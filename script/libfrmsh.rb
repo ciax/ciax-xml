@@ -72,7 +72,7 @@ module CIAX
         end
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
         @stream=Stream.new(iocmd,@fdb['wait'],timeout)
-        @sqlsv=@stream.ext_logging(@id,@fdb['version']) unless sim || ENV['NOSQLOG']
+        @sqlsv=@stream.ext_logging(@id,@fdb['version']).sqlsv unless sim
         @cobj.ext_proc{|ent|
           @stream.snd(ent.cfg[:frame],ent.id)
           @field.upd(ent){@stream.rcv}

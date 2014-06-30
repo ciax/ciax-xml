@@ -15,6 +15,7 @@ module CIAX
     #    base64: encoded data
     #   }
     # }
+    attr_reader :sqlsv
     def initialize(iocmd,wait=0,timeout=nil)
       Msg.abort(" No IO command") if iocmd.to_a.empty?
       @iocmd=type?(iocmd,Array)
@@ -79,7 +80,8 @@ module CIAX
         logging.append(@data)
       }
       update({'id'=>id,'ver'=>ver})
-      SqLog::Save.new(id).add_table(self)
+      @sqlsv=SqLog::Save.new(id).add_table(self)
+      self
     end
 
     private

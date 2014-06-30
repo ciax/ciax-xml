@@ -6,13 +6,14 @@ require "thread"
 # Generate SQL command string
 module CIAX
   module SqLog
-    class Upd
+    class Table
       attr_reader :tid,:stat
       include Msg
-      def initialize(stat,ver=nil)
-        @ver_color=9
+      def initialize(stat)
         @stat=type?(stat,Hash)
-        ver||=@stat['ver'].to_i
+        @ver_color=9
+        ver=@stat['ver'].to_i
+        return unless ver > 0
         @tid="#{@stat['type']}_#{ver}"
         verbose("SqLog","Init/Table '#{@tid}'")
       end
@@ -105,16 +106,22 @@ module CIAX
         }
       end
 
-      # Check table existence
-      def add_table(stat,ver=nil)
-        sqlog=Upd.new(stat,ver)
-        unless internal("tables").split(' ').include?(sqlog.tid)
-          @queue.push sqlog.create
-          verbose("SqLog","Init/Table '#{sqlog.tid}' is created")
+      # Check table existence (ver=0 is invalid)
+      def add_table(stat)
+        sqlog=Table.new(stat)
+        if sqlog.tid
+          # Create table if no table
+          unless internal("tables").split(' ').include?(sqlog.tid)
+            @queue.push sqlog.create
+            verbose("SqLog","Init/Table '#{sqlog.tid}' is created")
+          end
+          # Add to stat.upd
+          stat.post_upd_procs << proc{
+            @queue.push sqlog.upd
+          }
+        else
+          verbose("SqLog","Init/Table invalid Version(0): No Log")
         end
-        stat.post_upd_procs << proc{
-          @queue.push sqlog.upd
-        }
         self
       end
 
@@ -196,7 +203,7 @@ module CIAX
     begin
       adb=Site::Db.new.set(id)[:adb]
       stat=App::Status.new.skeleton(adb).ext_file
-      sqlog=SqLog::Upd.new(stat)
+      sqlog=SqLog::Table.new(stat)
       puts sqlog.create
       puts sqlog.upd
     rescue InvalidID

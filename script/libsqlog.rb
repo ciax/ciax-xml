@@ -125,6 +125,7 @@ module CIAX
       end
     end
 
+    # For log simulator
     class LogRing
       include CIAX::Msg
       attr_reader :index,:max

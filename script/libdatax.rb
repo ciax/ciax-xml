@@ -211,6 +211,8 @@ module CIAX
       else
         warning("File","  -- no json file (#{@base})")
       end
+    ensure
+      post_upd
     end
 
     private

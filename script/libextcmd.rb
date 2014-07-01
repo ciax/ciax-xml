@@ -58,7 +58,6 @@ module CIAX
       }
     end
 
-    private
     def deep_subst(data)
       case data
       when Array

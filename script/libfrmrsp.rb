@@ -30,11 +30,11 @@ module CIAX
       # Block accepts [frame,time]
       # Result : executed block or not
       def upd(ent)
-        @current_ent=type?(ent,Entity)
         @sel=Hash[@skel]
-        if rid=ent.cfg['response']
+        if rid=type?(ent,Entity).cfg['response']
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
           @sel.update(@fds[rid])
+          @sel[:body]=ent.deep_subst(@sel[:body])
           verbose("FrmRsp","Selected DB for #{rid} #{@sel}")
           # Frame structure: main(total){ ccrange{ body(selected str) } }
           stream=yield
@@ -88,7 +88,7 @@ module CIAX
             akey=e0['assign'] || Msg.cfg_err("No key for Array")
             # Insert range depends on command param
             idxs=e0[:index].map{|e1|
-              e1['range'] ? @current_ent.subst(e1['range']) : "0:#{e1['size'].to_i-1}"
+              e1['range']||"0:#{e1['size'].to_i-1}"
             }
             enclose("FrmRsp","Array:[#{akey}]:Range#{idxs}","Array:Assign[#{akey}]"){
               @cache[akey]=mk_array(idxs,get(akey)){yield}

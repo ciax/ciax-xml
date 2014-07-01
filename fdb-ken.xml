@@ -83,42 +83,54 @@
         </array>
       </response>
       <response id="getst0" delimiter=",">
-        <field label="StatusCode">MS0,</field>
+        <field label="StatusCode">MS0,0</field>
+        <field label="UNIT #">$1+1</field>
+        <field label="Delimiter">,</field>
         <array assign="ms0" label="Value">
           <index range="$1" size="3" />
           <index size="10" />
         </array>
       </response>
       <response id="getst1" delimiter=",">
-        <field label="StatusCode">MS1,</field>
+        <field label="StatusCode">MS1,0</field>
+        <field label="UNIT #">$1+1</field>
+        <field label="Delimiter">,</field>
         <array assign="ms1" label="Value">
           <index range="$1" size="3" />
           <index size="45" />
         </array>
       </response>
       <response id="getst2" delimiter=",">
-        <field label="StatusCode">MS2,</field>
+        <field label="StatusCode">MS2,0</field>
+        <field label="UNIT #">$1+1</field>
+        <field label="Delimiter">,</field>
         <array assign="ms2" label="Value">
           <index range="$1" size="3" />
           <index size="31" />
         </array>
       </response>
       <response id="getst3" delimiter=",">
-        <field label="StatusCode">MS3,</field>
+        <field label="StatusCode">MS3,0</field>
+        <field label="UNIT #">$1+1</field>
+        <field label="Delimiter">,</field>
         <array assign="ms3" label="Value">
           <index range="$1" size="3" />
           <index size="2" />
         </array>
       </response>
       <response id="getst4" delimiter=",">
-        <field label="StatusCode">MS4,</field>
+        <field label="StatusCode">MS4,0</field>
+        <field label="UNIT #">$1+1</field>
+        <field label="Delimiter">,</field>
         <array assign="ms4" label="Value">
           <index range="$1" size="3" />
           <index size="10" />
         </array>
       </response>
       <response id="getst5" delimiter=",">
-        <field label="StatusCode">MS5,</field>
+        <field label="StatusCode">MS5,0</field>
+        <field label="UNIT #">$1+1</field>
+        <field label="Delimiter">,</field>
         <array assign="ms5" label="Value">
           <index range="$1" size="3" />
           <index size="33" />

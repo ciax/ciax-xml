@@ -34,10 +34,10 @@
           <group id="b$b" column="2">
             <repeat_var from="0" to="3" counter="c">
               <float id="v$b$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
-                <field ref="ms0" index="$b:$c*2+1" />
+                <field ref="ms0" index="$b:$c*2" />
               </float>
               <float id="i$b$c" label="Current(A) CH$c" format="%5.2f" formula="$#/100">
-                <field ref="ms0" index="$b:$c*2+2" />
+                <field ref="ms0" index="$b:$c*2+1" />
               </float>
             </repeat_var>
           </group>

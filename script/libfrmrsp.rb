@@ -138,7 +138,7 @@ module CIAX
         cid=res['cmd']
       end
       fdb=Site::Db.new.set(id)[:fdb]
-      field=Field.new.skeleton(fdb).ext_rsp
+      field=Field.new.set_db(fdb).ext_rsp
       field.ext_file if $opt['m']
       if cid
         cfg=Config.new('frm_top').update(:db => fdb,:field => field)

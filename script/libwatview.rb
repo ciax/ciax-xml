@@ -108,7 +108,7 @@ module CIAX
       begin
         id=STDIN.tty? ? ARGV.shift : watch.read['id']
         adb=Site::Db.new.set(id)[:adb]
-        watch.skeleton(adb)
+        watch.set_db(adb)
         wview=View.new(adb,watch)
         watch.ext_file if STDIN.tty?
         wview.ext_prt unless $opt['r']

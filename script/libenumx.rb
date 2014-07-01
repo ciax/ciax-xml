@@ -114,6 +114,7 @@ module CIAX
 
   class Hashx < Hash
     include Enumx
+    # Make empty copy
     def skeleton
       hash=Hashx.new
       keys.each{|i|

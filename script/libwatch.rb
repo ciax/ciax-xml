@@ -62,7 +62,7 @@ module CIAX
     watch=Watch::Data.new
     begin
       adb=Site::Db.new.set(ARGV.shift)[:adb]
-      watch.skeleton(adb)
+      watch.set_db(adb)
       if host=$opt['h']
         watch.ext_http(host)
       else

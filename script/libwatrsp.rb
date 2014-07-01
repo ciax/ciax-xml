@@ -111,9 +111,9 @@ module CIAX
       stat=App::Status.new
       id=STDIN.tty? ? ARGV.shift : stat.read['id']
       adb=Site::Db.new.set(id)[:adb]
-      stat.skeleton(adb)
+      stat.set_db(adb)
       stat.ext_file if STDIN.tty?
-      watch=Watch::Data.new.skeleton(adb).ext_upd(stat)
+      watch=Watch::Data.new.set_db(adb).ext_upd(stat)
       if t=$opt['t']
         watch.ext_file
         stat.str_update(t)

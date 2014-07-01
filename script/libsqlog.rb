@@ -202,7 +202,7 @@ module CIAX
     ARGV.clear
     begin
       adb=Site::Db.new.set(id)[:adb]
-      stat=App::Status.new.skeleton(adb).ext_file
+      stat=App::Status.new.set_db(adb).ext_file
       sqlog=SqLog::Table.new(stat)
       puts sqlog.create
       puts sqlog.upd

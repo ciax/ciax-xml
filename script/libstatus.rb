@@ -14,7 +14,7 @@ module CIAX
         @lastsave=now_msec
       end
 
-      def skeleton(db)
+      def set_db(db)
         super
         if @data.empty?
           @adbs=@db[:status][:index]
@@ -74,7 +74,7 @@ module CIAX
       stat=Status.new
       begin
         adb=Site::Db.new.set(ARGV.shift)[:adb]
-        stat.skeleton(adb)
+        stat.set_db(adb)
         if host=$opt['h']
           stat.ext_http(host)
         else

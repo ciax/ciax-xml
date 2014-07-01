@@ -10,7 +10,7 @@ module CIAX
         super('field',init_struct)
       end
 
-      def skeleton(db)
+      def set_db(db)
         super
         # Field Initialize
         if @data.empty?

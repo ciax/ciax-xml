@@ -113,9 +113,9 @@ module CIAX
         field=Frm::Field.new
         id=STDIN.tty? ? ARGV.shift : field.read['id']
         ldb=Site::Db.new.set(id)
-        field.skeleton(ldb[:fdb]).ext_rsp
+        field.set_db(ldb[:fdb]).ext_rsp
         field.ext_file if STDIN.tty?
-        stat=Status.new.skeleton(ldb[:adb]).ext_rsp(field)
+        stat=Status.new.set_db(ldb[:adb]).ext_rsp(field)
         puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID
         Msg.usage "[site] | < field_file"

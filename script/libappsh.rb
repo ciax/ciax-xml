@@ -26,7 +26,7 @@ module CIAX
       attr_reader :adb,:stat
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
-        @stat=Status.new.skeleton(@adb)
+        @stat=Status.new.set_db(@adb)
         super('app',@stat['id'],Command.new(cfg))
         @output=@print=View.new(@adb,@stat)
         init_watch if @adb[:watch]
@@ -40,7 +40,7 @@ module CIAX
 
       private
       def init_watch
-        @watch=Watch::Data.new.skeleton(@adb)
+        @watch=Watch::Data.new.set_db(@adb)
         @watch.post_upd_procs << proc{|wat|
           block=wat.data['block'].map{|id,par| par ? nil : id}.compact
           @cobj.extgrp.valid_sub(block)

@@ -110,7 +110,7 @@
     <adb port="25612" />
     <fdb iocmd="socat - tcp:celaeno:4012" />
   </site>
-  <site id="mp1" label="MOIRCS Power Supply 1" app_id="ken">
+  <site id="mp1" label="MOIRCS Power Supply 1" app_id="mp1">
     <adb port="25613" />
     <fdb iocmd="socat - tcp:celaeno:4013" />
   </site>

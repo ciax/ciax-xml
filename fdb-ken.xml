@@ -16,8 +16,9 @@
         <char length="1">$1+0x41</char>
         <string>PWID</string>
       </item>
-      <item id="getst0" label="Get Status in INT [UNIT]" type="stat" response="getst0">
+      <item id="getst0" label="Get Status in INT [UNIT] [N of CH]" type="stat" response="getst0">
         <par_num>0:2</par_num>
+        <par_num>1:4</par_num>
         <char length="1">$1+0x41</char>
         <string>ST0</string>
       </item>
@@ -76,62 +77,66 @@
         <field label="ACK" decode="unsigned" length="1">6</field>
         <field label="Master CH">@</field>
       </response>
-      <response id="getstat" delimiter=",">
-        <array assign="id" label="Value">
+      <response id="getstat">
+        <array assign="id" label="Value" delimiter=",">
           <index range="$1" size="3" />
           <index size="5" />
         </array>
       </response>
-      <response id="getst0" delimiter=",">
+      <response id="getst0">
         <field label="StatusCode">MS0,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
-        <array assign="ms0" label="Value">
+        <array assign="ms0" label="Value" delimiter=",">
           <index range="$1" size="3" />
-          <index size="10" />
+          <index range="0:$2*2-1" size="10" />
+        </array>
+        <array assign="st0" label="Stat" length="1" decode="hexstr">
+          <index range="$1" size="3" />
+          <index size="4" />
         </array>
       </response>
-      <response id="getst1" delimiter=",">
+      <response id="getst1">
         <field label="StatusCode">MS1,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
-        <array assign="ms1" label="Value">
+        <array assign="ms1" label="Value" delimiter=",">
           <index range="$1" size="3" />
           <index size="45" />
         </array>
       </response>
-      <response id="getst2" delimiter=",">
+      <response id="getst2">
         <field label="StatusCode">MS2,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
-        <array assign="ms2" label="Value">
+        <array assign="ms2" label="Value" delimiter=",">
           <index range="$1" size="3" />
           <index size="31" />
         </array>
       </response>
-      <response id="getst3" delimiter=",">
+      <response id="getst3">
         <field label="StatusCode">MS3,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
-        <array assign="ms3" label="Value">
+        <array assign="ms3" label="Value" delimiter=",">
           <index range="$1" size="3" />
           <index size="2" />
         </array>
       </response>
-      <response id="getst4" delimiter=",">
+      <response id="getst4">
         <field label="StatusCode">MS4,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
-        <array assign="ms4" label="Value">
+        <array assign="ms4" label="Value" delimiter=",">
           <index range="$1" size="3" />
           <index size="10" />
         </array>
       </response>
-      <response id="getst5" delimiter=",">
+      <response id="getst5">
         <field label="StatusCode">MS5,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
-        <array assign="ms5" label="Value">
+        <array assign="ms5" label="Value" delimiter=",">
           <index range="$1" size="3" />
           <index size="33" />
         </array>

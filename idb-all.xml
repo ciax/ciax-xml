@@ -167,13 +167,7 @@
   <instance id="mft" label="MOIRCS Hall Sensor" app_id="fpa"/>
   <instance id="mh1" label="MOIRCS Carrousel Heater" app_id="psp"/>
   <instance id="mh2" label="MOIRCS Main Heater" app_id="psp"/>
-  <instance id="mp1" label="MOIRCS Power Supply 1" app_id="ken">
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-      <group ref="b0" caption="SYSTEM A" />
-      <group ref="b1" caption="SYSTEM B" />
-      <group ref="b2" caption="SYSTEM C" />
-    </status>
-  </instance>
+  <instance id="mp1" label="MOIRCS Power Supply 1" app_id="mp1"/>
   <instance id="mp2" label="MOIRCS Power Supply 2" app_id="ken">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="b0" caption="SYSTEM A" />

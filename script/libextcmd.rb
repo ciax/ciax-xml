@@ -51,7 +51,7 @@ module CIAX
           @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
         }
         if num && /\$/ !~ res
-          res=eval(res).to_s
+          res=res.split(':').map{|n| eval(n).to_s}.join(':')
         end
         Msg.cfg_err("Nil string") if res == ''
         res

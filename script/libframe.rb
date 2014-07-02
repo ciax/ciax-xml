@@ -69,9 +69,9 @@ module CIAX
           cc_add(str)
         elsif len.to_i == body.size
           str=body
-          @frame=rest.to_s
-          verbose("Frame","RSP:Cut terminator was removed") if tm
-          cc_add([str,tm].join)
+          @frame=[tm,rest].join
+          verbose("Frame","RSP:Cut just end before terminator") if tm
+          cc_add(str)
         else
           str=body.slice!(0,len.to_i)
           @frame=[body,tm,rest].join
@@ -79,9 +79,9 @@ module CIAX
         end
       elsif delimiter
         delimiter=eval('"'+delimiter+'"')
-        verbose("Frame","RSP:Cut by Delimiter [#{delimiter.inspect}] from [#{@frame.inspect}]")
+        verbose("Frame","RSP:Cut by Delimiter [#{delimiter.inspect}]")
         str,dlm,body=body.partition(delimiter)
-        verbose("Frame","RSP:Cut by Terminator [#{@terminator.inspect}] from [#{@frame.inspect}]") if tm and dlm
+        verbose("Frame","RSP:Cut by Terminator [#{@terminator.inspect}]") if tm and dlm
         @frame=[body,tm,rest].join
         cc_add([str,dlm].join)
       else
@@ -146,7 +146,6 @@ module CIAX
     private
     def verify(e0)
       ref=e0['val']
-      verbose("Frame","RSP:Verify(#{e0['label']}):[#{ref.inspect}])")
       len=e0['length']||ref.size
       str=@frame.slice!(0,len.to_i)
       if e0['decode']

@@ -60,7 +60,7 @@
  $1..9
     description : substitute parameters, sould be numerical
     available: fdb//command/[char,string]
-            fdb//response/array/index@range
+            fdb//response/array/index@range (separated by : )
             --
             adb//command/argv (eval if @format exists, Math included)
 

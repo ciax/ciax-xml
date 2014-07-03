@@ -30,12 +30,12 @@
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ken">
-      <group id="gu1" label="UNIT1" column="2">
+      <group id="gu1" caption="UNIT1" column="2">
         <integer id="model" label="Model">
           <field ref="ms3" index="0:0"/>
         </integer>
       </group>
-      <group id="gv1" label="Values" column="3">
+      <group id="gv1" caption="Values" column="3">
         <repeat_var from="0" to="3" counter="c">
           <float id="v0$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
             <field ref="ms0" index="0:$c*2" />

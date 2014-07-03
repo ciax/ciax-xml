@@ -20,11 +20,11 @@
       <response id="reqstat">
         <field decode="unsigned">6</field>
       </response>
-      <response id="getstat"  delimiter=",">
-        <field assign="st1" label="CH1 RetCode" />
-        <field assign="ch1" label="CH1 Value" />
-        <field assign="st2" label="CH2 RetCode" />
-        <field assign="ch2" label="CH2 Value" />
+      <response id="getstat">
+        <array assign="stat"  delimiter=",">
+          <index size="2"/>
+          <index size="2"/>
+        </array>
       </response>
     </responses>
   </frame>

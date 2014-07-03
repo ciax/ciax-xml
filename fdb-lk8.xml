@@ -28,8 +28,8 @@
       <body/>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="getstat" delimiter=";">
-        <array assign="ch" label="Value">
+      <response id="getstat">
+        <array assign="ch" label="Value" delimiter=";">
           <index size="8" />
         </array>
       </response>

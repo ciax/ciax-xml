@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf" ccmethod="sum" maxlength="255" version="3" wait="0.5">
+  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf" ccmethod="sum" maxlength="255" version="T4" wait="0.5">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="ENQ">5</char>
@@ -37,7 +37,7 @@
         <char length="1">$1+0x41</char>
         <string>ST3</string>
       </item>
-      <item id="getst4" label="Get Status in Float [UNIT]" type="stat" response="getst4">
+      <item id="getst4" label="Get Status in Float [UNIT] [N of CH]" type="stat" response="getst4">
         <par_num>0:2</par_num>
         <char length="1">$1+0x41</char>
         <string>ST4</string>
@@ -89,7 +89,7 @@
         <field label="Delimiter">,</field>
         <array assign="ms0" label="Value" delimiter=",">
           <index range="$1" size="3" />
-          <index range="0:$2*2-1" size="10" />
+          <index range="0:$2*2-1" size="8" />
         </array>
         <array assign="st0" label="Stat" length="1" decode="hexstr">
           <index range="$1" size="3" />
@@ -102,7 +102,7 @@
         <field label="Delimiter">,</field>
         <array assign="ms1" label="Value" delimiter=",">
           <index range="$1" size="3" />
-          <index size="45" />
+          <index size="44" />
         </array>
       </response>
       <response id="getst2">
@@ -111,7 +111,7 @@
         <field label="Delimiter">,</field>
         <array assign="ms2" label="Value" delimiter=",">
           <index range="$1" size="3" />
-          <index size="31" />
+          <index size="14" />
         </array>
       </response>
       <response id="getst3">
@@ -120,7 +120,6 @@
         <field label="Delimiter">,</field>
         <array assign="ms3" label="Value" delimiter=",">
           <index range="$1" size="3" />
-          <index size="2" />
         </array>
       </response>
       <response id="getst4">
@@ -129,7 +128,11 @@
         <field label="Delimiter">,</field>
         <array assign="ms4" label="Value" delimiter=",">
           <index range="$1" size="3" />
-          <index size="10" />
+          <index range="0:$2*2-1" size="8" />
+        </array>
+        <array assign="st0" label="Stat" length="1" decode="hexstr">
+          <index range="$1" size="3" />
+          <index size="4" />
         </array>
       </response>
       <response id="getst5">
@@ -138,7 +141,7 @@
         <field label="Delimiter">,</field>
         <array assign="ms5" label="Value" delimiter=",">
           <index range="$1" size="3" />
-          <index size="33" />
+          <index size="14" />
         </array>
       </response>
       <response id="default"  noaffix="true"/>

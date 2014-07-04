@@ -4,12 +4,21 @@
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <item id="upd" label="Update Status">
-          <repeat from="0" to="2">
-            <frmcmd name="getst0">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="ack"/>
-          </repeat>
+          <frmcmd name="getst0">
+            <argv>0</argv>
+            <argv>2</argv>
+          </frmcmd>
+          <frmcmd name="ack"/>
+          <frmcmd name="getst0">
+            <argv>1</argv>
+            <argv>4</argv>
+          </frmcmd>
+          <frmcmd name="ack"/>
+          <frmcmd name="getst0">
+            <argv>2</argv>
+            <argv>2</argv>
+          </frmcmd>
+          <frmcmd name="ack"/>
         </item>
         <item id="getconf" label="Get Config Data">
           <repeat from="0" to="2">
@@ -32,7 +41,7 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ken">
       <group id="gu1" caption="UNIT1" column="2">
         <integer id="model" label="Model">
-          <field ref="ms3" index="0:0"/>
+          <field ref="ms3" index="0"/>
         </integer>
       </group>
       <group id="gv1" caption="Values" column="3">

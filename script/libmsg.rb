@@ -167,7 +167,7 @@ module CIAX
     end
 
     def relay(msg)
-      msg=color(msg,3)+':'+$!.to_s
+      msg=msg ? color(msg,3)+':'+$!.to_s : ''
       raise $!.class,msg,caller(1)
     end
 

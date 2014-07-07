@@ -115,7 +115,7 @@ module CIAX
         ldb=Site::Db.new.set(id)
         field.set_db(ldb[:fdb]).ext_rsp
         field.ext_file if STDIN.tty?
-        stat=Status.new.set_db(ldb[:adb]).ext_rsp(field)
+        stat=Status.new.set_db(ldb[:adb]).ext_file.ext_rsp(field).save
         puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID
         Msg.usage "[site] | < field_file"

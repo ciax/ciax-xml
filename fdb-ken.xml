@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf" ccmethod="sum" maxlength="255" version="4" wait="0.5">
+  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf" ccmethod="sum" maxlength="255" version="5" wait="0.5">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="ENQ">5</char>
@@ -22,13 +22,15 @@
         <char length="1">$1+0x41</char>
         <string>ST0</string>
       </item>
-      <item id="getst1" label="Get Presets in INT [UNIT]" type="stat" response="getst1">
+      <item id="getst1" label="Get Presets in INT [UNIT] [N of CH]" type="stat" response="getst1">
         <par_num>0:2</par_num>
+        <par_num>1:4</par_num>
         <char length="1">$1+0x41</char>
         <string>ST1</string>
       </item>
-      <item id="getst2" label="Get status [UNIT]" type="stat" response="getst2">
+      <item id="getst2" label="Get status [UNIT] [N of CH]" type="stat" response="getst2">
         <par_num>0:2</par_num>
+        <par_num>1:4</par_num>
         <char length="1">$1+0x41</char>
         <string>ST2</string>
       </item>
@@ -39,11 +41,13 @@
       </item>
       <item id="getst4" label="Get Status in Float [UNIT] [N of CH]" type="stat" response="getst4">
         <par_num>0:2</par_num>
+        <par_num>1:4</par_num>
         <char length="1">$1+0x41</char>
         <string>ST4</string>
       </item>
-      <item id="getst5" label="Get Presets in Float [UNIT]" type="stat" response="getst5">
+      <item id="getst5" label="Get Presets in Float [UNIT] [N of CH]" type="stat" response="getst5">
         <par_num>0:2</par_num>
+        <par_num>1:4</par_num>
         <char length="1">$1+0x41</char>
         <string>ST5</string>
       </item>
@@ -89,7 +93,8 @@
         <field label="Delimiter">,</field>
         <array assign="ms0" label="Value" delimiter=",">
           <index range="$1" size="3" />
-          <index range="0:$2*2-1" size="8" />
+          <index range="0:$2-1" size="4" />
+          <index size="2" />
         </array>
         <array assign="st0" label="Stat" length="1" decode="hexstr">
           <index range="$1" size="3" />
@@ -101,8 +106,12 @@
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
         <array assign="ms1" label="Value" delimiter=",">
+          <!--Unit-->
           <index range="$1" size="3" />
-          <index size="44" />
+          <!--Preset-->
+          <index size="4" />
+          <!--CH-->
+          <index range="0:$2*2+2" size="11" />
         </array>
       </response>
       <response id="getst2">

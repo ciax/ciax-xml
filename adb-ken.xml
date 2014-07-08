@@ -4,34 +4,32 @@
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <item id="upd" label="Update Status">
-          <frmcmd name="getst0">
-            <argv>0</argv>
-            <argv>2</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst0">
-            <argv>1</argv>
-            <argv>4</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst0">
-            <argv>2</argv>
-            <argv>2</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
+          <repeat from="0" to="2" counter="c">
+            <frmcmd name="getst0">
+              <argv>$c</argv>
+              <argv>(($c&amp;1)+1)*2</argv>
+            </frmcmd>
+            <frmcmd name="ack"/>
+          </repeat>
         </item>
         <item id="getconf" label="Get Config Data">
-          <repeat from="0" to="2">
+          <repeat from="0" to="2" counter="c">
             <frmcmd name="getst1">
-              <argv>$_</argv>
+              <argv>$c</argv>
+              <argv>(($c&amp;1)+1)*2</argv>
             </frmcmd>
             <frmcmd name="ack"/>
+          </repeat>
+          <repeat from="0" to="2" counter="c">
             <frmcmd name="getst2">
-              <argv>$_</argv>
+              <argv>$c</argv>
+              <argv>(($c&amp;1)+1)*2</argv>
             </frmcmd>
             <frmcmd name="ack"/>
+          </repeat>
+          <repeat from="0" to="2" counter="c">
             <frmcmd name="getst3">
-              <argv>$_</argv>
+              <argv>$c</argv>
             </frmcmd>
             <frmcmd name="ack"/>
           </repeat>
@@ -46,45 +44,87 @@
           </integer>
         </repeat_var>
       </group>
-      <group id="gu1" caption="Values A" column="3">
+      <group id="gu1" caption="Output A" column="3">
         <repeat_var from="0" to="1" counter="c">
           <float id="v0$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
-            <field ref="ms0" index="0:$c*2" />
+            <field ref="ms0" index="0:$c:0" />
           </float>
           <float id="i0$c" label="Current(A) CH$c" format="%5.2f" formula="$#/100">
-            <field ref="ms0" index="0:$c*2+1" />
+            <field ref="ms0" index="0:$c:1" />
           </float>
           <integer id="s0$c" label="Stat CH$c">
             <field ref="st0" index="0:$c"/>
           </integer>
         </repeat_var>
       </group>
-      <group id="gu2" caption="Values B" column="3">
+      <group id="gu2" caption="Output B" column="3">
         <repeat_var from="0" to="3" counter="c">
           <float id="v1$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
-            <field ref="ms0" index="1:$c*2" />
+            <field ref="ms0" index="1:$c:0" />
           </float>
           <float id="i1$c" label="Current(A) CH$c" format="%5.2f" formula="$#/100">
-            <field ref="ms0" index="1:$c*2+1" />
+            <field ref="ms0" index="1:$c:1" />
           </float>
           <integer id="s1$c" label="Stat CH$c">
             <field ref="st0" index="1:$c"/>
           </integer>
         </repeat_var>
       </group>
-      <group id="gu3" caption="Values C" column="3">
+      <group id="gu3" caption="Output C" column="3">
         <repeat_var from="0" to="1" counter="c">
           <float id="v2$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
-            <field ref="ms0" index="2:$c*2" />
+            <field ref="ms0" index="2:$c:0" />
           </float>
           <float id="i2$c" label="Current(A) CH$c" format="%5.2f" formula="$#/100">
-            <field ref="ms0" index="2:$c*2+1" />
+            <field ref="ms0" index="2:$c:1" />
           </float>
           <integer id="s2$c" label="Stat CH$c">
             <field ref="st0" index="2:$c"/>
           </integer>
         </repeat_var>
       </group>
+      <repeat_grp from="0" to="1" counter="c">
+        <group id="gp1$c" caption="Preset UNIT A $cCH" column="4">
+          <repeat_var from="0" to="3" counter="p">
+            <float id="pv0$c$p" label="#$p (V)" format="%5.2f" formula="$#/100">
+              <field ref="ms1" index="0:$p:$c*2" />
+            </float>
+          </repeat_var>
+          <repeat_var from="0" to="3" counter="p">
+            <float id="pi0$c$p" label="#$p (A)" format="%5.2f" formula="$#/100">
+              <field ref="ms1" index="0:$p:$c*2+1" />
+            </float>
+          </repeat_var>
+        </group>
+      </repeat_grp>
+      <repeat_grp from="0" to="3" counter="c">
+        <group id="gp2$c" caption="Preset UNIT B $cCH" column="4">
+          <repeat_var from="0" to="3" counter="p">
+            <float id="pv1$c$p" label="#$p (V)" format="%5.2f" formula="$#/100">
+              <field ref="ms1" index="1:$p:$c*2" />
+            </float>
+          </repeat_var>
+          <repeat_var from="0" to="3" counter="p">
+            <float id="pi1$c$p" label="#$p (A)" format="%5.2f" formula="$#/100">
+              <field ref="ms1" index="1:$p:$c*2+1" />
+              </float>
+          </repeat_var>
+        </group>
+      </repeat_grp>
+      <repeat_grp from="0" to="1" counter="c">
+        <group id="gp3$c" caption="Preset UNIT C $cCH" column="4">
+          <repeat_var from="0" to="3" counter="p">
+            <float id="pv2$c$p" label="#$p (V)" format="%5.2f" formula="$#/100">
+              <field ref="ms1" index="2:$p:$c*2" />
+            </float>
+          </repeat_var>
+          <repeat_var from="0" to="3" counter="p">
+            <float id="pi2$c$p" label="#$p (A)" format="%5.2f" formula="$#/100">
+              <field ref="ms1" index="2:$p:$c*2+1" />
+              </float>
+          </repeat_var>
+        </group>
+      </repeat_grp>
     </status>
   </app>
 </adb>

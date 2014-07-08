@@ -37,13 +37,31 @@
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ken">
-      <group id="gsa" caption="UNIT NAME" column="4">
-        <repeat_var from="0" to="2" counter="c">
-          <integer id="model$c" label="Model $c">
+      <repeat_grp from="0" to="2" counter="c">
+        <group id="gs$c" caption="UNIT $c STAT" column="4">
+          <integer id="model$c" label="Model">
             <field ref="ms3" index="$c"/>
           </integer>
-        </repeat_var>
-      </group>
+          <integer id="disp$c" label="Display">
+            <field ref="ms2" index="$c:0"/>
+          </integer>
+          <integer id="main$c" label="Main Output">
+            <field ref="ms2" index="$c:1"/>
+          </integer>
+          <integer id="tr$c" label="Tracking">
+            <field ref="ms2" index="$c:3"/>
+          </integer>
+          <integer id="trm$c" label="Traking Mode">
+            <field ref="ms2" index="$c:5"/>
+          </integer>
+          <integer id="pre$c" label="Preset Sel">
+            <field ref="ms2" index="$c:6"/>
+          </integer>
+          <integer id="dly$c" label="Delay">
+            <field ref="ms2" index="$c:7"/>
+          </integer>
+        </group>
+      </repeat_grp>
       <group id="gu1" caption="Output A" column="3">
         <repeat_var from="0" to="1" counter="c">
           <float id="v0$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
@@ -107,7 +125,7 @@
           <repeat_var from="0" to="3" counter="p">
             <float id="pi1$c$p" label="#$p (A)" format="%5.2f" formula="$#/100">
               <field ref="ms1" index="1:$p:$c*2+1" />
-              </float>
+            </float>
           </repeat_var>
         </group>
       </repeat_grp>
@@ -121,10 +139,61 @@
           <repeat_var from="0" to="3" counter="p">
             <float id="pi2$c$p" label="#$p (A)" format="%5.2f" formula="$#/100">
               <field ref="ms1" index="2:$p:$c*2+1" />
-              </float>
+            </float>
           </repeat_var>
         </group>
       </repeat_grp>
+      <group id="gd0" caption="Delay UNIT A" column="4">
+        <repeat_var from="0" to="1" counter="c">
+          <float id="dly0$c" label="Delay (sec)" format="%5.2f" formula="$#/100">
+            <field ref="dly2" index="0:$c" />
+          </float>
+        </repeat_var>
+      </group>
+      <group id="gd1" caption="Delay UNIT B" column="4">
+        <repeat_var from="0" to="3" counter="c">
+          <float id="dly1$c" label="Delay (sec)" format="%5.2f" formula="$#/100">
+            <field ref="dly2" index="1:$c" />
+          </float>
+        </repeat_var>
+      </group>
+      <group id="gd2" caption="Delay UNIT C" column="4">
+        <repeat_var from="0" to="1" counter="c">
+          <float id="dly2$c" label="Delay (sec)" format="%5.2f" formula="$#/100">
+            <field ref="dly2" index="2:$c" />
+          </float>
+        </repeat_var>
+      </group>
+      <group id="gt0" caption="Tracking UNIT A" column="4">
+        <repeat_var from="0" to="1" counter="c">
+          <float id="trv0$c" label="Track $cCH(V)" format="%5.2f" formula="$#/100">
+            <field ref="tr2" index="0:$c*2" />
+          </float>
+          <float id="tri0$c" label="Track $cCH(A)" format="%5.2f" formula="$#/100">
+            <field ref="tr2" index="0:$c*2+1" />
+          </float>
+        </repeat_var>
+      </group>
+      <group id="gt1" caption="Tracking UNIT B" column="4">
+        <repeat_var from="0" to="3" counter="c">
+          <float id="trv1$c" label="Track $cCH(V)" format="%5.2f" formula="$#/100">
+            <field ref="tr2" index="1:$c" />
+          </float>
+          <float id="tri1$c" label="Track $cCH(A)" format="%5.2f" formula="$#/100">
+            <field ref="tr2" index="1:$c*2+1" />
+          </float>
+        </repeat_var>
+      </group>
+      <group id="gt2" caption="Tracking UNIT C" column="4">
+        <repeat_var from="0" to="1" counter="c">
+          <float id="trv2$c" label="Track $cCH(V)" format="%5.2f" formula="$#/100">
+            <field ref="tr2" index="2:$c" />
+          </float>
+          <float id="tri2$c" label="Track $cCH(A)" format="%5.2f" formula="$#/100">
+            <field ref="tr2" index="2:$c*2+1" />
+          </float>
+        </repeat_var>
+      </group>
     </status>
   </app>
 </adb>

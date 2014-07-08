@@ -7,7 +7,7 @@
           <repeat from="0" to="2" counter="c">
             <frmcmd name="getst0">
               <argv>$c</argv>
-              <argv>(($c&amp;1)+1)*2</argv>
+              <argv>($c&amp;1)*2+2</argv>
             </frmcmd>
             <frmcmd name="ack"/>
           </repeat>
@@ -16,14 +16,14 @@
           <repeat from="0" to="2" counter="c">
             <frmcmd name="getst1">
               <argv>$c</argv>
-              <argv>(($c&amp;1)+1)*2</argv>
+              <argv>($c&amp;1)*2+2</argv>
             </frmcmd>
             <frmcmd name="ack"/>
           </repeat>
           <repeat from="0" to="2" counter="c">
             <frmcmd name="getst2">
               <argv>$c</argv>
-              <argv>(($c&amp;1)+1)*2</argv>
+              <argv>($c&amp;1)*2+2</argv>
             </frmcmd>
             <frmcmd name="ack"/>
           </repeat>
@@ -62,45 +62,21 @@
           </integer>
         </group>
       </repeat_grp>
-      <group id="gu1" caption="Output A" column="3">
-        <repeat_var from="0" to="1" counter="c">
-          <float id="v0$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
-            <field ref="ms0" index="0:$c:0" />
-          </float>
-          <float id="i0$c" label="Current(A) CH$c" format="%5.2f" formula="$#/100">
-            <field ref="ms0" index="0:$c:1" />
-          </float>
-          <integer id="s0$c" label="Stat CH$c">
-            <field ref="st0" index="0:$c"/>
-          </integer>
-        </repeat_var>
-      </group>
-      <group id="gu2" caption="Output B" column="3">
-        <repeat_var from="0" to="3" counter="c">
-          <float id="v1$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
-            <field ref="ms0" index="1:$c:0" />
-          </float>
-          <float id="i1$c" label="Current(A) CH$c" format="%5.2f" formula="$#/100">
-            <field ref="ms0" index="1:$c:1" />
-          </float>
-          <integer id="s1$c" label="Stat CH$c">
-            <field ref="st0" index="1:$c"/>
-          </integer>
-        </repeat_var>
-      </group>
-      <group id="gu3" caption="Output C" column="3">
-        <repeat_var from="0" to="1" counter="c">
-          <float id="v2$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
-            <field ref="ms0" index="2:$c:0" />
-          </float>
-          <float id="i2$c" label="Current(A) CH$c" format="%5.2f" formula="$#/100">
-            <field ref="ms0" index="2:$c:1" />
-          </float>
-          <integer id="s2$c" label="Stat CH$c">
-            <field ref="st0" index="2:$c"/>
-          </integer>
-        </repeat_var>
-      </group>
+      <repeat_grp from="0" to="2" counter="u">
+        <group id="gu$u" caption="Output $u" column="3">
+          <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
+            <float id="v$u$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
+              <field ref="ms0" index="$u:$c:0" />
+            </float>
+            <float id="i$u$c" label="Current(A) CH$c" format="%5.2f" formula="$#/100">
+              <field ref="ms0" index="$u:$c:1" />
+            </float>
+            <integer id="s$u$c" label="Stat CH$c">
+              <field ref="st0" index="$u:$c"/>
+            </integer>
+          </repeat_var>
+        </group>
+      </repeat_grp>
       <repeat_grp from="0" to="1" counter="c">
         <group id="gp1$c" caption="Preset UNIT A $cCH" column="4">
           <repeat_var from="0" to="3" counter="p">
@@ -143,57 +119,27 @@
           </repeat_var>
         </group>
       </repeat_grp>
-      <group id="gd0" caption="Delay UNIT A" column="4">
-        <repeat_var from="0" to="1" counter="c">
-          <float id="dly0$c" label="Delay $cCH(sec)" format="%5.2f" formula="$#/100">
-            <field ref="dly2" index="0:$c" />
+      <repeat_grp from="0" to="2" counter="u">
+        <group id="gd$u" caption="Delay UNIT $u" column="4">
+          <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
+            <float id="dly$u$c" label="Delay $cCH(sec)" format="%5.2f" formula="$#/100">
+              <field ref="dly2" index="$u:$c" />
+            </float>
+          </repeat_var>
+        </group>
+      </repeat_grp>
+      <repeat_grp from="0" to="2" counter="u">
+      <group id="gt$u" caption="Tracking UNIT $u" column="4">
+        <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
+          <float id="trv$u$c" label="Track $cCH(V)" format="%5.2f" formula="$#/100">
+            <field ref="tr2" index="$u:$c*2" />
+          </float>
+          <float id="tri$u$c" label="Track $cCH(A)" format="%5.2f" formula="$#/100">
+            <field ref="tr2" index="$u:$c*2+1" />
           </float>
         </repeat_var>
       </group>
-      <group id="gd1" caption="Delay UNIT B" column="4">
-        <repeat_var from="0" to="3" counter="c">
-          <float id="dly1$c" label="Delay $cCH(sec)" format="%5.2f" formula="$#/100">
-            <field ref="dly2" index="1:$c" />
-          </float>
-        </repeat_var>
-      </group>
-      <group id="gd2" caption="Delay UNIT C" column="4">
-        <repeat_var from="0" to="1" counter="c">
-          <float id="dly2$c" label="Delay $cCH(sec)" format="%5.2f" formula="$#/100">
-            <field ref="dly2" index="2:$c" />
-          </float>
-        </repeat_var>
-      </group>
-      <group id="gt0" caption="Tracking UNIT A" column="4">
-        <repeat_var from="0" to="1" counter="c">
-          <float id="trv0$c" label="Track $cCH(V)" format="%5.2f" formula="$#/100">
-            <field ref="tr2" index="0:$c*2" />
-          </float>
-          <float id="tri0$c" label="Track $cCH(A)" format="%5.2f" formula="$#/100">
-            <field ref="tr2" index="0:$c*2+1" />
-          </float>
-        </repeat_var>
-      </group>
-      <group id="gt1" caption="Tracking UNIT B" column="4">
-        <repeat_var from="0" to="3" counter="c">
-          <float id="trv1$c" label="Track $cCH(V)" format="%5.2f" formula="$#/100">
-            <field ref="tr2" index="1:$c" />
-          </float>
-          <float id="tri1$c" label="Track $cCH(A)" format="%5.2f" formula="$#/100">
-            <field ref="tr2" index="1:$c*2+1" />
-          </float>
-        </repeat_var>
-      </group>
-      <group id="gt2" caption="Tracking UNIT C" column="4">
-        <repeat_var from="0" to="1" counter="c">
-          <float id="trv2$c" label="Track $cCH(V)" format="%5.2f" formula="$#/100">
-            <field ref="tr2" index="2:$c" />
-          </float>
-          <float id="tri2$c" label="Track $cCH(A)" format="%5.2f" formula="$#/100">
-            <field ref="tr2" index="2:$c*2+1" />
-          </float>
-        </repeat_var>
-      </group>
+      </repeat_grp>
     </status>
   </app>
 </adb>

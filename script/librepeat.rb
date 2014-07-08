@@ -49,7 +49,7 @@ module CIAX
       Msg.abort("Repeat:Counter Duplicate") if @counter.key?(c)
       fmt=@format[c]=e0['format'] || '%d'
       enclose("Repeat","Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]","End"){
-        Range.new(e0['from'],e0['to']).each { |n|
+        Range.new(subst(e0['from']),subst(e0['to'])).each { |n|
           enclose("Repeat","Turn Number[#{n}] Start","Turn Number[#{n}] End"){
             @counter[c]=n
             @rep.push yield

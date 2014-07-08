@@ -44,7 +44,9 @@
 
  $_ $` $a..z
     description : substitute sequence number(in repeat), expanded in Db
-      with eval(calc all over the string):
+      with eval(calc strings which is separated with ':'):
+            //repeat@[from,to]
+            --
             fdb//cmdframe/repeat/[char,string]
             --
             adb//commands/repeat/command/argv

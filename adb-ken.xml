@@ -145,21 +145,21 @@
       </repeat_grp>
       <group id="gd0" caption="Delay UNIT A" column="4">
         <repeat_var from="0" to="1" counter="c">
-          <float id="dly0$c" label="Delay (sec)" format="%5.2f" formula="$#/100">
+          <float id="dly0$c" label="Delay $cCH(sec)" format="%5.2f" formula="$#/100">
             <field ref="dly2" index="0:$c" />
           </float>
         </repeat_var>
       </group>
       <group id="gd1" caption="Delay UNIT B" column="4">
         <repeat_var from="0" to="3" counter="c">
-          <float id="dly1$c" label="Delay (sec)" format="%5.2f" formula="$#/100">
+          <float id="dly1$c" label="Delay $cCH(sec)" format="%5.2f" formula="$#/100">
             <field ref="dly2" index="1:$c" />
           </float>
         </repeat_var>
       </group>
       <group id="gd2" caption="Delay UNIT C" column="4">
         <repeat_var from="0" to="1" counter="c">
-          <float id="dly2$c" label="Delay (sec)" format="%5.2f" formula="$#/100">
+          <float id="dly2$c" label="Delay $cCH(sec)" format="%5.2f" formula="$#/100">
             <field ref="dly2" index="2:$c" />
           </float>
         </repeat_var>

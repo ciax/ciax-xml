@@ -127,8 +127,8 @@
           <index range="0:$2*2-1" size="8" />
         </array>
         <array assign="ms2" label="Value" delimiter=",">
-          <index range="$1" size="3" />
-          <index range="6:7" size="8" />
+          <index range="$1" />
+          <index range="6:7" />
         </array>
         <array assign="dly2" label="Value" delimiter=",">
           <index range="$1" size="3" />

@@ -52,9 +52,9 @@ module CIAX
       def init_index(domain)
         hash={}
         domain.each{|e0|
-          enclose("Fdb","INIT:Body Frame <-","-> INIT:Body Frame"){
-            id=e0.attr2item(hash)
-            item=hash[id]
+          id=e0.attr2item(hash)
+          item=hash[id]
+          enclose("Fdb","INIT:Body Frame [#{id}]<-","-> INIT:Body Frame"){
             Repeat.new.each(e0){|e1,r1|
               par2item(e1,item) && next
               e=yield(e1,r1) || next
@@ -78,7 +78,8 @@ module CIAX
       end
 
       def init_rsp(e,field)
-        if id=e['assign']
+        # Avoid override duplicated id
+        if (id=e['assign']) && !field.key?(id)
           item=field[id]={'label' => e['label']}
         end
         case e.name
@@ -94,6 +95,7 @@ module CIAX
             idx << e1.to_h
           }
           item[:struct]=idx.map{|h| h['size']} if item
+          verbose("Fdb","InitArray: #{attr}")
           attr
         when 'ccrange','body','echo'
           e.name

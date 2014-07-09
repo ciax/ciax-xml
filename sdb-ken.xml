@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+  <symbol id="ken" label="Kenwood DC Power Supply">
+    <table id="cmode">
+      <pattern class="normal" msg="CV">0</pattern>
+      <pattern class="normal" msg="CC">1</pattern>
+    </table>
+    <table id="model">
+      <pattern class="normal" msg="PW18-1.8AQ">1</pattern>
+      <pattern class="normal" msg="PW18-1.3AT(S)">2</pattern>
+      <pattern class="normal" msg="PW18-3AD">3</pattern>
+      <pattern class="normal" msg="PW36-1.5AD">4</pattern>
+      <pattern class="normal" msg="PW18-3ADP">5</pattern>
+      <pattern class="normal" msg="PW18-2ATP">6</pattern>
+      <pattern class="normal" msg="PW16-5ADP">7</pattern>
+      <pattern class="normal" msg="PW8-3ATP">8</pattern>
+      <pattern class="normal" msg="PW26-1AT(S)">9</pattern>
+      <pattern class="normal" msg="PW36-1.5ADP">10</pattern>
+      <pattern class="normal" msg="PW8-3AQP">11</pattern>
+      <pattern class="normal" msg="PW16-2ATP">12</pattern>
+      <pattern class="normal" msg="PW8-5ADPS">13</pattern>
+      <pattern class="normal" msg="PW24-1.5AQ">14</pattern>
+      <pattern class="alarm" msg="N/A" />
+    </table>
+    <table id="disp">
+      <pattern class="normal" msg="A">1</pattern>
+      <pattern class="normal" msg="B">2</pattern>
+      <pattern class="normal" msg="C">3</pattern>
+      <pattern class="normal" msg="D">4</pattern>
+      <pattern class="alarm" msg="N/A" />
+    </table>
+    <table id="tmode">
+      <pattern class="normal" msg="ABS">0</pattern>
+      <pattern class="normal" msg="%">1</pattern>
+    </table>
+
+
+
+    <table id="err">
+      <pattern class="hide" msg="No Error">0</pattern>
+      <pattern class="alarm" msg="Could not burn flash successfully">1</pattern>
+      <pattern class="alarm" msg="Could not download file">2</pattern>
+      <pattern class="alarm" msg="Not enough memory to execute user program">3</pattern>
+      <pattern class="alarm" msg="Attempt to access a non-existent array element">4</pattern>
+      <pattern class="alarm" msg="Unknown Error" />
+    </table>
+    <table id="abs">
+      <range class="normal" msg="INIT">0:0.5</range>
+      <range class="normal" msg="FOCUS">12.3:13.2</range>
+      <range class="normal" msg="ROT">122.5:123.5</range>
+      <range class="normal" msg="WAIT">184.5:185.5</range>
+      <range class="normal" msg="STOCK">200:201</range>
+    </table>
+  </symbol>
+</sdb>

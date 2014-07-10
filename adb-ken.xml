@@ -63,7 +63,7 @@
         </group>
       </repeat_grp>
       <repeat_grp from="0" to="2" counter="u">
-        <group id="gu$u" caption="Output $u" column="3">
+        <group id="gu$u" caption="Output $u" column="4">
           <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
             <float id="v$u$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
               <field ref="ms0" index="$u:$c:0" />
@@ -71,9 +71,12 @@
             <float id="i$u$c" label="Current(A) CH$c" format="%5.2f" formula="$#/100">
               <field ref="ms0" index="$u:$c:1" />
             </float>
-            <string id="s$u$c" label="Mode CH$c" symbol="cmode">
+            <string id="m$u$c" label="Mode CH$c" symbol="cmode">
               <field ref="st0" index="$u:$c"/>
             </string>
+            <binary id="s$u$c" label="Select CH$c" symbol="action">
+              <normal bit="$c" ref="ms2" index="$u:2"/>
+            </binary>
           </repeat_var>
         </group>
       </repeat_grp>

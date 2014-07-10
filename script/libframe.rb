@@ -56,7 +56,7 @@ module CIAX
 
     # Assign or Ignore mode
     # If cut str incldes terminetor, str will be trimmed
-    def cut(e0,delimiter=nil)
+    def cut(e0)
       verbose("Frame","RSP:Cut Start for [#{@frame.inspect}](#{@frame.size})")
       return verify(e0) if e0['val'] # Verify value
       body,tm,rest=@terminator ? @frame.partition(@terminator) : [@frame]
@@ -77,8 +77,8 @@ module CIAX
           @frame=[body,tm,rest].join
           cc_add(str)
         end
-      elsif delimiter
-        delimiter=eval('"'+delimiter+'"')
+      elsif del=e0['delimiter']
+        delimiter=eval('"'+del+'"')
         verbose("Frame","RSP:Cut by Delimiter [#{delimiter.inspect}]")
         str,dlm,body=body.partition(delimiter)
         verbose("Frame","RSP:Cut by Terminator [#{@terminator.inspect}]") if tm and dlm

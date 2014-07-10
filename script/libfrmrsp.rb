@@ -76,7 +76,7 @@ module CIAX
             verbose("FrmRsp","Set Command Echo [#{@echo.inspect}]")
             @frame.cut('label' => 'Command Echo','val' => @echo)
           when Hash
-            frame_to_field(e1){ @frame.cut(e1,e1['delimiter']) }
+            frame_to_field(e1){ @frame.cut(e1) }
           end
         }
       end

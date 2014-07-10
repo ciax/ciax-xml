@@ -2,6 +2,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <xsd:simpleType name="codec">
     <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="binstr" />
       <xsd:enumeration value="decstr" />
       <xsd:enumeration value="hexstr" />
       <xsd:enumeration value="unsigned" />

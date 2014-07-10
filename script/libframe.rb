@@ -98,7 +98,7 @@ module CIAX
         str=str.slice(*r.split(':').map{|i| i.to_i })
         verbose("Frame","RSP:Pick: [#{str.inspect}] by range=[#{r}]")
       end
-      @fragment=decode(e0,str)
+      decode(e0,str)
     end
 
     # Check Code
@@ -172,6 +172,8 @@ module CIAX
         # sign: k3n=F, oss=8,
         sign=(/[8Ff]/ === code[0]) ? '-' : ''
         num=sign+code[1..-1].sub(/0+/,'')
+      when 'binstr'
+        num=[code].pack("b*").ord
       else
         ary=code.unpack("C*")
         ary.reverse! if @endian=='little'

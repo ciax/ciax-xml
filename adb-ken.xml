@@ -120,25 +120,19 @@
         </group>
       </repeat_grp>
       <repeat_grp from="0" to="2" counter="u">
-        <group id="gd$u" caption="Delay UNIT $u" column="4">
+        <group id="gd$u" caption="Setting UNIT $u" column="3">
           <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
+            <float id="trv$u$c" label="Track $cCH(V)" format="%5.2f" formula="$#/100">
+              <field ref="tr2" index="$u:$c*2" />
+            </float>
+            <float id="tri$u$c" label="Track $cCH(A)" format="%5.2f" formula="$#/100">
+              <field ref="tr2" index="$u:$c*2+1" />
+            </float>
             <float id="dly$u$c" label="Delay $cCH(sec)" format="%5.2f" formula="$#/100">
               <field ref="dly2" index="$u:$c" />
             </float>
           </repeat_var>
         </group>
-      </repeat_grp>
-      <repeat_grp from="0" to="2" counter="u">
-      <group id="gt$u" caption="Tracking UNIT $u" column="4">
-        <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
-          <float id="trv$u$c" label="Track $cCH(V)" format="%5.2f" formula="$#/100">
-            <field ref="tr2" index="$u:$c*2" />
-          </float>
-          <float id="tri$u$c" label="Track $cCH(A)" format="%5.2f" formula="$#/100">
-            <field ref="tr2" index="$u:$c*2+1" />
-          </float>
-        </repeat_var>
-      </group>
       </repeat_grp>
     </status>
   </app>

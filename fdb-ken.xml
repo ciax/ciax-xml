@@ -11,7 +11,7 @@
       <string format="%02X">${cc}</string>
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <item id="getstat" label="Get Unit ID" type="stat" response="getstat">
+      <item id="getid" label="Get Unit ID(NEW)" type="stat" response="getstat">
         <par_num>0:2</par_num>
         <char length="1">$1+0x41</char>
         <string>PWID</string>
@@ -22,30 +22,42 @@
         <char length="1">$1+0x41</char>
         <string>ST0</string>
       </item>
-      <item id="getst1" label="Get Presets in INT [UNIT] [N of CH]" type="stat" response="getst1">
+      <item id="getst1" label="Get Presets(NEW) in INT [UNIT] [N of CH]" type="stat" response="getst1">
         <par_num>0:2</par_num>
         <par_num>1:4</par_num>
         <char length="1">$1+0x41</char>
         <string>ST1</string>
       </item>
-      <item id="getst2" label="Get status [UNIT] [N of CH]" type="stat" response="getst2">
+      <item id="getst1o" label="Get Presets(OLD) in INT [UNIT] [N of CH]" type="stat" response="getst1o">
+        <par_num>0:2</par_num>
+        <par_num>1:4</par_num>
+        <char length="1">$1+0x41</char>
+        <string>ST1</string>
+      </item>
+      <item id="getst2" label="Get status(NEW) [UNIT] [N of CH]" type="stat" response="getst2">
         <par_num>0:2</par_num>
         <par_num>1:4</par_num>
         <char length="1">$1+0x41</char>
         <string>ST2</string>
       </item>
-      <item id="getst3" label="Get status [UNIT]" type="stat" response="getst3">
+      <item id="getst2o" label="Get status(OLD) [UNIT] [N of CH]" type="stat" response="getst2o">
+        <par_num>0:2</par_num>
+        <par_num>1:4</par_num>
+        <char length="1">$1+0x41</char>
+        <string>ST2</string>
+      </item>
+      <item id="getst3" label="Get status(NEW) [UNIT]" type="stat" response="getst3">
         <par_num>0:2</par_num>
         <char length="1">$1+0x41</char>
         <string>ST3</string>
       </item>
-      <item id="getst4" label="Get Status in Float [UNIT] [N of CH]" type="stat" response="getst4">
+      <item id="getst4" label="Get Status(NEW) in Float [UNIT] [N of CH]" type="stat" response="getst4">
         <par_num>0:2</par_num>
         <par_num>1:4</par_num>
         <char length="1">$1+0x41</char>
         <string>ST4</string>
       </item>
-      <item id="getst5" label="Get Presets in Float [UNIT] [N of CH]" type="stat" response="getst5">
+      <item id="getst5" label="Get Presets(NEW) in Float [UNIT] [N of CH]" type="stat" response="getst5">
         <par_num>0:2</par_num>
         <par_num>1:4</par_num>
         <char length="1">$1+0x41</char>
@@ -111,6 +123,19 @@
           <!--Preset-->
           <index size="4" />
           <!--CH-->
+          <index range="0:$2*2-1" size="11" />
+        </array>
+      </response>
+      <response id="getst1o">
+        <field label="StatusCode">MS1,0</field>
+        <field label="UNIT #">$1+1</field>
+        <field label="Delimiter">,</field>
+        <array assign="ms1" label="Value" delimiter=",">
+          <!--Unit-->
+          <index range="$1" size="3" />
+          <!--Preset-->
+          <index size="4" />
+          <!--CH-->
           <index range="0:$2*2+2" size="11" />
         </array>
       </response>
@@ -133,6 +158,15 @@
         <array assign="dly2" label="Value" delimiter=",">
           <index range="$1" size="3" />
           <index range="0:$2-1" size="4" />
+        </array>
+      </response>
+      <response id="getst2o">
+        <field label="StatusCode">MS2,0</field>
+        <field label="UNIT #">$1+1</field>
+        <field label="Delimiter">,</field>
+        <array assign="ms2" label="Value" delimiter=",">
+          <index range="$1" size="3" />
+          <index range="0:4" size="8" />
         </array>
       </response>
       <response id="getst3">

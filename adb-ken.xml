@@ -138,7 +138,7 @@
           </repeat_var>
         </group>
       </repeat_grp>
-      <group id="gpd0" caption="Preset Delay A" column="4">
+      <group id="gpd0" caption="Preset Delay A(OLD)" column="4">
         <repeat_var from="0" to="3" counter="p">
           <integer id="pdp0$p" label="#$p Delay p/n">
             <field ref="ms1" index="0:$p:4" />
@@ -169,7 +169,7 @@
           </repeat_var>
         </group>
       </repeat_grp>
-      <group id="gpd1" caption="Preset Delay B" column="4">
+      <group id="gpd1" caption="Preset Delay B(OLD)" column="4">
         <repeat_var from="0" to="3" counter="p">
           <integer id="pdp1$p" label="#$p Delay p/n">
             <field ref="ms1" index="1:$p:8" />
@@ -200,7 +200,7 @@
           </repeat_var>
         </group>
       </repeat_grp>
-      <group id="gpd2" caption="Preset Delay C" column="4">
+      <group id="gpd2" caption="Preset Delay C(OLD)" column="4">
         <repeat_var from="0" to="3" counter="p">
           <integer id="pdp2$p" label="#$p Delay p/n">
             <field ref="ms1" index="2:$p:4" />

@@ -72,7 +72,7 @@ module CIAX
 
     def warning(prefix,title)
       @ver_indent=@@base
-      Kernel.warn make_msg(prefix,title,3)
+      Kernel.warn make_msg(prefix,Msg.color(title.to_s,1))
       self
     end
 

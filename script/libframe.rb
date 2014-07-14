@@ -90,7 +90,10 @@ module CIAX
         @frame=rest.to_s
         cc_add([str,tm].join)
       end
-      return '' if str.empty?
+      if str.empty?
+        warning("Frame","RSP:Cut Empty")
+        return ''
+      end
       len=str.size
       verbose("Frame","RSP:Cut String: [#{str.inspect}]")
       # Pick Part

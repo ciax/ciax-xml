@@ -108,9 +108,10 @@
           <index range="0:$2-1" size="4" />
           <index size="2" />
         </array>
-        <array assign="st0" label="Stat" length="1" decode="hexstr">
+        <array assign="st0" label="CV/CC Stat" length="1" decode="hexstr">
           <index range="$1" size="3" />
           <index size="4" />
+          <index range="0" size="3" />
         </array>
       </response>
       <response id="getst1">
@@ -143,21 +144,42 @@
         <field label="StatusCode">MS2,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
-        <array assign="ms2" label="Value" delimiter="," decode="binstr">
+        <array assign="ms2" label="LED/MAIN" delimiter="," decode="binstr">
           <index range="$1" size="3" />
-          <index range="0:5" size="8" />
+          <index range="0:1" size="7" />
         </array>
-        <array assign="tr2" label="Value" delimiter=",">
+        <array assign="st0" label="Output Select CH" length="1" decode="hexstr">
+          <index range="$1" size="3" />
+          <index size="4" />
+          <index range="1" size="3" />
+        </array>
+        <field label="Delimiter">,</field>
+        <array assign="ms2" label="Track SW" delimiter="," decode="binstr">
+          <index range="$1" size="3" />
+          <index range="3" size="8" />
+        </array>
+        <array assign="st0" label="Track Select CH" length="1">
+          <index range="$1" size="3" />
+          <index size="4" />
+          <index range="2" size="4" />
+        </array>
+        <field label="Delimiter">,</field>
+        <array assign="ms2" label="Track Mode" delimiter="," decode="binstr">
+          <index range="$1" size="3" />
+          <index range="6" size="8" />
+        </array>
+        <array assign="tr2" label="Track Values" delimiter=",">
           <index range="$1" size="3" />
           <index range="0:$2*2-1" size="8" />
         </array>
-        <array assign="ms2" label="Value" delimiter=",">
+        <array assign="ms2" label="Preset/Delay" delimiter=",">
           <index range="$1" size="3"/>
-          <index range="6:7" size="8"/>
+          <index range="4:5" size="8"/>
         </array>
-        <array assign="dly2" label="Value" delimiter=",">
+        <array assign="ms1" label="Delay Times" delimiter=",">
           <index range="$1" size="3" />
-          <index range="0:$2-1" size="4" />
+          <index size="4" />
+          <index range="$2*2+1" size="4" />
         </array>
       </response>
       <response id="getst2o">
@@ -188,6 +210,7 @@
         <array assign="st0" label="Stat" length="1" decode="hexstr">
           <index range="$1" size="3" />
           <index size="4" />
+          <index range="0" size="3" />
         </array>
       </response>
       <response id="getst5">

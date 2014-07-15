@@ -120,7 +120,7 @@
   </site>
   <site id="mph" label="MOIRCS Power Supply Hilo" app_id="ken">
     <adb port="25615" />
-    <fdb iocmd="socat - tcp:133.40.147.230:4017" />
+    <fdb iocmd="socat - tcp:133.40.147.230:10017" />
   </site>
   <site id="mh1" label="MOIRCS Main/Carrousel Heater" app_id="psp">
     <adb port="25621" />

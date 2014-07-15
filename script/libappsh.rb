@@ -201,7 +201,7 @@ module CIAX
             begin
               @buf.send(3,@cobj.set_cmd(['upd']))
             rescue InvalidID
-              warning("AppSv",$!)
+              errmsg
             end
             verbose("AppSv","Auto Update(#{@stat['time']})")
           }

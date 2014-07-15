@@ -72,13 +72,19 @@ module CIAX
 
     def warning(prefix,title)
       @ver_indent=@@base
-      Kernel.warn make_msg(prefix,Msg.color(title.to_s,1))
+      Kernel.warn make_msg(prefix,Msg.color(title.to_s,3))
+      self
+    end
+
+    def alert(prefix,title)
+      @ver_indent=@@base
+      Kernel.warn make_msg(prefix,Msg.color(title.to_s,5))
       self
     end
 
     def errmsg
       @ver_indent=@@base
-      Kernel.warn make_msg($!.class,$!,5)
+      Kernel.warn make_msg($!.class,$!,1)
     end
 
     def enclose(prefix,title1,title2,color=nil)

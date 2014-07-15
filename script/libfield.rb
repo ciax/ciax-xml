@@ -58,7 +58,7 @@ module CIAX
           vname << i
           verbose("Field","Type[#{h.class}] Name[#{i}]")
           verbose("Field","Content[#{h[i]}]")
-          h[i] || warning("Field","No such Value [#{vname.join(':')}] in 'data'")
+          h[i] || alert("Field","No such Value [#{vname.join(':')}] in 'data'")
         }
         verbose("Field","Get[#{key}]=[#{dat}]")
         dat

@@ -21,7 +21,7 @@ module CIAX
           adbs[:index].each{|key,hash|
             sid=hash['symbol']||next
             unless tbl=@symdb[sid.to_sym]
-              warning("Symbol","Table[#{sid}] not exist")
+              alert("Symbol","Table[#{sid}] not exist")
               next
             end
             verbose("Symbol","ID=#{key},Table=#{sid}")

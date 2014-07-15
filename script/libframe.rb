@@ -63,7 +63,7 @@ module CIAX
       if len=e0['length']
         verbose("Frame","RSP:Cut by Size [#{len}]")
         if len.to_i > body.size
-          warning("Frame","RSP:Cut reached terminator [#{body.size}/#{len}] ")
+          alert("Frame","RSP:Cut reached terminator [#{body.size}/#{len}] ")
           str=body
           @frame=rest.to_s
           cc_add(str)
@@ -91,7 +91,7 @@ module CIAX
         cc_add([str,tm].join)
       end
       if str.empty?
-        warning("Frame","RSP:Cut Empty")
+        alert("Frame","RSP:Cut Empty")
         return ''
       end
       len=str.size
@@ -160,7 +160,7 @@ module CIAX
       if ref == val
         verbose("Frame","RSP:Verify:(#{e0['label']}) [#{ref.inspect}] OK")
       else
-        warning("Frame","RSP:Mismatch(#{e0['label']}):[#{val.inspect}] (should be [#{ref.inspect}])")
+        alert("Frame","RSP:Mismatch(#{e0['label']}):[#{val.inspect}] (should be [#{ref.inspect}])")
       end
       cc_add(str)
       str

@@ -118,6 +118,10 @@
     <adb port="25614" />
     <fdb iocmd="socat - tcp:celaeno:4014" />
   </site>
+  <site id="mph" label="MOIRCS Power Supply Hilo" app_id="ken">
+    <adb port="25615" />
+    <fdb iocmd="socat - tcp:133.40.147.230:4017" />
+  </site>
   <site id="mh1" label="MOIRCS Main/Carrousel Heater" app_id="psp">
     <adb port="25621" />
     <fdb iocmd="socat - tcp:merope:59999" />

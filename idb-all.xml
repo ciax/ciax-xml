@@ -177,4 +177,5 @@
       <item id="getconf" label="Get Config" ref="getconf2" />
     </alias>
   </instance>
+  <instance id="mph" label="MOIRCS Power Supply Hilo" app_id="ken"/>
 </idb>

@@ -76,7 +76,7 @@ module CIAX
       self
     end
 
-    def alert
+    def errmsg
       @ver_indent=@@base
       Kernel.warn make_msg($!.class,$!,5)
     end

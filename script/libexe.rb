@@ -98,7 +98,7 @@ module CIAX
               self['msg']="INVALID"
             rescue RuntimeError
               self['msg']=$!.to_s
-              alert
+              errmsg
             end
             verbose("UDP:Server/#{self.class}","Send:#{self['msg']}",2)
             udp.send(server_output,0,addr[2],addr[1])

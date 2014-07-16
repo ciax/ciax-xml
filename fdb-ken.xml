@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf" ccmethod="sum" maxlength="255" version="7" wait="0.5">
+  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf" ccmethod="sum" maxlength="255" version="1" stream_ver="6" wait="0.5">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="ENQ">5</char>
@@ -111,7 +111,7 @@
         <array assign="st0" label="CV/CC Stat" length="1" decode="hexstr">
           <index range="$1" size="3" />
           <index size="4" />
-          <index range="0" size="5" />
+          <index range="0" size="6" />
         </array>
       </response>
       <response id="getst1">

@@ -10,7 +10,7 @@ module CIAX
     # cfg should have :db(Frm::Db)
     def self.new(cfg)
       if $opt['s'] or $opt['e']
-        cfg['iocmd']=['devsim-file',cfg[:db]['site_id'],cfg[:db]['version']] if $opt['s']
+        cfg['iocmd']=['devsim-file',cfg[:db]['site_id'],cfg[:db]['stream_ver']] if $opt['s']
         fsh=Frm::Sv.new(cfg)
         cfg['host']='localhost'
       end
@@ -72,7 +72,7 @@ module CIAX
         end
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
         @stream=Stream.new(iocmd,@fdb['wait'],timeout)
-        @sqlsv=@stream.ext_logging(@id,@fdb['version']).sqlsv unless sim
+        @sqlsv=@stream.ext_logging(@id,@fdb['stream_ver']).sqlsv unless sim
         @cobj.ext_proc{|ent|
           @stream.snd(ent.cfg[:frame],ent.id)
           @field.upd(ent){@stream.rcv}

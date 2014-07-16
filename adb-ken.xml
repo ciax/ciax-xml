@@ -82,35 +82,52 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ken">
       <repeat_grp from="0" to="2" counter="u">
-        <group id="gs$u" caption="STAT UNIT $u" column="4">
-          <integer id="model$u" label="Model" symbol="model">
-            <field ref="ms3" index="$u"/>
-          </integer>
+        <group id="gu$u" caption="Setting(NEW) [UNIT$u]" column="4">
           <integer id="disp$u" label="Display CH" symbol="disp">
             <field ref="ms2" index="$u:0"/>
           </integer>
           <integer id="main$u" label="Main Output" symbol="action">
             <field ref="ms2" index="$u:1"/>
           </integer>
-          <integer id="pr$u" label="Protect" symbol="action">
+          <integer id="tr$u" label="Tracking Func" symbol="action">
             <field ref="ms2" index="$u:2"/>
           </integer>
-          <integer id="tr$u" label="Tracking SW" symbol="action">
-            <field ref="ms2" index="$u:3"/>
-          </integer>
           <integer id="trm$u" label="Traking Mode" symbol="tmode">
-            <field ref="ms2" index="$u:6"/>
+            <field ref="ms2" index="$u:3"/>
           </integer>
           <integer id="pre$u" label="Preset Sel">
             <field ref="ms2" index="$u:4"/>
           </integer>
-          <integer id="dly$u" label="Delay" symbol="action">
+          <integer id="dly$u" label="Delay SW" symbol="action">
             <field ref="ms2" index="$u:5"/>
+          </integer>
+          <integer id="model$u" label="Model" symbol="model">
+            <field ref="ms3" index="$u"/>
+          </integer>
+        </group>
+        <group id="guo$u" caption="Setting(OLD) [UNIT$u]" column="4">
+          <integer id="disp$u" label="Display CH" symbol="disp">
+            <field ref="mso" index="$u:0"/>
+          </integer>
+          <integer id="main$u" label="Main Output" symbol="action">
+            <field ref="mso" index="$u:1"/>
+          </integer>
+          <integer id="prm$u" label="Protect Mode" symbol="action">
+            <field ref="mso" index="$u:2"/>
+          </integer>
+          <integer id="trm$u" label="Traking SW" symbol="action">
+            <field ref="mso" index="$u:3"/>
+          </integer>
+          <integer id="pre$u" label="Preset Sel">
+            <field ref="mso" index="$u:4"/>
+          </integer>
+          <integer id="model$u" label="Model" symbol="model">
+            <field ref="ms3" index="$u"/>
           </integer>
         </group>
       </repeat_grp>
       <repeat_grp from="0" to="2" counter="u">
-        <group id="gu$u" caption="Output UNIT $u" column="5">
+        <group id="go$u" caption="Output/CH [UNIT$u]" column="3">
           <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
             <float id="v$u$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
               <field ref="ms0" index="$u:$c:0" />
@@ -119,31 +136,34 @@
               <field ref="ms0" index="$u:$c:1" />
             </float>
             <string id="mch$u$c" label="Mode CH$c" symbol="cmode">
-              <field ref="st0" index="$u:$c:0"/>
+              <field ref="cst" index="$u:$c"/>
             </string>
-            <integer id="sch$u$c" label="Select CH$c" symbol="action">
-              <field ref="st0" index="$u:$c:1"/>
-            </integer>
-            <integer id="tch$u$c" label="Track CH$c" symbol="action">
-              <field ref="st0" index="$u:$c:2"/>
-            </integer>
           </repeat_var>
         </group>
-      </repeat_grp>
-      <repeat_grp from="0" to="2" counter="u">
-        <group id="gp$u" caption="Preset UNIT $u" column="4">
+        <group id="gc$u" caption="Setting/CH(NEW) [UNIT$u]" column="2">
           <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
-            <repeat_var from="0" to="3" counter="p">
-              <float id="pv$u$c$p" label="#$p $cCH(V)" format="%5.2f" formula="$#/100">
-                <field ref="ms1" index="$u:$p:$c*2" />
-              </float>
-            </repeat_var>
-            <repeat_var from="0" to="3" counter="p">
-              <float id="pi$u$c$p" label="#$p $cCH(A)" format="%5.2f" formula="$#/100">
-                <field ref="ms1" index="$u:$p:$c*2+1" />
-              </float>
-            </repeat_var>
+            <integer id="os$u$c" label="Output Sel CH$c" symbol="action">
+              <field ref="st0" index="$u:$c:0"/>
+            </integer>
+            <float id="dt$u$c" label="Delay time CH$c" format="%5.2f" formula="$#/100">
+              <field ref="st0" index="$u:$c:4" />
+            </float>
           </repeat_var>
+        </group>
+        <group id="gt$u" caption="Tracking/CH(NEW) [UNIT$u]" column="3">
+          <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
+            <integer id="tsw$u$c" label="Select CH$c" symbol="action">
+              <field ref="st0" index="$u:$c:1"/>
+            </integer>
+            <float id="tlv$u$c" label="Level (V) CH$c" format="%5.2f">
+              <field ref="st0" index="$u:$c:2" />
+            </float>
+            <float id="tlc$u$c" label="Level (A) CH$c" format="%5.2f">
+              <field ref="st0" index="$u:$c:3" />
+            </float>
+          </repeat_var>
+        </group>
+        <group id="gdo$u" caption="Delay/CH(OLD) [UNIT$u]" column="3">
           <repeat_var from="0" to="3" counter="p">
             <integer id="pdp$u$p" label="#$p Delay sign">
               <field ref="ms1" index="$u:$p:4" />

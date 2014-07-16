@@ -70,18 +70,25 @@
             </string>
           </repeat_var>
         </group>
-        <group id="gc$u" caption="Setting/CH (UNIT$u)" column="4">
+        <group id="gc$u" caption="Setting/CH (UNIT$u)" column="2">
           <repeat_var from="0" to="3" counter="c">
             <integer id="os$u$c" label="Output Sel CH$c" symbol="action">
               <field ref="st0" index="$u:$c:1"/>
             </integer>
-            <integer id="tsw$u$c" label="Track Sel CH$c" symbol="action">
+            <float id="dt$u$c" label="Delay time CH$c" format="%5.2f" formula="$#/100">
+              <field ref="st0" index="$u:$c:5" />
+            </float>
+          </repeat_var>
+        </group>
+        <group id="gt$u" caption="Tracking/CH (UNIT$u)" column="3">
+          <repeat_var from="0" to="3" counter="c">
+            <integer id="tsw$u$c" label="Select CH$c" symbol="action">
               <field ref="st0" index="$u:$c:2"/>
             </integer>
-            <float id="tl$u$c" label="Track Lev CH$c" format="%5.2f">
+            <float id="tlv$u$c" label="Level (V) CH$c" format="%5.2f">
               <field ref="st0" index="$u:$c:3" />
             </float>
-            <float id="dt$u$c" label="Delay time CH$c" format="%5.2f">
+            <float id="tlc$u$c" label="Level (A) CH$c" format="%5.2f">
               <field ref="st0" index="$u:$c:4" />
             </float>
           </repeat_var>

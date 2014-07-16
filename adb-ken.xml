@@ -81,36 +81,36 @@
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ken">
-      <repeat_grp from="0" to="2" counter="c">
-        <group id="gs$c" caption="UNIT $c STAT" column="4">
-          <integer id="model$c" label="Model" symbol="model">
-            <field ref="ms3" index="$c"/>
+      <repeat_grp from="0" to="2" counter="u">
+        <group id="gs$u" caption="STAT UNIT $u" column="4">
+          <integer id="model$u" label="Model" symbol="model">
+            <field ref="ms3" index="$u"/>
           </integer>
-          <integer id="disp$c" label="Display CH" symbol="disp">
-            <field ref="ms2" index="$c:0"/>
+          <integer id="disp$u" label="Display CH" symbol="disp">
+            <field ref="ms2" index="$u:0"/>
           </integer>
-          <integer id="main$c" label="Main Output" symbol="action">
-            <field ref="ms2" index="$c:1"/>
+          <integer id="main$u" label="Main Output" symbol="action">
+            <field ref="ms2" index="$u:1"/>
           </integer>
-          <integer id="pr$c" label="Protect" symbol="action">
-            <field ref="ms2" index="$c:2"/>
+          <integer id="pr$u" label="Protect" symbol="action">
+            <field ref="ms2" index="$u:2"/>
           </integer>
-          <integer id="tr$c" label="Tracking SW" symbol="action">
-            <field ref="ms2" index="$c:3"/>
+          <integer id="tr$u" label="Tracking SW" symbol="action">
+            <field ref="ms2" index="$u:3"/>
           </integer>
-          <integer id="trm$c" label="Traking Mode" symbol="tmode">
-            <field ref="ms2" index="$c:6"/>
+          <integer id="trm$u" label="Traking Mode" symbol="tmode">
+            <field ref="ms2" index="$u:6"/>
           </integer>
-          <integer id="pre$c" label="Preset Sel">
-            <field ref="ms2" index="$c:4"/>
+          <integer id="pre$u" label="Preset Sel">
+            <field ref="ms2" index="$u:4"/>
           </integer>
-          <integer id="dly$c" label="Delay" symbol="action">
-            <field ref="ms2" index="$c:5"/>
+          <integer id="dly$u" label="Delay" symbol="action">
+            <field ref="ms2" index="$u:5"/>
           </integer>
         </group>
       </repeat_grp>
       <repeat_grp from="0" to="2" counter="u">
-        <group id="gu$u" caption="Output $u" column="5">
+        <group id="gu$u" caption="Output UNIT $u" column="5">
           <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
             <float id="v$u$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
               <field ref="ms0" index="$u:$c:0" />
@@ -130,99 +130,37 @@
           </repeat_var>
         </group>
       </repeat_grp>
-      <repeat_grp from="0" to="1" counter="c">
-        <group id="gp0$c" caption="Preset UNIT A $cCH" column="4">
+      <repeat_grp from="0" to="2" counter="u">
+        <group id="gp$u" caption="Preset UNIT $u" column="4">
+          <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
+            <repeat_var from="0" to="3" counter="p">
+              <float id="pv$u$c$p" label="#$p $cCH(V)" format="%5.2f" formula="$#/100">
+                <field ref="ms1" index="$u:$p:$c*2" />
+              </float>
+            </repeat_var>
+            <repeat_var from="0" to="3" counter="p">
+              <float id="pi$u$c$p" label="#$p $cCH(A)" format="%5.2f" formula="$#/100">
+                <field ref="ms1" index="$u:$p:$c*2+1" />
+              </float>
+            </repeat_var>
+          </repeat_var>
           <repeat_var from="0" to="3" counter="p">
-            <float id="pv0$c$p" label="#$p (V)" format="%5.2f" formula="$#/100">
-              <field ref="ms1" index="0:$p:$c*2" />
+            <integer id="pdp$u$p" label="#$p Delay sign">
+              <field ref="ms1" index="$u:$p:4" />
+            </integer>
+          </repeat_var>
+          <repeat_var from="0" to="3" counter="p">
+            <float id="pdt$u$p" label="#$p Delay time" format="%5.2f" formula="$#/100">
+              <field ref="ms1" index="$u:$p:5" />
             </float>
           </repeat_var>
           <repeat_var from="0" to="3" counter="p">
-            <float id="pi0$c$p" label="#$p (A)" format="%5.2f" formula="$#/100">
-              <field ref="ms1" index="0:$p:$c*2+1" />
-            </float>
-          </repeat_var>
-        </group>
-      </repeat_grp>
-      <group id="gpd0" caption="Preset Delay A" column="4">
-        <repeat_var from="0" to="3" counter="p">
-          <integer id="pdp0$p" label="#$p Delay p/n">
-            <field ref="ms1" index="0:$p:4" />
-          </integer>
-        </repeat_var>
-        <repeat_var from="0" to="3" counter="p">
-          <float id="pdt0$p" label="#$p Delay time" format="%5.2f" formula="$#/100">
-            <field ref="ms1" index="0:$p:5" />
-          </float>
-        </repeat_var>
-        <repeat_var from="0" to="3" counter="p">
-          <integer id="ptr0$p" label="#$p Tracking" symbol="action">
-            <field ref="ms1" index="0:$p:6" />
-          </integer>
-        </repeat_var>
-      </group>
-      <repeat_grp from="0" to="3" counter="c">
-        <group id="gp1$c" caption="Preset UNIT B $cCH" column="4">
-          <repeat_var from="0" to="3" counter="p">
-            <float id="pv1$c$p" label="#$p (V)" format="%5.2f" formula="$#/100">
-              <field ref="ms1" index="1:$p:$c*2" />
-            </float>
-          </repeat_var>
-          <repeat_var from="0" to="3" counter="p">
-            <float id="pi1$c$p" label="#$p (A)" format="%5.2f" formula="$#/100">
-              <field ref="ms1" index="1:$p:$c*2+1" />
-            </float>
+            <integer id="ptr$u$p" label="#$p Tracking" symbol="action">
+              <field ref="ms1" index="$u:$p:6" />
+            </integer>
           </repeat_var>
         </group>
       </repeat_grp>
-      <group id="gpd1" caption="Preset Delay B" column="4">
-        <repeat_var from="0" to="3" counter="p">
-          <integer id="pdp1$p" label="#$p Delay p/n">
-            <field ref="ms1" index="1:$p:8" />
-          </integer>
-        </repeat_var>
-        <repeat_var from="0" to="3" counter="p">
-          <float id="pdt1$p" label="#$p Delay time" format="%5.2f" formula="$#/100">
-            <field ref="ms1" index="1:$p:9" />
-          </float>
-        </repeat_var>
-        <repeat_var from="0" to="3" counter="p">
-          <integer id="ptr1$p" label="#$p Tracking" symbol="action">
-            <field ref="ms1" index="1:$p:10" />
-          </integer>
-        </repeat_var>
-      </group>
-      <repeat_grp from="0" to="1" counter="c">
-        <group id="gp2$c" caption="Preset UNIT C $cCH" column="4">
-          <repeat_var from="0" to="3" counter="p">
-            <float id="pv2$c$p" label="#$p (V)" format="%5.2f" formula="$#/100">
-              <field ref="ms1" index="2:$p:$c*2" />
-            </float>
-          </repeat_var>
-          <repeat_var from="0" to="3" counter="p">
-            <float id="pi2$c$p" label="#$p (A)" format="%5.2f" formula="$#/100">
-              <field ref="ms1" index="2:$p:$c*2+1" />
-            </float>
-          </repeat_var>
-        </group>
-      </repeat_grp>
-      <group id="gpd2" caption="Preset Delay C" column="4">
-        <repeat_var from="0" to="3" counter="p">
-          <integer id="pdp2$p" label="#$p Delay p/n">
-            <field ref="ms1" index="2:$p:4" />
-          </integer>
-        </repeat_var>
-        <repeat_var from="0" to="3" counter="p">
-          <float id="pdt2$p" label="#$p Delay time" format="%5.2f" formula="$#/100">
-            <field ref="ms1" index="2:$p:5" />
-          </float>
-        </repeat_var>
-        <repeat_var from="0" to="3" counter="p">
-          <integer id="ptr2$p" label="#$p Tracking" symbol="action">
-            <field ref="ms1" index="2:$p:6" />
-          </integer>
-        </repeat_var>
-      </group>
     </status>
   </app>
 </adb>

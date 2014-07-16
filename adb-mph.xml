@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
+  <app frm_id="ken" id="mph" label="Kenwood Power Supply in HILO">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+      <group id="g0" caption="Device">
+        <item id="upd" label="Update Status">
+          <frmcmd name="getst0">
+            <argv>0</argv>
+            <argv>4</argv>
+          </frmcmd>
+          <frmcmd name="ack"/>
+        </item>
+        <item id="getconf" label="Get Config Data">
+          <!--Get New version-->
+          <frmcmd name="getst1">
+            <argv>0</argv>
+            <argv>4</argv>
+          </frmcmd>
+          <frmcmd name="ack"/>
+          <frmcmd name="getst2">
+            <argv>0</argv>
+            <argv>4</argv>
+          </frmcmd>
+          <frmcmd name="ack"/>
+          <!--Get Common-->
+          <frmcmd name="getst3">
+            <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="ack"/>
+        </item>
+      </group>
+    </commands>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ken">
+      <repeat_grp from="0" to="0" counter="u">
+        <group id="gs$u" caption="STAT UNIT $u" column="4">
+          <integer id="model$u" label="Model" symbol="model">
+            <field ref="ms3" index="$u"/>
+          </integer>
+          <integer id="disp$u" label="Display CH" symbol="disp">
+            <field ref="ms2" index="$u:0"/>
+          </integer>
+          <integer id="main$u" label="Main Output" symbol="action">
+            <field ref="ms2" index="$u:1"/>
+          </integer>
+          <integer id="pr$u" label="Protect" symbol="action">
+            <field ref="ms2" index="$u:2"/>
+          </integer>
+          <integer id="tr$u" label="Tracking SW" symbol="action">
+            <field ref="ms2" index="$u:3"/>
+          </integer>
+          <integer id="trm$u" label="Traking Mode" symbol="tmode">
+            <field ref="ms2" index="$u:6"/>
+          </integer>
+          <integer id="pre$u" label="Preset Sel">
+            <field ref="ms2" index="$u:4"/>
+          </integer>
+          <integer id="dly$u" label="Delay" symbol="action">
+            <field ref="ms2" index="$u:5"/>
+          </integer>
+        </group>
+      </repeat_grp>
+      <repeat_grp from="0" to="0" counter="u">
+        <group id="gu$u" caption="Output UNIT $u" column="5">
+          <repeat_var from="0" to="3" counter="c">
+            <float id="v$u$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
+              <field ref="ms0" index="$u:$c:0" />
+            </float>
+            <float id="i$u$c" label="Current(A) CH$c" format="%5.2f" formula="$#/100">
+              <field ref="ms0" index="$u:$c:1" />
+            </float>
+            <string id="mch$u$c" label="Mode CH$c" symbol="cmode">
+              <field ref="st0" index="$u:$c:0"/>
+            </string>
+            <integer id="sch$u$c" label="Select CH$c" symbol="action">
+              <field ref="st0" index="$u:$c:1"/>
+            </integer>
+            <integer id="tch$u$c" label="Track CH$c" symbol="action">
+              <field ref="st0" index="$u:$c:2"/>
+            </integer>
+          </repeat_var>
+        </group>
+      </repeat_grp>
+      <repeat_grp from="0" to="0" counter="u">
+        <group id="gp$u" caption="Preset UNIT $u" column="4">
+          <repeat_var from="0" to="3" counter="c">
+            <repeat_var from="0" to="3" counter="p">
+              <float id="pv$u$c$p" label="#$p $cCH(V)" format="%5.2f" formula="$#/100">
+                <field ref="ms1" index="$u:$p:$c*2" />
+              </float>
+            </repeat_var>
+            <repeat_var from="0" to="3" counter="p">
+              <float id="pi$u$c$p" label="#$p $cCH(A)" format="%5.2f" formula="$#/100">
+                <field ref="ms1" index="$u:$p:$c*2+1" />
+              </float>
+            </repeat_var>
+          </repeat_var>
+          <repeat_var from="0" to="3" counter="p">
+            <integer id="pdp$u$p" label="#$p Delay sign">
+              <field ref="ms1" index="$u:$p:4" />
+            </integer>
+          </repeat_var>
+          <repeat_var from="0" to="3" counter="p">
+            <float id="pdt$u$p" label="#$p Delay time" format="%5.2f" formula="$#/100">
+              <field ref="ms1" index="$u:$p:5" />
+            </float>
+          </repeat_var>
+          <repeat_var from="0" to="3" counter="p">
+            <integer id="ptr$u$p" label="#$p Tracking" symbol="action">
+              <field ref="ms1" index="$u:$p:6" />
+            </integer>
+          </repeat_var>
+        </group>
+      </repeat_grp>
+    </status>
+  </app>
+</adb>

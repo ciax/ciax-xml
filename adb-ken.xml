@@ -81,7 +81,7 @@
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ken">
-      <repeat_grp from="0" to="0" counter="c">
+      <repeat_grp from="0" to="2" counter="c">
         <group id="gs$c" caption="UNIT $c STAT" column="4">
           <integer id="model$c" label="Model" symbol="model">
             <field ref="ms3" index="$c"/>
@@ -109,7 +109,7 @@
           </integer>
         </group>
       </repeat_grp>
-      <repeat_grp from="0" to="0" counter="u">
+      <repeat_grp from="0" to="2" counter="u">
         <group id="gu$u" caption="Output $u" column="5">
           <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
             <float id="v$u$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">

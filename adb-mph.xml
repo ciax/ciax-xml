@@ -5,7 +5,7 @@
       <group id="g0" caption="Device">
         <item id="upd" label="Update Status">
           <frmcmd name="getst0">
-            <argv>0</argv>
+            <argv>1</argv>
             <argv>4</argv>
           </frmcmd>
           <frmcmd name="ack"/>
@@ -13,25 +13,25 @@
         <item id="getconf" label="Get Config Data">
           <!--Get New version-->
           <frmcmd name="getst1">
-            <argv>0</argv>
+            <argv>1</argv>
             <argv>4</argv>
           </frmcmd>
           <frmcmd name="ack"/>
           <frmcmd name="getst2">
-            <argv>0</argv>
+            <argv>1</argv>
             <argv>4</argv>
           </frmcmd>
           <frmcmd name="ack"/>
           <!--Get Common-->
           <frmcmd name="getst3">
-            <argv>0</argv>
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="ack"/>
         </item>
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ken">
-      <repeat_grp from="0" to="0" counter="u">
+      <repeat_grp from="1" to="1" counter="u">
         <group id="gu$u" caption="Setting (UNIT$u)" column="4">
           <integer id="disp$u" label="Display CH" symbol="disp">
             <field ref="ms2" index="$u:0"/>
@@ -56,7 +56,7 @@
           </integer>
         </group>
       </repeat_grp>
-      <repeat_grp from="0" to="0" counter="u">
+      <repeat_grp from="1" to="1" counter="u">
         <group id="go$u" caption="Output/CH (UNIT$u)" column="3">
           <repeat_var from="0" to="3" counter="c">
             <float id="v$u$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
@@ -87,7 +87,7 @@
           </repeat_var>
         </group>
       </repeat_grp>
-      <repeat_grp from="0" to="0" counter="u">
+      <repeat_grp from="1" to="1" counter="u">
         <group id="gp$u" caption="Preset (UNIT$u)" column="4">
           <repeat_var from="0" to="3" counter="c">
             <repeat_var from="0" to="3" counter="p">

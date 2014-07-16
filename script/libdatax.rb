@@ -149,7 +149,7 @@ module CIAX
       end
       self
     rescue OpenURI::HTTPError
-      warning("Http","  -- no url file (#{file_name})")
+      alert("Http","  -- no url file (#{file_name})")
     end
   end
 
@@ -202,7 +202,13 @@ module CIAX
       if json_str.empty?
         warning("File"," -- json file (#{@base}) is empty")
       else
-        @data.deep_update(j2h(json_str)[@dataname])
+        data=j2h(json_str)
+        verbose("File","Version compare [#{data['ver']}] vs. <#{self['ver']}>")
+        if data['ver'] == self['ver']
+          @data.deep_update(data[@dataname])
+        else
+          alert("File","Version mismatch [#{data['ver']}] should be <#{self['ver']}>")
+        end
       end
       self
     rescue Errno::ENOENT

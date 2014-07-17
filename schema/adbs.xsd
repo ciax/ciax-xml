@@ -48,6 +48,7 @@
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:token" use="required" />
       <xsd:attribute name="caption" type="xsd:token" use="optional" />
+      <xsd:attribute name="label" type="xsd:token" use="optional" />
       <xsd:attribute name="column" type="xsd:int" use="optional" />
     </xsd:complexType>
   </xsd:element>

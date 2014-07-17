@@ -171,11 +171,42 @@
     <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
       <item id="getconf" label="Get Config" ref="getconf1" />
     </alias>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <group ref="go0" caption="Output [UNIT A]" />
+      <group ref="go1" caption="Output [UNIT B]" />
+      <group ref="go2" caption="Output [UNIT C]" />
+      <group ref="gp0" caption="Preset [UNIT A]" />
+      <group ref="gp1" caption="Preset [UNIT B]" />
+      <group ref="gp2" caption="Preset [UNIT C]" />
+      <group ref="guo0" caption="Setting [UNIT A]" />
+      <group ref="guo1" caption="Setting [UNIT B]" />
+      <group ref="gu2"  caption="Setting [UNIT C]" />
+      <group ref="gdo0" caption="Delay/CH [UNIT A]" />
+      <group ref="gdo1" caption="Delay/CH [UNIT B]" />
+      <group ref="gc2" caption="Setting/CH [UNIT C]" />
+      <group ref="gt2" caption="Tracking/CH [UNIT C]" />
+    </status>
   </instance>
   <instance id="mp2" label="MOIRCS Power Supply 2" app_id="ken">
     <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
       <item id="getconf" label="Get Config" ref="getconf2" />
     </alias>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <group ref="go0" caption="Output [UNIT A]" />
+      <group ref="go1" caption="Output [UNIT B]" />
+      <group ref="go2" caption="Output [UNIT C]" />
+      <group ref="gp0" caption="Preset [UNIT A]" />
+      <group ref="gp1" caption="Preset [UNIT B]" />
+      <group ref="gp2" caption="Preset [UNIT C]" />
+      <group ref="gu0"  caption="Setting [UNIT A]" />
+      <group ref="gu1"  caption="Setting [UNIT B]" />
+      <group ref="guo2" caption="Setting [UNIT C]" />
+      <group ref="gc0" caption="Setting/CH [UNIT A]" />
+      <group ref="gc1" caption="Setting/CH [UNIT B]" />
+      <group ref="gt0" caption="Tracking/CH [UNIT A]" />
+      <group ref="gt1" caption="Tracking/CH [UNIT B]" />
+      <group ref="gdo2" caption="Delay/CH [UNIT C]" />
+    </status>
   </instance>
   <instance id="mph" label="MOIRCS Power Supply Hilo" app_id="mph"/>
 </idb>

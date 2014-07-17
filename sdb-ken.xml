@@ -22,6 +22,12 @@
       <pattern class="normal" msg="PW24-1.5AQ">14</pattern>
       <pattern class="alarm" msg="N/A" />
     </table>
+    <table id="model-old">
+      <pattern class="normal" msg="PWR18-1.8Q">0</pattern>
+      <pattern class="normal" msg="PWR18-1T">1</pattern>
+      <pattern class="normal" msg="PWR18-2">2</pattern>
+      <pattern class="normal" msg="PWR36-1">3</pattern>
+    </table>
     <table id="disp">
       <pattern class="normal" msg="A">1</pattern>
       <pattern class="normal" msg="B">2</pattern>

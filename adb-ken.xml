@@ -115,7 +115,7 @@
           <integer id="opre$u" label="Preset Sel">
             <field ref="mso" index="$u:4"/>
           </integer>
-          <integer id="omodel$u" label="Model" symbol="model">
+          <integer id="omodel$u" label="Model" symbol="model-old">
             <field ref="ms3" index="$u"/>
           </integer>
           <integer id="oprm$u" label="Protect Mode" symbol="action">

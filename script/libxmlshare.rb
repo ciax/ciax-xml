@@ -59,6 +59,7 @@ module CIAX
           end
         }
         key=attr.delete(id) || Msg.abort("No such key (#{id})")
+        alert("XmlShare","ATTRDB: Dupricated ID [#{key}]") if db.key?(key)
         db[key]=attr
         key
       end

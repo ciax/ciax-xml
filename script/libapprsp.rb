@@ -21,16 +21,18 @@ module CIAX
           enclose("AppRsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
             flds=hash[:fields]||next
             begin
-              data=case hash['type']
-                   when 'binary'
-                     flds.inject(0){|sum,e| (sum << 1)+binary(e)}
-                   when 'float'
-                     flds.inject(0){|sum,e| sum+float(e)}
-                   when 'integer'
-                     flds.inject(0){|sum,e| sum+int(e)}
-                   else
-                     flds.inject(''){|sum,e| sum+get_field(e)}
-                   end
+              case hash['type']
+              when 'binary'
+                data=flds.inject(0){|sum,e| (sum << 1)+binary(e)}
+              when 'float'
+                data=flds.map{|e|get_field(e)}.join.to_f
+                verbose("AppRsp","GetFloat[#{data}]")
+              when 'integer'
+                data=flds.map{|e|get_field(e)}.join.to_i
+                verbose("AppRsp","GetInteger[#{data}]")
+              else
+                data=flds.inject(''){|sum,e| sum+get_field(e)}
+              end
               if hash.key?('formula')
                 f=hash['formula'].gsub(/\$#/,data.to_s)
                 data=eval(f)
@@ -68,34 +70,6 @@ module CIAX
         bit = -(bit-1) if /true|1/ === e1['inv']
         verbose("AppRsp","GetBit[#{bit}]")
         bit
-      end
-
-      def float(e1)
-        data=get_field(e1)
-        sign=nil
-        # For Constant Length Data
-        if /true|1/ === e1['signed']
-          sign=(data[0] == "8")
-          data=data[1..-1]
-        end
-        if n=e1['decimal']
-          n=n.to_i
-          data=data[0..(-1-n)]+'.'+data[-n..-1]
-        end
-        data=data.to_f
-        # Numerical Data
-        data= -data if sign
-        verbose("AppRsp","GetFloat[#{data}]")
-        data
-      end
-
-      def int(e1)
-        data=get_field(e1).to_i
-        if /true|1/ === e1['signed']
-          data= data > 0x7fff ? data - 0x10000 : data
-        end
-        verbose("AppRsp","GetInteger[#{data}]")
-        data
       end
     end
 

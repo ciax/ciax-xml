@@ -24,7 +24,7 @@ module CIAX
       # Substitute str by Field data
       # - str format: ${key}
       # - output csv if array
-      def subst(str)
+      def subst(str) # subst by field
         return str unless /\$\{/ === str
         enclose("Field","Substitute from [#{str}]","Substitute to [%s]"){
           str.gsub(/\$\{(.+)\}/) {

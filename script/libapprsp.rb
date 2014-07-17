@@ -23,20 +23,21 @@ module CIAX
             begin
               case hash['type']
               when 'binary'
-                data=flds.inject(0){|sum,e| (sum << 1)+binary(e)}
+                data=eval('0b'+flds.map{|e| binary(e) }.join)
+                verbose("AppRsp","GetBinary[#{data}](#{id})")
               when 'float'
                 data=flds.map{|e|get_field(e)}.join.to_f
-                verbose("AppRsp","GetFloat[#{data}]")
+                verbose("AppRsp","GetFloat[#{data}](#{id})")
               when 'integer'
                 data=flds.map{|e|get_field(e)}.join.to_i
-                verbose("AppRsp","GetInteger[#{data}]")
+                verbose("AppRsp","GetInteger[#{data}](#{id})")
               else
                 data=flds.inject(''){|sum,e| sum+get_field(e)}
               end
               if hash.key?('formula')
                 f=hash['formula'].gsub(/\$#/,data.to_s)
                 data=eval(f)
-                verbose("AppRsp","Formula:#{f}(#{data})")
+                verbose("AppRsp","Formula:#{f}(#{data})(#{id})")
               end
               data = hash['format'] % data if hash.key?('format')
             rescue NoData
@@ -64,12 +65,23 @@ module CIAX
       end
 
       def binary(e1)
-        data=get_field(e1)
-        loc=eval(e1['bit'])
-        bit=(data.to_i >> loc & 1)
-        bit = -(bit-1) if /true|1/ === e1['inv']
-        verbose("AppRsp","GetBit[#{bit}]")
-        bit
+        data=get_field(e1).to_i
+        inv=(/true|1/ === e1['inv'])
+        str=index_range(e1['bit']).map{|sft|
+          bit=(data >> sft & 1)
+          bit = -(bit-1) if inv
+          bit.to_s
+        }.join
+        verbose("AppRsp","GetBit[#{str}]")
+        str
+      end
+
+      # range format n:m,l,..
+      def index_range(str)
+        str.split(',').map{|e|
+          r,l=e.split(':').map{|n| eval(n)}
+          Range.new(r,l||r).to_a
+        }.flatten
       end
     end
 

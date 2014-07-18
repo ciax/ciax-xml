@@ -110,10 +110,22 @@
   </xsd:element>
   <xsd:element name="field">
     <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="adbs:conv" />
+      </xsd:choice>
       <xsd:attributeGroup ref="adbs:ref_attr" />
       <xsd:attribute name="bit" type="xsd:token" />
         <!--negative logic for binary-->
       <xsd:attribute name="inv" type="xsd:boolean" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="conv">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+      <xsd:attribute name="ref" type="xsd:token" />
+        </xsd:extension>
+      </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

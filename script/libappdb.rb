@@ -93,6 +93,9 @@ module CIAX
             if i=st.delete('index')
               st['ref'] << ":#{i}"
             end
+            e1.each{|e2|
+              (st[:conv]||={})[e2.text]=e2['msg']
+            }
             item[:fields] << st
           }
         }

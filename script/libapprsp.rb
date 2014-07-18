@@ -26,10 +26,10 @@ module CIAX
                 data=eval('0b'+flds.map{|e| binstr(e) }.join)
                 verbose("AppRsp","GetBinary[#{data}](#{id})")
               when 'float'
-                data=flds.map{|e| numstr(e)}.join.to_f
+                data=flds.map{|e| get_field(e)}.join.to_f
                 verbose("AppRsp","GetFloat[#{data}](#{id})")
               when 'integer'
-                data=flds.map{|e| numstr(e)}.join.to_i
+                data=flds.map{|e| get_field(e)}.join.to_i
                 verbose("AppRsp","GetInteger[#{data}](#{id})")
               else
                 data=flds.map{|e| get_field(e)}.join
@@ -60,15 +60,8 @@ module CIAX
           verbose("AppRsp","NoFieldData in [#{fld}]")
           raise(NoData)
         end
+        data=e[:conv][data] if e[:conv]
         verbose("AppRsp","GetFieldData[#{fld}]=[#{data.inspect}]")
-        data
-      end
-
-      def numstr(e)
-        data=get_field(e)
-        if s=e['sign']
-          data={s => '-'}[data].to_s
-        end
         data
       end
 

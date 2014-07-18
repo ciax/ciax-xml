@@ -82,6 +82,7 @@ module CIAX
           r0.each(e0){|e1,r1|
             st={}
             st['inv']='true' if e1.name == 'invert'
+            st['sign']='true' if e1.name == 'sign'
             e1.to_h.each{|k,v|
               case k
               when 'bit','index'

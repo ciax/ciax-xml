@@ -52,7 +52,7 @@
             adb//commands/repeat/command/argv
             adb//status/repeat/value/[int,float,binary]@index
             adb//status/repeat/value/binary@bit
-            adb//status//value/repeat_fld/*@index,@bit
+            adb//status//value/repeat_field/*@index,@bit
             adb//watch/repeat//argv
       with format string;
             adb//status/repeat/value@[id,label,group]

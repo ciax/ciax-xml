@@ -23,16 +23,16 @@ module CIAX
             begin
               case hash['type']
               when 'binary'
-                data=eval('0b'+flds.map{|e| binary(e) }.join)
+                data=eval('0b'+flds.map{|e| binstr(e) }.join)
                 verbose("AppRsp","GetBinary[#{data}](#{id})")
               when 'float'
-                data=flds.map{|e|get_field(e)}.join.to_f
+                data=flds.map{|e| numstr(e)}.join.to_f
                 verbose("AppRsp","GetFloat[#{data}](#{id})")
               when 'integer'
-                data=flds.map{|e|get_field(e)}.join.to_i
+                data=flds.map{|e| numstr(e)}.join.to_i
                 verbose("AppRsp","GetInteger[#{data}](#{id})")
               else
-                data=flds.inject(''){|sum,e| sum+get_field(e)}
+                data=flds.map{|e| get_field(e)}.join
               end
               if hash.key?('formula')
                 f=hash['formula'].gsub(/\$#/,data.to_s)
@@ -64,10 +64,18 @@ module CIAX
         data
       end
 
-      def binary(e1)
-        data=get_field(e1).to_i
-        inv=(/true|1/ === e1['inv'])
-        str=index_range(e1['bit']).map{|sft|
+      def numstr(e)
+        data=get_field(e)
+        if s=e['sign']
+          data={s => '-'}[data].to_s
+        end
+        data
+      end
+
+      def binstr(e)
+        data=get_field(e).to_i
+        inv=(/true|1/ === e['inv'])
+        str=index_range(e['bit']).map{|sft|
           bit=(data >> sft & 1)
           bit = -(bit-1) if inv
           bit.to_s

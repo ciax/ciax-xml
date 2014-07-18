@@ -139,9 +139,9 @@
           <field ref="iang" />
         </float>
         <float id="jkm" label="JACK LEN" format="%.3f" formula="$#/1600">
-          <repeat_fld from="0" to="15">
+          <repeat_field from="0" to="15">
             <field ref="jk" index="$_" />
-          </repeat_fld>
+          </repeat_field>
         </float>
         <binary id="bsa" label="JACK ALM" symbol="warn">
           <normal ref="bsa" bit="1" />

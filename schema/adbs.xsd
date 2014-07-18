@@ -25,17 +25,17 @@
       <xsd:choice>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="adbs:group"></xsd:element>
-          <xsd:element ref="adbs:repeat_grp"></xsd:element>
+          <xsd:element ref="adbs:repeat_group"></xsd:element>
         </xsd:choice>
       </xsd:choice>
       <xsd:attribute name="symtbl" type="xsd:NCName" use="optional" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="repeat_grp">
+  <xsd:element name="repeat_group">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="adbs:group"></xsd:element>
-        <xsd:element ref="adbs:repeat_grp"></xsd:element>
+        <xsd:element ref="adbs:repeat_group"></xsd:element>
       </xsd:choice>
       <xsd:attributeGroup ref="adbs:repeat" />
     </xsd:complexType>
@@ -64,10 +64,13 @@
   </xsd:element>
   <!--data type in value-->
   <xsd:complexType name="numerical">
-    <xsd:choice minOccurs="1" maxOccurs="unbounded">
-      <xsd:element ref="adbs:field" />
-      <xsd:element ref="adbs:repeat_fld" maxOccurs="unbounded" />
-    </xsd:choice>
+    <xsd:sequence>
+      <xsd:element ref="adbs:sign" minOccurs="0" maxOccurs="1"/>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="adbs:field" />
+        <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded" />
+      </xsd:choice>
+    </xsd:sequence>
     <xsd:attributeGroup ref="adbs:id_attr" />
     <xsd:attribute name="format" type="xsd:token" use="optional" />
     <xsd:attribute name="formula" type="xsd:token" />
@@ -80,7 +83,7 @@
         <xsd:element ref="adbs:normal" />
         <!--negative logic-->
         <xsd:element ref="adbs:invert" />
-        <xsd:element ref="adbs:repeat_fld" maxOccurs="unbounded" />
+        <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attributeGroup ref="adbs:id_attr" />
     </xsd:complexType>
@@ -89,17 +92,22 @@
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="adbs:field" />
-        <xsd:element ref="adbs:repeat_fld" maxOccurs="unbounded" />
+        <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attributeGroup ref="adbs:id_attr" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="repeat_fld">
+  <xsd:element name="repeat_field">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="adbs:field" />
       </xsd:choice>
       <xsd:attributeGroup ref="adbs:repeat" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="sign">
+    <xsd:complexType>
+      <xsd:attributeGroup ref="adbs:ref_attr" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="field">

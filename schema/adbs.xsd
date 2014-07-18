@@ -123,7 +123,7 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
-      <xsd:attribute name="ref" type="xsd:token" />
+          <xsd:attribute name="msg" type="xsd:token" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

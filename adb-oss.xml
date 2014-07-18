@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="oss" id="oss" label="TSC Control" version="3">
+  <app frm_id="oss" id="oss" label="TSC Control" version="4">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <item id="upd" label="Update Status">
@@ -138,13 +138,9 @@
         <float id="iang" label="InR" format="%.3f">
           <field ref="iang" />
         </float>
-        <float id="jkm" label="JACK LEN" format="%.3f" formula="$#/1600">
-          <repeat_field from="0" to="15">
-            <field ref="jk" index="$_" />
-          </repeat_field>
-        </float>
-        <binary id="bsa" label="JACK ALM" symbol="warn">
-          <normal ref="bsa" bit="1" />
+        <binary id="rps" label="ROT SENSOR" symbol="rps">
+          <normal bit="4" ref="bstat" />
+          <normal bit="5" ref="bstat" />
         </binary>
         <binary id="abs" label="JACK STOP" symbol="warn">
           <normal ref="abs" bit="2" />
@@ -155,9 +151,8 @@
         <binary id="abr" label="JACK RDY" symbol="warn">
           <normal ref="abs" bit="4" />
         </binary>
-        <binary id="rps" label="ROT SENSOR" symbol="rps">
-          <normal bit="4" ref="bstat" />
-          <normal bit="5" ref="bstat" />
+        <binary id="bsa" label="JACK ALM" symbol="warn">
+          <normal ref="bsa" bit="1" />
         </binary>
       </group>
       <group id="g4" caption="[Stop] [Clmp] [Rdy] [Pos] [Jack Len]  [Clnt Lmt] [Alm]" column="7">

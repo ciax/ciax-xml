@@ -145,8 +145,8 @@
       </response>
       <response id="jakstat">
         <!--POWER_V1-->
-        <field assign="bsa" label="BOLT SUM ALM(B0)" length="1" decode="hexstr"/>
-        <field assign="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="1" decode="hexstr"/>
+        <field assign="bsa" label="BOLT SUM ALM(B0)" length="2" decode="hexstr"/>
+        <field assign="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2" decode="hexstr"/>
         <!--Order:2,1,4,3..-->
         <array assign="bs" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)" length="1" decode="hexstr">
           <index size="16"/>

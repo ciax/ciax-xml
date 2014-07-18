@@ -80,9 +80,7 @@
   <xsd:element name="binary">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbs:normal" />
-        <!--negative logic-->
-        <xsd:element ref="adbs:invert" />
+        <xsd:element ref="adbs:field" />
         <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attributeGroup ref="adbs:id_attr" />
@@ -113,18 +111,9 @@
   <xsd:element name="field">
     <xsd:complexType>
       <xsd:attributeGroup ref="adbs:ref_attr" />
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="normal">
-    <xsd:complexType>
-      <xsd:attributeGroup ref="adbs:ref_attr" />
       <xsd:attribute name="bit" type="xsd:token" />
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="invert">
-    <xsd:complexType>
-      <xsd:attributeGroup ref="adbs:ref_attr" />
-      <xsd:attribute name="bit" type="xsd:token" />
+        <!--negative logic for binary-->
+      <xsd:attribute name="inv" type="xsd:boolean" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

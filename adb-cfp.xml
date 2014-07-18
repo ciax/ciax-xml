@@ -77,50 +77,50 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="cfp">
       <group caption="Output" id="g1" column="2">
         <binary id="ao" label="Arm Gripper(out)" symbol="oc">
-          <normal bit="10" ref="output" />
-          <normal bit="11" ref="output" />
+          <field bit="10" ref="output" />
+          <field bit="11" ref="output" />
         </binary>
         <binary id="hr" label="Arm Rotation(out)" symbol="rot">
-          <normal bit="12" ref="output" />
-          <normal bit="13" ref="output" />
+          <field bit="12" ref="output" />
+          <field bit="13" ref="output" />
         </binary>
         <binary id="rao" label="Robohand A(out)" symbol="oc">
-          <normal bit="2" ref="output" />
-          <normal bit="3" ref="output" />
+          <field bit="2" ref="output" />
+          <field bit="3" ref="output" />
         </binary>
         <binary id="rbo" label="Robohand B(out)" symbol="oc">
-          <normal bit="4" ref="output" />
-          <normal bit="5" ref="output" />
+          <field bit="4" ref="output" />
+          <field bit="5" ref="output" />
         </binary>
         <binary id="go" label="Gate Valve(out)" symbol="oc">
-          <normal bit="6" ref="output" />
-          <normal bit="7" ref="output" />
+          <field bit="6" ref="output" />
+          <field bit="7" ref="output" />
         </binary>
       </group>
       <group caption="Input" id="g2" column="2">
         <binary id="rh1" label="RoboHand 1(in)" symbol="oc">
-          <normal bit="4" ref="input" />
-          <normal bit="5" ref="input" />
+          <field bit="4" ref="input" />
+          <field bit="5" ref="input" />
         </binary>
         <binary id="rh2" label="RoboHand 2(in)" symbol="oc">
-          <normal bit="6" ref="input" />
-          <normal bit="7" ref="input" />
+          <field bit="6" ref="input" />
+          <field bit="7" ref="input" />
         </binary>
         <binary id="rh3" label="RoboHand 3(in)" symbol="oc">
-          <normal bit="8" ref="input" />
-          <normal bit="9" ref="input" />
+          <field bit="8" ref="input" />
+          <field bit="9" ref="input" />
         </binary>
         <binary id="rh4" label="RoboHand 4(in)" symbol="oc">
-          <normal bit="10" ref="input" />
-          <normal bit="11" ref="input" />
+          <field bit="10" ref="input" />
+          <field bit="11" ref="input" />
         </binary>
         <binary id="gv" label="Gate Valve(in)" symbol="oc">
-          <normal bit="0" ref="input" />
-          <normal bit="1" ref="input" />
+          <field bit="0" ref="input" />
+          <field bit="1" ref="input" />
         </binary>
         <binary id="hv" label="Arm Rotation(in)" symbol="rot">
-          <normal bit="2" ref="input" />
-          <normal bit="3" ref="input" />
+          <field bit="2" ref="input" />
+          <field bit="3" ref="input" />
         </binary>
       </group>
     </status>

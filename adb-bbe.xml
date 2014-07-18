@@ -120,16 +120,16 @@
       <repeat_group from="0" to="3">
         <group id="g$_" column="4">
           <binary id="xsw$_" label="SWITCH" symbol="off_warn">
-            <normal bit="$_*4" ref="stat" />
+            <field bit="$_*4" ref="stat" />
           </binary>
           <binary id="xdr$_" label="DRIVE" symbol="off_warn">
-            <normal bit="$_*4+1" ref="stat" />
+            <field bit="$_*4+1" ref="stat" />
           </binary>
           <binary id="xtm$_" label="TEMP ALM" symbol="alarm">
-            <normal bit="$_*4+2" ref="stat" />
+            <field bit="$_*4+2" ref="stat" />
           </binary>
           <binary id="xpr$_" label="PRES ALM" symbol="alarm">
-            <normal bit="$_*4+3" ref="stat" />
+            <field bit="$_*4+3" ref="stat" />
           </binary>
         </group>
       </repeat_group>

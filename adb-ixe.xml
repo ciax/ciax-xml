@@ -156,30 +156,30 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" caption="Stat" column="3">
         <binary id="rdy" label="Comm Ready" symbol="off_warn">
-          <normal bit="0" ref="stat" />
+          <field bit="0" ref="stat" />
         </binary>
         <binary id="srq" label="SRQ" symbol="off_warn">
-          <normal bit="1" ref="stat" />
+          <field bit="1" ref="stat" />
         </binary>
         <binary id="pme" label="Program Error" symbol="alarm">
-          <normal bit="3" ref="stat" />
+          <field bit="3" ref="stat" />
         </binary>
         <binary id="pse" label="Power Stage Error" symbol="alarm">
-          <normal bit="4" ref="stat" />
+          <field bit="4" ref="stat" />
         </binary>
         <binary id="oes" label="ONE EM Stop" symbol="alarm">
-          <normal bit="5" ref="stat" />
+          <field bit="5" ref="stat" />
         </binary>
         <binary id="ees" label="EXT EM Stop" symbol="alarm">
-          <normal bit="6" ref="stat" />
+          <field bit="6" ref="stat" />
         </binary>
       </group>
       <group caption="Mode" id="g2" column="2">
         <binary id="trm" label="Terminal Mode" symbol="off_warn">
-          <normal bit="2" ref="stat" />
+          <field bit="2" ref="stat" />
         </binary>
         <binary id="cmd" label="Computer Mode" symbol="off_warn">
-          <normal bit="7" ref="stat" />
+          <field bit="7" ref="stat" />
         </binary>
       </group>
       <group id="g3" caption="Turrets" column="5">

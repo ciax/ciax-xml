@@ -268,19 +268,19 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="cj2">
       <group id="g1" caption="MAIN" column="3">
         <binary id="ctl" label="CONTROL" symbol="ctl">
-          <normal ref="w" index="0" bit="6:7" />
+          <field ref="w" index="0" bit="6:7" />
         </binary>
         <binary id="pse" label="PAUSE" symbol="warn">
-          <normal ref="w" index="0" bit="1" />
+          <field ref="w" index="0" bit="1" />
         </binary>
         <binary id="rdy" label="READY" symbol="off_warn">
-          <normal ref="w" index="0" bit="3" />
+          <field ref="w" index="0" bit="3" />
         </binary>
         <integer id="err" label="ERROR CODE" symbol="err">
           <field ref="err" />
         </integer>
         <binary id="emg" label="EMG STOP" symbol="alarm">
-          <normal ref="w" index="0" bit="0" />
+          <field ref="w" index="0" bit="0" />
         </binary>
       </group>
       <group id="g2" caption="ACTION STAT" column="3">
@@ -291,60 +291,60 @@
           <field ref="c" index="3" />
         </integer>
         <binary id="run" label="RUNNING" symbol="action">
-          <normal ref="w" index="0" bit="15" />
+          <field ref="w" index="0" bit="15" />
         </binary>
         <binary id="cmp" label="COMPLETE" symbol="warn">
-          <normal ref="w" index="0" bit="14" />
+          <field ref="w" index="0" bit="14" />
         </binary>
       </group>
       <group id="g3" caption="FIX Flange" column="3">
         <binary id="fis" label="Attach" symbol="ist">
-          <normal ref="w" index="2" bit="0:3" />
+          <field ref="w" index="2" bit="0:3" />
         </binary>
         <binary id="fhk" label="Hook" symbol="hook">
-          <normal ref="w" index="1" bit="0:1" />
+          <field ref="w" index="1" bit="0:1" />
         </binary>
         <binary id="fjb" label="Jack Bolt" symbol="jack">
-          <normal ref="w" index="1" bit="14:15" />
+          <field ref="w" index="1" bit="14:15" />
         </binary>
       </group>
       <group id="g4" caption="MOV Flange" column="3">
         <binary id="mis" label="Attach" symbol="ist">
-          <normal ref="w" index="6" bit="0:3" />
+          <field ref="w" index="6" bit="0:3" />
         </binary>
         <binary id="mhk" label="Hook" symbol="hook">
-          <normal ref="w" index="5" bit="0:1" />
+          <field ref="w" index="5" bit="0:1" />
         </binary>
         <binary id="mjb" label="Jack Bolt" symbol="jack">
-          <normal ref="w" index="5" bit="14:15" />
+          <field ref="w" index="5" bit="14:15" />
         </binary>
         <binary id="mrt" label="Rotation" symbol="rot">
-          <normal ref="w" index="5" bit="2:3" />
+          <field ref="w" index="5" bit="2:3" />
         </binary>
         <binary id="mtr" label="Transer" symbol="mov">
-          <normal ref="w" index="6" bit="8,6" />
+          <field ref="w" index="6" bit="8,6" />
         </binary>
       </group>
       <group id="gp" caption="Power Status" column="3">
         <binary id="fpw" label="Fix Inst Power" symbol="off_warn">
-          <normal ref="w" index="9" bit="8" />
+          <field ref="w" index="9" bit="8" />
         </binary>
         <binary id="fph" label="PW Phase" symbol="rst">
-          <normal ref="w" index="10" bit="0" />
-          <normal ref="w" index="10" bit="1" />
-          <normal ref="w" index="10" bit="2" />
+          <field ref="w" index="10" bit="0" />
+          <field ref="w" index="10" bit="1" />
+          <field ref="w" index="10" bit="2" />
         </binary>
         <binary id="fcc" label="CCD Power" symbol="action">
-          <normal ref="w" index="9" bit="10" />
+          <field ref="w" index="9" bit="10" />
         </binary>
         <binary id="mpw" label="Mov Inst Power" symbol="off_warn">
-          <normal ref="w" index="9" bit="9" />
+          <field ref="w" index="9" bit="9" />
         </binary>
         <binary id="mph" label="PW Phase" symbol="rst">
-          <normal ref="w" index="10" bit="8:10" />
+          <field ref="w" index="10" bit="8:10" />
         </binary>
         <binary id="mcc" label="CCD Power" symbol="action">
-          <normal ref="w" index="9" bit="11" />
+          <field ref="w" index="9" bit="11" />
         </binary>
       </group>
       <group id="g5" caption="Z Sensor" column="4">
@@ -369,16 +369,16 @@
       </group>
       <group id="g7" caption="Charging" column="4">
         <binary id="chg" label="CHG Plug" symbol="mov">
-          <normal ref="w" index="2" bit="6:7" />
+          <field ref="w" index="2" bit="6:7" />
         </binary>
         <binary id="ccn" label="CHG Connect" symbol="action">
-          <normal ref="w" index="4" bit="8" />
+          <field ref="w" index="4" bit="8" />
         </binary>
         <binary id="cpw" label="CHG Power" symbol="action">
-          <normal ref="w" index="4" bit="12" />
+          <field ref="w" index="4" bit="12" />
         </binary>
         <binary id="dor" label="Door" symbol="dor">
-          <normal ref="w" index="9" bit="0:1" />
+          <field ref="w" index="9" bit="0:1" />
         </binary>
       </group>
     </status>

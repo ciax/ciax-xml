@@ -95,7 +95,7 @@
           <field ref="exit" />
         </integer>
         <binary id="nfb" label="BOLT NFB TRIP">
-          <normal bit="6" ref="bstat" />
+          <field bit="6" ref="bstat" />
         </binary>
         <string id="login" label="Login Status" symbol="login">
           <field ref="login0" />
@@ -112,25 +112,25 @@
       </group>
       <group id="g2" caption="Drive Stat" column="4">
         <binary id="azd" label="AZ" symbol="drv">
-          <normal label="ON" bit="0" ref="teldrive" />
-          <normal label="OFF" bit="1" ref="teldrive" />
-          <normal label="Ready" bit="2" ref="teldrive" />
+          <field label="ON" bit="0" ref="teldrive" />
+          <field label="OFF" bit="1" ref="teldrive" />
+          <field label="Ready" bit="2" ref="teldrive" />
         </binary>
         <binary id="eld" label="EL" symbol="drv">
-          <normal label="ON" bit="3" ref="teldrive" />
-          <normal label="OFF" bit="4" ref="teldrive" />
-          <normal label="Ready" bit="5" ref="teldrive" />
+          <field label="ON" bit="3" ref="teldrive" />
+          <field label="OFF" bit="4" ref="teldrive" />
+          <field label="Ready" bit="5" ref="teldrive" />
         </binary>
         <integer id="rpw" label="ROT" symbol="rpw">
           <field ref="rpw" />
         </integer>
         <binary id="jpw" label="JAK" symbol="warn">
-          <normal bit="7" ref="bstat" />
+          <field bit="7" ref="bstat" />
         </binary>
       </group>
       <group id="g3" caption="Position" column="4">
         <binary id="stw" label="EL STOW" symbol="off_warn">
-          <normal bit="2" ref="stow_1" />
+          <field bit="2" ref="stow_1" />
         </binary>
         <float id="elv" label="EL" format="%.3f">
           <field ref="el" />
@@ -139,47 +139,47 @@
           <field ref="iang" />
         </float>
         <binary id="rps" label="ROT SENSOR" symbol="rps">
-          <normal bit="4" ref="bstat" />
-          <normal bit="5" ref="bstat" />
+          <field bit="4" ref="bstat" />
+          <field bit="5" ref="bstat" />
         </binary>
         <binary id="abs" label="JACK STOP" symbol="warn">
-          <normal ref="abs" bit="2" />
+          <field ref="abs" bit="2" />
         </binary>
         <binary id="abc" label="JACK CLMP" symbol="warn">
-          <normal ref="abs" bit="0" />
+          <field ref="abs" bit="0" />
         </binary>
         <binary id="abr" label="JACK RDY" symbol="warn">
-          <normal ref="abs" bit="4" />
+          <field ref="abs" bit="4" />
         </binary>
         <binary id="bsa" label="JACK ALM" symbol="warn">
-          <normal ref="bsa" bit="1" />
+          <field ref="bsa" bit="1" />
         </binary>
       </group>
       <group id="g4" caption="[Stop] [Clmp] [Rdy] [Pos] [Jack Len]  [Clnt Lmt] [Alm]" column="7">
         <repeat_var from="1" to="16" format="%02d">
           <!--Order:1,0;3,2;5,4;7,6;...-->
           <binary id="bs$_" symbol="warn" label="$_">
-            <normal ref="bs" index="$_-($_+1)%2*2" bit="2" />
+            <field ref="bs" index="$_-($_+1)%2*2" bit="2" />
           </binary>
           <binary id="bc$_" label="$_" symbol="warn">
-            <normal ref="bs" index="$_-($_+1)%2*2" bit="0" />
+            <field ref="bs" index="$_-($_+1)%2*2" bit="0" />
           </binary>
           <binary id="br$_" label="$_" symbol="warn">
-            <normal ref="bs" bit="3" index="$_-($_+1)%2*2" />
+            <field ref="bs" bit="3" index="$_-($_+1)%2*2" />
           </binary>
           <binary id="bl$_" label="$_" symbol="bl">
-            <normal ref="bl" index="$_-($_+1)%2*2" bit="1" />
-            <normal ref="bl" bit="2" index="$_-($_+1)%2*2" />
+            <field ref="bl" index="$_-($_+1)%2*2" bit="1" />
+            <field ref="bl" bit="2" index="$_-($_+1)%2*2" />
           </binary>
           <float id="jk$_" label="$_" format="%5.2f" formula="$#/100">
             <field ref="jk" index="$_-($_+1)%2*2" />
           </float>
           <binary id="cl$_" label="$_" symbol="normal">
-            <normal ref="clm" index="1-($_-1)/8" bit="($_-1)%8" />
+            <field ref="clm" index="1-($_-1)/8" bit="($_-1)%8" />
           </binary>
           <binary id="ba$_" label="$_" symbol="ba">
-            <normal ref="bl" index="$_-($_+1)%2*2" bit="0"/>
-            <normal ref="bl" index="$_-($_+1)%2*2" bit="4" />
+            <field ref="bl" index="$_-($_+1)%2*2" bit="0"/>
+            <field ref="bl" index="$_-($_+1)%2*2" bit="4" />
           </binary>
         </repeat_var>
       </group>

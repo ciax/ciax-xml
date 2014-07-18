@@ -190,6 +190,13 @@
           </float>
         </repeat_var>
       </group>
+      <group id="g6">
+        <string id="jkm">
+          <repeat_field from="0" to="15">
+            <field ref="jk" index="$_" />
+          </repeat_field>
+        </string>
+      </group>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <event label="Moving Jack" id="jak">

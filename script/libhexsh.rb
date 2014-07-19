@@ -45,19 +45,19 @@ module CIAX
         @cfg[:hex_list]=self
       end
 
-      def new_val(id)
+      def add(id)
         Hex.new(@cfg[:app_list][id])
       end
     end
-  end
 
-  if __FILE__ == $0
-    ENV['VER']||='init/'
-    GetOpts.new('chset')
-    begin
-      puts Hex::List.new.shell(ARGV.shift)
-    rescue InvalidID
-      $opt.usage('(opt) [id]')
-    end
+    if __FILE__ == $0
+      ENV['VER']||='init/'
+      GetOpts.new('chset')
+      begin
+        puts List.new.shell(ARGV.shift)
+      rescue InvalidID
+        $opt.usage('(opt) [id]')
+      end
+  end
   end
 end

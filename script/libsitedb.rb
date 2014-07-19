@@ -12,9 +12,8 @@ module CIAX
 
       def set(id=nil)
         ldb=super
-        appid=ldb.delete('app_id')
         insid=ldb.delete('ins_id')||ldb['id']
-        ldb.cover(App::Db.new.set(appid),:adb).ext_ins(insid)
+        ldb.cover(Ins::Db.new.set(insid).cover_app,:adb)
         app=ldb[:adb].update({'ins_id'=>insid,'site_id'=>id})
         frm=ldb[:fdb]||{}
         if ref=frm.delete('ref')

@@ -85,13 +85,20 @@ module CIAX
         b ? '1' : '0'
       end
     end
-  end
 
-  if __FILE__ == $0
-    require "libstatus"
-    Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
-    stat=App::Status.new.ext_file
-    hint=Hex::View.new({},stat)
-    puts hint
+    if __FILE__ == $0
+      require "libsitedb"
+      require "libstatus"
+      begin
+        stat=App::Status.new
+        id=STDIN.tty? ? ARGV.shift : stat.read['id']
+        ldb=Site::Db.new.set(id)
+        stat.set_db(ldb[:adb]).ext_file
+        hint=View.new({},stat)
+        puts hint
+      rescue InvalidID
+        Msg.usage("[site] | < status_file")
+      end
+    end
   end
 end

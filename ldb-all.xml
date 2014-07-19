@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ldb xmlns="http://ciax.sum.naoj.org/ciax-xml/ldb">
-  <site id="crt" label="CIAX CART 3" app_id="mel">
+  <site id="crt" label="CIAX CART 3" ins_id="crt">
     <adb port="25101" host="cxws2" />
     <fdb port="24101" iocmd="socat - udp:cart3:5000" />
   </site>
-  <site id="cjk" label="CART 3 Jack Setting" app_id="cjk">
+  <site id="cjk" label="CART 3 Jack Setting" ins_id="cjk">
     <adb port="25501" host="cxws2" />
     <fdb ref="crt" />
   </site>
-  <site id="cr2" label="CIAX CART 2" app_id="mel">
+  <site id="cr2" label="CIAX CART 2" ins_id="cr2">
     <adb port="25502" host="cxws2" />
     <fdb port="24502" iocmd="socat - udp:cart2:5000" />
   </site>
-  <site id="cci" label="IR Helium Compressor" app_id="bbe">
+  <site id="cci" label="IR Helium Compressor" ins_id="cci">
     <adb port="25108" />
     <fdb iocmd="socat - tcp:ltc-i:4002" />
   </site>
-  <site id="cco" label="OPT Helium Compressor" app_id="bbe">
+  <site id="cco" label="OPT Helium Compressor" ins_id="cco">
     <adb port="25109" />
     <fdb iocmd="socat - tcp:ltc-o:4002" />
   </site>
-  <site id="cf1" label="S1 HC Coolant Flow" app_id="k3n">
+  <site id="cf1" label="S1 HC Coolant Flow" ins_id="cf1">
     <adb port="25201" />
     <fdb iocmd="socat - tcp:ltt-o:4001" />
   </site>
-  <site id="cfa" label="S10 HC Coolant Flow" app_id="k3n">
+  <site id="cfa" label="S10 HC Coolant Flow" ins_id="cfa">
     <adb port="25210" />
     <fdb iocmd="socat - tcp:ltt-i:4015" />
   </site>
-  <site id="dsi" label="IR Stand-by Flange" app_id="cj2">
+  <site id="dsi" label="IR Stand-by Flange" ins_id="dsi">
     <adb port="25102" host="cxws2" />
     <fdb port="24102" iocmd="socat - udp:cst-i:9600">
       <field xmlns="http://ciax.sum.naoj.org/ciax-xml/ldbf">
@@ -37,7 +37,7 @@
       </field>
     </fdb>
   </site>
-  <site id="dso" label="OPT Stand-by Flange" app_id="cj2">
+  <site id="dso" label="OPT Stand-by Flange" ins_id="dso">
     <adb port="25103" host="cxws2" />
     <fdb iocmd="socat - udp:cst-o:9600">
       <field xmlns="http://ciax.sum.naoj.org/ciax-xml/ldbf">
@@ -46,87 +46,87 @@
       </field>
     </fdb>
   </site>
-  <site id="det" label="CsEtr Control" app_id="srm">
+  <site id="det" label="CsEtr Control" ins_id="det">
     <adb port="25104" />
     <fdb iocmd="socat - tcp:ltc-c:4003" />
   </site>
-  <site id="dts" label="Gen2 TSC Control" app_id="oss">
+  <site id="dts" label="Gen2 TSC Control" ins_id="dts">
     <adb port="25105" />
     <fdb iocmd="socat - tcp:cxws2:9999" />
   </site>
-  <site id="cri" label="IR Helium Compressor" app_id="bbe">
+  <site id="cri" label="IR Helium Compressor" ins_id="cri">
     <adb port="25110" />
     <fdb iocmd="socat - tcp:ltc-i:4003" />
   </site>
-  <site id="cro" label="OPT Helium Compressor" app_id="bbe">
+  <site id="cro" label="OPT Helium Compressor" ins_id="cro">
     <adb port="25106" />
     <fdb iocmd="socat - tcp:ltc-o:4003" />
   </site>
-  <site id="ml1" label="MOIRCS Temperature 1" app_id="lk8">
+  <site id="ml1" label="MOIRCS Temperature 1" ins_id="ml1">
     <adb port="25605" />
     <fdb iocmd="socat - tcp:celaeno:4005" />
   </site>
-  <site id="ml2" label="MOIRCS Temperature 2" app_id="lk8">
+  <site id="ml2" label="MOIRCS Temperature 2" ins_id="ml2">
     <adb port="25606" />
     <fdb iocmd="socat - tcp:celaeno:4006" />
   </site>
-  <site id="mfp" label="MOIRCS Pneumatic Actuator" app_id="cfp">
+  <site id="mfp" label="MOIRCS Pneumatic Actuator" ins_id="mfp">
     <adb port="25601" />
     <fdb iocmd="socat - tcp:celaeno:4001" />
   </site>
-  <site id="map" label="MOIRCS Air Pressure" app_id="oma">
+  <site id="map" label="MOIRCS Air Pressure" ins_id="map">
     <adb port="25602" />
     <fdb iocmd="socat - tcp:celaeno:4002" />
   </site>
-  <site id="mma" label="MOIRCS Extension Arm" app_id="mma">
+  <site id="mma" label="MOIRCS Extension Arm" ins_id="mma">
     <adb port="25603" />
     <fdb iocmd="socat - tcp:celaeno:4003" />
   </site>
-  <site id="mmc" label="MOIRCS Carrousel" app_id="mmc">
+  <site id="mmc" label="MOIRCS Carrousel" ins_id="mmc">
     <adb port="25604" />
     <fdb iocmd="socat - tcp:celaeno:4004" />
   </site>
-  <site id="mix" label="MOIRCS Turret" app_id="ixe">
+  <site id="mix" label="MOIRCS Turret" ins_id="mix">
     <adb port="25607" />
     <fdb iocmd="socat - tcp:celaeno:4007" />
   </site>
-  <site id="mva" label="MOIRCS Pumping" app_id="var">
+  <site id="mva" label="MOIRCS Pumping" ins_id="mva">
     <adb port="25608" />
     <fdb iocmd="socat - tcp:celaeno:4008" />
   </site>
-  <site id="mt1" label="MOIRCS Pressure Main" app_id="tpg">
+  <site id="mt1" label="MOIRCS Pressure Main" ins_id="mt1">
     <adb port="25609" />
     <fdb iocmd="socat - tcp:celaeno:4009" />
   </site>
-  <site id="mt2" label="MOIRCS Pressure Throat" app_id="tpg">
+  <site id="mt2" label="MOIRCS Pressure Throat" ins_id="mt2">
     <adb port="25610" />
     <fdb iocmd="socat - tcp:celaeno:4010" />
   </site>
-  <site id="mt3" label="MOIRCS Pressure Pump" app_id="tpg">
+  <site id="mt3" label="MOIRCS Pressure Pump" ins_id="mt3">
     <adb port="25611" />
     <fdb iocmd="socat - tcp:celaeno:4011" />
   </site>
-  <site id="mft" label="MOIRCS Hall Sensor" app_id="fpa">
+  <site id="mft" label="MOIRCS Hall Sensor" ins_id="mft">
     <adb port="25612" />
     <fdb iocmd="socat - tcp:celaeno:4012" />
   </site>
-  <site id="mp1" label="MOIRCS Power Supply 1" app_id="ken">
+  <site id="mp1" label="MOIRCS Power Supply 1" ins_id="mp1">
     <adb port="25613" />
     <fdb iocmd="socat - tcp:celaeno:4013" />
   </site>
-  <site id="mp2" label="MOIRCS Power Supply 2" app_id="ken">
+  <site id="mp2" label="MOIRCS Power Supply 2" ins_id="mp2">
     <adb port="25614" />
     <fdb iocmd="socat - tcp:celaeno:4014" />
   </site>
-  <site id="mph" label="MOIRCS Power Supply Hilo" app_id="mph">
+  <site id="mph" label="MOIRCS Power Supply Hilo" ins_id="mph">
     <adb port="25615" />
     <fdb iocmd="socat - tcp:133.40.147.230:10017" />
   </site>
-  <site id="mh1" label="MOIRCS Main/Carrousel Heater" app_id="psp">
+  <site id="mh1" label="MOIRCS Main/Carrousel Heater" ins_id="mh1">
     <adb port="25621" />
     <fdb iocmd="socat - tcp:merope:59999" />
   </site>
-  <site id="mh2" label="MOIRCS Main Heater" app_id="psp">
+  <site id="mh2" label="MOIRCS Main Heater" ins_id="mh2">
     <adb port="25622" />
     <fdb iocmd="socat - tcp:atlas:59999" />
   </site>

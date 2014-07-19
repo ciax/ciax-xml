@@ -38,13 +38,6 @@ module CIAX
     end
   end
 
-  class App::Db
-    def ext_ins(id)
-      ins=Ins::Db.new.set(id)
-      deep_update(ins)
-    end
-  end
-
   if __FILE__ == $0
     begin
       GetOpts.new("",{"f"=>"frm mode"})

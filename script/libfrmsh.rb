@@ -19,7 +19,7 @@ module CIAX
     end
 
     class Exe < Exe
-      attr_reader :field,:sqlsv,:flush_procs
+      attr_reader :field,:flush_procs
       def initialize(cfg)
         @fdb=type?(cfg[:db],Db)
         @field=cfg[:field]=Field.new.set_db(@fdb)
@@ -72,7 +72,7 @@ module CIAX
         end
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
         @stream=Stream.new(iocmd,@fdb['wait'],timeout)
-        @sqlsv=@stream.ext_logging(@id,@fdb['stream_ver']).sqlsv unless sim
+        @stream.ext_logging(@id,@fdb['stream_ver']) unless sim
         @cobj.ext_proc{|ent|
           @stream.snd(ent.cfg[:frame],ent.id)
           @field.upd(ent){@stream.rcv}
@@ -102,6 +102,7 @@ module CIAX
       end
 
       def add(id)
+        @cfg[:sqlog]||=SqLog::Save.new(id)
         @cfg[:db]=@cfg[:ldb].set(id)[:fdb]
         jumpgrp(Frm.new(@cfg))
       end

@@ -15,10 +15,9 @@ module CIAX
     #    base64: encoded data
     #   }
     # }
-    attr_reader :sqlsv
     def initialize(iocmd,wait=0,timeout=nil)
       Msg.abort(" No IO command") if iocmd.to_a.empty?
-      @iocmd=type?(iocmd,Array)
+      @iocmd=type?(iocmd,Array).compact
       super('stream',{'dir' => '','cmd' => '','base64' => ''})
       verbose("Stream","Init/Client:#{iocmd.join(' ')}")
       @wait=wait.to_f
@@ -80,7 +79,6 @@ module CIAX
         logging.append(@data)
       }
       update({'id'=>id,'ver'=>ver})
-      @sqlsv=SqLog::Save.new(id).add_table(self)
       self
     end
 

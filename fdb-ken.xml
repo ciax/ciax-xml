@@ -76,16 +76,16 @@
       </item>
       <!-- Action Command -->
       <!-- No response if Addr is # -->
-      <item id="tron" label="All Tracking ON(NEW)" response="default" type="action">
+      <item id="tron" label="All Tracking ON(NEW)" type="action">
         <string>#TR1</string>
       </item>
-      <item id="troff" label="All Tracking OFF(NEW)" response="default" type="action">
+      <item id="troff" label="All Tracking OFF(NEW)" type="action">
         <string>#TR0</string>
       </item>
-      <item id="aon" label="All Output ON" response="default" type="action">
+      <item id="aon" label="All Output ON" type="action">
         <string>#SW1</string>
       </item>
-      <item id="aoff" label="All Output OFF" response="default" type="action">
+      <item id="aoff" label="All Output OFF" type="action">
         <string>#SW0</string>
       </item>
     </commands>

@@ -12,7 +12,7 @@ module CIAX
       @type=type?(type,String)
       type?(id,String)
       ver=ver.to_i
-      @header={'time' => now_msec,'id' => id,'ver' => ver}
+      @header={'time' => now_msec,'id' => id,'ver' => ver,'host' => `hostname`.strip }
       FileUtils.mkdir_p VarDir
       @loghead=VarDir+"/"+type+"_#{id}"
       verbose("Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})")

@@ -13,7 +13,7 @@ module CIAX
         @stat=type?(stat,Hash)
         @ver_color=9
         ver=@stat['ver'].to_i
-        return unless ver > 0
+        return unless $opt['e'] && ver > 0
         @tid="#{@stat['type']}_#{ver}"
         verbose("SqLog","Init/Table '#{@tid}'")
       end
@@ -80,11 +80,11 @@ module CIAX
       # @< log,tid
       # @ sqlcmd
       include Msg
-      def initialize(id)
+      def initialize(id,layer=nil)
         @sqlcmd=["sqlite3",VarDir+"/sqlog_"+id+".sq3"]
         @queue=Queue.new
         @ver_color=9
-        verbose("SqLog","Init/DataBase '#{id}'")
+        verbose("SqLog","Init/DataBase '#{id}' on #{layer}")
         Threadx.new("SqLog Thread(#{id})",10){
           loop{
             sqlary=['begin;']
@@ -121,6 +121,9 @@ module CIAX
           }
         else
           verbose("SqLog","Init/Table invalid Version(0): No Log")
+          stat.post_upd_procs << proc{
+            verbose("SqLog","Dryrun #{sqlog.upd}")
+          }
         end
         self
       end

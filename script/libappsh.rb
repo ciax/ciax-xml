@@ -145,7 +145,7 @@ module CIAX
           'INTERRUPT'
         }
         # Logging if version number exists
-        if $opt['e'] && ver.to_i > 0 && sv=cfg[:sqlog]
+        if sv=cfg[:sqlog]
           sv.add_table(@stat)
           sv.add_table(@buf)
         end
@@ -216,7 +216,7 @@ module CIAX
       end
 
       def add(id)
-        @cfg[:sqlog]||=SqLog::Save.new(id)
+        @cfg[:sqlog]||=SqLog::Save.new(id,'App')
         @cfg[:db]=@cfg[:ldb].set(id)[:adb]
         jumpgrp(App.new(@cfg))
       end

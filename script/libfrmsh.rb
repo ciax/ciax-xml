@@ -102,7 +102,7 @@ module CIAX
       end
 
       def add(id)
-        @cfg[:sqlog]||=SqLog::Save.new(id)
+        @cfg[:sqlog]||=SqLog::Save.new(id,'Frm')
         @cfg[:db]=@cfg[:ldb].set(id)[:fdb]
         jumpgrp(Frm.new(@cfg))
       end

@@ -122,7 +122,7 @@ module CIAX
         else
           verbose("SqLog","Init/Table invalid Version(0): No Log")
           stat.post_upd_procs << proc{
-            verbose("SqLog","Dryrun #{sqlog.upd}")
+            verbose("SqLog","Dryrun '#{sqlog.upd}'")
           }
         end
         self

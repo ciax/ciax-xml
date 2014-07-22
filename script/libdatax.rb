@@ -13,6 +13,7 @@ module CIAX
       self['time']=now_msec
       self['id']=nil
       self['ver']=nil
+      self['host']=`hostname`.strip
       @data=init_struct.dup.extend(Enumx)
       @dataname=dataname
       @thread=Thread.current # For Thread safe

@@ -29,7 +29,7 @@ module CIAX
       type?(args,Array)
       verbose("Sh/Exe","Command #{args} recieved")
       @pre_exe_procs.each{|p| p.call(args)}
-      self['msg']=@cobj.set_cmd(args).exe(src)
+      self['msg']=@cobj.set_cmd(args).exe_cmd(src)
       self
     rescue LongJump
       raise $!

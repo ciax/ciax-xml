@@ -91,9 +91,10 @@ module CIAX
             IO.select([udp])
             line,addr=udp.recvfrom(4096)
             line.chomp!
+            rhost=Addrinfo.ip(addr[2]).getnameinfo.first
             verbose("UDP:Server/#{self.class}","Recv:#{line} is #{line.class}",2)
             begin
-              exe(server_input(line),"remote:#{addr[2]}")
+              exe(server_input(line),"#{rhost}")
             rescue InvalidCMD
               self['msg']="INVALID"
             rescue RuntimeError

@@ -7,7 +7,7 @@ module CIAX
     # Structure
     # {
     #  time:Int
-    #  :data:binary
+    #  @binary
     #  @data:
     #   {
     #    dir:(snd,rcv)
@@ -15,6 +15,7 @@ module CIAX
     #    base64: encoded data
     #   }
     # }
+    attr_reader :binary
     def initialize(iocmd,wait=0,timeout=nil)
       Msg.abort(" No IO command") if iocmd.to_a.empty?
       @iocmd=type?(iocmd,Array).compact
@@ -85,7 +86,7 @@ module CIAX
     private
     def conv(dir,data,cid=nil)
       self['time']=now_msec
-      self[:data]=data
+      @binary=data
       @data.update({'dir'=>dir,'base64'=>encode(data)})
       @data['cmd']=cid if cid
       self

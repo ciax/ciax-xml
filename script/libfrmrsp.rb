@@ -38,7 +38,7 @@ module CIAX
           verbose("FrmRsp","Selected DB for #{rid} #{@sel}")
           # Frame structure: main(total){ ccrange{ body(selected str) } }
           stream=yield
-          @frame.set(stream[:data],@sel['length'],@sel['padding'])
+          @frame.set(stream.binary,@sel['length'],@sel['padding'])
           @cache=@data.deep_copy
           if @fds[rid].key?('noaffix')
             getfield_rec(['body'])

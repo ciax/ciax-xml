@@ -25,11 +25,11 @@ module CIAX
     end
 
     # Sync only (Wait for other thread), never inherit
-    def exe(args)
+    def exe(args,src)
       type?(args,Array)
       verbose("Sh/Exe","Command #{args} recieved")
       @pre_exe_procs.each{|p| p.call(args)}
-      self['msg']=@cobj.set_cmd(args).exe
+      self['msg']=@cobj.set_cmd(args).exe(src)
       self
     rescue LongJump
       raise $!
@@ -93,7 +93,7 @@ module CIAX
             line.chomp!
             verbose("UDP:Server/#{self.class}","Recv:#{line} is #{line.class}",2)
             begin
-              exe(server_input(line))
+              exe(server_input(line),"remote:#{addr[2]}")
             rescue InvalidCMD
               self['msg']="INVALID"
             rescue RuntimeError

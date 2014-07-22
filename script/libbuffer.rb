@@ -26,7 +26,7 @@ module CIAX
     include Msg
     # svst: Server Status
     def initialize(svst={})
-      super('issue',{'pri' => '','cid' => ''})
+      super('issue',{'pri' => '','cid' => '','src' => ''})
       @svst=type?(svst,Hash)
       #element of @q is bunch of frm args corresponding an appcmd
       @q=Queue.new
@@ -42,15 +42,15 @@ module CIAX
     end
 
     # Send frm command batch (ary of ary)
-    def send(n=1,ent)
+    def send(n=1,ent,src)
       type?(ent,Entity)
       clear if n == 0
       batch=@send_proc.call(ent)
       #batch is frm batch (ary of ary)
-      @data.update('time'=>now_msec,'pri' => n,'cid' => ent.id)
+      @data.update('time'=>now_msec,'pri' => n,'cid' => ent.id,'src'=>src)
       unless batch.empty?
         @svst['isu']=true
-        @q.push([n,batch])
+        @q.push(:pri => n,:batch => batch,:src => src)
       end
       self
     ensure
@@ -61,9 +61,10 @@ module CIAX
       @tid=Threadx.new("Buffer Thread(#{@svst.layer}:#{@svst.id})",10){
         loop{
           begin
-            sort(*@q.shift)
+            rcv=@q.shift
+            sort(rcv[:pri],rcv[:batch])
             while args=pick
-              yield args
+              yield args,rcv[:src]
             end
             flush
           rescue

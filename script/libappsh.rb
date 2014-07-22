@@ -18,7 +18,7 @@ module CIAX
         ash=App::Sv.new(cfg)
         cfg['host']='localhost'
       end
-      ash=App::Cl.new(cfg) if $opt['c'] || (cfg['host']=$opt['h'])
+      ash=App::Cl.new(cfg) if (cfg['host']=$opt['h']) || $opt['c']
       ash||App::Test.new(cfg)
     end
 
@@ -131,15 +131,15 @@ module CIAX
         @buf=init_buf
         ver=@buf['ver']=@stat['ver']
         @fsh.flush_procs << proc{ @buf.flush }
-        @cobj.ext_proc{|ent|
-          verbose("AppSv","#@id/Issue:#{ent.id}")
-          @buf.send(1,ent)
+        @cobj.ext_proc{|ent,src|
+          verbose("AppSv","#@id/Issue:#{ent.id} from #{src}")
+          @buf.send(1,ent,src)
           "ISSUED"
         }
-        @cobj.item_proc('interrupt'){|ent|
+        @cobj.item_proc('interrupt'){|ent,src|
           batch_interrupt.each{|args|
-            verbose("AppSv","Interrupt:#{args}")
-            @buf.send(0,@cobj.set_cmd(args))
+            verbose("AppSv","Interrupt:#{args} from #{src}")
+            @buf.send(0,@cobj.set_cmd(args),src)
           }
           warning("AppSv","Interrupt(#{batch_interrupt})")
           'INTERRUPT'
@@ -164,7 +164,7 @@ module CIAX
         @watch.ext_upd(@stat).ext_file
         @watch.event_procs << proc{|p,args|
           verbose("AppSv","#@id/Auto(#{p}):#{args}")
-          @buf.send(p,@cobj.set_cmd(args))
+          @buf.send(p,@cobj.set_cmd(args),'event')
         }
         @watch.ext_logging if $opt['e'] && @stat['ver']
         @stat.post_upd_procs << proc{self['watch'] = @watch.active?}
@@ -179,9 +179,9 @@ module CIAX
           verbose("AppSv","Send FrmCmds #{batch}")
           batch
         }
-        buf.recv_proc{|args|
+        buf.recv_proc{|args,src|
           verbose("AppSv","Processing #{args}")
-          @fsh.exe(args)
+          @fsh.exe(args,src)
         }
         buf.flush_proc{
           verbose("AppSv","Flushed FrmCmds")
@@ -199,7 +199,7 @@ module CIAX
           loop{
             sleep int
             begin
-              @buf.send(3,@cobj.set_cmd(['upd']))
+              @buf.send(3,@cobj.set_cmd(['upd']),'auto')
             rescue InvalidID
               errmsg
             end

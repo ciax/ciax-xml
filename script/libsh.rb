@@ -42,7 +42,7 @@ module CIAX
         cmds=line.split(';')
         cmds=[""] if cmds.empty?
         begin
-          cmds.each{|token| exe(shell_input(token))}
+          cmds.each{|token| exe(shell_input(token),'local')}
         rescue UserError
         end
         puts shell_output

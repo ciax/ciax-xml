@@ -7,9 +7,9 @@ module CIAX
   # @data is conveted to json file where @data will be appeared as self['data'].
   # @data never contains object which can't save with JSON
   class Datax < Hashx
-    attr_reader :data,:pre_upd_procs,:post_upd_procs
+    attr_reader :type,:data,:pre_upd_procs,:post_upd_procs
     def initialize(type,init_struct={},dataname='data')
-      self['type']=type
+      @type=type
       self['time']=now_msec
       self['id']=nil
       self['ver']=nil
@@ -39,7 +39,7 @@ module CIAX
     # update after processing (super should be end of method if inherited)
     def upd
       pre_upd
-      verbose("Datax","UPD_PROC for [#{self['type']}:#{self['id']}]")
+      verbose("Datax","UPD_PROC for [#{@type}:#{self['id']}]")
       self
     ensure
       post_upd
@@ -103,7 +103,7 @@ module CIAX
     end
 
     def file_name(tag=nil)
-      @base=[self['type'],self['id'],tag].compact.join('_')+'.json'
+      @base=[@type,self['id'],tag].compact.join('_')+'.json'
       @prefix+@base
     end
 

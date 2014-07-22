@@ -14,7 +14,7 @@ module CIAX
         @ver_color=9
         ver=@stat['ver'].to_i
         return unless $opt['e'] && ver > 0
-        @tid="#{@stat['type']}_#{ver}"
+        @tid="#{@stat.type}_#{ver}"
         verbose("SqLog","Init/Table '#{@tid}'")
       end
 

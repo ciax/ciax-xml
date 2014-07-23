@@ -8,29 +8,63 @@ module CIAX
   module Watch
     # cfg should have [:app_list](App::List)
     def self.new(cfg)
-      Watch::Sv.new(cfg)
+      Msg.type?(cfg,Hash)
+      if $opt['s'] or $opt['e']
+        ash=Watch::Sv.new(cfg)
+        cfg['host']='localhost'
+      end
+      ash=Watch::Cl.new(cfg) if (cfg['host']=$opt['h']) || $opt['c']
+      ash||Watch::Test.new(cfg)
     end
 
-    class Sv < Exe
-      def initialize(ash)
-        type?(ash,App::Exe)
-        super('watch',ash.id)
-        @cobj.svdom.replace ash.cobj.svdom
-        @event=Event.new.set_db(ash.adb).ext_file
-        @event.post_upd_procs << proc{|wat|
-          block=wat.data['block'].map{|id,par| par ? nil : id}.compact
-          ash.cobj.extgrp.valid_sub(block)
-        }
-        ash.pre_exe_procs << proc{|args|
-          @event.block?(args)
-        }
-        @output=@wview=View.new(ash.adb,@event).ext_prt
+    class Exe < Exe
+      def initialize(cfg)
+        @adb=type?(cfg[:db],Db)
+        @event=Event.new.set_db(@adb)
+        super('watch',@event['id'],Command.new(cfg))
+        @ash=type?(cfg[:app_list][@id],App::Exe)
+        @mode=@ash.mode
+        @stat=@ash.stat
+        @cobj.svdom.replace @ash.cobj.svdom
+        @output=@wview=View.new(@adb,@event).ext_prt
+        ext_shell(@output)
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('prt',"Print mode").set_proc{@output=@wview;''}
         vg.add_item('raw',"Raw Watch mode").set_proc{@output=@event;''}
-        @post_exe_procs.concat(ash.post_exe_procs)
-        ext_server(ash.adb['port'].to_i+2000) if ['e','s'].any?{|i| $opt[i]}
-        ext_shell(@output)
+      end
+    end
+
+    class Test < Exe
+      def initialize(cfg)
+        super
+        @event.ext_upd(@stat)
+        @event.event_procs << proc{|p,args|
+          Msg.msg("#{args} is issued by event")
+        }
+      end
+    end
+
+    class Cl < Exe
+      def initialize(cfg)
+        super
+        host=type?(cfg['host']||@adb['host']||'localhost',String)
+        @event.ext_http(host)
+        @stat.post_upd_procs << proc{@event.upd} # @event is independent from @stat
+      end
+    end
+
+    class Sv < Exe
+      def initialize(cfg)
+        super
+        @event.post_upd_procs << proc{|wat|
+          block=wat.data['block'].map{|id,par| par ? nil : id}.compact
+          @ash.cobj.extgrp.valid_sub(block)
+        }
+        @ash.pre_exe_procs << proc{|args|
+          @event.block?(args)
+        }
+        @post_exe_procs.concat(@ash.post_exe_procs)
+        ext_server(@ash.adb['port'].to_i+2000) if ['e','s'].any?{|i| $opt[i]}
       end
     end
 
@@ -43,7 +77,8 @@ module CIAX
       end
 
       def add(id)
-        Watch.new(@cfg[:app_list][id])
+        @cfg[:db]=@cfg[:ldb].set(id)[:adb]
+        jumpgrp(Watch.new(@cfg))
       end
     end
 

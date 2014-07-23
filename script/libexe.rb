@@ -94,7 +94,7 @@ module CIAX
             rhost=Addrinfo.ip(addr[2]).getnameinfo.first
             verbose("UDP:Server/#{self.class}","Recv:#{line} is #{line.class}",2)
             begin
-              exe(server_input(line),"#{rhost}")
+              exe(server_input(line),"udp:#{rhost}")
             rescue InvalidCMD
               self['msg']="INVALID"
             rescue RuntimeError

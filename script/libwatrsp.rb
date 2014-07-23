@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libwatch'
+require 'libevent'
 require 'librerange'
 
 module CIAX

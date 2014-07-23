@@ -14,7 +14,8 @@ module CIAX
     class Sv < Exe
       def initialize(ash)
         type?(ash,App::Exe)
-        super('hex',ash.id,ash.cobj)
+        super('hex',ash.id)
+        @cobj.svdom.replace ash.cobj.svdom
         @mode=ash.mode
         @output=View.new(ash,ash.stat)
         @post_exe_procs.concat(ash.post_exe_procs)

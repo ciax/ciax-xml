@@ -14,7 +14,8 @@ module CIAX
     class Sv < Exe
       def initialize(ash)
         type?(ash,App::Exe)
-        super('watch',ash.id,ash.cobj)
+        super('watch',ash.id)
+        @cobj.svdom.replace ash.cobj.svdom
         @event=Event.new.set_db(ash.adb).ext_file
         @event.post_upd_procs << proc{|wat|
           block=wat.data['block'].map{|id,par| par ? nil : id}.compact

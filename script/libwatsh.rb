@@ -25,19 +25,13 @@ module CIAX
           @event.block?(args)
         }
         @output=@wview=View.new(ash.adb,@event).ext_prt
-        init_view
+        vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
+        vg.add_item('prt',"Print mode").set_proc{@output=@wview;''}
+        vg.add_item('raw',"Raw Watch mode").set_proc{@output=@event;''}
         @post_exe_procs.concat(ash.post_exe_procs)
         ext_server(ash.adb['port'].to_i+2000) if ['e','s'].any?{|i| $opt[i]}
         ext_shell(@output)
       end
-
-      def init_view
-        @view_grp=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
-        @view_grp.add_item('wat',"Watch mode").set_proc{@output=@wview;''}
-        @view_grp.add_item('rwa',"Raw Watch mode").set_proc{@output=@event;''}
-      end
-
-
     end
 
     class List < Site::List

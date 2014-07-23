@@ -7,12 +7,12 @@ require "thread"
 module CIAX
   class Logging
     include Msg
-    def initialize(type,id,ver=0)
+    def initialize(type,header)
       @ver_color=6
       @type=type?(type,String)
-      type?(id,String)
-      ver=ver.to_i
-      @header={'time' => now_msec,'id' => id,'ver' => ver,'host' => `hostname`.strip }
+      @header=type?(header,Hash)
+      id=@header['id']
+      ver=@header['ver']
       FileUtils.mkdir_p VarDir
       @loghead=VarDir+"/"+type+"_#{id}"
       verbose("Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})")

@@ -75,11 +75,11 @@ module CIAX
     end
 
     def ext_logging(id,ver=0)
-      logging=Logging.new('stream',id,ver)
+      update('id'=>id,'ver'=>ver)
+      logging=Logging.new('stream',Hash[self])
       @post_upd_procs << proc{
         logging.append(@data)
       }
-      update({'id'=>id,'ver'=>ver})
       self
     end
 

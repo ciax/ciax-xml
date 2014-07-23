@@ -19,7 +19,7 @@ module CIAX
         @output=View.new(ash,ash.stat)
         @post_exe_procs.concat(ash.post_exe_procs)
         if $opt['e']
-          logging=Logging.new('hex',@id,ash.adb['version'])
+          logging=Logging.new('hex',{'id' => @id,'ver' => ash.adb['version']})
           ash.stat.post_upd_procs << proc{logging.append({'hex' => @output.to_s})}
         end
         ext_server(ash.adb['port'].to_i+1000) if ['e','s'].any?{|i| $opt[i]}

@@ -50,8 +50,8 @@ module CIAX
         batch
       end
 
-      def ext_upd(stat)
-        extend(Upd).ext_upd(stat)
+      def ext_rsp(stat)
+        extend(Rsp).ext_rsp(stat)
       end
     end
 

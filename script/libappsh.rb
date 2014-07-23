@@ -100,7 +100,7 @@ module CIAX
 
       def ext_watch
         return unless @event
-        @event.ext_upd(@stat)
+        @event.ext_rsp(@stat)
         @event.event_procs << proc{|p,args|
           Msg.msg("#{args} is issued by event")
         }
@@ -161,7 +161,7 @@ module CIAX
       private
       def ext_watch
         return unless @event
-        @event.ext_upd(@stat).ext_file
+        @event.ext_rsp(@stat).ext_file
         @event.event_procs << proc{|p,args|
           verbose("AppSv","#@id/Auto(#{p}):#{args}")
           @buf.send(p,@cobj.set_cmd(args),'event')

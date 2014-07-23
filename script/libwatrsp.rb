@@ -4,12 +4,12 @@ require 'librerange'
 
 module CIAX
   module Watch
-    module Upd
+    module Rsp
       def self.extended(obj)
         Msg.type?(obj,Event)
       end
 
-      def ext_upd(stat)
+      def ext_rsp(stat)
         wdb=@db[:watch]||{}
         @windex=wdb[:index]||{}
         @stat=type?(stat,App::Status)
@@ -112,7 +112,7 @@ module CIAX
         adb=Site::Db.new.set(id)[:adb]
         stat.set_db(adb)
         stat.ext_file if STDIN.tty?
-        event=Event.new.set_db(adb).ext_upd(stat)
+        event=Event.new.set_db(adb).ext_rsp(stat)
         if t=$opt['t']
           event.ext_file
           stat.str_update(t)

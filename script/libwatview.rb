@@ -7,7 +7,7 @@ module CIAX
     # Decorate the event data (Put caption,symbole,etc.) from WDB
     class View < Hashx
       def initialize(adb,watch)
-        wdb=type?(adb,App::Db)[:watch]||{}
+        wdb=type?(adb,App::Db)[:watch]||{:index =>[]}
         @event=type?(watch,Event)
         self['stat']={}
         wdb[:index].each{|id,evnt|

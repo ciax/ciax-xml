@@ -4,12 +4,12 @@ require 'librerange'
 
 module CIAX
   module Watch
-    class Data < Datax
+    class Event < Datax
       # @ event_procs*
       attr_accessor :event_procs
       def initialize
         @ver_color=6
-        super('watch')
+        super('event')
         self['period']=300
         self['interval']=0.1
         @data['astart']=now_msec
@@ -29,7 +29,7 @@ module CIAX
       def block?(args)
         cid=args.join(':')
         blkcmd=@data['block'].map{|ary| ary.join(':')}
-        verbose("Watch","BLOCKING:#{blkcmd}") unless blkcmd.empty?
+        verbose("Event","BLOCKING:#{blkcmd}") unless blkcmd.empty?
         blkcmd.any?{|blk| /#{blk}/ === cid} && Msg.cmd_err("Blocking(#{args})")
       end
 
@@ -37,14 +37,14 @@ module CIAX
         # block parm = [priority(2),args]
         cmdary=@data['exec'].each{|args|
           @event_procs.each{|p| p.call([2,args])}
-          verbose("Watch","ISSUED_AUTO:#{args}")
+          verbose("Event","ISSUED_AUTO:#{args}")
         }.dup
         @data['exec'].clear
         cmdary
       end
 
       def batch_on_interrupt
-        verbose("Watch","Interrupt:#{@data['int']}")
+        verbose("Event","Interrupt:#{@data['int']}")
         batch=@data['int'].dup
         @data['int'].clear
         batch
@@ -54,23 +54,23 @@ module CIAX
         extend(Upd).ext_upd(stat)
       end
     end
-  end
 
-  if __FILE__ == $0
-    require "libsitedb"
-    GetOpts.new('h:')
-    watch=Watch::Data.new
-    begin
-      adb=Site::Db.new.set(ARGV.shift)[:adb]
-      watch.set_db(adb)
-      if host=$opt['h']
-        watch.ext_http(host)
-      else
-        watch.ext_file
+    if __FILE__ == $0
+      require "libsitedb"
+      GetOpts.new('h:')
+      event=Event.new
+      begin
+        adb=Site::Db.new.set(ARGV.shift)[:adb]
+        event.set_db(adb)
+        if host=$opt['h']
+        event.ext_http(host)
+        else
+          event.ext_file
+        end
+      puts STDOUT.tty? ? event : event.to_j
+      rescue InvalidID
+        $opt.usage("(opt) [site]")
       end
-      puts STDOUT.tty? ? watch : watch.to_j
-    rescue InvalidID
-      $opt.usage("(opt) [site]")
     end
   end
 end

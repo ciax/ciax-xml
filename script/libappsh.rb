@@ -40,13 +40,13 @@ module CIAX
 
       private
       def init_watch
-        @watch=Watch::Data.new.set_db(@adb)
-        @watch.post_upd_procs << proc{|wat|
+        @event=Watch::Event.new.set_db(@adb)
+        @event.post_upd_procs << proc{|wat|
           block=wat.data['block'].map{|id,par| par ? nil : id}.compact
           @cobj.extgrp.valid_sub(block)
         }
         @pre_exe_procs << proc{|args|
-          @watch.block?(args)
+          @event.block?(args)
         }
       end
 
@@ -55,14 +55,14 @@ module CIAX
         @view_grp=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         @view_grp.add_item('sta',"Stat mode").set_proc{@output=@print;''}
         @view_grp.add_item('rst',"Raw Stat mode").set_proc{@output=@stat;''}
-        return unless @watch
-        @wview=Watch::View.new(@adb,@watch).ext_prt
+        return unless @event
+        @wview=Watch::View.new(@adb,@event).ext_prt
         @view_grp.add_item('wat',"Watch mode").set_proc{@output=@wview;''}
-        @view_grp.add_item('rwa',"Raw Watch mode").set_proc{@output=@watch;''}
+        @view_grp.add_item('rwa',"Raw Watch mode").set_proc{@output=@event;''}
       end
 
       def batch_interrupt
-        @watch ? @watch.batch_on_interrupt : []
+        @event ? @event.batch_on_interrupt : []
       end
 
       def shell_input(line)
@@ -99,9 +99,9 @@ module CIAX
       end
 
       def ext_watch
-        return unless @watch
-        @watch.ext_upd(@stat)
-        @watch.event_procs << proc{|p,args|
+        return unless @event
+        @event.ext_upd(@stat)
+        @event.event_procs << proc{|p,args|
           Msg.msg("#{args} is issued by event")
         }
       end
@@ -111,9 +111,9 @@ module CIAX
       def initialize(cfg)
         super(cfg)
         host=type?(cfg['host']||@adb['host']||'localhost',String)
-        if @watch
-          @watch.ext_http(host)
-          @stat.post_upd_procs << proc{@watch.upd} # @watch is independent from @stat
+        if @event
+          @event.ext_http(host)
+          @stat.post_upd_procs << proc{@event.upd} # @event is independent from @stat
         end
         @stat.ext_http(host)
         @pre_exe_procs << proc{@stat.upd}
@@ -160,16 +160,16 @@ module CIAX
 
       private
       def ext_watch
-        return unless @watch
-        @watch.ext_upd(@stat).ext_file
-        @watch.event_procs << proc{|p,args|
+        return unless @event
+        @event.ext_upd(@stat).ext_file
+        @event.event_procs << proc{|p,args|
           verbose("AppSv","#@id/Auto(#{p}):#{args}")
           @buf.send(p,@cobj.set_cmd(args),'event')
         }
-        @watch.ext_logging if $opt['e'] && @stat['ver']
-        @stat.post_upd_procs << proc{self['watch'] = @watch.active?}
-        @interval=@watch['interval']
-        @period=@watch['period']
+        @event.ext_logging if $opt['e'] && @stat['ver']
+        @stat.post_upd_procs << proc{self['watch'] = @event.active?}
+        @interval=@event['interval']
+        @period=@event['period']
       end
 
       def init_buf
@@ -188,7 +188,7 @@ module CIAX
           @stat.upd
           sleep(@interval||0.1)
           # Auto issue by watch
-          @watch.batch_on_event if @watch
+          @event.batch_on_event if @event
         }
         buf
       end

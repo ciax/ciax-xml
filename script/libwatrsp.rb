@@ -6,7 +6,7 @@ module CIAX
   module Watch
     module Upd
       def self.extended(obj)
-        Msg.type?(obj,Data)
+        Msg.type?(obj,Event)
       end
 
       def ext_upd(stat)
@@ -100,27 +100,27 @@ module CIAX
         rary.all?
       end
     end
-  end
 
-  if __FILE__ == $0
-    require "libsitedb"
+    if __FILE__ == $0
+      require "libsitedb"
 
-    list={'t'=>'test conditions[key=val,..]'}
-    GetOpts.new('t:',list)
-    begin
-      stat=App::Status.new
-      id=STDIN.tty? ? ARGV.shift : stat.read['id']
-      adb=Site::Db.new.set(id)[:adb]
-      stat.set_db(adb)
-      stat.ext_file if STDIN.tty?
-      watch=Watch::Data.new.set_db(adb).ext_upd(stat)
-      if t=$opt['t']
-        watch.ext_file
-        stat.str_update(t)
+      list={'t'=>'test conditions[key=val,..]'}
+      GetOpts.new('t:',list)
+      begin
+        stat=App::Status.new
+        id=STDIN.tty? ? ARGV.shift : stat.read['id']
+        adb=Site::Db.new.set(id)[:adb]
+        stat.set_db(adb)
+        stat.ext_file if STDIN.tty?
+        event=Event.new.set_db(adb).ext_upd(stat)
+        if t=$opt['t']
+          event.ext_file
+          stat.str_update(t)
+        end
+        puts STDOUT.tty? ? event : event.to_j
+      rescue InvalidID
+        $opt.usage("(opt) [site] | < status_file")
       end
-      puts STDOUT.tty? ? watch : watch.to_j
-    rescue InvalidID
-      $opt.usage("(opt) [site] | < status_file")
     end
   end
 end

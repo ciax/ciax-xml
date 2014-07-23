@@ -4,11 +4,11 @@ require 'libwatrsp'
 # View is not used for computing, just for apperance for user. So the convert process can be included in to_s
 module CIAX
   module Watch
-    # Decorate the watch data (Put caption,symbole,etc.) from WDB
+    # Decorate the event data (Put caption,symbole,etc.) from WDB
     class View < Hashx
       def initialize(adb,watch)
         wdb=type?(adb,App::Db)[:watch]||{}
-        @watch=type?(watch,Data)
+        @event=type?(watch,Event)
         self['stat']={}
         wdb[:index].each{|id,evnt|
           hash=(self['stat'][id]||={})
@@ -36,20 +36,20 @@ module CIAX
       private
       def conv
         ['exec','block','int'].each{|id|
-          self[id]=@watch.data[id]
+          self[id]=@event.data[id]
         }
         ['astart','aend'].each{|id|
-          self[id]=@watch[id]
+          self[id]=@event[id]
         }
         self['stat'].each{|id,v|
           v['cond'].each_index{|i|
             h=v['cond'][i]
             var=h['var']
-            h['val']=@watch.data['crnt'][var]
-            h['res']=@watch.data['res'][id][i]
-            h['cmp']=@watch.data['last'][var] if h['type'] == 'onchange'
+            h['val']=@event.data['crnt'][var]
+            h['res']=@event.data['res'][id][i]
+            h['cmp']=@event.data['last'][var] if h['type'] == 'onchange'
           }
-          v['active']=@watch.data['active'].include?(id)
+          v['active']=@event.data['active'].include?(id)
         }
       end
     end
@@ -104,17 +104,17 @@ module CIAX
     if __FILE__ == $0
       require "libsitedb"
       GetOpts.new('r')
-      watch=Data.new
+      event=Event.new
       begin
-        id=STDIN.tty? ? ARGV.shift : watch.read['id']
+        id=STDIN.tty? ? ARGV.shift : event.read['id']
         adb=Site::Db.new.set(id)[:adb]
-        watch.set_db(adb)
-        wview=View.new(adb,watch)
-        watch.ext_file if STDIN.tty?
+        event.set_db(adb)
+        wview=View.new(adb,event)
+        event.ext_file if STDIN.tty?
         wview.ext_prt unless $opt['r']
         puts STDOUT.tty? ? wview : wview.to_j
       rescue InvalidID
-        $opt.usage("(opt) [site] | < watch_file")
+        $opt.usage("(opt) [site] | < event_file")
       end
     end
   end

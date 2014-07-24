@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmsg"
+require "libdatax"
 require "thread"
 
 # SubModule for App::Sv

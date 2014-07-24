@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 # Ascii Pack
-require "libmsg"
 require "libhexview"
 require "libappsh"
 

@@ -1,6 +1,4 @@
 #!/usr/bin/ruby
-# Ascii Pack
-require "libmsg"
 require "libwatview"
 require "libappsh"
 

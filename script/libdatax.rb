@@ -57,6 +57,14 @@ module CIAX
       post_upd
     end
 
+    def set(key,val)
+      @data[key]=val
+      self['time']=now_msec
+      self
+    ensure
+      post_upd
+    end
+
     def unset(key)
       @data.delete(key)
     ensure

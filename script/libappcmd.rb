@@ -27,7 +27,7 @@ module CIAX
         super
         @cfg['caption']='Test Commands'
         any={:type => 'reg', :list => ['.']}
-        add_item('set','[key=val,...]',{:parameters =>[any]})
+        add_item('set','[key] [val]',{:parameters =>[any,any]})
         add_item('del','[key,...]',{:parameters =>[any]})
       end
     end

@@ -64,12 +64,6 @@ module CIAX
       def batch_interrupt
         @event ? @event.batch_on_interrupt : []
       end
-
-      def shell_input(line)
-        args=super
-        args.unshift 'set' if /^[^ ]+\=/ === line
-        args
-      end
     end
 
     class Test < Exe
@@ -85,8 +79,8 @@ module CIAX
           'ISSUED:'+ent.cfg[:batch].inspect
         }
         @cobj.item_proc('set'){|ent|
-          @stat.str_update(ent.par[0])
-          "SET:#{ent.par[0]}"
+          @stat.set(ent.par[0],ent.par[1])
+          "SET:#{ent.par[0]}=#{ent.par[1]}"
         }
         @cobj.item_proc('del'){|ent|
           ent.par[0].split(',').each{|key| @stat.unset(key) }

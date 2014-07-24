@@ -28,13 +28,6 @@ module CIAX
         @flush_procs=[]
         ext_shell(@field)
       end
-
-      private
-      def shell_input(line)
-        args=line.split(/[ =]/)
-        args.unshift 'set' if /^[^ ]+\=/ === line
-        args
-      end
     end
 
     class Test < Exe
@@ -45,7 +38,7 @@ module CIAX
         @cobj.ext_proc{|ent| "#{ent.cfg[:frame].inspect} => #{ent.cfg['response']}"}
         @cobj.item_proc('set'){|ent|
           @field.set(ent.par[0],ent.par[1])
-          "Set #{ent.par[0]}"
+          "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
       end
     end

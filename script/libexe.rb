@@ -58,7 +58,11 @@ module CIAX
     # Overridable methods(do not set this kind of methods in modules)
     private
     def shell_input(line)
-      line.split(' ')
+      args=line.split(' ')
+      if (cmd=args.first) && cmd.include?('=')
+        args=['set']+cmd.split('=')
+      end
+      args
     end
 
     def shell_output

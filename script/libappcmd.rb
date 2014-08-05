@@ -7,7 +7,7 @@ module CIAX
       attr_reader :extgrp
       def initialize(upper)
         super
-        @extgrp=@svdom.add_group(:group_class =>ExtGrp,:item_class =>ExtItem)
+        @extgrp=@svdom.add_group(:group_class =>ExtGrp,:item_class =>ExtItem,:entity_class =>ExtEntity)
       end
 
       def ext_proc(&def_proc)
@@ -55,9 +55,13 @@ module CIAX
             args
           }
         }
-        ent.cfg[:batch]=batch
+        ent.batch=batch
         ent
       end
+    end
+
+    class ExtEntity < ExtEntity
+      attr_accessor :batch
     end
   end
 
@@ -70,7 +74,7 @@ module CIAX
       acf=Config.new('app_top')
       acf[:db]=App::Db.new.set(app)
       acobj=App::Command.new(acf)
-      acobj.set_cmd(args).cfg[:batch].each{|fargs|
+      acobj.set_cmd(args).batch.each{|fargs|
         p fargs
       }
     rescue InvalidCMD

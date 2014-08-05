@@ -76,7 +76,7 @@ module CIAX
         @cobj.add_int
         @cobj.ext_proc{|ent|
           @stat.upd
-          'ISSUED:'+ent.cfg[:batch].inspect
+          'ISSUED:'+ent.batch.inspect
         }
         @cobj.item_proc('set'){|ent|
           @stat.set(ent.par[0],ent.par[1])
@@ -169,7 +169,7 @@ module CIAX
       def init_buf
         buf=Buffer.new(self)
         buf.send_proc{|ent|
-          batch=type?(ent.cfg[:batch],Array)
+          batch=type?(ent.batch,Array)
           verbose("AppSv","Send FrmCmds #{batch}")
           batch
         }

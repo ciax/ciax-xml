@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libwatview"
-require "libappsh"
+require "libappsh2"
 
 module CIAX
   module Watch

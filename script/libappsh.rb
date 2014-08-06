@@ -125,17 +125,17 @@ module CIAX
         @buf=init_buf
         ver=@buf['ver']=@stat['ver']
         @fsh.flush_procs << proc{ @buf.flush }
-        @cobj.ext_proc{|ent,src|
-          verbose("AppSv","#@id/Issue:#{ent.id} from #{src}")
-          @buf.send(1,ent,src)
+        @cobj.ext_proc{|ent,src,pri|
+          verbose("AppSv","#@id/Issuing:#{ent.id} from #{src} with priority #{pri}")
+          @buf.send(pri,ent,src)
           "ISSUED"
         }
         @cobj.item_proc('interrupt'){|ent,src|
           batch_interrupt.each{|args|
-            verbose("AppSv","Interrupt:#{args} from #{src}")
+            verbose("AppSv","#@id/Issuing:#{args} for Interrupt")
             @buf.send(0,@cobj.set_cmd(args),src)
           }
-          warning("AppSv","Interrupt(#{batch_interrupt})")
+          warning("AppSv","Interrupt(#{batch_interrupt}) from #{src} with priority 0")
           'INTERRUPT'
         }
         # Logging if version number exists

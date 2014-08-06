@@ -25,7 +25,12 @@ module CIAX
         @stat=@ash.stat
         @cobj.svdom.replace @ash.cobj.svdom
         @output=@wview=View.new(@adb,@event).ext_prt
-        ext_shell(@output)
+        ext_shell(@output){
+          {'auto'=>'@','watch'=>'&','isu'=>'*'}.map{|k,v|
+            v if self[k]
+          }.join('')
+        }
+        # Init View
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('prt',"Print mode").set_proc{@output=@wview;''}
         vg.add_item('raw',"Raw Watch mode").set_proc{@output=@event;''}
@@ -54,6 +59,15 @@ module CIAX
     class Sv < Exe
       def initialize(cfg)
         super
+        @event.ext_rsp(@stat).ext_file
+        update({'auto'=>nil,'watch'=>nil,'isu'=>nil})
+        @event.event_procs << proc{|p,args|
+          verbose("AppSv","#@id/Auto(#{p}):#{args}")
+          @ash.exe(args,'event',2)
+        }
+        @event.ext_logging if $opt['e'] && @stat['ver']
+        @stat.post_upd_procs << proc{self['watch'] = @event.active?}
+        @interval=@event['interval']
         @event.post_upd_procs << proc{|wat|
           block=wat.data['block'].map{|id,par| par ? nil : id}.compact
           @ash.cobj.extgrp.valid_sub(block)
@@ -61,8 +75,26 @@ module CIAX
         @ash.pre_exe_procs << proc{|args|
           @event.block?(args)
         }
-        @post_exe_procs.concat(@ash.post_exe_procs)
+        tid_auto=auto_update
+        @post_exe_procs << proc{
+          self['auto'] = tid_auto && tid_auto.alive?
+        }
         ext_server(@ash.adb['port'].to_i+2000) if ['e','s'].any?{|i| $opt[i]}
+      end
+
+      def auto_update
+        Threadx.new("Update Thread(#@layer:#@id)",4){
+          int=(@event['period']||300).to_i
+          loop{
+            sleep 10 #int
+            begin
+              @ash.exe(['upd'],'auto',3)
+            rescue InvalidID
+              errmsg
+            end
+            verbose("AppSv","Auto Update(#{@stat['time']})")
+          }
+        }
       end
     end
 

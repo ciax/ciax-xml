@@ -228,9 +228,9 @@ module CIAX
       verbose(self.class,"Config #{@cfg.inspect}")
     end
 
-    def exe_cmd(src)
+    def exe_cmd(src,pri=1)
       verbose(self.class,"Execute #{@id} from #{src}")
-      @cfg[:def_proc].call(self,src)
+      @cfg[:def_proc].call(self,src,pri)
     end
   end
 end

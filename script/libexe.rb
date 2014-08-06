@@ -24,11 +24,11 @@ module CIAX
     end
 
     # Sync only (Wait for other thread), never inherit
-    def exe(args,src)
+    def exe(args,src,pri=1)
       type?(args,Array)
       verbose("Sh/Exe","Command #{args} recieved")
       @pre_exe_procs.each{|p| p.call(args)}
-      self['msg']=@cobj.set_cmd(args).exe_cmd(src)
+      self['msg']=@cobj.set_cmd(args).exe_cmd(src,pri)
       self
     rescue LongJump
       raise $!

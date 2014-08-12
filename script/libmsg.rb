@@ -62,7 +62,7 @@ module CIAX
       #   (val) -> calcurated from status
       @ver_indent=@@base
       msg=make_msg(prefix,title,color)
-      Kernel.warn msg if msg && condition(msg)
+      Kernel.warn msg if prefix && condition(prefix.to_s)
       self
     end
 

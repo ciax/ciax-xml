@@ -62,7 +62,7 @@ module CIAX
         @event.ext_rsp(@stat).ext_file
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil})
         @event.event_procs << proc{|p,args|
-          verbose("AppSv","#@id/Auto(#{p}):#{args}")
+          verbose("Watch","#@id/Issue(#{p}):#{args}")
           @ash.exe(args,'event',2)
         }
         @event.ext_logging if $opt['e'] && @stat['ver']
@@ -86,13 +86,13 @@ module CIAX
         Threadx.new("Update Thread(#@layer:#@id)",4){
           int=(@event['period']||300).to_i
           loop{
-            sleep 10 #int
+            sleep int
             begin
               @ash.exe(['upd'],'auto',3)
             rescue InvalidID
               errmsg
             end
-            verbose("AppSv","Auto Update(#{@stat['time']})")
+            verbose("Watch","Auto Update(#{@stat['time']})")
           }
         }
       end

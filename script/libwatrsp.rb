@@ -51,6 +51,7 @@ module CIAX
           end
         end
         verbose("Watch","Updated(#{@stat['time']})")
+        self
       ensure
         post_upd
       end

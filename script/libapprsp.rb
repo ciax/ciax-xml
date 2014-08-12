@@ -47,6 +47,7 @@ module CIAX
         }
         self['time']=@field['time']
         verbose("AppRsp","Update(#{self['time']})")
+        self
       ensure
         post_upd
       end

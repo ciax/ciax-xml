@@ -85,7 +85,7 @@ module CIAX
         @queue=Queue.new
         @pfx_color=9
         verbose("SqLog","Init/DataBase '#{id}' on #{layer}")
-        Threadx.new("SqLog Thread(#{id})",10){
+        Threadx.new("SqLog(#{id})",10){
           loop{
             sqlary=['begin;']
             begin

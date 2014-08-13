@@ -85,7 +85,7 @@ module CIAX
       end
 
       def auto_update
-        Threadx.new("Update Thread(#@layer:#@id)",4){
+        Threadx.new("Update(#@id)",4){
           int=(@event['period']||300).to_i
           loop{
             sleep int

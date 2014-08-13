@@ -58,7 +58,7 @@ module CIAX
     end
 
     def recv_proc
-      @tid=Threadx.new("Buffer Thread(#{@svst.layer}:#{@svst.id})",10){
+      @tid=Threadx.new("Buffer(#{@svst.id})",10){
         loop{
           begin
             rcv=@q.shift

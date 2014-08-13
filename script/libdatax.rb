@@ -147,7 +147,7 @@ module CIAX
       name=file_name(tag)
       json_str=''
       open(name){|f|
-        verbose("Http","Loading [#{@base}](#{f.size})",12)
+        verbose("Http","Loading [#{@base}](#{f.size})")
         json_str=f.read
       }
       if json_str.empty?
@@ -203,7 +203,7 @@ module CIAX
       name=file_name(tag)
       json_str=''
       open(name){|f|
-        verbose("File","Loading [#{@base}](#{f.size})",12)
+        verbose("#{self.class}:File","Loading [#{@base}](#{f.size})")
         f.flock(::File::LOCK_SH)
         json_str=f.read
       }
@@ -231,12 +231,12 @@ module CIAX
 
     private
     def write_json(data,tag=nil)
-      verbose("File","Saving from Multiple Threads") unless @thread == Thread.current
+      verbose("#{self.class}:File","Saving from Multiple Threads") unless @thread == Thread.current
       name=file_name(tag)
       open(name,'w'){|f|
         f.flock(::File::LOCK_EX)
         f << JSON.dump(data)
-        verbose("File","[#{@base}](#{f.size}) is Saved",12)
+        verbose("File","[#{@base}](#{f.size}) is Saved")
       }
       if tag
         # Making 'latest' tag link

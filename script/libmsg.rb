@@ -50,19 +50,19 @@ module CIAX
 
   # Should be extended in module/class
   module Msg
-    attr_accessor :ver_color
+    attr_accessor :ver_color,:cls_color
     Start_time=Time.now
     @@base=1
     # Public Method
-    def verbose(prefix,title,color=nil)
+    def verbose(prefix,title)
       # block takes array (shown by each line)
       # Description of values
       #   [val] -> taken from  xml (criteria)
       #   <val> -> taken from status (incoming)
       #   (val) -> calcurated from status
       @ver_indent=@@base
-      msg=make_msg(prefix,title,color)
-      Kernel.warn msg if prefix && condition(prefix.to_s)
+      msg=make_msg(prefix,title)
+      Kernel.warn msg if msg && condition(msg.to_s)
       self
     end
 
@@ -87,24 +87,26 @@ module CIAX
       Kernel.warn make_msg($!.class,"#{$!} at #{$@}",1)
     end
 
-    def enclose(prefix,title1,title2,color=nil)
-      verbose(prefix,title1,color)
+    def enclose(prefix,title1,title2)
+      verbose(prefix,title1)
       @@base+=1
       res=yield
     ensure
       @@base-=1
-      verbose(prefix,sprintf(title2,res),color)
+      verbose(prefix,sprintf(title2,res))
     end
 
     # Private Method
     private
-    def make_msg(prefix,title,c=nil)
+    def make_msg(prefix,title)
       return unless title
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
       tc=Thread.current
-      ts << Msg.color("#{tc[:name]||'Main Thread'}:",tc[:color]||15,@ver_indent)
-      ts << Msg.color("#{prefix}:",c||@ver_color)
+      ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
+      @cpath||=self.class.to_s.split('::')[1..-1].join('.')
+      ts << Msg.color("#@cpath:",@cls_color||12)
+      ts << Msg.color("#{prefix}:",@ver_color)
       ts << title.to_s
     end
 
@@ -113,9 +115,9 @@ module CIAX
       return unless msg
       return unless ver?
       return true if /\*/ === ENV['VER']
-      ENV['VER'].upcase.split(',').any?{|s|
+      ENV['VER'].capitalize.split(',').any?{|s|
         s.split(':').all?{|e|
-          msg.upcase.include?(e)
+          msg.include?(e)
         }
       }
     end

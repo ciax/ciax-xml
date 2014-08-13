@@ -7,7 +7,7 @@ module CIAX
     attr_reader :cc
     def initialize(endian=nil,ccmethod=nil,terminator=nil)
       # terminator: frame pointer will jump to terminator if no length or delimiter is specified
-      @ver_color=6
+      @pfx_color=6
       @endian=endian
       @ccrange=nil
       @method=ccmethod

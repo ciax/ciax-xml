@@ -52,7 +52,7 @@ module CIAX
           @sel=Hash[db[:command][:frame]]
         end
         @frame=Frame.new(db['endian'],db['ccmethod'])
-        @ver_color=0
+        @pfx_color=0
       end
 
       def set_par(par,opt={})

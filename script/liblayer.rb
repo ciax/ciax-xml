@@ -12,7 +12,7 @@ module CIAX
         super(Layer,upper)
         @cfg[:site]||=''
         @cfg[:ldb]||=Site::Db.new
-        @ver_color=4
+        @pfx_color=4
         @pars={:parameters => [{:default => @cfg[:site]}]}
       end
 

@@ -50,7 +50,7 @@ module CIAX
 
   # Should be extended in module/class
   module Msg
-    attr_accessor :ver_color,:cls_color
+    attr_accessor :pfx_color,:cls_color
     Start_time=Time.now
     @@base=1
     # Public Method
@@ -106,7 +106,7 @@ module CIAX
       ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
       @cpath||=self.class.to_s.split('::')[1..-1].join('.')
       ts << Msg.color("#@cpath:",@cls_color||12)
-      ts << Msg.color("#{prefix}:",@ver_color)
+      ts << Msg.color("#{prefix}:",@pfx_color)
       ts << title.to_s
     end
 

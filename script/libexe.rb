@@ -18,7 +18,7 @@ module CIAX
       @cobj=type?(cobj,Command)
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
-      @ver_color=6
+      @pfx_color=6
       self['msg']=''
       Thread.abort_on_exception=true
     end
@@ -86,7 +86,7 @@ module CIAX
 
     # JSON expression of server stat will be sent.
     def ext_server(port)
-      @ver_color=2
+      @pfx_color=2
       verbose("UDP:Server/#{self.class}","Init/Server(#@id):#{port}")
       Threadx.new("Server Thread(#@layer:#@id)",9){
         UDPSocket.open{ |udp|

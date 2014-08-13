@@ -7,7 +7,7 @@ module CIAX
     class Gnu
       include Share
       def initialize(f=nil)
-        @ver_color=4
+        @pfx_color=4
         case f
         when String
           test(?r,f) || raise(InvalidID)

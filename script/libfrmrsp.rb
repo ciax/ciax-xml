@@ -17,7 +17,7 @@ module CIAX
 
       # Ent is needed which includes response_id and cmd_parameters
       def ext_rsp
-        @ver_color=3
+        @pfx_color=3
         fdbr=@db[:response]
         @skel=fdbr[:frame]
         # @sel structure: { terminator, :main{}, :body{} <- changes on every upd }

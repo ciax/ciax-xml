@@ -23,7 +23,7 @@ module CIAX
       verbose("Stream","Init/Client:#{iocmd.join(' ')}")
       @wait=wait.to_f
       @timeout=timeout
-      @ver_color=1
+      @pfx_color=1
       Signal.trap(:CHLD){
         verbose("Stream","#@iocmd is terminated")
       }

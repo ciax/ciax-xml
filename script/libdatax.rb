@@ -16,7 +16,7 @@ module CIAX
       @data=init_struct.dup.extend(Enumx)
       @dataname=dataname
       @thread=Thread.current # For Thread safe
-      @ver_color=6
+      @pfx_color=6
       @pre_upd_procs=[] # Proc Array for Pre-Process of Update Propagation to the upper Layers
       @post_upd_procs=[] # Proc Array for Post-Process of Update Propagation to the upper Layers
     end

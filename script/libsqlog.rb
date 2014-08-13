@@ -11,7 +11,7 @@ module CIAX
       include Msg
       def initialize(stat)
         @stat=type?(stat,Hash)
-        @ver_color=9
+        @pfx_color=9
         ver=@stat['ver'].to_i
         return unless $opt['e'] && ver > 0
         @tid="#{@stat.type}_#{ver}"
@@ -83,7 +83,7 @@ module CIAX
       def initialize(id,layer=nil)
         @sqlcmd=["sqlite3",VarDir+"/sqlog_"+id+".sq3"]
         @queue=Queue.new
-        @ver_color=9
+        @pfx_color=9
         verbose("SqLog","Init/DataBase '#{id}' on #{layer}")
         Threadx.new("SqLog Thread(#{id})",10){
           loop{
@@ -146,7 +146,7 @@ module CIAX
         @tbl=query('.tables').split(/ /).grep(/^stream/).sort.last || raise("No Stream table")
         @total=query("select count(*) from #@tbl where dir='rcv';").to_i
         raise("No Line") if @total < 1
-        @ver_color=1
+        @pfx_color=1
       end
 
       def query(str)

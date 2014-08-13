@@ -7,7 +7,7 @@ module CIAX
       # @ last*
       attr_reader :last
       def initialize(init_struct={})
-        @ver_color=6
+        @pfx_color=6
         super('status',init_struct)
         @last={}
         @updated=now_msec

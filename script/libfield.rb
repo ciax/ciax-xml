@@ -6,7 +6,7 @@ module CIAX
     class Field < Datax
       attr_accessor :echo
       def initialize(init_struct={})
-        @ver_color=6
+        @pfx_color=6
         super('field',init_struct)
       end
 

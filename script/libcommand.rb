@@ -75,7 +75,7 @@ module CIAX
     #upper keys: def_proc,group_class,item_class,entity_class
     def initialize(upper,attr={})
       @cfg=Config.new('domain',upper).update(attr)
-      @ver_color=2
+      @pfx_color=2
     end
 
     def join_group(group)
@@ -99,7 +99,7 @@ module CIAX
       @cfg[:item_class]||=Item
       @valid_keys=@cfg[:valid_keys]||[]
       @cmdary=[CmdList.new(@cfg,@valid_keys)]
-      @ver_color=3
+      @pfx_color=3
     end
 
     def add_item(id,title=nil,crnt={})
@@ -153,7 +153,7 @@ module CIAX
     def initialize(upper,attr={})
       @cfg=Config.new('item',upper).update(attr)
       @cfg[:entity_class]||=Entity
-      @ver_color=5
+      @pfx_color=5
     end
 
     def set_par(par,opt={})
@@ -224,7 +224,7 @@ module CIAX
       @par=@cfg[:par]
       @id=[@cfg[:id],*@par].join(':')
       @cfg[:cid]=@id
-      @ver_color=5
+      @pfx_color=5
       verbose(self.class,"Config #{@cfg.inspect}")
     end
 

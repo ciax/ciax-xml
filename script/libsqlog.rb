@@ -36,7 +36,7 @@ module CIAX
           kary << k.inspect
           vary << (k == 'time' ? v.to_i : v.inspect)
         }
-        verbose("SqLog","Update(#{@stat['time']}):[#{@stat['id']}/#{@tid}]")
+        verbose("SqLog","Update(#{@stat['time']}):[#{@stat.type}]")
         "insert or ignore into #{@tid} (#{kary.join(',')}) values (#{vary.join(',')});"
       end
 
@@ -124,7 +124,7 @@ module CIAX
         else
           verbose("SqLog","Init/Table invalid Version(0): No Log")
           stat.post_upd_procs << proc{
-            verbose("SqLog","Dryrun '#{sqlog.upd}'")
+            verbose("SqLog","Dryrun",sqlog.upd)
           }
         end
         self

@@ -54,7 +54,7 @@ module CIAX
     Start_time=Time.now
     @@base=1
     # Public Method
-    def verbose(prefix,title)
+    def verbose(prefix,title,data=nil)
       # block takes array (shown by each line)
       # Description of values
       #   [val] -> taken from  xml (criteria)
@@ -62,7 +62,10 @@ module CIAX
       #   (val) -> calcurated from status
       @ver_indent=@@base
       msg=make_msg(prefix,title)
-      Kernel.warn msg if msg && condition(msg.to_s)
+      if msg && condition(msg.to_s)
+        Kernel.warn msg
+        Kernel.warn Msg.indent(@ver_indent+1)+data if data
+      end
       self
     end
 
@@ -117,7 +120,7 @@ module CIAX
       return true if /\*/ === ENV['VER']
       ENV['VER'].split(',').any?{|s|
         s.split(':').all?{|e|
-          msg.include?(e.capitalize)
+          msg.upcase.include?(e.upcase)
         }
       }
     end

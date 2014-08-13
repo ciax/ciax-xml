@@ -25,7 +25,6 @@ module CIAX
         @field=cfg[:field]=Field.new.set_db(@fdb)
         super('frm',@field['id'],Command.new(cfg))
         @cobj.add_int
-        @flush_procs=[]
         ext_shell(@field)
       end
     end

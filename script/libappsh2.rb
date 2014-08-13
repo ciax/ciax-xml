@@ -44,10 +44,6 @@ module CIAX
         @view_grp.add_item('prt',"Print Stat mode").set_proc{@output=@print;''}
         @view_grp.add_item('raw',"Raw Stat mode").set_proc{@output=@stat;''}
       end
-
-      def batch_interrupt
-        @event ? @event.batch_on_interrupt : []
-      end
     end
 
     class Test < Exe
@@ -134,7 +130,7 @@ module CIAX
           @stat.upd
           sleep(@interval||0.1)
           # Auto issue by watch
-          @event.batch_on_event if @event
+          @flush_procs.each{|p| p.call(self)}
         }
         buf
       end

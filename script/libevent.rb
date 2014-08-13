@@ -33,6 +33,17 @@ module CIAX
         blkcmd.any?{|blk| /#{blk}/ === cid} && Msg.cmd_err("Blocking(#{args})")
       end
 
+      def flush_event
+        ary=@data['exec']
+        ary.shift ary.size
+      end
+
+      def flush_int
+        ary=@data['int']
+        ary.shift ary.size
+      end
+
+      # deprecated
       def batch_on_event
         # block parm = [priority(2),args]
         cmdary=@data['exec'].each{|args|

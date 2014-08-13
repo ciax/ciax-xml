@@ -61,14 +61,14 @@ module CIAX
         super
         @event.ext_rsp(@stat).ext_file
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil})
-        @ash.flush_procs << proc{
+        @event.ext_logging if $opt['e'] && @stat['ver']
+        @stat.post_upd_procs << proc{
+          self['watch'] = @event.active?
           @event.flush_event.each{|args|
             verbose("Watch","#@id/Issue(EVENT):#{args}")
             @ash.exe(args,'event',2)
           }
         }
-        @event.ext_logging if $opt['e'] && @stat['ver']
-        @stat.post_upd_procs << proc{self['watch'] = @event.active?}
         @interval=@event['interval']
         @event.post_upd_procs << proc{|wat|
           block=wat.data['block'].map{|id,par| par ? nil : id}.compact

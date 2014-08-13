@@ -130,7 +130,6 @@ module CIAX
           @stat.upd
           sleep(@interval||0.1)
           # Auto issue by watch
-          @flush_procs.each{|p| p.call(self)}
         }
         buf
       end

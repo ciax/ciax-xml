@@ -10,7 +10,7 @@ require "libextcmd"
 
 module CIAX
   class Exe < Hashx # Having server status {id,msg,...}
-    attr_reader :layer,:id,:mode,:pre_exe_procs,:post_exe_procs,:flush_procs,:cobj,:output
+    attr_reader :layer,:id,:mode,:pre_exe_procs,:post_exe_procs,:cobj,:output
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
       @id=id
@@ -18,7 +18,6 @@ module CIAX
       @cobj=type?(cobj,Command)
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
-      @flush_procs=[] # Proc for Terminate process of Batch
       @ver_color=6
       self['msg']=''
       Thread.abort_on_exception=true

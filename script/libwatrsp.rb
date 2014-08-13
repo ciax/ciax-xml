@@ -57,9 +57,9 @@ module CIAX
       end
 
       def ext_logging
-        logging=Logging.new('event',Hash[@stat])
-        @event_procs << proc{|p,args|
-          logging.append('cmd'=>args,'active'=>@data['active'])
+        logging=Logging.new('event',Hash[self])
+        @post_upd_procs << proc{
+          logging.append('cmd'=>@data['exec'],'active'=>@data['active'])
         }
         self
       end

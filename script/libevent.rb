@@ -18,7 +18,6 @@ module CIAX
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
         #For Hash element
         ['crnt','last','res'].each{|i| @data[i]||={}}
-        @event_procs=[]
         self
       end
 
@@ -47,8 +46,8 @@ module CIAX
       def batch_on_event
         # block parm = [priority(2),args]
         cmdary=@data['exec'].each{|args|
-          @event_procs.each{|p| p.call([2,args])}
-          verbose("Event","ISSUED_AUTO:#{args}")
+#          @event_procs.each{|p| p.call([2,args])}
+#          verbose("Event","ISSUED_AUTO:#{args}")
         }.dup
         @data['exec'].clear
         cmdary

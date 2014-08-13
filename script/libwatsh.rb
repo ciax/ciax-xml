@@ -41,7 +41,7 @@ module CIAX
       def initialize(cfg)
         super
         @event.ext_rsp(@stat)
-        @event.event_procs << proc{|p,args|
+        @event.post_upd_procs << proc{|p,args|
           Msg.msg("#{args} is issued by event")
         }
       end

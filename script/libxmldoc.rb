@@ -17,7 +17,8 @@ module CIAX
       ALL='all-list'
       @@root={}
       def initialize(type,group=nil)
-        @pfx_color=4
+        @cls_color=4
+        @pfx_color=2
         /.+/ =~ type || Msg.cfg_err("No Db Type")
         @group=group||ALL
         verbose("XmlDoc","xmlroot:#{@@root.keys}")

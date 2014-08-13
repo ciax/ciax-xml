@@ -17,26 +17,26 @@ module CIAX
 
       def upd
         @adbs.each{|id,hash|
-          enclose("AppRsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
+          enclose("Rsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
             flds=hash[:fields]||next
             begin
               case hash['type']
               when 'binary'
                 data=eval('0b'+flds.map{|e| binstr(e) }.join)
-                verbose("AppRsp","GetBinary[#{data}](#{id})")
+                verbose("Rsp","GetBinary[#{data}](#{id})")
               when 'float'
                 data=flds.map{|e| get_field(e)}.join.to_f
-                verbose("AppRsp","GetFloat[#{data}](#{id})")
+                verbose("Rsp","GetFloat[#{data}](#{id})")
               when 'integer'
                 data=flds.map{|e| get_field(e)}.join.to_i
-                verbose("AppRsp","GetInteger[#{data}](#{id})")
+                verbose("Rsp","GetInteger[#{data}](#{id})")
               else
                 data=flds.map{|e| get_field(e)}.join
               end
               if hash.key?('formula')
                 f=hash['formula'].gsub(/\$#/,data.to_s)
                 data=eval(f)
-                verbose("AppRsp","Formula:#{f}(#{data})(#{id})")
+                verbose("Rsp","Formula:#{f}(#{data})(#{id})")
               end
               data = hash['format'] % data if hash.key?('format')
             rescue NoData
@@ -46,7 +46,7 @@ module CIAX
           }
         }
         self['time']=@field['time']
-        verbose("AppRsp","Update(#{self['time']})")
+        verbose("Rsp","Update(#{self['time']})")
         self
       ensure
         post_upd
@@ -57,11 +57,11 @@ module CIAX
         fld=e['ref'] || Msg.abort("No field Key")
         data=@field.get(fld)
         if data.empty?
-          verbose("AppRsp","NoFieldData in [#{fld}]")
+          verbose("Rsp","NoFieldData in [#{fld}]")
           raise(NoData)
         end
         data=e[:conv][data] if e[:conv]
-        verbose("AppRsp","GetFieldData[#{fld}]=[#{data.inspect}]")
+        verbose("Rsp","GetFieldData[#{fld}]=[#{data.inspect}]")
         data
       end
 
@@ -73,7 +73,7 @@ module CIAX
           bit = -(bit-1) if inv
           bit.to_s
         }.join
-        verbose("AppRsp","GetBit[#{str}]")
+        verbose("Rsp","GetBit[#{str}]")
         str
       end
 

@@ -8,8 +8,9 @@ module CIAX
       # @ event_procs*
       attr_accessor :event_procs
       def initialize
-        @pfx_color=6
         super('event')
+        @cls_color=3
+        @pfx_color=12
         self['period']=300
         self['interval']=0.1
         @data['astart']=now_msec

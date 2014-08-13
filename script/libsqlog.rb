@@ -11,7 +11,8 @@ module CIAX
       include Msg
       def initialize(stat)
         @stat=type?(stat,Hash)
-        @pfx_color=9
+        @cls_color=1
+        @pfx_color=14
         ver=@stat['ver'].to_i
         return unless $opt['e'] && ver > 0
         @tid="#{@stat.type}_#{ver}"
@@ -83,9 +84,10 @@ module CIAX
       def initialize(id,layer=nil)
         @sqlcmd=["sqlite3",VarDir+"/sqlog_"+id+".sq3"]
         @queue=Queue.new
-        @pfx_color=9
+        @cls_color=1
+        @pfx_color=14
         verbose("SqLog","Init/DataBase '#{id}' on #{layer}")
-        Threadx.new("SqLog(#{id})",10){
+        Threadx.new("SqLog(#{id})",13){
           loop{
             sqlary=['begin;']
             begin

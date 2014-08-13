@@ -16,6 +16,7 @@ module CIAX
       @data=init_struct.dup.extend(Enumx)
       @dataname=dataname
       @thread=Thread.current # For Thread safe
+      @cls_color=2
       @pfx_color=6
       @pre_upd_procs=[] # Proc Array for Pre-Process of Update Propagation to the upper Layers
       @post_upd_procs=[] # Proc Array for Post-Process of Update Propagation to the upper Layers
@@ -135,8 +136,8 @@ module CIAX
     require "open-uri"
     def ext_http(host)
       host||='localhost'
-      @prefix="http://"+host+"/json/"
       verbose("Http","Initialize(#{host})")
+      @prefix="http://"+host+"/json/"
       self['id']||Msg.cfg_err("ID")
       @pre_upd_procs << proc{load}
       load
@@ -203,7 +204,7 @@ module CIAX
       name=file_name(tag)
       json_str=''
       open(name){|f|
-        verbose("#{self.class}:File","Loading [#{@base}](#{f.size})")
+        verbose("File","Loading [#{@base}](#{f.size})")
         f.flock(::File::LOCK_SH)
         json_str=f.read
       }
@@ -231,7 +232,7 @@ module CIAX
 
     private
     def write_json(data,tag=nil)
-      verbose("#{self.class}:File","Saving from Multiple Threads") unless @thread == Thread.current
+      verbose("File","Saving from Multiple Threads") unless @thread == Thread.current
       name=file_name(tag)
       open(name,'w'){|f|
         f.flock(::File::LOCK_EX)

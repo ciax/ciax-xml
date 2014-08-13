@@ -50,7 +50,7 @@ module CIAX
             @data['astart']=now_msec
           end
         end
-        verbose("Watch","Updated(#{@stat['time']})")
+        verbose("Rsp","Updated(#{@stat['time']})")
         self
       ensure
         post_upd
@@ -74,7 +74,7 @@ module CIAX
 
       def check(id,item)
         return true unless cklst=item[:cnd]
-        verbose("Watch","Check: <#{item['label']}>")
+        verbose("Rsp","Check: <#{item['label']}>")
         rary=[]
         cklst.each{|ckitm|
           vn=ckitm['var']
@@ -83,16 +83,16 @@ module CIAX
           when 'onchange'
             cmp=@data['last'][vn]
             res=(cmp != val)
-            verbose("Watch","  onChange(#{vn}): [#{cmp}] vs <#{val}> =>#{res}")
+            verbose("Rsp","  onChange(#{vn}): [#{cmp}] vs <#{val}> =>#{res}")
           when 'pattern'
             cmp=ckitm['val']
             res=(Regexp.new(cmp) === val)
-            verbose("Watch","  Pattrn(#{vn}): [#{cmp}] vs <#{val}> =>#{res}")
+            verbose("Rsp","  Pattrn(#{vn}): [#{cmp}] vs <#{val}> =>#{res}")
           when 'range'
             cmp=ckitm['val']
             f="%.3f" % val.to_f
             res=(ReRange.new(cmp) == f)
-            verbose("Watch","  Range(#{vn}): [#{cmp}] vs <#{f}>(#{val.class}) =>#{res}")
+            verbose("Rsp","  Range(#{vn}): [#{cmp}] vs <#{f}>(#{val.class}) =>#{res}")
           end
           res=!res if /true|1/ === ckitm['inv']
           rary << res

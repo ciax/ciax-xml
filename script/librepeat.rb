@@ -5,7 +5,7 @@ module CIAX
   class Repeat
     include Msg
     def initialize
-      @pfx_color=5
+      @cls_color=5
       @counter={}
       @format={}
       @rep=[]

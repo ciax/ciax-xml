@@ -8,7 +8,7 @@ module CIAX
     XmlDir="#{ENV['HOME']}/ciax-xml"
     attr_reader :list
     def initialize(type,group=nil)
-      @pfx_color=5
+      @cls_color=5
       @type=type
       @group=group
       @list=cache(group||'list',group){|doc| doc.list }

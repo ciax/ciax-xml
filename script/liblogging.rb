@@ -8,7 +8,8 @@ module CIAX
   class Logging
     include Msg
     def initialize(type,header)
-      @pfx_color=6
+      @cls_color=1
+      @pfx_color=14
       @type=type?(type,String)
       @header=type?(header,Hash)
       id=@header['id']

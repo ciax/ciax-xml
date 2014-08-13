@@ -28,6 +28,7 @@ module CIAX
         @adb=type?(cfg[:db],Db)
         @stat=Status.new.set_db(@adb)
         super('app',@stat['id'],Command.new(cfg))
+        @cls_color=2
         @output=@print=View.new(@adb,@stat)
         ext_shell(@output){
           {'isu'=>'*'}.map{|k,v|

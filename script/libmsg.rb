@@ -105,8 +105,8 @@ module CIAX
       tc=Thread.current
       ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
       @cpath||=self.class.to_s.split('::')[1..-1].join('.')
-      ts << Msg.color("#@cpath:",@cls_color||12)
-      ts << Msg.color("#{prefix}:",@pfx_color)
+      ts << Msg.color("#@cpath:",@cls_color||7)
+      ts << Msg.color("#{prefix}:",@pfx_color||2)
       ts << title.to_s
     end
 
@@ -115,9 +115,9 @@ module CIAX
       return unless msg
       return unless ver?
       return true if /\*/ === ENV['VER']
-      ENV['VER'].capitalize.split(',').any?{|s|
+      ENV['VER'].split(',').any?{|s|
         s.split(':').all?{|e|
-          msg.include?(e)
+          msg.include?(e.capitalize)
         }
       }
     end

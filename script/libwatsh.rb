@@ -20,6 +20,7 @@ module CIAX
         @adb=type?(cfg[:db],Db)
         @event=Event.new.set_db(@adb)
         super('watch',@event['id'],Command.new(cfg))
+        @cls_color=3
         @ash=type?(cfg[:app_list][@id],App::Exe)
         @mode=@ash.mode
         @stat=@ash.stat
@@ -85,7 +86,7 @@ module CIAX
       end
 
       def auto_update
-        Threadx.new("Update(#@id)",4){
+        Threadx.new("Update(#@id)",14){
           int=(@event['period']||300).to_i
           loop{
             sleep int

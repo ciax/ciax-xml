@@ -93,6 +93,7 @@ module CIAX
         Threadx.new("Update(#@id)",14){
           int=(@event['period']||300).to_i
           loop{
+            @event.next_upd
             sleep int
             begin
               @ash.exe(['upd'],'auto',3)

@@ -5,14 +5,13 @@ require 'librerange'
 module CIAX
   module Watch
     class Event < Datax
-      # @ event_procs*
-      attr_accessor :event_procs
       def initialize
         super('event')
         @cls_color=3
         @pfx_color=12
         self['period']=300
         self['interval']=0.1
+        @data['unext']=now_msec
         @data['astart']=now_msec
         @data['aend']=now_msec
         #For Array element
@@ -38,27 +37,8 @@ module CIAX
         ary.shift ary.size
       end
 
-      def flush_int
-        ary=@data['int']
-        ary.shift ary.size
-      end
-
-      # deprecated
-      def batch_on_event
-        # block parm = [priority(2),args]
-        cmdary=@data['exec'].each{|args|
-#          @event_procs.each{|p| p.call([2,args])}
-#          verbose("Event","ISSUED_AUTO:#{args}")
-        }.dup
-        @data['exec'].clear
-        cmdary
-      end
-
-      def batch_on_interrupt
-        verbose("Event","Interrupt:#{@data['int']}")
-        batch=@data['int'].dup
-        @data['int'].clear
-        batch
+      def next_upd
+        @data['unext']=now_msec+self['period']
       end
 
       def ext_rsp(stat)

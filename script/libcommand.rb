@@ -7,15 +7,15 @@ require 'liblogging'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
 module CIAX
-  module HshShare
+  module SetProc
     def set_proc(&def_proc)
       @cfg[:def_proc]=type?(def_proc,Proc)
       self
     end
   end
 
-  module AryShare
-    include HshShare
+  class CmdShare < Arrayx
+    include SetProc
     def get_item(id)
       res=nil
       any?{|e| res=e.get_item(id)}
@@ -52,11 +52,10 @@ module CIAX
     end
   end
 
-  class Command < Arrayx
+  class Command < CmdShare
     # CDB: mandatory (:body)
     # optional (:label,:parameters)
     # optionalfrm (:nocache,:response)
-    include AryShare
     attr_reader :svdom,:lodom,:hidgrp
     def initialize(upper=nil)
       @cfg=Config.new('command',upper)
@@ -70,8 +69,7 @@ module CIAX
     end
   end
 
-  class Domain < Arrayx
-    include AryShare
+  class Domain < CmdShare
     #upper keys: def_proc,group_class,item_class,entity_class
     def initialize(upper,attr={})
       @cfg=Config.new('domain',upper).update(attr)
@@ -91,7 +89,7 @@ module CIAX
   end
 
   class Group < Hashx
-    include HshShare
+    include SetProc
     attr_reader :valid_keys,:cfg
     #upper keys: caption,color,column
     def initialize(upper,attr)
@@ -146,7 +144,7 @@ module CIAX
 
   # Corresponds commands
   class Item < Hashx
-    include HshShare
+    include SetProc
     include Math
     attr_reader :cfg
     #cfg should have :id,:label,:parameters,:def_proc

@@ -25,7 +25,7 @@ module CIAX
       end
 
       def add_step(e1)
-        Msg.type?(@cfg[:app_list],App::List)
+        Msg.type?(@cfg[:wat_list],Watch::List)
         step=Step.new(e1,@cfg){post_upd}
         step['time']=Msg.elps_sec(self['time'])
         @data << step
@@ -154,14 +154,14 @@ module CIAX
 
       def scan
         sites.inject({}){|hash,site|
-          hash[site]=@cfg[:app_list][site].stat
+          hash[site]=@cfg[:wat_list][site].stat
           hash
         }
       end
 
       def refresh
         sites.each{|site|
-          @cfg[:app_list][site].stat.refresh
+          @cfg[:wat_list][site].stat.refresh
         }
       end
 

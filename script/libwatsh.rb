@@ -16,6 +16,7 @@ module CIAX
     end
 
     class Exe < Exe
+      attr_reader :adb,:stat
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
         @event=Event.new.set_db(@adb)

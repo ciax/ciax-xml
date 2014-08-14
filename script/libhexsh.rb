@@ -1,28 +1,28 @@
 #!/usr/bin/ruby
 # Ascii Pack
 require "libhexview"
-require "libappsh"
+require "libwatsh"
 
 module CIAX
   module Hex
-    # cfg should have [:app_list](App::List)
-    def self.new(cfg)
-      Hex::Sv.new(cfg)
+    # cfg should have [:wat_list](Wat::List)
+    def self.new(wsh)
+      Hex::Sv.new(wsh)
     end
 
     class Sv < Exe
-      def initialize(ash)
-        type?(ash,App::Exe)
-        super('hex',ash.id)
-        @cobj.svdom.replace ash.cobj.svdom
-        @mode=ash.mode
-        @output=View.new(ash,ash.stat)
-        @post_exe_procs.concat(ash.post_exe_procs)
+      def initialize(wsh)
+        type?(wsh,Watch::Exe)
+        super('hex',wsh.id)
+        @cobj.svdom.replace wsh.cobj.svdom
+        @mode=wsh.mode
+        @output=View.new(wsh,wsh.stat)
+        @post_exe_procs.concat(wsh.post_exe_procs)
         if $opt['e']
-          logging=Logging.new('hex',{'id' => @id,'ver' => ash.adb['version']})
-          ash.stat.post_upd_procs << proc{logging.append({'hex' => @output.to_s})}
+          logging=Logging.new('hex',{'id' => @id,'ver' => wsh.adb['version']})
+          wsh.stat.post_upd_procs << proc{logging.append({'hex' => @output.to_s})}
         end
-        ext_server(ash.adb['port'].to_i+1000) if ['e','s'].any?{|i| $opt[i]}
+        ext_server(wsh.adb['port'].to_i+1000) if ['e','s'].any?{|i| $opt[i]}
         ext_shell(@output)
       end
 
@@ -41,12 +41,12 @@ module CIAX
       def initialize(upper=nil)
         super
         @cfg[:level]='hex'
-        @cfg[:app_list]||=App::List.new
+        @cfg[:wat_list]||=Watch::List.new
         @cfg[:hex_list]=self
       end
 
       def add(id)
-        Hex.new(@cfg[:app_list][id])
+        Hex.new(@cfg[:wat_list][id])
       end
     end
 

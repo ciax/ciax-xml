@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmcrcmd"
 require "librecord"
-require "libappsh"
+require "libwatsh"
 
 module CIAX
   # Modes            | Actual Status? | Force Entering | Query? | Moving | Retry Interval
@@ -24,7 +24,7 @@ module CIAX
       #cfg[:submcr_proc] for executing asynchronous submacro
       def initialize(ment)
         @cfg=type?(type?(ment,Entity).cfg)
-        type?(@cfg[:app_list],App::List)
+        type?(@cfg[:wat_list],Watch::List)
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         super('macro',@record['sid'],Command.new)
         @post_stat_procs=[] # execute on stat changes
@@ -80,7 +80,7 @@ module CIAX
               drop?(@step.timeout?{show '.'})
             when 'exec'
               @running << e1['site']
-              @cfg[:app_list][e1['site']].exe(e1['args']) if exec?(@step.exec?)
+              @cfg[:wat_list][e1['site']].exe(e1['args']) if exec?(@step.exec?)
             when 'mcr'
               if @step.async? && @cfg[:submcr_proc].is_a?(Proc)
                 @step['sid']=@cfg[:submcr_proc].call(e1['args'])['sid']
@@ -99,7 +99,7 @@ module CIAX
       rescue Interrupt
         msg("\nInterrupt Issued to running devices #{@running}")
         @running.each{|site|
-          @cfg[:app_list][site].exe(['interrupt'])
+          @cfg[:wat_list][site].exe(['interrupt'])
         } if $opt['m']
         finish('interrupted')
         self
@@ -193,7 +193,7 @@ module CIAX
       GetOpts.new('emlnt')
       begin
         cfg=Config.new('mcr_exe')
-        cfg[:app_list]=App::List.new
+        cfg[:wat_list]=Watch::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)
         cobj.add_ext

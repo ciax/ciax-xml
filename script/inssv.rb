@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require "libhexsh"
+require "libwatsh"
 
 module CIAX
-  module App
+  module Watch
     ENV['VER']||='init/'
     GetOpts.new('es')
     List.new.server(ARGV)

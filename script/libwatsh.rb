@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libwatview"
-require "libappsh2"
+require "libappsh"
 
 module CIAX
   module Watch
@@ -56,7 +56,7 @@ module CIAX
     class Cl < Exe
       def initialize(cfg)
         super
-        host=type?(cfg['host']||@adb['host']||'localhost',String)
+        host=type?(cfg['host']||@adb['host']+500||'localhost',String)
         @event.ext_http(host)
         @stat.post_upd_procs << proc{@event.upd} # @event is independent from @stat
       end
@@ -85,7 +85,7 @@ module CIAX
         @post_exe_procs << proc{
           self['auto'] = tid_auto && tid_auto.alive?
         }
-        ext_server(@ash.adb['port'].to_i+2000) if ['e','s'].any?{|i| $opt[i]}
+        ext_server(@adb['port'].to_i+500) if ['e','s'].any?{|i| $opt[i]}
       end
 
       def auto_update
@@ -126,6 +126,6 @@ module CIAX
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end
-  end
+    end
   end
 end

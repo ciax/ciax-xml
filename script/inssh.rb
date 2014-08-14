@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libhexsh"
+require "libwatsh"
 require "liblayer"
 
 module CIAX
@@ -11,9 +11,7 @@ module CIAX
   lay.add_layer(Frm)
   if !$opt['f']
     lay.add_layer(App)
-    if $opt['x']
-      lay.add_layer(Hex)
-    end
+    lay.add_layer(Watch)
   end
   lay.shell(lay.keys.last,ARGV.shift)
 end

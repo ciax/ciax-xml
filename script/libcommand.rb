@@ -158,7 +158,7 @@ module CIAX
 
     def set_par(par,opt={})
       opt[:par]=validate(type?(par,Array))
-      verbose(self.class,"SetPAR(#{@cfg[:id]}): #{par}")
+      verbose("Item","SetPAR(#{@cfg[:id]}): #{par}")
       @cfg[:entity_class].new(@cfg,opt)
     end
 
@@ -193,18 +193,18 @@ module CIAX
             rescue Exception
               Msg.par_err("Parameter is not number")
             end
-            verbose("CmdItem","Validate: [#{num}] Match? [#{disp}]")
+            verbose("Item","Validate: [#{num}] Match? [#{disp}]")
             unless list.any?{|r| ReRange.new(r) == num }
               Msg.par_err("Out of range (#{num}) for [#{disp}]")
             end
             next num.to_s
           when 'reg'
-            verbose("CmdItem","Validate: [#{str}] Match? [#{disp}]")
+            verbose("Item","Validate: [#{str}] Match? [#{disp}]")
             unless list.any?{|r| /#{r}/ === str}
               Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
             end
           else
-            verbose("CmdItem","Validate: [#{str}] Match? [#{disp}]")
+            verbose("Item","Validate: [#{str}] Match? [#{disp}]")
             unless list.include?(str)
               Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
             end
@@ -225,7 +225,7 @@ module CIAX
       @id=[@cfg[:id],*@par].join(':')
       @cfg[:cid]=@id
       @pfx_color=5
-      verbose(self.class,"Config",@cfg.inspect)
+      verbose("Entity","Config",@cfg.inspect)
     end
 
     def exe_cmd(src,pri=1)

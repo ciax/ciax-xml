@@ -42,6 +42,7 @@ module CIAX
     class ExtItem < Item
       def initialize(upper,crnt={})
         super
+        @cls_color=6
         @field=type?(@cfg[:field],Field)
         db=@cfg[:db]
         @cache={}

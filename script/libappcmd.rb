@@ -6,6 +6,7 @@ module CIAX
     class Command < Command
       attr_reader :extgrp
       def initialize(upper)
+        upper[:cls_color]=2
         super
         @extgrp=@svdom.add_group(:group_class =>ExtGrp,:item_class =>ExtItem,:entity_class =>ExtEntity)
       end

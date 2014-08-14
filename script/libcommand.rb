@@ -61,6 +61,8 @@ module CIAX
       @cfg=Config.new('command',upper)
       @cfg.update('color'=>2,'column'=>2)
       @cfg[:def_proc]||=proc{''}
+      @cls_color=@cfg[:cls_color]||7
+      @pfx_color=@cfg[:pfx_color]||2
       # Server Commands (service commands on Server)
       push @svdom=Domain.new(@cfg,{:domain_id => 'remote'}) # Remote Command Domain
       push @lodom=Domain.new(@cfg,{:domain_id => 'local'}) # Local Command Domain
@@ -73,7 +75,8 @@ module CIAX
     #upper keys: def_proc,group_class,item_class,entity_class
     def initialize(upper,attr={})
       @cfg=Config.new('domain',upper).update(attr)
-      @pfx_color=2
+      @cls_color=@cfg[:cls_color]
+      @pfx_color=@cfg[:pfx_color]
     end
 
     def join_group(group)
@@ -96,8 +99,9 @@ module CIAX
       @cfg=Config.new('group',upper).update(attr)
       @cfg[:item_class]||=Item
       @valid_keys=@cfg[:valid_keys]||[]
+      @cls_color=@cfg[:cls_color]
+      @pfx_color=@cfg[:pfx_color]
       @cmdary=[CmdList.new(@cfg,@valid_keys)]
-      @pfx_color=3
     end
 
     def add_item(id,title=nil,crnt={})
@@ -151,12 +155,13 @@ module CIAX
     def initialize(upper,attr={})
       @cfg=Config.new('item',upper).update(attr)
       @cfg[:entity_class]||=Entity
-      @pfx_color=5
+      @cls_color=@cfg[:cls_color]
+      @pfx_color=@cfg[:pfx_color]
     end
 
     def set_par(par,opt={})
       opt[:par]=validate(type?(par,Array))
-      verbose("Item","SetPAR(#{@cfg[:id]}): #{par}")
+      verbose("Cmd","SetPAR(#{@cfg[:id]}): #{par}")
       @cfg[:entity_class].new(@cfg,opt)
     end
 
@@ -191,18 +196,18 @@ module CIAX
             rescue Exception
               Msg.par_err("Parameter is not number")
             end
-            verbose("Item","Validate: [#{num}] Match? [#{disp}]")
+            verbose("Cmd","Validate: [#{num}] Match? [#{disp}]")
             unless list.any?{|r| ReRange.new(r) == num }
               Msg.par_err("Out of range (#{num}) for [#{disp}]")
             end
             next num.to_s
           when 'reg'
-            verbose("Item","Validate: [#{str}] Match? [#{disp}]")
+            verbose("Cmd","Validate: [#{str}] Match? [#{disp}]")
             unless list.any?{|r| /#{r}/ === str}
               Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
             end
           else
-            verbose("Item","Validate: [#{str}] Match? [#{disp}]")
+            verbose("Cmd","Validate: [#{str}] Match? [#{disp}]")
             unless list.include?(str)
               Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
             end
@@ -222,12 +227,13 @@ module CIAX
       @par=@cfg[:par]
       @id=[@cfg[:id],*@par].join(':')
       @cfg[:cid]=@id
-      @pfx_color=5
-      verbose("Entity","Config",@cfg.inspect)
+      @cls_color=@cfg[:cls_color]
+      @pfx_color=@cfg[:pfx_color]
+      verbose("Cmd","Config",@cfg.inspect)
     end
 
     def exe_cmd(src,pri=1)
-      verbose(self.class,"Execute #{@id} from #{src}")
+      verbose("Cmd","Execute #{@id} from #{src}")
       @cfg[:def_proc].call(self,src,pri)
     end
   end

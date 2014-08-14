@@ -8,6 +8,7 @@ module CIAX
     class Command < Command
       # upper must include [:field]
       def initialize(upper)
+        upper[:cls_color]=6
         super
         @extgrp=@svdom.add_group(:group_class => ExtGrp,:item_class =>ExtItem)
       end

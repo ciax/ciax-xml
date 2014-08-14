@@ -24,12 +24,14 @@ module CIAX
 
     class Exe < Exe
       attr_reader :adb,:stat
+      attr_accessor :batch_interrupt
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
         @stat=Status.new.set_db(@adb)
         super('app',@stat['id'],Command.new(cfg))
         @cls_color=2
         @output=@print=View.new(@adb,@stat)
+        @batch_interrupt=[]
         ext_shell(@output){
           {'isu'=>'*'}.map{|k,v|
             v if self[k]
@@ -68,7 +70,7 @@ module CIAX
           "DELETE:#{ent.par[0]}"
         }
         @cobj.item_proc('interrupt'){|ent|
-          "INTERRUPT(#{batch_interrupt})"
+          "INTERRUPT(#{@batch_interrupt})"
         }
       end
     end
@@ -99,11 +101,11 @@ module CIAX
           "ISSUED"
         }
         @cobj.item_proc('interrupt'){|ent,src|
-          batch_interrupt.each{|args|
+          @batch_interrupt.each{|args|
             verbose("AppSv","#@id/Issuing:#{args} for Interrupt")
             @buf.send(0,@cobj.set_cmd(args),src)
           }
-          warning("AppSv","Interrupt(#{batch_interrupt}) from #{src} with priority 0")
+          warning("AppSv","Interrupt(#{@batch_interrupt}) from #{src}")
           'INTERRUPT'
         }
         # Logging if version number exists

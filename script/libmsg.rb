@@ -87,7 +87,7 @@ module CIAX
 
     def errmsg
       @ver_indent=@@base
-      Kernel.warn make_msg($!.class,"#{$!} at #{$@}",1)
+      Kernel.warn make_msg($!.class,Msg.color("#{$!} at #{$@}",1))
     end
 
     def enclose(prefix,title1,title2)

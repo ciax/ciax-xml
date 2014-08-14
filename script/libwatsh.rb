@@ -26,6 +26,7 @@ module CIAX
         @stat=@ash.stat
         @cobj.svdom.replace @ash.cobj.svdom
         @output=@wview=View.new(@adb,@event).ext_prt
+        @ash.batch_interrupt=@event.data['int']
         ext_shell(@output){
           {'auto'=>'@','watch'=>'&','isu'=>'*'}.map{|k,v|
             v if self[k]
@@ -42,8 +43,12 @@ module CIAX
       def initialize(cfg)
         super
         @event.ext_rsp(@stat)
-        @event.post_upd_procs << proc{|p,args|
-          Msg.msg("#{args} is issued by event")
+        @event.post_upd_procs << proc{|wat|
+          @event.flush_event.each{|args|
+            Msg.msg("#@id/Issue(EVENT):#{args}")
+          }
+          block=wat.data['block'].map{|id,par| par ? nil : id}.compact
+          @ash.cobj.extgrp.valid_sub(block)
         }
       end
     end
@@ -63,15 +68,13 @@ module CIAX
         @event.ext_rsp(@stat).ext_file
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil})
         @event.ext_logging if $opt['e'] && @stat['ver']
-        @stat.post_upd_procs << proc{
+        @interval=@event['interval']
+        @event.post_upd_procs << proc{|wat|
           self['watch'] = @event.active?
           @event.flush_event.each{|args|
             verbose("Watch","#@id/Issue(EVENT):#{args}")
             @ash.exe(args,'event',2)
           }
-        }
-        @interval=@event['interval']
-        @event.post_upd_procs << proc{|wat|
           block=wat.data['block'].map{|id,par| par ? nil : id}.compact
           @ash.cobj.extgrp.valid_sub(block)
         }

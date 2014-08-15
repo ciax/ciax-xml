@@ -3,7 +3,7 @@ require "libwatsh"
 require "liblayer"
 
 module CIAX
-  ENV['VER']||='init/'
+  ENV['VER']||='initialize'
   GetOpts.new("afxtesch:")
   cfg=Config.new('ins_top')
   cfg[:ldb]=Site::Db.new

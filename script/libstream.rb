@@ -20,20 +20,20 @@ module CIAX
       Msg.abort(" No IO command") if iocmd.to_a.empty?
       @iocmd=type?(iocmd,Array).compact
       super('stream',{'dir' => '','cmd' => '','base64' => ''})
-      verbose("Stream","Init/Client:#{iocmd.join(' ')}")
-      @wait=wait.to_f
-      @timeout=timeout
       @cls_color=6
       @pfx_color=9
+      verbose("Client","Initialize (#{iocmd.join(' ')})")
+      @wait=wait.to_f
+      @timeout=timeout
       Signal.trap(:CHLD){
-        verbose("Stream","#@iocmd is terminated")
+        verbose("Client","#@iocmd is terminated")
       }
     end
 
     def snd(str,cid)
       return if str.to_s.empty?
-      verbose("Stream","Sending #{str.size} byte on #{cid}")
-      verbose("Stream","Binary Sending #{str.inspect}")
+      verbose("Client","Sending #{str.size} byte on #{cid}")
+      verbose("Client","Binary Sending #{str.inspect}")
       reopen{
         @f.write(str)
       }
@@ -42,7 +42,7 @@ module CIAX
     end
 
     def rcv
-      verbose("Stream","Wait to Recieve #{@wait} sec")
+      verbose("Client","Wait to Recieve #{@wait} sec")
       sleep @wait
       unless str=reopen{
           @f.readpartial(4096)
@@ -50,8 +50,8 @@ module CIAX
         Process.kill(1,@f.pid)
         Msg.com_err("Stream:No response")
       end
-      verbose("Stream","Recieved #{str.size} byte on #{self['cmd']}")
-      verbose("Stream","Binary Recieving #{str.inspect}")
+      verbose("Client","Recieved #{str.size} byte on #{self['cmd']}")
+      verbose("Client","Binary Recieving #{str.inspect}")
       conv('rcv',str)
       self
     end
@@ -63,7 +63,7 @@ module CIAX
         str=yield
       rescue
         Msg.com_err("IO error") if int > 8
-        verbose("Stream","Try to reopen")
+        verbose("Client","Try to reopen")
         sleep int
         int=(int+1)*2
         # SIGINT gets around the child process

@@ -10,13 +10,13 @@ module CIAX
     def initialize(type,header)
       @cls_color=1
       @pfx_color=14
-      @type=type?(type,String)
+      type?(type,String)
       @header=type?(header,Hash)
       id=@header['id']
       ver=@header['ver']
       FileUtils.mkdir_p VarDir
       @loghead=VarDir+"/"+type+"_#{id}"
-      verbose("Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})")
+      verbose(type.capitalize,"Initialize (#{id}/Ver.#{ver})")
       @queue=Queue.new
       Threadx.new("Logging(#{type}:#{ver})",11){
         loop{
@@ -27,7 +27,7 @@ module CIAX
           open(logfile,'a') {|f|
             logary.each{|str|
               f.puts str
-              verbose("Logging","#{@type}/Appended #{str.size} byte #{str}")
+              verbose(type.capitalize,"Appended #{str.size} byte #{str}")
             }
           }
         }

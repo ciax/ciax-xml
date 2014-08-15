@@ -104,7 +104,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      ENV['VER']||='init/'
+      ENV['VER']||='initialize'
       GetOpts.new('t')
       begin
         cfg=Config.new('mcr_list')

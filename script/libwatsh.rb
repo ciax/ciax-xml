@@ -121,7 +121,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      ENV['VER']||='init/'
+      ENV['VER']||='initialize'
       GetOpts.new('chset')
       begin
         puts List.new.shell(ARGV.shift)

@@ -7,21 +7,22 @@ require "thread"
 module CIAX
   module SqLog
     class Table
-      attr_reader :tid,:stat
+      attr_reader :tid,:stat,:tname
       include Msg
       def initialize(stat)
         @stat=type?(stat,Hash)
         @cls_color=1
         @pfx_color=14
         ver=@stat['ver'].to_i
+        @tname=@stat.type.capitalize
         return unless $opt['e'] && ver > 0
         @tid="#{@stat.type}_#{ver}"
-        verbose("SqLog","Init/Table '#{@tid}'")
+        verbose(@tname,"Initialize Table '#{@tid}'")
       end
 
       def create
         key=['time',*expand.keys].uniq.join("','")
-        verbose("SqLog","create ('#{key}')")
+        verbose(@tname,"create ('#{key}')")
         "create table #{@tid} ('#{key}',primary key(time));"
       end
 
@@ -36,7 +37,7 @@ module CIAX
           kary << k.inspect
           vary << (k == 'time' ? v.to_i : v.inspect)
         }
-        verbose("SqLog","Update(#{@stat['time']}):[#{@stat.type}]")
+        verbose(@tname,"Update(#{@stat['time']})")
         "insert or ignore into #{@tid} (#{kary.join(',')}) values (#{vary.join(',')});"
       end
 
@@ -85,8 +86,8 @@ module CIAX
         @sqlcmd=["sqlite3",VarDir+"/sqlog_"+id+".sq3"]
         @queue=Queue.new
         @cls_color=1
-        @pfx_color=14
-        verbose("SqLog","Init/DataBase '#{id}' on #{layer}")
+        @pfx_color=10
+        verbose("Server","Initialize '#{id}' on #{layer}")
         Threadx.new("SqLog(#{id})",13){
           loop{
             sqlary=['begin;']
@@ -98,7 +99,7 @@ module CIAX
               sqlary.each{|sql|
                 begin
                   f.puts sql
-                  verbose("SqLog","Saved for '#{sql}'")
+                  verbose("Server","Saved for '#{sql}'")
                 rescue
                   Msg.abort("Sqlite3 input error\n#{sql}")
                 end
@@ -115,16 +116,16 @@ module CIAX
           # Create table if no table
           unless internal("tables").split(' ').include?(sqlog.tid)
             @queue.push sqlog.create
-            verbose("SqLog","Init/Table '#{sqlog.tid}' is created")
+            verbose(sqlog.tname,"Initialize '#{sqlog.tid}' is created")
           end
           # Add to stat.upd
           stat.post_upd_procs << proc{
             @queue.push sqlog.upd
           }
         else
-          verbose("SqLog","Init/Table invalid Version(0): No Log")
+          verbose(sqlog.tname,"Initialize: invalid Version(0): No Log")
           stat.post_upd_procs << proc{
-            verbose("SqLog","Dryrun",sqlog.upd)
+            verbose(sqlog.tname,"Dryrun",sqlog.upd)
           }
         end
         self

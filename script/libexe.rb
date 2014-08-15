@@ -27,7 +27,7 @@ module CIAX
     # Sync only (Wait for other thread), never inherit
     def exe(args,src,pri=1)
       type?(args,Array)
-      verbose("Sh/Exe","Command #{args} recieved")
+      verbose("Exe","Command #{args} recieved")
       @pre_exe_procs.each{|p| p.call(args)}
       self['msg']=@cobj.set_cmd(args).exe_cmd(src,pri)
       self
@@ -96,7 +96,7 @@ module CIAX
             line,addr=udp.recvfrom(4096)
             line.chomp!
             rhost=Addrinfo.ip(addr[2]).getnameinfo.first
-            verbose("UDP:Server/#{self.class}","Recv:#{line} is #{line.class}")
+            verbose("UDP:Server","Recv:#{line} is #{line.class}")
             begin
               exe(server_input(line),"udp:#{rhost}")
             rescue InvalidCMD
@@ -105,7 +105,7 @@ module CIAX
               self['msg']=$!.to_s
               errmsg
             end
-            verbose("UDP:Server/#{self.class}","Send:#{self['msg']}")
+            verbose("UDP:Server","Send:#{self['msg']}")
             udp.send(server_output,0,addr[2],addr[1])
           }
         }

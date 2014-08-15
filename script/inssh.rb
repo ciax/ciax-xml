@@ -11,7 +11,9 @@ module CIAX
   lay.add_layer(Frm)
   if !$opt['f']
     lay.add_layer(App)
-    lay.add_layer(Watch)
+    if !$opt['a']
+      lay.add_layer(Watch)
+    end
   end
   lay.shell(lay.keys.last,ARGV.shift)
 end

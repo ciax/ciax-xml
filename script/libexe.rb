@@ -126,13 +126,13 @@ module CIAX
       host||='localhost'
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)
-      verbose("UDP:Client/#{self.class}","Init/Client(#@id):#{host}:#{port}",6)
+      verbose("UDP:Client","Init/Client(#@id):#{host}:#{port}")
       @cobj.svdom.set_proc{|ent|
         args=ent.id.split(':')
         @udp.send(JSON.dump(args),0,@addr) # Address family not supported by protocol -> see above
-        verbose("UDP:Client/#{self.class}","Send [#{args}]",6)
+        verbose("UDP:Client","Send [#{args}]")
         res=@udp.recv(1024)
-        verbose("UDP:Client/#{self.class}","Recv #{res}",6)
+        verbose("UDP:Client","Recv #{res}")
         update(JSON.load(res)) unless res.empty?
         self['msg']
       }

@@ -57,7 +57,7 @@ module CIAX
     class Cl < Exe
       def initialize(cfg)
         super
-        host=type?(cfg['host']||@adb['host']+500||'localhost',String)
+        host=type?(cfg['host']||@adb['host']||'localhost',String)
         @event.ext_http(host)
         @stat.post_upd_procs << proc{@event.upd} # @event is independent from @stat
       end

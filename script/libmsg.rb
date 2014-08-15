@@ -64,7 +64,7 @@ module CIAX
       msg=make_msg(prefix,title)
       if msg && condition(msg.to_s)
         Kernel.warn msg
-        Kernel.warn Msg.indent(@ver_indent+1)+data if data
+        Kernel.warn Msg.indent(@ver_indent+1)+data.to_s if data
       end
       self
     end

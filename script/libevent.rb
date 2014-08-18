@@ -11,9 +11,9 @@ module CIAX
         @pfx_color=12
         self['period']=300
         self['interval']=0.1
-        @data['unext']=now_msec
-        @data['astart']=now_msec
-        @data['aend']=now_msec
+        @data['upd_next']=now_msec
+        @data['act_start']=now_msec
+        @data['act_end']=now_msec
         #For Array element
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
         #For Hash element
@@ -38,7 +38,7 @@ module CIAX
       end
 
       def next_upd
-        @data['unext']=now_msec+self['period']
+        @data['upd_next']=now_msec+self['period']
       end
 
       def ext_rsp(stat)

@@ -45,9 +45,9 @@ module CIAX
         }
         if !@data['active'].empty?
           if active?
-            @data['aend']=now_msec
+            @data['act_end']=now_msec
           else
-            @data['astart']=now_msec
+            @data['act_start']=now_msec
           end
         end
         verbose("Rsp","Updated(#{@stat['time']})")

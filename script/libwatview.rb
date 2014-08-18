@@ -38,7 +38,7 @@ module CIAX
         ['exec','block','int'].each{|id|
           self[id]=@event.data[id]
         }
-        ['astart','aend'].each{|id|
+        ['act_start','act_end'].each{|id|
           self[id]=@event[id]
         }
         self['stat'].each{|id,v|
@@ -67,7 +67,7 @@ module CIAX
       def conv
         return '' if self['stat'].empty?
         super
-        atime=Msg.elps_sec(self['astart'],self['aend'])
+        atime=Msg.elps_sec(self['act_start'],self['act_end'])
         str="  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
         str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
         str << "  "+Msg.color("Conditions",2)+"\t:\n"

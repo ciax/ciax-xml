@@ -11,7 +11,7 @@ module CIAX
         @pfx_color=12
         self['period']=300
         self['interval']=0.1
-        @data['upd_next']=now_msec
+        next_upd
         @data['act_start']=now_msec
         @data['act_end']=now_msec
         #For Array element
@@ -38,7 +38,7 @@ module CIAX
       end
 
       def next_upd
-        @data['upd_next']=now_msec+self['period']
+        @data['upd_next']=now_msec+self['period']*1000
       end
 
       def ext_rsp(stat)

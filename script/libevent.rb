@@ -5,12 +5,13 @@ require 'librerange'
 module CIAX
   module Watch
     class Event < Datax
+      attr_reader :period,:interval
       def initialize
         super('event')
         @cls_color=3
         @pfx_color=12
-        self['period']=300
-        self['interval']=0.1
+        @period=300
+        @interval=0.1
         next_upd
         @data['act_start']=now_msec
         @data['act_end']=now_msec
@@ -38,7 +39,7 @@ module CIAX
       end
 
       def next_upd
-        @data['upd_next']=now_msec+self['period']*1000
+        @data['upd_next']=now_msec+@period*1000
       end
 
       def ext_rsp(stat)

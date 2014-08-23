@@ -14,8 +14,8 @@ module CIAX
         @windex=wdb[:index]||{}
         @stat=type?(stat,App::Status)
         @stat.post_upd_procs << proc{upd}
-        self['period']=wdb['period'].to_i if wdb.key?('period')
-        self['interval']=wdb['interval'].to_f/10 if wdb.key?('interval')
+        @period=wdb['period'].to_i if wdb.key?('period')
+        @interval=wdb['interval'].to_f/10 if wdb.key?('interval')
         # Pick usable val
         @list=[]
         @windex.values.each{|v|

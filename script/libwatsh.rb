@@ -69,7 +69,7 @@ module CIAX
         @event.ext_rsp(@stat).ext_file
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil})
         @event.ext_logging if $opt['e'] && @stat['ver']
-        @interval=@event['interval']
+        @interval=@event.interval
         @event.post_upd_procs << proc{|wat|
           self['watch'] = @event.active?
           @event.flush_event.each{|args|
@@ -100,7 +100,7 @@ module CIAX
             end
             verbose("Watch","Auto Update(#{@stat['time']})")
             @event.next_upd
-            sleep @event['period']
+            sleep @event.period
           }
         }
       end

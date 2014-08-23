@@ -62,7 +62,6 @@ module CIAX
 
       private
       def conv
-        return '' if self['stat'].empty?
         super
         tonext=Msg.elps_sec(now_msec,self['upd_next'])
         atime=Msg.elps_sec(self['act_start'],self['act_end'])
@@ -70,6 +69,7 @@ module CIAX
         str << "  "+Msg.color("ToNextUpdate",2)+"\t: #{tonext}\n"
         str << "  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
         str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
+        return str if self['stat'].empty?
         str << "  "+Msg.color("Conditions",2)+"\t:\n"
         conditions(str)
         str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"

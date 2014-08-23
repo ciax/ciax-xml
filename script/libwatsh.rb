@@ -91,16 +91,16 @@ module CIAX
 
       def auto_update
         Threadx.new("Update(#@id)",14){
-          int=(@event['period']||300).to_i
           loop{
             begin
+              @event.data['exec']=[['upd']]
               @ash.exe(['upd'],'auto',3)
             rescue InvalidID
               errmsg
             end
             verbose("Watch","Auto Update(#{@stat['time']})")
             @event.next_upd
-            sleep int
+            sleep @event['period']
           }
         }
       end

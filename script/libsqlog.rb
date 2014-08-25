@@ -6,6 +6,7 @@ require "thread"
 # Generate SQL command string
 module CIAX
   module SqLog
+    # Table create using @stat.data keys
     class Table
       attr_reader :tid,:stat,:tname
       include Msg
@@ -202,14 +203,22 @@ module CIAX
   end
 
   if __FILE__ == $0
-    require "libsitedb"
-    require "libstatus"
+    require "libappsh"
+    GetOpts.new
     id=ARGV.shift
+    lev=ARGV.shift
     ARGV.clear
     begin
       adb=Site::Db.new.set(id)[:adb]
-      stat=App::Status.new.set_db(adb).ext_file
+      case lev
+      when 'stat'
+      when 'issue'
+        stat=Buffer.new({})
+      else
+        stat=App::Status.new.set_db(adb).ext_file
+      end
       sqlog=SqLog::Table.new(stat)
+      puts stat
       puts sqlog.create
       puts sqlog.upd
     rescue InvalidID

@@ -6,12 +6,15 @@ module CIAX
   module Watch
     class Event < Datax
       attr_reader :period,:interval
+      attr_accessor :def_proc
       def initialize
         super('event')
         @cls_color=3
         @pfx_color=12
         @period=300
         @interval=0.1
+        @post_exe_procs=[]
+        @def_proc=proc{}
         next_upd
         @data['act_start']=now_msec
         @data['act_end']=now_msec
@@ -33,9 +36,16 @@ module CIAX
         blkcmd.any?{|blk| /#{blk}/ === cid} && Msg.cmd_err("Blocking(#{args})")
       end
 
-      def flush_event
-        ary=@data['exec']
-        ary.shift ary.size
+      def exec(src,pri,exec=[])
+        return self if @data['exec'].concat(exec).empty?
+        @data['exec'].each{|args|
+          verbose("Event","Executing:#{args} from [#{src}] by [#{pri}]")
+          @def_proc.call(args,src,pri)
+        }
+        @post_exe_procs.each{|p|
+          p.call(@data['exec'],src,pri)
+        }
+        self
       end
 
       def next_upd

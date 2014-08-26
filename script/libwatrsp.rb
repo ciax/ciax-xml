@@ -13,7 +13,7 @@ module CIAX
         wdb=@db[:watch]||{}
         @windex=wdb[:index]||{}
         @stat=type?(stat,App::Status)
-        @stat.post_upd_procs << proc{upd}
+        @stat.post_upd_procs << proc{upd.exec('event',2)}
         @period=wdb['period'].to_i if wdb.key?('period')
         @interval=wdb['interval'].to_f/10 if wdb.key?('interval')
         # Pick usable val
@@ -58,8 +58,8 @@ module CIAX
 
       def ext_logging
         logging=Logging.new('event',Hash[self])
-        @post_upd_procs << proc{
-          logging.append('cmd'=>@data['exec'],'active'=>@data['active'])
+        @post_exe_procs << proc{|batch,src,pri|
+          logging.append('src'=>src,'pri'=>pri,'cmd'=>batch,'active'=>@data['active'])
         }
         self
       end

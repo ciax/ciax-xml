@@ -49,11 +49,6 @@ module CIAX
       def initialize(cfg)
         super
         @event.ext_rsp(@stat)
-        @stat.post_upd_procs << proc{
-          @event.flush_event.each{|args|
-            Msg.msg("#@id/Issue(EVENT):#{args}")
-          }
-        }
       end
     end
 
@@ -71,17 +66,12 @@ module CIAX
         super
         @event.ext_rsp(@stat).ext_file
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil})
+        @event.def_proc=proc{|args,src,pri|
+            @ash.exe(args,src,pri)
+        }
         @event.ext_logging if $opt['e'] && @stat['ver']
         @interval=@event.interval
-        @stat.post_upd_procs << proc{
-          @event.flush_event.each{|args|
-            verbose("Watch","#@id/Issue(EVENT):#{args}")
-            @ash.exe(args,'event',2)
-          }
-        }
-        @ash.pre_exe_procs << proc{|args|
-          @event.block?(args)
-        }
+        @ash.pre_exe_procs << proc{|args| @event.block?(args) }
         tid_auto=auto_update
         @post_exe_procs << proc{
           self['auto'] = tid_auto && tid_auto.alive?
@@ -93,8 +83,7 @@ module CIAX
         Threadx.new("Update(#@id)",14){
           loop{
             begin
-              @event.data['exec']=[['upd']]
-              @ash.exe(['upd'],'auto',3)
+              @event.exec('auto',3,[['upd']])
             rescue InvalidID
               errmsg
             end

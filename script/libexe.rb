@@ -87,7 +87,7 @@ module CIAX
 
     # JSON expression of server stat will be sent.
     def ext_server(port)
-      verbose("UDP:Server","Init(#@id):#{port}")
+      verbose("UDP:Server","Initialize(#@id):#{port}")
       Threadx.new("Server(#@id)",9){
         UDPSocket.open{ |udp|
           udp.bind("0.0.0.0",port.to_i)
@@ -126,7 +126,7 @@ module CIAX
       host||='localhost'
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)
-      verbose("UDP:Client","Init(#@id):#{host}:#{port}")
+      verbose("UDP:Client","Initialize(#@id):#{host}:#{port}")
       @cobj.svdom.set_proc{|ent|
         args=ent.id.split(':')
         @udp.send(JSON.dump(args),0,@addr) # Address family not supported by protocol -> see above

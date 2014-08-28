@@ -21,6 +21,7 @@ module CIAX
         @adb=type?(cfg[:db],Db)
         @event=Event.new.set_db(@adb)
         super('watch',@event['id'],Command.new(cfg))
+        update({'auto'=>nil,'watch'=>nil,'isu'=>nil})
         @cls_color=3
         @ash=type?(cfg[:app_list][@id],App::Exe)
         @mode=@ash.mode
@@ -65,7 +66,6 @@ module CIAX
       def initialize(cfg)
         super
         @event.ext_rsp(@stat).ext_file
-        update({'auto'=>nil,'watch'=>nil,'isu'=>nil})
         @event.def_proc=proc{|args,src,pri|
             @ash.exe(args,src,pri)
         }
@@ -75,8 +75,9 @@ module CIAX
         tid_auto=auto_update
         @post_exe_procs << proc{
           self['auto'] = tid_auto && tid_auto.alive?
+          self['isu']=@ash['isu']
         }
-        ext_server(@adb['port'].to_i+500) if ['e','s'].any?{|i| $opt[i]}
+        ext_server(@adb['port'])
       end
 
       def auto_update

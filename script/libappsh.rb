@@ -32,11 +32,7 @@ module CIAX
         @cls_color=2
         @output=@print=View.new(@adb,@stat)
         @batch_interrupt=[]
-        ext_shell(@output){
-          {'isu'=>'*'}.map{|k,v|
-            v if self[k]
-          }.join('')
-        }
+        ext_shell(@output){ self['isu'] ? '*' : '' }
         init_view
       end
 
@@ -113,7 +109,6 @@ module CIAX
           sv.add_table(@stat)
           sv.add_table(@buf)
         end
-        ext_server(@adb['port'])
       end
 
       private

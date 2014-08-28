@@ -21,24 +21,20 @@ module CIAX
         @adb=type?(cfg[:db],Db)
         @event=Event.new.set_db(@adb)
         super('watch',@event['id'],Command.new(cfg))
-        update({'auto'=>nil,'watch'=>nil,'isu'=>nil})
-        @cls_color=3
         @ash=type?(cfg[:app_list][@id],App::Exe)
+        @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
+        @cls_color=3
         @mode=@ash.mode
         @stat=@ash.stat
         @cobj.svdom.replace @ash.cobj.svdom
         @output=@wview=View.new(@adb,@event).ext_prt
         @ash.batch_interrupt=@event.data['int']
         @event.post_upd_procs << proc{|wat|
-          self['watch'] = @event.active?
+          @site_stat['watch'] = @event.active?
           block=wat.data['block'].map{|id,par| par ? nil : id}.compact
           @ash.cobj.extgrp.valid_sub(block)
         }
-        ext_shell(@output){
-          {'auto'=>'@','watch'=>'&','isu'=>'*'}.map{|k,v|
-            v if self[k]
-          }.join('')
-        }
+        ext_shell(@output){ @site_stat.to_s }
         # Init View
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('prt',"Print mode").set_proc{@output=@wview;''}
@@ -74,10 +70,8 @@ module CIAX
         @ash.pre_exe_procs << proc{|args| @event.block?(args) }
         tid_auto=auto_update
         @post_exe_procs << proc{
-          self['auto'] = tid_auto && tid_auto.alive?
-          self['isu']=@ash['isu']
+          @site_stat['auto'] = tid_auto && tid_auto.alive?
         }
-        ext_server(@adb['port'])
       end
 
       def auto_update

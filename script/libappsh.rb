@@ -32,7 +32,8 @@ module CIAX
         @cls_color=2
         @output=@print=View.new(@adb,@stat)
         @batch_interrupt=[]
-        ext_shell(@output){ self['isu'] ? '*' : '' }
+        @site_stat.add_db('isu' => '*')
+        ext_shell(@output){ @site_stat.to_s }
         init_view
       end
 
@@ -86,8 +87,8 @@ module CIAX
         super(cfg)
         @fsh=type?(cfg[:frm_list][@id],Frm::Exe)
         @mode=@fsh.mode
+        @site_stat=@fsh.site_stat.add_db(@site_stat.db)
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
-        update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @buf=init_buf
         ver=@buf['ver']=@stat['ver']
         @fsh.flush_procs << proc{ @buf.flush }
@@ -109,11 +110,16 @@ module CIAX
           sv.add_table(@stat)
           sv.add_table(@buf)
         end
+        ext_server(@adb['port'])
       end
 
       private
+      def server_output
+        Hashx.new.update(@site_stat).update(self).to_j
+      end
+
       def init_buf
-        buf=Buffer.new(self)
+        buf=Buffer.new(@site_stat)
         buf.send_proc{|ent|
           batch=type?(ent.batch,Array)
           verbose("AppSv","Send FrmCmds #{batch}")

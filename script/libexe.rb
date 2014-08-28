@@ -9,8 +9,26 @@ require "libextcmd"
 # Add Server Command to Combine Lower Layer (Stream,Frm,App)
 
 module CIAX
+  class Prompt < Hashx
+    attr_reader :db
+    def initialize
+      @db={}
+    end
+
+    def add_db(db={})
+      type?(db,Hash).update(@db)
+      @db=db
+      self
+    end
+
+    def to_s
+      @db.map{|k,v| v if self[k] }.join('')
+    end
+  end
+
   class Exe < Hashx # Having server status {id,msg,...}
     attr_reader :layer,:id,:mode,:pre_exe_procs,:post_exe_procs,:cobj,:output
+    attr_accessor :site_stat
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
       @id=id
@@ -18,6 +36,7 @@ module CIAX
       @cobj=type?(cobj,Command)
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
+      @site_stat=Prompt.new # Status shared by all layers of the site
       @cls_color=7
       @pfx_color=9
       self['msg']=''

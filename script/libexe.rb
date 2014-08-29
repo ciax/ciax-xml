@@ -153,6 +153,7 @@ module CIAX
         res=@udp.recv(1024)
         verbose("UDP:Client","Recv #{res}")
         update(JSON.load(res)) unless res.empty?
+        @site_stat.update(self)
         self['msg']
       }
       self

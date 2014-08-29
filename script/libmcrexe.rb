@@ -25,7 +25,7 @@ module CIAX
       def initialize(ment)
         @cfg=type?(type?(ment,Entity).cfg)
         type?(@cfg[:wat_list],Watch::List)
-        @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
+        @output=@record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         super('macro',@record['sid'],Command.new)
         @post_stat_procs=[] # execute on stat changes
         @post_mcr_procs=[]
@@ -39,7 +39,7 @@ module CIAX
         @cobj.add_int
         @cobj.intgrp.set_proc{|ent| reply(ent.id)}
         self['option']=@cobj.intgrp.valid_keys.clear
-        super(@record){
+        super(@output){
           "(#{self['stat']})"+optlist(self['option'])
         }
       end

@@ -22,12 +22,12 @@ module CIAX
       attr_reader :field,:flush_procs
       def initialize(cfg)
         @fdb=type?(cfg[:db],Db)
-        @field=cfg[:field]=Field.new.set_db(@fdb)
+        @output=@field=cfg[:field]=Field.new.set_db(@fdb)
         super('frm',@field['id'],Command.new(cfg))
         @cls_color=6
         @cobj.add_int
         @flush_procs=[] # Proc for Terminate process of Batch
-        ext_shell(@field)
+        ext_shell
       end
     end
 

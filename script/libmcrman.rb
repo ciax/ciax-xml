@@ -27,14 +27,14 @@ module CIAX
         @cobj.add_ext
         @cobj.add_int
         lc=cfg[:list_class]||List
-        @list=lc.new(db['id'],db['version'])
+        @output=@list=lc.new(db['id'],db['version'])
         @valid_pars=@cobj.intgrp.valid_pars
         @mode='TEST'
         @current=0
       end
 
       def ext_shell
-        super(@list){
+        super(@output){
           size=@valid_pars.replace(@list.data.keys).size
           @current=size if size < @current || @current < 1
           "[%d]" % @current

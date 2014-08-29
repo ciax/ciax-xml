@@ -39,6 +39,7 @@ module CIAX
       @site_stat=Prompt.new # Status shared by all layers of the site
       @cls_color=7
       @pfx_color=9
+      @output={}
       self['msg']=''
       Thread.abort_on_exception=true
     end
@@ -70,8 +71,8 @@ module CIAX
       extend(Server).ext_server(port)
     end
 
-    def ext_shell(output={},&prompt_proc)
-      extend(Shell).ext_shell(output,&prompt_proc)
+    def ext_shell(&prompt_proc)
+      extend(Shell).ext_shell(&prompt_proc)
     end
 
     # Overridable methods(do not set this kind of methods in modules)

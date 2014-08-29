@@ -23,7 +23,7 @@ module CIAX
           wsh.stat.post_upd_procs << proc{logging.append({'hex' => @output.to_s})}
         end
         ext_server(wsh.adb['port'].to_i+1000) if ['e','s'].any?{|i| $opt[i]}
-        ext_shell(@output)
+        ext_shell
       end
 
       private

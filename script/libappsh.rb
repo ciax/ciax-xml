@@ -33,7 +33,7 @@ module CIAX
         @output=@print=View.new(@adb,@stat)
         @batch_interrupt=[]
         @site_stat.add_db('isu' => '*')
-        ext_shell(@output){ @site_stat.to_s }
+        ext_shell{ @site_stat.to_s }
         init_view
       end
 

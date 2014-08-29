@@ -21,19 +21,20 @@ module CIAX
         @adb=type?(cfg[:db],Db)
         @event=Event.new.set_db(@adb)
         super('watch',@event['id'],Command.new(cfg))
+        @cls_color=3
         @ash=type?(cfg[:app_list][@id],App::Exe)
         @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
-        @cls_color=3
         @mode=@ash.mode
         @stat=@ash.stat
         @cobj.svdom.replace @ash.cobj.svdom
-        @output=@wview=View.new(@adb,@event).ext_prt
         @ash.batch_interrupt=@event.data['int']
+        @output=@wview=View.new(@adb,@event).ext_prt
         @event.post_upd_procs << proc{|wat|
           @site_stat['watch'] = @event.active?
           block=wat.data['block'].map{|id,par| par ? nil : id}.compact
           @ash.cobj.extgrp.valid_sub(block)
         }
+        @ash.pre_exe_procs << proc{|args| @event.block?(args) }
         ext_shell(@output){ @site_stat.to_s }
         # Init View
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
@@ -46,6 +47,7 @@ module CIAX
       def initialize(cfg)
         super
         @event.ext_rsp(@stat)
+        @stat.post_upd_procs << proc{@event.upd} # @event is independent from @stat
       end
     end
 
@@ -65,9 +67,11 @@ module CIAX
         @event.def_proc=proc{|args,src,pri|
             @ash.exe(args,src,pri)
         }
+        @stat.post_upd_procs << proc{
+          @event.upd.exec('event',2)
+        }
         @event.ext_logging if $opt['e'] && @stat['ver']
         @interval=@event.interval
-        @ash.pre_exe_procs << proc{|args| @event.block?(args) }
         tid_auto=auto_update
         @post_exe_procs << proc{
           @site_stat['auto'] = tid_auto && tid_auto.alive?
@@ -75,7 +79,7 @@ module CIAX
       end
 
       def auto_update
-        Threadx.new("Update(#@id)",14){
+        Threadx.new("Auto(#@id)",14){
           loop{
             begin
               @event.exec('auto',3,[['upd']])

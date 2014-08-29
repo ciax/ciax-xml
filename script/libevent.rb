@@ -36,18 +36,6 @@ module CIAX
         blkcmd.any?{|blk| /#{blk}/ === cid} && Msg.cmd_err("Blocking(#{args})")
       end
 
-      def exec(src,pri,exec=[])
-        return self if @data['exec'].concat(exec).empty?
-        @data['exec'].each{|args|
-          verbose("Event","Executing:#{args} from [#{src}] by [#{pri}]")
-          @def_proc.call(args,src,pri)
-        }
-        @post_exe_procs.each{|p|
-          p.call(@data['exec'],src,pri)
-        }
-        self
-      end
-
       def next_upd
         @data['upd_next']=now_msec+@period*1000
       end

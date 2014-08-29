@@ -13,7 +13,6 @@ module CIAX
         wdb=@db[:watch]||{}
         @windex=wdb[:index]||{}
         @stat=type?(stat,App::Status)
-        @stat.post_upd_procs << proc{upd.exec('event',2)}
         @period=wdb['period'].to_i if wdb.key?('period')
         @interval=wdb['interval'].to_f/10 if wdb.key?('interval')
         # Pick usable val
@@ -54,6 +53,19 @@ module CIAX
         self
       ensure
         post_upd
+      end
+
+      def exec(src,pri,exec=[])
+        return self if @data['exec'].concat(exec).empty?
+        @data['exec'].each{|args|
+          verbose("Event","Executing:#{args} from [#{src}] by [#{pri}]")
+          @def_proc.call(args,src,pri)
+        }
+        @post_exe_procs.each{|p|
+          p.call(@data['exec'],src,pri)
+        }
+        @data['exec'].clear
+        self
       end
 
       def ext_logging

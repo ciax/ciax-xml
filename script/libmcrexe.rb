@@ -39,7 +39,7 @@ module CIAX
         @cobj.add_int
         @cobj.intgrp.set_proc{|ent| reply(ent.id)}
         self['option']=@cobj.intgrp.valid_keys.clear
-        super(@output){
+        super{
           "(#{self['stat']})"+optlist(self['option'])
         }
       end

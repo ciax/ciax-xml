@@ -34,7 +34,7 @@ module CIAX
       end
 
       def ext_shell
-        super(@output){
+        super{
           size=@valid_pars.replace(@list.data.keys).size
           @current=size if size < @current || @current < 1
           "[%d]" % @current

@@ -25,8 +25,9 @@ module CIAX
       def initialize(ment)
         @cfg=type?(type?(ment,Entity).cfg)
         type?(@cfg[:wat_list],Watch::List)
-        @output=@record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
+        @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         super('macro',@record['sid'],Command.new)
+        @output=@record
         @post_stat_procs=[] # execute on stat changes
         @post_mcr_procs=[]
         @que_cmd=Queue.new

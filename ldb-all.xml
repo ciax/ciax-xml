@@ -130,4 +130,8 @@
     <adb port="25622" />
     <fdb iocmd="socat - tcp:atlas:59999" />
   </site>
+  <site id="sdm" label="Slosyn dummy" ins_id="mma">
+    <adb port="25699" />
+    <fdb iocmd="socat - tcp:localhost:10001" />
+  </site>
 </ldb>

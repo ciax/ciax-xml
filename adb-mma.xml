@@ -68,6 +68,7 @@
           </frmcmd>
         </item>
         <item id="updp" label="Update Pulse" hidden="true">
+          <frmcmd name="bs" />
           <frmcmd name="p" />
           <frmcmd name="in">
             <argv>5</argv>

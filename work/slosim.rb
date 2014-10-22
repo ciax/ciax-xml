@@ -48,20 +48,20 @@ class Slosyn < GServer
         @bs=1
       when 'stop'
         @target=@pulse
-      when 'in1'
-        io.print within(122.5,123.5)
+      when 'in(1)'
+        io.print within(1225,1235)
         next
-      when 'in2'
-        io.print within(12.3,13.2)
+      when 'in(2)'
+        io.print within(123,132)
         next
-      when 'in3'
-        io.print within(200,201)
+      when 'in(3)'
+        io.print within(2000,2010)
         next
-      when 'in4'
-        io.print within(0,0.5)
+      when 'in(4)'
+        io.print within(0,5)
         next
-      when 'in5'
-        io.print within(184.5,185.5)
+      when 'in(5)'
+        io.print within(1845,1855)
         next
       when 'spd'
         io.print '0.1'

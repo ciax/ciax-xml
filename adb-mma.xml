@@ -32,24 +32,29 @@
         </item>
         <item id="ini" label="Goto Initial Position">
           <frmcmd name="jn"/>
+          <frmcmd name="bs" />
         </item>
         <item id="gf" label="Goto Focal Position">
           <frmcmd name="ma">
             <argv>12.8</argv>
           </frmcmd>
+          <frmcmd name="bs" />
         </item>
         <item id="gr" label="Goto Rotate Position">
           <frmcmd name="ma">
             <argv>123</argv>
           </frmcmd>
+          <frmcmd name="bs" />
         </item>
         <item id="gw" label="Goto Waiting Position">
           <frmcmd name="ma">
             <argv>185</argv>
           </frmcmd>
+          <frmcmd name="bs" />
         </item>
         <item id="gs" label="Goto Stock Position">
           <frmcmd name="jp"/>
+          <frmcmd name="bs" />
         </item>
         <item id="sets" label="Set Stock Pos Pulse">
           <frmcmd name="setp">
@@ -66,16 +71,7 @@
           <frmcmd name="setp">
             <argv>123</argv>
           </frmcmd>
-        </item>
-        <item id="updp" label="Update Pulse" hidden="true">
           <frmcmd name="bs" />
-          <frmcmd name="p" />
-          <frmcmd name="in">
-            <argv>5</argv>
-          </frmcmd>
-          <frmcmd name="in">
-            <argv>3</argv>
-          </frmcmd>
         </item>
         <item id="stop" label="Stop Run" hidden="true">
           <frmcmd name="stop" />
@@ -112,7 +108,7 @@
         <block name="gw" />
         <block name="gs" />
         <int name="stop" />
-        <exec name="updp"/>
+        <exec name="upd"/>
       </event>
       <event label="Reset Config" id="res">
         <onchange var="bs"/>

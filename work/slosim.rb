@@ -10,7 +10,7 @@ class Slosyn < GServer
     @bs=0
     Thread.new{
       loop{
-        sleep 0.2
+        sleep 0.1
         diff=@target-@pulse
         if diff!=0
           @bs=1
@@ -36,12 +36,16 @@ class Slosyn < GServer
         @target=@pulse=set(str)
       when /^ma=/
         @target=set(str)
+        @bs=1
       when /^mi=/
         @target+=set(str)
+        @bs=1
       when 'j=1'
         @target=200
+        @bs=1
       when 'j=-1'
         @target=0
+        @bs=1
       when 'stop'
         @target=@pulse
       when 'in1'

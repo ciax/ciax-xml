@@ -15,7 +15,7 @@ class Slosyn < GServer
         if diff!=0
           @bs=1
           @pulse+=diff/diff.abs
-          if @pulse > 999
+          if @pulse > 9999
             @pulse-=10000
           elsif @pulse < 0
             @pulse+=10000

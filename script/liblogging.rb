@@ -48,8 +48,10 @@ module CIAX
     def self.set_logline(str)
       h=JSON.load(str)
       abort("Logline:Line is not rcv") unless /rcv/ === h['dir']
-      if data=h.delete('base64')
-        h[:data]=data.unpack("m").first
+      if h['base64']
+        def h.binary
+          self['base64'].unpack("m").first
+        end
       end
       h
     end

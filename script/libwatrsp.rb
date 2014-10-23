@@ -34,6 +34,7 @@ module CIAX
         return self unless @stat['time'] > @ctime
         @ctime=@stat['time']
         sync
+        act=active?
         @data.values.each{|a| a.clear if Array === a}
         @windex.each{|id,item|
           next unless check(id,item)
@@ -42,12 +43,9 @@ module CIAX
           }
           @data['active'] << id
         }
-        if !@data['active'].empty?
-          if active?
-            @data['act_end']=now_msec
-          else
-            @data['act_start']=now_msec
-          end
+        if active?
+          @data['act_start']=@ctime if !act
+          @data['act_end']=now_msec
         end
         verbose("Rsp","Updated(#{@stat['time']})")
         self

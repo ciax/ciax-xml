@@ -2,6 +2,9 @@
 require 'gserver'
 
 class Slosyn < GServer
+  Pmax=9999
+  Pmin=0
+  Pos=[1230,128,2005,0,1850]
   def initialize(port=10001,*args)
     super(port,*args)
     Thread.abort_on_exception=true
@@ -15,10 +18,10 @@ class Slosyn < GServer
         if diff!=0
           @bs=1
           @pulse+=diff/diff.abs
-          if @pulse > 9999
-            @pulse-=10000
-          elsif @pulse < 0
-            @pulse+=10000
+          if @pulse > Pmax
+            @pulse=Pmin
+          elsif @pulse < Pmin
+            @pulse=Pmax
           end
         else
           @bs=0
@@ -41,27 +44,15 @@ class Slosyn < GServer
         @target+=set(str)
         @bs=1
       when 'j=1'
-        @target=2008
+        @target=2005
         @bs=1
       when 'j=-1'
         @target=0
         @bs=1
       when 'stop'
         @target=@pulse
-      when 'in(1)'
-        io.print within(1225,1235)
-        next
-      when 'in(2)'
-        io.print within(123,132)
-        next
-      when 'in(3)'
-        io.print within(2000,2010)
-        next
-      when 'in(4)'
-        io.print within(0,5)
-        next
-      when 'in(5)'
-        io.print within(1845,1855)
+      when /in\(([1-5])\)/
+        io.print about(Pos[$1.to_i-1])
         next
       when 'spd'
         io.print '0.1'
@@ -83,16 +74,16 @@ class Slosyn < GServer
   def set(str)
     a=str.split('=')
     num=(a[1].to_f*10).to_i
-    if num > 9999
-      num=9999
-    elsif num < 0
-      num=0
+    if num > Pmax
+      num=Pmax
+    elsif num < Pmin
+      num=Pmin
     end
     num
   end
 
-  def within(a,b)
-    (@pulse <= b && @pulse >= a) ? '1' : '0'
+  def about(x)
+    (@pulse <= x+5 && @pulse >= x-5) ? '1' : '0'
   end
 end
 

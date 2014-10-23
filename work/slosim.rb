@@ -41,7 +41,7 @@ class Slosyn < GServer
         @target+=set(str)
         @bs=1
       when 'j=1'
-        @target=200
+        @target=2008
         @bs=1
       when 'j=-1'
         @target=0

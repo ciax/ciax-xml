@@ -39,8 +39,8 @@ module CIAX
                 verbose("Rsp","Formula:#{f}(#{data})(#{id})")
               end
               data = hash['format'] % data if hash.key?('format')
-            rescue NoData
-              data=''
+#            rescue NoData
+#              data=''
             end
             @data[id]=data.to_s
           }
@@ -58,7 +58,7 @@ module CIAX
         data=@field.get(fld)
         if data.empty?
           verbose("Rsp","NoFieldData in [#{fld}]")
-          raise(NoData)
+#         raise(NoData)
         end
         data=e[:conv][data] if e[:conv]
         verbose("Rsp","GetFieldData[#{fld}]=[#{data.inspect}]")

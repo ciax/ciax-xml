@@ -102,7 +102,7 @@
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event id="mot" label="On Motion">
-        <pattern var="bs">1</pattern>
+        <range var="bs">1</range>
         <block name="gf" />
         <block name="gr" />
         <block name="gw" />
@@ -112,7 +112,7 @@
       </event>
       <event label="Reset Config" id="res">
         <onchange var="bs"/>
-        <pattern var="bs">0</pattern>
+        <range var="bs">0</range>
         <exec name="defcon"/>
       </event>
     </watch>

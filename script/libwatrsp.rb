@@ -96,7 +96,7 @@ module CIAX
           when 'pattern'
             cmp=ckitm['val']
             res=(Regexp.new(cmp) === val)
-            verbose("Rsp","  Pattrn(#{vn}): [#{cmp}] vs <#{val}> =>#{res}")
+            verbose("Rsp","  Pattern(#{vn}): [#{cmp}] vs <#{val}> =>#{res}")
           when 'range'
             cmp=ckitm['val']
             f="%.3f" % val.to_f

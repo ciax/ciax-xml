@@ -84,12 +84,12 @@ module CIAX
             str << "      "+show_res(j['res'],'o','x')+' '
             str << Msg.color(j['var'],3)
             str << "  "
-            str << "!" if j['inv']
+            ope=j['inv'] ? "!~" : "=~"
             str << "(#{j['type']}: "
             if j['type'] == 'onchange'
               str << "#{j['cmp']} => #{j['val']}"
             else
-              str << "/#{j['cmp']}/ =~ #{j['val']}"
+              str << "/#{j['cmp']}/ #{ope} #{j['val']}"
             end
             str << ")\n"
           }

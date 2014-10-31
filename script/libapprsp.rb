@@ -61,6 +61,13 @@ module CIAX
 #         raise(NoData)
         end
         data=e[:conv][data] if e[:conv]
+        if /true|1/ === e['sign']
+          if /#{e['negative']}/ === data
+            data="-"
+          elsif /#{e['positive']}/ === data
+            data="+"
+          end
+        end
         verbose("Rsp","GetFieldData[#{fld}]=[#{data.inspect}]")
         data
       end

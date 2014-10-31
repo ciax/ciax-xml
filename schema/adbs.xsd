@@ -74,6 +74,14 @@
     <xsd:attributeGroup ref="adbs:id_attr" />
     <xsd:attribute name="format" type="xsd:token" use="optional" />
     <xsd:attribute name="formula" type="xsd:token" />
+    <xsd:attribute name="operation" use="optional">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="sum"/>
+          <xsd:enumeration value="average"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
   </xsd:complexType>
   <xsd:element name="float" type="adbs:numerical"></xsd:element>
   <xsd:element name="integer" type="adbs:numerical"></xsd:element>
@@ -84,6 +92,14 @@
         <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attributeGroup ref="adbs:id_attr" />
+      <xsd:attribute name="first" use="optional">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="msb"/>
+            <xsd:enumeration value="lsb"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="string">
@@ -106,6 +122,8 @@
   <xsd:element name="sign">
     <xsd:complexType>
       <xsd:attributeGroup ref="adbs:ref_attr" />
+      <xsd:attribute name="positive" type="xsd:token" />
+      <xsd:attribute name="negative" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="field">

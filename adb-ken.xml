@@ -178,7 +178,7 @@
         <group id="gdo$u" label="Delay/CH(OLD) [UNIT$u]" column="4">
           <repeat_var from="0" to="3" counter="p">
             <float id="pdt$u$p" label="#$p Delay time" format="%5.2f" formula="$#/100">
-              <sign ref="ms1" index="$u:$p:4" positive="0" negative="1"/>
+              <sign ref="ms1" index="$u:$p:4" negative="1"/>
               <field ref="ms1" index="$u:$p:5" />
             </float>
           </repeat_var>

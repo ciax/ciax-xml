@@ -39,8 +39,6 @@ module CIAX
                 verbose("Rsp","Formula:#{f}(#{data})(#{id})")
               end
               data = hash['format'] % data if hash.key?('format')
-#            rescue NoData
-#              data=''
             end
             @data[id]=data.to_s
           }
@@ -56,15 +54,13 @@ module CIAX
       def get_field(e)
         fld=e['ref'] || Msg.abort("No field Key")
         data=@field.get(fld)
-        if data.empty?
-          verbose("Rsp","NoFieldData in [#{fld}]")
-#         raise(NoData)
-        end
+        verbose("Rsp","NoFieldData in [#{fld}]") if data.empty?
         data=e[:conv][data] if e[:conv]
         if /true|1/ === e['sign']
-          if /#{e['negative']}/ === data
+          verbose("Rsp","ConvertFieldData[#{fld}]=[#{data.inspect}]")
+          if data == e['negative']
             data="-"
-          elsif /#{e['positive']}/ === data
+          else
             data="+"
           end
         end

@@ -98,7 +98,7 @@
             <xsd:enumeration value="concat"/>
             <xsd:enumeration value="and"/>
             <xsd:enumeration value="or"/>
-            <xsd:enumeration value="xor"/>
+            <xsd:enumeration value="uneven"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>

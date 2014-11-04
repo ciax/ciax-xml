@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="oss" id="oss" label="TSC Control" version="4">
+  <app frm_id="oss" id="oss" label="TSC Control" version="x">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <item id="upd" label="Update Status">
@@ -190,12 +190,32 @@
           </float>
         </repeat_var>
       </group>
-      <group id="g6">
-        <string id="jkm">
+      <group id="g6" caption="Statstic of all Jack" column="7">
+        <binary id="bsx" operation="uneven" symbol="uni" label="Stop">
+          <repeat_field from="0" to="15">
+            <field ref="bs" index="$_" bit="2" />
+          </repeat_field>
+        </binary>
+        <binary id="bcx" operation="uneven" symbol="uni" label="Clmp">
+          <repeat_field from="0" to="15">
+            <field ref="bs" index="$_" bit="0" />
+          </repeat_field>
+        </binary>
+        <binary id="blx" operation="uneven" symbol="uni" label="Pos">
+          <repeat_field from="0" to="15">
+            <field ref="bs" index="$_" bit="1" />
+          </repeat_field>
+        </binary>
+        <binary id="clx" operation="uneven" symbol="uni" label="Lmt">
+          <repeat_field from="0" to="15">
+            <field ref="clm" index="1-$_/8" bit="$_%8" />
+          </repeat_field>
+        </binary>
+        <float id="jkm" operation="average" format="%5.2f" formula="$#/100" label="Len Avr">
           <repeat_field from="0" to="15">
             <field ref="jk" index="$_" />
           </repeat_field>
-        </string>
+        </float>
       </group>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">

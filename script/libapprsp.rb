@@ -19,27 +19,44 @@ module CIAX
         @adbs.each{|id,hash|
           enclose("Rsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
             flds=hash[:fields]||next
-            begin
-              case hash['type']
-              when 'binary'
-                data=eval('0b'+flds.map{|e| binstr(e) }.join)
-                verbose("Rsp","GetBinary[#{data}](#{id})")
-              when 'float'
-                data=flds.map{|e| get_field(e)}.join.to_f
-                verbose("Rsp","GetFloat[#{data}](#{id})")
-              when 'integer'
-                data=flds.map{|e| get_field(e)}.join.to_i
-                verbose("Rsp","GetInteger[#{data}](#{id})")
+            case type=hash['type']
+            when 'binary'
+              bary=flds.map{|e| get_bin(e) }
+              case ope=hash['operation']
+              when 'uneven'
+                ba=bary.inject{|r,e| r.to_i & e.to_i}
+                bo=bary.inject{|r,e| r.to_i | e.to_i}
+                binstr=(ba ^ bo).to_s
               else
-                data=flds.map{|e| get_field(e)}.join
+                binstr=bary.join
               end
-              if hash.key?('formula')
-                f=hash['formula'].gsub(/\$#/,data.to_s)
-                data=eval(f)
-                verbose("Rsp","Formula:#{f}(#{data})(#{id})")
+              data=eval('0b'+binstr)
+              verbose("Rsp","GetBinary[#{data}](#{id})")
+            else
+              ary=flds.map{|e| get_field(e)}
+              case type
+              when 'float','integer'
+                sign=(/^[+-]$/ === ary[0]) ? (ary.shift+'1').to_i : 1
+                data=ary.map{|e| e.to_f}.inject(0){|r,e| r+e }
+                data=data/ary.size if hash['opration'] != 'sum'
+                case type
+                when 'float'
+                  data=data.to_f
+                  verbose("Rsp","GetFloat[#{data}](#{id})")
+                when 'integer'
+                  data=data.to_i
+                  verbose("Rsp","GetInteger[#{data}](#{id})")
+                end
+              else
+                data=ary.join
               end
-              data = hash['format'] % data if hash.key?('format')
             end
+            if hash.key?('formula')
+              f=hash['formula'].gsub(/\$#/,data.to_s)
+              data=eval(f)
+              verbose("Rsp","Formula:#{f}(#{data})(#{id})")
+            end
+            data = hash['format'] % data if hash.key?('format')
             @data[id]=data.to_s
           }
         }
@@ -52,7 +69,8 @@ module CIAX
 
       private
       def get_field(e)
-        fld=e['ref'] || Msg.abort("No field Key")
+        type?(e,Hash)
+        fld=e['ref'] || Msg.abort("No field Key in #{e}")
         data=@field.get(fld)
         verbose("Rsp","NoFieldData in [#{fld}]") if data.empty?
         data=e[:conv][data] if e[:conv]
@@ -68,7 +86,7 @@ module CIAX
         data
       end
 
-      def binstr(e)
+      def get_bin(e)
         data=get_field(e).to_i
         inv=(/true|1/ === e['inv'])
         str=index_range(e['bit']).map{|sft|

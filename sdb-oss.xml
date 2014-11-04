@@ -50,5 +50,9 @@
       <pattern class="normal" msg="RDY">1</pattern>
       <pattern class="alarm" msg="N/A" />
     </table>
+    <table id="uni">
+      <pattern class="normal" msg="EVEN">0</pattern>
+      <pattern class="alarm" msg="UNEVEN" />
+    </table>
   </symbol>
 </sdb>

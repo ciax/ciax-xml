@@ -32,6 +32,7 @@ class Slosyn < GServer
 
   def serve(io)
     while str=io.gets("\r").chomp
+      sleep 0.1
       case str
       when /^abspos=/
         @target=@pulse=set(str)

@@ -3,7 +3,7 @@ require 'libwatrsp'
 
 # View is not used for computing, just for apperance for user. So the convert process can be included in to_s
 module CIAX
-  module Watch
+  module Wat
     # Decorate the event data (Put caption,symbole,etc.) from WDB
     class View < Hashx
       def initialize(adb,watch)

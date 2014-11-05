@@ -4,7 +4,7 @@ require "libappdb"
 module CIAX
   module Ins
     class Db < Db
-      include Watch::Db
+      include Wat::Db
       def initialize
         super('idb',ENV['PROJ'])
       end

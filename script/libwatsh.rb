@@ -3,16 +3,16 @@ require "libwatview"
 require "libappsh"
 
 module CIAX
-  module Watch
+  module Wat
     # cfg should have [:app_list](App::List)
     def self.new(cfg)
       Msg.type?(cfg,Hash)
       if $opt['s'] or $opt['e']
-        ash=Watch::Sv.new(cfg)
+        ash=Sv.new(cfg)
         cfg['host']='localhost'
       end
-      ash=Watch::Cl.new(cfg) if (cfg['host']=$opt['h']) || $opt['c']
-      ash||Watch::Test.new(cfg)
+      ash=Cl.new(cfg) if (cfg['host']=$opt['h']) || $opt['c']
+      ash||Test.new(cfg)
     end
 
     class Exe < Exe
@@ -104,7 +104,7 @@ module CIAX
 
       def add(id)
         @cfg[:db]=@cfg[:ldb].set(id)[:adb]
-        jumpgrp(Watch.new(@cfg))
+        jumpgrp(Wat.new(@cfg))
       end
     end
 

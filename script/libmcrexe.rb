@@ -24,7 +24,7 @@ module CIAX
       #cfg[:submcr_proc] for executing asynchronous submacro
       def initialize(ment)
         @cfg=type?(type?(ment,Entity).cfg)
-        type?(@cfg[:wat_list],Watch::List)
+        type?(@cfg[:wat_list],Wat::List)
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         super('macro',@record['sid'],Command.new)
         @output=@record
@@ -194,7 +194,7 @@ module CIAX
       GetOpts.new('emlnt')
       begin
         cfg=Config.new('mcr_exe')
-        cfg[:wat_list]=Watch::List.new
+        cfg[:wat_list]=Wat::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)
         cobj.add_ext

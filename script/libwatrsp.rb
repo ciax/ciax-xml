@@ -3,7 +3,7 @@ require 'libevent'
 require 'librerange'
 
 module CIAX
-  module Watch
+  module Wat
     module Rsp
       def self.extended(obj)
         Msg.type?(obj,Event)

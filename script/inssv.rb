@@ -2,7 +2,7 @@
 require "libwatsh"
 
 module CIAX
-  module Watch
+  module Wat
     ENV['VER']||='initialize'
     GetOpts.new('es')
     List.new.server(ARGV)

@@ -91,12 +91,12 @@
       <Db parent="Db" extend="Msg.Ver"/>
       <Upd extend_for="Status.Var" extend="Msg.Ver"/>
     </Sym>
-    <Watch>
+    <Wat>
       <Stat extend_for="Status.Var" extend="Msg.Ver"/>
       <Upd extend_for="Stat"/>
       <View parent="Hashx"/>
       <Print extend_for="Print"/>
-    </Watch>
+    </Wat>
     <Xml>
       <Share/>
       <Doc parent="Hash" extend="Msg.Ver"/>

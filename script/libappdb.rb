@@ -4,7 +4,7 @@ require "libwatdb"
 module CIAX
   module App
     class Db < Db
-      include Watch::Db
+      include Wat::Db
       def initialize
         super('adb')
       end

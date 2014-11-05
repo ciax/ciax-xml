@@ -3,7 +3,7 @@ require 'libstatus'
 require 'librerange'
 
 module CIAX
-  module Watch
+  module Wat
     class Event < Datax
       attr_reader :period,:interval
       attr_accessor :def_proc

@@ -12,7 +12,7 @@ module CIAX
   if !$opt['f']
     lay.add_layer(App)
     if !$opt['a']
-      lay.add_layer(Watch)
+      lay.add_layer(Wat)
       if $opt['x']
         lay.add_layer(Hex)
       end

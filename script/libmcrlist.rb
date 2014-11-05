@@ -108,7 +108,7 @@ module CIAX
       GetOpts.new('t')
       begin
         cfg=Config.new('mcr_list')
-        cfg[:wat_list]=Watch::List.new
+        cfg[:wat_list]=Wat::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg).add_ext
         list=SvList.new('ciax')

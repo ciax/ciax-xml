@@ -12,7 +12,7 @@ module CIAX
 
     class Sv < Exe
       def initialize(wsh)
-        type?(wsh,Watch::Exe)
+        type?(wsh,Wat::Exe)
         super('hex',wsh.id)
         @cobj.svdom.replace wsh.cobj.svdom
         @mode=wsh.mode
@@ -41,7 +41,7 @@ module CIAX
       def initialize(upper=nil)
         super
         @cfg[:level]='hex'
-        @cfg[:wat_list]||=Watch::List.new
+        @cfg[:wat_list]||=Wat::List.new
         @cfg[:hex_list]=self
       end
 

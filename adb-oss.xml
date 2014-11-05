@@ -211,7 +211,7 @@
             <field ref="clm" index="1-$_/8" bit="$_%8" />
           </repeat_field>
         </binary>
-        <float id="jkm" operation="average" format="%5.2f" formula="$#/100" label="Len Avr">
+        <float id="jkm" operation="average" format="%5.2f" formula="$#/100" label="Len Av">
           <repeat_field from="0" to="15">
             <field ref="jk" index="$_" />
           </repeat_field>

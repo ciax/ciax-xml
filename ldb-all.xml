@@ -48,7 +48,7 @@
   </site>
   <site id="det" label="CsEtr Control" ins_id="det">
     <adb port="25104" />
-    <fdb iocmd="socat - tcp:ltc-c:4003" />
+    <fdb iocmd="socat - tcp:ltc-e:4002" />
   </site>
   <site id="dts" label="Gen2 TSC Control" ins_id="dts">
     <adb port="25105" />

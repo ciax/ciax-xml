@@ -1,7 +1,10 @@
 #!/usr/bin/ruby
+require "libmsg"
 require "thread"
+
 module CIAX
   class Threadx < Thread
+    include Msg
     def initialize(name,color=4)
       th=super{
         Thread.pass
@@ -17,6 +20,7 @@ module CIAX
       super{
         loop{
           yield
+          verbose("Threadx","Next for #{Thread.current[:name]}")
         }
       }
     end

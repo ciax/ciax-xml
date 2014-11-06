@@ -23,7 +23,6 @@ require "libthreadx"
 
 module CIAX
   class Buffer < Datax
-    include Msg
     # svst: Server Status
     def initialize(svst={})
       super('issue',{'pri' => '','cid' => '','src' => ''})

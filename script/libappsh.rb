@@ -7,7 +7,6 @@ require "libapprsp"
 require "libappsym"
 require "libbuffer"
 require "libsqlog"
-require "thread"
 
 module CIAX
   module App

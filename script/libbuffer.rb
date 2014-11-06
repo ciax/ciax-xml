@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libdatax"
-require "thread"
+require "libthreadx"
 
 # SubModule for App::Sv
 # *Command stream(Send)
@@ -58,20 +58,18 @@ module CIAX
     end
 
     def recv_proc
-      @tid=Threadx.new("Buffer",12){
-        loop{
-          begin
-            rcv=@q.shift
-            sort(rcv[:pri],rcv[:batch])
-            while args=pick
-              yield args,rcv[:src]
-            end
-            flush
-          rescue
-            clear
-            errmsg
+      @tid=ThreadLoop.new("Buffer",12){
+        begin
+          rcv=@q.shift
+          sort(rcv[:pri],rcv[:batch])
+          while args=pick
+            yield args,rcv[:src]
           end
-        }
+          flush
+        rescue
+          clear
+          errmsg
+        end
       }
       self
     end

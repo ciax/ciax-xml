@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libmsg'
 require 'json'
-require "thread"
+require "libthreadx"
 
 # Capable of wider application than SqLog
 module CIAX
@@ -18,17 +18,15 @@ module CIAX
       @loghead=VarDir+"/"+type+"_#{id}"
       verbose(type.capitalize,"Initialize (#{id}/Ver.#{ver})")
       @queue=Queue.new
-      Threadx.new("Logging(#{type}:#{ver})",11){
-        loop{
-          logary=[]
-          begin
-            logary << @queue.pop
-          end until @queue.empty?
-          open(logfile,'a') {|f|
-            logary.each{|str|
-              f.puts str
-              verbose(type.capitalize,"Appended #{str.size} byte #{str}")
-            }
+      ThreadLoop.new("Logging(#{type}:#{ver})",11){
+        logary=[]
+        begin
+          logary << @queue.pop
+        end until @queue.empty?
+        open(logfile,'a') {|f|
+          logary.each{|str|
+            f.puts str
+            verbose(type.capitalize,"Appended #{str.size} byte #{str}")
           }
         }
       }

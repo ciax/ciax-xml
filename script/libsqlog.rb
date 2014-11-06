@@ -89,22 +89,20 @@ module CIAX
         @cls_color=1
         @pfx_color=10
         verbose("Server","Initialize '#{id}' on #{layer}")
-        Threadx.new("SqLog(#{id})",13){
-          loop{
-            sqlary=['begin;']
-            begin
-              sqlary << @queue.pop
-            end until @queue.empty?
-            sqlary << 'commit;'
-            IO.popen(@sqlcmd,'w'){|f|
-              sqlary.each{|sql|
-                begin
-                  f.puts sql
-                  verbose("Server","Saved for '#{sql}'")
-                rescue
-                  Msg.abort("Sqlite3 input error\n#{sql}")
-                end
-              }
+        ThreadLoop.new("SqLog(#{id})",13){
+          sqlary=['begin;']
+          begin
+            sqlary << @queue.pop
+          end until @queue.empty?
+          sqlary << 'commit;'
+          IO.popen(@sqlcmd,'w'){|f|
+            sqlary.each{|sql|
+              begin
+                f.puts sql
+                verbose("Server","Saved for '#{sql}'")
+              rescue
+                Msg.abort("Sqlite3 input error\n#{sql}")
+              end
             }
           }
         }

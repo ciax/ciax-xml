@@ -36,18 +36,6 @@ module CIAX
   # Configuration Error
   class ConfigError < RuntimeError; end
 
-
-  class Threadx < Thread
-    def initialize(name,color=4)
-      th=super{
-        Thread.pass
-        yield
-      }
-      th[:name]=name
-      th[:color]=color
-    end
-  end
-
   # Should be extended in module/class
   module Msg
     attr_accessor :pfx_color,:cls_color

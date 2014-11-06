@@ -79,17 +79,15 @@ module CIAX
       end
 
       def auto_update
-        Threadx.new("Auto(#@id)",14){
-          loop{
-            begin
-              @event.exec('auto',3,[['upd']])
-            rescue InvalidID
-              errmsg
-            end
-            verbose("Watch","Auto Update(#{@stat['time']})")
-            @event.next_upd
-            sleep @event.period
-          }
+        ThreadLoop.new("Auto(#@id)",14){
+          begin
+            @event.exec('auto',3,[['upd']])
+          rescue InvalidID
+            errmsg
+          end
+          verbose("Watch","Auto Update(#{@stat['time']})")
+          @event.next_upd
+          sleep @event.period
         }
       end
     end

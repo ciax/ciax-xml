@@ -108,27 +108,24 @@ module CIAX
     # JSON expression of server stat will be sent.
     def ext_server(port)
       verbose("UDP:Server","Initialize(#@id):#{port}")
-      Threadx.new("Server(#@id)",9){
-        UDPSocket.open{ |udp|
-          udp.bind("0.0.0.0",port.to_i)
-          loop {
-            IO.select([udp])
-            line,addr=udp.recvfrom(4096)
-            line.chomp!
-            rhost=Addrinfo.ip(addr[2]).getnameinfo.first
-            verbose("UDP:Server","Recv:#{line} is #{line.class}")
-            begin
-              exe(server_input(line),"udp:#{rhost}")
-            rescue InvalidCMD
-              self['msg']="INVALID"
-            rescue RuntimeError
-              self['msg']=$!.to_s
-              errmsg
-            end
-            verbose("UDP:Server","Send:#{self['msg']}")
-            udp.send(server_output,0,addr[2],addr[1])
-          }
-        }
+      udp=UDPSocket.open
+      udp.bind("0.0.0.0",port.to_i)
+      ThreadLoop.new("Server(#@id)",9){
+        IO.select([udp])
+        line,addr=udp.recvfrom(4096)
+        line.chomp!
+        rhost=Addrinfo.ip(addr[2]).getnameinfo.first
+        verbose("UDP:Server","Recv:#{line} is #{line.class}")
+        begin
+          exe(server_input(line),"udp:#{rhost}")
+        rescue InvalidCMD
+          self['msg']="INVALID"
+        rescue RuntimeError
+          self['msg']=$!.to_s
+          errmsg
+        end
+        verbose("UDP:Server","Send:#{self['msg']}")
+        udp.send(server_output,0,addr[2],addr[1])
       }
       self
     end

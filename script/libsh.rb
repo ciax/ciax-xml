@@ -15,8 +15,8 @@ module CIAX
       @prompt_proc=prompt_proc
       # Local(Long Jump) Commands (local handling commands on Client)
       shg=@cobj.lodom.add_group('caption'=>"Shell Command",'color'=>1)
-      shg.add_dummy('^D,q',"Quit")
-      shg.add_dummy('^C',"Interrupt")
+      shg.add_dummy('q',"Quit")
+      shg.add_dummy('^D',"Interrupt")
       @cobj.hidgrp.add_item(nil)
       self
     end
@@ -29,14 +29,15 @@ module CIAX
     end
 
     # invoked many times.
-    # '^D' gives exit break.
+    # '^D' gives interrupt
     # mode gives special break (loop returns mode).
     def shell(dmy=nil)
       verbose("Shell","Shell(#@id)")
       Readline.completion_proc=proc{|word|
         (@cobj.valid_keys+@cobj.valid_pars).grep(/^#{word}/)
       }
-      while line=readline(prompt)
+      loop{
+        line=Readline.readline(prompt,true)||'interrupt'
         break if /^q/ === line
         cmds=line.split(';')
         cmds=[""] if cmds.empty?
@@ -45,15 +46,7 @@ module CIAX
         rescue UserError
         end
         puts shell_output
-      end
-    end
-
-    private
-
-    def readline(prompt)
-      Readline.readline(prompt,true)
-    rescue Interrupt
-      'interrupt'
+      }
     end
   end
 end

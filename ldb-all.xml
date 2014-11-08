@@ -134,4 +134,8 @@
     <adb port="25699" />
     <fdb iocmd="socat - tcp:localhost:10001" />
   </site>
+  <site id="fdm" label="Field Point dummy" ins_id="mfp">
+    <adb port="25698" />
+    <fdb iocmd="socat - tcp:localhost:10002" />
+  </site>
 </ldb>

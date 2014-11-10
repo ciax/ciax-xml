@@ -143,7 +143,7 @@ module CIAX
         if  cc == @cc
           verbose("Cc"," Verify OK [#{cc}]")
         else
-          vfy_err("CC Mismatch:[#{cc}] (should be [#{@cc}])")
+          vfy_err("CC Mismatch:[#{cc}] (should be [#{@cc}]) in [#{@ccrange.inspect}]")
         end
         self
       end

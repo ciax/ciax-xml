@@ -6,8 +6,8 @@ class FPIO < GServer
   def initialize(port=10002,*args)
     super(port,*args)
     Thread.abort_on_exception=true
-    @input=38333
-    @output=65535
+    @input=0
+    @output=0
   end
 
   def serve(io)
@@ -22,13 +22,12 @@ warn str
       when /^>02!L/
         mask=$'[0,4].hex
         data=$'[4,4].hex
-stay=@output & !mask
+stay=@output & (65535 ^ mask)
 chg=data & mask
-warn stay
-warn chg
-        @output=stay & chg
+warn "%04X" % stay
+warn "%04X" % chg
+        @output=stay+chg
         base="%04X" % @output
-warn base
       else
         base="0000"
       end

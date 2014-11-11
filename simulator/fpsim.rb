@@ -13,7 +13,7 @@ class FPIO < GServer
   def serve(io)
     while str=io.gets("\r").chomp
       sleep 0.1
-warn str
+      warn str
       case str
       when /^>02!JCD/
         base="%04X" % @output
@@ -22,21 +22,19 @@ warn str
       when /^>02!L/
         mask=$'[0,4].hex
         data=$'[4,4].hex
-stay=@output & (65535 ^ mask)
-chg=data & mask
-warn "%04X" % stay
-warn "%04X" % chg
+        stay=@output & (65535 ^ mask)
+        chg=data & mask
         @output=stay+chg
-        base="%04X" % @output
-      else
-        base="0000"
+        base=nil
       end
-warn base
-      chk=0
-      base.each_byte{|c| chk += c }
-      res="A#{base}%02X\r" % (chk%256)
-warn res
+      if base
+        chk=0
+        base.each_byte{|c| chk += c }
+        base="#{base}%02X" % (chk%256)
+      end
+      res="A#{base}\r"
       io.print res
+      warn res
     end
   end
 end

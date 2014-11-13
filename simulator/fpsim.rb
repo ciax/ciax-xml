@@ -20,12 +20,23 @@ class FPIO < GServer
       when /^>03!JCE/
         base="%04X" % @input
       when /^>02!L/
-        mask=$'[0,4].hex
         data=$'[4,4].hex
-        stay=@output & (65535 ^ mask)
-        chg=data & mask
+        cmask=$'[0,4].hex
+        smask=0xffff ^ cmask
+        chg=data & cmask
+        stay=@output & smask
         @output=stay+chg
         base=nil
+        db="%016b" % data
+warn db
+        mb="%016b" % cmask
+warn mb
+        dary=db.split(//)
+        ary=mb.split(//).map{|f|
+          c=dary.shift
+          f == '1' ? c : nil
+        }
+        warn ary
       end
       if base
         chk=0

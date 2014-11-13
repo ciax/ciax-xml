@@ -8,6 +8,8 @@ class FPIO < GServer
     Thread.abort_on_exception=true
     @input=0
     @output=0
+    @drvtbl=[6,7,12,13,2,3,2,3,4,5,4,5]
+    @inptbl=[[],[],[4,6],[5,7],[8,10],[9,11],[0],[1],[],[],[],[],[2],[3]]
   end
 
   def serve(io)
@@ -31,12 +33,25 @@ class FPIO < GServer
 warn db
         mb="%016b" % cmask
 warn mb
-        dary=db.split(//)
-        ary=mb.split(//).map{|f|
+        ib="%016b" % @input
+warn ib
+        dary=db.split(//).reverse
+        i=-1
+        ary=mb.split(//).reverse.map{|f|
           c=dary.shift
-          f == '1' ? c : nil
+          i+=1
+          next if f != '1'
+          @inptbl[i].each{|bit|
+warn bit
+            ib[16-bit]=c
+          }
+          c
         }
         warn ary
+warn ib
+        @input=[ib].pack("b*").unpack("s*").first
+warn @input.inspect
+warn "%04X" % @input
       end
       if base
         chk=0

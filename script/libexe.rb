@@ -27,7 +27,7 @@ module CIAX
   end
 
   class Exe < Hashx # Having server status {id,msg,...}
-    attr_reader :layer,:id,:mode,:pre_exe_procs,:post_exe_procs,:cobj,:output
+    attr_reader :layer,:id,:mode,:pre_exe_procs,:post_exe_procs,:cobj,:output,:prompt_proc,:shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
     attr_accessor :site_stat
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
@@ -41,6 +41,22 @@ module CIAX
       @pfx_color=9
       @output={}
       self['msg']=''
+      @server_input_proc=proc{|line|
+        begin
+        JSON.load(line)
+        rescue JSON::ParserError
+          raise "NOT JSON"
+        end
+      }
+      @server_output_proc=proc{ to_j }
+      @shell_input_proc=proc{|line|
+        args=line.split(' ')
+        if (cmd=args.first) && cmd.include?('=')
+          args=['set']+cmd.split('=')
+        end
+        args
+      }
+      @shell_output_proc=proc{ self['msg'].empty? ? @output : self['msg'] }
       Thread.abort_on_exception=true
     end
 
@@ -74,30 +90,6 @@ module CIAX
     def ext_shell(&prompt_proc)
       extend(Shell).ext_shell(&prompt_proc)
     end
-
-    # Overridable methods(do not set this kind of methods in modules)
-    private
-    def shell_input(line)
-      args=line.split(' ')
-      if (cmd=args.first) && cmd.include?('=')
-        args=['set']+cmd.split('=')
-      end
-      args
-    end
-
-    def shell_output
-      self['msg'].empty? ? @output : self['msg']
-    end
-
-    def server_input(line)
-      JSON.load(line)
-    rescue JSON::ParserError
-      raise "NOT JSON"
-    end
-
-    def server_output
-      to_j
-    end
   end
 
   module Server
@@ -117,7 +109,7 @@ module CIAX
         rhost=Addrinfo.ip(addr[2]).getnameinfo.first
         verbose("UDP:Server","Recv:#{line} is #{line.class}")
         begin
-          exe(server_input(line),"udp:#{rhost}")
+          exe(@server_input_proc.call(line),"udp:#{rhost}")
         rescue InvalidCMD
           self['msg']="INVALID"
         rescue RuntimeError
@@ -125,7 +117,7 @@ module CIAX
           errmsg
         end
         verbose("UDP:Server","Send:#{self['msg']}")
-        udp.send(server_output,0,addr[2],addr[1])
+        udp.send(@server_output_proc.call,0,addr[2],addr[1])
       }
       self
     end

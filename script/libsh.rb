@@ -42,10 +42,10 @@ module CIAX
         cmds=line.split(';')
         cmds=[""] if cmds.empty?
         begin
-          cmds.each{|token| exe(shell_input(token),'shell')}
+          cmds.each{|token| exe(@shell_input_proc.call(token),'shell')}
         rescue UserError
         end
-        puts shell_output
+        puts @shell_output_proc.call
       }
     end
   end

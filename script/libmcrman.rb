@@ -30,24 +30,23 @@ module CIAX
         @output=@list=lc.new(db['id'],db['version'])
         @valid_pars=@cobj.intgrp.valid_pars
         @mode='TEST'
-        @current=0
       end
 
       def ext_shell
+        @shell_input_proc=proc{|line|
+          cmd,*par=line.split(' ')
+          if @cobj.intgrp.key?(cmd)
+            @current=par[0].to_i unless par.empty?
+            par=[@list.num_to_sid(@current)]
+          end
+          [cmd]+par
+        }
+        @current=0
         super{
           size=@valid_pars.replace(@list.data.keys).size
           @current=size if size < @current || @current < 1
           "[%d]" % @current
         }
-      end
-
-      def shell_input(line)
-        cmd,*par=super
-        if @cobj.intgrp.key?(cmd)
-          @current=par[0].to_i unless par.empty?
-          par=[@list.num_to_sid(@current)]
-        end
-        [cmd]+par
       end
     end
 

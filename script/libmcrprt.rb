@@ -23,7 +23,8 @@ module CIAX
     module PrtRecord
       include Prt
       def to_s
-        msg=head("MACRO",3)+"\n"
+        date=Time.at((self['time']/1000).round)
+        msg=head("MACRO",3)+" (#{date})\n"
         @data.each{|i|
           i.extend(PrtStep) unless i.is_a?(PrtStep)
           msg << i.to_s

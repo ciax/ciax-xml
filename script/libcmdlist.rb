@@ -46,8 +46,8 @@ module CIAX
       ((@select+@dummy) & keys).each_slice((@attr["column"]||1).to_i){|a|
         l=a.map{|key|
           next unless self[key]
-          head=@attr["line_number"] ? "[#{num+=1}]" : ''
-          Msg.item(head+key,self[key])
+          title=@attr["line_number"] ? "[#{num+=1}](#{key})" : key
+          Msg.item(title,self[key])
         }.compact
         page << l.join("\t") unless l.empty?
       }

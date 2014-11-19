@@ -107,6 +107,7 @@ module CIAX
         @cfg['caption']='Switch Macros'
         @cfg['color']=5
         @cfg['column']=2
+        @cfg['line_number']=true
         set_proc{|ent| raise(SiteJump,ent.id)}
       end
     end

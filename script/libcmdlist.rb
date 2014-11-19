@@ -3,6 +3,7 @@ require "libmsg"
 module CIAX
   # Sortable Hash of title
   # Used by Command and XmlDoc
+  # Attribute items: caption(text), color(#), column(#), show_all(t/f), line_number(t/f)
   class CmdList < Hash
     def initialize(attr,select=[])
       @attr=Msg.type?(attr,Hash)
@@ -41,9 +42,12 @@ module CIAX
       cap=@attr["caption"]
       cap= '==== '+Msg.color(cap,(@attr["color"]||6).to_i)+' ====' if cap
       page=[cap]
+      num=0
       ((@select+@dummy) & keys).each_slice((@attr["column"]||1).to_i){|a|
         l=a.map{|key|
-          Msg.item(key,self[key]) if self[key]
+          next unless self[key]
+          head=@attr["line_number"] ? "[#{num+=1}]" : ''
+          Msg.item(head+key,self[key])
         }.compact
         page << l.join("\t") unless l.empty?
       }

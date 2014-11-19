@@ -4,7 +4,7 @@ require "libmcrexe"
 module CIAX
   module Mcr
     class List < Datax
-      attr_accessor :sid
+      attr_accessor :current
       def initialize(proj,ver=0)
         super('macro',{},'procs')
         self['id']=proj
@@ -25,11 +25,11 @@ module CIAX
       end
 
       def shell(sid=nil)
-        @sid=sid||@sid||return
+        @current=sid||@current||return
         begin
-          @data[@sid].shell
+          @data[@current].shell
         rescue SiteJump
-          @sid=$!.to_s
+          @current=$!.to_s
           retry
         end
         self
@@ -61,11 +61,11 @@ module CIAX
         @post_upd_procs << proc{ @valid_keys.replace(@data.keys)}
       end
 
-      def add(ent)
+      def add_seq(ent)
         ssh=Seq.new(type?(ent,Entity))
-        @sid=ssh.id
-        @data[@sid]=ssh
-        @mjgrp.add_item(@sid,ent.id)
+        @current=ssh.id
+        @data[@current]=ssh
+        @mjgrp.add_item(@current,ent.id)
         ssh.cobj.lodom.join_group(@mjgrp)
         ssh.post_stat_procs << proc{upd}
         ssh.post_mcr_procs << proc{|s|
@@ -123,7 +123,7 @@ module CIAX
         list=SvList.new('ciax')
         ARGV.each{|cid|
           ent=cobj.set_cmd(cid.split(':'))
-          list.add(ent)
+          list.add_seq(ent)
         }
         list.shell||cobj.set_cmd([])
       rescue InvalidCMD

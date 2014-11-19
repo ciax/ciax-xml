@@ -27,8 +27,8 @@ module CIAX
   end
 
   class Exe < Hashx # Having server status {id,msg,...}
-    attr_reader :layer,:id,:mode,:pre_exe_procs,:post_exe_procs,:cobj,:output,:prompt_proc,:shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
-    attr_accessor :site_stat
+    attr_reader :layer,:id,:mode,:pre_exe_procs,:post_exe_procs,:cobj,:output,:prompt_proc
+    attr_accessor :site_stat,:shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
       @id=id

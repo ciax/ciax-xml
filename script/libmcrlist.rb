@@ -72,6 +72,14 @@ module CIAX
           @data.delete(s.id)
           clean
         }
+        ssh.shell_input_proc=proc{|line|
+          args=line.split(' ')
+          num=args[0].to_i
+          if num > 0 && num < 100
+            args[0]=@data.keys[num-1]||''
+          end
+          args
+        }
         ssh.fork(@tgrp)
         self
       end

@@ -33,20 +33,24 @@ module CIAX
       end
 
       def ext_shell
-        @shell_input_proc=proc{|line|
-          cmd,*par=line.split(' ')
-          if @cobj.intgrp.key?(cmd)
-            @current=par[0].to_i unless par.empty?
-            par=[@list.num_to_sid(@current)]
-          end
-          [cmd]+par
-        }
-        @current=0
-        super{
+        @prompt_proc=proc{
           size=@valid_pars.replace(@list.data.keys).size
           @current=size if size < @current || @current < 1
           "[%d]" % @current
         }
+        @shell_input_proc=proc{|line|
+          cmd,*par=line.split(' ')
+          if (n=cmd.to_i) > 0
+            @current=n
+            []
+          elsif @cobj.intgrp.key?(cmd)
+            [cmd]+[@list.num_to_sid(@current)]
+          else
+            [cmd]+par
+          end
+        }
+        @current=0
+        super
       end
     end
 
@@ -86,6 +90,7 @@ module CIAX
         # External Command Group
         @cobj.ext_proc{|ent|
           self['sid']=@list.add_seq(ent).current
+          @current=@list.size
           "ACCEPT"
         }
         @cobj.item_proc('interrupt'){|ent|

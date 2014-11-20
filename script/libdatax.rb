@@ -78,6 +78,10 @@ module CIAX
       self
     end
 
+    def size
+      @data.size
+    end
+
     def ext_file(tag=nil)
       extend File
       ext_file(tag)

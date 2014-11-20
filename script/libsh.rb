@@ -10,9 +10,7 @@ module CIAX
       Msg.type?(obj,Exe)
     end
 
-    def ext_shell(&prompt_proc)
-      # For Shell
-      @prompt_proc=prompt_proc
+    def ext_shell
       # Local(Long Jump) Commands (local handling commands on Client)
       shg=@cobj.lodom.add_group('caption'=>"Shell Command",'color'=>1)
       shg.add_dummy('q',"Quit")

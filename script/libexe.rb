@@ -87,8 +87,8 @@ module CIAX
       extend(Server).ext_server(port)
     end
 
-    def ext_shell(&prompt_proc)
-      extend(Shell).ext_shell(&prompt_proc)
+    def ext_shell
+      extend(Shell).ext_shell
     end
   end
 

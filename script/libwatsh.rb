@@ -35,7 +35,8 @@ module CIAX
           @ash.cobj.extgrp.valid_sub(block)
         }
         @ash.pre_exe_procs << proc{|args| @event.block?(args) }
-        ext_shell{ @site_stat.to_s }
+        @prompt_proc=proc{ @site_stat.to_s }
+        ext_shell
         # Init View
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('prt',"Print mode").set_proc{@output=@wview;''}

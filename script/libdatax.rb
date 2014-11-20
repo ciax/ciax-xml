@@ -9,15 +9,19 @@ module CIAX
     attr_reader :type,:data,:pre_upd_procs,:post_upd_procs
     def initialize(type,init_struct={},dataname='data')
       @type=type
+      # Headers
       self['time']=now_msec
       self['id']=nil
       self['ver']=nil
       self['host']=`hostname`.strip
-      @data=init_struct.dup.extend(Enumx)
+      # Variable Data (Shown as 'data'(dataname) hash in JSON)
       @dataname=dataname
+      @data=init_struct.dup.extend(Enumx)
+      # Setting (Not shown in JSON)
       @thread=Thread.current # For Thread safe
       @cls_color=2
       @pfx_color=6
+      # Updater
       @pre_upd_procs=[] # Proc Array for Pre-Process of Update Propagation to the upper Layers
       @post_upd_procs=[] # Proc Array for Post-Process of Update Propagation to the upper Layers
     end
@@ -45,7 +49,7 @@ module CIAX
       post_upd
     end
 
-    # Update with str (key=val,key=val,..)
+    # Update with strings (key=val,key=val,..)
     def str_update(str)
       type?(str,String)
       str.split(',').each{|i|
@@ -82,13 +86,13 @@ module CIAX
       @data.size
     end
 
-    def ext_file(tag=nil)
+    def ext_file(tag=nil) # Save data at every after update
       extend File
       ext_file(tag)
       self
     end
 
-    def ext_http(host=nil)
+    def ext_http(host=nil) # Read only as a client
       extend Http
       ext_http(host)
       self

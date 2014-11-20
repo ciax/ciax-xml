@@ -67,8 +67,7 @@ module CIAX
         @data[@current]=sh
         @mjgrp.add_item(@current,title)
         sh.cobj.lodom.join_group(@mjgrp)
-        sh.shell_input_proc=proc{|line|
-          args=line.split(' ')
+        sh.shell_input_proc=proc{|args|
           num=args[0].to_i
           if num > 0 && num < 100
             args[0]=@data.keys[num-1]||''

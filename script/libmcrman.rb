@@ -38,15 +38,15 @@ module CIAX
           @current=size if size < @current || @current < 1
           "[%d]" % @current
         }
-        @shell_input_proc=proc{|line|
-          cmd,*par=line.split(' ')
+        @shell_input_proc=proc{|args|
+          cmd=args[0]
           if (n=cmd.to_i) > 0
             @current=n
             []
           elsif @cobj.intgrp.key?(cmd)
             [cmd]+[@list.num_to_sid(@current)]
           else
-            [cmd]+par
+            args
           end
         }
         @current=0

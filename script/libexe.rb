@@ -49,8 +49,7 @@ module CIAX
         end
       }
       @server_output_proc=proc{ to_j }
-      @shell_input_proc=proc{|line|
-        args=line.split(' ')
+      @shell_input_proc=proc{|args|
         if (cmd=args.first) && cmd.include?('=')
           args=['set']+cmd.split('=')
         end

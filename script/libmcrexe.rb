@@ -40,9 +40,10 @@ module CIAX
         @cobj.add_int
         @cobj.intgrp.set_proc{|ent| reply(ent.id)}
         self['option']=@cobj.intgrp.valid_keys.clear
-        super{
+        @prompt_proc=proc{
           "(#{self['stat']})"+optlist(self['option'])
         }
+        super
       end
 
       def reply(ans)

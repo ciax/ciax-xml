@@ -61,18 +61,13 @@ module CIAX
         @post_upd_procs << proc{ @valid_keys.replace(@data.keys)}
       end
 
-      def add_seq(ent)
-        ssh=Seq.new(type?(ent,Entity))
-        @current=ssh.id
-        @data[@current]=ssh
-        @mjgrp.add_item(@current,ent.id)
-        ssh.cobj.lodom.join_group(@mjgrp)
-        ssh.post_stat_procs << proc{upd}
-        ssh.post_mcr_procs << proc{|s|
-          @data.delete(s.id)
-          clean
-        }
-        ssh.shell_input_proc=proc{|line|
+      def add(sh,id,title)
+        type?(sh,Exe)
+        @current=id
+        @data[@current]=sh
+        @mjgrp.add_item(@current,title)
+        sh.cobj.lodom.join_group(@mjgrp)
+        sh.shell_input_proc=proc{|line|
           args=line.split(' ')
           num=args[0].to_i
           if num > 0 && num < 100
@@ -80,6 +75,17 @@ module CIAX
           end
           args
         }
+        self
+      end
+
+      def add_seq(ent)
+        ssh=Seq.new(type?(ent,Entity))
+        ssh.post_stat_procs << proc{upd}
+        ssh.post_mcr_procs << proc{|s|
+          @data.delete(s.id)
+          clean
+        }
+        add(ssh,ssh.id,ent.id)
         ssh.fork(@tgrp)
         self
       end

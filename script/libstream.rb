@@ -1,25 +1,23 @@
 #!/usr/bin/ruby
-require "libdatax"
+require "libvarx"
 require "libsqlog"
 
 module CIAX
-  class Stream < Datax
+  class Stream < Varx
     # Structure
     # {
-    #  time:Int
-    #  @binary
-    #  @data:
-    #   {
-    #    dir:(snd,rcv)
-    #    cmd:String
-    #    base64: encoded data
-    #   }
+    #   @binary
+    #   time:Int
+    #   dir:(snd,rcv)
+    #   cmd:String
+    #   base64: encoded data
     # }
     attr_reader :binary
-    def initialize(iocmd,wait=0,timeout=nil)
+    def initialize(id,ver,iocmd,wait=0,timeout=nil)
       Msg.abort(" No IO command") if iocmd.to_a.empty?
       @iocmd=type?(iocmd,Array).compact
-      super('stream',{'dir' => '','cmd' => '','base64' => ''})
+      super('stream',id,ver)
+      update('dir' => '','cmd' => '','base64' => '')
       @cls_color=6
       @pfx_color=9
       verbose("Client","Initialize (#{iocmd.join(' ')})")
@@ -75,21 +73,12 @@ module CIAX
       str
     end
 
-    def ext_logging(id,ver=0)
-      update('id'=>id,'ver'=>ver)
-      logging=Logging.new('stream',Hash[self])
-      @post_upd_procs << proc{
-        logging.append(@data)
-      }
-      self
-    end
-
     private
     def conv(dir,data,cid=nil)
       self['time']=now_msec
       @binary=data
-      @data.update({'dir'=>dir,'base64'=>encode(data)})
-      @data['cmd']=cid if cid
+      update('dir'=>dir,'base64'=>encode(data))
+      self['cmd']=cid if cid
       self
     ensure
       post_upd

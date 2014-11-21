@@ -66,8 +66,8 @@ module CIAX
           timeout=60
         end
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
-        @stream=Stream.new(iocmd,@fdb['wait'],timeout)
-        @stream.ext_logging(@id,@fdb['stream_ver']) unless sim
+        @stream=Stream.new(@id,@fdb['stream_ver'],iocmd,@fdb['wait'],timeout)
+        @stream.ext_log unless sim
         @cobj.ext_proc{|ent|
           @stream.snd(ent.cfg[:frame],ent.id)
           @field.upd(ent){@stream.rcv}

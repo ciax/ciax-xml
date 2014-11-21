@@ -4,6 +4,9 @@ require "libenumx"
 require "libxmldoc"
 
 module CIAX
+  # Db class is for read only databases
+  # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
+  # Cache is available
   class Db < Hashx
     XmlDir="#{ENV['HOME']}/ciax-xml"
     attr_reader :list
@@ -19,6 +22,8 @@ module CIAX
       deep_copy.update(cache(id,@group){|doc| doc_to_db doc.set(id) })
     end
 
+    # cover() will deeply merge self and given db
+    # (If end of the element confricts, self content will be taken)
     def cover(db,key=nil,depth=nil)
       type?(db,Db)
       if key

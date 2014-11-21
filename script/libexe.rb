@@ -71,9 +71,6 @@ module CIAX
     rescue InvalidID
       self['msg']=$!.to_s
       raise $!
-    rescue
-      self['msg']=$!.to_s
-      Msg.relay(args.first)
     ensure
       @post_exe_procs.each{|p| p.call(self)}
     end
@@ -111,7 +108,7 @@ module CIAX
           exe(@server_input_proc.call(line),"udp:#{rhost}")
         rescue InvalidCMD
           self['msg']="INVALID"
-        rescue RuntimeError
+        rescue
           self['msg']=$!.to_s
           errmsg
         end

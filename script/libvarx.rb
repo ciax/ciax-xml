@@ -36,9 +36,9 @@ module CIAX
       self
     end
 
-    def ext_file(tag=nil) # Save data at every after update
-      extend File
-      ext_file(tag)
+    def ext_save # Save data at every after update
+      extend Save
+      ext_file
       self
     end
 
@@ -69,13 +69,13 @@ module CIAX
     end
   end
 
-  module File
-    def ext_file(tag=nil)
+  module Save
+    def ext_save
       verbose("File","Initialize")
       @jpath=VarDir+"/json/"
       FileUtils.mkdir_p @jpath
       self['id']||Msg.cfg_err("ID")
-      @post_upd_procs << proc{save(tag)}
+      @post_upd_procs << proc{save}
       self
     end
 
@@ -110,7 +110,7 @@ module CIAX
       id=self['id']
       ver=self['ver']
       loghead=VarDir+"/"+file_base
-      verbose(type.capitalize,"Initialize (#{id}/Ver.#{ver})")
+      verbose(@type.capitalize,"Initialize (#{id}/Ver.#{ver})")
       @queue=Queue.new
       @post_upd_procs << proc{
         @queue.push(JSON.dump(self))
@@ -123,7 +123,7 @@ module CIAX
         open(loghead+"_#{Time.now.year}.log",'a') {|f|
           logary.each{|str|
             f.puts str
-            verbose(type.capitalize,"Appended #{str.size} byte #{str}")
+            verbose(@type.capitalize,"Appended #{str.size} byte #{str}")
           }
         }
       }

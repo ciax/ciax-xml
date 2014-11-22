@@ -1,29 +1,17 @@
 #!/usr/bin/ruby
-require "libdb"
+require "libvarx"
 
 module CIAX
   # @data is hidden from access by '[]'.
   # @data is conveted to json file where @data will be appeared as self['data'].
   # @data never contains object which can't save with JSON
-  class Datax < Hashx
-    attr_reader :type,:data,:pre_upd_procs,:post_upd_procs
+  class Datax < Varx
+    attr_reader :data
     def initialize(type,init_struct={},dataname='data')
-      @type=type
-      # Headers
-      self['time']=now_msec
-      self['id']=nil
-      self['ver']=nil
-      self['host']=`hostname`.strip
+      super(type)
       # Variable Data (Shown as 'data'(dataname) hash in JSON)
       @dataname=dataname
       @data=init_struct.dup.extend(Enumx)
-      # Setting (Not shown in JSON)
-      @thread=Thread.current # For Thread safe
-      @cls_color=2
-      @pfx_color=6
-      # Updater
-      @pre_upd_procs=[] # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @post_upd_procs=[] # Proc Array for Post-Process of Update Propagation to the upper Layers
     end
 
     def to_j
@@ -38,15 +26,6 @@ module CIAX
       super
       _setdata
       self
-    end
-
-    # update after processing (super should be end of method if inherited)
-    def upd
-      pre_upd
-      verbose("Datax","UPD_PROC for [#{@type}:#{self['id']}]")
-      self
-    ensure
-      post_upd
     end
 
     # Update with strings (key=val,key=val,..)
@@ -75,26 +54,19 @@ module CIAX
       post_upd
     end
 
-    def set_db(db)
-      @db=type?(db,Db)
-      _setid(db['site_id']||db['id'])
-      self['ver']=db['version'].to_i
-      self
-    end
-
     def size
       @data.size
     end
 
-    def ext_file(tag=nil) # Save data at every after update
+    def ext_file(tag=nil) # File I/O
       extend File
       ext_file(tag)
       self
     end
 
-    def ext_http(host=nil) # Read only as a client
+    def ext_http(host=nil,tag=nil) # Read only as a client
       extend Http
-      ext_http(host)
+      ext_http(host,tag)
       self
     end
 
@@ -112,77 +84,48 @@ module CIAX
       self['time']||=now_msec
       self
     end
-
-    def _setid(id)
-      self['id']=id||Msg.cfg_err("ID")
-      self
-    end
-
-    def file_name(tag=nil)
-      @base=[@type,self['id'],tag].compact.join('_')+'.json'
-      @prefix+@base
-    end
-
-    def tag_list
-      Dir.glob(file_name('*')).map{|f|
-        f.slice(/.+_(.+)\.json/,1)
-      }.sort
-    end
-
-    def pre_upd
-      @pre_upd_procs.each{|p| p.call(self)}
-      self
-    end
-
-    def post_upd
-      @post_upd_procs.each{|p| p.call(self)}
-      self
-    end
   end
 
   module Http
     require "open-uri"
-    def ext_http(host)
-      host||='localhost'
-      verbose("Http","Initialize(#{host})")
-      @prefix="http://"+host+"/json/"
+    def ext_http(host,tag)
+      @host=host||'localhost'
+      verbose("Http","Initialize(#{@host})")
       self['id']||Msg.cfg_err("ID")
-      @pre_upd_procs << proc{load}
+      @pre_upd_procs << proc{load(tag)}
       load
       self
     end
 
     def load(tag=nil)
-      name=file_name(tag)
+      url=file_url(tag)
       json_str=''
-      open(name){|f|
-        verbose("Http","Loading [#{@base}](#{f.size})")
+      open(url){|f|
+        verbose("Http","Loading [#{url}](#{f.size})")
         json_str=f.read
       }
       if json_str.empty?
-        warning("Http"," -- json file (#{@base}) is empty")
+        warning("Http"," -- json file (#{url}) is empty")
       else
         read(json_str)
       end
       self
     rescue OpenURI::HTTPError
-      alert("Http","  -- no url file (#{file_name})")
+      alert("Http","  -- no url file (#{url})")
+    end
+
+    private
+    def file_url(tag=nil)
+      "http://"+host+"/json/"+file_base(tag)+'.json'
     end
   end
 
   module File
+    include Save
     def ext_file(tag=nil)
-      verbose("File","Initialize")
-      @prefix=VarDir+"/json/"
-      FileUtils.mkdir_p @prefix
-      self['id']||Msg.cfg_err("ID")
-      @post_upd_procs << proc{save(tag)}
+      ext_save(tag)
       load unless tag
       self
-    end
-
-    def save(tag=nil)
-      write_json(_getdata,tag)
     end
 
     # Saving data of specified keys with tag
@@ -209,15 +152,16 @@ module CIAX
     end
 
     def load(tag=nil)
-      name=file_name(tag)
+      base=file_base(tag)
+      fname=file_path(tag)
       json_str=''
-      open(name){|f|
-        verbose("File","Loading [#{@base}](#{f.size})")
+      open(fname){|f|
+        verbose("File","Loading [#{base}](#{f.size})")
         f.flock(::File::LOCK_SH)
         json_str=f.read
       }
       if json_str.empty?
-        warning("File"," -- json file (#{@base}) is empty")
+        warning("File"," -- json file (#{base}) is empty")
       else
         data=j2h(json_str)
         verbose("File","Version compare [#{data['ver']}] vs. <#{self['ver']}>")
@@ -238,23 +182,10 @@ module CIAX
       post_upd
     end
 
-    private
-    def write_json(data,tag=nil)
-      verbose("File","Saving from Multiple Threads") unless @thread == Thread.current
-      name=file_name(tag)
-      open(name,'w'){|f|
-        f.flock(::File::LOCK_EX)
-        f << JSON.dump(data)
-        verbose("File","[#{@base}](#{f.size}) is Saved")
-      }
-      if tag
-        # Making 'latest' tag link
-        sname=file_name('latest')
-        ::File.unlink(sname) if ::File.symlink?(sname)
-        ::File.symlink(name,sname)
-        verbose("File","Symboliclink to [#{sname}]")
-      end
-      self
+    def tag_list
+      Dir.glob(file_path('*')).map{|f|
+        f.slice(/.+_(.+)\.json/,1)
+      }.sort
     end
   end
 end

@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libenumx"
+require "libdb"
 
 module CIAX
   class Varx < Hashx
@@ -38,7 +39,7 @@ module CIAX
 
     def ext_save(tag=nil) # Save data at every after update
       extend Save
-      ext_file(tag)
+      ext_save(tag)
       self
     end
 
@@ -72,30 +73,32 @@ module CIAX
   module Save
     def ext_save(tag=nil)
       verbose("File","Initialize")
-      @jpath=VarDir+"/json/"
-      FileUtils.mkdir_p @jpath
+      FileUtils.mkdir_p(VarDir+"/json/")
       self['id']||Msg.cfg_err("ID")
       @post_upd_procs << proc{save(tag)}
       self
     end
 
     def save(tag=nil)
-      write_json(self,tag)
+      write_json(to_j,tag)
     end
 
     private
-    def write_json(data,tag=nil)
+    def file_path(tag=nil)
+      VarDir+"/json/"+file_base(tag)+'.json'
+    end
+
+    def write_json(json_str,tag=nil)
       verbose("File","Saving from Multiple Threads") unless @thread == Thread.current
-      base=file_base(tag)+'.json'
-      rname=@jpath+base
+      rname=file_path(tag)
       open(rname,'w'){|f|
         f.flock(::File::LOCK_EX)
-        f << JSON.dump(data)
-        verbose("File","[#{base}](#{f.size}) is Saved")
+        f << json_str
+        verbose("File","[#{rname}](#{f.size}) is Saved")
       }
       if tag
         # Making 'latest' tag link
-        sname=@jpath+file_base('latest')+'.json'
+        sname=file_path('latest')
         ::File.unlink(sname) if ::File.symlink?(sname)
         ::File.symlink(rname,sname)
         verbose("File","Symboliclink to [#{sname}]")
@@ -109,24 +112,28 @@ module CIAX
       FileUtils.mkdir_p VarDir
       id=self['id']
       ver=self['ver']
-      loghead=VarDir+"/"+file_base
       verbose(@type.capitalize,"Initialize (#{id}/Ver.#{ver})")
       @queue=Queue.new
       @post_upd_procs << proc{
-        @queue.push(JSON.dump(self))
+        @queue.push(to_j)
       }
       ThreadLoop.new("Logging(#{@type}:#{ver})",11){
         logary=[]
         begin
           logary << @queue.pop
         end until @queue.empty?
-        open(loghead+"_#{Time.now.year}.log",'a') {|f|
+        open(logpath,'a') {|f|
           logary.each{|str|
             f.puts str
             verbose(@type.capitalize,"Appended #{str.size} byte #{str}")
           }
         }
       }
+    end
+
+    private
+    def logpath(tag=nil)
+      VarDir+"/"+file_base(tag)+"_#{Time.now.year}.log"
     end
   end
 end

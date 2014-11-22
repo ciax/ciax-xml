@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require "libenumx"
+require "libvarx"
 
 module CIAX
   module JumpList
-    class List < Hashx
+    class List < Varx
       def initialize(level,upper=nil)
         @level=type?(level,Module)
         name=level.to_s.split(':').last

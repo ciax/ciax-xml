@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libvarx"
-require "libsqlog"
 
 module CIAX
   class Stream < Varx

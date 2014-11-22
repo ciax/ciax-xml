@@ -11,7 +11,7 @@ module CIAX
       attr_reader :tid,:stat,:tname
       include Msg
       def initialize(stat)
-        @stat=type?(stat,Hash)
+        @stat=type?(stat,Datax)
         @cls_color=1
         @pfx_color=14
         ver=@stat['ver'].to_i

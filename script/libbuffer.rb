@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libdatax"
+require "libvarx"
 require "libthreadx"
 
 # SubModule for App::Sv
@@ -22,10 +22,11 @@ require "libthreadx"
 #  3:Periodic Update
 
 module CIAX
-  class Buffer < Datax
+  class Buffer < Varx
     # svst: Server Status
-    def initialize(svst={})
-      super('issue',{'pri' => '','cid' => '','src' => ''})
+    def initialize(id,ver,svst={})
+      super('issue',id,ver)
+      update('pri' => '','cid' => '','src' => '')
       @svst=type?(svst,Hash)
       #element of @q is bunch of frm args corresponding an appcmd
       @q=Queue.new
@@ -46,7 +47,7 @@ module CIAX
       clear if n == 0
       batch=@send_proc.call(ent)
       #batch is frm batch (ary of ary)
-      @data.update('time'=>now_msec,'pri' => n,'cid' => ent.id,'src'=>src)
+      update('time'=>now_msec,'pri' => n,'cid' => ent.id,'src'=>src)
       unless batch.empty?
         @svst['isu']=true
         @q.push(:pri => n,:batch => batch,:src => src)

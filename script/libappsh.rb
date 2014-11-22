@@ -90,7 +90,7 @@ module CIAX
         @site_stat=@fsh.site_stat.add_db(@site_stat.db)
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         @buf=init_buf
-        ver=@buf['ver']=@stat['ver']
+        ver=@stat['ver']
         @fsh.flush_procs << proc{ @buf.flush }
         @cobj.ext_proc{|ent,src,pri|
           verbose("AppSv","#@id/Issuing:#{ent.id} from #{src} with priority #{pri}")
@@ -108,7 +108,6 @@ module CIAX
         # Logging if version number exists
         if sv=cfg[:sqlog]
           sv.add_table(@stat)
-          sv.add_table(@buf)
         end
         ext_server(@adb['port'])
       end
@@ -119,7 +118,7 @@ module CIAX
       end
 
       def init_buf
-        buf=Buffer.new(@site_stat)
+        buf=Buffer.new(@stat['id'],@stat['ver'],@site_stat)
         buf.send_proc{|ent|
           batch=type?(ent.batch,Array)
           verbose("AppSv","Send FrmCmds #{batch}")

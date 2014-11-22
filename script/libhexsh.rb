@@ -16,15 +16,14 @@ module CIAX
         super('hex',wsh.id)
         @cobj.svdom.replace wsh.cobj.svdom
         @mode=wsh.mode
-        @output=View.new(wsh,wsh.stat)
+        @output=View.new(@id,wsh.adb['version'],wsh,wsh.stat)
         @post_exe_procs.concat(wsh.post_exe_procs)
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')
         }
         @server_output_proc=proc{ @output.to_s }
         if $opt['e']
-          logging=Logging.new('hex',{'id' => @id,'ver' => wsh.adb['version']})
-          wsh.stat.post_upd_procs << proc{logging.append({'hex' => @output.to_s})}
+          @output.ext_log
         end
         ext_server(wsh.adb['port'].to_i+1000) if ['e','s'].any?{|i| $opt[i]}
         ext_shell

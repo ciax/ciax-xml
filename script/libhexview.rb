@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 # Ascii Pack
-require "libmsg"
+require "libvarx"
 
 module CIAX
   module Hex
-    class View
-      include Msg
+    class View < Varx
       #hint should have server status (isu,watch,exe..) like App::Exe
-      def initialize(hint,stat)
+      def initialize(id,ver,hint,stat)
+        super('hex',id,ver)
         # Server Status
         @hint=type?(hint,Hash)
         @stat=type?(stat,App::Status)
@@ -25,6 +25,8 @@ module CIAX
             end
           end
         }
+        @stat.post_upd_procs << proc{conv}
+        conv
         self
       end
 
@@ -33,7 +35,7 @@ module CIAX
         test(?r,file) && file
       end
 
-      def to_s
+      def conv
         @res[3]=b2i(@hint['watch'])
         @res[4]=b2i(@hint['isu'])
         @res[6]=''
@@ -63,7 +65,14 @@ module CIAX
             @res[6] << str
           end
         }
-        @res.join('')
+        self['hex']=@res.join('')
+        self
+      ensure
+        post_upd
+      end
+
+      def to_s
+        self['hex']
       end
 
       private
@@ -94,7 +103,7 @@ module CIAX
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
         ldb=Site::Db.new.set(id)
         stat.set_db(ldb[:adb]).ext_file
-        hint=View.new({},stat)
+        hint=View.new(id,0,{},stat).conv
         puts hint
       rescue InvalidID
         Msg.usage("[site] | < status_file")

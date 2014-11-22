@@ -36,9 +36,9 @@ module CIAX
       self
     end
 
-    def ext_save # Save data at every after update
+    def ext_save(tag=nil) # Save data at every after update
       extend Save
-      ext_file
+      ext_file(tag)
       self
     end
 
@@ -70,17 +70,17 @@ module CIAX
   end
 
   module Save
-    def ext_save
+    def ext_save(tag=nil)
       verbose("File","Initialize")
       @jpath=VarDir+"/json/"
       FileUtils.mkdir_p @jpath
       self['id']||Msg.cfg_err("ID")
-      @post_upd_procs << proc{save}
+      @post_upd_procs << proc{save(tag)}
       self
     end
 
-    def save
-      write_json(self)
+    def save(tag=nil)
+      write_json(self,tag)
     end
 
     private

@@ -16,7 +16,9 @@ module CIAX
       end
 
       # Ent is needed which includes response_id and cmd_parameters
-      def ext_rsp
+      # Takes a block for taking stream data
+      def ext_rsp(&input_proc)
+        @input_proc=input_proc
         fdbr=@db[:response]
         @skel=fdbr[:frame]
         # @sel structure: { terminator, :main{}, :body{} <- changes on every upd }
@@ -26,17 +28,21 @@ module CIAX
         self
       end
 
-      # Block accepts [frame,time]
-      # Result : executed block or not
-      def upd(ent)
+      def rsp(ent)
+        @ent=type?(ent,Entity)
+        upd
+      end
+
+      private
+      def conv
         @sel=Hash[@skel]
-        if rid=type?(ent,Entity).cfg['response']
+        if rid=@ent.cfg['response']
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
           @sel.update(@fds[rid])
-          @sel[:body]=ent.deep_subst(@sel[:body])
+          @sel[:body]=@ent.deep_subst(@sel[:body])
           verbose("Rsp","Selected DB for #{rid} #{@sel}")
           # Frame structure: main(total){ ccrange{ body(selected str) } }
-          stream=yield
+          stream=@input_proc.call
           @frame.set(stream.binary,@sel['length'],@sel['padding'])
           @cache=@data.deep_copy
           if @fds[rid].key?('noaffix')
@@ -52,11 +58,8 @@ module CIAX
           verbose("Rsp","Send Only")
         end
         self
-      ensure
-        post_upd
       end
 
-      private
       # Process Frame to Field
       def getfield_rec(e0)
         e0.each{|e1|
@@ -118,8 +121,8 @@ module CIAX
     end
 
     class Field
-      def ext_rsp
-        extend(Frm::Rsp).ext_rsp
+      def ext_rsp(&input_proc)
+        extend(Frm::Rsp).ext_rsp(&input_proc)
       end
     end
 
@@ -128,22 +131,19 @@ module CIAX
       require "liblogging"
       require "libfrmcmd"
       GetOpts.new("",{'m' => 'merge file'})
-      if STDIN.tty?
-        $opt.usage("(opt) < logline")
-      else
-        str=gets(nil) || exit
-        res=Logging.set_logline(str)
-        id=res['id']
-        cid=res['cmd']
-      end
+      $opt.usage("(opt) < logline") if STDIN.tty?
+      str=gets(nil) || exit
+      res=Logging.set_logline(str)
+      id=res['id']
+      cid=res['cmd']
       fdb=Site::Db.new.set(id)[:fdb]
-      field=Field.new.set_db(fdb).ext_rsp
+      field=Field.new.set_db(fdb).ext_rsp{res}
       field.ext_file if $opt['m']
       if cid
         cfg=Config.new('frm_top').update(:db => fdb,:field => field)
         cobj=Frm::Command.new(cfg)
         ent=cobj.set_cmd(cid.split(':'))
-        field.upd(ent){res}
+        field.rsp(ent)
       end
       puts STDOUT.tty? ? field : field.to_j
       exit

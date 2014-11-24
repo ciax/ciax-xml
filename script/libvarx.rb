@@ -21,10 +21,11 @@ module CIAX
       @post_upd_procs=[] # Proc Array for Post-Process of Update Propagation to the upper Layers
     end
 
-    # update after processing (super should be end of method if inherited)
+    # update after processing (never iniherit, use conv() instead)
     def upd
       pre_upd
       verbose("Datax","UPD_PROC for [#{@type}:#{self['id']}]")
+      conv
       self
     ensure
       post_upd
@@ -57,6 +58,11 @@ module CIAX
 
     def file_base(tag=nil)
       [@type,self['id'],tag].compact.join('_')
+    end
+
+    # Inherit conv() for upd function
+    def conv
+      self
     end
 
     def pre_upd

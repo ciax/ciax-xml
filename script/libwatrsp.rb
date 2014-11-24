@@ -30,29 +30,6 @@ module CIAX
         self
       end
 
-      def upd
-        return self unless @stat['time'] > @ctime
-        @ctime=@stat['time']
-        sync
-        act=active?
-        @data.values.each{|a| a.clear if Array === a}
-        @windex.each{|id,item|
-          next unless check(id,item)
-          item[:act].each{|key,ary|
-            @data[key.to_s].concat ary
-          }
-          @data['active'] << id
-        }
-        if active?
-          @data['act_start']=@ctime if !act
-          @data['act_end']=now_msec
-        end
-        verbose("Rsp","Updated(#{@stat['time']})")
-        self
-      ensure
-        post_upd
-      end
-
       def exec(src,pri,exec=[])
         return self if @data['exec'].concat(exec).empty?
         @data['exec'].each{|args|
@@ -74,6 +51,27 @@ module CIAX
       end
 
       private
+      def conv
+        return self unless @stat['time'] > @ctime
+        @ctime=@stat['time']
+        sync
+        act=active?
+        @data.values.each{|a| a.clear if Array === a}
+        @windex.each{|id,item|
+          next unless check(id,item)
+          item[:act].each{|key,ary|
+            @data[key.to_s].concat ary
+          }
+          @data['active'] << id
+        }
+        if active?
+          @data['act_start']=@ctime if !act
+          @data['act_end']=now_msec
+        end
+        verbose("Rsp","Updated(#{@stat['time']})")
+        self
+      end
+
       def sync
         @list.each{|i|
           @data['last'][i]=@data['crnt'][i]

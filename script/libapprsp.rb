@@ -15,7 +15,8 @@ module CIAX
         self
       end
 
-      def upd
+      private
+      def conv
         @adbs.each{|id,hash|
           enclose("Rsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
             flds=hash[:fields]||next
@@ -63,11 +64,8 @@ module CIAX
         self['time']=@field['time']
         verbose("Rsp","Update(#{self['time']})")
         self
-      ensure
-        post_upd
       end
 
-      private
       def get_field(e)
         type?(e,Hash)
         fld=e['ref'] || Msg.abort("No field Key in #{e}")

@@ -59,7 +59,7 @@ module CIAX
     class Sv < Exe
       def initialize(cfg)
         super(cfg)
-        @field.ext_rsp.ext_file
+        @field.ext_file
         timeout=5
         if sim=cfg['iocmd']
           @mode='SIM'
@@ -68,9 +68,10 @@ module CIAX
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
         @stream=Stream.new(@id,@fdb['stream_ver'],iocmd,@fdb['wait'],timeout)
         @stream.ext_log unless sim
+        @field.ext_rsp{@stream.rcv}
         @cobj.ext_proc{|ent|
           @stream.snd(ent.cfg[:frame],ent.id)
-          @field.upd(ent){@stream.rcv}
+          @field.rsp(ent)
           'OK'
         }
         @cobj.item_proc('set'){|ent|

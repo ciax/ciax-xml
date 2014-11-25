@@ -20,10 +20,9 @@ module CIAX
       end
 
       def shell(sid=nil)
-        (sid||=keys.last)||return
         begin
-          @data[sid].shell
-        rescue SiteJump
+          (get(sid)||lastval).shell
+        rescue Jump
           sid=$!.to_s
           retry
         end
@@ -107,9 +106,11 @@ module CIAX
         @cfg['color']=5
         @cfg['column']=2
         @cfg['line_number']=true
-        set_proc{|ent| raise(SiteJump,ent.id)}
+        set_proc{|ent| raise(Jump,ent.id)}
       end
     end
+
+    class Jump < LongJump; end
 
     if __FILE__ == $0
       ENV['VER']||='initialize'
@@ -123,8 +124,8 @@ module CIAX
         ARGV.each{|cid|
           ent=cobj.set_cmd(cid.split(':'))
           list.add_seq(ent)
-        }
-        list.shell||cobj.set_cmd([])
+        }.empty? && cobj.set_cmd([])
+        list.shell
       rescue InvalidCMD
         $opt.usage('[cmd(:par)] ...')
       end

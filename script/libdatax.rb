@@ -40,6 +40,10 @@ module CIAX
       post_upd
     end
 
+    def get(key)
+      @data[key]
+    end
+
     def set(key,val)
       @data[key]=val
       self['time']=now_msec
@@ -56,6 +60,10 @@ module CIAX
 
     def size
       @data.size
+    end
+
+    def last
+      get(@data.keys.last)
     end
 
     def ext_file(tag=nil) # File I/O

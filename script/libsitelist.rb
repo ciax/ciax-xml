@@ -16,22 +16,17 @@ module CIAX
         @cfg[:site]||=''
       end
 
-      def [](site)
-        if key?(site)
-          @cfg[:site].replace(site)
-          super
-        else
-          exe=self[site]=add(site)
-          @cfg[:site].replace(site)
-          exe
-        end
+      def get(site)
+        set(site,add(site)) unless @data.key?(site)
+        @cfg[:site].replace(site)
+        super
       end
 
       def server(ary)
         ary.each{|i|
           sleep 0.3
-          self[i]
-        }.empty? && self[nil]
+          get(i)
+        }.empty? && get(nil)
         sleep
       rescue InvalidID
         $opt.usage('(opt) [id] ....')

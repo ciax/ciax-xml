@@ -85,7 +85,7 @@ module CIAX
     class Sv < Exe
       def initialize(cfg)
         super(cfg)
-        @fsh=type?(cfg[:frm_list][@id],Frm::Exe)
+        @fsh=type?(cfg[:frm_list].get(@id),Frm::Exe)
         @mode=@fsh.mode
         @site_stat=@fsh.site_stat.add_db(@site_stat.db)
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file

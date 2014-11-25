@@ -22,7 +22,7 @@ module CIAX
         @event=Event.new.set_db(@adb)
         super('watch',@event['id'],Command.new(cfg))
         @cls_color=3
-        @ash=type?(cfg[:app_list][@id],App::Exe)
+        @ash=type?(cfg[:app_list].get(@id),App::Exe)
         @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
         @mode=@ash.mode
         @stat=@ash.stat

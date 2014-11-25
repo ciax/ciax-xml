@@ -1,12 +1,13 @@
 #!/usr/bin/ruby
-require "libvarx"
+require "libdatax"
 
 module CIAX
   module JumpList
-    class List < Varx
+    class List < Datax
       def initialize(level,upper=nil)
         @level=type?(level,Module)
         name=level.to_s.split(':').last
+        super(name)
         @cfg=Config.new("#{name.downcase}_list",upper)
         attr={'caption'=>"Switch #{name}s",'color'=>5,'column'=>2}
         @jumpgrp=Group.new(@cfg,attr).set_proc{|ent|
@@ -19,7 +20,7 @@ module CIAX
 
       def shell(key=nil,par=nil)
         begin
-          (self[key]||self[keys.last]).shell(par)
+          (get(key)||last).shell(par)
         rescue @level::Jump
           key,par=$!.to_s.split(':')
           retry

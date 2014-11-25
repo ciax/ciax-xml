@@ -22,7 +22,7 @@ module CIAX
         key="#{id}_list".to_sym
         lst=(@cfg[key]||=layer::List.new(@cfg))
         @jumpgrp.add_item(id,str+" mode",@pars)
-        self[id]=lst
+        set(id,lst)
       end
     end
 

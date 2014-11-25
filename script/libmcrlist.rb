@@ -4,15 +4,10 @@ require "libmcrexe"
 module CIAX
   module Mcr
     class List < Datax
-      attr_accessor :current # SID(String)
       def initialize(proj,ver=0)
         super('macro',{},'procs')
         self['id']=proj
         self['ver']=ver
-      end
-
-      def get_obj(sid)
-        @data[sid]
       end
 
       #convert the order number(Integer) to sid
@@ -25,11 +20,11 @@ module CIAX
       end
 
       def shell(sid=nil)
-        @current=sid||@current||return
+        (sid||=keys.last)||return
         begin
-          @data[@current].shell
+          @data[sid].shell
         rescue SiteJump
-          @current=$!.to_s
+          sid=$!.to_s
           retry
         end
         self
@@ -63,9 +58,8 @@ module CIAX
 
       def add(sh,id,title)
         type?(sh,Exe)
-        @current=id
-        @data[@current]=sh
-        @mjgrp.add_item(@current,title)
+        @data[id]=sh
+        @mjgrp.add_item(id,title)
         sh.cobj.lodom.join_group(@mjgrp)
         sh.shell_input_proc=proc{|args|
           num=args[0].to_i

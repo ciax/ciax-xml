@@ -80,7 +80,7 @@ module CIAX
         # Internal Command Group
         @cobj.intgrp.set_proc{|ent|
           sid=ent.par[0]
-          if sobj=@list.get_obj(sid)
+          if sobj=@list.get(sid)
             self['sid']=sid
             sobj.reply(ent.id)
           else
@@ -89,7 +89,7 @@ module CIAX
         }
         # External Command Group
         @cobj.ext_proc{|ent|
-          self['sid']=@list.add_seq(ent).current
+          self['sid']=@list.add_seq(ent).lastval
           @current=@list.size
           "ACCEPT"
         }

@@ -65,7 +65,7 @@ module CIAX
       @data.keys
     end
 
-    def last
+    def lastval
       get(keys.last)
     end
 

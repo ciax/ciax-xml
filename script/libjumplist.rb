@@ -20,7 +20,7 @@ module CIAX
 
       def shell(key=nil,par=nil)
         begin
-          (get(key)||last).shell(par)
+          (get(key)||lastval).shell(par)
         rescue @level::Jump
           key,par=$!.to_s.split(':')
           retry

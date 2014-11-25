@@ -41,19 +41,18 @@ module CIAX
         @res[6]=''
         pck=0
         bin=0
-        val=@stat.data
         @list.each{|key,title,len,type|
           len=len.to_i
           if key === '%pck'
             pck=len
             bin=0
           elsif pck > 0
-            bin+=val[key].to_i
+            bin+=@stat.get(key).to_i
             bin << 1
             pck-=1
             @res[6] << '%x' % bin if pck == 0
           else
-            if v=val[key]
+            if v=@stat.get(key)
               str=get_elem(type,len,v)
               verbose("HexView","#{title}/#{type}(#{len}) = #{str}")
             else

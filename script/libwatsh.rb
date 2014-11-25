@@ -27,11 +27,11 @@ module CIAX
         @mode=@ash.mode
         @stat=@ash.stat
         @cobj.svdom.replace @ash.cobj.svdom
-        @ash.batch_interrupt=@event.data['int']
+        @ash.batch_interrupt=@event.get('int')
         @output=@wview=View.new(@adb,@event).ext_prt
         @event.post_upd_procs << proc{|wat|
           @site_stat['watch'] = @event.active?
-          block=wat.data['block'].map{|id,par| par ? nil : id}.compact
+          block=wat.get('block').map{|id,par| par ? nil : id}.compact
           @ash.cobj.extgrp.valid_sub(block)
         }
         @ash.pre_exe_procs << proc{|args| @event.block?(args) }

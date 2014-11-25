@@ -6,7 +6,7 @@ require "thread"
 # Generate SQL command string
 module CIAX
   module SqLog
-    # Table create using @stat.data keys
+    # Table create using @stat.keys
     class Table
       attr_reader :tid,:stat,:tname
       include Msg
@@ -53,9 +53,9 @@ module CIAX
       private
       def expand
         val={'time'=>@stat['time']}
-        @stat.data.each{|k,v|
+        @stat.keys.each{|k|
           next if /type/ =~ k
-          case v
+          case v=@stat.get(k)
           when Array
             rec_expand(k,v,val)
           else

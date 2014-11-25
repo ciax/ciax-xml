@@ -6,7 +6,6 @@ module CIAX
   # @data is conveted to json file where @data will be appeared as self['data'].
   # @data never contains object which can't save with JSON
   class Datax < Varx
-    attr_reader :data
     def initialize(type,init_struct={},dataname='data')
       super(type)
       # Variable Data (Shown as 'data'(dataname) hash in JSON)
@@ -62,8 +61,12 @@ module CIAX
       @data.size
     end
 
+    def keys
+      @data.keys
+    end
+
     def last
-      get(@data.keys.last)
+      get(keys.last)
     end
 
     def ext_file(tag=nil) # File I/O

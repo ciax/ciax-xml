@@ -34,7 +34,7 @@ module CIAX
 
       def ext_shell
         @prompt_proc=proc{
-          size=@valid_pars.replace(@list.data.keys).size
+          size=@valid_pars.replace(@list.keys).size
           @current=size if size < @current || @current < 1
           "[%d]" % @current
         }

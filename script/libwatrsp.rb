@@ -20,9 +20,9 @@ module CIAX
         @windex.values.each{|v|
           @list|=v[:cnd].map{|i| i["var"]}
         }
-        # @stat.data(all) = @data['crnt'](picked) > @data['last']
+        # @stat.data(picked) = @data['crnt'](picked) > @data['last']
         # upd() => @data['last']<-@data['crnt']
-        #       => @data['crnt']<-@stat.data
+        #       => @data['crnt']<-@stat.data(picked)
         #       => check(@data['crnt'] <> @data['last']?)
         # Stat no changed -> clear exec, no eval
         @ctime=0
@@ -75,7 +75,7 @@ module CIAX
       def sync
         @list.each{|i|
           @data['last'][i]=@data['crnt'][i]
-          @data['crnt'][i]=@stat.data[i]
+          @data['crnt'][i]=@stat.get(i)
         }
       end
 
@@ -85,7 +85,7 @@ module CIAX
         rary=[]
         cklst.each{|ckitm|
           vn=ckitm['var']
-          val=@stat.data[vn]
+          val=@stat.get(vn)
           case ckitm['type']
           when 'onchange'
             cmp=@data['last'][vn]

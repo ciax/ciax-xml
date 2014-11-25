@@ -39,7 +39,7 @@ module CIAX
       end
 
       def add(id)
-        Hex.new(@cfg[:wat_list][id])
+        Hex.new(@cfg[:wat_list].get(id))
       end
     end
 

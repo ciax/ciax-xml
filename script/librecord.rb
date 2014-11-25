@@ -140,7 +140,7 @@ module CIAX
           stat=stats[site]
             inv=cond['inv']=h['inv']
             cmp=cond['cmp']=h['val']
-            actual=stat['msg'][var]||stat.data[var]
+            actual=stat['msg'][var]||stat.get(var)
             verbose("McrStep","site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},actual=#{actual}")
             cond['act']=actual
             cond['res']=match?(actual,cmp,cond['inv'])
@@ -154,14 +154,14 @@ module CIAX
 
       def scan
         sites.inject({}){|hash,site|
-          hash[site]=@cfg[:wat_list][site].stat
+          hash[site]=@cfg[:wat_list].get(site).stat
           hash
         }
       end
 
       def refresh
         sites.each{|site|
-          @cfg[:wat_list][site].stat.refresh
+          @cfg[:wat_list].get(site).stat.refresh
         }
       end
 

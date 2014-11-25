@@ -36,17 +36,17 @@ module CIAX
       private
       def conv
         ['exec','block','int','act_start','act_end','upd_next'].each{|id|
-          self[id]=@event.data[id]
+          self[id]=@event.get(id)
         }
         self['stat'].each{|id,v|
           v['cond'].each_index{|i|
             h=v['cond'][i]
             var=h['var']
-            h['val']=@event.data['crnt'][var]
-            h['res']=@event.data['res'][id][i]
-            h['cmp']=@event.data['last'][var] if h['type'] == 'onchange'
+            h['val']=@event.get('crnt')[var]
+            h['res']=@event.get('res')[id][i]
+            h['cmp']=@event.get('last')[var] if h['type'] == 'onchange'
           }
-          v['active']=@event.data['active'].include?(id)
+          v['active']=@event.get('active').include?(id)
         }
       end
     end

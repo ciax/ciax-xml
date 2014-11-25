@@ -37,7 +37,7 @@ module CIAX
               when 'time'
                 h['msg']=Msg.date(@stat['time'])
               else
-                h['msg']=@stat['msg'][id]||@stat.data[id]
+                h['msg']=@stat['msg'][id]||@stat.get(id)
               end
               set(h,'class',id)
             }

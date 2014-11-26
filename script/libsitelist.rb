@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libjumplist"
+require "liblist"
 require "libcommand"
 require "libsitedb"
 

@@ -5,7 +5,6 @@ require "libsitedb"
 
 module CIAX
   module Layer
-    include JumpList
     # Layer List
     class List < List
       def initialize(upper=nil)

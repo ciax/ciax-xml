@@ -5,7 +5,6 @@ require "libsitedb"
 
 module CIAX
   module Site
-    include JumpList
     # Site List
     class List < List
       # shdom: Domain for Shared Command Groups
@@ -17,8 +16,18 @@ module CIAX
       end
 
       def get(site)
-        set(site,add(site)) unless @data.key?(site)
+        add(site) unless @data.key?(site)
         @cfg[:site].replace(site)
+        super
+      end
+
+      def set(id,exe)
+        type?(exe,Exe)
+        return self if @data.key?(id)
+        # JumpGroup is set to Domain
+        @cfg[:jump_groups].each{|grp|
+          exe.cobj.lodom.join_group(grp)
+        }
         super
       end
 

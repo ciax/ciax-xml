@@ -99,7 +99,7 @@ module CIAX
 
       def add(id)
         @cfg[:db]=@cfg[:ldb].set(id)[:fdb]
-        jumpgrp(Frm.new(@cfg))
+        set(id,Frm.new(@cfg))
       end
     end
 

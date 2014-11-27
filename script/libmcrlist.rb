@@ -1,11 +1,14 @@
 #!/usr/bin/ruby
+require "liblist"
 require "libmcrexe"
 
 module CIAX
   module Mcr
-    class List < Datax
+    class List < List
       def initialize(proj,ver=0)
-        super('macro',{},'procs')
+        @cfg=Config.new('mcr_list')
+        @cfg[:dataname]='procs'
+        super(Mcr,@cfg)
         self['id']=proj
         self['ver']=ver
       end
@@ -17,18 +20,6 @@ module CIAX
 
       def sid_to_num(sid)
         @data.keys.index(sid)
-      end
-
-      def shell(sid=nil)
-        begin
-          (get(sid)||lastval).shell
-        rescue Jump
-          sid=$!.to_s
-          retry
-        end
-        self
-      rescue InvalidID
-        $opt.usage('(opt) [id]')
       end
 
       def to_s
@@ -49,25 +40,22 @@ module CIAX
       def initialize(proj,ver=0)
         super
         @tgrp=ThreadGroup.new
-        @cfg=Config.new('mcr_list')
         @cfg[:valid_keys]=@valid_keys=[]
-        @mjgrp=JumpGrp.new(@cfg)
         @post_upd_procs << proc{ @valid_keys.replace(@data.keys)}
       end
 
-      def add(sh,id,title)
-        type?(sh,Exe)
-        @data[id]=sh
-        @mjgrp.add_item(id,title)
-        sh.cobj.lodom.join_group(@mjgrp)
-        sh.shell_input_proc=proc{|args|
+      def set(id,exe)
+        type?(exe,Exe)
+        @jumpgrp.add_item(id,exe['cid'])
+        exe.cobj.lodom.join_group(@jumpgrp)
+        exe.shell_input_proc=proc{|args|
           num=args[0].to_i
           if num > 0 && num < 100
             args[0]=@data.keys[num-1]||''
           end
           args
         }
-        self
+        super
       end
 
       def add_seq(ent)
@@ -77,7 +65,7 @@ module CIAX
           @data.delete(s.id)
           clean
         }
-        add(ssh,ssh.id,ent.id)
+        set(ssh.id,ssh)
         ssh.fork(@tgrp)
         self
       end
@@ -96,17 +84,6 @@ module CIAX
           t.raise(Interrupt)
         }
         self
-      end
-    end
-
-    class JumpGrp < Group
-      def initialize(upper,crnt={})
-        super
-        @cfg['caption']='Switch Macros'
-        @cfg['color']=5
-        @cfg['column']=2
-        @cfg['line_number']=true
-        set_proc{|ent| raise(Jump,ent.id)}
       end
     end
 

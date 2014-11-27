@@ -9,6 +9,7 @@ module CIAX
       def initialize(proj,ver=0)
         @cfg=Config.new('mcr_list')
         @cfg[:dataname]='procs'
+        @cfg["line_number"]=true
         super(Mcr,@cfg)
         self['id']=proj
         self['ver']=ver
@@ -55,7 +56,7 @@ module CIAX
         exe.shell_input_proc=proc{|args|
           num=args[0].to_i
           if num > 0 && num < 100
-            args[0]=@data.keys[num-1]||''
+            args[0]=num_to_sid(num)||''
           end
           args
         }

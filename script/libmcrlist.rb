@@ -5,6 +5,7 @@ require "libmcrexe"
 module CIAX
   module Mcr
     class List < List
+      attr_reader :jumpgrp
       def initialize(proj,ver=0)
         @cfg=Config.new('mcr_list')
         @cfg[:dataname]='procs'
@@ -47,7 +48,10 @@ module CIAX
       def set(id,exe)
         type?(exe,Exe)
         @jumpgrp.add_item(id,exe['cid'])
-        exe.cobj.lodom.join_group(@jumpgrp)
+        # JumpGroup is set to Domain
+        @cfg[:jump_groups].each{|grp|
+          exe.cobj.lodom.join_group(grp)
+        }
         exe.shell_input_proc=proc{|args|
           num=args[0].to_i
           if num > 0 && num < 100

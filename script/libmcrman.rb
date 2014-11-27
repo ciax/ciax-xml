@@ -29,6 +29,7 @@ module CIAX
         lc=cfg[:list_class]||List
         @output=@list=lc.new(db['id'],db['version'])
         @valid_pars=@cobj.intgrp.valid_pars
+        @cobj.lodom.join_group(@list.jumpgrp)
         @mode='TEST'
       end
 

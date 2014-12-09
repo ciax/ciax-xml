@@ -23,12 +23,12 @@ module CIAX
 
     # update after processing (never iniherit, use conv() instead)
     def upd
-      pre_upd
+      pre_upd # Loading file at client
       verbose("Datax","UPD_PROC for [#{@type}:#{self['id']}]")
-      conv
+      conv # Data conversion
       self
     ensure
-      post_upd
+      post_upd # Save & Update super layer
     end
 
     def set_db(db)

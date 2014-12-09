@@ -111,6 +111,12 @@ module CIAX
       self[id]=@cfg[:item_class].new(@cfg,crnt)
     end
 
+    def del_item(id)
+      @valid_keys.delete(id)
+      @cmdary.last.delete(id)
+      delete(id)
+    end
+
     def update_items(labels)
       type?(labels,Hash).each{|id,title|
         add_item(id,title)

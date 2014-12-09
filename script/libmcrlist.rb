@@ -96,7 +96,7 @@ module CIAX
 
     if __FILE__ == $0
       ENV['VER']||='initialize'
-      GetOpts.new('t')
+      GetOpts.new('ten')
       begin
         cfg=Config.new('mcr_list')
         cfg[:wat_list]=Wat::List.new

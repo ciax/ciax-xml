@@ -4,12 +4,12 @@ require "librecord"
 require "libwatsh"
 
 module CIAX
-  # Modes            | Actual Status? | Force Entering | Query? | Moving | Retry Interval
-  # TEST(default):   | NO  | YES | YES | NO  | 0
-  # CHECK(-e):       | YES | YES | YES | NO  | 0
-  # DRYRUN(-ne):     | YES | YES | NO  | NO  | 0
-  # INTERACTIVE(-em):| YES | NO  | YES | YES | 1
-  # NONSTOP(-nem):   | YES | NO  | NO  | YES | 1
+  # Modes            | Actual Status? | Force Entering | Query? | Moving | Retry Interval | Record?
+  # TEST(default):   | NO  | YES | YES | NO  | 0 | NO
+  # CHECK(-e):       | YES | YES | YES | NO  | 0 | YES
+  # DRYRUN(-ne):     | YES | YES | NO  | NO  | 0 | YES
+  # INTERACTIVE(-em):| YES | NO  | YES | YES | 1 | YES
+  # NONSTOP(-nem):   | YES | NO  | NO  | YES | 1 | YES
 
   #MOTION:  TEST <-> REAL (m)
   #QUERY :  INTERACTIVE <-> NONSTOP(n)

@@ -17,7 +17,7 @@ module CIAX
       end
 
       def start(cfg)
-        ext_file(self['sid'])
+        $opt['e'] && ext_file(self['sid'])
         @cfg=type?(cfg,Config)
         self['cid']=@cfg[:cid] # Command ID (cmd:par)
         self['label']=@cfg['label'] # Label for CID

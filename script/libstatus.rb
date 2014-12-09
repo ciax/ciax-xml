@@ -3,7 +3,7 @@ require "libdatax"
 
 module CIAX
   module App
-    class Status < Datax
+    class Status < DataH
       # @ last*
       attr_reader :last
       def initialize(init_struct={})

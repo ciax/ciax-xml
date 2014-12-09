@@ -2,11 +2,11 @@
 require "libdatax"
 
 module CIAX
-  class List < Datax
+  class List < DataH
     def initialize(level,upper=nil)
       @level=type?(level,Module)
-      name=level.to_s.split(':').last
-      @cfg=Config.new("#{name.downcase}_list",upper)
+      name=level.to_s.split(':').last.downcase
+      @cfg=Config.new("#{name}_list",upper)
       super(name,{},@cfg[:dataname]||'list')
       attr={'caption'=>"Switch #{name}s",'color'=>5,'column'=>2}
       @jumpgrp=Group.new(@cfg,attr).set_proc{|ent|

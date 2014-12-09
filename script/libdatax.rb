@@ -27,6 +27,39 @@ module CIAX
       self
     end
 
+    def size
+      @data.size
+    end
+
+    def ext_file(tag=nil) # File I/O
+      extend File
+      ext_file(tag)
+      self
+    end
+
+    def ext_http(host=nil,tag=nil) # Read only as a client
+      extend Http
+      ext_http(host,tag)
+      self
+    end
+
+    private
+    def _getdata
+      verbose("Datax","Convert @data to [:data]")
+      hash=Hashx[self]
+      hash[@dataname]=@data
+      hash
+    end
+
+    def _setdata
+      verbose("Datax","Convert [:data] to @data")
+      @data=delete(@dataname).extend(Enumx)
+      self['time']||=now_msec
+      self
+    end
+  end
+
+  class DataH < Datax # @data is Hash
     # Update with strings (key=val,key=val,..)
     def str_update(str)
       type?(str,String)
@@ -57,43 +90,12 @@ module CIAX
       post_upd
     end
 
-    def size
-      @data.size
-    end
-
     def keys
       @data.keys
     end
 
     def lastval
       get(keys.last)
-    end
-
-    def ext_file(tag=nil) # File I/O
-      extend File
-      ext_file(tag)
-      self
-    end
-
-    def ext_http(host=nil,tag=nil) # Read only as a client
-      extend Http
-      ext_http(host,tag)
-      self
-    end
-
-    private
-    def _getdata
-      verbose("Datax","Convert @data to [:data]")
-      hash=Hashx[self]
-      hash[@dataname]=@data
-      hash
-    end
-
-    def _setdata
-      verbose("Datax","Convert [:data] to @data")
-      @data=delete(@dataname).extend(Enumx)
-      self['time']||=now_msec
-      self
     end
   end
 

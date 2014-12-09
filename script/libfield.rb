@@ -3,7 +3,7 @@ require 'libdatax'
 
 module CIAX
   module Frm
-    class Field < Datax
+    class Field < DataH
       attr_accessor :echo
       def initialize(init_struct={})
         super('field',init_struct)

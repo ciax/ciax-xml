@@ -4,7 +4,7 @@ require 'librerange'
 
 module CIAX
   module Wat
-    class Event < Datax
+    class Event < DataH
       attr_reader :period,:interval
       attr_accessor :def_proc
       def initialize

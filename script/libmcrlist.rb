@@ -44,6 +44,7 @@ module CIAX
         @tgrp=ThreadGroup.new
         @cfg[:valid_keys]=@valid_keys=[]
         @post_upd_procs << proc{ @valid_keys.replace(@data.keys)}
+        ext_file
       end
 
       def set(id,exe)
@@ -78,6 +79,7 @@ module CIAX
       def del_seq(id)
         @data.delete(id)
         @jumpgrp.del_item(id)
+        self
       end
 
       def clean
@@ -93,7 +95,7 @@ module CIAX
         @tgrp.list.each{|t|
           t.raise(Interrupt)
         }
-        self
+        upd
       end
     end
 

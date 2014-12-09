@@ -63,7 +63,7 @@ module CIAX
           "SET:#{ent.par[0]}=#{ent.par[1]}"
         }
         @cobj.item_proc('del'){|ent|
-          ent.par[0].split(',').each{|key| @stat.unset(key) }
+          ent.par[0].split(',').each{|key| @stat.del(key) }
           "DELETE:#{ent.par[0]}"
         }
         @cobj.item_proc('interrupt'){|ent|

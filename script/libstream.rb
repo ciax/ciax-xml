@@ -34,7 +34,7 @@ module CIAX
       reopen{
         @f.write(str)
       }
-      conv('snd',str,cid)
+      convert('snd',str,cid)
       self
     end
 
@@ -49,7 +49,7 @@ module CIAX
       end
       verbose("Client","Recieved #{str.size} byte on #{self['cmd']}")
       verbose("Client","Binary Recieving #{str.inspect}")
-      conv('rcv',str)
+      convert('rcv',str)
       self
     end
 
@@ -73,7 +73,7 @@ module CIAX
     end
 
     private
-    def conv(dir,data,cid=nil)
+    def convert(dir,data,cid=nil)
       self['time']=now_msec
       @binary=data
       update('dir'=>dir,'base64'=>encode(data))

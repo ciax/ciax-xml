@@ -82,14 +82,14 @@ module CIAX
 
       private
       def mk_frame(domain)
-        convert=nil
+        conv=nil
         @frame.reset
         @sel[domain].each{|a|
           case a
           when Hash
             frame=a['val'].gsub(/\$\{cc\}/){@frame.cc}
             frame=@field.subst(frame)
-            convert=true if frame != a['val']
+            conv=true if frame != a['val']
             frame.split(',').each{|s|
               @frame.add(s,a)
             }
@@ -98,7 +98,7 @@ module CIAX
           end
         }
         @fstr[domain]=@frame.copy
-        convert
+        conv
       end
     end
 

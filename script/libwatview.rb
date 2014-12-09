@@ -25,7 +25,7 @@ module CIAX
       end
 
       def to_s
-        conv
+        convert
         super
       end
 
@@ -34,7 +34,7 @@ module CIAX
       end
 
       private
-      def conv
+      def convert
         ['exec','block','int','act_start','act_end','upd_next'].each{|id|
           self[id]=@event.get(id)
         }
@@ -57,11 +57,11 @@ module CIAX
       end
 
       def to_s
-        conv
+        convert
       end
 
       private
-      def conv
+      def convert
         super
         tonext=Msg.elps_sec(now_msec,self['upd_next'])
         atime=Msg.elps_sec(self['act_start'],self['act_end'])

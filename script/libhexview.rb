@@ -25,8 +25,8 @@ module CIAX
             end
           end
         }
-        @stat.post_upd_procs << proc{conv}
-        conv
+        @stat.post_upd_procs << proc{convert}
+        convert
         self
       end
 
@@ -35,7 +35,7 @@ module CIAX
         test(?r,file) && file
       end
 
-      def conv
+      def convert
         @res[3]=b2i(@hint['watch'])
         @res[4]=b2i(@hint['isu'])
         @res[6]=''
@@ -102,7 +102,7 @@ module CIAX
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
         ldb=Site::Db.new.set(id)
         stat.set_db(ldb[:adb]).ext_file
-        hint=View.new(id,0,{},stat).conv
+        hint=View.new(id,0,{},stat).convert
         puts hint
       rescue InvalidID
         Msg.usage("[site] | < status_file")

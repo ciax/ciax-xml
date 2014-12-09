@@ -51,7 +51,7 @@ module CIAX
       end
 
       private
-      def conv
+      def convert
         return self unless @stat['time'] > @ctime
         @ctime=@stat['time']
         sync

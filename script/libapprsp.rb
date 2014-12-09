@@ -16,7 +16,7 @@ module CIAX
       end
 
       private
-      def conv
+      def convert
         @adbs.each{|id,hash|
           enclose("Rsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
             flds=hash[:fields]||next

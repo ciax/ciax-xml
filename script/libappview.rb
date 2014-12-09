@@ -10,7 +10,7 @@ module CIAX
       def initialize(adb,stat)
         @adbs=type?(adb,Db)[:status]
         @stat=type?(stat,Status)
-        @stat.post_upd_procs << proc{conv}
+        @stat.post_upd_procs << proc{convert}
         # Just additional data should be provided
         ['data','class','msg'].each{|key|
           stat[key]||={}
@@ -22,7 +22,7 @@ module CIAX
       end
 
       private
-      def conv
+      def convert
         @adbs[:group].each{|k,gdb|
           cap=gdb['caption'] || next
           self[k]={'caption' => cap,'lines'=>[]}
@@ -58,7 +58,7 @@ module CIAX
       end
 
       def to_s
-        conv
+        convert
         cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
         lines=[]
         each{|k,v|

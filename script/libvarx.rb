@@ -21,11 +21,11 @@ module CIAX
       @post_upd_procs=[] # Proc Array for Post-Process of Update Propagation to the upper Layers
     end
 
-    # update after processing (never iniherit, use conv() instead)
+    # update after processing (never iniherit, use convert() instead)
     def upd
       pre_upd # Loading file at client
       verbose("Varx","UPD_PROC for [#{@type}:#{self['id']}]")
-      conv # Data conversion
+      convert # Data conversion
       self
     ensure
       post_upd # Save & Update super layer
@@ -60,8 +60,8 @@ module CIAX
       [@type,self['id'],tag].compact.join('_')
     end
 
-    # Inherit conv() for upd function
-    def conv
+    # Inherit convert() for upd function
+    def convert
       self
     end
 

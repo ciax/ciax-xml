@@ -24,7 +24,7 @@ module CIAX
     # update after processing (never iniherit, use conv() instead)
     def upd
       pre_upd # Loading file at client
-      verbose("Datax","UPD_PROC for [#{@type}:#{self['id']}]")
+      verbose("Varx","UPD_PROC for [#{@type}:#{self['id']}]")
       conv # Data conversion
       self
     ensure

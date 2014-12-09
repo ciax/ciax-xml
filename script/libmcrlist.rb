@@ -67,7 +67,7 @@ module CIAX
         ssh=Seq.new(type?(ent,Entity))
         ssh.post_stat_procs << proc{upd}
         ssh.post_mcr_procs << proc{|s|
-          @data.delete(s.id)
+          del_seq(s.id)
           clean
         }
         set(ssh.id,ssh)
@@ -75,11 +75,16 @@ module CIAX
         self
       end
 
+      def del_seq(id)
+        @data.delete(id)
+        @jumpgrp.del_item(id)
+      end
+
       def clean
         @data.keys.each{|id|
-          @tgrp.list.any?{|t|
-            id == t[:sid]
-          }||@data.delete(id)
+          unless @tgrp.list.any?{|t| id == t[:sid]}
+            del_seq(id)
+          end
         }
         upd
       end

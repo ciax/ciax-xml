@@ -47,7 +47,7 @@ module CIAX
         rescue UserError
         end
         puts @shell_output_proc.call
-        p Thread.list.map{|t| t['name']}
+        verbose("Shell","Thread #{Threadx.list}")
       }
     end
   end

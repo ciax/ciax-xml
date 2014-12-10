@@ -13,6 +13,10 @@ module CIAX
       th[:name]=name
       th[:color]=color
     end
+
+    def self.list
+      Thread.list.map{|t| t['name']}
+    end
   end
 
   class ThreadLoop < Threadx

@@ -1,12 +1,11 @@
 ====================== Debug ======================
 *** Test Environment
-macro: interrupt doesn't finish macro.(13/11/14)-[13/11/15]
-macro: second macro issued -> INVALID(13/11/14)-[13/11/15]
+inssh: can't save 12/10/14
 macro: nonstop mode -> bad (13/11/14)
 macro: exec error needed (13/11/14)
 
 *** On-site
-any:interrupt doesn't work during execution(14/6/6)
+any:interrupt doesn't work during execution(14/6/6) : Done
 crt:cart pos/jack level inconsistency after error(14/6/6)
 crt:cart jack level error in oldmcr(12/1/31)
 dso:jack bolt stack after interrupt(12/8/15)
@@ -64,98 +63,3 @@ sql: easy log finder(date -> data)
 mcr-old:need interlock for dso/dsi manual or auto
 mcr-old:interlock error log
 mcr-old:remove door open interlock(11/2)
-
-========================== Result =============================
-***DISCARD
-field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain
-aso:need reset function for executing flag
-sql: using sqlite for symboling, labeling as cache
-app: watch layer will be separated as "Event" including interlock and skip
-
-***SOLVED
-debug:error "no such command 'exe'" in dsi
-station:OPT side = charging can be on under auto mode
-        IR side = carging will be off under auto mode 
-        --> Fixed, for no special reason. [4/17-4/21]
-dso:bolt stat is N/A with cramp -> macro interlock 
-         status corrected by farther push button [4/17-4/21]
-debug:VER=all getilk dsi fhook - makes Socket error [4/21]
-      refered dzi status in idb; connect to dzi makes error
-XML to DB: using libfrmdb, libclsdb[5/9]
-  ruby bug: segmentation fault inside of xmllib2 -> xml process description moves to hash at initialize
-    -> Purge xml access from operational method(getstat)
-    --> Purge xml access from adb stat [4/10]
-    --> Purge xml access from fdb stat [4/20]
-labeling: use the lib*cmd.rb -> use lib*db.rb
-symboling: symbol reference will move to status/value@symbol
-symboling&labeling: should be commutative
-interrupt: interrupt handling (add new error class)[5/23]
-grouping: sort function, move circular from libinssh[5/31]
-mcr: cart run1 at tag 9 with comics gives error with "No such key 'n'" [4/17]
-    -> mcr converted %r to n/a came from "ion"
-   --> ion symbol changed (0=OFF f=ON DEF=N/A -> DEF=ON) [4/21] 
-   ---> change both crt and dct (was crt only) [6/9]
-more variation:fdb//values/int@decode (sined/unsined, hexstr16,...) [6/13]
-libdb: chache function[8/15]
-mcr:dsi,dso/ exe finish immediately after command issue [4/17,6/9,6/19]
-crt:clssh crt gives error
-dts:status update works but appears incorrect status [4/17]
-dbchache: make it module -> independent class[9/1]
-objdb: using objdb to get iocmd instead of DB-object[9/1]
-status_??: update with clsobj -> save in cmd_thread of App::Sv[9/1]
-client,hprelay:using http for display status[9/8]
-hprelay: exe should be reset[9/6]
-Client: use socket instead of IoCmd(11/3)
-exadbc:need to verify frame commands(11/3)
-wdb: show watch status in shell(11/3)
-shell: toggle status display mode(view,stat,watch)(11/3)
-using sqlite for logging stat
-wdb: watch status log[12/7]
-rdb field log(fieldlog.sq3)[12/12]
-hexpack:crt:status is not correct 12/14
-cart:doesn't work on test run with appsh(11/2)
-cart:need clear tag command for reset manually on app mode
-command log (app level) 12/14
-crt: actual motion
-watch: multicondition
-inthex: update upper level status even if frame level(applevel) is manipulated(12/19)
-hexpack:crt:no exe stat just after command issued 12/14-(12/10 checked)
-frame log format(add version, data->base64)
-crt: tag_table readout(12/1/6) fixed by watanabe[1/20]
-crt/hexint:reset doesn't work(1/23/12) [1/26]
-dso/hexint:reset doesn't work(1/31)[2/3]
-dso/hexint:return immediately after pnumatic command isued (1/31)[2/8]
-frmcl,appcl: client should accept internal commands 
- xx -> validate internal commands in Frm::Sh or App::Sh
- -> no validation in client [2/9/12] 
-cart:attach at tag11 gives overload error by corn load unbalance [4/17]
-  -> Reduce Lv1 height of each jack that will be 27mm at #3 Jack. [6/9]
-  -> Lv1 height is set that is little bit higher than grounding[12/1/?]
-crt: not clear command trigger after running command issued(12/1/6) 
-crt:too short timeout for cart unnint (tag11-3) 1->12 OK
-AppPrt: make @view with item,label,caption etc. -> data name is pending
-Shell,Server: will become module and every int object will have this feature[4/14]
-prompt: will be object
-hexint: will be module
-field,stat: format standardize(4/26/12)
-update:add ext_???() method including add new method instead of extend(Module)
-intapp,intfrm/ set command should work at test (-t) mode
-more intelligent chache system with detecting file update like as Makefile
-Command: should includes procs
-libfrmrsp takes raw data -> Stream w/o IO (data+date) (2/15/13)
-Var::Val -> Var+module Upd(2/27/13)
-hexpack: too short return on exec (12/9/27)
-crt/hexint:return after command issued  without exe flag(12/1/6)
-bug: appsh -cf(4/8/13)
-server(???d) migrate to appsv
-client doesn't send any command (blank command was assinged to item)(12/12/19) -> send JSON
-crt:cart charging status is '4'(12/2/16) - hexpack bug
-dts:need more time to detect motion after moving command issue(12/3/12)
-mcr: batch mode w/showing progress
-list: applist,frmlit-> share db -> inslist
-crt:get_tbl doesn't work 13/6/12
-client status doesn't update (inssh -ec) 13/6/12
-var: module upd gets into Var
-var: rename Var to Data with new name space
-all: set entire name space (CIAX?)
-watch: no command issued by auto(reset at dsi command end) (12/9/27) [13/7/22]

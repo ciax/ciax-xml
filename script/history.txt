@@ -94,3 +94,4 @@ all: set entire name space (CIAX?)
 watch: no command issued by auto(reset at dsi command end) (12/9/27) [13/7/22]
 macro: interrupt doesn't finish macro.(13/11/14) : Done 13/11/15
 macro: second macro issued -> INVALID(13/11/14) : Done 13/11/15
+inssh: can't save 12/10/14 : Done 12/10/14

@@ -18,7 +18,7 @@ module CIAX
       @loghead=VarDir+"/"+type+"_#{id}"
       verbose(type.capitalize,"Initialize (#{id}/Ver.#{ver})")
       @queue=Queue.new
-      ThreadLoop.new("Logging(#{type}:#{ver})",11){
+      ThreadLoop.new("Old Logging(#{type}:#{id})",11){
         logary=[]
         begin
           logary << @queue.pop

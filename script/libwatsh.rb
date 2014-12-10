@@ -71,7 +71,7 @@ module CIAX
         @stat.post_upd_procs << proc{
           @event.upd.exec('event',2)
         }
-        @event.ext_logging if $opt['e'] && @stat['ver']
+        @event.ext_log if $opt['e'] && @stat['ver']
         @interval=@event.interval
         tid_auto=auto_update
         @post_exe_procs << proc{
@@ -80,7 +80,7 @@ module CIAX
       end
 
       def auto_update
-        ThreadLoop.new("Auto(#@id)",14){
+        ThreadLoop.new("Watch:Auto(#@id)",14){
           begin
             @event.exec('auto',3,[['upd']])
           rescue InvalidID

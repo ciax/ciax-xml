@@ -123,7 +123,7 @@ module CIAX
       @post_upd_procs << proc{
         @queue.push(to_j)
       }
-      ThreadLoop.new("Logging(#{@type}:#{ver})",11){
+      ThreadLoop.new("Logging(#{@type}:#{id})",11){
         logary=[]
         begin
           logary << @queue.pop

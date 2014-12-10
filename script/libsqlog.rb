@@ -89,7 +89,7 @@ module CIAX
         @cls_color=1
         @pfx_color=10
         verbose("Server","Initialize '#{id}' on #{layer}")
-        ThreadLoop.new("SqLog(#{id})",13){
+        ThreadLoop.new("SqLog(#{layer}:#{id})",13){
           sqlary=['begin;']
           begin
             sqlary << @queue.pop

@@ -16,6 +16,7 @@ module CIAX
       shg.add_dummy('q',"Quit")
       shg.add_dummy('^D',"Interrupt")
       @cobj.hidgrp.add_item(nil)
+      Thread.current['name']='Main'
       self
     end
 
@@ -46,6 +47,7 @@ module CIAX
         rescue UserError
         end
         puts @shell_output_proc.call
+        p Thread.list.map{|t| t['name']}
       }
     end
   end

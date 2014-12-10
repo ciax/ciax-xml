@@ -2,15 +2,15 @@
 require "libvarx"
 
 module CIAX
+  # Structure
+  # {
+  #   @binary
+  #   time:Int
+  #   dir:(snd,rcv)
+  #   cmd:String
+  #   base64: encoded data
+  # }
   class Stream < Varx
-    # Structure
-    # {
-    #   @binary
-    #   time:Int
-    #   dir:(snd,rcv)
-    #   cmd:String
-    #   base64: encoded data
-    # }
     attr_reader :binary
     def initialize(id,ver,iocmd,wait=0,timeout=nil)
       Msg.abort(" No IO command") if iocmd.to_a.empty?

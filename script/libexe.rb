@@ -98,7 +98,7 @@ module CIAX
       verbose("UDP:Server","Initialize(#@id):#{port}")
       udp=UDPSocket.open
       udp.bind("0.0.0.0",port.to_i)
-      ThreadLoop.new("Server(#@id)",9){
+      ThreadLoop.new("Server(#@layer:#@id)",9){
         IO.select([udp])
         line,addr=udp.recvfrom(4096)
         line.chomp!

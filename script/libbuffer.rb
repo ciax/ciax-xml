@@ -58,7 +58,7 @@ module CIAX
     end
 
     def recv_proc
-      @tid=ThreadLoop.new("Buffer",12){
+      @tid=ThreadLoop.new("Buffer(#{self['id']})",12){
         begin
           rcv=@q.shift
           sort(rcv[:pri],rcv[:batch])

@@ -145,7 +145,6 @@ module CIAX
 
     # Saving data of specified keys with tag
     def save_key(keylist,tag=nil)
-      Msg.com_err("No File") unless @base
       hash={}
       keylist.each{|k|
         if @data.key?(k)
@@ -191,7 +190,7 @@ module CIAX
       if tag
         Msg.par_err("No such Tag","Tag=#{tag_list}")
       else
-        warning("File","  -- no json file (#{@base})")
+        warning("File","  -- no json file (#{base})")
       end
     ensure
       post_upd

@@ -21,7 +21,7 @@ module CIAX
       begin
         (get(key)||lastval).shell(par)
       rescue @level::Jump
-          key,par=$!.to_s.split(':')
+        key,par=$!.to_s.split(':')
         retry
       rescue InvalidID
         $opt.usage('(opt) [id]')

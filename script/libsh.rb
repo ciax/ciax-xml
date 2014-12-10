@@ -29,7 +29,7 @@ module CIAX
     # invoked many times.
     # '^D' gives interrupt
     # mode gives special break (loop returns mode).
-    def shell(dmy=nil)
+    def shell(dmy=nil) # dmy: compatibility with List#shell()
       verbose("Shell","Shell(#@id)")
       Readline.completion_proc=proc{|word|
         (@cobj.valid_keys+@cobj.valid_pars).grep(/^#{word}/)

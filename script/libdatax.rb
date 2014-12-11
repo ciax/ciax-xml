@@ -158,9 +158,9 @@ module CIAX
       else
         tag||=(tag_list.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
         Msg.msg("Status Saving for [#{tag}]")
-        output=Hash[self]
+        output=Hashx[self]
         output[@dataname]=hash
-        write_json(output,tag)
+        write_json(output.to_j,tag)
       end
       self
     end

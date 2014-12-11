@@ -70,7 +70,7 @@ module CIAX
     class ManSv < Man
       def initialize(cfg)
         cfg[:list_class]=SvList
-        cfg[:submcr_proc]=proc{|args| exe(args)}
+        cfg[:submcr_proc]=proc{|args,src| exe(args,src)}
         super
         @mode='SV'
         type?(cfg[:wat_list],Wat::List)

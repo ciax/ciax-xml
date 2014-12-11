@@ -85,7 +85,7 @@ module CIAX
               @cfg[:wat_list].get(e1['site']).exe(e1['args']) if exec?(@step.exec?)
             when 'mcr'
               if @step.async? && @cfg[:submcr_proc].is_a?(Proc)
-                @step['sid']=@cfg[:submcr_proc].call(e1['args'])['sid']
+                @step['sid']=@cfg[:submcr_proc].call(e1['args'],@id)['sid']
               end
             end
           rescue Retry
@@ -101,7 +101,7 @@ module CIAX
       rescue Interrupt
         msg("\nInterrupt Issued to running devices #{@running}")
         @running.each{|site|
-          @cfg[:wat_list].get(site).exe(['interrupt'])
+          @cfg[:wat_list].get(site).exe(['interrupt'],'user')
         } if $opt['m']
         finish('interrupted')
         self

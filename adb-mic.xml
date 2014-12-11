@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
+  <app frm_id="mic" id="mic" label="Micronix Piezo Motor">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+      <group id="g0" caption="Device">
+        <item id="upd" label="Update Status">
+          <repeat from="1" to="6">
+            <frmcmd name="getst">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getp">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="geta">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="home" label="Home Position">
+          <repeat from="1" to="6">
+            <frmcmd name="home">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+      </group>
+    </commands>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <group id="g1" caption="Linear" column="4">
+        <repeat_var from="1" to="6">
+          <string id="st$_" label="Status $_">
+            <field ref="st" index="$_-1" />
+          </string>
+          <float id="px$_" label="X Pos $_" format="%5.2f">
+            <field ref="pos" index="$_-1:0" />
+          </float>
+          <float id="py$_" label="Y Pos $_" format="%5.2f">
+            <field ref="pos" index="$_-1:1" />
+          </float>
+          <float id="acc$_" label="Accel $_" format="%5.2f">
+            <field ref="acc" index="$_-1" />
+          </float>
+        </repeat_var>
+      </group>
+    </status>
+  </app>
+</adb>

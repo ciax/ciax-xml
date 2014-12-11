@@ -162,6 +162,7 @@
   <instance id="map" label="MOIRCS Air Pressure" app_id="oma"/>
   <instance id="mma" label="MOIRCS Extension Arm" app_id="mma"/>
   <instance id="mmc" label="MOIRCS Carrousel" app_id="mmc"/>
+  <instance id="mmf" label="MOIRCS Focus" app_id="mic"/>
   <instance id="mix" label="MOIRCS Turret" app_id="ixe"/>
   <instance id="mva" label="MOIRCS Pumping" app_id="var"/>
   <instance id="mft" label="MOIRCS Hall Sensor" app_id="fpa"/>

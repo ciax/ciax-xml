@@ -130,6 +130,10 @@
     <adb port="25622" />
     <fdb iocmd="socat - tcp:atlas:59999" />
   </site>
+  <site id="mmf" label="MOIRCS Focus Actuator" ins_id="mmf">
+    <adb port="25623" />
+    <fdb iocmd="socat - tcp:localhost:19990" />
+  </site>
   <site id="sdm" label="Slosyn dummy" ins_id="mma">
     <adb port="25699" />
     <fdb iocmd="socat - tcp:localhost:10001" />

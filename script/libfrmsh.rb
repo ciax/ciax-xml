@@ -76,7 +76,7 @@ module CIAX
         }
         @cobj.item_proc('set'){|ent|
           @field.set(ent.par[0],ent.par[1])
-          @flush_procs.each{|p| p.call(self)}
+          flush
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
         @cobj.item_proc('save'){|ent|
@@ -85,10 +85,16 @@ module CIAX
         }
         @cobj.item_proc('load'){|ent|
           @field.load(ent.par[0]||'').save
-          @flush_procs.each{|p| p.call(self)}
+          flush
           "Load [#{ent.par[0]}]"
         }
         ext_server(@fdb['port'].to_i)
+      end
+
+      private
+      def flush
+        @flush_procs.each{|p| p.call(self)}
+        self
       end
     end
 

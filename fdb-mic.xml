@@ -25,7 +25,7 @@
         <string>ACC?</string>
       </item>
       <!-- Motion Commands -->
-      <item id="home" label="Move to Home position [1-6]" response="geta" type="stat">
+      <item id="home" label="Move to Home position [1-6]" type="action">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>HOM</string>

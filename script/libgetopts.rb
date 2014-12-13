@@ -8,7 +8,8 @@ module CIAX
       Msg.type?(str,String)
       optdb={}
       #Layer
-      optdb['a']='app layer (default)'
+      optdb['w']='wat layer (default)'
+      optdb['a']='app layer'
       optdb['f']='frm layer'
       optdb['x']='hex layer'
       #Client option
@@ -21,6 +22,7 @@ module CIAX
       #For appearance
       optdb['v']='visual output (default)'
       optdb['r']='raw data output'
+      optdb['j']='json data output'
       #For macro
       optdb['n']='non-stop mode'
       optdb['l']='local client'
@@ -33,6 +35,8 @@ module CIAX
         optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
       }.compact
       update(ARGV.getopts(str))
+      $layer=[]
+      {'f' => Frm, 'a' => App, 'w' => Wat, 'x' => Hex}.each{|k,v| $layer << v if self[k] }
       $opt=self
     end
 

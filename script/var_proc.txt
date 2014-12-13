@@ -1,0 +1,137 @@
+#### PROC VARS
+## Related to Update
+
+  Varx@pre_upd_procs
+    structure: Array[Proc,..]
+    args: Varx(self)
+    called: Varx#pre_upd
+
+  Varx@post_upd_procs
+    structure: Array[Proc,..]
+    args: Varx(self)
+    called: Varx#pre_upd
+
+  Mcr::Step@upd_proc   
+    structure: Proc
+    args: no
+    called: Step#(timeout?, upd)
+    set: Step#initialize
+  ** Step could migrate to Varx
+
+## Related to Command
+
+  @cfg[:def_proc]
+    structure: Proc
+    args:
+      Entity, String(source), Integer(priority)
+    called:
+      Entity#execmd
+    set_methods:
+      (Command,Domain,Group)#set_proc(&) 
+      (Command,Domain,Group)#item_proc(id,&) 
+      (App/Frm/Mcr)::Command#ext_proc(&) 
+
+## Related to Event(DataH)
+
+  @def_proc
+    structure: Proc
+    args:
+      Entity, String(source), Integer(priority)
+    called:
+      Wat::Rsp(Event)#exec
+
+  @post_exe_procs
+    structure: Array[Proc,..]
+    args:(on each element)
+      Entity, String(source), Integer(priority)
+    called:
+      Wat::Rsp(Event)#exec
+
+## Related to Exe
+
+  @pre_exe_procs
+    structure: Array[Proc,..]
+    args: Array(command)
+    called: Exe#exe
+
+  @post_exe_procs
+    structure: Array[Proc,..]
+    args: Exe(self)
+    called: Exe#exe
+
+  @server_input_proc
+    structure: Proc
+    args: String(command line)
+    called: Server(Exe)#ext_server
+    
+  @server_output_proc
+    structure: Proc
+    args: no
+    called: Server(Exe)#ext_server
+
+  @shell_input_proc
+    structure: Proc
+    args: Array(command)
+    calld: Shell#shell
+
+  @shell_output_proc
+    args: no
+    structure: Proc
+    called: Shell#shell
+
+  Shell@prompt_proc
+    structure: Proc
+    args: no
+    called: Shell#prompt
+
+## Related to Frm
+
+  Exe@flush_procs
+    structure: Array[Proc,..]
+    args:(on each element)
+      Frm::Exe(self)
+    called: Frm::Sv#initialize
+
+  Rsp(Field)@input_proc
+    structure: Proc
+    args: no
+    called: Rsp:ext_rsp
+
+## Related to Buffer
+
+  @flush_proc
+    structure: Proc
+    args: Buffer(self)
+    called: flush
+    set_methods: flush_proc
+
+  @send_proc  
+    structure: Proc
+    args: Entity
+    called: send
+    set_methods: send_proc
+
+  @recv_proc  
+    structure: Proc
+    args: Array(args),String(src)
+    called: server
+    set_methods: recv_proc
+
+## Related to Mcr::Seq(Exe)
+
+  @post_stat_procs
+    structure: Array[Proc,..]
+    args:(on each element)
+      Seq(self)
+    called: set_stat
+
+  @post_mcr_procs
+    structure: Array[Proc,..]
+    args:(on each element)
+      Seq(self)
+    called: finish
+
+  @cfg[:submcr_proc]
+    structure: Proc
+    args: Array(args),String(id)
+    called: macro

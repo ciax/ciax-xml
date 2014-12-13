@@ -10,7 +10,11 @@ module CIAX
     end
 
     def to_s
-      view_struct
+      if $opt['j']
+        to_j
+      else
+        view_struct
+      end
     end
 
     def to_j

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libhexsh"
+require "libhexexe"
 
 ENV['VER']||='initialize'
 CIAX::GetOpts.new('e')

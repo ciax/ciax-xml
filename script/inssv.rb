@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libwatsh"
+require "libwatexe"
 
 module CIAX
   module Wat

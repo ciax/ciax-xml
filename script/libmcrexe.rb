@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmcrcmd"
 require "librecord"
-require "libwatsh"
+require "libwatexe"
 
 module CIAX
   # Modes            | Actual Status? | Force Entering | Query? | Moving | Retry Interval | Record?

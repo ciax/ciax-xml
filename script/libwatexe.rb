@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libwatview"
-require "libappsh"
+require "libappexe"
 
 module CIAX
   module Wat

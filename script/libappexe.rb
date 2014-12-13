@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libfrmsh'
+require 'libfrmexe'
 require "libappview"
 require "libwatview"
 require "libappcmd"

@@ -201,7 +201,7 @@ module CIAX
   end
 
   if __FILE__ == $0
-    require "libappsh"
+    require "libappexe"
     GetOpts.new
     id=ARGV.shift
     lev=ARGV.shift

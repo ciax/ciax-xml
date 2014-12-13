@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # Ascii Pack
 require "libhexview"
-require "libwatsh"
+require "libwatexe"
 
 module CIAX
   module Hex

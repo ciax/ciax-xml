@@ -134,7 +134,7 @@ module CIAX
           sleep(@interval||0.1)
           # Auto issue by watch
         }
-        buf
+        buf.server
       end
     end
 

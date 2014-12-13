@@ -33,11 +33,17 @@ module CIAX
       @tid=nil
       @flush_proc=proc{}
       @send_proc=proc{}
+      @recv_proc=proc{}
       clear
     end
 
     def send_proc
       @send_proc=proc{|ent| yield ent}
+      self
+    end
+
+    def recv_proc
+      @recv_proc=proc{|args,src| yield args,src}
       self
     end
 
@@ -57,13 +63,13 @@ module CIAX
       post_upd
     end
 
-    def recv_proc
+    def server
       @tid=ThreadLoop.new("Buffer(#{self['id']})",12){
         begin
           rcv=@q.shift
           sort(rcv[:pri],rcv[:batch])
           while args=pick
-            yield args,rcv[:src]
+            @recv_proc.call(args,rcv[:src])
           end
           flush
         rescue

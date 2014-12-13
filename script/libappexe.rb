@@ -29,7 +29,8 @@ module CIAX
         @stat=Status.new.set_db(@adb)
         super('app',@stat['id'],Command.new(cfg))
         @cls_color=2
-        @output=@print=View.new(@adb,@stat)
+        @print=View.new(@adb,@stat)
+        @output=$opt['j']?@stat:@print
         @batch_interrupt=[]
         @site_stat.add_db('isu' => '*')
         @prompt_proc=proc{ @site_stat.to_s }

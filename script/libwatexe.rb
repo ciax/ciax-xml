@@ -28,7 +28,8 @@ module CIAX
         @stat=@ash.stat
         @cobj.svdom.replace @ash.cobj.svdom
         @ash.batch_interrupt=@event.get('int')
-        @output=@wview=View.new(@adb,@event).ext_prt
+        @wview=View.new(@adb,@event).ext_prt
+        @output=$opt['j']?@event:@wview
         @event.post_upd_procs << proc{|wat|
           @site_stat['watch'] = @event.active?
           block=wat.get('block').map{|id,par| par ? nil : id}.compact

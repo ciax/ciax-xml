@@ -15,6 +15,10 @@ module CIAX
         @cfg[:site]||=''
       end
 
+      def exe(args)
+        get(args.shift).exe(args,'local')
+      end
+
       def get(site)
         add(site) unless @data.key?(site)
         @cfg[:site].replace(site)

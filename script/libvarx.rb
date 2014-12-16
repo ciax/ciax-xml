@@ -4,7 +4,7 @@ require "libdb"
 
 module CIAX
   class Varx < Hashx
-    attr_reader :type,:pre_upd_procs,:post_upd_procs
+    attr_reader :type
     def initialize(type,id=nil,ver=nil,host=nil)
       @type=type
       # Headers
@@ -16,20 +16,9 @@ module CIAX
       @thread=Thread.current # For Thread safe
       @cls_color=2
       @pfx_color=6
-      # Updater
-      @pre_upd_procs=[] # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @post_upd_procs=[] # Proc Array for Post-Process of Update Propagation to the upper Layers
+      super()
     end
 
-    # update after processing (never iniherit, use convert() instead)
-    def upd
-      pre_upd # Loading file at client
-      verbose("Varx","UPD_PROC for [#{@type}:#{self['id']}]")
-      convert # Data conversion
-      self
-    ensure
-      post_upd # Save & Update super layer
-    end
 
     def set_db(db)
       @db=type?(db,Db)
@@ -58,21 +47,6 @@ module CIAX
 
     def file_base(tag=nil)
       [@type,self['id'],tag].compact.join('_')
-    end
-
-    # Inherit convert() for upd function
-    def convert
-      self
-    end
-
-    def pre_upd
-      @pre_upd_procs.each{|p| p.call(self)}
-      self
-    end
-
-    def post_upd
-      @post_upd_procs.each{|p| p.call(self)}
-      self
     end
   end
 

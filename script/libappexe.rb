@@ -147,7 +147,7 @@ module CIAX
 
       def add(id)
         @cfg[:db]=@cfg[:ldb].set(id)[:adb]
-        @cfg[:sqlog]||=SqLog::Save.new(id,'App')
+        @cfg[:sqlog]||=SqLog::Save.new(id,'App') if $opt['e']
         set(id,App.new(@cfg))
       end
     end

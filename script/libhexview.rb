@@ -25,7 +25,7 @@ module CIAX
             end
           end
         }
-        @stat.post_upd_procs << proc{convert}
+        @stat.post_upd_procs << proc{upd}
         convert
         self
       end
@@ -66,8 +66,6 @@ module CIAX
         }
         self['hex']=@res.join('')
         self
-      ensure
-        post_upd
       end
 
       def to_s

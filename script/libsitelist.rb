@@ -15,7 +15,7 @@ module CIAX
         @cfg[:site]||=''
       end
 
-      def exe(args)
+      def exe(args) # As a individual cui command
         get(args.shift).exe(args,'local')
       end
 

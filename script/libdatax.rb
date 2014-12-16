@@ -131,7 +131,7 @@ module CIAX
 
     private
     def file_url(tag=nil)
-      "http://"+host+"/json/"+file_base(tag)+'.json'
+      "http://"+@host+"/json/"+file_base(tag)+'.json'
     end
   end
 

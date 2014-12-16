@@ -17,6 +17,7 @@ module CIAX
       ALL='all-list'
       @@root={}
       def initialize(type,group=nil)
+        super()
         @cls_color=4
         @pfx_color=2
         /.+/ =~ type || Msg.cfg_err("No Db Type")

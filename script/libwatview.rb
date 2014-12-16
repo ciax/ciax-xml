@@ -1,12 +1,14 @@
 #!/usr/bin/ruby
 require 'libwatrsp'
 
-# View is not used for computing, just for apperance for user. So the convert process can be included in to_s
+# View is not used for computing, just for apperance for user.
+# So the convert process (upd) will be included in to_s
 module CIAX
   module Wat
     # Decorate the event data (Put caption,symbole,etc.) from WDB
     class View < Hashx
       def initialize(adb,watch)
+        super()
         wdb=type?(adb,App::Db)[:watch]||{:index =>[]}
         @event=type?(watch,Event)
         self['stat']={}
@@ -25,7 +27,7 @@ module CIAX
       end
 
       def to_s
-        convert
+        upd
         super
       end
 
@@ -34,7 +36,7 @@ module CIAX
       end
 
       private
-      def convert
+      def upd_core
         ['exec','block','int','act_start','act_end','upd_next'].each{|id|
           self[id]=@event.get(id)
         }
@@ -57,11 +59,6 @@ module CIAX
       end
 
       def to_s
-        convert
-      end
-
-      private
-      def convert
         super
         tonext=Msg.elps_sec(now_msec,self['upd_next'])
         atime=Msg.elps_sec(self['act_start'],self['act_end'])
@@ -76,6 +73,7 @@ module CIAX
         str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
       end
 
+      private
       def conditions(str)
         self['stat'].each{|id,i|
           str << "    "+Msg.color(i['label'],6)+"\t: "

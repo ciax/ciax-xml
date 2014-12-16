@@ -2,15 +2,16 @@
 require "libappsym"
 
 # View is not used for computing, just for apperance for user.
-# So the convert process can be included in to_s
+# So the convert process (upd) will be included in to_s
 # Updated at to_s.
 module CIAX
   module App
     class View < Hashx
       def initialize(adb,stat)
+        super()
         @adbs=type?(adb,Db)[:status]
         @stat=type?(stat,Status)
-        @stat.post_upd_procs << proc{convert}
+        @stat.post_upd_procs << proc{upd}
         # Just additional data should be provided
         ['data','class','msg'].each{|key|
           stat[key]||={}
@@ -22,7 +23,7 @@ module CIAX
       end
 
       private
-      def convert
+      def upd_core
         @adbs[:group].each{|k,gdb|
           cap=gdb['caption'] || next
           self[k]={'caption' => cap,'lines'=>[]}
@@ -54,7 +55,7 @@ module CIAX
       end
 
       def to_s
-        convert
+        upd
         cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
         lines=[]
         each{|k,v|

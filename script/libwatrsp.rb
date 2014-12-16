@@ -51,7 +51,7 @@ module CIAX
       end
 
       private
-      def convert
+      def upd_core
         return self unless @stat['time'] > @ctime
         @ctime=@stat['time']
         sync

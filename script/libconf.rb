@@ -10,6 +10,7 @@ module CIAX
   class Config < Hashx
     attr_reader :generation
     def initialize(name,cfg=nil)
+      super()
       @generation=[self]
       self[:level]=name
       override(cfg) if cfg

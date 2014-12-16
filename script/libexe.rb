@@ -12,6 +12,7 @@ module CIAX
   class Prompt < Hashx
     attr_reader :db
     def initialize
+      super()
       @db={}
     end
 

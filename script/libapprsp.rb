@@ -16,7 +16,7 @@ module CIAX
       end
 
       private
-      def convert
+      def upd_core
         @adbs.each{|id,hash|
           enclose("Rsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
             flds=hash[:fields]||next

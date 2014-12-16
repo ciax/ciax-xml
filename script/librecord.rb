@@ -118,7 +118,7 @@ module CIAX
       def body(msg); msg; end
 
       private
-      def convert
+      def upd_core
         show result
       end
 

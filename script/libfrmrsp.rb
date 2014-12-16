@@ -34,7 +34,7 @@ module CIAX
       end
 
       private
-      def convert
+      def upd_core
         @sel=Hash[@skel]
         if rid=@ent.cfg['response']
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")

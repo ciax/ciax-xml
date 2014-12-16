@@ -134,11 +134,11 @@ module CIAX
       hash
     end
 
-    # update after processing (never iniherit, use convert() instead)
+    # update after processing (never iniherit, use upd_core() instead)
     def upd
       pre_upd # Loading file at client
       verbose("Varx","UPD_PROC for [#{@type}:#{self['id']}]")
-      convert # Data conversion
+      upd_core # Data conversion
       self
     ensure
       post_upd # Save & Update super layer
@@ -150,8 +150,8 @@ module CIAX
       self
     end
 
-    # Inherit convert() for upd function
-    def convert
+    # Inherit upd_core() for upd function
+    def upd_core
       self
     end
 

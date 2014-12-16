@@ -114,8 +114,9 @@ module CIAX
           self['msg']=$!.to_s
           errmsg
         end
-        verbose("UDP:Server","Send:#{self['msg']}")
-        udp.send(@server_output_proc.call,0,addr[2],addr[1])
+        send_str=@server_output_proc.call
+        verbose("UDP:Server","Send:#{send_str}")
+        udp.send(send_str,0,addr[2],addr[1])
       }
       self
     end

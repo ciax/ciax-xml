@@ -10,7 +10,7 @@ module CIAX
     end
 
     def to_s
-      if $opt['j']
+      if $opt && $opt['j']
         to_j
       else
         view_struct

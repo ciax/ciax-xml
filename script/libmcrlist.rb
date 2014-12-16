@@ -47,22 +47,6 @@ module CIAX
         ext_file
       end
 
-      def set(id,exe)
-        type?(exe,Exe)
-        @jumpgrp.add_item(id,exe['cid'])
-        # JumpGroup is set to Domain
-        @cfg[:jump_groups].each{|grp|
-          exe.cobj.lodom.join_group(grp)
-        }
-        exe.shell_input_proc=proc{|args|
-          num=args[0].to_i
-          if num > 0 && num < 100
-            args[0]=num_to_sid(num)||''
-          end
-          args
-        }
-        super
-      end
 
       def add_seq(ent)
         ssh=Seq.new(type?(ent,Entity))
@@ -70,6 +54,19 @@ module CIAX
         ssh.post_mcr_procs << proc{|s|
           del_seq(s.id)
           clean
+        }
+        # JumpGroup is set to Domain
+        @jumpgrp.add_item(ssh.id,ssh['cid'])
+        @cfg[:jump_groups].each{|grp|
+          ssh.cobj.lodom.join_group(grp)
+        }
+        # Set input alias as number
+        ssh.shell_input_proc=proc{|args|
+          num=args[0].to_i
+          if num > 0 && num < 100
+            args[0]=num_to_sid(num)||''
+          end
+          args
         }
         set(ssh.id,ssh)
         ssh.fork(@tgrp)

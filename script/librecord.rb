@@ -26,7 +26,8 @@ module CIAX
 
       def add_step(e1)
         Msg.type?(@cfg[:wat_list],Wat::List)
-        step=Step.new(e1,@cfg){post_upd}
+        step=Step.new(e1,@cfg)
+        step.post_upd_procs << proc{post_upd}
         step['time']=Msg.elps_sec(self['time'])
         @data << step
         step
@@ -44,12 +45,12 @@ module CIAX
     end
 
     class Step < Hashx
-      def initialize(db,cfg,&upd_proc)
+      def initialize(db,cfg)
+        super()
         update db
         self['depth']=db['depth']
         #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
         @cfg=cfg
-        @upd_proc=upd_proc
         @condition=delete('stat')
         @break=nil
         extend PrtStep unless $opt['r']
@@ -65,7 +66,7 @@ module CIAX
           break if condition_ok?
           sleep itv
           yield
-          @upd_proc.call
+          post_upd
         }
         self['result']= res ? 'timeout' : 'pass'
         upd
@@ -117,8 +118,7 @@ module CIAX
       def body(msg); msg; end
 
       private
-      def upd
-        @upd_proc.call
+      def convert
         show result
       end
 

@@ -6,6 +6,7 @@ module CIAX
   class Varx < Hashx
     attr_reader :type
     def initialize(type,id=nil,ver=nil,host=nil)
+      super()
       @type=type
       # Headers
       self['time']=now_msec
@@ -16,7 +17,6 @@ module CIAX
       @thread=Thread.current # For Thread safe
       @cls_color=2
       @pfx_color=6
-      super()
     end
 
 

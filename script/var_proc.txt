@@ -1,22 +1,15 @@
 #### PROC VARS
 ## Related to Update
 
-  Varx@pre_upd_procs
+  Hashx@pre_upd_procs
     structure: Array[Proc,..]
-    args: Varx(self)
-    called: Varx#pre_upd
+    args: Hashx(self)
+    called: Hashx#pre_upd
 
-  Varx@post_upd_procs
+  Hashx@post_upd_procs
     structure: Array[Proc,..]
-    args: Varx(self)
-    called: Varx#pre_upd
-
-  Mcr::Step@upd_proc   
-    structure: Proc
-    args: no
-    called: Step#(timeout?, upd)
-    set: Step#initialize
-  ** Step could migrate to Varx
+    args: Hashx(self)
+    called: Hashx#pre_upd
 
 ## Related to Command
 

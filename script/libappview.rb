@@ -39,16 +39,12 @@ module CIAX
               else
                 h['msg']=@stat['msg'][id]||@stat.get(id)
               end
-              set(h,'class',id)
+              h['class']=@stat['class'][id] if @stat['class'].key?(id)
             }
             self[k]['lines'] << hash
           }
         }
         self
-      end
-
-      def set(hash,key,id)
-        hash[key]=@stat[key][id] if @stat[key].key?(id)
       end
     end
 

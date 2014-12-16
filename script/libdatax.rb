@@ -76,7 +76,7 @@ module CIAX
       @data[key]
     end
 
-    def set(key,val)
+    def set(key,val) # super should be placed at the end of method
       @data[key]=val
       self['time']=now_msec
       self
@@ -84,7 +84,7 @@ module CIAX
       post_upd
     end
 
-    def del(key)
+    def del(key) # super should be placed at the end of method
       @data.delete(key)
       self['time']=now_msec
       self

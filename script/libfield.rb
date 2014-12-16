@@ -77,13 +77,13 @@ module CIAX
           when String
             p.replace(eval(conv).to_s)
           end
-          self['time']=now_msec
         elsif akey.empty?
-          super
+          @data[key]=val
         else
           Msg.par_err("Index is out of range")
         end
         verbose("Field","Evaluated[#{key}]=[#{@data[key]}]")
+        self['time']=now_msec
         self
       ensure
         post_upd

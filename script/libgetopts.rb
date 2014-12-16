@@ -3,6 +3,7 @@ require "libmsg"
 module CIAX
   # Global options
   class GetOpts < Hash
+    attr_reader :layer
     def initialize(str='',db={})
       require 'optparse'
       Msg.type?(str,String)
@@ -35,8 +36,9 @@ module CIAX
         optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
       }.compact
       update(ARGV.getopts(str))
-      $layer=[]
-      {'f' => Frm, 'a' => App, 'w' => Wat, 'x' => Hex}.each{|k,v| $layer << v if self[k] }
+      ['Wat','App','Frm','Hex'].each{|c|
+        eval "@layer=#{c}" if self[c[0].downcase]
+      }
       $opt=self
     end
 

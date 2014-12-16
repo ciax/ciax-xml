@@ -2,9 +2,9 @@
 require "libhexexe"
 
 module CIAX
-  GetOpts.new('jecafxr')
+  layer=GetOpts.new('jecafxr').layer||Wat
   begin
-    puts ($layer.first||Wat)::List.new.exe(ARGV).output
+    puts layer::List.new.exe(ARGV).output
   rescue InvalidID
     $opt.usage('(opt) [id]')
   end

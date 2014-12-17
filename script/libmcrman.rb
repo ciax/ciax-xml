@@ -7,6 +7,8 @@ module CIAX
     def self.new(cfg=ConfExe.new)
       if $opt['t']
         Man.new(cfg)
+      elsif $opt['c'] || $opt['h']
+        ManCl.new(cfg)
       else
         if $opt['l']
           cfg['host']='localhost'

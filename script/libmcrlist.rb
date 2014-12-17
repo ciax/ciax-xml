@@ -4,6 +4,7 @@ require "libmcrexe"
 
 module CIAX
   module Mcr
+    # List takes Command which could be shared with Man
     class List < List
       attr_reader :jumpgrp
       def initialize(cobj=nil)

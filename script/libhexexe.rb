@@ -51,6 +51,6 @@ module CIAX
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end
-  end
+    end
   end
 end

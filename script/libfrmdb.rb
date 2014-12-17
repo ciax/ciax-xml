@@ -104,15 +104,15 @@ module CIAX
         end
       end
     end
-  end
 
-  if __FILE__ == $0
-    begin
-      fdb=Frm::Db.new.set(ARGV.shift)
-    rescue InvalidID
-      Msg.usage("[id] (key) ..")
+    if __FILE__ == $0
+      begin
+        fdb=Db.new.set(ARGV.shift)
+      rescue InvalidID
+        Msg.usage("[id] (key) ..")
+      end
+      puts fdb.path(ARGV)
+      exit
     end
-    puts fdb.path(ARGV)
-    exit
   end
 end

@@ -64,24 +64,24 @@ module CIAX
     class ExtEntity < ExtEntity
       attr_accessor :batch
     end
-  end
 
-  if __FILE__ == $0
-    require "libappdb"
-    require "libfrmdb"
-    require "libfrmcmd"
-    app,*args=ARGV
-    begin
-      acf=Config.new('app_top')
-      acf[:db]=App::Db.new.set(app)
-      acobj=App::Command.new(acf)
-      acobj.set_cmd(args).batch.each{|fargs|
-        p fargs
+    if __FILE__ == $0
+      require "libappdb"
+      require "libfrmdb"
+      require "libfrmcmd"
+      app,*args=ARGV
+      begin
+        acf=Config.new('app_top')
+        acf[:db]=Db.new.set(app)
+        acobj=Command.new(acf)
+        acobj.set_cmd(args).batch.each{|fargs|
+          p fargs
       }
-    rescue InvalidCMD
-      Msg.usage("#{app} [cmd] (par)",2)
-    rescue InvalidID
-      Msg.usage("[app] [cmd] (par)")
+      rescue InvalidCMD
+        Msg.usage("#{app} [cmd] (par)",2)
+      rescue InvalidID
+        Msg.usage("[app] [cmd] (par)")
+      end
     end
   end
 end

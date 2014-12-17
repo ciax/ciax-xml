@@ -25,7 +25,7 @@ module CIAX
         @cobj.add_ext
         @cobj.add_int
         lc=cfg[:list_class]||List
-        @output=@list=lc.new(cfg)
+        @output=@list=lc.new(@cobj)
         @valid_pars=@cobj.intgrp.valid_pars
         @cobj.lodom.join_group(@list.jumpgrp)
         @mode='TEST'

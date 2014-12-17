@@ -6,8 +6,9 @@ module CIAX
   module Mcr
     class List < List
       attr_reader :jumpgrp
-      def initialize(upper=nil)
-        super(Mcr,upper||ConfExe.new)
+      def initialize(cobj=nil)
+        @cobj=cobj||Command.new(ConfExe.new).add_ext
+        super(Mcr,@cobj.cfg)
         @cfg[:dataname]='procs'
         @cfg["line_number"]=true
         self['id']=@cfg[:db]["id"]
@@ -38,14 +39,13 @@ module CIAX
     end
 
     class SvList < List
-      def initialize(upper=nil)
+      def initialize(cobj=nil)
         super
         @tgrp=ThreadGroup.new
         @cfg[:valid_keys]=@valid_keys=[]
         @post_upd_procs << proc{ @valid_keys.replace(@data.keys)}
         ext_file
       end
-
 
       def add_ent(ent)
         ssh=Seq.new(type?(ent,Entity))
@@ -70,6 +70,10 @@ module CIAX
         set(ssh.id,ssh)
         ssh.fork(@tgrp)
         self
+      end
+
+      def add_seq(args)
+        add_ent(@cobj.set_cmd(args))
       end
 
       def del_seq(id)
@@ -101,12 +105,10 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('ten')
       begin
-        cobj=Command.new(ConfExe.new).add_ext
-        list=SvList.new(cobj.cfg)
+        list=SvList.new
         ARGV.each{|cid|
-          ent=cobj.set_cmd(cid.split(':'))
-          list.add_ent(ent)
-        }.empty? && cobj.set_cmd([])
+          list.add_seq(cid.split(':'))
+        }.empty? && list.add_seq([])
         list.shell
       rescue InvalidCMD
         $opt.usage('[cmd(:par)] ...')

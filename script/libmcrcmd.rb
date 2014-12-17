@@ -61,13 +61,17 @@ module CIAX
       end
     end
 
+    class ConfCmd < Config
+      def initialize(name='mcr',proj=nil)
+        super(name)
+        self[:db]=Db.new.set(ENV['PROJ']||'ciax')
+      end
+    end
+
     if __FILE__ == $0
       GetOpts.new
       begin
-        cfg=Config.new('mcr_cmd')
-        cfg[:db]=Db.new.set('ciax')
-        mobj=Command.new(cfg)
-        mobj.add_ext
+        mobj=Command.new(ConfCmd.new).add_ext
         puts mobj.set_cmd(ARGV).cfg
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

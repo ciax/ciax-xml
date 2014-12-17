@@ -4,9 +4,7 @@ require "libmcrlist"
 
 module CIAX
   module Mcr
-    def self.new(cfg=Config.new('mcr'))
-      cfg[:db]||=Mcr::Db.new.set(ENV['PROJ']||'ciax')
-      cfg[:wat_list]||=Wat::List.new
+    def self.new(cfg=ConfExe.new)
       if $opt['t']
         Man.new(cfg)
       else

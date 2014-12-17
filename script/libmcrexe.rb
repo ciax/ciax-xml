@@ -190,15 +190,17 @@ module CIAX
       end
     end
 
+    class ConfExe < ConfCmd
+      def initialize(name='mcr',proj=nil)
+        super
+        self[:wat_list]=Wat::List.new
+      end
+    end
 
     if __FILE__ == $0
       GetOpts.new('emlnt')
       begin
-        cfg=Config.new('mcr_exe')
-        cfg[:wat_list]=Wat::List.new
-        cfg[:db]=Db.new.set('ciax')
-        cobj=Command.new(cfg)
-        cobj.add_ext
+        cobj=Command.new(ConfExe.new).add_ext
         seq=Seq.new(cobj.set_cmd(ARGV))
         if $opt['l']
           seq.fork.shell

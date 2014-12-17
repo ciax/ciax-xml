@@ -102,10 +102,7 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('ten')
       begin
-        cfg=Config.new('mcr_list')
-        cfg[:wat_list]=Wat::List.new
-        cfg[:db]=Db.new.set('ciax')
-        cobj=Command.new(cfg).add_ext
+        cobj=Command.new(ConfExe.new).add_ext
         list=SvList.new('ciax')
         ARGV.each{|cid|
           ent=cobj.set_cmd(cid.split(':'))

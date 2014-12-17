@@ -6,13 +6,12 @@ module CIAX
   module Mcr
     class List < List
       attr_reader :jumpgrp
-      def initialize(proj,ver=0)
-        @cfg=Config.new('mcr_list')
+      def initialize(upper=nil)
+        super(Mcr,upper||ConfExe.new)
         @cfg[:dataname]='procs'
         @cfg["line_number"]=true
-        super(Mcr,@cfg)
-        self['id']=proj
-        self['ver']=ver
+        self['id']=@cfg[:db]["id"]
+        self['ver']=@cfg[:db]["version"]
       end
 
       #convert the order number(Integer) to sid
@@ -39,7 +38,7 @@ module CIAX
     end
 
     class SvList < List
-      def initialize(proj,ver=0)
+      def initialize(upper=nil)
         super
         @tgrp=ThreadGroup.new
         @cfg[:valid_keys]=@valid_keys=[]
@@ -103,7 +102,7 @@ module CIAX
       GetOpts.new('ten')
       begin
         cobj=Command.new(ConfExe.new).add_ext
-        list=SvList.new('ciax')
+        list=SvList.new(cobj.cfg)
         ARGV.each{|cid|
           ent=cobj.set_cmd(cid.split(':'))
           list.add_seq(ent)

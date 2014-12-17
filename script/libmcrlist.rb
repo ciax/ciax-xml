@@ -47,7 +47,7 @@ module CIAX
       end
 
 
-      def add_seq(ent)
+      def add_ent(ent)
         ssh=Seq.new(type?(ent,Entity))
         ssh.post_stat_procs << proc{upd}
         ssh.post_mcr_procs << proc{|s|
@@ -105,7 +105,7 @@ module CIAX
         list=SvList.new(cobj.cfg)
         ARGV.each{|cid|
           ent=cobj.set_cmd(cid.split(':'))
-          list.add_seq(ent)
+          list.add_ent(ent)
         }.empty? && cobj.set_cmd([])
         list.shell
       rescue InvalidCMD

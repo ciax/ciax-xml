@@ -35,11 +35,7 @@ module CIAX
         update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:body].size,'stat'=>'run','option'=>[]})
         @running=[]
         @cobj.item_proc('interrupt'){|ent,src|
-          msg("\nInterrupt Issued to running devices #{@running} from #{src}",3)
-          @running.each{|site|
-            @cfg[:wat_list].get(site).exe(['interrupt'],'user')
-          } if $opt['m']
-          finish('interrupted')
+          @th_mcr.raise(Interrupt)
           'INTERRUPT'
         }
       end
@@ -65,8 +61,8 @@ module CIAX
 
       #Takes ThreadGroup to be added
       def fork(tg=nil)
-        th=Threadx.new("Macro(#@id)",10){macro}
-        tg.add(th) if tg.is_a?(ThreadGroup)
+        @th_mcr=Threadx.new("Macro(#@id)",10){macro}
+        tg.add(@th_mcr) if tg.is_a?(ThreadGroup)
         ext_shell
         self
       end
@@ -107,10 +103,19 @@ module CIAX
         finish('error')
         self
       rescue Interrupt
-        exe(['interrupt'])
+        interrupt
       end
 
       private
+      def interrupt
+        msg("\nInterrupt Issued to running devices #{@running}",3)
+        @running.each{|site|
+          @cfg[:wat_list].get(site).exe(['interrupt'],'user')
+        } if $opt['m']
+        finish('interrupted')
+        self
+      end
+
       def finish(str='complete')
         @running.clear
         show str+"\n"

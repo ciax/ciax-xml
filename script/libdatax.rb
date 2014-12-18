@@ -2,10 +2,11 @@
 require "libvarx"
 
 module CIAX
-  # @data is hidden from access by '[]'.
-  # @data is conveted to json file where @data will be appeared as self['data'].
-  # @data never contains object which can't save with JSON
+  # Header and Data Container(Hash or Array) with Loading feature
   class Datax < Varx
+    # @data is hidden from access by '[]'.
+    # @data is conveted to json file where @data will be appeared as self['data'].
+    # @data never contains object which can't save with JSON
     def initialize(type,init_struct={},dataname='data')
       super(type)
       # Variable Data (Shown as 'data'(dataname) hash in JSON)
@@ -59,7 +60,8 @@ module CIAX
     end
   end
 
-  class DataH < Datax # @data is Hash
+  # Data container is Hash
+  class DataH < Datax
     # Update with strings (key=val,key=val,..)
     def str_update(str)
       type?(str,String)

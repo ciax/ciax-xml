@@ -96,7 +96,6 @@ module CIAX
     attr_reader :valid_keys,:cfg
     #upper keys: caption,color,column
     def initialize(upper,attr)
-      super()
       @cfg=Config.new('group',upper).update(attr)
       @cfg[:item_class]||=Item
       @valid_keys=@cfg[:valid_keys]||[]
@@ -160,7 +159,6 @@ module CIAX
     attr_reader :cfg
     #cfg should have :id,:label,:parameters,:def_proc
     def initialize(upper,attr={})
-      super()
       @cfg=Config.new('item',upper).update(attr)
       @cfg[:entity_class]||=Entity
       @cls_color=@cfg[:cls_color]
@@ -231,7 +229,6 @@ module CIAX
     attr_reader :id,:par,:cfg
     #set should have :def_proc
     def initialize(upper,attr={})
-      super()
       @cfg=Config.new('entity',upper).update(attr)
       @par=@cfg[:par]
       @id=[@cfg[:id],*@par].join(':')

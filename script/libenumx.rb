@@ -118,13 +118,6 @@ module CIAX
 
   class Hashx < Hash
     include Enumx
-    attr_reader :pre_upd_procs,:post_upd_procs
-    def initialize
-      # Updater
-      @pre_upd_procs=[] # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @post_upd_procs=[] # Proc Array for Post-Process of Update Propagation to the upper Layers
-    end
-
     # Make empty copy
     def skeleton
       hash=Hashx.new
@@ -132,32 +125,6 @@ module CIAX
         hash[i]=nil
       }
       hash
-    end
-
-    # update after processing, never iniherit (use upd_core() instead)
-    def upd
-      pre_upd # Loading file at client
-      verbose("Varx","UPD_PROC for [#{@type}:#{self['id']}]")
-      upd_core # Data conversion
-      self
-    ensure
-      post_upd # Save & Update super layer
-    end
-
-    private
-    def pre_upd
-      @pre_upd_procs.each{|p| p.call(self)}
-      self
-    end
-
-    # Inherit upd_core() for upd function
-    def upd_core
-      self
-    end
-
-    def post_upd
-      @post_upd_procs.each{|p| p.call(self)}
-      self
     end
   end
 

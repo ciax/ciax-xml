@@ -6,7 +6,7 @@ require "libappsym"
 # Updated at to_s.
 module CIAX
   module App
-    class View < Hashx
+    class View < Upd
       def initialize(adb,stat)
         super()
         @adbs=type?(adb,Db)[:status]

@@ -12,7 +12,6 @@ module CIAX
   class Prompt < Hashx
     attr_reader :db
     def initialize
-      super()
       @db={}
     end
 
@@ -32,7 +31,6 @@ module CIAX
     attr_accessor :site_stat,:shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
-      super()
       @id=id
       @layer=layer
       @cobj=type?(cobj,Command)

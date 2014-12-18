@@ -151,7 +151,7 @@ module CIAX
       def set_stat(str)
         self['stat']=str
       ensure
-        post_upd
+        @post_stat_procs.each{|p| p.call(self)}
       end
 
       def query(cmds)

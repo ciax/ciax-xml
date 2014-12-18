@@ -44,7 +44,7 @@ module CIAX
       end
     end
 
-    class Step < Hashx
+    class Step < Upd
       def initialize(db,cfg)
         super()
         update db

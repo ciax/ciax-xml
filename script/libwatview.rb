@@ -6,7 +6,7 @@ require 'libwatrsp'
 module CIAX
   module Wat
     # Decorate the event data (Put caption,symbole,etc.) from WDB
-    class View < Hashx
+    class View < Upd
       def initialize(adb,watch)
         super()
         wdb=type?(adb,App::Db)[:watch]||{:index =>[]}

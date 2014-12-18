@@ -1,10 +1,11 @@
 #!/usr/bin/ruby
-require "libenumx"
+require "libupd"
 require "libdb"
 
 module CIAX
   # Variable Status Data with Saving, Logging feature
-  class Varx < Hashx
+  # Need Header(id,ver) data
+  class Varx < Upd
     attr_reader :type
     def initialize(type,id=nil,ver=nil,host=nil)
       super()

@@ -134,7 +134,7 @@ module CIAX
       hash
     end
 
-    # update after processing (never iniherit, use upd_core() instead)
+    # update after processing, never iniherit (use upd_core() instead)
     def upd
       pre_upd # Loading file at client
       verbose("Varx","UPD_PROC for [#{@type}:#{self['id']}]")

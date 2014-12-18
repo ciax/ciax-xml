@@ -3,6 +3,7 @@ require "libenumx"
 require "libdb"
 
 module CIAX
+  # Variable Status Data with Saving, Logging feature
   class Varx < Hashx
     attr_reader :type
     def initialize(type,id=nil,ver=nil,host=nil)

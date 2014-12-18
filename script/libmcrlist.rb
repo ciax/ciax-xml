@@ -48,6 +48,7 @@ module CIAX
         ext_file
       end
 
+      # Used by Man
       def add_ent(ent)
         ssh=Seq.new(type?(ent,Entity))
         ssh.post_stat_procs << proc{upd}
@@ -73,6 +74,7 @@ module CIAX
         self
       end
 
+      # Used by List
       def add_seq(args)
         add_ent(@cobj.set_cmd(args))
       end

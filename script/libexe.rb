@@ -105,6 +105,7 @@ module CIAX
         line,addr=udp.recvfrom(4096)
         line.chomp!
         rhost=Addrinfo.ip(addr[2]).getnameinfo.first
+        verbose("Exe:Server","Valid Commands #{@cobj.valid_keys}")
         verbose("UDP:Server","Recv:#{line} is #{line.class}")
         begin
           exe(@server_input_proc.call(line),"udp:#{rhost}")

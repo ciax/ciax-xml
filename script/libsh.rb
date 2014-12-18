@@ -51,7 +51,8 @@ module CIAX
         rescue UserError
         end
         puts @shell_output_proc.call
-        verbose("Shell","Thread #{Threadx.list}")
+        verbose("Threads","#{Threadx.list}")
+        verbose("Shell","Valid Commands #{@cobj.valid_keys}")
       }
     end
   end

@@ -1,12 +1,12 @@
 #### PROC VARS
 ## Related to Update
 
-  Hashx@pre_upd_procs
+  Upd@pre_upd_procs
     structure: Array[Proc,..]
     args: Hashx(self)
     called: Hashx#pre_upd
 
-  Hashx@post_upd_procs
+  Upd@post_upd_procs
     structure: Array[Proc,..]
     args: Hashx(self)
     called: Hashx#pre_upd

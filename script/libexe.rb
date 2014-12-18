@@ -62,7 +62,7 @@ module CIAX
     end
 
     # Sync only (Wait for other thread), never inherit
-    def exe(args,src,pri=1)
+    def exe(args,src='local',pri=1)
       type?(args,Array)
       verbose("Exe","Command #{args} recieved")
       @pre_exe_procs.each{|p| p.call(args)}

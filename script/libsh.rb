@@ -14,7 +14,7 @@ module CIAX
       # Local(Long Jump) Commands (local handling commands on Client)
       shg=@cobj.lodom.add_group('caption'=>"Shell Command",'color'=>1)
       shg.add_dummy('q',"Quit")
-      shg.add_dummy('^D',"Interrupt")
+      shg.add_dummy('^D,^C',"Interrupt")
       @cobj.hidgrp.add_item(nil)
       Thread.current['name']='Main'
       self
@@ -36,7 +36,11 @@ module CIAX
         (@cobj.valid_keys+@cobj.valid_pars).grep(/^#{word}/)
       }
       loop{
-        line=Readline.readline(prompt,true)||'interrupt'
+        begin
+          line=Readline.readline(prompt,true)||'interrupt'
+        rescue Interrupt
+          line='interrupt'
+        end
         break if /^q/ === line
         cmds=line.split(';')
         cmds=[""] if cmds.empty?

@@ -34,6 +34,14 @@ module CIAX
         @que_res=Queue.new
         update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:body].size,'stat'=>'run','option'=>[]})
         @running=[]
+        @cobj.item_proc('interrupt'){|ent,src|
+          msg("\nInterrupt Issued to running devices #{@running} from #{src}",3)
+          @running.each{|site|
+            @cfg[:wat_list].get(site).exe(['interrupt'],'user')
+          } if $opt['m']
+          finish('interrupted')
+          'INTERRUPT'
+        }
       end
 
       def ext_shell
@@ -99,12 +107,7 @@ module CIAX
         finish('error')
         self
       rescue Interrupt
-        msg("\nInterrupt Issued to running devices #{@running}")
-        @running.each{|site|
-          @cfg[:wat_list].get(site).exe(['interrupt'],'user')
-        } if $opt['m']
-        finish('interrupted')
-        self
+        exe(['interrupt'])
       end
 
       private
@@ -164,6 +167,8 @@ module CIAX
           raise(Interlock)
         when 'retry'
           raise(Retry)
+        when 'interrupt'
+          raise(Interrupt)
         end
       end
 
@@ -172,10 +177,11 @@ module CIAX
         loop{
           if Msg.fg?
             prom=@step.body(optlist(self['option']))
-            @que_cmd << Readline.readline(prom,true).rstrip
+            line=Readline.readline(prom,true)||'interrupt'
+            @que_cmd << line.rstrip
           end
           id=@que_cmd.pop.split(/[ :]/).first
-          if cmds.include?(id)
+          if (cmds+['interrupt']).include?(id)
             @que_res << 'ACCEPT'
             break id
           else

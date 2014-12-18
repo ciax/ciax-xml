@@ -42,6 +42,7 @@ module CIAX
           @field.set(ent.par[0],ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
+        verbose("Frm","Initialize Test mode")
       end
     end
 

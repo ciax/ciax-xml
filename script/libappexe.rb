@@ -70,6 +70,7 @@ module CIAX
         @cobj.item_proc('interrupt'){|ent|
           "INTERRUPT(#{@batch_interrupt})"
         }
+        verbose("App","Initialize Test mode")
       end
     end
 

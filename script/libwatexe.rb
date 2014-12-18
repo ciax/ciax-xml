@@ -50,6 +50,7 @@ module CIAX
         super
         @event.ext_rsp(@stat)
         @stat.post_upd_procs << proc{@event.upd} # @event is independent from @stat
+        verbose("Wat","Initialize Test mode")
       end
     end
 

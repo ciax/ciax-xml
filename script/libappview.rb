@@ -22,6 +22,17 @@ module CIAX
         extend Print
       end
 
+      def to_csv
+        str=''
+        @adbs[:group].each{|k,gdb|
+          cap=gdb['caption'] || k
+          gdb[:members].each{|id,label|
+            str << "#{cap},#{label},#{@stat.get(id)}\n"
+          }
+        }
+        str
+      end
+
       private
       def upd_core
         @adbs[:group].each{|k,gdb|
@@ -79,7 +90,7 @@ module CIAX
 
     if __FILE__ == $0
       require "libsitedb"
-      GetOpts.new('r')
+      GetOpts.new('rc','c' => 'CSV output')
       stat=Status.new
       begin
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
@@ -89,7 +100,11 @@ module CIAX
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
         view.ext_prt unless $opt['r']
-        puts STDOUT.tty? ? view : view.to_j
+        if $opt['c']
+          puts view.to_csv
+        else
+          puts STDOUT.tty? ? view : view.to_j
+        end
       rescue InvalidID
         $opt.usage "(opt) [site] | < status_file"
       end

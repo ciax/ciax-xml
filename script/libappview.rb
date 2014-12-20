@@ -25,7 +25,7 @@ module CIAX
       def to_csv
         str=''
         @adbs[:group].each{|k,gdb|
-          cap=gdb['caption'] || k
+          cap=gdb['caption'] || next
           gdb[:members].each{|id,label|
             str << "#{cap},#{label},#{@stat.get(id)}\n"
           }

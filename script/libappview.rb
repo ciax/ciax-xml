@@ -66,25 +66,24 @@ module CIAX
       end
 
       def to_s
+        @mode['r'] ? super : to_v
+      end
+
+      def to_v
         upd
         cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
         lines=[]
         each{|k,v|
           cap=v['caption']
-          lines << " ***"+color(2,cap)+"***" unless cap.empty?
+          lines << " ***"+color(cap,10)+"***" unless cap.empty?
           lines.concat v['lines'].map{|ele|
             "  "+ele.map{|id,val|
-              c=cm[val['class']]
-              '['+color(6,val['label'])+':'+color(c,val['msg'])+"]"
+              c=cm[val['class']]+8
+              '['+color(val['label'],14)+':'+color(val['msg'],c)+"]"
             }.join(' ')
           }
         }
         lines.join("\n")
-      end
-
-      private
-      def color(c,msg)
-        "\e[1;3#{c}m#{msg}\e[0m"
       end
     end
 

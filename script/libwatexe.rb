@@ -40,8 +40,8 @@ module CIAX
         ext_shell
         # Init View
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
-        vg.add_item('prt',"Print mode").set_proc{@output=@wview;''}
-        vg.add_item('raw',"Raw Watch mode").set_proc{@output=@event;''}
+        vg.add_item('vis',"Visual mode").set_proc{@output=@wview;''}
+        vg.add_item('raw',"Raw Print mode").set_proc{@output=@event;''}
       end
     end
 

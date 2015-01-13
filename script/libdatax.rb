@@ -47,7 +47,7 @@ module CIAX
     private
     def _getdata
       verbose("Datax","Convert @data to [:data]")
-      hash=Hashx[self]
+      hash=Hashx.new(self)
       hash[@dataname]=@data
       hash
     end
@@ -160,7 +160,7 @@ module CIAX
       else
         tag||=(tag_list.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
         Msg.msg("Status Saving for [#{tag}]")
-        output=Hashx[self]
+        output=Hashx.new(self)
         output[@dataname]=hash
         write_json(output.to_j,tag)
       end

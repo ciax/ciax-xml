@@ -5,6 +5,7 @@ module CIAX
   class Upd < Hashx
     attr_reader :pre_upd_procs,:post_upd_procs
     def initialize
+      super()
       # Updater
       @pre_upd_procs=[] # Proc Array for Pre-Process of Update Propagation to the upper Layers
       @post_upd_procs=[] # Proc Array for Post-Process of Update Propagation to the upper Layers

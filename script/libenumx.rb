@@ -9,14 +9,6 @@ module CIAX
       raise("Not Enumerable") unless obj.is_a? Enumerable
     end
 
-    def to_s
-      if $opt && $opt['j']
-        to_j
-      else
-        view_struct
-      end
-    end
-
     def to_j
       case self
       when Array
@@ -118,6 +110,17 @@ module CIAX
 
   class Hashx < Hash
     include Enumx
+    attr_reader :mode
+    def initialize(hash={})
+      update(hash)
+      @mode={}
+      @mode.update($opt) if $opt
+    end
+
+    def to_s
+      @mode['j'] ? to_j : view_struct
+    end
+
     # Make empty copy
     def skeleton
       hash=Hashx.new

@@ -11,6 +11,7 @@ module CIAX
     XmlDir="#{ENV['HOME']}/ciax-xml"
     attr_reader :list
     def initialize(type,group=nil)
+      super()
       @cls_color=5
       @type=type
       @group=group

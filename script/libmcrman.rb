@@ -90,7 +90,7 @@ module CIAX
         }
         # External Command Group
         @cobj.ext_proc{|ent|
-          self['sid']=@list.add_ent(ent).lastval
+          self['sid']=@list.add_ent(ent).lastval.id
           @current=@list.size
           "ACCEPT"
         }

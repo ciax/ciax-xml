@@ -36,6 +36,7 @@ module CIAX
         optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
       }.compact
       update(ARGV.getopts(str))
+      self['h']= 'localhost' if /^\W/ =~ self['h']
       ['Wat','App','Frm','Hex'].each{|c|
         eval "@layer=#{c}" if self[c[0].downcase]
       }

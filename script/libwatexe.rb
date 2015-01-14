@@ -30,7 +30,6 @@ module CIAX
         super('watch',@event['id'],Command.new(cfg))
         @ash=type?(cfg[:app_list].get(@id),App::Exe)
         @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
-        @mode=@ash.mode
         @stat=@ash.stat
         @cobj.svdom.replace @ash.cobj.svdom
         @ash.batch_interrupt=@event.get('int')
@@ -54,6 +53,7 @@ module CIAX
     class Test < Exe
       def initialize(cfg)
         super
+        @mode='TEST'
         @event.ext_rsp(@stat)
         @stat.post_upd_procs << proc{@event.upd} # @event is independent from @stat
       end
@@ -65,12 +65,14 @@ module CIAX
         host=type?(cfg['host']||@adb['host']||'localhost',String)
         @event.ext_http(host)
         @pre_exe_procs << proc{@event.upd} # @event is independent from @stat
+        ext_client(host,@adb['port'].to_i+1000)
       end
     end
 
     class Sv < Exe
       def initialize(cfg)
         super
+        @mode=@ash.mode
         @event.ext_rsp(@stat).ext_file
         @event.def_proc=proc{|args,src,pri|
             @ash.exe(args,src,pri)
@@ -84,6 +86,7 @@ module CIAX
         @post_exe_procs << proc{
           @site_stat['auto'] = tid_auto && tid_auto.alive?
         }
+        ext_server(@adb['port'].to_i+1000)
       end
 
       def auto_update

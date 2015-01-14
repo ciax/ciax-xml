@@ -13,11 +13,15 @@ module CIAX
     # cfg should have [:frm_list](Frm::List)
     def self.new(cfg)
       Msg.type?(cfg,Hash)
+      if (cfg['host']=$opt['h']) || $opt['c']
+        ['h','c'].each{|k| $opt.delete(k)}
+        cl=true
+      end
       if $opt['s'] or $opt['e']
         ash=App::Sv.new(cfg)
         cfg['host']='localhost'
       end
-      ash=App::Cl.new(cfg) if (cfg['host']=$opt['h']) || $opt['c']
+      ash=App::Cl.new(cfg) if cl
       ash||App::Test.new(cfg)
     end
 

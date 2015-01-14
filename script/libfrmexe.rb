@@ -23,9 +23,9 @@ module CIAX
       def initialize(cfg)
         @fdb=type?(cfg[:db],Db)
         @field=cfg[:field]=Field.new.set_db(@fdb)
+        @cls_color=6
         super('frm',@field['id'],Command.new(cfg))
         @output=@field
-        @cls_color=6
         @cobj.add_int
         @flush_procs=[] # Proc for Terminate process of Batch
         ext_shell

@@ -7,11 +7,15 @@ module CIAX
     # cfg should have [:app_list](App::List)
     def self.new(cfg)
       Msg.type?(cfg,Hash)
+      if (cfg['host']=$opt['h']) || $opt['c']
+        ['h','c'].each{|k| $opt.delete(k)}
+        cl=true
+      end
       if $opt['s'] or $opt['e']
         ash=Sv.new(cfg)
         cfg['host']='localhost'
       end
-      ash=Cl.new(cfg) if (cfg['host']=$opt['h']) || $opt['c']
+      ash=Cl.new(cfg) if cl
       ash||Test.new(cfg)
     end
 

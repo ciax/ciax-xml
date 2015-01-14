@@ -68,7 +68,7 @@ module CIAX
         self
       end
 
-      def to_s
+      def to_x
         self['hex']
       end
 

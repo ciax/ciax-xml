@@ -21,7 +21,8 @@ module CIAX
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')
         }
-        @server_output_proc=proc{ @output.to_s }
+        @server_output_proc=proc{ @output.to_x }
+        @shell_output_proc=proc{ @output.to_x }
         if $opt['e']
           @output.ext_log
         end

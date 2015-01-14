@@ -9,13 +9,20 @@ module CIAX
   module Frm
     # cfg should have :db(Frm::Db)
     def self.new(cfg)
-      if $opt['s'] or $opt['e']
-        cfg['iocmd']=['devsim-file',cfg[:db]['site_id'],cfg[:db]['stream_ver']] if $opt['s']
-        fsh=Frm::Sv.new(cfg)
+      Msg.type?(cfg,Hash)
+      cfg['iocmd']=['devsim-file',cfg[:db]['site_id'],cfg[:db]['stream_ver']] if $opt['s']
+      if $opt['l']
+        $opt.delete('l')
         cfg['host']='localhost'
+        Sv.new(cfg)
+        Cl.new(cfg)
+      elsif (cfg['host']=$opt['h']) or $opt['c']
+        Cl.new(cfg)
+      elsif $opt['s'] or $opt['e']
+        Sv.new(cfg)
+      else
+        Test.new(cfg)
       end
-      fsh=Frm::Cl.new(cfg) if $opt['c'] || (cfg['host']=$opt['h'])
-      fsh||Frm::Test.new(cfg)
     end
 
     class Exe < Exe

@@ -15,6 +15,7 @@ module CIAX
       optdb['x']='hex layer'
       #Client option
       optdb['c']='client'
+      optdb['l']='local client'
       optdb['h']='client for [host]'
       #Comm to devices
       optdb['t']='test mode (default)'
@@ -26,7 +27,6 @@ module CIAX
       optdb['j']='json data output'
       #For macro
       optdb['n']='non-stop mode'
-      optdb['l']='local client'
       optdb['m']='movable mode'
       optdb.update(db)
       db.keys.each{|k|

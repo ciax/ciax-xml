@@ -4,7 +4,7 @@ require "liblayer"
 
 module CIAX
   ENV['VER']||='initialize'
-  GetOpts.new("afxtesch:")
+  GetOpts.new("afxtelsch:")
   cfg=Config.new('ins_top')
   cfg[:ldb]=Site::Db.new
   lay=Layer::List.new(cfg)

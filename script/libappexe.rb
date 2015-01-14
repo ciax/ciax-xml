@@ -27,8 +27,8 @@ module CIAX
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
         @stat=Status.new.set_db(@adb)
-        super('app',@stat['id'],Command.new(cfg))
         @cls_color=2
+        super('app',@stat['id'],Command.new(cfg))
         @print=View.new(@adb,@stat)
         @output=$opt['j']?@stat:@print
         @batch_interrupt=[]
@@ -70,7 +70,6 @@ module CIAX
         @cobj.item_proc('interrupt'){|ent|
           "INTERRUPT(#{@batch_interrupt})"
         }
-        verbose("App","Initialize Test mode")
       end
     end
 

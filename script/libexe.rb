@@ -39,8 +39,8 @@ module CIAX
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
       @site_stat=Prompt.new # Status shared by all layers of the site
-      @cls_color=7
-      @pfx_color=9
+      @cls_color||=7
+      @pfx_color||=9
       @output={}
       self['msg']=''
       @server_input_proc=proc{|line|
@@ -59,6 +59,7 @@ module CIAX
       }
       @shell_output_proc=proc{ self['msg'].empty? ? @output : self['msg'] }
       Thread.abort_on_exception=true
+      verbose("Exe","initialize")
     end
 
     # Sync only (Wait for other thread), never inherit

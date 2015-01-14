@@ -20,8 +20,8 @@ module CIAX
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
         @event=Event.new.set_db(@adb)
-        super('watch',@event['id'],Command.new(cfg))
         @cls_color=3
+        super('watch',@event['id'],Command.new(cfg))
         @ash=type?(cfg[:app_list].get(@id),App::Exe)
         @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
         @mode=@ash.mode
@@ -50,7 +50,6 @@ module CIAX
         super
         @event.ext_rsp(@stat)
         @stat.post_upd_procs << proc{@event.upd} # @event is independent from @stat
-        verbose("Wat","Initialize Test mode")
       end
     end
 

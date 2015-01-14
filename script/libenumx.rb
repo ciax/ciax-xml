@@ -110,15 +110,15 @@ module CIAX
 
   class Hashx < Hash
     include Enumx
-    attr_reader :mode
+    attr_reader :vmode
     def initialize(hash={})
       update(hash)
-      @mode={}
-      @mode.update($opt) if $opt
+      @vmode={}
+      @vmode.update($opt) if $opt
     end
 
     def to_s
-      @mode['j'] ? to_j : view_struct
+      @vmode['j'] ? to_j : view_struct
     end
 
     # Make empty copy

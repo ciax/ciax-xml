@@ -66,7 +66,7 @@ module CIAX
       end
 
       def to_s
-        @mode['r'] ? super : to_v
+        @vmode['r'] ? super : to_v
       end
 
       def to_v

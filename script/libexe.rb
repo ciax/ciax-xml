@@ -25,10 +25,7 @@ module CIAX
     def pick(input)
       hash=input.dup
       @db.keys.each{|k|
-        if hash[k]
-          @db[k]=hash[k]
-          hash.delete(k)
-        end
+        self[k]=hash.delete(k) if hash[k]
       }
       hash
     end

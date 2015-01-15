@@ -160,7 +160,7 @@ module CIAX
 
     if __FILE__ == $0
       ENV['VER']||='initialize'
-      GetOpts.new('chset')
+      GetOpts.new('chlset')
       begin
         List.new.shell(ARGV.shift)
       rescue InvalidID

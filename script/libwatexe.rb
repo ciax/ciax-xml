@@ -27,23 +27,29 @@ module CIAX
         @adb=type?(cfg[:db],Db)
         @event=Event.new.set_db(@adb)
         @cls_color=3
-        super('watch',@event['id'],Command.new(cfg))
+        super('watch',@event['id'],App::Command.new(cfg))
         @ash=type?(cfg[:app_list].get(@id),App::Exe)
-        @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
-        @stat=@ash.stat
-        @cobj.svdom.replace @ash.cobj.svdom
-        @ash.batch_interrupt=@event.get('int')
         @wview=View.new(@adb,@event).ext_prt
         @output=$opt['j']?@event:@wview
+        @prompt_proc=proc{ @site_stat.to_s }
+        ext_shell
+        init_view
+      end
+
+      def init_sv(cfg)
+        @mode=@ash.mode
+        @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
+        @stat=@ash.stat
+        @ash.batch_interrupt=@event.get('int')
         @event.post_upd_procs << proc{|wat|
           @site_stat['watch'] = @event.active?
           block=wat.get('block').map{|id,par| par ? nil : id}.compact
           @ash.cobj.extgrp.valid_sub(block)
         }
         @ash.pre_exe_procs << proc{|args| @event.block?(args) }
-        @prompt_proc=proc{ @site_stat.to_s }
-        ext_shell
-        # Init View
+      end
+
+      def init_view
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('vis',"Visual mode").set_proc{@output=@wview;''}
         vg.add_item('raw',"Raw Print mode").set_proc{@output=@event;''}
@@ -53,7 +59,8 @@ module CIAX
     class Test < Exe
       def initialize(cfg)
         super
-        @mode='TEST'
+        @cobj.svdom.replace @ash.cobj.svdom
+        init_sv(cfg)
         @event.ext_rsp(@stat)
         @stat.post_upd_procs << proc{@event.upd} # @event is independent from @stat
       end
@@ -72,7 +79,7 @@ module CIAX
     class Sv < Exe
       def initialize(cfg)
         super
-        @mode=@ash.mode
+        init_sv(cfg)
         @event.ext_rsp(@stat).ext_file
         @event.def_proc=proc{|args,src,pri|
             @ash.exe(args,src,pri)
@@ -119,7 +126,7 @@ module CIAX
 
     if __FILE__ == $0
       ENV['VER']||='initialize'
-      GetOpts.new('chset')
+      GetOpts.new('chlset')
       begin
         puts List.new.shell(ARGV.shift)
       rescue InvalidID

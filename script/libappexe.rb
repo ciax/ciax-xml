@@ -35,11 +35,12 @@ module CIAX
         @stat=Status.new.set_db(@adb)
         @cls_color=2
         super('app',@stat['id'],Command.new(cfg))
+        @fsh=type?(cfg[:frm_list].get(@id),Frm::Exe)
+        @mode=@fsh.mode
+        @site_stat=@fsh.site_stat.add_db('isu' => '*')
         @print=View.new(@adb,@stat)
         @output=$opt['j']?@stat:@print
         @batch_interrupt=[]
-        @site_stat.add_db('isu' => '*')
-        @prompt_proc=proc{ @site_stat.to_s }
         ext_shell
         init_view
       end
@@ -92,9 +93,6 @@ module CIAX
     class Sv < Exe
       def initialize(cfg)
         super(cfg)
-        @fsh=type?(cfg[:frm_list].get(@id),Frm::Exe)
-        @mode=@fsh.mode
-        @site_stat=@fsh.site_stat.add_db(@site_stat.db)
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         @buf=init_buf
         ver=@stat['ver']

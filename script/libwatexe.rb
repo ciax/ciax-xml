@@ -32,7 +32,6 @@ module CIAX
         @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
         @wview=View.new(@adb,@event).ext_prt
         @output=$opt['j']?@event:@wview
-        @prompt_proc=proc{ @site_stat.to_s }
         ext_shell
         init_view
       end
@@ -72,7 +71,7 @@ module CIAX
         host=type?(cfg['host']||@adb['host']||'localhost',String)
         @event.ext_http(host)
         @pre_exe_procs << proc{@event.upd} # @event is independent from @stat
-        ext_client(host,@adb['port'].to_i+1000)
+        ext_client(host,@adb['port'].to_i+100)
       end
     end
 
@@ -93,7 +92,7 @@ module CIAX
         @post_exe_procs << proc{
           @site_stat['auto'] = tid_auto && tid_auto.alive?
         }
-        ext_server(@adb['port'].to_i+1000)
+        ext_server(@adb['port'].to_i+100)
       end
 
       def auto_update

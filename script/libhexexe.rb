@@ -15,6 +15,7 @@ module CIAX
         type?(wsh,Wat::Exe)
         super('hex',wsh.id)
         @cobj.svdom.replace wsh.cobj.svdom
+        @site_stat=wsh.site_stat
         @mode=wsh.mode
         @output=View.new(@id,wsh.adb['version'],wsh,wsh.stat)
         @post_exe_procs.concat(wsh.post_exe_procs)
@@ -26,8 +27,8 @@ module CIAX
         if $opt['e']
           @output.ext_log
         end
-        ext_server(wsh.adb['port'].to_i+1000) if ['e','s'].any?{|i| $opt[i]}
         ext_shell
+        ext_server(wsh.adb['port'].to_i+1000) if ['e','s'].any?{|i| $opt[i]}
       end
     end
 

@@ -29,6 +29,7 @@ module CIAX
         @cls_color=3
         super('watch',@event['id'],App::Command.new(cfg))
         @ash=type?(cfg[:app_list].get(@id),App::Exe)
+        @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
         @wview=View.new(@adb,@event).ext_prt
         @output=$opt['j']?@event:@wview
         @prompt_proc=proc{ @site_stat.to_s }
@@ -38,7 +39,6 @@ module CIAX
 
       def init_sv(cfg)
         @mode=@ash.mode
-        @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
         @stat=@ash.stat
         @ash.batch_interrupt=@event.get('int')
         @event.post_upd_procs << proc{|wat|

@@ -17,9 +17,20 @@ module CIAX
     end
 
     def add_db(db={})
-      type?(db,Hash).update(@db)
-      @db=db
+      @db.update(type?(db,Hash))
       self
+    end
+
+    # Pick up and merge to self data, return other data
+    def pick(input)
+      hash=input.dup
+      @db.keys.each{|k|
+        if hash[k]
+          @db[k]=hash[k]
+          hash.delete(k)
+        end
+      }
+      hash
     end
 
     def to_s
@@ -45,12 +56,12 @@ module CIAX
       self['msg']=''
       @server_input_proc=proc{|line|
         begin
-        JSON.load(line)
+          JSON.load(line)
         rescue JSON::ParserError
           raise "NOT JSON"
         end
       }
-      @server_output_proc=proc{ to_j }
+      @server_output_proc=proc{ merge(@site_stat).to_j }
       @shell_input_proc=proc{|args|
         if (cmd=args.first) && cmd.include?('=')
           args=['set']+cmd.split('=')
@@ -143,8 +154,7 @@ module CIAX
         verbose("UDP:Client","Send [#{args}]")
         res=@udp.recv(1024)
         verbose("UDP:Client","Recv #{res}")
-        update(JSON.load(res)) unless res.empty?
-        @site_stat.update(self)
+        update(@site_stat.pick(JSON.load(res))) unless res.empty?
         self['msg']
       }
       self

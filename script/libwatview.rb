@@ -37,6 +37,7 @@ module CIAX
 
       private
       def upd_core
+        self['time']=@event['time']
         ['exec','block','int','act_start','act_end','upd_next'].each{|id|
           self[id]=@event.get(id)
         }
@@ -62,7 +63,9 @@ module CIAX
         super
         tonext=Msg.elps_sec(now_msec,self['upd_next'])
         atime=Msg.elps_sec(self['act_start'],self['act_end'])
+        etime=Msg.elps_date(self['time'],now_msec)
         str=""
+        str << "  "+Msg.color("Elapsed",2)+"\t: #{etime}\n"
         str << "  "+Msg.color("ToNextUpdate",2)+"\t: #{tonext}\n"
         str << "  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
         str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"

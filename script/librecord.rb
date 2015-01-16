@@ -76,9 +76,8 @@ module CIAX
 
       def ok?
         show title
-        res=self['result']='ok'
         upd
-        res
+        'ok'
       end
 
       def skip?

@@ -121,6 +121,7 @@ module CIAX
         show str+"\n"
         @record.finish(str)
         self['option'].clear
+        @step.delete('option')
         set_stat str
         @post_mcr_procs.each{|p| p.call(self)}
         self
@@ -155,10 +156,11 @@ module CIAX
       end
 
       def query(cmds)
-        self['option'].replace(cmds)
+        @step['option']=self['option'].replace(cmds)
         set_stat 'query'
         res=input(cmds)
         self['option'].clear
+        @step.delete('option')
         set_stat 'run'
         @step['action']=res
         case res
@@ -209,7 +211,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      GetOpts.new('emint')
+      GetOpts.new('emintr')
       begin
         cobj=Command.new(ConfExe.new).add_ext
         seq=Seq.new(cobj.set_cmd(ARGV))

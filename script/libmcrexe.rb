@@ -45,7 +45,7 @@ module CIAX
         @cobj.intgrp.set_proc{|ent| reply(ent.id)}
         self['option']=@cobj.intgrp.valid_keys.clear
         @prompt_proc=proc{
-          "(#{self['stat']})"+optlist(self['option'])
+          "(#{self['stat']})"
         }
         super(@cfg[:cid].tr(':','_'))
       end

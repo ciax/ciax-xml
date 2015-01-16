@@ -77,6 +77,7 @@ module CIAX
           end
         end
         mary << body(self['action'].capitalize,8) if key?('action')
+        mary << optlist(self['option']) if key?('option')
         mary.join("\n")+"\n"
       end
     end

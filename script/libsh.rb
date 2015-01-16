@@ -15,8 +15,6 @@ module CIAX
       shg=@cobj.lodom.add_group('caption'=>"Shell Command",'color'=>1)
       shg.add_dummy('q',"Quit")
       shg.add_dummy('^D,^C',"Interrupt")
-      # Accept empty command
-      @cobj.hidgrp.add_item(nil)
       Thread.current['name']='Main'
       self
     end

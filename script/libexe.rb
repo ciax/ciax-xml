@@ -67,6 +67,8 @@ module CIAX
       }
       @shell_output_proc=proc{ self['msg'].empty? ? @output : self['msg'] }
       @prompt_proc=proc{ @site_stat.to_s }
+      # Accept empty command
+      @cobj.hidgrp.add_item(nil)
       Thread.abort_on_exception=true
       verbose("Exe","initialize")
     end

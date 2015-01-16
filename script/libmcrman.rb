@@ -23,18 +23,21 @@ module CIAX
       def initialize(cfg)
         db=type?(cfg[:db],Db)
         super('mcr',db['id'],Command.new(cfg))
+        @mode='TEST'
         @cobj.add_ext
         @cobj.add_int
         lc=cfg[:list_class]||List
         @output=@list=lc.new(@cobj)
         @valid_pars=@cobj.intgrp.valid_pars
         @cobj.lodom.join_group(@list.jumpgrp)
-        @mode='TEST'
+        @post_exe_procs << proc{
+          @valid_pars.replace(@list.keys)
+        }
       end
 
       def ext_shell
         @prompt_proc=proc{
-          size=@valid_pars.replace(@list.keys).size
+          size=@valid_pars.size
           @current=size if size < @current || @current < 1
           "[%d]" % @current
         }

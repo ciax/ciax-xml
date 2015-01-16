@@ -10,17 +10,18 @@ module CIAX
       Msg.type?(obj,Exe)
     end
 
-    def ext_shell
+    def ext_shell(als=nil)
       # Local(Long Jump) Commands (local handling commands on Client)
       shg=@cobj.lodom.add_group('caption'=>"Shell Command",'color'=>1)
       shg.add_dummy('q',"Quit")
       shg.add_dummy('^D,^C',"Interrupt")
       Thread.current['name']='Main'
+      @alias=als||@id
       self
     end
 
     def prompt
-      str="#@layer:#@id"
+      str="#@layer:#@alias"
       str+="(#@mode)" if @mode
       str+=@prompt_proc.call if @prompt_proc
       str+'>'

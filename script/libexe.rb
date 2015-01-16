@@ -97,8 +97,8 @@ module CIAX
       extend(Server).ext_server(port)
     end
 
-    def ext_shell
-      extend(Shell).ext_shell
+    def ext_shell(als=nil)
+      extend(Shell).ext_shell(als)
     end
   end
 

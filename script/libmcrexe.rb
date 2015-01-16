@@ -47,7 +47,7 @@ module CIAX
         @prompt_proc=proc{
           "(#{self['stat']})"+optlist(self['option'])
         }
-        super
+        super(@cfg[:cid].tr(':','_'))
       end
 
       def reply(ans)

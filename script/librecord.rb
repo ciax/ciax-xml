@@ -10,10 +10,10 @@ module CIAX
       attr_reader :cfg
       def initialize(db={})
         super('record',[],'steps')
-        extend PrtRecord unless $opt['r']
         self['id']=db['id'] # Project
         self['ver']=db['version'] # Version
         self['sid']=self['time'].to_s # Session ID
+        extend PrtRecord
       end
 
       def start(cfg)
@@ -27,6 +27,7 @@ module CIAX
       def add_step(e1)
         Msg.type?(@cfg[:wat_list],Wat::List)
         step=Step.new(e1,@cfg)
+        step.vmode.replace @vmode
         step.post_upd_procs << proc{post_upd}
         step['time']=Msg.elps_sec(self['time'])
         @data << step
@@ -53,7 +54,7 @@ module CIAX
         @cfg=cfg
         @condition=delete('stat')
         @break=nil
-        extend PrtStep unless $opt['r']
+        extend PrtStep
       end
 
       # Conditional judgment section

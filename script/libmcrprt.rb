@@ -3,7 +3,7 @@
 
 module CIAX
   module Mcr
-    module Prt
+    module PrtShare
       def head(msg,col)
         label=self['label']||self['site']||'noname'
         msg=Msg.indent(self['depth'].to_i)+Msg.color(msg,col)+':'
@@ -21,21 +21,22 @@ module CIAX
     end
 
     module PrtRecord
-      include Prt
+      include PrtShare
       def to_s
+        @vmode['r'] ? super : to_v
+      end
+
+      def to_v
         date=Time.at((self['time']/1000).round)
         msg=head("MACRO",3)+" (#{date})\n"
-        @data.each{|i|
-          i.extend(PrtStep) unless i.is_a?(PrtStep)
-          msg << i.to_s
-        }
+        @data.each{|i| msg << i.to_v }
         msg
       end
     end
 
     module PrtStep
-      include Prt
-      def to_s
+      include PrtShare
+      def to_v
         title+result
       end
 

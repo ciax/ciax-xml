@@ -6,7 +6,6 @@ module CIAX
   module Mcr
     # List takes Command which could be shared with Man
     class List < List
-      attr_reader :jumpgrp
       def initialize(cobj=nil)
         @cobj=cobj||Command.new(ConfExe.new).add_ext
         super(Mcr,@cobj.cfg)
@@ -40,6 +39,7 @@ module CIAX
     end
 
     class SvList < List
+      attr_reader :jumpgrp
       def initialize(cobj=nil)
         super
         @tgrp=ThreadGroup.new
@@ -106,7 +106,7 @@ module CIAX
 
     if __FILE__ == $0
       ENV['VER']||='initialize'
-      GetOpts.new('ten')
+      GetOpts.new('tenr')
       begin
         list=SvList.new
         ARGV.each{|cid|

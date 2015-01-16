@@ -33,6 +33,16 @@ module CIAX
         @post_exe_procs << proc{
           @valid_pars.replace(@list.keys)
         }
+        init_view
+      end
+
+      def init_view
+        vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
+        vg.add_item('lst',"List mode").set_proc{@output=@list;''}
+        vg.add_item('det',"Detail mode").set_proc{
+          @output=@list.get(@list.num_to_sid(@current)).output
+          ''
+        }
       end
 
       def ext_shell

@@ -5,18 +5,17 @@ require "libmcrlist"
 module CIAX
   module Mcr
     def self.new(cfg=ConfExe.new)
-      if $opt['t']
-        Man.new(cfg)
+      if $opt['l']
+        $opt.delete('l')
+        cfg['host']='localhost'
+        ManSv.new(cfg)
+        ManCl.new(cfg)
       elsif $opt['c'] || $opt['h']
         ManCl.new(cfg)
+      elsif $opt['t']
+        Man.new(cfg)
       else
-        if $opt['l']
-          cfg['host']='localhost'
-          ManSv.new(cfg)
-          ManCl.new(cfg)
-        else
-          ManSv.new(cfg)
-        end
+        ManSv.new(cfg)
       end
     end
 
@@ -58,7 +57,6 @@ module CIAX
     class ManCl < Man
       def initialize(cfg)
         super
-        @mode='CL'
         host=cfg['host']||@cobj.cfg[:db]['host']||'localhost'
         port=cfg['port']||@cobj.cfg[:db]['port']||55555
         @list.ext_http(host)
@@ -72,7 +70,6 @@ module CIAX
         cfg[:list_class]=SvList
         cfg[:submcr_proc]=proc{|args,src| exe(args,src)}
         super
-        @mode='SV'
         type?(cfg[:wat_list],Wat::List)
         port=cfg['port']||@cobj.cfg[:db]['port']||55555
         self['sid']='' # For server response

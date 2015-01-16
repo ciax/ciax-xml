@@ -53,7 +53,7 @@ module CIAX
       private
       def upd_core
         return self unless @stat['time'] > @ctime
-        @ctime=@stat['time']
+        @ctime=self['time']=@stat['time']
         sync
         act=active?
         @data.values.each{|a| a.clear if Array === a}

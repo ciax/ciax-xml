@@ -94,7 +94,7 @@ module CIAX
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
       tc=Thread.current
-      ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
+      ts << Msg.indent(@ver_indent)+Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15)
       @cpath||=self.class.to_s.split('::')[1..-1].join('.')
       ts << Msg.color("#@cpath:",@cls_color||7)
       ts << Msg.color("#{prefix}:",@pfx_color||2)
@@ -243,11 +243,11 @@ module CIAX
     end
 
     # Color 1=red,2=green,4=blue,8=bright
-    def color(text,c=7,i=0)
+    def color(text,c=nil)
       return '' if text == ''
-      return text unless STDERR.tty?
+      return text unless STDERR.tty? && c
       (c||=7).to_i
-      indent(i)+"\033[#{c>>3};3#{c&7}m#{text}\33[0m"
+      "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
     end
 
     def indent(ind=0)

@@ -26,6 +26,7 @@ module CIAX
       optdb['r']='raw data output'
       optdb['j']='json data output'
       #For macro
+      optdb['i']='interactive mode'
       optdb['n']='non-stop mode'
       optdb['m']='movable mode'
       optdb.update(db)

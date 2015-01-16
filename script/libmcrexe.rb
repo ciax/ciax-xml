@@ -209,14 +209,14 @@ module CIAX
     end
 
     if __FILE__ == $0
-      GetOpts.new('emlnt')
+      GetOpts.new('emint')
       begin
         cobj=Command.new(ConfExe.new).add_ext
         seq=Seq.new(cobj.set_cmd(ARGV))
-        if $opt['l']
-          seq.fork.shell
-        else
+        if $opt['i']
           seq.macro
+        else
+          seq.fork.shell
         end
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

@@ -40,7 +40,7 @@ module CIAX
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('lst',"List mode").set_proc{@output=@list;''}
         vg.add_item('det',"Detail mode").set_proc{
-          @output=@list.get(@list.num_to_sid(@current)).output
+          @output=@list.get(@list.num_to_key(@current)).output
           ''
         }
       end
@@ -57,7 +57,7 @@ module CIAX
             @current=n
             []
           elsif @cobj.intgrp.key?(cmd)
-            [cmd]+[@list.num_to_sid(@current)]
+            [cmd]+[@list.num_to_key(@current)]
           else
             args
           end

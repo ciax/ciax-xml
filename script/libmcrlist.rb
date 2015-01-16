@@ -16,13 +16,13 @@ module CIAX
         self['ver']=@cfg[:db]["version"]
       end
 
-      #convert the order number(Integer) to sid
-      def num_to_sid(num)
+      #convert the order number(Integer) to key (sid)
+      def num_to_key(num)
         @data.keys[num-1]
       end
 
-      def sid_to_num(sid)
-        @data.keys.index(sid)
+      def key_to_num(key)
+        @data.keys.index(key)
       end
 
       def to_s
@@ -65,7 +65,7 @@ module CIAX
         ssh.shell_input_proc=proc{|args|
           num=args[0].to_i
           if num > 0 && num < 100
-            args[0]=num_to_sid(num)||''
+            args[0]=num_to_key(num)||''
           end
           args
         }

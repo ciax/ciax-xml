@@ -33,6 +33,7 @@ module CIAX
         @post_exe_procs << proc{
           @valid_pars.replace(@list.keys)
         }
+        ext_shell
         init_view
       end
 
@@ -115,7 +116,7 @@ module CIAX
     if __FILE__ == $0
       GetOpts.new('mnlrt')
       begin
-        Mcr.new.ext_shell.shell
+        Mcr.new.shell
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

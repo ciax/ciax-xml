@@ -110,7 +110,7 @@ module CIAX
       verbose("Http","Initialize(#{@host})")
       self['id']||Msg.cfg_err("ID")
       @pre_upd_procs << proc{load(tag)}
-      load
+      load(tag)
       self
     end
 

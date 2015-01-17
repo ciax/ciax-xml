@@ -12,15 +12,15 @@ module CIAX
         super('record',[],'steps')
         self['id']=db['id'] # Project
         self['ver']=db['version'] # Version
-        self['sid']=self['time'].to_s # Session ID
         extend PrtRecord
       end
 
       def start(cfg)
-        $opt['e'] && ext_file(self['sid'])
         @cfg=type?(cfg,Config)
+        self['sid']=self['time'].to_s # Session ID
         self['cid']=@cfg[:cid] # Command ID (cmd:par)
         self['label']=@cfg['label'] # Label for CID
+        ext_file(self['sid'])
         self
       end
 

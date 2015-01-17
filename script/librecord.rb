@@ -43,6 +43,15 @@ module CIAX
       ensure
         post_upd
       end
+
+      def ext_http(host,sid)
+        @post_upd_procs << proc{
+          @data.each{|v|
+            v.extend PrtStep
+          }
+        }
+        super
+      end
     end
 
     class Step < Upd

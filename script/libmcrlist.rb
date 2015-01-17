@@ -13,6 +13,7 @@ module CIAX
         @cfg["line_number"]=true
         self['id']=@cfg[:db]["id"]
         self['ver']=@cfg[:db]["version"]
+        @records={}
       end
 
       #convert the order number(Integer) to key (sid)
@@ -22,6 +23,11 @@ module CIAX
 
       def key_to_num(key)
         @data.keys.index(key)
+      end
+
+      def record_by_num(num)
+        sid=num_to_key(num)
+        @records[sid]
       end
 
       def to_s
@@ -35,6 +41,21 @@ module CIAX
           idx+=1
         }
         page.join("\n")
+      end
+    end
+
+    class ClList < List
+      def initialize(cobj=nil)
+        super
+        host=type?(@cfg['host']||'localhost',String)
+        @post_upd_procs << proc{
+          @data.keys.each{|sid|
+            @records[sid]||=Record.new(self).ext_http(host,sid)
+            @records[sid].upd
+          }
+#          @valid_keys.replace(@data.keys)
+        }
+        ext_http(host)
       end
     end
 
@@ -70,6 +91,7 @@ module CIAX
           args
         }
         set(ssh.id,ssh)
+        @records[ssh.id]=ssh.record
         ssh.fork(@tgrp)
         self
       end
@@ -81,6 +103,7 @@ module CIAX
 
       def del_seq(id)
         @data.delete(id)
+        @records.delete(id)
         @jumpgrp.del_item(id)
         self
       end

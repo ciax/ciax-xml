@@ -39,9 +39,10 @@ module CIAX
 
       def init_view
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
-        vg.add_item('lst',"List mode").set_proc{@output=@list;''}
+        vg.add_item('lst',"List mode").set_proc{@output=@list;@vmode.delete('d');''}
         vg.add_item('det',"Detail mode").set_proc{
-          @output=@list.get(@list.num_to_key(@current)).output
+          @output=@list.record_by_num(@current)
+          @vmode['d']=true
           ''
         }
       end
@@ -51,6 +52,9 @@ module CIAX
           size=@valid_pars.size
           @current=size if size < @current || @current < 1
           "[%d]" % @current
+        }
+        @post_exe_procs << proc{
+          @output=@list.record_by_num(@current) if @vmode['d']
         }
         @shell_input_proc=proc{|args|
           cmd=args[0]
@@ -70,10 +74,10 @@ module CIAX
 
     class ManCl < Man
       def initialize(cfg)
+        cfg[:list_class]=ClList
         super
         host=cfg['host']||@cobj.cfg[:db]['host']||'localhost'
         port=cfg['port']||@cobj.cfg[:db]['port']||55555
-        @list.ext_http(host)
         @pre_exe_procs << proc{@list.upd}
         ext_client(host,port)
       end
@@ -101,8 +105,8 @@ module CIAX
         }
         # External Command Group
         @cobj.ext_proc{|ent|
-          self['sid']=@list.add_ent(ent).lastval.id
-          @current=@list.size
+          mobj=@list.add_ent(ent).lastval
+          self['sid']=mobj.id
           "ACCEPT"
         }
         @cobj.item_proc('interrupt'){|ent|

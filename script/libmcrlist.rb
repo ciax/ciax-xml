@@ -53,7 +53,7 @@ module CIAX
             @records[sid]||=Record.new(self).ext_http(host,sid)
             @records[sid].upd
           }
-#          @valid_keys.replace(@data.keys)
+          @valid_keys.replace(@data.keys)
         }
         ext_http(host)
       end

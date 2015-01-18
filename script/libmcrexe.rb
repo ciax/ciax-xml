@@ -156,7 +156,7 @@ module CIAX
       end
 
       def query(cmds)
-        @step['option']=self['option'].replace(cmds)
+        @step.setopt(self['option'].replace(cmds))
         set_stat 'query'
         res=input(cmds)
         self['option'].clear

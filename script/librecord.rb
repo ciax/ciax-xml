@@ -126,6 +126,12 @@ module CIAX
       def result ; "\n"+to_s; end
       def body(msg); msg; end
 
+      def setopt(ary)
+        self['option']=ary
+        upd
+        self
+      end
+
       private
       def upd_core
         show result

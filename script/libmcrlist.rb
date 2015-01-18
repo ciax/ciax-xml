@@ -6,13 +6,16 @@ module CIAX
   module Mcr
     # List takes Command which could be shared with Man
     class List < List
+      attr_reader :jumpgrp
       def initialize(cobj=nil)
         @cobj=cobj||Command.new(ConfExe.new).add_ext
         super(Mcr,@cobj.cfg)
         @cfg[:dataname]='procs'
+        @cfg[:valid_keys]=@valid_keys=[]
         @cfg["line_number"]=true
         self['id']=@cfg[:db]["id"]
         self['ver']=@cfg[:db]["version"]
+        @post_upd_procs << proc{ @valid_keys.replace(@data.keys)}
         @records={}
       end
 
@@ -53,19 +56,15 @@ module CIAX
             @records[sid]||=Record.new(self).ext_http(host,sid)
             @records[sid].upd
           }
-          @valid_keys.replace(@data.keys)
         }
         ext_http(host)
       end
     end
 
     class SvList < List
-      attr_reader :jumpgrp
       def initialize(cobj=nil)
         super
         @tgrp=ThreadGroup.new
-        @cfg[:valid_keys]=@valid_keys=[]
-        @post_upd_procs << proc{ @valid_keys.replace(@data.keys)}
         ext_file
       end
 

@@ -40,30 +40,36 @@ module CIAX
       private
       def init_view
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
-        vg.add_item('lst',"List mode").set_proc{@output=@list;@vmode.delete('d');''}
-        vg.add_item('det',"Detail mode").set_proc{
-          @output=@list.record_by_num(@current)
-          @vmode['d']=true
-          ''
-        }
+        vg.add_item('lst',"List mode").set_proc{list_mode;''}
+        vg.add_item('det',"Detail mode").set_proc{detail_mode;''}
+      end
+
+      def list_mode
+        @output=@list
+        @vmode.delete('d')
+      end
+
+      def detail_mode
+        @output=@list.record_by_num(@current)
+        @vmode['d']=true
       end
 
       def ext_shell
         @current=@lastsize=0
-        @prompt_proc=proc{
-          n=@valid_pars.size
-          if n > @lastsize || @current > n
-            @lastsize=@current=n
-          end
-          "[%d]" % @current
-        }
+        @prompt_proc=proc{"[%d]" % @current}
         @post_exe_procs << proc{
-          @output=@list.record_by_num(@current) if @vmode['d']
+          n=@valid_pars.size
+          @lastsize=@current=n if n > @lastsize || @current > n
+          if @current==0
+            list_mode
+          elsif @vmode['d']
+            detail_mode
+          end
         }
         @shell_input_proc=proc{|args|
           cmd=args[0]
           n=cmd.to_i
-          if (0 < n && n <= @valid_pars.size)
+          if 0 < n && n <= @valid_pars.size
             @current=n
             []
           elsif @cobj.intgrp.key?(cmd)

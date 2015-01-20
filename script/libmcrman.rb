@@ -49,9 +49,12 @@ module CIAX
       end
 
       def ext_shell
+        @current=@lastsize=0
         @prompt_proc=proc{
-          size=@valid_pars.size
-          @current=size if size < @current || @current < 1
+          n=@valid_pars.size
+          if n > @lastsize
+            @lastsize=@current=n
+          end
           "[%d]" % @current
         }
         @post_exe_procs << proc{
@@ -59,7 +62,8 @@ module CIAX
         }
         @shell_input_proc=proc{|args|
           cmd=args[0]
-          if (n=cmd.to_i) > 0
+          n=cmd.to_i
+          if (0 < n && n <= @valid_pars.size)
             @current=n
             []
           elsif @cobj.intgrp.key?(cmd)
@@ -68,7 +72,6 @@ module CIAX
             args
           end
         }
-        @current=0
         super
       end
     end

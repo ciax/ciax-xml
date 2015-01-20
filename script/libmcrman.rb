@@ -52,7 +52,7 @@ module CIAX
         @current=@lastsize=0
         @prompt_proc=proc{
           n=@valid_pars.size
-          if n > @lastsize
+          if n > @lastsize || @current > n
             @lastsize=@current=n
           end
           "[%d]" % @current

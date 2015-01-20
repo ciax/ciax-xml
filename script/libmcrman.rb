@@ -37,6 +37,7 @@ module CIAX
         init_view
       end
 
+      private
       def init_view
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('lst',"List mode").set_proc{@output=@list;@vmode.delete('d');''}

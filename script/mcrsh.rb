@@ -4,5 +4,5 @@ require "libmcrman"
 module CIAX
   ENV['VER']||='initialize'
   GetOpts.new('cmlnr')
-  Mcr.new.ext_shell.shell
+  Mcr.new.shell
 end

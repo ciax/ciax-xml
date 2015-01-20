@@ -47,7 +47,7 @@ module CIAX
       def ext_http(host,sid)
         @post_upd_procs << proc{
           @data.each{|v|
-            v.extend PrtStep
+            v.extend PrtStep unless PrtStep === v
           }
         }
         super

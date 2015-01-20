@@ -6,7 +6,7 @@ module CIAX
     module PrtShare
       def head(msg,col)
         label=self['label']||self['site']||'noname'
-        msg=indent+Msg.color(msg,col)+':'
+        msg=rindent+Msg.color(msg,col)+':'
         if key?('args')
           msg << self['args'].join(' ')+'('+label+')'
         else
@@ -16,10 +16,10 @@ module CIAX
       end
 
       def body(msg,col=5)
-        indent(1)+Msg.color(msg,col)
+        rindent(1)+Msg.color(msg,col)
       end
 
-      def indent(add=0)
+      def rindent(add=0)
         Msg.indent(self['depth'].to_i+add)
       end
     end
@@ -81,7 +81,7 @@ module CIAX
           end
         end
         mary << body(self['action'].capitalize,8) if key?('action')
-        mary << indent(1)+optlist(self['option']) if key?('option')
+        mary << rindent(1)+Msg.optlist(self['option']) if key?('option')
         mary.join("\n")+"\n"
       end
     end

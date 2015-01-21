@@ -34,16 +34,9 @@ module CIAX
           @valid_pars.replace(@list.keys)
         }
         ext_shell
-        init_view
       end
 
       private
-      def init_view
-        vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
-        vg.add_item('lst',"List mode").set_proc{list_mode;''}
-        vg.add_item('det',"Detail mode").set_proc{detail_mode;''}
-      end
-
       def list_mode
         @output=@list
         @vmode.delete('d')
@@ -79,6 +72,10 @@ module CIAX
           end
         }
         super
+        vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
+        vg.add_item('lst',"List mode").set_proc{list_mode;''}
+        vg.add_item('det',"Detail mode").set_proc{detail_mode;''}
+        self
       end
     end
 

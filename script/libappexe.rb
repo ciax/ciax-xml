@@ -42,15 +42,16 @@ module CIAX
         @output=$opt['j']?@stat:@print
         @batch_interrupt=[]
         ext_shell
-        init_view
       end
 
       private
-      def init_view
+      def ext_shell
+        super
         @print.ext_prt
         @view_grp=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         @view_grp.add_item('vis',"Visual mode").set_proc{@output=@print;''}
         @view_grp.add_item('raw',"Raw Print mode").set_proc{@output=@stat;''}
+        self
       end
     end
 

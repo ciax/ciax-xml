@@ -34,7 +34,6 @@ module CIAX
         @wview=View.new(@adb,@event).ext_prt
         @output=$opt['j']?@event:@wview
         ext_shell
-        init_view
       end
 
       def init_sv(cfg)
@@ -49,10 +48,12 @@ module CIAX
         @ash.pre_exe_procs << proc{|args| @event.block?(args) }
       end
 
-      def init_view
+      def ext_shell
+        super
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('vis',"Visual mode").set_proc{@output=@wview;''}
         vg.add_item('raw',"Raw Print mode").set_proc{@output=@event;''}
+        self
       end
     end
 

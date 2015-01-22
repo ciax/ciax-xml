@@ -45,7 +45,9 @@ module CIAX
         @cobj.intgrp.set_proc{|ent| reply(ent.id)}
         self['option']=@cobj.intgrp.valid_keys.clear
         @prompt_proc=proc{
-          "(#{self['stat']})"
+          res="(#{self['stat']})"
+          res+=optlist(self['option']) if key?('option')
+          res
         }
         super(@cfg[:cid].tr(':','_'))
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
@@ -159,11 +161,10 @@ module CIAX
       end
 
       def query(cmds)
-        @step.setopt(self['option'].replace(cmds))
+        self['option'].replace(cmds)
         set_stat 'query'
         res=input(cmds)
         self['option'].clear
-        @step.delete('option')
         set_stat 'run'
         @step['action']=res
         case res

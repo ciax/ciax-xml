@@ -33,7 +33,8 @@ module CIAX
         @post_exe_procs << proc{
           @valid_pars.replace(@list.keys)
         }
-        @dmode=false
+        # View Seq mode
+        @smode=false
         ext_shell
       end
 
@@ -44,7 +45,7 @@ module CIAX
           ("[%d]" % @list.index)+optlist(@list.option)
         }
         @post_exe_procs << proc{
-          @output=@dmode ? @list.output : @list
+          @output=@smode ? @list.output : @list
         }
         @shell_input_proc=proc{|args|
           cmd=args[0]
@@ -60,8 +61,8 @@ module CIAX
         }
         super
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
-        vg.add_item('lst',"List mode").set_proc{@dmode=false;''}
-        vg.add_item('det',"Detail mode").set_proc{@dmode=true;''}
+        vg.add_item('lst',"List mode").set_proc{@smode=false;''}
+        vg.add_item('seq',"Sequencer mode").set_proc{@smode=true;''}
         vg.add_item('vis',"Visual mode").set_proc{@output.vmode='v';''}
         vg.add_item('raw',"Raw mode").set_proc{@output.vmode='r';''}
         self

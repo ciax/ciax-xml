@@ -19,7 +19,7 @@ module CIAX
       # Conditional judgment section
       def timeout?
         itv=($opt['m'] && ($opt['e'] || $opt['s']))? 1 : 0
-        show title
+        show title(self)
         max=self['max']=self['retry']
         res=max.to_i.times{|n| #gives number or nil(if break)
           self['retry']=n
@@ -34,20 +34,20 @@ module CIAX
       end
 
       def ok?
-        show title
+        show title(self)
         upd
         'ok'
       end
 
       def skip?
-        show title
+        show title(self)
         res=condition_ok?('skip','pass')
         upd
         res
       end
 
       def fail?
-        show title
+        show title(self)
         res=! condition_ok?('pass','failed')
         upd
         res
@@ -55,7 +55,7 @@ module CIAX
 
       # Interactive section
       def exec?
-        show title
+        show title(self)
         res= !dryrun?
         self['result']= res ? 'exec' : 'skip'
         upd
@@ -64,7 +64,7 @@ module CIAX
 
       # Execution section
       def async?
-        show title
+        show title(self)
         res=(/true|1/ === self['async'])
         self['result']= res ? 'forked' : 'entering'
         upd
@@ -73,59 +73,12 @@ module CIAX
 
       # Display section
       def to_v
-        title+result
-      end
-
-      def title
-        case self['type']
-        when 'mesg'
-          msg=head('Mesg',5)
-        when 'goal'
-          msg=head('Done?',6)
-        when 'check'
-          msg=head('Check',6)
-        when 'wait'
-          msg=head('Waiting',6)
-        when 'mcr'
-          msg=head("MACRO",3)
-          msg << "(async)" if self['async']
-        when 'exec'
-          msg=head("EXEC",13)
-        end
-        msg
-      end
-
-      def result
-        mary=['']
-        mary[0] << "(#{self['retry']}/#{self['max']})" if self['max']
-        if res=self['result']
-          title=res.capitalize
-          color=(/failed|timeout/ === res) ? 1 : 2
-          mary[0] << ' -> '+Msg.color(title,color)
-          if c=self['conditions']
-            c.each{|h|
-              if h['res']
-                mary << body("#{h['site']}:#{h['var']}",3)+" is #{h['cmp']}"
-              else
-                mary << body("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
-              end
-            }
-          end
-        end
-        mary << body(self['action'].capitalize,8) if key?('action')
-        mary << rindent(1)+Msg.optlist(self['option']) if key?('option')
-        mary.join("\n")+"\n"
-      end
-
-      def setopt(ary)
-        self['option']=ary
-        upd
-        self
+        title(self)+result(self)
       end
 
       private
       def upd_core
-        show result
+        show result(self)
       end
 
       def show(msg)

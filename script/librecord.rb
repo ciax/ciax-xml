@@ -43,15 +43,6 @@ module CIAX
         post_upd
       end
 
-      def ext_http(host,sid)
-        @post_upd_procs << proc{
-          @data.each{|v|
-            v.extend PrtStep unless PrtStep === v
-          }
-        }
-        super
-      end
-
       def to_s
         @vmode == 'r' ? super : to_v
       end
@@ -59,7 +50,7 @@ module CIAX
       def to_v
         date=Time.at((self['time']/1000).round)
         msg=head("MACRO",3)+" (#{date})\n"
-        @data.each{|i| msg << i.to_v }
+        @data.each{|i| msg << title(i)+result(i) }
         msg
       end
     end

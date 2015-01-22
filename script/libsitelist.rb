@@ -13,6 +13,7 @@ module CIAX
         @cfg[:ldb]||=Db.new
         @jumpgrp.update_items(@cfg[:ldb].list)
         @cfg[:site]||=''
+        verbose("List","Initialize")
       end
 
       def exe(args) # As a individual cui command

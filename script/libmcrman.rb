@@ -89,7 +89,6 @@ module CIAX
         port=cfg['port']||@cobj.cfg[:db]['port']||55555
         self['sid']='' # For server response
         @pre_exe_procs << proc{ self['sid']='' }
-        @list.ext_file.clean
         # Internal Command Group
         @cobj.intgrp.set_proc{|ent|
           sid=ent.par[0]

@@ -19,7 +19,7 @@ module CIAX
     end
 
     def to_s
-      _getdata.to_s
+      @vmode == 'r' ? _getdata.to_s : to_v
     end
 
     def read(json_str=nil)

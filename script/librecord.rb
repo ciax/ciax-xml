@@ -43,10 +43,6 @@ module CIAX
         post_upd
       end
 
-      def to_s
-        @vmode == 'r' ? super : to_v
-      end
-
       def to_v
         date=Time.at((self['time']/1000).round)
         msg=head("MACRO",3)+" (#{date})\n"

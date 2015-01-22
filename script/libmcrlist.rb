@@ -40,10 +40,6 @@ module CIAX
         (@data[current_sid]||{})['option']||{}
       end
 
-      def to_s
-        @vmode == 'r' ? super : to_v
-      end
-
       def to_v
         idx=1
         page=['<<< '+Msg.color('Active Macros',2)+' >>>']

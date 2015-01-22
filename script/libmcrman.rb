@@ -39,7 +39,15 @@ module CIAX
       private
       def ext_shell
         @current=@lastsize=0
-        @prompt_proc=proc{"[%d]" % @current}
+        @prompt_proc=proc{
+          res="[%d]" % @current
+          if sid=@list.num_to_key(@current)
+            if opt=@list.get(sid)['option']
+              res+=optlist(opt)
+            end
+          end
+          res
+        }
         @post_exe_procs << proc{
           n=@valid_pars.size
           @lastsize=@current=n if n > @lastsize || @current > n
@@ -60,10 +68,14 @@ module CIAX
         super
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('lst',"List mode").set_proc{@output=@list;''}
-        vg.add_item('det',"Detail mode").set_proc{@output=@list.record_by_num(@current);''}
+        vg.add_item('det',"Detail mode").set_proc{detail_mode;''}
         vg.add_item('vis',"Visual mode").set_proc{@output.vmode='v';''}
         vg.add_item('raw',"Raw mode").set_proc{@output.vmode='r';''}
         self
+      end
+
+      def detail_mode
+        @output=@list.record_by_num(@current)
       end
     end
 

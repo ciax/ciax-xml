@@ -26,13 +26,25 @@ module CIAX
         self
       end
 
-      def to_s
-        upd
-        super
+      def to_v
+        tonext=Msg.elps_sec(now_msec,self['upd_next'])
+        atime=Msg.elps_sec(self['act_start'],self['act_end'])
+        etime=Msg.elps_date(self['time'],now_msec)
+        str=""
+        str << "  "+Msg.color("Elapsed",2)+"\t: #{etime}\n"
+        str << "  "+Msg.color("ToNextUpdate",2)+"\t: #{tonext}\n"
+        str << "  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
+        str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
+        return str if self['stat'].empty?
+        str << "  "+Msg.color("Conditions",2)+"\t:\n"
+        conditions(str)
+        str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"
+        str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
       end
 
-      def ext_prt
-        extend Print
+      def to_s
+        upd
+        @vmode == 'r' ? super : to_v
       end
 
       private
@@ -52,31 +64,7 @@ module CIAX
           v['active']=@event.get('active').include?(id)
         }
       end
-    end
 
-    module Print
-      def self.extended(obj)
-        Msg.type?(obj,View)
-      end
-
-      def to_s
-        super
-        tonext=Msg.elps_sec(now_msec,self['upd_next'])
-        atime=Msg.elps_sec(self['act_start'],self['act_end'])
-        etime=Msg.elps_date(self['time'],now_msec)
-        str=""
-        str << "  "+Msg.color("Elapsed",2)+"\t: #{etime}\n"
-        str << "  "+Msg.color("ToNextUpdate",2)+"\t: #{tonext}\n"
-        str << "  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
-        str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
-        return str if self['stat'].empty?
-        str << "  "+Msg.color("Conditions",2)+"\t:\n"
-        conditions(str)
-        str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"
-        str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
-      end
-
-      private
       def conditions(str)
         self['stat'].each{|id,i|
           str << "    "+Msg.color(i['label'],6)+"\t: "
@@ -112,7 +100,6 @@ module CIAX
         event.set_db(adb)
         wview=View.new(adb,event)
         event.ext_file if STDIN.tty?
-        wview.ext_prt unless $opt['r']
         puts STDOUT.tty? ? wview : wview.to_j
       rescue InvalidID
         $opt.usage("(opt) [site] | < event_file")

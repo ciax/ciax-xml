@@ -31,7 +31,7 @@ module CIAX
         @ash=type?(cfg[:app_list].get(@id),App::Exe)
         @cobj.svdom.replace @ash.cobj.svdom
         @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
-        @wview=View.new(@adb,@event).ext_prt
+        @wview=View.new(@adb,@event)
         @output=$opt['j']?@event:@wview
         ext_shell
       end

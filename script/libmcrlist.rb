@@ -6,7 +6,8 @@ module CIAX
   module Mcr
     # List takes Command which could be shared with Man
     class List < List
-      attr_reader :jumpgrp
+      # @index: current element (1..@data.size)
+      attr_reader :jumpgrp,:index
       def initialize(cobj=nil)
         @cobj=cobj||Command.new(ConfExe.new).add_ext
         super(Mcr,@cobj.cfg)
@@ -21,7 +22,8 @@ module CIAX
 
       #convert the order number(Integer) to key (sid)
       def num_to_key(num)
-        @data.keys[num-1]
+        @index=num if sid=@data.keys[num-1]
+        sid
       end
 
       def key_to_num(key)
@@ -31,6 +33,11 @@ module CIAX
       def record_by_num(num)
         sid=num_to_key(num)
         @records[sid]
+      end
+
+      def option_by_num(num)
+        sid=num_to_key(num)
+        @data[sid]['option']||{}
       end
 
       def to_s

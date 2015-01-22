@@ -41,11 +41,7 @@ module CIAX
         @current=@lastsize=0
         @prompt_proc=proc{
           res="[%d]" % @current
-          if sid=@list.num_to_key(@current)
-            if opt=@list.get(sid)['option']
-              res+=optlist(opt)
-            end
-          end
+          res+=optlist(@list.option_by_num(@current)) if @current > 0
           res
         }
         @post_exe_procs << proc{

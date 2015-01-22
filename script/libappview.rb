@@ -18,10 +18,6 @@ module CIAX
         }
       end
 
-      def ext_prt
-        extend Print
-      end
-
       def to_csv
         str=''
         @adbs[:group].each{|k,gdb|
@@ -31,6 +27,27 @@ module CIAX
           }
         }
         str
+      end
+
+      def to_v
+        upd
+        cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
+        lines=[]
+        each{|k,v|
+          cap=v['caption']
+          lines << " ***"+color(cap,10)+"***" unless cap.empty?
+          lines.concat v['lines'].map{|ele|
+            "  "+ele.map{|id,val|
+              c=cm[val['class']]+8
+              '['+color(val['label'],14)+':'+color(val['msg'],c)+"]"
+            }.join(' ')
+          }
+        }
+        lines.join("\n")
+      end
+
+      def to_s
+        @vmode == 'r' ? super : to_v
       end
 
       private
@@ -60,33 +77,6 @@ module CIAX
       end
     end
 
-    module Print
-      def self.extended(obj)
-        Msg.type?(obj,View)
-      end
-
-      def to_s
-        @vmode == 'r' ? super : to_v
-      end
-
-      def to_v
-        upd
-        cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
-        lines=[]
-        each{|k,v|
-          cap=v['caption']
-          lines << " ***"+color(cap,10)+"***" unless cap.empty?
-          lines.concat v['lines'].map{|ele|
-            "  "+ele.map{|id,val|
-              c=cm[val['class']]+8
-              '['+color(val['label'],14)+':'+color(val['msg'],c)+"]"
-            }.join(' ')
-          }
-        }
-        lines.join("\n")
-      end
-    end
-
     if __FILE__ == $0
       require "libsitedb"
       GetOpts.new('rc','c' => 'CSV output')
@@ -98,7 +88,6 @@ module CIAX
         view=View.new(adb,stat)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
-        view.ext_prt unless $opt['r']
         if $opt['c']
           puts view.to_csv
         else

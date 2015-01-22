@@ -33,6 +33,7 @@ module CIAX
         @post_exe_procs << proc{
           @valid_pars.replace(@list.keys)
         }
+        @dmode=false
         ext_shell
       end
 
@@ -40,38 +41,30 @@ module CIAX
       def ext_shell
         @current=@lastsize=0
         @prompt_proc=proc{
-          res="[%d]" % @current
-          res+=optlist(@list.option_by_num(@current)) if @current > 0
-          res
+          ("[%d]" % @list.index)+optlist(@list.option)
         }
         @post_exe_procs << proc{
-          n=@valid_pars.size
-          @lastsize=@current=n if n > @lastsize || @current > n
-          @output=@list if @current==0
+          @output=@dmode ? @list.output : @list
         }
         @shell_input_proc=proc{|args|
           cmd=args[0]
           n=cmd.to_i
           if 0 < n && n <= @valid_pars.size
-            @current=n
+            @list.index=n
             []
           elsif @cobj.intgrp.key?(cmd)
-            [cmd]+[@list.num_to_key(@current)]
+            [cmd]+[@list.current_sid]
           else
             args
           end
         }
         super
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
-        vg.add_item('lst',"List mode").set_proc{@output=@list;''}
-        vg.add_item('det',"Detail mode").set_proc{detail_mode;''}
+        vg.add_item('lst',"List mode").set_proc{@dmode=false;''}
+        vg.add_item('det',"Detail mode").set_proc{@dmode=true;''}
         vg.add_item('vis',"Visual mode").set_proc{@output.vmode='v';''}
         vg.add_item('raw',"Raw mode").set_proc{@output.vmode='r';''}
         self
-      end
-
-      def detail_mode
-        @output=@list.record_by_num(@current)
       end
     end
 

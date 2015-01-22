@@ -7,7 +7,8 @@ module CIAX
     # List takes Command which could be shared with Man
     class List < List
       # @index: current element (1..@data.size)
-      attr_reader :jumpgrp,:index
+      attr_reader :jumpgrp
+      attr_accessor :index
       def initialize(cobj=nil)
         @cobj=cobj||Command.new(ConfExe.new).add_ext
         super(Mcr,@cobj.cfg)
@@ -17,27 +18,22 @@ module CIAX
         self['id']=@cfg[:db]["id"]
         self['ver']=@cfg[:db]["version"]
         @post_upd_procs << proc{ @valid_keys.replace(@data.keys)}
+        @index=0
         @records={}
       end
 
       #convert the order number(Integer) to key (sid)
-      def num_to_key(num)
-        @index=num if sid=@data.keys[num-1]
-        sid
+      def current_sid
+        @index=@data.size if @index > @data.size
+        @data.keys[@index-1]
       end
 
-      def key_to_num(key)
-        @data.keys.index(key)
+      def output
+        @records[current_sid]||self
       end
 
-      def record_by_num(num)
-        sid=num_to_key(num)
-        @records[sid]
-      end
-
-      def option_by_num(num)
-        sid=num_to_key(num)
-        @data[sid]['option']||{}
+      def option
+        (@data[current_sid]||{})['option']||{}
       end
 
       def to_s
@@ -102,6 +98,7 @@ module CIAX
         }
         set(ssh.id,ssh)
         @records[ssh.id]=ssh.record
+        @index=@data.size
         ssh.fork(@tgrp)
         self
       end

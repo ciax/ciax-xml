@@ -62,7 +62,7 @@ module CIAX
         vg.add_item('lst',"List mode").set_proc{@output=@list;''}
         vg.add_item('det',"Detail mode").set_proc{@output=@list.record_by_num(@current);''}
         vg.add_item('vis',"Visual mode").set_proc{@output.vmode='v';''}
-        vg.add_item('raw',"Rawl mode").set_proc{@output.vmode='r';''}
+        vg.add_item('raw',"Raw mode").set_proc{@output.vmode='r';''}
         self
       end
     end

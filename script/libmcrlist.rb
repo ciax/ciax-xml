@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+ #!/usr/bin/ruby
 require "liblist"
 require "libmcrexe"
 
@@ -17,7 +17,11 @@ module CIAX
         @cfg["line_number"]=true
         self['id']=@cfg[:db]["id"]
         self['ver']=@cfg[:db]["version"]
-        @post_upd_procs << proc{ @valid_keys.replace(@data.keys)}
+        @post_upd_procs << proc{
+           @valid_keys.replace(@data.keys)
+           s=@data.size
+           @index=s if s > @lastsize || @index > s
+         }
         @index=0
         @lastsize=0
         @records={}
@@ -25,8 +29,6 @@ module CIAX
 
       #convert the order number(Integer) to key (sid)
       def current_sid
-        s=@data.size
-        @index=s if s > @lastsize || @index > s
         @data.keys[@index-1]
       end
 
@@ -48,7 +50,6 @@ module CIAX
         @data.each{|key,mst|
           title="[#{idx}](#{key})"
           msg="#{mst['cid']} [#{mst['step']}/#{mst['total_steps']}](#{mst['stat']})"
-          msg << optlist(mst['option'])
           page << Msg.item(title,msg)
           idx+=1
         }

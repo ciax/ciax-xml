@@ -1,4 +1,4 @@
- #!/usr/bin/ruby
+#!/usr/bin/ruby
 require "liblist"
 require "libmcrexe"
 
@@ -41,7 +41,7 @@ module CIAX
       end
 
       def to_s
-        @vmode == 'v' ? to_v : super
+        @vmode == 'r' ? super : to_v
       end
 
       def to_v

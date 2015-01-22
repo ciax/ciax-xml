@@ -34,6 +34,10 @@ module CIAX
       end
 
       def to_s
+        @vmode == 'v' ? to_v : super
+      end
+
+      def to_v
         idx=1
         page=['<<< '+Msg.color('Active Macros',2)+' >>>']
         @data.each{|key,mst|

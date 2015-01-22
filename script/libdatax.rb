@@ -32,6 +32,10 @@ module CIAX
       @data.size
     end
 
+    def get(id)
+      @data[id]
+    end
+
     def ext_file(tag=nil) # File I/O
       extend File
       ext_file(tag)
@@ -72,10 +76,6 @@ module CIAX
       self['time']=now_msec
     ensure
       post_upd
-    end
-
-    def get(key)
-      @data[key]
     end
 
     def set(key,val) # super should be placed at the end of method

@@ -46,9 +46,6 @@ module CIAX
         lines.join("\n")
       end
 
-      def to_s
-        @vmode == 'r' ? super : to_v
-      end
 
       private
       def upd_core

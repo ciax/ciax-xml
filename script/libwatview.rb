@@ -7,10 +7,11 @@ module CIAX
   module Wat
     # Decorate the event data (Put caption,symbole,etc.) from WDB
     class View < Upd
-      def initialize(adb,watch)
+      def initialize(adb,event)
         super()
         wdb=type?(adb,App::Db)[:watch]||{:index =>[]}
-        @event=type?(watch,Event)
+        @event=type?(event,Event)
+        @event.post_upd_procs << proc{upd}
         self['stat']={}
         wdb[:index].each{|id,evnt|
           hash=(self['stat'][id]||={})
@@ -40,11 +41,6 @@ module CIAX
         conditions(str)
         str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"
         str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
-      end
-
-      def to_s
-        upd
-        @vmode == 'r' ? super : to_v
       end
 
       private

@@ -27,7 +27,7 @@ module CIAX
     module PrtRecord
       include PrtShare
       def to_s
-        @vmode['r'] ? super : to_v
+        @vmode == 'r' ? super : to_v
       end
 
       def to_v

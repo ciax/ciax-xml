@@ -27,7 +27,6 @@ module CIAX
       def add_step(e1)
         Msg.type?(@cfg[:wat_list],Wat::List)
         step=Step.new(e1,@cfg)
-        step.vmode.replace @vmode
         step.post_upd_procs << proc{post_upd}
         step['time']=Msg.elps_sec(self['time'])
         @data << step

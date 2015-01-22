@@ -37,27 +37,13 @@ module CIAX
       end
 
       private
-      def list_mode
-        @output=@list
-        @vmode.delete('d')
-      end
-
-      def detail_mode
-        @output=@list.record_by_num(@current)
-        @vmode['d']=true
-      end
-
       def ext_shell
         @current=@lastsize=0
         @prompt_proc=proc{"[%d]" % @current}
         @post_exe_procs << proc{
           n=@valid_pars.size
           @lastsize=@current=n if n > @lastsize || @current > n
-          if @current==0
-            list_mode
-          elsif @vmode['d']
-            detail_mode
-          end
+          @output=@list if @current==0
         }
         @shell_input_proc=proc{|args|
           cmd=args[0]
@@ -73,8 +59,10 @@ module CIAX
         }
         super
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
-        vg.add_item('lst',"List mode").set_proc{list_mode;''}
-        vg.add_item('det',"Detail mode").set_proc{detail_mode;''}
+        vg.add_item('lst',"List mode").set_proc{@output=@list;''}
+        vg.add_item('det',"Detail mode").set_proc{@output=@list.record_by_num(@current);''}
+        vg.add_item('vis',"Visual mode").set_proc{@output.vmode='v';''}
+        vg.add_item('raw',"Rawl mode").set_proc{@output.vmode='r';''}
         self
       end
     end

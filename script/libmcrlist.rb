@@ -19,12 +19,14 @@ module CIAX
         self['ver']=@cfg[:db]["version"]
         @post_upd_procs << proc{ @valid_keys.replace(@data.keys)}
         @index=0
+        @lastsize=0
         @records={}
       end
 
       #convert the order number(Integer) to key (sid)
       def current_sid
-        @index=@data.size if @index > @data.size
+        s=@data.size
+        @index=s if s > @lastsize || @index > s
         @data.keys[@index-1]
       end
 
@@ -98,7 +100,6 @@ module CIAX
         }
         set(ssh.id,ssh)
         @records[ssh.id]=ssh.record
-        @index=@data.size
         ssh.fork(@tgrp)
         self
       end

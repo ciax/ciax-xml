@@ -6,6 +6,7 @@ require "libxmldoc"
 module CIAX
   # Db class is for read only databases
   # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
+  # set() generates new individual Db
   # Cache is available
   class Db < Hashx
     XmlDir="#{ENV['HOME']}/ciax-xml"

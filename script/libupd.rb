@@ -22,11 +22,11 @@ module CIAX
     end
 
     def to_s
-      @vmode == 'r' ? super : to_v
-    end
-
-    def to_v
-      view_struct
+      if self.class.method_defined?(:to_v)  && @vmode=='v'
+        to_v
+      else
+        super
+      end
     end
 
     private

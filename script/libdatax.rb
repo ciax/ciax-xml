@@ -19,7 +19,11 @@ module CIAX
     end
 
     def to_s
-      @vmode == 'r' ? _getdata.to_s : to_v
+      if self.class.method_defined?(:to_v) && @vmode == 'v'
+        to_v
+      else
+        _getdata.to_s
+      end
     end
 
     def read(json_str=nil)

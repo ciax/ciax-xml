@@ -157,6 +157,8 @@ module CIAX
       end
     end
 
+    class Jump < LongJump; end
+
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('chlset')

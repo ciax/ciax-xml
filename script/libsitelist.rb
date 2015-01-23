@@ -47,6 +47,5 @@ module CIAX
       end
     end
 
-    class Jump < LongJump; end
   end
 end

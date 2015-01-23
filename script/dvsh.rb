@@ -9,13 +9,13 @@ module CIAX
   cfg[:ldb]=Site::Db.new
   lay=Layer::List.new(cfg)
   if $opt['x']
-    mod=Hex
+    mod=Hex::List
   elsif $opt['f']
-    mod=Frm
+    mod=Frm::List
   elsif $opt['a']
-    mod=App
+    mod=App::List
   else
-    mod=Wat
+    mod=Wat::List
   end
   lay.add_layer(mod)
   lay.shell(lay.keys.first,ARGV.shift)

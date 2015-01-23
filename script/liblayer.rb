@@ -16,9 +16,9 @@ module CIAX
 
       def add_layer(layer)
         type?(layer,Module)
-        str=layer.to_s.split(':').last
+        str=layer.to_s.split(':')[1]
         id=str.downcase.to_sym
-        layer::List.new(@cfg)
+        layer.new(@cfg)
         @cfg.layers.each{|k,v|
           id=k.to_s
           @jumpgrp.add_item(id,str+" mode",@pars)

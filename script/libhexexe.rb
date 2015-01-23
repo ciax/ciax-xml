@@ -36,8 +36,7 @@ module CIAX
       def initialize(upper=nil)
         super
         @cfg[:level]='hex'
-        @cfg[:wat_list]||=Wat::List.new
-        @cfg[:hex_list]=self
+        @cfg.top[:wat_list]=Wat::List.new unless @cfg[:wat_list]
       end
 
       def add(id)

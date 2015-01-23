@@ -35,6 +35,10 @@ module CIAX
       hash
     end
 
+    def top
+      @generation.last
+    end
+
     def [](id)
       @generation.each{|h|
         return h.fetch(id) if h.key?(id)

@@ -114,8 +114,7 @@ module CIAX
       def initialize(upper=nil)
         super
         @cfg[:level]='watch'
-        @cfg[:app_list]||=App::List.new
-        @cfg[:wat_list]=self
+        @cfg.top[:app_list]=App::List.new unless @cfg[:app_list]
       end
 
       def add(id)

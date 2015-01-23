@@ -146,7 +146,7 @@ module CIAX
     class List < Site::List
       def initialize(upper=nil)
         super(upper)
-        @cfg[:frm_list]||=Frm::List.new(@cfg)
+        @cfg[:frm_list]=Frm::List.new(@cfg) unless @cfg[:frm_list]
       end
 
       def add(id)

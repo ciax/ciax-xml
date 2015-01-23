@@ -34,7 +34,7 @@ module CIAX
 
     class List < Site::List
       def initialize(upper=nil)
-        super
+        super(Hex,upper)
         @cfg[:level]='hex'
         @cfg.layers[:hex]=self
         Wat::List.new(@cfg)

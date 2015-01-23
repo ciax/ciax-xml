@@ -107,7 +107,7 @@ module CIAX
 
     class List < Site::List
       def initialize(upper=nil)
-        super(upper)
+        super(Frm,upper)
         @cfg.layers[:frm]=self
       end
 

@@ -112,8 +112,7 @@ module CIAX
 
     class List < Site::List
       def initialize(upper=nil)
-        super
-        @cfg[:level]='watch'
+        super(Wat,upper)
         @cfg.layers[:wat]=self
         App::List.new(@cfg)
       end

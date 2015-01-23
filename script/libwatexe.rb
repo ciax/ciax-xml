@@ -28,7 +28,7 @@ module CIAX
         @event=Event.new.set_db(@adb)
         @cls_color=3
         super('wat',@event['id'])
-        @ash=type?(cfg[:app_list].get(@id),App::Exe)
+        @ash=type?(cfg.layers[:app].get(@id),App::Exe)
         @cobj.svdom.replace @ash.cobj.svdom
         @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
         @wview=View.new(@adb,@event)
@@ -114,7 +114,8 @@ module CIAX
       def initialize(upper=nil)
         super
         @cfg[:level]='watch'
-        @cfg.top[:app_list]=App::List.new unless @cfg[:app_list]
+        @cfg.layers[:wat]=self
+        App::List.new(@cfg)
       end
 
       def add(id)

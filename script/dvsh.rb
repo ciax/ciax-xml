@@ -8,15 +8,15 @@ module CIAX
   cfg=Config.new('ins_top')
   cfg[:ldb]=Site::Db.new
   lay=Layer::List.new(cfg)
-  lay.add_layer(Frm)
-  if !$opt['f']
-    lay.add_layer(App)
-    if !$opt['a']
-      lay.add_layer(Wat)
-      if $opt['x']
-        lay.add_layer(Hex)
-      end
-    end
+  if $opt['x']
+    mod=Hex
+  elsif $opt['f']
+    mod=Frm
+  elsif $opt['a']
+    mod=App
+  else
+    mod=Wat
   end
-  lay.shell(lay.keys.last,ARGV.shift)
+  lay.add_layer(mod)
+  lay.shell(lay.keys.first,ARGV.shift)
 end

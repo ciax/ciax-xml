@@ -17,11 +17,13 @@ module CIAX
       def add_layer(layer)
         type?(layer,Module)
         str=layer.to_s.split(':').last
-        id=str.downcase
-        key="#{id}_list".to_sym
-        lst=(@cfg[key]||=layer::List.new(@cfg))
-        @jumpgrp.add_item(id,str+" mode",@pars)
-        set(id,lst)
+        id=str.downcase.to_sym
+        layer::List.new(@cfg)
+        @cfg.layers.each{|k,v|
+          id=k.to_s
+          @jumpgrp.add_item(id,str+" mode",@pars)
+          set(id,v)
+        }
       end
     end
 

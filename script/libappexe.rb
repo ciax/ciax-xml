@@ -35,7 +35,7 @@ module CIAX
         @stat=Status.new.set_db(@adb)
         @cls_color=2
         super('app',@stat['id'],Command.new(cfg))
-        @fsh=type?(cfg[:frm_list].get(@id),Frm::Exe)
+        @fsh=type?(cfg.layers[:frm].get(@id),Frm::Exe)
         @mode=@fsh.mode
         @site_stat=@fsh.site_stat.add_db('isu' => '*')
         @print=View.new(@adb,@stat)
@@ -146,7 +146,8 @@ module CIAX
     class List < Site::List
       def initialize(upper=nil)
         super(upper)
-        @cfg[:frm_list]=Frm::List.new(@cfg) unless @cfg[:frm_list]
+        @cfg.layers[:app]=self
+        Frm::List.new(@cfg)
       end
 
       def add(id)

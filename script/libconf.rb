@@ -8,16 +8,18 @@ module CIAX
   # Usage:[]=/ add to current Hash which will override(hide) upper level Hash;
   # Usage:[]/  get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
-    attr_reader :generation
+    attr_reader :generation,:layers
     def initialize(name,cfg=nil)
       super()
       @generation=[self]
+      @layers={}
       self[:level]=name
       override(cfg) if cfg
     end
 
     def override(cfg)
-      @generation.concat(type?(cfg,Config).generation)
+      @layers=type?(cfg,Config).layers
+      @generation.concat(cfg.generation)
       self
     end
 
@@ -33,10 +35,6 @@ module CIAX
       hash=Hashx.new
       @generation.reverse.each{|h| hash.update h}
       hash
-    end
-
-    def top
-      @generation.last
     end
 
     def [](id)

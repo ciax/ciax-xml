@@ -36,11 +36,12 @@ module CIAX
       def initialize(upper=nil)
         super
         @cfg[:level]='hex'
-        @cfg.top[:wat_list]=Wat::List.new unless @cfg[:wat_list]
+        @cfg.layers[:hex]=self
+        Wat::List.new(@cfg)
       end
 
       def add(id)
-        set(id,Hex.new(@cfg[:wat_list].get(id)))
+        set(id,Hex.new(@cfg.layers[:wat].get(id)))
       end
     end
 

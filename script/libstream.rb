@@ -68,7 +68,7 @@ module CIAX
         @f=IO.popen(@iocmd,'r+')
         Signal.trap(:INT,"DEFAULT")
         # Shut off from Ctrl-C Signal to the child process
-        Process.setpgid(@f.pid,@f.pid)
+#        Process.setpgid(@f.pid,@f.pid)
         retry
       end
       str

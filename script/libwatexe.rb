@@ -7,19 +7,21 @@ module CIAX
     # cfg should have [:app_list](App::List)
     def self.new(cfg)
       Msg.type?(cfg,Hash)
-      if $opt['l']
-        $opt.delete('l')
+      if $opt.delete('l')
         cfg['host']='localhost'
         Sv.new(cfg)
-        Cl.new(cfg)
-      elsif (cfg['host']=$opt['h']) or $opt['c']
-        Cl.new(cfg)
+      elsif host=$opt.delete('h')
+        cfg['host']=host
+      elsif $opt.delete('c')
       elsif $opt['s'] or $opt['e']
-        Sv.new(cfg)
+        return Sv.new(cfg)
       else
-        Test.new(cfg)
+        return Test.new(cfg)
       end
+      Cl.new(cfg)
     end
+
+    class Jump < LongJump; end
 
     class Exe < Exe
       attr_reader :adb,:stat
@@ -122,8 +124,6 @@ module CIAX
         set(id,Wat.new(@cfg))
       end
     end
-
-    class Jump < LongJump; end
 
     if __FILE__ == $0
       ENV['VER']||='initialize'

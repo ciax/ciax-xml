@@ -46,6 +46,5 @@ module CIAX
         $opt.usage('(opt) [id] ....')
       end
     end
-
   end
 end

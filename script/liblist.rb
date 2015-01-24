@@ -18,7 +18,11 @@ module CIAX
 
     def shell(key=nil,par=nil)
       begin
-        (get(key)||lastval).shell(par)
+        if lst=get(key)
+          lst.shell(par)
+        else
+          get(keys.first).shell(key)
+        end
       rescue @level::Jump
         key,par=$!.to_s.split(':')
         retry

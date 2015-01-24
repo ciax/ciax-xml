@@ -18,5 +18,5 @@ module CIAX
     mod=Wat::List
   end
   lay.add_layer(mod)
-  lay.shell(lay.keys.first,ARGV.shift)
+  lay.shell(ARGV.shift)
 end

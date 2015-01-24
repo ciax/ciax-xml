@@ -30,7 +30,7 @@ module CIAX
         type?(exe,Exe)
         return self if @data.key?(id)
         # JumpGroup is set to Domain
-        @cfg[:jump_groups].each{|grp|
+        (@cfg[:jump_groups]+[@jumpgrp]).each{|grp|
           exe.cobj.lodom.join_group(grp)
         }
         super

@@ -8,12 +8,11 @@ module CIAX
       name=level.to_s.split(':').last.downcase
       @cfg=Config.new("#{name}_list",upper)
       super(name,{},@cfg[:dataname]||'list')
+      @cfg[:jump_groups]||=[]
       attr={'caption'=>"Switch #{name}s",'color'=>5,'column'=>2}
       @jumpgrp=Group.new(@cfg,attr).set_proc{|ent|
         raise(@level::Jump,ent.id)
       }
-      jg=@cfg[:jump_groups]=(@cfg[:jump_groups]||[]).dup
-      jg << @jumpgrp
       $opt||=GetOpts.new
     end
 

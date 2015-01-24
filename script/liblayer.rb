@@ -12,6 +12,7 @@ module CIAX
         @cfg[:site]||=''
         @cfg[:ldb]||=Site::Db.new
         @pars={:parameters => [{:default => @cfg[:site]}]}
+        @cfg[:jump_groups] << @jumpgrp
       end
 
       def add_layer(layer)

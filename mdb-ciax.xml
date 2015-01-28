@@ -67,7 +67,7 @@
       <wait label="Jack start?" retry="5">
         <stat site="$1" var="exe">ON</stat>
       </wait>
-      <wait label="Jacking" retry="40">
+      <wait label="Jacking" retry="50">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>
@@ -83,7 +83,7 @@
       <wait label="Jack start?" retry="5">
         <stat site="$1" var="exe">ON</stat>
       </wait>
-      <wait label="Jacking" retry="40">
+      <wait label="Jacking" retry="50">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>
@@ -99,7 +99,7 @@
       <wait label="Jack start?" retry="5">
         <stat site="$1" var="exe">ON</stat>
       </wait>
-      <wait label="Jacking" retry="40">
+      <wait label="Jacking" retry="50">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>
@@ -115,7 +115,7 @@
       <wait label="Jack start?" retry="5">
         <stat site="$1" var="exe">ON</stat>
       </wait>
-      <wait label="Jacking" retry="40">
+      <wait label="Jacking" retry="50">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>
@@ -133,7 +133,7 @@
       <wait label="Jack start?" retry="5">
         <stat site="$1" var="exe">ON</stat>
       </wait>
-      <wait label="Jacking" retry="40">
+      <wait label="Jacking" retry="50">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>
@@ -149,7 +149,7 @@
       <wait label="Jack start?" retry="5">
         <stat site="$1" var="exe">ON</stat>
       </wait>
-      <wait label="Jacking" retry="40">
+      <wait label="Jacking" retry="50">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>
@@ -165,7 +165,7 @@
       <wait label="Jack start?" retry="5">
         <stat site="$1" var="exe">ON</stat>
       </wait>
-      <wait label="Jacking" retry="40">
+      <wait label="Jacking" retry="50">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>
@@ -181,7 +181,7 @@
       <wait label="Jack start?" retry="5">
         <stat site="$1" var="exe">ON</stat>
       </wait>
-      <wait label="Jacking" retry="40">
+      <wait label="Jacking" retry="50">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>

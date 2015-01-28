@@ -25,7 +25,7 @@ module CIAX
     def pick(input)
       hash=input.dup
       @db.keys.each{|k|
-        self[k]=hash.delete(k) if hash[k]
+        self[k]= hash[k] ? hash.delete(k) : false
       }
       hash
     end

@@ -346,10 +346,10 @@
         <binary id="run" label="RUNNING" symbol="action">
           <field ref="x" index="0" bit="4" />
         </binary>
-        <integer id="cps" label="Current Tag" format="%02d">
+        <integer id="cps" label="Current Tag">
           <field ref="x" index="25" />
         </integer>
-        <integer id="dps" label="Destination Tag" format="%02d">
+        <integer id="dps" label="Destination Tag">
           <field ref="x" index="26" />
         </integer>
         <binary id="jak" label="JACKING" symbol="action">

@@ -14,9 +14,9 @@ module CIAX
       if $opt.delete('l')
         cfg['host']='localhost'
         Sv.new(cfg)
-      elsif host=$opt.delete('h')
+      elsif host=$opt['h']
         cfg['host']=host
-      elsif $opt.delete('c')
+      elsif $opt['c']
       elsif $opt['s'] or $opt['e']
         return Sv.new(cfg)
       else

@@ -21,11 +21,6 @@
       <pattern class="warn" msg="DW">1</pattern>
       <pattern class="alarm" msg="N/A">0</pattern>
     </table>
-    <table id="ctl">
-      <pattern class="normal" msg="AUTO">2</pattern>
-      <pattern class="alarm" msg="MANUAL">1</pattern>
-      <pattern class="alarm" msg="N/A">0</pattern>
-    </table>
     <table id="mov">
       <pattern class="warn" msg="FW">2</pattern>
       <pattern class="normal" msg="BK">1</pattern>

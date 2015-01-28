@@ -54,7 +54,7 @@ module CIAX
               if h['res']
                 mary << body("#{h['site']}:#{h['var']}",3)+" is #{h['cmp']}"
               else
-                mary << body("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
+                mary << body("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']} (#{h['act']})"
               end
             }
           end

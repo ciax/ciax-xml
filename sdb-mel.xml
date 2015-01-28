@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="mel" label="Cart PLC">
-    <table id="aut" label="Operation Mode">
-      <pattern class="normal" msg="AUTO">2</pattern>
-      <pattern class="warn" msg="Manual">1</pattern>
-      <pattern class="alarm" msg="N/A" />
-    </table>
     <table id="acp" label="Command Accepting">
       <pattern class="normal" msg="OFF">2</pattern>
       <pattern class="warn" msg="ON">1</pattern>

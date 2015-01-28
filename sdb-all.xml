@@ -61,5 +61,10 @@
       <pattern class="normal" msg="ACK">6</pattern>
       <pattern class="alarm" msg="NAK">21</pattern>
     </table>
+    <table id="ctl_mode">
+      <pattern class="normal" msg="AUTO">2</pattern>
+      <pattern class="alarm" msg="MANUAL">1</pattern>
+      <pattern class="alarm" msg="N/A">0</pattern>
+    </table>
   </symbol>
 </sdb>

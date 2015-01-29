@@ -14,10 +14,8 @@ module CIAX
         @stat=type?(stat,Datax)
         @cls_color=1
         @pfx_color=14
-        ver=@stat['ver'].to_i
+        @tid="#{@stat.type}_#{@stat['ver']}"
         @tname=@stat.type.capitalize
-        return unless $opt['e'] && ver > 0
-        @tid="#{@stat.type}_#{ver}"
         verbose(@tname,"Initialize Table '#{@tid}'")
       end
 
@@ -111,7 +109,7 @@ module CIAX
       # Check table existence (ver=0 is invalid)
       def add_table(stat)
         sqlog=Table.new(stat)
-        if sqlog.tid
+        if $opt['e'] && stat['ver'].to_i > 0
           # Create table if no table
           unless internal("tables").split(' ').include?(sqlog.tid)
             @queue.push sqlog.create

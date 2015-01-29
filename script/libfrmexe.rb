@@ -36,7 +36,9 @@ module CIAX
         super('frm',@field['id'],Command.new(cfg))
         @output=@field
         @cobj.add_int
-        @flush_procs=[] # Proc for Terminate process of Batch
+        # Post internal command procs
+        # Proc for Terminate process of each individual commands
+        @flush_procs=[] 
         ext_shell
       end
     end

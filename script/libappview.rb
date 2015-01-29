@@ -9,9 +9,14 @@ module CIAX
     class View < Upd
       def initialize(adb,stat)
         super()
+        @cls_color=2
+        @pfx_color=13
         @adbs=type?(adb,Db)[:status]
         @stat=type?(stat,Status)
-        @stat.post_upd_procs << proc{upd}
+        @stat.post_upd_procs << proc{
+          verbose("View","Propagate Status@upd -> View@upd")
+          upd
+        }
         # Just additional data should be provided
         ['data','class','msg'].each{|key|
           stat[key]||={}

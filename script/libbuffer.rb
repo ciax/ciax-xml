@@ -4,16 +4,17 @@ require "libthreadx"
 
 # SubModule for App::Sv
 # *Command stream(Send)
-#  send() takes frame cmdary(Array of Array) in block
+#  send() takes frame batch(Array of Args) in block
 #  -> Inbuf[priority]
 #  -> Accept or Reject
-#  -> flush -> Queue
+#  -> Queue
 #
 # *Command stream(Recieve)
 #  recv()
 #  Queue -> Outbuf until Queue is empty
 #  -> provide single frame args(Array) as it is called
-#  (stack if Queue is empty)
+#  -> flush as Queue becomes empty
+#  (wait for command input in Queue) -> loop
 #
 # *Command Priority
 #  0:Interrupt

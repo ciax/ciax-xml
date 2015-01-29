@@ -42,7 +42,7 @@ module CIAX
               break
             }
           }
-          verbose("Symbol","Update(#{self['time']})")
+          verbose("Symbol","Propagate Status#upd -> Symbol:Update(#{self['time']})")
         }
         self
       end

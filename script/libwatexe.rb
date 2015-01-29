@@ -46,6 +46,7 @@ module CIAX
           @site_stat['watch'] = @event.active?
           block=wat.get('block').map{|id,par| par ? nil : id}.compact
           @ash.cobj.extgrp.valid_sub(block)
+          verbose("Watch","Propagate Event#upd -> Watch::Exe update")
         }
         @ash.pre_exe_procs << proc{|args| @event.block?(args) }
       end
@@ -64,7 +65,11 @@ module CIAX
         super
         init_sv(cfg)
         @event.ext_rsp(@stat)
-        @stat.post_upd_procs << proc{@event.upd} # @event is independent from @stat
+        # @event is independent from @stat
+        @stat.post_upd_procs << proc{
+          verbose("Watch","Propagate Status#upd -> Event#upd")
+          @event.upd
+        }
       end
     end
 
@@ -87,6 +92,7 @@ module CIAX
             @ash.exe(args,src,pri)
         }
         @stat.post_upd_procs << proc{
+          verbose("Watch","Propagate Status#upd -> Event#upd")
           @event.upd.exec('event',2)
         }
         @event.ext_log if $opt['e'] && @stat['ver']

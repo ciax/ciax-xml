@@ -25,7 +25,10 @@ module CIAX
             end
           end
         }
-        @stat.post_upd_procs << proc{upd}
+        @stat.post_upd_procs << proc{
+          verbose("HexView","Propagate Status#upd -> Hex::View#upd")
+          upd
+        }
         upd
         self
       end

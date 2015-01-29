@@ -62,7 +62,10 @@ module CIAX
         super
         @mode='TEST'
         @stat.ext_sym
-        @stat.post_upd_procs << proc{|st|st['time']=now_msec}
+        @stat.post_upd_procs << proc{|st|
+          verbose("App","Propagate Status#upd -> App#settime")
+          st['time']=now_msec
+        }
         @cobj.add_int
         @cobj.ext_proc{|ent|
           @stat.upd
@@ -98,7 +101,10 @@ module CIAX
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         @buf=init_buf
         ver=@stat['ver']
-        @fsh.flush_procs << proc{ @buf.flush }
+        @fsh.flush_procs << proc{
+          verbose("AppSv","Propagate Frm::Exe@flush -> Buffer@flush")
+          @buf.flush
+        }
         @cobj.ext_proc{|ent,src,pri|
           verbose("AppSv","#@id/Issuing:#{ent.id} from #{src} with priority #{pri}")
           @buf.send(pri,ent,src)
@@ -136,7 +142,7 @@ module CIAX
           @fsh.exe(args,src)
         }
         buf.flush_proc{
-          verbose("AppSv","Flushed FrmCmds")
+          verbose("AppSv","Propagate Buffer@flush -> Status::upd")
           @stat.upd
           sleep(@interval||0.1)
           # Auto issue by watch

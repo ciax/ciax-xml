@@ -58,7 +58,6 @@ module CIAX
               verbose("Rsp","Formula:#{f}(#{data})(#{id})")
             end
             data = hash['format'] % data if hash.key?('format')
-            verbose("Rsp","GetStatusData[#{data}](#{id})")
             @data[id]=data.to_s
           }
         }

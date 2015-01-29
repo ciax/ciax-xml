@@ -50,11 +50,11 @@ module CIAX
       #   (val) -> calcurated from status
       @ver_indent=@@base
       msg=make_msg(prefix,title)
-      if msg && condition(msg.to_s)
+      if @show_inside || msg && condition(msg.to_s)
         Kernel.warn msg
         Kernel.warn Msg.indent(@ver_indent+1)+data.to_s if data
+        true
       end
-      self
     end
 
     def ver?
@@ -79,13 +79,15 @@ module CIAX
     end
 
     def enclose(prefix,title1,title2)
-      verbose(prefix,title1)
+      @show_inside=verbose(prefix,title1)
+warn "OK show inside" if @show_insite
       @@base+=1
       res=yield
     ensure
       @@base-=1
       verbose(prefix,sprintf(title2,res))
-    end
+      @show_inside=false
+   end
 
     # Private Method
     private

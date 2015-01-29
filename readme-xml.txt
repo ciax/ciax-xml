@@ -102,6 +102,7 @@
     available: fdb//command/par_num
             --
             adb//command/par_num
+            adb//status/binary/field@bit
             adb//event/range
 
 ### Implicit conversion ###

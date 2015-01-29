@@ -40,7 +40,7 @@ module CIAX
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
           @sel.update(@fds[rid])
           @sel[:body]=@ent.deep_subst(@sel[:body])
-          verbose("Rsp","Selected DB for #{rid} #{@sel}")
+          verbose("Rsp","Selected DB for #{rid}",@sel)
           # Frame structure: main(total){ ccrange{ body(selected str) } }
           stream=@input_proc.call
           @frame.set(stream.binary,@sel['length'],@sel['padding'])

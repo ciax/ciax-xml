@@ -107,7 +107,7 @@ module CIAX
         open(logpath,'a') {|f|
           logary.each{|str|
             f.puts str
-            verbose(@type.capitalize,"Appended #{str.size} byte #{str}")
+            verbose(@type.capitalize,"Appended #{str.size} byte",str)
           }
         }
       }

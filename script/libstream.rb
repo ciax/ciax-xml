@@ -30,7 +30,7 @@ module CIAX
     def snd(str,cid)
       return if str.to_s.empty?
       verbose("Client","Sending #{str.size} byte on #{cid}")
-      verbose("Client","Binary Sending #{str.inspect}")
+      verbose("Client","Binary Sending",str)
       reopen{
         @f.write(str)
       }
@@ -48,7 +48,7 @@ module CIAX
         Msg.com_err("Stream:No response")
       end
       verbose("Client","Recieved #{str.size} byte on #{self['cmd']}")
-      verbose("Client","Binary Recieving #{str.inspect}")
+      verbose("Client","Binary Recieving",str)
       convert('rcv',str)
       self
     end

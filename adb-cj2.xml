@@ -5,7 +5,7 @@
       <group id="gint" caption="Interrpt Commands" column="2">
         <item id="upd" label="Status update">
           <frmcmd name="getstat" />
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
           <frmcmd name="geterr" />
           <frmcmd name="getzlen" />
         </item>
@@ -52,7 +52,7 @@
         </item>
         <item id="reset" label="ResetBit">
           <frmcmd name="clrbit" />
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
           <frmcmd name="getstat" />
         </item>
       </group>
@@ -62,28 +62,28 @@
             <argv>1</argv>
             <argv>0</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="fjup" label="Fix Flange Jack Up">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>4</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="funhk" label="Fix Flange UnHook">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="fjdw" label="Fix Flange Jack Down">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>5</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
       </group>
       <group id="gmov" caption="Mov Frange Control" column="2">
@@ -92,28 +92,28 @@
             <argv>2</argv>
             <argv>0</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="mjup" label="Mov Flange Jack Up">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>4</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="munhk" label="Mov Flange UnHook">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="mjdw" label="Mov Flange Jack Down">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>5</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
       </group>
       <group id="gtr" caption="Transer Control" column="2">
@@ -122,28 +122,28 @@
             <argv>2</argv>
             <argv>2</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="trout" label="Transer Out">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>6</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="rotin" label="Rotate Storing">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>3</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="trin" label="Transer In">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>7</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
       </group>
       <group id="gipw" caption="Instrument Power Supply" column="2">
@@ -152,7 +152,7 @@
             <argv>3</argv>
             <argv>2</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="mpwon" label="Mov IPW On">
           <frmcmd name="setbit">
@@ -166,14 +166,14 @@
             <argv>3</argv>
             <argv>3</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="mpwoff" label="Mov IPW Off">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>5</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
       </group>
       <group id="gccd" caption="Other Power Control" column="2">
@@ -182,42 +182,42 @@
             <argv>3</argv>
             <argv>8</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="mccdon" label="Mov CCD Power On">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>12</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="fccdoff" label="Fix CCD Power Off">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>9</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="mccdoff" label="Mov CCD Power Off">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>13</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="fccdtoff" label="Fix CCD Timer Off">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>10</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="mccdtoff" label="Mov CCD Timer Off">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>14</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="pwoff" label="Outlet Power Off">
           <frmcmd name="setbit">
@@ -233,35 +233,35 @@
             <argv>1</argv>
             <argv>6</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="dopen" label="Door Open">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>0</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="chgbk" label="Chg Plug Backward">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>7</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="dclose" label="Door Close">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
         <item id="chgon" label="Chg Power ON">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>8</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getexe" />
         </item>
       </group>
     </commands>

@@ -25,7 +25,7 @@
         <char length="1" label="FINS Param:Data Length (H)">0x00</char>
         <char length="1" label="FINS Param:Data Length (L)">0x13</char>
       </item>
-      <item id="getcmd" label="Get item bit" response="getcmd" type="stat">
+      <item id="getexe" label="Get item bit" response="getexe" type="stat">
         <char length="1" label="FINS Command:MRC">0x01</char>
         <char length="1" label="FINS Command:SRC">0x01</char>
         <char length="1" label="FINS Param:Memory type(W)">0xB1</char>
@@ -117,7 +117,7 @@
           <index size="13" />
         </array>
       </response>
-      <response id="getcmd">
+      <response id="getexe">
         <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>
         <field decode="unsigned" label="FINS Command:SRC" length="1">0x01</field>
         <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>

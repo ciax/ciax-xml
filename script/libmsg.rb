@@ -80,7 +80,6 @@ module CIAX
 
     def enclose(prefix,title1,title2)
       @show_inside=verbose(prefix,title1)
-warn "OK show inside" if @show_insite
       @@base+=1
       res=yield
     ensure
@@ -124,7 +123,7 @@ warn "OK show inside" if @show_insite
     end
 
     def msg(msg='message',color=2,ind=0) # Display only
-      Kernel.warn color(msg,color,ind)
+      Kernel.warn color(msg,color)+indent(ind)
     end
 
     def _w(var,msg='') # watch var for debug

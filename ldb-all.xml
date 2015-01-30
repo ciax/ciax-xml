@@ -4,13 +4,17 @@
     <adb port="25101" host="cxws2" />
     <fdb port="24101" iocmd="socat - udp:cart3:5000" />
   </site>
-  <site id="cjk" label="CART 3 Jack Setting" ins_id="cjk">
+  <site id="c3j" label="CART 3 Jack Setting" ins_id="cjk">
     <adb port="25501" host="cxws2" />
     <fdb ref="crt" />
   </site>
   <site id="cr2" label="CIAX CART 2" ins_id="cr2">
     <adb port="25502" host="cxws2" />
     <fdb port="24502" iocmd="socat - udp:cart2:5000" />
+  </site>
+  <site id="c2j" label="CART 2 Jack Setting" ins_id="cjk">
+    <adb port="25503" host="cxws2" />
+    <fdb ref="crt" />
   </site>
   <site id="cci" label="IR Helium Compressor" ins_id="cci">
     <adb port="25108" />

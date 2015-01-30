@@ -65,7 +65,7 @@ module CIAX
         end
         args
       }
-      @shell_output_proc=proc{ self['msg'].empty? ? @output : self['msg'] }
+      @shell_output_proc=proc{ @output }
       @prompt_proc=proc{ @site_stat.to_s }
       # Accept empty command
       @cobj.hidgrp.add_item(nil)

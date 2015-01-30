@@ -50,7 +50,7 @@ module CIAX
           }
         rescue UserError
         end
-        puts @shell_output_proc.call
+        puts self['msg'].empty? ? @shell_output_proc.call : self['msg']
         verbose("Threads","#{Threadx.list}")
         verbose("Shell","Valid Commands #{@cobj.valid_keys}")
       }

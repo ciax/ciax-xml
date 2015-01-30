@@ -102,7 +102,7 @@ module CIAX
         @buf=init_buf
         ver=@stat['ver']
         @fsh.flush_procs << proc{
-          verbose("AppSv","Propagate Frm::Exe@flush -> Buffer@flush")
+          verbose("AppSv","Propagate Frm::Exe#flush -> Buffer#flush")
           @buf.flush
         }
         @cobj.ext_proc{|ent,src,pri|
@@ -142,7 +142,7 @@ module CIAX
           @fsh.exe(args,src)
         }
         buf.flush_proc{
-          verbose("AppSv","Propagate Buffer@flush -> Status::upd")
+          verbose("AppSv","Propagate Buffer#flush -> Status#upd")
           @stat.upd
           sleep(@interval||0.1)
           # Auto issue by watch

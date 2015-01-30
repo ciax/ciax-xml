@@ -42,13 +42,16 @@ module CIAX
         @mode=@ash.mode
         @stat=@ash.stat
         @ash.batch_interrupt=@event.get('int')
-        @event.post_upd_procs << proc{|wat|
-          @site_stat['watch'] = @event.active?
-          block=wat.get('block').map{|id,par| par ? nil : id}.compact
-          @ash.cobj.extgrp.valid_sub(block)
-          verbose("Watch","Propagate Event#upd -> Watch::Exe update")
-        }
+        @event.post_upd_procs << proc{upd}
         @ash.pre_exe_procs << proc{|args| @event.block?(args) }
+      end
+
+      def upd
+        @site_stat['watch'] = @event.active?
+        block=@event.get('block').map{|id,par| par ? nil : id}.compact
+        @ash.cobj.extgrp.valid_sub(block)
+        verbose("Watch","Propagate Event#upd -> Watch::Exe#upd")
+        self
       end
 
       def ext_shell

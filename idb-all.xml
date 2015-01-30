@@ -102,7 +102,7 @@
     </watch>
   </instance>
   <instance id="crt" label="CIAX CART 3" app_id="mel"/>
-  <instance id="cjk" label="CART 3 Jack Setting" app_id="cjk">
+  <instance id="c3j" label="CART 3 Jack Setting" app_id="cjk">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="id0t0" caption="COMICS/CAS" />
       <group ref="id0t1" caption="COMICS/OPT/MOV" />
@@ -115,7 +115,8 @@
       <group ref="id4t0" caption="KYOTO3D/CAS" />
     </status>
   </instance>
-  <instance id="cr2" label="CIAX CART 2" app_id="cr2"/>
+  <instance id="cr2" label="CIAX CART 2" app_id="mel"/>
+  <instance id="c2j" label="CART 2 Jack Setting" app_id="cjk"/>
   <instance id="cf1" label="S1 HC Coolant Flow" app_id="k3n">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <value ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />

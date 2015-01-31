@@ -18,10 +18,10 @@ module CIAX
         self['id']=@cfg[:db]["id"]
         self['ver']=@cfg[:db]["version"]
         @post_upd_procs << proc{
-           @valid_keys.replace(@data.keys)
-           s=@data.size
-           @index=s if s > @lastsize || @index > s
-         }
+          @valid_keys.replace(@data.keys)
+          s=@data.size
+          @index=s if s > @lastsize || @index > s
+        }
         @index=0
         @lastsize=0
         @records={}
@@ -30,6 +30,15 @@ module CIAX
       #convert the order number(Integer) to key (sid)
       def current_sid
         @data.keys[@index-1]
+      end
+
+      def set_index(str)
+        n=str.to_i
+        if 0 < n && n <= @data.size
+          @index=n
+          str.replace(current_sid)
+        end
+        self
       end
 
       def output
@@ -72,6 +81,7 @@ module CIAX
         super
         @tgrp=ThreadGroup.new
         ext_file
+        clean
       end
 
       # Used by Man
@@ -89,10 +99,7 @@ module CIAX
         }
         # Set input alias as number
         ssh.shell_input_proc=proc{|args|
-          num=args[0].to_i
-          if num > 0 && num < 100
-            args[0]=num_to_key(num)||''
-          end
+          set_index(args[0])
           args
         }
         set(ssh.id,ssh)

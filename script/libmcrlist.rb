@@ -19,9 +19,9 @@ module CIAX
         self['ver']=@cfg[:db]["version"]
         @post_upd_procs << proc{
           @valid_keys.replace(@data.keys)
-          s=@data.size
-          @index=s if s > @lastsize || @index > s
+          set_index
         }
+        @cfg[:jump_groups] << @jumpgrp
         @index=0
         @lastsize=0
         @records={}
@@ -32,13 +32,27 @@ module CIAX
         @data.keys[@index-1]
       end
 
-      def set_index(str)
+      def set_index(str=nil)
         n=str.to_i
-        if 0 < n && n <= @data.size
+        if @data.size >= n && n > 0
           @index=n
-          str.replace(current_sid)
+          # Manual change
+          return str.replace(current_sid)
+        elsif @data.size > @lastsize
+          # Increase mcr
+          @index=@lastsize=@data.size
+        elsif @index > @data.size
+          # Decrease mcr
+          @index=@data.size
         end
-        self
+        false
+      end
+
+      def conv_cmd(args,list)
+        # Internal command with sid
+        args[1]=current_sid if list.key?(args[0])
+        # Change current sid
+        res=set_index(args[0]) ? [] : args
       end
 
       def output

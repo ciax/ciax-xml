@@ -47,18 +47,7 @@ module CIAX
         @post_exe_procs << proc{
           @output=@smode ? @list.output : @list
         }
-        @shell_input_proc=proc{|args|
-          cmd=args[0]
-          n=cmd.to_i
-          if 0 < n && n <= @valid_pars.size
-            @list.index=n
-            []
-          elsif @cobj.intgrp.key?(cmd)
-            [cmd]+[@list.current_sid]
-          else
-            args
-          end
-        }
+        @shell_input_proc=proc{|args| @list.conv_cmd(args,@cobj.intgrp)}
         super
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('lst',"List mode").set_proc{@smode=false;''}

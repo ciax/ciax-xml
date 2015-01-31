@@ -17,13 +17,13 @@ module CIAX
         @cobj.svdom.replace wsh.cobj.svdom
         @site_stat=wsh.site_stat
         @mode=wsh.mode
-        @output=View.new(@id,wsh.adb['version'],wsh,wsh.stat)
+        @output=View.new(@id,wsh.adb['version'],@site_stat,wsh.stat)
         @post_exe_procs.concat(wsh.post_exe_procs)
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')
         }
-        @server_output_proc=proc{ @output.to_x }
-        @shell_output_proc=proc{ @output.to_x }
+        @server_output_proc=proc{ @output.upd.to_x }
+        @shell_output_proc=proc{ @output.upd.to_x }
         if $opt['e']
           @output.ext_log
         end

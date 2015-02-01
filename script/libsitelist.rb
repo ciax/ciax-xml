@@ -16,14 +16,25 @@ module CIAX
 
       def add_layer(layer)
         type?(layer,Module)
-        str=layer.to_s.split(':')[1]
-        id=str.downcase.to_sym
+        str=layer.to_s.split(':').last
         layer::List.new(@cfg)
+        @layer=str.downcase
         @cfg.layers.each{|k,v|
           id=k.to_s
           @jumpgrp.add_item(id,str+" mode",@pars)
           set(id,v)
         }
+      end
+
+      def shell(id)
+        begin
+          get(layer||=@layer).shell(id)
+        rescue Site::Jump
+          layer,id=$!.to_s.split(':')
+          retry
+        rescue InvalidID
+          $opt.usage('(opt) [id]')
+        end
       end
     end
 
@@ -56,6 +67,17 @@ module CIAX
           exe.cobj.lodom.join_group(grp)
         }
         super
+      end
+
+      def shell(id)
+        begin
+          get(id).shell
+        rescue @level::Jump
+          id=$!.to_s
+          retry
+        rescue InvalidID
+          $opt.usage('(opt) [id]')
+        end
       end
 
       def server(ary)

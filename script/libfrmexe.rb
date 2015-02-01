@@ -25,8 +25,6 @@ module CIAX
       Cl.new(cfg)
     end
 
-    class Jump < LongJump; end
-
     class Exe < Exe
       attr_reader :field,:flush_procs
       def initialize(cfg)
@@ -120,6 +118,8 @@ module CIAX
         set(id,Frm.new(@cfg))
       end
     end
+
+    class Jump < LongJump; end
 
     if __FILE__ == $0
       ENV['VER']||='initialize'

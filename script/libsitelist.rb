@@ -7,7 +7,7 @@ module CIAX
   module Site
     class Layer < List
       def initialize(upper=nil)
-        super(Layer,upper)
+        super(Site,upper)
         @cfg[:site]||=''
         @cfg[:ldb]||=Site::Db.new
         @pars={:parameters => [{:default => @cfg[:site]}]}
@@ -32,9 +32,9 @@ module CIAX
       # shdom: Domain for Shared Command Groups
       def initialize(level,upper=nil)
         super(level,upper)
+        @cfg[:site]||=''
         @cfg[:ldb]||=Db.new
         @jumpgrp.update_items(@cfg[:ldb].list)
-        @cfg[:site]||=''
         verbose("List","Initialize")
       end
 

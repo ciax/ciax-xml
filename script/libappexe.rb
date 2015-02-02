@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
-require 'libfrmexe'
+require "libappdb"
 require "libappview"
-require "libwatview"
 require "libappcmd"
 require "libapprsp"
 require "libappsym"
+require 'libfrmexe'
 require "libbuffer"
 require "libsqlog"
 
@@ -35,12 +35,11 @@ module CIAX
         @stat=Status.new.set_db(@adb)
         @cls_color=2
         super('app',@stat['id'],Command.new(cfg))
-        @fsh=type?(cfg.layers[:frm].get(@id),Frm::Exe)
-        @mode=@fsh.mode
-        @site_stat=@fsh.site_stat.add_db('isu' => '*')
+        @site_stat.add_db('isu' => '*')
         @print=View.new(@adb,@stat)
         @output=$opt['j']?@stat:@print
         @batch_interrupt=[]
+        cfg[:app]=self
         ext_shell
       end
 
@@ -96,6 +95,8 @@ module CIAX
     class Sv < Exe
       def initialize(cfg)
         super(cfg)
+        @fsh=Frm.new(cfg)
+        @mode=@fsh.mode
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         @buf=init_buf
         ver=@stat['ver']
@@ -150,12 +151,11 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require 'libsitedb'
       ENV['VER']||='initialize'
-      GetOpts.new('chlset')
+      GetOpts.new('t')
       begin
         cfg=Config.new('app')
-        cfg[:db]=Site::Db.new.set(ARGV.shift)[:adb]
+        cfg[:db]=Db.new.set(ARGV.shift)
         puts App.new(cfg).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')

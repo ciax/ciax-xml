@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
-require 'libsh'
-require 'libfield'
+require "libsh"
+require "libfield"
+require "libfrmdb"
 require "libfrmrsp"
 require "libfrmcmd"
 
@@ -35,7 +36,8 @@ module CIAX
         @cobj.add_int
         # Post internal command procs
         # Proc for Terminate process of each individual commands
-        @flush_procs=[] 
+        @flush_procs=[]
+        cfg[:frm]=self
         ext_shell
       end
     end
@@ -110,9 +112,8 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require 'libsitedb'
       ENV['VER']||='initialize'
-      GetOpts.new('chset')
+      GetOpts.new('t')
       begin
         cfg=Config.new('frm')
         cfg[:db]=Db.new.set(ARGV.shift)

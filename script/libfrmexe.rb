@@ -3,7 +3,6 @@ require 'libsh'
 require 'libfield'
 require "libfrmrsp"
 require "libfrmcmd"
-require 'libsitelist'
 
 module CIAX
   module Frm
@@ -107,25 +106,14 @@ module CIAX
       end
     end
 
-    class List < Site::List
-      def initialize(upper=nil)
-        super(Frm,upper)
-        @cfg.layers[:frm]=self
-      end
-
-      def add(id)
-        @cfg[:db]=@cfg[:ldb].set(id)[:fdb]
-        set(id,Frm.new(@cfg))
-      end
-    end
-
-    class Jump < LongJump; end
-
     if __FILE__ == $0
+      require 'libsitedb'
       ENV['VER']||='initialize'
       GetOpts.new('chset')
       begin
-        puts List.new.shell(ARGV.shift)
+        cfg=Config.new('frm')
+        cfg[:db]=Site::Db.new.set(ARGV.shift)[:fdb]
+        puts Frm.new(cfg).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

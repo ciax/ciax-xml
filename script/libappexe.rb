@@ -149,27 +149,14 @@ module CIAX
       end
     end
 
-    class List < Site::List
-      def initialize(upper=nil)
-        super(App,upper)
-        @cfg.layers[:app]=self
-        Frm::List.new(@cfg)
-      end
-
-      def add(id)
-        @cfg[:db]||=@cfg[:ldb].set(id)[:adb]
-        @cfg[:sqlog]||=SqLog::Save.new(id,'App') if $opt['e']
-        set(id,App.new(@cfg))
-      end
-    end
-
-    class Jump < LongJump; end
-
     if __FILE__ == $0
+      require 'libsitedb'
       ENV['VER']||='initialize'
       GetOpts.new('chlset')
       begin
-        List.new.shell(ARGV.shift)
+        cfg=Config.new('app')
+        cfg[:db]=Site::Db.new.set(ARGV.shift)[:adb]
+        puts App.new(cfg).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

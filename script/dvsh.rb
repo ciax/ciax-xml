@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libhexexe"
+require "libhexlist"
 
 module CIAX
   ENV['VER']||='initialize'

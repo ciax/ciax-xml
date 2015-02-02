@@ -119,26 +119,14 @@ module CIAX
       end
     end
 
-    class List < Site::List
-      def initialize(upper=nil)
-        super(Wat,upper)
-        @cfg.layers[:wat]=self
-        App::List.new(@cfg)
-      end
-
-      def add(id)
-        @cfg[:db]=@cfg[:ldb].set(id)[:adb]
-        set(id,Wat.new(@cfg))
-      end
-    end
-
-    class Jump < LongJump; end
-
     if __FILE__ == $0
+      require 'libsitedb'
       ENV['VER']||='initialize'
       GetOpts.new('chlset')
       begin
-        puts List.new.shell(ARGV.shift)
+        cfg=Config.new('wat')
+        cfg[:db]=Site::Db.new.set(ARGV.shift)[:adb]
+        puts Wat.new(cfg).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

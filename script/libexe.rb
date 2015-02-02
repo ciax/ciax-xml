@@ -43,6 +43,7 @@ module CIAX
       super()
       @id=id
       @layer=layer
+      @mode='EXE'
       @cobj=type?(cobj,Command)
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
@@ -109,7 +110,6 @@ module CIAX
 
     # JSON expression of server stat will be sent.
     def ext_server(port)
-      @mode='SV'
       verbose("UDP:Server","Initialize(#@id):#{port}")
       udp=UDPSocket.open
       udp.bind("0.0.0.0",port.to_i)

@@ -71,9 +71,12 @@ module CIAX
         timeout=5
         if sim=cfg['iocmd']
           @mode='SIM'
+          iocmd=type?(sim,Array)
           timeout=60
+        else
+          @mode='SV'
+          iocmd=@fdb['iocmd'].split(' ')
         end
-        iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
         @stream=Stream.new(@id,@fdb['version'],iocmd,@fdb['wait'],timeout)
         @stream.ext_log unless sim
         @field.ext_rsp{@stream.rcv}
@@ -112,7 +115,7 @@ module CIAX
       GetOpts.new('chset')
       begin
         cfg=Config.new('frm')
-        cfg[:db]=Site::Db.new.set(ARGV.shift)[:fdb]
+        cfg[:db]=Db.new.set(ARGV.shift)
         puts Frm.new(cfg).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')

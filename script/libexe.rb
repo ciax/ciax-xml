@@ -36,15 +36,20 @@ module CIAX
   end
 
   class Exe < Hashx # Having server status {id,msg,...}
-    attr_reader :layer,:id,:mode,:pre_exe_procs,:post_exe_procs,:cobj,:output,:prompt_proc
+    attr_reader :layer,:id,:mode,:pre_exe_procs,:post_exe_procs,:cobj,:cfg,:output,:prompt_proc
     attr_accessor :site_stat,:shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
     # block gives command line convert
-    def initialize(layer,id,cobj=Command.new)
+    def initialize(id,cfg=nil)
       super()
+      # layer is Frm,App,Wat,Hex,Mcr,Man
+      cpath=self.class.to_s.split('::')
+      @mode=cpath.pop
+      layer=cpath.pop
+      @layer=layer.downcase
       @id=id
-      @layer=layer
-      @mode='EXE'
-      @cobj=type?(cobj,Command)
+      @cfg=cfg||Config.new(@layer)
+      @cfg[@layer]=self
+      @cobj=(@cfg[:command_class]||Command).new(@cfg)
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
       @site_stat=Prompt.new # Status shared by all layers of the site
@@ -144,7 +149,6 @@ module CIAX
     # If you get 'Address family not ..' error,
     # remove ipv6 entry from /etc/hosts
     def ext_client(host,port)
-      @mode='CL'
       host||='localhost'
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)

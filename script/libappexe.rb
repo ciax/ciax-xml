@@ -32,9 +32,10 @@ module CIAX
       attr_accessor :batch_interrupt
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
-        cfg[:stat]=@stat=Status.new.set_db(@adb)
+        @stat=cfg[:stat]=Status.new.set_db(@adb)
         @cls_color=2
-        super('app',@stat['id'],Command.new(cfg))
+        cfg[:command_class]=Command
+        super(@stat['id'],cfg)
         @site_stat.add_db('isu' => '*')
         @print=View.new(@adb,@stat)
         @output=$opt['j']?@stat:@print

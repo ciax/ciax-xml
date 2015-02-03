@@ -31,13 +31,13 @@ module CIAX
         @fdb=type?(cfg[:db],Db)
         @field=cfg[:field]=Field.new.set_db(@fdb)
         @cls_color=6
-        super('frm',@field['id'],Command.new(cfg))
+        cfg[:command_class]=Command
+        super(@field['id'],cfg)
         @output=@field
         @cobj.add_int
         # Post internal command procs
         # Proc for Terminate process of each individual commands
         @flush_procs=[]
-        cfg[:frm]=self
         ext_shell
       end
     end
@@ -45,7 +45,6 @@ module CIAX
     class Test < Exe
       def initialize(cfg)
         super
-        @mode='TEST'
         @cobj.svdom.set_proc{|ent|@field['time']=now_msec;''}
         @cobj.ext_proc{|ent| "#{ent.cfg[:frame].inspect} => #{ent.cfg['response']}"}
         @cobj.item_proc('set'){|ent|

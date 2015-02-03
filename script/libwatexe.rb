@@ -24,12 +24,11 @@ module CIAX
     class Exe < Exe
       attr_reader :adb,:stat
       def initialize(cfg)
-        @adb=type?(cfg[:db],Db)
+        @ash=App.new(cfg)
+        @adb=type?(@ash.adb,Db)
         @event=Event.new.set_db(@adb)
         @cls_color=3
-        super('wat',@event['id'])
-        @ash=type?(cfg.layers[:app].get(@id),App::Exe)
-        @cobj.svdom.replace @ash.cobj.svdom
+        super(@event['id'],cfg)
         @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
         @wview=View.new(@adb,@event)
         @output=$opt['j']?@event:@wview
@@ -39,7 +38,7 @@ module CIAX
       def init_sv(cfg)
         @mode=@ash.mode
         @stat=@ash.stat
-        @ash.batch_interrupt=@event.get('int')
+        @cfg[:batch_interrupt]=@event.get('int')
         @event.post_upd_procs << proc{upd}
         @ash.pre_exe_procs << proc{|args| @event.block?(args) }
       end
@@ -71,6 +70,7 @@ module CIAX
           verbose("Watch","Propagate Status#upd -> Event#upd")
           @event.upd
         }
+        @cobj.add_int.set_dmy
       end
     end
 
@@ -120,12 +120,11 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require 'libsitedb'
       ENV['VER']||='initialize'
-      GetOpts.new('chlset')
+      GetOpts.new('t')
       begin
         cfg=Config.new('wat')
-        cfg[:db]=Site::Db.new.set(ARGV.shift)[:adb]
+        cfg[:db]=App::Db.new.set(ARGV.shift)
         puts Wat.new(cfg).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')

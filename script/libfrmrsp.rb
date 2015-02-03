@@ -140,7 +140,7 @@ module CIAX
       field=Field.new.set_db(fdb).ext_rsp{res}
       field.ext_file if $opt['m']
       if cid
-        cfg=Config.new('frm_top').update(:db => fdb,:field => field)
+        cfg=Config.new('frm_test_rsp').update(:db => fdb,:field => field)
         cobj=Frm::Command.new(cfg)
         ent=cobj.set_cmd(cid.split(':'))
         field.rsp(ent)

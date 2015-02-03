@@ -138,7 +138,7 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('t')
       begin
-        cfg=Config.new('app')
+        cfg=Config.new('app_test_exe')
         cfg[:db]=Db.new.set(ARGV.shift)
         puts App.new(cfg).shell
       rescue InvalidID

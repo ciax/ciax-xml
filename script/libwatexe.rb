@@ -123,7 +123,7 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('t')
       begin
-        cfg=Config.new('wat')
+        cfg=Config.new('wat_test_exe')
         cfg[:db]=App::Db.new.set(ARGV.shift)
         puts Wat.new(cfg).shell
       rescue InvalidID

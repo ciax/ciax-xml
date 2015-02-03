@@ -89,7 +89,7 @@ module CIAX
       require "libfrmcmd"
       app,*args=ARGV
       begin
-        acf=Config.new('app_top')
+        acf=Config.new('app_test_cmd')
         acf[:db]=Db.new.set(app)
         acobj=Command.new(acf)
         acobj.set_cmd(args).batch.each{|fargs|

@@ -114,7 +114,7 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('t')
       begin
-        cfg=Config.new('frm')
+        cfg=Config.new('frm_test_exe')
         cfg[:db]=Db.new.set(ARGV.shift)
         puts Frm.new(cfg).shell
       rescue InvalidID

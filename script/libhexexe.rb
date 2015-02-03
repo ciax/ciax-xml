@@ -34,7 +34,7 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('t')
       begin
-        cfg=Config.new('hex')
+        cfg=Config.new('hex_test_exe')
         cfg[:db]=App::Db.new.set(ARGV.shift)
         puts Hex.new(cfg).shell
       rescue InvalidID

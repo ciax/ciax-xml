@@ -108,7 +108,7 @@ module CIAX
       id,*args=ARGV
       ARGV.clear
       begin
-        cfg=Config.new('frm_top')
+        cfg=Config.new('frm_test_cmd')
         db=cfg[:db]=Db.new.set(id)
         fld=cfg[:field]=Field.new.set_db(db)
         cobj=Command.new(cfg)

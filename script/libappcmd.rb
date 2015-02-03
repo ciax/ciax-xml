@@ -20,6 +20,18 @@ module CIAX
         @svdom.add_group(:group_class =>IntGrp)
         self
       end
+
+      def set_dmy
+        ext_proc{|ent|
+          @cfg[:stat].upd
+          'ISSUED:'+ent.batch.inspect
+        }
+        item_proc('interrupt'){|ent|
+          "INTERRUPT(#{@cfg[:batch_interrupt]})"
+        }
+        self
+      end
+
     end
 
     class IntGrp < Group
@@ -35,9 +47,6 @@ module CIAX
         add_item('del','[key,...]',{:parameters =>[any]}).set_proc{|ent|
           ent.par[0].split(',').each{|key| @cfg[:stat].del(key) }
           "DELETE:#{ent.par[0]}"
-        }
-        item_proc('interrupt'){|ent|
-          "INTERRUPT(#{@cfg[:batch_interrupt]})"
         }
       end
     end

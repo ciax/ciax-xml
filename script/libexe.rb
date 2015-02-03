@@ -37,7 +37,7 @@ module CIAX
 
   class Exe < Hashx # Having server status {id,msg,...}
     attr_reader :layer,:id,:mode,:pre_exe_procs,:post_exe_procs,:cobj,:cfg,:output,:prompt_proc
-    attr_accessor :site_stat,:shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
+    attr_accessor :shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
     # block gives command line convert
     def initialize(id,cfg=nil)
       super()
@@ -52,7 +52,7 @@ module CIAX
       @cobj=(@cfg[:command_class]||Command).new(@cfg)
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
-      @site_stat=Prompt.new # Status shared by all layers of the site
+      @cfg[:site_stat]||=Prompt.new # Status shared by all layers of the site
       @cls_color||=7
       @pfx_color||=9
       @output={}
@@ -64,7 +64,7 @@ module CIAX
           raise "NOT JSON"
         end
       }
-      @server_output_proc=proc{ merge(@site_stat).to_j }
+      @server_output_proc=proc{ merge(@cfg[:site_stat]).to_j }
       @shell_input_proc=proc{|args|
         if (cmd=args.first) && cmd.include?('=')
           args=['set']+cmd.split('=')
@@ -72,7 +72,7 @@ module CIAX
         args
       }
       @shell_output_proc=proc{ @output }
-      @prompt_proc=proc{ @site_stat.to_s }
+      @prompt_proc=proc{ @cfg[:site_stat].to_s }
       # Accept empty command
       @cobj.hidgrp.add_item(nil)
       Thread.abort_on_exception=true
@@ -159,7 +159,7 @@ module CIAX
         verbose("UDP:Client","Send [#{args}]")
         res=@udp.recv(1024)
         verbose("UDP:Client","Recv #{res}")
-        update(@site_stat.pick(JSON.load(res))) unless res.empty?
+        update(@cfg[:site_stat].pick(JSON.load(res))) unless res.empty?
         self['msg']
       }
       self

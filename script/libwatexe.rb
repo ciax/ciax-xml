@@ -29,7 +29,7 @@ module CIAX
         @event=Event.new.set_db(@adb)
         @cls_color=3
         super(@event['id'],cfg)
-        @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
+        @cfg[:site_stat].add_db('auto'=>'@','watch'=>'&')
         @wview=View.new(@adb,@event)
         @output=$opt['j']?@event:@wview
         ext_shell
@@ -44,7 +44,7 @@ module CIAX
       end
 
       def upd
-        @site_stat['watch'] = @event.active?
+        @cfg[:site_stat]['watch'] = @event.active?
         block=@event.get('block').map{|id,par| par ? nil : id}.compact
         @ash.cobj.extgrp.valid_sub(block)
         verbose("Watch","Propagate Event#upd -> Watch::Exe#upd")
@@ -100,7 +100,7 @@ module CIAX
         @interval=@event.interval
         tid_auto=auto_update
         @post_exe_procs << proc{
-          @site_stat['auto'] = tid_auto && tid_auto.alive?
+          @cfg[:site_stat]['auto'] = tid_auto && tid_auto.alive?
         }
         ext_server(@adb['port'].to_i+100)
       end

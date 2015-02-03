@@ -14,9 +14,8 @@ module CIAX
       def initialize(cfg)
         wsh=Wat.new(cfg)
         super(wsh.id,cfg)
-        @site_stat=wsh.site_stat
         @mode=wsh.mode
-        @output=View.new(@id,wsh.adb['version'],@site_stat,wsh.stat)
+        @output=View.new(@id,wsh.adb['version'],@cfg[:site_stat],wsh.stat)
         @post_exe_procs.concat(wsh.post_exe_procs)
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')

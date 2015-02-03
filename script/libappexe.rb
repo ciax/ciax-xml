@@ -35,10 +35,10 @@ module CIAX
         @cls_color=2
         cfg[:command_class]=Command
         super(@stat['id'],cfg)
-        @site_stat.add_db('isu' => '*')
+        @cfg[:site_stat].add_db('isu' => '*')
         @print=View.new(@adb,@stat)
         @output=$opt['j']?@stat:@print
-        cfg[:batch_interrupt]=[]
+        @cfg[:batch_interrupt]=[]
         ext_shell
       end
 
@@ -110,11 +110,11 @@ module CIAX
 
       private
       def server_output
-        Hashx.new.update(@site_stat).update(self).to_j
+        Hashx.new.update(@cfg[:site_stat]).update(self).to_j
       end
 
       def init_buf
-        buf=Buffer.new(@stat['id'],@stat['ver'],@site_stat)
+        buf=Buffer.new(@stat['id'],@stat['ver'],@cfg[:site_stat])
         buf.send_proc{|ent|
           batch=type?(ent.batch,Array)
           verbose("AppSv","Send FrmCmds #{batch}")

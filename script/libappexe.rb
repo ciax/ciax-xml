@@ -29,7 +29,6 @@ module CIAX
 
     class Exe < Exe
       attr_reader :adb,:stat
-      attr_accessor :batch_interrupt
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
         @stat=cfg[:stat]=Status.new.set_db(@adb)
@@ -39,8 +38,7 @@ module CIAX
         @site_stat.add_db('isu' => '*')
         @print=View.new(@adb,@stat)
         @output=$opt['j']?@stat:@print
-        cfg[:batch_interrupt]=@batch_interrupt=[]
-        cfg[:app]=self
+        cfg[:batch_interrupt]=[]
         ext_shell
       end
 
@@ -96,11 +94,11 @@ module CIAX
           "ISSUED"
         }
         @cobj.item_proc('interrupt'){|ent,src|
-          @batch_interrupt.each{|args|
+          @cfg[:batch_interrupt].each{|args|
             verbose("AppSv","#@id/Issuing:#{args} for Interrupt")
             @buf.send(0,@cobj.set_cmd(args),src)
           }
-          warning("AppSv","Interrupt(#{@batch_interrupt}) from #{src}")
+          warning("AppSv","Interrupt(#{@cfg[:batch_interrupt]}) from #{src}")
           'INTERRUPT'
         }
         # Logging if version number exists

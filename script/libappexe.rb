@@ -32,13 +32,13 @@ module CIAX
       attr_accessor :batch_interrupt
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
-        @stat=Status.new.set_db(@adb)
+        cfg[:stat]=@stat=Status.new.set_db(@adb)
         @cls_color=2
         super('app',@stat['id'],Command.new(cfg))
         @site_stat.add_db('isu' => '*')
         @print=View.new(@adb,@stat)
         @output=$opt['j']?@stat:@print
-        @batch_interrupt=[]
+        cfg[:batch_interrupt]=@batch_interrupt=[]
         cfg[:app]=self
         ext_shell
       end
@@ -63,22 +63,11 @@ module CIAX
           verbose("App","Propagate Status#upd -> App#settime")
           st['time']=now_msec
         }
-        @cobj.add_int
         @cobj.ext_proc{|ent|
           @stat.upd
           'ISSUED:'+ent.batch.inspect
         }
-        @cobj.item_proc('set'){|ent|
-          @stat.set(ent.par[0],ent.par[1])
-          "SET:#{ent.par[0]}=#{ent.par[1]}"
-        }
-        @cobj.item_proc('del'){|ent|
-          ent.par[0].split(',').each{|key| @stat.del(key) }
-          "DELETE:#{ent.par[0]}"
-        }
-        @cobj.item_proc('interrupt'){|ent|
-          "INTERRUPT(#{@batch_interrupt})"
-        }
+        @cobj.add_int
       end
     end
 

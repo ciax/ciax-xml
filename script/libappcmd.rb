@@ -28,8 +28,17 @@ module CIAX
         super
         @cfg['caption']='Test Commands'
         any={:type => 'reg', :list => ['.']}
-        add_item('set','[key] [val]',{:parameters =>[any,any]})
-        add_item('del','[key,...]',{:parameters =>[any]})
+        add_item('set','[key] [val]',{:parameters =>[any,any]}).set_proc{|ent|
+          @cfg[:stat].set(ent.par[0],ent.par[1])
+          "SET:#{ent.par[0]}=#{ent.par[1]}"
+        }
+        add_item('del','[key,...]',{:parameters =>[any]}).set_proc{|ent|
+          ent.par[0].split(',').each{|key| @cfg[:stat].del(key) }
+          "DELETE:#{ent.par[0]}"
+        }
+        item_proc('interrupt'){|ent|
+          "INTERRUPT(#{@cfg[:batch_interrupt]})"
+        }
       end
     end
 

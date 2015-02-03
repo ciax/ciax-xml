@@ -22,7 +22,7 @@ module CIAX
     class Man < Exe
       def initialize(cfg)
         db=type?(cfg[:db],Db)
-        super('mcr',db['id'],Command.new(cfg))
+        super(db['id'],cfg)
         @mode='TEST'
         @cobj.add_ext
         @cobj.add_int

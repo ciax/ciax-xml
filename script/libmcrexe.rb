@@ -23,10 +23,10 @@ module CIAX
       attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro
       def initialize(ment)
-        @cfg=type?(type?(ment,Entity).cfg)
-        type?(@cfg[:wat_list],Wat::List)
-        @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
-        super('macro',@record['sid'],Command.new)
+        cfg=type?(type?(ment,Entity).cfg)
+        type?(cfg[:wat_list],Wat::List)
+        @record=Record.new(type?(cfg[:db],Db)).start(cfg)
+        super(@record['sid'],cfg)
         @output=@record
         @post_stat_procs=[] # execute on stat changes
         @post_mcr_procs=[]

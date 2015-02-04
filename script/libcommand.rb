@@ -57,8 +57,8 @@ module CIAX
     # optional (:label,:parameters)
     # optionalfrm (:nocache,:response)
     attr_reader :svdom,:lodom,:hidgrp
-    def initialize(upper=nil)
-      @cfg=Config.new('command',upper)
+    def initialize(exe_cfg=nil,attr={})
+      @cfg=Config.new('command',exe_cfg).update(attr)
       @cfg.update('color'=>2,'column'=>2)
       @cfg[:def_proc]||=proc{''}
       @cls_color=@cfg[:cls_color]||7
@@ -72,9 +72,9 @@ module CIAX
   end
 
   class Domain < CmdShare
-    #upper keys: def_proc,group_class,item_class,entity_class
-    def initialize(upper,attr={})
-      @cfg=Config.new('domain',upper).update(attr)
+    #cmd_cfg keys: def_proc,group_class,item_class,entity_class
+    def initialize(cmd_cfg,attr={})
+      @cfg=Config.new('domain',cmd_cfg).update(attr)
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
     end
@@ -94,10 +94,10 @@ module CIAX
   class Group < Hashx
     include SetProc
     attr_reader :valid_keys,:cfg
-    #upper keys: caption,color,column
-    def initialize(upper,attr)
+    #dom_cfg keys: caption,color,column
+    def initialize(dom_cfg,attr={})
       super()
-      @cfg=Config.new('group',upper).update(attr)
+      @cfg=Config.new('group',dom_cfg).update(attr)
       @cfg[:item_class]||=Item
       @valid_keys=@cfg[:valid_keys]||[]
       @cls_color=@cfg[:cls_color]
@@ -158,10 +158,10 @@ module CIAX
     include SetProc
     include Math
     attr_reader :cfg
-    #cfg should have :id,:label,:parameters,:def_proc
-    def initialize(upper,attr={})
+    #grp_cfg should have :id,:label,:parameters,:def_proc
+    def initialize(grp_cfg,attr={})
       super()
-      @cfg=Config.new('item',upper).update(attr)
+      @cfg=Config.new('item',grp_cfg).update(attr)
       @cfg[:entity_class]||=Entity
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
@@ -230,9 +230,9 @@ module CIAX
   class Entity < Hashx
     attr_reader :id,:par,:cfg
     #set should have :def_proc
-    def initialize(upper,attr={})
+    def initialize(itm_cfg,attr={})
       super()
-      @cfg=Config.new('entity',upper).update(attr)
+      @cfg=Config.new('entity',itm_cfg).update(attr)
       @par=@cfg[:par]
       @id=[@cfg[:id],*@par].join(':')
       @cfg[:cid]=@id

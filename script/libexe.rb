@@ -42,10 +42,9 @@ module CIAX
     def initialize(id,cfg=nil)
       super()
       # layer is Frm,App,Wat,Hex,Mcr,Man
-      cpath=self.class.to_s.split('::')
-      @mode=cpath.pop
-      layer=cpath.pop
-      @layer=layer.downcase
+      cpath=class_path
+      @mode=cpath.pop.upcase
+      @layer=cpath.pop.downcase
       @id=id
       @cfg=cfg||Config.new(@layer)
       @cfg[@layer]=self

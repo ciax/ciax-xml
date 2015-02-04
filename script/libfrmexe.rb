@@ -75,7 +75,6 @@ module CIAX
           iocmd=type?(sim,Array)
           timeout=60
         else
-          @mode='SV'
           iocmd=@fdb['iocmd'].split(' ')
         end
         @stream=Stream.new(@id,@fdb['version'],iocmd,@fdb['wait'],timeout)

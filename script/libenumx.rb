@@ -9,6 +9,10 @@ module CIAX
       raise("Not Enumerable") unless obj.is_a? Enumerable
     end
 
+    def class_path
+      self.class.to_s.split('::')
+    end
+
     def to_j
       case self
       when Array

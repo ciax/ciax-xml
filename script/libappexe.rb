@@ -56,7 +56,6 @@ module CIAX
       require "libappsym"
       def initialize(cfg)
         super
-        @mode='TEST'
         @stat.ext_sym
         @stat.post_upd_procs << proc{|st|
           verbose("App","Propagate Status#upd -> App#settime")

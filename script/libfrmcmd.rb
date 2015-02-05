@@ -6,11 +6,11 @@ require "libfield"
 module CIAX
   module Frm
     class Command < Command
-      # exe_cfg must include [:field]
-      def initialize(exe_cfg)
-        exe_cfg[:cls_color]=6
+      # exe_cfg or attr should have [:id] and [:field]
+      def initialize(exe_cfg,attr={})
+        attr.update(:cls_color => 6)
         super
-        @extgrp=add_svgrp(Ext)
+        add_extgrp(Ext)
       end
     end
 
@@ -103,10 +103,9 @@ module CIAX
       id,*args=ARGV
       ARGV.clear
       begin
-        cfg=Config.new('frm_test_cmd')
-        db=cfg[:db]=Db.new.set(id)
-        fld=cfg[:field]=Field.new.set_db(db)
-        cobj=Command.new(cfg)
+        db=Db.new.set(id)
+        fld=Field.new.set_db(db)
+        cobj=Command.new(:db => db,:field => fld)
         fld.read unless STDIN.tty?
         print cobj.set_cmd(args).cfg[:frame]
       rescue InvalidCMD

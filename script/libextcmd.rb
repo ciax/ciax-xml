@@ -6,8 +6,8 @@ module CIAX
     attr_reader :extgrp,:intgrp
     # Add external or internal command group to the remote command domain
     # Need to give a module name as a group (Ext,Int)
-    def add_extgrp(mod,db)
-      @extgrp=@svdom.add_group(:mod => mod,:db => db)
+    def add_extgrp(mod)
+      @extgrp=@svdom.add_group(:mod => mod)
       self
     end
 
@@ -46,7 +46,7 @@ module CIAX
   # For External Command Domain
   # @cfg must contain [:db]
   module Ext
-    class Group < Group # dom_cfg needs [:db]
+    class Group < Group
       def initialize(dom_cfg,attr={})
         super
         @db=type?(@cfg[:db],Db)

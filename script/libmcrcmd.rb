@@ -9,7 +9,7 @@ module CIAX
       def add_ext
         @cfg[:depth]=0
         @cfg[:mobj]=self
-        @extgrp=add_svgrp(Ext)
+        add_extgrp(Ext)
         self
       end
     end

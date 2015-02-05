@@ -4,15 +4,11 @@ require "libextcmd"
 module CIAX
   module App
     class Command < Command
-      def initialize(exe_cfg)
-        exe_cfg[:cls_color]=2
-        super(exe_cfg)
-        @extgrp=add_svgrp(Ext)
-      end
-
-      def ext_sub(block)
-        @exgrp.valid_sub(block)
-        self
+      # exe_cfg or attr should have [:db]
+      def initialize(exe_cfg,attr={})
+        attr[:cls_color]=3
+        super
+        add_extgrp(Ext)
       end
 
       def set_dmy
@@ -81,13 +77,9 @@ module CIAX
 
     if __FILE__ == $0
       require "libappdb"
-      require "libfrmdb"
-      require "libfrmcmd"
       app,*args=ARGV
       begin
-        acf=Config.new('app_test_cmd')
-        acf[:db]=Db.new.set(app)
-        acobj=Command.new(acf)
+        acobj=Command.new(:db => Db.new.set(app))
         acobj.set_cmd(args).batch.each{|fargs|
           p fargs
         }

@@ -8,10 +8,13 @@ require 'liblogging'
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
 module CIAX
   module SetProc
-    def add(name,attr={}) # class name(String) + module val
+    # Add element which belongs a group enclosed with module (name space= Frm,App,..)
+    # Need to be set key[:mod] for module in config or attributes
+    # class name(String) + module val
+    def add(class_name,attr={})
       mod=type?(attr[:mod]||@cfg[:mod]||CIAX,Module)
-      cpath="#{mod}::#{name}"
-      cls= eval("defined? #{cpath}") ? eval(cpath) : eval(name)
+      cpath="#{mod}::#{class_name}"
+      cls= eval("defined? #{cpath}") ? eval(cpath) : eval(class_name)
       cls.new(@cfg,attr)
     end
 
@@ -77,6 +80,8 @@ module CIAX
       @hidgrp.add_item('interrupt')
     end
 
+    # Add external or internal command group to the remote command domain
+    # Need to give a module name as a group (Ext,Int)
     def add_svgrp(mod)
       @svdom.add_group(:mod => mod)
     end

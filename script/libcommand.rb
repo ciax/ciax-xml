@@ -12,10 +12,7 @@ module CIAX
     # Need to be set key[:mod] for module in config or attributes
     # class name(String) + module val
     def add(class_name,attr={})
-      mod=type?(attr[:mod]||@cfg[:mod]||CIAX,Module)
-      cpath="#{mod}::#{class_name}"
-      cls= eval("defined? #{cpath}") ? eval(cpath) : eval(class_name)
-      cls.new(@cfg,attr)
+      local_class(class_name,attr[:mod]||@cfg[:mod]).new(@cfg,attr)
     end
 
     def set_proc(&def_proc)

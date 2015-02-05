@@ -13,6 +13,13 @@ module CIAX
       self.class.to_s.split('::')
     end
 
+    def local_class(class_name,mod=nil)
+      type?(class_name,String)
+      type?(mod||=CIAX,Module)
+      cpath="#{mod}::#{class_name}"
+      eval("defined? #{cpath}") ? eval(cpath) : eval(class_name)
+    end
+
     def to_j
       case self
       when Array

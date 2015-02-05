@@ -2,13 +2,36 @@
 require 'libcommand'
 
 module CIAX
+  class Command
+    def ext_proc(&def_proc)
+      @extgrp.set_proc(&def_proc)
+      self
+    end
+  end
+
+  module Int
+    class Group < Group
+      def initialize(dom_cfg,attr={})
+        super
+        @cfg[:group_id]='internal'
+      end
+
+      def pars(n=1)
+        any={:type => 'reg', :list => ['.']}
+        ary=[]
+        n.times{ary << any}
+        {:parameters =>ary}
+      end
+    end
+  end
+
   # For External Command Domain
   # @cfg must contain [:db]
   module Ext
-    class Group < Group # upper needs [:db]
-      def initialize(upper,crnt={})
+    class Group < Group # dom_cfg needs [:db]
+      def initialize(dom_cfg,attr={})
         super
-        crnt[:group_id]=@cfg[:db]['id']
+        @cfg[:group_id]=@cfg[:db]['id']
         @cfg['caption']||="External Commands"
         @cfg['color']||=6
         set_items(@cfg[:db])
@@ -35,7 +58,7 @@ module CIAX
       # Substitute string($+number) with parameters
       # par={ val,range,format } or String
       # str could include Math functions
-      def initialize(upper,crnt={})
+      def initialize(grp_cfg,attr={})
         super
         @cfg[:body]=deep_subst(@cfg[:body])
       end

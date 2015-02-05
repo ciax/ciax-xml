@@ -61,7 +61,8 @@ module CIAX
           verbose("App","Propagate Status#upd -> App#settime")
           st['time']=now_msec
         }
-        @cobj.add_int.set_dmy
+        @cobj.add_svgrp(Int)
+        @cobj.set_dmy
       end
     end
 

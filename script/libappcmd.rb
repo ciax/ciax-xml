@@ -4,20 +4,14 @@ require "libextcmd"
 module CIAX
   module App
     class Command < Command
-      attr_reader :extgrp
-      def initialize(upper)
-        upper[:cls_color]=2
-        super
-        @extgrp=@svdom.add_group(:mod => Ext)
+      def initialize(exe_cfg)
+        exe_cfg[:cls_color]=2
+        super(exe_cfg)
+        @extgrp=add_svgrp(Ext)
       end
 
-      def ext_proc(&def_proc)
-        @extgrp.set_proc(&def_proc)
-        self
-      end
-
-      def add_int
-        @svdom.add_group(:mod => Int)
+      def ext_sub(block)
+        @exgrp.valid_sub(block)
         self
       end
 
@@ -34,17 +28,15 @@ module CIAX
     end
 
     module Int
-      class Group < Group
-        def initialize(upper,crnt={})
-          crnt[:group_id]='internal'
+      class Group < CIAX::Int::Group
+        def initialize(dom_cfg,attr={})
           super
           @cfg['caption']='Test Commands'
-          any={:type => 'reg', :list => ['.']}
-          add_item('set','[key] [val]',{:parameters =>[any,any]}).set_proc{|ent|
+          add_item('set','[key] [val]',pars(2)).set_proc{|ent|
             @cfg[:stat].set(ent.par[0],ent.par[1])
             "SET:#{ent.par[0]}=#{ent.par[1]}"
           }
-          add_item('del','[key,...]',{:parameters =>[any]}).set_proc{|ent|
+          add_item('del','[key,...]',pars(1)).set_proc{|ent|
             ent.par[0].split(',').each{|key| @cfg[:stat].del(key) }
             "DELETE:#{ent.par[0]}"
           }

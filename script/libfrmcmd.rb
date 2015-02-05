@@ -6,34 +6,24 @@ require "libfield"
 module CIAX
   module Frm
     class Command < Command
-      # upper must include [:field]
-      def initialize(upper)
-        upper[:cls_color]=6
+      # exe_cfg must include [:field]
+      def initialize(exe_cfg)
+        exe_cfg[:cls_color]=6
         super
-        @svdom.add_group(:mod => Ext)
-      end
-
-      def ext_proc(&def_proc)
-        @extgrp.set_proc(&def_proc)
-        self
-      end
-
-      def add_int
-        @svdom.add_group(:mod =>Int)
-        self
+        @extgrp=add_svgrp(Ext)
       end
     end
 
     module Int
-      class Group < Group
-        def initialize(upper,crnt={})
+      class Group < CIAX::Int::Group
+        def initialize(dom_cfg,attr={})
           super
           @cfg[:group_id]='internal'
           @cfg['caption']='Internal Commands'
           any={:type =>'reg',:list => ["."]}
-          add_item('save',"[key,key...] [tag]",{:parameters =>[any,any]})
-          add_item('load',"[tag]",{:parameters =>[any]})
-          set=add_item('set',"[key(:idx)] [val(,val)]",{:parameters =>[any,any]})
+          add_item('save',"[key,key...] [tag]",pars(2))
+          add_item('load',"[tag]",pars(1))
+          set=add_item('set',"[key(:idx)] [val(,val)]",pars(2))
           set.set_proc{|ent|
             @cfg[:field].set(*ent.par)
             'OK'
@@ -45,7 +35,7 @@ module CIAX
     module Ext
       include CIAX::Ext
       class Item < Item
-        def initialize(upper,crnt={})
+        def initialize(grp_cfg,attr={})
           super
           @cls_color=6
           @field=type?(@cfg[:field],Field)

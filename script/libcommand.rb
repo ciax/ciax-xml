@@ -76,6 +76,10 @@ module CIAX
       @hidgrp=@svdom.add_group('caption' => "Hidden Commands",:group_id => 'hidden')
       @hidgrp.add_item('interrupt')
     end
+
+    def add_svgrp(mod)
+      @svdom.add_group(:mod => mod)
+    end
   end
 
   class Domain < CmdShare

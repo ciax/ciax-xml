@@ -5,20 +5,11 @@ require "libextcmd"
 module CIAX
   module Mcr
     class Command < Command
-      attr_reader :cfg,:extgrp,:intgrp
+      attr_reader :cfg,:intgrp
       def add_ext
         @cfg[:depth]=0
-        @extgrp=@svdom.add_group(:mod => Ext, :mobj => self)
-        self
-      end
-
-      def ext_proc(&def_proc)
-        @extgrp.set_proc(&def_proc)
-        self
-      end
-
-      def add_int
-        @intgrp=@svdom.add_group(:mod => Int)
+        @cfg[:mobj]=self
+        @extgrp=add_svgrp(Ext)
         self
       end
     end

@@ -34,7 +34,7 @@ module CIAX
         cfg[:command_class]=Command
         super(@field['id'],cfg)
         @output=@field
-        @cobj.add_int
+        @cobj.add_svgrp(Int)
         # Post internal command procs
         # Proc for Terminate process of each individual commands
         @flush_procs=[]

@@ -41,9 +41,9 @@ module CIAX
       end
 
       def ext_shell
-        @cobj.add_int
-        @cobj.intgrp.set_proc{|ent| reply(ent.id)}
-        self['option']=@cobj.intgrp.valid_keys.clear
+        intgrp=@cobj.add_svdom(Int)
+        intgrp.set_proc{|ent| reply(ent.id)}
+        self['option']=intgrp.valid_keys.clear
         @prompt_proc=proc{
           res="(#{self['stat']})"
           res+=optlist(self['option']) if key?('option')

@@ -46,7 +46,7 @@ module CIAX
       def upd
         @cfg[:site_stat]['watch'] = @event.active?
         block=@event.get('block').map{|id,par| par ? nil : id}.compact
-        @ash.cobj.extgrp.valid_sub(block)
+        @ash.cobj.ext_sub(block)
         verbose("Watch","Propagate Event#upd -> Watch::Exe#upd")
         self
       end

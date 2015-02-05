@@ -3,8 +3,26 @@ require 'libcommand'
 
 module CIAX
   class Command
+    attr_reader :extgrp,:intgrp
+    # Add external or internal command group to the remote command domain
+    # Need to give a module name as a group (Ext,Int)
+    def add_extgrp(mod,db)
+      @extgrp=@svdom.add_group(:mod => mod,:db => db)
+      self
+    end
+
+    def add_intgrp(mod)
+      @intgrp=@svdom.add_group(:mod => mod)
+      self
+    end
+
     def ext_proc(&def_proc)
       @extgrp.set_proc(&def_proc)
+      self
+    end
+
+    def ext_sub(block)
+      @extgrp.valid_sub(block)
       self
     end
   end
@@ -31,14 +49,15 @@ module CIAX
     class Group < Group # dom_cfg needs [:db]
       def initialize(dom_cfg,attr={})
         super
-        @cfg[:group_id]=@cfg[:db]['id']
+        @db=type?(@cfg[:db],Db)
+        @cfg[:group_id]=@db['id']
         @cfg['caption']||="External Commands"
         @cfg['color']||=6
-        set_items(@cfg[:db])
+        set_items
       end
 
-      def set_items(db)
-        cdb=type?(db,Db)[:command]
+      def set_items
+        cdb=@db[:command]
         idx=cdb[:index]
         (cdb[:group]).each{|gid,gat|
           @cmdary << CmdList.new(gat,@valid_keys)

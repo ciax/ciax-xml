@@ -80,11 +80,6 @@ module CIAX
       @hidgrp.add_item('interrupt')
     end
 
-    # Add external or internal command group to the remote command domain
-    # Need to give a module name as a group (Ext,Int)
-    def add_svgrp(mod)
-      @svdom.add_group(:mod => mod)
-    end
   end
 
   class Domain < CmdShare

@@ -8,6 +8,13 @@ require 'liblogging'
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
 module CIAX
   module SetProc
+    def add(name,attr={}) # class name(String) + module val
+      mod=type?(attr[:mod]||@cfg[:mod]||CIAX,Module)
+      cpath="#{mod}::#{name}"
+      cls= eval("defined? #{cpath}") ? eval(cpath) : eval(name)
+      cls.new(@cfg,attr)
+    end
+
     def set_proc(&def_proc)
       @cfg[:def_proc]=type?(def_proc,Proc)
       self
@@ -54,7 +61,7 @@ module CIAX
 
   class Command < CmdShare
     # CDB: mandatory (:body)
-    # optional (:label,:parameters)
+    # optional (:label,:parameters,:mod)
     # optionalfrm (:nocache,:response)
     attr_reader :svdom,:lodom,:hidgrp
     def initialize(exe_cfg=nil,attr={})
@@ -86,7 +93,7 @@ module CIAX
     end
 
     def add_group(attr={})
-      unshift (attr[:group_class]||Group).new(@cfg,attr)
+      unshift add('Group',attr)
       first
     end
   end
@@ -98,7 +105,6 @@ module CIAX
     def initialize(dom_cfg,attr={})
       super()
       @cfg=Config.new('group',dom_cfg).update(attr)
-      @cfg[:item_class]||=Item
       @valid_keys=@cfg[:valid_keys]||[]
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
@@ -109,7 +115,7 @@ module CIAX
       crnt[:id]=id
       crnt[:label]=title
       @cmdary.last[id]=title
-      self[id]=@cfg[:item_class].new(@cfg,crnt)
+      self[id]=add('Item',crnt)
     end
 
     def del_item(id)
@@ -162,7 +168,6 @@ module CIAX
     def initialize(grp_cfg,attr={})
       super()
       @cfg=Config.new('item',grp_cfg).update(attr)
-      @cfg[:entity_class]||=Entity
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
     end
@@ -170,7 +175,7 @@ module CIAX
     def set_par(par,opt={})
       opt[:par]=validate(type?(par,Array))
       verbose("Cmd","SetPAR(#{@cfg[:id]}): #{par}")
-      @cfg[:entity_class].new(@cfg,opt)
+      add('Entity',opt)
     end
 
     def valid_pars

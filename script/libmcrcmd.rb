@@ -7,15 +7,8 @@ module CIAX
     class Command < Command
       attr_reader :cfg,:extgrp,:intgrp
       def add_ext
-        svc={:group_class =>ExtGrp,:entity_class=>ExtEntity,:mobj => self}
         @cfg[:depth]=0
-        @extgrp=@svdom.add_group(svc)
-        self
-      end
-
-      def add_int
-        inc={:group_class =>IntGrp,:group_id =>'internal'}
-        @intgrp=@svdom.add_group(inc)
+        @extgrp=@svdom.add_group(:mod => Ext, :mobj => self)
         self
       end
 
@@ -23,41 +16,52 @@ module CIAX
         @extgrp.set_proc(&def_proc)
         self
       end
-    end
 
-    class IntGrp < Group
-      attr_reader :valid_pars
-      def initialize(upper,crnt={})
-        super
-        @valid_pars=[]
-        parlist={:parameters => [{:type => 'str',:list => @valid_pars,:default => nil}]}
-        @cfg['caption']='Internal Commands'
-        {
-          "exec"=>"Command",
-          "skip"=>"Execution",
-          "drop"=>" Macro",
-          "suppress"=>"and Memorize",
-          "force"=>"Proceed",
-          "pass"=>"Step",
-          "ok"=>"for the message",
-          "retry"=>"Checking",
-        }.each{|id,cap|
-          add_item(id,id.capitalize+" "+cap,parlist)
-        }
+      def add_int
+        @intgrp=@svdom.add_group(:mod => Int)
+        self
       end
     end
 
-    class ExtEntity < ExtEntity
-      def initialize(upper,crnt={})
-        super
-        exp=[]
-        @cfg[:body].each{|elem|
-          elem["depth"]=@cfg[:depth]
-          exp << elem
-          next if elem["type"] != "mcr" || /true|1/ === elem["async"]
-          exp+=@cfg[:mobj].set_cmd(elem["args"],{:depth => @cfg[:depth]+1}).cfg[:body]
-        }
-        @cfg[:body]=exp
+    module Int
+      class Group < Group
+        attr_reader :valid_pars
+        def initialize(upper,crnt={})
+          crnt[:group_id]='internal'
+          super
+          @valid_pars=[]
+          parlist={:parameters => [{:type => 'str',:list => @valid_pars,:default => nil}]}
+          @cfg['caption']='Internal Commands'
+          {
+            "exec"=>"Command",
+            "skip"=>"Execution",
+            "drop"=>" Macro",
+            "suppress"=>"and Memorize",
+            "force"=>"Proceed",
+            "pass"=>"Step",
+            "ok"=>"for the message",
+            "retry"=>"Checking",
+          }.each{|id,cap|
+            add_item(id,id.capitalize+" "+cap,parlist)
+          }
+        end
+      end
+    end
+
+    module Ext
+      include CIAX::Ext
+      class Entity < Entity
+        def initialize(upper,crnt={})
+          super
+          exp=[]
+          @cfg[:body].each{|elem|
+            elem["depth"]=@cfg[:depth]
+            exp << elem
+            next if elem["type"] != "mcr" || /true|1/ === elem["async"]
+            exp+=@cfg[:mobj].set_cmd(elem["args"],{:depth => @cfg[:depth]+1}).cfg[:body]
+          }
+          @cfg[:body]=exp
+        end
       end
     end
 

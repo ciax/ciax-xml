@@ -10,7 +10,7 @@ module CIAX
       def initialize(upper)
         upper[:cls_color]=6
         super
-        @extgrp=@svdom.add_group(:group_class => ExtGrp,:item_class =>ExtItem)
+        @svdom.add_group(:mod => Ext)
       end
 
       def ext_proc(&def_proc)
@@ -19,86 +19,91 @@ module CIAX
       end
 
       def add_int
-        @svdom.add_group(:group_class =>IntGrp)
+        @svdom.add_group(:mod =>Int)
         self
       end
     end
 
-    class IntGrp < Group
-      def initialize(upper,crnt={})
-        super
-        @cfg[:group_id]='internal'
-        @cfg['caption']='Internal Commands'
-        any={:type =>'reg',:list => ["."]}
-        add_item('save',"[key,key...] [tag]",{:parameters =>[any,any]})
-        add_item('load',"[tag]",{:parameters =>[any]})
-        set=add_item('set',"[key(:idx)] [val(,val)]",{:parameters =>[any,any]})
-        set.set_proc{|ent|
-          @cfg[:field].set(*ent.par)
-          'OK'
-        }
+    module Int
+      class Group < Group
+        def initialize(upper,crnt={})
+          super
+          @cfg[:group_id]='internal'
+          @cfg['caption']='Internal Commands'
+          any={:type =>'reg',:list => ["."]}
+          add_item('save',"[key,key...] [tag]",{:parameters =>[any,any]})
+          add_item('load',"[tag]",{:parameters =>[any]})
+          set=add_item('set',"[key(:idx)] [val(,val)]",{:parameters =>[any,any]})
+          set.set_proc{|ent|
+            @cfg[:field].set(*ent.par)
+            'OK'
+          }
+        end
       end
     end
 
-    class ExtItem < Item
-      def initialize(upper,crnt={})
-        super
-        @cls_color=6
-        @field=type?(@cfg[:field],Field)
-        db=@cfg[:db]
-        @cache={}
-        @fstr={}
-        if /true|1/ === @cfg["noaffix"]
-          @sel={:main => ["body"]}
-        else
-          @sel=Hash[db[:command][:frame]]
-        end
-        @frame=Frame.new(db['endian'],db['ccmethod'])
-      end
-
-      def set_par(par,opt={})
-        ent=super
-        return ent unless @sel[:body]=ent.cfg[:body]
-        cid=ent.id
-        verbose("FrmItem","Body:#{@cfg[:label]}(#{cid})")
-        if frame=@cache[cid]
-          verbose("FrmItem","Cmd cache found [#{cid}]")
-        else
-          nocache=mk_frame(:body)
-          if @sel.key?(:ccrange)
-            @frame.cc_mark
-            mk_frame(:ccrange)
-            @frame.cc_set
+    module Ext
+      include CIAX::Ext
+      class Item < Item
+        def initialize(upper,crnt={})
+          super
+          @cls_color=6
+          @field=type?(@cfg[:field],Field)
+          db=@cfg[:db]
+          @cache={}
+          @fstr={}
+          if /true|1/ === @cfg["noaffix"]
+            @sel={:main => ["body"]}
+          else
+            @sel=Hash[db[:command][:frame]]
           end
-          mk_frame(:main)
-          frame=@fstr[:main]
-          @cache[cid]=frame unless nocache
-          verbose("FrmItem","Cmd Generated [#{cid}]")
+          @frame=Frame.new(db['endian'],db['ccmethod'])
         end
-        ent.cfg[:frame]=frame
-        @field.echo=frame
-        ent
-      end
 
-      private
-      def mk_frame(domain)
-        conv=nil
-        @frame.reset
-        @sel[domain].each{|a|
-          case a
-          when Hash
-            frame=a['val'].gsub(/\$\{cc\}/){@frame.cc}
-            frame=@field.subst(frame)
-            conv=true if frame != a['val']
-            frame.split(',').each{|s|
-              @frame.add(s,a)
-            }
-          else # ccrange,body ...
-            @frame.add(@fstr[a.to_sym])
+        def set_par(par,opt={})
+          ent=super
+          return ent unless @sel[:body]=ent.cfg[:body]
+          cid=ent.id
+          verbose("FrmItem","Body:#{@cfg[:label]}(#{cid})")
+          if frame=@cache[cid]
+            verbose("FrmItem","Cmd cache found [#{cid}]")
+          else
+            nocache=mk_frame(:body)
+            if @sel.key?(:ccrange)
+              @frame.cc_mark
+              mk_frame(:ccrange)
+              @frame.cc_set
+            end
+            mk_frame(:main)
+            frame=@fstr[:main]
+            @cache[cid]=frame unless nocache
+            verbose("FrmItem","Cmd Generated [#{cid}]")
           end
-        }
-        @fstr[domain]=@frame.copy
-        conv
+          ent.cfg[:frame]=frame
+          @field.echo=frame
+          ent
+        end
+
+        private
+        def mk_frame(domain)
+          conv=nil
+          @frame.reset
+          @sel[domain].each{|a|
+            case a
+            when Hash
+              frame=a['val'].gsub(/\$\{cc\}/){@frame.cc}
+              frame=@field.subst(frame)
+              conv=true if frame != a['val']
+              frame.split(',').each{|s|
+                @frame.add(s,a)
+              }
+            else # ccrange,body ...
+              @frame.add(@fstr[a.to_sym])
+            end
+          }
+          @fstr[domain]=@frame.copy
+          conv
+        end
       end
     end
 

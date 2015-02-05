@@ -15,9 +15,14 @@ module CIAX
 
     def local_class(class_name,mod=nil)
       type?(class_name,String)
-      type?(mod||=CIAX,Module)
-      cpath="#{mod}::#{class_name}"
-      eval("defined? #{cpath}") ? eval(cpath) : eval(class_name)
+      mod||=self.class
+      mary=mod.to_s.split('::')
+      mary.size.times{
+        cpath=(mary+[class_name]).join('::')
+        return eval(cpath) if eval("defined? #{cpath}")
+        mary.pop
+      }
+      abort("No such class #{class_name}")
     end
 
     def to_j

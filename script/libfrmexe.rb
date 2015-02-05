@@ -31,10 +31,9 @@ module CIAX
         @fdb=type?(cfg[:db],Db)
         @field=cfg[:field]=Field.new.set_db(@fdb)
         @cls_color=6
-        cfg[:command_class]=Command
         super(@field['id'],cfg)
         @output=@field
-        @cobj.add_svgrp(Int)
+        @cobj.add_intgrp(Int)
         # Post internal command procs
         # Proc for Terminate process of each individual commands
         @flush_procs=[]

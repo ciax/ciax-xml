@@ -48,7 +48,8 @@ module CIAX
       @id=id
       @cfg=cfg||Config.new(@layer)
       @cfg[@layer]=self
-      @cobj=(@cfg[:command_class]||Command).new(@cfg)
+      cls=local_class('Command')
+      @cobj=cls.new(@cfg)
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
       @cfg[:site_stat]||=Prompt.new # Status shared by all layers of the site

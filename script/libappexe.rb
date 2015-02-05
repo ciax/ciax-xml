@@ -33,7 +33,6 @@ module CIAX
         @adb=type?(cfg[:db],Db)
         @stat=cfg[:stat]=Status.new.set_db(@adb)
         @cls_color=2
-        cfg[:command_class]=Command
         super(@stat['id'],cfg)
         @cfg[:site_stat].add_db('isu' => '*')
         @print=View.new(@adb,@stat)
@@ -61,7 +60,7 @@ module CIAX
           verbose("App","Propagate Status#upd -> App#settime")
           st['time']=now_msec
         }
-        @cobj.add_svgrp(Int)
+        @cobj.add_intgrp(Int)
         @cobj.set_dmy
       end
     end

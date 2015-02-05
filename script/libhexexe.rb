@@ -5,15 +5,15 @@ require "libwatexe"
 
 module CIAX
   module Hex
-    # cfg should have [:wat_list](Wat::List)
-    def self.new(wsh)
-      Hex::Sv.new(wsh)
+    def self.new(cfg)
+      Hex::Sv.new(cfg)
     end
 
     class Sv < Exe
       def initialize(cfg)
         wsh=Wat.new(cfg)
         super(wsh.id,cfg)
+        @cobj.svdom.replace wsh.cobj.svdom
         @mode=wsh.mode
         @output=View.new(@id,wsh.adb['version'],@cfg[:site_stat],wsh.stat)
         @post_exe_procs.concat(wsh.post_exe_procs)
@@ -34,9 +34,7 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('t')
       begin
-        cfg=Config.new('hex_test_exe')
-        cfg[:db]=App::Db.new.set(ARGV.shift)
-        puts Hex.new(cfg).shell
+        puts Hex.new(:db => App::Db.new.set(ARGV.shift)).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

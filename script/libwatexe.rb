@@ -31,6 +31,7 @@ module CIAX
         super(@event['id'],cfg)
         @cfg[:site_stat].add_db('auto'=>'@','watch'=>'&')
         @wview=View.new(@adb,@event)
+        @cobj.svdom.replace @ash.cobj.svdom
         @output=$opt['j']?@event:@wview
         ext_shell
       end
@@ -70,7 +71,6 @@ module CIAX
           verbose("Watch","Propagate Status#upd -> Event#upd")
           @event.upd
         }
-        @cobj.add_int.set_dmy
       end
     end
 
@@ -80,7 +80,6 @@ module CIAX
         host=type?(cfg['host']||@adb['host']||'localhost',String)
         @event.ext_http(host)
         @pre_exe_procs << proc{@event.upd} # @event is independent from @stat
-        ext_client(host,@adb['port'].to_i+100)
       end
     end
 
@@ -102,7 +101,6 @@ module CIAX
         @post_exe_procs << proc{
           @cfg[:site_stat]['auto'] = tid_auto && tid_auto.alive?
         }
-        ext_server(@adb['port'].to_i+100)
       end
 
       def auto_update
@@ -123,9 +121,7 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('t')
       begin
-        cfg=Config.new('wat_test_exe')
-        cfg[:db]=App::Db.new.set(ARGV.shift)
-        puts Wat.new(cfg).shell
+        puts Wat.new(:db => App::Db.new.set(ARGV.shift)).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

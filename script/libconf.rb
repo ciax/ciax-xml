@@ -14,7 +14,12 @@ module CIAX
       @generation=[self]
       @layers={}
       self[:level]=name
-      override(cfg) if cfg
+      case cfg
+      when Config
+        override(cfg)
+      when Hash
+        update(cfg)
+      end
     end
 
     def override(cfg)

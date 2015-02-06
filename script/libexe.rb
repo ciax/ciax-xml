@@ -9,47 +9,21 @@ require "libextcmd"
 # Add Server Command to Combine Lower Layer (Stream,Frm,App)
 
 module CIAX
-  class Prompt < Hashx
-    attr_reader :db
-    def initialize
-      super()
-      @db={}
-    end
-
-    def add_db(db={})
-      @db.update(type?(db,Hash))
-      self
-    end
-
-    # Pick up and merge to self data, return other data
-    def pick(input)
-      hash=input.dup
-      @db.keys.each{|k|
-        self[k]= hash[k] ? hash.delete(k) : false
-      }
-      hash
-    end
-
-    def to_s
-      @db.map{|k,v| v if self[k] }.join('')
-    end
-  end
-
   class Exe < Hashx # Having server status {id,msg,...}
-    attr_reader :layer,:id,:mode,:pre_exe_procs,:post_exe_procs,:cobj,:cfg,:output,:prompt_proc
+    attr_reader :layer,:id,:mode,:cobj,:pre_exe_procs,:post_exe_procs,:cfg,:output,:prompt_proc
     attr_accessor :shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
     # block gives command line convert
-    def initialize(id,cfg=nil)
+    # site_cfg should have ['id']
+    def initialize(site_cfg=nil)
       super()
       # layer is Frm,App,Wat,Hex,Mcr,Man
       cpath=class_path
       @mode=cpath.pop.upcase
       @layer=cpath.pop.downcase
-      @id=id
-      @cfg=cfg||Config.new(@layer)
+      @cfg=Config.new(@layer,site_cfg)
+      @id=@cfg['id']
       @cfg[@layer]=self
-      cls=local_class('Command')
-      @cobj=cls.new(@cfg)
+      @cobj=local_class('Command').new(@cfg).add_nil
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
       @cfg[:site_stat]||=Prompt.new # Status shared by all layers of the site
@@ -73,8 +47,6 @@ module CIAX
       }
       @shell_output_proc=proc{ @output }
       @prompt_proc=proc{ @cfg[:site_stat].to_s }
-      # Accept empty command
-      @cobj.hidgrp.add_item(nil)
       Thread.abort_on_exception=true
       verbose("Exe","initialize")
     end
@@ -163,6 +135,32 @@ module CIAX
         self['msg']
       }
       self
+    end
+  end
+
+  class Prompt < Hashx
+    attr_reader :db
+    def initialize
+      super()
+      @db={}
+    end
+
+    def add_db(db={})
+      @db.update(type?(db,Hash))
+      self
+    end
+
+    # Pick up and merge to self data, return other data
+    def pick(input)
+      hash=input.dup
+      @db.keys.each{|k|
+        self[k]= hash[k] ? hash.delete(k) : false
+      }
+      hash
+    end
+
+    def to_s
+      @db.map{|k,v| v if self[k] }.join('')
     end
   end
 end

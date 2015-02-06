@@ -10,30 +10,31 @@ require "libsqlog"
 
 module CIAX
   module App
-    # cfg should have [:frm_list](Frm::List)
-    def self.new(cfg)
-      Msg.type?(cfg,Hash)
+    # site_cfg should have [:frm_list](Frm::List)
+    def self.new(site_cfg)
+      Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
-        cfg['host']='localhost'
-        Sv.new(cfg)
+        site_cfg['host']='localhost'
+        Sv.new(site_cfg)
       elsif host=$opt['h']
-        cfg['host']=host
+        site_cfg['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(cfg)
+        return Sv.new(site_cfg)
       else
-        return Test.new(cfg)
+        return Test.new(site_cfg)
       end
-      Cl.new(cfg)
+      Cl.new(site_cfg)
     end
 
     class Exe < Exe
+      # site_cfg should have 'id',:adb
       attr_reader :adb,:stat
-      def initialize(cfg)
-        @adb=type?(cfg[:db],Db)
-        @stat=cfg[:stat]=Status.new.set_db(@adb)
+      def initialize(site_cfg)
         @cls_color=2
-        super(@stat['id'],cfg)
+        @adb=site_cfg[:db]=type?(site_cfg[:adb],Db)
+        super
+        @stat=@cfg[:stat]=Status.new.set_db(@adb)
         @cfg[:site_stat].add_db('isu' => '*')
         @print=View.new(@adb,@stat)
         @output=$opt['j']?@stat:@print
@@ -53,7 +54,7 @@ module CIAX
 
     class Test < Exe
       require "libappsym"
-      def initialize(cfg)
+      def initialize(site_cfg)
         super
         @stat.ext_sym
         @stat.post_upd_procs << proc{|st|
@@ -66,9 +67,9 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(cfg)
-        super(cfg)
-        host=type?(cfg['host']||@adb['host']||'localhost',String)
+      def initialize(site_cfg)
+        super
+        host=type?(site_cfg['host']||@adb['host']||'localhost',String)
         @stat.ext_http(host)
         @pre_exe_procs << proc{@stat.upd}
         ext_client(host,@adb['port'])
@@ -76,9 +77,9 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(cfg)
-        super(cfg)
-        @fsh=Frm.new(cfg)
+      def initialize(site_cfg)
+        super
+        @fsh=Frm.new(@cfg)
         @mode=@fsh.mode
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         @buf=init_buf
@@ -101,7 +102,7 @@ module CIAX
           'INTERRUPT'
         }
         # Logging if version number exists
-        if sv=cfg[:sqlog]
+        if sv=@cfg[:sqlog]
           sv.add_table(@stat)
         end
         ext_server(@adb['port'])
@@ -134,11 +135,12 @@ module CIAX
     end
 
     if __FILE__ == $0
+      require "libsitedb"
       ENV['VER']||='initialize'
-      GetOpts.new('t')
+      GetOpts.new('celts')
+      id=ARGV.shift
       begin
-        cfg=Config.new('app_test_exe')
-        cfg[:db]=Db.new.set(ARGV.shift)
+        cfg=Site::Db.new.set(id)
         puts App.new(cfg).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')

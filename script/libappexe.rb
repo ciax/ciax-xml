@@ -29,16 +29,17 @@ module CIAX
 
     class Exe < Exe
       # site_cfg should have 'id',:adb
+      # it inherits :site_stat,:batch_interrupt from Watch layer;
       attr_reader :adb,:stat
       def initialize(site_cfg)
         @cls_color=2
         @adb=site_cfg[:db]=type?(site_cfg[:adb],Db)
         super
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
-        @cfg[:site_stat].add_db('isu' => '*')
-        @print=View.new(@adb,@stat)
-        @output=$opt['j']?@stat:@print
-        @cfg[:batch_interrupt]=[]
+        @site_stat=@cfg[:site_stat].add_db('isu' => '*')
+        @appview=View.new(@adb,@stat)
+        @output=$opt['j']?@stat:@appview
+        @batch_interrupt=(@cfg[:batch_interrupt]||=[])
         ext_shell
       end
 
@@ -46,7 +47,7 @@ module CIAX
       def ext_shell
         super
         @view_grp=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
-        @view_grp.add_item('vis',"Visual mode").set_proc{@output=@print;''}
+        @view_grp.add_item('vis',"Visual mode").set_proc{@output=@appview;''}
         @view_grp.add_item('raw',"Raw Print mode").set_proc{@output=@stat;''}
         self
       end
@@ -94,11 +95,11 @@ module CIAX
           "ISSUED"
         }
         @cobj.item_proc('interrupt'){|ent,src|
-          @cfg[:batch_interrupt].each{|args|
+          @batch_interrupt.each{|args|
             verbose("AppSv","#@id/Issuing:#{args} for Interrupt")
             @buf.send(0,@cobj.set_cmd(args),src)
           }
-          warning("AppSv","Interrupt(#{@cfg[:batch_interrupt]}) from #{src}")
+          warning("AppSv","Interrupt(#{@batch_interrupt}) from #{src}")
           'INTERRUPT'
         }
         # Logging if version number exists
@@ -110,11 +111,11 @@ module CIAX
 
       private
       def server_output
-        Hashx.new.update(@cfg[:site_stat]).update(self).to_j
+        Hashx.new.update(@site_stat).update(self).to_j
       end
 
       def init_buf
-        buf=Buffer.new(@stat['id'],@stat['ver'],@cfg[:site_stat])
+        buf=Buffer.new(@stat['id'],@stat['ver'],@site_stat)
         buf.send_proc{|ent|
           batch=type?(ent.batch,Array)
           verbose("AppSv","Send FrmCmds #{batch}")

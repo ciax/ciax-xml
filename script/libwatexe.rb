@@ -4,43 +4,47 @@ require "libappexe"
 
 module CIAX
   module Wat
-    # cfg should have [:app_list](App::List)
-    def self.new(cfg)
-      Msg.type?(cfg,Hash)
+    # site_cfg should have [:app_list](App::List)
+    def self.new(site_cfg)
+      Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
-        cfg['host']='localhost'
-        Sv.new(cfg)
+        site_cfg['host']='localhost'
+        Sv.new(site_cfg)
       elsif host=$opt['h']
-        cfg['host']=host
+        site_cfg['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(cfg)
+        return Sv.new(site_cfg)
       else
-        return Test.new(cfg)
+        return Test.new(site_cfg)
       end
-      Cl.new(cfg)
+      Cl.new(site_cfg)
     end
 
     class Exe < Exe
-      attr_reader :adb,:stat
-      def initialize(cfg)
-        @ash=App.new(cfg)
-        @adb=type?(@ash.adb,Db)
-        @event=Event.new.set_db(@adb)
+      attr_reader :adb,:stat,:ash
+      def initialize(site_cfg)
         @cls_color=3
-        super(@event['id'],cfg)
+        super
         @cfg[:site_stat].add_db('auto'=>'@','watch'=>'&')
+        @adb=@cfg[:db]=type?(site_cfg[:adb],Db)
+        @event=Event.new.set_db(@adb)
+        @cfg[:batch_interrupt]=@event.get('int')
+        @ash=App.new(@cfg)
+        @cobj=Command.new(@cfg).add_nil
         @wview=View.new(@adb,@event)
         @cobj.svdom.replace @ash.cobj.svdom
         @output=$opt['j']?@event:@wview
         ext_shell
       end
 
-      def init_sv(cfg)
+      def init_sv
         @mode=@ash.mode
         @stat=@ash.stat
-        @cfg[:batch_interrupt]=@event.get('int')
         @event.post_upd_procs << proc{upd}
+        @stat.post_upd_procs << proc{
+          verbose("Watch","Propagate Status#upd -> Event#upd")
+        }
         @ash.pre_exe_procs << proc{|args| @event.block?(args) }
       end
 
@@ -62,37 +66,35 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(cfg)
+      def initialize(site_cfg)
         super
-        init_sv(cfg)
+        init_sv
         @event.ext_rsp(@stat)
         # @event is independent from @stat
         @stat.post_upd_procs << proc{
-          verbose("Watch","Propagate Status#upd -> Event#upd")
           @event.upd
         }
       end
     end
 
     class Cl < Exe
-      def initialize(cfg)
+      def initialize(site_cfg)
         super
-        host=type?(cfg['host']||@adb['host']||'localhost',String)
+        host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @event.ext_http(host)
         @pre_exe_procs << proc{@event.upd} # @event is independent from @stat
       end
     end
 
     class Sv < Exe
-      def initialize(cfg)
+      def initialize(site_cfg)
         super
-        init_sv(cfg)
+        init_sv
         @event.ext_rsp(@stat).ext_file
         @event.def_proc=proc{|args,src,pri|
             @ash.exe(args,src,pri)
         }
         @stat.post_upd_procs << proc{
-          verbose("Watch","Propagate Status#upd -> Event#upd")
           @event.upd.exec('event',2)
         }
         @event.ext_log if $opt['e'] && @stat['ver']
@@ -118,10 +120,13 @@ module CIAX
     end
 
     if __FILE__ == $0
+      require "libsitedb"
       ENV['VER']||='initialize'
-      GetOpts.new('t')
+      GetOpts.new('celst')
+      id=ARGV.shift
       begin
-        puts Wat.new(:db => App::Db.new.set(ARGV.shift)).shell
+        cfg=Site::Db.new.set(id)
+        puts Wat.new(cfg).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

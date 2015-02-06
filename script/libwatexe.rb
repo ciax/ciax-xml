@@ -26,12 +26,11 @@ module CIAX
       def initialize(site_cfg)
         @cls_color=3
         super
-        @cfg[:site_stat].add_db('auto'=>'@','watch'=>'&')
+        @site_stat=@cfg[:site_stat].add_db('auto'=>'@','watch'=>'&')
         @adb=@cfg[:db]=type?(site_cfg[:adb],Db)
         @event=Event.new.set_db(@adb)
         @cfg[:batch_interrupt]=@event.get('int')
         @ash=App.new(@cfg)
-        @cobj=Command.new(@cfg).add_nil
         @wview=View.new(@adb,@event)
         @cobj.svdom.replace @ash.cobj.svdom
         @output=$opt['j']?@event:@wview
@@ -49,7 +48,7 @@ module CIAX
       end
 
       def upd
-        @cfg[:site_stat]['watch'] = @event.active?
+        @site_stat['watch'] = @event.active?
         block=@event.get('block').map{|id,par| par ? nil : id}.compact
         @ash.cobj.ext_sub(block)
         verbose("Watch","Propagate Event#upd -> Watch::Exe#upd")
@@ -101,7 +100,7 @@ module CIAX
         @interval=@event.interval
         tid_auto=auto_update
         @post_exe_procs << proc{
-          @cfg[:site_stat]['auto'] = tid_auto && tid_auto.alive?
+          @site_stat['auto'] = tid_auto && tid_auto.alive?
         }
       end
 

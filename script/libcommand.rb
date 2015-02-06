@@ -77,6 +77,11 @@ module CIAX
       @hidgrp.add_item('interrupt')
     end
 
+    def add_nil
+      # Accept empty command
+      @hidgrp.add_item(nil)
+      self
+    end
   end
 
   class Domain < CmdShare

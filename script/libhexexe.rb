@@ -11,8 +11,8 @@ module CIAX
 
     class Sv < Exe
       def initialize(cfg)
-        wsh=Wat.new(cfg)
-        super(wsh.id,cfg)
+        super
+        wsh=Wat.new(@cfg)
         @cobj.svdom.replace wsh.cobj.svdom
         @mode=wsh.mode
         @output=View.new(@id,wsh.adb['version'],@cfg[:site_stat],wsh.stat)
@@ -31,10 +31,13 @@ module CIAX
     end
 
     if __FILE__ == $0
+      require "libsitedb"
       ENV['VER']||='initialize'
-      GetOpts.new('t')
+      GetOpts.new('celst')
+      id=ARGV.shift
       begin
-        puts Hex.new(:db => App::Db.new.set(ARGV.shift)).shell
+        cfg=Site::Db.new.set(id)
+        puts Hex.new(cfg).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

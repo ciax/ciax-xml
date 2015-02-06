@@ -26,7 +26,7 @@ module CIAX
       def initialize(site_cfg)
         @cls_color=3
         super
-        @site_stat=@cfg[:site_stat].add_db('auto'=>'@','watch'=>'&')
+        @site_stat.add_db('auto'=>'@','watch'=>'&')
         @adb=@cfg[:db]=type?(site_cfg[:adb],Db)
         @event=Event.new.set_db(@adb)
         @cfg[:batch_interrupt]=@event.get('int')

@@ -36,7 +36,7 @@ module CIAX
         @adb=site_cfg[:db]=type?(site_cfg[:adb],Db)
         super
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
-        @site_stat=@cfg[:site_stat].add_db('isu' => '*')
+        @site_stat.add_db('isu' => '*')
         @appview=View.new(@adb,@stat)
         @output=$opt['j']?@stat:@appview
         @batch_interrupt=(@cfg[:batch_interrupt]||=[])

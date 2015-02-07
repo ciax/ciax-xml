@@ -8,28 +8,28 @@ require "libfrmcmd"
 module CIAX
   module Frm
     # site_cfg should have :db(Frm::Db)
-    def self.new(site_cfg)
+    def self.new(site_cfg,attr={})
       Msg.type?(site_cfg,Hash)
       fdb=site_cfg[:fdb]
-      site_cfg['iocmd']=['devsim-file',site_cfg['id'],fdb['version']] if $opt['s']
+      attr['iocmd']=['devsim-file',site_cfg['id'],fdb['version']] if $opt['s']
       if $opt.delete('l')
-        site_cfg['host']='localhost'
-        Sv.new(site_cfg)
+        attr['host']='localhost'
+        Sv.new(site_cfg,attr)
       elsif host=$opt['h']
-        site_cfg['host']=host
+        attr['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(site_cfg)
+        return Sv.new(site_cfg,attr)
       else
-        return Test.new(site_cfg)
+        return Test.new(site_cfg,attr)
       end
-      Cl.new(site_cfg)
+      Cl.new(site_cfg,attr)
     end
 
     class Exe < Exe
       # site_cfg should have 'id',:fdb
       attr_reader :field,:flush_procs
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         @cls_color=6
         @fdb=site_cfg[:db]=type?(site_cfg[:fdb],Db)
         site_cfg[:field]=Field.new.set_db(@fdb)
@@ -45,7 +45,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         super
         @cobj.svdom.set_proc{|ent|@field['time']=now_msec;''}
         @cobj.ext_proc{|ent| "#{ent.cfg[:frame].inspect} => #{ent.cfg['response']}"}
@@ -57,7 +57,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         super
         host=type?(cfg['host']||@fdb['host']||'localhost',String)
         @field.ext_http(host)
@@ -68,7 +68,7 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         super
         @field.ext_file
         timeout=5

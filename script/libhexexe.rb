@@ -5,12 +5,12 @@ require "libwatexe"
 
 module CIAX
   module Hex
-    def self.new(cfg)
-      Hex::Sv.new(cfg)
+    def self.new(site_cfg,attr={})
+      Hex::Sv.new(site_cfg,attr)
     end
 
     class Sv < Exe
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         (site_cfg[:layer]||={})[:hex]=self
         super
         ash=Wat.new(@cfg).ash

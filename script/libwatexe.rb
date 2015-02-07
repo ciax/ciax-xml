@@ -5,25 +5,25 @@ require "libappexe"
 module CIAX
   module Wat
     # site_cfg should have [:app_list](App::List)
-    def self.new(site_cfg)
+    def self.new(site_cfg,attr={})
       Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
-        site_cfg['host']='localhost'
-        Sv.new(site_cfg)
+        attr['host']='localhost'
+        Sv.new(site_cfg,attr)
       elsif host=$opt['h']
-        site_cfg['host']=host
+        attr['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(site_cfg)
+        return Sv.new(site_cfg,attr)
       else
-        return Test.new(site_cfg)
+        return Test.new(site_cfg,attr)
       end
-      Cl.new(site_cfg)
+      Cl.new(site_cfg,attr)
     end
 
     class Exe < Exe
       attr_reader :ash
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         @cls_color=3
         (site_cfg[:layer]||={})[:wat]=self
         super
@@ -65,7 +65,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         super
         init_sv
         # @event is independent from @ash.stat
@@ -74,7 +74,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         super
         @event.ext_http(@ash.host)
         # @event is independent from @ash.stat
@@ -83,7 +83,7 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         super
         init_sv
         @event.ext_file

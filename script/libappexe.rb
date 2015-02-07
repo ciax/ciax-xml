@@ -11,33 +11,33 @@ require "libsqlog"
 module CIAX
   module App
     # site_cfg should have [:frm_list](Frm::List)
-    def self.new(site_cfg)
+    def self.new(site_cfg,attr={})
       Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
-        site_cfg['host']='localhost'
-        Sv.new(site_cfg)
+        attr['host']='localhost'
+        Sv.new(site_cfg,attr)
       elsif host=$opt['h']
-        site_cfg['host']=host
+        attr['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(site_cfg)
+        return Sv.new(site_cfg,attr)
       else
-        return Test.new(site_cfg)
+        return Test.new(site_cfg,attr)
       end
-      Cl.new(site_cfg)
+      Cl.new(site_cfg,attr)
     end
 
     class Exe < Exe
       # site_cfg should have 'id',:adb
       # it inherits :site_stat,:batch_interrupt from Watch layer;
       attr_reader :adb,:stat,:host,:port
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         @cls_color=2
         @adb=site_cfg[:db]=type?(site_cfg[:adb],Db)
         (site_cfg[:layer]||={})[:app]=self
-        @host=type?(site_cfg['host']||@adb['host']||'localhost',String)
-        @port=adb['port']
         super
+        @host=type?(@cfg['host']||@adb['host']||'localhost',String)
+        @port=@adb['port']
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
         @site_stat.add_db('isu' => '*')
         @appview=View.new(@adb,@stat)
@@ -58,7 +58,7 @@ module CIAX
 
     class Test < Exe
       require "libappsym"
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         super
         @stat.ext_sym
         @stat.post_upd_procs << proc{|st|
@@ -71,7 +71,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         super
         @stat.ext_http(@host)
         @pre_exe_procs << proc{@stat.upd}
@@ -80,7 +80,7 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(site_cfg)
+      def initialize(site_cfg,attr={})
         super
         @fsh=Frm.new(@cfg)
         @mode=@fsh.mode

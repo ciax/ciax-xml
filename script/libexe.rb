@@ -14,13 +14,13 @@ module CIAX
     attr_accessor :shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
     # block gives command line convert
     # site_cfg should have ['id']
-    def initialize(site_cfg=nil)
+    def initialize(site_cfg=nil,attr={})
       super()
       # layer is Frm,App,Wat,Hex,Mcr,Man
       cpath=class_path
       @mode=cpath.pop.upcase
       @layer=cpath.pop.downcase
-      @cfg=Config.new(@layer,site_cfg)
+      @cfg=Config.new("exe_#@layer",site_cfg).update(attr)
       @id=@cfg['id']
       @cfg[@layer]=self
       @cobj=local_class('Command').new(@cfg).add_nil

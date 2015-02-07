@@ -7,7 +7,7 @@ require "libfrmcmd"
 
 module CIAX
   module Frm
-    # site_cfg should have :db(Frm::Db)
+    # site_cfg should have :fdb(Frm::Db)
     def self.new(site_cfg,attr={})
       Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
@@ -26,12 +26,12 @@ module CIAX
 
     class Exe < Exe
       # site_cfg should have 'id',:fdb
+      # :db belongs to level
       attr_reader :field,:flush_procs
       def initialize(site_cfg,attr={})
         @cls_color=6
-        @fdb=site_cfg[:db]=type?(site_cfg[:fdb],Db)
-        site_cfg[:field]=Field.new.set_db(@fdb)
-        (site_cfg[:layer]||={})[:frm]=self
+        @fdb=attr[:db]=type?(site_cfg[:fdb],Db)
+        attr[:field]=Field.new.set_db(@fdb)
         super
         @output=@field=@cfg[:field]
         @cobj.add_intgrp(Int)

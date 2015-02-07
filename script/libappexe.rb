@@ -33,8 +33,7 @@ module CIAX
       attr_reader :adb,:stat,:host,:port
       def initialize(site_cfg,attr={})
         @cls_color=2
-        @adb=site_cfg[:db]=type?(site_cfg[:adb],Db)
-        (site_cfg[:layer]||={})[:app]=self
+        @adb=attr[:db]=type?(site_cfg[:adb],Db)
         super
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']

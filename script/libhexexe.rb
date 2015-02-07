@@ -11,7 +11,6 @@ module CIAX
 
     class Sv < Exe
       def initialize(site_cfg,attr={})
-        (site_cfg[:layer]||={})[:hex]=self
         super
         ash=Wat.new(@cfg).ash
         @cobj.svdom.replace ash.cobj.svdom

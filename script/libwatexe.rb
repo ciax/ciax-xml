@@ -25,7 +25,6 @@ module CIAX
       attr_reader :ash
       def initialize(site_cfg,attr={})
         @cls_color=3
-        (site_cfg[:layer]||={})[:wat]=self
         super
         @site_stat.add_db('auto'=>'@','watch'=>'&')
         @ash=App.new(@cfg)

@@ -8,9 +8,9 @@ module CIAX
     class Layer < List
       def initialize(upper=nil)
         super(Site,upper)
-        @cfg[:site]||=''
+        @cfg[:current_site]||=''
         @cfg[:ldb]||=Site::Db.new
-        @pars={:parameters => [{:default => @cfg[:site]}]}
+        @pars={:parameters => [{:default => @cfg[:current_site]}]}
         @cfg[:jump_groups] << @jumpgrp
       end
 
@@ -43,9 +43,9 @@ module CIAX
       # shdom: Domain for Shared Command Groups
       def initialize(level,upper=nil)
         super(level,upper)
-        @cfg[:site]||=''
-        @cfg[:ldb]||=Db.new
-        @jumpgrp.update_items(@cfg[:ldb].list)
+        @cfg[:current_site]||=''
+        @db=Db.new
+        @jumpgrp.update_items(@db.list)
         verbose("List","Initialize")
       end
 
@@ -54,8 +54,10 @@ module CIAX
       end
 
       def get(site)
-        add(site) unless @data.key?(site)
-        @cfg[:site].replace(site)
+        unless @data.key?(site)
+          add(site)
+        end
+        @cfg[:current_site].replace(site)
         super
       end
 
@@ -88,6 +90,12 @@ module CIAX
         sleep
       rescue InvalidID
         $opt.usage('(opt) [id] ....')
+      end
+
+      private
+      def add(site)
+        site_cfg=Config.new("site_#{site}",@cfg).update('id' => site,:ldb =>@db.set(site))
+        set(site,@level.new(site_cfg))
       end
     end
 

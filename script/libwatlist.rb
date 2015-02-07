@@ -10,11 +10,6 @@ module CIAX
         @cfg.layers[:wat]=self
         App::List.new(@cfg)
       end
-
-      def add(id)
-        @cfg[:db]=@cfg[:ldb].set(id)[:adb]
-        set(id,Wat.new(@cfg))
-      end
     end
 
     class Jump < LongJump; end

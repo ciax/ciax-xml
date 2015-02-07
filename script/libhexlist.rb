@@ -8,13 +8,8 @@ module CIAX
     class List < Site::List
       def initialize(upper=nil)
         super(Hex,upper)
-        @cfg[:level]='hex'
         @cfg.layers[:hex]=self
         Wat::List.new(@cfg)
-      end
-
-      def add(id)
-        set(id,Hex.new(@cfg.layers[:wat].get(id)))
       end
     end
 

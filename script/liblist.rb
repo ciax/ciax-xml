@@ -6,7 +6,7 @@ module CIAX
     def initialize(level,upper=nil)
       @level=type?(level,Module)
       name=level.to_s.split(':').last.downcase
-      @cfg=Config.new("#{name}_list",upper)
+      @cfg=Config.new("list_#{name}",upper)
       super(name,{},@cfg[:dataname]||'list')
       @cfg[:jump_groups]||=[]
       attr={'caption'=>"Switch #{name}s",'color'=>5,'column'=>2}

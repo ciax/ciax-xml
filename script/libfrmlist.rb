@@ -9,11 +9,6 @@ module CIAX
         super(Frm,upper)
         @cfg.layers[:frm]=self
       end
-
-      def add(id)
-        cfg=Config.new("frm_list",@cfg).update(@cfg[:ldb].set(id))
-        set(id,Frm.new(cfg))
-      end
     end
 
     class Jump < LongJump; end

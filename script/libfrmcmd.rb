@@ -6,7 +6,7 @@ require "libfield"
 module CIAX
   module Frm
     class Command < Command
-      # exe_cfg or attr should have [:id] and [:field]
+      # exe_cfg or attr should have [:db] and [:field]
       def initialize(exe_cfg,attr={})
         attr.update(:cls_color => 6)
         super

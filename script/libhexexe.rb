@@ -36,7 +36,7 @@ module CIAX
       GetOpts.new('celst')
       id=ARGV.shift
       begin
-        cfg=Site::Db.new.set(id)
+        cfg=Config.new("site_#{id}",{'id' => id,:ldb => Site::Db.new.set(id)})
         puts Hex.new(cfg).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')

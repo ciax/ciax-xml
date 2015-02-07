@@ -25,12 +25,12 @@ module CIAX
     end
 
     class Exe < Exe
-      # site_cfg should have 'id',:fdb
-      # :db belongs to level
+      # site_cfg should have 'id'
+      # attr should have :db which  belongs to level
       attr_reader :field,:flush_procs
       def initialize(site_cfg,attr={})
         @cls_color=6
-        @fdb=attr[:db]=type?(site_cfg[:fdb],Db)
+        @fdb=(attr[:db]||=type?(site_cfg[:ldb][:fdb],Db))
         attr[:field]=Field.new.set_db(@fdb)
         super
         @output=@field=@cfg[:field]
@@ -115,8 +115,8 @@ module CIAX
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        cfg=Site::Db.new.set(id)
-        puts Frm.new(cfg).shell
+        attr={:db => Site::Db.new.set(id)[:fdb]}
+        puts Frm.new({},attr).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

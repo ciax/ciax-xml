@@ -4,7 +4,7 @@ require "libappview"
 require "libappcmd"
 require "libapprsp"
 require "libappsym"
-require 'libfrmexe'
+require 'libfrmlist'
 require "libbuffer"
 require "libsqlog"
 
@@ -33,7 +33,7 @@ module CIAX
       attr_reader :adb,:stat,:host,:port
       def initialize(site_cfg,attr={})
         @cls_color=2
-        @adb=attr[:db]=type?(site_cfg[:adb],Db)
+        @adb=(attr[:db]||=type?(site_cfg[:ldb][:adb],Db))
         super
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']
@@ -142,7 +142,7 @@ module CIAX
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        cfg=Site::Db.new.set(id)
+        cfg=Config.new("site_#{id}",{'id' => id,:ldb => Site::Db.new.set(id)})
         puts App.new(cfg).shell
       rescue InvalidID
         $opt.usage('(opt) [id]')

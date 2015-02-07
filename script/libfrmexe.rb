@@ -10,8 +10,6 @@ module CIAX
     # site_cfg should have :db(Frm::Db)
     def self.new(site_cfg,attr={})
       Msg.type?(site_cfg,Hash)
-      fdb=site_cfg[:fdb]
-      attr['iocmd']=['devsim-file',site_cfg['id'],fdb['version']] if $opt['s']
       if $opt.delete('l')
         attr['host']='localhost'
         Sv.new(site_cfg,attr)
@@ -72,15 +70,15 @@ module CIAX
         super
         @field.ext_file
         timeout=5
-        if sim=cfg['iocmd']
+        if $opt['s']
           @mode='SIM'
-          iocmd=type?(sim,Array)
+          iocmd=['devsim-file',@id,@fdb['version']]
           timeout=60
         else
           iocmd=@fdb['iocmd'].split(' ')
         end
         @stream=Stream.new(@id,@fdb['version'],iocmd,@fdb['wait'],timeout)
-        @stream.ext_log unless sim
+        @stream.ext_log unless $opt['s']
         @field.ext_rsp{@stream.rcv}
         @cobj.ext_proc{|ent|
           @stream.snd(ent.cfg[:frame],ent.id)

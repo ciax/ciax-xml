@@ -11,8 +11,8 @@ module CIAX
       end
 
       def add(id)
-        @cfg[:db]=@cfg[:ldb].set(id)[:fdb]
-        set(id,Frm.new(@cfg))
+        cfg=Config.new("frm_list",@cfg).update(@cfg[:ldb].set(id))
+        set(id,Frm.new(cfg))
       end
     end
 

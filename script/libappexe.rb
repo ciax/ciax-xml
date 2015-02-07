@@ -30,10 +30,13 @@ module CIAX
     class Exe < Exe
       # site_cfg should have 'id',:adb
       # it inherits :site_stat,:batch_interrupt from Watch layer;
-      attr_reader :adb,:stat
+      attr_reader :adb,:stat,:host,:port
       def initialize(site_cfg)
         @cls_color=2
         @adb=site_cfg[:db]=type?(site_cfg[:adb],Db)
+        (site_cfg[:layer]||={})[:app]=self
+        @host=type?(site_cfg['host']||@adb['host']||'localhost',String)
+        @port=adb['port']
         super
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
         @site_stat.add_db('isu' => '*')
@@ -70,10 +73,9 @@ module CIAX
     class Cl < Exe
       def initialize(site_cfg)
         super
-        host=type?(site_cfg['host']||@adb['host']||'localhost',String)
-        @stat.ext_http(host)
+        @stat.ext_http(@host)
         @pre_exe_procs << proc{@stat.upd}
-        ext_client(host,@adb['port'])
+        ext_client(@host,@port)
       end
     end
 
@@ -106,7 +108,7 @@ module CIAX
         if sv=@cfg[:sqlog]
           sv.add_table(@stat)
         end
-        ext_server(@adb['port'])
+        ext_server(@port)
       end
 
       private

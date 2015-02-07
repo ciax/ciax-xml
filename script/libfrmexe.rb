@@ -33,6 +33,7 @@ module CIAX
         @cls_color=6
         @fdb=site_cfg[:db]=type?(site_cfg[:fdb],Db)
         site_cfg[:field]=Field.new.set_db(@fdb)
+        (site_cfg[:layer]||={})[:frm]=self
         super
         @output=@field=@cfg[:field]
         @cobj.add_intgrp(Int)

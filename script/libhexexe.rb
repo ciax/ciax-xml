@@ -10,13 +10,14 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(cfg)
+      def initialize(site_cfg)
+        (site_cfg[:layer]||={})[:hex]=self
         super
-        wsh=Wat.new(@cfg)
-        @cobj.svdom.replace wsh.cobj.svdom
-        @mode=wsh.mode
-        @output=View.new(@id,wsh.adb['version'],@cfg[:site_stat],wsh.stat)
-        @post_exe_procs.concat(wsh.post_exe_procs)
+        ash=Wat.new(@cfg).ash
+        @cobj.svdom.replace ash.cobj.svdom
+        @mode=ash.mode
+        @output=View.new(@id,ash.adb['version'],@cfg[:site_stat],ash.stat)
+        @post_exe_procs.concat(ash.post_exe_procs)
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')
         }
@@ -26,7 +27,7 @@ module CIAX
           @output.ext_log
         end
         ext_shell
-        ext_server(wsh.adb['port'].to_i+1000) if ['e','s'].any?{|i| $opt[i]}
+        ext_server(ash.port.to_i+1000) if ['e','s'].any?{|i| $opt[i]}
       end
     end
 

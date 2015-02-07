@@ -22,16 +22,16 @@ module CIAX
     end
 
     class Exe < Exe
-      attr_reader :adb,:stat,:ash
+      attr_reader :ash
       def initialize(site_cfg)
         @cls_color=3
+        (site_cfg[:layer]||={})[:wat]=self
         super
         @site_stat.add_db('auto'=>'@','watch'=>'&')
-        @adb=@cfg[:db]=type?(site_cfg[:adb],Db)
-        @event=Event.new.set_db(@adb)
-        @cfg[:batch_interrupt]=@event.get('int')
         @ash=App.new(@cfg)
-        @wview=View.new(@adb,@event)
+        @event=Event.new.set_db(@ash.adb)
+        @wview=View.new(@ash.adb,@event)
+        @cfg[:batch_interrupt]=@event.get('int')
         @cobj.svdom.replace @ash.cobj.svdom
         @output=$opt['j']?@event:@wview
         ext_shell
@@ -39,12 +39,12 @@ module CIAX
 
       def init_sv
         @mode=@ash.mode
-        @stat=@ash.stat
         @event.post_upd_procs << proc{upd}
-        @stat.post_upd_procs << proc{
+        @ash.stat.post_upd_procs << proc{
           verbose("Watch","Propagate Status#upd -> Event#upd")
         }
         @ash.pre_exe_procs << proc{|args| @event.block?(args) }
+        @event.ext_rsp(@ash.stat)
       end
 
       def upd
@@ -68,20 +68,17 @@ module CIAX
       def initialize(site_cfg)
         super
         init_sv
-        @event.ext_rsp(@stat)
-        # @event is independent from @stat
-        @stat.post_upd_procs << proc{
-          @event.upd
-        }
+        # @event is independent from @ash.stat
+        @ash.stat.post_upd_procs << proc{@event.upd}
       end
     end
 
     class Cl < Exe
       def initialize(site_cfg)
         super
-        host=type?(@cfg['host']||@adb['host']||'localhost',String)
-        @event.ext_http(host)
-        @pre_exe_procs << proc{@event.upd} # @event is independent from @stat
+        @event.ext_http(@ash.host)
+        # @event is independent from @ash.stat
+        @pre_exe_procs << proc{@event.upd}
       end
     end
 
@@ -89,14 +86,14 @@ module CIAX
       def initialize(site_cfg)
         super
         init_sv
-        @event.ext_rsp(@stat).ext_file
+        @event.ext_file
         @event.def_proc=proc{|args,src,pri|
             @ash.exe(args,src,pri)
         }
-        @stat.post_upd_procs << proc{
+        @ash.stat.post_upd_procs << proc{
           @event.upd.exec('event',2)
         }
-        @event.ext_log if $opt['e'] && @stat['ver']
+        @event.ext_log if $opt['e'] && @ash.stat['ver']
         @interval=@event.interval
         tid_auto=auto_update
         @post_exe_procs << proc{
@@ -111,7 +108,7 @@ module CIAX
           rescue InvalidID
             errmsg
           end
-          verbose("Watch","Auto Update(#{@stat['time']})")
+          verbose("Watch","Auto Update(#{@ash.stat['time']})")
           @event.next_upd
           sleep @event.period
         }

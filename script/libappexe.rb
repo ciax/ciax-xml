@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
+require "libsh"
 require "libappdb"
 require "libappview"
 require "libappcmd"
 require "libapprsp"
 require "libappsym"
-require 'libfrmlist'
 require "libbuffer"
 require "libsqlog"
 
@@ -81,7 +81,8 @@ module CIAX
     class Sv < Exe
       def initialize(site_cfg,attr={})
         super
-        @fsh=Frm.new(@cfg)
+        fsite=@cfg[:ldb][:fdb]["site_id"]
+        @fsh=@cfg[:site_list].get("frm:#{fsite}")
         @mode=@fsh.mode
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         @buf=init_buf

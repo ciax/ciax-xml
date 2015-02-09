@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libsitedb"
+require "libhexexe"
 require "libwatexe"
 require "libfrmexe"
 require "libappexe"
@@ -28,7 +29,7 @@ module CIAX
           id="#{ent.id}:#{@cfg[:current_site]}"
           warn "Jump to #{id}"
           raise(Jump,id)
-        }.update_items({'frm' => "Frame layer",'app' => "App layer",'wat' => "Watch layer"})
+        }.update_items({'frm' => "Frame layer",'app' => "App layer",'wat' => "Watch layer",'hex' => "Hex Layer"})
         #
         verbose("List","Initialize")
         $opt||=GetOpts.new

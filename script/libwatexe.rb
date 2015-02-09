@@ -27,7 +27,7 @@ module CIAX
         @cls_color=3
         super
         @site_stat.add_db('auto'=>'@','watch'=>'&')
-        @ash=App.new(@cfg)
+        @ash=@cfg[:site_list].get("app:#{@id}")
         @event=Event.new.set_db(@ash.adb)
         @wview=View.new(@ash.adb,@event)
         @cfg[:batch_interrupt]=@event.get('int')

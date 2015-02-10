@@ -12,19 +12,25 @@ module CIAX
 
       def set(id=nil)
         ldb=super
-        insid=ldb['ins_id']||ldb['id']
+        id=ldb['site_id']=ldb.delete('id')
+        insid=ldb['ins_id']||id
         ldb.cover(Ins::Db.new.set(insid).cover_app,:adb)
+        # For App
         app=ldb[:adb].update('site_id'=>id)
+        ldb['app_site']=id
+        # For Frm
         frm=ldb[:fdb]||{}
         if ref=frm.delete('ref')
+          warn "FRM FEF ID =#{ref}"#
           frm=ldb.cover(Db.new.set(ref)[:fdb],:fdb)
+          id=ref
         else
           frm=ldb.cover(Frm::Db.new.set(app['frm_id']),:fdb)
-          frm['site_id']||=id
         end
+        ldb['frm_site']=id
+        frm['site_id']=id
         frm['host']||=(app['host']||='localhost')
         frm['port']||=app['port'].to_i-1000
-        ldb['site_id']=ldb.delete('id')
         ldb
       end
 

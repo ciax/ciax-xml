@@ -1,9 +1,6 @@
 #!/usr/bin/ruby
+require "libdatax"
 require "libsitedb"
-require "libhexexe"
-require "libwatexe"
-require "libfrmexe"
-require "libappexe"
 
 module CIAX
   module Site
@@ -14,23 +11,9 @@ module CIAX
         @cfg=Config.new("list_site",upper)
         super('site',{},@cfg[:dataname]||'list')
         @cfg[:site_list]=self
-        @cfg[:jump_groups]||=[]
         @cfg[:current_site]||=''
         @cfg[:current_layer]||=''
         @db=Db.new
-        attr={'caption'=>"Switch sites",'color'=>5,'column'=>2}
-        @cfg[:jump_groups] << Group.new(@cfg,attr).set_proc{|ent|
-          id="#{@cfg[:current_layer]}:#{ent.id}"
-          warn "Jump to #{id}"
-          raise(Jump,id)
-        }.update_items(@db.list)
-        attr={'caption'=>"Switch layer",'color'=>5,'column'=>2}
-        @cfg[:jump_groups] << Group.new(@cfg,attr).set_proc{|ent|
-          id="#{ent.id}:#{@cfg[:current_site]}"
-          warn "Jump to #{id}"
-          raise(Jump,id)
-        }.update_items({'frm' => "Frame layer",'app' => "App layer",'wat' => "Watch layer",'hex' => "Hex Layer"})
-        #
         verbose("List","Initialize")
         $opt||=GetOpts.new
       end
@@ -46,16 +29,6 @@ module CIAX
         @cfg[:current_site].replace(site)
         @cfg[:current_layer].replace(layer)
         super(id)
-      end
-
-      def set(id,exe)
-        type?(exe,Exe)
-        return self if @data.key?(id)
-        # JumpGroup is set to Domain
-        @cfg[:jump_groups].each{|grp|
-          exe.cobj.lodom.join_group(grp)
-        }
-        super
       end
 
       def shell(id)
@@ -80,17 +53,54 @@ module CIAX
       end
 
       private
+      def mk_jump_group(exe)
+        jg=exe.cfg[:jump_groups]||=[]
+        attr={'caption'=>"Switch sites",'color'=>5,'column'=>2}
+        jg << Group.new(exe.cfg,attr).set_proc{|ent|
+          id="#{@cfg[:current_layer]}:#{ent.id}"
+          raise(Jump,id)
+        }.update_items(@db.list)
+        attr={'caption'=>"Switch layer",'color'=>5,'column'=>2}
+        jg << Group.new(exe.cfg,attr).set_proc{|ent|
+          id="#{ent.id}:#{get_site(ent)}"
+          raise(Jump,id)
+        }.update_items(layer_list)
+        # JumpGroup is set to Domain
+        jg.each{|grp|
+          exe.cobj.lodom.join_group(grp)
+        }
+      end
+
       def add(id)
         layer,site=id.split(':')
         site_cfg=Config.new("site_#{site}",@cfg).update('id' => site,:ldb =>@db.set(site))
-        lm=layer.capitalize
-        set(id,eval("#{lm}.new(site_cfg)"))
+        exe=$layers[layer].new(site_cfg)
+        mk_jump_group(exe)
+        set(id,exe)
       end
+
+      def get_site(ent)
+        ldb=ent.cfg[:ldb]
+        ldb["#{ent.id}_site"]||ldb['app_site']
+      end
+
+      def layer_list
+        h={}
+        $layers.keys.each{|key|
+          h[key]=key.capitalize+' layer'
+        }
+        h
+      end
+
     end
 
     class Jump < LongJump; end
 
     if __FILE__ == $0
+      require "libhexexe"
+      require "libwatexe"
+      require "libfrmexe"
+      require "libappexe"
       ENV['VER']||='initialize'
       GetOpts.new('chset')
       begin

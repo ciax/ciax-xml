@@ -21,7 +21,6 @@ module CIAX
         # For Frm
         frm=ldb[:fdb]||{}
         if ref=frm.delete('ref')
-          warn "FRM FEF ID =#{ref}"#
           frm=ldb.cover(Db.new.set(ref)[:fdb],:fdb)
           id=ref
         else

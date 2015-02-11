@@ -250,10 +250,11 @@ module CIAX
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
       verbose("Cmd","Config",@cfg.inspect)
+      verbose("self",inspect)
     end
 
     def exe_cmd(src,pri=1)
-      verbose("Cmd","Execute #{@id} from #{src}")
+      verbose("Cmd","Execute [#{@id}] from #{src}")
       @cfg[:def_proc].call(self,src,pri)
     end
   end

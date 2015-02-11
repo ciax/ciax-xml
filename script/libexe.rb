@@ -66,6 +66,7 @@ module CIAX
       raise $!
     ensure
       @post_exe_procs.each{|p| p.call(self)}
+      verbose("Exe",inspect)
     end
 
     def ext_client(host,port)
@@ -161,6 +162,7 @@ module CIAX
     end
 
     def to_s
+      verbose("Shell",inspect)
       @db.map{|k,v| v if self[k] }.join('')
     end
   end

@@ -6,6 +6,7 @@ require "libfrmrsp"
 require "libfrmcmd"
 
 module CIAX
+  $layers['frm']=Frm
   module Frm
     # site_cfg should have :fdb(Frm::Db)
     def self.new(site_cfg,attr={})
@@ -110,13 +111,13 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsitedb"
+      require "libsitelist"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
       id=ARGV.shift
       begin
         attr={:db => Site::Db.new.set(id)[:fdb]}
-        puts Frm.new({},attr).shell
+        puts Site::List.new.shell("frm:#{id}")
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

@@ -9,6 +9,7 @@ require "libbuffer"
 require "libsqlog"
 
 module CIAX
+  $layers['app']=App
   module App
     # site_cfg should have [:frm_list](Frm::List)
     def self.new(site_cfg,attr={})
@@ -81,7 +82,7 @@ module CIAX
     class Sv < Exe
       def initialize(site_cfg,attr={})
         super
-        fsite=@cfg[:ldb][:fdb]["site_id"]
+        fsite=@cfg[:ldb]['frm_site']
         @fsh=@cfg[:site_list].get("frm:#{fsite}")
         @mode=@fsh.mode
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
@@ -138,13 +139,12 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsitedb"
+      require "libsitelist"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        cfg=Config.new("site_#{id}",{'id' => id,:ldb => Site::Db.new.set(id)})
-        puts App.new(cfg).shell
+        puts Site::List.new.shell("app:#{id}")
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

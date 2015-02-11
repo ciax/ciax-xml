@@ -9,6 +9,7 @@ require "libextcmd"
 # Add Server Command to Combine Lower Layer (Stream,Frm,App)
 
 module CIAX
+  $layers={}
   class Exe < Hashx # Having server status {id,msg,...}
     attr_reader :layer,:id,:mode,:cobj,:pre_exe_procs,:post_exe_procs,:cfg,:output,:prompt_proc
     attr_accessor :shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc

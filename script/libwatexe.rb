@@ -3,6 +3,7 @@ require "libwatview"
 require "libappexe"
 
 module CIAX
+  $layers['wat']=Wat
   module Wat
     # site_cfg should have [:app_list](App::List)
     def self.new(site_cfg,attr={})

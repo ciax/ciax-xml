@@ -24,6 +24,7 @@ module CIAX
       @cfg=Config.new("exe_#@layer",site_cfg).update(attr)
       @id=@cfg['id']
       @cfg[@layer]=self
+      @cfg['layer']=@layer
       @cobj=local_class('Command').new(@cfg).add_nil
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)

@@ -12,7 +12,6 @@ module CIAX
         super('site',{},@cfg[:dataname]||'list')
         @cfg[:site_list]=self
         @site_cfgs={}
-        @cfg[:current_layer]||=''
         @db=Db.new
         verbose("List","Initialize")
         $opt||=GetOpts.new
@@ -25,9 +24,7 @@ module CIAX
       # id = "layer:site"
       def get(id)
         add(id) unless @data.key?(id)
-        layer,site=id.split(':')
-        @cfg[:current_layer].replace(layer)
-        super(id)
+        super
       end
 
       def shell(id)
@@ -56,7 +53,7 @@ module CIAX
         jg=exe.cfg[:jump_groups]||=[]
         attr={'caption'=>"Switch sites",'color'=>5,'column'=>2}
         jg << Group.new(exe.cfg,attr).set_proc{|ent|
-          id="#{@cfg[:current_layer]}:#{ent.id}"
+          id="#{ent.cfg['layer']}:#{ent.id}"
           raise(Jump,id)
         }.update_items(@db.list)
         attr={'caption'=>"Switch layer",'color'=>5,'column'=>2}

@@ -11,7 +11,7 @@ module CIAX
         @cfg=Config.new("list_site",upper)
         super('site',{},@cfg[:dataname]||'list')
         @cfg[:site_list]=self
-        @cfg[:current_site]||=''
+        @site_cfgs={}
         @cfg[:current_layer]||=''
         @db=Db.new
         verbose("List","Initialize")
@@ -26,7 +26,6 @@ module CIAX
       def get(id)
         add(id) unless @data.key?(id)
         layer,site=id.split(':')
-        @cfg[:current_site].replace(site)
         @cfg[:current_layer].replace(layer)
         super(id)
       end
@@ -73,7 +72,7 @@ module CIAX
 
       def add(id)
         layer,site=id.split(':')
-        site_cfg=Config.new("site_#{site}",@cfg).update('id' => site,:ldb =>@db.set(site))
+        site_cfg=(@site_cfgs[site]||=Config.new("site_#{site}",@cfg).update('id' => site,:ldb =>@db.set(site),:site_stat => Prompt.new))
         exe=$layers[layer].new(site_cfg)
         mk_jump_group(exe)
         set(id,exe)

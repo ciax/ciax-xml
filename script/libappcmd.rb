@@ -10,17 +10,6 @@ module CIAX
         super
         add_extgrp(Ext)
       end
-
-      def set_dmy
-        ext_proc{|ent|
-          @cfg[:stat].upd
-          'ISSUED:'+ent.batch.inspect
-        }
-        item_proc('interrupt'){|ent|
-          "INTERRUPT(#{@cfg[:batch_interrupt]})"
-        }
-        self
-      end
     end
 
     module Int

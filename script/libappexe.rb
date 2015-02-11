@@ -30,8 +30,8 @@ module CIAX
 
     class Exe < Exe
       # site_cfg should have 'id',:adb
-      # it inherits :site_stat,:batch_interrupt from Watch layer;
       attr_reader :adb,:stat,:host,:port
+      attr_accessor :batch_interrupt
       def initialize(site_cfg,attr={})
         @cls_color=2
         @adb=(attr[:db]||=type?(site_cfg[:ldb][:adb],Db))
@@ -42,7 +42,7 @@ module CIAX
         @site_stat.add_db('isu' => '*')
         @appview=View.new(@adb,@stat)
         @output=$opt['j']?@stat:@appview
-        @batch_interrupt=(@cfg[:batch_interrupt]||=[])
+        @batch_interrupt=[]
         ext_shell
       end
 
@@ -66,7 +66,13 @@ module CIAX
           st['time']=now_msec
         }
         @cobj.add_intgrp(Int)
-        @cobj.set_dmy
+        @cobj.ext_proc{|ent|
+          @stat.upd
+          'ISSUED:'+ent.batch.inspect
+        }
+        @cobj.item_proc('interrupt'){|ent|
+          "INTERRUPT(#{@batch_interrupt})"
+        }
       end
     end
 

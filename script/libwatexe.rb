@@ -5,7 +5,7 @@ require "libappexe"
 module CIAX
   $layers['wat']=Wat
   module Wat
-    # site_cfg should have [:app_list](App::List)
+    # site_cfg should have :site_list,:site_stat
     def self.new(site_cfg,attr={})
       Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
@@ -31,7 +31,7 @@ module CIAX
         @ash=@cfg[:site_list].get("app:#{@id}")
         @event=Event.new.set_db(@ash.adb)
         @wview=View.new(@ash.adb,@event)
-        @cfg[:batch_interrupt]=@event.get('int')
+        @ash.batch_interrupt=@event.get('int')
         @cobj.svdom.replace @ash.cobj.svdom
         @output=$opt['j']?@event:@wview
         ext_shell

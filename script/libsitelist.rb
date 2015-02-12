@@ -103,10 +103,11 @@ module CIAX
           raise(Jump,"#{ent.id}:#{get_site(ent)}")
         }.update_items(layer_list)
         # JumpGroup is set to Domain
+        exe.ext_shell
         jg.each{|grp|
           exe.cobj.lodom.join_group(grp)
         }
-        exe.ext_shell
+        exe
       end
 
       class Jump < LongJump; end

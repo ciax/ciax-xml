@@ -1,10 +1,11 @@
 #!/usr/bin/ruby
+require "libsitelist"
 require "libwatexe"
+require "libappexe"
+require "libfrmexe"
 
 module CIAX
-  module Wat
-    ENV['VER']||='initialize'
-    GetOpts.new('es')
-    List.new.server(ARGV)
-  end
+  ENV['VER']||='initialize'
+  GetOpts.new('es')
+  Site::List.new.server(ARGV)
 end

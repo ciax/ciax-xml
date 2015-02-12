@@ -1,11 +1,17 @@
 #!/usr/bin/ruby
+require "libsitelist"
 require "libhexexe"
+require "libwatexe"
+require "libfrmexe"
+require "libappexe"
 
 module CIAX
-  layer=GetOpts.new('jecafxr').layer||Wat
+  GetOpts.new("afxtelsch:")
+  db={'x' => 'hex','f'=>'frm','a'=>'app','w'=>'wat'}
+  layer=$opt.map{|k,v| db[k] if v}.compact.last
   begin
-    puts layer::List.new.exe(ARGV).output
+    puts Site::List.new(layer).exe(ARGV).output
   rescue InvalidID
-    $opt.usage('(opt) [id]')
+    $opt.usage('(opt) [site] [cmd]')
   end
 end

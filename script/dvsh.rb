@@ -1,21 +1,15 @@
 #!/usr/bin/ruby
-require "libhexlist"
+require "libsitelist"
+require "libhexexe"
+require "libwatexe"
+require "libfrmexe"
+require "libappexe"
 
 module CIAX
   ENV['VER']||='initialize'
   GetOpts.new("afxtelsch:")
-  cfg=Config.new('ins_top')
-  cfg[:ldb]=Site::Db.new
-  lay=Site::Layer.new(cfg)
-  if $opt['x']
-    mod=Hex
-  elsif $opt['f']
-    mod=Frm
-  elsif $opt['a']
-    mod=App
-  else
-    mod=Wat
-  end
-  lay.add_layer(mod)
-  lay.shell(ARGV.shift)
+  site=ARGV.shift
+  db={'x' => 'hex','f'=>'frm','a'=>'app','w'=>'wat'}
+  layer=$opt.map{|k,v| db[k] if v}.compact.last
+  Site::List.new(layer).shell(site)
 end

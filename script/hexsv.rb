@@ -1,6 +1,12 @@
 #!/usr/bin/ruby
+require "libsitelist"
+require "libwatexe"
+require "libappexe"
+require "libfrmexe"
 require "libhexexe"
 
-ENV['VER']||='initialize'
-CIAX::GetOpts.new('e')
-CIAX::Hex::List.new.server(ARGV)
+module CIAX
+  ENV['VER']||='initialize'
+  GetOpts.new('e')
+  Site::List.new('hex').server(ARGV)
+end

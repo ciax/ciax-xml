@@ -7,8 +7,9 @@ module CIAX
     # Site List
     class List < DataH
       # shdom: Domain for Shared Command Groups
-      def initialize(upper=nil)
-        @cfg=Config.new("list_site",upper)
+      def initialize(layer=nil)
+        @layer=layer||'wat'
+        @cfg=Config.new("list_site")
         super('site',{},@cfg[:dataname]||'list')
         @cfg[:site_list]=self
         @site_cfgs={}
@@ -17,17 +18,19 @@ module CIAX
         $opt||=GetOpts.new
       end
 
-      def exe(args) # As a individual cui command
-        get(args.shift).exe(args,'local')
-      end
-
       # id = "layer:site"
       def get(id)
         add(id) unless @data.key?(id)
         super
       end
 
-      def shell(id)
+      def exe(args) # As a individual cui command
+        id="#{@layer}:#{args.shift}"
+        get(id).exe(args,'local')
+      end
+
+      def shell(site)
+        id="#{@layer}:#{site}"
         begin
           get(id).shell
         rescue Jump
@@ -39,27 +42,25 @@ module CIAX
       end
 
       def server(ary)
-        ary.each{|i|
+        ary.each{|site|
           sleep 0.3
-          get(i)
-        }.empty? && get(nil)
+          get("#{@layer}:#{site}")
+        }.empty? && get(@layer)
         sleep
       rescue InvalidID
         $opt.usage('(opt) [id] ....')
       end
 
       private
-      def mk_jump_group(exe)
+      def add_jump(exe)
         jg=exe.cfg[:jump_groups]||=[]
-        attr={'caption'=>"Switch sites",'color'=>5,'column'=>2}
-        jg << Group.new(exe.cfg,attr).set_proc{|ent|
-          id="#{ent.layer}:#{ent.id}"
-          raise(Jump,id)
+        # Switch site
+        jg << Group.new(exe.cfg,cap('site')).set_proc{|ent|
+          raise(Jump,"#{ent.layer}:#{ent.id}")
         }.update_items(@db.list)
-        attr={'caption'=>"Switch layer",'color'=>5,'column'=>2}
-        jg << Group.new(exe.cfg,attr).set_proc{|ent|
-          id="#{ent.id}:#{get_site(ent)}"
-          raise(Jump,id)
+        # Switch layer
+        jg << Group.new(exe.cfg,cap('layer')).set_proc{|ent|
+          raise(Jump,"#{ent.id}:#{get_site(ent)}")
         }.update_items(layer_list)
         # JumpGroup is set to Domain
         jg.each{|grp|
@@ -71,8 +72,12 @@ module CIAX
         layer,site=id.split(':')
         site_cfg=(@site_cfgs[site]||=Config.new("site_#{site}",@cfg).update('id' => site,:ldb =>@db.set(site),:site_stat => Prompt.new))
         exe=$layers[layer].new(site_cfg)
-        mk_jump_group(exe)
+        add_jump(exe)
         set(id,exe)
+      end
+
+      def cap(type)
+        {'caption'=>"Switch #{type}s",'color'=>5,'column'=>2 }
       end
 
       def get_site(ent)
@@ -87,7 +92,6 @@ module CIAX
         }
         h
       end
-
     end
 
     class Jump < LongJump; end
@@ -100,7 +104,7 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('chset')
       begin
-        puts List.new.shell("wat:#{ARGV.shift}")
+        puts List.new.shell(ARGV.shift)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

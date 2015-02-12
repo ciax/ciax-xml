@@ -96,3 +96,7 @@ frmsh (intfrm -t)/ used when running site is different from intapp
    a*: Associated with App (i.e. aargs, astat ..)
  #block rerutn value
    set return value to local var 'res' at the end of block if it is expressly provided
+
+## Method rule
+  - set() which stores value returns self
+  - add() which converts and stores value returns generated object

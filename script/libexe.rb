@@ -25,7 +25,7 @@ module CIAX
       @id=@cfg['id']
       @cfg[@layer]=self
       @cfg['layer']=@layer
-      @cobj=local_class('Command').new(@cfg).add_nil
+      @cobj=local_class('Command').new(@cfg)
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
       @site_stat=(@cfg[:site_stat]||=Prompt.new) # Status shared by all layers of the site
@@ -91,6 +91,7 @@ module CIAX
     # JSON expression of server stat will be sent.
     def ext_server(port)
       verbose("UDP:Server","Initialize(#@id):#{port}")
+      @cobj.add_nil
       udp=UDPSocket.open
       udp.bind("0.0.0.0",port.to_i)
       ThreadLoop.new("Server(#@layer:#@id)",9){

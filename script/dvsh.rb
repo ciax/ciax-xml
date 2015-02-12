@@ -8,5 +8,5 @@ module CIAX
   site=ARGV.shift
   db={'x' => 'hex','f'=>'frm','a'=>'app','w'=>'wat'}
   layer=$opt.map{|k,v| db[k] if v}.compact.last
-  Site::List.new(layer).shell(site)
+  Site::List.new(layer).ext_shell(site)
 end

@@ -3,6 +3,7 @@ require "libsitelist"
 require "libhexexe"
 
 module CIAX
+  ENV['VER']||='initialize'
   GetOpts.new("afxtelsch:")
   db={'x' => 'hex','f'=>'frm','a'=>'app','w'=>'wat'}
   layer=$opt.map{|k,v| db[k] if v}.compact.last

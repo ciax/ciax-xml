@@ -239,7 +239,7 @@ module CIAX
 
   # Command db with parameter derived from Item
   class Entity < Hashx
-    attr_reader :id,:par,:cfg
+    attr_reader :id,:par,:cfg,:layer
     #set should have :def_proc
     def initialize(itm_cfg,attr={})
       super()
@@ -249,6 +249,7 @@ module CIAX
       @cfg[:cid]=@id
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
+      @layer=@cfg['layer']
       verbose("Cmd","Config",@cfg.inspect)
       verbose("self",inspect)
     end

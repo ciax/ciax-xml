@@ -53,7 +53,7 @@ module CIAX
         jg=exe.cfg[:jump_groups]||=[]
         attr={'caption'=>"Switch sites",'color'=>5,'column'=>2}
         jg << Group.new(exe.cfg,attr).set_proc{|ent|
-          id="#{ent.cfg['layer']}:#{ent.id}"
+          id="#{ent.layer}:#{ent.id}"
           raise(Jump,id)
         }.update_items(@db.list)
         attr={'caption'=>"Switch layer",'color'=>5,'column'=>2}

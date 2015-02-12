@@ -32,13 +32,12 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsitedb"
+      require "libsitelist"
       ENV['VER']||='initialize'
       GetOpts.new('celst')
       id=ARGV.shift
       begin
-        cfg=Config.new("site_#{id}",{'id' => id,:ldb => Site::Db.new.set(id)})
-        puts Hex.new(cfg).shell
+        Site::List.new('hex').shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

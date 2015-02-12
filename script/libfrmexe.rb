@@ -116,8 +116,7 @@ module CIAX
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        attr={:db => Site::Db.new.set(id)[:fdb]}
-        puts Site::List.new.shell("frm:#{id}")
+        Site::List.new('frm').shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

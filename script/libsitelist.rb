@@ -98,9 +98,6 @@ module CIAX
 
     if __FILE__ == $0
       require "libhexexe"
-      require "libwatexe"
-      require "libfrmexe"
-      require "libappexe"
       ENV['VER']||='initialize'
       GetOpts.new('chset')
       begin

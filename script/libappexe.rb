@@ -11,7 +11,6 @@ require "libsqlog"
 module CIAX
   $layers['app']=App
   module App
-    # site_cfg should have [:frm_list](Frm::List)
     def self.new(site_cfg,attr={})
       Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
@@ -86,6 +85,7 @@ module CIAX
     end
 
     class Sv < Exe
+      require "libfrmexe"
       def initialize(site_cfg,attr={})
         super
         fsite=@cfg[:ldb]['frm_site']
@@ -150,7 +150,7 @@ module CIAX
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        puts Site::List.new.shell("app:#{id}")
+        puts Site::List.new('app').shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

@@ -1,9 +1,6 @@
 #!/usr/bin/ruby
 require "libsitelist"
 require "libhexexe"
-require "libwatexe"
-require "libfrmexe"
-require "libappexe"
 
 module CIAX
   ENV['VER']||='initialize'

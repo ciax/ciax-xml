@@ -50,7 +50,7 @@ module CIAX
       @shell_output_proc=proc{ @output }
       @prompt_proc=proc{ @site_stat.to_s }
       Thread.abort_on_exception=true
-      verbose("Exe","initialize")
+      verbose("Exe","initialize [#{@id}]")
     end
 
     # Sync only (Wait for other thread), never inherit

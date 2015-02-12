@@ -26,7 +26,6 @@ module CIAX
         if $opt['e']
           @output.ext_log
         end
-        ext_shell
         ext_server(ash.port.to_i+1000) if ['e','s'].any?{|i| $opt[i]}
       end
     end
@@ -37,7 +36,7 @@ module CIAX
       GetOpts.new('celst')
       id=ARGV.shift
       begin
-        Site::List.new('hex').shell(id)
+        Site::List.new('hex').ext_shell.shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

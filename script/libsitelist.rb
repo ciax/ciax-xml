@@ -39,8 +39,8 @@ module CIAX
         $opt.usage('(opt) [id] ....')
       end
 
-      def ext_shell(site)
-        extend(Shell).shell(site)
+      def ext_shell
+        extend(Shell)
       end
 
       private
@@ -106,7 +106,7 @@ module CIAX
         jg.each{|grp|
           exe.cobj.lodom.join_group(grp)
         }
-        exe
+        exe.ext_shell
       end
 
       class Jump < LongJump; end
@@ -117,7 +117,7 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('chset')
       begin
-        puts List.new.ext_shell(ARGV.shift)
+        puts List.new.ext_shell.shell(ARGV.shift)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

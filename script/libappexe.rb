@@ -42,10 +42,8 @@ module CIAX
         @appview=View.new(@adb,@stat)
         @output=$opt['j']?@stat:@appview
         @batch_interrupt=[]
-        ext_shell
       end
 
-      private
       def ext_shell
         super
         @view_grp=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
@@ -150,7 +148,7 @@ module CIAX
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        puts Site::List.new('app').shell(id)
+        puts Site::List.new('app').ext_shell.shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

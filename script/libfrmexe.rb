@@ -39,7 +39,6 @@ module CIAX
         # Post internal command procs
         # Proc for Terminate process of each individual commands
         @flush_procs=[]
-        ext_shell
       end
     end
 
@@ -116,7 +115,7 @@ module CIAX
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        Site::List.new('frm').shell(id)
+        Site::List.new('frm').ext_shell.shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

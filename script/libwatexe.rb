@@ -34,7 +34,6 @@ module CIAX
         @ash.batch_interrupt=@event.get('int')
         @cobj.svdom.replace @ash.cobj.svdom
         @output=$opt['j']?@event:@wview
-        ext_shell
       end
 
       def init_sv
@@ -121,7 +120,7 @@ module CIAX
       GetOpts.new('celst')
       id=ARGV.shift
       begin
-        Site::List.new('wat').shell(id)
+        Site::List.new('wat').ext_shell.shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

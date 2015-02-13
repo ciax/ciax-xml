@@ -26,11 +26,11 @@ module CIAX
     end
 
     class Exe < Exe
-      # site_cfg must have 'id',:ldb
+      # site_cfg must have 'id',:site_db
       attr_reader :field,:flush_procs
       def initialize(site_cfg,attr={})
         @cls_color=6
-        @fdb=attr[:db]=type?(site_cfg[:ldb][:fdb],Db)
+        @fdb=attr[:db]=type?(site_cfg[:site_db][:fdb],Db)
         @field=attr[:field]=Field.new.set_db(@fdb)
         super
         @output=@field

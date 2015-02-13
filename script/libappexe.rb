@@ -27,12 +27,12 @@ module CIAX
     end
 
     class Exe < Exe
-      # site_cfg must have 'id',:ldb
+      # site_cfg must have 'id',:site_db
       attr_reader :adb,:stat,:host,:port
       attr_accessor :batch_interrupt
       def initialize(site_cfg,attr={})
         @cls_color=2
-        @adb=attr[:db]=type?(site_cfg[:ldb][:adb],Db)
+        @adb=attr[:db]=type?(site_cfg[:site_db][:adb],Db)
         super
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']
@@ -85,7 +85,7 @@ module CIAX
       require "libfrmexe"
       def initialize(site_cfg,attr={})
         super
-        fsite=@cfg[:ldb]['frm_site']
+        fsite=@cfg[:site_db]['frm_site']
         @fsh=@cfg[:site_list].get("frm:#{fsite}")
         @mode=@fsh.mode
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file

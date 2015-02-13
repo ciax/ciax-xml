@@ -46,7 +46,7 @@ module CIAX
       private
       def add(id)
         layer,site=id.split(':')
-        site_cfg=(@site_cfgs[site]||=Config.new("site_#{site}",@cfg).update('id' => site,:ldb =>@db.set(site),:site_stat => Prompt.new))
+        site_cfg=(@site_cfgs[site]||=Config.new("site_#{site}",@cfg).update('id' => site,:site_db =>@db.set(site),:site_stat => Prompt.new))
         exe=$layers[layer].new(site_cfg)
         set(id,exe)
         exe
@@ -57,7 +57,7 @@ module CIAX
       end
 
       def get_site(ent)
-        ldb=ent.cfg[:ldb]
+        ldb=ent.cfg[:site_db]
         ldb["#{ent.id}_site"]||ldb['app_site']
       end
 

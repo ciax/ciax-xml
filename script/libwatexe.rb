@@ -22,7 +22,7 @@ module CIAX
       Cl.new(site_cfg,attr)
     end
 
-    # site_cfg should have 'id',:ldb,:site_list,:site_stat
+    # site_cfg should have 'id',:site_db,:site_list,:site_stat
     class Exe < Exe
       attr_reader :ash
       def initialize(site_cfg,attr={})

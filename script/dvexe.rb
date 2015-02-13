@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "libsitelist"
 require "libhexexe"
 
 module CIAX

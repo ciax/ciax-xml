@@ -6,6 +6,7 @@ require "libapprsp"
 require "libappsym"
 require "libbuffer"
 require "libsqlog"
+require "libsitelist"
 
 module CIAX
   $layers['app']=App
@@ -141,14 +142,20 @@ module CIAX
       end
     end
 
+    class List < Site::List
+      def initialize
+        super('app')
+        ext_shell
+      end
+    end
+
     if __FILE__ == $0
-      require "libsitelist"
       require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        puts Site::List.new('app').ext_shell.shell(id)
+        List.new.shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

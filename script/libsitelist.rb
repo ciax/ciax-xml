@@ -8,7 +8,7 @@ module CIAX
     class List < DataH
       # shdom: Domain for Shared Command Groups
       def initialize(layer=nil)
-        @layer=layer||'wat'
+        @layer=layer||abort("No Layer")
         @cfg=Config.new("list_site")
         super('site',{},@cfg[:dataname]||'list')
         @cfg[:site_list]=self
@@ -51,23 +51,6 @@ module CIAX
         set(id,exe)
         exe
       end
-
-      def cap(type)
-        {'caption'=>"Switch #{type}s",'color'=>5,'column'=>2 }
-      end
-
-      def get_site(ent)
-        ldb=ent.cfg[:site_db]
-        ldb["#{ent.id}_site"]||ldb['app_site']
-      end
-
-      def layer_list
-        h={}
-        $layers.keys.each{|key|
-          h[key]=key.capitalize+' layer'
-        }
-        h
-      end
     end
 
     module Shell
@@ -108,6 +91,24 @@ module CIAX
           exe.cobj.lodom.join_group(grp)
         }
         exe
+      end
+
+      def get_site(ent)
+        ldb=ent.cfg[:site_db]
+        ldb["#{ent.id}_site"]||ldb['app_site']
+      end
+
+      def cap(type)
+        {'caption'=>"Switch #{type}s",'color'=>5,'column'=>2 }
+      end
+
+      def layer_list
+        h={}
+        $layers.values.each{|mod|
+          str=mod.to_s.split(':').last
+          h[str.downcase]="#{str} layer"
+        }
+        h
       end
 
       class Jump < LongJump; end

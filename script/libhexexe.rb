@@ -30,13 +30,20 @@ module CIAX
       end
     end
 
+    class List < Site::List
+      def initialize
+        super('hex')
+        ext_shell
+      end
+    end
+
     if __FILE__ == $0
       require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celst')
       id=ARGV.shift
       begin
-        Site::List.new('hex').ext_shell.shell(id)
+        List.new.shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

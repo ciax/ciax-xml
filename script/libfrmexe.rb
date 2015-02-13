@@ -4,6 +4,7 @@ require "libfield"
 require "libfrmdb"
 require "libfrmrsp"
 require "libfrmcmd"
+require "libsitelist"
 
 module CIAX
   $layers['frm']=Frm
@@ -107,14 +108,20 @@ module CIAX
       end
     end
 
+    class List < Site::List
+      def initialize
+        super('frm')
+        ext_shell
+      end
+    end
+
     if __FILE__ == $0
-      require "libsitelist"
       require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        Site::List.new('frm').ext_shell.shell(id)
+        List.new.shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

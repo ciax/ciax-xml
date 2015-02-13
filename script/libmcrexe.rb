@@ -2,6 +2,7 @@
 require "libmcrcmd"
 require "librecord"
 require "libwatexe"
+require "libsh"
 
 module CIAX
   # Modes            | Actual Status? | Force Entering | Query? | Moving | Retry Interval | Record?
@@ -41,7 +42,7 @@ module CIAX
       end
 
       def ext_shell
-        intgrp=@cobj.add_svdom(Int)
+        intgrp=@cobj.add_intgrp(Int)
         intgrp.set_proc{|ent| reply(ent.id)}
         self['option']=intgrp.valid_keys.clear
         @prompt_proc=proc{
@@ -91,7 +92,7 @@ module CIAX
               drop?(@step.timeout?{show '.'})
             when 'exec'
               @running << e1['site']
-              @cfg[:wat_list].get(e1['site']).exe(e1['args']) if exec?(@step.exec?)
+              @cfg[:wat_list].site(e1['site']).exe(e1['args'],'macro') if exec?(@step.exec?)
             when 'mcr'
               if @step.async? && @cfg[:submcr_proc].is_a?(Proc)
                 @step['sid']=@cfg[:submcr_proc].call(e1['args'],@id)['sid']
@@ -115,7 +116,7 @@ module CIAX
       def interrupt
         msg("\nInterrupt Issued to running devices #{@running}",3)
         @running.each{|site|
-          @cfg[:wat_list].get(site).exe(['interrupt'],'user')
+          @cfg[:wat_list].site(site).exe(['interrupt'],'user')
         } if $opt['m']
         finish('interrupted')
         self

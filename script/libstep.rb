@@ -113,14 +113,14 @@ module CIAX
 
       def scan
         sites.inject({}){|hash,site|
-          hash[site]=@cfg[:wat_list].get(site).stat
+          hash[site]=@cfg[:wat_list].site(site).ash.stat
           hash
         }
       end
 
       def refresh
         sites.each{|site|
-          @cfg[:wat_list].get(site).stat.refresh
+          @cfg[:wat_list].site(site).ash.stat.refresh
         }
       end
 

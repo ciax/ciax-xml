@@ -7,12 +7,12 @@ module CIAX
     # Site List
     class List < DataH
       # shdom: Domain for Shared Command Groups
-      def initialize(layer=nil)
-        @layer=layer||$layers.keys.last||abort("No Layer")
+      def initialize(top_layer=nil)
+        @layer=top_layer||$layers.keys.last||abort("No Layer")
         @cfg=Config.new("list_site")
         super('site',{},@cfg[:dataname]||'list')
         @cfg[:site_list]=self
-        @site_cfgs={}
+        @site_cfgs={} # site specific configs
         @db=Db.new
         verbose("List","Initialize")
         $opt||=GetOpts.new
@@ -47,12 +47,17 @@ module CIAX
       end
 
       private
+      # generate all layer of the site
       def add(id)
         layer,sid=id.split(':')
-        site_cfg=(@site_cfgs[sid]||=Config.new("site_#{sid}",@cfg).update('id' => sid,:site_db =>@db.set(sid),:site_stat => Prompt.new))
-        exe=$layers[layer].new(site_cfg)
-        set(id,exe)
-        exe
+        return @data[id] if @site_cfgs.key?(sid)
+        cfg=@site_cfgs[sid]=Config.new("site_#{sid}",@cfg)
+        cfg.update('id' => sid,:site_db =>@db.set(sid),:site_stat => Prompt.new)
+        $layers.each{|key,mod|
+          oid="#{key}:#{sid}"
+          set(oid,mod.new(cfg)) unless @data.key?(oid)
+        }
+        @data[id]
       end
     end
 

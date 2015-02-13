@@ -19,7 +19,7 @@ module CIAX
       update('dir' => '','cmd' => '','base64' => '')
       @cls_color=6
       @pfx_color=9
-      verbose("Client","Initialize (#{iocmd.join(' ')})")
+      verbose("Client","Initialize [#{iocmd.join(' ')}]")
       @wait=wait.to_f
       @timeout=timeout
       Signal.trap(:CHLD){

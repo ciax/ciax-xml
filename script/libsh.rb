@@ -12,7 +12,7 @@ module CIAX
 
     # Separate initialize part because shell() could be called multiple times
     def ext_shell(als=nil)
-      verbose("Shell","Initialize")
+      verbose("Shell","Initialize [#{@id}]")
       @cobj.add_nil
       # Local(Long Jump) Commands (local handling commands on Client)
       shg=@cobj.lodom.add_group('caption'=>"Shell Command",'color'=>1)

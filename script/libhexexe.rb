@@ -37,7 +37,6 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celst')
       id=ARGV.shift

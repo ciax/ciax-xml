@@ -115,7 +115,6 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
       id=ARGV.shift

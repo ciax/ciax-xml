@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "libsh"
 require "libhexexe"
 
 module CIAX

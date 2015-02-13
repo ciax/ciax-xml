@@ -68,6 +68,7 @@ module CIAX
     end
 
     module Shell
+      require "libsh"
       def self.extended(obj)
         Msg.type?(obj,List)
       end

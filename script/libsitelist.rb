@@ -20,7 +20,7 @@ module CIAX
 
       # id = "layer:site"
       def get(id)
-        add(id) unless @data.key?(id)
+        add_all(id) unless @data.key?(id)
         super
       end
 
@@ -48,15 +48,21 @@ module CIAX
 
       private
       # generate all layer of the site
-      def add(id)
+      def add_all(id)
         layer,sid=id.split(':')
-        return @data[id] if @site_cfgs.key?(sid)
-        cfg=@site_cfgs[sid]=Config.new("site_#{sid}",@cfg)
-        cfg.update('id' => sid,:site_db =>@db.set(sid),:site_stat => Prompt.new)
-        $layers.each{|key,mod|
-          oid="#{key}:#{sid}"
-          set(oid,mod.new(cfg)) unless @data.key?(oid)
-        }
+        unless @site_cfgs.key?(sid)
+          cfg=@site_cfgs[sid]=Config.new("site_#{sid}",@cfg)
+          cfg.update('id' => sid,:site_db =>@db.set(sid),:site_stat => Prompt.new)
+          $layers.each{|key,mod|
+            oid="#{key}:#{sid}"
+            add(oid,mod,cfg) unless @data.key?(oid)
+          }
+        end
+        self
+      end
+
+      def add(id,mod,cfg)
+        set(id,mod.new(cfg))
         @data[id]
       end
     end
@@ -79,11 +85,9 @@ module CIAX
       end
 
       private
-      def add(id)
-        add_jump(super)
-      end
-
-      def add_jump(exe)
+      def add(id,mod,cfg)
+        exe=super
+        # Add jump groups
         jg=exe.cfg[:jump_groups]||=[]
         # Switch site
         jg << Group.new(exe.cfg,cap('site')).set_proc{|ent|

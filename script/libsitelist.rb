@@ -8,7 +8,7 @@ module CIAX
     class List < DataH
       # shdom: Domain for Shared Command Groups
       def initialize(layer=nil)
-        @layer=layer||abort("No Layer")
+        @layer=layer||$layers.keys.last||abort("No Layer")
         @cfg=Config.new("list_site")
         super('site',{},@cfg[:dataname]||'list')
         @cfg[:site_list]=self
@@ -112,17 +112,6 @@ module CIAX
       end
 
       class Jump < LongJump; end
-    end
-
-    if __FILE__ == $0
-      require "libhexexe"
-      ENV['VER']||='initialize'
-      GetOpts.new('chset')
-      begin
-        puts List.new.ext_shell.shell(ARGV.shift)
-      rescue InvalidID
-        $opt.usage('(opt) [id]')
-      end
     end
   end
 end

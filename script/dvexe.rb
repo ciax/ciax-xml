@@ -3,11 +3,11 @@ require "libhexexe"
 
 module CIAX
   ENV['VER']||='initialize'
-  GetOpts.new("afxtelsch:")
-  db={'x' => 'hex','f'=>'frm','a'=>'app','w'=>'wat'}
-  layer=$opt.map{|k,v| db[k] if v}.compact.last
+  GetOpts.new("jrafxtelch:")
+  db={'x' => Hex,'f'=> Frm,'a'=> App,'w'=> Wat}
+  layer=$opt.map{|k,v| db[k] if v}.compact.last||Wat
   begin
-    puts Site::List.new(layer).exe(ARGV).output
+    puts layer::List.new.exe(ARGV).output
   rescue InvalidID
     $opt.usage('(opt) [site] [cmd]')
   end

@@ -118,7 +118,6 @@ module CIAX
     class List < Site::List
       def initialize
         super('wat')
-        ext_shell
       end
     end
 
@@ -128,7 +127,7 @@ module CIAX
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        List.new.shell(id)
+        List.new.ext_shell.shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

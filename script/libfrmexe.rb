@@ -8,30 +8,29 @@ require "libfrmcmd"
 module CIAX
   $layers['frm']=Frm
   module Frm
-    # site_cfg should have :fdb(Frm::Db)
-    def self.new(site_cfg,attr={})
+    def self.new(site_cfg,layer_cfg={})
       Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
-        attr['host']='localhost'
-        Sv.new(site_cfg,attr)
+        layer_cfg['host']='localhost'
+        Sv.new(site_cfg,layer_cfg)
       elsif host=$opt['h']
-        attr['host']=host
+        layer_cfg['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(site_cfg,attr)
+        return Sv.new(site_cfg,layer_cfg)
       else
-        return Test.new(site_cfg,attr)
+        return Test.new(site_cfg,layer_cfg)
       end
-      Cl.new(site_cfg,attr)
+      Cl.new(site_cfg,layer_cfg)
     end
 
     class Exe < Exe
       # site_cfg must have 'id',:site_db
       attr_reader :field,:flush_procs
-      def initialize(site_cfg,attr={})
+      def initialize(site_cfg,layer_cfg={})
         @cls_color=6
-        @fdb=attr[:db]=type?(site_cfg[:site_db][:fdb],Db)
-        @field=attr[:field]=Field.new.set_db(@fdb)
+        @fdb=layer_cfg[:db]=type?(site_cfg[:site_db][:fdb],Db)
+        @field=layer_cfg[:field]=Field.new.set_db(@fdb)
         super
         @output=@field
         @cobj.add_intgrp(Int)
@@ -42,7 +41,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(site_cfg,attr={})
+      def initialize(site_cfg,layer_cfg={})
         super
         @cobj.svdom.set_proc{|ent|@field['time']=now_msec;''}
         @cobj.ext_proc{|ent| "#{ent.cfg[:frame].inspect} => #{ent.cfg['response']}"}
@@ -54,7 +53,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(site_cfg,attr={})
+      def initialize(site_cfg,layer_cfg={})
         super
         host=type?(cfg['host']||@fdb['host']||'localhost',String)
         @field.ext_http(host)
@@ -65,7 +64,7 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(site_cfg,attr={})
+      def initialize(site_cfg,layer_cfg={})
         super
         @field.ext_file
         timeout=5

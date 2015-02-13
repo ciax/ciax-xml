@@ -10,29 +10,29 @@ require "libsqlog"
 module CIAX
   $layers['app']=App
   module App
-    def self.new(site_cfg,attr={})
+    def self.new(site_cfg,layer_cfg={})
       Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
-        attr['host']='localhost'
-        Sv.new(site_cfg,attr)
+        layer_cfg['host']='localhost'
+        Sv.new(site_cfg,layer_cfg)
       elsif host=$opt['h']
-        attr['host']=host
+        layer_cfg['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(site_cfg,attr)
+        return Sv.new(site_cfg,layer_cfg)
       else
-        return Test.new(site_cfg,attr)
+        return Test.new(site_cfg,layer_cfg)
       end
-      Cl.new(site_cfg,attr)
+      Cl.new(site_cfg,layer_cfg)
     end
 
     class Exe < Exe
       # site_cfg must have 'id',:site_db
       attr_reader :adb,:stat,:host,:port
       attr_accessor :batch_interrupt
-      def initialize(site_cfg,attr={})
+      def initialize(site_cfg,layer_cfg={})
         @cls_color=2
-        @adb=attr[:db]=type?(site_cfg[:site_db][:adb],Db)
+        @adb=layer_cfg[:db]=type?(site_cfg[:site_db][:adb],Db)
         super
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']
@@ -54,7 +54,7 @@ module CIAX
 
     class Test < Exe
       require "libappsym"
-      def initialize(site_cfg,attr={})
+      def initialize(site_cfg,layer_cfg={})
         super
         @stat.ext_sym
         @stat.post_upd_procs << proc{|st|
@@ -73,7 +73,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(site_cfg,attr={})
+      def initialize(site_cfg,layer_cfg={})
         super
         @stat.ext_http(@host)
         @pre_exe_procs << proc{@stat.upd}
@@ -83,7 +83,7 @@ module CIAX
 
     class Sv < Exe
       require "libfrmexe"
-      def initialize(site_cfg,attr={})
+      def initialize(site_cfg,layer_cfg={})
         super
         fsite=@cfg[:site_db]['frm_site']
         @fsh=@cfg[:site_list].get("frm:#{fsite}")

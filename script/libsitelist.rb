@@ -24,16 +24,19 @@ module CIAX
         super
       end
 
-      def exe(args) # As a individual cui command
-        id="#{@layer}:#{args.shift}"
-        get(id).exe(args,'local')
+      def site(id=nil)
+        get("#{@layer}:#{id}")
       end
 
-      def server(ary)
-        ary.each{|site|
+      def exe(args,src='local') # As a individual cui command
+        site(args.shift).exe(args,src)
+      end
+
+      def server(sary)
+        sary.each{|sid|
           sleep 0.3
-          get("#{@layer}:#{site}")
-        }.empty? && get(@layer)
+          site(sid)
+        }.empty? && site
         sleep
       rescue InvalidID
         $opt.usage('(opt) [id] ....')
@@ -45,8 +48,8 @@ module CIAX
 
       private
       def add(id)
-        layer,site=id.split(':')
-        site_cfg=(@site_cfgs[site]||=Config.new("site_#{site}",@cfg).update('id' => site,:site_db =>@db.set(site),:site_stat => Prompt.new))
+        layer,sid=id.split(':')
+        site_cfg=(@site_cfgs[sid]||=Config.new("site_#{sid}",@cfg).update('id' => sid,:site_db =>@db.set(sid),:site_stat => Prompt.new))
         exe=$layers[layer].new(site_cfg)
         set(id,exe)
         exe
@@ -58,8 +61,8 @@ module CIAX
         Msg.type?(obj,List)
       end
 
-      def shell(site)
-        id="#{@layer}:#{site}"
+      def shell(sid)
+        id="#{@layer}:#{sid}"
         begin
           get(id).shell
         rescue Jump

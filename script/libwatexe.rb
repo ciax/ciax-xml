@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
+require "libsitelist"
 require "libwatview"
 require "libappexe"
 
 module CIAX
   $layers['wat']=Wat
   module Wat
-    # site_cfg should have :site_list,:site_stat
     def self.new(site_cfg,attr={})
       Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
@@ -22,6 +22,7 @@ module CIAX
       Cl.new(site_cfg,attr)
     end
 
+    # site_cfg should have 'id',:ldb,:site_list,:site_stat
     class Exe < Exe
       attr_reader :ash
       def initialize(site_cfg,attr={})
@@ -115,7 +116,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsitelist"
+      require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celst')
       id=ARGV.shift

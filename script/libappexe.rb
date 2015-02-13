@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
-require "libsh"
-require "libappdb"
+require "libexe"
 require "libappview"
 require "libappcmd"
 require "libapprsp"
@@ -28,12 +27,12 @@ module CIAX
     end
 
     class Exe < Exe
-      # site_cfg should have 'id',:adb
+      # site_cfg must have 'id',:ldb
       attr_reader :adb,:stat,:host,:port
       attr_accessor :batch_interrupt
       def initialize(site_cfg,attr={})
         @cls_color=2
-        @adb=(attr[:db]||=type?(site_cfg[:ldb][:adb],Db))
+        @adb=attr[:db]=type?(site_cfg[:ldb][:adb],Db)
         super
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']
@@ -144,6 +143,7 @@ module CIAX
 
     if __FILE__ == $0
       require "libsitelist"
+      require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
       id=ARGV.shift

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libsh"
+require "libexe"
 require "libfield"
 require "libfrmdb"
 require "libfrmrsp"
@@ -26,15 +26,14 @@ module CIAX
     end
 
     class Exe < Exe
-      # site_cfg should have 'id'
-      # attr should have :db which  belongs to level
+      # site_cfg must have 'id',:ldb
       attr_reader :field,:flush_procs
       def initialize(site_cfg,attr={})
         @cls_color=6
-        @fdb=(attr[:db]||=type?(site_cfg[:ldb][:fdb],Db))
-        attr[:field]=Field.new.set_db(@fdb)
+        @fdb=attr[:db]=type?(site_cfg[:ldb][:fdb],Db)
+        @field=attr[:field]=Field.new.set_db(@fdb)
         super
-        @output=@field=@cfg[:field]
+        @output=@field
         @cobj.add_intgrp(Int)
         # Post internal command procs
         # Proc for Terminate process of each individual commands
@@ -111,6 +110,7 @@ module CIAX
 
     if __FILE__ == $0
       require "libsitelist"
+      require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
       id=ARGV.shift

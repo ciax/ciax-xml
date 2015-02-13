@@ -23,8 +23,8 @@ module CIAX
           any={:type =>'reg',:list => ["."]}
           add_item('save',"[key,key...] [tag]",pars(2))
           add_item('load',"[tag]",pars(1))
-          set=add_item('set',"[key(:idx)] [val(,val)]",pars(2))
-          set.set_proc{|ent|
+          cmd=add_item('set',"[key(:idx)] [val(,val)]",pars(2))
+          cmd.set_proc{|ent|
             @cfg[:field].set(*ent.par)
             'OK'
           }

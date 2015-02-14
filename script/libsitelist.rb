@@ -20,8 +20,22 @@ module CIAX
 
       # id = "layer:site"
       def get(id)
-        add_all(id) unless @data.key?(id)
+        add(id) unless @data.key?(id)
         super
+      end
+
+      # generate all layer of the site
+      def jumpget(id)
+        unless @data.key?(id)
+          layer,sid=id.split(':')
+          # create only upper layers
+          $layers.each{|key,mod|
+            oid="#{key}:#{sid}"
+            add(oid) unless @data.key?(oid)
+            verbose("Site","Initialize [#{sid}]")
+          }
+          @data[id]
+        end
       end
 
       def site(id=nil)
@@ -47,24 +61,13 @@ module CIAX
       end
 
       private
-      # generate all layer of the site
-      def add_all(id)
+      def add(id)
         layer,sid=id.split(':')
-        unless @site_cfgs.key?(sid)
+        unless cfg=@site_cfgs[sid]
           cfg=@site_cfgs[sid]=Config.new("site_#{sid}",@cfg)
           cfg.update('id' => sid,:site_db =>@db.set(sid),:site_stat => Prompt.new)
-          # create only upper layers
-          $layers.keys.reverse.each{|key|
-            oid="#{key}:#{sid}"
-            add(oid,$layers[key],cfg) unless @data.key?(oid)
-          }
-          verbose("Site","Initialize [#{sid}]")
         end
-        self
-      end
-
-      def add(id,mod,cfg)
-        set(id,mod.new(cfg))
+        set(id,$layers[layer].new(cfg))
         @data[id]
       end
     end
@@ -78,7 +81,7 @@ module CIAX
       def shell(sid)
         id="#{@layer}:#{sid}"
         begin
-          get(id).shell
+          jumpget(id).shell
         rescue Jump
           id=$!.to_s
           retry
@@ -88,7 +91,7 @@ module CIAX
       end
 
       private
-      def add(id,mod,cfg)
+      def add(id)
         exe=super
         # Add jump groups
         jg=exe.cfg[:jump_groups]||=[]

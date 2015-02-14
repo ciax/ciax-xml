@@ -34,8 +34,8 @@ module CIAX
             add(oid) unless @data.key?(oid)
             verbose("Site","Initialize [#{sid}]")
           }
-          @data[id]
         end
+        @data[id]
       end
 
       def site(id=nil)

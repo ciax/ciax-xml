@@ -53,10 +53,12 @@ module CIAX
         unless @site_cfgs.key?(sid)
           cfg=@site_cfgs[sid]=Config.new("site_#{sid}",@cfg)
           cfg.update('id' => sid,:site_db =>@db.set(sid),:site_stat => Prompt.new)
-          $layers.each{|key,mod|
+          # create only upper layers
+          $layers.keys.reverse.each{|key|
             oid="#{key}:#{sid}"
-            add(oid,mod,cfg) unless @data.key?(oid)
+            add(oid,$layers[key],cfg) unless @data.key?(oid)
           }
+          verbose("Site","Initialize [#{sid}]")
         end
         self
       end

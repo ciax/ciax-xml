@@ -4,9 +4,8 @@ require "libfrmdb"
 module CIAX
   module Dev
     class Db < Db
-      attr_reader :cdb,:fdb
       def initialize
-        super('cdb')
+        super('ddb')
       end
 
       def set(id=nil)

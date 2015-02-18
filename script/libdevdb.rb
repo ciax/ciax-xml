@@ -15,7 +15,9 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        rec_db(doc.top)
+        db=rec_db(doc.top)
+        db['site_id']=db['id']
+        db
       end
 
       def rec_db(e0,hash={})

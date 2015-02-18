@@ -33,7 +33,7 @@ module CIAX
           end
         }
         init_watch(doc,db)
-        db['ins_id']=db.delete('id')
+        db['site_id']=db['ins_id']=db['id']
         db
       end
     end

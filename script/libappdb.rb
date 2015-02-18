@@ -16,7 +16,7 @@ module CIAX
         init_command(doc,db)
         init_stat(doc,db)
         init_watch(doc,db)
-        db['app_id']=db.delete('id')
+        db['app_id']=db['id']
         db
       end
 

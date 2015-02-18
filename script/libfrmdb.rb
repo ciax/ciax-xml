@@ -23,7 +23,7 @@ module CIAX
         rfm=hash[:field]={}
         hres[:frame]=init_frame(doc.domain('rspframe')){|e| init_rsp(e,rfm)}
         hres[:index]=init_index(doc.domain('responses')){|e| init_rsp(e,rfm)}
-        hash['frm_id']=hash.delete('id')
+        hash['frm_id']=hash['id']
         hash
       end
 

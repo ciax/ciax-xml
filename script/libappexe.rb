@@ -7,6 +7,7 @@ require "libappsym"
 require "libbuffer"
 require "libsqlog"
 require "libsitelist"
+require "libinsdb"
 
 module CIAX
   $layers['app']=App
@@ -28,12 +29,13 @@ module CIAX
     end
 
     class Exe < Exe
-      # site_cfg must have 'id',:site_db
+      # site_cfg must have 'id'
       attr_reader :adb,:stat,:host,:port
       attr_accessor :batch_interrupt
       def initialize(site_cfg,layer_cfg={})
         @cls_color=2
-        @adb=layer_cfg[:db]=type?(site_cfg[:site_db][:adb],Db)
+        idb=(site_cfg[:idb]||Ins::Db.new)
+        @adb=layer_cfg[:db]=idb.set(site_cfg['id']).cover_app
         super
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']
@@ -153,7 +155,7 @@ module CIAX
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        List.new.ext_shell.shell(id)
+        App.new({'id'=>id}).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

@@ -5,6 +5,7 @@ require "libfrmdb"
 require "libfrmrsp"
 require "libfrmcmd"
 require "libsitelist"
+require "libdevdb"
 
 module CIAX
   $layers['frm']=Frm
@@ -26,11 +27,12 @@ module CIAX
     end
 
     class Exe < Exe
-      # site_cfg must have 'id',:site_db
+      # site_cfg must have 'id'
       attr_reader :field,:flush_procs
       def initialize(site_cfg,layer_cfg={})
         @cls_color=6
-        @fdb=layer_cfg[:db]=type?(site_cfg[:site_db][:fdb],Db)
+        ddb=(site_cfg[:ddb]||Dev::Db.new)
+        @fdb=layer_cfg[:db]=ddb.set(site_cfg['id'])
         @field=layer_cfg[:field]=Field.new.set_db(@fdb)
         super
         @output=@field
@@ -119,7 +121,7 @@ module CIAX
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        List.new.ext_shell.shell(id)
+        Frm.new({'id'=>id}).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

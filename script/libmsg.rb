@@ -42,7 +42,7 @@ module CIAX
     Start_time=Time.now
     @@base=1
     # Public Method
-    def verbose(prefix,title,data=nil)
+    def verbose(prefix,title,*data)
       # block takes array (shown by each line)
       # Description of values
       #   [val] -> taken from  xml (criteria)
@@ -52,7 +52,13 @@ module CIAX
       msg=make_msg(prefix,title)
       if @show_inside || msg && condition(msg.to_s)
         Kernel.warn msg
-        Kernel.warn Msg.indent(@ver_indent+1)+data.to_s if data
+        if data
+          data.each{|str|
+            str.to_s.split("\n").each{|line|
+              Kernel.warn Msg.indent(@ver_indent+1)+line
+            }
+          }
+        end
         true
       end
     end

@@ -14,14 +14,14 @@ module CIAX
     attr_reader :layer,:id,:mode,:cobj,:pre_exe_procs,:post_exe_procs,:cfg,:output,:prompt_proc
     attr_accessor :shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
     # block gives command line convert
-    # site_cfg should have ['id']
-    def initialize(site_cfg=nil,layer_cfg={})
+    # layer_cfg should have ['id']
+    def initialize(layer_cfg=nil,site_cfg={})
       super()
       # layer is Frm,App,Wat,Hex,Mcr,Man
       cpath=class_path
       @mode=cpath.pop.upcase
       @layer=cpath.pop.downcase
-      @cfg=Config.new("exe_#@layer",site_cfg).update(layer_cfg)
+      @cfg=Config.new("exe_#@layer",layer_cfg).update(site_cfg)
       @id=@cfg['id']
       @cfg[@layer]=self
       @cfg['layer']=@layer

@@ -1,88 +1,83 @@
 #!/usr/bin/ruby
-require "libdatax"
+require "liblist"
+require "libcommand"
 require "libsitedb"
+require "libsh"
 
 module CIAX
   module Site
-    # Site List
-    class List < DataH
-      # shdom: Domain for Shared Command Groups
-      def initialize(top_layer=nil)
-        @layer=top_layer||$layers.keys.last||abort("No Layer")
-        @cfg=Config.new("list_site")
-        super('site',{},@cfg[:dataname]||'list')
-        @cfg[:site_list]=self
-        @site_cfgs={} # site specific configs
-        @db=Db.new
-        verbose("List","Initialize")
-        $opt||=GetOpts.new
+    class Layer < List
+      def initialize(upper=nil)
+        super(Site,upper)
+        @cfg[:current_site]||=''
+        @cfg[:ldb]||=Site::Db.new
+        @pars={:parameters => [{:default => @cfg[:current_site]}]}
+        @cfg[:jump_groups] << @jumpgrp
       end
 
-      # id = "layer:site"
-      def get(id)
-        add(id) unless @data.key?(id)
-        super
+      def add_layer(layer)
+        type?(layer,Module)
+        str=layer.to_s.split(':').last
+        layer::List.new(@cfg)
+        @layer=str.downcase
+        @cfg.layers.each{|k,v|
+          id=k.to_s
+          @jumpgrp.add_item(id,str+" mode",@pars)
+          set(id,v)
+        }
       end
 
-      # generate all layer of the site
-      def jumpget(id)
-        unless @data.key?(id)
-          layer,sid=id.split(':')
-          # create only upper layers
-          $layers.each{|key,mod|
-            oid="#{key}:#{sid}"
-            add(oid) unless @data.key?(oid)
-            verbose("Site","Initialize [#{sid}]")
-          }
+      def shell(id)
+        begin
+          get(layer||=@layer).shell(id)
+        rescue Site::Jump
+          layer,id=$!.to_s.split(':')
+          retry
+        rescue InvalidID
+          $opt.usage('(opt) [id]')
         end
-        @data[id]
-      end
-
-      def site(id=nil)
-        get("#{@layer}:#{id}")
-      end
-
-      def exe(args,src='local') # As a individual cui command
-        site(args.shift).exe(args,src)
-      end
-
-      def server(sary)
-        sary.each{|sid|
-          sleep 0.3
-          site(sid)
-        }.empty? && site
-        sleep
-      rescue InvalidID
-        $opt.usage('(opt) [id] ....')
-      end
-
-      def ext_shell
-        extend(Shell)
-      end
-
-      private
-      def add(id)
-        layer,sid=id.split(':')
-        unless cfg=@site_cfgs[sid]
-          cfg=@site_cfgs[sid]=Config.new("site_#{sid}",@cfg)
-          cfg.update('id' => sid,:site_db =>@db.set(sid),:site_stat => Prompt.new)
-        end
-        set(id,$layers[layer].new(cfg))
-        @data[id]
       end
     end
 
-    module Shell
-      require "libsh"
-      def self.extended(obj)
-        Msg.type?(obj,List)
+    # Site List
+    class List < List
+      # layer_cfg must have :db
+      # layer_cfg might have :current_site,:jump_groups
+      # shdom: Domain for Shared Command Groups
+      def initialize(level,layer_cfg={})
+        super(level,layer_cfg)
+        @cfg[:current_site]||=''
+        @db=@cfg[:layer_db]
+        @jumpgrp.update_items(@db.list)
+        verbose("List","Initialize")
       end
 
-      def shell(sid)
-        id="#{@layer}:#{sid}"
+      def exe(args) # As a individual cui command
+        get(args.shift).exe(args,'local')
+      end
+
+      def get(site)
+        unless @data.key?(site)
+          add(site)
+        end
+        @cfg[:current_site].replace(site)
+        super
+      end
+
+      def set(id,exe)
+        type?(exe,Exe)
+        return self if @data.key?(id)
+        # JumpGroup is set to Domain
+        (@cfg[:jump_groups]+[@jumpgrp]).each{|grp|
+          exe.cobj.lodom.join_group(grp)
+        }
+        super
+      end
+
+      def shell(id)
         begin
-          jumpget(id).shell
-        rescue Jump
+          get(id).shell
+        rescue @level::Jump
           id=$!.to_s
           retry
         rescue InvalidID
@@ -90,46 +85,24 @@ module CIAX
         end
       end
 
+      def server(ary)
+        ary.each{|i|
+          sleep 0.3
+          get(i)
+        }.empty? && get(nil)
+        sleep
+      rescue InvalidID
+        $opt.usage('(opt) [id] ....')
+      end
+
       private
-      def add(id)
-        exe=super
-        # Add jump groups
-        jg=exe.cfg[:jump_groups]||=[]
-        # Switch site
-        jg << Group.new(exe.cfg,cap('site')).set_proc{|ent|
-          raise(Jump,"#{ent.layer}:#{ent.id}")
-        }.update_items(@db.list)
-        # Switch layer
-        jg << Group.new(exe.cfg,cap('layer')).set_proc{|ent|
-          raise(Jump,"#{ent.id}:#{get_site(ent)}")
-        }.update_items(layer_list)
-        # JumpGroup is set to Domain
-        exe.ext_shell
-        jg.each{|grp|
-          exe.cobj.lodom.join_group(grp)
-        }
-        exe
+      def add(site)
+        site_cfg=Config.new("site_#{site}",@cfg)
+        obj=@level.new(site_cfg,{:db =>@db.set(site)})
+        set(site,obj.ext_shell)
       end
-
-      def get_site(ent)
-        ldb=ent.cfg[:site_db]
-        ldb["#{ent.id}_site"]||ldb['app_site']
-      end
-
-      def cap(type)
-        {'caption'=>"Switch #{type}s",'color'=>5,'column'=>2 }
-      end
-
-      def layer_list
-        h={}
-        $layers.values.each{|mod|
-          str=mod.to_s.split(':').last
-          h[str.downcase]="#{str} layer"
-        }
-        h
-      end
-
-      class Jump < LongJump; end
     end
+
+    class Jump < LongJump; end
   end
 end

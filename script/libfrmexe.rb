@@ -29,7 +29,7 @@ module CIAX
       attr_reader :field,:flush_procs
       def initialize(layer_cfg=nil,site_cfg={})
         @cls_color=6
-        @fdb=Msg.type?(site_cfg[:db],Db)
+        @fdb=type?(site_cfg[:db],Db)
         site_cfg['id']=@fdb['id']
         @field=site_cfg[:field]=Field.new.set_db(@fdb)
         super

@@ -10,8 +10,9 @@ module CIAX
       end
 
       # overwrite App::Db
-      def cover_app
-        cover(App::Db.new.set(self['app_id']))
+      def set(id=nil)
+        cpy=super
+        cpy.cover(App::Db.new.set(cpy['app_id']))
       end
 
       private
@@ -37,18 +38,16 @@ module CIAX
         db
       end
     end
-  end
 
-  if __FILE__ == $0
-    begin
-      GetOpts.new("",{"f"=>"frm mode"})
-      id=ARGV.shift
-      db=Ins::Db.new.set(id)
-    rescue InvalidID
-      $opt.usage("(opt) [id] (key) ..")
-      Msg.exit
+    if __FILE__ == $0
+      begin
+        id=ARGV.shift
+        db=Db.new.set(id)
+      rescue InvalidID
+        Msg.usage("(opt) [id] (key) ..")
+        Msg.exit
+      end
+      puts db.path(ARGV)
     end
-    db=db.cover_app unless $opt["f"]
-    puts db.path(ARGV)
   end
 end

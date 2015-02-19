@@ -55,7 +55,6 @@ module CIAX
     end
 
     class Test < Exe
-      require "libappsym"
       def initialize(layer_cfg,site_cfg={})
         super
         @stat.ext_sym
@@ -84,11 +83,14 @@ module CIAX
     end
 
     class Sv < Exe
-      require "libfrmexe"
-      def initialize(layer_cfg,site_cfg={})
+      require "libfrmlist"
+      # layer_cfg must have :frm_list
+      def initialize(layer_cfg={},site_cfg={})
+        layer_cfg[:frm_list]||=Frm::List.new
         super
-        fsite=@cfg[:site_db]['frm_site']
-        @fsh=@cfg[:site_list].get("frm:#{fsite}")
+        fsite=@adb['frm_site']
+warn @adb.path
+        @fsh=@cfg[:frm_list].get(fsite)
         @mode=@fsh.mode
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         @buf=init_buf
@@ -151,7 +153,7 @@ module CIAX
       id=ARGV.shift
       begin
         db=Ins::Db.new.set(id)
-        App.new(nil,{:db => db}).ext_shell.shell
+        App.new({},{:db => db}).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

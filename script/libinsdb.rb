@@ -35,6 +35,7 @@ module CIAX
         }
         init_watch(doc,db)
         db['site_id']=db['ins_id']=db['id']
+        db['frm_site']||=db['id']
         db
       end
     end

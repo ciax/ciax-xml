@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libsitelist"
 require "libwatview"
-require "libappexe"
+require "libapplist"
 
 module CIAX
   $layers['wat']=Wat
@@ -27,9 +27,10 @@ module CIAX
       attr_reader :ash
       def initialize(site_cfg,layer_cfg={})
         @cls_color=3
+        layer_cfg[:app_list]||=App::List.new
         super
         @site_stat.add_db('auto'=>'@','watch'=>'&')
-        @ash=@cfg[:site_list].get("app:#{@id}")
+        @ash=@cfg[:app_list].get(@id)
         @event=Event.new.set_db(@ash.adb)
         @wview=View.new(@ash.adb,@event)
         @ash.batch_interrupt=@event.get('int')
@@ -126,7 +127,7 @@ module CIAX
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        List.new.ext_shell.shell(id)
+        Wat.new('id' => id).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

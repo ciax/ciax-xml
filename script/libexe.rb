@@ -13,7 +13,8 @@ module CIAX
   class Exe < Hashx # Having server status {id,msg,...}
     attr_reader :layer,:id,:mode,:cobj,:pre_exe_procs,:post_exe_procs,:cfg,:output,:prompt_proc
     attr_accessor :shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
-    # block gives command line convert
+    # site_cfg contains the parameter for each site individually
+    # layer_cfg contains the parameter shared in layer, which are taken over from upper layer
     # site_cfg should have ['id']
     def initialize(site_cfg={},layer_cfg=nil)
       super()

@@ -116,12 +116,6 @@ module CIAX
       end
     end
 
-    class List < Site::List
-      def initialize
-        super('wat')
-      end
-    end
-
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('celts')

@@ -41,7 +41,7 @@ module CIAX
       GetOpts.new('celst')
       id=ARGV.shift
       begin
-        List.new.ext_shell.shell(id)
+        Sv.new('id'=>id).ext_shell.shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

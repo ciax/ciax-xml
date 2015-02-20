@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libhexexe"
+require "libhexlist"
 
 module CIAX
   ENV['VER']||='initialize'
@@ -7,5 +7,5 @@ module CIAX
   site=ARGV.shift
   db={'x' => Hex,'f'=> Frm,'a'=> App,'w'=> Wat}
   layer=$opt.map{|k,v| db[k] if v}.compact.last||Wat
-  layer::List.new.ext_shell.shell(site)
+  layer::List.new.shell(site)
 end

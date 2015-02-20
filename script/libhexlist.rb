@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libhexexe"
 require "libinsdb"
-require "libsitelist"
+require "libwatlist"
 
 module CIAX
   module Hex

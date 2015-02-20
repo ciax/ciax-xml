@@ -67,7 +67,7 @@ module CIAX
             val=v.class
           end
           k.inspect.to_s+'=>'+val.to_s
-        }.join(', ')+'}'
+        }.join(', ')+'} ('+h.object_id.to_s+')'
       }.join("\n")
     end
   end

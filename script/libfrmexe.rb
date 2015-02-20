@@ -4,34 +4,40 @@ require "libfield"
 require "libfrmdb"
 require "libfrmrsp"
 require "libfrmcmd"
+require "libdevdb"
 
 module CIAX
   $layers['frm']=Frm
   module Frm
-    def self.new(layer_cfg=nil,site_cfg={})
+    def self.new(site_cfg={},layer_cfg={})
       Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
         site_cfg['host']='localhost'
-        Sv.new(layer_cfg,site_cfg)
+        Sv.new(site_cfg,layer_cfg)
       elsif host=$opt['h']
         site_cfg['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(layer_cfg,site_cfg)
+        return Sv.new(site_cfg,layer_cfg)
       else
-        return Test.new(layer_cfg,site_cfg)
+        return Test.new(site_cfg,layer_cfg)
       end
-      Cl.new(layer_cfg,site_cfg)
+      Cl.new(site_cfg,layer_cfg)
     end
 
     class Exe < Exe
-      # site_cfg must have :db
+      # site_cfg must have :db or 'id'
       attr_reader :field,:flush_procs
-      def initialize(layer_cfg=nil,site_cfg={})
+      def initialize(site_cfg={},layer_cfg={})
         @cls_color=6
-        @fdb=type?(site_cfg[:db],Db)
-        site_cfg['id']=@fdb['id']
+        if @fdb=site_cfg[:db]
+          site_cfg['id']=@fdb['id']
+        else
+          ddb=(layer_cfg[:ddb]||=Dev::Db.new)
+          @fdb=type?(site_cfg[:db]=ddb.set(site_cfg['id']),Db)
+        end
         @field=site_cfg[:field]=Field.new.set_db(@fdb)
+        # Need cfg :db and :field
         super
         @output=@field
         @cobj.add_intgrp(Int)
@@ -42,7 +48,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(layer_cfg,site_cfg={})
+      def initialize(site_cfg={},layer_cfg={})
         super
         @cobj.svdom.set_proc{|ent|@field['time']=now_msec;''}
         @cobj.ext_proc{|ent| "#{ent.cfg[:frame].inspect} => #{ent.cfg['response']}"}
@@ -54,7 +60,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(layer_cfg,site_cfg={})
+      def initialize(site_cfg={},layer_cfg={})
         super
         host=type?(cfg['host']||@fdb['host']||'localhost',String)
         @field.ext_http(host)
@@ -65,7 +71,7 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(layer_cfg,site_cfg={})
+      def initialize(site_cfg={},layer_cfg={})
         super
         @field.ext_file
         timeout=5
@@ -115,8 +121,7 @@ module CIAX
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        db=Dev::Db.new.set(id)
-        Frm.new(nil,{:db => db}).ext_shell.shell
+        Frm.new('id' => id).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

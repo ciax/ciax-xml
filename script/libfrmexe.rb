@@ -9,37 +9,38 @@ require "libdevdb"
 module CIAX
   $layers['frm']=Frm
   module Frm
-    def self.new(site_cfg={},layer_cfg={})
-      Msg.type?(site_cfg,Hash)
+    def self.new(site_cfg,frm_cfg={})
+      Msg.type?(frm_cfg,Hash)
       if $opt.delete('l')
-        site_cfg['host']='localhost'
-        Sv.new(site_cfg,layer_cfg)
+        frm_cfg['host']='localhost'
+        Sv.new(site_cfg,frm_cfg)
       elsif host=$opt['h']
-        site_cfg['host']=host
+        frm_cfg['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(site_cfg,layer_cfg)
+        return Sv.new(site_cfg,frm_cfg)
       else
-        return Test.new(site_cfg,layer_cfg)
+        return Test.new(site_cfg,frm_cfg)
       end
-      Cl.new(site_cfg,layer_cfg)
+      Cl.new(site_cfg,frm_cfg)
     end
 
     class Exe < Exe
-      # site_cfg must have :db or 'id'
+      # site_cfg must have 'id'
       attr_reader :field,:flush_procs
-      def initialize(site_cfg={},layer_cfg={})
+      def initialize(site_cfg,frm_cfg={})
         @cls_color=6
-        if @fdb=site_cfg[:db]
+        if @fdb=frm_cfg[:db]
           site_cfg['id']=@fdb['id']
         else
-          ddb=(layer_cfg[:layer_db]||=Dev::Db.new)
-          @fdb=type?(site_cfg[:db]=ddb.set(site_cfg['id']),Db)
+          # LayerDB might generated in List level
+          ddb=(site_cfg[:layer_db]||=Dev::Db.new)
+          @fdb=type?(frm_cfg[:db]=ddb.set(site_cfg['id']),Db)
         end
-        @field=site_cfg[:field]=Field.new.set_db(@fdb)
+        @field=frm_cfg[:field]=Field.new
         # Need cfg :db and :field
         super
-        @output=@field
+        @output=@field.set_db(@fdb)
         @cobj.add_intgrp(Int)
         # Post internal command procs
         # Proc for Terminate process of each individual commands
@@ -48,7 +49,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(site_cfg={},layer_cfg={})
+      def initialize(site_cfg,frm_cfg={})
         super
         @cobj.svdom.set_proc{|ent|@field['time']=now_msec;''}
         @cobj.ext_proc{|ent| "#{ent.cfg[:frame].inspect} => #{ent.cfg['response']}"}
@@ -60,7 +61,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(site_cfg={},layer_cfg={})
+      def initialize(site_cfg,frm_cfg={})
         super
         host=type?(cfg['host']||@fdb['host']||'localhost',String)
         @field.ext_http(host)
@@ -71,7 +72,7 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(site_cfg={},layer_cfg={})
+      def initialize(site_cfg,frm_cfg={})
         super
         @field.ext_file
         timeout=5

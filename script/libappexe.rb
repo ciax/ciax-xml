@@ -12,33 +12,34 @@ require "libinsdb"
 module CIAX
   $layers['app']=App
   module App
-    def self.new(site_cfg={},layer_cfg={})
+    def self.new(site_cfg,app_cfg={})
       Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
         site_cfg['host']='localhost'
-        Sv.new(site_cfg,layer_cfg)
+        Sv.new(site_cfg,app_cfg)
       elsif host=$opt['h']
         site_cfg['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(site_cfg,layer_cfg)
+        return Sv.new(site_cfg,app_cfg)
       else
-        return Test.new(site_cfg,layer_cfg)
+        return Test.new(site_cfg,app_cfg)
       end
-      Cl.new(site_cfg,layer_cfg)
+      Cl.new(site_cfg,app_cfg)
     end
 
     class Exe < Exe
-      # site_cfg must have :db
+      # site_cfg must have 'id'
       attr_reader :adb,:stat,:host,:port
       attr_accessor :batch_interrupt
-      def initialize(site_cfg={},layer_cfg={})
+      def initialize(site_cfg,app_cfg={})
         @cls_color=2
-        if @adb=site_cfg[:db]
+        if @adb=app_cfg[:db]
           site_cfg['id']=@adb['id']
         else
-          idb=(layer_cfg[:layer_db]||=Ins::Db.new)
-          @adb=type?(site_cfg[:db]=idb.set(site_cfg['id']),Db)
+          # LayerDB might generated in List level
+          idb=(site_cfg[:layer_db]||=Ins::Db.new)
+          @adb=type?(app_cfg[:db]=idb.set(site_cfg['id']),Db)
         end
         super
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
@@ -60,7 +61,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(site_cfg={},layer_cfg={})
+      def initialize(site_cfg,app_cfg={})
         super
         @stat.ext_sym
         @stat.post_upd_procs << proc{|st|
@@ -79,7 +80,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(site_cfg={},layer_cfg={})
+      def initialize(site_cfg,app_cfg={})
         super
         @stat.ext_http(@host)
         @pre_exe_procs << proc{@stat.upd}
@@ -89,9 +90,9 @@ module CIAX
 
     class Sv < Exe
       require "libfrmlist"
-      # layer_cfg must have :frm_list
-      def initialize(site_cfg={},layer_cfg={})
-        layer_cfg[:frm_list]||=Frm::List.new
+      # app_cfg must have :frm_list
+      def initialize(site_cfg,app_cfg={})
+        site_cfg[:frm_list]||=Frm::List.new
         super
         fsite=@adb['frm_site']
         @fsh=@cfg[:frm_list].get(fsite)

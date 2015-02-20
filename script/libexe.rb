@@ -13,23 +13,23 @@ module CIAX
   class Exe < Hashx # Having server status {id,msg,...}
     attr_reader :layer,:id,:mode,:cobj,:pre_exe_procs,:post_exe_procs,:cfg,:output,:prompt_proc
     attr_accessor :shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
-    # site_cfg contains the parameter for each site individually
-    # layer_cfg contains the parameter shared in layer, which are taken over from upper layer
-    # site_cfg should have ['id']
-    def initialize(site_cfg={},layer_cfg=nil)
+    # site_cfg contains the parameter shared among layers for the site, which are taken over from list level
+    # layer_cfg contains the parameter for each layer individually (might have [:db])
+    # site_cfg should have ['id'] and might have [:site_stat] shared in the site (among layers)
+    def initialize(site_cfg,layer_cfg={})
       super()
       # layer is Frm,App,Wat,Hex,Mcr,Man
       cpath=class_path
       @mode=cpath.pop.upcase
       @layer=cpath.pop.downcase
-      @cfg=Config.new("exe_#@layer",layer_cfg).update(site_cfg)
+      @site_stat=(type?(site_cfg,Hash)[:site_stat]||=Prompt.new) # Status shared by all layers of the site
+      @cfg=Config.new("#{@layer}_exe",site_cfg).update(layer_cfg)
       @id=@cfg['id']
       @cfg[@layer]=self
       @cfg['layer']=@layer
       @cobj=local_class('Command').new(@cfg)
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
-      @site_stat=(@cfg[:site_stat]||=Prompt.new) # Status shared by all layers of the site
       @cls_color||=7
       @pfx_color||=9
       @output={}

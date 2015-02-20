@@ -7,34 +7,39 @@ require "libapprsp"
 require "libappsym"
 require "libbuffer"
 require "libsqlog"
+require "libinsdb"
 
 module CIAX
   $layers['app']=App
   module App
-    def self.new(layer_cfg,site_cfg={})
+    def self.new(site_cfg={},layer_cfg={})
       Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
         site_cfg['host']='localhost'
-        Sv.new(layer_cfg,site_cfg)
+        Sv.new(site_cfg,layer_cfg)
       elsif host=$opt['h']
         site_cfg['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(layer_cfg,site_cfg)
+        return Sv.new(site_cfg,layer_cfg)
       else
-        return Test.new(layer_cfg,site_cfg)
+        return Test.new(site_cfg,layer_cfg)
       end
-      Cl.new(layer_cfg,site_cfg)
+      Cl.new(site_cfg,layer_cfg)
     end
 
     class Exe < Exe
       # site_cfg must have :db
       attr_reader :adb,:stat,:host,:port
       attr_accessor :batch_interrupt
-      def initialize(layer_cfg=nil,site_cfg={})
+      def initialize(site_cfg={},layer_cfg={})
         @cls_color=2
-        @adb=type?(site_cfg[:db],Db)
-        site_cfg['id']=@adb['id']
+        if @adb=site_cfg[:db]
+          site_cfg['id']=@adb['id']
+        else
+          idb=(layer_cfg[:layer_db]||=Ins::Db.new)
+          @adb=type?(site_cfg[:db]=idb.set(site_cfg['id']),Db)
+        end
         super
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']
@@ -55,7 +60,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(layer_cfg,site_cfg={})
+      def initialize(site_cfg={},layer_cfg={})
         super
         @stat.ext_sym
         @stat.post_upd_procs << proc{|st|
@@ -74,7 +79,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(layer_cfg,site_cfg={})
+      def initialize(site_cfg={},layer_cfg={})
         super
         @stat.ext_http(@host)
         @pre_exe_procs << proc{@stat.upd}
@@ -85,11 +90,10 @@ module CIAX
     class Sv < Exe
       require "libfrmlist"
       # layer_cfg must have :frm_list
-      def initialize(layer_cfg={},site_cfg={})
+      def initialize(site_cfg={},layer_cfg={})
         layer_cfg[:frm_list]||=Frm::List.new
         super
         fsite=@adb['frm_site']
-warn @adb.path
         @fsh=@cfg[:frm_list].get(fsite)
         @mode=@fsh.mode
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
@@ -147,13 +151,11 @@ warn @adb.path
 
     if __FILE__ == $0
       require "libsh"
-      require "libinsdb"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        db=Ins::Db.new.set(id)
-        App.new({},{:db => db}).ext_shell.shell
+        App.new('id' => id).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

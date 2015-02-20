@@ -97,8 +97,7 @@ module CIAX
 
       private
       def add(site)
-        site_cfg=Config.new("site_#{site}",@cfg)
-        obj=@level.new(site_cfg,{:db =>@db.set(site)})
+        obj=@level.new({'id'=>site},@cfg)
         set(site,obj.ext_shell)
       end
     end

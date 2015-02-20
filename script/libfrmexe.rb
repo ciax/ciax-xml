@@ -33,7 +33,7 @@ module CIAX
         if @fdb=site_cfg[:db]
           site_cfg['id']=@fdb['id']
         else
-          ddb=(layer_cfg[:ddb]||=Dev::Db.new)
+          ddb=(layer_cfg[:layer_db]||=Dev::Db.new)
           @fdb=type?(site_cfg[:db]=ddb.set(site_cfg['id']),Db)
         end
         @field=site_cfg[:field]=Field.new.set_db(@fdb)

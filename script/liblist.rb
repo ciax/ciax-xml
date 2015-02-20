@@ -3,10 +3,10 @@ require "libdatax"
 
 module CIAX
   class List < DataH
-    def initialize(level,upper=nil)
+    def initialize(level,attr={},upper=nil)
       @level=type?(level,Module)
       name=level.to_s.split(':').last.downcase
-      @cfg=Config.new("list_#{name}",upper)
+      @cfg=Config.new("list_#{name}",upper).update(attr)
       super(name,{},@cfg[:dataname]||'list')
       @cfg[:jump_groups]||=[]
       attr={'caption'=>"Switch #{name}s",'color'=>5,'column'=>2}

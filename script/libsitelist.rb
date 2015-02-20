@@ -41,11 +41,8 @@ module CIAX
 
     # Site List
     class List < List
-      # layer_cfg must have :db
-      # layer_cfg might have :current_site,:jump_groups
-      # shdom: Domain for Shared Command Groups
-      def initialize(level,layer_cfg={})
-        super(level,layer_cfg)
+      def initialize(level,list_cfg={},upper={})
+        super
         @cfg[:current_site]||=''
         @db=@cfg[:layer_db]
         @jumpgrp.update_items(@db.list)
@@ -97,7 +94,9 @@ module CIAX
 
       private
       def add(site)
-        obj=@level.new({'id'=>site},@cfg)
+        cfg=Config.new("site_#{site}",@cfg)
+        cfg['id']=site
+        obj=@level.new(cfg)
         set(site,obj.ext_shell)
       end
     end

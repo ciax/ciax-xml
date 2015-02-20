@@ -6,9 +6,8 @@ require "libsitelist"
 module CIAX
   module Frm
     class List < Site::List
-      def initialize(layer_cfg={})
-        layer_cfg[:layer_db]=Dev::Db.new
-        super(Frm,layer_cfg)
+      def initialize(inter_cfg={})
+        super(Frm,{:layer_db =>Dev::Db.new},inter_cfg)
         @cfg.layers[:frm]=self
       end
     end

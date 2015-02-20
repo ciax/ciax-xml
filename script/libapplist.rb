@@ -1,14 +1,16 @@
 #!/usr/bin/ruby
 require "libappexe"
 require "libinsdb"
-require "libsitelist"
+require "libfrmlist"
 
 module CIAX
   module App
     class List < Site::List
-      def initialize(layer_cfg={})
-        layer_cfg[:layer_db]=Ins::Db.new
-        super(App,layer_cfg)
+      def initialize(inter_cfg={})
+        attr={}
+        attr[:frm_list]=Frm::List.new(inter_cfg)
+        attr[:layer_db]=Ins::Db.new
+        super(App,attr,inter_cfg)
         @cfg.layers[:app]=self
       end
     end

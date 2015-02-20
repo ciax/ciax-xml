@@ -90,9 +90,8 @@ module CIAX
 
     class Sv < Exe
       require "libfrmlist"
-      # app_cfg must have :frm_list
+      # site_cfg(app_cfg) must have :frm_list
       def initialize(site_cfg,app_cfg={})
-        site_cfg[:frm_list]||=Frm::List.new
         super
         fsite=@adb['frm_site']
         @fsh=@cfg[:frm_list].get(fsite)
@@ -156,7 +155,7 @@ module CIAX
       GetOpts.new('celts')
       id=ARGV.shift
       begin
-        App.new('id' => id).ext_shell.shell
+        App.new('id' => id,:frm_list => Frm::List.new).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

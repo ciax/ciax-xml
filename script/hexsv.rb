@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require "libhexexe"
+require "libhexlist"
 
 module CIAX
   ENV['VER']||='initialize'
   GetOpts.new('e')
-  Site::List.new.server(ARGV)
+  Hex::List.new.server(ARGV)
 end

@@ -28,8 +28,15 @@ module CIAX
       end
 
       def shell(id)
+        layer=@layer
         begin
-          get(layer||=@layer).shell(id)
+          dst=get(layer)
+          if dst.list.key?(id)
+            last=dst
+          else
+            dst=last
+          end
+          dst.shell(id)
         rescue Site::Jump
           layer,id=$!.to_s.split(':')
           retry
@@ -69,6 +76,10 @@ module CIAX
           exe.cobj.lodom.join_group(grp)
         }
         super
+      end
+
+      def list
+        @db.list
       end
 
       def shell(id)

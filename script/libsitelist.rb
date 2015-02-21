@@ -33,7 +33,7 @@ module CIAX
           dst=get(layer)
           if dst.list.key?(id)
             last=dst
-          else
+          elsif last
             dst=last
           end
           dst.shell(id)

@@ -48,7 +48,7 @@ module CIAX
 
     # Site List
     class List < List
-      def initialize(level,list_cfg={},upper={})
+      def initialize(level,list_cfg={},upper=nil)
         super
         @cfg[:current_site]||=''
         @db=@cfg[:layer_db]

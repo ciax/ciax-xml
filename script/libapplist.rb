@@ -7,7 +7,7 @@ module CIAX
   module App
     class List < Site::List
       # inter_cfg must have :frm_list
-      def initialize(inter_cfg)
+      def initialize(inter_cfg=nil)
         super(App,{:layer_db => Ins::Db.new},inter_cfg)
         Frm::List.new(@cfg) unless @cfg.layers.key?(:frm)
         @cfg.layers[:app]=self
@@ -19,9 +19,8 @@ module CIAX
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('chset')
-      cfg=Config.new('test')
        begin
-         puts List.new(cfg).shell(ARGV.shift)
+         puts List.new.shell(ARGV.shift)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

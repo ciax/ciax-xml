@@ -9,6 +9,7 @@ module CIAX
       # inter_cfg must have :frm_list
       def initialize(inter_cfg)
         super(App,{:layer_db => Ins::Db.new},inter_cfg)
+        Frm::List.new(@cfg) unless @cfg.layers.key?(:frm)
         @cfg.layers[:app]=self
       end
     end
@@ -20,7 +21,6 @@ module CIAX
       GetOpts.new('chset')
       cfg=Config.new('test')
        begin
-         Frm::List.new(cfg)
          puts List.new(cfg).shell(ARGV.shift)
       rescue InvalidID
         $opt.usage('(opt) [id]')

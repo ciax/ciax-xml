@@ -9,6 +9,8 @@ module CIAX
       # inter_cfg must have :app_list
       def initialize(inter_cfg)
         super(Wat,{:layer_db => Ins::Db.new},inter_cfg)
+        @cfg[:site_stat]||=Prompt.new
+        App::List.new(@cfg) unless @cfg.layers.key?(:app)
         @cfg.layers[:wat]=self
       end
     end
@@ -19,9 +21,6 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('chset')
       cfg=Config.new('test')
-      cfg[:site_stat]=Prompt.new
-      Frm::List.new(cfg)
-      App::List.new(cfg)
       begin
         puts List.new(cfg).shell(ARGV.shift)
       rescue InvalidID

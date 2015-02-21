@@ -8,6 +8,8 @@ module CIAX
     class List < Site::List
       def initialize(inter_cfg)
         super(Hex,{:layer_db => Ins::Db.new},inter_cfg)
+        @cfg[:site_stat]||=Prompt.new
+        Wat::List.new(@cfg) unless @cfg.layers.key?(:wat)
         @cfg.layers[:hex]=self
       end
     end
@@ -18,10 +20,6 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('chset')
       cfg=Config.new('test')
-      cfg[:site_stat]=Prompt.new
-      Frm::List.new(cfg)
-      App::List.new(cfg)
-      Wat::List.new(cfg)
       begin
         puts List.new(cfg).shell(ARGV.shift)
       rescue InvalidID

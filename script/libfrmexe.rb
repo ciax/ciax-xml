@@ -7,7 +7,7 @@ require "libfrmcmd"
 require "libdevdb"
 
 module CIAX
-  $layers['frm']=Frm
+  $layers['f']=Frm
   module Frm
     def self.new(site_cfg,frm_cfg={})
       Msg.type?(frm_cfg,Hash)

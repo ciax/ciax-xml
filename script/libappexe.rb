@@ -10,7 +10,7 @@ require "libsqlog"
 require "libinsdb"
 
 module CIAX
-  $layers['app']=App
+  $layers['a']=App
   module App
     def self.new(site_cfg,app_cfg={})
       Msg.type?(site_cfg,Hash)

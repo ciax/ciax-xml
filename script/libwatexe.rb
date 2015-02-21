@@ -4,7 +4,7 @@ require "libwatview"
 require "libapplist"
 
 module CIAX
-  $layers['wat']=Wat
+  $layers['w']=Wat
   module Wat
     def self.new(site_cfg,wat_cfg={})
       Msg.type?(site_cfg,Hash)

@@ -4,7 +4,7 @@ require "libhexview"
 require "libwatlist"
 
 module CIAX
-  $layers['hex']=Hex
+  $layers['x']=Hex
   module Hex
     def self.new(site_cfg,layer_cfg={})
       Hex::Sv.new(site_cfg,layer_cfg)

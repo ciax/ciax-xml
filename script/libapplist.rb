@@ -9,7 +9,7 @@ module CIAX
       # inter_cfg must have :frm_list
       def initialize(inter_cfg)
         super(App,{:layer_db => Ins::Db.new},inter_cfg)
-        @cfg.layers[:app_list]=self
+        @cfg.layers[:app]=self
       end
     end
 

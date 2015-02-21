@@ -6,6 +6,11 @@ module CIAX
   GetOpts.new("afxtelsch:")
   site=ARGV.shift
   db={'x' => Hex,'f'=> Frm,'a'=> App,'w'=> Wat}
-  layer=$opt.map{|k,v| db[k] if v}.compact.last||Wat
-  layer::List.new.shell(site)
+  inter=Site::Layer.new
+  ['f','a','w'].each{|tag|
+    inter.add_layer(db[tag])
+    break if $opt[tag]
+  }
+  inter.add_layer(db['x']) if $opt['x']
+  inter.shell(site)
 end

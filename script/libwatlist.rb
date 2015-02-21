@@ -9,7 +9,7 @@ module CIAX
       # inter_cfg must have :app_list
       def initialize(inter_cfg)
         super(Wat,{:layer_db => Ins::Db.new},inter_cfg)
-        @cfg.layers[:wat_list]=self
+        @cfg.layers[:wat]=self
       end
     end
 

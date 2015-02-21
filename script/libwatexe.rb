@@ -22,14 +22,14 @@ module CIAX
       Cl.new(site_cfg,wat_cfg)
     end
 
-    # site_cfg should have 'id',layer[:app_list]
+    # site_cfg should have 'id',layer[:app]
     class Exe < Exe
       attr_reader :ash
       def initialize(site_cfg,wat_cfg={})
         @cls_color=3
         super
         @site_stat.add_db('auto'=>'@','watch'=>'&')
-        @ash=@cfg.layers[:app_list].get(@id)
+        @ash=@cfg.layers[:app].get(@id)
         @event=Event.new.set_db(@ash.adb)
         @wview=View.new(@ash.adb,@event)
         @ash.batch_interrupt=@event.get('int')

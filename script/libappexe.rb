@@ -90,11 +90,11 @@ module CIAX
 
     class Sv < Exe
       require "libfrmlist"
-      # site_cfg(app_cfg) must have layers[:frm_list]
+      # site_cfg(app_cfg) must have layers[:frm]
       def initialize(site_cfg,app_cfg={})
         super
         fsite=@adb['frm_site']
-        @fsh=@cfg.layers[:frm_list].get(fsite)
+        @fsh=@cfg.layers[:frm].get(fsite)
         @mode=@fsh.mode
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         @buf=init_buf

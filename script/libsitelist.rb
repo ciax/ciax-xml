@@ -7,10 +7,10 @@ require "libsh"
 module CIAX
   module Site
     class Layer < List
-      def initialize(upper=nil)
-        super(Site,upper)
+      def initialize(attr={},upper={})
+        super(Site,attr,upper)
+        @cfg[:site_stat]=Prompt.new
         @cfg[:current_site]||=''
-        @cfg[:ldb]||=Site::Db.new
         @pars={:parameters => [{:default => @cfg[:current_site]}]}
         @cfg[:jump_groups] << @jumpgrp
       end

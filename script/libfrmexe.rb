@@ -120,9 +120,9 @@ module CIAX
       require "libdevdb"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
-      id=ARGV.shift
+      cfg=Config.new('test',{'id' => ARGV.shift})
       begin
-        Frm.new('id' => id).ext_shell.shell
+        Frm.new(cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

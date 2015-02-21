@@ -90,11 +90,11 @@ module CIAX
 
     class Sv < Exe
       require "libfrmlist"
-      # site_cfg(app_cfg) must have :frm_list
+      # site_cfg(app_cfg) must have layers[:frm_list]
       def initialize(site_cfg,app_cfg={})
         super
         fsite=@adb['frm_site']
-        @fsh=@cfg[:frm_list].get(fsite)
+        @fsh=@cfg.layers[:frm_list].get(fsite)
         @mode=@fsh.mode
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         @buf=init_buf
@@ -153,9 +153,10 @@ module CIAX
       require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
-      id=ARGV.shift
+      cfg=Config.new('test',{'id' => ARGV.shift})
       begin
-        App.new('id' => id,:frm_list => Frm::List.new).ext_shell.shell
+        Frm::List.new(cfg)
+        App.new(cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

@@ -6,31 +6,30 @@ require "libapplist"
 module CIAX
   $layers['wat']=Wat
   module Wat
-    def self.new(site_cfg,layer_cfg={})
+    def self.new(site_cfg,wat_cfg={})
       Msg.type?(site_cfg,Hash)
       if $opt.delete('l')
-        layer_cfg['host']='localhost'
-        Sv.new(site_cfg,layer_cfg)
+        wat_cfg['host']='localhost'
+        Sv.new(site_cfg,wat_cfg)
       elsif host=$opt['h']
-        layer_cfg['host']=host
+        wat_cfg['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(site_cfg,layer_cfg)
+        return Sv.new(site_cfg,wat_cfg)
       else
-        return Test.new(site_cfg,layer_cfg)
+        return Test.new(site_cfg,wat_cfg)
       end
-      Cl.new(site_cfg,layer_cfg)
+      Cl.new(site_cfg,wat_cfg)
     end
 
-    # site_cfg should have 'id',:site_db,:site_list,:site_stat
+    # site_cfg should have 'id',layer[:app_list]
     class Exe < Exe
       attr_reader :ash
-      def initialize(site_cfg,layer_cfg={})
+      def initialize(site_cfg,wat_cfg={})
         @cls_color=3
-        layer_cfg[:app_list]||=App::List.new
         super
         @site_stat.add_db('auto'=>'@','watch'=>'&')
-        @ash=@cfg[:app_list].get(@id)
+        @ash=@cfg.layers[:app_list].get(@id)
         @event=Event.new.set_db(@ash.adb)
         @wview=View.new(@ash.adb,@event)
         @ash.batch_interrupt=@event.get('int')
@@ -66,7 +65,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(site_cfg,layer_cfg={})
+      def initialize(site_cfg,wat_cfg={})
         super
         init_sv
         # @event is independent from @ash.stat
@@ -75,7 +74,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(site_cfg,layer_cfg={})
+      def initialize(site_cfg,wat_cfg={})
         super
         @event.ext_http(@ash.host)
         # @event is independent from @ash.stat
@@ -84,7 +83,7 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(site_cfg,layer_cfg={})
+      def initialize(site_cfg,wat_cfg={})
         super
         init_sv
         @event.ext_file
@@ -119,9 +118,12 @@ module CIAX
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('celts')
-      id=ARGV.shift
+      cfg=Config.new('test',{'id' => ARGV.shift})
+      cfg[:site_stat]=Prompt.new
       begin
-        Wat.new('id' => id).ext_shell.shell
+        Frm::List.new(cfg)
+        App::List.new(cfg)
+        Wat.new(cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

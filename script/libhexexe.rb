@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # Ascii Pack
 require "libhexview"
-require "libwatexe"
+require "libwatlist"
 
 module CIAX
   $layers['hex']=Hex
@@ -30,18 +30,16 @@ module CIAX
       end
     end
 
-    class List < Site::List
-      def initialize
-        super('hex')
-      end
-    end
-
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('celst')
-      id=ARGV.shift
+      cfg=Config.new('test',{'id'=>ARGV.shift})
+      cfg[:site_stat]=Prompt.new
       begin
-        Sv.new('id'=>id).ext_shell.shell(id)
+        Frm::List.new(cfg)
+        App::List.new(cfg)
+        Wat::List.new(cfg)
+        Sv.new(cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

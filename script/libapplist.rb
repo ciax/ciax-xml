@@ -6,12 +6,10 @@ require "libfrmlist"
 module CIAX
   module App
     class List < Site::List
-      def initialize(inter_cfg={})
-        attr={}
-        attr[:frm_list]=Frm::List.new(inter_cfg)
-        attr[:layer_db]=Ins::Db.new
-        super(App,attr,inter_cfg)
-        @cfg.layers[:app]=self
+      # inter_cfg must have :frm_list
+      def initialize(inter_cfg)
+        super(App,{:layer_db => Ins::Db.new},inter_cfg)
+        @cfg.layers[:app_list]=self
       end
     end
 
@@ -20,8 +18,10 @@ module CIAX
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('chset')
-      begin
-        puts List.new.shell(ARGV.shift)
+      cfg=Config.new('test')
+       begin
+         Frm::List.new(cfg)
+         puts List.new(cfg).shell(ARGV.shift)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

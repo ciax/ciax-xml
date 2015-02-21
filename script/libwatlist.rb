@@ -1,15 +1,15 @@
 #!/usr/bin/ruby
 require "libwatexe"
 require "libinsdb"
-require "libsitelist"
+require "libapplist"
 
 module CIAX
   module Wat
     class List < Site::List
-      def initialize(layer_cfg={})
-        layer_cfg[:layer_db]=Ins::Db.new
-        super(Wat,layer_cfg)
-        @cfg.layers[:wat]=self
+      # inter_cfg must have :app_list
+      def initialize(inter_cfg)
+        super(Wat,{:layer_db => Ins::Db.new},inter_cfg)
+        @cfg.layers[:wat_list]=self
       end
     end
 
@@ -18,8 +18,12 @@ module CIAX
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('chset')
+      cfg=Config.new('test')
+      cfg[:site_stat]=Prompt.new
+      Frm::List.new(cfg)
+      App::List.new(cfg)
       begin
-        puts List.new.shell(ARGV.shift)
+        puts List.new(cfg).shell(ARGV.shift)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

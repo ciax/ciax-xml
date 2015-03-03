@@ -196,6 +196,8 @@ module CIAX
           if (cmds+['interrupt']).include?(id)
             @que_res << 'ACCEPT'
             break id
+          elsif !id
+            @que_res << ''
           else
             @que_res << 'INVALID'
           end

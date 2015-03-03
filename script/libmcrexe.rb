@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmcrcmd"
 require "librecord"
-require "libwatexe"
+require "libwatlist"
 require "libsh"
 
 module CIAX

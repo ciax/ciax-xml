@@ -6,26 +6,26 @@ require "libapplist"
 module CIAX
   $layers['w']=Wat
   module Wat
-    def self.new(site_cfg,wat_cfg={})
-      Msg.type?(site_cfg,Hash)
+    def self.new(id,site_cfg={},wat_cfg={})
+      Msg.type?(wat_cfg,Hash)
       if $opt.delete('l')
         wat_cfg['host']='localhost'
-        Sv.new(site_cfg,wat_cfg)
+        Sv.new(id,site_cfg,wat_cfg)
       elsif host=$opt['h']
         wat_cfg['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(site_cfg,wat_cfg)
+        return Sv.new(id,site_cfg,wat_cfg)
       else
-        return Test.new(site_cfg,wat_cfg)
+        return Test.new(id,site_cfg,wat_cfg)
       end
-      Cl.new(site_cfg,wat_cfg)
+      Cl.new(id,site_cfg,wat_cfg)
     end
 
     # site_cfg should have 'id',layer[:app]
     class Exe < Exe
       attr_reader :ash
-      def initialize(site_cfg,wat_cfg={})
+      def initialize(id,site_cfg={},wat_cfg={})
         @cls_color=3
         super
         @site_stat.add_db('auto'=>'@','watch'=>'&')
@@ -65,7 +65,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(site_cfg,wat_cfg={})
+      def initialize(id,site_cfg={},wat_cfg={})
         super
         init_sv
         # @event is independent from @ash.stat
@@ -74,7 +74,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(site_cfg,wat_cfg={})
+      def initialize(id,site_cfg={},wat_cfg={})
         super
         @event.ext_http(@ash.host)
         # @event is independent from @ash.stat
@@ -83,7 +83,7 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(site_cfg,wat_cfg={})
+      def initialize(id,site_cfg={},wat_cfg={})
         super
         init_sv
         @event.ext_file
@@ -118,12 +118,11 @@ module CIAX
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('celts')
-      cfg=Config.new('test',{'id' => ARGV.shift})
-      cfg[:site_stat]=Prompt.new
+      cfg=Config.new('test',{:site_stat => Prompt.new})
       begin
         Frm::List.new(cfg)
         App::List.new(cfg)
-        Wat.new(cfg).ext_shell.shell
+        Wat.new(ARGV.shift,cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

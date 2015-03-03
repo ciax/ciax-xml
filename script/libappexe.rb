@@ -12,35 +12,31 @@ require "libinsdb"
 module CIAX
   $layers['a']=App
   module App
-    def self.new(site_cfg,app_cfg={})
-      Msg.type?(site_cfg,Hash)
+    def self.new(id,site_cfg={},app_cfg={})
+      Msg.type?(app_cfg,Hash)
       if $opt.delete('l')
-        site_cfg['host']='localhost'
-        Sv.new(site_cfg,app_cfg)
+        app_cfg['host']='localhost'
+        Sv.new(id,site_cfg,app_cfg)
       elsif host=$opt['h']
-        site_cfg['host']=host
+        app_cfg['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(site_cfg,app_cfg)
+        return Sv.new(id,site_cfg,app_cfg)
       else
-        return Test.new(site_cfg,app_cfg)
+        return Test.new(id,site_cfg,app_cfg)
       end
-      Cl.new(site_cfg,app_cfg)
+      Cl.new(id,site_cfg,app_cfg)
     end
 
     class Exe < Exe
       # site_cfg must have 'id'
       attr_reader :adb,:stat,:host,:port
       attr_accessor :batch_interrupt
-      def initialize(site_cfg,app_cfg={})
+      def initialize(id,site_cfg={},app_cfg={})
         @cls_color=2
-        if @adb=app_cfg[:db]
-          site_cfg['id']=@adb['id']
-        else
-          # LayerDB might generated in List level
-          idb=(site_cfg[:layer_db]||=Ins::Db.new)
-          @adb=type?(app_cfg[:db]=idb.set(site_cfg['id']),Db)
-        end
+        # LayerDB might generated in List level
+        idb=(site_cfg[:layer_db]||=Ins::Db.new)
+        @adb=type?(app_cfg[:db]=idb.set(id),Db)
         super
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']
@@ -61,7 +57,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(site_cfg,app_cfg={})
+      def initialize(id,site_cfg={},app_cfg={})
         super
         @stat.ext_sym
         @stat.post_upd_procs << proc{|st|
@@ -80,7 +76,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(site_cfg,app_cfg={})
+      def initialize(id,site_cfg={},app_cfg={})
         super
         @stat.ext_http(@host)
         @pre_exe_procs << proc{@stat.upd}
@@ -91,7 +87,7 @@ module CIAX
     class Sv < Exe
       require "libfrmlist"
       # site_cfg(app_cfg) must have layers[:frm]
-      def initialize(site_cfg,app_cfg={})
+      def initialize(id,site_cfg={},app_cfg={})
         super
         fsite=@adb['frm_site']
         @fsh=@cfg.layers[:frm].get(fsite)
@@ -153,10 +149,10 @@ module CIAX
       require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
-      cfg=Config.new('test',{'id' => ARGV.shift})
+      cfg=Config.new('test')
       begin
         Frm::List.new(cfg)
-        App.new(cfg).ext_shell.shell
+        App.new(ARGV.shift,cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

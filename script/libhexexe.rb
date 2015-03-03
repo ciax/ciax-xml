@@ -6,14 +6,14 @@ require "libwatlist"
 module CIAX
   $layers['x']=Hex
   module Hex
-    def self.new(site_cfg,layer_cfg={})
-      Hex::Sv.new(site_cfg,layer_cfg)
+    def self.new(id,site_cfg={},hex_cfg={})
+      Hex::Sv.new(id,site_cfg,hex_cfg)
     end
 
     class Sv < Exe
-      def initialize(site_cfg,layer_cfg={})
+      def initialize(id,site_cfg={},hex_cfg={})
         super
-        ash=Wat.new(@cfg).ash
+        ash=Wat.new(id,@cfg).ash
         @cobj.svdom.replace ash.cobj.svdom
         @mode=ash.mode
         @output=View.new(@id,ash.adb['version'],@cfg[:site_stat],ash.stat)
@@ -33,13 +33,12 @@ module CIAX
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('celst')
-      cfg=Config.new('test',{'id'=>ARGV.shift})
-      cfg[:site_stat]=Prompt.new
+      cfg=Config.new('test',{:site_stat => Prompt.new})
       begin
         Frm::List.new(cfg)
         App::List.new(cfg)
         Wat::List.new(cfg)
-        Sv.new(cfg).ext_shell.shell
+        Sv.new(ARGV.shift,cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

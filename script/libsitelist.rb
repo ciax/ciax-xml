@@ -106,8 +106,7 @@ module CIAX
       private
       def add(site)
         cfg=Config.new("site_#{site}",@cfg)
-        cfg['id']=site
-        obj=@level.new(cfg)
+        obj=@level.new(site,cfg)
         set(site,obj.ext_shell)
       end
     end

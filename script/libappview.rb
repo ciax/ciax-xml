@@ -80,12 +80,12 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsitedb"
+      require "libinsdb"
       GetOpts.new('rc','c' => 'CSV output')
       stat=Status.new
       begin
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
-        adb=Site::Db.new.set(id)[:adb]
+        adb=Ins::Db.new.set(id)
         stat.set_db(adb)
         view=View.new(adb,stat)
         stat.ext_file if STDIN.tty?

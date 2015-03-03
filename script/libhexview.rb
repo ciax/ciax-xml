@@ -96,13 +96,12 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsitedb"
+      require "libinsdb"
       require "libstatus"
       begin
         stat=App::Status.new
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
-        ldb=Site::Db.new.set(id)
-        stat.set_db(ldb[:adb]).ext_file
+        stat.set_db(Ins::Db.new.set(id)).ext_file
         hint=View.new(id,0,{},stat).upd
         puts hint
       rescue InvalidID

@@ -87,12 +87,12 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsitedb"
+      require "libinsdb"
       GetOpts.new('r')
       event=Event.new
       begin
         id=STDIN.tty? ? ARGV.shift : event.read['id']
-        adb=Site::Db.new.set(id)[:adb]
+        adb=Ins::Db.new.set(id)
         event.set_db(adb)
         wview=View.new(adb,event)
         event.ext_file if STDIN.tty?

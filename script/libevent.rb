@@ -46,11 +46,11 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsitedb"
+      require "libinsdb"
       GetOpts.new('h:')
       event=Event.new
       begin
-        adb=Site::Db.new.set(ARGV.shift)[:adb]
+        adb=Ins::Db.new.set(ARGV.shift)
         event.set_db(adb)
         if host=$opt['h']
         event.ext_http(host)

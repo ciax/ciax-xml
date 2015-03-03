@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "liblist"
 require "libcommand"
-require "libsitedb"
 require "libsh"
 
 module CIAX

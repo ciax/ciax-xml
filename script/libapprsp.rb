@@ -112,16 +112,18 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsitedb"
+      require "libdevdb"
+      require "libinsdb"
       require "libfrmrsp"
       require "libstatus"
       begin
         field=Frm::Field.new
         id=STDIN.tty? ? ARGV.shift : field.read['id']
-        ldb=Site::Db.new.set(id)
-        field.set_db(ldb[:fdb]).ext_rsp
+        idb=Ins::Db.new.set(id)
+        ddb=Dev::Db.new.set(idb["frm_site"])
+        field.set_db(ddb).ext_rsp
         field.ext_file if STDIN.tty?
-        stat=Status.new.set_db(ldb[:adb]).ext_file.ext_rsp(field).save
+        stat=Status.new.set_db(idb).ext_file.ext_rsp(field).save
         puts STDOUT.tty? ? stat : stat.to_j
         Msg.msg("Status saved")
       rescue InvalidID

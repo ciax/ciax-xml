@@ -127,7 +127,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsitedb"
+      require "libdevdb"
       require "liblogging"
       require "libfrmcmd"
       GetOpts.new("",{'m' => 'merge file'})
@@ -136,7 +136,7 @@ module CIAX
       res=Logging.set_logline(str)
       id=res['id']
       cid=res['cmd']
-      fdb=Site::Db.new.set(id)[:fdb]
+      fdb=Dev::Db.new.set(id)
       field=Field.new.set_db(fdb).ext_rsp{res}
       field.ext_file if $opt['m']
       if cid

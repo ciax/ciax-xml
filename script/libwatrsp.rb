@@ -110,14 +110,14 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsitedb"
+      require "libinsdb"
 
       list={'t'=>'test conditions[key=val,..]'}
       GetOpts.new('t:',list)
       begin
         stat=App::Status.new
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
-        adb=Site::Db.new.set(id)[:adb]
+        adb=Ins::Db.new.set(id)
         stat.set_db(adb)
         stat.ext_file if STDIN.tty?
         event=Event.new.set_db(adb).ext_rsp(stat)

@@ -6,12 +6,12 @@ require "libwatlist"
 module CIAX
   $layers['x']=Hex
   module Hex
-    def self.new(id,site_cfg={},hex_cfg={})
-      Hex::Sv.new(id,site_cfg,hex_cfg)
+    def self.new(id,inter_cfg={},attr={})
+      Hex::Sv.new(id,inter_cfg,attr)
     end
 
     class Sv < Exe
-      def initialize(id,site_cfg={},hex_cfg={})
+      def initialize(id,inter_cfg={},attr={})
         super
         ash=Wat.new(id,@cfg).ash
         @cobj.svdom.replace ash.cobj.svdom

@@ -9,31 +9,31 @@ require "libdevdb"
 module CIAX
   $layers['f']=Frm
   module Frm
-    def self.new(id,site_cfg={},frm_cfg={})
-      Msg.type?(frm_cfg,Hash)
+    def self.new(id,inter_cfg={},attr={})
+      Msg.type?(attr,Hash)
       if $opt.delete('l')
-        frm_cfg['host']='localhost'
-        Sv.new(id,site_cfg,frm_cfg)
+        attr['host']='localhost'
+        Sv.new(id,inter_cfg,attr)
       elsif host=$opt['h']
-        frm_cfg['host']=host
+        attr['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(id,site_cfg,frm_cfg)
+        return Sv.new(id,inter_cfg,attr)
       else
-        return Test.new(id,site_cfg,frm_cfg)
+        return Test.new(id,inter_cfg,attr)
       end
-      Cl.new(id,site_cfg,frm_cfg)
+      Cl.new(id,inter_cfg,attr)
     end
 
     class Exe < Exe
-      # site_cfg must have 'id'
+      # inter_cfg must have 'id'
       attr_reader :field,:flush_procs
-      def initialize(id,site_cfg={},frm_cfg={})
+      def initialize(id,inter_cfg={},attr={})
         @cls_color=6
         # LayerDB might generated in List level
-        ddb=(site_cfg[:layer_db]||=Dev::Db.new)
-        @fdb=type?(frm_cfg[:db]=ddb.set(id),Db)
-        @field=frm_cfg[:field]=Field.new
+        ddb=(inter_cfg[:layer_db]||=Dev::Db.new)
+        @fdb=type?(attr[:db]=ddb.set(id),Db)
+        @field=attr[:field]=Field.new
         # Need cfg :db and :field
         super
         @output=@field.set_db(@fdb)
@@ -45,7 +45,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(id,site_cfg={},frm_cfg={})
+      def initialize(id,inter_cfg={},attr={})
         super
         @cobj.svdom.set_proc{|ent|@field['time']=now_msec;''}
         @cobj.ext_proc{|ent| "#{ent.cfg[:frame].inspect} => #{ent.cfg['response']}"}
@@ -57,7 +57,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(id,site_cfg={},frm_cfg={})
+      def initialize(id,inter_cfg={},attr={})
         super
         host=type?(cfg['host']||@fdb['host']||'localhost',String)
         @field.ext_http(host)
@@ -68,7 +68,7 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(id,site_cfg={},frm_cfg={})
+      def initialize(id,inter_cfg={},attr={})
         super
         @field.ext_file
         timeout=5

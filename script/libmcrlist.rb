@@ -10,7 +10,7 @@ module CIAX
       attr_reader :jumpgrp
       attr_accessor :index
       def initialize(cobj=nil)
-        @cobj=cobj||Command.new(ConfExe.new).add_ext
+        @cobj=cobj||Command.new(:db => Db.new.set(ENV['PROJ']||'ciax')).add_ext
         super(Mcr,@cobj.cfg)
         @cfg[:dataname]='procs'
         @cfg[:valid_keys]=@valid_keys=[]
@@ -100,7 +100,7 @@ module CIAX
 
       # Used by Man
       def add_ent(ent)
-        ssh=Seq.new(type?(ent,Entity))
+        ssh=Seq.new(type?(ent,Entity).cfg)
         ssh.post_stat_procs << proc{upd}
         ssh.post_mcr_procs << proc{|s|
           del_seq(s.id)

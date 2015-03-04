@@ -23,17 +23,18 @@ module CIAX
       #reqired cfg keys: app,db,body,stat
       attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro
-      def initialize(ment)
-        cfg=type?(type?(ment,Entity).cfg)
-        type?(cfg[:wat_list],Wat::List)
-        @record=Record.new(type?(cfg[:db],Db)).start(cfg)
-        super(@record['sid'],cfg)
+      #ent_cfg should have [:db]
+      def initialize(ent_cfg={})
+        ent_cfg[:wat_list]||=Wat::List.new
+        db=type?(ent_cfg[:db],Db)
+        @record=Record.new(db['id'],db['version']).start(ent_cfg)
+        super(@record['sid'])
         @output=@record
         @post_stat_procs=[] # execute on stat changes
         @post_mcr_procs=[]
         @que_cmd=Queue.new
         @que_res=Queue.new
-        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:body].size,'stat'=>'run','option'=>[]})
+        update({'cid'=>@record.cfg[:cid],'step'=>0,'total_steps'=>@record.cfg[:body].size,'stat'=>'run','option'=>[]})
         @running=[]
         @cobj.item_proc('interrupt'){|ent,src|
           @th_mcr.raise(Interrupt)
@@ -50,10 +51,11 @@ module CIAX
           res+=optlist(self['option']) if key?('option')
           res
         }
-        super(@cfg[:cid].tr(':','_'))
+        super(@record.cfg[:cid].tr(':','_'))
         vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('vis',"Visual mode").set_proc{@output.vmode='v';''}
         vg.add_item('raw',"Raw mode").set_proc{@output.vmode='r';''}
+        self
       end
 
       def reply(ans)
@@ -77,7 +79,7 @@ module CIAX
         Thread.current[:sid]=@id
         set_stat('run')
         show @record
-        @cfg[:body].each{|e1|
+        @record.cfg[:body].each{|e1|
           self['step']+=1
           begin
             @step=@record.add_step(e1)
@@ -92,7 +94,7 @@ module CIAX
               drop?(@step.timeout?{show '.'})
             when 'exec'
               @running << e1['site']
-              @cfg[:wat_list].site(e1['site']).exe(e1['args'],'macro') if exec?(@step.exec?)
+              @record.cfg[:wat_list].site(e1['site']).exe(e1['args'],'macro') if exec?(@step.exec?)
             when 'mcr'
               if @step.async? && @cfg[:submcr_proc].is_a?(Proc)
                 @step['sid']=@cfg[:submcr_proc].call(e1['args'],@id)['sid']
@@ -116,7 +118,7 @@ module CIAX
       def interrupt
         msg("\nInterrupt Issued to running devices #{@running}",3)
         @running.each{|site|
-          @cfg[:wat_list].site(site).exe(['interrupt'],'user')
+          @record.cfg[:wat_list].site(site).exe(['interrupt'],'user')
         } if $opt['m']
         finish('interrupted')
         self
@@ -189,11 +191,11 @@ module CIAX
         loop{
           if Msg.fg?
             prom=@step.body(optlist(self['option']))
-            line=Readline.readline(prom,true)||'interrupt'
+            break 'interrupt' unless line=Readline.readline(prom,true)
             @que_cmd << line.rstrip
           end
           id=@que_cmd.pop.split(/[ :]/).first
-          if (cmds+['interrupt']).include?(id)
+          if cmds.include?(id)
             @que_res << 'ACCEPT'
             break id
           elsif !id
@@ -210,18 +212,12 @@ module CIAX
       end
     end
 
-    class ConfExe < ConfCmd
-      def initialize(name='mcr',proj=nil)
-        super
-        self[:wat_list]=Wat::List.new
-      end
-    end
-
     if __FILE__ == $0
       GetOpts.new('emintr')
+      id=ENV['PROJ']||'ciax'
       begin
-        cobj=Command.new(ConfExe.new).add_ext
-        seq=Seq.new(cobj.set_cmd(ARGV))
+        ment=Command.new(:db => Db.new.set(id)).add_ext.set_cmd(ARGV)
+        seq=Seq.new(ment.cfg)
         if $opt['i']
           seq.macro
         else

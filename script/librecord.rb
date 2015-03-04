@@ -9,12 +9,13 @@ module CIAX
       include PrtShare
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       attr_reader :cfg
-      def initialize(db={})
+      def initialize(id,ver='0')
         super('record',[],'steps')
-        self['id']=db['id'] # Project
-        self['ver']=db['version'] # Version
+        self['id']=id # Project ID
+        self['ver']=ver # Version
       end
 
+      # cfg will come from Entity, which should have [:cid],[:wat_list],['label']
       def start(cfg)
         @cfg=type?(cfg,Config)
         self['sid']=self['time'].to_s # Session ID
@@ -54,7 +55,7 @@ module CIAX
     if __FILE__ == $0
       GetOpts.new('r')
       $opt.usage "(-r) < record_file" if STDIN.tty?
-      puts Record.new.read
+      puts Record.new('none').read
     end
   end
 end

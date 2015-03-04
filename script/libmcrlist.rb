@@ -7,10 +7,11 @@ module CIAX
     # List takes Command which could be shared with Man
     class List < List
       # @index: current element (1..@data.size)
+      # initialize takes Command for generating submacro
       attr_reader :jumpgrp
       attr_accessor :index
       def initialize(cobj=nil)
-        @cobj=cobj||Command.new(:db => Db.new.set(ENV['PROJ']||'ciax')).add_ext
+        @cobj=type?(cobj||Command.new.add_extgrp,Command)
         super(Mcr,@cobj.cfg)
         @cfg[:dataname]='procs'
         @cfg[:valid_keys]=@valid_keys=[]

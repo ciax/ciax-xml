@@ -7,7 +7,7 @@ module CIAX
   module Wat
     class List < Site::List
       # inter_cfg must have :app_list
-      def initialize(inter_cfg=nil)
+      def initialize(inter_cfg={})
         super(Wat,{:layer_db => Ins::Db.new},inter_cfg)
         @cfg[:site_stat]||=Prompt.new
         App::List.new(@cfg) unless @cfg.layers.key?(:app)

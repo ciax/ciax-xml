@@ -7,7 +7,7 @@ module CIAX
   module Frm
     class List < Site::List
       def initialize(inter_cfg={})
-        super(Frm,{:layer_db =>Dev::Db.new},inter_cfg)
+        super(Frm,inter_cfg,{:layer_db =>Dev::Db.new})
         @cfg.layers[:frm]=self
       end
     end

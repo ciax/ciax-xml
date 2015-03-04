@@ -6,8 +6,8 @@ require "libsh"
 module CIAX
   module Site
     class Layer < List
-      def initialize(attr={},upper={})
-        super(Site,attr,upper)
+      def initialize(inter_cfg={},attr={})
+        super(Site,inter_cfg,attr)
         @cfg[:site_stat]=Prompt.new
         @cfg[:current_site]||=''
         @pars={:parameters => [{:default => @cfg[:current_site]}]}
@@ -47,7 +47,7 @@ module CIAX
 
     # Site List
     class List < List
-      def initialize(level,list_cfg={},upper=nil)
+      def initialize(level,inter_cfg={},attr={})
         super
         @cfg[:current_site]||=''
         @db=@cfg[:layer_db]

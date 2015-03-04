@@ -6,8 +6,8 @@ require "libwatlist"
 module CIAX
   module Hex
     class List < Site::List
-      def initialize(inter_cfg=nil)
-        super(Hex,{:layer_db => Ins::Db.new},inter_cfg)
+      def initialize(inter_cfg={})
+        super(Hex,inter_cfg,{:layer_db => Ins::Db.new})
         @cfg[:site_stat]||=Prompt.new
         Wat::List.new(@cfg) unless @cfg.layers.key?(:wat)
         @cfg.layers[:hex]=self

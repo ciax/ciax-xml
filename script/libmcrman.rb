@@ -4,7 +4,7 @@ require "libmcrlist"
 
 module CIAX
   module Mcr
-    def self.new(cfg=ConfExe.new)
+    def self.new(cfg={})
       if $opt['l']
         $opt.delete('l')
         cfg['host']='localhost'
@@ -20,12 +20,14 @@ module CIAX
     end
 
     class Man < Exe
-      def initialize(cfg)
-        db=type?(cfg[:db],Db)
-        super(db['id'],cfg)
+      def initialize(cfg={})
+        id=ENV['PROJ']||'ciax'
+        cfg[:db]||=Db.new.set(id)
+        cfg[:wat_list]||=Wat::List.new
+        super(id,cfg)
         @mode='TEST'
-        @cobj.add_ext
-        @cobj.add_int
+        @cobj.add_extgrp
+        @cobj.add_intgrp(Int)
         lc=cfg[:list_class]||List
         @output=@list=lc.new(@cobj)
         @valid_pars=@cobj.intgrp.valid_pars

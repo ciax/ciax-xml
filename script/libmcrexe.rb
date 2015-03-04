@@ -43,7 +43,7 @@ module CIAX
       end
 
       def ext_shell
-        intgrp=@cobj.add_intgrp(Int)
+        intgrp=@cobj.add_intgrp(Int).intgrp
         intgrp.set_proc{|ent| reply(ent.id)}
         self['option']=intgrp.valid_keys.clear
         @prompt_proc=proc{

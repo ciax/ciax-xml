@@ -58,7 +58,7 @@ module CIAX
     end
 
     def inspect
-      @generation.map{|h|
+      "******[\n"+@generation.map{|h|
         '{'+h.map{|k,v|
           case v
           when String,Numeric
@@ -68,7 +68,7 @@ module CIAX
           end
           k.inspect.to_s+'=>'+val.to_s
         }.join(', ')+'} ('+h.object_id.to_s+')'
-      }.join("\n")
+      }.join("\n")+"\n]******(#{object_id})\n"
     end
   end
 end

@@ -6,10 +6,11 @@ module CIAX
   module Mcr
     class Command < Command
       attr_reader :cfg,:intgrp
-      def add_ext
+      def add_extgrp
         @cfg[:depth]=0
         @cfg[:mobj]=self
-        add_extgrp(Ext)
+        @cfg[:db]||=Db.new.set(ENV['PROJ']||'ciax')
+        super(Ext)
         self
       end
     end
@@ -58,9 +59,8 @@ module CIAX
 
     if __FILE__ == $0
       GetOpts.new
-      id=ENV['PROJ']||'ciax'
       begin
-        ment=Command.new(:db => Db.new.set(id)).add_ext.set_cmd(ARGV)
+        ment=Command.new.add_extgrp.set_cmd(ARGV)
         puts ment.cfg
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

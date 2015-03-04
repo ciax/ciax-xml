@@ -214,9 +214,8 @@ module CIAX
 
     if __FILE__ == $0
       GetOpts.new('emintr')
-      id=ENV['PROJ']||'ciax'
       begin
-        ment=Command.new(:db => Db.new.set(id)).add_ext.set_cmd(ARGV)
+        ment=Command.new.add_extgrp.set_cmd(ARGV)
         seq=Seq.new(ment.cfg)
         if $opt['i']
           seq.macro

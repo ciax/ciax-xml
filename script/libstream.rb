@@ -30,7 +30,7 @@ module CIAX
     def snd(str,cid)
       return if str.to_s.empty?
       verbose("Client","Sending #{str.size} byte on #{cid}")
-      verbose("Client","Binary Sending",str)
+      verbose("Client","Binary Sending",str.inspect)
       reopen{
         @f.write(str)
       }
@@ -41,14 +41,18 @@ module CIAX
     def rcv
       verbose("Client","Wait to Recieve #{@wait} sec")
       sleep @wait
+      verbose("Client","Wait for Recieving")
       unless str=reopen{
-          @f.readpartial(4096)
+          if IO.select([@f],nil,nil,@timeout)
+            @f.sysread(4096)
+          else
+            Msg.com_err("Stream:No response")
+          end
         }
         Process.kill(1,@f.pid)
-        Msg.com_err("Stream:No response")
       end
       verbose("Client","Recieved #{str.size} byte on #{self['cmd']}")
-      verbose("Client","Binary Recieving",str)
+      verbose("Client","Binary Recieving",str.inspect)
       convert('rcv',str)
       self
     end
@@ -60,7 +64,7 @@ module CIAX
         str=yield
       rescue
         Msg.com_err("IO error") if int > 8
-        verbose("Client","Try to reopen")
+        warning("Client","Try to reopen")
         sleep int
         int=(int+1)*2
         # SIGINT gets around the child process

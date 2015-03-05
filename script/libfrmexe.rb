@@ -71,6 +71,7 @@ module CIAX
       def initialize(id,inter_cfg={},attr={})
         super
         @field.ext_file
+        @site_stat.add_db('cerr' => 'X')
         timeout=5
         if $opt['s']
           @mode='SIM'
@@ -83,6 +84,7 @@ module CIAX
         @stream.ext_log unless $opt['s']
         @field.ext_rsp{@stream.rcv}
         @cobj.ext_proc{|ent|
+          @site_stat['cerr']=false
           @stream.snd(ent.cfg[:frame],ent.id)
           @field.rsp(ent)
           'OK'
@@ -102,6 +104,13 @@ module CIAX
           "Load [#{ent.par[0]}]"
         }
         ext_server(@fdb['port'].to_i)
+      end
+
+      def exe(args,src='local',pri=1)
+        super
+      rescue CommError
+        @site_stat['cerr']=true
+        self['msg']=$!.to_s
       end
 
       private

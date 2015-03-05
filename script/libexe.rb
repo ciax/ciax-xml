@@ -127,16 +127,24 @@ module CIAX
     # remove ipv6 entry from /etc/hosts
     def ext_client(host,port)
       host||='localhost'
+      @site_stat.add_db('uerr' => 'x')
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)
       verbose("UDP:Client","Initialize [#@id/#{host}:#{port}]")
       @cobj.svdom.set_proc{|ent|
         args=ent.id.split(':')
-        @udp.send(JSON.dump(args),0,@addr) # Address family not supported by protocol -> see above
+        # Address family not supported by protocol -> see above
+        @udp.send(JSON.dump(args),0,@addr)
         verbose("UDP:Client","Send [#{args}]")
-        res=@udp.recv(1024)
-        verbose("UDP:Client","Recv #{res}")
-        update(@site_stat.pick(JSON.load(res))) unless res.empty?
+        if IO.select([@udp],nil,nil,1)
+          res=@udp.recv(1024)
+          @site_stat['uerr']=false
+          verbose("UDP:Client","Recv #{res}")
+          update(@site_stat.pick(JSON.load(res))) unless res.empty?
+        else
+          @site_stat['uerr']=true
+          self['msg']='TIMEOUT'
+        end
         self['msg']
       }
       self

@@ -254,6 +254,7 @@ module CIAX
       verbose("self",inspect)
     end
 
+    # returns result of def_proc block
     def exe_cmd(src,pri=1)
       verbose("Cmd","Execute [#{@id}] from #{src}")
       @cfg[:def_proc].call(self,src,pri)

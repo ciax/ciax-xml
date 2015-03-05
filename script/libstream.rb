@@ -63,7 +63,7 @@ module CIAX
         raise unless @f
         str=yield
       rescue
-        Msg.com_err("IO error") if int > 8
+        Msg.com_err("IO error") if int > 1
         warning("Client","Try to reopen")
         sleep int
         int=(int+1)*2

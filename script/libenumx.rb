@@ -84,6 +84,10 @@ module CIAX
       deep_update(j2h(json_str))
     end
 
+    def to_s
+      view_struct
+    end
+
     private
     def j2h(json_str=nil)
       JSON.load(json_str||gets(nil)||Msg.abort("No data in file(#{ARGV})"))
@@ -138,7 +142,7 @@ module CIAX
     end
 
     def to_s
-      @vmode == 'j' ? to_j : view_struct
+      @vmode == 'j' ? to_j : super
     end
 
     # Make empty copy

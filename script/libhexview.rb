@@ -39,8 +39,10 @@ module CIAX
       end
 
       def upd_core
+        @res[2]=b2e(@hint['uerr'])
         @res[3]=b2i(@hint['watch'])
         @res[4]=b2i(@hint['isu'])
+        @res[5]=b2e(@hint['cerr'])
         @res[6]=''
         pck=0
         bin=0
@@ -92,6 +94,10 @@ module CIAX
 
       def b2i(b) #Boolean to Integer (1,0)
         b ? '1' : '0'
+      end
+
+      def b2e(b) #Boolean to Error (E,_)
+        b ? 'E' : '_'
       end
     end
 

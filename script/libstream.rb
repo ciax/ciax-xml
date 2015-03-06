@@ -60,25 +60,30 @@ module CIAX
     def reopen
       int=0
       begin
-        raise unless @f
+        openstrm unless @f
         str=yield
       rescue
+        warn $!
         Msg.com_err("IO error") if int > 1
         warning("Client","Try to reopen")
         sleep int
         int=(int+1)*2
-        # SIGINT gets around the child process
-        Signal.trap(:INT,nil)
-        @f=IO.popen(@iocmd,'r+')
-        Signal.trap(:INT,"DEFAULT")
-        # Shut off from Ctrl-C Signal to the child process
-#        Process.setpgid(@f.pid,@f.pid)
         retry
       end
       str
     end
 
     private
+    def openstrm
+      # SIGINT gets around the child process
+      Signal.trap(:INT,nil)
+      @f=IO.popen(@iocmd,'r+')
+      Signal.trap(:INT,"DEFAULT")
+      # Shut off from Ctrl-C Signal to the child process
+      # Process.setpgid(@f.pid,@f.pid)
+      self
+    end
+
     def convert(dir,data,cid=nil)
       self['time']=now_msec
       @binary=data

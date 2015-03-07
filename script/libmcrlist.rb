@@ -90,7 +90,7 @@ module CIAX
         host=type?(@cfg['host']||'localhost',String)
         @post_upd_procs << proc{
           @data.keys.each{|sid|
-            @records[sid]||=Record.new(self).ext_http(host,sid)
+            @records[sid]||=Record.new(self['id']).ext_http(host,sid)
             @records[sid].upd
           }
         }

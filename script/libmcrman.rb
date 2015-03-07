@@ -26,7 +26,6 @@ module CIAX
           cfg[:db]||=Db.new.set(id)
           cfg[:wat_list]||=Wat::List.new
           super(id,cfg)
-          @mode='TEST'
           @cobj.add_extgrp
           @cobj.add_intgrp(Int)
           lc=cfg[:list_class]||List

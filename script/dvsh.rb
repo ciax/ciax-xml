@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libhexlist"
+require "libsitelayer"
 
 module CIAX
   ENV['VER']||='initialize'

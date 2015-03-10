@@ -6,7 +6,6 @@ require "libfrmlist"
 module CIAX
   module App
     class List < Site::List
-      # inter_cfg must have :frm_list
       def initialize(inter_cfg={})
         super(App,inter_cfg,{:layer_db => Ins::Db.new})
         Frm::List.new(@cfg) unless @cfg.layers.key?(:frm)

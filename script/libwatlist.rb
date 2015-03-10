@@ -6,7 +6,6 @@ require "libapplist"
 module CIAX
   module Wat
     class List < Site::List
-      # inter_cfg must have :app_list
       def initialize(inter_cfg={})
         super(Wat,inter_cfg,{:layer_db => Ins::Db.new})
         @cfg[:site_stat]||=Prompt.new

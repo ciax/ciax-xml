@@ -15,7 +15,7 @@ module CIAX
         self['ver']=ver # Version
       end
 
-      # cfg will come from Entity, which should have [:cid],[:wat_list],['label']
+      # cfg will come from Entity, which should have [:cid],['label'],@layers[:wat]
       def start(cfg)
         @cfg=type?(cfg,Config)
         self['sid']=self['time'].to_s # Session ID
@@ -26,7 +26,7 @@ module CIAX
       end
 
       def add_step(e1)
-        Msg.type?(@cfg[:wat_list],Wat::List)
+        Msg.type?(@cfg.layers[:wat],Wat::List)
         step=Step.new(e1,@cfg)
         step.post_upd_procs << proc{post_upd}
         step['time']=Msg.elps_sec(self['time'])

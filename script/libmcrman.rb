@@ -24,7 +24,7 @@ module CIAX
         def initialize(cfg={})
           id=ENV['PROJ']||'ciax'
           cfg[:db]||=Db.new.set(id)
-          cfg[:wat_list]||=Wat::List.new
+          cfg[:wat_list]||=Wat::List.new(cfg)
           super(id,cfg)
           @cobj.add_extgrp
           @cobj.add_intgrp(Int)

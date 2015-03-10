@@ -25,7 +25,7 @@ module CIAX
       #cfg[:submcr_proc] for executing asynchronous submacro
       #ent_cfg should have [:db]
       def initialize(ent_cfg={})
-        ent_cfg[:wat_list]||=Wat::List.new
+        Wat::List.new(ent_cfg) unless ent_cfg.layers.key?(:app)
         db=type?(ent_cfg[:db],Db)
         @record=Record.new(db['id'],db['version']).start(ent_cfg)
         super(@record['sid'])
@@ -94,7 +94,7 @@ module CIAX
               drop?(@step.timeout?{show '.'})
             when 'exec'
               @running << e1['site']
-              @record.cfg[:wat_list].site(e1['site']).exe(e1['args'],'macro') if exec?(@step.exec?)
+              @record.cfg.layers[:wat].site(e1['site']).exe(e1['args'],'macro') if exec?(@step.exec?)
             when 'mcr'
               if @step.async? && @cfg[:submcr_proc].is_a?(Proc)
                 @step['sid']=@cfg[:submcr_proc].call(e1['args'],@id)['sid']
@@ -118,7 +118,7 @@ module CIAX
       def interrupt
         msg("\nInterrupt Issued to running devices #{@running}",3)
         @running.each{|site|
-          @record.cfg[:wat_list].site(site).exe(['interrupt'],'user')
+          @record.cfg.layers[:wat].site(site).exe(['interrupt'],'user')
         } if $opt['m']
         finish('interrupted')
         self

@@ -24,8 +24,9 @@ module CIAX
       attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro
       #ent_cfg should have [:db]
-      def initialize(ent_cfg={})
-        Wat::List.new(ent_cfg) unless ent_cfg.layers.key?(:app)
+      def initialize(ent_cfg)
+        type?(ent_cfg,Config)
+        Wat::List.new(ent_cfg) unless ent_cfg.layers.key?(:wat)
         db=type?(ent_cfg[:db],Db)
         @record=Record.new(db['id'],db['version']).start(ent_cfg)
         super(@record['sid'])

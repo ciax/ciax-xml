@@ -5,30 +5,31 @@ require "libmcrlist"
 module CIAX
   module Mcr
     module Man
-      def self.new(cfg={})
+      def self.new(inter_cfg=Config.new('mcr'))
         if $opt['l']
           $opt.delete('l')
-          cfg['host']='localhost'
-          Sv.new(cfg)
-          Cl.new(cfg)
+          inter_cfg['host']='localhost'
+          Sv.new(inter_cfg)
+          Cl.new(inter_cfg)
         elsif $opt['c'] || $opt['h']
-          Cl.new(cfg)
+          Cl.new(inter_cfg)
         elsif $opt['t']
-          Exe.new(cfg)
+          Exe.new(inter_cfg)
         else
-          Sv.new(cfg)
+          Sv.new(inter_cfg)
         end
       end
 
       class Exe < Exe
-        def initialize(cfg={})
+        def initialize(inter_cfg)
           id=ENV['PROJ']||'ciax'
-          cfg[:db]||=Db.new.set(id)
-          cfg[:wat_list]||=Wat::List.new(cfg)
-          super(id,cfg)
+          type?(inter_cfg,Config)
+          Wat::List.new(inter_cfg) unless inter_cfg.layers.key?(:wat)
+          inter_cfg[:db]||=Db.new.set(id)
+          super(id,inter_cfg)
           @cobj.add_extgrp
           @cobj.add_intgrp(Int)
-          lc=cfg[:list_class]||List
+          lc=inter_cfg[:list_class]||List
           @output=@list=lc.new(@cobj)
           @valid_pars=@cobj.intgrp.valid_pars
           @cobj.lodom.join_group(@list.jumpgrp)
@@ -61,23 +62,22 @@ module CIAX
       end
 
       class Cl < Exe
-        def initialize(cfg)
-          cfg[:list_class]=ClList
+        def initialize(inter_cfg)
+          inter_cfg[:list_class]=ClList
           super
-          host=cfg['host']||@cobj.cfg[:db]['host']||'localhost'
-          port=cfg['port']||@cobj.cfg[:db]['port']||55555
+          host=inter_cfg['host']||@cobj.cfg[:db]['host']||'localhost'
+          port=inter_cfg['port']||@cobj.cfg[:db]['port']||55555
           @pre_exe_procs << proc{@list.upd}
           ext_client(host,port)
         end
       end
 
       class Sv < Exe
-        def initialize(cfg)
-          cfg[:list_class]=SvList
-          cfg[:submcr_proc]=proc{|args,src| exe(args,src)}
+        def initialize(inter_cfg)
+          inter_cfg[:list_class]=SvList
+          inter_cfg[:submcr_proc]=proc{|args,src| exe(args,src)}
           super
-          type?(cfg[:wat_list],Wat::List)
-          port=cfg['port']||@cobj.cfg[:db]['port']||55555
+          port=inter_cfg['port']||@cobj.cfg[:db]['port']||55555
           self['sid']='' # For server response
           @pre_exe_procs << proc{ self['sid']='' }
           # Internal Command Group

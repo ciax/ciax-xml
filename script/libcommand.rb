@@ -15,6 +15,7 @@ module CIAX
       local_class(class_name,attr[:mod]||@cfg[:mod]).new(@cfg,attr)
     end
 
+    # Proc should return String
     def set_proc(&def_proc)
       @cfg[:def_proc]=type?(def_proc,Proc)
       self
@@ -254,7 +255,7 @@ module CIAX
       verbose("self",inspect)
     end
 
-    # returns result of def_proc block
+    # returns result of def_proc block (String)
     def exe_cmd(src,pri=1)
       verbose("Cmd","Execute [#{@id}] from #{src}")
       @cfg[:def_proc].call(self,src,pri)

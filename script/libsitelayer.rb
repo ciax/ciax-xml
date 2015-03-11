@@ -5,7 +5,7 @@ module CIAX
   module Site
     class Layer < CIAX::List
       def initialize(inter_cfg={},attr={})
-        super(Site,inter_cfg,attr)
+        super(Layer,inter_cfg,attr)
         @cfg[:site_stat]=Prompt.new
         @cfg[:current_site]||=''
         @pars={:parameters => [{:default => @cfg[:current_site]}]}
@@ -35,15 +35,15 @@ module CIAX
             dst=last
           end
           dst.shell(id)
-        rescue Site::Jump
+        rescue Jump
           layer,id=$!.to_s.split(':')
           retry
         rescue InvalidID
           $opt.usage('(opt) [id]')
         end
       end
-    end
 
-    class Jump < LongJump; end
+      class Jump < LongJump; end
+    end
   end
 end

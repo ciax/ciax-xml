@@ -22,6 +22,7 @@ module CIAX
           @jumpgrp.add_item(id,str+" mode",@pars)
           set(id,v)
         }
+        self
       end
 
       def shell(id)

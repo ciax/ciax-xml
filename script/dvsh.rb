@@ -7,10 +7,9 @@ module CIAX
   GetOpts.new("afxtelsch:")
   site=ARGV.shift
   inter=Site::Layer.new
-  ['f','a','w'].each{|tag|
-    inter.add_layer($layers[tag])
-    break if $opt[tag]
+  mod=Wat
+  ['f','a','x'].each{|tag|
+    mod=$layers[tag] if $opt[tag]
   }
-  inter.add_layer($layers['x']) if $opt['x']
-  inter.shell(site)
+  inter.add_layer(mod).shell(site)
 end

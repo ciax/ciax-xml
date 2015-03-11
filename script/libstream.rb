@@ -12,6 +12,7 @@ module CIAX
   # }
   class Stream < Varx
     attr_reader :binary
+    attr_accessor :pre_open_proc,:post_open_proc
     def initialize(id,ver,iocmd,wait=0,timeout=nil)
       Msg.abort(" No IO command") if iocmd.to_a.empty?
       @iocmd=type?(iocmd,Array).compact
@@ -22,6 +23,8 @@ module CIAX
       verbose("Client","Initialize [#{iocmd.join(' ')}]")
       @wait=wait.to_f
       @timeout=timeout
+      @pre_open_proc=proc{}
+      @post_open_proc=proc{}
       Signal.trap(:CHLD){
         verbose("Client","#@iocmd is terminated")
       }
@@ -74,9 +77,11 @@ module CIAX
     def openstrm
       # SIGINT gets around the child process
       verbose("Client","Stream Opening")
+      @pre_open_proc.call
       Signal.trap(:INT,nil)
       @f=IO.popen(@iocmd,'r+')
       Signal.trap(:INT,"DEFAULT")
+      @opst_open_proc.call
       verbose("Client","Stream Open successfully")
       # Shut off from Ctrl-C Signal to the child process
       # Process.setpgid(@f.pid,@f.pid)

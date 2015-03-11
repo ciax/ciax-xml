@@ -71,7 +71,7 @@ module CIAX
       def initialize(id,inter_cfg={},attr={})
         super
         @field.ext_file
-        @site_stat.add_db('comerr' => 'X')
+        @site_stat.add_db('comerr' => 'X','strerr' => 'E')
         timeout=5
         if $opt['s']
           @mode='SIM'
@@ -82,6 +82,8 @@ module CIAX
         end
         @stream=Stream.new(@id,@fdb['version'],iocmd,@fdb['wait'],timeout)
         @stream.ext_log unless $opt['s']
+        @stream.pre_open_proc=proc{@site_stat['strerr']=true}
+        @stream.post_open_proc=proc{@site_stat['strerr']=false}
         @field.ext_rsp{@stream.rcv}
         @cobj.ext_proc{|ent|
           @site_stat['comerr']=false

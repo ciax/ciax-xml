@@ -29,6 +29,8 @@ module CIAX
   # No Data in Field for Status
   class NoData < UserError; end
 
+  # Stream Open Error
+  class StreamError < UserError; end
   # Communication Error
   class CommError < UserError; end
   # Verification Error
@@ -170,6 +172,11 @@ module CIAX
     def com_err(*msg) # Raise Device error (Communication Failed)
       msg[0]=color(msg[0],1)
       raise CommError,msg.join("\n  "),caller(1)
+    end
+
+    def str_err(*msg) # Raise Device error (Stream open Failed)
+      msg[0]=color(msg[0],1)
+      raise StreamError,msg.join("\n  "),caller(1)
     end
 
     def relay(msg)

@@ -8,7 +8,6 @@ module CIAX
     class List < List
       # @index: current element (1..@data.size)
       # initialize takes Command for generating submacro
-      attr_reader :jumpgrp
       attr_accessor :index
       def initialize(cobj=nil)
         @cobj=type?(cobj||Command.new.add_extgrp,Command)

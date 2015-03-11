@@ -3,6 +3,7 @@ require "libdatax"
 
 module CIAX
   class List < DataH
+    attr_reader :jumpgrp
     def initialize(level,inter_cfg={},attr={})
       @level=type?(level,Module)
       name=level.to_s.split(':').last.downcase

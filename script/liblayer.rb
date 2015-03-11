@@ -1,18 +1,20 @@
 #!/usr/bin/ruby
 require "libmcrman"
+require "libsitelayer"
 
 module CIAX
   module Mcr
     class Layer < CIAX::List
       def initialize(inter_cfg={},attr={})
         super(Layer,inter_cfg,attr)
-        @cfg[:jump_groups] << @jumpgrp
-        @jumpgrp.add_item('mcr',"Mcr mode")
+        sl=Site::Layer.new(@cfg).add_layer(Wat)
+        sl.jumpgrp.add_item('mcr',"Mcr mode").set_proc{|ent|
+          raise(Jump,ent.id)
+        }
         mcr=Mcr::Man.new(@cfg)
         set('mcr',mcr)
-        app=mcr.cfg.layers[:app]
         wg=mcr.cobj.lodom.add_group('caption'=>"App Mode",'color' => 9)
-        wg.update_items(app.list).set_proc{|ent| app.shell(ent.id);'' }
+        wg.update_items(@cfg.layers[:app].list).set_proc{|ent| sl.shell(ent.id);'' }
       end
 
       def shell(site='crt')

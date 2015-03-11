@@ -39,10 +39,10 @@ module CIAX
       end
 
       def upd_core
-        @res[2]=b2e(@hint['uerr'])
+        @res[2]=b2e(@hint['udperr'])
         @res[3]=b2i(@hint['watch'])
         @res[4]=b2i(@hint['isu'])
-        @res[5]=b2e(@hint['cerr'])
+        @res[5]=b2e(@hint['comerr'])
         @res[6]=''
         pck=0
         bin=0

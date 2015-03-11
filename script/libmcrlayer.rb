@@ -17,7 +17,7 @@ module CIAX
         wg.update_items(@cfg.layers[:app].list).set_proc{|ent| sl.shell(ent.id,'app');'' }
       end
 
-      def shell(site='crt')
+      def shell
         layer='mcr'
         begin
           get(layer).shell

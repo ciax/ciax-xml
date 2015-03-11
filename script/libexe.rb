@@ -127,7 +127,7 @@ module CIAX
     # remove ipv6 entry from /etc/hosts
     def ext_client(host,port)
       host||='localhost'
-      @site_stat.add_db('uerr' => 'x')
+      @site_stat.add_db('udperr' => 'x')
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)
       verbose("UDP:Client","Initialize [#@id/#{host}:#{port}]")
@@ -138,11 +138,11 @@ module CIAX
         verbose("UDP:Client","Send [#{args}]")
         if IO.select([@udp],nil,nil,1)
           res=@udp.recv(1024)
-          @site_stat['uerr']=false
+          @site_stat['udperr']=false
           verbose("UDP:Client","Recv #{res}")
           update(@site_stat.pick(JSON.load(res))) unless res.empty?
         else
-          @site_stat['uerr']=true
+          @site_stat['udperr']=true
           self['msg']='TIMEOUT'
         end
         self['msg']

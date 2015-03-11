@@ -71,7 +71,7 @@ module CIAX
       def initialize(id,inter_cfg={},attr={})
         super
         @field.ext_file
-        @site_stat.add_db('cerr' => 'X')
+        @site_stat.add_db('comerr' => 'X')
         timeout=5
         if $opt['s']
           @mode='SIM'
@@ -84,7 +84,7 @@ module CIAX
         @stream.ext_log unless $opt['s']
         @field.ext_rsp{@stream.rcv}
         @cobj.ext_proc{|ent|
-          @site_stat['cerr']=false
+          @site_stat['comerr']=false
           @stream.snd(ent.cfg[:frame],ent.id)
           @field.rsp(ent)
           'OK'
@@ -109,7 +109,7 @@ module CIAX
       def exe(args,src='local',pri=1)
         super
       rescue CommError
-        @site_stat['cerr']=true
+        @site_stat['comerr']=true
         self['msg']=$!.to_s
       end
 

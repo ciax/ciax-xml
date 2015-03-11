@@ -25,8 +25,7 @@ module CIAX
         self
       end
 
-      def shell(id)
-        layer=@layer
+      def shell(id,layer=@layer)
         begin
           dst=get(layer)
           if dst.list.key?(id)

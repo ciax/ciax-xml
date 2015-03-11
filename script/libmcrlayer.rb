@@ -14,7 +14,7 @@ module CIAX
         mcr=Mcr::Man.new(@cfg)
         set('mcr',mcr)
         wg=mcr.cobj.lodom.add_group('caption'=>"App Mode",'color' => 9)
-        wg.update_items(@cfg.layers[:app].list).set_proc{|ent| sl.shell(ent.id);'' }
+        wg.update_items(@cfg.layers[:app].list).set_proc{|ent| sl.shell(ent.id,'app');'' }
       end
 
       def shell(site='crt')

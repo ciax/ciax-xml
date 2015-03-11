@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require "libmcrman"
+require "libmcrlayer"
 
 module CIAX
   ENV['VER']||='initialize'
   GetOpts.new('cmlnr')
-  Mcr::Man.new.shell
+  Mcr::Layer.new.shell
 end

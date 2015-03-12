@@ -54,6 +54,8 @@
           <stat var="jak" site="crt">OFF</stat>
         </wait>
       </item>
+    </group>
+    <group id="gsub" caption="Sub Macro Commands" column="2">
       <!--FIX Flange Jack Command-->
       <item id="fju0" label="InR0 Jkup at FIX [site]">
         <par_str>dso,dsi</par_str>

@@ -6,12 +6,17 @@
   app: Application layer
        classified by model number (application)
        transaction: async
-  loc: Location Layer
-       classified by site id (location)
-       information: host, port
-  ins: Instance layer
-       classified by serial id (individuality or identity)
+  wat: Watch layer
+       associated with app id
+       function: automated command issue according to the status
+                 block conflicting commands
+                 appropriate command for interrupt. 
+  mcr: Macro layer
+
+  ins/dev: Site Layer
+       classified by site id (dev=>frm, ins=>app)
        function: aliasing, symboling and labeling over adb items
+       information: host, port
 
 ## DB description ##
 
@@ -21,12 +26,13 @@
   adb: Apprication DB
     adbc: Command DB
     adbs: Status DB
-  ldb: Location DB
-  idb: Instance DB
+  ddb: Device DB (Frm site information)
+  idb: Instance DB (App site information)
   sdb: Symbol DB
       used by adb or idb
   wdb: Watch DB
       included in adb      
+  mdb: Macro DB
 
 ### Data Validation ###
 

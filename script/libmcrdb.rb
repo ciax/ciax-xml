@@ -18,7 +18,6 @@ module CIAX
 
       def init_command(mdbc)
         idx={}
-#        grp={'main' =>{'caption' => 'Macro Commands',:members => mbs}}
         grp={}
         mdbc.each{|e|
           Msg.abort("No group in mdbc") unless e.name == 'group'

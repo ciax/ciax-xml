@@ -92,21 +92,12 @@ module CIAX
         }
         @event.ext_log if $opt['e'] && @ash.stat['ver']
         @interval=@event.interval
-        @tid_exec=exec_queue
         @tid_auto=auto_update
         @post_exe_procs << proc{
           @site_stat['auto'] = @tid_auto && @tid_auto.alive?
         }
         @ash.stat.post_upd_procs << proc{
-          @event.upd
-          @tid_exec.run
-        }
-      end
-
-      def exec_queue
-        ThreadLoop.new("Watch:Exec(#@id)",14){
-          @event.exec
-          sleep
+          @event.upd.exec
         }
       end
 
@@ -115,8 +106,7 @@ module CIAX
           begin
             if @event.get('exec').empty?
               verbose("Watch","Auto Update(#{@ash.stat['time']})")
-              @event.queue('auto',3,[['upd']])
-              @tid_exec.run
+              @event.queue('auto',3,[['upd']]).exec
             end
             @event.next_upd
           rescue InvalidID

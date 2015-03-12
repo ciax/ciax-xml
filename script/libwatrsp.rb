@@ -26,7 +26,6 @@ module CIAX
         #       => check(@data['crnt'] <> @data['last']?)
         # Stat no changed -> clear exec, no eval
         @ctime=0
-        upd
         self
       end
 

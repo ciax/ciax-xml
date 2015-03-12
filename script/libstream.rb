@@ -22,7 +22,7 @@ module CIAX
       @pfx_color=9
       verbose("Client","Initialize [#{iocmd.join(' ')}]")
       @wait=wait.to_f
-      @timeout=timeout
+      @timeout=timeout||5
       @pre_open_proc=proc{}
       @post_open_proc=proc{}
       Signal.trap(:CHLD){
@@ -47,11 +47,16 @@ module CIAX
       verbose("Client","Wait for Recieving")
       reopen
       if IO.select([@f],nil,nil,@timeout)
-        str=@f.sysread(4096)
+        begin
+          str=@f.sysread(4096)
+        rescue EOFError
+          #Jumped at quit
+          @f.close
+          exit
+        end
       else
         Msg.com_err("Stream:No response")
       end
-#        Process.kill(1,@f.pid)
       verbose("Client","Recieved #{str.size} byte on #{self['cmd']}")
       verbose("Client","Binary Recieving",str.inspect)
       convert('rcv',str)
@@ -80,7 +85,9 @@ module CIAX
       Signal.trap(:INT,nil)
       @f=IO.popen(@iocmd,'r+')
       Signal.trap(:INT,"DEFAULT")
-      at_exit{@f.close}
+      at_exit{
+        Process.kill('INT',@f.pid)
+      }
       @post_open_proc.call
       verbose("Client","Stream Open successfully")
       # Shut off from Ctrl-C Signal to the child process

@@ -106,7 +106,7 @@ module CIAX
           if @event.get('exec').empty?
             verbose("Auto","Update(#{@ash.stat['time']})")
             begin
-              @event.queue('auto',3,[['upd']]).exec
+              @event.queue('auto',3,[['upd']]).upd.exec
             rescue InvalidID
               errmsg
             rescue

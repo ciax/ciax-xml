@@ -113,10 +113,12 @@ module CIAX
       def auto_update
         ThreadLoop.new("Watch:Auto(#@id)",14){
           begin
-            verbose("Watch","Auto Update(#{@ash.stat['time']})")
-            @event.queue('auto',3,[['upd']]) if @event.get('exec').empty?
+            if @event.get('exec').empty?
+              verbose("Watch","Auto Update(#{@ash.stat['time']})")
+              @event.queue('auto',3,[['upd']])
+              @tid_exec.run
+            end
             @event.next_upd
-            @tid_exec.run
           rescue InvalidID
             errmsg
           rescue

@@ -46,6 +46,7 @@ module CIAX
         @post_exe_procs.each{|p|
           p.call(@data['exec'])
         }
+        @data['exec'].clear
         self
       end
 

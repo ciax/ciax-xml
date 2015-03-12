@@ -15,7 +15,7 @@ module CIAX
         @interval=0.1
         @post_exe_procs=[]
         @def_proc=proc{}
-        next_upd
+        @data['upd_next']=now_msec
         @data['act_start']=now_msec
         @data['act_end']=now_msec
         #For Array element

@@ -3,7 +3,6 @@ require "libhexlist"
 require "libsitelayer"
 
 module CIAX
-  ENV['VER']||='initialize'
   GetOpts.new("afxtelsch:")
   site=ARGV.shift
   inter=Site::Layer.new

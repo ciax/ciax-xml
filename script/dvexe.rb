@@ -2,7 +2,6 @@
 require "libhexexe"
 
 module CIAX
-  ENV['VER']||='initialize'
   GetOpts.new("jrafxtelch:")
   db={'x' => Hex,'f'=> Frm,'a'=> App,'w'=> Wat}
   layer=$opt.map{|k,v| db[k] if v}.compact.last||Wat

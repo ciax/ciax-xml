@@ -18,16 +18,23 @@ module CIAX
 
       def init_command(mdbc)
         idx={}
-        mbs={}
-        grp={'main' =>{'caption' => 'Macro Commands',:members => mbs}}
-        mdbc.each{|e0|
-          e0.attr2item(idx)
+#        grp={'main' =>{'caption' => 'Macro Commands',:members => mbs}}
+        grp={}
+        mdbc.each{|e|
+          Msg.abort("No group in mdbc") unless e.name == 'group'
+          gid=e.attr2item(grp)
+          arc_command(e,idx,grp[gid])
         }
-        mdbc.each{|e0|
-          id=e0['id']
+        {:group => grp,:index => idx}
+      end
+
+      def arc_command(e,idx,grp)
+        e.each{|e0|
+          id=e0.attr2item(idx)
           verbose("Mdb","MACRO:[#{id}]")
           item=idx[id]
-          mbs[id]=item['label']
+          label=item.delete('label')
+          (grp[:members]||={})[id]=label
           body=(item[:body]||=[])
           final={}
           e0.each{|e1,rep|
@@ -56,7 +63,7 @@ module CIAX
           }
           body << final unless final.empty?
         }
-        {:group => grp,:index => idx}
+        idx
       end
 
       def make_condition(e1,attr)

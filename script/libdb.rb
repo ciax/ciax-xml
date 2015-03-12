@@ -62,7 +62,7 @@ module CIAX
 
     def newest?
       if ENV['NOCACHE']
-        verbose("#@type/Cache","ENV NOCACHE is set")
+        warning("#@type/Cache","ENV NOCACHE is set")
       elsif !test(?e,fmar)
         verbose("#@type/Cache","MAR file(#{@base}) not exist")
       elsif newer=cmp($".grep(/#{ScrDir}/)+Dir.glob(XmlDir+"/#{@type}-*.xml"))

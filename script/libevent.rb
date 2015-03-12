@@ -15,9 +15,9 @@ module CIAX
         @interval=0.1
         @post_exe_procs=[]
         @def_proc=proc{}
-        @data['upd_next']=now_msec
         @data['act_start']=now_msec
         @data['act_end']=now_msec
+        next_upd
         #For Array element
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
         #For Hash element
@@ -38,6 +38,7 @@ module CIAX
 
       def next_upd
         @data['upd_next']=now_msec+@period*1000
+        upd
       end
 
       def ext_rsp(stat)

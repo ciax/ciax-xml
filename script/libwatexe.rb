@@ -103,17 +103,18 @@ module CIAX
 
       def auto_update
         ThreadLoop.new("Watch:Auto(#@id)",14){
-          begin
-            if @event.get('exec').empty?
-              verbose("Watch","Auto Update(#{@ash.stat['time']})")
+          if @event.get('exec').empty?
+            verbose("Auto","Update(#{@ash.stat['time']})")
+            begin
               @event.queue('auto',3,[['upd']]).exec
+            rescue InvalidID
+              errmsg
+            rescue
+              warn $!
             end
-            @event.next_upd
-          rescue InvalidID
-            errmsg
-          rescue
-            warn $!
           end
+          @event.next_upd
+          verbose("Auto","Update Sleep(#{@event.period}sec)")
           sleep @event.period
         }
       end

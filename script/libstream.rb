@@ -49,7 +49,6 @@ module CIAX
       if IO.select([@f],nil,nil,@timeout)
         str=@f.sysread(4096)
       else
-        @f.close
         Msg.com_err("Stream:No response")
       end
 #        Process.kill(1,@f.pid)
@@ -63,7 +62,7 @@ module CIAX
       int=0
       begin
         openstrm if !@f || @f.closed?
-      rescue
+      rescue SystemCallError
         warn $!
         Msg.str_err("Stream Open failed") if int > 2
         warning("Client","Try to reopen")
@@ -81,7 +80,8 @@ module CIAX
       Signal.trap(:INT,nil)
       @f=IO.popen(@iocmd,'r+')
       Signal.trap(:INT,"DEFAULT")
-      @opst_open_proc.call
+      at_exit{@f.close}
+      @post_open_proc.call
       verbose("Client","Stream Open successfully")
       # Shut off from Ctrl-C Signal to the child process
       # Process.setpgid(@f.pid,@f.pid)

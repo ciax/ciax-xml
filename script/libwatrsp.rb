@@ -30,22 +30,29 @@ module CIAX
         self
       end
 
-      def exec(src,pri,exec=[])
-        return self if @data['exec'].concat(exec).empty?
-        @data['exec'].each{|args|
+      def queue(src,pri,batch=[])
+        batch.each{|args|
+          @data['exec'] << [src,pri,args]
+        }
+        self
+      end
+
+      def exec
+        return self if @data['exec'].empty?
+        @data['exec'].each{|src,pri,args|
           verbose("Event","Executing:#{args} from [#{src}] by [#{pri}]")
           @def_proc.call(args,src,pri)
         }
         @post_exe_procs.each{|p|
-          p.call(@data['exec'],src,pri)
+          p.call(@data['exec'])
         }
         self
       end
 
       def ext_logging
         logging=Logging.new('event',Hash[self])
-        @post_exe_procs << proc{|batch,src,pri|
-          logging.append('src'=>src,'pri'=>pri,'cmd'=>batch,'active'=>@data['active'])
+        @post_exe_procs << proc{|src,pri,args|
+          logging.append('src'=>src,'pri'=>pri,'cmd'=>args,'active'=>@data['active'])
         }
         self
       end
@@ -60,7 +67,11 @@ module CIAX
         @windex.each{|id,item|
           next unless check(id,item)
           item[:act].each{|key,ary|
-            @data[key.to_s].concat ary
+            if key == :exec
+              queue('event',2,ary)
+            else
+              @data[key.to_s].concat(ary)
+            end
           }
           @data['active'] << id
         }

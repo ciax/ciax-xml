@@ -88,28 +88,40 @@ module CIAX
         init_sv
         @event.ext_file
         @event.def_proc=proc{|args,src,pri|
-            @ash.exe(args,src,pri)
-        }
-        @ash.stat.post_upd_procs << proc{
-          @event.upd.exec('event',2)
+          @ash.exe(args,src,pri)
         }
         @event.ext_log if $opt['e'] && @ash.stat['ver']
         @interval=@event.interval
-        tid_auto=auto_update
+        @tid_exec=exec_queue
+        @tid_auto=auto_update
         @post_exe_procs << proc{
-          @site_stat['auto'] = tid_auto && tid_auto.alive?
+          @site_stat['auto'] = @tid_auto && @tid_auto.alive?
+        }
+        @ash.stat.post_upd_procs << proc{
+          @event.upd
+          @tid_exec.run
+        }
+      end
+
+      def exec_queue
+        ThreadLoop.new("Watch:Exec(#@id)",14){
+          @event.exec
+          sleep
         }
       end
 
       def auto_update
         ThreadLoop.new("Watch:Auto(#@id)",14){
           begin
-            @event.exec('auto',3,[['upd']])
+            verbose("Watch","Auto Update(#{@ash.stat['time']})")
+            @event.queue('auto',3,[['upd']]) if @event.get('exec').empty?
+            @event.next_upd
+            @tid_exec.run
           rescue InvalidID
             errmsg
+          rescue
+            warn $!
           end
-          verbose("Watch","Auto Update(#{@ash.stat['time']})")
-          @event.next_upd
           sleep @event.period
         }
       end

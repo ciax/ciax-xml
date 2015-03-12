@@ -43,18 +43,18 @@ module CIAX
     def cache(id,group)
       @base="#{@type}-#{id}"
       if newest?
-        verbose("#@type/Cache","Loading(#{@base})")
+        verbose("#@type/Cache","Loading(#{id})")
         begin
           res=Marshal.load(IO.read(fmar))
         rescue ArgumentError #if empty
           res={}
         end
       else
-        verbose("#@type/Cache","Refresh Db")
+        warning("#@type/Cache","Refresh Db(#{id})")
         res=type?(yield(Xml::Doc.new(@type,group)),Hash)
         open(fmar,'w') {|f|
           f << Marshal.dump(res)
-          verbose("#@type/Cache","Saved(#{@base})")
+          verbose("#@type/Cache","Saved(#{id})")
         }
       end
       res
@@ -62,7 +62,7 @@ module CIAX
 
     def newest?
       if ENV['NOCACHE']
-        warning("#@type/Cache","ENV NOCACHE is set")
+        verbose("#@type/Cache","ENV NOCACHE is set")
       elsif !test(?e,fmar)
         verbose("#@type/Cache","MAR file(#{@base}) not exist")
       elsif newer=cmp($".grep(/#{ScrDir}/)+Dir.glob(XmlDir+"/#{@type}-*.xml"))

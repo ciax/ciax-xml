@@ -14,7 +14,7 @@ module CIAX
         hash=Hash[doc]
         # Command section
         members={}
-        hcmd=hash[:command]={:group => {'main' => {'caption' => 'Main',:members => members}}}
+        hcmd=hash[:command]={:group => {'main' => {'caption' => 'Device Commands',:members => members}}}
         hcmd[:frame]=init_frame(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
         icmd=hcmd[:index]=init_index(doc.domain('commands')){|e,r| init_cmd(e,r)}
         icmd.each{|id,hash| members[id]=hash.delete('label')}

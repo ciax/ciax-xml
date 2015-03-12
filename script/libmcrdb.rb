@@ -19,7 +19,7 @@ module CIAX
       def init_command(mdbc)
         idx={}
         mbs={}
-        grp={'main' =>{'caption' => 'Main',:members => mbs}}
+        grp={'main' =>{'caption' => 'Macro Commands',:members => mbs}}
         mdbc.each{|e0|
           e0.attr2item(idx)
         }

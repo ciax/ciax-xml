@@ -11,41 +11,41 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        hash=Hash[doc]
-        init_command(doc,hash)
-        init_stat(doc,hash)
-        hash
+        db=Db[doc]
+        init_command(doc,db)
+        init_stat(doc,db)
+        db
       end
 
       # Command section
-      def init_command(doc,hash)
+      def init_command(doc,db)
         members={}
-        hcmd=hash[:command]={:group => {'main' => {'caption' => 'Device Commands',:members => members}}}
+        hcmd=db[:command]={:group => {'main' => {'caption' => 'Device Commands',:members => members}}}
         hcmd[:frame]=init_frame(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
         icmd=hcmd[:index]=init_index(doc.domain('commands')){|e,r| init_cmd(e,r)}
-        icmd.each{|id,hash| members[id]=hash.delete('label')}
-        hash
+        icmd.each{|id,h| members[id]=h.delete('label')}
+        db
       end
 
       # Status section
-      def init_stat(doc,hash)
-        hres=hash[:response]={}
-        rfm=hash[:field]={}
+      def init_stat(doc,db)
+        hres=db[:response]={}
+        rfm=db[:field]={}
         hres[:frame]=init_frame(doc.domain('rspframe')){|e| init_rsp(e,rfm)}
         hres[:index]=init_index(doc.domain('responses')){|e| init_rsp(e,rfm)}
-        hash['frm_id']=hash['id']
-        hash
+        db['frm_id']=db['id']
+        db
       end
 
       def init_frame(domain)
-        hash=domain.to_h
+        db=domain.to_h
         enclose("Fdb","INIT:Main Frame <-","-> INIT:Main Frame"){
           frame=[]
           domain.each{|e1|
             frame << yield(e1)
           }
           verbose("Fdb","InitMainFrame:#{frame}")
-          hash[:main]=frame
+          db[:main]=frame
         }
         domain.find('ccrange'){|e0|
           enclose("Fdb","INIT:Ceck Code Frame <-","-> INIT:Ceck Code Frame"){
@@ -54,17 +54,17 @@ module CIAX
               frame << yield(e1,r1)
             }
             verbose("Fdb","InitCCFrame:#{frame}")
-            hash[:ccrange]=frame
+            db[:ccrange]=frame
           }
         }
-        hash
+        db
       end
 
       def init_index(domain)
-        hash={}
+        db={}
         domain.each{|e0|
-          id=e0.attr2item(hash)
-          item=hash[id]
+          id=e0.attr2item(db)
+          item=db[id]
           enclose("Fdb","INIT:Body Frame [#{id}]<-","-> INIT:Body Frame"){
             Repeat.new.each(e0){|e1,r1|
               par2item(e1,item) && next
@@ -73,7 +73,7 @@ module CIAX
             }
           }
         }
-        hash
+        db
       end
 
       def init_cmd(e,rep=nil)

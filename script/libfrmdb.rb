@@ -20,20 +20,22 @@ module CIAX
       # Command section
       def init_command(doc,db)
         members={}
-        hcmd=db[:command]={:group => {'main' => {'caption' => 'Device Commands',:members => members}}}
-        hcmd[:frame]=init_frame(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
-        icmd=hcmd[:index]=init_index(doc.domain('commands')){|e,r| init_cmd(e,r)}
-        icmd.each{|id,h| members[id]=h.delete('label')}
+        idx={}
+        grp={'main' => {'caption' => 'Device Commands',:members => members}}
+        frm=init_frame(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
+        idx=init_index(doc.domain('commands')){|e,r| init_cmd(e,r)}
+        idx.each{|id,h| members[id]=h.delete('label')}
+        db[:command]={:group => grp, :index => idx, :frame => frm}
         db
       end
 
       # Status section
       def init_stat(doc,db)
-        hres=db[:response]={}
-        rfm=db[:field]={}
-        hres[:frame]=init_frame(doc.domain('rspframe')){|e| init_rsp(e,rfm)}
-        hres[:index]=init_index(doc.domain('responses')){|e| init_rsp(e,rfm)}
+        db[:field]=fld={}
+        frm=init_frame(doc.domain('rspframe')){|e| init_rsp(e,fld)}
+        idx=init_index(doc.domain('responses')){|e| init_rsp(e,fld)}
         db['frm_id']=db['id']
+        db[:response]={:index => idx, :frame => frm}
         db
       end
 

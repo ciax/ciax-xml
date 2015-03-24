@@ -115,19 +115,20 @@ module CIAX
       @valid_keys=@cfg[:valid_keys]||[]
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
-      @cmdary=CmdGrp.new.add_grp(@cfg,@valid_keys)
+      @cmdary=CmdGrp.new
+      @current=@cmdary.add_grp(@cfg,@valid_keys)
     end
 
     def add_item(id,title=nil,crnt={})
       crnt[:id]=id
       crnt[:label]=title
-      @cmdary.last[id]=title
+      @current[id]=title
       self[id]=add('Item',crnt)
     end
 
     def del_item(id)
       @valid_keys.delete(id)
-      @cmdary.last.delete(id)
+      @current.delete(id)
       delete(id)
     end
 
@@ -139,7 +140,7 @@ module CIAX
     end
 
     def add_dummy(id,title)
-      @cmdary.last.dummy(id,title) #never put into valid_key
+      @current.dummy(id,title) #never put into valid_key
       self
     end
 

@@ -10,17 +10,18 @@ module CIAX
   # Cache is available
   class Db < Hashx
     XmlDir="#{ENV['HOME']}/ciax-xml"
-    attr_reader :list
+    attr_reader :list,:index
     def initialize(type,group=nil)
       super()
       @cls_color=5
       @type=type
       @group=group
+      @index={}
       @list=cache(group||'list',group){|doc| doc.list }
     end
 
     def set(id)
-      raise(InvalidID,"No such ID(#{id})\n"+@list.to_s) unless id
+      raise(InvalidID,"No such ID(#{id})\n"+@list) unless id
       deep_copy.update(cache(id,@group){|doc| doc_to_db doc.set(id) })
     end
 
@@ -51,7 +52,7 @@ module CIAX
         end
       else
         warning("#@type/Cache","Refresh Db(#{id})")
-        res=type?(yield(Xml::Doc.new(@type,group)),Hash)
+        res=yield(Xml::Doc.new(@type,group))
         open(fmar,'w') {|f|
           f << Marshal.dump(res)
           verbose("#@type/Cache","Saved(#{id})")

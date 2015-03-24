@@ -13,30 +13,37 @@ module CIAX
     # The group named file can conatin referenced item whose entity is
     # in another file.
     class Doc < Hashx
-      attr_reader :top,:list
-      ALL='all-list'
+      attr_reader :top,:index
       @@root={}
       def initialize(type,group=nil)
         super()
+        @index={}
+        @captions={}
         @cls_color=4
         @pfx_color=2
         /.+/ =~ type || Msg.cfg_err("No Db Type")
-        @group=group||ALL
         verbose("XmlDoc","xmlroot:#{@@root.keys}")
         @tree=(@@root[type]||=readxml("#{ENV['XMLPATH']}/#{type}-*.xml"))
-        list={}
-        Msg.abort("No XML group for '#{group}' in #{type}") unless @tree.key? @group
-        @tree[@group].each{|id,e|
-          list[id]=e['label']
-        }.empty? && raise(InvalidID)
-        @list=CmdList.new({"caption" => "[id]"}).update(list).sort!
+        @list=CmdGrp.new
+        grp=group ? [group] : @tree.keys
+        grp.each{|gid|
+          idx={}
+          @tree[gid].each{|id,e|
+            idx[id]=e['label']
+          }.empty? && raise(InvalidID)
+          @list.add_grp({"caption" => "[#{@captions[gid]}]"}).update(idx).sort!
+        }
         @domain={}
         @top=nil
       end
 
+      def list
+        @list.map{|l| l.to_s}.grep(/./).join("\n")
+      end
+
       def set(id)
-        raise(InvalidID,"No such ID(#{id})\n"+@list.to_s) unless @tree[@group].key?(id)
-        @top=@tree[@group][id]
+        raise(InvalidID,"No such ID(#{id})\n"+list) unless @index.key?(id)
+        @top=@index[id]
         update(@top.to_h)
         @top.each{|e1|
           @domain[e1.name]=e1 unless @top.ns == e1.ns
@@ -59,23 +66,34 @@ module CIAX
 
       private
       def readxml(glob)
-        group={ALL=>{}}
+        group={}
         reflist=[]
+        caption=nil
         Dir.glob(glob).each{|p|
           base=::File.basename(p,'.xml')
           verbose("XmlDoc","readxml:#{base}")
           fid=base.gsub(/.+-/,'')
           Gnu.new(p).each{|e|
-            if ref=e['ref']
+            if e.name == 'group'
+              gdb=group[e['id']]={}
+              @captions[e['id']]=e['caption']||e['id']
+              e.each{|e0|
+                id=e0['id']
+                gdb[id]=e0
+                @index[id]=e0
+              }
+            elsif ref=e['ref']
               reflist << [fid,ref]
+              @captions[fid]=fid.upcase
             elsif id=e['id']
-              (group[fid]||={})[id]=e if fid != id
-              group[ALL][id]=e if fid != ALL
+              (group['all']||={})[id]=e
+              @captions['all']='ALL'
+              @index[id]=e
             end
           }
         }.empty? && Msg.abort("No XML file for #{glob}")
         reflist.each{|fid,id|
-          (group[fid]||={})[id]=group[ALL][id] if fid != ALL
+          (group[fid]||={})[id]=@index[id]
         }
         group
       end
@@ -84,7 +102,7 @@ module CIAX
 
   if __FILE__ == $0
     begin
-      doc=Xml::Doc.new(ARGV.shift)
+      doc=Xml::Doc.new(ARGV.shift,ARGV.shift)
       puts doc.list
     rescue ConfigError
       Msg.usage("[type] (adb,fdb,idb,mdb,sdb)")

@@ -98,5 +98,7 @@ frmsh (intfrm -t)/ used when running site is different from intapp
    set return value to local var 'res' at the end of block if it is expressly provided
 
 ## Method rule
-  - set() which stores value returns self
-  - add() which converts and stores value returns generated object
+  - set() [set_*()] : stores value returns self
+  - add() [add_*()] : converts and stores value returns generated object
+  - index() : returns Hash
+  - list() : returns String

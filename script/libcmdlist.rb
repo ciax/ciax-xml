@@ -61,8 +61,8 @@ module CIAX
 
   class CmdGrp < Array
     def add_grp(cfg,select={})
-      concat(CmdList.new(cfg,select))
-      self
+      concat(cl=CmdList.new(cfg,select))
+      cl
     end
 
     def list

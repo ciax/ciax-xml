@@ -61,7 +61,7 @@ module CIAX
         cdb=@db[:command]
         idx=cdb[:index]
         (cdb[:group]).each{|gid,gat|
-          @cmdary << CmdList.new(gat,@valid_keys)
+          @cmdary.add_grp(gat,@valid_keys)
           (gat[:members]).each{|id,label|
             if ref=(cdb[:alias]||{})[id]
               item=idx[ref]

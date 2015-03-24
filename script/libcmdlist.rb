@@ -58,4 +58,15 @@ module CIAX
       end
     end
   end
+
+  class CmdGrp < Array
+    def add_grp(cfg,select={})
+      concat(CmdList.new(cfg,select))
+      self
+    end
+
+    def list
+      map{|l| l.to_s}.grep(/./).join("\n")
+    end
+  end
 end

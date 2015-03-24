@@ -115,7 +115,7 @@ module CIAX
       @valid_keys=@cfg[:valid_keys]||[]
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
-      @cmdary=[CmdList.new(@cfg,@valid_keys)]
+      @cmdary=CmdGrp.new.add_grp(@cfg,@valid_keys)
     end
 
     def add_item(id,title=nil,crnt={})
@@ -154,7 +154,7 @@ module CIAX
     end
 
     def list
-      @cmdary.map{|l| l.to_s}.grep(/./).join("\n")
+      @cmdary.list
     end
 
     def valid_pars

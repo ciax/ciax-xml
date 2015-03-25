@@ -13,7 +13,7 @@ module CIAX
     # The group named file can conatin referenced item whose entity is
     # in another file.
     class Doc < Hashx
-      attr_reader :top,:list
+      attr_reader :top,:cmdlist
       @@root={}
       def initialize(type,group=nil)
         super()
@@ -24,7 +24,7 @@ module CIAX
         /.+/ =~ type || Msg.cfg_err("No Db Type")
         verbose("XmlDoc","xmlroot:#{@@root.keys}")
         @tree=(@@root[type]||=readxml("#{ENV['XMLPATH']}/#{type}-*.xml"))
-        @list=CmdGrps.new
+        @cmdlist=CmdGrps.new
         if group
           raise(InvalidGrp,"No such Group(#{group}) #{@tree.keys}") unless @tree.key?(group)
           grp=[group]
@@ -36,14 +36,14 @@ module CIAX
           @tree[gid].each{|id,e|
             idx[id]=e['label']
           }.empty? && raise(InvalidID)
-          @list.add_grp({"caption" => "[#{@captions[gid]}]"}).update(idx).sort!
+          @cmdlist.add_grp({"caption" => "[#{@captions[gid]}]"}).update(idx).sort!
         }
         @domain={}
         @top=nil
       end
 
       def set(id)
-        raise(InvalidID,"No such ID(#{id})\n"+@list.to_s) unless @list.key?(id)
+        raise(InvalidID,"No such ID(#{id})\n"+@cmdlist.to_s) unless @index.key?(id)
         @top=@index[id]
         update(@top.to_h)
         @top.each{|e1|
@@ -104,7 +104,7 @@ module CIAX
   if __FILE__ == $0
     begin
       doc=Xml::Doc.new(ARGV.shift,ARGV.shift)
-      puts doc.list
+      puts doc.cmdlist
     rescue InvalidGrp
       Msg.usage("[type] [group]")
     rescue ConfigError

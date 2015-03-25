@@ -115,8 +115,8 @@ module CIAX
       @valid_keys=@cfg[:valid_keys]||[]
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
-      @cmdary=CmdGrps.new(@valid_keys)
-      @current=@cmdary.add_grp(@cfg)
+      @cmdlist=CmdGrps.new(@valid_keys)
+      @current=@cmdlist.add_grp(@cfg)
     end
 
     def add_item(id,title=nil,crnt={})
@@ -139,6 +139,11 @@ module CIAX
       self
     end
 
+    def update_lists(cmdlist)
+      @cmdlist.concat(type?(cmdlist,CmdGrps))
+      self
+    end
+
     def add_dummy(id,title)
       @current.dummy(id,title) #never put into valid_key
       self
@@ -155,7 +160,7 @@ module CIAX
     end
 
     def list
-      @cmdary.to_s
+      @cmdlist.to_s
     end
 
     def valid_pars

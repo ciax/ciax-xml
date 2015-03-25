@@ -1,41 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ddb xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb">
-  <site id="crt" frm_id="mel" host="cxws2" port="24101" iocmd="socat - udp:cart3:5000" label="CIAX CART 3"/>
-  <site id="dsi" frm_id="cj2" host="cxws2" port="24102" iocmd="socat - udp:cst-i:9600" label="IR Stand-by Flange">
-    <assign id="ipl" val="1"/>
-    <assign id="ipr" val="33"/>
-  </site>
-  <site id="dso" frm_id="cj2" host="cxws2" port="24103" iocmd="socat - udp:cst-o:9600" label="OPT Stand-by Flange">
-    <assign id="ipl" val="1"/>
-    <assign id="ipr" val="32"/>
-  </site>
-  <site id="det" frm_id="srm" host="cxws2" port="24104" iocmd="socat - tcp:ltc-e:4002" label="CsEtr Control"/>
-  <site id="dts" frm_id="oss" host="cxws2" port="24105" iocmd="socat - tcp:cxws2:9999" label="Gen2 TSC Control"/>
-  <site id="cro" frm_id="bbe" host="ciax" port="24106" iocmd="socat - tcp:ltc-o:4003" label="OPT Helium Compressor 2"/>
-  <site id="cci" frm_id="bbe" host="ciax" port="24108" iocmd="socat - tcp:ltc-i:4002" label="IR Helium Compressor 1"/>
-  <site id="cco" frm_id="bbe" host="ciax" port="24109" iocmd="socat - tcp:ltc-o:4002" label="OPT Helium Compressor 1"/>
-  <site id="cri" frm_id="bbe" host="ciax" port="24110" iocmd="socat - tcp:ltc-i:4003" label="IR Helium Compressor 2"/>
-  <site id="cf1" frm_id="k3n" host="ciax" port="24201" iocmd="socat - tcp:ltt-o:4001" label="S1 HC Coolant Flow"/>
-  <site id="cfa" frm_id="k3n" host="ciax" port="24210" iocmd="socat - tcp:ltt-i:4015" label="S10 HC Coolant Flow"/>
-  <site id="cr2" frm_id="mel" host="ciax" port="24502" iocmd="socat - udp:cart2:5000" label="CIAX CART 2"/>
-  <site id="mfp" frm_id="cfp" host="electra" port="24601" iocmd="socat - tcp:celaeno:4001" label="MOIRCS Pneumatic Actuator"/>
-  <site id="map" frm_id="oma" host="electra" port="24602" iocmd="socat - tcp:celaeno:4002" label="MOIRCS Air Pressure"/>
-  <site id="mma" frm_id="slo" host="electra" port="24603" iocmd="socat - tcp:celaeno:4003" label="MOIRCS Extension Arm"/>
-  <site id="mmc" frm_id="slo" host="electra" port="24604" iocmd="socat - tcp:celaeno:4004" label="MOIRCS Carrousel"/>
-  <site id="ml1" frm_id="lk8" host="electra" port="24605" iocmd="socat - tcp:celaeno:4005" label="MOIRCS Temperature 1"/>
-  <site id="ml2" frm_id="lk8" host="electra" port="24606" iocmd="socat - tcp:celaeno:4006" label="MOIRCS Temperature 2"/>
-  <site id="mix" frm_id="ixe" host="electra" port="24607" iocmd="socat - tcp:celaeno:4007" label="MOIRCS Turret"/>
-  <site id="mva" frm_id="var" host="electra" port="24608" iocmd="socat - tcp:celaeno:4008" label="MOIRCS Pumping"/>
-  <site id="mt1" frm_id="tpg" host="electra" port="24609" iocmd="socat - tcp:celaeno:4009" label="MOIRCS Pressure Main"/>
-  <site id="mt2" frm_id="tpg" host="electra" port="24610" iocmd="socat - tcp:celaeno:4010" label="MOIRCS Pressure Throat"/>
-  <site id="mt3" frm_id="tpg" host="electra" port="24611" iocmd="socat - tcp:celaeno:4011" label="MOIRCS Pressure Pump"/>
-  <site id="mft" frm_id="fpa" host="electra" port="24612" iocmd="socat - tcp:celaeno:4012" label="MOIRCS Hall Sensor"/>
-  <site id="mp1" frm_id="ken" host="electra" port="24613" iocmd="socat - tcp:celaeno:4013" label="MOIRCS Power Supply 1"/>
-  <site id="mp2" frm_id="ken" host="electra" port="24614" iocmd="socat - tcp:celaeno:4014" label="MOIRCS Power Supply 2"/>
-  <site id="mph" frm_id="mph" host="electra" port="24615" iocmd="socat - tcp:133.40.147.230:10017" label="MOIRCS Power Supply Hilo"/>
-  <site id="mh1" frm_id="psp" host="merope" port="24621" iocmd="socat - tcp:merope:59999" label="MOIRCS Main/Carrousel Heater"/>
-  <site id="mh2" frm_id="psp" host="atlas" port="24622" iocmd="socat - tcp:atlas:59999" label="MOIRCS Main Heater"/>
-  <site id="mmf" frm_id="mic" host="electra" port="24623" iocmd="socat - tcp:localhost:19990" label="MOIRCS Focus Actuator"/>
-  <site id="sdm" frm_id="slo" host="electra" port="24699" iocmd="socat - tcp:localhost:10001" label="Slosyn dummy"/>
-  <site id="fdm" frm_id="cfp" host="electra" port="24698" iocmd="socat - tcp:localhost:10002" label="Field Point dummy"/>
+  <group id="ciax" caption="CIAX" column="2">
+    <site id="crt" frm_id="mel" host="cxws2" port="24101" iocmd="socat - udp:cart3:5000" label="CIAX CART 3"/>
+    <site id="dsi" frm_id="cj2" host="cxws2" port="24102" iocmd="socat - udp:cst-i:9600" label="IR Stand-by Flange">
+      <assign id="ipl" val="1"/>
+      <assign id="ipr" val="33"/>
+    </site>
+    <site id="dso" frm_id="cj2" host="cxws2" port="24103" iocmd="socat - udp:cst-o:9600" label="OPT Stand-by Flange">
+      <assign id="ipl" val="1"/>
+      <assign id="ipr" val="32"/>
+    </site>
+    <site id="det" frm_id="srm" host="cxws2" port="24104" iocmd="socat - tcp:ltc-e:4002" label="CsEtr Control"/>
+    <site id="dts" frm_id="oss" host="cxws2" port="24105" iocmd="socat - tcp:cxws2:9999" label="Gen2 TSC Control"/>
+    <site id="cr2" frm_id="mel" host="ciax" port="24502" iocmd="socat - udp:cart2:5000" label="CIAX CART 2"/>
+  </group>
+  <group id="cmp" caption="Helium Compressor" column="2">
+    <site id="cro" frm_id="bbe" host="ciax" port="24106" iocmd="socat - tcp:ltc-o:4003" label="OPT Helium Compressor 2"/>
+    <site id="cci" frm_id="bbe" host="ciax" port="24108" iocmd="socat - tcp:ltc-i:4002" label="IR Helium Compressor 1"/>
+    <site id="cco" frm_id="bbe" host="ciax" port="24109" iocmd="socat - tcp:ltc-o:4002" label="OPT Helium Compressor 1"/>
+    <site id="cri" frm_id="bbe" host="ciax" port="24110" iocmd="socat - tcp:ltc-i:4003" label="IR Helium Compressor 2"/>
+    <site id="cf1" frm_id="k3n" host="ciax" port="24201" iocmd="socat - tcp:ltt-o:4001" label="S1 HC Coolant Flow"/>
+    <site id="cfa" frm_id="k3n" host="ciax" port="24210" iocmd="socat - tcp:ltt-i:4015" label="S10 HC Coolant Flow"/>
+  </group>
+  <group id="moircs" caption="MOIRCS" column="2">
+    <site id="mfp" frm_id="cfp" host="electra" port="24601" iocmd="socat - tcp:celaeno:4001" label="MOIRCS Pneumatic Actuator"/>
+    <site id="map" frm_id="oma" host="electra" port="24602" iocmd="socat - tcp:celaeno:4002" label="MOIRCS Air Pressure"/>
+    <site id="mma" frm_id="slo" host="electra" port="24603" iocmd="socat - tcp:celaeno:4003" label="MOIRCS Extension Arm"/>
+    <site id="mmc" frm_id="slo" host="electra" port="24604" iocmd="socat - tcp:celaeno:4004" label="MOIRCS Carrousel"/>
+    <site id="ml1" frm_id="lk8" host="electra" port="24605" iocmd="socat - tcp:celaeno:4005" label="MOIRCS Temperature 1"/>
+    <site id="ml2" frm_id="lk8" host="electra" port="24606" iocmd="socat - tcp:celaeno:4006" label="MOIRCS Temperature 2"/>
+    <site id="mix" frm_id="ixe" host="electra" port="24607" iocmd="socat - tcp:celaeno:4007" label="MOIRCS Turret"/>
+    <site id="mva" frm_id="var" host="electra" port="24608" iocmd="socat - tcp:celaeno:4008" label="MOIRCS Pumping"/>
+    <site id="mt1" frm_id="tpg" host="electra" port="24609" iocmd="socat - tcp:celaeno:4009" label="MOIRCS Pressure Main"/>
+    <site id="mt2" frm_id="tpg" host="electra" port="24610" iocmd="socat - tcp:celaeno:4010" label="MOIRCS Pressure Throat"/>
+    <site id="mt3" frm_id="tpg" host="electra" port="24611" iocmd="socat - tcp:celaeno:4011" label="MOIRCS Pressure Pump"/>
+    <site id="mft" frm_id="fpa" host="electra" port="24612" iocmd="socat - tcp:celaeno:4012" label="MOIRCS Hall Sensor"/>
+    <site id="mp1" frm_id="ken" host="electra" port="24613" iocmd="socat - tcp:celaeno:4013" label="MOIRCS Power Supply 1"/>
+    <site id="mp2" frm_id="ken" host="electra" port="24614" iocmd="socat - tcp:celaeno:4014" label="MOIRCS Power Supply 2"/>
+    <site id="mph" frm_id="mph" host="electra" port="24615" iocmd="socat - tcp:133.40.147.230:10017" label="MOIRCS Power Supply Hilo"/>
+    <site id="mh1" frm_id="psp" host="merope" port="24621" iocmd="socat - tcp:merope:59999" label="MOIRCS Main/Carrousel Heater"/>
+    <site id="mh2" frm_id="psp" host="atlas" port="24622" iocmd="socat - tcp:atlas:59999" label="MOIRCS Main Heater"/>
+    <site id="mmf" frm_id="mic" host="electra" port="24623" iocmd="socat - tcp:localhost:19990" label="MOIRCS Focus Actuator"/>
+    <site id="sdm" frm_id="slo" host="electra" port="24699" iocmd="socat - tcp:localhost:10001" label="Slosyn dummy"/>
+    <site id="fdm" frm_id="cfp" host="electra" port="24698" iocmd="socat - tcp:localhost:10002" label="Field Point dummy"/>
+  </group>
 </ddb>

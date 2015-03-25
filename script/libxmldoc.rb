@@ -24,7 +24,7 @@ module CIAX
         /.+/ =~ type || Msg.cfg_err("No Db Type")
         verbose("XmlDoc","xmlroot:#{@@root.keys}")
         @tree=(@@root[type]||=readxml("#{ENV['XMLPATH']}/#{type}-*.xml"))
-        @list=CmdGrp.new
+        @list=CmdGrps.new
         if group
           raise(InvalidGrp,"No such Group(#{group}) #{@tree.keys}") unless @tree.key?(group)
           grp=[group]

@@ -60,7 +60,7 @@ module CIAX
     end
   end
 
-  class CmdGrp
+  class CmdGrps
     def initialize(select=[])
       @select=[]
       @groups=[]

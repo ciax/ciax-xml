@@ -115,7 +115,7 @@ module CIAX
       @valid_keys=@cfg[:valid_keys]||[]
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
-      @cmdary=CmdGrp.new(@valid_keys)
+      @cmdary=CmdGrps.new(@valid_keys)
       @current=@cmdary.add_grp(@cfg)
     end
 

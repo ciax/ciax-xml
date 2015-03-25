@@ -61,12 +61,13 @@ module CIAX
   end
 
   class CmdGrp
-    def initialize
+    def initialize(select=[])
+      @select=[]
       @groups=[]
     end
 
-    def add_grp(cfg,select=[])
-      @groups.push(CmdList.new(cfg,select)).last
+    def add_grp(attr)
+      @groups.push(CmdList.new(attr,@select)).last
     end
 
     def [](id)
@@ -74,7 +75,7 @@ module CIAX
     end
 
     def key?(id)
-      @groups.any?{|l| l.select.include?(id)}
+      @select.include?(id)
     end
 
     def to_s

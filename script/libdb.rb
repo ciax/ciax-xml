@@ -21,7 +21,7 @@ module CIAX
     end
 
     def set(id)
-      raise(InvalidID,"No such ID(#{id})\n"+@list) unless id
+      raise(InvalidID,"No such ID(#{id})\n"+@list.to_s) unless id
       deep_copy.update(cache(id,@group){|doc| doc_to_db doc.set(id) })
     end
 

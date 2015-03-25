@@ -155,7 +155,7 @@ module CIAX
     end
 
     def list
-      @cmdary.list
+      @cmdary.to_s
     end
 
     def valid_pars

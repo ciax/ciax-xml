@@ -13,7 +13,7 @@ module CIAX
     # The group named file can conatin referenced item whose entity is
     # in another file.
     class Doc < Hashx
-      attr_reader :top,:index
+      attr_reader :top,:list
       @@root={}
       def initialize(type,group=nil)
         super()
@@ -25,7 +25,12 @@ module CIAX
         verbose("XmlDoc","xmlroot:#{@@root.keys}")
         @tree=(@@root[type]||=readxml("#{ENV['XMLPATH']}/#{type}-*.xml"))
         @list=CmdGrp.new
-        grp=group ? [group] : @tree.keys
+        if group
+          raise(InvalidGrp,"No such Group(#{group}) #{@tree.keys}") unless @tree.key?(group)
+          grp=[group]
+        else
+          grp=@tree.keys
+        end
         grp.each{|gid|
           idx={}
           @tree[gid].each{|id,e|
@@ -37,12 +42,8 @@ module CIAX
         @top=nil
       end
 
-      def list
-        @list.map{|l| l.to_s}.grep(/./).join("\n")
-      end
-
       def set(id)
-        raise(InvalidID,"No such ID(#{id})\n"+list) unless @index.key?(id)
+        raise(InvalidID,"No such ID(#{id})\n"+@list.to_s) unless @index.key?(id)
         @top=@index[id]
         update(@top.to_h)
         @top.each{|e1|
@@ -104,6 +105,8 @@ module CIAX
     begin
       doc=Xml::Doc.new(ARGV.shift,ARGV.shift)
       puts doc.list
+    rescue InvalidGrp
+      Msg.usage("[type] [group]")
     rescue ConfigError
       Msg.usage("[type] (adb,fdb,idb,mdb,sdb)")
     end

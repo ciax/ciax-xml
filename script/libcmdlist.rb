@@ -59,13 +59,21 @@ module CIAX
     end
   end
 
-  class CmdGrp < Array
-    def add_grp(cfg,select=[])
-      push(CmdList.new(cfg,select)).last
+  class CmdGrp
+    def initialize
+      @groups=[]
     end
 
-    def list
-      map{|l| l.to_s}.grep(/./).join("\n")
+    def add_grp(cfg,select=[])
+      @groups.push(CmdList.new(cfg,select)).last
+    end
+
+    def [](id)
+      @groups.map{|l| l[id]}.compact.first
+    end
+
+    def to_s
+      @groups.map{|l| l.to_s}.grep(/./).join("\n")
     end
   end
 end

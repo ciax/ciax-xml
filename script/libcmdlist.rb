@@ -5,6 +5,7 @@ module CIAX
   # Used by Command and XmlDoc
   # Attribute items: caption(text), color(#), column(#), show_all(t/f), line_number(t/f)
   class CmdList < Hash
+    attr_reader :select
     def initialize(attr,select=[])
       @attr=Msg.type?(attr,Hash)
       @select=Msg.type?(select,Array)
@@ -70,6 +71,10 @@ module CIAX
 
     def [](id)
       @groups.map{|l| l[id]}.compact.first
+    end
+
+    def key?(id)
+      @groups.any?{|l| l.select.include?(id)}
     end
 
     def to_s

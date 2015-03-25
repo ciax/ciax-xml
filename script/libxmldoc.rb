@@ -43,7 +43,7 @@ module CIAX
       end
 
       def set(id)
-        raise(InvalidID,"No such ID(#{id})\n"+@list.to_s) unless @index.key?(id)
+        raise(InvalidID,"No such ID(#{id})\n"+@list.to_s) unless @list.key?(id)
         @top=@index[id]
         update(@top.to_h)
         @top.each{|e1|

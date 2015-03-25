@@ -37,7 +37,7 @@ module CIAX
           @tree[gid].each{|id,e|
             idx[id]=e['label']
           }.empty? && raise(InvalidID)
-          @cmdlist.add_grp(@attrs[gid]).update(idx).sort!
+          @cmdlist.add_grp(@attrs[gid]||{}).update(idx).sort!
         }
         @domain={}
         @top=nil

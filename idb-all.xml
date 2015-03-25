@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <group id="ciax" caption="CIAX" >
+  <group id="ciax" caption="CIAX" column="2">
     <instance id="crt" app_id="mel" host="cxws2" port="25101" label="CIAX CART 3"/>
     <instance id="dsi" app_id="cj2" host="cxws2" port="25102" label="IR Stand-by"/>
     <instance id="dso" app_id="cj2" host="cxws2" port="25103" label="OPT Stand-by"/>
@@ -27,7 +27,7 @@
       </status>
     </instance>
   </group>
-  <group id="cmp" caption="Helium Compressor" >
+  <group id="cmp" caption="Helium Compressor" column="2">
     <instance id="cro" app_id="bbe" host="ciax" port="25106" label="OPT Helium Compressor">
       <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
         <item id="on" label="Alias for X0 ON" ref="x0on" />
@@ -215,6 +215,6 @@
     <instance id="mph" app_id="mph" host="electra" port="25615" label="MOIRCS Power Supply Hilo"/>
     <instance id="mh1" app_id="psp" host="merope" port="25621" label="MOIRCS Carrousel Heater"/>
     <instance id="mh2" app_id="psp" host="atlas" port="25622" label="MOIRCS Main Heater"/>
-    <instance id="mmf" app_id="mic" host="elextra" port="25623" label="MOIRCS Focus"/>
+    <instance id="mmf" app_id="mic" host="elextra" port="25623" label="MOIRCS Focus Control"/>
   </group>
 </idb>

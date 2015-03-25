@@ -18,6 +18,7 @@ module CIAX
       def initialize(type,group=nil)
         super()
         @index={}
+        @attrs={}
         @captions={}
         @cls_color=4
         @pfx_color=2
@@ -36,7 +37,7 @@ module CIAX
           @tree[gid].each{|id,e|
             idx[id]=e['label']
           }.empty? && raise(InvalidID)
-          @cmdlist.add_grp({"caption" => "[#{@captions[gid]}]"}).update(idx).sort!
+          @cmdlist.add_grp(@attrs[gid]).update(idx).sort!
         }
         @domain={}
         @top=nil
@@ -77,7 +78,7 @@ module CIAX
           Gnu.new(p).each{|e|
             if e.name == 'group'
               gdb=group[e['id']]={}
-              @captions[e['id']]=e['caption']||e['id']
+              @attrs[e['id']]=e.to_h
               e.each{|e0|
                 id=e0['id']
                 gdb[id]=e0
@@ -85,10 +86,10 @@ module CIAX
               }
             elsif ref=e['ref']
               reflist << [fid,ref]
-              @captions[fid]=fid.upcase
+              @attrs[fid]={'caption' => fid.upcase}
             elsif id=e['id']
               (group['all']||={})[id]=e
-              @captions['all']='ALL'
+              @attrs['all']={'caption' => 'ALL'}
               @index[id]=e
             end
           }

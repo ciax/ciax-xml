@@ -1,11 +1,12 @@
 #!/usr/bin/ruby
 require "libmsg"
 module CIAX
-  # Sortable Hash of title
+  # Sortable Caption Database (Value is String)
+  # Including key list (@select) for display chosen items.
+  # Including key list (@dummy) for always display.
   # Used by Command and XmlDoc
   # Attribute items: caption(text), color(#), column(#), show_all(t/f), line_number(t/f)
   class CmdList < Hash
-    attr_reader :select
     def initialize(attr,select=[])
       @attr=Msg.type?(attr,Hash)
       @select=Msg.type?(select,Array)
@@ -61,12 +62,8 @@ module CIAX
   end
 
   class CmdGrps < Array
-    def initialize(select=[])
-      @select=[]
-    end
-
-    def add_grp(attr)
-      push(CmdList.new(attr,@select)).last
+    def add_grp(attr,select=[])
+      push(CmdList.new(attr,select)).last
     end
 
     def to_s

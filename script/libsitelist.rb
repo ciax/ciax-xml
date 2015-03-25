@@ -10,7 +10,7 @@ module CIAX
         super
         @cfg[:current_site]||=''
         @db=type?(@cfg[:layer_db],CIAX::Db)
-        @jumpgrp.update_items(@db.index)
+        @jumpgrp.update_lists(@db.list)
         verbose("List","Initialize")
       end
 

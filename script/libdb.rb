@@ -10,14 +10,13 @@ module CIAX
   # Cache is available
   class Db < Hashx
     XmlDir="#{ENV['HOME']}/ciax-xml"
-    attr_reader :list,:index
+    attr_reader :list
     def initialize(type,group=nil)
       super()
       @cls_color=5
       @type=type
       @group=group
-      @index={}
-      @list=cache(group||'list',group){|doc| doc.list }
+      @list=cache(group||'list',group){|doc| doc.cmdlist }
     end
 
     def set(id)

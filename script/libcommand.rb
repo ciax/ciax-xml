@@ -140,7 +140,11 @@ module CIAX
     end
 
     def update_lists(cmdlist)
-      @cmdlist.concat(type?(cmdlist,CmdGrps))
+      type?(cmdlist,CmdGrps).each{|cl|
+        @cmdlist << cl
+        @current=cl
+        update_items(cl)
+      }
       self
     end
 

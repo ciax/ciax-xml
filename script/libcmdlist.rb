@@ -62,8 +62,12 @@ module CIAX
   end
 
   class CmdGrps < Array
-    def add_grp(attr,select=[])
-      push(CmdList.new(attr,select)).last
+    def initialize(select=[])
+      @select=select
+    end
+
+    def add_grp(attr)
+      push(CmdList.new(attr,@select)).last
     end
 
     def to_s

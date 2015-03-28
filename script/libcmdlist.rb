@@ -70,6 +70,10 @@ module CIAX
       push(CmdList.new(attr,@select)).last
     end
 
+    def key?(id)
+      @select.include?(id)
+    end
+
     def to_s
       map{|l| l.to_s}.grep(/./).join("\n")
     end

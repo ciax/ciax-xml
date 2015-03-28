@@ -16,6 +16,7 @@ module CIAX
       @cls_color=5
       @type=type
       @group=group
+      # @list is CmdGrps
       @list=cache(group||'list',group){|doc| doc.cmdlist }
     end
 

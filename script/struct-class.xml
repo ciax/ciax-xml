@@ -28,7 +28,7 @@
     </Hashx>
     <App.List/>
     <Frm.List/>
-    <Msg.CmdList/>
+    <Msg.CmdGrp/>
     <Xml.Doc/>
   </Hash>
   <Array>

@@ -18,7 +18,7 @@
   </basic>
   <shared>
     <Msg>
-      <CmdList parent="Hash"/>
+      <CmdGrp parent="Hash"/>
       <Ver parent="Object"/>
     </Msg>
     <Command parent="Hashx" extend="Msg.Ver" include="Math">

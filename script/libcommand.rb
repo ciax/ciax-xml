@@ -115,7 +115,7 @@ module CIAX
       @valid_keys=@cfg[:valid_keys]||[]
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
-      @cmdlist=CmdGrps.new(@valid_keys)
+      @cmdlist=CmdList.new(@valid_keys)
       @current=@cmdlist.add_grp(@cfg)
     end
 
@@ -140,7 +140,7 @@ module CIAX
     end
 
     def update_lists(cmdlist)
-      type?(cmdlist,CmdGrps).each{|cl|
+      type?(cmdlist,CmdList).each{|cl|
         @cmdlist << cl
         @current=cl
         update_items(cl)

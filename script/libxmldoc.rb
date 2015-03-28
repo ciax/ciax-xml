@@ -104,8 +104,8 @@ module CIAX
 
   if __FILE__ == $0
     begin
-      doc=Xml::Doc.new(ARGV.shift,ARGV.shift)
-      puts doc.cmdlist
+      doc=Xml::Doc.new(ARGV.shift)
+      puts doc.set(ARGV.shift)
     rescue InvalidGrp
       Msg.usage("[type] [group]")
     rescue ConfigError

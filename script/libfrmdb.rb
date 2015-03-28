@@ -119,11 +119,11 @@ module CIAX
     end
 
     if __FILE__ == $0
-      begin
+#      begin
         fdb=Db.new.set(ARGV.shift)
-      rescue InvalidID
-        Msg.usage("[id] (key) ..")
-      end
+#      rescue InvalidID
+#        Msg.usage("[id] (key) ..")
+#      end
       puts fdb.path(ARGV)
       exit
     end

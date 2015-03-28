@@ -10,19 +10,25 @@ module CIAX
   # Cache is available
   class Db < Hashx
     XmlDir="#{ENV['HOME']}/ciax-xml"
-    attr_reader :list
+    attr_reader :cmdlist
     def initialize(type,group=nil)
       super()
       @cls_color=5
       @type=type
-      @group=group
-      # @list is CmdList
-      @list=cache(group||'list',group){|doc| doc.cmdlist }
+      # @cmdlist is CmdList
+      @cmdlist=cache(group||'list',group){|doc| doc.cmdlist }
     end
 
     def set(id)
-      raise(InvalidID,"No such ID(#{id})\n"+@list.to_s) unless id
-      deep_copy.update(cache(id,@group){|doc| doc_to_db doc.set(id) })
+      raise(InvalidID,"No ID\n"+@list.to_s) unless id
+      db=cache(id){|doc|
+        puts "Object ID in yield #{doc.object_id}"#
+        top=doc.set(id)
+        puts "SET (#{id}) OK"#
+        doc_to_db(top)
+      }
+#      deep_copy.update(db)
+update(db)
     end
 
     # cover() will deeply merge self and given db
@@ -41,9 +47,10 @@ module CIAX
       {}
     end
 
-    def cache(id,group)
+    def cache(id,group=nil)
       @base="#{@type}-#{id}"
       if newest?
+puts "ENTERING FILE CACHE"
         verbose("#@type/Cache","Loading(#{id})")
         begin
           res=Marshal.load(IO.read(fmar))
@@ -52,7 +59,11 @@ module CIAX
         end
       else
         warning("#@type/Cache","Refresh Db(#{id})")
-        res=yield(Xml::Doc.new(@type,group))
+puts "XML type=#{@type}, group=#{group.inspect}"#
+        @doc||=Xml::Doc.new(@type,group)
+puts "Object ID in cache #{@doc.object_id}"#
+        res=yield(@doc)
+puts "EXIT YIELDED"
         open(fmar,'w') {|f|
           f << Marshal.dump(res)
           verbose("#@type/Cache","Saved(#{id})")

@@ -27,7 +27,7 @@ module CIAX
         str << " :\n"
         ind+=1
       else
-        str << "#\n"
+        str << "<<#{data.class}>>\n"
       end
       iv={}
       data.instance_variables.each{|n|

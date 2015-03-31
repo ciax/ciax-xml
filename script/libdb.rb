@@ -48,7 +48,7 @@ module CIAX
 
     def cache(id,group=nil)
       @base="#{@type}-#{id}"
-      if false #newest?
+      if newest?
         verbose("#@type/Cache","Loading(#{id})")
         begin
           res=Marshal.load(IO.read(fmar))

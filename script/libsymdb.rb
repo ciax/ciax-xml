@@ -10,17 +10,11 @@ module CIAX
         super('sdb')
       end
 
-      def add(id=nil)
-        update(set(id))
-      rescue InvalidID
-        # No error even if no sdb associated with ins/app id
-        raise $! if __FILE__ == $0
-      end
-
       def self.pack(ary=[])
         sdb=Sym::Db.new
-        ary.each{|k| sdb.add(k) }
-        sdb
+        dbi=Dbi.new
+        ary.each{|k| dbi.update(sdb.set(k)) }
+        dbi
       end
 
       private

@@ -9,7 +9,7 @@ module CIAX
     class View < Upd
       def initialize(adb,event)
         super()
-        wdb=type?(adb,App::Db)[:watch]||{:index =>[]}
+        wdb=type?(adb,Dbi)[:watch]||{:index =>[]}
         @event=type?(event,Event)
         @event.post_upd_procs << proc{upd}
         self['stat']={}

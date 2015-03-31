@@ -115,8 +115,8 @@ module CIAX
       @valid_keys=@cfg[:valid_keys]||[]
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
-      @cmdlist=CmdList.new(@valid_keys)
-      @current=@cmdlist.add_grp(@cfg)
+      @cmdlist=CmdList.new(@cfg,@valid_keys)
+      @current=@cmdlist.add_grp({'column' =>@cfg['column']})
     end
 
     def add_item(id,title=nil,crnt={})

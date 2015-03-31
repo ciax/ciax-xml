@@ -57,7 +57,7 @@ module CIAX
 
       def ext_shell
         super
-        vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
+        vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9,'column' => 2)
         vg.add_item('vis',"Visual mode").set_proc{@output=@wview;''}
         vg.add_item('raw',"Raw Print mode").set_proc{@output=@event;''}
         self

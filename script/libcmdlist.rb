@@ -5,7 +5,7 @@ module CIAX
   # Including key list (@select) for display chosen items.
   # Including key list (@dummy) for always display.
   # Used by Command and XmlDoc
-  # Attribute items: caption(text), color(#), column(#), show_all(t/f), line_number(t/f)
+  # Attribute items: caption(text), color(#), column(#), line_number(t/f)
   class CmdGrp < Hash
     def initialize(attr,select=[])
       @attr=Msg.type?(attr,Hash)
@@ -41,9 +41,24 @@ module CIAX
     end
 
     def to_s
-      cap=@attr["caption"]
-      cap= '==== '+Msg.color(cap,(@attr["color"]||6).to_i)+' ====' if cap
-      page=[cap]
+      if (b=body).empty?
+        ''
+      else
+        (caption+b).join("\n")
+      end
+    end
+
+    private
+    def caption
+      page=[]
+      if cap=@attr["caption"]
+        page << " == "+Msg.color(cap,(@attr["color"]||6).to_i)+" =="
+      end
+      page
+    end
+
+    def body
+      page=[]
       num=0
       ((@select+@dummy) & keys).each_slice((@attr["column"]||1).to_i){|a|
         l=a.map{|key|
@@ -53,20 +68,17 @@ module CIAX
         }.compact
         page << l.join("\t") unless l.empty?
       }
-      if @attr["show_all"] || page.size > 1
-        page.compact.join("\n")
-      else
-        ''
-      end
+      page.compact
     end
   end
 
   class CmdList < Array
-    def initialize(select=[])
+    def initialize(attr={},select=[])
+      @attr=Msg.type?(attr,Hash)
       @select=select
     end
 
-    def add_grp(attr)
+    def add_grp(attr={})
       push(CmdGrp.new(attr,@select)).last
     end
 
@@ -75,7 +87,24 @@ module CIAX
     end
 
     def to_s
-      map{|l| l.to_s}.grep(/./).join("\n")
+      if (b=body).empty?
+        ''
+      else
+        (caption+b).join("\n")
+      end
+    end
+
+    private
+    def caption
+      page=[]
+      if cap=@attr["caption"]
+       page << "**** "+Msg.color(cap,(@attr["color"]||6).to_i)+" ****"
+      end
+      page
+    end
+
+    def body
+      map{|l| l.to_s}.grep(/./)
     end
   end
 end

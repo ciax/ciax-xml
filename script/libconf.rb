@@ -57,7 +57,7 @@ module CIAX
       }
     end
 
-    def to_s
+    def path
       "******[\n"+@generation.map{|h|
         '{'+h.map{|k,v|
           case v

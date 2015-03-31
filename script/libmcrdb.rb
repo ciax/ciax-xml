@@ -11,8 +11,8 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        hash=Hash[doc]
-        hash[:command]=init_command(doc.top)
+        hash=Dbi[doc[:attr]]
+        hash[:command]=init_command(doc[:top])
         hash
       end
 

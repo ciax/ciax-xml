@@ -17,15 +17,15 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        db=Db[doc]
+        db=Dbi[doc[:attr]]
         hcmd=db[:command]={}
         algrp={'caption' => 'Alias','column' => 2,:members =>{}}
-        doc.domain('alias').each{|e0|
+        (doc[:domain]['alias']||[]).each{|e0|
           (hcmd[:alias]||={})[e0['id']]=e0['ref']
           algrp[:members][e0['id']]=e0['label']
         }
         (hcmd[:group]||={})['gal']=algrp
-        doc.domain('status').each{|e0|
+        (doc[:domain]['status']||[]).each{|e0|
           p=(db[:status]||={})
           if e0.name == 'group'
             e0.attr2item(p[:group]||={},'ref')

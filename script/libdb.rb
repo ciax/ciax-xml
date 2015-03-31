@@ -14,9 +14,9 @@ module CIAX
     def cover(db,key=nil,depth=nil)
       type?(db,Dbi)
       if key
-        self[key]=db.db.deep_copy.deep_update(self[key]||{},depth)
+        self[key]=db.deep_copy.deep_update(self[key]||{},depth)
       else
-        db.db.deep_copy.deep_update(self,depth)
+        db.deep_copy.deep_update(self,depth)
       end
     end
   end

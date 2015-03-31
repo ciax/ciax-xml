@@ -27,7 +27,7 @@ module CIAX
       def initialize(ent_cfg)
         type?(ent_cfg,Config)
         Wat::List.new(ent_cfg) unless ent_cfg.layers.key?(:wat)
-        db=type?(ent_cfg[:db],Db)
+        db=type?(ent_cfg[:db],Dbi)
         @record=Record.new(db['id'],db['version']).start(ent_cfg)
         super(@record['sid'])
         @output=@record

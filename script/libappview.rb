@@ -11,7 +11,7 @@ module CIAX
         super()
         @cls_color=2
         @pfx_color=13
-        @adbs=type?(adb,Db)[:status]
+        @adbs=type?(adb,Dbi)[:status]
         @stat=type?(stat,Status)
         @stat.post_upd_procs << proc{
           verbose("View","Propagate Status#upd -> App::View#upd")

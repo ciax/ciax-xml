@@ -20,8 +20,8 @@ module CIAX
         db
       end
 
-      def rec_db(e0,hash={})
-        (hash||={}).update(e0.to_h)
+      def rec_db(e0,hash=Dbi.new)
+        (hash||=Dbi.new).update(e0.to_h)
         e0.each{|e|
           if e['id']
             e.attr2item(hash)

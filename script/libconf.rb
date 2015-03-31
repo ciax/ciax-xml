@@ -57,7 +57,7 @@ module CIAX
       }
     end
 
-    def inspect
+    def to_s
       "******[\n"+@generation.map{|h|
         '{'+h.map{|k,v|
           case v

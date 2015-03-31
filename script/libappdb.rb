@@ -11,7 +11,7 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        db=Hash[doc]
+        db=Dbi[doc[:attr]]
         # Domains
         init_command(doc,db)
         init_stat(doc,db)
@@ -22,7 +22,7 @@ module CIAX
 
       # Command Db
       def init_command(doc,db)
-        adbc=doc.domain('commands')
+        adbc=doc[:domain]['commands']
         idx={}
         grp={}
         adbc.each{|e|
@@ -62,7 +62,7 @@ module CIAX
 
       # Status Db
       def init_stat(doc,db)
-        adbs=doc.domain('status')
+        adbs=doc[:domain]['status']
         mbr={'time'=>'TIMESTAMP','elapse'=>'ELAPSED'}
         grp={'gtime'=>{'caption' =>'','column' => 2,:members =>mbr}}
         idx=Hashx.new

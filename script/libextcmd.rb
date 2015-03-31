@@ -50,7 +50,7 @@ module CIAX
     class Group < Group
       def initialize(dom_cfg,attr={})
         super
-        @db=type?(@cfg[:db],Db)
+        @db=type?(@cfg[:db],Dbi)
         @cfg[:group_id]=@db['id']
         @cfg['caption']||="External Commands"
         @cfg['color']||=6

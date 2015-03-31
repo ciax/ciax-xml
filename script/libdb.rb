@@ -4,13 +4,27 @@ require "libenumx"
 require "libxmldoc"
 
 module CIAX
-  # Db class is for read only databases
+  # Db class is for read only databases, which holds all items of database.
   # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
-  # set() generates new individual Db
+  # set() generates HashDb
   # Cache is available
-  class Db < Hashx
+  class Dbi < Hashx #DB Item
+    # cover() will deeply merge self and given db
+    # (If end of the element confricts, self content will be taken)
+    def cover(db,key=nil,depth=nil)
+      type?(db,Dbi)
+      if key
+        self[key]=db.db.deep_copy.deep_update(self[key]||{},depth)
+      else
+        db.db.deep_copy.deep_update(self,depth)
+      end
+    end
+  end
+
+  class Db
+    include Msg
     XmlDir="#{ENV['HOME']}/ciax-xml"
-    attr_reader :cmdlist
+    attr_reader :cmdlist,:db
     def initialize(type,group=nil)
       super()
       @cls_color=5
@@ -20,37 +34,21 @@ module CIAX
     end
 
     def set(id)
-      raise(InvalidID,"No ID\n"+@list.to_s) unless id
-      db=cache(id){|doc|
-        puts "Object ID in yield #{doc.object_id}"#
-        top=doc.set(id)
-        puts "SET (#{id}) OK"#
-        doc_to_db(top)
+      raise(InvalidID,"No ID in #@type\n"+@cmdlist.to_s) unless id
+      cache(id){|doc|
+        doc_to_db(doc.set(id))
       }
-#      deep_copy.update(db)
-update(db)
-    end
-
-    # cover() will deeply merge self and given db
-    # (If end of the element confricts, self content will be taken)
-    def cover(db,key=nil,depth=nil)
-      type?(db,Db)
-      if key
-        self[key]=db.deep_copy.deep_update(self[key]||{},depth)
-      else
-        db.deep_copy.deep_update(self,depth)
-      end
     end
 
     private
+    # Returns Hash
     def doc_to_db(doc)
-      {}
+      Dbi.new
     end
 
     def cache(id,group=nil)
       @base="#{@type}-#{id}"
-      if newest?
-puts "ENTERING FILE CACHE"
+      if false #newest?
         verbose("#@type/Cache","Loading(#{id})")
         begin
           res=Marshal.load(IO.read(fmar))
@@ -59,11 +57,8 @@ puts "ENTERING FILE CACHE"
         end
       else
         warning("#@type/Cache","Refresh Db(#{id})")
-puts "XML type=#{@type}, group=#{group.inspect}"#
         @doc||=Xml::Doc.new(@type,group)
-puts "Object ID in cache #{@doc.object_id}"#
         res=yield(@doc)
-puts "EXIT YIELDED"
         open(fmar,'w') {|f|
           f << Marshal.dump(res)
           verbose("#@type/Cache","Saved(#{id})")

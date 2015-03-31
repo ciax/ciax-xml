@@ -11,7 +11,7 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        db=Db[doc]
+        db=Dbi[doc[:attr]]
         init_command(doc,db)
         init_stat(doc,db)
         db
@@ -22,8 +22,8 @@ module CIAX
         members={}
         idx={}
         grp={'main' => {'caption' => 'Device Commands',:members => members}}
-        frm=init_frame(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
-        idx=init_index(doc.domain('commands')){|e,r| init_cmd(e,r)}
+        frm=init_frame(doc[:domain]['cmdframe']){|e,r| init_cmd(e,r)}
+        idx=init_index(doc[:domain]['commands']){|e,r| init_cmd(e,r)}
         idx.each{|id,h| members[id]=h.delete('label')}
         db[:command]={:group => grp, :index => idx, :frame => frm}
         db
@@ -32,8 +32,8 @@ module CIAX
       # Status section
       def init_stat(doc,db)
         db[:field]=fld={}
-        frm=init_frame(doc.domain('rspframe')){|e| init_rsp(e,fld)}
-        idx=init_index(doc.domain('responses')){|e| init_rsp(e,fld)}
+        frm=init_frame(doc[:domain]['rspframe']){|e| init_rsp(e,fld)}
+        idx=init_index(doc[:domain]['responses']){|e| init_rsp(e,fld)}
         db['frm_id']=db['id']
         db[:response]={:index => idx, :frame => frm}
         db
@@ -119,11 +119,11 @@ module CIAX
     end
 
     if __FILE__ == $0
-#      begin
+      begin
         fdb=Db.new.set(ARGV.shift)
-#      rescue InvalidID
-#        Msg.usage("[id] (key) ..")
-#      end
+      rescue InvalidID
+        Msg.usage("[id] (key) ..")
+      end
       puts fdb.path(ARGV)
       exit
     end

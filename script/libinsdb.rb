@@ -17,7 +17,7 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        db=Hash[doc]
+        db=Db[doc]
         hcmd=db[:command]={}
         algrp={'caption' => 'Alias','column' => 2,:members =>{}}
         doc.domain('alias').each{|e0|

@@ -25,16 +25,16 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        hash={}
-        doc.top.each{|e1|
+        db=Dbi.new
+        doc[:top].each{|e1|
           id=e1['id'].to_sym
           label=e1['label']
           e1.each{|e2| # case
-            (hash[id]||=[]) << e2.to_h.update({'type' => e2.name})
+            (db[id]||=[]) << e2.to_h.update({'type' => e2.name})
           }
           verbose("SymDb","Symbol Table:#{id} : #{label}")
         }
-        hash
+        db
       end
     end
   end

@@ -23,7 +23,7 @@ module CIAX
 
 
     def set_db(db)
-      @db=type?(db,Db)
+      @db=type?(db,Dbi)
       _setid(db['site_id']||db['id'])
       self['ver']=db['version'].to_i
       self

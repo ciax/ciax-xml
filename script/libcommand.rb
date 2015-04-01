@@ -116,19 +116,18 @@ module CIAX
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
-      @current=@cmdlist.add_grp({'column' =>@cfg['column']})
     end
 
     def add_item(id,title=nil,crnt={})
+      current[id]=title
       crnt[:id]=id
       crnt[:label]=title
-      @current[id]=title
       self[id]=add('Item',crnt)
     end
 
     def del_item(id)
       @valid_keys.delete(id)
-      @current.delete(id)
+      current.delete(id)
       delete(id)
     end
 
@@ -151,7 +150,7 @@ module CIAX
     end
 
     def add_dummy(id,title)
-      @current.dummy(id,title) #never put into valid_key
+      current.dummy(id,title) #never put into valid_key
       self
     end
 
@@ -175,6 +174,11 @@ module CIAX
 
     def get_item(id)
       self[id]
+    end
+
+    private
+    def current
+      @current||=@cmdlist.add_grp('column' => @cfg['column'])
     end
   end
 

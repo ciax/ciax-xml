@@ -36,10 +36,6 @@ module CIAX
         super
       end
 
-      def list
-        @db.cmdlist
-      end
-
       def shell(id)
         begin
           get(id).shell

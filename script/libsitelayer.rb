@@ -28,7 +28,7 @@ module CIAX
       def shell(id,layer=@layer)
         begin
           dst=get(layer)
-          if dst.list.key?(id)
+          if dst.key?(id)
             last=dst
           elsif last
             dst=last

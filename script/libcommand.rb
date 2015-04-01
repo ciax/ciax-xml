@@ -107,7 +107,7 @@ module CIAX
 
   class Group < Hashx
     include SetProc
-    attr_reader :valid_keys,:cfg
+    attr_reader :cfg,:valid_keys
     #dom_cfg keys: caption,color,column
     def initialize(dom_cfg,attr={})
       super()
@@ -140,11 +140,13 @@ module CIAX
     end
 
     def update_lists(cmdlist)
+      cmdlist.select=@valid_keys
       type?(cmdlist,CmdList).each{|cl|
         @cmdlist << cl
         @current=cl
         update_items(cl)
       }
+      @cmdlist.reset!
       self
     end
 

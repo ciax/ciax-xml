@@ -6,7 +6,8 @@ module CIAX
   # Including key list (@dummy) for always display.
   # Used by Command and XmlDoc
   # Attribute items: caption(text), color(#), column(#), line_number(t/f)
-  class CmdGrp < Hash
+  class CmdGrp < Hashx
+    attr_accessor :select
     def initialize(attr,select=[])
       @attr=Msg.type?(attr,Hash)
       @select=Msg.type?(select,Array)
@@ -72,7 +73,7 @@ module CIAX
     end
   end
 
-  class CmdList < Array
+  class CmdList < Arrayx
     def initialize(attr={},select=[])
       @attr=Msg.type?(attr,Hash)
       @select=select
@@ -80,6 +81,17 @@ module CIAX
 
     def add_grp(attr={})
       push(CmdGrp.new(attr,@select)).last
+    end
+
+    def select=(select)
+      @select=Msg.type?(select,Array)
+      each{|cg| cg.select=select}
+      select
+    end
+
+    def reset!
+      each{|cg| cg.reset!}
+      self
     end
 
     def key?(id)

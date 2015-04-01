@@ -13,8 +13,7 @@ module CIAX
         }
         mcr=Mcr::Man.new(@cfg)
         set('mcr',mcr)
-        wg=mcr.cobj.lodom.add_group('caption'=>"Switch to App Layer",'color' => 9)
-        wg.update_items(@cfg.layers[:app].list).set_proc{|ent| sl.shell(ent.id,'app');'' }
+        wg=mcr.cobj.lodom.join_group(@cfg.layers[:app].jumpgrp).set_proc{|ent| sl.shell(ent.id,'app');'' }
       end
 
       def shell

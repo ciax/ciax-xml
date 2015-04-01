@@ -131,19 +131,14 @@ module CIAX
       delete(id)
     end
 
-    def update_items(labels)
-      type?(labels,Hash).each{|id,title|
-        add_item(id,title)
-      }
-      self
-    end
-
     def update_lists(cmdlist)
       cmdlist.select=@valid_keys
       type?(cmdlist,CmdList).each{|cl|
         @cmdlist << cl
         @current=cl
-        update_items(cl)
+        cl.each{|id,title|
+          add_item(id,title)
+        }
       }
       @cmdlist.reset!
       self

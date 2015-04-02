@@ -229,11 +229,13 @@ module CIAX
     # Display methods
     def columns(hash,column=2)
       page=[]
+      max=hash.values.map{|v| v.size}.max
       hash.keys.each_slice(column){|a|
-        l=a.map{|key|
-          item(key,hash[key])
+        ary=a.map{|key|
+          val=hash[key]
+          item(key,val)+' '*(max-val.size)
         }.compact
-        page << l.join("\t") unless l.empty?
+        page << ary.join('') unless ary.empty?
       }
       page.compact.join("\n")
     end

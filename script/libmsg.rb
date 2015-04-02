@@ -227,15 +227,17 @@ module CIAX
     end
 
     # Display methods
-    def columns(hash,column=2,vmax=nil,kmax=3)
+    def columns(hash,column=4,vmax=nil,kmax=3)
       page=[]
       vmax||=hash.values.map{|v| v.size}.max
       hash.keys.each_slice(column){|a|
-        ary=a.map{|key|
+        line=''
+        a.each_with_index{|key,i|
           val=hash[key]
-          item(key,val,kmax)+' '*(vmax-val.size)
-        }.compact
-        page << ary.join('') unless ary.empty?
+          line << item(key,val,kmax)
+          line << '_'*[vmax-val.size,0].max if a.size-1 > i
+        }
+        page << line
       }
       page.compact.join("\n")
     end

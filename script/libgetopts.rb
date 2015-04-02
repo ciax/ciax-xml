@@ -33,9 +33,10 @@ module CIAX
       db.keys.each{|k|
         str << k unless str.include?(k)
       }
-      @list=str.split('').map{|c|
-        optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
-      }.compact
+      @index={}
+      (str.split('') & optdb.keys).each{|c|
+        @index["-#{c}"]=optdb[c]
+      }
       update(ARGV.getopts(str))
       self['h']= 'localhost' if self['h'] && /^\W/ =~ self['h']
       ['Wat','App','Frm','Hex'].each{|c|
@@ -45,7 +46,7 @@ module CIAX
     end
 
     def usage(str)
-      Msg.usage([str,*@list].join("\n"))
+      Msg.usage(str+"\n"+Msg.columns(@index))
     end
   end
 end

@@ -10,6 +10,7 @@ module CIAX
     attr_accessor :select
     def initialize(attr,select=[])
       @attr=Msg.type?(attr,Hash)
+      @column=(@attr["column"]||1).to_i
       @select=Msg.type?(select,Array)
       @dummy=[]
     end
@@ -43,11 +44,15 @@ module CIAX
 
     def view(vx=nil,kx=3)
       return '' if (t=list_table).empty?
-      caption+Msg.columns(t,(@attr["column"]||1).to_i,vx,kx)
+      caption+Msg.columns(t,@column,vx,kx)
     end
 
     def vmax # max text length
-      list_table.values.map{|v| v.size }.max||0
+      max=0
+      list_table.values.each_with_index{|v,i|
+        max=v.size if (i % @column) < @column-1 && v.size > max
+      }
+      max
     end
 
     def kmax

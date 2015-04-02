@@ -26,11 +26,11 @@ init_pkg(){
     echo $C3"Install required packages"$C0
     read dist dmy < /etc/issue
     case "$dist" in
-        Debian)
-            sudo apt-get install ruby-libxml libxml2-utils socat sqlite3
+        *bian)
+            sudo apt-get install ruby-libxml socat sqlite3 apache2 libxml2-utils
             ;;
         Ubuntu)
-            sudo apt-get install ruby-libxml socat sqlite3
+            sudo apt-get install ruby-libxml socat sqlite3 apache2
             ;;
         CentOS)
             ;;
@@ -47,3 +47,4 @@ echo $C3"Make script symlinks"$C0
 mklink ~/ciax-xml/*
 init_bashrc
 init_pkg
+sudo ln -s ~/.var/json /var/www/

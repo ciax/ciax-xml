@@ -41,33 +41,32 @@ module CIAX
       self
     end
 
-    def view(max=nil)
-      b=body(max)
-      b.empty? ? '' : caption+b
+    def view(vx=nil,kx=3)
+      return '' if (t=list_table).empty?
+      caption+Msg.columns(t,(@attr["column"]||1).to_i,vx,kx)
     end
 
-    def max_size # max text length
-      valid_keys.map{|k| self[k].size if self[k] }.compact.max||0
+    def vmax # max text length
+      list_table.values.map{|v| v.size }.max||0
+    end
+
+    def kmax
+      list_table.keys.map{|k| k.size }.max||0
     end
 
     private
-    def valid_keys
-      ((@select+@dummy) & keys)
-    end
-
     def caption
       @attr["caption"] ? " == "+Msg.color(@attr["caption"],(@attr["color"]||6).to_i)+" ==\n" : ""
     end
 
-    def body(max=nil)
+    def list_table
       hash={}
-      num=0
-      valid_keys.each{|key|
+      ((@select+@dummy) & keys).each{|key|
         next unless self[key]
         title=@attr["line_number"] ? "[#{num+=1}](#{key})" : key
         hash[title]=self[key]
       }
-      Msg.columns(hash,(@attr["column"]||1).to_i,max)
+      hash
     end
   end
 
@@ -114,8 +113,9 @@ module CIAX
     end
 
     def body
-      max=map{|cg| cg.max_size }.max
-      map{|cg| cg.view(max)}.grep(/./)
+      vmax=map{|cg| cg.vmax }.max
+      kmax=map{|cg| cg.kmax }.max
+      map{|cg| cg.view(vmax,kmax)}.grep(/./)
     end
   end
 end

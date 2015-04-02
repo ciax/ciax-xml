@@ -227,21 +227,21 @@ module CIAX
     end
 
     # Display methods
-    def columns(hash,column=2,max=nil)
+    def columns(hash,column=2,vmax=nil,kmax=3)
       page=[]
-      max||=hash.values.map{|v| v.size}.max
+      vmax||=hash.values.map{|v| v.size}.max
       hash.keys.each_slice(column){|a|
         ary=a.map{|key|
           val=hash[key]
-          item(key,val)+' '*(max-val.size)
+          item(key,val,kmax)+' '*(vmax-val.size)
         }.compact
         page << ary.join('') unless ary.empty?
       }
       page.compact.join("\n")
     end
 
-    def item(key,val)
-      indent(1)+color("%-6s" % key,3)+": #{val}"
+    def item(key,val,kmax=3)
+      indent(1)+color("%-#{kmax+1}s" % key,3)+": #{val}"
     end
 
     def now_msec

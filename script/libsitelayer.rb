@@ -14,18 +14,17 @@ module CIAX
 
       def add_layer(layer)
         type?(layer,Module)
-        str=layer.to_s.split(':').last
         layer::List.new(@cfg)
-        @layer=str.downcase
+        @init_layer=layer.to_s.split(':').last.downcase
         @cfg.layers.each{|k,v|
           id=k.to_s
-          @jumpgrp.add_item(id,str+" mode",@pars)
+          @jumpgrp.add_item(id,id.capitalize+" mode",@pars)
           set(id,v)
         }
         self
       end
 
-      def shell(id,layer=@layer)
+      def shell(id,layer=@init_layer)
         begin
           dst=get(layer)
           if dst.key?(id)

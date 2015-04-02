@@ -10,7 +10,7 @@ module CIAX
       @cfg=Config.new("list_#{name}",inter_cfg).update(attr)
       super(name,{},@cfg[:dataname]||'list')
       @cfg[:jump_groups]||=[]
-      attr={'caption'=>"Switch #{name}s",'color'=>5,'column'=>2}
+      attr={'caption'=>"Switch #{name.capitalize}s",'color'=>5,'column'=>3}
       @jumpgrp=Group.new(@cfg,attr).set_proc{|ent|
         raise(@level::Jump,ent.id)
       }

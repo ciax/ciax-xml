@@ -235,7 +235,7 @@ module CIAX
         a.each_with_index{|key,i|
           val=hash[key]
           line << item(key,val,kmax)
-          line << '_'*[vmax-val.size,0].max if a.size-1 > i
+          line << ' '*[vmax-val.size,0].max if a.size-1 > i
         }
         page << line
       }

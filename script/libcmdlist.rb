@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmsg"
+require "libenumx"
 module CIAX
   # Sortable Caption Database (Value is String)
   # Including key list (@select) for display chosen items.

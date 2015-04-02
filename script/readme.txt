@@ -100,5 +100,5 @@ frmsh (intfrm -t)/ used when running site is different from intapp
 ## Method rule
   - set() [set_*()] : stores value returns self
   - add() [add_*()] : converts and stores value returns generated object
-  - index() : returns Hash
-  - list() : returns String
+  - list() [list_*()] : returns Hash or Array
+  - view() [view_*()] : returns String

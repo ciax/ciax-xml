@@ -40,7 +40,7 @@ module CIAX
 
     def set_cmd(args,opt={})
       id,*par=type?(args,Array)
-      valid_keys.include?(id) || raise(InvalidCMD,list)
+      valid_keys.include?(id) || raise(InvalidCMD,view_list)
       get_item(id).set_par(par,opt)
     end
 
@@ -48,8 +48,8 @@ module CIAX
       map{|e| e.valid_pars}.flatten
     end
 
-    def list
-      map{|e| e.list}.grep(/./).join("\n")
+    def view_list
+      map{|e| e.view_list}.grep(/./).join("\n")
     end
 
     def show_proc(id)
@@ -159,7 +159,7 @@ module CIAX
       self
     end
 
-    def list
+    def view_list
       @cmdlist.to_s
     end
 

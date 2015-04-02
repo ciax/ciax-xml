@@ -227,6 +227,17 @@ module CIAX
     end
 
     # Display methods
+    def columns(hash,column=2)
+      page=[]
+      hash.keys.each_slice(column){|a|
+        l=a.map{|key|
+          item(key,hash[key])
+        }.compact
+        page << l.join("\t") unless l.empty?
+      }
+      page.compact.join("\n")
+    end
+
     def item(key,val)
       indent(1)+color("%-6s" % key,3)+": #{val}"
     end

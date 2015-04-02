@@ -45,31 +45,25 @@ module CIAX
       if (b=body).empty?
         ''
       else
-        (caption+b).join("\n")
+        caption+b
       end
     end
 
     private
     def caption
-      page=[]
-      if cap=@attr["caption"]
-        page << " == "+Msg.color(cap,(@attr["color"]||6).to_i)+" =="
-      end
-      page
+      @attr["caption"] ? " == "+Msg.color(@attr["caption"],(@attr["color"]||6).to_i)+" ==\n" : ""
     end
 
     def body
-      page=[]
+      vkey=((@select+@dummy) & keys)
+      hash={}
       num=0
-      ((@select+@dummy) & keys).each_slice((@attr["column"]||1).to_i){|a|
-        l=a.map{|key|
-          next unless self[key]
-          title=@attr["line_number"] ? "[#{num+=1}](#{key})" : key
-          Msg.item(title,self[key])
-        }.compact
-        page << l.join("\t") unless l.empty?
+      vkey.each{|key|
+        next unless self[key]
+        title=@attr["line_number"] ? "[#{num+=1}](#{key})" : key
+        hash[title]=self[key]
       }
-      page.compact
+      Msg.columns(hash,(@attr["column"]||1).to_i)
     end
   end
 

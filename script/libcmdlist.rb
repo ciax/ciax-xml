@@ -41,29 +41,33 @@ module CIAX
       self
     end
 
-    def to_s
-      if (b=body).empty?
-        ''
-      else
-        caption+b
-      end
+    def view(max=nil)
+      b=body(max)
+      b.empty? ? '' : caption+b
+    end
+
+    def max_size # max text length
+      valid_keys.map{|k| self[k].size if self[k] }.compact.max||0
     end
 
     private
+    def valid_keys
+      ((@select+@dummy) & keys)
+    end
+
     def caption
       @attr["caption"] ? " == "+Msg.color(@attr["caption"],(@attr["color"]||6).to_i)+" ==\n" : ""
     end
 
-    def body
-      vkey=((@select+@dummy) & keys)
+    def body(max=nil)
       hash={}
       num=0
-      vkey.each{|key|
+      valid_keys.each{|key|
         next unless self[key]
         title=@attr["line_number"] ? "[#{num+=1}](#{key})" : key
         hash[title]=self[key]
       }
-      Msg.columns(hash,(@attr["column"]||1).to_i)
+      Msg.columns(hash,(@attr["column"]||1).to_i,max)
     end
   end
 
@@ -110,7 +114,8 @@ module CIAX
     end
 
     def body
-      map{|l| l.to_s}.grep(/./)
+      max=map{|cg| cg.max_size }.max
+      map{|cg| cg.view(max)}.grep(/./)
     end
   end
 end

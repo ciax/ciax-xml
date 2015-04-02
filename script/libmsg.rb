@@ -227,9 +227,9 @@ module CIAX
     end
 
     # Display methods
-    def columns(hash,column=2)
+    def columns(hash,column=2,max=nil)
       page=[]
-      max=hash.values.map{|v| v.size}.max
+      max||=hash.values.map{|v| v.size}.max
       hash.keys.each_slice(column){|a|
         ary=a.map{|key|
           val=hash[key]

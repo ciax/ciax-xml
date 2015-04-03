@@ -5,12 +5,12 @@ module CIAX
   # Including key list (@select) for display chosen items.
   # Including key list (@dummy) for always display.
   # Used by Command and XmlDoc
-  # Attribute items: caption(text), color(#), column(#), line_number(t/f)
+  # Attribute items : caption(text), color(#), sub_color(#),  column(#), line_number(t/f)
   class CmdGrp < Hashx
     attr_accessor :select
-    def initialize(attr,column=1,select=[])
+    def initialize(attr,select=[])
       @attr=Msg.type?(attr,Hash)
-      @column=column
+      @column=[attr['column'].to_i,1].max
       @select=Msg.type?(select,Array)
       @dummy=[]
     end
@@ -61,11 +61,12 @@ module CIAX
 
     private
     def caption
-      @attr["caption"] ? " == "+Msg.color(@attr["caption"],(@attr["color"]||6).to_i)+" ==\n" : ""
+      @attr["caption"] ? " == "+Msg.color(@attr["caption"],(@attr["sub_color"]||6).to_i)+" ==\n" : ""
     end
 
     def list_table
       hash={}
+      num=0
       ((@select+@dummy) & keys).each{|key|
         next unless self[key]
         title=@attr["line_number"] ? "[#{num+=1}](#{key})" : key
@@ -81,8 +82,10 @@ module CIAX
       @select=select
     end
 
-    def add_grp(attr={})
-      push(CmdGrp.new(attr,(@attr['column']||1).to_i,@select)).last
+    def add_grp(caption=nil)
+      attr=Hash[@attr]
+      attr['caption']=caption
+      push(CmdGrp.new(attr,@select)).last
     end
 
     def select=(select)
@@ -112,7 +115,7 @@ module CIAX
     def caption
       page=[]
       if cap=@attr["caption"]
-       page << "**** "+Msg.color(cap,(@attr["color"]||6).to_i)+" ****"
+       page << "**** "+Msg.color(cap,(@attr["color"]||2).to_i)+" ****"
       end
       page
     end

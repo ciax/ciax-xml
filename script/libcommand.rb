@@ -67,7 +67,6 @@ module CIAX
     attr_reader :svdom,:lodom,:hidgrp
     def initialize(exe_cfg=nil,attr={})
       @cfg=Config.new('command',exe_cfg).update(attr)
-      @cfg.update('color'=>2,'column'=>2)
       @cfg[:def_proc]||=proc{''}
       @cls_color=@cfg[:cls_color]||7
       @pfx_color=@cfg[:pfx_color]||2
@@ -116,6 +115,8 @@ module CIAX
       @cls_color=@cfg[:cls_color]
       @pfx_color=@cfg[:pfx_color]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
+      @cfg['color']||=2
+      @cfg['column']||=2
     end
 
     def add_item(id,title=nil,crnt={})

@@ -53,7 +53,6 @@ module CIAX
         @db=type?(@cfg[:db],Dbi)
         @cfg[:group_id]=@db['id']
         @cfg['caption']||="External Commands"
-        @cfg['color']||=6
         set_items
       end
 
@@ -61,7 +60,7 @@ module CIAX
         cdb=@db[:command]
         idx=cdb[:index]
         (cdb[:group]).each{|gid,gat|
-          @current=@cmdlist.add_grp(gat)
+          @current=@cmdlist.add_grp(gat['caption'])
           (gat[:members]).each{|id,label|
             if ref=(cdb[:alias]||{})[id]
               item=idx[ref]

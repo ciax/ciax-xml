@@ -36,7 +36,8 @@ module CIAX
           @groups[gid].each{|id,e|
             idx[id]=e['label']
           }.empty? && raise(InvalidID)
-          @cmdlist.add_grp(@attrs[gid]||{}).update(idx).sort!
+          cap=(@attrs[gid]||{})['caption']
+          @cmdlist.add_grp(cap).update(idx).sort!
         }
       end
 

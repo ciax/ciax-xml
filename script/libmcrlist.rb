@@ -11,10 +11,9 @@ module CIAX
       attr_accessor :index
       def initialize(cobj=nil)
         @cobj=type?(cobj||Command.new.add_extgrp,Command)
-        super(Mcr,@cobj.cfg)
+        super(Mcr,@cobj.cfg,{"line_number" => true})
         @cfg[:dataname]='procs'
         @cfg[:valid_keys]=@valid_keys=[]
-        @cfg["line_number"]=true
         self['id']=@cfg[:db]["id"]
         self['ver']=@cfg[:db]["version"]
         @post_upd_procs << proc{

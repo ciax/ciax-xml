@@ -83,7 +83,7 @@ module CIAX
     end
 
     def add_grp(caption=nil)
-      attr=Hash[@attr]
+      attr=@attr.to_hash
       attr['caption']=caption
       push(CmdGrp.new(attr,@select)).last
     end
@@ -104,26 +104,19 @@ module CIAX
     end
 
     def to_s
-      if (b=body).empty?
-        ''
-      else
-        (caption+b).join("\n")
-      end
+      b=grp_lists
+      b.empty? ? '' : caption+b
     end
 
     private
     def caption
-      page=[]
-      if cap=@attr["caption"]
-       page << "**** "+Msg.color(cap,(@attr["color"]||2).to_i)+" ****"
-      end
-      page
+      @attr["caption"] ? "**** "+Msg.color(@attr["caption"],(@attr["color"]||2).to_i)+" ****\n" : ""
     end
 
-    def body
+    def grp_lists
       vmax=map{|cg| cg.vmax }.max
       kmax=map{|cg| cg.kmax }.max
-      map{|cg| cg.view(vmax,kmax)}.grep(/./)
+      map{|cg| cg.view(vmax,kmax)}.grep(/./).join("\n")
     end
   end
 end

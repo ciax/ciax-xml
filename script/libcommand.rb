@@ -173,7 +173,7 @@ module CIAX
 
     private
     def current
-      @current||=@cmdlist.add_grp('column' => @cfg['column'])
+      @current||=@cmdlist.add_grp
     end
   end
 

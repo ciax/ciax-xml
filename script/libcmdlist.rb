@@ -8,9 +8,9 @@ module CIAX
   # Attribute items: caption(text), color(#), column(#), line_number(t/f)
   class CmdGrp < Hashx
     attr_accessor :select
-    def initialize(attr,select=[])
+    def initialize(attr,column=1,select=[])
       @attr=Msg.type?(attr,Hash)
-      @column=(@attr["column"]||1).to_i
+      @column=column
       @select=Msg.type?(select,Array)
       @dummy=[]
     end
@@ -82,7 +82,7 @@ module CIAX
     end
 
     def add_grp(attr={})
-      push(CmdGrp.new(attr,@select)).last
+      push(CmdGrp.new(attr,(@attr['column']||1).to_i,@select)).last
     end
 
     def select=(select)

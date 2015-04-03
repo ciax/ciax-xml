@@ -24,7 +24,7 @@ module CIAX
         /.+/ =~ type || Msg.cfg_err("No Db Type")
         @type=type
         @groups=readxml("#{ENV['XMLPATH']}/#{type}-*.xml")
-        @cmdlist=CmdList.new
+        @cmdlist=CmdList.new('column' => 2)
         if group
           raise(InvalidGrp,"No such Group(#{group}) #{@groups.keys}") unless @groups.key?(group)
           grp=[group]

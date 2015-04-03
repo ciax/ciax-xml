@@ -41,6 +41,7 @@ module CIAX
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
         }
+        ext_shell
       end
 
       def ext_shell
@@ -72,7 +73,6 @@ module CIAX
       def fork(tg=nil)
         @th_mcr=Threadx.new("Macro(#@id)",10){macro}
         tg.add(@th_mcr) if tg.is_a?(ThreadGroup)
-        ext_shell
         self
       end
 

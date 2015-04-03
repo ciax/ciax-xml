@@ -32,13 +32,13 @@ module CIAX
           lc=inter_cfg[:list_class]||List
           @output=@list=lc.new(@cobj)
           @valid_pars=@cobj.intgrp.valid_pars
+          ext_shell
           @cobj.lodom.join_group(@list.jumpgrp)
           @post_exe_procs << proc{
             @valid_pars.replace(@list.keys)
           }
           # View Seq mode
           @smode=false
-          ext_shell
         end
 
         private

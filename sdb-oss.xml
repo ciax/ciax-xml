@@ -24,7 +24,7 @@
       <pattern class="normal" msg="CIAO">^3$</pattern>
       <pattern class="normal" msg="FOCAS">5</pattern>
       <pattern class="normal" msg="COMICS">7</pattern>
-      <pattern class="normal" msg="K3D">10</pattern>
+      <pattern class="normal" msg="MC-BOX">10</pattern>
       <pattern class="normal" msg="MOIRCS">12</pattern>
       <pattern class="normal" msg="CIAX3">13</pattern>
       <pattern class="warn" msg="N/A" />

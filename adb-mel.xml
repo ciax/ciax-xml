@@ -246,7 +246,7 @@
           </frmcmd>
           <frmcmd name="getstat" />
         </item>
-        <item id="k3d" label="Kyoto 3D">
+        <item id="mc-box" label="Meteorogy Box">
           <frmcmd name="set_ins">
             <argv>5</argv>
           </frmcmd>

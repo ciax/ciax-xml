@@ -214,7 +214,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      GetOpts.new('emintr')
+      GetOpts.new('cemintr')
       begin
         ment=Command.new.add_extgrp.set_cmd(ARGV)
         seq=Seq.new(ment.cfg)

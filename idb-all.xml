@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <group id="ciax" caption="CIAX" column="2">
+  <project id="ciax" caption="CIAX" column="2">
     <instance id="crt" app_id="mel" host="cxws2" port="25101" label="CIAX CART 3"/>
     <instance id="dsi" app_id="cj2" host="cxws2" port="25102" label="IR Stand-by"/>
     <instance id="dso" app_id="cj2" host="cxws2" port="25103" label="OPT Stand-by"/>
@@ -26,8 +26,8 @@
         <value ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
       </status>
     </instance>
-  </group>
-  <group id="cmp" caption="Helium Compressor" column="2">
+  </project>
+  <project id="cmp" caption="Helium Compressor" column="2">
     <instance id="cro" app_id="bbe" host="ciax" port="25106" label="OPT Helium Compressor">
       <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
         <item id="on" label="Alias for X0 ON" ref="x0on" />
@@ -114,8 +114,8 @@
         <value ref="flow" label="FMOS-K(S10) Coolant Flow" />
       </status>
     </instance>
-  </group>
-  <group id="moircs" caption="MOIRCS" column="2">
+  </project>
+  <project id="moircs" caption="MOIRCS" column="2">
     <instance id="mfp" app_id="cfp" host="electra" port="25601" label="MOIRCS Pneumatic Actuator"/>
     <instance id="map" app_id="oma" host="electra" port="25602" label="MOIRCS Air Pressure"/>
     <instance id="mma" app_id="mma" host="electra" port="25603" label="MOIRCS Extension Arm"/>
@@ -216,5 +216,5 @@
     <instance id="mh1" app_id="psp" host="merope" port="25621" label="MOIRCS Carrousel Heater"/>
     <instance id="mh2" app_id="psp" host="atlas" port="25622" label="MOIRCS Main Heater"/>
     <instance id="mmf" app_id="mic" host="elextra" port="25623" label="MOIRCS Focus Control"/>
-  </group>
+  </project>
 </idb>

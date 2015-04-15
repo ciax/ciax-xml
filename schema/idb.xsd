@@ -6,11 +6,11 @@
   <xsd:element name="idb">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="idb:group" />
+        <xsd:element ref="idb:project" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="group">
+  <xsd:element name="project">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="idb:instance" />

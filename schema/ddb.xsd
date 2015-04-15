@@ -3,11 +3,11 @@
   <xsd:element name="ddb">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="ddb:group" />
+        <xsd:element ref="ddb:project" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="group">
+  <xsd:element name="project">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="ddb:site" />

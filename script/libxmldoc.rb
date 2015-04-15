@@ -10,13 +10,12 @@ module CIAX
     # default group name is 'all' and all xmldoc will belong to this group
     # The default group specified at initialize limits the items
     # to those described in the group named file or element.
-    # The group named file can conatin referenced item whose entity is
+    # The project named file can conatin referenced item whose entity is
     # in another file.
     class Doc < Hashx
       attr_reader :top,:cmdlist
       def initialize(type,group=nil)
         super()
-        @groups={}
         @attrs={}
         @captions={}
         @cls_color=4
@@ -63,7 +62,7 @@ module CIAX
           verbose("XmlDoc","readxml:#{base}")
           fid=base.gsub(/.+-/,'')
           Gnu.new(p).each{|e|
-            if e.name == 'group'
+            if e.name == 'group' || e.name == 'project'
               gdb=group[e['id']]={}
               @attrs[e['id']]=e.to_h
               e.each{|e0|
@@ -99,7 +98,7 @@ module CIAX
     rescue InvalidID
       Msg.usage("[type] [group] [id]")
     rescue ConfigError
-      Msg.usage("[type] (adb,fdb,idb,mdb,sdb)")
+      Msg.usage("[type] (adb,fdb,idb,ddb,mdb,sdb)")
     end
   end
 end

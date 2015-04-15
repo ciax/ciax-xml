@@ -1,4 +1,7 @@
 #!/bin/bash
+# Required packages(Debian,Raspbian,Ubuntu): ruby1.9.1 libxml-ruby1.9.1 libxml2-utils apache2 socat libxml-xpath-perl
+# Required packages(CentOs): ruby-devel libxml2-devel httpd socat
+# Required modules(Ruby): json libxml-ruby
 mklink(){
     for i;do
         [ -d "$i" ] && (dig_dir "$i";mklink *)
@@ -24,7 +27,11 @@ init_bashrc(){
 }
 init_pkg(){
     echo $C3"Install required packages"$C0
-    read dist dmy < /etc/issue
+    if [ -f /etc/centos-release ]; then
+	dist=CentOS
+    else
+	read dist dmy < /etc/issue
+    fi
     case "$dist" in
         *bian)
             sudo apt-get install ruby-libxml socat sqlite3 apache2 libxml2-utils
@@ -33,6 +40,8 @@ init_pkg(){
             sudo apt-get install ruby-libxml socat sqlite3 apache2
             ;;
         CentOS)
+	    sudo yum install ruby-devel libxml2-devel httpd socat
+	    sudo gem install json libxml-ruby
             ;;
         *);;
     esac
@@ -47,4 +56,4 @@ echo $C3"Make script symlinks"$C0
 mklink ~/ciax-xml/*
 init_bashrc
 init_pkg
-sudo ln -s ~/.var/json /var/www/
+sudo ln -sf ~/.var/json /var/www/

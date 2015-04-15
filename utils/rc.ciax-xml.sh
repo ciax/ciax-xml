@@ -1,5 +1,4 @@
 #!/bin/bash --rcfile
-# Required packages: ruby1.9.1 libxml-ruby1.9.1 libxml2-utils apache2 socat libxml-xpath-perl
 addenv(){
     name=$1;shift
     list=$(IFS=: eval echo \$$name)

@@ -21,9 +21,9 @@ dig_dir(){
     done
 }
 init_bashrc(){
-    grep -q '#initrc' ~/.bashrc >/dev/null 2>&1 && return
-    echo $C3"Update .bashrc"$C0
-    echo 'shopt -s nullglob;for i in ~/bin/rc.*;do . $i;done #initrc' >> ~/.bashrc
+    grep -q '#initrc' ~/.profile >/dev/null 2>&1 && return
+    echo $C3"Update .profile"$C0
+    echo 'shopt -s nullglob;for i in ~/bin/rc.login*;do . $i;done #initrc' >> ~/.profile
 }
 init_pkg(){
     echo $C3"Install required packages"$C0

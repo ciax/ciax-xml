@@ -13,7 +13,7 @@ module CIAX
       def ext_sym
         adbs=@db[:status]
         @symbol=adbs[:symbol]||{}
-        @symdb=Sym::Db.pack(['all',adbs['symtbl']])
+        @symdb=Sym::Db.pack(['share',adbs['symtbl']])
         self['class']={}
         self['msg']={}
         @post_upd_procs << proc{ #post process

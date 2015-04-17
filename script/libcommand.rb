@@ -133,15 +133,12 @@ module CIAX
     end
 
     def update_lists(cmdlist)
-      cmdlist.select=@valid_keys
-      type?(cmdlist,CmdList).each{|cl|
-        @cmdlist << cl
-        @current=cl
-        cl.each{|id,title|
+      cmdlist.each{|cg|
+        cg.each{|id,title|
           add_item(id,title)
         }
       }
-      @cmdlist.reset!
+      @current=@cmdlist.merge!(cmdlist).last
       self
     end
 

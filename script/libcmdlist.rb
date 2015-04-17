@@ -94,6 +94,14 @@ module CIAX
       select
     end
 
+    def merge!(cmdlist)
+      type?(cmdlist,CmdList).each{|cg|
+        cg.select=@select
+      }
+      concat(cmdlist)
+      reset!
+    end
+
     def reset!
       each{|cg| cg.reset!}
       self

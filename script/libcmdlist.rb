@@ -82,7 +82,7 @@ module CIAX
       @select=select
     end
 
-    def add_grp(caption=nil)
+    def new_grp(caption=nil)
       attr=Hash[@attr.to_hash] # attr can be Config
       attr['caption']=caption
       push(CmdGrp.new(attr,@select)).last

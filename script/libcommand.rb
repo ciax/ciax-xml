@@ -174,7 +174,7 @@ module CIAX
 
     private
     def current
-      @current||=@cmdlist.add_grp
+      @current||=@cmdlist.new_grp
     end
   end
 

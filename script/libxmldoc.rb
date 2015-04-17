@@ -36,7 +36,7 @@ module CIAX
             idx[id]=e['label']
           }.empty? && raise(InvalidID)
           cap=(@attrs[gid]||{})['caption']
-          @cmdlist.add_grp(cap).update(idx).sort!
+          @cmdlist.new_grp(cap).update(idx).sort!
         }
       end
 

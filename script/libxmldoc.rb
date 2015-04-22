@@ -14,30 +14,23 @@ module CIAX
     # in another file.
     class Doc < Hashx
       attr_reader :top,:cmdlist
-      def initialize(type,group=nil)
+      def initialize(type,project=nil)
         super()
-        @attrs={}
-        @captions={}
         @cls_color=4
         @pfx_color=2
+        @project=project
         /.+/ =~ type || Msg.cfg_err("No Db Type")
         @type=type
-        @groups=readxml("#{ENV['XMLPATH']}/#{type}-*.xml")
+        @pcap='All'
         @cmdlist=CmdList.new('column' => 2)
-        if group
-          raise(InvalidGrp,"No such Group(#{group}) #{@groups.keys}") unless @groups.key?(group)
-          grp=[group]
-        else
-          grp=@groups.keys
-        end
-        grp.each{|gid|
-          idx={}
-          @groups[gid].each{|id,e|
-            idx[id]=e['label']
-          }.empty? && raise(InvalidID)
-          cap=(@attrs[gid]||{})['caption']
-          @cmdlist.new_grp(cap).update(idx).sort!
-        }
+        @projlist=CmdGrp.new('caption' => 'Project', 'column' => 2)
+        Dir.glob("#{ENV['XMLPATH']}/#{type}-*.xml").each{|xml|
+          verbose("XmlDoc","readxml:"+::File.basename(xml,'.xml'))
+          Gnu.new(xml).each{|e|
+            readproj(e)
+          }
+        }.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
+        raise(InvalidProj,"No such Project(#{@project})\n"+@projlist.view) if @cmdlist.empty?
       end
 
       # set generates document branch of db items(Hash), which includes attribute and domains
@@ -53,50 +46,48 @@ module CIAX
       end
 
       private
-      def readxml(glob)
-        group={}
-        reflist=[]
-        caption=nil
-        Dir.glob(glob).each{|p|
-          base=::File.basename(p,'.xml')
-          verbose("XmlDoc","readxml:#{base}")
-          fid=base.gsub(/.+-/,'')
-          Gnu.new(p).each{|e|
-            if e.name == 'group' || e.name == 'project'
-              gdb=group[e['id']]={}
-              @attrs[e['id']]=e.to_h
-              e.each{|e0|
-                id=e0['id']
-                gdb[id]=e0
-                self[id]=e0
-              }
-            elsif ref=e['ref']
-              reflist << [fid,ref]
-              @attrs[fid]={'caption' => fid.upcase}
-            elsif id=e['id']
-              (group['all']||={})[id]=e
-              @attrs['all']={'caption' => 'ALL'}
-              self[id]=e
-            end
+      def readproj(e)
+        if e.name == 'project'
+          id=e['id']
+          @pcap=@projlist[id]=e['caption']
+          @pcap=nil if id != @project
+          e.each{|e0|
+            readgrp(e0)
           }
-        }.empty? && Msg.abort("No XML file for #{glob}")
-        reflist.each{|fid,id|
-          (self[fid]||={})[id]=self[id]
-        }
-        group
+        else
+          readgrp(e)
+        end
+      end
+
+      def readgrp(e)
+        if e.name == 'group'
+          @group=@cmdlist.new_grp(e['caption']) if @pcap
+          e.each{|e0|
+            readitem(e0)
+          }
+        else
+          @group||=@cmdlist.new_grp(@pcap) if @pcap
+          readitem(e)
+        end
+      end
+
+      def readitem(e)
+        id=e['id']
+        self[id]=e
+        @group[id]=e['label'] if @pcap
       end
     end
   end
 
   if __FILE__ == $0
-    type,grp,id=ARGV
+    type,id=ARGV
     begin
-      doc=Xml::Doc.new(type,grp)
+      doc=Xml::Doc.new(type,ENV['PROJ'])
       puts doc.set(id)
-    rescue InvalidGrp
-      Msg.usage("[type] [group] [id]")
+    rescue InvalidProj
+      Msg.usage("[type] [project] [id]")
     rescue InvalidID
-      Msg.usage("[type] [group] [id]")
+      Msg.usage("[type] [project] [id]")
     rescue ConfigError
       Msg.usage("[type] (adb,fdb,idb,ddb,mdb,sdb)")
     end

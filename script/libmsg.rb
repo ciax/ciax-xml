@@ -8,10 +8,10 @@ module CIAX
 
   # User input Error
   class UserError < RuntimeError; end
-  # When invalid Group, exit from shell/server
-  class InvalidGrp < UserError; end
+  # When invalid Project, exit from shell/server
+  class InvalidProj < UserError; end
   # When invalid Device, exit from shell/server
-  class InvalidID < InvalidGrp; end
+  class InvalidID < InvalidProj; end
   # When invalid Command, continue in shell/server
   class InvalidCMD < InvalidID; end
   # When invalid Parameter, continue in shell/server

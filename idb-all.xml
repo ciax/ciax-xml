@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="ciax" caption="CIAX" column="2">
+    <group id="sum" caption="Summit">
     <instance id="crt" app_id="mel" host="cxws2" port="25101" label="CIAX CART 3"/>
     <instance id="dsi" app_id="cj2" host="cxws2" port="25102" label="IR Stand-by"/>
     <instance id="dso" app_id="cj2" host="cxws2" port="25103" label="OPT Stand-by"/>
     <instance id="det" app_id="srm" host="cxws2" port="25104" label="CsEtr Control"/>
     <instance id="dts" app_id="oss" host="cxws2" port="25105" label="TSC Control"/>
+    </group>
+    <group id="sim" caption="SimLab">
+      <instance id="cr2" app_id="mel" host="ciax" port="25502" label="CIAX CART 2"/>
+    </group>
+    <group id="cfg" caption="Setting">
     <instance id="c3j" app_id="cjk" host="ciax" port="25501" frm_site="crt" label="CART 3 Jack Setting">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
         <group ref="id0t0" caption="COMICS/CAS" />
@@ -19,13 +25,8 @@
         <group ref="id4t0" caption="KYOTO3D/CAS" />
       </status>
     </instance>
-    <instance id="cr2" app_id="mel" host="ciax" port="25502" label="CIAX CART 2"/>
     <instance id="c2j" app_id="cjk" host="ciax" port="25503" frm_site="cr2" label="CART 2 Jack Setting"/>
-    <instance id="cf1" app_id="k3n" host="ciax" port="25201" label="S1 HC Coolant Flow">
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <value ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
-      </status>
-    </instance>
+    </group>
   </project>
   <project id="cmp" caption="Helium Compressor" column="2">
     <instance id="cro" app_id="bbe" host="ciax" port="25106" label="OPT Helium Compressor">
@@ -112,6 +113,11 @@
     <instance id="cfa" app_id="k3n" host="ciax" port="25210" label="S10 HC Coolant Flow">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
         <value ref="flow" label="FMOS-K(S10) Coolant Flow" />
+      </status>
+    </instance>
+    <instance id="cf1" app_id="k3n" host="ciax" port="25201" label="S1 HC Coolant Flow">
+      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+        <value ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
       </status>
     </instance>
   </project>

@@ -49,8 +49,8 @@ module CIAX
       def readproj(e)
         if e.name == 'project'
           id=e['id']
-          @pcap=@projlist[id]=e['caption']
-          @pcap=nil if id != @project
+          pc=@projlist[id]=e['caption']
+          @pcap=(id == @project) ? pc : nil
           e.each{|e0|
             readgrp(e0)
           }

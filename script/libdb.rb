@@ -25,12 +25,15 @@ module CIAX
     include Msg
     XmlDir="#{ENV['HOME']}/ciax-xml"
     attr_reader :cmdlist,:db
-    def initialize(type,group=nil)
+    def initialize(type,proj=nil)
       super()
       @cls_color=5
       @type=type
+      @proj=proj
       # @cmdlist is CmdList
-      @cmdlist=cache(group||'list',group){|doc| doc.cmdlist }
+      lid='list'
+      lid+="-#@proj" if @proj
+      @cmdlist=cache(lid){|doc| doc.cmdlist }
     end
 
     def set(id)
@@ -46,7 +49,7 @@ module CIAX
       Dbi.new
     end
 
-    def cache(id,group=nil)
+    def cache(id)
       @base="#{@type}-#{id}"
       if newest?
         verbose("#@type/Cache","Loading(#{id})")
@@ -57,8 +60,7 @@ module CIAX
         end
       else
         warning("#@type/Cache","Refresh Db(#{id})")
-        @doc||=Xml::Doc.new(@type,group)
-        res=yield(@doc)
+        res=yield(Xml::Doc.new(@type,@proj))
         open(fmar,'w') {|f|
           f << Marshal.dump(res)
           verbose("#@type/Cache","Saved(#{id})")

@@ -5,8 +5,8 @@ module CIAX
   module Ins
     class Db < Db
       include Wat::Db
-      def initialize
-        super('idb',ENV['PROJ'])
+      def initialize(proj=nil)
+        super('idb',proj)
       end
 
       # overwrite App::Db
@@ -42,9 +42,8 @@ module CIAX
 
     if __FILE__ == $0
       begin
-        id=ARGV.shift
-        db=Db.new.set(id)
-      rescue InvalidID
+        db=Db.new(ARGV.shift).set(ARGV.shift)
+      rescue
         Msg.usage("(opt) [id] (key) ..")
         Msg.exit
       end

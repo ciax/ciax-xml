@@ -4,8 +4,8 @@ require "libfrmdb"
 module CIAX
   module Dev
     class Db < Db
-      def initialize
-        super('ddb')
+      def initialize(proj=nil)
+        super('ddb',proj)
       end
 
       def set(id=nil)
@@ -37,8 +37,7 @@ module CIAX
 
     if __FILE__ == $0
       begin
-        id=ARGV.shift
-        db=Db.new.set(id)
+        db=Db.new(ARGV.shift).set(ARGV.shift)
       rescue
         Msg.usage("(opt) [id] (key) ..")
         Msg.exit

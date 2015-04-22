@@ -13,7 +13,7 @@ module CIAX
       def self.pack(ary=[])
         sdb=Sym::Db.new
         dbi=Dbi.new
-        ary.each{|k| dbi.update(sdb.set(k)) }
+        ary.compact.each{|k| dbi.update(sdb.set(k)) }
         dbi
       end
 

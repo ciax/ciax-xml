@@ -60,7 +60,7 @@ module CIAX
         end
       else
         warning("#@type/Cache","Refresh Db(#{id})")
-        res=yield(Xml::Doc.new(@type,@proj))
+        res=yield(@doc||=Xml::Doc.new(@type,@proj))
         open(fmar,'w') {|f|
           f << Marshal.dump(res)
           verbose("#@type/Cache","Saved(#{id})")

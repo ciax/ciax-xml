@@ -5,7 +5,7 @@ module CIAX
   module Ins
     class Db < Db
       include Wat::Db
-      def initialize(proj=nil)
+      def initialize(proj=ENV['PROJ'])
         super('idb',proj)
       end
 

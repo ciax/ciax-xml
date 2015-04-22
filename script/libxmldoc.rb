@@ -80,16 +80,20 @@ module CIAX
   end
 
   if __FILE__ == $0
-    type,id=ARGV
+    type=ARGV.shift
+    proj=nil
     begin
-      doc=Xml::Doc.new(type,ENV['PROJ'])
-      puts doc.set(id)
-    rescue InvalidProj
-      Msg.usage("[type] [project] [id]")
-    rescue InvalidID
-      Msg.usage("[type] [project] [id]")
+      doc=Xml::Doc.new(type,proj)
     rescue ConfigError
       Msg.usage("[type] (adb,fdb,idb,ddb,mdb,sdb)")
+    rescue InvalidProj
+      (proj=ARGV.shift) && retry
+      Msg.usage("[type] [project] [id]")
+    end
+    begin
+      puts doc.set(ARGV.shift)
+    rescue InvalidID
+      Msg.usage("[type] [project] [id]")
     end
   end
 end

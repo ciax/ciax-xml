@@ -24,6 +24,7 @@ module CIAX
   class Db
     include Msg
     XmlDir="#{ENV['HOME']}/ciax-xml"
+    PROJ=ENV['PROJ']||'ciax'
     attr_reader :cmdlist,:db
     def initialize(type,proj=nil)
       super()

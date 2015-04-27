@@ -4,7 +4,7 @@ require "libfrmdb"
 module CIAX
   module Dev
     class Db < Db
-      def initialize(proj=ENV['PROJ'])
+      def initialize(proj=PROJ)
         super('ddb',proj)
       end
 

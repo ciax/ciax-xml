@@ -1,5 +1,5 @@
 #!/bin/bash
-# Required packages(Debian,Raspbian,Ubuntu): ruby1.9.1 libxml-ruby1.9.1 libxml2-utils apache2 socat libxml-xpath-perl
+# Required packages(Debian,Raspbian,Ubuntu): ruby ruby-libxml libxml2-utils apache2 socat libxml-xpath-perl
 # Required packages(CentOs): ruby-devel libxml2-devel httpd socat
 # Required modules(Ruby): json libxml-ruby
 mklink(){
@@ -28,9 +28,9 @@ init_bashrc(){
 init_pkg(){
     echo $C3"Install required packages"$C0
     if [ -f /etc/centos-release ]; then
-	dist=CentOS
+        dist=CentOS
     else
-	read dist dmy < /etc/issue
+        read dist dmy < /etc/issue
     fi
     case "$dist" in
         *bian)
@@ -40,8 +40,8 @@ init_pkg(){
             sudo apt-get install ruby-libxml socat sqlite3 apache2
             ;;
         CentOS)
-	    sudo yum install ruby-devel libxml2-devel httpd socat
-	    sudo gem install json libxml-ruby
+            sudo yum install ruby-devel libxml2-devel httpd socat
+            sudo gem install json libxml-ruby
             ;;
         *);;
     esac

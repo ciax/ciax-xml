@@ -1,17 +1,21 @@
 #!/bin/bash
-. ~/lib/libdb.sh entity
-appcmd=~/lib/libappcmd.rb
+xmldir=~/ciax-xml
+appcmd=$xmldir/script/libappcmd.rb
 list(){
-    $appcmd $1 2>&1 | grep "^ "| cut -d ':' -f 1
+    for f in $xmldir/adb-*.xml; do
+        a=${f%.*}
+        echo ${a##*-}
+    done
 }
+
 show(){
-    for id ;do
-        echo "$C2#### $id ####$C0"
-        list $id|while read cmd; do
-            echo "$C3$cmd$C0"
-            $appcmd $id $cmd 1 1
-            read -t 0 && return
-        done
+    for site ;do
+        echo "$C2#### $site ####$C0"
+        while read dmy cmd dmy2; do
+            eval $cmd
+            echo "$C3$id$C0"
+            $appcmd $site $id 1 1
+        done < <(grep '<item' $xmldir/adb-$site.xml)
     done
 }
 out=`mktemp`

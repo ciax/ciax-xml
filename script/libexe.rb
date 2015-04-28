@@ -135,7 +135,7 @@ module CIAX
         args=ent.id.split(':')
         # Address family not supported by protocol -> see above
         @udp.send(JSON.dump(args),0,@addr)
-        verbose("UDP:Client","Send [#{args}]")
+        verbose("UDP:Client","Send #{args}")
         if IO.select([@udp],nil,nil,1)
           res=@udp.recv(1024)
           @site_stat['udperr']=false

@@ -133,9 +133,9 @@ module CIAX
     end
 
     def update_lists(cmdlist)
-      cmdlist.each{|cg|
+      type?(cmdlist,CmdList).each{|cg|
         cg.each{|id,title|
-          add_item(id,title)
+          self[id]=add('Item')
         }
       }
       @current=@cmdlist.merge!(cmdlist).last

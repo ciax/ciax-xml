@@ -4,6 +4,7 @@ macro: nonstop mode -> bad (13/11/14)
 macro: exec error needed (13/11/14)
 
 *** On-site
+issued flag can't clear in server(15/4/29)
 any:interrupt doesn't work during execution(14/6/6) : Done
 crt:cart pos/jack level inconsistency after error(14/6/6)
 crt:cart jack level error in oldmcr(12/1/31)

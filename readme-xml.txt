@@ -70,7 +70,7 @@
     available: fdb//command/[char,string]
             fdb//response/array/index@range (separated by : )
             --
-            adb//command/argv (eval if @format exists, Math included)
+            adb//command/argv (eval if @format exists, Math and condition operator (a ? b : c) included)
 
  ${*:*}
     description : substitute status ${key:idx:idx} => var[key][idx][idx]

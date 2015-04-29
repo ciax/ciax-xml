@@ -74,6 +74,7 @@ module CIAX
       # Substitute string($+number) with parameters
       # par={ val,range,format } or String
       # str could include Math functions
+      include Math
       def initialize(grp_cfg,attr={})
         super
         @cfg[:body]=deep_subst(@cfg[:body])

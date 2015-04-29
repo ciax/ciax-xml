@@ -182,7 +182,6 @@ module CIAX
   # Corresponds commands
   class Item < Hashx
     include SetProc
-    include Math
     attr_reader :cfg
     #grp_cfg should have :id,:label,:parameters,:def_proc
     def initialize(grp_cfg,attr={})

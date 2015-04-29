@@ -53,10 +53,7 @@ module CIAX
         @db=type?(@cfg[:db],Dbi)
         @cfg[:group_id]=@db['id']
         @cfg['caption']||="External Commands"
-        set_items
-      end
-
-      def set_items
+        # Set items by DB
         cdb=@db[:command]
         idx=cdb[:index]
         (cdb[:group]).each{|gid,gat|

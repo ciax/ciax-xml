@@ -130,7 +130,7 @@ module CIAX
       delete(id)
     end
 
-    def update_lists(cmdlist)
+    def merge_items(cmdlist)
       type?(cmdlist,CmdList).each{|cg|
         cg.each{|id,title|
           set_item(id,title)

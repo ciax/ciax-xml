@@ -10,7 +10,7 @@ module CIAX
         super
         @cfg[:current_site]||=''
         @db=type?(@cfg[:layer_db],CIAX::Db)
-        @jumpgrp.update_lists(@db.cmdlist)
+        @jumpgrp.merge_items(@db.cmdlist)
         verbose("List","Initialize")
       end
 

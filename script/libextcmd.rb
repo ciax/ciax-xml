@@ -89,8 +89,13 @@ module CIAX
             verbose("ExtEntity","Parameter No.#{i} = [#{@par[i-1]}]")
             @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
           }
-          if num && /\$/ !~ res
-            res=res.split(':').map{|n| eval(n).to_s}.join(':')
+          # Colon separated value or branch expression (a ? b : c)
+          if num
+            if /[\$\?]/ !~ res
+              res=res.split(':').map{|n| eval(n).to_s}.join(':')
+            else
+              res=eval(res).to_s
+            end
           end
           Msg.cfg_err("Nil string") if res == ''
           res

@@ -59,7 +59,7 @@ module CIAX
         end
       end
 
-      class Entity < Entity
+      class Entity < CIAX::Ext::Entity
         attr_accessor :batch
       end
     end

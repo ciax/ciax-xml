@@ -74,7 +74,6 @@ module CIAX
       # Substitute string($+number) with parameters
       # par={ val,range,format } or String
       # str could include Math functions
-      include Math
       def initialize(grp_cfg,attr={})
         super
         @cfg[:body]=deep_subst(@cfg[:body])
@@ -90,14 +89,6 @@ module CIAX
             verbose("ExtEntity","Parameter No.#{i} = [#{@par[i-1]}]")
             @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
           }
-          # Colon separated value or condition operator (a ? b : c)
-          if num
-            if /[\$\?]/ !~ res
-              res=res.split(':').map{|n| eval(n).to_s}.join(':')
-            else
-              res=eval(res).to_s
-            end
-          end
           Msg.cfg_err("Nil string") if res == ''
           res
         }

@@ -32,6 +32,7 @@ module CIAX
     module Ext
       include CIAX::Ext
       class Item < Item
+        include Math
         #batch is ary of args(ary)
         def set_par(par,opt={})
           ent=super
@@ -45,7 +46,7 @@ module CIAX
                   args << e2
                 when Hash
                   str=e2['val']
-                  str = e2['format'] % str if e2['format']
+                  str = e2['format'] % eval(str) if e2['format']
                   verbose("AppItem","Calculated [#{str}]")
                   args << str
                 end

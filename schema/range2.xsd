@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!--ReRange-->
+  <!--value="^(-?\d+(\.\d+)?&lt;?)?(:&lt;?-?\d+(\.\d+)?)?"-->
+  <xsd:complexType name="range">
+    <xsd:attribute name="min" type="equation" />
+    <xsd:attribute name="max" type="equation" />
+    <xsd:attribute name="exclude">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="min" />
+          <xsd:enumeration value="max" />
+          <xsd:enumeration value="both" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="enumrange">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element ref="range"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:simpleType name="equation">
+    <xsd:restriction base="xsd:token">
+      <xsd:pattern value="[0-9\.\-\?:&lt;&gt;,\$]+"></xsd:pattern>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

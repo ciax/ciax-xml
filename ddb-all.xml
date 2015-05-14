@@ -27,25 +27,25 @@
     <site id="cfa" frm_id="k3n" host="ciax" port="24210" iocmd="socat - tcp:ltt-i:4015" label="S10 HC Coolant Flow"/>
   </project>
   <project id="moircs" caption="MOIRCS" column="2">
-    <site id="mfp" frm_id="cfp" host="electra" port="24601" iocmd="socat - tcp:celaeno:4001" label="MOIRCS Pneumatic Actuator"/>
-    <site id="map" frm_id="oma" host="electra" port="24602" iocmd="socat - tcp:celaeno:4002" label="MOIRCS Air Pressure"/>
-    <site id="mma" frm_id="slo" host="electra" port="24603" iocmd="socat - tcp:celaeno:4003" label="MOIRCS Extension Arm"/>
-    <site id="mmc" frm_id="slo" host="electra" port="24604" iocmd="socat - tcp:celaeno:4004" label="MOIRCS Carrousel"/>
-    <site id="ml1" frm_id="lk8" host="electra" port="24605" iocmd="socat - tcp:celaeno:4005" label="MOIRCS Temperature 1"/>
-    <site id="ml2" frm_id="lk8" host="electra" port="24606" iocmd="socat - tcp:celaeno:4006" label="MOIRCS Temperature 2"/>
-    <site id="mix" frm_id="ixe" host="electra" port="24607" iocmd="socat - tcp:celaeno:4007" label="MOIRCS Turret"/>
-    <site id="mva" frm_id="var" host="electra" port="24608" iocmd="socat - tcp:celaeno:4008" label="MOIRCS Pumping"/>
-    <site id="mt1" frm_id="tpg" host="electra" port="24609" iocmd="socat - tcp:celaeno:4009" label="MOIRCS Pressure Main"/>
-    <site id="mt2" frm_id="tpg" host="electra" port="24610" iocmd="socat - tcp:celaeno:4010" label="MOIRCS Pressure Throat"/>
-    <site id="mt3" frm_id="tpg" host="electra" port="24611" iocmd="socat - tcp:celaeno:4011" label="MOIRCS Pressure Pump"/>
-    <site id="mft" frm_id="fpa" host="electra" port="24612" iocmd="socat - tcp:celaeno:4012" label="MOIRCS Hall Sensor"/>
-    <site id="mp1" frm_id="ken" host="electra" port="24613" iocmd="socat - tcp:celaeno:4013" label="MOIRCS Power Supply 1"/>
-    <site id="mp2" frm_id="ken" host="electra" port="24614" iocmd="socat - tcp:celaeno:4014" label="MOIRCS Power Supply 2"/>
-    <site id="mph" frm_id="mph" host="electra" port="24615" iocmd="socat - tcp:133.40.147.230:10017" label="MOIRCS Power Supply Hilo"/>
+    <site id="mfp" frm_id="cfp" host="moircssamhost1" port="24601" iocmd="socat - tcp:celaeno:4001" label="MOIRCS Pneumatic Actuator"/>
+    <site id="map" frm_id="oma" host="moircssamhost1" port="24602" iocmd="socat - tcp:celaeno:4002" label="MOIRCS Air Pressure"/>
+    <site id="mma" frm_id="slo" host="moircssamhost1" port="24603" iocmd="socat - tcp:celaeno:4003" label="MOIRCS Extension Arm"/>
+    <site id="mmc" frm_id="slo" host="moircssamhost1" port="24604" iocmd="socat - tcp:celaeno:4004" label="MOIRCS Carrousel"/>
+    <site id="ml1" frm_id="lk8" host="moircssamhost1" port="24605" iocmd="socat - tcp:celaeno:4005" label="MOIRCS Temperature 1"/>
+    <site id="ml2" frm_id="lk8" host="moircssamhost1" port="24606" iocmd="socat - tcp:celaeno:4006" label="MOIRCS Temperature 2"/>
+    <site id="mix" frm_id="ixe" host="moircssamhost1" port="24607" iocmd="socat - tcp:celaeno:4007" label="MOIRCS Turret"/>
+    <site id="mva" frm_id="var" host="moircssamhost1" port="24608" iocmd="socat - tcp:celaeno:4008" label="MOIRCS Pumping"/>
+    <site id="mt1" frm_id="tpg" host="moircssamhost1" port="24609" iocmd="socat - tcp:celaeno:4009" label="MOIRCS Pressure Main"/>
+    <site id="mt2" frm_id="tpg" host="moircssamhost1" port="24610" iocmd="socat - tcp:celaeno:4010" label="MOIRCS Pressure Throat"/>
+    <site id="mt3" frm_id="tpg" host="moircssamhost1" port="24611" iocmd="socat - tcp:celaeno:4011" label="MOIRCS Pressure Pump"/>
+    <site id="mft" frm_id="fpa" host="moircssamhost1" port="24612" iocmd="socat - tcp:celaeno:4012" label="MOIRCS Hall Sensor"/>
+    <site id="mp1" frm_id="ken" host="moircssamhost1" port="24613" iocmd="socat - tcp:celaeno:4013" label="MOIRCS Power Supply 1"/>
+    <site id="mp2" frm_id="ken" host="moircssamhost1" port="24614" iocmd="socat - tcp:celaeno:4014" label="MOIRCS Power Supply 2"/>
+    <site id="mph" frm_id="mph" host="moircssamhost1" port="24615" iocmd="socat - tcp:133.40.147.230:10017" label="MOIRCS Power Supply Hilo"/>
     <site id="mh1" frm_id="psp" host="merope" port="24621" iocmd="socat - tcp:merope:59999" label="MOIRCS Main/Carrousel Heater"/>
     <site id="mh2" frm_id="psp" host="atlas" port="24622" iocmd="socat - tcp:atlas:59999" label="MOIRCS Main Heater"/>
-    <site id="mmf" frm_id="mic" host="electra" port="24623" iocmd="socat - tcp:localhost:19990" label="MOIRCS Focus Actuator"/>
-    <site id="sdm" frm_id="slo" host="electra" port="24699" iocmd="socat - tcp:localhost:10001" label="Slosyn dummy"/>
-    <site id="fdm" frm_id="cfp" host="electra" port="24698" iocmd="socat - tcp:localhost:10002" label="Field Point dummy"/>
+    <site id="mmf" frm_id="mic" host="moircssamhost1" port="24623" iocmd="socat - tcp:localhost:19990" label="MOIRCS Focus Actuator"/>
+    <site id="sdm" frm_id="slo" host="moircssamhost1" port="24699" iocmd="socat - tcp:localhost:10001" label="Slosyn dummy"/>
+    <site id="fdm" frm_id="cfp" host="moircssamhost1" port="24698" iocmd="socat - tcp:localhost:10002" label="Field Point dummy"/>
   </project>
 </ddb>

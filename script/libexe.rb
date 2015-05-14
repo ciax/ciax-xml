@@ -129,8 +129,8 @@ module CIAX
       host||='localhost'
       @site_stat.add_db('udperr' => 'x')
       @udp=UDPSocket.open()
-      @addr=Socket.pack_sockaddr_in(port.to_i,host)
       verbose("UDP:Client","Initialize [#@id/#{host}:#{port}]")
+      @addr=Socket.pack_sockaddr_in(port.to_i,host)
       @cobj.svdom.set_proc{|ent|
         args=ent.id.split(':')
         # Address family not supported by protocol -> see above

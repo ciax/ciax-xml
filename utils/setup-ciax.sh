@@ -56,4 +56,4 @@ echo $C3"Make script symlinks"$C0
 mklink ~/ciax-xml/*
 init_bashrc
 init_pkg
-sudo ln -sf ~/.var/json /var/www/
+sudo ln -sf ~/.var/json /var/www/html

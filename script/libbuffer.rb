@@ -75,7 +75,7 @@ module CIAX
           flush
         rescue
           clear
-          errmsg
+          alert("Buffer",$!.to_s)
         end
       }
       self

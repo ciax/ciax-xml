@@ -113,6 +113,7 @@ module CIAX
       rescue CommError
         @site_stat['comerr']=true
         self['msg']=$!.to_s
+        raise $!
       end
 
       private

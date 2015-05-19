@@ -52,6 +52,7 @@ module CIAX
             exe(@shell_input_proc.call(token.split(' ')),'shell')
           }
         rescue UserError
+          warning("Shell",$!)
         end
         puts self['msg'].empty? ? @shell_output_proc.call : self['msg']
         verbose("Threads","#{Threadx.list}")

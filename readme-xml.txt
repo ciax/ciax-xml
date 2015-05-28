@@ -122,7 +122,10 @@
 
   concat strings
     adb//status/value/string
- 
+
+  format strings (using %)
+    sdb//table/*@msg
+
 ### Reference Key ###
 
   fdb//command@response <= fdb//rspframe//response@id

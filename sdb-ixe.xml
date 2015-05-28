@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+  <symbol id="ixe" label="MOIRCS Turret">
+    <table id="pos">
+      <range class="warn" msg="S00">0</range>
+      <range class="warn" msg="S01">8000</range>
+      <range class="warn" msg="S02">16000</range>
+      <range class="warn" msg="S03">24000</range>
+      <range class="warn" msg="S04">36000</range>
+      <range class="warn" msg="S05">40000</range>
+      <range class="warn" msg="S06">48000</range>
+      <range class="warn" msg="S07">56000</range>
+      <range class="warn" msg="S08">64000</range>
+      <range class="warn" msg="S09">72000</range>
+      <range class="warn" msg="S10">80000</range>
+      <range class="warn" msg="S11">88000</range>
+      <range class="warn" msg="S12">96000</range>
+    </table>
+  </symbol>
+</sdb>

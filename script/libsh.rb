@@ -52,6 +52,7 @@ module CIAX
             exe(@shell_input_proc.call(token.split(' ')),'shell')
           }
         rescue UserError
+        rescue ServerError
           warning("Shell",$!)
         end
         puts self['msg'].empty? ? @shell_output_proc.call : self['msg']

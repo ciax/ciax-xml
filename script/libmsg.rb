@@ -28,17 +28,21 @@ module CIAX
   class Retry < LongJump; end
   class Skip < LongJump; end
 
+
+  # Server error
+  class ServerError < RuntimeError;end
+
   # No Data in Field for Status
-  class NoData < UserError; end
+  class NoData < ServerError; end
 
   # Stream Open Error
-  class StreamError < UserError; end
+  class StreamError < ServerError; end
   # Communication Error
-  class CommError < UserError; end
+  class CommError < ServerError; end
   # Verification Error
-  class VerifyError < UserError; end
+  class VerifyError < ServerError; end
   # Configuration Error
-  class ConfigError < RuntimeError; end
+  class ConfigError < ServerError; end
 
   # Should be extended in module/class
   module Msg
@@ -186,9 +190,9 @@ module CIAX
       raise $!.class,msg,caller(1)
     end
 
-    def err(*msg) # Raise User error (Invalid Configuration)
+    def err(*msg) # Raise Server error (Invalid Configuration)
       msg[0]=color(msg[0],1)
-      raise UserError,msg.join("\n  "),caller(1)
+      raise ServerError,msg.join("\n  "),caller(1)
     end
 
     def abort(msg='abort')
@@ -210,7 +214,7 @@ module CIAX
       src=caller(1)
       modules.each{|mod|
         unless name.is_a?(mod)
-          raise(RuntimeError,"Parameter type error <#{name.class}> for (#{mod.to_s})",src)
+          raise(ServerError,"Parameter type error <#{name.class}> for (#{mod.to_s})",src)
         end
       }
       name

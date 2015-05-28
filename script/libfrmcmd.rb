@@ -25,8 +25,13 @@ module CIAX
           add_item('load',"[tag]",pars(1))
           cmd=add_item('set',"[key(:idx)] [val(,val)]",pars(2))
           cmd.set_proc{|ent|
-            @cfg[:field].set(*ent.par)
-            'OK'
+warn ent.par
+            if @cfg[:field].key?(ent[0])
+              @cfg[:field].set(*ent.par)
+              'OK'
+            else
+              "No such value #{ent[0]}"
+            end
           }
         end
       end
@@ -103,7 +108,7 @@ module CIAX
       id,*args=ARGV
       ARGV.clear
       begin
-        db=Db.new.set(id)
+        db=Db.new.get(id)
         fld=Field.new.set_db(db)
         cobj=Command.new(:db => db,:field => fld)
         fld.read unless STDIN.tty?

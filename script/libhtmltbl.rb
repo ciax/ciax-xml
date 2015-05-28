@@ -40,7 +40,7 @@ module CIAX
     require "libinsdb"
     id=ARGV.shift
     begin
-      adb=Ins::Db.new.set(id).cover_app
+      adb=Ins::Db.new.get(id).cover_app
     rescue InvalidID
       Msg.usage "[id]"
     end

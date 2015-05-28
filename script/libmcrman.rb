@@ -25,7 +25,7 @@ module CIAX
           id=ENV['PROJ']||'ciax'
           type?(inter_cfg,Config)
           Wat::List.new(inter_cfg) unless inter_cfg.layers.key?(:wat)
-          inter_cfg[:db]||=Db.new.set(id)
+          inter_cfg[:db]||=Db.new.get(id)
           super(id,inter_cfg)
           @cobj.add_extgrp
           @cobj.add_intgrp(Int)

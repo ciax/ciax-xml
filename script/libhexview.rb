@@ -107,7 +107,7 @@ module CIAX
       begin
         stat=App::Status.new
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
-        stat.set_db(Ins::Db.new.set(id)).ext_file
+        stat.set_db(Ins::Db.new.get(id)).ext_file
         hint=View.new(id,0,{},stat).upd
         puts hint
       rescue InvalidID

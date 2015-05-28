@@ -92,7 +92,7 @@ module CIAX
       event=Event.new
       begin
         id=STDIN.tty? ? ARGV.shift : event.read['id']
-        adb=Ins::Db.new.set(id)
+        adb=Ins::Db.new.get(id)
         event.set_db(adb)
         wview=View.new(adb,event)
         event.ext_file if STDIN.tty?

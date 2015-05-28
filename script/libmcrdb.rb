@@ -84,7 +84,7 @@ module CIAX
 
   if __FILE__ == $0
     begin
-      mdb=Mcr::Db.new.set(ARGV.shift)
+      mdb=Mcr::Db.new.get(ARGV.shift)
     rescue InvalidID
       Msg.usage "[id] (key) .."
       Msg.exit

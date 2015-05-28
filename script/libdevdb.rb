@@ -8,9 +8,9 @@ module CIAX
         super('ddb',proj)
       end
 
-      def set(id=nil)
+      def get(id=nil)
         cpy=super
-        cpy.cover(Frm::Db.new.set(cpy['frm_id']))
+        cpy.cover(Frm::Db.new.get(cpy['frm_id']))
       end
 
       private
@@ -37,7 +37,7 @@ module CIAX
 
     if __FILE__ == $0
       begin
-        db=Db.new(ARGV.shift).set(ARGV.shift)
+        db=Db.new(ARGV.shift).get(ARGV.shift)
       rescue
         Msg.usage("(opt) [id] (key) ..")
         Msg.exit

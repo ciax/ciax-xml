@@ -119,8 +119,8 @@ module CIAX
       begin
         field=Frm::Field.new
         id=STDIN.tty? ? ARGV.shift : field.read['id']
-        idb=Ins::Db.new.set(id)
-        ddb=Dev::Db.new.set(idb["frm_site"])
+        idb=Ins::Db.new.get(id)
+        ddb=Dev::Db.new.get(idb["frm_site"])
         field.set_db(ddb).ext_rsp
         field.ext_file if STDIN.tty?
         stat=Status.new.set_db(idb).ext_file.ext_rsp(field).save

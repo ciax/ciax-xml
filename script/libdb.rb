@@ -37,7 +37,7 @@ module CIAX
       @cmdlist=cache(lid){|doc| doc.cmdlist }
     end
 
-    def set(id)
+    def get(id)
       raise(InvalidID,"No ID in #@type\n"+@cmdlist.to_s) unless id
       cache(id){|doc|
         doc_to_db(doc.set(id))

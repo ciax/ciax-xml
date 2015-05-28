@@ -13,7 +13,7 @@ module CIAX
       def self.pack(ary=[])
         sdb=Sym::Db.new
         dbi=Dbi.new
-        ary.compact.each{|k| dbi.update(sdb.set(k)) }
+        ary.compact.each{|k| dbi.update(sdb.get(k)) }
         dbi
       end
 
@@ -35,7 +35,7 @@ module CIAX
 
   if __FILE__ == $0
     begin
-      sdb=Sym::Db.new.set(ARGV.shift)
+      sdb=Sym::Db.new.get(ARGV.shift)
     rescue InvalidID
       Msg.usage "[id] ..."
       Msg.exit

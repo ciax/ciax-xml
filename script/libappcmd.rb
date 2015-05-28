@@ -69,7 +69,7 @@ module CIAX
       require "libappdb"
       app,*args=ARGV
       begin
-        acobj=Command.new(:db => Db.new.set(app))
+        acobj=Command.new(:db => Db.new.get(app))
         acobj.set_cmd(args).batch.each{|fargs|
           p fargs
         }

@@ -36,7 +36,7 @@ module CIAX
         @cls_color=2
         # LayerDB might generated in List level
         idb=(inter_cfg[:layer_db]||=Ins::Db.new)
-        @adb=type?(attr[:db]=idb.set(id),Dbi)
+        @adb=type?(attr[:db]=idb.get(id),Dbi)
         super
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']

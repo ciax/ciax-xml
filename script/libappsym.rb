@@ -60,7 +60,7 @@ module CIAX
       begin
         stat=Status.new
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
-        adb=Ins::Db.new.set(id)
+        adb=Ins::Db.new.get(id)
         stat.set_db(adb)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd

@@ -120,7 +120,7 @@ module CIAX
 
     if __FILE__ == $0
       begin
-        fdb=Db.new.set(ARGV.shift)
+        fdb=Db.new.get(ARGV.shift)
       rescue InvalidID
         Msg.usage("[id] (key) ..")
       end

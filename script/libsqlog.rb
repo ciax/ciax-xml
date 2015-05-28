@@ -205,7 +205,7 @@ module CIAX
     lev=ARGV.shift
     ARGV.clear
     begin
-      adb=Site::Db.new.set(id)[:adb]
+      adb=Site::Db.new.get(id)[:adb]
       case lev
       when 'stat'
       when 'issue'

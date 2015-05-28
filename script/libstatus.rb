@@ -67,7 +67,7 @@ module CIAX
       GetOpts.new('h:')
       stat=Status.new
       begin
-        adb=Ins::Db.new.set(ARGV.shift)
+        adb=Ins::Db.new.get(ARGV.shift)
         stat.set_db(adb)
         if host=$opt['h']
           stat.ext_http(host)

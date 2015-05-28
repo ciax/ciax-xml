@@ -9,7 +9,7 @@ module CIAX
       def add_extgrp
         @cfg[:depth]=0
         @cfg[:mobj]=self
-        @cfg[:db]||=Db.new.set(ENV['PROJ']||'ciax')
+        @cfg[:db]||=Db.new.get(ENV['PROJ']||'ciax')
         super(Ext)
         self
       end

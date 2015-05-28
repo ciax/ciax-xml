@@ -136,7 +136,7 @@ module CIAX
       res=Logging.set_logline(str)
       id=res['id']
       cid=res['cmd']
-      fdb=Dev::Db.new.set(id)
+      fdb=Dev::Db.new.get(id)
       field=Field.new.set_db(fdb).ext_rsp{res}
       field.ext_file if $opt['m']
       if cid

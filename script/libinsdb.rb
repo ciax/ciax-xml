@@ -10,9 +10,9 @@ module CIAX
       end
 
       # overwrite App::Db
-      def set(id=nil)
+      def get(id=nil)
         cpy=super
-        cpy.cover(App::Db.new.set(cpy['app_id']))
+        cpy.cover(App::Db.new.get(cpy['app_id']))
       end
 
       private
@@ -42,7 +42,7 @@ module CIAX
 
     if __FILE__ == $0
       begin
-        db=Db.new(ARGV.shift).set(ARGV.shift)
+        db=Db.new(ARGV.shift).get(ARGV.shift)
       rescue
         Msg.usage("(opt) [id] (key) ..")
         Msg.exit

@@ -129,7 +129,7 @@ module CIAX
       begin
         stat=App::Status.new
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
-        adb=Ins::Db.new.set(id)
+        adb=Ins::Db.new.get(id)
         stat.set_db(adb)
         stat.ext_file if STDIN.tty?
         event=Event.new.set_db(adb).ext_rsp(stat)

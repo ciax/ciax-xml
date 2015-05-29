@@ -52,9 +52,9 @@ module CIAX
           if c=obj['conditions']
             c.each{|h|
               if h['res']
-                mary << body("#{h['site']}:#{h['var']}",3)+" is #{h['cmp']}"
+                mary << body("#{h['site']}:#{h['var']}",3)+" is #{h['req']}"
               else
-                mary << body("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']} (#{h['act']})"
+                mary << body("#{h['site']}:#{h['var']}",3)+" is not #{h['req']} (#{h['act']})"
               end
             }
           end

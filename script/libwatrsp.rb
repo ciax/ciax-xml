@@ -100,18 +100,18 @@ module CIAX
           val=@stat.get(vn)
           case ckitm['type']
           when 'onchange'
-            cmp=@data['last'][vn]
-            res=(cmp != val)
-            verbose("Rsp","  onChange(#{vn}): [#{cmp}] vs <#{val}> =>#{res}")
+            req=@data['last'][vn]
+            res=(req != val)
+            verbose("Rsp","  onChange(#{vn}): [#{req}] vs <#{val}> =>#{res}")
           when 'pattern'
-            cmp=ckitm['val']
-            res=(Regexp.new(cmp) === val)
-            verbose("Rsp","  Pattern(#{vn}): [#{cmp}] vs <#{val}> =>#{res}")
+            req=ckitm['val']
+            res=(Regexp.new(req) === val)
+            verbose("Rsp","  Pattern(#{vn}): [#{req}] vs <#{val}> =>#{res}")
           when 'range'
-            cmp=ckitm['val']
+            req=ckitm['val']
             f="%.3f" % val.to_f
-            res=(ReRange.new(cmp) == f)
-            verbose("Rsp","  Range(#{vn}): [#{cmp}] vs <#{f}>(#{val.class}) =>#{res}")
+            res=(ReRange.new(req) == f)
+            verbose("Rsp","  Range(#{vn}): [#{req}] vs <#{f}>(#{val.class}) =>#{res}")
           end
           res=!res if /true|1/ === ckitm['inv']
           rary << res

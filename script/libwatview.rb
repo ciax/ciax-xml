@@ -20,7 +20,7 @@ module CIAX
           evnt[:cnd].each{|cnd|
             m << Hash[cnd]
             if cnd['type'] != 'onchange'
-              m.last['cmp']=cnd['val']
+              m.last['req']=cnd['val']
             end
           }
         }
@@ -55,7 +55,7 @@ module CIAX
             var=h['var']
             h['val']=@event.get('crnt')[var]
             h['res']=@event.get('res')[id][i]
-            h['cmp']=@event.get('last')[var] if h['type'] == 'onchange'
+            h['req']=@event.get('last')[var] if h['type'] == 'onchange'
           }
           v['active']=@event.get('active').include?(id)
         }
@@ -72,9 +72,9 @@ module CIAX
             ope=j['inv'] ? "!~" : "=~"
             str << "(#{j['type']}: "
             if j['type'] == 'onchange'
-              str << "#{j['cmp']} => #{j['val']}"
+              str << "#{j['req']} => #{j['val']}"
             else
-              str << "/#{j['cmp']}/ #{ope} #{j['val']}"
+              str << "/#{j['req']}/ #{ope} #{j['val']}"
             end
             str << ")\n"
           }

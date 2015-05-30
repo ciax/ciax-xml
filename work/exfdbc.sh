@@ -1,15 +1,12 @@
 #!/bin/bash
-. ~/lib/libdb.sh entity
-frmcmd=~/lib/libfrmcmd.rb
-list(){
-    $frmcmd $1 2>&1 | grep "^ "| cut -d ':' -f 1
-}
+xmldir=~/ciax-xml
+frmcmd=$xmldir/script/libfrmcmd.rb
 show(){
-    for id ;do
-        echo "$C2#### $id ####$C0"
-        list $id|while read cmd; do
+    for site ;do
+        echo "$C2#### $site ####$C0"
+        for cmd in $(list-item fdb $site); do
             echo "$C3$cmd$C0"
-            <$inp $frmcmd $id $cmd 1 1 | visi
+            <$inp $frmcmd $site $cmd 1 1 | visible
         done
         read -t 0 && break
     done
@@ -30,7 +27,7 @@ EOF
 trap "rm $out $inp" EXIT
 <$inp $frmcmd $* >$out 2>&1
 case "$?$2:$1" in
-    1:) show `list`;; # For All Devices
+    1:) show `list-db fdb`;; # For All Devices
     2:*) show $1;;   # For All Command of One Device
     0*) visi $out;; # For One Command of One Device
     *) $frmcmd $*;; # For Error Output

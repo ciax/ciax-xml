@@ -20,7 +20,7 @@ module CIAX
   module Mcr
     # Sequencer
     class Seq < Exe
-      #reqired cfg keys: app,db,body,stat
+      #required cfg keys: app,db,body,stat
       attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro
       #ent_cfg should have [:db]

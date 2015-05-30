@@ -82,7 +82,7 @@ module CIAX
       post_upd
     end
 
-    def set(key,val) # super should be placed at the end of method
+    def put(key,val) # super should be placed at the end of method
       @data[key]=val
       self['time']=now_msec
       self

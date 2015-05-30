@@ -65,12 +65,12 @@ module CIAX
         dat
       end
 
-      # Set value with mixed key
-      def set(key,val)
+      # Put value with mixed key
+      def put(key,val)
         akey=key.split(':')
         if @data.key?(akey.shift) && p=get(key)
           conv=subst(val).to_s
-          verbose("Field","Set[#{key}]=[#{conv}]")
+          verbose("Field","Put[#{key}]=[#{conv}]")
           case p
           when Array
             p.replace(conv.split(','))
@@ -96,7 +96,7 @@ module CIAX
       if s=ARGV.shift
         k,v=s.split('=')
         if v
-          puts f.set(k,v)
+          puts f.put(k,v)
         else
           puts f.get(s)
         end

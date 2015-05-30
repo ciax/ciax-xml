@@ -122,7 +122,7 @@ module CIAX
           set_index(args[0])
           args
         }
-        set(ssh.id,ssh)
+        put(ssh.id,ssh)
         @records[ssh.id]=ssh.record
         ssh.fork(@tgrp)
         self

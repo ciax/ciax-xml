@@ -26,7 +26,7 @@ module CIAX
         super
       end
 
-      def set(id,exe)
+      def put(id,exe)
         type?(exe,Exe)
         return self if @data.key?(id)
         # JumpGroup is set to Domain
@@ -61,7 +61,7 @@ module CIAX
       def add(site)
         cfg=Config.new("site_#{site}",@cfg)
         obj=@level.new(site,cfg)
-        set(site,obj.ext_shell)
+        put(site,obj.ext_shell)
       end
     end
   end

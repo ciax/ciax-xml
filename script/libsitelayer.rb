@@ -19,7 +19,7 @@ module CIAX
         @cfg.layers.each{|k,v|
           id=k.to_s
           @jumpgrp.add_item(id,id.capitalize+" mode",@pars)
-          set(id,v)
+          put(id,v)
         }
         self
       end

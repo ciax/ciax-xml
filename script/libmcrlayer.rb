@@ -12,7 +12,7 @@ module CIAX
           raise(Jump,ent.id)
         }
         mcr=Mcr::Man.new(@cfg)
-        set('mcr',mcr)
+        put('mcr',mcr)
         wg=mcr.cobj.lodom.join_group(@cfg.layers[:app].jumpgrp).set_proc{|ent| sl.shell(ent.id,'app');exit }
       end
 

@@ -25,9 +25,8 @@ module CIAX
           add_item('load',"[tag]",pars(1))
           cmd=add_item('set',"[key(:idx)] [val(,val)]",pars(2))
           cmd.set_proc{|ent|
-warn ent.par
             if @cfg[:field].key?(ent[0])
-              @cfg[:field].set(*ent.par)
+              @cfg[:field].put(*ent.par)
               'OK'
             else
               "No such value #{ent[0]}"

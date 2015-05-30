@@ -73,15 +73,31 @@ module CIAX
         verbose("Field","Put[#{key}]=[#{conv}]")
         case p=get(key)
         when Array
-          p.replace(conv.split(','))
+          merge_ary(p,conv.split(','))
         when String
-          p.replace(eval(conv).to_s)
+          begin
+            p.replace(eval(conv).to_s)
+          rescue SyntaxError,NameError
+            alert("Field","Value is not numerical")
+          end
         end
         verbose("Field","Evaluated[#{key}]=[#{@data[key]}]")
         self['time']=now_msec
         self
       ensure
         post_upd
+      end
+
+      private
+      def merge_ary(p,r)
+        r=[r] unless Array === r
+        p.map!{|i|
+          if Array === i
+            merge_ary(i,r.shift)
+          else
+            r.shift || i
+          end
+        }
       end
     end
 

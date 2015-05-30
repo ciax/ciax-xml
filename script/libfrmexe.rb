@@ -50,7 +50,7 @@ module CIAX
         @cobj.svdom.set_proc{|ent|@field['time']=now_msec;''}
         @cobj.ext_proc{|ent| "#{ent.cfg[:frame].inspect} => #{ent.cfg['response']}"}
         @cobj.item_proc('set'){|ent|
-          @field.put(ent.par[0],ent.par[1])
+          @field.rep(ent.par[0],ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
       end
@@ -92,7 +92,7 @@ module CIAX
           'OK'
         }
         @cobj.item_proc('set'){|ent|
-          @field.put(ent.par[0],ent.par[1])
+          @field.rep(ent.par[0],ent.par[1])
           flush
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }

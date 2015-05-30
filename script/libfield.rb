@@ -65,22 +65,17 @@ module CIAX
         dat
       end
 
-      # Put value with mixed key
-      def put(key,val)
+      # Replace value with mixed key
+      def rep(key,val)
         akey=key.split(':')
-        if @data.key?(akey.shift) && p=get(key)
-          conv=subst(val).to_s
-          verbose("Field","Put[#{key}]=[#{conv}]")
-          case p
-          when Array
-            p.replace(conv.split(','))
-          when String
-            p.replace(eval(conv).to_s)
-          end
-        elsif akey.empty?
-          @data[key]=val
-        else
-          Msg.par_err("Index is out of range")
+        Msg.par_err("No such Key") unless @data.key?(akey.shift)
+        conv=subst(val).to_s
+        verbose("Field","Put[#{key}]=[#{conv}]")
+        case p=get(key)
+        when Array
+          p.replace(conv.split(','))
+        when String
+          p.replace(eval(conv).to_s)
         end
         verbose("Field","Evaluated[#{key}]=[#{@data[key]}]")
         self['time']=now_msec
@@ -96,7 +91,7 @@ module CIAX
       if s=ARGV.shift
         k,v=s.split('=')
         if v
-          puts f.put(k,v)
+          puts f.rep(k,v)
         else
           puts f.get(s)
         end

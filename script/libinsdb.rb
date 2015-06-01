@@ -22,7 +22,7 @@ module CIAX
         hcmd=db[:command]={}
         algrp={'caption' => 'Alias','column' => 2,:members =>{}}
         (doc[:domain]['alias']||[]).each{|e0|
-          (hcmd[:alias]||={})[e0['id']]=e0['ref']
+          e0.attr2item(hcmd[:alias]||={})
           algrp[:members][e0['id']]=e0['label']
         }
         (hcmd[:group]||={})['gal']=algrp

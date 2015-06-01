@@ -59,10 +59,12 @@ module CIAX
         (cdb[:group]).each{|gid,gat|
           @current=@cmdlist.new_grp(gat['caption'])
           (gat[:members]).each{|id,label|
-            if ref=(cdb[:alias]||{})[id]
-              item=idx[ref]
+            if att=(cdb[:alias]||{})[id]
+              item=idx[att['ref']]
+              label=att['label']
             else
               item=idx[id]
+              label=item['label']
             end
             add_item(id,label,item)
           }

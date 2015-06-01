@@ -18,6 +18,7 @@ module CIAX
       private
       def doc_to_db(doc)
         db=Dbi[doc[:attr]]
+        # Command Domain
         hcmd=db[:command]={}
         algrp={'caption' => 'Alias','column' => 2,:members =>{}}
         (doc[:domain]['alias']||[]).each{|e0|
@@ -25,6 +26,7 @@ module CIAX
           algrp[:members][e0['id']]=e0['label']
         }
         (hcmd[:group]||={})['gal']=algrp
+        # Status Domain
         (doc[:domain]['status']||[]).each{|e0|
           p=(db[:status]||={})
           if e0.name == 'group'

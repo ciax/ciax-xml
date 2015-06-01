@@ -37,7 +37,7 @@ module CIAX
         e.each{|e0|
           id=e0.attr2item(idx)
           item=idx[id]
-          label=item.delete('label')
+          label=item['label']
           label=nil if /true|1/ === e0['hidden']
           (grp[:members]||={})[id]=label
           Repeat.new.each(e0){|e1,rep|
@@ -77,7 +77,7 @@ module CIAX
         rep.each(e){|e0,r0|
           id=e0.attr2item(idx){|k,v| r0.format(v)}
           item=idx[id]
-          (grp[:members]||={})[id]=item.delete('label')
+          (grp[:members]||={})[id]=item['label']
           item['type'] = e0.name
           item[:fields] = []
           r0.each(e0){|e1,r1|

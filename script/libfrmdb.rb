@@ -24,7 +24,7 @@ module CIAX
         grp={'main' => {'caption' => 'Device Commands',:members => members}}
         frm=init_frame(doc[:domain]['cmdframe']){|e,r| init_cmd(e,r)}
         idx=init_index(doc[:domain]['commands']){|e,r| init_cmd(e,r)}
-        idx.each{|id,h| members[id]=h.delete('label')}
+        idx.each{|id,h| members[id]=h['label']}
         db[:command]={:group => grp, :index => idx, :frame => frm}
         db
       end

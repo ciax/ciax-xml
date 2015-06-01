@@ -32,7 +32,7 @@ module CIAX
           id=e0.attr2item(idx)
           verbose("Mdb","MACRO:[#{id}]")
           item=idx[id]
-          label=item.delete('label')
+          label=item['label']
           (grp[:members]||={})[id]=label
           body=(item[:body]||=[])
           final={}

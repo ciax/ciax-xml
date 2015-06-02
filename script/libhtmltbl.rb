@@ -9,7 +9,7 @@ module CIAX
       @index=adbs[:index]
       push "<div class=\"outline\">"
       push "<div class=\"title\">#{adb['label']}</div>"
-      get_element(['time','elapse'],'',2)
+      get_element(['time','elapsed'],'',2)
       adbs[:group].each{|k,g|
         cap=g["caption"] || next
         get_element(g[:members],cap,g["column"].to_i)

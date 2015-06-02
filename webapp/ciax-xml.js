@@ -1,5 +1,5 @@
 var last;
-function elapse(){
+function elapsed(){
     var now=new Date();
     var ms=now.getTime()-last;
     if(ms < 0){ ms=0; }
@@ -12,7 +12,7 @@ function elapse(){
     }else{
         str=t.getMinutes()+"' "+t.getSeconds()+'"';
     }
-    $("#elapse").text(str);
+    $("#elapsed").text(str);
 }
 function conv(stat){
     var data=stat.data
@@ -32,7 +32,7 @@ function conv(stat){
 }
 function update(){
     $.getJSON(File,conv);
-    elapse();
+    elapsed();
 }
 function init(){
     update();

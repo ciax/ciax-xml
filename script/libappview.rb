@@ -59,7 +59,7 @@ module CIAX
       def upd_core
         self['gtime']={'caption'=>'','lines'=>[hash={}]}
         hash['time']={'label'=>'TIMESTAMP','msg'=>Msg.date(@stat['time'])}
-        hash['elapse']={'label'=>'ELAPSED','msg'=>Msg.elps_date(@stat['time'])}
+        hash['elapsed']={'label'=>'ELAPSED','msg'=>Msg.elps_date(@stat['time'])}
         @adbs[:group].each{|k,gdb|
           cap=gdb['caption'] || next
           self[k]={'caption' => cap,'lines'=>[]}

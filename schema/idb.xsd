@@ -13,12 +13,22 @@
   <xsd:element name="project">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="idb:group" />
         <xsd:element ref="idb:instance" />
-        <xsd:element ref="idb:reference" />
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="caption" type="xsd:token" use="optional" />
       <xsd:attribute name="column" type="xsd:int" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="group">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="idb:instance" />
+        <xsd:element ref="idb:reference" />
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:NCName" use="required" />
+      <xsd:attribute name="caption" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="instance">

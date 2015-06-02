@@ -9,6 +9,7 @@ module CIAX
       end
 
       def title
+        args=self['args'].join(':') if key?('args')
         case self['type']
         when 'mesg'
           msg=head('Mesg',5)
@@ -19,10 +20,10 @@ module CIAX
         when 'wait'
           msg=head('Waiting',6)
         when 'mcr'
-          msg=head("MACRO",3)
+          msg=head("MACRO",3,"#{self['label']}(#{args})")
           msg << "(async)" if self['async']
         when 'exec'
-          msg=head("EXEC",13)
+          msg=head("EXEC",13,"[#{self['site']}:#{args}]")
         end
         msg
       end
@@ -48,15 +49,9 @@ module CIAX
         mary.join("\n")+"\n"
       end
 
-      def head(msg,col)
-        label=self['label']||self['site']||'noname'
-        msg=rindent+Msg.color(msg,col)+':'
-        if key?('args')
-          msg << self['args'].join(' ')+'('+label+')'
-        else
-          msg << label
-        end
-        msg
+      private
+      def head(msg,col,label=nil)
+        rindent+Msg.color(msg,col)+':'+(label||self['label']||'noname')
       end
 
       def rindent(add=0)

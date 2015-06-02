@@ -19,7 +19,7 @@
         </wait>
       </item>
       <item id="run" label="Run to Tag [1-12]">
-        <par_num name="tag">1:12</par_num>
+        <par_num label="1-12">1:12</par_num>
         <goal label="On Destination Tag?">
           <stat var="cps" site="crt">$1</stat>
         </goal>

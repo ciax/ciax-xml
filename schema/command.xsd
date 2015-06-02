@@ -28,7 +28,7 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="rerange">
-          <xsd:attribute name="name" type="xsd:NCName"></xsd:attribute>
+          <xsd:attribute name="label" type="xsd:token"></xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -37,7 +37,7 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
-          <xsd:attribute name="name" type="xsd:NCName"></xsd:attribute>
+          <xsd:attribute name="label" type="xsd:token"></xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

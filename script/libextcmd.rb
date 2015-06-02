@@ -81,6 +81,7 @@ module CIAX
       # str could include Math functions
       def initialize(grp_cfg,attr={})
         super
+        @cfg['label']=subst(@cfg['label'])
         @cfg[:body]=deep_subst(@cfg[:body])
       end
 

@@ -19,7 +19,7 @@ module CIAX
       # Conditional judgment section
       def timeout?
         itv=($opt['m'] && ($opt['e'] || $opt['s']))? 1 : 0
-        show title(self)
+        show title
         max=self['max']=self['retry']
         res=max.to_i.times{|n| #gives number or nil(if break)
           self['retry']=n
@@ -34,20 +34,20 @@ module CIAX
       end
 
       def ok?
-        show title(self)
+        show title
         upd
         'ok'
       end
 
       def skip?
-        show title(self)
+        show title
         res=condition_ok?('skip','pass')
         upd
         res
       end
 
       def fail?
-        show title(self)
+        show title
         res=! condition_ok?('pass','failed')
         upd
         res
@@ -55,7 +55,7 @@ module CIAX
 
       # Interactive section
       def exec?
-        show title(self)
+        show title
         res= !dryrun?
         self['result']= res ? 'exec' : 'skip'
         upd
@@ -64,7 +64,7 @@ module CIAX
 
       # Execution section
       def async?
-        show title(self)
+        show title
         res=(/true|1/ === self['async'])
         self['result']= res ? 'forked' : 'entering'
         upd
@@ -73,12 +73,12 @@ module CIAX
 
       # Display section
       def to_v
-        title(self)+result(self)
+        title+result
       end
 
       private
       def upd_core
-        show result(self)
+        show result
       end
 
       def show(msg)

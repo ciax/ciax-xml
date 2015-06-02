@@ -6,7 +6,6 @@ require "libstep"
 module CIAX
   module Mcr
     class Record < Datax
-      include PrtShare
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       attr_reader :cfg
       def initialize(id,ver='0')
@@ -44,10 +43,16 @@ module CIAX
         post_upd
       end
 
+      def read(json_str=nil)
+        super
+        @data.each{|i| i.extend(PrtShare)}
+        self
+      end
+
       def to_v
         date=Time.at((self['time']/1000).round)
-        msg=head("MACRO",3)+" (#{date})\n"
-        @data.each{|i| msg << title(i)+result(i) }
+        msg=Msg.color("MACRO",3)+":#{self['label']} (#{date})\n"
+        @data.each{|i| msg << i.title+i.result}
         msg
       end
     end

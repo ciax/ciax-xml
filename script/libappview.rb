@@ -2,16 +2,18 @@
 require "libappsym"
 
 # View is not used for computing, just for apperance for user.
-# So the convert process (upd) will be included in to_s
-# Updated at to_s.
+# So the convert process (upd) will be included in to_v
+# Updated at to_v.
 module CIAX
   module App
+    # Hash of App Groups
     class View < Upd
       def initialize(adb,stat)
         super()
         @cls_color=2
         @pfx_color=13
         @adbs=type?(adb,Dbi)[:status]
+        @index=@adbs[:index]
         @stat=type?(stat,Status)
         @stat.post_upd_procs << proc{
           verbose("View","Propagate Status#upd -> App::View#upd")
@@ -27,7 +29,8 @@ module CIAX
         str=''
         @adbs[:group].each{|k,gdb|
           cap=gdb['caption'] || next
-          gdb[:members].each{|id,label|
+          gdb[:members].each{|id|
+            label=@index[id]['label']
             str << "#{cap},#{label},#{@stat.get(id)}\n"
           }
         }
@@ -54,22 +57,18 @@ module CIAX
 
       private
       def upd_core
+        self['gtime']={'caption'=>'','lines'=>[hash={}]}
+        hash['time']={'label'=>'TIMESTAMP','msg'=>Msg.date(@stat['time'])}
+        hash['elapse']={'label'=>'ELAPSED','msg'=>Msg.elps_date(@stat['time'])}
         @adbs[:group].each{|k,gdb|
           cap=gdb['caption'] || next
           self[k]={'caption' => cap,'lines'=>[]}
           col=gdb['column']||1
           gdb[:members].each_slice(col.to_i){|hline|
             hash={}
-            hline.each{|id,label|
-              h=hash[id]={'label'=>label||id.upcase}
-              case id
-              when 'elapse'
-                h['msg']=Msg.elps_date(@stat['time'])
-              when 'time'
-                h['msg']=Msg.date(@stat['time'])
-              else
-                h['msg']=@stat['msg'][id]||@stat.get(id)
-              end
+            hline.each{|id|
+              h=hash[id]={'label'=>@index[id]['label']||id.upcase}
+              h['msg']=@stat['msg'][id]||@stat.get(id)
               h['class']=@stat['class'][id] if @stat['class'].key?(id)
             }
             self[k]['lines'] << hash

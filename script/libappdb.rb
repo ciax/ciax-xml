@@ -61,8 +61,7 @@ module CIAX
       # Status Db
       def init_stat(doc,db)
         adbs=doc[:domain]['status']
-        mbr={'time'=>'TIMESTAMP','elapse'=>'ELAPSED'}
-        grp={'gtime'=>{'caption' =>'','column' => 2,:members =>mbr}}
+        grp={}
         idx=Hashx.new
         Repeat.new.each(adbs){|e,r|
           gid=e.attr2item(grp){|k,v| r.format(v)}
@@ -75,7 +74,7 @@ module CIAX
         rep.each(e){|e0,r0|
           id=e0.attr2item(idx){|k,v| r0.format(v)}
           item=idx[id]
-          (grp[:members]||={})[id]=item['label']
+          (grp[:members]||=[]) << id
           item['type'] = e0.name
           item[:fields] = []
           r0.each(e0){|e1,r1|

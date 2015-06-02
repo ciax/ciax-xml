@@ -32,8 +32,7 @@ module CIAX
           id=e0.attr2item(idx)
           verbose("Mdb","MACRO:[#{id}]")
           item=idx[id]
-          label=item['label']
-          (grp[:members]||={})[id]=label
+          (grp[:members]||=[]) << id
           body=(item[:body]||=[])
           final={}
           e0.each{|e1,rep|

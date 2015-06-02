@@ -19,12 +19,9 @@ module CIAX
 
       # Command section
       def init_command(doc,db)
-        members={}
-        idx={}
-        grp={'main' => {'caption' => 'Device Commands',:members => members}}
         frm=init_frame(doc[:domain]['cmdframe']){|e,r| init_cmd(e,r)}
         idx=init_index(doc[:domain]['commands']){|e,r| init_cmd(e,r)}
-        idx.each{|id,h| members[id]=h['label']}
+        grp={'main' => {'caption' => 'Device Commands',:members => idx.keys}}
         db[:command]={:group => grp, :index => idx, :frame => frm}
         db
       end

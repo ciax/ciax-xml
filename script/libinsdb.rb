@@ -20,10 +20,10 @@ module CIAX
         db=Dbi[doc[:attr]]
         # Command Domain
         hcmd=db[:command]={}
-        algrp={'caption' => 'Alias','column' => 2,:members =>{}}
+        algrp={'caption' => 'Alias','column' => 2,:members =>[]}
         (doc[:domain]['alias']||[]).each{|e0|
           e0.attr2item(hcmd[:alias]||={})
-          algrp[:members][e0['id']]=e0['label']
+          algrp[:members] << e0['id']
         }
         (hcmd[:group]||={})['gal']=algrp
         # Status Domain

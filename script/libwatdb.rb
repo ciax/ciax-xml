@@ -27,7 +27,7 @@ module CIAX
               (act[name]||=[]) << args
             when :block_grp
               blk=(act[:block]||=[])
-              cmdgrp[e1['ref']][:members].each{|k,v| blk << [k]}
+              cmdgrp[e1['ref']][:members].each{|k| blk << [k]}
             else
               h=e1.to_h
               h.each_value{|v| v.replace(r0.format(v))}

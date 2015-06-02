@@ -58,7 +58,7 @@ module CIAX
           ent=super
           return ent unless @sel[:body]=ent.cfg[:body]
           cid=ent.id
-          verbose("FrmItem","Body:#{@cfg[:label]}(#{cid})")
+          verbose("FrmItem","Body:#{@cfg['label']}(#{cid})")
           if frame=@cache[cid]
             verbose("FrmItem","Cmd cache found [#{cid}]")
           else

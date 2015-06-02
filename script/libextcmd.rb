@@ -67,7 +67,7 @@ module CIAX
               label=item['label']
             end
             if Array === item[:parameters]
-              label=label.gsub(/\$([\d]+)/,'%s') % item[:parameters].map{|e| e[:label]}
+              label=label.gsub(/\$([\d]+)/,'%s') % item[:parameters].map{|e| e['label']}
             end
             add_item(id,label,item)
           }

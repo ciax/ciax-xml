@@ -62,7 +62,7 @@ module CIAX
 
   class Command < CmdShare
     # CDB: mandatory (:body)
-    # optional (:label,:parameters,:mod)
+    # optional ('label',:parameters)
     # optionalfrm (:nocache,:response)
     attr_reader :svdom,:lodom,:hidgrp
     def initialize(exe_cfg=nil,attr={})
@@ -170,7 +170,7 @@ module CIAX
     private
     def new_item(id,title=nil,crnt={})
       crnt[:id]=id
-      crnt[:label]=title
+#      crnt[:label]=title
       self[id]=add('Item',crnt)
     end
 
@@ -183,7 +183,7 @@ module CIAX
   class Item < Hashx
     include SetProc
     attr_reader :cfg
-    #grp_cfg should have :id,:label,:parameters,:def_proc
+    #grp_cfg should have :id,'label',:parameters,:def_proc
     def initialize(grp_cfg,attr={})
       super()
       @cfg=Config.new('item',grp_cfg).update(attr)
@@ -214,7 +214,7 @@ module CIAX
           next par[:default] if par.key?(:default)
           mary=[]
           mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameters].size})"
-          mary << Msg.item(@cfg[:id],@cfg[:label])
+          mary << Msg.item(@cfg[:id],@cfg['label'])
           mary << " "*10+"key=(#{disp})"
           Msg.par_err(*mary)
         end

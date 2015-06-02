@@ -5,12 +5,13 @@ require "libwatlist"
 require "libsh"
 
 module CIAX
-  # Modes            | Actual Status? | Force Entering | Query? | Moving | Retry Interval | Record?
-  # TEST(default):   | NO  | YES | YES | NO  | 0 | NO
-  # CHECK(-e):       | YES | YES | YES | NO  | 0 | YES
-  # DRYRUN(-ne):     | YES | YES | NO  | NO  | 0 | YES
-  # INTERACTIVE(-em):| YES | NO  | YES | YES | 1 | YES
-  # NONSTOP(-nem):   | YES | NO  | NO  | YES | 1 | YES
+  # Modes             | Actual Status? | Force Entering | Query? | Moving | Retry Interval | Record?
+  # TEST(default):    | NO  | YES | YES | NO  | 0 | NO
+  # NONSTOP TEST(-n): | NO  | YES | NO  | NO  | 0 | NO
+  # CHECK(-e):        | YES | YES | YES | NO  | 0 | YES
+  # DRYRUN(-ne):      | YES | YES | NO  | NO  | 0 | YES
+  # INTERACTIVE(-em): | YES | NO  | YES | YES | 1 | YES
+  # NONSTOP(-nem):    | YES | NO  | NO  | YES | 1 | YES
 
   #MOTION:  TEST <-> REAL (m)
   #QUERY :  INTERACTIVE <-> NONSTOP(n)
@@ -86,16 +87,17 @@ module CIAX
             @step=@record.add_step(e1)
             case e1['type']
             when 'mesg'
-              ack?(@step.ok?)
+              @step.ok?
+              query(['ok'])
             when 'goal'
-              break if skip?(@step.skip?)
+              break if @step.skip? && !query(['pass','force'])
             when 'check'
-              drop?(@step.fail?)
+              @step.fail? && query(['drop','force','retry'])
             when 'wait'
-              drop?(@step.timeout?{show '.'})
+              @step.timeout?{show '.'} && query(['drop','force','retry'])
             when 'exec'
               @running << e1['site']
-              @record.cfg.layers[:wat].site(e1['site']).exe(e1['args'],'macro') if exec?(@step.exec?)
+              @record.cfg.layers[:wat].site(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
             when 'mcr'
               if @step.async? && @cfg[:submcr_proc].is_a?(Proc)
                 @step['sid']=@cfg[:submcr_proc].call(e1['args'],@id)['sid']
@@ -136,28 +138,6 @@ module CIAX
         self
       end
 
-      # Interactive section
-      def ack?(res)
-        $opt['n'] || query(['ok'])
-      end
-
-      def skip?(res)
-        return res if $opt['n']
-        res && !query(['pass','force'])
-      end
-
-      def drop?(res)
-        if res
-          raise(Interlock) if $opt['n']
-          query(['drop','force','retry'])
-        end
-      end
-
-      def exec?(res)
-        return res if $opt['n']
-        res && query(['exec','skip'])
-      end
-
       def set_stat(str)
         self['stat']=str
       ensure
@@ -165,16 +145,21 @@ module CIAX
       end
 
       def query(cmds)
+        return true if $opt['n']
         self['option'].replace(cmds)
         set_stat 'query'
-        res=input(cmds)
+        if $opt['n']
+          res=$opt['e'] ? cmds.first : 'ok'
+        else
+          res=input(cmds)
+        end
         self['option'].clear
         set_stat 'run'
         @step['action']=res
         case res
-        when 'exec','force'
+        when 'exec','force','ok'
           return true
-        when 'pass','ok'
+        when 'pass'
           return false
         when 'skip'
           raise(Skip)

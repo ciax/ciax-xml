@@ -7,7 +7,7 @@ module CIAX
     class Command < Command
       attr_reader :cfg,:intgrp
       def add_extgrp
-        @cfg[:depth]=0
+        @cfg[:depth]=1
         @cfg[:mobj]=self
         @cfg[:db]||=Db.new.get(ENV['PROJ']||'ciax')
         super(Ext)
@@ -42,7 +42,7 @@ module CIAX
 
     module Ext
       include CIAX::Ext
-      class Entity < Entity
+      class Entity < Ext::Entity
         def initialize(upper,crnt={})
           super
           exp=[]

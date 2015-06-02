@@ -21,9 +21,9 @@ module CIAX
           @cfg[:group_id]='internal'
           @cfg['caption']='Internal Commands'
           any={:type =>'reg',:list => ["."]}
-          add_item('save',"[key,key...] [tag]",pars(2))
-          add_item('load',"[tag]",pars(1))
-          cmd=add_item('set',"[key(:idx)] [val(,val)]",pars(2))
+          add_item('save',"[key,key...] [tag]",def_pars(2))
+          add_item('load',"[tag]",def_pars(1))
+          cmd=add_item('set',"[key(:idx)] [val(,val)]",def_pars(2))
           cmd.set_proc{|ent|
             if @cfg[:field].key?(ent[0])
               @cfg[:field].put(*ent.par)

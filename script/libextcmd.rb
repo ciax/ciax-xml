@@ -35,7 +35,7 @@ module CIAX
         @cfg[:group_id]='internal'
       end
 
-      def pars(n=1)
+      def def_pars(n=1)
         any={:type => 'reg', :list => ['.']}
         ary=[]
         n.times{ary << any}

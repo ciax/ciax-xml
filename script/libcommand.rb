@@ -120,7 +120,7 @@ module CIAX
     end
 
     def add_item(id,title=nil,crnt={})
-      crnt['label']=current[id]=title
+      crnt['clabel']=current[id]=title
       new_item(id,crnt)
     end
 
@@ -133,7 +133,7 @@ module CIAX
     def merge_items(cmdlist)
       type?(cmdlist,CmdList).each{|cg|
         cg.each{|id,title|
-          new_item(id,{'label'=> title})
+          new_item(id,{'clabel'=> title})
         }
       }
       @current=@cmdlist.merge!(cmdlist).last

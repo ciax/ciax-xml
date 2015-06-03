@@ -18,7 +18,8 @@ module CIAX
 
       # Conditional judgment section
       def timeout?
-        itv=($opt['m'] && ($opt['e'] || $opt['s']))? 1 : 0
+        itv=($opt['e'] || $opt['s'])? 0.1 : 0
+        itv*=10 if $opt['m']
         show title
         max=self['max']=self['retry']
         res=max.to_i.times{|n| #gives number or nil(if break)

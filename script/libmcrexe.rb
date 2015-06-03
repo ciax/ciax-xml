@@ -97,7 +97,7 @@ module CIAX
               @step.timeout?{show '.'} && query(['drop','force','retry'])
             when 'exec'
               @running << e1['site']
-              @record.cfg.layers[:wat].site(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
+              @record.cfg.layers[:wat].get(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
             when 'mcr'
               if @step.async? && @cfg[:submcr_proc].is_a?(Proc)
                 @step['sid']=@cfg[:submcr_proc].call(e1['args'],@id)['sid']
@@ -120,7 +120,7 @@ module CIAX
       def interrupt
         msg("\nInterrupt Issued to running devices #{@running}",3)
         @running.each{|site|
-          @record.cfg.layers[:wat].site(site).exe(['interrupt'],'user')
+          @record.cfg.layers[:wat].get(site).exe(['interrupt'],'user')
         } if $opt['m']
         finish('interrupted')
         self

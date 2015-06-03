@@ -26,8 +26,6 @@ module CIAX
   # Macro
   class Interlock < LongJump; end
   class Retry < LongJump; end
-  class Skip < LongJump; end
-
 
   # Server error
   class ServerError < RuntimeError;end

@@ -90,7 +90,7 @@ module CIAX
               @step.ok?
               query(['ok'])
             when 'goal'
-              break if @step.skip? && !query(['pass','force'])
+              break if @step.skip? && !query(['skip','force'])
             when 'check'
               @step.fail? && query(['drop','force','retry'])
             when 'wait'
@@ -105,7 +105,6 @@ module CIAX
             end
           rescue Retry
             retry
-          rescue Skip
           end
         }
         finish
@@ -159,10 +158,8 @@ module CIAX
         case res
         when 'exec','force','ok'
           return true
-        when 'pass'
-          return false
         when 'skip'
-          raise(Skip)
+          return false
         when 'drop'
           raise(Interlock)
         when 'retry'

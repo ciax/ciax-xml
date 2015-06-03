@@ -99,10 +99,10 @@ module CIAX
           stat=stats[site]
             inv=cond['inv']=h['inv']
             cri=cond['cri']=h['val']
-            actual=stat['msg'][var]||stat.get(var)
-            verbose("McrStep","site=#{site},var=#{var},inv=#{inv},cri=#{cri},actual=#{actual}")
-            cond['act']=actual
-            cond['res']=match?(actual,cri,cond['inv'])
+            real=stat['msg'][var]||stat.get(var)
+            verbose("McrStep","site=#{site},var=#{var},inv=#{inv},cri=#{cri},real=#{real}")
+            cond['real']=real
+            cond['res']=match?(real,cri,cond['inv'])
           cond
         }
         res=conds.all?{|h| h['res']}
@@ -130,12 +130,12 @@ module CIAX
         @condition.map{|h| h['site']}.uniq
       end
 
-      def match?(actual,cri,inv)
+      def match?(real,cri,inv)
         i=(/true|1/ === inv)
         if /[a-zA-Z]/ === cri
-          (/#{cri}/ === actual) ^ i
+          (/#{cri}/ === real) ^ i
         else
-          (cri == actual) ^ i
+          (cri == real) ^ i
         end
       end
     end

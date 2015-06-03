@@ -37,11 +37,11 @@ module CIAX
           mary[0] << ' -> '+Msg.color(cap,color)
           if c=self['conditions']
             c.each{|h|
-              if h['res']
-                mary << body("#{h['site']}:#{h['var']}",3)+" is #{h['cri']}"
-              else
-                mary << body("#{h['site']}:#{h['var']}",3)+" is not #{h['cri']} (#{h['act']})"
-              end
+              res= h['res'] ? body("o",2) : body("x",1)
+              ope= h['inv'] ? "!=" : "="
+              line=res+" #{h['site']}:#{h['var']} #{ope} #{h['cri']}"
+              line+=" (#{h['real']})" if !h['res'] || h['inv']
+              mary << line
             }
           end
         end

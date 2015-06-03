@@ -38,9 +38,16 @@ module CIAX
           if c=self['conditions']
             c.each{|h|
               res= h['res'] ? body("o",2) : body("x",1)
-              ope= h['inv'] ? "!=" : "="
+              case h['cmp']
+              when "equal"
+                ope="="
+              when "not"
+                ope="!="
+              when "pattern"
+                ope="=~"
+              end
               line=res+" #{h['site']}:#{h['var']} #{ope} #{h['cri']}"
-              line+=" (#{h['real']})" if !h['res'] || h['inv']
+              line+=" (#{h['real']})" if !h['res'] || ope != "="
               mary << line
             }
           end

@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="moircs" version="1" label="MOIRCS Macro" port="55555">
     <group id="gmain" caption="Macro Commands" column="2">
       <item id="l-s" label="LoadMask(WAIT~STOCK)">
         <goal label="On STOCK?" join="all">
-          <stat site="mma" var="pos" inv="true">N/A</stat>
-          <stat site="mma" var="abs" inv="false">WAIT</stat>
-          <stat site="mma" var="pos" inv="true">STOCK</stat>
+          <not site="mma" var="pos">N/A</not>
+          <equal site="mma" var="abs">WAIT</equal>
+          <not site="mma" var="pos">STOCK</not>
         </goal>
         <check label="On WAIT?">
-          <stat site="mfp" var="gv">OPEN</stat>
-          <stat site="map" var="ch1">OK</stat>
-          <stat site="mmc" var="cvs">/S</stat>
+          <equal site="mfp" var="gv">OPEN</equal>
+          <equal site="map" var="ch1">OK</equal>
+          <pattern site="mmc" var="cvs">S</pattern>
         </check>
         <mcr async="false" name="l-w">
           <argv>dsi</argv>

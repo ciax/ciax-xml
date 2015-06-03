@@ -46,7 +46,7 @@ module CIAX
               body << make_condition(e1,attr)
             when 'goal'
               body << make_condition(e1,attr)
-              final.update(attr)['type'] = 'check'
+              final.update(attr.extend(Enumx).deep_copy)['type'] = 'check'
             when 'exec'
               attr['args']=getcmd(e1)
               attr.delete('name')
@@ -66,7 +66,9 @@ module CIAX
 
       def make_condition(e1,attr)
         e1.each{|e2|
-          (attr['stat']||=[]) << e2.to_h
+          hash=e2.to_h
+          hash['cmp']=e2.name
+          (attr['cond']||=[]) << hash
         }
         attr
       end

@@ -4,54 +4,54 @@
     <group id="gmain" caption="Macro Commands" column="2">
       <item id="runf" label="Run Forward to Tag">
         <goal label="On Tag?">
-          <stat site="crt" var="cps" inv="true">0</stat>
+          <not site="crt" var="cps">0</not>
         </goal>
         <mesg label="Clear the way?"/>
         <wait retry="5" label="Ready?">
-          <stat var="rdy" site="crt">ON</stat>
+          <equal var="rdy" site="crt">ON</equal>
         </wait>
         <exec site="crt" name="runf"/>
         <wait retry="5" label="Run start?">
-          <stat var="run" site="crt">ON</stat>
+          <equal var="run" site="crt">ON</equal>
         </wait>
         <wait retry="40" label="Run end?">
-          <stat var="run" site="crt">OFF</stat>
+          <equal var="run" site="crt">OFF</equal>
         </wait>
       </item>
       <item id="run" label="Run to Tag [1-12]">
         <par_num label="1-12">1:12</par_num>
         <goal label="On Destination Tag?">
-          <stat var="cps" site="crt">$1</stat>
+          <equal var="cps" site="crt">$1</equal>
         </goal>
         <check label="Ready?">
-          <stat var="rdy" site="crt">ON</stat>
+          <equal var="rdy" site="crt">ON</equal>
         </check>
         <exec site="crt" name="run">
           <argv>$1</argv>
         </exec>
         <wait retry="5" label="Run start?">
-          <stat var="run" site="crt">ON</stat>
+          <equal var="run" site="crt">ON</equal>
         </wait>
         <wait retry="120" label="Run end?">
-          <stat label="Running" var="run" site="crt">OFF</stat>
+          <equal label="Running" var="run" site="crt">OFF</equal>
         </wait>
       </item>
       <item id="lift" label="Jack UP Level [1-4]">
         <par_num>1:4</par_num>
         <goal label="On Destination Level?">
-          <stat var="jlv" site="crt">$1</stat>
+          <equal var="jlv" site="crt">$1</equal>
         </goal>
         <check label="Ready?">
-          <stat var="rdy" site="crt">ON</stat>
+          <equal var="rdy" site="crt">ON</equal>
         </check>
         <exec site="crt" name="lift">
           <argv>$1</argv>
         </exec>
         <wait label="Jack start?" retry="5">
-          <stat var="jak" site="crt">ON</stat>
+          <equal var="jak" site="crt">ON</equal>
         </wait>
         <wait label="Jacking" retry="40">
-          <stat var="jak" site="crt">OFF</stat>
+          <equal var="jak" site="crt">OFF</equal>
         </wait>
       </item>
     </group>
@@ -60,150 +60,150 @@
       <item id="fju0" label="InR0 Jkup at FIX [$1]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Jack DW?">
-          <stat site="$1" var="fjb">DW</stat>
+          <equal site="$1" var="fjb">DW</equal>
         </goal>
         <check label="HOOK?">
-          <stat site="$1" var="fis">ON</stat>
-          <stat site="$1" var="fhk">HOOK</stat>
+          <equal site="$1" var="fis">ON</equal>
+          <equal site="$1" var="fhk">HOOK</equal>
         </check>
         <exec site="$1" name="fjdw"/>
         <wait label="Jack start?" retry="5">
-          <stat site="$1" var="exe">ON</stat>
+          <equal site="$1" var="exe">ON</equal>
         </wait>
         <wait label="Jacking" retry="50">
-          <stat site="$1" var="exe">OFF</stat>
+          <equal site="$1" var="exe">OFF</equal>
         </wait>
       </item>
       <item id="fjd0" label="InR0 Jkdw at FIX [$1]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Instrument ON?">
-          <stat site="$1" var="fis">ON</stat>
+          <equal site="$1" var="fis">ON</equal>
         </goal>
         <check label="HOOK?">
-          <stat site="$1" var="fhk">HOOK</stat>
+          <equal site="$1" var="fhk">HOOK</equal>
         </check>
         <exec site="$1" name="fjup"/>
         <wait label="Jack start?" retry="5">
-          <stat site="$1" var="exe">ON</stat>
+          <equal site="$1" var="exe">ON</equal>
         </wait>
         <wait label="Jacking" retry="50">
-          <stat site="$1" var="exe">OFF</stat>
+          <equal site="$1" var="exe">OFF</equal>
         </wait>
       </item>
       <item id="fju4" label="InR4 Jkup at FIX.IR [$1]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Jack Up?">
-          <stat site="$1" var="fjb">UP</stat>
+          <equal site="$1" var="fjb">UP</equal>
         </goal>
         <check label="UNHOOK?">
-          <stat site="$1" var="fhk">UNHK</stat>
+          <equal site="$1" var="fhk">UNHK</equal>
         </check>
         <exec site="$1" name="fjup"/>
         <wait label="Jack start?" retry="5">
-          <stat site="$1" var="exe">ON</stat>
+          <equal site="$1" var="exe">ON</equal>
         </wait>
         <wait label="Jacking" retry="50">
-          <stat site="$1" var="exe">OFF</stat>
+          <equal site="$1" var="exe">OFF</equal>
         </wait>
       </item>
       <item id="fjd4" label="InR4 Jkdw at FIX.IR [$1]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Jack Dw?">
-          <stat site="$1" var="fjb">DW</stat>
+          <equal site="$1" var="fjb">DW</equal>
         </goal>
         <check label="UNHOOK?">
-          <stat site="$1" var="fhk">UNHK</stat>
+          <equal site="$1" var="fhk">UNHK</equal>
         </check>
         <exec site="$1" name="fjdw"/>
         <wait label="Jack start?" retry="5">
-          <stat site="$1" var="exe">ON</stat>
+          <equal site="$1" var="exe">ON</equal>
         </wait>
         <wait label="Jacking" retry="50">
-          <stat site="$1" var="exe">OFF</stat>
+          <equal site="$1" var="exe">OFF</equal>
         </wait>
       </item>
       <!--MOV Flange Jack Command-->
       <item id="mju0" label="InR0 Jkup at MOV [$1]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Jack DW?">
-          <stat site="$1" var="mjb">DW</stat>
+          <equal site="$1" var="mjb">DW</equal>
         </goal>
         <check label="HOOK?">
-          <stat site="$1" var="mis">ON</stat>
-          <stat site="$1" var="mhk">HOOK</stat>
+          <equal site="$1" var="mis">ON</equal>
+          <equal site="$1" var="mhk">HOOK</equal>
         </check>
         <exec site="$1" name="mjdw"/>
         <wait label="Jack start?" retry="5">
-          <stat site="$1" var="exe">ON</stat>
+          <equal site="$1" var="exe">ON</equal>
         </wait>
         <wait label="Jacking" retry="50">
-          <stat site="$1" var="exe">OFF</stat>
+          <equal site="$1" var="exe">OFF</equal>
         </wait>
       </item>
       <item id="mjd0" label="InR0 Jkdw at MOV [$1]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Instrument ON?">
-          <stat site="$1" var="mis">ON</stat>
+          <equal site="$1" var="mis">ON</equal>
         </goal>
         <check label="HOOK?">
-          <stat site="$1" var="mhk">HOOK</stat>
+          <equal site="$1" var="mhk">HOOK</equal>
         </check>
         <exec site="$1" name="mjup"/>
         <wait label="Jack start?" retry="5">
-          <stat site="$1" var="exe">ON</stat>
+          <equal site="$1" var="exe">ON</equal>
         </wait>
         <wait label="Jacking" retry="50">
-          <stat site="$1" var="exe">OFF</stat>
+          <equal site="$1" var="exe">OFF</equal>
         </wait>
       </item>
       <item id="mju4" label="InR4 Jkup at MOV.IR [$1]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Jack Up?">
-          <stat site="$1" var="mjb">UP</stat>
+          <equal site="$1" var="mjb">UP</equal>
         </goal>
         <check label="UNHOOK?">
-          <stat site="$1" var="mhk">UNHK</stat>
+          <equal site="$1" var="mhk">UNHK</equal>
         </check>
         <exec site="$1" name="mjup"/>
         <wait label="Jack start?" retry="5">
-          <stat site="$1" var="exe">ON</stat>
+          <equal site="$1" var="exe">ON</equal>
         </wait>
         <wait label="Jacking" retry="50">
-          <stat site="$1" var="exe">OFF</stat>
+          <equal site="$1" var="exe">OFF</equal>
         </wait>
       </item>
       <item id="mjd4" label="InR4 Jkdw at MOV.IR [$1]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Jack Dw?">
-          <stat site="$1" var="mjb">DW</stat>
+          <equal site="$1" var="mjb">DW</equal>
         </goal>
         <check label="UNHOOK?">
-          <stat site="$1" var="mhk">UNHK</stat>
+          <equal site="$1" var="mhk">UNHK</equal>
         </check>
         <exec site="$1" name="mjdw"/>
         <wait label="Jack start?" retry="5">
-          <stat site="$1" var="exe">ON</stat>
+          <equal site="$1" var="exe">ON</equal>
         </wait>
         <wait label="Jacking" retry="50">
-          <stat site="$1" var="exe">OFF</stat>
+          <equal site="$1" var="exe">OFF</equal>
         </wait>
       </item>
       <!--FIX Jack & Rotate-->
       <item id="jupd" label="HookUp at FIX.IR [$1]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Instrument ON?">
-          <stat site="$1" var="fis">ON</stat>
+          <equal site="$1" var="fis">ON</equal>
         </goal>
         <check label="CART ON TAG?">
-          <stat site="crt" var="cps">12</stat>
-          <stat site="crt" var="jlv">H</stat>
+          <equal site="crt" var="cps">12</equal>
+          <equal site="crt" var="jlv">H</equal>
         </check>
         <exec site="$1" name="fhook"/>
         <wait label="Hook start?" retry="5">
-          <stat site="$1" var="exe">ON</stat>
+          <equal site="$1" var="exe">ON</equal>
         </wait>
         <wait label="Hooking" retry="40">
-          <stat site="$1" var="exe">OFF</stat>
+          <equal site="$1" var="exe">OFF</equal>
         </wait>
         <mcr name="fju0">
           <argv>$1</argv>
@@ -213,49 +213,49 @@
       <item id="trsi" label="MOV.IR Trans Backward w/SITET [$1]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Transer Stored?">
-          <stat site="$1" var="mtr">BK</stat>
+          <equal site="$1" var="mtr">BK</equal>
         </goal>
         <check label="CART CLEAR?">
-          <stat site="crt" var="cps" inv="true">12</stat>
-          <stat site="crt" var="cps" inv="true">11</stat>
+          <not site="crt" var="cps">12</not>
+          <not site="crt" var="cps">11</not>
         </check>
         <exec site="$1" name="rotin"/>
         <wait label="Rotate start?" retry="5">
-          <stat site="$1" var="exe">ON</stat>
+          <equal site="$1" var="exe">ON</equal>
         </wait>
         <wait label="Rotating" retry="20">
-          <stat site="$1" var="exe">OFF</stat>
+          <equal site="$1" var="exe">OFF</equal>
         </wait>
         <exec site="$1" name="trin"/>
         <wait label="Transer start?" retry="5">
-          <stat site="$1" var="exe">ON</stat>
+          <equal site="$1" var="exe">ON</equal>
         </wait>
         <wait label="Moving" retry="60">
-          <stat site="$1" var="exe">OFF</stat>
+          <equal site="$1" var="exe">OFF</equal>
         </wait>
       </item>
       <!--Run & Transer-->
       <item id="r08to" label="Leave IR from Tag 8 to [2-7]">
         <par_num>2:7</par_num>
         <goal label="Leave Cart and Transer Stored?">
-          <stat site="crt" var="cps" inv="true">8</stat>
-          <stat site="dsi" var="mtr">BK</stat>
+          <not site="crt" var="cps">8</not>
+          <equal site="dsi" var="mtr">BK</equal>
         </goal>
         <check label="CART CLEAR?">
-          <stat site="crt" var="cps">8</stat>
-          <stat site="crt" var="ion">OFF</stat>
+          <equal site="crt" var="cps">8</equal>
+          <equal site="crt" var="ion">OFF</equal>
         </check>
         <exec site="crt" name="run">
           <argv>$1</argv>
         </exec>
         <wait retry="5" label="Run start?">
-          <stat var="run" site="crt">ON</stat>
+          <equal var="run" site="crt">ON</equal>
         </wait>
         <mcr async="true" name="trsi">
           <argv>dsi</argv>
         </mcr>
         <wait retry="120" label="Run end?">
-          <stat label="Running" site="crt" var="run">OFF</stat>
+          <equal label="Running" site="crt" var="run">OFF</equal>
         </wait>
       </item>
     </group>

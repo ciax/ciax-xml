@@ -66,43 +66,50 @@
       </xsd:simpleType>
     </xsd:attribute>
   </xsd:attributeGroup>
+  <xsd:complexType name="condition">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:token">
+        <xsd:attribute name="site" type="xsd:token" use="required" />
+        <xsd:attribute name="var" type="xsd:token" use="required" />
+        <xsd:attribute name="label" type="xsd:token" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:group name="conditions">
+    <xsd:choice>
+      <xsd:element ref="mdb:equal" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="mdb:not" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="mdb:pattern" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:choice>
+  </xsd:group>
   <xsd:element name="goal">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="mdb:stat" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:sequence  minOccurs="0" maxOccurs="unbounded">
+        <xsd:group ref="mdb:conditions"/>
       </xsd:sequence>
       <xsd:attributeGroup ref="mdb:attr_stat" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="check">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="mdb:stat" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:sequence  minOccurs="0" maxOccurs="unbounded">
+        <xsd:group ref="mdb:conditions"/>
       </xsd:sequence>
       <xsd:attributeGroup ref="mdb:attr_stat" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="wait">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="mdb:stat" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:sequence  minOccurs="0" maxOccurs="unbounded">
+        <xsd:group ref="mdb:conditions"/>
       </xsd:sequence>
       <xsd:attributeGroup ref="mdb:attr_stat" />
       <xsd:attribute name="retry" type="xsd:int" use="optional" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="stat">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:token">
-          <xsd:attribute name="site" type="xsd:token" use="required" />
-          <xsd:attribute name="var" type="xsd:token" use="required" />
-          <xsd:attribute name="inv" type="xsd:boolean" />
-          <xsd:attribute name="label" type="xsd:token" />
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
+  <xsd:element name="equal" type="mdb:condition"/>
+  <xsd:element name="not" type="mdb:condition"/>
+  <xsd:element name="pattern" type="mdb:condition"/>
   <xsd:element name="mcr">
     <xsd:complexType>
       <xsd:complexContent>

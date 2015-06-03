@@ -12,7 +12,7 @@ module CIAX
         self['depth']=db['depth']
         #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
         @cfg=cfg
-        @condition=delete('stat')
+        @condition=delete('cond')
         @break=nil
       end
 
@@ -98,12 +98,12 @@ module CIAX
           site=cond['site']=h['site']
           var=cond['var']=h['var']
           stat=stats[site]
-            inv=cond['inv']=h['inv']
+            cmp=cond['cmp']=h['cmp']
             cri=cond['cri']=h['val']
             real=stat['msg'][var]||stat.get(var)
-            verbose("McrStep","site=#{site},var=#{var},inv=#{inv},cri=#{cri},real=#{real}")
+            verbose("McrStep","site=#{site},var=#{var},cmp=#{cmp},cri=#{cri},real=#{real}")
             cond['real']=real
-            cond['res']=match?(real,cri,cond['inv'])
+            cond['res']=match?(real,cri,cond['cmp'])
           cond
         }
         res=conds.all?{|h| h['res']}
@@ -131,12 +131,16 @@ module CIAX
         @condition.map{|h| h['site']}.uniq
       end
 
-      def match?(real,cri,inv)
-        i=(/true|1/ === inv)
-        if /[a-zA-Z]/ === cri
-          (/#{cri}/ === real) ^ i
+      def match?(real,cri,cmp)
+        case cmp
+        when "equal"
+          cri == real
+        when "not"
+          cri != real
+        when "pattern"
+          /#{cri}/ === real
         else
-          (cri == real) ^ i
+          false
         end
       end
     end

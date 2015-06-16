@@ -141,7 +141,7 @@ module CIAX
       field.ext_file if $opt['m']
       if cid
         cfg=Config.new('frm_test_rsp').update(:db => fdb,:field => field)
-        cobj=Frm::Command.new(cfg)
+        cobj=Command.new(cfg)
         ent=cobj.set_cmd(cid.split(':'))
         field.rsp(ent)
       end

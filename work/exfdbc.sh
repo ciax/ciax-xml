@@ -6,7 +6,7 @@ show(){
         echo "$C2#### $site ####$C0"
         for cmd in $(list-item fdb $site); do
             echo "$C3$cmd$C0"
-            <$inp $frmcmd $site $cmd 1 1 | visible
+            <$inp $frmcmd $site $cmd 1 1 | text-visible
         done
         read -t 0 && break
     done

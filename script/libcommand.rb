@@ -66,6 +66,9 @@ module CIAX
     # optionalfrm (:nocache,:response)
     attr_reader :svdom,:lodom,:hidgrp
     def initialize(exe_cfg=nil,attr={})
+      # Add exe_cfg to @generation as ancestor, add attr to self
+      # @cfg is isolated from exe_cfg
+      # So it is same meaning to set value to 'attr' and @cfg
       @cfg=Config.new('command',exe_cfg).update(attr)
       @cfg[:def_proc]||=proc{''}
       @cls_color=@cfg[:cls_color]||7

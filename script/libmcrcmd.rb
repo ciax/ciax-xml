@@ -60,8 +60,8 @@ module CIAX
     if __FILE__ == $0
       GetOpts.new
       begin
-        ment=Command.new.add_extgrp.set_cmd(ARGV)
-        puts ment.cfg
+        cobj=Command.new.add_extgrp
+        puts cobj.set_cmd(ARGV).cfg
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

@@ -81,7 +81,7 @@ module CIAX
       if tag
         # Making 'latest' tag link
         sname=file_path('latest')
-        ::File.unlink(sname) if ::File.symlink?(sname)
+        ::File.unlink(sname) if ::File.exist?(sname)
         ::File.symlink(rname,sname)
         verbose("File","Symboliclink to [#{sname}]")
       end

@@ -8,12 +8,12 @@ module CIAX
     # Need to give a module name as a group (Ext,Int)
     # cfg need [:db] entry
     def add_extgrp(mod)
-      @extgrp=@svdom.add_group(:mod => mod)
+      @extgrp=@rem.add_group(:mod => mod)
       self
     end
 
     def add_intgrp(mod)
-      @intgrp=@svdom.add_group(:mod => mod)
+      @intgrp=@rem.add_group(:mod => mod)
       self
     end
 

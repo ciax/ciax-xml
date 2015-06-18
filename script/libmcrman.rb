@@ -33,7 +33,7 @@ module CIAX
           @output=@list=lc.new(@cobj)
           @valid_pars=@cobj.intgrp.valid_pars
           ext_shell
-          @cobj.lodom.join_group(@list.jumpgrp)
+          @cobj.loc.join_group(@list.jumpgrp)
           @post_exe_procs << proc{
             @valid_pars.replace(@list.keys)
           }
@@ -52,7 +52,7 @@ module CIAX
           }
           @shell_input_proc=proc{|args| @list.conv_cmd(args,@cobj.intgrp)}
           super
-          vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
+          vg=@cobj.loc.add_group('caption'=>"Change View Mode",'color' => 9)
           vg.add_item('lst',"List mode").set_proc{@smode=false;''}
           vg.add_item('seq',"Sequencer mode").set_proc{@smode=true;''}
           vg.add_item('vis',"Visual mode").set_proc{@output.vmode='v';''}

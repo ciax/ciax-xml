@@ -13,7 +13,7 @@ module CIAX
         }
         mcr=Mcr::Man.new(@cfg)
         put('mcr',mcr)
-        wg=mcr.cobj.lodom.join_group(@cfg.layers[:app].jumpgrp).set_proc{|ent| sl.shell(ent.id,'app');exit }
+        wg=mcr.cobj.loc.join_group(@cfg.layers[:app].jumpgrp).set_proc{|ent| sl.shell(ent.id,'app');exit }
       end
 
       def shell

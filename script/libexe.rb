@@ -131,7 +131,7 @@ module CIAX
       @udp=UDPSocket.open()
       verbose("UDP:Client","Initialize [#@id/#{host}:#{port}]")
       @addr=Socket.pack_sockaddr_in(port.to_i,host)
-      @cobj.svdom.set_proc{|ent|
+      @cobj.rem.set_proc{|ent|
         args=ent.id.split(':')
         # Address family not supported by protocol -> see above
         @udp.send(JSON.dump(args),0,@addr)

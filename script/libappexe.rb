@@ -49,7 +49,7 @@ module CIAX
 
       def ext_shell
         super
-        @view_grp=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
+        @view_grp=@cobj.loc.add_group('caption'=>"Change View Mode",'color' => 9)
         @view_grp.add_item('vis',"Visual mode").set_proc{@output=@appview;''}
         @view_grp.add_item('raw',"Raw Print mode").set_proc{@output=@stat;''}
         self

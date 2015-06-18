@@ -14,7 +14,7 @@ module CIAX
       def initialize(id,inter_cfg={},attr={})
         super
         ash=Wat.new(id,@cfg).ash
-        @cobj.svdom.replace ash.cobj.svdom
+        @cobj.rem.replace ash.cobj.rem
         @mode=ash.mode
         @output=View.new(@id,ash.adb['version'],@cfg[:site_stat],ash.stat)
         @post_exe_procs.concat(ash.post_exe_procs)

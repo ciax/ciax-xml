@@ -15,7 +15,7 @@ module CIAX
       verbose("Shell","Initialize [#{@id}]")
       @cobj.add_nil
       # Local(Long Jump) Commands (local handling commands on Client)
-      shg=@cobj.lodom.add_group('caption'=>"Shell Command",'color'=>1)
+      shg=@cobj.loc.add_group('caption'=>"Shell Command",'color'=>1)
       shg.add_dummy('q',"Quit")
       shg.add_dummy('^D,^C',"Interrupt")
       Thread.current['name']='Main'

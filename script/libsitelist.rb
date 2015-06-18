@@ -31,7 +31,7 @@ module CIAX
         return self if @data.key?(id)
         # JumpGroup is set to Domain
         (@cfg[:jump_groups]+[@jumpgrp]).each{|grp|
-          exe.cobj.lodom.join_group(grp)
+          exe.cobj.loc.join_group(grp)
         }
         super
       end

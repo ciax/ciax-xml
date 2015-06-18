@@ -64,7 +64,7 @@ module CIAX
     # CDB: mandatory (:body)
     # optional ('label',:parameters)
     # optionalfrm (:nocache,:response)
-    attr_reader :svdom,:lodom,:hidgrp
+    attr_reader :rem,:loc,:hidgrp
     def initialize(exe_cfg=nil,attr={})
       # Add exe_cfg to @generation as ancestor, add attr to self
       # @cfg is isolated from exe_cfg
@@ -74,9 +74,9 @@ module CIAX
       @cls_color=@cfg[:cls_color]||7
       @pfx_color=@cfg[:pfx_color]||2
       # Server Commands (service commands on Server)
-      push @svdom=Domain.new(@cfg,{:domain_id => 'remote'}) # Remote Command Domain
-      push @lodom=Domain.new(@cfg,{:domain_id => 'local'}) # Local Command Domain
-      @hidgrp=@svdom.add_group('caption' => "Hidden Commands",:group_id => 'hidden')
+      push @rem=Domain.new(@cfg,{:domain_id => 'remote'}) # Remote Command Domain
+      push @loc=Domain.new(@cfg,{:domain_id => 'local'}) # Local Command Domain
+      @hidgrp=@rem.add_group('caption' => "Hidden Commands",:group_id => 'hidden')
       @hidgrp.add_item('interrupt')
     end
 

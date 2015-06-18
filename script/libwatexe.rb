@@ -33,7 +33,7 @@ module CIAX
         @event=Event.new.set_db(@ash.adb)
         @wview=View.new(@ash.adb,@event)
         @ash.batch_interrupt=@event.get('int')
-        @cobj.svdom.replace @ash.cobj.svdom
+        @cobj.rem.replace @ash.cobj.rem
         @output=$opt['j']?@event:@wview
       end
 
@@ -57,7 +57,7 @@ module CIAX
 
       def ext_shell
         super
-        vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9,'column' => 2)
+        vg=@cobj.loc.add_group('caption'=>"Change View Mode",'color' => 9,'column' => 2)
         vg.add_item('vis',"Visual mode").set_proc{@output=@wview;''}
         vg.add_item('raw',"Raw Print mode").set_proc{@output=@event;''}
         self

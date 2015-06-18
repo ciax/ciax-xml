@@ -55,7 +55,7 @@ module CIAX
           res
         }
         super(@record.cfg[:cid].tr(':','_'))
-        vg=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
+        vg=@cobj.loc.add_group('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('vis',"Visual mode").set_proc{@output.vmode='v';''}
         vg.add_item('raw',"Raw mode").set_proc{@output.vmode='r';''}
         self

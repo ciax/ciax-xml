@@ -1,0 +1,29 @@
+#### Command Object Structure ####
+
+## Top Level(Array)
+  There are Two domains.
+  * Server Command Domain
+    Commands that will be sent to Server.
+  * Local Command Domain
+    Commands that is used locally in Client.
+    (ex. Switching site, layer, view, interrupt) 
+
+## Domain(Array)
+ # Server Domain
+  There are two Groups.
+  * External Command Group
+    Commands that directly manipulate the devices.
+  * Internal Command Group
+    Commands that manuipulate the server status.
+    (ex. set variables, status request)
+
+## Group(Hash)
+ There are many Items stored as dictionary. (key,val)
+
+## Item
+ Tagged by command name.
+ This has parameter setting method which generates Entity.
+
+## Entity
+ This has own parameter individually.
+ This has execution method.

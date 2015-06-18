@@ -1,0 +1,32 @@
+#### Coding conventions ####
+
+## Source comment legend
+ #@ : instance variable list
+ #@< : parent's var ('<' is added as the number of ancestor generaton) 
+       parenthetic var is not used in the class
+       * is added for exported var
+
+## Naming rule
+ # general
+  - method name is recommended to be long word which contains under bar to privent mixing up with local var (verb_noun)
+  - local var name is recommended to use abbrev word (as short as possible < 4 letter) 
+    (i.e. i,j,k,idx,grp,key(k),hsh(h),ary(a),val(v)...) 
+  - DB key which contains Hash or Array will be Symbol. Other keys are String.
+  - Status key which could be written out to a file will be String.
+ #local var
+   args: Command(Array) [cmd,par,par...]
+   cid: Command ID(String) "cmd:par:par"
+   bat: Batch Array of Commands(Array of Array) [args,args,...]
+   f*: Associated with Frm (i.e. fargs, fstat ..)
+   a*: Associated with App (i.e. aargs, astat ..)
+ #block rerutn value
+   set return value to local var 'res' at the end of block if it is expressly provided
+
+## Method rule
+  - set(val) [set_*] : stores value to self, returns self
+  - add(val) [add_*] : converts and stores value to self and returns generated object
+  - put(key,val) [put_*] : stores key and value, returns self
+  - rep(key,val) [rep_*] : stores value to existent key and returns self
+  - get(key) [get_*] : fetch value from existent key
+  - list() [list_*] : returns Hash or Array
+  - view() [view_*] : returns String

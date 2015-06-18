@@ -26,7 +26,7 @@ module CIAX
       #ent_cfg should have [:db]
       def initialize(upper,crnt={})
         super
-        Wat::List.new(@cfg) unless @cfg.layers.key?(:wat)
+        type?(@cfg.layers[:wat],Wat::List)
         db=type?(@cfg[:db],Dbi)
         @submcr_proc=@cfg[:submcr_proc]||proc{|args,id|
           show(Msg.indent(@step['depth']+1)+"Sub Macro #{args} issued\n")
@@ -162,8 +162,10 @@ module CIAX
 
     if __FILE__ == $0
       GetOpts.new('cemntr')
+      cfg=Config.new('test')
       begin
-        cobj=Command.new.add_extgrp
+        Wat::List.new(cfg)
+        cobj=Command.new(cfg).add_extgrp
         seq=Seq.new(cobj.set_cmd(ARGV).cfg)
         seq.macro
       rescue InvalidCMD

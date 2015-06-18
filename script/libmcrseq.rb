@@ -37,7 +37,7 @@ module CIAX
         @post_mcr_procs=[]
         @que_cmd=Queue.new
         @que_res=Queue.new
-        update({'cid'=>@record.cfg[:cid],'step'=>0,'total_steps'=>@record.cfg[:body].size,'stat'=>'run','option'=>[]})
+        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:body].size,'stat'=>'run','option'=>[]})
         @running=[]
       end
 
@@ -45,7 +45,7 @@ module CIAX
         Thread.current[:sid]=@record['sid']
         set_stat('run')
         show @record
-        @record.cfg[:body].each{|e1|
+        @cfg[:body].each{|e1|
           self['step']+=1
           begin
             @step=@record.add_step(e1)
@@ -61,7 +61,7 @@ module CIAX
               @step.timeout?{show '.'} && query(['drop','force','retry'])
             when 'exec'
               @running << e1['site']
-              @record.cfg.layers[:wat].get(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
+              @cfg.layers[:wat].get(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
             when 'mcr'
               if @step.async? && @submcr_proc.is_a?(Proc)
                 @step['sid']=@submcr_proc.call(e1['args'],@record['sid'])['sid']
@@ -84,7 +84,7 @@ module CIAX
       def interrupt
         msg("\nInterrupt Issued to running devices #{@running}",3)
         @running.each{|site|
-          @record.cfg.layers[:wat].get(site).exe(['interrupt'],'user')
+          @cfg.layers[:wat].get(site).exe(['interrupt'],'user')
         } if $opt['m']
         finish('interrupted')
         self
@@ -139,9 +139,10 @@ module CIAX
           if Msg.fg?
             prom=@step.body(optlist(self['option']))
             break 'interrupt' unless line=Readline.readline(prom,true)
-            @que_cmd << line.rstrip
+            id=line.rstrip
+          else
+            id=@que_cmd.pop.split(/[ :]/).first
           end
-          id=@que_cmd.pop.split(/[ :]/).first
           if cmds.include?(id)
             @que_res << 'ACCEPT'
             break id

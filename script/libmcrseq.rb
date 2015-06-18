@@ -19,21 +19,20 @@ module CIAX
   #REAL: query(exec,error), interval=1
   module Mcr
     # Sequencer
-    class Seq < Hashx
+    class Seq < Entity
       #required cfg keys: app,db,body,stat,(:submcr_proc)
       attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro
       #ent_cfg should have [:db]
-      def initialize(ent_cfg)
-        super()
-        type?(ent_cfg,Config)
-        Wat::List.new(ent_cfg) unless ent_cfg.layers.key?(:wat)
-        db=type?(ent_cfg[:db],Dbi)
-        @submcr_proc=ent_cfg[:submcr_proc]||proc{|args,id|
+      def initialize(upper,crnt={})
+        super
+        Wat::List.new(@cfg) unless @cfg.layers.key?(:wat)
+        db=type?(@cfg[:db],Dbi)
+        @submcr_proc=@cfg[:submcr_proc]||proc{|args,id|
           show(Msg.indent(@step['depth']+1)+"Sub Macro #{args} issued\n")
           {'sid' => 'dmy'}
         }
-        @record=Record.new(db['id'],db['version']).start(ent_cfg)
+        @record=Record.new(db['id'],db['version']).start(@cfg)
         @post_stat_procs=[] # execute on stat changes
         @post_mcr_procs=[]
         @que_cmd=Queue.new

@@ -128,3 +128,4 @@
     structure: Proc
     args: Array(args),String(id)
     called: macro
+    set_at: Mcr::Man::Sv#initialize()

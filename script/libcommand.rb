@@ -237,7 +237,7 @@ module CIAX
             next num.to_s
           when 'reg'
             verbose("Cmd","Validate: [#{str}] Match? [#{disp}]")
-            unless list.any?{|r| /#{r}/ === str}
+            unless list.any?{|r| Regexp.new(r) === str}
               Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
             end
           else

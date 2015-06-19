@@ -55,7 +55,7 @@ module CIAX
   end
 
   class Group < Hashx
-    include SetProc
+    include AddElem
     attr_reader :cfg,:valid_keys
     #dom_cfg keys: caption,color,column
     def initialize(dom_cfg,attr={})
@@ -130,7 +130,7 @@ module CIAX
 
   # Corresponds commands
   class Item < Hashx
-    include SetProc
+    include AddElem
     attr_reader :cfg
     #grp_cfg should have :id,'label',:parameters,:def_proc
     def initialize(grp_cfg,attr={})

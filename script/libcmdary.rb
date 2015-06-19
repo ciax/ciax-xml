@@ -4,7 +4,7 @@ require 'libconf'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
 module CIAX
-  module SetProc
+  module AddElem
     # Add element which belongs a group enclosed with module (name space= Frm,App,..)
     # Need to be set key[:mod] for module in config or attributes
     # class name(String) + module val
@@ -14,7 +14,7 @@ module CIAX
   end
 
   class CmdAry < Arrayx
-    include SetProc
+    include AddElem
     def get_item(id)
       res=nil
       any?{|e| res=e.get_item(id)}

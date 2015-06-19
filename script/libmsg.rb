@@ -292,5 +292,23 @@ module CIAX
     def optlist(list)
       list.empty? ? '' :  color("[#{list.join('/')}]?",5)
     end
+
+    ## class name handling
+    # Full path class name in same namespace
+    def context_class(class_name,mod=nil)
+      type?(class_name,String)
+      mod||=self.class
+      mary=mod.to_s.split('::')
+      mary.size.times{
+        cpath=(mary+[class_name]).join('::')
+        return eval(cpath) if eval("defined? #{cpath}")
+        mary.pop
+      }
+      abort("No such class #{class_name}")
+    end
+
+    def class_path
+      self.class.to_s.split('::')
+    end
   end
 end

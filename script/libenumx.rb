@@ -9,22 +9,6 @@ module CIAX
       raise("Not Enumerable") unless obj.is_a? Enumerable
     end
 
-    def class_path
-      self.class.to_s.split('::')
-    end
-
-    def local_class(class_name,mod=nil)
-      type?(class_name,String)
-      mod||=self.class
-      mary=mod.to_s.split('::')
-      mary.size.times{
-        cpath=(mary+[class_name]).join('::')
-        return eval(cpath) if eval("defined? #{cpath}")
-        mary.pop
-      }
-      abort("No such class #{class_name}")
-    end
-
     def to_j
       case self
       when Array

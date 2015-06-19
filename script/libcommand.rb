@@ -199,7 +199,8 @@ module CIAX
   end
 
   # Command db with parameter derived from Item
-  class Entity < Hashx
+  class Entity
+    include Msg
     attr_reader :id,:par,:cfg,:layer
     #set should have :def_proc
     def initialize(itm_cfg,attr={})

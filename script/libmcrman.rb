@@ -53,10 +53,10 @@ module CIAX
           @shell_input_proc=proc{|args| @list.conv_cmd(args,@cobj.intgrp)}
           super
           vg=@cobj.loc.add_group('caption'=>"Change View Mode",'color' => 9)
-          vg.add_item('lst',"List mode").set_proc{@smode=false;''}
-          vg.add_item('seq',"Sequencer mode").set_proc{@smode=true;''}
-          vg.add_item('vis',"Visual mode").set_proc{@output.vmode='v';''}
-          vg.add_item('raw',"Raw mode").set_proc{@output.vmode='r';''}
+          vg.add_item('lst',"List mode").cfg.proc{@smode=false;''}
+          vg.add_item('seq',"Sequencer mode").cfg.proc{@smode=true;''}
+          vg.add_item('vis',"Visual mode").cfg.proc{@output.vmode='v';''}
+          vg.add_item('raw',"Raw mode").cfg.proc{@output.vmode='r';''}
           self
         end
       end
@@ -81,7 +81,7 @@ module CIAX
           self['sid']='' # For server response
           @pre_exe_procs << proc{ self['sid']='' }
           # Internal Command Group
-          @cobj.intgrp.set_proc{|ent|
+          @cobj.intgrp.cfg.proc{|ent|
             sid=ent.par[0]
             if sobj=@list.get(sid)
               self['sid']=sid

@@ -24,7 +24,7 @@ module CIAX
           add_item('save',"[key,key...] [tag]",def_pars(2))
           add_item('load',"[tag]",def_pars(1))
           cmd=add_item('set',"[key(:idx)] [val(,val)]",def_pars(2))
-          cmd.set_proc{|ent|
+          cmd.cfg.proc{|ent|
             if @cfg[:field].key?(ent[0])
               @cfg[:field].put(*ent.par)
               'OK'

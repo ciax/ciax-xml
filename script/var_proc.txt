@@ -20,7 +20,7 @@
     called:
       Entity#execmd
     set_methods:
-      (Command,Domain,Group)#set_proc(&) 
+      (Command,Domain,Group)#cfg.proc(&) 
       (Command,Domain,Group)#item_proc(id,&) 
       (App/Frm/Mcr)::Command#ext_proc(&) 
 

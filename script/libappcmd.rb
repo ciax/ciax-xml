@@ -17,11 +17,11 @@ module CIAX
         def initialize(dom_cfg,attr={})
           super
           @cfg['caption']='Test Commands'
-          add_item('set','[key] [val]',def_pars(2)).set_proc{|ent|
+          add_item('set','[key] [val]',def_pars(2)).cfg.proc{|ent|
             @cfg[:stat].put(ent.par[0],ent.par[1])
             "SET:#{ent.par[0]}=#{ent.par[1]}"
           }
-          add_item('del','[key,...]',def_pars(1)).set_proc{|ent|
+          add_item('del','[key,...]',def_pars(1)).cfg.proc{|ent|
             ent.par[0].split(',').each{|key| @cfg[:stat].del(key) }
             "DELETE:#{ent.par[0]}"
           }

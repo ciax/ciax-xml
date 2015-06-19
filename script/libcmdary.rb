@@ -11,12 +11,6 @@ module CIAX
     def add(class_name,attr={})
       local_class(class_name,attr[:mod]||@cfg[:mod]).new(@cfg,attr)
     end
-
-    # Proc should return String
-    def set_proc(&def_proc)
-      @cfg[:def_proc]=type?(def_proc,Proc)
-      self
-    end
   end
 
   class CmdAry < Arrayx
@@ -28,7 +22,7 @@ module CIAX
     end
 
     def item_proc(id,&def_proc)
-      get_item(id).set_proc(&def_proc)
+      get_item(id).cfg.proc(&def_proc)
     end
 
     def valid_keys

@@ -18,7 +18,7 @@ module CIAX
     end
 
     def ext_proc(&def_proc)
-      @extgrp.set_proc(&def_proc)
+      @extgrp.cfg.proc(&def_proc)
       self
     end
 

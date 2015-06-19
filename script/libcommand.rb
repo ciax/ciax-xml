@@ -10,7 +10,7 @@ module CIAX
     # CDB: mandatory (:body)
     # optional ('label',:parameters)
     # optionalfrm (:nocache,:response)
-    attr_reader :rem,:loc,:hidgrp
+    attr_reader :cfg,:rem,:loc,:hidgrp
     def initialize(exe_cfg=nil,attr={})
       # Add exe_cfg to @generation as ancestor, add attr to self
       # @cfg is isolated from exe_cfg
@@ -35,6 +35,7 @@ module CIAX
 
   class Domain < CmdAry
     #cmd_cfg keys: def_proc,group_class,item_class,entity_class
+    attr_reader :cfg
     def initialize(cmd_cfg,attr={})
       @cfg=Config.new('domain',cmd_cfg).update(attr)
       @cls_color=@cfg[:cls_color]

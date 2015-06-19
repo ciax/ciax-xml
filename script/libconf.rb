@@ -57,6 +57,12 @@ module CIAX
       }
     end
 
+    # Proc should return String
+    def proc(&def_proc)
+      self[:def_proc]=type?(def_proc,Proc)
+      self
+    end
+
     def path
       "******[\n"+@generation.map{|h|
         '{'+h.map{|k,v|

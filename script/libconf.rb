@@ -5,7 +5,7 @@ module CIAX
   #         -> Domain[cfg,command_cfg]
   #         -> Group[cfg,domain_cfg,command_cfg]
   #         -> Item[cfg,group_cfg,domain_cfg,command_cfg]...
-  # Usage:[]=/ add to current Hash which will override(hide) upper level Hash;
+  # Usage:[]=/ add to current Hash which will overwrite(hide) upper level Hash;
   # Usage:[]/  get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
     attr_reader :generation,:layers
@@ -16,13 +16,17 @@ module CIAX
       self[:level]=name
       case cfg
       when Config
-        override(cfg)
+        join_in(cfg)
       when Hash
         update(cfg)
       end
     end
 
-    def override(cfg)
+    def spawn(name)
+      Config.new(name,self)
+    end
+
+    def join_in(cfg)
       @layers=type?(cfg,Config).layers
       @generation.concat(cfg.generation)
       self

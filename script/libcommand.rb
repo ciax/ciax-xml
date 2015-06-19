@@ -44,7 +44,7 @@ module CIAX
 
     def join_group(group)
       unshift type?(group,Group)
-      group.cfg.override(@cfg)
+      group.cfg.join_in(@cfg)
       group
     end
 

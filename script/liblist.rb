@@ -11,7 +11,8 @@ module CIAX
       super(name,{},@cfg[:dataname]||'list')
       @cfg[:jump_groups]||=[]
       attr={'caption'=>"Switch #{name.capitalize}s",'color'=>5,'column'=>3}
-      @jumpgrp=Group.new(@cfg,attr).cfg.proc{|ent|
+      @jumpgrp=Group.new(@cfg,attr)
+      @jumpgrp.cfg.proc{|ent|
         raise(@level::Jump,ent.id)
       }
       $opt||=GetOpts.new

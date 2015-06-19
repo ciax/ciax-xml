@@ -295,16 +295,16 @@ module CIAX
 
     ## class name handling
     # Full path class name in same namespace
-    def context_class(class_name,mod=nil)
-      type?(class_name,String)
+    def context_constant(name,mod=nil)
+      type?(name,String)
       mod||=self.class
       mary=mod.to_s.split('::')
       mary.size.times{
-        cpath=(mary+[class_name]).join('::')
+        cpath=(mary+[name]).join('::')
         return eval(cpath) if eval("defined? #{cpath}")
         mary.pop
       }
-      abort("No such class #{class_name}")
+      abort("No such constant #{name}")
     end
 
     def class_path

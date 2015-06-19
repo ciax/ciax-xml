@@ -27,7 +27,7 @@ module CIAX
       @cfg=Config.new("#{@layer}_exe",inter_cfg).update(attr)
       @cfg[@layer]=self
       @cfg['layer']=@layer
-      @cobj=context_class('Command').new(@cfg)
+      @cobj=context_constant('Command').new(@cfg)
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
       @cls_color||=7

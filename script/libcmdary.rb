@@ -9,7 +9,7 @@ module CIAX
     # Need to be set key[:mod] for module in config or attributes
     # class name(String) + module val
     def add(class_name,attr={})
-      context_class(class_name,attr[:mod]||@cfg[:mod]).new(@cfg,attr)
+      context_constant(class_name,attr[:mod]||@cfg[:mod]).new(@cfg,attr)
     end
   end
 

@@ -22,7 +22,7 @@ module CIAX
       end
     end
 
-    def spawn(name)
+    def gen(name)
       Config.new(name,self)
     end
 

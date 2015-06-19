@@ -301,7 +301,9 @@ module CIAX
       mary=mod.to_s.split('::')
       mary.size.times{
         cpath=(mary+[name]).join('::')
-        return eval(cpath) if eval("defined? #{cpath}")
+        if eval("defined? #{cpath}")
+          return eval(cpath)
+        end
         mary.pop
       }
       abort("No such constant #{name}")

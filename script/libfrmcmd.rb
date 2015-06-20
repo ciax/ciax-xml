@@ -127,12 +127,12 @@ module CIAX
         db=Db.new.get(id)
         fld=Field.new.set_db(db)
         cfg=Config.new('test',{:db => db,:field => fld})
+        cfg.proc{|ent| ent.cfg.path }
         cobj=Command.new(cfg)
         cobj.rem.add_int
         fld.read unless STDIN.tty?
         ent=cobj.set_cmd(args)
         puts ent.exe_cmd('test')
-        print ent.cfg[:frame]
       rescue InvalidCMD
         Msg.usage("#{id} [cmd] (par) < field_file",2)
       rescue InvalidID

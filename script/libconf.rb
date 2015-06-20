@@ -13,6 +13,7 @@ module CIAX
       super()
       @generation=[self]
       @layers={}
+      name=name.class.name.split('::').last.downcase unless String === name
       self[:level]=name
       case cfg
       when Config

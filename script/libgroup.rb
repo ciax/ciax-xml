@@ -91,7 +91,7 @@ module CIAX
       attr_reader :cfg
       #grp_cfg should have :id,'label',:parameters,:def_proc
       def initialize(cfg,attr={})
-        @cfg=cfg.gen(self.class.to_s.downcase).update(attr)
+        @cfg=cfg.gen(self).update(attr)
         @cls_color=@cfg[:cls_color]
         @pfx_color=@cfg[:pfx_color]
       end
@@ -161,14 +161,14 @@ module CIAX
       attr_reader :id,:par,:cfg,:layer
       #set should have :def_proc
       def initialize(cfg,attr={})
-        @cfg=cfg.gen(self.class.to_s.downcase).update(attr)
+        @cfg=cfg.gen(self).update(attr)
         @par=@cfg[:par]
         @id=[@cfg[:id],*@par].join(':')
         @cfg[:cid]=@id
         @cls_color=@cfg[:cls_color]
         @pfx_color=@cfg[:pfx_color]
         @layer=@cfg['layer']
-        verbose("Cmd","Config",@cfg.inspect)
+        verbose("Cmd","Config",@cfg.path)
         verbose("self",inspect)
       end
 

@@ -73,7 +73,7 @@ module CIAX
         @valid_keys.include?(id) || raise(InvalidCMD,view_list)
         get_item(id).set_par(par,opt)
       end
-      
+
       private
       def new_item(id,crnt={})
         crnt[:id]=id

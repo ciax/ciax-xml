@@ -26,7 +26,7 @@ module CIAX
         @int=add(Int::Index,{:group_id => 'internal'})
       end
     end
-    
+
     module Int
       include Remote::Int
       class Index < Index
@@ -38,11 +38,11 @@ module CIAX
           add_item('load',"[tag]",def_pars(1))
           cmd=add_item('set',"[key(:idx)] [val(,val)]",def_pars(2))
           cmd.cfg.proc{|ent|
-            if @cfg[:field].key?(ent[0])
+            if @cfg[:field].key?(ent.par[0])
               @cfg[:field].put(*ent.par)
               'OK'
             else
-              "No such value #{ent[0]}"
+              "No such value #{ent.par[0]}"
             end
           }
         end
@@ -128,8 +128,11 @@ module CIAX
         fld=Field.new.set_db(db)
         cfg=Config.new('test',{:db => db,:field => fld})
         cobj=Command.new(cfg)
+        cobj.rem.add_int
         fld.read unless STDIN.tty?
-        print cobj.set_cmd(args).cfg[:frame]
+        ent=cobj.set_cmd(args)
+        puts ent.exe_cmd('test')
+        print ent.cfg[:frame]
       rescue InvalidCMD
         Msg.usage("#{id} [cmd] (par) < field_file",2)
       rescue InvalidID

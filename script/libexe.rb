@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "socket"
 require "readline"
-require "libextcmd"
+require "libcommand"
 
 # Provide Server,Client
 # Integrate Command,Status
@@ -92,7 +92,7 @@ module CIAX
     # JSON expression of server stat will be sent.
     def ext_server(port)
       verbose("UDP:Server","Initialize [#@id:#{port}]")
-      @cobj.add_nil
+      @cobj.rem.hid.add_nil
       udp=UDPSocket.open
       udp.bind("0.0.0.0",port.to_i)
       ThreadLoop.new("Server(#@layer:#@id)",9){

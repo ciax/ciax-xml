@@ -49,7 +49,7 @@ module CIAX
 
       def ext_shell
         super
-        @view_grp=@cobj.loc.add_group('caption'=>"Change View Mode",'color' => 9)
+        @view_grp=@cobj.loc.add('caption'=>"Change View Mode",'color' => 9)
         @view_grp.add_item('vis',"Visual mode").cfg.proc{@output=@appview;''}
         @view_grp.add_item('raw',"Raw Print mode").cfg.proc{@output=@stat;''}
         self
@@ -64,8 +64,8 @@ module CIAX
           verbose("App","Propagate Status#upd -> App#settime")
           st['time']=now_msec
         }
-        @cobj.add_intgrp(Int)
-        @cobj.ext_proc{|ent|
+        @cobj.rem.add_int
+        @cobj.rem.ext.cfg.proc{|ent|
           @stat.upd
           'ISSUED:'+ent.batch.inspect
         }
@@ -99,7 +99,7 @@ module CIAX
           verbose("AppSv","Propagate Frm::Exe#flush -> Buffer#flush")
           @buf.flush
         }
-        @cobj.ext_proc{|ent,src,pri|
+        @cobj.rem.ext.cfg.proc{|ent,src,pri|
           verbose("AppSv","#@id/Issuing:#{ent.id} from #{src} with priority #{pri}")
           @buf.send(pri,ent,src)
           "ISSUED"

@@ -6,8 +6,8 @@ require "libsitelist"
 module CIAX
   module Frm
     class List < Site::List
-      def initialize(inter_cfg={})
-        super(Frm,inter_cfg,{:layer_db =>Dev::Db.new})
+      def initialize(cfg)
+        super(Frm,cfg,{:layer_db =>Dev::Db.new})
         @cfg.layers[:frm]=self
       end
     end
@@ -18,7 +18,8 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('chset')
       begin
-        puts List.new.shell(ARGV.shift)
+        cfg=Config.new('test')
+        puts List.new(cfg).shell(ARGV.shift)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

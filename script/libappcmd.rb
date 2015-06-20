@@ -1,20 +1,33 @@
 #!/usr/bin/ruby
-require "libextcmd"
+require "libremote"
 
 module CIAX
   module App
     class Command < Command
-      # exe_cfg or attr should have [:db]
-      def initialize(exe_cfg,attr={})
-        attr[:cls_color]=3
+      attr_reader :rem
+      def initialize(cfg,attr={})
         super
-        add_extgrp(Ext)
+        @cfg[:cls_color]=3
+        @rem=add(Domain)
+      end
+    end
+
+    class Domain < Remote::Domain
+      attr_reader :ext,:int
+      def initialize(cfg,attr={})
+        super
+        @ext=add(Ext::Index,{:group_id => 'external'})
+      end
+
+      def add_int
+        @int=add(Int::Index,{:group_id => 'internal'})
       end
     end
 
     module Int
-      class Group < CIAX::Int::Group
-        def initialize(dom_cfg,attr={})
+      include Remote::Int
+      class Index < Index
+        def initialize(cfg,attr={})
           super
           @cfg['caption']='Test Commands'
           add_item('set','[key] [val]',def_pars(2)).cfg.proc{|ent|
@@ -27,10 +40,13 @@ module CIAX
           }
         end
       end
+      class Item < Item;end
+      class Entity < Entity;end
     end
 
     module Ext
-      include CIAX::Ext
+      include Remote::Ext
+      class Index < Index;end
       class Item < Item
         include Math
         #batch is ary of args(ary)
@@ -60,7 +76,7 @@ module CIAX
         end
       end
 
-      class Entity < CIAX::Ext::Entity
+      class Entity < Entity
         attr_accessor :batch
       end
     end
@@ -69,7 +85,8 @@ module CIAX
       require "libappdb"
       app,*args=ARGV
       begin
-        cobj=Command.new(:db => Db.new.get(app))
+        cfg=Config.new('test',{:db => Db.new.get(app)})
+        cobj=Command.new(cfg)
         cobj.set_cmd(args).batch.each{|fargs|
           p fargs
         }

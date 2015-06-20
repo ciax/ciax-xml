@@ -1,24 +1,37 @@
 #!/usr/bin/ruby
-require "libextcmd"
+require "libremote"
 require "libframe"
 require "libfield"
 
 module CIAX
   module Frm
     class Command < Command
-      # exe_cfg or attr should have [:db] and [:field]
-      def initialize(exe_cfg,attr={})
-        attr.update(:cls_color => 6)
+      # cfg or attr should have [:db] and [:field]
+      attr_reader :rem
+      def initialize(cfg,attr={})
         super
-        add_extgrp(Ext)
+        @cfg[:cls_color]=6
+        @rem=add(Domain)
       end
     end
 
+    class Domain < Remote::Domain
+      attr_reader :ext,:int
+      def initialize(cfg,attr={})
+        super
+        @ext=add(Ext::Index,{:group_id => 'external'})
+      end
+
+      def add_int
+        @int=add(Int::Index,{:group_id => 'internal'})
+      end
+    end
+    
     module Int
-      class Group < CIAX::Int::Group
-        def initialize(dom_cfg,attr={})
+      include Remote::Int
+      class Index < Index
+        def initialize(cfg,attr={})
           super
-          @cfg[:group_id]='internal'
           @cfg['caption']='Internal Commands'
           any={:type =>'reg',:list => ["."]}
           add_item('save',"[key,key...] [tag]",def_pars(2))
@@ -34,12 +47,15 @@ module CIAX
           }
         end
       end
+      class Item < Item;end
+      class Entity < Entity;end
     end
 
     module Ext
-      include CIAX::Ext
+      include Remote::Ext
+      class Index < Index;end
       class Item < Item
-        def initialize(grp_cfg,attr={})
+        def initialize(cfg,attr={})
           super
           @cls_color=6
           @field=type?(@cfg[:field],Field)
@@ -99,6 +115,7 @@ module CIAX
           conv
         end
       end
+      class Entity < Entity;end
     end
 
     if __FILE__ == $0
@@ -109,7 +126,8 @@ module CIAX
       begin
         db=Db.new.get(id)
         fld=Field.new.set_db(db)
-        cobj=Command.new(:db => db,:field => fld)
+        cfg=Config.new('test',{:db => db,:field => fld})
+        cobj=Command.new(cfg)
         fld.read unless STDIN.tty?
         print cobj.set_cmd(args).cfg[:frame]
       rescue InvalidCMD

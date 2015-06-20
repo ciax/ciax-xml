@@ -106,7 +106,7 @@ module CIAX
 
       # Used by Man
       def add_ent(ent)
-        ssh=Seq.new(type?(ent,Entity).cfg)
+        ssh=Seq.new(type?(ent,Group::Entity).cfg)
         ssh.post_stat_procs << proc{upd}
         ssh.post_mcr_procs << proc{|s|
           del_seq(s.id)
@@ -115,7 +115,7 @@ module CIAX
         # JumpGroup is set to Domain
         @jumpgrp.add_item(ssh.id,ssh['cid'])
         @cfg[:jump_groups].each{|grp|
-          ssh.cobj.loc.join_group(grp)
+          ssh.cobj.loc.put(grp)
         }
         # Set input alias as number
         ssh.shell_input_proc=proc{|args|

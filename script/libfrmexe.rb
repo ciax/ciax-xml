@@ -37,7 +37,7 @@ module CIAX
         # Need cfg :db and :field
         super
         @output=@field.set_db(@fdb)
-        @cobj.add_intgrp(Int)
+        @cobj.rem.add_int
         # Post internal command procs
         # Proc for Terminate process of each individual commands
         @flush_procs=[]
@@ -48,7 +48,7 @@ module CIAX
       def initialize(id,inter_cfg={},attr={})
         super
         @cobj.rem.cfg.proc{|ent|@field['time']=now_msec;''}
-        @cobj.ext_proc{|ent| "#{ent.cfg[:frame].inspect} => #{ent.cfg['response']}"}
+        @cobj.rem.ext.cfg.proc{|ent| "#{ent.cfg[:frame].inspect} => #{ent.cfg['response']}"}
         @cobj.item_proc('set'){|ent|
           @field.rep(ent.par[0],ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
@@ -85,7 +85,7 @@ module CIAX
         @stream.pre_open_proc=proc{@site_stat['strerr']=true}
         @stream.post_open_proc=proc{@site_stat['strerr']=false}
         @field.ext_rsp{@stream.rcv}
-        @cobj.ext_proc{|ent|
+        @cobj.rem.ext.cfg.proc{|ent|
           @site_stat['comerr']=false
           @stream.snd(ent.cfg[:frame],ent.id)
           @field.rsp(ent)

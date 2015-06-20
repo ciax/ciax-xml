@@ -5,7 +5,7 @@ require "libsitelayer"
 module CIAX
   GetOpts.new("afxtelsch:")
   site=ARGV.shift
-  inter=Site::Layer.new
+  inter=Site::Layer.new(Config.new('sh'))
   mod=Wat
   ['f','a','x'].each{|tag|
     mod=$layers[tag] if $opt[tag]

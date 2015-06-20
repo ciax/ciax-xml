@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libexe"
 require "readline"
+require "libthreadx"
 
 module CIAX
   # Provide Shell related modules
@@ -13,9 +14,9 @@ module CIAX
     # Separate initialize part because shell() could be called multiple times
     def ext_shell(als=nil)
       verbose("Shell","Initialize [#{@id}]")
-      @cobj.add_nil
+      @cobj.rem.hid.add_nil
       # Local(Long Jump) Commands (local handling commands on Client)
-      shg=@cobj.loc.add_group('caption'=>"Shell Command",'color'=>1)
+      shg=@cobj.loc.add('caption'=>"Shell Command",'color'=>1)
       shg.add_dummy('q',"Quit")
       shg.add_dummy('^D,^C',"Interrupt")
       Thread.current['name']='Main'

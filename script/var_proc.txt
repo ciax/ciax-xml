@@ -22,7 +22,7 @@
     set_methods:
       (Command,Domain,Group)#cfg.proc(&) 
       (Command,Domain,Group)#item_proc(id,&) 
-      (App/Frm/Mcr)::Command#ext_proc(&) 
+      (App/Frm/Mcr)::Command#rem.ext.cfg.proc(&) 
 
 ## Related to Event(DataH)
 

@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libvarx"
 require "libthreadx"
+require "libgroup"
 
 # SubModule for App::Sv
 # *Command stream(Send)
@@ -50,7 +51,7 @@ module CIAX
 
     # Send frm command batch (ary of ary)
     def send(n=1,ent,src)
-      type?(ent,Entity)
+      type?(ent,Group::Entity)
       clear if n == 0
       batch=@send_proc.call(ent)
       #batch is frm batch (ary of ary)

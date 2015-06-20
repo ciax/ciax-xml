@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libstatus"
-require "libcommand"
 require "libstep"
 
 module CIAX

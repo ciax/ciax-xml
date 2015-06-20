@@ -8,6 +8,7 @@ module CIAX
   module Wat
     def self.new(id,inter_cfg={},attr={})
       Msg.type?(attr,Hash)
+
       if $opt.delete('l')
         attr['host']='localhost'
         Sv.new(id,inter_cfg,attr)
@@ -30,10 +31,10 @@ module CIAX
         super
         @site_stat.add_db('auto'=>'@','watch'=>'&')
         @ash=@cfg.layers[:app].get(@id)
+        @cobj.add_rem(@ash)
         @event=Event.new.set_db(@ash.adb)
         @wview=View.new(@ash.adb,@event)
         @ash.batch_interrupt=@event.get('int')
-        @cobj.rem.replace @ash.cobj.rem
         @output=$opt['j']?@event:@wview
       end
 
@@ -50,14 +51,14 @@ module CIAX
       def upd
         @site_stat['watch'] = @event.active?
         block=@event.get('block').map{|id,par| par ? nil : id}.compact
-        @ash.cobj.ext_sub(block)
+        @cobj.rem.ext.valid_sub(block)
         verbose("Watch","Propagate Event#upd -> Watch::Exe#upd")
         self
       end
 
       def ext_shell
         super
-        vg=@cobj.loc.add_group('caption'=>"Change View Mode",'color' => 9,'column' => 2)
+        vg=@cobj.loc.add('caption'=>"Change View Mode",'color' => 9,'column' => 2)
         vg.add_item('vis',"Visual mode").cfg.proc{@output=@wview;''}
         vg.add_item('raw',"Raw Print mode").cfg.proc{@output=@event;''}
         self
@@ -120,6 +121,13 @@ module CIAX
       end
     end
 
+    class Command < Command
+      attr_reader :rem,:ash
+      def add_rem(ash)
+        unshift @rem=ash.cobj.rem
+      end
+    end
+        
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('celts')

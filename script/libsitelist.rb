@@ -1,12 +1,11 @@
 #!/usr/bin/ruby
 require "liblist"
-require "libcommand"
 require "libsh"
 
 module CIAX
   module Site
     class List < List
-      def initialize(level,inter_cfg={},attr={})
+      def initialize(level,cfg,attr={})
         super
         @cfg[:current_site]||=''
         @db=type?(@cfg[:layer_db],CIAX::Db)
@@ -31,7 +30,7 @@ module CIAX
         return self if @data.key?(id)
         # JumpGroup is set to Domain
         (@cfg[:jump_groups]+[@jumpgrp]).each{|grp|
-          exe.cobj.loc.join_group(grp)
+          exe.cobj.loc.put(grp)
         }
         super
       end
@@ -59,7 +58,7 @@ module CIAX
 
       private
       def add(site)
-        cfg=Config.new("site_#{site}",@cfg)
+        cfg=@cfg.gen("site_#{site}")
         obj=@level.new(site,cfg)
         put(site,obj.ext_shell)
       end

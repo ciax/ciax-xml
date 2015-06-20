@@ -29,7 +29,7 @@ module CIAX
       end
 
       def rsp(ent)
-        @ent=type?(ent,Entity)
+        @ent=type?(ent,Group::Entity)
         upd
       end
 

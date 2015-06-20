@@ -1,226 +1,82 @@
 #!/usr/bin/ruby
-require 'libcmdary'
-require 'libcmdlist'
-require 'librerange'
-require 'liblogging'
+require 'libenumx'
+require 'libconf'
+require 'libgroup'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
 module CIAX
-  class Command < CmdAry
-    # CDB: mandatory (:body)
-    # optional ('label',:parameters)
-    # optionalfrm (:nocache,:response)
-    attr_reader :cfg,:rem,:loc,:hidgrp
-    def initialize(exe_cfg=nil,attr={})
+  class Domain < Arrayx
+    attr_reader :cfg
+    def initialize(cfg,attr={})
       # Add exe_cfg to @generation as ancestor, add attr to self
       # @cfg is isolated from exe_cfg
       # So it is same meaning to set value to 'attr' and @cfg
-      @cfg=Config.new('command',exe_cfg).update(attr)
+      @cfg=cfg.gen(self.class.to_s.downcase).update(attr)
       @cfg[:def_proc]||=proc{''}
       @cls_color=@cfg[:cls_color]||7
       @pfx_color=@cfg[:pfx_color]||2
-      # Server Commands (service commands on Server)
-      push @rem=Domain.new(@cfg,{:domain_id => 'remote'}) # Remote Command Domain
-      push @loc=Domain.new(@cfg,{:domain_id => 'local'}) # Local Command Domain
-      @hidgrp=@rem.add_group('caption' => "Hidden Commands",:group_id => 'hidden')
-      @hidgrp.add_item('interrupt')
+    end
+    
+    def get_item(id)
+      res=nil
+      any?{|e| res=e.get_item(id)}
+      res
     end
 
-    def add_nil
-      # Accept empty command
-      @hidgrp.add_item(nil)
-      self
-    end
-  end
-
-  class Domain < CmdAry
-    #cmd_cfg keys: def_proc,group_class,item_class,entity_class
-    attr_reader :cfg
-    def initialize(cmd_cfg,attr={})
-      @cfg=Config.new('domain',cmd_cfg).update(attr)
-      @cls_color=@cfg[:cls_color]
-      @pfx_color=@cfg[:pfx_color]
+    def item_proc(id,&def_proc)
+      get_item(id).cfg.proc(&def_proc)
     end
 
-    def join_group(group)
-      unshift type?(group,Group)
-      group.cfg.join_in(@cfg)
-      group
+    def valid_keys
+      map{|e| e.valid_keys}.flatten
     end
 
-    def add_group(attr={})
-      unshift add('Group',attr)
-      first
-    end
-  end
-
-  class Group < Hashx
-    include AddElem
-    attr_reader :cfg,:valid_keys
-    #dom_cfg keys: caption,color,column
-    def initialize(dom_cfg,attr={})
-      super()
-      @cfg=Config.new('group',dom_cfg).update(attr)
-      @valid_keys=@cfg[:valid_keys]||[]
-      @cls_color=@cfg[:cls_color]
-      @pfx_color=@cfg[:pfx_color]
-      @cmdlist=CmdList.new(@cfg,@valid_keys)
-      @cfg['color']||=2
-      @cfg['column']||=2
+    def set_cmd(args,opt={})
+      id,*par=type?(args,Array)
+      valid_keys.include?(id) || raise(InvalidCMD,view_list)
+      get_item(id).set_par(par,opt)
     end
 
-    def add_item(id,title=nil,crnt={})
-      crnt['clabel']=current[id]=title
-      new_item(id,crnt)
-    end
-
-    def del_item(id)
-      @valid_keys.delete(id)
-      current.delete(id)
-      delete(id)
-    end
-
-    def merge_items(cmdlist)
-      type?(cmdlist,CmdList).each{|cg|
-        cg.each{|id,title|
-          new_item(id,{'clabel'=> title})
-        }
-      }
-      @current=@cmdlist.merge!(cmdlist).last
-      self
-    end
-
-    def add_dummy(id,title)
-      current.dummy(id,title) #never put into valid_key
-      self
-    end
-
-    def valid_reset
-      @valid_keys.concat(keys).uniq!
-      self
-    end
-
-    def valid_sub(ary)
-      @valid_keys.replace(keys-type?(ary,Array))
-      self
+    def valid_pars
+      map{|e| e.valid_pars}.flatten
     end
 
     def view_list
-      @cmdlist.to_s
+      map{|e| e.view_list}.grep(/./).join("\n")
     end
 
-    def valid_pars
-      values.map{|e| e.valid_pars}.flatten
+    def show_proc(id)
+      item=get_item(id)
+      cfg=item.cfg
+      cls=cfg.generation[cfg.level(:def_proc)][:level]
+      " #{id},level=#{cls},item=#{item.object_id},proc=#{cfg[:def_proc].object_id}"
     end
 
-    def get_item(id)
-      self[id]
+    def add(cls,attr={})
+      unshift obj=cls.new(@cfg,attr)
+      obj
     end
 
-    private
-    def new_item(id,crnt={})
-      crnt[:id]=id
-      self[id]=add('Item',crnt)
-    end
-
-    def current
-      @current||=@cmdlist.new_grp
-    end
-  end
-
-  # Corresponds commands
-  class Item < Hashx
-    include AddElem
-    attr_reader :cfg
-    #grp_cfg should have :id,'label',:parameters,:def_proc
-    def initialize(grp_cfg,attr={})
-      super()
-      @cfg=Config.new('item',grp_cfg).update(attr)
-      @cls_color=@cfg[:cls_color]
-      @pfx_color=@cfg[:pfx_color]
-    end
-
-    def set_par(par,opt={})
-      opt[:par]=validate(type?(par,Array))
-      verbose("Cmd","SetPAR(#{@cfg[:id]}): #{par}")
-      add('Entity',opt)
-    end
-
-    def valid_pars
-      (@cfg[:parameters]||[]).map{|e| e[:list] if e[:type] == 'str'}.flatten
-    end
-
-    private
-    # Parameter for validate(cfg[:paremeters]) structure:  [{:type,:list,:default}, ...]
-    # Returns converted parameter array
-    def validate(pary)
-      pary=type?(pary.dup,Array)
-      return [] unless @cfg[:parameters]
-      @cfg[:parameters].map{|par|
-        list=par[:list]||[]
-        disp=list.join(',')
-        unless str=pary.shift
-          next par[:default] if par.key?(:default)
-          mary=[]
-          mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameters].size})"
-          mary << Msg.item(@cfg[:id],@cfg['label'])
-          mary << " "*10+"key=(#{disp})"
-          Msg.par_err(*mary)
-        end
-        if list.empty?
-          next par[:default] if par.key?(:default)
-        else
-          case par[:type]
-          when 'num'
-            begin
-              num=eval(str)
-            rescue Exception
-              Msg.par_err("Parameter is not number")
-            end
-            verbose("Cmd","Validate: [#{num}] Match? [#{disp}]")
-            unless list.any?{|r| ReRange.new(r) == num }
-              Msg.par_err("Out of range (#{num}) for [#{disp}]")
-            end
-            next num.to_s
-          when 'reg'
-            verbose("Cmd","Validate: [#{str}] Match? [#{disp}]")
-            unless list.any?{|r| Regexp.new(r) === str}
-              Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
-            end
-          else
-            verbose("Cmd","Validate: [#{str}] Match? [#{disp}]")
-            unless list.include?(str)
-              Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
-            end
-          end
-        end
-        str
-      }
+    def put(obj) # Destroy obj.cfg
+      obj.cfg.join_in(@cfg)
+      unshift obj
+      self
     end
   end
 
-  # Command db with parameter derived from Item
-  class Entity
-    include Msg
-    attr_reader :id,:par,:cfg,:layer
-    #set should have :def_proc
-    def initialize(itm_cfg,attr={})
-      super()
-      @cfg=Config.new('entity',itm_cfg).update(attr)
-      @par=@cfg[:par]
-      @id=[@cfg[:id],*@par].join(':')
-      @cfg[:cid]=@id
-      @cls_color=@cfg[:cls_color]
-      @pfx_color=@cfg[:pfx_color]
-      @layer=@cfg['layer']
-      verbose("Cmd","Config",@cfg.inspect)
-      verbose("self",inspect)
+  class Command < Domain
+    attr_reader :loc
+    def initialize(cfg,attr={})
+      super
+      @loc=add(Local::Domain,{:domain_id => 'local'})
     end
+  end
 
-    # returns result of def_proc block (String)
-    def exe_cmd(src,pri=1)
-      verbose("Cmd","Execute [#{@id}] from #{src}")
-      @cfg[:def_proc].call(self,src,pri)
+  module Local
+    class Domain < Domain
+      def add(attr={})
+        super(Group::Index,attr)
+      end
     end
   end
 end

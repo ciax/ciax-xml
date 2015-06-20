@@ -6,8 +6,8 @@ require "libapplist"
 module CIAX
   module Wat
     class List < Site::List
-      def initialize(inter_cfg={})
-        super(Wat,inter_cfg,{:layer_db => Ins::Db.new})
+      def initialize(cfg)
+        super(Wat,cfg,{:layer_db => Ins::Db.new})
         @cfg[:site_stat]||=Prompt.new
         App::List.new(@cfg) unless @cfg.layers.key?(:app)
         @cfg.layers[:wat]=self
@@ -20,7 +20,8 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('chset')
       begin
-        puts List.new.shell(ARGV.shift)
+        cfg=Config.new('test')
+        puts List.new(cfg).shell(ARGV.shift)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

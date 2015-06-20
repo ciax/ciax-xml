@@ -28,12 +28,12 @@ module CIAX
           inter_cfg[:db]||=Db.new.get(id)
           super(id,inter_cfg)
           @cobj.add_extgrp
-          @cobj.add_intgrp(Int)
+          @cobj.rem.add_int
           lc=inter_cfg[:list_class]||List
           @output=@list=lc.new(@cobj)
           @valid_pars=@cobj.intgrp.valid_pars
           ext_shell
-          @cobj.loc.join_group(@list.jumpgrp)
+          @cobj.loc.put(@list.jumpgrp)
           @post_exe_procs << proc{
             @valid_pars.replace(@list.keys)
           }
@@ -52,7 +52,7 @@ module CIAX
           }
           @shell_input_proc=proc{|args| @list.conv_cmd(args,@cobj.intgrp)}
           super
-          vg=@cobj.loc.add_group('caption'=>"Change View Mode",'color' => 9)
+          vg=@cobj.loc.add('caption'=>"Change View Mode",'color' => 9)
           vg.add_item('lst',"List mode").cfg.proc{@smode=false;''}
           vg.add_item('seq',"Sequencer mode").cfg.proc{@smode=true;''}
           vg.add_item('vis',"Visual mode").cfg.proc{@output.vmode='v';''}
@@ -91,7 +91,7 @@ module CIAX
             end
           }
           # External Command Group
-          @cobj.ext_proc{|ent|
+          @cobj.rem.ext.cfg.proc{|ent|
             mobj=@list.add_ent(ent).lastval
             self['sid']=mobj.id
             "ACCEPT"

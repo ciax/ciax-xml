@@ -4,8 +4,8 @@ require "libsitelist"
 module CIAX
   module Site
     class Layer < CIAX::List
-      def initialize(inter_cfg={},attr={})
-        super(Layer,inter_cfg,attr)
+      def initialize(cfg,attr={})
+        super(Layer,cfg,attr)
         @cfg[:site_stat]=Prompt.new
         @cfg[:current_site]||=''
         @pars={:parameters => [{:default => @cfg[:current_site]}]}

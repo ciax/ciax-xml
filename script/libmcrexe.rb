@@ -46,7 +46,7 @@ module CIAX
       end
 
       def ext_shell
-        intgrp=@cobj.add_intgrp(Int).intgrp
+        intgrp=@cobj.rem.add_int.int
         intgrp.cfg.proc{|ent| reply(ent.id)}
         self['option']=intgrp.valid_keys.clear
         @prompt_proc=proc{
@@ -55,7 +55,7 @@ module CIAX
           res
         }
         super(@record.cfg[:cid].tr(':','_'))
-        vg=@cobj.loc.add_group('caption'=>"Change View Mode",'color' => 9)
+        vg=@cobj.loc.add('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('vis',"Visual mode").cfg.proc{@output.vmode='v';''}
         vg.add_item('raw',"Raw mode").cfg.proc{@output.vmode='r';''}
         self

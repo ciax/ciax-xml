@@ -47,14 +47,14 @@ module CIAX
     module Ext
       include Remote::Ext
       class Index < Index;end
-
-      class Item < Item
+      class Item < Item;end
+      class Entity < Entity
         include Math
         #batch is ary of args(ary)
-        def set_par(par,opt={})
-          ent=super
-          batch=[]
-          ent.cfg[:body].each{|e1|
+        def initialize(cfg,attr={})
+          super
+          @cfg[:batch]=[]
+          @cfg[:body].each{|e1|
             args=[]
             enclose("AppItem","GetCmd(FDB):#{e1.first}","Exec(FDB):%s"){
               e1.each{|e2| # //argv
@@ -68,16 +68,12 @@ module CIAX
                   args << str
                 end
               }
-              batch.push args
+              @cfg[:batch].push args
               args
             }
           }
-          ent.cfg[:batch]=batch
-          ent
         end
       end
-
-      class Entity < Entity;end
     end
 
     if __FILE__ == $0

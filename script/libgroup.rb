@@ -86,11 +86,12 @@ module CIAX
     end
 
     # Corresponds commands
-    class Item
+    class Item < Hashx
       include Msg
       attr_reader :cfg
       #grp_cfg should have :id,'label',:parameters,:def_proc
       def initialize(cfg,attr={})
+        super()
         @cfg=cfg.gen(self).update(attr)
         @cls_color=@cfg[:cls_color]
         @pfx_color=@cfg[:pfx_color]
@@ -99,7 +100,15 @@ module CIAX
       def set_par(par,opt={})
         opt[:par]=validate(type?(par,Array))
         verbose("Cmd","SetPAR(#{@cfg[:id]}): #{par}")
-        context_constant('Entity').new(@cfg,opt)
+        cid=opt[:cid]=[@cfg[:id],*par].join(':')
+        if key?(cid)
+          verbose("Cmd","SetPAR: Entity Cache found(#{cid})")
+          self[cid]
+        else
+          ent=context_constant('Entity').new(@cfg,opt)
+          self[cid]=ent unless @cfg["nocache"]
+          ent
+        end
       end
 
       def valid_pars
@@ -163,8 +172,7 @@ module CIAX
       def initialize(cfg,attr={})
         @cfg=cfg.gen(self).update(attr)
         @par=@cfg[:par]
-        @id=[@cfg[:id],*@par].join(':')
-        @cfg[:cid]=@id
+        @id=@cfg[:cid]
         @cls_color=@cfg[:cls_color]
         @pfx_color=@cfg[:pfx_color]
         @layer=@cfg['layer']

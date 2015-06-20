@@ -82,7 +82,6 @@ module CIAX
       end
 
       class Item < Item;end
-
       class Entity < Entity
         # Substitute string($+number) with parameters
         # par={ val,range,format } or String

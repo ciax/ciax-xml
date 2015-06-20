@@ -25,7 +25,6 @@ module CIAX
       end
     end
 
-    
     module Int
       include Remote::Int
       class Index < Index

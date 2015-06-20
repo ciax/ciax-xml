@@ -47,6 +47,7 @@ module CIAX
     module Ext
       include Remote::Ext
       class Index < Index;end
+
       class Item < Item
         include Math
         #batch is ary of args(ary)
@@ -71,14 +72,12 @@ module CIAX
               args
             }
           }
-          ent.batch=batch
+          ent.cfg[:batch]=batch
           ent
         end
       end
 
-      class Entity < Entity
-        attr_accessor :batch
-      end
+      class Entity < Entity;end
     end
 
     if __FILE__ == $0
@@ -87,7 +86,10 @@ module CIAX
       begin
         cfg=Config.new('test',{:db => Db.new.get(app)})
         cobj=Command.new(cfg)
-        cobj.set_cmd(args).batch.each{|fargs|
+        cobj.rem.ext.cfg.proc{|ent| ent.cfg.path }
+        ent=cobj.set_cmd(args)
+        puts ent.exe_cmd('test')
+        ent.cfg[:batch].each{|fargs|
           p fargs
         }
       rescue InvalidCMD

@@ -29,7 +29,7 @@ module CIAX
         end
       end
     end
-    
+
     module Int
       include Group
       class Index < Index

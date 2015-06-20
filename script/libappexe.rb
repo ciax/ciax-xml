@@ -67,7 +67,7 @@ module CIAX
         @cobj.rem.add_int
         @cobj.rem.ext.cfg.proc{|ent|
           @stat.upd
-          'ISSUED:'+ent.batch.inspect
+          'ISSUED:'+ent.cfg[:batch].inspect
         }
         @cobj.item_proc('interrupt'){|ent|
           "INTERRUPT(#{@batch_interrupt})"

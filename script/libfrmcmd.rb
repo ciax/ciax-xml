@@ -54,13 +54,12 @@ module CIAX
     module Ext
       include Remote::Ext
       class Index < Index;end
-      class Item < Item
+      class Item < Item;end
+      class Entity < Entity
         def initialize(cfg,attr={})
           super
-          @cls_color=6
           @field=type?(@cfg[:field],Field)
           db=@cfg[:db]
-          @cache={}
           @fstr={}
           if /true|1/ === @cfg["noaffix"]
             @sel={:main => ["body"]}
@@ -68,30 +67,20 @@ module CIAX
             @sel=Hash[db[:command][:frame]]
           end
           @frame=Frame.new(db['endian'],db['ccmethod'])
-        end
-
-        def set_par(par,opt={})
-          ent=super
-          return ent unless @sel[:body]=ent.cfg[:body]
-          cid=ent.id
+          return unless @sel[:body]=@cfg[:body]
+          cid=@id
           verbose("FrmItem","Body:#{@cfg['label']}(#{cid})")
-          if frame=@cache[cid]
-            verbose("FrmItem","Cmd cache found [#{cid}]")
-          else
-            nocache=mk_frame(:body)
-            if @sel.key?(:ccrange)
-              @frame.cc_mark
-              mk_frame(:ccrange)
-              @frame.cc_set
-            end
-            mk_frame(:main)
-            frame=@fstr[:main]
-            @cache[cid]=frame unless nocache
-            verbose("FrmItem","Cmd Generated [#{cid}]")
+          mk_frame(:body)
+          if @sel.key?(:ccrange)
+            @frame.cc_mark
+            mk_frame(:ccrange)
+            @frame.cc_set
           end
-          ent.cfg[:frame]=frame
+          mk_frame(:main)
+          frame=@fstr[:main]
+          verbose("FrmItem","Cmd Generated [#{cid}]")
+          @cfg[:frame]=frame
           @field.echo=frame
-          ent
         end
 
         private
@@ -115,7 +104,6 @@ module CIAX
           conv
         end
       end
-      class Entity < Entity;end
     end
 
     if __FILE__ == $0

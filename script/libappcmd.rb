@@ -53,8 +53,7 @@ module CIAX
         #batch is ary of args(ary)
         def initialize(cfg,attr={})
           super
-          @cfg[:batch]=[]
-          @cfg[:body].each{|e1|
+          @cfg[:batch]=@cfg[:body].map{|e1|
             args=[]
             enclose("AppItem","GetCmd(FDB):#{e1.first}","Exec(FDB):%s"){
               e1.each{|e2| # //argv
@@ -68,9 +67,8 @@ module CIAX
                   args << str
                 end
               }
-              @cfg[:batch].push args
-              args
             }
+            args
           }
         end
       end

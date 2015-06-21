@@ -106,7 +106,12 @@ module CIAX
           self[cid]
         else
           ent=context_constant('Entity').new(@cfg,opt)
-          self[cid]=ent unless @cfg["nocache"]
+          if @cfg["nocache"]
+            verbose("Cmd","SetPAR: Entity No Cache Created (#{cid})")
+          else
+            self[cid]=ent
+            verbose("Cmd","SetPAR: Entity Cache Created (#{cid})")
+          end
           ent
         end
       end

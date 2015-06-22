@@ -108,8 +108,8 @@ module CIAX
       ts= STDERR.tty? ? '' : "[#{pass}]"
       tc=Thread.current
       ts << Msg.indent(@ver_indent)+Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15)
-      @cpath||=self.class.to_s.split('::')[1..-1].join('.')
-      ts << Msg.color("#@cpath:",@cls_color||7)
+      cpath||=singleton_class.ancestors[1].name.split('::')[1..-1].join('::')
+      ts << Msg.color("#{cpath}:",@cls_color||7)
       ts << Msg.color("#{prefix}:",@pfx_color||2)
       ts << title.to_s
     end

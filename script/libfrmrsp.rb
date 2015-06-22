@@ -74,7 +74,7 @@ module CIAX
             enclose("Rsp","Entering Body Node","Exitting Body Node"){
               getfield_rec(@sel[:body]||[])
             }
-          when 'echo'
+          when 'echo' # Send back the command string
             verbose("Rsp","Set Command Echo [#{@echo.inspect}]")
             @frame.cut('label' => 'Command Echo','val' => @echo)
           when Hash

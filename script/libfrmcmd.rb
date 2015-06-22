@@ -68,8 +68,7 @@ module CIAX
           end
           @frame=Frame.new(db['endian'],db['ccmethod'])
           return unless @sel[:body]=@cfg[:body]
-          cid=@id
-          verbose("FrmItem","Body:#{@cfg['label']}(#{cid})")
+          verbose("FrmItem","Body:#{@cfg['label']}(#@id)")
           mk_frame(:body)
           if @sel.key?(:ccrange)
             @frame.cc_mark
@@ -78,12 +77,13 @@ module CIAX
           end
           mk_frame(:main)
           frame=@fstr[:main]
-          verbose("FrmItem","Cmd Generated [#{cid}]")
+          verbose("FrmItem","Cmd Generated [#@id]")
           @cfg[:frame]=frame
-          @field.echo=frame
+          @field.echo=frame # For send back
         end
 
         private
+        # instance var frame,sel,field,fstr
         def mk_frame(domain)
           conv=nil
           @frame.reset

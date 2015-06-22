@@ -56,7 +56,8 @@ module CIAX
         self
       end
 
-      # Assign or Ignore mode
+      # Cut frame and decode
+      # If param includes 'val' key, it checks value  only
       # If cut str incldes terminetor, str will be trimmed
       def cut(e0)
         verbose("Rsp","Cut Start for [#{@frame.inspect}](#{@frame.size})")

@@ -60,13 +60,15 @@ module CIAX
         attr_reader :batch
         def initialize(cfg,crnt={})
           super
-          @batch=Arrayx.new
+          # @cfg[:body] expansion
+          batch=Arrayx.new
           @cfg[:body].each{|elem|
             elem["depth"]=@cfg[:depth]
-            @batch << elem
+            batch << elem
             next if elem["type"] != "mcr" || /true|1/ === elem["async"]
-            @batch+=@cfg[:mobj].set_cmd(elem["args"],{:depth => @cfg[:depth]+1}).cfg[:body]
+            batch.concat @cfg[:mobj].set_cmd(elem["args"],{:depth => @cfg[:depth]+1}).cfg[:body]
           }
+          @cfg[:body]=batch
         end
       end
     end
@@ -77,7 +79,10 @@ module CIAX
       begin
         cfg=Config.new('test',{:db => Db.new.get(ENV['PROJ']||'ciax')})
         cobj=Command.new(cfg)
-        puts cobj.set_cmd(ARGV).batch.to_s
+        cobj.rem.ext.cfg.proc{|ent| ent.cfg.path }
+        ent=cobj.set_cmd(ARGV)
+        puts ent.exe_cmd('test')
+        puts ent.cfg[:body].to_s
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

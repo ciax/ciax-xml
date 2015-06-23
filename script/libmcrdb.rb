@@ -81,15 +81,15 @@ module CIAX
         args
       end
     end
-  end
 
-  if __FILE__ == $0
-    begin
-      mdb=Mcr::Db.new.get(ARGV.shift)
-    rescue InvalidID
-      Msg.usage "[id] (key) .."
-      Msg.exit
+    if __FILE__ == $0
+      begin
+        mdb=Db.new.get(ARGV.shift)
+      rescue InvalidID
+        Msg.usage "[id] (key) .."
+        Msg.exit
+      end
+      puts mdb.path(ARGV)
     end
-    puts mdb.path(ARGV)
   end
 end

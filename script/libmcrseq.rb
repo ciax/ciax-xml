@@ -19,13 +19,14 @@ module CIAX
   #REAL: query(exec,error), interval=1
   module Mcr
     # Sequencer
-    class Seq < Entity
+    class Seq
+      include Msg
       #required cfg keys: app,db,body,stat,(:submcr_proc)
       attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro
       #ent_cfg should have [:db]
-      def initialize(upper,crnt={})
-        super
+      def initialize(cfg,attr={})
+        @cfg=cfg.gen('seq').update(attr)
         type?(@cfg.layers[:wat],Wat::List)
         db=type?(@cfg[:db],Dbi)
         @submcr_proc=@cfg[:submcr_proc]||proc{|args,id|
@@ -161,12 +162,15 @@ module CIAX
     end
 
     if __FILE__ == $0
+      require "libmcrdb"
       GetOpts.new('cemntr')
-      cfg=Config.new('test')
+      db=Db.new.get(ENV['PROJ']||'ciax')
+      cfg=Config.new('test',{:db => db})
       begin
         Wat::List.new(cfg)
-        cobj=Command.new(cfg).add_extgrp
-        seq=Seq.new(cobj.set_cmd(ARGV).cfg)
+        cobj=Command.new(cfg)
+        ent=cobj.set_cmd(ARGV)
+        seq=Seq.new(ent.cfg)
         seq.macro
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

@@ -62,13 +62,13 @@ module CIAX
           super
           # @cfg[:body] expansion
           batch=Arrayx.new
-          @cfg[:body].each{|elem|
+          @body.each{|elem|
             elem["depth"]=@cfg[:depth]
             batch << elem
             next if elem["type"] != "mcr" || /true|1/ === elem["async"]
             batch.concat @cfg[:mobj].set_cmd(elem["args"],{:depth => @cfg[:depth]+1}).cfg[:body]
           }
-          @cfg[:body]=batch
+          @cfg[:batch]=batch
         end
       end
     end
@@ -82,7 +82,7 @@ module CIAX
         cobj.rem.ext.cfg.proc{|ent| ent.cfg.path }
         ent=cobj.set_cmd(ARGV)
         puts ent.exe_cmd('test')
-        puts ent.cfg[:body].to_s
+        puts ent.cfg[:batch].to_s
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

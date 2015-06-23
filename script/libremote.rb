@@ -89,7 +89,7 @@ module CIAX
         def initialize(grp_cfg,attr={})
           super
           @cfg['label']=subst(@cfg['label'])
-          @cfg[:body]=deep_subst(@cfg[:body])
+          @body=deep_subst(@cfg[:body])
         end
 
         def subst(str) #subst by parameters ($1,$2...)

@@ -67,7 +67,7 @@ module CIAX
             @sel=Hash[db[:command][:frame]]
           end
           @frame=Frame.new(db['endian'],db['ccmethod'])
-          return unless @sel[:body]=@cfg[:body]
+          return unless @sel[:body]=@body
           verbose("FrmItem","Body:#{@cfg['label']}(#@id)")
           mk_frame(:body)
           if @sel.key?(:ccrange)
@@ -121,6 +121,7 @@ module CIAX
         fld.read unless STDIN.tty?
         ent=cobj.set_cmd(args)
         puts ent.exe_cmd('test')
+        p ent.cfg[:frame]
       rescue InvalidCMD
         Msg.usage("#{id} [cmd] (par) < field_file",2)
       rescue InvalidID

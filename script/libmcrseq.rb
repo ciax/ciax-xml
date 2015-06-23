@@ -19,8 +19,7 @@ module CIAX
   #REAL: query(exec,error), interval=1
   module Mcr
     # Sequencer
-    class Seq
-      include Msg
+    class Seq < Hashx
       #required cfg keys: app,db,body,stat,(:submcr_proc)
       attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro

@@ -127,7 +127,7 @@ module CIAX
       def init_buf
         buf=Buffer.new(@stat['id'],@stat['ver'],@site_stat)
         buf.send_proc{|ent|
-          batch=type?(ent.batch,Array)
+          batch=type?(ent.cfg[:batch],Array)
           verbose("AppSv","Send FrmCmds #{batch}")
           batch
         }

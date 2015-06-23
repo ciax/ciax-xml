@@ -53,7 +53,7 @@ module CIAX
         #batch is ary of args(ary)
         def initialize(cfg,attr={})
           super
-          @cfg[:batch]=@cfg[:body].map{|e1|
+          @cfg[:batch]=@body.map{|e1|
             args=[]
             enclose("AppItem","GetCmd(FDB):#{e1.first}","Exec(FDB):%s"){
               e1.each{|e2| # //argv
@@ -69,7 +69,7 @@ module CIAX
               }
             }
             args
-          }
+          }.extend(Enumx)
         end
       end
     end
@@ -83,9 +83,7 @@ module CIAX
         cobj.rem.ext.cfg.proc{|ent| ent.cfg.path }
         ent=cobj.set_cmd(args)
         puts ent.exe_cmd('test')
-        ent.cfg[:batch].each{|fargs|
-          p fargs
-        }
+        puts ent.cfg[:batch].to_s
       rescue InvalidCMD
         Msg.usage("#{app} [cmd] (par)",2)
       rescue InvalidID

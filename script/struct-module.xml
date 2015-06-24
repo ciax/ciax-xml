@@ -18,7 +18,7 @@
   </basic>
   <shared>
     <Msg>
-      <CmdGrp parent="Hash"/>
+      <Disp::Group parent="Hash"/>
       <Ver parent="Object"/>
     </Msg>
     <Command parent="Hashx" extend="Msg.Ver" include="Math">

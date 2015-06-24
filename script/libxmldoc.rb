@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libcmdlist"
+require "libdisp"
 require "libenumx"
 require "libxmlgn"
 
@@ -13,7 +13,7 @@ module CIAX
     # The project named file can conatin referenced item whose entity is
     # in another file.
     class Doc < Hashx
-      attr_reader :top,:cmdlist
+      attr_reader :top,:displist
       def initialize(type,project=nil)
         super()
         @cls_color=4
@@ -22,20 +22,20 @@ module CIAX
         /.+/ =~ type || Msg.cfg_err("No Db Type")
         @type=type
         @pcap='All'
-        @cmdlist=CmdList.new('column' => 2)
-        @projlist=CmdGrp.new('caption' => 'Project', 'column' => 2)
+        @displist=Disp::List.new('column' => 2)
+        @projlist=Disp::Group.new('caption' => 'Project', 'column' => 2)
         Dir.glob("#{ENV['XMLPATH']}/#{type}-*.xml").each{|xml|
           verbose("XmlDoc","readxml:"+::File.basename(xml,'.xml'))
           Gnu.new(xml).each{|e|
             readproj(e)
           }
         }.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
-        raise(InvalidProj,"No such Project(#{@project})\n"+@projlist.view) if @cmdlist.empty?
+        raise(InvalidProj,"No such Project(#{@project})\n"+@projlist.view) if @displist.empty?
       end
 
       # set generates document branch of db items(Hash), which includes attribute and domains
       def set(id)
-        raise(InvalidID,"No such ID(#{id}) in #@type\n"+@cmdlist.to_s) unless key?(id)
+        raise(InvalidID,"No such ID(#{id}) in #@type\n"+@displist.to_s) unless key?(id)
         top=self[id]
         item={:top => top,:attr => top.to_h,:domain => {}}
         top.each{|e1|
@@ -61,12 +61,12 @@ module CIAX
 
       def readgrp(e)
         if e.name == 'group'
-          @group=@cmdlist.new_grp(e['caption']) if @pcap
+          @group=@displist.new_grp(e['caption']) if @pcap
           e.each{|e0|
             readitem(e0)
           }
         else
-          @group||=@cmdlist.new_grp(@pcap) if @pcap
+          @group||=@displist.new_grp(@pcap) if @pcap
           readitem(e)
         end
       end

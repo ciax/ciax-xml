@@ -25,20 +25,20 @@ module CIAX
     include Msg
     XmlDir="#{ENV['HOME']}/ciax-xml"
     PROJ=ENV['PROJ']||'ciax'
-    attr_reader :cmdlist,:db
+    attr_reader :displist,:db
     def initialize(type,proj=nil)
       super()
       @cls_color=5
       @type=type
       @proj=proj
-      # @cmdlist is CmdList
+      # @displist is Disp::List
       lid='list'
       lid+="-#@proj" if @proj
-      @cmdlist=cache(lid){|doc| doc.cmdlist }
+      @displist=cache(lid){|doc| doc.displist }
     end
 
     def get(id)
-      raise(InvalidID,"No ID in #@type\n"+@cmdlist.to_s) unless id
+      raise(InvalidID,"No ID in #@type\n"+@displist.to_s) unless id
       cache(id){|doc|
         doc_to_db(doc.set(id))
       }

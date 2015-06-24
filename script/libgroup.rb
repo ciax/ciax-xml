@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libcmdlist'
+require 'libdisp'
 require 'librerange'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
@@ -15,7 +15,7 @@ module CIAX
         @valid_keys=@cfg[:valid_keys]||[]
         @cls_color=@cfg[:cls_color]
         @pfx_color=@cfg[:pfx_color]
-        @cmdlist=CmdList.new(@cfg,@valid_keys)
+        @displist=Disp::List.new(@cfg,@valid_keys)
         @cfg['color']||=2
         @cfg['column']||=2
       end
@@ -31,13 +31,13 @@ module CIAX
         delete(id)
       end
 
-      def merge_items(cmdlist)
-        type?(cmdlist,CmdList).each{|cg|
+      def merge_items(displist)
+        type?(displist,Disp::List).each{|cg|
           cg.each{|id,title|
             new_item(id,{'label'=> title})
           }
         }
-        @current=@cmdlist.merge!(cmdlist).last
+        @current=@displist.merge!(displist).last
         self
       end
 
@@ -57,7 +57,7 @@ module CIAX
       end
 
       def view_list
-        @cmdlist.to_s
+        @displist.to_s
       end
 
       def valid_pars
@@ -81,7 +81,7 @@ module CIAX
       end
 
       def current
-        @current||=@cmdlist.new_grp
+        @current||=@displist.new_grp
       end
     end
 

@@ -5,8 +5,8 @@ require 'librerange'
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
 # @cfg
 module CIAX
-  module Group
-    class Index < Hashx
+  module Command
+    class Group < Hashx
       attr_reader :cfg,:valid_keys
       #dom_cfg keys: caption,color,column
       def initialize(cfg,attr={})

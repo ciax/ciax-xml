@@ -3,6 +3,7 @@ require 'libcommand'
 
 module CIAX
   module Remote
+    include Command
     class Domain < Domain
       attr_reader :hid
       def initialize(cfg,attr={})
@@ -13,8 +14,8 @@ module CIAX
     end
 
     module Hid
-      include Group
-      class Index < Index
+      include Command
+      class Group < Group
         def initialize(dom_cfg,attr={})
           super
           @cfg['caption']="Hidden Commands"
@@ -31,8 +32,8 @@ module CIAX
     end
 
     module Int
-      include Group
-      class Index < Index
+      include Command
+      class Group < Group
         def initialize(dom_cfg,attr={})
           super
           @cfg[:group_id]='internal'
@@ -52,8 +53,8 @@ module CIAX
     # For External Command Domain
     # @cfg must contain [:db]
     module Ext
-      include Group
-      class Index < Index
+      include Command
+      class Group < Group
         def initialize(dom_cfg,attr={})
           super
           @db=type?(@cfg[:db],Dbi)

@@ -5,7 +5,8 @@ require "libfield"
 
 module CIAX
   module Frm
-    class Command < Command
+    include Remote
+    class Index < Index
       # cfg or attr should have [:db] and [:field]
       attr_reader :rem
       def initialize(cfg,attr={})
@@ -15,21 +16,21 @@ module CIAX
       end
     end
 
-    class Domain < Remote::Domain
+    class Domain < Domain
       attr_reader :ext,:int
       def initialize(cfg,attr={})
         super
-        @ext=add(Ext::Index,{:group_id => 'external'})
+        @ext=add(Ext::Group,{:group_id => 'external'})
       end
 
       def add_int
-        @int=add(Int::Index,{:group_id => 'internal'})
+        @int=add(Int::Group,{:group_id => 'internal'})
       end
     end
 
     module Int
       include Remote::Int
-      class Index < Index
+      class Group < Group
         def initialize(cfg,attr={})
           super
           @cfg['caption']='Internal Commands'
@@ -53,7 +54,7 @@ module CIAX
 
     module Ext
       include Remote::Ext
-      class Index < Index;end
+      class Group < Group;end
       class Item < Item;end
       class Entity < Entity
         def initialize(cfg,attr={})
@@ -116,7 +117,7 @@ module CIAX
         fld=Field.new.set_db(db)
         cfg=Config.new('test',{:db => db,:field => fld})
         cfg.proc{|ent| ent.cfg.path }
-        cobj=Command.new(cfg)
+        cobj=Index.new(cfg)
         cobj.rem.add_int
         fld.read unless STDIN.tty?
         ent=cobj.set_cmd(args)

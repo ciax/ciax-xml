@@ -3,7 +3,8 @@ require "libremote"
 
 module CIAX
   module App
-    class Command < Command
+    include Remote
+    class Index < Index
       attr_reader :rem
       def initialize(cfg,attr={})
         super
@@ -12,21 +13,21 @@ module CIAX
       end
     end
 
-    class Domain < Remote::Domain
+    class Domain < Domain
       attr_reader :ext,:int
       def initialize(cfg,attr={})
         super
-        @ext=add(Ext::Index,{:group_id => 'external'})
+        @ext=add(Ext::Group,{:group_id => 'external'})
       end
 
       def add_int
-        @int=add(Int::Index,{:group_id => 'internal'})
+        @int=add(Int::Group,{:group_id => 'internal'})
       end
     end
 
     module Int
       include Remote::Int
-      class Index < Index
+      class Group < Group
         def initialize(cfg,attr={})
           super
           @cfg['caption']='Test Commands'
@@ -46,7 +47,7 @@ module CIAX
 
     module Ext
       include Remote::Ext
-      class Index < Index;end
+      class Group < Group;end
       class Item < Item;end
       class Entity < Entity
         include Math
@@ -78,8 +79,8 @@ module CIAX
       require "libappdb"
       app,*args=ARGV
       begin
-        cfg=Config.new('test',{:db => Db.new.get(app)})
-        cobj=Command.new(cfg)
+        cfg=Config.new('test',{:dbi => Db.new.get(app)})
+        cobj=Index.new(cfg)
         cobj.rem.ext.cfg.proc{|ent| ent.cfg.path }
         ent=cobj.set_cmd(args)
         puts ent.exe_cmd('test')

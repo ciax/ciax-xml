@@ -57,11 +57,11 @@ module CIAX
       class Group < Group
         def initialize(dom_cfg,attr={})
           super
-          @db=type?(@cfg[:db],Dbi)
-          @cfg[:group_id]=@db['id']
+          @dbi=type?(@cfg[:dbi],Dbi)
+          @cfg[:group_id]=@dbi['id']
           @cfg['caption']||="External Commands"
           # Set items by DB
-          cdb=@db[:command]
+          cdb=@dbi[:command]
           idx=cdb[:index]
           (cdb[:group]).each{|gid,gat|
             @current=@displist.new_grp(gat['caption'])

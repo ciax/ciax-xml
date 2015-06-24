@@ -7,7 +7,7 @@ module CIAX
   module Frm
     include Remote
     class Index < Index
-      # cfg or attr should have [:db] and [:field]
+      # cfg or attr should have [:dbi] and [:field]
       attr_reader :rem
       def initialize(cfg,attr={})
         super
@@ -60,14 +60,14 @@ module CIAX
         def initialize(cfg,attr={})
           super
           @field=type?(@cfg[:field],Field)
-          db=@cfg[:db]
+          dbi=@cfg[:dbi]
           @fstr={}
           if /true|1/ === @cfg["noaffix"]
             @sel={:main => ["body"]}
           else
-            @sel=Hash[db[:command][:frame]]
+            @sel=Hash[dbi[:command][:frame]]
           end
-          @frame=Frame.new(db['endian'],db['ccmethod'])
+          @frame=Frame.new(dbi['endian'],dbi['ccmethod'])
           return unless @sel[:body]=@body
           verbose("FrmItem","Body:#{@cfg['label']}(#@id)")
           mk_frame(:body)
@@ -113,9 +113,9 @@ module CIAX
       id,*args=ARGV
       ARGV.clear
       begin
-        db=Db.new.get(id)
-        fld=Field.new.set_db(db)
-        cfg=Config.new('test',{:db => db,:field => fld})
+        dbi=Db.new.get(id)
+        fld=Field.new.set_db(dbi)
+        cfg=Config.new('test',{:dbi => dbi,:field => fld})
         cfg.proc{|ent| ent.cfg.path }
         cobj=Index.new(cfg)
         cobj.rem.add_int

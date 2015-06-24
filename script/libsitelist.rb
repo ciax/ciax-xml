@@ -4,6 +4,9 @@ require "libsh"
 
 module CIAX
   module Site
+    # Db should be set to @cfg at List level
+    # Dbi will made and set to @cfg at Exe level
+
     class List < List
       def initialize(level,cfg,attr={})
         super
@@ -25,9 +28,9 @@ module CIAX
         super
       end
 
-      def put(id,exe)
+      def put(site,exe)
         type?(exe,Exe)
-        return self if @data.key?(id)
+        return self if @data.key?(site)
         # JumpGroup is set to Domain
         (@cfg[:jump_groups]+[@jumpgrp]).each{|grp|
           exe.cobj.loc.put(grp)
@@ -35,14 +38,14 @@ module CIAX
         super
       end
 
-      def shell(id)
+      def shell(site)
         begin
-          get(id).shell
+          get(site).shell
         rescue @level::Jump
-          id=$!.to_s
+          site=$!.to_s
           retry
         rescue InvalidID
-          $opt.usage('(opt) [id]')
+          $opt.usage('(opt) [site]')
         end
       end
 

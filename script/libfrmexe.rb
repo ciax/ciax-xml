@@ -32,9 +32,9 @@ module CIAX
         @cls_color=6
         # LayerDB might generated in List level
         ddb=(inter_cfg[:layer_db]||=Dev::Db.new)
-        @fdb=type?(attr[:db]=ddb.get(id),Dbi)
+        @fdb=type?(attr[:dbi]=ddb.get(id),Dbi)
         @field=attr[:field]=Field.new
-        # Need cfg :db and :field
+        # Need cfg :dbi and :field
         super
         @output=@field.set_db(@fdb)
         @cobj.rem.add_int

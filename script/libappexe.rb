@@ -36,7 +36,7 @@ module CIAX
         @cls_color=2
         # LayerDB might generated in List level
         idb=(inter_cfg[:layer_db]||=Ins::Db.new)
-        @adb=type?(attr[:db]=idb.get(id),Dbi)
+        @adb=type?(attr[:dbi]=idb.get(id),Dbi)
         super
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']
@@ -49,7 +49,7 @@ module CIAX
 
       def ext_shell
         super
-        @view_grp=@cobj.loc.add('caption'=>"Change View Mode",'color' => 9)
+        @view_grp=@cobj.loc.add(Command::Group,'caption'=>"Change View Mode",'color' => 9)
         @view_grp.add_item('vis',"Visual mode").cfg.proc{@output=@appview;''}
         @view_grp.add_item('raw',"Raw Print mode").cfg.proc{@output=@stat;''}
         self

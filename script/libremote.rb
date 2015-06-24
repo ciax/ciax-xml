@@ -9,7 +9,7 @@ module CIAX
       def initialize(cfg,attr={})
         super
         @cfg[:domain_id]='remote'
-        @hid=add(Hid::Index)
+        @hid=add(Hid::Group)
       end
     end
 

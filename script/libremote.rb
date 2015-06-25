@@ -6,11 +6,16 @@ module CIAX
     include Command
     # Instance var is @rem in Index
     class Domain < GrpAry
-      attr_reader :hid
+      attr_reader :hid,:ext,:int
       def initialize(cfg,attr={})
         super
         @cfg[:domain_id]='remote'
         @hid=add(Hid::Group)
+        @ext=add(@cfg[:layer]::Ext::Group)
+      end
+
+      def add_int
+        @int=add(@cfg[:layer]::Int::Group)
       end
     end
 

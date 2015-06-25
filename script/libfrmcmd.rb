@@ -1,22 +1,24 @@
 #!/usr/bin/ruby
+require "liblocal"
 require "libremote"
 require "libframe"
 require "libfield"
 
 module CIAX
   module Frm
-    include Remote
-    class Index < Index
+    include Command
+    class Index < GrpAry
       # cfg or attr should have [:dbi] and [:field]
       attr_reader :rem
       def initialize(cfg,attr={})
         super
         @cfg[:cls_color]=6
+        @loc=add(Local::Domain)
         @rem=add(Domain)
       end
     end
 
-    class Domain < Domain
+    class Domain < Remote::Domain
       attr_reader :ext,:int
       def initialize(cfg,attr={})
         super

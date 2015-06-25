@@ -1,19 +1,21 @@
 #!/usr/bin/ruby
+require "liblocal"
 require "libremote"
 
 module CIAX
   module App
-    include Remote
-    class Index < Index
-      attr_reader :rem
+    include Command
+    class Index < GrpAry
+      attr_reader :loc,:rem
       def initialize(cfg,attr={})
         super
         @cfg[:cls_color]=3
+        @loc=add(Local::Domain)
         @rem=add(Domain)
       end
     end
 
-    class Domain < Domain
+    class Domain < Remote::Domain
       attr_reader :ext,:int
       def initialize(cfg,attr={})
         super

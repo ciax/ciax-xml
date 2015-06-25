@@ -4,7 +4,8 @@ require 'libcommand'
 module CIAX
   module Remote
     include Command
-    class Domain < Domain
+    # Instance var is @rem in Index
+    class Domain < GrpAry
       attr_reader :hid
       def initialize(cfg,attr={})
         super

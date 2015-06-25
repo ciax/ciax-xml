@@ -64,15 +64,5 @@ module CIAX
         self
       end
     end
-
-    class Index < GrpAry
-      attr_reader :loc
-      def initialize(cfg,attr={})
-        super
-        @loc=add(Domain,{:domain_id => 'local'})
-      end
-    end
-
-    class Domain < GrpAry; end
   end
 end

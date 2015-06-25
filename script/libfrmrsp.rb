@@ -28,18 +28,14 @@ module CIAX
         self
       end
 
-      def rsp(ent)
-        @ent=type?(ent,Group::Entity)
-        upd
-      end
-
-      private
-      def upd_core
+      # Convert with corresponding cmd
+      def conv(ent)
+        type?(ent,Ext::Entity)
         @sel=Hash[@skel]
-        if rid=@ent.cfg['response']
+        if rid=ent.cfg['response']
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
           @sel.update(@fds[rid])
-          @sel[:body]=@ent.deep_subst(@sel[:body])
+          @sel[:body]=ent.deep_subst(@sel[:body])
           verbose("Rsp","Selected DB for #{rid}",@sel)
           # Frame structure: main(total){ ccrange{ body(selected str) } }
           stream=@input_proc.call
@@ -60,6 +56,7 @@ module CIAX
         self
       end
 
+      private
       # Process Frame to Field
       def getfield_rec(e0)
         e0.each{|e1|
@@ -140,10 +137,10 @@ module CIAX
       field=Field.new.set_db(fdb).ext_rsp{res}
       field.ext_file if $opt['m']
       if cid
-        cfg=Config.new('frm_test_rsp').update(:db => fdb,:field => field)
-        cobj=Command.new(cfg)
+        cfg=Config.new.update(:dbi => fdb,:field => field)
+        cobj=Index.new(cfg)
         ent=cobj.set_cmd(cid.split(':'))
-        field.rsp(ent)
+        field.conv(ent)
       end
       puts STDOUT.tty? ? field : field.to_j
       exit

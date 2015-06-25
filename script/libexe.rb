@@ -15,16 +15,16 @@ module CIAX
     attr_accessor :shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
     # cfg contains the parameter shared among layers for the site, which are taken over from list level
     # attr contains the parameter for each layer individually (might have [:db])
-    # cfg should have ['id'] and might have [:site_stat] shared in the site (among layers)
+    # cfg should have [:db] and [:site_stat] shared in the site (among layers)
     def initialize(id,cfg={},attr={})
       super()
+      @cfg=cfg.gen(self).update(attr)
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @id=id
       cpath=class_path
       @mode=cpath.pop.upcase
       @layer=cpath.pop.downcase
-      @site_stat=(type?(cfg,Hash)[:site_stat]||=Prompt.new) # Status shared by all layers of the site
-      @cfg=Config.new("#{@layer}_exe",cfg).update(attr)
+      @site_stat=type?(@cfg[:site_stat],Prompt) # Site Status shared among layers
       @cfg[@layer]=self
       @cfg['layer']=@layer
       @pre_exe_procs=[] # Proc for Server Command (by User query)

@@ -9,34 +9,33 @@ require "libdevdb"
 module CIAX
   $layers['f']=Frm
   module Frm
-    def self.new(id,inter_cfg={},attr={})
+    def self.new(id,cfg={},attr={})
       Msg.type?(attr,Hash)
       if $opt.delete('l')
         attr['host']='localhost'
-        Sv.new(id,inter_cfg,attr)
+        Sv.new(id,cfg,attr)
       elsif host=$opt['h']
         attr['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(id,inter_cfg,attr)
+        return Sv.new(id,cfg,attr)
       else
-        return Test.new(id,inter_cfg,attr)
+        return Test.new(id,cfg,attr)
       end
-      Cl.new(id,inter_cfg,attr)
+      Cl.new(id,cfg,attr)
     end
 
     class Exe < Exe
-      # inter_cfg must have [:db],['id']
+      # cfg must have [:db],[:site_stat]
       attr_reader :field,:flush_procs
-      def initialize(id,inter_cfg={},attr={})
-        @cls_color=6
-        # LayerDB might generated in List level
-        ddb=(inter_cfg[:layer_db]||=Dev::Db.new)
-        @fdb=type?(attr[:dbi]=ddb.get(id),Dbi)
-        @field=attr[:field]=Field.new
-        # Need cfg :dbi and :field
+      def initialize(id,cfg={},attr={})
         super
-        @output=@field.set_db(@fdb)
+        @cls_color=6
+        # DB is generated in List level
+        @fdb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)
+        @field=@cfg[:field]=Field.new.set_db(@fdb)
+        @output=@field
+        @cobj=Index.new(@cfg)
         @cobj.rem.add_int
         # Post internal command procs
         # Proc for Terminate process of each individual commands
@@ -45,7 +44,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(id,inter_cfg={},attr={})
+      def initialize(id,cfg={},attr={})
         super
         @cobj.rem.cfg.proc{|ent|@field['time']=now_msec;''}
         @cobj.rem.ext.cfg.proc{|ent| "#{ent.cfg[:frame].inspect} => #{ent.cfg['response']}"}
@@ -57,7 +56,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(id,inter_cfg={},attr={})
+      def initialize(id,cfg={},attr={})
         super
         host=type?(cfg['host']||@fdb['host']||'localhost',String)
         @field.ext_http(host)
@@ -68,7 +67,7 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(id,inter_cfg={},attr={})
+      def initialize(id,cfg={},attr={})
         super
         @field.ext_file
         @site_stat.add_db('comerr' => 'X','strerr' => 'E')
@@ -88,7 +87,7 @@ module CIAX
         @cobj.rem.ext.cfg.proc{|ent|
           @site_stat['comerr']=false
           @stream.snd(ent.cfg[:frame],ent.id)
-          @field.rsp(ent)
+          @field.conv(ent)
           'OK'
         }
         @cobj.item_proc('set'){|ent|
@@ -128,8 +127,12 @@ module CIAX
       require "libdevdb"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
+      id=ARGV.shift
       begin
-        Frm.new(ARGV.shift).ext_shell.shell
+        cfg=Config.new
+        cfg[:db]=Dev::Db.new
+        cfg[:site_stat]=Prompt.new
+        Frm.new(id,cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

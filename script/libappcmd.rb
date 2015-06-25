@@ -19,11 +19,11 @@ module CIAX
       attr_reader :ext,:int
       def initialize(cfg,attr={})
         super
-        @ext=add(Ext::Group,{:group_id => 'external'})
+        @ext=add(Ext::Group)
       end
 
       def add_int
-        @int=add(Int::Group,{:group_id => 'internal'})
+        @int=add(Int::Group)
       end
     end
 
@@ -32,7 +32,6 @@ module CIAX
       class Group < Group
         def initialize(cfg,attr={})
           super
-          @cfg['caption']='Test Commands'
           add_item('set','[key] [val]',def_pars(2)).cfg.proc{|ent|
             @cfg[:stat].put(ent.par[0],ent.par[1])
             "SET:#{ent.par[0]}=#{ent.par[1]}"

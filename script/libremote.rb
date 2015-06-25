@@ -19,8 +19,8 @@ module CIAX
       class Group < Group
         def initialize(dom_cfg,attr={})
           super
-          @cfg['caption']="Hidden Commands"
           @cfg[:group_id]='hidden'
+          @cfg['caption']="Hidden Commands"
           add_item('interrupt')
         end
 
@@ -38,6 +38,7 @@ module CIAX
         def initialize(dom_cfg,attr={})
           super
           @cfg[:group_id]='internal'
+          @cfg['caption']='Internal Commands'
         end
 
         def def_pars(n=1)

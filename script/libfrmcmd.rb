@@ -22,11 +22,11 @@ module CIAX
       attr_reader :ext,:int
       def initialize(cfg,attr={})
         super
-        @ext=add(Ext::Group,{:group_id => 'external'})
+        @ext=add(Ext::Group)
       end
 
       def add_int
-        @int=add(Int::Group,{:group_id => 'internal'})
+        @int=add(Int::Group)
       end
     end
 
@@ -35,7 +35,6 @@ module CIAX
       class Group < Group
         def initialize(cfg,attr={})
           super
-          @cfg['caption']='Internal Commands'
           any={:type =>'reg',:list => ["."]}
           add_item('save',"[key,key...] [tag]",def_pars(2))
           add_item('load',"[tag]",def_pars(1))

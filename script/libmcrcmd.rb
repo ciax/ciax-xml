@@ -20,11 +20,11 @@ module CIAX
       attr_reader :ext,:int
       def initialize(cfg,attr={})
         super
-        @ext=add(Ext::Group,{:group_id => 'external'})
+        @ext=add(Ext::Group)
       end
 
       def add_int
-        @int=add(Int::Group,{:group_id => 'internal'})
+        @int=add(Int::Group)
       end
     end
 
@@ -36,7 +36,6 @@ module CIAX
           super
           @valid_pars=[]
           parlist={:parameters => [{:type => 'str',:list => @valid_pars,:default => nil}]}
-          @cfg['caption']='Internal Commands'
           {
             "exec"=>"Command",
             "skip"=>"Execution",

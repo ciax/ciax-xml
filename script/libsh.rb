@@ -15,10 +15,7 @@ module CIAX
     def ext_shell(als=nil)
       verbose("Shell","Initialize [#{@id}]")
       @cobj.rem.hid.add_nil
-      # Local(Long Jump) Commands (local handling commands on Client)
-      shg=@cobj.loc.add(Command::Group,'caption'=>"Shell Command",'color'=>1)
-      shg.add_dummy('q',"Quit")
-      shg.add_dummy('^D,^C',"Interrupt")
+      @cobj.loc.add_shell
       Thread.current['name']='Main'
       @alias=als||@id
       self

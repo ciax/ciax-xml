@@ -6,6 +6,7 @@ module CIAX
   module App
     include Command
     class Index < GrpAry
+      # cfg should have [:dbi] and [:stat]
       attr_reader :loc,:rem
       def initialize(cfg,attr={})
         super
@@ -67,18 +68,20 @@ module CIAX
 
     if __FILE__ == $0
       require "libappdb"
-      app,*args=ARGV
+      id,*args=ARGV
+      ARGV.clear
       begin
-        cfg=Config.new('test',{:dbi => Db.new.get(app)})
+        dbi=Db.new.get(id)
+        cfg=Config.new('test',{:dbi => dbi})
         cobj=Index.new(cfg)
         cobj.rem.ext.cfg.proc{|ent| ent.cfg.path }
         ent=cobj.set_cmd(args)
         puts ent.exe_cmd('test')
         puts ent.cfg[:batch].to_s
       rescue InvalidCMD
-        Msg.usage("#{app} [cmd] (par)",2)
+        Msg.usage("#{id} [cmd] (par)",2)
       rescue InvalidID
-        Msg.usage("[app] [cmd] (par)")
+        Msg.usage("[id] [cmd] (par)")
       end
     end
   end

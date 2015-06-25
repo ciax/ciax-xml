@@ -6,6 +6,7 @@ module CIAX
   module Mcr
     include Command
     class Index < GrpAry
+      # cfg should have [:dbi]
       attr_reader :loc,:rem
       def initialize(cfg,attr={})
         super
@@ -69,14 +70,15 @@ module CIAX
       GetOpts.new
       proj=ENV['PROJ']||'ciax'
       begin
-        cfg=Config.new('test',{:dbi => Db.new.get(proj)})
+        dbi=Db.new.get(proj)
+        cfg=Config.new('test',{:dbi => dbi})
         cobj=Index.new(cfg)
         cobj.rem.ext.cfg.proc{|ent| ent.cfg.path }
         ent=cobj.set_cmd(ARGV)
         puts ent.exe_cmd('test')
         puts ent.cfg[:batch].to_s
       rescue InvalidCMD
-        $opt.usage("[mcr] [cmd] (par)")
+        $opt.usage("[id] [cmd] (par)")
       end
     end
   end

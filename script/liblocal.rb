@@ -26,7 +26,7 @@ module CIAX
 
     module Shell
       include Command
-      class Group
+      class Group < Group
         def initialize(cfg,attr={})
           super
           @cfg['caption']="Shell Command"
@@ -39,7 +39,7 @@ module CIAX
 
     module Jump
       include Command
-      class Group
+      class Group < Group
         def initialize(cfg,attr={})
           super
           @cfg['caption']="Switch #{name.capitalize}s"
@@ -54,7 +54,7 @@ module CIAX
 
     module View
       include Command
-      class Group
+      class Group < Group
         def initialize(cfg,attr={})
           super
           @cfg['caption']="Change View Mode"

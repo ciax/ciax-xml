@@ -8,8 +8,8 @@ module CIAX
   module Frm
     include Command
     class Index < GrpAry
-      # cfg or attr should have [:dbi] and [:field]
-      attr_reader :rem
+      # cfg should have [:dbi] and [:field]
+      attr_reader :loc,:rem
       def initialize(cfg,attr={})
         super
         @cfg[:layer]=Frm

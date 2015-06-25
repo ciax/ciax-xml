@@ -26,7 +26,7 @@ module CIAX
     end
 
     class Exe < Exe
-      # inter_cfg must have 'id'
+      # inter_cfg must have [:db],['id']
       attr_reader :field,:flush_procs
       def initialize(id,inter_cfg={},attr={})
         @cls_color=6

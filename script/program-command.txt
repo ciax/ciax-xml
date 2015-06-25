@@ -1,21 +1,29 @@
 #### Command Object Structure ####
 
-## Top Level(Array)
+## Index(Array)
   There are Two domains.
-  * Server Command Domain
+  * Remote Command Domain
     Commands that will be sent to Server.
   * Local Command Domain
     Commands that is used locally in Client.
     (ex. Switching site, layer, view, interrupt) 
 
 ## Domain(Array)
- # Server Domain
+ # Remote Domain
   There are two Groups.
   * External Command Group
     Commands that directly manipulate the devices.
   * Internal Command Group
     Commands that manuipulate the server status.
     (ex. set variables, status request)
+
+ # Local Domain
+  * Shell Command Group
+    quit or interrupt
+  * View Command Group
+    Change visual
+  * Jump Command Group
+    Jump among Sites,Layers
 
 ## Group(Hash)
  There are many Items stored as dictionary. (key,val)

@@ -8,13 +8,14 @@ module CIAX
   # Usage:[]=/ add to current Hash which will overwrite(hide) upper level Hash;
   # Usage:[]/  get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
-    attr_reader :generation,:layers
-    def initialize(name,cfg=nil)
+    attr_reader :generation,:layers,:jump_groups
+    def initialize(obj=self,cfg=nil)
       super()
       @generation=[self]
       @layers={}
-      name=name.class.name.split('::').last.downcase unless String === name
-      self[:level]=name
+      @jump_groups={}
+#      name=name.class.name.split('::').last.downcase unless String === name
+      self[:level]=obj.class
       case cfg
       when Config
         join_in(cfg)
@@ -23,8 +24,8 @@ module CIAX
       end
     end
 
-    def gen(name)
-      Config.new(name,self)
+    def gen(obj)
+      Config.new(obj,self)
     end
 
     def join_in(cfg)
@@ -74,8 +75,10 @@ module CIAX
           case v
           when String,Numeric
             val=v.inspect
-          else
+          when Enumerable,Proc
             val=v.class
+          else
+            val=v
           end
           k.inspect.to_s+'=>'+val.to_s
         }.join(', ')+'} ('+h.object_id.to_s+')'

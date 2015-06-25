@@ -71,8 +71,9 @@ module CIAX
       id,*args=ARGV
       ARGV.clear
       begin
-        dbi=Db.new.get(id)
-        cfg=Config.new('test',{:dbi => dbi})
+        dbi=
+        cfg=Config.new
+        cfg[:dbi]=Db.new.get(id)
         cobj=Index.new(cfg)
         cobj.rem.ext.cfg.proc{|ent| ent.cfg.path }
         ent=cobj.set_cmd(args)

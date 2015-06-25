@@ -9,7 +9,7 @@ module CIAX
       #dom_cfg keys: caption,color,column
       def initialize(cfg,attr={})
         super()
-        @cfg=cfg.gen('group').update(attr)
+        @cfg=cfg.gen(self).update(attr)
         @valid_keys=@cfg[:valid_keys]||[]
         @cls_color=@cfg[:cls_color]
         @pfx_color=@cfg[:pfx_color]

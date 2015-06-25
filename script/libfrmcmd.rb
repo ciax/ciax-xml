@@ -7,6 +7,7 @@ require "libfield"
 module CIAX
   module Frm
     include Command
+    # Command Index
     class Index < GrpAry
       # cfg should have [:dbi] and [:field]
       attr_reader :loc,:rem
@@ -103,9 +104,9 @@ module CIAX
       id,*args=ARGV
       ARGV.clear
       begin
-        dbi=Db.new.get(id)
-        fld=Field.new.set_db(dbi)
-        cfg=Config.new('test',{:dbi => dbi,:field => fld})
+        cfg=Config.new
+        cfg[:dbi]=Db.new.get(id)
+        cfg[:field]=Field.new.set_db(cfg[:dbi])
         cfg.proc{|ent| ent.cfg.path }
         cobj=Index.new(cfg)
         cobj.rem.add_int

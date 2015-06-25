@@ -1,11 +1,14 @@
 #### Top Object Structure ####
+  There are three level in layer/site listing
 
 ## Layer List(Hash)
-  There are Two layers.
+  There are three layers.
   * Frame Layer
     Includes Site List
   * Application Layer
     Includes Site List
+  * Watch Layer
+    Same as Application Layer
 
 ## Site List(Hash)
  There are many Exes stored as dictionary. (key,val)

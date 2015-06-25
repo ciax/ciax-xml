@@ -1,0 +1,24 @@
+#### Top Object Structure ####
+
+## Layer List(Hash)
+  There are Two layers.
+  * Frame Layer
+    Includes Site List
+  * Application Layer
+    Includes Site List
+
+## Site List(Hash)
+ There are many Exes stored as dictionary. (key,val)
+ Shared var over sites in same layer:
+  cfg[:db]
+
+## Exe(Hash)
+ Shared var over layers in same site:
+  cfg[:site_stat]
+ Each site has own cfg[:dbi]
+  There are two object in this.
+ * Frm
+  Shared var: cfg[:dbi],cfg[:field]
+ * App
+  Shared var: cfg[:dbi],cfg[:stat]
+

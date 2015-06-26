@@ -71,7 +71,6 @@ module CIAX
       id,*args=ARGV
       ARGV.clear
       begin
-        dbi=
         cfg=Config.new
         cfg[:dbi]=Db.new.get(id)
         cobj=Index.new(cfg)

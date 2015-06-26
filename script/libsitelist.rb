@@ -10,7 +10,7 @@ module CIAX
       def initialize(layer,cfg,attr={})
         super(layer,cfg,attr)
         @cfg[:layer]=layer
-        @cfg[:current_site]||=''
+        @cfg[:current_site]=''
         verbose("List","Initialize")
         @jumpgrp.merge_items(@cfg[:db].displist)
         self

@@ -47,7 +47,7 @@ module CIAX
       def initialize(id,cfg={},attr={})
         super
         @cobj.rem.cfg.proc{|ent|@field['time']=now_msec;''}
-        @cobj.rem.ext.cfg.proc{|ent| "#{ent.cfg[:frame].inspect} => #{ent.cfg['response']}"}
+        @cobj.rem.ext.cfg.proc{|ent| ent.cfg.path }
         @cobj.item_proc('set'){|ent|
           @field.rep(ent.par[0],ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"

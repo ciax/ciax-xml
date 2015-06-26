@@ -23,7 +23,7 @@ module CIAX
         cfg=Config.new
         cfg[:site_stat]=Prompt.new
         Frm::List.new(cfg)
-        puts List.new(cfg).shell(ARGV.shift)
+        List.new(cfg).shell(ARGV.shift)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

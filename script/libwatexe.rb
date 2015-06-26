@@ -22,7 +22,7 @@ module CIAX
       Cl.new(id,cfg,attr)
     end
 
-    # cfg should have 'id',layer[:app]
+    # cfg should have [:site_stat],layer[:app]
     class Exe < Exe
       attr_reader :ash
       def initialize(id,cfg={},attr={})
@@ -30,7 +30,6 @@ module CIAX
         @cls_color=3
         @site_stat.add_db('auto'=>'@','watch'=>'&')
         @ash=@cfg.layers[:app].get(@id)
-
         @event=Event.new.set_db(@ash.adb)
         @wview=View.new(@ash.adb,@event)
         @ash.batch_interrupt=@event.get('int')
@@ -141,8 +140,8 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('celts')
       cfg=Config.new
-      cfg[:site_stat]=Prompt.new
       cfg[:jump_groups]=[]
+      cfg[:site_stat]=Prompt.new
       begin
         Frm::List.new(cfg)
         App::List.new(cfg)

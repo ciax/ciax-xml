@@ -7,10 +7,10 @@ module CIAX
   module Wat
     class List < Site::List
       def initialize(cfg)
-        super(Wat,cfg,{:layer_db => Ins::Db.new})
-        @cfg[:site_stat]||=Prompt.new
-        App::List.new(@cfg) unless @cfg.layers.key?(:app)
+        super(Wat,cfg)
+        @cfg[:db]=Ins::Db.new
         @cfg.layers[:wat]=self
+        add_jump
       end
     end
 
@@ -20,8 +20,11 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('chset')
       begin
-        cfg=Config.new('test')
-        puts List.new(cfg).shell(ARGV.shift)
+        cfg=Config.new
+        cfg[:site_stat]=Prompt.new
+        Frm::List.new(cfg)
+        App::List.new(cfg)
+        List.new(cfg).shell(ARGV.shift)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

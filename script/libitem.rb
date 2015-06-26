@@ -17,7 +17,7 @@ module CIAX
       end
 
       def set_par(par,opt={})
-        opt[:par]=validate(type?(par,Array))
+        par=opt[:par]=validate(type?(par,Array))
         verbose("Cmd","SetPAR(#{@cfg[:id]}): #{par}")
         cid=opt[:cid]=[@cfg[:id],*par].join(':')
         if key?(cid)

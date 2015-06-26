@@ -13,6 +13,7 @@ module CIAX
         # @cfg is isolated from exe_cfg
         # So it is same meaning to set value to 'attr' and @cfg
         @cfg=cfg.gen(self).update(attr)
+        @cfg[:def_proc]=proc{|ent| ent.cfg.path }
         @cls_color=@cfg[:cls_color]||7
         @pfx_color=@cfg[:pfx_color]||2
       end

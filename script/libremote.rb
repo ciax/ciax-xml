@@ -29,7 +29,7 @@ module CIAX
 
         def add_nil
           # Accept empty command
-          add_item(nil)
+          add_item(nil).cfg.proc{""}
           self
         end
       end

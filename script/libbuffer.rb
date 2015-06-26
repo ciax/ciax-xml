@@ -51,7 +51,7 @@ module CIAX
 
     # Send frm command batch (ary of ary)
     def send(n=1,ent,src)
-      type?(ent,Group::Entity)
+      type?(ent,Command::Entity)
       clear if n == 0
       batch=@send_proc.call(ent)
       #batch is frm batch (ary of ary)

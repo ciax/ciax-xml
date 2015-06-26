@@ -9,6 +9,7 @@ module CIAX
       def initialize(layer,cfg,attr={})
         super(layer,cfg,attr)
         @cfg[:layer]=layer
+        @cfg[:jump_groups]=[]
         @cfg[:current_site]||=''
         verbose("List","Initialize")
       end
@@ -18,7 +19,7 @@ module CIAX
         @jumpgrp.merge_items(@cfg[:db].displist)
         self
       end
-      
+
       def exe(args) # As a individual cui command
         get(args.shift).exe(args,'local')
       end

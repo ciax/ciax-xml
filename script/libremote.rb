@@ -9,7 +9,6 @@ module CIAX
       attr_reader :hid,:ext,:int
       def initialize(cfg,attr={})
         super
-        @cfg[:domain_id]='remote'
         @hid=add(Hid::Group)
         @ext=add(@cfg[:layer]::Ext::Group)
       end
@@ -24,7 +23,6 @@ module CIAX
       class Group < Group
         def initialize(dom_cfg,attr={})
           super
-          @cfg[:group_id]='hidden'
           @cfg['caption']="Hidden Commands"
           add_item('interrupt')
         end
@@ -42,7 +40,6 @@ module CIAX
       class Group < Group
         def initialize(dom_cfg,attr={})
           super
-          @cfg[:group_id]='internal'
           @cfg['caption']='Internal Commands'
         end
 
@@ -65,7 +62,6 @@ module CIAX
         def initialize(dom_cfg,attr={})
           super
           @dbi=type?(@cfg[:dbi],Dbi)
-          @cfg[:group_id]=@dbi['id']
           @cfg['caption']||="External Commands"
           # Set items by DB
           cdb=@dbi[:command]
@@ -96,7 +92,7 @@ module CIAX
         # str could include Math functions
         def initialize(grp_cfg,attr={})
           super
-          @cfg['label']=subst(@cfg['label'])
+#          @cfg['label']=subst(@cfg['label'])
           @body=deep_subst(@cfg[:body])
         end
 

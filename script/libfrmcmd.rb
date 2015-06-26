@@ -107,8 +107,8 @@ module CIAX
         cfg=Config.new
         cfg[:dbi]=Db.new.get(id)
         cfg[:field]=Field.new.set_db(cfg[:dbi])
-        cfg.proc{|ent| ent.cfg.path }
         cobj=Index.new(cfg)
+        cobj.rem.cfg.proc{|ent| ent.cfg.path }
         cobj.rem.add_int
         fld.read unless STDIN.tty?
         ent=cobj.set_cmd(args)

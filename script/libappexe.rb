@@ -35,6 +35,7 @@ module CIAX
       def initialize(id,cfg={},attr={})
         super
         @cls_color=2
+        @cfg[:site_id]=id
         # LayerDB might generated in List level
         @adb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)

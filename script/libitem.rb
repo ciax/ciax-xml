@@ -91,7 +91,7 @@ module CIAX
     # Command db with parameter derived from Item
     class Entity
       include Msg
-      attr_reader :id,:par,:cfg,:layer
+      attr_reader :id,:par,:cfg
       #set should have :def_proc
       def initialize(cfg,attr={})
         @cfg=cfg.gen(self).update(attr)
@@ -99,7 +99,6 @@ module CIAX
         @id=@cfg[:cid]
         @cls_color=@cfg[:cls_color]
         @pfx_color=@cfg[:pfx_color]
-        @layer=@cfg['layer']
         verbose("Cmd","Config",@cfg.path)
         verbose("self",inspect)
       end

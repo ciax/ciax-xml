@@ -29,35 +29,35 @@ module CIAX
     end
 
     class Exe < Exe
-      # inter_cfg must have 'id'
+      # cfg must have [:db],[:site_stat]
       attr_reader :adb,:stat,:host,:port
       attr_accessor :batch_interrupt
-      def initialize(id,inter_cfg={},attr={})
+      def initialize(id,cfg={},attr={})
+        super
         @cls_color=2
         # LayerDB might generated in List level
-        idb=(inter_cfg[:layer_db]||=Ins::Db.new)
-        @adb=type?(attr[:dbi]=idb.get(id),Dbi)
-        super
+        @adb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
         @site_stat.add_db('isu' => '*')
         @appview=View.new(@adb,@stat)
-        @output=$opt['j']?@stat:@appview
+        @output=$opt['j'] ? @stat : @appview
         @batch_interrupt=[]
+        @cobj=Index.new(@cfg)
       end
 
       def ext_shell
         super
-        @view_grp=@cobj.loc.add(Command::Group,'caption'=>"Change View Mode",'color' => 9)
-        @view_grp.add_item('vis',"Visual mode").cfg.proc{@output=@appview;''}
-        @view_grp.add_item('raw',"Raw Print mode").cfg.proc{@output=@stat;''}
+        vg=@cobj.loc.add_view
+        vg['vis'].cfg.proc{@output=@appview;''}
+        vg['raw'].cfg.proc{@output=@stat;''}
         self
       end
     end
 
     class Test < Exe
-      def initialize(id,inter_cfg={},attr={})
+      def initialize(id,cfg={},attr={})
         super
         @stat.ext_sym
         @stat.post_upd_procs << proc{|st|
@@ -76,7 +76,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(id,inter_cfg={},attr={})
+      def initialize(id,cfg={},attr={})
         super
         @stat.ext_http(@host)
         @pre_exe_procs << proc{@stat.upd}
@@ -86,8 +86,8 @@ module CIAX
 
     class Sv < Exe
       require "libfrmlist"
-      # inter_cfg(attr) must have layers[:frm]
-      def initialize(id,inter_cfg={},attr={})
+      # cfg(attr) must have layers[:frm]
+      def initialize(id,cfg={},attr={})
         super
         fsite=@adb['frm_site']
         @fsh=@cfg.layers[:frm].get(fsite)
@@ -149,7 +149,10 @@ module CIAX
       require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
-      cfg=Config.new('test')
+      cfg=Config.new
+      cfg[:jump_groups]=[]
+      cfg[:db]=Ins::Db.new
+      cfg[:site_stat]=Prompt.new
       begin
         Frm::List.new(cfg)
         App.new(ARGV.shift,cfg).ext_shell.shell

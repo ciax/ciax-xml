@@ -4,6 +4,7 @@ require "liblocal"
 
 module CIAX
   # This is parent of Layer List, Site List.
+  # @cfg should have [:jump_groups]
   class List < DataH
     attr_reader :jumpgrp
     # level can be Layer or Site

@@ -25,8 +25,6 @@ module CIAX
       @mode=cpath.pop.upcase
       @layer=cpath.pop.downcase
       @site_stat=type?(@cfg[:site_stat],Prompt) # Site Status shared among layers
-      @cfg[@layer]=self
-      @cfg['layer']=@layer
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
       @cls_color||=7

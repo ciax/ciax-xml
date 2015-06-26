@@ -7,10 +7,8 @@ module CIAX
   module Frm
     class List < Site::List
       def initialize(cfg)
-        super(Frm,cfg)
-        @cfg[:db]=Dev::Db.new
+        super(Frm,cfg,{:db => Dev::Db.new})
         @cfg.layers[:frm]=self
-        add_jump
       end
     end
 
@@ -21,6 +19,7 @@ module CIAX
       GetOpts.new('chset')
       begin
         cfg=Config.new
+        cfg[:jump_groups]=[]
         cfg[:site_stat]=Prompt.new
         puts List.new(cfg).shell(ARGV.shift)
       rescue InvalidID

@@ -7,10 +7,8 @@ module CIAX
   module Wat
     class List < Site::List
       def initialize(cfg)
-        super(Wat,cfg)
-        @cfg[:db]=Ins::Db.new
+        super(Wat,cfg,{:db => Ins::Db.new})
         @cfg.layers[:wat]=self
-        add_jump
       end
     end
 
@@ -21,6 +19,7 @@ module CIAX
       GetOpts.new('chset')
       begin
         cfg=Config.new
+        cfg[:jump_groups]=[]
         cfg[:site_stat]=Prompt.new
         Frm::List.new(cfg)
         App::List.new(cfg)

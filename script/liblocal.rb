@@ -6,11 +6,6 @@ module CIAX
     include Command
     # Instance var is @loc in Index
     class Domain < GrpAry
-      def initialize(cfg,attr={})
-        super
-        @cfg[:domain_id]='local'
-      end
-
       def add_shell
         add(Shell::Group)
       end

@@ -7,10 +7,8 @@ module CIAX
   module App
     class List < Site::List
       def initialize(cfg)
-        super(App,cfg)
-        @cfg[:db]=Ins::Db.new
+        super(App,cfg,{:db => Ins::Db.new})
         @cfg.layers[:app]=self
-        add_jump
       end
     end
 
@@ -21,6 +19,7 @@ module CIAX
       GetOpts.new('chset')
       begin
         cfg=Config.new
+        cfg[:jump_groups]=[]
         cfg[:site_stat]=Prompt.new
         Frm::List.new(cfg)
         List.new(cfg).shell(ARGV.shift)

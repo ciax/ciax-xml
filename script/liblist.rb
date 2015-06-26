@@ -10,16 +10,12 @@ module CIAX
     # level can be Layer or Site
     def initialize(level,cfg,attr={})
       @level=type?(level,Module)
-      name=level.to_s.split(':').last.downcase
       @cfg=cfg.gen(self).update(attr)
+      name=level.to_s.split(':').last.downcase
       super(name,{},@cfg[:dataname]||'list')
-      $opt||=GetOpts.new
-    end
-
-    def add_jump
       @jumpgrp=Local::Jump::Group.new(@cfg,{:level => @level})
-      @cfg[:jump_groups] << @jumpgrp
-      self
+      @cfg[:jump_groups]+=[@jumpgrp]
+      $opt||=GetOpts.new
     end
 
     def shell(key=nil,par=nil)

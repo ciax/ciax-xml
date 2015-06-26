@@ -11,21 +11,21 @@ require "libinsdb"
 
 module CIAX
   $layers['a']=App
-  module App
-    def self.new(id,inter_cfg={},attr={})
+ module App
+    def self.new(id,cfg={},attr={})
       Msg.type?(attr,Hash)
       if $opt.delete('l')
         attr['host']='localhost'
-        Sv.new(id,inter_cfg,attr)
+        Sv.new(id,cfg,attr)
       elsif host=$opt['h']
         attr['host']=host
       elsif $opt['c']
       elsif $opt['s'] or $opt['e']
-        return Sv.new(id,inter_cfg,attr)
+        return Sv.new(id,cfg,attr)
       else
-        return Test.new(id,inter_cfg,attr)
+        return Test.new(id,cfg,attr)
       end
-      Cl.new(id,inter_cfg,attr)
+      Cl.new(id,cfg,attr)
     end
 
     class Exe < Exe
@@ -151,8 +151,8 @@ module CIAX
       GetOpts.new('celts')
       cfg=Config.new
       cfg[:jump_groups]=[]
-      cfg[:db]=Ins::Db.new
       cfg[:site_stat]=Prompt.new
+      cfg[:db]=Ins::Db.new
       begin
         Frm::List.new(cfg)
         App.new(ARGV.shift,cfg).ext_shell.shell

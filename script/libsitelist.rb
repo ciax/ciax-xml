@@ -4,18 +4,21 @@ require "libsh"
 
 module CIAX
   module Site
-    # Db should be set to @cfg at List level
-    # Dbi will made and set to @cfg at Exe level
-
+    # @cfg[:db] associated site/layer should be set
     class List < List
-      def initialize(level,cfg,attr={})
-        super
+      def initialize(layer,cfg,attr={})
+        super(layer,cfg,attr)
+        @cfg[:layer]=layer
         @cfg[:current_site]||=''
-        @db=type?(@cfg[:layer_db],CIAX::Db)
-        @jumpgrp.merge_items(@db.displist)
         verbose("List","Initialize")
       end
 
+      def add_jump
+        super
+        @jumpgrp.merge_items(@cfg[:db].displist)
+        self
+      end
+      
       def exe(args) # As a individual cui command
         get(args.shift).exe(args,'local')
       end
@@ -28,20 +31,10 @@ module CIAX
         super
       end
 
-      def put(site,exe)
-        type?(exe,Exe)
-        return self if @data.key?(site)
-        # JumpGroup is set to Domain
-        (@cfg[:jump_groups]+[@jumpgrp]).each{|grp|
-          exe.cobj.loc.put(grp)
-        }
-        super
-      end
-
       def shell(site)
         begin
           get(site).shell
-        rescue @level::Jump
+        rescue @cfg[:layer]::Jump
           site=$!.to_s
           retry
         rescue InvalidID
@@ -61,8 +54,7 @@ module CIAX
 
       private
       def add(site)
-        cfg=@cfg.gen("site_#{site}")
-        obj=@level.new(site,cfg)
+        obj=@level.new(site,@cfg)
         put(site,obj.ext_shell)
       end
     end

@@ -16,6 +16,7 @@ module CIAX
       verbose("Shell","Initialize [#{@id}]")
       @cobj.rem.hid.add_nil
       @cobj.loc.add_shell
+      @cobj.loc.add_jump
       Thread.current['name']='Main'
       @alias=als||@id
       self

@@ -12,15 +12,15 @@ module CIAX
       end
 
       def add_shell
-        @shell=add(Shell::Group)
+        add(Shell::Group)
+      end
+
+      def add_jump
+        (@cfg[:jump_groups]||[]).each{|grp| put(grp)}
       end
 
       def add_view
-        @view=add(View::Group)
-      end
-
-      def add_jump(name)
-        @jump=add(Jump::Group)
+        add(View::Group)
       end
     end
 
@@ -42,11 +42,12 @@ module CIAX
       class Group < Group
         def initialize(cfg,attr={})
           super
-          @cfg['caption']="Switch #{name.capitalize}s"
+          level=@cfg[:level]
+          @cfg['caption']="Switch #{level.name.capitalize}s"
           @cfg['color']=5
           @cfg['column']=3
           @cfg.proc{|ent|
-            raise(@level::Jump,ent.id)
+            raise(level::Jump,ent.id)
           }
         end
       end

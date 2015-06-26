@@ -8,13 +8,11 @@ module CIAX
   # Usage:[]=/ add to current Hash which will overwrite(hide) upper level Hash;
   # Usage:[]/  get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
-    attr_reader :generation,:layers,:jump_groups
+    attr_reader :generation,:layers
     def initialize(obj=self,cfg=nil)
       super()
       @generation=[self]
       @layers={}
-      @jump_groups={}
-#      name=name.class.name.split('::').last.downcase unless String === name
       self[:level]=obj.class
       case cfg
       when Config

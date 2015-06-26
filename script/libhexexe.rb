@@ -6,15 +6,16 @@ require "libwatlist"
 module CIAX
   $layers['x']=Hex
   module Hex
-    def self.new(id,inter_cfg={},attr={})
-      Hex::Sv.new(id,inter_cfg,attr)
+    def self.new(id,cfg={},attr={})
+      Hex::Sv.new(id,cfg,attr)
     end
 
+    # cfg should have [:site_stat],layer[:wat]
     class Sv < Exe
-      def initialize(id,inter_cfg={},attr={})
+      def initialize(id,cfg={},attr={})
         super
-        ash=Wat.new(id,@cfg).ash
-        @cobj.rem.replace ash.cobj.rem
+        ash=@cfg.layers[:app].get(id)
+        @cobj=ash.cobj
         @mode=ash.mode
         @output=View.new(@id,ash.adb['version'],@cfg[:site_stat],ash.stat)
         @post_exe_procs.concat(ash.post_exe_procs)
@@ -33,7 +34,9 @@ module CIAX
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('celst')
-      cfg=Config.new('test',{:site_stat => Prompt.new})
+      cfg=Config.new
+      cfg[:jump_groups]=[]
+      cfg[:site_stat]=Prompt.new
       begin
         Frm::List.new(cfg)
         App::List.new(cfg)

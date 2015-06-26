@@ -9,18 +9,14 @@ module CIAX
         @cfg[:site_stat]=Prompt.new
         @cfg[:current_site]||=''
         @pars={:parameters => [{:default => @cfg[:current_site]}]}
-        @cfg[:jump_groups] << @jumpgrp
       end
 
       def add_layer(layer)
         type?(layer,Module)
-        layer::List.new(@cfg)
-        @init_layer=layer.to_s.split(':').last.downcase
-        @cfg.layers.each{|k,v|
-          id=k.to_s
-          @jumpgrp.add_item(id,id.capitalize+" mode",@pars)
-          put(id,v)
-        }
+        id=layer.to_s.split(':').last.downcase
+        @jumpgrp.add_item(id,id.capitalize+" mode",@pars)
+        put(id,layer::List.new(@cfg))
+        @init_layer=id
         self
       end
 

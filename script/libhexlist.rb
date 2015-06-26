@@ -6,10 +6,8 @@ require "libwatlist"
 module CIAX
   module Hex
     class List < Site::List
-      def initialize(inter_cfg={})
-        super(Hex,inter_cfg,{:layer_db => Ins::Db.new})
-        @cfg[:site_stat]||=Prompt.new
-        Wat::List.new(@cfg) unless @cfg.layers.key?(:wat)
+      def initialize(cfg={})
+        super(Hex,cfg,{:db => Ins::Db.new})
         @cfg.layers[:hex]=self
       end
     end
@@ -20,7 +18,13 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('chset')
       begin
-        puts List.new.shell(ARGV.shift)
+        cfg=Config.new
+        cfg[:jump_groups]=[]
+        cfg[:site_stat]=Prompt.new
+        Frm::List.new(cfg)
+        App::List.new(cfg)
+        Wat::List.new(cfg)
+        List.new(cfg).shell(ARGV.shift)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

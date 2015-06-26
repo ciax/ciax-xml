@@ -34,7 +34,7 @@ module CIAX
       end
 
       def self.sdb(id)
-        file="/home/ciax/config/sdb_#{id}.txt"
+        file=ENV['HOME']+"/config/sdb_#{id}.txt"
         test(?r,file) && file
       end
 

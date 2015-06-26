@@ -21,8 +21,7 @@ module CIAX
     end
   end
 
-  class Db
-    include Msg
+  class Db < Hashx
     XmlDir="#{ENV['HOME']}/ciax-xml"
     PROJ=ENV['PROJ']||'ciax'
     attr_reader :displist,:db
@@ -54,6 +53,7 @@ module CIAX
       @base="#{@type}-#{id}"
       if newest?
         verbose("#@type/Cache","Loading(#{id})")
+        return self[id] if key?(id)
         begin
           res=Marshal.load(IO.read(fmar))
         rescue ArgumentError #if empty
@@ -67,7 +67,7 @@ module CIAX
           verbose("#@type/Cache","Saved(#{id})")
         }
       end
-      res
+      self[id]=res
     end
 
     def newest?

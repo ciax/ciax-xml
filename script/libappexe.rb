@@ -38,6 +38,8 @@ module CIAX
         @cfg[:site_id]=id
         # LayerDB might generated in List level
         @adb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)
+        @cfg[:frm_site]=@adb['frm_site']
+        @fsh=@cfg.layers[:frm].get(@cfg[:frm_site])
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
@@ -90,9 +92,6 @@ module CIAX
       # cfg(attr) must have layers[:frm]
       def initialize(id,cfg={},attr={})
         super
-        fsite=@adb['frm_site']
-        @fsh=@cfg.layers[:frm].get(fsite)
-        @mode=@fsh.mode
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         @buf=init_buf
         ver=@stat['ver']

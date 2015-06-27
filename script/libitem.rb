@@ -41,6 +41,9 @@ module CIAX
 
       private
       # Parameter for validate(cfg[:paremeters]) structure:  [{:type,:list,:default}, ...]
+      # *Empty parameter will replaced to :default
+      # *Error if str doesn't match with strings listed in :list
+      # *If no :list, returns :default
       # Returns converted parameter array
       def validate(pary)
         pary=type?(pary.dup,Array)

@@ -8,7 +8,6 @@ module CIAX
     class List < Site::List
       def initialize(cfg)
         super(Frm,cfg,{:db => Dev::Db.new})
-        @cfg.layers[:frm]=self
       end
     end
 

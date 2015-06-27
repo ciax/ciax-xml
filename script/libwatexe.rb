@@ -22,13 +22,13 @@ module CIAX
       Cl.new(id,cfg,attr)
     end
 
-    # cfg should have layer[:app]
+    # cfg should have [:layers]
     class Exe < Exe
       attr_reader :ash
       def initialize(id,cfg={},attr={})
         super
         @cls_color=3
-        @ash=@cfg.layers[:app].get(@id)
+        @ash=@cfg[:layers].get('app').get(@id)
         @event=Event.new.set_db(@ash.adb)
         @wview=View.new(@ash.adb,@event)
         @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
@@ -141,9 +141,10 @@ module CIAX
       GetOpts.new('celts')
       cfg=Config.new
       cfg[:jump_groups]=[]
+      sl=cfg[:layers]=Site::Layer.new(cfg)
       begin
-        Frm::List.new(cfg)
-        App::List.new(cfg)
+        sl.add_layer(Frm)
+        sl.add_layer(App)
         Wat.new(ARGV.shift,cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')

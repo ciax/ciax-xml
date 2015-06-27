@@ -12,7 +12,6 @@ module CIAX
     def initialize(obj=self,cfg=nil)
       super()
       @generation=[self]
-      @layers={}
       self[:level]=obj.class
       case cfg
       when Config
@@ -27,7 +26,6 @@ module CIAX
     end
 
     def join_in(cfg)
-      @layers=type?(cfg,Config).layers
       @generation.concat(cfg.generation)
       self
     end

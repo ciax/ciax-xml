@@ -8,6 +8,7 @@ require "libappsym"
 require "libbuffer"
 require "libsqlog"
 require "libinsdb"
+require "libsitelayer"
 
 module CIAX
   $layers['a']=App
@@ -29,7 +30,7 @@ module CIAX
     end
 
     class Exe < Exe
-      # cfg must have [:db]
+      # cfg must have [:db],[:layers]
       attr_reader :adb,:stat,:host,:port
       attr_accessor :batch_interrupt
       def initialize(id,cfg={},attr={})
@@ -39,7 +40,7 @@ module CIAX
         # LayerDB might generated in List level
         @adb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)
         @cfg[:frm_site]=@adb['frm_site']
-        @fsh=@cfg.layers[:frm].get(@cfg[:frm_site])
+        @fsh=@cfg[:layers].get('frm').get(@cfg[:frm_site])
         @site_stat=@fsh.site_stat.add_db('isu' => '*')
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']
@@ -146,14 +147,13 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
       cfg=Config.new
       cfg[:jump_groups]=[]
+      cfg[:layers]=Site::Layer.new(cfg).add_layer(Frm)
       cfg[:db]=Ins::Db.new
       begin
-        Frm::List.new(cfg)
         App.new(ARGV.shift,cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')

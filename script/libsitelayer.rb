@@ -15,7 +15,6 @@ module CIAX
         put(id,lst)
         pars={:parameters => [lst.current_site]}
         @jumpgrp.add_item(id,id.capitalize+" mode",pars)
-        @init_layer=id
         self
       end
 

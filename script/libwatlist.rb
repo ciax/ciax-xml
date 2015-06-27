@@ -8,7 +8,6 @@ module CIAX
     class List < Site::List
       def initialize(cfg)
         super(Wat,cfg,{:db => Ins::Db.new})
-        @cfg.layers[:wat]=self
       end
     end
 
@@ -17,11 +16,12 @@ module CIAX
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('chset')
+      cfg=Config.new
+      cfg[:jump_groups]=[]
+      sl=cfg[:layers]=Site::Layer.new(cfg)
       begin
-        cfg=Config.new
-        cfg[:jump_groups]=[]
-        Frm::List.new(cfg)
-        App::List.new(cfg)
+        sl.add_layer(Frm)
+        sl.add_layer(App)
         List.new(cfg).shell(ARGV.shift)
       rescue InvalidID
         $opt.usage('(opt) [id]')

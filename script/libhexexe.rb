@@ -10,12 +10,13 @@ module CIAX
       Hex::Sv.new(id,cfg,attr)
     end
 
-    # cfg should have layer[:wat]
+    # cfg should have [:layers]
     class Sv < Exe
       def initialize(id,cfg={},attr={})
         super
-        ash=@cfg.layers[:app].get(id)
-        @cobj=ash.cobj
+        ash=@cfg[:layers].get('app').get(id)
+        @cobj=Index.new(@cfg)
+        @cobj.add_rem(ash)
         @mode=ash.mode
         @output=View.new(@id,ash.adb['version'],ash.site_stat,ash.stat)
         @post_exe_procs.concat(ash.post_exe_procs)
@@ -31,15 +32,31 @@ module CIAX
       end
     end
 
+    include Command
+    class Index < GrpAry
+      attr_reader :loc,:rem,:ash
+      def initialize(cfg,attr={})
+        super
+        @cfg[:layer]||=Hex
+        @cfg[:cls_color]=3
+        @loc=add(Local::Domain)
+      end
+
+      def add_rem(ash)
+        unshift @rem=ash.cobj.rem
+      end
+    end
+
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('celst')
       cfg=Config.new
       cfg[:jump_groups]=[]
+      sl=cfg[:layers]=Site::Layer.new(cfg)
       begin
-        Frm::List.new(cfg)
-        App::List.new(cfg)
-        Wat::List.new(cfg)
+        sl.add_layer(Frm)
+        sl.add_layer(App)
+        sl.add_layer(Wat)
         Sv.new(ARGV.shift,cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')

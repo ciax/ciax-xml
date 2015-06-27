@@ -20,7 +20,6 @@ module CIAX
       begin
         cfg=Config.new
         cfg[:jump_groups]=[]
-        cfg[:site_stat]=Prompt.new
         Frm::List.new(cfg)
         App::List.new(cfg)
         Wat::List.new(cfg)

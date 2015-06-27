@@ -28,10 +28,10 @@ module CIAX
       def initialize(id,cfg={},attr={})
         super
         @cls_color=3
-        @site_stat.add_db('auto'=>'@','watch'=>'&')
         @ash=@cfg.layers[:app].get(@id)
         @event=Event.new.set_db(@ash.adb)
         @wview=View.new(@ash.adb,@event)
+        @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
         @ash.batch_interrupt=@event.get('int')
         @output=$opt['j']?@event:@wview
         @cobj=Index.new(@cfg)
@@ -141,7 +141,6 @@ module CIAX
       GetOpts.new('celts')
       cfg=Config.new
       cfg[:jump_groups]=[]
-      cfg[:site_stat]=Prompt.new
       begin
         Frm::List.new(cfg)
         App::List.new(cfg)

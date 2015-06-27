@@ -26,7 +26,7 @@ module CIAX
     end
 
     class Exe < Exe
-      # cfg must have [:db],[:site_stat]
+      # cfg must have [:db]
       attr_reader :field,:flush_procs
       def initialize(id,cfg={},attr={})
         super
@@ -132,7 +132,6 @@ module CIAX
       begin
         cfg=Config.new
         cfg[:db]=Dev::Db.new
-        cfg[:site_stat]=Prompt.new
         Frm.new(id,cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')

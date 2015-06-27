@@ -29,7 +29,7 @@ module CIAX
     end
 
     class Exe < Exe
-      # cfg must have [:db],[:site_stat]
+      # cfg must have [:db]
       attr_reader :adb,:stat,:host,:port
       attr_accessor :batch_interrupt
       def initialize(id,cfg={},attr={})
@@ -40,10 +40,10 @@ module CIAX
         @adb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)
         @cfg[:frm_site]=@adb['frm_site']
         @fsh=@cfg.layers[:frm].get(@cfg[:frm_site])
+        @site_stat=@fsh.site_stat.add_db('isu' => '*')
         @host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @port=@adb['port']
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
-        @site_stat.add_db('isu' => '*')
         @appview=View.new(@adb,@stat)
         @output=$opt['j'] ? @stat : @appview
         @batch_interrupt=[]
@@ -151,7 +151,6 @@ module CIAX
       GetOpts.new('celts')
       cfg=Config.new
       cfg[:jump_groups]=[]
-      cfg[:site_stat]=Prompt.new
       cfg[:db]=Ins::Db.new
       begin
         Frm::List.new(cfg)

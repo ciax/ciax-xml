@@ -10,14 +10,14 @@ module CIAX
       Hex::Sv.new(id,cfg,attr)
     end
 
-    # cfg should have [:site_stat],layer[:wat]
+    # cfg should have layer[:wat]
     class Sv < Exe
       def initialize(id,cfg={},attr={})
         super
         ash=@cfg.layers[:app].get(id)
         @cobj=ash.cobj
         @mode=ash.mode
-        @output=View.new(@id,ash.adb['version'],@cfg[:site_stat],ash.stat)
+        @output=View.new(@id,ash.adb['version'],ash.site_stat,ash.stat)
         @post_exe_procs.concat(ash.post_exe_procs)
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')
@@ -36,7 +36,6 @@ module CIAX
       GetOpts.new('celst')
       cfg=Config.new
       cfg[:jump_groups]=[]
-      cfg[:site_stat]=Prompt.new
       begin
         Frm::List.new(cfg)
         App::List.new(cfg)

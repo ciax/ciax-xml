@@ -6,7 +6,6 @@ module CIAX
     class Layer < CIAX::List
       def initialize(cfg,attr={})
         super(Layer,cfg,attr)
-        @cfg[:site_stat]=Prompt.new
       end
 
       def add_layer(layer)

@@ -12,10 +12,10 @@ module CIAX
   $layers={}
   class Exe < Hashx # Having server status {id,msg,...}
     attr_reader :layer,:id,:mode,:cobj,:pre_exe_procs,:post_exe_procs,:cfg,:output,:prompt_proc
-    attr_accessor :shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
+    attr_accessor :site_stat,:shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
     # cfg contains the parameter shared among layers for the site, which are taken over from list level
     # attr contains the parameter for each layer individually (might have [:db])
-    # cfg should have [:db] and [:site_stat] shared in the site (among layers)
+    # cfg should have [:db] shared in the site (among layers)
     def initialize(id,cfg={},attr={})
       super()
       @cfg=cfg.gen(self).update(attr)
@@ -24,7 +24,7 @@ module CIAX
       cpath=class_path
       @mode=cpath.pop.upcase
       @layer=cpath.pop.downcase
-      @site_stat=type?(@cfg[:site_stat],Prompt) # Site Status shared among layers
+      @site_stat=Prompt.new # Site Status shared among layers
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
       @cls_color||=7

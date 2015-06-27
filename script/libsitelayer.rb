@@ -7,37 +7,32 @@ module CIAX
       def initialize(cfg,attr={})
         super(Layer,cfg,attr)
         @cfg[:site_stat]=Prompt.new
-        @cfg[:current_site]||=''
-        @pars={:parameters => [{:default => @cfg[:current_site]}]}
       end
 
       def add_layer(layer)
         type?(layer,Module)
         id=layer.to_s.split(':').last.downcase
-        @jumpgrp.add_item(id,id.capitalize+" mode",@pars)
-        put(id,layer::List.new(@cfg))
+        lst=layer::List.new(@cfg)
+        put(id,lst)
+        pars={:parameters => [lst.current_site]}
+        @jumpgrp.add_item(id,id.capitalize+" mode",pars)
         @init_layer=id
         self
       end
 
-      def shell(id,layer=@init_layer)
-        begin
-          dst=get(layer)
-          if dst.key?(id)
-            last=dst
-          elsif last
-            dst=last
-          end
-          dst.shell(id)
-        rescue Jump
-          layer,id=$!.to_s.split(':')
-          retry
-        rescue InvalidID
-          $opt.usage('(opt) [id]')
-        end
-      end
-
       class Jump < LongJump; end
     end
+  end
+  
+  if __FILE__ == $0
+    require "libapplist"
+    GetOpts.new("els")
+    id=ARGV.shift
+    cfg=Config.new
+    cfg[:jump_groups]=[]
+    sl=Site::Layer.new(cfg)
+    sl.add_layer(Frm)
+    sl.add_layer(App)
+    sl.shell('app',id)
   end
 end

@@ -31,7 +31,7 @@
             <argv>0.2</argv>
           </frmcmd>
         </item>
-        <item id="cwini" label="Goto CW Limit">
+        <item id="cwini" label="Goto CW Limit (Slot 0)">
           <frmcmd name="jp" />
         </item>
         <item id="cwhome" label="Goto Home from CW Limit">
@@ -42,13 +42,13 @@
         <item id="cwset0" label="Set 0 at S00">
           <frmcmd name="set0" />
         </item>
-        <item id="cw" label="Move CW [1-5]">
+        <item id="cw" label="Move CW(TopView) Decreasing [1-5]">
           <par_num>1:5</par_num>
           <frmcmd name="mi">
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="ccw" label="Move CCW [1-5]">
+        <item id="ccw" label="Move CCW(TopView) Increasing [1-5]">
           <par_num>1:5</par_num>
           <frmcmd name="mi">
             <argv>-$1</argv>
@@ -60,7 +60,7 @@
             <argv>-$1</argv>
           </frmcmd>
         </item>
-        <item id="access" label="Move to Access [0-23]">
+        <item id="access" label="Move to Access Door [0-23]">
           <par_num>0:23</par_num>
           <frmcmd name="ma">
             <argv format="%d">$1&gt;18?-$1+18:-$1-6</argv>

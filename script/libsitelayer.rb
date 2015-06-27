@@ -11,7 +11,7 @@ module CIAX
 
       def add_layer(layer)
         type?(layer,Module)
-        id=layer.to_s.split(':').last.downcase
+        id=m2id(layer)
         lst=layer::List.new(@cfg)
         put(id,lst)
         pars={:parameters => [lst.current_site]}

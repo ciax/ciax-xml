@@ -312,5 +312,9 @@ module CIAX
     def class_path
       self.class.to_s.split('::')
     end
+
+    def m2id(mod)
+      mod.name.split(':').last.downcase
+    end
   end
 end

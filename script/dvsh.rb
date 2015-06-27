@@ -13,7 +13,7 @@ module CIAX
     mod=$layers[tag]
     sl.add_layer(mod)
     if $opt[tag]
-      name=mod.name.split(':').last.downcase
+      name=Msg.m2id(mod)
       break
     end
 

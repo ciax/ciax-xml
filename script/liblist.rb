@@ -11,7 +11,7 @@ module CIAX
     def initialize(level,cfg,attr={})
       @level=type?(level,Module)
       @cfg=cfg.gen(self).update(attr)
-      name=level.to_s.split(':').last.downcase
+      name=m2id(level)
       super(name,{},@cfg[:dataname]||'list')
       @jumpgrp=Local::Jump::Group.new(@cfg,{:level => @level})
       @cfg[:jump_groups]+=[@jumpgrp]

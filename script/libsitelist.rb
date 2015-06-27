@@ -7,13 +7,15 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # @cfg should have [:jump_group]
     class List < List
+      attr_reader :current_site
       def initialize(layer,cfg,attr={})
         super(layer,cfg,attr)
         @cfg[:layer]=layer
-        @cfg[:current_site]=''
+        sites=@cfg[:db].displist
         verbose("List","Initialize")
-        @jumpgrp.merge_items(@cfg[:db].displist)
-        self
+        @jumpgrp.merge_items(sites)
+        # For parameter of jump from another layer
+        @current_site={:default => sites.keys.first,:list => sites.keys}
       end
 
       def exe(args) # As a individual cui command
@@ -24,7 +26,7 @@ module CIAX
         unless @data.key?(site)
           add(site)
         end
-        @cfg[:current_site].replace(site)
+        @current_site[:default]=site
         super
       end
 

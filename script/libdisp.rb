@@ -112,6 +112,10 @@ module CIAX
         @select.include?(id)
       end
 
+      def keys
+        @select
+      end
+
       def to_s
         b=grp_lists
         b.empty? ? '' : caption+b

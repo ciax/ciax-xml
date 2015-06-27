@@ -3,15 +3,20 @@ require "libhexlist"
 require "libsitelayer"
 
 module CIAX
-  GetOpts.new("aftelsch:")
-  site=ARGV.shift
+  GetOpts.new("aftxelsch:")
+  id=ARGV.shift
   cfg=Config.new
   cfg[:jump_groups]=[]
-  inter=Site::Layer.new(cfg)
-  mod=nil
-  ['f','a','w'].each{|tag|
-    mod=inter.add_layer($layers[tag])
-    break if $opt[tag]
+  sl=Site::Layer.new(cfg)
+  name='wat'
+  ['f','a','w','x'].each{|tag|
+    mod=$layers[tag]
+    sl.add_layer(mod)
+    if $opt[tag]
+      name=mod.name.split(':').last.downcase
+      break
+    end
+
   }
-  mod.shell(site)
+  sl.shell(name,id)
 end

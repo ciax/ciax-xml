@@ -22,7 +22,7 @@ module CIAX
       Cl.new(id,cfg,attr)
     end
 
-    # cfg should have [:site_stat],layer[:app]
+    # cfg should have layer[:app]
     class Exe < Exe
       attr_reader :ash
       def initialize(id,cfg={},attr={})

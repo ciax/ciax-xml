@@ -151,9 +151,10 @@ module CIAX
       GetOpts.new('celts')
       cfg=Config.new
       cfg[:jump_groups]=[]
-      cfg[:layers]=Site::Layer.new(cfg).add_layer(Frm,Dev)
+      sl=cfg[:layers]=Site::Layer.new(cfg)
       cfg[:db]=Ins::Db.new
       begin
+        sl.add_layer(Frm,Dev)
         App.new(ARGV.shift,cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')

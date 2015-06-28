@@ -21,7 +21,7 @@ module CIAX
         end
         @default=m2id(layer_mod)
         sid=m2id(site_mod)
-        site_db=site_mod::Db.new
+        site_db=(@site_db[sid]||=site_mod::Db.new)
         lst=List.new(@cfg,{:jump_level => layer_mod,:db => site_db})
         put(@default,lst)
         pars={:parameters => [lst.current_site]}
@@ -45,7 +45,7 @@ module CIAX
   end
 
   if __FILE__ == $0
-    require "libapplist"
+    require "libwatexe"
     GetOpts.new("els")
     site=ARGV.shift
     cfg=Config.new
@@ -53,6 +53,7 @@ module CIAX
     sl=cfg[:layers]=Site::Layer.new(cfg)
     sl.add_layer(Frm,Dev)
     sl.add_layer(App,Ins)
+    sl.add_layer(Wat,Ins)
     sl.shell(site)
   end
 end

@@ -136,6 +136,8 @@ module CIAX
       end
     end
 
+    class Jump < LongJump; end
+
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('celts')
@@ -143,8 +145,8 @@ module CIAX
       cfg[:jump_groups]=[]
       sl=cfg[:layers]=Site::Layer.new(cfg)
       begin
-        sl.add_layer(Frm)
-        sl.add_layer(App)
+        sl.add_layer(Frm,Dev)
+        sl.add_layer(App,Ins)
         Wat.new(ARGV.shift,cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')

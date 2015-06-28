@@ -5,6 +5,8 @@ require "libwatview"
 module CIAX
   $layers['w']=Wat
   module Wat
+    include Command
+
     def self.new(id,cfg={},attr={})
       Msg.type?(attr,Hash)
       if $opt.delete('l')
@@ -120,7 +122,6 @@ module CIAX
       end
     end
 
-    include Command
     class Index < GrpAry
       attr_reader :loc,:rem,:ash
       def initialize(cfg,attr={})

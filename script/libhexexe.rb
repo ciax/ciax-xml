@@ -6,6 +6,8 @@ require "libhexview"
 module CIAX
   $layers['x']=Hex
   module Hex
+    include Command
+
     def self.new(id,cfg={},attr={})
       Hex::Sv.new(id,cfg,attr)
     end
@@ -32,19 +34,7 @@ module CIAX
       end
     end
 
-    include Command
-    class Index < GrpAry
-      attr_reader :loc,:rem,:ash
-      def initialize(cfg,attr={})
-        super
-        @cfg[:cls_color]=3
-        @loc=add(Local::Domain)
-      end
-
-      def add_rem(ash)
-        unshift @rem=ash.cobj.rem
-      end
-    end
+    class Index < Wat::Index; end
 
     class Jump < LongJump; end
 

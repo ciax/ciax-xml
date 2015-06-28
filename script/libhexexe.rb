@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # Ascii Pack
+require "libwatexe"
 require "libhexview"
-require "libwatlist"
 
 module CIAX
   $layers['x']=Hex
@@ -37,7 +37,6 @@ module CIAX
       attr_reader :loc,:rem,:ash
       def initialize(cfg,attr={})
         super
-        @cfg[:layer]||=Hex
         @cfg[:cls_color]=3
         @loc=add(Local::Domain)
       end

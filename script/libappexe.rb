@@ -8,6 +8,7 @@ require "libappsym"
 require "libbuffer"
 require "libsqlog"
 require "libinsdb"
+require "libfrmexe"
 require "libsitelayer"
 
 module CIAX

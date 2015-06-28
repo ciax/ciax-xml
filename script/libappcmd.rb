@@ -10,7 +10,6 @@ module CIAX
       attr_reader :loc,:rem
       def initialize(cfg,attr={})
         super
-        @cfg[:layer]||=App
         @cfg[:cls_color]=3
         @loc=add(Local::Domain)
         @rem=add(Remote::Domain)

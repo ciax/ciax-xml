@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
-require "libsitelist"
+require "libappexe"
 require "libwatview"
-require "libapplist"
 
 module CIAX
   $layers['w']=Wat
@@ -126,7 +125,6 @@ module CIAX
       attr_reader :loc,:rem,:ash
       def initialize(cfg,attr={})
         super
-        @cfg[:layer]||=Wat
         @cfg[:cls_color]=3
         @loc=add(Local::Domain)
       end

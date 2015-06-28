@@ -1,15 +1,15 @@
 #!/usr/bin/ruby
-require "liblist"
-require "libsh"
+require "libsitelayer"
 
 module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set
-    # @cfg should have [:jump_group],[:layer],[:db]
+    # @cfg should have [:jump_group],[:layer],[:db],[:layer_list]
     class List < List
       attr_reader :current_site
       def initialize(cfg,attr={})
         super
+        @cfg[:layer_list].add_layer(self) if @cfg.all_key?(:layer_list)
         @cfg[:jump_level]=@cfg[:layer]
         sites=@cfg[:db].displist
         verbose("List","Initialize")
@@ -70,7 +70,7 @@ module CIAX
     begin
       cfg=Config.new
       cfg[:jump_groups]=[]
-      cfg[:jump_level]=Frm
+      cfg[:layer]=Frm
       cfg[:db]=Dev::Db.new
       sl=Site::List.new(cfg)
       sl.shell(site)

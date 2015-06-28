@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libexe"
+require "libfrmexe"
 require "libappdb"
 require "libappview"
 require "libappcmd"
@@ -8,7 +8,6 @@ require "libappsym"
 require "libbuffer"
 require "libsqlog"
 require "libinsdb"
-require "libfrmexe"
 
 module CIAX
   $layers['a']=App

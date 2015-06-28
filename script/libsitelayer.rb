@@ -1,30 +1,16 @@
 #!/usr/bin/ruby
-require "libsitelist"
+require "liblist"
 
 module CIAX
   module Site
     class Layer < CIAX::List
       attr_reader :default
-      def initialize(cfg,attr={})
-        super
-        @site_db={}
-      end
-
-      # layer_mod can be (Frm,App,Wat,Hex)
-      # site_mod can be (Dev,Ins)
-      def add_layer(layer_mod,site_mod=nil)
-        type?(layer_mod,Module)
-        if site_mod
-          type?(site_mod,Module)
-        else
-          site_mod=layer_mod
-        end
-        @default=m2id(layer_mod)
-        sid=m2id(site_mod)
-        site_db=(@site_db[sid]||=site_mod::Db.new)
-        lst=List.new(@cfg,{:jump_level => layer_mod,:db => site_db})
-        put(@default,lst)
-        pars={:parameters => [lst.current_site]}
+      # list object can be (Frm,App,Wat,Hex)
+      def add_layer(lobj)
+        type?(lobj,List)
+        @default=m2id(lobj.cfg[:layer])
+        put(@default,lobj)
+        pars={:parameters => [lobj.current_site]}
         @jumpgrp.add_item(@default,@default.capitalize+" mode",pars)
         self
       end
@@ -50,11 +36,13 @@ module CIAX
     site=ARGV.shift
     cfg=Config.new
     cfg[:jump_groups]=[]
-    sl=cfg[:layers]=Site::Layer.new(cfg)
-    sl.add_layer(Frm,Dev)
-    sl.add_layer(App,Ins)
-    sl.add_layer(Wat,Ins)
-    sl.add_layer(Hex,Ins)
-    sl.shell(site)
+    sl=Site::Layer.new(cfg)
+    cfg[:layer_list]=sl
+    begin
+      Hex::List.new(cfg)
+      sl.shell(site)
+    rescue InvalidID
+      $opt.usage('(opt) [id]')
+    end
   end
 end

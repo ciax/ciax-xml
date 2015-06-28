@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libexe"
+require "libsh"
 require "libfield"
 require "libfrmdb"
 require "libfrmrsp"
@@ -135,7 +136,6 @@ module CIAX
     class Jump < LongJump; end
 
     if __FILE__ == $0
-      require "libsh"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
       id=ARGV.shift

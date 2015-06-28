@@ -1,7 +1,7 @@
 # Required packages: ruby-libxml,libxml2-utils,socat,sqlite3
 
 ## Install required (Debian squeeze) ##
- ruby1.9.1 (for using JSON)
+ ruby1.9.1 or later (for using JSON)
  libxml-ruby1.9.1 (XML instead of REXML)
  libxml2-utils (xmllint)
  apache(http server)

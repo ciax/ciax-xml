@@ -29,14 +29,14 @@ module CIAX
       def initialize(id,cfg={},attr={})
         super
         @cls_color=3
-        @ash=@cfg[:layers].get('app').get(@id)
+        @ash=@cfg[:sub_list].get(@id)
+        @cobj=Index.new(@cfg)
+        @cobj.add_rem(@ash)
         @event=Event.new.set_db(@ash.adb)
         @wview=View.new(@ash.adb,@event)
         @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
         @ash.batch_interrupt=@event.get('int')
         @output=$opt['j']?@event:@wview
-        @cobj=Index.new(@cfg)
-        @cobj.add_rem(@ash)
       end
 
       def init_sv
@@ -135,18 +135,26 @@ module CIAX
       end
     end
 
+    class List < Site::List
+      def initialize(cfg,attr={})
+        attr[:layer]=Wat
+        sub=App::List.new(cfg)
+        attr[:sub_list]=sub
+        attr[:db]=sub.cfg[:db]
+        super
+      end
+    end
+
     class Jump < LongJump; end
 
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('celts')
+      id=ARGV.shift
       cfg=Config.new
       cfg[:jump_groups]=[]
-      sl=cfg[:layers]=Site::Layer.new(cfg)
       begin
-        sl.add_layer(Frm,Dev)
-        sl.add_layer(App,Ins)
-        Wat.new(ARGV.shift,cfg).ext_shell.shell
+        List.new(cfg).shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

@@ -5,6 +5,7 @@ require "libfrmdb"
 require "libfrmrsp"
 require "libfrmcmd"
 require "libdevdb"
+require "libsitelist"
 
 module CIAX
   $layers['f']=Frm
@@ -123,18 +124,25 @@ module CIAX
       end
     end
 
+    class List < Site::List
+      def initialize(cfg,attr={})
+        attr[:layer]=Frm
+        attr[:db]=Dev::Db.new
+        super
+      end
+    end
+
     class Jump < LongJump; end
 
     if __FILE__ == $0
       require "libsh"
-      require "libdevdb"
       ENV['VER']||='initialize'
       GetOpts.new('celts')
       id=ARGV.shift
+      cfg=Config.new
+      cfg[:jump_groups]=[]
       begin
-        cfg=Config.new
-        cfg[:db]=Dev::Db.new
-        Frm.new(id,cfg).ext_shell.shell
+        List.new(cfg).shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

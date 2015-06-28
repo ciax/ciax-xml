@@ -5,13 +5,12 @@ require "libsh"
 module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set
-    # @cfg should have [:jump_group],[:db]
-    # attr shoudl have [:jump_level]
+    # @cfg should have [:jump_group],[:layer],[:db]
     class List < List
       attr_reader :current_site
       def initialize(cfg,attr={})
         super
-        @cfg[:layer]=@cfg[:jump_level]
+        @cfg[:jump_level]=@cfg[:layer]
         sites=@cfg[:db].displist
         verbose("List","Initialize")
         @jumpgrp.merge_items(sites)

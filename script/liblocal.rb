@@ -37,12 +37,12 @@ module CIAX
       class Group < Group
         def initialize(cfg,attr={})
           super
-          name=@cfg[:level].name.split('::').pop.capitalize
+          name=@cfg[:jump_level].name.split('::').pop.capitalize
           @cfg['caption']="Switch #{name}s"
           @cfg['color']=5
           @cfg['column']=3
           @cfg.proc{|ent|
-            raise(@cfg[:level]::Jump,ent.id)
+            raise(ent.cfg[:jump_level]::Jump,ent.id)
           }
         end
       end

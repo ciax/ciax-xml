@@ -5,12 +5,13 @@ require "libsh"
 module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set
-    # @cfg should have [:jump_group]
+    # @cfg should have [:jump_group],[:db]
+    # attr shoudl have [:jump_level]
     class List < List
       attr_reader :current_site
-      def initialize(layer,cfg,attr={})
-        super(layer,cfg,attr)
-        @cfg[:layer]=layer
+      def initialize(cfg,attr={})
+        super
+        @cfg[:layer]=@cfg[:jump_level]
         sites=@cfg[:db].displist
         verbose("List","Initialize")
         @jumpgrp.merge_items(sites)
@@ -33,7 +34,7 @@ module CIAX
       def shell(site)
         begin
           get(site).shell
-        rescue @cfg[:layer]::Jump
+        rescue @cfg[:jump_level]::Jump
           site=$!.to_s
           retry
         rescue InvalidID
@@ -53,9 +54,27 @@ module CIAX
 
       private
       def add(site)
-        obj=@level.new(site,@cfg)
+        obj=@cfg[:layer].new(site,@cfg)
         put(site,obj.ext_shell)
       end
+    end
+
+    class Jump < LongJump; end
+  end
+
+  if __FILE__ == $0
+    require "libfrmexe"
+    require "libdevdb"
+    ENV['VER']||='initialize'
+    GetOpts.new('chset')
+    begin
+      cfg=Config.new
+      cfg[:jump_groups]=[]
+      cfg[:jump_level]=Frm
+      cfg[:db]=Dev::Db.new
+      Site::List.new(cfg).shell(ARGV.shift)
+    rescue InvalidID
+      $opt.usage('(opt) [id]')
     end
   end
 end

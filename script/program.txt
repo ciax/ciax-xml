@@ -25,9 +25,9 @@
 ## Method rule
   - upd() [upd_*] : Update for triggering execute the implicit procs (upper layer).
   - set(val) [set_*] : stores value to self, returns self
-  - add(val) [add_*] : converts and stores value to self and returns generated object
-  - put(key,val) [put_*] : stores key and value, returns self
+  - add(val) [add_*] : converts and stores value to self and returns generated object, which can be called by get()
+  - put(key,val) [put_*] : stores key and value, returns self, which can be called by add()
   - rep(key,val) [rep_*] : stores value to existent key and returns self
-  - get(key) [get_*] : fetch value from existent key
+  - get(key) [get_*] : fetch value from existent key, which can includes cache access or data generation
   - list() [list_*] : returns Hash or Array
   - view() [view_*] : returns String

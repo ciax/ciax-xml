@@ -90,7 +90,6 @@ module CIAX
     end
 
     class Sv < Exe
-      require "libfrmlist"
       # cfg(attr) must have layers[:frm]
       def initialize(id,cfg={},attr={})
         super

@@ -45,7 +45,7 @@ module CIAX
   end
 
   if __FILE__ == $0
-    require "libwatexe"
+    require "libhexexe"
     GetOpts.new("els")
     site=ARGV.shift
     cfg=Config.new
@@ -54,6 +54,7 @@ module CIAX
     sl.add_layer(Frm,Dev)
     sl.add_layer(App,Ins)
     sl.add_layer(Wat,Ins)
+    sl.add_layer(Hex,Ins)
     sl.shell(site)
   end
 end

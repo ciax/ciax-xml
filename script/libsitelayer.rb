@@ -50,8 +50,9 @@ module CIAX
     site=ARGV.shift
     cfg=Config.new
     cfg[:jump_groups]=[]
-    sl=Site::Layer.new(cfg)
+    sl=cfg[:layers]=Site::Layer.new(cfg)
     sl.add_layer(Frm,Dev)
+    sl.add_layer(App,Ins)
     sl.shell(site)
   end
 end

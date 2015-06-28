@@ -151,7 +151,7 @@ module CIAX
       GetOpts.new('celts')
       cfg=Config.new
       cfg[:jump_groups]=[]
-      cfg[:layers]=Site::Layer.new(cfg).add_layer(Frm)
+      cfg[:layers]=Site::Layer.new(cfg).add_layer(Frm,Dev)
       cfg[:db]=Ins::Db.new
       begin
         App.new(ARGV.shift,cfg).ext_shell.shell

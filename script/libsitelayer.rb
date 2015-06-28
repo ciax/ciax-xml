@@ -4,6 +4,7 @@ require "libsitelist"
 module CIAX
   module Site
     class Layer < CIAX::List
+      attr_reader :default
       def initialize(cfg,attr={})
         super
         @site_db={}
@@ -18,14 +19,25 @@ module CIAX
         else
           site_mod=layer_mod
         end
-        lid=m2id(layer_mod)
+        @default=m2id(layer_mod)
         sid=m2id(site_mod)
         site_db=site_mod::Db.new
         lst=List.new(@cfg,{:jump_level => layer_mod,:db => site_db})
-        put(lid,lst)
+        put(@default,lst)
         pars={:parameters => [lst.current_site]}
-        @jumpgrp.add_item(lid,lid.capitalize+" mode",pars)
+        @jumpgrp.add_item(@default,@default.capitalize+" mode",pars)
         self
+      end
+
+      def shell(site,layer=nil)
+        begin
+          get(layer||@default).shell(site)
+        rescue @cfg[:jump_level]::Jump
+          layer,site=$!.to_s.split(':')
+          retry
+        rescue InvalidID
+          $opt.usage('(opt) [id]')
+        end
       end
 
       class Jump < LongJump; end
@@ -35,11 +47,11 @@ module CIAX
   if __FILE__ == $0
     require "libapplist"
     GetOpts.new("els")
-    id=ARGV.shift
+    site=ARGV.shift
     cfg=Config.new
     cfg[:jump_groups]=[]
     sl=Site::Layer.new(cfg)
     sl.add_layer(Frm,Dev)
-    sl.get('frm').shell(id)
+    sl.shell(site)
   end
 end

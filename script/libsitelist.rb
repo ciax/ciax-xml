@@ -67,12 +67,14 @@ module CIAX
     require "libdevdb"
     ENV['VER']||='initialize'
     GetOpts.new('chset')
+    site=ARGV.shift
     begin
       cfg=Config.new
       cfg[:jump_groups]=[]
       cfg[:jump_level]=Frm
       cfg[:db]=Dev::Db.new
-      Site::List.new(cfg).shell(ARGV.shift)
+      sl=Site::List.new(cfg)
+      sl.shell(site)
     rescue InvalidID
       $opt.usage('(opt) [id]')
     end

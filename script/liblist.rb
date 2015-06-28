@@ -11,6 +11,7 @@ module CIAX
     # level can be Layer or Site
     def initialize(cfg,attr={})
       @cfg=cfg.gen(self).update(attr)
+      type?(@cfg[:jump_groups],Array)
       @cfg[:jump_level]||=self.class
       name=m2id(type?(@cfg[:jump_level],Module))
       super(name,{},@cfg[:dataname]||'list')

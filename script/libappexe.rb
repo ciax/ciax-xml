@@ -13,7 +13,7 @@ require "libsitelayer"
 
 module CIAX
   $layers['a']=App
- module App
+  module App
     def self.new(id,cfg={},attr={})
       Msg.type?(attr,Hash)
       if $opt.delete('l')

@@ -42,6 +42,7 @@ module CIAX
           @cfg['color']=5
           @cfg['column']=3
           @cfg.proc{|ent|
+            # Use shell() of top level class (ie. List.new.get(id).shell -> List.new.shell(id) )
             raise(ent.cfg[:jump_level]::Jump,ent.id)
           }
         end

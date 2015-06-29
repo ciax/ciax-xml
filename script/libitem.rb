@@ -103,7 +103,7 @@ module CIAX
         @cls_color=@cfg[:cls_color]
         @pfx_color=@cfg[:pfx_color]
         verbose("Cmd","Config",@cfg.path)
-        verbose("self",inspect)
+        verbose("Cmd","Config",@cfg.list)
       end
 
       # returns result of def_proc block (String)

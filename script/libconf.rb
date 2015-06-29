@@ -65,9 +65,10 @@ module CIAX
       self
     end
 
+    # Show all conttents of all generation
     def path
-      "******[\n"+@generation.map{|h|
-        '{'+h.map{|k,v|
+      "******[Config]******(#{object_id})\n"+@generation.map{|h|
+        '  {'+h.map{|k,v|
           case v
           when String,Numeric
             val=v.inspect
@@ -78,7 +79,30 @@ module CIAX
           end
           k.inspect.to_s+'=>'+val.to_s
         }.join(', ')+'} ('+h.object_id.to_s+')'
-      }.join("\n")+"\n]******(#{object_id})\n"
+      }.join("\n")+"\n************\n"
+    end
+
+    # Show list of all key,val which is taken with [] access
+    def list
+      i=0
+      db={}
+      @generation.each{|h|
+        h.each{|key,val|
+          db[key]=[i,val] unless db.key?(key)
+        }
+        i+=1
+      }
+      "******[Config]******(#{object_id})\n"+db.map{|key,ary|
+        case v=ary[1]
+        when String,Numeric,Enumerable
+          val=v.inspect
+        when Proc
+          val=v.class
+        else
+          val=v
+        end
+        "  #{key} (#{ary[0]}) = #{val}"
+      }.reverse.join("\n")+"\n************\n"
     end
   end
 end

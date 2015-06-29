@@ -36,10 +36,9 @@ module CIAX
     site=ARGV.shift
     cfg=Config.new
     cfg[:jump_groups]=[]
-    sl=Site::Layer.new(cfg)
-    cfg[:layer_list]=sl
+    sl=cfg[:layer_list]=Site::Layer.new(cfg)
     begin
-      Hex::List.new(cfg)
+      sl.add_layer(Hex::List.new(cfg))
       sl.shell(site)
     rescue InvalidID
       $opt.usage('(opt) [id]')

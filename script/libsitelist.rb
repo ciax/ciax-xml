@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libsitelayer"
+require "liblist"
 
 module CIAX
   module Site
@@ -9,7 +9,6 @@ module CIAX
       attr_reader :current_site
       def initialize(cfg,attr={})
         super
-        @cfg[:layer_list].add_layer(self) if @cfg.all_key?(:layer_list)
         @cfg[:jump_level]=@cfg[:layer]
         sites=@cfg[:db].displist
         verbose("List","Initialize")

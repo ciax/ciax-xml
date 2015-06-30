@@ -138,10 +138,9 @@ module CIAX
     class List < Site::List
       def initialize(cfg,attr={})
         attr[:layer]=Wat
-        sub=App::List.new(cfg)
-        attr[:sub_list]=sub
-        attr[:db]=sub.cfg[:db]
         super
+        sub=@cfg[:sub_list]=sub_list(App)
+        set_db(sub.cfg[:db])
       end
     end
 

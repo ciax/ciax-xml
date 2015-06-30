@@ -1,20 +1,34 @@
 #!/usr/bin/ruby
-require "liblist"
+require "libsitelayer"
 
 module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set
-    # @cfg should have [:jump_group],[:layer],[:db],[:layer_list]
-    class List < List
+    # @cfg should have [:jump_group],[:layer_list]
+    # This should be set [:layer],[:db]
+    class List < CIAX::List
       attr_reader :current_site
       def initialize(cfg,attr={})
         super
         @cfg[:jump_level]=@cfg[:layer]
-        sites=@cfg[:db].displist
+      end
+
+      def set_db(db)
+        @cfg[:db]=type?(db,Db)
+        sites=db.displist
         verbose("List","Initialize")
         @jumpgrp.merge_items(sites)
         # For parameter of jump from another layer
         @current_site={:default => sites.keys.first,:list => sites.keys}
+        self
+      end
+
+      def sub_list(layer)
+        if @cfg.all_key?(:layer_list)
+          @cfg[:layer_list].add_layer(layer)
+        else
+          layer::List.new(@cfg)
+        end
       end
 
       def exe(args) # As a individual cui command
@@ -70,8 +84,8 @@ module CIAX
       cfg=Config.new
       cfg[:jump_groups]=[]
       cfg[:layer]=Frm
-      cfg[:db]=Dev::Db.new
       sl=Site::List.new(cfg)
+      sl.set_db(Dev::Db.new)
       sl.shell(site)
     rescue InvalidID
       $opt.usage('(opt) [id]')

@@ -128,8 +128,8 @@ module CIAX
     class List < Site::List
       def initialize(cfg,attr={})
         attr[:layer]=Frm
-        attr[:db]=Dev::Db.new
         super
+        set_db(Dev::Db.new)
       end
     end
 

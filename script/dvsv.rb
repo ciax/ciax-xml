@@ -1,7 +1,9 @@
 #!/usr/bin/ruby
-require "libsitelayer"
+require "libwatexe"
 
 module CIAX
   GetOpts.new('es')
-  Wat::List.new.server(ARGV)
+  cfg=Config.new
+  cfg[:jump_groups]=[]
+  Wat::List.new(cfg).server(ARGV)
 end

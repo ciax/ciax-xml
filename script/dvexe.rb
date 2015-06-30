@@ -3,10 +3,12 @@ require "libhexexe"
 
 module CIAX
   GetOpts.new("jrafxtelch:")
-  db={'x' => Hex,'f'=> Frm,'a'=> App,'w'=> Wat}
-  layer=$opt.map{|k,v| db[k] if v}.compact.last||Wat
+  id=ARGV.shift
+  cfg=Config.new
+  cfg[:jump_groups]=[]
+  cl=Site::Layer.new(cfg).add_layer($opt.layer)
   begin
-    puts layer::List.new.exe(ARGV).output
+    puts cl.get(id).exe(ARGV).output
   rescue InvalidID
     $opt.usage('(opt) [site] [cmd]')
   end

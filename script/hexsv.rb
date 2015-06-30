@@ -1,7 +1,9 @@
 #!/usr/bin/ruby
-require "libhexlist"
+require "libhexexe"
 
 module CIAX
   GetOpts.new('e')
-  Hex::List.new.server(ARGV)
+  cfg=Config.new
+  cfg[:jump_groups]=[]
+  Hex::List.new(cfg).server(ARGV)
 end

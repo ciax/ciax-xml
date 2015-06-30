@@ -5,6 +5,11 @@ module CIAX
   module Site
     class Layer < CIAX::List
       attr_reader :default
+      def initialize(cfg,attr={})
+        attr[:layer_list]=self
+        super
+      end
+
       # list object can be (Frm,App,Wat,Hex)
       def add_layer(layer)
         type?(layer,Module)
@@ -38,7 +43,7 @@ module CIAX
     site=ARGV.shift
     cfg=Config.new
     cfg[:jump_groups]=[]
-    sl=cfg[:layer_list]=Site::Layer.new(cfg)
+    sl=Site::Layer.new(cfg)
     begin
       sl.add_layer(Hex)
       sl.shell(site)

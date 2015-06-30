@@ -37,13 +37,13 @@ module CIAX
       class Group < Group
         def initialize(cfg,attr={})
           super
-          name=@cfg[:jump_level].name.split('::').pop.capitalize
+          name=m2id(@cfg[:jump_class],-2).capitalize
           @cfg['caption']="Switch #{name}s"
           @cfg['color']=5
           @cfg['column']=3
           @cfg.proc{|ent|
             # Use shell() of top level class (ie. List.new.get(id).shell -> List.new.shell(id) )
-            raise(ent.cfg[:jump_level]::Jump,ent.id)
+            raise(ent.cfg[:jump_class],ent.id)
           }
         end
       end

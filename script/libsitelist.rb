@@ -9,8 +9,8 @@ module CIAX
     class List < CIAX::List
       attr_reader :current_site
       def initialize(cfg,attr={})
+        attr[:jump_class]=cfg[:layer]::Jump
         super
-        @cfg[:jump_level]=@cfg[:layer]
       end
 
       def set_db(db)
@@ -46,7 +46,7 @@ module CIAX
       def shell(site)
         begin
           get(site).shell
-        rescue @cfg[:jump_level]::Jump
+        rescue @jumpcls
           site=$!.to_s
           retry
         rescue InvalidID

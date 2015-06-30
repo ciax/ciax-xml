@@ -313,8 +313,8 @@ module CIAX
       self.class.to_s.split('::')
     end
 
-    def m2id(mod)
-      mod.name.split(':').last.downcase
+    def m2id(mod,pos=-1)
+      mod.name.split('::')[pos].downcase
     end
   end
 end

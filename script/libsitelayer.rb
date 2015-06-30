@@ -7,6 +7,7 @@ module CIAX
       attr_reader :default
       def initialize(cfg,attr={})
         attr[:layer_list]=self
+        attr[:jump_class]=Jump
         super
       end
 
@@ -25,7 +26,7 @@ module CIAX
       def shell(site,layer=nil)
         begin
           get(layer||@default).shell(site)
-        rescue @cfg[:jump_level]::Jump
+        rescue Jump
           layer,site=$!.to_s.split(':')
           retry
         rescue InvalidID

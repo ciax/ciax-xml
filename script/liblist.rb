@@ -5,15 +5,15 @@ require "liblocal"
 module CIAX
   # This is parent of Layer List, Site List.
   # @cfg should have [:jump_groups]
-  # attr should have [:jump_level] (Used in Local::Jump::Group)
+  # attr should have [:jump_class] (Used in Local::Jump::Group)
   class List < DataH
     attr_reader :cfg,:jumpgrp
     # level can be Layer or Site
     def initialize(cfg,attr={})
       @cfg=cfg.gen(self).update(attr)
       type?(@cfg[:jump_groups],Array)
-      @cfg[:jump_level]||=self.class
-      name=m2id(type?(@cfg[:jump_level],Module))
+      @jumpcls=type?(@cfg[:jump_class],Module)
+      name=m2id(@jumpcls,-2)
       super(name,{},@cfg[:dataname]||'list')
       @jumpgrp=Local::Jump::Group.new(@cfg)
       @cfg[:jump_groups]+=[@jumpgrp]
@@ -27,7 +27,7 @@ module CIAX
         else
           get(keys.first).shell(key)
         end
-      rescue @cfg[:jump_level]::Jump
+      rescue @jump_cls
         key,par=$!.to_s.split(':')
         retry
       rescue InvalidID

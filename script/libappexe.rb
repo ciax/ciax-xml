@@ -10,7 +10,6 @@ require "libsqlog"
 require "libinsdb"
 
 module CIAX
-  $layers['a']=App
   module App
     def self.new(id,cfg={},attr={})
       Msg.type?(attr,Hash)

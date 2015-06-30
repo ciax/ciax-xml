@@ -3,7 +3,6 @@ require "libappexe"
 require "libwatview"
 
 module CIAX
-  $layers['w']=Wat
   module Wat
     include Command
 

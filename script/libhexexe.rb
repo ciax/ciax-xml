@@ -4,7 +4,6 @@ require "libwatexe"
 require "libhexview"
 
 module CIAX
-  $layers['x']=Hex
   module Hex
     include Command
 

@@ -9,7 +9,6 @@ require "libdevdb"
 require "libsitelist"
 
 module CIAX
-  $layers['f']=Frm
   module Frm
     def self.new(id,cfg={},attr={})
       Msg.type?(attr,Hash)

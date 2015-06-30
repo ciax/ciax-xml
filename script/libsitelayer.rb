@@ -6,13 +6,15 @@ module CIAX
     class Layer < CIAX::List
       attr_reader :default
       # list object can be (Frm,App,Wat,Hex)
-      def add_layer(lobj)
-        type?(lobj,List)
-        @default=m2id(lobj.cfg[:layer])
-        put(@default,lobj)
-        pars={:parameters => [lobj.current_site]}
-        @jumpgrp.add_item(@default,@default.capitalize+" mode",pars)
-        self
+      def add_layer(layer)
+        type?(layer,Module)
+        id=m2id(layer)
+        sl=layer::List.new(@cfg)
+        put(id,sl)
+        pars={:parameters => [sl.current_site]}
+        @jumpgrp.add_item(id,id.capitalize+" mode",pars)
+        @default=id
+        sl
       end
 
       def shell(site,layer=nil)
@@ -38,7 +40,7 @@ module CIAX
     cfg[:jump_groups]=[]
     sl=cfg[:layer_list]=Site::Layer.new(cfg)
     begin
-      sl.add_layer(Hex::List.new(cfg))
+      sl.add_layer(Hex)
       sl.shell(site)
     rescue InvalidID
       $opt.usage('(opt) [id]')

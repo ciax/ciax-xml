@@ -66,20 +66,23 @@ module CIAX
     end
 
     # Show all conttents of all generation
-    def path
+    def path(key=nil)
+      i=0
       "******[Config]******(#{object_id})\n"+@generation.map{|h|
-        '  {'+h.map{|k,v|
+        i+=1
+        "  [#{i}]{"+h.map{|k,v|
+          next if key and k != key
           case v
           when String,Numeric
             val=v.inspect
-          when Enumerable,Proc
+          when Hash,Proc
             val=v.class
           else
             val=v
           end
           k.inspect.to_s+'=>'+val.to_s
-        }.join(', ')+'} ('+h.object_id.to_s+')'
-      }.join("\n")+"\n************\n"
+        }.compact.join(', ')+'} ('+h.object_id.to_s+')'
+      }.reverse.join("\n")+"\n************\n"
     end
 
     # Show list of all key,val which is taken with [] access

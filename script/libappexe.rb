@@ -67,11 +67,9 @@ module CIAX
           verbose("App","Propagate Status#upd -> App#settime")
           st['time']=now_msec
         }
+        @post_exe_procs << proc{@stat.upd}
         @cobj.rem.add_int
-        @cobj.rem.ext.cfg.proc{|ent|
-          @stat.upd
-          ent.cfg.path
-        }
+        @cobj.rem.ext.cfg.proc{|ent| ent.cfg.path(:jump_groups)}
         @cobj.item_proc('interrupt'){|ent|
           "INTERRUPT(#{@batch_interrupt})"
         }

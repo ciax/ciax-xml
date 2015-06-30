@@ -23,7 +23,7 @@ module CIAX
       Cl.new(id,cfg,attr)
     end
 
-    # cfg should have [:layers]
+    # cfg should have [:sub_list]
     class Exe < Exe
       attr_reader :ash
       def initialize(id,cfg={},attr={})

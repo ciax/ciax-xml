@@ -24,7 +24,7 @@ module CIAX
             end
           }
         }
-        self
+        upd
       end
 
       def to_v

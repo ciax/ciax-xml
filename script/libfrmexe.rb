@@ -36,13 +36,18 @@ module CIAX
         @cfg[:site_id]=id
         @fdb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)
         @field=@cfg[:field]=Field.new.set_db(@fdb)
-        @output=@field
         @cobj=Index.new(@cfg)
         @cobj.rem.add_int
         # Post internal command procs
         # Proc for Terminate process of each individual commands
         @flush_procs=[]
       end
+
+      def ext_shell
+        @output=@field
+        super
+      end        
+
     end
 
     class Test < Exe

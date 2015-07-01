@@ -21,15 +21,23 @@ module CIAX
         @mode=ash.mode
         @output=View.new(@id,ash.adb['version'],ash.site_stat,ash.stat)
         @post_exe_procs.concat(ash.post_exe_procs)
+        if $opt['e']
+          @output.ext_log
+        end
+        ext_server(ash.port) if ['e','s'].any?{|i| $opt[i]}
+      end
+
+      def ext_shell
+        @shell_output_proc=proc{ @output.upd.to_x }
+        super
+      end
+      
+      def ext_server(port)
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')
         }
         @server_output_proc=proc{ @output.upd.to_x }
-        @shell_output_proc=proc{ @output.upd.to_x }
-        if $opt['e']
-          @output.ext_log
-        end
-        ext_server(ash.port.to_i+1000) if ['e','s'].any?{|i| $opt[i]}
+        super(port.to_i+1000)
       end
     end
 

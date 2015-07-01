@@ -40,21 +40,24 @@ module CIAX
         @cfg[:frm_site]=@adb['frm_site']
         @fsh=@cfg[:sub_list].get(@cfg[:frm_site])
         @site_stat=@fsh.site_stat.add_db('isu' => '*')
-        @host=type?(@cfg['host']||@adb['host']||'localhost',String)
-        @port=@adb['port']
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
         @appview=View.new(@adb,@stat)
-        @output=$opt['j'] ? @stat : @appview
         @batch_interrupt=[]
         @cobj=Index.new(@cfg)
       end
 
+      def ext_server
+        @host=type?(@cfg['host']||@adb['host']||'localhost',String)
+        @port=@adb['port']
+        super(@port)
+      end
+
       def ext_shell
-        super
+        @output=$opt['j'] ? @stat : @appview
         vg=@cobj.loc.add_view
         vg['vis'].cfg.proc{@output=@appview;''}
         vg['raw'].cfg.proc{@output=@stat;''}
-        self
+        super
       end
     end
 
@@ -112,7 +115,7 @@ module CIAX
         if sv=@cfg[:sqlog]
           sv.add_table(@stat)
         end
-        ext_server(@port)
+        ext_server
       end
 
       private

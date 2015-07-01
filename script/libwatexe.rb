@@ -32,10 +32,8 @@ module CIAX
         @cobj=Index.new(@cfg)
         @cobj.add_rem(@ash)
         @event=Event.new.set_db(@ash.adb)
-        @wview=View.new(@ash.adb,@event)
         @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
         @ash.batch_interrupt=@event.get('int')
-        @output=$opt['j']?@event:@wview
       end
 
       def init_sv
@@ -57,11 +55,12 @@ module CIAX
       end
 
       def ext_shell
-        super
+        @wview=View.new(@ash.adb,@event)
+        @output=$opt['j'] ? @event : @wview
         vg=@cobj.loc.add_view
         vg['vis'].cfg.proc{@output=@wview;''}
         vg['raw'].cfg.proc{@output=@event;''}
-        self
+        super
       end
     end
 

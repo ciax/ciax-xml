@@ -30,14 +30,6 @@ module CIAX
       @pfx_color||=9
       @output={}
       self['msg']=''
-      @server_input_proc=proc{|line|
-        begin
-          JSON.load(line)
-        rescue JSON::ParserError
-          raise "NOT JSON"
-        end
-      }
-      @server_output_proc=proc{ merge(@site_stat).to_j }
       @shell_input_proc=proc{|args|
         if (cmd=args.first) && cmd.include?('=')
           args=['set']+cmd.split('=')
@@ -87,6 +79,14 @@ module CIAX
 
     # JSON expression of server stat will be sent.
     def ext_server(port)
+      @server_input_proc=proc{|line|
+        begin
+          JSON.load(line)
+        rescue JSON::ParserError
+          raise "NOT JSON"
+        end
+      }
+      @server_output_proc=proc{ merge(@site_stat).to_j }
       verbose("UDP:Server","Initialize [#@id:#{port}]")
       @cobj.rem.hid.add_nil
       udp=UDPSocket.open

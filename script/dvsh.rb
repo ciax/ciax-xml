@@ -9,5 +9,5 @@ module CIAX
   cfg[:jump_groups]=[]
   sl=Site::Layer.new(cfg)
   sl.add_layer($opt.layer)
-  sl.shell(id)
+  sl.ext_shell.shell(id)
 end

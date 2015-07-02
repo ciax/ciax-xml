@@ -43,6 +43,7 @@ module CIAX
 
         private
         def ext_shell
+          super
           @current=@lastsize=0
           @prompt_proc=proc{
             ("[%d]" % @list.index)+optlist(@list.option)
@@ -51,7 +52,6 @@ module CIAX
             @output=@smode ? @list.output : @list
           }
           @shell_input_proc=proc{|args| @list.conv_cmd(args,@cobj.intgrp)}
-          super
           vg=@cobj.loc.add('caption'=>"Change View Mode",'color' => 9)
           vg.add_item('lst',"List mode").cfg.proc{@smode=false;''}
           vg.add_item('seq',"Sequencer mode").cfg.proc{@smode=true;''}

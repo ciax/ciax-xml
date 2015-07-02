@@ -14,6 +14,14 @@ module CIAX
     # Separate initialize part because shell() could be called multiple times
     def ext_shell(als=nil)
       verbose("Shell","Initialize [#{@id}]")
+      @shell_input_proc=proc{|args|
+        if (cmd=args.first) && cmd.include?('=')
+          args=['set']+cmd.split('=')
+        end
+        args
+      }
+      @shell_output_proc=proc{ @output }
+      @prompt_proc=proc{ @site_stat.to_s }
       @cobj.rem.hid.add_nil
       @cobj.loc.add_shell
       @cobj.loc.add_jump

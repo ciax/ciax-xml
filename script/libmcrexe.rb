@@ -49,12 +49,12 @@ module CIAX
         intgrp=@cobj.rem.add_int.int
         intgrp.cfg.proc{|ent| reply(ent.id)}
         self['option']=intgrp.valid_keys.clear
+        super(@record.cfg[:cid].tr(':','_'))
         @prompt_proc=proc{
           res="(#{self['stat']})"
           res+=optlist(self['option']) if key?('option')
           res
         }
-        super(@record.cfg[:cid].tr(':','_'))
         vg=@cobj.loc.add('caption'=>"Change View Mode",'color' => 9)
         vg.add_item('vis',"Visual mode").cfg.proc{@output.vmode='v';''}
         vg.add_item('raw',"Raw mode").cfg.proc{@output.vmode='r';''}

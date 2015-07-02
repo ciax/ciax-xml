@@ -30,14 +30,6 @@ module CIAX
       @pfx_color||=9
       @output={}
       self['msg']=''
-      @shell_input_proc=proc{|args|
-        if (cmd=args.first) && cmd.include?('=')
-          args=['set']+cmd.split('=')
-        end
-        args
-      }
-      @shell_output_proc=proc{ @output }
-      @prompt_proc=proc{ @site_stat.to_s }
       Thread.abort_on_exception=true
       verbose("Exe","initialize [#{@id}]")
     end

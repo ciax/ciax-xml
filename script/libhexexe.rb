@@ -45,8 +45,8 @@ module CIAX
 
     class List < Site::List
       def initialize(cfg,attr={})
-        attr[:layer]=Hex
         super
+        @cfg[:layer]=Hex
         sub=@cfg[:sub_list]=sub_list(Wat)
         set_db(sub.cfg[:db])
       end
@@ -59,7 +59,7 @@ module CIAX
       cfg=Config.new
       cfg[:jump_groups]=[]
       begin
-        List.new(cfg).shell(id)
+        List.new(cfg).ext_shell.shell(id)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

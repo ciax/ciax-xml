@@ -11,28 +11,15 @@ module CIAX
     # level can be Layer or Site
     def initialize(cfg,attr={})
       @cfg=cfg.gen(self).update(attr)
-      type?(@cfg[:jump_groups],Array)
-      @jumpcls=type?(@cfg[:jump_class],Module)
-      name=m2id(@jumpcls,-2)
-      super(name,{},@cfg[:dataname]||'list')
-      @jumpgrp=Local::Jump::Group.new(@cfg)
-      @cfg[:jump_groups]+=[@jumpgrp]
+      super(m2id(@cfg[:level],-2),{},@cfg[:dataname]||'list')
       $opt||=GetOpts.new
     end
 
-    def shell(key=nil,par=nil)
-      begin
-        if lst=get(key)
-          lst.shell(par)
-        else
-          get(keys.first).shell(key)
-        end
-      rescue @jump_cls
-        key,par=$!.to_s.split(':')
-        retry
-      rescue InvalidID
-        $opt.usage('(opt) [id]')
-      end
+    def ext_shell
+      type?(@cfg[:jump_groups],Array)
+      type?(@cfg[:jump_class],Module)
+      @jumpgrp=Local::Jump::Group.new(@cfg)
+      @cfg[:jump_groups]+=[@jumpgrp]
     end
   end
 end

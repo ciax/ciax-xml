@@ -9,17 +9,13 @@ module CIAX
     class List < CIAX::List
       attr_reader :current_site
       def initialize(cfg,attr={})
-        attr[:jump_class]=cfg[:layer]::Jump
+        attr[:jump_class]=Jump
         super
       end
 
       def set_db(db)
         @cfg[:db]=type?(db,Db)
-        sites=db.displist
         verbose("List","Initialize")
-        @jumpgrp.merge_items(sites)
-        # For parameter of jump from another layer
-        @current_site={:default => sites.keys.first,:list => sites.keys}
         self
       end
 
@@ -41,6 +37,16 @@ module CIAX
         end
         @current_site[:default]=site
         super
+      end
+
+      def ext_shell
+        super
+        sites=@cfg[:db].displist
+        @jumpgrp.merge_items(sites)
+        # For parameter of jump from another layer
+        @current_site={:default => sites.keys.first,:list => sites.keys}
+        @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
+        self
       end
 
       def shell(site)

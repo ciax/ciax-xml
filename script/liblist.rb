@@ -15,10 +15,10 @@ module CIAX
       $opt||=GetOpts.new
     end
 
-    def ext_shell
-      type?(@cfg[:jump_groups],Array)
-      type?(@cfg[:jump_class],Module)
+    def ext_shell(jump_class)
+      @cfg[:jump_class]=type?(jump_class,Module)
       @jumpgrp=Local::Jump::Group.new(@cfg)
+      type?(@cfg[:jump_groups],Array)
       @cfg[:jump_groups]+=[@jumpgrp]
     end
   end

@@ -6,7 +6,6 @@ module CIAX
     class Layer < CIAX::List
       def initialize(cfg,attr={})
         attr[:layer_list]=self
-        attr[:jump_class]=Jump
         super
       end
 
@@ -19,7 +18,7 @@ module CIAX
       end
 
       def ext_shell
-        super
+        super(Jump)
         keys.each{|id|
           sl=get(id).ext_shell
           pars={:parameters => [sl.parameter]}

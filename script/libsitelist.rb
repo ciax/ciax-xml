@@ -9,7 +9,6 @@ module CIAX
     class List < CIAX::List
       attr_reader :parameter
       def initialize(cfg,attr={})
-        attr[:jump_class]=Jump
         super
         @current_site=''
       end
@@ -41,7 +40,7 @@ module CIAX
       end
 
       def ext_shell
-        super
+        super(Jump)
         sites=@cfg[:db].displist
         @jumpgrp.merge_items(sites)
         # For parameter of jump from another layer

@@ -7,10 +7,11 @@ module CIAX
     # @cfg should have [:jump_group],[:layer_list]
     # This should be set [:layer],[:db]
     class List < CIAX::List
-      attr_reader :current_site
+      attr_reader :parameter
       def initialize(cfg,attr={})
         attr[:jump_class]=Jump
         super
+        @current_site=''
       end
 
       def set_db(db)
@@ -35,7 +36,7 @@ module CIAX
         unless @data.key?(site)
           add(site)
         end
-        @current_site[:default]=site
+        @current_site.replace(site)
         super
       end
 
@@ -44,7 +45,7 @@ module CIAX
         sites=@cfg[:db].displist
         @jumpgrp.merge_items(sites)
         # For parameter of jump from another layer
-        @current_site={:default => sites.keys.first,:list => sites.keys}
+        @parameter={:default => @current_site,:list => sites.keys}
         @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
         self
       end

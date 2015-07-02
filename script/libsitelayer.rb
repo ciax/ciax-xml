@@ -22,7 +22,7 @@ module CIAX
         super
         keys.each{|id|
           sl=get(id).ext_shell
-          pars={:parameters => [sl.current_site]}
+          pars={:parameters => [sl.parameter]}
           @jumpgrp.add_item(id,id.capitalize+" mode",pars)
         }
         self

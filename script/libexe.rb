@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
-require "socket"
-require "readline"
+require "libserver"
+require "libclient"
+require "libprompt"
 require "libcommand"
 
 # Provide Server,Client
@@ -12,7 +13,6 @@ module CIAX
   class Exe < Hashx # Having server status {id,msg,...}
     attr_reader :layer,:id,:mode,:cobj,:pre_exe_procs,:post_exe_procs,:cfg,:output,:prompt_proc
     attr_accessor :site_stat,:shell_input_proc,:shell_output_proc,:server_input_proc,:server_output_proc
-    # cfg contains the parameter shared among layers for the site, which are taken over from list level
     # attr contains the parameter for each layer individually (might have [:db])
     # cfg should have [:db] shared in the site (among layers)
     def initialize(id,cfg={},attr={})
@@ -61,81 +61,6 @@ module CIAX
 
     def ext_shell(als=nil)
       extend(Shell).ext_shell(als)
-    end
-  end
-
-  module Server
-    def self.extended(obj)
-      Msg.type?(obj,Exe)
-    end
-
-    # JSON expression of server stat will be sent.
-    def ext_server(port)
-      @server_input_proc=proc{|line|
-        begin
-          JSON.load(line)
-        rescue JSON::ParserError
-          raise "NOT JSON"
-        end
-      }
-      @server_output_proc=proc{ merge(@site_stat).to_j }
-      verbose("UDP:Server","Initialize [#@id:#{port}]")
-      @cobj.rem.hid.add_nil
-      udp=UDPSocket.open
-      udp.bind("0.0.0.0",port.to_i)
-      ThreadLoop.new("Server(#@layer:#@id)",9){
-        IO.select([udp])
-        line,addr=udp.recvfrom(4096)
-        line.chomp!
-        rhost=Addrinfo.ip(addr[2]).getnameinfo.first
-        verbose("Exe:Server","Valid Commands #{@cobj.valid_keys}")
-        verbose("UDP:Server","Recv:#{line} is #{line.class}")
-        begin
-          exe(@server_input_proc.call(line),"udp:#{rhost}")
-        rescue InvalidCMD
-          self['msg']="INVALID"
-        rescue
-          self['msg']=$!.to_s
-          errmsg
-        end
-        send_str=@server_output_proc.call
-        verbose("UDP:Server","Send:#{send_str}")
-        udp.send(send_str,0,addr[2],addr[1])
-      }
-      self
-    end
-  end
-
-  module Client
-    def self.extended(obj)
-      Msg.type?(obj,Exe)
-    end
-
-    # If you get 'Address family not ..' error,
-    # remove ipv6 entry from /etc/hosts
-    def ext_client(host,port)
-      host||='localhost'
-      @site_stat.add_db('udperr' => 'x')
-      @udp=UDPSocket.open()
-      verbose("UDP:Client","Initialize [#@id/#{host}:#{port}]")
-      @addr=Socket.pack_sockaddr_in(port.to_i,host)
-      @cobj.rem.cfg.proc{|ent|
-        args=ent.id.split(':')
-        # Address family not supported by protocol -> see above
-        @udp.send(JSON.dump(args),0,@addr)
-        verbose("UDP:Client","Send #{args}")
-        if IO.select([@udp],nil,nil,1)
-          res=@udp.recv(1024)
-          @site_stat['udperr']=false
-          verbose("UDP:Client","Recv #{res}")
-          update(@site_stat.pick(JSON.load(res))) unless res.empty?
-        else
-          @site_stat['udperr']=true
-          self['msg']='TIMEOUT'
-        end
-        self['msg']
-      }
-      self
     end
   end
 

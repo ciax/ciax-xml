@@ -46,7 +46,7 @@ module CIAX
       def shell(site)
         begin
           get(site).shell
-        rescue @jumpcls
+        rescue Jump
           site=$!.to_s
           retry
         rescue InvalidID
@@ -69,9 +69,9 @@ module CIAX
         obj=@cfg[:layer].new(site,@cfg)
         put(site,obj.ext_shell)
       end
-    end
 
-    class Jump < LongJump; end
+      class Jump < LongJump; end
+    end
   end
 
   if __FILE__ == $0

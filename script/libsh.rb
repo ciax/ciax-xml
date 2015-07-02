@@ -13,7 +13,7 @@ module CIAX
 
     # Separate initialize part because shell() could be called multiple times
     def ext_shell(als=nil)
-      verbose("Shell","#{self.class}:Initialize [#{@id}]")
+      verbose("#{self.class}:Initialize [#{@id}]")
       @shell_input_proc=proc{|args|
         if (cmd=args.first) && cmd.include?('=')
           args=['set']+cmd.split('=')
@@ -41,7 +41,7 @@ module CIAX
     # '^D' gives interrupt
     # mode gives special break (loop returns mode).
     def shell(dmy=nil) # dmy: compatibility with List#shell()
-      verbose("Shell","Shell(#@id)")
+      verbose("Shell(#@id)")
       Readline.completion_proc=proc{|word|
         (@cobj.valid_keys+@cobj.valid_pars).grep(/^#{word}/)
       }
@@ -60,11 +60,11 @@ module CIAX
           }
         rescue UserError
         rescue ServerError
-          warning("Shell",$!)
+          warning($!)
         end
         puts self['msg'].empty? ? @shell_output_proc.call : self['msg']
         verbose("Threads","#{Threadx.list}")
-        verbose("Shell","Valid Commands #{@cobj.valid_keys}")
+        verbose("Valid Commands #{@cobj.valid_keys}")
       }
     end
   end

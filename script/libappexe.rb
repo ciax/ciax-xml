@@ -33,7 +33,7 @@ module CIAX
       attr_accessor :batch_interrupt
       def initialize(id,cfg={},attr={})
         super
-        @cls_color=2
+        @cls_color=@cfg[:cls_color]=4
         @cfg[:site_id]=id
         # LayerDB might generated in List level
         @adb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)
@@ -66,7 +66,7 @@ module CIAX
         super
         @stat.ext_sym
         @stat.post_upd_procs << proc{|st|
-          verbose("App","Propagate Status#upd -> App#settime")
+          verbose("Propagate Status#upd -> App#settime")
           st['time']=now_msec
         }
         @post_exe_procs << proc{@stat.upd}
@@ -95,20 +95,20 @@ module CIAX
         @buf=init_buf
         ver=@stat['ver']
         @fsh.flush_procs << proc{
-          verbose("AppSv","Propagate Frm::Exe#flush -> Buffer#flush")
+          verbose("Propagate Frm::Exe#flush -> Buffer#flush")
           @buf.flush
         }
         @cobj.rem.ext.cfg.proc{|ent,src,pri|
-          verbose("AppSv","#@id/Issuing:#{ent.id} from #{src} with priority #{pri}")
+          verbose("#@id/Issuing:#{ent.id} from #{src} with priority #{pri}")
           @buf.send(pri,ent,src)
           "ISSUED"
         }
         @cobj.item_proc('interrupt'){|ent,src|
           @batch_interrupt.each{|args|
-            verbose("AppSv","#@id/Issuing:#{args} for Interrupt")
+            verbose("#@id/Issuing:#{args} for Interrupt")
             @buf.send(0,@cobj.set_cmd(args),src)
           }
-          warning("AppSv","Interrupt(#{@batch_interrupt}) from #{src}")
+          warning("Interrupt(#{@batch_interrupt}) from #{src}")
           'INTERRUPT'
         }
         # Logging if version number exists
@@ -127,15 +127,15 @@ module CIAX
         buf=Buffer.new(@stat['id'],@stat['ver'],@site_stat)
         buf.send_proc{|ent|
           batch=type?(ent.cfg[:batch],Array)
-          verbose("AppSv","Send FrmCmds #{batch}")
+          verbose("Send FrmCmds #{batch}")
           batch
         }
         buf.recv_proc{|args,src|
-          verbose("AppSv","Processing #{args}")
+          verbose("Processing #{args}")
           @fsh.exe(args,src)
         }
         buf.flush_proc{
-          verbose("AppSv","Propagate Buffer#flush -> Status#upd")
+          verbose("Propagate Buffer#flush -> Status#upd")
           @stat.upd
           sleep(@interval||0.1)
           # Auto issue by watch

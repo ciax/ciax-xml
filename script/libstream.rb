@@ -20,21 +20,21 @@ module CIAX
       update('dir' => '','cmd' => '','base64' => '')
       @cls_color=6
       @pfx_color=9
-      verbose("Client","Initialize [#{iocmd.join(' ')}]")
+      verbose("Initialize [#{iocmd.join(' ')}]")
       @wait=wait.to_f
       @timeout=timeout||5
       @pre_open_proc=proc{}
       @post_open_proc=proc{}
       Signal.trap(:CHLD){
-        verbose("Client","#@iocmd is terminated")
+        verbose("#@iocmd is terminated")
       }
       reopen
     end
 
     def snd(str,cid)
       return if str.to_s.empty?
-      verbose("Client","Sending #{str.size} byte on #{cid}")
-      verbose("Client","Binary Sending",str.inspect)
+      verbose("Sending #{str.size} byte on #{cid}")
+      verbose("Binary Sending",str.inspect)
       reopen
       @f.write(str)
       convert('snd',str,cid)
@@ -42,9 +42,9 @@ module CIAX
     end
 
     def rcv
-      verbose("Client","Wait to Recieve #{@wait} sec")
+      verbose("Wait to Recieve #{@wait} sec")
       sleep @wait
-      verbose("Client","Wait for Recieving")
+      verbose("Wait for Recieving")
       reopen
       if IO.select([@f],nil,nil,@timeout)
         begin
@@ -57,8 +57,8 @@ module CIAX
       else
         Msg.com_err("Stream:No response")
       end
-      verbose("Client","Recieved #{str.size} byte on #{self['cmd']}")
-      verbose("Client","Binary Recieving",str.inspect)
+      verbose("Recieved #{str.size} byte on #{self['cmd']}")
+      verbose("Binary Recieving",str.inspect)
       convert('rcv',str)
       self
     end
@@ -70,7 +70,7 @@ module CIAX
       rescue SystemCallError
         warn $!
         Msg.str_err("Stream Open failed") if int > 2
-        warning("Client","Try to reopen")
+        warning("Try to reopen")
         sleep int
         int=(int+1)*2
         retry
@@ -80,7 +80,7 @@ module CIAX
     private
     def openstrm
       # SIGINT gets around the child process
-      verbose("Client","Stream Opening")
+      verbose("Stream Opening")
       @pre_open_proc.call
       Signal.trap(:INT,nil)
       @f=IO.popen(@iocmd,'r+')
@@ -89,7 +89,7 @@ module CIAX
         Process.kill('INT',@f.pid)
       }
       @post_open_proc.call
-      verbose("Client","Stream Open successfully")
+      verbose("Stream Open successfully")
       # Shut off from Ctrl-C Signal to the child process
       # Process.setpgid(@f.pid,@f.pid)
       self

@@ -44,18 +44,18 @@ module CIAX
 
   # Should be extended in module/class
   module Msg
-    attr_accessor :pfx_color,:cls_color
+    attr_accessor :ns_color,:cls_color
     Start_time=Time.now
     @@base=1
     # Public Method
-    def verbose(prefix,title,*data)
+    def verbose(title,*data)
       # block takes array (shown by each line)
       # Description of values
       #   [val] -> taken from  xml (criteria)
       #   <val> -> taken from status (incoming)
       #   (val) -> calcurated from status
       @ver_indent=@@base
-      msg=make_msg(prefix,title)
+      msg=make_msg(title)
       if @show_inside || msg && condition(msg.to_s)
         Kernel.warn msg
         if data
@@ -73,44 +73,47 @@ module CIAX
       !ENV['VER'].to_s.empty?
     end
 
-    def warning(prefix,title)
+    def warning(title)
       @ver_indent=@@base
-      Kernel.warn make_msg(prefix,Msg.color(title.to_s,3))
+      Kernel.warn make_msg(Msg.color(title.to_s,3))
       self
     end
 
-    def alert(prefix,title)
+    def alert(title)
       @ver_indent=@@base
-      Kernel.warn make_msg(prefix,Msg.color(title.to_s,5))
+      Kernel.warn make_msg(Msg.color(title.to_s,5))
       self
     end
 
     def errmsg
       @ver_indent=@@base
-      Kernel.warn make_msg($!.class,Msg.color("#{$!} at #{$@}",1))
+      Kernel.warn make_msg(Msg.color("#{$!} at #{$@}",1))
     end
 
-    def enclose(prefix,title1,title2)
-      @show_inside=verbose(prefix,title1)
+    def enclose(title1,title2)
+      @show_inside=verbose(title1)
       @@base+=1
       res=yield
     ensure
       @@base-=1
-      verbose(prefix,sprintf(title2,res))
+      verbose(sprintf(title2,res))
       @show_inside=false
    end
 
     # Private Method
     private
-    def make_msg(prefix,title)
+    def make_msg(title)
       return unless title
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
       tc=Thread.current
       ts << Msg.indent(@ver_indent)+Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15)
-      cpath||=singleton_class.ancestors[1].name.split('::')[1..-1].join('::')
-      ts << Msg.color("#{cpath}:",@cls_color||7)
-      ts << Msg.color("#{prefix}:",@pfx_color||2)
+      cpath=class_path
+      level=cpath.shift
+      cls=cpath.join('::')
+      #||=singleton_class.ancestors[1].name.split('::')[1..-1].join('::')
+      ts << Msg.color("#{level}:",@ns_color||7)
+      ts << Msg.color("#{cls}:",@cls_color||15)
       ts << title.to_s
     end
 
@@ -310,7 +313,7 @@ module CIAX
     end
 
     def class_path
-      self.class.to_s.split('::')
+      self.class.to_s.split('::')[1..-1]
     end
 
     def m2id(mod,pos=-1)

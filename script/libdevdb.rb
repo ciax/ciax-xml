@@ -27,7 +27,7 @@ module CIAX
             e.attr2item(hash)
           else
             id=e.name.to_sym
-            verbose("SiteDb","Override [#{id}]")
+            verbose("Override [#{id}]")
             rec_db(e,hash[id]||={})
           end
         }

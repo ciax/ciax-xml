@@ -38,21 +38,21 @@ module CIAX
 
       def init_frame(domain)
         db=domain.to_h
-        enclose("Fdb","INIT:Main Frame <-","-> INIT:Main Frame"){
+        enclose("INIT:Main Frame <-","-> INIT:Main Frame"){
           frame=[]
           domain.each{|e1|
             frame << yield(e1)
           }
-          verbose("Fdb","InitMainFrame:#{frame}")
+          verbose("InitMainFrame:#{frame}")
           db[:main]=frame
         }
         domain.find('ccrange'){|e0|
-          enclose("Fdb","INIT:Ceck Code Frame <-","-> INIT:Ceck Code Frame"){
+          enclose("INIT:Ceck Code Frame <-","-> INIT:Ceck Code Frame"){
             frame=[]
             Repeat.new.each(e0){|e1,r1|
               frame << yield(e1,r1)
             }
-            verbose("Fdb","InitCCFrame:#{frame}")
+            verbose("InitCCFrame:#{frame}")
             db[:ccrange]=frame
           }
         }
@@ -64,7 +64,7 @@ module CIAX
         domain.each{|e0|
           id=e0.attr2item(db)
           item=db[id]
-          enclose("Fdb","INIT:Body Frame [#{id}]<-","-> INIT:Body Frame"){
+          enclose("INIT:Body Frame [#{id}]<-","-> INIT:Body Frame"){
             Repeat.new.each(e0){|e1,r1|
               par2item(e1,item) && next
               e=yield(e1,r1) || next
@@ -80,7 +80,7 @@ module CIAX
         when 'char','string'
           attr=e.to_h
           attr['val']=rep.subst(attr['val']) if rep
-          verbose("Fdb","Data:[#{attr}]")
+          verbose("Data:[#{attr}]")
           attr
         else
           e.name
@@ -96,7 +96,7 @@ module CIAX
         when 'field'
           attr=e.to_h
           item[:struct]=[] if item
-          verbose("Fdb","InitElement: #{attr}")
+          verbose("InitElement: #{attr}")
           attr
         when 'array'
           attr=e.to_h
@@ -105,7 +105,7 @@ module CIAX
             idx << e1.to_h
           }
           item[:struct]=idx.map{|h| h['size']} if item
-          verbose("Fdb","InitArray: #{attr}")
+          verbose("InitArray: #{attr}")
           attr
         when 'ccrange','body','echo'
           e.name

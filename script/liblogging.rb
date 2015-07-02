@@ -16,7 +16,7 @@ module CIAX
       ver=@header['ver']
       FileUtils.mkdir_p VarDir
       @loghead=VarDir+"/"+type+"_#{id}"
-      verbose(type.capitalize,"Initialize (#{id}/Ver.#{ver})")
+      verbose("Initialize (#{id}/Ver.#{ver})")
       @queue=Queue.new
       ThreadLoop.new("Old Logging(#{type}:#{id})",11){
         logary=[]
@@ -26,7 +26,7 @@ module CIAX
         open(logfile,'a') {|f|
           logary.each{|str|
             f.puts str
-            verbose(type.capitalize,"Appended #{str.size} byte",str)
+            verbose("Appended #{str.size} byte",str)
           }
         }
       }

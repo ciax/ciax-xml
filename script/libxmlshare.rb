@@ -42,7 +42,7 @@ module CIAX
           sym=str.to_sym
           db[sym]={} unless db.key?(sym)
           db[sym][key]=v
-          verbose("XmlShare","ATTRDB:"+str.upcase+":[#{key}] : #{v}")
+          verbose("ATTRDB:"+str.upcase+":[#{key}] : #{v}")
         }
         key
       end
@@ -59,7 +59,7 @@ module CIAX
           end
         }
         key=attr.delete(id) || Msg.abort("No such key (#{id})")
-        alert("XmlShare","ATTRDB: Dupricated ID [#{key}]") if db.key?(key)
+        alert("ATTRDB: Dupricated ID [#{key}]") if db.key?(key)
         db[key]=attr
         key
       end

@@ -54,7 +54,7 @@ module CIAX
 
   module Save
     def ext_save(tag=nil)
-      verbose("File","Initialize [#{self['id']}]")
+      verbose("Initialize [#{self['id']}]")
       FileUtils.mkdir_p(VarDir+"/json/")
       self['id']||Msg.cfg_err("ID")
       @post_upd_procs << proc{save(tag)}
@@ -71,19 +71,19 @@ module CIAX
     end
 
     def write_json(json_str,tag=nil)
-      verbose("File","Saving from Multiple Threads") unless @thread == Thread.current
+      verbose("Saving from Multiple Threads") unless @thread == Thread.current
       rname=file_path(tag)
       open(rname,'w'){|f|
         f.flock(::File::LOCK_EX)
         f << json_str
-        verbose("File","[#{rname}](#{f.size}) is Saved")
+        verbose("[#{rname}](#{f.size}) is Saved")
       }
       if tag
         # Making 'latest' tag link
         sname=file_path('latest')
         ::File.unlink(sname) if ::File.exist?(sname)
         ::File.symlink(rname,sname)
-        verbose("File","Symboliclink to [#{sname}]")
+        verbose("Symboliclink to [#{sname}]")
       end
       self
     end
@@ -94,7 +94,7 @@ module CIAX
       FileUtils.mkdir_p VarDir
       id=self['id']
       ver=self['ver']
-      verbose(@type.capitalize,"Initialize [#{id}/Ver.#{ver}]")
+      verbose("#{@type.capitalize} Initialize [#{id}/Ver.#{ver}]")
       @queue=Queue.new
       @post_upd_procs << proc{
         @queue.push(to_j)
@@ -107,7 +107,7 @@ module CIAX
         open(logpath,'a') {|f|
           logary.each{|str|
             f.puts str
-            verbose(@type.capitalize,"Appended #{str.size} byte",str)
+            verbose("#{@type.capitalize} Appended #{str.size} byte",str)
           }
         }
       }

@@ -101,7 +101,7 @@ module CIAX
             cmp=cond['cmp']=h['cmp']
             cri=cond['cri']=h['val']
             real=stat['msg'][var]||stat.get(var)
-            verbose("McrStep","site=#{site},var=#{var},cmp=#{cmp},cri=#{cri},real=#{real}")
+            verbose("site=#{site},var=#{var},cmp=#{cmp},cri=#{cri},real=#{real}")
             cond['real']=real
             cond['res']=match?(real,cri,cond['cmp'])
           cond
@@ -114,7 +114,7 @@ module CIAX
 
       def scan
         sites.inject({}){|hash,site|
-          verbose("Step","Scanning Status #{site}")
+          verbose("Scanning Status #{site}")
           hash[site]=@cfg.layers[:wat].get(site).ash.stat
           hash
         }
@@ -122,7 +122,7 @@ module CIAX
 
       def refresh
         sites.each{|site|
-          verbose("Step","Refresh Status #{site}")
+          verbose("Refresh Status #{site}")
           @cfg.layers[:wat].get(site).ash.stat.refresh
         }
       end

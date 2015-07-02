@@ -27,7 +27,7 @@ module CIAX
       # - output csv if array
       def subst(str) # subst by field
         return str unless /\$\{/ === str
-        enclose("Field","Substitute from [#{str}]","Substitute to [%s]"){
+        enclose("Substitute from [#{str}]","Substitute to [%s]"){
           str.gsub(/\$\{(.+)\}/) {
             ary=[*get($1)].map!{|i| eval(i)}
             Msg.abort("No value for subst [#{$1}]") if ary.empty?
@@ -41,7 +41,7 @@ module CIAX
       # - index should be numerical or formula
       # - ${key:idx1:idx2} => hash[key][idx1][idx2]
       def get(key)
-        verbose("Field","Getting[#{key}]")
+        verbose("Getting[#{key}]")
         Msg.abort("Nill Key") unless key
         return @data[key] if @data.key?(key)
         vname=[]
@@ -57,11 +57,11 @@ module CIAX
             break
           end
           vname << i
-          verbose("Field","Type[#{h.class}] Name[#{i}]")
-          verbose("Field","Content[#{h[i]}]")
-          h[i] || alert("Field","No such Value [#{vname.join(':')}] in 'data'")
+          verbose("Type[#{h.class}] Name[#{i}]")
+          verbose("Content[#{h[i]}]")
+          h[i] || alert("No such Value [#{vname.join(':')}] in 'data'")
         }
-        verbose("Field","Get[#{key}]=[#{dat}]")
+        verbose("Get[#{key}]=[#{dat}]")
         dat
       end
 
@@ -70,7 +70,7 @@ module CIAX
         akey=key.split(':')
         Msg.par_err("No such Key") unless @data.key?(akey.shift)
         conv=subst(val).to_s
-        verbose("Field","Put[#{key}]=[#{conv}]")
+        verbose("Put[#{key}]=[#{conv}]")
         case p=get(key)
         when Array
           merge_ary(p,conv.split(','))
@@ -78,10 +78,10 @@ module CIAX
           begin
             p.replace(eval(conv).to_s)
           rescue SyntaxError,NameError
-            alert("Field","Value is not numerical")
+            alert("Value is not numerical")
           end
         end
-        verbose("Field","Evaluated[#{key}]=[#{@data[key]}]")
+        verbose("Evaluated[#{key}]=[#{@data[key]}]")
         self['time']=now_msec
         self
       ensure

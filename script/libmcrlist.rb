@@ -35,22 +35,22 @@ module CIAX
       def set_index(str=nil)
         n=str.to_i
         oidx=@index
-        verbose('Index',"Data size #{@lastsize} -> #{@data.size}")
+        verbose("Data size #{@lastsize} -> #{@data.size}")
         if @data.size >= n && n > 0
           @index=n
           # Manual change
           return str.replace(current_sid)
         elsif @data.size > @lastsize
           # Increase mcr
-          verbose('Index','increase')
+          verbose('increase')
           @index=@data.size
         elsif @index > @data.size
           # Decrease mcr
-          verbose('Index','decrease')
+          verbose('decrease')
           @index=@data.size
         end
         @lastsize=@data.size
-        verbose('Index',"Index Changed #{oidx} -> #{@index}")
+        verbose("Index Changed #{oidx} -> #{@index}")
         false
       end
 

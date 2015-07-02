@@ -54,14 +54,14 @@ module CIAX
 
     private
     def _getdata
-      verbose("Datax","Convert @data to [:data]")
+      verbose("Convert @data to [:data]")
       hash=Hashx.new(self)
       hash[@dataname]=@data
       hash
     end
 
     def _setdata
-      verbose("Datax","Convert [:data] to @data")
+      verbose("Convert [:data] to @data")
       @data=delete(@dataname).extend(Enumx)
       self['time']||=now_msec
       self
@@ -115,7 +115,7 @@ module CIAX
     require "open-uri"
     def ext_http(host,tag)
       @host=host||'localhost'
-      verbose("Http","Initialize(#{@host})")
+      verbose("Initialize(#{@host})")
       self['id']||Msg.cfg_err("ID")
       @pre_upd_procs << proc{load(tag)}
       load(tag)
@@ -126,17 +126,17 @@ module CIAX
       url=file_url(tag)
       json_str=''
       open(url){|f|
-        verbose("Http","Loading [#{url}](#{f.size})")
+        verbose("Loading [#{url}](#{f.size})")
         json_str=f.read
       }
       if json_str.empty?
-        warning("Http"," -- json file (#{url}) is empty")
+        warning(" -- json file (#{url}) is empty")
       else
         read(json_str)
       end
       self
     rescue OpenURI::HTTPError
-      alert("Http","  -- no url file (#{url})")
+      alert("  -- no url file (#{url})")
     end
 
     private
@@ -160,7 +160,7 @@ module CIAX
         if @data.key?(k)
           hash[k]=get(k)
         else
-          warning("File","No such Key [#{k}]")
+          warning("No such Key [#{k}]")
         end
       }
       if hash.empty?
@@ -180,19 +180,19 @@ module CIAX
       fname=file_path(tag)
       json_str=''
       open(fname){|f|
-        verbose("File","Loading [#{base}](#{f.size})")
+        verbose("Loading [#{base}](#{f.size})")
         f.flock(::File::LOCK_SH)
         json_str=f.read
       }
       if json_str.empty?
-        warning("File"," -- json file (#{base}) is empty")
+        warning(" -- json file (#{base}) is empty")
       else
         data=j2h(json_str)
-        verbose("File","Version compare [#{data['ver']}] vs. <#{self['ver']}>")
+        verbose("Version compare [#{data['ver']}] vs. <#{self['ver']}>")
         if data['ver'] == self['ver']
           @data.deep_update(data[@dataname])
         else
-          alert("File","Version mismatch [#{data['ver']}] should be <#{self['ver']}>")
+          alert("Version mismatch [#{data['ver']}] should be <#{self['ver']}>")
         end
       end
       self
@@ -200,7 +200,7 @@ module CIAX
       if tag
         Msg.par_err("No such Tag","Tag=#{tag_list}")
       else
-        warning("File","  -- no json file (#{base})")
+        warning("  -- no json file (#{base})")
       end
     ensure
       post_upd

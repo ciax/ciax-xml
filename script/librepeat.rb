@@ -31,14 +31,14 @@ module CIAX
       res=str.gsub(/\$([_a-z])/){ @counter[$1] }
       res=res.split(':').map{|i| /\$/ =~ i ? i : eval(i)}.join(':')
       Msg.cfg_err("Empty String") if res == ''
-      verbose("Repeat","Substitute [#{str}] to [#{res}]")
+      verbose("Substitute [#{str}] to [#{res}]")
       res
     end
 
     def format(str)
       return str unless /\$([_a-z])/ === str
       res=str.gsub(/\$([_a-z])/){ @format[$1] % @counter[$1] }
-      verbose("Repeat","Format [#{str}] to [#{res}]")
+      verbose("Format [#{str}] to [#{res}]")
       res
     end
 
@@ -48,9 +48,9 @@ module CIAX
       c=e0['counter'] || '_'
       Msg.abort("Repeat:Counter Duplicate") if @counter.key?(c)
       fmt=@format[c]=e0['format'] || '%d'
-      enclose("Repeat","Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]","End"){
+      enclose("Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]","End"){
         Range.new(subst(e0['from']),subst(e0['to'])).each { |n|
-          enclose("Repeat","Turn Number[#{n}] Start","Turn Number[#{n}] End"){
+          enclose("Turn Number[#{n}] Start","Turn Number[#{n}] End"){
             @counter[c]=n
             @rep.push yield
           }

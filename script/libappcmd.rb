@@ -46,7 +46,7 @@ module CIAX
           super
           @cfg[:batch]=@body.map{|e1|
             args=[]
-            enclose("AppItem","GetCmd(FDB):#{e1.first}","Exec(FDB):%s"){
+            enclose("GetCmd(FDB):#{e1.first}","Exec(FDB):%s"){
               e1.each{|e2| # //argv
                 case e2
                 when String
@@ -54,7 +54,7 @@ module CIAX
                 when Hash
                   str=e2['val']
                   str = e2['format'] % eval(str) if e2['format']
-                  verbose("AppItem","Calculated [#{str}]")
+                  verbose("Calculated [#{str}]")
                   args << str
                 end
               }

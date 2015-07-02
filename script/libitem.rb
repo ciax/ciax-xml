@@ -18,18 +18,18 @@ module CIAX
 
       def set_par(par,opt={})
         par=opt[:par]=validate(type?(par,Array))
-        verbose("Cmd","SetPAR(#{@cfg[:id]}): #{par}")
+        verbose("SetPAR(#{@cfg[:id]}): #{par}")
         cid=opt[:cid]=[@cfg[:id],*par].join(':')
         if key?(cid)
-          verbose("Cmd","SetPAR: Entity Cache found(#{cid})")
+          verbose("SetPAR: Entity Cache found(#{cid})")
           self[cid]
         else
           ent=context_constant('Entity').new(@cfg,opt)
           if @cfg["nocache"]
-            verbose("Cmd","SetPAR: Entity No Cache Created (#{cid})")
+            verbose("SetPAR: Entity No Cache Created (#{cid})")
           else
             self[cid]=ent
-            verbose("Cmd","SetPAR: Entity Cache Created (#{cid})")
+            verbose("SetPAR: Entity Cache Created (#{cid})")
           end
           ent
         end
@@ -69,18 +69,18 @@ module CIAX
               rescue Exception
                 Msg.par_err("Parameter is not number")
               end
-              verbose("Cmd","Validate: [#{num}] Match? [#{disp}]")
+              verbose("Validate: [#{num}] Match? [#{disp}]")
               unless list.any?{|r| ReRange.new(r) == num }
                 Msg.par_err("Out of range (#{num}) for [#{disp}]")
               end
               next num.to_s
             when 'reg'
-              verbose("Cmd","Validate: [#{str}] Match? [#{disp}]")
+              verbose("Validate: [#{str}] Match? [#{disp}]")
               unless list.any?{|r| Regexp.new(r) === str}
                 Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
               end
             else
-              verbose("Cmd","Validate: [#{str}] Match? [#{disp}]")
+              verbose("Validate: [#{str}] Match? [#{disp}]")
               unless list.include?(str)
                 Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
               end
@@ -102,13 +102,13 @@ module CIAX
         @id=@cfg[:cid]
         @cls_color=@cfg[:cls_color]
         @pfx_color=@cfg[:pfx_color]
-        verbose("Cmd","Config",@cfg.path)
-        verbose("Cmd","Config",@cfg.list)
+        verbose("Config",@cfg.path)
+        verbose("Config",@cfg.list)
       end
 
       # returns result of def_proc block (String)
       def exe_cmd(src,pri=1)
-        verbose("Cmd","Execute [#{@id}] from #{src}")
+        verbose("Execute [#{@id}] from #{src}")
         @cfg[:def_proc].call(self,src,pri)
       end
     end

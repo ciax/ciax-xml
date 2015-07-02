@@ -40,7 +40,7 @@ module CIAX
       def exec
         return self if @data['exec'].empty?
         @data['exec'].each{|src,pri,args|
-          verbose("Event","Executing:#{args} from [#{src}] by [#{pri}]")
+          verbose("Executing:#{args} from [#{src}] by [#{pri}]")
           @def_proc.call(args,src,pri)
         }
         @post_exe_procs.each{|p|
@@ -80,7 +80,7 @@ module CIAX
           @data['act_start']=@ctime if !act
           @data['act_end']=now_msec
         end
-        verbose("Rsp","Updated(#{@stat['time']})")
+        verbose("Updated(#{@stat['time']})")
         self
       end
 
@@ -93,7 +93,7 @@ module CIAX
 
       def check(id,item)
         return true unless cklst=item[:cnd]
-        verbose("Rsp","Check: <#{item['label']}>")
+        verbose("Check: <#{item['label']}>")
         rary=[]
         cklst.each{|ckitm|
           vn=ckitm['var']
@@ -102,16 +102,16 @@ module CIAX
           when 'onchange'
             cri=@data['last'][vn]
             res=(cri != val)
-            verbose("Rsp","  onChange(#{vn}): [#{cri}] vs <#{val}> =>#{res}")
+            verbose("  onChange(#{vn}): [#{cri}] vs <#{val}> =>#{res}")
           when 'pattern'
             cri=ckitm['val']
             res=(Regexp.new(cri) === val)
-            verbose("Rsp","  Pattern(#{vn}): [#{cri}] vs <#{val}> =>#{res}")
+            verbose("  Pattern(#{vn}): [#{cri}] vs <#{val}> =>#{res}")
           when 'range'
             cri=ckitm['val']
             f="%.3f" % val.to_f
             res=(ReRange.new(cri) == f)
-            verbose("Rsp","  Range(#{vn}): [#{cri}] vs <#{f}>(#{val.class}) =>#{res}")
+            verbose("  Range(#{vn}): [#{cri}] vs <#{f}>(#{val.class}) =>#{res}")
           end
           res=!res if /true|1/ === ckitm['inv']
           rary << res

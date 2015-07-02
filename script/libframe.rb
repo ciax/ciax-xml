@@ -20,7 +20,7 @@ module CIAX
       #For Command
       def reset
         @frame=''
-        verbose("Cmd","Reset")
+        verbose("Reset")
         self
       end
 
@@ -29,24 +29,24 @@ module CIAX
           code=encode(e,frame)
           @frame << code
           @ccrange << code if @ccrange
-          verbose("Cmd","Add [#{frame.inspect}]")
+          verbose("Add [#{frame.inspect}]")
         end
         self
       end
 
       def copy
-        verbose("Cmd","Copy [#{@frame.inspect}]")
+        verbose("Copy [#{@frame.inspect}]")
         @frame
       end
 
       #For Response
       def set(frame='',length=nil,padding=nil)
         if frame && !frame.empty?
-          verbose("Rsp","Set [#{frame.inspect}]")
+          verbose("Set [#{frame.inspect}]")
           if length # Special for OSS
             @frame=frame.split(@terminator).map{|str|
               res=str.rjust(length.to_i,padding||'0')
-              verbose("Rsp","Frame length short and add '0'") if res.to_i > str.size
+              verbose("Frame length short and add '0'") if res.to_i > str.size
               res
             }.join(@terminator)
           else
@@ -60,20 +60,20 @@ module CIAX
       # If param includes 'val' key, it checks value  only
       # If cut str incldes terminetor, str will be trimmed
       def cut(e0)
-        verbose("Rsp","Cut Start for [#{@frame.inspect}](#{@frame.size})")
+        verbose("Cut Start for [#{@frame.inspect}](#{@frame.size})")
         return verify(e0) if e0['val'] # Verify value
         body,tm,rest=@terminator ? @frame.partition(@terminator) : [@frame]
         if len=e0['length']
-          verbose("Rsp","Cut by Size [#{len}]")
+          verbose("Cut by Size [#{len}]")
           if len.to_i > body.size
-            alert("Rsp","Cut reached terminator [#{body.size}/#{len}] ")
+            alert("Cut reached terminator [#{body.size}/#{len}] ")
             str=body
             @frame=rest.to_s
             cc_add(str)
           elsif len.to_i == body.size
             str=body
             @frame=[tm,rest].join
-            verbose("Rsp","Cut just end before terminator") if tm
+            verbose("Cut just end before terminator") if tm
             cc_add(str)
           else
             str=body.slice!(0,len.to_i)
@@ -82,27 +82,27 @@ module CIAX
           end
         elsif del=e0['delimiter']
           delimiter=eval('"'+del+'"')
-          verbose("Rsp","Cut by Delimiter [#{delimiter.inspect}]")
+          verbose("Cut by Delimiter [#{delimiter.inspect}]")
           str,dlm,body=body.partition(delimiter)
-          verbose("Rsp","Cut by Terminator [#{@terminator.inspect}]") if tm and dlm
+          verbose("Cut by Terminator [#{@terminator.inspect}]") if tm and dlm
           @frame=[body,tm,rest].join
           cc_add([str,dlm].join)
         else
-          verbose("Rsp","Cut all the rest")
+          verbose("Cut all the rest")
           str=body
           @frame=rest.to_s
           cc_add([str,tm].join)
         end
         if str.empty?
-          alert("Rsp","Cut Empty")
+          alert("Cut Empty")
           return ''
         end
         len=str.size
-        verbose("Rsp","Cut String: [#{str.inspect}]")
+        verbose("Cut String: [#{str.inspect}]")
         # Pick Part
         if r=e0['slice']
           str=str.slice(*r.split(':').map{|i| i.to_i })
-          verbose("Rsp","Pick: [#{str.inspect}] by range=[#{r}]")
+          verbose("Pick: [#{str.inspect}] by range=[#{r}]")
         end
         decode(e0,str)
       end
@@ -110,18 +110,18 @@ module CIAX
       # Check Code
       def cc_add(str) # Add to check code
         @ccrange << str if @ccrange
-        verbose("Cc"," Add to Range Frame [#{str.inspect}]")
+        verbose("Cc Add to Range Frame [#{str.inspect}]")
         self
       end
 
       def cc_mark # Check Code Start
-        verbose("Cc"," Mark Range Start" )
+        verbose("Cc Mark Range Start" )
         @ccrange=''
         self
       end
 
       def cc_set # Check Code End
-        verbose("Cc"," Frame [#{@ccrange.inspect}]")
+        verbose("Cc Frame [#{@ccrange.inspect}]")
         chk=0
         case @method
         when 'len'
@@ -134,7 +134,7 @@ module CIAX
         else
           Msg.cfg_err("No such CC method #{@method}")
         end
-        verbose("Cc"," Calc [#{@method.upcase}] -> (#{chk})")
+        verbose("Cc Calc [#{@method.upcase}] -> (#{chk})")
         @ccrange=nil
         @cc=chk.to_s
       end
@@ -142,7 +142,7 @@ module CIAX
       def cc_check(cc)
         return self unless cc
         if  cc == @cc
-          verbose("Cc"," Verify OK [#{cc}]")
+          verbose("Cc Verify OK [#{cc}]")
         else
           vfy_err("CC Mismatch:[#{cc}] (should be [#{@cc}]) in [#{@ccrange.inspect}]")
         end
@@ -161,9 +161,9 @@ module CIAX
           val=str
         end
         if ref == val
-          verbose("Rsp","Verify:(#{e0['label']}) [#{ref.inspect}] OK")
+          verbose("Verify:(#{e0['label']}) [#{ref.inspect}] OK")
         else
-          alert("Rsp","Mismatch(#{e0['label']}):[#{val.inspect}] (should be [#{ref.inspect}])")
+          alert("Mismatch(#{e0['label']}):[#{val.inspect}] (should be [#{ref.inspect}])")
         end
         cc_add(str)
         str
@@ -189,7 +189,7 @@ module CIAX
             num = num < p/2 ? num : num - p
           end
         end
-        verbose("Rsp","Decode:(#{cdc}) [#{code.inspect}] -> [#{num}]")
+        verbose("Decode:(#{cdc}) [#{code.inspect}] -> [#{num}]")
         num.to_s
       end
 
@@ -203,7 +203,7 @@ module CIAX
             num/=256
             code =(@endian == 'little') ? code+c : c+code
           }
-          verbose("Cmd","Encode:[#{str}](#{len}) -> [#{code.inspect}]")
+          verbose("Encode:[#{str}](#{len}) -> [#{code.inspect}]")
           str=code
         end
         str

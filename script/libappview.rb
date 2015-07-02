@@ -16,7 +16,7 @@ module CIAX
         @index=@adbs[:index]
         @stat=type?(stat,Status)
         @stat.post_upd_procs << proc{
-          verbose("View","Propagate Status#upd -> App::View#upd")
+          verbose("Propagate Status#upd -> App::View#upd")
           upd
         }
         # Just additional data should be provided

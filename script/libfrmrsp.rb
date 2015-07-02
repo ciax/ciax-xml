@@ -36,7 +36,7 @@ module CIAX
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
           @sel.update(@fds[rid])
           @sel[:body]=ent.deep_subst(@sel[:body])
-          verbose("Rsp","Selected DB for #{rid}",@sel)
+          verbose("Selected DB for #{rid}",@sel)
           # Frame structure: main(total){ ccrange{ body(selected str) } }
           stream=@input_proc.call
           @frame.set(stream.binary,@sel['length'],@sel['padding'])
@@ -49,9 +49,9 @@ module CIAX
           end
           @data=@cache
           self['time']=stream['time']
-          verbose("Rsp","Updated(#{self['time']})") #Field::get
+          verbose("Updated(#{self['time']})") #Field::get
         else
-          verbose("Rsp","Send Only")
+          verbose("Send Only")
         end
         self
       end
@@ -62,17 +62,17 @@ module CIAX
         e0.each{|e1|
           case e1
           when 'ccrange'
-            enclose("Rsp","Entering Ceck Code Node","Exitting Ceck Code Node"){
+            enclose("Entering Ceck Code Node","Exitting Ceck Code Node"){
               @frame.cc_mark
               getfield_rec(@sel[:ccrange])
               @frame.cc_set
             }
           when 'body'
-            enclose("Rsp","Entering Body Node","Exitting Body Node"){
+            enclose("Entering Body Node","Exitting Body Node"){
               getfield_rec(@sel[:body]||[])
             }
           when 'echo' # Send back the command string
-            verbose("Rsp","Set Command Echo [#{@echo.inspect}]")
+            verbose("Set Command Echo [#{@echo.inspect}]")
             @frame.cut('label' => 'Command Echo','val' => @echo)
           when Hash
             frame_to_field(e1){ @frame.cut(e1) }
@@ -81,7 +81,7 @@ module CIAX
       end
 
       def frame_to_field(e0)
-        enclose("Rsp","#{e0['label']}","Field:End"){
+        enclose("#{e0['label']}","Field:End"){
           if e0[:index]
             # Array
             akey=e0['assign'] || Msg.cfg_err("No key for Array")
@@ -89,7 +89,7 @@ module CIAX
             idxs=e0[:index].map{|e1|
               e1['range']||"0:#{e1['size'].to_i-1}"
             }
-            enclose("Rsp","Array:[#{akey}]:Range#{idxs}","Array:Assign[#{akey}]"){
+            enclose("Array:[#{akey}]:Range#{idxs}","Array:Assign[#{akey}]"){
               @cache[akey]=mk_array(idxs,get(akey)){yield}
             }
           else
@@ -97,7 +97,7 @@ module CIAX
             data=yield
             if akey=e0['assign']
               @cache[akey]=data
-              verbose("Rsp","Assign:[#{akey}] <- <#{data}>")
+              verbose("Assign:[#{akey}] <- <#{data}>")
             end
           end
         }
@@ -111,7 +111,7 @@ module CIAX
         f,l=idx[0].split(':').map{|i| eval(i)}
         Range.new(f,l||f).each{|i|
           fld[i] = mk_array(idx[1..-1],fld[i]){yield}
-          verbose("Rsp","Array:Index[#{i}]=#{fld[i]}")
+          verbose("Array:Index[#{i}]=#{fld[i]}")
         }
         fld
       end

@@ -31,13 +31,13 @@ module CIAX
       @output={}
       self['msg']=''
       Thread.abort_on_exception=true
-      verbose("Exe","initialize [#{@id}]")
+      verbose("initialize [#{@id}]")
     end
 
     # Sync only (Wait for other thread), never inherit
     def exe(args,src='local',pri=1)
       type?(args,Array)
-      verbose("Exe","Command #{args} recieved")
+      verbose("Command #{args} recieved")
       @pre_exe_procs.each{|p| p.call(args)}
       self['msg']=@cobj.set_cmd(args).exe_cmd(src,pri)
       self
@@ -48,7 +48,7 @@ module CIAX
       raise $!
     ensure
       @post_exe_procs.each{|p| p.call(self)}
-      verbose("Exe",inspect)
+      verbose(inspect)
     end
 
     def ext_client(host,port)

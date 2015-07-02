@@ -40,7 +40,7 @@ module CIAX
         @mode=@ash.mode
         @event.post_upd_procs << proc{upd}
         @ash.stat.post_upd_procs << proc{
-          verbose("Watch","Propagate Status#upd -> Event#upd")
+          verbose("Propagate Status#upd -> Event#upd")
         }
         @ash.pre_exe_procs << proc{|args| @event.block?(args) }
         @event.ext_rsp(@ash.stat)
@@ -50,7 +50,7 @@ module CIAX
         @site_stat['watch'] = @event.active?
         block=@event.get('block').map{|id,par| par ? nil : id}.compact
         @cobj.rem.ext.valid_sub(block)
-        verbose("Watch","Propagate Event#upd -> Watch::Exe#upd")
+        verbose("Propagate Event#upd -> Watch::Exe#upd")
         self
       end
 
@@ -104,7 +104,7 @@ module CIAX
       def auto_update
         ThreadLoop.new("Watch:Auto(#@id)",14){
           if @event.get('exec').empty?
-            verbose("Auto","Update(#{@ash.stat['time']})")
+            verbose("Auto Update(#{@ash.stat['time']})")
             begin
               @event.queue('auto',3,[['upd']]).upd.exec
             rescue InvalidID
@@ -114,7 +114,7 @@ module CIAX
             end
           end
           @event.next_upd
-          verbose("Auto","Update Sleep(#{@event.period}sec)")
+          verbose("Auto Update Sleep(#{@event.period}sec)")
           sleep @event.period
         }
       end

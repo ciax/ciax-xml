@@ -18,7 +18,7 @@ module CIAX
       private
       def upd_core
         @adbs.each{|id,hash|
-          enclose("Rsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
+          enclose("GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
             flds=hash[:fields]||next
             case type=hash['type']
             when 'binary'
@@ -32,7 +32,7 @@ module CIAX
                 binstr=bary.join
               end
               data=eval('0b'+binstr)
-              verbose("Rsp","GetBinary[#{data}](#{id})")
+              verbose("GetBinary[#{data}](#{id})")
             else
               ary=flds.map{|e| get_field(e)}
               case type
@@ -43,10 +43,10 @@ module CIAX
                 case type
                 when 'float'
                   data=data.to_f
-                  verbose("Rsp","GetFloat[#{data}](#{id})")
+                  verbose("GetFloat[#{data}](#{id})")
                 when 'integer'
                   data=data.to_i
-                  verbose("Rsp","GetInteger[#{data}](#{id})")
+                  verbose("GetInteger[#{data}](#{id})")
                 end
               else
                 data=ary.join
@@ -55,14 +55,14 @@ module CIAX
             if hash.key?('formula')
               f=hash['formula'].gsub(/\$#/,data.to_s)
               data=eval(f)
-              verbose("Rsp","Formula:#{f}(#{data})(#{id})")
+              verbose("Formula:#{f}(#{data})(#{id})")
             end
             data = hash['format'] % data if hash.key?('format')
             @data[id]=data.to_s
           }
         }
         self['time']=@field['time']
-        verbose("Rsp","Update(#{self['time']})")
+        verbose("Update(#{self['time']})")
         self
       end
 
@@ -70,17 +70,17 @@ module CIAX
         type?(e,Hash)
         fld=e['ref'] || Msg.abort("No field Key in #{e}")
         data=@field.get(fld)
-        verbose("Rsp","NoFieldData in [#{fld}]") if data.empty?
+        verbose("NoFieldData in [#{fld}]") if data.empty?
         data=e[:conv][data] if e[:conv]
         if /true|1/ === e['sign']
-          verbose("Rsp","ConvertFieldData[#{fld}]=[#{data.inspect}]")
+          verbose("ConvertFieldData[#{fld}]=[#{data.inspect}]")
           if data == e['negative']
             data="-"
           else
             data="+"
           end
         end
-        verbose("Rsp","GetFieldData[#{fld}]=[#{data.inspect}]")
+        verbose("GetFieldData[#{fld}]=[#{data.inspect}]")
         data
       end
 
@@ -92,7 +92,7 @@ module CIAX
           bit = -(bit-1) if inv
           bit.to_s
         }.join
-        verbose("Rsp","GetBit[#{str}]")
+        verbose("GetBit[#{str}]")
         str
       end
 

@@ -20,10 +20,10 @@ module CIAX
           adbs[:index].each{|key,hash|
             sid=hash['symbol']||next
             unless tbl=@symdb[sid.to_sym]
-              alert("Symbol","Table[#{sid}] not exist")
+              alert("Table[#{sid}] not exist")
               next
             end
-            verbose("Symbol","ID=#{key},Table=#{sid}")
+            verbose("ID=#{key},Table=#{sid}")
             self['class'][key]='alarm'
             self['msg'][key]='N/A'
             val=@data[key]
@@ -31,18 +31,18 @@ module CIAX
               case sym['type']
               when 'range'
                 next unless ReRange.new(sym['val']) == val
-                verbose("Symbol","VIEW:Range:[#{sym['val']}] and [#{val}]")
+                verbose("VIEW:Range:[#{sym['val']}] and [#{val}]")
                 self['msg'][key]=sym['msg'] % val
               when 'pattern'
                 next unless /#{sym['val']}/ === val || val == 'default'
-                verbose("Symbol","VIEW:Regexp:[#{sym['val']}] and [#{val}]")
+                verbose("VIEW:Regexp:[#{sym['val']}] and [#{val}]")
                 self['msg'][key]=sym['msg'] % val
               end
               self['class'][key]=sym['class']
               break
             }
           }
-          verbose("Symbol","Propagate Status#upd -> Symbol:Update(#{self['time']})")
+          verbose("Propagate Status#upd -> Symbol:Update(#{self['time']})")
         }
         self
       end

@@ -59,7 +59,7 @@ module CIAX
           end
           @frame=Frame.new(dbi['endian'],dbi['ccmethod'])
           return unless @sel[:body]=@body
-          verbose("FrmItem","Body:#{@cfg['label']}(#@id)")
+          verbose("Body:#{@cfg['label']}(#@id)")
           mk_frame(:body)
           if @sel.key?(:ccrange)
             @frame.cc_mark
@@ -68,7 +68,7 @@ module CIAX
           end
           mk_frame(:main)
           frame=@fstr[:main]
-          verbose("FrmItem","Cmd Generated [#@id]")
+          verbose("Cmd Generated [#@id]")
           @cfg[:frame]=frame
           @field.echo=frame # For send back
         end

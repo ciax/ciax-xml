@@ -64,7 +64,7 @@ module CIAX
         }
         @post_exe_procs << proc{@stat.upd}
         @cobj.rem.add_int
-        @cobj.rem.ext.cfg.proc{|ent| ent.cfg.path}
+        @cobj.rem.cfg.proc{|ent| ent.cfg.path}
         @cobj.item_proc('interrupt'){|ent|
           "INTERRUPT(#{@batch_interrupt})"
         }

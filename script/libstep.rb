@@ -115,7 +115,7 @@ module CIAX
       def scan
         sites.inject({}){|hash,site|
           verbose("Scanning Status #{site}")
-          hash[site]=@cfg.layers[:wat].get(site).ash.stat
+          hash[site]=@cfg[:sub_list].get(site).stat
           hash
         }
       end
@@ -123,7 +123,7 @@ module CIAX
       def refresh
         sites.each{|site|
           verbose("Refresh Status #{site}")
-          @cfg.layers[:wat].get(site).ash.stat.refresh
+          @cfg[:sub_list].get(site).stat.refresh
         }
       end
 

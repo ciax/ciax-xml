@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmcrcmd"
 require "librecord"
-require "libsitelayer"
+require "libwatexe"
 
 module CIAX
   # Modes             | Actual Status? | Force Entering | Query? | Moving | Retry Interval | Record?
@@ -23,11 +23,11 @@ module CIAX
       #required cfg keys: app,db,body,stat,(:submcr_proc)
       attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro
-      #ent_cfg should have [:db]
+      #ent_cfg should have [:dbi]
       def initialize(cfg,attr={})
-        @cfg=cfg.gen('seq').update(attr)
-        type?(@cfg.layers[:wat],Wat::List)
-        db=type?(@cfg[:db],Dbi)
+        @cfg=cfg.gen(self).update(attr)
+        type?(@cfg[:sub_list],CIAX::List)
+        db=type?(@cfg[:dbi],Dbi)
         @submcr_proc=@cfg[:submcr_proc]||proc{|args,id|
           show(Msg.indent(@step['depth']+1)+"Sub Macro #{args} issued\n")
           {'sid' => 'dmy'}
@@ -61,7 +61,7 @@ module CIAX
               @step.timeout?{show '.'} && query(['drop','force','retry'])
             when 'exec'
               @running << e1['site']
-              @cfg.layers[:wat].get(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
+              @cfg[:sub_list].get(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
             when 'mcr'
               if @step.async? && @submcr_proc.is_a?(Proc)
                 @step['sid']=@submcr_proc.call(e1['args'],@record['sid'])['sid']
@@ -84,7 +84,7 @@ module CIAX
       def interrupt
         msg("\nInterrupt Issued to running devices #{@running}",3)
         @running.each{|site|
-          @cfg.layers[:wat].get(site).exe(['interrupt'],'user')
+          @cfg[:sub_list].get(site).exe(['interrupt'],'user')
         } if $opt['m']
         finish('interrupted')
         self
@@ -163,11 +163,14 @@ module CIAX
     if __FILE__ == $0
       require "libmcrdb"
       GetOpts.new('cemntr')
-      db=Db.new.get(ENV['PROJ']||'ciax')
-      cfg=Config.new('test',{:db => db})
+      proj=ENV['PROJ']||'ciax'
+      cfg=Config.new
+      cfg[:jump_groups]=[]
+      al=Wat::List.new(cfg).cfg[:sub_list] #Take App List
+      cfg[:sub_list]=al
+      cfg[:dbi]=Db.new.get(proj)
       begin
-        Wat::List.new(cfg)
-        cobj=Command.new(cfg)
+        cobj=Index.new(cfg)
         ent=cobj.set_cmd(ARGV)
         seq=Seq.new(ent.cfg)
         seq.macro

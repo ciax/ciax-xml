@@ -11,8 +11,8 @@ module CIAX
       attr_reader :tid,:stat,:tname
       include Msg
       def initialize(stat)
-        @stat=type?(stat,Datax)
         @cls_color=14
+        @stat=type?(stat,Datax)
         @tid="#{@stat.type}_#{@stat['ver']}"
         @tname=@stat.type.capitalize
         verbose("Initialize Table '#{@tid}'")
@@ -81,9 +81,9 @@ module CIAX
       # @ sqlcmd
       include Msg
       def initialize(id,layer=nil)
+        @cls_color=10
         @sqlcmd=["sqlite3",VarDir+"/sqlog_"+id+".sq3"]
         @queue=Queue.new
-        @cls_color=10
         verbose("Initialize '#{id}' on #{layer}")
         ThreadLoop.new("SqLog(#{layer}:#{id})",13){
           sqlary=['begin;']
@@ -138,13 +138,13 @@ module CIAX
       include CIAX::Msg
       attr_reader :index,:max
       def initialize(id)
+        @cls_color=1
         @logary=[{}]
         @index=0
         @sqlcmd=["sqlite3",ENV['HOME']+"/.var/sqlog_"+id+".sq3"]
         @tbl=query('.tables').split(/ /).grep(/^stream/).sort.last || raise("No Stream table")
         @total=query("select count(*) from #@tbl where dir='rcv';").to_i
         raise("No Line") if @total < 1
-        @cls_color=1
       end
 
       def query(str)

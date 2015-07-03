@@ -17,6 +17,7 @@ module CIAX
     # cfg should have [:db] shared in the site (among layers)
     def initialize(id,cfg={},attr={})
       super()
+      @cls_color=13
       @cfg=cfg.gen(self).update(attr)
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @id=id
@@ -26,7 +27,6 @@ module CIAX
       @site_stat=Prompt.new # Site Status shared among layers
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
-      @cls_color=@cfg[:cls_color]=12
       @output={}
       self['msg']=''
       Thread.abort_on_exception=true

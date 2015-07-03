@@ -9,6 +9,7 @@ module CIAX
     attr_reader :type
     def initialize(type,id=nil,ver=nil,host=nil)
       super()
+      @cls_color=6
       @type=type
       # Headers
       self['time']=now_msec
@@ -17,7 +18,6 @@ module CIAX
       self['host']=host||`hostname`.strip
       # Setting (Not shown in JSON)
       @thread=Thread.current # For Thread safe
-      @cls_color=6
     end
 
 

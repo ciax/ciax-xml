@@ -9,9 +9,9 @@ module CIAX
       #dom_cfg keys: caption,color,column
       def initialize(cfg,attr={})
         super()
+        @cls_color=3
         @cfg=cfg.gen(self).update(attr)
         @valid_keys=@cfg[:valid_keys]||[]
-        @cls_color=@cfg[:cls_color]
         @displist=Disp::List.new(@cfg,@valid_keys)
         @cfg['color']||=2
         @cfg['column']||=2

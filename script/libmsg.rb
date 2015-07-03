@@ -44,7 +44,7 @@ module CIAX
 
   # Should be extended in module/class
   module Msg
-    attr_accessor :ns_color,:cls_color
+    attr_accessor :cls_color
     Start_time=Time.now
     @@base=1
     # Public Method

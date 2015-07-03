@@ -6,8 +6,8 @@ module CIAX
     class Frame # For Command/Response Frame
       include Msg
       attr_reader :cc
+      # terminator: frame pointer will jump to terminator if no length or delimiter is specified
       def initialize(endian=nil,ccmethod=nil,terminator=nil)
-        # terminator: frame pointer will jump to terminator if no length or delimiter is specified
         @cls_color=11
         @endian=endian
         @ccrange=nil

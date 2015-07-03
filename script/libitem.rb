@@ -11,8 +11,8 @@ module CIAX
       #grp_cfg should have :id,'label',:parameters,:def_proc
       def initialize(cfg,attr={})
         super()
+        @cls_color=6
         @cfg=cfg.gen(self).update(attr)
-        @cls_color=@cfg[:cls_color]
       end
 
       def set_par(par,opt={})
@@ -96,10 +96,10 @@ module CIAX
       attr_reader :id,:par,:cfg
       #set should have :def_proc
       def initialize(cfg,attr={})
+        @cls_color=14
         @cfg=cfg.gen(self).update(attr)
         @par=@cfg[:par]
         @id=@cfg[:cid]
-        @cls_color=@cfg[:cls_color]
         verbose("Config",@cfg.path)
       end
 

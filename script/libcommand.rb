@@ -9,12 +9,12 @@ module CIAX
     class GrpAry < Arrayx
       attr_reader :cfg
       def initialize(cfg,attr={})
+        @cls_color=13
         # Add exe_cfg to @generation as ancestor, add attr to self
         # @cfg is isolated from exe_cfg
         # So it is same meaning to set value to 'attr' and @cfg
         @cfg=cfg.gen(self).update(attr)
         @cfg[:def_proc]=proc{|ent| ent.cfg.path }
-        @cls_color=(@cfg[:cls_color]||=2)
       end
 
       def get_item(id)

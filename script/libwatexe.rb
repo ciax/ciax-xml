@@ -27,7 +27,6 @@ module CIAX
       attr_reader :ash
       def initialize(id,cfg={},attr={})
         super
-        @cls_color=3
         @ash=@cfg[:sub_list].get(@id)
         @cobj=Index.new(@cfg)
         @cobj.add_rem(@ash)
@@ -124,7 +123,6 @@ module CIAX
       attr_reader :loc,:rem,:ash
       def initialize(cfg,attr={})
         super
-        @cfg[:cls_color]=3
         @loc=add(Local::Domain)
       end
 

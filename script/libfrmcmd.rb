@@ -27,7 +27,7 @@ module CIAX
           add_item('save',"[key,key...] [tag]",def_pars(2))
           add_item('load',"[tag]",def_pars(1))
           cmd=add_item('set',"[key(:idx)] [val(,val)]",def_pars(2))
-          cmd.cfg.proc{|ent|
+          cmd.proc{|ent|
             if @cfg[:field].key?(ent.par[0])
               @cfg[:field].put(*ent.par)
               'OK'
@@ -106,7 +106,7 @@ module CIAX
         cfg[:dbi]=Db.new.get(id)
         cfg[:field]=Field.new.set_db(cfg[:dbi])
         cobj=Index.new(cfg)
-        cobj.rem.cfg.proc{|ent| ent.cfg.path }
+        cobj.rem.proc{|ent| ent.cfg.path }
         cobj.rem.add_int
         fld.read unless STDIN.tty?
         ent=cobj.set_cmd(args)

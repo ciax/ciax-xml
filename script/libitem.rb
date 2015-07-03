@@ -38,6 +38,12 @@ module CIAX
         (@cfg[:parameters]||[]).map{|e| e[:list] if e[:type] == 'str'}.flatten
       end
 
+      # Proc should return String
+      def proc(&def_proc)
+        @cfg[:def_proc]=type?(def_proc,Proc)
+        self
+      end
+
       private
       # Parameter for validate(cfg[:paremeters]) structure:  [{:type,:list,:default}, ...]
       # *Empty parameter will replaced to :default

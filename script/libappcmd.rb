@@ -20,11 +20,11 @@ module CIAX
       class Group < Group
         def initialize(cfg,attr={})
           super
-          add_item('set','[key] [val]',def_pars(2)).cfg.proc{|ent|
+          add_item('set','[key] [val]',def_pars(2)).proc{|ent|
             @cfg[:stat].put(ent.par[0],ent.par[1])
             "SET:#{ent.par[0]}=#{ent.par[1]}"
           }
-          add_item('del','[key,...]',def_pars(1)).cfg.proc{|ent|
+          add_item('del','[key,...]',def_pars(1)).proc{|ent|
             ent.par[0].split(',').each{|key| @cfg[:stat].del(key) }
             "DELETE:#{ent.par[0]}"
           }
@@ -72,7 +72,7 @@ module CIAX
         cfg=Config.new
         cfg[:dbi]=Db.new.get(id)
         cobj=Index.new(cfg)
-        cobj.rem.cfg.proc{|ent| ent.cfg.path }
+        cobj.rem.proc{|ent| ent.cfg.path }
         ent=cobj.set_cmd(args)
         puts ent.exe_cmd('test')
         puts ent.cfg[:batch].to_s

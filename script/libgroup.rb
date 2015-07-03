@@ -71,6 +71,12 @@ module CIAX
         get_item(id).set_par(par,opt)
       end
 
+      # Proc should return String
+      def proc(&def_proc)
+        @cfg[:def_proc]=type?(def_proc,Proc)
+        self
+      end
+
       private
       def new_item(id,crnt={})
         crnt[:id]=id

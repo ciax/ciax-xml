@@ -41,7 +41,7 @@ module CIAX
           @cfg['caption']="Switch #{name}s"
           @cfg['color']=5
           @cfg['column']=3
-          @cfg.proc{|ent|
+          self.proc{|ent|
             # Use shell() of top level class (ie. List.new.get(id).shell -> List.new.shell(id) )
             raise(ent.cfg[:jump_class],ent.id)
           }

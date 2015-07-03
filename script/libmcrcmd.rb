@@ -73,7 +73,7 @@ module CIAX
         cfg=Config.new
         cfg[:dbi]=Db.new.get(proj)
         cobj=Index.new(cfg)
-        cobj.rem.ext.cfg.proc{|ent| ent.cfg.path }
+        cobj.rem.ext.proc{|ent| ent.cfg.path }
         ent=cobj.set_cmd(ARGV)
         puts ent.exe_cmd('test')
         puts ent.cfg[:batch].to_s

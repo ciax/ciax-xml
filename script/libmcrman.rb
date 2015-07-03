@@ -53,10 +53,10 @@ module CIAX
           }
           @shell_input_proc=proc{|args| @list.conv_cmd(args,@cobj.intgrp)}
           vg=@cobj.loc.add('caption'=>"Change View Mode",'color' => 9)
-          vg.add_item('lst',"List mode").cfg.proc{@smode=false;''}
-          vg.add_item('seq',"Sequencer mode").cfg.proc{@smode=true;''}
-          vg.add_item('vis',"Visual mode").cfg.proc{@output.vmode='v';''}
-          vg.add_item('raw',"Raw mode").cfg.proc{@output.vmode='r';''}
+          vg.add_item('lst',"List mode").proc{@smode=false;''}
+          vg.add_item('seq',"Sequencer mode").proc{@smode=true;''}
+          vg.add_item('vis',"Visual mode").proc{@output.vmode='v';''}
+          vg.add_item('raw',"Raw mode").proc{@output.vmode='r';''}
           self
         end
       end
@@ -81,7 +81,7 @@ module CIAX
           self['sid']='' # For server response
           @pre_exe_procs << proc{ self['sid']='' }
           # Internal Command Group
-          @cobj.intgrp.cfg.proc{|ent|
+          @cobj.intgrp.proc{|ent|
             sid=ent.par[0]
             if sobj=@list.get(sid)
               self['sid']=sid
@@ -91,12 +91,12 @@ module CIAX
             end
           }
           # External Command Group
-          @cobj.rem.ext.cfg.proc{|ent|
+          @cobj.rem.ext.proc{|ent|
             mobj=@list.add_ent(ent).lastval
             self['sid']=mobj.id
             "ACCEPT"
           }
-          @cobj.rem.int['interrupt'].cfg.proc{|ent|
+          @cobj.rem.int['interrupt'].proc{|ent|
             @list.interrupt
             'INTERRUPT'
           }

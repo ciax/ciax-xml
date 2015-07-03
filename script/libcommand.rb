@@ -41,6 +41,12 @@ module CIAX
         map{|e| e.view_list}.grep(/./).join("\n")
       end
 
+      # Proc should return String
+      def proc(&def_proc)
+        @cfg[:def_proc]=type?(def_proc,Proc)
+        self
+      end
+
       def show_proc(id)
         item=get_item(id)
         cfg=item.cfg

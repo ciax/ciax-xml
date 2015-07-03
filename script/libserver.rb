@@ -19,7 +19,7 @@ module CIAX
         end
       }
       @server_output_proc=proc{ merge(@site_stat).to_j }
-      @cobj.rem.hid.add_nil.cfg.proc{""}
+      @cobj.rem.hid.add_nil.proc{""}
       udp=UDPSocket.open
       udp.bind("0.0.0.0",port.to_i)
       ThreadLoop.new("Server(#@layer:#@id)",9){

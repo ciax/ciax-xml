@@ -20,9 +20,9 @@
     called:
       Entity#execmd
     set_methods:
-      (Command,Domain,Group)#cfg.proc(&) 
-      (Command,Domain,Group)#rem.int.cfg.proc(id,&) 
-      (App/Frm/Mcr)::Command#rem.ext.cfg.proc(&) 
+      (Command,Domain,Group)#proc(&) 
+      (Command,Domain,Group)#rem.int.proc(id,&) 
+      (App/Frm/Mcr)::Command#rem.ext.proc(&) 
 
 ## Related to Event(DataH)
 

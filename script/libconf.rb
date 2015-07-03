@@ -59,12 +59,6 @@ module CIAX
       }
     end
 
-    # Proc should return String
-    def proc(&def_proc)
-      self[:def_proc]=type?(def_proc,Proc)
-      self
-    end
-
     # Show all conttents of all generation
     def path(key=nil)
       i=0

@@ -48,8 +48,8 @@ module CIAX
       def ext_shell
         @output=$opt['j'] ? @stat : @appview
         vg=@cobj.loc.add_view
-        vg['vis'].cfg.proc{@output=@appview;''}
-        vg['raw'].cfg.proc{@output=@stat;''}
+        vg['vis'].proc{@output=@appview;''}
+        vg['raw'].proc{@output=@stat;''}
         super
       end
     end
@@ -64,8 +64,8 @@ module CIAX
         }
         @post_exe_procs << proc{@stat.upd}
         @cobj.rem.add_int
-        @cobj.rem.cfg.proc{|ent| ent.cfg.path}
-        @cobj.rem.hid['interrupt'].cfg.proc{|ent|
+        @cobj.rem.proc{|ent| ent.cfg.path}
+        @cobj.rem.hid['interrupt'].proc{|ent|
           "INTERRUPT(#{@batch_interrupt})"
         }
       end
@@ -92,12 +92,12 @@ module CIAX
           verbose("Propagate Frm::Exe#flush -> Buffer#flush")
           @buf.flush
         }
-        @cobj.rem.ext.cfg.proc{|ent,src,pri|
+        @cobj.rem.ext.proc{|ent,src,pri|
           verbose("#@id/Issuing:#{ent.id} from #{src} with priority #{pri}")
           @buf.send(pri,ent,src)
           "ISSUED"
         }
-        @cobj.rem.hid['interrupt'].cfg.proc{|ent,src|
+        @cobj.rem.hid['interrupt'].proc{|ent,src|
           @batch_interrupt.each{|args|
             verbose("#@id/Issuing:#{args} for Interrupt")
             @buf.send(0,@cobj.set_cmd(args),src)

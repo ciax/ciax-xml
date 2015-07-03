@@ -8,12 +8,12 @@ module CIAX
       def initialize(inter_cfg={},attr={})
         super(Layer,inter_cfg,attr)
         sl=Site::Layer.new(@cfg).add_layer(Wat)
-        sl.jumpgrp.add_item('mcr',"Mcr mode").cfg.proc{|ent|
+        sl.jumpgrp.add_item('mcr',"Mcr mode").proc{|ent|
           raise(Jump,ent.id)
         }
         mcr=Mcr::Man.new(@cfg)
         put('mcr',mcr)
-        wg=mcr.cobj.loc.put(@cfg.layers[:app].jumpgrp).cfg.proc{|ent| sl.shell(ent.id,'app');exit }
+        wg=mcr.cobj.loc.put(@cfg.layers[:app].jumpgrp).proc{|ent| sl.shell(ent.id,'app');exit }
       end
 
       def shell

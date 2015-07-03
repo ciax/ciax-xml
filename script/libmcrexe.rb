@@ -38,7 +38,7 @@ module CIAX
         @que_res=Queue.new
         update({'cid'=>@record.cfg[:cid],'step'=>0,'total_steps'=>@record.cfg[:body].size,'stat'=>'run','option'=>[]})
         @running=[]
-        @cobj.rem.int['interrupt'].cfg.proc{|ent,src|
+        @cobj.rem.int['interrupt'].proc{|ent,src|
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
         }
@@ -47,7 +47,7 @@ module CIAX
 
       def ext_shell
         intgrp=@cobj.rem.add_int.int
-        intgrp.cfg.proc{|ent| reply(ent.id)}
+        intgrp.proc{|ent| reply(ent.id)}
         self['option']=intgrp.valid_keys.clear
         super(@record.cfg[:cid].tr(':','_'))
         @prompt_proc=proc{
@@ -56,8 +56,8 @@ module CIAX
           res
         }
         vg=@cobj.loc.add('caption'=>"Change View Mode",'color' => 9)
-        vg.add_item('vis',"Visual mode").cfg.proc{@output.vmode='v';''}
-        vg.add_item('raw',"Raw mode").cfg.proc{@output.vmode='r';''}
+        vg.add_item('vis',"Visual mode").proc{@output.vmode='v';''}
+        vg.add_item('raw',"Raw mode").proc{@output.vmode='r';''}
         self
       end
 

@@ -33,7 +33,7 @@ module CIAX
       attr_accessor :batch_interrupt
       def initialize(id,cfg={},attr={})
         super
-        @cls_color=@cfg[:cls_color]=4
+        @cls_color=@cfg[:cls_color]=13
         @cfg[:site_id]=id
         # LayerDB might generated in List level
         @adb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)

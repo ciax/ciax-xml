@@ -31,7 +31,6 @@ module CIAX
       attr_reader :field,:flush_procs
       def initialize(id,cfg={},attr={})
         super
-        @cls_color=6
         # DB is generated in List level
         @cfg[:site_id]=id
         @fdb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)

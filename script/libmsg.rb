@@ -107,13 +107,21 @@ module CIAX
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
       tc=Thread.current
-      ts << Msg.indent(@ver_indent)+Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15)
+      ts << Msg.indent(@ver_indent)
+      ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15)
       cpath=class_path
       level=cpath.shift
       cls=cpath.join('::')
-      #||=singleton_class.ancestors[1].name.split('::')[1..-1].join('::')
-      ts << Msg.color("#{level}:",@ns_color||7)
-      ts << Msg.color("#{cls}:",@cls_color||15)
+      begin
+        lv_color=eval("#{level}::Color")
+      rescue NameError
+        Msg.color("No #{level}::Color",1)
+        lv_color=1
+      end        
+      ts << Msg.color("#{level}",lv_color)
+      ts << ':'
+      ts << Msg.color("#{cls}",@cls_color||15)
+      ts << ':'
       ts << title.to_s
     end
 
@@ -320,4 +328,11 @@ module CIAX
       mod.name.split('::')[pos].downcase
     end
   end
+
+  module Frm;Color=2;end
+  module App;Color=6;end
+  module Wat;Color=3;end
+  module Hex;Color=5;end
+  module Mcr;Color=7;end
+  module Xml;Color=4;end
 end

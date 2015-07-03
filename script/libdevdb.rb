@@ -2,7 +2,7 @@
 require "libfrmdb"
 
 module CIAX
-  module Dev
+  module Dev;Color=2
     class Db < Db
       def initialize(proj=PROJ)
         super('ddb',proj)

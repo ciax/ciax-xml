@@ -2,7 +2,7 @@
 require "libappdb"
 
 module CIAX
-  module Ins
+  module Ins;Color=6
     class Db < Db
       include Wat::Db
       def initialize(proj=PROJ)

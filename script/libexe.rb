@@ -26,8 +26,7 @@ module CIAX
       @site_stat=Prompt.new # Site Status shared among layers
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
-      @cls_color||=7
-      @pfx_color||=9
+      @cls_color=@cfg[:cls_color]=12
       @output={}
       self['msg']=''
       Thread.abort_on_exception=true

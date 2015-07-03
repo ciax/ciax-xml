@@ -111,7 +111,7 @@ module CIAX
     end
   end
 
-  module Http
+  module Http;Color=3
     require "open-uri"
     def ext_http(host,tag)
       @host=host||'localhost'
@@ -145,7 +145,7 @@ module CIAX
     end
   end
 
-  module File
+  module File;Color=12
     include Save
     def ext_file(tag=nil)
       ext_save(tag)

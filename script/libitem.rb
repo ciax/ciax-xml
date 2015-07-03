@@ -3,7 +3,7 @@ require 'librerange'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
 module CIAX
-  module Command
+  module Command;Color=2
     # Corresponds commands
     class Item < Hashx
       include Msg

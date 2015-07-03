@@ -16,8 +16,7 @@ module CIAX
       attr_reader :top,:displist
       def initialize(type,project=nil)
         super()
-        @cls_color=4
-        @pfx_color=2
+        @cls_color=2
         @project=project
         /.+/ =~ type || Msg.cfg_err("No Db Type")
         @type=type

@@ -4,7 +4,7 @@ require "librerange"
 
 # id = Table Group ID
 module CIAX
-  module Sym
+  module Sym;Color=1
     class Db < Db
       def initialize
         super('sdb')
@@ -26,7 +26,7 @@ module CIAX
           e1.each{|e2| # case
             (db[id]||=[]) << e2.to_h.update({'type' => e2.name})
           }
-          verbose("SymDb","Symbol Table:#{id} : #{label}")
+          verbose("Symbol Table:#{id} : #{label}")
         }
         db
       end

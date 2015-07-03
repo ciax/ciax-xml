@@ -24,25 +24,24 @@ module CIAX
 
     # cfg should have [:sub_list]
     class Exe < Exe
-      attr_reader :ash
       def initialize(id,cfg={},attr={})
         super
-        @ash=@cfg[:sub_list].get(@id)
+        @sub=@cfg[:sub_list].get(@id)
         @cobj=Index.new(@cfg)
-        @cobj.add_rem(@ash)
-        @event=Event.new.set_db(@ash.adb)
-        @site_stat=@ash.site_stat.add_db('auto'=>'@','watch'=>'&')
-        @ash.batch_interrupt=@event.get('int')
+        @cobj.add_rem(@sub)
+        @event=Event.new.set_db(@sub.adb)
+        @site_stat=@sub.site_stat.add_db('auto'=>'@','watch'=>'&')
+        @sub.batch_interrupt=@event.get('int')
       end
 
       def init_sv
-        @mode=@ash.mode
+        @mode=@sub.mode
         @event.post_upd_procs << proc{upd}
-        @ash.stat.post_upd_procs << proc{
+        @sub.stat.post_upd_procs << proc{
           verbose("Propagate Status#upd -> Event#upd")
         }
-        @ash.pre_exe_procs << proc{|args| @event.block?(args) }
-        @event.ext_rsp(@ash.stat)
+        @sub.pre_exe_procs << proc{|args| @event.block?(args) }
+        @event.ext_rsp(@sub.stat)
       end
 
       def upd
@@ -54,7 +53,7 @@ module CIAX
       end
 
       def ext_shell
-        @wview=View.new(@ash.adb,@event)
+        @wview=View.new(@sub.adb,@event)
         @output=$opt['j'] ? @event : @wview
         vg=@cobj.loc.add_view
         vg['vis'].proc{@output=@wview;''}
@@ -67,16 +66,16 @@ module CIAX
       def initialize(id,cfg={},attr={})
         super
         init_sv
-        # @event is independent from @ash.stat
-        @ash.stat.post_upd_procs << proc{@event.upd}
+        # @event is independent from @sub.stat
+        @sub.stat.post_upd_procs << proc{@event.upd}
       end
     end
 
     class Cl < Exe
       def initialize(id,cfg={},attr={})
         super
-        @event.ext_http(@ash.host)
-        # @event is independent from @ash.stat
+        @event.ext_http(@sub.host)
+        # @event is independent from @sub.stat
         @pre_exe_procs << proc{@event.upd}
       end
     end
@@ -87,15 +86,15 @@ module CIAX
         init_sv
         @event.ext_file
         @event.def_proc=proc{|args,src,pri|
-          @ash.exe(args,src,pri)
+          @sub.exe(args,src,pri)
         }
-        @event.ext_log if $opt['e'] && @ash.stat['ver']
+        @event.ext_log if $opt['e'] && @sub.stat['ver']
         @interval=@event.interval
         @tid_auto=auto_update
         @post_exe_procs << proc{
           @site_stat['auto'] = @tid_auto && @tid_auto.alive?
         }
-        @ash.stat.post_upd_procs << proc{
+        @sub.stat.post_upd_procs << proc{
           @event.upd.exec
         }
       end
@@ -103,7 +102,7 @@ module CIAX
       def auto_update
         ThreadLoop.new("Watch:Auto(#@id)",14){
           if @event.get('exec').empty?
-            verbose("Auto Update(#{@ash.stat['time']})")
+            verbose("Auto Update(#{@sub.stat['time']})")
             begin
               @event.queue('auto',3,[['upd']]).upd.exec
             rescue InvalidID

@@ -37,8 +37,8 @@ module CIAX
         # LayerDB might generated in List level
         @adb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)
         @cfg[:frm_site]=@adb['frm_site']
-        @fsh=@cfg[:sub_list].get(@cfg[:frm_site])
-        @site_stat=@fsh.site_stat.add_db('isu' => '*')
+        @sub=@cfg[:sub_list].get(@cfg[:frm_site])
+        @site_stat=@sub.site_stat.add_db('isu' => '*')
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
         @appview=View.new(@adb,@stat)
         @batch_interrupt=[]
@@ -86,10 +86,10 @@ module CIAX
       # cfg(attr) must have layers[:frm]
       def initialize(id,cfg={},attr={})
         super
-        @stat.ext_rsp(@fsh.field).ext_sym.ext_file
+        @stat.ext_rsp(@sub.field).ext_sym.ext_file
         @buf=init_buf
         ver=@stat['ver']
-        @fsh.flush_procs << proc{
+        @sub.flush_procs << proc{
           verbose("Propagate Frm::Exe#flush -> Buffer#flush")
           @buf.flush
         }
@@ -127,7 +127,7 @@ module CIAX
         }
         buf.recv_proc{|args,src|
           verbose("Processing #{args}")
-          @fsh.exe(args,src)
+          @sub.exe(args,src)
         }
         buf.flush_proc{
           verbose("Propagate Buffer#flush -> Status#upd")

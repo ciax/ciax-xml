@@ -32,7 +32,7 @@ module CIAX
           show(Msg.indent(@step['depth']+1)+"Sub Macro #{args} issued\n")
           {'sid' => 'dmy'}
         }
-        @record=Record.new(db['id'],db['version']).start(@cfg)
+        @record=Record.new(db['id'],@cfg['ver']).start(@cfg)
         @post_stat_procs=[] # execute on stat changes
         @post_mcr_procs=[]
         @que_cmd=Queue.new

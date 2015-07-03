@@ -52,7 +52,7 @@ module CIAX
     def cache(id)
       @base="#{@type}-#{id}"
       if newest?
-        verbose("Cache Loading(#{id})")
+        verbose("Cache Loading (#{id})")
         return self[id] if key?(id)
         begin
           res=Marshal.load(IO.read(fmar))
@@ -60,7 +60,7 @@ module CIAX
           res={}
         end
       else
-        warning("Cache Refresh Db(#{id})")
+        warning("Cache Refresh (#{id})")
         res=yield(@doc||=Xml::Doc.new(@type,@proj))
         open(fmar,'w') {|f|
           f << Marshal.dump(res)

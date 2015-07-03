@@ -45,12 +45,6 @@ module CIAX
         @cobj=Index.new(@cfg)
       end
 
-      def ext_server
-        @host=type?(@cfg['host']||@adb['host']||'localhost',String)
-        @port=@adb['port']
-        super(@port)
-      end
-
       def ext_shell
         @output=$opt['j'] ? @stat : @appview
         vg=@cobj.loc.add_view
@@ -80,9 +74,10 @@ module CIAX
     class Cl < Exe
       def initialize(id,cfg={},attr={})
         super
-        @stat.ext_http(@host)
+        host=type?(@cfg['host']||@adb['host']||'localhost',String)
+        @stat.ext_http(host)
         @pre_exe_procs << proc{@stat.upd}
-        ext_client(@host,@port)
+        ext_client(host,@adb['port'])
       end
     end
 
@@ -114,7 +109,7 @@ module CIAX
         if sv=@cfg[:sqlog]
           sv.add_table(@stat)
         end
-        ext_server
+        ext_server(@adb['port'])
       end
 
       private

@@ -46,7 +46,6 @@ module CIAX
         @output=@field
         super
       end        
-
     end
 
     class Test < Exe
@@ -64,7 +63,7 @@ module CIAX
     class Cl < Exe
       def initialize(id,cfg={},attr={})
         super
-        host=type?(cfg['host']||@fdb['host']||'localhost',String)
+        host=type?(@cfg['host']||@fdb['host']||'localhost',String)
         @field.ext_http(host)
         @cobj.rem.cfg.proc{to_s}
         @pre_exe_procs << proc{@field.upd}
@@ -110,7 +109,7 @@ module CIAX
           flush
           "Load [#{ent.par[0]}]"
         }
-        ext_server(@fdb['port'].to_i)
+        ext_server(@fdb['port'])
       end
 
       def exe(args,src='local',pri=1)

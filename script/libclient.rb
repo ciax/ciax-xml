@@ -14,17 +14,16 @@ module CIAX
       host||='localhost'
       @site_stat.add_db('udperr' => 'x')
       @udp=UDPSocket.open()
-      verbose("Initialize [#@id/#{host}:#{port}]")
-      @addr=Socket.pack_sockaddr_in(port.to_i,host)
+      verbose("Initialize UDP[#@id/#{host}:#{port}]")
       @cobj.rem.cfg.proc{|ent|
         args=ent.id.split(':')
         # Address family not supported by protocol -> see above
-        @udp.send(JSON.dump(args),0,@addr)
-        verbose("Send #{args}")
+        @udp.send(JSON.dump(args),0,host,port.to_i)
+        verbose("UDP Send #{args}")
         if IO.select([@udp],nil,nil,1)
           res=@udp.recv(1024)
           @site_stat['udperr']=false
-          verbose("Recv #{res}")
+          verbose("UDP Recv #{res}")
           update(@site_stat.pick(JSON.load(res))) unless res.empty?
         else
           @site_stat['udperr']=true

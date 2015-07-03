@@ -12,7 +12,6 @@ module CIAX
         @cfg=cfg.gen(self).update(attr)
         @valid_keys=@cfg[:valid_keys]||[]
         @cls_color=@cfg[:cls_color]
-        @pfx_color=@cfg[:pfx_color]
         @displist=Disp::List.new(@cfg,@valid_keys)
         @cfg['color']||=2
         @cfg['column']||=2

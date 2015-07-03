@@ -13,7 +13,6 @@ module CIAX
         super()
         @cfg=cfg.gen(self).update(attr)
         @cls_color=@cfg[:cls_color]
-        @pfx_color=@cfg[:pfx_color]
       end
 
       def set_par(par,opt={})
@@ -101,9 +100,7 @@ module CIAX
         @par=@cfg[:par]
         @id=@cfg[:cid]
         @cls_color=@cfg[:cls_color]
-        @pfx_color=@cfg[:pfx_color]
         verbose("Config",@cfg.path)
-        verbose("Config",@cfg.list)
       end
 
       # returns result of def_proc block (String)

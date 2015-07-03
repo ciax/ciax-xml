@@ -18,8 +18,7 @@ module CIAX
       @iocmd=type?(iocmd,Array).compact
       super('stream',id,ver)
       update('dir' => '','cmd' => '','base64' => '')
-      @cls_color=6
-      @pfx_color=9
+      @cls_color=9
       verbose("Initialize [#{iocmd.join(' ')}]")
       @wait=wait.to_f
       @timeout=timeout||5

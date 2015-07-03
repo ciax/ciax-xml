@@ -10,8 +10,7 @@ module CIAX
     class View < Upd
       def initialize(adb,stat)
         super()
-        @cls_color=2
-        @pfx_color=13
+        @cls_color=13
         @adbs=type?(adb,Dbi)[:status]
         @index=@adbs[:index]
         @stat=type?(stat,Status)

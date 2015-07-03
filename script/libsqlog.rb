@@ -12,8 +12,7 @@ module CIAX
       include Msg
       def initialize(stat)
         @stat=type?(stat,Datax)
-        @cls_color=1
-        @pfx_color=14
+        @cls_color=14
         @tid="#{@stat.type}_#{@stat['ver']}"
         @tname=@stat.type.capitalize
         verbose("Initialize Table '#{@tid}'")
@@ -84,8 +83,7 @@ module CIAX
       def initialize(id,layer=nil)
         @sqlcmd=["sqlite3",VarDir+"/sqlog_"+id+".sq3"]
         @queue=Queue.new
-        @cls_color=1
-        @pfx_color=10
+        @cls_color=10
         verbose("Initialize '#{id}' on #{layer}")
         ThreadLoop.new("SqLog(#{layer}:#{id})",13){
           sqlary=['begin;']
@@ -146,7 +144,7 @@ module CIAX
         @tbl=query('.tables').split(/ /).grep(/^stream/).sort.last || raise("No Stream table")
         @total=query("select count(*) from #@tbl where dir='rcv';").to_i
         raise("No Line") if @total < 1
-        @pfx_color=1
+        @cls_color=1
       end
 
       def query(str)

@@ -63,11 +63,12 @@ module CIAX
           st['time']=now_msec
         }
         @post_exe_procs << proc{@stat.upd}
+        @cobj.rem.proc{''}
         @cobj.rem.add_int
-        @cobj.rem.proc{|ent| ent.cfg.path}
         @cobj.rem.hid['interrupt'].proc{|ent|
           "INTERRUPT(#{@batch_interrupt})"
         }
+        @cobj.rem.ext.proc{|ent| ent.cfg.path}
       end
     end
 

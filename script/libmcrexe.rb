@@ -6,7 +6,6 @@ module CIAX
   module Mcr
     class Exe < Exe
       #required cfg keys: app,db,body,stat
-      attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro
       #ent_cfg should have [:db]
       def initialize(cfg)
@@ -25,25 +24,26 @@ module CIAX
 
       def ext_shell
         int=@cobj.rem.add_int
+        warn @cobj.view_list
         int.proc{|ent| reply(ent.id)}
-        self['option']=int.valid_keys.clear
+        @seq['option']=int.valid_keys.clear
         super(@cfg[:cid].tr(':','_'))
         @prompt_proc=proc{
-          res="(#{self['stat']})"
-          res+=optlist(self['option']) if key?('option')
+          res="(#{@seq['stat']})"
+          res+=optlist(@seq['option']) if key?('option')
           res
         }
         vg=@cobj.loc.add_view
-        vg.add_item('vis',"Visual mode").proc{@output.vmode='v';''}
-        vg.add_item('raw',"Raw mode").proc{@output.vmode='r';''}
+        vg['vis'].proc{@output.vmode='v';''}
+        vg['raw'].proc{@output.vmode='r';''}
         @cobj.rem.hid[nil].proc{""}
         self
       end
 
       def reply(ans)
-        if self['stat'] == 'query'
-          @que_cmd << ans
-          @que_res.pop
+        if @seq['stat'] == 'query'
+          @seq.que_cmd << ans
+          @seq.que_res.pop
         else
           "IGNORE"
         end

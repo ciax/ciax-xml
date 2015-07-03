@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "liblocal"
 require "libremote"
+require "libmcrdb"
 
 module CIAX
   module Mcr
@@ -66,7 +67,6 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libmcrdb"
       GetOpts.new
       proj=ENV['PROJ']||'ciax'
       begin

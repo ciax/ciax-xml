@@ -38,7 +38,7 @@ module CIAX
         @que_res=Queue.new
         update({'cid'=>@record.cfg[:cid],'step'=>0,'total_steps'=>@record.cfg[:body].size,'stat'=>'run','option'=>[]})
         @running=[]
-        @cobj.item_proc('interrupt'){|ent,src|
+        @cobj.rem.int['interrupt'].cfg.proc{|ent,src|
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
         }

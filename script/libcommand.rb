@@ -23,10 +23,6 @@ module CIAX
         res
       end
 
-      def item_proc(id,&def_proc)
-        get_item(id).cfg.proc(&def_proc)
-      end
-
       def valid_keys
         map{|e| e.valid_keys}.flatten
       end

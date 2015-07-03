@@ -53,7 +53,7 @@ module CIAX
         super
         @cobj.rem.cfg.proc{|ent|@field['time']=now_msec;''}
         @cobj.rem.ext.cfg.proc{|ent| ent.cfg.path }
-        @cobj.item_proc('set'){|ent|
+        @cobj.rem.int['set'].cfg.proc{|ent|
           @field.rep(ent.par[0],ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
@@ -95,16 +95,16 @@ module CIAX
           @field.conv(ent)
           'OK'
         }
-        @cobj.item_proc('set'){|ent|
+        @cobj.rem.int['set'].cfg.proc{|ent|
           @field.rep(ent.par[0],ent.par[1])
           flush
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
-        @cobj.item_proc('save'){|ent|
+        @cobj.rem.int['save'].cfg.proc{|ent|
           @field.save_key(ent.par[0].split(','),ent.par[1])
           "Save [#{ent.par[0]}]"
         }
-        @cobj.item_proc('load'){|ent|
+        @cobj.rem.int['load'].cfg.proc{|ent|
           @field.load(ent.par[0]||'').save
           flush
           "Load [#{ent.par[0]}]"

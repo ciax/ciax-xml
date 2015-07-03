@@ -16,6 +16,7 @@ module CIAX
       private
       def doc_to_db(doc)
         db=rec_db(doc[:top])
+        db['proj']=@proj
         db['site_id']=db['id']
         db
       end

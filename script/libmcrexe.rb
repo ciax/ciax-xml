@@ -60,9 +60,9 @@ module CIAX
       cfg[:jump_groups]=[]
       al=Wat::List.new(cfg).cfg[:sub_list] #Take App List
       cfg[:sub_list]=al
+      mobj=Index.new(cfg)
+      mobj.rem.add_ext(Db.new.get(proj))
       begin
-        mobj=Index.new(cfg)
-        mobj.rem.add_ext(Db.new.get(proj))
         ent=mobj.set_cmd(ARGV)
         mcr=Exe.new(ent.cfg)
         mcr.fork.shell

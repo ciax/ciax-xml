@@ -5,12 +5,16 @@ module CIAX
   module Remote
     include Command
     # Instance var is @rem in Index
+    # cfg must have [:layer]
     class Domain < GrpAry
       attr_reader :hid,:ext,:int
       def initialize(cfg,attr={})
         super
         @hid=add(Hid::Group)
-        @ext=add(@cfg[:layer]::Ext::Group)
+      end
+
+      def add_ext(dbi)
+        @ext=add(@cfg[:layer]::Ext::Group,{:dbi => type?(dbi,Dbi)})
       end
 
       def add_int
@@ -55,11 +59,11 @@ module CIAX
     end
 
     # For External Command Domain
-    # @cfg must contain [:db]
+    # @cfg must contain [:dbi]
     module Ext
       include Command
       class Group < Group
-        def initialize(dom_cfg,attr={})
+        def initialize(cfg,attr={})
           super
           @dbi=type?(@cfg[:dbi],Dbi)
           @cfg['caption']||="External Commands"
@@ -93,7 +97,6 @@ module CIAX
         # str could include Math functions
         def initialize(grp_cfg,attr={})
           super
-#          @cfg['label']=subst(@cfg['label'])
           @body=deep_subst(@cfg[:body])
         end
 

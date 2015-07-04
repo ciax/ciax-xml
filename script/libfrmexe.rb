@@ -33,9 +33,10 @@ module CIAX
         super
         # DB is generated in List level
         @cfg[:site_id]=id
-        @fdb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)
+        @fdb=type?(@cfg[:db].get(id),Dbi)
         @field=@cfg[:field]=Field.new.set_db(@fdb)
         @cobj=Index.new(@cfg)
+        @cobj.rem.add_ext(@fdb)
         @cobj.rem.add_int
         # Post internal command procs
         # Proc for Terminate process of each individual commands
@@ -45,7 +46,7 @@ module CIAX
       def ext_shell
         @output=@field
         super
-      end        
+      end
     end
 
     class Test < Exe

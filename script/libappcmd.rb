@@ -11,7 +11,7 @@ module CIAX
       def initialize(cfg,attr={})
         super
         @loc=add(Local::Domain)
-        @rem=add(Remote::Domain)
+        @rem=add(Remote::Domain,{:layer => App})
       end
     end
 
@@ -70,9 +70,9 @@ module CIAX
       ARGV.clear
       begin
         cfg=Config.new
-        cfg[:dbi]=Db.new.get(id)
         cobj=Index.new(cfg)
         cobj.rem.proc{|ent| ent.cfg.path }
+        cobj.rem.add_ext(Db.new.get(id))
         ent=cobj.set_cmd(args)
         puts ent.exe_cmd('test')
         puts ent.cfg[:batch].to_s

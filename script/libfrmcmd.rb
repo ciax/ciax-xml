@@ -9,12 +9,12 @@ module CIAX
     include Command
     # Command Index
     class Index < GrpAry
-      # cfg should have [:dbi] and [:field]
+      # cfg should have [:field]
       attr_reader :loc,:rem
       def initialize(cfg,attr={})
         super
         @loc=add(Local::Domain)
-        @rem=add(Remote::Domain)
+        @rem=add(Remote::Domain,{:layer => Frm})
       end
     end
 
@@ -102,16 +102,16 @@ module CIAX
       id,*args=ARGV
       ARGV.clear
       begin
+        dbi=Db.new.get(id)
         cfg=Config.new
-        cfg[:dbi]=Db.new.get(id)
-        cfg[:field]=Field.new.set_db(cfg[:dbi])
+        cfg[:field]=Field.new.set_db(dbi)
         cobj=Index.new(cfg)
         cobj.rem.proc{|ent| ent.cfg.path }
+        cobj.rem.add_ext(dbi)
         cobj.rem.add_int
         fld.read unless STDIN.tty?
         ent=cobj.set_cmd(args)
         puts ent.exe_cmd('test')
-        p ent.cfg[:frame]
       rescue InvalidCMD
         Msg.usage("#{id} [cmd] (par) < field_file",2)
       rescue InvalidID

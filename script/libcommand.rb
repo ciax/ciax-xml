@@ -46,13 +46,6 @@ module CIAX
         self
       end
 
-      def show_proc(id)
-        item=get_item(id)
-        cfg=item.cfg
-        cls=cfg.generation[cfg.level(:def_proc)][:level]
-        " #{id},level=#{cls},item=#{item.object_id},proc=#{cfg[:def_proc].object_id}"
-      end
-
       def add(cls,attr={})
         unshift obj=cls.new(@cfg,attr)
         obj

@@ -35,7 +35,7 @@ module CIAX
         super
         @cfg[:site_id]=id
         # LayerDB might generated in List level
-        @adb=type?(@cfg[:dbi]=@cfg[:db].get(id),Dbi)
+        @adb=type?(@cfg[:db].get(id),Dbi)
         @cfg[:frm_site]=@adb['frm_site']
         @sub=@cfg[:sub_list].get(@cfg[:frm_site])
         @site_stat=@sub.site_stat.add_db('isu' => '*')
@@ -43,6 +43,7 @@ module CIAX
         @appview=View.new(@adb,@stat)
         @batch_interrupt=[]
         @cobj=Index.new(@cfg)
+        @cobj.rem.add_ext(@adb)
       end
 
       def ext_shell

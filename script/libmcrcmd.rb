@@ -7,15 +7,11 @@ module CIAX
   module Mcr
     include Command
     class Index < GrpAry
-      # cfg should have [:dbi]
       attr_reader :loc,:rem
       def initialize(cfg,attr={})
         super
-        @cfg[:layer]=Mcr
-        @cfg[:depth]=1
-        @cfg[:mobj]=self
         @loc=add(Local::Domain)
-        @rem=add(Remote::Domain)
+        @rem=add(Remote::Domain,{:layer => Mcr,:depth => 1,:mobj => self})
       end
     end
 
@@ -71,8 +67,8 @@ module CIAX
       proj=ENV['PROJ']||'ciax'
       begin
         cfg=Config.new
-        cfg[:dbi]=Db.new.get(proj)
         cobj=Index.new(cfg)
+        cobj.rem.add_ext(Db.new.get(proj))
         cobj.rem.ext.proc{|ent| ent.cfg.path }
         ent=cobj.set_cmd(ARGV)
         puts ent.exe_cmd('test')

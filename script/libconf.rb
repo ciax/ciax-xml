@@ -52,7 +52,7 @@ module CIAX
     end
 
     def ancestor(n)
-      @generation[n]
+      @generation[n][:obj]
     end
 
     # Show all conttents of all generation

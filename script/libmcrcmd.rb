@@ -11,7 +11,7 @@ module CIAX
       def initialize(cfg,attr={})
         super
         @loc=add(Local::Domain)
-        @rem=add(Remote::Domain,{:layer => Mcr,:depth => 1,:mobj => self})
+        @rem=add(Remote::Domain,{:layer => Mcr,:depth => 1})
       end
     end
 
@@ -51,11 +51,14 @@ module CIAX
           super
           # @cfg[:body] expansion
           batch=Arrayx.new
+          depth=@cfg[:depth]
           @body.each{|elem|
-            elem["depth"]=@cfg[:depth]
+            elem["depth"]=depth
             batch << elem
             next if elem["type"] != "mcr" || /true|1/ === elem["async"]
-            batch.concat @cfg[:mobj].set_cmd(elem["args"],{:depth => @cfg[:depth]+1}).cfg[:batch]
+            grp=@cfg.ancestor(2)
+            sub_batch=grp.set_cmd(elem["args"],{:depth => depth+1}).cfg[:batch]
+            batch.concat sub_batch
           }
           @cfg[:batch]=batch
         end

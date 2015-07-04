@@ -8,7 +8,7 @@ module CIAX
   # Usage:[]=/ add to current Hash which will overwrite(hide) upper level Hash;
   # Usage:[]/  get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
-    attr_reader :generation,:layers
+    attr_reader :generation
     def initialize(obj=self,cfg=nil)
       super()
       @generation=[self]
@@ -51,20 +51,16 @@ module CIAX
       nil
     end
 
-    def level(id)
-      i=0
-      @generation.each{|h|
-        return i if h.key?(id)
-        i+=1
-      }
+    def ancestor(n)
+      @generation[n]
     end
 
     # Show all conttents of all generation
     def path(key=nil)
       i=0
-      "******[Config]******(#{object_id})\n"+@generation.map{|h|
-        i+=1
-        "  [#{i}]{"+h.map{|k,v|
+      str="******[Config]******(#{object_id})\n"
+      @generation.each{|h|
+        str="  [#{i}]{"+h.map{|k,v|
           next if key and k != key
           case v
           when String,Numeric
@@ -75,8 +71,10 @@ module CIAX
             val=v
           end
           k.inspect.to_s+'=>'+val.to_s
-        }.compact.join(', ')+'} ('+h.object_id.to_s+')'
-      }.reverse.join("\n")+"\n************\n"
+        }.compact.join(', ')+'} ('+h.object_id.to_s+")\n"+str
+        i+=1
+      }
+      str << "************\n"
     end
 
     # Show list of all key,val which is taken with [] access

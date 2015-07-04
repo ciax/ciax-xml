@@ -37,7 +37,7 @@ module CIAX
         @post_mcr_procs=[]
         @que_cmd=Queue.new
         @que_res=Queue.new
-        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:body].size,'stat'=>'run','option'=>[]})
+        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'run','option'=>[]})
         @running=[]
       end
 
@@ -45,7 +45,7 @@ module CIAX
         Thread.current[:sid]=@record['sid']
         set_stat('run')
         show @record
-        @cfg[:body].each{|e1|
+        @cfg[:batch].each{|e1|
           self['step']+=1
           begin
             @step=@record.add_step(e1)
@@ -168,9 +168,9 @@ module CIAX
       cfg[:jump_groups]=[]
       al=Wat::List.new(cfg).cfg[:sub_list] #Take App List
       cfg[:sub_list]=al
+      cobj=Index.new(cfg)
+      cobj.rem.add_ext(Db.new.get(proj))
       begin
-        cobj=Index.new(cfg)
-        cobj.rem.add_ext(Db.new.get(proj))
         ent=cobj.set_cmd(ARGV)
         seq=Seq.new(ent.cfg)
         seq.macro

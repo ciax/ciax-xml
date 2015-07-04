@@ -7,19 +7,18 @@ module CIAX
     class Record < Datax
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       attr_reader :cfg
-      def initialize(id,ver='0')
+      def initialize(id=nil)
         super('record',[],'steps')
-        self['id']=id # Project ID
-        self['ver']=ver # Version
+        self['id']=id||self['time'].to_s # Session ID
       end
 
       # cfg will come from Entity, which should have [:cid],['label'],@layers[:wat]
       def start(cfg)
         @cfg=type?(cfg,Config)
-        self['sid']=self['time'].to_s # Session ID
+        self['ver']=@cfg['ver']||'0' # Version
         self['cid']=@cfg[:cid] # Command ID (cmd:par)
         self['label']=@cfg['label'] # Label for CID
-        ext_file(self['sid'])
+        ext_file
         self
       end
 
@@ -59,7 +58,7 @@ module CIAX
     if __FILE__ == $0
       GetOpts.new('r')
       $opt.usage "(-r) < record_file" if STDIN.tty?
-      puts Record.new('none').read
+      puts Record.new.read
     end
   end
 end

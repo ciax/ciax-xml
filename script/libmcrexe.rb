@@ -11,13 +11,13 @@ module CIAX
       def initialize(cfg)
         @seq=Seq.new(cfg)
         rec=@seq.record
-        super(rec.cfg['sid'],rec.cfg)
+        super(rec['id'],rec.cfg)
         @cobj=Index.new(@cfg)
         @cobj.rem.hid['interrupt'].proc{|ent,src|
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
         }
-        @cobj.rem.add_int(@seq['option'].clear).proc{|ent| reply(ent.id)}
+        @cobj.rem.add_int(@seq['option']).proc{|ent| reply(ent.id)}
         ext_shell
       end
 

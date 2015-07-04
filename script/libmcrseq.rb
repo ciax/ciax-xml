@@ -30,9 +30,9 @@ module CIAX
         db=type?(@cfg[:dbi],Dbi)
         @submcr_proc=@cfg[:submcr_proc]||proc{|args,id|
           show(Msg.indent(@step['depth']+1)+"Sub Macro #{args} issued\n")
-          {'sid' => 'dmy'}
+          {'id' => 'dmy'}
         }
-        @record=Record.new(db['id'],@cfg['ver']).start(@cfg)
+        @record=Record.new.start(@cfg)
         @post_stat_procs=[] # execute on stat changes
         @post_mcr_procs=[]
         @que_cmd=Queue.new
@@ -42,7 +42,7 @@ module CIAX
       end
 
       def macro
-        Thread.current[:sid]=@record['sid']
+        Thread.current[:id]=@record['id']
         set_stat('run')
         show @record
         @cfg[:batch].each{|e1|
@@ -64,7 +64,7 @@ module CIAX
               @cfg[:sub_list].get(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
             when 'mcr'
               if @step.async? && @submcr_proc.is_a?(Proc)
-                @step['sid']=@submcr_proc.call(e1['args'],@record['sid'])['sid']
+                @step['id']=@submcr_proc.call(e1['args'],@record['id'])['id']
               end
             end
           rescue Retry

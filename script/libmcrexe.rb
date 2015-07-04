@@ -12,8 +12,7 @@ module CIAX
         @seq=Seq.new(cfg)
         rec=@seq.record
         super(rec.cfg['sid'],rec.cfg)
-        @output=rec
-        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:body].size,'stat'=>'run','option'=>[]})
+        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'run','option'=>[]})
         @cobj=Index.new(@cfg)
         @cobj.rem.hid['interrupt'].proc{|ent,src|
           @th_mcr.raise(Interrupt)
@@ -24,10 +23,10 @@ module CIAX
 
       def ext_shell
         int=@cobj.rem.add_int
-        warn @cobj.view_list
         int.proc{|ent| reply(ent.id)}
         @seq['option']=int.valid_keys.clear
         super(@cfg[:cid].tr(':','_'))
+        @output=@seq.record
         @prompt_proc=proc{
           res="(#{@seq['stat']})"
           res+=optlist(@seq['option']) if key?('option')
@@ -65,9 +64,9 @@ module CIAX
       al=Wat::List.new(cfg).cfg[:sub_list] #Take App List
       cfg[:sub_list]=al
       begin
-        cobj=Index.new(cfg)
-        cobj.rem.add_ext(Db.new.get(proj))
-        ent=cobj.set_cmd(ARGV)
+        mobj=Index.new(cfg)
+        mobj.rem.add_ext(Db.new.get(proj))
+        ent=mobj.set_cmd(ARGV)
         mcr=Exe.new(ent.cfg)
         mcr.fork.shell
       rescue InvalidCMD

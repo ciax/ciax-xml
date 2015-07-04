@@ -12,24 +12,21 @@ module CIAX
         @seq=Seq.new(cfg)
         rec=@seq.record
         super(rec.cfg['sid'],rec.cfg)
-        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'run','option'=>[]})
         @cobj=Index.new(@cfg)
         @cobj.rem.hid['interrupt'].proc{|ent,src|
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
         }
+        @cobj.rem.add_int(@seq['option'].clear).proc{|ent| reply(ent.id)}
         ext_shell
       end
 
       def ext_shell
-        int=@cobj.rem.add_int
-        int.proc{|ent| reply(ent.id)}
-        @seq['option']=int.valid_keys.clear
         super(@cfg[:cid].tr(':','_'))
         @output=@seq.record
         @prompt_proc=proc{
           res="(#{@seq['stat']})"
-          res+=optlist(@seq['option']) if key?('option')
+          res+=optlist(@seq['option'])
           res
         }
         vg=@cobj.loc.add_view

@@ -95,7 +95,6 @@ module CIAX
         show str+"\n"
         @record.finish(str)
         self['option'].clear
-        @step.delete('option')
         set_stat str
         @post_mcr_procs.each{|p| p.call(self)}
         self

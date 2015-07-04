@@ -14,7 +14,6 @@ module CIAX
         # @cfg is isolated from exe_cfg
         # So it is same meaning to set value to 'attr' and @cfg
         @cfg=cfg.gen(self).update(attr)
-        @cfg[:def_proc]=proc{|ent| ent.cfg.path }
       end
 
       def get_item(id)

@@ -12,7 +12,7 @@ module CIAX
     def initialize(obj=self,cfg=nil)
       super()
       @generation=[self]
-      self[:level]=obj.class
+      self[:obj]=obj
       case cfg
       when Config
         join_in(cfg)

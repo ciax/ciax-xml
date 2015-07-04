@@ -11,7 +11,7 @@ module CIAX
     # level can be Layer or Site
     def initialize(cfg,attr={})
       @cfg=cfg.gen(self).update(attr)
-      super(m2id(@cfg[:level],-2),{},@cfg[:dataname]||'list')
+      super(m2id(@cfg[:obj].class,-2),{},@cfg[:dataname]||'list')
       $opt||=GetOpts.new
     end
 

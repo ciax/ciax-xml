@@ -65,13 +65,11 @@ module CIAX
     if __FILE__ == $0
       GetOpts.new
       proj=ENV['PROJ']||'ciax'
+      cfg=Config.new
+      cobj=Index.new(cfg)
+      cobj.rem.add_ext(Db.new.get(proj))
       begin
-        cfg=Config.new
-        cobj=Index.new(cfg)
-        cobj.rem.add_ext(Db.new.get(proj))
-        cobj.rem.ext.proc{|ent| ent.cfg.path }
         ent=cobj.set_cmd(ARGV)
-        puts ent.exe_cmd('test')
         puts ent.cfg[:batch].to_s
       rescue InvalidCMD
         $opt.usage("[id] [cmd] (par)")

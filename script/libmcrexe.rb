@@ -8,11 +8,13 @@ module CIAX
       #required cfg keys: app,db,body,stat
       #cfg[:submcr_proc] for executing asynchronous submacro
       #ent_cfg should have [:db]
-      def initialize(cfg)
-        @seq=Seq.new(cfg)
+      def initialize(sec_cfg)
+        @seq=Seq.new(sec_cfg)
         rec=@seq.record
         super(rec['id'],rec.cfg)
-        @cobj=Index.new(@cfg)
+        cfg=Config.new
+        cfg[:jump_groups]=rec.cfg[:jump_groups]
+        @cobj=Index.new(cfg)
         @cobj.rem.hid['interrupt'].proc{|ent,src|
           @th_mcr.raise(Interrupt)
           'INTERRUPT'

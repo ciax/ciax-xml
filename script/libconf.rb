@@ -58,7 +58,7 @@ module CIAX
     # Show all conttents of all generation
     def path(key=nil)
       i=0
-      str="******[Config]******(#{object_id})\n"
+      str=""
       @generation.each{|h|
         str="  [#{i}]{"+h.map{|k,v|
           next if key and k != key
@@ -74,7 +74,7 @@ module CIAX
         }.compact.join(', ')+'} ('+h.object_id.to_s+")\n"+str
         i+=1
       }
-      str << "************\n"
+      "******[Config]******(#{object_id})\n#{str}************\n"
     end
 
     # Show list of all key,val which is taken with [] access

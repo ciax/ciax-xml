@@ -29,12 +29,8 @@ module CIAX
           super
           @cfg['caption']="Hidden Commands"
           add_item('interrupt')
-        end
-
-        def add_nil
           # Accept empty command
           add_item(nil)
-          self
         end
       end
     end

@@ -22,7 +22,6 @@ module CIAX
       }
       @shell_output_proc=proc{ @output }
       @prompt_proc=proc{ @site_stat.to_s }
-      @cobj.rem.hid.add_nil
       @cobj.loc.add_shell
       @cobj.loc.add_jump
       Thread.current['name']='Main'

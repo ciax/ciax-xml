@@ -17,7 +17,9 @@ module CIAX
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
         }
-        @cobj.rem.add_int(@seq['option']).proc{|ent| reply(ent.id)}
+        @cobj.rem.add_int(@seq['option']).proc{|ent|
+          warn "Send ent"
+          reply(ent.id)}
         ext_shell
       end
 
@@ -32,7 +34,6 @@ module CIAX
         vg=@cobj.loc.add_view
         vg['vis'].proc{@output.vmode='v';''}
         vg['raw'].proc{@output.vmode='r';''}
-        @cobj.rem.hid[nil].proc{""}
         self
       end
 

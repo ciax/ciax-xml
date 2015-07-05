@@ -11,7 +11,7 @@ module CIAX
       def initialize(cfg,attr={})
         super
         @loc=add(Local::Domain)
-        @rem=add(Remote::Domain,{:layer => Mcr,:depth => 1})
+        @rem=add(Remote::Domain,{:layer => Mcr,:depth => 1}).proc{""}
       end
     end
 

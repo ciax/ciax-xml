@@ -9,7 +9,7 @@ module CIAX
       attr_reader :hid,:ext,:int
       def initialize(cfg,attr={})
         super
-        @cfg[:def_proc]=proc{""}
+        @cfg[:def_proc]=Proc.new{""} # proc is re-defined
         @hid=add(Hid::Group)
       end
 

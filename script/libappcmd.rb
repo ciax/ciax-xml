@@ -4,16 +4,18 @@ require "libremote"
 
 module CIAX
   module App
-    include Command
+    include Remote
     class Index < GrpAry
       # cfg should have [:dbi] and [:stat]
       attr_reader :loc,:rem
       def initialize(cfg,attr={})
         super
         @loc=add(Local::Domain)
-        @rem=add(Remote::Domain,{:layer => App})
+        @rem=add(Domain)
       end
     end
+
+    class Domain < Domain;end
 
     module Int
       include Remote::Int

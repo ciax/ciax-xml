@@ -6,7 +6,7 @@ require "libfield"
 
 module CIAX
   module Frm
-    include Command
+    include Remote
     # Command Index
     class Index < GrpAry
       # cfg should have [:field]
@@ -14,9 +14,11 @@ module CIAX
       def initialize(cfg,attr={})
         super
         @loc=add(Local::Domain)
-        @rem=add(Remote::Domain,{:layer => Frm})
+        @rem=add(Domain)
       end
     end
+
+    class Domain < Domain;end
 
     module Int
       include Remote::Int

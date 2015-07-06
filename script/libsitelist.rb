@@ -5,7 +5,7 @@ module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set
     # @cfg should have [:jump_group],[:layer_list]
-    # This should be set [:layer],[:db]
+    # This should be set [:db]
     class List < CIAX::List
       attr_reader :parameter
       def initialize(cfg,attr={})
@@ -72,7 +72,7 @@ module CIAX
 
       private
       def add(site)
-        obj=@cfg[:layer].new(site,@cfg)
+        obj=layer_module.new(site,@cfg)
         put(site,obj.ext_shell)
       end
 

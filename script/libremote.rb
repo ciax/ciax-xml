@@ -14,11 +14,11 @@ module CIAX
       end
 
       def add_ext(dbi)
-        @ext=add(@cfg[:layer]::Ext::Group,{:dbi => type?(dbi,Dbi)})
+        @ext=add(layer_module::Ext::Group,{:dbi => type?(dbi,Dbi)})
       end
 
       def add_int(valid_keys=[])
-        @int=add(@cfg[:layer]::Int::Group,{:valid_keys => valid_keys})
+        @int=add(layer_module::Int::Group,{:valid_keys => valid_keys})
       end
     end
 

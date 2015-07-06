@@ -320,6 +320,10 @@ module CIAX
       abort("No such constant #{name}")
     end
 
+    def layer_module
+      eval self.class.name.split('::')[1]
+    end
+
     def class_path
       self.class.to_s.split('::')[1..-1]
     end

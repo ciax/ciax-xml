@@ -131,7 +131,6 @@ module CIAX
     class List < Site::List
       def initialize(cfg,attr={})
         super
-        @cfg[:layer]=Frm
         @cfg[:ns_color]=2
         set_db(Dev::Db.new)
       end

@@ -143,7 +143,6 @@ module CIAX
     class List < Site::List
       def initialize(cfg,attr={})
         super
-        @cfg[:layer]=App
         @cfg[:sub_list]=sub_list(Frm)
         set_db(Ins::Db.new)
       end

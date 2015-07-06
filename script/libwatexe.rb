@@ -133,7 +133,6 @@ module CIAX
     class List < Site::List
       def initialize(cfg,attr={})
         super
-        @cfg[:layer]=Wat
         sub=@cfg[:sub_list]=sub_list(App)
         set_db(sub.cfg[:db])
       end

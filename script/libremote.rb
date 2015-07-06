@@ -5,11 +5,11 @@ module CIAX
   module Remote
     include Command
     # Instance var is @rem in Index
-    # cfg must have [:layer]
     class Domain < GrpAry
       attr_reader :hid,:ext,:int
       def initialize(cfg,attr={})
         super
+        @cfg[:def_proc]=proc{""}
         @hid=add(Hid::Group)
       end
 

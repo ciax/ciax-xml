@@ -89,8 +89,7 @@ module CIAX
     begin
       cfg=Config.new
       cfg[:jump_groups]=[]
-      cfg[:layer]=Frm
-      sl=Site::List.new(cfg)
+      sl=Frm::List.new(cfg)
       sl.set_db(Dev::Db.new)
       sl.shell(site)
     rescue InvalidID

@@ -5,7 +5,7 @@ module CIAX
   module Local
     include Command
     class Index < GrpAry
-      # cfg should have [:dbi] and [:stat]
+      # cfg should have [:jump_groups],[:jump_class]
       attr_reader :loc
       def initialize(cfg,attr={})
         super
@@ -13,7 +13,6 @@ module CIAX
       end
     end
 
-    # Instance var is @loc in Index
     class Domain < GrpAry
       def add_shell
         add(Shell::Group)

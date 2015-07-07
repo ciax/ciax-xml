@@ -120,13 +120,8 @@ module CIAX
       end
     end
 
-    class Index < GrpAry
-      attr_reader :loc,:rem,:ash
-      def initialize(cfg,attr={})
-        super
-        @loc=add(Local::Domain)
-      end
-
+    class Index < Local::Index
+      attr_reader :rem
       def add_rem(ash)
         unshift @rem=ash.cobj.rem
       end

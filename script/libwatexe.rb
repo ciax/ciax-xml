@@ -116,6 +116,10 @@ module CIAX
           sleep @event.period
         }
       end
+
+      def server
+        @sub.server
+      end
     end
 
     class Index < GrpAry

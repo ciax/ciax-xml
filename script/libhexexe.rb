@@ -33,11 +33,12 @@ module CIAX
       end
       
       def ext_server(port)
+        @port=port.to_i+1000
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')
         }
         @server_output_proc=proc{ @output.upd.to_x }
-        super(port.to_i+1000)
+        self
       end
     end
 

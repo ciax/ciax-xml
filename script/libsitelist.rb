@@ -79,21 +79,4 @@ module CIAX
       class Jump < LongJump; end
     end
   end
-
-  if __FILE__ == $0
-    require "libfrmexe"
-    require "libdevdb"
-    ENV['VER']||='initialize'
-    GetOpts.new('chset')
-    site=ARGV.shift
-    begin
-      cfg=Config.new
-      cfg[:jump_groups]=[]
-      sl=Frm::List.new(cfg)
-      sl.set_db(Dev::Db.new)
-      sl.shell(site)
-    rescue InvalidID
-      $opt.usage('(opt) [id]')
-    end
-  end
 end

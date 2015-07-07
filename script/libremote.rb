@@ -10,6 +10,9 @@ module CIAX
       def initialize(cfg,attr={})
         super
         @cfg[:def_proc]=Proc.new{""} # proc is re-defined
+      end
+
+      def add_hid
         @hid=add(Hid::Group)
       end
 

@@ -29,6 +29,7 @@ module CIAX
         super
         @sub=@cfg[:sub_list].get(@id)
         @cobj=Index.new(@cfg)
+        @cobj.rem.add_hid
         @cobj.add_rem(@sub)
         @event=Event.new.set_db(@sub.adb)
         @site_stat=@sub.site_stat.add_db('auto'=>'@','watch'=>'&')

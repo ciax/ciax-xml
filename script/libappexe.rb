@@ -46,7 +46,8 @@ module CIAX
         @cfg['host']||=@adb['host']
         @cfg['port']||=@adb['port']
         @cobj=Index.new(@cfg)
-        @cobj.rem.add_ext(@adb)
+      @cobj.rem.add_hid
+              @cobj.rem.add_ext(@adb)
       end
 
       def ext_shell

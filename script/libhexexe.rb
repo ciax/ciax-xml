@@ -17,6 +17,7 @@ module CIAX
         super
         sub=@cfg[:sub_list].get(id).sub
         @cobj=Index.new(@cfg)
+        @cobj.rem.add_hid
         @cobj.add_rem(sub)
         @mode=sub.mode
         @output=View.new(@id,sub.cfg['ver'],sub.site_stat,sub.stat)
@@ -31,7 +32,7 @@ module CIAX
         @shell_output_proc=proc{ @output.upd.to_x }
         super
       end
-      
+
       def ext_server
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')

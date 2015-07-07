@@ -42,6 +42,8 @@ module CIAX
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
         @appview=View.new(@adb,@stat)
         @batch_interrupt=[]
+        @cfg['host']||=@adb['host']
+        @cfg['port']||=@adb['port']
         @cobj=Index.new(@cfg)
         @cobj.rem.add_ext(@adb)
       end
@@ -76,10 +78,9 @@ module CIAX
     class Cl < Exe
       def initialize(id,cfg={},attr={})
         super
-        host=type?(@cfg['host']||@adb['host']||'localhost',String)
         @stat.ext_http(host)
         @pre_exe_procs << proc{@stat.upd}
-        ext_client(host,@adb['port'])
+        ext_client
       end
     end
 
@@ -111,7 +112,6 @@ module CIAX
         if sv=@cfg[:sqlog]
           sv.add_table(@stat)
         end
-        ext_server(@adb['port'])
       end
 
       private

@@ -50,11 +50,11 @@ module CIAX
       verbose(inspect)
     end
 
-    def ext_client(host,port)
+    def ext_client(host=nil,port=nil)
       extend(Client).ext_client(host,port)
     end
 
-    def ext_server(port)
+    def ext_server(port=nil)
       extend(Server).ext_server(port)
     end
 

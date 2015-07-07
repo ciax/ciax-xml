@@ -63,7 +63,7 @@ module CIAX
       def server(ary)
         ary.each{|site|
           sleep 0.3
-          get(site).server
+          get(site).ext_server.server
         }.empty? && get(nil)
         sleep
       rescue InvalidID

@@ -41,6 +41,8 @@ module CIAX
         # Post internal command procs
         # Proc for Terminate process of each individual commands
         @flush_procs=[]
+        @cfg['host']||=@fdb['host']
+        @cfg['port']||=@fdb['port']
       end
 
       def ext_shell
@@ -68,7 +70,7 @@ module CIAX
         @field.ext_http(host)
         @cobj.rem.proc{to_s}
         @pre_exe_procs << proc{@field.upd}
-        ext_client(host,@fdb['port'])
+        ext_client
       end
     end
 
@@ -110,7 +112,6 @@ module CIAX
           flush
           "Load [#{ent.par[0]}]"
         }
-        ext_server(@fdb['port'])
       end
 
       def exe(args,src='local',pri=1)

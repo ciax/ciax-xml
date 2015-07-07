@@ -34,6 +34,7 @@ module CIAX
         # DB is generated in List level
         @cfg[:site_id]=id
         @fdb=type?(@cfg[:db].get(id),Dbi)
+        @cfg['ver']=@fdb['version']
         @field=@cfg[:field]=Field.new.set_db(@fdb)
         @cobj=Index.new(@cfg)
         @cobj.rem.add_ext(@fdb)

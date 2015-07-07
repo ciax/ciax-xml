@@ -36,6 +36,7 @@ module CIAX
         @cfg[:site_id]=id
         # LayerDB might generated in List level
         @adb=type?(@cfg[:db].get(id),Dbi)
+        @cfg['ver']=@adb['version']
         @cfg[:frm_site]=@adb['frm_site']
         @sub=@cfg[:sub_list].get(@cfg[:frm_site])
         @site_stat=@sub.site_stat.add_db('isu' => '*')

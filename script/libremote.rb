@@ -63,7 +63,7 @@ module CIAX
           super
           @dbi=type?(@cfg[:dbi],Dbi)
           @cfg['caption']||="External Commands"
-          @cfg['ver']=@dbi['version']
+          @cfg['ver']||=@dbi['version']
           # Set items by DB
           cdb=@dbi[:command]
           idx=cdb[:index]

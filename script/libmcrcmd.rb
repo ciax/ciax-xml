@@ -6,11 +6,10 @@ require "libmcrdb"
 module CIAX
   module Mcr
     include Remote
-    class Index < GrpAry
-      attr_reader :loc,:rem
+    class Index < Local::Index
+      attr_reader :rem
       def initialize(cfg,attr={})
         super
-        @loc=add(Local::Domain)
         @rem=add(Domain,{:depth => 1})
       end
     end

@@ -6,12 +6,11 @@ require "libappdb"
 module CIAX
   module App
     include Remote
-    class Index < GrpAry
+    class Index < Local::Index
       # cfg should have [:dbi] and [:stat]
-      attr_reader :loc,:rem
+      attr_reader :rem
       def initialize(cfg,attr={})
         super
-        @loc=add(Local::Domain)
         @rem=add(Domain)
       end
     end

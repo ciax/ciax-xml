@@ -8,12 +8,11 @@ module CIAX
   module Frm
     include Remote
     # Command Index
-    class Index < GrpAry
+    class Index < Local::Index
       # cfg should have [:field]
-      attr_reader :loc,:rem
+      attr_reader :rem
       def initialize(cfg,attr={})
         super
-        @loc=add(Local::Domain)
         @rem=add(Domain)
       end
     end

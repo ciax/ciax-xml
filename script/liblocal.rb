@@ -4,6 +4,15 @@ require 'libcommand'
 module CIAX
   module Local
     include Command
+    class Index < GrpAry
+      # cfg should have [:dbi] and [:stat]
+      attr_reader :loc
+      def initialize(cfg,attr={})
+        super
+        @loc=add(Domain)
+      end
+    end
+
     # Instance var is @loc in Index
     class Domain < GrpAry
       def add_shell

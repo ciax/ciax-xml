@@ -24,6 +24,7 @@ module CIAX
 
     # cfg should have [:sub_list]
     class Exe < Exe
+      attr_reader :sub
       def initialize(id,cfg={},attr={})
         super
         @sub=@cfg[:sub_list].get(@id)
@@ -116,10 +117,6 @@ module CIAX
           sleep @event.period
         }
       end
-
-      def server
-        @sub.server
-      end
     end
 
     class Index < GrpAry
@@ -137,8 +134,8 @@ module CIAX
     class List < Site::List
       def initialize(cfg,attr={})
         super
-        sub=@cfg[:sub_list]=sub_list(App)
-        set_db(sub.cfg[:db])
+        set_db(Ins::Db.new) unless @cfg[:db]
+        @cfg[:sub_list]=sub_list(App)
       end
     end
 

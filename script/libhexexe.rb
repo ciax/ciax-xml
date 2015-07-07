@@ -15,16 +15,16 @@ module CIAX
     class Sv < Exe
       def initialize(id,cfg={},attr={})
         super
-        ash=@cfg[:sub_list].get(id).ash
+        sub=@cfg[:sub_list].get(id).sub
         @cobj=Index.new(@cfg)
-        @cobj.add_rem(ash)
-        @mode=ash.mode
-        @output=View.new(@id,ash.adb['version'],ash.site_stat,ash.stat)
-        @post_exe_procs.concat(ash.post_exe_procs)
+        @cobj.add_rem(sub)
+        @mode=sub.mode
+        @output=View.new(@id,sub.adb['version'],sub.site_stat,sub.stat)
+        @post_exe_procs.concat(sub.post_exe_procs)
+        @cfg['port']=sub.cfg['port'].to_i+1000
         if $opt['e']
           @output.ext_log
         end
-        ext_server(ash.port) if ['e','s'].any?{|i| $opt[i]}
       end
 
       def ext_shell
@@ -32,13 +32,12 @@ module CIAX
         super
       end
       
-      def ext_server(port)
-        @port=port.to_i+1000
+      def ext_server
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')
         }
         @server_output_proc=proc{ @output.upd.to_x }
-        self
+        super
       end
     end
 
@@ -47,8 +46,8 @@ module CIAX
     class List < Site::List
       def initialize(cfg,attr={})
         super
-        sub=@cfg[:sub_list]=sub_list(Wat)
-        set_db(sub.cfg[:db])
+        set_db(Ins::Db.new)
+        @cfg[:sub_list]=sub_list(Wat)
       end
     end
 

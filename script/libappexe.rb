@@ -143,8 +143,8 @@ module CIAX
     class List < Site::List
       def initialize(cfg,attr={})
         super
+        set_db(Ins::Db.new) unless @cfg[:db]
         @cfg[:sub_list]=sub_list(Frm)
-        set_db(Ins::Db.new)
       end
     end
 

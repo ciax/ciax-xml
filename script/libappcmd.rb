@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "liblocal"
 require "libremote"
+require "libappdb"
 
 module CIAX
   module App
@@ -67,15 +68,14 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libappdb"
-      id,*args=ARGV
-      ARGV.clear
+      GetOpts.new
+      id=ARGV.shift
+      cfg=Config.new
+      cobj=Index.new(cfg)
+      cobj.rem.proc{|ent| ent.cfg.path }
       begin
-        cfg=Config.new
-        cobj=Index.new(cfg)
-        cobj.rem.proc{|ent| ent.cfg.path }
         cobj.rem.add_ext(Db.new.get(id))
-        ent=cobj.set_cmd(args)
+        ent=cobj.set_cmd(ARGV)
         puts ent.exe_cmd('test')
         puts ent.cfg[:batch].to_s
       rescue InvalidCMD

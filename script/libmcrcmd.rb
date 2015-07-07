@@ -5,15 +5,17 @@ require "libmcrdb"
 
 module CIAX
   module Mcr
-    include Command
+    include Remote
     class Index < GrpAry
       attr_reader :loc,:rem
       def initialize(cfg,attr={})
         super
         @loc=add(Local::Domain)
-        @rem=add(Remote::Domain,{:layer => Mcr,:depth => 1}).proc{""}
+        @rem=add(Domain,{:depth => 1})
       end
     end
+
+    class Domain < Domain;end
 
     module Int
       include Remote::Int
@@ -71,6 +73,7 @@ module CIAX
       proj=ENV['PROJ']||'ciax'
       cfg=Config.new
       cobj=Index.new(cfg)
+      cobj.rem.proc{|ent| ent.cfg.path }
       cobj.rem.add_ext(Db.new.get(proj))
       begin
         ent=cobj.set_cmd(ARGV)

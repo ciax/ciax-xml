@@ -46,6 +46,7 @@ module CIAX
         @cfg['host']||=@adb['host']
         @cfg['port']||=@adb['port']
         @cobj=Index.new(@cfg)
+        @cobj.add_rem
         @cobj.rem.add_hid
         @cobj.rem.add_ext(@adb)
       end

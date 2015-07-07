@@ -1,10 +1,17 @@
 #!/usr/bin/ruby
-require 'libcommand'
+require 'liblocal'
 
 module CIAX
   module Remote
     include Command
     # Instance var is @rem in Index
+    class Index < Local::Index
+      attr_reader :rem
+      def add_rem
+        @rem=add(Domain)
+      end
+    end
+
     class Domain < GrpAry
       attr_reader :hid,:ext,:int
       def initialize(cfg,attr={})

@@ -1,16 +1,14 @@
 #!/usr/bin/ruby
-require "liblocal"
 require "libremote"
 require "libmcrdb"
 
 module CIAX
   module Mcr
     include Remote
-    class Index < Local::Index
-      attr_reader :rem
-      def initialize(cfg,attr={})
+    class Index < Index
+      def add_rem
+        @cfg[:depth]=1
         super
-        @rem=add(Domain,{:depth => 1})
       end
     end
 
@@ -72,6 +70,7 @@ module CIAX
       proj=ENV['PROJ']||'ciax'
       cfg=Config.new
       cobj=Index.new(cfg)
+      cobj.add_rem
       cobj.rem.proc{|ent| ent.cfg.path }
       cobj.rem.add_ext(Db.new.get(proj))
       begin

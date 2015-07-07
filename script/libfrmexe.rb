@@ -37,6 +37,7 @@ module CIAX
         @cfg['ver']=@fdb['version']
         @field=@cfg[:field]=Field.new.set_db(@fdb)
         @cobj=Index.new(@cfg)
+        @cobj.add_rem
         @cobj.rem.add_hid
         @cobj.rem.add_ext(@fdb)
         @cobj.rem.add_int

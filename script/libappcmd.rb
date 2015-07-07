@@ -1,19 +1,12 @@
 #!/usr/bin/ruby
-require "liblocal"
 require "libremote"
 require "libappdb"
 
 module CIAX
   module App
     include Remote
-    class Index < Local::Index
-      # cfg should have [:dbi] and [:stat]
-      attr_reader :rem
-      def initialize(cfg,attr={})
-        super
-        @rem=add(Domain)
-      end
-    end
+    # cfg should have [:dbi] and [:stat]
+    class Index < Index;end
 
     class Domain < Domain;end
 
@@ -71,6 +64,7 @@ module CIAX
       id=ARGV.shift
       cfg=Config.new
       cobj=Index.new(cfg)
+      cobj.add_rem
       cobj.rem.proc{|ent| ent.cfg.path }
       begin
         cobj.rem.add_ext(Db.new.get(id))

@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "liblocal"
 require "libremote"
 require "libframe"
 require "libfield"
@@ -8,14 +7,8 @@ module CIAX
   module Frm
     include Remote
     # Command Index
-    class Index < Local::Index
-      # cfg should have [:field]
-      attr_reader :rem
-      def initialize(cfg,attr={})
-        super
-        @rem=add(Domain)
-      end
-    end
+    # cfg should have [:field]
+    class Index < Index;end
 
     class Domain < Domain;end
 
@@ -107,6 +100,7 @@ module CIAX
         cfg=Config.new
         cfg[:field]=Field.new.set_db(dbi)
         cobj=Index.new(cfg)
+        cobj.add_rem
         cobj.rem.proc{|ent| ent.cfg.path }
         cobj.rem.add_ext(dbi)
         cobj.rem.add_int

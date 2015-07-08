@@ -30,7 +30,6 @@ module CIAX
         @sub=@cfg[:sub_list].get(@id)
         @cobj=Index.new(@cfg)
         @cobj.add_rem(@sub)
-        @cobj.rem.add_hid
         @event=Event.new.set_db(@sub.adb)
         @site_stat=@sub.site_stat.add_db('auto'=>'@','watch'=>'&')
         @sub.batch_interrupt=@event.get('int')
@@ -55,12 +54,13 @@ module CIAX
       end
 
       def ext_shell
+        super
         @wview=View.new(@sub.adb,@event)
         @output=$opt['j'] ? @event : @wview
         vg=@cobj.loc.add_view
         vg['vis'].proc{@output=@wview;''}
         vg['raw'].proc{@output=@event;''}
-        super
+        self
       end
     end
 

@@ -15,8 +15,7 @@ module CIAX
         cfg=Config.new
         cfg[:jump_groups]=rec.cfg[:jump_groups]
         @cobj=Index.new(cfg)
-        @cobj.add_rem
-        @cobj.rem.add_hid
+        @cobj.add_rem.add_hid
         @cobj.get_item('interrupt').proc{|ent,src|
           @th_mcr.raise(Interrupt)
           'INTERRUPT'

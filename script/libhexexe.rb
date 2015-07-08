@@ -18,7 +18,6 @@ module CIAX
         sub=@cfg[:sub_list].get(id).sub
         @cobj=Index.new(@cfg)
         @cobj.add_rem(sub)
-        @cobj.rem.add_hid
         @mode=sub.mode
         @output=View.new(@id,sub.cfg['ver'],sub.site_stat,sub.stat)
         @post_exe_procs.concat(sub.post_exe_procs)
@@ -29,8 +28,9 @@ module CIAX
       end
 
       def ext_shell
-        @shell_output_proc=proc{ @output.upd.to_x }
         super
+        @shell_output_proc=proc{ @output.upd.to_x }
+        self
       end
 
       def ext_server

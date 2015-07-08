@@ -46,17 +46,17 @@ module CIAX
         @cfg['host']||=@adb['host']
         @cfg['port']||=@adb['port']
         @cobj=Index.new(@cfg)
-        @cobj.add_rem
-        @cobj.rem.add_hid
+        @cobj.add_rem.add_hid
         @cobj.rem.add_ext(@adb)
       end
 
       def ext_shell
+        super
         @output=$opt['j'] ? @stat : @appview
         vg=@cobj.loc.add_view
         vg.get_item('vis').proc{@output=@appview;''}
         vg.get_item('raw').proc{@output=@stat;''}
-        super
+        self
       end
     end
 
@@ -69,7 +69,6 @@ module CIAX
           st['time']=now_msec
         }
         @post_exe_procs << proc{@stat.upd}
-        @cobj.rem.proc{''}
         @cobj.rem.add_int
         @cobj.get_item('interrupt').proc{|ent|
           "INTERRUPT(#{@batch_interrupt})"

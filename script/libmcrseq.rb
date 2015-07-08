@@ -80,6 +80,13 @@ module CIAX
         interrupt
       end
 
+      #Takes ThreadGroup to be added
+      def fork(tg=nil)
+        @th_mcr=Threadx.new("Macro(#@id)",10){macro}
+        tg.add(@th_mcr) if tg.is_a?(ThreadGroup)
+        self
+      end
+
       private
       def interrupt
         msg("\nInterrupt Issued to running devices #{@running}",3)

@@ -8,8 +8,8 @@ module CIAX
       #required cfg keys: app,db,body,stat
       #cfg[:submcr_proc] for executing asynchronous submacro
       #ent_cfg should have [:db]
-      def initialize(sec_cfg)
-        @seq=Seq.new(sec_cfg)
+      def initialize(seq)
+        @seq=type?(seq,Seq)
         rec=@seq.record
         super(rec['id'],rec.cfg)
         cfg=Config.new
@@ -47,13 +47,6 @@ module CIAX
           "IGNORE"
         end
       end
-
-      #Takes ThreadGroup to be added
-      def fork(tg=nil)
-        @th_mcr=Threadx.new("Macro(#@id)",10){@seq.macro}
-        tg.add(@th_mcr) if tg.is_a?(ThreadGroup)
-        self
-      end
     end
 
     if __FILE__ == $0
@@ -68,8 +61,9 @@ module CIAX
       mobj.rem.add_ext(Db.new.get(proj))
       begin
         ent=mobj.set_cmd(ARGV)
-        mcr=Exe.new(ent.cfg).ext_shell
-        mcr.fork.shell
+        seq=Seq.new(ent.cfg).fork
+        mcr=Exe.new(seq).ext_shell
+        mcr.shell
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

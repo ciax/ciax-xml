@@ -53,7 +53,7 @@ module CIAX
         when String,Symbol
           mod=layer_module.const_get(cls)
         else
-          err("Not class")
+          sv_err("Not class")
         end
         unshift obj=mod.new(@cfg,attr)
         obj

@@ -199,9 +199,9 @@ module CIAX
       raise $!.class,msg,caller(1)
     end
 
-    def err(*msg) # Raise Server error (Invalid Configuration)
+    def sv_err(*msg) # Raise Server error (Parameter type)
       msg[0]=color(msg[0],1)
-      raise ServerError,msg.join("\n  "),caller(1)
+      raise ServerError,msg.join("\n  "),caller(2)
     end
 
     def abort(msg='abort')

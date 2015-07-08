@@ -51,6 +51,14 @@ module CIAX
       nil
     end
 
+    # Check key if it is correct type. Used for argument validation.
+    def check(name,type)
+      sv_err("No such key in Config [#{name}]") unless self[name]
+      sv_err("Type is mismatch for Config key [#{name}]") unless self[name].is_a?(type)
+      true
+    end
+
+    # Get the object of upper generation in which Config is generated 
     def ancestor(n)
       @generation[n][:obj]
     end

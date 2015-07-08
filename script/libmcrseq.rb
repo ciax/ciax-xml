@@ -37,7 +37,7 @@ module CIAX
         @post_mcr_procs=[]
         @que_cmd=Queue.new
         @que_res=Queue.new
-        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'run','option'=>[]})
+        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>[]})
         @running=[]
       end
 

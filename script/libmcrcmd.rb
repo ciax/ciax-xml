@@ -23,6 +23,7 @@ module CIAX
           @valid_pars=[]
           parlist={:parameters => [{:type => 'str',:list => @valid_pars,:default => nil}]}
           {
+            "start"=>"Sequence",
             "exec"=>"Command",
             "skip"=>"Execution",
             "drop"=>" Macro",
@@ -34,7 +35,7 @@ module CIAX
           }.each{|id,cap|
             add_item(id,id.capitalize+" "+cap,parlist)
           }
-          @valid_keys.clear
+          @valid_keys.clear.push("start")
         end
       end
       class Item < Item;end

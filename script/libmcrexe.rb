@@ -23,6 +23,9 @@ module CIAX
         @cobj.rem.add_int(@seq['option']).proc{|ent|
           reply(ent.id)
         }
+        @cobj.get_item('start').proc{|ent|
+          @seq.fork
+        }
       end
 
       def ext_shell
@@ -61,7 +64,7 @@ module CIAX
       mobj.rem.add_ext(Db.new.get(proj))
       begin
         ent=mobj.set_cmd(ARGV)
-        seq=Seq.new(ent.cfg).fork
+        seq=Seq.new(ent.cfg)
         mcr=Exe.new(seq).ext_shell
         mcr.shell
       rescue InvalidCMD

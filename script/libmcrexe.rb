@@ -21,9 +21,8 @@ module CIAX
           'INTERRUPT'
         }
         @cobj.rem.add_int(@seq['option']).proc{|ent|
-          warn "Send ent"
-          reply(ent.id)}
-        ext_shell
+          reply(ent.id)
+        }
       end
 
       def ext_shell
@@ -69,7 +68,7 @@ module CIAX
       mobj.rem.add_ext(Db.new.get(proj))
       begin
         ent=mobj.set_cmd(ARGV)
-        mcr=Exe.new(ent.cfg)
+        mcr=Exe.new(ent.cfg).ext_shell
         mcr.fork.shell
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

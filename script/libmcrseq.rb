@@ -168,6 +168,7 @@ module CIAX
       al=Wat::List.new(cfg).cfg[:sub_list] #Take App List
       cfg[:sub_list]=al
       mobj=Index.new(cfg)
+      mobj.add_rem
       mobj.rem.add_ext(Db.new.get(proj))
       begin
         ent=mobj.set_cmd(ARGV)

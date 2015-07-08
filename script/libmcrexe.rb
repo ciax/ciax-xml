@@ -17,7 +17,7 @@ module CIAX
         @cobj=Index.new(cfg)
         @cobj.add_rem
         @cobj.rem.add_hid
-        @cobj.rem.hid['interrupt'].proc{|ent,src|
+        @cobj.get_item('interrupt').proc{|ent,src|
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
         }
@@ -66,6 +66,7 @@ module CIAX
       al=Wat::List.new(cfg).cfg[:sub_list] #Take App List
       cfg[:sub_list]=al
       mobj=Index.new(cfg)
+      mobj.add_rem
       mobj.rem.add_ext(Db.new.get(proj))
       begin
         ent=mobj.set_cmd(ARGV)

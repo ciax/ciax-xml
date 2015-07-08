@@ -71,7 +71,7 @@ module CIAX
         @post_exe_procs << proc{@stat.upd}
         @cobj.rem.proc{''}
         @cobj.rem.add_int
-        @cobj.rem.hid['interrupt'].proc{|ent|
+        @cobj.get_item('interrupt').proc{|ent|
           "INTERRUPT(#{@batch_interrupt})"
         }
         @cobj.rem.ext.proc{|ent| ent.cfg.path}
@@ -103,7 +103,7 @@ module CIAX
           @buf.send(pri,ent,src)
           "ISSUED"
         }
-        @cobj.rem.hid['interrupt'].proc{|ent,src|
+        @cobj.get_item('interrupt').proc{|ent,src|
           @batch_interrupt.each{|args|
             verbose("#@id/Issuing:#{args} for Interrupt")
             @buf.send(0,@cobj.set_cmd(args),src)

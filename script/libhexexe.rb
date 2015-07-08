@@ -17,8 +17,8 @@ module CIAX
         super
         sub=@cfg[:sub_list].get(id).sub
         @cobj=Index.new(@cfg)
-        @cobj.rem.add_hid
         @cobj.add_rem(sub)
+        @cobj.rem.add_hid
         @mode=sub.mode
         @output=View.new(@id,sub.cfg['ver'],sub.site_stat,sub.stat)
         @post_exe_procs.concat(sub.post_exe_procs)

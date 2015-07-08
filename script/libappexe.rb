@@ -54,8 +54,8 @@ module CIAX
       def ext_shell
         @output=$opt['j'] ? @stat : @appview
         vg=@cobj.loc.add_view
-        vg['vis'].proc{@output=@appview;''}
-        vg['raw'].proc{@output=@stat;''}
+        vg.get_item('vis').proc{@output=@appview;''}
+        vg.get_item('raw').proc{@output=@stat;''}
         super
       end
     end

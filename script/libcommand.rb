@@ -45,8 +45,17 @@ module CIAX
         self
       end
 
+      # If cls is String or Symbol, constant is taken locally.
       def add(cls,attr={})
-        unshift obj=cls.new(@cfg,attr)
+        case cls
+        when Module
+          mod=cls
+        when String,Symbol
+          mod=layer_module.const_get(cls)
+        else
+          err("Not class")
+        end
+        unshift obj=mod.new(@cfg,attr)
         obj
       end
 

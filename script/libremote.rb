@@ -8,7 +8,7 @@ module CIAX
     class Index < Local::Index
       attr_reader :rem
       def add_rem
-        @rem=add(Domain)
+        @rem=add('Domain')
       end
     end
 
@@ -20,15 +20,15 @@ module CIAX
       end
 
       def add_hid
-        @hid=add(Hid::Group)
+        @hid=add('Hid::Group')
       end
 
       def add_ext(dbi)
-        @ext=add(layer_module::Ext::Group,{:dbi => type?(dbi,Dbi)})
+        @ext=add('Ext::Group',{:dbi => type?(dbi,Dbi)})
       end
 
       def add_int(valid_keys=[])
-        @int=add(layer_module::Int::Group,{:valid_keys => valid_keys})
+        @int=add('Int::Group',{:valid_keys => valid_keys})
       end
     end
 

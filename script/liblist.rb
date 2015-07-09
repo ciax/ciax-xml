@@ -20,6 +20,7 @@ module CIAX
       @jumpgrp=Local::Jump::Group.new(@cfg)
       type?(@cfg[:jump_groups],Array)
       @cfg[:jump_groups]+=[@jumpgrp]
+      self
     end
   end
 end

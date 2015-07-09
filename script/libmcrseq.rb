@@ -21,7 +21,7 @@ module CIAX
     # Sequencer
     class Seq < Hashx
       #required cfg keys: app,db,body,stat,(:submcr_proc)
-      attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
+      attr_reader :id,:record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro
       #ent_cfg should have [:dbi]
       def initialize(cfg,attr={})
@@ -33,6 +33,7 @@ module CIAX
           {'id' => 'dmy'}
         }
         @record=Record.new.start(@cfg)
+        @id=@record['id'] # ID for list
         @post_stat_procs=[] # execute on stat changes
         @post_mcr_procs=[]
         @que_cmd=Queue.new
@@ -42,7 +43,7 @@ module CIAX
       end
 
       def macro
-        Thread.current[:id]=@record['id']
+        Thread.current[:id]=@id
         set_stat('run')
         show @record
         @cfg[:batch].each{|e1|
@@ -167,7 +168,6 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libmcrdb"
       GetOpts.new('cemntr')
       proj=ENV['PROJ']||'ciax'
       cfg=Config.new

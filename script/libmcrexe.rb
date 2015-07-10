@@ -7,7 +7,7 @@ module CIAX
     class Exe < Exe
       #required cfg keys: app,db,body,stat
       #cfg[:submcr_proc] for executing asynchronous submacro
-      #ent_cfg should have [:db]
+      #ent_cfg should have [:dbi]
       def initialize(seq)
         @seq=type?(seq,Seq)
         rec=@seq.record

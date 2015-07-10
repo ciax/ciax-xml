@@ -25,7 +25,7 @@ module CIAX
         map{|e| e.valid_keys}.flatten
       end
 
-      def set_cmd(args,opt={})
+      def set_cmd(args=[],opt={})
         id,*par=type?(args,Array)
         valid_keys.include?(id) || raise(InvalidCMD,view_list)
         get_item(id).set_par(par,opt)

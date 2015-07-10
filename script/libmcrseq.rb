@@ -21,8 +21,8 @@ module CIAX
     # Sequencer
     class Seq < Hashx
       #required cfg keys: app,db,body,stat,(:submcr_proc)
-      attr_reader :id,:record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
-      #cfg[:submcr_proc] for executing asynchronous submacro
+      attr_reader :id,:cfg,:record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
+      #cfg[:submcr_proc] for executing asynchronous submacro, which returns hash with ['id']
       #ent_cfg should have [:dbi]
       def initialize(cfg,attr={})
         @cfg=cfg.gen(self).update(attr)

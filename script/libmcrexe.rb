@@ -10,10 +10,9 @@ module CIAX
       #ent_cfg should have [:dbi]
       def initialize(seq)
         @seq=type?(seq,Seq)
-        rec=@seq.record
-        super(rec['id'],rec.cfg)
+        super(seq.id,seq.cfg)
         cfg=Config.new
-        cfg[:jump_groups]=rec.cfg[:jump_groups]
+        cfg[:jump_groups]=seq.cfg[:jump_groups]
         @cobj=Index.new(cfg)
         @cobj.add_rem.add_hid
         @cobj.get_item('interrupt').proc{|ent,src|

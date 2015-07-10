@@ -6,13 +6,13 @@ module CIAX
   module Mcr
     class Record < Datax
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
-      attr_reader :cfg
       def initialize(id=nil)
         super('record',[],'steps')
         self['id']=id||self['time'].to_s # Session ID
       end
 
       # cfg will come from Entity, which should have [:cid],['label'],@layers[:wat]
+      # cfg doesn't change
       def start(cfg)
         @cfg=type?(cfg,Config)
         self['ver']=@cfg['ver']||'0' # Version

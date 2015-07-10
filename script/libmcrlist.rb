@@ -1,172 +1,70 @@
 #!/usr/bin/ruby
-require "liblist"
 require "libmcrexe"
 
 module CIAX
   module Mcr
-    # List takes Command which could be shared with Man
-    class List < List
-      # @index: current element (1..@data.size)
-      # initialize takes Command for generating submacro
-      attr_accessor :index
-      def initialize(cobj=nil)
-        @cobj=type?(cobj||Command.new.add_extgrp,Command)
-        super(Mcr,@cobj.cfg,{"line_number" => true})
-        @cfg[:dataname]='procs'
-        @cfg[:valid_keys]=@valid_keys=[]
-        self['id']=@cfg[:db]["id"]
-        self['ver']=@cfg[:db]["version"]
-        @post_upd_procs << proc{
-          @valid_keys.replace(@data.keys)
-          set_index
-        }
-        @cfg[:jump_groups] << @jumpgrp
-        @index=0
-        @lastsize=0
-        @records={}
+    # @cfg[:db] associated site/layer should be set
+    # @cfg should have [:jump_group],[:layer_list]
+    class List < CIAX::List
+      attr_reader :current
+      def initialize(cfg,attr={})
+        super
+        @cfg[:submcr_proc]=proc{|args,id| add(args,id)}
+        @current=''
+        verbose("Initialize")
+        @mobj=Index.new(@cfg)
+        @mobj.add_rem.add_ext(Db.new.get('ciax'))
       end
 
-      #convert the order number(Integer) to key (sid)
-      def current_sid
-        @data.keys[@index-1]
+      def get(sid)
+        @mobj.set_cmd unless res=super
+        @current=sid
+        res
       end
 
-      # return false if no change in @index
-      def set_index(str=nil)
-        n=str.to_i
-        oidx=@index
-        verbose("Data size #{@lastsize} -> #{@data.size}")
-        if @data.size >= n && n > 0
-          @index=n
-          # Manual change
-          return str.replace(current_sid)
-        elsif @data.size > @lastsize
-          # Increase mcr
-          verbose('increase')
-          @index=@data.size
-        elsif @index > @data.size
-          # Decrease mcr
-          verbose('decrease')
-          @index=@data.size
+      def add(args,src='user')
+        ent=@mobj.set_cmd(args)
+        seq=Seq.new(ent.cfg)
+        exe=Exe.new(seq).ext_shell
+        @current=seq.id
+        @jumpgrp.add_item(@current,seq['cid'])
+        put(@current,exe)
+      end
+
+      def ext_shell
+        super(Jump)
+        @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
+        self
+      end
+
+      def shell
+        sid=@current
+        begin
+          get(sid).shell
+        rescue Jump
+          sid=$!.to_s
+          retry
+        rescue InvalidID
+          $opt.usage('(opt) [site]')
         end
-        @lastsize=@data.size
-        verbose("Index Changed #{oidx} -> #{@index}")
-        false
       end
 
-      def conv_cmd(args,list)
-        # Internal command with sid
-        args[1]=current_sid if list.key?(args[0])
-        # Change current sid
-        res=set_index(args[0]) ? [] : args
-      end
-
-      def output
-        @records[current_sid]||self
-      end
-
-      def option
-        (@data[current_sid]||{})['option']||{}
-      end
-
-      def to_v
-        idx=1
-        page=['<<< '+Msg.color('Active Macros',2)+' >>>']
-        @data.each{|key,mst|
-          title="[#{idx}](#{key})"
-          msg="#{mst['cid']} [#{mst['step']}/#{mst['total_steps']}](#{mst['stat']})"
-          page << Msg.item(title,msg)
-          idx+=1
-        }
-        page.join("\n")
-      end
+      class Jump < LongJump; end
     end
-
-    class ClList < List
-      def initialize(cobj=nil)
-        super
-        host=type?(@cfg['host']||'localhost',String)
-        @post_upd_procs << proc{
-          @data.keys.each{|sid|
-            @records[sid]||=Record.new(self['id']).ext_http(host,sid)
-            @records[sid].upd
-          }
-        }
-        ext_http(host)
-      end
-    end
-
-    class SvList < List
-      def initialize(cobj=nil)
-        super
-        @tgrp=ThreadGroup.new
-        ext_file
-        clean
-      end
-
-      # Used by Man
-      def add_ent(ent)
-        ssh=Seq.new(type?(ent,Group::Entity).cfg)
-        ssh.post_stat_procs << proc{upd}
-        ssh.post_mcr_procs << proc{|s|
-          del_seq(s.id)
-          clean
-        }
-        # JumpGroup is set to Domain
-        @jumpgrp.add_item(ssh.id,ssh['cid'])
-        @cfg[:jump_groups].each{|grp|
-          ssh.cobj.loc.put(grp)
-        }
-        # Set input alias as number
-        ssh.shell_input_proc=proc{|args|
-          set_index(args[0])
-          args
-        }
-        put(ssh.id,ssh)
-        @records[ssh.id]=ssh.record
-        ssh.fork(@tgrp)
-        self
-      end
-
-      # Used by List
-      def add_seq(args)
-        add_ent(@cobj.set_cmd(args))
-      end
-
-      def del_seq(id)
-        @data.delete(id)
-        @records.delete(id)
-        @jumpgrp.del_item(id)
-        self
-      end
-
-      def clean
-        @data.keys.each{|id|
-          unless @tgrp.list.any?{|t| id == t[:sid]}
-            del_seq(id)
-          end
-        }
-        upd
-      end
-
-      def interrupt
-        @tgrp.list.each{|t|
-          t.raise(Interrupt)
-        }
-        upd
-      end
-    end
-
-    class Jump < LongJump; end
 
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('tenr')
+      proj=ENV['PROJ']||'ciax'
+      cfg=Config.new
+      cfg[:jump_groups]=[]
+      al=Wat::List.new(cfg).cfg[:sub_list] #Take App List
+      cfg[:sub_list]=al
+      list=List.new(cfg).ext_shell
       begin
-        list=SvList.new
         ARGV.each{|cid|
-          list.add_seq(cid.split(':'))
-        }.empty? && list.add_seq([])
+          list.add(cid.split(':'))
+        }
         list.shell
       rescue InvalidCMD
         $opt.usage('[cmd(:par)] ...')

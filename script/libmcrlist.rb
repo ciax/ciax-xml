@@ -9,7 +9,7 @@ module CIAX
       attr_reader :current
       def initialize(cfg,attr={})
         super
-        @cfg[:submcr_proc]=proc{|args,id| add(args,id)}
+        @cfg[:submcr_proc]=proc{|args,id| add(args,id) }
         @current=''
         verbose("Initialize")
         @mobj=Index.new(@cfg)
@@ -22,25 +22,26 @@ module CIAX
         res
       end
 
-      def add(args,src='user')
+      def add(args,parent='user')
         ent=@mobj.set_cmd(args)
-        seq=Seq.new(ent.cfg)
-        exe=Exe.new(seq).ext_shell
+        seq=Seq.new(ent.cfg,{'parent' => parent})
         @current=seq.id
         @jumpgrp.add_item(@current,seq['cid'])
-        put(@current,exe)
+        put(@current,seq)
+        seq
       end
 
       def ext_shell
         super(Jump)
         @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
+        @shlist={}
         self
       end
 
       def shell
         sid=@current
         begin
-          get(sid).shell
+          (@shlist[sid]||=Exe.new(get(sid)).ext_shell).shell
         rescue Jump
           sid=$!.to_s
           retry

@@ -22,7 +22,7 @@ module CIAX
     class Seq < Hashx
       #required cfg keys: app,db,body,stat,(:submcr_proc)
       attr_reader :id,:cfg,:record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
-      #cfg[:submcr_proc] for executing asynchronous submacro, which returns hash with ['id']
+      #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
       #ent_cfg should have [:dbi]
       def initialize(cfg,attr={})
         @cfg=cfg.gen(self).update(attr)
@@ -65,7 +65,7 @@ module CIAX
               @cfg[:sub_list].get(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
             when 'mcr'
               if @step.async? && @submcr_proc.is_a?(Proc)
-                @step['id']=@submcr_proc.call(e1['args'],@record['id'])['id']
+                @step['id']=@submcr_proc.call(e1['args'],@record['id']).id
               end
             end
           rescue Retry

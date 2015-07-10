@@ -7,13 +7,14 @@ module CIAX
       def initialize(cfg,attr={})
         attr[:layer_list]=self
         super
+        @current=''
       end
 
       # list object can be (Frm,App,Wat,Hex)
       def add_layer(layer)
         type?(layer,Module)
         sl=layer::List.new(@cfg)
-        put(m2id(layer),sl)
+        put(@current=m2id(layer),sl)
         sl
       end
 
@@ -26,9 +27,10 @@ module CIAX
         self
       end
 
-      def shell(site,layer=nil)
+      def shell(site)
+        layer=@current
         begin
-          get(layer||keys.last).shell(site)
+          get(layer).shell(site)
         rescue Jump
           layer,site=$!.to_s.split(':')
           retry

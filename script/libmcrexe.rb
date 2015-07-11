@@ -24,6 +24,7 @@ module CIAX
         }
         @cobj.get_item('start').proc{|ent|
           @seq.fork
+          'ACCEPT'
         }
       end
 

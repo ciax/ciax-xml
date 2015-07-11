@@ -10,7 +10,7 @@ module CIAX
       attr_reader :parameter
       def initialize(cfg,attr={})
         super
-        @current_site=''
+        @current=''
       end
 
       def set_db(db)
@@ -35,7 +35,7 @@ module CIAX
         unless @data.key?(site)
           add(site)
         end
-        @current_site.replace(site)
+        @current.replace(site)
         super
       end
 
@@ -44,7 +44,7 @@ module CIAX
         sites=@cfg[:db].displist
         @jumpgrp.merge_items(sites)
         # For parameter of jump from another layer
-        @parameter={:default => @current_site,:list => sites.keys}
+        @parameter={:default => @current,:list => sites.keys}
         @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
         self
       end

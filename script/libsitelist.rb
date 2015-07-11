@@ -21,7 +21,7 @@ module CIAX
 
       def sub_list(layer)
         if @cfg.all_key?(:layer_list)
-          @cfg[:layer_list].add_layer(layer)
+          @cfg[:layer_list].add(layer)
         else
           layer::List.new(@cfg)
         end

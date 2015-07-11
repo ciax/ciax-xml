@@ -11,7 +11,7 @@ module CIAX
       end
 
       # list object can be (Frm,App,Wat,Hex)
-      def add_layer(layer)
+      def add(layer)
         type?(layer,Module)
         sl=layer::List.new(@cfg)
         put(@current=m2id(layer),sl)
@@ -51,7 +51,7 @@ module CIAX
     cfg[:jump_groups]=[]
     sl=Site::Layer.new(cfg)
     begin
-      sl.add_layer(Hex)
+      sl.add(Hex)
       sl.ext_shell.shell(site)
     rescue InvalidID
       $opt.usage('(opt) [id]')

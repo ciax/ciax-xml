@@ -6,7 +6,7 @@ module CIAX
   id=ARGV.shift
   cfg=Config.new
   cfg[:jump_groups]=[]
-  cl=Site::Layer.new(cfg).add_layer($opt.layer)
+  cl=Site::Layer.new(cfg).add($opt.layer)
   begin
     puts cl.get(id).exe(ARGV).output
   rescue InvalidID

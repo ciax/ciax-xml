@@ -6,24 +6,20 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # @cfg should have [:jump_group],[:layer_list]
     class List < CIAX::List
-      attr_reader :current
+      attr_reader :cfg
       def initialize(cfg,attr={})
         super
         @cfg[:submcr_proc]=proc{|args,id| add(args,id) }
         @current=''
         verbose("Initialize")
-        @mobj=Index.new(@cfg)
-        @mobj.add_rem.add_ext(Db.new.get('ciax'))
       end
 
       def get(sid)
-        @mobj.set_cmd unless res=super
         @current=sid
-        res
+        super
       end
 
-      def add(args,parent='user')
-        ent=@mobj.set_cmd(args)
+      def add(ent,parent='user')
         seq=Seq.new(ent.cfg,{'parent' => parent})
         @current=seq.id
         @jumpgrp.add_item(@current,seq['cid'])
@@ -59,12 +55,15 @@ module CIAX
       proj=ENV['PROJ']||'ciax'
       cfg=Config.new
       cfg[:jump_groups]=[]
-      al=Wat::List.new(cfg).cfg[:sub_list] #Take App List
-      cfg[:sub_list]=al
+      cfg[:sub_list]=Wat::List.new(cfg).cfg[:sub_list] #Take App List
       list=List.new(cfg).ext_shell
+      mobj=Index.new(list.cfg)
+      mobj.add_rem.add_ext(Db.new.get(proj))
       begin
+        mobj.set_cmd if ARGV.empty?
         ARGV.each{|cid|
-          list.add(cid.split(':'))
+          ent=mobj.set_cmd(cid.split(':'))
+          list.add(ent)
         }
         list.shell
       rescue InvalidCMD

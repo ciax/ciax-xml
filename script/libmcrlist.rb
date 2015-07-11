@@ -10,7 +10,6 @@ module CIAX
       attr_reader :cfg
       def initialize(cfg,attr={})
         super
-        @cfg[:submcr_proc]=proc{|args,id| add(args,id) }
         @current=''
         verbose("Initialize")
       end
@@ -60,6 +59,10 @@ module CIAX
       list=List.new(cfg).ext_shell
       mobj=Index.new(list.cfg)
       mobj.add_rem.add_ext(Db.new.get(proj))
+      cfg[:submcr_proc]=proc{|args,id|
+        ent=mobj.set_cmd(args)
+        list.add(ent,id)
+      }
       begin
         mobj.set_cmd if ARGV.empty?
         ARGV.each{|cid|

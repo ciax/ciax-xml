@@ -72,7 +72,7 @@ module CIAX
       cfg=Config.new
       cobj=Index.new(cfg)
       cobj.add_rem
-      cobj.rem.proc{|ent| ent.cfg.path }
+      cobj.rem.def_proc{|ent| ent.cfg.path }
       cobj.rem.add_ext(Db.new.get(proj))
       begin
         ent=cobj.set_cmd(ARGV)

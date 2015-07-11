@@ -58,8 +58,8 @@ module CIAX
         @wview=View.new(@sub.adb,@event)
         @output=$opt['j'] ? @event : @wview
         vg=@cobj.loc.add_view
-        vg['vis'].proc{@output=@wview;''}
-        vg['raw'].proc{@output=@event;''}
+        vg.get_item('vis').def_proc{@output=@wview;''}
+        vg.get_item('raw').def_proc{@output=@event;''}
         self
       end
     end

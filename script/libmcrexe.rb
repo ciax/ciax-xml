@@ -15,14 +15,14 @@ module CIAX
         cfg[:jump_groups]=seq.cfg[:jump_groups]
         @cobj=Index.new(cfg)
         @cobj.add_rem.add_hid
-        @cobj.get_item('interrupt').proc{|ent,src|
+        @cobj.get_item('interrupt').def_proc{|ent,src|
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
         }
-        @cobj.rem.add_int(@seq['option']).proc{|ent|
+        @cobj.rem.add_int(@seq['option']).def_proc{|ent|
           reply(ent.id)
         }
-        @cobj.get_item('start').proc{|ent|
+        @cobj.get_item('start').def_proc{|ent|
           @seq.fork
           'ACCEPT'
         }
@@ -37,8 +37,8 @@ module CIAX
           res
         }
         vg=@cobj.loc.add_view
-        vg['vis'].proc{@output.vmode='v';''}
-        vg['raw'].proc{@output.vmode='r';''}
+        vg.get_item('vis').def_proc{@output.vmode='v';''}
+        vg.get_item('raw').def_proc{@output.vmode='r';''}
         self
       end
 

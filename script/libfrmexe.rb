@@ -57,9 +57,9 @@ module CIAX
     class Test < Exe
       def initialize(id,cfg={},attr={})
         super
-        @cobj.rem.proc{|ent|@field['time']=now_msec;''}
-        @cobj.rem.ext.proc{|ent| ent.cfg.path }
-        @cobj.get_item('set').proc{|ent|
+        @cobj.rem.def_proc{|ent|@field['time']=now_msec;''}
+        @cobj.rem.ext.def_proc{|ent| ent.cfg.path }
+        @cobj.get_item('set').def_proc{|ent|
           @field.rep(ent.par[0],ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
@@ -71,7 +71,7 @@ module CIAX
         super
         host=type?(@cfg['host']||@fdb['host']||'localhost',String)
         @field.ext_http(host)
-        @cobj.rem.proc{to_s}
+        @cobj.rem.def_proc{to_s}
         @pre_exe_procs << proc{@field.upd}
         ext_client
       end
@@ -95,22 +95,22 @@ module CIAX
         @stream.pre_open_proc=proc{@site_stat['strerr']=true}
         @stream.post_open_proc=proc{@site_stat['strerr']=false}
         @field.ext_rsp{@stream.rcv}
-        @cobj.rem.ext.proc{|ent|
+        @cobj.rem.ext.def_proc{|ent|
           @site_stat['comerr']=false
           @stream.snd(ent.cfg[:frame],ent.id)
           @field.conv(ent)
           'OK'
         }
-        @cobj.get_item('set').proc{|ent|
+        @cobj.get_item('set').def_proc{|ent|
           @field.rep(ent.par[0],ent.par[1])
           flush
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
-        @cobj.get_item('save').proc{|ent|
+        @cobj.get_item('save').def_proc{|ent|
           @field.save_key(ent.par[0].split(','),ent.par[1])
           "Save [#{ent.par[0]}]"
         }
-        @cobj.get_item('load').proc{|ent|
+        @cobj.get_item('load').def_proc{|ent|
           @field.load(ent.par[0]||'').save
           flush
           "Load [#{ent.par[0]}]"

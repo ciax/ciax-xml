@@ -39,7 +39,7 @@ module CIAX
       end
 
       # Proc should return String
-      def proc(&def_proc)
+      def def_proc(&def_proc)
         @cfg[:def_proc]=type?(def_proc,Proc)
         self
       end

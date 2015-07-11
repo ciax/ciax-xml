@@ -4,6 +4,7 @@ require "libsh"
 
 module CIAX
   module Mcr
+    # Sequencer Layer Shell
     class Exe < Exe
       #required cfg keys: app,db,body,stat
       #cfg[:submcr_proc] for executing asynchronous submacro

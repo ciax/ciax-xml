@@ -18,7 +18,7 @@ module CIAX
   #TEST: query(exec,error,enter), interval=0
   #REAL: query(exec,error), interval=1
   module Mcr
-    # Sequencer
+    # Sequencer Layer
     class Seq < Hashx
       #required cfg keys: app,db,body,stat,(:submcr_proc)
       attr_reader :id,:cfg,:record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs

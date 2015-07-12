@@ -125,6 +125,14 @@ module CIAX
       } if $opt
     end
 
+    def get(id)
+      fetch(id)
+    end
+
+    def put(key,val)
+      store(key,val)
+    end
+
     def to_s
       @vmode == 'j' ? to_j : super
     end
@@ -149,6 +157,14 @@ module CIAX
         dary[i]=skeleton(sary[1..-1])
       }
       dary
+    end
+
+    # Get value of Hash which is element of self
+    def get(key)
+      each{|e|
+        return e.get(key) if e === Enumx
+      }
+      nil
     end
   end
 end

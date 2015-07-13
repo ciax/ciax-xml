@@ -8,13 +8,14 @@ module CIAX
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       def initialize(id=nil)
         super('record',[],'steps')
-        self['id']=id||self['time'].to_s # Session ID
+        self['id']=id # Session ID for Loading
       end
 
       # cfg will come from Entity, which should have [:cid],['label'],@layers[:wat]
       # cfg doesn't change
       def start(cfg)
         @cfg=type?(cfg,Config)
+        self['id']=self['time'].to_s # Session ID
         self['ver']=@cfg['ver']||'0' # Version
         self['cid']=@cfg[:cid] # Command ID (cmd:par)
         self['label']=@cfg['label'] # Label for CID

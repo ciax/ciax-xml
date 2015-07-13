@@ -11,7 +11,7 @@ module CIAX
       #ent_cfg should have [:dbi]
       def initialize(seq)
         @seq=type?(seq,Seq)
-        super(seq.id,seq.cfg)
+        super(seq['cid'],seq.cfg)
         cfg=Config.new
         cfg[:jump_groups]=seq.cfg[:jump_groups]
         @cobj=Index.new(cfg)

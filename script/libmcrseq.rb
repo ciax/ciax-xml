@@ -21,7 +21,7 @@ module CIAX
     # Sequencer Layer
     class Seq < Hashx
       #required cfg keys: app,db,body,stat,(:submcr_proc)
-      attr_reader :id,:cfg,:record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
+      attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
       #ent_cfg should have [:dbi]
       def initialize(cfg,attr={})
@@ -32,8 +32,7 @@ module CIAX
           show(Msg.indent(@step['depth']+1)+"Sub Macro #{args} issued\n")
           {'id' => 'dmy'}
         }
-        @record=Record.new.start(@cfg)
-        @id=@record['id'] # ID for list
+        @record=Record.new
         @post_stat_procs=[] # execute on stat changes
         @post_mcr_procs=[]
         @que_cmd=Queue.new
@@ -43,7 +42,8 @@ module CIAX
       end
 
       def macro
-        Thread.current[:id]=@id
+        @record.start(@cfg)
+        self['id']=@record['id'] # ID for list
         set_stat('run')
         show @record
         @cfg[:batch].each{|e1|
@@ -65,7 +65,7 @@ module CIAX
               @cfg[:sub_list].get(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
             when 'mcr'
               if @step.async? && @submcr_proc.is_a?(Proc)
-                @step['id']=@submcr_proc.call(e1['args'],@record['id']).id
+                @step['id']=@submcr_proc.call(e1['args'],@record['id'])['id']
               end
             end
           rescue Retry

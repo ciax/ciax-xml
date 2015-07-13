@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libenumx'
 module CIAX
   # Recursive hash array of @generation: each Hash is associated with Domain,Group,Item;
   # Structure: Command[cfg]

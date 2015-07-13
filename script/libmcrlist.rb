@@ -1,13 +1,11 @@
 #!/usr/bin/ruby
 require "libmcrexe"
-
 module CIAX
   module Mcr
     # Sequencer Layer List
     # @cfg[:db] associated site/layer should be set
     # @cfg should have [:jump_group],[:layer_list]
     class List < CIAX::List
-      attr_reader :cfg
       def initialize(cfg,attr={})
         super
         @current=''

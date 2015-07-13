@@ -62,14 +62,10 @@ module CIAX
         values.map{|e| e.valid_pars}.flatten
       end
 
-      def get_item(id)
-        self[id]
-      end
-
       def set_cmd(args,opt={})
         id,*par=type?(args,Array)
         @valid_keys.include?(id) || raise(InvalidCMD,view_list)
-        get_item(id).set_par(par,opt)
+        get(id).set_par(par,opt)
       end
 
       private

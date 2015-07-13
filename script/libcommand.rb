@@ -14,12 +14,6 @@ module CIAX
         @cfg=cfg.gen(self).update(attr)
       end
 
-      def get_item(id)
-        res=nil
-        any?{|e| res=e.get_item(id)}
-        res
-      end
-
       def valid_keys
         map{|e| e.valid_keys}.flatten
       end
@@ -27,7 +21,7 @@ module CIAX
       def set_cmd(args=[],opt={})
         id,*par=type?(args,Array)
         valid_keys.include?(id) || raise(InvalidCMD,view_list)
-        get_item(id).set_par(par,opt)
+        get(id).set_par(par,opt)
       end
 
       def valid_pars

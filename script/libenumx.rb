@@ -126,7 +126,7 @@ module CIAX
     end
 
     def get(id)
-      fetch(id)
+      self[id]
     end
 
     def put(key,val)
@@ -162,7 +162,8 @@ module CIAX
     # Get value of Hash which is element of self
     def get(key)
       each{|e|
-        return e.get(key) if e === Enumx
+        res=e.get(key)
+        return res if res
       }
       nil
     end

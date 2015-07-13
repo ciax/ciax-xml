@@ -54,8 +54,8 @@ module CIAX
         super
         @output=$opt['j'] ? @stat : @appview
         vg=@cobj.loc.add_view
-        vg.get_item('vis').def_proc{@output=@appview;''}
-        vg.get_item('raw').def_proc{@output=@stat;''}
+        vg.get('vis').def_proc{@output=@appview;''}
+        vg.get('raw').def_proc{@output=@stat;''}
         self
       end
     end
@@ -70,7 +70,7 @@ module CIAX
         }
         @post_exe_procs << proc{@stat.upd}
         @cobj.rem.add_int
-        @cobj.get_item('interrupt').def_proc{|ent|
+        @cobj.get('interrupt').def_proc{|ent|
           "INTERRUPT(#{@batch_interrupt})"
         }
         @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
@@ -102,7 +102,7 @@ module CIAX
           @buf.send(pri,ent,src)
           "ISSUED"
         }
-        @cobj.get_item('interrupt').def_proc{|ent,src|
+        @cobj.get('interrupt').def_proc{|ent,src|
           @batch_interrupt.each{|args|
             verbose("#@id/Issuing:#{args} for Interrupt")
             @buf.send(0,@cobj.set_cmd(args),src)

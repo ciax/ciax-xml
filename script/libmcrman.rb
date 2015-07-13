@@ -96,7 +96,7 @@ module CIAX
             self['sid']=mobj.id
             "ACCEPT"
           }
-          @cobj.get_item('interrupt').def_proc{|ent|
+          @cobj.get('interrupt').def_proc{|ent|
             @list.interrupt
             'INTERRUPT'
           }

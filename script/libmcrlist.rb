@@ -7,6 +7,7 @@ module CIAX
     # @cfg should have [:jump_group],[:layer_list]
     class List < CIAX::List
       def initialize(cfg,attr={})
+        attr[:data_struct]=[]
         super
         @current=''
         verbose("Initialize")
@@ -14,28 +15,27 @@ module CIAX
 
       def get(sid)
         @current=sid
-        super
+        super(sid.to_i-1)
       end
 
       def add(ent,parent='user')
         seq=Seq.new(ent.cfg,{'parent' => parent})
-        @current=seq.id
+        @data.push Exe.new(seq).ext_shell
+        @current=@data.size.to_s
         @jumpgrp.add_item(@current,seq['cid'])
-        put(@current,seq)
         seq
       end
 
       def ext_shell
         super(Jump)
         @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
-        @shlist={}
         self
       end
 
       def shell
         sid=@current
         begin
-          (@shlist[sid]||=Exe.new(get(sid)).ext_shell).shell
+          get(sid).shell
         rescue Jump
           sid=$!.to_s
           retry

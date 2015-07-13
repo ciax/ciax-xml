@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libenumx'
 require 'librerange'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.

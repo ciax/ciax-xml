@@ -117,7 +117,7 @@ module CIAX
       rescue NameError
         Msg.color("No #{level}::Color",1)
         lv_color=1
-      end        
+      end
       ts << Msg.color("#{level}",lv_color)
       ts << ':'
       ts << Msg.color("#{cls}",@cls_color||15)

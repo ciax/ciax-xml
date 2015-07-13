@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libenumx'
 require 'libconf'
 require 'libgroup'
 
@@ -51,7 +50,7 @@ module CIAX
         when Module
           res=obj.new(@cfg,attr)
         when String,Symbol
-          res=layer_module.const_get(cls).new(@cfg,attr)
+          res=layer_module.const_get(obj).new(@cfg,attr)
         when Enumx
           obj.cfg.join_in(@cfg)
           res=obj

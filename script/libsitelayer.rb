@@ -2,8 +2,8 @@
 require "liblist"
 
 module CIAX
-  module Site
-    class Layer < CIAX::List
+  module Layer
+    class List < CIAX::List
       def initialize(cfg,attr={})
         attr[:layer_list]=self
         super
@@ -48,20 +48,20 @@ module CIAX
         end
       end
     end
-  end
 
-  if __FILE__ == $0
-    require "libhexexe"
-    GetOpts.new("els")
-    site=ARGV.shift
-    cfg=Config.new
-    cfg[:jump_groups]=[]
-    sl=Site::Layer.new(cfg).ext_shell
-    begin
-      sl.add(Frm)
-      sl.shell(site)
-    rescue InvalidID
-      $opt.usage('(opt) [id]')
+    if __FILE__ == $0
+      require "libhexexe"
+      GetOpts.new("els")
+      site=ARGV.shift
+      cfg=Config.new
+      cfg[:jump_groups]=[]
+      sl=List.new(cfg).ext_shell
+      begin
+        sl.add(Frm)
+        sl.shell(site)
+      rescue InvalidID
+        $opt.usage('(opt) [id]')
+      end
     end
   end
 end

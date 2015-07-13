@@ -7,7 +7,7 @@ module CIAX
   id=ARGV.shift
   cfg=Config.new
   cfg[:jump_groups]=[]
-  sl=Site::Layer.new(cfg)
+  sl=Layer::List.new(cfg)
   sl.add($opt.layer)
   sl.ext_shell.shell(id)
 end

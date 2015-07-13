@@ -45,7 +45,7 @@ module CIAX
       class Group < Group
         def initialize(cfg,attr={})
           super
-          name=m2id(@cfg[:jump_class],-2).capitalize
+          name=m2id(@cfg[:jump_class],1).capitalize
           @cfg['caption']="Switch #{name}s"
           @cfg['color']=5
           @cfg['column']=3

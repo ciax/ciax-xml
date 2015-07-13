@@ -7,10 +7,10 @@ module CIAX
     # @data is hidden from access by '[]'.
     # @data is conveted to json file where @data will be appeared as self['data'].
     # @data never contains object which can't save with JSON
-    def initialize(type,init_struct={},dataname='data')
+    def initialize(type,init_struct={},data_name='data')
       super(type)
-      # Variable Data (Shown as 'data'(dataname) hash in JSON)
-      @dataname=dataname
+      # Variable Data (Shown as 'data'(data_name) hash in JSON)
+      @data_name=data_name
       @data=init_struct.dup.extend(Enumx)
     end
 
@@ -56,13 +56,13 @@ module CIAX
     def _getdata
       verbose("Convert @data to [:data]")
       hash=Hashx.new(self)
-      hash[@dataname]=@data
+      hash[@data_name]=@data
       hash
     end
 
     def _setdata
       verbose("Convert [:data] to @data")
-      @data=delete(@dataname).extend(Enumx)
+      @data=delete(@data_name).extend(Enumx)
       self['time']||=now_msec
       self
     end
@@ -169,7 +169,7 @@ module CIAX
         tag||=(tag_list.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
         Msg.msg("Status Saving for [#{tag}]")
         output=Hashx.new(self)
-        output[@dataname]=hash
+        output[@data_name]=hash
         write_json(output.to_j,tag)
       end
       self
@@ -190,7 +190,7 @@ module CIAX
         data=j2h(json_str)
         verbose("Version compare [#{data['ver']}] vs. <#{self['ver']}>")
         if data['ver'] == self['ver']
-          @data.deep_update(data[@dataname])
+          @data.deep_update(data[@data_name])
         else
           alert("Version mismatch [#{data['ver']}] should be <#{self['ver']}>")
         end

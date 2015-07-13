@@ -12,7 +12,7 @@ module CIAX
       def initialize(cobj=nil)
         @cobj=type?(cobj||Command.new.add_extgrp,Command)
         super(Mcr,@cobj.cfg,{"line_number" => true})
-        @cfg[:dataname]='procs'
+        @cfg[:data_name]='procs'
         @cfg[:valid_keys]=@valid_keys=[]
         self['id']=@cfg[:db]["id"]
         self['ver']=@cfg[:db]["version"]

@@ -18,7 +18,7 @@ module CIAX
 
       def add(ent,parent='user')
         seq=Seq.new(ent.cfg,{'parent' => parent})
-        @data.push Exe.new(seq).ext_shell
+        @data.push seq
         seq
       end
 
@@ -33,12 +33,18 @@ module CIAX
         def ext_shell
           super(Jump)
           @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
+          @exelist={}
           self
+        end
+
+        def get(id)
+          @exelist[id]||=Exe.new(super).ext_shell
         end
 
         def add(ent,parent='user')
           seq=super
-          @jumpgrp.add_item(@data.size.to_s,seq['cid'])
+          id=@data.size.to_s
+          @jumpgrp.add_item(id,seq['cid'])
           seq
         end
 

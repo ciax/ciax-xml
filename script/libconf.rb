@@ -73,7 +73,7 @@ module CIAX
           case v
           when String,Numeric
             val=v.inspect
-          when Array,Hash,Proc
+          when Array,Hash,Proc,CmdProc
             val=v.class
           else
             val=v

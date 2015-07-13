@@ -6,7 +6,7 @@ require 'libgroup'
 module CIAX
   module Command
     class GrpAry < Arrayx
-      attr_reader :cfg
+      include CmdProc
       def initialize(cfg,attr={})
         @cls_color=13
         # @cfg is isolated from cfg
@@ -38,12 +38,6 @@ module CIAX
         map{|e| e.view_list}.grep(/./).join("\n")
       end
 
-      # Proc should return String
-      def def_proc(&def_proc)
-        @cfg[:def_proc]=type?(def_proc,Proc)
-        self
-      end
-
       # If cls is String or Symbol, constant is taken locally.
       def add(obj,attr={})
         case obj
@@ -51,7 +45,7 @@ module CIAX
           res=obj.new(@cfg,attr)
         when String,Symbol
           res=layer_module.const_get(obj).new(@cfg,attr)
-        when Enumx
+        when CmdProc
           obj.cfg.join_in(@cfg)
           res=obj
         else

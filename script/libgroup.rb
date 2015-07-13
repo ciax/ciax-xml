@@ -5,7 +5,8 @@ require 'libdisp'
 module CIAX
   module Command
     class Group < Hashx
-      attr_reader :cfg,:valid_keys
+      include CmdProc
+      attr_reader :valid_keys
       #dom_cfg keys: caption,color,column
       def initialize(cfg,attr={})
         super()
@@ -69,12 +70,6 @@ module CIAX
         id,*par=type?(args,Array)
         @valid_keys.include?(id) || raise(InvalidCMD,view_list)
         get_item(id).set_par(par,opt)
-      end
-
-      # Proc should return String
-      def def_proc(&def_proc)
-        @cfg[:def_proc]=type?(def_proc,Proc)
-        self
       end
 
       private

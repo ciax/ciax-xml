@@ -4,11 +4,20 @@ require 'librerange'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
 module CIAX
+  module CmdProc
+    include Msg
+    attr_reader :cfg
+    # Proc should return String
+    def def_proc(&def_proc)
+      @cfg[:def_proc]=type?(def_proc,Proc)
+      self
+    end
+  end
+
   module Command;Color=2
     # Corresponds commands
     class Item < Hashx
-      include Msg
-      attr_reader :cfg
+      include CmdProc
       #grp_cfg should have :id,'label',:parameters,:def_proc
       def initialize(cfg,attr={})
         super()
@@ -39,11 +48,6 @@ module CIAX
         (@cfg[:parameters]||[]).map{|e| e[:list] if e[:type] == 'str'}.flatten
       end
 
-      # Proc should return String
-      def def_proc(&def_proc)
-        @cfg[:def_proc]=type?(def_proc,Proc)
-        self
-      end
 
       private
       # Parameter for validate(cfg[:paremeters]) structure:  [{:type,:list,:default}, ...]
@@ -99,8 +103,8 @@ module CIAX
 
     # Command db with parameter derived from Item
     class Entity
-      include Msg
-      attr_reader :id,:par,:cfg
+      include CmdProc
+      attr_reader :id,:par
       #set should have :def_proc
       def initialize(cfg,attr={})
         @cls_color=14
@@ -117,4 +121,5 @@ module CIAX
       end
     end
   end
+
 end

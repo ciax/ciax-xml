@@ -115,7 +115,7 @@ module CIAX
         # JumpGroup is set to Domain
         @jumpgrp.add_item(ssh.id,ssh['cid'])
         @cfg[:jump_groups].each{|grp|
-          ssh.cobj.loc.put(grp)
+          ssh.cobj.loc.add(grp)
         }
         # Set input alias as number
         ssh.shell_input_proc=proc{|args|

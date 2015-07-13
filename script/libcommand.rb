@@ -46,23 +46,20 @@ module CIAX
       end
 
       # If cls is String or Symbol, constant is taken locally.
-      def add(cls,attr={})
-        case cls
+      def add(obj,attr={})
+        case obj
         when Module
-          mod=cls
+          res=obj.new(@cfg,attr)
         when String,Symbol
-          mod=layer_module.const_get(cls)
+          res=layer_module.const_get(cls).new(@cfg,attr)
+        when Enumx
+          obj.cfg.join_in(@cfg)
+          res=obj
         else
-          sv_err("Not class")
+          sv_err("Not class or element")
         end
-        unshift obj=mod.new(@cfg,attr)
-        obj
-      end
-
-      def put(obj) # Destroy obj.cfg
-        obj.cfg.join_in(@cfg)
-        unshift obj
-        self
+        unshift res
+        res
       end
     end
   end

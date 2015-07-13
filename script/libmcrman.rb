@@ -33,7 +33,7 @@ module CIAX
           @output=@list=lc.new(@cobj)
           @valid_pars=@cobj.intgrp.valid_pars
           ext_shell
-          @cobj.loc.put(@list.jumpgrp)
+          @cobj.loc.add(@list.jumpgrp)
           @post_exe_procs << proc{
             @valid_pars.replace(@list.keys)
           }

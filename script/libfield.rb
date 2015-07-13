@@ -77,7 +77,7 @@ module CIAX
           begin
             p.replace(eval(conv).to_s)
           rescue SyntaxError,NameError
-            alert("Value is not numerical")
+            par_err("Value is not numerical")
           end
         end
         verbose("Evaluated[#{key}]=[#{@data[key]}]")

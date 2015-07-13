@@ -9,20 +9,16 @@ module CIAX
       def initialize(cfg,attr={})
         attr[:data_struct]=[]
         super
-        @current=''
         verbose("Initialize")
       end
 
-      def get(sid)
-        @current=sid
-        super(sid.to_i-1)
+      def get(id)
+        super(id.to_i-1)
       end
 
       def add(ent,parent='user')
         seq=Seq.new(ent.cfg,{'parent' => parent})
         @data.push Exe.new(seq).ext_shell
-        @current=@data.size.to_s
-        @jumpgrp.add_item(@current,seq['cid'])
         seq
       end
 
@@ -40,12 +36,18 @@ module CIAX
           self
         end
 
+        def add(ent,parent='user')
+          seq=super
+          @jumpgrp.add_item(@data.size.to_s,seq['cid'])
+          seq
+        end
+
         def shell
-          sid=@current
+          id=@data.size.to_s
           begin
-            get(sid).shell
+            get(id).shell
           rescue Jump
-            sid=$!.to_s
+            id=$!.to_s
             retry
           rescue InvalidID
             $opt.usage('(opt) [site]')

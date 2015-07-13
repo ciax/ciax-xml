@@ -161,6 +161,7 @@ module CIAX
 
     # Get value of Hash which is element of self
     def get(key)
+      # In case of find(), find{|e| e.get(key)}.get(key) to get content
       each{|e|
         res=e.get(key)
         return res if res

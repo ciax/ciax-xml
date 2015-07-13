@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libsitelayer"
+require "liblayer"
 
 module CIAX
   module Site

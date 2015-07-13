@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libsitelayer"
+require "liblayer"
 require "libhexexe"
 
 module CIAX

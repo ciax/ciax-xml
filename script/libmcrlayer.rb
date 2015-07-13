@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmcrman"
-require "libsitelayer"
+require "liblayer"
 
 module CIAX
   module Mcr

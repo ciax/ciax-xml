@@ -55,6 +55,7 @@ module CIAX
 
       private
       def add(site)
+        # layer_module can be Frm,App,Wat,Hex
         obj=layer_module.new(site,@cfg)
         put(site,obj.ext_shell)
       end

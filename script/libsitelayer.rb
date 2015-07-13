@@ -56,10 +56,10 @@ module CIAX
     site=ARGV.shift
     cfg=Config.new
     cfg[:jump_groups]=[]
-    sl=Site::Layer.new(cfg)
+    sl=Site::Layer.new(cfg).ext_shell
     begin
       sl.add(Frm)
-      sl.ext_shell.shell(site)
+      sl.shell(site)
     rescue InvalidID
       $opt.usage('(opt) [id]')
     end

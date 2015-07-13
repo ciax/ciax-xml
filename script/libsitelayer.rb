@@ -19,27 +19,34 @@ module CIAX
       end
 
       def ext_shell
-        super(Jump)
-        keys.each{|id|
-          sl=get(id).ext_shell
-          @jumpgrp.add_item(id,id.capitalize+" mode",{:parameters => [sl.parameter]})
-        }
-        self
+        extend(Shell).ext_shell
       end
 
-      def shell(site)
-        layer=@current
-        begin
-          get(layer).shell(site)
-        rescue Jump
-          layer,site=$!.to_s.split(':')
-          retry
-        rescue InvalidID
-          $opt.usage('(opt) [id]')
+      module Shell
+        include CIAX::List::Shell
+        class Jump < LongJump; end
+
+        def ext_shell
+          super(Jump)
+          keys.each{|id|
+            sl=get(id).ext_shell
+            @jumpgrp.add_item(id,id.capitalize+" mode",{:parameters => [sl.parameter]})
+          }
+          self
+        end
+
+        def shell(site)
+          layer=@current
+          begin
+            get(layer).shell(site)
+          rescue Jump
+            layer,site=$!.to_s.split(':')
+            retry
+          rescue InvalidID
+            $opt.usage('(opt) [id]')
+          end
         end
       end
-
-      class Jump < LongJump; end
     end
   end
 
@@ -51,7 +58,7 @@ module CIAX
     cfg[:jump_groups]=[]
     sl=Site::Layer.new(cfg)
     begin
-      sl.add(Hex)
+      sl.add(Frm)
       sl.ext_shell.shell(site)
     rescue InvalidID
       $opt.usage('(opt) [id]')

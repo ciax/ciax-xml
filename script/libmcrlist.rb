@@ -27,24 +27,31 @@ module CIAX
       end
 
       def ext_shell
-        super(Jump)
-        @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
-        self
+        extend(Shell).ext_shell
       end
 
-      def shell
-        sid=@current
-        begin
-          get(sid).shell
-        rescue Jump
-          sid=$!.to_s
-          retry
-        rescue InvalidID
-          $opt.usage('(opt) [site]')
+      module Shell
+        include CIAX::List::Shell
+        class Jump < LongJump; end
+
+        def ext_shell
+          super(Jump)
+          @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
+          self
+        end
+
+        def shell
+          sid=@current
+          begin
+            get(sid).shell
+          rescue Jump
+            sid=$!.to_s
+            retry
+          rescue InvalidID
+            $opt.usage('(opt) [site]')
+          end
         end
       end
-
-      class Jump < LongJump; end
     end
 
     if __FILE__ == $0

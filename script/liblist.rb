@@ -16,11 +16,21 @@ module CIAX
     end
 
     def ext_shell(jump_class)
-      @cfg[:jump_class]=type?(jump_class,Module)
-      @jumpgrp=Local::Jump::Group.new(@cfg)
-      type?(@cfg[:jump_groups],Array)
-      @cfg[:jump_groups]+=[@jumpgrp]
-      self
+      extend(Shell).ext_shell(jump_class)
+    end
+
+    module Shell
+      def self.extended(obj)
+        Msg.type?(obj,List)
+      end
+
+      def ext_shell(jump_class)
+        @cfg[:jump_class]=type?(jump_class,Module)
+        @jumpgrp=Local::Jump::Group.new(@cfg)
+        type?(@cfg[:jump_groups],Array)
+        @cfg[:jump_groups]+=[@jumpgrp]
+        self
+      end
     end
   end
 end

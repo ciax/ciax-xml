@@ -39,27 +39,6 @@ module CIAX
         super
       end
 
-      def ext_shell
-        super(Jump)
-        sites=@cfg[:db].displist
-        @jumpgrp.merge_items(sites)
-        # For parameter of jump from another layer
-        @parameter={:default => @current,:list => sites.keys}
-        @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
-        self
-      end
-
-      def shell(site)
-        begin
-          get(site).shell
-        rescue Jump
-          site=$!.to_s
-          retry
-        rescue InvalidID
-          $opt.usage('(opt) [site]')
-        end
-      end
-
       def server(ary)
         ary.each{|site|
           sleep 0.3
@@ -70,13 +49,41 @@ module CIAX
         $opt.usage('(opt) [id] ....')
       end
 
+      def ext_shell
+        extend(Shell).ext_shell
+      end
+
       private
       def add(site)
         obj=layer_module.new(site,@cfg)
         put(site,obj.ext_shell)
       end
 
-      class Jump < LongJump; end
+      module Shell
+        include CIAX::List::Shell
+        class Jump < LongJump; end
+
+        def ext_shell
+          super(Jump)
+          sites=@cfg[:db].displist
+          @jumpgrp.merge_items(sites)
+          # For parameter of jump from another layer
+          @parameter={:default => @current,:list => sites.keys}
+          @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
+          self
+        end
+
+        def shell(site)
+          begin
+            get(site).shell
+          rescue Jump
+            site=$!.to_s
+            retry
+          rescue InvalidID
+            $opt.usage('(opt) [site]')
+          end
+        end
+      end
     end
   end
 end

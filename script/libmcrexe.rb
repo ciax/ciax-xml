@@ -20,8 +20,8 @@ module CIAX
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
         }
-        @cobj.rem.add_int(@seq['option'])
-        @cobj.get('start').def_proc{|ent|
+        @cobj.rem.add_int(@seq['option']).valid_clear
+        @cobj.rem.int.add_item('start','Sequece Start').def_proc{|ent|
           @seq.fork
           'ACCEPT'
         }

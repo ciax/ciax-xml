@@ -35,7 +35,6 @@ module CIAX
           }.each{|id,cap|
             add_item(id,id.capitalize+" "+cap,parlist)
           }
-          @valid_keys.clear.push("start")
         end
       end
       class Item < Item;end

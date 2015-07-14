@@ -44,6 +44,11 @@ module CIAX
         self
       end
 
+      def valid_clear
+        @valid_keys.clear
+        self
+      end
+
       def valid_reset
         @valid_keys.concat(keys).uniq!
         self

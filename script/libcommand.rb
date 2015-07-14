@@ -33,20 +33,24 @@ module CIAX
       end
 
       # If cls is String or Symbol, constant is taken locally.
-      def add(obj,attr={})
-        case obj
+      def add(cls,attr={})
+        case cls
         when Module
-          res=obj.new(@cfg,attr)
+          res=cls.new(@cfg,attr)
         when String,Symbol
-          res=layer_module.const_get(obj).new(@cfg,attr)
-        when CmdProc
-          obj.cfg.join_in(@cfg)
-          res=obj
+          res=layer_module.const_get(cls).new(@cfg,attr)
         else
-          sv_err("Not class or element")
+          sv_err("Not class")
         end
         unshift res
         res
+      end
+
+      def append(obj)
+        type?(obj,CmdProc)
+        obj.cfg.join_in(@cfg)
+        unshift obj
+        obj
       end
     end
   end

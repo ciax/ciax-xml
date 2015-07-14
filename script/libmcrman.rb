@@ -35,6 +35,7 @@ module CIAX
             @list.add(@cobj.set_cmd(args),id).fork
           }
           @cobj.rem.int.par[:list]=@list.index
+          set_crnt
           ext_shell
         end
 
@@ -42,7 +43,7 @@ module CIAX
         def ext_shell
           super
           @prompt_proc=proc{
-            ("[%s]" % @cobj.rem.int.par[:default])
+            ("[%s]" % @current)
           }
           @post_exe_procs << proc{
             @output=@list.to_v
@@ -53,6 +54,10 @@ module CIAX
           vg.get('vis').def_proc{@output.vmode='v';''}
           vg.get('raw').def_proc{@output.vmode='r';''}
           self
+        end
+
+        def set_crnt(id='0')
+          @current=@cobj.rem.int.par[:default]=id
         end
       end
 
@@ -78,7 +83,7 @@ module CIAX
           @cobj.rem.int.def_proc{|ent|
             id=ent.par[0]
             if seq=@list.get(id)
-              @cobj.rem.int.par[:default]=id
+              set_crnt(id)
               self['sid']=seq['id']
               seq.reply(ent.id)
             else
@@ -88,6 +93,7 @@ module CIAX
           # External Command Group
           @cobj.rem.ext.def_proc{|ent|
             @list.add(ent).fork
+            set_crnt(@list.index.size.to_s)
             "ACCEPT"
           }
           @cobj.get('interrupt').def_proc{|ent|

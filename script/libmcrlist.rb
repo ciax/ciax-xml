@@ -26,6 +26,18 @@ module CIAX
         extend(Shell).ext_shell
       end
 
+      def to_v
+        idx=1
+        page=['<<< '+Msg.color('Active Macros',2)+' >>>']
+        @data.each{|seq|
+          title="[#{idx}](#{seq['id']})"
+          msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}](#{seq['stat']})"
+          page << Msg.item(title,msg)
+          idx+=1
+        }
+        page.join("\n")
+      end
+
       module Shell
         include CIAX::List::Shell
         class Jump < LongJump; end

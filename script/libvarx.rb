@@ -53,9 +53,9 @@ module CIAX
 
   module Save
     def ext_save(tag=nil)
-      verbose("Initialize [#{self['id']}]")
+      verbose("Save Initialize [#{file_base(tag)}]")
       FileUtils.mkdir_p(VarDir+"/json/")
-      self['id']||Msg.cfg_err("ID")
+      self['id']||Msg.cfg_err("No ID")
       @post_upd_procs << proc{save(tag)}
       self
     end
@@ -93,7 +93,7 @@ module CIAX
       FileUtils.mkdir_p VarDir
       id=self['id']
       ver=self['ver']
-      verbose("#{@type.capitalize} Initialize [#{id}/Ver.#{ver}]")
+      verbose("Log Initialize [#{id}/Ver.#{ver}]")
       @queue=Queue.new
       @post_upd_procs << proc{
         @queue.push(to_j)

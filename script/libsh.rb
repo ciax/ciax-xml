@@ -13,7 +13,7 @@ module CIAX
 
     # Separate initialize part because shell() could be called multiple times
     def ext_shell(als=nil)
-      verbose("#{self.class}:Initialize [#{@id}]")
+      verbose("Shell Initialize [#{@id}]")
       @shell_input_proc=proc{|args|
         if (cmd=args.first) && cmd.include?('=')
           args=['set']+cmd.split('=')

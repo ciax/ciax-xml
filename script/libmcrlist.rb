@@ -7,10 +7,11 @@ module CIAX
     # @cfg should have [:jump_group],[:layer_list]
     class List < CIAX::List
       attr_accessor :index
-      def initialize(cfg,attr={})
+      def initialize(id,cfg,attr={})
         attr[:data_struct]=[]
-        super
-        verbose("Initialize")
+        super(cfg,attr)
+        self['id']=id
+        verbose("Initialize [#{id}]")
         @index=[] # Will be :valid_pars in Man
       end
 
@@ -32,7 +33,7 @@ module CIAX
 
       def to_v
         idx=1
-        page=['<<< '+Msg.color('Active Macros',2)+' >>>']
+        page=['<<< '+Msg.color("Active Macros [#{self['id']}]",2)+' >>>']
         @data.each{|seq|
           title="[#{idx}] (by #{get_cid(seq['pid'])})"
           opt=Msg.color('['+seq['option'].join('/')+']',5) unless seq['option'].empty?
@@ -95,7 +96,7 @@ module CIAX
       cfg=Config.new
       cfg[:jump_groups]=[]
       cfg[:sub_list]=Wat::List.new(cfg).cfg[:sub_list] #Take App List
-      list=List.new(cfg).ext_shell
+      list=List.new(proj,cfg).ext_save.ext_shell
       mobj=Index.new(list.cfg)
       mobj.add_rem.add_ext(Db.new.get(proj))
       cfg[:submcr_proc]=proc{|args,pid|

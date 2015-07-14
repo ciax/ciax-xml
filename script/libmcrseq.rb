@@ -88,6 +88,16 @@ module CIAX
         self
       end
 
+      # Communicate with forked macro
+      def reply(ans)
+        if self['stat'] == 'query'
+          @que_cmd << ans
+          @que_res.pop
+        else
+          "IGNORE"
+        end
+      end
+
       private
       def interrupt
         msg("\nInterrupt Issued to running devices #{@running}",3)

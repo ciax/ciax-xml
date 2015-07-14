@@ -20,9 +20,7 @@ module CIAX
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
         }
-        @cobj.rem.add_int(@seq['option']).def_proc{|ent|
-          reply(ent.id)
-        }
+        @cobj.rem.add_int(@seq['option'])
         @cobj.get('start').def_proc{|ent|
           @seq.fork
           'ACCEPT'
@@ -43,19 +41,13 @@ module CIAX
             res+=optlist(@seq['option'])
             res
           }
+          @cobj.rem.int.def_proc{|ent|
+            @seq.reply(ent.id)
+          }
           vg=@cobj.loc.add_view
           vg.get('vis').def_proc{@output.vmode='v';''}
           vg.get('raw').def_proc{@output.vmode='r';''}
           self
-        end
-
-        def reply(ans)
-          if @seq['stat'] == 'query'
-            @seq.que_cmd << ans
-            @seq.que_res.pop
-          else
-            "IGNORE"
-          end
         end
       end
     end

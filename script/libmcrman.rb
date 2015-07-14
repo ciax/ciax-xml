@@ -25,8 +25,8 @@ module CIAX
         def initialize(cfg,attr={})
           proj=ENV['PROJ']||'ciax'
           type?(cfg,Config)
-          @output=@list=List.new(cfg).ext_shell
-          super(proj,@list.cfg)
+          super(proj,cfg)
+          @output=@list=List.new(@cfg).ext_shell
           @cobj=Index.new(@cfg)
           @cobj.add_rem.add_hid
           @cobj.rem.add_ext(Db.new.get(proj))
@@ -82,9 +82,9 @@ module CIAX
           # Internal Command Group
           @cobj.rem.int.def_proc{|ent|
             sid=ent.par[0]
-            if sobj=@list.get(sid)
+            if seq=@list.get(sid)
               self['sid']=sid
-              sobj.reply(ent.id)
+              seq.reply(ent.id)
             else
               "NOSID"
             end

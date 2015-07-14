@@ -17,7 +17,8 @@ module CIAX
       end
 
       def add(ent,parent='user')
-        seq=Seq.new(ent.cfg,{'parent' => parent})
+        seq=Seq.new(ent.cfg)
+        seq['parent']=parent
         @data.push seq
         seq
       end
@@ -30,9 +31,11 @@ module CIAX
         idx=1
         page=['<<< '+Msg.color('Active Macros',2)+' >>>']
         @data.each{|seq|
-          title="[#{idx}](#{seq['id']})"
-          msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}](#{seq['stat']})"
+          title="[#{idx}] (by #{seq['parent']})"
+          opt=':'+seq['option'].join('/') unless seq['option'].empty?
+          msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}](#{seq['stat']}#{opt})"
           page << Msg.item(title,msg)
+          page << seq.view_struct
           idx+=1
         }
         page.join("\n")

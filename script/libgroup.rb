@@ -29,6 +29,12 @@ module CIAX
         delete(id)
       end
 
+      def clear_item
+        valid_clear
+        @displist.clear
+        clear
+      end
+
       def merge_items(displist)
         type?(displist,Disp::List).each{|cg|
           cg.each{|id,title|

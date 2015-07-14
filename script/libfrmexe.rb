@@ -49,7 +49,7 @@ module CIAX
 
       def ext_shell
         super
-        @output=@field
+        @cfg[:output]=@field
         self
       end
     end

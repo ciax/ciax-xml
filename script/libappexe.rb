@@ -41,7 +41,7 @@ module CIAX
         @sub=@cfg[:sub_list].get(@cfg[:frm_site])
         @site_stat=@sub.site_stat.add_db('isu' => '*')
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
-        @output=@cfg[:output]=View.new(@adb,@stat)
+        @cfg[:output]=View.new(@adb,@stat)
         @batch_interrupt=[]
         @cfg['host']||=@adb['host']
         @cfg['port']||=@adb['port']

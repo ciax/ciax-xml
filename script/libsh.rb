@@ -20,7 +20,7 @@ module CIAX
         end
         args
       }
-      @shell_output_proc=proc{ @output }
+      @shell_output_proc=proc{ @cfg[:output] }
       @prompt_proc=proc{ @site_stat.to_s }
       @cobj.loc.add_shell
       @cobj.loc.add_jump #@cfg[:jump_groups] should be set

@@ -55,7 +55,7 @@ module CIAX
 
       def ext_shell
         super
-        @output=@cfg[:output]=View.new(@sub.adb,@event)
+        @cfg[:output]=View.new(@sub.adb,@event)
         @cobj.loc.add_view
         self
       end

@@ -55,10 +55,8 @@ module CIAX
 
       def ext_shell
         super
-        @output=View.new(@sub.adb,@event)
-        vg=@cobj.loc.add_view
-        vg.get('vis').def_proc{@output.vmode='v';''}
-        vg.get('raw').def_proc{@output.vmode='r';''}
+        @output=@cfg[:output]=View.new(@sub.adb,@event)
+        @cobj.loc.add_view
         self
       end
     end

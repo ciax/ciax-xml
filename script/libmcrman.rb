@@ -26,7 +26,7 @@ module CIAX
           proj=ENV['PROJ']||'ciax'
           type?(cfg,Config)
           super(proj,cfg)
-          @output=@list=List.new(@cfg)
+          @output=@cfg[:output]=@list=List.new(@cfg)
           @cobj=Index.new(@cfg)
           @cobj.add_rem.add_hid
           @cobj.rem.add_ext(Db.new.get(proj))
@@ -51,8 +51,6 @@ module CIAX
           vg=@cobj.loc.add_view
           vg.add_item('lst',"List mode").def_proc{@smode=false;''}
           vg.add_item('seq',"Sequencer mode").def_proc{@smode=true;''}
-          vg.get('vis').def_proc{@output.vmode='v';''}
-          vg.get('raw').def_proc{@output.vmode='r';''}
           self
         end
 

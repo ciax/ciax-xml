@@ -35,7 +35,7 @@ module CIAX
         include CIAX::Shell
         def ext_shell
           super(@cfg[:cid].tr(':','_'))
-          @output=@seq.record
+          @output=@cfg[:output]=@seq.record
           @prompt_proc=proc{
             res="(#{@seq['stat']})"
             res+=optlist(@seq['option'])
@@ -44,9 +44,7 @@ module CIAX
           @cobj.rem.int.def_proc{|ent|
             @seq.reply(ent.id)
           }
-          vg=@cobj.loc.add_view
-          vg.get('vis').def_proc{@output.vmode='v';''}
-          vg.get('raw').def_proc{@output.vmode='r';''}
+          @cobj.loc.add_view
           self
         end
       end

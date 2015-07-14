@@ -59,13 +59,14 @@ module CIAX
 
     module View
       include Command
+      # cfg should have [:output]
       class Group < Group
         def initialize(cfg,attr={})
           super
           @cfg['caption']="Change View Mode"
           @cfg['color']=9
-          add_item('vis',"Visual mode")
-          add_item('raw',"Raw Print mode")
+          add_item('vis',"Visual mode").def_proc{@cfg[:output].vmode='v';''}
+          add_item('raw',"Raw Print mode").def_proc{@cfg[:output].vmode='r';''}
         end
       end
     end

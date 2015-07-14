@@ -15,9 +15,7 @@ module CIAX
       end
 
       def get(id)
-        n=id.to_i-1
-        par_err("Invalid ID") if n < 0
-        super(n)
+        @data.find{|e| e['id']=id }
       end
 
       def add(ent,pid='0')
@@ -48,7 +46,7 @@ module CIAX
       private
       def get_cid(id)
         return 'user' if id == '0'
-        @data.find{|e| e['id']=id}['cid']
+        get(id)['cid']
       end
 
       module Shell
@@ -63,7 +61,9 @@ module CIAX
         end
 
         def get_exe(id)
-          @exelist[id]||=Exe.new(get(id)).ext_shell
+          n=id.to_i-1
+          par_err("Invalid ID") if n < 0
+          @exelist[id]||=Exe.new(@data[n]).ext_shell
         end
 
         def add(ent,parent='user')
@@ -87,7 +87,7 @@ module CIAX
         end
       end
     end
-
+      
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('tenr')

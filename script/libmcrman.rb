@@ -34,7 +34,7 @@ module CIAX
           @cfg[:submcr_proc]=proc{|args,id|
             @list.add(@cobj.set_cmd(args),id).fork
           }
-          @list.index=@cobj.rem.int.valid_pars
+          @cobj.rem.int.par[:list]=@list.index
           ext_shell
           @post_exe_procs << proc{
 #            @valid_pars.replace(@list.keys)
@@ -81,9 +81,10 @@ module CIAX
           @pre_exe_procs << proc{ self['sid']='' }
           # Internal Command Group
           @cobj.rem.int.def_proc{|ent|
-            sid=ent.par[0]
-            if seq=@list.get(sid)
-              self['sid']=sid
+            id=ent.par[0]
+            if seq=@list.get(id)
+              @cobj.rem.int.par[:default]=id
+              self['sid']=seq['id']
               seq.reply(ent.id)
             else
               "NOSID"

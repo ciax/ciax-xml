@@ -11,7 +11,7 @@ module CIAX
         attr[:data_struct]=[]
         super
         verbose("Initialize")
-        @index=[]
+        @index=[] # Will be :valid_pars in Man
       end
 
       def get(id)

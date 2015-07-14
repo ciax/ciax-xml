@@ -17,11 +17,11 @@ module CIAX
     module Int
       include Remote::Int
       class Group < Group
-        attr_reader :valid_pars
+        attr_reader :par
         def initialize(cfg,crnt={})
           super
-          @valid_pars=[]
-          parlist={:parameters => [{:type => 'str',:list => @valid_pars,:default => nil}]}
+          @par={:type => 'str',:list => [],:default => ''}
+          @cfg[:parameters]=[@par]
           {
             "start"=>"Sequence",
             "exec"=>"Command",
@@ -33,7 +33,7 @@ module CIAX
             "ok"=>"for the message",
             "retry"=>"Checking",
           }.each{|id,cap|
-            add_item(id,id.capitalize+" "+cap,parlist)
+            add_item(id,id.capitalize+" "+cap)
           }
         end
       end

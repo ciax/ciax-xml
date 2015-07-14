@@ -15,7 +15,9 @@ module CIAX
       end
 
       def get(id)
-        super(id.to_i-1)
+        n=id.to_i-1
+        par_err("Invalid ID") if n < 0
+        super(n)
       end
 
       def add(ent,pid='0')

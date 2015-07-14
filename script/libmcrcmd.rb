@@ -20,7 +20,7 @@ module CIAX
         attr_reader :par
         def initialize(cfg,crnt={})
           super
-          @par={:type => 'str',:list => [],:default => ''}
+          @par={:type => 'str',:list => [],:default => '0'}
           @cfg[:parameters]=[@par]
           {
             "start"=>"Sequence",

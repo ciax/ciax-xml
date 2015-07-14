@@ -36,22 +36,17 @@ module CIAX
           }
           @cobj.rem.int.par[:list]=@list.index
           ext_shell
-          @post_exe_procs << proc{
-#            @valid_pars.replace(@list.keys)
-          }
         end
 
         private
         def ext_shell
           super
-          @current=@lastsize=0
-#          @prompt_proc=proc{
-#            ("[%d]" % @list.index)+optlist(@list.option)
-#          }
+          @prompt_proc=proc{
+            ("[%s]" % @cobj.rem.int.par[:default])
+          }
           @post_exe_procs << proc{
             @output=@list.to_v
           }
-#          @shell_input_proc=proc{|args| @list.conv_cmd(args,@cobj.intgrp)}
           vg=@cobj.loc.add_view
           vg.add_item('lst',"List mode").def_proc{@smode=false;''}
           vg.add_item('seq',"Sequencer mode").def_proc{@smode=true;''}

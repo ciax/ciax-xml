@@ -41,7 +41,7 @@ module CIAX
         @sub=@cfg[:sub_list].get(@cfg[:frm_site])
         @site_stat=@sub.site_stat.add_db('isu' => '*')
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
-        @appview=View.new(@adb,@stat)
+        @output=View.new(@adb,@stat)
         @batch_interrupt=[]
         @cfg['host']||=@adb['host']
         @cfg['port']||=@adb['port']
@@ -52,10 +52,9 @@ module CIAX
 
       def ext_shell
         super
-        @output=$opt['j'] ? @stat : @appview
         vg=@cobj.loc.add_view
-        vg.get('vis').def_proc{@output=@appview;''}
-        vg.get('raw').def_proc{@output=@stat;''}
+        vg.get('vis').def_proc{@output.vmode='v';''}
+        vg.get('raw').def_proc{@output.vmode='r';''}
         self
       end
     end

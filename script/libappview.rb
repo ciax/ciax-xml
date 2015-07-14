@@ -36,6 +36,10 @@ module CIAX
         str
       end
 
+      def to_s
+        @vmode == 'r' ? @stat.to_s : super
+      end
+
       def to_v
         upd
         cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})

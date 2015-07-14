@@ -3,7 +3,7 @@ require "liblayer"
 require "libhexexe"
 
 module CIAX
-  GetOpts.new("aftxelsch:")
+  GetOpts.new("aftxelsrch:")
   id=ARGV.shift
   cfg=Config.new
   cfg[:jump_groups]=[]

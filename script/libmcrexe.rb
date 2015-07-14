@@ -30,25 +30,32 @@ module CIAX
       end
 
       def ext_shell
-        super(@cfg[:cid].tr(':','_'))
-        @output=@seq.record
-        @prompt_proc=proc{
-          res="(#{@seq['stat']})"
-          res+=optlist(@seq['option'])
-          res
-        }
-        vg=@cobj.loc.add_view
-        vg.get('vis').def_proc{@output.vmode='v';''}
-        vg.get('raw').def_proc{@output.vmode='r';''}
-        self
+        extend(Shell).ext_shell
       end
 
-      def reply(ans)
-        if @seq['stat'] == 'query'
-          @seq.que_cmd << ans
-          @seq.que_res.pop
-        else
-          "IGNORE"
+      module Shell
+        include CIAX::Shell
+        def ext_shell
+          super(@cfg[:cid].tr(':','_'))
+          @output=@seq.record
+          @prompt_proc=proc{
+            res="(#{@seq['stat']})"
+            res+=optlist(@seq['option'])
+            res
+          }
+          vg=@cobj.loc.add_view
+          vg.get('vis').def_proc{@output.vmode='v';''}
+          vg.get('raw').def_proc{@output.vmode='r';''}
+          self
+        end
+
+        def reply(ans)
+          if @seq['stat'] == 'query'
+            @seq.que_cmd << ans
+            @seq.que_res.pop
+          else
+            "IGNORE"
+          end
         end
       end
     end

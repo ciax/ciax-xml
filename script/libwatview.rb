@@ -27,6 +27,10 @@ module CIAX
         upd
       end
 
+      def to_s
+        @vmode == 'r' ? @event.to_s : to_v
+      end
+
       def to_v
         tonext=Msg.elps_sec(now_msec,self['upd_next'])
         atime=Msg.elps_sec(self['act_start'],self['act_end'])

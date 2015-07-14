@@ -6,20 +6,23 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # @cfg should have [:jump_group],[:layer_list]
     class List < CIAX::List
+      attr_accessor :index
       def initialize(cfg,attr={})
         attr[:data_struct]=[]
         super
         verbose("Initialize")
+        @index=[]
       end
 
       def get(id)
         super(id.to_i-1)
       end
 
-      def add(ent,parent='user')
+      def add(ent,pid='0')
         seq=Seq.new(ent.cfg)
-        seq['parent']=parent
+        seq['pid']=pid
         @data.push seq
+        @index << @data.size.to_s
         seq
       end
 
@@ -31,14 +34,19 @@ module CIAX
         idx=1
         page=['<<< '+Msg.color('Active Macros',2)+' >>>']
         @data.each{|seq|
-          title="[#{idx}] (by #{seq['parent']})"
+          title="[#{idx}] (by #{get_cid(seq['pid'])})"
           opt=':'+seq['option'].join('/') unless seq['option'].empty?
           msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}](#{seq['stat']}#{opt})"
           page << Msg.item(title,msg)
-          page << seq.view_struct
           idx+=1
         }
         page.join("\n")
+      end
+
+      private
+      def get_cid(id)
+        return 'user' if id == '0'
+        @data.find{|e| e['id']=id}['cid']
       end
 
       module Shell
@@ -52,13 +60,14 @@ module CIAX
           self
         end
 
-        def get(id)
-          @exelist[id]||=Exe.new(super).ext_shell
+        def get_exe(id)
+          @exelist[id]||=Exe.new(get(id)).ext_shell
         end
 
         def add(ent,parent='user')
           seq=super
           id=@data.size.to_s
+          @index << id
           @jumpgrp.add_item(id,seq['cid'])
           seq
         end
@@ -66,7 +75,7 @@ module CIAX
         def shell
           id=@data.size.to_s
           begin
-            get(id).shell
+            get_exe(id).shell
           rescue Jump
             id=$!.to_s
             retry
@@ -87,9 +96,9 @@ module CIAX
       list=List.new(cfg).ext_shell
       mobj=Index.new(list.cfg)
       mobj.add_rem.add_ext(Db.new.get(proj))
-      cfg[:submcr_proc]=proc{|args,id|
+      cfg[:submcr_proc]=proc{|args,pid|
         ent=mobj.set_cmd(args)
-        list.add(ent,id)
+        list.add(ent,pid)
       }
       begin
         mobj.set_cmd if ARGV.empty?

@@ -26,15 +26,15 @@ module CIAX
           proj=ENV['PROJ']||'ciax'
           type?(cfg,Config)
           super(proj,cfg)
-          @output=@list=List.new(@cfg).ext_shell
+          @output=@list=List.new(@cfg)
           @cobj=Index.new(@cfg)
           @cobj.add_rem.add_hid
           @cobj.rem.add_ext(Db.new.get(proj))
           @cobj.rem.add_int
           @cfg[:submcr_proc]=proc{|args,id|
-            @list.add(@cobj.set_cmd(args),id)
+            @list.add(@cobj.set_cmd(args),id).fork
           }
-          @valid_pars=@cobj.rem.int.valid_pars
+          @list.index=@cobj.rem.int.valid_pars
           ext_shell
           @post_exe_procs << proc{
 #            @valid_pars.replace(@list.keys)

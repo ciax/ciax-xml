@@ -66,6 +66,12 @@ module CIAX
         end
       end
 
+      def to_s
+        msg=@record.to_v
+        opt=Msg.color('['+self['option'].join('/')+']',5) unless self['option'].empty?
+        msg << "  [#{self['step']}/#{self['total_steps']}](#{self['stat']})#{opt}"
+      end
+
       private
       def macro
         set_stat('run')

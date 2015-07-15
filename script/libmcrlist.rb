@@ -8,22 +8,23 @@ module CIAX
     class List < CIAX::List
       attr_accessor :index
       def initialize(id,cfg,attr={})
-        attr[:data_struct]=[]
         super(cfg,attr)
         self['id']=id
         verbose("Initialize [#{id}]")
+        @stack=[]
         @index=[] # Will be :valid_pars in Man
       end
 
       def get(id)
         upd
-        @data.find{|e| e['id']=id }
+        super
       end
 
       def add(ent,pid='0')
         seq=Seq.new(ent.cfg)
+        seq.pre_mcr_procs << proc{|id,seq| put(id,seq) }
         seq['pid']=pid
-        @data.push seq
+        @stack.push seq
         @index << seq['id']
         seq.post_stat_procs << proc{upd}
         seq
@@ -66,19 +67,19 @@ module CIAX
         def get_exe(id)
           n=id.to_i-1
           par_err("Invalid ID") if n < 0
-          @exelist[id]||=Exe.new(@data[n]).ext_shell
+          @exelist[id]||=Exe.new(@stack[n]).ext_shell
         end
 
         def add(ent,parent='user')
           seq=super
-          id=@data.size.to_s
+          id=@stack.size.to_s
           @index << id
           @jumpgrp.add_item(id,seq['cid'])
           seq
         end
 
         def shell
-          id=@data.size.to_s
+          id=@stack.size.to_s
           begin
             get_exe(id).shell
           rescue Jump

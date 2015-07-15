@@ -21,7 +21,7 @@ module CIAX
     # Sequencer Layer
     class Seq < Hashx
       #required cfg keys: app,db,body,stat,(:submcr_proc)
-      attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
+      attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:pre_mcr_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
       #ent_cfg should have [:dbi]
       def initialize(cfg,attr={})
@@ -34,6 +34,7 @@ module CIAX
         }
         @record=Record.new
         @post_stat_procs=[] # execute on stat changes
+        @pre_mcr_procs=[]
         @post_mcr_procs=[]
         @que_cmd=Queue.new
         @que_res=Queue.new
@@ -44,6 +45,9 @@ module CIAX
       def macro
         @record.start(@cfg)
         self['id']=@record['id'] # ID for list
+        @pre_mcr_procs.each{|p|
+          p.call(self['id'],self)
+        }
         set_stat('run')
         show @record
         @cfg[:batch].each{|e1|

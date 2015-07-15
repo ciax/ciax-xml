@@ -34,7 +34,6 @@ module CIAX
           @cfg[:submcr_proc]=proc{|args,id|
             @list.add(@cobj.set_cmd(args),id).start(true)
           }
-          @cobj.rem.int.par[:list]=@list.index
           set_crnt
           ext_shell
         end
@@ -43,6 +42,7 @@ module CIAX
         def ext_shell
           super
           @prompt_proc=proc{
+            @cobj.rem.int.par[:list]=@list.keys
             ("[%s]" % @current)
           }
           vg=@cobj.loc.add_view

@@ -32,7 +32,7 @@ module CIAX
           @cobj.rem.add_ext(Db.new.get(proj))
           @cobj.rem.add_int
           @cfg[:submcr_proc]=proc{|args,id|
-            @list.add(@cobj.set_cmd(args),id).fork
+            @list.add(@cobj.set_cmd(args),id).start(true)
           }
           @cobj.rem.int.par[:list]=@list.index
           set_crnt
@@ -58,7 +58,6 @@ module CIAX
 
       class Cl < Exe
         def initialize(cfg)
-          cfg[:list_class]=ClList
           super
           host=cfg['host']||@cobj.cfg[:dbi]['host']||'localhost'
           port=cfg['port']||@cobj.cfg[:dbi]['port']||55555
@@ -88,8 +87,8 @@ module CIAX
           }
           # External Command Group
           @cobj.rem.ext.def_proc{|ent|
-            @list.add(ent).fork
-            set_crnt(@list.index.size.to_s)
+            seq=@list.add(ent).start(true)
+            set_crnt(seq['id'])
             "ACCEPT"
           }
           @cobj.get('interrupt').def_proc{|ent|

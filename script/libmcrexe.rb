@@ -22,7 +22,7 @@ module CIAX
         }
         @cobj.rem.add_int(@seq['option']).valid_clear
         @cobj.rem.int.add_item('start','Sequece Start').def_proc{|ent|
-          @seq.fork
+          @seq.start(true)
           'ACCEPT'
         }
       end

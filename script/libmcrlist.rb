@@ -22,10 +22,12 @@ module CIAX
 
       def add(ent,pid='0')
         seq=Seq.new(ent.cfg)
-        seq.pre_mcr_procs << proc{|id,seq| put(id,seq) }
+        seq.pre_mcr_procs << proc{|id,seq|
+          put(id,seq)
+          @index << id
+        }
         seq['pid']=pid
         @stack.push seq
-        @index << seq['id']
         seq.post_stat_procs << proc{upd}
         seq
       end
@@ -37,8 +39,8 @@ module CIAX
       def to_v
         idx=1
         page=['<<< '+Msg.color("Active Macros [#{self['id']}]",2)+' >>>']
-        @stack.each{|seq|
-          title="[#{idx}] (#{seq['pid']})(by #{get_cid(seq['pid'])})"
+        @data.each{|id,seq|
+          title="[#{idx}] (#{id})(by #{get_cid(seq['pid'])})"
           opt=Msg.color('['+seq['option'].join('/')+']',5) unless seq['option'].empty?
           msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}](#{seq['stat']})#{opt}"
           page << Msg.item(title,msg)

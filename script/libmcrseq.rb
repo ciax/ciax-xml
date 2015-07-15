@@ -42,12 +42,32 @@ module CIAX
         @running=[]
       end
 
-      def macro
+      def start(bg=nil)
         @record.start(@cfg)
         self['id']=@record['id'] # ID for list
         @pre_mcr_procs.each{|p|
           p.call(self['id'],self)
         }
+        if bg
+          fork
+        else
+          macro
+        end
+        self
+      end
+
+      # Communicate with forked macro
+      def reply(ans)
+        if self['stat'] == 'query'
+          @que_cmd << ans
+          @que_res.pop
+        else
+          "IGNORE"
+        end
+      end
+
+      private
+      def macro
         set_stat('run')
         show @record
         @cfg[:batch].each{|e1|
@@ -92,17 +112,6 @@ module CIAX
         self
       end
 
-      # Communicate with forked macro
-      def reply(ans)
-        if self['stat'] == 'query'
-          @que_cmd << ans
-          @que_res.pop
-        else
-          "IGNORE"
-        end
-      end
-
-      private
       def interrupt
         msg("\nInterrupt Issued to running devices #{@running}",3)
         @running.each{|site|
@@ -194,7 +203,7 @@ module CIAX
       begin
         ent=mobj.set_cmd(ARGV)
         seq=Seq.new(ent.cfg)
-        seq.macro
+        seq.start
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

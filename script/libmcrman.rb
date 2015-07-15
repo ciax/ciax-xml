@@ -26,7 +26,7 @@ module CIAX
           proj=ENV['PROJ']||'ciax'
           type?(cfg,Config)
           super(proj,cfg)
-          @cfg[:output]=@list=List.new(@cfg)
+          @cfg[:output]=@list=List.new(proj,@cfg)
           @cobj=Index.new(@cfg)
           @cobj.add_rem.add_hid
           @cobj.rem.add_ext(Db.new.get(proj))
@@ -74,6 +74,7 @@ module CIAX
           port=cfg['port']||@cobj.rem.ext.cfg[:dbi]['port']||55555
           self['sid']='' # For server response
           @pre_exe_procs << proc{ self['sid']='' }
+          @list.ext_save
           # Internal Command Group
           @cobj.rem.int.def_proc{|ent|
             id=ent.par[0]

@@ -16,6 +16,7 @@ module CIAX
       end
 
       def get(id)
+        upd
         @data.find{|e| e['id']=id }
       end
 
@@ -23,7 +24,8 @@ module CIAX
         seq=Seq.new(ent.cfg)
         seq['pid']=pid
         @data.push seq
-        @index << @data.size.to_s
+        @index << seq['id']
+        seq.post_stat_procs << proc{upd}
         seq
       end
 
@@ -35,7 +37,7 @@ module CIAX
         idx=1
         page=['<<< '+Msg.color("Active Macros [#{self['id']}]",2)+' >>>']
         @data.each{|seq|
-          title="[#{idx}] (by #{get_cid(seq['pid'])})"
+          title="[#{idx}] (#{seq['pid']})(by #{get_cid(seq['pid'])})"
           opt=Msg.color('['+seq['option'].join('/')+']',5) unless seq['option'].empty?
           msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}](#{seq['stat']})#{opt}"
           page << Msg.item(title,msg)

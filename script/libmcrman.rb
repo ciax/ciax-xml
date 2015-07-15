@@ -34,7 +34,7 @@ module CIAX
           @cfg[:submcr_proc]=proc{|args,id|
             @list.add(@cobj.set_cmd(args),id).start(true)
           }
-          set_crnt
+          @current=0
           ext_shell
         end
 
@@ -42,19 +42,24 @@ module CIAX
         def ext_shell
           super
           @prompt_proc=proc{
-            ("[%s]" % @current)
+            ("[%d]" % @current)
           }
           @list.post_upd_procs << proc{
             @cobj.rem.int.par[:list]=@list.keys
+          }
+          conv_num{|i|
+            if id=@list.keys[i-1]
+              @current=i
+              @cobj.rem.int.par[:default]=id
+              nil
+            else
+              i
+            end
           }
           vg=@cobj.loc.add_view
           vg.add_item('lst',"List mode").def_proc{@smode=false;''}
           vg.add_item('seq',"Sequencer mode").def_proc{@smode=true;''}
           self
-        end
-
-        def set_crnt(id='0')
-          @current=@cobj.rem.int.par[:default]=id
         end
       end
 
@@ -80,7 +85,7 @@ module CIAX
           @cobj.rem.int.def_proc{|ent|
             id=ent.par[0]
             if seq=@list.get(id)
-              set_crnt(id)
+              @cobj.rem.int.par[:default]=id
               self['sid']=seq['id']
               seq.reply(ent.id)
             else
@@ -90,7 +95,8 @@ module CIAX
           # External Command Group
           @cobj.rem.ext.def_proc{|ent|
             seq=@list.add(ent).start(true)
-            set_crnt(seq['id'])
+            @current=@list.size
+            @cobj.rem.int.par[:default]=seq['id']
             "ACCEPT"
           }
           @cobj.get('interrupt').def_proc{|ent|

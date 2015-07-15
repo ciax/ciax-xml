@@ -24,7 +24,7 @@ module CIAX
       self
     end
 
-    def set_conv
+    def conv_set
       @shell_input_procs << proc{|cmd|
         if cmd && cmd.include?('=')
           args=['set']+cmd.split('=')
@@ -32,6 +32,18 @@ module CIAX
           cmd
         end
       }
+      self
+    end
+
+    def conv_num
+      @shell_input_procs << proc{|cmd|
+        if cmd && /^[0-9]/ =~ cmd
+          yield(cmd.to_i)
+        else
+          cmd
+        end
+      }
+      self
     end
 
     def prompt
@@ -60,15 +72,7 @@ module CIAX
         cmds=[""] if cmds.empty?
         begin
           cmds.each{|token|
-            procs=Array.new(@shell_input_procs)
-            args=token.split(' ').map{|str|
-              if conv=procs.shift
-                conv.call(str)
-              else
-                str
-              end
-            }.flatten
-            exe(args,'shell')
+            exe(convert(token),'shell')
           }
         rescue UserError
         rescue ServerError
@@ -78,6 +82,18 @@ module CIAX
         verbose("Threads","#{Threadx.list}")
         verbose("Valid Commands #{@cobj.valid_keys}")
       }
+    end
+
+    private
+    def convert(token)
+      procs=Array.new(@shell_input_procs)
+      token.split(' ').map{|str|
+        if conv=procs.shift
+          conv.call(str)
+        else
+          str
+        end
+      }.flatten.compact
     end
   end
 end

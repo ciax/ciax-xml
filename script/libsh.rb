@@ -14,11 +14,13 @@ module CIAX
     # Separate initialize part because shell() could be called multiple times
     def ext_shell(als=nil)
       verbose("Shell Initialize [#{@id}]")
-      @shell_input_proc=proc{|args|
-        if (cmd=args.first) && cmd.include?('=')
+      @shell_input_procs=[]
+      @shell_input_procs << proc{|cmd|
+        if cmd && cmd.include?('=')
           args=['set']+cmd.split('=')
+        else
+          cmd
         end
-        args
       }
       @shell_output_proc=proc{ @cfg[:output] }
       @prompt_proc=proc{ @site_stat.to_s }
@@ -55,7 +57,15 @@ module CIAX
         cmds=[""] if cmds.empty?
         begin
           cmds.each{|token|
-            exe(@shell_input_proc.call(token.split(' ')),'shell')
+            procs=Array.new(@shell_input_procs)
+            args=token.split(' ').map{|str|
+              if conv=procs.shift
+                conv.call(str)
+              else
+                str
+              end
+            }.flatten
+            exe(args,'shell')
           }
         rescue UserError
         rescue ServerError

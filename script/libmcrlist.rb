@@ -37,7 +37,7 @@ module CIAX
       def to_v
         idx=1
         page=['<<< '+Msg.color("Active Macros [#{self['id']}]",2)+' >>>']
-        @data.each{|seq|
+        @stack.each{|seq|
           title="[#{idx}] (#{seq['pid']})(by #{get_cid(seq['pid'])})"
           opt=Msg.color('['+seq['option'].join('/')+']',5) unless seq['option'].empty?
           msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}](#{seq['stat']})#{opt}"

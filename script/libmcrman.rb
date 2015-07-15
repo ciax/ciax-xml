@@ -42,8 +42,10 @@ module CIAX
         def ext_shell
           super
           @prompt_proc=proc{
-            @cobj.rem.int.par[:list]=@list.keys
             ("[%s]" % @current)
+          }
+          @list.post_upd_procs << proc{
+            @cobj.rem.int.par[:list]=@list.keys
           }
           vg=@cobj.loc.add_view
           vg.add_item('lst',"List mode").def_proc{@smode=false;''}

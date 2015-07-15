@@ -40,6 +40,7 @@ module CIAX
         @que_res=Queue.new
         update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>[]})
         @running=[]
+        @vmode='v'
       end
 
       def start(bg=nil)
@@ -67,6 +68,10 @@ module CIAX
       end
 
       def to_s
+        @vmode == 'v' ? to_v : super
+      end
+
+      def to_v
         msg=@record.to_v
         opt=Msg.color('['+self['option'].join('/')+']',5) unless self['option'].empty?
         msg << "  [#{self['step']}/#{self['total_steps']}](#{self['stat']})#{opt}"

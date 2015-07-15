@@ -58,7 +58,7 @@ module CIAX
           }
           vg=@cobj.loc.add_view
           vg.add_item('lst',"List mode").def_proc{@cfg[:output]=@list;''}
-          vg.add_item('seq',"Sequencer mode").def_proc{@cfg[:output]=@list.get(@crnt);''}
+          vg.add_item('seq',"Sequencer mode").def_proc{@cfg[:output]=@list.get(@crnt)||@list;''}
           self
         end
 

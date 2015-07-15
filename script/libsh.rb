@@ -15,13 +15,6 @@ module CIAX
     def ext_shell(als=nil)
       verbose("Shell Initialize [#{@id}]")
       @shell_input_procs=[]
-      @shell_input_procs << proc{|cmd|
-        if cmd && cmd.include?('=')
-          args=['set']+cmd.split('=')
-        else
-          cmd
-        end
-      }
       @shell_output_proc=proc{ @cfg[:output] }
       @prompt_proc=proc{ @site_stat.to_s }
       @cobj.loc.add_shell
@@ -29,6 +22,16 @@ module CIAX
       Thread.current['name']='Main'
       @alias=als||@id
       self
+    end
+
+    def set_conv
+      @shell_input_procs << proc{|cmd|
+        if cmd && cmd.include?('=')
+          args=['set']+cmd.split('=')
+        else
+          cmd
+        end
+      }
     end
 
     def prompt

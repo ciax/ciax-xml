@@ -6,13 +6,11 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # @cfg should have [:jump_group],[:layer_list]
     class List < CIAX::List
-      attr_accessor :index
       def initialize(id,cfg,attr={})
         super(cfg,attr)
         self['id']=id
         verbose("Initialize [#{id}]")
         @stack=[]
-        @index=[] # Will be :valid_pars in Man
       end
 
       def get(id)
@@ -22,13 +20,11 @@ module CIAX
 
       def add(ent,pid='0')
         seq=Seq.new(ent.cfg)
-        seq.pre_mcr_procs << proc{|id,seq|
-          put(id,seq)
-          @index << id
-        }
+        seq.post_stat_procs << proc{upd}
+        seq.pre_mcr_procs << proc{|id,seq| put(id,seq)}
         seq['pid']=pid
         @stack.push seq
-        seq.post_stat_procs << proc{upd}
+        upd
         seq
       end
 
@@ -42,7 +38,8 @@ module CIAX
         @data.each{|id,seq|
           title="[#{idx}] (#{id})(by #{get_cid(seq['pid'])})"
           opt=Msg.color('['+seq['option'].join('/')+']',5) unless seq['option'].empty?
-          msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}](#{seq['stat']})#{opt}"
+          msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}]"
+          msg << "(#{seq['stat']})#{opt}"
           page << Msg.item(title,msg)
           idx+=1
         }
@@ -75,7 +72,6 @@ module CIAX
         def add(ent,parent='user')
           seq=super
           id=@stack.size.to_s
-          @index << id
           @jumpgrp.add_item(id,seq['cid'])
           seq
         end
@@ -93,7 +89,7 @@ module CIAX
         end
       end
     end
-      
+
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('tenr')

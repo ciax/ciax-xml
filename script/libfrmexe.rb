@@ -50,6 +50,7 @@ module CIAX
       def ext_shell
         super
         @cfg[:output]=@field
+        conv_set
         self
       end
     end

@@ -53,6 +53,7 @@ module CIAX
       def ext_shell
         super
         @cobj.loc.add_view
+        conv_set
         self
       end
     end

@@ -38,7 +38,7 @@ module CIAX
             @cobj.rem.int.par[:list]=@list.keys
           }
           @index=0
-          set_crnt
+          set_crnt(0)
           ext_shell
         end
 

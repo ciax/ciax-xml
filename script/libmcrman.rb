@@ -34,7 +34,9 @@ module CIAX
           @cfg[:submcr_proc]=proc{|args,id|
             @list.add(@cobj.set_cmd(args),id).start(true)
           }
-          @cobj.rem.int.par[:list]=@list.index
+          @post_exe_procs << proc{
+            @cobj.rem.int.par[:list]=@list.keys
+          }
           set_crnt
           ext_shell
         end

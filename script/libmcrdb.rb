@@ -54,7 +54,9 @@ module CIAX
               verbose("COMMAND:[#{e1['name']}]")
             when 'mcr'
               args=attr['args']=getcmd(e1)
-              attr['label']=idx[args.first]['label']
+              cmd=args.first
+              idx.key?(cmd) || cfg_err("No such CMD [#{cmd}]")
+              attr['label']=idx[cmd]['label']
               attr.delete('name')
               body << attr
             end

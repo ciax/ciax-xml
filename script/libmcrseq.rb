@@ -21,7 +21,7 @@ module CIAX
     # Sequencer Layer
     class Seq < Hashx
       #required cfg keys: app,db,body,stat,(:submcr_proc)
-      attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
+      attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:pre_mcr_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
       #ent_cfg should have [:dbi]
       def initialize(cfg,attr={})
@@ -34,16 +34,51 @@ module CIAX
         }
         @record=Record.new
         @post_stat_procs=[] # execute on stat changes
+        @pre_mcr_procs=[]
         @post_mcr_procs=[]
         @que_cmd=Queue.new
         @que_res=Queue.new
         update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>[]})
         @running=[]
+        @vmode='v'
       end
 
-      def macro
+      def start(bg=nil)
         @record.start(@cfg)
         self['id']=@record['id'] # ID for list
+        @pre_mcr_procs.each{|p|
+          p.call(self['id'],self)
+        }
+        if bg
+          fork
+        else
+          macro
+        end
+        self
+      end
+
+      # Communicate with forked macro
+      def reply(ans)
+        if self['stat'] == 'query'
+          @que_cmd << ans
+          @que_res.pop
+        else
+          "IGNORE"
+        end
+      end
+
+      def to_s
+        @vmode == 'v' ? to_v : super
+      end
+
+      def to_v
+        msg=@record.to_v
+        opt=Msg.color('['+self['option'].join('/')+']',5) unless self['option'].empty?
+        msg << "  [#{self['step']}/#{self['total_steps']}](#{self['stat']})#{opt}"
+      end
+
+      private
+      def macro
         set_stat('run')
         show @record
         @cfg[:batch].each{|e1|
@@ -88,17 +123,6 @@ module CIAX
         self
       end
 
-      # Communicate with forked macro
-      def reply(ans)
-        if self['stat'] == 'query'
-          @que_cmd << ans
-          @que_res.pop
-        else
-          "IGNORE"
-        end
-      end
-
-      private
       def interrupt
         msg("\nInterrupt Issued to running devices #{@running}",3)
         @running.each{|site|
@@ -190,7 +214,7 @@ module CIAX
       begin
         ent=mobj.set_cmd(ARGV)
         seq=Seq.new(ent.cfg)
-        seq.macro
+        seq.start
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

@@ -19,7 +19,7 @@ module CIAX
       end
 
       def add_jump
-        (@cfg[:jump_groups]||[]).each{|grp| add(grp)}
+        (@cfg[:jump_groups]||[]).each{|grp| append(grp)}
       end
 
       def add_view

@@ -6,25 +6,25 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # @cfg should have [:jump_group],[:layer_list]
     class List < CIAX::List
-      attr_accessor :index
-      def initialize(cfg,attr={})
-        attr[:data_struct]=[]
-        super
-        verbose("Initialize")
-        @index=[] # Will be :valid_pars in Man
+      def initialize(id,cfg,attr={})
+        super(cfg,attr)
+        self['id']=id
+        verbose("Initialize [#{id}]")
+        @stack=[]
       end
 
       def get(id)
-        n=id.to_i-1
-        par_err("Invalid ID") if n < 0
-        super(n)
+        upd
+        super
       end
 
       def add(ent,pid='0')
         seq=Seq.new(ent.cfg)
+        seq.post_stat_procs << proc{upd}
+        seq.pre_mcr_procs << proc{|id,seq| put(id,seq)}
         seq['pid']=pid
-        @data.push seq
-        @index << @data.size.to_s
+        @stack.push seq
+        upd
         seq
       end
 
@@ -34,11 +34,12 @@ module CIAX
 
       def to_v
         idx=1
-        page=['<<< '+Msg.color('Active Macros',2)+' >>>']
-        @data.each{|seq|
-          title="[#{idx}] (by #{get_cid(seq['pid'])})"
-          opt=':('+seq['option'].join('/')+')' unless seq['option'].empty?
-          msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}]<#{seq['stat']}#{opt}>"
+        page=['<<< '+Msg.color("Active Macros [#{self['id']}]",2)+' >>>']
+        @data.each{|id,seq|
+          title="[#{idx}] (#{id})(by #{get_cid(seq['pid'])})"
+          opt=Msg.color('['+seq['option'].join('/')+']',5) unless seq['option'].empty?
+          msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}]"
+          msg << "(#{seq['stat']})#{opt}"
           page << Msg.item(title,msg)
           idx+=1
         }
@@ -48,7 +49,7 @@ module CIAX
       private
       def get_cid(id)
         return 'user' if id == '0'
-        @data.find{|e| e['id']=id}['cid']
+        get(id)['cid']
       end
 
       module Shell
@@ -63,19 +64,20 @@ module CIAX
         end
 
         def get_exe(id)
-          @exelist[id]||=Exe.new(get(id)).ext_shell
+          n=id.to_i-1
+          par_err("Invalid ID") if n < 0
+          @exelist[id]||=Exe.new(@stack[n]).ext_shell
         end
 
         def add(ent,parent='user')
           seq=super
-          id=@data.size.to_s
-          @index << id
+          id=@stack.size.to_s
           @jumpgrp.add_item(id,seq['cid'])
           seq
         end
 
         def shell
-          id=@data.size.to_s
+          id=@stack.size.to_s
           begin
             get_exe(id).shell
           rescue Jump
@@ -95,7 +97,7 @@ module CIAX
       cfg=Config.new
       cfg[:jump_groups]=[]
       cfg[:sub_list]=Wat::List.new(cfg).cfg[:sub_list] #Take App List
-      list=List.new(cfg).ext_shell
+      list=List.new(proj,cfg).ext_save.ext_shell
       mobj=Index.new(list.cfg)
       mobj.add_rem.add_ext(Db.new.get(proj))
       cfg[:submcr_proc]=proc{|args,pid|

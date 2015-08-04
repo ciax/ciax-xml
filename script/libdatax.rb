@@ -40,6 +40,10 @@ module CIAX
       @data[id]
     end
 
+    def num(n)
+      get(@data.keys[n])
+    end
+
     def ext_file(tag=nil) # File I/O
       extend File
       ext_file(tag)

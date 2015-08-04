@@ -24,7 +24,7 @@ module CIAX
       self
     end
 
-    def conv_set
+    def input_conv_set
       @shell_input_procs << proc{|cmd|
         if cmd && cmd.include?('=')
           args=['set']+cmd.split('=')
@@ -35,7 +35,7 @@ module CIAX
       self
     end
 
-    def conv_num
+    def input_conv_num
       @shell_input_procs << proc{|cmd|
         if cmd && /^[0-9]/ =~ cmd
           yield(cmd.to_i)

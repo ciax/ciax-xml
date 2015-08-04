@@ -50,7 +50,7 @@ module CIAX
           @list.post_upd_procs << proc{
             @cobj.rem.int.par[:list]=@list.keys
           }
-          conv_num{|i|
+          input_conv_num{|i|
             if i == 0
               @index=0
               @cobj.rem.int.par[:default]=nil

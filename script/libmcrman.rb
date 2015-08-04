@@ -51,31 +51,22 @@ module CIAX
             @cobj.rem.int.par[:list]=@list.keys
           }
           conv_num{|i|
-            if id=@list.keys[i-1]
+            if i == 0
+              @index=0
+              @cobj.rem.int.par[:default]=nil
+              @cfg[:output]=@list
+              nil
+            elsif id=@list.keys[i-1]
               @index=i
               @cobj.rem.int.par[:default]=id
-              set_disp
+              @cfg[:output]=@list.num(@index-1)
               nil
             else
               i
             end
           }
-          vg=@cobj.loc.add_view
-          vg.add_item('lst',"List mode").def_proc{
-            @seq=nil
-            set_disp
-            ''
-          }
-          vg.add_item('seq',"Sequencer mode").def_proc{
-            @seq=true
-            set_disp
-            ''
-          }
+          @cobj.loc.add_view
           self
-        end
-
-        def set_disp
-          @cfg[:output]=(@seq ? @list.num(@index-1) : nil) || @list
         end
       end
 

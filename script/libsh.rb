@@ -24,6 +24,7 @@ module CIAX
       self
     end
 
+    # Convert Shell input from "x=n" to "set x n"
     def input_conv_set
       @shell_input_procs << proc{|args|
         if args[0] && args[0].include?('=')
@@ -35,10 +36,12 @@ module CIAX
       self
     end
 
-    def input_conv_num
+    # Convert Shell input from number to string
+    def input_conv_num(cmdlist=[])
       @shell_input_procs << proc{|args|
-        if args[0] && /^[0-9]/ =~ args[0]
-          [yield(args[0].to_i)]
+        n=cmdlist.include?(args[0]) ? 1 : 0
+        if args[n] && /^[0-9]/ =~ args[n]
+          [yield(args[n].to_i)]
         else
           args
         end

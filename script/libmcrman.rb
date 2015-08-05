@@ -34,9 +34,6 @@ module CIAX
           @cfg[:submcr_proc]=proc{|args,id|
             @list.add(@cobj.set_cmd(args),id).start(true)
           }
-          @post_exe_procs << proc{
-            @cobj.rem.int.par[:list]=@list.keys
-          }
           ext_shell
         end
 
@@ -48,9 +45,11 @@ module CIAX
             ("[%d]" % @index)
           }
           @list.post_upd_procs << proc{
-            @cobj.rem.int.par[:list]=@list.keys
+            list=@cobj.rem.int.par[:list]=@list.keys
+            i=0
+            list.size.times{ list << (i+=1).to_s }
           }
-          input_conv_num{|i|
+          input_conv_num(@cobj.rem.int.keys){|i|
             if i == 0
               @index=0
               @cobj.rem.int.par[:default]=nil

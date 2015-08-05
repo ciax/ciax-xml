@@ -14,7 +14,7 @@ module CIAX
     # Separate initialize part because shell() could be called multiple times
     def ext_shell(als=nil)
       verbose("Shell Initialize [#{@id}]")
-      @shell_input_procs=[]
+      @shell_input_procs=[] #proc takes args(Array)
       @shell_output_proc=proc{ @cfg[:output] }
       @prompt_proc=proc{ @site_stat.to_s }
       @cobj.loc.add_shell
@@ -25,22 +25,22 @@ module CIAX
     end
 
     def input_conv_set
-      @shell_input_procs << proc{|cmd|
-        if cmd && cmd.include?('=')
-          args=['set']+cmd.split('=')
+      @shell_input_procs << proc{|args|
+        if args[0] && args[0].include?('=')
+          ['set']+args.shift.split('=')+args
         else
-          cmd
+          args
         end
       }
       self
     end
 
     def input_conv_num
-      @shell_input_procs << proc{|cmd|
-        if cmd && /^[0-9]/ =~ cmd
-          yield(cmd.to_i)
+      @shell_input_procs << proc{|args|
+        if args[0] && /^[0-9]/ =~ args[0]
+          [yield(args[0].to_i)]
         else
-          cmd
+          args
         end
       }
       self
@@ -86,14 +86,11 @@ module CIAX
 
     private
     def convert(token)
-      procs=Array.new(@shell_input_procs)
-      token.split(' ').map{|str|
-        if conv=procs.shift
-          conv.call(str)
-        else
-          str
-        end
-      }.flatten.compact
+      args=token.split(' ')
+      @shell_input_procs.each{|proc|
+        args=proc.call(args)
+      }
+      args
     end
   end
 end

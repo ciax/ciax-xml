@@ -40,11 +40,8 @@ module CIAX
     def input_conv_num(cmdlist=[])
       @shell_input_procs << proc{|args|
         n=cmdlist.include?(args[0]) ? 1 : 0
-        if args[n] && /^[0-9]/ =~ args[n]
-          [yield(args[n].to_i)]
-        else
-          args
-        end
+        args[n]=yield(args[n].to_i) if args[n] && /^[0-9]/ =~ args[n]
+        args
       }
       self
     end

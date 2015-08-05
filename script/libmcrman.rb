@@ -49,7 +49,7 @@ module CIAX
             i=0
             list.size.times{ list << (i+=1).to_s }
           }
-          input_conv_num(@cobj.rem.int.keys){|i|
+          input_conv_num{|i|
             if i == 0
               @index=0
               @cobj.rem.int.par[:default]=nil
@@ -63,6 +63,9 @@ module CIAX
             else
               i
             end
+          }
+          input_conv_num(@cobj.rem.int.keys){|i|
+            @list.keys[i-1]
           }
           @cobj.loc.add_view
           self

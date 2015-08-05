@@ -86,11 +86,9 @@ module CIAX
 
     private
     def convert(token)
-      args=token.split(' ')
-      @shell_input_procs.each{|proc|
-        args=proc.call(args)
+      @shell_input_procs.inject(token.split(' ')){|args,proc|
+        proc.call(args)
       }
-      args
     end
   end
 end

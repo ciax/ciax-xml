@@ -14,7 +14,8 @@ module CIAX
       def add(layer)
         type?(layer,Module)
         sl=layer::List.new(@cfg)
-        put(@current=m2id(layer),sl)
+        id=@current=m2id(layer)
+        put(id,sl)
         sl
       end
 
@@ -55,10 +56,11 @@ module CIAX
       site=ARGV.shift
       cfg=Config.new
       cfg[:jump_groups]=[]
-      sl=List.new(cfg).ext_shell
+      ll=List.new(cfg)
       begin
-        sl.add(Frm)
-        sl.shell(site)
+        ll.add(App)
+        ll.ext_shell
+        ll.shell(site)
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

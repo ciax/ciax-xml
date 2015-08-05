@@ -70,7 +70,6 @@ module CIAX
           @jumpgrp.merge_items(sites)
           # For parameter of jump from another layer
           @parameter={:default => @current,:list => sites.keys}
-          @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
           self
         end
 

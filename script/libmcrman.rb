@@ -52,7 +52,6 @@ module CIAX
           input_conv_num{|i|
             if i == 0
               @index=0
-              @cobj.rem.int.par[:default]=nil
               @cfg[:output]=@list
               nil
             elsif id=@list.keys[i-1]
@@ -65,7 +64,11 @@ module CIAX
             end
           }
           input_conv_num(@cobj.rem.int.keys){|i|
-            @list.keys[i-1]
+            id=@list.include?(i.to_s) ? i.to_s : @list.keys[i-1] 
+            if id
+              @index=i
+              @cobj.rem.int.par[:default]=id 
+            end
           }
           @cobj.loc.add_view
           self

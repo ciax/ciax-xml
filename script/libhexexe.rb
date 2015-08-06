@@ -7,13 +7,13 @@ module CIAX
   module Hex
     include Command
 
-    def self.new(id,cfg={},attr={})
+    def self.new(id,cfg,attr={})
       Hex::Sv.new(id,cfg,attr)
     end
 
     # cfg should have [:layers]
     class Sv < Exe
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         sub=@cfg[:sub_list].get(id).sub
         @cobj=Index.new(@cfg)

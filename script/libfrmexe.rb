@@ -10,7 +10,7 @@ require "libsitelist"
 
 module CIAX
   module Frm
-    def self.new(id,cfg={},attr={})
+    def self.new(id,cfg,attr={})
       Msg.type?(attr,Hash)
       if $opt.delete('l')
         attr['host']='localhost'
@@ -29,7 +29,7 @@ module CIAX
     class Exe < Exe
       # cfg must have [:db]
       attr_reader :field,:flush_procs
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         # DB is generated in List level
         @cfg[:site_id]=id
@@ -56,7 +56,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         @cobj.rem.def_proc{|ent|@field['time']=now_msec;''}
         @cobj.rem.ext.def_proc{|ent| ent.cfg.path }
@@ -68,7 +68,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         host=type?(@cfg['host']||@fdb['host']||'localhost',String)
         @field.ext_http(host)
@@ -79,7 +79,7 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         @field.ext_file
         @site_stat.add_db('comerr' => 'X','strerr' => 'E')

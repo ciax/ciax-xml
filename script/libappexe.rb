@@ -11,7 +11,7 @@ require "libinsdb"
 
 module CIAX
   module App
-    def self.new(id,cfg={},attr={})
+    def self.new(id,cfg,attr={})
       Msg.type?(attr,Hash)
       if $opt.delete('l')
         attr['host']='localhost'
@@ -31,7 +31,7 @@ module CIAX
       # cfg must have [:db],[:frm_list]
       attr_reader :adb,:stat,:host,:port
       attr_accessor :batch_interrupt
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         @cfg[:site_id]=id
         # LayerDB might generated in List level
@@ -59,7 +59,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         @stat.ext_sym
         @stat.post_upd_procs << proc{|st|
@@ -76,7 +76,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         @stat.ext_http(host)
         @pre_exe_procs << proc{@stat.upd}
@@ -86,7 +86,7 @@ module CIAX
 
     class Sv < Exe
       # cfg(attr) must have layers[:frm]
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         @stat.ext_rsp(@sub.field).ext_sym.ext_file
         @buf=init_buf

@@ -5,7 +5,7 @@ require "liblayer"
 module CIAX
   module Mcr
     class Layer < CIAX::List
-      def initialize(inter_cfg={},attr={})
+      def initialize(inter_cfg,attr={})
         super(Layer,inter_cfg,attr)
         sl=Site::Layer.new(@cfg).add(Wat)
         sl.jumpgrp.add_item('mcr',"Mcr mode").def_proc{|ent|

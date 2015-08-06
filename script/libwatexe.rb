@@ -6,7 +6,7 @@ module CIAX
   module Wat
     include Command
 
-    def self.new(id,cfg={},attr={})
+    def self.new(id,cfg,attr={})
       Msg.type?(attr,Hash)
       if $opt.delete('l')
         attr['host']='localhost'
@@ -25,7 +25,7 @@ module CIAX
     # cfg should have [:sub_list]
     class Exe < Exe
       attr_reader :sub
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         @sub=@cfg[:sub_list].get(@id)
         @cobj=Index.new(@cfg)
@@ -62,7 +62,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         init_sv
         # @event is independent from @sub.stat
@@ -71,7 +71,7 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         @event.ext_http(@sub.host)
         # @event is independent from @sub.stat
@@ -80,7 +80,7 @@ module CIAX
     end
 
     class Sv < Exe
-      def initialize(id,cfg={},attr={})
+      def initialize(id,cfg,attr={})
         super
         init_sv
         @event.ext_file

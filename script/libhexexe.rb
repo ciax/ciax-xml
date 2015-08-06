@@ -11,7 +11,7 @@ module CIAX
       Hex::Sv.new(id,cfg,attr)
     end
 
-    # cfg should have [:layers]
+    # cfg should have [:sub_list]
     class Sv < Exe
       def initialize(id,cfg,attr={})
         super
@@ -46,9 +46,9 @@ module CIAX
 
     class List < Site::List
       def initialize(cfg,attr={})
+        attr[:sub_list]=Wat::List.new(cfg)
         super
         set_db(Ins::Db.new) unless @cfg[:db]
-        @cfg[:sub_list]=sub_list(Wat::List)
       end
     end
 

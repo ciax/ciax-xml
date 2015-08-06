@@ -126,9 +126,9 @@ module CIAX
 
     class List < Site::List
       def initialize(cfg,attr={})
+        attr[:sub_list]=App::List.new(cfg)
         super
         set_db(Ins::Db.new) unless @cfg[:db]
-        @cfg[:sub_list]=sub_list(App::List)
       end
     end
 

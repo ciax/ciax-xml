@@ -141,10 +141,11 @@ module CIAX
     end
 
     class List < Site::List
+    # cfg should have [:jump_groups]
       def initialize(cfg,attr={})
+        attr[:sub_list]=Frm::List.new(cfg)
         super
         set_db(Ins::Db.new) unless @cfg[:db]
-        @cfg[:sub_list]=sub_list(Frm::List)
       end
     end
 

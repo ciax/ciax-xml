@@ -7,9 +7,10 @@ module CIAX
     # @cfg should have [:jump_group],[:layer_list]
     # This should be set [:db]
     class List < CIAX::List
-      attr_reader :parameter
+      attr_reader :parameter,:sub_list
       def initialize(cfg,attr={})
         super
+        @sub_list=@cfg[:sub_list]
         @current=''
       end
 
@@ -17,14 +18,6 @@ module CIAX
         @cfg[:db]=type?(db,Db)
         verbose("Initialize")
         self
-      end
-
-      def sub_list(layer)
-        if @cfg.all_key?(:layer_list)
-          @cfg[:layer_list].add(layer)
-        else
-          layer.new(@cfg)
-        end
       end
 
       def exe(args) # As a individual cui command

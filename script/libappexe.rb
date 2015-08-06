@@ -144,7 +144,7 @@ module CIAX
       def initialize(cfg,attr={})
         super
         set_db(Ins::Db.new) unless @cfg[:db]
-        @cfg[:sub_list]=sub_list(Frm)
+        @cfg[:sub_list]=sub_list(Frm::List)
       end
     end
 

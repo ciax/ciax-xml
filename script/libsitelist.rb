@@ -23,7 +23,7 @@ module CIAX
         if @cfg.all_key?(:layer_list)
           @cfg[:layer_list].add(layer)
         else
-          layer::List.new(@cfg)
+          layer.new(@cfg)
         end
       end
 

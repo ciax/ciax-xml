@@ -18,7 +18,7 @@ module CIAX
     def initialize(id,cfg,attr={})
       super()
       @cls_color=13
-      @cfg=cfg.gen(self).update(attr)
+      @cfg=type?(cfg,Config).gen(self).update(attr)
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @id=id
       cpath=class_path

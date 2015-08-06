@@ -13,8 +13,8 @@ module CIAX
       # list object can be (Frm,App,Wat,Hex)
       def add(layer)
         type?(layer,Module)
-        sl=layer::List.new(@cfg)
-        id=@current=m2id(layer)
+        sl=layer.new(@cfg)
+        id=@current=m2id(layer,-2)
         put(id,sl)
         sl
       end
@@ -51,14 +51,14 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libhexexe"
+      require "libmcrman"
       GetOpts.new("els")
       site=ARGV.shift
       cfg=Config.new
       cfg[:jump_groups]=[]
       ll=List.new(cfg)
       begin
-        ll.add(App)
+        ll.add(App::List)
         ll.ext_shell
         ll.shell(site)
       rescue InvalidID

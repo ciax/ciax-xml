@@ -8,6 +8,6 @@ module CIAX
   cfg=Config.new
   cfg[:jump_groups]=[]
   sl=Layer::List.new(cfg)
-  sl.add($opt.layer)
+  sl.add(eval "#{$opt.layer}::List")
   sl.ext_shell.shell(id)
 end

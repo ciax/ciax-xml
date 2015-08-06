@@ -5,6 +5,7 @@ module CIAX
   class GetOpts < Hash
     # str = valid option list (afch:)
     # db = addigional option db
+    attr_reader :layer
     def initialize(str='',db={})
       require 'optparse'
       Msg.type?(str,String)
@@ -46,10 +47,6 @@ module CIAX
       # Set @layer (default 'Wat')
       @layer=['Hex','App','Frm','Wat'].find{|c| self[c[0].downcase]}||'Wat'
       $opt=self
-    end
-
-    def layer
-      eval @layer
     end
 
     def usage(str)

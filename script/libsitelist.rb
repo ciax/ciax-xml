@@ -17,6 +17,7 @@ module CIAX
       def set_db(db)
         @cfg[:db]=type?(db,Db)
         verbose("Initialize")
+        @current=db.displist.keys.first
         self
       end
 

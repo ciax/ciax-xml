@@ -8,7 +8,7 @@ module CIAX
   cfg[:jump_groups]=[]
   sl=$opt.layer_list.new(cfg)
   begin
-    puts sl.get(id).exe(ARGV).output
+    puts sl.get(id).exe(ARGV)['msg']
   rescue InvalidID
     $opt.usage('(opt) [site] [cmd]')
   end

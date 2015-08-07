@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libsh"
 require "libmcrlist"
+require "liblayer"
 
 module CIAX
   module Mcr
@@ -21,7 +22,8 @@ module CIAX
       end
 
       class Exe < CIAX::Exe
-        # cfg should have [:jump_groups],[:sub_list](App::List)
+        # cfg should have [:jump_groups],[:layer_list]
+        attr_reader :sub_list
         def initialize(cfg,attr={})
           proj=ENV['PROJ']||'ciax'
           type?(cfg,Config)
@@ -34,10 +36,10 @@ module CIAX
           @cfg[:submcr_proc]=proc{|args,id|
             @list.add(@cobj.set_cmd(args),id).start(true)
           }
-          ext_shell
+          #Set sublist
+          @sub_list=@cfg[:sub_list]=Wat::List.new(@cfg)
         end
 
-        private
         def ext_shell
           super
           @index=0
@@ -121,9 +123,7 @@ module CIAX
         begin
           cfg=Config.new
           cfg[:jump_groups]=[]
-          wl=Wat::List.new(cfg)
-          cfg[:sub_list]=wl.cfg[:sub_list] #Take App List
-          Man.new(cfg).shell
+          Man.new(cfg).ext_shell.shell
         rescue InvalidCMD
           $opt.usage("[mcr] [cmd] (par)")
         end

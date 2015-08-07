@@ -24,10 +24,11 @@ module CIAX
 
     # cfg should have [:sub_list]
     class Exe < Exe
-      attr_reader :sub
+      attr_reader :sub,:stat
       def initialize(id,cfg,attr={})
         super
         @sub=@cfg[:sub_list].get(@id)
+        @stat=@sub.stat
         @cobj=Index.new(@cfg)
         @cobj.add_rem(@sub)
         @event=Event.new.set_db(@sub.adb)

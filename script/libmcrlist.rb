@@ -4,7 +4,7 @@ module CIAX
   module Mcr
     # Sequencer Layer List
     # @cfg[:db] associated site/layer should be set
-    # @cfg should have [:jump_group],[:layer_list]
+    # @cfg should have [:jump_groups],[:layer_list]
     class List < CIAX::List
       def initialize(id,cfg,attr={})
         super(cfg,attr)

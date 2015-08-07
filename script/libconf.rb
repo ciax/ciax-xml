@@ -45,9 +45,10 @@ module CIAX
       hash
     end
 
+    # If content is Array, merge generations
     def [](id)
-      @generation.each{|h|
-        return h.fetch(id) if h.key?(id)
+      @generation.each{|gen|
+        return gen.fetch(id) if gen.key?(id)
       }
       nil
     end
@@ -72,12 +73,14 @@ module CIAX
         str="  [#{i}]{"+h.map{|k,v|
           next if key and k != key
           case v
-          when String,Numeric
-            val=v.inspect
-          when Array,Hash,Proc,CmdProc
+          when Hash,Proc,CmdProc
             val=v.class
+          when Array
+            val="["+v.map{|e|
+              e.class
+            }.join(",")+"](#{v.object_id})"
           else
-            val=v
+            val=v.inspect
           end
           k.inspect.to_s+'=>'+val.to_s
         }.compact.join(', ')+'} ('+h.object_id.to_s+")\n"+str

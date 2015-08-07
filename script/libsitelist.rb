@@ -7,7 +7,7 @@ module CIAX
     # @cfg should have [:jump_groups]
     # This should be set [:db]
     class List < CIAX::List
-      attr_reader :parameter,:sub_list
+      attr_reader :sub_list
       def initialize(cfg,attr={})
         super
         @sub_list=@cfg[:sub_list]
@@ -57,6 +57,7 @@ module CIAX
         include CIAX::List::Shell
         class Jump < LongJump; end
 
+        attr_reader :parameter
         def ext_shell
           super(Jump)
           @cfg[:jump_groups]+=[@jumpgrp]

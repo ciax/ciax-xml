@@ -3,6 +3,7 @@ require "liblayer"
 require "libhexexe"
 
 module CIAX
+  ENV['VER']||='initialize'
   GetOpts.new("aftxelsrch:")
   id=ARGV.shift
   cfg=Config.new

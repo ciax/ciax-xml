@@ -13,7 +13,6 @@ module CIAX
 
     # Separate initialize part because shell() could be called multiple times
     def ext_shell(als=nil)
-      verbose("Shell Initialize [#{@id}]")
       @shell_input_procs=[] #proc takes args(Array)
       @shell_output_proc=proc{ @cfg[:output] }
       @prompt_proc=proc{ @site_stat.to_s }

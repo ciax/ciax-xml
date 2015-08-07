@@ -15,10 +15,10 @@ module CIAX
       attr_reader :binary
       attr_accessor :pre_open_proc,:post_open_proc
       def initialize(id,ver,iocmd,wait=0,timeout=nil)
-        @cls_color=9
         Msg.abort(" No IO command") if iocmd.to_a.empty?
         @iocmd=type?(iocmd,Array).compact
         super('stream',id,ver)
+        @cls_color=9
         update('dir' => '','cmd' => '','base64' => '')
         verbose("Initialize [#{iocmd.join(' ')}]")
         @wait=wait.to_f

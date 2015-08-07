@@ -4,12 +4,13 @@ require "liblist"
 module CIAX
   module Layer
     class List < CIAX::List
-      def initialize(cfg,attr={})
-        super
+      def initialize
+        super(Config.new)
       end
 
       # list object can be (Frm,App,Wat,Hex)
-      def set(obj)
+      def set(mod)
+        obj=mod.new(@cfg)
         begin
           put(m2id(obj.class,-2),obj)
         end while obj=obj.sub_list
@@ -26,7 +27,7 @@ module CIAX
 
         def ext_shell
           super(Jump)
-          @cfg[:jump_groups] << @jumpgrp
+          @cfg[:jump_groups]=[@jumpgrp]
           keys.each{|id|
             sl=get(id).ext_shell
             @jumpgrp.add_item(id,id.capitalize+" mode",{:parameters => [sl.parameter]})
@@ -53,11 +54,9 @@ module CIAX
       require "libhexexe"
       GetOpts.new("els")
       site=ARGV.shift
-      cfg=Config.new
-      cfg[:jump_groups]=[]
-      ll=List.new(cfg)
+      ll=List.new
       begin
-        ll.set(Wat::List.new(cfg))
+        ll.set(Wat::List)
         ll.ext_shell
         ll.shell(site)
       rescue InvalidID

@@ -3,11 +3,9 @@ require "libmcrman"
 
 module CIAX
   GetOpts.new('cmlnr')
-  cfg=Config.new
-  cfg[:jump_groups]=[]
-  ll=Layer::List.new(cfg)
+  ll=Layer::List.new
   begin
-    ll.set(Mcr::Man.new(cfg))
+    ll.set(Mcr::Man)
     ll.ext_shell.shell(nil)
   rescue InvalidID
     $opt.usage('(opt) [id]')

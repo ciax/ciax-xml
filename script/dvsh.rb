@@ -6,9 +6,7 @@ module CIAX
   ENV['VER']||='initialize'
   GetOpts.new("aftxelsrch:")
   id=ARGV.shift
-  cfg=Config.new
-  cfg[:jump_groups]=[]
-  ll=Layer::List.new(cfg)
-  ll.set($opt.layer_list.new(cfg))
+  ll=Layer::List.new
+  ll.set($opt.layer_list)
   ll.ext_shell.shell(id)
 end

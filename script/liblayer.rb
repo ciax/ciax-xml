@@ -50,14 +50,14 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libmcrman"
+      require "libhexexe"
       GetOpts.new("els")
       site=ARGV.shift
       cfg=Config.new
       cfg[:jump_groups]=[]
       ll=List.new(cfg)
       begin
-        ll.set(Mcr::Man.new(cfg))
+        ll.set(Wat::List.new(cfg))
         ll.ext_shell
         ll.shell(site)
       rescue InvalidID

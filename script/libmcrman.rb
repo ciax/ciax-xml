@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libsh"
 require "libmcrlist"
-require "liblayer"
 
 module CIAX
   module Mcr

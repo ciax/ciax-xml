@@ -4,7 +4,7 @@ require "liblayer"
 module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set
-    # @cfg should have [:jump_groups],[:layer_list]
+    # @cfg should have [:jump_groups]
     # This should be set [:db]
     class List < CIAX::List
       attr_reader :parameter,:sub_list

@@ -5,7 +5,6 @@ module CIAX
   module Layer
     class List < CIAX::List
       def initialize(cfg,attr={})
-        attr[:layer_list]=self
         super
       end
 

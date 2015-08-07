@@ -6,9 +6,10 @@ module CIAX
   id=ARGV.shift
   cfg=Config.new
   cfg[:jump_groups]=[]
-  cl=Layer::List.new(cfg).add(eval "#{$opt.layer}::List")
+  ll=Layer::List.new(cfg)
+  ll.set(eval "#{$opt.layer}::List.new(cfg)")
   begin
-    puts cl.get(id).exe(ARGV).output
+    puts ll.get(id).exe(ARGV).output
   rescue InvalidID
     $opt.usage('(opt) [site] [cmd]')
   end

@@ -22,7 +22,7 @@ module CIAX
       end
 
       class Exe < CIAX::Exe
-        # cfg should have [:jump_groups],[:layer_list]
+        # cfg should have [:jump_groups]
         attr_reader :sub_list
         def initialize(cfg,attr={})
           proj=ENV['PROJ']||'ciax'

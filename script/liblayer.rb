@@ -57,7 +57,7 @@ module CIAX
       cfg[:jump_groups]=[]
       ll=List.new(cfg)
       begin
-        ll.set(Wat::List.new(cfg))
+        ll.set(Mcr::Man.new(cfg))
         ll.ext_shell
         ll.shell(site)
       rescue InvalidID

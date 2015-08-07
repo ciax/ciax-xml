@@ -23,7 +23,7 @@ module CIAX
 
       class Exe < CIAX::Exe
         # cfg should have [:jump_groups]
-        attr_reader :sub_list
+        attr_reader :sub_list,:parameter
         def initialize(cfg,attr={})
           proj=ENV['PROJ']||'ciax'
           type?(cfg,Config)
@@ -41,8 +41,18 @@ module CIAX
         end
 
         def ext_shell
+          extend(Shell).ext_shell
+        end
+      end
+
+      module Shell
+        include CIAX::Shell
+        attr_reader :parameter
+
+        def ext_shell
           super
           @index=0
+          @parameter=@cobj.rem.int.par
           @prompt_proc=proc{
             ("[%d]" % @index)
           }

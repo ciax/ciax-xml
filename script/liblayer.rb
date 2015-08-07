@@ -7,16 +7,14 @@ module CIAX
       def initialize(cfg,attr={})
         attr[:layer_list]=self
         super
-        @current=''
       end
 
       # list object can be (Frm,App,Wat,Hex)
-      def add(layer)
-        type?(layer,Module)
-        sl=layer.new(@cfg)
-        id=@current=m2id(layer,-2)
-        put(id,sl)
-        sl
+      def set(obj)
+        begin
+          put(m2id(obj.class,-2),obj)
+        end while obj=obj.sub_list
+        self
       end
 
       def ext_shell
@@ -29,10 +27,12 @@ module CIAX
 
         def ext_shell
           super(Jump)
+          @cfg[:jump_groups] << @jumpgrp
           keys.each{|id|
             sl=get(id).ext_shell
             @jumpgrp.add_item(id,id.capitalize+" mode",{:parameters => [sl.parameter]})
           }
+          @current=keys.first
           self
         end
 
@@ -58,7 +58,7 @@ module CIAX
       cfg[:jump_groups]=[]
       ll=List.new(cfg)
       begin
-        ll.add(App::List)
+        ll.set(Wat::List.new(cfg))
         ll.ext_shell
         ll.shell(site)
       rescue InvalidID

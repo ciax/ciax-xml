@@ -4,7 +4,7 @@ require "liblayer"
 module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set
-    # @cfg should have [:jump_group],[:layer_list]
+    # @cfg should have [:jump_groups],[:layer_list]
     # This should be set [:db]
     class List < CIAX::List
       attr_reader :parameter,:sub_list
@@ -59,6 +59,7 @@ module CIAX
 
         def ext_shell
           super(Jump)
+          @cfg[:jump_groups]+=[@jumpgrp]
           sites=@cfg[:db].displist
           @jumpgrp.merge_items(sites)
           # For parameter of jump from another layer

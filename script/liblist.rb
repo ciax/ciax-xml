@@ -28,7 +28,6 @@ module CIAX
         @cfg[:jump_class]=type?(jump_class,Module)
         @jumpgrp=Local::Jump::Group.new(@cfg)
         type?(@cfg[:jump_groups],Array)
-        @cfg[:jump_groups]+=[@jumpgrp]
         self
       end
     end

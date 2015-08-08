@@ -12,7 +12,7 @@ module CIAX
     def ext_server(port=nil)
       @sub.ext_server if @sub
       return self unless (port||=@cfg['port'])
-      verbose("Initialize UDP [#@id:#{port}]")
+      verbose("Initialize UDP server [#@id:#{port}]")
       @port=port.to_i
       @server_input_proc=proc{|line|
         begin

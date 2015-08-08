@@ -7,19 +7,13 @@ module CIAX
     include Command
 
     def self.new(id,cfg,attr={})
-      Msg.type?(attr,Hash)
-      if $opt.delete('l')
-        attr['host']='localhost'
-        Sv.new(id,cfg,attr)
-      elsif host=$opt['h']
-        attr['host']=host
-      elsif $opt['c']
-      elsif $opt['s'] or $opt['e']
-        return Sv.new(id,cfg,attr)
+      if $opt.sv?
+        sv=Sv.new(id,cfg,attr)
+      elsif $opt.cl?
+        Cl.new(id,cfg,attr.update($opt.host))
       else
-        return Test.new(id,cfg,attr)
+        Test.new(id,cfg,attr)
       end
-      Cl.new(id,cfg,attr)
     end
 
     # cfg should have [:sub_list]
@@ -135,7 +129,7 @@ module CIAX
 
     if __FILE__ == $0
       ENV['VER']||='initialize'
-      GetOpts.new('celts')
+      GetOpts.new('ceh:lts')
       id=ARGV.shift
       cfg=Config.new
       cfg[:jump_groups]=[]

@@ -54,7 +54,7 @@ module CIAX
 
     if __FILE__ == $0
       ENV['VER']||='initialize'
-      GetOpts.new('celts')
+      GetOpts.new('ceh:lts')
       id=ARGV.shift
       cfg=Config.new
       cfg[:jump_groups]=[]

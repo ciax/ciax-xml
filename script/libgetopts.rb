@@ -41,8 +41,6 @@ module CIAX
         @index["-#{c}"]=optdb[c]
       }
       update(ARGV.getopts(str))
-      # -h: takes hostname (default 'localhost')
-      self['h']= 'localhost' if self['h'] && /^\W/ =~ self['h']
       # Set @layer (default 'Wat')
       @layer=['Hex','App','Frm','Wat'].find{|c| self[c[0].downcase]}||'Wat'
       $opt=self
@@ -50,6 +48,22 @@ module CIAX
 
     def layer_list
       eval "#@layer::List"
+    end
+
+    def sv?
+      ['s','e'].any?{|k| self[k]}
+    end
+
+    def cl?
+      ['h','c','l'].any?{|k| self[k]}
+    end
+
+    def host
+      res={}
+      if !self['c']
+        res['host']= self['h'] ? self['h'] : 'localhost'
+      end
+      res
     end
 
     def usage(str)

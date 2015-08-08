@@ -9,42 +9,6 @@ module CIAX
       raise("Not Enumerable") unless obj.is_a? Enumerable
     end
 
-    def to_j
-      case self
-      when Array
-        JSON.dump(to_a)
-      when Hash
-        JSON.dump(to_hash)
-      end
-    end
-
-    # Show branch (omit lower tree of Hash/Array with sym key)
-    def path(ary=[])
-      enum=ary.inject(self){|prev,a|
-        if /@/ === a
-          prev.instance_variable_get(a)
-        else
-          case prev
-          when Array
-            prev[a.to_i]
-          when Hash
-            prev[a.to_sym]||prev[a.to_s]
-          end
-        end
-      }||Msg.abort("No such key")
-      branch=enum.dup.extend(ViewStruct)
-      if Hash === branch
-        branch.each{|k,v|
-          branch[k]=v.class.to_s if Enumerable === v
-        }
-      end
-      branch.instance_variables.each{|n|
-        v=branch.instance_variable_get(n)
-        branch.instance_variable_set(n,v.class.to_s) if Enumerable === v
-      }
-      branch.view_struct(true,true)
-    end
-
     def deep_copy
       Marshal.load(Marshal.dump(self))
     end

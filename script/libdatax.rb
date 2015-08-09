@@ -106,6 +106,10 @@ module CIAX
       @data.key?(key)
     end
 
+    def values
+      @data.values
+    end
+
     def lastval
       get(keys.last)
     end

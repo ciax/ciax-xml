@@ -35,7 +35,7 @@ module CIAX
       module Shell
         include CIAX::Shell
         def ext_shell
-          super(@cfg[:cid].tr(':','_'))
+          super
           @prompt_proc=proc{
             res="(#{@seq['stat']})"
             res+=optlist(@seq['option'])

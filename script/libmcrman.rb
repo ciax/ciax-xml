@@ -37,6 +37,9 @@ module CIAX
           }
           #Set sublist
           @sub_list=@cfg[:sub_list]=Wat::List.new(@cfg)
+          @mdb=@cobj.rem.ext.cfg[:dbi]
+          @cfg['host']||=@mdb['host']
+          @cfg['port']||=(@mdb['port']||5555)
         end
 
         def ext_shell
@@ -89,8 +92,6 @@ module CIAX
       class Cl < Exe
         def initialize(cfg)
           super
-          host=cfg['host']||@cobj.cfg[:dbi]['host']||'localhost'
-          port=cfg['port']||@cobj.cfg[:dbi]['port']||55555
           @pre_exe_procs << proc{@list.upd}
           ext_client
         end
@@ -100,7 +101,6 @@ module CIAX
         def initialize(cfg)
           cfg[:submcr_proc]=proc{|args,src| exe(args,src)}
           super
-          port=cfg['port']||@cobj.rem.ext.cfg[:dbi]['port']||55555
           self['sid']='' # For server response
           @pre_exe_procs << proc{ self['sid']='' }
           @list.ext_save
@@ -123,7 +123,7 @@ module CIAX
             @list.interrupt
             'INTERRUPT'
           }
-          ext_server(port)
+          ext_server
         end
       end
 

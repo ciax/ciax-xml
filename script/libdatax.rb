@@ -18,12 +18,8 @@ module CIAX
       _getdata.to_j
     end
 
-    def to_s
-      if self.class.method_defined?(:to_v) && @vmode == 'v'
-        to_v
-      else
-        _getdata.to_s
-      end
+    def to_r
+      _getdata.to_r
     end
 
     def read(json_str=nil)

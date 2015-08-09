@@ -25,10 +25,7 @@ module CIAX
           }
         }
         upd
-      end
-
-      def to_s
-        @vmode == 'r' ? @event.to_s : to_v
+        @vmode='v'
       end
 
       def to_v
@@ -45,6 +42,10 @@ module CIAX
         conditions(str)
         str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"
         str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
+      end
+
+      def to_r
+        @event.to_r
       end
 
       private

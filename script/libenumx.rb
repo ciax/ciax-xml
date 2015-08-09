@@ -32,10 +32,6 @@ module CIAX
       deep_update(j2h(json_str))
     end
 
-    def to_s
-      view_struct
-    end
-
     private
     def j2h(json_str=nil)
       JSON.load(json_str||gets(nil)||Msg.abort("No data in file(#{ARGV})"))
@@ -83,7 +79,7 @@ module CIAX
     attr_accessor :vmode
     def initialize(hash={})
       update(hash)
-      @vmode="v" # v|r|j
+      @vmode="r" # v|r|j
       ['v','r','j'].each{|k|
         @vmode=k if $opt[k]
       } if $opt
@@ -95,10 +91,6 @@ module CIAX
 
     def put(key,val)
       store(key,val)
-    end
-
-    def to_s
-      @vmode == 'j' ? to_j : super
     end
 
     # Make empty copy

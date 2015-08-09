@@ -5,6 +5,19 @@ module CIAX
   module ViewStruct
     include Msg
     attr_accessor :vmode
+    def to_s
+      case @vmode
+      when 'v'
+        to_v
+      when 'j'
+        to_j
+      when 'r'
+        to_r
+      else
+        super
+      end
+    end
+
     def to_v; end
 
     def to_j

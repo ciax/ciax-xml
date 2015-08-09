@@ -40,7 +40,6 @@ module CIAX
         @que_res=Queue.new
         update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>[]})
         @running=[]
-        @vmode='v'
       end
 
       def start(bg=nil)
@@ -65,10 +64,6 @@ module CIAX
         else
           "IGNORE"
         end
-      end
-
-      def to_s
-        @vmode == 'v' ? to_v : super
       end
 
       def to_v

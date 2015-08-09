@@ -11,6 +11,7 @@ module CIAX
         self['id']=id
         verbose("Initialize [#{id}]")
         @stack=[]
+        @vmode='v'
       end
 
       def get(id)

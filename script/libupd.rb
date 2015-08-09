@@ -21,14 +21,6 @@ module CIAX
       post_upd # Save & Update super layer
     end
 
-    def to_s
-      if self.class.method_defined?(:to_v)  && @vmode=='v'
-        to_v
-      else
-        super
-      end
-    end
-
     private
     def pre_upd
       @pre_upd_procs.each{|p| p.call(self)}

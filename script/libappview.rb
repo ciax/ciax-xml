@@ -22,6 +22,7 @@ module CIAX
         ['data','class','msg'].each{|key|
           stat[key]||={}
         }
+        @vmode='v'
       end
 
       def to_csv
@@ -36,8 +37,8 @@ module CIAX
         str
       end
 
-      def to_s
-        @vmode == 'r' ? @stat.to_s : super
+      def to_r
+        @stat.to_r
       end
 
       def to_v

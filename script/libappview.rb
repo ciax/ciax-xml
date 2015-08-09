@@ -22,7 +22,6 @@ module CIAX
         ['data','class','msg'].each{|key|
           stat[key]||={}
         }
-        @vmode='v'
       end
 
       def to_csv

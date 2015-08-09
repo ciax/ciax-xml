@@ -9,7 +9,6 @@ module CIAX
       def initialize(id=nil)
         super('record',[],'steps')
         self['id']=id # Session ID for Loading
-        @vmode='v'
       end
 
       # cfg will come from Entity, which should have [:cid],['label'],@layers[:wat]

@@ -25,7 +25,6 @@ module CIAX
           }
         }
         upd
-        @vmode='v'
       end
 
       def to_v

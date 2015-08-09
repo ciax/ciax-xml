@@ -79,7 +79,7 @@ module CIAX
     attr_accessor :vmode
     def initialize(hash={})
       update(hash)
-      @vmode="r" # v|r|j
+      @vmode="v" # v|r|j
       ['v','r','j'].each{|k|
         @vmode=k if $opt[k]
       } if $opt

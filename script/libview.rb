@@ -18,8 +18,6 @@ module CIAX
       end
     end
 
-    def to_v; end
-
     def to_j
       case self
       when Array
@@ -31,6 +29,10 @@ module CIAX
 
     def to_r
       view_struct
+    end
+
+    def to_v
+      to_r
     end
 
     # Show branch (omit lower tree of Hash/Array with sym key)

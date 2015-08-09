@@ -92,7 +92,7 @@ module CIAX
           host=cfg['host']||@cobj.cfg[:dbi]['host']||'localhost'
           port=cfg['port']||@cobj.cfg[:dbi]['port']||55555
           @pre_exe_procs << proc{@list.upd}
-          ext_client(host,port)
+          ext_client
         end
       end
 

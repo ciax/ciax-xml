@@ -10,9 +10,9 @@ module CIAX
 
     # If you get 'Address family not ..' error,
     # remove ipv6 entry from /etc/hosts
-    def ext_client(host=nil,port=nil)
-      host||=(@cfg['host']||'localhost')
-      port||=@cfg['port']
+    def ext_client
+      host=@cfg['host']
+      port=@cfg['port']
       @site_stat.add_db('udperr' => 'x')
       @udp=UDPSocket.open()
       verbose("Initialize UDP client [#@id/#{host}:#{port}]")

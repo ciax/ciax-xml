@@ -23,7 +23,7 @@ module CIAX
 
     class Exe < Exe
       # cfg must have [:db],[:frm_list]
-      attr_reader :adb,:stat,:host,:port
+      attr_reader :adb,:stat
       attr_accessor :batch_interrupt
       def initialize(id,cfg,attr={})
         super

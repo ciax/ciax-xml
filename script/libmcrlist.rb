@@ -6,12 +6,14 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # @cfg should have [:jump_groups]
     class List < CIAX::List
+      attr_reader :current
       def initialize(id,cfg,attr={})
         super(cfg,attr)
         self['id']=id
         verbose("Initialize [#{id}]")
         @stack=[]
         @record={}
+        @current=0
         @post_upd_procs << proc{
           @data.each{|id,seq|
             case seq
@@ -37,6 +39,13 @@ module CIAX
         @stack.push seq
         upd
         seq
+      end
+
+      def set_current(num)
+        if num==0 || id=keys[num-1]
+          @current=num
+          id||0
+        end
       end
 
       def get_rec(num)

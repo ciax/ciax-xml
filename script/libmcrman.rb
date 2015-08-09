@@ -59,29 +59,24 @@ module CIAX
             ("[%d]" % @index)
           }
           @list.post_upd_procs << proc{
-            list=@cobj.rem.int.par[:list]=@list.keys
+            list=@parameter[:list]=@list.keys
             i=0
             list.size.times{ list << (i+=1).to_s }
           }
           input_conv_num{|i|
-            if i == 0
-              @index=0
-              @cfg[:output]=@list
-              nil
-            elsif id=@list.keys[i-1]
+            if i == 0 || id=@list.keys[i-1]
               @index=i
-              @cobj.rem.int.par[:default]=id
-              @cfg[:output]=@list.num(@index-1)
+              @parameter[:default]=id
               nil
             else
-              i
+              ''
             end
           }
           input_conv_num(@cobj.rem.int.keys){|i|
-            id=@list.include?(i.to_s) ? i.to_s : @list.keys[i-1] 
+            id=@list.include?(i.to_s) ? i.to_s : @list.keys[i-1]
             if id
               @index=i
-              @cobj.rem.int.par[:default]=id 
+              @parameter[:default]=id
             end
           }
           @cobj.loc.add_view

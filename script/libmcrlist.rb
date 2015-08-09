@@ -11,6 +11,17 @@ module CIAX
         self['id']=id
         verbose("Initialize [#{id}]")
         @stack=[]
+        @record={}
+        @post_upd_procs << proc{
+          @data.each{|id,seq|
+            case seq
+            when Seq
+              @record[id]||=seq.record
+            when Hash
+              @record[id]||=Record.new(id)
+            end
+          }
+        }
       end
 
       def get(id)
@@ -26,6 +37,11 @@ module CIAX
         @stack.push seq
         upd
         seq
+      end
+
+      def get_rec(num)
+        id=@data.keys.sort[num]
+        @record[id]
       end
 
       def ext_shell
@@ -63,25 +79,25 @@ module CIAX
           self
         end
 
-        def get_exe(id)
-          n=id.to_i-1
+        def get_exe(num)
+          n=num.to_i-1
           par_err("Invalid ID") if n < 0
-          @exelist[id]||=Exe.new(@stack[n]).ext_shell
+          @exelist[num]||=Exe.new(@stack[n]).ext_shell
         end
 
         def add(ent,parent='user')
           seq=super
-          id=@stack.size.to_s
-          @jumpgrp.add_item(id,seq['cid'])
+          num=@stack.size.to_s
+          @jumpgrp.add_item(num,seq['cid'])
           seq
         end
 
         def shell
-          id=@stack.size.to_s
+          num=@stack.size.to_s
           begin
-            get_exe(id).shell
+            get_exe(num).shell
           rescue Jump
-            id=$!.to_s
+            num=$!.to_s
             retry
           rescue InvalidID
             $opt.usage('(opt) [site]')

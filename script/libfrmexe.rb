@@ -64,8 +64,7 @@ module CIAX
     class Cl < Exe
       def initialize(id,cfg,attr={})
         super
-        host=type?(@cfg['host']||@fdb['host']||'localhost',String)
-        @field.ext_http(host)
+        @field.ext_http(@cfg['host'])
         @cobj.rem.def_proc{to_s}
         @pre_exe_procs << proc{@field.upd}
         ext_client

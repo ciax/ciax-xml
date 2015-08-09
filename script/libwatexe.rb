@@ -68,7 +68,7 @@ module CIAX
     class Cl < Exe
       def initialize(id,cfg,attr={})
         super
-        @event.ext_http(@sub.host)
+        @event.ext_http(@sub.cfg['host'])
         # @event is independent from @sub.stat
         @pre_exe_procs << proc{@event.upd}
       end

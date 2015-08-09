@@ -72,7 +72,7 @@ module CIAX
     class Cl < Exe
       def initialize(id,cfg,attr={})
         super
-        @stat.ext_http(host)
+        @stat.ext_http(@cfg['host'])
         @pre_exe_procs << proc{@stat.upd}
         ext_client
       end

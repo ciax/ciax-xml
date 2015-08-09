@@ -37,7 +37,7 @@ module CIAX
     end
 
     def num(n)
-      get(@data.keys[n])
+      get(@data.keys.sort[n])
     end
 
     def ext_file(tag=nil) # File I/O

@@ -22,8 +22,8 @@ module CIAX
         (@cfg[:jump_groups]||[]).each{|grp| append(grp)}
       end
 
-      def add_view
-        add(View::Group)
+      def add_view(attr={})
+        add(View::Group,attr)
       end
     end
 

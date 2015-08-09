@@ -11,10 +11,11 @@ module CIAX
       #ent_cfg should have [:dbi]
       def initialize(seq)
         @seq=type?(seq,Seq)
-        super(seq['cid'],seq.cfg)
-        cfg=Config.new
-        cfg[:jump_groups]=seq.cfg[:jump_groups]
-        @cobj=Index.new(cfg)
+        super(@seq['cid'],@seq.cfg)
+        seq_cfg=Config.new
+        seq_cfg[:jump_groups]=@seq.cfg[:jump_groups]
+        @cfg[:output]=@seq.record
+        @cobj=Index.new(seq_cfg)
         @cobj.add_rem.add_hid
         @cobj.get('interrupt').def_proc{|ent,src|
           @th_mcr.raise(Interrupt)
@@ -35,7 +36,6 @@ module CIAX
         include CIAX::Shell
         def ext_shell
           super(@cfg[:cid].tr(':','_'))
-          @cfg[:output]=@seq.record
           @prompt_proc=proc{
             res="(#{@seq['stat']})"
             res+=optlist(@seq['option'])
@@ -44,7 +44,7 @@ module CIAX
           @cobj.rem.int.def_proc{|ent|
             @seq.reply(ent.id)
           }
-          @cobj.loc.add_view
+          @cobj.loc.add_view(:output => @cfg[:output])
           self
         end
       end

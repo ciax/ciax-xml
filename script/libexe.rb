@@ -57,8 +57,8 @@ module CIAX
       extend(Server).ext_server
     end
 
-    def ext_shell(als=nil)
-      extend(Shell).ext_shell(als)
+    def ext_shell
+      extend(Shell).ext_shell
     end
   end
 end

@@ -12,14 +12,13 @@ module CIAX
     end
 
     # Separate initialize part because shell() could be called multiple times
-    def ext_shell(als=nil)
+    def ext_shell
       @shell_input_procs=[] #proc takes args(Array)
       @shell_output_proc=proc{ @cfg[:output] }
       @prompt_proc=proc{ @site_stat.to_s }
       @cobj.loc.add_shell
       @cobj.loc.add_jump #@cfg[:jump_groups] should be set
       Thread.current['name']='Main'
-      @alias=als||@id
       self
     end
 
@@ -46,7 +45,7 @@ module CIAX
     end
 
     def prompt
-      str="#@layer:#@alias"
+      str="#@layer:#@id"
       str+="(#@mode)" if @mode
       str+=@prompt_proc.call if @prompt_proc
       str+'>'

@@ -76,7 +76,7 @@ module CIAX
         def initialize(cfg,attr={})
           super
           @pre_exe_procs << proc{@list.upd}
-          @list.ext_http(@cfg['host'])
+          @list.ext_http
           ext_client
         end
       end

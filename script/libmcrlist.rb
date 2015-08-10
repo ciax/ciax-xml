@@ -51,7 +51,7 @@ module CIAX
       def to_s
         if @vmode == 's'
           id=@data.keys.sort[@current-1]
-          @record[id]
+          @record[id].to_s+" "+@record[id].cmd_opt
         else
           super
         end
@@ -62,9 +62,8 @@ module CIAX
         page=['<<< '+Msg.color("Active Macros [#{self['id']}]",2)+' >>>']
         @data.each{|id,seq|
           title="[#{idx}] (#{id})(by #{get_cid(seq['pid'])})"
-          opt=Msg.color('['+seq['option'].join('/')+']',5) unless seq['option'].empty?
           msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}]"
-          msg << "(#{seq['stat']})#{opt}"
+          msg << "(#{seq['stat']})#{seq.record.cmd_opt}"
           page << Msg.item(title,msg)
           idx+=1
         }

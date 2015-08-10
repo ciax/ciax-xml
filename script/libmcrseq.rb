@@ -38,7 +38,7 @@ module CIAX
         @post_mcr_procs=[]
         @que_cmd=Queue.new
         @que_res=Queue.new
-        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>[]})
+        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>@record.option})
         @running=[]
       end
 
@@ -68,8 +68,7 @@ module CIAX
 
       def to_v
         msg=@record.to_v
-        opt=Msg.color('['+self['option'].join('/')+']',5) unless self['option'].empty?
-        msg << "  [#{self['step']}/#{self['total_steps']}](#{self['stat']})#{opt}"
+        msg << "  [#{self['step']}/#{self['total_steps']}](#{self['stat']})#{@record.cmd_opt}"
       end
 
       private

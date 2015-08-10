@@ -6,9 +6,11 @@ module CIAX
   module Mcr
     class Record < Datax
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
+      attr_reader :option
       def initialize(id=nil)
         super('record',[],'steps')
         self['id']=id # Session ID for Loading
+        @option=[]
       end
 
       # cfg will come from Entity, which should have [:cid],['label'],@layers[:wat]
@@ -55,6 +57,14 @@ module CIAX
         @data.each{|i| msg << i.title+i.result}
         msg << " (#{self['result']})" if self['result']
         msg
+      end
+
+      def cmd_opt
+        if @option.empty?
+          ''
+        else
+          Msg.color('['+@option.join('/')+']',5)
+        end
       end
     end
 

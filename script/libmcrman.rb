@@ -54,6 +54,7 @@ module CIAX
           }
           input_conv_num{|i|
             if id=@list.set_current(i)
+              @cfg[:output].vmode='v' if id == 0
               @parameter[:default]=id
               nil
             else

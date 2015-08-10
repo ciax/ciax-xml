@@ -49,12 +49,16 @@ module CIAX
       end
 
       def to_s
-        if @vmode == 's'
-          id=@data.keys.sort[@current-1]
-          @record[id].to_s+" "+@record[id].cmd_opt
-        else
-          super
-        end
+         if @vmode == 's'
+           if @current == 0
+             @vmode='v'
+           elsif id=@data.keys.sort[@current-1] and rec=@record[id]
+             return rec.to_s+" "+rec.cmd_opt
+           else
+             @vmode='v'
+           end
+         end
+         super
       end
 
       def to_v

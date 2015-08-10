@@ -53,6 +53,7 @@ module CIAX
         date=Time.at((self['time']/1000).round)
         msg=Msg.color("MACRO",3)+":#{self['label']} (#{date})\n"
         @data.each{|i| msg << i.title+i.result}
+        msg << " (#{self['result']})" if self['result']
         msg
       end
     end

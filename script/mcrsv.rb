@@ -4,6 +4,6 @@ require "libmcrman"
 module CIAX
   ENV['VER']||='initialize'
   GetOpts.new('csemr')
-  Mcr::Man.new(Config.new)
+  Mcr::Man.new(Config.new).ext_server.server
   sleep
 end

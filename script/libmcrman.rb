@@ -76,7 +76,8 @@ module CIAX
               @parameter[:default]=id
             end
           }
-          @cobj.loc.add_view
+          vg=@cobj.loc.add_view
+          vg.add_item('seq',"Seq mode").def_proc{@cfg[:output].vmode='s';''}
           self
         end
       end

@@ -14,7 +14,7 @@ module CIAX
     # Separate initialize part because shell() could be called multiple times
     def ext_shell
       @shell_input_procs=[] #proc takes args(Array)
-      @shell_output_proc=proc{ @cfg[:output] }
+      @shell_output_proc=proc{ @cfg[:output].to_s }
       @prompt_proc=proc{ @site_stat.to_s }
       @cobj.loc.add_shell
       @cobj.loc.add_jump #@cfg[:jump_groups] should be set

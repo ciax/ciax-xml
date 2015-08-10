@@ -48,13 +48,13 @@ module CIAX
         end
       end
 
-      def get_rec(num)
-        id=@data.keys.sort[num]
-        @record[id]
-      end
-
-      def ext_shell
-        extend(Shell).ext_shell
+      def to_s
+        if @vmode == 's'
+          id=@data.keys.sort[@current-1]
+          @record[id]
+        else
+          super
+        end
       end
 
       def to_v
@@ -69,6 +69,10 @@ module CIAX
           idx+=1
         }
         page.join("\n")
+      end
+
+      def ext_shell
+        extend(Shell).ext_shell
       end
 
       private

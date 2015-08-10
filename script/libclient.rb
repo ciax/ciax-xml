@@ -15,7 +15,7 @@ module CIAX
       port=@cfg['port']
       @site_stat.add_db('udperr' => 'x')
       @udp=UDPSocket.open()
-      verbose("Initialize UDP client [#@id/#{host}:#{port}]")
+      verbose("Initialize UDP client (#@id) [#{host}:#{port}]")
       @cobj.rem.def_proc{|ent|
         args=ent.id.split(':')
         # Address family not supported by protocol -> see above

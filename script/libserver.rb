@@ -12,7 +12,7 @@ module CIAX
     def ext_server
       @sub.ext_server if @sub
       return self unless @cfg['port']
-      verbose("Initialize UDP server [#@id:#{@cfg['port']}]")
+      verbose("Initialize UDP server (#@id) [#{@cfg['port']}]")
       @server_input_proc=proc{|line|
         begin
           JSON.load(line)

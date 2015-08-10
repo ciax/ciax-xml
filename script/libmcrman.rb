@@ -5,18 +5,11 @@ require "libmcrlist"
 module CIAX
   module Mcr
     module Man
-      def self.new(cfg=Config.new('mcr'))
-        if $opt['l']
-          $opt.delete('l')
-          cfg['host']='localhost'
-          Sv.new(cfg)
-          Cl.new(cfg)
-        elsif $opt['c'] || $opt['h']
-          Cl.new(cfg)
-        elsif $opt['t']
-          Exe.new(cfg)
+      def self.new(cfg,attr={})
+        if $opt.cl?
+          Cl.new(cfg,attr.update($opt.host))
         else
-          Sv.new(cfg)
+          Sv.new(cfg,attr)
         end
       end
 
@@ -32,9 +25,6 @@ module CIAX
           @cobj.add_rem.add_hid
           @cobj.rem.add_ext(Db.new.get(proj))
           @cobj.rem.add_int
-          @cfg[:submcr_proc]=proc{|args,id|
-            @list.add(@cobj.set_cmd(args),id).start(true)
-          }
           #Set sublist
           @sub_list=@cfg[:sub_list]=Wat::List.new(@cfg)
           @mdb=@cobj.rem.ext.cfg[:dbi]
@@ -83,7 +73,7 @@ module CIAX
       end
 
       class Cl < Exe
-        def initialize(cfg)
+        def initialize(cfg,attr={})
           super
           @pre_exe_procs << proc{@list.upd}
           @list.ext_http(@cfg['host'])
@@ -92,13 +82,16 @@ module CIAX
       end
 
       class Sv < Exe
-        def initialize(cfg)
+        def initialize(cfg,attr={})
           cfg[:submcr_proc]=proc{|args,src| exe(args,src)}
           super
           self['sid']='' # For server response
           @pre_exe_procs << proc{ self['sid']='' }
           @list.ext_save
           # Internal Command Group
+          @cfg[:submcr_proc]=proc{|args,id|
+            @list.add(@cobj.set_cmd(args),id).start(true)
+          }
           @cobj.rem.int.def_proc{|ent|
             id=ent.par[0]
             if seq=@list.get(id)
@@ -117,12 +110,11 @@ module CIAX
             @list.interrupt
             'INTERRUPT'
           }
-          ext_server
         end
       end
 
       if __FILE__ == $0
-        GetOpts.new('mnlrt')
+        GetOpts.new('cmnlrt')
         begin
           cfg=Config.new
           cfg[:jump_groups]=[]

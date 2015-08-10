@@ -20,7 +20,7 @@ module CIAX
             when Seq
               @record[id]||=seq.record
             when Hash
-              @record[id]||=Record.new(id)
+              @record[id]||=Record.new(id).ext_http
             end
           }
         }
@@ -69,6 +69,10 @@ module CIAX
           idx+=1
         }
         page.join("\n")
+      end
+
+      def ext_http
+        super(@cfg['host'])
       end
 
       def ext_shell

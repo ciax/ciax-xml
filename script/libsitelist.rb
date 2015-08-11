@@ -11,13 +11,12 @@ module CIAX
       def initialize(cfg,attr={})
         super
         @sub_list=@cfg[:sub_list]
-        @current=''
+        @current=nil
       end
 
       def set_db(db)
         @cfg[:db]=type?(db,Db)
         verbose("Initialize")
-        @current=db.displist.keys.first
         self
       end
 
@@ -29,7 +28,7 @@ module CIAX
         unless @data.key?(site)
           add(site)
         end
-        @current.replace(site)
+        @current=site
         super
       end
 
@@ -43,7 +42,9 @@ module CIAX
         $opt.usage('(opt) [id] ....')
       end
 
-      def ext_shell
+      def ext_shell(site)
+        # Set initial site
+        @current=site
         extend(Shell).ext_shell
       end
 
@@ -58,22 +59,19 @@ module CIAX
         include CIAX::List::Shell
         class Jump < LongJump; end
 
-        attr_reader :parameter
         def ext_shell
           super(Jump)
           @cfg[:jump_groups]+=[@jumpgrp]
           sites=@cfg[:db].displist
           @jumpgrp.merge_items(sites)
-          # For parameter of jump from another layer
-          @parameter={:default => @current,:list => sites.keys}
           self
         end
 
-        def shell(site)
+        def shell
           begin
-            get(site).shell
+            get(@current).shell
           rescue Jump
-            site=$!.to_s
+            @current=$!.to_s
             retry
           rescue InvalidID
             $opt.usage('(opt) [site]')

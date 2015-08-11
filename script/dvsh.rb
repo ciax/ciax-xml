@@ -8,5 +8,5 @@ module CIAX
   id=ARGV.shift
   ll=Layer::List.new
   ll.set($opt.layer_list)
-  ll.ext_shell.shell(id)
+  ll.ext_shell(id).shell
 end

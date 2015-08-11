@@ -66,17 +66,6 @@ module CIAX
           @jumpgrp.merge_items(sites)
           self
         end
-
-        def shell
-          begin
-            get(@current).shell
-          rescue Jump
-            @current=$!.to_s
-            retry
-          rescue InvalidID
-            $opt.usage('(opt) [site]')
-          end
-        end
       end
     end
   end

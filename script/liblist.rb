@@ -25,9 +25,20 @@ module CIAX
       end
 
       def ext_shell(jump_class)
-        @cfg[:jump_class]=type?(jump_class,Module)
+        @cfg[:jump_class]=type?(jump_class,Module) # Use for liblocal
         @jumpgrp=Local::Jump::Group.new(@cfg)
         self
+      end
+
+      def shell
+        begin
+          get(@current).shell
+        rescue @cfg[:jump_class]
+          @current=$!.to_s
+          retry
+        rescue InvalidID
+          $opt.usage('(opt) [id]')
+        end
       end
     end
   end

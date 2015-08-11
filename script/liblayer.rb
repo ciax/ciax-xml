@@ -35,17 +35,6 @@ module CIAX
           @current=keys.first
           self
         end
-
-        def shell
-          begin
-            get(@current).shell
-          rescue Jump
-            @current=$!.to_s
-            retry
-          rescue InvalidID
-            $opt.usage('(opt) [id]')
-          end
-        end
       end
     end
 

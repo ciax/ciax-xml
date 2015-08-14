@@ -29,6 +29,7 @@ module CIAX
               "No such value #{ent.par[0]}"
             end
           }
+          add_item('flush',"Stream")
         end
       end
       class Item < Item;end

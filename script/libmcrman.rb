@@ -32,7 +32,7 @@ module CIAX
           @cfg['port']||=(@mdb['port']||5555)
         end
 
-        def ext_shell
+        def ext_shell(dmy)
           extend(Shell).ext_shell
         end
       end

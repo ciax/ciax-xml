@@ -109,6 +109,11 @@ module CIAX
           flush
           "Load [#{ent.par[0]}]"
         }
+        @cobj.get('flush').def_proc{|ent|
+          @stream.rcv
+          flush
+          "Flush Stream"
+        }
       end
 
       def exe(args,src='local',pri=1)

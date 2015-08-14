@@ -46,7 +46,6 @@ module CIAX
       raise $!
     ensure
       @post_exe_procs.each{|p| p.call(self)}
-      verbose(inspect)
     end
 
     def ext_client

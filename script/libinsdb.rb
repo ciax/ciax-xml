@@ -28,12 +28,8 @@ module CIAX
         (hcmd[:group]||={})['gal']=algrp
         # Status Domain
         (doc[:domain]['status']||[]).each{|e0|
-          p=(db[:status]||={})
-          if e0.name == 'group'
-            e0.attr2item(p[:group]||={},'ref')
-          else
-            e0.attr2db(p,'ref')
-          end
+          p=((db[:status]||={})[e0.name.to_sym]||={})
+          e0.attr2item(p,'ref')
         }
         init_watch(doc,db)
         db['proj']=@proj

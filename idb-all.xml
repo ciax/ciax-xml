@@ -112,12 +112,12 @@
     </instance>
     <instance id="cfa" app_id="k3n" host="ciax" port="25210" label="S10 HC Coolant Flow">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <value ref="flow" label="FMOS-K(S10) Coolant Flow" />
+        <index ref="flow" label="FMOS-K(S10) Coolant Flow" />
       </status>
     </instance>
     <instance id="cf1" app_id="k3n" host="ciax" port="25201" label="S1 HC Coolant Flow">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <value ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
+        <index ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
       </status>
     </instance>
   </project>
@@ -128,57 +128,57 @@
     <instance id="mmc" app_id="mmc" host="moircssamhost1" port="25604" label="MOIRCS Carrousel"/>
     <instance id="ml1" app_id="lk8" host="moircssamhost1" port="25605" label="MOIRCS Temperature 1">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <value ref="ch0" label="MosCold2" />
-        <value ref="ch1" label="MosCold1" />
-        <value ref="ch2" label="Mask" />
-        <value ref="ch3" label="Wheel" />
-        <value ref="ch4" label="D1(NONE)" />
-        <value ref="ch5" label="D2(NONE)" />
-        <value ref="ch6" label="ChipBox1" />
-        <value ref="ch7" label="Det1" />
-        <value ref="sp" label="SetPoint1 (K)" />
-        <value ref="htr" label="HeaterPower1(%%)" />
+        <index ref="ch0" label="MosCold2" />
+        <index ref="ch1" label="MosCold1" />
+        <index ref="ch2" label="Mask" />
+        <index ref="ch3" label="Wheel" />
+        <index ref="ch4" label="D1(NONE)" />
+        <index ref="ch5" label="D2(NONE)" />
+        <index ref="ch6" label="ChipBox1" />
+        <index ref="ch7" label="Det1" />
+        <index ref="sp" label="SetPoint1 (K)" />
+        <index ref="htr" label="HeaterPower1(%%)" />
       </status>
     </instance>
     <instance id="ml2" app_id="lk8" host="moircssamhost1" port="25606" label="MOIRCS Temperature 2">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <value ref="ch0" label="Robohand" />
-        <value ref="ch1" label="CollBench" />
-        <value ref="ch2" label="BulkHead" />
-        <value ref="ch3" label="HeatPath" />
-        <value ref="ch4" label="D1(NONE)" />
-        <value ref="ch5" label="D2(NONE)" />
-        <value ref="ch6" label="ChipBox2" />
-        <value ref="ch7" label="Det2" />
-        <value ref="sp" label="SetPoint2 (K)" />
-        <value ref="htr" label="HeaterPower2(%%)" />
+        <index ref="ch0" label="Robohand" />
+        <index ref="ch1" label="CollBench" />
+        <index ref="ch2" label="BulkHead" />
+        <index ref="ch3" label="HeatPath" />
+        <index ref="ch4" label="D1(NONE)" />
+        <index ref="ch5" label="D2(NONE)" />
+        <index ref="ch6" label="ChipBox2" />
+        <index ref="ch7" label="Det2" />
+        <index ref="sp" label="SetPoint2 (K)" />
+        <index ref="htr" label="HeaterPower2(%%)" />
       </status>
     </instance>
     <instance id="mix" app_id="ixe" host="moircssamhost1" port="25607" label="MOIRCS Turret">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <value ref="p3" label="CH1" />
-        <value ref="p6" label="CH2" />
+        <index ref="p3" symbol="t3_a" />
+        <index ref="p6" symbol="t3_a" />
       </status>
       </instance>
     <instance id="mva" app_id="var" host="moircssamhost1" port="25608" label="MOIRCS Pumping"/>
     <instance id="mt1" app_id="tpg" host="moircssamhost1" port="25609" label="MOIRCS Pressure Main">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <value ref="st1" label="Main Dewar Stat" />
-        <value ref="ch1" label="Main Dewar (Torr)" />
+        <index ref="st1" label="Main Dewar Stat" />
+        <index ref="ch1" label="Main Dewar (Torr)" />
       </status>
     </instance>
     <instance id="mt2" app_id="tpg" host="moircssamhost1" port="25610" label="MOIRCS Pressure Main">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <value ref="st1" label="Throat Stat" />
-        <value ref="ch1" label="Throat (Torr)" />
+        <index ref="st1" label="Throat Stat" />
+        <index ref="ch1" label="Throat (Torr)" />
       </status>
     </instance>
     <instance id="mt3" app_id="tpg" host="moircssamhost1" port="25611" label="MOIRCS Pressure Pump">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <value ref="st1" label="Turbo Pump Stat" />
-        <value ref="ch1" label="Turbo Pump (Torr)" />
-        <value ref="st2" label="Scroll Pump Stat" />
-        <value ref="ch2" label="Scroll Pump (Torr)" />
+        <index ref="st1" label="Turbo Pump Stat" />
+        <index ref="ch1" label="Turbo Pump (Torr)" />
+        <index ref="st2" label="Scroll Pump Stat" />
+        <index ref="ch2" label="Scroll Pump (Torr)" />
       </status>
     </instance>
     <instance id="mft" app_id="fpa" host="moircssamhost1" port="25612" label="MOIRCS Hall Sensor"/>

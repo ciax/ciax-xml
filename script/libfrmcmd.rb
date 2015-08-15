@@ -100,7 +100,7 @@ module CIAX
       begin
         dbi=Db.new.get(id)
         cfg=Config.new
-        cfg[:field]=Field.new.set_db(dbi)
+        fld=cfg[:field]=Field.new.set_db(dbi)
         cobj=Index.new(cfg)
         cobj.add_rem
         if $opt['r']

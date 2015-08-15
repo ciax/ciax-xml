@@ -58,6 +58,12 @@
         <string>P21S</string>
         <string>${p:$1-1}</string>
       </item>
+      <item id="regp" label="Regulate pulse within (0-96000)" nocache="true" response="default" type="config">
+        <par_num>1:6</par_num>
+        <string>$1</string>
+        <string>P21SA</string>
+        <string format="%d">${p:$1-1} % 96000</string>
+      </item>
       <item id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
         <par_num>1:6</par_num>
         <string>$1</string>

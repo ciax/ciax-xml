@@ -154,7 +154,12 @@
         <value ref="htr" label="HeaterPower2(%%)" />
       </status>
     </instance>
-    <instance id="mix" app_id="ixe" host="moircssamhost1" port="25607" label="MOIRCS Turret"/>
+    <instance id="mix" app_id="ixe" host="moircssamhost1" port="25607" label="MOIRCS Turret">
+      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+        <value ref="p3" label="CH1" />
+        <value ref="p6" label="CH2" />
+      </status>
+      </instance>
     <instance id="mva" app_id="var" host="moircssamhost1" port="25608" label="MOIRCS Pumping"/>
     <instance id="mt1" app_id="tpg" host="moircssamhost1" port="25609" label="MOIRCS Pressure Main">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">

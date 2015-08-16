@@ -140,6 +140,12 @@
         <string>A</string>
         <string>$2</string>
       </item>
+      <item id="opt" label="Move abs by optimal [0-96000] (8000/hole)" response="default" type="action">
+        <par_num>1:6</par_num>
+        <par_num>0:96000</par_num>
+        <string>$1</string>
+        <string format="%+d">(($2-${p:$1-1}+48000) % 96000)-48000</string>
+      </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <!--Acknowlege message: STX ACK ETX CR LF (Manual Section 12.5)-->

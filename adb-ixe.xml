@@ -77,12 +77,32 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="resetp" label="Set 0 Pulses">
+        <item id="resetp" label="Set Home Pulses">
+          <frmcmd name="set">
+            <argv>0</argv>
+            <argv>40000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>1</argv>
+            <argv>56000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>2</argv>
+            <argv>40000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>3</argv>
+            <argv>56000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>4</argv>
+            <argv>40000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>5</argv>
+            <argv>56000</argv>
+          </frmcmd>
           <repeat from="1" to="6">
-            <frmcmd name="set">
-              <argv format="p:%d">$_-1</argv>
-              <argv>0</argv>
-            </frmcmd>
             <frmcmd name="setp">
               <argv>$_</argv>
             </frmcmd>
@@ -193,10 +213,10 @@
           <string id="r$_" label="Running $_">
             <field ref="run" index="$_-1" />
           </string>
-          <integer id="p$_" label="Pulse $_" symbol="pos">
+          <integer id="p$_" label="Select Slot $_" symbol="pos">
             <field ref="p" index="$_-1" />
           </integer>
-          <integer id="mp$_" label="Mech Pulse $_" symbol="pos">
+          <integer id="mp$_" label="Access Slot $_" symbol="pos">
             <field ref="mp" index="$_-1" />
           </integer>
         </repeat_var>

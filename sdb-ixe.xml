@@ -16,19 +16,19 @@
       <range class="warn" msg="S11">88000</range>
       <range class="warn" msg="S12">96000</range>
     </table>
-    <table id="t3_a">
-      <range class="warn" msg="VPH_H(A0)">0</range>
-      <range class="warn" msg="ND(A1)">8000</range>
-      <range class="warn" msg="PV(A2)">16000</range>
-      <range class="warn" msg="VPH_K(A3)">24000</range>
-      <range class="warn" msg="NONE(A4)">36000</range>
-      <range class="warn" msg="HK500(A5)">40000</range>
-      <range class="warn" msg="VPH_J(A6)">48000</range>
-      <range class="warn" msg="K_CONT(A7)">56000</range>
-      <range class="warn" msg="ZJ500(A8)">64000</range>
-      <range class="warn" msg="VPH_Y(A9)">72000</range>
-      <range class="warn" msg="BP(A10)">80000</range>
-      <range class="warn" msg="R1300(A11)">88000</range>
+    <table id="t3">
+      <range class="warn" msg="VPH_H(0)">0</range>
+      <range class="warn" msg="ND(1)">8000</range>
+      <range class="warn" msg="PV(2)">16000</range>
+      <range class="warn" msg="VPH_K(3)">24000</range>
+      <range class="warn" msg="NONE(4)">36000</range>
+      <range class="warn" msg="HK500(5)">40000</range>
+      <range class="warn" msg="VPH_J(6)">48000</range>
+      <range class="warn" msg="K_CONT(7)">56000</range>
+      <range class="warn" msg="ZJ500(8)">64000</range>
+      <range class="warn" msg="VPH_Y(9)">72000</range>
+      <range class="warn" msg="BP(10)">80000</range>
+      <range class="warn" msg="R1300(11)">88000</range>
     </table>
   </symbol>
 </sdb>

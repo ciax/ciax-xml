@@ -156,8 +156,10 @@
     </instance>
     <instance id="mix" app_id="ixe" host="moircssamhost1" port="25607" label="MOIRCS Turret">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <index ref="p3" symbol="t3_a" />
-        <index ref="p6" symbol="t3_a" />
+        <index ref="p3" symbol="t3" />
+        <index ref="p6" symbol="t3" />
+        <index ref="mp3" symbol="t3" />
+        <index ref="mp6" symbol="t3" />
       </status>
       </instance>
     <instance id="mva" app_id="var" host="moircssamhost1" port="25608" label="MOIRCS Pumping"/>

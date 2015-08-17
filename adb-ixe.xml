@@ -21,6 +21,12 @@
             <frmcmd name="getofs">
               <argv>$_</argv>
             </frmcmd>
+            <frmcmd name="getispd">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getmp">
+              <argv>$_</argv>
+            </frmcmd>
           </repeat>
         </item>
         <item id="chkmov" label="Update Moving Status [1-6]" hidden="true">
@@ -201,9 +207,9 @@
             <field ref="spd" index="$_-1" />
           </integer>
           <integer id="rmp$_" label="Ramp $_">
-            <field ref="spd" index="$_-1" />
+            <field ref="rmp" index="$_-1" />
           </integer>
-          <integer id="iofs$_" label="Init Speed $_">
+          <integer id="ispd$_" label="Init Speed $_">
             <field ref="ispd" index="$_-1" />
           </integer>
           <integer id="ofs$_" label="Init Offset $_">

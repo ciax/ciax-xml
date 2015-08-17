@@ -57,7 +57,7 @@
         <string>$1</string>
         <string>P21R</string>
       </item>
-      <item id="setap" label="Set absolute pulse from buffer[1-6]" nocache="true" response="default" type="config">
+      <item id="setp" label="Set absolute pulse from buffer[1-6]" nocache="true" response="default" type="config">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P21S</string>

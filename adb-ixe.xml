@@ -79,27 +79,27 @@
         </item>
         <item id="resetp" label="Set Home Pulses">
           <frmcmd name="set">
-            <argv>0</argv>
+            <argv>p:0</argv>
             <argv>40000</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>1</argv>
+            <argv>p:1</argv>
             <argv>56000</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>2</argv>
+            <argv>p:2</argv>
             <argv>40000</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>3</argv>
+            <argv>p:3</argv>
             <argv>56000</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>4</argv>
+            <argv>p:4</argv>
             <argv>40000</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>5</argv>
+            <argv>p:5</argv>
             <argv>56000</argv>
           </frmcmd>
           <repeat from="1" to="6">

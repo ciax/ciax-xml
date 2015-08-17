@@ -182,7 +182,7 @@
           <field bit="7" ref="stat" />
         </binary>
       </group>
-      <group id="g3" caption="Turrets" column="5">
+      <group id="g3" caption="Turret Status" column="3">
         <repeat_var from="1" to="6">
           <string id="r$_" label="Running $_">
             <field ref="run" index="$_-1" />
@@ -190,13 +190,23 @@
           <integer id="p$_" label="Pulse $_" symbol="pos">
             <field ref="p" index="$_-1" />
           </integer>
+          <integer id="mp$_" label="Mech Pulse $_" symbol="pos">
+            <field ref="mp" index="$_-1" />
+          </integer>
+        </repeat_var>
+      </group>
+      <group id="g4" caption="Turret Config" column="4">
+        <repeat_var from="1" to="6">
           <integer id="spd$_" label="Speed $_">
             <field ref="spd" index="$_-1" />
           </integer>
           <integer id="rmp$_" label="Ramp $_">
             <field ref="spd" index="$_-1" />
           </integer>
-          <integer id="ofs$_" label="Offset $_">
+          <integer id="iofs$_" label="Init Speed $_">
+            <field ref="ispd" index="$_-1" />
+          </integer>
+          <integer id="ofs$_" label="Init Offset $_">
             <field ref="ofs" index="$_-1" />
           </integer>
         </repeat_var>

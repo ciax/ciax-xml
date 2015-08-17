@@ -16,6 +16,34 @@
       <range class="warn" msg="S11">88000</range>
       <range class="warn" msg="S12">96000</range>
     </table>
+    <table id="t1">
+      <range class="warn" msg="CO(0)">0</range>
+      <range class="warn" msg="NONE(1)">8000</range>
+      <range class="warn" msg="BrG(2)">16000</range>
+      <range class="warn" msg="NB119(3)">24000</range>
+      <range class="warn" msg="STD_K(4)">36000</range>
+      <range class="warn" msg="Y(5)">40000</range>
+      <range class="warn" msg="OC1_3(6)">48000</range>
+      <range class="warn" msg="J(7)">56000</range>
+      <range class="warn" msg="H(8)">64000</range>
+      <range class="warn" msg="Ks(9)">72000</range>
+      <range class="warn" msg="H2(10)">80000</range>
+      <range class="warn" msg="Fe2(11)">88000</range>
+    </table>
+    <table id="t2">
+      <range class="warn" msg="CSL(0)">0</range>
+      <range class="warn" msg="OC_HK(1)">8000</range>
+      <range class="warn" msg="OC_ZJ(2)">16000</range>
+      <range class="warn" msg="NB1657(3)">24000</range>
+      <range class="warn" msg="NB2071(4)">36000</range>
+      <range class="warn" msg="B05(5)">40000</range>
+      <range class="warn" msg="CSS(6)">48000</range>
+      <range class="warn" msg="CSL2(7)">56000</range>
+      <range class="warn" msg="NB2315(8)">64000</range>
+      <range class="warn" msg="NB2095(9)">72000</range>
+      <range class="warn" msg="NB1550(10)">80000</range>
+      <range class="warn" msg="NONE(11)">88000</range>
+    </table>
     <table id="t3">
       <range class="warn" msg="VPH_H(0)">0</range>
       <range class="warn" msg="ND(1)">8000</range>

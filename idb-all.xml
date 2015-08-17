@@ -156,9 +156,17 @@
     </instance>
     <instance id="mix" app_id="ixe" host="moircssamhost1" port="25607" label="MOIRCS Turret">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+        <index ref="p1" symbol="t1" />
+        <index ref="p2" symbol="t2" />
         <index ref="p3" symbol="t3" />
+        <index ref="p4" symbol="t1" />
+        <index ref="p5" symbol="t2" />
         <index ref="p6" symbol="t3" />
+        <index ref="mp1" symbol="t1" />
+        <index ref="mp2" symbol="t2" />
         <index ref="mp3" symbol="t3" />
+        <index ref="mp4" symbol="t1" />
+        <index ref="mp5" symbol="t2" />
         <index ref="mp6" symbol="t3" />
       </status>
       </instance>

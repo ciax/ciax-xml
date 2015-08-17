@@ -151,10 +151,21 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="abs" label="Move Absolute [1-6(Turret)] [0-48(hole)]">
+        <item id="abs" label="Move Absolute [1-6(Turret)] [0-11(hole)]">
           <par_num>1:6</par_num>
-          <par_num>0:48</par_num>
+          <par_num>0:11</par_num>
           <frmcmd name="abs">
+            <argv>$1</argv>
+            <argv format="%d">$2 * 8000</argv>
+          </frmcmd>
+          <frmcmd name="chkrun">
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
+        <item id="opt" label="Move Absolute by Optimal way [1-6(Turret)] [0-11(hole)]">
+          <par_num>1:6</par_num>
+          <par_num>0:11</par_num>
+          <frmcmd name="opt">
             <argv>$1</argv>
             <argv format="%d">$2 * 8000</argv>
           </frmcmd>

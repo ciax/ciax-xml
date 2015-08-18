@@ -9,22 +9,22 @@ module CIAX
         Msg.type?(obj,Event)
       end
 
+      # @stat.data(picked) = @data['crnt'](picked) > @data['last']
+      # upd() => @data['last']<-@data['crnt']
+      #       => @data['crnt']<-@stat.data(picked)
+      #       => check(@data['crnt'] <> @data['last']?)
+      # Stat no changed -> clear exec, no eval
       def ext_rsp(stat)
         wdb=@db[:watch]||{}
         @windex=wdb[:index]||{}
         @stat=type?(stat,App::Status)
         @period=wdb['period'].to_i if wdb.key?('period')
-        @interval=wdb['interval'].to_f/10 if wdb.key?('interval')
+        @interval=wdb['interval'].to_f if wdb.key?('interval')
         # Pick usable val
         @list=[]
         @windex.values.each{|v|
           @list|=v[:cnd].map{|i| i["var"]}
         }
-        # @stat.data(picked) = @data['crnt'](picked) > @data['last']
-        # upd() => @data['last']<-@data['crnt']
-        #       => @data['crnt']<-@stat.data(picked)
-        #       => check(@data['crnt'] <> @data['last']?)
-        # Stat no changed -> clear exec, no eval
         @ctime=0
         upd
         self
@@ -47,6 +47,7 @@ module CIAX
           p.call(@data['exec'])
         }
         @data['exec'].clear
+        sleep @interval
         self
       end
 

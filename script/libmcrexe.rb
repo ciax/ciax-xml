@@ -28,12 +28,16 @@ module CIAX
         }
       end
 
+      def ext_client
+        super
+        @cobj.rem.int.cfg['argv']=@seq['id']
+        self
+      end
+
       def ext_shell
         super
         @prompt_proc=proc{
-          res="(#{@seq['stat']})"
-          res+=optlist(@seq['option'])
-          res
+          "(#{@seq['stat']})"+optlist(@seq['option'])
         }
         @cobj.rem.int.def_proc{|ent|
           @seq.reply(ent.id)

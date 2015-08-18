@@ -77,7 +77,12 @@ module CIAX
             val=v.class
           when Array
             val="["+v.map{|e|
-              e.class
+              case e
+              when Enumerable
+                e.class
+              else
+                e.inspect
+              end
             }.join(",")+"](#{v.object_id})"
           else
             val=v.inspect

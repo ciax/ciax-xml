@@ -181,6 +181,9 @@
           <frmcmd name="getp">
             <argv>$1</argv>
           </frmcmd>
+          <frmcmd name="getmp">
+            <argv>$1</argv>
+          </frmcmd>
         </item>
         <item id="stop" label="Stop Run [1-6]" hidden="true">
           <par_num>1:6</par_num>
@@ -265,18 +268,6 @@
           <int name="stop">
             <argv>$_</argv>
           </int>
-          <exec name="updp">
-            <argv>$_</argv>
-          </exec>
-        </event>
-      </repeat>
-      <repeat from="1" to="6">
-        <event label="Complete $_" id="c$_">
-          <onchange var="r$_"/>
-          <pattern var="r$_">E</pattern>
-          <exec name="setp">
-            <argv>$_</argv>
-          </exec>
           <exec name="updp">
             <argv>$_</argv>
           </exec>

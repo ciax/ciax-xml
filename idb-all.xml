@@ -155,6 +155,12 @@
       </status>
     </instance>
     <instance id="mix" app_id="ixe" host="moircssamhost1" port="25607" label="MOIRCS Turret">
+      <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+        <item id="none_1" label="No Filter for Turret 1" ref="opt">
+          <argv>1</argv>
+          <argv>1</argv>
+        </item>
+      </alias>
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
         <index ref="p1" symbol="t1" />
         <index ref="p2" symbol="t2" />

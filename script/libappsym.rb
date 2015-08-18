@@ -25,8 +25,8 @@ module CIAX
             end
             verbose("ID=#{key},Table=#{sid}")
             self['class'][key]='alarm'
-            self['msg'][key]='N/A'
             val=@data[key]
+            self['msg'][key]="N/A(#{val})"
             tbl.each{|sym|
               case sym['type']
               when 'range'

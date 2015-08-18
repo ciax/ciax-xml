@@ -224,28 +224,28 @@
           <string id="r$_" label="Running $_">
             <field ref="run" index="$_-1" />
           </string>
-          <integer id="p$_" label="Select Slot $_" symbol="pos" >
+          <float id="p$_" label="Select Slot $_" symbol="pos" format="%.1f" formula="($# % 96000)/8000">
             <field ref="p" index="$_-1" />
-          </integer>
-          <integer id="mp$_" label="Access Slot $_" symbol="pos" formula="$# % 96000">
+          </float>
+          <float id="mp$_" label="Access Slot $_" symbol="pos" format="%.1f" formula="($# % 96000)/8000">
             <field ref="mp" index="$_-1" />
-          </integer>
+          </float>
         </repeat_var>
       </group>
       <group id="g4" caption="Turret Config" column="4">
         <repeat_var from="1" to="6">
-          <integer id="spd$_" label="Speed $_">
+          <float id="spd$_" label="Speed $_(/s)" format="%.1f" formula="$#/8000">
             <field ref="spd" index="$_-1" />
-          </integer>
-          <integer id="rmp$_" label="Ramp $_">
+          </float>
+          <float id="rmp$_" label="Ramp $_(/s2)" format="%.1f" formula="$#/8000">
             <field ref="rmp" index="$_-1" />
-          </integer>
-          <integer id="ispd$_" label="Init Speed $_">
+          </float>
+          <float id="ispd$_" label="Init Speed $_(/s)" format="%.1f" formula="$#/8000">
             <field ref="ispd" index="$_-1" />
-          </integer>
-          <integer id="ofs$_" label="Init Offset $_">
+          </float>
+          <float id="ofs$_" label="Init Offset $_" format="%.1f" formula="$#/8000">
             <field ref="ofs" index="$_-1" />
-          </integer>
+          </float>
         </repeat_var>
       </group>
     </status>

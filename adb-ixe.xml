@@ -224,10 +224,10 @@
           <string id="r$_" label="Running $_">
             <field ref="run" index="$_-1" />
           </string>
-          <integer id="p$_" label="Select Slot $_" symbol="pos">
+          <integer id="p$_" label="Select Slot $_" symbol="pos" >
             <field ref="p" index="$_-1" />
           </integer>
-          <integer id="mp$_" label="Access Slot $_" symbol="pos">
+          <integer id="mp$_" label="Access Slot $_" symbol="pos" formula="$# % 96000">
             <field ref="mp" index="$_-1" />
           </integer>
         </repeat_var>

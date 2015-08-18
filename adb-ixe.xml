@@ -270,6 +270,18 @@
           </exec>
         </event>
       </repeat>
+      <repeat from="1" to="6">
+        <event label="Complete $_" id="c$_">
+          <onchange var="r$_"/>
+          <pattern var="r$_">E</pattern>
+          <exec name="setp">
+            <argv>$_</argv>
+          </exec>
+          <exec name="updp">
+            <argv>$_</argv>
+          </exec>
+        </event>
+      </repeat>
     </watch>
   </app>
 </adb>

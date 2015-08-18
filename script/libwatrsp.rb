@@ -101,17 +101,17 @@ module CIAX
           case ckitm['type']
           when 'onchange'
             cri=@data['last'][vn]
-            res=(cri != val)
-            verbose("  onChange(#{vn}): [#{cri}] vs <#{val}> =>#{res}")
+            res=(cri and cri != val)
+            verbose("  onChange(#{vn}): [#{cri.inspect}] vs <#{val}> =>#{res.inspect}")
           when 'pattern'
             cri=ckitm['val']
             res=(Regexp.new(cri) === val)
-            verbose("  Pattern(#{vn}): [#{cri}] vs <#{val}> =>#{res}")
+            verbose("  Pattern(#{vn}): [#{cri}] vs <#{val}> =>#{res.inspect}")
           when 'range'
             cri=ckitm['val']
             f="%.3f" % val.to_f
             res=(ReRange.new(cri) == f)
-            verbose("  Range(#{vn}): [#{cri}] vs <#{f}>(#{val.class}) =>#{res}")
+            verbose("  Range(#{vn}): [#{cri}] vs <#{f}>(#{val.class}) =>#{res.inspect}")
           end
           res=!res if /true|1/ === ckitm['inv']
           rary << res

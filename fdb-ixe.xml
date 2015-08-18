@@ -47,16 +47,21 @@
         <string>$1</string>
         <string>=H</string>
       </item>
-      <item id="getp" label="Get pulse [1-6]" response="getp" type="stat">
+      <item id="getmp" label="Get mechanical pulse [1-6]" response="getmp" type="stat">
+        <par_num>1:6</par_num>
+        <string>$1</string>
+        <string>P20R</string>
+      </item>
+      <item id="getp" label="Get absolute pulse [1-6]" response="getp" type="stat">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P21R</string>
       </item>
-      <item id="setp" label="Set pulse from buffer[1-6]" nocache="true" response="default" type="config">
+      <item id="setp" label="Set absolute pulse from buffer[1-6]" nocache="true" response="default" type="config">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P21S</string>
-        <string>${p:$1-1}</string>
+        <string format="%d">${p:$1-1} % 96000</string>
       </item>
       <item id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
         <par_num>1:6</par_num>
@@ -69,6 +74,17 @@
         <string>P14S</string>
         <string>${spd:$1-1}</string>
       </item>
+      <item id="getispd" label="Get init speed [1-6]" response="getispd" type="stat">
+        <par_num>1:6</par_num>
+        <string>$1</string>
+        <string>P10R</string>
+      </item>
+      <item id="setispd" label="Set init speed from buffer [1-6]" nocache="true" response="default" type="config">
+        <par_num>1:6</par_num>
+        <string>$1</string>
+        <string>P10S</string>
+        <string>${ispd:$1-1}</string>
+      </item>
       <item id="getrmp" label="Get ramp [1-6]" response="getrmp" type="stat">
         <par_num>1:6</par_num>
         <string>$1</string>
@@ -80,12 +96,12 @@
         <string>P15S</string>
         <string>${rmp:$1-1}</string>
       </item>
-      <item id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
+      <item id="getofs" label="Get mechanical offset [1-6]" response="getofs" type="stat">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P12R</string>
       </item>
-      <item id="setofs" label="Set offset from buffer[1-6]" nocache="true" response="default" type="config">
+      <item id="setofs" label="Set mechanical offset from buffer[1-6]" nocache="true" response="default" type="config">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P12S</string>
@@ -127,12 +143,18 @@
         <string>-</string>
         <string>$2</string>
       </item>
-      <item id="abs" label="Move absolute pos [0-192000] (8000/hole)" response="default" type="action">
+      <item id="abs" label="Move to absolute pos [0-192000] (8000/hole)" response="default" type="action">
         <par_num>1:6</par_num>
         <par_num>0:384000</par_num>
         <string>$1</string>
         <string>A</string>
         <string>$2</string>
+      </item>
+      <item id="opt" label="Move abs by optimal [0-96000] (8000/hole)" response="default" type="action">
+        <par_num>1:6</par_num>
+        <par_num>0:96000</par_num>
+        <string>$1</string>
+        <string format="%+d">(($2-${p:$1-1}+48000) % 96000)-48000</string>
       </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
@@ -165,18 +187,28 @@
           <index range="$1-1" size="6" />
         </array>
       </response>
+      <response id="getmp">
+        <array assign="mp" label="Mechanical Pulse">
+          <index range="$1-1" size="6" />
+        </array>
+      </response>
       <response id="getspd">
         <array assign="spd" label="Speed">
           <index range="$1-1" size="6" />
         </array>
       </response>
       <response id="getrmp">
-        <array assign="rmp" label="Ramp">
+        <array assign="rmp" label="Ramp Speed">
+          <index range="$1-1" size="6" />
+        </array>
+      </response>
+      <response id="getispd">
+        <array assign="ispd" label="Init Speed">
           <index range="$1-1" size="6" />
         </array>
       </response>
       <response id="getofs">
-        <array assign="ofs" label="Offset">
+        <array assign="ofs" label="Init Offset">
           <index range="$1-1" size="6" />
         </array>
       </response>

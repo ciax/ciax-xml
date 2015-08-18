@@ -1,0 +1,7 @@
+# Security setting for service
+ - Disable SELinux (For httpd)
+   . checking: getenforce (can be Enforcing)
+   . setting: setenforce 0 (disable SELinux temporaly)
+   . edit for setting: /etc/selinux/config -> SELINUX=disabled -> reboot
+
+  

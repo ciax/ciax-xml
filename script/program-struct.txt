@@ -24,3 +24,13 @@
   Shared var: cfg[:dbi],cfg[:field]
  * App
   Shared var: cfg[:dbi],cfg[:stat]
+
+ There are several modes in Exe;
+  * Exe (Core of device driver)
+  * Test (test mode)
+   - Shell extension
+  * Cl (client mode)
+   - Shell extension
+  * Sv (processing mode)
+   - Service extension
+   - Shell extension

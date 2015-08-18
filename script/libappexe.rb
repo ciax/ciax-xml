@@ -127,7 +127,7 @@ module CIAX
         buf.flush_proc{
           verbose("Propagate Buffer#flush -> Status#upd")
           @stat.upd
-          sleep(@interval||0.1)
+          sleep(0.1)
           # Auto issue by watch
         }
         buf.server

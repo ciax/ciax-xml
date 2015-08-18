@@ -21,6 +21,12 @@
             <frmcmd name="getofs">
               <argv>$_</argv>
             </frmcmd>
+            <frmcmd name="getispd">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getmp">
+              <argv>$_</argv>
+            </frmcmd>
           </repeat>
         </item>
         <item id="chkmov" label="Update Moving Status [1-6]" hidden="true">
@@ -71,12 +77,32 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="resetp" label="Set 0 Pulses">
+        <item id="resetp" label="Set Home Pulses">
+          <frmcmd name="set">
+            <argv>p:0</argv>
+            <argv>40000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>p:1</argv>
+            <argv>56000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>p:2</argv>
+            <argv>40000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>p:3</argv>
+            <argv>56000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>p:4</argv>
+            <argv>40000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>p:5</argv>
+            <argv>56000</argv>
+          </frmcmd>
           <repeat from="1" to="6">
-            <frmcmd name="set">
-              <argv format="p:%d">$_-1</argv>
-              <argv>0</argv>
-            </frmcmd>
             <frmcmd name="setp">
               <argv>$_</argv>
             </frmcmd>
@@ -125,10 +151,21 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="abs" label="Move Absolute [1-6(Turret)] [0-48(hole)]">
+        <item id="abs" label="Move Absolute [1-6(Turret)] [0-11(hole)]">
           <par_num>1:6</par_num>
-          <par_num>0:48</par_num>
+          <par_num>0:11</par_num>
           <frmcmd name="abs">
+            <argv>$1</argv>
+            <argv format="%d">$2 * 8000</argv>
+          </frmcmd>
+          <frmcmd name="chkrun">
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
+        <item id="opt" label="Move Absolute by Optimal way [1-6(Turret)] [0-11(hole)]">
+          <par_num>1:6</par_num>
+          <par_num>0:11</par_num>
+          <frmcmd name="opt">
             <argv>$1</argv>
             <argv format="%d">$2 * 8000</argv>
           </frmcmd>
@@ -142,6 +179,9 @@
             <argv>$1</argv>
           </frmcmd>
           <frmcmd name="getp">
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="getmp">
             <argv>$1</argv>
           </frmcmd>
         </item>
@@ -182,23 +222,33 @@
           <field bit="7" ref="stat" />
         </binary>
       </group>
-      <group id="g3" caption="Turrets" column="5">
+      <group id="g3" caption="Turret Status" column="3">
         <repeat_var from="1" to="6">
           <string id="r$_" label="Running $_">
             <field ref="run" index="$_-1" />
           </string>
-          <integer id="p$_" label="Pulse $_" symbol="pos">
+          <float id="p$_" label="Select Slot $_" symbol="pos" format="%.1f" formula="($# % 96000)/8000">
             <field ref="p" index="$_-1" />
-          </integer>
-          <integer id="spd$_" label="Speed $_">
+          </float>
+          <float id="mp$_" label="Access Slot $_" symbol="pos" format="%.1f" formula="($# % 96000)/8000">
+            <field ref="mp" index="$_-1" />
+          </float>
+        </repeat_var>
+      </group>
+      <group id="g4" caption="Turret Config" column="4">
+        <repeat_var from="1" to="6">
+          <float id="spd$_" label="Speed $_(/s)" format="%.1f" formula="$#/8000">
             <field ref="spd" index="$_-1" />
-          </integer>
-          <integer id="rmp$_" label="Ramp $_">
-            <field ref="spd" index="$_-1" />
-          </integer>
-          <integer id="ofs$_" label="Offset $_">
+          </float>
+          <float id="rmp$_" label="Ramp $_(/s2)" format="%.1f" formula="$#/8000">
+            <field ref="rmp" index="$_-1" />
+          </float>
+          <float id="ispd$_" label="Init Speed $_(/s)" format="%.1f" formula="$#/8000">
+            <field ref="ispd" index="$_-1" />
+          </float>
+          <float id="ofs$_" label="Init Offset $_" format="%.1f" formula="$#/8000">
             <field ref="ofs" index="$_-1" />
-          </integer>
+          </float>
         </repeat_var>
       </group>
     </status>

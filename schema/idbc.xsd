@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/idbc" xmlns:idbc="http://ciax.sum.naoj.org/ciax-xml/idbc">
+  <xsd:include schemaLocation="command.xsd" />
   <!--command list-->
   <xsd:element name="alias">
     <xsd:complexType>
@@ -10,9 +11,13 @@
   </xsd:element>
   <xsd:element name="item">
     <xsd:complexType>
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element ref="argv" />
+    </xsd:choice>
     <xsd:attribute name="id" type="xsd:NCName" use="required" />
     <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
     <xsd:attribute name="ref" type="xsd:NCName" use="required" />
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="argv" type="xsd:token"/>
 </xsd:schema>

@@ -81,8 +81,9 @@ module CIAX
             @current=@displist.new_grp(gat['caption'])
             (gat[:members]).each{|id|
               if att=(cdb[:alias]||{})[id]
-                item=idx[att['ref']]
+                item=idx[att['ref']].dup
                 label=att['label']
+                item['argv']=att['argv'] if att['argv']
               else
                 item=idx[id]
                 label=item['label']

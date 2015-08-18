@@ -83,7 +83,6 @@ module CIAX
           @sub.exe(args,src,pri)
         }
         @event.ext_log if $opt['e'] && @sub.stat['ver']
-        @interval=@event.interval
         @tid_auto=auto_update
         @post_exe_procs << proc{
           @site_stat['auto'] = @tid_auto && @tid_auto.alive?

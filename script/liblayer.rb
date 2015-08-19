@@ -29,7 +29,7 @@ module CIAX
           super(Jump)
           @cfg[:jump_groups]=[@jumpgrp]
           keys.each{|id|
-            sl=get(id).ext_shell(site)
+            sl=get(id).set(site).ext_shell
             @jumpgrp.add_item(id,id.capitalize+" mode")
           }
           @current=keys.first

@@ -32,6 +32,12 @@ module CIAX
         super
       end
 
+      # Set initial site
+      def set(site)
+        @current=site
+        self
+      end
+
       def server(ary)
         ary.each{|site|
           sleep 0.3
@@ -42,9 +48,7 @@ module CIAX
         $opt.usage('(opt) [id] ....')
       end
 
-      def ext_shell(site)
-        # Set initial site
-        @current=site
+      def ext_shell
         extend(Shell).ext_shell
       end
 

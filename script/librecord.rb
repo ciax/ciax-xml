@@ -7,9 +7,9 @@ module CIAX
     class Record < Datax
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       attr_reader :option
-      def initialize(id=nil)
+      def initialize(id=nil) # Session ID for Loading
         super('record',[],'steps')
-        self['id']=id # Session ID for Loading
+        self['id']=id||self['time'].to_s # Session ID
         @option=[]
       end
 
@@ -17,7 +17,7 @@ module CIAX
       # cfg doesn't change
       def start(cfg)
         @cfg=type?(cfg,Config)
-        self['id']=self['time'].to_s # Session ID
+        self['start']=now_msec.to_s
         self['ver']=@cfg['ver']||'0' # Version
         self['cid']=@cfg[:cid] # Command ID (cmd:par)
         self['label']=@cfg['label'] # Label for CID

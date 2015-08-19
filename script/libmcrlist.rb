@@ -31,6 +31,7 @@ module CIAX
         super
       end
 
+      # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent,pid='0')
         seq=Seq.new(ent.cfg)
         seq.post_stat_procs << proc{upd}
@@ -83,6 +84,7 @@ module CIAX
       end
 
       private
+      # Getting command ID (ex. run:1)
       def get_cid(id)
         return 'user' if id == '0'
         get(id)['cid']

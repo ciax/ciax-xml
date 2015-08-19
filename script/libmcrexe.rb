@@ -28,25 +28,22 @@ module CIAX
         }
       end
 
-      def ext_shell
-        extend(Shell).ext_shell
+      def ext_client
+        super
+        @cobj.rem.int.cfg['argv']=@seq['id']
+        self
       end
 
-      module Shell
-        include CIAX::Shell
-        def ext_shell
-          super
-          @prompt_proc=proc{
-            res="(#{@seq['stat']})"
-            res+=optlist(@seq['option'])
-            res
-          }
-          @cobj.rem.int.def_proc{|ent|
-            @seq.reply(ent.id)
-          }
-          @cobj.loc.add_view(:output => @cfg[:output])
-          self
-        end
+      def ext_shell
+        super
+        @prompt_proc=proc{
+          "(#{@seq['stat']})"+optlist(@seq['option'])
+        }
+        @cobj.rem.int.def_proc{|ent|
+          @seq.reply(ent.id)
+        }
+        @cobj.loc.add_view(:output => @cfg[:output])
+        self
       end
     end
 

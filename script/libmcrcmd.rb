@@ -75,7 +75,8 @@ module CIAX
       cobj.rem.add_ext(Db.new.get(proj))
       begin
         ent=cobj.set_cmd(ARGV)
-        puts ent.cfg[:batch].to_s
+        puts ent.cfg.path
+        puts ent.cfg[:batch].to_v
       rescue InvalidCMD
         $opt.usage("[id] [cmd] (par)")
       end

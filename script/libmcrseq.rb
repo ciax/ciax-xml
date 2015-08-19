@@ -19,21 +19,21 @@ module CIAX
   #REAL: query(exec,error), interval=1
   module Mcr
     # Sequencer Layer
-    class Seq < Hashx
+    class Seq < Exe
       #required cfg keys: app,db,body,stat,(:submcr_proc)
       attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:pre_mcr_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
       #ent_cfg should have [:dbi]
-      def initialize(cfg,attr={})
-        @cfg=cfg.gen(self).update(attr)
+      def initialize(ent)
+        type?(ent,Mcr::Entity)
+        super(ent.id,ent.cfg)
         type?(@cfg[:sub_list],CIAX::List)
         db=type?(@cfg[:dbi],Dbi)
+        @cfg[:output]=@record=Record.new
         @submcr_proc=@cfg[:submcr_proc]||proc{|args,id|
           show(Msg.indent(@step['depth']+1)+"Sub Macro #{args} issued\n")
           {'id' => 'dmy'}
         }
-        @record=Record.new
-        self['id']=@record['id'] # ID for list
         @post_stat_procs=[] # execute on stat changes
         @pre_mcr_procs=[]
         @post_mcr_procs=[]
@@ -41,34 +41,48 @@ module CIAX
         @que_res=Queue.new
         update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>@record.option})
         @running=[]
+        # Thread mode
+        @cobj=Index.new(Config.new,{:jump_groups => @cfg[:jump_groups]})
+        @cobj.add_rem.add_hid
+        @cobj.rem.add_int(@record.option).valid_clear
+        @cobj.rem.int.add_item('start','Sequece Start').def_proc{|ent|
+          fork
+          'ACCEPT'
+        }
       end
 
-      def start(bg=nil)
+      #Takes ThreadGroup to be added
+      def fork(tg=nil)
         @record.start(@cfg)
-        @pre_mcr_procs.each{|p|
-          p.call(self['id'],self)
+        @th_mcr=Threadx.new("Macro(#@id)",10){macro}
+        tg.add(@th_mcr) if tg.is_a?(ThreadGroup)
+        @cobj.get('interrupt').def_proc{|ent,src|
+          @th_mcr.raise(Interrupt)
+          'INTERRUPT'
         }
-        if bg
-          fork
-        else
-          macro
-        end
         self
       end
 
-      # Communicate with forked macro
-      def reply(ans)
-        if self['stat'] == 'query'
-          @que_cmd << ans
-          @que_res.pop
-        else
-          "IGNORE"
-        end
+      def start
+        @record.start(@cfg)
+        macro
       end
-
+        
       def to_v
         msg=@record.to_v
         msg << "  [#{self['step']}/#{self['total_steps']}](#{self['stat']})#{@record.cmd_opt}"
+      end
+
+      def ext_shell
+        super
+        @prompt_proc=proc{
+          "(#{self['stat']})"+optlist(self['option'])
+        }
+        @cobj.rem.int.def_proc{|ent|
+          reply(ent.id)
+        }
+        @cobj.loc.add_view(:output => @cfg[:output])
+        self
       end
 
       private
@@ -110,11 +124,14 @@ module CIAX
         interrupt
       end
 
-      #Takes ThreadGroup to be added
-      def fork(tg=nil)
-        @th_mcr=Threadx.new("Macro(#@id)",10){macro}
-        tg.add(@th_mcr) if tg.is_a?(ThreadGroup)
-        self
+      # Communicate with forked macro
+      def reply(ans)
+        if self['stat'] == 'query'
+          @que_cmd << ans
+          @que_res.pop
+        else
+          "IGNORE"
+        end
       end
 
       def interrupt
@@ -196,7 +213,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      GetOpts.new('cemntr')
+      GetOpts.new('icemntr')
       proj=ENV['PROJ']||'ciax'
       cfg=Config.new
       cfg[:jump_groups]=[]
@@ -207,8 +224,12 @@ module CIAX
       mobj.rem.add_ext(Db.new.get(proj))
       begin
         ent=mobj.set_cmd(ARGV)
-        seq=Seq.new(ent.cfg)
-        seq.start
+        seq=Seq.new(ent)
+        if $opt['i']
+          seq.start
+        else
+          seq.ext_shell.shell
+        end
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

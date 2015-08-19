@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmcrman"
+require "libmanexe"
 
 module CIAX
   GetOpts.new('cmlnr')

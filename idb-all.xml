@@ -160,6 +160,14 @@
           <argv>1</argv>
           <argv>1</argv>
         </item>
+        <item id="none_2" label="No Filter for Turret 2" ref="opt">
+          <argv>2</argv>
+          <argv>11</argv>
+        </item>
+        <item id="none_3" label="No Filter for Turret 3" ref="opt">
+          <argv>3</argv>
+          <argv>4</argv>
+        </item>
       </alias>
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
         <index ref="p1" symbol="t1" />

@@ -33,6 +33,7 @@ module CIAX
           {'id' => 'dmy'}
         }
         @record=Record.new
+        self['id']=@record['id'] # ID for list
         @post_stat_procs=[] # execute on stat changes
         @pre_mcr_procs=[]
         @post_mcr_procs=[]
@@ -44,7 +45,6 @@ module CIAX
 
       def start(bg=nil)
         @record.start(@cfg)
-        self['id']=@record['id'] # ID for list
         @pre_mcr_procs.each{|p|
           p.call(self['id'],self)
         }

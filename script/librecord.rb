@@ -21,7 +21,7 @@ module CIAX
         self['ver']=@cfg['ver']||'0' # Version
         self['cid']=@cfg[:cid] # Command ID (cmd:par)
         self['label']=@cfg['label'] # Label for CID
-        self['parent']=@cfg['parent'] # Command issued source
+        self['pid']=@cfg['pid'] # Command issued source
         ext_file
         self
       end

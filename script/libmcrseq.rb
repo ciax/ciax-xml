@@ -24,9 +24,9 @@ module CIAX
       attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:pre_mcr_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
       #ent_cfg should have [:dbi]
-      def initialize(ent)
+      def initialize(ent,attr={})
         type?(ent,Mcr::Entity)
-        super(ent.id,ent.cfg)
+        super(ent.id,ent.cfg,attr)
         type?(@cfg[:sub_list],CIAX::List)
         db=type?(@cfg[:dbi],Dbi)
         @cfg[:output]=@record=Record.new
@@ -41,7 +41,7 @@ module CIAX
         @que_res=Queue.new
         update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>@record.option})
         @running=[]
-        # Thread mode
+        # For Thread mode
         @cobj=Index.new(Config.new,{:jump_groups => @cfg[:jump_groups]})
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(@record.option).valid_clear

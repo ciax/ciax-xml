@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmcrexe"
+require "libmcrseq"
 module CIAX
   module Mcr
     # Sequencer Layer List
@@ -14,7 +14,7 @@ module CIAX
 
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent,pid='0')
-        seq=Seq.new(ent.cfg,{'pid'=>pid})
+        seq=Seq.new(ent,{'pid'=>pid})
         put(seq['id'],seq)
       end
 
@@ -52,17 +52,18 @@ module CIAX
           self
         end
 
+        def add(ent,pid='0')
+          seq=super.ext_shell
+          num=@data.size.to_s
+          @jumpgrp.add_item(num,seq.id)
+        end
+
         def get_exe(num)
           n=num.to_i-1
           par_err("Invalid ID") if n < 0 or n > @data.size
-          Exe.new(@data[keys[n]]).ext_shell
+          @data[keys[n]]
         end
 
-        def add(ent,pid='0')
-          seq=super
-          num=size.to_s
-          @jumpgrp.add_item(num,seq['cid'])
-        end
 
         def shell
           num=size.to_s
@@ -82,16 +83,13 @@ module CIAX
       ENV['VER']||='initialize'
       GetOpts.new('tenr')
       proj=ENV['PROJ']||'ciax'
-      int_cfg=Config.new
-      int_cfg[:jump_groups]=[]
-      list=SeqList.new(proj,int_cfg).ext_shell
-
-      ext_cfg=Config.new
-      ext_cfg[:sub_list]=Wat::List.new(int_cfg).cfg[:sub_list] #Take App List
-      mobj=Index.new(ext_cfg)
+      cfg=Config.new
+      cfg[:jump_groups]=[]
+      cfg[:sub_list]=Wat::List.new(cfg).cfg[:sub_list] #Take App List
+      list=List.new(proj,cfg).ext_shell
+      mobj=Index.new(cfg)
       mobj.add_rem.add_ext(Db.new.get(proj))
-
-      int_cfg[:submcr_proc]=proc{|args,pid|
+      cfg[:submcr_proc]=proc{|args,pid|
         ent=mobj.set_cmd(args)
         list.add(ent,pid)
       }

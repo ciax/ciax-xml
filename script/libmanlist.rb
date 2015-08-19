@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmcrexe"
 module CIAX
-  module Mcr
+  module Man
     # Sequencer Layer List
     # @cfg[:db] associated site/layer should be set
     # @cfg should have [:jump_groups]
@@ -33,7 +33,7 @@ module CIAX
 
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent,pid='0')
-        seq=Seq.new(ent.cfg)
+        seq=Mcr::Seq.new(ent.cfg)
         seq.post_stat_procs << proc{upd}
         seq.pre_mcr_procs << proc{|id,seq| put(id,seq)}
         seq['pid']=pid
@@ -104,7 +104,7 @@ module CIAX
         def get_exe(num)
           n=num.to_i-1
           par_err("Invalid ID") if n < 0
-          @exelist[num]||=Exe.new(@stack[n]).ext_shell
+          @exelist[num]||=Mcr::Exe.new(@stack[n]).ext_shell
         end
 
         def add(ent,parent='user')
@@ -136,8 +136,8 @@ module CIAX
       cfg[:jump_groups]=[]
       cfg[:sub_list]=Wat::List.new(cfg).cfg[:sub_list] #Take App List
       list=List.new(proj,cfg).ext_save.ext_shell
-      mobj=Index.new(list.cfg)
-      mobj.add_rem.add_ext(Db.new.get(proj))
+      mobj=Mcr::Index.new(list.cfg)
+      mobj.add_rem.add_ext(Mcr::Db.new.get(proj))
       cfg[:submcr_proc]=proc{|args,pid|
         ent=mobj.set_cmd(args)
         list.add(ent,pid)

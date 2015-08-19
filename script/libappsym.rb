@@ -30,10 +30,11 @@ module CIAX
             tbl.each{|sym|
               case sym['type']
               when 'numeric'
-                cri=sym['val'].to_f
                 tol=sym['tolerance'].to_f
-                next if val.to_f > cri+tol or val.to_f < cri-tol
-                verbose("VIEW:Numeric:[#{cri}+-#{tol}] and [#{val}]")
+                next if sym['val'].split(',').all?{|cri|
+                  val.to_f > cri.to_f+tol or val.to_f < cri.to_f-tol
+                }
+                verbose("VIEW:Numeric:[#{sym['val']}+-#{tol}] and [#{val}]")
                 self['msg'][key]=sym['msg'] % val
               when 'range'
                 next unless ReRange.new(sym['val']) == val

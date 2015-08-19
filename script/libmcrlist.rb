@@ -5,7 +5,7 @@ module CIAX
     # Sequencer Layer List
     # @cfg[:db] associated site/layer should be set
     # @cfg should have [:jump_groups]
-    class SeqList < CIAX::List
+    class List < CIAX::List
       def initialize(proj,cfg,attr={})
         super(cfg,attr)
         self['id']=proj

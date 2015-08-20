@@ -21,7 +21,7 @@ module CIAX
     # Sequencer Layer
     class Seq < Exe
       #required cfg keys: app,db,body,stat,(:submcr_proc)
-      attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:pre_mcr_procs,:post_mcr_procs
+      attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:pre_mcr_procs,:post_mcr_procs,:th_mcr
       #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
       #ent_cfg should have [:dbi]
       def initialize(ent,attr={})
@@ -52,11 +52,9 @@ module CIAX
         }
       end
 
-      #Takes ThreadGroup to be added
-      def fork(tg=nil)
+      def fork
         @record.start(@cfg)
         @th_mcr=Threadx.new("Macro(#@id)",10){macro}
-        tg.add(@th_mcr) if tg.is_a?(ThreadGroup)
         @cobj.get('interrupt').def_proc{|ent,src|
           @th_mcr.raise(Interrupt)
           'INTERRUPT'

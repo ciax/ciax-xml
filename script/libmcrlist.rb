@@ -12,13 +12,6 @@ module CIAX
         verbose("Initialize [#{proj}]")
       end
 
-      # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
-      def add(ent,pid='0')
-        seq=Seq.new(ent,{'pid'=>pid})
-        seq.post_stat_procs << proc{upd}
-        put(seq['id'],seq)
-      end
-
       def to_v
         idx=1
         page=['<<< '+Msg.color("Active Macros [#{self['id']}]",2)+' >>>']
@@ -33,10 +26,8 @@ module CIAX
         page.join("\n")
       end
 
-      def interrupt
-        @data.each{|id,seq|
-          seq.exe(['interrupt'])
-        }
+      def ext_sv
+        extend(Sv).ext_sv
       end
 
       def ext_shell
@@ -48,6 +39,34 @@ module CIAX
       def get_cid(id)
         return 'user' if id == '0'
         get(id)['cid']
+      end
+
+      ### Server methods
+      module Sv
+        def ext_sv
+          ext_file
+          @data.clear
+          self
+        end
+
+        def interrupt
+          @data.each{|id,seq|
+            seq.exe(['interrupt'])
+          }
+        end
+
+        # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
+        def add(ent,pid='0')
+          seq=Seq.new(ent,{'pid'=>pid})
+          seq.post_stat_procs << proc{upd}
+          put(seq['id'],seq)
+        end
+
+        def clean
+          @data.each{|k,seq|
+            p seq.class
+          }
+        end
       end
 
       module Shell
@@ -95,7 +114,7 @@ module CIAX
       cfg=Config.new
       cfg[:jump_groups]=[]
       cfg[:sub_list]=Wat::List.new(cfg).cfg[:sub_list] #Take App List
-      list=List.new(proj,cfg).ext_file.ext_shell
+      list=List.new(proj,cfg).ext_sv.ext_shell
       mobj=Index.new(cfg)
       mobj.add_rem.add_ext(Db.new.get(proj))
       cfg[:submcr_proc]=proc{|args,pid|

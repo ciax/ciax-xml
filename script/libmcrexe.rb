@@ -51,7 +51,7 @@ module CIAX
         super
         self['sid']='' # For server response
         @pre_exe_procs << proc{ self['sid']='' }
-        @list.ext_file
+        @list.ext_sv
         # Internal Command Group
         @cfg[:submcr_proc]=proc{|args,pid|
           set(@cobj.set_cmd(args),pid)

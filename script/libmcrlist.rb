@@ -34,6 +34,12 @@ module CIAX
         page.join("\n")
       end
 
+      def interrupt
+        @data.each{|id,seq|
+          seq.exe(['interrupt'])
+        }
+      end
+
       def ext_shell
         extend(Shell).ext_shell
       end

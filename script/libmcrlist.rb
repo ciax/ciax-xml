@@ -15,9 +15,8 @@ module CIAX
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent,pid='0')
         seq=Seq.new(ent,{'pid'=>pid})
+        seq.post_stat_procs << proc{upd}
         put(seq['id'],seq)
-        upd
-        seq
       end
 
       def to_v
@@ -60,7 +59,7 @@ module CIAX
           @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
           @cfg[:jump_groups] << @jumpgrp
           @post_upd_procs << proc{
-            @jumpgrp.number_item(@data.values.map{|seq| seq.id})
+            @jumpgrp.number_item(@data.values.map{|seq| seq['id']})
           }
           self
         end
@@ -96,7 +95,7 @@ module CIAX
       cfg=Config.new
       cfg[:jump_groups]=[]
       cfg[:sub_list]=Wat::List.new(cfg).cfg[:sub_list] #Take App List
-      list=List.new(proj,cfg).ext_shell
+      list=List.new(proj,cfg).ext_file.ext_shell
       mobj=Index.new(cfg)
       mobj.add_rem.add_ext(Db.new.get(proj))
       cfg[:submcr_proc]=proc{|args,pid|

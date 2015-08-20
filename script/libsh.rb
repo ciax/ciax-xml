@@ -80,6 +80,7 @@ module CIAX
         verbose("Threads","#{Threadx.list}")
         verbose("Valid Commands #{@cobj.valid_keys}")
       }
+      msg("Quit Shell",3)
     end
 
     private

@@ -65,7 +65,6 @@ module CIAX
           @data[keys[n]]
         end
 
-
         def shell
           num=size.to_s
           begin

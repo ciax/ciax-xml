@@ -59,6 +59,7 @@ module CIAX
           if seq=@list.get(ent.par[0])
             self['sid']=seq.record['id']
             seq.exe(ent.id.split(':'))
+            ''
           else
             "NOSID"
           end

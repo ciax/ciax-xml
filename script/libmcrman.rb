@@ -6,6 +6,7 @@ module CIAX
   module Mcr
     def self.new(cfg,attr={})
       if $opt.cl?
+        Sv.new(cfg,attr).ext_server.server if $opt['l']
         Cl.new(cfg,attr.update($opt.host))
       else
         Sv.new(cfg,attr)

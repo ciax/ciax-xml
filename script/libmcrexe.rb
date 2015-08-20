@@ -89,6 +89,7 @@ module CIAX
         @parameter=@cobj.rem.int.par
         @current=0
         @prompt_proc=proc{
+          set_current
           ("[%d]" % @current)
         }
         @list.post_upd_procs << proc{
@@ -96,20 +97,11 @@ module CIAX
         }
         # Convert as command
         input_conv_num{|i|
-          if id=@list.keys[i-1]
-            @current=i
-            @parameter[:default]=id
-            nil
-          else
-            ''
-          end
+          set_current(i) ? nil : ''
         }
         # Convert as parameter
         input_conv_num(@cobj.rem.int.keys){|i|
-          if id=@list.keys[i-1]
-            @current=i
-            @parameter[:default]=id
-          end
+          set_current(i)
         }
         self
       end
@@ -119,6 +111,15 @@ module CIAX
         @parameter[:default]=seq['id']
         @current+=1
         seq
+      end
+
+      private
+      def set_current(i=nil)
+        i||=@current > @list.size ? @list.size : @current
+        if id=@list.keys[i-1] || i==0
+          @current=i
+          @parameter[:default]=id
+        end
       end
     end
 

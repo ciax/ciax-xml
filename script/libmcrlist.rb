@@ -45,7 +45,7 @@ module CIAX
       module Sv
         def ext_sv
           ext_file
-          @data.clear
+          clean
           self
         end
 
@@ -63,9 +63,10 @@ module CIAX
         end
 
         def clean
-          @data.each{|k,seq|
-            p seq.class
+          @data.delete_if{|k,seq|
+            ! (Seq === seq && seq.th_mcr.status)
           }
+          self
         end
       end
 

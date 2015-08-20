@@ -25,6 +25,7 @@ module CIAX
         @cobj=Index.new(@cfg)
         @cobj.add_rem.add_hid
         @cobj.rem.add_int
+        @cobj.rem.int.add_item('clean','Clean list').def_proc{ @list.clean;'ACCEPT'}
         @cobj.rem.add_ext(Db.new.get(proj))
         #Set sublist
         @mdb=@cobj.rem.ext.cfg[:dbi]

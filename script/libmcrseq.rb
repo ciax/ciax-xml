@@ -37,6 +37,7 @@ module CIAX
         @post_stat_procs=[] # execute on stat changes
         @pre_mcr_procs=[]
         @post_mcr_procs=[]
+        @th_mcr=Thread.current
         @que_cmd=Queue.new
         @que_res=Queue.new
         update({'id'=>@record['id'],'cid'=>@cfg[:cid],'pid'=>@cfg['pid'],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>@record.option})

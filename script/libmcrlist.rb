@@ -16,6 +16,8 @@ module CIAX
       def add(ent,pid='0')
         seq=Seq.new(ent,{'pid'=>pid})
         put(seq.record['id'],seq)
+        upd
+        seq
       end
 
       def to_v
@@ -50,13 +52,14 @@ module CIAX
           super(Jump)
           @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
           @cfg[:jump_groups] << @jumpgrp
+          @post_upd_procs << proc{
+            @jumpgrp.number_item(@data.values.map{|seq| seq.id})
+          }
           self
         end
 
         def add(ent,pid='0')
-          res=super.ext_shell
-          @jumpgrp.number_item(@data.values.map{|seq| seq.id})
-          res
+          super.ext_shell
         end
 
         def get_exe(num)

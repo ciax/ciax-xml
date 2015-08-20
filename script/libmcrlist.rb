@@ -26,7 +26,8 @@ module CIAX
         @data.each{|id,seq|
           title="[#{idx}] (#{id})(by #{get_cid(seq['pid'])})"
           msg="#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}]"
-          msg << "(#{seq['stat']})#{seq['option']}"
+          msg << "(#{seq['stat']})"
+          msg << optlist(seq['option'])
           page << Msg.item(title,msg)
           idx+=1
         }

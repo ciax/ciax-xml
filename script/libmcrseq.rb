@@ -68,10 +68,12 @@ module CIAX
         @record.start(@cfg)
         macro
       end
-        
+
       def to_v
         msg=@record.to_v
-        msg << "  [#{self['step']}/#{self['total_steps']}](#{self['stat']})#{@record.cmd_opt}"
+        msg << "  [#{self['step']}/#{self['total_steps']}]"
+        msg << "(#{self['stat']})"
+        msg << optlist(self['option'])
       end
 
       def ext_shell

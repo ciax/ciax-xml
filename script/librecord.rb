@@ -58,14 +58,6 @@ module CIAX
         msg << " (#{self['result']})" if self['result']
         msg
       end
-
-      def cmd_opt
-        if @option.empty?
-          ''
-        else
-          Msg.color('['+@option.join('/')+']',5)
-        end
-      end
     end
 
     if __FILE__ == $0

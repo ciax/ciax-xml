@@ -54,9 +54,9 @@ module CIAX
         end
 
         def add(ent,pid='0')
-          seq=super.ext_shell
-          num=@data.size.to_s
-          @jumpgrp.add_item(num,seq.id)
+          res=super.ext_shell
+          @jumpgrp.number_item(@data.values.map{|seq| seq.id})
+          res
         end
 
         def get_exe(num)

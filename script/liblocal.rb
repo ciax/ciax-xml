@@ -54,6 +54,15 @@ module CIAX
             raise(ent.cfg[:jump_class],ent.id)
           }
         end
+
+        def number_item(ary)
+          clear
+          i=0
+          type?(ary,Array).each{|str|
+            add_item((i+=1).to_s,str)
+          }
+          self
+        end
       end
     end
 

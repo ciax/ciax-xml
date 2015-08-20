@@ -15,7 +15,7 @@ module CIAX
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent,pid='0')
         seq=Seq.new(ent,{'pid'=>pid})
-        put(seq['id'],seq)
+        put(seq.record['id'],seq)
       end
 
       def to_v
@@ -49,6 +49,7 @@ module CIAX
         def ext_shell
           super(Jump)
           @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
+          @cfg[:jump_groups] << @jumpgrp
           self
         end
 

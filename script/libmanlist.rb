@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmcrexe"
+require "libmcrman"
 module CIAX
   module Man
     # Sequencer Layer List

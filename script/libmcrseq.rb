@@ -39,12 +39,13 @@ module CIAX
         @post_mcr_procs=[]
         @que_cmd=Queue.new
         @que_res=Queue.new
-        update({'cid'=>@cfg[:cid],'pid'=>@cfg['pid'],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>@record.option})
+        update({'id'=>@record['id'],'cid'=>@cfg[:cid],'pid'=>@cfg['pid'],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>@record.option})
         @running=[]
         # For Thread mode
         @cobj=Index.new(Config.new,{:jump_groups => @cfg[:jump_groups]})
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(@record.option).valid_clear
+        @cobj.rem.int.def_proc{|ent| reply(ent.id)}
         @cobj.rem.int.add_item('start','Sequece Start').def_proc{|ent|
           fork
           'ACCEPT'
@@ -77,9 +78,6 @@ module CIAX
         super
         @prompt_proc=proc{
           "(#{self['stat']})"+optlist(self['option'])
-        }
-        @cobj.rem.int.def_proc{|ent|
-          reply(ent.id)
         }
         @cobj.loc.add_view(:output => @cfg[:output])
         self

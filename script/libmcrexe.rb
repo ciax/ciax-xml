@@ -15,7 +15,7 @@ module CIAX
 
     class Exe < CIAX::Exe
       # cfg should have [:jump_groups]
-      attr_reader :sub_list,:parameter
+      attr_reader :sub_list
       def initialize(cfg,attr={})
         proj=ENV['PROJ']||'ciax'
         type?(cfg,Config)
@@ -27,6 +27,10 @@ module CIAX
         @cobj.rem.add_int
         @cobj.rem.int.add_item('clean','Clean list')
         @cobj.rem.add_ext(Db.new.get(proj))
+        @parameter=@cobj.rem.int.par
+        @list.post_upd_procs << proc{
+          @parameter[:list]=@list.keys
+        }
         #Set sublist
         @mdb=@cobj.rem.ext.cfg[:dbi]
         @cfg['host']||=@mdb['host']
@@ -84,18 +88,12 @@ module CIAX
 
     module Shell
       include CIAX::Shell
-      attr_reader :parameter
-
       def ext_shell
         super
-        @parameter=@cobj.rem.int.par
         @current=0
         @prompt_proc=proc{
           set_current
           ("[%d]" % @current)
-        }
-        @list.post_upd_procs << proc{
-          @parameter[:list]=@list.keys
         }
         # Convert as command
         input_conv_num{|i|
@@ -118,7 +116,10 @@ module CIAX
       private
       def set_current(i=nil)
         i||=@current > @list.size ? @list.size : @current
-        if id=@list.keys[i-1] || i==0
+        if i==0
+          @current=0
+          @parameter[:default]=nil
+        elsif id=@list.keys[i-1]
           @current=i
           @parameter[:default]=id
         end

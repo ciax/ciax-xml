@@ -10,6 +10,8 @@ module CIAX
   # Usage:[]/  get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
     attr_reader :generation
+    alias :this_key :key
+    alias :this_key? :key?
     def initialize(obj=self,cfg=nil)
       super()
       @generation=[self]
@@ -31,12 +33,12 @@ module CIAX
       self
     end
 
-    def all_key?(id)
-      @generation.any?{|h| h.key?(id)}
+    def key?(id)
+      @generation.any?{|h| h.this_key?(id)}
     end
 
-    def all_keys
-      @generation.map{|h| h.keys}.flatten.uniq
+    def keys
+      @generation.map{|h| h.this_keys}.flatten.uniq
     end
 
     def to_hash
@@ -48,7 +50,7 @@ module CIAX
     # If content is Array, merge generations
     def [](id)
       @generation.each{|gen|
-        return gen.fetch(id) if gen.key?(id)
+        return gen.fetch(id) if gen.this_key?(id)
       }
       nil
     end
@@ -65,7 +67,7 @@ module CIAX
       @generation[n][:obj]
     end
 
-    # Show all conttents of all generation
+    # Show all contents of all generation
     def path(key=nil)
       i=0
       str=""
@@ -94,7 +96,7 @@ module CIAX
       "******[Config]******(#{object_id})\n#{str}************\n"
     end
 
-    # Show list of all key,val which is taken with [] access
+    # Show list of all key,val which will be taken with [] access
     def list
       i=0
       db={}

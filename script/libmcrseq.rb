@@ -43,7 +43,7 @@ module CIAX
         update({'id'=>@record['id'],'cid'=>@cfg[:cid],'pid'=>@cfg['pid'],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>@record.option})
         @running=[]
         # For Thread mode
-        @cobj=Index.new(Config.new,{:jump_groups => @cfg[:jump_groups]})
+        @cobj=Index.new(Config.new,@cfg.pick([:jump_groups,:output]))
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(@record.option).valid_clear
         @cobj.rem.int.def_proc{|ent| reply(ent.id)}
@@ -80,7 +80,7 @@ module CIAX
         @prompt_proc=proc{
           "(#{self['stat']})"+optlist(self['option'])
         }
-        @cobj.loc.add_view(:output => @cfg[:output])
+        @cobj.loc.add_view #(:output => @cfg[:output])
         self
       end
 

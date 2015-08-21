@@ -101,6 +101,15 @@ module CIAX
       }
       hash
     end
+
+    # Generate Hash Pick up keys
+    def pick(keyary)
+      hash=Hashx.new
+      keyary.each{|key|
+        hash[key]=self[key]
+      }
+      hash
+    end
   end
 
   class Arrayx < Array

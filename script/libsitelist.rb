@@ -11,12 +11,16 @@ module CIAX
       def initialize(cfg,attr={})
         super
         @sub_list=@cfg[:sub_list]
-        @current=@cfg[:site]
       end
 
       def set_db(db)
         @cfg[:db]=type?(db,Db)
         verbose("Initialize")
+        if @cfg.key?(:site)
+          @current=@cfg[:site]
+        else
+          @current=db.displist.keys.first
+        end
         self
       end
 

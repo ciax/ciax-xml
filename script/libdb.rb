@@ -24,7 +24,7 @@ module CIAX
   class Db < Hashx
     XmlDir="#{ENV['HOME']}/ciax-xml"
     PROJ=ENV['PROJ']||'ciax'
-    attr_reader :displist,:db
+    attr_reader :displist
     def initialize(type,proj=nil)
       super()
       @cls_color=5

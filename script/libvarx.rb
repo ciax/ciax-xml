@@ -90,7 +90,7 @@ module CIAX
 
   module Log
     def ext_log # logging with flatten
-      FileUtils.mkdir_p VarDir
+      FileUtils.mkdir_p(VarDir+"/log/")
       id=self['id']
       ver=self['ver']
       verbose("Log Initialize [#{id}/Ver.#{ver}]")
@@ -114,7 +114,7 @@ module CIAX
 
     private
     def logpath(tag=nil)
-      VarDir+"/"+file_base(tag)+"_#{Time.now.year}.log"
+      VarDir+"/log/"+file_base(tag)+"_#{Time.now.year}.log"
     end
   end
 end

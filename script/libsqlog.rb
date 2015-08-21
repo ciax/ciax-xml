@@ -82,7 +82,8 @@ module CIAX
       include Msg
       def initialize(id,layer=nil)
         @cls_color=10
-        @sqlcmd=["sqlite3",VarDir+"/sqlog_"+id+".sq3"]
+        FileUtils.mkdir_p(VarDir+"/log/")
+        @sqlcmd=["sqlite3",VarDir+"/log/sqlog_"+id+".sq3"]
         @queue=Queue.new
         verbose("Initialize '#{id}' on #{layer}")
         ThreadLoop.new("SqLog(#{layer}:#{id})",13){

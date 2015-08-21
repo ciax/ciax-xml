@@ -3,13 +3,12 @@ require "liblist"
 
 module CIAX
   module Layer
+    # list object can be (Frm,App,Wat,Hex)
+    # attr can have [:top_layer]
     class List < CIAX::List
       def initialize(attr={})
         super(Config.new,attr)
-      end
-
-      # list object can be (Frm,App,Wat,Hex)
-      def set(mod)
+        mod=@cfg[:top_layer]||$opt.layer_list
         obj=mod.new(@cfg)
         begin
           put(m2id(obj.class,-2),obj)
@@ -41,10 +40,8 @@ module CIAX
     if __FILE__ == $0
       require "libhexexe"
       GetOpts.new("els")
-      ll=List.new(:site => ARGV.shift)
       begin
-        ll.set(Wat::List)
-        ll.ext_shell.shell
+        List.new(:site => ARGV.shift,:top_layer => Wat::List).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

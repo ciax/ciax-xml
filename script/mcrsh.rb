@@ -2,11 +2,10 @@
 require "libmcrexe"
 
 module CIAX
+  ENV['VER']||='initialize'
   GetOpts.new('cmlnr')
-  ll=Layer::List.new
   begin
-    ll.set(Mcr)
-    ll.ext_shell.shell
+    Layer::List.new(:top_layer => Mcr).ext_shell.shell
   rescue InvalidID
     $opt.usage('(opt) [id]')
   end

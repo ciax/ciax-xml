@@ -25,7 +25,7 @@ module CIAX
         @cobj=Index.new(@cfg)
         @cobj.add_rem.add_hid
         @cobj.rem.add_int
-        @cobj.rem.int.add_item('clean','Clean list').def_proc{ @list.clean;'ACCEPT'}
+        @cobj.rem.int.add_item('clean','Clean list')
         @cobj.rem.add_ext(Db.new.get(proj))
         #Set sublist
         @mdb=@cobj.rem.ext.cfg[:dbi]
@@ -53,6 +53,8 @@ module CIAX
         self['sid']='' # For server response
         @pre_exe_procs << proc{ self['sid']='' }
         @list.ext_sv
+        # External Command Group
+        @cobj.rem.ext.def_proc{|ent| set(ent);"ACCEPT"}
         # Internal Command Group
         @cfg[:submcr_proc]=proc{|args,pid|
           set(@cobj.set_cmd(args),pid)
@@ -66,12 +68,12 @@ module CIAX
             "NOSID"
           end
         }
-        # External Command Group
-        @cobj.rem.ext.def_proc{|ent| set(ent);"ACCEPT"}
+        @cobj.get('clean').def_proc{ @list.clean;'ACCEPT'}
         @cobj.get('interrupt').def_proc{|ent|
           @list.interrupt
           'INTERRUPT'
         }
+        @terminate_procs << proc{ @list.clean}
       end
 
       private
@@ -124,6 +126,7 @@ module CIAX
     end
 
     if __FILE__ == $0
+      ENV['VER']||='initialize'
       GetOpts.new('cmnlrt')
       begin
         cfg=Config.new

@@ -27,6 +27,7 @@ module CIAX
       @site_stat=Prompt.new # Site Status shared among layers
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
+      @terminate_procs=[] # Proc for program terminated
       self['msg']=''
       Thread.abort_on_exception=true
       verbose("initialize [#{@id}]")

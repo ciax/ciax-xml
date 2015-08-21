@@ -66,6 +66,7 @@ module CIAX
           @data.delete_if{|k,seq|
             ! (Seq === seq && seq.th_mcr.status)
           }
+          upd
           self
         end
       end

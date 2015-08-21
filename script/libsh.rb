@@ -80,6 +80,7 @@ module CIAX
         verbose("Threads","#{Threadx.list}")
         verbose("Valid Commands #{@cobj.valid_keys}")
       }
+      @terminate_procs.inject(self){|obj,proc| proc.call(obj)}
       msg("Quit Shell",3)
     end
 

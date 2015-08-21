@@ -104,6 +104,7 @@ module CIAX
         input_conv_num(@cobj.rem.int.keys){|i|
           set_current(i)
         }
+        @cobj.loc.add_view
         self
       end
 

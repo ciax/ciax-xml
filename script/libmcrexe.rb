@@ -17,17 +17,16 @@ module CIAX
       # cfg should have [:jump_groups]
       attr_reader :sub_list
       def initialize(cfg,attr={})
-        proj=ENV['PROJ']||'ciax'
         type?(cfg,Config)
-        super(proj,cfg)
+        super(PROJ,cfg)
         @sub_list=@cfg[:sub_list]=Wat::List.new(@cfg)
-        @cfg[:output]=@list=List.new(proj,@cfg)
+        @cfg[:output]=@list=List.new(PROJ,@cfg)
         @lastsize=0
         @cobj=Index.new(@cfg)
         @cobj.add_rem.add_hid
         @cobj.rem.add_int
         @cobj.rem.int.add_item('clean','Clean list')
-        @cobj.rem.add_ext(Db.new.get(proj))
+        @cobj.rem.add_ext(Db.new.get(PROJ))
         @parameter=@cobj.rem.int.par
         @list.post_upd_procs << proc{
           @parameter[:list]=@list.keys

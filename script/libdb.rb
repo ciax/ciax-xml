@@ -4,6 +4,8 @@ require "libenumx"
 require "libxmldoc"
 
 module CIAX
+  XmlDir="#{ENV['HOME']}/ciax-xml"
+  PROJ=ENV['PROJ']||'ciax'
   # Db class is for read only databases, which holds all items of database.
   # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
   # set() generates HashDb
@@ -22,8 +24,6 @@ module CIAX
   end
 
   class Db < Hashx
-    XmlDir="#{ENV['HOME']}/ciax-xml"
-    PROJ=ENV['PROJ']||'ciax'
     attr_reader :displist
     def initialize(type,proj=nil)
       super()

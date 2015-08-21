@@ -112,13 +112,12 @@ module CIAX
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('tenr')
-      proj=ENV['PROJ']||'ciax'
       cfg=Config.new
       cfg[:jump_groups]=[]
       cfg[:sub_list]=Wat::List.new(cfg).cfg[:sub_list] #Take App List
-      list=List.new(proj,cfg).ext_sv.ext_shell
+      list=List.new(PROJ,cfg).ext_sv.ext_shell
       mobj=Index.new(cfg)
-      mobj.add_rem.add_ext(Db.new.get(proj))
+      mobj.add_rem.add_ext(Db.new.get(PROJ))
       cfg[:submcr_proc]=proc{|args,pid|
         ent=mobj.set_cmd(args)
         list.add(ent,pid)

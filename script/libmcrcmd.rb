@@ -67,12 +67,11 @@ module CIAX
 
     if __FILE__ == $0
       GetOpts.new
-      proj=ENV['PROJ']||'ciax'
       cfg=Config.new
       cobj=Index.new(cfg)
       cobj.add_rem
       cobj.rem.def_proc{|ent| ent.cfg.path }
-      cobj.rem.add_ext(Db.new.get(proj))
+      cobj.rem.add_ext(Db.new.get(PROJ))
       begin
         ent=cobj.set_cmd(ARGV)
         puts ent.cfg.path

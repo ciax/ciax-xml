@@ -213,14 +213,13 @@ module CIAX
 
     if __FILE__ == $0
       GetOpts.new('icemntr')
-      proj=ENV['PROJ']||'ciax'
       cfg=Config.new
       cfg[:jump_groups]=[]
       al=Wat::List.new(cfg).cfg[:sub_list] #Take App List
       cfg[:sub_list]=al
       mobj=Index.new(cfg)
       mobj.add_rem
-      mobj.rem.add_ext(Db.new.get(proj))
+      mobj.rem.add_ext(Db.new.get(PROJ))
       begin
         ent=mobj.set_cmd(ARGV)
         seq=Seq.new(ent)

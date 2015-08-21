@@ -22,6 +22,7 @@ module CIAX
         super(proj,cfg)
         @sub_list=@cfg[:sub_list]=Wat::List.new(@cfg)
         @cfg[:output]=@list=List.new(proj,@cfg)
+        @lastsize=0
         @cobj=Index.new(@cfg)
         @cobj.add_rem.add_hid
         @cobj.rem.add_int
@@ -92,7 +93,7 @@ module CIAX
         super
         @current=0
         @prompt_proc=proc{
-          set_current
+          upd_current
           ("[%d]" % @current)
         }
         # Convert as command
@@ -106,22 +107,16 @@ module CIAX
         self
       end
 
-      def set(ent,pid='0')
-        seq=super
-        @parameter[:default]=seq['id']
-        @current+=1
-        seq
+      private
+      def set_current(i)
+        return false if i > @list.size
+        @parameter[:default]= i==0 ? nil : @list.keys[i-1]
+        @current=i
       end
 
-      private
-      def set_current(i=nil)
-        i||=@current > @list.size ? @list.size : @current
-        if i==0
-          @current=0
-          @parameter[:default]=nil
-        elsif id=@list.keys[i-1]
-          @current=i
-          @parameter[:default]=id
+      def upd_current
+        if @current > @list.size or @list.size > @lastsize 
+          set_current(@lastsize=@list.size)
         end
       end
     end

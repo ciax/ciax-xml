@@ -11,7 +11,7 @@ module CIAX
       def initialize(cfg,attr={})
         super
         @sub_list=@cfg[:sub_list]
-        @current=nil
+        @current=@cfg[:site]
       end
 
       def set_db(db)
@@ -30,12 +30,6 @@ module CIAX
         end
         @current=site
         super
-      end
-
-      # Set initial site
-      def set(site)
-        @current=site
-        self
       end
 
       def server(ary)

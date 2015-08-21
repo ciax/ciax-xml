@@ -55,11 +55,11 @@ module CIAX
     if __FILE__ == $0
       ENV['VER']||='initialize'
       GetOpts.new('ceh:lts')
-      id=ARGV.shift
       cfg=Config.new
+      cfg[:site]=ARGV.shift
       cfg[:jump_groups]=[]
       begin
-        List.new(cfg).ext_shell(id).shell
+        List.new(cfg).ext_shell.shell
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end

@@ -5,8 +5,7 @@ require "libhexexe"
 module CIAX
   ENV['VER']||='initialize'
   GetOpts.new("aftxelsrch:")
-  id=ARGV.shift
-  ll=Layer::List.new
+  ll=Layer::List.new(:site => ARGV.shift)
   ll.set($opt.layer_list)
-  ll.ext_shell(id).shell
+  ll.ext_shell.shell
 end

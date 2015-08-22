@@ -22,7 +22,7 @@ module CIAX
     end
 
     class Exe < Exe
-      # cfg must have [:db],[:frm_list]
+      # cfg must have [:db],[:sub_list]
       attr_reader :adb,:stat
       attr_accessor :batch_interrupt
       def initialize(id,cfg,attr={})

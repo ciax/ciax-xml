@@ -4,10 +4,8 @@ require "liblocal"
 
 module CIAX
   # This is parent of Layer List, Site List.
-  # @cfg should have [:jump_groups]
-  # attr should have [:jump_class] (Used in Local::Jump::Group)
   class List < DataH
-    attr_reader :cfg,:jumpgrp
+    attr_reader :cfg
     # level can be Layer or Site
     def initialize(cfg,attr={})
       @cfg=cfg.gen(self).update(attr)
@@ -20,10 +18,13 @@ module CIAX
     end
 
     module Shell
+      attr_reader :jumpgrp
       def self.extended(obj)
         Msg.type?(obj,List)
       end
 
+      # attr should have [:jump_class] (Used in Local::Jump::Group)
+      # @cfg should have [:jump_groups]
       def ext_shell(jump_class)
         @cfg[:jump_class]=type?(jump_class,Module) # Use for liblocal
         @jumpgrp=Local::Jump::Group.new(@cfg)

@@ -4,7 +4,6 @@ require "liblayer"
 module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set
-    # @cfg should have [:jump_groups]
     # This should be set [:db]
     class List < CIAX::List
       attr_reader :sub_list
@@ -61,6 +60,7 @@ module CIAX
         include CIAX::List::Shell
         class Jump < LongJump; end
 
+        # @cfg should have [:jump_groups]
         def ext_shell
           super(Jump)
           @cfg[:jump_groups]+=[@jumpgrp]

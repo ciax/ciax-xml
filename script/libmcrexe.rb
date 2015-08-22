@@ -103,6 +103,7 @@ module CIAX
         @post_exe_procs << proc{@cfg[:output].upd}
         vg=@cobj.loc.add_view
         vg.add_item("list","list mode").def_proc{list_mode}
+        vg.add_dummy("[1-n]","Seq mode")
         @records={nil => @list}
         self
       end

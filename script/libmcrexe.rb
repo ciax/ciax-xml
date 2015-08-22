@@ -104,19 +104,29 @@ module CIAX
           set_current(i)
         }
         @cfg[:output]=@list
+        @post_exe_procs << proc{@cfg[:output].upd}
         @cobj.loc.add_view
+        @records={}
         self
       end
 
       private
       def set_current(i)
         return false if i > @list.size
-        @parameter[:default]= i==0 ? nil : @list.keys[i-1]
+        if i==0
+          @parameter[:default]=nil
+          @cfg[:output]=@list
+        else
+          seq=@list.get(id=@list.keys[i-1])
+          @records[id]||= (Seq === seq) ? seq.record : Record.new(id).ext_http
+          @parameter[:default]=id
+          @cfg[:output]=@records[id]
+        end
         @current=i
       end
 
       def upd_current
-        if @current > @list.size or @list.size > @lastsize 
+        if @current > @list.size or @list.size > @lastsize
           set_current(@lastsize=@list.size)
         end
       end

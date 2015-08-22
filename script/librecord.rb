@@ -6,11 +6,9 @@ module CIAX
   module Mcr
     class Record < Datax
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
-      attr_reader :option
       def initialize(id=nil) # Session ID for Loading
         super('record',[],'steps')
         self['id']=id||self['time'].to_s # Session ID
-        @option=[]
         ext_file
       end
 

@@ -40,12 +40,12 @@ module CIAX
         @th_mcr=Thread.current
         @que_cmd=Queue.new
         @que_res=Queue.new
-        update({'id'=>@record['id'],'cid'=>@cfg[:cid],'pid'=>@cfg['pid'],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>@record.option})
+        update({'id'=>@record['id'],'cid'=>@cfg[:cid],'pid'=>@cfg['pid'],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>[]})
         @running=[]
         # For Thread mode
         @cobj=Index.new(@cfg)
         @cobj.add_rem.add_hid
-        @cobj.rem.add_int(@record.option).valid_clear
+        @cobj.rem.add_int(self['option']).valid_clear
         @cobj.rem.int.def_proc{|ent| reply(ent.id)}
         @cobj.rem.int.add_item('start','Sequece Start').def_proc{|ent|
           fork

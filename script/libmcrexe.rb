@@ -96,7 +96,7 @@ module CIAX
         }
         # Convert as command
         input_conv_num{|i|
-          set_current(i) ? nil : ''
+          set_current(i)
         }
         # Convert as parameter
         input_conv_num(@cobj.rem.int.keys){|i|
@@ -105,23 +105,22 @@ module CIAX
         @cfg[:output]=@list
         @post_exe_procs << proc{@cfg[:output].upd}
         @cobj.loc.add_view
-        @records={'0' => @list}
+        @records={nil => @list}
         self
       end
 
       private
       def set_current(i)
-        return false if i > @list.size
-        if i==0
-          id='0'
-        else
+        return i.to_s if i > @list.size
+        @current=i
+        if i > 0
           id=@list.keys[i-1]
           @seq=@list.get(id)
           @records[id]||= (Seq === @seq) ? @seq.record : Record.new(id).ext_http
         end
         @parameter[:default]=id
         @cfg[:output]=@records[id]
-        @current=i
+        nil
       end
 
       def upd_current

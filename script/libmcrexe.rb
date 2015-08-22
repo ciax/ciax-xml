@@ -110,25 +110,34 @@ module CIAX
       end
 
       private
+      def upd_current
+        if @current > @list.size or @list.size > @lastsize
+          set_current(@lastsize=@list.size)
+        end
+        if @current > 0
+          seq=@list.upd.get(@parameter[:default])
+          "(#{seq['stat']})"+optlist(seq['option'])
+        end
+      end
+
       def set_current(i)
         return i.to_s if i > @list.size
         @current=i
         if i > 0
           id=@list.keys[i-1]
-          @seq=@list.get(id)
-          @records[id]||= (Seq === @seq) ? @seq.record : Record.new(id).ext_http
+          @records[id]||=get_record(@list.get(id))
         end
         @parameter[:default]=id
         @cfg[:output]=@records[id]
         nil
       end
 
-      def upd_current
-        if @current > @list.size or @list.size > @lastsize
-          set_current(@lastsize=@list.size)
-        end
-        if @current > 0
-          "(#{@seq['stat']})"+optlist(@seq['option'])
+      def get_record(seq)
+        case seq
+        when Hash
+          Record.new(seq['id']).ext_http
+        when Seq
+          seq.record
         end
       end
     end

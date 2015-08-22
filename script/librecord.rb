@@ -11,6 +11,7 @@ module CIAX
         super('record',[],'steps')
         self['id']=id||self['time'].to_s # Session ID
         @option=[]
+        ext_file
       end
 
       # cfg will come from Entity, which should have [:cid],['label'],@layers[:wat]
@@ -22,7 +23,6 @@ module CIAX
         self['cid']=@cfg[:cid] # Command ID (cmd:par)
         self['label']=@cfg['label'] # Label for CID
         self['pid']=@cfg['pid'] # Command issued source
-        ext_file
         self
       end
 

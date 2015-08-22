@@ -91,9 +91,7 @@ module CIAX
       def ext_shell
         super
         @current=0
-        @prompt_proc=proc{
-          ("[%d]%s" % [@current,upd_current])
-        }
+        @prompt_proc=proc{upd_current}
         # Convert as command
         input_conv_num{|i|
           set_current(i)
@@ -111,13 +109,16 @@ module CIAX
 
       private
       def upd_current
+        @list.upd
         if @current > @list.size or @list.size > @lastsize
           set_current(@lastsize=@list.size)
         end
+        msg="[%d]" % @current
         if @current > 0
-          seq=@list.upd.get(@parameter[:default])
-          "(#{seq['stat']})"+optlist(seq['option'])
+          seq=@list.get(@parameter[:default])
+          msg << "(#{seq['stat']})"+optlist(seq['option'])
         end
+        msg
       end
 
       def set_current(i)

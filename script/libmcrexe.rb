@@ -90,7 +90,7 @@ module CIAX
       include CIAX::Shell
       def ext_shell
         super
-        @current=0
+        list_mode
         @prompt_proc=proc{upd_current}
         # Convert as command
         input_conv_num{|i|
@@ -100,9 +100,9 @@ module CIAX
         input_conv_num(@cobj.rem.int.keys){|i|
           set_current(i)
         }
-        @cfg[:output]=@list
         @post_exe_procs << proc{@cfg[:output].upd}
-        @cobj.loc.add_view
+        vg=@cobj.loc.add_view
+        vg.add_item("list","list mode").def_proc{list_mode}
         @records={nil => @list}
         self
       end
@@ -131,6 +131,13 @@ module CIAX
         @parameter[:default]=id
         @cfg[:output]=@records[id]
         nil
+      end
+
+      def list_mode
+        @current=0
+        @cfg[:output]=@list
+        @parameter[:default]=nil
+        ''
       end
 
       def get_record(seq)

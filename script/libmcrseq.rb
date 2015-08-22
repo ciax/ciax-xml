@@ -29,7 +29,7 @@ module CIAX
         super(ent.id,ent.cfg,attr)
         type?(@cfg[:sub_list],CIAX::List)
         db=type?(@cfg[:dbi],Dbi)
-        @cfg[:output]=@record=Record.new
+        @record=Record.new
         @submcr_proc=@cfg[:submcr_proc]||proc{|args,id|
           show(Msg.indent(@step['depth']+1)+"Sub Macro #{args} issued\n")
           {'id' => 'dmy'}
@@ -43,7 +43,7 @@ module CIAX
         update({'id'=>@record['id'],'cid'=>@cfg[:cid],'pid'=>@cfg['pid'],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>@record.option})
         @running=[]
         # For Thread mode
-        @cobj=Index.new(Config.new,@cfg.pick([:jump_groups,:output]))
+        @cobj=Index.new(@cfg)
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(@record.option).valid_clear
         @cobj.rem.int.def_proc{|ent| reply(ent.id)}
@@ -80,7 +80,8 @@ module CIAX
         @prompt_proc=proc{
           "(#{self['stat']})"+optlist(self['option'])
         }
-        @cobj.loc.add_view #(:output => @cfg[:output])
+        @cfg[:output]=@record
+        @cobj.loc.add_view
         self
       end
 

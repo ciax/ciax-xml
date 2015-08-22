@@ -20,7 +20,7 @@ module CIAX
         type?(cfg,Config)
         super(PROJ,cfg)
         @sub_list=@cfg[:sub_list]=Wat::List.new(@cfg)
-        @cfg[:output]=@list=List.new(PROJ,@cfg)
+        @list=List.new(PROJ,@cfg)
         @lastsize=0
         @cobj=Index.new(@cfg)
         @cobj.add_rem.add_hid
@@ -103,6 +103,7 @@ module CIAX
         input_conv_num(@cobj.rem.int.keys){|i|
           set_current(i)
         }
+        @cfg[:output]=@list
         @cobj.loc.add_view
         self
       end

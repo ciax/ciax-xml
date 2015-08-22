@@ -35,7 +35,6 @@ module CIAX
         @sub=@cfg[:sub_list].get(@cfg[:frm_site])
         @site_stat=@sub.site_stat.add_db('isu' => '*')
         @stat=@cfg[:stat]=Status.new.set_db(@adb)
-        @cfg[:output]=View.new(@adb,@stat)
         @batch_interrupt=[]
         @cfg['host']||=@adb['host']
         @cfg['port']||=@adb['port']
@@ -46,6 +45,7 @@ module CIAX
 
       def ext_shell
         super
+        @cfg[:output]=View.new(@adb,@stat)
         @cobj.loc.add_view
         input_conv_set
         self

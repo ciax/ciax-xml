@@ -92,8 +92,7 @@ module CIAX
         super
         @current=0
         @prompt_proc=proc{
-          upd_current
-          ("[%d]" % @current)
+          ("[%d]%s" % [@current,upd_current])
         }
         # Convert as command
         input_conv_num{|i|
@@ -117,8 +116,8 @@ module CIAX
           id='0'
         else
           id=@list.keys[i-1]
-          seq=@list.get(id)
-          @records[id]||= (Seq === seq) ? seq.record : Record.new(id).ext_http
+          @seq=@list.get(id)
+          @records[id]||= (Seq === @seq) ? @seq.record : Record.new(id).ext_http
         end
         @parameter[:default]=id
         @cfg[:output]=@records[id]
@@ -128,6 +127,9 @@ module CIAX
       def upd_current
         if @current > @list.size or @list.size > @lastsize
           set_current(@lastsize=@list.size)
+        end
+        if @current > 0
+          "(#{@seq['stat']})"+optlist(@seq['option'])
         end
       end
     end

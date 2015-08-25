@@ -54,11 +54,16 @@ module CIAX
           depth=@cfg[:depth]
           @body.each{|elem|
             elem["depth"]=depth
-            batch << elem
-            next if elem["type"] != "mcr" || /true|1/ === elem["async"]
-            grp=@cfg.ancestor(2)
-            sub_batch=grp.set_cmd(elem["args"],{:depth => depth+1}).cfg[:batch]
-            batch.concat sub_batch
+            case elem['type']
+            when "mcr"
+              batch << elem
+              next if /true|1/ === elem["async"]
+              grp=@cfg.ancestor(2)
+              sub_batch=grp.set_cmd(elem["args"],{:depth => depth+1}).cfg[:batch]
+              batch.concat sub_batch
+            else
+              batch << elem
+            end
           }
           @cfg[:batch]=batch
         end

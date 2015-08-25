@@ -154,36 +154,6 @@
         <index ref="htr" label="HeaterPower2(%%)" />
       </status>
     </instance>
-    <instance id="mix" app_id="ixe" host="moircssamhost1" port="25607" label="MOIRCS Turret">
-      <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-        <item id="none_1" label="No Filter for Turret 1" ref="opt">
-          <argv>1</argv>
-          <argv>1</argv>
-        </item>
-        <item id="none_2" label="No Filter for Turret 2" ref="opt">
-          <argv>2</argv>
-          <argv>11</argv>
-        </item>
-        <item id="none_3" label="No Filter for Turret 3" ref="opt">
-          <argv>3</argv>
-          <argv>4</argv>
-        </item>
-      </alias>
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <index ref="p1" symbol="t1" />
-        <index ref="p2" symbol="t2" />
-        <index ref="p3" symbol="t3" />
-        <index ref="p4" symbol="t1" />
-        <index ref="p5" symbol="t2" />
-        <index ref="p6" symbol="t3" />
-        <index ref="mp1" symbol="t1" />
-        <index ref="mp2" symbol="t2" />
-        <index ref="mp3" symbol="t3" />
-        <index ref="mp4" symbol="t1" />
-        <index ref="mp5" symbol="t2" />
-        <index ref="mp6" symbol="t3" />
-      </status>
-      </instance>
     <instance id="mva" app_id="var" host="moircssamhost1" port="25608" label="MOIRCS Pumping"/>
     <instance id="mt1" app_id="tpg" host="moircssamhost1" port="25609" label="MOIRCS Pressure Main">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">

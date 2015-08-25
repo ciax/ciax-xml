@@ -11,13 +11,12 @@
   </xsd:element>
   <xsd:element name="item">
     <xsd:complexType>
-    <xsd:choice minOccurs="0" maxOccurs="unbounded">
-      <xsd:element ref="argv" />
-    </xsd:choice>
-    <xsd:attribute name="id" type="xsd:NCName" use="required" />
-    <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
-    <xsd:attribute name="ref" type="xsd:NCName" use="required" />
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="idbc:argv" />
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:NCName" use="required" />
+      <xsd:attribute name="label" type="xsd:token" use="optional" />
+      <xsd:attribute name="ref" type="xsd:NCName" use="required" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="argv" type="xsd:token"/>
 </xsd:schema>

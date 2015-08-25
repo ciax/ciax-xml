@@ -36,6 +36,14 @@
           <equal label="Running" var="run" site="crt">OFF</equal>
         </wait>
       </item>
+      <item id="runi" label="Run with interlock to Tag [1-12]">
+        <par_num label="1-12">1:12</par_num>
+        <select site="crt" var="cps">
+          <option mcr="r08to">8</option>
+          <option mcr="run"/>
+          <argv>$1</argv>
+        </select>
+      </item>
       <item id="lift" label="Jack UP Level [1-4]">
         <par_num>1:4</par_num>
         <goal label="On Destination Level?">

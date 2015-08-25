@@ -43,6 +43,7 @@
         <xsd:group ref="mdb:validate" minOccurs="0" maxOccurs="unbounded" />
         <xsd:element ref="mdb:goal" minOccurs="0" maxOccurs="1" />
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
+          <xsd:element ref="mdb:select" />
           <xsd:element ref="mdb:check" />
           <xsd:element ref="mdb:wait" />
           <xsd:element ref="mdb:mesg" />
@@ -110,6 +111,27 @@
   <xsd:element name="equal" type="mdb:condition"/>
   <xsd:element name="not" type="mdb:condition"/>
   <xsd:element name="pattern" type="mdb:condition"/>
+  <xsd:element name="select">
+    <xsd:complexType>
+      <xsd:sequence  minOccurs="1" maxOccurs="1">
+        <xsd:element ref="mdb:option" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="mdb:argv" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+      <xsd:attribute name="site" type="xsd:token" use="required" />
+      <xsd:attribute name="var" type="xsd:token" use="required" />
+      <xsd:attribute name="label" type="xsd:token" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="option">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="mcr" type="xsd:token" use="required" />
+          <xsd:attribute name="label" type="xsd:token" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
   <xsd:element name="mcr">
     <xsd:complexType>
       <xsd:complexContent>

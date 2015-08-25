@@ -39,9 +39,12 @@
       <item id="runi" label="Run with interlock to Tag [1-12]">
         <par_num label="1-12">1:12</par_num>
         <select site="crt" var="cps">
-          <option mcr="r08to">8</option>
-          <option mcr="run"/>
-          <argv>$1</argv>
+          <mcr name="sr08to" value="8">
+            <argv>$1</argv>
+          </mcr>
+          <mcr name="run">
+            <argv>$1</argv>
+          </mcr>
         </select>
       </item>
       <item id="lift" label="Jack UP Level [1-4]">

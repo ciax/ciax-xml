@@ -59,6 +59,10 @@ module CIAX
               attr['label']=idx[cmd]['label']
               attr.delete('name')
               body << attr
+            when 'select'
+              attr['select']=get_option(e1)
+              attr.delete('name')
+              body << attr
             end
           }
           body << final unless final.empty?
@@ -81,6 +85,14 @@ module CIAX
           args << e2.text
         }
         args
+      end
+
+      def get_option(e1)
+        options={}
+        e1.each{|e2|
+          options[e2['value']||'*']=getcmd(e2)
+        }
+        options
       end
     end
 

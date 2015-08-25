@@ -31,6 +31,7 @@
       <xsd:choice>
         <xsd:element ref="sdb:pattern" maxOccurs="unbounded" />
         <xsd:element ref="sdb:range" maxOccurs="unbounded" />
+        <xsd:element ref="sdb:numeric" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
@@ -41,6 +42,16 @@
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
           <xsd:attributeGroup ref="sdb:sym_attr" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="numeric">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:decimal">
+          <xsd:attributeGroup ref="sdb:sym_attr" />
+          <xsd:attribute name="tolerance" type="xsd:decimal" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

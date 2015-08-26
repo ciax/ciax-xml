@@ -101,7 +101,7 @@ module CIAX
               @step.ok?
               query(['ok'])
             when 'goal'
-              break if @step.skip? && !query(['skip','force'])
+              raise Skip if @step.skip? && !query(['skip','force'])
             when 'check'
               @step.fail? && query(['drop','force','retry'])
             when 'wait'
@@ -123,6 +123,9 @@ module CIAX
           end
         }
         finish
+        self
+      rescue Skip
+        finish('skipped')
         self
       rescue Interlock
         finish('error')

@@ -22,7 +22,7 @@ module CIAX
         update('dir' => '','cmd' => '','base64' => '')
         verbose("Initialize [#{iocmd.join(' ')}]")
         @wait=wait.to_f
-        @timeout=timeout||5
+        @timeout=timeout||10
         @pre_open_proc=proc{}
         @post_open_proc=proc{}
         Signal.trap(:CHLD){

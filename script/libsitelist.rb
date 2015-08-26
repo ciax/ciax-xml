@@ -35,6 +35,10 @@ module CIAX
         super
       end
 
+      def getstat(attr)
+        get(attr['site']).stat.get(attr['var'])
+      end
+
       def server(ary)
         ary.each{|site|
           sleep 0.3

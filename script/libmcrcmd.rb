@@ -58,21 +58,33 @@ module CIAX
             when "mcr"
               batch << elem
               next if /true|1/ === elem["async"]
-              grp=@cfg.ancestor(2)
-              sub_batch=grp.set_cmd(elem["args"],{:depth => depth+1}).cfg[:batch]
-              batch.concat sub_batch
+              batch.concat sub_batch(elem['args'])
+            when "select"
+              sel=elem['select']
+              val=@cfg[:sub_list].getstat(elem)
+              args=sel[val]||sel['*']
+              @cfg['select']=args.join(':')
+              batch.concat sub_batch(args)
             else
               batch << elem
             end
           }
           @cfg[:batch]=batch
         end
+
+        private
+        def sub_batch(args)
+          grp=@cfg.ancestor(2)
+          grp.set_cmd(args,{:depth => @cfg[:depth]+1}).cfg[:batch]
+        end
       end
     end
 
     if __FILE__ == $0
+      require "libwatexe"
       GetOpts.new
       cfg=Config.new
+      cfg[:sub_list]=Wat::List.new(cfg)
       cobj=Index.new(cfg)
       cobj.add_rem
       cobj.rem.def_proc{|ent| ent.cfg.path }

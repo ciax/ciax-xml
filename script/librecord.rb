@@ -24,11 +24,12 @@ module CIAX
         self
       end
 
-      def add_step(e1)
+      def add_step(e1,depth)
         Msg.type?(@cfg[:sub_list],CIAX::List)
         step=Step.new(e1,@cfg)
         step.post_upd_procs << proc{post_upd}
         step['time']=Msg.elps_sec(self['time'])
+        step['depth']=depth
         @data << step
         step
       ensure

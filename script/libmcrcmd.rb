@@ -53,18 +53,13 @@ module CIAX
           batch=Arrayx.new
           depth=@cfg[:depth]
           @body.each{|elem|
-            elem["depth"]=depth
             case elem['type']
-            when "mcr"
-              batch << elem
-              next if /true|1/ === elem["async"]
-              batch.concat sub_batch(elem['args'])
             when "select"
+              hash={'type' => 'mcr'}
               sel=elem['select']
               val=@cfg[:sub_list].getstat(elem)
-              args=sel[val]||sel['*']
-              @cfg['select']=args.join(':')
-              batch.concat sub_batch(args)
+              hash['args']=sel[val]||sel['*']
+              batch << hash
             else
               batch << elem
             end
@@ -73,9 +68,9 @@ module CIAX
         end
 
         private
-        def sub_batch(args)
+        def sub_batch(args,depth)
           grp=@cfg.ancestor(2)
-          grp.set_cmd(args,{:depth => @cfg[:depth]+1}).cfg[:batch]
+          grp.set_cmd(args,{:depth => depth}).cfg[:batch]
         end
       end
     end

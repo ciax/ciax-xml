@@ -30,6 +30,7 @@ module CIAX
         type?(@cfg[:sub_list],CIAX::List)
         db=type?(@cfg[:dbi],Dbi)
         @record=Record.new
+        @mobj=ent.cfg.ancestor(2)
         @submcr_proc=@cfg[:submcr_proc]||proc{|args,id|
           show(Msg.indent(@step['depth']+1)+"Sub Macro #{args} issued\n")
           {'id' => 'dmy'}
@@ -55,7 +56,7 @@ module CIAX
 
       def fork
         @record.start(@cfg)
-        @th_mcr=Threadx.new("Macro(#@id)",10){macro}
+        @th_mcr=Threadx.new("Macro(#@id)",10){macro(@cfg[:batch])}
         @cobj.get('interrupt').def_proc{|ent,src|
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
@@ -65,7 +66,8 @@ module CIAX
 
       def start
         @record.start(@cfg)
-        macro
+        show @record
+        macro(@cfg[:batch])
       end
 
       def to_v
@@ -86,13 +88,12 @@ module CIAX
       end
 
       private
-      def macro
+      def macro(batch,depth=0)
         set_stat('run')
-        show @record
-        @cfg[:batch].each{|e1|
+        batch.each{|e1|
           self['step']+=1
           begin
-            @step=@record.add_step(e1)
+            @step=@record.add_step(e1,depth)
             case e1['type']
             when 'mesg'
               @step.ok?
@@ -107,8 +108,12 @@ module CIAX
               @running << e1['site']
               @cfg[:sub_list].get(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
             when 'mcr'
-              if @step.async? && @submcr_proc.is_a?(Proc)
-                @step['id']=@submcr_proc.call(e1['args'],@record['id'])['id']
+              if @step.async?
+                if @submcr_proc.is_a?(Proc)
+                  @step['id']=@submcr_proc.call(e1['args'],@record['id'])['id']
+                end
+              else
+                macro(@mobj.set_cmd(e1['args']).cfg[:batch],depth+1)                
               end
             end
           rescue Retry

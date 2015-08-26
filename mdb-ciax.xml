@@ -216,6 +216,9 @@
         <wait label="Hooking" retry="40">
           <equal site="$1" var="exe">OFF</equal>
         </wait>
+        <mcr name="runi">
+          <argv>8</argv>
+        </mcr>
         <mcr name="fju0">
           <argv>$1</argv>
         </mcr>
@@ -247,10 +250,9 @@
       </item>
       <!--Run & Transer-->
       <item id="r08to" label="Leave IR from Tag 8 to [2-7]">
-        <par_num>2:7</par_num>
+        <par_num>1:12</par_num>
         <goal label="Leave Cart and Transer Stored?">
-          <not site="crt" var="cps">8</not>
-          <equal site="dsi" var="mtr">BK</equal>
+          <equal site="crt" var="cps">8</equal>
         </goal>
         <check label="CART CLEAR?">
           <equal site="crt" var="cps">8</equal>

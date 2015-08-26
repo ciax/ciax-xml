@@ -9,7 +9,6 @@ module CIAX
       def initialize(db,cfg)
         super()
         update db
-        self['depth']=db['depth']
         #[:stat_proc,:exec_proc,:submcr_proc,:query]
         @cfg=cfg
         @condition=delete('cond')

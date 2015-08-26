@@ -77,13 +77,13 @@ module CIAX
         super
         @field.ext_file
         @site_stat.add_db('comerr' => 'X','strerr' => 'E')
-        timeout=5
         if $opt['s']
           @mode='SIM'
           iocmd=['devsim-file',@id,@fdb['version']]
           timeout=60
         else
           iocmd=@fdb['iocmd'].split(' ')
+          timeout=(@fdb['timeout']||10).to_i
         end
         @stream=Stream.new(@id,@fdb['version'],iocmd,@fdb['wait'],timeout)
         @stream.ext_log unless $opt['s']

@@ -52,6 +52,7 @@ module CIAX
     class Test < Exe
       def initialize(id,cfg,attr={})
         super
+        @field.ext_file
         @cobj.rem.def_proc{|ent|@field['time']=now_msec;''}
         @cobj.rem.ext.def_proc{|ent| ent.cfg.path }
         @cobj.get('set').def_proc{|ent|

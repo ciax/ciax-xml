@@ -55,7 +55,7 @@ module CIAX
     class Test < Exe
       def initialize(id,cfg,attr={})
         super
-        @stat.ext_sym
+        @stat.ext_sym.ext_file
         @stat.post_upd_procs << proc{|st|
           verbose("Propagate Status#upd -> App#settime")
           st['time']=now_msec

@@ -32,7 +32,7 @@ module CIAX
         @record=Record.new
         @mobj=ent.cfg.ancestor(2)
         @submcr_proc=@cfg[:submcr_proc]||proc{|args,id|
-          show(Msg.indent(@step['depth']+1)+"Sub Macro #{args} issued\n")
+          show{"Sub Macro #{args} issued\n"}
           {'id' => 'dmy'}
         }
         @post_stat_procs=[] # execute on stat changes
@@ -43,6 +43,7 @@ module CIAX
         @que_res=Queue.new
         update({'id'=>@record['id'],'cid'=>@cfg[:cid],'pid'=>@cfg['pid'],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>[]})
         @running=[]
+        @depth=0
         # For Thread mode
         @cobj=Index.new(Config.new)
         @cobj.add_rem.add_hid
@@ -66,7 +67,7 @@ module CIAX
 
       def start
         @record.start(@cfg)
-        show @record
+        show{@record}
         macro(@cfg[:batch])
       end
 
@@ -88,12 +89,13 @@ module CIAX
       end
 
       private
-      def macro(batch,depth=0)
+      def macro(batch)
+        @depth+=1
         set_stat('run')
         batch.each{|e1|
           self['step']+=1
           begin
-            @step=@record.add_step(e1,depth)
+            @step=@record.add_step(e1,@depth)
             case e1['type']
             when 'mesg'
               @step.ok?
@@ -103,7 +105,7 @@ module CIAX
             when 'check'
               @step.fail? && query(['drop','force','retry'])
             when 'wait'
-              @step.timeout?{show '.'} && query(['drop','force','retry'])
+              @step.timeout?{show('.')} && query(['drop','force','retry'])
             when 'exec'
               @running << e1['site']
               @cfg[:sub_list].get(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
@@ -113,7 +115,7 @@ module CIAX
                   @step['id']=@submcr_proc.call(e1['args'],@record['id'])['id']
                 end
               else
-                macro(@mobj.set_cmd(e1['args']).cfg[:batch],depth+1)
+                macro(@mobj.set_cmd(e1['args']).cfg[:batch])
               end
             end
           rescue Retry
@@ -127,6 +129,8 @@ module CIAX
         self
       rescue Interrupt
         interrupt
+      ensure
+        @depth-=1
       end
 
       # Communicate with forked macro
@@ -150,7 +154,7 @@ module CIAX
 
       def finish(str='complete')
         @running.clear
-        show str+"\n"
+        show{"#{str}"}
         @record.finish(str)
         self['option'].clear
         set_stat str
@@ -212,8 +216,13 @@ module CIAX
       end
 
       # Print section
-      def show(msg)
-        print msg if Msg.fg?
+      def show(str=nil)
+        return unless Msg.fg?
+        if defined? yield
+          puts indent(@depth)+yield.to_s
+        else
+          print str
+        end
       end
     end
 

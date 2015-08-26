@@ -44,7 +44,7 @@ module CIAX
         update({'id'=>@record['id'],'cid'=>@cfg[:cid],'pid'=>@cfg['pid'],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>[]})
         @running=[]
         # For Thread mode
-        @cobj=Index.new(@cfg)
+        @cobj=Index.new(Config.new)
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(self['option']).valid_clear
         @cobj.rem.int.def_proc{|ent| reply(ent.id)}

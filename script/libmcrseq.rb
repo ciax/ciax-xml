@@ -113,7 +113,7 @@ module CIAX
                   @step['id']=@submcr_proc.call(e1['args'],@record['id'])['id']
                 end
               else
-                macro(@mobj.set_cmd(e1['args']).cfg[:batch],depth+1)                
+                macro(@mobj.set_cmd(e1['args']).cfg[:batch],depth+1)
               end
             end
           rescue Retry

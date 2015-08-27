@@ -85,7 +85,8 @@ module CIAX
           iocmd=@fdb['iocmd'].split(' ')
           timeout=(@fdb['timeout']||10).to_i
         end
-        @stream=Stream.new(@id,@fdb['version'],iocmd,@fdb['wait'],timeout)
+        tm=@fdb[:response][:frame]["terminator"]
+        @stream=Stream.new(@id,@fdb['version'],iocmd,@fdb['wait'],timeout,(tm && eval('"'+tm+'"')))
         @stream.ext_log unless $opt['s']
         @stream.pre_open_proc=proc{@site_stat['strerr']=true}
         @stream.post_open_proc=proc{@site_stat['strerr']=false}

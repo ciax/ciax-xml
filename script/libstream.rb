@@ -14,7 +14,7 @@ module CIAX
     class Stream < Varx
       attr_reader :binary
       attr_accessor :pre_open_proc,:post_open_proc
-      def initialize(id,ver,iocmd,wait=0,timeout=nil)
+      def initialize(id,ver,iocmd,wait=0,timeout=nil,terminator=nil)
         Msg.abort(" No IO command") if iocmd.to_a.empty?
         @iocmd=type?(iocmd,Array).compact
         super('stream',id,ver)
@@ -23,6 +23,7 @@ module CIAX
         verbose("Initialize [#{iocmd.join(' ')}]")
         @wait=wait.to_f
         @timeout=timeout||10
+        @terminator=terminator
         @pre_open_proc=proc{}
         @post_open_proc=proc{}
         Signal.trap(:CHLD){
@@ -46,19 +47,23 @@ module CIAX
         sleep @wait
         verbose("Wait for Recieving")
         reopen
-        if IO.select([@f],nil,nil,@timeout)
-          begin
-            str=@f.sysread(4096)
-          rescue EOFError
-            #Jumped at quit
-            @f.close
-            exit
+        str=''
+        begin
+          if IO.select([@f],nil,nil,@timeout)
+            begin
+              str<<@f.sysread(4096)
+              verbose("Binary Getting",str.inspect)
+            rescue EOFError
+              #Jumped at quit
+              @f.close
+              exit
+            end
+          else
+            Msg.com_err("Stream:No response")
           end
-        else
-          Msg.com_err("Stream:No response")
-        end
+        end while @terminator and /#@terminator/ !~ str
         verbose("Recieved #{str.size} byte on #{self['cmd']}")
-        verbose("Binary Recieving",str.inspect)
+        verbose("Binary Recieved",str.inspect)
         convert('rcv',str)
         self
       end

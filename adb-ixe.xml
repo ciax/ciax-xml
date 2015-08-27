@@ -77,7 +77,7 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="resetp" label="Set Home Pulses">
+        <item id="resetp" label="Set Pulse Zero for OBS mode">
           <frmcmd name="set">
             <argv>p:0</argv>
             <argv>40000</argv>
@@ -103,6 +103,17 @@
             <argv>56000</argv>
           </frmcmd>
           <repeat from="1" to="6">
+            <frmcmd name="setp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="resetm" label="Set Pulse Zero for Access mode">
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="p:%d">$_</argv>
+              <argv>0</argv>
+            </frmcmd>
             <frmcmd name="setp">
               <argv>$_</argv>
             </frmcmd>

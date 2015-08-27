@@ -26,7 +26,7 @@
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.1">
       <repeat from="1" to="6">
         <event id="mv$_" label="Moving$_">
-          <onchange var="v$_" />
+          <onchange var="v$_" tolerance="0.1"/>
           <exec name="upd" />
         </event>
       </repeat>

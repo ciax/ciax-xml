@@ -102,8 +102,17 @@ module CIAX
           case ckitm['type']
           when 'onchange'
             cri=@data['last'][vn]
-            res=(cri and cri != val)
-            verbose("  onChange(#{vn}): [#{cri.inspect}] vs <#{val}> =>#{res.inspect}")
+            if cri
+              if tol=ckitm['tolerance'].to_f
+                res=((cri.to_f-val.to_f).abs > tol)
+                verbose("  onChange(#{vn}): |[#{cri}]-<#{val}>| > #{tol} =>#{res.inspect}")
+              else
+                res=(cri != val)
+                verbose("  onChange(#{vn}): [#{cri.inspect}] vs <#{val}> =>#{res.inspect}")
+              end
+            else
+              res=nil
+            end
           when 'pattern'
             cri=ckitm['val']
             res=(Regexp.new(cri) === val)

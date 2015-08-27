@@ -122,11 +122,11 @@
     </instance>
   </project>
   <project id="moircs" caption="MOIRCS" column="2">
-    <instance id="mfp" app_id="cfp" host="moircssamhost1" port="25601" label="MOIRCS Pneumatic Actuator"/>
-    <instance id="map" app_id="oma" host="moircssamhost1" port="25602" label="MOIRCS Air Pressure"/>
-    <instance id="mma" app_id="mma" host="moircssamhost1" port="25603" label="MOIRCS Extension Arm"/>
-    <instance id="mmc" app_id="mmc" host="moircssamhost1" port="25604" label="MOIRCS Carrousel"/>
-    <instance id="ml1" app_id="lk8" host="moircssamhost1" port="25605" label="MOIRCS Temperature 1">
+    <instance id="mfp" app_id="cfp" host="moircsobcp" port="25601" label="MOIRCS Pneumatic Actuator"/>
+    <instance id="map" app_id="oma" host="moircsobcp" port="25602" label="MOIRCS Air Pressure"/>
+    <instance id="mma" app_id="mma" host="moircsobcp" port="25603" label="MOIRCS Extension Arm"/>
+    <instance id="mmc" app_id="mmc" host="moircsobcp" port="25604" label="MOIRCS Carrousel"/>
+    <instance id="ml1" app_id="lk8" host="moircsobcp" port="25605" label="MOIRCS Temperature 1">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
         <index ref="ch0" label="MosCold2" />
         <index ref="ch1" label="MosCold1" />
@@ -140,7 +140,7 @@
         <index ref="htr" label="HeaterPower1(%%)" />
       </status>
     </instance>
-    <instance id="ml2" app_id="lk8" host="moircssamhost1" port="25606" label="MOIRCS Temperature 2">
+    <instance id="ml2" app_id="lk8" host="moircsobcp" port="25606" label="MOIRCS Temperature 2">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
         <index ref="ch0" label="Robohand" />
         <index ref="ch1" label="CollBench" />
@@ -154,20 +154,20 @@
         <index ref="htr" label="HeaterPower2(%%)" />
       </status>
     </instance>
-    <instance id="mva" app_id="var" host="moircssamhost1" port="25608" label="MOIRCS Pumping"/>
-    <instance id="mt1" app_id="tpg" host="moircssamhost1" port="25609" label="MOIRCS Pressure Main">
+    <instance id="mva" app_id="var" host="moircsobcp" port="25608" label="MOIRCS Pumping"/>
+    <instance id="mt1" app_id="tpg" host="moircsobcp" port="25609" label="MOIRCS Pressure Main">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
         <index ref="st1" label="Main Dewar Stat" />
         <index ref="ch1" label="Main Dewar (Torr)" />
       </status>
     </instance>
-    <instance id="mt2" app_id="tpg" host="moircssamhost1" port="25610" label="MOIRCS Pressure Main">
+    <instance id="mt2" app_id="tpg" host="moircsobcp" port="25610" label="MOIRCS Pressure Main">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
         <index ref="st1" label="Throat Stat" />
         <index ref="ch1" label="Throat (Torr)" />
       </status>
     </instance>
-    <instance id="mt3" app_id="tpg" host="moircssamhost1" port="25611" label="MOIRCS Pressure Pump">
+    <instance id="mt3" app_id="tpg" host="moircsobcp" port="25611" label="MOIRCS Pressure Pump">
       <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
         <index ref="st1" label="Turbo Pump Stat" />
         <index ref="ch1" label="Turbo Pump (Torr)" />
@@ -175,8 +175,8 @@
         <index ref="ch2" label="Scroll Pump (Torr)" />
       </status>
     </instance>
-    <instance id="mft" app_id="fpa" host="moircssamhost1" port="25612" label="MOIRCS Hall Sensor"/>
-    <instance id="mp1" app_id="ken" host="moircssamhost1" port="25613" label="MOIRCS Power Supply 1">
+    <instance id="mft" app_id="fpa" host="moircsobcp" port="25612" label="MOIRCS Hall Sensor"/>
+    <instance id="mp1" app_id="ken" host="moircsobcp" port="25613" label="MOIRCS Power Supply 1">
       <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
         <item id="getconf" label="Get Config" ref="getconf1" />
       </alias>
@@ -196,7 +196,7 @@
         <group ref="gt2" caption="Tracking/CH [UNIT C]" />
       </status>
     </instance>
-    <instance id="mp2" app_id="ken" host="moircssamhost1" port="25614" label="MOIRCS Power Supply 2">
+    <instance id="mp2" app_id="ken" host="moircsobcp" port="25614" label="MOIRCS Power Supply 2">
       <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
         <item id="getconf" label="Get Config" ref="getconf2" />
       </alias>
@@ -217,7 +217,7 @@
         <group ref="gdo2" caption="Delay/CH [UNIT C]" />
       </status>
     </instance>
-    <instance id="mph" app_id="mph" host="moircssamhost1" port="25615" label="MOIRCS Power Supply Hilo"/>
+    <instance id="mph" app_id="mph" host="moircsobcp" port="25615" label="MOIRCS Power Supply Hilo"/>
     <instance id="mh1" app_id="psp" host="merope" port="25621" label="MOIRCS Carrousel Heater"/>
     <instance id="mh2" app_id="psp" host="atlas" port="25622" label="MOIRCS Main Heater"/>
     <instance id="mmf" app_id="mic" host="elextra" port="25623" label="MOIRCS Focus Control"/>

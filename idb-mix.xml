@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="moircs" caption="MOIRCS" column="2">
-    <instance id="mix" app_id="ixe" host="moircssamhost1" port="25607" label="MOIRCS Turret">
+    <instance id="mix" app_id="ixe" host="moircsobcp" port="25607" label="MOIRCS Turret">
       <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
         <item id="co_1" label="CO Filter for Turret 1" ref="opt">
           <argv>1</argv>

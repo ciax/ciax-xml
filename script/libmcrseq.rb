@@ -92,6 +92,7 @@ module CIAX
       def macro(batch)
         @depth+=1
         set_stat('run')
+        result='complete'
         batch.each{|e1|
           self['step']+=1
           begin
@@ -101,7 +102,10 @@ module CIAX
               @step.ok?
               query(['ok'])
             when 'goal'
-              raise Skip if @step.skip? && !query(['skip','force'])
+              if @step.skip? && !query(['skip','force'])
+                result='skipped'
+                break
+              end
             when 'check'
               @step.fail? && query(['drop','force','retry'])
             when 'wait'
@@ -122,10 +126,7 @@ module CIAX
             retry
           end
         }
-        finish
-        self
-      rescue Skip
-        finish('skipped')
+        finish(result)
         self
       rescue Interlock
         finish('error')

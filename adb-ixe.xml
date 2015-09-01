@@ -108,7 +108,7 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="resetm" label="Set Pulse Zero for Access mode">
+        <item id="resetm" label="Set Pulse Zero for MTN mode">
           <repeat from="1" to="6">
             <frmcmd name="set">
               <argv format="p:%d">$_</argv>
@@ -184,7 +184,7 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="updp" label="Update Pulse" hidden="true">
+        <item id="updp" label="Update Pulse [1-6(Turret)]" hidden="true">
           <par_num>1:6</par_num>
           <frmcmd name="chkrun">
             <argv>$1</argv>
@@ -192,11 +192,8 @@
           <frmcmd name="getp">
             <argv>$1</argv>
           </frmcmd>
-          <frmcmd name="getmp">
-            <argv>$1</argv>
-          </frmcmd>
         </item>
-        <item id="stop" label="Stop Run [1-6]" hidden="true">
+        <item id="stop" label="Stop Run [1-6(Turret)]" hidden="true">
           <par_num>1:6</par_num>
           <frmcmd name="stop">
             <argv>$1</argv>

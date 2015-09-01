@@ -103,8 +103,8 @@ module CIAX
           when 'onchange'
             cri=@data['last'][vn]
             if cri
-              if tol=ckitm['tolerance'].to_f
-                res=((cri.to_f-val.to_f).abs > tol)
+              if tol=ckitm['tolerance']
+                res=((cri.to_f-val.to_f).abs > tol.to_f)
                 verbose("  onChange(#{vn}): |[#{cri}]-<#{val}>| > #{tol} =>#{res.inspect}")
               else
                 res=(cri != val)

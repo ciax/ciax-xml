@@ -35,7 +35,7 @@ module CIAX
       def snd(str,cid)
         return if str.to_s.empty?
         verbose("Sending #{str.size} byte on #{cid}")
-        verbose("Binary Sending",str.inspect)
+        verbose("Data Sending",str.inspect)
         reopen
         @f.write(str)
         convert('snd',str,cid)
@@ -63,7 +63,7 @@ module CIAX
           end
         end while @terminator and /#@terminator/ !~ str
         verbose("Recieved #{str.size} byte on #{self['cmd']}")
-        verbose("Binary Recieved",str.inspect)
+        verbose("Data Recieved",str.inspect)
         convert('rcv',str)
         self
       end

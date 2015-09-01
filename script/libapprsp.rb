@@ -70,17 +70,17 @@ module CIAX
         type?(e,Hash)
         fld=e['ref'] || Msg.abort("No field Key in #{e}")
         data=@field.get(fld)
-        verbose("NoFieldData in [#{fld}]") if data.empty?
+        verbose("NoFieldContent in [#{fld}]") if data.empty?
         data=e[:conv][data] if e[:conv]
         if /true|1/ === e['sign']
-          verbose("ConvertFieldData[#{fld}]=[#{data.inspect}]")
+          verbose("ConvertField[#{fld}]=[#{data.inspect}]")
           if data == e['negative']
             data="-"
           else
             data="+"
           end
         end
-        verbose("GetFieldData[#{fld}]=[#{data.inspect}]")
+        verbose("GetField[#{fld}]=[#{data.inspect}]")
         data
       end
 

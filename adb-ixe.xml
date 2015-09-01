@@ -260,7 +260,7 @@
         </repeat_var>
       </group>
     </status>
-    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1" period="3600">
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.01" period="3600">
       <repeat from="1" to="6">
         <event id="m$_" label="Moving $_">
           <pattern var="r$_">N</pattern>
@@ -280,6 +280,16 @@
             <argv>$_</argv>
           </exec>
         </event>
+        <event id="f$_" label="Finish $_">
+          <onchange var="r$_"/>
+          <pattern var="r1">E</pattern>
+          <pattern var="r2">E</pattern>
+          <pattern var="r3">E</pattern>
+          <pattern var="r4">E</pattern>
+          <pattern var="r5">E</pattern>
+          <pattern var="r6">E</pattern>
+        <exec name="upd"/>
+      </event>
       </repeat>
     </watch>
   </app>

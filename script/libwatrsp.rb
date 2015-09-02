@@ -55,14 +55,6 @@ module CIAX
         self
       end
 
-      def ext_logging
-        logging=Logging.new('event',Hash[self])
-        @post_exe_procs << proc{|src,pri,args|
-          logging.append('src'=>src,'pri'=>pri,'cmd'=>args,'active'=>@data['active'])
-        }
-        self
-      end
-
       private
       def upd_core
         return self unless @stat['time'] > @ctime

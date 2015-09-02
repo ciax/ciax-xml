@@ -72,8 +72,8 @@ module CIAX
       self
     end
 
-    def save(tag=nil)
-      write_json(to_j,tag)
+    def save
+      write_json(to_j)
     end
 
     private
@@ -108,18 +108,13 @@ module CIAX
         begin
           logary << @queue.pop
         end until @queue.empty?
-        open(logpath,'a') {|f|
+        open(vardir("log")+file_base+"_#{Time.now.year}.log",'a') {|f|
           logary.each{|str|
             f.puts str
             verbose("#{@type.capitalize} Appended #{str.size} byte",str)
           }
         }
       }
-    end
-
-    private
-    def logpath(tag=nil)
-      vardir("log")+file_base(tag)+"_#{Time.now.year}.log"
     end
   end
 end

@@ -98,7 +98,7 @@ module CIAX
           if @event.get('exec').empty?
             verbose("Auto Update(#{@sub.stat['time']})")
             begin
-              @event.queue('auto',3,[['upd']]).upd.exec
+              @event.queue('auto',3,[['upd']]).exec
             rescue InvalidID
               errmsg
             rescue

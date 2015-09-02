@@ -37,7 +37,7 @@ module CIAX
 
       def next_upd
         @data['upd_next']=now_msec+@period*1000
-        upd
+        self
       end
 
       def ext_rsp(stat)

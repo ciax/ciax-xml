@@ -5,6 +5,7 @@
     <xsd:attribute name="id" type="xsd:token" use="required" />
     <xsd:attribute name="label" type="xsd:token" use="optional" />
     <xsd:attribute name="symbol" type="xsd:NCName" />
+    <xsd:attribute name="default" type="xsd:token" />
   </xsd:attributeGroup>
   <xsd:attributeGroup name="ref_attr">
     <xsd:attribute name="ref" type="xsd:NCName" use="required" />

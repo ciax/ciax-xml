@@ -23,7 +23,7 @@
         </repeat_var>
       </group>
       <group id="g2" caption="Modes">
-        <string id="auto" label="Auto update" symbol="warn"/>
+        <string id="auto" label="Auto update" symbol="warn" default="0"/>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.01">

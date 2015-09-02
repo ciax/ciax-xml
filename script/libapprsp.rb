@@ -21,7 +21,7 @@ module CIAX
           enclose("GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
             flds=hash[:fields]
             if flds.empty?
-              @data[id]=''
+              @data[id]||=''
               next
             end
             case type=hash['type']

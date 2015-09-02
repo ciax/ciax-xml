@@ -52,13 +52,13 @@ module CIAX
   end
 
   module Save
-    def ext_save(tag=nil)
-      verbose("Save Initialize [#{file_base(tag)}]")
+    def ext_save
+      verbose("Save Initialize [#{file_base}]")
       FileUtils.mkdir_p(VarDir+"/json/")
       self['id']||Msg.cfg_err("No ID")
       @post_upd_procs << proc{
         verbose("Propagate upd -> save")
-        save(tag)
+        save
       }
       self
     end

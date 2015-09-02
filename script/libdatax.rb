@@ -40,15 +40,15 @@ module CIAX
       get(@data.keys.sort[n])
     end
 
-    def ext_file(tag=nil) # File I/O
+    def ext_file # File I/O
       extend File
-      ext_file(tag)
+      ext_file
       self
     end
 
-    def ext_http(host=nil,tag=nil) # Read only as a client
+    def ext_http(host=nil) # Read only as a client
       extend Http
-      ext_http(host,tag)
+      ext_http(host)
       self
     end
 
@@ -127,12 +127,12 @@ module CIAX
 
   module Http;Color=3
     require "open-uri"
-    def ext_http(host,tag)
+    def ext_http(host)
       @host=host||'localhost'
       verbose("Initialize(#{@host})")
       self['id']||Msg.cfg_err("ID")
-      @pre_upd_procs << proc{load(tag)}
-      load(tag)
+      @pre_upd_procs << proc{load}
+      load
       self
     end
 
@@ -161,9 +161,9 @@ module CIAX
 
   module File;Color=12
     include Save
-    def ext_file(tag=nil)
-      ext_save(tag)
-      load unless tag
+    def ext_file
+      ext_save
+      load
       self
     end
 

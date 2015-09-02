@@ -90,6 +90,14 @@ module CIAX
       post_upd
     end
 
+    # Replace value
+    def rep(key,val)
+      Msg.par_err("No such Key [#{key}]") unless @data.key?(key)
+      get(key).replace(val)
+    ensure
+      post_upd
+    end
+
     def del(key) # super should be placed at the end of method
       @data.delete(key)
       self['time']=now_msec

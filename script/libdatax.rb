@@ -40,9 +40,9 @@ module CIAX
       get(@data.keys.sort[n])
     end
 
-    def ext_file # File I/O
+    def ext_file(latest_link=nil) # File I/O
       extend File
-      ext_file
+      ext_file(latest_link)
       self
     end
 
@@ -161,8 +161,8 @@ module CIAX
 
   module File;Color=12
     include Save
-    def ext_file
-      ext_save
+    def ext_file(latest_link=nil)
+      ext_save(latest_link)
       load
       self
     end

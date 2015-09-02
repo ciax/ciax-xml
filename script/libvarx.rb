@@ -28,9 +28,9 @@ module CIAX
       self
     end
 
-    def ext_save(tag=nil) # Save data at every after update
+    def ext_save # Save data at every after update
       extend Save
-      ext_save(tag)
+      ext_save
       self
     end
 
@@ -52,7 +52,8 @@ module CIAX
   end
 
   module Save
-    def ext_save
+    # Set latest_link=true for making latest link at save
+    def ext_save(latest_link=nil)
       verbose("Save Initialize [#{file_base}]")
       FileUtils.mkdir_p(VarDir+"/json/")
       self['id']||Msg.cfg_err("No ID")
@@ -60,6 +61,14 @@ module CIAX
         verbose("Propagate upd -> save")
         save
       }
+      save
+      # Making 'latest' link
+      if latest_link
+        sname=VarDir+"/json/#{@type}_latest.json"
+        ::File.unlink(sname) if ::File.exist?(sname)
+        ::File.symlink(file_path,sname)
+        verbose("Symboliclink to [#{sname}]")
+      end
       self
     end
 
@@ -80,13 +89,6 @@ module CIAX
         f << json_str
         verbose("[#{rname}](#{f.size}) is Saved")
       }
-      if tag
-        # Making 'latest' tag link
-        sname=file_path('latest')
-        ::File.unlink(sname) if ::File.exist?(sname)
-        ::File.symlink(rname,sname)
-        verbose("Symboliclink to [#{sname}]")
-      end
       self
     end
   end

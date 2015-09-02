@@ -9,7 +9,7 @@ module CIAX
       def initialize(id=nil) # Session ID for Loading
         super('record',[],'steps')
         self['id']=id||self['time'].to_s # Session ID
-        ext_file
+        ext_file(true)
       end
 
       # cfg will come from Entity, which should have [:cid],['label'],@layers[:wat]

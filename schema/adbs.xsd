@@ -106,7 +106,7 @@
   </xsd:element>
   <xsd:element name="string">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="adbs:field" />
         <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded" />
       </xsd:choice>

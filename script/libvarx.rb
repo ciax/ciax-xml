@@ -57,7 +57,7 @@ module CIAX
       FileUtils.mkdir_p(VarDir+"/json/")
       self['id']||Msg.cfg_err("No ID")
       @post_upd_procs << proc{
-        verbose("Propagate #{self.class}#upd -> save")
+        verbose("Propagate upd -> save")
         save(tag)
       }
       self
@@ -99,7 +99,7 @@ module CIAX
       verbose("Log Initialize [#{id}/Ver.#{ver}]")
       @queue=Queue.new
       @post_upd_procs << proc{
-        verbose("Propagate #{self.class}#upd -> logging")
+        verbose("Propagate upd -> logging")
         @queue.push(to_j)
       }
       ThreadLoop.new("Logging(#{@type}:#{id})",11){

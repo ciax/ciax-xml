@@ -29,6 +29,7 @@ module CIAX
         @cobj.rem.add_ext(Db.new.get(PROJ))
         @parameter=@cobj.rem.int.par
         @list.post_upd_procs << proc{
+          verbose("Propagate List#upd -> Parameter#upd")
           @parameter[:list]=@list.keys
         }
         #Set sublist

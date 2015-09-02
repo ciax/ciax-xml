@@ -80,6 +80,7 @@ module CIAX
           @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
           @cfg[:jump_groups] << @jumpgrp
           @post_upd_procs << proc{
+            verbose("Propagate List#upd -> JumpGrp#upd")
             @jumpgrp.number_item(@data.values.map{|seq| seq['id']})
           }
           self

@@ -202,13 +202,28 @@
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ixe">
-      <group id="g1" caption="Stat" column="3">
+      <group caption="Mode" id="gm" column="2">
+        <binary id="trm" label="Terminal Mode" symbol="off_warn">
+          <field bit="2" ref="stat" />
+        </binary>
+        <binary id="cmd" label="Computer Mode" symbol="off_warn">
+          <field bit="7" ref="stat" />
+        </binary>
+      </group>
+      <group id="gs" caption="Stat" column="3">
         <binary id="rdy" label="Comm Ready" symbol="off_warn">
           <field bit="0" ref="stat" />
         </binary>
         <binary id="srq" label="SRQ" symbol="off_warn">
           <field bit="1" ref="stat" />
         </binary>
+        <string id="stp" label="Stop All" symbol="stp">
+          <repeat_field from="1" to="6">
+            <field ref="run" index="$_-1" />
+          </repeat_field>
+        </string>
+      </group>
+      <group caption="Error" id="ge" column="2">
         <binary id="pme" label="Program Error" symbol="alarm">
           <field bit="3" ref="stat" />
         </binary>
@@ -220,14 +235,6 @@
         </binary>
         <binary id="ees" label="EXT EM Stop" symbol="alarm">
           <field bit="6" ref="stat" />
-        </binary>
-      </group>
-      <group caption="Mode" id="g2" column="2">
-        <binary id="trm" label="Terminal Mode" symbol="off_warn">
-          <field bit="2" ref="stat" />
-        </binary>
-        <binary id="cmd" label="Computer Mode" symbol="off_warn">
-          <field bit="7" ref="stat" />
         </binary>
       </group>
       <group id="g3" caption="Turret Status" column="3">

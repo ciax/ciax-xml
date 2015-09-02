@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="ixe" label="MOIRCS Turret">
+    <table id="stp">
+      <pattern class="normal" msg="STOP">EEEEEE</pattern>
+      <pattern class="warn" msg="NO"/>
+    </table>
     <table id="pos">
       <range class="warn" msg="S00">-0.2:0.2,11.8:12.2</range>
       <range class="warn" msg="S01">0.8:1.2</range>

@@ -11,7 +11,10 @@ module CIAX
         super()
         wdb=type?(adb,Dbi)[:watch]||{:index =>[]}
         @event=type?(event,Event)
-        @event.post_upd_procs << proc{upd}
+        @event.post_upd_procs << proc{
+          verbose("Propagate Event#upd -> View#upd")
+          upd
+        }
         self['stat']={}
         wdb[:index].each{|id,evnt|
           hash=(self['stat'][id]||={})

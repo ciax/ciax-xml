@@ -2,7 +2,6 @@
 require "fileutils"
 module CIAX
   require 'debug' if ENV['DEBUG']
-  VarDir="#{ENV['HOME']}/.var"
   ScrDir=::File.dirname(__FILE__)
   Indent='  '
 
@@ -42,6 +41,7 @@ module CIAX
   # Configuration Error
   class ConfigError < ServerError; end
 
+  ######################### Message Module #############################
   # Should be extended in module/class
   module Msg
     attr_accessor :cls_color
@@ -98,7 +98,7 @@ module CIAX
       @@base-=1
       verbose(sprintf(title2,res))
       @show_inside=false
-   end
+    end
 
     # Private Method
     private
@@ -138,6 +138,7 @@ module CIAX
     end
     ### Class method ###
 
+    ########################## Module Functions ###########################
     module_function
     # Messaging methods
     def progress(f=true)
@@ -330,6 +331,13 @@ module CIAX
 
     def m2id(mod,pos=-1)
       mod.name.split('::')[pos].downcase
+    end
+
+    # Make Var dir if not exist
+    def vardir(subdir)
+      dir="#{ENV['HOME']}/.var/#{subdir}/"
+      FileUtils.mkdir_p(dir)
+      dir
     end
   end
 

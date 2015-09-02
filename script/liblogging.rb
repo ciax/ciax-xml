@@ -13,8 +13,7 @@ module CIAX
       @header=type?(header,Hash)
       id=@header['id']
       ver=@header['ver']
-      FileUtils.mkdir_p(VarDir+"/log/")
-      @loghead=VarDir+"/log/"+type+"_#{id}"
+      @loghead=vardir('log')+"#{type}_#{id}"
       verbose("Initialize (#{id}/Ver.#{ver})")
       @queue=Queue.new
       ThreadLoop.new("Old Logging(#{type}:#{id})",11){

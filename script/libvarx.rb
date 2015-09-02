@@ -55,8 +55,8 @@ module CIAX
     # Set latest_link=true for making latest link at save
     def ext_save(latest_link=nil)
       verbose("Save Initialize [#{file_base}]")
-      FileUtils.mkdir_p(VarDir+"/json/")
       self['id']||Msg.cfg_err("No ID")
+      @jsondir=vardir('json')
       @post_upd_procs << proc{
         verbose("Propagate upd -> save")
         save
@@ -64,7 +64,7 @@ module CIAX
       save
       # Making 'latest' link
       if latest_link
-        sname=VarDir+"/json/#{@type}_latest.json"
+        sname=@jsondir+"#{@type}_latest.json"
         ::File.unlink(sname) if ::File.exist?(sname)
         ::File.symlink(file_path,sname)
         verbose("Symboliclink to [#{sname}]")
@@ -78,7 +78,7 @@ module CIAX
 
     private
     def file_path(tag=nil)
-      VarDir+"/json/"+file_base(tag)+'.json'
+      @jsondir+file_base(tag)+'.json'
     end
 
     def write_json(json_str,tag=nil)
@@ -95,7 +95,6 @@ module CIAX
 
   module Log
     def ext_log # logging with flatten
-      FileUtils.mkdir_p(VarDir+"/log/")
       id=self['id']
       ver=self['ver']
       verbose("Log Initialize [#{id}/Ver.#{ver}]")
@@ -120,7 +119,7 @@ module CIAX
 
     private
     def logpath(tag=nil)
-      VarDir+"/log/"+file_base(tag)+"_#{Time.now.year}.log"
+      vardir("log")+file_base(tag)+"_#{Time.now.year}.log"
     end
   end
 end

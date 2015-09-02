@@ -52,6 +52,7 @@ module CIAX
         super
         @cfg[:output]=View.new(@sub.adb,@event)
         @cobj.loc.add_view
+        input_conv_set
         self
       end
     end

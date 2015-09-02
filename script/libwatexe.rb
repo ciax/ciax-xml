@@ -32,19 +32,24 @@ module CIAX
 
       def ext_sv
         @mode=@sub.mode
-        @event.post_upd_procs << proc{upd}
+        @event.post_upd_procs << proc{
+          verbose("Propagate Event#upd -> Watch::Exe#upd")
+          upd
+        }
+        # @event is independent from @sub.stat
         @sub.stat.post_upd_procs << proc{
           verbose("Propagate Status#upd -> Event#upd")
+          @event.upd
         }
         @sub.pre_exe_procs << proc{|args| @event.block?(args) }
         @event.ext_rsp(@sub.stat)
+        self
       end
 
       def upd
         @site_stat['watch'] = @event.active?
         block=@event.get('block').map{|id,par| par ? nil : id}.compact
         @cobj.rem.ext.valid_sub(block)
-        verbose("Propagate Event#upd -> Watch::Exe#upd")
         self
       end
 
@@ -61,8 +66,6 @@ module CIAX
       def initialize(id,cfg,attr={})
         super
         ext_sv
-        # @event is independent from @sub.stat
-        @sub.stat.post_upd_procs << proc{@event.upd}
       end
     end
 
@@ -87,9 +90,6 @@ module CIAX
         @tid_auto=auto_update
         @post_exe_procs << proc{
           @site_stat['auto'] = @tid_auto && @tid_auto.alive?
-        }
-        @sub.stat.post_upd_procs << proc{
-          @event.upd.exec
         }
       end
 

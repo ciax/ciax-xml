@@ -41,6 +41,7 @@ module CIAX
         @cobj=Index.new(@cfg)
         @cobj.add_rem.add_hid
         @cobj.rem.add_ext(@adb)
+        @cobj.rem.add_int
       end
 
       def ext_shell
@@ -61,7 +62,7 @@ module CIAX
           st['time']=now_msec
         }
         @post_exe_procs << proc{@stat.upd}
-        @cobj.rem.add_int
+        @cobj.rem.int.ext_sv
         @cobj.get('interrupt').def_proc{|ent|
           "INTERRUPT(#{@batch_interrupt})"
         }
@@ -94,6 +95,7 @@ module CIAX
           @buf.send(pri,ent,src)
           "ISSUED"
         }
+        @cobj.rem.int.ext_sv
         @cobj.get('interrupt').def_proc{|ent,src|
           @batch_interrupt.each{|args|
             verbose("#@id/Issuing:#{args} for Interrupt")

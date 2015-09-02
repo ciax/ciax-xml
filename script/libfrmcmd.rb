@@ -20,15 +20,7 @@ module CIAX
           any={:type =>'reg',:list => ["."]}
           add_item('save',"[key,key...] [tag]",def_pars(2))
           add_item('load',"[tag]",def_pars(1))
-          cmd=add_item('set',"[key(:idx)] [val(,val)]",def_pars(2))
-          cmd.def_proc{|ent|
-            if @cfg[:field].key?(ent.par[0])
-              @cfg[:field].put(*ent.par)
-              'OK'
-            else
-              "No such value #{ent.par[0]}"
-            end
-          }
+          add_item('set',"[key(:idx)] [val(,val)]",def_pars(2))
           add_item('flush',"Stream")
         end
       end

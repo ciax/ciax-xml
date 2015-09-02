@@ -19,7 +19,8 @@ module CIAX
       def upd_core
         @adbs.each{|id,hash|
           enclose("GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
-            flds=hash[:fields]||next
+            flds=hash[:fields]
+            next if flds.empty?
             case type=hash['type']
             when 'binary'
               bary=flds.map{|e| get_bin(e) }

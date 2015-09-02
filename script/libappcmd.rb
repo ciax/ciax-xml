@@ -15,14 +15,20 @@ module CIAX
       class Group < Group
         def initialize(cfg,attr={})
           super
-          add_item('set','[key] [val]',def_pars(2)).def_proc{|ent|
-            @cfg[:stat].put(ent.par[0],ent.par[1])
+          add_item('set','[key] [val]',def_pars(2))
+          add_item('del','[key,...]',def_pars(1))
+        end
+
+        def ext_sv
+          get('set').def_proc{|ent|
+            @cfg[:stat].rep(ent.par[0],ent.par[1])
             "SET:#{ent.par[0]}=#{ent.par[1]}"
           }
-          add_item('del','[key,...]',def_pars(1)).def_proc{|ent|
+          get('del').def_proc{|ent|
             ent.par[0].split(',').each{|key| @cfg[:stat].del(key) }
             "DELETE:#{ent.par[0]}"
           }
+          self
         end
       end
       class Item < Item;end

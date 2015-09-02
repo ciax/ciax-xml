@@ -45,7 +45,7 @@ module CIAX
         @running=[]
         @depth=0
         # For Thread mode
-        @cobj=Index.new(Config.new)
+        @cobj=Index.new(Config.new(:output => @record))
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(self['option']).valid_clear
         @cobj.rem.int.def_proc{|ent| reply(ent.id)}

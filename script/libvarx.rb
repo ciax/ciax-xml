@@ -103,15 +103,16 @@ module CIAX
         verbose("Propagate upd -> logging")
         @queue.push(to_j)
       }
+      logfile=vardir("log")+file_base+"_#{Time.now.year}.log"
       ThreadLoop.new("Logging(#{@type}:#{id})",11){
         logary=[]
         begin
           logary << @queue.pop
         end until @queue.empty?
-        open(vardir("log")+file_base+"_#{Time.now.year}.log",'a') {|f|
+        open(logfile,'a') {|f|
           logary.each{|str|
             f.puts str
-            verbose("#{@type.capitalize} Appended #{str.size} byte",str)
+            verbose("Appended #{str.size} byte",str)
           }
         }
       }

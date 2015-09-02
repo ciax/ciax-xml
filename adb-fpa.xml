@@ -22,7 +22,7 @@
           </float>
         </repeat_var>
       </group>
-      <group id="hid">
+      <group id="g2" caption="Modes">
         <string id="auto" label="Auto update" symbol="warn"/>
       </group>
     </status>

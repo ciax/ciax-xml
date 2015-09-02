@@ -20,7 +20,10 @@ module CIAX
         @adbs.each{|id,hash|
           enclose("GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
             flds=hash[:fields]
-            next if flds.empty?
+            if flds.empty?
+              @data[id]=''
+              next
+            end
             case type=hash['type']
             when 'binary'
               bary=flds.map{|e| get_bin(e) }

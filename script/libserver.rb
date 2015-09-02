@@ -41,7 +41,7 @@ module CIAX
         rescue InvalidCMD
           self['msg']="INVALID"
         rescue
-          self['msg']=$!.to_s
+          self['msg']="ERROR:#{$!}"
           errmsg
         end
         send_str=@server_output_proc.call

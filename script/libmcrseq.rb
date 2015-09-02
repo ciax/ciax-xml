@@ -89,10 +89,11 @@ module CIAX
       end
 
       private
+      # macro returns result
       def macro(batch)
         @depth+=1
         set_stat('run')
-        result='complete'
+        result=
         batch.each{|e1|
           self['step']+=1
           begin
@@ -103,8 +104,7 @@ module CIAX
               query(['ok'])
             when 'goal'
               if @step.skip? && !query(['skip','force'])
-                result='skipped'
-                break
+                return finish('skipped')
               end
             when 'check'
               @step.fail? && query(['drop','force','retry'])
@@ -119,18 +119,16 @@ module CIAX
                   @step['id']=@submcr_proc.call(e1['args'],@record['id'])['id']
                 end
               else
-                macro(@mobj.set_cmd(e1['args']).cfg[:batch])
+                @step['result']=macro(@mobj.set_cmd(e1['args']).cfg[:batch])
               end
             end
           rescue Retry
             retry
           end
         }
-        finish(result)
-        self
+        finish('complete')
       rescue Interlock
         finish('error')
-        self
       rescue Interrupt
         interrupt
       ensure
@@ -153,7 +151,6 @@ module CIAX
           @cfg[:sub_list].get(site).exe(['interrupt'],'user')
         } if $opt['m']
         finish('interrupted')
-        self
       end
 
       def finish(str='complete')
@@ -163,7 +160,7 @@ module CIAX
         self['option'].clear
         set_stat str
         @post_mcr_procs.each{|p| p.call(self)}
-        self
+        str
       end
 
       def set_stat(str)

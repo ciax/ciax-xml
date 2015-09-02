@@ -287,17 +287,12 @@
             <argv>$_</argv>
           </exec>
         </event>
-        <event id="f$_" label="Finish $_">
-          <onchange var="r$_"/>
-          <pattern var="r1">E</pattern>
-          <pattern var="r2">E</pattern>
-          <pattern var="r3">E</pattern>
-          <pattern var="r4">E</pattern>
-          <pattern var="r5">E</pattern>
-          <pattern var="r6">E</pattern>
+      </repeat>
+      <event id="fin" label="Finish Run">
+        <onchange var="stp"/>
+        <pattern var="stp">EEEEEE</pattern>
         <exec name="upd"/>
       </event>
-      </repeat>
     </watch>
   </app>
 </adb>

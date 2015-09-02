@@ -30,7 +30,7 @@ module CIAX
         @sub.batch_interrupt=@event.get('int')
       end
 
-      def init_sv
+      def ext_sv
         @mode=@sub.mode
         @event.post_upd_procs << proc{upd}
         @sub.stat.post_upd_procs << proc{
@@ -60,7 +60,7 @@ module CIAX
     class Test < Exe
       def initialize(id,cfg,attr={})
         super
-        init_sv
+        ext_sv
         # @event is independent from @sub.stat
         @sub.stat.post_upd_procs << proc{@event.upd}
       end
@@ -78,7 +78,7 @@ module CIAX
     class Sv < Exe
       def initialize(id,cfg,attr={})
         super
-        init_sv
+        ext_sv
         @event.ext_file
         @event.def_proc=proc{|args,src,pri|
           @sub.exe(args,src,pri)

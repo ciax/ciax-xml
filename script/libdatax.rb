@@ -93,7 +93,7 @@ module CIAX
     # Replace value
     def rep(key,val)
       Msg.par_err("No such Key [#{key}]") unless @data.key?(key)
-      get(key).replace(val)
+      (get(key)||put(key,'')).replace(val)
     ensure
       post_upd
     end

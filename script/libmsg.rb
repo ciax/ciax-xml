@@ -265,8 +265,9 @@ module CIAX
       (Time.now.to_f*1000).to_i
     end
 
-    def elps_sec(msec,base=now_msec)
+    def elps_sec(msec,base=nil)
       return 0 unless msec
+      base||=now_msec
       "%.3f" % ((base-msec).to_f/1000)
     end
 

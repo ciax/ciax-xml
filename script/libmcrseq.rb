@@ -56,8 +56,7 @@ module CIAX
       end
 
       def fork
-        @record.start(@cfg)
-        @th_mcr=Threadx.new("Macro(#@id)",10){macro(@cfg[:batch])}
+        @th_mcr=Threadx.new("Macro(#@id)",10){macro}
         @cobj.get('interrupt').def_proc{|ent,src|
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
@@ -66,9 +65,7 @@ module CIAX
       end
 
       def start
-        @record.start(@cfg)
-        show{@record}
-        macro(@cfg[:batch])
+        macro
       end
 
       def to_v
@@ -88,12 +85,30 @@ module CIAX
         self
       end
 
+      def macro
+        @record.start(@cfg)
+        show{@record}
+        sub_macro(@cfg[:batch],@record)
+      rescue Interrupt
+        msg("\nInterrupt Issued to running devices #{@running}",3)
+        @running.each{|site|
+          @cfg[:sub_list].get(site).exe(['interrupt'],'user')
+        } if $opt['m']
+      ensure
+        @running.clear
+        self['option'].clear
+        res=@record.finish
+        show{"#{res}"}
+        set_stat(res)
+        @post_mcr_procs.each{|p| p.call(self)}
+      end
+
       private
       # macro returns result
-      def macro(batch)
+      def sub_macro(batch,mstat)
         @depth+=1
         set_stat('run')
-        result=
+        result='complete'
         batch.each{|e1|
           self['step']+=1
           begin
@@ -103,35 +118,46 @@ module CIAX
               @step.ok?
               query(['ok'])
             when 'goal'
-              if @step.skip? && !query(['skip','force'])
-                return finish('skipped')
+              if @step.skip? && query(['skip','force'])
+                result='skipped'
+                break
               end
             when 'check'
-              @step.fail? && query(['drop','force','retry'])
+              if @step.fail? && query(['drop','force','retry'])
+                result='error'
+                return
+              end
             when 'wait'
-              @step.timeout?{show('.')} && query(['drop','force','retry'])
+              if @step.timeout?{show('.')} && query(['drop','force','retry'])
+                result='timeout'
+                return
+              end
             when 'exec'
-              @running << e1['site']
-              @cfg[:sub_list].get(e1['site']).exe(e1['args'],'macro') if @step.exec? && query(['exec','skip'])
+              if @step.exec? && query(['exec','pass'])
+                @running << e1['site']
+                @cfg[:sub_list].get(e1['site']).exe(e1['args'],'macro') 
+              end
             when 'mcr'
               if @step.async?
                 if @submcr_proc.is_a?(Proc)
                   @step['id']=@submcr_proc.call(e1['args'],@record['id'])['id']
                 end
               else
-                @step['result']=macro(@mobj.set_cmd(e1['args']).cfg[:batch])
+                res=sub_macro(@mobj.set_cmd(e1['args']).cfg[:batch],@step)
+                result=@step['result']
+                return unless res
               end
             end
           rescue Retry
             retry
           end
         }
-        finish('complete')
-      rescue Interlock
-        finish('error')
+        true
       rescue Interrupt
-        interrupt
+        result='interrupted'
+        raise Interrupt
       ensure
+        mstat['result']=result
         @depth-=1
       end
 
@@ -145,24 +171,6 @@ module CIAX
         end
       end
 
-      def interrupt
-        msg("\nInterrupt Issued to running devices #{@running}",3)
-        @running.each{|site|
-          @cfg[:sub_list].get(site).exe(['interrupt'],'user')
-        } if $opt['m']
-        finish('interrupted')
-      end
-
-      def finish(str='complete')
-        @running.clear
-        show{"#{str}"}
-        @record.finish(str)
-        self['option'].clear
-        set_stat str
-        @post_mcr_procs.each{|p| p.call(self)}
-        str
-      end
-
       def set_stat(str)
         self['stat']=str
       ensure
@@ -173,25 +181,19 @@ module CIAX
         return true if $opt['n']
         self['option'].replace(cmds)
         set_stat 'query'
-        if $opt['n']
-          res=$opt['e'] ? cmds.first : 'ok'
-        else
-          res=input(cmds)
-        end
+        res=input(cmds)
         self['option'].clear
         set_stat 'run'
         @step['action']=res
         case res
-        when 'exec','force','ok'
-          return true
-        when 'skip'
-          return false
-        when 'drop'
-          raise(Interlock)
         when 'retry'
           raise(Retry)
         when 'interrupt'
           raise(Interrupt)
+        when 'force','pass'
+          false
+        else
+          true
         end
       end
 

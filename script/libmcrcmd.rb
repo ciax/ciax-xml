@@ -25,11 +25,11 @@ module CIAX
           {
             "start"=>"Sequence",
             "exec"=>"Command",
-            "skip"=>"Execution",
+            "skip"=>"Macro",
             "drop"=>" Macro",
             "suppress"=>"and Memorize",
             "force"=>"Proceed",
-            "pass"=>"Step",
+            "pass"=>"Execution",
             "ok"=>"for the message",
             "retry"=>"Checking",
           }.each{|id,cap|

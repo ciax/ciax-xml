@@ -42,7 +42,8 @@ module CIAX
       }
       update(ARGV.getopts(str))
       # Set @layer (default 'Wat')
-      @layer=['Hex','App','Frm','Wat'].find{|c| self[c[0].downcase]}||'Wat'
+      lopt=['x','a','f','w'].find{|c| self[c]}||'w'
+      @layer=optdb[lopt].split(' ').first.capitalize
       $opt=self
     end
 

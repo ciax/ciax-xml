@@ -94,6 +94,7 @@ module CIAX
       end
 
       def auto_update
+        @event.next_upd
         ThreadLoop.new("Watch:Auto(#@id)",14){
           if @event.get('exec').empty?
             verbose("Auto Update(#{@sub.stat['time']})")

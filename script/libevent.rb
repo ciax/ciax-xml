@@ -16,7 +16,6 @@ module CIAX
         @def_proc=proc{}
         @data['act_start']=now_msec
         @data['act_end']=now_msec
-        next_upd
         #For Array element
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
         #For Hash element

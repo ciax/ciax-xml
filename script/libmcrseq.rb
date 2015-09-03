@@ -64,10 +64,6 @@ module CIAX
         self
       end
 
-      def start
-        macro
-      end
-
       def to_v
         msg=@record.to_v
         msg << "  [#{self['step']}/#{self['total_steps']}]"
@@ -93,7 +89,7 @@ module CIAX
         msg("\nInterrupt Issued to running devices #{@running}",3)
         @running.each{|site|
           @cfg[:sub_list].get(site).exe(['interrupt'],'user')
-        } if $opt['m']
+        }
       ensure
         @running.clear
         self['option'].clear
@@ -242,7 +238,7 @@ module CIAX
         ent=mobj.set_cmd(ARGV)
         seq=Seq.new(ent)
         if $opt['i']
-          seq.start
+          seq.macro
         else
           seq.ext_shell.shell
         end

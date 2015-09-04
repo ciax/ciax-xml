@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libvarx"
+require "libprompt"
 require "libthreadx"
 require "libgroup"
 
@@ -25,11 +25,11 @@ require "libgroup"
 
 module CIAX
   class Buffer < Varx
-    # svst: Server Status
-    def initialize(id,ver,svst={})
+    # site_stat: Server Status
+    def initialize(id,ver,site_stat={})
       super('issue',id,ver)
       update('pri' => '','cid' => '','src' => '')
-      @svst=type?(svst,Hash)
+      @site_stat=type?(site_stat,Prompt)
       #element of @q is bunch of frm args corresponding an appcmd
       @q=Queue.new
       @tid=nil
@@ -57,7 +57,7 @@ module CIAX
       #batch is frm batch (ary of ary)
       update('time'=>now_msec,'pri' => n,'cid' => ent.id,'src'=>src)
       unless batch.empty?
-        @svst['isu']=true
+        @site_stat.set('isu')
         @q.push(:pri => n,:batch => batch,:src => src)
       end
       self
@@ -95,7 +95,7 @@ module CIAX
       verbose("SUB:Waiting")
       # @q can not be empty depending on @flush_proc
       @flush_proc.call(self)
-      @svst['isu']=false if @q.empty?
+      @site_stat.reset('isu') if @q.empty?
       self
     end
 
@@ -124,7 +124,7 @@ module CIAX
     end
 
     def clear
-      @svst['isu']=false
+      @site_stat.reset('isu')
       @outbuf=[[],[],[]]
       @q.clear
       @tid && @tid.run

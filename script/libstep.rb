@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "libupd"
 require "libmcrprt"
 
 module CIAX

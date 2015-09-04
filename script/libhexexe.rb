@@ -29,7 +29,7 @@ module CIAX
 
       def ext_shell
         super
-        @shell_output_proc=proc{ @cfg[:output].upd.to_s }
+        @shell_output_proc=proc{ @cfg[:output].to_s }
         self
       end
 
@@ -37,7 +37,7 @@ module CIAX
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')
         }
-        @server_output_proc=proc{ @cfg[:output].upd.to_s }
+        @server_output_proc=proc{ @cfg[:output].to_s }
         super
       end
     end

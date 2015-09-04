@@ -17,7 +17,7 @@ module CIAX
         self['class']={}
         self['msg']={}
         @post_upd_procs << proc{ #post process
-          verbose("Propagate Status#upd -> Symbol#upd")
+          verbose("Propagate upd -> Symbol#upd")
           adbs[:index].each{|key,hash|
             sid=hash['symbol']||next
             unless tbl=@symdb[sid.to_sym]

@@ -105,9 +105,7 @@ module CIAX
           'INTERRUPT'
         }
         # Logging if version number exists
-        if sv=@cfg[:sqlog]
-          sv.add_table(@stat)
-        end
+        SqLog::Save.new(@id,'app').add_table(@stat)
       end
 
       private

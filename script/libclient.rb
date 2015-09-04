@@ -23,11 +23,11 @@ module CIAX
         verbose("UDP Send #{args}")
         if IO.select([@udp],nil,nil,1)
           res=@udp.recv(1024)
-          @site_stat['udperr']=false
+          @site_stat.reset('udperr')
           verbose("UDP Recv #{res}")
-          update(@site_stat.pick(JSON.load(res))) unless res.empty?
+          update(@site_stat.sub(JSON.load(res))) unless res.empty?
         else
-          @site_stat['udperr']=true
+          @site_stat.set('udperr')
           self['msg']='TIMEOUT'
         end
         self['msg']

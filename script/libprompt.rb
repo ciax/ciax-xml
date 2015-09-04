@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require "libenumx"
+require "libupd"
 module CIAX
   # For server status through all layers
-  class Prompt < Hashx
+  class Prompt < Upd
     attr_reader :db
     def initialize
       super()
@@ -14,8 +14,18 @@ module CIAX
       self
     end
 
-    # Pick up and merge to self data, return other data
-    def pick(input)
+    def set(key)
+      self[key]=true
+      upd
+    end
+
+    def reset(key)
+      self[key]=false
+      upd
+    end
+
+    # Subtract and merge to self data, return rest of the data
+    def sub(input)
       hash=input.dup
       @db.keys.each{|k|
         self[k]= hash[k] ? hash.delete(k) : false

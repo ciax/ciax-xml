@@ -88,11 +88,11 @@ module CIAX
         tm=@fdb[:response][:frame]["terminator"]
         @stream=Stream.new(@id,@fdb['version'],iocmd,@fdb['wait'],timeout,(tm && eval('"'+tm+'"')))
         @stream.ext_log unless $opt['s']
-        @stream.pre_open_proc=proc{@site_stat['strerr']=true}
-        @stream.post_open_proc=proc{@site_stat['strerr']=false}
+        @stream.pre_open_proc=proc{@site_stat.set('strerr')}
+        @stream.post_open_proc=proc{@site_stat.reset('strerr')}
         @field.ext_rsp{@stream.rcv}
         @cobj.rem.ext.def_proc{|ent|
-          @site_stat['comerr']=false
+          @site_stat.reset('comerr')
           @stream.snd(ent.cfg[:frame],ent.id)
           @field.conv(ent)
           'OK'
@@ -121,7 +121,7 @@ module CIAX
       def exe(args,src='local',pri=1)
         super
       rescue CommError
-        @site_stat['comerr']=true
+        @site_stat.set('comerr')
         self['msg']=$!.to_s
         raise $!
       end

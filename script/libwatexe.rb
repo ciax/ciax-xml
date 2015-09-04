@@ -47,7 +47,7 @@ module CIAX
       end
 
       def upd
-        @site_stat['watch'] = @event.active?
+        @site_stat.put('watch',@event.active?)
         block=@event.get('block').map{|id,par| par ? nil : id}.compact
         @cobj.rem.ext.valid_sub(block)
         self
@@ -89,7 +89,7 @@ module CIAX
         @event.ext_log if $opt['e'] && @sub.stat['ver']
         @tid_auto=auto_update
         @post_exe_procs << proc{
-          @site_stat['auto'] = @tid_auto && @tid_auto.alive?
+          @site_stat.put('auto',@tid_auto && @tid_auto.alive?)
         }
       end
 

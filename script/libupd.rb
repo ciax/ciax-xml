@@ -21,6 +21,12 @@ module CIAX
       post_upd # Save & Update super layer
     end
 
+    def put(key,val)
+      super
+      upd
+      val
+    end
+
     private
     def pre_upd
       @pre_upd_procs.each{|p| p.call(self)}

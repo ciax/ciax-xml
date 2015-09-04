@@ -25,13 +25,12 @@ module CIAX
       #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
       #ent_cfg should have [:dbi]
       def initialize(ent,attr={})
-        type?(ent,Mcr::Entity)
-        super(ent.id,ent.cfg,attr)
-        type?(@cfg[:sub_list],CIAX::List)
-        db=type?(@cfg[:dbi],Dbi)
+        @mcfg=type?(ent,Mcr::Entity).cfg
+        super(ent.id,Config.new,attr)
+        type?(@mcfg[:sub_list],CIAX::List)
+        type?(@mcfg[:dbi],Dbi)
         @record=Record.new.ext_file(true) # Make latest link
-        @mobj=ent.cfg.ancestor(2)
-        @submcr_proc=@cfg[:submcr_proc]||proc{|args,id|
+        @submcr_proc=@mcfg[:submcr_proc]||proc{|args,id|
           show{"Sub Macro #{args} issued\n"}
           {'id' => 'dmy'}
         }
@@ -41,11 +40,11 @@ module CIAX
         @th_mcr=Thread.current
         @que_cmd=Queue.new
         @que_res=Queue.new
-        update({'id'=>@record['id'],'cid'=>@cfg[:cid],'pid'=>@cfg['pid'],'step'=>0,'total_steps'=>@cfg[:batch].size,'stat'=>'ready','option'=>[]})
+        update({'id'=>@record['id'],'cid'=>@mcfg[:cid],'pid'=>@mcfg['pid'],'step'=>0,'total_steps'=>@mcfg[:batch].size,'stat'=>'ready','option'=>[]})
         @running=[]
         @depth=0
         # For Thread mode
-        @cobj=Index.new(Config.new(:output => @record))
+        @cobj=Index.new(@cfg)
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(self['option']).valid_clear
         @cobj.rem.int.def_proc{|ent| reply(ent.id)}
@@ -82,13 +81,13 @@ module CIAX
       end
 
       def macro
-        @record.start(@cfg)
+        @record.start(@mcfg)
         show{@record}
-        sub_macro(@cfg[:batch],@record)
+        sub_macro(@mcfg[:batch],@record)
       rescue Interrupt
         msg("\nInterrupt Issued to running devices #{@running}",3)
         @running.each{|site|
-          @cfg[:sub_list].get(site).exe(['interrupt'],'user')
+          @mcfg[:sub_list].get(site).exe(['interrupt'],'user')
         }
       ensure
         @running.clear
@@ -131,7 +130,7 @@ module CIAX
             when 'exec'
               if @step.exec? && query(['exec','pass'])
                 @running << e1['site']
-                @cfg[:sub_list].get(e1['site']).exe(e1['args'],'macro') 
+                @mcfg[:sub_list].get(e1['site']).exe(e1['args'],'macro') 
               end
             when 'mcr'
               if @step.async?
@@ -139,7 +138,7 @@ module CIAX
                   @step['id']=@submcr_proc.call(e1['args'],@record['id'])['id']
                 end
               else
-                res=sub_macro(@mobj.set_cmd(e1['args']).cfg[:batch],@step)
+                res=sub_macro(@mcfg.ancestor(2).set_cmd(e1['args']).cfg[:batch],@step)
                 result=@step['result']
                 return unless res
               end

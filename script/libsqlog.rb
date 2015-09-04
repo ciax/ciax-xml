@@ -115,13 +115,14 @@ module CIAX
           end
           # Add to stat.upd
           stat.post_upd_procs << proc{
-            verbose("Propagate Status#upd -> upd")
+            verbose("Propagate Save#upd -> upd")
             @queue.push sqlog.upd
           }
         else
           verbose("Initialize: invalid Version(0): No Log")
           stat.post_upd_procs << proc{
-            verbose("Propagate Status#upd -> upd(Dryrun)",sqlog.upd)
+            verbose("Propagate Save#upd -> upd(Dryrun)")
+            verbose("Insert",sqlog.upd)
           }
         end
         self

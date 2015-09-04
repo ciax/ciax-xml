@@ -6,7 +6,6 @@ require "libappcmd"
 require "libapprsp"
 require "libappsym"
 require "libbuffer"
-require "libsqlog"
 require "libinsdb"
 
 module CIAX
@@ -83,7 +82,7 @@ module CIAX
       # cfg(attr) must have layers[:frm]
       def initialize(id,cfg,attr={})
         super
-        @stat.ext_rsp(@sub.field).ext_sym.ext_file
+        @stat.ext_rsp(@sub.field).ext_sym.ext_file.ext_sqlog
         @buf=init_buf
         ver=@stat['ver']
         @sub.flush_procs << proc{
@@ -104,8 +103,6 @@ module CIAX
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
           'INTERRUPT'
         }
-        # Logging if version number exists
-        SqLog::Save.new(@id,'app').add_table(@stat)
       end
 
       private

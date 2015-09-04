@@ -51,6 +51,7 @@ module CIAX
   end
 
   module Save
+    require "libsqlog"
     # Set latest_link=true for making latest link at save
     def ext_save
       verbose("Save Initialize [#{file_base}]")
@@ -74,6 +75,12 @@ module CIAX
 
     def save
       write_json(to_j)
+    end
+
+    def ext_sqlog
+      # Logging if version number exists
+      SqLog::Save.new(@id,@type).add_table(self)
+      self
     end
 
     private

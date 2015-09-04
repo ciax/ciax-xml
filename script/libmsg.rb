@@ -5,6 +5,14 @@ module CIAX
   ScrDir=::File.dirname(__FILE__)
   Indent='  '
 
+  # Layer Color
+  module Frm;Color=2;end
+  module App;Color=3;end
+  module Wat;Color=9;end
+  module Hex;Color=5;end
+  module Mcr;Color=12;end
+  module Xml;Color=4;end
+
   # User input Error
   class UserError < RuntimeError; end
   # When invalid Project, exit from shell/server
@@ -341,11 +349,4 @@ module CIAX
       dir
     end
   end
-
-  module Frm;Color=2;end
-  module App;Color=6;end
-  module Wat;Color=3;end
-  module Hex;Color=5;end
-  module Mcr;Color=7;end
-  module Xml;Color=4;end
 end

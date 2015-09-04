@@ -9,7 +9,7 @@ module CIAX
       attr_accessor :def_proc
       def initialize
         super('event')
-        @cls_color=12
+        @cls_color=11
         @period=300
         @interval=0.1
         @post_exe_procs=[]

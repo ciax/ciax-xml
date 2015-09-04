@@ -28,6 +28,7 @@ module CIAX
         @event=Event.new.set_db(@sub.adb)
         @site_stat=@sub.site_stat.add_db('auto'=>'@','watch'=>'&')
         @sub.batch_interrupt=@event.get('int')
+        @sub_proc=proc{verbose("Dummy exec")}
       end
 
       def ext_sv
@@ -42,6 +43,10 @@ module CIAX
       end
 
       def upd
+        @event.get('exec').each{|src,pri,args|
+          verbose("Executing:#{args} from [#{src}] by [#{pri}]")
+          @sub_proc.call(args,src,pri)
+        }.clear
         @site_stat.put('watch',@event.active?)
         block=@event.get('block').map{|id,par| par ? nil : id}.compact
         @cobj.rem.ext.valid_sub(block)
@@ -77,7 +82,7 @@ module CIAX
       def initialize(id,cfg,attr={})
         super
         ext_sv
-        @event.def_proc=proc{|args,src,pri|
+        @sub_proc=proc{|args,src,pri|
           @sub.exe(args,src,pri)
         }
         @event.ext_log if $opt['e'] && @sub.stat['ver']
@@ -93,7 +98,8 @@ module CIAX
           if @event.get('exec').empty?
             verbose("Auto Update(#{@sub.stat['time']})")
             begin
-              @event.queue('auto',3,[['upd']]).exec
+              @event.queue('auto',3,[['upd']])
+              upd
             rescue InvalidID
               errmsg
             rescue

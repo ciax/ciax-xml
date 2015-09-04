@@ -30,10 +30,6 @@ module CIAX
           verbose("Propagate Status#upd -> upd")
           upd
         }
-        @post_upd_procs << proc{
-          verbose("Propagate upd -> exec")
-          exec
-        }
         upd
         self
       end
@@ -42,19 +38,6 @@ module CIAX
         batch.each{|args|
           @data['exec'] << [src,pri,args]
         }
-        self
-      end
-
-      def exec
-        return self if @data['exec'].empty?
-        @data['exec'].each{|src,pri,args|
-          verbose("Executing:#{args} from [#{src}] by [#{pri}]")
-          @def_proc.call(args,src,pri)
-        }
-        @post_exe_procs.each{|p|
-          p.call(@data['exec'])
-        }
-        @data['exec'].clear
         sleep @interval
         self
       end

@@ -6,13 +6,10 @@ module CIAX
   module Wat
     class Event < DataH
       attr_reader :period,:interval
-      attr_accessor :def_proc
       def initialize
         super('event')
         @period=300
         @interval=0.1
-        @post_exe_procs=[]
-        @def_proc=proc{}
         @data['act_start']=now_msec
         @data['act_end']=now_msec
         #For Array element

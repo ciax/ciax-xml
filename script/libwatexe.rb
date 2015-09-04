@@ -42,7 +42,7 @@ module CIAX
           @event.upd
         }
         @sub.pre_exe_procs << proc{|args| @event.block?(args) }
-        @event.ext_rsp(@sub.stat)
+        @event.ext_rsp(@sub.stat).ext_file
         self
       end
 
@@ -82,7 +82,6 @@ module CIAX
       def initialize(id,cfg,attr={})
         super
         ext_sv
-        @event.ext_file
         @event.def_proc=proc{|args,src,pri|
           @sub.exe(args,src,pri)
         }

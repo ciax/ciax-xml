@@ -201,17 +201,10 @@ module CIAX
     require "libappexe"
     GetOpts.new
     id=ARGV.shift
-    lev=ARGV.shift
     ARGV.clear
     begin
-      adb=Site::Db.new.get(id)[:adb]
-      case lev
-      when 'stat'
-      when 'issue'
-        stat=Buffer.new({})
-      else
-        stat=App::Status.new.set_db(adb).ext_file
-      end
+      adb=Ins::Db.new.get(id)
+      stat=App::Status.new.set_db(adb).ext_file
       sqlog=SqLog::Table.new(stat)
       puts stat
       puts sqlog.create

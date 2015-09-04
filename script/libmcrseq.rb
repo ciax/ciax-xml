@@ -29,7 +29,7 @@ module CIAX
         super(ent.id,Config.new,attr)
         type?(@mcfg[:sub_list],CIAX::List)
         type?(@mcfg[:dbi],Dbi)
-        @record=Record.new.ext_file(true) # Make latest link
+        @record=Record.new.ext_file.mklink # Make latest link
         @submcr_proc=@mcfg[:submcr_proc]||proc{|args,id|
           show{"Sub Macro #{args} issued\n"}
           {'id' => 'dmy'}

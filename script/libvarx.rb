@@ -53,7 +53,7 @@ module CIAX
 
   module Save
     # Set latest_link=true for making latest link at save
-    def ext_save(latest_link=nil)
+    def ext_save
       verbose("Save Initialize [#{file_base}]")
       self['id']||Msg.cfg_err("No ID")
       @jsondir=vardir('json')
@@ -61,14 +61,15 @@ module CIAX
         verbose("Propagate upd -> save")
         save
       }
-      save
+      self
+    end
+
+    def mklink
       # Making 'latest' link
-      if latest_link
-        sname=@jsondir+"#{@type}_latest.json"
-        ::File.unlink(sname) if ::File.exist?(sname)
-        ::File.symlink(file_path,sname)
-        verbose("Symboliclink to [#{sname}]")
-      end
+      sname=@jsondir+"#{@type}_latest.json"
+      ::File.unlink(sname) if ::File.exist?(sname)
+      ::File.symlink(file_path,sname)
+      verbose("Symboliclink to [#{sname}]")
       self
     end
 

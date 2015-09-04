@@ -26,8 +26,12 @@ module CIAX
           @list|=v[:cnd].map{|i| i["var"]}
         }
         @ctime=0
+        @stat.post_upd_procs << proc{
+          verbose("Propagate Status#upd -> upd")
+          upd
+        }
         @post_upd_procs << proc{
-          verbose("Propagate Event#upd -> Event#exec")
+          verbose("Propagate upd -> exec")
           exec
         }
         upd

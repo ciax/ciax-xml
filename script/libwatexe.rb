@@ -33,13 +33,8 @@ module CIAX
       def ext_sv
         @mode=@sub.mode
         @event.post_upd_procs << proc{
-          verbose("Propagate Event#upd -> Watch::Exe#upd")
+          verbose("Propagate Event#upd -> upd")
           upd
-        }
-        # @event is independent from @sub.stat
-        @sub.stat.post_upd_procs << proc{
-          verbose("Propagate Status#upd -> Event#upd")
-          @event.upd
         }
         @sub.pre_exe_procs << proc{|args| @event.block?(args) }
         @event.ext_rsp(@sub.stat).ext_file

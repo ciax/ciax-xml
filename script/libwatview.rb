@@ -12,7 +12,7 @@ module CIAX
         wdb=type?(adb,Dbi)[:watch]||{:index =>[]}
         @event=type?(event,Event)
         @event.post_upd_procs << proc{
-          verbose("Propagate Event#upd -> View#upd")
+          verbose("Propagate Event#upd -> upd")
           upd
         }
         self['stat']={}

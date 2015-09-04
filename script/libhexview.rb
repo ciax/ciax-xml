@@ -15,6 +15,7 @@ module CIAX
         file=View.sdb(id) || id_err("Hex/Can't found sdb_#{id}.txt")
         @res=["%",id,'_','0','0','_','']
         @list=[]
+        @vmode='x'
         open(file){|f|
           while line=f.gets
             ary=line.split(',')
@@ -75,6 +76,15 @@ module CIAX
 
       def to_x
         self['hex']
+      end
+
+      def to_s
+        case @vmode
+        when 'x'
+          to_x
+        else
+          super
+        end
       end
 
       private

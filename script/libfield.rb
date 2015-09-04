@@ -7,7 +7,6 @@ module CIAX
       attr_accessor :echo
       def initialize(init_struct={})
         super('field',init_struct)
-        @cls_color=11
       end
 
       def set_db(db)

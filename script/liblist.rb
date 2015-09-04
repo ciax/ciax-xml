@@ -10,6 +10,7 @@ module CIAX
     def initialize(cfg,attr={})
       @cfg=cfg.gen(self).update(attr)
       super(m2id(@cfg[:obj].class,-2),{},'list')
+      @cls_color=6
       $opt||=GetOpts.new
     end
 

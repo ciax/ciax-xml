@@ -12,6 +12,7 @@ module CIAX
       # Variable Data (Shown as 'data'(data_name) hash in JSON)
       @data_name=data_name
       @data=init_struct.dup.extend(Enumx)
+      @cls_color=12
     end
 
     def to_j

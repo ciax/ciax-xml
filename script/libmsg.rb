@@ -124,7 +124,7 @@ module CIAX
         ns_color=eval("#{ns}::NsColor")
       rescue NameError
         Msg.color("No #{ns}::NsColor",1)
-        ns_color=1
+        ns_color=7
       end
       ts << Msg.color("#{ns}",ns_color)
       ts << ':'

@@ -5,7 +5,7 @@ require "thread"
 
 # Generate SQL command string
 module CIAX
-  module SqLog
+  module SqLog;NsColor=1
     # Table create using @stat.keys
     class Table
       attr_reader :tid,:stat,:tname

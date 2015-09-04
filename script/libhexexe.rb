@@ -19,7 +19,7 @@ module CIAX
         @cobj=Index.new(@cfg)
         @cobj.add_rem(sub)
         @mode=sub.mode
-        @cfg[:output]=View.new(@id,sub.cfg['ver'],sub.site_stat,sub.stat)
+        @cfg[:output]=View.new(sub.stat,sub.site_stat)
         @post_exe_procs.concat(sub.post_exe_procs)
         @cfg['port']=sub.cfg['port'].to_i+1000
         if $opt['e']

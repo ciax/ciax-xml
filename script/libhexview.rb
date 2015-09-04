@@ -1,17 +1,18 @@
 #!/usr/bin/ruby
 # Ascii Pack
 require "libvarx"
+require "libprompt"
 
 module CIAX
   module Hex
     class View < Varx
       #hint should have server status (isu,watch,exe..) like App::Exe
-      def initialize(id,ver,hint,stat)
-        super('hex',id,ver)
-        # Server Status
-        @hint=type?(hint,Hash)
+      def initialize(stat,site_stat=Prompt.new)
         @stat=type?(stat,App::Status)
-        id=stat['id'] || id_err("NO ID(#{id}) in Stat")
+        super('hex',@stat['id'],@stat['ver'])
+        @site_stat=type?(site_stat,Prompt)
+        # Server Status
+        id=self['id'] || id_err("NO ID(#{id}) in Stat")
         file=View.sdb(id) || id_err("Hex/Can't found sdb_#{id}.txt")
         @res=["%",id,'_','0','0','_','']
         @list=[]
@@ -25,6 +26,10 @@ module CIAX
               @list << ary
             end
           end
+        }
+        @site_stat.post_upd_procs << proc{
+          verbose("Propagate Prompt#upd -> Hex::View#upd")
+          upd
         }
         @stat.post_upd_procs << proc{
           verbose("Propagate Status#upd -> Hex::View#upd")
@@ -40,10 +45,10 @@ module CIAX
       end
 
       def upd_core
-        @res[2]=b2e(@hint['udperr'])
-        @res[3]=b2i(@hint['watch'])
-        @res[4]=b2i(@hint['isu'])
-        @res[5]=b2e(@hint['comerr'])
+        @res[2]=b2e(@site_stat['udperr'])
+        @res[3]=b2i(@site_stat['watch'])
+        @res[4]=b2i(@site_stat['isu'])
+        @res[5]=b2e(@site_stat['comerr'])
         @res[6]=''
         pck=0
         bin=0
@@ -115,13 +120,11 @@ module CIAX
       require "libinsdb"
       require "libstatus"
       begin
-        stat=App::Status.new
-        id=STDIN.tty? ? ARGV.shift : stat.read['id']
-        stat.set_db(Ins::Db.new.get(id)).ext_file
-        hint=View.new(id,0,{},stat).upd
-        puts hint
+        raise(InvalidID) if STDIN.tty?
+        stat=App::Status.new.read
+        puts View.new(stat).upd
       rescue InvalidID
-        Msg.usage("[site] | < status_file")
+        Msg.usage(" < status_file")
       end
     end
   end

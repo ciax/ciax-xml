@@ -33,23 +33,14 @@ module CIAX
 
       def ext_sv
         @mode=@sub.mode
-        @event.post_upd_procs << proc{
+        @event.post_upd_procs << proc{|ev|
           verbose("Propagate Event#upd -> upd")
-          upd
+          @site_stat.put('watch',ev.active?)
+          block=ev.get('block').map{|id,par| par ? nil : id}.compact
+          @cobj.rem.ext.valid_sub(block)
         }
         @sub.pre_exe_procs << proc{|args| @event.block?(args) }
         @event.ext_rsp(@sub.stat).ext_file
-        self
-      end
-
-      def upd
-        @event.get('exec').each{|src,pri,args|
-          verbose("Executing:#{args} from [#{src}] by [#{pri}]")
-          @sub_proc.call(args,src,pri)
-        }.clear
-        @site_stat.put('watch',@event.active?)
-        block=@event.get('block').map{|id,par| par ? nil : id}.compact
-        @cobj.rem.ext.valid_sub(block)
         self
       end
 
@@ -82,10 +73,14 @@ module CIAX
       def initialize(id,cfg,attr={})
         super
         ext_sv
-        @sub_proc=proc{|args,src,pri|
-          @sub.exe(args,src,pri)
-        }
         @event.ext_log if $opt['e'] && @sub.stat['ver']
+        @event.post_upd_procs << proc{|ev|
+          ev.get('exec').each{|src,pri,args|
+            verbose("Executing:#{args} from [#{src}] by [#{pri}]")
+            @sub.exe(args,src,pri)
+          }.clear
+          sleep ev.interval
+        }
         @tid_auto=auto_update
         @post_exe_procs << proc{
           @site_stat.put('auto',@tid_auto && @tid_auto.alive?)
@@ -99,7 +94,6 @@ module CIAX
             verbose("Auto Update(#{@sub.stat['time']})")
             begin
               @event.queue('auto',3,[['upd']])
-              upd
             rescue InvalidID
               errmsg
             rescue

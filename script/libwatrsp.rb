@@ -30,15 +30,15 @@ module CIAX
           verbose("Propagate Status#upd -> upd")
           upd
         }
-        upd
         self
       end
 
       def queue(src,pri,batch=[])
+        @ctime=self['time']=now_msec
         batch.each{|args|
           @data['exec'] << [src,pri,args]
         }
-        sleep @interval
+        post_upd
         self
       end
 
@@ -53,7 +53,9 @@ module CIAX
           next unless check(id,item)
           item[:act].each{|key,ary|
             if key == :exec
-              queue('event',2,ary)
+              ary.each{|args|
+                @data['exec'] << ['event',2,args]
+              }
             else
               @data[key.to_s].concat(ary)
             end

@@ -14,7 +14,7 @@ module CIAX
     # update after processing, never iniherit (use upd_core() instead)
     def upd
       pre_upd # Loading file at client
-      verbose("UPD_PROC for [#{@type}:#{self['id']}]")
+      verbose("Update")
       upd_core # Data conversion
       self
     ensure

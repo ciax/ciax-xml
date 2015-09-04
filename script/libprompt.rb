@@ -16,12 +16,19 @@ module CIAX
 
     def set(key)
       self[key]=true
+      verbose("Set [#{key}]")
       upd
     end
 
     def reset(key)
       self[key]=false
+      verbose("Reset [#{key}]")
       upd
+    end
+
+    def put(key,val)
+      verbose("Change [#{key}] -> #{val}")
+      super
     end
 
     # Subtract and merge to self data, return rest of the data

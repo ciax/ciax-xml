@@ -6,12 +6,12 @@ module CIAX
   Indent='  '
 
   # Layer Color
-  module Frm;Color=2;end
-  module App;Color=3;end
-  module Wat;Color=9;end
-  module Hex;Color=5;end
-  module Mcr;Color=12;end
-  module Xml;Color=4;end
+  module Frm;NsColor=2;end
+  module App;NsColor=3;end
+  module Wat;NsColor=9;end
+  module Hex;NsColor=5;end
+  module Mcr;NsColor=12;end
+  module Xml;NsColor=4;end
 
   # User input Error
   class UserError < RuntimeError; end
@@ -121,9 +121,9 @@ module CIAX
       level=cpath.shift
       cls=cpath.join('::')
       begin
-        lv_color=eval("#{level}::Color")
+        lv_color=eval("#{level}::NsColor")
       rescue NameError
-        Msg.color("No #{level}::Color",1)
+        Msg.color("No #{level}::NsColor",1)
         lv_color=1
       end
       ts << Msg.color("#{level}",lv_color)

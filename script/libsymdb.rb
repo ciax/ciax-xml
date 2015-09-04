@@ -4,7 +4,7 @@ require "librerange"
 
 # id = Table Group ID
 module CIAX
-  module Sym;Color=1
+  module Sym;NsColor=1
     class Db < Db
       def initialize
         super('sdb')

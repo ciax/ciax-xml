@@ -14,7 +14,7 @@ module CIAX
     end
   end
 
-  module Command;Color=2
+  module Command
     # Corresponds commands
     class Item < Hashx
       include CmdProc

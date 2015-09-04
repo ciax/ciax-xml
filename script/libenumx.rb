@@ -3,7 +3,7 @@ require 'libview'
 require 'json'
 #Extened Hash
 module CIAX
-  module Enumx;Color=2
+  module Enumx
     include ViewStruct
     def self.extended(obj)
       raise("Not Enumerable") unless obj.is_a? Enumerable

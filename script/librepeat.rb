@@ -2,7 +2,7 @@
 require 'libmsg'
 
 module CIAX
-  class Repeat;Color=3
+  class Repeat;NsColor=3
     include Msg
     def initialize
       @cls_color=5

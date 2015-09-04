@@ -27,18 +27,13 @@ module CIAX
         end
       end
 
-      def ext_shell
-        super
-        @shell_output_proc=proc{ @cfg[:output].to_s }
-        self
-      end
-
       def ext_server
+        super
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')
         }
         @server_output_proc=proc{ @cfg[:output].to_s }
-        super
+        self
       end
     end
 

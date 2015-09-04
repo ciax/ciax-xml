@@ -9,7 +9,6 @@ module CIAX
     attr_reader :type
     def initialize(type,id=nil,ver=nil,host=nil)
       super()
-      @cls_color=6
       @type=type
       # Headers
       self['time']=now_msec
@@ -58,7 +57,7 @@ module CIAX
       self['id']||Msg.cfg_err("No ID")
       @jsondir=vardir('json')
       @post_upd_procs << proc{
-        verbose("Propagate upd -> save")
+        verbose("Propagate upd -> Save#save")
         save
       }
       self
@@ -101,7 +100,7 @@ module CIAX
       verbose("Log Initialize [#{id}/Ver.#{ver}]")
       @queue=Queue.new
       @post_upd_procs << proc{
-        verbose("Propagate upd -> logging")
+        verbose("Propagate upd -> Log#queue")
         @queue.push(to_j)
       }
       logfile=vardir("log")+file_base+"_#{Time.now.year}.log"

@@ -83,6 +83,7 @@ module CIAX
       ['v','r','j'].each{|k|
         @vmode=k if $opt[k]
       } if $opt
+      @cls_color=6
     end
 
     def get(id)

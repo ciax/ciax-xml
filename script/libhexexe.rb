@@ -19,17 +19,17 @@ module CIAX
         @cobj=Index.new(@cfg)
         @cobj.add_rem(sub)
         @mode=sub.mode
-        @output=View.new(@id,sub.cfg['ver'],sub.site_stat,sub.stat)
+        @cfg[:output]=View.new(@id,sub.cfg['ver'],sub.site_stat,sub.stat)
         @post_exe_procs.concat(sub.post_exe_procs)
         @cfg['port']=sub.cfg['port'].to_i+1000
         if $opt['e']
-          @output.ext_log
+          @cfg[:output].ext_log
         end
       end
 
       def ext_shell
         super
-        @shell_output_proc=proc{ @output.upd.to_x }
+        @shell_output_proc=proc{ @cfg[:output].upd.to_s }
         self
       end
 
@@ -37,7 +37,7 @@ module CIAX
         @server_input_proc=proc{|line|
           /^(strobe|stat)/ === line ? [] : line.split(' ')
         }
-        @server_output_proc=proc{ @output.upd.to_x }
+        @server_output_proc=proc{ @cfg[:output].upd.to_s }
         super
       end
     end

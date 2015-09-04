@@ -118,15 +118,15 @@ module CIAX
       ts << Msg.indent(@ver_indent)
       ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15)
       cpath=class_path
-      level=cpath.shift
+      ns=cpath.shift
       cls=cpath.join('::')
       begin
-        lv_color=eval("#{level}::NsColor")
+        ns_color=eval("#{ns}::NsColor")
       rescue NameError
-        Msg.color("No #{level}::NsColor",1)
-        lv_color=1
+        Msg.color("No #{ns}::NsColor",1)
+        ns_color=1
       end
-      ts << Msg.color("#{level}",lv_color)
+      ts << Msg.color("#{ns}",ns_color)
       ts << ':'
       ts << Msg.color("#{cls}",@cls_color||15)
       ts << ':'

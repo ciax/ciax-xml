@@ -37,7 +37,7 @@ module CIAX
     def exe(args,src='local',pri=1)
       type?(args,Array)
       verbose("Command #{args} recieved")
-      @pre_exe_procs.each{|p| p.call(args)}
+      @pre_exe_procs.each{|p| p.call(args,src)}
       self['msg']=@cobj.set_cmd(args).exe_cmd(src,pri)
       self
     rescue LongJump
@@ -46,7 +46,7 @@ module CIAX
       self['msg']=$!.to_s
       raise $!
     ensure
-      @post_exe_procs.each{|p| p.call(self)}
+      @post_exe_procs.each{|p| p.call(args,src)}
     end
 
     def ext_client

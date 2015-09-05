@@ -44,7 +44,16 @@ module CIAX
       def ext_shell
         super
         @cfg[:output]=@field
+        @post_exe_procs << proc{|args,src|
+          flush if !args.empty? and src != 'local'
+        }
         input_conv_set
+        self
+      end
+
+      private
+      def flush
+        @flush_procs.each{|p| p.call(self)}
         self
       end
     end
@@ -124,12 +133,6 @@ module CIAX
         @site_stat.set('comerr')
         self['msg']=$!.to_s
         raise $!
-      end
-
-      private
-      def flush
-        @flush_procs.each{|p| p.call(self)}
-        self
       end
     end
 

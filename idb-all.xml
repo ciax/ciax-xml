@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <project id="ciax" caption="CIAX" column="2">
+  <project id="ciax" caption="CIAX" include="cmp" column="2">
     <group id="sum" caption="Summit">
       <instance id="crt" app_id="mel" host="cxws2" port="25101" label="CIAX CART 3"/>
       <instance id="dsi" app_id="cj2" host="cxws2" port="25102" label="IR Stand-by"/>
@@ -28,198 +28,99 @@
       <instance id="c2j" app_id="cjk" host="ciax" port="25503" frm_site="cr2" label="CART 2 Jack Setting"/>
     </group>
   </project>
-  <project id="cmp" caption="Helium Compressor" column="2">
-    <instance id="cro" app_id="bbe" host="ciax" port="25106" label="OPT Helium Compressor">
-      <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-        <item id="on" label="Alias for X0 ON" ref="x0on" />
-        <item id="off" label="Alias for X0 OFF" ref="x0off" />
-      </alias>
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <group ref="g0" caption="X0-3" />
-        <group ref="g1" caption="X4-7" />
-        <group ref="g2" caption="X8-11" />
-        <group ref="g3" caption="X12-15" />
-      </status>
-      <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
-        <event label="ON Executed" id="on">
-          <onchange var="xsw0"/>
-          <pattern var="xsw0">1</pattern>
-          <pattern var="xsw1">0</pattern>
-          <exec name="x1on"/>
-        </event>
-        <event label="OFF Executed" id="off">
-          <onchange var="xsw0"/>
-          <pattern var="xsw0">0</pattern>
-          <pattern var="xsw1">1</pattern>
-          <exec name="x1off"/>
-        </event>
-      </watch>
-    </instance>
-    <instance id="cci" app_id="bbe" host="ciax" port="25108" label="IR Helium Compressor">
-      <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-        <item id="c2on" label="CAS2(S1) ON" ref="x0on" />
-        <item id="c2off" label="CAS2(S1) OFF" ref="x0off" />
-        <item id="c1on" label="CAS1(S2) ON" ref="x1on" />
-        <item id="c1off" label="CAS1(S2) OFF" ref="x1off" />
-        <item id="m2on" label="MOIRCS CR(S8) ON" ref="x2on" />
-        <item id="m2off" label="MOIRCS CR(S8) OFF" ref="x2off" />
-        <item id="m1on" label="MOIRCS MAIN(S9) ON" ref="x3on" />
-        <item id="m1off" label="MOIRCS MAIN(S9) OFF" ref="x3off" />
-        <item id="cmon" label="CAS MOIRCS/MAIN ON" ref="x0on" />
-        <item id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="x0off" />
-        <item id="ccon" label="CAS MOIRCS/CR ON" ref="x1on" />
-        <item id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
-        <item id="caon" label="CAS BOTH HC ON" ref="x01on" />
-        <item id="caoff" label="CAS BOTH HC OFF" ref="x01off" />
-        <item id="maon" label="MOIRCS BOTH ON" ref="x23on" />
-        <item id="maoff" label="MOIRCS BOTH OFF" ref="x23off" />
-      </alias>
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <group ref="g0" caption="CAS2(S1)(CIAO)" />
-        <group ref="g1" caption="CAS1(S2)(MOIRCS/MAIN)" />
-        <group ref="g2" caption="MOIRCS/CR(S8)" />
-        <group ref="g3" caption="MOIRCS/MAIN(S9)" />
-      </status>
-    </instance>
-    <instance id="cco" app_id="bbe" host="ciax" port="25109" label="OPT Helium Compressor">
-      <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-        <item id="f2on" label="CIAO(S6) ON" ref="x0on" />
-        <item id="f2off" label="CIAO(S6) OFF" ref="x0off" />
-        <item id="m1on" label="COMICS IMG(S4) ON" ref="x2on" />
-        <item id="m1off" label="COMICS IMG(S4) OFF" ref="x2off" />
-        <item id="m2on" label="COMICS SPEC(S5) ON" ref="x3on" />
-        <item id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off" />
-        <item id="maon" label="COMICS BOTH ON" ref="x23on" />
-        <item id="maoff" label="COMICS BOTH OFF" ref="x23off" />
-      </alias>
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <group ref="g0" caption="CIAO(S6) SWITCH" />
-        <group ref="g2" caption="COMICS IMG(S4)" />
-        <group ref="g3" caption="COMICS SPEC(S5)" />
-      </status>
-    </instance>
-    <instance id="cri" app_id="bbe" host="ciax" port="25110" label="IR Helium Compressor">
-      <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-        <item id="f1on" label="FMOS/IRS1(S10)ON" ref="x0on" />
-        <item id="f1off" label="FMOS/IRS1(S10)OFF" ref="x0off" />
-        <item id="f2on" label="FMOS/IRS2(S11)ON" ref="x2on" />
-        <item id="f2off" label="FMOS/IRS2(S11)OFF" ref="x2off" />
-      </alias>
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <group ref="g0" caption="FMOS/IRS1(S10)" />
-        <group ref="g2" caption="FMOS/IRS2(S11)" />
-      </status>
-    </instance>
-    <instance id="cfa" app_id="k3n" host="ciax" port="25210" label="S10 HC Coolant Flow">
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <index ref="flow" label="FMOS-K(S10) Coolant Flow" />
-      </status>
-    </instance>
-    <instance id="cf1" app_id="k3n" host="ciax" port="25201" label="S1 HC Coolant Flow">
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <index ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
-      </status>
-    </instance>
-  </project>
-  <project id="moircs" caption="MOIRCS" column="2">
-    <instance id="mfp" app_id="cfp" host="moircsobcp" port="25601" label="MOIRCS Pneumatic Actuator"/>
-    <instance id="map" app_id="oma" host="moircsobcp" port="25602" label="MOIRCS Air Pressure"/>
-    <instance id="mma" app_id="mma" host="moircsobcp" port="25603" label="MOIRCS Extension Arm"/>
-    <instance id="mmc" app_id="mmc" host="moircsobcp" port="25604" label="MOIRCS Carrousel"/>
-    <instance id="ml1" app_id="lk8" host="moircsobcp" port="25605" label="MOIRCS Temperature 1">
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <index ref="ch0" label="MosCold2" />
-        <index ref="ch1" label="MosCold1" />
-        <index ref="ch2" label="Mask" />
-        <index ref="ch3" label="Wheel" />
-        <index ref="ch4" label="D1(NONE)" />
-        <index ref="ch5" label="D2(NONE)" />
-        <index ref="ch6" label="ChipBox1" />
-        <index ref="ch7" label="Det1" />
-        <index ref="sp" label="SetPoint1 (K)" />
-        <index ref="htr" label="HeaterPower1(%%)" />
-      </status>
-    </instance>
-    <instance id="ml2" app_id="lk8" host="moircsobcp" port="25606" label="MOIRCS Temperature 2">
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <index ref="ch0" label="Robohand" />
-        <index ref="ch1" label="CollBench" />
-        <index ref="ch2" label="BulkHead" />
-        <index ref="ch3" label="HeatPath" />
-        <index ref="ch4" label="D1(NONE)" />
-        <index ref="ch5" label="D2(NONE)" />
-        <index ref="ch6" label="ChipBox2" />
-        <index ref="ch7" label="Det2" />
-        <index ref="sp" label="SetPoint2 (K)" />
-        <index ref="htr" label="HeaterPower2(%%)" />
-      </status>
-    </instance>
-    <instance id="mva" app_id="var" host="moircsobcp" port="25608" label="MOIRCS Pumping"/>
-    <instance id="mt1" app_id="tpg" host="moircsobcp" port="25609" label="MOIRCS Pressure Main">
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <index ref="st1" label="Main Dewar Stat" />
-        <index ref="ch1" label="Main Dewar (Torr)" />
-      </status>
-    </instance>
-    <instance id="mt2" app_id="tpg" host="moircsobcp" port="25610" label="MOIRCS Pressure Main">
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <index ref="st1" label="Throat Stat" />
-        <index ref="ch1" label="Throat (Torr)" />
-      </status>
-    </instance>
-    <instance id="mt3" app_id="tpg" host="moircsobcp" port="25611" label="MOIRCS Pressure Pump">
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <index ref="st1" label="Turbo Pump Stat" />
-        <index ref="ch1" label="Turbo Pump (Torr)" />
-        <index ref="st2" label="Scroll Pump Stat" />
-        <index ref="ch2" label="Scroll Pump (Torr)" />
-      </status>
-    </instance>
-    <instance id="mft" app_id="fpa" host="moircsobcp" port="25612" label="MOIRCS Hall Sensor"/>
-    <instance id="mp1" app_id="ken" host="moircsobcp" port="25613" label="MOIRCS Power Supply 1">
-      <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-        <item id="getconf" label="Get Config" ref="getconf1" />
-      </alias>
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <group ref="go0" caption="Output [UNIT A]" />
-        <group ref="go1" caption="Output [UNIT B]" />
-        <group ref="go2" caption="Output [UNIT C]" />
-        <group ref="gp0" caption="Preset [UNIT A]" />
-        <group ref="gp1" caption="Preset [UNIT B]" />
-        <group ref="gp2" caption="Preset [UNIT C]" />
-        <group ref="guo0" caption="Setting [UNIT A]" />
-        <group ref="guo1" caption="Setting [UNIT B]" />
-        <group ref="gu2"  caption="Setting [UNIT C]" />
-        <group ref="gdo0" caption="Delay/CH [UNIT A]" />
-        <group ref="gdo1" caption="Delay/CH [UNIT B]" />
-        <group ref="gc2" caption="Setting/CH [UNIT C]" />
-        <group ref="gt2" caption="Tracking/CH [UNIT C]" />
-      </status>
-    </instance>
-    <instance id="mp2" app_id="ken" host="moircsobcp" port="25614" label="MOIRCS Power Supply 2">
-      <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-        <item id="getconf" label="Get Config" ref="getconf2" />
-      </alias>
-      <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-        <group ref="go0" caption="Output [UNIT A]" />
-        <group ref="go1" caption="Output [UNIT B]" />
-        <group ref="go2" caption="Output [UNIT C]" />
-        <group ref="gp0" caption="Preset [UNIT A]" />
-        <group ref="gp1" caption="Preset [UNIT B]" />
-        <group ref="gp2" caption="Preset [UNIT C]" />
-        <group ref="gu0"  caption="Setting [UNIT A]" />
-        <group ref="gu1"  caption="Setting [UNIT B]" />
-        <group ref="guo2" caption="Setting [UNIT C]" />
-        <group ref="gc0" caption="Setting/CH [UNIT A]" />
-        <group ref="gc1" caption="Setting/CH [UNIT B]" />
-        <group ref="gt0" caption="Tracking/CH [UNIT A]" />
-        <group ref="gt1" caption="Tracking/CH [UNIT B]" />
-        <group ref="gdo2" caption="Delay/CH [UNIT C]" />
-      </status>
-    </instance>
-    <instance id="mph" app_id="mph" host="moircsobcp" port="25615" label="MOIRCS Power Supply Hilo"/>
-    <instance id="mh1" app_id="psp" host="merope" port="25621" label="MOIRCS Carrousel Heater"/>
-    <instance id="mh2" app_id="psp" host="atlas" port="25622" label="MOIRCS Main Heater"/>
-    <instance id="mmf" app_id="mic" host="elextra" port="25623" label="MOIRCS Focus Control"/>
+  <project id="cmp" caption="Helium Compressor">
+    <group id="sum" caption="Summit Helium Compressor">
+      <instance id="cro" app_id="bbe" host="ciax" port="25106" label="OPT Helium Compressor">
+        <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+          <item id="on" label="Alias for X0 ON" ref="x0on" />
+          <item id="off" label="Alias for X0 OFF" ref="x0off" />
+        </alias>
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="g0" caption="X0-3" />
+          <group ref="g1" caption="X4-7" />
+          <group ref="g2" caption="X8-11" />
+          <group ref="g3" caption="X12-15" />
+        </status>
+        <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+          <event label="ON Executed" id="on">
+            <onchange var="xsw0"/>
+            <pattern var="xsw0">1</pattern>
+            <pattern var="xsw1">0</pattern>
+            <exec name="x1on"/>
+          </event>
+          <event label="OFF Executed" id="off">
+            <onchange var="xsw0"/>
+            <pattern var="xsw0">0</pattern>
+            <pattern var="xsw1">1</pattern>
+            <exec name="x1off"/>
+          </event>
+        </watch>
+      </instance>
+      <instance id="cci" app_id="bbe" host="ciax" port="25108" label="IR Helium Compressor">
+        <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+          <item id="c2on" label="CAS2(S1) ON" ref="x0on" />
+          <item id="c2off" label="CAS2(S1) OFF" ref="x0off" />
+          <item id="c1on" label="CAS1(S2) ON" ref="x1on" />
+          <item id="c1off" label="CAS1(S2) OFF" ref="x1off" />
+          <item id="m2on" label="MOIRCS CR(S8) ON" ref="x2on" />
+          <item id="m2off" label="MOIRCS CR(S8) OFF" ref="x2off" />
+          <item id="m1on" label="MOIRCS MAIN(S9) ON" ref="x3on" />
+          <item id="m1off" label="MOIRCS MAIN(S9) OFF" ref="x3off" />
+          <item id="cmon" label="CAS MOIRCS/MAIN ON" ref="x0on" />
+          <item id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="x0off" />
+          <item id="ccon" label="CAS MOIRCS/CR ON" ref="x1on" />
+          <item id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
+          <item id="caon" label="CAS BOTH HC ON" ref="x01on" />
+          <item id="caoff" label="CAS BOTH HC OFF" ref="x01off" />
+          <item id="maon" label="MOIRCS BOTH ON" ref="x23on" />
+          <item id="maoff" label="MOIRCS BOTH OFF" ref="x23off" />
+        </alias>
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="g0" caption="CAS2(S1)(CIAO)" />
+          <group ref="g1" caption="CAS1(S2)(MOIRCS/MAIN)" />
+          <group ref="g2" caption="MOIRCS/CR(S8)" />
+          <group ref="g3" caption="MOIRCS/MAIN(S9)" />
+        </status>
+      </instance>
+      <instance id="cco" app_id="bbe" host="ciax" port="25109" label="OPT Helium Compressor">
+        <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+          <item id="f2on" label="CIAO(S6) ON" ref="x0on" />
+          <item id="f2off" label="CIAO(S6) OFF" ref="x0off" />
+          <item id="m1on" label="COMICS IMG(S4) ON" ref="x2on" />
+          <item id="m1off" label="COMICS IMG(S4) OFF" ref="x2off" />
+          <item id="m2on" label="COMICS SPEC(S5) ON" ref="x3on" />
+          <item id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off" />
+          <item id="maon" label="COMICS BOTH ON" ref="x23on" />
+          <item id="maoff" label="COMICS BOTH OFF" ref="x23off" />
+        </alias>
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="g0" caption="CIAO(S6) SWITCH" />
+          <group ref="g2" caption="COMICS IMG(S4)" />
+          <group ref="g3" caption="COMICS SPEC(S5)" />
+        </status>
+      </instance>
+      <instance id="cri" app_id="bbe" host="ciax" port="25110" label="IR Helium Compressor">
+        <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+          <item id="f1on" label="FMOS/IRS1(S10)ON" ref="x0on" />
+          <item id="f1off" label="FMOS/IRS1(S10)OFF" ref="x0off" />
+          <item id="f2on" label="FMOS/IRS2(S11)ON" ref="x2on" />
+          <item id="f2off" label="FMOS/IRS2(S11)OFF" ref="x2off" />
+        </alias>
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="g0" caption="FMOS/IRS1(S10)" />
+          <group ref="g2" caption="FMOS/IRS2(S11)" />
+        </status>
+      </instance>
+      <instance id="cfa" app_id="k3n" host="ciax" port="25210" label="S10 HC Coolant Flow">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <index ref="flow" label="FMOS-K(S10) Coolant Flow" />
+        </status>
+      </instance>
+      <instance id="cf1" app_id="k3n" host="ciax" port="25201" label="S1 HC Coolant Flow">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <index ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
+        </status>
+      </instance>
+    </group>
   </project>
 </idb>

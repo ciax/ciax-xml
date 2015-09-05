@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
+  <project id="moircs" caption="MOIRCS" include="cmp" column="2">
+    <group id="mos" caption="MOS Mask Exchanger">
+      <instance id="mfp" app_id="cfp" host="moircsobcp" port="25601" label="MOIRCS Pneumatic Actuator"/>
+      <instance id="map" app_id="oma" host="moircsobcp" port="25602" label="MOIRCS Air Pressure"/>
+      <instance id="mma" app_id="mma" host="moircsobcp" port="25603" label="MOIRCS Extension Arm"/>
+      <instance id="mmc" app_id="mmc" host="moircsobcp" port="25604" label="MOIRCS Carrousel"/>
+    </group>
+    <group id="turret" caption="Turret control">
+      <instance id="mft" app_id="fpa" host="moircsobcp" port="25612" label="MOIRCS Hall Sensor"/>
+      <instance id="mix" app_id="ixe" host="moircsobcp" port="25607" label="MOIRCS Turret">
+        <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+          <item id="co_1" label="CO Filter for Turret 1" ref="opt">
+            <argv>1</argv>
+            <argv>0</argv>
+          </item>
+          <item id="none_1" label="No Filter for Turret 1" ref="opt">
+            <argv>1</argv>
+            <argv>1</argv>
+          </item>
+          <item id="brg_1" label="BrG Filter for Turret 1" ref="opt">
+            <argv>1</argv>
+            <argv>2</argv>
+          </item>
+          <item id="nb119_1" label="NB119 Filter for Turret 1" ref="opt">
+            <argv>1</argv>
+            <argv>3</argv>
+          </item>
+          <item id="std_k_1" label="STD K Filter for Turret 1" ref="opt">
+            <argv>1</argv>
+            <argv>4</argv>
+          </item>
+          <item id="y_1" label="Y Filter for Turret 1" ref="opt">
+            <argv>1</argv>
+            <argv>5</argv>
+          </item>
+          <item id="oc1_3_1" label="OC1 3 Filter for Turret 1" ref="opt">
+            <argv>1</argv>
+            <argv>6</argv>
+          </item>
+          <item id="j_1" label="J Filter for Turret 1" ref="opt">
+            <argv>1</argv>
+            <argv>7</argv>
+          </item>
+          <item id="h_1" label="H Filter for Turret 1" ref="opt">
+            <argv>1</argv>
+            <argv>8</argv>
+          </item>
+          <item id="ks_1" label="Ks Filter for Turret 1" ref="opt">
+            <argv>1</argv>
+            <argv>9</argv>
+          </item>
+          <item id="h2_1" label="H2 Filter for Turret 1" ref="opt">
+            <argv>1</argv>
+            <argv>10</argv>
+          </item>
+          <item id="fe2_1" label="Fe2 Filter for Turret 1" ref="opt">
+            <argv>1</argv>
+            <argv>11</argv>
+          </item>
+          <item id="csl_2" label="Cold Stop Large for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>0</argv>
+          </item>
+          <item id="oc_hk_2" label="OC HK Filter for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>1</argv>
+          </item>
+          <item id="oc_zj_2" label="OC ZJ Filter for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>2</argv>
+          </item>
+          <item id="nb1657_2" label="NB1657 Filter for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>3</argv>
+          </item>
+          <item id="nb2071_2" label="NB2071 Filter for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>4</argv>
+          </item>
+          <item id="b05_2" label="B05 Filter for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>5</argv>
+          </item>
+          <item id="css_2" label="Cold Stop Small for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>6</argv>
+          </item>
+          <item id="csl2_2" label="Cold Stop Large 2 for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>7</argv>
+          </item>
+          <item id="nb2315_2" label="NB2315 Filter for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>8</argv>
+          </item>
+          <item id="nb2095_2" label="NB2095 Filter for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>9</argv>
+          </item>
+          <item id="nb1550_2" label="NB1550 Filter for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>10</argv>
+          </item>
+          <item id="none_2" label="No Filter for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>11</argv>
+          </item>
+          <item id="vph_h_3" label="VPH H Grism for Turret 3" ref="opt">
+            <argv>3</argv>
+            <argv>0</argv>
+          </item>
+          <item id="nd_3" label="ND Filter for Turret 3" ref="opt">
+            <argv>3</argv>
+            <argv>1</argv>
+          </item>
+          <item id="pv_3" label="Pupile Viewr for Turret 3" ref="opt">
+            <argv>3</argv>
+            <argv>2</argv>
+          </item>
+          <item id="vph_k_3" label="VPH K Grism for Turret 3" ref="opt">
+            <argv>3</argv>
+            <argv>3</argv>
+          </item>
+          <item id="none_3" label="No Filter for Turret 3" ref="opt">
+            <argv>3</argv>
+            <argv>4</argv>
+          </item>
+          <item id="hk500_3" label="HK500 Grism for Turret 3" ref="opt">
+            <argv>3</argv>
+            <argv>5</argv>
+          </item>
+          <item id="vph_j_3" label="VPH J Grism for Turret 3" ref="opt">
+            <argv>3</argv>
+            <argv>6</argv>
+          </item>
+          <item id="k_cont_3" label="K CONT Filter for Turret 3" ref="opt">
+            <argv>3</argv>
+            <argv>7</argv>
+          </item>
+          <item id="zj500_3" label="ZJ500 Grism for Turret 3" ref="opt">
+            <argv>3</argv>
+            <argv>8</argv>
+          </item>
+          <item id="vph_y_3" label="VPH Y Grism for Turret 3" ref="opt">
+            <argv>3</argv>
+            <argv>9</argv>
+          </item>
+          <item id="bp_3" label="Blind Plate for Turret 3" ref="opt">
+            <argv>3</argv>
+            <argv>10</argv>
+          </item>
+          <item id="r1300_3" label="R1300 Grism for Turret 3" ref="opt">
+            <argv>3</argv>
+            <argv>11</argv>
+          </item>
+          <item id="co_4" label="CO Filter for Turret 4" ref="opt">
+            <argv>4</argv>
+            <argv>0</argv>
+          </item>
+          <item id="none_4" label="No Filter for Turret 4" ref="opt">
+            <argv>4</argv>
+            <argv>1</argv>
+          </item>
+          <item id="brg_4" label="BrG Filter for Turret 4" ref="opt">
+            <argv>4</argv>
+            <argv>2</argv>
+          </item>
+          <item id="nb119_4" label="NB119 Filter for Turret 4" ref="opt">
+            <argv>4</argv>
+            <argv>3</argv>
+          </item>
+          <item id="std_k_4" label="STD K Filter for Turret 4" ref="opt">
+            <argv>4</argv>
+            <argv>4</argv>
+          </item>
+          <item id="y_4" label="Y Filter for Turret 4" ref="opt">
+            <argv>4</argv>
+            <argv>5</argv>
+          </item>
+          <item id="oc1_3_4" label="OC1 3 Filter for Turret 4" ref="opt">
+            <argv>4</argv>
+            <argv>6</argv>
+          </item>
+          <item id="j_4" label="J Filter for Turret 4" ref="opt">
+            <argv>4</argv>
+            <argv>7</argv>
+          </item>
+          <item id="h_4" label="H Filter for Turret 4" ref="opt">
+            <argv>4</argv>
+            <argv>8</argv>
+          </item>
+          <item id="ks_4" label="Ks Filter for Turret 4" ref="opt">
+            <argv>4</argv>
+            <argv>9</argv>
+          </item>
+          <item id="h2_4" label="H2 Filter for Turret 4" ref="opt">
+            <argv>4</argv>
+            <argv>10</argv>
+          </item>
+          <item id="fe2_4" label="Fe2 Filter for Turret 4" ref="opt">
+            <argv>4</argv>
+            <argv>11</argv>
+          </item>
+          <item id="csl_5" label="Cold Stop Large for Turret 5" ref="opt">
+            <argv>5</argv>
+            <argv>0</argv>
+          </item>
+          <item id="oc_hk_5" label="OC HK Filter for Turret 5" ref="opt">
+            <argv>5</argv>
+            <argv>1</argv>
+          </item>
+          <item id="oc_zj_5" label="OC ZJ Filter for Turret 5" ref="opt">
+            <argv>5</argv>
+            <argv>2</argv>
+          </item>
+          <item id="nb1657_5" label="NB1657 Filter for Turret 5" ref="opt">
+            <argv>5</argv>
+            <argv>3</argv>
+          </item>
+          <item id="nb2071_5" label="NB2071 Filter for Turret 5" ref="opt">
+            <argv>5</argv>
+            <argv>4</argv>
+          </item>
+          <item id="b05_5" label="B05 Filter for Turret 5" ref="opt">
+            <argv>5</argv>
+            <argv>5</argv>
+          </item>
+          <item id="css_5" label="Cold Stop Small for Turret 5" ref="opt">
+            <argv>5</argv>
+            <argv>6</argv>
+          </item>
+          <item id="csl2_5" label="Cold Stop Large 2 for Turret 5" ref="opt">
+            <argv>5</argv>
+            <argv>7</argv>
+          </item>
+          <item id="nb2315_5" label="NB2315 Filter for Turret 5" ref="opt">
+            <argv>5</argv>
+            <argv>8</argv>
+          </item>
+          <item id="nb2095_5" label="NB2095 Filter for Turret 5" ref="opt">
+            <argv>5</argv>
+            <argv>9</argv>
+          </item>
+          <item id="nb1550_5" label="NB1550 Filter for Turret 5" ref="opt">
+            <argv>5</argv>
+            <argv>10</argv>
+          </item>
+          <item id="none_2" label="No Filter for Turret 2" ref="opt">
+            <argv>2</argv>
+            <argv>11</argv>
+          </item>
+          <item id="vph_h_6" label="VPH H Grism for Turret 6" ref="opt">
+            <argv>6</argv>
+            <argv>0</argv>
+          </item>
+          <item id="nd_6" label="ND Filter for Turret 6" ref="opt">
+            <argv>6</argv>
+            <argv>1</argv>
+          </item>
+          <item id="pv_6" label="Pupile Viewr for Turret 6" ref="opt">
+            <argv>6</argv>
+            <argv>2</argv>
+          </item>
+          <item id="vph_k_6" label="VPH K Grism for Turret 6" ref="opt">
+            <argv>6</argv>
+            <argv>6</argv>
+          </item>
+          <item id="none_6" label="No Filter for Turret 6" ref="opt">
+            <argv>6</argv>
+            <argv>4</argv>
+          </item>
+          <item id="hk500_6" label="HK500 Grism for Turret 6" ref="opt">
+            <argv>6</argv>
+            <argv>5</argv>
+          </item>
+          <item id="vph_j_6" label="VPH J Grism for Turret 6" ref="opt">
+            <argv>6</argv>
+            <argv>6</argv>
+          </item>
+          <item id="k_cont_6" label="K CONT Filter for Turret 6" ref="opt">
+            <argv>6</argv>
+            <argv>7</argv>
+          </item>
+          <item id="zj500_6" label="ZJ500 Grism for Turret 6" ref="opt">
+            <argv>6</argv>
+            <argv>8</argv>
+          </item>
+          <item id="vph_y_6" label="VPH Y Grism for Turret 6" ref="opt">
+            <argv>6</argv>
+            <argv>9</argv>
+          </item>
+          <item id="bp_6" label="Blind Plate for Turret 6" ref="opt">
+            <argv>6</argv>
+            <argv>10</argv>
+          </item>
+          <item id="r1300_6" label="R1300 Grism for Turret 6" ref="opt">
+            <argv>6</argv>
+            <argv>11</argv>
+          </item>
+        </alias>
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <index ref="p1" symbol="t1" />
+          <index ref="p2" symbol="t2" />
+          <index ref="p3" symbol="t3" />
+          <index ref="p4" symbol="t1" />
+          <index ref="p5" symbol="t2" />
+          <index ref="p6" symbol="t3" />
+          <index ref="mp1" symbol="t1" />
+          <index ref="mp2" symbol="t2" />
+          <index ref="mp3" symbol="t3" />
+          <index ref="mp4" symbol="t1" />
+          <index ref="mp5" symbol="t2" />
+          <index ref="mp6" symbol="t3" />
+        </status>
+      </instance>
+    </group>
+    <group id="tele" caption="Telemetory">
+      <instance id="ml1" app_id="lk8" host="moircsobcp" port="25605" label="MOIRCS Temperature 1">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <index ref="ch0" label="MosCold2" />
+          <index ref="ch1" label="MosCold1" />
+          <index ref="ch2" label="Mask" />
+          <index ref="ch3" label="Wheel" />
+          <index ref="ch4" label="D1(NONE)" />
+          <index ref="ch5" label="D2(NONE)" />
+          <index ref="ch6" label="ChipBox1" />
+          <index ref="ch7" label="Det1" />
+          <index ref="sp" label="SetPoint1 (K)" />
+          <index ref="htr" label="HeaterPower1(%%)" />
+        </status>
+      </instance>
+      <instance id="ml2" app_id="lk8" host="moircsobcp" port="25606" label="MOIRCS Temperature 2">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <index ref="ch0" label="Robohand" />
+          <index ref="ch1" label="CollBench" />
+          <index ref="ch2" label="BulkHead" />
+          <index ref="ch3" label="HeatPath" />
+          <index ref="ch4" label="D1(NONE)" />
+          <index ref="ch5" label="D2(NONE)" />
+          <index ref="ch6" label="ChipBox2" />
+          <index ref="ch7" label="Det2" />
+          <index ref="sp" label="SetPoint2 (K)" />
+          <index ref="htr" label="HeaterPower2(%%)" />
+        </status>
+      </instance>
+      <instance id="mva" app_id="var" host="moircsobcp" port="25608" label="MOIRCS Pumping"/>
+      <instance id="mt1" app_id="tpg" host="moircsobcp" port="25609" label="MOIRCS Pressure Main">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <index ref="st1" label="Main Dewar Stat" />
+          <index ref="ch1" label="Main Dewar (Torr)" />
+        </status>
+      </instance>
+      <instance id="mt2" app_id="tpg" host="moircsobcp" port="25610" label="MOIRCS Pressure Main">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <index ref="st1" label="Throat Stat" />
+          <index ref="ch1" label="Throat (Torr)" />
+        </status>
+      </instance>
+      <instance id="mt3" app_id="tpg" host="moircsobcp" port="25611" label="MOIRCS Pressure Pump">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <index ref="st1" label="Turbo Pump Stat" />
+          <index ref="ch1" label="Turbo Pump (Torr)" />
+          <index ref="st2" label="Scroll Pump Stat" />
+          <index ref="ch2" label="Scroll Pump (Torr)" />
+        </status>
+      </instance>
+    </group>
+    <group id="mtn" caption="Maintenance">
+      <instance id="mp1" app_id="ken" host="moircsobcp" port="25613" label="MOIRCS Power Supply 1">
+        <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+          <item id="getconf" label="Get Config" ref="getconf1" />
+        </alias>
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="go0" caption="Output [UNIT A]" />
+          <group ref="go1" caption="Output [UNIT B]" />
+          <group ref="go2" caption="Output [UNIT C]" />
+          <group ref="gp0" caption="Preset [UNIT A]" />
+          <group ref="gp1" caption="Preset [UNIT B]" />
+          <group ref="gp2" caption="Preset [UNIT C]" />
+          <group ref="guo0" caption="Setting [UNIT A]" />
+          <group ref="guo1" caption="Setting [UNIT B]" />
+          <group ref="gu2"  caption="Setting [UNIT C]" />
+          <group ref="gdo0" caption="Delay/CH [UNIT A]" />
+          <group ref="gdo1" caption="Delay/CH [UNIT B]" />
+          <group ref="gc2" caption="Setting/CH [UNIT C]" />
+          <group ref="gt2" caption="Tracking/CH [UNIT C]" />
+        </status>
+      </instance>
+      <instance id="mp2" app_id="ken" host="moircsobcp" port="25614" label="MOIRCS Power Supply 2">
+        <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+          <item id="getconf" label="Get Config" ref="getconf2" />
+        </alias>
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="go0" caption="Output [UNIT A]" />
+          <group ref="go1" caption="Output [UNIT B]" />
+          <group ref="go2" caption="Output [UNIT C]" />
+          <group ref="gp0" caption="Preset [UNIT A]" />
+          <group ref="gp1" caption="Preset [UNIT B]" />
+          <group ref="gp2" caption="Preset [UNIT C]" />
+          <group ref="gu0"  caption="Setting [UNIT A]" />
+          <group ref="gu1"  caption="Setting [UNIT B]" />
+          <group ref="guo2" caption="Setting [UNIT C]" />
+          <group ref="gc0" caption="Setting/CH [UNIT A]" />
+          <group ref="gc1" caption="Setting/CH [UNIT B]" />
+          <group ref="gt0" caption="Tracking/CH [UNIT A]" />
+          <group ref="gt1" caption="Tracking/CH [UNIT B]" />
+          <group ref="gdo2" caption="Delay/CH [UNIT C]" />
+        </status>
+      </instance>
+      <instance id="mph" app_id="mph" host="moircsobcp" port="25615" label="MOIRCS Power Supply Hilo"/>
+      <instance id="mh1" app_id="psp" host="merope" port="25621" label="MOIRCS Carrousel Heater"/>
+      <instance id="mh2" app_id="psp" host="atlas" port="25622" label="MOIRCS Main Heater"/>
+      <instance id="mmf" app_id="mic" host="elextra" port="25623" label="MOIRCS Focus Control"/>
+    </group>
+  </project>
+</idb>

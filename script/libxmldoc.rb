@@ -17,18 +17,23 @@ module CIAX
       def initialize(type,project=nil)
         super()
         @cls_color=2
-        @project=project
+        @project=[project]
         /.+/ =~ type || Msg.cfg_err("No Db Type")
         @type=type
         @pcap='All'
         @displist=Disp::List.new('column' => 2)
         @projlist=Disp::Group.new('caption' => 'Project', 'column' => 2)
-        Dir.glob("#{ENV['XMLPATH']}/#{type}-*.xml").each{|xml|
+        files=Dir.glob("#{ENV['XMLPATH']}/#{type}-*.xml")
+        files.each{|xml|
           verbose("readxml:"+::File.basename(xml,'.xml'))
           Gnu.new(xml).each{|e|
-            readproj(e)
+            @project << e['include'] if @project.include?(e['id']) and e['include']
           }
         }.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
+        # Two pass reading for refering
+        files.each{|xml|
+          Gnu.new(xml).each{|e| readproj(e)}
+        }
         raise(InvalidProj,"No such Project(#{@project})\n"+@projlist.view) if @displist.empty?
       end
 
@@ -49,7 +54,7 @@ module CIAX
         if e.name == 'project'
           id=e['id']
           pc=@projlist[id]=e['caption']
-          @pcap=(id == @project) ? pc : nil
+          @pcap=@project.include?(id) ? pc : nil
           e.each{|e0|
             readgrp(e0)
           }

@@ -36,17 +36,6 @@
           <equal label="Running" var="run" site="crt">OFF</equal>
         </wait>
       </item>
-      <item id="runi" label="Run with interlock to Tag [1-12]">
-        <par_num label="1-12">1:12</par_num>
-        <select site="crt" var="cps">
-          <mcr name="r08to" value="8">
-            <argv>$1</argv>
-          </mcr>
-          <mcr name="run">
-            <argv>$1</argv>
-          </mcr>
-        </select>
-      </item>
       <item id="lift" label="Jack UP Level [1-4]">
         <par_num>1:4</par_num>
         <goal label="On Destination Level?">
@@ -216,9 +205,6 @@
         <wait label="Hooking" retry="40">
           <equal site="$1" var="exe">OFF</equal>
         </wait>
-        <mcr name="runi">
-          <argv>8</argv>
-        </mcr>
         <mcr name="fju0">
           <argv>$1</argv>
         </mcr>
@@ -270,6 +256,17 @@
         <wait retry="120" label="Run end?">
           <equal label="Running" site="crt" var="run">OFF</equal>
         </wait>
+      </item>
+      <item id="runi" label="Run with interlock to Tag [1-12]">
+        <par_num label="1-12">1:12</par_num>
+        <select site="crt" var="cps">
+          <mcr name="r08to" value="8">
+            <argv>$1</argv>
+          </mcr>
+          <mcr name="runi">
+            <argv>8</argv>
+          </mcr>
+        </select>
       </item>
     </group>
   </macro>

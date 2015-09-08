@@ -20,7 +20,7 @@
       <range class="warn" msg="S11">10.8:11.2</range>
     </table>
     <table id="t1">
-      <numeric class="warn" msg="CO(0)" tolerance="0.1">0,12</numeric>
+      <numeric class="warn" msg="CO(0)" tolerance="0.1">0</numeric>
       <numeric class="warn" msg="NONE(1)" tolerance="0.1">1</numeric>
       <numeric class="warn" msg="BrG(2)" tolerance="0.1">2</numeric>
       <numeric class="warn" msg="NB119(3)" tolerance="0.1">3</numeric>
@@ -31,7 +31,7 @@
       <numeric class="warn" msg="H(8)" tolerance="0.1">8</numeric>
       <numeric class="warn" msg="Ks(9)" tolerance="0.1">9</numeric>
       <numeric class="warn" msg="H2(10)" tolerance="0.1">10</numeric>
-      <numeric class="warn" msg="Fe2(11)" tolerance="0.1">-1,11</numeric>
+      <numeric class="warn" msg="Fe2(11)" tolerance="0.1">11</numeric>
     </table>
     <table id="t2">
       <numeric class="warn" msg="CSL(0)" tolerance="0.1">0</numeric>

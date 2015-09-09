@@ -5,7 +5,7 @@ require "libxmldoc"
 
 module CIAX
   XmlDir="#{ENV['HOME']}/ciax-xml"
-  PROJ=ENV['PROJ']||'ciax'
+  PROJ=ENV['PROJ']||'moircs'
   # Db class is for read only databases, which holds all items of database.
   # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
   # set() generates HashDb

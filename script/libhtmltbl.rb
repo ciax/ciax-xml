@@ -12,13 +12,14 @@ module CIAX
       get_element(['time','elapsed'],'',2)
       adbs[:group].each{|k,g|
         cap=g["caption"] || next
-        get_element(g[:members],cap,g["column"].to_i)
+        get_element(g[:members],cap,g["column"])
       }
       push "</div>"
     end
 
     private
-    def get_element(members,cap='',col=6)
+    def get_element(members,cap='',col=nil)
+      col= col.to_i > 0 ? col.to_i : 6
       push "<table><tbody>"
       push  "<tr><th colspan=\"6\">#{cap}</th></tr>" unless cap.empty?
       members.each_slice(col){|da|

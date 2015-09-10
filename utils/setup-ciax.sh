@@ -34,10 +34,10 @@ init_pkg(){
     fi
     case "$dist" in
         *bian)
-            sudo apt-get install ruby-libxml socat sqlite3 apache2 libxml2-utils
+            sudo apt-get install ruby-libxml socat sqlite3 libxml2-utils libapache2-mod-php5
             ;;
         Ubuntu)
-            sudo apt-get install ruby-libxml socat sqlite3 apache2
+            sudo apt-get install ruby-libxml socat sqlite3 libapache2-mod-php5
             ;;
         CentOS)
             sudo yum install ruby-devel libxml2-devel httpd socat

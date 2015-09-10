@@ -33,17 +33,16 @@ init_pkg(){
         read dist dmy < /etc/issue
     fi
     case "$dist" in
-        *bian)
-            sudo apt-get install ruby-libxml socat sqlite3 libxml2-utils libapache2-mod-php5
-            ;;
-        Ubuntu)
-            sudo apt-get install ruby-libxml socat sqlite3 libapache2-mod-php5
+        *bian|Ubuntu)
+            sudo apt-get install socat sqlite3 ruby-libxml libxml2-utils libapache2-mod-php5
             ;;
         CentOS)
-            sudo yum install ruby-devel libxml2-devel httpd socat
+            sudo yum install socat sqlite ruby-devel httpd php php-pear libxml2-devel perl-XML-XPath
             sudo gem install json libxml-ruby
             ;;
-        *);;
+        *)
+            return
+            ;;
     esac
 }
 echo $C3"Prepare work dirs"$C0

@@ -50,6 +50,7 @@ module CIAX
           @data=@cache
           self['time']=stream['time']
           verbose("Updated(#{self['time']})") #Field::get
+          upd
         else
           verbose("Send Only")
         end

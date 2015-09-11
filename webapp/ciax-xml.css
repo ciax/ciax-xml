@@ -1,50 +1,57 @@
 body{
-  background-image : url(/bg-1.jpg);
-  background-repeat : repeat;
-  background-attachment : fixed;
-  color : #000066;
-  background-color : white;
+    background-image : url(/bg-1.jpg);
+    background-repeat : repeat;
+    background-attachment : fixed;
+    color : #000066;
+    background-color : white;
 }
 table{
-  width : 100%;
+    width : 100%;
 }
 .outline{
-  width : 90%;
-  border : 5px outset #aadd99;
-  margin-left : 5%;
-  margin-right : 5%;
+    width : 90%;
+    border : 5px outset #aadd99;
+    margin-left : 5%;
+    margin-right : 5%;
 }
 .title{
-  border : 2px outset;
-  font-size : x-large;
-  text-align : center;
-  color : white;
-  background-color:#bbeeaa;
+    border : 2px outset;
+    font-size : x-large;
+    text-align : center;
+    color : white;
+    background-color:#bbeeaa;
 }
 th{
-  border : 2px outset;
-  text-align : center;
+    border : 2px outset;
+    text-align : center;
 }
 .item{
-  border : 2px inset;
+    border : 2px inset;
 }
 .label{
-  border : 2px outset;
-  text-align : center;
-  color : blue;
+    border : 2px outset;
+    text-align : center;
+    color : blue;
 }
 .hide{
-  color : black;
+    color : black;
 }
 .normal{
-  color : green;
+    color : green;
 }
 .alarm{
-  color : red;
+    color : red;
 }
 .warn{
-  color : darkgoldenrod;
+    color : darkgoldenrod;
 }
 .active{
-  color : purple;
+    color : purple;
+}
+.button{
+    font-size: 5em;
+    font-weight: bold;
+}
+.center{
+    text-align :center;
 }

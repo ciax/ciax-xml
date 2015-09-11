@@ -247,7 +247,7 @@
             <argv>5</argv>
             <argv>10</argv>
           </item>
-          <item id="none_5" label="No Filter for Turret 2" ref="opt">
+          <item id="none_5" label="No Filter for Turret 5" ref="opt">
             <argv>2</argv>
             <argv>11</argv>
           </item>

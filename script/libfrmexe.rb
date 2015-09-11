@@ -75,7 +75,6 @@ module CIAX
       def initialize(id,cfg,attr={})
         super
         @field.ext_http(@cfg['host'])
-        @cobj.rem.def_proc{to_s}
         @pre_exe_procs << proc{@field.upd}
         ext_client
       end

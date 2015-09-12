@@ -98,7 +98,7 @@ module CIAX
         if $opt['r']
           cobj.rem.def_proc{|ent| ent.cfg[:frame] }
         else
-          cobj.rem.def_proc{|ent| ent.cfg.path }
+          cobj.rem.def_proc{|ent| ent.cfg[:frame].inspect }
         end
         cobj.rem.add_ext(dbi)
         cobj.rem.add_int

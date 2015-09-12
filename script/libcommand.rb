@@ -38,6 +38,8 @@ module CIAX
         res=cls.new(@cfg,attr)
       when String,Symbol
         res=layer_module.const_get(cls).new(@cfg,attr)
+      when CmdProc
+        res=cls
       else
         sv_err("Not class")
       end

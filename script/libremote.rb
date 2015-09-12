@@ -6,8 +6,8 @@ module CIAX
     # Instance var is @rem in Index
     class Index < Local::Index
       attr_reader :rem
-      def add_rem
-        @rem=add('Domain')
+      def add_rem(obj='Domain')
+        @rem=add(obj)
       end
     end
 

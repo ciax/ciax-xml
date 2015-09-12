@@ -22,7 +22,7 @@ module CIAX
         @sub=@cfg[:sub_list].get(@id)
         @stat=@sub.stat
         @cobj=Index.new(@cfg)
-        @cobj.add_rem(@sub)
+        @cobj.add_rem(@sub.cobj.rem)
         @event=Event.new.set_db(@sub.dbi)
         @site_stat=@sub.site_stat.add_db('auto'=>'@','watch'=>'&')
         @sub.batch_interrupt=@event.get('int')
@@ -105,12 +105,7 @@ module CIAX
       end
     end
 
-    class Index < Local::Index
-      attr_reader :rem
-      def add_rem(ash)
-        unshift @rem=ash.cobj.rem
-      end
-    end
+    class Index < Remote::Index;end
 
     class List < Site::List
       def initialize(cfg,attr={})

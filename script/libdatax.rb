@@ -141,11 +141,11 @@ module CIAX
       url=file_url(tag)
       json_str=''
       open(url){|f|
-        verbose("Loading [#{url}](#{f.size})")
+        verbose("Loading url [#{url}](#{f.size})")
         json_str=f.read
       }
       if json_str.empty?
-        warning(" -- json file (#{url}) is empty")
+        warning(" -- json url file (#{url}) is empty at loading")
       else
         read(json_str)
       end
@@ -200,7 +200,7 @@ module CIAX
         json_str=f.read
       }
       if json_str.empty?
-        warning(" -- json file (#{base}) is empty")
+        warning(" -- json file (#{base}) is empty at loading")
       else
         data=j2h(json_str)
         verbose("Version compare [#{data['ver']}] vs. <#{self['ver']}>")

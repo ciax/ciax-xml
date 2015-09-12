@@ -15,7 +15,7 @@ module CIAX
       #       => check(@data['crnt'] <> @data['last']?)
       # Stat no changed -> clear exec, no eval
       def ext_rsp(stat)
-        wdb=@db[:watch]||{}
+        wdb=@dbi[:watch]||{}
         @windex=wdb[:index]||{}
         @stat=type?(stat,App::Status)
         @period=wdb['period'].to_i if wdb.key?('period')

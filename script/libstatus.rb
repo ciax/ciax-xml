@@ -16,7 +16,7 @@ module CIAX
       def set_db(db)
         super
         if @data.empty?
-          @adbs=@db[:status][:index]
+          @adbs=@dbi[:status][:index]
           @data.update(@adbs.skeleton)
         end
         self

@@ -13,7 +13,7 @@ module CIAX
         super
         # Field Initialize
         if @data.empty?
-          @db[:field].each{|id,val|
+          @dbi[:field].each{|id,val|
             @data[id]=val['val']||Arrayx.new.skeleton(val[:struct])
           }
         end

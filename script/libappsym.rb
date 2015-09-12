@@ -11,7 +11,7 @@ module CIAX
       end
 
       def ext_sym
-        adbs=@db[:status]
+        adbs=@dbi[:status]
         @symbol=adbs[:symbol]||{}
         @symdb=Sym::Db.pack(['share',adbs['symtbl']])
         self['class']={}

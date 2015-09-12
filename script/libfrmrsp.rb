@@ -19,11 +19,11 @@ module CIAX
       # Takes a block for taking stream data
       def ext_rsp(&input_proc)
         @input_proc=input_proc
-        fdbr=@db[:response]
+        fdbr=@dbi[:response]
         @skel=fdbr[:frame]
         # @sel structure: { terminator, :main{}, :body{} <- changes on every upd }
         @fds=fdbr[:index]
-        @frame=Frame.new(@db['endian'],@db['ccmethod'],@skel['terminator'])
+        @frame=Frame.new(@dbi['endian'],@dbi['ccmethod'],@skel['terminator'])
         # terminator: frame pointer will jump to terminator if no length or delimiter is specified
         self
       end

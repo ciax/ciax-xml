@@ -20,10 +20,10 @@ module CIAX
     end
 
 
-    def set_db(db)
-      @db=type?(db,Dbi)
-      _setid(db['site_id']||db['id'])
-      self['ver']=db['version'].to_i
+    def set_db(dbi)
+      @dbi=type?(dbi,Dbi)
+      _setid(dbi['site_id']||dbi['id'])
+      self['ver']=dbi['version'].to_i
       self
     end
 

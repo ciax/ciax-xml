@@ -134,11 +134,11 @@ module CIAX
       res=Logging.set_logline(str)
       id=res['id']
       cid=res['cmd']
-      fdb=Dev::Db.new.get(id)
-      field=Field.new.set_db(fdb).ext_rsp{res}
+      dbi=Dev::Db.new.get(id)
+      field=Field.new.set_db(dbi).ext_rsp{res}
       field.ext_file if $opt['m']
       if cid
-        cfg=Config.new.update(:dbi => fdb,:field => field)
+        cfg=Config.new.update(:dbi => dbi,:field => field)
         cobj=Index.new(cfg)
         ent=cobj.set_cmd(cid.split(':'))
         field.conv(ent)

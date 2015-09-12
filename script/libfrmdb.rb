@@ -11,29 +11,29 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        db=Dbi[doc[:attr]]
-        init_command(doc,db)
-        init_stat(doc,db)
-        db
+        dbi=Dbi[doc[:attr]]
+        init_command(doc,dbi)
+        init_stat(doc,dbi)
+        dbi
       end
 
       # Command section
-      def init_command(doc,db)
+      def init_command(doc,dbi)
         frm=init_frame(doc[:domain]['cmdframe']){|e,r| init_cmd(e,r)}
         idx=init_index(doc[:domain]['commands']){|e,r| init_cmd(e,r)}
         grp={'main' => {'caption' => 'Device Commands',:members => idx.keys}}
-        db[:command]={:group => grp, :index => idx, :frame => frm}
-        db
+        dbi[:command]={:group => grp, :index => idx, :frame => frm}
+        dbi
       end
 
       # Status section
-      def init_stat(doc,db)
-        db[:field]=fld={}
+      def init_stat(doc,dbi)
+        dbi[:field]=fld={}
         frm=init_frame(doc[:domain]['rspframe']){|e| init_rsp(e,fld)}
         idx=init_index(doc[:domain]['responses']){|e| init_rsp(e,fld)}
-        db['frm_id']=db['id']
-        db[:response]={:index => idx, :frame => frm}
-        db
+        dbi['frm_id']=dbi['id']
+        dbi[:response]={:index => idx, :frame => frm}
+        dbi
       end
 
       def init_frame(domain)
@@ -117,11 +117,11 @@ module CIAX
 
     if __FILE__ == $0
       begin
-        fdb=Db.new.get(ARGV.shift)
+        dbi=Db.new.get(ARGV.shift)
       rescue InvalidID
         Msg.usage("[id] (key) ..")
       end
-      puts fdb.path(ARGV)
+      puts dbi.path(ARGV)
       exit
     end
   end

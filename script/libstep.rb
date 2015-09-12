@@ -11,7 +11,7 @@ module CIAX
         super()
         update db
         #[:stat_proc,:exec_proc,:submcr_proc,:query]
-        @sublist=type?(sublist,CIAX::List)
+        @sub_list=type?(sublist,CIAX::List)
         @condition=delete('cond')
         @break=nil
       end
@@ -115,7 +115,7 @@ module CIAX
       def scan
         sites.inject({}){|hash,site|
           verbose("Scanning Status #{site}")
-          hash[site]=@sublist.get(site).stat
+          hash[site]=@sub_list.get(site).stat
           hash
         }
       end
@@ -123,7 +123,7 @@ module CIAX
       def refresh
         sites.each{|site|
           verbose("Refresh Status #{site}")
-          @sublist.get(site).stat.refresh
+          @sub_list.get(site).stat.refresh
         }
       end
 

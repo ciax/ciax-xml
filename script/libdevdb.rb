@@ -9,8 +9,8 @@ module CIAX
       end
 
       def get(id=nil)
-        cpy=super
-        cpy.cover(Frm::Db.new.get(cpy['frm_id']))
+        dbi=super
+        dbi.cover(Frm::Db.new.get(dbi['frm_id']))
       end
 
       private
@@ -21,29 +21,29 @@ module CIAX
         db
       end
 
-      def rec_db(e0,hash=Dbi.new)
-        (hash||=Dbi.new).update(e0.to_h)
+      def rec_db(e0,dbi=Dbi.new)
+        (dbi||=Dbi.new).update(e0.to_h)
         e0.each{|e|
           if e['id']
-            e.attr2item(hash)
+            e.attr2item(dbi)
           else
             id=e.name.to_sym
             verbose("Override [#{id}]")
-            rec_db(e,hash[id]||={})
+            rec_db(e,dbi[id]||={})
           end
         }
-        hash
+        dbi
       end
     end
 
     if __FILE__ == $0
       begin
-        db=Db.new(ARGV.shift).get(ARGV.shift)
+        dbi=Db.new(ARGV.shift).get(ARGV.shift)
       rescue
         Msg.usage("(opt) [id] (key) ..")
         Msg.exit
       end
-      puts db.path(ARGV)
+      puts dbi.path(ARGV)
     end
   end
 end

@@ -11,15 +11,15 @@ module CIAX
 
       # overwrite App::Db
       def get(id=nil)
-        cpy=super
-        cpy.cover(App::Db.new.get(cpy['app_id']))
+        dbi=super
+        dbi.cover(App::Db.new.get(dbi['app_id']))
       end
 
       private
       def doc_to_db(doc)
-        db=Dbi[doc[:attr]]
+        dbi=Dbi[doc[:attr]]
         # Command Domain
-        hcmd=db[:command]={}
+        hcmd=dbi[:command]={}
         algrp={'caption' => 'Alias','column' => 2,:members =>[]}
         (doc[:domain]['alias']||[]).each{|e0|
           e0.attr2item(hcmd[:alias]||={})
@@ -31,25 +31,25 @@ module CIAX
         (hcmd[:group]||={})['gal']=algrp
         # Status Domain
         (doc[:domain]['status']||[]).each{|e0|
-          p=((db[:status]||={})[e0.name.to_sym]||={})
+          p=((dbi[:status]||={})[e0.name.to_sym]||={})
           e0.attr2item(p,'ref')
         }
-        init_watch(doc,db)
-        db['proj']=@proj
-        db['site_id']=db['ins_id']=db['id']
-        db['frm_site']||=db['id']
-        db
+        init_watch(doc,dbi)
+        dbi['proj']=@proj
+        dbi['site_id']=dbi['ins_id']=dbi['id']
+        dbi['frm_site']||=dbi['id']
+        dbi
       end
     end
 
     if __FILE__ == $0
       begin
-        db=Db.new(ARGV.shift).get(ARGV.shift)
+        dbi=Db.new(ARGV.shift).get(ARGV.shift)
       rescue
         Msg.usage("(opt) [id] (key) ..")
         Msg.exit
       end
-      puts db.path(ARGV)
+      puts dbi.path(ARGV)
     end
   end
 end

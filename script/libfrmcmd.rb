@@ -37,14 +37,13 @@ module CIAX
         def initialize(cfg,attr={})
           super
           @field=type?(@cfg[:field],Field)
-          dbi=@cfg[:dbi]
           @fstr={}
           if /true|1/ === @cfg["noaffix"]
             @sel={:main => ["body"]}
           else
-            @sel=Hash[dbi[:command][:frame]]
+            @sel=Hash[@dbi[:command][:frame]]
           end
-          @frame=Frame.new(dbi['endian'],dbi['ccmethod'])
+          @frame=Frame.new(@dbi['endian'],@dbi['ccmethod'])
           return unless @sel[:body]=@body
           verbose("Body:#{@cfg['label']}(#@id)")
           mk_frame(:body)

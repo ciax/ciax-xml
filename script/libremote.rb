@@ -93,13 +93,20 @@ module CIAX
         end
       end
 
-      class Item < Item;end
+      class Item < Item
+        def initialize(grp_cfg,attr={})
+          super
+          @dbi=type?(@cfg[:dbi],Dbi)
+        end
+      end
+
       class Entity < Entity
         # Substitute string($+number) with parameters
         # par={ val,range,format } or String
         # str could include Math functions
         def initialize(grp_cfg,attr={})
           super
+          @dbi=type?(@cfg[:dbi],Dbi)
           @body=deep_subst(@cfg[:body])
         end
 

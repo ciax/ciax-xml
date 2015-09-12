@@ -22,30 +22,30 @@ module CIAX
 
     class Exe < Exe
       # cfg must have [:db],[:sub_list]
-      attr_reader :adb,:stat
+      attr_reader :dbi,:stat
       attr_accessor :batch_interrupt
       def initialize(id,cfg,attr={})
         super
         @cfg[:site_id]=id
         # LayerDB might generated in List level
-        @adb=type?(@cfg[:db].get(id),Dbi)
-        @cfg['ver']=@adb['version']
-        @cfg[:frm_site]=@adb['frm_site']
+        @dbi=type?(@cfg[:db].get(id),Dbi)
+        @cfg['ver']=@dbi['version']
+        @cfg[:frm_site]=@dbi['frm_site']
         @sub=@cfg[:sub_list].get(@cfg[:frm_site])
         @site_stat=@sub.site_stat.add_db('isu' => '*')
-        @stat=@cfg[:stat]=Status.new.set_db(@adb)
+        @stat=@cfg[:stat]=Status.new.set_db(@dbi)
         @batch_interrupt=[]
-        @cfg['host']||=@adb['host']
-        @cfg['port']||=@adb['port']
+        @cfg['host']||=@dbi['host']
+        @cfg['port']||=@dbi['port']
         @cobj=Index.new(@cfg)
         @cobj.add_rem.add_hid
-        @cobj.rem.add_ext(@adb)
+        @cobj.rem.add_ext(@dbi)
         @cobj.rem.add_int
       end
 
       def ext_shell
         super
-        @cfg[:output]=View.new(@adb,@stat)
+        @cfg[:output]=View.new(@dbi,@stat)
         @cobj.loc.add_view
         input_conv_set
         self

@@ -23,7 +23,7 @@ module CIAX
         @stat=@sub.stat
         @cobj=Index.new(@cfg)
         @cobj.add_rem(@sub)
-        @event=Event.new.set_db(@sub.adb)
+        @event=Event.new.set_db(@sub.dbi)
         @site_stat=@sub.site_stat.add_db('auto'=>'@','watch'=>'&')
         @sub.batch_interrupt=@event.get('int')
         @sub_proc=proc{verbose("Dummy exec")}
@@ -44,7 +44,7 @@ module CIAX
 
       def ext_shell
         super
-        @cfg[:output]=View.new(@sub.adb,@event)
+        @cfg[:output]=View.new(@sub.dbi,@event)
         @cobj.loc.add_view
         input_conv_set
         self

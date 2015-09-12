@@ -8,9 +8,9 @@ module CIAX
   module App
     # Hash of App Groups
     class View < Upd
-      def initialize(adb,stat)
+      def initialize(dbi,stat)
         super()
-        @adbs=type?(adb,Dbi)[:status]
+        @adbs=type?(dbi,Dbi)[:status]
         @index=@adbs[:index]
         @stat=type?(stat,Status)
         @stat.post_upd_procs << proc{
@@ -86,9 +86,9 @@ module CIAX
       stat=Status.new
       begin
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
-        adb=Ins::Db.new.get(id)
-        stat.set_db(adb)
-        view=View.new(adb,stat)
+        dbi=Ins::Db.new.get(id)
+        stat.set_db(dbi)
+        view=View.new(dbi,stat)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
         if $opt['c']

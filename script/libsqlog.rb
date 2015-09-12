@@ -196,23 +196,22 @@ module CIAX
       end
 
     end
-  end
 
-  if __FILE__ == $0
-    require "libappexe"
-    GetOpts.new
-    id=ARGV.shift
-    ARGV.clear
-    begin
-      adb=Ins::Db.new.get(id)
-      stat=App::Status.new.set_db(adb).ext_file
-      sqlog=SqLog::Table.new(stat)
-      puts stat
-      puts sqlog.create
-      puts sqlog.upd
-    rescue InvalidID
-      Msg.usage "[id]"
+    if __FILE__ == $0
+      require "libappexe"
+      GetOpts.new
+      id=ARGV.shift
+      ARGV.clear
+      begin
+        dbi=Ins::Db.new.get(id)
+        stat=App::Status.new.set_db(dbi).ext_file
+        sqlog=Table.new(stat)
+        puts stat
+        puts sqlog.create
+        puts sqlog.upd
+      rescue InvalidID
+        Msg.usage "[id]"
+      end
     end
-    exit
   end
 end

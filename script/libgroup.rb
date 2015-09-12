@@ -29,7 +29,7 @@ module CIAX
     end
 
     def clear_item
-      valid_clear
+      @valid_keys.clear
       @displist.clear
       clear
     end
@@ -46,11 +46,6 @@ module CIAX
 
     def add_dummy(id,title)
       current.dummy(id,title) #never put into valid_key
-      self
-    end
-
-    def valid_clear
-      @valid_keys.clear
       self
     end
 

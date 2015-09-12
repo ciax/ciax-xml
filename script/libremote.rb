@@ -26,8 +26,8 @@ module CIAX
         @ext=add('Ext::Group',{:dbi => type?(dbi,Dbi)})
       end
 
-      def add_int(valid_keys=[])
-        @int=add('Int::Group',{:valid_keys => valid_keys})
+      def add_int
+        @int=add('Int::Group')
       end
     end
 

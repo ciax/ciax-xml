@@ -116,7 +116,7 @@ module CIAX
       def initialize(cfg,attr={})
         attr[:sub_list]=App::List.new(cfg)
         super
-        set_db(Ins::Db.new) unless @cfg[:db]
+        set_db(@sub_list.cfg[:db])
       end
     end
 

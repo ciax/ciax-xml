@@ -217,8 +217,6 @@ module CIAX
       else
         warning("  -- no json file (#{base})")
       end
-    ensure
-      post_upd
     end
 
     def tag_list

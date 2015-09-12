@@ -21,7 +21,7 @@ file=~/ciax-xml/$db-$id.xml
     list-db $db
     exit
 }
-while read dmy cmd; do
+while read dmy cmd label; do
     eval ${cmd%>}
-    echo $id$'\t'$label
+    echo $id
 done < <(grep '<item' $file)

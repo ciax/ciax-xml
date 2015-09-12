@@ -68,9 +68,9 @@ module CIAX
         stat=Status.new
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
         dbi=Ins::Db.new.get(id)
-        stat.set_db(dbi)
+        stat.set_db(dbi).ext_sym
         stat.ext_file if STDIN.tty?
-        stat.ext_sym.upd
+        stat.upd
         puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID
         Msg.usage "[site] | < status_file"

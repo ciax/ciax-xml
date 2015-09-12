@@ -66,6 +66,7 @@ module CIAX
 
     def mklink
       # Making 'latest' link
+      save
       sname=@jsondir+"#{@type}_latest.json"
       ::File.unlink(sname) if ::File.exist?(sname)
       ::File.symlink(file_path,sname)

@@ -30,7 +30,7 @@ module CIAX
 
       # Convert with corresponding cmd
       def conv(ent)
-        type?(ent,Command::Entity)
+        type?(ent,Entity)
         @sel=Hash[@skel]
         if rid=ent.cfg['response']
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")

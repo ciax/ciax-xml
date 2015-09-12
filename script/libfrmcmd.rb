@@ -14,7 +14,7 @@ module CIAX
 
     module Int
       include Remote::Int
-      class Group < Group
+      class Group < Int::Group
         def initialize(cfg,attr={})
           super
           any={:type =>'reg',:list => ["."]}
@@ -24,15 +24,16 @@ module CIAX
           add_item('flush',"Stream")
         end
       end
-      class Item < Item;end
-      class Entity < Entity;end
+
+      class Item < Int::Item;end
+      class Entity < Int::Entity;end
     end
 
     module Ext
       include Remote::Ext
-      class Group < Group;end
-      class Item < Item;end
-      class Entity < Entity
+      class Group < Ext::Group;end
+      class Item < Ext::Item;end
+      class Entity < Ext::Entity
         def initialize(cfg,attr={})
           super
           @field=type?(@cfg[:field],Field)

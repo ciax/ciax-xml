@@ -5,8 +5,6 @@ require "libhexview"
 
 module CIAX
   module Hex
-    include Command
-
     def self.new(id,cfg,attr={})
       Hex::Sv.new(id,cfg,attr)
     end

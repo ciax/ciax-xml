@@ -4,8 +4,6 @@ require "libwatview"
 
 module CIAX
   module Wat
-    include Command
-
     def self.new(id,cfg,attr={})
       if $opt.sv?
         sv=Sv.new(id,cfg,attr)

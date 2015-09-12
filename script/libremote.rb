@@ -3,7 +3,6 @@ require 'liblocal'
 
 module CIAX
   module Remote
-    include Command
     # Instance var is @rem in Index
     class Index < Local::Index
       attr_reader :rem
@@ -33,7 +32,6 @@ module CIAX
     end
 
     module Hid
-      include Command
       class Group < Group
         def initialize(dom_cfg,attr={})
           super
@@ -46,7 +44,6 @@ module CIAX
     end
 
     module Int
-      include Command
       class Group < Group
         def initialize(dom_cfg,attr={})
           super
@@ -67,7 +64,6 @@ module CIAX
     # For External Command Domain
     # @cfg must contain [:dbi]
     module Ext
-      include Command
       class Group < Group
         def initialize(cfg,attr={})
           super

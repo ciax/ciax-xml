@@ -12,7 +12,7 @@ module CIAX
 
     module Int
       include Remote::Int
-      class Group < Group
+      class Group < Int::Group
         def initialize(cfg,attr={})
           super
           add_item('set','[key] [val]',def_pars(2))
@@ -31,15 +31,15 @@ module CIAX
           self
         end
       end
-      class Item < Item;end
-      class Entity < Entity;end
+      class Item < Int::Item;end
+      class Entity < Int::Entity;end
     end
 
     module Ext
       include Remote::Ext
-      class Group < Group;end
-      class Item < Item;end
-      class Entity < Entity
+      class Group < Ext::Group;end
+      class Item < Ext::Item;end
+      class Entity < Ext::Entity
         include Math
         #batch is ary of args(ary)
         def initialize(cfg,attr={})

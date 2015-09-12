@@ -3,7 +3,6 @@ require 'libcommand'
 
 module CIAX
   module Local
-    include Command
     class Index < GrpAry
       # cfg should have [:jump_groups],[:jump_class]
       attr_reader :loc
@@ -28,7 +27,6 @@ module CIAX
     end
 
     module Shell
-      include Command
       class Group < Group
         def initialize(cfg,attr={})
           super
@@ -41,7 +39,6 @@ module CIAX
     end
 
     module Jump
-      include Command
       class Group < Group
         def initialize(cfg,attr={})
           super
@@ -67,7 +64,6 @@ module CIAX
     end
 
     module View
-      include Command
       # cfg should have [:output]
       class Group < Group
         def initialize(cfg,attr={})

@@ -132,6 +132,7 @@ module CIAX
           event.ext_file
           stat.str_update(t)
         end
+        stat.upd
         puts STDOUT.tty? ? event : event.to_j
       rescue InvalidID
         $opt.usage("(opt) [site] | < status_file")

@@ -33,7 +33,7 @@ module CIAX
           @parameter[:list]=@list.keys
         }
         #Set sublist
-        @mdb=@cobj.rem.ext.cfg[:dbi]
+        @mdb=@cobj.rem.ext.dbi
         @cfg['host']||=@mdb['host']
         @cfg['port']||=(@mdb['port']||5555)
       end

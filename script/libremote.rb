@@ -65,6 +65,7 @@ module CIAX
     # @cfg must contain [:dbi]
     module Ext
       class Group < Group
+        attr_reader :dbi
         def initialize(cfg,attr={})
           super
           @dbi=type?(@cfg[:dbi],Dbi)

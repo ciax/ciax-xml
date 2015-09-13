@@ -25,8 +25,8 @@ module CIAX
       #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
       #ent_cfg should have [:dbi]
       def initialize(ent,attr={})
-        @mcfg=type?(ent,Entity).cfg
-        super(ent.id,Config.new,attr)
+        super(type?(ent,Entity).id,Config.new,attr)
+        @mcfg=ent.cfg
         type?(@mcfg[:sub_list],CIAX::List)
         type?(@mcfg[:dbi],Dbi)
         @record=Record.new.ext_file.mklink # Make latest link

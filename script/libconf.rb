@@ -10,7 +10,7 @@ module CIAX
   # Usage:[]/  get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
     attr_reader :generation
-    alias :this_key :key
+    alias :this_keys :keys
     alias :this_key? :key?
     def initialize(obj=self,cfg=nil)
       super()

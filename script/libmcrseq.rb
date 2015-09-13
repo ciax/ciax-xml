@@ -23,10 +23,11 @@ module CIAX
       #required cfg keys: app,db,body,stat,(:submcr_proc)
       attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:pre_mcr_procs,:post_mcr_procs,:th_mcr
       #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
-      #ent_cfg should have [:batch]'[:sub_list],[:submcr_proc]
+      #ent_cfg should have [:sequence]'[:sub_list],[:submcr_proc]
       def initialize(ent,attr={})
         super(type?(ent,Entity).id,Config.new,attr)
         @mcfg=ent.cfg
+        @sequence=ent.sequence
         type?(@mcfg[:sub_list],CIAX::List)
         @record=Record.new.ext_file.mklink # Make latest link
         @submcr_proc=@mcfg[:submcr_proc]||proc{|args,id|
@@ -39,7 +40,7 @@ module CIAX
         @th_mcr=Thread.current
         @que_cmd=Queue.new
         @que_res=Queue.new
-        update({'id'=>@record['id'],'cid'=>@mcfg[:cid],'pid'=>@mcfg['pid'],'step'=>0,'total_steps'=>@mcfg[:batch].size,'stat'=>'ready'})
+        update({'id'=>@record['id'],'cid'=>@mcfg[:cid],'pid'=>@cfg['pid'],'step'=>0,'total_steps'=>@sequence.size,'stat'=>'ready'})
         @running=[]
         @depth=0
         # For Thread mode
@@ -82,7 +83,7 @@ module CIAX
       def macro
         @record.start(@mcfg)
         show{@record}
-        sub_macro(@mcfg[:batch],@record)
+        sub_macro(@sequence,@record)
       rescue Interrupt
         msg("\nInterrupt Issued to running devices #{@running}",3)
         @running.each{|site|
@@ -99,11 +100,11 @@ module CIAX
 
       private
       # macro returns result
-      def sub_macro(batch,mstat)
+      def sub_macro(sequence,mstat)
         @depth+=1
         set_stat('run')
         result='complete'
-        batch.each{|e1|
+        sequence.each{|e1|
           self['step']+=1
           begin
             @step=@record.add_step(e1,@depth)
@@ -137,7 +138,7 @@ module CIAX
                   @step['id']=@submcr_proc.call(e1['args'],@record['id'])['id']
                 end
               else
-                res=sub_macro(@mcfg.ancestor(2).set_cmd(e1['args']).cfg[:batch],@step)
+                res=sub_macro(@mcfg.ancestor(2).set_cmd(e1['args']).sequence,@step)
                 result=@step['result']
                 return unless res
               end

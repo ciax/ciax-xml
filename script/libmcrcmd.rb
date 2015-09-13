@@ -46,11 +46,11 @@ module CIAX
       class Group < Ext::Group;end
       class Item < Ext::Item;end
       class Entity < Ext::Entity
-        attr_reader :batch
+        attr_reader :sequence
         def initialize(cfg,crnt={})
           super
           # @cfg[:body] expansion
-          batch=Arrayx.new
+          sequence=Arrayx.new
           depth=@cfg[:depth]
           @body.each{|elem|
             case elem['type']
@@ -59,18 +59,18 @@ module CIAX
               sel=elem['select']
               val=@cfg[:sub_list].getstat(elem)
               hash['args']=sel[val]||sel['*']
-              batch << hash
+              sequence << hash
             else
-              batch << elem
+              sequence << elem
             end
           }
-          @cfg[:batch]=batch
+          @sequence=@cfg[:sequence]=sequence
         end
 
         private
-        def sub_batch(args,depth)
+        def sub_sequence(args,depth)
           grp=@cfg.ancestor(2)
-          grp.set_cmd(args,{:depth => depth}).cfg[:batch]
+          grp.set_cmd(args,{:depth => depth}).cfg[:sequence]
         end
       end
     end
@@ -87,7 +87,7 @@ module CIAX
       begin
         ent=cobj.set_cmd(ARGV)
         puts ent.cfg.path
-        puts ent.cfg[:batch].to_v
+        puts ent.sequence.to_v
       rescue InvalidCMD
         $opt.usage("[id] [cmd] (par)")
       end

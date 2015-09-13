@@ -55,8 +55,8 @@ module CIAX
     class Sv < Exe
       def initialize(cfg,attr={})
         super
-        self['sid']='' # For server response
-        @pre_exe_procs << proc{ self['sid']='' }
+        @site_stat['sid']='' # For server response
+        @pre_exe_procs << proc{ @site_stat['sid']='' }
         @list.ext_sv
         # External Command Group
         @cobj.rem.ext.def_proc{|ent| set(ent);"ACCEPT"}
@@ -66,7 +66,7 @@ module CIAX
         }
         @cobj.rem.int.def_proc{|ent|
           if seq=@list.get(ent.par[0])
-            self['sid']=seq.record['id']
+            @site_stat['sid']=seq.record['id']
             seq.exe(ent.id.split(':'))
             'ACCEPT'
           else

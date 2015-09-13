@@ -23,12 +23,11 @@ module CIAX
       #required cfg keys: app,db,body,stat,(:submcr_proc)
       attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:pre_mcr_procs,:post_mcr_procs,:th_mcr
       #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
-      #ent_cfg should have [:dbi]
+      #ent_cfg should have [:batch]'[:sub_list],[:submcr_proc]
       def initialize(ent,attr={})
         super(type?(ent,Entity).id,Config.new,attr)
         @mcfg=ent.cfg
         type?(@mcfg[:sub_list],CIAX::List)
-        type?(@mcfg[:dbi],Dbi)
         @record=Record.new.ext_file.mklink # Make latest link
         @submcr_proc=@mcfg[:submcr_proc]||proc{|args,id|
           show{"Sub Macro #{args} issued\n"}

@@ -33,9 +33,9 @@ module CIAX
           @parameter[:list]=@list.keys
         }
         #Set sublist
-        @mdb=@cobj.rem.ext.dbi
-        @cfg['host']||=@mdb['host']
-        @cfg['port']||=(@mdb['port']||5555)
+        @dbi=@cobj.rem.ext.dbi
+        @cfg['host']||=@dbi['host']
+        @cfg['port']||=(@dbi['port']||5555)
       end
 
       def ext_shell

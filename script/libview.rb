@@ -118,7 +118,7 @@ module CIAX
     def _mixed?(str,data,vary,idx,object_ary,ind,show_iv,show_id,depth)
       if vary.any?{|v| v.kind_of?(Enumerable)}
         idx.each{|i|
-          str << _recursive(data.fetch(i),i,object_ary,ind,show_iv,show_id,depth)
+          str << _recursive(data[i],i,object_ary,ind,show_iv,show_id,depth)
         }
       end
     end
@@ -135,7 +135,7 @@ module CIAX
     def _only_hash(str,data,ind,title)
       data.keys.each_slice(title ? 2 : 1){|a|
         str << indent(ind)+a.map{|k|
-          color("%-8s" % k.inspect,3)+(": %-10s" % data.fetch(k).inspect)
+          color("%-8s" % k.inspect,3)+(": %-10s" % data[k].inspect)
         }.join("\t")+"\n"
       }
       str

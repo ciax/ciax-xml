@@ -7,6 +7,7 @@ module CIAX
     def initialize
       super()
       @db={}
+      self['msg']=''
     end
 
     def add_db(db={})
@@ -38,6 +39,11 @@ module CIAX
         self[k]= hash[k] ? hash.delete(k) : false
       }
       hash
+    end
+
+    def msg(msg=nil)
+      self['msg']=msg if msg
+      self['msg']
     end
 
     def to_s

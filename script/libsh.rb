@@ -76,12 +76,12 @@ module CIAX
         rescue ServerError
           warning($!)
         end
-        puts self['msg'].empty? ? @shell_output_proc.call : self['msg']
+        puts @site_stat.msg.empty? ? @shell_output_proc.call : @site_stat.msg
         verbose("Threads","#{Threadx.list}")
         verbose("Valid Commands #{@cobj.valid_keys}")
       }
       @terminate_procs.inject(self){|obj,proc| proc.call(obj)}
-      msg("Quit Shell",3)
+      Msg.msg("Quit Shell",3)
     end
 
     private

@@ -25,12 +25,12 @@ module CIAX
           res=@udp.recv(1024)
           @site_stat.reset('udperr')
           verbose("UDP Recv #{res}")
-          update(@site_stat.sub(JSON.load(res))) unless res.empty?
+          update(@site_stat.update(JSON.load(res))) unless res.empty?
+          @site_stat.msg
         else
           @site_stat.set('udperr')
-          self['msg']='TIMEOUT'
+          'TIMEOUT'
         end
-        self['msg']
       }
       self
     end

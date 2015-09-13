@@ -28,7 +28,6 @@ module CIAX
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
       @terminate_procs=[] # Proc for program terminated
-      self['msg']=''
       Thread.abort_on_exception=true
       verbose("initialize [#{@id}]")
     end
@@ -38,12 +37,12 @@ module CIAX
       type?(args,Array)
       verbose("Command #{args} recieved")
       @pre_exe_procs.each{|p| p.call(args,src)}
-      self['msg']=@cobj.set_cmd(args).exe_cmd(src,pri)
+      @site_stat.msg(@cobj.set_cmd(args).exe_cmd(src,pri))
       self
     rescue LongJump
       raise $!
     rescue InvalidID
-      self['msg']=$!.to_s
+      @site_stat.msg($!.to_s)
       raise $!
     ensure
       @post_exe_procs.each{|p| p.call(args,src)}

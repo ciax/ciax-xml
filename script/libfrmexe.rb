@@ -129,8 +129,7 @@ module CIAX
       def exe(args,src='local',pri=1)
         super
       rescue CommError
-        @site_stat.set('comerr')
-        self['msg']=$!.to_s
+        @site_stat.set('comerr').msg($!.to_s)
         raise $!
       end
     end

@@ -39,9 +39,9 @@ module CIAX
         begin
           exe(@server_input_proc.call(line),"udp:#{rhost}")
         rescue InvalidCMD
-          self['msg']="INVALID"
+          @site_stat.msg("INVALID")
         rescue
-          self['msg']="ERROR:#{$!}"
+          @site_stat.msg("ERROR:#{$!}")
           errmsg
         end
         send_str=@server_output_proc.call

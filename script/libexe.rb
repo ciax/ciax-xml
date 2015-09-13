@@ -22,7 +22,7 @@ module CIAX
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @id=id
       cpath=class_path
-      @mode=cpath.pop.upcase
+      @mode="TEST"
       @layer=cpath.pop.downcase
       @site_stat=Prompt.new # Site Status shared among layers
       @pre_exe_procs=[] # Proc for Server Command (by User query)

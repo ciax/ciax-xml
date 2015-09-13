@@ -13,6 +13,7 @@ module CIAX
     def ext_client
       host=@cfg['host']
       port=@cfg['port']
+      @mode='CL'
       @site_stat.add_db('udperr' => 'x')
       @udp=UDPSocket.open()
       verbose("Initialize UDP client (#@id) [#{host}:#{port}]")

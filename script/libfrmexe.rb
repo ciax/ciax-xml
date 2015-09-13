@@ -14,9 +14,9 @@ module CIAX
       if $opt.sv?
         Sv.new(id,cfg,attr)
       elsif $opt.cl?
-        Cl.new(id,cfg,attr.update($opt.host))
+        Exe.new(id,cfg,attr.update($opt.host)).ext_client
       else
-        Test.new(id,cfg,attr)
+        Exe.new(id,cfg,attr).ext_sv
       end
     end
 
@@ -31,7 +31,7 @@ module CIAX
         @cfg['ver']=@dbi['version']
         @field=@cfg[:field]=Field.new.set_db(@dbi)
         @cobj=Index.new(@cfg)
-        @cobj.add_rem.add_hid
+        @cobj.add_rem
         @cobj.rem.add_int
         @cobj.rem.add_ext(@dbi)
         # Post internal command procs
@@ -39,6 +39,12 @@ module CIAX
         @flush_procs=[]
         @cfg['host']||=@dbi['host']
         @cfg['port']||=@dbi['port']
+      end
+
+      def ext_client
+        @field.ext_http(@cfg['host'])
+        @pre_exe_procs << proc{@field.upd}
+        super
       end
 
       def ext_shell
@@ -51,6 +57,19 @@ module CIAX
         self
       end
 
+      def ext_sv
+        @field.ext_file
+        @cobj.rem.add_hid
+        @cobj.rem.def_proc{|ent|@field['time']=now_msec;''}
+        @cobj.rem.ext.def_proc{|ent| ent.cfg.path }
+        @cobj.get('set').def_proc{|ent|
+          @field.rep(ent.par[0],ent.par[1])
+          flush
+          "Set [#{ent.par[0]}] = #{ent.par[1]}"
+        }
+        self
+      end
+
       private
       def flush
         @flush_procs.each{|p| p.call(self)}
@@ -58,38 +77,17 @@ module CIAX
       end
     end
 
-    class Test < Exe
-      def initialize(id,cfg,attr={})
-        super
-        @field.ext_file
-        @cobj.rem.def_proc{|ent|@field['time']=now_msec;''}
-        @cobj.rem.ext.def_proc{|ent| ent.cfg.path }
-        @cobj.get('set').def_proc{|ent|
-          @field.rep(ent.par[0],ent.par[1])
-          "Set [#{ent.par[0]}] = #{ent.par[1]}"
-        }
-      end
-    end
-
-    class Cl < Exe
-      def initialize(id,cfg,attr={})
-        super
-        @field.ext_http(@cfg['host'])
-        @pre_exe_procs << proc{@field.upd}
-        ext_client
-      end
-    end
-
     class Sv < Exe
       def initialize(id,cfg,attr={})
         super
-        @field.ext_file
+        ext_sv
         @site_stat.add_db('comerr' => 'X','strerr' => 'E')
         if $opt['s']
           @mode='SIM'
           iocmd=['devsim-file',@id,@dbi['version']]
           timeout=60
         else
+          @mode='SV'
           iocmd=@dbi['iocmd'].split(' ')
           timeout=(@dbi['timeout']||10).to_i
         end
@@ -104,11 +102,6 @@ module CIAX
           @stream.snd(ent.cfg[:frame],ent.id)
           @field.conv(ent)
           'OK'
-        }
-        @cobj.get('set').def_proc{|ent|
-          @field.rep(ent.par[0],ent.par[1])
-          flush
-          "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
         @cobj.get('save').def_proc{|ent|
           @field.save_key(ent.par[0].split(','),ent.par[1])

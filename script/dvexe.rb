@@ -6,5 +6,5 @@ module CIAX
   cfg=Config.new
   cfg[:jump_groups]=[]
   sl=$opt.layer_list.new(cfg)
-  puts sl.exe(ARGV)['msg']
+  puts sl.exe(ARGV)
 end

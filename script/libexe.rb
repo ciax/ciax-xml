@@ -38,7 +38,6 @@ module CIAX
       verbose("Command #{args} recieved")
       @pre_exe_procs.each{|p| p.call(args,src)}
       @site_stat.msg(@cobj.set_cmd(args).exe_cmd(src,pri))
-      self
     rescue LongJump
       raise $!
     rescue InvalidID

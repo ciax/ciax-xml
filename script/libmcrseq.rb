@@ -130,7 +130,7 @@ module CIAX
             when 'exec'
               if @step.exec? && query(['exec','pass'])
                 @running << e1['site']
-                @mcfg[:sub_list].get(e1['site']).exe(e1['args'],'macro') 
+                @mcfg[:sub_list].get(e1['site']).exe(e1['args'],'macro')
               end
             when 'mcr'
               if @step.async?

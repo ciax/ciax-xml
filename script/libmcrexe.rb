@@ -22,11 +22,11 @@ module CIAX
         @sub_list=@cfg[:sub_list]=Wat::List.new(@cfg)
         @list=List.new(PROJ,@cfg)
         @lastsize=0
-        @cobj=Index.new(@cfg)
+        @cobj=Remote::Index.new(@cfg,{:dbi =>Db.new.get(PROJ)})
         @cobj.add_rem.add_hid
-        @cobj.rem.add_int
+        @cobj.rem.add_int(Int)
         @cobj.rem.int.add_item('clean','Clean list')
-        @cobj.rem.add_ext(Db.new.get(PROJ))
+        @cobj.rem.add_ext(Ext)
         @parameter=@cobj.rem.int.par
         @list.post_upd_procs << proc{
           verbose("Propagate List#upd -> Parameter#upd")

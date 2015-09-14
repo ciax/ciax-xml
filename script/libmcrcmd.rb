@@ -37,8 +37,6 @@ module CIAX
           }
         end
       end
-      class Item < Int::Item;end
-      class Entity < Int::Entity;end
     end
 
     module Ext
@@ -80,11 +78,11 @@ module CIAX
       GetOpts.new
       cfg=Config.new
       cfg[:sub_list]=Wat::List.new(cfg)
-      cobj=Index.new(cfg)
-      cobj.add_rem
-      cobj.rem.def_proc{|ent| ent.cfg.path }
-      cobj.rem.add_ext(Db.new.get(PROJ))
       begin
+        cobj=Index.new(cfg,{:dbi =>Db.new.get(PROJ)})
+        cobj.add_rem
+        cobj.rem.def_proc{|ent| ent.cfg.path }
+        cobj.rem.add_ext(Ext)
         ent=cobj.set_cmd(ARGV)
         puts ent.cfg.path
         puts ent.sequence.to_v

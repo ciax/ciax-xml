@@ -44,11 +44,12 @@ module CIAX
         @running=[]
         @depth=0
         # For Thread mode
-        @cobj=Index.new(@cfg)
+        @cobj=Remote::Index.new(@cfg)
         @cobj.add_rem.add_hid
-        self['option']=@cobj.rem.add_int.valid_keys.clear
-        @cobj.rem.int.def_proc{|ent| reply(ent.id)}
-        @cobj.rem.int.add_item('start','Sequece Start').def_proc{|ent|
+        int=@cobj.rem.add_int(Int)
+        self['option']=int.valid_keys.clear
+        int.def_proc{|ent| reply(ent.id)}
+        int.add_item('start','Sequece Start').def_proc{|ent|
           fork
           'ACCEPT'
         }
@@ -230,9 +231,8 @@ module CIAX
       cfg[:jump_groups]=[]
       al=Wat::List.new(cfg).cfg[:sub_list] #Take App List
       cfg[:sub_list]=al
-      mobj=Index.new(cfg)
-      mobj.add_rem
-      mobj.rem.add_ext(Db.new.get(PROJ))
+      mobj=Remote::Index.new(cfg,{:dbi =>Db.new.get(PROJ)})
+      mobj.add_rem.add_ext(Ext)
       begin
         ent=mobj.set_cmd(ARGV)
         seq=Seq.new(ent)

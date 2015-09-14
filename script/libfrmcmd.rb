@@ -6,15 +6,9 @@ require "libfield"
 module CIAX
   module Frm
     include Remote
-    # Command Index
     # cfg should have [:field]
-    class Index < Index;end
-
-    class Domain < Domain;end
-
     module Int
-      include Remote::Int
-      class Group < Int::Group
+      class Group < Remote::Int::Group
         def initialize(cfg,attr={})
           super
           any={:type =>'reg',:list => ["."]}
@@ -24,9 +18,6 @@ module CIAX
           add_item('flush',"Stream")
         end
       end
-
-      class Item < Int::Item;end
-      class Entity < Int::Entity;end
     end
 
     module Ext
@@ -93,18 +84,12 @@ module CIAX
         dbi=Db.new.get(id)
         cfg=Config.new
         fld=cfg[:field]=Field.new.set_db(dbi)
-        cobj=Index.new(cfg)
-        cobj.add_rem
-        if $opt['r']
-          cobj.rem.def_proc{|ent| ent.cfg[:frame] }
-        else
-          cobj.rem.def_proc{|ent| ent.cfg[:frame].inspect }
-        end
-        cobj.rem.add_ext(dbi)
-        cobj.rem.add_int
+        cobj=Index.new(cfg,{:dbi => dbi})
+        cobj.add_rem.def_proc{|ent| ent.cfg[:frame]}
+        cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?
-        ent=cobj.set_cmd(args)
-        puts ent.exe_cmd('test')
+        res=cobj.set_cmd(args).exe_cmd('test')
+        puts($opt['r'] ? res : res.inspect)
       rescue InvalidCMD
         $opt.usage("#{id} [cmd] (par) < field_file")
       rescue InvalidID

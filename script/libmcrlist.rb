@@ -117,8 +117,8 @@ module CIAX
       cfg[:jump_groups]=[]
       cfg[:sub_list]=Wat::List.new(cfg).cfg[:sub_list] #Take App List
       list=List.new(PROJ,cfg).ext_sv.ext_shell
-      mobj=Index.new(cfg)
-      mobj.add_rem.add_ext(Db.new.get(PROJ))
+      mobj=Remote::Index.new(cfg,{:dbi =>Db.new.get(PROJ)})
+      mobj.add_rem.add_ext(Ext)
       cfg[:submcr_proc]=proc{|args,pid|
         ent=mobj.set_cmd(args)
         list.add(ent,pid)

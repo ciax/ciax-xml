@@ -37,10 +37,10 @@ module CIAX
         @batch_interrupt=[]
         @cfg['host']||=@dbi['host']
         @cfg['port']||=@dbi['port']
-        @cobj=Index.new(@cfg)
+        @cobj=Remote::Index.new(@cfg,{:dbi => @dbi})
         @cobj.add_rem.add_hid
-        @cobj.rem.add_ext(@dbi)
-        @cobj.rem.add_int
+        @cobj.rem.add_ext(Ext)
+        @cobj.rem.add_int(Int)
       end
 
       def ext_shell

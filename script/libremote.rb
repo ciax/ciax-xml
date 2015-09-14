@@ -11,6 +11,7 @@ module CIAX
       end
     end
 
+    # @cfg should have [:dbi]
     class Domain < GrpAry
       attr_reader :hid,:ext,:int
       def initialize(cfg,attr={})
@@ -18,16 +19,17 @@ module CIAX
         @cfg[:def_proc]=Proc.new{""} # proc is re-defined
       end
 
-      def add_hid
-        @hid=add('Hid::Group')
+      def add_hid(ns=Hid)
+        @hid=add(ns::Group)
       end
 
-      def add_ext(dbi)
-        @ext=add('Ext::Group',{:dbi => type?(dbi,Dbi)})
+      def add_ext(ns=Ext)
+        type?(@cfg[:dbi],Dbi)
+        @ext=add(ns::Group)
       end
 
-      def add_int
-        @int=add('Int::Group')
+      def add_int(ns=Int)
+        @int=add(ns::Group)
       end
     end
 

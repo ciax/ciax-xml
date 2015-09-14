@@ -30,10 +30,10 @@ module CIAX
         @dbi=type?(@cfg[:db].get(id),Dbi)
         @cfg['ver']=@dbi['version']
         @field=@cfg[:field]=Field.new.set_db(@dbi)
-        @cobj=Index.new(@cfg)
+        @cobj=Remote::Index.new(@cfg,{:dbi => @dbi})
         @cobj.add_rem
-        @cobj.rem.add_int
-        @cobj.rem.add_ext(@dbi)
+        @cobj.rem.add_int(Int)
+        @cobj.rem.add_ext(Ext)
         # Post internal command procs
         # Proc for Terminate process of each individual commands
         @flush_procs=[]

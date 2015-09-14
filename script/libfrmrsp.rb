@@ -140,6 +140,7 @@ module CIAX
       if cid
         cfg=Config.new.update(:dbi => dbi,:field => field)
         cobj=Index.new(cfg)
+        cobj.add_rem.add_ext(Ext)
         ent=cobj.set_cmd(cid.split(':'))
         field.conv(ent)
       end

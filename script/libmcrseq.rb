@@ -44,7 +44,6 @@ module CIAX
         @running=[]
         @depth=0
         # For Thread mode
-        @cobj=Remote::Index.new(@cfg)
         @cobj.add_rem.add_hid
         int=@cobj.rem.add_int(Int)
         self['option']=int.valid_keys.clear

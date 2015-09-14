@@ -2,7 +2,7 @@
 require "libserver"
 require "libclient"
 require "libprompt"
-require "libcommand"
+require "libremote"
 
 # Provide Server,Client
 # Integrate Command,Status
@@ -30,6 +30,7 @@ module CIAX
       @terminate_procs=[] # Proc for program terminated
       Thread.abort_on_exception=true
       verbose("initialize [#{@id}]")
+      @cobj=Remote::Index.new(@cfg)
     end
 
     # Sync only (Wait for other thread), never inherit

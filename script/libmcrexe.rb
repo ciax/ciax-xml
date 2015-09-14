@@ -17,12 +17,12 @@ module CIAX
       # cfg should have [:jump_groups]
       attr_reader :sub_list
       def initialize(cfg,attr={})
-        type?(cfg,Config)
         super(PROJ,cfg)
         @sub_list=@cfg[:sub_list]=Wat::List.new(@cfg)
         @list=List.new(PROJ,@cfg)
         @lastsize=0
-        @cobj=Remote::Index.new(@cfg,{:dbi =>Db.new.get(PROJ)})
+        @dbi=Db.new.get(PROJ)
+        @cfg[:dbi]=@dbi
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.int.add_item('clean','Clean list')

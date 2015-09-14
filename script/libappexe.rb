@@ -28,7 +28,8 @@ module CIAX
         super
         @cfg[:site_id]=id
         # LayerDB might generated in List level
-        @dbi=type?(@cfg[:db].get(id),Dbi)
+        @dbi=type?(cfg[:db].get(id),Dbi)
+        @cfg[:dbi]=@dbi
         @cfg['ver']=@dbi['version']
         @cfg[:frm_site]=@dbi['frm_site']
         @sub=@cfg[:sub_list].get(@cfg[:frm_site])
@@ -37,7 +38,6 @@ module CIAX
         @batch_interrupt=[]
         @cfg['host']||=@dbi['host']
         @cfg['port']||=@dbi['port']
-        @cobj=Remote::Index.new(@cfg,{:dbi => @dbi})
         @cobj.add_rem.add_hid
         @cobj.rem.add_ext(Ext)
         @cobj.rem.add_int(Int)

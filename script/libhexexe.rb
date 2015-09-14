@@ -14,7 +14,6 @@ module CIAX
       def initialize(id,cfg,attr={})
         super
         sub=@cfg[:sub_list].get(id).sub
-        @cobj=Index.new(@cfg)
         @cobj.add_rem(sub.cobj.rem)
         @mode=sub.mode
         @cfg[:output]=View.new(sub.stat,sub.site_stat)
@@ -34,8 +33,6 @@ module CIAX
         self
       end
     end
-
-    class Index < Wat::Index; end
 
     class List < Site::List
       def initialize(cfg,attr={})

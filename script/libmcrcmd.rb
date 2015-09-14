@@ -5,15 +5,6 @@ require "libmcrdb"
 module CIAX
   module Mcr
     include Remote
-    class Index < Index
-      def add_rem
-        @cfg[:depth]=1
-        super
-      end
-    end
-
-    class Domain < Domain;end
-
     module Int
       include Remote::Int
       class Group < Int::Group
@@ -49,7 +40,6 @@ module CIAX
           super
           # @cfg[:body] expansion
           sequence=Arrayx.new
-          depth=@cfg[:depth]
           @body.each{|elem|
             case elem['type']
             when "select"
@@ -63,12 +53,6 @@ module CIAX
             end
           }
           @sequence=@cfg[:sequence]=sequence
-        end
-
-        private
-        def sub_sequence(args,depth)
-          grp=@cfg.ancestor(2)
-          grp.set_cmd(args,{:depth => depth}).cfg[:sequence]
         end
       end
     end

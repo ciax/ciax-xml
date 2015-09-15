@@ -27,18 +27,17 @@ module CIAX
         super
         # DB is generated in List level
         @cfg[:site_id]=id
-        @dbi=type?(@cfg[:db].get(id),Dbi)
-        @cfg[:dbi]=@dbi
-        @cfg['ver']=@dbi['version']
-        @field=@cfg[:field]=Field.new.set_db(@dbi)
+        dbi=@cfg[:dbi]=type?(@cfg[:db].get(id),Dbi)
+        @cfg['ver']=dbi['version']
+        @field=@cfg[:field]=Field.new.set_db(dbi)
         @cobj.add_rem
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
         # Post internal command procs
         # Proc for Terminate process of each individual commands
         @flush_procs=[]
-        @cfg['host']||=@dbi['host']
-        @cfg['port']||=@dbi['port']
+        @cfg['host']||=dbi['host']
+        @cfg['port']||=dbi['port']
       end
 
       def ext_client
@@ -81,18 +80,19 @@ module CIAX
       def initialize(id,cfg,attr={})
         super
         ext_sv
+        dbi=@cfg[:dbi]
         @site_stat.add_db('comerr' => 'X','strerr' => 'E')
         if $opt['s']
           @mode='SIM'
-          iocmd=['devsim-file',@id,@dbi['version']]
+          iocmd=['devsim-file',@id,dbi['version']]
           timeout=60
         else
           @mode='SV'
-          iocmd=@dbi['iocmd'].split(' ')
-          timeout=(@dbi['timeout']||10).to_i
+          iocmd=dbi['iocmd'].split(' ')
+          timeout=(dbi['timeout']||10).to_i
         end
-        tm=@dbi[:response][:frame]["terminator"]
-        @stream=Stream.new(@id,@dbi['version'],iocmd,@dbi['wait'],timeout,(tm && eval('"'+tm+'"')))
+        tm=dbi[:response][:frame]["terminator"]
+        @stream=Stream.new(@id,dbi['version'],iocmd,dbi['wait'],timeout,(tm && eval('"'+tm+'"')))
         @stream.ext_log unless $opt['s']
         @stream.pre_open_proc=proc{@site_stat.set('strerr')}
         @stream.post_open_proc=proc{@site_stat.reset('strerr')}

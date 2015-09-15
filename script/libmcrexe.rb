@@ -21,8 +21,7 @@ module CIAX
         @sub_list=@cfg[:sub_list]=Wat::List.new(@cfg)
         @list=List.new(PROJ,@cfg)
         @lastsize=0
-        @dbi=Db.new.get(PROJ)
-        @cfg[:dbi]=@dbi
+        dbi=@cfg[:dbi]=Db.new.get(PROJ)
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.int.add_item('clean','Clean list')
@@ -33,8 +32,8 @@ module CIAX
           @parameter[:list]=@list.keys
         }
         #Set sublist
-        @cfg['host']||=@dbi['host']
-        @cfg['port']||=(@dbi['port']||5555)
+        @cfg['host']||=dbi['host']
+        @cfg['port']||=(dbi['port']||5555)
       end
 
       def ext_shell

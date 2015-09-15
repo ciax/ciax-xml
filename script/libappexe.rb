@@ -22,22 +22,22 @@ module CIAX
 
     class Exe < Exe
       # cfg must have [:db],[:sub_list]
-      attr_reader :dbi,:stat
+      attr_reader :stat
       attr_accessor :batch_interrupt
       def initialize(id,cfg,attr={})
         super
         @cfg[:site_id]=id
         # LayerDB might generated in List level
-        @dbi=type?(cfg[:db].get(id),Dbi)
-        @cfg[:dbi]=@dbi
-        @cfg['ver']=@dbi['version']
-        @cfg[:frm_site]=@dbi['frm_site']
+        dbi=type?(cfg[:db].get(id),Dbi)
+        @cfg[:dbi]=dbi
+        @cfg['ver']=dbi['version']
+        @cfg[:frm_site]=dbi['frm_site']
         @sub=@cfg[:sub_list].get(@cfg[:frm_site])
         @site_stat=@sub.site_stat.add_db('isu' => '*')
-        @stat=@cfg[:stat]=Status.new.set_db(@dbi)
+        @stat=@cfg[:stat]=Status.new.set_db(dbi)
         @batch_interrupt=[]
-        @cfg['host']||=@dbi['host']
-        @cfg['port']||=@dbi['port']
+        @cfg['host']||=dbi['host']
+        @cfg['port']||=dbi['port']
         @cobj.add_rem.add_hid
         @cobj.rem.add_ext(Ext)
         @cobj.rem.add_int(Int)

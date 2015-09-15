@@ -32,9 +32,9 @@ module CIAX
           if /true|1/ === @cfg["noaffix"]
             @sel={:main => ["body"]}
           else
-            @sel=Hash[@dbi[:command][:frame]]
+            @sel=Hash[@cfg[:dbi][:command][:frame]]
           end
-          @frame=Frame.new(@dbi['endian'],@dbi['ccmethod'])
+          @frame=Frame.new(@cfg[:dbi]['endian'],@cfg[:dbi]['ccmethod'])
           return unless @sel[:body]=@body
           verbose("Body:#{@cfg['label']}(#@id)")
           mk_frame(:body)

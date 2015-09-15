@@ -65,16 +65,16 @@ module CIAX
 
     # For External Command Domain
     # @cfg must contain [:dbi]
+    # Content of Dbi[:command][:index][id] will be merged in Item@cfg
     module Ext
       class Group < Group
-        attr_reader :dbi
         def initialize(cfg,attr={})
           super
-          @dbi=type?(@cfg[:dbi],Dbi)
+          dbi=type?(@cfg[:dbi],Dbi)
           @cfg['caption']||="External Commands"
-          @cfg['ver']||=@dbi['version']
+          @cfg['ver']||=dbi['version']
           # Set items by DB
-          cdb=@dbi[:command]
+          cdb=dbi[:command]
           idx=cdb[:index]
           (cdb[:group]).each{|gid,gat|
             @current=@displist.new_grp(gat['caption'])
@@ -96,12 +96,7 @@ module CIAX
         end
       end
 
-      class Item < Item
-        def initialize(grp_cfg,attr={})
-          super
-          @dbi=type?(@cfg[:dbi],Dbi)
-        end
-      end
+      class Item < Item;end
 
       class Entity < Entity
         # Substitute string($+number) with parameters
@@ -109,7 +104,7 @@ module CIAX
         # str could include Math functions
         def initialize(grp_cfg,attr={})
           super
-          @dbi=type?(@cfg[:dbi],Dbi)
+          type?(@cfg[:dbi],Dbi)
           @body=deep_subst(@cfg[:body])
         end
 

@@ -30,6 +30,7 @@ module CIAX
       @terminate_procs=[] # Proc for program terminated
       Thread.abort_on_exception=true
       verbose("initialize [#{@id}]")
+      @dbi=@cfg[:dbi]=type?(@cfg[:db].get(id),Dbi) if @cfg.key?(:db)
       @cobj=Remote::Index.new(@cfg)
     end
 

@@ -6,7 +6,7 @@ module CIAX
   # Variable Status Data with Saving, Logging feature
   # Need Header(id,ver) data
   class Varx < Upd
-    attr_reader :type
+    attr_reader :type,:dbi
     def initialize(type,id=nil,ver=nil,host=nil)
       super()
       @type=type

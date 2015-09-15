@@ -45,7 +45,7 @@ module CIAX
 
       def ext_shell
         super
-        @cfg[:output]=View.new(@dbi,@stat)
+        @cfg[:output]=View.new(@stat)
         @cobj.loc.add_view
         input_conv_set
         self

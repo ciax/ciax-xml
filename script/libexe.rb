@@ -21,9 +21,8 @@ module CIAX
       @cfg=type?(cfg,Config).gen(self).update(attr)
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @id=id
-      cpath=class_path
       @mode="TEST"
-      @layer=cpath.pop.downcase
+      @layer=class_path.first.downcase
       @site_stat=Prompt.new # Site Status shared among layers
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)

@@ -11,13 +11,14 @@ require "libsitelist"
 module CIAX
   module Frm
     def self.new(id,cfg,attr={})
+      attr.update($opt.host)
+      exe=Exe.new(id,cfg,attr)
       if $opt.sv?
-        Sv.new(id,cfg,attr)
+        exe.ext_driver
       elsif $opt.cl?
-        Exe.new(id,cfg,attr.update($opt.host)).ext_client
-      else
-        Exe.new(id,cfg,attr).ext_sv
+        exe.ext_client
       end
+      exe
     end
 
     class Exe < Exe
@@ -39,46 +40,21 @@ module CIAX
         @cfg['port']||=@dbi['port']
       end
 
+      def exe(args,src='local',pri=1)
+        super
+      rescue CommError
+        @site_stat.set('comerr').msg($!.to_s)
+        raise $!
+      end
+
       def ext_client
         @field.ext_http(@cfg['host'])
         @pre_exe_procs << proc{@field.upd}
         super
       end
 
-      def ext_shell
-        super
-        @cfg[:output]=@field
-        @post_exe_procs << proc{|args,src|
-          flush if !args.empty? and src != 'local'
-        }
-        input_conv_set
-        self
-      end
-
-      def ext_sv
+      def ext_driver
         @field.ext_file
-        @cobj.rem.add_hid
-        @cobj.rem.def_proc{|ent|@field['time']=now_msec;''}
-        @cobj.rem.ext.def_proc{|ent| ent.cfg.path }
-        @cobj.get('set').def_proc{|ent|
-          @field.rep(ent.par[0],ent.par[1])
-          flush
-          "Set [#{ent.par[0]}] = #{ent.par[1]}"
-        }
-        self
-      end
-
-      private
-      def flush
-        @flush_procs.each{|p| p.call(self)}
-        self
-      end
-    end
-
-    class Sv < Exe
-      def initialize(id,cfg,attr={})
-        super
-        ext_sv
         @site_stat.add_db('comerr' => 'X','strerr' => 'E')
         if $opt['s']
           @mode='SIM'
@@ -101,6 +77,11 @@ module CIAX
           @field.conv(ent)
           'OK'
         }
+        @cobj.get('set').def_proc{|ent|
+          @field.rep(ent.par[0],ent.par[1])
+          flush
+          "Set [#{ent.par[0]}] = #{ent.par[1]}"
+        }
         @cobj.get('save').def_proc{|ent|
           @field.save_key(ent.par[0].split(','),ent.par[1])
           "Save [#{ent.par[0]}]"
@@ -115,13 +96,24 @@ module CIAX
           flush
           "Flush Stream"
         }
+        self
       end
 
-      def exe(args,src='local',pri=1)
+      def ext_shell
         super
-      rescue CommError
-        @site_stat.set('comerr').msg($!.to_s)
-        raise $!
+        @cobj.rem.add_hid
+        @cfg[:output]=@field
+        @post_exe_procs << proc{|args,src|
+          flush if !args.empty? and src != 'local'
+        }
+        input_conv_set
+        self
+      end
+
+      private
+      def flush
+        @flush_procs.each{|p| p.call(self)}
+        self
       end
     end
 

@@ -21,7 +21,6 @@ module CIAX
       @cfg=type?(cfg,Config).gen(self).update(attr)
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @id=id
-      @mode="TEST"
       @layer=class_path.first.downcase
       @site_stat=Prompt.new # Site Status shared among layers
       @pre_exe_procs=[] # Proc for Server Command (by User query)
@@ -48,9 +47,21 @@ module CIAX
       @post_exe_procs.each{|p| p.call(args,src)}
     end
 
+    def ext_test
+      @mode='TEST'
+      self
+    end
+
+    def ext_drv
+      @mode='DRV'
+      self
+    end
+
     def ext_client
+      @mode='CL'
       extend(Client).ext_client
     end
+
 
     def ext_server
       extend(Server).ext_server

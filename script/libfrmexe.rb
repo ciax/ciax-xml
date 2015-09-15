@@ -17,6 +17,8 @@ module CIAX
         exe.ext_driver
       elsif $opt.cl?
         exe.ext_client
+      else
+        exe.ext_test
       end
       exe
     end
@@ -47,6 +49,18 @@ module CIAX
         raise $!
       end
 
+      def ext_test
+        super
+        @field.ext_file
+        @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
+        @cobj.get('set').def_proc{|ent|
+          @field.rep(ent.par[0],ent.par[1])
+          flush
+          "Set [#{ent.par[0]}] = #{ent.par[1]}"
+        }
+        self
+      end
+
       def ext_client
         @field.ext_http(@cfg['host'])
         @pre_exe_procs << proc{@field.upd}
@@ -54,7 +68,8 @@ module CIAX
       end
 
       def ext_driver
-        @field.ext_file
+        ext_test
+        super
         @site_stat.add_db('comerr' => 'X','strerr' => 'E')
         if $opt['s']
           @mode='SIM'
@@ -76,11 +91,6 @@ module CIAX
           @stream.snd(ent.cfg[:frame],ent.id)
           @field.conv(ent)
           'OK'
-        }
-        @cobj.get('set').def_proc{|ent|
-          @field.rep(ent.par[0],ent.par[1])
-          flush
-          "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
         @cobj.get('save').def_proc{|ent|
           @field.save_key(ent.par[0].split(','),ent.par[1])

@@ -11,6 +11,7 @@ module CIAX
 
       def ext_rsp(field)
         @field=type?(field,Frm::Field)
+        type?(@dbi,Dbi)
         upd
         self
       end

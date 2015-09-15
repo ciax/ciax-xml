@@ -15,9 +15,10 @@ module CIAX
       #       => check(@data['crnt'] <> @data['last']?)
       # Stat no changed -> clear exec, no eval
       def ext_rsp(stat)
+        @stat=type?(stat,App::Status)
+        set_db(stat.dbi)
         wdb=@dbi[:watch]||{}
         @windex=wdb[:index]||{}
-        @stat=type?(stat,App::Status)
         @period=wdb['period'].to_i if wdb.key?('period')
         @interval=wdb['interval'].to_f if wdb.key?('interval')
         # Pick usable val
@@ -127,7 +128,7 @@ module CIAX
         dbi=Ins::Db.new.get(id)
         stat.set_db(dbi)
         stat.ext_file if STDIN.tty?
-        event=Event.new.set_db(dbi).ext_rsp(stat)
+        event=Event.new.ext_rsp(stat)
         if t=$opt['t']
           event.ext_file
           stat.str_update(t)

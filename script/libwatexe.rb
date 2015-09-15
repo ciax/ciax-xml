@@ -22,7 +22,7 @@ module CIAX
         @sub=@cfg[:sub_list].get(@id)
         @stat=@sub.stat
         @cobj.add_rem(@sub.cobj.rem)
-        @event=Event.new.set_db(@sub.dbi)
+        @event=Event.new.ext_rsp(@sub.stat)
         @site_stat=@sub.site_stat.add_db('auto'=>'@','watch'=>'&')
         @sub.batch_interrupt=@event.get('int')
         @sub_proc=proc{verbose("Dummy exec")}
@@ -37,13 +37,13 @@ module CIAX
           @cobj.rem.ext.valid_sub(block)
         }
         @sub.pre_exe_procs << proc{|args| @event.block?(args) }
-        @event.ext_rsp(@sub.stat).ext_file
+        @event.ext_file
         self
       end
 
       def ext_shell
         super
-        @cfg[:output]=View.new(@sub.dbi,@event)
+        @cfg[:output]=View.new(@event)
         @cobj.loc.add_view
         input_conv_set
         self

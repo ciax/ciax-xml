@@ -7,10 +7,10 @@ module CIAX
   module Wat
     # Decorate the event data (Put caption,symbole,etc.) from WDB
     class View < Upd
-      def initialize(dbi,event)
+      def initialize(event)
         super()
-        wdb=type?(dbi,Dbi)[:watch]||{:index =>[]}
         @event=type?(event,Event)
+        wdb=type?(event.dbi,Dbi)[:watch]||{:index =>[]}
         @event.post_upd_procs << proc{
           verbose("Propagate Event#upd -> upd")
           upd
@@ -100,9 +100,8 @@ module CIAX
       begin
         id=STDIN.tty? ? ARGV.shift : event.read['id']
         dbi=Ins::Db.new.get(id)
-        event.set_db(dbi)
-        wview=View.new(dbi,event)
-        event.ext_file if STDIN.tty?
+        event.set_db(dbi).ext_file if STDIN.tty?
+        wview=View.new(event)
         puts STDOUT.tty? ? wview : wview.to_j
       rescue InvalidID
         $opt.usage("(opt) [site] | < event_file")

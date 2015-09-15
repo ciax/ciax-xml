@@ -19,6 +19,7 @@ module CIAX
       # Takes a block for taking stream data
       def ext_rsp(&input_proc)
         @input_proc=input_proc
+        type?(@dbi,Dbi)
         fdbr=@dbi[:response]
         @skel=fdbr[:frame]
         # @sel structure: { terminator, :main{}, :body{} <- changes on every upd }

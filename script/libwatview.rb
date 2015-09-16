@@ -9,7 +9,7 @@ module CIAX
     class View < Upd
       def initialize(event)
         super()
-        @event=type?(event,Event)
+        @event=type?(event,Event).upd
         wdb=type?(event.dbi,Dbi)[:watch]||{:index =>[]}
         @event.post_upd_procs << proc{
           verbose("Propagate Event#upd -> upd")

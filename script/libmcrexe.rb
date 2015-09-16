@@ -4,15 +4,6 @@ require "libmcrlist"
 
 module CIAX
   module Mcr
-    def self.new(cfg,attr={})
-      if $opt.cl?
-        Sv.new(cfg,attr).ext_server.server if $opt['l']
-        Cl.new(cfg,attr.update($opt.host))
-      else
-        Sv.new(cfg,attr)
-      end
-    end
-
     class Exe < CIAX::Exe
       # cfg should have [:jump_groups]
       attr_reader :sub_list
@@ -34,25 +25,25 @@ module CIAX
         #Set sublist
         @cfg['host']||=@dbi['host']
         @cfg['port']||=(@dbi['port']||5555)
+        opt_mode
       end
 
       def ext_shell
         extend(Shell).ext_shell
       end
-    end
 
-    class Cl < Exe
-      def initialize(cfg,attr={})
-        super
+      private
+      def ext_test
+        ext_driver
+      end
+
+      def ext_client
         @pre_exe_procs << proc{@list.upd}
         @list.ext_http
-        ext_client
-      end
-    end
-
-    class Sv < Exe
-      def initialize(cfg,attr={})
         super
+      end
+
+      def ext_driver
         @site_stat['sid']='' # For server response
         @pre_exe_procs << proc{ @site_stat['sid']='' }
         @list.ext_sv
@@ -77,9 +68,9 @@ module CIAX
           'INTERRUPT'
         }
         @terminate_procs << proc{ @list.clean}
+        super
       end
 
-      private
       def set(ent,pid='0')
         @list.add(ent,pid)
       end
@@ -156,7 +147,7 @@ module CIAX
       begin
         cfg=Config.new
         cfg[:jump_groups]=[]
-        Mcr.new(cfg).ext_shell.shell
+        Exe.new(cfg).ext_shell.shell
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

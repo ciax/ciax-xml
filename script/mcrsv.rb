@@ -4,6 +4,6 @@ require "libmcrexe"
 module CIAX
   ENV['VER']||='initialize'
   GetOpts.new('csemr')
-  Mcr.new(Config.new).ext_server.server
+  Mcr::Exe.new(Config.new).ext_server.server
   sleep
 end

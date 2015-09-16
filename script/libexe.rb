@@ -48,21 +48,22 @@ module CIAX
     end
 
     def ext_test
-      @mode='TEST'
+      @mode||='TEST'
       self
     end
 
     def ext_driver
-      @mode='DRV'
+      @mode||='DRV'
       self
     end
 
     def ext_client
-      @mode='CL'
+      @mode||='CL'
       extend(Client).ext_client
     end
 
     def ext_server
+      @mode+=':SV'
       extend(Server).ext_server
     end
 

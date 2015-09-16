@@ -44,7 +44,6 @@ module CIAX
       end
 
       def ext_test
-        super
         @stat.ext_sym.ext_file
         @stat.post_upd_procs << proc{|st|
           verbose("Propagate Status#upd -> App#settime")
@@ -56,17 +55,10 @@ module CIAX
           "INTERRUPT(#{@batch_interrupt})"
         }
         @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
-        self
-      end
-
-      def ext_client
-        @stat.ext_http(@cfg['host'])
-        @pre_exe_procs << proc{@stat.upd}
         super
       end
 
       def ext_driver
-        super
         @stat.ext_rsp(@sub.field).ext_sym.ext_file.ext_sqlog
         @buf=init_buf
         ver=@stat['ver']
@@ -88,6 +80,13 @@ module CIAX
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
           'INTERRUPT'
         }
+        super
+      end
+
+      def ext_client
+        @stat.ext_http(@cfg['host'])
+        @pre_exe_procs << proc{@stat.upd}
+        super
       end
 
       def ext_shell

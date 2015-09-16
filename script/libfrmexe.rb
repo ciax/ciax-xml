@@ -50,24 +50,16 @@ module CIAX
       end
 
       def ext_test
-        super
         @field.ext_file
         @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
         @cobj.get('set').def_proc{|ent|
           @field.rep(ent.par[0],ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
-        self
-      end
-
-      def ext_client
-        @field.ext_http(@cfg['host'])
-        @pre_exe_procs << proc{@field.upd}
         super
       end
 
       def ext_driver
-        super
         if $opt['s']
           @mode='SIM'
           iocmd=['devsim-file',@id,@dbi['version']]
@@ -109,7 +101,13 @@ module CIAX
           flush
           "Flush Stream"
         }
-        self
+        super
+      end
+
+      def ext_client
+        @field.ext_http(@cfg['host'])
+        @pre_exe_procs << proc{@field.upd}
+        super
       end
 
       def ext_shell

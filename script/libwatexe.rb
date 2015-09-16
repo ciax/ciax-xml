@@ -5,12 +5,14 @@ require "libwatview"
 module CIAX
   module Wat
     def self.new(id,cfg,attr={})
+      attr.update($opt.host)
+      exe=Exe.new(id,cfg,attr)
       if $opt.sv?
-        sv=Sv.new(id,cfg,attr)
+        exe.ext_driver
       elsif $opt.cl?
-        Cl.new(id,cfg,attr.update($opt.host))
+        exe.ext_client
       else
-        Test.new(id,cfg,attr)
+        exe.ext_test
       end
     end
 
@@ -28,8 +30,7 @@ module CIAX
         @sub_proc=proc{verbose("Dummy exec")}
       end
 
-      def ext_sv
-        @mode=@sub.mode
+      def ext_test
         @event.post_upd_procs << proc{|ev|
           verbose("Propagate Event#upd -> upd")
           @site_stat.put('watch',ev.active?)
@@ -38,38 +39,11 @@ module CIAX
         }
         @sub.pre_exe_procs << proc{|args| @event.block?(args) }
         @event.ext_file
-        self
+        super
       end
 
-      def ext_shell
-        super
-        @cfg[:output]=View.new(@event)
-        @cobj.loc.add_view
-        input_conv_set
-        self
-      end
-    end
-
-    class Test < Exe
-      def initialize(id,cfg,attr={})
-        super
-        ext_sv
-      end
-    end
-
-    class Cl < Exe
-      def initialize(id,cfg,attr={})
-        super
-        @event.ext_http(@sub.cfg['host'])
-        # @event is independent from @sub.stat
-        @pre_exe_procs << proc{@event.upd}
-      end
-    end
-
-    class Sv < Exe
-      def initialize(id,cfg,attr={})
-        super
-        ext_sv
+      def ext_driver
+        ext_test
         @event.ext_log if $opt['e'] && @sub.stat['ver']
         @event.post_upd_procs << proc{|ev|
           ev.get('exec').each{|src,pri,args|
@@ -82,8 +56,25 @@ module CIAX
         @post_exe_procs << proc{
           @site_stat.put('auto',@tid_auto && @tid_auto.alive?)
         }
+        super
       end
 
+      def ext_client
+        @event.ext_http(@sub.cfg['host'])
+        # @event is independent from @sub.stat
+        @pre_exe_procs << proc{@event.upd}
+        super
+      end
+
+      def ext_shell
+        super
+        @cfg[:output]=View.new(@event)
+        @cobj.loc.add_view
+        input_conv_set
+        self
+      end
+
+      private
       def auto_update
         @event.next_upd
         ThreadLoop.new("Watch:Auto(#@id)",14){

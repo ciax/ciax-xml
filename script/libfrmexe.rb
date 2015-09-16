@@ -25,8 +25,8 @@ module CIAX
         # Post internal command procs
         # Proc for Terminate process of each individual commands
         @flush_procs=[]
-        @cfg['host']||=@dbi['host']
-        @cfg['port']||=@dbi['port']
+        @host||=@dbi['host']
+        @port||=@dbi['port']
         opt_mode
       end
 
@@ -105,7 +105,7 @@ module CIAX
       end
 
       def ext_client
-        @field.ext_http(@cfg['host'])
+        @field.ext_http(@host)
         @pre_exe_procs << proc{@field.upd}
         super
       end

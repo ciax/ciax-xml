@@ -14,7 +14,7 @@ module CIAX
         @mode=sub.mode
         @cfg[:output]=View.new(sub.stat,sub.site_stat)
         @post_exe_procs.concat(sub.post_exe_procs)
-        @cfg['port']=sub.cfg['port'].to_i+1000
+        @port=sub.port.to_i+1000
         if $opt['e']
           @cfg[:output].ext_log
         end

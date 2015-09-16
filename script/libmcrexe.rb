@@ -23,8 +23,8 @@ module CIAX
           @parameter[:list]=@list.keys
         }
         #Set sublist
-        @cfg['host']||=@dbi['host']
-        @cfg['port']||=(@dbi['port']||5555)
+        @host||=@dbi['host']
+        @port||=(@dbi['port']||5555)
         opt_mode
       end
 
@@ -38,8 +38,8 @@ module CIAX
       end
 
       def ext_client
+        @list.ext_http(@host)
         @pre_exe_procs << proc{@list.upd}
-        @list.ext_http
         super
       end
 

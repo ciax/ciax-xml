@@ -11,11 +11,13 @@ module CIAX
         super
         @sub=@cfg[:sub_list].get(@id)
         @stat=@sub.stat
+        @host=@sub.host
         @cobj.add_rem(@sub.cobj.rem)
         @event=Event.new.ext_rsp(@sub.stat)
         @site_stat=@sub.site_stat.add_db('auto'=>'@','watch'=>'&')
         @sub.batch_interrupt=@event.get('int')
         @sub_proc=proc{verbose("Dummy exec")}
+
         opt_mode
       end
 
@@ -58,7 +60,7 @@ module CIAX
       end
 
       def ext_client
-        @event.ext_http(@sub.cfg['host'])
+        @event.ext_http(@host)
         # @event is independent from @sub.stat
         @pre_exe_procs << proc{@event.upd}
         super

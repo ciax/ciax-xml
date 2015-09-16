@@ -47,7 +47,7 @@ module CIAX
       begin
         dbi=Ins::Db.new.get(ARGV.shift)
         event.set_db(dbi)
-        if host=$opt['h']
+        if host=$opt.host
           event.ext_http(host)
         else
           event.ext_file

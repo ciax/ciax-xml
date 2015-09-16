@@ -24,8 +24,8 @@ module CIAX
         @site_stat=@sub.site_stat.add_db('isu' => '*')
         @stat=@cfg[:stat]=Status.new.set_db(@dbi)
         @batch_interrupt=[]
-        @cfg['host']||=@dbi['host']
-        @cfg['port']||=@dbi['port']
+        @host||=@dbi['host']
+        @port||=@dbi['port']
         @cobj.add_rem.add_hid
         @cobj.rem.add_ext(Ext)
         @cobj.rem.add_int(Int)
@@ -82,7 +82,7 @@ module CIAX
       end
 
       def ext_client
-        @stat.ext_http(@cfg['host'])
+        @stat.ext_http(@host)
         @pre_exe_procs << proc{@stat.upd}
         super
       end

@@ -11,12 +11,14 @@ require "libinsdb"
 module CIAX
   module App
     def self.new(id,cfg,attr={})
+      attr.update($opt.host)
+      exe=Exe.new(id,cfg,attr)
       if $opt.sv?
-        Sv.new(id,cfg,attr)
+        exe.ext_driver
       elsif $opt.cl?
-        Cl.new(id,cfg,attr.update($opt.host))
+        exe.ext_client
       else
-        Test.new(id,cfg,attr)
+        exe.ext_test
       end
     end
 
@@ -41,17 +43,7 @@ module CIAX
         @cobj.rem.add_int(Int)
       end
 
-      def ext_shell
-        super
-        @cfg[:output]=View.new(@stat)
-        @cobj.loc.add_view
-        input_conv_set
-        self
-      end
-    end
-
-    class Test < Exe
-      def initialize(id,cfg,attr={})
+      def ext_test
         super
         @stat.ext_sym.ext_file
         @stat.post_upd_procs << proc{|st|
@@ -64,21 +56,16 @@ module CIAX
           "INTERRUPT(#{@batch_interrupt})"
         }
         @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
+        self
       end
-    end
 
-    class Cl < Exe
-      def initialize(id,cfg,attr={})
-        super
+      def ext_client
         @stat.ext_http(@cfg['host'])
         @pre_exe_procs << proc{@stat.upd}
-        ext_client
+        super
       end
-    end
 
-    class Sv < Exe
-      # cfg(attr) must have layers[:frm]
-      def initialize(id,cfg,attr={})
+      def ext_driver
         super
         @stat.ext_rsp(@sub.field).ext_sym.ext_file.ext_sqlog
         @buf=init_buf
@@ -101,6 +88,14 @@ module CIAX
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
           'INTERRUPT'
         }
+      end
+
+      def ext_shell
+        super
+        @cfg[:output]=View.new(@stat)
+        @cobj.loc.add_view
+        input_conv_set
+        self
       end
 
       private

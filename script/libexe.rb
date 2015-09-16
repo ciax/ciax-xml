@@ -52,7 +52,7 @@ module CIAX
       self
     end
 
-    def ext_drv
+    def ext_driver
       @mode='DRV'
       self
     end
@@ -61,7 +61,6 @@ module CIAX
       @mode='CL'
       extend(Client).ext_client
     end
-
 
     def ext_server
       extend(Server).ext_server

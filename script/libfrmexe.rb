@@ -55,7 +55,6 @@ module CIAX
         @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
         @cobj.get('set').def_proc{|ent|
           @field.rep(ent.par[0],ent.par[1])
-          flush
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
         self
@@ -68,15 +67,12 @@ module CIAX
       end
 
       def ext_driver
-        ext_test
         super
-        @site_stat.add_db('comerr' => 'X','strerr' => 'E')
         if $opt['s']
           @mode='SIM'
           iocmd=['devsim-file',@id,@dbi['version']]
           timeout=60
         else
-          @mode='SV'
           iocmd=@dbi['iocmd'].split(' ')
           timeout=(@dbi['timeout']||10).to_i
         end
@@ -85,12 +81,19 @@ module CIAX
         @stream.ext_log unless $opt['s']
         @stream.pre_open_proc=proc{@site_stat.set('strerr')}
         @stream.post_open_proc=proc{@site_stat.reset('strerr')}
+        @site_stat.add_db('comerr' => 'X','strerr' => 'E')
+        @field.ext_file
         @field.ext_rsp{@stream.rcv}
         @cobj.rem.ext.def_proc{|ent|
           @site_stat.reset('comerr')
           @stream.snd(ent.cfg[:frame],ent.id)
           @field.conv(ent)
           'OK'
+        }
+        @cobj.get('set').def_proc{|ent|
+          @field.rep(ent.par[0],ent.par[1])
+          flush
+          "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
         @cobj.get('save').def_proc{|ent|
           @field.save_key(ent.par[0].split(','),ent.par[1])

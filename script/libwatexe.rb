@@ -4,18 +4,6 @@ require "libwatview"
 
 module CIAX
   module Wat
-    def self.new(id,cfg,attr={})
-      attr.update($opt.host)
-      exe=Exe.new(id,cfg,attr)
-      if $opt.sv?
-        exe.ext_driver
-      elsif $opt.cl?
-        exe.ext_client
-      else
-        exe.ext_test
-      end
-    end
-
     # cfg should have [:sub_list]
     class Exe < Exe
       attr_reader :sub,:stat
@@ -28,8 +16,18 @@ module CIAX
         @site_stat=@sub.site_stat.add_db('auto'=>'@','watch'=>'&')
         @sub.batch_interrupt=@event.get('int')
         @sub_proc=proc{verbose("Dummy exec")}
+        opt_mode
       end
 
+      def ext_shell
+        super
+        @cfg[:output]=View.new(@event)
+        @cobj.loc.add_view
+        input_conv_set
+        self
+      end
+
+      private
       def ext_test
         @event.post_upd_procs << proc{|ev|
           verbose("Propagate Event#upd -> upd")
@@ -66,15 +64,6 @@ module CIAX
         super
       end
 
-      def ext_shell
-        super
-        @cfg[:output]=View.new(@event)
-        @cobj.loc.add_view
-        input_conv_set
-        self
-      end
-
-      private
       def auto_update
         @event.next_upd
         ThreadLoop.new("Watch:Auto(#@id)",14){

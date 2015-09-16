@@ -10,18 +10,6 @@ require "libinsdb"
 
 module CIAX
   module App
-    def self.new(id,cfg,attr={})
-      attr.update($opt.host)
-      exe=Exe.new(id,cfg,attr)
-      if $opt.sv?
-        exe.ext_driver
-      elsif $opt.cl?
-        exe.ext_client
-      else
-        exe.ext_test
-      end
-    end
-
     class Exe < Exe
       # cfg must have [:db],[:sub_list]
       attr_reader :stat
@@ -41,8 +29,18 @@ module CIAX
         @cobj.add_rem.add_hid
         @cobj.rem.add_ext(Ext)
         @cobj.rem.add_int(Int)
+        opt_mode
       end
 
+      def ext_shell
+        super
+        @cfg[:output]=View.new(@stat)
+        @cobj.loc.add_view
+        input_conv_set
+        self
+      end
+
+      private
       def ext_test
         @stat.ext_sym.ext_file
         @stat.post_upd_procs << proc{|st|
@@ -89,15 +87,6 @@ module CIAX
         super
       end
 
-      def ext_shell
-        super
-        @cfg[:output]=View.new(@stat)
-        @cobj.loc.add_view
-        input_conv_set
-        self
-      end
-
-      private
       def server_output
         Hashx.new.update(@site_stat).update(self).to_j
       end

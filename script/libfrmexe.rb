@@ -10,19 +10,6 @@ require "libsitelist"
 
 module CIAX
   module Frm
-    def self.new(id,cfg,attr={})
-      attr.update($opt.host)
-      exe=Exe.new(id,cfg,attr)
-      if $opt.sv?
-        exe.ext_driver
-      elsif $opt.cl?
-        exe.ext_client
-      else
-        exe.ext_test
-      end
-      exe
-    end
-
     class Exe < Exe
       # cfg must have [:db]
       attr_reader :field,:flush_procs
@@ -40,6 +27,7 @@ module CIAX
         @flush_procs=[]
         @cfg['host']||=@dbi['host']
         @cfg['port']||=@dbi['port']
+        opt_mode
       end
 
       def exe(args,src='local',pri=1)
@@ -49,6 +37,18 @@ module CIAX
         raise $!
       end
 
+      def ext_shell
+        super
+        @cobj.rem.add_hid
+        @cfg[:output]=@field
+        @post_exe_procs << proc{|args,src|
+          flush if !args.empty? and src != 'local'
+        }
+        input_conv_set
+        self
+      end
+
+      private
       def ext_test
         @field.ext_file
         @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
@@ -110,18 +110,6 @@ module CIAX
         super
       end
 
-      def ext_shell
-        super
-        @cobj.rem.add_hid
-        @cfg[:output]=@field
-        @post_exe_procs << proc{|args,src|
-          flush if !args.empty? and src != 'local'
-        }
-        input_conv_set
-        self
-      end
-
-      private
       def flush
         @flush_procs.each{|p| p.call(self)}
         self

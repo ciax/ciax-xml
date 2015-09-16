@@ -47,6 +47,28 @@ module CIAX
       @post_exe_procs.each{|p| p.call(args,src)}
     end
 
+    def ext_server
+      @mode+=':SV'
+      extend(Server).ext_server
+    end
+
+    def ext_shell
+      extend(Shell).ext_shell
+    end
+
+    private
+    def opt_mode
+      # Option handling
+      @cfg.update($opt.host)
+      if $opt.sv?
+        ext_driver
+      elsif $opt.cl?
+        ext_client
+      else
+        ext_test
+      end
+    end
+
     def ext_test
       @mode||='TEST'
       self
@@ -60,15 +82,6 @@ module CIAX
     def ext_client
       @mode||='CL'
       extend(Client).ext_client
-    end
-
-    def ext_server
-      @mode+=':SV'
-      extend(Server).ext_server
-    end
-
-    def ext_shell
-      extend(Shell).ext_shell
     end
   end
 end

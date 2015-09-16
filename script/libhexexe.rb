@@ -6,11 +6,11 @@ require "libhexview"
 module CIAX
   module Hex
     def self.new(id,cfg,attr={})
-      Hex::Sv.new(id,cfg,attr)
+      Hex::Exe.new(id,cfg,attr)
     end
 
     # cfg should have [:sub_list]
-    class Sv < Exe
+    class Exe < Exe
       def initialize(id,cfg,attr={})
         super
         sub=@cfg[:sub_list].get(id).sub

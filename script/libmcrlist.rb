@@ -6,8 +6,8 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # @cfg should have [:jump_groups]
     class List < CIAX::List
-      def initialize(proj,cfg,attr={})
-        super(cfg,attr)
+      def initialize(proj,cfg)
+        super(cfg)
         self['id']=proj
         verbose("Initialize [#{proj}]")
       end

@@ -25,7 +25,7 @@ module CIAX
       #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
       #ent_cfg should have [:sequence]'[:sub_list],[:submcr_proc]
       def initialize(ent,pid='0')
-        super(type?(ent,Entity).id,Config.new)
+        super(type?(ent,Entity).id)
         @mcfg=ent.cfg
         @sequence=ent.sequence
         type?(@mcfg[:sub_list],CIAX::List)

@@ -32,8 +32,7 @@ module CIAX
 
     class List < Site::List
       def initialize(cfg,attr={})
-        attr[:sub_list]=Wat::List.new(cfg)
-        super
+        super(cfg,Wat::List.new(cfg))
         set_db(@sub_list.cfg[:db])
       end
     end

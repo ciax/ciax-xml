@@ -78,8 +78,7 @@ module CIAX
 
     class List < Site::List
       def initialize(cfg,attr={})
-        attr[:sub_list]=App::List.new(cfg)
-        super
+        super(cfg,App::List.new(cfg))
         set_db(@sub_list.cfg[:db])
       end
     end

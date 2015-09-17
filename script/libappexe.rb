@@ -21,7 +21,7 @@ module CIAX
         @cfg[:frm_site]=@dbi['frm_site']
         @sub=@cfg[:sub_list].get(@cfg[:frm_site])
         @site_stat=@sub.site_stat.add_db('isu' => '*')
-        @stat=@cfg[:stat]=Status.new.set_dbi(@dbi)
+        @stat=Status.new.set_dbi(@dbi)
         @batch_interrupt=[]
         @host||=@dbi['host']
         @port||=@dbi['port']
@@ -68,7 +68,6 @@ module CIAX
           @buf.send(ent,pri)
           "ISSUED"
         }
-        @cobj.rem.int.ext_sv
         @cobj.get('interrupt').def_proc{|ent,src|
           @batch_interrupt.each{|args|
             verbose("#@id/Issuing:#{args} for Interrupt")
@@ -122,7 +121,7 @@ module CIAX
     # cfg should have [:jump_groups]
       def initialize(cfg)
         super(cfg,Frm::List.new(cfg))
-        set_dbi(Ins::Db.new) unless @cfg[:db]
+        set_dbi(Ins::Db.new)
       end
     end
 

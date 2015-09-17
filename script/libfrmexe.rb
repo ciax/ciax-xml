@@ -18,7 +18,7 @@ module CIAX
         # DB is generated in List level
         @cfg[:site_id]=id
         @cfg['ver']=@dbi['version']
-        @stat=@cfg[:field]=Field.new.set_db(@dbi)
+        @stat=@cfg[:field]=Field.new.set_dbi(@dbi)
         @cobj.add_rem
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
@@ -113,7 +113,7 @@ module CIAX
     class List < Site::List
       def initialize(cfg)
         super(cfg)
-        set_db(Dev::Db.new)
+        set_dbi(Dev::Db.new)
       end
     end
 

@@ -21,7 +21,7 @@ module CIAX
         @cfg[:frm_site]=@dbi['frm_site']
         @sub=@cfg[:sub_list].get(@cfg[:frm_site])
         @site_stat=@sub.site_stat.add_db('isu' => '*')
-        @stat=@cfg[:stat]=Status.new.set_db(@dbi)
+        @stat=@cfg[:stat]=Status.new.set_dbi(@dbi)
         @batch_interrupt=[]
         @host||=@dbi['host']
         @port||=@dbi['port']
@@ -109,7 +109,7 @@ module CIAX
     # cfg should have [:jump_groups]
       def initialize(cfg)
         super(cfg,Frm::List.new(cfg))
-        set_db(Ins::Db.new) unless @cfg[:db]
+        set_dbi(Ins::Db.new) unless @cfg[:db]
       end
     end
 

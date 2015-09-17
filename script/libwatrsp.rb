@@ -16,7 +16,7 @@ module CIAX
       # Stat no changed -> clear exec, no eval
       def ext_rsp(stat)
         @stat=type?(stat,App::Status)
-        set_db(stat.dbi)
+        set_dbi(stat.dbi)
         wdb=@dbi[:watch]||{}
         @windex=wdb[:index]||{}
         @period=wdb['period'].to_i if wdb.key?('period')
@@ -126,7 +126,7 @@ module CIAX
         stat=App::Status.new
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
         dbi=Ins::Db.new.get(id)
-        stat.set_db(dbi)
+        stat.set_dbi(dbi)
         stat.ext_file if STDIN.tty?
         event=Event.new.ext_rsp(stat)
         if t=$opt['t']

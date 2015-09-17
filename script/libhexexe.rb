@@ -7,8 +7,8 @@ module CIAX
   module Hex
     # cfg should have [:sub_list]
     class Exe < Exe
-      def initialize(id,cfg,attr={})
-        super
+      def initialize(id,cfg)
+        super(id,cfg)
         sub=@cfg[:sub_list].get(id).sub
         @cobj.add_rem(sub.cobj.rem)
         @mode=sub.mode

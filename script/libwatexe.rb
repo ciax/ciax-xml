@@ -7,8 +7,8 @@ module CIAX
     # cfg should have [:sub_list]
     class Exe < Exe
       attr_reader :sub,:stat
-      def initialize(id,cfg,attr={})
-        super
+      def initialize(id,cfg)
+        super(id,cfg)
         @sub=@cfg[:sub_list].get(@id)
         @cobj.add_rem(@sub.cobj.rem)
         @stat=Event.new.ext_rsp(@sub.stat)

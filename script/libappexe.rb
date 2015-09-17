@@ -13,8 +13,8 @@ module CIAX
     class Exe < Exe
       # cfg must have [:db],[:sub_list]
       attr_accessor :batch_interrupt
-      def initialize(id,cfg,attr={})
-        super
+      def initialize(id,cfg)
+        super(id,cfg)
         @cfg[:site_id]=id
         # LayerDB might generated in List level
         @cfg['ver']=@dbi['version']

@@ -13,8 +13,8 @@ module CIAX
     class Exe < Exe
       # cfg must have [:db]
       attr_reader :flush_procs
-      def initialize(id,cfg,attr={})
-        super
+      def initialize(id,cfg)
+        super(id,cfg)
         # DB is generated in List level
         @cfg[:site_id]=id
         @cfg['ver']=@dbi['version']

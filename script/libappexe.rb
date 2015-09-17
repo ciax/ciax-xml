@@ -47,11 +47,11 @@ module CIAX
           st['time']=now_msec
         }
         @post_exe_procs << proc{@stat.upd}
-        @cobj.rem.int.ext_sv
         @cobj.get('interrupt').def_proc{|ent|
           "INTERRUPT(#{@batch_interrupt})"
         }
         @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
+        ext_int
         super
       end
 
@@ -77,7 +77,20 @@ module CIAX
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
           'INTERRUPT'
         }
+        ext_int
         super
+      end
+
+      def ext_int
+        @cobj.get('set').def_proc{|ent|
+          @stat.rep(ent.par[0],ent.par[1])
+          "SET:#{ent.par[0]}=#{ent.par[1]}"
+        }
+        @cobj.get('del').def_proc{|ent|
+          ent.par[0].split(',').each{|key| @stat.del(key) }
+          "DELETE:#{ent.par[0]}"
+        }
+        self
       end
 
       def server_output

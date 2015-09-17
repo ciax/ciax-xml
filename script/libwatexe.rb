@@ -66,7 +66,7 @@ module CIAX
             rescue InvalidID
               errmsg
             rescue
-              warn $!
+              warning $!
             end
           end
           @stat.next_upd

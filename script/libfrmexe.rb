@@ -104,12 +104,6 @@ module CIAX
         super
       end
 
-      def ext_client
-        @stat.ext_http(@host)
-        @pre_exe_procs << proc{@stat.upd}
-        super
-      end
-
       def flush
         @flush_procs.each{|p| p.call(self)}
         self

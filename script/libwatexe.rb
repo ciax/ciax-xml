@@ -56,13 +56,6 @@ module CIAX
         super
       end
 
-      def ext_client
-        @stat.ext_http(@host)
-        # @stat is independent from @sub.stat
-        @pre_exe_procs << proc{@stat.upd}
-        super
-      end
-
       def auto_update
         @stat.next_upd
         ThreadLoop.new("Watch:Auto(#@id)",14){

@@ -81,6 +81,8 @@ module CIAX
 
     def ext_client
       @mode||='CL'
+      @stat.ext_http(@host)
+      @pre_exe_procs << proc{@stat.upd}
       extend(Client).ext_client
     end
   end

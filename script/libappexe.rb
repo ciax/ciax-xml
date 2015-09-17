@@ -80,12 +80,6 @@ module CIAX
         super
       end
 
-      def ext_client
-        @stat.ext_http(@host)
-        @pre_exe_procs << proc{@stat.upd}
-        super
-      end
-
       def server_output
         Hashx.new.update(@site_stat).update(self).to_j
       end

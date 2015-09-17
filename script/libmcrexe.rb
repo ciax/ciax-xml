@@ -11,16 +11,16 @@ module CIAX
         attr[:db]=Db.new
         @sub_list=attr[:sub_list]=Wat::List.new(cfg).sub_list
         super(PROJ,cfg,attr)
-        @list=List.new(@id,@cfg)
+        @stat=List.new(@id,@cfg)
         @lastsize=0
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.int.add_item('clean','Clean list')
         @cobj.rem.add_ext(Ext)
         @parameter=@cobj.rem.int.par
-        @list.post_upd_procs << proc{
+        @stat.post_upd_procs << proc{
           verbose("Propagate List#upd -> Parameter#upd")
-          @parameter[:list]=@list.keys
+          @parameter[:list]=@stat.keys
         }
         @host||=@dbi['host']
         @port||=(@dbi['port']||5555)
@@ -36,16 +36,10 @@ module CIAX
         ext_driver
       end
 
-      def ext_client
-        @list.ext_http(@host)
-        @pre_exe_procs << proc{@list.upd}
-        super
-      end
-
       def ext_driver
         @site_stat['sid']='' # For server response
         @pre_exe_procs << proc{ @site_stat['sid']='' }
-        @list.ext_sv
+        @stat.ext_sv
         # External Command Group
         @cobj.rem.ext.def_proc{|ent| set(ent);"ACCEPT"}
         # Internal Command Group
@@ -53,7 +47,7 @@ module CIAX
           set(@cobj.set_cmd(args),pid)
         }
         @cobj.rem.int.def_proc{|ent|
-          if seq=@list.get(ent.par[0])
+          if seq=@stat.get(ent.par[0])
             @site_stat['sid']=seq.record['id']
             seq.exe(ent.id.split(':'))
             'ACCEPT'
@@ -61,17 +55,17 @@ module CIAX
             "NOSID"
           end
         }
-        @cobj.get('clean').def_proc{ @list.clean;'ACCEPT'}
+        @cobj.get('clean').def_proc{ @stat.clean;'ACCEPT'}
         @cobj.get('interrupt').def_proc{|ent|
-          @list.interrupt
+          @stat.interrupt
           'INTERRUPT'
         }
-        @terminate_procs << proc{ @list.clean}
+        @terminate_procs << proc{ @stat.clean}
         super
       end
 
       def set(ent,pid='0')
-        @list.add(ent,pid)
+        @stat.add(ent,pid)
       end
     end
 
@@ -93,30 +87,30 @@ module CIAX
         vg=@cobj.loc.add_view
         vg.add_item("list","List mode").def_proc{list_mode}
         vg.add_dummy("[1-n]","Sequencer mode")
-        @records={nil => @list}
+        @records={nil => @stat}
         self
       end
 
       private
       def upd_current
-        @list.upd
-        if @current > @list.size or @list.size > @lastsize
-          set_current(@lastsize=@list.size)
+        @stat.upd
+        if @current > @stat.size or @stat.size > @lastsize
+          set_current(@lastsize=@stat.size)
         end
         msg="[%d]" % @current
         if @current > 0
-          seq=@list.get(@parameter[:default])
+          seq=@stat.get(@parameter[:default])
           msg << "(#{seq['stat']})"+optlist(seq['option'])
         end
         msg
       end
 
       def set_current(i)
-        return i.to_s if i > @list.size
+        return i.to_s if i > @stat.size
         @current=i
         if i > 0
-          id=@list.keys[i-1]
-          @records[id]||=get_record(@list.get(id))
+          id=@stat.keys[i-1]
+          @records[id]||=get_record(@stat.get(id))
         end
         @parameter[:default]=id
         @cfg[:output]=@records[id]
@@ -125,7 +119,7 @@ module CIAX
 
       def list_mode
         @current=0
-        @cfg[:output]=@list
+        @cfg[:output]=@stat
         @parameter[:default]=nil
         ''
       end

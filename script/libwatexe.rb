@@ -4,48 +4,45 @@ require "libwatview"
 
 module CIAX
   module Wat
-    def self.new(id,cfg,attr={})
-      attr.update($opt.host)
-      exe=Exe.new(id,cfg,attr)
-      if $opt.sv?
-        exe.ext_driver
-      elsif $opt.cl?
-        exe.ext_client
-      else
-        exe.ext_test
-      end
-    end
-
     # cfg should have [:sub_list]
     class Exe < Exe
       attr_reader :sub,:stat
-      def initialize(id,cfg,attr={})
-        super
+      def initialize(id,cfg)
+        super(id,cfg)
         @sub=@cfg[:sub_list].get(@id)
-        @stat=@sub.stat
         @cobj.add_rem(@sub.cobj.rem)
-        @event=Event.new.ext_rsp(@sub.stat)
+        @stat=Event.new.ext_rsp(@sub.stat)
         @site_stat=@sub.site_stat.add_db('auto'=>'@','watch'=>'&')
-        @sub.batch_interrupt=@event.get('int')
+        @sub.batch_interrupt=@stat.get('int')
         @sub_proc=proc{verbose("Dummy exec")}
+        opt_mode
       end
 
+      def ext_shell
+        super
+        @cfg[:output]=View.new(@stat)
+        @cobj.loc.add_view
+        input_conv_set
+        self
+      end
+
+      private
       def ext_test
-        @event.post_upd_procs << proc{|ev|
+        @stat.post_upd_procs << proc{|ev|
           verbose("Propagate Event#upd -> upd")
           @site_stat.put('watch',ev.active?)
           block=ev.get('block').map{|id,par| par ? nil : id}.compact
           @cobj.rem.ext.valid_sub(block)
         }
-        @sub.pre_exe_procs << proc{|args| @event.block?(args) }
-        @event.ext_file
+        @sub.pre_exe_procs << proc{|args| @stat.block?(args) }
+        @stat.ext_file
         super
       end
 
       def ext_driver
         ext_test
-        @event.ext_log if $opt['e'] && @sub.stat['ver']
-        @event.post_upd_procs << proc{|ev|
+        @stat.ext_log if $opt['e'] && @sub.stat['ver']
+        @stat.post_upd_procs << proc{|ev|
           ev.get('exec').each{|src,pri,args|
             verbose("Executing:#{args} from [#{src}] by [#{pri}]")
             @sub.exe(args,src,pri)
@@ -59,46 +56,29 @@ module CIAX
         super
       end
 
-      def ext_client
-        @event.ext_http(@sub.cfg['host'])
-        # @event is independent from @sub.stat
-        @pre_exe_procs << proc{@event.upd}
-        super
-      end
-
-      def ext_shell
-        super
-        @cfg[:output]=View.new(@event)
-        @cobj.loc.add_view
-        input_conv_set
-        self
-      end
-
-      private
       def auto_update
-        @event.next_upd
+        @stat.next_upd
         ThreadLoop.new("Watch:Auto(#@id)",14){
-          if @event.get('exec').empty?
+          if @stat.get('exec').empty?
             verbose("Auto Update(#{@sub.stat['time']})")
             begin
-              @event.queue('auto',3,[['upd']])
+              @stat.queue('auto',3,[['upd']])
             rescue InvalidID
               errmsg
             rescue
-              warn $!
+              warning $!
             end
           end
-          @event.next_upd
-          verbose("Auto Update Sleep(#{@event.period}sec)")
-          sleep @event.period
+          @stat.next_upd
+          verbose("Auto Update Sleep(#{@stat.period}sec)")
+          sleep @stat.period
         }
       end
     end
 
     class List < Site::List
       def initialize(cfg,attr={})
-        attr[:sub_list]=App::List.new(cfg)
-        super
+        super(cfg,App::List.new(cfg))
         set_db(@sub_list.cfg[:db])
       end
     end

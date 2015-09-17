@@ -7,9 +7,9 @@ module CIAX
     # This should be set [:db]
     class List < CIAX::List
       attr_reader :sub_list
-      def initialize(cfg,attr={})
-        super
-        @sub_list=@cfg[:sub_list]
+      def initialize(cfg,sub_list=nil)
+        super(cfg)
+        @sub_list=@cfg[:sub_list]=sub_list
       end
 
       def set_db(db)
@@ -58,8 +58,8 @@ module CIAX
       private
       def add(site)
         # layer_module can be Frm,App,Wat,Hex
-        obj=layer_module.new(site,@cfg)
-        put(site,obj.ext_shell)
+        obj=layer_module::Exe.new(site,@cfg)
+        put(site,obj)
       end
 
       module Shell
@@ -72,7 +72,12 @@ module CIAX
           @cfg[:jump_groups]+=[@jumpgrp]
           sites=@cfg[:db].displist
           @jumpgrp.merge_items(sites)
+          @sub_list.ext_shell if @sub_list
           self
+        end
+
+        def add(site)
+          super.ext_shell
         end
       end
     end

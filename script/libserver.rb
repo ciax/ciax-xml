@@ -11,8 +11,8 @@ module CIAX
     # JSON expression of server stat will be sent.
     def ext_server
       @sub.ext_server if @sub
-      return self unless @cfg['port']
-      verbose("Initialize UDP server (#@id) [#{@cfg['port']}]")
+      return self unless @port
+      verbose("Initialize UDP server (#@id) [#{@port}]")
       @server_input_proc=proc{|line|
         begin
           JSON.load(line)
@@ -26,9 +26,9 @@ module CIAX
 
     def server
       @sub.server if @sub
-      return self unless @cfg['port']
+      return self unless @port
       udp=UDPSocket.open
-      udp.bind("0.0.0.0",@cfg['port'].to_i)
+      udp.bind("0.0.0.0",@port.to_i)
       ThreadLoop.new("Server(#@layer:#@id)",9){
         IO.select([udp])
         line,addr=udp.recvfrom(4096)

@@ -60,11 +60,7 @@ module CIAX
     end
 
     def host
-      res={}
-      if !self['c']
-        res['host']= self['h'] ? self['h'] : 'localhost'
-      end
-      res
+      self['h']||'localhost' unless self['c']
     end
 
     def usage(str)

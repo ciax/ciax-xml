@@ -87,7 +87,7 @@ module CIAX
       begin
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
         dbi=Ins::Db.new.get(id)
-        stat.set_db(dbi)
+        stat.set_dbi(dbi)
         view=View.new(stat)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd

@@ -13,7 +13,7 @@ module CIAX
         @lastsave=now_msec
       end
 
-      def set_db(db)
+      def set_dbi(db)
         super
         if @data.empty?
           @adbs=@dbi[:status][:index]
@@ -66,8 +66,8 @@ module CIAX
       stat=Status.new
       begin
         dbi=Ins::Db.new.get(ARGV.shift)
-        stat.set_db(dbi)
-        if host=$opt['h']
+        stat.set_dbi(dbi)
+        if host=$opt.host
           stat.ext_http(host)
         else
           stat.ext_file

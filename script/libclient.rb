@@ -11,15 +11,15 @@ module CIAX
     # If you get 'Address family not ..' error,
     # remove ipv6 entry from /etc/hosts
     def ext_client
-      host=@cfg['host']
-      port=@cfg['port']
+      @sub.ext_client if @sub
+      return self unless @port
       @site_stat.add_db('udperr' => 'x')
       @udp=UDPSocket.open()
-      verbose("Initialize UDP client (#@id) [#{host}:#{port}]")
+      verbose("Initialize UDP client (#@id) [#{@host}:#{@port}]")
       @cobj.rem.def_proc{|ent|
         args=ent.id.split(':')
         # Address family not supported by protocol -> see above
-        @udp.send(JSON.dump(args),0,host,port.to_i)
+        @udp.send(JSON.dump(args),0,@host,@port.to_i)
         verbose("UDP Send #{args}")
         if IO.select([@udp],nil,nil,1)
           res=@udp.recv(1024)

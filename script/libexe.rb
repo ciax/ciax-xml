@@ -11,11 +11,11 @@ require "libremote"
 
 module CIAX
   class Exe < Hashx # Having server status {id,msg,...}
-    attr_reader :layer,:id,:mode,:cobj,:pre_exe_procs,:post_exe_procs,:cfg,:prompt_proc
+    attr_reader :layer,:id,:mode,:cobj,:stat,:pre_exe_procs,:post_exe_procs,:cfg,:prompt_proc,:host,:port
     attr_accessor :site_stat,:shell_input_procs,:shell_output_proc,:server_input_proc,:server_output_proc
     # attr contains the parameter for each layer individually (might have [:db])
     # cfg should have [:db] shared in the site (among layers)
-    def initialize(id,cfg,attr={})
+    def initialize(id,cfg=Config.new,attr={})
       super()
       @cls_color=13
       @cfg=type?(cfg,Config).gen(self).update(attr)
@@ -30,6 +30,7 @@ module CIAX
       verbose("initialize [#{@id}]")
       @dbi=@cfg[:dbi]=type?(@cfg[:db].get(id),Dbi) if @cfg.key?(:db)
       @cobj=Remote::Index.new(@cfg)
+      @host=$opt.host
     end
 
     # Sync only (Wait for other thread), never inherit
@@ -47,6 +48,27 @@ module CIAX
       @post_exe_procs.each{|p| p.call(args,src)}
     end
 
+    def ext_server
+      @mode+=':SV'
+      extend(Server).ext_server
+    end
+
+    def ext_shell
+      extend(Shell).ext_shell
+    end
+
+    private
+    def opt_mode
+      # Option handling
+      if $opt.sv?
+        ext_driver
+      elsif $opt.cl?
+        ext_client
+      else
+        ext_test
+      end
+    end
+
     def ext_test
       @mode||='TEST'
       self
@@ -59,16 +81,9 @@ module CIAX
 
     def ext_client
       @mode||='CL'
+      @stat.ext_http(@host)
+      @pre_exe_procs << proc{@stat.upd}
       extend(Client).ext_client
-    end
-
-    def ext_server
-      @mode+=':SV'
-      extend(Server).ext_server
-    end
-
-    def ext_shell
-      extend(Shell).ext_shell
     end
   end
 end

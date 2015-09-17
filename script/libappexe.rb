@@ -10,83 +10,25 @@ require "libinsdb"
 
 module CIAX
   module App
-    def self.new(id,cfg,attr={})
-      attr.update($opt.host)
-      exe=Exe.new(id,cfg,attr)
-      if $opt.sv?
-        exe.ext_driver
-      elsif $opt.cl?
-        exe.ext_client
-      else
-        exe.ext_test
-      end
-    end
-
     class Exe < Exe
       # cfg must have [:db],[:sub_list]
-      attr_reader :stat
       attr_accessor :batch_interrupt
-      def initialize(id,cfg,attr={})
-        super
+      def initialize(id,cfg)
+        super(id,cfg)
         @cfg[:site_id]=id
         # LayerDB might generated in List level
         @cfg['ver']=@dbi['version']
         @cfg[:frm_site]=@dbi['frm_site']
         @sub=@cfg[:sub_list].get(@cfg[:frm_site])
         @site_stat=@sub.site_stat.add_db('isu' => '*')
-        @stat=@cfg[:stat]=Status.new.set_db(@dbi)
+        @stat=Status.new.set_dbi(@dbi)
         @batch_interrupt=[]
-        @cfg['host']||=@dbi['host']
-        @cfg['port']||=@dbi['port']
+        @host||=@dbi['host']
+        @port||=@dbi['port']
         @cobj.add_rem.add_hid
         @cobj.rem.add_ext(Ext)
         @cobj.rem.add_int(Int)
-      end
-
-      def ext_test
-        @stat.ext_sym.ext_file
-        @stat.post_upd_procs << proc{|st|
-          verbose("Propagate Status#upd -> App#settime")
-          st['time']=now_msec
-        }
-        @post_exe_procs << proc{@stat.upd}
-        @cobj.rem.int.ext_sv
-        @cobj.get('interrupt').def_proc{|ent|
-          "INTERRUPT(#{@batch_interrupt})"
-        }
-        @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
-        super
-      end
-
-      def ext_driver
-        @stat.ext_rsp(@sub.field).ext_sym.ext_file.ext_sqlog
-        @buf=init_buf
-        ver=@stat['ver']
-        @sub.flush_procs << proc{
-          verbose("Propagate Frm::Exe#flush -> Buffer#flush")
-          @buf.flush
-        }
-        @cobj.rem.ext.def_proc{|ent,src,pri|
-          verbose("#@id/Issuing:#{ent.id} from #{src} with priority #{pri}")
-          @buf.send(ent,pri)
-          "ISSUED"
-        }
-        @cobj.rem.int.ext_sv
-        @cobj.get('interrupt').def_proc{|ent,src|
-          @batch_interrupt.each{|args|
-            verbose("#@id/Issuing:#{args} for Interrupt")
-            @buf.send(@cobj.set_cmd(args),0)
-          }
-          warning("Interrupt(#{@batch_interrupt}) from #{src}")
-          'INTERRUPT'
-        }
-        super
-      end
-
-      def ext_client
-        @stat.ext_http(@cfg['host'])
-        @pre_exe_procs << proc{@stat.upd}
-        super
+        opt_mode
       end
 
       def ext_shell
@@ -98,6 +40,58 @@ module CIAX
       end
 
       private
+      def ext_test
+        @stat.ext_sym.ext_file
+        @stat.post_upd_procs << proc{|st|
+          verbose("Propagate Status#upd -> App#settime")
+          st['time']=now_msec
+        }
+        @post_exe_procs << proc{@stat.upd}
+        @cobj.get('interrupt').def_proc{|ent|
+          "INTERRUPT(#{@batch_interrupt})"
+        }
+        @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
+        ext_int
+        super
+      end
+
+      def ext_driver
+        @stat.ext_rsp(@sub.stat).ext_sym.ext_file.ext_sqlog
+        @buf=init_buf
+        ver=@stat['ver']
+        @sub.flush_procs << proc{
+          verbose("Propagate Frm::Exe#flush -> Buffer#flush")
+          @buf.flush
+        }
+        @cobj.rem.ext.def_proc{|ent,src,pri|
+          verbose("#@id/Issuing:#{ent.id} from #{src} with priority #{pri}")
+          @buf.send(ent,pri)
+          "ISSUED"
+        }
+        @cobj.get('interrupt').def_proc{|ent,src|
+          @batch_interrupt.each{|args|
+            verbose("#@id/Issuing:#{args} for Interrupt")
+            @buf.send(@cobj.set_cmd(args),0)
+          }
+          warning("Interrupt(#{@batch_interrupt}) from #{src}")
+          'INTERRUPT'
+        }
+        ext_int
+        super
+      end
+
+      def ext_int
+        @cobj.get('set').def_proc{|ent|
+          @stat.rep(ent.par[0],ent.par[1])
+          "SET:#{ent.par[0]}=#{ent.par[1]}"
+        }
+        @cobj.get('del').def_proc{|ent|
+          ent.par[0].split(',').each{|key| @stat.del(key) }
+          "DELETE:#{ent.par[0]}"
+        }
+        self
+      end
+
       def server_output
         Hashx.new.update(@site_stat).update(self).to_j
       end
@@ -125,10 +119,9 @@ module CIAX
 
     class List < Site::List
     # cfg should have [:jump_groups]
-      def initialize(cfg,attr={})
-        attr[:sub_list]=Frm::List.new(cfg)
-        super
-        set_db(Ins::Db.new) unless @cfg[:db]
+      def initialize(cfg)
+        super(cfg,Frm::List.new(cfg))
+        set_db(Ins::Db.new)
       end
     end
 

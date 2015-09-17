@@ -5,20 +5,16 @@ require "libhexview"
 
 module CIAX
   module Hex
-    def self.new(id,cfg,attr={})
-      Hex::Sv.new(id,cfg,attr)
-    end
-
     # cfg should have [:sub_list]
-    class Sv < Exe
-      def initialize(id,cfg,attr={})
-        super
+    class Exe < Exe
+      def initialize(id,cfg)
+        super(id,cfg)
         sub=@cfg[:sub_list].get(id).sub
         @cobj.add_rem(sub.cobj.rem)
         @mode=sub.mode
         @cfg[:output]=View.new(sub.stat,sub.site_stat)
         @post_exe_procs.concat(sub.post_exe_procs)
-        @cfg['port']=sub.cfg['port'].to_i+1000
+        @port=sub.port.to_i+1000
         if $opt['e']
           @cfg[:output].ext_log
         end
@@ -36,8 +32,7 @@ module CIAX
 
     class List < Site::List
       def initialize(cfg,attr={})
-        attr[:sub_list]=Wat::List.new(cfg)
-        super
+        super(cfg,Wat::List.new(cfg))
         set_db(@sub_list.cfg[:db])
       end
     end

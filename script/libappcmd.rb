@@ -15,17 +15,6 @@ module CIAX
           add_item('del','[key,...]',def_pars(1))
         end
 
-        def ext_sv
-          get('set').def_proc{|ent|
-            @cfg[:stat].rep(ent.par[0],ent.par[1])
-            "SET:#{ent.par[0]}=#{ent.par[1]}"
-          }
-          get('del').def_proc{|ent|
-            ent.par[0].split(',').each{|key| @cfg[:stat].del(key) }
-            "DELETE:#{ent.par[0]}"
-          }
-          self
-        end
       end
     end
 

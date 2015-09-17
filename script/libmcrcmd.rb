@@ -45,7 +45,7 @@ module CIAX
             when "select"
               hash={'type' => 'mcr'}
               sel=elem['select']
-              val=@cfg[:sub_list].getstat(elem)
+              val=type?(@cfg[:sub_list],App::List).getstat(elem)
               hash['args']=sel[val]||sel['*']
               sequence << hash
             else
@@ -61,7 +61,7 @@ module CIAX
       require "libwatexe"
       GetOpts.new
       cfg=Config.new
-      cfg[:sub_list]=Wat::List.new(cfg)
+      cfg[:sub_list]=Wat::List.new(cfg).sub_list
       begin
         cobj=Index.new(cfg,{:dbi =>Db.new.get(PROJ)})
         cobj.add_rem

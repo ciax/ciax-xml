@@ -12,13 +12,13 @@ module CIAX
   module Frm
     class Exe < Exe
       # cfg must have [:db]
-      attr_reader :field,:flush_procs
+      attr_reader :flush_procs
       def initialize(id,cfg,attr={})
         super
         # DB is generated in List level
         @cfg[:site_id]=id
         @cfg['ver']=@dbi['version']
-        @field=@cfg[:field]=Field.new.set_db(@dbi)
+        @stat=@cfg[:field]=Field.new.set_db(@dbi)
         @cobj.add_rem
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
@@ -40,7 +40,7 @@ module CIAX
       def ext_shell
         super
         @cobj.rem.add_hid
-        @cfg[:output]=@field
+        @cfg[:output]=@stat
         @post_exe_procs << proc{|args,src|
           flush if !args.empty? and src != 'local'
         }
@@ -50,10 +50,10 @@ module CIAX
 
       private
       def ext_test
-        @field.ext_file
+        @stat.ext_file
         @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
         @cobj.get('set').def_proc{|ent|
-          @field.rep(ent.par[0],ent.par[1])
+          @stat.rep(ent.par[0],ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
         super
@@ -74,25 +74,25 @@ module CIAX
         @stream.pre_open_proc=proc{@site_stat.set('strerr')}
         @stream.post_open_proc=proc{@site_stat.reset('strerr')}
         @site_stat.add_db('comerr' => 'X','strerr' => 'E')
-        @field.ext_file
-        @field.ext_rsp{@stream.rcv}
+        @stat.ext_file
+        @stat.ext_rsp{@stream.rcv}
         @cobj.rem.ext.def_proc{|ent|
           @site_stat.reset('comerr')
           @stream.snd(ent.cfg[:frame],ent.id)
-          @field.conv(ent)
+          @stat.conv(ent)
           'OK'
         }
         @cobj.get('set').def_proc{|ent|
-          @field.rep(ent.par[0],ent.par[1])
+          @stat.rep(ent.par[0],ent.par[1])
           flush
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
         @cobj.get('save').def_proc{|ent|
-          @field.save_key(ent.par[0].split(','),ent.par[1])
+          @stat.save_key(ent.par[0].split(','),ent.par[1])
           "Save [#{ent.par[0]}]"
         }
         @cobj.get('load').def_proc{|ent|
-          @field.load(ent.par[0]||'').save
+          @stat.load(ent.par[0]||'').save
           flush
           "Load [#{ent.par[0]}]"
         }
@@ -105,8 +105,8 @@ module CIAX
       end
 
       def ext_client
-        @field.ext_http(@host)
-        @pre_exe_procs << proc{@field.upd}
+        @stat.ext_http(@host)
+        @pre_exe_procs << proc{@stat.upd}
         super
       end
 

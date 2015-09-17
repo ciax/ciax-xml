@@ -12,7 +12,6 @@ module CIAX
   module App
     class Exe < Exe
       # cfg must have [:db],[:sub_list]
-      attr_reader :stat
       attr_accessor :batch_interrupt
       def initialize(id,cfg,attr={})
         super
@@ -57,7 +56,7 @@ module CIAX
       end
 
       def ext_driver
-        @stat.ext_rsp(@sub.field).ext_sym.ext_file.ext_sqlog
+        @stat.ext_rsp(@sub.stat).ext_sym.ext_file.ext_sqlog
         @buf=init_buf
         ver=@stat['ver']
         @sub.flush_procs << proc{

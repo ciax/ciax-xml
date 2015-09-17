@@ -24,12 +24,13 @@ module CIAX
       attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:pre_mcr_procs,:post_mcr_procs,:th_mcr
       #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
       #ent_cfg should have [:sequence]'[:sub_list],[:submcr_proc]
-      def initialize(ent,attr={})
-        super(type?(ent,Entity).id,Config.new,attr)
+      def initialize(ent,pid='0')
+        super(type?(ent,Entity).id,Config.new)
         @mcfg=ent.cfg
         @sequence=ent.sequence
         type?(@mcfg[:sub_list],CIAX::List)
         @record=Record.new.ext_file.mklink # Make latest link
+        @record['pid']=pid
         @submcr_proc=@mcfg[:submcr_proc]||proc{|args,id|
           show{"Sub Macro #{args} issued\n"}
           {'id' => 'dmy'}
@@ -40,7 +41,7 @@ module CIAX
         @th_mcr=Thread.current
         @que_cmd=Queue.new
         @que_res=Queue.new
-        update({'id'=>@record['id'],'cid'=>@mcfg[:cid],'pid'=>@cfg['pid'],'step'=>0,'total_steps'=>@sequence.size,'stat'=>'ready'})
+        update({'id'=>@record['id'],'cid'=>@mcfg[:cid],'pid'=>pid,'step'=>0,'total_steps'=>@sequence.size,'stat'=>'ready'})
         @running=[]
         @depth=0
         # For Thread mode

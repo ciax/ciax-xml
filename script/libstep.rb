@@ -7,11 +7,11 @@ module CIAX
     # Element of Record
     class Step < Upd
       include PrtShare
-      def initialize(db,sublist)
+      def initialize(db,sub_list)
         super()
         update db
         #[:stat_proc,:exec_proc,:submcr_proc,:query]
-        @sub_list=type?(sublist,CIAX::List)
+        @sub_list=type?(sub_list,App::List)
         @condition=delete('cond')
         @break=nil
       end

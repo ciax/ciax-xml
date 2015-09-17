@@ -9,7 +9,7 @@ module CIAX
       attr_reader :sub_list
       def initialize(cfg,attr={})
         attr[:db]=Db.new
-        @sub_list=attr[:sub_list]=Wat::List.new(cfg)
+        @sub_list=attr[:sub_list]=Wat::List.new(cfg).sub_list
         super(PROJ,cfg,attr)
         @list=List.new(@id,@cfg)
         @lastsize=0
@@ -22,7 +22,6 @@ module CIAX
           verbose("Propagate List#upd -> Parameter#upd")
           @parameter[:list]=@list.keys
         }
-        #Set sublist
         @host||=@dbi['host']
         @port||=(@dbi['port']||5555)
         opt_mode

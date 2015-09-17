@@ -115,7 +115,7 @@ module CIAX
       GetOpts.new('tenr')
       cfg=Config.new
       cfg[:jump_groups]=[]
-      cfg[:sub_list]=Wat::List.new(cfg).cfg[:sub_list] #Take App List
+      cfg[:sub_list]=Wat::List.new(cfg).sub_list #Take App List
       list=List.new(PROJ,cfg).ext_sv.ext_shell
       mobj=Remote::Index.new(cfg,{:dbi =>Db.new.get(PROJ)})
       mobj.add_rem.add_ext(Ext)

@@ -113,7 +113,7 @@ module CIAX
     class List < Site::List
       def initialize(cfg)
         super(cfg)
-        set_dbi(Dev::Db.new)
+        set_db(Dev::Db.new)
       end
     end
 

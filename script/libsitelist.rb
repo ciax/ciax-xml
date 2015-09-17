@@ -12,7 +12,7 @@ module CIAX
         @sub_list=@cfg[:sub_list]=sub_list
       end
 
-      def set_dbi(db)
+      def set_db(db)
         @cfg[:db]=type?(db,Db)
         verbose("Initialize")
         if @cfg.key?(:site)

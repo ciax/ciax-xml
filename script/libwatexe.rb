@@ -79,7 +79,7 @@ module CIAX
     class List < Site::List
       def initialize(cfg,attr={})
         super(cfg,App::List.new(cfg))
-        set_dbi(@sub_list.cfg[:db])
+        set_db(@sub_list.cfg[:db])
       end
     end
 

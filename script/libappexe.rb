@@ -121,7 +121,7 @@ module CIAX
     # cfg should have [:jump_groups]
       def initialize(cfg)
         super(cfg,Frm::List.new(cfg))
-        set_dbi(Ins::Db.new)
+        set_db(Ins::Db.new)
       end
     end
 

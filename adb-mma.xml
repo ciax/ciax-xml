@@ -13,7 +13,7 @@
           </frmcmd>
           </repeat>
         </item>
-        <item id="reset" label="Reset">
+        <item id="mres" label="Motor Reset">
           <frmcmd name="reset" />
         </item>
         <item id="defcon" label="Default Config">

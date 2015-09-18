@@ -40,7 +40,7 @@ module CIAX
               when 'range'
                 next unless ReRange.new(sym['val']) == val
                 verbose("VIEW:Range:[#{sym['val']}] and [#{val}]")
-                self['msg'][key]=sym['msg'] % val
+                self['msg'][key]=sym['msg'] % val.to_f
               when 'pattern'
                 next unless /#{sym['val']}/ === val || val == 'default'
                 verbose("VIEW:Regexp:[#{sym['val']}] and [#{val}]")

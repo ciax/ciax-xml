@@ -10,7 +10,7 @@ module CIAX
         attr_reader :sub_list
         def initialize(cfg)
           @sub_list=Wat::List.new(cfg)
-          super(PROJ,cfg,{:db =>Db.new,:sub_list =>@sub_list.sub_list})
+          super(PROJ,cfg,{:db =>Db.new,:dev_list =>@sub_list.sub_list})
           @stat=Seq::List.new(@id,@cfg)
           @lastsize=0
           @cobj.add_rem.add_hid

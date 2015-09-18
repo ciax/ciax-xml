@@ -7,11 +7,11 @@ module CIAX
     # Element of Record
     class Step < Upd
       include PrtShare
-      def initialize(db,sub_list)
+      def initialize(db,dev_list)
         super()
         update db
         #[:stat_proc,:exec_proc,:submcr_proc,:query]
-        @sub_list=type?(sub_list,App::List)
+        @dev_list=type?(dev_list,App::List)
         @condition=delete('cond')
         @break=nil
       end
@@ -115,7 +115,7 @@ module CIAX
       def scan
         sites.inject({}){|hash,site|
           verbose("Scanning Status #{site}")
-          hash[site]=@sub_list.get(site).stat
+          hash[site]=@dev_list.get(site).stat
           hash
         }
       end
@@ -123,7 +123,7 @@ module CIAX
       def refresh
         sites.each{|site|
           verbose("Refresh Status #{site}")
-          @sub_list.get(site).stat.refresh
+          @dev_list.get(site).stat.refresh
         }
       end
 

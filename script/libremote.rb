@@ -104,8 +104,8 @@ module CIAX
         # str could include Math functions
         def initialize(grp_cfg,attr={})
           super
-          type?(@cfg[:dbi],Dbi)
-          @body=deep_subst(@cfg[:body])
+          type?(self[:dbi],Dbi)
+          @body=deep_subst(self[:body])
         end
 
         def subst(str) #subst by parameters ($1,$2...)
@@ -114,7 +114,7 @@ module CIAX
             num=true
             res=str.gsub(/\$([\d]+)/){
               i=$1.to_i
-              num=false if @cfg[:parameters][i-1][:type] != 'num'
+              num=false if self[:parameters][i-1][:type] != 'num'
               verbose("Parameter No.#{i} = [#{@par[i-1]}]")
               @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
             }

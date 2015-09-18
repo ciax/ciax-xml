@@ -33,7 +33,7 @@ module CIAX
       def conv(ent)
         type?(ent,Entity)
         @sel=Hash[@skel]
-        if rid=ent.cfg['response']
+        if rid=ent['response']
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
           @sel.update(@fds[rid])
           @sel[:body]=ent.deep_subst(@sel[:body])

@@ -48,7 +48,7 @@ module CIAX
           @cfg['column']=3
           def_proc{|ent|
             # Use shell() of top level class (ie. List.new.get(id).shell -> List.new.shell(id) )
-            raise(ent.cfg[:jump_class],ent.id)
+            raise(ent[:jump_class],ent.id)
           }
         end
 

@@ -51,7 +51,7 @@ module CIAX
         @cobj.get('interrupt').def_proc{|ent|
           "INTERRUPT(#{@batch_interrupt})"
         }
-        @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
+        @cobj.rem.ext.def_proc{|ent| ent.path}
         ext_share
       end
 
@@ -99,7 +99,7 @@ module CIAX
       def init_buf
         buf=Buffer.new(@stat['id'],@stat['ver'],@site_stat)
         buf.send_proc{|ent|
-          batch=type?(ent.cfg[:batch],Array)
+          batch=type?(ent[:batch],Array)
           verbose("Send FrmCmds #{batch}")
           batch
         }

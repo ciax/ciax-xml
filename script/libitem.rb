@@ -48,7 +48,6 @@ module CIAX
       (@cfg[:parameters]||[]).map{|e| e[:list] if e[:type] == 'str'}.flatten
     end
 
-
     private
     # Parameter for validate(cfg[:paremeters]) structure:  [{:type,:list,:default}, ...]
     # *Empty parameter will replaced to :default
@@ -102,22 +101,21 @@ module CIAX
   end
 
   # Command db with parameter derived from Item
-  class Entity
-    include CmdProc
-    attr_reader :id,:par
+  class Entity < Config
+    attr_reader :id,:par,:cfg
     #set should have :def_proc
     def initialize(cfg,attr={})
+      super(cfg).update(attr)
       @cls_color=14
-      @cfg=cfg.gen(self).update(attr)
-      @par=@cfg[:par]
-      @id=@cfg[:cid]
-      verbose("Config",@cfg.path)
+      @par=self[:par]
+      @id=self[:cid]
+      verbose("Config",path)
     end
 
     # returns result of def_proc block (String)
     def exe_cmd(src,pri=1)
       verbose("Execute [#{@id}] from #{src}")
-      @cfg[:def_proc].call(self,src,pri)
+      self[:def_proc].call(self,src,pri)
     end
   end
 end

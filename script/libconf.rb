@@ -12,7 +12,7 @@ module CIAX
     attr_reader :generation
     alias :this_keys :keys
     alias :this_key? :key?
-    def initialize(obj=self,cfg=nil)
+    def initialize(cfg=nil,obj=self)
       super()
       @generation=[self]
       self[:obj]=obj
@@ -25,7 +25,7 @@ module CIAX
     end
 
     def gen(obj)
-      Config.new(obj,self)
+      Config.new(self,obj)
     end
 
     def join_in(cfg)

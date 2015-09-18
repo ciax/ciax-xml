@@ -7,10 +7,10 @@ module CIAX
   module Hex
     class View < Varx
       #hint should have server status (isu,watch,exe..) like App::Exe
-      def initialize(stat,site_stat=Prompt.new)
+      def initialize(stat,sv_stat=Prompt.new)
         @stat=type?(stat,App::Status)
         super('hex',@stat['id'],@stat['ver'])
-        @site_stat=type?(site_stat,Prompt)
+        @sv_stat=type?(sv_stat,Prompt)
         # Server Status
         id=self['id'] || id_err("NO ID(#{id}) in Stat")
         file=View.sdb(id) || id_err("Hex/Can't found sdb_#{id}.txt")
@@ -27,7 +27,7 @@ module CIAX
             end
           end
         }
-        @site_stat.post_upd_procs << proc{
+        @sv_stat.post_upd_procs << proc{
           verbose("Propagate Prompt#upd -> Hex::View#upd")
           upd
         }
@@ -45,10 +45,10 @@ module CIAX
       end
 
       def upd_core
-        @res[2]=b2e(@site_stat['udperr'])
-        @res[3]=b2i(@site_stat['watch'])
-        @res[4]=b2i(@site_stat['isu'])
-        @res[5]=b2e(@site_stat['comerr'])
+        @res[2]=b2e(@sv_stat['udperr'])
+        @res[3]=b2i(@sv_stat['watch'])
+        @res[4]=b2i(@sv_stat['isu'])
+        @res[5]=b2e(@sv_stat['comerr'])
         @res[6]=''
         pck=0
         bin=0

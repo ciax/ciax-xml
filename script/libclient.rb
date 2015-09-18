@@ -13,7 +13,7 @@ module CIAX
     def ext_client
       @sub.ext_client if @sub
       return self unless @port
-      @site_stat.add_db('udperr' => 'x')
+      @sv_stat.add_db('udperr' => 'x')
       @udp=UDPSocket.open()
       verbose("Initialize UDP client (#@id) [#{@host}:#{@port}]")
       @cobj.rem.def_proc{|ent|
@@ -23,12 +23,12 @@ module CIAX
         verbose("UDP Send #{args}")
         if IO.select([@udp],nil,nil,1)
           res=@udp.recv(1024)
-          @site_stat.reset('udperr')
+          @sv_stat.reset('udperr')
           verbose("UDP Recv #{res}")
-          update(@site_stat.update(JSON.load(res))) unless res.empty?
-          @site_stat.msg
+          update(@sv_stat.update(JSON.load(res))) unless res.empty?
+          @sv_stat.msg
         else
-          @site_stat.set('udperr')
+          @sv_stat.set('udperr')
           'TIMEOUT'
         end
       }

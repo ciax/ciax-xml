@@ -20,7 +20,7 @@ module CIAX
         @cfg['ver']=@dbi['version']
         @cfg[:frm_site]=@dbi['frm_site']
         @sub=@cfg[:sub_list].get(@cfg[:frm_site])
-        @site_stat=@sub.site_stat.add_db('isu' => '*')
+        @sv_stat=@sub.sv_stat.add_db('isu' => '*')
         @stat=Status.new.set_dbi(@dbi)
         @batch_interrupt=[]
         @host||=@dbi['host']
@@ -93,11 +93,11 @@ module CIAX
       end
 
       def server_output
-        Hashx.new.update(@site_stat).update(self).to_j
+        Hashx.new.update(@sv_stat).update(self).to_j
       end
 
       def init_buf
-        buf=Buffer.new(@stat['id'],@stat['ver'],@site_stat)
+        buf=Buffer.new(@stat['id'],@stat['ver'],@sv_stat)
         buf.send_proc{|ent|
           batch=type?(ent[:batch],Array)
           verbose("Send FrmCmds #{batch}")

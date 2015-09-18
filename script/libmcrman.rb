@@ -38,8 +38,8 @@ module CIAX
         end
 
         def ext_driver
-          @site_stat['sid']='' # For server response
-          @pre_exe_procs << proc{ @site_stat['sid']='' }
+          @sv_stat['sid']='' # For server response
+          @pre_exe_procs << proc{ @sv_stat['sid']='' }
           @stat.ext_sv
           # External Command Group
           @cobj.rem.ext.def_proc{|ent| set(ent);"ACCEPT"}
@@ -49,7 +49,7 @@ module CIAX
           }
           @cobj.rem.int.def_proc{|ent|
             if seq=@stat.get(ent.par[0])
-              @site_stat['sid']=seq.record['id']
+              @sv_stat['sid']=seq.record['id']
               seq.exe(ent.id.split(':'))
               'ACCEPT'
             else

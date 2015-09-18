@@ -12,7 +12,7 @@ require "libremote"
 module CIAX
   class Exe < Hashx # Having server status {id,msg,...}
     attr_reader :layer,:id,:mode,:cobj,:stat,:pre_exe_procs,:post_exe_procs,:cfg,:prompt_proc,:host,:port
-    attr_accessor :site_stat,:shell_input_procs,:shell_output_proc,:server_input_proc,:server_output_proc
+    attr_accessor :sv_stat,:shell_input_procs,:shell_output_proc,:server_input_proc,:server_output_proc
     # attr contains the parameter for each layer individually (might have [:db])
     # cfg should have [:db] shared in the site (among layers)
     def initialize(id,cfg=Config.new,attr={})
@@ -22,7 +22,7 @@ module CIAX
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @id=id
       @layer=class_path.first.downcase
-      @site_stat=Prompt.new # Site Status shared among layers
+      @sv_stat=Prompt.new # Site Status shared among layers
       @pre_exe_procs=[] # Proc for Server Command (by User query)
       @post_exe_procs=[] # Proc for Server Status Update (by User query)
       @terminate_procs=[] # Proc for program terminated
@@ -38,11 +38,11 @@ module CIAX
       type?(args,Array)
       verbose("Command #{args} recieved")
       @pre_exe_procs.each{|p| p.call(args,src)}
-      @site_stat.msg(@cobj.set_cmd(args).exe_cmd(src,pri))
+      @sv_stat.msg(@cobj.set_cmd(args).exe_cmd(src,pri))
     rescue LongJump
       raise $!
     rescue InvalidID
-      @site_stat.msg($!.to_s)
+      @sv_stat.msg($!.to_s)
       raise $!
     ensure
       @post_exe_procs.each{|p| p.call(args,src)}

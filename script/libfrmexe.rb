@@ -33,7 +33,7 @@ module CIAX
       def exe(args,src='local',pri=1)
         super
       rescue CommError
-        @site_stat.set('comerr').msg($!.to_s)
+        @sv_stat.set('comerr').msg($!.to_s)
         raise $!
       end
 
@@ -73,13 +73,13 @@ module CIAX
         tm=@dbi[:response][:frame]["terminator"]
         @stream=Stream.new(@id,@dbi['version'],iocmd,@dbi['wait'],timeout,(tm && eval('"'+tm+'"')))
         @stream.ext_log unless $opt['s']
-        @stream.pre_open_proc=proc{@site_stat.set('strerr')}
-        @stream.post_open_proc=proc{@site_stat.reset('strerr')}
-        @site_stat.add_db('comerr' => 'X','strerr' => 'E')
+        @stream.pre_open_proc=proc{@sv_stat.set('strerr')}
+        @stream.post_open_proc=proc{@sv_stat.reset('strerr')}
+        @sv_stat.add_db('comerr' => 'X','strerr' => 'E')
         @stat.ext_file
         @stat.ext_rsp{@stream.rcv}
         @cobj.rem.ext.def_proc{|ent|
-          @site_stat.reset('comerr')
+          @sv_stat.reset('comerr')
           @stream.snd(ent[:frame],ent.id)
           @stat.conv(ent)
           'OK'

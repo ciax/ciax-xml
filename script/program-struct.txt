@@ -17,7 +17,7 @@
 
 ## Exe(Hash)
  Shared var over layers in same site:
-   @site_stat
+   @sv_stat
  Each site has own cfg[:dbi]
   There are two object in this.
  * Frm

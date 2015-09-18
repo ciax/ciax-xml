@@ -15,7 +15,7 @@ module CIAX
     def ext_shell
       @shell_input_procs=[] #proc takes args(Array)
       @shell_output_proc=proc{ @cfg[:output].to_s }
-      @prompt_proc=proc{ @site_stat.to_s }
+      @prompt_proc=proc{ @sv_stat.to_s }
       @cobj.loc.add_shell
       @cobj.loc.add_jump #@cfg[:jump_groups] should be set
       Thread.current['name']='Main'
@@ -76,7 +76,7 @@ module CIAX
         rescue ServerError
           warning($!)
         end
-        puts @site_stat.msg.empty? ? @shell_output_proc.call : @site_stat.msg
+        puts @sv_stat.msg.empty? ? @shell_output_proc.call : @sv_stat.msg
         verbose("Threads","#{Threadx.list}")
         verbose("Valid Commands #{@cobj.valid_keys}")
       }

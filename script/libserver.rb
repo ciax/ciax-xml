@@ -20,7 +20,7 @@ module CIAX
           raise "NOT JSON"
         end
       }
-      @server_output_proc=proc{ merge(@site_stat).to_j }
+      @server_output_proc=proc{ merge(@sv_stat).to_j }
       self
     end
 
@@ -39,9 +39,9 @@ module CIAX
         begin
           exe(@server_input_proc.call(line),"udp:#{rhost}")
         rescue InvalidCMD
-          @site_stat.msg("INVALID")
+          @sv_stat.msg("INVALID")
         rescue
-          @site_stat.msg("ERROR:#{$!}")
+          @sv_stat.msg("ERROR:#{$!}")
           errmsg
         end
         send_str=@server_output_proc.call

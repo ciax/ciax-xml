@@ -12,7 +12,7 @@ module CIAX
         @sub=@cfg[:sub_list].get(@id)
         @cobj.add_rem(@sub.cobj.rem)
         @stat=Event.new.ext_rsp(@sub.stat)
-        @site_stat=@sub.site_stat.add_db('auto'=>'@','watch'=>'&')
+        @sv_stat=@sub.sv_stat.add_db('auto'=>'@','watch'=>'&')
         @sub.batch_interrupt=@stat.get('int')
         @sub_proc=proc{verbose("Dummy exec")}
         @mode=@sub.mode
@@ -44,7 +44,7 @@ module CIAX
         }
         @tid_auto=auto_update
         @post_exe_procs << proc{
-          @site_stat.put('auto',@tid_auto && @tid_auto.alive?)
+          @sv_stat.put('auto',@tid_auto && @tid_auto.alive?)
         }
         self
       end
@@ -52,7 +52,7 @@ module CIAX
       def ext_share
         @stat.post_upd_procs << proc{|ev|
           verbose("Propagate Event#upd -> upd")
-          @site_stat.put('watch',ev.active?)
+          @sv_stat.put('watch',ev.active?)
           block=ev.get('block').map{|id,par| par ? nil : id}.compact
           @cobj.rem.ext.valid_sub(block)
         }

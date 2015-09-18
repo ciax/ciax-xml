@@ -14,7 +14,7 @@ module CIAX
 
     class Domain < GrpAry
       def add_shell
-        add(Shell::Group)
+        add(Sh::Group)
       end
 
       def add_jump
@@ -26,7 +26,7 @@ module CIAX
       end
     end
 
-    module Shell
+    module Sh
       class Group < Group
         def initialize(cfg,attr={})
           super

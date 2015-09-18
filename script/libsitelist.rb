@@ -6,14 +6,14 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # This should be set [:db]
     class List < CIAX::List
-      attr_reader :sub_list
+      attr_reader :db,:sub_list
       def initialize(cfg,sub_list=nil)
         super(cfg)
         @sub_list=@cfg[:sub_list]=sub_list
       end
 
       def set_db(db)
-        @cfg[:db]=type?(db,Db)
+        @db=@cfg[:db]=type?(db,Db)
         verbose("Initialize")
         if @cfg.key?(:site)
           @current=@cfg[:site]

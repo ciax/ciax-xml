@@ -70,17 +70,17 @@ module CIAX
     end
 
     def ext_test
-      @mode||='TEST'
+      @mode='TEST'
       self
     end
 
     def ext_driver
-      @mode||='DRV'
+      @mode='DRV'
       self
     end
 
     def ext_client
-      @mode||='CL'
+      @mode='CL'
       @stat.ext_http(@host)
       @pre_exe_procs << proc{@stat.upd}
       extend(Client).ext_client

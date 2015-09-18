@@ -50,13 +50,14 @@ module CIAX
 
       private
       def ext_test
+        @mode='TEST'
         @stat.ext_file
         @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
         @cobj.get('set').def_proc{|ent|
           @stat.rep(ent.par[0],ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
-        super
+        self
       end
 
       def ext_driver
@@ -65,6 +66,7 @@ module CIAX
           iocmd=['devsim-file',@id,@dbi['version']]
           timeout=60
         else
+          @mode='DRV'
           iocmd=@dbi['iocmd'].split(' ')
           timeout=(@dbi['timeout']||10).to_i
         end
@@ -101,7 +103,7 @@ module CIAX
           flush
           "Flush Stream"
         }
-        super
+        self
       end
 
       def flush

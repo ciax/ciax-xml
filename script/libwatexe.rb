@@ -15,6 +15,7 @@ module CIAX
         @site_stat=@sub.site_stat.add_db('auto'=>'@','watch'=>'&')
         @sub.batch_interrupt=@stat.get('int')
         @sub_proc=proc{verbose("Dummy exec")}
+        @mode=@sub.mode
         opt_mode
       end
 
@@ -28,19 +29,11 @@ module CIAX
 
       private
       def ext_test
-        @stat.post_upd_procs << proc{|ev|
-          verbose("Propagate Event#upd -> upd")
-          @site_stat.put('watch',ev.active?)
-          block=ev.get('block').map{|id,par| par ? nil : id}.compact
-          @cobj.rem.ext.valid_sub(block)
-        }
-        @sub.pre_exe_procs << proc{|args| @stat.block?(args) }
-        @stat.ext_file
-        super
+        ext_share
       end
 
       def ext_driver
-        ext_test
+        ext_share
         @stat.ext_log if $opt['e'] && @sub.stat['ver']
         @stat.post_upd_procs << proc{|ev|
           ev.get('exec').each{|src,pri,args|
@@ -53,7 +46,19 @@ module CIAX
         @post_exe_procs << proc{
           @site_stat.put('auto',@tid_auto && @tid_auto.alive?)
         }
-        super
+        self
+      end
+
+      def ext_share
+        @stat.post_upd_procs << proc{|ev|
+          verbose("Propagate Event#upd -> upd")
+          @site_stat.put('watch',ev.active?)
+          block=ev.get('block').map{|id,par| par ? nil : id}.compact
+          @cobj.rem.ext.valid_sub(block)
+        }
+        @sub.pre_exe_procs << proc{|args| @stat.block?(args) }
+        @stat.ext_file
+        self
       end
 
       def auto_update

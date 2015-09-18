@@ -41,6 +41,7 @@ module CIAX
 
       private
       def ext_test
+        @mode='TEST'
         @stat.ext_sym.ext_file
         @stat.post_upd_procs << proc{|st|
           verbose("Propagate Status#upd -> App#settime")
@@ -51,11 +52,11 @@ module CIAX
           "INTERRUPT(#{@batch_interrupt})"
         }
         @cobj.rem.ext.def_proc{|ent| ent.cfg.path}
-        ext_int
-        super
+        ext_share
       end
 
       def ext_driver
+        @mode='DRV'
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file.ext_sqlog
         @buf=init_buf
         ver=@stat['ver']
@@ -76,11 +77,10 @@ module CIAX
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
           'INTERRUPT'
         }
-        ext_int
-        super
+        ext_share
       end
 
-      def ext_int
+      def ext_share
         @cobj.get('set').def_proc{|ent|
           @stat.rep(ent.par[0],ent.par[1])
           "SET:#{ent.par[0]}=#{ent.par[1]}"

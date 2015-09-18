@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmcrseq"
+require "libseqexe"
 module CIAX
   module Mcr
     # Sequencer Layer List

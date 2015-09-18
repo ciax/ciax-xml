@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libsh"
-require "libmcrlist"
+require "libseqlist"
 
 module CIAX
   module Mcr

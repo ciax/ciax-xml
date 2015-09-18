@@ -24,12 +24,12 @@ module CIAX
         #required cfg keys: app,db,body,stat,(:submcr_proc)
         attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:pre_mcr_procs,:post_mcr_procs,:th_mcr
         #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
-        #ent_cfg should have [:sequence]'[:sub_list],[:submcr_proc]
+        #ent should have [:sequence]'[:dev_list],[:submcr_proc]
         def initialize(ent,pid='0')
           super(type?(ent,Entity).id)
-          @mcfg=ent.cfg
+          @mcfg=ent
           @sequence=ent.sequence
-          type?(@mcfg[:sub_list],CIAX::List)
+          type?(@mcfg[:dev_list],CIAX::List)
           @record=Record.new.ext_file.mklink # Make latest link
           @record['pid']=pid
           @submcr_proc=@mcfg[:submcr_proc]||proc{|args,id|
@@ -89,7 +89,7 @@ module CIAX
         rescue Interrupt
           msg("\nInterrupt Issued to running devices #{@running}",3)
           @running.each{|site|
-            @mcfg[:sub_list].get(site).exe(['interrupt'],'user')
+            @mcfg[:dev_list].get(site).exe(['interrupt'],'user')
           }
         ensure
           @running.clear
@@ -132,7 +132,7 @@ module CIAX
               when 'exec'
                 if @step.exec? && query(['exec','pass'])
                   @running << e1['site']
-                  @mcfg[:sub_list].get(e1['site']).exe(e1['args'],'macro')
+                  @mcfg[:dev_list].get(e1['site']).exe(e1['args'],'macro')
                 end
               when 'mcr'
                 if @step.async?
@@ -230,8 +230,8 @@ module CIAX
         GetOpts.new('icemntr')
         cfg=Config.new
         cfg[:jump_groups]=[]
-        al=Wat::List.new(cfg).cfg[:sub_list] #Take App List
-        cfg[:sub_list]=al
+        al=Wat::List.new(cfg).sub_list #Take App List
+        cfg[:dev_list]=al
         mobj=Remote::Index.new(cfg,{:dbi =>Db.new.get(PROJ)})
         mobj.add_rem.add_ext(Ext)
         begin

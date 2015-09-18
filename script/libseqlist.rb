@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmcrseq"
+require "libseqexe"
 module CIAX
   module Mcr
     # Sequencer Layer List
@@ -78,7 +78,7 @@ module CIAX
 
           def ext_shell
             super(Jump)
-            @cfg[:sub_list].ext_shell if @cfg.key?(:sub_list) # Limit self level
+            @cfg[:dev_list].ext_shell if @cfg.key?(:dev_list) # Limit self level
             @cfg[:jump_groups] << @jumpgrp
             @post_upd_procs << proc{
               verbose("Propagate List#upd -> JumpGrp#upd")
@@ -116,7 +116,7 @@ module CIAX
         GetOpts.new('tenr')
         cfg=Config.new
         cfg[:jump_groups]=[]
-        cfg[:sub_list]=Wat::List.new(cfg).sub_list #Take App List
+        cfg[:dev_list]=Wat::List.new(cfg).sub_list #Take App List
         list=List.new(PROJ,cfg).ext_sv.ext_shell
         mobj=Remote::Index.new(cfg,{:dbi =>Db.new.get(PROJ)})
         mobj.add_rem.add_ext(Ext)

@@ -27,16 +27,16 @@ module CIAX
       class Entity < Ext::Entity
         def initialize(cfg,attr={})
           super
-          @field=type?(@cfg[:field],Field)
+          @field=type?(self[:field],Field)
           @fstr={}
-          if /true|1/ === @cfg["noaffix"]
+          if /true|1/ === self["noaffix"]
             @sel={:main => ["body"]}
           else
-            @sel=Hash[@cfg[:dbi][:command][:frame]]
+            @sel=Hash[self[:dbi][:command][:frame]]
           end
-          @frame=Frame.new(@cfg[:dbi]['endian'],@cfg[:dbi]['ccmethod'])
+          @frame=Frame.new(self[:dbi]['endian'],self[:dbi]['ccmethod'])
           return unless @sel[:body]=@body
-          verbose("Body:#{@cfg['label']}(#@id)")
+          verbose("Body:#{self['label']}(#@id)")
           mk_frame(:body)
           if @sel.key?(:ccrange)
             @frame.cc_mark
@@ -46,7 +46,7 @@ module CIAX
           mk_frame(:main)
           frame=@fstr[:main]
           verbose("Cmd Generated [#@id]")
-          @cfg[:frame]=frame
+          self[:frame]=frame
           @field.echo=frame # For send back
         end
 
@@ -85,7 +85,7 @@ module CIAX
         cfg=Config.new
         fld=cfg[:field]=Field.new.set_dbi(dbi)
         cobj=Index.new(cfg,{:dbi => dbi})
-        cobj.add_rem.def_proc{|ent| ent.cfg[:frame]}
+        cobj.add_rem.def_proc{|ent| ent[:frame]}
         cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?
         res=cobj.set_cmd(args).exe_cmd('test')

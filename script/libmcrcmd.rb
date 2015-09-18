@@ -45,14 +45,14 @@ module CIAX
             when "select"
               hash={'type' => 'mcr'}
               sel=elem['select']
-              val=type?(@cfg[:sub_list],App::List).getstat(elem)
+              val=type?(self[:dev_list],App::List).getstat(elem)
               hash['args']=sel[val]||sel['*']
               sequence << hash
             else
               sequence << elem
             end
           }
-          @sequence=@cfg[:sequence]=sequence
+          @sequence=self[:sequence]=sequence
         end
       end
     end
@@ -61,14 +61,14 @@ module CIAX
       require "libwatexe"
       GetOpts.new
       cfg=Config.new
-      cfg[:sub_list]=Wat::List.new(cfg).sub_list
+      cfg[:dev_list]=Wat::List.new(cfg).sub_list
       begin
         cobj=Index.new(cfg,{:dbi =>Db.new.get(PROJ)})
         cobj.add_rem
-        cobj.rem.def_proc{|ent| ent.cfg.path }
+        cobj.rem.def_proc{|ent| ent.path }
         cobj.rem.add_ext(Ext)
         ent=cobj.set_cmd(ARGV)
-        puts ent.cfg.path
+        puts ent.path
         puts ent.sequence.to_v
       rescue InvalidCMD
         $opt.usage("[id] [cmd] (par)")

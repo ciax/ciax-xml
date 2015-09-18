@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libsh"
-require "libmcrlist"
+require "libseqlist"
 
 module CIAX
   module Mcr
@@ -8,10 +8,9 @@ module CIAX
       class Exe < CIAX::Exe
         # cfg should have [:jump_groups]
         attr_reader :sub_list
-        def initialize(cfg,attr={})
-          attr[:db]=Db.new
-          @sub_list=attr[:sub_list]=Wat::List.new(cfg).sub_list
-          super(PROJ,cfg,attr)
+        def initialize(cfg)
+          @sub_list=Wat::List.new(cfg)
+          super(PROJ,cfg,{:db =>Db.new,:dev_list =>@sub_list.sub_list})
           @stat=Seq::List.new(@id,@cfg)
           @lastsize=0
           @cobj.add_rem.add_hid

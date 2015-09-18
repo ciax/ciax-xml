@@ -27,7 +27,7 @@ module CIAX
         #batch is ary of args(ary)
         def initialize(cfg,attr={})
           super
-          @cfg[:batch]=@body.map{|e1|
+          self[:batch]=@body.map{|e1|
             args=[]
             enclose("GetCmd(FDB):#{e1.first}","Exec(FDB):%s"){
               e1.each{|e2| # //argv
@@ -54,10 +54,10 @@ module CIAX
       cfg=Config.new
       begin
         cobj=Index.new(cfg,{:dbi =>Db.new.get(id)})
-        cobj.add_rem.def_proc{|ent| ent.cfg.path }
+        cobj.add_rem.def_proc{|ent| ent.path }
         cobj.rem.add_ext(Ext)
         ent=cobj.set_cmd(ARGV)
-        puts ent.cfg[:batch].to_s
+        puts ent[:batch].to_s
       rescue InvalidCMD
         Msg.usage("#{id} [cmd] (par)",2)
       rescue InvalidID

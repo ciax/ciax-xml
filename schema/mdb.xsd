@@ -72,6 +72,15 @@
       <xsd:extension base="xsd:token">
         <xsd:attribute name="site" type="xsd:token" use="required" />
         <xsd:attribute name="var" type="xsd:token" use="required" />
+        <xsd:attribute name="form" use="required">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="class" />
+              <xsd:enumeration value="msg" />
+              <xsd:enumeration value="data" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
         <xsd:attribute name="label" type="xsd:token" />
       </xsd:extension>
     </xsd:simpleContent>

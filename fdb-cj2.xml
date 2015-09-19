@@ -107,7 +107,7 @@
       <field decode="unsigned" label="FINS Header:SID" length="1">0xFF</field>
       <body />
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">
         <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>
         <field decode="unsigned" label="FINS Command:SRC" length="1">0x01</field>
@@ -153,6 +153,6 @@
         <field decode="unsigned" label="Remote IP (DSO)" length="1" assign="ipr">32</field>
         <field decode="unsigned" label="Exe Flag" length="1" assign="exe">0</field>
       </response>
-    </responses>
+    </response>
   </frame>
 </fdb>

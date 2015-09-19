@@ -40,7 +40,7 @@
       </ccrange>
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">
         <field assign="output" decode="hexstr" label="Status" length="4"/>
       </response>
@@ -48,6 +48,6 @@
         <field assign="input" decode="hexstr" label="Status" length="4"/>
       </response>
       <response id="default"/>
-    </responses>
+    </response>
   </frame>
 </fdb>

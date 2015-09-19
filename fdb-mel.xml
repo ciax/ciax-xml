@@ -141,7 +141,7 @@
         <body/>
       </ccrange>
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat" label="get status">
         <array assign="x" decode="signed" label="Status Flags" length="2">
           <index size="52" />
@@ -163,6 +163,6 @@
           <index size="44" />
         </array>
       </response>
-    </responses>
+    </response>
   </frame>
 </fdb>

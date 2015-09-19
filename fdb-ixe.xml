@@ -163,7 +163,7 @@
       <field decode="unsigned" label="ResponseCode" length="1">6</field>
       <body/>
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">
         <field assign="stat" label="StatusCode" />
       </response>
@@ -213,6 +213,6 @@
         </array>
       </response>
       <response id="default" />
-    </responses>
+    </response>
   </frame>
 </fdb>

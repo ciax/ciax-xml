@@ -38,7 +38,7 @@
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
       <field label="Terminater">*</field>
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getmodel">
         <field label="Command Code">00MM</field>
         <field label="Response Code" length="2" assign="cod"/>
@@ -57,6 +57,6 @@
         <field label="Command Code">00FK</field>
         <field label="Exit Code" length="2" assign="cod"/>
       </response>
-    </responses>
+    </response>
   </frame>
 </fdb>

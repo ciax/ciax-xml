@@ -23,10 +23,10 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <body/>
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">
         <field assign="stat" decode="unsigned" label="Status" length="2" />
       </response>
-    </responses>
+    </response>
   </frame>
 </fdb>

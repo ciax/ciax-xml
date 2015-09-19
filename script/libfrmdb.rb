@@ -30,7 +30,7 @@ module CIAX
       def init_stat(doc,dbi)
         dbi[:field]=fld={}
         frm=init_frame(doc[:domain]['rspframe']){|e| init_rsp(e,fld)}
-        idx=init_index(doc[:domain]['responses']){|e| init_rsp(e,fld)}
+        idx=init_index(doc[:domain]['response']){|e| init_rsp(e,fld)}
         dbi['frm_id']=dbi['id']
         dbi[:response]={:index => idx, :frame => frm}
         dbi

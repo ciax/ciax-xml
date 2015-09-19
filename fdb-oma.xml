@@ -16,11 +16,11 @@
       <field label="Prefix">?</field>
       <body/>
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">
         <field label="Command Response">01CP=</field>
         <field assign="stat" label="Status" length="6" />
       </response>
-    </responses>
+    </response>
   </frame>
 </fdb>

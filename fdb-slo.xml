@@ -81,7 +81,7 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <body/>
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">
         <field assign="err" label="ErrorCode" />
       </response>
@@ -102,6 +102,6 @@
       <response id="default">
         <field>&gt;</field>
       </response>
-    </responses>
+    </response>
   </frame>
 </fdb>

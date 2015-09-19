@@ -40,13 +40,13 @@
       </ccrange>
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">
         <array assign="stat" decode="hexstr" label="Status" length="4">
           <index size="8" />
         </array>
       </response>
       <response id="default" />
-    </responses>
+    </response>
   </frame>
 </fdb>

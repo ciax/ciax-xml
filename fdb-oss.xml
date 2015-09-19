@@ -127,7 +127,7 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\n">
       <body/>
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">
         <!--TSCMON-->
         <field assign="rsel" label="InR Select(NsOpt/NsIR/Cas)" />
@@ -188,6 +188,6 @@
       <response id="pid">
         <field assign="pid" label="Background Process ID" />
       </response>
-    </responses>
+    </response>
   </frame>
 </fdb>

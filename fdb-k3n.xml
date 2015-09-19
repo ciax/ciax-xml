@@ -33,12 +33,12 @@
       </ccrange>
       <field assign="cc" decode="unsigned" label="BCC" length="1" />
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">
         <field label="MRC SRC">0101</field>
         <field assign="rcode" label="Response Code" length="4" />
         <field assign="stat" label="Status" decode="decstr" length="8" />
       </response>
-    </responses>
+    </response>
   </frame>
 </fdb>

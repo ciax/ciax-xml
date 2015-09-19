@@ -35,7 +35,7 @@
       <field label="Prefix" length="1">#</field>
       <body/>
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getst">
         <array assign="st" label="Status">
           <index range="$1-1" size="6" />
@@ -52,6 +52,6 @@
           <index range="$1-1" size="6" />
         </array>
       </response>
-    </responses>
+    </response>
   </frame>
 </fdb>

@@ -66,7 +66,7 @@
     </xsd:complexType>
   </xsd:element>
   <!--Response Select-->
-  <xsd:element name="responses">
+  <xsd:element name="response">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="fdbr:response" minOccurs="1" maxOccurs="unbounded" />

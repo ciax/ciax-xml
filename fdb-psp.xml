@@ -40,7 +40,7 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <body/>
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">
         <field>V</field>
         <field assign="v" label="Output(V)" length="5" />
@@ -62,6 +62,6 @@
         <field assign="f5" label="Remote" length="1" />
         <field assign="f6" label="Local Lock" length="1" />
       </response>
-    </responses>
+    </response>
   </frame>
 </fdb>

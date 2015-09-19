@@ -27,7 +27,7 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <body/>
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">
         <array assign="ch" label="Value" delimiter=";">
           <index size="8" />
@@ -39,6 +39,6 @@
       <response id="spstat">
         <field assign="sp" label="SetPoint" />
       </response>
-    </responses>
+    </response>
   </frame>
 </fdb>

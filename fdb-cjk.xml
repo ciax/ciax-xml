@@ -63,7 +63,7 @@
         <body/>
       </ccrange>
     </rspframe>
-    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="cmdrsp" label="command resp" />
       <response id="get_tbl">
         <array assign="t" decode="unsigned" label="Jack Pulse Tables" length="2">
@@ -74,6 +74,6 @@
           <index size="256" />
         </array>
       </response>
-    </responses>
+    </response>
   </frame>
 </fdb>

@@ -5,7 +5,11 @@
       <instance id="mfp" app_id="cfp" host="moircsobcp" port="25601" label="MOIRCS Pneumatic Actuator"/>
       <instance id="map" app_id="oma" host="moircsobcp" port="25602" label="MOIRCS Air Pressure"/>
       <instance id="mma" app_id="mma" host="moircsobcp" port="25603" label="MOIRCS Extension Arm"/>
-      <instance id="mmc" app_id="mmc" host="moircsobcp" port="25604" label="MOIRCS Carrousel"/>
+      <instance id="mmc" app_id="mmc" host="moircsobcp" port="25604" label="MOIRCS Carrousel">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <alias id="acs" ref="abs" label="Access Hole Position" symbol="acs" />
+        </status>
+      </instance>
     </group>
     <group id="turret" caption="Turret control">
       <instance id="mft" app_id="fpa" host="moircsobcp" port="25612" label="MOIRCS Hall Sensor"/>

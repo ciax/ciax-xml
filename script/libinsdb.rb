@@ -30,9 +30,15 @@ module CIAX
         }
         (hcmd[:group]||={})['gal']=algrp
         # Status Domain
+        hst=dbi[:status]={}
         (doc[:domain]['status']||[]).each{|e0|
-          p=((dbi[:status]||={})[e0.name.to_sym]||={})
-          e0.attr2item(p,'ref')
+          p=(hst[e0.name.to_sym]||={})
+          case e0.name
+          when 'alias'
+            e0.attr2item(p)
+          else
+            e0.attr2item(p,'ref')
+          end
         }
         init_watch(doc,dbi)
         dbi['proj']=@proj

@@ -11,8 +11,13 @@ module CIAX
       def initialize(stat)
         super()
         @stat=type?(stat,Status)
-        @adbs=type?(@stat.dbi,Dbi)[:status]
-        @index=@adbs[:index]
+        adbs=type?(@stat.dbi,Dbi)[:status]
+        @group=adbs[:group]
+        @index=adbs[:index].dup
+        if adbs.key?(:alias)
+          @group['gal']={'caption'=>'Alias',:members => adbs[:alias].keys}
+          @index.update(adbs[:alias])
+        end
         @stat.post_upd_procs << proc{
           verbose("Propagate Status#upd -> upd")
           upd
@@ -25,7 +30,7 @@ module CIAX
 
       def to_csv
         str=''
-        @adbs[:group].each{|k,gdb|
+        @group.each{|k,gdb|
           cap=gdb['caption'] || next
           gdb[:members].each{|id|
             label=@index[id]['label']
@@ -56,13 +61,12 @@ module CIAX
         lines.join("\n")
       end
 
-
       private
       def upd_core
         self['gtime']={'caption'=>'','lines'=>[hash={}]}
         hash['time']={'label'=>'TIMESTAMP','msg'=>Msg.date(@stat['time'])}
         hash['elapsed']={'label'=>'ELAPSED','msg'=>Msg.elps_date(@stat['time'])}
-        @adbs[:group].each{|k,gdb|
+        @group.each{|k,gdb|
           cap=gdb['caption'] || next
           self[k]={'caption' => cap,'lines'=>[]}
           col=gdb['column']||1

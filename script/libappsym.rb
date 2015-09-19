@@ -18,8 +18,7 @@ module CIAX
         self['msg']={}
         @post_upd_procs << proc{ #post process
           verbose("Propagate upd -> Symbol#upd")
-          set_sym(adbs[:index])
-          set_sym(adbs[:alias])
+          set_sym(adbs[:index].dup.update(adbs[:alias]||{}))
         }
         self
       end

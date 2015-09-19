@@ -6,7 +6,7 @@
       <body/>
       <char length="1">0xd</char>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="getstat" label="Get Status" response="getstat" type="stat">
         <string>L</string>
       </item>
@@ -36,7 +36,7 @@
       <item id="poff" label="OUTPUT OFF" type="action">
         <string>KOD</string>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <body/>
     </rspframe>

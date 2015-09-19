@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="cfp" id="cfp" label="MOIRCS Field Point">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
@@ -73,7 +73,7 @@
           <frmcmd name="putfield"/>
         </item>
       </group>
-    </commands>
+    </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="cfp">
       <group caption="Output" id="g1" column="2">
         <binary id="ao" label="Arm Gripper(out)" symbol="oc">

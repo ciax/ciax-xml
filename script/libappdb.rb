@@ -22,7 +22,7 @@ module CIAX
 
       # Command Db
       def init_command(doc,db)
-        adbc=doc[:domain]['commands']
+        adbc=doc[:domain]['command']
         idx={}
         grp={}
         adbc.each{|e|

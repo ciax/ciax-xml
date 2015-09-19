@@ -10,7 +10,7 @@
       </ccrange>
       <string format="%02X">${cc}</string>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <!-- Ack Commands -->
       <item id="ack" label="ACK" noaffix="true" response="ack">
         <char length="1" label="ACK">6</char>
@@ -88,7 +88,7 @@
       <item id="aoff" label="All Output OFF" type="action">
         <string>#SW0</string>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr"  terminator="\x03">
       <echo/>
       <field length="1" decode="unsigned" label="ACK">6</field>

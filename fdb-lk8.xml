@@ -6,7 +6,7 @@
       <body/>
       <char length="2" label="Suffix">0x0d0a</char>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="getstat" label="Get Status" response="getstat" type="stat">
         <string>krdg? c1;</string>
         <string>krdg? c2;</string>
@@ -23,7 +23,7 @@
       <item id="spstat" label="Set Point (K)" response="spstat" type="stat">
         <string>SETP? 1</string>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <body/>
     </rspframe>

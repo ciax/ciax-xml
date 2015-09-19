@@ -16,7 +16,7 @@
         <body/>
       </ccrange>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="getstat" label="Get all status" response="getstat" type="stat">
         <char length="2" label="Read region command">0x401</char>
         <char length="2" label="Read region subcommand">0</char>
@@ -126,7 +126,7 @@
         <char length="2" label="Data Length">1</char>
         <char length="2" label="Parameter">$1</char>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="SubHeader: Prefix" length="2">212</field>
       <field label="SubHeader: Serial Number">XX</field>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="cj2" id="cj2" label="Stand-by Flange PLC" version="3">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrpt Commands" column="2">
         <item id="upd" label="Status update">
           <frmcmd name="getstat" />
@@ -264,7 +264,7 @@
           <frmcmd name="getexe" />
         </item>
       </group>
-    </commands>
+    </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="cj2">
       <group id="g1" caption="MAIN" column="3">
         <binary id="ctl" label="CONTROL" symbol="ctl_mode">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="psp" id="psp" label="MOIRCS Ext Heater">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
@@ -33,7 +33,7 @@
           <frmcmd name="getstat" />
         </item>
       </group>
-    </commands>
+    </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" caption="" column="3" >
         <float id="vol" label="OUTPUT (V)" format="%3.2f">

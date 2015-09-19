@@ -16,7 +16,7 @@
         <body/>
       </ccrange>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
         <par_num>0:5</par_num>
         <char length="2" label="Read region command">0x401</char>
@@ -48,7 +48,7 @@
         <char length="2" label="Data Length">1</char>
         <char length="2" label="Parameter">$1</char>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="SubHeader: Prefix" length="2">212</field>
       <field label="SubHeader: Serial Number">XX</field>

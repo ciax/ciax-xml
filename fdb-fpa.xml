@@ -9,7 +9,7 @@
       <char length="1">13</char>
       <char length="1">10</char>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <!--String Length must be <32-->
       <item id="getstat" label="Get status" response="getstat" type="stat">
         <string>!F00FF</string>
@@ -32,7 +32,7 @@
           <string>0000112</string>
         </repeat>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <field label="Prefix">A</field>
       <ccrange>

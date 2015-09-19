@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="fpa" id="fpa" label="MOIRCS Field Point Analog Input">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
@@ -13,7 +13,7 @@
           <frmcmd name="setr5" />
         </item>
       </group>
-    </commands>
+    </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" column="3" caption="Voltage">
         <repeat_var from="1" to="6">

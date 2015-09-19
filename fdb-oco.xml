@@ -7,7 +7,7 @@
       <body/>
       <char length="1" label="Suffix">0xd</char>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="getstat" label="Get Status" response="getstat" type="stat">
         <string>1RD</string>
       </item>
@@ -16,7 +16,7 @@
         <string>1AO+000</string>
         <string format="%05.2f">$1</string>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix">*</field>
       <body/>

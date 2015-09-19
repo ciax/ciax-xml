@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="bbe" id="bbe" label="Helium Compressor">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device" column="2">
         <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
@@ -115,7 +115,7 @@
           <frmcmd name="getstat" />
         </item>
       </group>
-    </commands>
+    </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <repeat_group from="0" to="3">
         <group id="g$_" column="4">

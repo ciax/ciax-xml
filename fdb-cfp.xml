@@ -11,7 +11,7 @@
       <char length="1">13</char>
       <char length="1">10</char>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <!--String Length must be <32-->
       <item id="getstat" label="Get output status" response="getstat" type="stat">
         <string>02!J</string>
@@ -32,7 +32,7 @@
         <string>FFFF</string>
         <string format="%04X">${output}</string>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix">A</field>
       <ccrange>

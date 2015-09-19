@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="mel" id="mel" label="Cart PLC" version="7">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrupt Commands" column="2">
         <item id="upd" label="Status update">
           <frmcmd name="getstat" />
@@ -296,7 +296,7 @@
           </frmcmd>
         </item>
       </group>
-    </commands>
+    </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="mel">
       <group id="gs" caption="Status" column="3">
         <binary id="ctl" label="CONTROL" symbol="ctl_mode">

@@ -7,7 +7,7 @@
       <char length="1">0xa</char>
       <char length="1">0xd</char>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <!-- Status Commands -->
       <item id="getst" label="Get Status" response="getst" type="stat">
         <par_num>1:6</par_num>
@@ -30,7 +30,7 @@
         <string>$1</string>
         <string>HOM</string>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\n\r">
       <field label="Prefix" length="1">#</field>
       <body/>

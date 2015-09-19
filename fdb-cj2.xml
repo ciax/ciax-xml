@@ -14,7 +14,7 @@
       <char length="1" label="FINS Header:SID">0xFF</char>
       <body />
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="getstat" label="Get all status" response="getstat" type="stat">
         <char length="1" label="FINS Command:MRC">0x01</char>
         <char length="1" label="FINS Command:SRC">0x01</char>
@@ -93,7 +93,7 @@
         <char length="1" label="FINS Param:Data Length (L)">0x01</char>
         <char length="2" label="FINS Param:Bit Data">0x00</char>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="FINS Header:ICF" length="1">0xc0</field>
       <field decode="unsigned" label="FINS Header:RSV" length="1">0x00</field>

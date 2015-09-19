@@ -6,7 +6,7 @@
       <body/>
       <char length="1">0xd</char>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="getstat" label="Error Status" response="getstat" type="stat">
         <string>err</string>
       </item>
@@ -77,7 +77,7 @@
       <item id="mhn" label="Move To e2 Sensor Negative" response="default" type="action">
         <string>mh=-1</string>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <body/>
     </rspframe>

@@ -6,7 +6,7 @@
       <string label="Prefix">!0</string>
       <body/>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="getstat" label="Get Status" response="getstat" type="stat">
         <string>RD</string>
       </item>
@@ -19,7 +19,7 @@
         <string>SO</string>
         <char length="2">${stat}</char>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <body/>
     </rspframe>

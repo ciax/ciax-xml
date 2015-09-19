@@ -4,7 +4,7 @@
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="reqstat" label="Request status" response="reqstat" type="stat">
         <string label="Measurment string gauges 1&amp;2">PRX</string>
         <char length="1" label="Suffix">13</char>
@@ -12,7 +12,7 @@
       <item id="getstat" label="Get status" response="getstat" type="stat">
         <char length="1" label="ENQ">5</char>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <body/>
     </rspframe>

@@ -4,7 +4,7 @@
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="command.xsd" />
   <!--Command Select-->
-  <xsd:element name="commands">
+  <xsd:element name="command">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="fdbc:item" minOccurs="1" maxOccurs="unbounded" />

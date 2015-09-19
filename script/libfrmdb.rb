@@ -20,7 +20,7 @@ module CIAX
       # Command section
       def init_command(doc,dbi)
         frm=init_frame(doc[:domain]['cmdframe']){|e,r| init_cmd(e,r)}
-        idx=init_index(doc[:domain]['commands']){|e,r| init_cmd(e,r)}
+        idx=init_index(doc[:domain]['command']){|e,r| init_cmd(e,r)}
         grp={'main' => {'caption' => 'Device Commands',:members => idx.keys}}
         dbi[:command]={:group => grp, :index => idx, :frame => frm}
         dbi

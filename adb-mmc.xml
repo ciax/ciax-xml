@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="slo" id="mmc" label="MOIRCS Carrousel">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
@@ -76,7 +76,7 @@
           <frmcmd name="stop" />
         </item>
       </group>
-    </commands>
+    </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="mmc">
       <group id="g1" caption="" column="4">
         <string id="bs" label="Moter Moving" symbol="warn">

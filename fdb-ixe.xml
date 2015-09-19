@@ -9,7 +9,7 @@
       <char length="1">13</char>
       <char length="1">10</char>
     </cmdframe>
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <!--String Length must be <32-->
       <item id="getstat" label="Get status" response="getstat" type="stat">
         <string>ST</string>
@@ -156,7 +156,7 @@
         <string>$1</string>
         <string format="%+d">(($2-${p:$1-1}+48000) % 96000)-48000</string>
       </item>
-    </commands>
+    </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <!--Acknowlege message: STX ACK ETX CR LF (Manual Section 12.5)-->
       <field decode="unsigned" label="Prefix" length="1">2</field>

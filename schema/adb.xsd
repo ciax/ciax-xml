@@ -19,7 +19,7 @@
   <xsd:element name="app">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="adbc:commands" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="adbc:command" minOccurs="0" maxOccurs="1" />
         <xsd:element ref="adbs:status" minOccurs="1" maxOccurs="1" />
         <xsd:element ref="wdb:watch" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>

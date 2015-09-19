@@ -76,23 +76,30 @@ module CIAX
           # Set items by DB
           cdb=dbi[:command]
           idx=cdb[:index]
-          (cdb[:group]).each{|gid,gat|
+          cdb[:group].each{|gid,gat|
             @current=@displist.new_grp(gat['caption'])
-            (gat[:members]).each{|id|
-              if att=(cdb[:alias]||{})[id]
-                item=idx[att['ref']].dup
-                label=att['label']
-                item['argv']=att['argv'] if att['argv']
-              else
-                item=idx[id]
-                label=item['label']
-              end
-              if Array === item[:parameters]
-                label=label.gsub(/\$([\d]+)/,'%s') % item[:parameters].map{|e| e['label']}
-              end
+            gat[:members].each{|id|
+              item=idx[id]
+              label=item['label']
               add_item(id,label,item)
             }
           }
+          if cdb[:alias]
+            @current=@displist.new_grp('Alias')
+            cdb[:alias].each{|id,att|
+              item=idx[att['ref']].dup
+              label=att['label']
+              item['argv']=att['argv'] if att['argv']
+              add_item(id,label,item)
+            }
+          end
+        end
+
+        def add_item(id,label,item)
+          if Array === item[:parameters]
+            label=label.gsub(/\$([\d]+)/,'%s') % item[:parameters].map{|e| e['label']}
+          end
+          super
         end
       end
 

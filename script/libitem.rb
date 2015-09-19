@@ -102,7 +102,7 @@ module CIAX
 
   # Command db with parameter derived from Item
   class Entity < Config
-    attr_reader :id,:par,:cfg
+    attr_reader :id,:par
     #set should have :def_proc
     def initialize(cfg,attr={})
       super(cfg).update(attr)

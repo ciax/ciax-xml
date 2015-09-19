@@ -49,19 +49,21 @@ module CIAX
     end
 
     if __FILE__ == $0
-      GetOpts.new
+      require "libinsdb"
+      GetOpts.new('d','d' => 'Device Mode')
       id=ARGV.shift
       cfg=Config.new
+      dbm=$opt['d'] ? Db : Ins::Db
       begin
-        cobj=Index.new(cfg,{:dbi =>Db.new.get(id)})
+        cobj=Index.new(cfg,{:dbi =>dbm.new.get(id)})
         cobj.add_rem.def_proc{|ent| ent.path }
         cobj.rem.add_ext(Ext)
         ent=cobj.set_cmd(ARGV)
         puts ent[:batch].to_s
       rescue InvalidCMD
-        Msg.usage("#{id} [cmd] (par)",2)
+        Msg.usage("#{id} (-d) [cmd] (par)",2)
       rescue InvalidID
-        Msg.usage("[id] [cmd] (par)")
+        Msg.usage("(-d) [id] [cmd] (par)")
       end
     end
   end

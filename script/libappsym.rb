@@ -18,40 +18,45 @@ module CIAX
         self['msg']={}
         @post_upd_procs << proc{ #post process
           verbose("Propagate upd -> Symbol#upd")
-          adbs[:index].each{|key,hash|
-            sid=hash['symbol']||next
-            unless tbl=@symdb[sid.to_sym]
-              alert("Table[#{sid}] not exist")
-              next
-            end
-            verbose("ID=#{key},Table=#{sid}")
-            self['class'][key]='alarm'
-            val=@data[key]
-            self['msg'][key]="N/A(#{val})"
-            tbl.each{|sym|
-              case sym['type']
-              when 'numeric'
-                tol=sym['tolerance'].to_f
-                next if sym['val'].split(',').all?{|cri|
-                  val.to_f > cri.to_f+tol or val.to_f < cri.to_f-tol
-                }
-                verbose("VIEW:Numeric:[#{sym['val']}+-#{tol}] and [#{val}]")
-                self['msg'][key]=sym['msg'] % val
-              when 'range'
-                next unless ReRange.new(sym['val']) == val
-                verbose("VIEW:Range:[#{sym['val']}] and [#{val}]")
-                self['msg'][key]=sym['msg'] % val.to_f
-              when 'pattern'
-                next unless /#{sym['val']}/ === val || val == 'default'
-                verbose("VIEW:Regexp:[#{sym['val']}] and [#{val}]")
-                self['msg'][key]=sym['msg'] % val
-              end
-              self['class'][key]=sym['class']
-              break
-            }
-          }
+          set_sym(adbs[:index])
+          set_sym(adbs[:alias])
         }
         self
+      end
+
+      def set_sym(index)
+        index.each{|key,hash|
+          sid=hash['symbol']||next
+          unless tbl=@symdb[sid.to_sym]
+            alert("Table[#{sid}] not exist")
+            next
+          end
+          verbose("ID=#{key},Table=#{sid}")
+          self['class'][key]='alarm'
+          val=@data[hash['ref']||key]
+          self['msg'][key]="N/A(#{val})"
+          tbl.each{|sym|
+            case sym['type']
+            when 'numeric'
+              tol=sym['tolerance'].to_f
+              next if sym['val'].split(',').all?{|cri|
+                val.to_f > cri.to_f+tol or val.to_f < cri.to_f-tol
+              }
+              verbose("VIEW:Numeric:[#{sym['val']}+-#{tol}] and [#{val}]")
+              self['msg'][key]=sym['msg'] % val
+            when 'range'
+              next unless ReRange.new(sym['val']) == val
+              verbose("VIEW:Range:[#{sym['val']}] and [#{val}]")
+              self['msg'][key]=sym['msg'] % val.to_f
+            when 'pattern'
+              next unless /#{sym['val']}/ === val || val == 'default'
+              verbose("VIEW:Regexp:[#{sym['val']}] and [#{val}]")
+              self['msg'][key]=sym['msg'] % val
+            end
+            self['class'][key]=sym['class']
+            break
+          }
+        }
       end
     end
 

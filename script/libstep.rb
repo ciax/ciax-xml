@@ -100,8 +100,9 @@ module CIAX
           stat=stats[site]
             cmp=cond['cmp']=h['cmp']
             cri=cond['cri']=h['val']
-            real=stat['msg'][var]||stat.get(var)
-            verbose("site=#{site},var=#{var},cmp=#{cmp},cri=#{cri},real=#{real}")
+            form=cond['form']=h['form']
+            real=(stat[form]||{})[var]||stat.get(var)
+            verbose("site=#{site},var=#{var},form=#{form},cmp=#{cmp},cri=#{cri},real=#{real}")
             cond['real']=real
             cond['res']=match?(real,cri,cond['cmp'])
           cond

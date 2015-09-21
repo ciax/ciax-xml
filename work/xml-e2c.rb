@@ -4,7 +4,12 @@ require "optparse"
 require "rexml/document"
 include REXML
 
-abort "Usage: e2c [xpath] [child elem] < xml" if ARGV.size < 2
+if ARGV.size < 2
+  abort <<EOF
+Usage: e2c [xpath] [child elem] < xml
+       //xpath@attr -> //xpath/child@attr
+EOF
+end
 
 xpath=ARGV.shift
 child=ARGV.shift

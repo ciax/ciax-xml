@@ -4,24 +4,10 @@
 require 'json'
 abort "Usage: csv2mdb [sites]" if ARGV.size < 1
 
-def prt_cond(fld)
-  fld.split('&').each{|cond|
-    attr='form ="msg"'
-    if /:/ =~ cond
-      attr+=' site="%s"' % $`
-      cond=$'
-    end
-    if /[!=\~]/ =~ cond
-      attr+=' var="%s"' % $`
-      tag={'~'=>'pattern','!'=>'not','='=>'equal'}[$&]
-      puts '   <%s %s>%s</%s>' % [tag,attr,$',tag]
-    end
-  }
-end
-
-def get_file(site,mdb)
+mdb={}
+ARGV.each{|site|
   ['idb','cdb'].each{|db|
-    open("#{db}_#{site}.txt"){|f|
+    open(ENV['HOME']+"/config/#{db}_#{site}.txt"){|f|
       f.readlines.each{|line|
         next if /^[a-zA-Z0-9]/ !~ line
         id,goal,check,type,seq=line.chomp.split(',')
@@ -51,12 +37,6 @@ def get_file(site,mdb)
       }
     }
   }
-  mdb
-end
-
-mdb={}
-ARGV.each{|site|
-  get_file(site,mdb)
 }
 print JSON.dump mdb.select{|k,v|
   ['seq','goal','check'].any?{|f| v.key?(f)}

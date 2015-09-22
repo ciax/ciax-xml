@@ -3,7 +3,12 @@
 #alias m2x
 require 'json'
 
+def indent(str)
+  puts '  '*@indent+str
+end
+
 def prt_cond(fld)
+  @indent+=1
   fld.each{|cond|
     attr='form ="msg"'
     if /:/ =~ cond
@@ -13,13 +18,14 @@ def prt_cond(fld)
     if /[!=\~]/ =~ cond
       attr+=' var="%s"' % $`
       tag={'~'=>'pattern','!'=>'not','='=>'equal'}[$&]
-      puts '   <%s %s>%s</%s>' % [tag,attr,$',tag]
+      indent('<%s %s>%s</%s>' % [tag,attr,$',tag])
     end
   }
+  @indent-=1
 end
 
 def prt_exe(cmd)
-  puts '  <exe site="%s" id="%s"/>' % cmd.split(':')
+  indent('<exe site="%s" id="%s"/>' % cmd.split(':'))
 end
 
 def prt_seq(seq)
@@ -32,32 +38,46 @@ def prt_seq(seq)
         next
       end
     end
-    puts '  <mcr id="%s"/>' % id
+    indent('<mcr id="%s"/>' % id)
   }
 end
 
 abort "Usage: mdb2xml [mdb(json) file]" if STDIN.tty? && ARGV.size < 1
 
+proj=ENV['PROJ']||'moircs'
+
 @mdb=JSON.load(gets(nil))
+@indent=0
+indent('<?xml version="1.0" encoding="utf-8"?>')
+indent('<mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">')
+@indent+=1
+indent("<macro id=\"#{proj}\" version=\"1\" label=\"#{proj.upcase} Macro\" port=\"55555\">")
+@indent+=1
 @mdb.each{|id,db|
-  print '<item id="'+id+'"'
-  print ' title="%s"' % db['title'] if db['title']  
-  puts '>'
+  item='<item id="'+id+'"'
+  item << ' title="%s"' % db['title'] if db['title']  
+  indent(item+'>')
+  @indent+=1
   db.each{|key,data|
     case key
     when 'goal'
-      puts "  <goal>"
+      indent("<goal>")
       prt_cond(data)
-      puts "  </goal>"
+      indent("</goal>")
     when 'check'
-      puts "  <check>"
+      indent("<check>")
       prt_cond(data)
-      puts "  </check>"
+      indent("</check>")
     when 'exe'
       prt_exe(data.first)
     when 'seq'
       prt_seq(data)
     end
   }
-  puts "</item>"
+  @indent-=1
+  indent("</item>")
 }
+@indent-=1
+indent('</macro>')
+@indent-=1
+indent('</mdb>')

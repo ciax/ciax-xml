@@ -16,7 +16,7 @@ ARGV.each{|site|
         when /mcr/
           con=(mdb[id]||={})
           case type
-          when 'mcr'
+          when 'mcr','cmd'
             con['title']=goal
             con['seq']=seq.split(" ") if seq and !seq.empty?
           else

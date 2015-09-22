@@ -3,29 +3,41 @@
 #alias m2x
 require 'json'
 
-def indent(str)
-  puts '  '*@indent+str
+def indent(tag,attr={},text=nil)
+  print '  '*@indent+'<'+tag
+  attr.each{|k,v|
+    print ' '+k+'="'+v+'"'
+  }
+  if text
+    puts ">#{text}</#{tag}>"
+  elsif defined?(yield)
+    puts '>'
+    @indent+=1
+    yield
+    @indent-=1
+    puts '  '*@indent+"</#{tag}>"
+  else
+    puts '/>'
+  end
 end
 
 def prt_cond(fld)
-  @indent+=1
   fld.each{|cond|
-    attr='form ="msg"'
+    attr={'form' => 'msg'}
     if /:/ =~ cond
-      attr+=' site="%s"' % $`
+      attr['site']=$`
       cond=$'
     end
     if /[!=\~]/ =~ cond
-      attr+=' var="%s"' % $`
-      tag={'~'=>'pattern','!'=>'not','='=>'equal'}[$&]
-      indent('<%s %s>%s</%s>' % [tag,attr,$',tag])
+      attr['var']=$`
+      indent(@tbl[$&],attr,$')
     end
   }
-  @indent-=1
 end
 
 def prt_exe(cmd)
-  indent('<exe site="%s" id="%s"/>' % cmd.split(':'))
+  site,id=cmd.split(':')
+  indent('exe',{'site'=>site,'id'=>id})
 end
 
 def prt_seq(seq)
@@ -38,7 +50,7 @@ def prt_seq(seq)
         next
       end
     end
-    indent('<mcr id="%s"/>' % id)
+    indent('mcr',{'id'=>id})
   }
 end
 
@@ -48,36 +60,31 @@ proj=ENV['PROJ']||'moircs'
 
 @mdb=JSON.load(gets(nil))
 @indent=0
-indent('<?xml version="1.0" encoding="utf-8"?>')
-indent('<mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">')
-@indent+=1
-indent("<macro id=\"#{proj}\" version=\"1\" label=\"#{proj.upcase} Macro\" port=\"55555\">")
-@indent+=1
-@mdb.each{|id,db|
-  item='<item id="'+id+'"'
-  item << ' title="%s"' % db['title'] if db['title']  
-  indent(item+'>')
-  @indent+=1
-  db.each{|key,data|
-    case key
-    when 'goal'
-      indent("<goal>")
-      prt_cond(data)
-      indent("</goal>")
-    when 'check'
-      indent("<check>")
-      prt_cond(data)
-      indent("</check>")
-    when 'exe'
-      prt_exe(data.first)
-    when 'seq'
-      prt_seq(data)
-    end
+@tbl={'~'=>'pattern','!'=>'not','='=>'equal'}
+puts '<?xml version="1.0" encoding="utf-8"?>'
+indent('mdb','xmlns'=>'http://ciax.sum.naoj.org/ciax-xml/mdb'){
+  indent('macro',{'id'=>proj,'version'=>'1','label'=>"#{proj.upcase} Macro",'port'=>'55555'}){
+    @mdb.each{|id,db|
+      attr={'id'=>id}
+      attr['title']=db['title'] if db['title']
+      indent('item',attr){
+        db.each{|key,data|
+          case key
+          when 'goal'
+            indent("goal"){
+              prt_cond(data)
+            }
+          when 'check'
+            indent("check"){
+              prt_cond(data)
+            }
+          when 'exe'
+            prt_exe(data.first)
+          when 'seq'
+            prt_seq(data)
+          end
+        }
+      }
+    }
   }
-  @indent-=1
-  indent("</item>")
 }
-@indent-=1
-indent('</macro>')
-@indent-=1
-indent('</mdb>')

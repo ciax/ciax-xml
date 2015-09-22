@@ -19,7 +19,7 @@ ARGV.each{|site|
           con=(grp[id]||={})
           case type
           when 'mcr','cmd'
-            con['title']=goal
+            con['label']=goal
             con['seq']=seq.split(" ") if seq and !seq.empty?
           else
             con['goal']=goal.split("&") if goal and !goal.empty?
@@ -29,11 +29,11 @@ ARGV.each{|site|
           con=(grp["#{site}_#{id}"]||={})
           case type
           when 'act','cmd'
-            con['title']=goal
-            con['exe']=["#{site}:#{id}"]
+            con['label']=goal
+            con['exec']=["#{site}:#{id}"]
           else
-            con['goal']=goal.split("&") if goal and !goal.empty?
-            con['check']=check.split("&") if check and !check.empty?
+            con['goal']=goal.split("&").map{|s| "#{site}:#{s}"} if goal and !goal.empty?
+            con['check']=check.split("&").map{|s| "#{site}:#{s}"}  if check and !check.empty?
           end
         end
       }

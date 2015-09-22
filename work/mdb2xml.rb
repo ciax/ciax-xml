@@ -36,21 +36,21 @@ def prt_cond(fld)
 end
 
 def prt_exe(cmd)
-  site,id=cmd.split(':')
-  indent('exe',{'site'=>site,'id'=>id})
+  site,name=cmd.split(':')
+  indent('exec',{'site'=>site,'name'=>name})
 end
 
 def prt_seq(seq)
   seq.each{|cmd|
-    site,id=cmd.split(':')
+    site,name=cmd.split(':')
     if site != 'mcr'
-      id="#{site}_#{id}"
-      if !@mdb.key?(id)
+      name="#{site}_#{name}"
+      if !@mdb.key?(name)
         prt_exe(cmd)
         next
       end
     end
-    indent('mcr',{'id'=>id})
+    indent('mcr',{'name'=>name})
   }
 end
 
@@ -64,25 +64,29 @@ proj=ENV['PROJ']||'moircs'
 puts '<?xml version="1.0" encoding="utf-8"?>'
 indent('mdb','xmlns'=>'http://ciax.sum.naoj.org/ciax-xml/mdb'){
   indent('macro',{'id'=>proj,'version'=>'1','label'=>"#{proj.upcase} Macro",'port'=>'55555'}){
-    @mdb.each{|id,db|
-      attr={'id'=>id}
-      attr['title']=db['title'] if db['title']
-      indent('item',attr){
-        db.each{|key,data|
-          case key
-          when 'goal'
-            indent("goal"){
-              prt_cond(data)
+    @mdb.each{|grp,mem|
+      indent('group',{'id'=>grp}){
+        mem.each{|id,db|
+          attr={'id'=>id}
+          attr['label']=db['label'] if db['label']
+          indent('item',attr){
+            db.each{|key,data|
+              case key
+              when 'goal'
+                indent("goal"){
+                  prt_cond(data)
+                }
+              when 'check'
+                indent("check"){
+                  prt_cond(data)
+                }
+              when 'exec'
+                prt_exe(data.first)
+              when 'seq'
+                prt_seq(data)
+              end
             }
-          when 'check'
-            indent("check"){
-              prt_cond(data)
-            }
-          when 'exe'
-            prt_exe(data.first)
-          when 'seq'
-            prt_seq(data)
-          end
+          }
         }
       }
     }

@@ -6,15 +6,17 @@ abort "Usage: csv2mdb [sites]" if ARGV.size < 1
 
 mdb={}
 ARGV.each{|site|
+  proj='-'+(ENV['PROJ']||'moircs') if site == 'mcr'
+  grp={}
   ['idb','cdb'].each{|db|
-    open(ENV['HOME']+"/config/#{db}_#{site}.txt"){|f|
+    open(ENV['HOME']+"/config/#{db}_#{site}#{proj}.txt"){|f|
       f.readlines.each{|line|
         next if /^[a-zA-Z0-9]/ !~ line
         id,goal,check,type,seq=line.chomp.split(',')
         next if type == 'cap'
         case site
         when /mcr/
-          con=(mdb[id]||={})
+          con=(grp[id]||={})
           case type
           when 'mcr','cmd'
             con['title']=goal
@@ -22,9 +24,9 @@ ARGV.each{|site|
           else
             con['goal']=goal.split("&") if goal and !goal.empty?
             con['check']=check.split("&") if check and !check.empty?
-          end            
+          end
         else
-          con=(mdb["#{site}_#{id}"]||={})
+          con=(grp["#{site}_#{id}"]||={})
           case type
           when 'act','cmd'
             con['title']=goal
@@ -37,7 +39,9 @@ ARGV.each{|site|
       }
     }
   }
+  mdb["grp_#{site}"]=grp.select{|k,v|
+    ['seq','goal','check'].any?{|f| v.key?(f)}
+  }
+
 }
-print JSON.dump mdb.select{|k,v|
-  ['seq','goal','check'].any?{|f| v.key?(f)}
-}
+print JSON.dump mdb

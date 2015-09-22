@@ -101,7 +101,13 @@ module CIAX
             cmp=cond['cmp']=h['cmp']
             cri=cond['cri']=h['val']
             form=cond['form']=h['form']
-            real=(stat[form]||{})[var]||stat.get(var)
+            case form
+            when 'class','msg'
+              warning("No key value [#{var}] in Status[#{form}]") unless stat[form].key?(var)
+              real=stat[form][var]
+            else
+              real=stat.get(var)
+            end
             verbose("site=#{site},var=#{var},form=#{form},cmp=#{cmp},cri=#{cri},real=#{real}")
             cond['real']=real
             cond['res']=match?(real,cri,cond['cmp'])

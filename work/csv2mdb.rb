@@ -4,6 +4,11 @@
 require 'json'
 abort "Usage: csv2mdb [sites]" if ARGV.size < 1
 
+def conds(line,site=nil)
+  site=site+':' if site
+  line.split("&").map{|s| "#{site}#{s}"}
+end
+
 mdb={}
 ARGV.each{|site|
   proj='-'+(ENV['PROJ']||'moircs') if site == 'mcr'
@@ -31,9 +36,14 @@ ARGV.each{|site|
           when 'act','cmd'
             con['label']=goal
             con['exec']=["#{site}:#{id}"]
+            if /\// =~ seq
+              rtry,cri=$'.split(':')
+              wait=con['wait']={'retry'=> rtry}
+              wait['until']=conds(cri,site) if cri and !cri.empty?
+            end
           else
-            con['goal']=goal.split("&").map{|s| "#{site}:#{s}"} if goal and !goal.empty?
-            con['check']=check.split("&").map{|s| "#{site}:#{s}"}  if check and !check.empty?
+            con['goal']=conds(goal,site) if goal and !goal.empty?
+            con['check']=conds(check,site) if check and !check.empty?
           end
         end
       }

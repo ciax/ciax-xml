@@ -55,8 +55,6 @@ module CIAX
             when 'mcr'
               args=attr['args']=getcmd(e1)
               cmd=args.first
-              idx.key?(cmd) || cfg_err("No such CMD [#{cmd}]")
-              attr['label']=idx[cmd]['label']
               attr.delete('name')
               body << attr
             when 'select'

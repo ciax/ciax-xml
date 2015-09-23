@@ -2,7 +2,11 @@
 # IDB,CDB CSV(CIAX-v1) to MDB
 #alias c2m
 require 'json'
-abort "Usage: csv2mdb [sites]" if ARGV.size < 1
+abort "Usage: csv2mdb -m [sites]" if ARGV.size < 1
+if ARGV[0] == '-m'
+  getmcr=true
+  ARGV.shift
+end
 
 def add_site(line,site)
   line.split('&').map{|s|
@@ -10,9 +14,32 @@ def add_site(line,site)
   }
 end
 
-def spl(line,del)
+def spl_cond(line)
+  line.split('&').map{|s|
+    skip=nil
+    site,cond=s.split(':').each{|e|
+      if /^!/ =~ e
+        skip='true'
+        var=$'
+      else
+        var=e
+      end
+      var
+    }
+    abort "NO operator in #{s}" unless /[~!=^]/ =~ cond
+    ope={'~'=>'match','!'=>'ne','='=>'eq','^'=>'unmatch'}[$&]
+    [ope,site,$`,$',skip]
+  }
+end
+
+def spl_cmd(line,del=' ')
   line.split(del).map{|s|
-    s.split(':')
+    ary=s.split(':')
+    if /^!/ =~ ary[0]
+      ary[0]=$'
+      ary << true
+    end
+    ary
   }
 end
 
@@ -52,7 +79,7 @@ ARGV.each{|site|
           wait['sleep']=rtry
         end
         if post
-          wait['post']=spl(post,'&')
+          wait['post']=spl_cmd(post,'&')
         end
       end
     end
@@ -64,20 +91,22 @@ ARGV.each{|site|
 }
 
 # Convert mdb
-proj='-'+(ENV['PROJ']||'moircs')
-grp=mdb["grp_mcr"]={}
-get_csv("idb_mcr#{proj}"){|id,goal,check|
-  con=grp[id]={}
-  con['goal']=spl(goal,"&") if goal and !goal.empty?
-  con['check']=spl(check,"&") if check and !check.empty?
-}
-get_csv("cdb_mcr#{proj}"){|id,label,inv,type,seq|
-  next if type == 'cap'
-  con=(grp[id]||={})
-  con['label']=label.gsub(/&/,'and')
-  con['seq']=spl(seq," ").map{|ary|
-    id=ary.join('_')
-    index.key?(id) ? ['mcr',id] : ary
-  } if seq and !seq.empty?
-}
+if getmcr
+  proj='-'+(ENV['PROJ']||'moircs')
+  grp=mdb["grp_mcr"]={}
+  get_csv("idb_mcr#{proj}"){|id,goal,check|
+    con=grp[id]={}
+    con['goal']=spl_cond(goal) if goal and !goal.empty?
+    con['check']=spl_cond(check) if check and !check.empty?
+  }
+  get_csv("cdb_mcr#{proj}"){|id,label,inv,type,seq|
+    next if type == 'cap'
+    con=(grp[id]||={})
+    con['label']=label.gsub(/&/,'and')
+    con['seq']=spl_cmd(seq).map{|ary|
+      id=ary.join('_')
+      index.key?(id) ? ['mcr',id] : ary
+    } if seq and !seq.empty?
+  }
+end
 print JSON.dump mdb

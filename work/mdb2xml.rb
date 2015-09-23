@@ -28,10 +28,21 @@ def enclose(tag,attr={})
   puts '  '*@indent+"</#{tag}>"
 end
 
+def mkattr(vals,*tags)
+  attr={}
+  vals.each{|val|
+    attr[tags.shift]=val
+  }
+  attr
+end
+
 def prt_cond(fld)
   fld.each{|ary|
     attr={'form' => 'msg'}
+    mkattr(ary,'site','var','
+
     attr['site']=ary[0]
+    attr['skip']='true' if ary[2]
     cond=ary[1]
     if /[!=\~]/ =~ cond
       attr['var']=$`
@@ -41,7 +52,7 @@ def prt_cond(fld)
 end
 
 def prt_exe(ary)
-  indent('exec',{'site'=>ary[0],'name'=>ary[1]})
+  indent('exec',mkattr(ary,'site','name','skip'))
 end
 
 def prt_seq(seq)

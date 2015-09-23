@@ -38,7 +38,7 @@ ARGV.each{|site|
   get_csv("cdb_#{site}"){|id,label,inv,type,cmd|
     next if type == 'cap'
     con=(grp["#{site}_#{id}"]||={})
-    con['label']=label
+    con['label']=label.gsub(/&/,'and')
     con['exec']=[[site,id]]
     if cmd
       pre,mid,post=cmd.split('/')
@@ -65,7 +65,7 @@ ARGV.each{|site|
 
 # Convert mdb
 proj='-'+(ENV['PROJ']||'moircs')
-grp={}
+grp=mdb["grp_mcr"]={}
 get_csv("idb_mcr#{proj}"){|id,goal,check|
   con=grp[id]={}
   con['goal']=spl(goal,"&") if goal and !goal.empty?
@@ -74,13 +74,10 @@ get_csv("idb_mcr#{proj}"){|id,goal,check|
 get_csv("cdb_mcr#{proj}"){|id,label,inv,type,seq|
   next if type == 'cap'
   con=(grp[id]||={})
-  con['label']=label
+  con['label']=label.gsub(/&/,'and')
   con['seq']=spl(seq," ").map{|ary|
     id=ary.join('_')
     index.key?(id) ? ['mcr',id] : ary
   } if seq and !seq.empty?
-}
-mdb["grp_mcr"]=grp.select!{|k,v|
-  ['seq','goal','check'].any?{|f| v.key?(f)}
 }
 print JSON.dump mdb

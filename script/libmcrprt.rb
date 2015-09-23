@@ -37,6 +37,7 @@ module CIAX
           mary[0] << ' -> '+Msg.color(cap,color)
           if c=self['conditions']
             c.each{|h|
+p h
               res= h['res'] ? body("o",2) : body("x",1)
               case h['cmp']
               when "equal"
@@ -46,7 +47,7 @@ module CIAX
               when "pattern"
                 ope="=~"
               end
-              line=res+" #{h['site']}:#{h['var']} #{ope} #{h['cri']}"
+              line=res+" #{h['site']}:#{h['var']}(#{h['form']}) #{ope} #{h['cri']}"
               line+=" (#{h['real']})" if !h['res'] || ope != "="
               mary << line
             }

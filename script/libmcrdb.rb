@@ -88,7 +88,9 @@ module CIAX
       def get_option(e1)
         options={}
         e1.each{|e2|
-          options[e2['value']||'*']=getcmd(e2)
+          e2.each{|e3|
+            options[e2['val']||'*']=getcmd(e3)
+          }
         }
         options
       end

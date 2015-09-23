@@ -4,14 +4,14 @@
     <group id="gmain" caption="Macro Commands" column="2">
       <item id="l-s" label="LoadMask(WAIT~STOCK)">
         <goal label="On STOCK?" join="all">
-          <not site="mma" var="pos">N/A</not>
-          <equal site="mma" var="abs">WAIT</equal>
-          <not site="mma" var="pos">STOCK</not>
+          <not site="mma" var="pos" form="msg">N/A</not>
+          <equal site="mma" var="abs" form="msg">WAIT</equal>
+          <not site="mma" var="pos" form="msg">STOCK</not>
         </goal>
         <check label="On WAIT?">
-          <equal site="mfp" var="gv">OPEN</equal>
-          <equal site="map" var="ch1">OK</equal>
-          <pattern site="mmc" var="cvs">S</pattern>
+          <equal site="mfp" var="gv" form="msg">OPEN</equal>
+          <equal site="map" var="ch1" form="msg">OK</equal>
+          <pattern site="mmc" var="cvs" form="msg">S</pattern>
         </check>
         <mcr async="false" name="l-w">
           <argv>dsi</argv>
@@ -19,14 +19,14 @@
       </item>
       <item id="start" label="StartMask(INIT~STOCK)">
         <goal label="On STOCK?" join="all">
-          <not site="mma" var="pos">N/A</not>
-          <equal site="mma" var="abs">WAIT</equal>
-          <not site="mma" var="pos">STOCK</not>
+          <not site="mma" var="pos" form="msg">N/A</not>
+          <equal site="mma" var="abs" form="msg">WAIT</equal>
+          <not site="mma" var="pos" form="msg">STOCK</not>
         </goal>
         <check label="On WAIT?">
-          <equal site="mfp" var="gv">OPEN</equal>
-          <equal site="map" var="ch1">OK</equal>
-          <pattern site="mmc" var="cvs">S</pattern>
+          <equal site="mfp" var="gv" form="msg">OPEN</equal>
+          <equal site="map" var="ch1" form="msg">OK</equal>
+          <pattern site="mmc" var="cvs" form="msg">S</pattern>
         </check>
         <mcr async="false" name="l-w">
           <argv>dsi</argv>

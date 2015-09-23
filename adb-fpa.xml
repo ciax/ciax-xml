@@ -10,7 +10,10 @@
           <frmcmd name="setr1" />
         </item>
         <item id="set6v" label="Set Range +-6V">
-          <frmcmd name="setr5" />
+          <frmcmd name="setr6" />
+        </item>
+        <item id="set15v" label="Set Range +-15V">
+          <frmcmd name="setr15" />
         </item>
       </group>
     </command>

@@ -105,8 +105,10 @@ module CIAX
             when 'class','msg'
               warning("No key value [#{var}] in Status[#{form}]") unless stat[form].key?(var)
               real=stat[form][var]
-            else
+            when 'data'
               real=stat.get(var)
+            else
+              warning("No form specified")
             end
             verbose("site=#{site},var=#{var},form=#{form},cmp=#{cmp},cri=#{cri},real=#{real}")
             cond['real']=real

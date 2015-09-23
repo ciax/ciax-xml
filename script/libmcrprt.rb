@@ -37,7 +37,6 @@ module CIAX
           mary[0] << ' -> '+Msg.color(cap,color)
           if c=self['conditions']
             c.each{|h|
-p h
               res= h['res'] ? body("o",2) : body("x",1)
               case h['cmp']
               when "equal"

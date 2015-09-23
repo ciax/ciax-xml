@@ -38,16 +38,11 @@ end
 
 def prt_cond(fld)
   fld.each{|ary|
-    attr={'form' => 'msg'}
-    mkattr(ary,'site','var','
-
-    attr['site']=ary[0]
-    attr['skip']='true' if ary[2]
-    cond=ary[1]
-    if /[!=\~]/ =~ cond
-      attr['var']=$`
-      indent(@tbl[$&],attr,$')
-    end
+    ope=ary.shift
+    val=ary.shift
+    attr=mkattr(ary,'site','var','skip')
+    attr['form']='msg'
+    indent(ope,attr,val)
   }
 end
 
@@ -76,7 +71,6 @@ proj=ENV['PROJ']||'moircs'
 
 @mdb=JSON.load(gets(nil))
 @indent=0
-@tbl={'~'=>'pattern','!'=>'not','='=>'equal'}
 puts '<?xml version="1.0" encoding="utf-8"?>'
 enclose('mdb','xmlns'=>'http://ciax.sum.naoj.org/ciax-xml/mdb'){
   enclose('macro',{'id'=>proj,'version'=>'1','label'=>"#{proj.upcase} Macro",'port'=>'55555'}){

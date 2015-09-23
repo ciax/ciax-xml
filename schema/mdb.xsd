@@ -82,6 +82,7 @@
           </xsd:simpleType>
         </xsd:attribute>
         <xsd:attribute name="label" type="xsd:token" />
+        <xsd:attribute name="skip" type="xsd:boolean" />
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
@@ -115,6 +116,7 @@
       </xsd:sequence>
       <xsd:attributeGroup ref="mdb:attr_stat" />
       <xsd:attribute name="retry" type="xsd:int" use="optional" />
+      <xsd:attribute name="sleep" type="xsd:int" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="equal" type="mdb:condition"/>

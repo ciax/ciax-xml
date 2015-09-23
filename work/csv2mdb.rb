@@ -8,27 +8,27 @@ if ARGV[0] == '-m'
   ARGV.shift
 end
 
-def add_site(line,site)
-  line.split('&').map{|s|
-    [site,s]
+def get_site(elem)
+  @skip=nil
+  elem.split(':').map{|e|
+    if /^!/ =~ e
+      @skip='true'
+      var=$'
+    else
+      var=e
+    end
+    var
   }
 end
 
 def spl_cond(line)
   line.split('&').map{|s|
-    skip=nil
-    site,cond=s.split(':').each{|e|
-      if /^!/ =~ e
-        skip='true'
-        var=$'
-      else
-        var=e
-      end
-      var
-    }
-    abort "NO operator in #{s}" unless /[~!=^]/ =~ cond
+    site,cond=yield s
+    abort "NO operator in #{cond}" unless /[~!=^]/ =~ cond
     ope={'~'=>'match','!'=>'ne','='=>'eq','^'=>'unmatch'}[$&]
-    [ope,site,$`,$',skip]
+    ary=[ope,site,$`,$']
+    ary << @skip if @skip
+    ary
   }
 end
 
@@ -59,8 +59,8 @@ ARGV.each{|site|
   grp={}
   get_csv("idb_#{site}"){|id,goal,check|
     con=grp["#{site}_#{id}"]={}
-    con['goal']=add_site(goal,site) if goal and !goal.empty?
-    con['check']=add_site(check,site) if check and !check.empty?
+    con['goal']=spl_cond(goal){|cond| [site,cond]} if goal and !goal.empty?
+    con['check']=spl_cond(check){|cond| [site,cond]} if check and !check.empty?
   }
   get_csv("cdb_#{site}"){|id,label,inv,type,cmd|
     next if type == 'cap'
@@ -74,7 +74,7 @@ ARGV.each{|site|
         wait=con['wait']={}
         if cri
           wait['retry']=rtry
-          wait['until']=add_site(cri,site)
+          wait['until']=spl_cond(cri){|cond| [site,cond]}
         else
           wait['sleep']=rtry
         end
@@ -96,8 +96,8 @@ if getmcr
   grp=mdb["grp_mcr"]={}
   get_csv("idb_mcr#{proj}"){|id,goal,check|
     con=grp[id]={}
-    con['goal']=spl_cond(goal) if goal and !goal.empty?
-    con['check']=spl_cond(check) if check and !check.empty?
+    con['goal']=spl_cond(goal){|elem| get_site(elem)} if goal and !goal.empty?
+    con['check']=spl_cond(check){|elem| get_site(elem)} if check and !check.empty?
   }
   get_csv("cdb_mcr#{proj}"){|id,label,inv,type,seq|
     next if type == 'cap'

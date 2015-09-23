@@ -17,49 +17,55 @@ def spl(line,del)
 end
 
 mdb={}
+index={}
 ARGV.each{|site|
   proj='-'+(ENV['PROJ']||'moircs') if site == 'mcr'
   grp={}
-  ['idb','cdb'].each{|db|
-    open(ENV['HOME']+"/config/#{db}_#{site}#{proj}.txt"){|f|
-      f.readlines.each{|line|
-        next if /^[a-zA-Z0-9]/ !~ line
-        id,goal,check,type,seq=line.chomp.split(',')
-        next if type == 'cap'
-        case site
-        when /mcr/
-          con=(grp[id]||={})
-          case type
-          when 'mcr','cmd'
-            con['label']=goal
-            con['seq']=spl(seq," ") if seq and !seq.empty?
-          else
-            con['goal']=spl(goal,"&") if goal and !goal.empty?
-            con['check']=spl(check,"&") if check and !check.empty?
-          end
-        else
-          con=(grp["#{site}_#{id}"]||={})
-          case type
-          when 'act','cmd'
-            con['label']=goal
-            con['exec']=[[site,id]]
-            if seq
-              pre,mid,post=seq.split('/')
-              if mid
-                rtry,cri,*upd=mid.split(':')
-                wait=con['wait']={'retry'=> rtry}
-                wait['until']=add_site(cri,site) if cri and !cri.empty?
-                if post
-                  wait['post']=spl(post,'&')
-                end
-              end
+  open(ENV['HOME']+"/config/idb_#{site}#{proj}.txt"){|f|
+    f.readlines.each{|line|
+      next if /^[a-zA-Z0-9]/ !~ line
+      id,goal,check=line.chomp.split(',')
+      case site
+      when /mcr/
+        con=grp[id]={}
+        con['goal']=spl(goal,"&") if goal and !goal.empty?
+        con['check']=spl(check,"&") if check and !check.empty?
+      else
+        con=grp["#{site}_#{id}"]={}
+        con['goal']=add_site(goal,site) if goal and !goal.empty?
+        con['check']=add_site(check,site) if check and !check.empty?
+      end
+    }
+  }
+  open(ENV['HOME']+"/config/cdb_#{site}#{proj}.txt"){|f|
+    f.readlines.each{|line|
+      next if /^[a-zA-Z0-9]/ !~ line
+      id,label,inv,type,seq=line.chomp.split(',')
+      next if type == 'cap'
+      case site
+      when /mcr/
+        con=(grp[id]||={})
+        con['label']=label
+        con['seq']=spl(seq," ").map{|ary|
+          id=ary.join('_')
+          index.key?(id) ? ['mcr',id] : ary
+        } if seq and !seq.empty?
+      else
+        con=(grp["#{site}_#{id}"]||={})
+        con['label']=label
+        con['exec']=[[site,id]]
+        if seq
+          pre,mid,post=seq.split('/')
+          if mid
+            rtry,cri,*upd=mid.split(':')
+            wait=con['wait']={'retry'=> rtry}
+            wait['until']=add_site(cri,site) if cri and !cri.empty?
+            if post
+              wait['post']=spl(post,'&')
             end
-          else
-            con['goal']=add_site(goal,site) if goal and !goal.empty?
-            con['check']=add_site(check,site) if check and !check.empty?
           end
         end
-      }
+      end
     }
   }
   mdb["grp_#{site}"]=grp.select{|k,v|

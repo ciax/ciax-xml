@@ -90,9 +90,13 @@ enclose('mdb','xmlns'=>'http://ciax.sum.naoj.org/ciax-xml/mdb'){
               when 'seq'
                 prt_seq(ary)
               when 'wait'
-                enclose("wait",{'retry'=>ary['retry']}){
-                  prt_cond(ary['until'])
-                }
+                if ary['sleep']
+                  indent("wait",{'sleep'=>ary['sleep']})
+                else
+                  enclose("wait",{'retry'=>ary['retry']}){
+                    prt_cond(ary['until'])
+                  }
+                end
               end
             }
           }

@@ -4,9 +4,16 @@
 require 'json'
 abort "Usage: csv2mdb [sites]" if ARGV.size < 1
 
-def conds(line,site=nil)
-  site=site+':' if site
-  line.split("&").map{|s| "#{site}#{s}"}
+def add_site(line,site)
+  line.split('&').map{|s|
+    [site,s]
+  }
+end
+
+def spl(line,del)
+  line.split(del).map{|s|
+    s.split(':')
+  }
 end
 
 mdb={}
@@ -25,33 +32,38 @@ ARGV.each{|site|
           case type
           when 'mcr','cmd'
             con['label']=goal
-            con['seq']=seq.split(" ") if seq and !seq.empty?
+            con['seq']=spl(seq," ") if seq and !seq.empty?
           else
-            con['goal']=goal.split("&") if goal and !goal.empty?
-            con['check']=check.split("&") if check and !check.empty?
+            con['goal']=spl(goal,"&") if goal and !goal.empty?
+            con['check']=spl(check,"&") if check and !check.empty?
           end
         else
           con=(grp["#{site}_#{id}"]||={})
           case type
           when 'act','cmd'
             con['label']=goal
-            con['exec']=["#{site}:#{id}"]
-            if /\// =~ seq
-              rtry,cri=$'.split(':')
-              wait=con['wait']={'retry'=> rtry}
-              wait['until']=conds(cri,site) if cri and !cri.empty?
+            con['exec']=[[site,id]]
+            if seq
+              pre,mid,post=seq.split('/')
+              if mid
+                rtry,cri,*upd=mid.split(':')
+                wait=con['wait']={'retry'=> rtry}
+                wait['until']=add_site(cri,site) if cri and !cri.empty?
+                if post
+                  wait['post']=spl(post,'&')
+                end
+              end
             end
           else
-            con['goal']=conds(goal,site) if goal and !goal.empty?
-            con['check']=conds(check,site) if check and !check.empty?
+            con['goal']=add_site(goal,site) if goal and !goal.empty?
+            con['check']=add_site(check,site) if check and !check.empty?
           end
         end
       }
     }
   }
   mdb["grp_#{site}"]=grp.select{|k,v|
-    ['seq','goal','check'].any?{|f| v.key?(f)}
+    ['wait','seq','goal','check'].any?{|f| v.key?(f)}
   }
-
 }
 print JSON.dump mdb

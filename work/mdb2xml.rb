@@ -3,31 +3,36 @@
 #alias m2x
 require 'json'
 
-def indent(tag,attr={},text=nil)
+def mktag(tag,attr)
   print '  '*@indent+'<'+tag
   attr.each{|k,v|
     print ' '+k+'="'+v+'"'
   }
+end
+
+def indent(tag,attr={},text=nil)
+  mktag(tag,attr)
   if text
     puts ">#{text}</#{tag}>"
-  elsif defined?(yield)
-    puts '>'
-    @indent+=1
-    yield
-    @indent-=1
-    puts '  '*@indent+"</#{tag}>"
   else
     puts '/>'
   end
 end
 
+def enclose(tag,attr={})
+  mktag(tag,attr)
+  puts '>'
+  @indent+=1
+  yield
+  @indent-=1
+  puts '  '*@indent+"</#{tag}>"
+end
+
 def prt_cond(fld)
-  fld.each{|cond|
+  fld.each{|ary|
     attr={'form' => 'msg'}
-    if /:/ =~ cond
-      attr['site']=$`
-      cond=$'
-    end
+    attr['site']=ary[0]
+    cond=ary[1]
     if /[!=\~]/ =~ cond
       attr['var']=$`
       indent(@tbl[$&],attr,$')
@@ -35,20 +40,20 @@ def prt_cond(fld)
   }
 end
 
-def prt_exe(cmd)
-  site,name=cmd.split(':')
-  indent('exec',{'site'=>site,'name'=>name})
+def prt_exe(ary)
+  indent('exec',{'site'=>ary[0],'name'=>ary[1]})
 end
 
 def prt_seq(seq)
-  seq.each{|cmd|
-    site,name=cmd.split(':')
-    if site != 'mcr'
-      name="#{site}_#{name}"
+  seq.each{|ary|
+    if ary[0] != 'mcr'
+      name="#{ary[0]}_#{ary[1]}"
       if !@mdb.key?(name)
-        prt_exe(cmd)
+        prt_exe(ary)
         next
       end
+    else
+      name=ary[1]
     end
     indent('mcr',{'name'=>name})
   }
@@ -62,28 +67,32 @@ proj=ENV['PROJ']||'moircs'
 @indent=0
 @tbl={'~'=>'pattern','!'=>'not','='=>'equal'}
 puts '<?xml version="1.0" encoding="utf-8"?>'
-indent('mdb','xmlns'=>'http://ciax.sum.naoj.org/ciax-xml/mdb'){
-  indent('macro',{'id'=>proj,'version'=>'1','label'=>"#{proj.upcase} Macro",'port'=>'55555'}){
+enclose('mdb','xmlns'=>'http://ciax.sum.naoj.org/ciax-xml/mdb'){
+  enclose('macro',{'id'=>proj,'version'=>'1','label'=>"#{proj.upcase} Macro",'port'=>'55555'}){
     @mdb.each{|grp,mem|
-      indent('group',{'id'=>grp}){
+      enclose('group',{'id'=>grp}){
         mem.each{|id,db|
           attr={'id'=>id}
           attr['label']=db['label'] if db['label']
-          indent('item',attr){
-            db.each{|key,data|
+          enclose('item',attr){
+            db.each{|key,ary|
               case key
               when 'goal'
-                indent("goal"){
-                  prt_cond(data)
+                enclose("goal"){
+                  prt_cond(ary)
                 }
               when 'check'
-                indent("check"){
-                  prt_cond(data)
+                enclose("check"){
+                  prt_cond(ary)
                 }
               when 'exec'
-                prt_exe(data.first)
+                prt_exe(ary.first)
               when 'seq'
-                prt_seq(data)
+                prt_seq(ary)
+              when 'wait'
+                enclose("wait",{'retry'=>ary['retry']}){
+                  prt_cond(ary['until'])
+                }
               end
             }
           }

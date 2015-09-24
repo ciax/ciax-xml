@@ -311,12 +311,6 @@
           <index ref="p4" symbol="t1" />
           <index ref="p5" symbol="t2" />
           <index ref="p6" symbol="t3" />
-          <index ref="mp1" symbol="t1" />
-          <index ref="mp2" symbol="t2" />
-          <index ref="mp3" symbol="t3" />
-          <index ref="mp4" symbol="t1" />
-          <index ref="mp5" symbol="t2" />
-          <index ref="mp6" symbol="t3" />
         </status>
       </instance>
     </group>

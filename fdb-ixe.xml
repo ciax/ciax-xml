@@ -159,8 +159,8 @@
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <!--Acknowlege message: STX ACK ETX CR LF (Manual Section 12.5)-->
-      <field decode="unsigned" label="Prefix" length="1">2</field>
-      <field decode="unsigned" label="ResponseCode" length="1">6</field>
+      <field decode="integer" label="Prefix" length="1">2</field>
+      <field decode="integer" label="ResponseCode" length="1">6</field>
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">

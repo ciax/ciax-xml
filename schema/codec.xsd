@@ -5,8 +5,13 @@
       <xsd:enumeration value="binstr" />
       <xsd:enumeration value="decstr" />
       <xsd:enumeration value="hexstr" />
-      <xsd:enumeration value="unsigned" />
-      <xsd:enumeration value="signed" />
+      <xsd:enumeration value="integer" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="sign">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none" />
+      <xsd:enumeration value="msb" />
     </xsd:restriction>
   </xsd:simpleType>
   <xsd:simpleType name="ccmethod">

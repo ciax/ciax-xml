@@ -128,33 +128,33 @@
       </item>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field decode="unsigned" label="SubHeader: Prefix" length="2">212</field>
+      <field decode="integer" label="SubHeader: Prefix" length="2">212</field>
       <field label="SubHeader: Serial Number">XX</field>
-      <field decode="unsigned" label="SubHeader: Fixed Number" length="2">0</field>
-      <field decode="unsigned" label="Q Header: Network Number" length="1">0</field>
-      <field decode="unsigned" label="Q Header: PC Number" length="1">255</field>
-      <field decode="unsigned" label="Q Header: Request Unit I/O Number" length="2">1023</field>
-      <field decode="unsigned" label="Q Header: Request Unit Station Number" length="1">0</field>
-      <field assign="cc" decode="unsigned" label="Response Data Length" length="2" />
+      <field decode="integer" label="SubHeader: Fixed Number" length="2">0</field>
+      <field decode="integer" label="Q Header: Network Number" length="1">0</field>
+      <field decode="integer" label="Q Header: PC Number" length="1">255</field>
+      <field decode="integer" label="Q Header: Request Unit I/O Number" length="2">1023</field>
+      <field decode="integer" label="Q Header: Request Unit Station Number" length="1">0</field>
+      <field assign="cc" decode="integer" label="Response Data Length" length="2" />
       <ccrange>
-        <field assign="ecode" decode="unsigned" label="Error Code" length="2">0</field>
+        <field assign="ecode" decode="integer" label="Error Code" length="2">0</field>
         <body/>
       </ccrange>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat" label="get status">
-        <array assign="x" decode="signed" label="Status Flags" length="2">
+        <array assign="x" decode="integer" sign="msb" label="Status Flags" length="2">
           <index size="52" />
         </array>
       </item>
       <item id="getcmd" label="get cmd status">
-        <array assign="c" decode="signed" label="Command Flags" length="2">
+        <array assign="c" decode="integer" sign="msb" label="Command Flags" length="2">
           <index size="5" />
         </array>
       </item>
       <item id="cmdrsp" label="command resp" />
       <item id="get_tbl">
-        <array assign="t" decode="unsigned" label="Jack Pulse Tables" length="2">
+        <array assign="t" decode="integer" label="Jack Pulse Tables" length="2">
           <!--Tag-->
           <index range="$1" size="6"/>
           <!--Jak-->

@@ -18,7 +18,7 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="reqstat">
-        <field decode="unsigned">6</field>
+        <field decode="integer">6</field>
       </item>
       <item id="getstat">
         <array assign="stat"  delimiter=",">

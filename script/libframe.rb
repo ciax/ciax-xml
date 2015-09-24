@@ -183,10 +183,11 @@ module CIAX
           ary=code.unpack("C*")
           ary.reverse! if @endian=='little'
           num=ary.inject(0){|r,i| r*256+i}
-          if cdc=='signed'
-            p= 256 ** code.size
-            num = num < p/2 ? num : num - p
-          end
+        end
+        case e['sign']
+        when 'msb'
+          p= 256 ** code.size
+          num = num < p/2 ? num : num - p
         end
         verbose("Decode:(#{cdc}) [#{code.inspect}] -> [#{num}]")
         num.to_s

@@ -91,19 +91,19 @@
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr"  terminator="\x03">
       <echo/>
-      <field length="1" decode="unsigned" label="ACK">6</field>
+      <field length="1" decode="integer" label="ACK">6</field>
       <field length="1" label="DST CH"/>
-      <field length="1" decode="unsigned" label="ENQ">5</field>
+      <field length="1" decode="integer" label="ENQ">5</field>
       <ccrange>
         <field label="SRC CH">@</field>
         <body/>
-        <field length="1" decode="unsigned" label="ETX">3</field>
+        <field length="1" decode="integer" label="ETX">3</field>
       </ccrange>
       <field assign="cc" decode="hexstr" length="2" label="CC"/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="ack" noaffix="true">
-        <field label="ACK" decode="unsigned" length="1">6</field>
+        <field label="ACK" decode="integer" length="1">6</field>
         <field label="Master CH">@</field>
       </item>
       <item id="getstat">

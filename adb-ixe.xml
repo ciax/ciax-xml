@@ -2,7 +2,7 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="ixe" id="ixe" label="MOIRCS Turret">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="g0" caption="Device">
+      <group id="g0" caption="Motion Commands">
         <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
           <repeat from="1" to="6">
@@ -12,36 +12,7 @@
             <frmcmd name="getp">
               <argv>$_</argv>
             </frmcmd>
-            <frmcmd name="getspd">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="getrmp">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="getofs">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="getispd">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="getmp">
-              <argv>$_</argv>
-            </frmcmd>
           </repeat>
-        </item>
-        <item id="chkmov" label="Update Moving Status [1-6]" hidden="true">
-          <par_num>1:6</par_num>
-          <frmcmd name="chkrun">
-            <argv>$1</argv>
-          </frmcmd>
-          <frmcmd name="getp">
-            <argv>$1</argv>
-          </frmcmd>
-        </item>
-        <item id="sysinit" label="System Initialize">
-          <frmcmd name="initrot" />
-          <frmcmd name="initunit" />
-          <frmcmd name="initfactor" />
         </item>
         <item id="posinit" label="Position Initialize">
           <repeat from="1" to="6">
@@ -49,30 +20,6 @@
               <argv>$_</argv>
             </frmcmd>
             <frmcmd name="chkrun">
-              <argv>$_</argv>
-            </frmcmd>
-          </repeat>
-        </item>
-        <item id="speed" label="Set Speed [25-800]">
-          <par_num>25:800</par_num>
-          <repeat from="1" to="6">
-            <frmcmd name="set">
-              <argv format="spd:%d">$_-1</argv>
-              <argv>$1</argv>
-            </frmcmd>
-            <frmcmd name="setspd">
-              <argv>$_</argv>
-            </frmcmd>
-          </repeat>
-        </item>
-        <item id="ramp" label="Set ramp [200-800]">
-          <par_num>200:800</par_num>
-          <repeat from="1" to="6">
-            <frmcmd name="set">
-              <argv format="rmp:%d">$_-1</argv>
-              <argv>$1</argv>
-            </frmcmd>
-            <frmcmd name="setrmp">
               <argv>$_</argv>
             </frmcmd>
           </repeat>
@@ -184,7 +131,66 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="updp" label="Update Pulse [1-6(Turret)]" hidden="true">
+      </group>
+      <group id='gcfg' caption="Configuration Commands">
+        <item id="speed" label="Set Speed [25-800]">
+          <par_num>25:800</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="spd:%d">$_-1</argv>
+              <argv>$1</argv>
+            </frmcmd>
+            <frmcmd name="setspd">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="ramp" label="Set ramp [200-800]">
+          <par_num>200:800</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="rmp:%d">$_-1</argv>
+              <argv>$1</argv>
+            </frmcmd>
+            <frmcmd name="setrmp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+      </group>
+      <group id='gsys' caption="System Commands">
+        <item id="sysinit" label="System Initialize">
+          <frmcmd name="initrot" />
+          <frmcmd name="initunit" />
+          <frmcmd name="initfactor" />
+        </item>
+        <item id="sysupd" label="Update System Status">
+          <frmcmd name="getstat" />
+          <repeat from="1" to="6">
+            <frmcmd name="chkrun">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getp">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getspd">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getrmp">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getofs">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getispd">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getmp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="updp" label="Update Pulse [1-6(Turret)]">
           <par_num>1:6</par_num>
           <frmcmd name="chkrun">
             <argv>$1</argv>
@@ -193,7 +199,7 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="stop" label="Stop Run [1-6(Turret)]" hidden="true">
+        <item id="stop" label="Stop Run [1-6(Turret)]">
           <par_num>1:6</par_num>
           <frmcmd name="stop">
             <argv>$1</argv>
@@ -291,7 +297,7 @@
       <event id="fin" label="Finish Run">
         <onchange var="stp"/>
         <pattern var="stp">EEEEEE</pattern>
-        <exec name="upd"/>
+        <exec name="sysupd"/>
       </event>
     </watch>
   </app>

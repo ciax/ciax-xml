@@ -9,12 +9,12 @@ module CIAX
     class Exe < Exe
       def initialize(id,cfg)
         super(id,cfg)
-        sub=@cfg[:sub_list].get(id).sub
-        @cobj.add_rem(sub.cobj.rem)
-        @mode=sub.mode
-        @cfg[:output]=View.new(sub.stat,sub.sv_stat)
-        @post_exe_procs.concat(sub.post_exe_procs)
-        @port=sub.port.to_i+1000
+        @sub=@cfg[:sub_list].get(id).sub
+        @cobj.add_rem(@sub.cobj.rem)
+        @mode=@sub.mode
+        @cfg[:output]=View.new(@sub.stat,@sub.sv_stat)
+        @post_exe_procs.concat(@sub.post_exe_procs)
+        @port=@sub.port.to_i+1000
         if $opt['e']
           @cfg[:output].ext_log
         end

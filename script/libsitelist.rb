@@ -30,11 +30,14 @@ module CIAX
       end
 
       def get(site)
-        unless @data.key?(site)
-          add(site)
+        if @data.key?(site)
+          cobj=super
+          @sub_list.get(cobj.sub.id) if @sub_list
+        else
+          cobj=add(site)
         end
         @current=site
-        super
+        cobj
       end
 
       def getstat(attr)

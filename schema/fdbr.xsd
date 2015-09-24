@@ -7,7 +7,8 @@
   <xsd:attributeGroup name="rsp_attr">
     <xsd:attribute name="label" type="xsd:token" />
     <xsd:attribute name="assign" type="xsd:NCName" />
-    <xsd:attribute name="decode" type="fdbr:codec"></xsd:attribute>
+    <xsd:attribute name="decode" type="fdbr:codec"/>
+    <xsd:attribute name="sign" type="fdbr:sign"/>
     <xsd:attribute name="length" type="xsd:int" />
     <xsd:attribute name="slice" type="fdbr:rerange" />
   </xsd:attributeGroup>

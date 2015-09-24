@@ -46,7 +46,7 @@
           <index size="8" />
         </array>
       </item>
-      <item id="default" />
+      <item id="default" noaffix="true"/>
     </response>
   </frame>
 </fdb>

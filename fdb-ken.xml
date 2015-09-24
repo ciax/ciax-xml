@@ -102,17 +102,17 @@
       <field assign="cc" decode="hexstr" length="2" label="CC"/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="ack" noaffix="true">
+      <item id="ack" noaffix="true">
         <field label="ACK" decode="unsigned" length="1">6</field>
         <field label="Master CH">@</field>
-      </response>
-      <response id="getstat">
+      </item>
+      <item id="getstat">
         <array assign="id" label="Value" delimiter=",">
           <index range="$1" size="3" />
           <index size="5" />
         </array>
-      </response>
-      <response id="getst0">
+      </item>
+      <item id="getst0">
         <field label="StatusCode">MS0,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
@@ -125,8 +125,8 @@
           <index range="$1" size="3" />
           <index size="4" />
         </array>
-      </response>
-      <response id="getst1">
+      </item>
+      <item id="getst1">
         <field label="StatusCode">MS1,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
@@ -138,8 +138,8 @@
           <!--CH-->
           <index range="0:$2*2-1" size="11" />
         </array>
-      </response>
-      <response id="getst1o">
+      </item>
+      <item id="getst1o">
         <field label="StatusCode">MS1,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
@@ -151,8 +151,8 @@
           <!--CH-->
           <index range="0:$2*2+2" size="11" />
         </array>
-      </response>
-      <response id="getst2">
+      </item>
+      <item id="getst2">
         <field label="StatusCode">MS2,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
@@ -194,8 +194,8 @@
           <index range="0:$2-1" size="4" />
           <index range="4" size="5" />
         </array>
-      </response>
-      <response id="getst2o">
+      </item>
+      <item id="getst2o">
         <field label="StatusCode">MS2,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
@@ -203,16 +203,16 @@
           <index range="$1" size="3" />
           <index range="0:4" size="5" />
         </array>
-      </response>
-      <response id="getst3">
+      </item>
+      <item id="getst3">
         <field label="StatusCode">MS3,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
         <array assign="ms3" label="Value" delimiter=",">
           <index range="$1" size="3" />
         </array>
-      </response>
-      <response id="getst4">
+      </item>
+      <item id="getst4">
         <field label="StatusCode">MS4,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
@@ -225,8 +225,8 @@
           <index size="4" />
           <index range="0" size="3" />
         </array>
-      </response>
-      <response id="getst5">
+      </item>
+      <item id="getst5">
         <field label="StatusCode">MS5,0</field>
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
@@ -234,8 +234,8 @@
           <index range="$1" size="3" />
           <index size="14" />
         </array>
-      </response>
-      <response id="default"  noaffix="true"/>
+      </item>
+      <item id="default"  noaffix="true"/>
     </response>
   </frame>
 </fdb>

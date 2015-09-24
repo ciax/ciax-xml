@@ -41,12 +41,12 @@
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="getstat">
+      <item id="getstat">
         <array assign="stat" decode="hexstr" label="Status" length="4">
           <index size="8" />
         </array>
-      </response>
-      <response id="default" />
+      </item>
+      <item id="default" />
     </response>
   </frame>
 </fdb>

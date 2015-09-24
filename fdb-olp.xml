@@ -17,9 +17,9 @@
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="getstat">
+      <item id="getstat">
         <field assign="pres" length="6" />
-      </response>
+      </item>
     </response>
   </frame>
 </fdb>

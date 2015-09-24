@@ -82,26 +82,26 @@
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="getstat">
+      <item id="getstat">
         <field assign="err" label="ErrorCode" />
-      </response>
-      <response id="bs">
+      </item>
+      <item id="bs">
         <field assign="bs" label="Moving" />
-      </response>
-      <response id="p">
+      </item>
+      <item id="p">
         <field assign="p" label="Pulse" />
-      </response>
-      <response id="spd">
+      </item>
+      <item id="spd">
         <field assign="spd" label="Speed" />
-      </response>
-      <response id="in">
+      </item>
+      <item id="in">
         <array assign="in" label="Input">
           <index range="$1-1" size="5" />
         </array>
-      </response>
-      <response id="default">
+      </item>
+      <item id="default">
         <field>&gt;</field>
-      </response>
+      </item>
     </response>
   </frame>
 </fdb>

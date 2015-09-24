@@ -36,22 +36,22 @@
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="getst">
+      <item id="getst">
         <array assign="st" label="Status">
           <index range="$1-1" size="6" />
         </array>
-      </response>
-      <response id="getp">
+      </item>
+      <item id="getp">
         <array assign="pos" label="Position" delimiter=",">
           <index range="$1-1" size="6" />
           <index size="2" />
         </array>
-      </response>
-      <response id="geta">
+      </item>
+      <item id="geta">
         <array assign="acc" label="Acceleration">
           <index range="$1-1" size="6" />
         </array>
-      </response>
+      </item>
     </response>
   </frame>
 </fdb>

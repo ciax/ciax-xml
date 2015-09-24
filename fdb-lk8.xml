@@ -28,17 +28,17 @@
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="getstat">
+      <item id="getstat">
         <array assign="ch" label="Value" delimiter=";">
           <index size="8" />
         </array>
-      </response>
-      <response id="htrstat">
+      </item>
+      <item id="htrstat">
         <field assign="htr" label="Heater Power" />
-      </response>
-      <response id="spstat">
+      </item>
+      <item id="spstat">
         <field assign="sp" label="SetPoint" />
-      </response>
+      </item>
     </response>
   </frame>
 </fdb>

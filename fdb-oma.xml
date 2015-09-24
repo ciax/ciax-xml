@@ -17,10 +17,10 @@
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="getstat">
-        <field label="Command Response">01CP=</field>
+      <item id="getstat">
+        <field label="Command Rseponse">01CP=</field>
         <field assign="stat" label="Status" length="6" />
-      </response>
+      </item>
     </response>
   </frame>
 </fdb>

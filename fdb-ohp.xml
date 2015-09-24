@@ -21,16 +21,16 @@
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="getstat">
+      <item id="getstat">
         <field label="Prefix">X01</field>
         <field assign="pres" length="5" />
-      </response>
-      <response id="setd">
+      </item>
+      <item id="setd">
         <field label="Command">W1F</field>
-      </response>
-      <response id="init">
+      </item>
+      <item id="init">
         <field label="Command">Z02</field>
-      </response>
+      </item>
     </response>
   </frame>
 </fdb>

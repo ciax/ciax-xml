@@ -108,7 +108,7 @@
       <body />
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="getstat">
+      <item id="getstat">
         <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>
         <field decode="unsigned" label="FINS Command:SRC" length="1">0x01</field>
         <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
@@ -116,8 +116,8 @@
         <array assign="w" decode="unsigned" label="Status" length="2">
           <index size="13" />
         </array>
-      </response>
-      <response id="getexe">
+      </item>
+      <item id="getexe">
         <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>
         <field decode="unsigned" label="FINS Command:SRC" length="1">0x01</field>
         <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
@@ -125,15 +125,15 @@
         <array assign="c" decode="unsigned" label="Status" length="2">
           <index size="4" />
         </array>
-      </response>
-      <response id="geterr">
+      </item>
+      <item id="geterr">
         <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>
         <field decode="unsigned" label="FINS Command:SRC" length="1">0x01</field>
         <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
         <field decode="unsigned" label="FINS Command:SRES" length="1">0x00</field>
         <field assign="err" decode="unsigned" label="FINS Command:Error Code" length="2"/>
-      </response>
-      <response id="getzlen">
+      </item>
+      <item id="getzlen">
         <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>
         <field decode="unsigned" label="FINS Command:SRC" length="1">0x01</field>
         <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
@@ -141,18 +141,18 @@
         <array assign="d" decode="signed" label="Status" length="2">
           <index size="10" />
         </array>
-      </response>
-      <response id="cmdrsp" label="command resp">
+      </item>
+      <item id="cmdrsp" label="command resp">
         <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>
         <field decode="unsigned" label="FINS Command:SRC" length="1">0x02</field>
         <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
         <field decode="unsigned" label="FINS Command:SRES" length="1">0x00</field>
-      </response>
-      <response id="dmy" label="for csv daemon">
+      </item>
+      <item id="dmy" label="for csv daemon">
         <field decode="unsigned" label="Local IP (CIAX)" length="1" assign="ipl">1</field>
         <field decode="unsigned" label="Remote IP (DSO)" length="1" assign="ipr">32</field>
         <field decode="unsigned" label="Exe Flag" length="1" assign="exe">0</field>
-      </response>
+      </item>
     </response>
   </frame>
 </fdb>

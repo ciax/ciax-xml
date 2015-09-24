@@ -164,55 +164,55 @@
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="getstat">
+      <item id="getstat">
         <field assign="stat" label="StatusCode" />
-      </response>
-      <response id="chkrun">
+      </item>
+      <item id="chkrun">
         <array assign="run" label="Moving">
           <index range="$1-1" size="6" />
         </array>
-      </response>
-      <response id="chkems">
+      </item>
+      <item id="chkems">
         <array assign="ems" label="Emergency">
           <index range="$1-1" size="6" />
         </array>
-      </response>
-      <response id="chkpse">
+      </item>
+      <item id="chkpse">
         <array assign="pse" label="Power Stage Err">
           <index range="$1-1" size="6" />
         </array>
-      </response>
-      <response id="getp">
+      </item>
+      <item id="getp">
         <array assign="p" label="Pulse">
           <index range="$1-1" size="6" />
         </array>
-      </response>
-      <response id="getmp">
+      </item>
+      <item id="getmp">
         <array assign="mp" label="Mechanical Pulse">
           <index range="$1-1" size="6" />
         </array>
-      </response>
-      <response id="getspd">
+      </item>
+      <item id="getspd">
         <array assign="spd" label="Speed">
           <index range="$1-1" size="6" />
         </array>
-      </response>
-      <response id="getrmp">
+      </item>
+      <item id="getrmp">
         <array assign="rmp" label="Ramp Speed">
           <index range="$1-1" size="6" />
         </array>
-      </response>
-      <response id="getispd">
+      </item>
+      <item id="getispd">
         <array assign="ispd" label="Init Speed">
           <index range="$1-1" size="6" />
         </array>
-      </response>
-      <response id="getofs">
+      </item>
+      <item id="getofs">
         <array assign="ofs" label="Init Offset">
           <index range="$1-1" size="6" />
         </array>
-      </response>
-      <response id="default" />
+      </item>
+      <item id="default" />
     </response>
   </frame>
 </fdb>

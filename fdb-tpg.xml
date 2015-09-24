@@ -17,15 +17,15 @@
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="reqstat">
+      <item id="reqstat">
         <field decode="unsigned">6</field>
-      </response>
-      <response id="getstat">
+      </item>
+      <item id="getstat">
         <array assign="stat"  delimiter=",">
           <index size="2"/>
           <index size="2"/>
         </array>
-      </response>
+      </item>
     </response>
   </frame>
 </fdb>

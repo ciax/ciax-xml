@@ -173,21 +173,25 @@ module CIAX
         case cdc
         when 'hexstr' # "FF" -> "255"
           num=code.hex
+          base=16
         when 'decstr' # "80000123" -> "-123"
           # sign: k3n=F, oss=8,
           sign=(/[8Ff]/ === code[0]) ? '-' : ''
           num=sign+code[1..-1].sub(/0+/,'')
+          base=10
         when 'binstr'
           num=[code].pack("b*").ord
+          base=2
         else
           ary=code.unpack("C*")
           ary.reverse! if @endian=='little'
           num=ary.inject(0){|r,i| r*256+i}
+          base=256
         end
         case e['sign']
         when 'msb'
-          p= 256 ** code.size
-          num = num < p/2 ? num : num - p
+          range=base ** code.size
+          num = num < range/2 ? num : num - range
         end
         verbose("Decode:(#{cdc}) [#{code.inspect}] -> [#{num}]")
         num.to_s

@@ -146,8 +146,10 @@ module CIAX
           cri == real
         when "not"
           cri != real
-        when "pattern"
-          /#{cri}/ === real
+        when "match"
+          /#{cri}/ =~ real
+        when "unmatch"
+          /#{cri}/ !~ real
         else
           false
         end

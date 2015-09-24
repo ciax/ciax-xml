@@ -93,7 +93,8 @@
     <xsd:choice>
       <xsd:element ref="mdb:equal" minOccurs="0" maxOccurs="unbounded" />
       <xsd:element ref="mdb:not" minOccurs="0" maxOccurs="unbounded" />
-      <xsd:element ref="mdb:pattern" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="mdb:match" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="mdb:unmatch" minOccurs="0" maxOccurs="unbounded" />
     </xsd:choice>
   </xsd:group>
   <xsd:element name="goal">
@@ -124,7 +125,8 @@
   </xsd:element>
   <xsd:element name="equal" type="mdb:condition"/>
   <xsd:element name="not" type="mdb:condition"/>
-  <xsd:element name="pattern" type="mdb:condition"/>
+  <xsd:element name="match" type="mdb:condition"/>
+  <xsd:element name="unmatch" type="mdb:condition"/>
   <xsd:element name="mcr">
     <xsd:complexType>
       <xsd:complexContent>

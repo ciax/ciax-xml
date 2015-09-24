@@ -25,7 +25,7 @@ def spl_cond(line)
   line.split('&').map{|s|
     site,cond=yield s
     abort "NO operator in #{cond}" unless /[~!=^]/ =~ cond
-    ope={'~'=>'match','!'=>'ne','='=>'eq','^'=>'unmatch'}[$&]
+    ope={'~'=>'match','!'=>'not','='=>'equal','^'=>'unmatch'}[$&]
     ary=[ope,$',site,$`]
     ary << @skip if @skip
     ary

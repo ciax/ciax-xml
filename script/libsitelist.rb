@@ -6,9 +6,10 @@ module CIAX
     # This should be set [:db]
     class List < CIAX::List
       attr_reader :db,:sub_list
-      def initialize(cfg,sub_list=nil)
+      def initialize(cfg,top_list,sub_mod=nil)
+        cfg[:top_list]||=top_list
         super(cfg)
-        @sub_list=@cfg[:sub_list]=sub_list
+        @sub_list=@cfg[:sub_list]=sub_mod.new(cfg) if sub_mod
       end
 
       def set_db(db)

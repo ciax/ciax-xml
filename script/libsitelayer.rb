@@ -10,7 +10,6 @@ module CIAX
         super(Config.new,attr)
         mod=@cfg[:top_layer]||=$opt.layer_list
         obj=mod.new(@cfg)
-        @cfg[:top_list]||=obj
         begin
           put(m2id(obj.class,-2),obj)
         end while obj=obj.sub_list

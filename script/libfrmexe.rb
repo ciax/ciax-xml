@@ -113,8 +113,8 @@ module CIAX
     end
 
     class List < Site::List
-      def initialize(cfg)
-        super(cfg)
+      def initialize(cfg,top_list=nil)
+        super(cfg,top_list||self)
         set_db(Dev::Db.new)
       end
     end

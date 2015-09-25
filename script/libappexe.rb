@@ -119,8 +119,8 @@ module CIAX
 
     class List < Site::List
     # cfg should have [:jump_groups]
-      def initialize(cfg)
-        super(cfg,Frm::List.new(cfg))
+      def initialize(cfg,top_list=nil)
+        super(cfg,top_list||self,Frm::List)
         set_db(Ins::Db.new)
       end
     end

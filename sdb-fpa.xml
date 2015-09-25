@@ -4,7 +4,7 @@
     <table id="volt">
       <range class="active" msg="HOME POS">1.5:</range>
       <range class="normal" msg="ON SLOT">:-1.5</range>
-      <range class="warn" msg="MID"/>
+      <default class="warn" msg="MID(%s)"/>
     </table>
   </symbol>
 </sdb>

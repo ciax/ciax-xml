@@ -4,7 +4,7 @@
     <table id="acp" label="Command Accepting">
       <pattern class="normal" msg="OFF">2</pattern>
       <pattern class="warn" msg="ON">1</pattern>
-      <pattern class="normal" msg="OFF" />
+      <default class="normal" msg="OFF" />
     </table>
     <table id="ecode" label="ExitCode">
       <pattern class="hide" msg="OK">0000</pattern>
@@ -13,7 +13,7 @@
       <pattern class="alarm" msg="Devide Num Error">0056</pattern>
       <pattern class="alarm" msg="Communication Error">005B</pattern>
       <pattern class="alarm" msg="CPU Watch timeout Error">0060</pattern>
-      <pattern class="alarm" msg="Unknown" />
+      <default class="alarm" msg="Unknown" />
     </table>
     <table id="ist">
       <pattern class="normal" msg="COMICS">1</pattern>
@@ -21,16 +21,16 @@
       <pattern class="normal" msg="FOCAS">3</pattern>
       <pattern class="normal" msg="MOIRCS">4</pattern>
       <pattern class="normal" msg="MC-BOX">5</pattern>
-      <pattern class="warn" msg="N/A" />
+      <default class="warn" msg="N/A" />
     </table>
     <table id="corn" label="all corn">
       <pattern class="normal" msg="OFF">0</pattern>
       <pattern class="normal" msg="ON">15</pattern>
-      <pattern class="warn" msg="N/A" />
+      <default class="warn" msg="N/A" />
     </table>
     <table id="con">
       <pattern class="normal" msg="OFF">0</pattern>
-      <pattern class="normal" msg="ON" />
+      <default class="normal" msg="ON" />
     </table>
     <table id="jlv">
       <pattern class="normal" msg="D">1</pattern>
@@ -38,7 +38,7 @@
       <pattern class="normal" msg="M">4</pattern>
       <pattern class="normal" msg="H">8</pattern>
       <pattern class="normal" msg="CHG">16</pattern>
-      <pattern class="warn" msg="N/A" />
+      <default class="warn" msg="N/A" />
     </table>
     <table id="bvl">
       <range class="alarm" msg="LOW">:20</range>
@@ -53,7 +53,7 @@
       <pattern class="normal" msg="M">4</pattern>
       <pattern class="warn" msg="L">8</pattern>
       <pattern class="alarm" msg="LL">16</pattern>
-      <pattern class="alarm" msg="N/A"/>
+      <default class="alarm" msg="N/A"/>
     </table>
   </symbol>
 </sdb>

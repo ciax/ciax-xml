@@ -51,6 +51,8 @@ module CIAX
               next unless /#{sym['val']}/ === val || val == 'default'
               verbose("VIEW:Regexp:[#{sym['val']}] and [#{val}]")
               self['msg'][key]=sym['msg'] % val
+            when 'default'
+              self['msg'][key]=sym['msg'] % val
             end
             self['class'][key]=sym['class']
             break

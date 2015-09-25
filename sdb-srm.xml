@@ -18,7 +18,7 @@
       <pattern class="alarm" msg="Abort by Format">A4</pattern>
       <pattern class="alarm" msg="Abort by Range">A5</pattern>
       <pattern class="alarm" msg="Abort by Length">A8</pattern>
-      <pattern class="alarm" msg="Other"/>
+      <default class="alarm" msg="Other"/>
     </table>
   </symbol>
 </sdb>

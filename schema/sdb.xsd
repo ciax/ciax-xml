@@ -28,15 +28,17 @@
   </xsd:element>
   <xsd:element name="table">
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:element ref="sdb:pattern" maxOccurs="unbounded" />
-        <xsd:element ref="sdb:range" maxOccurs="unbounded" />
-        <xsd:element ref="sdb:numeric" maxOccurs="unbounded" />
-      </xsd:choice>
+      <xsd:sequence>
+        <xsd:choice>
+          <xsd:element ref="sdb:pattern" maxOccurs="unbounded" />
+          <xsd:element ref="sdb:range" maxOccurs="unbounded" />
+          <xsd:element ref="sdb:numeric" maxOccurs="unbounded" />
+        </xsd:choice>
+        <xsd:element ref="sdb:default" minOccurs="0" maxOccurs="1" />
+      </xsd:sequence>
       <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
   </xsd:element>
-  <!--No text is default-->
   <xsd:element name="pattern">
     <xsd:complexType>
       <xsd:simpleContent>
@@ -63,6 +65,11 @@
           <xsd:attributeGroup ref="sdb:sym_attr" />
         </xsd:extension>
       </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="default">
+    <xsd:complexType>
+      <xsd:attributeGroup ref="sdb:sym_attr" />
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="sym_attr">

@@ -20,7 +20,7 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="fpa">
       <group id="g1" column="3" caption="Voltage">
         <repeat_var from="1" to="6">
-          <float id="v$_" label="OUTPUT$_ (V)" format="%+2.2f" formula="($#-32768)/32768*6" symbol="volt">
+          <float id="v$_" label="OUTPUT$_ (V)" format="%2.2f" formula="($#-32768)/32768*6" symbol="volt">
             <field ref="stat" index="$_-1" />
           </float>
         </repeat_var>

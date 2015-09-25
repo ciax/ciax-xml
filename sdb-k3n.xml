@@ -9,7 +9,7 @@
       <pattern class="alarm" msg="Area Error">1101</pattern>
       <pattern class="alarm" msg="Start Address Error">1103</pattern>
       <pattern class="alarm" msg="Action Error">2203</pattern>
-      <pattern class="alarm" msg="ResponseCode Error" />
+      <default class="alarm" msg="ResponseCode Error" />
     </table>
     <table id="ecode" label="ExitCode">
       <pattern class="normal" msg="OK">00</pattern>
@@ -21,7 +21,7 @@
       <pattern class="alarm" msg="Format Error">14</pattern>
       <pattern class="alarm" msg="Sub Address Error">16</pattern>
       <pattern class="alarm" msg="Frame Length Error">18</pattern>
-      <pattern class="alarm" msg="Unknown" />
+      <default class="alarm" msg="Unknown" />
     </table>
     <table id="flow">
       <range class="alarm" msg="HH">6:</range>

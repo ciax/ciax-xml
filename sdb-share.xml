@@ -10,7 +10,7 @@
       <pattern class="normal" msg="MC-BOX">10</pattern>
       <pattern class="normal" msg="MOIRCS">12</pattern>
       <pattern class="normal" msg="CIAX3">13</pattern>
-      <pattern class="warn" msg="N/A" />
+      <default class="warn" msg="N/A" />
     </table>
     <table id="iid_ac" label="Instrument ID by Auto Connector">
       <pattern class="warn" msg="NONE">0</pattern>
@@ -23,7 +23,7 @@
       <pattern class="normal" msg="MOIRCS">7</pattern>
       <pattern class="normal" msg="MC-BOX">8</pattern>
       <pattern class="normal" msg="MP-CS2">9</pattern>
-      <pattern class="warn" msg="OTHER" />
+      <default class="warn" msg="OTHER" />
     </table>
     <table id="normal">
       <pattern class="normal" msg="ON">1</pattern>
@@ -55,7 +55,7 @@
     </table>
     <table id="nonzero">
       <pattern class="normal" msg="OFF">0</pattern>
-      <pattern class="warn" msg="ON" />
+      <default class="warn" msg="ON" />
     </table>
     <table id="control_code">
       <pattern class="normal" msg="ACK">6</pattern>

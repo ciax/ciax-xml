@@ -7,7 +7,7 @@
       <pattern class="alarm" msg="Could not download file">2</pattern>
       <pattern class="alarm" msg="Not enough memory to execute user program">3</pattern>
       <pattern class="alarm" msg="Attempt to access a non-existent array element">4</pattern>
-      <pattern class="alarm" msg="Unknown Error" />
+      <default class="alarm" msg="Unknown Error" />
     </table>
     <table id="abs">
       <range class="warn" msg="S00">0</range>

@@ -5,7 +5,6 @@ module CIAX
     # Sequencer Layer List
     module Seq
       # @cfg[:db] associated site/layer should be set
-      # @cfg should have [:jump_groups]
       class List < CIAX::List
         def initialize(proj,cfg)
           super(cfg)
@@ -73,6 +72,7 @@ module CIAX
         end
 
         module Shell
+          # @cfg should have [:jump_groups]
           include CIAX::List::Shell
           class Jump < LongJump; end
 

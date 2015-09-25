@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require "liblayer"
+require "libsitelayer"
 require "libhexexe"
 
 module CIAX
   ENV['VER']||='initialize'
   GetOpts.new("aftxelsrch:")
-  Layer::List.new(:site => ARGV.shift).ext_shell.shell
+  Site::Layer.new(:site => ARGV.shift).ext_shell.shell
 end

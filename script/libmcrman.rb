@@ -6,11 +6,10 @@ module CIAX
   module Mcr
     module Man
       class Exe < CIAX::Exe
-        # cfg should have [:jump_groups]
-        attr_reader :sub_list
-        def initialize(cfg)
-          @sub_list=Wat::List.new(cfg)
-          super(PROJ,cfg,{:db =>Db.new,:dev_list =>@sub_list.sub_list})
+        # cfg should have [:dev_list]
+        def initialize(cfg,attr={})
+          attr[:db]=Db.new
+          super(PROJ,cfg,attr)
           @stat=Seq::List.new(@id,@cfg)
           @lastsize=0
           @cobj.add_rem.add_hid
@@ -71,6 +70,7 @@ module CIAX
       end
 
       module Shell
+        # cfg should have [:jump_groups]
         include CIAX::Shell
         def ext_shell
           super
@@ -141,6 +141,7 @@ module CIAX
         begin
           cfg=Config.new
           cfg[:jump_groups]=[]
+          cfg[:dev_list]=Wat::List.new(cfg).sub_list
           Exe.new(cfg).ext_shell.shell
         rescue InvalidCMD
           $opt.usage("[mcr] [cmd] (par)")

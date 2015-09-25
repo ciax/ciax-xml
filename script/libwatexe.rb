@@ -14,7 +14,6 @@ module CIAX
         @stat=Event.new.ext_rsp(@sub.stat)
         @sv_stat=@sub.sv_stat.add_db('auto'=>'@','watch'=>'&')
         @sub.batch_interrupt=@stat.get('int')
-        @sub_proc=proc{verbose("Dummy exec")}
         @mode=@sub.mode
         opt_mode
       end

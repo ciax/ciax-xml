@@ -25,10 +25,15 @@ module CIAX
     end
 
     def set_par(par,opt={})
-      par=@cfg['argv'] if Array === @cfg['argv']
-      par=opt[:par]=validate(type?(par,Array))
+      cid=@cfg[:id]
+      if Array === @cfg['argv']
+        par=@cfg['argv']
+      else
+        cid=[cid,*par].join(':')
+      end
+      par=validate(type?(par,Array))
+      opt.update(:par => par,:cid => cid)
       verbose("SetPAR(#{@cfg[:id]}): #{par}")
-      cid=opt[:cid]=[@cfg[:id],*par].join(':')
       if key?(cid)
         verbose("SetPAR: Entity Cache found(#{cid})")
         self[cid]

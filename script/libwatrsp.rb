@@ -19,7 +19,6 @@ module CIAX
         set_dbi(stat.dbi)
         wdb=@dbi[:watch]||{}
         @windex=wdb[:index]||{}
-        @period=wdb['period'].to_i if wdb.key?('period')
         @interval=wdb['interval'].to_f if wdb.key?('interval')
         # Pick usable val
         @list=[]

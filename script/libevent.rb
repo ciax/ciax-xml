@@ -5,10 +5,9 @@ require 'librerange'
 module CIAX
   module Wat
     class Event < DataH
-      attr_reader :period,:interval
+      attr_reader :interval
       def initialize
         super('event')
-        @period=300
         @interval=0.1
         @data['act_start']=now_msec
         @data['act_end']=now_msec
@@ -30,8 +29,8 @@ module CIAX
         blkcmd.any?{|blk| /#{blk}/ === cid} && Msg.cmd_err("Blocking(#{args})")
       end
 
-      def next_upd
-        @data['upd_next']=now_msec+@period*1000
+      def next_upd(period)
+        @data['upd_next']=now_msec+period.to_i*1000
         self
       end
 

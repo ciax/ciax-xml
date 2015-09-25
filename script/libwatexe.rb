@@ -61,21 +61,23 @@ module CIAX
       end
 
       def auto_update
-        @stat.next_upd
+        reg=(@stat.dbi[:watch]||{})[:regular]
+        period=reg['period'].to_i
+        @stat.next_upd(period)
         ThreadLoop.new("Watch:Auto(#@id)",14){
           if @stat.get('exec').empty?
             verbose("Auto Update(#{@sub.stat['time']})")
             begin
-              @stat.queue('auto',3,[['upd']])
+              @stat.queue('auto',3,reg[:exec])
             rescue InvalidID
               errmsg
             rescue
               warning $!
             end
           end
-          @stat.next_upd
-          verbose("Auto Update Sleep(#{@stat.period}sec)")
-          sleep @stat.period
+          @stat.next_upd(period)
+          verbose("Auto Update Sleep(#{period}sec)")
+          sleep period
         }
       end
     end

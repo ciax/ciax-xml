@@ -6,9 +6,11 @@
   <!--watch events-->
   <xsd:element name="watch">
     <xsd:complexType>
-      <xsd:group minOccurs="0" maxOccurs="unbounded" ref="wdb:event"></xsd:group>
+      <xsd:sequence>
+        <xsd:element ref="wdb:regular" minOccurs="0" maxOccurs="1"/>
+        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="wdb:event"></xsd:group>
+      </xsd:sequence>
       <xsd:attribute name="interval" type="xsd:float" use="required"></xsd:attribute>
-      <xsd:attribute name="period" type="xsd:int"></xsd:attribute>
     </xsd:complexType>
     <xsd:unique name="onchange-ref">
       <xsd:selector xpath="*/wdb:onchange" />
@@ -25,6 +27,15 @@
     <xsd:complexType>
       <xsd:group minOccurs="1" maxOccurs="unbounded" ref="wdb:event"></xsd:group>
       <xsd:attributeGroup ref="wdb:repeat" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="regular">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="wdb:exec" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+      <xsd:attribute name="period" type="xsd:int" use="required" />
+      <xsd:attribute name="label" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="event">

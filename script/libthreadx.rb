@@ -6,6 +6,7 @@ module CIAX
   class Threadx < Thread
     include Msg
     def initialize(name,color=4)
+      Thread.abort_on_exception=true
       th=super{
         Thread.pass
         yield

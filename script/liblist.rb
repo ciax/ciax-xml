@@ -34,13 +34,18 @@ module CIAX
 
       def shell
         begin
-          get(@current).shell
+          switch(@current).shell
         rescue @cfg[:jump_class]
           @current=$!.to_s
           retry
         rescue InvalidID
           $opt.usage('(opt) [id]')
         end
+      end
+
+      private
+      def switch(id)
+        get(id)
       end
     end
   end

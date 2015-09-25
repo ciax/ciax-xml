@@ -81,6 +81,11 @@ module CIAX
         def add(site)
           super.ext_shell
         end
+
+        def switch(site)
+          @cfg[:top_list].get(site)
+          super
+        end
       end
     end
   end

@@ -99,14 +99,40 @@ if getmcr
     con['goal']=spl_cond(goal){|elem| get_site(elem)} if goal and !goal.empty?
     con['check']=spl_cond(check){|elem| get_site(elem)} if check and !check.empty?
   }
+  select=[]
   get_csv("cdb_mcr#{proj}"){|id,label,inv,type,seq|
     next if type == 'cap'
     con=(grp[id]||={})
     con['label']=label.gsub(/&/,'and')
     con['seq']=spl_cmd(seq).map{|ary|
       id=ary.join('_')
-      index.key?(id) ? ['mcr',id] : ary
+      ary=index.key?(id) ? ['mcr',id] : ary
+      if /%./ =~ ary[1]
+        select << ary[1]
+        ary[1]=ary[1].sub(/%(.)/,'X')
+      end
+      ary
     } if seq and !seq.empty?
   }
+  unless select.empty?
+    db={}
+    get_csv("db_mcv#{proj}"){|id,var,list|
+      db[id]={'var' => var,'list' => "#{list}".split(' ').map{|str| str.split('=')}}
+    }
+    grp=mdb['select']={}
+    select.each{|str|
+      id=str.sub(/%(.)/,'X')
+      con=grp[id]={}
+      dbi=db[$+]
+      var=dbi['var'].split(':')
+      con['label']='Select Macro'
+      con['site']=var[0]
+      con['var']=var[1]
+      op=con['option']={}
+      dbi['list'].each{|k,v|
+        op[v]={'mcr' => str.sub(/%./,v),'val' => k}
+      }
+    }
+  end
 end
-print JSON.dump mdb
+puts JSON.dump mdb

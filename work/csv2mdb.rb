@@ -1,12 +1,11 @@
 #!/usr/bin/ruby
 # IDB,CDB CSV(CIAX-v1) to MDB
 #alias c2m
+require 'optparse'
 require 'json'
-abort "Usage: csv2mdb -m [sites]" if ARGV.size < 1
-if ARGV[0] == '-m'
-  getmcr=true
-  ARGV.shift
-end
+abort "Usage: csv2mdb -m(proj) [sites]" if ARGV.size < 1
+opt=ARGV.getopts('m:')
+
 
 def get_site(elem)
   @skip=nil
@@ -91,16 +90,15 @@ ARGV.each{|site|
 }
 
 # Convert mdb
-if getmcr
-  proj='-'+(ENV['PROJ']||'moircs')
+if proj=opt['m']
   grp=mdb["grp_mcr"]={}
-  get_csv("idb_mcr#{proj}"){|id,goal,check|
+  get_csv("idb_mcr-#{proj}"){|id,goal,check|
     con=grp[id]={}
     con['goal']=spl_cond(goal){|elem| get_site(elem)} if goal and !goal.empty?
     con['check']=spl_cond(check){|elem| get_site(elem)} if check and !check.empty?
   }
   select=[]
-  get_csv("cdb_mcr#{proj}"){|id,label,inv,type,seq|
+  get_csv("cdb_mcr-#{proj}"){|id,label,inv,type,seq|
     next if type == 'cap'
     con=(grp[id]||={})
     con['label']=label.gsub(/&/,'and')
@@ -116,7 +114,7 @@ if getmcr
   }
   unless select.empty?
     db={}
-    get_csv("db_mcv#{proj}"){|id,var,list|
+    get_csv("db_mcv-#{proj}"){|id,var,list|
       db[id]={'var' => var,'list' => "#{list}".split(' ').map{|str| str.split('=')}}
     }
     grp=mdb['select']={}

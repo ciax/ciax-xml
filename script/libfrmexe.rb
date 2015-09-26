@@ -19,7 +19,7 @@ module CIAX
         @cfg[:site_id]=id
         @cfg['ver']=@dbi['version']
         @stat=@cfg[:field]=Field.new.set_dbi(@dbi)
-        @cobj.add_rem
+        @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
         # Post internal command procs
@@ -39,7 +39,6 @@ module CIAX
 
       def ext_shell
         super
-        @cobj.rem.add_hid
         @cfg[:output]=@stat
         @post_exe_procs << proc{|args,src|
           flush if !args.empty? and src != 'local'

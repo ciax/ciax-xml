@@ -30,7 +30,11 @@ module CIAX
             sl=get(id).ext_shell
             @jumpgrp.add_item(id,id.capitalize+" mode")
           }
-          @current||=keys.first
+          if layer=@cfg[:layer]
+            @current=layer
+          else
+            @current=keys.first
+          end
           self
         end
       end

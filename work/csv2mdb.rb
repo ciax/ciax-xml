@@ -6,7 +6,6 @@ require 'json'
 abort "Usage: csv2mdb -m(proj) [sites]" if ARGV.size < 1
 opt=ARGV.getopts('m:')
 
-
 def get_site(elem)
   @skip=nil
   elem.split(':').map{|e|
@@ -23,12 +22,18 @@ end
 def spl_cond(line)
   line.split('&').map{|s|
     site,cond=yield s
-    abort "NO operator in #{cond}" unless /[~!=^]/ =~ cond
-    ope={'~'=>'match','!'=>'not','='=>'equal','^'=>'unmatch'}[$&]
-    ary=[ope,$',site,$`]
-    ary << @skip if @skip
-    ary
-  }
+    case cond
+    when /[~!=^]/
+      ope={'~'=>'match','!'=>'not','='=>'equal','^'=>'unmatch'}[$&]
+      ary=[ope,$',site,$`]
+      ary << @skip if @skip
+      ary
+    when '*','',nil
+      nil
+    else
+      abort "IDB: NO operator in #{cond}"
+    end
+  }.compact
 end
 
 def spl_cmd(line,del=' ')

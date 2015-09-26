@@ -17,7 +17,7 @@ module CIAX
       @shell_output_proc=proc{ @cfg[:output].to_s }
       @prompt_proc=proc{ @sv_stat.to_s }
       @cobj.loc.add_shell
-      @cobj.loc.add_jump #@cfg[:jump_groups] should be set
+      @cobj.loc.add_jump
       Thread.current['name']='Main'
       self
     end

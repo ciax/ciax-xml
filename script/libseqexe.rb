@@ -229,7 +229,6 @@ module CIAX
       if __FILE__ == $0
         GetOpts.new('icemntr')
         cfg=Config.new
-        cfg[:jump_groups]=[]
         al=Wat::List.new(cfg).sub_list #Take App List
         cfg[:dev_list]=al
         mobj=Remote::Index.new(cfg,{:dbi =>Db.new.get(PROJ)})

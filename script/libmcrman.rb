@@ -70,7 +70,6 @@ module CIAX
       end
 
       module Shell
-        # cfg should have [:jump_groups]
         include CIAX::Shell
         def ext_shell
           super
@@ -140,7 +139,6 @@ module CIAX
         GetOpts.new('cmnlrt')
         begin
           cfg=Config.new
-          cfg[:jump_groups]=[]
           cfg[:dev_list]=Wat::List.new(cfg).sub_list
           Exe.new(cfg).ext_shell.shell
         rescue InvalidCMD

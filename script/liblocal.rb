@@ -4,7 +4,7 @@ require 'libcommand'
 module CIAX
   module Local
     class Index < GrpAry
-      # cfg should have [:jump_groups],[:jump_class]
+      # cfg should have [:jump_class]
       attr_reader :loc
       def initialize(cfg,attr={})
         super

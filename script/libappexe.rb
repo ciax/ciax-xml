@@ -118,7 +118,6 @@ module CIAX
     end
 
     class List < Site::List
-    # cfg should have [:jump_groups]
       def initialize(cfg,top_list=nil)
         super(cfg,top_list||self,Frm::List)
         set_db(Ins::Db.new)
@@ -130,7 +129,6 @@ module CIAX
       GetOpts.new('ceh:lts')
       cfg=Config.new
       cfg[:site]=ARGV.shift
-      cfg[:jump_groups]=[]
       begin
         List.new(cfg).ext_shell.shell
       rescue InvalidID

@@ -94,7 +94,6 @@ module CIAX
       GetOpts.new('ceh:lts')
       cfg=Config.new
       cfg[:site]=ARGV.shift
-      cfg[:jump_groups]=[]
       begin
         List.new(cfg).ext_shell.shell
       rescue InvalidID

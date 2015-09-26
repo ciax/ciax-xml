@@ -25,7 +25,6 @@ module CIAX
       end
 
       # attr should have [:jump_class] (Used in Local::Jump::Group)
-      # @cfg should have [:jump_groups]
       def ext_shell(jump_class)
         @cfg[:jump_class]=type?(jump_class,Module) # Use for liblocal
         @jumpgrp=Local::Jump::Group.new(@cfg)

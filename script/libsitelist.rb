@@ -69,7 +69,6 @@ module CIAX
         include CIAX::List::Shell
         class Jump < LongJump; end
 
-        # @cfg should have [:jump_groups]
         def ext_shell
           super(Jump)
           @cfg[:jump_site]=@jumpgrp

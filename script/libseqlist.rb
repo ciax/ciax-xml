@@ -72,14 +72,14 @@ module CIAX
         end
 
         module Shell
-          # @cfg should have [:jump_groups]
           include CIAX::List::Shell
           class Jump < LongJump; end
 
           def ext_shell
             super(Jump)
-            @cfg[:dev_list].ext_shell if @cfg.key?(:dev_list) # Limit self level
-            @cfg[:jump_groups] << @jumpgrp
+            # Limit self level
+            # :dev_list is App::List
+            @cfg[:dev_list].ext_shell if @cfg.key?(:dev_list)
             @post_upd_procs << proc{
               verbose("Propagate List#upd -> JumpGrp#upd")
               @jumpgrp.number_item(@data.values.map{|seq| seq['id']})
@@ -115,7 +115,6 @@ module CIAX
         ENV['VER']||='initialize'
         GetOpts.new('tenr')
         cfg=Config.new
-        cfg[:jump_groups]=[]
         cfg[:dev_list]=Wat::List.new(cfg).sub_list #Take App List
         list=List.new(PROJ,cfg).ext_sv.ext_shell
         mobj=Remote::Index.new(cfg,{:dbi =>Db.new.get(PROJ)})

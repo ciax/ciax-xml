@@ -40,7 +40,7 @@ module CIAX
           @cfg['caption']="Hidden Commands"
           add_item('interrupt')
           # Accept empty command
-          add_item(nil)
+          add_item(nil) unless @cfg[:exe_mode]
         end
       end
     end

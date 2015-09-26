@@ -35,7 +35,7 @@ module CIAX
       db.keys.each{|k|
         str << k unless str.include?(k)
       }
-      # Make usage text 
+      # Make usage text
       @index={}
       (str.split('') & optdb.keys).each{|c|
         @index["-#{c}"]=optdb[c]

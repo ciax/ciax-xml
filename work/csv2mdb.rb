@@ -124,11 +124,12 @@ if proj=opt['m']
       dbi=db[$+]
       var=dbi['var'].split(':')
       con['label']='Select Macro'
-      con['site']=var[0]
-      con['var']=var[1]
-      op=con['option']={}
+      sel=con['select']={}
+      sel['site']=var[0]
+      sel['var']=var[1]
+      op=sel['option']={}
       dbi['list'].each{|k,v|
-        op[v]={'mcr' => str.sub(/%./,v),'val' => k}
+        op[k]=str.sub(/%./,v)
       }
     }
   end

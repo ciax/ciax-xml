@@ -102,6 +102,15 @@ enclose('mdb','xmlns'=>'http://ciax.sum.naoj.org/ciax-xml/mdb'){
                     prt_cond(ary['until'])
                   }
                 end
+              when 'select'
+                attr={'site'=>ary['site'],'var'=>ary['var'],'form'=>'msg'}
+                enclose("select",attr){
+                  ary['option'].each{|val,mcr|
+                    enclose("option",{'val' => val}){
+                      indent('mcr',{'name'=>mcr})
+                    }
+                  }
+                }
               end
             }
           }

@@ -1406,7 +1406,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_00"/>
+        <mcr name="slotX_00"/>
         <mcr name="check_slot00"/>
       </item>
       <item id="slot1" label="carousel">
@@ -1419,7 +1419,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_01"/>
+        <mcr name="slotX_01"/>
         <mcr name="check_slot01"/>
       </item>
       <item id="slot2" label="carousel">
@@ -1432,7 +1432,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_02"/>
+        <mcr name="slotX_02"/>
         <mcr name="check_slot02"/>
       </item>
       <item id="slot3" label="carousel">
@@ -1445,7 +1445,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_03"/>
+        <mcr name="slotX_03"/>
         <mcr name="check_slot03"/>
       </item>
       <item id="slot4" label="carousel">
@@ -1458,7 +1458,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_04"/>
+        <mcr name="slotX_04"/>
         <mcr name="check_slot04"/>
       </item>
       <item id="slot5" label="carousel">
@@ -1471,7 +1471,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_05"/>
+        <mcr name="slotX_05"/>
         <mcr name="check_slot05"/>
       </item>
       <item id="slot6" label="carousel">
@@ -1484,7 +1484,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_06"/>
+        <mcr name="slotX_06"/>
         <mcr name="check_slot06"/>
       </item>
       <item id="slot7" label="carousel">
@@ -1497,7 +1497,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_07"/>
+        <mcr name="slotX_07"/>
         <mcr name="check_slot07"/>
       </item>
       <item id="slot8" label="carousel">
@@ -1510,7 +1510,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_08"/>
+        <mcr name="slotX_08"/>
         <mcr name="check_slot08"/>
       </item>
       <item id="slot9" label="carousel">
@@ -1523,7 +1523,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_09"/>
+        <mcr name="slotX_09"/>
         <mcr name="check_slot09"/>
       </item>
       <item id="slot10" label="carousel">
@@ -1536,7 +1536,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_10"/>
+        <mcr name="slotX_10"/>
         <mcr name="check_slot10"/>
       </item>
       <item id="slot11" label="carousel">
@@ -1549,7 +1549,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_11"/>
+        <mcr name="slotX_11"/>
         <mcr name="check_slot11"/>
       </item>
       <item id="slot12" label="carousel">
@@ -1562,7 +1562,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_12"/>
+        <mcr name="slotX_12"/>
         <mcr name="check_slot12"/>
       </item>
       <item id="slot13" label="carousel">
@@ -1575,7 +1575,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_13"/>
+        <mcr name="slotX_13"/>
         <mcr name="check_slot13"/>
       </item>
       <item id="slot14" label="carousel">
@@ -1588,7 +1588,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_14"/>
+        <mcr name="slotX_14"/>
         <mcr name="check_slot14"/>
       </item>
       <item id="slot15" label="carousel">
@@ -1601,7 +1601,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_15"/>
+        <mcr name="slotX_15"/>
         <mcr name="check_slot15"/>
       </item>
       <item id="slot16" label="carousel">
@@ -1614,7 +1614,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_16"/>
+        <mcr name="slotX_16"/>
         <mcr name="check_slot16"/>
       </item>
       <item id="slot17" label="carousel">
@@ -1627,7 +1627,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_17"/>
+        <mcr name="slotX_17"/>
         <mcr name="check_slot17"/>
       </item>
       <item id="slot18" label="carousel">
@@ -1640,7 +1640,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_18"/>
+        <mcr name="slotX_18"/>
         <mcr name="check_slot18"/>
       </item>
       <item id="slot19" label="carousel">
@@ -1653,7 +1653,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_19"/>
+        <mcr name="slotX_19"/>
         <mcr name="check_slot19"/>
       </item>
       <item id="slot20" label="carousel">
@@ -1666,7 +1666,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_20"/>
+        <mcr name="slotX_20"/>
         <mcr name="check_slot20"/>
       </item>
       <item id="slot21" label="carousel">
@@ -1679,7 +1679,7 @@
         </check>
         <mcr name="upd"/>
         <exec site="mmc" name="lowspd"/>
-        <mcr name="slot%S_21"/>
+        <mcr name="slotX_21"/>
         <mcr name="check_slot21"/>
       </item>
       <item id="check_slot00" label="check_slot">
@@ -8988,6 +8988,1680 @@
       </item>
       <item id="rbc_l-f" label="Rh3 4 Close">
         <exec site="mfp" name="rbc"/>
+      </item>
+    </group>
+    <group id="select">
+      <item id="slotX_00" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_00"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_00"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_00"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_00"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_00"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_00"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_00"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_00"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_00"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_00"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_00"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_00"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_00"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_00"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_00"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_00"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_00"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_00"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_00"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_00"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_00"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_00"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_00"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_00"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_01" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_01"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_01"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_01"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_01"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_01"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_01"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_01"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_01"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_01"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_01"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_01"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_01"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_01"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_01"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_01"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_01"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_01"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_01"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_01"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_01"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_01"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_01"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_01"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_01"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_02" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_02"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_02"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_02"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_02"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_02"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_02"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_02"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_02"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_02"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_02"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_02"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_02"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_02"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_02"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_02"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_02"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_02"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_02"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_02"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_02"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_02"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_02"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_02"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_02"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_03" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_03"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_03"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_03"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_03"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_03"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_03"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_03"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_03"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_03"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_03"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_03"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_03"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_03"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_03"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_03"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_03"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_03"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_03"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_03"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_03"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_03"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_03"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_03"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_03"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_04" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_04"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_04"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_04"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_04"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_04"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_04"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_04"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_04"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_04"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_04"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_04"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_04"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_04"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_04"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_04"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_04"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_04"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_04"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_04"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_04"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_04"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_04"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_04"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_04"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_05" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_05"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_05"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_05"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_05"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_05"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_05"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_05"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_05"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_05"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_05"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_05"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_05"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_05"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_05"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_05"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_05"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_05"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_05"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_05"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_05"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_05"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_05"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_05"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_05"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_06" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_06"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_06"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_06"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_06"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_06"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_06"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_06"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_06"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_06"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_06"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_06"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_06"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_06"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_06"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_06"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_06"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_06"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_06"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_06"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_06"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_06"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_06"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_06"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_06"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_07" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_07"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_07"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_07"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_07"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_07"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_07"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_07"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_07"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_07"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_07"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_07"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_07"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_07"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_07"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_07"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_07"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_07"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_07"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_07"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_07"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_07"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_07"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_07"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_07"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_08" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_08"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_08"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_08"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_08"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_08"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_08"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_08"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_08"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_08"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_08"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_08"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_08"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_08"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_08"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_08"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_08"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_08"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_08"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_08"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_08"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_08"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_08"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_08"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_08"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_09" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_09"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_09"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_09"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_09"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_09"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_09"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_09"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_09"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_09"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_09"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_09"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_09"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_09"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_09"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_09"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_09"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_09"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_09"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_09"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_09"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_09"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_09"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_09"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_09"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_10" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_10"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_10"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_10"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_10"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_10"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_10"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_10"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_10"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_10"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_10"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_10"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_10"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_10"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_10"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_10"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_10"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_10"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_10"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_10"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_10"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_10"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_10"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_10"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_10"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_11" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_11"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_11"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_11"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_11"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_11"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_11"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_11"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_11"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_11"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_11"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_11"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_11"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_11"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_11"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_11"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_11"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_11"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_11"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_11"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_11"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_11"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_11"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_11"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_11"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_12" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_12"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_12"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_12"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_12"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_12"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_12"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_12"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_12"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_12"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_12"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_12"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_12"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_12"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_12"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_12"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_12"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_12"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_12"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_12"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_12"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_12"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_12"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_12"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_12"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_13" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_13"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_13"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_13"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_13"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_13"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_13"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_13"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_13"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_13"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_13"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_13"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_13"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_13"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_13"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_13"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_13"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_13"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_13"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_13"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_13"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_13"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_13"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_13"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_13"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_14" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_14"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_14"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_14"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_14"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_14"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_14"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_14"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_14"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_14"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_14"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_14"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_14"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_14"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_14"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_14"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_14"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_14"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_14"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_14"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_14"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_14"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_14"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_14"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_14"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_15" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_15"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_15"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_15"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_15"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_15"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_15"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_15"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_15"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_15"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_15"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_15"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_15"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_15"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_15"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_15"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_15"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_15"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_15"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_15"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_15"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_15"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_15"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_15"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_15"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_16" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_16"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_16"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_16"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_16"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_16"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_16"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_16"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_16"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_16"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_16"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_16"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_16"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_16"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_16"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_16"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_16"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_16"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_16"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_16"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_16"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_16"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_16"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_16"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_16"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_17" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_17"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_17"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_17"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_17"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_17"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_17"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_17"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_17"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_17"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_17"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_17"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_17"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_17"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_17"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_17"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_17"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_17"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_17"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_17"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_17"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_17"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_17"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_17"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_17"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_18" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_18"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_18"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_18"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_18"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_18"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_18"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_18"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_18"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_18"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_18"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_18"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_18"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_18"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_18"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_18"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_18"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_18"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_18"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_18"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_18"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_18"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_18"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_18"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_18"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_19" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_19"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_19"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_19"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_19"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_19"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_19"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_19"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_19"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_19"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_19"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_19"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_19"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_19"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_19"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_19"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_19"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_19"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_19"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_19"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_19"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_19"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_19"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_19"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_19"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_20" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_20"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_20"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_20"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_20"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_20"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_20"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_20"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_20"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_20"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_20"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_20"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_20"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_20"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_20"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_20"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_20"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_20"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_20"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_20"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_20"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_20"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_20"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_20"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_20"/>
+          </option>
+        </select>
+      </item>
+      <item id="slotX_21" label="Select Macro">
+        <select site="mmc" var="abs" form="msg">
+          <option val="/S00">
+            <mcr name="slot00_21"/>
+          </option>
+          <option val="/S01">
+            <mcr name="slot01_21"/>
+          </option>
+          <option val="/S02">
+            <mcr name="slot02_21"/>
+          </option>
+          <option val="/S03">
+            <mcr name="slot03_21"/>
+          </option>
+          <option val="/S04">
+            <mcr name="slot04_21"/>
+          </option>
+          <option val="/S05">
+            <mcr name="slot05_21"/>
+          </option>
+          <option val="/S06">
+            <mcr name="slot06_21"/>
+          </option>
+          <option val="/S07">
+            <mcr name="slot07_21"/>
+          </option>
+          <option val="/S08">
+            <mcr name="slot08_21"/>
+          </option>
+          <option val="/S09">
+            <mcr name="slot09_21"/>
+          </option>
+          <option val="/S10">
+            <mcr name="slot10_21"/>
+          </option>
+          <option val="/S11">
+            <mcr name="slot11_21"/>
+          </option>
+          <option val="/S12">
+            <mcr name="slot12_21"/>
+          </option>
+          <option val="/S13">
+            <mcr name="slot13_21"/>
+          </option>
+          <option val="/S14">
+            <mcr name="slot14_21"/>
+          </option>
+          <option val="/S15">
+            <mcr name="slot15_21"/>
+          </option>
+          <option val="/S16">
+            <mcr name="slot16_21"/>
+          </option>
+          <option val="/S17">
+            <mcr name="slot17_21"/>
+          </option>
+          <option val="/S18">
+            <mcr name="slot18_21"/>
+          </option>
+          <option val="/S19">
+            <mcr name="slot19_21"/>
+          </option>
+          <option val="/S20">
+            <mcr name="slot20_21"/>
+          </option>
+          <option val="/S21">
+            <mcr name="slot21_21"/>
+          </option>
+          <option val="/S22">
+            <mcr name="slot22_21"/>
+          </option>
+          <option val="/S23">
+            <mcr name="slot23_21"/>
+          </option>
+        </select>
       </item>
     </group>
   </macro>

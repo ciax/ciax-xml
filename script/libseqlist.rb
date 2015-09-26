@@ -26,8 +26,8 @@ module CIAX
           page.join("\n")
         end
 
-        def ext_sv
-          extend(Sv).ext_sv
+        def ext_drv
+          extend(Drv).ext_drv
         end
 
         def ext_shell
@@ -42,8 +42,8 @@ module CIAX
         end
 
         ### Server methods
-        module Sv
-          def ext_sv
+        module Drv
+          def ext_drv
             ext_file
             clean
             self
@@ -116,7 +116,7 @@ module CIAX
         GetOpts.new('tenr')
         cfg=Config.new
         cfg[:dev_list]=Wat::List.new(cfg).sub_list #Take App List
-        list=List.new(PROJ,cfg).ext_sv.ext_shell
+        list=List.new(PROJ,cfg).ext_drv.ext_shell
         mobj=Remote::Index.new(cfg,{:dbi =>Db.new.get(PROJ)})
         mobj.add_rem.add_ext(Ext)
         cfg[:submcr_proc]=proc{|args,pid|

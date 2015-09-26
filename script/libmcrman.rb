@@ -39,7 +39,7 @@ module CIAX
         def ext_driver
           @sv_stat['sid']='' # For server response
           @pre_exe_procs << proc{ @sv_stat['sid']='' }
-          @stat.ext_sv
+          @stat.ext_drv
           # External Command Group
           @cobj.rem.ext.def_proc{|ent| set(ent);"ACCEPT"}
           # Internal Command Group

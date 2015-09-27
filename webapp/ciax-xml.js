@@ -1,3 +1,4 @@
+// Need var: Type,Site
 var last;
 function elapsed(){
     var now=new Date();
@@ -31,17 +32,17 @@ function conv(stat){
     $("#time").text(lstr.toLocaleString());
 }
 function update(){
-    $.getJSON(File,conv);
+    $.getJSON(Type+'_'+Site+'.json',conv);
     elapsed();
 }
 function init(){
     update();
     setInterval(update,1000);
 }
-function dvctl(site,cmd){
+function dvctl(cmd){
     $.post(
         "/json/dvctl-exe.php",
-        {site: site, cmd : cmd},
+        {site: Site, cmd : cmd},
         function(data){
             alert("Data Loaded: "+data);
         }

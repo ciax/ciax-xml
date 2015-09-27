@@ -7,10 +7,6 @@
 <script type="text/javascript">var File="status_mfp.json";</script>
 <script type="text/javascript" src="ciax-xml.js"></script>
 <script type="text/javascript">
-  function ctl_mfp(cmd){
-  $.post(File,{site: "mfp", cmd : cmd});
-  alert(cmd)
-  }
 </script>
 </head>
 <body>
@@ -33,10 +29,10 @@
 </tr>
 <tr>
 <td class="center">
-  <input class="button" type="button" value="OPEN" onclick="ctl_mfp(&quot;go&quot;)"/>
+  <input class="button" type="button" value="OPEN" onclick="dvctl(&quot;mfp&quot;,&quot;go&quot;)"/>
 </td>
 <td class="center">
-  <input class="button" type="button" value="CLOSE" onclick="ctl_mfp(&quot;gc&quot;)"/>
+  <input class="button" type="button" value="CLOSE" onclick="dvctl(&quot;mfp&quot,&quot;gc&quot;)"/>
 </td>
 </tr>
 </tbody></table>

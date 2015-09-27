@@ -38,4 +38,13 @@ function init(){
     update();
     setInterval(update,1000);
 }
+function dvctl(site,cmd){
+    $.post(
+        "/json/dvctl-exe.php",
+        {site: site, cmd : cmd},
+        function(data){
+            alert("Data Loaded: "+data);
+        }
+    );
+}
 $(document).ready(init);

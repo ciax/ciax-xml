@@ -1,0 +1,12 @@
+<table><tbody>
+<tr><th colspan="6">Gate Valve Control</th></tr>
+</tr>
+<tr>
+<td class="center">
+  <input class="button" type="button" value="OPEN" onclick="dvctl(&quot;go&quot;)"/>
+</td>
+<td class="center">
+  <input class="button" type="button" value="CLOSE" onclick="dvctl(&quot;gc&quot;)"/>
+</td>
+</tr>
+</tbody></table>

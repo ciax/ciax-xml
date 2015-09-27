@@ -1,6 +1,11 @@
 <?php
-$port=(int)$_POST['port'];
-$cmd=$_POST['cmd'];
+function getarg($key){
+  $res=$_POST[$key] ;
+  $res=($res) ? $res : $_GET[$key];
+  return $res;
+}
+$port=(int)getarg('port');
+$cmd=getarg('cmd');
 $soc=socket_create(AF_INET,SOCK_DGRAM,SOL_UDP);
 $msg='["'+$cmd+'"]';
 $len=strlen($msg);

@@ -6,114 +6,126 @@
         <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
         </item>
-        <item id="x0on" label="X0 ON">
-          <frmcmd name="getstat"/>
-          <frmcmd name="set">
-            <argv>stat</argv>
-            <argv>${stat}|0x01</argv>
-          </frmcmd>
-          <frmcmd name="outfld" />
-          <frmcmd name="getstat" />
-        </item>
-        <item id="x0off" label="X0 OFF">
-          <frmcmd name="getstat" />
-          <frmcmd name="set">
-            <argv>stat</argv>
-            <argv>${stat}&amp;0xfffe</argv>
-          </frmcmd>
-          <frmcmd name="outfld" />
-          <frmcmd name="getstat" />
-        </item>
-        <item id="x1on" label="X1 ON">
-          <frmcmd name="getstat" />
-          <frmcmd name="set">
-            <argv>stat</argv>
-            <argv>${stat}|0x10</argv>
-          </frmcmd>
-          <frmcmd name="outfld" />
-          <frmcmd name="getstat" />
-        </item>
-        <item id="x1off" label="X1 OFF">
-          <frmcmd name="getstat" />
-          <frmcmd name="set">
-            <argv>stat</argv>
-            <argv>${stat}&amp;0xffef</argv>
-          </frmcmd>
-          <frmcmd name="outfld" />
-          <frmcmd name="getstat" />
-        </item>
-        <item id="x2on" label="X2 ON">
-          <frmcmd name="getstat" />
-          <frmcmd name="set">
-            <argv>stat</argv>
-            <argv>${stat}|0x100</argv>
-          </frmcmd>
-          <frmcmd name="outfld" />
-          <frmcmd name="getstat" />
-        </item>
-        <item id="x2off" label="X2 OFF">
-          <frmcmd name="getstat" />
-          <frmcmd name="set">
-            <argv>stat</argv>
-            <argv>${stat}&amp;0xfeff</argv>
-          </frmcmd>
-          <frmcmd name="outfld" />
-          <frmcmd name="getstat" />
-        </item>
-        <item id="x3on" label="X3 ON">
-          <frmcmd name="getstat" />
-          <frmcmd name="set">
-            <argv>stat</argv>
-            <argv>${stat}|0x1000</argv>
-          </frmcmd>
-          <frmcmd name="outfld" />
-          <frmcmd name="getstat" />
-        </item>
-        <item id="x3off" label="X3 OFF">
-          <frmcmd name="getstat" />
-          <frmcmd name="set">
-            <argv>stat</argv>
-            <argv>${stat}&amp;0xefff</argv>
-          </frmcmd>
-          <frmcmd name="outfld" />
-          <frmcmd name="getstat" />
-        </item>
-        <item id="x01on" label="X0 and X1 ON">
-          <frmcmd name="getstat" />
-          <frmcmd name="set">
-            <argv>stat</argv>
-            <argv>${stat}|0x0011</argv>
-          </frmcmd>
-          <frmcmd name="outfld" />
-          <frmcmd name="getstat" />
-        </item>
-        <item id="x01off" label="X0 and X1 OFF">
-          <frmcmd name="getstat" />
-          <frmcmd name="set">
-            <argv>stat</argv>
-            <argv>${stat}&amp;0xffee</argv>
-          </frmcmd>
-          <frmcmd name="outfld" />
-          <frmcmd name="getstat" />
-        </item>
-        <item id="x23on" label="X2 and X3 ON">
-          <frmcmd name="getstat" />
-          <frmcmd name="set">
-            <argv>stat</argv>
-            <argv>${stat}|0x1100</argv>
-          </frmcmd>
-          <frmcmd name="outfld" />
-          <frmcmd name="getstat" />
-        </item>
-        <item id="x23off" label="X2 and X3 OFF">
-          <frmcmd name="getstat" />
-          <frmcmd name="set">
-            <argv>stat</argv>
-            <argv>${stat}&amp;0xeeff</argv>
-          </frmcmd>
-          <frmcmd name="outfld" />
-          <frmcmd name="getstat" />
-        </item>
+        <unit id='x0' label="X0">
+          <item id="x0on" label="ON">
+            <frmcmd name="getstat"/>
+            <frmcmd name="set">
+              <argv>stat</argv>
+              <argv>${stat}|0x01</argv>
+            </frmcmd>
+            <frmcmd name="outfld" />
+            <frmcmd name="getstat" />
+          </item>
+          <item id="x0off" label="OFF">
+            <frmcmd name="getstat" />
+            <frmcmd name="set">
+              <argv>stat</argv>
+              <argv>${stat}&amp;0xfffe</argv>
+            </frmcmd>
+            <frmcmd name="outfld" />
+            <frmcmd name="getstat" />
+          </item>
+        </unit>
+        <unit id='x1' label="X1">
+          <item id="x1on" label="ON">
+            <frmcmd name="getstat" />
+            <frmcmd name="set">
+              <argv>stat</argv>
+              <argv>${stat}|0x10</argv>
+            </frmcmd>
+            <frmcmd name="outfld" />
+            <frmcmd name="getstat" />
+          </item>
+          <item id="x1off" label="OFF">
+            <frmcmd name="getstat" />
+            <frmcmd name="set">
+              <argv>stat</argv>
+              <argv>${stat}&amp;0xffef</argv>
+            </frmcmd>
+            <frmcmd name="outfld" />
+            <frmcmd name="getstat" />
+          </item>
+        </unit>
+        <unit id='x2' label="X2">
+          <item id="x2on" label="ON">
+            <frmcmd name="getstat" />
+            <frmcmd name="set">
+              <argv>stat</argv>
+              <argv>${stat}|0x100</argv>
+            </frmcmd>
+            <frmcmd name="outfld" />
+            <frmcmd name="getstat" />
+          </item>
+          <item id="x2off" label="OFF">
+            <frmcmd name="getstat" />
+            <frmcmd name="set">
+              <argv>stat</argv>
+              <argv>${stat}&amp;0xfeff</argv>
+            </frmcmd>
+            <frmcmd name="outfld" />
+            <frmcmd name="getstat" />
+          </item>
+        </unit>
+        <unit id='x3' label="X3">
+          <item id="x3on" label="ON">
+            <frmcmd name="getstat" />
+            <frmcmd name="set">
+              <argv>stat</argv>
+              <argv>${stat}|0x1000</argv>
+            </frmcmd>
+            <frmcmd name="outfld" />
+            <frmcmd name="getstat" />
+          </item>
+          <item id="x3off" label="OFF">
+            <frmcmd name="getstat" />
+            <frmcmd name="set">
+              <argv>stat</argv>
+              <argv>${stat}&amp;0xefff</argv>
+            </frmcmd>
+            <frmcmd name="outfld" />
+            <frmcmd name="getstat" />
+          </item>
+        </unit>
+        <unit id='x01' label="X0 and X1">
+          <item id="x01on" label="ON">
+            <frmcmd name="getstat" />
+            <frmcmd name="set">
+              <argv>stat</argv>
+              <argv>${stat}|0x0011</argv>
+            </frmcmd>
+            <frmcmd name="outfld" />
+            <frmcmd name="getstat" />
+          </item>
+          <item id="x01off" label="OFF">
+            <frmcmd name="getstat" />
+            <frmcmd name="set">
+              <argv>stat</argv>
+              <argv>${stat}&amp;0xffee</argv>
+            </frmcmd>
+            <frmcmd name="outfld" />
+            <frmcmd name="getstat" />
+          </item>
+        </unit>        
+        <unit id='x23' label="X2 and X3">
+          <item id="x23on" label="ON">
+            <frmcmd name="getstat" />
+            <frmcmd name="set">
+              <argv>stat</argv>
+              <argv>${stat}|0x1100</argv>
+            </frmcmd>
+            <frmcmd name="outfld" />
+            <frmcmd name="getstat" />
+          </item>
+          <item id="x23off" label="OFF">
+            <frmcmd name="getstat" />
+            <frmcmd name="set">
+              <argv>stat</argv>
+              <argv>${stat}&amp;0xeeff</argv>
+            </frmcmd>
+            <frmcmd name="outfld" />
+            <frmcmd name="getstat" />
+          </item>
+        </unit>
       </group>
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">

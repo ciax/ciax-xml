@@ -6,15 +6,17 @@
         <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
         </item>
-        <item id="set1v" label="Set Range +-1.2V">
-          <frmcmd name="setr1" />
-        </item>
-        <item id="set6v" label="Set Range +-6V(output is +-3V for moircs hall sensor)">
-          <frmcmd name="setr6" />
-        </item>
-        <item id="set15v" label="Set Range +-15V">
-          <frmcmd name="setr15" />
-        </item>
+        <unit id="setr" label="Set Range">
+          <item id="set1v" label="+-1.2V">
+            <frmcmd name="setr1" />
+          </item>
+          <item id="set6v" label="+-6V(output is +-3V for moircs hall sensor)">
+            <frmcmd name="setr6" />
+          </item>
+          <item id="set15v" label="+-15V">
+            <frmcmd name="setr15" />
+          </item>
+        </unit>
       </group>
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="fpa">

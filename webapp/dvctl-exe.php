@@ -1,8 +1,21 @@
 <?php
 function getarg($key){
-  $res=$_POST[$key] ;
-  $res=($res) ? $res : $_GET[$key];
+  global $args;
+  $res=(isset($_POST[$key])) ? $_POST[$key] :
+    (
+      (isset($_GET[$key])) ? $_GET[$key] :
+        (
+          (isset($args[$key])) ? $args[$key] : null
+        )
+    );
   return $res;
+}
+$args=array();
+foreach($argv as &$e){
+  $ary=split("=",$e);
+  if(count($ary)>1){
+    $args[$ary[0]]=$ary[1];
+  }
 }
 $site=getarg('site');
 $cmd=getarg('cmd');

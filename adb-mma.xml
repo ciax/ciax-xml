@@ -27,51 +27,55 @@
             <argv>0</argv>
           </frmcmd>
         </item>
-        <item id="set0" label="Set 0 Pulses">
-          <frmcmd name="set0" />
-        </item>
-        <item id="ini" label="Goto Initial Position">
-          <frmcmd name="jn"/>
-          <frmcmd name="bs" />
-        </item>
-        <item id="gf" label="Goto Focal Position">
-          <frmcmd name="ma">
-            <argv>12.8</argv>
-          </frmcmd>
-          <frmcmd name="bs" />
-        </item>
-        <item id="gr" label="Goto Rotate Position">
+        <unit id="setp" label="Set Puls">
+          <item id="set0" label="0">
+            <frmcmd name="set0" />
+          </item>
+          <item id="sets" label="Stock Pos">
+            <frmcmd name="setp">
+              <argv>200.44</argv>
+            </frmcmd>
+          </item>
+          <item id="setr" label="Rotate Pos">
+            <frmcmd name="setp">
+              <argv>123</argv>
+            </frmcmd>
+            <frmcmd name="bs" />
+          </item>
+        </unit>
+        <unit id="go" label="Goto Pos"> 
+          <item id="ini" label="Initial">
+            <frmcmd name="jn"/>
+            <frmcmd name="bs" />
+          </item>
+          <item id="gf" label="Focal">
+            <frmcmd name="ma">
+              <argv>12.8</argv>
+            </frmcmd>
+            <frmcmd name="bs" />
+          </item>
+          <item id="gr" label="Rotate">
           <frmcmd name="ma">
             <argv>123</argv>
           </frmcmd>
           <frmcmd name="bs" />
-        </item>
-        <item id="gw" label="Goto Waiting Position">
-          <frmcmd name="ma">
-            <argv>185</argv>
-          </frmcmd>
-          <frmcmd name="bs" />
-        </item>
-        <item id="gs" label="Goto Stock Position">
-          <frmcmd name="jp"/>
-          <frmcmd name="bs" />
-        </item>
-        <item id="sets" label="Set Stock Pos Pulse">
-          <frmcmd name="setp">
-            <argv>200.44</argv>
-          </frmcmd>
-        </item>
+          </item>
+          <item id="gw" label="Waiting">
+            <frmcmd name="ma">
+              <argv>185</argv>
+            </frmcmd>
+            <frmcmd name="bs" />
+          </item>
+          <item id="gs" label="Stock">
+            <frmcmd name="jp"/>
+            <frmcmd name="bs" />
+          </item>
+        </unit>
         <item id="rini" label="Init to RP at AV">
           <frmcmd name="e2">
             <argv>1</argv>
           </frmcmd>
           <frmcmd name="mhn"/>
-        </item>
-        <item id="setr" label="Set Rotate Pos Pulse">
-          <frmcmd name="setp">
-            <argv>123</argv>
-          </frmcmd>
-          <frmcmd name="bs" />
         </item>
         <item id="stop" label="Stop Run" hidden="true">
           <frmcmd name="stop" />

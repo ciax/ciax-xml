@@ -43,6 +43,7 @@ module CIAX
             e0.each{|e1|
               id=arc_command(e1,idx)
               (units[uid][:members]||=[]) << id
+              idx[id]['unit']=uid
               (grp[:members]||=[]) << id
             }
           when 'item'

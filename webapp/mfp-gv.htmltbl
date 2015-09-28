@@ -8,5 +8,8 @@
 <td class="center">
   <input class="button" type="button" value="CLOSE" onclick="dvctl(&quot;gc&quot;)"/>
 </td>
+<td class="center">
+  <input class="button" type="button" value="UPD" onclick="dvctl(&quot;upd&quot;)"/>
+</td>
 </tr>
 </tbody></table>

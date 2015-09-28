@@ -8,14 +8,14 @@
           <frmcmd name="getstat2" />
         </item>
         <unit id="rh" label="Robohand All">
-          <item id="ro" label="Robohand All Open">
+          <item id="ro" label="Open">
             <frmcmd name="putdata">
               <argv>0x3c</argv>
               <argv>0x28</argv>
             </frmcmd>
             <frmcmd name="getstat" />
           </item>
-          <item id="rc" label="Robohand All Close">
+          <item id="rc" label="Close">
             <frmcmd name="putdata">
               <argv>0x3c</argv>
               <argv>0x14</argv>
@@ -24,14 +24,14 @@
           </item>
         </unit>
         <unit id="gv" label="Gate Valve">
-          <item id="go" label="Gate Valve Open">
+          <item id="go" label="Open">
             <frmcmd name="putdata">
               <argv>0xc0</argv>
               <argv>0x80</argv>
             </frmcmd>
             <frmcmd name="getstat" />
           </item>
-          <item id="gc" label="Gate Valve Close">
+          <item id="gc" label="Close">
             <frmcmd name="putdata">
               <argv>0xc0</argv>
               <argv>0x40</argv>
@@ -40,14 +40,14 @@
           </item>
         </unit>
         <unit id="ar" label="Arm Rotation">
-          <item id="av" label="Arm Vertical">
+          <item id="av" label="Vertical">
             <frmcmd name="putdata">
               <argv>0x3000</argv>
               <argv>0x2000</argv>
             </frmcmd>
             <frmcmd name="getstat" />
           </item>
-          <item id="ah" label="Arm Horizontal">
+          <item id="ah" label="Horizontal">
             <frmcmd name="putdata">
               <argv>0x3000</argv>
               <argv>0x1000</argv>
@@ -56,14 +56,14 @@
           </item>
         </unit>
         <unit id="ag" label="Arm Gripper">
-          <item id="ao" label="Arm Open">
+          <item id="ao" label="Open">
             <frmcmd name="putdata">
               <argv>0xc00</argv>
               <argv>0x800</argv>
             </frmcmd>
             <frmcmd name="getstat" />
           </item>
-          <item id="ac" label="Arm Close">
+          <item id="ac" label="Close">
             <frmcmd name="putdata">
               <argv>0xc00</argv>
               <argv>0x400</argv>
@@ -71,15 +71,17 @@
             <frmcmd name="getstat" />
           </item>
         </unit>
-        <item id="save" label="Save Output">
-          <frmcmd name="save"/>
-        </item>
-        <item id="load" label="Load Output(Caution! Move)">
-          <frmcmd name="load">
-            <argv>latest</argv>
-          </frmcmd>
-          <frmcmd name="putfield"/>
-        </item>
+        <unit id="file" label="Output Status">
+          <item id="save" label="Save">
+            <frmcmd name="save"/>
+          </item>
+          <item id="load" label="Load(Caution! Move)">
+            <frmcmd name="load">
+              <argv>latest</argv>
+            </frmcmd>
+            <frmcmd name="putfield"/>
+          </item>
+        </unit>
       </group>
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="cfp">

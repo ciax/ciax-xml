@@ -81,6 +81,8 @@ module CIAX
             gat[:members].each{|id|
               item=idx[id]
               label=item['label']
+              unit=item['unit']
+              label="#{cdb[:unit][unit]['label']} #{label}" if unit
               add_item(id,label,item)
             }
           }

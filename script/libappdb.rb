@@ -24,38 +24,55 @@ module CIAX
       def init_command(doc,db)
         adbc=doc[:domain]['command']
         idx={}
-        grp={}
+        grps={}
+        units={}
         adbc.each{|e|
           Msg.abort("No group in adbc") unless e.name == 'group'
-          gid=e.attr2item(grp)
-          arc_command(e,idx,grp[gid])
+          gid=e.attr2item(grps)
+          arc_unit(e,idx,grps[gid],units)
         }
-        db[:command]={:group => grp,:index => idx}
+        db[:command]={:group => grps,:index => idx}
+        db[:command][:unit]=units unless units.empty?
       end
 
-      def arc_command(e,idx,grp)
+      def arc_unit(e,idx,grp,units)
         e.each{|e0|
-          id=e0.attr2item(idx)
-          item=idx[id]
-          (grp[:members]||=[]) << id
-          Repeat.new.each(e0){|e1,rep|
-            par2item(e1,item) && next
-            case e1.name
-            when 'frmcmd'
-              command=[e1['name']]
-              e1.each{|e2|
-                argv=e2.to_h
-                argv['val'] = rep.subst(e2.text)
-                if /\$/ !~ argv['val'] && fmt=argv.delete('format')
-                  argv['val']=fmt % eval(argv['val'])
-                end
-                command << argv
-              }
-              (item[:body]||=[]) << command
-            end
-          }
+          case e0.name
+          when 'unit'
+            uid=e0.attr2item(units)
+            e0.each{|e1|
+              id=arc_command(e1,idx)
+              (units[uid][:members]||=[]) << id
+              (grp[:members]||=[]) << id
+            }
+          when 'item'
+            id=arc_command(e0,idx)
+            (grp[:members]||=[]) << id
+          end
         }
         idx
+      end
+
+      def arc_command(e0,idx)
+        id=e0.attr2item(idx)
+        item=idx[id]
+        Repeat.new.each(e0){|e1,rep|
+          par2item(e1,item) && next
+          case e1.name
+          when 'frmcmd'
+            command=[e1['name']]
+            e1.each{|e2|
+              argv=e2.to_h
+              argv['val'] = rep.subst(e2.text)
+              if /\$/ !~ argv['val'] && fmt=argv.delete('format')
+                argv['val']=fmt % eval(argv['val'])
+              end
+              command << argv
+            }
+            (item[:body]||=[]) << command
+          end
+        }
+        id
       end
 
       # Status Db

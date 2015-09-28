@@ -7,7 +7,7 @@ tmpfile="$dir/temp"
 for id; do
     file=$dir/$id.html
     libhtmltbl $id > $tmpfile || break
-    html-enclose < $tmpfile > $file
+    html-enclose $id < $tmpfile > $file
     echo "$file created"
 done
 rm $tmpfile

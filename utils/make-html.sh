@@ -1,28 +1,13 @@
 #!/bin/bash
 JQUERY=1.7.2
-[ "$1" ] || { libhtmltbl; exit; }
+[ "$1" ] || { echo "Usage: make-html [site].."; exit; }
 setup-www
 dir=$HOME/.var/json
 tmpfile="$dir/temp"
 for id; do
     file=$dir/$id.html
     libhtmltbl $id > $tmpfile || break
-    cat > $file <<EOF
-<html>
-<head>
-<title>CIAX-XML</title>
-<link rel="stylesheet" type="text/css" href="ciax-xml.css" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script type="text/javascript">var Type="status",Site="$id";</script>
-<script type="text/javascript" src="ciax-xml.js"></script>
-</head>
-<body>
-EOF
-    cat $tmpfile >> $file
-    cat >> $file <<EOF
-</body>
-</html>
-EOF
-echo "$file created"
+    html-enclose < $tmpfile > $file
+    echo "$file created"
 done
 rm $tmpfile

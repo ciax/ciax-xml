@@ -39,27 +39,25 @@ module CIAX
 
     def get_ctl(unitary)
       uidx=@dbi[:command][:unit] || return
-      lines=[]
+      push "<table><tbody>"
+      push "<tr>"
+      push '<th colspan="6">Controls</th></tr>'
+      push "<tr>"
       unitary.each{|unit|
         if udb=uidx[unit]
-          lines << '<td class="item">'
-          lines << '<span class="ctllabel">'+udb['label']+'</span>'
-          lines << '<span class="center">'
+          push '<td class="item">'
+          push '<span class="ctllabel">'+udb['label']+'</span>'
           udb[:members].each{|id|
+            push '<span class="center">'
             label=@dbi[:command][:index][id]['label'].upcase
-            lines << '<input class="button" type="button" value="'+label+'" onclick="dvctl('+"'#{id}'"+')"/>'
+            push '<input class="button" type="button" value="'+label+'" onclick="dvctl('+"'#{id}'"+')"/>'
+            push "</span>"
           }
-          lines << "</span></td>"
+          push "</td>"
         else
           abort("Wrong CTL Unit\n"+uidx.map{|k,v| item(k,v['label'])}.join("\n"))
         end
       }
-      return self if lines.empty?
-      push "<table><tbody>"
-      push "<tr>"
-      push '<th colspan="6">Controls</th></tr>'
-      push  "<tr>"
-      concat(lines)
       push "</tr>"
       push "</tbody></table>"
       self

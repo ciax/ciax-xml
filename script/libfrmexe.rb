@@ -51,7 +51,7 @@ module CIAX
       def ext_test
         @mode='TEST'
         @stat.ext_file
-        @cobj.rem.ext.def_proc{|ent| ent.path}
+        @cobj.rem.ext.def_proc{|ent| 'TEST'}
         @cobj.get('set').def_proc{|ent|
           @stat.rep(ent.par[0],ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"

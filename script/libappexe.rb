@@ -51,7 +51,7 @@ module CIAX
         @cobj.get('interrupt').def_proc{|ent|
           "INTERRUPT(#{@batch_interrupt})"
         }
-        @cobj.rem.ext.def_proc{|ent| ent.path}
+        @cobj.rem.ext.def_proc{|ent| 'TEST'}
         ext_share
       end
 

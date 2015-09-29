@@ -39,7 +39,7 @@ module CIAX
 
     def get_ctl(unit)
       uidx=@dbi[:command][:unit] || return
-      udb=uidx[unit]
+      udb=uidx[unit]||abort(uidx.map{|k,v| item(k,v['label'])}.join("\n"))
       cap=udb['label']+' Control'
       push "<table><tbody>"
       push  "<tr><th colspan=\"6\">#{cap}</th></tr>"
@@ -78,14 +78,16 @@ module CIAX
   if __FILE__ == $0
     require "libinsdb"
     id=ARGV.shift
-    unit=ARGV.shift
     begin
       dbi=Ins::Db.new.get(id)
     rescue InvalidID
       Msg.usage "[id] (ctl)"
     end
-    tbl=HtmlTbl.new(dbi).get_stat
-    tbl.get_ctl(unit) if unit
+    tbl=HtmlTbl.new(dbi)
+    tbl.get_stat
+    ARGV.each{|unit|
+      tbl.get_ctl(unit)
+    }
     puts tbl.fin
   end
 end

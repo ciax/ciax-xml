@@ -45,8 +45,8 @@ function dvctl(cmd){
         {port: Port, cmd : cmd},
         function(data){
             alert($.parseJSON(data).msg);
+            update();
         }
     );
-    update();
 }
 $(document).ready(init);

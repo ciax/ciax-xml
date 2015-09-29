@@ -47,5 +47,6 @@ function dvctl(cmd){
             alert($.parseJSON(data).msg);
         }
     );
+    update();
 }
 $(document).ready(init);

@@ -1,5 +1,5 @@
 body{
-    background-image : url(/bg-1.jpg);
+    background-image : url(/json/bg-1.jpg);
     background-repeat : repeat;
     background-attachment : fixed;
     color : #000066;
@@ -49,7 +49,7 @@ th{
     color : purple;
 }
 .button{
-    font-size: 5em;
+    font-size: 2em;
     font-weight: bold;
 }
 .center{

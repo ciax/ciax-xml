@@ -64,6 +64,7 @@ module CIAX
       def auto_update
         reg=(@stat.dbi[:watch]||{})[:regular]||return
         period=reg['period'].to_i
+        period= period > 1 ? period : 300
         @stat.next_upd(period)
         ThreadLoop.new("Watch:Auto(#@id)",14){
           if @stat.get('exec').empty?

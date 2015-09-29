@@ -5,16 +5,53 @@ module CIAX
   class HtmlTbl < Array
     include Msg
     def initialize(dbi)
-      adbs=type?(dbi,Dbi)[:status]
+      @dbi=type?(dbi,Dbi)
+      push '<html>'
+      push '<head>'
+      push '<title>CIAX-XML</title>'
+      push '<link rel="stylesheet" type="text/css" href="ciax-xml.css" />'
+      push '<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>'
+      push '<script type="text/javascript">var Type="status",Site="'+@dbi['id']+'",Port="'+@dbi['port']+'";</script>'
+      push '<script type="text/javascript" src="ciax-xml.js"></script>'
+      push '</head>'
+      push '<body>'
+      push '<div class="outline">'
+      push '<div class="title">'+@dbi['label']+'</div>'
+    end
+
+    def fin
+      push '</div>'
+      push '</body>'
+      push '</html>'
+      self
+    end
+
+    def get_stat
+      adbs=@dbi[:status]
       @index=adbs[:index]
-      push "<div class=\"outline\">"
-      push "<div class=\"title\">#{dbi['label']}</div>"
       get_element(['time','elapsed'],'',2)
       adbs[:group].each{|k,g|
         cap=g["caption"] || next
         get_element(g[:members],cap,g["column"])
       }
-      push "</div>"
+      self
+    end
+
+    def get_ctl(unit)
+      uidx=@dbi[:command][:unit] || return
+      udb=uidx[unit]
+      cap=udb['label']+' Control'
+      push "<table><tbody>"
+      push  "<tr><th colspan=\"6\">#{cap}</th></tr>"
+      udb[:members].each{|id|
+        label=@dbi[:command][:index][id]['label'].upcase
+        push '<td class="center">'
+        push '<input class="button" type="button" value="'+label+'" onclick="dvctl('+"'#{id}'"+')"/>'
+        push "</td>"
+      }
+      push "</tr>"
+      push "</tbody></table>"
+      self
     end
 
     private
@@ -41,11 +78,14 @@ module CIAX
   if __FILE__ == $0
     require "libinsdb"
     id=ARGV.shift
+    unit=ARGV.shift
     begin
       dbi=Ins::Db.new.get(id)
     rescue InvalidID
-      Msg.usage "[id]"
+      Msg.usage "[id] (ctl)"
     end
-    puts HtmlTbl.new(dbi)
+    tbl=HtmlTbl.new(dbi).get_stat
+    tbl.get_ctl(unit) if unit
+    puts tbl.fin
   end
 end

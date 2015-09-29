@@ -16,7 +16,6 @@ module CIAX
       # Stat no changed -> clear exec, no eval
       def ext_rsp(stat)
         @stat=type?(stat,App::Status)
-        set_dbi(stat.dbi)
         wdb=@dbi[:watch]||{}
         @windex=wdb[:index]||{}
         @interval=wdb['interval'].to_f if wdb.key?('interval')

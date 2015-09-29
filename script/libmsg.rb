@@ -57,6 +57,7 @@ module CIAX
     @@base=1
     # Public Method
     def verbose(title,*data)
+      return unless ver?
       # block takes array (shown by each line)
       # Description of values
       #   [val] -> taken from  xml (criteria)

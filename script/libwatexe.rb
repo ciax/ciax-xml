@@ -11,10 +11,11 @@ module CIAX
         super(id,cfg)
         @sub=@cfg[:sub_list].get(@id)
         @cobj.add_rem(@sub.cobj.rem)
-        @stat=Event.new.ext_rsp(@sub.stat)
+        @stat=Event.new.set_dbi(@dbi)
         @sv_stat=@sub.sv_stat.add_db('auto'=>'@','watch'=>'&')
         @sub.batch_interrupt=@stat.get('int')
         @mode=@sub.mode
+        @host=@sub.host
         opt_mode
       end
 
@@ -56,7 +57,7 @@ module CIAX
           @cobj.rem.ext.valid_sub(block)
         }
         @sub.pre_exe_procs << proc{|args| @stat.block?(args) }
-        @stat.ext_file
+        @stat.ext_rsp(@sub.stat).ext_file
         self
       end
 

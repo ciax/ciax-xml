@@ -34,7 +34,7 @@ module CIAX
 
       def ext_driver
         ext_non_client
-        @stat.ext_log if $opt['e'] && @sub.stat['ver']
+        @stat.ext_log if $opt['e']
         @stat.post_upd_procs << proc{|ev|
           ev.get('exec').each{|src,pri,args|
             verbose("Executing:#{args} from [#{src}] by [#{pri}]")

@@ -124,6 +124,7 @@ module CIAX
           }
         }
       }
+      self
     end
   end
 end

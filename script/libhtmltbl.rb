@@ -51,7 +51,7 @@ module CIAX
           }
           lines << "</span></td>"
         else
-          warn(uidx.map{|k,v| item(k,v['label'])}.join("\n"))
+          abort("Wrong CTL Unit\n"+uidx.map{|k,v| item(k,v['label'])}.join("\n"))
         end
       }
       return self if lines.empty?

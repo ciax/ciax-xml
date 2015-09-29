@@ -1,13 +1,9 @@
 #!/bin/bash
-JQUERY=1.7.2
-[ "$1" ] || { echo "Usage: make-html [site].."; exit; }
+[ "$1" ] || { echo "Usage: make-html [site] [ctlunit].."; exit; }
 setup-www
+id=$1
+shift
 dir=$HOME/.var/json
-tmpfile="$dir/temp"
-for id; do
-    file=$dir/$id.html
-    libhtmltbl $id > $tmpfile || break
-    html-enclose $id < $tmpfile > $file
-    echo "$file created"
-done
-rm $tmpfile
+file=$dir/$id.html
+libhtmltbl $id $* > $file
+echo "$file created"

@@ -37,18 +37,29 @@ module CIAX
       self
     end
 
-    def get_ctl(unit)
+    def get_ctl(unitary)
       uidx=@dbi[:command][:unit] || return
-      udb=uidx[unit]||abort(uidx.map{|k,v| item(k,v['label'])}.join("\n"))
-      cap=udb['label']+' Control'
-      push "<table><tbody>"
-      push  "<tr><th colspan=\"6\">#{cap}</th></tr>"
-      udb[:members].each{|id|
-        label=@dbi[:command][:index][id]['label'].upcase
-        push '<td class="center">'
-        push '<input class="button" type="button" value="'+label+'" onclick="dvctl('+"'#{id}'"+')"/>'
-        push "</td>"
+      lines=[]
+      unitary.each{|unit|
+        if udb=uidx[unit]
+          lines << '<td class="item">'
+          lines << '<span class="ctllabel">'+udb['label']+'</span>'
+          lines << '<span class="center">'
+          udb[:members].each{|id|
+            label=@dbi[:command][:index][id]['label'].upcase
+            lines << '<input class="button" type="button" value="'+label+'" onclick="dvctl('+"'#{id}'"+')"/>'
+          }
+          lines << "</span></td>"
+        else
+          warn(uidx.map{|k,v| item(k,v['label'])}.join("\n"))
+        end
       }
+      return self if lines.empty?
+      push "<table><tbody>"
+      push "<tr>"
+      push '<th colspan="6">Controls</th></tr>'
+      push  "<tr>"
+      concat(lines)
       push "</tr>"
       push "</tbody></table>"
       self
@@ -85,9 +96,7 @@ module CIAX
     end
     tbl=HtmlTbl.new(dbi)
     tbl.get_stat
-    ARGV.each{|unit|
-      tbl.get_ctl(unit)
-    }
+    tbl.get_ctl(ARGV)
     puts tbl.fin
   end
 end

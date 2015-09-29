@@ -48,8 +48,15 @@ th{
 .active{
     color : purple;
 }
+.ctllabel{
+    border : 2px outset;
+    text-align : center;
+    color : blue;
+    font-size: large;
+    font-weight: bold;
+}
 .button{
-    font-size: 2em;
+    font-size: large;
     font-weight: bold;
 }
 .center{

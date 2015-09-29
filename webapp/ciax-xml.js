@@ -41,10 +41,10 @@ function init(){
 }
 function dvctl(cmd){
     $.post(
-        "/json/dvctl-exe.php",
-        {site: Site, cmd : cmd},
+        "/json/dvctl-udp.php",
+        {port: Port, cmd : cmd},
         function(data){
-            alert("Data Loaded: "+data);
+            alert($.parseJSON(data).msg);
         }
     );
 }

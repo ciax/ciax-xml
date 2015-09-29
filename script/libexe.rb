@@ -23,9 +23,9 @@ module CIAX
       @id=id
       @layer=class_path.first.downcase
       @sv_stat=Prompt.new # Site Status shared among layers
-      @pre_exe_procs=[] # Proc for Server Command (by User query)
-      @post_exe_procs=[] # Proc for Server Status Update (by User query)
-      @terminate_procs=[] # Proc for program terminated
+      @pre_exe_procs=[proc{verbose("Processing PreExeProcs")}] # Proc for Server Command (by User query)
+      @post_exe_procs=[proc{verbose("Processing PostExeProcs")}] # Proc for Server Status Update (by User query)
+      @terminate_procs=[proc{verbose("Processing TerminateProcs")}] # Proc for program terminated
       Thread.abort_on_exception=true
       verbose("initialize [#{@id}]")
       @dbi=@cfg[:dbi]=type?(@cfg[:db].get(id),Dbi) if @cfg.key?(:db)

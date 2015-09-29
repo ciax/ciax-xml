@@ -24,7 +24,7 @@ module CIAX
         @cobj.rem.add_ext(Ext)
         # Post internal command procs
         # Proc for Terminate process of each individual commands
-        @flush_procs=[]
+        @flush_procs=[proc{verbose("Processing FlushProcs")}]
         @host||=@dbi['host']
         @port||=@dbi['port']
         opt_mode

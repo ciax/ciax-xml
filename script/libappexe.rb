@@ -52,7 +52,7 @@ module CIAX
           "INTERRUPT(#{@batch_interrupt})"
         }
         @cobj.rem.ext.def_proc{|ent| 'TEST'}
-        ext_share
+        ext_non_client
       end
 
       def ext_driver
@@ -77,10 +77,10 @@ module CIAX
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
           'INTERRUPT'
         }
-        ext_share
+        ext_non_client
       end
 
-      def ext_share
+      def ext_non_client
         @cobj.get('set').def_proc{|ent|
           @stat.rep(ent.par[0],ent.par[1])
           "SET:#{ent.par[0]}=#{ent.par[1]}"

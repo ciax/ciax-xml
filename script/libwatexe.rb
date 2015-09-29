@@ -29,11 +29,11 @@ module CIAX
 
       private
       def ext_test
-        ext_share
+        ext_non_client
       end
 
       def ext_driver
-        ext_share
+        ext_non_client
         @stat.ext_log if $opt['e'] && @sub.stat['ver']
         @stat.post_upd_procs << proc{|ev|
           ev.get('exec').each{|src,pri,args|
@@ -49,7 +49,7 @@ module CIAX
         self
       end
 
-      def ext_share
+      def ext_non_client
         @stat.post_upd_procs << proc{|ev|
           verbose("Propagate Event#upd -> upd")
           @sv_stat.put('watch',ev.active?)

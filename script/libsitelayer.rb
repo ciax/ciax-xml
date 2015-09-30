@@ -29,7 +29,7 @@ module CIAX
             sl=get(id).ext_shell
             @jumpgrp.add_item(id,id.capitalize+" mode")
           }
-          @current=$opt.layer||keys.first
+          @current||=$opt.layer||keys.first
           self
         end
       end

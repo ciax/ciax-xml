@@ -8,7 +8,7 @@ module CIAX
     # attr can have [:top_layer]
     class Layer < Site::Layer
       def initialize(attr={})
-        super(:top_layer => Wat::List)
+        super
         put('mcr',Man::Exe.new(@cfg,{:dev_list => get('app')}))
         @current='mcr'
       end

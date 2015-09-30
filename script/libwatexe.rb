@@ -39,8 +39,8 @@ module CIAX
           ev.get('exec').each{|src,pri,args|
             verbose{"Executing:#{args} from [#{src}] by [#{pri}]"}
             @sub.exe(args,src,pri)
+            sleep ev.interval
           }.clear
-          sleep ev.interval
         }
         @tid_auto=auto_update
         @post_exe_procs << proc{

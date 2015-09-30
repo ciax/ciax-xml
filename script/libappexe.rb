@@ -88,8 +88,6 @@ module CIAX
         buf.post_upd_procs << proc{
           verbose{"Propagate Buffer#upd -> Status#upd"}
           @stat.upd
-          sleep(0.1)
-          # Auto issue by watch
         }
         @sub.stat.flush_procs << proc{
           verbose{"Propagate Field#flush -> Buffer#upd"}

@@ -29,6 +29,7 @@
       <xsd:attribute name="stream_ver" type="xsd:int" />
       <xsd:attribute name="label" type="xsd:token" />
       <xsd:attribute name="reference" type="xsd:anyURI" />
+      <!--waiting time between sending and recieving-->
       <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>
       <xsd:attribute name="timeout" type="xsd:int"></xsd:attribute>
       <xsd:attribute name="maxlength" type="xsd:int" />

@@ -324,7 +324,7 @@
         </repeat_var>
       </group>
     </status>
-    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.01">
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.1">
       <regular period="3600" label="Finish Run">
         <exec name="sysupd"/>
       </regular>

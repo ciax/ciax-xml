@@ -31,7 +31,7 @@
         <string id="auto" label="Auto update" symbol="warn" default="0"/>
       </group>
     </status>
-    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.01">
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.1">
       <event id="auto" label="Auto switch">
         <pattern var="auto">1</pattern>
         <exec name="upd"/>

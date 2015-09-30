@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
-require "libhexexe"
+require "libwatexe"
 
 module CIAX
-  GetOpts.new("afxtelch:")
+  GetOpts.new("elch:")
   cfg=Config.new
   cfg[:exe_mode]=true
-  sl=$opt.layer_list.new(cfg)
+  sl=Wat::List.new(cfg)
   puts sl.exe(ARGV)
 end

@@ -8,8 +8,7 @@ module CIAX
     class Layer < CIAX::List
       def initialize(attr={})
         super(Config.new,attr)
-        mod=@cfg[:top_layer]||=$opt.layer_list
-        obj=mod.new(@cfg)
+        obj=($opt['x'] ? Hex::List : Wat::List).new(@cfg)
         begin
           put(m2id(obj.class,-2),obj)
         end while obj=obj.sub_list
@@ -30,11 +29,7 @@ module CIAX
             sl=get(id).ext_shell
             @jumpgrp.add_item(id,id.capitalize+" mode")
           }
-          if layer=@cfg[:layer]
-            @current=layer
-          else
-            @current=keys.first
-          end
+          @current=$opt.layer||keys.first
           self
         end
       end

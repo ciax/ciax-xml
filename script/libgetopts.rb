@@ -5,13 +5,14 @@ module CIAX
   class GetOpts < Hash
     # str = valid option list (afch:)
     # db = addigional option db
+    attr_reader :layer
     def initialize(str='',db={})
       require 'optparse'
       Msg.type?(str,String)
       optdb={}
       #Layer
-      optdb['w']='wat layer (default)'
-      optdb['a']='app layer'
+      optdb['w']='wat layer'
+      optdb['a']='app layer(default)'
       optdb['f']='frm layer'
       optdb['x']='hex layer'
       #Client option
@@ -42,13 +43,9 @@ module CIAX
       }
       update(ARGV.getopts(str))
       # Set @layer (default 'Wat')
-      lopt=['x','a','f','w'].find{|c| self[c]}||'w'
-      @layer=optdb[lopt].split(' ').first.capitalize
+      lopt=['x','a','f','w'].find{|c| self[c]}||'a'
+      @layer=optdb[lopt].split(' ').first
       $opt=self
-    end
-
-    def layer_list
-      eval "#@layer::List"
     end
 
     def sv?

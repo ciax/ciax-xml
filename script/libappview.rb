@@ -19,7 +19,7 @@ module CIAX
           @index.update(adbs[:alias])
         end
         @stat.post_upd_procs << proc{
-          verbose("Propagate Status#upd -> upd")
+          verbose{"Propagate Status#upd -> upd"}
           upd
         }
         # Just additional data should be provided

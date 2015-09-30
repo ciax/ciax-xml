@@ -110,7 +110,7 @@ module CIAX
             else
               warning("No form specified")
             end
-            verbose("site=#{site},var=#{var},form=#{form},cmp=#{cmp},cri=#{cri},real=#{real}")
+            verbose{"site=#{site},var=#{var},form=#{form},cmp=#{cmp},cri=#{cri},real=#{real}"}
             cond['real']=real
             cond['res']=match?(real,cri,cond['cmp'])
           cond
@@ -123,7 +123,7 @@ module CIAX
 
       def scan
         sites.inject({}){|hash,site|
-          verbose("Scanning Status #{site}")
+          verbose{"Scanning Status #{site}"}
           hash[site]=@dev_list.get(site).stat
           hash
         }
@@ -131,7 +131,7 @@ module CIAX
 
       def refresh
         sites.each{|site|
-          verbose("Refresh Status #{site}")
+          verbose{"Refresh Status #{site}"}
           @dev_list.get(site).stat.refresh
         }
       end

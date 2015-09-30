@@ -37,7 +37,7 @@ module CIAX
         @stat.ext_log if $opt['e']
         @stat.post_upd_procs << proc{|ev|
           ev.get('exec').each{|src,pri,args|
-            verbose("Executing:#{args} from [#{src}] by [#{pri}]")
+            verbose{"Executing:#{args} from [#{src}] by [#{pri}]"}
             @sub.exe(args,src,pri)
           }.clear
           sleep ev.interval
@@ -51,7 +51,7 @@ module CIAX
 
       def ext_non_client
         @stat.post_upd_procs << proc{|ev|
-          verbose("Propagate Event#upd -> upd")
+          verbose{"Propagate Event#upd -> upd"}
           @sv_stat.put('watch',ev.active?)
           block=ev.get('block').map{|id,par| par ? nil : id}.compact
           @cobj.rem.ext.valid_sub(block)
@@ -68,7 +68,7 @@ module CIAX
         @stat.next_upd(period)
         ThreadLoop.new("Watch:Auto(#@id)",14){
           if @stat.get('exec').empty?
-            verbose("Auto Update(#{@sub.stat['time']})")
+            verbose{"Auto Update(#{@sub.stat['time']})"}
             begin
               @stat.queue('auto',3,reg[:exec])
             rescue InvalidID
@@ -78,7 +78,7 @@ module CIAX
             end
           end
           @stat.next_upd(period)
-          verbose("Auto Update Sleep(#{period}sec)")
+          verbose{"Auto Update Sleep(#{period}sec)"}
           sleep period
         }
       end

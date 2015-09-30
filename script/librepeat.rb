@@ -31,14 +31,14 @@ module CIAX
       res=str.gsub(/\$([_a-z])/){ @counter[$1] }
       res=res.split(':').map{|i| /\$/ =~ i ? i : eval(i)}.join(':')
       Msg.cfg_err("Empty String") if res == ''
-      verbose("Substitute [#{str}] to [#{res}]")
+      verbose{"Substitute [#{str}] to [#{res}]"}
       res
     end
 
     def format(str)
       return str unless /\$([_a-z])/ === str
       res=str.gsub(/\$([_a-z])/){ @format[$1] % @counter[$1] }
-      verbose("Format [#{str}] to [#{res}]")
+      verbose{"Format [#{str}] to [#{res}]"}
       res
     end
 

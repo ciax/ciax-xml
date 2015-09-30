@@ -55,14 +55,14 @@ module CIAX
 
     private
     def _getdata
-      verbose("Convert @data to [:data]")
+      verbose{"Convert @data to [:data]"}
       hash=Hashx.new(self)
       hash[@data_name]=@data
       hash
     end
 
     def _setdata
-      verbose("Convert [:data] to @data")
+      verbose{"Convert [:data] to @data"}
       @data=delete(@data_name).extend(Enumx)
       self['time']||=now_msec
       self
@@ -130,7 +130,7 @@ module CIAX
     require "open-uri"
     def ext_http(host)
       @host=host||'localhost'
-      verbose("Initialize(#{@host})")
+      verbose{"Initialize(#{@host})"}
       self['id']||Msg.cfg_err("ID")
       @pre_upd_procs << proc{load}
       load
@@ -141,7 +141,7 @@ module CIAX
       url=file_url(tag)
       json_str=''
       open(url){|f|
-        verbose("Loading url [#{url}](#{f.size})")
+        verbose{"Loading url [#{url}](#{f.size})"}
         json_str=f.read
       }
       if json_str.empty?
@@ -195,7 +195,7 @@ module CIAX
       fname=file_path(tag)
       json_str=''
       open(fname){|f|
-        verbose("Loading [#{base}](#{f.size})")
+        verbose{"Loading [#{base}](#{f.size})"}
         f.flock(::File::LOCK_SH)
         json_str=f.read
       }
@@ -203,7 +203,7 @@ module CIAX
         warning(" -- json file (#{base}) is empty at loading")
       else
         data=j2h(json_str)
-        verbose("Version compare [#{data['ver']}] vs. <#{self['ver']}>")
+        verbose{"Version compare [#{data['ver']}] vs. <#{self['ver']}>"}
         if data['ver'] == self['ver']
           @data.deep_update(data[@data_name])
         else

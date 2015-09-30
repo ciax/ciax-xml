@@ -33,17 +33,17 @@ module CIAX
       end
       par=validate(type?(par,Array))
       opt.update(:par => par,:cid => cid)
-      verbose("SetPAR(#{@cfg[:id]}): #{par}")
+      verbose{"SetPAR(#{@cfg[:id]}): #{par}"}
       if key?(cid)
-        verbose("SetPAR: Entity Cache found(#{cid})")
+        verbose{"SetPAR: Entity Cache found(#{cid})"}
         self[cid]
       else
         ent=context_constant('Entity').new(@cfg,opt)
         if @cfg["nocache"]
-          verbose("SetPAR: Entity No Cache Created (#{cid})")
+          verbose{"SetPAR: Entity No Cache Created (#{cid})"}
         else
           self[cid]=ent
-          verbose("SetPAR: Entity Cache Created (#{cid})")
+          verbose{"SetPAR: Entity Cache Created (#{cid})"}
         end
         ent
       end
@@ -83,18 +83,18 @@ module CIAX
             rescue Exception
               Msg.par_err("Parameter is not number")
             end
-            verbose("Validate: [#{num}] Match? [#{disp}]")
+            verbose{"Validate: [#{num}] Match? [#{disp}]"}
             unless list.any?{|r| ReRange.new(r) == num }
               Msg.par_err("Out of range (#{num}) for [#{disp}]")
             end
             next num.to_s
           when 'reg'
-            verbose("Validate: [#{str}] Match? [#{disp}]")
+            verbose{"Validate: [#{str}] Match? [#{disp}]"}
             unless list.any?{|r| Regexp.new(r) === str}
               Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
             end
           else
-            verbose("Validate: [#{str}] Match? [#{disp}]")
+            verbose{"Validate: [#{str}] Match? [#{disp}]"}
             unless list.include?(str)
               Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
             end
@@ -114,12 +114,12 @@ module CIAX
       @cls_color=14
       @par=self[:par]
       @id=self[:cid]
-      verbose("Config",path)
+      verbose{["Config",path]}
     end
 
     # returns result of def_proc block (String)
     def exe_cmd(src,pri=1)
-      verbose("Execute [#{@id}] from #{src}")
+      verbose{"Execute [#{@id}] from #{src}"}
       self[:def_proc].call(self,src,pri)
     end
   end

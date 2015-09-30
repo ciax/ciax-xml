@@ -124,7 +124,7 @@ module CIAX
             res=str.gsub(/\$([\d]+)/){
               i=$1.to_i
               num=false if self[:parameters][i-1][:type] != 'num'
-              verbose("Parameter No.#{i} = [#{@par[i-1]}]")
+              verbose{"Parameter No.#{i} = [#{@par[i-1]}]"}
               @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
             }
             Msg.cfg_err("Nil string") if res == ''

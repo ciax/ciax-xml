@@ -23,7 +23,7 @@ module CIAX
       end
 
       def change?(id)
-        verbose("Compare(#{id}) current=[#{@data[id]}] vs last=[#{@last[id]}]")
+        verbose{"Compare(#{id}) current=[#{@data[id]}] vs last=[#{@last[id]}]"}
         @data[id] != @last[id]
       end
 
@@ -32,7 +32,7 @@ module CIAX
       end
 
       def refresh
-        verbose("Status Updated")
+        verbose{"Status Updated"}
         @last.update(@data)
         @updated=self['time']
         self
@@ -54,7 +54,7 @@ module CIAX
           super
           @lastsave=time
         else
-          verbose("Skip Save for #{time}")
+          verbose{"Skip Save for #{time}"}
         end
         self
       end

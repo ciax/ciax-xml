@@ -23,11 +23,11 @@ module CIAX
       @id=id
       @layer=class_path.first.downcase
       @sv_stat=Prompt.new # Site Status shared among layers
-      @pre_exe_procs=[proc{verbose("Processing PreExeProcs")}] # Proc for Server Command (by User query)
-      @post_exe_procs=[proc{verbose("Processing PostExeProcs")}] # Proc for Server Status Update (by User query)
-      @terminate_procs=[proc{verbose("Processing TerminateProcs")}] # Proc for program terminated
+      @pre_exe_procs=[proc{verbose{"Processing PreExeProcs"}}] # Proc for Server Command (by User query}
+      @post_exe_procs=[proc{verbose{"Processing PostExeProcs"}}] # Proc for Server Status Update (by User query}
+      @terminate_procs=[proc{verbose{"Processing TerminateProcs"}}] # Proc for program terminated
       Thread.abort_on_exception=true
-      verbose("initialize [#{@id}]")
+      verbose{"initialize [#{@id}]"}
       @dbi=@cfg[:dbi]=type?(@cfg[:db].get(id),Dbi) if @cfg.key?(:db)
       @cobj=Remote::Index.new(@cfg)
       @host=$opt.host
@@ -36,7 +36,7 @@ module CIAX
     # Sync only (Wait for other thread), never inherit
     def exe(args,src='local',pri=1)
       type?(args,Array)
-      verbose("Command #{args} recieved")
+      verbose{"Command #{args} recieved"}
       @pre_exe_procs.each{|p| p.call(args,src)}
       @sv_stat.msg(@cobj.set_cmd(args).exe_cmd(src,pri))
     rescue LongJump

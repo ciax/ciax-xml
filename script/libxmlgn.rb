@@ -12,7 +12,7 @@ module CIAX
         when String
           test(?r,f) || raise(InvalidID)
           @e=XML::Document.file(f).root
-          verbose(@e.namespaces.default)
+          verbose{@e.namespaces.default}
         when XML::Node
           @e=f
         when nil
@@ -44,7 +44,7 @@ module CIAX
 
       # pick same ns nodes even if it is in another tree
       def find(xpath)
-        verbose("FindXpath:#{xpath}")
+        verbose{"FindXpath:#{xpath}"}
         @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
           enclose("<#{e.name} #{e.attributes.to_h}>","</#{e.name}>"){
             yield Gnu.new(e)

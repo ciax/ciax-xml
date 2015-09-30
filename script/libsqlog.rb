@@ -15,12 +15,12 @@ module CIAX
         @stat=type?(stat,Datax)
         @tid="#{@stat.type}_#{@stat['ver']}"
         @tname=@stat.type.capitalize
-        verbose("Initialize Table '#{@tid}'")
+        verbose{"Initialize Table '#{@tid}'"}
       end
 
       def create
         key=['time',*expand.keys].uniq.join("','")
-        verbose("Create ('#{key}')")
+        verbose{"Create ('#{key}')"}
         "create table #{@tid} ('#{key}',primary key(time));"
       end
 
@@ -35,7 +35,7 @@ module CIAX
           kary << k.inspect
           vary << (k == 'time' ? v.to_i : v.inspect)
         }
-        verbose("Update(#{@stat['time']})")
+        verbose{"Update(#{@stat['time']})"}
         "insert or ignore into #{@tid} (#{kary.join(',')}) values (#{vary.join(',')});"
       end
 
@@ -84,7 +84,7 @@ module CIAX
         @cls_color=10
         @sqlcmd=["sqlite3",vardir("log")+"sqlog_#{id}.sq3"]
         @queue=Queue.new
-        verbose("Initialize '#{id}' on #{layer}")
+        verbose{"Initialize '#{id}' on #{layer}"}
         ThreadLoop.new("SqLog(#{layer}:#{id})",13){
           sqlary=['begin;']
           begin
@@ -95,7 +95,7 @@ module CIAX
             sqlary.each{|sql|
               begin
                 f.puts sql
-                verbose("Saved for '#{sql}'")
+                verbose{"Saved for '#{sql}'"}
               rescue
                 Msg.abort("Sqlite3 input error\n#{sql}")
               end
@@ -111,18 +111,18 @@ module CIAX
           # Create table if no table
           unless internal("tables").split(' ').include?(sqlog.tid)
             @queue.push sqlog.create
-            verbose("Initialize '#{sqlog.tid}' is created")
+            verbose{"Initialize '#{sqlog.tid}' is created"}
           end
           # Add to stat.upd
           stat.post_upd_procs << proc{
-            verbose("Propagate Save#upd -> upd")
+            verbose{"Propagate Save#upd -> upd"}
             @queue.push sqlog.upd
           }
         else
-          verbose("Initialize: invalid Version(0): No Log")
+          verbose{"Initialize: invalid Version(0): No Log"}
           stat.post_upd_procs << proc{
-            verbose("Propagate Save#upd -> upd(Dryrun)")
-            verbose("Insert",sqlog.upd)
+            verbose{"Propagate Save#upd -> upd(Dryrun)"}
+            verbose{["Insert",sqlog.upd]}
           }
         end
         self
@@ -150,35 +150,35 @@ module CIAX
       end
 
       def query(str)
-        verbose("->[#{str}]")
+        verbose{"->[#{str}]"}
         IO.popen(@sqlcmd,'r+'){|f|
           f.puts str
           str=f.gets.chomp
         }
-        verbose("<-[#{str}]")
+        verbose{"<-[#{str}]"}
         str
       end
 
       def find_next(str)
         begin
-          verbose("Search corresponding CMD")
+          verbose{"Search corresponding CMD"}
           sql="select min(time),cmd from #@tbl where time > #@index and base64='#{str}';"
           ans=query(sql)
           tim,cmd=ans.split('|')
-          verbose("Matched time is #{tim}")
+          verbose{"Matched time is #{tim}"}
           raise if tim.empty?
           @index=tim.to_i
         rescue
           raise("NO record for #{str}") if @index==0
           @index=0
-          verbose(color("LINE:REWINDED",3))
+          verbose{color("LINE:REWINDED",3)}
           retry
         end
-        verbose("Search corresponding RES")
+        verbose{"Search corresponding RES"}
         sql="select min(time),count(*),cmd,base64 from #@tbl where dir='rcv' and cmd='#{cmd}' and time > #{tim};"
         ans=query(sql)
         tim,count,base64=ans.split('|')
-        verbose(color("LINE:[#{cmd}](#{@total-count.to_i}/#{@total})<#{wait(tim)}>",2))
+        verbose{color("LINE:[#{cmd}](#{@total-count.to_i}/#{@total})<#{wait(tim)}>",2)}
         sql="select base64 from #@tbl where time = #{tim};"
         query(sql)
       end

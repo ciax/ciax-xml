@@ -53,7 +53,7 @@ module CIAX
       @base="#{@type}-#{id}"
       @marfile=vardir("cache")+"#{@base}.mar"
       if newest?
-        verbose("Cache Loading (#{id})")
+        verbose{"Cache Loading (#{id})"}
         return self[id] if key?(id)
         begin
           res=Marshal.load(IO.read(@marfile))
@@ -65,7 +65,7 @@ module CIAX
         res=yield(@doc||=Xml::Doc.new(@type,@proj))
         open(@marfile,'w') {|f|
           f << Marshal.dump(res)
-          verbose("Cache Saved(#{id})")
+          verbose{"Cache Saved(#{id})"}
         }
       end
       self[id]=res
@@ -73,13 +73,13 @@ module CIAX
 
     def newest?
       if ENV['NOCACHE']
-        verbose("#@type/Cache ENV NOCACHE is set")
+        verbose{"#@type/Cache ENV NOCACHE is set"}
       elsif !test(?e,@marfile)
-        verbose("#@type/Cache MAR file(#{@base}) not exist")
+        verbose{"#@type/Cache MAR file(#{@base}) not exist"}
       elsif newer=cmp($".grep(/#{ScrDir}/)+Dir.glob(XmlDir+"/#{@type}-*.xml"))
-        verbose("#@type/Cache File(#{newer}) is newer than cache")
-        verbose("#@type/Cache cache=#{::File::Stat.new(@marfile).mtime}")
-        verbose("#@type/Cache file=#{::File::Stat.new(newer).mtime}")
+        verbose{"#@type/Cache File(#{newer}) is newer than cache"}
+        verbose{"#@type/Cache cache=#{::File::Stat.new(@marfile).mtime}"}
+        verbose{"#@type/Cache file=#{::File::Stat.new(newer).mtime}"}
       else
         return true
       end

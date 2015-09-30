@@ -12,7 +12,7 @@ module CIAX
     def ext_server
       @sub.ext_server if @sub
       return self unless @port
-      verbose("Initialize UDP server (#@id) [#{@port}]")
+      verbose{"Initialize UDP server (#@id) [#{@port}]"}
       @server_input_proc=proc{|line|
         begin
           JSON.load(line)
@@ -34,8 +34,8 @@ module CIAX
         line,addr=udp.recvfrom(4096)
         line.chomp!
         rhost=Addrinfo.ip(addr[2]).getnameinfo.first
-        verbose("Exec Server","Valid Commands #{@cobj.valid_keys}")
-        verbose("UDP Recv:#{line} is #{line.class}")
+        verbose{["Exec Server","Valid Commands #{@cobj.valid_keys}"]}
+        verbose{"UDP Recv:#{line} is #{line.class}"}
         begin
           exe(@server_input_proc.call(line),"udp:#{rhost}")
         rescue InvalidCMD
@@ -45,7 +45,7 @@ module CIAX
           errmsg
         end
         send_str=@server_output_proc.call
-        verbose("UDP Send:#{send_str}")
+        verbose{"UDP Send:#{send_str}"}
         udp.send(send_str,0,addr[2],addr[1])
       }
       self

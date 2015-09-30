@@ -56,25 +56,32 @@ module CIAX
     Start_time=Time.now
     @@base=1
     # Public Method
-    def verbose(title,*data)
-      return unless ver?
+    def verbose(cond=true)
       # block takes array (shown by each line)
       # Description of values
       #   [val] -> taken from  xml (criteria)
       #   <val> -> taken from status (incoming)
       #   (val) -> calcurated from status
-      @ver_indent=@@base
-      msg=make_msg(title)
-      if @show_inside || msg && condition(msg.to_s)
-        Kernel.warn msg
-        if data
-          data.each{|str|
-            str.to_s.split("\n").each{|line|
-              Kernel.warn Msg.indent(@ver_indent+1)+line
-            }
-          }
+      if cond && ENV['VER']
+        @ver_indent=@@base
+        title=yield
+        case title
+        when Array
+          data=title
+          title=data.shift
         end
-        true
+        msg=make_msg(title)
+        if @show_inside || msg && condition(msg.to_s)
+          Kernel.warn msg
+          if data
+            data.each{|str|
+              str.to_s.split("\n").each{|line|
+                Kernel.warn Msg.indent(@ver_indent+1)+line
+              }
+            }
+          end
+          true
+        end
       end
     end
 
@@ -100,12 +107,12 @@ module CIAX
     end
 
     def enclose(title1,title2)
-      @show_inside=verbose(title1)
+      @show_inside=verbose{title1}
       @@base+=1
       res=yield
     ensure
       @@base-=1
-      verbose(sprintf(title2,res))
+      verbose{sprintf(title2,res)}
       @show_inside=false
     end
 

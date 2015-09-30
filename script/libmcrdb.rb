@@ -30,7 +30,7 @@ module CIAX
       def arc_command(e,idx,grp)
         e.each{|e0|
           id=e0.attr2item(idx)
-          verbose("MACRO:[#{id}]")
+          verbose{"MACRO:[#{id}]"}
           item=idx[id]
           (grp[:members]||=[]) << id
           body=(item[:body]||=[])
@@ -51,7 +51,7 @@ module CIAX
               attr['args']=getcmd(e1)
               attr.delete('name')
               body << attr
-              verbose("COMMAND:[#{e1['name']}]")
+              verbose{"COMMAND:[#{e1['name']}]"}
             when 'mcr'
               args=attr['args']=getcmd(e1)
               cmd=args.first

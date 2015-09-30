@@ -44,7 +44,7 @@ module CIAX
         @mode='TEST'
         @stat.ext_sym.ext_file
         @stat.post_upd_procs << proc{|st|
-          verbose("Propagate Status#upd -> App#settime")
+          verbose{"Propagate Status#upd -> App#settime"}
           st['time']=now_msec
         }
         @post_exe_procs << proc{@stat.upd}
@@ -62,17 +62,17 @@ module CIAX
         @buf=init_buf
         ver=@stat['ver']
         @sub.flush_procs << proc{
-          verbose("Propagate Frm::Exe#flush -> Buffer#flush")
+          verbose{"Propagate Frm::Exe#flush -> Buffer#flush"}
           @buf.flush
         }
         @cobj.rem.ext.def_proc{|ent,src,pri|
-          verbose("#@id/Issuing:#{ent.id} from #{src} with priority #{pri}")
+          verbose{"#@id/Issuing:#{ent.id} from #{src} with priority #{pri}"}
           @buf.send(ent,pri)
           "ISSUED"
         }
         @cobj.get('interrupt').def_proc{|ent,src|
           @batch_interrupt.each{|args|
-            verbose("#@id/Issuing:#{args} for Interrupt")
+            verbose{"#@id/Issuing:#{args} for Interrupt"}
             @buf.send(@cobj.set_cmd(args),0)
           }
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
@@ -101,15 +101,15 @@ module CIAX
         buf=Buffer.new(@stat['id'],@stat['ver'],@sv_stat)
         buf.send_proc{|ent|
           batch=type?(ent[:batch],Array)
-          verbose("Send FrmCmds #{batch}")
+          verbose{"Send FrmCmds #{batch}"}
           batch
         }
         buf.recv_proc{|args,src|
-          verbose("Processing #{args}")
+          verbose{"Processing #{args}"}
           @sub.exe(args,src)
         }
         buf.flush_proc{
-          verbose("Propagate Buffer#flush -> Status#upd")
+          verbose{"Propagate Buffer#flush -> Status#upd"}
           @stat.upd
           sleep(0.1)
           # Auto issue by watch

@@ -26,7 +26,7 @@ module CIAX
         }
         @ctime=0
         @stat.post_upd_procs << proc{
-          verbose("Propagate Status#upd -> upd")
+          verbose{"Propagate Status#upd -> upd"}
           upd
         }
         self
@@ -65,7 +65,7 @@ module CIAX
           @data['act_start']=@ctime if !act
           @data['act_end']=now_msec
         end
-        verbose("Updated(#{@stat['time']})")
+        verbose{"Updated(#{@stat['time']})"}
         self
       end
 
@@ -78,7 +78,7 @@ module CIAX
 
       def check(id,item)
         return true unless cklst=item[:cnd]
-        verbose("Check: <#{item['label']}>")
+        verbose{"Check: <#{item['label']}>"}
         rary=[]
         cklst.each{|ckitm|
           vn=ckitm['var']
@@ -89,10 +89,10 @@ module CIAX
             if cri
               if tol=ckitm['tolerance']
                 res=((cri.to_f-val.to_f).abs > tol.to_f)
-                verbose("  onChange(#{vn}): |[#{cri}]-<#{val}>| > #{tol} =>#{res.inspect}")
+                verbose{"  onChange(#{vn}): |[#{cri}]-<#{val}>| > #{tol} =>#{res.inspect}"}
               else
                 res=(cri != val)
-                verbose("  onChange(#{vn}): [#{cri.inspect}] vs <#{val}> =>#{res.inspect}")
+                verbose{"  onChange(#{vn}): [#{cri.inspect}] vs <#{val}> =>#{res.inspect}"}
               end
             else
               res=nil
@@ -100,12 +100,12 @@ module CIAX
           when 'pattern'
             cri=ckitm['val']
             res=(Regexp.new(cri) === val)
-            verbose("  Pattern(#{vn}): [#{cri}] vs <#{val}> =>#{res.inspect}")
+            verbose{"  Pattern(#{vn}): [#{cri}] vs <#{val}> =>#{res.inspect}"}
           when 'range'
             cri=ckitm['val']
             f="%.3f" % val.to_f
             res=(ReRange.new(cri) == f)
-            verbose("  Range(#{vn}): [#{cri}] vs <#{f}>(#{val.class}) =>#{res.inspect}")
+            verbose{"  Range(#{vn}): [#{cri}] vs <#{f}>(#{val.class}) =>#{res.inspect}"}
           end
           res=!res if /true|1/ === ckitm['inv']
           rary << res

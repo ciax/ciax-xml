@@ -37,7 +37,7 @@ module CIAX
                 when Hash
                   str=e2['val']
                   str = e2['format'] % eval(str) if e2['format']
-                  verbose("Calculated [#{str}]")
+                  verbose{"Calculated [#{str}]"}
                   args << str
                 end
               }

@@ -55,7 +55,7 @@ module CIAX
     # '^D' gives interrupt
     # mode gives special break (loop returns mode).
     def shell(dmy=nil) # dmy: compatibility with List#shell()
-      verbose("Shell(#@id)")
+      verbose{"Shell(#@id)"}
       Readline.completion_proc=proc{|word|
         (@cobj.valid_keys+@cobj.valid_pars).grep(/^#{word}/)
       }
@@ -77,8 +77,8 @@ module CIAX
           warning($!)
         end
         puts @sv_stat.msg.empty? ? @shell_output_proc.call : @sv_stat.msg
-        verbose("Threads","#{Threadx.list}")
-        verbose("Valid Commands #{@cobj.valid_keys}")
+        verbose{["Threads","#{Threadx.list}"]}
+        verbose{"Valid Commands #{@cobj.valid_keys}"}
       }
       @terminate_procs.inject(self){|obj,proc| proc.call(obj)}
       Msg.msg("Quit Shell",3)

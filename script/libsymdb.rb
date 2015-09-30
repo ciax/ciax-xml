@@ -26,7 +26,7 @@ module CIAX
           e1.each{|e2| # case
             (db[id]||=[]) << e2.to_h.update({'type' => e2.name})
           }
-          verbose("Symbol Table:#{id} : #{label}")
+          verbose{"Symbol Table:#{id} : #{label}"}
         }
         db
       end

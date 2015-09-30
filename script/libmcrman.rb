@@ -18,7 +18,7 @@ module CIAX
           @cobj.rem.add_ext(Ext)
           @parameter=@cobj.rem.int.par
           @stat.post_upd_procs << proc{
-            verbose("Propagate List#upd -> Parameter#upd")
+            verbose{"Propagate List#upd -> Parameter#upd"}
             @parameter[:list]=@stat.keys
           }
           @host||=@dbi['host']

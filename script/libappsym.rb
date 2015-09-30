@@ -17,7 +17,7 @@ module CIAX
         self['class']={}
         self['msg']={}
         @post_upd_procs << proc{ #post process
-          verbose("Propagate upd -> Symbol#upd")
+          verbose{"Propagate upd -> Symbol#upd"}
           set_sym(adbs[:index].dup.update(adbs[:alias]||{}))
         }
         self
@@ -30,7 +30,7 @@ module CIAX
             alert("Table[#{sid}] not exist")
             next
           end
-          verbose("ID=#{key},Table=#{sid}")
+          verbose{"ID=#{key},Table=#{sid}"}
           self['class'][key]='alarm'
           val=@data[hash['ref']||key]
           self['msg'][key]="N/A(#{val})"
@@ -43,16 +43,16 @@ module CIAX
               next if sym['val'].split(',').all?{|cri|
                 val.to_f > cri.to_f+tol or val.to_f < cri.to_f-tol
               }
-              verbose("VIEW:Numeric:[#{sym['val']}+-#{tol}] and [#{val}]")
+              verbose{"VIEW:Numeric:[#{sym['val']}+-#{tol}] and [#{val}]"}
               self['msg'][key]="#{sym['msg']}(#{val})"
             when 'range'
               numeric=true
               next unless ReRange.new(sym['val']) == val
-              verbose("VIEW:Range:[#{sym['val']}] and [#{val}]")
+              verbose{"VIEW:Range:[#{sym['val']}] and [#{val}]"}
               self['msg'][key]="#{sym['msg']}(#{val})"
             when 'pattern'
               next unless /#{sym['val']}/ === val || val == 'default'
-              verbose("VIEW:Regexp:[#{sym['val']}] and [#{val}]")
+              verbose{"VIEW:Regexp:[#{sym['val']}] and [#{val}]"}
             end
             if numeric
               self['msg'][key]="#{sym['msg']}(#{val})"

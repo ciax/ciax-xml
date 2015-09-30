@@ -92,7 +92,7 @@ module CIAX
     end
 
     def flush
-      verbose("SUB:Waiting")
+      verbose{"SUB:Waiting"}
       # @q can not be empty depending on @flush_proc
       @flush_proc.call(self)
       @sv_stat.reset('isu') if @q.empty?
@@ -102,11 +102,11 @@ module CIAX
     private
     #batch is command array (ary of ary)
     def sort(p,batch)
-      verbose("SUB:Recieve [#{batch}] with priority[#{p}]")
+      verbose{"SUB:Recieve [#{batch}] with priority[#{p}]"}
       (@outbuf[p]||=[]).concat(batch)
       i=-1
       @outbuf.map{|o|
-        verbose("SUB:Outbuf(#{i+=1}) is [#{o}]\n")
+        verbose{"SUB:Outbuf(#{i+=1}) is [#{o}]\n"}
       }
     end
 

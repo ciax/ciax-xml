@@ -17,18 +17,18 @@ module CIAX
 
     def set(key)
       self[key]=true
-      verbose("Set [#{key}]")
+      verbose{"Set [#{key}]"}
       upd
     end
 
     def reset(key)
       self[key]=false
-      verbose("Reset [#{key}]")
+      verbose{"Reset [#{key}]"}
       upd
     end
 
     def put(key,val)
-      verbose("Change [#{key}] -> #{val}")
+      verbose{"Change [#{key}] -> #{val}"}
       super
     end
 
@@ -47,7 +47,7 @@ module CIAX
     end
 
     def to_s
-      verbose("Shell",inspect)
+      verbose{["Shell",inspect]}
       @db.map{|k,v| v if self[k] }.join('')
     end
   end

@@ -37,7 +37,7 @@ module CIAX
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
           @sel.update(@fds[rid])
           @sel[:body]=ent.deep_subst(@sel[:body])
-          verbose("Selected DB for #{rid}",@sel)
+          verbose{["Selected DB for #{rid}",@sel]}
           # Frame structure: main(total){ ccrange{ body(selected str) } }
           stream=@input_proc.call
           @frame.set(stream.binary,@sel['length'],@sel['padding'])
@@ -50,10 +50,10 @@ module CIAX
           end
           @data=@cache
           self['time']=stream['time']
-          verbose("Updated(#{self['time']})") #Field::get
+          verbose{"Updated(#{self['time']})"} #Field::get
           upd
         else
-          verbose("Send Only")
+          verbose{"Send Only"}
         end
         self
       end
@@ -74,7 +74,7 @@ module CIAX
               getfield_rec(@sel[:body]||[])
             }
           when 'echo' # Send back the command string
-            verbose("Set Command Echo [#{@echo.inspect}]")
+            verbose{"Set Command Echo [#{@echo.inspect}]"}
             @frame.cut('label' => 'Command Echo','val' => @echo)
           when Hash
             frame_to_field(e1){ @frame.cut(e1) }
@@ -99,7 +99,7 @@ module CIAX
             data=yield
             if akey=e0['assign']
               @cache[akey]=data
-              verbose("Assign:[#{akey}] <- <#{data}>")
+              verbose{"Assign:[#{akey}] <- <#{data}>"}
             end
           end
         }
@@ -113,7 +113,7 @@ module CIAX
         f,l=idx[0].split(':').map{|i| eval(i)}
         Range.new(f,l||f).each{|i|
           fld[i] = mk_array(idx[1..-1],fld[i]){yield}
-          verbose("Array:Index[#{i}]=#{fld[i]}")
+          verbose{"Array:Index[#{i}]=#{fld[i]}"}
         }
         fld
       end

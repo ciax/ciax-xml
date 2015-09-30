@@ -39,7 +39,7 @@ module CIAX
       # - index should be numerical or formula
       # - ${key:idx1:idx2} => hash[key][idx1][idx2]
       def get(key)
-        verbose("Getting[#{key}]")
+        verbose{"Getting[#{key}]"}
         Msg.abort("Nill Key") unless key
         return @data[key] if @data.key?(key)
         vname=[]
@@ -55,11 +55,11 @@ module CIAX
             break
           end
           vname << i
-          verbose("Type[#{h.class}] Name[#{i}]")
-          verbose("Content[#{h[i]}]")
+          verbose{"Type[#{h.class}] Name[#{i}]"}
+          verbose{"Content[#{h[i]}]"}
           h[i] || alert("No such Value [#{vname.join(':')}] in 'data'")
         }
-        verbose("Get[#{key}]=[#{dat}]")
+        verbose{"Get[#{key}]=[#{dat}]"}
         dat
       end
 
@@ -68,7 +68,7 @@ module CIAX
         akey=key.split(':')
         Msg.par_err("No such Key") unless @data.key?(akey.shift)
         conv=subst(val).to_s
-        verbose("Put[#{key}]=[#{conv}]")
+        verbose{"Put[#{key}]=[#{conv}]"}
         case p=get(key)
         when Array
           merge_ary(p,conv.split(','))
@@ -79,7 +79,7 @@ module CIAX
             par_err("Value is not numerical")
           end
         end
-        verbose("Evaluated[#{key}]=[#{@data[key]}]")
+        verbose{"Evaluated[#{key}]=[#{@data[key]}]"}
         self['time']=now_msec
         val
       ensure

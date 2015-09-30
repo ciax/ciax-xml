@@ -37,7 +37,7 @@ module CIAX
                 binstr=bary.join
               end
               data=eval('0b'+binstr)
-              verbose("GetBinary[#{data}](#{id})")
+              verbose{"GetBinary[#{data}](#{id})"}
             else
               ary=flds.map{|e| get_field(e)}
               case type
@@ -48,10 +48,10 @@ module CIAX
                 case type
                 when 'float'
                   data=data.to_f
-                  verbose("GetFloat[#{data}](#{id})")
+                  verbose{"GetFloat[#{data}](#{id})"}
                 when 'integer'
                   data=data.to_i
-                  verbose("GetInteger[#{data}](#{id})")
+                  verbose{"GetInteger[#{data}](#{id})"}
                 end
               else
                 data=ary.join
@@ -60,14 +60,14 @@ module CIAX
             if hash.key?('formula')
               f=hash['formula'].gsub(/\$#/,data.to_s)
               data=eval(f)
-              verbose("Formula:#{f}(#{data})(#{id})")
+              verbose{"Formula:#{f}(#{data})(#{id})"}
             end
             data = hash['format'] % data if hash.key?('format')
             @data[id]=data.to_s
           }
         }
         self['time']=@field['time']
-        verbose("Update(#{self['time']})")
+        verbose{"Update(#{self['time']})"}
         self
       end
 
@@ -75,17 +75,17 @@ module CIAX
         type?(e,Hash)
         fld=e['ref'] || Msg.abort("No field Key in #{e}")
         data=@field.get(fld)
-        verbose("NoFieldContent in [#{fld}]") if data.empty?
+        verbose(data.empty?){"NoFieldContent in [#{fld}]"}
         data=e[:conv][data] if e[:conv]
         if /true|1/ === e['sign']
-          verbose("ConvertField[#{fld}]=[#{data.inspect}]")
+          verbose{"ConvertField[#{fld}]=[#{data.inspect}]"}
           if data == e['negative']
             data="-"
           else
             data="+"
           end
         end
-        verbose("GetField[#{fld}]=[#{data.inspect}]")
+        verbose{"GetField[#{fld}]=[#{data.inspect}]"}
         data
       end
 
@@ -97,7 +97,7 @@ module CIAX
           bit = -(bit-1) if inv
           bit.to_s
         }.join
-        verbose("GetBit[#{str}]")
+        verbose{"GetBit[#{str}]"}
         str
       end
 

@@ -43,7 +43,7 @@ module CIAX
           domain.each{|e1|
             frame << yield(e1)
           }
-          verbose("InitMainFrame:#{frame}")
+          verbose{"InitMainFrame:#{frame}"}
           db[:main]=frame
         }
         domain.find('ccrange'){|e0|
@@ -52,7 +52,7 @@ module CIAX
             Repeat.new.each(e0){|e1,r1|
               frame << yield(e1,r1)
             }
-            verbose("InitCCFrame:#{frame}")
+            verbose{"InitCCFrame:#{frame}"}
             db[:ccrange]=frame
           }
         }
@@ -80,7 +80,7 @@ module CIAX
         when 'char','string'
           attr=e.to_h
           attr['val']=rep.subst(attr['val']) if rep
-          verbose("Data:[#{attr}]")
+          verbose{"Data:[#{attr}]"}
           attr
         else
           e.name
@@ -96,7 +96,7 @@ module CIAX
         when 'field'
           attr=e.to_h
           item[:struct]=[] if item
-          verbose("InitElement: #{attr}")
+          verbose{"InitElement: #{attr}"}
           attr
         when 'array'
           attr=e.to_h
@@ -105,7 +105,7 @@ module CIAX
             idx << e1.to_h
           }
           item[:struct]=idx.map{|h| h['size']} if item
-          verbose("InitArray: #{attr}")
+          verbose{"InitArray: #{attr}"}
           attr
         when 'ccrange','body','echo'
           e.name

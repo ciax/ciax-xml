@@ -15,16 +15,16 @@ module CIAX
       return self unless @port
       @sv_stat.add_db('udperr' => 'x')
       @udp=UDPSocket.open()
-      verbose("Initialize UDP client (#@id) [#{@host}:#{@port}]")
+      verbose{"Initialize UDP client (#@id) [#{@host}:#{@port}]"}
       @cobj.rem.def_proc{|ent|
         args=ent.id.split(':')
         # Address family not supported by protocol -> see above
         @udp.send(JSON.dump(args),0,@host,@port.to_i)
-        verbose("UDP Send #{args}")
+        verbose{"UDP Send #{args}"}
         if IO.select([@udp],nil,nil,1)
           res=@udp.recv(1024)
           @sv_stat.reset('udperr')
-          verbose("UDP Recv #{res}")
+          verbose{"UDP Recv #{res}"}
           update(@sv_stat.update(JSON.load(res))) unless res.empty?
           @sv_stat.msg
         else

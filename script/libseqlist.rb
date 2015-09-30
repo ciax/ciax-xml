@@ -9,7 +9,7 @@ module CIAX
         def initialize(proj,cfg)
           super(cfg)
           self['id']=proj
-          verbose("Initialize [#{proj}]")
+          verbose{"Initialize [#{proj}]"}
         end
 
         def to_v
@@ -81,7 +81,7 @@ module CIAX
             # :dev_list is App::List
             @cfg[:dev_list].ext_shell if @cfg.key?(:dev_list)
             @post_upd_procs << proc{
-              verbose("Propagate List#upd -> JumpGrp#upd")
+              verbose{"Propagate List#upd -> JumpGrp#upd"}
               @jumpgrp.number_item(@data.values.map{|seq| seq['id']})
             }
             self

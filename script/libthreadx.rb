@@ -25,7 +25,7 @@ module CIAX
       super{
         loop{
           yield
-          verbose("Next for #{Thread.current[:name]}")
+          verbose{"Next for #{Thread.current[:name]}"}
         }
       }
     end

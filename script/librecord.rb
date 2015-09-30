@@ -25,7 +25,7 @@ module CIAX
       def add_step(e1,depth)
         step=Step.new(e1,@cfg[:dev_list])
         step.post_upd_procs << proc{
-          verbose("Propagate Step#upd -> Record#upd")
+          verbose{"Propagate Step#upd -> Record#upd"}
           post_upd
         }
         step['time']=Msg.elps_sec(self['time'])

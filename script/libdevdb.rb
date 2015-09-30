@@ -28,7 +28,7 @@ module CIAX
             e.attr2item(dbi)
           else
             id=e.name.to_sym
-            verbose("Override [#{id}]")
+            verbose{"Override [#{id}]"}
             rec_db(e,dbi[id]||={})
           end
         }

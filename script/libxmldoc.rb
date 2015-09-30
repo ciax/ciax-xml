@@ -25,7 +25,7 @@ module CIAX
         @projlist=Disp::Group.new('caption' => 'Project', 'column' => 2)
         files=Dir.glob("#{ENV['XMLPATH']}/#{type}-*.xml")
         files.each{|xml|
-          verbose("readxml:"+::File.basename(xml,'.xml'))
+          verbose{"readxml:"+::File.basename(xml,'.xml')}
           Gnu.new(xml).each{|e|
             @project << e['include'] if @project.include?(e['id']) and e['include']
           }
@@ -45,7 +45,7 @@ module CIAX
         top.each{|e1|
           item[:domain][e1.name]=e1 unless top.ns == e1.ns
         }
-        verbose("Domain registerd:#{item[:domain].keys}")
+        verbose{"Domain registerd:#{item[:domain].keys}"}
         item
       end
 

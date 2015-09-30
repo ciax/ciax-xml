@@ -14,7 +14,7 @@ module CIAX
 
       def set_db(db)
         @db=@cfg[:db]=type?(db,Db)
-        verbose("Initialize")
+        verbose{"Initialize"}
         if @cfg.key?(:site)
           @current=@cfg[:site]
         else

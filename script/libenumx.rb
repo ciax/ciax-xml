@@ -24,7 +24,6 @@ module CIAX
     # Merge self to ope
     def deep_update(ope,depth=nil)
       rec_merge(ope,self,depth)
-      verbose("Merging, later is overridden by formar",ope,self)
       self
     end
 
@@ -43,7 +42,7 @@ module CIAX
       each_idx(r,w){|i,cls|
         w=cls.new unless cls === w
         if d && d < 1
-          verbose("Merging #{i}")
+          verbose{"Merging #{i}"}
           w[i]=r[i]
         else
           w[i]=rec_merge(r[i],w[i],d)

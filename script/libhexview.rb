@@ -28,11 +28,11 @@ module CIAX
           end
         }
         @sv_stat.post_upd_procs << proc{
-          verbose("Propagate Prompt#upd -> Hex::View#upd")
+          verbose{"Propagate Prompt#upd -> Hex::View#upd"}
           upd
         }
         @stat.post_upd_procs << proc{
-          verbose("Propagate Status#upd -> Hex::View#upd")
+          verbose{"Propagate Status#upd -> Hex::View#upd"}
           upd
         }
         upd
@@ -65,13 +65,13 @@ module CIAX
           else
             if v=@stat.get(key)
               str=get_elem(type,len,v)
-              verbose("#{title}/#{type}(#{len}) = #{str}")
+              verbose{"#{title}/#{type}(#{len}) = #{str}"}
             else
               str='*' * len
             end
             # str can exceed specified length
             str=str[0,len]
-            verbose("add '#{str}' as #{key}")
+            verbose{"add '#{str}' as #{key}"}
             @res[6] << str
           end
         }

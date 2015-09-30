@@ -34,25 +34,30 @@ module CIAX
           self['class'][key]='alarm'
           val=@data[hash['ref']||key]
           self['msg'][key]="N/A(#{val})"
+          numeric=false
           tbl.each{|sym|
             case sym['type']
             when 'numeric'
+              numeric=true
               tol=sym['tolerance'].to_f
               next if sym['val'].split(',').all?{|cri|
                 val.to_f > cri.to_f+tol or val.to_f < cri.to_f-tol
               }
               verbose("VIEW:Numeric:[#{sym['val']}+-#{tol}] and [#{val}]")
-              self['msg'][key]=sym['msg'] % val
+              self['msg'][key]="#{sym['msg']}(#{val})"
             when 'range'
+              numeric=true
               next unless ReRange.new(sym['val']) == val
               verbose("VIEW:Range:[#{sym['val']}] and [#{val}]")
-              self['msg'][key]=sym['msg'] % val.to_f
+              self['msg'][key]="#{sym['msg']}(#{val})"
             when 'pattern'
               next unless /#{sym['val']}/ === val || val == 'default'
               verbose("VIEW:Regexp:[#{sym['val']}] and [#{val}]")
-              self['msg'][key]=sym['msg'] % val
-            when 'default'
-              self['msg'][key]=sym['msg'] % val
+            end
+            if numeric
+              self['msg'][key]="#{sym['msg']}(#{val})"
+            else
+              self['msg'][key]=sym['msg']||"N/A(#{val})"
             end
             self['class'][key]=sym['class']
             break

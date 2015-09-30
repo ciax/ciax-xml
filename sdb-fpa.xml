@@ -2,9 +2,9 @@
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="fpa" label="MOIRCS Hall Sensor">
     <table id="volt">
-      <range class="active" msg="HOME POS">1.5:</range>
-      <range class="normal" msg="ON SLOT">:-1.5</range>
-      <default class="warn" msg="MID(%s)"/>
+      <range class="active" msg="HOME POS">1.3:</range>
+      <range class="normal" msg="ON SLOT">:-1.3</range>
+      <default class="warn" msg="MID"/>
     </table>
   </symbol>
 </sdb>

@@ -57,10 +57,9 @@ module CIAX
 
       def ext_driver
         @mode='DRV'
-        @stat.ext_rsp(@sub.stat).ext_sym.ext_file.ext_log.ext_sqlog
+        @stat.ext_rsp(@sub.stat).ext_sym.ext_file
         @stat.ext_log.ext_sqlog if $opt['e']
         @buf=init_buf
-        ver=@stat['ver']
         @sub.flush_procs << proc{
           verbose{"Propagate Frm::Exe#flush -> Buffer#flush"}
           @buf.flush

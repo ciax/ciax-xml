@@ -1,4 +1,6 @@
 #!/bin/bash
+# Generate dictionary by sdb
+[ -t 0 ] && { echo "Usage: sdb2json < sdb_file"; exit 1; }
 while read name line; do
     [[ $line =~ \" ]] || continue
     eval "${line%\"*}\""
@@ -12,7 +14,7 @@ while read name line; do
     fi
     body="${line#*>}"
     body="${body%<*}"
-    [ "$body" ] && json="$json\"$body\":\"$msg\""
+    [ "$body" ] && json="$json\"$body\":\"$msg\","
 done
 if [ "$json" ]; then
     echo "{${json%,}}" > "$file"

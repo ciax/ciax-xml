@@ -79,7 +79,7 @@
 
 ## Related to Frm
 
-  Exe@flush_procs
+  Field@flush_procs
     structure: Array[Proc,..]
     args:(on each element)
       Frm::Exe(self)

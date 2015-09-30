@@ -60,8 +60,8 @@ module CIAX
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file
         @stat.ext_log.ext_sqlog if $opt['e']
         @buf=init_buf
-        @sub.flush_procs << proc{
-          verbose{"Propagate Frm::Exe#flush -> Buffer#flush"}
+        @sub.stat.flush_procs << proc{
+          verbose{"Propagate Field#flush -> Buffer#flush"}
           @buf.flush
         }
         @cobj.rem.ext.def_proc{|ent,src,pri|

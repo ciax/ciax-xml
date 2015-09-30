@@ -4,9 +4,12 @@ require 'libdatax'
 module CIAX
   module Frm
     class Field < DataH
+      attr_reader :flush_procs
       attr_accessor :echo
       def initialize(init_struct={})
         super('field',init_struct)
+        # Proc for Terminate process of each individual commands (Set upper layer's update);
+        @flush_procs=[proc{verbose{"Processing FlushProcs"}}]
       end
 
       def set_dbi(db)
@@ -81,9 +84,13 @@ module CIAX
         end
         verbose{"Evaluated[#{key}]=[#{@data[key]}]"}
         self['time']=now_msec
+        upd
         val
-      ensure
-        post_upd
+      end
+
+      def flush
+        @flush_procs.each{|p| p.call(self)}
+        self
       end
 
       private

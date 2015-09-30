@@ -12,7 +12,6 @@ module CIAX
   module Frm
     class Exe < Exe
       # cfg must have [:db]
-      attr_reader :flush_procs
       def initialize(id,cfg)
         super(id,cfg)
         # DB is generated in List level
@@ -23,8 +22,6 @@ module CIAX
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
         # Post internal command procs
-        # Proc for Terminate process of each individual commands
-        @flush_procs=[proc{verbose{"Processing FlushProcs"}}]
         @host||=@dbi['host']
         @port||=@dbi['port']
         opt_mode
@@ -40,9 +37,6 @@ module CIAX
       def ext_shell
         super
         @cfg[:output]=@stat
-        @post_exe_procs << proc{|args,src|
-          flush if !args.empty? and src != 'local'
-        }
         input_conv_set
         self
       end
@@ -77,15 +71,16 @@ module CIAX
         @sv_stat.add_db('comerr' => 'X','strerr' => 'E')
         @stat.ext_file
         @stat.ext_rsp{@stream.rcv}
-        @cobj.rem.ext.def_proc{|ent|
+        @cobj.rem.ext.def_proc{|ent,src|
           @sv_stat.reset('comerr')
           @stream.snd(ent[:frame],ent.id)
           @stat.conv(ent)
+          @stat.flush if src != 'local'
           'OK'
         }
         @cobj.get('set').def_proc{|ent|
           @stat.rep(ent.par[0],ent.par[1])
-          flush
+          @stat.flush
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
         @cobj.get('save').def_proc{|ent|
@@ -93,22 +88,18 @@ module CIAX
           "Save [#{ent.par[0]}]"
         }
         @cobj.get('load').def_proc{|ent|
-          @stat.load(ent.par[0]||'').save
-          flush
+          @stat.load(ent.par[0]||'')
+          @stat.flush
           "Load [#{ent.par[0]}]"
         }
         @cobj.get('flush').def_proc{|ent|
           @stream.rcv
-          flush
+          @stat.flush
           "Flush Stream"
         }
         self
       end
 
-      def flush
-        @flush_procs.each{|p| p.call(self)}
-        self
-      end
     end
 
     class List < Site::List

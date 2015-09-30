@@ -83,7 +83,7 @@ module CIAX
           delimiter=eval('"'+del+'"')
           verbose{"Cut by Delimiter [#{delimiter.inspect}]"}
           str,dlm,body=body.partition(delimiter)
-          verbose(tm and dlm){"Cut by Terminator [#{@terminator.inspect}]"}
+          verbose(tm && dlm){"Cut by Terminator [#{@terminator.inspect}]"}
           @frame=[body,tm,rest].join
           cc_add([str,dlm].join)
         else

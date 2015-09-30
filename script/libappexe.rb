@@ -60,23 +60,6 @@ module CIAX
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file
         @stat.ext_log.ext_sqlog if $opt['e']
         @buf=init_buf
-        @sub.stat.flush_procs << proc{
-          verbose{"Propagate Field#flush -> Buffer#flush"}
-          @buf.flush
-        }
-        @cobj.rem.ext.def_proc{|ent,src,pri|
-          verbose{"#@id/Issuing:#{ent.id} from #{src} with priority #{pri}"}
-          @buf.send(ent,pri)
-          "ISSUED"
-        }
-        @cobj.get('interrupt').def_proc{|ent,src|
-          @batch_interrupt.each{|args|
-            verbose{"#@id/Issuing:#{args} for Interrupt"}
-            @buf.send(@cobj.set_cmd(args),0)
-          }
-          warning("Interrupt(#{@batch_interrupt}) from #{src}")
-          'INTERRUPT'
-        }
         ext_non_client
       end
 
@@ -98,20 +81,32 @@ module CIAX
 
       def init_buf
         buf=Buffer.new(@stat['id'],@stat['ver'],@sv_stat)
-        buf.send_proc{|ent|
-          batch=type?(ent[:batch],Array)
-          verbose{"Send FrmCmds #{batch}"}
-          batch
-        }
         buf.recv_proc{|args,src|
           verbose{"Processing #{args}"}
           @sub.exe(args,src)
         }
-        buf.flush_proc{
-          verbose{"Propagate Buffer#flush -> Status#upd"}
+        buf.post_upd_procs << proc{
+          verbose{"Propagate Buffer#upd -> Status#upd"}
           @stat.upd
           sleep(0.1)
           # Auto issue by watch
+        }
+        @sub.stat.flush_procs << proc{
+          verbose{"Propagate Field#flush -> Buffer#upd"}
+          buf.upd
+        }
+        @cobj.rem.ext.def_proc{|ent,src,pri|
+          verbose{"#@id/Issuing:#{ent.id} from #{src} with priority #{pri}"}
+          buf.send(ent,pri)
+          "ISSUED"
+        }
+        @cobj.get('interrupt').def_proc{|ent,src|
+          @batch_interrupt.each{|args|
+            verbose{"#@id/Issuing:#{args} for Interrupt"}
+            buf.send(@cobj.set_cmd(args),0)
+          }
+          warning("Interrupt(#{@batch_interrupt}) from #{src}")
+          'INTERRUPT'
         }
         buf.server
       end

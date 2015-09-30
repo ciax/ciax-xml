@@ -75,7 +75,7 @@ module CIAX
           @sv_stat.reset('comerr')
           @stream.snd(ent[:frame],ent.id)
           @stat.conv(ent)
-          @stat.flush if src != 'local'
+          @stat.flush if src != 'buffer'
           'OK'
         }
         @cobj.get('set').def_proc{|ent|

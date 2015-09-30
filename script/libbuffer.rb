@@ -28,7 +28,7 @@ module CIAX
     # sv_stat: Server Status
     def initialize(id,ver,sv_stat={})
       super('issue',id,ver)
-      update('pri' => '','cid' => '','src' => '')
+      update('pri' => '','cid' => '')
       @sv_stat=type?(sv_stat,Prompt)
       #element of @q is bunch of frm args corresponding an appcmd
       @q=Queue.new
@@ -39,41 +39,35 @@ module CIAX
       clear
     end
 
-    def send_proc
-      @send_proc=proc{|ent| yield ent}
-      self
-    end
-
     def recv_proc
       @recv_proc=proc{|args,src| yield args,src}
       self
     end
 
     # Send frm command batch (ary of ary)
-    def send(ent,n=1,src='local')
+    def send(ent,n=1)
       type?(ent,Entity)
       clear if n == 0
-      batch=@send_proc.call(ent)
+      batch=ent[:batch]
       #batch is frm batch (ary of ary)
-      update('time'=>now_msec,'pri' => n,'cid' => ent.id,'src'=>src)
+      update('time'=>now_msec,'pri' => n,'cid' => ent.id)
       unless batch.empty?
         @sv_stat.set('isu')
-        @q.push(:pri => n,:batch => batch,:src => src)
+        @q.push(:pri => n,:batch => batch)
       end
       self
-    ensure
-      post_upd
     end
 
     def server
       @tid=ThreadLoop.new("Buffer(#{self['id']})",12){
         begin
+          verbose{"SUB:Waiting"}
           rcv=@q.shift
           sort(rcv[:pri],rcv[:batch])
           while args=pick
-            @recv_proc.call(args,rcv[:src])
+            @recv_proc.call(args,'buffer')
           end
-          flush
+          upd
         rescue
           clear
           alert($!.to_s)
@@ -82,19 +76,12 @@ module CIAX
       self
     end
 
-    def flush_proc
-      @flush_proc=proc{|ent| yield ent}
-      self
-    end
-
     def alive?
       @tid && @tid.alive?
     end
 
-    def flush
-      verbose{"SUB:Waiting"}
+    def upd_core
       # @q can not be empty depending on @flush_proc
-      @flush_proc.call(self)
       @sv_stat.reset('isu') if @q.empty?
       self
     end

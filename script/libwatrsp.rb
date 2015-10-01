@@ -24,7 +24,6 @@ module CIAX
         @windex.values.each{|v|
           @list|=v[:cnd].map{|i| i["var"]}
         }
-        @ctime=0
         @stat.post_upd_procs << proc{
           verbose{"Propagate Status#upd -> upd"}
           upd
@@ -33,7 +32,7 @@ module CIAX
       end
 
       def queue(src,pri,batch=[])
-        @ctime=self['time']=now_msec
+        @last_updated=self['time']=now_msec
         batch.each{|args|
           @data['exec'] << [src,pri,args]
         }
@@ -43,8 +42,8 @@ module CIAX
 
       private
       def upd_core
-        return self unless @stat['time'] > @ctime
-        @ctime=self['time']=@stat['time']
+        return self unless @stat['time'] > @last_updated
+        @last_updated=self['time']=@stat['time']
         sync
         act=active?
         @data.values.each{|a| a.clear if Array === a}
@@ -61,9 +60,10 @@ module CIAX
           }
           @data['active'] << id
         }
-        if active?
-          @data['act_start']=@ctime if !act
-          @data['act_end']=now_msec
+        if !act && active?
+          @on_act_procs.each{|p| p.call(self)}
+        elsif act && !active?
+          @on_deact_procs.each{|p| p.call(self)}
         end
         verbose{"Updated(#{@stat['time']})"}
         self

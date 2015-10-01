@@ -5,16 +5,21 @@ require 'librerange'
 module CIAX
   module Wat
     class Event < DataH
-      attr_reader :interval
+      attr_reader :on_act_procs,:on_deact_procs,:interval
       def initialize
         super('event')
         @interval=0.1
-        @data['act_start']=now_msec
-        @data['act_end']=now_msec
+        @last_updated=now_msec
+        @on_act_procs=[proc{verbose{"Processing OnActProcs"}}]
+        @on_deact_procs=[proc{verbose{"Processing OnActProcs"}}]
         #For Array element
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
         #For Hash element
         ['crnt','last','res'].each{|i| @data[i]||={}}
+        #For Time element
+        ['act_start','act_end'].each{|i| @data[i]||=now_msec}
+        @on_act_procs << proc{@data['act_start']=@last_updated}
+        @on_deact_procs << proc{@data['act_end']=now_msec}
         self
       end
 

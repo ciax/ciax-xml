@@ -11,7 +11,7 @@ module CIAX
         @interval=0.1
         @last_updated=0
         @on_act_procs=[proc{verbose{"Processing OnActProcs"}}]
-        @on_deact_procs=[proc{verbose{"Processing OnActProcs"}}]
+        @on_deact_procs=[proc{verbose{"Processing OnDeActProcs"}}]
         #For Array element
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
         #For Hash element
@@ -39,8 +39,8 @@ module CIAX
         self
       end
 
-      def ext_rsp(stat)
-        extend(Rsp).ext_rsp(stat)
+      def ext_rsp(stat,sv_stat={})
+        extend(Rsp).ext_rsp(stat,sv_stat)
       end
     end
 

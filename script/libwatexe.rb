@@ -57,7 +57,7 @@ module CIAX
           @cobj.rem.ext.valid_sub(block)
         }
         @sub.pre_exe_procs << proc{|args| @stat.block?(args) }
-        @stat.ext_rsp(@sub.stat).ext_file
+        @stat.ext_rsp(@sub.stat,@sv_stat).ext_file
         self
       end
 

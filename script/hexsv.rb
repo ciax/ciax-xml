@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require "libhexexe"
-
+require 'libhexexe'
+# CIAX-XML Device Server for V1
 module CIAX
   GetOpts.new('e')
-  cfg=Config.new
+  cfg = Config.new
   Hex::List.new(cfg).server(ARGV)
 end

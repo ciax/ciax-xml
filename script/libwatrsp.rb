@@ -62,11 +62,11 @@ module CIAX
         if @sv_stat['event']
           @data['act_end']=now_msec
           if !active? && !@sv_stat['isu']
-            @sv_stat['event']=false
+            @sv_stat.reset('event')
             @on_deact_procs.each{|p| p.call(self)}
           end
         elsif active?
-          @sv_stat['event']=true
+          @sv_stat.set('event')
           @data['act_start']=@data['act_end']=@last_updated
           @on_act_procs.each{|p| p.call(self)}
         end

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libsqlog"
+require "libsqlsim"
 # Device simulator by SqLog
 
 module CIAX
@@ -9,7 +9,7 @@ module CIAX
     ver=ARGV.shift
     ARGV.clear
 
-    logv=LogRing.new(id)
+    logv=Simulator.new(id)
     begin
       while base64=logv.input
         if str=logv.find_next(base64)

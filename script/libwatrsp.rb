@@ -14,8 +14,9 @@ module CIAX
       #       => @data['crnt']<-@stat.data(picked)
       #       => check(@data['crnt'] <> @data['last']?)
       # Stat no changed -> clear exec, no eval
-      def ext_rsp(stat)
+      def ext_rsp(stat,sv_stat={})
         @stat=type?(stat,App::Status)
+        @sv_stat=type?(sv_stat,Hash)
         wdb=@dbi[:watch]||{}
         @windex=wdb[:index]||{}
         @interval=wdb['interval'].to_f if wdb.key?('interval')
@@ -45,7 +46,7 @@ module CIAX
         return self unless @stat['time'] > @last_updated
         @last_updated=self['time']=@stat['time']
         sync
-        act=active?
+        prev=active?
         @data.values.each{|a| a.clear if Array === a}
         @windex.each{|id,item|
           next unless check(id,item)
@@ -60,9 +61,9 @@ module CIAX
           }
           @data['active'] << id
         }
-        if !act && active?
+        if !prev && active?
           @on_act_procs.each{|p| p.call(self)}
-        elsif act && !active?
+        elsif prev && !active?
           @on_deact_procs.each{|p| p.call(self)}
         end
         verbose{"Updated(#{@stat['time']})"}

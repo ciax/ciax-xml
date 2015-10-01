@@ -9,7 +9,7 @@ module CIAX
       def initialize
         super('event')
         @interval=0.1
-        @last_updated=now_msec
+        @last_updated=0
         @on_act_procs=[proc{verbose{"Processing OnActProcs"}}]
         @on_deact_procs=[proc{verbose{"Processing OnActProcs"}}]
         #For Array element

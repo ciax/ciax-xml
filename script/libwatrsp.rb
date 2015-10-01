@@ -126,7 +126,7 @@ module CIAX
         dbi=Ins::Db.new.get(id)
         stat.set_dbi(dbi)
         stat.ext_file if STDIN.tty?
-        event=Event.new.ext_rsp(stat)
+        event=Event.new.set_dbi(dbi).ext_rsp(stat)
         if t=$opt['t']
           event.ext_file
           stat.str_update(t)

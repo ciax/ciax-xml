@@ -12,7 +12,7 @@ module CIAX
         @sub=@cfg[:sub_list].get(@id)
         @cobj.add_rem(@sub.cobj.rem)
         @stat=Event.new.set_dbi(@dbi)
-        @sv_stat=@sub.sv_stat.add_db('auto'=>'@','watch'=>'&')
+        @sv_stat=@sub.sv_stat.add_db('auto'=>'&','event'=>'@')
         @sub.batch_interrupt=@stat.get('int')
         @mode=@sub.mode
         @host=@sub.host
@@ -43,7 +43,7 @@ module CIAX
           }.clear
         }
         @tid_auto=auto_update
-        @post_exe_procs << proc{
+        @sub.post_exe_procs << proc{
           @sv_stat.put('auto',@tid_auto && @tid_auto.alive?)
         }
         self
@@ -52,7 +52,6 @@ module CIAX
       def ext_non_client
         @stat.post_upd_procs << proc{|ev|
           verbose{"Propagate Event#upd -> upd"}
-          @sv_stat.put('watch',ev.active?)
           block=ev.get('block').map{|id,par| par ? nil : id}.compact
           @cobj.rem.ext.valid_sub(block)
         }

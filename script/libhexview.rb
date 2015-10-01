@@ -46,7 +46,7 @@ module CIAX
 
       def upd_core
         @res[2]=b2e(@sv_stat['udperr'])
-        @res[3]=b2i(@sv_stat['watch'])
+        @res[3]=b2i(@sv_stat['event'])
         @res[4]=b2i(@sv_stat['isu'])
         @res[5]=b2e(@sv_stat['comerr'])
         @res[6]=''

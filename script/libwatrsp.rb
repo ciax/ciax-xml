@@ -8,7 +8,6 @@ module CIAX
       def self.extended(obj)
         Msg.type?(obj,Event)
       end
-
       # @stat.data(picked) = @data['crnt'](picked) > @data['last']
       # upd() => @data['last']<-@data['crnt']
       #       => @data['crnt']<-@stat.data(picked)
@@ -46,7 +45,6 @@ module CIAX
         return self unless @stat['time'] > @last_updated
         @last_updated=self['time']=@stat['time']
         sync
-        prev=active?
         @data.values.each{|a| a.clear if Array === a}
         @windex.each{|id,item|
           next unless check(id,item)
@@ -61,10 +59,16 @@ module CIAX
           }
           @data['active'] << id
         }
-        if !prev && active?
+        if @sv_stat['event']
+          @data['act_end']=now_msec
+          if !active? && !@sv_stat['isu']
+            @sv_stat['event']=false
+            @on_deact_procs.each{|p| p.call(self)}
+          end
+        elsif active?
+          @sv_stat['event']=true
+          @data['act_start']=@data['act_end']=@last_updated
           @on_act_procs.each{|p| p.call(self)}
-        elsif prev && !active?
-          @on_deact_procs.each{|p| p.call(self)}
         end
         verbose{"Updated(#{@stat['time']})"}
         self

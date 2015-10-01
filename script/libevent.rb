@@ -18,8 +18,6 @@ module CIAX
         ['crnt','last','res'].each{|i| @data[i]||={}}
         #For Time element
         ['act_start','act_end'].each{|i| @data[i]||=now_msec}
-        @on_act_procs << proc{@data['act_start']=@last_updated}
-        @on_deact_procs << proc{@data['act_end']=now_msec}
         self
       end
 

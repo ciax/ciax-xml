@@ -40,14 +40,17 @@ module CIAX
       verbose{"Command #{args} recieved from '#{src}' as ##{pri}"}
       @pre_exe_procs.each{|p| p.call(args,src)}
       @sv_stat.msg(@cobj.set_cmd(args).exe_cmd(src,pri))
+      @post_exe_procs.each{|p| p.call(args,src)}
       self
     rescue LongJump
       raise $!
     rescue InvalidID
       @sv_stat.msg($!.to_s)
       raise $!
-    ensure
-      @post_exe_procs.each{|p| p.call(args,src)}
+    end
+
+    def to_s
+      @sv_stat['msg']
     end
 
     def ext_server

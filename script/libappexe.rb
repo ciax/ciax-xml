@@ -59,7 +59,12 @@ module CIAX
         @mode='DRV'
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file
         @stat.ext_log.ext_sqlog if $opt['e']
-        @buf=init_buf
+        init_buf
+        if @cfg[:exe_mode]
+          tc=Thread.current
+          @stat.post_upd_procs << proc{tc.run}
+          @post_exe_procs << proc{sleep}
+        end
         ext_non_client
       end
 

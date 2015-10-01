@@ -44,7 +44,7 @@ module CIAX
         ### Server methods
         module Drv
           def ext_drv
-            ext_file
+            ext_save.ext_load
             clean
             self
           end

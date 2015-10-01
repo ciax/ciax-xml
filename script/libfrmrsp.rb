@@ -137,7 +137,7 @@ module CIAX
       cid=res['cmd']
       dbi=Dev::Db.new.get(id)
       field=Field.new.set_dbi(dbi).ext_rsp{res}
-      field.ext_file if $opt['m']
+      field.ext_save.ext_load if $opt['m']
       if cid
         cfg=Config.new.update(:dbi => dbi,:field => field)
         cobj=Index.new(cfg)

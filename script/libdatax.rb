@@ -1,5 +1,7 @@
 #!/usr/bin/ruby
 require "libvarx"
+require "libhttp"
+require "libload"
 
 module CIAX
   # Header and Data Container(Hash or Array) with Loading feature
@@ -41,9 +43,9 @@ module CIAX
       get(@data.keys.sort[n])
     end
 
-    def ext_file # File I/O
-      extend File
-      ext_file
+    def ext_load # File I/O
+      extend Load
+      ext_load
       self
     end
 
@@ -123,106 +125,6 @@ module CIAX
 
     def lastval
       get(keys.last)
-    end
-  end
-
-  module Http
-    require "open-uri"
-    def ext_http(host)
-      @host=host||'localhost'
-      verbose{"Initialize(#{@host})"}
-      self['id']||Msg.cfg_err("ID")
-      @pre_upd_procs << proc{load}
-      load
-      self
-    end
-
-    def load(tag=nil)
-      url=file_url(tag)
-      json_str=''
-      open(url){|f|
-        verbose{"Loading url [#{url}](#{f.size})"}
-        json_str=f.read
-      }
-      if json_str.empty?
-        warning(" -- json url file (#{url}) is empty at loading")
-      else
-        read(json_str)
-      end
-      self
-    rescue OpenURI::HTTPError
-      alert("  -- no url file (#{url})")
-    end
-
-    private
-    def file_url(tag=nil)
-      "http://"+@host+"/json/"+file_base(tag)+'.json'
-    end
-  end
-
-  module File
-    include Save
-    def ext_file
-      ext_save
-      load
-      self
-    end
-
-    # Saving data of specified keys with tag
-    def save_key(keylist,tag=nil)
-      hash={}
-      keylist.each{|k|
-        if @data.key?(k)
-          hash[k]=get(k)
-        else
-          warning("No such Key [#{k}]")
-        end
-      }
-      if hash.empty?
-        Msg.par_err("No Keys")
-      else
-        tag||=(tag_list.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
-        Msg.msg("Status Saving for [#{tag}]")
-        output=Hashx.new(self)
-        output[@data_name]=hash
-        write_json(output.to_j,tag)
-      end
-      self
-    end
-
-    def load(tag=nil)
-      base=file_base(tag)
-      fname=file_path(tag)
-      json_str=''
-      open(fname){|f|
-        verbose{"Loading [#{base}](#{f.size})"}
-        f.flock(::File::LOCK_SH)
-        json_str=f.read
-      }
-      if json_str.empty?
-        warning(" -- json file (#{base}) is empty at loading")
-      else
-        data=j2h(json_str)
-        verbose{"Version compare [#{data['ver']}] vs. <#{self['ver']}>"}
-        if data['ver'] == self['ver']
-          @data.deep_update(data[@data_name])
-        else
-          alert("Version mismatch [#{data['ver']}] should be <#{self['ver']}>")
-        end
-      end
-      self
-    rescue Errno::ENOENT
-      if tag
-        Msg.par_err("No such Tag","Tag=#{tag_list}")
-      else
-        warning("  -- no json file (#{base})")
-      end
-    end
-
-    def tag_list
-      Dir.glob(file_path('*')).map{|f|
-        f.slice(/.+_(.+)\.json/,1)
-      }.sort
     end
   end
 end

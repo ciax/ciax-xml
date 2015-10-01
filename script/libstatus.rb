@@ -39,11 +39,11 @@ module CIAX
       end
     end
 
-    module File
+    module Load
       # @< (db),(base),(prefix)
       # @< (last)
       # @ lastsave
-      include CIAX::File
+      include CIAX::Load
       def self.extended(obj)
         Msg.type?(obj,Status)
       end
@@ -70,7 +70,7 @@ module CIAX
         if host=$opt.host
           stat.ext_http(host)
         else
-          stat.ext_file
+          stat.ext_save.ext_load
         end
         puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID

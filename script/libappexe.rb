@@ -42,7 +42,7 @@ module CIAX
       private
       def ext_test
         @mode='TEST'
-        @stat.ext_sym.ext_file
+        @stat.ext_sym.ext_save.ext_load
         @stat.post_upd_procs << proc{|st|
           verbose{"Propagate Status#upd -> App#settime"}
           st['time']=now_msec
@@ -57,7 +57,7 @@ module CIAX
 
       def ext_driver
         @mode='DRV'
-        @stat.ext_rsp(@sub.stat).ext_sym.ext_file
+        @stat.ext_rsp(@sub.stat).ext_sym.ext_save.ext_load
         @stat.ext_log.ext_sqlog if $opt['e']
         init_buf
         if @cfg[:exe_mode]

@@ -44,7 +44,7 @@ module CIAX
       private
       def ext_test
         @mode='TEST'
-        @stat.ext_file
+        @stat.ext_save.ext_load
         @cobj.rem.ext.def_proc{|ent| 'TEST'}
         @cobj.get('set').def_proc{|ent|
           @stat.rep(ent.par[0],ent.par[1])
@@ -69,7 +69,7 @@ module CIAX
         @stream.pre_open_proc=proc{@sv_stat.set('strerr')}
         @stream.post_open_proc=proc{@sv_stat.reset('strerr')}
         @sv_stat.add_db('comerr' => 'X','strerr' => 'E')
-        @stat.ext_file
+        @stat.ext_save.ext_load
         @stat.ext_rsp{@stream.rcv}
         @cobj.rem.ext.def_proc{|ent,src|
           @sv_stat.reset('comerr')

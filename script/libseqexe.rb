@@ -30,7 +30,7 @@ module CIAX
           @mcfg=ent
           @sequence=ent.sequence
           type?(@mcfg[:dev_list],CIAX::List)
-          @record=Record.new.ext_file.mklink # Make latest link
+          @record=Record.new.ext_save.ext_load.mklink # Make latest link
           @record['pid']=pid
           @submcr_proc=@mcfg[:submcr_proc]||proc{|args,id|
             show{"Sub Macro #{args} issued\n"}

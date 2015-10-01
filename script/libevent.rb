@@ -52,7 +52,7 @@ module CIAX
         if host=$opt.host
           event.ext_http(host)
         else
-          event.ext_file
+          event.ext_save.ext_load
         end
       puts STDOUT.tty? ? event : event.to_j
       rescue InvalidID

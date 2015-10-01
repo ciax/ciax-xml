@@ -130,10 +130,10 @@ module CIAX
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
         dbi=Ins::Db.new.get(id)
         stat.set_dbi(dbi)
-        stat.ext_file if STDIN.tty?
+        stat.ext_save.ext_load if STDIN.tty?
         event=Event.new.set_dbi(dbi).ext_rsp(stat)
         if t=$opt['t']
-          event.ext_file
+          event.ext_save.ext_load
           stat.str_update(t)
         end
         stat.upd

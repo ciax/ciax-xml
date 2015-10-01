@@ -34,7 +34,6 @@ module CIAX
       @q=Queue.new
       @tid=nil
       @flush_proc=proc{}
-      @send_proc=proc{}
       @recv_proc=proc{}
       clear
     end

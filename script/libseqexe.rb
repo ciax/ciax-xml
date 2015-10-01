@@ -101,7 +101,7 @@ module CIAX
         end
 
         private
-        # macro returns result
+        # macro returns result (true/false)
         def sub_macro(sequence,mstat)
           @depth+=1
           set_stat('run')

@@ -62,7 +62,7 @@ module CIAX
       true
     end
 
-    # Get the object of upper generation in which Config is generated 
+    # Get the object of upper generation in which Config is generated
     def ancestor(n)
       @generation[n][:obj]
     end

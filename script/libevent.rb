@@ -13,11 +13,11 @@ module CIAX
         @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
         @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
         # For Array element
-        ['active', 'exec', 'block', 'int'].each { |i| @data[i] ||= Array.new }
+        %w(active exec block int).each { |i| @data[i] ||= Array.new }
         # For Hash element
-        ['crnt', 'last', 'res'].each { |i| @data[i] ||= {} }
+        %w(crnt last res).each { |i| @data[i] ||= {} }
         # For Time element
-        ['act_start', 'act_end'].each { |i| @data[i] ||= now_msec }
+        %w(act_start act_end).each { |i| @data[i] ||= now_msec }
         self
       end
 

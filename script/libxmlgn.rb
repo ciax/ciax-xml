@@ -27,7 +27,7 @@ module CIAX
         @e.namespaces.default
       end
 
-      def to_h # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"}) 
+      def to_h # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
         h = @e.attributes.to_h
         t = text
         h['val'] = t if t

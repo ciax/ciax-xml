@@ -35,7 +35,7 @@ module CIAX
           end
           @frame = Frame.new(self[:dbi]['endian'], self[:dbi]['ccmethod'])
           return unless @body
-          @sel[:body] = @body          
+          @sel[:body] = @body
           verbose { "Body:#{self['label']}(#@id)" }
           mk_frame(:body)
           if @sel.key?(:ccrange)

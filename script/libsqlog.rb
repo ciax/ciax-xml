@@ -17,17 +17,17 @@ module CIAX
                    @tname = @stat.type.capitalize
                    verbose { "Initialize Table '#{@tid}'" }
                  end
-           
+
                  def create
                    key = ['time', *expand.keys].uniq.join("','")
                    verbose { "Create ('#{key}')" }
                    "create table #{@tid} ('#{key}',primary key(time));"
                  end
-           
+
                  def add_field(key)
                    "alter table #{@tid} add column #{key};"
                  end
-           
+
                  def upd
                    kary = []
                    vary = []
@@ -38,15 +38,15 @@ module CIAX
                    verbose { "Update(#{@stat['time']})" }
                    "insert or ignore into #{@tid} (#{kary.join(',')}) values (#{vary.join(',')});"
                  end
-           
+
                  def start
                    'begin;'
                  end
-           
+
                  def commit
                    'commit;'
                  end
-           
+
                  private
                  def expand
                    val = { 'time' => @stat['time'] }
@@ -61,7 +61,7 @@ module CIAX
                    }
                    val
                  end
-           
+
                  def rec_expand(k, v, val)
                    v.size.times{|i|
                      case v[i]
@@ -104,7 +104,7 @@ module CIAX
                      }
                    }
                  end
-           
+
                  # Check table existence (ver=0 is invalid)
                  def add_table(stat)
                    sqlog = Table.new(stat)
@@ -128,7 +128,7 @@ module CIAX
                    end
                    self
                  end
-           
+
                  # Issue internal command
                  def internal(str)
                    args = @sqlcmd.join(' ') + ' .' + str

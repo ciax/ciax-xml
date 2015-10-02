@@ -29,7 +29,7 @@ module CIAX
     def get_stat
       adbs = @dbi[:status]
       @index = adbs[:index]
-      get_element(['time', 'elapsed'], '', 2)
+      get_element(%w(time elapsed), '', 2)
       adbs[:group].values.each{|g|
         cap = g['caption'] || next
         get_element(g[:members], cap, g['column'])

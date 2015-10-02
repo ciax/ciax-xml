@@ -16,7 +16,7 @@ module CIAX
                    @total = query("select count(*) from #@tbl where dir='rcv';").to_i
                    raise('No Line') if @total < 1
                  end
-           
+
                  def query(str)
                    verbose { "->[#{str}]" }
                    IO.popen(@sqlcmd, 'r+'){|f|
@@ -26,7 +26,7 @@ module CIAX
                    verbose { "<-[#{str}]" }
                    str
                  end
-           
+
                  def find_next(str)
                    begin
                      verbose { 'Search corresponding CMD' }
@@ -50,19 +50,19 @@ module CIAX
                    sql = "select base64 from #@tbl where time = #{tim};"
                    query(sql)
                  end
-           
+
                  def wait(tim)
                    dif = (tim.to_i > @index) ? [tim.to_i - @index, 1000].min : 0
                    wt = dif.to_f / 1000
                    sleep wt
                    '%.3f' % wt
                  end
-           
+
                  def input
                    select([STDIN])
                    [STDIN.sysread(1024)].pack('m').split("\n").join('')
                  end
-           
+
                end
   end
 end

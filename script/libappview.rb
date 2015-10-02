@@ -23,7 +23,7 @@ module CIAX
           upd
         }
         # Just additional data should be provided
-        ['data', 'class', 'msg'].each{|key|
+        %w(data class msg).each{|key|
           stat[key] ||= {}
         }
       end

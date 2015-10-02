@@ -79,7 +79,7 @@ module CIAX
     def initialize(hash = {})
       update(hash)
       @vmode = 'v' # v|r|j
-      ['v', 'r', 'j'].each{|k|
+      %w(v r j).each{|k|
         @vmode = k if $opt[k]
       } if $opt
       @cls_color = 6

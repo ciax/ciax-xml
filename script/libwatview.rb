@@ -53,7 +53,7 @@ module CIAX
       private
       def upd_core
         self['time'] = @event['time']
-        ['exec', 'block', 'int', 'act_start', 'act_end', 'upd_next'].each{|id|
+        %w(exec block int act_start act_end upd_next).each{|id|
           self[id] = @event.get(id)
         }
         self['stat'].each{|id, v|

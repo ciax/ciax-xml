@@ -9,14 +9,14 @@ module CIAX
                def initialize
                  super('sdb')
                end
-         
+
                def self.pack(ary = [])
                  sdb = Sym::Db.new
                  dbi = Dbi.new
                  ary.compact.each { |k| dbi.update(sdb.get(k)) }
                  dbi
                end
-         
+
                private
                def doc_to_db(doc)
                  db = Dbi.new

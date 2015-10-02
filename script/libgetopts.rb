@@ -43,17 +43,17 @@ module CIAX
       }
       update(ARGV.getopts(str))
       # Set @layer (default 'Wat')
-      lopt = ['x', 'a', 'f', 'w'].find { |c| self[c] } || 'a'
+      lopt = %w(x a f w).find { |c| self[c] } || 'a'
       @layer = optdb[lopt].split(' ').first
       $opt = self
     end
 
     def sv?
-      ['s', 'e'].any? { |k| self[k] }
+      %w(s e).any? { |k| self[k] }
     end
 
     def cl?
-      ['h', 'c', 'l'].any? { |k| self[k] }
+      %w(h c l).any? { |k| self[k] }
     end
 
     def host

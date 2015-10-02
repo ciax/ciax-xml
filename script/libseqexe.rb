@@ -115,22 +115,22 @@ module CIAX
                 @step.ok?
                 query(['ok'])
               when 'goal'
-                if @step.skip? && query(['skip', 'force'])
+                if @step.skip? && query(%w(skip force))
                   result = 'skipped'
                   break true
                 end
               when 'check'
-                if @step.fail? && query(['drop', 'force', 'retry'])
+                if @step.fail? && query(%w(drop force retry))
                   result = 'error'
                   break
                 end
               when 'wait'
-                if @step.timeout? { show('.') } && query(['drop', 'force', 'retry'])
+                if @step.timeout? { show('.') } && query(%w(drop force retry))
                   result = 'timeout'
                   break
                 end
               when 'exec'
-                if @step.exec? && query(['exec', 'pass'])
+                if @step.exec? && query(%w(exec pass))
                   @running << e1['site']
                   @mcfg[:dev_list].get(e1['site']).exe(e1['args'], 'macro')
                 end

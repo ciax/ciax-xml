@@ -66,7 +66,7 @@ module CIAX
         list = par[:list] || []
         disp = list.join(',')
         str = pary.shift
-        unless str 
+        unless str
           next par[:default] if par.key?(:default)
           mary = []
           mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameters].size})"

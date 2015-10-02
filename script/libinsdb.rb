@@ -8,13 +8,13 @@ module CIAX
                def initialize(proj = PROJ)
                  super('idb', proj)
                end
-         
+
                # overwrite App::Db
                def get(id = nil)
                  dbi = super
                  dbi.cover(App::Db.new.get(dbi['app_id']))
                end
-         
+
                private
                def doc_to_db(doc)
                  dbi = Dbi[doc[:attr]]

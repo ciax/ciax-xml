@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
-require "libexe"
-require "libsh"
-require "libfield"
-require "libfrmdb"
-require "libfrmrsp"
-require "libfrmcmd"
-require "libdevdb"
-require "libsitelist"
+require 'libexe'
+require 'libsh'
+require 'libfield'
+require 'libfrmdb'
+require 'libfrmrsp'
+require 'libfrmcmd'
+require 'libdevdb'
+require 'libsitelist'
 
 module CIAX
   module Frm
@@ -63,7 +63,7 @@ module CIAX
           iocmd=@dbi['iocmd'].split(' ')
           timeout=(@dbi['timeout']||10).to_i
         end
-        tm=@dbi[:response][:frame]["terminator"]
+        tm=@dbi[:response][:frame]['terminator']
         @stream=Stream.new(@id,@dbi['version'],iocmd,@dbi['wait'],timeout,(tm && eval('"'+tm+'"')))
         @stream.ext_log unless $opt['s']
         @stream.pre_open_proc=proc{@sv_stat.set('strerr')}
@@ -95,7 +95,7 @@ module CIAX
         @cobj.get('flush').def_proc{
           @stream.rcv
           @stat.flush
-          "Flush Stream"
+          'Flush Stream'
         }
         self
       end

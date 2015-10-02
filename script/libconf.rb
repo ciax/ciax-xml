@@ -70,7 +70,7 @@ module CIAX
     # Show all contents of all generation
     def path(key=nil)
       i=0
-      str=""
+      str=''
       @generation.each{|h|
         str="  [#{i}]{"+h.map{|k,v|
           next if key and k != key
@@ -78,14 +78,14 @@ module CIAX
           when Hash,Proc,CmdProc
             val=v.class
           when Array
-            val="["+v.map{|e|
+            val='['+v.map{|e|
               case e
               when Enumerable
                 e.class
               else
                 e.inspect
               end
-            }.join(",")+"](#{v.object_id})"
+            }.join(',')+"](#{v.object_id})"
           else
             val=v.inspect
           end

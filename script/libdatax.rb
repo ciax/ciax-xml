@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
-require "libvarx"
-require "libhttp"
-require "libload"
+require 'libvarx'
+require 'libhttp'
+require 'libload'
 
 module CIAX
   # Header and Data Container(Hash or Array) with Loading feature
@@ -57,14 +57,14 @@ module CIAX
 
     private
     def _getdata
-      verbose{"Convert @data to [:data]"}
+      verbose{'Convert @data to [:data]'}
       hash=Hashx.new(self)
       hash[@data_name]=@data
       hash
     end
 
     def _setdata
-      verbose{"Convert [:data] to @data"}
+      verbose{'Convert [:data] to @data'}
       @data=delete(@data_name).extend(Enumx)
       self['time']||=now_msec
       self

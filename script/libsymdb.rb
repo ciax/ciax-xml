@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libdb"
-require "librerange"
+require 'libdb'
+require 'librerange'
 
 # id = Table Group ID
 module CIAX
@@ -37,7 +37,7 @@ module CIAX
     begin
       sdb=Sym::Db.new.get(ARGV.shift)
     rescue InvalidID
-      Msg.usage "[id] ..."
+      Msg.usage '[id] ...'
       Msg.exit
     end
     puts sdb.path(ARGV)

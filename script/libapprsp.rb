@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libstatus"
+require 'libstatus'
 
 module CIAX
   module App
@@ -80,9 +80,9 @@ module CIAX
         if /true|1/ === e['sign']
           verbose{"ConvertField[#{fld}]=[#{data.inspect}]"}
           if data == e['negative']
-            data="-"
+            data='-'
           else
-            data="+"
+            data='+'
           end
         end
         verbose{"GetField[#{fld}]=[#{data.inspect}]"}
@@ -117,21 +117,21 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libdevdb"
-      require "libinsdb"
-      require "libfrmrsp"
-      require "libstatus"
+      require 'libdevdb'
+      require 'libinsdb'
+      require 'libfrmrsp'
+      require 'libstatus'
       begin
         field=Frm::Field.new
         id=STDIN.tty? ? ARGV.shift : field.read['id']
         idb=Ins::Db.new.get(id)
-        ddb=Dev::Db.new.get(idb["frm_site"])
+        ddb=Dev::Db.new.get(idb['frm_site'])
         field.set_dbi(ddb).ext_rsp
         field.ext_save.ext_load if STDIN.tty?
         stat=Status.new.set_dbi(idb).ext_rsp(field)
         puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID
-        Msg.usage "[site] | < field_file"
+        Msg.usage '[site] | < field_file'
       end
     end
   end

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
-require "libdisp"
-require "libenumx"
-require "libxmlgn"
+require 'libdisp'
+require 'libenumx'
+require 'libxmlgn'
 
 # Domain is the top node of each name spaces
 module CIAX
@@ -18,14 +18,14 @@ module CIAX
         super()
         @cls_color=2
         @project=[project]
-        /.+/ =~ type || Msg.cfg_err("No Db Type")
+        /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type=type
         @pcap='All'
         @displist=Disp::List.new('column' => 2)
         @projlist=Disp::Group.new('caption' => 'Project', 'column' => 2)
         files=Dir.glob("#{ENV['XMLPATH']}/#{type}-*.xml")
         files.each{|xml|
-          verbose{"readxml:"+::File.basename(xml,'.xml')}
+          verbose{'readxml:'+::File.basename(xml,'.xml')}
           Gnu.new(xml).each{|e|
             @project << e['include'] if @project.include?(e['id']) and e['include']
           }
@@ -89,15 +89,15 @@ module CIAX
     begin
       doc=Xml::Doc.new(type,proj)
     rescue ConfigError
-      Msg.usage("[type] (adb,fdb,idb,ddb,mdb,sdb)")
+      Msg.usage('[type] (adb,fdb,idb,ddb,mdb,sdb)')
     rescue InvalidProj
       (proj=ARGV.shift) && retry
-      Msg.usage("[type] [project] [id]")
+      Msg.usage('[type] [project] [id]')
     end
     begin
       puts doc.set(ARGV.shift)
     rescue InvalidID
-      Msg.usage("[type] [project] [id]")
+      Msg.usage('[type] [project] [id]')
     end
   end
 end

@@ -39,7 +39,7 @@ module CIAX
         self[cid]
       else
         ent=context_constant('Entity').new(@cfg,opt)
-        if @cfg["nocache"]
+        if @cfg['nocache']
           verbose{"SetPAR: Entity No Cache Created (#{cid})"}
         else
           self[cid]=ent
@@ -71,7 +71,7 @@ module CIAX
           mary=[]
           mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameters].size})"
           mary << Msg.item(@cfg[:id],@cfg['label'])
-          mary << " "*10+"key=(#{disp})"
+          mary << ' '*10+"key=(#{disp})"
           Msg.par_err(*mary)
         end
         if list.empty?
@@ -82,7 +82,7 @@ module CIAX
             begin
               num=eval(str)
             rescue NameError,SyntaxError
-              Msg.par_err("Parameter is not number")
+              Msg.par_err('Parameter is not number')
             end
             verbose{"Validate: [#{num}] Match? [#{disp}]"}
             unless list.any?{|r| ReRange.new(r) == num }
@@ -115,7 +115,7 @@ module CIAX
       @cls_color=14
       @par=self[:par]
       @id=self[:cid]
-      verbose{["Config",path]}
+      verbose{['Config',path]}
     end
 
     # returns result of def_proc block (String)

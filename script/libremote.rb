@@ -16,7 +16,7 @@ module CIAX
       attr_reader :hid,:ext,:int
       def initialize(cfg,attr={})
         super
-        @cfg[:def_proc]=Proc.new{""} # proc is re-defined
+        @cfg[:def_proc]=Proc.new{''} # proc is re-defined
       end
 
       def add_hid(ns=Hid)
@@ -37,7 +37,7 @@ module CIAX
       class Group < Group
         def initialize(dom_cfg,attr={})
           super
-          @cfg['caption']="Hidden Commands"
+          @cfg['caption']='Hidden Commands'
           add_item('interrupt')
           # Accept empty command
           add_item(nil) unless @cfg[:exe_mode]
@@ -71,7 +71,7 @@ module CIAX
         def initialize(cfg,attr={})
           super
           dbi=type?(@cfg[:dbi],Dbi)
-          @cfg['caption']||="External Commands"
+          @cfg['caption']||='External Commands'
           @cfg['ver']||=dbi['version']
           # Set items by DB
           cdb=dbi[:command]
@@ -119,7 +119,7 @@ module CIAX
 
         def subst(str) #subst by parameters ($1,$2...)
           return str unless /\$([\d]+)/ === str
-          enclose("Substitute from [#{str}]","Substitute to [%s]"){
+          enclose("Substitute from [#{str}]",'Substitute to [%s]'){
             num=true
             res=str.gsub(/\$([\d]+)/){
               i=$1.to_i
@@ -127,7 +127,7 @@ module CIAX
               verbose{"Parameter No.#{i} = [#{@par[i-1]}]"}
               @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
             }
-            Msg.cfg_err("Nil string") if res == ''
+            Msg.cfg_err('Nil string') if res == ''
             res
           }
         end

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libvarx"
+require 'libvarx'
 
 # Structure
 # {
@@ -15,7 +15,7 @@ module CIAX
       attr_reader :binary
       attr_accessor :pre_open_proc,:post_open_proc
       def initialize(id,ver,iocmd,wait=0.01,timeout=nil,terminator=nil)
-        Msg.abort(" No IO command") if iocmd.to_a.empty?
+        Msg.abort(' No IO command') if iocmd.to_a.empty?
         @iocmd=type?(iocmd,Array).compact
         super('stream',id,ver)
         @cls_color=9
@@ -35,7 +35,7 @@ module CIAX
       def snd(str,cid)
         return if str.to_s.empty?
         verbose{"Sending #{str.size} byte on #{cid}"}
-        verbose{["Data Sending",str.inspect]}
+        verbose{['Data Sending',str.inspect]}
         reopen
         @f.write(str)
         convert('snd',str,cid)
@@ -45,26 +45,26 @@ module CIAX
       def rcv
         verbose{"Wait to Recieve #{@wait} sec"}
         sleep @wait
-        verbose{"Wait for Recieving"}
+        verbose{'Wait for Recieving'}
         reopen
         str=''
         loop{
           if IO.select([@f],nil,nil,@timeout)
             begin
               str<<@f.sysread(4096)
-              verbose{["Binary Getting",str.inspect]}
+              verbose{['Binary Getting',str.inspect]}
             rescue EOFError
               #Jumped at quit
               @f.close
               exit
             end
           else
-            Msg.com_err("Stream:No response")
+            Msg.com_err('Stream:No response')
           end
           break unless @terminator and /#@terminator/ !~ str
         }
         verbose{"Recieved #{str.size} byte on #{self['cmd']}"}
-        verbose{["Data Recieved",str.inspect]}
+        verbose{['Data Recieved',str.inspect]}
         convert('rcv',str)
         self
       end
@@ -75,8 +75,8 @@ module CIAX
           openstrm if !@f || @f.closed?
         rescue SystemCallError
           warning($!)
-          Msg.str_err("Stream Open failed") if int > 2
-          warning("Try to reopen")
+          Msg.str_err('Stream Open failed') if int > 2
+          warning('Try to reopen')
           sleep int
           int=(int+1)*2
           retry
@@ -86,16 +86,16 @@ module CIAX
       private
       def openstrm
         # SIGINT gets around the child process
-        verbose{"Stream Opening"}
+        verbose{'Stream Opening'}
         @pre_open_proc.call
         Signal.trap(:INT,nil)
         @f=IO.popen(@iocmd,'r+')
-        Signal.trap(:INT,"DEFAULT")
+        Signal.trap(:INT,'DEFAULT')
         at_exit{
           Process.kill('INT',@f.pid)
         }
         @post_open_proc.call
-        verbose{"Stream Open successfully"}
+        verbose{'Stream Open successfully'}
         # Shut off from Ctrl-C Signal to the child process
         # Process.setpgid(@f.pid,@f.pid)
         self
@@ -112,7 +112,7 @@ module CIAX
       end
 
       def encode(str)
-        [str].pack("m").split("\n").join('')
+        [str].pack('m').split("\n").join('')
       end
     end
   end

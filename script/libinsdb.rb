@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libappdb"
+require 'libappdb'
 
 module CIAX
   module Ins;NsColor=6
@@ -49,7 +49,7 @@ module CIAX
       begin
         dbi=Db.new(ARGV.shift).get(ARGV.shift)
       rescue
-        Msg.usage("(opt) [id] (key) ..")
+        Msg.usage('(opt) [id] (key) ..')
         Msg.exit
       end
       puts dbi.path(ARGV)

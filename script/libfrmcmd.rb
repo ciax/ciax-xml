@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
-require "libremote"
-require "libframe"
-require "libfield"
+require 'libremote'
+require 'libframe'
+require 'libfield'
 
 module CIAX
   module Frm
@@ -11,10 +11,10 @@ module CIAX
       class Group < Remote::Int::Group
         def initialize(cfg,attr={})
           super
-          add_item('save',"[key,key...] [tag]",def_pars(2))
-          add_item('load',"[tag]",def_pars(1))
-          add_item('set',"[key(:idx)] [val(,val)]",def_pars(2))
-          add_item('flush',"Stream")
+          add_item('save','[key,key...] [tag]',def_pars(2))
+          add_item('load','[tag]',def_pars(1))
+          add_item('set','[key(:idx)] [val(,val)]',def_pars(2))
+          add_item('flush','Stream')
         end
       end
     end
@@ -28,8 +28,8 @@ module CIAX
           super
           @field=type?(self[:field],Field)
           @fstr={}
-          if /true|1/ === self["noaffix"]
-            @sel={:main => ["body"]}
+          if /true|1/ === self['noaffix']
+            @sel={:main => ['body']}
           else
             @sel=Hash[self[:dbi][:command][:frame]]
           end
@@ -75,8 +75,8 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libfrmrsp"
-      require "libfrmdb"
+      require 'libfrmrsp'
+      require 'libfrmdb'
       GetOpts.new('r')
       id,*args=ARGV
       ARGV.clear
@@ -93,7 +93,7 @@ module CIAX
       rescue InvalidCMD
         $opt.usage("#{id} [cmd] (par) < field_file")
       rescue InvalidID
-        $opt.usage("[dev] [cmd] (par) < field_file")
+        $opt.usage('[dev] [cmd] (par) < field_file')
       end
     end
   end

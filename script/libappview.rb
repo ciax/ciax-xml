@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libappsym"
+require 'libappsym'
 
 # View is not used for computing, just for apperance for user.
 # So the convert process (upd) will be included in to_v
@@ -19,7 +19,7 @@ module CIAX
           @index.update(adbs[:alias])
         end
         @stat.post_upd_procs << proc{
-          verbose{"Propagate Status#upd -> upd"}
+          verbose{'Propagate Status#upd -> upd'}
           upd
         }
         # Just additional data should be provided
@@ -50,11 +50,11 @@ module CIAX
         lines=[]
         values.each{|v|
           cap=v['caption']
-          lines << " ***"+color(cap,10)+"***" unless cap.empty?
+          lines << ' ***'+color(cap,10)+'***' unless cap.empty?
           lines.concat v['lines'].map{|ele|
-            "  "+ele.values.map{|val|
+            '  '+ele.values.map{|val|
               c=cm[val['class']]+8
-              '['+color(val['label'],14)+':'+color(val['msg'],c)+"]"
+              '['+color(val['label'],14)+':'+color(val['msg'],c)+']'
             }.join(' ')
           }
         }
@@ -85,7 +85,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libinsdb"
+      require 'libinsdb'
       GetOpts.new('rc','c' => 'CSV output')
       stat=Status.new
       begin
@@ -101,7 +101,7 @@ module CIAX
           puts STDOUT.tty? ? view : view.to_j
         end
       rescue InvalidID
-        $opt.usage "(opt) [site] | < status_file"
+        $opt.usage '(opt) [site] | < status_file'
       end
       exit
     end

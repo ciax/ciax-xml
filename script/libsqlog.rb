@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # For sqlite3
-require "libmsg"
-require "thread"
+require 'libmsg'
+require 'thread'
 
 # Generate SQL command string
 module CIAX
@@ -40,11 +40,11 @@ module CIAX
       end
 
       def start
-        "begin;"
+        'begin;'
       end
 
       def commit
-        "commit;"
+        'commit;'
       end
 
       private
@@ -82,7 +82,7 @@ module CIAX
       include Msg
       def initialize(id,layer=nil)
         @cls_color=10
-        @sqlcmd=["sqlite3",vardir("log")+"sqlog_#{id}.sq3"]
+        @sqlcmd=['sqlite3',vardir('log')+"sqlog_#{id}.sq3"]
         @queue=Queue.new
         verbose{"Initialize '#{id}' on #{layer}"}
         ThreadLoop.new("SqLog(#{layer}:#{id})",13){
@@ -110,20 +110,20 @@ module CIAX
         sqlog=Table.new(stat)
         if $opt['e'] && stat['ver'].to_i > 0
           # Create table if no table
-          unless internal("tables").split(' ').include?(sqlog.tid)
+          unless internal('tables').split(' ').include?(sqlog.tid)
             @queue.push sqlog.create
             verbose{"Initialize '#{sqlog.tid}' is created"}
           end
           # Add to stat.upd
           stat.post_upd_procs << proc{
-            verbose{"Propagate Save#upd -> upd"}
+            verbose{'Propagate Save#upd -> upd'}
             @queue.push sqlog.upd
           }
         else
-          verbose{"Initialize: invalid Version(0): No Log"}
+          verbose{'Initialize: invalid Version(0): No Log'}
           stat.post_upd_procs << proc{
-            verbose{"Propagate Save#upd -> upd(Dryrun)"}
-            verbose{["Insert",sqlog.upd]}
+            verbose{'Propagate Save#upd -> upd(Dryrun)'}
+            verbose{['Insert',sqlog.upd]}
           }
         end
         self
@@ -131,13 +131,13 @@ module CIAX
 
       # Issue internal command
       def internal(str)
-        args=@sqlcmd.join(' ')+" ."+str
+        args=@sqlcmd.join(' ')+' .'+str
         `#{args}`
       end
     end
 
     if __FILE__ == $0
-      require "libappexe"
+      require 'libappexe'
       GetOpts.new
       id=ARGV.shift
       ARGV.clear
@@ -149,7 +149,7 @@ module CIAX
         puts sqlog.create
         puts sqlog.upd
       rescue InvalidID
-        Msg.usage "[id]"
+        Msg.usage '[id]'
       end
     end
   end

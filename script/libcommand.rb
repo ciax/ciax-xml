@@ -41,7 +41,7 @@ module CIAX
       when CmdProc
         res=cls
       else
-        sv_err("Not class")
+        sv_err('Not class')
       end
       unshift res
       res

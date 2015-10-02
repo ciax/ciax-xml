@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libmsg'
 require 'json'
-require "libthreadx"
+require 'libthreadx'
 
 # Capable of wider application than SqLog
 module CIAX
@@ -44,10 +44,10 @@ module CIAX
     #For new format
     def self.set_logline(str)
       h=JSON.load(str)
-      abort("Logline:Line is not rcv") unless /rcv/ === h['dir']
+      abort('Logline:Line is not rcv') unless /rcv/ === h['dir']
       if h['base64']
         def h.binary
-          self['base64'].unpack("m").first
+          self['base64'].unpack('m').first
         end
       end
       h
@@ -60,7 +60,7 @@ module CIAX
 
     def encode(str)
       #str.dump
-      [str].pack("m").split("\n").join('')
+      [str].pack('m').split("\n").join('')
     end
   end
 end

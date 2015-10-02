@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libenumx"
+require 'libenumx'
 module CIAX
   # Sortable Caption Database (Value is String)
   # Including key list (@select) for display chosen items.
@@ -62,7 +62,7 @@ module CIAX
 
       private
       def caption
-        @attr["caption"] ? " == "+Msg.color(@attr["caption"],(@attr["sub_color"]||6).to_i)+" ==\n" : ""
+        @attr['caption'] ? ' == '+Msg.color(@attr['caption'],(@attr['sub_color']||6).to_i)+" ==\n" : ''
       end
 
       def list_table
@@ -70,7 +70,7 @@ module CIAX
         num=0
         ((@select+@dummy) & keys).each{|key|
           next unless self[key]
-          title=@attr["line_number"] ? "[#{num+=1}](#{key})" : key
+          title=@attr['line_number'] ? "[#{num+=1}](#{key})" : key
           hash[title]=self[key]
         }
         hash
@@ -123,7 +123,7 @@ module CIAX
 
       private
       def caption
-        @attr["caption"] ? "**** "+Msg.color(@attr["caption"],(@attr["color"]||2).to_i)+" ****\n" : ""
+        @attr['caption'] ? '**** '+Msg.color(@attr['caption'],(@attr['color']||2).to_i)+" ****\n" : ''
       end
 
       def grp_lists

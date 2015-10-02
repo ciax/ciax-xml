@@ -19,7 +19,7 @@ module CIAX
       #For Command
       def reset
         @frame=''
-        verbose{"Reset"}
+        verbose{'Reset'}
         self
       end
 
@@ -74,7 +74,7 @@ module CIAX
           elsif len.to_i == body.size
             str=body
             @frame=[tm,rest].join
-            verbose(tm){"Cut just end before terminator"}
+            verbose(tm){'Cut just end before terminator'}
             cc_add(str)
           else
             str=body.slice!(0,len.to_i)
@@ -89,13 +89,13 @@ module CIAX
           @frame=[body,tm,rest].join
           cc_add([str,dlm].join)
         else
-          verbose{"Cut all the rest"}
+          verbose{'Cut all the rest'}
           str=body
           @frame=rest.to_s
           cc_add([str,tm].join)
         end
         if str.empty?
-          alert("Cut Empty")
+          alert('Cut Empty')
           return ''
         end
         len=str.size
@@ -117,7 +117,7 @@ module CIAX
       end
 
       def cc_mark # Check Code Start
-        verbose{"Cc Mark Range Start" }
+        verbose{'Cc Mark Range Start' }
         @ccrange=''
         self
       end
@@ -184,10 +184,10 @@ module CIAX
           num=sign+code[1..-1].sub(/0+/,'')
           base=10
         when 'binstr'
-          num=[code].pack("b*").ord
+          num=[code].pack('b*').ord
           base=2
         else
-          ary=code.unpack("C*")
+          ary=code.unpack('C*')
           ary.reverse! if @endian=='little'
           num=ary.inject(0){|r,i| r*256+i}
           base=256

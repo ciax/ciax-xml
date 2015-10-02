@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "socket"
+require 'socket'
 
 # Provide Server
 module CIAX
@@ -17,7 +17,7 @@ module CIAX
         begin
           JSON.load(line)
         rescue JSON::ParserError
-          raise "NOT JSON"
+          raise 'NOT JSON'
         end
       }
       @server_output_proc=proc{ merge(@sv_stat).to_j }
@@ -28,18 +28,18 @@ module CIAX
       @sub.server if @sub
       return self unless @port
       udp=UDPSocket.open
-      udp.bind("0.0.0.0",@port.to_i)
+      udp.bind('0.0.0.0',@port.to_i)
       ThreadLoop.new("Server(#@layer:#@id)",9){
         IO.select([udp])
         line,addr=udp.recvfrom(4096)
         line.chomp!
         rhost=Addrinfo.ip(addr[2]).getnameinfo.first
-        verbose{["Exec Server","Valid Commands #{@cobj.valid_keys}"]}
+        verbose{['Exec Server',"Valid Commands #{@cobj.valid_keys}"]}
         verbose{"UDP Recv:#{line} is #{line.class}"}
         begin
           exe(@server_input_proc.call(line),"udp:#{rhost}")
         rescue InvalidCMD
-          @sv_stat.msg("INVALID")
+          @sv_stat.msg('INVALID')
         rescue
           @sv_stat.msg("ERROR:#{$!}")
           errmsg

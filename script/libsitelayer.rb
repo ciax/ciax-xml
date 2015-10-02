@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "liblist"
+require 'liblist'
 
 module CIAX
   module Site
@@ -28,7 +28,7 @@ module CIAX
           @cfg[:jump_groups]=[@jumpgrp]
           keys.each{|id|
             get(id).ext_shell
-            @jumpgrp.add_item(id,id.capitalize+" mode")
+            @jumpgrp.add_item(id,id.capitalize+' mode')
           }
           @current||=$opt.layer||keys.first
           self
@@ -37,8 +37,8 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libhexexe"
-      GetOpts.new("els")
+      require 'libhexexe'
+      GetOpts.new('els')
       begin
         Layer.new(:site => ARGV.shift).ext_shell.shell
       rescue InvalidID

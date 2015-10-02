@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmsg"
+require 'libmsg'
 module CIAX
   # Global options
   class GetOpts < Hash

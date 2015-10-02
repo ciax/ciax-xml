@@ -31,10 +31,10 @@ module CIAX
       class Group < Group
         def initialize(cfg,attr={})
           super
-          @cfg['caption']="Shell Command"
+          @cfg['caption']='Shell Command'
           @cfg['color']=1
-          add_dummy('q',"Quit")
-          add_dummy('^D,^C',"Interrupt")
+          add_dummy('q','Quit')
+          add_dummy('^D,^C','Interrupt')
         end
       end
     end
@@ -69,10 +69,10 @@ module CIAX
       class Group < Group
         def initialize(cfg,attr={})
           super
-          @cfg['caption']="Change View Mode"
+          @cfg['caption']='Change View Mode'
           @cfg['color']=9
-          add_item('vis',"Visual mode").def_proc{@cfg[:output].vmode='v';''}
-          add_item('raw',"Raw Print mode").def_proc{@cfg[:output].vmode='r';''}
+          add_item('vis','Visual mode').def_proc{@cfg[:output].vmode='v';''}
+          add_item('raw','Raw Print mode').def_proc{@cfg[:output].vmode='r';''}
         end
       end
     end

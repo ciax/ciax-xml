@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
-require "libgetopts"
-require "libenumx"
-require "libxmldoc"
+require 'libgetopts'
+require 'libenumx'
+require 'libxmldoc'
 
 module CIAX
   XmlDir="#{ENV['HOME']}/ciax-xml"
@@ -51,7 +51,7 @@ module CIAX
 
     def cache(id)
       @base="#{@type}-#{id}"
-      @marfile=vardir("cache")+"#{@base}.mar"
+      @marfile=vardir('cache')+"#{@base}.mar"
       if newest?
         verbose{"Cache Loading (#{id})"}
         return self[id] if key?(id)

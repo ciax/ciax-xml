@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
-require "libmcrcmd"
-require "librecord"
-require "libwatexe"
+require 'libmcrcmd'
+require 'librecord'
+require 'libwatexe'
 
 module CIAX
   # Modes             | Actual Status? | Force Entering | Query? | Moving | Retry Interval | Record?
@@ -36,9 +36,9 @@ module CIAX
             show{"Sub Macro #{args} issued\n"}
             {'id' => 'dmy'}
           }
-          @post_stat_procs=[proc{verbose{"Processing PostStatProcs"}}] # execute on stat changes
-          @pre_mcr_procs=[proc{verbose{"Processing PreMcrProcs"}}]
-          @post_mcr_procs=[proc{verbose{"Processing PostMcrProcs"}}]
+          @post_stat_procs=[proc{verbose{'Processing PostStatProcs'}}] # execute on stat changes
+          @pre_mcr_procs=[proc{verbose{'Processing PreMcrProcs'}}]
+          @post_mcr_procs=[proc{verbose{'Processing PostMcrProcs'}}]
           @th_mcr=Thread.current
           @que_cmd=Queue.new
           @que_res=Queue.new
@@ -163,7 +163,7 @@ module CIAX
             @que_cmd << ans
             @que_res.pop
           else
-            "IGNORE"
+            'IGNORE'
           end
         end
 
@@ -242,7 +242,7 @@ module CIAX
             seq.ext_shell.shell
           end
         rescue InvalidCMD
-          $opt.usage("[mcr] [cmd] (par)")
+          $opt.usage('[mcr] [cmd] (par)')
         end
       end
     end

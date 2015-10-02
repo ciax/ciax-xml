@@ -10,8 +10,8 @@ module CIAX
         super('event')
         @interval=0.1
         @last_updated=0
-        @on_act_procs=[proc{verbose{"Processing OnActProcs"}}]
-        @on_deact_procs=[proc{verbose{"Processing OnDeActProcs"}}]
+        @on_act_procs=[proc{verbose{'Processing OnActProcs'}}]
+        @on_deact_procs=[proc{verbose{'Processing OnDeActProcs'}}]
         #For Array element
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
         #For Hash element
@@ -43,7 +43,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libinsdb"
+      require 'libinsdb'
       GetOpts.new('h:')
       event=Event.new
       begin
@@ -56,7 +56,7 @@ module CIAX
         end
       puts STDOUT.tty? ? event : event.to_j
       rescue InvalidID
-        $opt.usage("(opt) [site]")
+        $opt.usage('(opt) [site]')
       end
     end
   end

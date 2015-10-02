@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "socket"
+require 'socket'
 
 # Provide Client
 module CIAX

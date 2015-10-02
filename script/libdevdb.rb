@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libfrmdb"
+require 'libfrmdb'
 
 module CIAX
   module Dev;NsColor=2
@@ -40,7 +40,7 @@ module CIAX
       begin
         dbi=Db.new(ARGV.shift).get(ARGV.shift)
       rescue
-        Msg.usage("(opt) [id] (key) ..")
+        Msg.usage('(opt) [id] (key) ..')
         Msg.exit
       end
       puts dbi.path(ARGV)

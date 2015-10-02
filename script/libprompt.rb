@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libupd"
+require 'libupd'
 module CIAX
   # For server status through all layers
   class Prompt < Upd
@@ -47,7 +47,7 @@ module CIAX
     end
 
     def to_s
-      verbose{["Shell",inspect]}
+      verbose{['Shell',inspect]}
       @db.map{|k,v| v if self[k] }.join('')
     end
   end

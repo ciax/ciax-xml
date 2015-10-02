@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "fileutils"
+require 'fileutils'
 module CIAX
   require 'debug' if ENV['DEBUG']
   ScrDir=::File.dirname(__FILE__)
@@ -120,7 +120,7 @@ module CIAX
     private
     def make_msg(title)
       return unless title
-      pass=sprintf("%5.4f",Time.now-Start_time)
+      pass=sprintf('%5.4f',Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
       tc=Thread.current
       ts << Msg.indent(@ver_indent)
@@ -284,16 +284,16 @@ module CIAX
     def elps_sec(msec,base=nil)
       return 0 unless msec
       base||=now_msec
-      "%.3f" % ((base-msec).to_f/1000)
+      '%.3f' % ((base-msec).to_f/1000)
     end
 
     def elps_date(msec,base=now_msec)
       return 0 unless msec
       sec=(base-msec).to_f/1000
       if sec > 86400
-        "%.1f days" % (sec/86400)
+        '%.1f days' % (sec/86400)
       elsif sec > 3600
-        Time.at(sec).utc.strftime("%H:%M")
+        Time.at(sec).utc.strftime('%H:%M')
       elsif sec > 60
         Time.at(sec).utc.strftime("%M'%S\"")
       else

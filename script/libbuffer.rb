@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
-require "libprompt"
-require "libthreadx"
-require "libgroup"
+require 'libprompt'
+require 'libthreadx'
+require 'libgroup'
 
 # SubModule for App::Sv
 # *Command stream(Send)
@@ -60,7 +60,7 @@ module CIAX
     def server
       @tid=ThreadLoop.new("Buffer(#{self['id']})",12){
         begin
-          verbose{"SUB:Waiting"}
+          verbose{'SUB:Waiting'}
           rcv=@q.shift
           sort(rcv[:pri],rcv[:batch])
           while (args=pick)

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libdatax"
-require "liblocal"
+require 'libdatax'
+require 'liblocal'
 
 module CIAX
   # This is parent of Layer List, Site List.

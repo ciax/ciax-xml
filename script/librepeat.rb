@@ -30,7 +30,7 @@ module CIAX
       return str unless /\$([_a-z])/ === str
       res=str.gsub(/\$([_a-z])/){ @counter[$1] }
       res=res.split(':').map{|i| /\$/ =~ i ? i : eval(i)}.join(':')
-      Msg.cfg_err("Empty String") if res == ''
+      Msg.cfg_err('Empty String') if res == ''
       verbose{"Substitute [#{str}] to [#{res}]"}
       res
     end
@@ -46,9 +46,9 @@ module CIAX
     def repeat(e0)
       @rep.clear
       c=e0['counter'] || '_'
-      Msg.abort("Repeat:Counter Duplicate") if @counter.key?(c)
+      Msg.abort('Repeat:Counter Duplicate') if @counter.key?(c)
       fmt=@format[c]=e0['format'] || '%d'
-      enclose("Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]","End"){
+      enclose("Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]",'End'){
         Range.new(subst(e0['from']),subst(e0['to'])).each { |n|
           enclose("Turn Number[#{n}] Start","Turn Number[#{n}] End"){
             @counter[c]=n

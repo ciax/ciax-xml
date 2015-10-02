@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libsitelayer"
+require 'libsitelayer'
 module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set
@@ -14,7 +14,7 @@ module CIAX
 
       def set_db(db)
         @db=@cfg[:db]=type?(db,Db)
-        verbose{"Initialize"}
+        verbose{'Initialize'}
         if @cfg.key?(:site)
           @current=@cfg[:site]
         else

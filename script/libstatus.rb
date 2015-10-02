@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libdatax"
+require 'libdatax'
 
 module CIAX
   module App
@@ -32,7 +32,7 @@ module CIAX
       end
 
       def refresh
-        verbose{"Status Updated"}
+        verbose{'Status Updated'}
         @last.update(@data)
         @updated=self['time']
         self
@@ -61,7 +61,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libinsdb"
+      require 'libinsdb'
       GetOpts.new('h:')
       stat=Status.new
       begin
@@ -74,7 +74,7 @@ module CIAX
         end
         puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID
-        $opt.usage "(opt) [id]"
+        $opt.usage '(opt) [id]'
       end
       exit
     end

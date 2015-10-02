@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # Ascii Pack
-require "libvarx"
-require "libprompt"
+require 'libvarx'
+require 'libprompt'
 
 module CIAX
   module Hex
@@ -14,7 +14,7 @@ module CIAX
         # Server Status
         id=self['id'] || id_err("NO ID(#{id}) in Stat")
         file=View.sdb(id) || id_err("Hex/Can't found sdb_#{id}.txt")
-        @res=["%",id,'_','0','0','_','']
+        @res=['%',id,'_','0','0','_','']
         @list=[]
         @vmode='x'
         open(file){|f|
@@ -28,11 +28,11 @@ module CIAX
           end
         }
         @sv_stat.post_upd_procs << proc{
-          verbose{"Propagate Prompt#upd -> Hex::View#upd"}
+          verbose{'Propagate Prompt#upd -> Hex::View#upd'}
           upd
         }
         @stat.post_upd_procs << proc{
-          verbose{"Propagate Status#upd -> Hex::View#upd"}
+          verbose{'Propagate Status#upd -> Hex::View#upd'}
           upd
         }
         upd
@@ -118,14 +118,14 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libinsdb"
-      require "libstatus"
+      require 'libinsdb'
+      require 'libstatus'
       begin
         raise(InvalidID) if STDIN.tty?
         stat=App::Status.new.read
         puts View.new(stat).upd
       rescue InvalidID
-        Msg.usage(" < status_file")
+        Msg.usage(' < status_file')
       end
     end
   end

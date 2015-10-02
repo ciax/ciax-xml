@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libsqlog"
+require 'libsqlog'
 module CIAX
   module Save
     def self.extended(obj)
@@ -9,10 +9,10 @@ module CIAX
     # Set latest_link=true for making latest link at save
     def ext_save
       verbose{"Save Initialize [#{file_base}]"}
-      self['id']||Msg.cfg_err("No ID")
+      self['id']||Msg.cfg_err('No ID')
       @jsondir=vardir('json')
       @post_upd_procs << proc{
-        verbose{"Propagate upd -> Save#save"}
+        verbose{'Propagate upd -> Save#save'}
         save
       }
       self
@@ -44,7 +44,7 @@ module CIAX
     end
 
     def write_json(json_str,tag=nil)
-      verbose(@thread != Thread.current){"Saving from Multiple Threads"}
+      verbose(@thread != Thread.current){'Saving from Multiple Threads'}
       rname=file_path(tag)
       open(rname,'w'){|f|
         f.flock(::File::LOCK_EX)
@@ -62,10 +62,10 @@ module CIAX
       verbose{"Log Initialize [#{id}/Ver.#{ver}]"}
       @queue=Queue.new
       @post_upd_procs << proc{
-        verbose{"Propagate upd -> Log#queue"}
+        verbose{'Propagate upd -> Log#queue'}
         @queue.push(to_j)
       }
-      logfile=vardir("log")+file_base+"_#{Time.now.year}.log"
+      logfile=vardir('log')+file_base+"_#{Time.now.year}.log"
       ThreadLoop.new("Logging(#{@type}:#{id})",11){
         logary=[]
         loop{

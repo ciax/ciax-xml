@@ -48,7 +48,7 @@ module CIAX
             prev[a.to_sym]||prev[a.to_s]
           end
         end
-      }||Msg.abort("No such key")
+      }||Msg.abort('No such key')
       branch=enum.dup.extend(ViewStruct)
       if Hash === branch
         branch.each{|k,v|
@@ -75,11 +75,11 @@ module CIAX
         case title
         when Numeric
           title="[#{title}]"
-          str << indent(ind)+color("%-6s" % title,6)
+          str << indent(ind)+color('%-6s' % title,6)
         when /@/
-          str << indent(ind)+color("%-6s" % title.inspect,1)
+          str << indent(ind)+color('%-6s' % title.inspect,1)
         else
-          str << indent(ind)+color("%-6s" % title.inspect,2)
+          str << indent(ind)+color('%-6s' % title.inspect,2)
         end
         str << color("(#{id})",4) if show_id && Enumerable === data
         str << " :\n"
@@ -124,10 +124,10 @@ module CIAX
     end
 
     def _only_ary(str,data,ind,column)
-      str << indent(ind)+"["
+      str << indent(ind)+'['
       line=[]
       data.each_slice(column){|a|
-        line << a.map{|v| v.inspect}.join(",")
+        line << a.map{|v| v.inspect}.join(',')
       }
       str << line.join(",\n "+indent(ind))+"]\n"
     end
@@ -135,7 +135,7 @@ module CIAX
     def _only_hash(str,data,ind,title)
       data.keys.each_slice(title ? 2 : 1){|a|
         str << indent(ind)+a.map{|k|
-          color("%-8s" % k.inspect,3)+(": %-10s" % data[k].inspect)
+          color('%-8s' % k.inspect,3)+(': %-10s' % data[k].inspect)
         }.join("\t")+"\n"
       }
       str

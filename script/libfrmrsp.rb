@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
-require "libfield"
-require "libframe"
-require "libstream"
+require 'libfield'
+require 'libframe'
+require 'libstream'
 
 # Rsp Methods
 # Input  : upd block(frame,time)
@@ -53,7 +53,7 @@ module CIAX
           verbose{"Updated(#{self['time']})"} #Field::get
           upd
         else
-          verbose{"Send Only"}
+          verbose{'Send Only'}
         end
         self
       end
@@ -64,13 +64,13 @@ module CIAX
         e0.each{|e1|
           case e1
           when 'ccrange'
-            enclose("Entering Ceck Code Node","Exitting Ceck Code Node"){
+            enclose('Entering Ceck Code Node','Exitting Ceck Code Node'){
               @frame.cc_mark
               getfield_rec(@sel[:ccrange])
               @frame.cc_set
             }
           when 'body'
-            enclose("Entering Body Node","Exitting Body Node"){
+            enclose('Entering Body Node','Exitting Body Node'){
               getfield_rec(@sel[:body]||[])
             }
           when 'echo' # Send back the command string
@@ -83,10 +83,10 @@ module CIAX
       end
 
       def frame_to_field(e0)
-        enclose("#{e0['label']}","Field:End"){
+        enclose("#{e0['label']}",'Field:End'){
           if e0[:index]
             # Array
-            akey=e0['assign'] || Msg.cfg_err("No key for Array")
+            akey=e0['assign'] || Msg.cfg_err('No key for Array')
             # Insert range depends on command param
             idxs=e0[:index].map{|e1|
               e1['range']||"0:#{e1['size'].to_i-1}"
@@ -126,11 +126,11 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libdevdb"
-      require "liblogging"
-      require "libfrmcmd"
-      GetOpts.new("",{'m' => 'merge file'})
-      $opt.usage("(opt) < logline") if STDIN.tty?
+      require 'libdevdb'
+      require 'liblogging'
+      require 'libfrmcmd'
+      GetOpts.new('',{'m' => 'merge file'})
+      $opt.usage('(opt) < logline') if STDIN.tty?
       str=gets(nil) || exit
       res=Logging.set_logline(str)
       id=res['id']

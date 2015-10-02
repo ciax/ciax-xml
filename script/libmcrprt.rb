@@ -20,10 +20,10 @@ module CIAX
         when 'wait'
           msg=head('Waiting',6)
         when 'mcr'
-          msg=head("MACRO",3,"#{self['label']}(#{args})")
-          msg << "(async)" if self['async']
+          msg=head('MACRO',3,"#{self['label']}(#{args})")
+          msg << '(async)' if self['async']
         when 'exec'
-          msg=head("EXEC",13,"[#{self['site']}:#{args}]")
+          msg=head('EXEC',13,"[#{self['site']}:#{args}]")
         end
         msg
       end
@@ -37,17 +37,17 @@ module CIAX
           color=(/failed|timeout/ === res) ? 1 : 2
           mary[0] << ' -> '+Msg.color(cap,color)
           (self['conditions']||{}).each{|h|
-            res= h['res'] ? body("o",2) : body("x",1)
+            res= h['res'] ? body('o',2) : body('x',1)
             case h['cmp']
-            when "equal"
-              ope="="
-            when "not"
-              ope="!="
-            when "pattern"
-              ope="=~"
+            when 'equal'
+              ope='='
+            when 'not'
+              ope='!='
+            when 'pattern'
+              ope='=~'
             end
             line=res+" #{h['site']}:#{h['var']}(#{h['form']}) #{ope} #{h['cri']}"
-            line+=" (#{h['real']})" if !h['res'] || ope != "="
+            line+=" (#{h['real']})" if !h['res'] || ope != '='
             mary << line
           }
         end

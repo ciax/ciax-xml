@@ -31,18 +31,18 @@ module CIAX
       @index=adbs[:index]
       get_element(['time','elapsed'],'',2)
       adbs[:group].values.each{|g|
-        cap=g["caption"] || next
-        get_element(g[:members],cap,g["column"])
+        cap=g['caption'] || next
+        get_element(g[:members],cap,g['column'])
       }
       self
     end
 
     def get_ctl(unitary)
       uidx=@dbi[:command][:unit] || return
-      push "<table><tbody>"
-      push "<tr>"
+      push '<table><tbody>'
+      push '<tr>'
       push '<th colspan="6">Controls</th></tr>'
-      push "<tr>"
+      push '<tr>'
       unitary.each{|unit|
         udb=uidx[unit]
         if udb
@@ -52,46 +52,46 @@ module CIAX
             push '<span class="center">'
             label=@dbi[:command][:index][id]['label'].upcase
             push '<input class="button" type="button" value="'+label+'" onclick="dvctl('+"'#{id}'"+')"/>'
-            push "</span>"
+            push '</span>'
           }
-          push "</td>"
+          push '</td>'
         else
           abort("Wrong CTL Unit\n"+uidx.map{|k,v| item(k,v['label'])}.join("\n"))
         end
       }
-      push "</tr>"
-      push "</tbody></table>"
+      push '</tr>'
+      push '</tbody></table>'
       self
     end
 
     private
     def get_element(members,cap='',col=nil)
       col= col.to_i > 0 ? col.to_i : 6
-      push "<table><tbody>"
+      push '<table><tbody>'
       push  "<tr><th colspan=\"6\">#{cap}</th></tr>" unless cap.empty?
       members.each_slice(col){|da|
-        push "<tr>"
+        push '<tr>'
         da.each{|id|
           label=(@index[id]||{})['label']||id.upcase
           push "<td class=\"item\">"
           push "<span class=\"label\">#{label}</span>"
           push "<span id=\"#{id}\" class=\"normal\">*******</span>"
-          push "</td>"
+          push '</td>'
         }
-        push "</tr>"
+        push '</tr>'
       }
-      push "</tbody></table>"
+      push '</tbody></table>'
       self
     end
   end
 
   if __FILE__ == $0
-    require "libinsdb"
+    require 'libinsdb'
     id=ARGV.shift
     begin
       dbi=Ins::Db.new.get(id)
     rescue InvalidID
-      Msg.usage "[id] (ctl)"
+      Msg.usage '[id] (ctl)'
     end
     tbl=HtmlTbl.new(dbi)
     tbl.get_stat

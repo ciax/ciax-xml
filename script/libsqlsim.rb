@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmsg"
+require 'libmsg'
 # Generate SQL command string
 module CIAX
   module SqLog;NsColor=1
@@ -11,10 +11,10 @@ module CIAX
         @cls_color=1
         @logary=[{}]
         @index=0
-        @sqlcmd=["sqlite3",ENV['HOME']+"/.var/sqlog_"+id+".sq3"]
-        @tbl=query('.tables').split(/ /).grep(/^stream/).sort.last || raise("No Stream table")
+        @sqlcmd=['sqlite3',ENV['HOME']+'/.var/sqlog_'+id+'.sq3']
+        @tbl=query('.tables').split(/ /).grep(/^stream/).sort.last || raise('No Stream table')
         @total=query("select count(*) from #@tbl where dir='rcv';").to_i
-        raise("No Line") if @total < 1
+        raise('No Line') if @total < 1
       end
 
       def query(str)
@@ -29,7 +29,7 @@ module CIAX
 
       def find_next(str)
         begin
-          verbose{"Search corresponding CMD"}
+          verbose{'Search corresponding CMD'}
           sql="select min(time),cmd from #@tbl where time > #@index and base64='#{str}';"
           ans=query(sql)
           tim,cmd=ans.split('|')
@@ -39,10 +39,10 @@ module CIAX
         rescue
           raise("NO record for #{str}") if @index==0
           @index=0
-          verbose{color("LINE:REWINDED",3)}
+          verbose{color('LINE:REWINDED',3)}
           retry
         end
-        verbose{"Search corresponding RES"}
+        verbose{'Search corresponding RES'}
         sql="select min(time),count(*),cmd,base64 from #@tbl where dir='rcv' and cmd='#{cmd}' and time > #{tim};"
         ans=query(sql)
         tim,count,_=ans.split('|')
@@ -60,7 +60,7 @@ module CIAX
 
       def input
         select([STDIN])
-        [STDIN.sysread(1024)].pack("m").split("\n").join('')
+        [STDIN.sysread(1024)].pack('m').split("\n").join('')
       end
 
     end

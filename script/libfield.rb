@@ -9,7 +9,7 @@ module CIAX
       def initialize(init_struct={})
         super('field',init_struct)
         # Proc for Terminate process of each individual commands (Set upper layer's update);
-        @flush_procs=[proc{verbose{"Processing FlushProcs"}}]
+        @flush_procs=[proc{verbose{'Processing FlushProcs'}}]
       end
 
       def set_dbi(db)
@@ -28,7 +28,7 @@ module CIAX
       # - output csv if array
       def subst(str) # subst by field
         return str unless /\$\{/ === str
-        enclose("Substitute from [#{str}]","Substitute to [%s]"){
+        enclose("Substitute from [#{str}]",'Substitute to [%s]'){
           str.gsub(/\$\{(.+)\}/) {
             ary=[*get($1)].map!{|i| eval(i)}
             Msg.abort("No value for subst [#{$1}]") if ary.empty?
@@ -43,7 +43,7 @@ module CIAX
       # - ${key:idx1:idx2} => hash[key][idx1][idx2]
       def get(key)
         verbose{"Getting[#{key}]"}
-        Msg.abort("Nill Key") unless key
+        Msg.abort('Nill Key') unless key
         return @data[key] if @data.key?(key)
         vname=[]
         dat=key.split(':').inject(@data){|h,i|
@@ -69,7 +69,7 @@ module CIAX
       # Replace value with mixed key
       def rep(key,val)
         akey=key.split(':')
-        Msg.par_err("No such Key") unless @data.key?(akey.shift)
+        Msg.par_err('No such Key') unless @data.key?(akey.shift)
         conv=subst(val).to_s
         verbose{"Put[#{key}]=[#{conv}]"}
         case p=get(key)
@@ -79,7 +79,7 @@ module CIAX
           begin
             p.replace(eval(conv).to_s)
           rescue SyntaxError,NameError
-            par_err("Value is not numerical")
+            par_err('Value is not numerical')
           end
         end
         verbose{"Evaluated[#{key}]=[#{@data[key]}]"}
@@ -107,7 +107,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      f=Field.new({"a"=>[["0"],"1"]})
+      f=Field.new({'a'=>[['0'],'1']})
       puts f.to_j
       s=ARGV.shift
       if s

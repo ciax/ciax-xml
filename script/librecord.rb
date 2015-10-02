@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libstatus"
-require "libstep"
+require 'libstatus'
+require 'libstep'
 
 module CIAX
   module Mcr
@@ -25,7 +25,7 @@ module CIAX
       def add_step(e1,depth)
         step=Step.new(e1,@cfg[:dev_list])
         step.post_upd_procs << proc{
-          verbose{"Propagate Step#upd -> Record#upd"}
+          verbose{'Propagate Step#upd -> Record#upd'}
           post_upd
         }
         step['time']=Msg.elps_sec(self['time'])
@@ -51,7 +51,7 @@ module CIAX
 
       def to_v
         date=Time.at((self['time']/1000).round)
-        msg=Msg.color("MACRO",3)+":#{self['label']} (#{date})\n"
+        msg=Msg.color('MACRO',3)+":#{self['label']} (#{date})\n"
         @data.each{|i| msg << i.title+i.result}
         msg << " (#{self['result']})" if self['result']
         msg
@@ -60,7 +60,7 @@ module CIAX
 
     if __FILE__ == $0
       GetOpts.new('r')
-      $opt.usage "(-r) < record_file" if STDIN.tty?
+      $opt.usage '(-r) < record_file' if STDIN.tty?
       puts Record.new.read
     end
   end

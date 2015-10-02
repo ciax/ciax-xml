@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libmsg"
-require "thread"
+require 'libmsg'
+require 'thread'
 
 module CIAX
   class Threadx < Thread

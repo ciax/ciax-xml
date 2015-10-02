@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libxmlshare"
-require "xml"
+require 'libxmlshare'
+require 'xml'
 
 module CIAX
   module Xml
@@ -19,7 +19,7 @@ module CIAX
           doc=XML::Document.new
           @e=doc.root=XML::Node.new('blank')
         else
-          Msg.cfg_err("Parameter shoud be String or Node")
+          Msg.cfg_err('Parameter shoud be String or Node')
         end
       end
 

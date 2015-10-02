@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
-require "libexe"
-require "readline"
-require "libthreadx"
+require 'libexe'
+require 'readline'
+require 'libthreadx'
 
 module CIAX
   # Provide Shell related modules
@@ -67,7 +67,7 @@ module CIAX
         end
         break if /^q/ === line
         cmds=line.split(';')
-        cmds=[""] if cmds.empty?
+        cmds=[''] if cmds.empty?
         begin
           cmds.each{|token|
             exe(convert(token),'shell')
@@ -78,11 +78,11 @@ module CIAX
           warning($!)
         end
         puts @sv_stat.msg.empty? ? @shell_output_proc.call : @sv_stat.msg
-        verbose{["Threads","#{Threadx.list}"]}
+        verbose{['Threads',"#{Threadx.list}"]}
         verbose{"Valid Commands #{@cobj.valid_keys}"}
       }
       @terminate_procs.inject(self){|obj,proc| proc.call(obj)}
-      Msg.msg("Quit Shell",3)
+      Msg.msg('Quit Shell',3)
     end
 
     private

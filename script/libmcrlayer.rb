@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libmcrman"
-require "libsitelayer"
+require 'libmcrman'
+require 'libsitelayer'
 
 module CIAX
   module Mcr
@@ -15,9 +15,9 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libhexexe"
+      require 'libhexexe'
       ENV['VER']||='initialize'
-      GetOpts.new("els")
+      GetOpts.new('els')
       begin
         Layer.new.ext_shell.shell
       rescue InvalidID

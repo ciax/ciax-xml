@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libremote"
-require "libappdb"
+require 'libremote'
+require 'libappdb'
 
 module CIAX
   module App
@@ -29,7 +29,7 @@ module CIAX
           super
           self[:batch]=@body.map{|e1|
             args=[]
-            enclose("GetCmd(FDB):#{e1.first}","Exec(FDB):%s"){
+            enclose("GetCmd(FDB):#{e1.first}",'Exec(FDB):%s'){
               e1.each{|e2| # //argv
                 case e2
                 when String
@@ -49,7 +49,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libinsdb"
+      require 'libinsdb'
       GetOpts.new('d','d' => 'Device Mode')
       id=ARGV.shift
       cfg=Config.new
@@ -63,7 +63,7 @@ module CIAX
       rescue InvalidCMD
         Msg.usage("#{id} (-d) [cmd] (par)",2)
       rescue InvalidID
-        Msg.usage("(-d) [id] [cmd] (par)")
+        Msg.usage('(-d) [id] [cmd] (par)')
       end
     end
   end

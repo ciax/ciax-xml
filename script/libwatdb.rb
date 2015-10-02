@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "librepeat"
-require "libdb"
+require 'librepeat'
+require 'libdb'
 
 module CIAX
   module Wat

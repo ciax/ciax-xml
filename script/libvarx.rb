@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
-require "libupd"
-require "libdb"
-require "libsave"
+require 'libupd'
+require 'libdb'
+require 'libsave'
 
 module CIAX
   # Variable Status Data with Saving, Logging feature
@@ -42,7 +42,7 @@ module CIAX
 
     private
     def _setid(id)
-      self['id']=id||Msg.cfg_err("ID")
+      self['id']=id||Msg.cfg_err('ID')
       self
     end
 

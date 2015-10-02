@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libappexe"
-require "libwatview"
+require 'libappexe'
+require 'libwatview'
 
 module CIAX
   module Wat
@@ -51,7 +51,7 @@ module CIAX
 
       def ext_non_client
         @stat.post_upd_procs << proc{|ev|
-          verbose{"Propagate Event#upd -> upd"}
+          verbose{'Propagate Event#upd -> upd'}
           block=ev.get('block').map{|id,par| par ? nil : id}.compact
           @cobj.rem.ext.valid_sub(block)
         }

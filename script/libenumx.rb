@@ -6,7 +6,7 @@ module CIAX
   module Enumx
     include ViewStruct
     def self.extended(obj)
-      raise("Not Enumerable") unless obj.is_a? Enumerable
+      raise('Not Enumerable') unless obj.is_a? Enumerable
     end
 
     def deep_copy
@@ -78,7 +78,7 @@ module CIAX
     attr_accessor :vmode
     def initialize(hash={})
       update(hash)
-      @vmode="v" # v|r|j
+      @vmode='v' # v|r|j
       ['v','r','j'].each{|k|
         @vmode=k if $opt[k]
       } if $opt

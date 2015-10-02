@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libremote"
-require "libmcrdb"
+require 'libremote'
+require 'libmcrdb'
 
 module CIAX
   module Mcr
@@ -14,17 +14,17 @@ module CIAX
           @par={:type => 'str',:list => [],:default => '0'}
           @cfg[:parameters]=[@par]
           {
-            "start"=>"Sequence",
-            "exec"=>"Command",
-            "skip"=>"Macro",
-            "drop"=>" Macro",
-            "suppress"=>"and Memorize",
-            "force"=>"Proceed",
-            "pass"=>"Execution",
-            "ok"=>"for the message",
-            "retry"=>"Checking",
+            'start'=>'Sequence',
+            'exec'=>'Command',
+            'skip'=>'Macro',
+            'drop'=>' Macro',
+            'suppress'=>'and Memorize',
+            'force'=>'Proceed',
+            'pass'=>'Execution',
+            'ok'=>'for the message',
+            'retry'=>'Checking',
           }.each{|id,cap|
-            add_item(id,id.capitalize+" "+cap)
+            add_item(id,id.capitalize+' '+cap)
           }
         end
       end
@@ -42,7 +42,7 @@ module CIAX
           sequence=Arrayx.new
           @body.each{|elem|
             case elem['type']
-            when "select"
+            when 'select'
               hash={'type' => 'mcr'}
               sel=elem['select']
               val=type?(self[:dev_list],App::List).getstat(elem)
@@ -58,7 +58,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libwatexe"
+      require 'libwatexe'
       GetOpts.new
       cfg=Config.new
       cfg[:dev_list]=Wat::List.new(cfg).sub_list
@@ -71,7 +71,7 @@ module CIAX
         puts ent.path
         puts ent.sequence.to_v
       rescue InvalidCMD
-        $opt.usage("[id] [cmd] (par)")
+        $opt.usage('[id] [cmd] (par)')
       end
     end
   end

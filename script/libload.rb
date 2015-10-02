@@ -22,7 +22,7 @@ module CIAX
         end
       }
       if hash.empty?
-        Msg.par_err("No Keys")
+        Msg.par_err('No Keys')
       else
         tag||=(tag_list.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
         Msg.msg("Status Saving for [#{tag}]")
@@ -56,7 +56,7 @@ module CIAX
       self
     rescue Errno::ENOENT
       if tag
-        Msg.par_err("No such Tag","Tag=#{tag_list}")
+        Msg.par_err('No such Tag',"Tag=#{tag_list}")
       else
         warning("  -- no json file (#{base})")
       end

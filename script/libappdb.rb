@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libwatdb"
+require 'libwatdb'
 
 module CIAX
   module App
@@ -27,7 +27,7 @@ module CIAX
         grps={}
         units={}
         adbc.each{|e|
-          Msg.abort("No group in adbc") unless e.name == 'group'
+          Msg.abort('No group in adbc') unless e.name == 'group'
           gid=e.attr2item(grps)
           arc_unit(e,idx,grps[gid],units)
         }
@@ -123,7 +123,7 @@ module CIAX
       begin
         db=Db.new.get(ARGV.shift)
       rescue InvalidID
-        Msg.usage("[id] (key) ..")
+        Msg.usage('[id] (key) ..')
       end
       puts db.path(ARGV)
       exit

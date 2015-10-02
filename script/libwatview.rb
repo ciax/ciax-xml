@@ -12,7 +12,7 @@ module CIAX
         @event=type?(event,Event).upd
         wdb=type?(event.dbi,Dbi)[:watch]||{:index =>[]}
         @event.post_upd_procs << proc{
-          verbose{"Propagate Event#upd -> upd"}
+          verbose{'Propagate Event#upd -> upd'}
           upd
         }
         self['stat']={}
@@ -34,16 +34,16 @@ module CIAX
         tonext=Msg.elps_sec(now_msec,self['upd_next'])
         atime=Msg.elps_sec(self['act_start'],self['act_end'])
         etime=Msg.elps_date(self['time'],now_msec)
-        str=""
-        str << "  "+Msg.color("Elapsed",2)+"\t: #{etime}\n"
-        str << "  "+Msg.color("ToNextUpdate",2)+"\t: #{tonext}\n"
-        str << "  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
-        str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
+        str=''
+        str << '  '+Msg.color('Elapsed',2)+"\t: #{etime}\n"
+        str << '  '+Msg.color('ToNextUpdate',2)+"\t: #{tonext}\n"
+        str << '  '+Msg.color('ActiveTime',2)+"\t: #{atime}\n"
+        str << '  '+Msg.color('Issuing',2)+"\t: #{self['exec']}\n"
         return str if self['stat'].empty?
-        str << "  "+Msg.color("Conditions",2)+"\t:\n"
+        str << '  '+Msg.color('Conditions',2)+"\t:\n"
         conditions(str)
-        str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"
-        str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
+        str << '  '+Msg.color('Interrupt',2)+"\t: #{self['int']}\n"
+        str << '  '+Msg.color('Blocked',2)+"\t: #{self['block']}\n"
       end
 
       def to_r
@@ -70,13 +70,13 @@ module CIAX
 
       def conditions(str)
         self['stat'].values.each{|i|
-          str << "    "+Msg.color(i['label'],6)+"\t: "
+          str << '    '+Msg.color(i['label'],6)+"\t: "
           str << show_res(i['active'])+"\n"
           i['cond'].each{|j|
-            str << "      "+show_res(j['res'],'o','x')+' '
+            str << '      '+show_res(j['res'],'o','x')+' '
             str << Msg.color(j['var'],3)
-            str << "  "
-            ope=j['inv'] ? "!~" : "=~"
+            str << '  '
+            ope=j['inv'] ? '!~' : '=~'
             str << "(#{j['type']}: "
             if j['type'] == 'onchange'
               str << "#{j['cri']} => #{j['val']}"
@@ -94,7 +94,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libinsdb"
+      require 'libinsdb'
       GetOpts.new('r')
       event=Event.new
       begin
@@ -104,7 +104,7 @@ module CIAX
         wview=View.new(event)
         puts STDOUT.tty? ? wview : wview.to_j
       rescue InvalidID
-        $opt.usage("(opt) [site] | < event_file")
+        $opt.usage('(opt) [site] | < event_file')
       end
     end
   end

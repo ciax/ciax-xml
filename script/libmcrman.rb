@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libsh"
-require "libseqlist"
+require 'libsh'
+require 'libseqlist'
 
 module CIAX
   module Mcr
@@ -18,7 +18,7 @@ module CIAX
           @cobj.rem.add_ext(Ext)
           @parameter=@cobj.rem.int.par
           @stat.post_upd_procs << proc{
-            verbose{"Propagate List#upd -> Parameter#upd"}
+            verbose{'Propagate List#upd -> Parameter#upd'}
             @parameter[:list]=@stat.keys
           }
           @host||=@dbi['host']
@@ -41,7 +41,7 @@ module CIAX
           @pre_exe_procs << proc{ @sv_stat['sid']='' }
           @stat.ext_drv
           # External Command Group
-          @cobj.rem.ext.def_proc{|ent| set(ent);"ACCEPT"}
+          @cobj.rem.ext.def_proc{|ent| set(ent);'ACCEPT'}
           # Internal Command Group
           @cfg[:submcr_proc]=proc{|args,pid|
             set(@cobj.set_cmd(args),pid)
@@ -53,7 +53,7 @@ module CIAX
               seq.exe(ent.id.split(':'))
               'ACCEPT'
             else
-              "NOSID"
+              'NOSID'
             end
           }
           @cobj.get('clean').def_proc{ @stat.clean;'ACCEPT'}
@@ -86,8 +86,8 @@ module CIAX
           }
           @post_exe_procs << proc{@cfg[:output].upd}
           vg=@cobj.loc.add_view
-          vg.add_item("list","List mode").def_proc{list_mode}
-          vg.add_dummy("[1-n]","Sequencer mode")
+          vg.add_item('list','List mode').def_proc{list_mode}
+          vg.add_dummy('[1-n]','Sequencer mode')
           @records={nil => @stat}
           self
         end
@@ -98,7 +98,7 @@ module CIAX
           if @current > @stat.size or @stat.size > @lastsize
             set_current(@lastsize=@stat.size)
           end
-          msg="[%d]" % @current
+          msg='[%d]' % @current
           if @current > 0
             seq=@stat.get(@parameter[:default])
             msg << "(#{seq['stat']})"+optlist(seq['option'])
@@ -143,7 +143,7 @@ module CIAX
           cfg[:dev_list]=Wat::List.new(cfg).sub_list
           Exe.new(cfg).ext_shell.shell
         rescue InvalidCMD
-          $opt.usage("[mcr] [cmd] (par)")
+          $opt.usage('[mcr] [cmd] (par)')
         end
       end
     end

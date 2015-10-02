@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libstatus"
-require "libsymdb"
+require 'libstatus'
+require 'libsymdb'
 
 # Status to App::Sym (String with attributes)
 module CIAX
@@ -17,7 +17,7 @@ module CIAX
         self['class']={}
         self['msg']={}
         @post_upd_procs << proc{ #post process
-          verbose{"Propagate upd -> Symbol#upd"}
+          verbose{'Propagate upd -> Symbol#upd'}
           set_sym(adbs[:index].dup.update(adbs[:alias]||{}))
         }
         self
@@ -74,7 +74,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libinsdb"
+      require 'libinsdb'
       GetOpts.new
       begin
         stat=Status.new
@@ -85,7 +85,7 @@ module CIAX
         stat.upd
         puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID
-        Msg.usage "[site] | < status_file"
+        Msg.usage '[site] | < status_file'
       end
     end
   end

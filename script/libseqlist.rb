@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libseqexe"
+require 'libseqexe'
 module CIAX
   module Mcr
     # Sequencer Layer List
@@ -81,7 +81,7 @@ module CIAX
             # :dev_list is App::List
             @cfg[:dev_list].ext_shell if @cfg.key?(:dev_list)
             @post_upd_procs << proc{
-              verbose{"Propagate List#upd -> JumpGrp#upd"}
+              verbose{'Propagate List#upd -> JumpGrp#upd'}
               @jumpgrp.number_item(@data.values.map{|seq| seq['id']})
             }
             self
@@ -93,7 +93,7 @@ module CIAX
 
           def get_exe(num)
             n=num.to_i-1
-            par_err("Invalid ID") if n < 0 or n > @data.size
+            par_err('Invalid ID') if n < 0 or n > @data.size
             @data[keys[n]]
           end
 

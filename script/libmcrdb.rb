@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "librepeat"
-require "libdb"
+require 'librepeat'
+require 'libdb'
 
 module CIAX
   module Mcr
@@ -20,7 +20,7 @@ module CIAX
         idx={}
         grp={}
         mdbc.each{|e|
-          Msg.abort("No group in mdbc") unless e.name == 'group'
+          Msg.abort('No group in mdbc') unless e.name == 'group'
           gid=e.attr2item(grp)
           arc_command(e,idx,grp[gid])
         }
@@ -99,7 +99,7 @@ module CIAX
       begin
         mdb=Db.new.get(ARGV.shift)
       rescue InvalidID
-        Msg.usage "[id] (key) .."
+        Msg.usage '[id] (key) ..'
         Msg.exit
       end
       puts mdb.path(ARGV)

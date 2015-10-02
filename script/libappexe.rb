@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
-require "libfrmexe"
-require "libappdb"
-require "libappview"
-require "libappcmd"
-require "libapprsp"
-require "libappsym"
-require "libbuffer"
-require "libinsdb"
+require 'libfrmexe'
+require 'libappdb'
+require 'libappview'
+require 'libappcmd'
+require 'libapprsp'
+require 'libappsym'
+require 'libbuffer'
+require 'libinsdb'
 
 module CIAX
   module App
@@ -44,7 +44,7 @@ module CIAX
         @mode='TEST'
         @stat.ext_sym.ext_save.ext_load
         @stat.post_upd_procs << proc{|st|
-          verbose{"Propagate Status#upd -> App#settime"}
+          verbose{'Propagate Status#upd -> App#settime'}
           st['time']=now_msec
         }
         @post_exe_procs << proc{@stat.upd}
@@ -91,17 +91,17 @@ module CIAX
           @sub.exe(args,src)
         }
         buf.post_upd_procs << proc{
-          verbose{"Propagate Buffer#upd -> Status#upd"}
+          verbose{'Propagate Buffer#upd -> Status#upd'}
           @stat.upd
         }
         @sub.stat.flush_procs << proc{
-          verbose{"Propagate Field#flush -> Buffer#upd"}
+          verbose{'Propagate Field#flush -> Buffer#upd'}
           buf.upd
         }
         @cobj.rem.ext.def_proc{|ent,src,pri|
           verbose{"#@id/Issuing:#{ent.id} from #{src} with priority #{pri}"}
           buf.send(ent,pri)
-          "ISSUED"
+          'ISSUED'
         }
         @cobj.get('interrupt').def_proc{|_,src|
           @batch_interrupt.each{|args|

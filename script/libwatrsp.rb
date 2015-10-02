@@ -22,10 +22,10 @@ module CIAX
         # Pick usable val
         @list=[]
         @windex.values.each{|v|
-          @list|=v[:cnd].map{|i| i["var"]}
+          @list|=v[:cnd].map{|i| i['var']}
         }
         @stat.post_upd_procs << proc{
-          verbose{"Propagate Status#upd -> upd"}
+          verbose{'Propagate Status#upd -> upd'}
           upd
         }
         self
@@ -108,7 +108,7 @@ module CIAX
             verbose{"  Pattern(#{vn}): [#{cri}] vs <#{val}> =>#{res.inspect}"}
           when 'range'
             cri=ckitm['val']
-            f="%.3f" % val.to_f
+            f='%.3f' % val.to_f
             res=(ReRange.new(cri) == f)
             verbose{"  Range(#{vn}): [#{cri}] vs <#{f}>(#{val.class}) =>#{res.inspect}"}
           end
@@ -121,7 +121,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libinsdb"
+      require 'libinsdb'
 
       list={'t'=>'test conditions[key=val,..]'}
       GetOpts.new('t:',list)
@@ -139,7 +139,7 @@ module CIAX
         stat.upd
         puts STDOUT.tty? ? event : event.to_j
       rescue InvalidID
-        $opt.usage("(opt) [site] | < status_file")
+        $opt.usage('(opt) [site] | < status_file')
       end
     end
   end

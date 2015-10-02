@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "librepeat"
-require "libdb"
+require 'librepeat'
+require 'libdb'
 
 module CIAX
   module Frm
@@ -38,7 +38,7 @@ module CIAX
 
       def init_frame(domain)
         db=domain.to_h
-        enclose("INIT:Main Frame <-","-> INIT:Main Frame"){
+        enclose('INIT:Main Frame <-','-> INIT:Main Frame'){
           frame=[]
           domain.each{|e1|
             frame << yield(e1)
@@ -47,7 +47,7 @@ module CIAX
           db[:main]=frame
         }
         domain.find('ccrange'){|e0|
-          enclose("INIT:Ceck Code Frame <-","-> INIT:Ceck Code Frame"){
+          enclose('INIT:Ceck Code Frame <-','-> INIT:Ceck Code Frame'){
             frame=[]
             Repeat.new.each(e0){|e1,r1|
               frame << yield(e1,r1)
@@ -64,7 +64,7 @@ module CIAX
         domain.each{|e0|
           id=e0.attr2item(db)
           item=db[id]
-          enclose("INIT:Body Frame [#{id}]<-","-> INIT:Body Frame"){
+          enclose("INIT:Body Frame [#{id}]<-",'-> INIT:Body Frame'){
             Repeat.new.each(e0){|e1,r1|
               par2item(e1,item) && next
               e=yield(e1,r1) || next
@@ -119,7 +119,7 @@ module CIAX
       begin
         dbi=Db.new.get(ARGV.shift)
       rescue InvalidID
-        Msg.usage("[id] (key) ..")
+        Msg.usage('[id] (key) ..')
       end
       puts dbi.path(ARGV)
       exit

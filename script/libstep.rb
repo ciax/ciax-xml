@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libupd"
-require "libmcrprt"
+require 'libupd'
+require 'libmcrprt'
 
 module CIAX
   module Mcr
@@ -108,7 +108,7 @@ module CIAX
             when 'data'
               real=stat.get(var)
             else
-              warning("No form specified")
+              warning('No form specified')
             end
             verbose{"site=#{site},var=#{var},form=#{form},cmp=#{cmp},cri=#{cri},real=#{real}"}
             cond['real']=real
@@ -142,13 +142,13 @@ module CIAX
 
       def match?(real,cri,cmp)
         case cmp
-        when "equal"
+        when 'equal'
           cri == real
-        when "not"
+        when 'not'
           cri != real
-        when "match"
+        when 'match'
           /#{cri}/ =~ real
-        when "unmatch"
+        when 'unmatch'
           /#{cri}/ !~ real
         else
           false

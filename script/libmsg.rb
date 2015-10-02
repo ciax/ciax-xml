@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+# Common Module
 require 'fileutils'
 module CIAX
   require 'debug' if ENV['DEBUG']

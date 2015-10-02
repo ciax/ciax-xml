@@ -1,5 +1,7 @@
 #!/usr/bin/ruby
 require 'libmsg'
+require 'optparse'
+# CIAX-XML
 module CIAX
   # Global options
   class GetOpts < Hash
@@ -7,45 +9,15 @@ module CIAX
     # db = addigional option db
     attr_reader :layer
     def initialize(str = '', db = {})
-      require 'optparse'
       Msg.type?(str, String)
-      optdb = {}
-      # Layer
-      optdb['w'] = 'wat layer'
-      optdb['a'] = 'app layer(default)'
-      optdb['f'] = 'frm layer'
-      optdb['x'] = 'hex layer'
-      # Client option
-      optdb['c'] = 'client'
-      optdb['l'] = 'local client'
-      optdb['h'] = 'client for [host]'
-      # Comm to devices
-      optdb['t'] = 'test mode (default)'
-      optdb['s'] = 'simulation mode'
-      optdb['e'] = 'execution mode'
-      # For appearance
-      optdb['v'] = 'visual output (default)'
-      optdb['r'] = 'raw data output'
-      optdb['j'] = 'json data output'
-      # For macro
-      optdb['i'] = 'interactive mode'
-      optdb['n'] = 'non-stop mode'
-      optdb['m'] = 'movable mode'
-      optdb.update(db)
-      # Merge additional db
+      @optdb = db
+      make_db
       db.keys.each do|k|
         str << k unless str.include?(k)
       end
-      # Make usage text
-      @index = {}
-      (str.split('') & optdb.keys).each do|c|
-        @index["-#{c}"] = optdb[c]
-      end
+      make_usage(str)
       update(ARGV.getopts(str))
-      # Set @layer (default 'Wat')
-      lopt = %w(x a f w).find { |c| self[c] } || 'a'
-      @layer = optdb[lopt].split(' ').first
-      $opt = self
+      make_layer
     end
 
     def sv?
@@ -62,6 +34,73 @@ module CIAX
 
     def usage(str)
       Msg.usage(str + "\n" + Msg.columns(@index))
+    end
+
+    private
+
+    def make_db
+      layer_db
+      cli_db
+      mode_db
+      vis_db
+      mcr_db
+    end
+
+    # Layer option
+    def layer_db
+      @optdb['w'] = 'wat layer'
+      @optdb['a'] = 'app layer(default)'
+      @optdb['f'] = 'frm layer'
+      @optdb['x'] = 'hex layer'
+      self
+    end
+
+    # Client option
+    def cli_db
+      @optdb['c'] = 'client'
+      @optdb['l'] = 'local client'
+      @optdb['h'] = 'client for [host]'
+      self
+    end
+
+    # Comm to devices
+    def mode_db
+      @optdb['t'] = 'test mode (default)'
+      @optdb['s'] = 'simulation mode'
+      @optdb['e'] = 'execution mode'
+      self
+    end
+
+    # For visual
+    def vis_db
+      @optdb['v'] = 'visual output (default)'
+      @optdb['r'] = 'raw data output'
+      @optdb['j'] = 'json data output'
+      self
+    end
+
+    # For macro
+    def mcr_db
+      @optdb['i'] = 'interactive mode'
+      @optdb['n'] = 'non-stop mode'
+      @optdb['m'] = 'movable mode'
+      self
+    end
+
+    # Make usage text
+    def make_usage(str)
+      @index = {}
+      (str.split('') & @optdb.keys).each do|c|
+        @index["-#{c}"] = @optdb[c]
+      end
+      self
+    end
+
+    # Set @layer (default 'Wat')
+    def make_layer
+      lopt = %w(x a f w).find { |c| self[c] } || 'a'
+      @layer = @optdb[lopt].split(' ').first
+      $opt = self
     end
   end
 end

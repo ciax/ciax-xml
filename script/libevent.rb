@@ -50,11 +50,11 @@ module CIAX
         dbi=Ins::Db.new.get(ARGV.shift)
         event.set_dbi(dbi)
         if $opt.host
-         event.ext_http($opt.host)
+          event.ext_http($opt.host)
         else
           event.ext_save.ext_load
         end
-      puts STDOUT.tty? ? event : event.to_j
+        puts STDOUT.tty? ? event : event.to_j
       rescue InvalidID
         $opt.usage('(opt) [site]')
       end

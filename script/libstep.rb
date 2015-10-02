@@ -98,21 +98,21 @@ module CIAX
           site=cond['site']=h['site']
           var=cond['var']=h['var']
           stat=stats[site]
-            cmp=cond['cmp']=h['cmp']
-            cri=cond['cri']=h['val']
-            form=cond['form']=h['form']
-            case form
-            when 'class','msg'
-              warning("No key value [#{var}] in Status[#{form}]") unless stat[form].key?(var)
-              real=stat[form][var]
-            when 'data'
-              real=stat.get(var)
-            else
-              warning('No form specified')
-            end
-            verbose{"site=#{site},var=#{var},form=#{form},cmp=#{cmp},cri=#{cri},real=#{real}"}
-            cond['real']=real
-            cond['res']=match?(real,cri,cond['cmp'])
+          cmp=cond['cmp']=h['cmp']
+          cri=cond['cri']=h['val']
+          form=cond['form']=h['form']
+          case form
+          when 'class','msg'
+            warning("No key value [#{var}] in Status[#{form}]") unless stat[form].key?(var)
+            real=stat[form][var]
+          when 'data'
+            real=stat.get(var)
+          else
+            warning('No form specified')
+          end
+          verbose{"site=#{site},var=#{var},form=#{form},cmp=#{cmp},cri=#{cri},real=#{real}"}
+          cond['real']=real
+          cond['res']=match?(real,cri,cond['cmp'])
           cond
         }
         res=conds.all?{|h| h['res']}

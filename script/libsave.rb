@@ -11,10 +11,10 @@ module CIAX
       verbose { "Save Initialize [#{file_base}]" }
       self['id'] || Msg.cfg_err('No ID')
       @jsondir = vardir('json')
-      @post_upd_procs << proc{
+      @post_upd_procs << proc do
         verbose { 'Propagate upd -> Save#save' }
         save
-      }
+      end
       self
     end
 
@@ -46,11 +46,11 @@ module CIAX
     def write_json(json_str, tag = nil)
       verbose(@thread != Thread.current) { 'Saving from Multiple Threads' }
       rname = file_path(tag)
-      open(rname, 'w'){|f|
+      open(rname, 'w') do|f|
         f.flock(::File::LOCK_EX)
         f << json_str
         verbose { "[#{rname}](#{f.size}) is Saved" }
-      }
+      end
       self
     end
   end
@@ -61,24 +61,24 @@ module CIAX
       ver = self['ver']
       verbose { "Log Initialize [#{id}/Ver.#{ver}]" }
       @queue = Queue.new
-      @post_upd_procs << proc{
+      @post_upd_procs << proc do
         verbose { 'Propagate upd -> Log#queue' }
         @queue.push(to_j)
-      }
+      end
       logfile = vardir('log') + file_base + "_#{Time.now.year}.log"
-      ThreadLoop.new("Logging(#{@type}:#{id})", 11){
+      ThreadLoop.new("Logging(#{@type}:#{id})", 11) do
         logary = []
-        loop{
+        loop do
           logary << @queue.pop
           break if @queue.empty?
-        }
-        open(logfile, 'a') {|f|
-          logary.each{|str|
+        end
+        open(logfile, 'a') do|f|
+          logary.each do|str|
             f.puts str
             verbose { "Appended #{str.size} byte" }
-          }
-        }
-      }
+          end
+        end
+      end
       self
     end
   end

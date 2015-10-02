@@ -50,9 +50,9 @@ module CIAX
 
       def vmax # max text length
         max = 0
-        list_table.values.each_with_index{|v, i|
+        list_table.values.each_with_index do|v, i|
           max = v.size if (i % @column) < @column - 1 && v.size > max
-        }
+        end
         max
       end
 
@@ -68,11 +68,11 @@ module CIAX
       def list_table
         hash = {}
         num = 0
-        ((@select + @dummy) & keys).each{|key|
+        ((@select + @dummy) & keys).each do|key|
           next unless self[key]
           title = @attr['line_number'] ? "[#{num += 1}](#{key})" : key
           hash[title] = self[key]
-        }
+        end
         hash
       end
     end
@@ -96,9 +96,9 @@ module CIAX
       end
 
       def merge!(displist)
-        type?(displist, List).each{|cg|
+        type?(displist, List).each do|cg|
           cg.select = @select
-        }
+        end
         concat(displist)
         reset!
       end

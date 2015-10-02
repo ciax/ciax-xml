@@ -58,7 +58,7 @@ module CIAX
     end
 
     def server
-      @tid = ThreadLoop.new("Buffer(#{self['id']})", 12){
+      @tid = ThreadLoop.new("Buffer(#{self['id']})", 12) do
         begin
           verbose { 'SUB:Waiting' }
           rcv = @q.shift
@@ -71,7 +71,7 @@ module CIAX
           clear
           alert($!.to_s)
         end
-      }
+      end
       self
     end
 
@@ -91,21 +91,21 @@ module CIAX
       verbose { "SUB:Recieve [#{batch}] with priority[#{p}]" }
       (@outbuf[p] ||= []).concat(batch)
       i = -1
-      @outbuf.map{|o|
+      @outbuf.map do|o|
         verbose { "SUB:Outbuf(#{i += 1}) is [#{o}]\n" }
-      }
+      end
     end
 
     # Remove duplicated args and pop one
     def pick
       args = nil
-      @outbuf.size.times{|i|
+      @outbuf.size.times do|i|
         if args
           @outbuf[i].delete(args)
         else
           args = @outbuf[i].shift
         end
-      }
+      end
       args
     end
 

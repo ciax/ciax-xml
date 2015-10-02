@@ -6,7 +6,7 @@ require 'thread'
 # Generate SQL command string
 module CIAX
   module SqLog
-               # Table create using @stat.keys
+    # Table create using @stat.keys
     class Table
       attr_reader :tid, :stat, :tname
       include Msg
@@ -75,7 +75,7 @@ module CIAX
       end
     end
 
-               # Execute Sql Command to sqlite3
+    # Execute Sql Command to sqlite3
     class Save
       # @< log,tid
       # @ sqlcmd

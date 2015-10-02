@@ -13,13 +13,13 @@ module CIAX
       @sub.ext_server if @sub
       return self unless @port
       verbose { "Initialize UDP server (#@id) [#{@port}]" }
-      @server_input_proc = proc{|line|
+      @server_input_proc = proc do|line|
         begin
           JSON.load(line)
         rescue JSON::ParserError
           raise 'NOT JSON'
         end
-      }
+      end
       @server_output_proc = proc { merge(@sv_stat).to_j }
       self
     end
@@ -29,7 +29,7 @@ module CIAX
       return self unless @port
       udp = UDPSocket.open
       udp.bind('0.0.0.0', @port.to_i)
-      ThreadLoop.new("Server(#@layer:#@id)", 9){
+      ThreadLoop.new("Server(#@layer:#@id)", 9) do
         IO.select([udp])
         line, addr = udp.recvfrom(4096)
         line.chomp!
@@ -47,7 +47,7 @@ module CIAX
         send_str = @server_output_proc.call
         verbose { "UDP Send:#{send_str}" }
         udp.send(send_str, 0, addr[2], addr[1])
-      }
+      end
       self
     end
   end

@@ -36,7 +36,7 @@ module CIAX
           cap = res.capitalize
           color = (/failed|timeout/ === res) ? 1 : 2
           mary[0] << ' -> ' + Msg.color(cap, color)
-          (self['conditions'] || {}).each{|h|
+          (self['conditions'] || {}).each do|h|
             res = h['res'] ? body('o', 2) : body('x', 1)
             case h['cmp']
             when 'equal'
@@ -49,7 +49,7 @@ module CIAX
             line = res + " #{h['site']}:#{h['var']}(#{h['form']}) #{ope} #{h['cri']}"
             line += " (#{h['real']})" if !h['res'] || ope != '='
             mary << line
-          }
+          end
         end
         mary << body(self['action'].capitalize, 8) if key?('action')
         mary.join("\n") + "\n"

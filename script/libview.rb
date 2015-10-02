@@ -37,7 +37,7 @@ module CIAX
 
     # Show branch (omit lower tree of Hash/Array with sym key)
     def path(ary = [])
-      enum = ary.inject(self){|prev, a|
+      enum = ary.inject(self) do|prev, a|
         if /@/ === a
           prev.instance_variable_get(a)
         else
@@ -48,17 +48,17 @@ module CIAX
             prev[a.to_sym] || prev[a.to_s]
           end
         end
-      } || Msg.abort('No such key')
+      end || Msg.abort('No such key')
       branch = enum.dup.extend(ViewStruct)
       if Hash === branch
-        branch.each{|k, v|
+        branch.each do|k, v|
           branch[k] = v.class.to_s if Enumerable === v
-        }
+        end
       end
-      branch.instance_variables.each{|n|
+      branch.instance_variables.each do|n|
         v = branch.instance_variable_get(n)
         branch.instance_variable_set(n, v.class.to_s) if Enumerable === v
-      }
+      end
       branch.view_struct(true, true)
     end
 
@@ -88,10 +88,10 @@ module CIAX
         str << "<<#{data.class}>>\n"
       end
       iv = {}
-      data.instance_variables.each{|n|
+      data.instance_variables.each do|n|
         iv[n] = data.instance_variable_get(n) unless n == :object_ids
         depth -= 1 # Show only top level of the instance variable
-      } if show_iv && depth > 0
+      end if show_iv && depth > 0
       _show(str, iv, object_ary, ind, column, title, show_iv, show_id, depth)
       _show(str, data, object_ary, ind, column, title, show_iv, show_id, depth)
     end
@@ -117,27 +117,27 @@ module CIAX
 
     def _mixed?(str, data, vary, idx, object_ary, ind, show_iv, show_id, depth)
       if vary.any? { |v| v.kind_of?(Enumerable) }
-        idx.each{|i|
+        idx.each do|i|
           str << _recursive(data[i], i, object_ary, ind, show_iv, show_id, depth)
-        }
+        end
       end
     end
 
     def _only_ary(str, data, ind, column)
       str << indent(ind) + '['
       line = []
-      data.each_slice(column){|a|
+      data.each_slice(column) do|a|
         line << a.map { |v| v.inspect }.join(',')
-      }
+      end
       str << line.join(",\n " + indent(ind)) + "]\n"
     end
 
     def _only_hash(str, data, ind, title)
-      data.keys.each_slice(title ? 2 : 1){|a|
-        str << indent(ind) + a.map{|k|
+      data.keys.each_slice(title ? 2 : 1) do|a|
+        str << indent(ind) + a.map do|k|
           color('%-8s' % k.inspect, 3) + (': %-10s' % data[k].inspect)
-        }.join("\t") + "\n"
-      }
+        end.join("\t") + "\n"
+      end
       str
     end
   end

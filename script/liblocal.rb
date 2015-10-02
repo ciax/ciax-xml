@@ -47,18 +47,18 @@ module CIAX
           @cfg['caption'] = "Switch #{name}s"
           @cfg['color'] = 5
           @cfg['column'] = 3
-          def_proc{|ent|
+          def_proc do|ent|
             # Use shell() of top level class (ie. List.new.get(id).shell -> List.new.shell(id) )
             raise(ent[:jump_class], ent.id)
-          }
+          end
         end
 
         def number_item(ary)
           clear
           i = 0
-          type?(ary, Array).each{|str|
+          type?(ary, Array).each do|str|
             add_item((i += 1).to_s, str)
-          }
+          end
           self
         end
       end

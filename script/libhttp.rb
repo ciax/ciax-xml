@@ -19,10 +19,10 @@ module CIAX
     def load(tag = nil)
       url = file_url(tag)
       json_str = ''
-      open(url){|f|
+      open(url) do|f|
         verbose { "Loading url [#{url}](#{f.size})" }
         json_str = f.read
-      }
+      end
       if json_str.empty?
         warning(" -- json url file (#{url}) is empty at loading")
       else

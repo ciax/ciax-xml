@@ -7,10 +7,10 @@ module CIAX
     include Msg
     def initialize(name, color = 4)
       Thread.abort_on_exception = true
-      th = super{
+      th = super do
         Thread.pass
         yield
-      }
+      end
       th[:name] = name
       th[:color] = color
     end
@@ -22,12 +22,12 @@ module CIAX
 
   class ThreadLoop < Threadx
     def initialize(name, color = 4)
-      super{
-        loop{
+      super do
+        loop do
           yield
           verbose { "Next for #{Thread.current[:name]}" }
-        }
-      }
+        end
+      end
     end
   end
 end

@@ -35,9 +35,9 @@ module CIAX
     # Subtract and merge to self data, return rest of the data
     def sub(input)
       hash = input.dup
-      @db.keys.each{|k|
+      @db.keys.each do|k|
         self[k] = hash[k] ? hash.delete(k) : false
-      }
+      end
       hash
     end
 

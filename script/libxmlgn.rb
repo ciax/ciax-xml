@@ -35,28 +35,28 @@ module CIAX
       end
 
       def text
-        @e.each{|n|
+        @e.each do|n|
           return n.content if n.text? && /[\S]/ === n.content
-        }
+        end
         nil
       end
 
       # pick same ns nodes even if it is in another tree
       def find(xpath)
         verbose { "FindXpath:#{xpath}" }
-        @e.doc.find("//ns:#{xpath}", "ns:#{ns}").each{|e|
-          enclose("<#{e.name} #{e.attributes.to_h}>", "</#{e.name}>"){
+        @e.doc.find("//ns:#{xpath}", "ns:#{ns}").each do|e|
+          enclose("<#{e.name} #{e.attributes.to_h}>", "</#{e.name}>") do
             yield Gnu.new(e)
-          }
-        }
+          end
+        end
       end
 
       def each
-        @e.each_element{|e|
-          enclose("<#{e.name} #{e.attributes.to_h}>", "</#{e.name}>"){
+        @e.each_element do|e|
+          enclose("<#{e.name} #{e.attributes.to_h}>", "</#{e.name}>") do
             yield Gnu.new(e)
-          }
-        }
+          end
+        end
       end
     end
   end

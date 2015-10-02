@@ -76,24 +76,24 @@ module CIAX
           # Set items by DB
           cdb = dbi[:command]
           idx = cdb[:index]
-          cdb[:group].values.each{|gat|
+          cdb[:group].values.each do|gat|
             @current = @displist.new_grp(gat['caption'])
-            gat[:members].each{|id|
+            gat[:members].each do|id|
               item = idx[id]
               label = item['label']
               unit = item['unit']
               label = "#{cdb[:unit][unit]['label']} #{label}" if unit
               add_item(id, label, item)
-            }
-          }
+            end
+          end
           if cdb[:alias]
             @current = @displist.new_grp('Alias')
-            cdb[:alias].each{|id, att|
+            cdb[:alias].each do|id, att|
               item = idx[att['ref']].dup
               label = att['label']
               item['argv'] = att['argv'] if att['argv']
               add_item(id, label, item)
-            }
+            end
           end
         end
 
@@ -119,31 +119,31 @@ module CIAX
 
         def subst(str) # subst by parameters ($1,$2...)
           return str unless /\$([\d]+)/ === str
-          enclose("Substitute from [#{str}]", 'Substitute to [%s]'){
+          enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
             num = true
-            res = str.gsub(/\$([\d]+)/){
+            res = str.gsub(/\$([\d]+)/) do
               i = $1.to_i
               num = false if self[:parameters][i - 1][:type] != 'num'
               verbose { "Parameter No.#{i} = [#{@par[i - 1]}]" }
               @par[i - 1] || Msg.cfg_err(" No substitute data ($#{i})")
-            }
+            end
             Msg.cfg_err('Nil string') if res == ''
             res
-          }
+          end
         end
 
         def deep_subst(data)
           case data
           when Array
             res = []
-            data.each{|v|
+            data.each do|v|
               res << deep_subst(v)
-            }
+            end
           when Hash
             res = {}
-            data.each{|k, v|
+            data.each do|k, v|
               res[k] = deep_subst(v)
-            }
+            end
           else
             res = subst(data)
           end

@@ -22,13 +22,13 @@ module CIAX
         itv *= 10 if $opt['m']
         show title
         max = self['max'] = self['retry']
-        res = max.to_i.times{|n| # gives number or nil(if break)
+        res = max.to_i.times do|n| # gives number or nil(if break)
           self['retry'] = n
           break if condition_ok?
           sleep itv
           yield
           post_upd
-        }
+        end
         self['result'] = res ? 'timeout' : 'pass'
         upd
         res
@@ -93,7 +93,7 @@ module CIAX
       # Sub methods
       def condition_ok?(t = nil, f = nil)
         stats = scan
-        conds = @condition.map{|h|
+        conds = @condition.map do|h|
           cond = {}
           site = cond['site'] = h['site']
           var = cond['var'] = h['var']
@@ -114,7 +114,7 @@ module CIAX
           cond['real'] = real
           cond['res'] = match?(real, cri, cond['cmp'])
           cond
-        }
+        end
         res = conds.all? { |h| h['res'] }
         self['conditions'] = conds
         self['result'] = (res ? t : f) if t || f
@@ -122,18 +122,18 @@ module CIAX
       end
 
       def scan
-        sites.inject({}){|hash, site|
+        sites.inject({}) do|hash, site|
           verbose { "Scanning Status #{site}" }
           hash[site] = @dev_list.get(site).stat
           hash
-        }
+        end
       end
 
       def refresh
-        sites.each{|site|
+        sites.each do|site|
           verbose { "Refresh Status #{site}" }
           @dev_list.get(site).stat.refresh
-        }
+        end
       end
 
       def sites

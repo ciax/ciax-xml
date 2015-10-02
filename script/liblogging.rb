@@ -16,19 +16,19 @@ module CIAX
       @loghead = vardir('log') + "#{type}_#{id}"
       verbose { "Initialize (#{id}/Ver.#{ver})" }
       @queue = Queue.new
-      ThreadLoop.new("Old Logging(#{type}:#{id})", 11){
+      ThreadLoop.new("Old Logging(#{type}:#{id})", 11) do
         logary = []
-        loop{
+        loop do
           logary << @queue.pop
           break if @queue.empty?
-        }
-        open(logfile, 'a') {|f|
-          logary.each{|str|
+        end
+        open(logfile, 'a') do|f|
+          logary.each do|str|
             f.puts str
             verbose { ["Appended #{str.size} byte", str] }
-          }
-        }
-      }
+          end
+        end
+      end
     end
 
     # Return UnixTime

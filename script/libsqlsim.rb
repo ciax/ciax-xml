@@ -3,7 +3,7 @@ require 'libmsg'
 # Generate SQL command string
 module CIAX
   module SqLog
-               # For log simulator
+    # For log simulator
     class Simulator
       include CIAX::Msg
       attr_reader :index, :max
@@ -19,10 +19,10 @@ module CIAX
 
       def query(str)
         verbose { "->[#{str}]" }
-        IO.popen(@sqlcmd, 'r+'){|f|
+        IO.popen(@sqlcmd, 'r+') do|f|
           f.puts str
           str = f.gets.chomp
-        }
+        end
         verbose { "<-[#{str}]" }
         str
       end

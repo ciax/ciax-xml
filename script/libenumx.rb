@@ -15,9 +15,9 @@ module CIAX
 
     # Freeze one level deepth or more
     def deep_freeze
-      rec_proc(self){|i|
+      rec_proc(self) do|i|
         i.freeze
-      }
+      end
       self
     end
 
@@ -39,7 +39,7 @@ module CIAX
     # r(operand) will be merged to w (w is changed)
     def rec_merge(r, w, d)
       d -= 1 if d
-      each_idx(r, w){|i, cls|
+      each_idx(r, w) do|i, cls|
         w = cls.new unless cls === w
         if d && d < 1
           verbose { "Merging #{i}" }
@@ -47,13 +47,13 @@ module CIAX
         else
           w[i] = rec_merge(r[i], w[i], d)
         end
-      }
+      end
     end
 
     def rec_proc(db)
-      each_idx(db){|i|
+      each_idx(db) do|i|
         rec_proc(db[i]) { |d| yield d }
-      }
+      end
       yield db
     end
 
@@ -79,9 +79,9 @@ module CIAX
     def initialize(hash = {})
       update(hash)
       @vmode = 'v' # v|r|j
-      %w(v r j).each{|k|
+      %w(v r j).each do|k|
         @vmode = k if $opt[k]
-      } if $opt
+      end if $opt
       @cls_color = 6
     end
 
@@ -96,18 +96,18 @@ module CIAX
     # Make empty copy
     def skeleton
       hash = Hashx.new
-      keys.each{|i|
+      keys.each do|i|
         hash[i] = nil
-      }
+      end
       hash
     end
 
     # Generate Hash Pick up keys
     def pick(keyary)
       hash = Hashx.new
-      keyary.each{|key|
+      keyary.each do|key|
         hash[key] = self[key]
-      }
+      end
       hash
     end
   end
@@ -118,19 +118,19 @@ module CIAX
     def skeleton(sary)
       return '' if sary.empty?
       dary = []
-      sary[0].to_i.times{|i|
+      sary[0].to_i.times do|i|
         dary[i] = skeleton(sary[1..-1])
-      }
+      end
       dary
     end
 
     # Get value of Hash which is element of self
     def get(key)
       # In case of find(), find{|e| e.get(key)}.get(key) to get content
-      each{|e|
+      each do|e|
         res = e.get(key)
         return res if res
-      }
+      end
       nil
     end
   end

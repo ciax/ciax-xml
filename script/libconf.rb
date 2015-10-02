@@ -49,9 +49,9 @@ module CIAX
 
     # If content is Array, merge generations
     def [](id)
-      @generation.each{|gen|
+      @generation.each do|gen|
         return gen.fetch(id) if gen.this_key?(id)
-      }
+      end
       nil
     end
 
@@ -71,28 +71,28 @@ module CIAX
     def path(key = nil)
       i = 0
       str = ''
-      @generation.each{|h|
-        str = "  [#{i}]{" + h.map{|k, v|
+      @generation.each do|h|
+        str = "  [#{i}]{" + h.map do|k, v|
           next if key and k != key
           case v
           when Hash, Proc, CmdProc
             val = v.class
           when Array
-            val = '[' + v.map{|e|
+            val = '[' + v.map do|e|
               case e
               when Enumerable
                 e.class
               else
                 e.inspect
               end
-            }.join(',') + "](#{v.object_id})"
+            end.join(',') + "](#{v.object_id})"
           else
             val = v.inspect
           end
           k.inspect.to_s + '=>' + val.to_s
-        }.compact.join(', ') + '} (' + h.object_id.to_s + ")\n" + str
+        end.compact.join(', ') + '} (' + h.object_id.to_s + ")\n" + str
         i += 1
-      }
+      end
       "******[Config]******(#{object_id})\n#{str}************\n"
     end
 
@@ -100,13 +100,13 @@ module CIAX
     def list
       i = 0
       db = {}
-      @generation.each{|h|
-        h.each{|key, val|
+      @generation.each do|h|
+        h.each do|key, val|
           db[key] = [i, val] unless db.key?(key)
-        }
+        end
         i += 1
-      }
-      "******[Config]******(#{object_id})\n" + db.map{|key, ary|
+      end
+      "******[Config]******(#{object_id})\n" + db.map do|key, ary|
         case v = ary[1]
         when String, Numeric, Enumerable
           val = v.inspect
@@ -116,7 +116,7 @@ module CIAX
           val = v
         end
         "  #{key} (#{ary[0]}) = #{val}"
-      }.reverse.join("\n") + "\n************\n"
+      end.reverse.join("\n") + "\n************\n"
     end
   end
 end

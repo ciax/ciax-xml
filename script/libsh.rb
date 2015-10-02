@@ -24,23 +24,23 @@ module CIAX
 
     # Convert Shell input from "x=n" to "set x n"
     def input_conv_set
-      @shell_input_procs << proc{|args|
+      @shell_input_procs << proc do|args|
         if args[0] && args[0].include?('=')
           ['set'] + args.shift.split('=') + args
         else
           args
         end
-      }
+      end
       self
     end
 
     # Convert Shell input from number to string
     def input_conv_num(cmdlist = [])
-      @shell_input_procs << proc{|args|
+      @shell_input_procs << proc do|args|
         n = cmdlist.include?(args[0]) ? 1 : 0
         args[n] = yield(args[n].to_i) if args[n] && /^[0-9]/ =~ args[n]
         args
-      }
+      end
       self
     end
 
@@ -59,7 +59,7 @@ module CIAX
       Readline.completion_proc = proc{|word|
         (@cobj.valid_keys + @cobj.valid_pars).grep(/^#{word}/)
       }
-      loop{
+      loop do
         begin
           line = Readline.readline(prompt, true) || 'interrupt'
         rescue Interrupt
@@ -69,9 +69,9 @@ module CIAX
         cmds = line.split(';')
         cmds = [''] if cmds.empty?
         begin
-          cmds.each{|token|
+          cmds.each do|token|
             exe(convert(token), 'shell')
-          }
+          end
         rescue UserError
           nil
         rescue ServerError
@@ -80,16 +80,16 @@ module CIAX
         puts @sv_stat.msg.empty? ? @shell_output_proc.call : @sv_stat.msg
         verbose { ['Threads', "#{Threadx.list}"] }
         verbose { "Valid Commands #{@cobj.valid_keys}" }
-      }
+      end
       @terminate_procs.inject(self) { |obj, proc| proc.call(obj) }
       Msg.msg('Quit Shell', 3)
     end
 
     private
     def convert(token)
-      @shell_input_procs.inject(token.split(' ')){|args, proc|
+      @shell_input_procs.inject(token.split(' ')) do|args, proc|
         proc.call(args)
-      }
+      end
     end
   end
 end

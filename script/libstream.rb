@@ -26,9 +26,9 @@ module CIAX
         @terminator = terminator
         @pre_open_proc = proc {}
         @post_open_proc = proc {}
-        Signal.trap(:CHLD){
+        Signal.trap(:CHLD) do
           verbose { "#@iocmd is terminated" }
-        }
+        end
         reopen
       end
 
@@ -48,7 +48,7 @@ module CIAX
         verbose { 'Wait for Recieving' }
         reopen
         str = ''
-        loop{
+        loop do
           if IO.select([@f], nil, nil, @timeout)
             begin
               str << @f.sysread(4096)
@@ -62,7 +62,7 @@ module CIAX
             Msg.com_err('Stream:No response')
           end
           break unless @terminator and /#@terminator/ !~ str
-        }
+        end
         verbose { "Recieved #{str.size} byte on #{self['cmd']}" }
         verbose { ['Data Recieved', str.inspect] }
         convert('rcv', str)
@@ -91,9 +91,9 @@ module CIAX
         Signal.trap(:INT, nil)
         @f = IO.popen(@iocmd, 'r+')
         Signal.trap(:INT, 'DEFAULT')
-        at_exit{
+        at_exit do
           Process.kill('INT', @f.pid)
-        }
+        end
         @post_open_proc.call
         verbose { 'Stream Open successfully' }
         # Shut off from Ctrl-C Signal to the child process

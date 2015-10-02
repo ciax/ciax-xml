@@ -43,11 +43,11 @@ module CIAX
         if frame && !frame.empty?
           verbose { "Set [#{frame.inspect}]" }
           if length # Special for OSS
-            @frame = frame.split(@terminator).map{|str|
+            @frame = frame.split(@terminator).map do|str|
               res = str.rjust(length.to_i, padding || '0')
               verbose(res.to_i > str.size) { "Frame length short and add '0'" }
               res
-            }.join(@terminator)
+            end.join(@terminator)
           else
             @frame = frame
           end
@@ -207,11 +207,11 @@ module CIAX
         if len
           code = ''
           num = eval(str)
-          len.to_i.times{
+          len.to_i.times do
             c = (num % 256).chr
             num /= 256
             code = (@endian == 'little') ? code + c : c + code
-          }
+          end
           verbose { "Encode:[#{str}](#{len}) -> [#{code.inspect}]" }
           str = code
         end

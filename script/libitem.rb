@@ -62,7 +62,7 @@ module CIAX
     def validate(pary)
       pary = type?(pary.dup, Array)
       return [] unless @cfg[:parameters]
-      @cfg[:parameters].map{|par|
+      @cfg[:parameters].map do|par|
         list = par[:list] || []
         disp = list.join(',')
         str = pary.shift
@@ -102,7 +102,7 @@ module CIAX
           end
         end
         str
-      }
+      end
     end
   end
 

@@ -20,9 +20,9 @@ module CIAX
 
       def map
         ary = []
-        each{|e|
+        each do|e|
           ary << (yield e)
-        }
+        end
         ary
       end
 
@@ -30,20 +30,20 @@ module CIAX
         # <xml id='id' a='1' b='2'> => db[:a][id]='1', db[:b][id]='2'
         type?(db, Hash)
         attr = {}
-        to_h.each{|k, v|
+        to_h.each do|k, v|
           if defined?(yield)
             attr[k] = yield k, v
           else
             attr[k] = v
           end
-        }
+        end
         key = attr.delete(id) || Msg.abort("No such key (#{id})")
-        attr.each{|str, v|
+        attr.each do|str, v|
           sym = str.to_sym
           db[sym] = {} unless db.key?(sym)
           db[sym][key] = v
           verbose { 'ATTRDB:' + str.upcase + ":[#{key}] : #{v}" }
-        }
+        end
         key
       end
 
@@ -51,13 +51,13 @@ module CIAX
         # <xml id='id' a='1' b='2'> => db[id][a]='1', db[id][b]='2'
         type?(db, Hash)
         attr = {}
-        to_h.each{|k, v|
+        to_h.each do|k, v|
           if defined?(yield)
             attr[k] = yield k, v
           else
             attr[k] = v
           end
-        }
+        end
         key = attr.delete(id) || Msg.abort("No such key (#{id})")
         alert("ATTRDB: Dupricated ID [#{key}]") if db.key?(key)
         db[key] = attr

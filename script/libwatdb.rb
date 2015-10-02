@@ -13,29 +13,29 @@ module CIAX
         cmdgrp = db[:command][:group]
         idx = {}
         regular = { 'period' => 300, :exec => [] }
-        Repeat.new.each(wdb){|e0, r0|
+        Repeat.new.each(wdb) do|e0, r0|
           case e0.name
           when 'regular'
             regular.update(e0.to_h)
-            e0.each{|e1|
+            e0.each do|e1|
               args = [e1['name']]
-              e1.each{|e2|
+              e1.each do|e2|
                 args << e2.text
-              }
+              end
               regular[:exec] << args
-            }
+            end
           when 'event'
             id = e0.attr2item(idx) { |_, v| r0.format(v) }
             item = idx[id]
             cnd = item[:cnd] = []
             act = item[:act] = {}
-            e0.each{|e1|
+            e0.each do|e1|
               case name = e1.name.to_sym
               when :block, :int, :exec
                 args = [e1['name']]
-                e1.each{|e2|
+                e1.each do|e2|
                   args << r0.subst(e2.text)
-                }
+                end
                 (act[name] ||= []) << args
               when :block_grp
                 blk = (act[:block] ||= [])
@@ -46,9 +46,9 @@ module CIAX
                 h['type'] = e1.name
                 cnd << h
               end
-            }
+            end
           end
-        }
+        end
         regular[:exec] << ['upd'] if regular[:exec].empty?
         db[:watch] = wdb.to_h.update(:index => idx, :regular => regular)
       end
@@ -56,9 +56,9 @@ module CIAX
       private
       def get_cmd
         args = [e1['name']]
-        e1.each{|e2|
+        e1.each do|e2|
           args << r0.subst(e2.text)
-        }
+        end
         (act[name] ||= []) << args
       end
     end

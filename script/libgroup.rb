@@ -35,11 +35,11 @@ module CIAX
     end
 
     def merge_items(displist)
-      type?(displist, Disp::List).each{|cg|
-        cg.each{|id, title|
+      type?(displist, Disp::List).each do|cg|
+        cg.each do|id, title|
           new_item(id, { 'label' => title })
-        }
-      }
+        end
+      end
       @current = @displist.merge!(displist).last
       self
     end

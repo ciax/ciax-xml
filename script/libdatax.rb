@@ -76,10 +76,10 @@ module CIAX
     # Update with strings (key=val,key=val,..)
     def str_update(str)
       type?(str, String)
-      str.split(',').each{|i|
+      str.split(',').each do|i|
         k, v = i.split('=')
         @data[k] = v
-      }
+      end
       self['time'] = now_msec
     ensure
       post_upd

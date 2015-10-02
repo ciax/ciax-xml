@@ -14,13 +14,13 @@ module CIAX
     # Saving data of specified keys with tag
     def save_key(keylist, tag = nil)
       hash = {}
-      keylist.each{|k|
+      keylist.each do|k|
         if @data.key?(k)
           hash[k] = get(k)
         else
           warning("No such Key [#{k}]")
         end
-      }
+      end
       if hash.empty?
         Msg.par_err('No Keys')
       else
@@ -37,11 +37,11 @@ module CIAX
       base = file_base(tag)
       fname = file_path(tag)
       json_str = ''
-      open(fname){|f|
+      open(fname) do|f|
         verbose { "Loading [#{base}](#{f.size})" }
         f.flock(::File::LOCK_SH)
         json_str = f.read
-      }
+      end
       if json_str.empty?
         warning(" -- json file (#{base}) is empty at loading")
       else
@@ -63,9 +63,9 @@ module CIAX
     end
 
     def tag_list
-      Dir.glob(file_path('*')).map{|f|
+      Dir.glob(file_path('*')).map do|f|
         f.slice(/.+_(.+)\.json/, 1)
-      }.sort
+      end.sort
     end
   end
 end

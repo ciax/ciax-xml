@@ -45,10 +45,10 @@ module CIAX
       end
 
       def server(ary)
-        ary.each{|site|
+        ary.each do|site|
           sleep 0.3
           get(site).ext_server.server
-        }.empty? && get(nil)
+        end.empty? && get(nil)
         sleep
       rescue InvalidID
         $opt.usage('(opt) [id] ....')

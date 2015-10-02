@@ -38,9 +38,9 @@ module CIAX
 
     def get(id)
       raise(InvalidID, "No such ID (#{id}) in #@type\n" + @displist.to_s) unless @displist.key?(id)
-      cache(id){|doc|
+      cache(id) do|doc|
         doc_to_db(doc.set(id))
-      }
+      end
     end
 
     private
@@ -63,10 +63,10 @@ module CIAX
       else
         warning("Cache Refresh (#{id})")
         res = yield(@doc ||= Xml::Doc.new(@type, @proj))
-        open(@marfile, 'w') {|f|
+        open(@marfile, 'w') do|f|
           f << Marshal.dump(res)
           verbose { "Cache Saved(#{id})" }
-        }
+        end
       end
       self[id] = res
     end
@@ -91,9 +91,9 @@ module CIAX
     end
 
     def cmp(ary)
-      ary.each{|f|
+      ary.each do|f|
         return f if ::File.file?(f) && test(?>, f, @marfile)
-      }
+      end
       false
     end
 

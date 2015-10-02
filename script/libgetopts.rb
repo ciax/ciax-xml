@@ -33,14 +33,14 @@ module CIAX
       optdb['m'] = 'movable mode'
       optdb.update(db)
       # Merge additional db
-      db.keys.each{|k|
+      db.keys.each do|k|
         str << k unless str.include?(k)
-      }
+      end
       # Make usage text
       @index = {}
-      (str.split('') & optdb.keys).each{|c|
+      (str.split('') & optdb.keys).each do|c|
         @index["-#{c}"] = optdb[c]
-      }
+      end
       update(ARGV.getopts(str))
       # Set @layer (default 'Wat')
       lopt = %w(x a f w).find { |c| self[c] } || 'a'

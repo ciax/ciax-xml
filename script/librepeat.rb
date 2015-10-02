@@ -12,18 +12,18 @@ module CIAX
     end
 
     def each(e0)
-      e0.each{|e1|
+      e0.each do|e1|
         case e1.name
         when /repeat.*/
-          repeat(e1){
-            each(e1){|e2|
+          repeat(e1) do
+            each(e1) do|e2|
               yield e2, self
-            }
-          }
+            end
+          end
         else
           yield e1, self
         end
-      } if e0
+      end if e0
     end
 
     def subst(str) # Sub $key => @counter[key]
@@ -48,15 +48,15 @@ module CIAX
       c = e0['counter'] || '_'
       Msg.abort('Repeat:Counter Duplicate') if @counter.key?(c)
       fmt = @format[c] = e0['format'] || '%d'
-      enclose("Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]", 'End'){
-        Range.new(subst(e0['from']), subst(e0['to'])).each { |n|
-          enclose("Turn Number[#{n}] Start", "Turn Number[#{n}] End"){
+      enclose("Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]", 'End') do
+        Range.new(subst(e0['from']), subst(e0['to'])).each do |n|
+          enclose("Turn Number[#{n}] Start", "Turn Number[#{n}] End") do
             @counter[c] = n
             @rep.push yield
-          }
-        }
+          end
+        end
         @counter.delete(c)
-      }
+      end
       self
     end
   end

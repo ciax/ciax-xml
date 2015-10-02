@@ -105,7 +105,7 @@ module CIAX
               num = $!.to_s
               retry
             rescue InvalidID
-              $opt.usage('(opt) [site]')
+              OPT.usage('(opt) [site]')
             end
           end
         end
@@ -113,7 +113,7 @@ module CIAX
 
       if __FILE__ == $0
         ENV['VER'] ||= 'initialize'
-        GetOpts.new('tenr')
+        OPT.parse('tenr')
         cfg = Config.new
         cfg[:dev_list] = Wat::List.new(cfg).sub_list # Take App List
         list = List.new(PROJ, cfg).ext_drv.ext_shell
@@ -131,7 +131,7 @@ module CIAX
           }
           list.shell
         rescue InvalidCMD
-          $opt.usage('[cmd(:par)] ...')
+          OPT.usage('[cmd(:par)] ...')
         end
       end
     end

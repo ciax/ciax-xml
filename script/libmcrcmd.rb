@@ -59,7 +59,7 @@ module CIAX
 
     if __FILE__ == $0
       require 'libwatexe'
-      GetOpts.new
+      OPT.parse
       cfg = Config.new
       cfg[:dev_list] = Wat::List.new(cfg).sub_list
       begin
@@ -71,7 +71,7 @@ module CIAX
         puts ent.path
         puts ent.sequence.to_v
       rescue InvalidCMD
-        $opt.usage('[id] [cmd] (par)')
+        OPT.usage('[id] [cmd] (par)')
       end
     end
   end

@@ -11,7 +11,6 @@ module CIAX
       @cfg = cfg.gen(self).update(attr)
       super(m2id(@cfg[:obj].class, -2), {}, 'list')
       @cls_color = 6
-      $opt ||= GetOpts.new
     end
 
     def ext_shell(jump_class)
@@ -38,7 +37,7 @@ module CIAX
           @current = $!.to_s
           retry
         rescue InvalidID
-          $opt.usage('(opt) [id]')
+          OPT.usage('(opt) [id]')
         end
       end
 

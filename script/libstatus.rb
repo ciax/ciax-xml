@@ -62,19 +62,19 @@ module CIAX
 
     if __FILE__ == $0
       require 'libinsdb'
-      GetOpts.new('h:')
+      OPT.parse('h:')
       stat = Status.new
       begin
         dbi = Ins::Db.new.get(ARGV.shift)
         stat.set_dbi(dbi)
-        if $opt.host
-          stat.ext_http($opt.host)
+        if OPT.host
+          stat.ext_http(OPT.host)
         else
           stat.ext_save.ext_load
         end
         puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID
-        $opt.usage '(opt) [id]'
+        OPT.usage '(opt) [id]'
       end
       exit
     end

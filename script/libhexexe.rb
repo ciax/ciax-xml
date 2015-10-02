@@ -15,7 +15,7 @@ module CIAX
         @cfg[:output] = View.new(@sub.stat, @sub.sv_stat)
         @post_exe_procs.concat(@sub.post_exe_procs)
         @port = @sub.port.to_i + 1000
-        if $opt['e']
+        if OPT['e']
           @cfg[:output].ext_log
         end
       end
@@ -39,13 +39,13 @@ module CIAX
 
     if __FILE__ == $0
       ENV['VER'] ||= 'initialize'
-      GetOpts.new('ceh:lts')
+      OPT.parse('ceh:lts')
       cfg = Config.new
       cfg[:site] = ARGV.shift
       begin
         List.new(cfg).ext_shell.shell
       rescue InvalidID
-        $opt.usage('(opt) [id]')
+        OPT.usage('(opt) [id]')
       end
     end
   end

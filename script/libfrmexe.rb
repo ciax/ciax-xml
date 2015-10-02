@@ -54,7 +54,7 @@ module CIAX
       end
 
       def ext_driver
-        if $opt['s']
+        if OPT['s']
           @mode = 'SIM'
           iocmd = ['devsim-file', @id, @dbi['version']]
           timeout = 60
@@ -65,7 +65,7 @@ module CIAX
         end
         tm = @dbi[:response][:frame]['terminator']
         @stream = Stream.new(@id, @dbi['version'], iocmd, @dbi['wait'], timeout, (tm && eval('"' + tm + '"')))
-        @stream.ext_log unless $opt['s']
+        @stream.ext_log unless OPT['s']
         @stream.pre_open_proc = proc { @sv_stat.set('strerr') }
         @stream.post_open_proc = proc { @sv_stat.reset('strerr') }
         @sv_stat.add_db('comerr' => 'X', 'strerr' => 'E')
@@ -111,13 +111,13 @@ module CIAX
 
     if __FILE__ == $0
       ENV['VER'] ||= 'initialize'
-      GetOpts.new('ceh:lts')
+      OPT.parse('ceh:lts')
       cfg = Config.new
       cfg[:site] = ARGV.shift
       begin
         List.new(cfg).ext_shell.shell
       rescue InvalidID
-        $opt.usage('(opt) [id]')
+        OPT.usage('(opt) [id]')
       end
     end
   end

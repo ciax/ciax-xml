@@ -59,8 +59,8 @@ module CIAX
     end
 
     if __FILE__ == $0
-      GetOpts.new('r')
-      $opt.usage '(-r) < record_file' if STDIN.tty?
+      OPT.parse('r')
+      OPT.usage '(-r) < record_file' if STDIN.tty?
       puts Record.new.read
     end
   end

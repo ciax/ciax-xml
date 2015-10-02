@@ -77,7 +77,7 @@ module CIAX
     if __FILE__ == $0
       require 'libfrmrsp'
       require 'libfrmdb'
-      GetOpts.new('r')
+      OPT.parse('r')
       id, *args = ARGV
       ARGV.clear
       begin
@@ -89,11 +89,11 @@ module CIAX
         cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?
         res = cobj.set_cmd(args).exe_cmd('test')
-        puts($opt['r'] ? res : res.inspect)
+        puts(OPT['r'] ? res : res.inspect)
       rescue InvalidCMD
-        $opt.usage("#{id} [cmd] (par) < field_file")
+        OPT.usage("#{id} [cmd] (par) < field_file")
       rescue InvalidID
-        $opt.usage('[dev] [cmd] (par) < field_file')
+        OPT.usage('[dev] [cmd] (par) < field_file')
       end
     end
   end

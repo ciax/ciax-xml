@@ -95,7 +95,7 @@ module CIAX
 
     if __FILE__ == $0
       require 'libinsdb'
-      GetOpts.new('r')
+      OPT.parse('r')
       event = Event.new
       begin
         id = STDIN.tty? ? ARGV.shift : event.read['id']
@@ -104,7 +104,7 @@ module CIAX
         wview = View.new(event)
         puts STDOUT.tty? ? wview : wview.to_j
       rescue InvalidID
-        $opt.usage('(opt) [site] | < event_file')
+        OPT.usage('(opt) [site] | < event_file')
       end
     end
   end

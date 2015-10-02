@@ -8,7 +8,7 @@ module CIAX
     class Layer < CIAX::List
       def initialize(attr = {})
         super(Config.new, attr)
-        obj = ($opt['x'] ? Hex::List : Wat::List).new(@cfg)
+        obj = (OPT['x'] ? Hex::List : Wat::List).new(@cfg)
         loop{
           put(m2id(obj.class, -2), obj)
           obj = obj.sub_list || break
@@ -30,7 +30,7 @@ module CIAX
             get(id).ext_shell
             @jumpgrp.add_item(id, id.capitalize + ' mode')
           }
-          @current ||= $opt.layer || keys.first
+          @current ||= OPT.layer || keys.first
           self
         end
       end
@@ -38,11 +38,11 @@ module CIAX
 
     if __FILE__ == $0
       require 'libhexexe'
-      GetOpts.new('els')
+      OPT.parse('els')
       begin
         Layer.new(:site => ARGV.shift).ext_shell.shell
       rescue InvalidID
-        $opt.usage('(opt) [id]')
+        OPT.usage('(opt) [id]')
       end
     end
   end

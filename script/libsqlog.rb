@@ -93,7 +93,7 @@ module CIAX
       # Check table existence (ver=0 is invalid)
       def add_table(stat)
         sqlog = Table.new(stat)
-        if $opt['e'] && stat['ver'].to_i > 0
+        if OPT['e'] && stat['ver'].to_i > 0
           create_tbl(sqlog)
           real_mode(stat, sqlog)
         else
@@ -157,7 +157,6 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libappexe'
-      GetOpts.new
       id = ARGV.shift
       ARGV.clear
       begin

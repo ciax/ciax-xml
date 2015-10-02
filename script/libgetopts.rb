@@ -8,11 +8,15 @@ module CIAX
     # str = valid option list (afch:)
     # db = addigional option db
     attr_reader :layer
-    def initialize(str = '', db = {})
-      Msg.type?(str, String)
-      @optdb = db
+    def initialize
+      @optdb = {}
       make_db
-      db.keys.each do|k|
+    end
+
+    def parse(str, db = {})
+      Msg.type?(str, String)
+      @optdb.update(db)
+      @optdb.keys.each do|k|
         str << k unless str.include?(k)
       end
       make_usage(str)
@@ -100,7 +104,8 @@ module CIAX
     def make_layer
       lopt = %w(x a f w).find { |c| self[c] } || 'a'
       @layer = @optdb[lopt].split(' ').first
-      $opt = self
+      self
     end
   end
+  OPT = GetOpts.new
 end

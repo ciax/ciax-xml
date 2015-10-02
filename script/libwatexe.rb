@@ -34,7 +34,7 @@ module CIAX
 
       def ext_driver
         ext_non_client
-        @stat.ext_log if $opt['e']
+        @stat.ext_log if OPT['e']
         @stat.post_upd_procs << proc{|ev|
           ev.get('exec').each{|src, pri, args|
             verbose { "Executing:#{args} from [#{src}] by [#{pri}]" }
@@ -92,13 +92,13 @@ module CIAX
 
     if __FILE__ == $0
       ENV['VER'] ||= 'initialize'
-      GetOpts.new('ceh:lts')
+      OPT.parse('ceh:lts')
       cfg = Config.new
       cfg[:site] = ARGV.shift
       begin
         List.new(cfg).ext_shell.shell
       rescue InvalidID
-        $opt.usage('(opt) [id]')
+        OPT.usage('(opt) [id]')
       end
     end
   end

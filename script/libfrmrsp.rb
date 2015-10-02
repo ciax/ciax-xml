@@ -129,15 +129,15 @@ module CIAX
       require 'libdevdb'
       require 'liblogging'
       require 'libfrmcmd'
-      GetOpts.new('', { 'm' => 'merge file' })
-      $opt.usage('(opt) < logline') if STDIN.tty?
+      OPT.parse('', { 'm' => 'merge file' })
+      OPT.usage('(opt) < logline') if STDIN.tty?
       str = gets(nil) || exit
       res = Logging.set_logline(str)
       id = res['id']
       cid = res['cmd']
       dbi = Dev::Db.new.get(id)
       field = Field.new.set_dbi(dbi).ext_rsp { res }
-      field.ext_save.ext_load if $opt['m']
+      field.ext_save.ext_load if OPT['m']
       if cid
         cfg = Config.new.update(:dbi => dbi, :field => field)
         cobj = Index.new(cfg)

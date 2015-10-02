@@ -30,7 +30,7 @@ module CIAX
       verbose { "initialize [#{@id}]" }
       @dbi = @cfg[:dbi] = type?(@cfg[:db].get(id), Dbi) if @cfg.key?(:db)
       @cobj = Remote::Index.new(@cfg)
-      @host = $opt.host
+      @host = OPT.host
     end
 
     # Sync only (Wait for other thread), never inherit
@@ -65,9 +65,9 @@ module CIAX
     private
     def opt_mode
       # Option handling
-      if $opt.sv?
+      if OPT.sv?
         ext_driver
-      elsif $opt.cl?
+      elsif OPT.cl?
         ext_client
       else
         ext_test

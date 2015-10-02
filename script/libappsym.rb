@@ -75,7 +75,7 @@ module CIAX
 
     if __FILE__ == $0
       require 'libinsdb'
-      GetOpts.new
+      OPT.parse
       begin
         stat = Status.new
         id = STDIN.tty? ? ARGV.shift : stat.read['id']

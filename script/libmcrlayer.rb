@@ -17,11 +17,11 @@ module CIAX
     if __FILE__ == $0
       require 'libhexexe'
       ENV['VER'] ||= 'initialize'
-      GetOpts.new('els')
+      OPT.parse('els')
       begin
         Layer.new.ext_shell.shell
       rescue InvalidID
-        $opt.usage('(opt) [id]')
+        OPT.usage('(opt) [id]')
       end
     end
   end

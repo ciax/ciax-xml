@@ -137,13 +137,13 @@ module CIAX
 
       if __FILE__ == $0
         ENV['VER'] ||= 'initialize'
-        GetOpts.new('cmnlrt')
+        OPT.parse('cmnlrt')
         begin
           cfg = Config.new
           cfg[:dev_list] = Wat::List.new(cfg).sub_list
           Exe.new(cfg).ext_shell.shell
         rescue InvalidCMD
-          $opt.usage('[mcr] [cmd] (par)')
+          OPT.usage('[mcr] [cmd] (par)')
         end
       end
     end

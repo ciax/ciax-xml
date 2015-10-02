@@ -86,7 +86,7 @@ module CIAX
 
     if __FILE__ == $0
       require 'libinsdb'
-      GetOpts.new('rc', 'c' => 'CSV output')
+      OPT.parse('rc', 'c' => 'CSV output')
       stat = Status.new
       begin
         id = STDIN.tty? ? ARGV.shift : stat.read['id']
@@ -95,13 +95,13 @@ module CIAX
         view = View.new(stat)
         stat.ext_save.ext_load if STDIN.tty?
         stat.ext_sym.upd
-        if $opt['c']
+        if OPT['c']
           puts view.to_csv
         else
           puts STDOUT.tty? ? view : view.to_j
         end
       rescue InvalidID
-        $opt.usage '(opt) [site] | < status_file'
+        OPT.usage '(opt) [site] | < status_file'
       end
       exit
     end

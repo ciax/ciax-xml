@@ -26,7 +26,7 @@ module CIAX
       def exe(args) # As a individual cui command
         get(args.shift).exe(args, 'local')
       rescue InvalidID
-        $opt.usage('(opt) [id]')
+        OPT.usage('(opt) [id]')
       end
 
       def get(site)
@@ -51,7 +51,7 @@ module CIAX
         end.empty? && get(nil)
         sleep
       rescue InvalidID
-        $opt.usage('(opt) [id] ....')
+        OPT.usage('(opt) [id] ....')
       end
 
       def ext_shell

@@ -174,7 +174,7 @@ module CIAX
         end
 
         def query(cmds)
-          return true if $opt['n']
+          return true if OPT['n']
           self['option'].replace(cmds)
           set_stat 'query'
           res = input(cmds)
@@ -227,7 +227,7 @@ module CIAX
       end
 
       if __FILE__ == $0
-        GetOpts.new('icemntr')
+        OPT.parse('icemntr')
         cfg = Config.new
         al = Wat::List.new(cfg).sub_list # Take App List
         cfg[:dev_list] = al
@@ -236,13 +236,13 @@ module CIAX
         begin
           ent = mobj.set_cmd(ARGV)
           seq = Exe.new(ent)
-          if $opt['i']
+          if OPT['i']
             seq.macro
           else
             seq.ext_shell.shell
           end
         rescue InvalidCMD
-          $opt.usage('[mcr] [cmd] (par)')
+          OPT.usage('[mcr] [cmd] (par)')
         end
       end
     end

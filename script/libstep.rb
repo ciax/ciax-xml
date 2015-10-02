@@ -18,8 +18,8 @@ module CIAX
 
       # Conditional judgment section
       def timeout?
-        itv = ($opt['e'] || $opt['s']) ? 0.1 : 0
-        itv *= 10 if $opt['m']
+        itv = (OPT['e'] || OPT['s']) ? 0.1 : 0
+        itv *= 10 if OPT['m']
         show title
         max = self['max'] = self['retry']
         res = max.to_i.times do|n| # gives number or nil(if break)
@@ -87,7 +87,7 @@ module CIAX
       end
 
       def dryrun?
-        ! $opt['m'] && self['action'] = 'dryrun'
+        ! OPT['m'] && self['action'] = 'dryrun'
       end
 
       # Sub methods

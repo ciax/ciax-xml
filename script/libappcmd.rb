@@ -50,10 +50,10 @@ module CIAX
 
     if __FILE__ == $0
       require 'libinsdb'
-      GetOpts.new('d', 'd' => 'Device Mode')
+      OPT.parse('d', 'd' => 'Device Mode')
       id = ARGV.shift
       cfg = Config.new
-      dbm = $opt['d'] ? Db : Ins::Db
+      dbm = OPT['d'] ? Db : Ins::Db
       begin
         cobj = Index.new(cfg, { :dbi => dbm.new.get(id) })
         cobj.add_rem.def_proc { |ent| ent.path }

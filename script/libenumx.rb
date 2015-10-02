@@ -80,8 +80,8 @@ module CIAX
       update(hash)
       @vmode = 'v' # v|r|j
       %w(v r j).each do|k|
-        @vmode = k if $opt[k]
-      end if $opt
+        @vmode = k if OPT[k]
+      end if OPT
       @cls_color = 6
     end
 

@@ -124,7 +124,7 @@ module CIAX
       require 'libinsdb'
 
       list = { 't' => 'test conditions[key=val,..]' }
-      GetOpts.new('t:', list)
+      OPT.parse('t:', list)
       begin
         stat = App::Status.new
         id = STDIN.tty? ? ARGV.shift : stat.read['id']
@@ -132,14 +132,14 @@ module CIAX
         stat.set_dbi(dbi)
         stat.ext_save.ext_load if STDIN.tty?
         event = Event.new.set_dbi(dbi).ext_rsp(stat)
-        if (t = $opt['t'])
+        if (t = OPT['t'])
           event.ext_save.ext_load
           stat.str_update(t)
         end
         stat.upd
         puts STDOUT.tty? ? event : event.to_j
       rescue InvalidID
-        $opt.usage('(opt) [site] | < status_file')
+        OPT.usage('(opt) [site] | < status_file')
       end
     end
   end

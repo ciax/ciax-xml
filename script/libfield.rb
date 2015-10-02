@@ -6,18 +6,18 @@ module CIAX
     class Field < DataH
       attr_reader :flush_procs
       attr_accessor :echo
-      def initialize(init_struct={})
-        super('field',init_struct)
+      def initialize(init_struct = {})
+        super('field', init_struct)
         # Proc for Terminate process of each individual commands (Set upper layer's update);
-        @flush_procs=[proc{verbose{'Processing FlushProcs'}}]
+        @flush_procs = [proc { verbose { 'Processing FlushProcs' } }]
       end
 
       def set_dbi(db)
         super
         # Field Initialize
         if @data.empty?
-          @dbi[:field].each{|id,val|
-            @data[id]=val['val']||Arrayx.new.skeleton(val[:struct])
+          @dbi[:field].each{|id, val|
+            @data[id] = val['val'] || Arrayx.new.skeleton(val[:struct])
           }
         end
         self
@@ -28,9 +28,9 @@ module CIAX
       # - output csv if array
       def subst(str) # subst by field
         return str unless /\$\{/ === str
-        enclose("Substitute from [#{str}]",'Substitute to [%s]'){
+        enclose("Substitute from [#{str}]", 'Substitute to [%s]'){
           str.gsub(/\$\{(.+)\}/) {
-            ary=[*get($1)].map!{|i| eval(i)}
+            ary = [*get($1)].map! { |i| eval(i) }
             Msg.abort("No value for subst [#{$1}]") if ary.empty?
             ary.join(',')
           }
@@ -42,63 +42,63 @@ module CIAX
       # - index should be numerical or formula
       # - ${key:idx1:idx2} => hash[key][idx1][idx2]
       def get(key)
-        verbose{"Getting[#{key}]"}
+        verbose { "Getting[#{key}]" }
         Msg.abort('Nill Key') unless key
         return @data[key] if @data.key?(key)
-        vname=[]
-        dat=key.split(':').inject(@data){|h,i|
+        vname = []
+        dat = key.split(':').inject(@data){|h, i|
           case h
           when Array
             begin
-              i=eval(i)
-            rescue SyntaxError,NoMethodError
+              i = eval(i)
+            rescue SyntaxError, NoMethodError
               Msg.abort("#{i} is not number")
             end
           when nil
             break
           end
           vname << i
-          verbose{"Type[#{h.class}] Name[#{i}]"}
-          verbose{"Content[#{h[i]}]"}
+          verbose { "Type[#{h.class}] Name[#{i}]" }
+          verbose { "Content[#{h[i]}]" }
           h[i] || alert("No such Value [#{vname.join(':')}] in 'data'")
         }
-        verbose{"Get[#{key}]=[#{dat}]"}
+        verbose { "Get[#{key}]=[#{dat}]" }
         dat
       end
 
       # Replace value with mixed key
-      def rep(key,val)
-        akey=key.split(':')
+      def rep(key, val)
+        akey = key.split(':')
         Msg.par_err('No such Key') unless @data.key?(akey.shift)
-        conv=subst(val).to_s
-        verbose{"Put[#{key}]=[#{conv}]"}
-        case p=get(key)
+        conv = subst(val).to_s
+        verbose { "Put[#{key}]=[#{conv}]" }
+        case p = get(key)
         when Array
-          merge_ary(p,conv.split(','))
+          merge_ary(p, conv.split(','))
         when String
           begin
             p.replace(eval(conv).to_s)
-          rescue SyntaxError,NameError
+          rescue SyntaxError, NameError
             par_err('Value is not numerical')
           end
         end
-        verbose{"Evaluated[#{key}]=[#{@data[key]}]"}
-        self['time']=now_msec
+        verbose { "Evaluated[#{key}]=[#{@data[key]}]" }
+        self['time'] = now_msec
         upd
         val
       end
 
       def flush
-        @flush_procs.each{|p| p.call(self)}
+        @flush_procs.each { |p| p.call(self) }
         self
       end
 
       private
-      def merge_ary(p,r)
-        r=[r] unless Array === r
+      def merge_ary(p, r)
+        r = [r] unless Array === r
         p.map!{|i|
           if Array === i
-            merge_ary(i,r.shift)
+            merge_ary(i, r.shift)
           else
             r.shift || i
           end
@@ -107,13 +107,13 @@ module CIAX
     end
 
     if __FILE__ == $0
-      f=Field.new({'a'=>[['0'],'1']})
+      f = Field.new({ 'a' => [['0'], '1'] })
       puts f.to_j
-      s=ARGV.shift
+      s = ARGV.shift
       if s
-        k,v=s.split('=')
+        k, v = s.split('=')
         if v
-          puts f.rep(k,v)
+          puts f.rep(k, v)
         else
           puts f.get(s)
         end

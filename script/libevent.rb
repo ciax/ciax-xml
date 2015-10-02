@@ -5,19 +5,19 @@ require 'librerange'
 module CIAX
   module Wat
     class Event < DataH
-      attr_reader :on_act_procs,:on_deact_procs,:interval
+      attr_reader :on_act_procs, :on_deact_procs, :interval
       def initialize
         super('event')
-        @interval=0.1
-        @last_updated=0
-        @on_act_procs=[proc{verbose{'Processing OnActProcs'}}]
-        @on_deact_procs=[proc{verbose{'Processing OnDeActProcs'}}]
+        @interval = 0.1
+        @last_updated = 0
+        @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
+        @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
         #For Array element
-        ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
+        ['active', 'exec', 'block', 'int'].each { |i| @data[i] ||= Array.new }
         #For Hash element
-        ['crnt','last','res'].each{|i| @data[i]||={}}
+        ['crnt', 'last', 'res'].each { |i| @data[i] ||= {} }
         #For Time element
-        ['act_start','act_end'].each{|i| @data[i]||=now_msec}
+        ['act_start', 'act_end'].each { |i| @data[i] ||= now_msec }
         self
       end
 
@@ -26,28 +26,28 @@ module CIAX
       end
 
       def block?(args)
-        cid=args.join(':')
-        blkcmd=@data['block'].map{|ary| ary.join(':')}
-        verbose(!blkcmd.empty?){"BLOCKING:#{blkcmd}"}
-        blkcmd.any?{|blk| /#{blk}/ === cid} && Msg.cmd_err("Blocking(#{args})")
+        cid = args.join(':')
+        blkcmd = @data['block'].map { |ary| ary.join(':') }
+        verbose(!blkcmd.empty?) { "BLOCKING:#{blkcmd}" }
+        blkcmd.any? { |blk| /#{blk}/ === cid } && Msg.cmd_err("Blocking(#{args})")
       end
 
       def next_upd(period)
-        @data['upd_next']=now_msec+period.to_i*1000
+        @data['upd_next'] = now_msec + period.to_i * 1000
         self
       end
 
-      def ext_rsp(stat,sv_stat={})
-        extend(Rsp).ext_rsp(stat,sv_stat)
+      def ext_rsp(stat, sv_stat = {})
+        extend(Rsp).ext_rsp(stat, sv_stat)
       end
     end
 
     if __FILE__ == $0
       require 'libinsdb'
       GetOpts.new('h:')
-      event=Event.new
+      event = Event.new
       begin
-        dbi=Ins::Db.new.get(ARGV.shift)
+        dbi = Ins::Db.new.get(ARGV.shift)
         event.set_dbi(dbi)
         if $opt.host
           event.ext_http($opt.host)

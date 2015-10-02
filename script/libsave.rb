@@ -3,16 +3,16 @@ require 'libsqlog'
 module CIAX
   module Save
     def self.extended(obj)
-      Msg.type?(obj,Varx)
+      Msg.type?(obj, Varx)
     end
 
     # Set latest_link=true for making latest link at save
     def ext_save
-      verbose{"Save Initialize [#{file_base}]"}
-      self['id']||Msg.cfg_err('No ID')
-      @jsondir=vardir('json')
+      verbose { "Save Initialize [#{file_base}]" }
+      self['id'] || Msg.cfg_err('No ID')
+      @jsondir = vardir('json')
       @post_upd_procs << proc{
-        verbose{'Propagate upd -> Save#save'}
+        verbose { 'Propagate upd -> Save#save' }
         save
       }
       self
@@ -21,10 +21,10 @@ module CIAX
     def mklink
       # Making 'latest' link
       save
-      sname=@jsondir+"#{@type}_latest.json"
+      sname = @jsondir + "#{@type}_latest.json"
       ::File.unlink(sname) if ::File.exist?(sname)
-      ::File.symlink(file_path,sname)
-      verbose{"Symboliclink to [#{sname}]"}
+      ::File.symlink(file_path, sname)
+      verbose { "Symboliclink to [#{sname}]" }
       self
     end
 
@@ -34,22 +34,22 @@ module CIAX
 
     def ext_sqlog
       # Logging if version number exists
-      SqLog::Save.new(@id,@type).add_table(self)
+      SqLog::Save.new(@id, @type).add_table(self)
       self
     end
 
     private
-    def file_path(tag=nil)
-      @jsondir+file_base(tag)+'.json'
+    def file_path(tag = nil)
+      @jsondir + file_base(tag) + '.json'
     end
 
-    def write_json(json_str,tag=nil)
-      verbose(@thread != Thread.current){'Saving from Multiple Threads'}
-      rname=file_path(tag)
-      open(rname,'w'){|f|
+    def write_json(json_str, tag = nil)
+      verbose(@thread != Thread.current) { 'Saving from Multiple Threads' }
+      rname = file_path(tag)
+      open(rname, 'w'){|f|
         f.flock(::File::LOCK_EX)
         f << json_str
-        verbose{"[#{rname}](#{f.size}) is Saved"}
+        verbose { "[#{rname}](#{f.size}) is Saved" }
       }
       self
     end
@@ -57,25 +57,25 @@ module CIAX
 
   module Log
     def ext_log # logging with flatten
-      id=self['id']
-      ver=self['ver']
-      verbose{"Log Initialize [#{id}/Ver.#{ver}]"}
-      @queue=Queue.new
+      id = self['id']
+      ver = self['ver']
+      verbose { "Log Initialize [#{id}/Ver.#{ver}]" }
+      @queue = Queue.new
       @post_upd_procs << proc{
-        verbose{'Propagate upd -> Log#queue'}
+        verbose { 'Propagate upd -> Log#queue' }
         @queue.push(to_j)
       }
-      logfile=vardir('log')+file_base+"_#{Time.now.year}.log"
-      ThreadLoop.new("Logging(#{@type}:#{id})",11){
-        logary=[]
+      logfile = vardir('log') + file_base + "_#{Time.now.year}.log"
+      ThreadLoop.new("Logging(#{@type}:#{id})", 11){
+        logary = []
         loop{
           logary << @queue.pop
           break if @queue.empty?
         }
-        open(logfile,'a') {|f|
+        open(logfile, 'a') {|f|
           logary.each{|str|
             f.puts str
-            verbose{"Appended #{str.size} byte"}
+            verbose { "Appended #{str.size} byte" }
           }
         }
       }

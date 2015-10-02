@@ -4,24 +4,24 @@ require 'open-uri'
 module CIAX
   module Http
     def self.extended(obj)
-      Msg.type?(obj,Datax)
+      Msg.type?(obj, Datax)
     end
 
     def ext_http(host)
-      @host=host||'localhost'
-      verbose{"Initialize(#{@host})"}
-      self['id']||Msg.cfg_err('ID')
-      @pre_upd_procs << proc{load}
+      @host = host || 'localhost'
+      verbose { "Initialize(#{@host})" }
+      self['id'] || Msg.cfg_err('ID')
+      @pre_upd_procs << proc { load }
       load
       self
     end
 
-    def load(tag=nil)
-      url=file_url(tag)
-      json_str=''
+    def load(tag = nil)
+      url = file_url(tag)
+      json_str = ''
       open(url){|f|
-        verbose{"Loading url [#{url}](#{f.size})"}
-        json_str=f.read
+        verbose { "Loading url [#{url}](#{f.size})" }
+        json_str = f.read
       }
       if json_str.empty?
         warning(" -- json url file (#{url}) is empty at loading")
@@ -34,8 +34,8 @@ module CIAX
     end
 
     private
-    def file_url(tag=nil)
-      'http://'+@host+'/json/'+file_base(tag)+'.json'
+    def file_url(tag = nil)
+      'http://' + @host + '/json/' + file_base(tag) + '.json'
     end
   end
 end

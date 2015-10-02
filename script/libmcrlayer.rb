@@ -7,16 +7,16 @@ module CIAX
     # list object can be (Frm,App,Wat,Hex)
     # attr can have [:top_layer]
     class Layer < Site::Layer
-      def initialize(attr={})
+      def initialize(attr = {})
         super
-        put('mcr',Man::Exe.new(@cfg,{:dev_list => get('app')}))
-        @current='mcr'
+        put('mcr', Man::Exe.new(@cfg, { :dev_list => get('app') }))
+        @current = 'mcr'
       end
     end
 
     if __FILE__ == $0
       require 'libhexexe'
-      ENV['VER']||='initialize'
+      ENV['VER'] ||= 'initialize'
       GetOpts.new('els')
       begin
         Layer.new.ext_shell.shell

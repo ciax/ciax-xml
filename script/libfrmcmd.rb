@@ -9,34 +9,34 @@ module CIAX
     # cfg should have [:field]
     module Int
       class Group < Remote::Int::Group
-        def initialize(cfg,attr={})
+        def initialize(cfg, attr = {})
           super
-          add_item('save','[key,key...] [tag]',def_pars(2))
-          add_item('load','[tag]',def_pars(1))
-          add_item('set','[key(:idx)] [val(,val)]',def_pars(2))
-          add_item('flush','Stream')
+          add_item('save', '[key,key...] [tag]', def_pars(2))
+          add_item('load', '[tag]', def_pars(1))
+          add_item('set', '[key(:idx)] [val(,val)]', def_pars(2))
+          add_item('flush', 'Stream')
         end
       end
     end
 
     module Ext
       include Remote::Ext
-      class Group < Ext::Group;end
-      class Item < Ext::Item;end
+      class Group < Ext::Group; end
+      class Item < Ext::Item; end
       class Entity < Ext::Entity
-        def initialize(cfg,attr={})
+        def initialize(cfg, attr = {})
           super
-          @field=type?(self[:field],Field)
-          @fstr={}
+          @field = type?(self[:field], Field)
+          @fstr = {}
           if /true|1/ === self['noaffix']
-            @sel={:main => ['body']}
+            @sel = { :main => ['body'] }
           else
-            @sel=Hash[self[:dbi][:command][:frame]]
+            @sel = Hash[self[:dbi][:command][:frame]]
           end
-          @frame=Frame.new(self[:dbi]['endian'],self[:dbi]['ccmethod'])
+          @frame = Frame.new(self[:dbi]['endian'], self[:dbi]['ccmethod'])
           return unless @body
-          @sel[:body]=@body          
-          verbose{"Body:#{self['label']}(#@id)"}
+          @sel[:body] = @body          
+          verbose { "Body:#{self['label']}(#@id)" }
           mk_frame(:body)
           if @sel.key?(:ccrange)
             @frame.cc_mark
@@ -44,31 +44,31 @@ module CIAX
             @frame.cc_set
           end
           mk_frame(:main)
-          frame=@fstr[:main]
-          verbose{"Cmd Generated [#@id]"}
-          self[:frame]=frame
-          @field.echo=frame # For send back
+          frame = @fstr[:main]
+          verbose { "Cmd Generated [#@id]" }
+          self[:frame] = frame
+          @field.echo = frame # For send back
         end
 
         private
         # instance var frame,sel,field,fstr
         def mk_frame(domain)
-          conv=nil
+          conv = nil
           @frame.reset
           @sel[domain].each{|a|
             case a
             when Hash
-              frame=a['val'].gsub(/\$\{cc\}/){@frame.cc}
-              frame=@field.subst(frame)
-              conv=true if frame != a['val']
+              frame = a['val'].gsub(/\$\{cc\}/) { @frame.cc }
+              frame = @field.subst(frame)
+              conv = true if frame != a['val']
               frame.split(',').each{|s|
-                @frame.add(s,a)
+                @frame.add(s, a)
               }
             else # ccrange,body ...
               @frame.add(@fstr[a.to_sym])
             end
           }
-          @fstr[domain]=@frame.copy
+          @fstr[domain] = @frame.copy
           conv
         end
       end
@@ -78,17 +78,17 @@ module CIAX
       require 'libfrmrsp'
       require 'libfrmdb'
       GetOpts.new('r')
-      id,*args=ARGV
+      id, *args = ARGV
       ARGV.clear
       begin
-        dbi=Db.new.get(id)
-        cfg=Config.new
-        fld=cfg[:field]=Field.new.set_dbi(dbi)
-        cobj=Index.new(cfg,{:dbi => dbi})
-        cobj.add_rem.def_proc{|ent| ent[:frame]}
+        dbi = Db.new.get(id)
+        cfg = Config.new
+        fld = cfg[:field] = Field.new.set_dbi(dbi)
+        cobj = Index.new(cfg, { :dbi => dbi })
+        cobj.add_rem.def_proc { |ent| ent[:frame] }
         cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?
-        res=cobj.set_cmd(args).exe_cmd('test')
+        res = cobj.set_cmd(args).exe_cmd('test')
         puts($opt['r'] ? res : res.inspect)
       rescue InvalidCMD
         $opt.usage("#{id} [cmd] (par) < field_file")

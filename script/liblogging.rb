@@ -7,25 +7,25 @@ require 'libthreadx'
 module CIAX
   class Logging
     include Msg
-    def initialize(type,header)
-      @cls_color=14
-      type?(type,String)
-      @header=type?(header,Hash)
-      id=@header['id']
-      ver=@header['ver']
-      @loghead=vardir('log')+"#{type}_#{id}"
-      verbose{"Initialize (#{id}/Ver.#{ver})"}
-      @queue=Queue.new
-      ThreadLoop.new("Old Logging(#{type}:#{id})",11){
-        logary=[]
+    def initialize(type, header)
+      @cls_color = 14
+      type?(type, String)
+      @header = type?(header, Hash)
+      id = @header['id']
+      ver = @header['ver']
+      @loghead = vardir('log') + "#{type}_#{id}"
+      verbose { "Initialize (#{id}/Ver.#{ver})" }
+      @queue = Queue.new
+      ThreadLoop.new("Old Logging(#{type}:#{id})", 11){
+        logary = []
         loop{
           logary << @queue.pop
           break if @queue.empty?
         }
-        open(logfile,'a') {|f|
+        open(logfile, 'a') {|f|
           logary.each{|str|
             f.puts str
-            verbose{["Appended #{str.size} byte",str]}
+            verbose { ["Appended #{str.size} byte", str] }
           }
         }
       }
@@ -33,9 +33,9 @@ module CIAX
 
     # Return UnixTime
     def append(data)
-      time=@header['time']=now_msec
+      time = @header['time'] = now_msec
       unless ENV.key?('NOLOG')
-        str=JSON.dump(@header.merge(data))
+        str = JSON.dump(@header.merge(data))
         @queue.push str
       end
       time
@@ -43,7 +43,7 @@ module CIAX
 
     #For new format
     def self.set_logline(str)
-      h=JSON.load(str)
+      h = JSON.load(str)
       abort('Logline:Line is not rcv') unless /rcv/ === h['dir']
       if h['base64']
         def h.binary
@@ -55,7 +55,7 @@ module CIAX
 
     private
     def logfile
-      @loghead+"_#{Time.now.year}.log"
+      @loghead + "_#{Time.now.year}.log"
     end
 
     def encode(str)

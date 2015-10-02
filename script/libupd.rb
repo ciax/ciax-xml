@@ -3,25 +3,25 @@ require 'libenumx'
 module CIAX
   # Variables with update feature
   class Upd < Hashx
-    attr_reader :pre_upd_procs,:post_upd_procs
+    attr_reader :pre_upd_procs, :post_upd_procs
     def initialize
       super()
       # Updater
-      @pre_upd_procs=[proc{verbose{'Processing PreUpdProcs'}}] # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @post_upd_procs=[proc{verbose{'Processing PostUpdProcs'}}] # Proc Array for Post-Process of Update Propagation to the upper Layers
+      @pre_upd_procs = [proc { verbose { 'Processing PreUpdProcs' } }] # Proc Array for Pre-Process of Update Propagation to the upper Layers
+      @post_upd_procs = [proc { verbose { 'Processing PostUpdProcs' } }] # Proc Array for Post-Process of Update Propagation to the upper Layers
     end
 
     # update after processing, never iniherit (use upd_core() instead)
     def upd
       pre_upd # Loading file at client
-      verbose{'Update'}
+      verbose { 'Update' }
       upd_core # Data conversion
       self
     ensure
       post_upd # Save & Update super layer
     end
 
-    def put(key,val)
+    def put(key, val)
       super
       upd
       val
@@ -29,7 +29,7 @@ module CIAX
 
     private
     def pre_upd
-      @pre_upd_procs.each{|p| p.call(self)}
+      @pre_upd_procs.each { |p| p.call(self) }
       self
     end
 
@@ -39,7 +39,7 @@ module CIAX
     end
 
     def post_upd
-      @post_upd_procs.each{|p| p.call(self)}
+      @post_upd_procs.each { |p| p.call(self) }
       self
     end
   end

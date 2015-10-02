@@ -12,10 +12,10 @@ module CIAX
     attr_reader :generation
     alias :this_keys :keys
     alias :this_key? :key?
-    def initialize(cfg=nil,obj=self)
+    def initialize(cfg = nil, obj = self)
       super()
-      @generation=[self]
-      self[:obj]=obj
+      @generation = [self]
+      self[:obj] = obj
       case cfg
       when Config
         join_in(cfg)
@@ -25,7 +25,7 @@ module CIAX
     end
 
     def gen(obj)
-      Config.new(self,obj)
+      Config.new(self, obj)
     end
 
     def join_in(cfg)
@@ -34,16 +34,16 @@ module CIAX
     end
 
     def key?(id)
-      @generation.any?{|h| h.this_key?(id)}
+      @generation.any? { |h| h.this_key?(id) }
     end
 
     def keys
-      @generation.map{|h| h.this_keys}.flatten.uniq
+      @generation.map { |h| h.this_keys }.flatten.uniq
     end
 
     def to_hash
-      hash=Hashx.new
-      @generation.reverse.each{|h| hash.update h}
+      hash = Hashx.new
+      @generation.reverse.each { |h| hash.update h }
       hash
     end
 
@@ -56,7 +56,7 @@ module CIAX
     end
 
     # Check key if it is correct type. Used for argument validation.
-    def check(name,type)
+    def check(name, type)
       sv_err("No such key in Config [#{name}]") unless self[name]
       sv_err("Type is mismatch for Config key [#{name}]") unless self[name].is_a?(type)
       true
@@ -68,55 +68,55 @@ module CIAX
     end
 
     # Show all contents of all generation
-    def path(key=nil)
-      i=0
-      str=''
+    def path(key = nil)
+      i = 0
+      str = ''
       @generation.each{|h|
-        str="  [#{i}]{"+h.map{|k,v|
+        str = "  [#{i}]{" + h.map{|k, v|
           next if key and k != key
           case v
-          when Hash,Proc,CmdProc
-            val=v.class
+          when Hash, Proc, CmdProc
+            val = v.class
           when Array
-            val='['+v.map{|e|
+            val = '[' + v.map{|e|
               case e
               when Enumerable
                 e.class
               else
                 e.inspect
               end
-            }.join(',')+"](#{v.object_id})"
+            }.join(',') + "](#{v.object_id})"
           else
-            val=v.inspect
+            val = v.inspect
           end
-          k.inspect.to_s+'=>'+val.to_s
-        }.compact.join(', ')+'} ('+h.object_id.to_s+")\n"+str
-        i+=1
+          k.inspect.to_s + '=>' + val.to_s
+        }.compact.join(', ') + '} (' + h.object_id.to_s + ")\n" + str
+        i += 1
       }
       "******[Config]******(#{object_id})\n#{str}************\n"
     end
 
     # Show list of all key,val which will be taken with [] access
     def list
-      i=0
-      db={}
+      i = 0
+      db = {}
       @generation.each{|h|
-        h.each{|key,val|
-          db[key]=[i,val] unless db.key?(key)
+        h.each{|key, val|
+          db[key] = [i, val] unless db.key?(key)
         }
-        i+=1
+        i += 1
       }
-      "******[Config]******(#{object_id})\n"+db.map{|key,ary|
-        case v=ary[1]
-        when String,Numeric,Enumerable
-          val=v.inspect
+      "******[Config]******(#{object_id})\n" + db.map{|key, ary|
+        case v = ary[1]
+        when String, Numeric, Enumerable
+          val = v.inspect
         when Proc
-          val=v.class
+          val = v.class
         else
-          val=v
+          val = v
         end
         "  #{key} (#{ary[0]}) = #{val}"
-      }.reverse.join("\n")+"\n************\n"
+      }.reverse.join("\n") + "\n************\n"
     end
   end
 end

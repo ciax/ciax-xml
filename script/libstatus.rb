@@ -6,24 +6,24 @@ module CIAX
     class Status < DataH
       # @ last*
       attr_reader :last
-      def initialize(init_struct={})
-        super('status',init_struct)
-        @last={}
-        @updated=now_msec
-        @lastsave=now_msec
+      def initialize(init_struct = {})
+        super('status', init_struct)
+        @last = {}
+        @updated = now_msec
+        @lastsave = now_msec
       end
 
       def set_dbi(db)
         super
         if @data.empty?
-          @adbs=@dbi[:status][:index]
+          @adbs = @dbi[:status][:index]
           @data.update(@adbs.skeleton)
         end
         self
       end
 
       def change?(id)
-        verbose{"Compare(#{id}) current=[#{@data[id]}] vs last=[#{@last[id]}]"}
+        verbose { "Compare(#{id}) current=[#{@data[id]}] vs last=[#{@last[id]}]" }
         @data[id] != @last[id]
       end
 
@@ -32,9 +32,9 @@ module CIAX
       end
 
       def refresh
-        verbose{'Status Updated'}
+        verbose { 'Status Updated' }
         @last.update(@data)
-        @updated=self['time']
+        @updated = self['time']
         self
       end
     end
@@ -45,16 +45,16 @@ module CIAX
       # @ lastsave
       include CIAX::Load
       def self.extended(obj)
-        Msg.type?(obj,Status)
+        Msg.type?(obj, Status)
       end
 
-      def save(tag=nil)
-        time=self['time']
+      def save(tag = nil)
+        time = self['time']
         if time > @lastsave
           super
-          @lastsave=time
+          @lastsave = time
         else
-          verbose{"Skip Save for #{time}"}
+          verbose { "Skip Save for #{time}" }
         end
         self
       end
@@ -63,9 +63,9 @@ module CIAX
     if __FILE__ == $0
       require 'libinsdb'
       GetOpts.new('h:')
-      stat=Status.new
+      stat = Status.new
       begin
-        dbi=Ins::Db.new.get(ARGV.shift)
+        dbi = Ins::Db.new.get(ARGV.shift)
         stat.set_dbi(dbi)
         if $opt.host
           stat.ext_http($opt.host)

@@ -26,45 +26,45 @@ require 'libgroup'
 module CIAX
   class Buffer < Varx
     # sv_stat: Server Status
-    def initialize(id,ver,sv_stat={})
-      super('issue',id,ver)
-      update('pri' => '','cid' => '')
-      @sv_stat=type?(sv_stat,Prompt)
+    def initialize(id, ver, sv_stat = {})
+      super('issue', id, ver)
+      update('pri' => '', 'cid' => '')
+      @sv_stat = type?(sv_stat, Prompt)
       #element of @q is bunch of frm args corresponding an appcmd
-      @q=Queue.new
-      @tid=nil
-      @flush_proc=proc{}
-      @recv_proc=proc{}
+      @q = Queue.new
+      @tid = nil
+      @flush_proc = proc {}
+      @recv_proc = proc {}
       clear
     end
 
     def recv_proc
-      @recv_proc=proc{|args,src| yield args,src}
+      @recv_proc = proc { |args, src| yield args, src }
       self
     end
 
     # Send frm command batch (ary of ary)
-    def send(ent,n=1)
-      type?(ent,Entity)
+    def send(ent, n = 1)
+      type?(ent, Entity)
       clear if n == 0
-      batch=ent[:batch]
+      batch = ent[:batch]
       #batch is frm batch (ary of ary)
-      update('time'=>now_msec,'pri' => n,'cid' => ent.id)
+      update('time' => now_msec, 'pri' => n, 'cid' => ent.id)
       unless batch.empty?
         @sv_stat.set('isu')
-        @q.push(:pri => n,:batch => batch)
+        @q.push(:pri => n, :batch => batch)
       end
       self
     end
 
     def server
-      @tid=ThreadLoop.new("Buffer(#{self['id']})",12){
+      @tid = ThreadLoop.new("Buffer(#{self['id']})", 12){
         begin
-          verbose{'SUB:Waiting'}
-          rcv=@q.shift
-          sort(rcv[:pri],rcv[:batch])
-          while (args=pick)
-            @recv_proc.call(args,'buffer')
+          verbose { 'SUB:Waiting' }
+          rcv = @q.shift
+          sort(rcv[:pri], rcv[:batch])
+          while (args = pick)
+            @recv_proc.call(args, 'buffer')
           end
           upd
         rescue
@@ -87,23 +87,23 @@ module CIAX
 
     private
     #batch is command array (ary of ary)
-    def sort(p,batch)
-      verbose{"SUB:Recieve [#{batch}] with priority[#{p}]"}
-      (@outbuf[p]||=[]).concat(batch)
-      i=-1
+    def sort(p, batch)
+      verbose { "SUB:Recieve [#{batch}] with priority[#{p}]" }
+      (@outbuf[p] ||= []).concat(batch)
+      i = -1
       @outbuf.map{|o|
-        verbose{"SUB:Outbuf(#{i+=1}) is [#{o}]\n"}
+        verbose { "SUB:Outbuf(#{i += 1}) is [#{o}]\n" }
       }
     end
 
     # Remove duplicated args and pop one
     def pick
-      args=nil
+      args = nil
       @outbuf.size.times{|i|
         if args
           @outbuf[i].delete(args)
         else
-          args=@outbuf[i].shift
+          args = @outbuf[i].shift
         end
       }
       args
@@ -111,7 +111,7 @@ module CIAX
 
     def clear
       @sv_stat.reset('isu')
-      @outbuf=[[],[],[]]
+      @outbuf = [[], [], []]
       @q.clear
       @tid && @tid.run
     end

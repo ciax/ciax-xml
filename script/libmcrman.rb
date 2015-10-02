@@ -7,23 +7,23 @@ module CIAX
     module Man
       class Exe < CIAX::Exe
         # cfg should have [:dev_list]
-        def initialize(cfg,attr={})
-          attr[:db]=Db.new
-          super(PROJ,cfg,attr)
-          @stat=Seq::List.new(@id,@cfg)
-          @lastsize=0
+        def initialize(cfg, attr = {})
+          attr[:db] = Db.new
+          super(PROJ, cfg, attr)
+          @stat = Seq::List.new(@id, @cfg)
+          @lastsize = 0
           @cobj.add_rem.add_hid
           @cobj.rem.add_int(Int)
-          @cobj.rem.int.add_item('clean','Clean list')
+          @cobj.rem.int.add_item('clean', 'Clean list')
           @cobj.rem.add_ext(Ext)
-          @parameter=@cobj.rem.int.par
+          @parameter = @cobj.rem.int.par
           @stat.post_upd_procs << proc{
-            verbose{'Propagate List#upd -> Parameter#upd'}
-            @parameter[:list]=@stat.keys
+            verbose { 'Propagate List#upd -> Parameter#upd' }
+            @parameter[:list] = @stat.keys
           }
-          @host||=@dbi['host']
-          @port||=(@dbi['port']||5555)
-          @mode='MCR'
+          @host ||= @dbi['host']
+          @port ||= (@dbi['port'] || 5555)
+          @mode = 'MCR'
           opt_mode
         end
 
@@ -37,36 +37,36 @@ module CIAX
         end
 
         def ext_driver
-          @sv_stat['sid']='' # For server response
-          @pre_exe_procs << proc{ @sv_stat['sid']='' }
+          @sv_stat['sid'] = '' # For server response
+          @pre_exe_procs << proc { @sv_stat['sid'] = '' }
           @stat.ext_drv
           # External Command Group
-          @cobj.rem.ext.def_proc{|ent| set(ent);'ACCEPT'}
+          @cobj.rem.ext.def_proc { |ent| set(ent); 'ACCEPT' }
           # Internal Command Group
-          @cfg[:submcr_proc]=proc{|args,pid|
-            set(@cobj.set_cmd(args),pid)
+          @cfg[:submcr_proc] = proc{|args, pid|
+            set(@cobj.set_cmd(args), pid)
           }
           @cobj.rem.int.def_proc{|ent|
-            seq=@stat.get(ent.par[0])
+            seq = @stat.get(ent.par[0])
             if seq
-              @sv_stat['sid']=seq.record['id']
+              @sv_stat['sid'] = seq.record['id']
               seq.exe(ent.id.split(':'))
               'ACCEPT'
             else
               'NOSID'
             end
           }
-          @cobj.get('clean').def_proc{ @stat.clean;'ACCEPT'}
+          @cobj.get('clean').def_proc { @stat.clean; 'ACCEPT' }
           @cobj.get('interrupt').def_proc{
             @stat.interrupt
             'INTERRUPT'
           }
-          @terminate_procs << proc{ @stat.clean}
+          @terminate_procs << proc { @stat.clean }
           super
         end
 
-        def set(ent,pid='0')
-          @stat.add(ent,pid)
+        def set(ent, pid = '0')
+          @stat.add(ent, pid)
         end
       end
 
@@ -75,7 +75,7 @@ module CIAX
         def ext_shell
           super
           list_mode
-          @prompt_proc=proc{upd_current}
+          @prompt_proc = proc { upd_current }
           # Convert as command
           input_conv_num{|i|
             set_current(i)
@@ -84,11 +84,11 @@ module CIAX
           input_conv_num(@cobj.rem.int.keys){|i|
             set_current(i)
           }
-          @post_exe_procs << proc{@cfg[:output].upd}
-          vg=@cobj.loc.add_view
-          vg.add_item('list','List mode').def_proc{list_mode}
-          vg.add_dummy('[1-n]','Sequencer mode')
-          @records={nil => @stat}
+          @post_exe_procs << proc { @cfg[:output].upd }
+          vg = @cobj.loc.add_view
+          vg.add_item('list', 'List mode').def_proc { list_mode }
+          vg.add_dummy('[1-n]', 'Sequencer mode')
+          @records = { nil => @stat }
           self
         end
 
@@ -96,32 +96,32 @@ module CIAX
         def upd_current
           @stat.upd
           if @current > @stat.size or @stat.size > @lastsize
-            set_current(@lastsize=@stat.size)
+            set_current(@lastsize = @stat.size)
           end
-          msg='[%d]' % @current
+          msg = '[%d]' % @current
           if @current > 0
-            seq=@stat.get(@parameter[:default])
-            msg << "(#{seq['stat']})"+optlist(seq['option'])
+            seq = @stat.get(@parameter[:default])
+            msg << "(#{seq['stat']})" + optlist(seq['option'])
           end
           msg
         end
 
         def set_current(i)
           return i.to_s if i > @stat.size
-          @current=i
+          @current = i
           if i > 0
-            id=@stat.keys[i-1]
-            @records[id]||=get_record(@stat.get(id))
+            id = @stat.keys[i - 1]
+            @records[id] ||= get_record(@stat.get(id))
           end
-          @parameter[:default]=id
-          @cfg[:output]=@records[id]
+          @parameter[:default] = id
+          @cfg[:output] = @records[id]
           nil
         end
 
         def list_mode
-          @current=0
-          @cfg[:output]=@stat
-          @parameter[:default]=nil
+          @current = 0
+          @cfg[:output] = @stat
+          @parameter[:default] = nil
           ''
         end
 
@@ -136,11 +136,11 @@ module CIAX
       end
 
       if __FILE__ == $0
-        ENV['VER']||='initialize'
+        ENV['VER'] ||= 'initialize'
         GetOpts.new('cmnlrt')
         begin
-          cfg=Config.new
-          cfg[:dev_list]=Wat::List.new(cfg).sub_list
+          cfg = Config.new
+          cfg[:dev_list] = Wat::List.new(cfg).sub_list
           Exe.new(cfg).ext_shell.shell
         rescue InvalidCMD
           $opt.usage('[mcr] [cmd] (par)')

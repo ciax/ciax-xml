@@ -5,38 +5,38 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # This should be set [:db]
     class List < CIAX::List
-      attr_reader :db,:sub_list
-      def initialize(cfg,top_list,sub_mod=nil)
-        cfg[:top_list]||=top_list
+      attr_reader :db, :sub_list
+      def initialize(cfg, top_list, sub_mod = nil)
+        cfg[:top_list] ||= top_list
         super(cfg)
-        @sub_list=@cfg[:sub_list]=sub_mod.new(cfg) if sub_mod
+        @sub_list = @cfg[:sub_list] = sub_mod.new(cfg) if sub_mod
       end
 
       def set_db(db)
-        @db=@cfg[:db]=type?(db,Db)
-        verbose{'Initialize'}
+        @db = @cfg[:db] = type?(db, Db)
+        verbose { 'Initialize' }
         if @cfg.key?(:site)
-          @current=@cfg[:site]
+          @current = @cfg[:site]
         else
-          @current=db.displist.keys.first
+          @current = db.displist.keys.first
         end
         self
       end
 
       def exe(args) # As a individual cui command
-        get(args.shift).exe(args,'local')
+        get(args.shift).exe(args, 'local')
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end
 
       def get(site)
         if @data.key?(site)
-          cobj=super
+          cobj = super
           @sub_list.get(cobj.sub.id) if @sub_list
         else
-          cobj=add(site)
+          cobj = add(site)
         end
-        @current=site
+        @current = site
         cobj
       end
 
@@ -61,8 +61,8 @@ module CIAX
       private
       def add(site)
         # layer_module can be Frm,App,Wat,Hex
-        obj=layer_module::Exe.new(site,@cfg)
-        put(site,obj)
+        obj = layer_module::Exe.new(site, @cfg)
+        put(site, obj)
       end
 
       module Shell
@@ -71,8 +71,8 @@ module CIAX
 
         def ext_shell
           super(Jump)
-          @cfg[:jump_site]=@jumpgrp
-          sites=@cfg[:db].displist
+          @cfg[:jump_site] = @jumpgrp
+          sites = @cfg[:db].displist
           @jumpgrp.merge_items(sites)
           @sub_list.ext_shell if @sub_list
           self

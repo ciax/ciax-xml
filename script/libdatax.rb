@@ -9,12 +9,12 @@ module CIAX
     # @data is hidden from access by '[]'.
     # @data is conveted to json file where @data will be appeared as self['data'].
     # @data never contains object which can't save with JSON
-    def initialize(type,init_struct={},data_name='data')
+    def initialize(type, init_struct = {}, data_name = 'data')
       super(type)
       # Variable Data (Shown as 'data'(data_name) hash in JSON)
-      @data_name=data_name
-      @data=init_struct.dup.extend(Enumx)
-      @cls_color=12
+      @data_name = data_name
+      @data = init_struct.dup.extend(Enumx)
+      @cls_color = 12
     end
 
     def to_j
@@ -25,7 +25,7 @@ module CIAX
       _getdata.to_r
     end
 
-    def read(json_str=nil)
+    def read(json_str = nil)
       super
       _setdata
       self
@@ -49,7 +49,7 @@ module CIAX
       self
     end
 
-    def ext_http(host=nil) # Read only as a client
+    def ext_http(host = nil) # Read only as a client
       extend Http
       ext_http(host)
       self
@@ -57,16 +57,16 @@ module CIAX
 
     private
     def _getdata
-      verbose{'Convert @data to [:data]'}
-      hash=Hashx.new(self)
-      hash[@data_name]=@data
+      verbose { 'Convert @data to [:data]' }
+      hash = Hashx.new(self)
+      hash[@data_name] = @data
       hash
     end
 
     def _setdata
-      verbose{'Convert [:data] to @data'}
-      @data=delete(@data_name).extend(Enumx)
-      self['time']||=now_msec
+      verbose { 'Convert [:data] to @data' }
+      @data = delete(@data_name).extend(Enumx)
+      self['time'] ||= now_msec
       self
     end
   end
@@ -75,29 +75,29 @@ module CIAX
   class DataH < Datax
     # Update with strings (key=val,key=val,..)
     def str_update(str)
-      type?(str,String)
+      type?(str, String)
       str.split(',').each{|i|
-        k,v=i.split('=')
-        @data[k]=v
+        k, v = i.split('=')
+        @data[k] = v
       }
-      self['time']=now_msec
+      self['time'] = now_msec
     ensure
       post_upd
     end
 
-    def put(key,val) # super should be placed at the end of method
-      @data[key]=val
-      self['time']=now_msec
+    def put(key, val) # super should be placed at the end of method
+      @data[key] = val
+      self['time'] = now_msec
       val
     ensure
       post_upd
     end
 
     # Replace value
-    def rep(key,val)
+    def rep(key, val)
       Msg.par_err("No such Key [#{key}]") unless @data.key?(key)
-      (@data[key]||='').replace(val)
-      self['time']=now_msec
+      (@data[key] ||= '').replace(val)
+      self['time'] = now_msec
       val
     ensure
       post_upd
@@ -105,7 +105,7 @@ module CIAX
 
     def del(key) # super should be placed at the end of method
       @data.delete(key)
-      self['time']=now_msec
+      self['time'] = now_msec
       self
     ensure
       post_upd

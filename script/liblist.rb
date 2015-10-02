@@ -7,11 +7,11 @@ module CIAX
   class List < DataH
     attr_reader :cfg
     # level can be Layer or Site
-    def initialize(cfg,attr={})
-      @cfg=cfg.gen(self).update(attr)
-      super(m2id(@cfg[:obj].class,-2),{},'list')
-      @cls_color=6
-      $opt||=GetOpts.new
+    def initialize(cfg, attr = {})
+      @cfg = cfg.gen(self).update(attr)
+      super(m2id(@cfg[:obj].class, -2), {}, 'list')
+      @cls_color = 6
+      $opt ||= GetOpts.new
     end
 
     def ext_shell(jump_class)
@@ -21,13 +21,13 @@ module CIAX
     module Shell
       attr_reader :jumpgrp
       def self.extended(obj)
-        Msg.type?(obj,List)
+        Msg.type?(obj, List)
       end
 
       # attr should have [:jump_class] (Used in Local::Jump::Group)
       def ext_shell(jump_class)
-        @cfg[:jump_class]=type?(jump_class,Module) # Use for liblocal
-        @jumpgrp=Local::Jump::Group.new(@cfg)
+        @cfg[:jump_class] = type?(jump_class, Module) # Use for liblocal
+        @jumpgrp = Local::Jump::Group.new(@cfg)
         self
       end
 
@@ -35,7 +35,7 @@ module CIAX
         begin
           switch(@current).shell
         rescue @cfg[:jump_class]
-          @current=$!.to_s
+          @current = $!.to_s
           retry
         rescue InvalidID
           $opt.usage('(opt) [id]')

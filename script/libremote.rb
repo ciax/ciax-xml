@@ -6,38 +6,38 @@ module CIAX
     # Instance var is @rem in Index
     class Index < Local::Index
       attr_reader :rem
-      def add_rem(obj='Domain')
-        @rem=add(obj)
+      def add_rem(obj = 'Domain')
+        @rem = add(obj)
       end
     end
 
     # @cfg should have [:dbi]
     class Domain < GrpAry
-      attr_reader :hid,:ext,:int
-      def initialize(cfg,attr={})
+      attr_reader :hid, :ext, :int
+      def initialize(cfg, attr = {})
         super
-        @cfg[:def_proc]=Proc.new{''} # proc is re-defined
+        @cfg[:def_proc] = Proc.new { '' } # proc is re-defined
       end
 
-      def add_hid(ns=Hid)
-        @hid=add(ns::Group)
+      def add_hid(ns = Hid)
+        @hid = add(ns::Group)
       end
 
-      def add_ext(ns=Ext)
-        type?(@cfg[:dbi],Dbi)
-        @ext=add(ns::Group)
+      def add_ext(ns = Ext)
+        type?(@cfg[:dbi], Dbi)
+        @ext = add(ns::Group)
       end
 
-      def add_int(ns=Int)
-        @int=add(ns::Group)
+      def add_int(ns = Int)
+        @int = add(ns::Group)
       end
     end
 
     module Hid
       class Group < Group
-        def initialize(dom_cfg,attr={})
+        def initialize(dom_cfg, attr = {})
           super
-          @cfg['caption']='Hidden Commands'
+          @cfg['caption'] = 'Hidden Commands'
           add_item('interrupt')
           # Accept empty command
           add_item(nil) unless @cfg[:exe_mode]
@@ -47,20 +47,20 @@ module CIAX
 
     module Int
       class Group < Group
-        def initialize(dom_cfg,attr={})
+        def initialize(dom_cfg, attr = {})
           super
-          @cfg['caption']='Internal Commands'
+          @cfg['caption'] = 'Internal Commands'
         end
 
-        def def_pars(n=1)
-          any={:type => 'reg', :list => ['.']}
-          ary=[]
-          n.times{ary << any}
-          {:parameters =>ary}
+        def def_pars(n = 1)
+          any = { :type => 'reg', :list => ['.'] }
+          ary = []
+          n.times { ary << any }
+          { :parameters => ary }
         end
       end
-      class Item < Item;end
-      class Entity < Entity;end
+      class Item < Item; end
+      class Entity < Entity; end
     end
 
     # For External Command Domain
@@ -68,64 +68,64 @@ module CIAX
     # Content of Dbi[:command][:index][id] will be merged in Item@cfg
     module Ext
       class Group < Group
-        def initialize(cfg,attr={})
+        def initialize(cfg, attr = {})
           super
-          dbi=type?(@cfg[:dbi],Dbi)
-          @cfg['caption']||='External Commands'
-          @cfg['ver']||=dbi['version']
+          dbi = type?(@cfg[:dbi], Dbi)
+          @cfg['caption'] ||= 'External Commands'
+          @cfg['ver'] ||= dbi['version']
           # Set items by DB
-          cdb=dbi[:command]
-          idx=cdb[:index]
+          cdb = dbi[:command]
+          idx = cdb[:index]
           cdb[:group].values.each{|gat|
-            @current=@displist.new_grp(gat['caption'])
+            @current = @displist.new_grp(gat['caption'])
             gat[:members].each{|id|
-              item=idx[id]
-              label=item['label']
-              unit=item['unit']
-              label="#{cdb[:unit][unit]['label']} #{label}" if unit
-              add_item(id,label,item)
+              item = idx[id]
+              label = item['label']
+              unit = item['unit']
+              label = "#{cdb[:unit][unit]['label']} #{label}" if unit
+              add_item(id, label, item)
             }
           }
           if cdb[:alias]
-            @current=@displist.new_grp('Alias')
-            cdb[:alias].each{|id,att|
-              item=idx[att['ref']].dup
-              label=att['label']
-              item['argv']=att['argv'] if att['argv']
-              add_item(id,label,item)
+            @current = @displist.new_grp('Alias')
+            cdb[:alias].each{|id, att|
+              item = idx[att['ref']].dup
+              label = att['label']
+              item['argv'] = att['argv'] if att['argv']
+              add_item(id, label, item)
             }
           end
         end
 
-        def add_item(id,label,item)
+        def add_item(id, label, item)
           if Array === item[:parameters]
-            label=label.gsub(/\$([\d]+)/,'%s') % item[:parameters].map{|e| e['label']}
+            label = label.gsub(/\$([\d]+)/, '%s') % item[:parameters].map { |e| e['label'] }
           end
           super
         end
       end
 
-      class Item < Item;end
+      class Item < Item; end
 
       class Entity < Entity
         # Substitute string($+number) with parameters
         # par={ val,range,format } or String
         # str could include Math functions
-        def initialize(grp_cfg,attr={})
+        def initialize(grp_cfg, attr = {})
           super
-          type?(self[:dbi],Dbi)
-          @body=deep_subst(self[:body])
+          type?(self[:dbi], Dbi)
+          @body = deep_subst(self[:body])
         end
 
         def subst(str) #subst by parameters ($1,$2...)
           return str unless /\$([\d]+)/ === str
-          enclose("Substitute from [#{str}]",'Substitute to [%s]'){
-            num=true
-            res=str.gsub(/\$([\d]+)/){
-              i=$1.to_i
-              num=false if self[:parameters][i-1][:type] != 'num'
-              verbose{"Parameter No.#{i} = [#{@par[i-1]}]"}
-              @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
+          enclose("Substitute from [#{str}]", 'Substitute to [%s]'){
+            num = true
+            res = str.gsub(/\$([\d]+)/){
+              i = $1.to_i
+              num = false if self[:parameters][i - 1][:type] != 'num'
+              verbose { "Parameter No.#{i} = [#{@par[i - 1]}]" }
+              @par[i - 1] || Msg.cfg_err(" No substitute data ($#{i})")
             }
             Msg.cfg_err('Nil string') if res == ''
             res
@@ -135,17 +135,17 @@ module CIAX
         def deep_subst(data)
           case data
           when Array
-            res=[]
+            res = []
             data.each{|v|
               res << deep_subst(v)
             }
           when Hash
-            res={}
-            data.each{|k,v|
-              res[k]=deep_subst(v)
+            res = {}
+            data.each{|k, v|
+              res[k] = deep_subst(v)
             }
           else
-            res=subst(data)
+            res = subst(data)
           end
           res
         end

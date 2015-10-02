@@ -6,12 +6,12 @@ module CIAX
     # list object can be (Frm,App,Wat,Hex)
     # attr can have [:top_layer]
     class Layer < CIAX::List
-      def initialize(attr={})
-        super(Config.new,attr)
-        obj=($opt['x'] ? Hex::List : Wat::List).new(@cfg)
+      def initialize(attr = {})
+        super(Config.new, attr)
+        obj = ($opt['x'] ? Hex::List : Wat::List).new(@cfg)
         loop{
-          put(m2id(obj.class,-2),obj)
-          obj=obj.sub_list||break
+          put(m2id(obj.class, -2), obj)
+          obj = obj.sub_list || break
         }
       end
 
@@ -25,12 +25,12 @@ module CIAX
 
         def ext_shell
           super(Jump)
-          @cfg[:jump_groups]=[@jumpgrp]
+          @cfg[:jump_groups] = [@jumpgrp]
           keys.each{|id|
             get(id).ext_shell
-            @jumpgrp.add_item(id,id.capitalize+' mode')
+            @jumpgrp.add_item(id, id.capitalize + ' mode')
           }
-          @current||=$opt.layer||keys.first
+          @current ||= $opt.layer || keys.first
           self
         end
       end

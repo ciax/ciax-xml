@@ -5,7 +5,7 @@ require 'socket'
 module CIAX
   module Client
     def self.extended(obj)
-      Msg.type?(obj,Exe)
+      Msg.type?(obj, Exe)
     end
 
     # If you get 'Address family not ..' error,
@@ -14,17 +14,17 @@ module CIAX
       @sub.ext_client if @sub
       return self unless @port
       @sv_stat.add_db('udperr' => 'x')
-      @udp=UDPSocket.open()
-      verbose{"Initialize UDP client (#@id) [#{@host}:#{@port}]"}
+      @udp = UDPSocket.open()
+      verbose { "Initialize UDP client (#@id) [#{@host}:#{@port}]" }
       @cobj.rem.def_proc{|ent|
-        args=ent.id.split(':')
+        args = ent.id.split(':')
         # Address family not supported by protocol -> see above
-        @udp.send(JSON.dump(args),0,@host,@port.to_i)
-        verbose{"UDP Send #{args}"}
-        if IO.select([@udp],nil,nil,1)
-          res=@udp.recv(1024)
+        @udp.send(JSON.dump(args), 0, @host, @port.to_i)
+        verbose { "UDP Send #{args}" }
+        if IO.select([@udp], nil, nil, 1)
+          res = @udp.recv(1024)
           @sv_stat.reset('udperr')
-          verbose{"UDP Recv #{res}"}
+          verbose { "UDP Recv #{res}" }
           update(@sv_stat.update(JSON.load(res))) unless res.empty?
           @sv_stat.msg
         else

@@ -9,21 +9,21 @@ module CIAX
     class View < Upd
       def initialize(event)
         super()
-        @event=type?(event,Event).upd
-        wdb=type?(event.dbi,Dbi)[:watch]||{:index =>[]}
+        @event = type?(event, Event).upd
+        wdb = type?(event.dbi, Dbi)[:watch] || { :index => [] }
         @event.post_upd_procs << proc{
-          verbose{'Propagate Event#upd -> upd'}
+          verbose { 'Propagate Event#upd -> upd' }
           upd
         }
-        self['stat']={}
-        wdb[:index].each{|id,evnt|
-          hash=(self['stat'][id]||={})
-          hash['label']=evnt['label']
-          m=(hash['cond']||=[])
+        self['stat'] = {}
+        wdb[:index].each{|id, evnt|
+          hash = (self['stat'][id] ||= {})
+          hash['label'] = evnt['label']
+          m = (hash['cond'] ||= [])
           evnt[:cnd].each{|cnd|
             m << Hash[cnd]
             if cnd['type'] != 'onchange'
-              m.last['cri']=cnd['val']
+              m.last['cri'] = cnd['val']
             end
           }
         }
@@ -31,19 +31,19 @@ module CIAX
       end
 
       def to_v
-        tonext=Msg.elps_sec(now_msec,self['upd_next'])
-        atime=Msg.elps_sec(self['act_start'],self['act_end'])
-        etime=Msg.elps_date(self['time'],now_msec)
-        str=''
-        str << '  '+Msg.color('Elapsed',2)+"\t: #{etime}\n"
-        str << '  '+Msg.color('ToNextUpdate',2)+"\t: #{tonext}\n"
-        str << '  '+Msg.color('ActiveTime',2)+"\t: #{atime}\n"
-        str << '  '+Msg.color('Issuing',2)+"\t: #{self['exec']}\n"
+        tonext = Msg.elps_sec(now_msec, self['upd_next'])
+        atime = Msg.elps_sec(self['act_start'], self['act_end'])
+        etime = Msg.elps_date(self['time'], now_msec)
+        str = ''
+        str << '  ' + Msg.color('Elapsed', 2) + "\t: #{etime}\n"
+        str << '  ' + Msg.color('ToNextUpdate', 2) + "\t: #{tonext}\n"
+        str << '  ' + Msg.color('ActiveTime', 2) + "\t: #{atime}\n"
+        str << '  ' + Msg.color('Issuing', 2) + "\t: #{self['exec']}\n"
         return str if self['stat'].empty?
-        str << '  '+Msg.color('Conditions',2)+"\t:\n"
+        str << '  ' + Msg.color('Conditions', 2) + "\t:\n"
         conditions(str)
-        str << '  '+Msg.color('Interrupt',2)+"\t: #{self['int']}\n"
-        str << '  '+Msg.color('Blocked',2)+"\t: #{self['block']}\n"
+        str << '  ' + Msg.color('Interrupt', 2) + "\t: #{self['int']}\n"
+        str << '  ' + Msg.color('Blocked', 2) + "\t: #{self['block']}\n"
       end
 
       def to_r
@@ -52,31 +52,31 @@ module CIAX
 
       private
       def upd_core
-        self['time']=@event['time']
-        ['exec','block','int','act_start','act_end','upd_next'].each{|id|
-          self[id]=@event.get(id)
+        self['time'] = @event['time']
+        ['exec', 'block', 'int', 'act_start', 'act_end', 'upd_next'].each{|id|
+          self[id] = @event.get(id)
         }
-        self['stat'].each{|id,v|
+        self['stat'].each{|id, v|
           v['cond'].each_index{|i|
-            h=v['cond'][i]
-            var=h['var']
-            h['val']=@event.get('crnt')[var]
-            h['res']=@event.get('res')[id][i]
-            h['cri']=@event.get('last')[var] if h['type'] == 'onchange'
+            h = v['cond'][i]
+            var = h['var']
+            h['val'] = @event.get('crnt')[var]
+            h['res'] = @event.get('res')[id][i]
+            h['cri'] = @event.get('last')[var] if h['type'] == 'onchange'
           }
-          v['active']=@event.get('active').include?(id)
+          v['active'] = @event.get('active').include?(id)
         }
       end
 
       def conditions(str)
         self['stat'].values.each{|i|
-          str << '    '+Msg.color(i['label'],6)+"\t: "
-          str << show_res(i['active'])+"\n"
+          str << '    ' + Msg.color(i['label'], 6) + "\t: "
+          str << show_res(i['active']) + "\n"
           i['cond'].each{|j|
-            str << '      '+show_res(j['res'],'o','x')+' '
-            str << Msg.color(j['var'],3)
+            str << '      ' + show_res(j['res'], 'o', 'x') + ' '
+            str << Msg.color(j['var'], 3)
             str << '  '
-            ope=j['inv'] ? '!~' : '=~'
+            ope = j['inv'] ? '!~' : '=~'
             str << "(#{j['type']}: "
             if j['type'] == 'onchange'
               str << "#{j['cri']} => #{j['val']}"
@@ -88,20 +88,20 @@ module CIAX
         }
       end
 
-      def show_res(res,t=nil,f=nil)
-        res ? Msg.color(t||res,2) : Msg.color(f||res,1)
+      def show_res(res, t = nil, f = nil)
+        res ? Msg.color(t || res, 2) : Msg.color(f || res, 1)
       end
     end
 
     if __FILE__ == $0
       require 'libinsdb'
       GetOpts.new('r')
-      event=Event.new
+      event = Event.new
       begin
-        id=STDIN.tty? ? ARGV.shift : event.read['id']
-        dbi=Ins::Db.new.get(id)
+        id = STDIN.tty? ? ARGV.shift : event.read['id']
+        dbi = Ins::Db.new.get(id)
         event.set_dbi(dbi).ext_save.ext_load if STDIN.tty?
-        wview=View.new(event)
+        wview = View.new(event)
         puts STDOUT.tty? ? wview : wview.to_j
       rescue InvalidID
         $opt.usage('(opt) [site] | < event_file')

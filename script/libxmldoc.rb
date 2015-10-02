@@ -13,48 +13,48 @@ module CIAX
     # The project named file can conatin referenced item whose entity is
     # in another file.
     class Doc < Hashx
-      attr_reader :top,:displist
-      def initialize(type,project=nil)
+      attr_reader :top, :displist
+      def initialize(type, project = nil)
         super()
-        @cls_color=2
-        @project=[project]
+        @cls_color = 2
+        @project = [project]
         /.+/ =~ type || Msg.cfg_err('No Db Type')
-        @type=type
-        @pcap='All'
-        @displist=Disp::List.new('column' => 2)
-        @projlist=Disp::Group.new('caption' => 'Project', 'column' => 2)
-        files=Dir.glob("#{ENV['XMLPATH']}/#{type}-*.xml")
+        @type = type
+        @pcap = 'All'
+        @displist = Disp::List.new('column' => 2)
+        @projlist = Disp::Group.new('caption' => 'Project', 'column' => 2)
+        files = Dir.glob("#{ENV['XMLPATH']}/#{type}-*.xml")
         files.each{|xml|
-          verbose{'readxml:'+::File.basename(xml,'.xml')}
+          verbose { 'readxml:' + ::File.basename(xml, '.xml') }
           Gnu.new(xml).each{|e|
             @project << e['include'] if @project.include?(e['id']) and e['include']
           }
         }.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
         # Two pass reading for refering
         files.each{|xml|
-          Gnu.new(xml).each{|e| readproj(e)}
+          Gnu.new(xml).each { |e| readproj(e) }
         }
-        raise(InvalidProj,"No such Project(#{@project})\n"+@projlist.view) if @displist.empty?
+        raise(InvalidProj, "No such Project(#{@project})\n" + @projlist.view) if @displist.empty?
       end
 
       # set generates document branch of db items(Hash), which includes attribute and domains
       def set(id)
-        raise(InvalidID,"No such ID(#{id}) in #@type\n"+@displist.to_s) unless key?(id)
-        top=self[id]
-        item={:top => top,:attr => top.to_h,:domain => {}}
+        raise(InvalidID, "No such ID(#{id}) in #@type\n" + @displist.to_s) unless key?(id)
+        top = self[id]
+        item = { :top => top, :attr => top.to_h, :domain => {} }
         top.each{|e1|
-          item[:domain][e1.name]=e1 unless top.ns == e1.ns
+          item[:domain][e1.name] = e1 unless top.ns == e1.ns
         }
-        verbose{"Domain registerd:#{item[:domain].keys}"}
+        verbose { "Domain registerd:#{item[:domain].keys}" }
         item
       end
 
       private
       def readproj(e)
         if e.name == 'project'
-          id=e['id']
-          pc=@projlist[id]=e['caption']
-          @pcap=@project.include?(id) ? pc : nil
+          id = e['id']
+          pc = @projlist[id] = e['caption']
+          @pcap = @project.include?(id) ? pc : nil
           e.each{|e0|
             readgrp(e0)
           }
@@ -65,33 +65,33 @@ module CIAX
 
       def readgrp(e)
         if e.name == 'group'
-          @group=@displist.new_grp(e['caption']) if @pcap
+          @group = @displist.new_grp(e['caption']) if @pcap
           e.each{|e0|
             readitem(e0)
           }
         else
-          @group||=@displist.new_grp(@pcap) if @pcap
+          @group ||= @displist.new_grp(@pcap) if @pcap
           readitem(e)
         end
       end
 
       def readitem(e)
-        id=e['id']
-        self[id]=e
-        @group[id]=e['label'] if @pcap
+        id = e['id']
+        self[id] = e
+        @group[id] = e['label'] if @pcap
       end
     end
   end
 
   if __FILE__ == $0
-    type=ARGV.shift
-    proj=nil
+    type = ARGV.shift
+    proj = nil
     begin
-      doc=Xml::Doc.new(type,proj)
+      doc = Xml::Doc.new(type, proj)
     rescue ConfigError
       Msg.usage('[type] (adb,fdb,idb,ddb,mdb,sdb)')
     rescue InvalidProj
-      (proj=ARGV.shift) && retry
+      (proj = ARGV.shift) && retry
       Msg.usage('[type] [project] [id]')
     end
     begin

@@ -6,40 +6,40 @@ require 'libgroup'
 module CIAX
   class GrpAry < Arrayx
     include CmdProc
-    def initialize(cfg,attr={})
-      @cls_color=13
+    def initialize(cfg, attr = {})
+      @cls_color = 13
       # @cfg is isolated from cfg
       # So it is same meaning to set value to 'attr' and @cfg
-      @cfg=cfg.gen(self).update(attr)
+      @cfg = cfg.gen(self).update(attr)
     end
 
     def valid_keys
-      map{|e| e.valid_keys}.flatten
+      map { |e| e.valid_keys }.flatten
     end
 
-    def set_cmd(args=[],opt={})
-      id,*par=type?(args,Array)
-      valid_keys.include?(id) || raise(InvalidCMD,view_list)
-      get(id).set_par(par,opt)
+    def set_cmd(args = [], opt = {})
+      id, *par = type?(args, Array)
+      valid_keys.include?(id) || raise(InvalidCMD, view_list)
+      get(id).set_par(par, opt)
     end
 
     def valid_pars
-      map{|e| e.valid_pars}.flatten
+      map { |e| e.valid_pars }.flatten
     end
 
     def view_list
-      map{|e| e.view_list}.grep(/./).join("\n")
+      map { |e| e.view_list }.grep(/./).join("\n")
     end
 
     # If cls is String or Symbol, constant is taken locally.
-    def add(cls,attr={})
+    def add(cls, attr = {})
       case cls
       when Module
-        res=cls.new(@cfg,attr)
-      when String,Symbol
-        res=layer_module.const_get(cls).new(@cfg,attr)
+        res = cls.new(@cfg, attr)
+      when String, Symbol
+        res = layer_module.const_get(cls).new(@cfg, attr)
       when CmdProc
-        res=cls
+        res = cls
       else
         sv_err('Not class')
       end
@@ -48,7 +48,7 @@ module CIAX
     end
 
     def append(obj)
-      type?(obj,CmdProc)
+      type?(obj, CmdProc)
       obj.cfg.join_in(@cfg)
       unshift obj
       obj

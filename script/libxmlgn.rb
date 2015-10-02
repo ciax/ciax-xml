@@ -6,18 +6,18 @@ module CIAX
   module Xml
     class Gnu
       include Share
-      def initialize(f=nil)
-        @cls_color=3
+      def initialize(f = nil)
+        @cls_color = 3
         case f
         when String
-          test(?r,f) || raise(InvalidID)
-          @e=XML::Document.file(f).root
-          verbose{@e.namespaces.default}
+          test(?r, f) || raise(InvalidID)
+          @e = XML::Document.file(f).root
+          verbose { @e.namespaces.default }
         when XML::Node
-          @e=f
+          @e = f
         when nil
-          doc=XML::Document.new
-          @e=doc.root=XML::Node.new('blank')
+          doc = XML::Document.new
+          @e = doc.root = XML::Node.new('blank')
         else
           Msg.cfg_err('Parameter shoud be String or Node')
         end
@@ -28,9 +28,9 @@ module CIAX
       end
 
       def to_h # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"}) 
-        h=@e.attributes.to_h
-        t=text
-        h['val']=t if t
+        h = @e.attributes.to_h
+        t = text
+        h['val'] = t if t
         h
       end
 
@@ -43,9 +43,9 @@ module CIAX
 
       # pick same ns nodes even if it is in another tree
       def find(xpath)
-        verbose{"FindXpath:#{xpath}"}
-        @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
-          enclose("<#{e.name} #{e.attributes.to_h}>","</#{e.name}>"){
+        verbose { "FindXpath:#{xpath}" }
+        @e.doc.find("//ns:#{xpath}", "ns:#{ns}").each{|e|
+          enclose("<#{e.name} #{e.attributes.to_h}>", "</#{e.name}>"){
             yield Gnu.new(e)
           }
         }
@@ -53,7 +53,7 @@ module CIAX
 
       def each
         @e.each_element{|e|
-          enclose("<#{e.name} #{e.attributes.to_h}>","</#{e.name}>"){
+          enclose("<#{e.name} #{e.attributes.to_h}>", "</#{e.name}>"){
             yield Gnu.new(e)
           }
         }

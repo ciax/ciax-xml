@@ -2,16 +2,16 @@
 require 'fileutils'
 module CIAX
   require 'debug' if ENV['DEBUG']
-  ScrDir=::File.dirname(__FILE__)
-  Indent='  '
+  ScrDir = ::File.dirname(__FILE__)
+  Indent = '  '
 
   # Layer Color
-  module Frm;NsColor=2;end
-  module App;NsColor=3;end
-  module Wat;NsColor=9;end
-  module Hex;NsColor=5;end
-  module Mcr;NsColor=12;end
-  module Xml;NsColor=4;end
+  module Frm; NsColor = 2; end
+  module App; NsColor = 3; end
+  module Wat; NsColor = 9; end
+  module Hex; NsColor = 5; end
+  module Mcr; NsColor = 12; end
+  module Xml; NsColor = 4; end
 
   # User input Error
   class UserError < RuntimeError; end
@@ -35,7 +35,7 @@ module CIAX
   class Retry < LongJump; end
 
   # Server error
-  class ServerError < RuntimeError;end
+  class ServerError < RuntimeError; end
 
   # No Data in Field for Status
   class NoData < ServerError; end
@@ -53,30 +53,30 @@ module CIAX
   # Should be extended in module/class
   module Msg
     attr_accessor :cls_color
-    Start_time=Time.now
-    @@base=1
+    Start_time = Time.now
+    @@base = 1
     # Public Method
-    def verbose(cond=true)
+    def verbose(cond = true)
       # block takes array (shown by each line)
       # Description of values
       #   [val] -> taken from  xml (criteria)
       #   <val> -> taken from status (incoming)
       #   (val) -> calcurated from status
       if cond && ENV['VER']
-        @ver_indent=@@base
-        title=yield
+        @ver_indent = @@base
+        title = yield
         case title
         when Array
-          data=title
-          title=data.shift
+          data = title
+          title = data.shift
         end
-        msg=make_msg(title)
+        msg = make_msg(title)
         if @show_inside || msg && condition(msg.to_s)
           Kernel.warn msg
           if data
             data.each{|str|
               str.to_s.split("\n").each{|line|
-                Kernel.warn Msg.indent(@ver_indent+1)+line
+                Kernel.warn Msg.indent(@ver_indent + 1) + line
               }
             }
           end
@@ -90,53 +90,53 @@ module CIAX
     end
 
     def warning(title)
-      @ver_indent=@@base
-      Kernel.warn make_msg(Msg.color(title.to_s,3))
+      @ver_indent = @@base
+      Kernel.warn make_msg(Msg.color(title.to_s, 3))
       self
     end
 
     def alert(title)
-      @ver_indent=@@base
-      Kernel.warn make_msg(Msg.color(title.to_s,5))
+      @ver_indent = @@base
+      Kernel.warn make_msg(Msg.color(title.to_s, 5))
       self
     end
 
     def errmsg
-      @ver_indent=@@base
-      Kernel.warn make_msg(Msg.color("#{$!} at #{$@}",1))
+      @ver_indent = @@base
+      Kernel.warn make_msg(Msg.color("#{$!} at #{$@}", 1))
     end
 
-    def enclose(title1,title2)
-      @show_inside=verbose{title1}
-      @@base+=1
-      res=yield
+    def enclose(title1, title2)
+      @show_inside = verbose { title1 }
+      @@base += 1
+      res = yield
     ensure
-      @@base-=1
-      verbose{sprintf(title2,res)}
-      @show_inside=false
+      @@base -= 1
+      verbose { sprintf(title2, res) }
+      @show_inside = false
     end
 
     # Private Method
     private
     def make_msg(title)
       return unless title
-      pass=sprintf('%5.4f',Time.now-Start_time)
-      ts= STDERR.tty? ? '' : "[#{pass}]"
-      tc=Thread.current
+      pass = sprintf('%5.4f', Time.now - Start_time)
+      ts = STDERR.tty? ? '' : "[#{pass}]"
+      tc = Thread.current
       ts << Msg.indent(@ver_indent)
-      ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15)
-      cpath=class_path
-      ns=cpath.shift
-      cls=cpath.join('::')
+      ts << Msg.color("#{tc[:name] || 'Main'}:", tc[:color] || 15)
+      cpath = class_path
+      ns = cpath.shift
+      cls = cpath.join('::')
       begin
-        ns_color=eval("#{ns}::NsColor")
+        ns_color = eval("#{ns}::NsColor")
       rescue NameError
-        Msg.color("No #{ns}::NsColor",1)
-        ns_color=7
+        Msg.color("No #{ns}::NsColor", 1)
+        ns_color = 7
       end
-      ts << Msg.color("#{ns}",ns_color)
+      ts << Msg.color("#{ns}", ns_color)
       ts << ':'
-      ts << Msg.color("#{cls}",@cls_color||15)
+      ts << Msg.color("#{cls}", @cls_color || 15)
       ts << ':'
       ts << title.to_s
     end
@@ -157,96 +157,96 @@ module CIAX
     ########################## Module Functions ###########################
     module_function
     # Messaging methods
-    def progress(f=true)
-      p=color(f ? '.' : 'x',1)
+    def progress(f = true)
+      p = color(f ? '.' : 'x', 1)
       $stderr.print p
     end
 
-    def msg(msg='message',color=2,ind=0) # Display only
-      Kernel.warn color(msg,color)+indent(ind)
+    def msg(msg = 'message', color = 2, ind = 0) # Display only
+      Kernel.warn color(msg, color) + indent(ind)
     end
 
-    def _w(var,msg='') # watch var for debug
+    def _w(var, msg = '') # watch var for debug
       if var.kind_of?(Enumerable)
-        Kernel.warn color(msg,5)+color("(#{var.object_id})",3)+':'+caller(1).first.split('/').last
+        Kernel.warn color(msg, 5) + color("(#{var.object_id})", 3) + ':' + caller(1).first.split('/').last
         Kernel.warn var.dup.extend(Enumx).path
       else
-        Kernel.warn color(var,5)+':'+caller(1).first.split('/').last
+        Kernel.warn color(var, 5) + ':' + caller(1).first.split('/').last
       end
     end
 
     # Exception methods
     def id_err(*msg) # Raise User error (Invalid User input)
-      msg[0]=color(msg[0],1)
-      raise InvalidID,msg.join("\n  "),caller(1)
+      msg[0] = color(msg[0], 1)
+      raise InvalidID, msg.join("\n  "), caller(1)
     end
 
     def cmd_err(*msg) # Raise User error (Invalid User input)
-      msg[0]=color(msg[0],1)
-      raise InvalidCMD,msg.join("\n  "),caller(1)
+      msg[0] = color(msg[0], 1)
+      raise InvalidCMD, msg.join("\n  "), caller(1)
     end
 
     def par_err(*msg) # Raise User error (Invalid User input)
-      msg[0]=color(msg[0],1)
-      raise InvalidPAR,msg.join("\n  "),caller(1)
+      msg[0] = color(msg[0], 1)
+      raise InvalidPAR, msg.join("\n  "), caller(1)
     end
 
     def cfg_err(*msg) # Raise Device error (Bad Configulation)
-      msg[0]=color(msg[0],1)
-      raise ConfigError,msg.join("\n  "),caller(1)
+      msg[0] = color(msg[0], 1)
+      raise ConfigError, msg.join("\n  "), caller(1)
     end
 
     def vfy_err(*msg) # Raise Device error (Verification Failed)
-      msg[0]=color(msg[0],1)
-      raise VerifyError,msg.join("\n  "),caller(1)
+      msg[0] = color(msg[0], 1)
+      raise VerifyError, msg.join("\n  "), caller(1)
     end
 
     def com_err(*msg) # Raise Device error (Communication Failed)
-      msg[0]=color(msg[0],1)
-      raise CommError,msg.join("\n  "),caller(1)
+      msg[0] = color(msg[0], 1)
+      raise CommError, msg.join("\n  "), caller(1)
     end
 
     def str_err(*msg) # Raise Device error (Stream open Failed)
-      msg[0]=color(msg[0],1)
-      raise StreamError,msg.join("\n  "),caller(1)
+      msg[0] = color(msg[0], 1)
+      raise StreamError, msg.join("\n  "), caller(1)
     end
 
     def relay(msg)
-      msg=msg ? color(msg,3)+':'+$!.to_s : ''
-      raise $!.class,msg,caller(1)
+      msg = msg ? color(msg, 3) + ':' + $!.to_s : ''
+      raise $!.class, msg, caller(1)
     end
 
     def sv_err(*msg) # Raise Server error (Parameter type)
-      msg[0]=color(msg[0],1)
-      raise ServerError,msg.join("\n  "),caller(2)
+      msg[0] = color(msg[0], 1)
+      raise ServerError, msg.join("\n  "), caller(2)
     end
 
-    def abort(msg='abort')
-      Kernel.abort([color(msg,1),$!.to_s].join("\n"))
+    def abort(msg = 'abort')
+      Kernel.abort([color(msg, 1), $!.to_s].join("\n"))
     end
 
-    def usage(str,code=1)
+    def usage(str, code = 1)
       Kernel.warn("Usage: #{$0.split('/').last} #{str}")
       exit code
     end
 
-    def exit(code=1)
+    def exit(code = 1)
       Kernel.warn($!.to_s) if $!
       Kernel.exit(code)
     end
 
     # Assertion
-    def type?(name,*modules)
-      src=caller(1)
+    def type?(name, *modules)
+      src = caller(1)
       modules.each{|mod|
         unless name.is_a?(mod)
-          raise(ServerError,"Parameter type error <#{name.class}> for (#{mod})",src)
+          raise(ServerError, "Parameter type error <#{name.class}> for (#{mod})", src)
         end
       }
       name
     end
 
-    def data_type?(data,type)
+    def data_type?(data, type)
       return data if data['type'] == type
       raise "Data type error <#{name.class}> for (#{mod})"
     end
@@ -257,41 +257,41 @@ module CIAX
     end
 
     # Display methods
-    def columns(hash,column=2,vmax=nil,kmax=nil)
-      page=[]
-      vmax||=hash.values.map{|v| v.size}.max
-      kmax||=hash.keys.map{|k| k.size}.max
+    def columns(hash, column = 2, vmax = nil, kmax = nil)
+      page = []
+      vmax ||= hash.values.map { |v| v.size }.max
+      kmax ||= hash.keys.map { |k| k.size }.max
       hash.keys.each_slice(column){|a|
-        line=''
-        a.each_with_index{|key,i|
-          val=hash[key]
-          line << item(key,val,kmax)
-          line << ' '*[vmax-val.size,0].max if a.size-1 > i
+        line = ''
+        a.each_with_index{|key, i|
+          val = hash[key]
+          line << item(key, val, kmax)
+          line << ' ' * [vmax - val.size, 0].max if a.size - 1 > i
         }
         page << line
       }
       page.compact.join("\n")
     end
 
-    def item(key,val,kmax=3)
-      indent(1)+color("%-#{kmax+1}s" % key,3)+": #{val}"
+    def item(key, val, kmax = 3)
+      indent(1) + color("%-#{kmax + 1}s" % key, 3) + ": #{val}"
     end
 
     def now_msec
-      (Time.now.to_f*1000).to_i
+      (Time.now.to_f * 1000).to_i
     end
 
-    def elps_sec(msec,base=nil)
+    def elps_sec(msec, base = nil)
       return 0 unless msec
-      base||=now_msec
-      '%.3f' % ((base-msec).to_f/1000)
+      base ||= now_msec
+      '%.3f' % ((base - msec).to_f / 1000)
     end
 
-    def elps_date(msec,base=now_msec)
+    def elps_date(msec, base = now_msec)
       return 0 unless msec
-      sec=(base-msec).to_f/1000
+      sec = (base - msec).to_f / 1000
       if sec > 86400
-        '%.1f days' % (sec/86400)
+        '%.1f days' % (sec / 86400)
       elsif sec > 3600
         Time.at(sec).utc.strftime('%H:%M')
       elsif sec > 60
@@ -302,34 +302,34 @@ module CIAX
     end
 
     def date(msec)
-      Time.at(msec.to_f/1000).inspect
+      Time.at(msec.to_f / 1000).inspect
     end
 
     # Color 1=red,2=green,4=blue,8=bright
-    def color(text,c=nil)
+    def color(text, c = nil)
       return '' if text == ''
       return text unless STDERR.tty? && c
-      (c||=7).to_i
-      "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
+      (c ||= 7).to_i
+      "\033[#{c >> 3};3#{c & 7}m#{text}\33[0m"
     end
 
-    def indent(ind=0)
-      Indent*ind
+    def indent(ind = 0)
+      Indent * ind
     end
 
     # Query options
     def optlist(list)
-      list.empty? ? '' :  color("[#{list.join('/')}]?",5)
+      list.empty? ? '' : color("[#{list.join('/')}]?", 5)
     end
 
     ## class name handling
     # Full path class name in same namespace
-    def context_constant(name,mod=nil)
-      type?(name,String)
-      mod||=self.class
-      mary=mod.to_s.split('::')
+    def context_constant(name, mod = nil)
+      type?(name, String)
+      mod ||= self.class
+      mary = mod.to_s.split('::')
       mary.size.times{
-        cpath=(mary+[name]).join('::')
+        cpath = (mary + [name]).join('::')
         if eval("defined? #{cpath}")
           return eval(cpath)
         end
@@ -346,13 +346,13 @@ module CIAX
       self.class.to_s.split('::')[1..-1]
     end
 
-    def m2id(mod,pos=-1)
+    def m2id(mod, pos = -1)
       mod.name.split('::')[pos].downcase
     end
 
     # Make Var dir if not exist
     def vardir(subdir)
-      dir="#{ENV['HOME']}/.var/#{subdir}/"
+      dir = "#{ENV['HOME']}/.var/#{subdir}/"
       FileUtils.mkdir_p(dir)
       dir
     end

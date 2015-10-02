@@ -6,22 +6,22 @@ module CIAX
   module Wat
     # cfg should have [:sub_list]
     class Exe < Exe
-      attr_reader :sub,:stat
-      def initialize(id,cfg)
-        super(id,cfg)
-        @sub=@cfg[:sub_list].get(@id)
+      attr_reader :sub, :stat
+      def initialize(id, cfg)
+        super(id, cfg)
+        @sub = @cfg[:sub_list].get(@id)
         @cobj.add_rem(@sub.cobj.rem)
-        @stat=Event.new.set_dbi(@dbi)
-        @sv_stat=@sub.sv_stat.add_db('auto'=>'&','event'=>'@')
-        @sub.batch_interrupt=@stat.get('int')
-        @mode=@sub.mode
-        @host=@sub.host
+        @stat = Event.new.set_dbi(@dbi)
+        @sv_stat = @sub.sv_stat.add_db('auto' => '&', 'event' => '@')
+        @sub.batch_interrupt = @stat.get('int')
+        @mode = @sub.mode
+        @host = @sub.host
         opt_mode
       end
 
       def ext_shell
         super
-        @cfg[:output]=View.new(@stat)
+        @cfg[:output] = View.new(@stat)
         @cobj.loc.add_view
         input_conv_set
         self
@@ -36,40 +36,40 @@ module CIAX
         ext_non_client
         @stat.ext_log if $opt['e']
         @stat.post_upd_procs << proc{|ev|
-          ev.get('exec').each{|src,pri,args|
-            verbose{"Executing:#{args} from [#{src}] by [#{pri}]"}
-            @sub.exe(args,src,pri)
+          ev.get('exec').each{|src, pri, args|
+            verbose { "Executing:#{args} from [#{src}] by [#{pri}]" }
+            @sub.exe(args, src, pri)
             sleep ev.interval
           }.clear
         }
-        @tid_auto=auto_update
+        @tid_auto = auto_update
         @sub.post_exe_procs << proc{
-          @sv_stat.put('auto',@tid_auto && @tid_auto.alive?)
+          @sv_stat.put('auto', @tid_auto && @tid_auto.alive?)
         }
         self
       end
 
       def ext_non_client
         @stat.post_upd_procs << proc{|ev|
-          verbose{'Propagate Event#upd -> upd'}
-          block=ev.get('block').map{|id,par| par ? nil : id}.compact
+          verbose { 'Propagate Event#upd -> upd' }
+          block = ev.get('block').map { |id, par| par ? nil : id }.compact
           @cobj.rem.ext.valid_sub(block)
         }
-        @sub.pre_exe_procs << proc{|args| @stat.block?(args) }
-        @stat.ext_rsp(@sub.stat,@sv_stat).ext_save.ext_load
+        @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
+        @stat.ext_rsp(@sub.stat, @sv_stat).ext_save.ext_load
         self
       end
 
       def auto_update
-        reg=(@stat.dbi[:watch]||{})[:regular]||return
-        period=reg['period'].to_i
-        period= period > 1 ? period : 300
+        reg = (@stat.dbi[:watch] || {})[:regular] || return
+        period = reg['period'].to_i
+        period = period > 1 ? period : 300
         @stat.next_upd(period)
-        ThreadLoop.new("Watch:Auto(#@id)",14){
+        ThreadLoop.new("Watch:Auto(#@id)", 14){
           if @stat.get('exec').empty?
-            verbose{"Auto Update(#{@sub.stat['time']})"}
+            verbose { "Auto Update(#{@sub.stat['time']})" }
             begin
-              @stat.queue('auto',3,reg[:exec])
+              @stat.queue('auto', 3, reg[:exec])
             rescue InvalidID
               errmsg
             rescue
@@ -77,24 +77,24 @@ module CIAX
             end
           end
           @stat.next_upd(period)
-          verbose{"Auto Update Sleep(#{period}sec)"}
+          verbose { "Auto Update Sleep(#{period}sec)" }
           sleep period
         }
       end
     end
 
     class List < Site::List
-      def initialize(cfg,top_list=nil)
-        super(cfg,top_list||self,App::List)
+      def initialize(cfg, top_list = nil)
+        super(cfg, top_list || self, App::List)
         set_db(@sub_list.db)
       end
     end
 
     if __FILE__ == $0
-      ENV['VER']||='initialize'
+      ENV['VER'] ||= 'initialize'
       GetOpts.new('ceh:lts')
-      cfg=Config.new
-      cfg[:site]=ARGV.shift
+      cfg = Config.new
+      cfg[:site] = ARGV.shift
       begin
         List.new(cfg).ext_shell.shell
       rescue InvalidID

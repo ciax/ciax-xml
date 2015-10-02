@@ -9,21 +9,21 @@ module CIAX
   module Disp
     class Group < Hashx
       attr_accessor :select
-      def initialize(attr,select=[])
-        @attr=Msg.type?(attr,Hash)
-        @column=[attr['column'].to_i,1].max
-        @select=Msg.type?(select,Array)
-        @dummy=[]
+      def initialize(attr, select = [])
+        @attr = Msg.type?(attr, Hash)
+        @column = [attr['column'].to_i, 1].max
+        @select = Msg.type?(select, Array)
+        @dummy = []
       end
 
-      def []=(k,v)
+      def []=(k, v)
         @select << k
         super
       end
 
-      def dummy(k,v)
+      def dummy(k, v)
         @dummy << k
-        store(k,v)
+        store(k, v)
       end
 
       def update(h)
@@ -43,68 +43,68 @@ module CIAX
         self
       end
 
-      def view(vx=nil,kx=3)
-        return '' if (t=list_table).empty?
-        caption+Msg.columns(t,@column,vx,kx)
+      def view(vx = nil, kx = 3)
+        return '' if (t = list_table).empty?
+        caption + Msg.columns(t, @column, vx, kx)
       end
 
       def vmax # max text length
-        max=0
-        list_table.values.each_with_index{|v,i|
-          max=v.size if (i % @column) < @column-1 && v.size > max
+        max = 0
+        list_table.values.each_with_index{|v, i|
+          max = v.size if (i % @column) < @column - 1 && v.size > max
         }
         max
       end
 
       def kmax
-        list_table.keys.map{|k| k.size }.max||0
+        list_table.keys.map { |k| k.size }.max || 0
       end
 
       private
       def caption
-        @attr['caption'] ? ' == '+Msg.color(@attr['caption'],(@attr['sub_color']||6).to_i)+" ==\n" : ''
+        @attr['caption'] ? ' == ' + Msg.color(@attr['caption'], (@attr['sub_color'] || 6).to_i) + " ==\n" : ''
       end
 
       def list_table
-        hash={}
-        num=0
-        ((@select+@dummy) & keys).each{|key|
+        hash = {}
+        num = 0
+        ((@select + @dummy) & keys).each{|key|
           next unless self[key]
-          title=@attr['line_number'] ? "[#{num+=1}](#{key})" : key
-          hash[title]=self[key]
+          title = @attr['line_number'] ? "[#{num += 1}](#{key})" : key
+          hash[title] = self[key]
         }
         hash
       end
     end
 
     class List < Arrayx
-      def initialize(attr={},select=[])
-        @attr=Msg.type?(attr,Hash)
-        @select=select
+      def initialize(attr = {}, select = [])
+        @attr = Msg.type?(attr, Hash)
+        @select = select
       end
 
-      def new_grp(caption=nil)
-        attr=Hash[@attr.to_hash] # attr can be Config
-        attr['caption']=caption
-        push(Group.new(attr,@select)).last
+      def new_grp(caption = nil)
+        attr = Hash[@attr.to_hash] # attr can be Config
+        attr['caption'] = caption
+        push(Group.new(attr, @select)).last
       end
 
       def select=(select)
-        @select=Msg.type?(select,Array)
-        each{|cg| cg.select=select}
+        @select = Msg.type?(select, Array)
+        each { |cg| cg.select = select }
         select
       end
 
       def merge!(displist)
-        type?(displist,List).each{|cg|
-          cg.select=@select
+        type?(displist, List).each{|cg|
+          cg.select = @select
         }
         concat(displist)
         reset!
       end
 
       def reset!
-        each{|cg| cg.reset!}
+        each { |cg| cg.reset! }
         self
       end
 
@@ -117,19 +117,19 @@ module CIAX
       end
 
       def to_s
-        b=grp_lists
-        b.empty? ? '' : caption+b
+        b = grp_lists
+        b.empty? ? '' : caption + b
       end
 
       private
       def caption
-        @attr['caption'] ? '**** '+Msg.color(@attr['caption'],(@attr['color']||2).to_i)+" ****\n" : ''
+        @attr['caption'] ? '**** ' + Msg.color(@attr['caption'], (@attr['color'] || 2).to_i) + " ****\n" : ''
       end
 
       def grp_lists
-        vmax=map{|cg| cg.vmax }.max
-        kmax=map{|cg| cg.kmax }.max
-        map{|cg| cg.view(vmax,kmax)}.grep(/./).join("\n")
+        vmax = map { |cg| cg.vmax }.max
+        kmax = map { |cg| cg.kmax }.max
+        map { |cg| cg.view(vmax, kmax) }.grep(/./).join("\n")
       end
     end
   end

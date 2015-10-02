@@ -6,7 +6,7 @@ module CIAX
   module Wat
     module Db
       # Wat Db
-      #structure of exec=[cond1,2,...]; cond=[args1,2,..]; args1=['cmd','par1',..]
+      # structure of exec=[cond1,2,...]; cond=[args1,2,..]; args1=['cmd','par1',..]
       def init_watch(doc, db)
         return {} unless doc[:domain].key?('watch')
         wdb = doc[:domain]['watch']

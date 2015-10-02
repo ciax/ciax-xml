@@ -10,7 +10,7 @@ module CIAX
       def initialize(db, dev_list)
         super()
         update db
-        #[:stat_proc,:exec_proc,:submcr_proc,:query]
+        # [:stat_proc,:exec_proc,:submcr_proc,:query]
         @dev_list = type?(dev_list, App::List)
         @condition = delete('cond')
         @break = nil
@@ -22,7 +22,7 @@ module CIAX
         itv *= 10 if $opt['m']
         show title
         max = self['max'] = self['retry']
-        res = max.to_i.times{|n| #gives number or nil(if break)
+        res = max.to_i.times{|n| # gives number or nil(if break)
           self['retry'] = n
           break if condition_ok?
           sleep itv

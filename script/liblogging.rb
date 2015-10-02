@@ -41,7 +41,7 @@ module CIAX
       time
     end
 
-    #For new format
+    # For new format
     def self.set_logline(str)
       h = JSON.load(str)
       abort('Logline:Line is not rcv') unless /rcv/ === h['dir']
@@ -59,7 +59,7 @@ module CIAX
     end
 
     def encode(str)
-      #str.dump
+      # str.dump
       [str].pack('m').split("\n").join('')
     end
   end

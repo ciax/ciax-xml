@@ -16,7 +16,7 @@ module CIAX
         @symdb = Sym::Db.pack(['share', adbs['symtbl']])
         self['class'] = {}
         self['msg'] = {}
-        @post_upd_procs << proc{ #post process
+        @post_upd_procs << proc{ # post process
           verbose { 'Propagate upd -> Symbol#upd' }
           set_sym(adbs[:index].dup.update(adbs[:alias] || {}))
         }

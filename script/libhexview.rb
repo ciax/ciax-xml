@@ -6,7 +6,7 @@ require 'libprompt'
 module CIAX
   module Hex
     class View < Varx
-      #hint should have server status (isu,watch,exe..) like App::Exe
+      # hint should have server status (isu,watch,exe..) like App::Exe
       def initialize(stat, sv_stat = Prompt.new)
         @stat = type?(stat, App::Status)
         super('hex', @stat['id'], @stat['ver'])
@@ -108,11 +108,11 @@ module CIAX
         str
       end
 
-      def b2i(b) #Boolean to Integer (1,0)
+      def b2i(b) # Boolean to Integer (1,0)
         b ? '1' : '0'
       end
 
-      def b2e(b) #Boolean to Error (E,_)
+      def b2e(b) # Boolean to Error (E,_)
         b ? 'E' : '_'
       end
     end

@@ -117,7 +117,7 @@ module CIAX
           @body = deep_subst(self[:body])
         end
 
-        def subst(str) #subst by parameters ($1,$2...)
+        def subst(str) # subst by parameters ($1,$2...)
           return str unless /\$([\d]+)/ === str
           enclose("Substitute from [#{str}]", 'Substitute to [%s]'){
             num = true

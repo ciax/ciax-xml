@@ -10,7 +10,7 @@ module CIAX
   # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
   # set() generates HashDb
   # Cache is available
-  class Dbi < Hashx #DB Item
+  class Dbi < Hashx # DB Item
     # cover() will deeply merge self and given db
     # (If end of the element confricts, self content will be taken)
     def cover(db, key = nil, depth = nil)
@@ -57,7 +57,7 @@ module CIAX
         return self[id] if key?(id)
         begin
           res = Marshal.load(IO.read(@marfile))
-        rescue ArgumentError #if empty
+        rescue ArgumentError # if empty
           res = {}
         end
       else

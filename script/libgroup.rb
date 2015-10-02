@@ -6,7 +6,7 @@ module CIAX
   class Group < Hashx
     include CmdProc
     attr_reader :valid_keys
-    #dom_cfg keys: caption,color,column
+    # dom_cfg keys: caption,color,column
     def initialize(cfg, attr = {})
       super()
       @cls_color = 3
@@ -45,7 +45,7 @@ module CIAX
     end
 
     def add_dummy(id, title)
-      current.dummy(id, title) #never put into valid_key
+      current.dummy(id, title) # never put into valid_key
       self
     end
 

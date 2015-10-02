@@ -54,7 +54,7 @@ module CIAX
               str << @f.sysread(4096)
               verbose { ['Binary Getting', str.inspect] }
             rescue EOFError
-              #Jumped at quit
+              # Jumped at quit
               @f.close
               exit
             end

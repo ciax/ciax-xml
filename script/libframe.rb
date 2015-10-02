@@ -16,7 +16,7 @@ module CIAX
         reset
       end
 
-      #For Command
+      # For Command
       def reset
         @frame = ''
         verbose { 'Reset' }
@@ -38,7 +38,7 @@ module CIAX
         @frame
       end
 
-      #For Response
+      # For Response
       def set(frame = '', length = nil, padding = nil)
         if frame && !frame.empty?
           verbose { "Set [#{frame.inspect}]" }

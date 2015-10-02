@@ -12,19 +12,19 @@ module CIAX
   # INTERACTIVE(-em): | YES | NO  | YES | YES | 1 | YES
   # NONSTOP(-nem):    | YES | NO  | NO  | YES | 1 | YES
 
-  #MOTION:  TEST <-> REAL (m)
-  #QUERY :  INTERACTIVE <-> NONSTOP(n)
+  # MOTION:  TEST <-> REAL (m)
+  # QUERY :  INTERACTIVE <-> NONSTOP(n)
 
-  #TEST: query(exec,error,enter), interval=0
-  #REAL: query(exec,error), interval=1
+  # TEST: query(exec,error,enter), interval=0
+  # REAL: query(exec,error), interval=1
   module Mcr
     # Sequencer Layer
     module Seq
       class Exe < Exe
-        #required cfg keys: app,db,body,stat,(:submcr_proc)
+        # required cfg keys: app,db,body,stat,(:submcr_proc)
         attr_reader :cfg, :record, :que_cmd, :que_res, :post_stat_procs, :pre_mcr_procs, :post_mcr_procs, :th_mcr
-        #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
-        #ent should have [:sequence]'[:dev_list],[:submcr_proc]
+        # cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
+        # ent should have [:sequence]'[:dev_list],[:submcr_proc]
         def initialize(ment, pid = '0')
           super(type?(ment, Entity).id)
           @mcfg = ment
@@ -229,7 +229,7 @@ module CIAX
       if __FILE__ == $0
         GetOpts.new('icemntr')
         cfg = Config.new
-        al = Wat::List.new(cfg).sub_list #Take App List
+        al = Wat::List.new(cfg).sub_list # Take App List
         cfg[:dev_list] = al
         mobj = Remote::Index.new(cfg, { :dbi => Db.new.get(PROJ) })
         mobj.add_rem.add_ext(Ext)

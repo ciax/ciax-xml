@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libview'
 require 'json'
-#Extened Hash
+# Extened Hash
 module CIAX
   module Enumx
     include ViewStruct
@@ -114,7 +114,7 @@ module CIAX
 
   class Arrayx < Array
     include Enumx
-    #sary: array of the element numbers [a,b,c,..]
+    # sary: array of the element numbers [a,b,c,..]
     def skeleton(sary)
       return '' if sary.empty?
       dary = []

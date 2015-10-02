@@ -10,24 +10,24 @@ module CIAX
       require 'optparse'
       Msg.type?(str, String)
       optdb = {}
-      #Layer
+      # Layer
       optdb['w'] = 'wat layer'
       optdb['a'] = 'app layer(default)'
       optdb['f'] = 'frm layer'
       optdb['x'] = 'hex layer'
-      #Client option
+      # Client option
       optdb['c'] = 'client'
       optdb['l'] = 'local client'
       optdb['h'] = 'client for [host]'
-      #Comm to devices
+      # Comm to devices
       optdb['t'] = 'test mode (default)'
       optdb['s'] = 'simulation mode'
       optdb['e'] = 'execution mode'
-      #For appearance
+      # For appearance
       optdb['v'] = 'visual output (default)'
       optdb['r'] = 'raw data output'
       optdb['j'] = 'json data output'
-      #For macro
+      # For macro
       optdb['i'] = 'interactive mode'
       optdb['n'] = 'non-stop mode'
       optdb['m'] = 'movable mode'

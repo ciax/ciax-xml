@@ -30,7 +30,7 @@ module CIAX
       super('issue', id, ver)
       update('pri' => '', 'cid' => '')
       @sv_stat = type?(sv_stat, Prompt)
-      #element of @q is bunch of frm args corresponding an appcmd
+      # element of @q is bunch of frm args corresponding an appcmd
       @q = Queue.new
       @tid = nil
       @flush_proc = proc {}
@@ -48,7 +48,7 @@ module CIAX
       type?(ent, Entity)
       clear if n == 0
       batch = ent[:batch]
-      #batch is frm batch (ary of ary)
+      # batch is frm batch (ary of ary)
       update('time' => now_msec, 'pri' => n, 'cid' => ent.id)
       unless batch.empty?
         @sv_stat.set('isu')
@@ -86,7 +86,7 @@ module CIAX
     end
 
     private
-    #batch is command array (ary of ary)
+    # batch is command array (ary of ary)
     def sort(p, batch)
       verbose { "SUB:Recieve [#{batch}] with priority[#{p}]" }
       (@outbuf[p] ||= []).concat(batch)

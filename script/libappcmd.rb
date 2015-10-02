@@ -24,7 +24,7 @@ module CIAX
       class Item < Ext::Item; end
       class Entity < Ext::Entity
         include Math
-        #batch is ary of args(ary)
+        # batch is ary of args(ary)
         def initialize(cfg, attr = {})
           super
           self[:batch] = @body.map{|e1|

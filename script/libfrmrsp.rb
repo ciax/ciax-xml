@@ -50,7 +50,7 @@ module CIAX
           end
           @data = @cache
           self['time'] = stream['time']
-          verbose { "Updated(#{self['time']})" } #Field::get
+          verbose { "Updated(#{self['time']})" } # Field::get
           upd
         else
           verbose { 'Send Only' }
@@ -95,7 +95,7 @@ module CIAX
               @cache[akey] = mk_array(idxs, get(akey)) { yield }
             }
           else
-            #Field
+            # Field
             data = yield
             if (akey = e0['assign'])
               @cache[akey] = data

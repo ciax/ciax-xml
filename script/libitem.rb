@@ -17,7 +17,7 @@ module CIAX
   # Corresponds commands
   class Item < Hashx
     include CmdProc
-    #grp_cfg should have :id,'label',:parameters,:def_proc
+    # grp_cfg should have :id,'label',:parameters,:def_proc
     def initialize(cfg, attr = {})
       super()
       @cls_color = 6
@@ -109,7 +109,7 @@ module CIAX
   # Command db with parameter derived from Item
   class Entity < Config
     attr_reader :id, :par
-    #set should have :def_proc
+    # set should have :def_proc
     def initialize(cfg, attr = {})
       super(cfg).update(attr)
       @cls_color = 14

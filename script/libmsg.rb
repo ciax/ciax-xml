@@ -12,6 +12,10 @@ module CIAX
   module Hex; NsColor = 5; end
   module Mcr; NsColor = 12; end
   module Xml; NsColor = 4; end
+  module Dev; NsColor = 2; end
+  module Ins; NsColor = 6; end
+  module Sym; NsColor= 1; end
+  module SqLog; NsColor= 1; end
 
   # User input Error
   class UserError < RuntimeError; end

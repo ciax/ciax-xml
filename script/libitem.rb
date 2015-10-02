@@ -65,7 +65,8 @@ module CIAX
       @cfg[:parameters].map{|par|
         list=par[:list]||[]
         disp=list.join(',')
-        unless str=pary.shift
+        str=pary.shift
+        unless str 
           next par[:default] if par.key?(:default)
           mary=[]
           mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameters].size})"
@@ -80,7 +81,7 @@ module CIAX
           when 'num'
             begin
               num=eval(str)
-            rescue Exception
+            rescue NameError,SyntaxError
               Msg.par_err("Parameter is not number")
             end
             verbose{"Validate: [#{num}] Match? [#{disp}]"}

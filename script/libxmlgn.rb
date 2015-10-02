@@ -29,9 +29,8 @@ module CIAX
 
       def to_h # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"}) 
         h=@e.attributes.to_h
-        if t=text
-          h['val']=t
-        end
+        t=text
+        h['val']=t if t
         h
       end
 

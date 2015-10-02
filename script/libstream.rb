@@ -48,7 +48,7 @@ module CIAX
         verbose{"Wait for Recieving"}
         reopen
         str=''
-        begin
+        loop{
           if IO.select([@f],nil,nil,@timeout)
             begin
               str<<@f.sysread(4096)
@@ -61,7 +61,8 @@ module CIAX
           else
             Msg.com_err("Stream:No response")
           end
-        end while @terminator and /#@terminator/ !~ str
+          break unless @terminator and /#@terminator/ !~ str
+        }
         verbose{"Recieved #{str.size} byte on #{self['cmd']}"}
         verbose{["Data Recieved",str.inspect]}
         convert('rcv',str)

@@ -18,7 +18,7 @@ module CIAX
         @list=[]
         @vmode='x'
         open(file){|f|
-          while line=f.gets
+          while (line=f.gets)
             ary=line.split(',')
             case line
             when /^[#]/,/^$/
@@ -63,7 +63,8 @@ module CIAX
             pck-=1
             @res[6] << '%x' % bin if pck == 0
           else
-            if v=@stat.get(key)
+            v=@stat.get(key)
+            if v
               str=get_elem(type,len,v)
               verbose{"#{title}/#{type}(#{len}) = #{str}"}
             else

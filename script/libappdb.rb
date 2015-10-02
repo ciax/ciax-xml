@@ -65,8 +65,9 @@ module CIAX
             e1.each{|e2|
               argv=e2.to_h
               argv['val'] = rep.subst(e2.text)
-              if /\$/ !~ argv['val'] && fmt=argv.delete('format')
-                argv['val']=fmt % eval(argv['val'])
+              if /\$/ !~ argv['val']
+                fmt=argv.delete('format')
+                argv['val']=fmt % eval(argv['val']) if fmt
               end
               command << argv
             }
@@ -82,7 +83,7 @@ module CIAX
         grp={}
         idx=Hashx.new
         Repeat.new.each(adbs){|e,r|
-          gid=e.attr2item(grp){|k,v| r.format(v)}
+          gid=e.attr2item(grp){|_,v| r.format(v)}
           rec_stat(e,idx,grp[gid],r)
         }
         db[:status]=adbs.to_h.update(:group => grp,:index => idx)
@@ -90,7 +91,7 @@ module CIAX
 
       def rec_stat(e,idx,grp,rep)
         rep.each(e){|e0,r0|
-          id=e0.attr2item(idx){|k,v| r0.format(v)}
+          id=e0.attr2item(idx){|_,v| r0.format(v)}
           item=idx[id]
           (grp[:members]||=[]) << id
           item['type'] = e0.name
@@ -106,9 +107,8 @@ module CIAX
                 st[k] = v
               end
             }
-            if i=st.delete('index')
-              st['ref'] << ":#{i}"
-            end
+            i=st.delete('index')
+            st['ref'] << ":#{i}" if i
             e1.each{|e2|
               (st[:conv]||={})[e2.text]=e2['msg']
             }

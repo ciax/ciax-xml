@@ -25,7 +25,7 @@ module CIAX
               regular[:exec] << args
             }
           when 'event'
-            id=e0.attr2item(idx){|k,v| r0.format(v)}
+            id=e0.attr2item(idx){|_,v| r0.format(v)}
             item=idx[id]
             cnd=item[:cnd]=[]
             act=item[:act]={}

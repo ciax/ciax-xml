@@ -63,7 +63,7 @@ module CIAX
           verbose{"SUB:Waiting"}
           rcv=@q.shift
           sort(rcv[:pri],rcv[:batch])
-          while args=pick
+          while (args=pick)
             @recv_proc.call(args,'buffer')
           end
           upd

@@ -54,7 +54,7 @@ module CIAX
     # invoked many times.
     # '^D' gives interrupt
     # mode gives special break (loop returns mode).
-    def shell(dmy=nil) # dmy: compatibility with List#shell()
+    def shell
       verbose{"Shell(#@id)"}
       Readline.completion_proc=proc{|word|
         (@cobj.valid_keys+@cobj.valid_pars).grep(/^#{word}/)
@@ -73,6 +73,7 @@ module CIAX
             exe(convert(token),'shell')
           }
         rescue UserError
+          nil
         rescue ServerError
           warning($!)
         end

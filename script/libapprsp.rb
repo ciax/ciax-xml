@@ -28,7 +28,7 @@ module CIAX
             case type=hash['type']
             when 'binary'
               bary=flds.map{|e| get_bin(e) }
-              case ope=hash['operation']
+              case hash['operation']
               when 'uneven'
                 ba=bary.inject{|r,e| r.to_i & e.to_i}
                 bo=bary.inject{|r,e| r.to_i | e.to_i}
@@ -47,10 +47,10 @@ module CIAX
                 data=data/ary.size if hash['opration'] == 'average'
                 case type
                 when 'float'
-                  data=data.to_f
+                  data=(sign*data).to_f
                   verbose{"GetFloat[#{data}](#{id})"}
                 when 'integer'
-                  data=data.to_i
+                  data=(sign*data).to_i
                   verbose{"GetInteger[#{data}](#{id})"}
                 end
               else

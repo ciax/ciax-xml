@@ -240,7 +240,7 @@ module CIAX
       src=caller(1)
       modules.each{|mod|
         unless name.is_a?(mod)
-          raise(ServerError,"Parameter type error <#{name.class}> for (#{mod.to_s})",src)
+          raise(ServerError,"Parameter type error <#{name.class}> for (#{mod})",src)
         end
       }
       name
@@ -248,7 +248,7 @@ module CIAX
 
     def data_type?(data,type)
       return data if data['type'] == type
-      raise "Data type error <#{name.class}> for (#{mod.to_s})"
+      raise "Data type error <#{name.class}> for (#{mod})"
     end
 
     # Thread is main

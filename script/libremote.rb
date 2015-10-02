@@ -76,7 +76,7 @@ module CIAX
           # Set items by DB
           cdb=dbi[:command]
           idx=cdb[:index]
-          cdb[:group].each{|gid,gat|
+          cdb[:group].values.each{|gat|
             @current=@displist.new_grp(gat['caption'])
             gat[:members].each{|id|
               item=idx[id]

@@ -45,7 +45,7 @@ module CIAX
 
     private
     # Returns Hash
-    def doc_to_db(doc)
+    def doc_to_db(_)
       Dbi.new
     end
 
@@ -74,16 +74,20 @@ module CIAX
     def newest?
       if ENV['NOCACHE']
         verbose{"#@type/Cache ENV NOCACHE is set"}
+        return false
       elsif !test(?e,@marfile)
         verbose{"#@type/Cache MAR file(#{@base}) not exist"}
-      elsif newer=cmp($".grep(/#{ScrDir}/)+Dir.glob(XmlDir+"/#{@type}-*.xml"))
-        verbose{"#@type/Cache File(#{newer}) is newer than cache"}
-        verbose{"#@type/Cache cache=#{::File::Stat.new(@marfile).mtime}"}
-        verbose{"#@type/Cache file=#{::File::Stat.new(newer).mtime}"}
+        return false
       else
-        return true
+        newer=cmp($".grep(/#{ScrDir}/)+Dir.glob(XmlDir+"/#{@type}-*.xml"))
+        if newer
+          verbose{"#@type/Cache File(#{newer}) is newer than cache"}
+          verbose{"#@type/Cache cache=#{::File::Stat.new(@marfile).mtime}"}
+          verbose{"#@type/Cache file=#{::File::Stat.new(newer).mtime}"}
+          return false
+        end
       end
-      false
+      true
     end
 
     def cmp(ary)

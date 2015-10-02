@@ -47,7 +47,8 @@ module CIAX
             set(@cobj.set_cmd(args),pid)
           }
           @cobj.rem.int.def_proc{|ent|
-            if seq=@stat.get(ent.par[0])
+            seq=@stat.get(ent.par[0])
+            if seq
               @sv_stat['sid']=seq.record['id']
               seq.exe(ent.id.split(':'))
               'ACCEPT'
@@ -56,7 +57,7 @@ module CIAX
             end
           }
           @cobj.get('clean').def_proc{ @stat.clean;'ACCEPT'}
-          @cobj.get('interrupt').def_proc{|ent|
+          @cobj.get('interrupt').def_proc{
             @stat.interrupt
             'INTERRUPT'
           }

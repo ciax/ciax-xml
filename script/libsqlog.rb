@@ -87,9 +87,10 @@ module CIAX
         verbose{"Initialize '#{id}' on #{layer}"}
         ThreadLoop.new("SqLog(#{layer}:#{id})",13){
           sqlary=['begin;']
-          begin
+          loop{
             sqlary << @queue.pop
-          end until @queue.empty?
+            break if @queue.empty?
+          }
           sqlary << 'commit;'
           IO.popen(@sqlcmd,'w'){|f|
             sqlary.each{|sql|

@@ -69,7 +69,7 @@ module CIAX
       end
 
       def conditions(str)
-        self['stat'].each{|id,i|
+        self['stat'].values.each{|i|
           str << "    "+Msg.color(i['label'],6)+"\t: "
           str << show_res(i['active'])+"\n"
           i['cond'].each{|j|

@@ -26,7 +26,8 @@ module CIAX
       def set_sym(index)
         index.each{|key,hash|
           sid=hash['symbol']||next
-          unless tbl=@symdb[sid.to_sym]
+          tbl=@symdb[sid.to_sym]
+          unless tbl
             alert("Table[#{sid}] not exist")
             next
           end

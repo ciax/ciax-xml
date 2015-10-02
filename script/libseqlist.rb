@@ -50,7 +50,7 @@ module CIAX
           end
 
           def interrupt
-            @data.each{|id,seq|
+            @data.values.each{|seq|
               seq.exe(['interrupt'])
             }
           end
@@ -63,7 +63,7 @@ module CIAX
           end
 
           def clean
-            @data.delete_if{|k,seq|
+            @data.delete_if{|_,seq|
               ! (Exe === seq && seq.th_mcr.status)
             }
             upd

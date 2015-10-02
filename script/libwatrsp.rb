@@ -82,7 +82,7 @@ module CIAX
       end
 
       def check(id,item)
-        return true unless cklst=item[:cnd]
+        return true unless (cklst=item[:cnd])
         verbose{"Check: <#{item['label']}>"}
         rary=[]
         cklst.each{|ckitm|
@@ -92,7 +92,7 @@ module CIAX
           when 'onchange'
             cri=@data['last'][vn]
             if cri
-              if tol=ckitm['tolerance']
+              if (tol=ckitm['tolerance'])
                 res=((cri.to_f-val.to_f).abs > tol.to_f)
                 verbose{"  onChange(#{vn}): |[#{cri}]-<#{val}>| > #{tol} =>#{res.inspect}"}
               else
@@ -132,7 +132,7 @@ module CIAX
         stat.set_dbi(dbi)
         stat.ext_save.ext_load if STDIN.tty?
         event=Event.new.set_dbi(dbi).ext_rsp(stat)
-        if t=$opt['t']
+        if (t=$opt['t'])
           event.ext_save.ext_load
           stat.str_update(t)
         end

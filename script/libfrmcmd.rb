@@ -11,7 +11,6 @@ module CIAX
       class Group < Remote::Int::Group
         def initialize(cfg,attr={})
           super
-          any={:type =>'reg',:list => ["."]}
           add_item('save',"[key,key...] [tag]",def_pars(2))
           add_item('load',"[tag]",def_pars(1))
           add_item('set',"[key(:idx)] [val(,val)]",def_pars(2))
@@ -35,7 +34,8 @@ module CIAX
             @sel=Hash[self[:dbi][:command][:frame]]
           end
           @frame=Frame.new(self[:dbi]['endian'],self[:dbi]['ccmethod'])
-          return unless @sel[:body]=@body
+          return unless @body
+          @sel[:body]=@body          
           verbose{"Body:#{self['label']}(#@id)"}
           mk_frame(:body)
           if @sel.key?(:ccrange)

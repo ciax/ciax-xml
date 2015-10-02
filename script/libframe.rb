@@ -62,7 +62,9 @@ module CIAX
         verbose{"Cut Start for [#{@frame.inspect}](#{@frame.size})"}
         return verify(e0) if e0['val'] # Verify value
         body,tm,rest=@terminator ? @frame.partition(@terminator) : [@frame]
-        if len=e0['length']
+        len=e0['length']
+        del=e0['delimiter']
+        if len
           verbose{"Cut by Size [#{len}]"}
           if len.to_i > body.size
             alert("Cut reached terminator [#{body.size}/#{len}] ")
@@ -79,7 +81,7 @@ module CIAX
             @frame=[body,tm,rest].join
             cc_add(str)
           end
-        elsif del=e0['delimiter']
+        elsif del
           delimiter=eval('"'+del+'"')
           verbose{"Cut by Delimiter [#{delimiter.inspect}]"}
           str,dlm,body=body.partition(delimiter)
@@ -99,7 +101,8 @@ module CIAX
         len=str.size
         verbose{"Cut String: [#{str.inspect}]"}
         # Pick Part
-        if r=e0['slice']
+        r=e0['slice']
+        if r
           str=str.slice(*r.split(':').map{|i| i.to_i })
           verbose{"Pick: [#{str.inspect}] by range=[#{r}]"}
         end
@@ -169,7 +172,8 @@ module CIAX
       end
 
       def decode(e,code) # Chr -> Num
-        return code.to_s unless cdc=e['decode']
+        cdc=e['decode']
+        return code.to_s unless cdc
         case cdc
         when 'hexstr' # "FF" -> "255"
           num=code.hex
@@ -199,7 +203,8 @@ module CIAX
 
       def encode(e,str) # Num -> Chr
         str=e['format'] % eval(str) if e['format']
-        if len=e['length']
+        len=e['length']
+        if len
           code=''
           num=eval(str)
           len.to_i.times{

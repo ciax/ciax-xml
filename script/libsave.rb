@@ -68,9 +68,10 @@ module CIAX
       logfile=vardir("log")+file_base+"_#{Time.now.year}.log"
       ThreadLoop.new("Logging(#{@type}:#{id})",11){
         logary=[]
-        begin
+        loop{
           logary << @queue.pop
-        end until @queue.empty?
+          break if @queue.empty?
+        }
         open(logfile,'a') {|f|
           logary.each{|str|
             f.puts str

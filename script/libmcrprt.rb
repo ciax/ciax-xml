@@ -31,26 +31,25 @@ module CIAX
       def result
         mary=['']
         mary[0] << "(#{self['retry']}/#{self['max']})" if self['max']
-        if res=self['result']
+        res=self['result']
+        if res
           cap=res.capitalize
           color=(/failed|timeout/ === res) ? 1 : 2
           mary[0] << ' -> '+Msg.color(cap,color)
-          if c=self['conditions']
-            c.each{|h|
-              res= h['res'] ? body("o",2) : body("x",1)
-              case h['cmp']
-              when "equal"
-                ope="="
-              when "not"
-                ope="!="
-              when "pattern"
-                ope="=~"
-              end
-              line=res+" #{h['site']}:#{h['var']}(#{h['form']}) #{ope} #{h['cri']}"
-              line+=" (#{h['real']})" if !h['res'] || ope != "="
-              mary << line
-            }
-          end
+          (self['conditions']||{}).each{|h|
+            res= h['res'] ? body("o",2) : body("x",1)
+            case h['cmp']
+            when "equal"
+              ope="="
+            when "not"
+              ope="!="
+            when "pattern"
+              ope="=~"
+            end
+            line=res+" #{h['site']}:#{h['var']}(#{h['form']}) #{ope} #{h['cri']}"
+            line+=" (#{h['real']})" if !h['res'] || ope != "="
+            mary << line
+          }
         end
         mary << body(self['action'].capitalize,8) if key?('action')
         mary.join("\n")+"\n"

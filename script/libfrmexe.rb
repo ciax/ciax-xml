@@ -45,7 +45,7 @@ module CIAX
       def ext_test
         @mode='TEST'
         @stat.ext_save.ext_load
-        @cobj.rem.ext.def_proc{|ent| 'TEST'}
+        @cobj.rem.ext.def_proc{'TEST'}
         @cobj.get('set').def_proc{|ent|
           @stat.rep(ent.par[0],ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
@@ -92,7 +92,7 @@ module CIAX
           @stat.flush
           "Load [#{ent.par[0]}]"
         }
-        @cobj.get('flush').def_proc{|ent|
+        @cobj.get('flush').def_proc{
           @stream.rcv
           @stat.flush
           "Flush Stream"

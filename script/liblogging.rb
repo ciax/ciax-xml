@@ -18,9 +18,10 @@ module CIAX
       @queue=Queue.new
       ThreadLoop.new("Old Logging(#{type}:#{id})",11){
         logary=[]
-        begin
+        loop{
           logary << @queue.pop
-        end until @queue.empty?
+          break if @queue.empty?
+        }
         open(logfile,'a') {|f|
           logary.each{|str|
             f.puts str

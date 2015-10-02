@@ -109,7 +109,8 @@ module CIAX
     if __FILE__ == $0
       f=Field.new({"a"=>[["0"],"1"]})
       puts f.to_j
-      if s=ARGV.shift
+      s=ARGV.shift
+      if s
         k,v=s.split('=')
         if v
           puts f.rep(k,v)

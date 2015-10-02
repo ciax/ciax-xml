@@ -30,7 +30,7 @@ module CIAX
       adbs=@dbi[:status]
       @index=adbs[:index]
       get_element(['time','elapsed'],'',2)
-      adbs[:group].each{|k,g|
+      adbs[:group].values.each{|g|
         cap=g["caption"] || next
         get_element(g[:members],cap,g["column"])
       }
@@ -44,7 +44,8 @@ module CIAX
       push '<th colspan="6">Controls</th></tr>'
       push "<tr>"
       unitary.each{|unit|
-        if udb=uidx[unit]
+        udb=uidx[unit]
+        if udb
           push '<td class="item">'
           push '<span class="ctllabel">'+udb['label']+'</span>'
           udb[:members].each{|id|

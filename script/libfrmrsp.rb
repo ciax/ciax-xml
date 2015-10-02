@@ -33,7 +33,7 @@ module CIAX
       def conv(ent)
         type?(ent,Entity)
         @sel=Hash[@skel]
-        if rid=ent['response']
+        if (rid=ent['response'])
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
           @sel.update(@fds[rid])
           @sel[:body]=ent.deep_subst(@sel[:body])
@@ -97,7 +97,7 @@ module CIAX
           else
             #Field
             data=yield
-            if akey=e0['assign']
+            if (akey=e0['assign'])
               @cache[akey]=data
               verbose{"Assign:[#{akey}] <- <#{data}>"}
             end

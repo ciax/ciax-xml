@@ -35,7 +35,7 @@ module CIAX
           (grp[:members]||=[]) << id
           body=(item[:body]||=[])
           final={}
-          e0.each{|e1,rep|
+          e0.each{|e1|
             attr=e1.to_h
             par2item(e1,item) && next
             attr['type'] = e1.name
@@ -53,8 +53,7 @@ module CIAX
               body << attr
               verbose{"COMMAND:[#{e1['name']}]"}
             when 'mcr'
-              args=attr['args']=getcmd(e1)
-              cmd=args.first
+              attr['args']=getcmd(e1)
               attr.delete('name')
               body << attr
             when 'select'

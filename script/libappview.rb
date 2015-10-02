@@ -30,7 +30,7 @@ module CIAX
 
       def to_csv
         str=''
-        @group.each{|k,gdb|
+        @group.values.each{|gdb|
           cap=gdb['caption'] || next
           gdb[:members].each{|id|
             label=@index[id]['label']
@@ -48,11 +48,11 @@ module CIAX
         upd
         cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
         lines=[]
-        each{|k,v|
+        values.each{|v|
           cap=v['caption']
           lines << " ***"+color(cap,10)+"***" unless cap.empty?
           lines.concat v['lines'].map{|ele|
-            "  "+ele.map{|id,val|
+            "  "+ele.values.map{|val|
               c=cm[val['class']]+8
               '['+color(val['label'],14)+':'+color(val['msg'],c)+"]"
             }.join(' ')

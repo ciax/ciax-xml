@@ -25,14 +25,14 @@ module CIAX
         attr_reader :cfg,:record,:que_cmd,:que_res,:post_stat_procs,:pre_mcr_procs,:post_mcr_procs,:th_mcr
         #cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
         #ent should have [:sequence]'[:dev_list],[:submcr_proc]
-        def initialize(ent,pid='0')
-          super(type?(ent,Entity).id)
-          @mcfg=ent
-          @sequence=ent.sequence
+        def initialize(ment,pid='0')
+          super(type?(ment,Entity).id)
+          @mcfg=ment
+          @sequence=ment.sequence
           type?(@mcfg[:dev_list],CIAX::List)
           @record=Record.new.ext_save.ext_load.mklink # Make latest link
           @record['pid']=pid
-          @submcr_proc=@mcfg[:submcr_proc]||proc{|args,id|
+          @submcr_proc=@mcfg[:submcr_proc]||proc{|args|
             show{"Sub Macro #{args} issued\n"}
             {'id' => 'dmy'}
           }
@@ -50,7 +50,7 @@ module CIAX
           int=@cobj.rem.add_int(Int)
           self['option']=int.valid_keys.clear
           int.def_proc{|ent| reply(ent.id)}
-          int.add_item('start','Sequece Start').def_proc{|ent|
+          int.add_item('start','Sequece Start').def_proc{
             fork
             'ACCEPT'
           }
@@ -58,7 +58,7 @@ module CIAX
 
         def fork
           @th_mcr=Threadx.new("Macro(#@id)",10){macro}
-          @cobj.get('interrupt').def_proc{|ent,src|
+          @cobj.get('interrupt').def_proc{
             @th_mcr.raise(Interrupt)
             'INTERRUPT'
           }
@@ -117,17 +117,17 @@ module CIAX
               when 'goal'
                 if @step.skip? && query(['skip','force'])
                   result='skipped'
-                  break
+                  break true
                 end
               when 'check'
                 if @step.fail? && query(['drop','force','retry'])
                   result='error'
-                  return
+                  break
                 end
               when 'wait'
                 if @step.timeout?{show('.')} && query(['drop','force','retry'])
                   result='timeout'
-                  return
+                  break
                 end
               when 'exec'
                 if @step.exec? && query(['exec','pass'])
@@ -142,14 +142,13 @@ module CIAX
                 else
                   res=sub_macro(@mcfg.ancestor(2).set_cmd(e1['args']).sequence,@step)
                   result=@step['result']
-                  return unless res
+                  break unless res
                 end
               end
             rescue Retry
               retry
             end
           }
-          true
         rescue Interrupt
           result='interrupted'
           raise Interrupt
@@ -199,7 +198,8 @@ module CIAX
           loop{
             if Msg.fg?
               prom=@step.body(optlist(self['option']))
-              break 'interrupt' unless line=Readline.readline(prom,true)
+              line=Readline.readline(prom,true)
+              break 'interrupt' unless line
               id=line.rstrip
             else
               id=@que_cmd.pop.split(/[ :]/).first

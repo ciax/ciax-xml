@@ -61,7 +61,7 @@ module CIAX
       end
 
       def auto_update
-        reg = (@stat.dbi[:watch] || {})[:regular] || return
+        reg = (@dbi[:watch] || {})[:regular] || {}
         period = reg['period'].to_i
         period = period > 1 ? period : 300
         @stat.next_upd(period)
@@ -69,7 +69,7 @@ module CIAX
           if @stat.get('exec').empty?
             verbose { "Auto Update(#{@sub.stat['time']})" }
             begin
-              @stat.queue('auto', 3, reg[:exec])
+              @stat.queue('auto', 3, reg[:exec] || [['upd']])
             rescue InvalidID
               errmsg
             rescue

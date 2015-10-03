@@ -3,19 +3,19 @@
 module CIAX
   require 'debug' if ENV['DEBUG']
   ScrDir = ::File.dirname(__FILE__)
-  Indent = '  '
+  INDENT = '  '
 
   # Layer Color
-  module Frm; NsColor = 2; end
-  module App; NsColor = 3; end
-  module Wat; NsColor = 9; end
-  module Hex; NsColor = 5; end
-  module Mcr; NsColor = 12; end
-  module Xml; NsColor = 4; end
-  module Dev; NsColor = 2; end
-  module Ins; NsColor = 6; end
-  module Sym; NsColor = 1; end
-  module SqLog; NsColor = 1; end
+  module Frm; NS_COLOR = 2; end
+  module App; NS_COLOR = 3; end
+  module Wat; NS_COLOR = 9; end
+  module Hex; NS_COLOR = 5; end
+  module Mcr; NS_COLOR = 12; end
+  module Xml; NS_COLOR = 4; end
+  module Dev; NS_COLOR = 2; end
+  module Ins; NS_COLOR = 6; end
+  module Sym; NS_COLOR = 1; end
+  module SqLog; NS_COLOR = 1; end
 
   # User input Error
   class UserError < RuntimeError; end

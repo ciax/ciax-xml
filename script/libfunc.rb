@@ -162,7 +162,7 @@ module CIAX
     end
 
     def indent(ind = 0)
-      Indent * ind
+      INDENT * ind
     end
 
     # Query options

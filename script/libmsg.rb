@@ -84,9 +84,9 @@ module CIAX
       ns = cpath.shift
       cls = cpath.join('::')
       begin
-        ns_color = eval("#{ns}::NsColor")
+        ns_color = eval("#{ns}::NS_COLOR")
       rescue NameError
-        Msg.color("No #{ns}::NsColor", 1)
+        Msg.color("No #{ns}::NS_COLOR", 1)
         ns_color = 7
       end
       ts << Msg.color("#{ns}", ns_color)

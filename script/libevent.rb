@@ -1,20 +1,22 @@
 #!/usr/bin/ruby
 require 'libstatus'
 require 'librerange'
-
+# CIAX-XML
 module CIAX
+  # Watch Layer
   module Wat
+    # Event Data
     class Event < DataH
       attr_reader :on_act_procs, :on_deact_procs, :interval
       def initialize
         super('event')
         @interval = 0.1
-        @period=300
+        @period = 300
         @last_updated = 0
         @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
         @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
         # For Array element
-        %w(active exec block int).each { |i| @data[i] ||= Array.new }
+        %w(active exec block int).each { |i| @data[i] ||= [] }
         # For Hash element
         %w(crnt last res).each { |i| @data[i] ||= {} }
         # For Time element
@@ -30,11 +32,12 @@ module CIAX
         cid = args.join(':')
         blkcmd = @data['block'].map { |ary| ary.join(':') }
         verbose(!blkcmd.empty?) { "BLOCKING:#{blkcmd}" }
-        blkcmd.any? { |blk| /#{blk}/ === cid } && Msg.cmd_err("Blocking(#{args})")
+        return unless blkcmd.any? { |blk| Regexp.new(blk).match(cid) }
+        Msg.cmd_err("Blocking(#{args})")
       end
 
-      def next_upd(slp=nil)
-        dif=(@data['upd_next'] || 0) - now_msec
+      def next_upd(slp = nil)
+        dif = (@data['upd_next'] || 0) - now_msec
         if dif > 0
           verbose { "Auto Update Sleep(#{@period}sec)" }
           sleep dif if slp
@@ -49,7 +52,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $0
+    if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       OPT.parse('h:')
       event = Event.new

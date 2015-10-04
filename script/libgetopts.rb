@@ -16,11 +16,9 @@ module CIAX
     def parse(str, db = {})
       Msg.type?(str, String)
       @optdb.update(db)
-      @optdb.keys.each do|k|
-        str << k unless str.include?(k)
-      end
-      make_usage(str)
-      update(ARGV.getopts(str))
+      optary = current_options(str)
+      make_usage(optary)
+      update(ARGV.getopts(optary.join('')))
       make_layer
     end
 
@@ -91,10 +89,15 @@ module CIAX
       self
     end
 
+    # Current Options
+    def current_options(str)
+      (str.split('') & @optdb.keys)
+    end
+
     # Make usage text
-    def make_usage(str)
+    def make_usage(optary)
       @index = {}
-      (str.split('') & @optdb.keys).each do|c|
+      optary.each do|c|
         @index["-#{c}"] = @optdb[c]
       end
       self

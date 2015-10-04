@@ -9,6 +9,7 @@ module CIAX
       def initialize
         super('event')
         @interval = 0.1
+        @period=300
         @last_updated = 0
         @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
         @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
@@ -32,9 +33,15 @@ module CIAX
         blkcmd.any? { |blk| /#{blk}/ === cid } && Msg.cmd_err("Blocking(#{args})")
       end
 
-      def next_upd(period)
-        @data['upd_next'] = now_msec + period.to_i * 1000
-        self
+      def next_upd(slp=nil)
+        dif=(@data['upd_next'] || 0) - now_msec
+        if dif > 0
+          verbose { "Auto Update Sleep(#{@period}sec)" }
+          sleep dif if slp
+        else
+          @data['upd_next'] = now_msec + @period * 1000
+        end
+        upd
       end
 
       def ext_rsp(stat, sv_stat = {})

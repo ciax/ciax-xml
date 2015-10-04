@@ -30,6 +30,8 @@ module CIAX
       private
       def ext_test
         ext_non_client
+        @post_exe_procs << proc{ @stat.next_upd }
+        self
       end
 
       def ext_driver
@@ -61,24 +63,10 @@ module CIAX
       end
 
       def auto_update
-        reg = (@dbi[:watch] || {})[:regular] || {}
-        period = reg['period'].to_i
-        period = period > 1 ? period : 300
-        @stat.next_upd(period)
+        @stat.next_upd
         ThreadLoop.new("Watch:Auto(#@id)", 14){
-          if @stat.get('exec').empty?
-            verbose { "Auto Update(#{@sub.stat['time']})" }
-            begin
-              @stat.queue('auto', 3, reg[:exec] || [['upd']])
-            rescue InvalidID
-              errmsg
-            rescue
-              warning $!
-            end
-          end
-          @stat.next_upd(period)
-          verbose { "Auto Update Sleep(#{period}sec)" }
-          sleep period
+          @stat.auto_exec
+          @stat.next_upd(true)
         }
       end
     end

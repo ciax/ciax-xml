@@ -2,102 +2,110 @@
 require 'libdefine'
 # Common Module
 module CIAX
+  ### Module Functions ###
   module Msg
-    ########################## Module Functions ###########################
     module_function
+
     # Messaging methods
     def progress(f = true)
       p = color(f ? '.' : 'x', 1)
       $stderr.print p
     end
 
-    def msg(msg = 'message', color = 2, ind = 0) # Display only
-      Kernel.warn color(msg, color) + indent(ind)
+    def msg(str = 'message', color = 2, ind = 0) # Display only
+      warn color(str, color) + indent(ind)
     end
 
-    def _w(var, msg = '') # watch var for debug
-      if var.kind_of?(Enumerable)
-        Kernel.warn color(msg, 5) + color("(#{var.object_id})", 3) + ':' + caller(1).first.split('/').last
-        Kernel.warn var.dup.extend(Enumx).path
+    def _w(var, str = '') # watch var for debug
+      clr = ':' + caller(1).first.split('/').last
+      if var.is_a?(Enumerable)
+        res = color(str, 5) + clr + _prt_enum(var)
       else
-        Kernel.warn color(var, 5) + ':' + caller(1).first.split('/').last
+        res = color(var, 5) + clr
       end
+      warn res
+    end
+
+    def _prt_enum(var)
+      res = color("(#{var.object_id})", 3)
+      res << var.dup.extend(Enumx).path
     end
 
     # Exception methods
-    def id_err(*msg) # Raise User error (Invalid User input)
-      msg[0] = color(msg[0], 1)
-      raise InvalidID, msg.join("\n  "), caller(1)
+    def id_err(*ary) # Raise User error (Invalid User input)
+      ary[0] = color(ary[0], 1)
+      fail InvalidID, ary.join("\n  "), caller(1)
     end
 
-    def cmd_err(*msg) # Raise User error (Invalid User input)
-      msg[0] = color(msg[0], 1)
-      raise InvalidCMD, msg.join("\n  "), caller(1)
+    def cmd_err(*ary) # Raise User error (Invalid User input)
+      ary[0] = color(ary[0], 1)
+      fail InvalidCMD, ary.join("\n  "), caller(1)
     end
 
-    def par_err(*msg) # Raise User error (Invalid User input)
-      msg[0] = color(msg[0], 1)
-      raise InvalidPAR, msg.join("\n  "), caller(1)
+    def par_err(*ary) # Raise User error (Invalid User input)
+      ary[0] = color(ary[0], 1)
+      fail InvalidPAR, ary.join("\n  "), caller(1)
     end
 
-    def cfg_err(*msg) # Raise Device error (Bad Configulation)
-      msg[0] = color(msg[0], 1)
-      raise ConfigError, msg.join("\n  "), caller(1)
+    def cfg_err(*ary) # Raise Device error (Bad Configulation)
+      ary[0] = color(ary[0], 1)
+      fail ConfigError, ary.join("\n  "), caller(1)
     end
 
-    def cc_err(*msg) # Raise Device error (Verification Failed)
-      msg[0] = color(msg[0], 1)
-      raise VerifyError, msg.join("\n  "), caller(1)
+    def cc_err(*ary) # Raise Device error (Verification Failed)
+      ary[0] = color(ary[0], 1)
+      fail VerifyError, ary.join("\n  "), caller(1)
     end
 
-    def com_err(*msg) # Raise Device error (Communication Failed)
-      msg[0] = color(msg[0], 1)
-      raise CommError, msg.join("\n  "), caller(1)
+    def com_err(*ary) # Raise Device error (Communication Failed)
+      ary[0] = color(ary[0], 1)
+      fail CommError, ary.join("\n  "), caller(1)
     end
 
-    def str_err(*msg) # Raise Device error (Stream open Failed)
-      msg[0] = color(msg[0], 1)
-      raise StreamError, msg.join("\n  "), caller(1)
+    def str_err(*ary) # Raise Device error (Stream open Failed)
+      ary[0] = color(ary[0], 1)
+      fail StreamError, ary.join("\n  "), caller(1)
     end
 
-    def relay(msg)
-      msg = msg ? color(msg, 3) + ':' + $!.to_s : ''
-      raise $!.class, msg, caller(1)
+    def relay(str)
+      str = str ? color(str, 3) + ':' + $ERROR_INFO.to_s : ''
+      fail $ERROR_INFO.class, str, caller(1)
     end
 
-    def sv_err(*msg) # Raise Server error (Parameter type)
-      msg[0] = color(msg[0], 1)
-      raise ServerError, msg.join("\n  "), caller(2)
+    def sv_err(*ary) # Raise Server error (Parameter type)
+      ary[0] = color(ary[0], 1)
+      fail ServerError, ary.join("\n  "), caller(2)
     end
 
-    def abort(msg = 'abort')
-      Kernel.abort([color(msg, 1), $!.to_s].join("\n"))
+    def abort(str = 'abort')
+      Kernel.abort([color(str, 1), $ERROR_INFO.to_s].join("\n"))
     end
 
     def usage(str, code = 1)
-      Kernel.warn("Usage: #{$0.split('/').last} #{str}")
+      warn("Usage: #{$PROGRAM_NAME.split('/').last} #{str}")
       exit code
     end
 
     def exit(code = 1)
-      Kernel.warn($!.to_s) if $!
+      warn($ERROR_INFO.to_s) if $ERROR_INFO
       Kernel.exit(code)
     end
 
     # Assertion
     def type?(name, *modules)
       src = caller(1)
-      modules.each{|mod|
+      modules.each do|mod|
         unless name.is_a?(mod)
-          raise(ServerError, "Parameter type error <#{name.class}> for (#{mod})", src)
+          res = "Parameter type error <#{name.class}> for (#{mod})"
+          fail(ServerError, res, src)
         end
-      }
+      end
       name
     end
 
     def data_type?(data, type)
       return data if data['type'] == type
-      raise "Data type error <#{name.class}> for (#{mod})"
+      fail "Data type error <#{name.class}> for (#{mod})"
     end
 
     # Thread is main
@@ -106,24 +114,24 @@ module CIAX
     end
 
     # Display methods
-    def columns(hash, column = 2, vmax = nil, kmax = nil)
-      page = []
-      vmax ||= hash.values.map { |v| v.size }.max
-      kmax ||= hash.keys.map { |k| k.size }.max
-      hash.keys.each_slice(column){|a|
-        line = ''
-        a.each_with_index{|key, i|
-          val = hash[key]
-          line << item(key, val, kmax)
-          line << ' ' * [vmax - val.size, 0].max if a.size - 1 > i
-        }
-        page << line
-      }
-      page.compact.join("\n")
+    def columns(h, c = 2, vx = nil, kx = nil)
+      vx, kx = _max_size(h, vx, kx)
+      h.keys.each_slice(c).map do|a|
+        a.map do|k|
+          item(k, h[k], kx).ljust(vx + kx + 15)
+        end.join('').rstrip
+      end.join("\n")
+    end
+
+    # max string length of value and key in hash
+    def _max_size(hash, vx = nil, kx = nil)
+      vx ||= hash.values.map(&:size).max
+      kx ||= hash.keys.map(&:size).max
+      [vx, kx]
     end
 
     def item(key, val, kmax = 3)
-      indent(1) + color("%-#{kmax + 1}s" % key, 3) + ": #{val}"
+      indent(1) + color(key, 3).ljust(kmax + 11) + ": #{val}"
     end
 
     def now_msec
@@ -133,21 +141,25 @@ module CIAX
     def elps_sec(msec, base = nil)
       return 0 unless msec
       base ||= now_msec
-      '%.3f' % ((base - msec).to_f / 1000)
+      format('%.3f', (base - msec).to_f / 1000)
     end
 
     def elps_date(msec, base = now_msec)
       return 0 unless msec
       sec = (base - msec).to_f / 1000
-      if sec > 86400
-        '%.1f days' % (sec / 86400)
-      elsif sec > 3600
-        Time.at(sec).utc.strftime('%H:%M')
+      interval(sec)
+    end
+
+    def interval(sec)
+      return format('%.1f days', sec / 86_400) if sec > 86_400
+      if sec > 3600
+        fmt = '%H:%M'
       elsif sec > 60
-        Time.at(sec).utc.strftime("%M'%S\"")
+        fmt = "%M'%S\""
       else
-        Time.at(sec).utc.strftime("%S\"%L")
+        fmt = "%S\"%L"
       end
+      Time.at(sec).utc.strftime(fmt)
     end
 
     def date(msec)
@@ -177,13 +189,11 @@ module CIAX
       type?(name, String)
       mod ||= self.class
       mary = mod.to_s.split('::')
-      mary.size.times{
+      mary.size.times do
         cpath = (mary + [name]).join('::')
-        if eval("defined? #{cpath}")
-          return eval(cpath)
-        end
+        return eval(cpath) if eval("defined? #{cpath}")
         mary.pop
-      }
+      end
       abort("No such constant #{name}")
     end
 

@@ -28,6 +28,7 @@ module CIAX
           verbose { 'Propagate Status#upd -> upd' }
           upd
         }
+        init_auto(wdb)
         self
       end
 
@@ -40,7 +41,30 @@ module CIAX
         self
       end
 
+      def auto_exec
+        return self if @data['exec'].empty?
+        verbose { "Auto Update(#{self['time']})" }
+        begin
+          queue('auto', 3, @regexe)
+        rescue InvalidID
+          errmsg
+        rescue
+          warning $!
+        end
+        self
+      end
+
       private
+
+      # Initialize for Auto Update
+      def init_auto(wdb)
+        reg = wdb[:regular] || {}
+        per = reg['period'].to_i
+        @period = per > 1 ? per : 300
+        @regexe = reg[:exec] || [['upd']]
+        self
+      end
+
       def upd_core
         return self unless @stat['time'] > @last_updated
         @last_updated = self['time'] = @stat['time']

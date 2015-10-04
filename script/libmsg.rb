@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 # Common Module
 require 'fileutils'
-require 'libdefine'
 require 'libfunc'
 module CIAX
   ######################### Message Module #############################

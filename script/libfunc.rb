@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libdefine'
 # Common Module
 module CIAX
   module Msg

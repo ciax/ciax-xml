@@ -11,38 +11,19 @@ module CIAX
     attr_accessor :cls_color
     Start_time = Time.now
     @@base = 1
-    # Public Method
+    # block takes array (shown by each line)
+    # Description of values
+    #   [val] -> taken from  xml (criteria)
+    #   <val> -> taken from status (incoming)
+    #   (val) -> calcurated from status
     def verbose(cond = true)
-      # block takes array (shown by each line)
-      # Description of values
-      #   [val] -> taken from  xml (criteria)
-      #   <val> -> taken from status (incoming)
-      #   (val) -> calcurated from status
-      if cond && ENV['VER']
-        @ver_indent = @@base
-        title = yield
-        case title
-        when Array
-          data = title
-          title = data.shift
-        end
-        msg = make_msg(title)
-        if @show_inside || msg && condition(msg.to_s)
-          Kernel.warn msg
-          if data
-            data.each{|str|
-              str.to_s.split("\n").each{|line|
-                Kernel.warn Msg.indent(@ver_indent + 1) + line
-              }
-            }
-          end
-          true
-        end
-      end
-    end
-
-    def ver?
-      !ENV['VER'].to_s.empty?
+      return if !ENV['VER'] || !cond
+      @ver_indent = @@base
+      msg, data = make_title(yield)
+      return unless @show_inside || condition(msg)
+      Kernel.warn msg
+      show_data(data)
+      true
     end
 
     def warning(title)
@@ -59,7 +40,7 @@ module CIAX
 
     def errmsg
       @ver_indent = @@base
-      Kernel.warn make_msg(Msg.color("#{$!} at #{$@}", 1))
+      Kernel.warn make_msg(Msg.color("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1))
     end
 
     def enclose(title1, title2)
@@ -68,45 +49,76 @@ module CIAX
       res = yield
     ensure
       @@base -= 1
-      verbose { sprintf(title2, res) }
+      verbose { Kernel.format(title2, res) }
       @show_inside = false
     end
 
     # Private Method
+
     private
+
+    def make_title(title)
+      if title.is_a? Array
+        data = title
+        title = data.shift
+      else
+        data = []
+      end
+      [make_msg(title), data]
+    end
+
+    def show_data(data)
+      data.each do|str|
+        str.to_s.split("\n").each do|line|
+          Kernel.warn Msg.indent(@ver_indent + 1) + line
+        end
+      end
+    end
+
     def make_msg(title)
       return unless title
-      pass = sprintf('%5.4f', Time.now - Start_time)
-      ts = STDERR.tty? ? '' : "[#{pass}]"
+      @head ||= make_head
+      ts = "#{@head}:#{title}"
+      return ts if STDERR.tty?
+      pass = Kernel.format('%5.4f', Time.now - Start_time)
+      "[#{pass}]" + ts
+    end
+
+    def head_ary
+      cary = []
       tc = Thread.current
-      ts << Msg.indent(@ver_indent)
-      ts << Msg.color("#{tc[:name] || 'Main'}:", tc[:color] || 15)
       cpath = class_path
       ns = cpath.shift
-      cls = cpath.join('::')
+      cary << [tc[:name] || 'Main', tc[:color] || 15]
+      cary << [ns, ns_color(ns)]
+      cary << [cpath.join('::'), @cls_color || 15]
+    end
+
+    def make_head
+      Msg.indent(@ver_indent) + head_ary.map do|str, color|
+        Msg.color("#{str}", color)
+      end.join(':')
+    end
+
+    def ns_color(ns)
       begin
-        ns_color = eval("#{ns}::NS_COLOR")
+        color = eval("#{ns}::NS_COLOR")
       rescue NameError
-        Msg.color("No #{ns}::NS_COLOR", 1)
-        ns_color = 7
+        Msg.msg("No color defined for #{ns}::NS_COLOR", 3)
+        color = 7
       end
-      ts << Msg.color("#{ns}", ns_color)
-      ts << ':'
-      ts << Msg.color("#{cls}", @cls_color || 15)
-      ts << ':'
-      ts << title.to_s
+      color
     end
 
     # VER= makes setenv "" to VER otherwise nil
     def condition(msg)
-      return unless msg
-      return unless ver?
-      return true if /\*/ === ENV['VER']
-      ENV['VER'].split(',').any?{|s|
-        s.split(':').all?{|e|
+      return if !ENV['VER'] || !msg
+      return true if Regexp.new('\*').match(ENV['VER'])
+      ENV['VER'].split(',').any? do|s|
+        s.split(':').all? do|e|
           msg.upcase.include?(e.upcase)
-        }
-      }
+        end
+      end
     end
   end
 end

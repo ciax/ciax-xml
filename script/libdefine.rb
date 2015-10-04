@@ -38,7 +38,7 @@ module CIAX
   class Interlock < LongJump; end
   class Retry < LongJump; end
 
-  # Server error
+  # Server error (Handled in Server)
   class ServerError < RuntimeError; end
 
   # No Data in Field for Status
@@ -48,7 +48,7 @@ module CIAX
   class StreamError < ServerError; end
   # Communication Error
   class CommError < ServerError; end
-  # Verification Error
+  # CC Verification Error
   class VerifyError < ServerError; end
   # Configuration Error
   class ConfigError < ServerError; end

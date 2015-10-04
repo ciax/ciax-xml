@@ -76,7 +76,6 @@ module CIAX
       rescue InvalidID
         OPT.usage '(opt) [id]'
       end
-      exit
     end
   end
 end

@@ -38,7 +38,6 @@ module CIAX
       sdb = Sym::Db.new.get(ARGV.shift)
     rescue InvalidID
       Msg.usage '[id] ...'
-      Msg.exit
     end
     puts sdb.path(ARGV)
   end

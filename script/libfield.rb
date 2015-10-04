@@ -118,7 +118,6 @@ module CIAX
           puts f.get(s)
         end
       end
-      exit
     end
   end
 end

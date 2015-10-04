@@ -126,7 +126,6 @@ module CIAX
         Msg.usage('[id] (key) ..')
       end
       puts db.path(ARGV)
-      exit
     end
   end
 end

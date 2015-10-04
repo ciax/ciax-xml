@@ -56,7 +56,7 @@ module CIAX
             rescue EOFError
               # Jumped at quit
               @f.close
-              exit
+              fail (CommError)
             end
           else
             Msg.com_err('Stream:No response')

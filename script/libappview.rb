@@ -103,7 +103,6 @@ module CIAX
       rescue InvalidID
         OPT.usage '(opt) [site] | < status_file'
       end
-      exit
     end
   end
 end

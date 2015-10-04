@@ -100,7 +100,6 @@ module CIAX
         mdb = Db.new.get(ARGV.shift)
       rescue InvalidID
         Msg.usage '[id] (key) ..'
-        Msg.exit
       end
       puts mdb.path(ARGV)
     end

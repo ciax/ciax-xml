@@ -122,7 +122,6 @@ module CIAX
         Msg.usage('[id] (key) ..')
       end
       puts dbi.path(ARGV)
-      exit
     end
   end
 end

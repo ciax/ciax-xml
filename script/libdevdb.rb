@@ -41,7 +41,6 @@ module CIAX
         dbi = Db.new(ARGV.shift).get(ARGV.shift)
       rescue
         Msg.usage('(opt) [id] (key) ..')
-        Msg.exit
       end
       puts dbi.path(ARGV)
     end

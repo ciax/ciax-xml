@@ -146,7 +146,6 @@ module CIAX
         field.conv(ent)
       end
       puts STDOUT.tty? ? field : field.to_j
-      exit
     end
   end
 end

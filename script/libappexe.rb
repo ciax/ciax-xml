@@ -43,15 +43,13 @@ module CIAX
       def ext_test
         @mode = 'TEST'
         @stat.ext_sym.ext_save.ext_load
-        @stat.post_upd_procs << proc{|st|
-          verbose { 'Propagate Status#upd -> App#settime' }
-          st['time'] = now_msec
-        }
-        @post_exe_procs << proc { @stat.upd }
         @cobj.get('interrupt').def_proc{
           "INTERRUPT(#{@batch_interrupt})"
         }
-        @cobj.rem.ext.def_proc { 'TEST' }
+        @cobj.rem.ext.def_proc {
+          @stat['time'] = now_msec
+          'TEST'
+        }
         ext_non_client
       end
 

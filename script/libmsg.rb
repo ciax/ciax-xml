@@ -1,7 +1,9 @@
 #!/usr/bin/ruby
 # Common Module
-require 'fileutils'
-require 'libfunc'
+require 'libmsgfunc'
+require 'libmsgmod'
+require 'libmsgtime'
+
 module CIAX
   ######################### Message Module #############################
   # Should be extended in module/class

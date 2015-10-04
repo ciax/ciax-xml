@@ -3,7 +3,6 @@
 module CIAX
   require 'debug' if ENV['DEBUG']
   ScrDir = ::File.dirname(__FILE__)
-  INDENT = '  '
 
   # Frame Layer
   module Frm; NS_COLOR = 2; end

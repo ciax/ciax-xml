@@ -4,7 +4,6 @@ require 'libmsgerr'
 module CIAX
   ### Debug Methods ###
   module Msg
-
     module_function
 
     # For Debug

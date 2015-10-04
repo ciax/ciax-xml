@@ -54,8 +54,8 @@ module CIAX
     end
 
     def relay(str)
-      str = str ? color(str, 3) + ':' + $!.to_s : ''
-      fail $!.class, str, caller(1)
+      str = str ? color(str, 3) + ':' + $ERROR_INFO.to_s : ''
+      fail $ERROR_INFO.class, str, caller(1)
     end
 
     def sv_err(*ary) # Raise Server error (Parameter type)
@@ -64,12 +64,12 @@ module CIAX
     end
 
     def abort(str = 'abort')
-      Kernel.abort([color(str, 1), $!.to_s].join("\n"))
+      Kernel.abort([color(str, 1), $ERROR_INFO.to_s].join("\n"))
     end
 
     def usage(str, code = 1)
       warn("Usage: #{$PROGRAM_NAME.split('/').last} #{str}")
-      warn($!) if $!
+      warn($ERROR_INFO) if $ERROR_INFO
       exit code
     end
   end

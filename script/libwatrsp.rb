@@ -42,8 +42,8 @@ module CIAX
       end
 
       def auto_exec
-        return self if @data['exec'].empty?
-        verbose { "Auto Update(#{self['time']})" }
+        return self unless @data['exec'].empty?
+        verbose { "Auto Update(#{self['time']} ,#{@regexe})" }
         begin
           queue('auto', 3, @regexe)
         rescue InvalidID
@@ -62,6 +62,7 @@ module CIAX
         per = reg['period'].to_i
         @period = per > 1 ? per : 300
         @regexe = reg[:exec] || [['upd']]
+        verbose { "Auto Update Initialize: Period = #{@period} sec, Command = #{@regexe})" }
         self
       end
 

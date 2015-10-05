@@ -36,15 +36,22 @@ module CIAX
         Msg.cmd_err("Blocking(#{args})")
       end
 
-      def next_upd(slp = nil)
-        dif = (@data['upd_next'] || 0) - now_msec
-        if dif > 0
-          verbose { "Auto Update Sleep(#{@period}sec)" }
-          sleep dif if slp
-        else
-          @data['upd_next'] = now_msec + @period * 1000
+      # Update the next update time
+      # Return rest time unless expired
+      def next_upd
+        dif = ((@data['upd_next'] || 0) - now_msec)/1000
+        return dif if dif.between?(0, @period)
+        @data['upd_next'] = now_msec + @period * 1000
+        nil
+      end
+
+      def sleep
+        dif = next_upd
+        if dif
+          verbose { "Auto Update Sleep(#{dif}sec)" }
+          Kernel.sleep dif 
         end
-        upd
+        self
       end
 
       def ext_rsp(stat, sv_stat = {})

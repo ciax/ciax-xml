@@ -7,7 +7,7 @@ module CIAX
   # Header and Data Container(Hash or Array) with Loading feature
   class Datax < Varx
     # @data is hidden from access by '[]'.
-    # @data is conveted to json file where @data will be appeared as self['data'].
+    # @data will be appeared as self['data'] in json file.
     # @data never contains object which can't save with JSON
     def initialize(type, init_struct = {}, data_name = 'data')
       super(type)
@@ -56,6 +56,7 @@ module CIAX
     end
 
     private
+
     def _getdata
       verbose { 'Convert @data to [:data]' }
       hash = Hashx.new(self)

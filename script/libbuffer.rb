@@ -22,8 +22,8 @@ require 'libgroup'
 #  1:User Input
 #  2:Event Driven
 #  3:Periodic Update
-
 module CIAX
+  # Command Buffering
   class Buffer < Varx
     NS_COLOR = 11
     # sv_stat: Server Status
@@ -53,25 +53,17 @@ module CIAX
       update('time' => now_msec, 'pri' => n, 'cid' => ent.id)
       unless batch.empty?
         @sv_stat.set('isu')
-        @q.push(:pri => n, :batch => batch)
+        @q.push(pri: n, batch: batch)
       end
       self
     end
 
     def server
       @tid = ThreadLoop.new("Buffer(#{self['id']})", 12) do
-        begin
-          verbose { 'SUB:Waiting' }
-          rcv = @q.shift
-          sort(rcv[:pri], rcv[:batch])
-          while (args = pick)
-            @recv_proc.call(args, 'buffer')
-          end
-          upd
-        rescue
-          clear
-          alert($!.to_s)
-        end
+        verbose { 'SUB:Waiting' }
+        rcv = @q.shift
+        pri_sort(rcv[:pri], rcv[:batch])
+        exec
       end
       self
     end
@@ -87,14 +79,26 @@ module CIAX
     end
 
     private
+
     # batch is command array (ary of ary)
-    def sort(p, batch)
+    def pri_sort(p, batch)
       verbose { "SUB:Recieve [#{batch}] with priority[#{p}]" }
       (@outbuf[p] ||= []).concat(batch)
       i = -1
       @outbuf.map do|o|
         verbose { "SUB:Outbuf(#{i += 1}) is [#{o}]\n" }
       end
+    end
+
+    # Execute recieved command
+    def exec
+      while (args = pick)
+        @recv_proc.call(args, 'buffer')
+      end
+      upd
+    rescue
+      clear
+      alert($ERROR_INFO.to_s)
     end
 
     # Remove duplicated args and pop one

@@ -20,8 +20,7 @@ module CIAX
       return if !ENV['VER'] || !cond
       msg, data = make_title(yield)
       return unless @show_inside || condition(msg)
-      Kernel.warn msg
-      show_data(data)
+      prt_lines(msg)
       true
     end
 
@@ -63,11 +62,12 @@ module CIAX
       [make_msg(title), data]
     end
 
-    def show_data(data)
-      data.each do|str|
-        str.to_s.split("\n").each do|line|
-          Kernel.warn Msg.indent(Msg.ver_indent + 1) + line
-        end
+    def prt_lines(data)
+      ind=0
+      base=Msg.ver_indent
+      data.each_line do|line|
+        Kernel.warn Msg.indent(base+ind) + line
+        ind=2
       end
     end
 

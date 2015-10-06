@@ -78,7 +78,7 @@ module CIAX
           warning($!)
         end
         puts @sv_stat.msg.empty? ? @shell_output_proc.call : @sv_stat.msg
-        verbose { ['Threads', "#{Threadx.list}"] }
+        verbose { "Threads\n#{Threadx.list}" }
         verbose { "Valid Commands #{@cobj.valid_keys}" }
       end
       @terminate_procs.inject(self) { |obj, proc| proc.call(obj) }

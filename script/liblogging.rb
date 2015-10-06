@@ -25,7 +25,7 @@ module CIAX
         open(logfile, 'a') do|f|
           logary.each do|str|
             f.puts str
-            verbose { ["Appended #{str.size} byte", str] }
+            verbose { "Appended #{str.size} byte\n"+str }
           end
         end
       end

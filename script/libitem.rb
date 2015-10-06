@@ -117,7 +117,7 @@ module CIAX
       @cls_color = 14
       @par = self[:par]
       @id = self[:cid]
-      verbose { ['Config', path] }
+      verbose { "Config\n"+path }
     end
 
     # returns result of def_proc block (String)

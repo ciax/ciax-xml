@@ -84,6 +84,21 @@ module CIAX
           }
           @data['active'] << id
         }
+        # event is internal var
+        ## Timing chart in active mode
+        # isu   :__--__--__--==__--____
+        # act?  :___--------__------___
+        # evnt :____----------------__
+        ## Trigger Table
+        # isu | act?| evnt| action
+        #  o  |  o  |  o  |  -
+        #  o  |  x  |  o  |  -
+        #  o  |  o  |  x  |  up
+        #  o  |  x  |  x  |  -
+        #  x  |  o  |  o  |  -
+        #  x  |  x  |  o  | down
+        #  x  |  o  |  x  |  up
+        #  x  |  x  |  x  |  -
         if @sv_stat['event']
           @data['act_end'] = now_msec
           if !active? && !@sv_stat['isu']

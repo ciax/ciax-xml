@@ -48,7 +48,7 @@ module CIAX
     end
 
     def to_s
-      verbose { "Shell\n"+inspect }
+      verbose { "Shell\n" + inspect }
       @db.map { |k, v| v if self[k] }.join('')
     end
   end

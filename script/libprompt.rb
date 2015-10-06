@@ -3,6 +3,7 @@ require 'libupd'
 module CIAX
   # For server status through all layers
   class Prompt < Upd
+    NS_COLOR = 9
     attr_reader :db
     def initialize
       super()

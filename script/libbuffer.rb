@@ -25,6 +25,7 @@ require 'libgroup'
 
 module CIAX
   class Buffer < Varx
+    NS_COLOR = 11
     # sv_stat: Server Status
     def initialize(id, ver, sv_stat = {})
       super('issue', id, ver)

@@ -4,6 +4,7 @@ require 'thread'
 
 module CIAX
   class Threadx < Thread
+    NS_COLOR = 4
     include Msg
     def initialize(name, color = 4)
       Thread.abort_on_exception = true

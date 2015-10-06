@@ -4,7 +4,9 @@ module CIAX
   require 'English'  # To use $! -> $ERROR_INFO
   require 'debug' if ENV['DEBUG']
   ScrDir = ::File.dirname(__FILE__)
-
+  
+  # Site Domain
+  module Site; NS_COLOR = 13; end
   # Frame Layer
   module Frm; NS_COLOR = 2; end
   # Application Layer
@@ -13,7 +15,7 @@ module CIAX
   module Wat; NS_COLOR = 9; end
   # HexString Layer
   module Hex; NS_COLOR = 5; end
-  # Macro Layer
+  # Macro Domain
   module Mcr; NS_COLOR = 12; end
   # Device Site DB
   module Dev; NS_COLOR = 2; end
@@ -25,7 +27,7 @@ module CIAX
   module Sym; NS_COLOR = 1; end
   # SqLog module
   module SqLog; NS_COLOR = 1; end
-
+  
   # User input Error
   class UserError < RuntimeError; end
   # When invalid Project, exit from shell/server

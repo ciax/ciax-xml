@@ -47,7 +47,7 @@ module CIAX
     def repeat(e0)
       @rep.clear
       c = e0['counter'] || '_'
-      Msg.abort('Repeat:Counter Duplicate') if @counter.key?(c)
+      Msg.give_up('Repeat:Counter Duplicate') if @counter.key?(c)
       fmt = @format[c] = e0['format'] || '%d'
       enclose("Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]", 'End') do
         Range.new(subst(e0['from']), subst(e0['to'])).each do |n|

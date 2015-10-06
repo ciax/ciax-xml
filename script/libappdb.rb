@@ -27,7 +27,7 @@ module CIAX
         grps = {}
         units = {}
         adbc.each{|e|
-          Msg.abort('No group in adbc') unless e.name == 'group'
+          Msg.give_up('No group in adbc') unless e.name == 'group'
           gid = e.attr2item(grps)
           arc_unit(e, idx, grps[gid], units)
         }

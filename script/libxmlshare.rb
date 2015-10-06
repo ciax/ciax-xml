@@ -37,7 +37,7 @@ module CIAX
             attr[k] = v
           end
         end
-        key = attr.delete(id) || Msg.abort("No such key (#{id})")
+        key = attr.delete(id) || Msg.give_up("No such key (#{id})")
         attr.each do|str, v|
           sym = str.to_sym
           db[sym] = {} unless db.key?(sym)
@@ -58,7 +58,7 @@ module CIAX
             attr[k] = v
           end
         end
-        key = attr.delete(id) || Msg.abort("No such key (#{id})")
+        key = attr.delete(id) || Msg.give_up("No such key (#{id})")
         alert("ATTRDB: Dupricated ID [#{key}]") if db.key?(key)
         db[key] = attr
         key

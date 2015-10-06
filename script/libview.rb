@@ -48,7 +48,7 @@ module CIAX
             prev[a.to_sym] || prev[a.to_s]
           end
         end
-      end || Msg.abort('No such key')
+      end || Msg.give_up('No such key')
       branch = enum.dup.extend(ViewStruct)
       if Hash === branch
         branch.each do|k, v|

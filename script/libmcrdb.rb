@@ -20,7 +20,7 @@ module CIAX
         idx = {}
         grp = {}
         mdbc.each{|e|
-          Msg.abort('No group in mdbc') unless e.name == 'group'
+          Msg.give_up('No group in mdbc') unless e.name == 'group'
           gid = e.attr2item(grp)
           arc_command(e, idx, grp[gid])
         }

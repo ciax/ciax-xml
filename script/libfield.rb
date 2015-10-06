@@ -31,7 +31,7 @@ module CIAX
         enclose("Substitute from [#{str}]", 'Substitute to [%s]'){
           str.gsub(/\$\{(.+)\}/) {
             ary = [*get($1)].map! { |i| eval(i) }
-            Msg.abort("No value for subst [#{$1}]") if ary.empty?
+            Msg.give_up("No value for subst [#{$1}]") if ary.empty?
             ary.join(',')
           }
         }
@@ -43,7 +43,7 @@ module CIAX
       # - ${key:idx1:idx2} => hash[key][idx1][idx2]
       def get(key)
         verbose { "Getting[#{key}]" }
-        Msg.abort('Nill Key') unless key
+        Msg.give_up('Nill Key') unless key
         return @data[key] if @data.key?(key)
         vname = []
         dat = key.split(':').inject(@data){|h, i|
@@ -52,7 +52,7 @@ module CIAX
             begin
               i = eval(i)
             rescue SyntaxError, NoMethodError
-              Msg.abort("#{i} is not number")
+              Msg.give_up("#{i} is not number")
             end
           when nil
             break

@@ -17,7 +17,7 @@ module CIAX
         return CIAX.const_get(cpath) if CIAX.const_defined? cpath
         mary.pop
       end
-      abort("No such constant #{name}")
+      give_up("No such constant #{name}")
     end
 
     def layer_module

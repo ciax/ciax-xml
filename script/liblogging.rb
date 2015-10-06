@@ -44,7 +44,7 @@ module CIAX
     # For new format
     def self.set_logline(str)
       h = JSON.load(str)
-      abort('Logline:Line is not rcv') unless /rcv/ === h['dir']
+      give_up('Logline:Line is not rcv') unless /rcv/ === h['dir']
       if h['base64']
         def h.binary
           self['base64'].unpack('m').first

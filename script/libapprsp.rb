@@ -73,7 +73,7 @@ module CIAX
 
       def get_field(e)
         type?(e, Hash)
-        fld = e['ref'] || Msg.abort("No field Key in #{e}")
+        fld = e['ref'] || Msg.give_up("No field Key in #{e}")
         data = @field.get(fld)
         verbose(data.empty?) { "NoFieldContent in [#{fld}]" }
         data = e[:conv][data] if e[:conv]

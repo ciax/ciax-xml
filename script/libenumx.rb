@@ -33,7 +33,7 @@ module CIAX
     private
 
     def j2h(json_str = nil)
-      JSON.load(json_str || gets(nil) || Msg.abort("No data in file(#{ARGV})"))
+      JSON.load(json_str || gets(nil) || Msg.give_up("No data in file(#{ARGV})"))
     end
 
     # r(operand) will be merged to w (w is changed)

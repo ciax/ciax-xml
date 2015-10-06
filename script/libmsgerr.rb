@@ -63,7 +63,7 @@ module CIAX
       fail ServerError, ary.join("\n  "), caller(2)
     end
 
-    def abort(str = 'abort')
+    def give_up(str = 'give_up')
       Kernel.abort([color(str, 1), $ERROR_INFO.to_s].join("\n"))
     end
 

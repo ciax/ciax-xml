@@ -117,7 +117,7 @@ module CIAX
               f.puts sql
               verbose { "Saved for '#{sql}'" }
             rescue
-              Msg.abort("Sqlite3 input error\n#{sql}")
+              Msg.give_up("Sqlite3 input error\n#{sql}")
             end
           end
         end

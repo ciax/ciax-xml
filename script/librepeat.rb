@@ -2,6 +2,7 @@
 require 'libmsg'
 
 module CIAX
+  # XML Repeated Data Handling Class
   class Repeat
     NS_COLOR = 1
     include Msg
@@ -14,12 +15,9 @@ module CIAX
 
     def each(e0)
       e0.each do|e1|
-        case e1.name
-        when /repeat.*/
+        if /repeat.*/ =~ e1.name
           repeat(e1) do
-            each(e1) do|e2|
-              yield e2, self
-            end
+            each(e1) { |e2| yield e2, self }
           end
         else
           yield e1, self
@@ -28,37 +26,46 @@ module CIAX
     end
 
     def subst(str) # Sub $key => @counter[key]
-      return str unless /\$([_a-z])/ === str
-      res = str.gsub(/\$([_a-z])/) { @counter[$1] }
-      res = res.split(':').map { |i| /\$/ =~ i ? i : eval(i) }.join(':')
+      return str unless Regexp.new('\$([_a-z])').match(str)
+      res = str.gsub(/\$([_a-z])/) { @counter[Regexp.last_match(1)] }
+      res = res.split(':').map {|i|
+        # i could be expression
+        Regexp.new('\$').match(i) ? i : eval(i)
+      }.join(':')
       Msg.cfg_err('Empty String') if res == ''
       verbose { "Substitute [#{str}] to [#{res}]" }
       res
     end
 
     def formatting(str)
-      return str unless /\$([_a-z])/ === str
-      res = str.gsub(/\$([_a-z])/) { @format[$1] % @counter[$1] }
-      verbose { "Format [#{str}] to [#{res}]" }
+      return str unless Regexp.new('\$([_a-z])').match(str)
+      res = str.gsub(/\$([_a-z])/) do
+        @format[Regexp.last_match(1)] % @counter[Regexp.last_match(1)]
+      end
+      verbose { "Formatting [#{str}] to [#{res}]" }
       res
     end
 
     private
+
     def repeat(e0)
       @rep.clear
       c = e0['counter'] || '_'
       Msg.give_up('Repeat:Counter Duplicate') if @counter.key?(c)
       fmt = @format[c] = e0['format'] || '%d'
-      enclose("Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]", 'End') do
-        Range.new(subst(e0['from']), subst(e0['to'])).each do |n|
-          enclose("Turn Number[#{n}] Start", "Turn Number[#{n}] End") do
-            @counter[c] = n
-            @rep.push yield
-          end
-        end
-        @counter.delete(c)
-      end
+      caption = "Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]"
+      enclose(caption, 'End') { sub_repeat(e0, c) { yield } }
       self
+    end
+
+    def sub_repeat(e0, c)
+      Range.new(subst(e0['from']), subst(e0['to'])).each do |n|
+        enclose("Turn Number[#{n}] Start", "Turn Number[#{n}] End") do
+          @counter[c] = n
+          @rep.push yield
+        end
+      end
+      @counter.delete(c)
     end
   end
 end

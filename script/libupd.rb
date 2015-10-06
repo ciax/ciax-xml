@@ -7,8 +7,10 @@ module CIAX
     def initialize
       super()
       # Updater
-      @pre_upd_procs = [proc { verbose { 'Processing PreUpdProcs' } }] # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @post_upd_procs = [proc { verbose { 'Processing PostUpdProcs' } }] # Proc Array for Post-Process of Update Propagation to the upper Layers
+      # Proc Array for Pre-Process of Update Propagation to the upper Layers
+      @pre_upd_procs = [proc { verbose { 'Processing PreUpdProcs' } }]
+      # Proc Array for Post-Process of Update Propagation to the upper Layers
+      @post_upd_procs = [proc { verbose { 'Processing PostUpdProcs' } }]
     end
 
     # update after processing, never iniherit (use upd_core() instead)
@@ -28,6 +30,7 @@ module CIAX
     end
 
     private
+
     def pre_upd
       @pre_upd_procs.each { |p| p.call(self) }
       self

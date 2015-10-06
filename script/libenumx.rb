@@ -3,10 +3,11 @@ require 'libview'
 require 'json'
 # Extened Hash
 module CIAX
+  # Extended Enumerable
   module Enumx
     include ViewStruct
     def self.extended(obj)
-      raise('Not Enumerable') unless obj.is_a? Enumerable
+      fail('Not Enumerable') unless obj.is_a? Enumerable
     end
 
     def deep_copy
@@ -15,9 +16,7 @@ module CIAX
 
     # Freeze one level deepth or more
     def deep_freeze
-      rec_proc(self) do|i|
-        i.freeze
-      end
+      rec_proc(self, &:freeze)
       self
     end
 
@@ -32,6 +31,7 @@ module CIAX
     end
 
     private
+
     def j2h(json_str = nil)
       JSON.load(json_str || gets(nil) || Msg.abort("No data in file(#{ARGV})"))
     end
@@ -40,7 +40,7 @@ module CIAX
     def rec_merge(r, w, d)
       d -= 1 if d
       each_idx(r, w) do|i, cls|
-        w = cls.new unless cls === w
+        w = cls.new unless w.is_a? cls
         if d && d < 1
           verbose { "Merging #{i}" }
           w[i] = r[i]
@@ -61,18 +61,17 @@ module CIAX
       case ope
       when Hash
         ope.each_key { |k| yield k, Hash }
-        res || ope.dup
       when Array
         ope.each_index { |i| yield i, Array }
-        res || ope.dup
       when String
-        ope.dup
       else
-        ope
+        return ope
       end
+      res || ope.dup
     end
   end
 
+  # Extended Hash
   class Hashx < Hash
     include Enumx
     attr_accessor :vmode
@@ -112,6 +111,7 @@ module CIAX
     end
   end
 
+  # Extended Array
   class Arrayx < Array
     include Enumx
     # sary: array of the element numbers [a,b,c,..]

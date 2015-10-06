@@ -36,7 +36,7 @@ module CIAX
       res
     end
 
-    def format(str)
+    def formatting(str)
       return str unless /\$([_a-z])/ === str
       res = str.gsub(/\$([_a-z])/) { @format[$1] % @counter[$1] }
       verbose { "Format [#{str}] to [#{res}]" }

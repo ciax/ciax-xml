@@ -25,7 +25,7 @@ module CIAX
               regular[:exec] << args
             end
           when 'event'
-            id = e0.attr2item(idx) { |_, v| r0.format(v) }
+            id = e0.attr2item(idx) { |_, v| r0.formatting(v) }
             item = idx[id]
             cnd = item[:cnd] = []
             act = item[:act] = {}
@@ -42,7 +42,7 @@ module CIAX
                 cmdgrp[e1['ref']][:members].each { |k| blk << [k] }
               else
                 h = e1.to_h
-                h.each_value { |v| v.replace(r0.format(v)) }
+                h.each_value { |v| v.replace(r0.formatting(v)) }
                 h['type'] = e1.name
                 cnd << h
               end

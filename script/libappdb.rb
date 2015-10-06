@@ -83,7 +83,7 @@ module CIAX
         grp = {}
         idx = Hashx.new
         Repeat.new.each(adbs){|e, r|
-          gid = e.attr2item(grp) { |_, v| r.format(v) }
+          gid = e.attr2item(grp) { |_, v| r.formatting(v) }
           rec_stat(e, idx, grp[gid], r)
         }
         db[:status] = adbs.to_h.update(:group => grp, :index => idx)
@@ -91,7 +91,7 @@ module CIAX
 
       def rec_stat(e, idx, grp, rep)
         rep.each(e){|e0, r0|
-          id = e0.attr2item(idx) { |_, v| r0.format(v) }
+          id = e0.attr2item(idx) { |_, v| r0.formatting(v) }
           item = idx[id]
           (grp[:members] ||= []) << id
           item['type'] = e0.name

@@ -67,6 +67,7 @@ module CIAX
     end
 
     private
+
     def _recursive(data, title, object_ary, ind, show_iv, show_id, depth)
       str = ''
       column = 4
@@ -116,7 +117,7 @@ module CIAX
     end
 
     def _mixed?(str, data, vary, idx, object_ary, ind, show_iv, show_id, depth)
-      if vary.any? { |v| v.kind_of?(Enumerable) }
+      if vary.any? { |v| v.is_a?(Enumerable) }
         idx.each do|i|
           str << _recursive(data[i], i, object_ary, ind, show_iv, show_id, depth)
         end
@@ -127,7 +128,7 @@ module CIAX
       str << indent(ind) + '['
       line = []
       data.each_slice(column) do|a|
-        line << a.map { |v| v.inspect }.join(',')
+        line << a.map(&:inspect).join(',')
       end
       str << line.join(",\n " + indent(ind)) + "]\n"
     end

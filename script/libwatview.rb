@@ -10,23 +10,23 @@ module CIAX
     class View < Upd
       def initialize(event)
         super()
-        @event = type?(event, Event).upd
-        wdb = type?(event.dbi, Dbi)[:watch] || { index: [] }
+        @event = type?(event, Event)
+        wdb = type?(event.dbi, Dbi)[:watch]
+        init_stat(wdb || { index: [] })
         @event.post_upd_procs << proc do
           verbose { 'Propagate Event#upd -> upd' }
           upd
         end
-        init_stat(wdb)
-        upd
       end
 
       def to_v
-        str = time_elps
-        str << time_next
-        str << time_act
-        str << item('Issuing', self['exec'])
-        return str if self['stat'].empty?
-        str << view_cond
+        vw = ''
+        view_time(vw)
+        vw << item('Issuing', self['exec'])
+        return vw if self['stat'].empty?
+        view_cond(vw)
+        vw << item('Interrupt', self['int'])
+        vw << item('Blocked', self['block'])
       end
 
       def to_r
@@ -47,33 +47,11 @@ module CIAX
 
       def init_cond(cond, m)
         cond.each do |cnd|
-          m << Hash[cnd]
-          m.last['cri'] = cnd['val'] if cnd['type'] != 'onchange'
+          h = Hash[cnd]
+          h['cri'] = cnd['val'] if cnd['type'] != 'onchange'
+          m << h
         end
         self
-      end
-
-      def time_elps
-        item('Elapsed', elps_date(self['time'], now_msec))
-      end
-
-      def time_act
-        item('ActiveTime', elps_sec(self['act_start'], self['act_end']))
-      end
-
-      def time_next
-        item('ToNextUpdate', elps_sec(now_msec, self['upd_next']))
-      end
-
-      def item(str, res = nil)
-        '  ' + color(str, 2) + "\t: #{res}\n"
-      end
-
-      def view_cond
-        str = item('Conditions')
-        conditions(str)
-        str << item('Interrupt', self['int'])
-        str << item('Blocked', self['block'])
       end
 
       def upd_core
@@ -87,50 +65,61 @@ module CIAX
 
       def upd_stat
         self['stat'].each do |id, v|
-          upd_cond(v['cond'], id, v)
+          upd_cond(id, v['cond'])
           v['active'] = @event.get('active').include?(id)
         end
         self
       end
 
-      def upd_cond(cond, id, v)
-        cond.each_index do |i|
-          h = v['cond'][i]
-          var = h['var']
-          h['val'] = @event.get('crnt')[var]
+      def upd_cond(id, cond)
+        cond.each_with_index do |h, i|
+          v = h['var']
           h['res'] = @event.get('res')[id][i]
-          h['cri'] = @event.get('last')[var] if h['type'] == 'onchange'
+          h['val'] = @event.get('crnt')[v]
+          h['cri'] = @event.get('last')[v] if h['type'] == 'onchange'
         end
         self
       end
 
-      def conditions(str)
+      def view_time(vw)
+        vw << item('Elapsed', elps_date(self['time'], now_msec))
+        vw << item('ActiveTime', elps_sec(self['act_start'], self['act_end']))
+        vw << item('ToNextUpdate', elps_sec(now_msec, self['upd_next']))
+      end
+
+      def view_cond(vw)
+        vw << item('Conditions')
         self['stat'].values.each do |i|
-          str << '    ' + color(i['label'], 6) + "\t: "
-          str << show_res(i['active']) + "\n"
-          i['cond'].each { |j| str << sub_cond(j) }
+          ary = [color(i['label'], 6), rslt(i['active'])]
+          vw << format("    %s\t: %s\n", *ary)
+          view_event(vw, i['cond'])
         end
       end
 
-      def sub_cond(j)
-        str = '      ' + show_res(j['res'], 'o', 'x') + ' '
-        str << color(j['var'], 3) + '  '
-        ope = j['inv'] ? '!~' : '=~'
-        str << "(#{j['type']}: "
+      def view_event(vw, cond)
+        cond.each do |j|
+          ary = [rslt(j['res']), color(j['var'], 3), j['type'], frml(j)]
+          vw << format("      %s %s  (%s: %s)\n", *ary)
+        end
+      end
+
+      def frml(j)
+        cri = j['cri']
+        val = j['val']
         if j['type'] == 'onchange'
-          str << "#{j['cri']} => #{j['val']}"
+          format('%s => %s', cri, val)
         else
-          str << "/#{j['cri']}/ #{ope} #{j['val']}"
+          ope = j['inv'] ? '!' : '='
+          format('/%s/ %s~ %s', cri, ope, val)
         end
-        str << ")\n"
       end
 
-      def head(str, clr)
-        '    ' + color(str, clr) + "\t: "
+      def rslt(res)
+        color(res ? 'o' : 'x', res ? 2 : 1)
       end
 
-      def show_res(res, t = nil, f = nil)
-        res ? color(t || res, 2) : color(f || res, 1)
+      def item(str, res = nil)
+        format("  %s\t: %s\n", color(str, 2), res)
       end
     end
 
@@ -141,8 +130,9 @@ module CIAX
       begin
         id = STDIN.tty? ? ARGV.shift : event.read['id']
         dbi = Ins::Db.new.get(id)
-        event.setdbi(dbi).ext_save.ext_load if STDIN.tty?
+        event.setdbi(dbi)
         wview = View.new(event)
+        event.ext_save.ext_load if STDIN.tty?
         puts STDOUT.tty? ? wview : wview.to_j
       rescue InvalidID
         OPT.usage('(opt) [site] | < event_file')

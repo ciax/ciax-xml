@@ -14,14 +14,14 @@ module CIAX
       mary = mod.to_s.split('::')
       mary.size.times do
         cpath = (mary + [name]).join('::')
-        return eval(cpath) if eval("defined? #{cpath}")
+        return CIAX.const_get(cpath) if CIAX.const_defined? cpath
         mary.pop
       end
       abort("No such constant #{name}")
     end
 
     def layer_module
-      eval self.class.name.split('::')[1]
+      CIAX.const_get self.class.name.split('::')[1]
     end
 
     def class_path

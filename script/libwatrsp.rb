@@ -154,9 +154,9 @@ module CIAX
         stat = App::Status.new
         id = STDIN.tty? ? ARGV.shift : stat.read['id']
         dbi = Ins::Db.new.get(id)
-        stat.set_dbi(dbi)
+        stat.setdbi(dbi)
         stat.ext_save.ext_load if STDIN.tty?
-        event = Event.new.set_dbi(dbi).ext_rsp(stat)
+        event = Event.new.setdbi(dbi).ext_rsp(stat)
         if (t = OPT['t'])
           event.ext_save.ext_load
           stat.str_update(t)

@@ -20,8 +20,7 @@ module CIAX
       @thread = Thread.current # For Thread safe
     end
 
-
-    def set_dbi(dbi)
+    def setdbi(dbi)
       @dbi = type?(dbi, Dbi)
       _setid(dbi['site_id'] || dbi['id'])
       self['ver'] = dbi['version'].to_i
@@ -41,6 +40,7 @@ module CIAX
     end
 
     private
+
     def _setid(id)
       self['id'] = id || Msg.cfg_err('ID')
       self

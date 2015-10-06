@@ -21,7 +21,7 @@ module CIAX
         @cfg[:frm_site] = @dbi['frm_site']
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
         @sv_stat = @sub.sv_stat.add_db('isu' => '*')
-        @stat = Status.new.set_dbi(@dbi)
+        @stat = Status.new.setdbi(@dbi)
         @batch_interrupt = []
         @host ||= @dbi['host']
         @port ||= @dbi['port']

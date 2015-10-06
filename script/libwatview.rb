@@ -100,7 +100,7 @@ module CIAX
       begin
         id = STDIN.tty? ? ARGV.shift : event.read['id']
         dbi = Ins::Db.new.get(id)
-        event.set_dbi(dbi).ext_save.ext_load if STDIN.tty?
+        event.setdbi(dbi).ext_save.ext_load if STDIN.tty?
         wview = View.new(event)
         puts STDOUT.tty? ? wview : wview.to_j
       rescue InvalidID

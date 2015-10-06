@@ -12,7 +12,7 @@ module CIAX
         @flush_procs = [proc { verbose { 'Processing FlushProcs' } }]
       end
 
-      def set_dbi(db)
+      def setdbi(db)
         super
         # Field Initialize
         if @data.empty?

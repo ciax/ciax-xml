@@ -11,7 +11,7 @@ module CIAX
         super(id, cfg)
         @sub = @cfg[:sub_list].get(@id)
         @cobj.add_rem(@sub.cobj.rem)
-        @stat = Event.new.set_dbi(@dbi)
+        @stat = Event.new.setdbi(@dbi)
         @sv_stat = @sub.sv_stat.add_db('auto' => '&', 'event' => '@')
         @sub.batch_interrupt = @stat.get('int')
         @mode = @sub.mode

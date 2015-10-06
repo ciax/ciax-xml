@@ -84,9 +84,9 @@ module CIAX
     def pri_sort(p, batch)
       verbose { "SUB:Recieve [#{batch}] with priority[#{p}]" }
       (@outbuf[p] ||= []).concat(batch)
-      i = -1
-      @outbuf.map do|o|
-        verbose { "SUB:Outbuf(#{i += 1}) is [#{o}]\n" }
+      verbose do
+        i = -1
+        @outbuf.map { |o| "SUB:Outbuf(#{i += 1}) is [#{o}]\n" }
       end
     end
 

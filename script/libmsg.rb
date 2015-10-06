@@ -10,7 +10,7 @@ module CIAX
   module Msg
     attr_accessor :cls_color
     Start_time = Time.now
-    @@base = 1
+    @indent_base = 1
     # block takes array (shown by each line)
     # Description of values
     #   [val] -> taken from  xml (criteria)
@@ -18,7 +18,6 @@ module CIAX
     #   (val) -> calcurated from status
     def verbose(cond = true)
       return if !ENV['VER'] || !cond
-      @ver_indent = @@base
       msg, data = make_title(yield)
       return unless @show_inside || condition(msg)
       Kernel.warn msg
@@ -27,28 +26,25 @@ module CIAX
     end
 
     def warning(title)
-      @ver_indent = @@base
       Kernel.warn make_msg(Msg.color(title.to_s, 3))
       self
     end
 
     def alert(title)
-      @ver_indent = @@base
       Kernel.warn make_msg(Msg.color(title.to_s, 5))
       self
     end
 
     def errmsg
-      @ver_indent = @@base
       Kernel.warn make_msg(Msg.color("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1))
     end
 
     def enclose(title1, title2)
       @show_inside = verbose { title1 }
-      @@base += 1
+      Msg.ver_indent(1)
       res = yield
     ensure
-      @@base -= 1
+      Msg.ver_indent(-1)
       verbose { Kernel.format(title2, res) }
       @show_inside = false
     end
@@ -70,7 +66,7 @@ module CIAX
     def show_data(data)
       data.each do|str|
         str.to_s.split("\n").each do|line|
-          Kernel.warn Msg.indent(@ver_indent + 1) + line
+          Kernel.warn Msg.indent(Msg.ver_indent + 1) + line
         end
       end
     end
@@ -95,14 +91,14 @@ module CIAX
     end
 
     def make_head
-      Msg.indent(@ver_indent) + head_ary.map do|str, color|
+      Msg.indent(Msg.ver_indent) + head_ary.map do|str, color|
         Msg.color("#{str}", color)
       end.join(':')
     end
 
     def ns_color(ns)
       begin
-        color = eval("#{ns}::NS_COLOR")
+        color = CIAX.const_get("#{ns}::NS_COLOR")
       rescue NameError
         Msg.msg("No color defined for #{ns}::NS_COLOR", 3)
         color = 7
@@ -119,6 +115,10 @@ module CIAX
           msg.upcase.include?(e.upcase)
         end
       end
+    end
+
+    def self.ver_indent(add = 0)
+      @indent_base += add
     end
   end
 end

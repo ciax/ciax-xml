@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+$: << __dir__
 require 'libmcrlayer'
 # CIAX-XML Macro Shell
 module CIAX

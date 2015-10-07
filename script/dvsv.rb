@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+$: << __dir__
 require 'libwatexe'
 # CIAX-XML Device Server
 module CIAX

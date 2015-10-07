@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+$: << __dir__
 require 'libappexe'
 # CIAX-XML Device Executor
 module CIAX

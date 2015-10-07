@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+$: << __dir__
 require 'libmcrman'
 # CIAX-XML Macro Server
 module CIAX

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-$: << __dir__
+$LOAD_PATH << __dir__
 require 'libhexexe'
 # CIAX-XML Device Server for V1
 module CIAX

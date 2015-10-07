@@ -12,7 +12,8 @@ module CIAX
     end
 
     # Colored format
-    # spacify color with :n (n =0..f) located between '%' and flag
+    # specify color with :n (n =0..f) located between '%' and flag
+    # (ex. '%:1s')
     def cformat(fmt, *ary)
       fmt.gsub!(/%.*?[a-zA-Z]/) do |m|
         m.sub!(/:(.)/, '')
@@ -29,6 +30,8 @@ module CIAX
       "\033[#{c >> 3};3#{c & 7}m#{text}\33[0m"
     end
 
+    # Display DB item in one line fromat.
+    #    title : description
     def item(key, val, kmax = 3)
       indent(1) + color(key, 3).ljust(kmax + 11) + ": #{val}"
     end
@@ -55,6 +58,4 @@ module CIAX
       [vx, kx]
     end
   end
-
-  puts Msg.cformat('x % :6 5s 23', 'ab')
 end

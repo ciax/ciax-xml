@@ -2,7 +2,9 @@
 require 'libdatax'
 
 module CIAX
+  # Application Layer
   module App
+    # Status Data
     class Status < DataH
       # @ last*
       attr_reader :last
@@ -23,7 +25,10 @@ module CIAX
       end
 
       def change?(id)
-        verbose { "Compare(#{id}) current=[#{@data[id]}] vs last=[#{@last[id]}]" }
+        verbose do
+          "Compare(#{id}) current=[#{@data[id]}]"\
+          " vs last=[#{@last[id]}]"
+        end
         @data[id] != @last[id]
       end
 
@@ -39,6 +44,7 @@ module CIAX
       end
     end
 
+    # Loading feature
     module Load
       # @< (db),(base),(prefix)
       # @< (last)

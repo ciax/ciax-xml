@@ -1,6 +1,5 @@
 #!/bin/bash
 cd ../..
 export HOME=$PWD
-export XMLPATH=$HOME/ciax-xml
-export RUBYLIB=$XMLPATH/script
+export RUBYLIB=$HOME/ciax-xml/script
 bin/dvexe $1 $2 2>&1

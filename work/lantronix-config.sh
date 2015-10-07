@@ -1,7 +1,7 @@
 #!/bin/bash
 # use nc for input to lantronix (i.e. ltcfg id | nc host 23)
-ltf=$XMLPATH/DB-ltx.csv
-rsf=$XMLPATH/DB-rs.csv
+ltf=~/ciax-xml/DB-ltx.csv
+rsf=~/ciax-xml/DB-rs.csv
 [ "$1" ] || {
     echo "Usage:ltcfg [id] (range)"
     echo -n "   "

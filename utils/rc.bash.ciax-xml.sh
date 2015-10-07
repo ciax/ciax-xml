@@ -20,7 +20,6 @@ shopt -s nullglob
 export LANG="C"
 addenv PATH "$HOME/bin" "$HOME/lib"
 addenv RUBYLIB "$HOME/ciax-xml/script"
-addenv XMLPATH "$HOME/ciax-xml"
 
 #Alias
 alias chkxml=check-xml

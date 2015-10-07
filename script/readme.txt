@@ -18,7 +18,6 @@ sqlite3: light weight sql server for logging, not for access from multiple proce
 
 ## ENV Var ##
  RUBYLIB
- XMLPATH
  PROJ
  NOCACHE
  DEBUG

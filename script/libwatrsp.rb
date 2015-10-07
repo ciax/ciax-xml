@@ -66,8 +66,8 @@ module CIAX
         @period = per > 1 ? per : 300
         @regexe = reg[:exec] || [['upd']]
         verbose do
-          ary = [@period, @regexe]
-          format('Auto Update Initialize: Period = %s sec, Command = %s)', *ary)
+          format('Auto Update Initialize: Period = %s sec, Command = %s)',
+                 @period, @regexe)
         end
         self
       end
@@ -149,14 +149,14 @@ module CIAX
               if (tol = ckitm['tolerance'])
                 res = ((cri.to_f - val.to_f).abs > tol.to_f)
                 verbose do
-                  ary = [vn, cri, val, tol, res.inspect]
-                  format('  onChange(%s): |[%s]-<%s>| > %s =>%s', *ary)
+                  format('  onChange(%s): |[%s]-<%s>| > %s =>%s',
+                         vn, cri, val, tol, res.inspect)
                 end
               else
                 res = (cri != val)
                 verbose do
-                  ary = [vn, cri.inspect, val, res.inspect]
-                  format('  onChange(%s): [%s] vs <%s> =>%s', *ary)
+                  format('  onChange(%s): [%s] vs <%s> =>%s',
+                         vn, cri.inspect, val, res.inspect)
                 end
               end
             else
@@ -166,16 +166,16 @@ module CIAX
             cri = ckitm['val']
             res = Regexp.new(cri).match(val)
             verbose do
-              ary = [vn, cri, val, res.inspect]
-              format('  Pattern(%s): [%s] vs <%s> =>%s', *ary)
+              format('  Pattern(%s): [%s] vs <%s> =>%s',
+                     vn, cri, val, res.inspect)
             end
           when 'range'
             cri = ckitm['val']
             f = format('%.3f', val.to_f)
             res = (ReRange.new(cri) == f)
             verbose do
-              ary = [vn, cri, f, val.class, res.inspect]
-              format('  Range(%s): [%s] vs <%s>(%s) =>%s', *ary)
+              format('  Range(%s): [%s] vs <%s>(%s) =>%s',
+                     vn, cri, f, val.class, res.inspect)
             end
           end
           res = !res if /true|1/ =~ ckitm['inv']

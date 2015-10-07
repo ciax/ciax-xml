@@ -45,7 +45,7 @@ module CIAX
         verbose { 'Search corresponding RES' }
         sql = "select min(time),count(*),cmd,base64 from #{@tbl} where dir='rcv' and cmd='#{cmd}' and time > #{tim};"
         ans = query(sql)
-        tim, count, _ = ans.split('|')
+        tim, count, = ans.split('|')
         verbose { color("LINE:[#{cmd}](#{@total - count.to_i}/#{@total})<#{wait(tim)}>", 2) }
         sql = "select base64 from #{@tbl} where time = #{tim};"
         query(sql)

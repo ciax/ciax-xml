@@ -38,7 +38,7 @@ module CIAX
     end
 
     def keys
-      @generation.map { |h| h.this_keys }.flatten.uniq
+      @generation.map(&:this_keys).flatten.uniq
     end
 
     def to_hash

@@ -14,7 +14,7 @@ module CIAX
     end
 
     def valid_keys
-      map { |e| e.valid_keys }.flatten
+      map(&:valid_keys).flatten
     end
 
     def set_cmd(args = [], opt = {})
@@ -24,11 +24,11 @@ module CIAX
     end
 
     def valid_pars
-      map { |e| e.valid_pars }.flatten
+      map(&:valid_pars).flatten
     end
 
     def view_list
-      map { |e| e.view_list }.grep(/./).join("\n")
+      map(&:view_list).grep(/./).join("\n")
     end
 
     # If cls is String or Symbol, constant is taken locally.

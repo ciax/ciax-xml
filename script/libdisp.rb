@@ -57,7 +57,7 @@ module CIAX
       end
 
       def kmax
-        list_table.keys.map { |k| k.size }.max || 0
+        list_table.keys.map(&:size).max || 0
       end
 
       private
@@ -104,7 +104,7 @@ module CIAX
       end
 
       def reset!
-        each { |cg| cg.reset! }
+        each(&:reset!)
         self
       end
 
@@ -127,8 +127,8 @@ module CIAX
       end
 
       def grp_lists
-        vmax = map { |cg| cg.vmax }.max
-        kmax = map { |cg| cg.kmax }.max
+        vmax = map(&:vmax).max
+        kmax = map(&:kmax).max
         map { |cg| cg.view(vmax, kmax) }.grep(/./).join("\n")
       end
     end

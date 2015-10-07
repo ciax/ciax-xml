@@ -103,7 +103,7 @@ module CIAX
         # Pick Part
         r = e0['slice']
         if r
-          str = str.slice(*r.split(':').map { |i| i.to_i })
+          str = str.slice(*r.split(':').map(&:to_i))
           verbose { "Pick: [#{str.inspect}] by range=[#{r}]" }
         end
         decode(e0, str)

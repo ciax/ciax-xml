@@ -22,7 +22,7 @@ module CIAX
             'force' => 'Proceed',
             'pass' => 'Execution',
             'ok' => 'for the message',
-            'retry' => 'Checking',
+            'retry' => 'Checking'
           }.each{|id, cap|
             add_item(id, id.capitalize + ' ' + cap)
           }
@@ -65,7 +65,7 @@ module CIAX
       begin
         cobj = Index.new(cfg, { :dbi => Db.new.get(PROJ) })
         cobj.add_rem
-        cobj.rem.def_proc { |ent| ent.path }
+        cobj.rem.def_proc(&:path)
         cobj.rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)
         puts ent.path

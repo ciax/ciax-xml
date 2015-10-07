@@ -33,7 +33,7 @@ module CIAX
       # @displist is Disp::List
       lid = 'list'
       lid += "-#{@proj}" if @proj
-      @displist = cache(lid) { |doc| doc.displist }
+      @displist = cache(lid, &:displist)
     end
 
     def get(id)

@@ -49,7 +49,7 @@ module CIAX
         dif = next_upd
         if dif
           verbose { "Auto Update Sleep(#{dif}sec)" }
-          Kernel.sleep dif 
+          Kernel.sleep dif
         end
         self
       end

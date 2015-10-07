@@ -64,7 +64,7 @@ module CIAX
     end
 
     def valid_pars
-      values.map { |e| e.valid_pars }.flatten
+      values.map(&:valid_pars).flatten
     end
 
     def set_cmd(args, opt = {})

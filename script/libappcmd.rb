@@ -56,7 +56,7 @@ module CIAX
       dbm = OPT['d'] ? Db : Ins::Db
       begin
         cobj = Index.new(cfg, { :dbi => dbm.new.get(id) })
-        cobj.add_rem.def_proc { |ent| ent.path }
+        cobj.add_rem.def_proc(&:path)
         cobj.rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)
         puts ent[:batch].to_s

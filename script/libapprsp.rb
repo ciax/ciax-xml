@@ -43,7 +43,7 @@ module CIAX
               case type
               when 'float', 'integer'
                 sign = (/^[+-]$/ === ary[0]) ? (ary.shift + '1').to_i : 1
-                data = ary.map { |e| e.to_f }.inject(0) { |r, e| r + e }
+                data = ary.map(&:to_f).inject(0) { |r, e| r + e }
                 data = data / ary.size if hash['opration'] == 'average'
                 case type
                 when 'float'

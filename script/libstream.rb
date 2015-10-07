@@ -27,7 +27,7 @@ module CIAX
         @pre_open_proc = proc {}
         @post_open_proc = proc {}
         Signal.trap(:CHLD) do
-          verbose { "#@iocmd is terminated" }
+          verbose { "#{@iocmd} is terminated" }
         end
         reopen
       end
@@ -56,12 +56,12 @@ module CIAX
             rescue EOFError
               # Jumped at quit
               @f.close
-              fail (CommError)
+              fail(CommError)
             end
           else
             Msg.com_err('Stream:No response')
           end
-          break unless @terminator and /#@terminator/ !~ str
+          break unless @terminator and /#{@terminator}/ !~ str
         end
         verbose { "Recieved #{str.size} byte on #{self['cmd']}" }
         verbose { "Data Recieved\n"+str.inspect }

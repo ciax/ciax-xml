@@ -13,7 +13,7 @@ module CIAX
         @index = 0
         @sqlcmd = ['sqlite3', ENV['HOME'] + '/.var/sqlog_' + id + '.sq3']
         @tbl = query('.tables').split(/ /).grep(/^stream/).sort.last || raise('No Stream table')
-        @total = query("select count(*) from #@tbl where dir='rcv';").to_i
+        @total = query("select count(*) from #{@tbl} where dir='rcv';").to_i
         raise('No Line') if @total < 1
       end
 
@@ -30,7 +30,7 @@ module CIAX
       def find_next(str)
         begin
           verbose { 'Search corresponding CMD' }
-          sql = "select min(time),cmd from #@tbl where time > #@index and base64='#{str}';"
+          sql = "select min(time),cmd from #{@tbl} where time > #{@index} and base64='#{str}';"
           ans = query(sql)
           tim, cmd = ans.split('|')
           verbose { "Matched time is #{tim}" }
@@ -43,11 +43,11 @@ module CIAX
           retry
         end
         verbose { 'Search corresponding RES' }
-        sql = "select min(time),count(*),cmd,base64 from #@tbl where dir='rcv' and cmd='#{cmd}' and time > #{tim};"
+        sql = "select min(time),count(*),cmd,base64 from #{@tbl} where dir='rcv' and cmd='#{cmd}' and time > #{tim};"
         ans = query(sql)
         tim, count, _ = ans.split('|')
         verbose { color("LINE:[#{cmd}](#{@total - count.to_i}/#{@total})<#{wait(tim)}>", 2) }
-        sql = "select base64 from #@tbl where time = #{tim};"
+        sql = "select base64 from #{@tbl} where time = #{tim};"
         query(sql)
       end
 

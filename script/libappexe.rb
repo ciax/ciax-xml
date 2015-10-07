@@ -97,13 +97,13 @@ module CIAX
           buf.upd
         }
         @cobj.rem.ext.def_proc{|ent, src, pri|
-          verbose { "#@id/Issuing:#{ent.id} from #{src} with priority #{pri}" }
+          verbose { "#{@id}/Issuing:#{ent.id} from #{src} with priority #{pri}" }
           buf.send(ent, pri)
           'ISSUED'
         }
         @cobj.get('interrupt').def_proc{|_, src|
           @batch_interrupt.each{|args|
-            verbose { "#@id/Issuing:#{args} for Interrupt" }
+            verbose { "#{@id}/Issuing:#{args} for Interrupt" }
             buf.send(@cobj.set_cmd(args), 0)
           }
           warning("Interrupt(#{@batch_interrupt}) from #{src}")

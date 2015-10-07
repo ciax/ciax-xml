@@ -40,7 +40,7 @@ module CIAX
 
       # set generates document branch of db items(Hash), which includes attribute and domains
       def set(id)
-        raise(InvalidID, "No such ID(#{id}) in #@type\n" + @displist.to_s) unless key?(id)
+        raise(InvalidID, "No such ID(#{id}) in #{@type}\n" + @displist.to_s) unless key?(id)
         top = self[id]
         item = { :top => top, :attr => top.to_h, :domain => {} }
         top.each{|e1|

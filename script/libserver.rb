@@ -12,7 +12,7 @@ module CIAX
     def ext_server
       @sub.ext_server if @sub
       return self unless @port
-      verbose { "Initialize UDP server (#@id) [#{@port}]" }
+      verbose { "Initialize UDP server (#{@id}) [#{@port}]" }
       @server_input_proc = proc do|line|
         begin
           JSON.load(line)
@@ -29,7 +29,7 @@ module CIAX
       return self unless @port
       udp = UDPSocket.open
       udp.bind('0.0.0.0', @port.to_i)
-      ThreadLoop.new("Server(#@layer:#@id)", 9) do
+      ThreadLoop.new("Server(#{@layer}:#{@id})", 9) do
         IO.select([udp])
         line, addr = udp.recvfrom(4096)
         line.chomp!

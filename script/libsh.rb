@@ -45,8 +45,8 @@ module CIAX
     end
 
     def prompt
-      str = "#@layer:#@id"
-      str += "(#@mode)" if @mode
+      str = "#{@layer}:#{@id}"
+      str += "(#{@mode})" if @mode
       str += @prompt_proc.call if @prompt_proc
       str + '>'
     end
@@ -55,7 +55,7 @@ module CIAX
     # '^D' gives interrupt
     # mode gives special break (loop returns mode).
     def shell
-      verbose { "Shell(#@id)" }
+      verbose { "Shell(#{@id})" }
       Readline.completion_proc = proc{|word|
         (@cobj.valid_keys + @cobj.valid_pars).grep(/^#{word}/)
       }

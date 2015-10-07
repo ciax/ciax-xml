@@ -32,12 +32,12 @@ module CIAX
       @proj = proj
       # @displist is Disp::List
       lid = 'list'
-      lid += "-#@proj" if @proj
+      lid += "-#{@proj}" if @proj
       @displist = cache(lid) { |doc| doc.displist }
     end
 
     def get(id)
-      raise(InvalidID, "No such ID (#{id}) in #@type\n" + @displist.to_s) unless @displist.key?(id)
+      raise(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s) unless @displist.key?(id)
       cache(id) do|doc|
         doc_to_db(doc.set(id))
       end
@@ -73,17 +73,17 @@ module CIAX
 
     def newest?
       if ENV['NOCACHE']
-        verbose { "#@type/Cache ENV NOCACHE is set" }
+        verbose { "#{@type}/Cache ENV NOCACHE is set" }
         return false
       elsif !test(?e, @marfile)
-        verbose { "#@type/Cache MAR file(#{@base}) not exist" }
+        verbose { "#{@type}/Cache MAR file(#{@base}) not exist" }
         return false
       else
         newer = cmp($".grep(/#{ScrDir}/) + Dir.glob(XmlDir + "/#{@type}-*.xml"))
         if newer
-          verbose { "#@type/Cache File(#{newer}) is newer than cache" }
-          verbose { "#@type/Cache cache=#{::File::Stat.new(@marfile).mtime}" }
-          verbose { "#@type/Cache file=#{::File::Stat.new(newer).mtime}" }
+          verbose { "#{@type}/Cache File(#{newer}) is newer than cache" }
+          verbose { "#{@type}/Cache cache=#{::File::Stat.new(@marfile).mtime}" }
+          verbose { "#{@type}/Cache file=#{::File::Stat.new(newer).mtime}" }
           return false
         end
       end

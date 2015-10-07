@@ -36,7 +36,7 @@ module CIAX
           @frame = Frame.new(self[:dbi]['endian'], self[:dbi]['ccmethod'])
           return unless @body
           @sel[:body] = @body
-          verbose { "Body:#{self['label']}(#@id)" }
+          verbose { "Body:#{self['label']}(#{@id})" }
           mk_frame(:body)
           if @sel.key?(:ccrange)
             @frame.cc_mark
@@ -45,7 +45,7 @@ module CIAX
           end
           mk_frame(:main)
           frame = @fstr[:main]
-          verbose { "Cmd Generated [#@id]" }
+          verbose { "Cmd Generated [#{@id}]" }
           self[:frame] = frame
           @field.echo = frame # For send back
         end

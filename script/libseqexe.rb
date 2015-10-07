@@ -57,7 +57,7 @@ module CIAX
         end
 
         def fork
-          @th_mcr = Threadx.new("Macro(#@id)", 10) { macro }
+          @th_mcr = Threadx.new("Macro(#{@id})", 10) { macro }
           @cobj.get('interrupt').def_proc{
             @th_mcr.raise(Interrupt)
             'INTERRUPT'

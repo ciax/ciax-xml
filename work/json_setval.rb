@@ -13,11 +13,12 @@ readlines.each do|str|
   exp.each do|e|
     key, v = e.split('=').map(&:strip)
     final = key.split(':').inject(field) do|h, k|
-      if Array === h
+      case h
+      when Array
         if k == '0' || k.to_i > 0
           if k.to_i > h.size
             warn("Out of range [0..#{h.size - 1}]")
-          elsif Enumerable === h[k.to_i]
+          elsif h[k.to_i].is_a? Enumerable
             h[k.to_i]
           else
             h[k.to_i] = v
@@ -25,9 +26,9 @@ readlines.each do|str|
         else
           warn("Not number [#{k}]")
         end
-      elsif Hash === h
+      when Hash
         if h.key?(k)
-          if Enumerable === h[k]
+          if h[k].is_a? Enumerable
             h[k]
           else
             h[k] = v
@@ -40,7 +41,7 @@ readlines.each do|str|
         h
       end
     end
-    abort("Key shortage\n  #{final}") if Enumerable === final
+    abort("Key shortage\n  #{final}") if final.is_a? Enumerable
   end
 end
 puts JSON.dump(field)

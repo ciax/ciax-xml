@@ -1,25 +1,29 @@
 #!/usr/bin/ruby
 require 'json'
 
+def _hm(a, b)
+  b ||= {}
+  a.keys.each { |k| b[k] = merge(a[k], b[k]) }
+end
+
+def _am(a, b)
+  b ||= []
+  a.size.times { |i| b[i] = merge(a[i], b[i]) }
+end
+
 def merge(a, b)
   case a
   when Hash
-    b ||= {}
-    a.keys.each do|k|
-      b[k] = merge(a[k], b[k])
-    end
+    _hm(a, b)
   when Array
-    b ||= []
-    a.size.times do|i|
-      b[i] = merge(a[i], b[i])
-    end
+    _am(a, b)
   else
     b = a || b
   end
   b
 end
 if STDIN.tty? || !file = ARGV.shift
-  abort "Usage: json_merge [status_file] < [json_data]\n#{$ERROR_INFO}"
+  abort 'Usage: json_merge [status_file] < [json_data]'
 end
 output = {}
 begin

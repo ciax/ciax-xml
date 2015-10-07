@@ -12,7 +12,7 @@ EOF
 end
 
 xpath = ARGV.shift
-if /-r/ === xpath
+if /-r/ =~ xpath
   xpath = ARGV.shift
   attr = ARGV.shift || abort('No attr')
   doc = Document.new(gets(nil))

@@ -52,17 +52,20 @@ end
 
 def prt_seq(seq)
   seq.each do|ary|
-    if ary[0] != 'mcr'
-      name = "#{ary[0]}_#{ary[1]}"
-      unless @mdb.key?(name)
-        prt_exe(ary)
-        next
-      end
+    ary = dev_mcr(ary)
+    if ary[0] == 'mcr'
+      indent(ary[0], 'name' => ary[1])
     else
-      name = ary[1]
+      prt_exe(ary)
     end
-    indent('mcr', 'name' => name)
   end
+end
+
+# Make small macro corresponding device command which has own interlock
+def dev_mcr(ary)
+  name = "#{ary[0]}_#{ary[1]}"
+  ary = ['mcr', name] if @mdb.key?(name)
+  ary
 end
 
 abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.size < 1

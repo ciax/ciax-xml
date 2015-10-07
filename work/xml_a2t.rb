@@ -15,7 +15,8 @@ end
 xpath = ARGV.shift
 attr = ARGV.shift || abort('No attr')
 doc = Document.io(STDIN)
-if ns = ARGV.shift
+ns = ARGV.shift
+if ns
   url = 'http://ciax.sum.naoj.org/ciax-xml'
   nodes = doc.find("//dns:#{xpath}", "dns:#{url}/#{ns}")
 else

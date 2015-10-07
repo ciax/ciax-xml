@@ -1,20 +1,20 @@
 #!/usr/bin/ruby
-require 'libsitedb'
+require 'libinsdb'
 require 'libfrmcmd'
 require 'libfrmrsp'
 require 'libapprsp'
 require 'libstatus'
 require 'libsqlog'
 require 'liblogging'
-
+# Convert Stream Log in SqLog to App::Staus;
 module CIAX
-  GetOpts.new('t', 'v' => 'verbose')
+  OPT.parse('t', 'v' => 'verbose')
   begin
     fail(InvalidID, '') if STDIN.tty? && ARGV.size < 1
-    ldb = Loc::Db.new
+    ldb = Ins::Db.new
     field = Frm::Field.new
     stat = App::Status.new
-    sqlog = SqLog::Upd.new(stat, $opt['t'] && 'test')
+    sqlog = SqLog::Upd.new(stat, OPT['t'] && 'test')
     fobj = nil
     site_id = nil
     logline = ['begin;']
@@ -39,7 +39,7 @@ module CIAX
         logline << sqlog.upd
         Msg.progress
       rescue
-        $stderr.print $ERROR_INFO if $opt['v']
+        $stderr.print $ERROR_INFO if OPT['v']
         Msg.progress(false)
       end
     end
@@ -47,7 +47,7 @@ module CIAX
     $stderr.puts
     puts logline.join("\n")
   rescue InvalidID
-    $opt.usage('(opt) [stream_log]')
+    OPT.usage('(opt) [stream_log]')
     # input format 'sqlite3 -header'
   end
 end

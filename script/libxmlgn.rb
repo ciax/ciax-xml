@@ -36,7 +36,7 @@ module CIAX
 
       def text
         @e.each do|n|
-          return n.content if n.text? && /[\S]/ === n.content
+          return n.content if n.text? && /[\S]/ =~ n.content
         end
         nil
       end

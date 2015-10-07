@@ -34,7 +34,7 @@ module CIAX
         res = self['result']
         if res
           cap = res.capitalize
-          color = (/failed|timeout/ === res) ? 1 : 2
+          color = (/failed|timeout/ =~ res) ? 1 : 2
           mary[0] << ' -> ' + Msg.color(cap, color)
           (self['conditions'] || {}).each do|h|
             res = h['res'] ? body('o', 2) : body('x', 1)

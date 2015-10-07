@@ -65,7 +65,7 @@ module CIAX
 
           def clean
             @data.delete_if {|_, seq|
-              ! (Exe === seq && seq.th_mcr.status)
+              ! (seq.is_a?(Exe) && seq.th_mcr.status)
             }
             upd
             self

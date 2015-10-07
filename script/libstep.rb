@@ -66,7 +66,7 @@ module CIAX
       # Execution section
       def async?
         show title
-        res = (/true|1/ === self['async'])
+        res = (/true|1/ =~ self['async'])
         self['result'] = res ? 'forked' : 'entering'
         upd
         res

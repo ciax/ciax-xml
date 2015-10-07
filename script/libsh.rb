@@ -65,7 +65,7 @@ module CIAX
         rescue Interrupt
           line = 'interrupt'
         end
-        break if /^q/ === line
+        break if /^q/ =~ line
         cmds = line.split(';')
         cmds = [''] if cmds.empty?
         begin

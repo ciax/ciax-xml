@@ -38,7 +38,7 @@ module CIAX
     # Show branch (omit lower tree of Hash/Array with sym key)
     def path(ary = [])
       enum = ary.inject(self) do|prev, a|
-        if /@/ === a
+        if /@/ =~ a
           prev.instance_variable_get(a)
         else
           case prev
@@ -50,14 +50,14 @@ module CIAX
         end
       end || Msg.give_up('No such key')
       branch = enum.dup.extend(ViewStruct)
-      if Hash === branch
+      if branch.is_a? Hash
         branch.each do|k, v|
-          branch[k] = v.class.to_s if Enumerable === v
+          branch[k] = v.class.to_s if v.is_a?(Enumerable)
         end
       end
       branch.instance_variables.each do|n|
         v = branch.instance_variable_get(n)
-        branch.instance_variable_set(n, v.class.to_s) if Enumerable === v
+        branch.instance_variable_set(n, v.class.to_s) if v.is_a?(Enumerable)
       end
       branch.view_struct(true, true)
     end
@@ -82,7 +82,7 @@ module CIAX
         else
           str << indent(ind) + color('%-6s' % title.inspect, 2)
         end
-        str << color("(#{id})", 4) if show_id && Enumerable === data
+        str << color("(#{id})", 4) if show_id && data.is_a?(Enumerable)
         str << " :\n"
         ind += 1
       else
@@ -98,7 +98,7 @@ module CIAX
     end
 
     def _show(str, data, object_ary, ind, column, title, show_iv, show_id, depth)
-      if Enumerable === data
+      if data.is_a?(Enumerable)
         if object_ary.include?(data.object_id)
           return str.chomp + " #{data.class}(Loop)\n"
         else

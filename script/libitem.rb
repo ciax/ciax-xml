@@ -27,7 +27,7 @@ module CIAX
 
     def set_par(par, opt = {})
       cid = @cfg[:id]
-      if Array === @cfg['argv']
+      if @cfg['argv'].is_a? Array
         par = @cfg['argv']
       else
         cid = [cid, *par].join(':')
@@ -93,7 +93,7 @@ module CIAX
             next num.to_s
           when 'reg'
             verbose { "Validate: [#{str}] Match? [#{disp}]" }
-            unless list.any? { |r| Regexp.new(r) === str }
+            unless list.any? { |r| Regexp.new(r).match(str) }
               Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
             end
           else

@@ -28,7 +28,7 @@ module CIAX
           super
           @field = type?(self[:field], Field)
           @fstr = {}
-          if /true|1/ === self['noaffix']
+          if /true|1/ =~ self['noaffix']
             @sel = { main: ['body'] }
           else
             @sel = Hash[self[:dbi][:command][:frame]]

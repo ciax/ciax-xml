@@ -54,7 +54,7 @@ module CIAX
         bin = 0
         @list.each {|key, title, len, type|
           len = len.to_i
-          if key === '%pck'
+          if key =~ '%pck'
             pck = len
             bin = 0
           elsif pck > 0

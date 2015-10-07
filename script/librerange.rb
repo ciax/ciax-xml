@@ -7,16 +7,16 @@ module CIAX
     # Range format (between) "X:Y","X<Y","X<:Y","X:<Y"
     def initialize(str)
       @eq = @max = @min = @min_ex = @max_ex = nil
-      if /[:<]+/ === str
+      if /[:<]+/ =~ str
         min = $`
         ope = $&
         max = $'
         if min != ''
-          @min_ex = true if /^</ === ope
+          @min_ex = true if /^</ =~ ope
           @min = s2f(min)
         end
         if max != ''
-          @max_ex = true if /<$/ === ope
+          @max_ex = true if /<$/ =~ ope
           @max = s2f(max)
         end
       else
@@ -40,7 +40,7 @@ module CIAX
     # For float /^-?[0-9]+(\.[0-9]+)?$/
     def s2f(str)
       return str if str.is_a? Numeric
-      if /^0[Xx][0-9a-fA-F]+$/ === str
+      if /^0[Xx][0-9a-fA-F]+$/ =~ str
         str.to_i(0).to_f
       else
         str.to_f

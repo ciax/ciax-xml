@@ -27,7 +27,7 @@ module CIAX
       # - str format: ${key}
       # - output csv if array
       def subst(str) # subst by field
-        return str unless /\$\{/ === str
+        return str unless /\$\{/ =~ str
         enclose("Substitute from [#{str}]", 'Substitute to [%s]') {
           str.gsub(/\$\{(.+)\}/) {
             ary = [*get(Regexp.last_match(1))].map! { |i| eval(i) }
@@ -96,9 +96,9 @@ module CIAX
       private
 
       def merge_ary(p, r)
-        r = [r] unless Array === r
+        r = [r] unless r.is_a? Array
         p.map! {|i|
-          if Array === i
+          if i.is_a? Array
             merge_ary(i, r.shift)
           else
             r.shift || i

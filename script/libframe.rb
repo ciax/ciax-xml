@@ -181,7 +181,7 @@ module CIAX
           base = 16
         when 'decstr' # "80000123" -> "-123"
           # sign: k3n=F, oss=8,
-          sign = (/[8Ff]/ === code[0]) ? '-' : ''
+          sign = (/[8Ff]/ =~ code[0]) ? '-' : ''
           num = sign + code[1..-1].sub(/0+/, '')
           base = 10
         when 'binstr'

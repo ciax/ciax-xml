@@ -76,7 +76,7 @@ module CIAX
         return self unless @stat['time'] > @last_updated
         @last_updated = self['time'] = @stat['time']
         sync
-        @data.values.each { |a| a.clear if Array === a }
+        @data.values.each { |a| a.clear if a.is_a? Array }
         @windex.each {|id, item|
           next unless check(id, item)
           item[:act].each {|key, ary|

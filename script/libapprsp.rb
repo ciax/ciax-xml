@@ -43,7 +43,7 @@ module CIAX
               ary = flds.map { |e| get_field(e) }
               case type
               when 'float', 'integer'
-                sign = (/^[+-]$/ === ary[0]) ? (ary.shift + '1').to_i : 1
+                sign = (/^[+-]$/ =~ ary[0]) ? (ary.shift + '1').to_i : 1
                 data = ary.map(&:to_f).inject(0) { |a, e| a + e }
                 data /= ary.size if hash['opration'] == 'average'
                 case type
@@ -78,7 +78,7 @@ module CIAX
         data = @field.get(fld)
         verbose(data.empty?) { "NoFieldContent in [#{fld}]" }
         data = e[:conv][data] if e[:conv]
-        if /true|1/ === e['sign']
+        if /true|1/ =~ e['sign']
           verbose { "ConvertField[#{fld}]=[#{data.inspect}]" }
           if data == e['negative']
             data = '-'
@@ -92,7 +92,7 @@ module CIAX
 
       def get_bin(e)
         data = get_field(e).to_i
-        inv = (/true|1/ === e['inv'])
+        inv = (/true|1/ =~ e['inv'])
         str = index_range(e['bit']).map {|sft|
           bit = (data >> sft & 1)
           bit = -(bit - 1) if inv

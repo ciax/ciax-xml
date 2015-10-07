@@ -52,7 +52,7 @@ module CIAX
               verbose { "VIEW:Range:[#{sym['val']}] and [#{val}]" }
               self['msg'][key] = "#{sym['msg']}(#{val})"
             when 'pattern'
-              next unless /#{sym['val']}/ === val || val == 'default'
+              next unless /#{sym['val']}/ =~ val || val == 'default'
               verbose { "VIEW:Regexp:[#{sym['val']}] and [#{val}]" }
             end
             if numeric

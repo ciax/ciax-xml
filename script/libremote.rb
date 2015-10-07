@@ -98,7 +98,7 @@ module CIAX
         end
 
         def add_item(id, label, item)
-          if Array === item[:parameters]
+          if item[:parameters].is_a? Array
             label = label.gsub(/\$([\d]+)/, '%s') % item[:parameters].map { |e| e['label'] }
           end
           super
@@ -118,7 +118,7 @@ module CIAX
         end
 
         def subst(str) # subst by parameters ($1,$2...)
-          return str unless /\$([\d]+)/ === str
+          return str unless /\$([\d]+)/ =~ str
           enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
             num = true
             res = str.gsub(/\$([\d]+)/) do

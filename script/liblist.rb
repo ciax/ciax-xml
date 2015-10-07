@@ -34,7 +34,7 @@ module CIAX
         begin
           switch(@current).shell
         rescue @cfg[:jump_class]
-          @current = $!.to_s
+          @current = $ERROR_INFO.to_s
           retry
         rescue InvalidID
           OPT.usage('(opt) [id]')

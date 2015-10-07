@@ -74,7 +74,7 @@ module CIAX
         begin
           openstrm if !@f || @f.closed?
         rescue SystemCallError
-          warning($!)
+          warning($ERROR_INFO)
           Msg.str_err('Stream Open failed') if int > 2
           warning('Try to reopen')
           sleep int

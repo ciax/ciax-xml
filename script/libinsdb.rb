@@ -45,7 +45,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $0
+    if __FILE__ == $PROGRAM_NAME
       begin
         dbi = Db.new(ARGV.shift).get(ARGV.shift)
       rescue

@@ -84,7 +84,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $0
+    if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       OPT.parse('rc', 'c' => 'CSV output')
       stat = Status.new

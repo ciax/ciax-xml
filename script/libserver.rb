@@ -41,7 +41,7 @@ module CIAX
         rescue InvalidCMD
           @sv_stat.msg('INVALID')
         rescue
-          @sv_stat.msg("ERROR:#{$!}")
+          @sv_stat.msg("ERROR:#{$ERROR_INFO}")
           errmsg
         end
         send_str = @server_output_proc.call

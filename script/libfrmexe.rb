@@ -30,8 +30,8 @@ module CIAX
       def exe(args, src = 'local', pri = 1)
         super
       rescue CommError
-        @sv_stat.set('comerr').msg($!.to_s)
-        raise $!
+        @sv_stat.set('comerr').msg($ERROR_INFO.to_s)
+        raise $ERROR_INFO
       end
 
       def ext_shell
@@ -109,7 +109,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $0
+    if __FILE__ == $PROGRAM_NAME
       ENV['VER'] ||= 'initialize'
       OPT.parse('ceh:lts')
       cfg = Config.new

@@ -43,10 +43,10 @@ module CIAX
       @post_exe_procs.each { |p| p.call(args, src) }
       self
     rescue LongJump
-      raise $!
+      raise $ERROR_INFO
     rescue InvalidID
-      @sv_stat.msg($!.to_s)
-      raise $!
+      @sv_stat.msg($ERROR_INFO.to_s)
+      raise $ERROR_INFO
     end
 
     def to_s

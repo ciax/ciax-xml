@@ -102,7 +102,7 @@ module CIAX
             begin
               get_exe(num).shell
             rescue Jump
-              num = $!.to_s
+              num = $ERROR_INFO.to_s
               retry
             rescue InvalidID
               OPT.usage('(opt) [site]')
@@ -111,7 +111,7 @@ module CIAX
         end
       end
 
-      if __FILE__ == $0
+      if __FILE__ == $PROGRAM_NAME
         ENV['VER'] ||= 'initialize'
         OPT.parse('tenr')
         cfg = Config.new

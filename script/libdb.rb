@@ -79,7 +79,7 @@ module CIAX
         verbose { "#{@type}/Cache MAR file(#{@base}) not exist" }
         return false
       else
-        newer = cmp($".grep(/#{ScrDir}/) + Dir.glob(XmlDir + "/#{@type}-*.xml"))
+        newer = cmp($LOADED_FEATURES.grep(/#{ScrDir}/) + Dir.glob(XmlDir + "/#{@type}-*.xml"))
         if newer
           verbose { "#{@type}/Cache File(#{newer}) is newer than cache" }
           verbose { "#{@type}/Cache cache=#{::File::Stat.new(@marfile).mtime}" }

@@ -58,7 +58,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $0
+    if __FILE__ == $PROGRAM_NAME
       OPT.parse('r')
       OPT.usage '(-r) < record_file' if STDIN.tty?
       puts Record.new.read

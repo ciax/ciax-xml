@@ -75,7 +75,7 @@ module CIAX
         rescue UserError
           nil
         rescue ServerError
-          warning($!)
+          warning($ERROR_INFO)
         end
         puts @sv_stat.msg.empty? ? @shell_output_proc.call : @sv_stat.msg
         verbose { "Threads\n#{Threadx.list}" }

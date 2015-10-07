@@ -61,7 +61,7 @@ module CIAX
             bin += @stat.get(key).to_i
             bin << 1
             pck -= 1
-            @res[6] << '%x' % bin if pck == 0
+            @res[6] << format('%x', bin) if pck == 0
           else
             v = @stat.get(key)
             if v
@@ -98,13 +98,13 @@ module CIAX
       def get_elem(type, len, val)
         case type
         when /FLOAT/
-          str = ("%0#{len}.2f" % val.to_f)
+          str = format("%0#{len}.2f", val.to_f)
         when /INT/
-          str = ("%0#{len}d" % val.to_i)
+          str = format("%0#{len}d", val.to_i)
         when /BINARY/
-          str = ("%0#{len}b" % val.to_i)
+          str = format("%0#{len}b", val.to_i)
         else
-          str = ("%#{len}s" % val)
+          str = format("%#{len}s", val)
         end
         str
       end

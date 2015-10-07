@@ -100,7 +100,7 @@ module CIAX
           if @current > @stat.size or @stat.size > @lastsize
             set_current(@lastsize = @stat.size)
           end
-          msg = '[%d]' % @current
+          msg = format('[%d]', @current)
           if @current > 0
             seq = @stat.get(@parameter[:default])
             msg << "(#{seq['stat']})" + optlist(seq['option'])

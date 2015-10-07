@@ -55,7 +55,7 @@ module CIAX
         dif = (tim.to_i > @index) ? [tim.to_i - @index, 1000].min : 0
         wt = dif.to_f / 1000
         sleep wt
-        '%.3f' % wt
+        format('%.3f', wt)
       end
 
       def input

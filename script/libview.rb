@@ -35,7 +35,7 @@ module CIAX
     end
 
     def vmode(mode)
-      @vmode=mode
+      @vmode = mode
       ''
     end
 

@@ -11,6 +11,16 @@ module CIAX
       INDENT * ind
     end
 
+    # Colored format
+    # spacify color with :n (n =0..f) located between '%' and flag
+    def cformat(fmt, *ary)
+      fmt.gsub!(/%.*?[a-zA-Z]/) do |m|
+        m.sub!(/:(.)/, '')
+        $+ ? color(m, $+.hex) : m
+      end
+      format(fmt, *ary)
+    end
+
     # Color 1=red,2=green,4=blue,8=bright
     def color(text, c = nil)
       return '' if text == ''
@@ -45,4 +55,6 @@ module CIAX
       [vx, kx]
     end
   end
+
+  puts Msg.cformat('x % :6 5s 23', 'ab')
 end

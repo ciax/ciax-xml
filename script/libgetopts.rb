@@ -16,7 +16,7 @@ module CIAX
     def parse(str, db = {})
       Msg.type?(str, String)
       @optdb.update(db)
-      optary = current_options(str)
+      optary = current_options(str) + db.keys
       make_usage(optary)
       update(ARGV.getopts(optary.join('')))
       make_layer

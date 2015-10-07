@@ -61,7 +61,7 @@ module CIAX
           else
             Msg.com_err('Stream:No response')
           end
-          break unless @terminator and /#{@terminator}/ !~ str
+          break unless @terminator && /#{@terminator}/ !~ str
         end
         verbose { "Recieved #{str.size} byte on #{self['cmd']}" }
         verbose { "Data Recieved\n" + str.inspect }

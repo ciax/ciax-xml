@@ -10,8 +10,8 @@ module CIAX
   # Usage:[]/  get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
     attr_reader :generation
-    alias :this_keys :keys
-    alias :this_key? :key?
+    alias_method :this_keys, :keys
+    alias_method :this_key?, :key?
     def initialize(cfg = nil, obj = self)
       super()
       @generation = [self]
@@ -43,7 +43,7 @@ module CIAX
 
     def to_hash
       hash = Hashx.new
-      @generation.reverse.each { |h| hash.update h }
+      @generation.reverse_each { |h| hash.update h }
       hash
     end
 
@@ -73,7 +73,7 @@ module CIAX
       str = ''
       @generation.each do|h|
         str = "  [#{i}]{" + h.map do|k, v|
-          next if key and k != key
+          next if key && k != key
           case v
           when Hash, Proc, CmdProc
             val = v.class

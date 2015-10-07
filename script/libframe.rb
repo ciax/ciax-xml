@@ -143,7 +143,7 @@ module CIAX
 
       def cc_check(cc)
         return self unless cc
-        if  cc == @cc
+        if cc == @cc
           verbose { "Cc Verify OK [#{cc}]" }
         else
           cc_err("CC Mismatch:[#{cc}] (should be [#{@cc}]) in [#{@ccrange.inspect}]")

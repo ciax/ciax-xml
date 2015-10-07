@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # Class/Module Definition
 module CIAX
-  require 'English'  # To use $! -> $ERROR_INFO
+  require 'English' # To use $! -> $ERROR_INFO
   require 'debug' if ENV['DEBUG']
   ScrDir = ::File.dirname(__FILE__)
 

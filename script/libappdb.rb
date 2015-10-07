@@ -31,7 +31,7 @@ module CIAX
           gid = e.attr2item(grps)
           arc_unit(e, idx, grps[gid], units)
         }
-        db[:command] = { :group => grps, :index => idx }
+        db[:command] = { group: grps, index: idx }
         db[:command][:unit] = units unless units.empty?
       end
 
@@ -86,7 +86,7 @@ module CIAX
           gid = e.attr2item(grp) { |_, v| r.formatting(v) }
           rec_stat(e, idx, grp[gid], r)
         }
-        db[:status] = adbs.to_h.update(:group => grp, :index => idx)
+        db[:status] = adbs.to_h.update(group: grp, index: idx)
       end
 
       def rec_stat(e, idx, grp, rep)

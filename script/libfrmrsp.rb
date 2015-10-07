@@ -139,7 +139,7 @@ module CIAX
       field = Field.new.setdbi(dbi).ext_rsp { res }
       field.ext_save.ext_load if OPT['m']
       if cid
-        cfg = Config.new.update(:dbi => dbi, :field => field)
+        cfg = Config.new.update(dbi: dbi, field: field)
         cobj = Index.new(cfg)
         cobj.add_rem.add_ext(Ext)
         ent = cobj.set_cmd(cid.split(':'))

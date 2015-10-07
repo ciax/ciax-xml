@@ -15,9 +15,7 @@ module CIAX
         @cfg[:output] = View.new(@sub.stat, @sub.sv_stat)
         @post_exe_procs.concat(@sub.post_exe_procs)
         @port = @sub.port.to_i + 1000
-        if OPT['e']
-          @cfg[:output].ext_log
-        end
+        @cfg[:output].ext_log if OPT['e']
       end
 
       def ext_server

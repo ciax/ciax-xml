@@ -30,8 +30,8 @@ module CIAX
               bary = flds.map { |e| get_bin(e) }
               case hash['operation']
               when 'uneven'
-                ba = bary.inject { |r, e| r.to_i & e.to_i }
-                bo = bary.inject { |r, e| r.to_i | e.to_i }
+                ba = bary.inject { |a, e| a.to_i & e.to_i }
+                bo = bary.inject { |a, e| a.to_i | e.to_i }
                 binstr = (ba ^ bo).to_s
               else
                 binstr = bary.join
@@ -43,8 +43,8 @@ module CIAX
               case type
               when 'float', 'integer'
                 sign = (/^[+-]$/ === ary[0]) ? (ary.shift + '1').to_i : 1
-                data = ary.map(&:to_f).inject(0) { |r, e| r + e }
-                data = data / ary.size if hash['opration'] == 'average'
+                data = ary.map(&:to_f).inject(0) { |a, e| a + e }
+                data /= ary.size if hash['opration'] == 'average'
                 case type
                 when 'float'
                   data = (sign * data).to_f

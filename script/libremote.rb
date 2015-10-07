@@ -16,7 +16,7 @@ module CIAX
       attr_reader :hid, :ext, :int
       def initialize(cfg, attr = {})
         super
-        @cfg[:def_proc] = Proc.new { '' } # proc is re-defined
+        @cfg[:def_proc] = proc { '' } # proc is re-defined
       end
 
       def add_hid(ns = Hid)
@@ -53,10 +53,10 @@ module CIAX
         end
 
         def def_pars(n = 1)
-          any = { :type => 'reg', :list => ['.'] }
+          any = { type: 'reg', list: ['.'] }
           ary = []
           n.times { ary << any }
-          { :parameters => ary }
+          { parameters: ary }
         end
       end
       class Item < Item; end
@@ -122,7 +122,7 @@ module CIAX
           enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
             num = true
             res = str.gsub(/\$([\d]+)/) do
-              i = $1.to_i
+              i = Regexp.last_match(1).to_i
               num = false if self[:parameters][i - 1][:type] != 'num'
               verbose { "Parameter No.#{i} = [#{@par[i - 1]}]" }
               @par[i - 1] || Msg.cfg_err(" No substitute data ($#{i})")

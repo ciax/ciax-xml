@@ -42,7 +42,7 @@ module CIAX
       def set(id)
         fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + @displist.to_s) unless key?(id)
         top = self[id]
-        item = { :top => top, :attr => top.to_h, :domain => {} }
+        item = { top: top, attr: top.to_h, domain: {} }
         top.each {|e1|
           item[:domain][e1.name] = e1 unless top.ns == e1.ns
         }

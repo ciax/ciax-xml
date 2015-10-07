@@ -40,7 +40,7 @@ module CIAX
       require 'libhexexe'
       OPT.parse('els')
       begin
-        Layer.new(:site => ARGV.shift).ext_shell.shell
+        Layer.new(site: ARGV.shift).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

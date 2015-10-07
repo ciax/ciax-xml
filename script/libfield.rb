@@ -30,8 +30,8 @@ module CIAX
         return str unless /\$\{/ === str
         enclose("Substitute from [#{str}]", 'Substitute to [%s]') {
           str.gsub(/\$\{(.+)\}/) {
-            ary = [*get($1)].map! { |i| eval(i) }
-            Msg.give_up("No value for subst [#{$1}]") if ary.empty?
+            ary = [*get(Regexp.last_match(1))].map! { |i| eval(i) }
+            Msg.give_up("No value for subst [#{Regexp.last_match(1)}]") if ary.empty?
             ary.join(',')
           }
         }

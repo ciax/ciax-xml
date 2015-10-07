@@ -171,8 +171,8 @@ module CIAX
         str
       end
 
-      def decode(e, code) # Chr -> Num
-        cdc = e['decode']
+      def decode(e0, code) # Chr -> Num
+        cdc = e0['decode']
         return code.to_s unless cdc
         case cdc
         when 'hexstr' # "FF" -> "255"
@@ -189,10 +189,10 @@ module CIAX
         else
           ary = code.unpack('C*')
           ary.reverse! if @endian == 'little'
-          num = ary.inject(0) { |r, i| r * 256 + i }
+          num = ary.inject(0) { |a, e| a * 256 + e }
           base = 256
         end
-        case e['sign']
+        case e0['sign']
         when 'msb'
           range = base**code.size
           num = num < range / 2 ? num : num - range
@@ -201,9 +201,9 @@ module CIAX
         num.to_s
       end
 
-      def encode(e, str) # Num -> Chr
-        str = e['format'] % eval(str) if e['format']
-        len = e['length']
+      def encode(e0, str) # Num -> Chr
+        str = e0['format'] % eval(str) if e0['format']
+        len = e0['length']
         if len
           code = ''
           num = eval(str)

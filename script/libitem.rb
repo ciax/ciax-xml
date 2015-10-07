@@ -33,7 +33,7 @@ module CIAX
         cid = [cid, *par].join(':')
       end
       par = validate(type?(par, Array))
-      opt.update(:par => par, :cid => cid)
+      opt.update(par: par, cid: cid)
       verbose { "SetPAR(#{@cfg[:id]}): #{par}" }
       if key?(cid)
         verbose { "SetPAR: Entity Cache found(#{cid})" }

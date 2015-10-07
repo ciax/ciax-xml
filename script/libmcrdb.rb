@@ -24,7 +24,7 @@ module CIAX
           gid = e.attr2item(grp)
           arc_command(e, idx, grp[gid])
         }
-        { :group => grp, :index => idx }
+        { group: grp, index: idx }
       end
 
       def arc_command(e, idx, grp)

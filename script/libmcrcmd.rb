@@ -11,7 +11,7 @@ module CIAX
         attr_reader :par
         def initialize(cfg, crnt = {})
           super
-          @par = { :type => 'str', :list => [], :default => '0' }
+          @par = { type: 'str', list: [], default: '0' }
           @cfg[:parameters] = [@par]
           {
             'start' => 'Sequence',
@@ -63,7 +63,7 @@ module CIAX
       cfg = Config.new
       cfg[:dev_list] = Wat::List.new(cfg).sub_list
       begin
-        cobj = Index.new(cfg, { :dbi => Db.new.get(PROJ) })
+        cobj = Index.new(cfg, { dbi: Db.new.get(PROJ) })
         cobj.add_rem
         cobj.rem.def_proc(&:path)
         cobj.rem.add_ext(Ext)

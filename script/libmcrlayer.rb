@@ -9,7 +9,7 @@ module CIAX
     class Layer < Site::Layer
       def initialize(attr = {})
         super
-        put('mcr', Man::Exe.new(@cfg, { :dev_list => get('app') }))
+        put('mcr', Man::Exe.new(@cfg, { dev_list: get('app') }))
         @current = 'mcr'
       end
     end

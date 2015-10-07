@@ -22,7 +22,7 @@ module CIAX
         frm = init_frame(doc[:domain]['cmdframe']) { |e, r| init_cmd(e, r) }
         idx = init_index(doc[:domain]['command']) { |e, r| init_cmd(e, r) }
         grp = { 'main' => { 'caption' => 'Device Commands', :members => idx.keys } }
-        dbi[:command] = { :group => grp, :index => idx, :frame => frm }
+        dbi[:command] = { group: grp, index: idx, frame: frm }
         dbi
       end
 
@@ -32,7 +32,7 @@ module CIAX
         frm = init_frame(doc[:domain]['rspframe']) { |e| init_rsp(e, fld) }
         idx = init_index(doc[:domain]['response']) { |e| init_rsp(e, fld) }
         dbi['frm_id'] = dbi['id']
-        dbi[:response] = { :index => idx, :frame => frm }
+        dbi[:response] = { index: idx, frame: frm }
         dbi
       end
 

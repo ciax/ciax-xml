@@ -31,14 +31,12 @@ module CIAX
       end
 
       def shell
-        begin
-          switch(@current).shell
-        rescue @cfg[:jump_class]
-          @current = $ERROR_INFO.to_s
-          retry
-        rescue InvalidID
-          OPT.usage('(opt) [id]')
-        end
+        switch(@current).shell
+      rescue @cfg[:jump_class]
+        @current = $ERROR_INFO.to_s
+        retry
+      rescue InvalidID
+        OPT.usage('(opt) [id]')
       end
 
       private

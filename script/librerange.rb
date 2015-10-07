@@ -8,7 +8,9 @@ module CIAX
     def initialize(str)
       @eq = @max = @min = @min_ex = @max_ex = nil
       if /[:<]+/ === str
-        min, ope, max = $`, $&, $'
+        min = $`
+        ope = $&
+        max = $'
         if min != ''
           @min_ex = true if /^</ === ope
           @min = s2f(min)
@@ -29,7 +31,7 @@ module CIAX
       return 1 if @min && @min > num
       return -1 if @max_ex && @max <= num
       return -1 if @max && @max < num
-      return 0
+      0
     end
 
     private

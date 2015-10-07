@@ -50,7 +50,7 @@ module CIAX
           end
         end
         regular[:exec] << ['upd'] if regular[:exec].empty?
-        db[:watch] = wdb.to_h.update(:index => idx, :regular => regular)
+        db[:watch] = wdb.to_h.update(index: idx, regular: regular)
       end
 
       private

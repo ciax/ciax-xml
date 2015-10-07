@@ -87,7 +87,7 @@ module CIAX
       end
 
       def dryrun?
-        ! OPT['m'] && self['action'] = 'dryrun'
+        !OPT['m'] && self['action'] = 'dryrun'
       end
 
       # Sub methods

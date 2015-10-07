@@ -30,7 +30,7 @@ module CIAX
       adbs = @dbi[:status]
       @index = adbs[:index]
       get_element(%w(time elapsed), '', 2)
-      adbs[:group].values.each{|g|
+      adbs[:group].values.each {|g|
         cap = g['caption'] || next
         get_element(g[:members], cap, g['column'])
       }
@@ -43,12 +43,12 @@ module CIAX
       push '<tr>'
       push '<th colspan="6">Controls</th></tr>'
       push '<tr>'
-      unitary.each{|unit|
+      unitary.each {|unit|
         udb = uidx[unit]
         if udb
           push '<td class="item">'
           push '<span class="ctllabel">' + udb['label'] + '</span>'
-          udb[:members].each{|id|
+          udb[:members].each {|id|
             push '<span class="center">'
             label = @dbi[:command][:index][id]['label'].upcase
             push '<input class="button" type="button" value="' + label + '" onclick="dvctl(' + "'#{id}'" + ')"/>'
@@ -68,10 +68,10 @@ module CIAX
     def get_element(members, cap = '', col = nil)
       col = col.to_i > 0 ? col.to_i : 6
       push '<table><tbody>'
-      push  "<tr><th colspan=\"6\">#{cap}</th></tr>" unless cap.empty?
-      members.each_slice(col){|da|
+      push "<tr><th colspan=\"6\">#{cap}</th></tr>" unless cap.empty?
+      members.each_slice(col) {|da|
         push '<tr>'
-        da.each{|id|
+        da.each {|id|
           label = (@index[id] || {})['label'] || id.upcase
           push "<td class=\"item\">"
           push "<span class=\"label\">#{label}</span>"

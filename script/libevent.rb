@@ -39,7 +39,7 @@ module CIAX
       # Update the next update time
       # Return rest time unless expired
       def next_upd
-        dif = ((@data['upd_next'] || 0) - now_msec)/1000
+        dif = ((@data['upd_next'] || 0) - now_msec) / 1000
         return dif if dif.between?(0, @period)
         @data['upd_next'] = now_msec + @period * 1000
         nil

@@ -30,29 +30,29 @@ module CIAX
       private
       def ext_test
         ext_non_client
-        @post_exe_procs << proc{ @stat.next_upd }
+        @post_exe_procs << proc { @stat.next_upd }
         self
       end
 
       def ext_driver
         ext_non_client
         @stat.ext_log if OPT['e']
-        @stat.post_upd_procs << proc{|ev|
-          ev.get('exec').each{|src, pri, args|
+        @stat.post_upd_procs << proc {|ev|
+          ev.get('exec').each {|src, pri, args|
             verbose { "Executing:#{args} from [#{src}] by [#{pri}]" }
             @sub.exe(args, src, pri)
             sleep ev.interval
           }.clear
         }
         @tid_auto = auto_update
-        @sub.post_exe_procs << proc{
+        @sub.post_exe_procs << proc {
           @sv_stat.put('auto', @tid_auto && @tid_auto.alive?)
         }
         self
       end
 
       def ext_non_client
-        @stat.post_upd_procs << proc{|ev|
+        @stat.post_upd_procs << proc {|ev|
           verbose { 'Propagate Event#upd -> upd' }
           block = ev.get('block').map { |id, par| par ? nil : id }.compact
           @cobj.rem.ext.valid_sub(block)
@@ -64,7 +64,7 @@ module CIAX
 
       def auto_update
         @stat.next_upd
-        ThreadLoop.new("Watch:Auto(#{@id})", 14){
+        ThreadLoop.new("Watch:Auto(#{@id})", 14) {
           @stat.upd.auto_exec.sleep
         }
       end

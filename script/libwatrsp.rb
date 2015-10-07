@@ -24,10 +24,10 @@ module CIAX
         @interval = wdb['interval'].to_f if wdb.key?('interval')
         # Pick usable val
         @list = []
-        @windex.values.each{|v|
+        @windex.values.each {|v|
           @list |= v[:cnd].map { |i| i['var'] }
         }
-        @stat.post_upd_procs << proc{
+        @stat.post_upd_procs << proc {
           verbose { 'Propagate Status#upd -> upd' }
           upd
         }
@@ -37,7 +37,7 @@ module CIAX
 
       def queue(src, pri, batch = [])
         @last_updated = self['time'] = now_msec
-        batch.each{|args|
+        batch.each {|args|
           @data['exec'] << [src, pri, args]
         }
         post_upd
@@ -77,11 +77,11 @@ module CIAX
         @last_updated = self['time'] = @stat['time']
         sync
         @data.values.each { |a| a.clear if Array === a }
-        @windex.each{|id, item|
+        @windex.each {|id, item|
           next unless check(id, item)
-          item[:act].each{|key, ary|
+          item[:act].each {|key, ary|
             if key == :exec
-              ary.each{|args|
+              ary.each {|args|
                 @data['exec'] << ['event', 2, args]
               }
             else
@@ -129,7 +129,7 @@ module CIAX
       end
 
       def sync
-        @list.each{|i|
+        @list.each {|i|
           @data['last'][i] = @data['crnt'][i]
           @data['crnt'][i] = @stat.get(i)
         }
@@ -139,7 +139,7 @@ module CIAX
         return true unless (cklst = item[:cnd])
         verbose { "Check: <#{item['label']}>" }
         rary = []
-        cklst.each{|ckitm|
+        cklst.each {|ckitm|
           vn = ckitm['var']
           val = @stat.get(vn)
           case ckitm['type']

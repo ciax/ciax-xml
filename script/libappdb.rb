@@ -26,7 +26,7 @@ module CIAX
         idx = {}
         grps = {}
         units = {}
-        adbc.each{|e|
+        adbc.each {|e|
           Msg.give_up('No group in adbc') unless e.name == 'group'
           gid = e.attr2item(grps)
           arc_unit(e, idx, grps[gid], units)
@@ -36,11 +36,11 @@ module CIAX
       end
 
       def arc_unit(e, idx, grp, units)
-        e.each{|e0|
+        e.each {|e0|
           case e0.name
           when 'unit'
             uid = e0.attr2item(units)
-            e0.each{|e1|
+            e0.each {|e1|
               id = arc_command(e1, idx)
               (units[uid][:members] ||= []) << id
               idx[id]['unit'] = uid
@@ -57,12 +57,12 @@ module CIAX
       def arc_command(e0, idx)
         id = e0.attr2item(idx)
         item = idx[id]
-        Repeat.new.each(e0){|e1, rep|
+        Repeat.new.each(e0) {|e1, rep|
           par2item(e1, item) && next
           case e1.name
           when 'frmcmd'
             command = [e1['name']]
-            e1.each{|e2|
+            e1.each {|e2|
               argv = e2.to_h
               argv['val'] = rep.subst(e2.text)
               if /\$/ !~ argv['val']
@@ -82,7 +82,7 @@ module CIAX
         adbs = doc[:domain]['status']
         grp = {}
         idx = Hashx.new
-        Repeat.new.each(adbs){|e, r|
+        Repeat.new.each(adbs) {|e, r|
           gid = e.attr2item(grp) { |_, v| r.formatting(v) }
           rec_stat(e, idx, grp[gid], r)
         }
@@ -90,16 +90,16 @@ module CIAX
       end
 
       def rec_stat(e, idx, grp, rep)
-        rep.each(e){|e0, r0|
+        rep.each(e) {|e0, r0|
           id = e0.attr2item(idx) { |_, v| r0.formatting(v) }
           item = idx[id]
           (grp[:members] ||= []) << id
           item['type'] = e0.name
           item[:fields] = []
-          r0.each(e0){|e1, r1|
+          r0.each(e0) {|e1, r1|
             st = {}
             st['sign'] = 'true' if e1.name == 'sign'
-            e1.to_h.each{|k, v|
+            e1.to_h.each {|k, v|
               case k
               when 'bit', 'index'
                 st[k] = r1.subst(v)
@@ -109,7 +109,7 @@ module CIAX
             }
             i = st.delete('index')
             st['ref'] << ":#{i}" if i
-            e1.each{|e2|
+            e1.each {|e2|
               (st[:conv] ||= {})[e2.text] = e2['msg']
             }
             item[:fields] << st

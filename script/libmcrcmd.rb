@@ -23,7 +23,7 @@ module CIAX
             'pass' => 'Execution',
             'ok' => 'for the message',
             'retry' => 'Checking'
-          }.each{|id, cap|
+          }.each {|id, cap|
             add_item(id, id.capitalize + ' ' + cap)
           }
         end
@@ -40,7 +40,7 @@ module CIAX
           super
           # @cfg[:body] expansion
           sequence = Arrayx.new
-          @body.each{|elem|
+          @body.each {|elem|
             case elem['type']
             when 'select'
               hash = { 'type' => 'mcr' }

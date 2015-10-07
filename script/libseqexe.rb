@@ -32,7 +32,7 @@ module CIAX
           type?(@mcfg[:dev_list], CIAX::List)
           @record = Record.new.ext_save.ext_load.mklink # Make latest link
           @record['pid'] = pid
-          @submcr_proc = @mcfg[:submcr_proc] || proc{|args|
+          @submcr_proc = @mcfg[:submcr_proc] || proc {|args|
             show { "Sub Macro #{args} issued\n" }
             { 'id' => 'dmy' }
           }
@@ -50,7 +50,7 @@ module CIAX
           int = @cobj.rem.add_int(Int)
           self['option'] = int.valid_keys.clear
           int.def_proc { |ent| reply(ent.id) }
-          int.add_item('start', 'Sequece Start').def_proc{
+          int.add_item('start', 'Sequece Start').def_proc {
             fork
             'ACCEPT'
           }
@@ -58,7 +58,7 @@ module CIAX
 
         def fork
           @th_mcr = Threadx.new("Macro(#{@id})", 10) { macro }
-          @cobj.get('interrupt').def_proc{
+          @cobj.get('interrupt').def_proc {
             @th_mcr.raise(Interrupt)
             'INTERRUPT'
           }
@@ -74,7 +74,7 @@ module CIAX
 
         def ext_shell
           super
-          @prompt_proc = proc{
+          @prompt_proc = proc {
             "(#{self['stat']})" + optlist(self['option'])
           }
           @cfg[:output] = @record
@@ -88,7 +88,7 @@ module CIAX
           sub_macro(@sequence, @record)
         rescue Interrupt
           msg("\nInterrupt Issued to running devices #{@running}", 3)
-          @running.each{|site|
+          @running.each {|site|
             @mcfg[:dev_list].get(site).exe(['interrupt'], 'user')
           }
         ensure
@@ -106,7 +106,7 @@ module CIAX
           @depth += 1
           set_stat('run')
           result = 'complete'
-          sequence.each{|e1|
+          sequence.each {|e1|
             self['step'] += 1
             begin
               @step = @record.add_step(e1, @depth)
@@ -195,7 +195,7 @@ module CIAX
 
         def input(cmds)
           Readline.completion_proc = proc { |word| cmds.grep(/^#{word}/) } if Msg.fg?
-          loop{
+          loop {
             if Msg.fg?
               prom = @step.body(optlist(self['option']))
               line = Readline.readline(prom, true)

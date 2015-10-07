@@ -46,7 +46,7 @@ module CIAX
         @mode = 'TEST'
         @stat.ext_save.ext_load
         @cobj.rem.ext.def_proc { 'TEST' }
-        @cobj.get('set').def_proc{|ent|
+        @cobj.get('set').def_proc {|ent|
           @stat.rep(ent.par[0], ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
@@ -71,28 +71,28 @@ module CIAX
         @sv_stat.add_db('comerr' => 'X', 'strerr' => 'E')
         @stat.ext_save.ext_load
         @stat.ext_rsp { @stream.rcv }
-        @cobj.rem.ext.def_proc{|ent, src|
+        @cobj.rem.ext.def_proc {|ent, src|
           @sv_stat.reset('comerr')
           @stream.snd(ent[:frame], ent.id)
           @stat.conv(ent)
           @stat.flush if src != 'buffer'
           'OK'
         }
-        @cobj.get('set').def_proc{|ent|
+        @cobj.get('set').def_proc {|ent|
           @stat.rep(ent.par[0], ent.par[1])
           @stat.flush
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
-        @cobj.get('save').def_proc{|ent|
+        @cobj.get('save').def_proc {|ent|
           @stat.save_key(ent.par[0].split(','), ent.par[1])
           "Save [#{ent.par[0]}]"
         }
-        @cobj.get('load').def_proc{|ent|
+        @cobj.get('load').def_proc {|ent|
           @stat.load(ent.par[0] || '')
           @stat.flush
           "Load [#{ent.par[0]}]"
         }
-        @cobj.get('flush').def_proc{
+        @cobj.get('flush').def_proc {
           @stream.rcv
           @stat.flush
           'Flush Stream'

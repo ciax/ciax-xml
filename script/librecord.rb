@@ -24,7 +24,7 @@ module CIAX
 
       def add_step(e1, depth)
         step = Step.new(e1, @cfg[:dev_list])
-        step.post_upd_procs << proc{
+        step.post_upd_procs << proc {
           verbose { 'Propagate Step#upd -> Record#upd' }
           post_upd
         }

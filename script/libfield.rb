@@ -16,7 +16,7 @@ module CIAX
         super
         # Field Initialize
         if @data.empty?
-          @dbi[:field].each{|id, val|
+          @dbi[:field].each {|id, val|
             @data[id] = val['val'] || Arrayx.new.skeleton(val[:struct])
           }
         end
@@ -28,7 +28,7 @@ module CIAX
       # - output csv if array
       def subst(str) # subst by field
         return str unless /\$\{/ === str
-        enclose("Substitute from [#{str}]", 'Substitute to [%s]'){
+        enclose("Substitute from [#{str}]", 'Substitute to [%s]') {
           str.gsub(/\$\{(.+)\}/) {
             ary = [*get($1)].map! { |i| eval(i) }
             Msg.give_up("No value for subst [#{$1}]") if ary.empty?
@@ -46,7 +46,7 @@ module CIAX
         Msg.give_up('Nill Key') unless key
         return @data[key] if @data.key?(key)
         vname = []
-        dat = key.split(':').inject(@data){|h, i|
+        dat = key.split(':').inject(@data) {|h, i|
           case h
           when Array
             begin
@@ -96,7 +96,7 @@ module CIAX
       private
       def merge_ary(p, r)
         r = [r] unless Array === r
-        p.map!{|i|
+        p.map! {|i|
           if Array === i
             merge_ary(i, r.shift)
           else

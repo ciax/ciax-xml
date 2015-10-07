@@ -56,7 +56,7 @@ module CIAX
     # mode gives special break (loop returns mode).
     def shell
       verbose { "Shell(#{@id})" }
-      Readline.completion_proc = proc{|word|
+      Readline.completion_proc = proc {|word|
         (@cobj.valid_keys + @cobj.valid_pars).grep(/^#{word}/)
       }
       loop do

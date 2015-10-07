@@ -20,15 +20,15 @@ module CIAX
         dbi = Dbi[doc[:attr]]
         # Command Domain
         hcmd = dbi[:command] = {}
-        (doc[:domain]['alias'] || []).each{|e0|
+        (doc[:domain]['alias'] || []).each {|e0|
           e0.attr2item(hcmd[:alias] ||= {})
-          e0.each{|e1|
+          e0.each {|e1|
             (hcmd[:alias][e0['id']]['argv'] ||= []) << e1.text
           }
         }
         # Status Domain
         hst = dbi[:status] = {}
-        (doc[:domain]['status'] || []).each{|e0|
+        (doc[:domain]['status'] || []).each {|e0|
           p = (hst[e0.name.to_sym] ||= {})
           case e0.name
           when 'alias'

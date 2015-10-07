@@ -16,7 +16,7 @@ module CIAX
         @symdb = Sym::Db.pack(['share', adbs['symtbl']])
         self['class'] = {}
         self['msg'] = {}
-        @post_upd_procs << proc{ # post process
+        @post_upd_procs << proc { # post process
           verbose { 'Propagate upd -> Symbol#upd' }
           set_sym(adbs[:index].dup.update(adbs[:alias] || {}))
         }
@@ -24,7 +24,7 @@ module CIAX
       end
 
       def set_sym(index)
-        index.each{|key, hash|
+        index.each {|key, hash|
           sid = hash['symbol'] || next
           tbl = @symdb[sid.to_sym]
           unless tbl
@@ -36,12 +36,12 @@ module CIAX
           val = @data[hash['ref'] || key]
           self['msg'][key] = "N/A(#{val})"
           numeric = false
-          tbl.each{|sym|
+          tbl.each {|sym|
             case sym['type']
             when 'numeric'
               numeric = true
               tol = sym['tolerance'].to_f
-              next if sym['val'].split(',').all?{|cri|
+              next if sym['val'].split(',').all? {|cri|
                 val.to_f > cri.to_f + tol or val.to_f < cri.to_f - tol
               }
               verbose { "VIEW:Numeric:[#{sym['val']}+-#{tol}] and [#{val}]" }

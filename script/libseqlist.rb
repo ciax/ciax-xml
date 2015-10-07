@@ -15,7 +15,7 @@ module CIAX
         def to_v
           idx = 1
           page = ['<<< ' + Msg.color("Active Macros [#{self['id']}]", 2) + ' >>>']
-          @data.each{|id, seq|
+          @data.each {|id, seq|
             title = "[#{idx}] (#{id})(by #{get_cid(seq['pid'])})"
             msg = "#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}]"
             msg << "(#{seq['stat']})"
@@ -50,7 +50,7 @@ module CIAX
           end
 
           def interrupt
-            @data.values.each{|seq|
+            @data.values.each {|seq|
               seq.exe(['interrupt'])
             }
           end
@@ -63,7 +63,7 @@ module CIAX
           end
 
           def clean
-            @data.delete_if{|_, seq|
+            @data.delete_if {|_, seq|
               ! (Exe === seq && seq.th_mcr.status)
             }
             upd
@@ -80,7 +80,7 @@ module CIAX
             # Limit self level
             # :dev_list is App::List
             @cfg[:dev_list].ext_shell if @cfg.key?(:dev_list)
-            @post_upd_procs << proc{
+            @post_upd_procs << proc {
               verbose { 'Propagate List#upd -> JumpGrp#upd' }
               @jumpgrp.number_item(@data.values.map { |seq| seq['id'] })
             }
@@ -119,13 +119,13 @@ module CIAX
         list = List.new(PROJ, cfg).ext_drv.ext_shell
         mobj = Remote::Index.new(cfg, { :dbi => Db.new.get(PROJ) })
         mobj.add_rem.add_ext(Ext)
-        cfg[:submcr_proc] = proc{|args, pid|
+        cfg[:submcr_proc] = proc {|args, pid|
           ent = mobj.set_cmd(args)
           list.add(ent, pid)
         }
         begin
           mobj.set_cmd if ARGV.empty?
-          ARGV.each{|cid|
+          ARGV.each {|cid|
             ent = mobj.set_cmd(cid.split(':'))
             list.add(ent)
           }

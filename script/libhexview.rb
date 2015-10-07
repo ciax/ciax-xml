@@ -17,7 +17,7 @@ module CIAX
         @res = ['%', id, '_', '0', '0', '_', '']
         @list = []
         @vmode = 'x'
-        open(file){|f|
+        open(file) {|f|
           while (line = f.gets)
             ary = line.split(',')
             case line
@@ -27,11 +27,11 @@ module CIAX
             end
           end
         }
-        @sv_stat.post_upd_procs << proc{
+        @sv_stat.post_upd_procs << proc {
           verbose { 'Propagate Prompt#upd -> Hex::View#upd' }
           upd
         }
-        @stat.post_upd_procs << proc{
+        @stat.post_upd_procs << proc {
           verbose { 'Propagate Status#upd -> Hex::View#upd' }
           upd
         }
@@ -52,7 +52,7 @@ module CIAX
         @res[6] = ''
         pck = 0
         bin = 0
-        @list.each{|key, title, len, type|
+        @list.each {|key, title, len, type|
           len = len.to_i
           if key === '%pck'
             pck = len

@@ -150,7 +150,7 @@ module CIAX
         verbose { 'Initialize: invalid Version(0): No Log' }
         stat.post_upd_procs << proc do
           verbose { 'Propagate Save#upd -> upd(Dryrun)' }
-          verbose { "Insert\n"+sqlog.upd }
+          verbose { "Insert\n" + sqlog.upd }
         end
       end
     end

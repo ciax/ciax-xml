@@ -23,7 +23,7 @@ module CIAX
 
       def rec_db(e0, dbi = Dbi.new)
         (dbi ||= Dbi.new).update(e0.to_h)
-        e0.each{|e|
+        e0.each {|e|
           if e['id']
             e.attr2item(dbi)
           else

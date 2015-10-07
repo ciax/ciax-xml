@@ -17,7 +17,7 @@ module CIAX
           @cobj.rem.int.add_item('clean', 'Clean list')
           @cobj.rem.add_ext(Ext)
           @parameter = @cobj.rem.int.par
-          @stat.post_upd_procs << proc{
+          @stat.post_upd_procs << proc {
             verbose { 'Propagate List#upd -> Parameter#upd' }
             @parameter[:list] = @stat.keys
           }
@@ -43,10 +43,10 @@ module CIAX
           # External Command Group
           @cobj.rem.ext.def_proc { |ent| set(ent); 'ACCEPT' }
           # Internal Command Group
-          @cfg[:submcr_proc] = proc{|args, pid|
+          @cfg[:submcr_proc] = proc {|args, pid|
             set(@cobj.set_cmd(args), pid)
           }
-          @cobj.rem.int.def_proc{|ent|
+          @cobj.rem.int.def_proc {|ent|
             seq = @stat.get(ent.par[0])
             if seq
               @sv_stat['sid'] = seq.record['id']
@@ -57,7 +57,7 @@ module CIAX
             end
           }
           @cobj.get('clean').def_proc { @stat.clean; 'ACCEPT' }
-          @cobj.get('interrupt').def_proc{
+          @cobj.get('interrupt').def_proc {
             @stat.interrupt
             'INTERRUPT'
           }
@@ -77,11 +77,11 @@ module CIAX
           list_mode
           @prompt_proc = proc { upd_current }
           # Convert as command
-          input_conv_num{|i|
+          input_conv_num {|i|
             set_current(i)
           }
           # Convert as parameter
-          input_conv_num(@cobj.rem.int.keys){|i|
+          input_conv_num(@cobj.rem.int.keys) {|i|
             set_current(i)
           }
           @post_exe_procs << proc { @cfg[:output].upd }

@@ -19,7 +19,7 @@ module CIAX
       def init_command(mdbc)
         idx = {}
         grp = {}
-        mdbc.each{|e|
+        mdbc.each {|e|
           Msg.give_up('No group in mdbc') unless e.name == 'group'
           gid = e.attr2item(grp)
           arc_command(e, idx, grp[gid])
@@ -28,14 +28,14 @@ module CIAX
       end
 
       def arc_command(e, idx, grp)
-        e.each{|e0|
+        e.each {|e0|
           id = e0.attr2item(idx)
           verbose { "MACRO:[#{id}]" }
           item = idx[id]
           (grp[:members] ||= []) << id
           body = (item[:body] ||= [])
           final = {}
-          e0.each{|e1|
+          e0.each {|e1|
             attr = e1.to_h
             par2item(e1, item) && next
             attr['type'] = e1.name
@@ -68,7 +68,7 @@ module CIAX
       end
 
       def make_condition(e1, attr)
-        e1.each{|e2|
+        e1.each {|e2|
           hash = e2.to_h
           hash['cmp'] = e2.name
           (attr['cond'] ||= []) << hash
@@ -78,7 +78,7 @@ module CIAX
 
       def getcmd(e1)
         args = [e1['name']]
-        e1.each{|e2|
+        e1.each {|e2|
           args << e2.text
         }
         args
@@ -86,8 +86,8 @@ module CIAX
 
       def get_option(e1)
         options = {}
-        e1.each{|e2|
-          e2.each{|e3|
+        e1.each {|e2|
+          e2.each {|e3|
             options[e2['val'] || '*'] = getcmd(e3)
           }
         }

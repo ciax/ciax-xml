@@ -44,6 +44,7 @@ module CIAX
     end
 
     private
+
     # Returns Hash
     def doc_to_db(_)
       Dbi.new
@@ -75,7 +76,7 @@ module CIAX
       if ENV['NOCACHE']
         verbose { "#{@type}/Cache ENV NOCACHE is set" }
         return false
-      elsif !test(?e, @marfile)
+      elsif !test('e', @marfile)
         verbose { "#{@type}/Cache MAR file(#{@base}) not exist" }
         return false
       else
@@ -92,7 +93,7 @@ module CIAX
 
     def cmp(ary)
       ary.each do|f|
-        return f if ::File.file?(f) && test(?>, f, @marfile)
+        return f if ::File.file?(f) && test('>', f, @marfile)
       end
       false
     end
@@ -107,8 +108,6 @@ module CIAX
         attr = { type: 'str', list: e.text.split(',') }
         attr['label'] = e['label'] if e['label']
         (item[:parameters] ||= []) << attr
-      else
-        nil
       end
     end
   end

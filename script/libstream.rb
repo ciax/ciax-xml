@@ -84,6 +84,7 @@ module CIAX
       end
 
       private
+
       def openstrm
         # SIGINT gets around the child process
         verbose { 'Stream Opening' }

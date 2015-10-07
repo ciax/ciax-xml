@@ -94,6 +94,7 @@ module CIAX
       end
 
       private
+
       def merge_ary(p, r)
         r = [r] unless Array === r
         p.map! {|i|

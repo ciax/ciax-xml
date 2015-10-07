@@ -51,6 +51,7 @@ module CIAX
       end
 
       private
+
       def readproj(e)
         if e.name == 'project'
           id = e['id']

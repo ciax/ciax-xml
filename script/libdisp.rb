@@ -61,6 +61,7 @@ module CIAX
       end
 
       private
+
       def caption
         @attr['caption'] ? ' == ' + Msg.color(@attr['caption'], (@attr['sub_color'] || 6).to_i) + " ==\n" : ''
       end
@@ -122,6 +123,7 @@ module CIAX
       end
 
       private
+
       def caption
         @attr['caption'] ? '**** ' + Msg.color(@attr['caption'], (@attr['color'] || 2).to_i) + " ****\n" : ''
       end

@@ -40,6 +40,7 @@ module CIAX
       end
 
       private
+
       def ext_test
         @mode = 'TEST'
         @stat.ext_sym.ext_save.ext_load

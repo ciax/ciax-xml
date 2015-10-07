@@ -51,6 +51,7 @@ module CIAX
         end
 
         private
+
         # instance var frame,sel,field,fstr
         def mk_frame(domain)
           conv = nil

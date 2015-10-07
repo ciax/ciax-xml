@@ -34,6 +34,7 @@ module CIAX
     end
 
     private
+
     def file_url(tag = nil)
       'http://' + @host + '/json/' + file_base(tag) + '.json'
     end

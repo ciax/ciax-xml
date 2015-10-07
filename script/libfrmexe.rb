@@ -42,6 +42,7 @@ module CIAX
       end
 
       private
+
       def ext_test
         @mode = 'TEST'
         @stat.ext_save.ext_load
@@ -99,7 +100,6 @@ module CIAX
         }
         self
       end
-
     end
 
     class List < Site::List

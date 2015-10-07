@@ -10,6 +10,7 @@ module CIAX
       end
 
       private
+
       def doc_to_db(doc)
         dbi = Dbi[doc[:attr]]
         init_command(doc, dbi)
@@ -109,8 +110,6 @@ module CIAX
           attr
         when 'ccrange', 'body', 'echo'
           e.name
-        else
-          nil
         end
       end
     end

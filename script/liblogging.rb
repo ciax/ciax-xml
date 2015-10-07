@@ -54,6 +54,7 @@ module CIAX
     end
 
     private
+
     def logfile
       @loghead + "_#{Time.now.year}.log"
     end

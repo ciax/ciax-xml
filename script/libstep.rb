@@ -78,6 +78,7 @@ module CIAX
       end
 
       private
+
       def upd_core
         show result
       end

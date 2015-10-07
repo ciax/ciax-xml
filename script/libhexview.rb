@@ -41,7 +41,7 @@ module CIAX
 
       def self.sdb(id)
         file = ENV['HOME'] + "/config/sdb_#{id}.txt"
-        test(?r, file) && file
+        test('r', file) && file
       end
 
       def upd_core
@@ -94,6 +94,7 @@ module CIAX
       end
 
       private
+
       def get_elem(type, len, val)
         case type
         when /FLOAT/

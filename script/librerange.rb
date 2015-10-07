@@ -35,10 +35,11 @@ module CIAX
     end
 
     private
+
     # Accepts int,float,hexstr
     # For float /^-?[0-9]+(\.[0-9]+)?$/
     def s2f(str)
-      return str if str.kind_of? Numeric
+      return str if str.is_a? Numeric
       if /^0[Xx][0-9a-fA-F]+$/ === str
         str.to_i(0).to_f
       else

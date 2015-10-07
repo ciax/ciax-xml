@@ -28,10 +28,10 @@ module CIAX
     def subst(str) # Sub $key => @counter[key]
       return str unless Regexp.new('\$([_a-z])').match(str)
       res = str.gsub(/\$([_a-z])/) { @counter[Regexp.last_match(1)] }
-      res = res.split(':').map {|i|
+      res = res.split(':').map do|i|
         # i could be expression
         Regexp.new('\$').match(i) ? i : eval(i)
-      }.join(':')
+      end.join(':')
       Msg.cfg_err('Empty String') if res == ''
       verbose { "Substitute [#{str}] to [#{res}]" }
       res

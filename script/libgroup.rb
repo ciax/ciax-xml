@@ -37,7 +37,7 @@ module CIAX
     def merge_items(displist)
       type?(displist, Disp::List).each do|cg|
         cg.each do|id, title|
-          new_item(id, { 'label' => title })
+          new_item(id, 'label' => title)
         end
       end
       @current = @displist.merge!(displist).last
@@ -74,6 +74,7 @@ module CIAX
     end
 
     private
+
     def new_item(id, crnt = {})
       crnt[:id] = id
       self[id] = context_constant('Item').new(@cfg, crnt)

@@ -35,6 +35,7 @@ module CIAX
         end
 
         private
+
         # Getting command ID (ex. run:1)
         def get_cid(id)
           return 'user' if id == '0'

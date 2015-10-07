@@ -62,7 +62,6 @@ module CIAX
         select([STDIN])
         [STDIN.sysread(1024)].pack('m').split("\n").join('')
       end
-
     end
   end
 end

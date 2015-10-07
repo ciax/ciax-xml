@@ -62,6 +62,7 @@ module CIAX
       end
 
       private
+
       def upd_core
         self['gtime'] = { 'caption' => '', 'lines' => [hash = {}] }
         hash['time'] = { 'label' => 'TIMESTAMP', 'msg' => Msg.date(@stat['time']) }

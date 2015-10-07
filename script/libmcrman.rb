@@ -32,6 +32,7 @@ module CIAX
         end
 
         private
+
         def ext_test
           ext_driver
         end
@@ -93,6 +94,7 @@ module CIAX
         end
 
         private
+
         def upd_current
           @stat.upd
           if @current > @stat.size or @stat.size > @lastsize

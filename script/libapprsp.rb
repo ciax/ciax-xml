@@ -17,6 +17,7 @@ module CIAX
       end
 
       private
+
       def upd_core
         @adbs.each {|id, hash|
           enclose("GetStatus:[#{id}]", "GetStatus:#{id}=[%s]") {

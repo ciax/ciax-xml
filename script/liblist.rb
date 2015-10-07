@@ -40,6 +40,7 @@ module CIAX
       end
 
       private
+
       def switch(id)
         get(id)
       end

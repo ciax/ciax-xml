@@ -86,6 +86,7 @@ module CIAX
     end
 
     private
+
     def convert(token)
       @shell_input_procs.inject(token.split(' ')) do|args, proc|
         proc.call(args)

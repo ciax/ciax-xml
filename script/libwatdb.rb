@@ -54,6 +54,7 @@ module CIAX
       end
 
       private
+
       def get_cmd
         args = [e1['name']]
         e1.each do|e2|

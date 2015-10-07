@@ -16,6 +16,7 @@ module CIAX
       end
 
       private
+
       def doc_to_db(doc)
         dbi = Dbi[doc[:attr]]
         # Command Domain

@@ -39,6 +39,7 @@ module CIAX
     end
 
     private
+
     def file_path(tag = nil)
       @jsondir + file_base(tag) + '.json'
     end

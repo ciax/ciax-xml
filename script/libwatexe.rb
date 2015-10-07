@@ -28,6 +28,7 @@ module CIAX
       end
 
       private
+
       def ext_test
         ext_non_client
         @post_exe_procs << proc { @stat.next_upd }

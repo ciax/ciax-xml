@@ -63,6 +63,7 @@ module CIAX
     end
 
     private
+
     def opt_mode
       # Option handling
       if OPT.sv?

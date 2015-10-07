@@ -56,6 +56,7 @@ module CIAX
       end
 
       private
+
       def head(msg, col, label = nil)
         rindent + Msg.color(msg, col) + ':' + (label || self['label'] || 'noname')
       end

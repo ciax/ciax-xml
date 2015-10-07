@@ -59,6 +59,7 @@ module CIAX
       end
 
       private
+
       # Process Frame to Field
       def getfield_rec(e0)
         e0.each {|e1|

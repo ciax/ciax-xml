@@ -152,6 +152,7 @@ module CIAX
       end
 
       private
+
       def verify(e0)
         ref = e0['val']
         len = e0['length'] || ref.size

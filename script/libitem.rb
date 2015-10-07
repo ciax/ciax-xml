@@ -55,6 +55,7 @@ module CIAX
     end
 
     private
+
     # Parameter for validate(cfg[:paremeters]) structure:  [{:type,:list,:default}, ...]
     # *Empty parameter will replaced to :default
     # *Error if str doesn't match with strings listed in :list

@@ -65,6 +65,7 @@ module CIAX
     end
 
     private
+
     def get_element(members, cap = '', col = nil)
       col = col.to_i > 0 ? col.to_i : 6
       push '<table><tbody>'

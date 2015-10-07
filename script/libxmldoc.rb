@@ -24,7 +24,7 @@ module CIAX
         @pcap = 'All'
         @displist = Disp::List.new('column' => 2)
         @projlist = Disp::Group.new('caption' => 'Project', 'column' => 2)
-        files = Dir.glob("#{ENV['XMLPATH']}/#{type}-*.xml")
+        files = Msg.xmlfiles(@type)
         files.each {|xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
           Gnu.new(xml).each {|e|

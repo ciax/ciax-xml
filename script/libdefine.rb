@@ -4,7 +4,7 @@ module CIAX
   require 'English' # To use $! -> $ERROR_INFO
   require 'debug' if ENV['DEBUG']
   SCRIPT_DIR = ::File.dirname(__FILE__)
-  p SCRIPT_DIR
+  PROJ = ENV['PROJ'] || 'moircs'
   
   # Site Domain
   module Site; NS_COLOR = 13; end

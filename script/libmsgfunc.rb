@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 # Common Module
+require 'libdefine'
 require 'fileutils'
 module CIAX
   ### Checking Methods ###
@@ -9,6 +10,10 @@ module CIAX
     # Thread is main
     def fg?
       Thread.current == Thread.main
+    end
+
+    def xmlfiles(type)
+      Dir.glob("#{SCRIPT_DIR}/../#{type}-*.xml")
     end
 
     # Make Var dir if not exist

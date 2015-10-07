@@ -10,7 +10,7 @@ module CIAX
         @cls_color = 3
         case f
         when String
-          test(?r, f) || raise(InvalidID)
+          test(?r, f) || fail(InvalidID)
           @e = XML::Document.file(f).root
           verbose { @e.namespaces.default }
         when XML::Node

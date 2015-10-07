@@ -12,9 +12,9 @@ module CIAX
         @logary = [{}]
         @index = 0
         @sqlcmd = ['sqlite3', ENV['HOME'] + '/.var/sqlog_' + id + '.sq3']
-        @tbl = query('.tables').split(/ /).grep(/^stream/).sort.last || raise('No Stream table')
+        @tbl = query('.tables').split(/ /).grep(/^stream/).sort.last || fail('No Stream table')
         @total = query("select count(*) from #{@tbl} where dir='rcv';").to_i
-        raise('No Line') if @total < 1
+        fail('No Line') if @total < 1
       end
 
       def query(str)
@@ -34,7 +34,7 @@ module CIAX
           ans = query(sql)
           tim, cmd = ans.split('|')
           verbose { "Matched time is #{tim}" }
-          raise if tim.empty?
+          fail if tim.empty?
           @index = tim.to_i
         rescue
           raise("NO record for #{str}") if @index == 0

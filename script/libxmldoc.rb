@@ -35,12 +35,12 @@ module CIAX
         files.each {|xml|
           Gnu.new(xml).each { |e| readproj(e) }
         }
-        raise(InvalidProj, "No such Project(#{@project})\n" + @projlist.view) if @displist.empty?
+        fail(InvalidProj, "No such Project(#{@project})\n" + @projlist.view) if @displist.empty?
       end
 
       # set generates document branch of db items(Hash), which includes attribute and domains
       def set(id)
-        raise(InvalidID, "No such ID(#{id}) in #{@type}\n" + @displist.to_s) unless key?(id)
+        fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + @displist.to_s) unless key?(id)
         top = self[id]
         item = { :top => top, :attr => top.to_h, :domain => {} }
         top.each {|e1|

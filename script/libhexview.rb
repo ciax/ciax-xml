@@ -121,7 +121,7 @@ module CIAX
       require 'libinsdb'
       require 'libstatus'
       begin
-        raise(InvalidID) if STDIN.tty?
+        fail(InvalidID) if STDIN.tty?
         stat = App::Status.new.read
         puts View.new(stat).upd
       rescue InvalidID

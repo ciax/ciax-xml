@@ -183,9 +183,9 @@ module CIAX
           @step['action'] = res
           case res
           when 'retry'
-            raise(Retry)
+            fail(Retry)
           when 'interrupt'
-            raise(Interrupt)
+            fail(Interrupt)
           when 'force', 'pass'
             false
           else

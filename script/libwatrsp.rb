@@ -3,11 +3,14 @@ require 'libevent'
 require 'librerange'
 
 module CIAX
+  # Watch Layer
   module Wat
+    # Watch Response Module
     module Rsp
       def self.extended(obj)
         Msg.type?(obj, Event)
       end
+
       # @stat.data(picked) = @data['crnt'](picked) > @data['last']
       # upd() => @data['last']<-@data['crnt']
       #       => @data['crnt']<-@stat.data(picked)
@@ -43,13 +46,13 @@ module CIAX
 
       def auto_exec
         return self unless @data['exec'].empty?
-        verbose { "Auto Update(#{self['time']} ,#{@regexe})" }
+        verbose { format('Auto Update(%s, %s)', self['time'], @regexe) }
         begin
           queue('auto', 3, @regexe)
         rescue InvalidID
           errmsg
         rescue
-          warning $!
+          warning $ERROR_INFO
         end
         self
       end
@@ -62,7 +65,10 @@ module CIAX
         per = reg['period'].to_i
         @period = per > 1 ? per : 300
         @regexe = reg[:exec] || [['upd']]
-        verbose { "Auto Update Initialize: Period = #{@period} sec, Command = #{@regexe})" }
+        verbose do
+          ary = [@period, @regexe]
+          format('Auto Update Initialize: Period = %s sec, Command = %s)', *ary)
+        end
         self
       end
 
@@ -84,21 +90,30 @@ module CIAX
           }
           @data['active'] << id
         }
-        # event is internal var
-        ## Timing chart in active mode
-        # isu   :__--__--__--==__--____
-        # act?  :___--------__------___
-        # evnt :____----------------__
-        ## Trigger Table
-        # isu | act?| evnt| action
-        #  o  |  o  |  o  |  -
-        #  o  |  x  |  o  |  -
-        #  o  |  o  |  x  |  up
-        #  o  |  x  |  x  |  -
-        #  x  |  o  |  o  |  -
-        #  x  |  x  |  o  | down
-        #  x  |  o  |  x  |  up
-        #  x  |  x  |  x  |  -
+        upd_event
+        verbose { "Updated(#{@stat['time']})" }
+        self
+      end
+
+      # self['event'] is internal var
+
+      ## Timing chart in active mode
+      # isu   :__--__--__--==__--___
+      # act?  :___--------__----____
+      # evnt :_____---------------__
+
+      ## Trigger Table
+      # isu | act?| evnt| action
+      #  o  |  o  |  o  |  -
+      #  o  |  x  |  o  |  -
+      #  o  |  o  |  x  |  up
+      #  o  |  x  |  x  |  -
+      #  x  |  o  |  o  |  -
+      #  x  |  x  |  o  | down
+      #  x  |  o  |  x  |  up
+      #  x  |  x  |  x  |  -
+
+      def upd_event
         if @sv_stat['event']
           @data['act_end'] = now_msec
           if !active? && !@sv_stat['isu']
@@ -110,7 +125,6 @@ module CIAX
           @data['act_start'] = @data['act_end'] = @last_updated
           @on_act_procs.each { |p| p.call(self) }
         end
-        verbose { "Updated(#{@stat['time']})" }
         self
       end
 
@@ -134,25 +148,37 @@ module CIAX
             if cri
               if (tol = ckitm['tolerance'])
                 res = ((cri.to_f - val.to_f).abs > tol.to_f)
-                verbose { "  onChange(#{vn}): |[#{cri}]-<#{val}>| > #{tol} =>#{res.inspect}" }
+                verbose do
+                  ary = [vn, cri, val, tol, res.inspect]
+                  format('  onChange(%s): |[%s]-<%s>| > %s =>%s', *ary)
+                end
               else
                 res = (cri != val)
-                verbose { "  onChange(#{vn}): [#{cri.inspect}] vs <#{val}> =>#{res.inspect}" }
+                verbose do
+                  ary = [vn, cri.inspect, val, res.inspect]
+                  format('  onChange(%s): [%s] vs <%s> =>%s', *ary)
+                end
               end
             else
               res = nil
             end
           when 'pattern'
             cri = ckitm['val']
-            res = (Regexp.new(cri) === val)
-            verbose { "  Pattern(#{vn}): [#{cri}] vs <#{val}> =>#{res.inspect}" }
+            res = Regexp.new(cri).match(val)
+            verbose do
+              ary = [vn, cri, val, res.inspect]
+              format('  Pattern(%s): [%s] vs <%s> =>%s', *ary)
+            end
           when 'range'
             cri = ckitm['val']
-            f = '%.3f' % val.to_f
+            f = format('%.3f', val.to_f)
             res = (ReRange.new(cri) == f)
-            verbose { "  Range(#{vn}): [#{cri}] vs <#{f}>(#{val.class}) =>#{res.inspect}" }
+            verbose do
+              ary = [vn, cri, f, val.class, res.inspect]
+              format('  Range(%s): [%s] vs <%s>(%s) =>%s', *ary)
+            end
           end
-          res = !res if /true|1/ === ckitm['inv']
+          res = !res if /true|1/ =~ ckitm['inv']
           rary << res
         }
         @data['res'][id] = rary
@@ -160,7 +186,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $0
+    if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
 
       list = { 't' => 'test conditions[key=val,..]' }

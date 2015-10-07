@@ -4,7 +4,7 @@ require 'libenumx'
 require 'libxmldoc'
 
 module CIAX
-  XmlDir = "#{ENV['HOME']}/ciax-xml"
+  XML_DIR = "#{ENV['HOME']}/ciax-xml"
   PROJ = ENV['PROJ'] || 'moircs'
   # Db class is for read only databases, which holds all items of database.
   # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
@@ -80,7 +80,7 @@ module CIAX
         verbose { "#{@type}/Cache MAR file(#{@base}) not exist" }
         return false
       else
-        newer = cmp($LOADED_FEATURES.grep(/#{ScrDir}/) + Dir.glob(XmlDir + "/#{@type}-*.xml"))
+        newer = cmp($LOADED_FEATURES.grep(/#{SCRIPT_DIR}/) + Dir.glob(XML_DIR + "/#{@type}-*.xml"))
         if newer
           verbose { "#{@type}/Cache File(#{newer}) is newer than cache" }
           verbose { "#{@type}/Cache cache=#{::File::Stat.new(@marfile).mtime}" }

@@ -9,7 +9,7 @@ module CIAX
   # Should be extended in module/class
   module Msg
     attr_accessor :cls_color
-    Start_time = Time.now
+    START_TIME = Time.now
     @indent_base = 1
     # block takes array (shown by each line) or string
     # Description of values
@@ -68,7 +68,7 @@ module CIAX
       @head ||= make_head
       ts = "#{@head}:#{title}"
       return ts if STDERR.tty?
-      pass = Kernel.format('%5.4f', Time.now - Start_time)
+      pass = Kernel.format('%5.4f', Time.now - START_TIME)
       "[#{pass}]" + ts
     end
 

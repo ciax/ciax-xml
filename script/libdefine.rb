@@ -3,8 +3,9 @@
 module CIAX
   require 'English' # To use $! -> $ERROR_INFO
   require 'debug' if ENV['DEBUG']
-  ScrDir = ::File.dirname(__FILE__)
-
+  SCRIPT_DIR = ::File.dirname(__FILE__)
+  p SCRIPT_DIR
+  
   # Site Domain
   module Site; NS_COLOR = 13; end
   # Frame Layer

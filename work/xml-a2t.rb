@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
 # XML Attribute vs Text Exchanger
-require "optparse"
-require "xml"
+require 'optparse'
+require 'xml'
 include XML
 
-opt=ARGV.getopts("r")
+opt = ARGV.getopts('r')
 if ARGV.size < 3
   abort <<EOF
 Usage: a2t (-r) [xpath] [attr] (ns) < xml
@@ -12,24 +12,24 @@ Usage: a2t (-r) [xpath] [attr] (ns) < xml
        http://ciax.sum.naoj.org/ciax-xml/(ns)
 EOF
 end
-xpath=ARGV.shift
-attr=ARGV.shift || abort("No attr")
-doc=Document.io(STDIN)
-if ns=ARGV.shift
-  url="http://ciax.sum.naoj.org/ciax-xml"
-  nodes=doc.find("//dns:#{xpath}","dns:#{url}/#{ns}")
+xpath = ARGV.shift
+attr = ARGV.shift || abort('No attr')
+doc = Document.io(STDIN)
+if ns = ARGV.shift
+  url = 'http://ciax.sum.naoj.org/ciax-xml'
+  nodes = doc.find("//dns:#{xpath}", "dns:#{url}/#{ns}")
 else
-  nodes=doc.find("//#{xpath}")
+  nodes = doc.find("//#{xpath}")
 end
 
-nodes.each {|e|
-  if opt["r"]
-    e[attr]=e.content
-    e.content=''
+nodes.each do|e|
+  if opt['r']
+    e[attr] = e.content
+    e.content = ''
   else
-    str=e[attr] || next
-    e.content=str
+    str = e[attr] || next
+    e.content = str
     e.attributes.get_attribute(attr).remove!
   end
-}
+end
 puts doc

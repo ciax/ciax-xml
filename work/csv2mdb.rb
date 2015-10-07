@@ -3,8 +3,11 @@
 # alias c2m
 require 'optparse'
 require 'json'
-abort 'Usage: csv2mdb -m(proj) [sites]' if ARGV.size < 1
+abort "Usage: csv2mdb -m(proj) [sites]\n"\
+      "  mcr is taken by -m\n"\
+      '  sites for specific macro for devices' if ARGV.size < 1
 opt = ARGV.getopts('m:')
+@ope = { '~' => 'match', '!' => 'not', '=' => 'equal', '^' => 'unmatch' }
 
 def get_site(elem)
   @skip = nil
@@ -19,20 +22,23 @@ def get_site(elem)
   end
 end
 
+def mk_cond(site, cond)
+  case cond
+  when /[~!=^]/
+    ary = [@ope[$&], $', site, $`]
+    ary << @skip if @skip
+    ary
+  when '*', '', nil
+    nil
+  else
+    abort "IDB: NO operator in #{cond}"
+  end
+end
+
 def spl_cond(line)
   line.split('&').map do|s|
     site, cond = yield s
-    case cond
-    when /[~!=^]/
-      ope = { '~' => 'match', '!' => 'not', '=' => 'equal', '^' => 'unmatch' }[$&]
-      ary = [ope, $', site, $`]
-      ary << @skip if @skip
-      ary
-    when '*', '', nil
-      nil
-    else
-      abort "IDB: NO operator in #{cond}"
-    end
+    mk_cond(site, cond)
   end.compact
 end
 
@@ -61,10 +67,10 @@ index = {}
 # Convert device
 ARGV.each do|site|
   grp = {}
-  get_csv("idb_#{site}") do|id, goal, check|
+  get_csv("idb_#{site}") do|id, gl, ck|
     con = grp["#{site}_#{id}"] = {}
-    con['goal'] = spl_cond(goal) { |cond| [site, cond] } if goal && !goal.empty?
-    con['check'] = spl_cond(check) { |cond| [site, cond] } if check && !check.empty?
+    con['goal'] = spl_cond(gl) { |cond| [site, cond] } if gl && !gl.empty?
+    con['check'] = spl_cond(ck) { |cond| [site, cond] } if ck && !ck.empty?
   end
   get_csv("cdb_#{site}") do|id, label, _inv, type, cmd|
     next if type == 'cap'
@@ -72,9 +78,9 @@ ARGV.each do|site|
     con['label'] = label.gsub(/&/, 'and')
     con['exec'] = [[site, id]]
     if cmd
-      pre, mid, post = cmd.split('/')
+      _, mid, post = cmd.split('/')
       if mid
-        rtry, cri, *upd = mid.split(':')
+        rtry, cri, = mid.split(':')
         wait = con['wait'] = {}
         if cri
           wait['retry'] = rtry
@@ -93,12 +99,13 @@ ARGV.each do|site|
 end
 
 # Convert mdb
-if proj = opt['m']
+proj = opt['m']
+if proj
   grp = mdb['grp_mcr'] = {}
-  get_csv("idb_mcr-#{proj}") do|id, goal, check|
+  get_csv("idb_mcr-#{proj}") do|id, gl, ck|
     con = grp[id] = {}
-    con['goal'] = spl_cond(goal) { |elem| get_site(elem) } if goal && !goal.empty?
-    con['check'] = spl_cond(check) { |elem| get_site(elem) } if check && !check.empty?
+    con['goal'] = spl_cond(gl) { |e| get_site(e) } if gl && !gl.empty?
+    con['check'] = spl_cond(ck) { |e| get_site(e) } if ck && !ck.empty?
   end
   select = []
   get_csv("cdb_mcr-#{proj}") do|id, label, _inv, type, seq|
@@ -118,7 +125,8 @@ if proj = opt['m']
   unless select.empty?
     db = {}
     get_csv("db_mcv-#{proj}") do|id, var, list|
-      db[id] = { 'var' => var, 'list' => "#{list}".split(' ').map { |str| str.split('=') } }
+      ary = list.to_s.split(' ').map { |str| str.split('=') }
+      db[id] = { 'var' => var, 'list' => ary }
     end
     grp = mdb['select'] = {}
     select.each do|str|

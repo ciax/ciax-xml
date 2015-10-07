@@ -85,8 +85,7 @@ module CIAX
       verbose { "SUB:Recieve [#{batch}] with priority[#{p}]" }
       (@outbuf[p] ||= []).concat(batch)
       verbose do
-        i = -1
-        @outbuf.map { |o| "SUB:Outbuf(#{i += 1}) is [#{o}]\n" }
+        @outbuf.map.with_index { |o, i| "SUB:Outbuf(#{i}) is [#{o}]\n" }
       end
     end
 

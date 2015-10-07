@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 # Common Module
-require 'libdefine'
 require 'fileutils'
 module CIAX
   ### Checking Methods ###
@@ -13,7 +12,7 @@ module CIAX
     end
 
     def xmlfiles(type)
-      Dir.glob("#{SCRIPT_DIR}/../#{type}-*.xml")
+      Dir.glob("#{__dir__}/../#{type}-*.xml")
     end
 
     # Make Var dir if not exist

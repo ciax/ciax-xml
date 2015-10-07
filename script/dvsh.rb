@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+$: << __dir__
 require 'libsitelayer'
 require 'libhexexe'
 # CIAX-XML Device Shell

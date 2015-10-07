@@ -4,7 +4,6 @@ module CIAX
   # show_iv = Show Instance Variable
   module ViewStruct
     include Msg
-    attr_accessor :vmode
     def to_s
       case @vmode
       when 'v'
@@ -33,6 +32,11 @@ module CIAX
 
     def to_v
       to_r
+    end
+
+    def vmode(mode)
+      @vmode=mode
+      ''
     end
 
     # Show branch (omit lower tree of Hash/Array with sym key)

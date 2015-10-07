@@ -71,8 +71,8 @@ module CIAX
           super
           @cfg['caption'] = 'Change View Mode'
           @cfg['color'] = 9
-          add_item('vis', 'Visual mode').def_proc { @cfg[:output].vmode = 'v'; '' }
-          add_item('raw', 'Raw Print mode').def_proc { @cfg[:output].vmode = 'r'; '' }
+          add_item('vis', 'Visual mode').def_proc { @cfg[:output].vmode('v') }
+          add_item('raw', 'Raw Print mode').def_proc { @cfg[:output].vmode('r')}
         end
       end
     end

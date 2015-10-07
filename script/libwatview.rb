@@ -90,16 +90,16 @@ module CIAX
       def view_cond(vw)
         vw << item('Conditions')
         self['stat'].values.each do |i|
-          ary = [color(i['label'], 6), rslt(i['active'])]
-          vw << format("    %s\t: %s\n", *ary)
+          ary = [i['label'], rslt(i['active'])]
+          vw << cformat("    %:6s\t: %s\n", *ary)
           view_event(vw, i['cond'])
         end
       end
 
       def view_event(vw, cond)
         cond.each do |j|
-          ary = [rslt(j['res']), color(j['var'], 3), j['type'], frml(j)]
-          vw << format("      %s %s  (%s: %s)\n", *ary)
+          ary = [rslt(j['res']), j['var'], j['type'], frml(j)]
+          vw << cformat("      %s %:3s  (%s: %s)\n", *ary)
         end
       end
 
@@ -119,7 +119,7 @@ module CIAX
       end
 
       def item(str, res = nil)
-        format("  %s\t: %s\n", color(str, 2), res)
+        cformat("  %:2s\t: %s\n", str, res)
       end
     end
 

@@ -42,7 +42,7 @@ module CIAX
               numeric = true
               tol = sym['tolerance'].to_f
               next if sym['val'].split(',').all? {|cri|
-                val.to_f > cri.to_f + tol or val.to_f < cri.to_f - tol
+                val.to_f > cri.to_f + tol || val.to_f < cri.to_f - tol
               }
               verbose { "VIEW:Numeric:[#{sym['val']}+-#{tol}] and [#{val}]" }
               self['msg'][key] = "#{sym['msg']}(#{val})"

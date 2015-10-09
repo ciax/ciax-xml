@@ -28,7 +28,7 @@ module CIAX
         files.each {|xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
           Gnu.new(xml).each {|e|
-            @project << e['include'] if @project.include?(e['id']) and e['include']
+            @project << e['include'] if @project.include?(e['id']) && e['include']
           }
         }.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
         # Two pass reading for refering

@@ -103,7 +103,7 @@ module CIAX
 
         def upd_current
           @stat.upd
-          if @current > @stat.size or @stat.size > @lastsize
+          if @current > @stat.size || @stat.size > @lastsize
             set_current(@lastsize = @stat.size)
           end
           msg = format('[%d]', @current)

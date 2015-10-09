@@ -94,7 +94,7 @@ module CIAX
 
           def get_exe(num)
             n = num.to_i - 1
-            par_err('Invalid ID') if n < 0 or n > @data.size
+            par_err('Invalid ID') if n < 0 || n > @data.size
             @data[keys[n]]
           end
 

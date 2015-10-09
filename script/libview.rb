@@ -121,10 +121,9 @@ module CIAX
     end
 
     def _mixed?(str, data, vary, idx, object_ary, ind, show_iv, show_id, depth)
-      if vary.any? { |v| v.is_a?(Enumerable) }
-        idx.each do|i|
-          str << _recursive(data[i], i, object_ary, ind, show_iv, show_id, depth)
-        end
+      return unless vary.any? { |v| v.is_a?(Enumerable) }
+      idx.each do|i|
+        str << _recursive(data[i], i, object_ary, ind, show_iv, show_id, depth)
       end
     end
 

@@ -42,7 +42,10 @@ module CIAX
           @pre_exe_procs << proc { @sv_stat['sid'] = '' }
           @stat.ext_drv
           # External Command Group
-          @cobj.rem.ext.def_proc { |ent| set(ent); 'ACCEPT' }
+          @cobj.rem.ext.def_proc do |ent|
+            set(ent)
+            'ACCEPT'
+          end
           # Internal Command Group
           @cfg[:submcr_proc] = proc {|args, pid|
             set(@cobj.set_cmd(args), pid)
@@ -57,7 +60,10 @@ module CIAX
               'NOSID'
             end
           }
-          @cobj.get('clean').def_proc { @stat.clean; 'ACCEPT' }
+          @cobj.get('clean').def_proc do
+            @stat.clean
+            'ACCEPT'
+          end
           @cobj.get('interrupt').def_proc {
             @stat.interrupt
             'INTERRUPT'

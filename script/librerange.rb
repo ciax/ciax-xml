@@ -24,8 +24,8 @@ module CIAX
       end
     end
 
-    def <=>(str)
-      num = s2f(str)
+    def <=>(other)
+      num = s2f(other)
       return @eq <=> num if @eq
       return 1 if @min_ex && @min >= num
       return 1 if @min && @min > num
@@ -38,12 +38,12 @@ module CIAX
 
     # Accepts int,float,hexstr
     # For float /^-?[0-9]+(\.[0-9]+)?$/
-    def s2f(str)
-      return str if str.is_a? Numeric
-      if /^0[Xx][0-9a-fA-F]+$/ =~ str
-        str.to_i(0).to_f
+    def s2f(other)
+      return other if other.is_a? Numeric
+      if /^0[Xx][0-9a-fA-F]+$/ =~ other
+        other.to_i(0).to_f
       else
-        str.to_f
+        other.to_f
       end
     end
   end

@@ -86,14 +86,17 @@ module CIAX
               add_item(id, label, item)
             end
           end
-          if cdb[:alias]
-            @current = @displist.new_grp('Alias')
-            cdb[:alias].each do|id, att|
-              item = idx[att['ref']].dup
-              label = att['label']
-              item['argv'] = att['argv'] if att['argv']
-              add_item(id, label, item)
-            end
+          init_alias(cdb,idx)
+        end
+
+        def init_alias(cdb,idx)
+          return unless cdb[:alias]
+          @current = @displist.new_grp('Alias')
+          cdb[:alias].each do|id, att|
+            item = idx[att['ref']].dup
+            label = att['label']
+            item['argv'] = att['argv'] if att['argv']
+            add_item(id, label, item)
           end
         end
 

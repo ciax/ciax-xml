@@ -86,10 +86,10 @@ module CIAX
               add_item(id, label, item)
             end
           end
-          init_alias(cdb,idx)
+          init_alias(cdb, idx)
         end
 
-        def init_alias(cdb,idx)
+        def init_alias(cdb, idx)
           return unless cdb[:alias]
           @current = @displist.new_grp('Alias')
           cdb[:alias].each do|id, att|

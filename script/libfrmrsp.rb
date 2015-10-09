@@ -130,7 +130,7 @@ module CIAX
       require 'libdevdb'
       require 'liblogging'
       require 'libfrmcmd'
-      OPT.parse('', { 'm' => 'merge file' })
+      OPT.parse('', 'm' => 'merge file')
       OPT.usage('(opt) < logline') if STDIN.tty?
       str = gets(nil) || exit
       res = Logging.set_logline(str)

@@ -108,7 +108,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      f = Field.new({ 'a' => [['0'], '1'] })
+      f = Field.new('a' => [['0'], '1'])
       puts f.to_j
       s = ARGV.shift
       if s

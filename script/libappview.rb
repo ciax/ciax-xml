@@ -46,7 +46,7 @@ module CIAX
 
       def to_v
         upd
-        cm = Hash.new(2).update({ 'active' => 5, 'alarm' => 1, 'warn' => 3, 'hide' => 0 })
+        cm = Hash.new(2).update('active' => 5, 'alarm' => 1, 'warn' => 3, 'hide' => 0)
         lines = []
         values.each {|v|
           cap = v['caption']

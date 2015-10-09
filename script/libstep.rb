@@ -123,7 +123,7 @@ module CIAX
       end
 
       def scan
-        sites.each_with_object({}) do|site,hash|
+        sites.each_with_object({}) do|site, hash|
           verbose { "Scanning Status #{site}" }
           hash[site] = @dev_list.get(site).stat
         end

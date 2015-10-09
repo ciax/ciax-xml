@@ -118,7 +118,7 @@ module CIAX
         cfg = Config.new
         cfg[:dev_list] = Wat::List.new(cfg).sub_list # Take App List
         list = List.new(PROJ, cfg).ext_drv.ext_shell
-        mobj = Remote::Index.new(cfg, { dbi: Db.new.get(PROJ) })
+        mobj = Remote::Index.new(cfg,  dbi: Db.new.get(PROJ))
         mobj.add_rem.add_ext(Ext)
         cfg[:submcr_proc] = proc {|args, pid|
           ent = mobj.set_cmd(args)

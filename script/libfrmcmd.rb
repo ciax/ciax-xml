@@ -85,7 +85,7 @@ module CIAX
         dbi = Db.new.get(id)
         cfg = Config.new
         fld = cfg[:field] = Field.new.setdbi(dbi)
-        cobj = Index.new(cfg, { dbi: dbi })
+        cobj = Index.new(cfg, dbi: dbi)
         cobj.add_rem.def_proc { |ent| ent[:frame] }
         cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?

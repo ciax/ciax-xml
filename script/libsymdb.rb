@@ -25,7 +25,7 @@ module CIAX
           id = e1['id'].to_sym
           label = e1['label']
           e1.each {|e2| # case
-            (db[id] ||= []) << e2.to_h.update({ 'type' => e2.name })
+            (db[id] ||= []) << e2.to_h.update('type' => e2.name)
           }
           verbose { "Symbol Table:#{id} : #{label}" }
         }

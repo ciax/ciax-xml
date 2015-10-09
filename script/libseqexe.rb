@@ -42,7 +42,7 @@ module CIAX
           @th_mcr = Thread.current
           @que_cmd = Queue.new
           @que_res = Queue.new
-          update({ 'id' => @record['id'], 'cid' => @mcfg[:cid], 'pid' => pid, 'step' => 0, 'total_steps' => @sequence.size, 'stat' => 'ready' })
+          update('id' => @record['id'], 'cid' => @mcfg[:cid], 'pid' => pid, 'step' => 0, 'total_steps' => @sequence.size, 'stat' => 'ready')
           @running = []
           @depth = 0
           # For Thread mode
@@ -232,7 +232,7 @@ module CIAX
         cfg = Config.new
         al = Wat::List.new(cfg).sub_list # Take App List
         cfg[:dev_list] = al
-        mobj = Remote::Index.new(cfg, { dbi: Db.new.get(PROJ) })
+        mobj = Remote::Index.new(cfg, dbi: Db.new.get(PROJ))
         mobj.add_rem.add_ext(Ext)
         begin
           ent = mobj.set_cmd(ARGV)

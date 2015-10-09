@@ -3,7 +3,11 @@ var last;
 function elapsed(){
     var now=new Date();
     var ms=now.getTime()-last;
-    if(ms < 0){ ms=0; }
+    var sign='';
+    if(ms < 0){
+        ms=-ms;
+        sign='-';
+    }
     var t=new Date(ms);
     var str;
     if (ms > 86400000){
@@ -13,7 +17,7 @@ function elapsed(){
     }else{
         str=t.getMinutes()+"' "+t.getSeconds()+'"';
     }
-    $("#elapsed").text(str);
+    $("#elapsed").text(sign+str);
 }
 function conv(stat){
     var data=stat.data

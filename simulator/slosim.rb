@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'gserver'
 
+# Slosyn Driver Simulator
 class Slosyn < GServer
   P_MAX = 9999
   P_MIN = 0
@@ -8,79 +9,46 @@ class Slosyn < GServer
   def initialize(port = 10_001, *args)
     super(port, *args)
     Thread.abort_on_exception = true
-    @target = 0
-    @pulse = 0
+    @pulse = 0 # Integer
     @bs = 0
-    Thread.new do
-      loop do
-        sleep 0.1
-        diff = @target - @pulse
-        if diff != 0
-          @bs = 1
-          @pulse += diff / diff.abs
-          if @pulse > P_MAX
-            @pulse = P_MIN
-          elsif @pulse < P_MIN
-            @pulse = P_MAX
-          end
-        else
-          @bs = 0
-        end
-      end
-    end
+    @q = Queue.new
   end
 
   def serve(io)
     while (str = io.gets("\r").chomp)
       sleep 0.1
-      case str
-      when /^abspos=/
-        @target = @pulse = set(str)
-      when /^p=/
-        @target = @pulse = set(str)
-      when /^ma=/
-        @target = set(str)
-        @bs = 1
-      when /^mi=/
-        @target += set(str)
-        @bs = 1
-      when 'j=1'
-        @target = 2005
-        @bs = 1
-      when 'j=-1'
-        @target = 0
-        @bs = 1
-      when 'stop'
-        @target = @pulse
-      when /in\(([1-5])\)/
-        io.print about(POS[Regexp.last_match(1).to_i - 1])
-        next
-      when 'spd'
-        io.print '0.1'
-        next
-      when 'err'
-        io.print '0'
-        next
-      when 'bs'
-        io.print @bs
-        next
-      when 'p'
-        io.print format('%.1f', @pulse.to_f / 10)
-        next
+      begin
+        method(str).call
+      rescue NameError
+        io.print '>'
       end
-      io.print '>'
     end
   end
 
-  def set(str)
-    a = str.split('=')
-    num = (a[1].to_f * 10).to_i
-    if num > P_MAX
-      num = P_MAX
-    elsif num < P_MIN
-      num = P_MIN
+  def servo(target)
+    Thread.new(target.to_i) do |t|
+      @bs = 1
+      loop do
+        diff = t - @pulse
+        @bs = 0 if diff == 0
+        break if @bs == 0
+        setpulse(@pulse + (diff <=> 0))
+        sleep 0.1
+      end
     end
-    num
+  end
+
+  def setpulse(num)
+    if num > P_MAX
+      num = P_MIN
+    elsif num < P_MIN
+      num = P_MAX
+    end
+    @pulse = num
+  end
+
+  def setdec(n)
+    (n.to_f * 10).to_i
   end
 
   def about(x)
@@ -89,11 +57,60 @@ class Slosyn < GServer
 
   # Commands
   def abspos=(num)
-    @target = @pulse = set(num)
+    setpulse(setdec(num))
+    io.print '>'
   end
 
-  def p=(str)
-    @target = @pulse = set(str)
+  def p=(num)
+    setpulse(setdec(num))
+    io.print '>'
+  end
+
+  def ma=(num)
+    servo(setdec(num))
+    io.print '>'
+  end
+
+  def mi=(num)
+    servo(@pulse + setdec(num))
+    @q << @pulse
+    @bs = 1
+    io.print '>'
+  end
+
+  def j=(num)
+    case num.to_i
+    when 1
+      servo(2005)
+    when -1
+      servo(0)
+    end
+    io.print '>'
+  end
+
+  def stop
+    @bs = 0
+    ''
+  end
+
+  def in(num)
+    io.print about(POS[num.to_i - 1])
+  end
+
+  def spd
+    io.print '0.1'
+  end
+
+  def err
+    io.print '0'
+  end
+
+  def bs
+    io.print @bs
+  end
+
+  def p
+    io.print format('%.1f', @pulse.to_f / 10)
   end
 end
 

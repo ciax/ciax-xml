@@ -26,7 +26,7 @@ module CIAX
       self
     end
 
-    def get_stat
+    def fetch_stat
       adbs = @dbi[:status]
       @index = adbs[:index]
       get_element(%w(time elapsed), '', 2)
@@ -95,7 +95,7 @@ module CIAX
       Msg.usage '[id] (ctl)'
     end
     tbl = HtmlTbl.new(dbi)
-    tbl.get_stat
+    tbl.fetch_stat
     tbl.get_ctl(ARGV)
     puts tbl.fin
   end

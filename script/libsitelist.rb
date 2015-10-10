@@ -12,7 +12,7 @@ module CIAX
         @sub_list = @cfg[:sub_list] = sub_mod.new(cfg) if sub_mod
       end
 
-      def set_db(db)
+      def store_db(db)
         @db = @cfg[:db] = type?(db, Db)
         verbose { 'Initialize' }
         if @cfg.key?(:site)

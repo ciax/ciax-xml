@@ -74,7 +74,7 @@ module CIAX
     class List < Site::List
       def initialize(cfg, top_list = nil)
         super(cfg, top_list || self, App::List)
-        set_db(@sub_list.db)
+        store_db(@sub_list.db)
       end
     end
 

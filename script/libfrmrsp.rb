@@ -133,7 +133,7 @@ module CIAX
       OPT.parse('', 'm' => 'merge file')
       OPT.usage('(opt) < logline') if STDIN.tty?
       str = gets(nil) || exit
-      res = Logging.set_logline(str)
+      res = Logging.store_logline(str)
       id = res['id']
       cid = res['cmd']
       dbi = Dev::Db.new.get(id)

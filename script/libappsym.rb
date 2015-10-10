@@ -18,12 +18,12 @@ module CIAX
         self['msg'] = {}
         @post_upd_procs << proc { # post process
           verbose { 'Propagate upd -> Symbol#upd' }
-          set_sym(adbs[:index].dup.update(adbs[:alias] || {}))
+          store_sym(adbs[:index].dup.update(adbs[:alias] || {}))
         }
         self
       end
 
-      def set_sym(index)
+      def store_sym(index)
         index.each {|key, hash|
           sid = hash['symbol'] || next
           tbl = @symdb[sid.to_sym]

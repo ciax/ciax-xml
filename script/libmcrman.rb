@@ -85,11 +85,11 @@ module CIAX
           @prompt_proc = proc { upd_current }
           # Convert as command
           input_conv_num {|i|
-            set_current(i)
+            store_current(i)
           }
           # Convert as parameter
           input_conv_num(@cobj.rem.int.keys) {|i|
-            set_current(i)
+            store_current(i)
           }
           @post_exe_procs << proc { @cfg[:output].upd }
           vg = @cobj.loc.add_view
@@ -104,7 +104,7 @@ module CIAX
         def upd_current
           @stat.upd
           if @current > @stat.size || @stat.size > @lastsize
-            set_current(@lastsize = @stat.size)
+            store_current(@lastsize = @stat.size)
           end
           msg = format('[%d]', @current)
           if @current > 0
@@ -114,7 +114,7 @@ module CIAX
           msg
         end
 
-        def set_current(i)
+        def store_current(i)
           return i.to_s if i > @stat.size
           @current = i
           if i > 0

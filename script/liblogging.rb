@@ -42,7 +42,7 @@ module CIAX
     end
 
     # For new format
-    def self.set_logline(str)
+    def self.store_logline(str)
       h = JSON.load(str)
       give_up('Logline:Line is not rcv') unless /rcv/ =~ h['dir']
       if h['base64']

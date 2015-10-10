@@ -52,16 +52,6 @@ module CIAX
         regular[:exec] << ['upd'] if regular[:exec].empty?
         db[:watch] = wdb.to_h.update(index: idx, regular: regular)
       end
-
-      private
-
-      def get_cmd
-        args = [e1['name']]
-        e1.each do|e2|
-          args << r0.subst(e2.text)
-        end
-        (act[name] ||= []) << args
-      end
     end
   end
 end

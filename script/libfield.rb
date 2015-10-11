@@ -30,7 +30,7 @@ module CIAX
         return str unless /\$\{/ =~ str
         enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
           str.gsub(/\$\{(.+)\}/) do
-            ary = [*get(Regexp.last_match(1))].map! { |i| eval(i) }
+            ary = [*get(Regexp.last_match(1))].map! { |i| expr(i) }
             Msg.give_up("No value for subst [#{Regexp.last_match(1)}]") if ary.empty?
             ary.join(',')
           end
@@ -50,7 +50,7 @@ module CIAX
           case h
           when Array
             begin
-              i = eval(i)
+              i = expr(i)
             rescue SyntaxError, NoMethodError
               Msg.give_up("#{i} is not number")
             end
@@ -77,7 +77,7 @@ module CIAX
           merge_ary(p, conv.split(','))
         when String
           begin
-            p.replace(eval(conv).to_s)
+            p.replace(expr(conv).to_s)
           rescue SyntaxError, NameError
             par_err('Value is not numerical')
           end

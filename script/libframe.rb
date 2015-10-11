@@ -12,7 +12,7 @@ module CIAX
         @endian = endian
         @ccrange = nil
         @method = ccmethod
-        @terminator = terminator && eval('"' + terminator + '"')
+        @terminator = esc_code(terminator)
         reset
       end
 
@@ -82,7 +82,7 @@ module CIAX
             cc_add(str)
           end
         elsif del
-          delimiter = eval('"' + del + '"')
+          delimiter = esc_code(del).to_s
           verbose { "Cut by Delimiter [#{delimiter.inspect}]" }
           str, dlm, body = body.partition(delimiter)
           verbose(tm && dlm) { "Cut by Terminator [#{@terminator.inspect}]" }
@@ -159,7 +159,7 @@ module CIAX
         str = @frame.slice!(0, len.to_i)
         if e0['decode']
           val = decode(e0, str)
-          ref = eval(ref).to_s
+          ref = expr(ref).to_s
         else
           val = str
         end
@@ -203,11 +203,11 @@ module CIAX
       end
 
       def encode(e0, str) # Num -> Chr
-        str = e0['format'] % eval(str) if e0['format']
+        str = e0['format'] % expr(str) if e0['format']
         len = e0['length']
         if len
           code = ''
-          num = eval(str)
+          num = expr(str)
           len.to_i.times do
             c = (num % 256).chr
             num /= 256

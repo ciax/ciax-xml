@@ -30,7 +30,7 @@ module CIAX
       res = str.gsub(/\$([_a-z])/) { @counter[Regexp.last_match(1)] }
       res = res.split(':').map do|i|
         # i could be expression
-        Regexp.new('\$').match(i) ? i : eval(i)
+        Regexp.new('\$').match(i) ? i : expr(i)
       end.join(':')
       Msg.cfg_err('Empty String') if res == ''
       verbose { "Substitute [#{str}] to [#{res}]" }

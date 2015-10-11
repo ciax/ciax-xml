@@ -1,10 +1,21 @@
 #!/usr/bin/ruby
 # Common Module
 require 'fileutils'
+require 'libmsgdbg'
 module CIAX
   ### Checking Methods ###
   module Msg
     module_function
+
+    def expr(str)
+      num=eval(str)
+      type?(num,Numeric)
+    end
+
+    def esc_code(str)
+      return unless str
+      eval('"'+str+'"')
+    end
 
     # Thread is main
     def fg?

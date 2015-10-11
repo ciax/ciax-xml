@@ -68,7 +68,7 @@ module CIAX
               argv['val'] = rep.subst(e2.text)
               if /\$/ !~ argv['val']
                 fmt = argv.delete('format')
-                argv['val'] = fmt % eval(argv['val']) if fmt
+                argv['val'] = fmt % expr(argv['val']) if fmt
               end
               command << argv
             end

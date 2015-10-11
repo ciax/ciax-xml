@@ -82,7 +82,7 @@ module CIAX
           case par[:type]
           when 'num'
             begin
-              num = eval(str)
+              num = expr(str)
             rescue NameError, SyntaxError
               Msg.par_err('Parameter is not number')
             end

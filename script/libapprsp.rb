@@ -37,7 +37,7 @@ module CIAX
               else
                 binstr = bary.join
               end
-              data = eval('0b' + binstr)
+              data = expr('0b' + binstr)
               verbose { "GetBinary[#{data}](#{id})" }
             else
               ary = flds.map { |e| get_field(e) }
@@ -60,7 +60,7 @@ module CIAX
             end
             if hash.key?('formula')
               f = hash['formula'].gsub(/\$#/, data.to_s)
-              data = eval(f)
+              data = expr(f)
               verbose { "Formula:#{f}(#{data})(#{id})" }
             end
             data = hash['format'] % data if hash.key?('format')
@@ -105,7 +105,7 @@ module CIAX
       # range format n:m,l,..
       def index_range(str)
         str.split(',').map do|e|
-          r, l = e.split(':').map { |n| eval(n) }
+          r, l = e.split(':').map { |n| expr(n) }
           Range.new(r, l || r).to_a
         end.flatten
       end

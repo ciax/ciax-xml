@@ -65,7 +65,7 @@ module CIAX
           timeout = (@dbi['timeout'] || 10).to_i
         end
         tm = @dbi[:response][:frame]['terminator']
-        @stream = Stream.new(@id, @dbi['version'], iocmd, @dbi['wait'], timeout, (tm && eval('"' + tm + '"')))
+        @stream = Stream.new(@id, @dbi['version'], iocmd, @dbi['wait'], timeout, (tm && esc_code(tm)))
         @stream.ext_log unless OPT['s']
         @stream.pre_open_proc = proc { @sv_stat.set('strerr') }
         @stream.post_open_proc = proc { @sv_stat.reset('strerr') }

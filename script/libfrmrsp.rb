@@ -111,7 +111,7 @@ module CIAX
         # i.e. idxary=[0,0:10,0] -> @data[0][0][0] .. @data[0][10][0]
         return yield if idx.empty?
         fld = field || []
-        f, l = idx[0].split(':').map { |i| eval(i) }
+        f, l = idx[0].split(':').map { |i| expr(i) }
         Range.new(f, l || f).each do|i|
           fld[i] = mk_array(idx[1..-1], fld[i]) { yield }
           verbose { "Array:Index[#{i}]=#{fld[i]}" }

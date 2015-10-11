@@ -8,13 +8,13 @@ module CIAX
     module_function
 
     def expr(str)
-      num=eval(str)
-      type?(num,Numeric)
+      num = eval(str)
+      type?(num, Numeric)
     end
 
     def esc_code(str)
       return unless str
-      eval('"'+str+'"')
+      eval('"' + str + '"')
     end
 
     # Thread is main

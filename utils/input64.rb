@@ -4,12 +4,11 @@
 begin
   select([STDIN])
 rescue Interrupt
-  warn "Input64:SIGINT"
+  warn 'Input64:SIGINT'
   retry
 end
 begin
-  puts [STDIN.readpartial(1024)].pack("m").split("\n").join('')
+  puts [STDIN.readpartial(1024)].pack('m').split("\n").join('')
 rescue EOFError
   exit 1
 end
-

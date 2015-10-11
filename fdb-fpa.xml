@@ -7,7 +7,6 @@
       <body/>
       <string>??</string>
       <char length="1">13</char>
-      <char length="1">10</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <!--String Length must be <32-->

@@ -11,12 +11,12 @@ module CIAX
   class Dbi < Hashx # DB Item
     # cover() will deeply merge self and given db
     # (If end of the element confricts, self content will be taken)
-    def cover(db, key = nil, depth = nil)
+    def cover(db, key = nil)
       type?(db, Dbi)
       if key
-        self[key] = db.deep_copy.deep_update(self[key] || {}, depth)
+        self[key] = db.deep_copy.deep_update(self[key] || {})
       else
-        db.deep_copy.deep_update(self, depth)
+        db.deep_copy.deep_update(self)
       end
     end
   end

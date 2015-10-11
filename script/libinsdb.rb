@@ -7,12 +7,13 @@ module CIAX
       include Wat::Db
       def initialize(proj = PROJ)
         super('idb', proj)
+        @adb=App::Db.new
       end
 
       # overwrite App::Db
       def get(id = nil)
         dbi = super
-        dbi.cover(App::Db.new.get(dbi['app_id']))
+        dbi.cover(@adb.get(dbi['app_id']))
       end
 
       private

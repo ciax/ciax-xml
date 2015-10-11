@@ -21,8 +21,8 @@ module CIAX
     end
 
     # Merge self to ope
-    def deep_update(ope, depth = nil)
-      rec_merge(ope, self, depth)
+    def deep_update(ope)
+      rec_merge(self, ope)
       self
     end
 
@@ -33,21 +33,8 @@ module CIAX
     private
 
     def j2h(json_str = nil)
-      JSON.load(json_str || gets(nil) || Msg.give_up("No data in file(#{ARGV})"))
-    end
-
-    # r(operand) will be merged to w (w is changed)
-    def rec_merge(r, w, d)
-      d -= 1 if d
-      each_idx(r, w) do|i, cls|
-        w = cls.new unless w.is_a? cls
-        if d && d < 1
-          verbose { "Merging #{i}" }
-          w[i] = r[i]
-        else
-          w[i] = rec_merge(r[i], w[i], d)
-        end
-      end
+      inp = json_str || gets(nil) || Msg.give_up("No data in file(#{ARGV})")
+      JSON.load(inp)
     end
 
     def rec_proc(db)
@@ -57,17 +44,15 @@ module CIAX
       yield db
     end
 
-    def each_idx(ope, res = nil)
-      case ope
-      when Hash
-        ope.each_key { |k| yield k, Hash }
-      when Array
-        ope.each_index { |i| yield i, Array }
-      when String
-      else
-        return ope
+    # r(operand) will be merged to w (w is changed)
+    def rec_merge(me, other)
+      me.update(other) do |_k, mv, ov|
+        if mv.is_a? Hash
+          rec_merge(mv, ov)
+        else
+          ov
+        end
       end
-      res || ope.dup
     end
   end
 
@@ -132,5 +117,14 @@ module CIAX
       end
       nil
     end
+  end
+
+  if __FILE__ == $PROGRAM_NAME
+    a = Hashx.new
+    a[:b] = { c: { 'd' => 'e' } }
+    puts a.to_v
+    e = Hashx.new(b: { c: { d: 'x' } })
+    puts e.to_v
+    puts a.deep_update(e).to_v
   end
 end

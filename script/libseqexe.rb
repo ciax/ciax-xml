@@ -96,7 +96,7 @@ module CIAX
           self['option'].clear
           res = @record.finish
           show { "#{res}" }
-          set_stat(res)
+          store_stat(res)
           @post_mcr_procs.each { |p| p.call(self) }
         end
 
@@ -105,7 +105,7 @@ module CIAX
         # macro returns result (true/false)
         def sub_macro(sequence, mstat)
           @depth += 1
-          set_stat('run')
+          store_stat('run')
           result = 'complete'
           sequence.each do|e1|
             self['step'] += 1
@@ -168,7 +168,7 @@ module CIAX
           end
         end
 
-        def set_stat(str)
+        def store_stat(str)
           self['stat'] = str
         ensure
           @post_stat_procs.each { |p| p.call(self) }
@@ -177,10 +177,10 @@ module CIAX
         def query(cmds)
           return true if OPT['n']
           self['option'].replace(cmds)
-          set_stat 'query'
+          store_stat 'query'
           res = input(cmds)
           self['option'].clear
-          set_stat 'run'
+          store_stat 'run'
           @step['action'] = res
           case res
           when 'retry'

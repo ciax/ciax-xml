@@ -24,22 +24,22 @@ module CIAX
         @interval = wdb['interval'].to_f if wdb.key?('interval')
         # Pick usable val
         @list = []
-        @windex.values.each {|v|
+        @windex.values.each do|v|
           @list |= v[:cnd].map { |i| i['var'] }
-        }
-        @stat.post_upd_procs << proc {
+        end
+        @stat.post_upd_procs << proc do
           verbose { 'Propagate Status#upd -> upd' }
           upd
-        }
+        end
         init_auto(wdb)
         self
       end
 
       def queue(src, pri, batch = [])
         @last_updated = self['time'] = now_msec
-        batch.each {|args|
+        batch.each do|args|
           @data['exec'] << [src, pri, args]
-        }
+        end
         post_upd
         self
       end
@@ -77,19 +77,19 @@ module CIAX
         @last_updated = self['time'] = @stat['time']
         sync
         @data.values.each { |a| a.clear if a.is_a? Array }
-        @windex.each {|id, item|
+        @windex.each do|id, item|
           next unless check(id, item)
-          item[:act].each {|key, ary|
+          item[:act].each do|key, ary|
             if key == :exec
-              ary.each {|args|
+              ary.each do|args|
                 @data['exec'] << ['event', 2, args]
-              }
+              end
             else
               @data[key.to_s].concat(ary)
             end
-          }
+          end
           @data['active'] << id
-        }
+        end
         upd_event
         verbose { "Updated(#{@stat['time']})" }
         self
@@ -129,17 +129,17 @@ module CIAX
       end
 
       def sync
-        @list.each {|i|
+        @list.each do|i|
           @data['last'][i] = @data['crnt'][i]
           @data['crnt'][i] = @stat.get(i)
-        }
+        end
       end
 
       def check(id, item)
         return true unless (cklst = item[:cnd])
         verbose { "Check: <#{item['label']}>" }
         rary = []
-        cklst.each {|ckitm|
+        cklst.each do|ckitm|
           vn = ckitm['var']
           val = @stat.get(vn)
           case ckitm['type']
@@ -180,7 +180,7 @@ module CIAX
           end
           res = !res if /true|1/ =~ ckitm['inv']
           rary << res
-        }
+        end
         @data['res'][id] = rary
         rary.all?
       end

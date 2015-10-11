@@ -20,9 +20,9 @@ module CIAX
 
       def ext_server
         super
-        @server_input_proc = proc {|line|
+        @server_input_proc = proc do|line|
           /^(strobe|stat)/ =~ line ? [] : line.split(' ')
-        }
+        end
         @server_output_proc = proc { @cfg[:output].to_s }
         self
       end

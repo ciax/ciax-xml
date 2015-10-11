@@ -39,40 +39,36 @@ module CIAX
 
       def init_frame(domain)
         db = domain.to_h
-        enclose('INIT:Main Frame <-', '-> INIT:Main Frame') {
+        enclose('INIT:Main Frame <-', '-> INIT:Main Frame') do
           frame = []
-          domain.each {|e1|
-            frame << yield(e1)
-          }
+          domain.each { |e1| frame << yield(e1) }
           verbose { "InitMainFrame:#{frame}" }
           db[:main] = frame
-        }
-        domain.find('ccrange') {|e0|
-          enclose('INIT:Ceck Code Frame <-', '-> INIT:Ceck Code Frame') {
+        end
+        domain.find('ccrange') do|e0|
+          enclose('INIT:Ceck Code Frame <-', '-> INIT:Ceck Code Frame') do
             frame = []
-            Repeat.new.each(e0) {|e1, r1|
-              frame << yield(e1, r1)
-            }
+            Repeat.new.each(e0) { |e1, r1| frame << yield(e1, r1) }
             verbose { "InitCCFrame:#{frame}" }
             db[:ccrange] = frame
-          }
-        }
+          end
+        end
         db
       end
 
       def init_index(domain)
         db = {}
-        domain.each {|e0|
+        domain.each do|e0|
           id = e0.attr2item(db)
           item = db[id]
-          enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') {
-            Repeat.new.each(e0) {|e1, r1|
+          enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
+            Repeat.new.each(e0) do|e1, r1|
               par2item(e1, item) && next
               e = yield(e1, r1) || next
               (item[:body] ||= []) << e
-            }
-          }
-        }
+            end
+          end
+        end
         db
       end
 
@@ -102,9 +98,7 @@ module CIAX
         when 'array'
           attr = e.to_h
           idx = attr[:index] = []
-          e.each {|e1|
-            idx << e1.to_h
-          }
+          e.each { |e1| idx << e1.to_h }
           item[:struct] = idx.map { |h| h['size'] } if item
           verbose { "InitArray: #{attr}" }
           attr

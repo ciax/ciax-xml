@@ -62,39 +62,39 @@ module CIAX
 
       # Process Frame to Field
       def getfield_rec(e0)
-        e0.each {|e1|
+        e0.each do|e1|
           case e1
           when 'ccrange'
-            enclose('Entering Ceck Code Node', 'Exitting Ceck Code Node') {
+            enclose('Entering Ceck Code Node', 'Exitting Ceck Code Node') do
               @frame.cc_mark
               getfield_rec(@sel[:ccrange])
               @frame.cc_set
-            }
+            end
           when 'body'
-            enclose('Entering Body Node', 'Exitting Body Node') {
+            enclose('Entering Body Node', 'Exitting Body Node') do
               getfield_rec(@sel[:body] || [])
-            }
+            end
           when 'echo' # Send back the command string
             verbose { "Set Command Echo [#{@echo.inspect}]" }
             @frame.cut('label' => 'Command Echo', 'val' => @echo)
           when Hash
             frame_to_field(e1) { @frame.cut(e1) }
           end
-        }
+        end
       end
 
       def frame_to_field(e0)
-        enclose("#{e0['label']}", 'Field:End') {
+        enclose("#{e0['label']}", 'Field:End') do
           if e0[:index]
             # Array
             akey = e0['assign'] || Msg.cfg_err('No key for Array')
             # Insert range depends on command param
-            idxs = e0[:index].map {|e1|
+            idxs = e0[:index].map do|e1|
               e1['range'] || "0:#{e1['size'].to_i - 1}"
-            }
-            enclose("Array:[#{akey}]:Range#{idxs}", "Array:Assign[#{akey}]") {
+            end
+            enclose("Array:[#{akey}]:Range#{idxs}", "Array:Assign[#{akey}]") do
               @cache[akey] = mk_array(idxs, get(akey)) { yield }
-            }
+            end
           else
             # Field
             data = yield
@@ -103,7 +103,7 @@ module CIAX
               verbose { "Assign:[#{akey}] <- <#{data}>" }
             end
           end
-        }
+        end
       end
 
       def mk_array(idx, field)
@@ -112,10 +112,10 @@ module CIAX
         return yield if idx.empty?
         fld = field || []
         f, l = idx[0].split(':').map { |i| eval(i) }
-        Range.new(f, l || f).each {|i|
+        Range.new(f, l || f).each do|i|
           fld[i] = mk_array(idx[1..-1], fld[i]) { yield }
           verbose { "Array:Index[#{i}]=#{fld[i]}" }
-        }
+        end
         fld
       end
     end

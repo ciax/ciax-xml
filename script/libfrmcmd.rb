@@ -56,19 +56,19 @@ module CIAX
         def mk_frame(domain)
           conv = nil
           @frame.reset
-          @sel[domain].each {|a|
+          @sel[domain].each do|a|
             case a
             when Hash
               frame = a['val'].gsub(/\$\{cc\}/) { @frame.cc }
               frame = @field.subst(frame)
               conv = true if frame != a['val']
-              frame.split(',').each {|s|
+              frame.split(',').each do|s|
                 @frame.add(s, a)
-              }
+              end
             else # ccrange,body ...
               @frame.add(@fstr[a.to_sym])
             end
-          }
+          end
           @fstr[domain] = @frame.copy
           conv
         end

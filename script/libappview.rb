@@ -18,25 +18,23 @@ module CIAX
           @group['gal'] = { 'caption' => 'Alias', :members => adbs[:alias].keys }
           @index.update(adbs[:alias])
         end
-        @stat.post_upd_procs << proc {
+        @stat.post_upd_procs << proc do
           verbose { 'Propagate Status#upd -> upd' }
           upd
-        }
+        end
         # Just additional data should be provided
-        %w(data class msg).each {|key|
-          stat[key] ||= {}
-        }
+        %w(data class msg).each { |key| stat[key] ||= {} }
       end
 
       def to_csv
         str = ''
-        @group.values.each {|gdb|
+        @group.values.each do|gdb|
           cap = gdb['caption'] || next
-          gdb[:members].each {|id|
+          gdb[:members].each do|id|
             label = @index[id]['label']
             str << "#{cap},#{label},#{@stat.get(id)}\n"
-          }
-        }
+          end
+        end
         str
       end
 
@@ -48,16 +46,16 @@ module CIAX
         upd
         cm = Hash.new(2).update('active' => 5, 'alarm' => 1, 'warn' => 3, 'hide' => 0)
         lines = []
-        values.each {|v|
+        values.each do|v|
           cap = v['caption']
           lines << ' ***' + color(cap, 10) + '***' unless cap.empty?
-          lines.concat v['lines'].map {|ele|
-            '  ' + ele.values.map {|val|
+          lines.concat(v['lines'].map do|ele|
+            '  ' + ele.values.map do|val|
               c = cm[val['class']] + 8
               '[' + color(val['label'], 14) + ':' + color(val['msg'], c) + ']'
-            }.join(' ')
-          }
-        }
+            end.join(' ')
+          end)
+        end
         lines.join("\n")
       end
 
@@ -67,20 +65,20 @@ module CIAX
         self['gtime'] = { 'caption' => '', 'lines' => [hash = {}] }
         hash['time'] = { 'label' => 'TIMESTAMP', 'msg' => Msg.date(@stat['time']) }
         hash['elapsed'] = { 'label' => 'ELAPSED', 'msg' => Msg.elps_date(@stat['time']) }
-        @group.each {|k, gdb|
+        @group.each do|k, gdb|
           cap = gdb['caption'] || next
           self[k] = { 'caption' => cap, 'lines' => [] }
           col = gdb['column'] || 1
-          gdb[:members].each_slice(col.to_i) {|hline|
+          gdb[:members].each_slice(col.to_i) do|hline|
             hash = {}
-            hline.each {|id|
+            hline.each do|id|
               h = hash[id] = { 'label' => @index[id]['label'] || id.upcase }
               h['msg'] = @stat['msg'][id] || @stat.get(id)
               h['class'] = @stat['class'][id] if @stat['class'].key?(id)
-            }
+            end
             self[k]['lines'] << hash
-          }
-        }
+          end
+        end
         self
       end
     end

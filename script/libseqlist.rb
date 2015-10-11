@@ -15,14 +15,14 @@ module CIAX
         def to_v
           idx = 1
           page = ['<<< ' + Msg.color("Active Macros [#{self['id']}]", 2) + ' >>>']
-          @data.each {|id, seq|
+          @data.each do|id, seq|
             title = "[#{idx}] (#{id})(by #{get_cid(seq['pid'])})"
             msg = "#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}]"
             msg << "(#{seq['stat']})"
             msg << optlist(seq['option'])
             page << Msg.item(title, msg)
             idx += 1
-          }
+          end
           page.join("\n")
         end
 
@@ -51,9 +51,9 @@ module CIAX
           end
 
           def interrupt
-            @data.values.each {|seq|
+            @data.values.each do|seq|
               seq.exe(['interrupt'])
-            }
+            end
           end
 
           # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
@@ -64,9 +64,9 @@ module CIAX
           end
 
           def clean
-            @data.delete_if {|_, seq|
+            @data.delete_if do|_, seq|
               ! (seq.is_a?(Exe) && seq.th_mcr.status)
-            }
+            end
             upd
             self
           end
@@ -81,10 +81,10 @@ module CIAX
             # Limit self level
             # :dev_list is App::List
             @cfg[:dev_list].ext_shell if @cfg.key?(:dev_list)
-            @post_upd_procs << proc {
+            @post_upd_procs << proc do
               verbose { 'Propagate List#upd -> JumpGrp#upd' }
               @jumpgrp.number_item(@data.values.map { |seq| seq['id'] })
-            }
+            end
             self
           end
 
@@ -120,16 +120,16 @@ module CIAX
         list = List.new(PROJ, cfg).ext_drv.ext_shell
         mobj = Remote::Index.new(cfg,  dbi: Db.new.get(PROJ))
         mobj.add_rem.add_ext(Ext)
-        cfg[:submcr_proc] = proc {|args, pid|
+        cfg[:submcr_proc] = proc do|args, pid|
           ent = mobj.set_cmd(args)
           list.add(ent, pid)
-        }
+        end
         begin
           mobj.set_cmd if ARGV.empty?
-          ARGV.each {|cid|
+          ARGV.each do|cid|
             ent = mobj.set_cmd(cid.split(':'))
             list.add(ent)
-          }
+          end
           list.shell
         rescue InvalidCMD
           OPT.usage('[cmd(:par)] ...')

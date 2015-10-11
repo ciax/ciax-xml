@@ -24,7 +24,7 @@ module CIAX
 
       def rec_db(e0, dbi = Dbi.new)
         (dbi ||= Dbi.new).update(e0.to_h)
-        e0.each {|e|
+        e0.each do|e|
           if e['id']
             e.attr2item(dbi)
           else
@@ -32,7 +32,7 @@ module CIAX
             verbose { "Override [#{id}]" }
             rec_db(e, dbi[id] ||= {})
           end
-        }
+        end
         dbi
       end
     end

@@ -25,16 +25,16 @@ module CIAX
         @displist = Disp::List.new('column' => 2)
         @projlist = Disp::Group.new('caption' => 'Project', 'column' => 2)
         files = Msg.xmlfiles(@type)
-        files.each {|xml|
+        files.each do|xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
-          Gnu.new(xml).each {|e|
+          Gnu.new(xml).each do|e|
             @project << e['include'] if @project.include?(e['id']) && e['include']
-          }
-        }.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
+          end
+        end.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
         # Two pass reading for refering
-        files.each {|xml|
+        files.each do|xml|
           Gnu.new(xml).each { |e| readproj(e) }
-        }
+        end
         fail(InvalidProj, "No such Project(#{@project})\n" + @projlist.view) if @displist.empty?
       end
 
@@ -43,9 +43,9 @@ module CIAX
         fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + @displist.to_s) unless key?(id)
         top = self[id]
         item = { top: top, attr: top.to_h, domain: {} }
-        top.each {|e1|
+        top.each do|e1|
           item[:domain][e1.name] = e1 unless top.ns == e1.ns
-        }
+        end
         verbose { "Domain registerd:#{item[:domain].keys}" }
         item
       end
@@ -57,9 +57,7 @@ module CIAX
           id = e['id']
           pc = @projlist[id] = e['caption']
           @pcap = @project.include?(id) ? pc : nil
-          e.each {|e0|
-            readgrp(e0)
-          }
+          e.each { |e0| readgrp(e0) }
         else
           readgrp(e)
         end
@@ -68,9 +66,7 @@ module CIAX
       def readgrp(e)
         if e.name == 'group'
           @group = @displist.new_grp(e['caption']) if @pcap
-          e.each {|e0|
-            readitem(e0)
-          }
+          e.each { |e0| readitem(e0) }
         else
           @group ||= @displist.new_grp(@pcap) if @pcap
           readitem(e)

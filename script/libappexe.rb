@@ -44,13 +44,13 @@ module CIAX
       def ext_test
         @mode = 'TEST'
         @stat.ext_sym.ext_save.ext_load.upd
-        @cobj.get('interrupt').def_proc {
+        @cobj.get('interrupt').def_proc do
           "INTERRUPT(#{@batch_interrupt})"
-        }
-        @cobj.rem.ext.def_proc {
+        end
+        @cobj.rem.ext.def_proc do
           @stat['time'] = now_msec
           'TEST'
-        }
+        end
         ext_non_client
       end
 
@@ -68,14 +68,14 @@ module CIAX
       end
 
       def ext_non_client
-        @cobj.get('set').def_proc {|ent|
+        @cobj.get('set').def_proc do|ent|
           @stat.rep(ent.par[0], ent.par[1])
           "SET:#{ent.par[0]}=#{ent.par[1]}"
-        }
-        @cobj.get('del').def_proc {|ent|
+        end
+        @cobj.get('del').def_proc do|ent|
           ent.par[0].split(',').each { |key| @stat.del(key) }
           "DELETE:#{ent.par[0]}"
-        }
+        end
         self
       end
 
@@ -85,31 +85,31 @@ module CIAX
 
       def init_buf
         buf = Buffer.new(@stat['id'], @stat['ver'], @sv_stat)
-        buf.recv_proc {|args, src|
+        buf.recv_proc do|args, src|
           verbose { "Processing #{args}" }
           @sub.exe(args, src)
-        }
-        buf.post_upd_procs << proc {
+        end
+        buf.post_upd_procs << proc do
           verbose { 'Propagate Buffer#upd -> Status#upd' }
           @stat.upd
-        }
-        @sub.stat.flush_procs << proc {
+        end
+        @sub.stat.flush_procs << proc do
           verbose { 'Propagate Field#flush -> Buffer#upd' }
           buf.upd
-        }
-        @cobj.rem.ext.def_proc {|ent, src, pri|
+        end
+        @cobj.rem.ext.def_proc do|ent, src, pri|
           verbose { "#{@id}/Issuing:#{ent.id} from #{src} with priority #{pri}" }
           buf.send(ent, pri)
           'ISSUED'
-        }
-        @cobj.get('interrupt').def_proc {|_, src|
-          @batch_interrupt.each {|args|
+        end
+        @cobj.get('interrupt').def_proc do|_, src|
+          @batch_interrupt.each do|args|
             verbose { "#{@id}/Issuing:#{args} for Interrupt" }
             buf.send(@cobj.set_cmd(args), 0)
-          }
+          end
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
           'INTERRUPT'
-        }
+        end
         buf.server
       end
     end

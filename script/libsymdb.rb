@@ -21,14 +21,14 @@ module CIAX
 
       def doc_to_db(doc)
         db = Dbi.new
-        doc[:top].each {|e1|
+        doc[:top].each do|e1|
           id = e1['id'].to_sym
           label = e1['label']
-          e1.each {|e2| # case
+          e1.each do|e2| # case
             (db[id] ||= []) << e2.to_h.update('type' => e2.name)
-          }
+          end
           verbose { "Symbol Table:#{id} : #{label}" }
-        }
+        end
         db
       end
     end

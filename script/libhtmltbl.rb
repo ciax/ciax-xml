@@ -30,10 +30,10 @@ module CIAX
       adbs = @dbi[:status]
       @index = adbs[:index]
       get_element(%w(time elapsed), '', 2)
-      adbs[:group].values.each {|g|
+      adbs[:group].values.each do|g|
         cap = g['caption'] || next
         get_element(g[:members], cap, g['column'])
-      }
+      end
       self
     end
 
@@ -43,22 +43,22 @@ module CIAX
       push '<tr>'
       push '<th colspan="6">Controls</th></tr>'
       push '<tr>'
-      unitary.each {|unit|
+      unitary.each do|unit|
         udb = uidx[unit]
         if udb
           push '<td class="item">'
           push '<span class="ctllabel">' + udb['label'] + '</span>'
-          udb[:members].each {|id|
+          udb[:members].each do|id|
             push '<span class="center">'
             label = @dbi[:command][:index][id]['label'].upcase
             push '<input class="button" type="button" value="' + label + '" onclick="dvctl(' + "'#{id}'" + ')"/>'
             push '</span>'
-          }
+          end
           push '</td>'
         else
           give_up("Wrong CTL Unit\n" + uidx.map { |k, v| item(k, v['label']) }.join("\n"))
         end
-      }
+      end
       push '</tr>'
       push '</tbody></table>'
       self
@@ -70,17 +70,17 @@ module CIAX
       col = col.to_i > 0 ? col.to_i : 6
       push '<table><tbody>'
       push "<tr><th colspan=\"6\">#{cap}</th></tr>" unless cap.empty?
-      members.each_slice(col) {|da|
+      members.each_slice(col) do|da|
         push '<tr>'
-        da.each {|id|
+        da.each do|id|
           label = (@index[id] || {})['label'] || id.upcase
           push "<td class=\"item\">"
           push "<span class=\"label\">#{label}</span>"
           push "<span id=\"#{id}\" class=\"normal\">*******</span>"
           push '</td>'
-        }
+        end
         push '</tr>'
-      }
+      end
       push '</tbody></table>'
       self
     end

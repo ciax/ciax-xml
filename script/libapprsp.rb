@@ -19,8 +19,8 @@ module CIAX
       private
 
       def upd_core
-        @adbs.each {|id, hash|
-          enclose("GetStatus:[#{id}]", "GetStatus:#{id}=[%s]") {
+        @adbs.each do|id, hash|
+          enclose("GetStatus:[#{id}]", "GetStatus:#{id}=[%s]") do
             flds = hash[:fields]
             if flds.empty?
               @data[id] ||= (hash['default'] || '')
@@ -65,8 +65,8 @@ module CIAX
             end
             data = hash['format'] % data if hash.key?('format')
             @data[id] = data.to_s
-          }
-        }
+          end
+        end
         self['time'] = @field['time']
         verbose { "Update(#{self['time']})" }
         self
@@ -93,21 +93,21 @@ module CIAX
       def get_bin(e)
         data = get_field(e).to_i
         inv = (/true|1/ =~ e['inv'])
-        str = index_range(e['bit']).map {|sft|
+        str = index_range(e['bit']).map do|sft|
           bit = (data >> sft & 1)
           bit = -(bit - 1) if inv
           bit.to_s
-        }.join
+        end.join
         verbose { "GetBit[#{str}]" }
         str
       end
 
       # range format n:m,l,..
       def index_range(str)
-        str.split(',').map {|e|
+        str.split(',').map do|e|
           r, l = e.split(':').map { |n| eval(n) }
           Range.new(r, l || r).to_a
-        }.flatten
+        end.flatten
       end
     end
 

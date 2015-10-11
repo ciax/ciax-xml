@@ -26,10 +26,10 @@ module CIAX
         # batch is ary of args(ary)
         def initialize(cfg, attr = {})
           super
-          self[:batch] = @body.map {|e1|
+          self[:batch] = @body.map do|e1|
             args = []
-            enclose("GetCmd(FDB):#{e1.first}", 'Exec(FDB):%s') {
-              e1.each {|e2| # //argv
+            enclose("GetCmd(FDB):#{e1.first}", 'Exec(FDB):%s') do
+              e1.each do|e2| # //argv
                 case e2
                 when String
                   args << e2
@@ -39,10 +39,10 @@ module CIAX
                   verbose { "Calculated [#{str}]" }
                   args << str
                 end
-              }
-            }
+              end
+            end
             args
-          }.extend(Enumx)
+          end.extend(Enumx)
         end
       end
     end

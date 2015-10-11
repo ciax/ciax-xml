@@ -1,58 +1,67 @@
 #!/usr/bin/ruby
 require 'libremote'
 require 'libmcrdb'
-
+# CIAX_XML
 module CIAX
+  # Macro Layer
   module Mcr
     include Remote
+    INTCMD = {
+      'start' => 'Sequence',
+      'exec' => 'Command',
+      'skip' => 'Macro',
+      'drop' => ' Macro',
+      'suppress' => 'and Memorize',
+      'force' => 'Proceed',
+      'pass' => 'Execution',
+      'ok' => 'for the message',
+      'retry' => 'Checking'
+    }
+    # Internal Commands
     module Int
       include Remote::Int
+      # Internal Group
       class Group < Int::Group
         attr_reader :par
         def initialize(cfg, crnt = {})
           super
           @par = { type: 'str', list: [], default: '0' }
           @cfg[:parameters] = [@par]
-          {
-            'start' => 'Sequence',
-            'exec' => 'Command',
-            'skip' => 'Macro',
-            'drop' => ' Macro',
-            'suppress' => 'and Memorize',
-            'force' => 'Proceed',
-            'pass' => 'Execution',
-            'ok' => 'for the message',
-            'retry' => 'Checking'
-          }.each {|id, cap|
+          INTCMD.each do|id, cap|
             add_item(id, id.capitalize + ' ' + cap)
-          }
+          end
         end
       end
     end
-
+    # External Command
     module Ext
       include Remote::Ext
       class Group < Ext::Group; end
       class Item < Ext::Item; end
+      # External Entity
       class Entity < Ext::Entity
         attr_reader :sequence
         def initialize(cfg, crnt = {})
           super
           # @cfg[:body] expansion
-          sequence = Arrayx.new
-          @body.each {|elem|
+          seq = Arrayx.new
+          init_sel(seq)
+          @sequence = self[:sequence] = seq
+        end
+
+        private
+
+        def init_sel(seq)
+          @body.each do|elem|
             case elem['type']
             when 'select'
-              hash = { 'type' => 'mcr' }
               sel = elem['select']
               val = type?(self[:dev_list], App::List).getstat(elem)
-              hash['args'] = sel[val] || sel['*']
-              sequence << hash
+              seq << { 'type' => 'mcr', 'args' => sel[val] || sel['*'] }
             else
-              sequence << elem
+              seq << elem
             end
-          }
-          @sequence = self[:sequence] = sequence
+          end
         end
       end
     end

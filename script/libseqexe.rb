@@ -32,10 +32,10 @@ module CIAX
           type?(@mcfg[:dev_list], CIAX::List)
           @record = Record.new.ext_save.ext_load.mklink # Make latest link
           @record['pid'] = pid
-          @submcr_proc = @mcfg[:submcr_proc] || proc {|args|
+          @submcr_proc = @mcfg[:submcr_proc] || proc do|args|
             show { "Sub Macro #{args} issued\n" }
             { 'id' => 'dmy' }
-          }
+          end
           @post_stat_procs = [proc { verbose { 'Processing PostStatProcs' } }] # execute on stat changes
           @pre_mcr_procs = [proc { verbose { 'Processing PreMcrProcs' } }]
           @post_mcr_procs = [proc { verbose { 'Processing PostMcrProcs' } }]
@@ -50,18 +50,18 @@ module CIAX
           int = @cobj.rem.add_int(Int)
           self['option'] = int.valid_keys.clear
           int.def_proc { |ent| reply(ent.id) }
-          int.add_item('start', 'Sequece Start').def_proc {
+          int.add_item('start', 'Sequece Start').def_proc do
             fork
             'ACCEPT'
-          }
+          end
         end
 
         def fork
           @th_mcr = Threadx.new("Macro(#{@id})", 10) { macro }
-          @cobj.get('interrupt').def_proc {
+          @cobj.get('interrupt').def_proc do
             @th_mcr.raise(Interrupt)
             'INTERRUPT'
-          }
+          end
           self
         end
 
@@ -74,9 +74,9 @@ module CIAX
 
         def ext_shell
           super
-          @prompt_proc = proc {
+          @prompt_proc = proc do
             "(#{self['stat']})" + optlist(self['option'])
-          }
+          end
           @cfg[:output] = @record
           @cobj.loc.add_view
           self
@@ -88,9 +88,9 @@ module CIAX
           sub_macro(@sequence, @record)
         rescue Interrupt
           msg("\nInterrupt Issued to running devices #{@running}", 3)
-          @running.each {|site|
+          @running.each do|site|
             @mcfg[:dev_list].get(site).exe(['interrupt'], 'user')
-          }
+          end
         ensure
           @running.clear
           self['option'].clear
@@ -107,7 +107,7 @@ module CIAX
           @depth += 1
           set_stat('run')
           result = 'complete'
-          sequence.each {|e1|
+          sequence.each do|e1|
             self['step'] += 1
             begin
               @step = @record.add_step(e1, @depth)
@@ -149,7 +149,7 @@ module CIAX
             rescue Retry
               retry
             end
-          }
+          end
         rescue Interrupt
           result = 'interrupted'
           raise Interrupt
@@ -196,7 +196,7 @@ module CIAX
 
         def input(cmds)
           Readline.completion_proc = proc { |word| cmds.grep(/^#{word}/) } if Msg.fg?
-          loop {
+          loop do
             if Msg.fg?
               prom = @step.body(optlist(self['option']))
               line = Readline.readline(prom, true)
@@ -213,7 +213,7 @@ module CIAX
             else
               @que_res << 'INVALID'
             end
-          }
+          end
         end
 
         # Print section

@@ -41,7 +41,7 @@ module CIAX
           verbose { "Selected DB for #{rid}\n" + @sel.inspect }
           # Frame structure: main(total){ ccrange{ body(selected str) } }
           stream = @input_proc.call
-          @frame.set(stream.binary, @sel['length'], @sel['padding'])
+          @frame.set(stream.binary)
           @cache = @data.deep_copy
           if @fds[rid].key?('noaffix')
             getfield_rec(['body'])

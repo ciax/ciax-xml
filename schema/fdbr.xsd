@@ -34,7 +34,6 @@
         <xsd:element ref="fdbr:index" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attributeGroup ref="fdbr:rsp_attr" />
-      <xsd:attribute name="delimiter" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <!--Field Elements-->
@@ -83,8 +82,6 @@
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="label" type="xsd:token" />
       <xsd:attribute name="noaffix" type="xsd:boolean" />
-      <xsd:attribute name="length" type="xsd:int" />
-      <xsd:attribute name="padding" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

@@ -8,9 +8,10 @@ module CIAX
     class Frame
       include Msg
       attr_reader :cc
-      # terminator: repeat recieving in communication until terminator is detected
-      #             frame pointer will jump to terminator if no length or delimiter is specified
-      # delimiter: cut variable length data by delimiter
+      # terminator: used for detecting end of stream, cut off before processing in Frame#set(). 
+      #             never being included in CC range
+      # delimiter: cut 'variable length data' by delimiter
+      #             can be included in CC range
       def initialize(endian = nil, ccmethod = nil, terminator = nil)
         @cls_color = 11
         @endian = endian
@@ -27,6 +28,7 @@ module CIAX
         self
       end
 
+      # For Command
       def add(frame, e = {})
         if frame
           code = encode(e, frame)
@@ -43,18 +45,10 @@ module CIAX
       end
 
       # For Response
-      def set(frame = '', length = nil, padding = nil)
+      def set(frame = '')
         if frame && !frame.empty?
           verbose { "Set [#{frame.inspect}]" }
-          if length # Special for OSS
-            @frame = frame.split(@terminator).map do|str|
-              res = str.rjust(length.to_i, padding || '0')
-              verbose(res.to_i > str.size) { "Frame length short and add '0'" }
-              res
-            end.join(@terminator)
-          else
-            @frame = frame
-          end
+          @frame = @terminator ? frame.split(@terminator).shift : frame
         end
         self
       end
@@ -65,38 +59,27 @@ module CIAX
       def cut(e0)
         verbose { "Cut Start for [#{@frame.inspect}](#{@frame.size})" }
         return verify(e0) if e0['val'] # Verify value
-        body, tm, rest = @terminator ? @frame.partition(@terminator) : [@frame]
         len = e0['length']
         del = e0['delimiter']
         if len
           verbose { "Cut by Size [#{len}]" }
-          if len.to_i > body.size
-            alert("Cut reached terminator [#{body.size}/#{len}] ")
-            str = body
-            @frame = rest.to_s
-            cc_add(str)
-          elsif len.to_i == body.size
-            str = body
-            @frame = [tm, rest].join
-            verbose(tm) { 'Cut just end before terminator' }
+          if len.to_i > @frame.size
+            alert("Cut reached end [#{@frame.size}/#{len}] ")
+            str=@frame
             cc_add(str)
           else
-            str = body.slice!(0, len.to_i)
-            @frame = [body, tm, rest].join
+            str = @frame.slice!(0, len.to_i)
             cc_add(str)
           end
         elsif del
-          delimiter = esc_code(del).to_s
-          verbose { "Cut by Delimiter [#{delimiter.inspect}]" }
-          str, dlm, body = body.partition(delimiter)
-          verbose(tm && dlm) { "Cut by Terminator [#{@terminator.inspect}]" }
-          @frame = [body, tm, rest].join
-          cc_add([str, dlm].join)
+          dlm = esc_code(del).to_s
+          verbose { "Cut by Delimiter [#{dlm.inspect}]" }
+          str, dlm, @frame = @frame.partition(dlm)
+          cc_add(str+dlm)
         else
           verbose { 'Cut all the rest' }
-          str = body
-          @frame = rest.to_s
-          cc_add([str, tm].join)
+          str=@frame
+          cc_add(str)
         end
         if str.empty?
           alert('Cut Empty')

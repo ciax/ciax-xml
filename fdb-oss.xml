@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="oss" label="OSS Command line" version="1">
-    <stream terminator="\n"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
       <char length="1" label="Suffix">0xa</char>
@@ -131,18 +130,18 @@
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
         <!--TSCMON-->
-        <field assign="rsel" label="InR Select(NsOpt/NsIR/Cas)" />
+        <field assign="rsel" label="InR Select(NsOpt/NsIR/Cas)" delimiter="\n"/>
         <!--MCUMON-->
-        <field assign="stow_1" decode="hexstr" label="Stow pin Status" />
-        <field assign="shutter" decode="hexstr" label="Shutter Status" />
-        <field assign="teldrive" decode="hexstr" label="AZ/EL Drive Status" />
-        <field assign="el" label="EL Angle(deg)" />
-        <field assign="mlp3" label="CIAX-MLP3 Comm Error" />
-        <field assign="rpw" label="InR Drive ON/OFF" />
-        <field assign="bstat" decode="hexstr" label="BOLT System Status" />
+        <field assign="stow_1" decode="hexstr" label="Stow pin Status" delimiter="\n"/>
+        <field assign="shutter" decode="hexstr" label="Shutter Status" delimiter="\n"/>
+        <field assign="teldrive" decode="hexstr" label="AZ/EL Drive Status" delimiter="\n"/>
+        <field assign="el" label="EL Angle(deg)" delimiter="\n"/>
+        <field assign="mlp3" label="CIAX-MLP3 Comm Error" delimiter="\n"/>
+        <field assign="rpw" label="InR Drive ON/OFF" delimiter="\n"/>
+        <field assign="bstat" decode="hexstr" label="BOLT System Status" delimiter="\n"/>
       </item>
       <item id="iststat">
-        <field assign="iid" label="CAS Instrument" />
+        <field assign="iid" label="CAS Instrument" delimiter="\n"/>
       </item>
       <item id="jakstat">
         <!--POWER_V1-->
@@ -175,19 +174,19 @@
         </array>
       </item>
       <item id="inrstat">
-        <field assign="iang" label="InR Angle(deg)" />
+        <field assign="iang" label="InR Angle(deg)" delimiter="\n"/>
       </item>
       <item id="logstat">
-        <field assign="login0" label="LOGIN 0" />
-        <field assign="login1" label="LOGIN 1" />
-        <field assign="login2" label="LOGIN 2" />
-        <field assign="login3" label="LOGIN 3" />
+        <field assign="login0" label="LOGIN 0" delimiter="\n"/>
+        <field assign="login1" label="LOGIN 1" delimiter="\n"/>
+        <field assign="login2" label="LOGIN 2" delimiter="\n"/>
+        <field assign="login3" label="LOGIN 3" delimiter="\n"/>
       </item>
       <item id="exit">
-        <field assign="exit" label="Exit Code" />
+        <field assign="exit" label="Exit Code" delimiter="\n"/>
       </item>
       <item id="pid">
-        <field assign="pid" label="Background Process ID" />
+        <field assign="pid" label="Background Process ID" delimiter="\n"/>
       </item>
     </response>
   </frame>

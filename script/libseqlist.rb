@@ -113,7 +113,6 @@ module CIAX
       end
 
       if __FILE__ == $PROGRAM_NAME
-        ENV['VER'] ||= 'initialize'
         OPT.parse('tenr')
         cfg = Config.new
         cfg[:dev_list] = Wat::List.new(cfg).sub_list # Take App List

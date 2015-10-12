@@ -11,7 +11,7 @@ module CIAX
         @cls_color = 1
         @logary = [{}]
         @index = 0
-        @sqlcmd = ['sqlite3', ENV['HOME'] + '/.var/sqlog_' + id + '.sq3']
+        @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
         @tbl = query('.tables').split(/ /).grep(/^stream/).sort.last || fail('No Stream table')
         @total = query("select count(*) from #{@tbl} where dir='rcv';").to_i
         fail('No Line') if @total < 1

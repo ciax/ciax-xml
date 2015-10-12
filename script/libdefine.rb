@@ -5,6 +5,9 @@ module CIAX
   require 'debug' if ENV['DEBUG']
   PROJ = ENV['PROJ'] || 'moircs'
   SIMCMD = ENV['SIMCMD'] || 'frmsim'
+  VERBOSE = ENV['VER'] || 'initialize'
+  NOCACHE = ENV['NOCACHE']
+  NOLOG = ENV['NOLOG']
   
   # Site Domain
   module Site; NS_COLOR = 13; end

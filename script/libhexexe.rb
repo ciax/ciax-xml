@@ -36,7 +36,6 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ENV['VER'] ||= 'initialize'
       OPT.parse('ceh:lts')
       cfg = Config.new
       cfg[:site] = ARGV.shift

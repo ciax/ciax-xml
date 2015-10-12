@@ -34,7 +34,7 @@ module CIAX
     # Return UnixTime
     def append(data)
       time = @header['time'] = now_msec
-      unless ENV.key?('NOLOG')
+      unless NOLOG
         str = JSON.dump(@header.merge(data))
         @queue.push str
       end

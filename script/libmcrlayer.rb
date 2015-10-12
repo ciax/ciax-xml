@@ -16,7 +16,6 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libhexexe'
-      ENV['VER'] ||= 'initialize'
       OPT.parse('els')
       begin
         Layer.new.ext_shell.shell

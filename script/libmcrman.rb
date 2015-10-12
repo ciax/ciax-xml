@@ -144,7 +144,6 @@ module CIAX
       end
 
       if __FILE__ == $PROGRAM_NAME
-        ENV['VER'] ||= 'initialize'
         OPT.parse('cmnlrt')
         begin
           cfg = Config.new

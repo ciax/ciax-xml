@@ -71,7 +71,7 @@ module CIAX
     end
 
     def newest?
-      if ENV['NOCACHE']
+      if NOCACHE
         verbose { "#{@type}/Cache ENV NOCACHE is set" }
         return false
       elsif !test('e', @marfile)

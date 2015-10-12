@@ -2,8 +2,10 @@
 require 'libmsg'
 
 module CIAX
+  # Frame Layer
   module Frm
-    class Frame # For Command/Response Frame
+    # For Command/Response Frame
+    class Frame
       include Msg
       attr_reader :cc
       # terminator: repeat recieving in communication until terminator is detected
@@ -183,8 +185,9 @@ module CIAX
           base = 16
         when 'decstr' # "80000123" -> "-123"
           # sign: k3n=F, oss=8,
-          sign = (/[8Ff]/ =~ code[0]) ? '-' : ''
-          num = sign + code[1..-1].sub(/0+/, '')
+          sign = (/[8Ff]/ =~ code.slice!(0)) ? '-' : ''
+          code.sub!(/^0+/, '')
+          num = code.empty? ? '0' : sign + num
           base = 10
         when 'binstr'
           num = [code].pack('b*').ord

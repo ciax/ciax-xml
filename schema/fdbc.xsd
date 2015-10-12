@@ -42,7 +42,7 @@
         <xsd:group ref="fdbc:data" />
       </xsd:choice>
       <xsd:attributeGroup ref="fdbc:repeat" />
-      <xsd:attribute name="delimiter" type="xsd:token" />
+      <xsd:attribute name="delimiter" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <!--Command frame-->

@@ -11,6 +11,7 @@
     <xsd:attribute name="sign" type="fdbr:sign"/>
     <xsd:attribute name="length" type="xsd:int" />
     <xsd:attribute name="slice" type="fdbr:rerange" />
+    <xsd:attribute name="delimiter" type="xsd:string" />
   </xsd:attributeGroup>
   <xsd:element name="body">
     <xsd:complexType/>
@@ -33,7 +34,7 @@
         <xsd:element ref="fdbr:index" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attributeGroup ref="fdbr:rsp_attr" />
-      <xsd:attribute name="delimiter" type="xsd:token" />
+      <xsd:attribute name="delimiter" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <!--Field Elements-->

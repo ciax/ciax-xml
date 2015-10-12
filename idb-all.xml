@@ -41,7 +41,7 @@
           <group ref="g2" caption="X8-11" />
           <group ref="g3" caption="X12-15" />
         </status>
-        <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+        <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.2">
           <regular period="60"/>
           <event label="ON Executed 1" id="on1">
             <onchange var="xsw0"/>

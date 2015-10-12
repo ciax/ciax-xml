@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 require 'libsqlsim'
 # Device simulator by SqLog
-
 module CIAX
+  # Logging by Sql
   module SqLog
     Msg.usage('[id] (ver)') if ARGV.size < 1
     id = ARGV.shift

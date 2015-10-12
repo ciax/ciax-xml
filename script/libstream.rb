@@ -11,6 +11,7 @@ require 'libvarx'
 # }
 module CIAX
   module Frm
+    # Stream treats an individual round trip (send/recieve) communication which will be done sequentially
     class Stream < Varx
       attr_reader :binary
       attr_accessor :pre_open_proc, :post_open_proc

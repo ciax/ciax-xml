@@ -4,7 +4,8 @@ module CIAX
   require 'English' # To use $! -> $ERROR_INFO
   require 'debug' if ENV['DEBUG']
   PROJ = ENV['PROJ'] || 'moircs'
-
+  SIMCMD = ENV['SIMCMD'] || 'frmsim'
+  
   # Site Domain
   module Site; NS_COLOR = 13; end
   # Frame Layer

@@ -58,7 +58,7 @@ module CIAX
         sp=@dbi[:stream]
         if OPT['s']
           @mode = 'SIM'
-          iocmd = ['devsim-file', @id, @dbi['version']]
+          iocmd = [SIMCMD, @id, @dbi['version']]
           timeout = 60
         else
           @mode = 'DRV'

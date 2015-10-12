@@ -56,7 +56,7 @@ while [ $pass -lt 2 ]  ;do
             nk=0
 
         fi
-    done 3< <(grep -h . ~/.var/stream_${site}_*.log)
+    done 3< <(grep -h . ~/.var/log/stream_${site}_*.log)
     warn "Pass <$pass>"
     pass=$(( $pass + 1 ))
 done

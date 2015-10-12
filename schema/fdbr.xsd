@@ -63,7 +63,6 @@
         <xsd:element ref="fdbr:ccrange" />
         <xsd:element ref="fdbr:field" />
       </xsd:choice>
-      <xsd:attribute name="terminator" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <!--Response Select-->

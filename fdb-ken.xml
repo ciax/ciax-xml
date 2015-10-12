@@ -89,7 +89,7 @@
         <string>#SW0</string>
       </item>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr"  terminator="\x03">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <echo/>
       <field length="1" decode="integer" label="ACK">6</field>
       <field length="1" label="DST CH"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="srm" label="OMRON SRM1" ccmethod="bcc" wait="0.3" version="1">
+  <frame id="srm" label="OMRON SRM1" ccmethod="bcc" wait="0.3" version="1" terminator="\r">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <ccrange>
@@ -30,7 +30,7 @@
         <string format="%016d">$1</string>
       </item>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <ccrange>
         <field label="Prefix">@</field>
         <body/>

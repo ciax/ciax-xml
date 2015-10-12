@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="slo" label="SLOSYN SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf" wait="0.1">
+  <frame id="slo" label="SLOSYN SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf" wait="0.1" terminator="\r\n">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
@@ -78,7 +78,7 @@
         <string>mh=-1</string>
       </item>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">

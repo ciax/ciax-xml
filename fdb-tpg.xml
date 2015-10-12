@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" wait="0.3">
+  <frame id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" wait="0.3" terminator="\r\n">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
     </cmdframe>
@@ -13,7 +13,7 @@
         <char length="1" label="ENQ">5</char>
       </item>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">

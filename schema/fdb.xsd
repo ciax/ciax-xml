@@ -33,6 +33,7 @@
       <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>
       <xsd:attribute name="timeout" type="xsd:int"></xsd:attribute>
       <xsd:attribute name="maxlength" type="xsd:int" />
+      <xsd:attribute name="terminator" type="xsd:token" />
       <xsd:attribute name="endian">
         <xsd:simpleType>
           <xsd:restriction base="xsd:token">

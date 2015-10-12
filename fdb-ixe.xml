@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" maxlength="31" wait="0.001" timeout="30">
+  <frame id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" maxlength="31" wait="0.001" timeout="30"  terminator="\003\r\n">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="Prefix">2</char>
@@ -157,7 +157,7 @@
         <string format="%+d">(($2-${p:$1-1}+48000) % 96000)-48000</string>
       </item>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <!--Acknowlege message: STX ACK ETX CR LF (Manual Section 12.5)-->
       <field decode="integer" label="Prefix" length="1">2</field>
       <field decode="integer" label="ResponseCode" length="1">6</field>

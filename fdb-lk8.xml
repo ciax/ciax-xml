@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3">
+  <frame id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3" terminator="\r\n">
     <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
@@ -24,7 +24,7 @@
         <string>SETP? 1</string>
       </item>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">

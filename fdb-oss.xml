@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="oss" label="OSS Command line" version="1">
+  <frame id="oss" label="OSS Command line" version="1" terminator="\n">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
       <char length="1" label="Suffix">0xa</char>
@@ -124,7 +124,7 @@
         <string format="%02d">$1</string>
       </item>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\n">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">

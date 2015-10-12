@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="oma" label="OMEGA Air Pressure Sensor(PX971)" wait="0.2">
+  <frame id="oma" label="OMEGA Air Pressure Sensor(PX971)" wait="0.2" terminator="\r">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">*</string>
@@ -12,7 +12,7 @@
         <string>00P1</string>
       </item>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix">?</field>
       <body/>
     </rspframe>

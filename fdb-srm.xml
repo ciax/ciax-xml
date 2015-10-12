@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="srm" label="OMRON SRM1" ccmethod="bcc" wait="0.3" version="1" terminator="\r">
+  <frame id="srm" version="1" label="OMRON SRM1">
+    <stream ccmethod="bcc" wait="0.3" terminator="\r"/>
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <ccrange>

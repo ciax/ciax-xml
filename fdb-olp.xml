@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="olp" label="OMEGA LN2 Pressure Sensor" wait="1" terminator="\r">
+  <frame id="olp" label="OMEGA LN2 Pressure Sensor">
+    <stream wait="1" terminator="\r"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">*</string>

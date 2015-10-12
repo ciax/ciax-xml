@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="mic" label="Piezo Motor(Micronix MMC-100)" reference="http://www.micronixusa.com/motion/assets/docs/manuals/MMC-100%20Manual%20Rev2.00.pdf" wait="0.1" terminator="\n\r">
+  <frame id="mic" label="Piezo Motor(Micronix MMC-100)">
+    <spec type="Piezo Motor" mfr="Micronix" model="MMC-100" reference="http://www.micronixusa.com/motion/assets/docs/manuals/MMC-100%20Manual%20Rev2.00.pdf"/>
+    <stream wait="0.1" terminator="\n\r"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="38400" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>

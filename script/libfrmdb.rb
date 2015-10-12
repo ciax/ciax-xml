@@ -13,6 +13,7 @@ module CIAX
 
       def doc_to_db(doc)
         dbi = Dbi[doc[:attr]]
+        dbi[:stream]=doc[:property]['stream'].to_h
         init_command(doc, dbi)
         init_stat(doc, dbi)
         dbi

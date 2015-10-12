@@ -55,6 +55,7 @@ module CIAX
       end
 
       def ext_driver
+        sp=@dbi[:stream]
         if OPT['s']
           @mode = 'SIM'
           iocmd = ['devsim-file', @id, @dbi['version']]
@@ -62,10 +63,9 @@ module CIAX
         else
           @mode = 'DRV'
           iocmd = @dbi['iocmd'].split(' ')
-          timeout = (@dbi['timeout'] || 10).to_i
+          timeout = (sp['timeout'] || 10).to_i
         end
-        tm = @dbi['terminator']
-        @stream = Stream.new(@id, @dbi['version'], iocmd, @dbi['wait'], timeout, (tm && esc_code(tm)))
+        @stream = Stream.new(@id, @dbi['version'], iocmd, sp['wait'], timeout, esc_code(sp['terminator']))
         @stream.ext_log unless OPT['s']
         @stream.pre_open_proc = proc { @sv_stat.set('strerr') }
         @stream.post_open_proc = proc { @sv_stat.reset('strerr') }

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" maxlength="31" wait="0.001" timeout="30"  terminator="\003\r\n">
+  <frame id="ixe" label="Phytron IXEa-A">
+    <spec mfr="Phytron" model="IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf"/>
+    <stream maxlength="31" wait="0.001" timeout="30"  terminator="\003\r\n"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="Prefix">2</char>

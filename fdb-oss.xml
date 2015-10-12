@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="oss" label="OSS Command line" version="1" terminator="\n">
+  <frame id="oss" label="OSS Command line" version="1">
+    <stream terminator="\n"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
       <char length="1" label="Suffix">0xa</char>

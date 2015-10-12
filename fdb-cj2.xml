@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="cj2" label="OMRON CJ2M-CPU33" endian="big" version="1">
+  <frame id="cj2" version="1" label="OMRON CJ2M-CPU33">
+    <stream endian="big"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="FINS Header:ICF">0x80</char>
       <char length="1" label="FINS Header:RSV">0x00</char>

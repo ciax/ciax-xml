@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="fpa" label="Field Point Analog Input(FP-AI-100)" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf" ccmethod="sum" wait="0.01" terminator="\r">
+  <frame id="fpa" label="Field Point Analog Input(FP-AI-100)">
+    <spec brand="Field Point" type="Analog Input" model="FP-AI-100" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf"/>
+    <stream ccmethod="sum" wait="0.01" terminator="\r"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="38400" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">&gt;01</string>

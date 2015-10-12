@@ -24,7 +24,8 @@ module CIAX
         @skel = fdbr[:frame]
         # @sel structure: { terminator, :main{}, :body{} <- changes on every upd }
         @fds = fdbr[:index]
-        @frame = Frame.new(@dbi['endian'], @dbi['ccmethod'], @dbi['terminator'])
+        sp=@dbi[:stream]
+        @frame = Frame.new(sp['endian'], sp['ccmethod'], sp['terminator'])
         # terminator: frame pointer will jump to terminator if no length or delimiter is specified
         self
       end

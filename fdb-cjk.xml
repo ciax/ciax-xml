@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="cjk" version="4" label="MELSEC Q Series" endian="little" ccmethod="len">
+  <frame id="cjk" version="4" label="MELSEC Q Series">
+    <stream endian="little" ccmethod="len"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="2" label="SubHeader: Prefix">0x54</char>
       <string label="SubHeader: Serial Number">XX</string>

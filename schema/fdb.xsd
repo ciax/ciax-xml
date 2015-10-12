@@ -15,6 +15,8 @@
   <xsd:element name="frame">
     <xsd:complexType>
       <xsd:sequence>
+        <xsd:element ref="fdb:spec" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="fdb:stream" minOccurs="0" maxOccurs="1" />
         <!--Protocol for RS232C-->
         <xsd:element ref="fdb:serial" minOccurs="0" maxOccurs="1" />
         <!--Command frame-->
@@ -26,9 +28,29 @@
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="version" type="xsd:int" />
-      <xsd:attribute name="stream_ver" type="xsd:int" />
       <xsd:attribute name="label" type="xsd:token" />
+    </xsd:complexType>
+    <xsd:key name="response_id">
+      <xsd:selector xpath=".//fdbr:item" />
+      <xsd:field xpath="@id" />
+    </xsd:key>
+    <xsd:keyref name="command_id" refer="fdb:response_id">
+      <xsd:selector xpath=".//fdbc:item" />
+      <xsd:field xpath="@response" />
+    </xsd:keyref>
+  </xsd:element>
+  <xsd:element name="spec">
+    <xsd:complexType>
+      <xsd:attribute name="mfr" type="xsd:token"/>
+      <xsd:attribute name="type" type="xsd:token"/>
+      <xsd:attribute name="brand" type="xsd:token"/>
+      <xsd:attribute name="model" type="xsd:token"/>
       <xsd:attribute name="reference" type="xsd:anyURI" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="stream">
+    <xsd:complexType>
+      <xsd:attribute name="stream_ver" type="xsd:int" />
       <!--waiting time between sending and recieving on stream (default 0.01)-->
       <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>
       <xsd:attribute name="timeout" type="xsd:int"></xsd:attribute>
@@ -52,14 +74,6 @@
         </xsd:simpleType>
       </xsd:attribute>
     </xsd:complexType>
-    <xsd:key name="response_id">
-      <xsd:selector xpath=".//fdbr:item" />
-      <xsd:field xpath="@id" />
-    </xsd:key>
-    <xsd:keyref name="command_id" refer="fdb:response_id">
-      <xsd:selector xpath=".//fdbc:item" />
-      <xsd:field xpath="@response" />
-    </xsd:keyref>
   </xsd:element>
   <xsd:element name="serial">
     <xsd:complexType>

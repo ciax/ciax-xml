@@ -42,10 +42,11 @@ module CIAX
       def set(id)
         fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + @displist.to_s) unless key?(id)
         top = self[id]
-        item = { top: top, attr: top.to_h, domain: {} }
+        item = { top: top, attr: top.to_h, domain: {} , property: {}}
         top.each do|e1|
-          item[:domain][e1.name] = e1 unless top.ns == e1.ns
+          item[top.ns == e1.ns ? :property : :domain][e1.name] = e1
         end
+        verbose { "Property registerd:#{item[:property].keys}" }
         verbose { "Domain registerd:#{item[:domain].keys}" }
         item
       end

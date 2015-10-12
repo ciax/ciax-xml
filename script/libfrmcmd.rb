@@ -33,7 +33,8 @@ module CIAX
           else
             @sel = Hash[self[:dbi][:command][:frame]]
           end
-          @frame = Frame.new(self[:dbi]['endian'], self[:dbi]['ccmethod'])
+          sp=self[:dbi][:stream]
+          @frame = Frame.new(sp['endian'], sp['ccmethod'])
           return unless @body
           @sel[:body] = @body
           verbose { "Body:#{self['label']}(#{@id})" }

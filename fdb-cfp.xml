@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="cfp" label="Compact Field Point" ccmethod="sum" wait="0">
+  <frame id="cfp" label="Compact Field Point">
+    <stream ccmethod="sum" wait="0"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">&gt;</string>

@@ -7,6 +7,7 @@
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
       <char length="1">0xd</char>
+      <char length="1">0xa</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="getstat" label="Error Status" response="getstat" type="stat">

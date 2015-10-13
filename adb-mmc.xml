@@ -3,17 +3,19 @@
   <app frm_id="slo" id="mmc" label="MOIRCS Carrousel">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <item id="upd" label="Update Status">
-          <frmcmd name="getstat" />
-          <frmcmd name="bs" />
-          <frmcmd name="p" />
-          <frmcmd name="spd" />
-          <repeat from="1" to="5">
-            <frmcmd name="in">
-              <argv>$_</argv>
-            </frmcmd>
-          </repeat>
-        </item>
+        <unit id='upd' label="Update Status">
+          <item id="upd" label="Update Status">
+            <frmcmd name="getstat" />
+            <frmcmd name="bs" />
+            <frmcmd name="p" />
+            <frmcmd name="spd" />
+            <repeat from="1" to="5">
+              <frmcmd name="in">
+                <argv>$_</argv>
+              </frmcmd>
+            </repeat>
+          </item>
+        </unit>
         <item id="mres" label="Motor Reset">
           <frmcmd name="reset" />
         </item>

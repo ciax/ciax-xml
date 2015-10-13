@@ -3,15 +3,17 @@
   <app frm_id="oss" id="oss" label="TSC Control" version="5">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <item id="upd" label="Update Status">
-          <frmcmd name="logstat" />
-          <frmcmd name="getstat" />
-          <frmcmd name="iststat" />
-          <frmcmd name="jakstat" />
-          <frmcmd name="inrstat" />
-          <frmcmd name="jaklen" />
-          <frmcmd name="zlen" />
-        </item>
+        <unit id='upd' label="Update Status">
+          <item id="upd" label="Update Status">
+            <frmcmd name="logstat" />
+            <frmcmd name="getstat" />
+            <frmcmd name="iststat" />
+            <frmcmd name="jakstat" />
+            <frmcmd name="inrstat" />
+            <frmcmd name="jaklen" />
+            <frmcmd name="zlen" />
+          </item>
+        </unit>
         <item id="login" label="Login">
           <frmcmd name="login" />
           <frmcmd name="logstat" />

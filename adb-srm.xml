@@ -3,9 +3,11 @@
   <app frm_id="srm" id="srm" label="CsEtr Controller" version="1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <item id="upd" label="Update Status">
-          <frmcmd name="getstat" />
-        </item>
+        <unit id='upd' label="Update Status">
+          <item id="upd" label="Update Status">
+            <frmcmd name="getstat" />
+          </item>
+        </unit>
         <unit id="c3p" label="CIAX3 POWER">
           <item id="c3on" label="ON">
             <frmcmd name="fset" label="Bit 0 on">

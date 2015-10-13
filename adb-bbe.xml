@@ -3,9 +3,11 @@
   <app frm_id="bbe" id="bbe" label="Helium Compressor">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device" column="2">
-        <item id="upd" label="Update Status">
-          <frmcmd name="getstat" />
-        </item>
+        <unit id='upd' label="Update Status">
+          <item id="upd" label="Update Status">
+            <frmcmd name="getstat" />
+          </item>
+        </unit>
         <unit id='x0' label="X0">
           <item id="x0on" label="ON">
             <frmcmd name="getstat"/>

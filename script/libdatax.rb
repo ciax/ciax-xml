@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libvarx'
 require 'libhttp'
-require 'libload'
+require 'libjload'
 
 module CIAX
   # Header and Data Container(Hash or Array) with Loading feature
@@ -44,7 +44,7 @@ module CIAX
     end
 
     def ext_load # File I/O
-      extend Load
+      extend JLoad
       ext_load
       self
     end

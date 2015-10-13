@@ -1,9 +1,10 @@
 #!/usr/bin/ruby
 module CIAX
+  # Add Data Loading feature
   # @data needed
-  module Load
+  module JLoad
     def self.extended(obj)
-      Msg.type?(obj, Datax, Save)
+      Msg.type?(obj, Datax, JSave)
     end
 
     def ext_load

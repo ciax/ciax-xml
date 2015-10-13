@@ -45,11 +45,11 @@ module CIAX
     end
 
     # Loading feature
-    module Load
+    module JLoad
       # @< (db),(base),(prefix)
       # @< (last)
       # @ lastsave
-      include CIAX::Load
+      include CIAX::JLoad
       def self.extended(obj)
         Msg.type?(obj, Status)
       end

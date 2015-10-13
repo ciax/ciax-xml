@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libupd'
 require 'libdb'
-require 'libsave'
+require 'libjsave'
 
 module CIAX
   # Variable Status Data with Saving, Logging feature
@@ -28,13 +28,13 @@ module CIAX
     end
 
     def ext_save # Save data at every after update
-      extend Save
+      extend JSave
       ext_save
       self
     end
 
     def ext_log # Write only for server
-      extend Log
+      extend JsLog
       ext_log
       self
     end

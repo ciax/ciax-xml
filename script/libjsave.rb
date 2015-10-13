@@ -1,7 +1,9 @@
 #!/usr/bin/ruby
 require 'libsqlog'
+require 'libjslog'
 module CIAX
-  module Save
+  # Add Data saving feature with JSON
+  module JSave
     def self.extended(obj)
       Msg.type?(obj, Varx)
     end
@@ -51,34 +53,6 @@ module CIAX
         f.flock(::File::LOCK_EX)
         f << json_str
         verbose { "[#{rname}](#{f.size}) is Saved" }
-      end
-      self
-    end
-  end
-
-  module Log
-    def ext_log # logging with flatten
-      id = self['id']
-      ver = self['ver']
-      verbose { "Log Initialize [#{id}/Ver.#{ver}]" }
-      @queue = Queue.new
-      @post_upd_procs << proc do
-        verbose { 'Propagate upd -> Log#queue' }
-        @queue.push(to_j)
-      end
-      logfile = vardir('log') + file_base + "_#{Time.now.year}.log"
-      ThreadLoop.new("Logging(#{@type}:#{id})", 11) do
-        logary = []
-        loop do
-          logary << @queue.pop
-          break if @queue.empty?
-        end
-        open(logfile, 'a') do|f|
-          logary.each do|str|
-            f.puts str
-            verbose { "Appended #{str.size} byte" }
-          end
-        end
       end
       self
     end

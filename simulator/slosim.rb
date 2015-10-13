@@ -3,24 +3,38 @@ require 'gserver'
 
 # Slosyn Driver Simulator
 class Slosyn < GServer
+  attr_accessor :spd,:e1,:e2
+  attr_reader :err,:bs,:hl1,:hl0,:help
+  RS="\r\n"
   P_MAX = 9999
   P_MIN = 0
   POS = [1230, 128, 2005, 0, 1850]
-  def initialize(port = 10_001, *args)
+  def initialize(port = 2103, *args)
     super(port, *args)
     Thread.abort_on_exception = true
     @pulse = 0 # Integer
     @bs = 0
-    @q = Queue.new
+    @err=0
+    @spd=0.1
+    @hl1=@hl0='>'
+    @help=self.class.methods.inspect
   end
 
   def serve(io)
-    while (str = io.gets("\r").chomp)
+    @io=io
+    while (cmd = io.gets(RS).chomp)
       sleep 0.1
       begin
-        method(str).call
+        if /=/ =~ cmd
+          method($`+$&).call($')
+          res '>'
+        elsif /\((.*)\)/ =~ cmd
+          res method($`).call($1)
+        else
+          res method(cmd).call
+        end
       rescue NameError
-        io.print '>'
+        res '?'
       end
     end
   end
@@ -38,6 +52,10 @@ class Slosyn < GServer
     end
   end
 
+  def res(str)
+    @io.print str.to_s+RS
+  end
+  
   def setpulse(num)
     if num > P_MAX
       num = P_MIN
@@ -58,24 +76,22 @@ class Slosyn < GServer
   # Commands
   def abspos=(num)
     setpulse(setdec(num))
-    io.print '>'
   end
 
   def p=(num)
     setpulse(setdec(num))
-    io.print '>'
+  end
+
+  def p
+    format("%.1f", @pulse.to_f / 10)
   end
 
   def ma=(num)
     servo(setdec(num))
-    io.print '>'
   end
 
   def mi=(num)
     servo(@pulse + setdec(num))
-    @q << @pulse
-    @bs = 1
-    io.print '>'
   end
 
   def j=(num)
@@ -85,32 +101,15 @@ class Slosyn < GServer
     when -1
       servo(0)
     end
-    io.print '>'
   end
 
   def stop
     @bs = 0
-    ''
+    '>'
   end
 
   def in(num)
-    io.print about(POS[num.to_i - 1])
-  end
-
-  def spd
-    io.print '0.1'
-  end
-
-  def err
-    io.print '0'
-  end
-
-  def bs
-    io.print @bs
-  end
-
-  def p
-    io.print format('%.1f', @pulse.to_f / 10)
+    about(POS[num.to_i - 1])
   end
 end
 

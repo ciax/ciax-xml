@@ -11,7 +11,7 @@
     </table>
     <table id="pos">
       <pattern class="normal" msg="INIT">0001</pattern>
-      <pattern class="normal" msg="STOCK">0010</pattern>
+      <pattern class="normal" msg="STORE">0010</pattern>
       <pattern class="normal" msg="FOCUS">0100</pattern>
       <pattern class="normal" msg="ROT">1000</pattern>
       <default class="alarm" msg="N/A" />
@@ -21,7 +21,7 @@
       <range class="normal" msg="FOCUS">12.3:13.2</range>
       <range class="normal" msg="ROT">122.5:123.5</range>
       <range class="normal" msg="WAIT">184.5:185.5</range>
-      <range class="normal" msg="STOCK">200:201</range>
+      <range class="normal" msg="STORE">200:201</range>
     </table>
   </symbol>
 </sdb>

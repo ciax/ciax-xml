@@ -31,7 +31,7 @@
           <item id="set0" label="0">
             <frmcmd name="set0" />
           </item>
-          <item id="sets" label="Stock Pos">
+          <item id="sets" label="Store Pos">
             <frmcmd name="setp">
               <argv>200.44</argv>
             </frmcmd>
@@ -66,7 +66,7 @@
             </frmcmd>
             <frmcmd name="bs" />
           </item>
-          <item id="gs" label="Stock">
+          <item id="gs" label="Store">
             <frmcmd name="jp"/>
             <frmcmd name="bs" />
           </item>

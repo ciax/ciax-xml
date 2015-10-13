@@ -38,6 +38,7 @@ module CIAX
     end
 
     def get_ctl(unitary)
+      return if unitary.empty?
       uidx = @dbi[:command][:unit] || return
       push '<table><tbody>'
       push '<tr>'

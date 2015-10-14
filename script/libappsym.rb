@@ -75,7 +75,6 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      OPT.parse
       begin
         stat = Status.new
         id = STDIN.tty? ? ARGV.shift : stat.read['id']

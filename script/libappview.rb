@@ -14,10 +14,7 @@ module CIAX
         adbs = type?(@stat.dbi, Dbi)[:status]
         @group = adbs[:group]
         @index = adbs[:index].dup
-        if adbs.key?(:alias)
-          @group['gal'] = { 'caption' => 'Alias', :members => adbs[:alias].keys }
-          @index.update(adbs[:alias])
-        end
+        @index.update(adbs[:alias]) if adbs.key?(:alias)
         @stat.post_upd_procs << proc do
           verbose { 'Propagate Status#upd -> upd' }
           upd

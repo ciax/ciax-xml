@@ -30,11 +30,14 @@ module CIAX
         end
         # Status Domain
         hst = dbi[:status] = {}
+        grp = hst[:group] = {}
         (doc[:domain]['status'] || []).each do|e0|
           p = (hst[e0.name.to_sym] ||= {})
           case e0.name
           when 'alias'
             e0.attr2item(p)
+            ag = (grp['alias']||= {'caption' => 'Alias',:members =>[]})
+            ag[:members]  << e0['id']
           else
             e0.attr2item(p, 'ref')
           end

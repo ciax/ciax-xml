@@ -18,13 +18,13 @@ module CIAX
     end
 
     def add_item(id, title = nil, crnt = {})
-      crnt['label'] = current[id] = title
+      crnt['label'] = subgrp[id] = title
       new_item(id, crnt)
     end
 
     def del_item(id)
       @valid_keys.delete(id)
-      current.delete(id)
+      subgrp.delete(id)
       delete(id)
     end
 
@@ -40,12 +40,12 @@ module CIAX
           new_item(id, 'label' => title)
         end
       end
-      @current = @displist.merge!(displist).last
+      @subgrp = @displist.merge!(displist).last
       self
     end
 
     def add_dummy(id, title)
-      current.dummy(id, title) # never put into valid_key
+      subgrp.dummy(id, title) # never put into valid_key
       self
     end
 
@@ -80,8 +80,8 @@ module CIAX
       self[id] = context_constant('Item').new(@cfg, crnt)
     end
 
-    def current
-      @current ||= @displist.new_grp
+    def subgrp
+      @subgrp ||= @displist.new_grp
     end
   end
 end

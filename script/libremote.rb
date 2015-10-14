@@ -77,13 +77,10 @@ module CIAX
           cdb = dbi[:command]
           idx = cdb[:index]
           cdb[:group].values.each do|gat|
-            @current = @displist.new_grp(gat['caption'])
+            @subgrp = @displist.new_grp(gat['caption'])
             gat[:members].each do|id|
               item = idx[id]
-              label = item['label']
-              unit = item['unit']
-              label = "#{cdb[:unit][unit]['label']} #{label}" if unit
-              add_item(id, label, item)
+              add_item(id, cdb, item)
             end
           end
           init_alias(cdb, idx)
@@ -91,20 +88,23 @@ module CIAX
 
         def init_alias(cdb, idx)
           return unless cdb[:alias]
-          @current = @displist.new_grp('Alias')
+          @subgrp = @displist.new_grp('Alias')
           cdb[:alias].each do|id, att|
             item = idx[att['ref']].dup
-            label = att['label']
-            item['argv'] = att['argv'] if att['argv']
-            add_item(id, label, item)
+            item.update(att)
+            add_item(id, cdb, item)
           end
         end
 
-        def add_item(id, label, item)
+        def add_item(id, cdb, item)
+          label = item['label']
+          unit = item['unit']
+          label = "#{cdb[:unit][unit]['label']} #{label}" if unit
           if item[:parameters].is_a? Array
             label = label.gsub(/\$([\d]+)/, '%s') % item[:parameters].map { |e| e['label'] }
           end
-          super
+          @subgrp[id] = label
+          new_item(id, item)
         end
       end
 

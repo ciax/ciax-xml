@@ -1,18 +1,21 @@
 #!/usr/bin/ruby
 require 'libenumx'
 module CIAX
-  # Sortable Caption Database (Value is String)
-  # Including key list (@select) for display chosen items.
-  # Including key list (@dummy) for always display.
-  # Used by Command and XmlDoc
-  # Attribute items : caption(text), color(#), sub_color(#),  column(#), line_number(t/f)
+  # Disp::List: Sortable Caption Database (Value is String)
+  #    Shows visiual command list categorized by sub-group
+  #    Holds valid command list in @select
+  #    Used by Command and XmlDoc
+  #    Attribute items : caption(text), color(#), sub_color(#),  column(#), line_number(t/f)
   module Disp
+    # Sub-Group of the Disp List
     class Group < Hashx
       attr_accessor :select
       def initialize(attr, select = [])
         @attr = Msg.type?(attr, Hash)
         @column = [attr['column'].to_i, 1].max
+        # Selected items for display
         @select = Msg.type?(select, Array)
+        # Always display items
         @dummy = []
       end
 
@@ -43,12 +46,14 @@ module CIAX
         self
       end
 
+      # view mode
       def view(vx = nil, kx = 3)
         return '' if (t = list_table).empty?
         caption + Msg.columns(t, @column, vx, kx)
       end
 
-      def vmax # max text length
+      # max value length
+      def vmax
         max = 0
         list_table.values.each_with_index do|v, i|
           max = v.size if (i % @column) < @column - 1 && v.size > max
@@ -56,6 +61,7 @@ module CIAX
         max
       end
 
+      # max key length
       def kmax
         list_table.keys.map(&:size).max || 0
       end

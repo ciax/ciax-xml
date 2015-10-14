@@ -17,6 +17,7 @@ module CIAX
       @cfg['column'] ||= 2
     end
 
+    # crnt could have 'label',:body,'unit','group'
     def add_item(id, title = nil, crnt = {})
       crnt['label'] = subgrp[id] = title
       new_item(id, crnt)

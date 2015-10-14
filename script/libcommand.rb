@@ -4,6 +4,7 @@ require 'libgroup'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
 module CIAX
+  # Inherited by Index,Domain
   class GrpAry < Arrayx
     include CmdProc
     def initialize(cfg, attr = {})
@@ -31,6 +32,7 @@ module CIAX
       map(&:view_list).grep(/./).join("\n")
     end
 
+    # Add sub group
     # If cls is String or Symbol, constant is taken locally.
     def add(cls, attr = {})
       case cls

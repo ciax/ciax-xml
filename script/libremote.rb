@@ -2,6 +2,7 @@
 require 'liblocal'
 
 module CIAX
+  # Remote Command Domain
   module Remote
     # Instance var is @rem in Index
     class Index < Local::Index
@@ -33,6 +34,7 @@ module CIAX
       end
     end
 
+    # Hidden Command Group
     module Hid
       class Group < Group
         def initialize(dom_cfg, attr = {})
@@ -45,6 +47,7 @@ module CIAX
       end
     end
 
+    # Internal Command Group
     module Int
       class Group < Group
         def initialize(dom_cfg, attr = {})
@@ -67,6 +70,7 @@ module CIAX
     # @cfg must contain [:dbi]
     # Content of Dbi[:command][:index][id] will be merged in Item@cfg
     module Ext
+      # External Command Group
       class Group < Group
         def initialize(cfg, attr = {})
           super
@@ -110,10 +114,10 @@ module CIAX
 
       class Item < Item; end
 
+      # Substitute string($+number) with parameters
+      # par={ val,range,format } or String
+      # str could include Math functions
       class Entity < Entity
-        # Substitute string($+number) with parameters
-        # par={ val,range,format } or String
-        # str could include Math functions
         def initialize(grp_cfg, attr = {})
           super
           type?(self[:dbi], Dbi)

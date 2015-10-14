@@ -28,36 +28,37 @@ module CIAX
       # Command Domain
       def init_command(doc,dbi)
         hcmd = dbi[:command] = {}
-        (doc[:domain]['alias'] || []).each do|e0|
-          case e0.name
-          when 'item'
-            e0.attr2item(hcmd[:alias] ||= {})
-            e0.each do|e1|
-              (hcmd[:alias][e0['id']]['argv'] ||= []) << e1.text
-            end
-          when 'unit'
-          end
-        end
+        init_unit(doc[:domain]['alias'],hcmd)
+        self
       end
 
       # identical with App::Db#arc_unit()
-      def arc_unit(e0, idx, grp, units)
+      def init_unit(e,hcmd)
+        return unless e
         e.each do|e0|
           case e0.name
           when 'unit'
+            units=(hcmd[:unit]||={})
             uid = e0.attr2item(units)
+            uni=units[uid]
             e0.each do|e1|
-              id = arc_command(e1, idx)
-              (units[uid][:members] ||= []) << id
-              idx[id]['unit'] = uid
-              (grp[:members] ||= []) << id
+              id = init_item(e1,hcmd)
+              (uni[:members] ||= []) << id
+              hcmd[:alias][id]['unit']=uid
             end
           when 'item'
-            id = arc_command(e0, idx)
-            (grp[:members] ||= []) << id
+            init_item(e0,hcmd)
           end
         end
-        idx
+        self
+      end
+
+      def init_item(e0,hcmd)
+        id=e0.attr2item(hcmd[:alias] ||= {})
+        e0.each do|e1|
+          (hcmd[:alias][id]['argv'] ||= []) << e1.text
+        end
+        id
       end
 
       # Status Domain

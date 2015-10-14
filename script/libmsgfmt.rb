@@ -43,6 +43,7 @@ module CIAX
 
     # Display methods
     def columns(h, c = 2, vx = nil, kx = nil)
+      return '' unless h
       vx, kx = _max_size(h, vx, kx)
       h.keys.each_slice(c).map do|a|
         a.map do|k|

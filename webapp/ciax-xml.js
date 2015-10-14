@@ -20,16 +20,12 @@ function elapsed(){
     $("#elapsed").text(sign+str);
 }
 function conv(stat){
-    var data=stat.data
+    var data= $.extend({},stat.data,stat.msg);
     for (var id in data){
-        var msg=data[id];
-        if("class" in stat && id in stat["class"]){
-                $("#"+id).addClass(stat["class"][id]);
+        if("class" in stat && id in stat.class){
+            $("#"+id).addClass(stat.class[id]);
         }
-        if("msg" in stat && id in stat["msg"]){
-            msg=stat.msg[id]
-        }
-        $("#"+id).text(msg);
+        $("#"+id).text(data[id]);
     }
     last=stat.time;
     var lstr=new Date(last);

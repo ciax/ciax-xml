@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 # JSON to String(Decorated)
+#alias jv
 require 'libenumx'
 
 abort 'Usage: json-view [json_file]' if STDIN.tty? && ARGV.size < 1

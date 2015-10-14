@@ -1,4 +1,5 @@
 #!/bin/bash
+#alias jlp
 [ "$1" = '-s' ] && { dir='snd';shift; }
 [ "$1" ] || { echo "Usage: ${0##*/} (-s:snd) [site] (cmd:par)"; exit 1; }
 id=$1;shift

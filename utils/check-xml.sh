@@ -1,4 +1,5 @@
 #!/bin/bash
+#alias chksml
 [ "$1" ] || { echo "USAGE:chkxml [xmlfiles]"; exit; }
 sdir=$HOME/ciax-xml/schema
 for i ; do

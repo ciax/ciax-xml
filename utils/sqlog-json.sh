@@ -1,4 +1,5 @@
 #!/bin/bash
+#alias logj
 [ "$1" = '-s' ] && { dir='snd';shift; }
 id=$1;shift
 fname="$HOME/.var/sqlog_${id}.sq3"

@@ -22,14 +22,5 @@ addenv PATH "$HOME/bin" "$HOME/lib"
 addenv RUBYLIB "$HOME/ciax-xml/script"
 
 #Alias
-alias chkxml=check-xml
-alias devsim=devsim-sql
-alias jv=json-view
-alias jlv=json-logview
-alias jlp=json-logpick
-alias mkhtm=make-html
-alias msv=marshal-view
-alias logj=sqlog-json
-alias vc=view-ctrl
 alias rub='rubocop -a -c .rubocop_todo.yml'
 alias rgen='rubocop --auto-gen-config'

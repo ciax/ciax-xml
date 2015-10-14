@@ -24,40 +24,39 @@ module CIAX
       # Command Db
       def init_command(doc, db)
         adbc = doc[:domain]['command']
-        idx = {}
-        grps = {}
-        units = {}
-        adbc.each do|e|
+        @cidx = {}
+        @cgrps = {}
+        @units = {}
+        adbc.each do|e| # e.name should be group
           Msg.give_up('No group in adbc') unless e.name == 'group'
-          gid = e.attr2item(grps)
-          arc_unit(e, idx, grps[gid], units)
+          gid = e.attr2item(@cgrps)
+          arc_unit(e, gid)
         end
-        db[:command] = { group: grps, index: idx }
-        db[:command][:unit] = units unless units.empty?
+        db[:command] = { group: @cgrps, index: @cidx }
+        db[:command][:unit] = @units unless @units.empty?
       end
 
-      def arc_unit(e, idx, grp, units)
+      def arc_unit(e, gid)
         e.each do|e0|
           case e0.name
           when 'unit'
-            uid = e0.attr2item(units)
+            uid = e0.attr2item(@units)
             e0.each do|e1|
-              id = arc_command(e1, idx)
-              (units[uid][:members] ||= []) << id
-              idx[id]['unit'] = uid
-              (grp[:members] ||= []) << id
+              id = arc_command(e1,gid,uid)
+              @cidx[id]['unit'] = uid
+              (@units[uid][:members] ||= []) << id
             end
           when 'item'
-            id = arc_command(e0, idx)
-            (grp[:members] ||= []) << id
+            arc_command(e0,gid)
           end
         end
-        idx
       end
 
-      def arc_command(e0, idx)
-        id = e0.attr2item(idx)
-        item = idx[id]
+      def arc_command(e0,gid,uid=nil)
+        id = e0.attr2item(@cidx)
+        item = @cidx[id]
+        item['group'] = gid
+        (@cgrps[gid][:members] ||= []) << id
         Repeat.new.each(e0) do|e1, rep|
           par2item(e1, item) && next
           case e1.name

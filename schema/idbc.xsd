@@ -6,7 +6,17 @@
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="idbc:item" />
+        <xsd:element ref="idbc:unit" />
       </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="unit">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="idbc:item" />
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:NCName" use="required" />
+      <xsd:attribute name="label" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="item">

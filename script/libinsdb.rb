@@ -20,15 +20,48 @@ module CIAX
 
       def doc_to_db(doc)
         dbi = Dbi[doc[:attr]]
-        # Command Domain
+        init_command(doc,dbi)
+        init_status(doc,dbi)
+        dbi
+      end
+
+      # Command Domain
+      def init_command(doc,dbi)
         hcmd = dbi[:command] = {}
         (doc[:domain]['alias'] || []).each do|e0|
-          e0.attr2item(hcmd[:alias] ||= {})
-          e0.each do|e1|
-            (hcmd[:alias][e0['id']]['argv'] ||= []) << e1.text
+          case e0.name
+          when 'item'
+            e0.attr2item(hcmd[:alias] ||= {})
+            e0.each do|e1|
+              (hcmd[:alias][e0['id']]['argv'] ||= []) << e1.text
+            end
+          when 'unit'
           end
         end
-        # Status Domain
+      end
+
+      # identical with App::Db#arc_unit()
+      def arc_unit(e0, idx, grp, units)
+        e.each do|e0|
+          case e0.name
+          when 'unit'
+            uid = e0.attr2item(units)
+            e0.each do|e1|
+              id = arc_command(e1, idx)
+              (units[uid][:members] ||= []) << id
+              idx[id]['unit'] = uid
+              (grp[:members] ||= []) << id
+            end
+          when 'item'
+            id = arc_command(e0, idx)
+            (grp[:members] ||= []) << id
+          end
+        end
+        idx
+      end
+
+      # Status Domain
+      def init_status(doc,dbi)
         hst = dbi[:status] = {}
         grp = hst[:group] = {}
         (doc[:domain]['status'] || []).each do|e0|
@@ -46,8 +79,8 @@ module CIAX
         dbi['proj'] = @proj
         dbi['site_id'] = dbi['ins_id'] = dbi['id']
         dbi['frm_site'] ||= dbi['id']
-        dbi
       end
+
     end
 
     if __FILE__ == $PROGRAM_NAME

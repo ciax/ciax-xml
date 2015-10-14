@@ -15,54 +15,57 @@
       <instance id="mft" app_id="fpa" host="moircsobcp" port="25612" label="MOIRCS Hall Sensor"/>
       <instance id="mix" app_id="ixe" host="moircsobcp" port="25607" label="MOIRCS Turret">
         <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <item id="co_1" label="CO Filter for Turret 1" ref="opt">
-            <argv>1</argv>
-            <argv>0</argv>
-          </item>
-          <item id="none_1" label="No Filter for Turret 1" ref="opt">
-            <argv>1</argv>
-            <argv>1</argv>
-          </item>
-          <item id="brg_1" label="BrG Filter for Turret 1" ref="opt">
-            <argv>1</argv>
-            <argv>2</argv>
-          </item>
-          <item id="nb119_1" label="NB119 Filter for Turret 1" ref="opt">
-            <argv>1</argv>
-            <argv>3</argv>
-          </item>
-          <item id="std_k_1" label="STD K Filter for Turret 1" ref="opt">
-            <argv>1</argv>
-            <argv>4</argv>
-          </item>
-          <item id="y_1" label="Y Filter for Turret 1" ref="opt">
-            <argv>1</argv>
-            <argv>5</argv>
-          </item>
-          <item id="oc1_3_1" label="OC1 3 Filter for Turret 1" ref="opt">
-            <argv>1</argv>
-            <argv>6</argv>
-          </item>
-          <item id="j_1" label="J Filter for Turret 1" ref="opt">
-            <argv>1</argv>
-            <argv>7</argv>
-          </item>
-          <item id="h_1" label="H Filter for Turret 1" ref="opt">
-            <argv>1</argv>
-            <argv>8</argv>
-          </item>
-          <item id="ks_1" label="Ks Filter for Turret 1" ref="opt">
-            <argv>1</argv>
-            <argv>9</argv>
-          </item>
-          <item id="h2_1" label="H2 Filter for Turret 1" ref="opt">
-            <argv>1</argv>
-            <argv>10</argv>
-          </item>
-          <item id="fe2_1" label="Fe2 Filter for Turret 1" ref="opt">
-            <argv>1</argv>
-            <argv>11</argv>
-          </item>
+          <unit id="t1" label="Turret 1">
+            <item id="co_1" label="CO Filter for Turret 1" ref="opt">
+              <argv>1</argv>
+              <argv>0</argv>
+            </item>
+            <item id="none_1" label="No Filter for Turret 1" ref="opt">
+              <argv>1</argv>
+              <argv>1</argv>
+            </item>
+            <item id="brg_1" label="BrG Filter for Turret 1" ref="opt">
+              <argv>1</argv>
+              <argv>2</argv>
+            </item>
+            <item id="nb119_1" label="NB119 Filter for Turret 1" ref="opt">
+              <argv>1</argv>
+              <argv>3</argv>
+            </item>
+            <item id="std_k_1" label="STD K Filter for Turret 1" ref="opt">
+              <argv>1</argv>
+              <argv>4</argv>
+            </item>
+            <item id="y_1" label="Y Filter for Turret 1" ref="opt">
+              <argv>1</argv>
+              <argv>5</argv>
+            </item>
+            <item id="oc1_3_1" label="OC1 3 Filter for Turret 1" ref="opt">
+              <argv>1</argv>
+              <argv>6</argv>
+            </item>
+            <item id="j_1" label="J Filter for Turret 1" ref="opt">
+              <argv>1</argv>
+              <argv>7</argv>
+            </item>
+            <item id="h_1" label="H Filter for Turret 1" ref="opt">
+              <argv>1</argv>
+              <argv>8</argv>
+            </item>
+            <item id="ks_1" label="Ks Filter for Turret 1" ref="opt">
+              <argv>1</argv>
+              <argv>9</argv>
+            </item>
+            <item id="h2_1" label="H2 Filter for Turret 1" ref="opt">
+              <argv>1</argv>
+              <argv>10</argv>
+            </item>
+            <item id="fe2_1" label="Fe2 Filter for Turret 1" ref="opt">
+              <argv>1</argv>
+              <argv>11</argv>
+            </item>
+          </unit>
+          <unit id="t2" label="Turret 2">
           <item id="csl_2" label="Cold Stop Large for Turret 2" ref="opt">
             <argv>2</argv>
             <argv>0</argv>
@@ -111,6 +114,8 @@
             <argv>2</argv>
             <argv>11</argv>
           </item>
+          </unit>
+          <unit id="t3" label="Turret 3">
           <item id="vph_h_3" label="VPH H Grism for Turret 3" ref="opt">
             <argv>3</argv>
             <argv>0</argv>
@@ -159,6 +164,8 @@
             <argv>3</argv>
             <argv>11</argv>
           </item>
+          </unit>
+          <unit id="t4" label="Turret 4">
           <item id="co_4" label="CO Filter for Turret 4" ref="opt">
             <argv>4</argv>
             <argv>0</argv>
@@ -207,6 +214,8 @@
             <argv>4</argv>
             <argv>11</argv>
           </item>
+          </unit>
+          <unit id="t5" label="Turret 5">
           <item id="csl_5" label="Cold Stop Large for Turret 5" ref="opt">
             <argv>5</argv>
             <argv>0</argv>
@@ -255,6 +264,8 @@
             <argv>5</argv>
             <argv>11</argv>
           </item>
+          </unit>
+          <unit id="t6" label="Turret 6">
           <item id="vph_h_6" label="VPH H Grism for Turret 6" ref="opt">
             <argv>6</argv>
             <argv>0</argv>
@@ -303,6 +314,7 @@
             <argv>6</argv>
             <argv>11</argv>
           </item>
+          </unit>
         </alias>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <index ref="p1" symbol="t1" />

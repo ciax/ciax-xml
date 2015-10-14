@@ -3,7 +3,7 @@
   <app frm_id="mel" id="mel" label="Cart PLC" version="7">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrupt Commands" column="2">
-        <unit id='upd' label="Update Status">
+        <unit id='upd' label="Status">
           <item id="upd" label="Status update">
             <frmcmd name="getstat" />
             <frmcmd name="getcmd" />

@@ -3,7 +3,7 @@
   <app frm_id="ixe" id="ixe" label="MOIRCS Turret">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Motion Commands">
-        <unit id='upd' label="Update Status">
+        <unit id='upd' label="Status">
           <item id="upd" label="Upd">
             <frmcmd name="getstat" />
             <repeat from="1" to="6">

@@ -3,7 +3,7 @@
   <app frm_id="mic" id="mic" label="Micronix Piezo Motor">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id='upd' label="Update Status">
+        <unit id='upd' label="Status">
           <item id="upd" label="Upd">
             <repeat from="1" to="6">
               <frmcmd name="getst">

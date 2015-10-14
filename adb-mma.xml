@@ -3,7 +3,7 @@
   <app frm_id="slo" id="mma" label="MOIRCS Arm">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id='upd' label="Update Status">
+        <unit id='upd' label="Status">
           <item id="upd" label="Upd">
             <frmcmd name="getstat" />
             <frmcmd name="bs" />

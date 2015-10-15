@@ -17,7 +17,7 @@ module CIAX
     #   <val> -> taken from status (incoming)
     #   (val) -> calcurated from status
     def verbose(cond = true)
-      return if !VERBOSE || !cond || @hide_inside
+      return unless VERBOSE && cond && !@hide_inside
       data = yield
       (data.is_a?(Array) ? data : [data]).map do|line|
         msg = make_msg(line)

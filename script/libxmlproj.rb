@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libgetopts'
-require 'libdisp'
+require 'libdisplay'
 require 'libenumx'
 require 'libxmlgn'
 
@@ -43,7 +43,7 @@ module CIAX
           Gnu.new(xml).each { |e| read_proj(e) }
         end.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
       end
-      
+
       def read_proj(e)
         proj = e['id']
         @disp_list[proj] ||= e['caption']
@@ -53,25 +53,24 @@ module CIAX
 
       def read_grp(e)
         if e.name == 'group'
-          grplist = @disp_list.new_grp(e['caption'],e['id'])
-          e.each { |e0| read_doc(e0,grplist) }
+          @disp_list.new_grp(e['id'],e['caption'])
+          e.each { |e0| read_doc(e0,e['id']) }
         else
-          grplist = @disp_list.new_grp('All','g0')
-          read_doc(e, grplist)
+          grplist = @disp_list.new_grp('g0','All')
+          read_doc(e, 'g0')
         end
       end
 
-      def read_doc(top,grplist)
+      def read_doc(top,gid)
         id = top['id']
-        @group[id] = top['label']
+        @disp_list.put(id,top['label'],gid)
         item = Hashx[ top: top, attr: top.to_h, domain: {} , property: {}]
-        item[:proj]=proj if proj
         top.each do|e1|
           item[top.ns == e1.ns ? :property : :domain][e1.name] = e1
         end
         verbose { "Property registerd:#{item[:property].keys}" }
         verbose { "Domain registerd:#{item[:domain].keys}" }
-        index[id] = item
+        self[id] = item
       end
     end
   end
@@ -87,7 +86,7 @@ module CIAX
       Msg.usage('[type] [project] [id]')
     end
     begin
-      puts doc.set(ARGV.shift).to_v
+      puts doc.get(ARGV.shift).to_v
     rescue InvalidID
       Msg.usage('[type] [project] [id]')
     end

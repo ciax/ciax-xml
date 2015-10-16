@@ -91,12 +91,10 @@ module CIAX
         @column = [attr['column'].to_i, 1].max
         # Selected items for display
         @select = select
-        # Always display items
-        @dummy = []
         @group = Hashx['def' => @attr]
       end
 
-      def set(k, v , grp='def')
+      def put(k, v , grp='def')
         @select << k
         @group[grp][:member]=k
         super(k, v)
@@ -144,20 +142,18 @@ module CIAX
       end
 
       def grp_lists
-        vmax = valid_list.map{|k| self[k].size }.max
-        kmax = valid_list.map(&:size).max
+        vmax = @select.map{|k| self[k].size }.max
+        kmax = @select.map(&:size).max
         all=[caption(@attr)]
         @group.values_each do |gr|
           all << sub_caption(gr)
           gr[:member].each do |id|
-            next unless valid_list.include?(id)
+            next unless @select.include?(id)
             all << Msg.columns(self[id],@column, vmax, kmax)
           end
         end.grep(/./).join("\n")
       end
-      def valid
-        @select + @dummy
-      end
+
       
       def list_table
         hash = {}

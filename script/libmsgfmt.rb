@@ -42,21 +42,23 @@ module CIAX
     end
 
     # Display methods
-    def columns(h, c = 2, vx = nil, kx = nil)
+    def columns(h, c = 2)
       return '' unless h
-      vx, kx = _max_size(h, vx, kx)
-      h.keys.each_slice(c).map do|a|
-        a.map do|k|
-          item(k, h[k], kx).ljust(vx + kx + 15)
+      kary=h.keys
+      kx = _ary_max(kary,c)
+      vx = _ary_max(kary.map{|k|h[k]},c)
+      kary.each_slice(c).map do|a|
+        a.map.with_index do|k,i|
+          item(k, h[k], kx[i]).ljust(vx[i] + kx[i] + 15)
         end.join('').rstrip
       end.join("\n")
     end
 
-    # max string length of value and key in hash
-    def _max_size(hash, vx = nil, kx = nil)
-      vx ||= hash.values.map(&:size).max
-      kx ||= hash.keys.map(&:size).max
-      [vx, kx]
+    # max string length of value and key in hash at each column
+    def _ary_max(ary,c)
+      cols=Array.new(c).map{[]}
+      ary.each_with_index{|s,i| cols[i % c] << s.size }
+      cols.map(&:max)
     end
   end
 end

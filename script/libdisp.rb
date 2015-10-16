@@ -47,9 +47,9 @@ module CIAX
       end
 
       # view mode
-      def view(vx = nil, kx = 3)
+      def view
         return '' if (t = list_table).empty?
-        caption + Msg.columns(t, @column, vx, kx)
+        caption + Msg.columns(t, @column)
       end
 
       # max value length
@@ -135,9 +135,7 @@ module CIAX
       end
 
       def grp_lists
-        vmax = map(&:vmax).max
-        kmax = map(&:kmax).max
-        map { |cg| cg.view(vmax, kmax) }.grep(/./).join("\n")
+        map { |cg| cg.view }.grep(/./).join("\n")
       end
     end
   end

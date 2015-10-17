@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libitem'
-require 'libdisp'
+require 'libdisplay'
 
 module CIAX
   class Group < Hashx
@@ -12,7 +12,7 @@ module CIAX
       @cls_color = 3
       @cfg = cfg.gen(self).update(attr)
       @valid_keys = @cfg[:valid_keys] || []
-      @displist = Disp::List.new(@cfg, @valid_keys)
+      @displist = Display.new(@cfg, @valid_keys)
       @cfg['color'] ||= 2
       @cfg['column'] ||= 2
     end
@@ -24,34 +24,27 @@ module CIAX
     end
 
     def del_item(id)
-      @valid_keys.delete(id)
-      subgrp.delete(id)
+      @displist.delete(id)
       delete(id)
     end
 
     def clear_item
-      @valid_keys.clear
       @displist.clear
       clear
     end
 
     def merge_items(displist)
-      type?(displist, Disp::List).each do|cg|
-        cg.each do|id, title|
-          new_item(id, 'label' => title)
-        end
-      end
-      @subgrp = @displist.merge!(displist).last
+      @displist.merge_group!(type?(displist, Display))
       self
     end
 
     def add_dummy(id, title)
-      subgrp.dummy(id, title) # never put into valid_key
+      @displist[id]=title # never put into valid_key
       self
     end
 
     def valid_reset
-      @valid_keys.concat(keys).uniq!
+      @displist.reset!
       self
     end
 
@@ -79,10 +72,6 @@ module CIAX
     def new_item(id, crnt = {})
       crnt[:id] = id
       self[id] = context_constant('Item').new(@cfg, crnt)
-    end
-
-    def subgrp
-      @subgrp ||= @displist.new_grp
     end
   end
 end

@@ -34,16 +34,11 @@ module CIAX
       @sub_group[id] = atrb
     end
 
-    def merge!(other)
+    def merge_group!(other)
       type?(other, List).select = @select
       @sub_group.update(other.group)
       deep_update(other)
       reset!
-    end
-
-    def update(h)
-      @select.concat h.keys
-      super
     end
 
     # For ver 1.9 or more
@@ -56,6 +51,18 @@ module CIAX
     def reset!
       @select.concat(keys).uniq!
       self
+    end
+
+    def clear
+      @select.clear
+      @sub_group.clear
+      super
+    end
+
+    def delete(id)
+      @sub_group.each_value{|atrb| atrb[:member].delete(id)}
+      @select.delete(id)
+      super
     end
 
     def key?(id)
@@ -85,7 +92,7 @@ module CIAX
     def make_line(atrb)
       list = {}
       num = 0
-      (@select & atrb[:member]).sort.each do|id|
+      (@select & atrb[:member] & keys).sort.each do|id|
         title = @ln ? "[#{num += 1}](#{id})" : id
         list[title] = self[id]
       end

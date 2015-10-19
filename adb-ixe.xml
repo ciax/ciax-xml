@@ -66,6 +66,24 @@
             </frmcmd>
           </repeat>
         </item>
+        <item id="resetm" label="Set Pulse Zero for MTN mode">
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="p:%d">$_</argv>
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="setp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="resetr" label="Set Regulated Pulse">
+          <repeat from="1" to="6">
+            <frmcmd name="setp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
         <item id="backup" label="Backup Pulse,Speed,Offset">
           <frmcmd name="save">
             <argv>p,spd,ofs</argv>
@@ -352,6 +370,7 @@
         <onchange var="stp"/>
         <pattern var="stp">EEEEEE</pattern>
         <exec name="sysupd"/>
+        <exec name="resetr"/>
       </event>
     </watch>
   </app>

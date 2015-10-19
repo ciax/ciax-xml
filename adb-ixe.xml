@@ -66,17 +66,6 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="resetm" label="Set Pulse Zero for MTN mode">
-          <repeat from="1" to="6">
-            <frmcmd name="set">
-              <argv format="p:%d">$_</argv>
-              <argv>0</argv>
-            </frmcmd>
-            <frmcmd name="setp">
-              <argv>$_</argv>
-            </frmcmd>
-          </repeat>
-        </item>
         <item id="resetr" label="Set Regulated Pulse">
           <repeat from="1" to="6">
             <frmcmd name="setp">

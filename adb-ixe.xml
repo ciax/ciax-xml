@@ -358,8 +358,8 @@
       <event id="fin" label="Finish Run">
         <onchange var="stp"/>
         <pattern var="stp">EEEEEE</pattern>
-        <exec name="sysupd"/>
         <exec name="resetr"/>
+        <exec name="sysupd"/>
       </event>
     </watch>
   </app>

@@ -1,11 +1,14 @@
 #!/usr/bin/ruby
 require 'libgetopts'
-require 'libdisp'
+require 'libdisplay'
 require 'libenumx'
 require 'libxmlgn'
 
 # Domain is the top node of each name spaces
 module CIAX
+  # Regular Doc: accessible, display in help list
+  # Hidden Doc: accessible, but not displayed in help list(sub command, etc.)
+  # Invalid Doc: not accessible external, for internal refernce/include only
   module Xml
     # xmldoc group will be named after xml filename or group element
     # default group name is 'all' and all xmldoc will belong to this group
@@ -15,88 +18,84 @@ module CIAX
     # in another file.
     class Doc < Hashx
       attr_reader :top, :displist
-      def initialize(type, project = nil)
+      def initialize(type, proj)
         super()
         @cls_color = 2
-        @project = [project]
+        @valid_list = [proj].compact
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
-        @pcap = 'All'
-        @displist = Disp::List.new('column' => 2)
-        @projlist = Disp::Group.new('caption' => 'Project', 'column' => 2)
-        files = Msg.xmlfiles(@type)
-        files.each do|xml|
-          verbose { 'readxml:' + ::File.basename(xml, '.xml') }
-          Gnu.new(xml).each do|e|
-            @project << e['include'] if @project.include?(e['id']) && e['include']
-          end
-        end.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
-        # Two pass reading for refering
-        files.each do|xml|
-          Gnu.new(xml).each { |e| readproj(e) }
-        end
-        fail(InvalidProj, "No such Project(#{@project})\n" + @projlist.view) if @displist.empty?
+        @projects = Hashx.new
+        @displist = Display.new('caption' => type.upcase, 'column' => 2)
+        read_files(Msg.xmlfiles(@type))
+        valid_proj
       end
 
-      # set generates document branch of db items(Hash), which includes attribute and domains
-      def set(id)
-        fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + @displist.to_s) unless key?(id)
-        top = self[id]
-        item = { top: top, attr: top.to_h, domain: {} , property: {}}
-        top.each do|e1|
-          item[top.ns == e1.ns ? :property : :domain][e1.name] = e1
-        end
-        verbose { "Property registerd:#{item[:property].keys}" }
-        verbose { "Domain registerd:#{item[:domain].keys}" }
-        item
+      # get generates document branch of db items(Hash),
+      # which includes attribute and domains
+      def get(id)
+        return self[id] if key?(id)
+        fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + @displist.to_s)
       end
 
       private
 
-      def readproj(e)
-        if e.name == 'project'
-          id = e['id']
-          pc = @projlist[id] = e['caption']
-          @pcap = @project.include?(id) ? pc : nil
-          e.each { |e0| readgrp(e0) }
-        else
-          readgrp(e)
-        end
+      def read_files(files)
+        files.each do|xml|
+          verbose { 'readxml:' + ::File.basename(xml, '.xml') }
+          Gnu.new(xml).each do |e|
+            e.name == 'project' ? read_proj(e) : read_grp(e)
+          end
+        end.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
       end
 
-      def readgrp(e)
+      def read_proj(e)
+        proj = e['id']
+        @projects[proj] = e
+        return if @valid_list.empty?
+        return unless  @valid_list.include?(proj) && e['include']
+        @valid_list << e['include']
+      end
+
+      def valid_proj
+        vl = @valid_list & @projects.keys
+        vl = @projects.keys if vl.empty?
+        vl.each { |p| @projects[p].each { |e| read_grp(e, p) } }
+      end
+
+      def read_grp(e, proj = nil)
         if e.name == 'group'
-          @group = @displist.new_grp(e['caption']) if @pcap
-          e.each { |e0| readitem(e0) }
+          gid = e['id']
+          gid += proj if proj
+          @displist.new_grp(gid, e['caption'])
+          e.each { |e0| read_doc(e0, gid) }
         else
-          @group ||= @displist.new_grp(@pcap) if @pcap
-          readitem(e)
+          read_doc(e)
         end
       end
 
-      def readitem(e)
-        id = e['id']
-        self[id] = e
-        @group[id] = e['label'] if @pcap
+      def read_doc(top, gid = nil)
+        id = top['id']
+        @displist.put(id, top['label'], gid)
+        item = Hashx[top: top, attr: top.to_h, domain: {}, property: {}]
+        top.each do|e1|
+          item[top.ns == e1.ns ? :property : :domain][e1.name] = e1
+        end
+        self[id] = item
       end
     end
   end
 
   if __FILE__ == $PROGRAM_NAME
     type = ARGV.shift
-    proj = nil
     begin
-      doc = Xml::Doc.new(type, proj)
+      doc = Xml::Doc.new(type, PROJ)
     rescue ConfigError
       Msg.usage('[type] (adb,fdb,idb,ddb,mdb,sdb)')
-    rescue InvalidProj
-      (proj = ARGV.shift) && retry
-      Msg.usage('[type] [project] [id]')
     end
     begin
-      puts doc.set(ARGV.shift)
+      puts doc.get(ARGV.shift).path
     rescue InvalidID
-      Msg.usage('[type] [project] [id]')
+      Msg.usage('[type] [id]')
     end
   end
 end

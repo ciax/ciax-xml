@@ -8,6 +8,7 @@ module CIAX
     module_function
 
     def expr(str)
+      cfg_err("Expression is empty") unless str
       num = eval(str)
       type?(num, Numeric)
     end

@@ -41,10 +41,10 @@ module CIAX
       else
         ent = context_constant('Entity').new(@cfg, opt)
         if @cfg['nocache']
-          verbose { "SetPAR: Entity No Cache Created (#{cid})" }
+          verbose { "SetPAR: Entity No Cache Saved (#{cid})" }
         else
           self[cid] = ent
-          verbose { "SetPAR: Entity Cache Created (#{cid})" }
+          verbose { "SetPAR: Entity Cache Saved (#{cid})" }
         end
         ent
       end

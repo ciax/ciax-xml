@@ -152,7 +152,7 @@
         <string>A</string>
         <string>$2</string>
       </item>
-      <item id="opt" label="Move abs by optimal [0-96000] (8000/hole)" response="default" type="action">
+      <item id="opt" label="Move abs by optimal [0-96000] (8000/hole)" nocache="true" response="default" type="action">
         <par_num>1:6</par_num>
         <par_num>0:96000</par_num>
         <string>$1</string>

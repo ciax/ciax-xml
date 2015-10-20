@@ -95,7 +95,7 @@ module CIAX
     begin
       puts doc.get(ARGV.shift).to_v
     rescue InvalidID
-      Msg.usage('[type] [project] [id]')
+      Msg.usage('[type] [id]')
     end
   end
 end

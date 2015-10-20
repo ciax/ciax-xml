@@ -29,6 +29,7 @@ module CIAX
       @type = type
       # @displist is Display
       lid = 'list'
+      lid += "_#{PROJ}" if PROJ 
       @displist = cache(lid, &:displist)
     end
 

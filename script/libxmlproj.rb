@@ -18,21 +18,24 @@ module CIAX
     # in another file.
     class Doc < Hashx
       attr_reader :top, :displist
-      def initialize(type,proj)
+      def initialize(type, proj)
         super()
         @cls_color = 2
         @valid_list = [proj].compact
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
-        @disp_list = Disp::List.new('caption' => 'Project', 'column' => 2)
+        @disp_list = Display.new('caption' => type.upcase, 'column' => 2)
+        @projects = Hashx.new
         read_files(Msg.xmlfiles(@type))
-        fail(InvalidProj, "No such Project(#{@valid_list})\n" + @disp_list.view) if @disp_list.empty?
+        @valid_list = @projects.keys if @valid_list.empty?
+        @valid_list.each { |p| @projects[p].each { |e| read_grp(p, e) } }
       end
 
-      # get generates document branch of db items(Hash), which includes attribute and domains
+      # get generates document branch of db items(Hash),
+      # which includes attribute and domains
       def get(id)
-        fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + @disp_list.to_s) unless key?(id)
-        self[id]
+        self[id] if key?(id)
+        fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + @disp_list.to_s)
       end
 
       private
@@ -40,36 +43,42 @@ module CIAX
       def read_files(files)
         files.each do|xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
-          Gnu.new(xml).each { |e| read_proj(e) }
+          Gnu.new(xml).each do |e|
+            e.name == 'project' ? read_proj(e) : read_grp('all', e)
+          end
         end.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
+      end
+
+      def sec
+        (@valid_list.empty? ? @projects.keys : @valid_list).each do
+        end
       end
 
       def read_proj(e)
         proj = e['id']
-        @disp_list[proj] ||= e['caption']
-        @valid_list << e['include'] if !@valid_list.empty? && @valid_list.include?(proj) && e['include']
-        e.each { |e0| read_grp(e0, ) }
+        @projects[proj] = e
+        return if @valid_list.empty?
+        return unless  @valid_list.include?(proj) && e['include']
+        @valid_list << e['include']
       end
 
-      def read_grp(e)
+      def read_grp(proj, e)
         if e.name == 'group'
-          @disp_list.new_grp(e['id'],e['caption'])
-          e.each { |e0| read_doc(e0,e['id']) }
+          gid = "#{proj}:#{e['id']}"
+          @disp_list.new_grp(gid, e['caption'])
+          e.each { |e0| read_doc(e0, gid) }
         else
-          grplist = @disp_list.new_grp('g0','All')
-          read_doc(e, 'g0')
+          read_doc(e)
         end
       end
 
-      def read_doc(top,gid)
+      def read_doc(top, gid = nil)
         id = top['id']
-        @disp_list.put(id,top['label'],gid)
-        item = Hashx[ top: top, attr: top.to_h, domain: {} , property: {}]
+        @disp_list.put(id, top['label'], gid)
+        item = Hashx[top: top, attr: top.to_h, domain: {}, property: {}]
         top.each do|e1|
           item[top.ns == e1.ns ? :property : :domain][e1.name] = e1
         end
-        verbose { "Property registerd:#{item[:property].keys}" }
-        verbose { "Domain registerd:#{item[:domain].keys}" }
         self[id] = item
       end
     end
@@ -78,12 +87,9 @@ module CIAX
   if __FILE__ == $PROGRAM_NAME
     type = ARGV.shift
     begin
-      doc = Xml::Doc.new(type,PROJ)
+      doc = Xml::Doc.new(type, PROJ)
     rescue ConfigError
       Msg.usage('[type] (adb,fdb,idb,ddb,mdb,sdb)')
-    rescue InvalidProj
-      (proj = ARGV.shift) && retry
-      Msg.usage('[type] [project] [id]')
     end
     begin
       puts doc.get(ARGV.shift).to_v

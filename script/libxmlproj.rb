@@ -33,7 +33,7 @@ module CIAX
       # get generates document branch of db items(Hash),
       # which includes attribute and domains
       def get(id)
-        self[id] if key?(id)
+        return self[id] if key?(id)
         fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + @disp_list.to_s)
       end
 
@@ -65,7 +65,7 @@ module CIAX
       def read_grp(e, proj = nil)
         if e.name == 'group'
           gid = e['id']
-          gid+=proj if proj
+          gid += proj if proj
           @disp_list.new_grp(gid, e['caption'])
           e.each { |e0| read_doc(e0, gid) }
         else
@@ -93,7 +93,7 @@ module CIAX
       Msg.usage('[type] (adb,fdb,idb,ddb,mdb,sdb)')
     end
     begin
-      puts doc.get(ARGV.shift).to_v
+      puts doc.get(ARGV.shift).path
     rescue InvalidID
       Msg.usage('[type] [id]')
     end

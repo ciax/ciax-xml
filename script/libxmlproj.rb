@@ -24,11 +24,10 @@ module CIAX
         @valid_list = [proj].compact
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
-        @disp_list = Display.new('caption' => type.upcase, 'column' => 2)
         @projects = Hashx.new
+        @disp_list = Display.new('caption' => type.upcase, 'column' => 2)
         read_files(Msg.xmlfiles(@type))
-        @valid_list = @projects.keys if @valid_list.empty?
-        @valid_list.each { |p| @projects[p].each { |e| read_grp(p, e) } }
+        valid_proj
       end
 
       # get generates document branch of db items(Hash),
@@ -44,14 +43,9 @@ module CIAX
         files.each do|xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
           Gnu.new(xml).each do |e|
-            e.name == 'project' ? read_proj(e) : read_grp('all', e)
+            e.name == 'project' ? read_proj(e) : read_grp(e)
           end
         end.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
-      end
-
-      def sec
-        (@valid_list.empty? ? @projects.keys : @valid_list).each do
-        end
       end
 
       def read_proj(e)
@@ -62,9 +56,16 @@ module CIAX
         @valid_list << e['include']
       end
 
-      def read_grp(proj, e)
+      def valid_proj
+        vl = @valid_list & @projects.keys
+        vl = @projects.keys if vl.empty?
+        vl.each { |p| @projects[p].each { |e| read_grp(e, p) } }
+      end
+
+      def read_grp(e, proj = nil)
         if e.name == 'group'
-          gid = "#{proj}:#{e['id']}"
+          gid = e['id']
+          gid+=proj if proj
           @disp_list.new_grp(gid, e['caption'])
           e.each { |e0| read_doc(e0, gid) }
         else

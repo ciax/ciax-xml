@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="ciax" caption="CIAX" include="cmp" column="2">
-    <group id="sum" caption="Summit">
+    <group id="sum" caption="CIAX Summit">
       <instance id="crt" app_id="mel" host="cxws2" port="25101" label="CIAX CART 3"/>
       <instance id="dsi" app_id="cj2" host="cxws2" port="25102" label="IR Stand-by"/>
       <instance id="dso" app_id="cj2" host="cxws2" port="25103" label="OPT Stand-by"/>

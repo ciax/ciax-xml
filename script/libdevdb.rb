@@ -4,8 +4,8 @@ require 'libfrmdb'
 module CIAX
   module Dev
     class Db < Db
-      def initialize(proj = PROJ)
-        super('ddb', proj)
+      def initialize
+        super('ddb')
       end
 
       def get(id = nil)
@@ -17,7 +17,7 @@ module CIAX
 
       def doc_to_db(doc)
         db = rec_db(doc[:top])
-        db['proj'] = @proj
+        db['proj'] = PROJ
         db['site_id'] = db['id']
         db
       end
@@ -39,7 +39,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       begin
-        dbi = Db.new(ARGV.shift).get(ARGV.shift)
+        dbi = Db.new.get(ARGV.shift)
       rescue
         Msg.usage('(opt) [id] (key) ..')
       end

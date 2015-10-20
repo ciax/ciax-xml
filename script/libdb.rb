@@ -23,21 +23,19 @@ module CIAX
 
   class Db < Hashx
     attr_reader :displist
-    def initialize(type, proj = nil)
+    def initialize(type)
       super()
       @cls_color = 5
       @type = type
-      @proj = proj
-      # @displist is Disp::List
+      # @displist is Display
       lid = 'list'
-      lid += "-#{@proj}" if @proj
       @displist = cache(lid, &:displist)
     end
 
     def get(id)
       fail(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s) unless @displist.key?(id)
       cache(id) do|doc|
-        doc_to_db(doc.set(id))
+        doc_to_db(doc.get(id))
       end
     end
 
@@ -61,7 +59,7 @@ module CIAX
         end
       else
         warning("Cache Refresh (#{id})")
-        res = yield(@doc ||= Xml::Doc.new(@type, @proj))
+        res = yield(@doc ||= Xml::Doc.new(@type,PROJ))
         open(@marfile, 'w') do|f|
           f << Marshal.dump(res)
           verbose { "Cache Saved(#{id})" }
@@ -72,7 +70,7 @@ module CIAX
 
     def newest?
       if NOCACHE
-        verbose { "#{@type}/Cache ENV NOCACHE is set" }
+        verbose { "#{@type}/Cache NOCACHE is set" }
         return false
       elsif !test('e', @marfile)
         verbose { "#{@type}/Cache MAR file(#{@base}) not exist" }

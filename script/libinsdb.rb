@@ -5,8 +5,8 @@ module CIAX
   module Ins
     class Db < Db
       include Wat::Db
-      def initialize(proj = PROJ)
-        super('idb', proj)
+      def initialize
+        super('idb')
         @adb = App::Db.new
       end
 
@@ -77,7 +77,7 @@ module CIAX
           end
         end
         init_watch(doc, dbi)
-        dbi['proj'] = @proj
+        dbi['proj'] = PROJ
         dbi['site_id'] = dbi['ins_id'] = dbi['id']
         dbi['frm_site'] ||= dbi['id']
       end
@@ -86,7 +86,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       begin
-        dbi = Db.new(ARGV.shift).get(ARGV.shift)
+        dbi = Db.new.get(ARGV.shift)
       rescue
         Msg.usage('(opt) [id] (key) ..')
       end

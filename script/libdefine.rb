@@ -3,12 +3,12 @@
 module CIAX
   require 'English' # To use $! -> $ERROR_INFO
   require 'debug' if ENV['DEBUG']
-  PROJ = ENV['PROJ'] || 'moircs'
+  PROJ = ENV['PROJ']
   SIMCMD = ENV['SIMCMD'] || 'frmsim'
   VERBOSE = ENV['VER'] || 'initialize'
   NOCACHE = ENV['NOCACHE']
   NOLOG = ENV['NOLOG']
-  
+
   # Site Domain
   module Site; NS_COLOR = 13; end
   # Frame Layer

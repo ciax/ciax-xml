@@ -20,9 +20,9 @@ module CIAX
       new_grp('def')
     end
 
-    def put(k, v, grp = 'def')
+    def put(k, v, grp = nil)
       @select << k
-      @sub_group[grp][:member] << k
+      @sub_group[grp||'def'][:member] << k
       super(k, v)
     end
 

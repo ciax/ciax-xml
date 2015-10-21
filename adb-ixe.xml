@@ -68,6 +68,13 @@
             </frmcmd>
           </repeat>
         </item>
+        <item id="resetr" label="Set Regulated Pulse">
+          <repeat from="1" to="6">
+            <frmcmd name="setp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
         <item id="backup" label="Backup Pulse,Speed,Offset">
           <frmcmd name="save">
             <argv>p,spd,ofs</argv>
@@ -353,6 +360,7 @@
       <event id="fin" label="Finish Run">
         <onchange var="stp"/>
         <pattern var="stp">EEEEEE</pattern>
+        <exec name="resetr"/>
         <exec name="sysupd"/>
       </event>
     </watch>

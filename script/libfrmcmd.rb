@@ -38,13 +38,14 @@ module CIAX
           return unless @body
           @sel[:body] = @body
           verbose { "Body:#{self['label']}(#{@id})" }
-          mk_frame(:body)
+          conv = mk_frame(:body)
           if @sel.key?(:ccrange)
             @frame.cc_mark
-            mk_frame(:ccrange)
+            conv |= mk_frame(:ccrange)
             @frame.cc_set
           end
-          mk_frame(:main)
+          conv |= mk_frame(:main)
+          warning("Frame was converted by Status but chache is still effective") if conv && !self['nocache']
           frame = @fstr[:main]
           verbose { "Cmd Generated [#{@id}]" }
           self[:frame] = frame

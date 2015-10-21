@@ -153,7 +153,7 @@ module CIAX
         if ref == val
           verbose { "Verify:(#{e0['label']}) [#{ref.inspect}] OK" }
         else
-          cc_err("Mismatch(#{e0['label']}):[#{val.inspect}] (should be [#{ref.inspect}])")
+          cc_err("Mismatch(#{e0['label']}/#{e0['decode']}):[#{val.inspect}] (should be [#{ref.inspect}])")
         end
         cc_add(str)
         str
@@ -176,6 +176,7 @@ module CIAX
           num = [code].pack('b*').ord
           base = 2
         else
+          # integer
           ary = code.unpack('C*')
           ary.reverse! if @endian == 'little'
           num = ary.inject(0) { |a, e| a * 256 + e }

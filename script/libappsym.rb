@@ -45,18 +45,16 @@ module CIAX
                 val.to_f > cri.to_f + tol || val.to_f < cri.to_f - tol
               end
               verbose { "VIEW:Numeric:[#{sym['val']}+-#{tol}] and [#{val}]" }
-              self['msg'][key] = "#{sym['msg']}(#{val})"
             when 'range'
               numeric = true
               next unless ReRange.new(sym['val']) == val
               verbose { "VIEW:Range:[#{sym['val']}] and [#{val}]" }
-              self['msg'][key] = "#{sym['msg']}(#{val})"
             when 'pattern'
               next unless /#{sym['val']}/ =~ val || val == 'default'
               verbose { "VIEW:Regexp:[#{sym['val']}] and [#{val}]" }
             end
             if numeric
-              self['msg'][key] = "#{sym['msg']}(#{val})"
+              self['msg'][key] = format(sym['msg'],val)
             else
               self['msg'][key] = sym['msg'] || "N/A(#{val})"
             end

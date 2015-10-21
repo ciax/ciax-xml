@@ -8,7 +8,7 @@ module CIAX
     module_function
 
     def expr(str)
-      num = eval(str)
+      num = str ? eval(str) : 0
       type?(num, Numeric)
     end
 

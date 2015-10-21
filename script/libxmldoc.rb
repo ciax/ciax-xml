@@ -21,7 +21,7 @@ module CIAX
       def initialize(type, proj)
         super()
         @cls_color = 2
-        @valid_list = [proj].compact
+        @valid_proj = [proj].compact
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
         @projects = Hashx.new
@@ -51,13 +51,13 @@ module CIAX
       def read_proj(e)
         proj = e['id']
         @projects[proj] = e
-        return if @valid_list.empty?
-        return unless  @valid_list.include?(proj) && e['include']
-        @valid_list << e['include']
+        return if @valid_proj.empty?
+        return unless  @valid_proj.include?(proj) && e['include']
+        @valid_proj << e['include']
       end
 
       def valid_proj
-        vl = @valid_list & @projects.keys
+        vl = @valid_proj & @projects.keys
         vl = @projects.keys if vl.empty?
         vl.each { |p| @projects[p].each { |e| read_grp(e, p) } }
       end

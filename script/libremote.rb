@@ -15,7 +15,7 @@ module CIAX
     # @cfg should have [:dbi]
     class Domain < GrpAry
       attr_reader :hid, :ext, :int
-      def initialize(cfg, attr = {})
+      def initialize(cfg, atrb = {})
         super
         @cfg[:def_proc] = proc { '' } # proc is re-defined
       end
@@ -37,9 +37,9 @@ module CIAX
     # Hidden Command Group
     module Hid
       class Group < Group
-        def initialize(dom_cfg, attr = {})
+        def initialize(dom_cfg, atrb = {})
+          atrb['caption'] = 'Hidden Commands'
           super
-          @cfg['caption'] = 'Hidden Commands'
           add_item('interrupt')
           # Accept empty command
           add_item(nil) unless @cfg[:exe_mode]
@@ -50,9 +50,9 @@ module CIAX
     # Internal Command Group
     module Int
       class Group < Group
-        def initialize(dom_cfg, attr = {})
+        def initialize(dom_cfg, atrb = {})
+          atrb['caption'] = 'Internal Commands'
           super
-          @cfg['caption'] = 'Internal Commands'
         end
 
         def def_pars(n = 1)
@@ -72,30 +72,31 @@ module CIAX
     module Ext
       # External Command Group
       class Group < Group
-        def initialize(cfg, attr = {})
+        def initialize(cfg, atrb = {})
+          cfg['caption'] ||= 'External Commands'
           super
           dbi = type?(@cfg[:dbi], Dbi)
-          @cfg['caption'] ||= 'External Commands'
           @cfg['ver'] ||= dbi['version']
           # Set items by DB
           cdb = dbi[:command]
           idx = cdb[:index]
-          cdb[:group].values.each do|gat|
-            @subgrp = @displist.new_grp(gat['caption'])
+          cdb[:group].each do|gid,gat|
+            @displist.sub_group[gid]=gat
             gat[:members].each do|id|
-              item = idx[id]
-              add_item(id, cdb, item)
+              add_item(id, cdb, idx[id])
             end
           end
           init_alias(cdb, idx)
+          @displist.reset!
         end
 
         def init_alias(cdb, idx)
           return unless cdb[:alias]
-          @subgrp = @displist.new_grp('Alias')
+          sg = @displist.new_grp('gal','Alias')
           cdb[:alias].each do|id, att|
             item = idx[att['ref']].dup
             item.update(att)
+            sg[:members] << id
             add_item(id, cdb, item)
           end
         end
@@ -107,7 +108,7 @@ module CIAX
           if item[:parameters].is_a? Array
             label = label.gsub(/\$([\d]+)/, '%s') % item[:parameters].map { |e| e['label'] }
           end
-          @subgrp[id] = label
+          @displist[id] = label
           new_item(id, item)
         end
       end
@@ -118,7 +119,7 @@ module CIAX
       # par={ val,range,format } or String
       # str could include Math functions
       class Entity < Entity
-        def initialize(grp_cfg, attr = {})
+        def initialize(grp_cfg, atrb = {})
           super
           type?(self[:dbi], Dbi)
           @body = deep_subst(self[:body])

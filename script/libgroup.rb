@@ -7,19 +7,20 @@ module CIAX
     include CmdProc
     attr_reader :valid_keys
     # dom_cfg keys: caption,color,column
-    def initialize(cfg, attr = {})
+    def initialize(cfg, atrb = {})
       super()
       @cls_color = 3
-      @cfg = cfg.gen(self).update(attr)
+      @cfg = cfg.gen(self).update(atrb)
       @valid_keys = @cfg[:valid_keys] || []
-      @displist = Display.new(@cfg, @valid_keys)
       @cfg['color'] ||= 2
       @cfg['column'] ||= 2
+      @displist = Display.new(@cfg, @valid_keys)
     end
 
     # crnt could have 'label',:body,'unit','group'
     def add_item(id, title = nil, crnt = {})
-      crnt['label'] = subgrp[id] = title
+      crnt['label'] = title
+      @displist.put(id,title)
       new_item(id, crnt)
     end
 
@@ -39,7 +40,7 @@ module CIAX
     end
 
     def add_dummy(id, title)
-      @displist[id]=title # never put into valid_key
+      @displist.put(id,title) # never put into valid_key
       self
     end
 

@@ -6,7 +6,7 @@ module CIAX
     class Index < GrpAry
       # cfg should have [:jump_class]
       attr_reader :loc
-      def initialize(cfg, attr = {})
+      def initialize(cfg, atrb = {})
         super
         @loc = add(Domain)
       end
@@ -22,17 +22,17 @@ module CIAX
         append(@cfg[:jump_site]) if @cfg[:jump_site]
       end
 
-      def add_view(attr = {})
-        add(View::Group, attr)
+      def add_view(atrb = {})
+        add(View::Group, atrb)
       end
     end
 
     module Sh
       class Group < Group
-        def initialize(cfg, attr = {})
+        def initialize(cfg, atrb = {})
+          atrb['caption'] = 'Shell Command'
+          atrb['color'] = 1
           super
-          @cfg['caption'] = 'Shell Command'
-          @cfg['color'] = 1
           add_dummy('q', 'Quit')
           add_dummy('^D,^C', 'Interrupt')
         end
@@ -41,12 +41,12 @@ module CIAX
 
     module Jump
       class Group < Group
-        def initialize(cfg, attr = {})
+        def initialize(cfg, atrb = {})
+          name = m2id(cfg[:jump_class], 1).capitalize
+          atrb['caption'] = "Switch #{name}s"
+          atrb['color'] = 5
+          atrb['column'] = 3
           super
-          name = m2id(@cfg[:jump_class], 1).capitalize
-          @cfg['caption'] = "Switch #{name}s"
-          @cfg['color'] = 5
-          @cfg['column'] = 3
           def_proc do|ent|
             # Use shell() of top level class (ie. List.new.get(id).shell -> List.new.shell(id) )
             fail(ent[:jump_class], ent.id)
@@ -67,14 +67,23 @@ module CIAX
     module View
       # cfg should have [:output]
       class Group < Group
-        def initialize(cfg, attr = {})
+        def initialize(cfg, atrb = {})
+          atrb['caption'] = 'Change View Mode'
+          atrb['color'] = 9
           super
-          @cfg['caption'] = 'Change View Mode'
-          @cfg['color'] = 9
           add_item('vis', 'Visual mode').def_proc { @cfg[:output].vmode('v') }
           add_item('raw', 'Raw Print mode').def_proc { @cfg[:output].vmode('r') }
         end
       end
     end
+  end
+
+  if __FILE__ == $PROGRAM_NAME
+    cfg=Config.new
+    loc=Local::Index.new(cfg).loc
+    vg=loc.add_view
+    loc.add_jump
+    loc.add_shell
+    puts loc.view_list
   end
 end

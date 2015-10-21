@@ -84,7 +84,7 @@ module CIAX
     def make_line(atrb)
       list = {}
       num = 0
-      (@select & atrb[:members] & keys).sort.each do|id|
+      (@select & atrb[:members] & keys).compact.sort.each do|id|
         title = @ln ? "[#{num += 1}](#{id})" : id
         list[title] = self[id]
       end

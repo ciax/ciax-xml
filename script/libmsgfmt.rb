@@ -57,7 +57,7 @@ module CIAX
     # max string length of value and key in hash at each column
     def _ary_max(ary,c)
       cols=Array.new(c).map{[]}
-      ary.each_with_index{|s,i| cols[i % c] << s.size if s }
+      ary.each_with_index{|s,i| cols[i % c] << s.to_s.size }
       cols.map(&:max)
     end
   end

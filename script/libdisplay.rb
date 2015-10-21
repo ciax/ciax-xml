@@ -8,12 +8,13 @@ module CIAX
   #    Used by Command and XmlDoc
   #    Attribute items : caption(text), color(#),  column(#), line_number(t/f)
   class Display < Hashx
-    attr_accessor :select,:sub_group
+    attr_accessor :select, :sub_group
     def initialize(atrb = {}, select = [])
       @atrb = Msg.type?(atrb, Hash) # atrb can be Config
-      @caption = caption(atrb, '****')
       @column = [atrb['column'].to_i, 1].max
       @ln = atrb['line_number']
+      atrb['color'] ||= 2
+      @caption = caption(atrb, '****')
       # Selected items for display
       @select = type?(select, Array)
       @sub_group = Hashx.new
@@ -22,7 +23,7 @@ module CIAX
 
     def put(k, v, grp = nil)
       @select << k
-      @sub_group[grp||'def'][:members] << k
+      @sub_group[grp || 'def'][:members] << k
       super(k, v)
     end
 
@@ -60,35 +61,33 @@ module CIAX
     end
 
     def delete(id)
-      @sub_group.each_value{|atrb| atrb[:members].delete(id)}
+      @sub_group.each_value { |atrb| atrb[:members].delete(id) }
       @select.delete(id)
       super
     end
 
     def to_s
-      all = [@caption]
-      @sub_group.each_value do |atrb|
-        all << caption(atrb)
-        all << make_line(atrb)
-      end
-      all.grep(/./).join("\n")
+      all = @sub_group.values.map { |at| make_line(at) }.flatten.compact
+      return '' if all.empty?
+      all.unshift(@caption) if @caption
+      all.join("\n")
     end
 
     private
 
     def caption(atrb, sep = '==')
-      return '' unless atrb['caption']
+      return unless atrb['caption']
       sep + ' ' + Msg.color(atrb['caption'], atrb['color'] || 6) + ' ' + sep
     end
 
     def make_line(atrb)
       list = {}
-      num = 0
-      (@select & atrb[:members] & keys).compact.sort.each do|id|
-        title = @ln ? "[#{num += 1}](#{id})" : id
+      (@select & atrb[:members] & keys).compact.sort.each_with_index do|id, num|
+        title = @ln ? "[#{num}](#{id})" : id
         list[title] = self[id]
       end
-      Msg.columns(list, @column)
+      return if list.empty?
+      [caption(atrb), Msg.columns(list, @column)]
     end
   end
 

@@ -25,7 +25,7 @@ module CIAX
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
         @projects = Hashx.new
-        @displist = Display.new('caption' => type.upcase, 'column' => 2)
+        @projdisp = Hashx.new
         read_files(Msg.xmlfiles(@type))
         valid_proj
       end
@@ -34,16 +34,25 @@ module CIAX
       # which includes attribute and domains
       def get(id)
         return self[id] if key?(id)
-        fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + @displist.to_s)
+        fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + to_s)
       end
 
+      def to_s
+        @projdisp.values.map { |d| d.to_s }.grep(/./).join("\n")
+      end
+      
       private
 
       def read_files(files)
         files.each do|xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
           Gnu.new(xml).each do |e|
-            e.name == 'project' ? read_proj(e) : read_grp(e)
+            if e.name == 'project'
+              read_proj(e)
+            else
+              @projdisp['def'] ||=  Display.new('column' => 2)
+              read_grp(e, 'def')
+            end
           end
         end.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
       end
@@ -51,6 +60,7 @@ module CIAX
       def read_proj(e)
         proj = e['id']
         @projects[proj] = e
+        @projdisp[proj] = Display.new(e.to_h)
         return if @valid_proj.empty?
         return unless  @valid_proj.include?(proj) && e['include']
         @valid_proj << e['include']
@@ -62,20 +72,19 @@ module CIAX
         vl.each { |p| @projects[p].each { |e| read_grp(e, p) } }
       end
 
-      def read_grp(e, proj = nil)
+      def read_grp(e, proj)
         if e.name == 'group'
-          gid = e['id']
-          gid += proj if proj
-          @displist.new_grp(gid, e['caption'])
-          e.each { |e0| read_doc(e0, gid) }
+          gid = e['id']+proj
+          @projdisp[proj].new_grp(gid, e['caption'])
+          e.each { |e0| read_doc(e0, gid, proj) }
         else
-          read_doc(e)
+          read_doc(e, 'def', proj)
         end
       end
 
-      def read_doc(top, gid = nil)
-        id = top['id']
-        @displist.put(id, top['label'], gid)
+      def read_doc(top, gid = nil, proj = nil)
+        id = top['id'] # site_id or macro_proj
+        @projdisp[proj].put(id, top['label'], gid)
         item = Hashx[top: top, attr: top.to_h, domain: {}, property: {}]
         top.each do|e1|
           item[top.ns == e1.ns ? :property : :domain][e1.name] = e1

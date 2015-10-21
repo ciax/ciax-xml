@@ -153,7 +153,7 @@ module CIAX
         if ref == val
           verbose { "Verify:(#{e0['label']}) [#{ref.inspect}] OK" }
         else
-          alert("Mismatch(#{e0['label']}):[#{val.inspect}] (should be [#{ref.inspect}])")
+          cc_err("Mismatch(#{e0['label']}):[#{val.inspect}] (should be [#{ref.inspect}])")
         end
         cc_add(str)
         str

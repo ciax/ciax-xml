@@ -8,7 +8,7 @@ module CIAX
   #    Used by Command and XmlDoc
   #    Attribute items : caption(text), color(#),  column(#), line_number(t/f)
   class Display < Hashx
-    attr_accessor :select
+    attr_accessor :select,:sub_group
     def initialize(atrb = {}, select = [])
       @atrb = Msg.type?(atrb, Hash) # atrb can be Config
       @caption = caption(atrb, '****')
@@ -22,7 +22,7 @@ module CIAX
 
     def put(k, v, grp = nil)
       @select << k
-      @sub_group[grp||'def'][:member] << k
+      @sub_group[grp||'def'][:members] << k
       super(k, v)
     end
 
@@ -30,13 +30,13 @@ module CIAX
       atrb = Hashx.new
       atrb['caption'] = caption if caption
       atrb['color'] = color.to_i if color
-      atrb[:member] = []
+      atrb[:members] = []
       @sub_group[id] = atrb
     end
 
     def merge_group!(other)
-      type?(other, List).select = @select
-      @sub_group.update(other.group)
+      type?(other, Display).select = @select
+      @sub_group.deep_update(other.sub_group)
       deep_update(other)
       reset!
     end
@@ -60,17 +60,9 @@ module CIAX
     end
 
     def delete(id)
-      @sub_group.each_value{|atrb| atrb[:member].delete(id)}
+      @sub_group.each_value{|atrb| atrb[:members].delete(id)}
       @select.delete(id)
       super
-    end
-
-    def key?(id)
-      @select.include?(id)
-    end
-
-    def keys
-      @select
     end
 
     def to_s
@@ -92,7 +84,7 @@ module CIAX
     def make_line(atrb)
       list = {}
       num = 0
-      (@select & atrb[:member] & keys).sort.each do|id|
+      (@select & atrb[:members] & keys).sort.each do|id|
         title = @ln ? "[#{num += 1}](#{id})" : id
         list[title] = self[id]
       end

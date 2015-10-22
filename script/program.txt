@@ -2,35 +2,37 @@
 
 ## Source comment legend
  #@ : instance variable list
- #@< : parent's var ('<' is added as the number of ancestor generaton) 
-       parenthetic var is not used in the class
-       * is added for exported var
+ #@< : parent's var ('<' is added as the number of ancestor generaton).
+       parenthetic var is not used in the class.
+       * is added for exported var.
 
-## Naming rule
+## Naming rule recommendation
  # general
-  - method name is recommended to be long word which contains under bar to privent mixing up with local var (verb_noun)
-  - local var name is recommended to use abbrev word (as short as possible < 4 letter) 
-    (i.e. i,j,k,idx,grp,key(k),hsh(h),ary(a),val(v)...) 
-  - DB key which contains Hash or Array will be Symbol. Other keys are String.
-  - Status key which could be written out to a file will be String.
+  - method name : snake case to privent to mix up with local var (verb_noun).
+  - shared method name (mixin module) : start under bar to distinct with system method. 
+  - local var name : abbrev word (as short as possible < 4 letter).
+    (i.e. i,j,k,idx,grp,key(k),hsh(h),ary(a),val(v)...).
+  - DB key which contains Hash or Array : Symbol. Other keys are String.
+  - Status key which could be written out to a file : String.
  #local var
-   args: Command(Array) [cmd,par,par...]
-   cid: Command ID(String) "cmd:par:par"
-   bat: Batch Array of Commands(Array of Array) [args,args,...]
-   f*: Associated with Frm (i.e. fargs, fstat ..)
-   a*: Associated with App (i.e. aargs, astat ..)
+   args: Command(Array) [cmd,par,par...].
+   cid: Command ID(String) "cmd:par:par".
+   bat: Batch Array of Commands(Array of Array) [args,args,...].
+   f*: Associated with Frm (i.e. fargs, fstat ..).
+   a*: Associated with App (i.e. aargs, astat ..).
  #block rerutn value
-   set return value to local var 'res' at the end of block if it is expressly provided
+   set return value to local var 'res' at the end of block if it is expressly provided.
 
 ## Method rule (Container objects)
-  - list() [list_*] : returns Hash or Array
-  - view() [view_*] : returns String
-  - upd() [upd_*] : Update for triggering execute the implicit procs (upper layer).
-  - set(val) [set_*] : stores value to self, returns self
-  - get(id) [get_*] : fetch value from existent key/index, which can includes cache access or data generation
-  - add(par) [add_*] : generate and store new element with parameter. This can call add() or put() 
+  - list()   [list_*] : returns Hash or Array.
+  - view()   [view_*] : returns String.
+  - upd()    [upd_*] : Update for triggering execute the implicit procs (upper layer).
+  - set(val) [store_*] : stores value to self, returns self.
+  - get(id)  [fetch_*] : fetch value from existent key/index, which can includes cache access or data generation.
+  - add(par) [add_*] : generate and store new element with parameter, returns generated object.
  #For Array
   - append(obj) [append_*] : stores and returns object.
  #For Hash
-  - put(key,val) [put_*] : stores key and value, returns value.
-  - rep(key,val) [rep_*] : replace value to existent key and returns value
+  - put(key,val)  [put_*] : stores key and value, returns value.
+  - put(key,&val) [put_*] : stores key and value if key is not exist, returns value.      
+  - rep(key,val)  [rep_*] : replace value to existent key and returns value.

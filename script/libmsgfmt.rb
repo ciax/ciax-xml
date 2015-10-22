@@ -36,6 +36,10 @@ module CIAX
       indent(1) + color(key, 3).ljust(kmax + 11) + ": #{val}"
     end
 
+    def caption(text, color = 2, sep = '-') 
+      [sep, color(text, color), sep].join(' ')
+    end
+
     # Query options
     def optlist(list)
       list.empty? ? '' : color("[#{list.join('/')}]?", 5)

@@ -1,78 +1,72 @@
 #!/usr/bin/ruby
-require 'libconf'
+require 'libenumx'
 # CIAX-XML
 module CIAX
   # Display: Sortable Caption Database (Value is String)
   #    Shows visiual command list categorized by sub-group
   #    Holds valid command list in @select
   #    Used by Command and XmlDoc
-  #    Attribute items : caption(text), color(#),  column(#), line_number(t/f)
-  class SubDisp < Hashx
-    attr_reader :cfg
-    def initialize(cfg,atrb = {})
-      @cfg= type?(cfg, Config).gen(self).update(atrb)
-      @member = Arrayx.new
-    end
+  #    Attribute items : caption(text), separator(string), color(#),  column(#), line_number(t/f)
 
-    def put(k, v)
-      @member.push(k)
-      @cfg[:index].put(k, v)
-    end
-      
-    def to_s
-      if empty?
-        view
-      else
-        values.map{ |g| g.to_s }.join("\n")
+  # Making View module
+  module DispView
+    def view(index,select)
+      list = {}
+      select.compact.sort.each_with_index do|id, num|
+        title = @atrb[:line_number] ? "[#{num}](#{id})" : id
+        list[title] = index[id]
       end
+      return if list.empty?
+      columns(list, @atrb[:column],mk_caption)
     end
 
-    # generate sub level groups
-    def sub_atrb(sep, color, column = 2)
-      @subat = { sep: sep, color: color, column: column}
+    def mk_caption
+      return unless @atrb[:caption]
+      Msg.caption(@atrb[:caption], @atrb[:color] || 6, @atrb[:sep])
+    end
+  end
+
+  # Making Sub Group module
+  module DispGroup
+    attr_reader :sub
+    def ext_group(sep, color)
+      @sub = Hashx.new
+      @subat={}.update(@atrb).update( sep: sep, color: color )
       self
     end
 
-    def add_sub(id, capt)
-      @subat['caption'] = capt
-      self[id] = SubDisp.new(@cfg,@subat)
+    def add_group(id, caption)
+      atrb={}.update(@subat).update(caption: caption)
+      @sub[id] = DispMember.new(self,atrb)
     end
 
-    private
+    def merge_group!(other)
+      @sub.update(other.sub)
+      super
+    end
 
-    def view
-      list = {}
-      (@member & @cfg[:select]).compact.sort.each_with_index do|id, num|
-        title = @cfg['line_number'] ? "[#{num}](#{id})" : id
-        list[title] = @cfg[:index][id]
-      end
-      return if list.empty?
-      cap = Msg.caption(@cfg['caption'], @cfg[:color] || 6, @cfg[:sep]) if @cfg['caption']
-      columns(list, @cfg[:column],cap)
+    def delete(id)
+      @sub.each_value { |s| s.delete(id) }
+      super
+    end
+
+    def to_s
+      [ mk_caption, *@sub.values ].map{ |g| g.to_s }.grep(/./).join("\n")
     end
   end
-  
-  class Display < SubDisp
-    attr_reader :select, :sub
-    def initialize(atrb = {})
-      @cfg=Config.new(atrb)
-      @cfg[:index] = self
-      @select=@cfg[:select] = []
-      @caption = caption(@cfg)
-      @sub = Hashx.new
-      @member = Arrayx.new
+
+  # Main class
+  class Display < Hashx
+    include DispView
+    attr_accessor :select
+    def initialize(atrb = {:column => 2})
+      @atrb = atrb
+      @select = []
     end
 
     def put(k, v)
       @select << k
       super
-    end
-
-    def merge_group!(other)
-      type?(other, Display).select.replace(@select)
-      @sub.update(other.sub)
-      update(other)
-      reset!
     end
 
     # For ver 1.9 or more
@@ -89,43 +83,60 @@ module CIAX
 
     def clear
       @select.clear
-      @sub.each_value { |s| s.clear }
       super
     end
 
     def delete(id)
       @select.delete(id)
-      @sub.each_value { |s| s.delete(id) }
       super
     end
 
-    def to_s
-      if @sub.empty?
-        view(keys)
-      else
-        @sub.values.map{ |g| g.to_s }.join("\n")
-      end
+    def merge_group!(other)
+      type?(other, Display).select.replace(@select)
+      update(other)
+      reset!
     end
 
-    def add_sub(id, capt)
-      @subat['caption'] = capt
-      @sub[id] = SubDisp.new(@cfg,@subat)
+    def to_s
+      view(self,@select)
+    end
+
+    # generate sub level groups
+    def ext_group(sep, color)
+      extend(DispGroup).ext_group(sep, color)
     end
   end
 
+  # Group class
+  class DispMember < Arrayx
+    include DispView
+    def initialize(index,atrb)
+      @index = index
+      @atrb = atrb
+    end
+
+    def put(k,v)
+      push(k)
+      @index.put(k,v)
+    end
+
+    def to_s
+      view(@index,self & @index.select)
+    end
+  end
+  
   if __FILE__ == $PROGRAM_NAME
-    atrb = { 'caption' => 'TEST', sep: '****', column: 3, color: 2}
-    atrb['line_number'] = true
-    dl = Display.new(atrb).sub_atrb('==', 6)
+    atrb = { :caption => 'TEST', sep: '****', column: 3, color: 2}
+    atrb[:line_number] = true
+    dl = Display.new(atrb).ext_group('==', 6)
     5.times do |i|
-#      grp = dl.add_sub("g#{i}", "Group#{i}")
-      #      5.times do |j|
-      j = 0
+      grp = dl.add_group("g#{i}", "Group#{i}")
+      5.times do |j|
         istr = '+' * rand(5)
         cstr = '*' * rand(5)
-        dl.put("#{i}-#{j},#{istr}", "caption#{i}-#{j},#{cstr}")
+        grp.put("#{i}-#{j},#{istr}", "caption#{i}-#{j},#{cstr}")
       end
-#    end
+    end
     puts dl.to_s
   end
 end

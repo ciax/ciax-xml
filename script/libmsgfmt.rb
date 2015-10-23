@@ -36,7 +36,7 @@ module CIAX
       indent(1) + color(key, 3).ljust(kmax + 11) + ": #{val}"
     end
 
-    def caption(text, color = 2, sep = '-') 
+    def caption(text, color = 2, sep = '-')
       [sep, color(text, color), sep].join(' ')
     end
 
@@ -46,22 +46,25 @@ module CIAX
     end
 
     # Display methods
-    def columns(h, c = 2)
+    def columns(h, c = 2, cap = nil)
       return '' unless h
-      kary=h.keys
-      kx = _ary_max(kary,c)
-      vx = _ary_max(kary.map{|k|h[k]},c)
-      kary.each_slice(c).map do|a|
-        a.map.with_index do|k,i|
-          item(k, h[k], kx[i]).ljust(vx[i] + kx[i] + 15)
-        end.join('').rstrip
-      end.join("\n")
+      kary = h.keys
+      kx = __ary_max(kary, c)
+      vx = __ary_max(kary.map { |k| h[k] }, c)
+      lary = kary.each_slice(c).map { |a| __mk_line(h, a, kx, vx) }
+      (cap ? lary.unshift(cap) : lary).join("\n")
+    end
+
+    def __mk_line(h, a, kx, vx)
+      a.map.with_index do|k, i|
+        item(k, h[k], kx[i]).ljust(vx[i] + kx[i] + 15)
+      end.join('').rstrip
     end
 
     # max string length of value and key in hash at each column
-    def _ary_max(ary,c)
-      cols=Array.new(c).map{[]}
-      ary.each_with_index{|s,i| cols[i % c] << s.to_s.size }
+    def __ary_max(ary, c)
+      cols = Array.new(c).map { [] }
+      ary.each_with_index { |s, i| cols[i % c] << s.to_s.size }
       cols.map(&:max)
     end
   end

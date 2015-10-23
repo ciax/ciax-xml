@@ -46,19 +46,19 @@ module CIAX
     end
 
     # Display methods
-    def columns(h, clm = nil, cap = nil)
+    def columns(h, clm = nil, ind = nil, cap = nil)
       return '' unless h
       kary = h.keys
       clm ||= 2
       kx = __ary_max(kary, clm)
       vx = __ary_max(kary.map { |k| h[k] }, clm)
-      lary = kary.each_slice(clm).map { |a| __mk_line(h, a, kx, vx) }
+      lary = kary.each_slice(clm).map { |a| __mk_line(h, a, kx, vx, ind) }
       (cap ? lary.unshift(cap) : lary).join("\n")
     end
 
-    def __mk_line(h, a, kx, vx)
+    def __mk_line(h, a, kx, vx, ind)
       a.map.with_index do|k, i|
-        item(k, h[k], kx[i]).ljust(vx[i] + kx[i] + 15)
+        indent(ind) + item(k, h[k], kx[i]).ljust(vx[i] + kx[i] + 15)
       end.join('').rstrip
     end
 

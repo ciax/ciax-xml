@@ -63,7 +63,8 @@ module CIAX
 
     def add_group(id, caption)
       atrb = {}.update(@subat).update(caption: caption)
-      self[id] = Display.new(atrb, @index)
+      atrb[:gid] = atrb.key?(:gid) ? atrb[:gid] + ':' + id : id
+      self[atrb[:gid]] = Display.new(atrb, @index)
     end
 
     def put(k, v)
@@ -112,11 +113,10 @@ module CIAX
   end
 
   if __FILE__ == $PROGRAM_NAME
-    atrb = { caption: 'TEST', sep: '****', column: 3, color: 2 }
-    atrb[:line_number] = true
-    dl = Display.new(atrb).ext_group('==', 6)
+    atrb = { column: 3, line_number: true}
+    dl = Display.new(atrb).ext_group('****', 2)
     2.times do |i|
-      grp = dl.add_group("g#{i}", "Group#{i}").ext_group('+', 4)
+      grp = dl.add_group("g#{i}", "Group#{i}").ext_group('==', 6)
       3.times do |j|
         sg = grp.add_group("sg#{j}", "SubGroup#{j}")
         4.times do |k|

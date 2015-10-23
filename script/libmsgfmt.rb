@@ -32,12 +32,12 @@ module CIAX
 
     # Display DB item in one line fromat.
     #    title : description
-    def item(key, val, kmax = 3)
-      indent(1) + color(key, 3).ljust(kmax + 11) + ": #{val}"
+    def item(key, val, kmax = nil)
+      indent(1) + color(key, 3).ljust((kmax || 3) + 11) + ": #{val}"
     end
 
-    def caption(text, color = 2, sep = '-')
-      [sep, color(text, color), sep].join(' ')
+    def caption(text, c = nil, sep = nil)
+      [sep, color(text, c || 2), sep || '-'].join(' ')
     end
 
     # Query options
@@ -46,12 +46,13 @@ module CIAX
     end
 
     # Display methods
-    def columns(h, c = 2, cap = nil)
+    def columns(h, clm = nil, cap = nil)
       return '' unless h
       kary = h.keys
-      kx = __ary_max(kary, c)
-      vx = __ary_max(kary.map { |k| h[k] }, c)
-      lary = kary.each_slice(c).map { |a| __mk_line(h, a, kx, vx) }
+      clm ||= 2
+      kx = __ary_max(kary, clm)
+      vx = __ary_max(kary.map { |k| h[k] }, clm)
+      lary = kary.each_slice(clm).map { |a| __mk_line(h, a, kx, vx) }
       (cap ? lary.unshift(cap) : lary).join("\n")
     end
 
@@ -62,9 +63,9 @@ module CIAX
     end
 
     # max string length of value and key in hash at each column
-    def __ary_max(ary, c)
-      cols = Array.new(c).map { [] }
-      ary.each_with_index { |s, i| cols[i % c] << s.to_s.size }
+    def __ary_max(ary, clm)
+      cols = Array.new(clm).map { [] }
+      ary.each_with_index { |s, i| cols[i % clm] << s.to_s.size }
       cols.map(&:max)
     end
   end

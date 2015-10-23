@@ -8,120 +8,99 @@ module CIAX
   #    Used by Command and XmlDoc
   #    Attribute items : caption(text), separator(string), color(#),  column(#), line_number(t/f)
 
-  # Making View module
-  module DispView
-    def view(index,select)
-      list = {}
-      select.compact.sort.each_with_index do|id, num|
-        title = @atrb[:line_number] ? "[#{num}](#{id})" : id
-        list[title] = index[id]
+  class Display < Hashx
+    class Index < Hashx
+      attr_reader :select
+      def initialize
+        @select = []
       end
-      return if list.empty?
-      columns(list, @atrb[:column],mk_caption)
+
+      def put(k, v)
+        @select << k
+        super
+      end
+
+      # For ver 1.9 or more
+      def sort!
+        @select.sort!
+        self
+      end
+
+      # Reset @select(could be shared)
+      def reset!
+        @select.concat(keys).uniq!
+        self
+      end
+
+      def clear
+        @select.clear
+        super
+      end
+
+      def delete(id)
+        @select.delete(id)
+        super
+      end
     end
 
-    def mk_caption
-      return unless @atrb[:caption]
-      Msg.caption(@atrb[:caption], @atrb[:color] || 6, @atrb[:sep])
+    # Element is group
+    attr_accessor :index
+    def initialize(atrb = {:column => 2}, index = Index.new)
+      @atrb = atrb
+      @index = index
+      @member = []
     end
-  end
 
-  # Making Sub Group module
-  module DispGroup
-    attr_reader :sub
+    # generate sub level groups
     def ext_group(sep, color)
-      @sub = Hashx.new
       @subat={}.update(@atrb).update( sep: sep, color: color )
       self
     end
 
     def add_group(id, caption)
       atrb={}.update(@subat).update(caption: caption)
-      @sub[id] = DispMember.new(self,atrb)
-    end
-
-    def merge_group!(other)
-      @sub.update(other.sub)
-      super
-    end
-
-    def delete(id)
-      @sub.each_value { |s| s.delete(id) }
-      super
-    end
-
-    def to_s
-      [ mk_caption, *@sub.values ].map{ |g| g.to_s }.grep(/./).join("\n")
-    end
-  end
-
-  # Main class
-  class Display < Hashx
-    include DispView
-    attr_accessor :select
-    def initialize(atrb = {:column => 2})
-      @atrb = atrb
-      @select = []
+      self[id] = Display.new(atrb,@index)
     end
 
     def put(k, v)
-      @select << k
-      super
-    end
-
-    # For ver 1.9 or more
-    def sort!
-      @select.sort!
-      self
-    end
-
-    # Reset @select(could be shared)
-    def reset!
-      @select.concat(keys).uniq!
-      self
-    end
-
-    def clear
-      @select.clear
-      super
-    end
-
-    def delete(id)
-      @select.delete(id)
-      super
+      @member << k
+      @index.put(k,v)
     end
 
     def merge_group!(other)
-      type?(other, Display).select.replace(@select)
-      update(other)
+      update(type?(other, Display))
+      values.each {|g| g.index = @index.update(g.index) }
       reset!
     end
 
     def to_s
-      view(self,@select)
+      if empty?
+        view(@member & @index.select)
+      else
+        [ mk_caption, *values ].map{ |g| g.to_s }.grep(/./).join("\n")
+      end
     end
 
-    # generate sub level groups
-    def ext_group(sep, color)
-      extend(DispGroup).ext_group(sep, color)
-    end
-  end
-
-  # Group class
-  class DispMember < Arrayx
-    include DispView
-    def initialize(index,atrb)
-      @index = index
-      @atrb = atrb
+    private
+    
+    def view(select)
+      list = mk_list(select)
+      return if list.empty?
+      columns(list, @atrb[:column],mk_caption)
     end
 
-    def put(k,v)
-      push(k)
-      @index.put(k,v)
+    def mk_list(select)
+      list = {}
+      select.compact.sort.each_with_index do|id, num|
+        title = @atrb[:line_number] ? "[#{num}](#{id})" : id
+        list[title] = @index[id]
+      end
+      list
     end
-
-    def to_s
-      view(@index,self & @index.select)
+    
+    def mk_caption
+      return unless @atrb[:caption]
+      Msg.caption(@atrb[:caption], @atrb[:color] || 6, @atrb[:sep])
     end
   end
   

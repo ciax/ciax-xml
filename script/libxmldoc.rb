@@ -25,7 +25,7 @@ module CIAX
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
         @projects = Hashx.new
-        @displist = Display.new
+        @displist = Display.new.new_group
         read_files(Msg.xmlfiles(@type))
         valid_proj
       end
@@ -50,7 +50,7 @@ module CIAX
             if e.name == 'project'
               read_proj(e)
             else
-              sg = @displist.ext_group('==',6)
+              sg = @displist.init_sub('==',6)
               read_grp(e, sg)
             end
           end
@@ -68,17 +68,17 @@ module CIAX
       def valid_proj
         return if @projects.keys.empty?
         vl = @valid_proj.empty? ? @projects.keys : @projects.keys & @valid_proj
-        @displist.ext_group('****',2)
+        @displist.init_sub('****',2)
         vl.each do |pid|
           proj=@projects[pid]
-          sg = @displist.add_group(pid,proj['caption']).ext_group('==',6)
+          sg = @displist.add_sub(pid,proj['caption']).init_sub('==',6)
           proj.each { |e| read_grp(e, sg) }
         end
       end
 
       def read_grp(e, dl)
         if e.name == 'group'
-          sg = dl.add_group( e['id'], e['caption'])
+          sg = dl.add_sub( e['id'], e['caption'])
           e.each { |e0| read_doc(e0, sg) }
         else
           read_doc(e, dl)

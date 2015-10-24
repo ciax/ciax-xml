@@ -1,24 +1,16 @@
 #!/usr/bin/ruby
 require 'libenumx'
-# CIAX-XML
+# Display: Sortable Caption Database (Value is String)
+#   Shows visiual command list categorized by sub-group
+#   Holds valid command list in @select
+#   Used by Command and XmlDoc
 module CIAX
-  # Display: Sortable Caption Database (Value is String)
-  #   Shows visiual command list categorized by sub-group
-  #   Holds valid command list in @select
-  #   Used by Command and XmlDoc
-  #   Attributes (global):  column(#), line_number(t/f)
-  #   Attributes (shared in groups): sep(string), color(#)
-  #   Attributes (each group): caption(text)
+  # Index of Display (Used for validation, display)
   class Display < Hashx
     attr_reader :select, :group
-    def initialize(atrb = { column: 2})
+    def initialize(atrb = { column: 2}, select = [])
       @group = Group.new(self, atrb)
-      @select = []
-    end
-
-    def put(k, v)
-      @select << k
-      super
+      @select = select
     end
 
     # For ver 1.9 or more
@@ -44,10 +36,8 @@ module CIAX
     end
 
     def merge_group!(other)
+      @group.merge_sub(other.group)
       update(type?(other, Display))
-      @select.concat(other.select)
-      @group.update(other.group)
-      other.group.index = @index
       reset!
     end
 
@@ -55,8 +45,10 @@ module CIAX
       @group.to_s
     end
 
-    # Element is group
-    # Index of Display
+    # Grouping class (Used for setting db)
+    #   Attributes (all level): column(#), line_number(t/f)
+    #   Attributes (one level): sep(string), color(#)
+    #   Attributes (one group): caption(text)
     class Group < Hashx
       attr_accessor :index
       def initialize(index, atrb = { column: 2 })
@@ -82,7 +74,8 @@ module CIAX
 
       def put(k, v)
         @member << k
-        @index.put(k, v)
+        @index.select << k
+        @index[k]=v
       end
 
       def to_s
@@ -91,6 +84,11 @@ module CIAX
         else
           [mk_caption, *values].map(&:to_s).grep(/./).join("\n")
         end
+      end
+
+      def merge_sub(other)
+        rec_merge_index(other)
+        update(other)
       end
 
       private
@@ -115,38 +113,57 @@ module CIAX
         indent(@indent) +
           caption(@atrb[:caption], @atrb[:color] || 6, @atrb[:sep])
       end
+
+      def rec_merge_index(gr)
+        type?(gr, Group).values.each do |sg|
+          rec_merge_index(sg)
+        end
+        gr.index = @index
+      end
     end
   end
 
   if __FILE__ == $PROGRAM_NAME
-    idx0 = Display.new(column: 3, caption: 'TEST', sep: '---')
+    # Top level only
+    idx0 = Display.new(column: 3, caption: 'Top Level', sep: '---')
     grp0 = idx0.group
     10.times{ |i| grp0.put("x#{i}","caption #{i}")}
     puts idx0
-    idx1 = Display.new(column: 3, line_number: true)
-    grp = idx1.group
-    grp.init_sub('****', 2)
+    puts
+    # Three level groups
+    idx1 = Display.new(column: 3)
+    grp1 = idx1.group
+    grp1.init_sub('****', 2)
     2.times do |i|
-      s1 = grp.add_sub("g#{i}", "Group#{i}").init_sub('==', 6)
+      s11 = grp1.add_sub("g#{i}", "Group#{i}").init_sub('==', 6)
       3.times do |j|
-        s2 = s1.add_sub("sg#{j}", "SubGroup#{j}")
+        s12 = s11.add_sub("sg#{j}", "SubGroup#{j}")
         4.times do |k|
           cstr = '*' * rand(5)
-          s2.put("#{i}-#{j}-#{k}", "caption#{i}-#{j}-#{k},#{cstr}")
+          s12.put("#{i}-#{j}-#{k}", "caption#{i}-#{j}-#{k},#{cstr}")
         end
       end
     end
-    idx2 = Display.new(column: 2)
-    gr2 = idx2.group
-    gr2.init_sub('%%%%', 5)
+    puts idx1
+    puts
+    # Two level groups with item number
+    idx2 = Display.new(column: 2, line_number: true)
+    grp2 = idx2.group
+    grp2.init_sub('%%%%', 5)
     3.times do |i|
-      s1 = gr2.add_sub("g2#{i}", "Gp#{i}")
+      s21 = grp2.add_sub("g2#{i}", "Gp#{i}")
       3.times do |j|
         cstr = '*' * rand(5)
-        s1.put("#{i}-#{j}", "cp#{i}-#{j},#{cstr}")
+        s21.put("#{i}-#{j}", "cp#{i}-#{j},#{cstr}")
       end
     end
+    puts idx2
+    puts
+    # Merging groups
     idx1.merge_group!(idx2)
+    #    grp1.merge_sub(grp2)
+
+    # Confirm merged index
     idx1.select.delete('0-0')
     puts idx1
   end

@@ -11,7 +11,8 @@ module CIAX
   #   Attributes (each group): caption(text)
   class Display < Hashx
     attr_reader :select, :group
-    def initialize
+    def initialize(atrb = { column: 2})
+      @group = Group.new(self, atrb)
       @select = []
     end
 
@@ -50,12 +51,8 @@ module CIAX
       reset!
     end
 
-    def new_group(atrb = { column: 2})
-      @group = Group.new(self, atrb)
-    end
-
     def to_s
-      @group ? @group.to_s : super
+      @group.to_s
     end
 
     # Element is group
@@ -122,12 +119,12 @@ module CIAX
   end
 
   if __FILE__ == $PROGRAM_NAME
-    idx0 = Display.new
-    grp0 = idx0.new_group(column: 3, caption: 'TEST', sep: '---')
+    idx0 = Display.new(column: 3, caption: 'TEST', sep: '---')
+    grp0 = idx0.group
     10.times{ |i| grp0.put("x#{i}","caption #{i}")}
     puts idx0
-    idx1 = Display.new
-    grp = idx1.new_group(column: 3, line_number: true)
+    idx1 = Display.new(column: 3, line_number: true)
+    grp = idx1.group
     grp.init_sub('****', 2)
     2.times do |i|
       s1 = grp.add_sub("g#{i}", "Group#{i}").init_sub('==', 6)
@@ -139,8 +136,8 @@ module CIAX
         end
       end
     end
-    idx2 = Display.new
-    gr2 = idx2.new_group(column: 2)
+    idx2 = Display.new(column: 2)
+    gr2 = idx2.group
     gr2.init_sub('%%%%', 5)
     3.times do |i|
       s1 = gr2.add_sub("g2#{i}", "Gp#{i}")

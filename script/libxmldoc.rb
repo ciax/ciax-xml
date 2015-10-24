@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libgetopts'
-require 'libdisplay'
+require 'libdisp'
 require 'libenumx'
 require 'libxmlgn'
 
@@ -25,7 +25,7 @@ module CIAX
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
         @projects = Hashx.new
-        @projdisp = Hashx.new
+        @displist = Display.new
         read_files(Msg.xmlfiles(@type))
         valid_proj
       end
@@ -38,7 +38,7 @@ module CIAX
       end
 
       def to_s
-        @projdisp.values.map { |d| d.to_s }.grep(/./).join("\n")
+        @displist.to_s
       end
       
       private
@@ -50,8 +50,8 @@ module CIAX
             if e.name == 'project'
               read_proj(e)
             else
-              @projdisp['def'] ||=  Display.new('column' => 2)
-              read_grp(e, 'def')
+              sg = @displist.ext_group('==',6)
+              read_grp(e, sg)
             end
           end
         end.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
@@ -60,31 +60,34 @@ module CIAX
       def read_proj(e)
         proj = e['id']
         @projects[proj] = e
-        @projdisp[proj] = Display.new(e.to_h)
         return if @valid_proj.empty?
         return unless  @valid_proj.include?(proj) && e['include']
         @valid_proj << e['include']
       end
 
       def valid_proj
-        vl = @valid_proj & @projects.keys
-        vl = @projects.keys if vl.empty?
-        vl.each { |p| @projects[p].each { |e| read_grp(e, p) } }
-      end
-
-      def read_grp(e, proj)
-        if e.name == 'group'
-          gid = e['id']+proj
-          @projdisp[proj].new_grp(gid, e['caption'])
-          e.each { |e0| read_doc(e0, gid, proj) }
-        else
-          read_doc(e, 'def', proj)
+        return if @projects.keys.empty?
+        vl = @valid_proj.empty? ? @projects.keys : @projects.keys & @valid_proj
+        @displist.ext_group('****',2)
+        vl.each do |pid|
+          proj=@projects[pid]
+          sg = @displist.add_group(pid,proj['caption']).ext_group('==',6)
+          proj.each { |e| read_grp(e, sg) }
         end
       end
 
-      def read_doc(top, gid = nil, proj = nil)
+      def read_grp(e, dl)
+        if e.name == 'group'
+          sg = dl.add_group( e['id'], e['caption'])
+          e.each { |e0| read_doc(e0, sg) }
+        else
+          read_doc(e, dl)
+        end
+      end
+
+      def read_doc(top, dl)
         id = top['id'] # site_id or macro_proj
-        @projdisp[proj].put(id, top['label'], gid)
+        dl.put(id, top['label'])
         item = Hashx[top: top, attr: top.to_h, domain: {}, property: {}]
         top.each do|e1|
           item[top.ns == e1.ns ? :property : :domain][e1.name] = e1

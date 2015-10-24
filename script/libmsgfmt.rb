@@ -58,7 +58,7 @@ module CIAX
 
     def __mk_line(h, a, kx, vx, ind)
       a.map.with_index do|k, i|
-        indent(ind) + item(k, h[k], kx[i]).ljust(vx[i] + kx[i] + 15)
+        indent(ind.to_i) + item(k, h[k], kx[i]).ljust(vx[i] + kx[i] + 15)
       end.join('').rstrip
     end
 

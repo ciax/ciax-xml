@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libitem'
-require 'libdisplay'
+require 'libdisp'
 
 module CIAX
   class Group < Hashx
@@ -12,8 +12,9 @@ module CIAX
       @cls_color = 3
       @cfg = cfg.gen(self).update(atrb)
       @valid_keys = @cfg[:valid_keys] || []
-      @cfg['color'] ||= 2
-      @cfg['column'] ||= 2
+      @cfg[:sep] ||= '****'
+      @cfg[:color] ||= 2
+      @cfg[:column] ||= 2
       @displist = Display.new(@cfg, @valid_keys)
     end
 

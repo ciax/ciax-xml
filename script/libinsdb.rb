@@ -70,7 +70,7 @@ module CIAX
           case e0.name
           when 'alias'
             e0.attr2item(p)
-            ag = (grp['alias']||= {'caption' => 'Alias',:members =>[]})
+            ag = (grp['alias']||= {:caption => 'Alias',:members =>[]})
             ag[:members]  << e0['id']
           else
             e0.attr2item(p, 'ref')

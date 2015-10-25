@@ -30,8 +30,8 @@ module CIAX
     module Sh
       class Group < Group
         def initialize(cfg, atrb = {})
-          atrb['caption'] = 'Shell Command'
-          atrb['color'] = 1
+          atrb[:caption] = 'Shell Command'
+          atrb[:color] = 1
           super
           add_dummy('q', 'Quit')
           add_dummy('^D,^C', 'Interrupt')
@@ -43,9 +43,9 @@ module CIAX
       class Group < Group
         def initialize(cfg, atrb = {})
           name = m2id(cfg[:jump_class], 1).capitalize
-          atrb['caption'] = "Switch #{name}s"
-          atrb['color'] = 5
-          atrb['column'] = 3
+          atrb[:caption] = "Switch #{name}s"
+          atrb[:color] = 5
+          atrb[:column] = 3
           super
           def_proc do|ent|
             # Use shell() of top level class (ie. List.new.get(id).shell -> List.new.shell(id) )
@@ -68,8 +68,8 @@ module CIAX
       # cfg should have [:output]
       class Group < Group
         def initialize(cfg, atrb = {})
-          atrb['caption'] = 'Change View Mode'
-          atrb['color'] = 9
+          atrb[:caption] = 'Change View Mode'
+          atrb[:color] = 9
           super
           add_item('vis', 'Visual mode').def_proc { @cfg[:output].vmode('v') }
           add_item('raw', 'Raw Print mode').def_proc { @cfg[:output].vmode('r') }

@@ -38,7 +38,7 @@ module CIAX
     module Hid
       class Group < Group
         def initialize(dom_cfg, atrb = {})
-          atrb['caption'] = 'Hidden Commands'
+          atrb[:caption] = 'Hidden Commands'
           super
           add_item('interrupt')
           # Accept empty command
@@ -51,7 +51,7 @@ module CIAX
     module Int
       class Group < Group
         def initialize(dom_cfg, atrb = {})
-          atrb['caption'] = 'Internal Commands'
+          atrb[:caption] = 'Internal Commands'
           super
         end
 
@@ -73,16 +73,18 @@ module CIAX
       # External Command Group
       class Group < Group
         def initialize(cfg, atrb = {})
-          cfg['caption'] ||= 'External Commands'
+          cfg[:caption] ||= 'External Commands'
           super
           dbi = type?(@cfg[:dbi], Dbi)
           @cfg['ver'] ||= dbi['version']
           # Set items by DB
           cdb = dbi[:command]
           idx = cdb[:index]
+          @group=@displist.group.init_sub('==', 6)
           cdb[:group].each do|gid,gat|
-            @displist.sub_group[gid]=gat
+            sg = @group.add_sub(gid,gat['caption'])
             gat[:members].each do|id|
+              sg.put(id,idx[id]['label'])
               add_item(id, cdb, idx[id])
             end
           end
@@ -92,11 +94,11 @@ module CIAX
 
         def init_alias(cdb, idx)
           return unless cdb[:alias]
-          sg = @displist.new_grp('gal','Alias')
+          sg = @group.add_sub('gal','Alias')
           cdb[:alias].each do|id, att|
             item = idx[att['ref']].dup
             item.update(att)
-            sg[:members] << id
+            sg.put(id,att['label'])
             add_item(id, cdb, item)
           end
         end
@@ -108,7 +110,6 @@ module CIAX
           if item[:parameters].is_a? Array
             label = label.gsub(/\$([\d]+)/, '%s') % item[:parameters].map { |e| e['label'] }
           end
-          @displist[id] = label
           new_item(id, item)
         end
       end

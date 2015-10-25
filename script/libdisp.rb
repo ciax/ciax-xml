@@ -13,6 +13,10 @@ module CIAX
       @select = select
     end
 
+    def put(k,v)
+      @group.put(k,v)
+    end
+
     # For ver 1.9 or more
     def sort!
       @select.sort!

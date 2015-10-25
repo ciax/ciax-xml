@@ -47,15 +47,15 @@ module CIAX
 
     # Grouping class (Used for setting db)
     #   Attributes (all level): column(#), line_number(t/f)
-    #   Attributes (one level): sep(string), color(#)
-    #   Attributes (one group): caption(text)
+    #   Attributes (one level): sep(string), color(#), indent(#)
+    #   Attributes (one group): caption(text), members(array)
     class Group < Hashx
       attr_accessor :index
       def initialize(index, atrb = { column: 2 })
         @atrb = atrb
         @index = type?(index, Display)
         @indent = atrb[:indent] || 0
-        @member = []
+        @members = atrb[:members] || []
       end
 
       # generate sub level groups
@@ -73,14 +73,14 @@ module CIAX
       end
 
       def put(k, v)
-        @member << k
+        @members << k
         @index.select << k
         @index[k]=v
       end
 
       def to_s
         if empty?
-          view(@member & @index.select)
+          view(@members & @index.select)
         else
           [mk_caption, *values].map(&:to_s).grep(/./).join("\n")
         end
@@ -132,8 +132,7 @@ module CIAX
     puts
     # Three level groups
     idx1 = Display.new(column: 3)
-    grp1 = idx1.group
-    grp1.init_sub('****', 2)
+    grp1 = idx1.group.init_sub('****', 2)
     2.times do |i|
       s11 = grp1.add_sub("g#{i}", "Group#{i}").init_sub('==', 6)
       3.times do |j|
@@ -148,8 +147,7 @@ module CIAX
     puts
     # Two level groups with item number
     idx2 = Display.new(column: 2, line_number: true)
-    grp2 = idx2.group
-    grp2.init_sub('%%%%', 5)
+    grp2 = idx2.group.init_sub('%%%%', 5)
     3.times do |i|
       s21 = grp2.add_sub("g2#{i}", "Gp#{i}")
       3.times do |j|
@@ -161,7 +159,6 @@ module CIAX
     puts
     # Merging groups
     idx1.merge_group!(idx2)
-    #    grp1.merge_sub(grp2)
 
     # Confirm merged index
     idx1.select.delete('0-0')

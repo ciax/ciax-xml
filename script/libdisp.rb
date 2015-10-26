@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libenumx'
 # Display: Sortable Caption Database (Value is String)
+#   New feature: can make recursive groups
 #   Shows visiual command list categorized by sub-group
 #   Holds valid command list in @select
 #   Used by Command and XmlDoc
@@ -53,6 +54,48 @@ module CIAX
     #   Attributes (all level): column(#), line_number(t/f)
     #   Attributes (one level): sep(string), color(#), indent(#)
     #   Attributes (one group): caption(text), members(array)
+    class Parent < Hashx
+      attr_accessor :index
+      def initialize(index, atrb = { column: 2 })
+        @atrb = atrb
+        @index = type?(index, Display)
+        @indent = atrb[:indent] || 0
+        inc = @subat.key?(:caption) ? 1 : 0
+        @atrb.update(sep: sep, color: color, indent: @indent + inc, child: Group)
+      end
+
+      # add sub group
+      def add_sub(id, caption)
+        atrb = {}.update(@atrb).update(caption: caption)
+        atrb[:gid] = atrb.key?(:gid) ? atrb[:gid] + ':' + id : id
+        self[atrb[:gid]] = atrb[:child].new(@index, atrb)
+      end
+
+      def to_s
+        [mk_caption, *values].map(&:to_s).grep(/./).join("\n")
+      end
+
+      def merge_sub(other)
+        rec_merge_index(other)
+        update(other)
+      end
+
+      private
+
+      def mk_caption
+        return unless @atrb[:caption]
+        indent(@indent) +
+          caption(@atrb[:caption], @atrb[:color] || 6, @atrb[:sep])
+      end
+
+      def rec_merge_index(gr)
+        type?(gr, Parent).values.each do |sg|
+          rec_merge_index(sg) if sg.is_a? Parent
+        end
+        gr.index = @index
+      end
+    end
+
     class Group < Hashx
       attr_accessor :index
       def initialize(index, atrb = { column: 2 })
@@ -62,20 +105,7 @@ module CIAX
         @members = atrb[:members] || []
       end
 
-      # generate sub level groups
-      def init_sub(sep, color)
-        @subat = {}.update(@atrb)
-        inc = @subat.key?(:caption) ? 1 : 0
-        @subat.update(sep: sep, color: color, indent: @indent + inc)
-        self
-      end
-
-      def add_sub(id, caption)
-        atrb = {}.update(@subat).update(caption: caption)
-        atrb[:gid] = atrb.key?(:gid) ? atrb[:gid] + ':' + id : id
-        self[atrb[:gid]] = Group.new(@index, atrb)
-      end
-
+      # add item
       def put(k, v)
         @members << k
         @index.select << k
@@ -83,16 +113,7 @@ module CIAX
       end
 
       def to_s
-        if empty?
-          view(@members & @index.select)
-        else
-          [mk_caption, *values].map(&:to_s).grep(/./).join("\n")
-        end
-      end
-
-      def merge_sub(other)
-        rec_merge_index(other)
-        update(other)
+        view(@members & @index.select)
       end
 
       private
@@ -116,13 +137,6 @@ module CIAX
         return unless @atrb[:caption]
         indent(@indent) +
           caption(@atrb[:caption], @atrb[:color] || 6, @atrb[:sep])
-      end
-
-      def rec_merge_index(gr)
-        type?(gr, Group).values.each do |sg|
-          rec_merge_index(sg)
-        end
-        gr.index = @index
       end
     end
   end

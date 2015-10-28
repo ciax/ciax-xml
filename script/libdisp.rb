@@ -79,7 +79,7 @@ module CIAX
       end
 
       # add sub group
-      def put(id, cap)
+      def put(id, cap = nil)
         mod = @sub ? Section : Group
         self[id] = mod.new(@index, cap, @level + 1)
       end

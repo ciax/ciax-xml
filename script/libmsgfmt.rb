@@ -37,7 +37,8 @@ module CIAX
     end
 
     def caption(text, c = nil, sep = nil)
-      [sep, color(text, c || 2), sep || '-'].join(' ')
+      sep ||= '~'
+      [sep, color(text, c || 2), sep].join(' ')
     end
 
     # Query options

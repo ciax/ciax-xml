@@ -50,10 +50,6 @@ module CIAX
           int = @cobj.rem.add_int(Int)
           self['option'] = int.valid_keys.clear
           int.def_proc { |ent| reply(ent.id) }
-          int.add_item('start', 'Sequece Start').def_proc do
-            fork
-            'ACCEPT'
-          end
         end
 
         def fork

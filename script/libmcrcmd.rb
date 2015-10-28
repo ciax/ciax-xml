@@ -7,7 +7,6 @@ module CIAX
   module Mcr
     include Remote
     INTCMD = {
-      'start' => 'Sequence',
       'exec' => 'Command',
       'skip' => 'Macro',
       'drop' => ' Macro',

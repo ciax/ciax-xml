@@ -7,7 +7,7 @@ require 'libenumx'
 #   Used by Command and XmlDoc
 module CIAX
   # Index of Display (Used for validation, display)
-  class Display < Hashx
+  class Disp < Hashx
     # Grouping class (Used for setting db)
     #   Attributes (all level): column(#), line_number(t/f)
     #   Attributes (one level): child(module), color(#), indent(#)
@@ -47,11 +47,16 @@ module CIAX
     end
 
     def to_s
-      view(@select)
+      view
     end
 
-    def view(select, level = 0, cap = nil)
-      list = mk_list(select)
+    def view(select = nil, level = 0, cap = nil)
+      select = select ? @select & select : @select
+      list = {}
+      select.compact.sort.each_with_index do|id, num|
+        title = @atrb[:line_number] ? "[#{num}](#{id})" : id
+        list[title] = self[id]
+      end
       return if list.empty?
       columns(list, @atrb[:column], level, mk_caption(cap, level))
     end
@@ -63,30 +68,19 @@ module CIAX
         caption(cap, col, sep)
     end
 
-    private
-
-    def mk_list(select)
-      list = {}
-      select.compact.sort.each_with_index do|id, num|
-        title = @atrb[:line_number] ? "[#{num}](#{id})" : id
-        list[title] = self[id]
-      end
-      list
-    end
-
     # Parent of Group
     class Section < Hashx
       attr_accessor :index, :level, :sub
-      def initialize(index, sub = Group, cap = nil, level = nil)
-        @index = type?(index, Display)
+      def initialize(index, more_level = false, cap = nil, level = nil)
+        @index = type?(index, Disp)
         @caption = cap
         @level = level || -1
-        @sub = sub
+        @sub = more_level ? Section : Group
       end
 
       # add sub group
-      def put(id, cap, sub = Group)
-        self[id] = @sub.new(@index, sub, cap, @level + 1)
+      def put(id, cap, more_level = false)
+        self[id] = @sub.new(@index, more_level, cap, @level + 1)
       end
 
       def to_s
@@ -115,7 +109,7 @@ module CIAX
     class Group < Hashx
       attr_accessor :index
       def initialize(index, _sub, cap, level)
-        @index = type?(index, Display)
+        @index = type?(index, Disp)
         @caption = cap
         @level = level || 0
         @members = []
@@ -129,20 +123,20 @@ module CIAX
       end
 
       def to_s
-        @index.view(@members & @index.select, @level, @caption)
+        @index.view(@members, @level, @caption)
       end
     end
   end
 
   if __FILE__ == $PROGRAM_NAME
     # Top level only
-    idx0 = Display.new(column: 3)
+    idx0 = Disp.new(column: 3)
     10.times { |i| idx0.put("x#{i}", "caption #{i}") }
     puts idx0
     puts
     # Three level groups
-    idx1 = Display.new(column: 3)
-    grp1 = Display::Section.new(idx1, Display::Section)
+    idx1 = Disp.new(column: 3)
+    grp1 = Disp::Section.new(idx1, true)
     2.times do |i|
       s11 = grp1.put("g#{i}", "Group#{i}")
       3.times do |j|
@@ -156,8 +150,8 @@ module CIAX
     puts grp1
     puts
     # Two level groups with item number
-    idx2 = Display.new(column: 2, line_number: true)
-    grp2 = Display::Section.new(idx2)
+    idx2 = Disp.new(column: 2, line_number: true)
+    grp2 = Disp::Section.new(idx2)
     3.times do |i|
       s21 = grp2.put("g2#{i}", "Gp#{i}")
       3.times do |j|

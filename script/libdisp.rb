@@ -69,18 +69,19 @@ module CIAX
     end
 
     # Parent of Group
+    # Set sub = true for making sub group
     class Section < Hashx
-      attr_accessor :index, :level, :sub
-      def initialize(index, more_level = false, cap = nil, level = nil)
+      attr_accessor :index, :sub
+      def initialize(index, cap = nil, level = nil)
         @index = type?(index, Disp)
         @caption = cap
         @level = level || -1
-        @sub = more_level ? Section : Group
       end
 
       # add sub group
-      def put(id, cap, more_level = false)
-        self[id] = @sub.new(@index, more_level, cap, @level + 1)
+      def put(id, cap)
+        mod = @sub ? Section : Group
+        self[id] = mod.new(@index, cap, @level + 1)
       end
 
       def to_s
@@ -108,7 +109,7 @@ module CIAX
     # It has members of item
     class Group < Hashx
       attr_accessor :index
-      def initialize(index, _sub, cap, level)
+      def initialize(index, cap, level)
         @index = type?(index, Disp)
         @caption = cap
         @level = level || 0
@@ -136,7 +137,8 @@ module CIAX
     puts
     # Three level groups
     idx1 = Disp.new(column: 3)
-    grp1 = Disp::Section.new(idx1, true)
+    grp1 = Disp::Section.new(idx1)
+    grp1.sub = true
     2.times do |i|
       s11 = grp1.put("g#{i}", "Group#{i}")
       3.times do |j|

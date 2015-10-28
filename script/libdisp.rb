@@ -76,7 +76,7 @@ module CIAX
 
     # Parent of Group
     class Section < Hashx
-      attr_accessor :index, :level
+      attr_accessor :index, :level, :sub
       def initialize(index, sub = Group, cap = nil, level = nil)
         @index = type?(index, Display)
         @caption = cap
@@ -144,7 +144,7 @@ module CIAX
     idx1 = Display.new(column: 3)
     grp1 = Display::Section.new(idx1, Display::Section)
     2.times do |i|
-      s11 = grp1.put("g#{i}", "Group#{i}", Display::Group)
+      s11 = grp1.put("g#{i}", "Group#{i}")
       3.times do |j|
         s12 = s11.put("sg#{j}", "SubGroup#{j}")
         4.times do |k|

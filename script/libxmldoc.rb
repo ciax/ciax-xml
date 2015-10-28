@@ -26,7 +26,7 @@ module CIAX
         @type = type
         @projects = Hashx.new
         @displist = Display.new
-        @group=@displist.group
+        @group=Display::Section.new(@displist)
         read_files(Msg.xmlfiles(@type))
         valid_proj
       end
@@ -39,7 +39,7 @@ module CIAX
       end
 
       def to_s
-        @displist.to_s
+        @group.to_s
       end
 
       private
@@ -51,8 +51,7 @@ module CIAX
             if e.name == 'project'
               read_proj(e)
             else
-              sg = @group.init_sub('==',6)
-              read_grp(e, sg)
+              read_grp(e, @group)
             end
           end
         end.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
@@ -69,17 +68,17 @@ module CIAX
       def valid_proj
         return if @projects.keys.empty?
         vl = @valid_proj.empty? ? @projects.keys : @projects.keys & @valid_proj
-        @group.init_sub('****',2)
+        @group.sub = Display::Section
         vl.each do |pid|
           proj=@projects[pid]
-          sg = @group.add_sub(pid,proj['caption']).init_sub('==',6)
+          sg = @group.put(pid,proj['caption'])
           proj.each { |e| read_grp(e, sg) }
         end
       end
 
       def read_grp(e, dl)
         if e.name == 'group'
-          sg = dl.add_sub( e['id'], e['caption'])
+          sg = dl.put( e['id'], e['caption'])
           e.each { |e0| read_doc(e0, sg) }
         else
           read_doc(e, dl)

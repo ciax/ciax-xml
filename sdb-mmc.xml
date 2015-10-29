@@ -36,30 +36,30 @@
       <range class="warn" msg="Sensor">-23</range>
     </table>
     <table id="acs">
-      <range class="warn" msg="A06">0</range>
-      <range class="warn" msg="A07">-1</range>
-      <range class="warn" msg="A08">-2</range>
-      <range class="warn" msg="A09">-3</range>
-      <range class="warn" msg="A10">-4</range>
-      <range class="warn" msg="A11">-5</range>
-      <range class="warn" msg="A12">-6</range>
-      <range class="warn" msg="A13">-7</range>
-      <range class="warn" msg="A14">-8</range>
-      <range class="warn" msg="A15">-9</range>
-      <range class="warn" msg="A16">-10</range>
-      <range class="warn" msg="A17">-11</range>
-      <range class="warn" msg="A18">-12</range>
-      <range class="warn" msg="H19">-13</range>
-      <range class="warn" msg="H20">-14</range>
-      <range class="warn" msg="H21">-15</range>
-      <range class="warn" msg="H22">-16</range>
-      <range class="warn" msg="X23">-17</range>
-      <range class="warn" msg="A00">-18</range>
-      <range class="warn" msg="A01">-19</range>
-      <range class="warn" msg="A02">-20</range>
-      <range class="warn" msg="A03">-21</range>
-      <range class="warn" msg="A04">-22</range>
-      <range class="warn" msg="Sensor">-23</range>
+      <range class="warn" msg="A18">0</range>
+      <range class="warn" msg="A19">-1</range>
+      <range class="warn" msg="A20">-2</range>
+      <range class="warn" msg="A21">-3</range>
+      <range class="warn" msg="A22">-4</range>
+      <range class="warn" msg="X23">-5</range>
+      <range class="warn" msg="A00">-6</range>
+      <range class="warn" msg="A01">-7</range>
+      <range class="warn" msg="A02">-8</range>
+      <range class="warn" msg="A03">-9</range>
+      <range class="warn" msg="A04">-10</range>
+      <range class="warn" msg="A05">-11</range>
+      <range class="warn" msg="A06">-12</range>
+      <range class="warn" msg="A07">-13</range>
+      <range class="warn" msg="A08">-14</range>
+      <range class="warn" msg="A09">-15</range>
+      <range class="warn" msg="A10">-16</range>
+      <range class="warn" msg="A11">-17</range>
+      <range class="warn" msg="A12">-18</range>
+      <range class="warn" msg="A13">-19</range>
+      <range class="warn" msg="A14">-20</range>
+      <range class="warn" msg="A15">-21</range>
+      <range class="warn" msg="A16">-22</range>
+      <range class="warn" msg="A17">-23</range>
     </table>
   </symbol>
 </sdb>

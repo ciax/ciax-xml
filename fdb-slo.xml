@@ -48,7 +48,7 @@
         <string>abspos=0</string>
       </item>
       <item id="setp" label="Set Pulse Number" response="default" type="config">
-        <par_num>0:999</par_num>
+        <par_num>-999:999</par_num>
         <string>p=</string>
         <string format="%5.2f">$1</string>
       </item>
@@ -67,7 +67,7 @@
         <string>j=-1</string>
       </item>
       <item id="ma" label="Move Absolute Position" response="default" type="action">
-        <par_num>0:999</par_num>
+        <par_num>-999:999</par_num>
         <string>ma=</string>
         <string format="%3.1f">$1</string>
       </item>

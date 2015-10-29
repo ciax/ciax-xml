@@ -109,7 +109,7 @@ module CIAX
     # It has members of item
     class Group < Hashx
       attr_accessor :index
-      def initialize(index, cap, level)
+      def initialize(index, cap = nil, level = nil)
         @index = type?(index, Disp)
         @caption = cap
         @level = level || 0

@@ -25,8 +25,8 @@ module CIAX
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
         @projects = Hashx.new
-        @displist = Display.new
-        @group=Display::Section.new(@displist)
+        @displist = Disp.new
+        @group = Disp::Group.new(@displist)
         read_files(Msg.xmlfiles(@type))
         valid_proj
       end
@@ -48,10 +48,13 @@ module CIAX
         files.each do|xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
           Gnu.new(xml).each do |e|
-            if e.name == 'project'
+            case e.name
+            when 'project'
               read_proj(e)
-            else
+            when 'group'
               read_grp(e, @group)
+            else
+              read_grp(e,Disp::Group.new(@displist))
             end
           end
         end.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
@@ -68,26 +71,29 @@ module CIAX
       def valid_proj
         return if @projects.keys.empty?
         vl = @valid_proj.empty? ? @projects.keys : @projects.keys & @valid_proj
-        @group.sub = Display::Section
+        @group = Disp::Section.new(@displist)
         vl.each do |pid|
           proj=@projects[pid]
-          sg = @group.put(pid,proj['caption'])
-          proj.each { |e| read_grp(e, sg) }
+          proj.each do |e|
+            @group.sub = true if e.name == 'group'
+            subsec ||= @group.put(pid,proj['caption'])
+            read_grp(e, subsec)
+          end
         end
       end
 
-      def read_grp(e, dl)
+      def read_grp(e, sec)
         if e.name == 'group'
-          sg = dl.put( e['id'], e['caption'])
+          sg = sec.put( e['id'], e['caption'])
           e.each { |e0| read_doc(e0, sg) }
         else
-          read_doc(e, dl)
+          read_doc(e, sec)
         end
       end
 
-      def read_doc(top, dl)
+      def read_doc(top, grp)
         id = top['id'] # site_id or macro_proj
-        dl.put(id, top['label'])
+        grp.put(id, top['label'])
         item = Hashx[top: top, attr: top.to_h, domain: {}, property: {}]
         top.each do|e1|
           item[top.ns == e1.ns ? :property : :domain][e1.name] = e1

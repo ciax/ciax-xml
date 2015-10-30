@@ -15,7 +15,7 @@ module CIAX
       @cfg[:sep] ||= '****'
       @cfg[:color] ||= 2
       @cfg[:column] ||= 2
-      @displist = Display.new(@cfg, @valid_keys)
+      @displist = Disp.new(@cfg, @valid_keys)
     end
 
     # crnt could have 'label',:body,'unit','group'
@@ -36,7 +36,7 @@ module CIAX
     end
 
     def merge_items(displist)
-      @displist.merge_group!(type?(displist, Display))
+      @displist.update(type?(displist, Disp)).reset!
       self
     end
 

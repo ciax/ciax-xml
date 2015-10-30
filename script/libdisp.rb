@@ -50,10 +50,9 @@ module CIAX
       view
     end
 
-    def view(select = nil, level = 0, cap = nil)
-      select = select ? @select & select : @select
+    def view(select = @select, level = 0, cap = nil)
       list = {}
-      select.compact.sort.each_with_index do|id, num|
+      (@select & select).compact.sort.each_with_index do|id, num|
         title = @atrb[:line_number] ? "[#{num}](#{id})" : id
         list[title] = self[id]
       end
@@ -72,8 +71,10 @@ module CIAX
     # Set sub = true for making sub group
     class Section < Hashx
       attr_accessor :index, :sub
+      attr_reader :select
       def initialize(index, cap = nil, level = nil)
         @index = type?(index, Disp)
+        @select = []
         @caption = cap
         @level = level || -1
       end
@@ -84,9 +85,22 @@ module CIAX
         self[id] = mod.new(@index, cap, @level + 1)
       end
 
-      def to_s
+      def reset!
+        values_each do |sg|
+          sg.reset!
+          @select.concat(sg.select)
+        end
+        @select.uniq!
+        self
+      end
+
+      def view(select = @select)
         ary = [@index.mk_caption(@caption, @level)]
-        (ary + values).map(&:to_s).grep(/./).join("\n")
+        (ary + values).map(&:view(@select & select)).grep(/./).join("\n")
+      end
+
+      def to_s
+        view
       end
 
       def merge_sub(other)
@@ -107,24 +121,35 @@ module CIAX
     end
 
     # It has members of item
-    class Group < Hashx
+    class Group < Arrayx
       attr_accessor :index
+      attr_reader :select
       def initialize(index, cap = nil, level = nil)
         @index = type?(index, Disp)
         @caption = cap
         @level = level || 0
-        @members = []
+        @select = []
       end
 
       # add item
       def put(k, v)
-        @members << k
+        push k
+        @select << k
         @index.select << k
         @index[k] = v
       end
 
+      def reset!
+        @select.concat(self).uniq!
+        self
+      end
+
+      def view(select = @select)
+        @index.view(@select & select, @level, @caption)
+      end
+
       def to_s
-        @index.view(@members, @level, @caption)
+        view
       end
     end
   end

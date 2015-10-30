@@ -80,9 +80,9 @@ module CIAX
           # Set items by DB
           cdb = dbi[:command]
           idx = cdb[:index]
-          @group=@displist.group.init_sub('==', 6)
+          @group = Disp::Section.new(@displist)
           cdb[:group].each do|gid,gat|
-            sg = @group.add_sub(gid,gat['caption'])
+            sg = @group.put(gid,gat['caption'])
             gat[:members].each do|id|
               sg.put(id,idx[id]['label'])
               add_item(id, cdb, idx[id])
@@ -94,7 +94,7 @@ module CIAX
 
         def init_alias(cdb, idx)
           return unless cdb[:alias]
-          sg = @group.add_sub('gal','Alias')
+          sg = @group.put('gal','Alias')
           cdb[:alias].each do|id, att|
             item = idx[att['ref']].dup
             item.update(att)
@@ -111,6 +111,10 @@ module CIAX
             label = label.gsub(/\$([\d]+)/, '%s') % item[:parameters].map { |e| e['label'] }
           end
           new_item(id, item)
+        end
+
+        def view_list
+          @group.to_s
         end
       end
 

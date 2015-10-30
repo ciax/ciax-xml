@@ -3,7 +3,7 @@ require 'libenumx'
 # Display: Sortable Caption Database (Value is String)
 #   New feature: can make recursive groups
 #   Shows visiual command list categorized by sub-group
-#   Holds valid command list in @valid
+#   Holds valid command list in @valid_keys
 #   Used by Command and XmlDoc
 module CIAX
   # Index of Display (Used for validation, display)
@@ -13,38 +13,38 @@ module CIAX
     #   Attributes (one level): child(module), color(#), indent(#)
     #   Attributes (one group): caption(text), members(array)
     SEPTBL = [['****', 2], ['===', 6], ['--', 9], ['_', 14]]
-    attr_reader :valid
+    attr_reader :valid_keys
     attr_accessor :column, :line_number
     def initialize(valid = [], column = 2, line_number = false)
       @column = column
       @line_number = line_number
-      @valid = valid
+      @valid_keys = valid
     end
 
     def put(k, v)
-      @valid << k
+      @valid_keys << k
       super
     end
 
     # For ver 1.9 or more
     def sort!
-      @valid.sort!
+      @valid_keys.sort!
       self
     end
 
-    # Reset @valid(could be shared)
+    # Reset @valid_keys(could be shared)
     def reset!
-      @valid.concat(keys).uniq!
+      @valid_keys.concat(keys).uniq!
       self
     end
 
     def clear
-      @valid.clear
+      @valid_keys.clear
       super
     end
 
     def delete(id)
-      @valid.delete(id)
+      @valid_keys.delete(id)
       super
     end
 
@@ -52,9 +52,9 @@ module CIAX
       view
     end
 
-    def view(select: @valid, level: 0, cap: nil, color: nil)
+    def view(select: @valid_keys, level: 0, cap: nil, color: nil)
       list = {}
-      (@valid & select).compact.sort.each_with_index do|id, num|
+      (@valid_keys & select).compact.sort.each_with_index do|id, num|
         title = @line_number ? "[#{num}](#{id})" : id
         list[title] = self[id]
       end
@@ -127,7 +127,7 @@ module CIAX
       # add item
       def put_item(k, v)
         push k
-        @index.valid << k
+        @index.valid_keys << k
         @index[k] = v
       end
 
@@ -180,7 +180,7 @@ module CIAX
     puts grp1
     puts
     # Confirm merged index
-    grp1.index.valid.delete('0-0')
+    grp1.index.valid_keys.delete('0-0')
     puts grp1
   end
 end

@@ -8,7 +8,7 @@ module CIAX
     module_function
 
     def indent(ind = 0)
-      INDENT * ind
+      INDENT * (ind > 0 ? ind : 0)
     end
 
     # Colored format

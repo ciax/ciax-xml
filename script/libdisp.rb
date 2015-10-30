@@ -14,7 +14,10 @@ module CIAX
     #   Attributes (one group): caption(text), members(array)
     SEPTBL = [['****', 2], ['===', 6], ['--', 9], ['_', 14]]
     attr_reader :valid
-    def initialize(valid = [])
+    attr_accessor :column, :line_number
+    def initialize(valid = [], column = 2, line_number = false)
+      @column = column
+      @line_number = line_number
       @valid = valid
     end
 
@@ -49,14 +52,14 @@ module CIAX
       view
     end
 
-    def view(select: @valid, level: 0, cap: nil, column: 2, line_number: false)
+    def view(select: @valid, level: 0, cap: nil)
       list = {}
       (@valid & select).compact.sort.each_with_index do|id, num|
-        title = line_number ? "[#{num}](#{id})" : id
+        title = @line_number ? "[#{num}](#{id})" : id
         list[title] = self[id]
       end
       return if list.empty?
-      columns(list, column, level, mk_caption(cap, level))
+      columns(list, @column, level, mk_caption(cap, level))
     end
 
     def mk_caption(cap, level)
@@ -69,18 +72,19 @@ module CIAX
     # Parent of Group
     class Section < Hashx
       attr_accessor :index
-      def initialize(index: Disp.new, cap: nil, level: nil, column: 2, line_number: false)
+      def initialize(index: Disp.new, cap: nil, level: nil)
         @index = type?(index, Disp)
         @caption = cap
         @level = level || -1
-        @column = column
-        @line_number = line_number
       end
 
       # add sub caption if sub is true
-      def put(id, cap = nil, sub = nil)
-        mod = sub ? Section : Group
-        self[id] = mod.new(index: @index, cap: cap, level: @level + 1, column: @column, line_number: @line_number)
+      def put_sec(id, cap = nil)
+        self[id] = Section.new(index: @index, cap: cap, level: @level + 1)
+      end
+
+      def put_grp(id, cap = nil)
+        self[id] = Group.new(index: @index, cap: cap, level: @level + 1)
       end
 
       def view
@@ -104,32 +108,29 @@ module CIAX
       def rec_merge_index(gr)
         type?(gr, Hashx).values.each do |sg|
           rec_merge_index(sg) if sg.is_a? Hashx
+          sg.index = @index.update(sg.index)
         end
-        @index.update(gr.index)
-        gr.index = @index
       end
     end
 
     # It has members of item
     class Group < Arrayx
       attr_accessor :index
-      def initialize(index: Disp.new, cap: nil, level: nil, column: 2, line_number: false)
+      def initialize(index: Disp.new, cap: nil, level: nil)
         @index = type?(index, Disp)
         @caption = cap
         @level = level || 0
-        @column = column
-        @line_number = line_number
       end
 
       # add item
-      def put(k, v)
+      def put_item(k, v)
         push k
         @index.valid << k
         @index[k] = v
       end
 
       def view
-        @index.view(select: self, level: @level, cap: @caption, column: @column, line_number: @line_number)
+        @index.view(select: self, level: @level, cap: @caption)
       end
 
       def to_s
@@ -140,31 +141,34 @@ module CIAX
 
   if __FILE__ == $PROGRAM_NAME
     # Top level only
-    grp0 = Disp::Group.new(column: 3)
-    10.times { |i| grp0.put("x#{i}", "caption #{i}") }
+    grp0 = Disp::Group.new
+    grp0.index.column = 3
+    10.times { |i| grp0.put_item("x#{i}", "caption #{i}") }
     puts grp0.view
     puts
     # Three level groups
-    grp1 = Disp::Section.new(column: 3)
+    grp1 = Disp::Section.new
+    grp1.index.column = 3
     2.times do |i|
-      s11 = grp1.put("g#{i}", "Group#{i}",true)
+      s11 = grp1.put_sec("g#{i}", "Group#{i}")
       3.times do |j|
-        s12 = s11.put("sg#{j}", "SubGroup#{j}")
+        s12 = s11.put_grp("sg#{j}", "SubGroup#{j}")
         4.times do |k|
           cstr = '*' * rand(5)
-          s12.put("#{i}-#{j}-#{k}", "caption#{i}-#{j}-#{k},#{cstr}")
+          s12.put_item("#{i}-#{j}-#{k}", "caption#{i}-#{j}-#{k},#{cstr}")
         end
       end
     end
     puts grp1
     puts
     # Two level groups with item number
-    grp2 = Disp::Section.new(column: 2, line_number: true)
+    grp2 = Disp::Section.new
+    grp2.index.line_number = true
     3.times do |i|
-      s21 = grp2.put("g2#{i}", "Gp#{i}")
+      s21 = grp2.put_grp("g2#{i}", "Gp#{i}")
       3.times do |j|
         cstr = '*' * rand(5)
-        s21.put("#{i}-#{j}", "cp#{i}-#{j},#{cstr}")
+        s21.put_item("#{i}-#{j}", "cp#{i}-#{j},#{cstr}")
       end
     end
     puts grp2

@@ -81,10 +81,10 @@ module CIAX
           sg = nil
           proj.each do |e|
             if e.name == 'group'
-              sg ||= @group.put(pid,proj['caption'],true)
+              sg ||= @group.put_sec(pid,proj['caption'])
               read_grp(e,sg)
             else
-              sg ||= @group.put(pid,proj['caption'])
+              sg ||= @group.put_grp(pid,proj['caption'])
               read_doc(e, sg)
             end
           end
@@ -92,13 +92,13 @@ module CIAX
       end
 
       def read_grp(e, sec)
-        sg = sec.put( e['id'], e['caption'])
+        sg = sec.put_grp( e['id'], e['caption'])
         e.each { |e0| read_doc(e0, sg) }
       end
 
       def read_doc(top, grp)
         id = top['id'] # site_id or macro_proj
-        grp.put(id, top['label'])
+        grp.put_item(id, top['label'])
         item = Hashx[top: top, attr: top.to_h, domain: {}, property: {}]
         top.each do|e1|
           item[top.ns == e1.ns ? :property : :domain][e1.name] = e1

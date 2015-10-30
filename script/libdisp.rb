@@ -52,44 +52,45 @@ module CIAX
       view
     end
 
-    def view(select: @valid, level: 0, cap: nil)
+    def view(select: @valid, level: 0, cap: nil, color: nil)
       list = {}
       (@valid & select).compact.sort.each_with_index do|id, num|
         title = @line_number ? "[#{num}](#{id})" : id
         list[title] = self[id]
       end
       return if list.empty?
-      columns(list, @column, level, mk_caption(cap, level))
+      columns(list, @column, level, mk_caption(cap, level, color))
     end
 
-    def mk_caption(cap, level)
+    def mk_caption(cap, level, color)
       return unless cap
       sep, col = SEPTBL[level]
       indent(level) +
-        caption(cap, col, sep)
+        caption(cap, color || col, sep)
     end
 
     # Parent of Group
     class Section < Hashx
       attr_accessor :index
-      def initialize(index: Disp.new, cap: nil, level: nil)
-        @index = type?(index, Disp)
+      def initialize(index: nil, valid: [], cap: nil, color: nil, level: nil)
+        @index = index ? type?(index,Disp) : Disp.new(valid) 
         @caption = cap
+        @color = color
         @level = level || -1
       end
 
       # add sub caption if sub is true
-      def put_sec(id, cap = nil)
-        self[id] = Section.new(index: @index, cap: cap, level: @level + 1)
+      def put_sec(id, cap = nil, color = nil)
+        self[id] = Section.new(index: @index, cap: cap, color: color, level: @level + 1)
       end
 
-      def put_grp(id, cap = nil)
-        self[id] = Group.new(index: @index, cap: cap, level: @level + 1)
+      def put_grp(id, cap = nil, color = nil)
+        self[id] = Group.new(index: @index, cap: cap, color: color, level: @level + 1)
       end
 
       def view
         ary = values.map(&:view).grep(/./)
-        ary.unshift(@index.mk_caption(@caption, @level)) if @caption
+        ary.unshift(@index.mk_caption(@caption, @level, @color)) if @caption
         ary.join("\n")
       end
 
@@ -116,9 +117,10 @@ module CIAX
     # It has members of item
     class Group < Arrayx
       attr_accessor :index
-      def initialize(index: Disp.new, cap: nil, level: nil)
-        @index = type?(index, Disp)
+      def initialize(index: nil, valid: [], cap: nil, color: nil, level: nil)
+        @index = index ? type?(index,Disp) : Disp.new(valid) 
         @caption = cap
+        @color = color
         @level = level || 0
       end
 
@@ -130,7 +132,7 @@ module CIAX
       end
 
       def view
-        @index.view(select: self, level: @level, cap: @caption)
+        @index.view(select: self, level: @level, cap: @caption, color: @color)
       end
 
       def to_s
@@ -150,7 +152,7 @@ module CIAX
     grp1 = Disp::Section.new
     grp1.index.column = 3
     2.times do |i|
-      s11 = grp1.put_sec("g#{i}", "Group#{i}")
+      s11 = grp1.put_sec("g#{i}", "Group#{i}", 1)
       3.times do |j|
         s12 = s11.put_grp("sg#{j}", "SubGroup#{j}")
         4.times do |k|

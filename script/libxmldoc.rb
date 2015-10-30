@@ -26,7 +26,7 @@ module CIAX
         @type = type
         @projects = Hashx.new
         @displist = Disp.new
-        @group = Disp::Group.new(@displist)
+        @level = 0
         read_files(Msg.xmlfiles(@type))
         valid_proj
       end
@@ -47,17 +47,21 @@ module CIAX
       def read_files(files)
         files.each do|xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
-          Gnu.new(xml).each do |e|
-            case e.name
-            when 'project'
-              read_proj(e)
-            when 'group'
-              read_grp(e, @group)
-            else
-              read_grp(e,Disp::Group.new(@displist))
-            end
-          end
-        end.empty? && Msg.cfg_err("No XML file for #{type}-*.xml")
+          Gnu.new(xml).each { |e| read_xml(e) }
+        end.empty? && Msg.cfg_err("No XML file for #{@type}-*.xml")
+      end
+
+      def read_xml(e)
+        case e.name
+        when 'project'
+          read_proj(e)
+        when 'group'
+          @group ||= Disp::Section.new(@displit)
+          read_grp(e, @group)
+        else
+          @group ||= Disp::Group.new(@displist)
+          read_doc(e, @group)
+        end
       end
 
       def read_proj(e)
@@ -74,21 +78,23 @@ module CIAX
         @group = Disp::Section.new(@displist)
         vl.each do |pid|
           proj=@projects[pid]
+          sg = nil
           proj.each do |e|
-            @group.sub = true if e.name == 'group'
-            subsec ||= @group.put(pid,proj['caption'])
-            read_grp(e, subsec)
+            if e.name == 'group'
+              @group.sub = true
+              sg ||= @group.put(pid,proj['caption'])
+              read_grp(e, sg)
+            else
+              sg ||= @group.put(pid,proj['caption'])
+              read_doc(e, sg)
+            end
           end
         end
       end
 
       def read_grp(e, sec)
-        if e.name == 'group'
-          sg = sec.put( e['id'], e['caption'])
-          e.each { |e0| read_doc(e0, sg) }
-        else
-          read_doc(e, sec)
-        end
+        sg = sec.put( e['id'], e['caption'])
+        e.each { |e0| read_doc(e0, sg) }
       end
 
       def read_doc(top, grp)

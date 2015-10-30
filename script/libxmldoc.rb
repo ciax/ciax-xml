@@ -81,9 +81,8 @@ module CIAX
           sg = nil
           proj.each do |e|
             if e.name == 'group'
-              @group.sub = true
-              sg ||= @group.put(pid,proj['caption'])
-              read_grp(e, sg)
+              sg ||= @group.put(pid,proj['caption'],true)
+              read_grp(e,sg)
             else
               sg ||= @group.put(pid,proj['caption'])
               read_doc(e, sg)

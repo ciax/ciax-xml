@@ -68,18 +68,17 @@ module CIAX
     end
 
     # Parent of Group
-    # Set sub = true for making sub group
     class Section < Hashx
-      attr_accessor :index, :sub
+      attr_accessor :index
       def initialize(index, cap = nil, level = nil)
         @index = type?(index, Disp)
         @caption = cap
         @level = level || -1
       end
 
-      # add sub group
-      def put(id, cap = nil)
-        mod = @sub ? Section : Group
+      # add sub caption if sub is true
+      def put(id, cap = nil, sub = nil)
+        mod = sub ? Section : Group
         self[id] = mod.new(@index, cap, @level + 1)
       end
 
@@ -145,9 +144,8 @@ module CIAX
     # Three level groups
     idx1 = Disp.new(column: 3)
     grp1 = Disp::Section.new(idx1)
-    grp1.sub = true
     2.times do |i|
-      s11 = grp1.put("g#{i}", "Group#{i}")
+      s11 = grp1.put("g#{i}", "Group#{i}",true)
       3.times do |j|
         s12 = s11.put("sg#{j}", "SubGroup#{j}")
         4.times do |k|

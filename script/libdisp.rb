@@ -88,6 +88,15 @@ module CIAX
         self[id] = Group.new(index: @index, cap: cap, color: color, level: @level + 1)
       end
 
+      def reset!
+        values.each{ |sg| sg.reset! }
+        self
+      end
+
+      def valid?(id)
+        values.any?{ |sg| sg.valid? }
+      end
+
       def view
         ary = values.map(&:view).grep(/./)
         ary.unshift(@index.mk_caption(@caption, @level, @color)) if @caption
@@ -129,6 +138,7 @@ module CIAX
       # add item
       def put_item(k, v)
         push k
+        @valid_keys << k
         @index.valid_keys << k
         @index[k] = v
       end
@@ -137,9 +147,13 @@ module CIAX
         @valid_keys.concat(self).uniq!
         self
       end
-      
+
+      def valid?(id)
+        @valid_keys.include?(id)
+      end
+
       def view
-        @index.view(select: self, level: @level, cap: @caption, color: @color)
+        @index.view(select: @valid_keys, level: @level, cap: @caption, color: @color)
       end
 
       def to_s

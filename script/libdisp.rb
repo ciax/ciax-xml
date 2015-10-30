@@ -116,9 +116,11 @@ module CIAX
 
     # It has members of item
     class Group < Arrayx
+      attr_reader :valid_keys
       attr_accessor :index
       def initialize(index: nil, valid: [], cap: nil, color: nil, level: nil)
         @index = index ? type?(index,Disp) : Disp.new(valid) 
+        @valid_keys = []
         @caption = cap
         @color = color
         @level = level || 0
@@ -131,6 +133,11 @@ module CIAX
         @index[k] = v
       end
 
+      def reset!
+        @valid_keys.concat(self).uniq!
+        self
+      end
+      
       def view
         @index.view(select: self, level: @level, cap: @caption, color: @color)
       end

@@ -19,6 +19,7 @@ module CIAX
         self['ver'] = @cfg['ver'] || '0' # Version
         self['cid'] = @cfg[:cid] # Command ID (cmd:par)
         self['label'] = @cfg['label'] # Label for CID
+        self['result'] = 'busy'
         self
       end
 

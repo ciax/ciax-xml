@@ -58,7 +58,7 @@ module CIAX
 
           # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
           def add(ent, pid = '0')
-            seq = Exe.new(ent, pid)
+            seq = Exe.new(ent, pid).fork
             seq.post_stat_procs << proc { upd }
             put(seq['id'], seq)
           end

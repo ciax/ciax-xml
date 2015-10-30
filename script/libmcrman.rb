@@ -22,7 +22,7 @@ module CIAX
             @parameter[:list] = @stat.keys
           end
           @host ||= @dbi['host']
-          @port ||= (@dbi['port'] || 5555)
+          @port ||= (@dbi['port'] || 55555)
           @mode = 'MCR'
           opt_mode
         end
@@ -43,12 +43,12 @@ module CIAX
           @stat.ext_drv
           # External Command Group
           @cobj.rem.ext.def_proc do |ent|
-            set(ent)
+            @sv_stat['sid'] = add(ent).record['id']
             'ACCEPT'
           end
           # Internal Command Group
           @cfg[:submcr_proc] = proc do|args, pid|
-            set(@cobj.set_cmd(args), pid)
+            add(@cobj.set_cmd(args), pid)
           end
           @cobj.rem.int.def_proc do|ent|
             seq = @stat.get(ent.par[0])
@@ -72,7 +72,7 @@ module CIAX
           super
         end
 
-        def set(ent, pid = '0')
+        def add(ent, pid = '0')
           @stat.add(ent, pid)
         end
       end

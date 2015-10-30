@@ -71,10 +71,8 @@ module CIAX
     # Set sub = true for making sub group
     class Section < Hashx
       attr_accessor :index, :sub
-      attr_reader :select
       def initialize(index, cap = nil, level = nil)
         @index = type?(index, Disp)
-        @select = []
         @caption = cap
         @level = level || -1
       end
@@ -85,18 +83,10 @@ module CIAX
         self[id] = mod.new(@index, cap, @level + 1)
       end
 
-      def reset!
-        values_each do |sg|
-          sg.reset!
-          @select.concat(sg.select)
-        end
-        @select.uniq!
-        self
-      end
-
-      def view(select = @select)
-        ary = [@index.mk_caption(@caption, @level)]
-        (ary + values).map(&:view(@select & select)).grep(/./).join("\n")
+      def view
+        ary = values.map(&:view).grep(/./)
+        ary.unshift(@index.mk_caption(@caption, @level)) if @caption
+        ary.join("\n")
       end
 
       def to_s
@@ -123,29 +113,21 @@ module CIAX
     # It has members of item
     class Group < Arrayx
       attr_accessor :index
-      attr_reader :select
       def initialize(index, cap = nil, level = nil)
         @index = type?(index, Disp)
         @caption = cap
         @level = level || 0
-        @select = []
       end
 
       # add item
       def put(k, v)
         push k
-        @select << k
         @index.select << k
         @index[k] = v
       end
 
-      def reset!
-        @select.concat(self).uniq!
-        self
-      end
-
-      def view(select = @select)
-        @index.view(@select & select, @level, @caption)
+      def view
+        @index.view(self, @level, @caption)
       end
 
       def to_s

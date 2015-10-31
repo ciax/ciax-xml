@@ -11,7 +11,7 @@ module CIAX
       super()
       @cls_color = 3
       @cfg = cfg.gen(self).update(atrb)
-      @displist = Disp.new(@cfg)
+      @displist = Disp.new(@cfg.to_hash)
       @valid_keys = @displist.valid_keys
     end
 

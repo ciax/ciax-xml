@@ -12,16 +12,13 @@ module CIAX
       @cls_color = 3
       @cfg = cfg.gen(self).update(atrb)
       @valid_keys = @cfg[:valid_keys] || []
-      @cfg[:sep] ||= '****'
-      @cfg[:color] ||= 2
-      @cfg[:column] ||= 2
-      @displist = Disp.new(@cfg, @valid_keys)
+      @displist = Disp.new(@cfg)
     end
 
     # crnt could have 'label',:body,'unit','group'
     def add_item(id, title = nil, crnt = {})
       crnt['label'] = title
-      @displist.put(id,title)
+      @displist.put_item(id,title)
       new_item(id, crnt)
     end
 
@@ -36,17 +33,17 @@ module CIAX
     end
 
     def merge_items(displist)
-      @displist.update(type?(displist, Disp)).reset!
+      @displist.merge_sub(type?(displist, Disp))
       self
     end
 
     def add_dummy(id, title)
-      @displist.put(id,title) # never put into valid_key
+      @displist.put_item(id,title) # never put into valid_key
       self
     end
 
     def valid_reset
-      @displist.reset!
+      @displist.index.reset!
       self
     end
 

@@ -17,7 +17,7 @@ module CIAX
     # The project named file can conatin referenced item whose entity is
     # in another file.
     class Doc < Hashx
-      attr_reader :top, :displist
+      attr_reader :top
       def initialize(type, proj)
         super()
         @cls_color = 2
@@ -56,10 +56,10 @@ module CIAX
         when 'project'
           read_proj(e)
         when 'group'
-          @group ||= Disp::Section.new(@displit)
+          @group ||= Disp::Section.new
           read_grp(e, @group)
         else
-          @group ||= Disp::Group.new(@displist)
+          @group ||= Disp::Group.new
           read_doc(e, @group)
         end
       end
@@ -75,7 +75,7 @@ module CIAX
       def valid_proj
         return if @projects.keys.empty?
         vl = @valid_proj.empty? ? @projects.keys : @projects.keys & @valid_proj
-        @group = Disp::Section.new(@displist)
+        @group = Disp::Section.new
         vl.each do |pid|
           proj=@projects[pid]
           sg = nil

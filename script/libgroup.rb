@@ -11,14 +11,15 @@ module CIAX
       super()
       @cls_color = 3
       @cfg = cfg.gen(self).update(atrb)
-      @displist = Disp.new(@cfg.to_hash)
+      @displist = Disp.new(@cfg.pick(:column,:line_number))
       @valid_keys = @displist.valid_keys
+      @dispgrp = @displist.put_grp(atrb)
     end
 
     # crnt could have 'label',:body,'unit','group'
     def add_item(id, title = nil, crnt = {})
       crnt['label'] = title
-      @displist.put_item(id,title)
+      @dispgrp.put_item(id,title)
       new_item(id, crnt)
     end
 

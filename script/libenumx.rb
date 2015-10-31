@@ -86,7 +86,7 @@ module CIAX
     end
 
     # Generate Hash Pick up keys
-    def pick(keyary)
+    def pick(*keyary)
       hash = Hashx.new
       keyary.each do|key|
         hash[key] = self[key]

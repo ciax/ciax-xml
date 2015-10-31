@@ -20,18 +20,16 @@ module CIAX
       @atrb = atrb
     end
 
-    def put_sec(cap = nil, atrb = {})
+    def put_sec(caption: nil, color: nil, **atrb)
       return @sub if @sub.is_a? Section
       at = {}.update(@atrb).update(atrb)
-      at[:caption] = cap
-      @sub = Section.new(self, at)
+      @sub = Section.new(self, caption: caption, color: color, **at)
     end
 
-    def put_grp(cap = nil, atrb = {})
+    def put_grp(caption: nil, color: nil, **atrb)
       return @sub if @sub.is_a? Group
       at = {}.update(@atrb).update(atrb)
-      at[:caption] = cap
-      @sub = Group.new(self, at)
+      @sub = Group.new(self, caption: caption, color: color, **at)
     end
 
     def put_item(k, v)
@@ -184,13 +182,13 @@ module CIAX
   if __FILE__ == $PROGRAM_NAME
     # Top level only
     idx0 = Disp.new(column: 3)
-    grp0 = idx0.put_grp('top')
+    grp0 = idx0.put_grp(caption: 'top')
     10.times { |i| grp0.put_item("x#{i}", "caption #{i}") }
     puts idx0
     puts
     # Three level groups
     idx1 = Disp.new(column: 3)
-    grp1 = idx1.put_sec('top1',color: 4)
+    grp1 = idx1.put_sec(caption: 'top1',color: 4)
     2.times do |i|
       s11 = grp1.put_sec("g#{i}", "Group#{i}")
       2.times do |j|
@@ -205,7 +203,7 @@ module CIAX
     puts
     # Two level groups with item number
     idx2 = Disp.new(line_number: true)
-    grp2 = idx2.put_sec('top2')
+    grp2 = idx2.put_sec(caption: 'top2')
     3.times do |i|
       s21 = grp2.put_grp("g2#{i}", "Gp#{i}")
       3.times do |j|

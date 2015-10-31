@@ -13,10 +13,21 @@ module CIAX
     #   Attributes (one level): child(module), color(#), indent(#)
     #   Attributes (one group): caption(text), members(array)
     SEPTBL = [['****', 2], ['===', 6], ['--', 9], ['_', 14]]
-    attr_reader :valid_keys
+    attr_reader :valid_keys, :sub
     def initialize(atrb = {})
       @valid_keys = Arrayx.new
+      @sub = nil
       @atrb = atrb
+    end
+
+    def put_sec(atrb = {})
+      return @sub if @sub.is_a? Section
+      @sub = Section.new(self, atrb)
+    end
+
+    def put_grp(atrb = {})
+      return @sub if @sub.is_a? Group
+      @sub = Group.new(self, atrb)
     end
 
     def put_item(k, v)
@@ -51,10 +62,10 @@ module CIAX
     end
 
     def to_s
-      view
+      @sub ? @sub.view : view
     end
 
-    def view(select: @valid_keys, **atrb)
+    def view(select = @valid_keys, atrb = {})
       atrb = @atrb.dup.update(atrb)
       list = {}
       (@valid_keys & select).compact.sort.each_with_index do|id, num|
@@ -75,22 +86,24 @@ module CIAX
     # Parent of Group
     class Section < Hashx
       attr_accessor :index
-      def initialize(index: Disp.new, **atrb)
+      def initialize(index, atrb = {})
         @index = index
         @atrb = atrb
       end
 
       # add sub caption if sub is true
-      def put_sec(id, cap, **atrb)
+      def put_sec(id, cap, atrb = {})
+        return self[id] if self[id]
         level = @atrb[:level].to_i
         level += 1 if @atrb[:caption]
-        self[id] = Section.new(index: @index, caption: cap, level: level, **atrb)
+        self[id] = Section.new(@index, caption: cap, level: level, **atrb)
       end
 
-      def put_grp(id, cap, **atrb)
+      def put_grp(id, cap, atrb = {})
+        return self[id] if self[id]
         level = @atrb[:level].to_i
         level += 1 if @atrb[:caption]
-        self[id] = Group.new(index: @index, caption: cap, level: level, **atrb)
+        self[id] = Group.new(@index, caption: cap, level: level, **atrb)
       end
 
       def reset!
@@ -131,7 +144,7 @@ module CIAX
     # It has members of item
     class Group < Arrayx
       attr_accessor :index
-      def initialize(index: Disp.new, **atrb)
+      def initialize(index, atrb = {})
         @index = index
         @atrb = atrb
       end
@@ -153,7 +166,7 @@ module CIAX
       end
 
       def view
-        @index.view(select: self, **@atrb)
+        @index.view(self, @atrb)
       end
 
       def to_s
@@ -164,12 +177,12 @@ module CIAX
 
   if __FILE__ == $PROGRAM_NAME
     # Top level only
-    grp0 = Disp::Group.new(caption: 'top',column: 3)
+    grp0 = Disp.new(caption: 'top',column: 3)
     10.times { |i| grp0.put_item("x#{i}", "caption #{i}") }
     puts grp0.view
     puts
     # Three level groups
-    grp1 = Disp::Section.new(column: 3)
+    grp1 = Disp.new(column: 3).put_sec
     2.times do |i|
       s11 = grp1.put_sec("g#{i}", "Group#{i}", color: 1)
       3.times do |j|
@@ -183,7 +196,7 @@ module CIAX
     puts grp1
     puts
     # Two level groups with item number
-    grp2 = Disp::Section.new(line_number: true)
+    grp2 = Disp.new(line_number: true).put_sec
     3.times do |i|
       s21 = grp2.put_grp("g2#{i}", "Gp#{i}")
       3.times do |j|

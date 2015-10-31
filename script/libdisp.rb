@@ -10,31 +10,25 @@ module CIAX
   class Disp < Hashx
     # Grouping class (Used for setting db)
     #   Attributes (all level): column(#), line_number(t/f)
-    #   Attributes (one level): child(module), color(#), indent(#)
-    #   Attributes (one group): caption(text), members(array)
+    #   Attributes (one level): color(#), level(#)
+    #   Attributes (one group): caption(text)
     SEPTBL = [['****', 2], ['===', 6], ['--', 9], ['_', 14]]
     attr_reader :valid_keys, :sub
-    def initialize(atrb = {})
+    def initialize(caption: nil, color: nil, **atrb)
       @valid_keys = Arrayx.new
-      @sub = nil
+      @caption = caption
+      @color = color
       @atrb = atrb
+      @sub = Group.new(self, caption: @caption, color: @color)
     end
 
-    def put_sec(caption: nil, color: nil, **atrb)
+    def put_sec
       return @sub if @sub.is_a? Section
-      at = {}.update(@atrb).update(atrb)
-      @sub = Section.new(self, caption: caption, color: color, **at)
-    end
-
-    def put_grp(caption: nil, color: nil, **atrb)
-      return @sub if @sub.is_a? Group
-      at = {}.update(@atrb).update(atrb)
-      @sub = Group.new(self, caption: caption, color: color, **at)
+      @sub = Section.new(self, caption: @caption, color: @color)
     end
 
     def put_item(k, v)
-      @valid_keys << k
-      put(k, v)
+      @sub.put_item(k,v)
     end
 
     # For ver 1.9 or more
@@ -64,25 +58,25 @@ module CIAX
     end
 
     def to_s
-      @sub ? @sub.view : view
+      @sub.view
     end
 
-    def view(select = @valid_keys, atrb = {})
+    def view(select, caption: nil, color: nil, level: nil)
       list = {}
       (@valid_keys & select).compact.sort.each_with_index do|id, num|
         title = @atrb[:line_number] ? "[#{num}](#{id})" : id
         list[title] = self[id]
       end
       return if list.empty?
-      columns(list, atrb[:column] || @atrb[:column], atrb[:level], mk_caption(atrb))
+      columns(list, @atrb[:column], level, mk_caption(caption, color: color, level: level))
     end
 
-    def mk_caption(atrb = {})
-      return unless atrb[:caption]
-      level=atrb[:level] || 0
+    def mk_caption(caption, color: nil, level: nil)
+      return unless caption
+      level=level.to_i
       sep, col = SEPTBL[level]
       indent(level) +
-        caption(atrb[:caption], atrb[:color] || col, sep)
+        caption(caption, color || col, sep)
     end
 
     def merge_sub(other)
@@ -105,24 +99,26 @@ module CIAX
     # Parent of Group
     class Section < Hashx
       attr_accessor :index
-      def initialize(index, atrb = {})
+      def initialize(index, caption: nil, color: nil, level: 0)
         @index = index
-        @atrb = atrb
+        @caption = caption
+        @color = color
+        @level = level
       end
 
       # add sub caption if sub is true
-      def put_sec(id, cap, atrb = {})
+      def put_sec(id, cap, color = nil)
         return self[id] if self[id]
-        level = @atrb[:level].to_i
-        level += 1 if @atrb[:caption]
-        self[id] = Section.new(@index, caption: cap, level: level, **atrb)
+        level = @level.to_i
+        level += 1 if @caption
+        self[id] = Section.new(@index, caption: cap, color: color, level: level)
       end
 
-      def put_grp(id, cap, atrb = {})
+      def put_grp(id, cap, color = nil)
         return self[id] if self[id]
-        level = @atrb[:level].to_i
-        level += 1 if @atrb[:caption]
-        self[id] = Group.new(@index, caption: cap, level: level, **atrb)
+        level = @level.to_i
+        level += 1 if @caption
+        self[id] = Group.new(@index, caption: cap, color: color, level: level)
       end
 
       def reset!
@@ -136,7 +132,7 @@ module CIAX
 
       def view
         ary = values.map(&:view).grep(/./)
-        ary.unshift(@index.mk_caption(@atrb)) if @atrb[:caption]
+        ary.unshift(@index.mk_caption(@caption, color: @color, level: @level)) if @caption
         ary.join("\n")
       end
 
@@ -148,9 +144,11 @@ module CIAX
     # It has members of item
     class Group < Arrayx
       attr_accessor :index
-      def initialize(index, atrb = {})
+      def initialize(index, caption: nil, color: nil, level: 0)
         @index = index
-        @atrb = atrb
+        @caption = caption
+        @color = color
+        @level = level
       end
 
       # add item
@@ -170,7 +168,7 @@ module CIAX
       end
 
       def view
-        @index.view(self, @atrb)
+        @index.view(self, caption: @caption, color: @color, level: @level)
       end
 
       def to_s
@@ -181,18 +179,17 @@ module CIAX
 
   if __FILE__ == $PROGRAM_NAME
     # Top level only
-    idx0 = Disp.new(column: 3)
-    grp0 = idx0.put_grp(caption: 'top')
-    10.times { |i| grp0.put_item("x#{i}", "caption #{i}") }
+    idx0 = Disp.new(column: 3,caption: 'top')
+    10.times { |i| idx0.put_item("x#{i}", "caption #{i}") }
     puts idx0
     puts
     # Three level groups
-    idx1 = Disp.new(column: 3)
-    grp1 = idx1.put_sec(caption: 'top1',color: 4)
+    idx1 = Disp.new(column: 3,caption: 'top1',color: 4)
+    grp1 = idx1.put_sec
     2.times do |i|
       s11 = grp1.put_sec("g#{i}", "Group#{i}")
       2.times do |j|
-        s12 = s11.put_grp("sg#{j}", "SubGroup#{j}", color: 1)
+        s12 = s11.put_grp("sg#{j}", "SubGroup#{j}", 1)
         2.times do |k|
           cstr = '*' * rand(5)
           s12.put_item("#{i}-#{j}-#{k}", "caption#{i}-#{j}-#{k},#{cstr}")
@@ -202,8 +199,8 @@ module CIAX
     puts idx1
     puts
     # Two level groups with item number
-    idx2 = Disp.new(line_number: true)
-    grp2 = idx2.put_sec(caption: 'top2')
+    idx2 = Disp.new(line_number: true, caption: 'top2')
+    grp2 = idx2.put_sec
     3.times do |i|
       s21 = grp2.put_grp("g2#{i}", "Gp#{i}")
       3.times do |j|

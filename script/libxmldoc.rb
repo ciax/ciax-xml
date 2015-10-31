@@ -58,7 +58,7 @@ module CIAX
         when 'group'
           read_grp(e, @displist.put_sec)
         else
-          read_doc(e, @displist.put_grp)
+          read_doc(e, @displist)
         end
       end
 

@@ -35,6 +35,11 @@ module CIAX
       put(k, v)
     end
 
+    def merge_sub(other)
+      put_sec.merge_sub(type?(other,Disp).sub)
+      self
+    end
+
     # For ver 1.9 or more
     def sort!
       @valid_keys.sort!

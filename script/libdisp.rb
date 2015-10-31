@@ -20,14 +20,14 @@ module CIAX
       @atrb = atrb
     end
 
-    def put_sec(atrb = {})
+    def put_sec
       return @sub if @sub.is_a? Section
-      @sub = Section.new(self, atrb)
+      @sub = Section.new(self, @atrb)
     end
 
-    def put_grp(atrb = {})
+    def put_grp
       return @sub if @sub.is_a? Group
-      @sub = Group.new(self, atrb)
+      @sub = Group.new(self, @atrb)
     end
 
     def put_item(k, v)
@@ -188,11 +188,11 @@ module CIAX
     puts grp0.view
     puts
     # Three level groups
-    grp1 = Disp.new(column: 3).put_sec
+    grp1 = Disp.new(column: 3, caption: 'top1', color: 4).put_sec
     2.times do |i|
-      s11 = grp1.put_sec("g#{i}", "Group#{i}", color: 1)
+      s11 = grp1.put_sec("g#{i}", "Group#{i}")
       3.times do |j|
-        s12 = s11.put_grp("sg#{j}", "SubGroup#{j}")
+        s12 = s11.put_grp("sg#{j}", "SubGroup#{j}", color: 1)
         4.times do |k|
           cstr = '*' * rand(5)
           s12.put_item("#{i}-#{j}-#{k}", "caption#{i}-#{j}-#{k},#{cstr}")

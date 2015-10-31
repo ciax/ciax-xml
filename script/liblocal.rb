@@ -44,7 +44,7 @@ module CIAX
         def initialize(cfg, atrb = {})
           name = m2id(cfg[:jump_class], 1).capitalize
           atrb[:caption] = "Switch #{name}s"
-          atrb[:color] = 5
+          atrb[:color] = 4
           atrb[:column] = 3
           super
           def_proc do|ent|

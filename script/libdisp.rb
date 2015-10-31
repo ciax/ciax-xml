@@ -16,7 +16,7 @@ module CIAX
     attr_reader :valid_keys, :sub
     def initialize(atrb = {})
       @valid_keys = Arrayx.new
-      @sub = nil
+      @sub = {}
       @atrb = atrb
     end
 
@@ -33,11 +33,6 @@ module CIAX
     def put_item(k, v)
       @valid_keys << k
       put(k, v)
-    end
-
-    def merge_sub(other)
-      put_sec.merge_sub(type?(other,Disp).sub)
-      self
     end
 
     # For ver 1.9 or more
@@ -89,6 +84,23 @@ module CIAX
         caption(atrb[:caption], atrb[:color] || col, sep)
     end
 
+    def merge_sub(other)
+      update(other)
+      osub=type?(other,Disp).sub
+      rec_merge_index(osub)
+      put_sec.update(osub)
+      reset!
+    end
+
+    private
+
+    def rec_merge_index(gr)
+      type?(gr, Hash).values.each do |sg|
+        rec_merge_index(sg) if sg.is_a? Hash
+        sg.index = self
+      end
+    end
+
     # Parent of Group
     class Section < Hashx
       attr_accessor :index
@@ -131,20 +143,7 @@ module CIAX
         view
       end
 
-      def merge_sub(other)
-        rec_merge_index(other)
-        update(other)
-        @index.reset!
-      end
 
-      private
-
-      def rec_merge_index(gr)
-        type?(gr, Hashx).values.each do |sg|
-          rec_merge_index(sg) if sg.is_a? Hashx
-          sg.index = @index.update(sg.index)
-        end
-      end
     end
 
     # It has members of item

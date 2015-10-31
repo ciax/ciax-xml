@@ -73,16 +73,16 @@ module CIAX
       # External Command Group
       class Group < Group
         def initialize(cfg, atrb = {})
-          cfg[:caption] ||= 'External Commands'
+          atrb[:caption] = 'External Commands'
           super
           dbi = type?(@cfg[:dbi], Dbi)
           @cfg['ver'] ||= dbi['version']
           # Set items by DB
           cdb = dbi[:command]
           idx = cdb[:index]
-          @sec = @displist.put_sec
+          @dispgrp = @displist.put_sec(atrb)
           cdb[:group].each do|gid,gat|
-            sg = @sec.put_grp(gid,gat['caption'])
+            sg = @dispgrp.put_grp(gid,gat['caption'])
             gat[:members].each do|id|
               sg.put_item(id,idx[id]['label'])
               add_item(id, cdb, idx[id])
@@ -94,7 +94,7 @@ module CIAX
 
         def init_alias(cdb, idx)
           return unless cdb[:alias]
-          sg = @sec.put_grp('gal','Alias')
+          sg = @dispgrp.put_grp('gal','Alias')
           cdb[:alias].each do|id, att|
             item = idx[att['ref']].dup
             item.update(att)

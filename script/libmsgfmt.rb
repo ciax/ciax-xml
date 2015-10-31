@@ -3,7 +3,7 @@
 module CIAX
   ### Formatting methods ###
   module Msg
-    INDENT = '  '
+    INDENT = ' '
 
     module_function
 

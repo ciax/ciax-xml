@@ -44,7 +44,7 @@ module CIAX
         def initialize(cfg, atrb = {})
           name = m2id(cfg[:jump_class], 1).capitalize
           atrb[:caption] = "Switch #{name}s"
-          atrb[:color] = 4
+          atrb[:color] = 5
           super
           def_proc do|ent|
             # Use shell() of top level class (ie. List.new.get(id).shell -> List.new.shell(id) )

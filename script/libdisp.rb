@@ -12,7 +12,7 @@ module CIAX
     #   Attributes (all level): column(#), line_number(t/f)
     #   Attributes (one level): color(#), level(#)
     #   Attributes (one group): caption(text)
-    SEPTBL = [['****', 2], ['===', 6], ['--', 9], ['_', 14]]
+    SEPTBL = [['****', 2], ['===', 6], ['--', 12], ['_', 14]]
     attr_reader :valid_keys, :sub
     def initialize(caption: nil, color: nil, **atrb)
       @valid_keys = Arrayx.new
@@ -98,26 +98,24 @@ module CIAX
 
     # Parent of Group
     class Section < Hashx
-      attr_accessor :index
-      def initialize(index, caption: nil, color: nil, level: 0)
+      attr_accessor :index, :level
+      def initialize(index, caption: nil, color: nil, level: nil)
         @index = index
         @caption = caption
         @color = color
-        @level = level
+        @level = level.to_i
       end
 
       # add sub caption if sub is true
       def put_sec(id, cap, color = nil)
         return self[id] if self[id]
-        level = @level.to_i
-        level += 1 if @caption
+        level = @level.to_i + 1
         self[id] = Section.new(@index, caption: cap, color: color, level: level)
       end
 
       def put_grp(id, cap, color = nil)
         return self[id] if self[id]
-        level = @level.to_i
-        level += 1 if @caption
+        level = @level.to_i + 1
         self[id] = Group.new(@index, caption: cap, color: color, level: level)
       end
 
@@ -143,7 +141,7 @@ module CIAX
 
     # It has members of item
     class Group < Arrayx
-      attr_accessor :index
+      attr_accessor :index, :level
       def initialize(index, caption: nil, color: nil, level: 0)
         @index = index
         @caption = caption

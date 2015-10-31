@@ -17,7 +17,7 @@ module CIAX
     # The project named file can conatin referenced item whose entity is
     # in another file.
     class Doc < Hashx
-      attr_reader :top
+      attr_reader :top, :displist
       def initialize(type, proj)
         super()
         @cls_color = 2
@@ -25,7 +25,6 @@ module CIAX
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
         @projects = Hashx.new
-        @displist = Disp.new
         @level = 0
         read_files(Msg.xmlfiles(@type))
         valid_proj
@@ -39,7 +38,7 @@ module CIAX
       end
 
       def to_s
-        @group.to_s
+        @displist.to_s
       end
 
       private
@@ -56,11 +55,11 @@ module CIAX
         when 'project'
           read_proj(e)
         when 'group'
-          @group ||= Disp::Section.new
-          read_grp(e, @group)
+          @displist ||= Disp::Section.new
+          read_grp(e, @displist)
         else
-          @group ||= Disp::Group.new
-          read_doc(e, @group)
+          @displist ||= Disp::Group.new
+          read_doc(e, @displist)
         end
       end
 
@@ -75,16 +74,16 @@ module CIAX
       def valid_proj
         return if @projects.keys.empty?
         vl = @valid_proj.empty? ? @projects.keys : @projects.keys & @valid_proj
-        @group = Disp::Section.new
+        @displist = Disp::Section.new
         vl.each do |pid|
           proj=@projects[pid]
           sg = nil
           proj.each do |e|
             if e.name == 'group'
-              sg ||= @group.put_sec(pid,proj['caption'])
+              sg ||= @displist.put_sec(pid,proj['caption'])
               read_grp(e,sg)
             else
-              sg ||= @group.put_grp(pid,proj['caption'])
+              sg ||= @displist.put_grp(pid,proj['caption'])
               read_doc(e, sg)
             end
           end

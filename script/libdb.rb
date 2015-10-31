@@ -34,7 +34,7 @@ module CIAX
     end
 
     def get(id)
-      fail(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s) unless @displist.key?(id)
+      fail(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s) unless @displist.valid?(id)
       cache(id) do|doc|
         doc_to_db(doc.get(id))
       end

@@ -21,7 +21,7 @@ module CIAX
 
     def put_item(k, v)
       @valid_keys << k
-      super
+      put(k, v)
     end
 
     # For ver 1.9 or more

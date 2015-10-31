@@ -80,7 +80,7 @@ module CIAX
           # Set items by DB
           cdb = dbi[:command]
           idx = cdb[:index]
-          @dispgrp = @displist.put_sec(atrb)
+          @dispgrp = @displist.put_sec
           cdb[:group].each do|gid,gat|
             sg = @dispgrp.put_grp(gid,gat['caption'])
             gat[:members].each do|id|

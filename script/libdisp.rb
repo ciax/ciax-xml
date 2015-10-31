@@ -14,8 +14,8 @@ module CIAX
     #   Attributes (one group): caption(text), members(array)
     SEPTBL = [['****', 2], ['===', 6], ['--', 9], ['_', 14]]
     attr_reader :valid_keys
-    def initialize(valid_keys: [], **atrb)
-      @valid_keys = type?(valid_keys,Array)
+    def initialize(atrb = {})
+      @valid_keys = Arrayx.new
       @atrb = atrb
     end
 
@@ -75,8 +75,8 @@ module CIAX
     # Parent of Group
     class Section < Hashx
       attr_accessor :index
-      def initialize(index: nil, valid_keys: [], **atrb)
-        @index = index ? type?(index,Disp) : Disp.new(valid_keys: valid_keys) 
+      def initialize(index: Disp.new, **atrb)
+        @index = index
         @atrb = atrb
       end
 
@@ -131,8 +131,8 @@ module CIAX
     # It has members of item
     class Group < Arrayx
       attr_accessor :index
-      def initialize(index: nil, valid_keys: [], **atrb)
-        @index = index ? type?(index,Disp) : Disp.new(valid_keys: valid_keys) 
+      def initialize(index: Disp.new, **atrb)
+        @index = index
         @atrb = atrb
       end
 

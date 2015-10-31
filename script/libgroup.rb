@@ -11,8 +11,8 @@ module CIAX
       super()
       @cls_color = 3
       @cfg = cfg.gen(self).update(atrb)
-      @valid_keys = @cfg[:valid_keys] || []
       @displist = Disp.new(@cfg)
+      @valid_keys = @displist.valid_keys
     end
 
     # crnt could have 'label',:body,'unit','group'

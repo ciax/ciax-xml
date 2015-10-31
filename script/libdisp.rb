@@ -16,18 +16,23 @@ module CIAX
     attr_reader :valid_keys, :sub
     def initialize(atrb = {})
       @valid_keys = Arrayx.new
-      @sub = {}
+      @sub = nil
       @atrb = atrb
+      @color = atrb.delete(:color)
     end
 
-    def put_sec
+    def put_sec(cap = nil, atrb = {})
       return @sub if @sub.is_a? Section
-      @sub = Section.new(self, @atrb)
+      at = {}.update(@atrb).update(atrb)
+      at[:caption] = cap
+      @sub = Section.new(self, at)
     end
 
-    def put_grp
+    def put_grp(cap = nil, atrb = {})
       return @sub if @sub.is_a? Group
-      @sub = Group.new(self, @atrb)
+      at = {}.update(@atrb).update(atrb)
+      at[:caption] = cap
+      @sub = Group.new(self, at)
     end
 
     def put_item(k, v)
@@ -66,14 +71,13 @@ module CIAX
     end
 
     def view(select = @valid_keys, atrb = {})
-      atrb = @atrb.dup.update(atrb)
       list = {}
       (@valid_keys & select).compact.sort.each_with_index do|id, num|
-        title = atrb[:line_number] ? "[#{num}](#{id})" : id
+        title = @atrb[:line_number] ? "[#{num}](#{id})" : id
         list[title] = self[id]
       end
       return if list.empty?
-      columns(list, atrb[:column], atrb[:level], mk_caption(atrb))
+      columns(list, atrb[:column] || @atrb[:column], atrb[:level], mk_caption(atrb))
     end
 
     def mk_caption(atrb = {})
@@ -142,8 +146,6 @@ module CIAX
       def to_s
         view
       end
-
-
     end
 
     # It has members of item
@@ -182,26 +184,29 @@ module CIAX
 
   if __FILE__ == $PROGRAM_NAME
     # Top level only
-    grp0 = Disp.new(caption: 'top',column: 3)
+    idx0 = Disp.new(column: 3)
+    grp0 = idx0.put_grp('top')
     10.times { |i| grp0.put_item("x#{i}", "caption #{i}") }
-    puts grp0.view
+    puts idx0
     puts
     # Three level groups
-    grp1 = Disp.new(column: 3, caption: 'top1', color: 4).put_sec
+    idx1 = Disp.new(column: 3)
+    grp1 = idx1.put_sec('top1',color: 4)
     2.times do |i|
       s11 = grp1.put_sec("g#{i}", "Group#{i}")
-      3.times do |j|
+      2.times do |j|
         s12 = s11.put_grp("sg#{j}", "SubGroup#{j}", color: 1)
-        4.times do |k|
+        2.times do |k|
           cstr = '*' * rand(5)
           s12.put_item("#{i}-#{j}-#{k}", "caption#{i}-#{j}-#{k},#{cstr}")
         end
       end
     end
-    puts grp1
+    puts idx1
     puts
     # Two level groups with item number
-    grp2 = Disp.new(line_number: true).put_sec
+    idx2 = Disp.new(line_number: true)
+    grp2 = idx2.put_sec('top2')
     3.times do |i|
       s21 = grp2.put_grp("g2#{i}", "Gp#{i}")
       3.times do |j|
@@ -209,14 +214,14 @@ module CIAX
         s21.put_item("#{i}-#{j}", "cp#{i}-#{j},#{cstr}")
       end
     end
-    puts grp2
+    puts idx2
     puts
     # Merging groups
-    grp1.merge_sub(grp2)
-    puts grp1
+    idx1.merge_sub(idx2)
+    puts idx1
     puts
     # Confirm merged index
-    grp1.index.valid_keys.delete('0-0')
-    puts grp1
+    idx1.valid_keys.delete('0-0')
+    puts idx1
   end
 end

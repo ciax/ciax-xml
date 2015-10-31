@@ -4,10 +4,11 @@ require 'liblist'
 module CIAX
   module Site
     # list object can be (Frm,App,Wat,Hex)
-    # attr can have [:top_layer]
+    # atrb can have [:top_layer]
     class Layer < CIAX::List
-      def initialize(attr = {})
-        super(Config.new, attr)
+      def initialize(atrb = {})
+        atrb[:column] = 3
+        super(Config.new, atrb)
         obj = (OPT['x'] ? Hex::List : Wat::List).new(@cfg)
         loop do
           put(m2id(obj.class, -2), obj)

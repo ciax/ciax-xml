@@ -6,7 +6,7 @@ module CIAX
   class Group < Hashx
     include CmdProc
     attr_reader :valid_keys
-    # dom_cfg keys: caption,color,column
+    # cfg keys: caption,color,column
     def initialize(cfg, atrb = {})
       super()
       @cls_color = 3

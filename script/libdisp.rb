@@ -81,11 +81,12 @@ module CIAX
       columns(list, atrb[:column], atrb[:level], mk_caption(atrb))
     end
 
-    def mk_caption(caption: nil, level: 0, color: nil, **_)
-      return unless caption
+    def mk_caption(atrb = {})
+      return unless atrb[:caption]
+      level=atrb[:level] || 0
       sep, col = SEPTBL[level]
       indent(level) +
-        caption(caption, color || col, sep)
+        caption(atrb[:caption], atrb[:color] || col, sep)
     end
 
     # Parent of Group

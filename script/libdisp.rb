@@ -18,7 +18,6 @@ module CIAX
       @valid_keys = Arrayx.new
       @sub = nil
       @atrb = atrb
-      @color = atrb.delete(:color)
     end
 
     def put_sec(cap = nil, atrb = {})

@@ -45,7 +45,6 @@ module CIAX
           name = m2id(cfg[:jump_class], 1).capitalize
           atrb[:caption] = "Switch #{name}s"
           atrb[:color] = 4
-          atrb[:column] = 3
           super
           def_proc do|ent|
             # Use shell() of top level class (ie. List.new.get(id).shell -> List.new.shell(id) )

@@ -56,9 +56,9 @@ module CIAX
         when 'project'
           read_proj(e)
         when 'group'
-          read_grp(e, @displist.put_sec)
+          store_grp(e, @displist.put_sec)
         else
-          read_doc(e, @displist)
+          store_doc(e, @displist)
         end
       end
 
@@ -74,24 +74,27 @@ module CIAX
         return if @projects.keys.empty?
         vl = @valid_proj.empty? ? @projects.keys : @projects.keys & @valid_proj
         sec = @displist.put_sec
-        vl.each do |pid|
-          proj=@projects[pid]
-          proj.each do |e|
-            if e.name == 'group'
-              read_grp(e, sec.put_sec(pid,proj['caption']))
-            else
-              read_doc(e, sec.put_grp(pid,proj['caption']))
-            end
+        vl.each { |pid| store_proj(sec, pid) }
+      end
+
+      def store_proj(sec, pid)
+        proj = @projects[pid]
+        cap = proj['caption']
+        proj.each do |e|
+          if e.name == 'group'
+            store_grp(e, sec.put_sec(pid, cap))
+          else
+            store_doc(e, sec.put_grp(pid, cap))
           end
         end
       end
 
-      def read_grp(e, sec)
-        sg = sec.put_grp( e['id'], e['caption'])
-        e.each { |e0| read_doc(e0, sg) }
+      def store_grp(e, sec)
+        sg = sec.put_grp(e['id'], e['caption'])
+        e.each { |e0| store_doc(e0, sg) }
       end
 
-      def read_doc(top, grp)
+      def store_doc(top, grp)
         id = top['id'] # site_id or macro_proj
         grp.put_item(id, top['label'])
         item = Hashx[top: top, attr: top.to_h, domain: {}, property: {}]

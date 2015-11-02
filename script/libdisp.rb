@@ -28,7 +28,7 @@ module CIAX
     end
 
     def put_item(k, v)
-      @sub.put_item(k,v)
+      @sub.put_item(k, v)
     end
 
     # For ver 1.9 or more
@@ -68,12 +68,14 @@ module CIAX
         list[title] = self[id]
       end
       return if list.empty?
-      columns(list, @atrb[:column], level, mk_caption(caption, color: color, level: level))
+      columns(list, @atrb[:column], level,
+              mk_caption(caption, color: color, level: level)
+             )
     end
 
     def mk_caption(caption, color: nil, level: nil)
       return unless caption
-      level=level.to_i
+      level = level.to_i
       sep, col = SEPTBL[level]
       indent(level) +
         caption(caption, color || col, sep)
@@ -81,7 +83,7 @@ module CIAX
 
     def merge_sub(other)
       update(other)
-      osub=type?(other,Disp).sub
+      osub = type?(other, Disp).sub
       rec_merge_index(osub)
       put_sec.update(osub)
       reset!
@@ -130,7 +132,9 @@ module CIAX
 
       def view
         ary = values.map(&:view).grep(/./)
-        ary.unshift(@index.mk_caption(@caption, color: @color, level: @level)) if @caption
+        if @caption
+          ary.unshift(@index.mk_caption(@caption, color: @color, level: @level))
+        end
         ary.join("\n")
       end
 
@@ -177,12 +181,12 @@ module CIAX
 
   if __FILE__ == $PROGRAM_NAME
     # Top level only
-    idx0 = Disp.new(column: 3,caption: 'top')
+    idx0 = Disp.new(column: 3, caption: 'top')
     10.times { |i| idx0.put_item("x#{i}", "caption #{i}") }
     puts idx0
     puts
     # Three level groups
-    idx1 = Disp.new(column: 3,caption: 'top1',color: 4)
+    idx1 = Disp.new(column: 3, caption: 'top1', color: 4)
     grp1 = idx1.put_sec
     2.times do |i|
       s11 = grp1.put_sec("g#{i}", "Group#{i}")

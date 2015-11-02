@@ -16,9 +16,9 @@ module CIAX
       #       => @data['crnt']<-@stat.data(picked)
       #       => check(@data['crnt'] <> @data['last']?)
       # Stat no changed -> clear exec, no eval
-      def ext_rsp(stat, sv_stat = {})
+      def ext_rsp(stat, sv_stat = Prompt.new)
         @stat = type?(stat, App::Status)
-        @sv_stat = type?(sv_stat, Hash)
+        @sv_stat = type?(sv_stat, Prompt)
         wdb = @dbi[:watch] || {}
         @windex = wdb[:index] || {}
         @interval = wdb['interval'].to_f if wdb.key?('interval')
@@ -72,6 +72,10 @@ module CIAX
         self
       end
 
+      # @data['active'] : Array of event ids which meet criteria
+      # @data['exec'] : Command queue which contains commands issued as event
+      # @data['block'] : Array of commands (units) which are blocked during busy
+      # @data['int'] : List of interrupt commands which is effectie during busy
       def upd_core
         return self unless @stat['time'] > @last_updated
         @last_updated = self['time'] = @stat['time']
@@ -95,7 +99,7 @@ module CIAX
         self
       end
 
-      # self['event'] is internal var
+      # @sv_stat['event'] is internal var
 
       ## Timing chart in active mode
       # isu   :__--__--__--==__--___
@@ -189,8 +193,8 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
 
-      list = { 't' => 'test conditions[key=val,..]' }
-      OPT.parse('t:', list)
+      list = { 't:' => 'test conditions[key=val,..]' }
+      OPT.parse('', list)
       begin
         stat = App::Status.new
         id = STDIN.tty? ? ARGV.shift : stat.read['id']

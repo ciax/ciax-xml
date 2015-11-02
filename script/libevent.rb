@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libprompt'
 require 'libstatus'
 require 'librerange'
 # CIAX-XML
@@ -54,7 +55,7 @@ module CIAX
         self
       end
 
-      def ext_rsp(stat, sv_stat = {})
+      def ext_rsp(stat, sv_stat = Prompt.new)
         extend(Rsp).ext_rsp(stat, sv_stat)
       end
     end

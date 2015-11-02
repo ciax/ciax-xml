@@ -7,9 +7,11 @@ require 'libapprsp'
 require 'libappsym'
 require 'libbuffer'
 require 'libinsdb'
-
+# CIAX-XML
 module CIAX
+  # Application Layer
   module App
+    # Exec class
     class Exe < Exe
       # cfg must have [:db],[:sub_list]
       attr_accessor :batch_interrupt
@@ -20,14 +22,10 @@ module CIAX
         @cfg['ver'] = @dbi['version']
         @cfg[:frm_site] = @dbi['frm_site']
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
-        @sv_stat = @sub.sv_stat.add_db('isu' => '*')
         @stat = Status.new.setdbi(@dbi)
         @batch_interrupt = []
-        @host ||= @dbi['host']
-        @port ||= @dbi['port']
-        @cobj.add_rem.add_hid
-        @cobj.rem.add_ext(Ext)
-        @cobj.rem.add_int(Int)
+        init_server
+        init_command
         opt_mode
       end
 
@@ -40,6 +38,21 @@ module CIAX
       end
 
       private
+
+      def init_server
+        @sv_stat = @sub.sv_stat.add_db('isu' => '*')
+        @sv_stat['busy'] = []
+        @host ||= @dbi['host']
+        @port ||= @dbi['port']
+        self
+      end
+
+      def init_command
+        @cobj.add_rem.add_hid
+        @cobj.rem.add_ext(Ext)
+        @cobj.rem.add_int(Int)
+        self
+      end
 
       def ext_test
         @mode = 'TEST'
@@ -83,25 +96,22 @@ module CIAX
         Hashx.new.update(@sv_stat).update(self).to_j
       end
 
+      # Process of command execution:
+      #  Main: Recieve App command with validation
+      #  Main: Set 'isu' flag in Server status
+      #  Main: Send command to queue of Buffer thread (Async)
+      #  Main: Send back App response with msg 'ISSUED' in Server Status
+      #    Buffer: Recieve the command from queue
+      #    Buffer: Break up to Frm commands (Batch)
+      #    Buffer: Reorder by priority and set command to outbuffer
+      #      Batch: Pick up the command from outbuffer by priority
+      #      Batch: Execute single Frm command
+      #      Batch: Get Frm command response
+      #      Batch: Update Field by Frm response
+      #      Batch: Repeat until outbuffer is empty
       def init_buf
         buf = Buffer.new(@stat['id'], @stat['ver'], @sv_stat)
-        buf.recv_proc do|args, src|
-          verbose { "Processing #{args}" }
-          @sub.exe(args, src)
-        end
-        buf.post_upd_procs << proc do
-          verbose { 'Propagate Buffer#upd -> Status#upd' }
-          @stat.upd
-        end
-        @sub.stat.flush_procs << proc do
-          verbose { 'Propagate Field#flush -> Buffer#upd' }
-          buf.upd
-        end
-        @cobj.rem.ext.def_proc do|ent, src, pri|
-          verbose { "#{@id}/Issuing:#{ent.id} from #{src} with priority #{pri}" }
-          buf.send(ent, pri)
-          'ISSUED'
-        end
+        # App: Sendign a first priority command (interrupt)
         @cobj.get('interrupt').def_proc do|_, src|
           @batch_interrupt.each do|args|
             verbose { "#{@id}/Issuing:#{args} for Interrupt" }
@@ -110,10 +120,34 @@ module CIAX
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
           'INTERRUPT'
         end
+        # App: Sending a general App command (Frm batch)
+        @cobj.rem.ext.def_proc do|ent, src, pri|
+          verbose { "#{@id}/Issuing:#{ent.id} from #{src} with priority #{pri}" }
+          buf.send(ent, pri)
+          'ISSUED'
+        end
+        # Frm: Execute single command
+        buf.recv_proc do|args, src|
+          verbose { "Processing #{args}" }
+          @sub.exe(args, src)
+        end
+        # Frm: Update after each single command finish
+        # @stat file output should be done before 'isu' flag is reset
+        buf.pre_upd_procs << proc do
+          verbose { 'Propagate Buffer#upd -> Status#upd' }
+          @stat.upd
+        end
+        # Field: Update after each Batch Frm command finish
+        @sub.stat.flush_procs << proc do
+          verbose { 'Propagate Field#flush -> Buffer#upd' }
+          buf.upd
+        end
+        # Start buffer server thread
         buf.server
       end
     end
 
+    # Application List
     class List < Site::List
       def initialize(cfg, top_list = nil)
         super(cfg, top_list || self, Frm::List)

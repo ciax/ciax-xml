@@ -44,13 +44,14 @@ module CIAX
       self
     end
 
-    # Send frm command batch (ary of ary)
+    # Send app entity
     def send(ent, n = 1)
-      type?(ent, Entity)
-      clear if n == 0
+      clear if n == 0 # interrupt
+      cid = type?(ent, Entity).id
       batch = ent[:batch]
       # batch is frm batch (ary of ary)
-      update('time' => now_msec, 'pri' => n, 'cid' => ent.id)
+      update('time' => now_msec, 'pri' => n, 'cid' => cid)
+      @sv_stat['busy'] << cid
       unless batch.empty?
         @sv_stat.set('isu')
         @q.push(pri: n, batch: batch)
@@ -103,11 +104,11 @@ module CIAX
     # Remove duplicated args and pop one
     def pick
       args = nil
-      @outbuf.size.times do|i|
+      @outbuf.each do|ary|
         if args
-          @outbuf[i].delete(args)
+          ary.delete(args)
         else
-          args = @outbuf[i].shift
+          args = ary.shift
         end
       end
       args

@@ -55,7 +55,7 @@ module CIAX
       end
 
       def ext_driver
-        sp=@dbi[:stream]
+        sp = @dbi[:stream]
         if OPT['s']
           @mode = 'SIM'
           iocmd = [SIMCMD, @id, @dbi['version']]

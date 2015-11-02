@@ -29,7 +29,7 @@ module CIAX
       @type = type
       # @displist is Display
       lid = 'list'
-      lid += "_#{PROJ}" if PROJ 
+      lid += "_#{PROJ}" if PROJ
       @displist = cache(lid, &:displist)
     end
 
@@ -60,7 +60,7 @@ module CIAX
         end
       else
         warning("Cache Refresh (#{id})")
-        res = yield(@doc ||= Xml::Doc.new(@type,PROJ))
+        res = yield(@doc ||= Xml::Doc.new(@type, PROJ))
         open(@marfile, 'w') do|f|
           f << Marshal.dump(res)
           verbose { "Cache Saved(#{id})" }

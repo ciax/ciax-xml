@@ -11,14 +11,14 @@ module CIAX
       super()
       @cls_color = 3
       @cfg = cfg.gen(self).update(atrb)
-      @displist = Disp.new(@cfg.pick(:caption,:color,:column,:line_number))
+      @displist = Disp.new(@cfg.pick(:caption, :color, :column, :line_number))
       @valid_keys = @displist.valid_keys
     end
 
     # crnt could have 'label',:body,'unit','group'
     def add_item(id, title = nil, crnt = {})
       crnt['label'] = title
-      @displist.put_item(id,title)
+      @displist.put_item(id, title)
       new_item(id, crnt)
     end
 
@@ -38,7 +38,7 @@ module CIAX
     end
 
     def add_dummy(id, title)
-      @displist.put_item(id,title) # never put into valid_key
+      @displist.put_item(id, title) # never put into valid_key
       self
     end
 

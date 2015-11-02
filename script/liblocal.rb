@@ -78,9 +78,9 @@ module CIAX
   end
 
   if __FILE__ == $PROGRAM_NAME
-    cfg=Config.new
-    loc=Local::Index.new(cfg).loc
-    vg=loc.add_view
+    cfg = Config.new
+    loc = Local::Index.new(cfg).loc
+    vg = loc.add_view
     loc.add_jump
     loc.add_shell
     puts loc.view_list

@@ -8,7 +8,7 @@ module CIAX
     class Frame
       include Msg
       attr_reader :cc
-      # terminator: used for detecting end of stream, cut off before processing in Frame#set(). 
+      # terminator: used for detecting end of stream, cut off before processing in Frame#set().
       #             never being included in CC range
       # delimiter: cut 'variable length data' by delimiter
       #             can be included in CC range
@@ -65,7 +65,7 @@ module CIAX
           verbose { "Cut by Size [#{len}]" }
           if len.to_i > @frame.size
             alert("Cut reached end [#{@frame.size}/#{len}] ")
-            str=@frame
+            str = @frame
             cc_add(str)
           else
             str = @frame.slice!(0, len.to_i)
@@ -75,10 +75,10 @@ module CIAX
           dlm = esc_code(del).to_s
           verbose { "Cut by Delimiter [#{dlm.inspect}]" }
           str, dlm, @frame = @frame.partition(dlm)
-          cc_add(str+dlm)
+          cc_add(str + dlm)
         else
           verbose { 'Cut all the rest' }
-          str=@frame
+          str = @frame
           cc_add(str)
         end
         if str.empty?

@@ -70,7 +70,7 @@ module CIAX
       cfg = Config.new
       cfg[:dev_list] = Wat::List.new(cfg).sub_list
       begin
-        cobj = Index.new(cfg, dbi: Db.new.get(PROJ||ARGV.shift))
+        cobj = Index.new(cfg, dbi: Db.new.get(PROJ || ARGV.shift))
         cobj.add_rem
         cobj.rem.def_proc(&:path)
         cobj.rem.add_ext(Ext)

@@ -20,41 +20,41 @@ module CIAX
 
       def doc_to_db(doc)
         dbi = Dbi[doc[:attr]]
-        init_command(doc,dbi)
-        init_status(doc,dbi)
+        init_command(doc, dbi)
+        init_status(doc, dbi)
         dbi
       end
 
       # Command Domain
-      def init_command(doc,dbi)
+      def init_command(doc, dbi)
         hcmd = dbi[:command] = {}
-        init_unit(doc[:domain]['alias'],hcmd)
+        init_unit(doc[:domain]['alias'], hcmd)
         self
       end
 
       # identical with App::Db#arc_unit()
-      def init_unit(e,hcmd)
+      def init_unit(e, hcmd)
         return unless e
         e.each do|e0|
           case e0.name
           when 'unit'
-            units=(hcmd[:unit]||={})
+            units = (hcmd[:unit] ||= {})
             uid = e0.attr2item(units)
-            uni=units[uid]
+            uni = units[uid]
             e0.each do|e1|
-              id = init_item(e1,hcmd)
+              id = init_item(e1, hcmd)
               (uni[:members] ||= []) << id
-              hcmd[:alias][id]['unit']=uid
+              hcmd[:alias][id]['unit'] = uid
             end
           when 'item'
-            init_item(e0,hcmd)
+            init_item(e0, hcmd)
           end
         end
         self
       end
 
-      def init_item(e0,hcmd)
-        id=e0.attr2item(hcmd[:alias] ||= {})
+      def init_item(e0, hcmd)
+        id = e0.attr2item(hcmd[:alias] ||= {})
         e0.each do|e1|
           (hcmd[:alias][id]['argv'] ||= []) << e1.text
         end
@@ -62,7 +62,7 @@ module CIAX
       end
 
       # Status Domain
-      def init_status(doc,dbi)
+      def init_status(doc, dbi)
         hst = dbi[:status] = {}
         grp = hst[:group] = {}
         (doc[:domain]['status'] || []).each do|e0|
@@ -70,8 +70,8 @@ module CIAX
           case e0.name
           when 'alias'
             e0.attr2item(p)
-            ag = (grp['alias']||= {:caption => 'Alias',:members =>[]})
-            ag[:members]  << e0['id']
+            ag = (grp['alias'] ||= { caption: 'Alias', members: [] })
+            ag[:members] << e0['id']
           else
             e0.attr2item(p, 'ref')
           end
@@ -81,7 +81,6 @@ module CIAX
         dbi['site_id'] = dbi['ins_id'] = dbi['id']
         dbi['frm_site'] ||= dbi['id']
       end
-
     end
 
     if __FILE__ == $PROGRAM_NAME

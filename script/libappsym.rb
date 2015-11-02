@@ -54,7 +54,7 @@ module CIAX
               verbose { "VIEW:Regexp:[#{sym['val']}] and [#{val}]" }
             end
             if numeric
-              self['msg'][key] = format(sym['msg'],val)
+              self['msg'][key] = format(sym['msg'], val)
             else
               self['msg'][key] = sym['msg'] || "N/A(#{val})"
             end

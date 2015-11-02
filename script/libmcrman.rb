@@ -22,7 +22,7 @@ module CIAX
             @parameter[:list] = @stat.keys
           end
           @host ||= @dbi['host']
-          @port ||= (@dbi['port'] || 55555)
+          @port ||= (@dbi['port'] || 55_555)
           @mode = 'MCR'
           opt_mode
         end

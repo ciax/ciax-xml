@@ -13,7 +13,7 @@ module CIAX
 
       def doc_to_db(doc)
         dbi = Dbi[doc[:attr]]
-        dbi[:stream]=doc[:property]['stream'].to_h
+        dbi[:stream] = doc[:property]['stream'].to_h
         init_command(doc, dbi)
         init_stat(doc, dbi)
         dbi
@@ -23,7 +23,7 @@ module CIAX
       def init_command(doc, dbi)
         frm = init_frame(doc[:domain]['cmdframe']) { |e, r| init_cmd(e, r) }
         idx = init_index(doc[:domain]['command']) { |e, r| init_cmd(e, r) }
-        grp = { 'main' => { :caption => 'Device Commands', :members => idx.keys } }
+        grp = { 'main' => { caption: 'Device Commands', members: idx.keys } }
         dbi[:command] = { group: grp, index: idx, frame: frm }
         dbi
       end

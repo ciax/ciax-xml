@@ -8,7 +8,7 @@ module CIAX
       attr_reader :db, :sub_list
       def initialize(cfg, top_list, sub_mod = nil)
         cfg[:top_list] ||= top_list
-        super(cfg,column: 2)
+        super(cfg, column: 2)
         @sub_list = @cfg[:sub_list] = sub_mod.new(cfg) if sub_mod
       end
 

@@ -42,17 +42,17 @@ module CIAX
           when 'unit'
             uid = e0.attr2item(@units)
             e0.each do|e1|
-              id = arc_command(e1,gid,uid)
+              id = arc_command(e1, gid, uid)
               @cidx[id]['unit'] = uid
               (@units[uid][:members] ||= []) << id
             end
           when 'item'
-            arc_command(e0,gid)
+            arc_command(e0, gid)
           end
         end
       end
 
-      def arc_command(e0,gid,uid=nil)
+      def arc_command(e0, gid, _uid = nil)
         id = e0.attr2item(@cidx)
         item = @cidx[id]
         item['group'] = gid

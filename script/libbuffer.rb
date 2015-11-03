@@ -27,10 +27,11 @@ module CIAX
   class Buffer < Varx
     NS_COLOR = 11
     # sv_stat: Server Status
-    def initialize(id, ver, sv_stat = {})
+    def initialize(id, ver, sv_stat = Prompt.new)
       super('issue', id, ver)
       update('pri' => '', 'cid' => '')
-      @sv_stat = type?(sv_stat, Prompt)
+      @sv_stat = type?(sv_stat, Prompt).add_db('isu' => '*')
+      @sv_stat.put('busy', [])
       # element of @q is bunch of frm args corresponding an appcmd
       @q = Queue.new
       @tid = nil
@@ -51,20 +52,19 @@ module CIAX
       batch = ent[:batch]
       # batch is frm batch (ary of ary)
       update('time' => now_msec, 'pri' => n, 'cid' => cid)
-      @sv_stat['busy'] << cid
       unless batch.empty?
+        @sv_stat['busy'] << cid
         @sv_stat.set('isu')
-        @q.push(pri: n, batch: batch)
+        @q.push(pri: n, batch: batch, cid: cid)
       end
       self
     end
 
     def server
       @tid = ThreadLoop.new("Buffer(#{self['id']})", 12) do
+        next if @q.empty? && exec
         verbose { 'SUB:Waiting' }
-        rcv = @q.shift
-        pri_sort(rcv[:pri], rcv[:batch])
-        exec
+        pri_sort(@q.shift)
       end
       self
     end
@@ -73,18 +73,29 @@ module CIAX
       @tid && @tid.alive?
     end
 
+    # @q can not be empty depending on @flush_proc
     def upd_core
-      # @q can not be empty depending on @flush_proc
-      @sv_stat.reset('isu') if @q.empty?
+      if @q.empty?
+        @sv_stat.reset('isu')
+        @sv_stat['busy'].clear
+      end
       self
     end
 
     private
 
-    # batch is command array (ary of ary)
-    def pri_sort(p, batch)
-      verbose { "SUB:Recieve [#{batch}] with priority[#{p}]" }
-      (@outbuf[p] ||= []).concat(batch)
+    # Structure of @outbuf (4 level arrays)
+    # [0] Array of interrupt Batch
+    # [1] Array of user issued Batch
+    # [2] Array of event driven Batch
+    # [3] Array of redular update Batch
+    #  Batch: [ Property, ..]
+    #  Property: [ Args, cid ]
+    #  Args: ['cmd','par','par'..]
+
+    def pri_sort(rcv)
+      buf = (@outbuf[rcv[:pri]] ||= [])
+      buf.concat rcv[:batch].map { |args| [args, rcv[:cid]] }
       verbose do
         @outbuf.map.with_index { |o, i| "SUB:Outbuf(#{i}) is [#{o}]\n" }
       end
@@ -104,12 +115,21 @@ module CIAX
     # Remove duplicated args and pop one
     def pick
       args = nil
-      @outbuf.each do|ary|
-        if args
-          ary.delete(args)
-        else
-          args = ary.shift
+      cids = []
+      @outbuf.each { |ary| args = fetch_arg(args, ary, cids) }
+      rep = @sv_stat['busy'] & cids
+      @sv_stat['busy'].replace(rep)
+      args
+    end
+
+    def fetch_arg(args, ary, cids)
+      if args
+        ary.delete_if do |p|
+          warning("remove duplicated cmd #{args.inspect}") if p[0] == args
         end
+      else
+        args, cid = ary.shift
+        cids << cid
       end
       args
     end

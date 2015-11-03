@@ -63,22 +63,26 @@ module CIAX
       end
 
       def read_proj(e)
-        proj = e['id']
-        @projects[proj] = e
+        pid = e['id']
+        @projects[pid] = e
         return if @valid_proj.empty?
-        return unless  @valid_proj.include?(proj) && e['include']
+        return unless  @valid_proj.include?(pid) && e['include']
         @valid_proj << e['include']
       end
 
       def valid_proj
         return if @projects.keys.empty?
         vl = @valid_proj.empty? ? @projects.keys : @projects.keys & @valid_proj
-        sec = @displist.put_sec
-        vl.each { |pid| store_proj(sec, pid) }
+        pl = vl.map{ |pid| @projects[pid] }
+        if @type == 'mdb'
+          pl.each { |proj| store_doc(proj, @displist) }
+        else
+          pl.each { |proj| store_proj(proj, @displist.put_sec) }
+        end
       end
 
-      def store_proj(sec, pid)
-        proj = @projects[pid]
+      def store_proj(proj, sec)
+        pid = proj['id']
         cap = proj['caption']
         proj.each do |e|
           if e.name == 'group'

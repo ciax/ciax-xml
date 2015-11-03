@@ -70,7 +70,7 @@ module CIAX
       cfg = Config.new
       cfg[:dev_list] = Wat::List.new(cfg).sub_list
       begin
-        cobj = Index.new(cfg, dbi: Db.new.get(PROJ || ARGV.shift))
+        cobj = Index.new(cfg, dbi: Db.new.get)
         cobj.add_rem
         cobj.rem.def_proc(&:path)
         cobj.rem.add_ext(Ext)
@@ -78,7 +78,7 @@ module CIAX
         puts ent.path
         puts ent.sequence.to_v
       rescue InvalidID
-        OPT.usage('[id] [cmd] (par)')
+        OPT.usage('[cmd] (par)')
       end
     end
   end

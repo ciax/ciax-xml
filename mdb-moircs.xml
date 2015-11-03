@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <project id="moircs" version="1" label="MOIRCS Macro" port="55555">
-    <group id="grp_mcr">
+    <group id="mo_main">
       <item id="stop" label="Emergency STOP">
         <exec site="mma" name="astop"/>
         <exec site="mmc" name="astop"/>
@@ -8990,7 +8990,7 @@
         <exec site="mfp" name="rbc"/>
       </item>
     </group>
-    <group id="select">
+    <group id="mo_select">
       <item id="slotX_00" label="Select Macro">
         <select site="mmc" var="abs" form="msg">
           <option val="/S00">

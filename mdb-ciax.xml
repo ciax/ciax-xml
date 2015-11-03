@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <project id="ciax" version="1" label="Cart Macro" port="55555">
-    <group id="gmain" caption="Macro Commands" column="2">
+    <group id="cx_main" caption="Macro Commands" column="2">
       <item id="runf" label="Run Forward to Tag">
         <goal label="On Tag?">
           <not form="data" site="crt" var="cps">0</not>
@@ -55,7 +55,7 @@
         </wait>
       </item>
     </group>
-    <group id="gsub" caption="Sub Macro Commands" column="2">
+    <group id="cx_sub" caption="Sub Macro Commands" column="2">
       <!--FIX Flange Jack Command-->
       <item id="fju0" label="InR0 Jkup at FIX [$1]">
         <par_str label="site">dso,dsi</par_str>

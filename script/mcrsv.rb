@@ -5,7 +5,12 @@ require 'libmcrman'
 module CIAX
   OPT.parse('csenmr')
   cfg = Config.new
-  cfg[:dev_list] = Wat::List.new(cfg).sub_list
-  Mcr::Man::Exe.new(cfg).ext_server.server
-  sleep
+  PROJ ||= ARGV.shift
+  begin
+    cfg[:dev_list] = Wat::List.new(cfg).sub_list
+    Mcr::Man::Exe.new(cfg).ext_server.server
+    sleep
+  rescue InvalidID
+    OPT.usage('[proj] [cmd] (par)')
+  end
 end

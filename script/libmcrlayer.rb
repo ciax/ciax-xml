@@ -16,6 +16,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libhexexe'
+      PROJ ||= ARGV.shift
       OPT.parse('els')
       begin
         Layer.new.ext_shell.shell

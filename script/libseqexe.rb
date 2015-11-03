@@ -237,12 +237,13 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         OPT.parse('icemntr')
+        PROJ ||= ARGV.shift
         cfg = Config.new
         al = Wat::List.new(cfg).sub_list # Take App List
         cfg[:dev_list] = al
-        mobj = Remote::Index.new(cfg, dbi: Db.new.get(PROJ))
-        mobj.add_rem.add_ext(Ext)
         begin
+          mobj = Remote::Index.new(cfg, dbi: Db.new.get(PROJ))
+          mobj.add_rem.add_ext(Ext)
           ent = mobj.set_cmd(ARGV)
           seq = Exe.new(ent)
           if OPT['i']
@@ -251,7 +252,9 @@ module CIAX
             seq.fork.ext_shell.shell
           end
         rescue InvalidCMD
-          OPT.usage('[mcr] [cmd] (par)')
+          OPT.usage('[cmd] (par)')
+        rescue InvalidID
+          OPT.usage('[proj] [cmd] (par)')
         end
       end
     end

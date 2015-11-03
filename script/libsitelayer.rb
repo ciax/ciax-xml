@@ -40,11 +40,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libhexexe'
       OPT.parse('els')
-      begin
-        Layer.new(site: ARGV.shift).ext_shell.shell
-      rescue InvalidID
-        OPT.usage('(opt) [id]')
-      end
+      Layer.new(site: ARGV.shift).ext_shell.shell
     end
   end
 end

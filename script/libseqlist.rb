@@ -114,17 +114,18 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         OPT.parse('tenr')
+        PROJ ||= ARGV.shift
         cfg = Config.new
         cfg[:dev_list] = Wat::List.new(cfg).sub_list # Take App List
-        list = List.new(PROJ, cfg).ext_drv.ext_shell
-        mobj = Remote::Index.new(cfg,  dbi: Db.new.get)
-        mobj.add_rem.add_ext(Ext)
-        cfg[:submcr_proc] = proc do|args, pid|
-          ent = mobj.set_cmd(args)
-          list.add(ent, pid)
-        end
         begin
+          mobj = Remote::Index.new(cfg,  dbi: Db.new.get(PROJ))
+          mobj.add_rem.add_ext(Ext)
+          cfg[:submcr_proc] = proc do|args, pid|
+            ent = mobj.set_cmd(args)
+            list.add(ent, pid)
+          end
           mobj.set_cmd if ARGV.empty?
+          list = List.new(PROJ, cfg).ext_drv.ext_shell
           ARGV.each do|cid|
             ent = mobj.set_cmd(cid.split(':'))
             list.add(ent)
@@ -132,6 +133,8 @@ module CIAX
           list.shell
         rescue InvalidCMD
           OPT.usage('[cmd(:par)] ...')
+        rescue InvalidID
+          OPT.usage('[proj] [cmd] (par)')
         end
       end
     end

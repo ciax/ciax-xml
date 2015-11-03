@@ -145,12 +145,15 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         OPT.parse('cmnlrt')
+        PROJ ||= ARGV.shift
         begin
           cfg = Config.new
           cfg[:dev_list] = Wat::List.new(cfg).sub_list
           Exe.new(cfg).ext_shell.shell
         rescue InvalidCMD
-          OPT.usage('[mcr] [cmd] (par)')
+          OPT.usage('[cmd] (par)')
+        rescue InvalidID
+          OPT.usage('[proj] [cmd] (par)')
         end
       end
     end

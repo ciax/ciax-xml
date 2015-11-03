@@ -58,7 +58,7 @@ module CIAX
 
           # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
           def add(ent, pid = '0')
-            seq = Exe.new(ent, pid).fork
+            seq = Exe.new(ent, pid).fork # start immediately
             seq.post_stat_procs << proc { upd }
             put(seq['id'], seq)
           end
@@ -117,7 +117,7 @@ module CIAX
         cfg = Config.new
         cfg[:dev_list] = Wat::List.new(cfg).sub_list # Take App List
         list = List.new(PROJ, cfg).ext_drv.ext_shell
-        mobj = Remote::Index.new(cfg,  dbi: Db.new.get(PROJ))
+        mobj = Remote::Index.new(cfg,  dbi: Db.new.get)
         mobj.add_rem.add_ext(Ext)
         cfg[:submcr_proc] = proc do|args, pid|
           ent = mobj.set_cmd(args)

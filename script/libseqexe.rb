@@ -4,7 +4,15 @@ require 'librecord'
 require 'libwatexe'
 
 module CIAX
-  # Modes             | Actual Status? | Force Entering | Query? | Moving | Retry Interval | Record?
+  # Modes Legend:
+  #   AS: Actual Status?
+  #   FE: Force Entering
+  #   QW: Query? (Interactive?)
+  #   MV: Moving
+  #   RI: Retry with Interval
+  #   RC: Recording?
+  # Mode Table
+  # Field             | AS  | FE  | QW  | MV  | RI| RC
   # TEST(default):    | NO  | YES | YES | NO  | 0 | NO
   # NONSTOP TEST(-n): | NO  | YES | NO  | NO  | 0 | NO
   # CHECK(-e):        | YES | YES | YES | NO  | 0 | YES
@@ -22,8 +30,10 @@ module CIAX
     module Seq
       class Exe < Exe
         # required cfg keys: app,db,body,stat,(:submcr_proc)
-        attr_reader :cfg, :record, :que_cmd, :que_res, :post_stat_procs, :pre_mcr_procs, :post_mcr_procs, :th_mcr
-        # cfg[:submcr_proc] for executing asynchronous submacro, which must returns hash with ['id']
+        attr_reader :cfg, :record, :que_cmd, :que_res,
+                    :post_stat_procs, :pre_mcr_procs, :post_mcr_procs, :th_mcr
+        # cfg[:submcr_proc] for executing asynchronous submacro,
+        #   which must returns hash with ['id']
         # ent should have [:sequence]'[:dev_list],[:submcr_proc]
         def initialize(ment, pid = '0')
           super(type?(ment, Entity).id)
@@ -36,13 +46,15 @@ module CIAX
             show { "Sub Macro #{args} issued\n" }
             { 'id' => 'dmy' }
           end
-          @post_stat_procs = [proc { verbose { 'Processing PostStatProcs' } }] # execute on stat changes
+          # execute on stat changes
+          @post_stat_procs = [proc { verbose { 'Processing PostStatProcs' } }]
           @pre_mcr_procs = [proc { verbose { 'Processing PreMcrProcs' } }]
           @post_mcr_procs = [proc { verbose { 'Processing PostMcrProcs' } }]
           @th_mcr = Thread.current
           @que_cmd = Queue.new
           @que_res = Queue.new
-          update('id' => @record['id'], 'cid' => @mcfg[:cid], 'pid' => pid, 'step' => 0, 'total_steps' => @sequence.size, 'stat' => 'ready')
+          update('id' => @record['id'], 'cid' => @mcfg[:cid], 'pid' => pid,
+                 'step' => 0, 'total_steps' => @sequence.size, 'stat' => 'ready')
           @running = []
           @depth = 0
           # For Thread mode
@@ -228,7 +240,7 @@ module CIAX
         cfg = Config.new
         al = Wat::List.new(cfg).sub_list # Take App List
         cfg[:dev_list] = al
-        mobj = Remote::Index.new(cfg, dbi: Db.new.get(PROJ))
+        mobj = Remote::Index.new(cfg, dbi: Db.new.get)
         mobj.add_rem.add_ext(Ext)
         begin
           ent = mobj.set_cmd(ARGV)
@@ -236,7 +248,7 @@ module CIAX
           if OPT['i']
             seq.macro
           else
-            seq.ext_shell.shell
+            seq.fork.ext_shell.shell
           end
         rescue InvalidCMD
           OPT.usage('[mcr] [cmd] (par)')

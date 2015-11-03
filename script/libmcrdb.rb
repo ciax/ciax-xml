@@ -9,13 +9,6 @@ module CIAX
         super('mdb')
       end
 
-      def get
-        doc = Hashx.new
-        ary = @displist.keys
-        doc = super(ary.shift)
-        ary.inject(doc){|doc,id| doc.deep_update(super(id)) }
-      end
-
       private
 
       def doc_to_db(doc)
@@ -106,7 +99,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       begin
-        mdb = Db.new.get #(PROJ || ARGV.shift)
+        mdb = Db.new.get(PROJ)
       rescue InvalidID
         Msg.usage '[id] (key) ..'
       end

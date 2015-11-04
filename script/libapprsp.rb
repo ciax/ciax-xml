@@ -1,8 +1,10 @@
 #!/usr/bin/ruby
 require 'libstatus'
-
+# CIAX-XML
 module CIAX
+  # Application Layer
   module App
+    # Convert Response
     module Rsp
       # @< (base),(prefix)
       def self.extended(obj)
@@ -26,38 +28,13 @@ module CIAX
               @data[id] ||= (hash['default'] || '')
               next
             end
-            case type = hash['type']
+            case hash['type']
             when 'binary'
-              bary = flds.map { |e| get_bin(e) }
-              case hash['operation']
-              when 'uneven'
-                ba = bary.inject { |a, e| a.to_i & e.to_i }
-                bo = bary.inject { |a, e| a.to_i | e.to_i }
-                binstr = (ba ^ bo).to_s
-              else
-                binstr = bary.join
-              end
-              data = expr('0b' + binstr)
-              verbose { "GetBinary[#{data}](#{id})" }
+              data = conv_bin(hash)
             else
-              ary = flds.map { |e| get_field(e) }
-              case type
-              when 'float', 'integer'
-                sign = (/^[+-]$/ =~ ary[0]) ? (ary.shift + '1').to_i : 1
-                data = ary.map(&:to_f).inject(0) { |a, e| a + e }
-                data /= ary.size if hash['opration'] == 'average'
-                case type
-                when 'float'
-                  data = (sign * data).to_f
-                  verbose { "GetFloat[#{data}](#{id})" }
-                when 'integer'
-                  data = (sign * data).to_i
-                  verbose { "GetInteger[#{data}](#{id})" }
-                end
-              else
-                data = ary.join
-              end
+              data = conv_num(hash)
             end
+            verbose { "GetData[#{data}](#{id})" }
             if hash.key?('formula')
               f = hash['formula'].gsub(/\$#/, data.to_s)
               data = expr(f)
@@ -72,20 +49,45 @@ module CIAX
         self
       end
 
+      def conv_bin(hash)
+        bary = hash[:fields].map { |e| get_bin(e) }
+        case hash['operation']
+        when 'uneven'
+          ba = bary.inject { |a, e| a.to_i & e.to_i }
+          bo = bary.inject { |a, e| a.to_i | e.to_i }
+          binstr = (ba ^ bo).to_s
+        else
+          binstr = bary.join
+        end
+        data = expr('0b' + binstr)
+        data
+      end
+
+      def conv_num(hash)
+        ary = hash[:fields].map { |e| get_field(e) }
+        case (type = hash['type'])
+        when 'float', 'integer'
+          sign = (/^[+-]$/ =~ ary[0]) ? (ary.shift + '1').to_i : 1
+          data = ary.map(&:to_f).inject(0) { |a, e| a + e }
+          data /= ary.size if hash['opration'] == 'average'
+          case type
+          when 'float'
+            data = (sign * data).to_f
+          when 'integer'
+            data = (sign * data).to_i
+          end
+        else
+          data = ary.join
+        end
+        data
+      end
+
       def get_field(e)
-        type?(e, Hash)
-        fld = e['ref'] || Msg.give_up("No field Key in #{e}")
+        fld = type?(e, Hash)['ref'] || give_up("No field Key in #{e}")
         data = @field.get(fld)
         verbose(data.empty?) { "NoFieldContent in [#{fld}]" }
-        data = e[:conv][data] if e[:conv]
-        if /true|1/ =~ e['sign']
-          verbose { "ConvertField[#{fld}]=[#{data.inspect}]" }
-          if data == e['negative']
-            data = '-'
-          else
-            data = '+'
-          end
-        end
+        data = e[:conv][data] if e.key?(:conv)
+        data = (data == e['negative']) ? '-' : '+' if /true|1/ =~ e['sign']
         verbose { "GetField[#{fld}]=[#{data.inspect}]" }
         data
       end
@@ -111,6 +113,7 @@ module CIAX
       end
     end
 
+    # Add extend method in Status
     class Status
       def ext_rsp(field)
         extend(App::Rsp).ext_rsp(field)

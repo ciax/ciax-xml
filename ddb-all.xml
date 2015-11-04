@@ -37,8 +37,6 @@
     <site id="mh1" frm_id="psp" host="merope" port="24621" iocmd="socat - tcp:merope:59999" label="MOIRCS Main/Carrousel Heater"/>
     <site id="mh2" frm_id="psp" host="atlas" port="24622" iocmd="socat - tcp:atlas:59999" label="MOIRCS Main Heater"/>
     <site id="mmf" frm_id="mic" host="moircsobcp" port="24623" iocmd="socat - tcp:localhost:19990" label="MOIRCS Focus Actuator"/>
-    <site id="sdm" frm_id="slo" host="moircsobcp" port="24699" iocmd="socat - tcp:localhost:10001" label="Slosyn dummy"/>
-    <site id="fdm" frm_id="cfp" host="moircsobcp" port="24698" iocmd="socat - tcp:localhost:10002" label="Field Point dummy"/>
   </project>
   <project id="cmp" caption="Helium Compressor" column="2">
     <site id="cro" frm_id="bbe" host="ciax" port="24106" iocmd="socat - tcp:ltc-o:4003" label="OPT Helium Compressor 2"/>
@@ -47,5 +45,9 @@
     <site id="cri" frm_id="bbe" host="ciax" port="24110" iocmd="socat - tcp:ltc-i:4003" label="IR Helium Compressor 2"/>
     <site id="cf1" frm_id="k3n" host="ciax" port="24201" iocmd="socat - tcp:ltt-o:4001" label="S1 HC Coolant Flow"/>
     <site id="cfa" frm_id="k3n" host="ciax" port="24210" iocmd="socat - tcp:ltt-i:4015" label="S10 HC Coolant Flow"/>
+  </project>
+  <project id="dmy" caption="Dummy Simulator" column="2">
+    <site id="tsl" frm_id="slo" host="localhost" port="24699" iocmd="socat - tcp:localhost:10001" label="Slosyn dummy"/>
+    <site id="tfp" frm_id="cfp" host="localhost" port="24698" iocmd="socat - tcp:localhost:10002" label="Field Point dummy"/>
   </project>
 </ddb>

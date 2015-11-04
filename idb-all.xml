@@ -148,4 +148,10 @@
       </instance>
     </group>
   </project>
+  <project id="dmy" caption="Dummy simulator">
+    <group id="dmy" caption="Dummy simulator">
+      <instance id="tsl" app_id="slo" frm_site="tsl" host="localhost" port="25699" label="TEST Slosyn"/>
+      <instance id="tfp" app_id="cfp" frm_site="tfp" host="localhost" port="25698" label="TEST Field Point"/>
+    </group>
+  </project>
 </idb>

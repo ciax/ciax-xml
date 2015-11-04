@@ -12,7 +12,7 @@ module CIAX
         super('hex', @stat['id'], @stat['ver'])
         # Server Status
         id = self['id'] || id_err("NO ID(#{id}) in Stat")
-        @sv_stat = sv_stat || Prompt.new(id)
+        @sv_stat = type?(sv_stat || Prompt.new(id), Prompt)
         file = View.sdb(id) || id_err("Hex/Can't found sdb_#{id}.txt")
         @res = ['%', id, '_', '0', '0', '_', '']
         @list = []

@@ -30,7 +30,7 @@ module CIAX
     def initialize(id, ver, sv_stat = nil)
       super('issue', id, ver)
       update('pri' => '', 'cid' => '')
-      @sv_stat = sv_stat || Prompt.new(id)
+      @sv_stat = type?(sv_stat || Prompt.new(id), Prompt)
       @sv_stat.add_db('isu' => '*').put('busy', [])
       # element of @q is bunch of frm args corresponding an appcmd
       @q = Queue.new

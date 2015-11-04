@@ -26,7 +26,7 @@ for did in ${ids:-$(_getdid)}; do
     echo "$C2#### $frm_id($did) ####$C0"
     output="$HOME/.var/json/field_${did}.json"
     _getstat ${cmds:-$(_getcmd $frm_id)} || break
-    [ -e $output ] && json-view $output
+    [ -e $output ] && json_view $output
     read -t 0 && break
 done
 

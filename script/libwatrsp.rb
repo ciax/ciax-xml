@@ -37,7 +37,8 @@ module CIAX
       end
 
       def queue(src, pri, batch = [])
-        @last_updated = self['time'] = now_msec
+        pre_upd
+        @last_updated = self['time']
         batch.each do|args|
           @data['exec'] << [src, pri, args]
         end
@@ -120,7 +121,7 @@ module CIAX
 
       def upd_event
         if @sv_stat['event']
-          @data['act_end'] = now_msec
+          pre_upd
           if !active? && !@sv_stat['isu']
             @sv_stat.reset('event')
             @on_deact_procs.each { |p| p.call(self) }

@@ -83,7 +83,6 @@ module CIAX
           end
         end
         verbose { "Evaluated[#{key}]=[#{@data[key]}]" }
-        self['time'] = now_msec
         upd
         val
       end

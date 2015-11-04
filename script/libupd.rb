@@ -23,10 +23,18 @@ module CIAX
       post_upd # Save & Update super layer
     end
 
-    def put(key, val)
+    def read(json_str = nil)
+      pre_upd
       super
-      upd
-      val
+    ensure
+      post_upd
+    end
+
+    def put(key, val)
+      pre_upd
+      super
+    ensure
+      post_upd
     end
 
     private

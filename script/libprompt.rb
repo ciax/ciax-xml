@@ -17,15 +17,21 @@ module CIAX
     end
 
     def set(key)
+      pre_upd
       self[key] = true
       verbose { "Set [#{key}]" }
-      upd
+      self
+    ensure
+      post_upd
     end
 
     def reset(key)
+      pre_upd
       self[key] = false
       verbose { "Reset [#{key}]" }
-      upd
+      self
+    ensure
+      post_upd
     end
 
     def put(key, val)
@@ -35,11 +41,14 @@ module CIAX
 
     # Subtract and merge to self data, return rest of the data
     def sub(input)
+      pre_upd
       hash = input.dup
       @db.keys.each do|k|
         self[k] = hash[k] ? hash.delete(k) : false
       end
       hash
+    ensure
+      post_upd
     end
 
     def msg(msg = nil)

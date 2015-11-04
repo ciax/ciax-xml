@@ -67,7 +67,6 @@ module CIAX
     def _setdata
       verbose { 'Convert [:data] to @data' }
       @data = delete(@data_name).extend(Enumx)
-      self['time'] ||= now_msec
       self
     end
   end
@@ -76,19 +75,19 @@ module CIAX
   class DataH < Datax
     # Update with strings (key=val,key=val,..)
     def str_update(str)
+      pre_upd
       type?(str, String)
       str.split(',').each do|i|
         k, v = i.split('=')
         @data[k] = v
       end
-      self['time'] = now_msec
     ensure
       post_upd
     end
 
     def put(key, val) # super should be placed at the end of method
+      pre_upd
       @data[key] = val
-      self['time'] = now_msec
       val
     ensure
       post_upd
@@ -96,17 +95,17 @@ module CIAX
 
     # Replace value
     def rep(key, val)
+      pre_upd
       Msg.par_err("No such Key [#{key}]") unless @data.key?(key)
       (@data[key] ||= '').replace(val)
-      self['time'] = now_msec
       val
     ensure
       post_upd
     end
 
     def del(key) # super should be placed at the end of method
+      pre_upd
       @data.delete(key)
-      self['time'] = now_msec
       self
     ensure
       post_upd

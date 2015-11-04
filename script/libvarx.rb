@@ -18,6 +18,7 @@ module CIAX
       self['host'] = host || `hostname`.strip
       # Setting (Not shown in JSON)
       @thread = Thread.current # For Thread safe
+      @pre_upd_procs << proc{ self['time'] = now_msec }
     end
 
     def setdbi(dbi)

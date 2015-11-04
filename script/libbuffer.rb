@@ -47,17 +47,20 @@ module CIAX
 
     # Send app entity
     def send(ent, n = 1)
+      pre_upd
       clear if n == 0 # interrupt
       cid = type?(ent, Entity).id
       batch = ent[:batch]
       # batch is frm batch (ary of ary)
-      update('time' => now_msec, 'pri' => n, 'cid' => cid)
+      update('pri' => n, 'cid' => cid)
       unless batch.empty?
         @sv_stat['busy'] << cid
         @sv_stat.set('isu')
         @q.push(pri: n, batch: batch, cid: cid)
       end
       self
+    ensure
+      post_upd
     end
 
     def server

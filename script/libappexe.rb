@@ -132,7 +132,7 @@ module CIAX
         end
         # Frm: Update after each single command finish
         # @stat file output should be done before 'isu' flag is reset
-        buf.pre_upd_procs << proc do
+        buf.post_upd_procs << proc do
           verbose { 'Propagate Buffer#upd -> Status#upd' }
           @stat.upd
         end

@@ -92,12 +92,6 @@
 
 ## Related to Buffer
 
-  @flush_proc
-    structure: Proc
-    args: Buffer(self)
-    called: flush
-    set_methods: flush_proc
-
   @send_proc  
     structure: Proc
     args: Entity

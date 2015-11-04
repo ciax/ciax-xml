@@ -35,7 +35,6 @@ module CIAX
       # element of @q is bunch of frm args corresponding an appcmd
       @q = Queue.new
       @tid = nil
-      @flush_proc = proc {}
       @recv_proc = proc {}
       clear
     end
@@ -50,6 +49,7 @@ module CIAX
       pre_upd
       clear if n == 0 # interrupt
       cid = type?(ent, Entity).id
+      verbose{ "Send to Buffer [#{cid}]" }
       batch = ent[:batch]
       # batch is frm batch (ary of ary)
       update('pri' => n, 'cid' => cid)
@@ -76,15 +76,6 @@ module CIAX
       @tid && @tid.alive?
     end
 
-    # @q can not be empty depending on @flush_proc
-    def upd_core
-      if @q.empty?
-        @sv_stat.reset('isu')
-        @sv_stat['busy'].clear
-      end
-      self
-    end
-
     private
 
     # Structure of @outbuf (4 level arrays)
@@ -109,7 +100,9 @@ module CIAX
       while (args = pick)
         @recv_proc.call(args, 'buffer')
       end
-      upd
+      @sv_stat.reset('isu')
+      @sv_stat['busy'].clear
+      false
     rescue
       clear
       alert($ERROR_INFO.to_s)

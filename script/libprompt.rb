@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
-require 'libupd'
+require 'libvarx'
 module CIAX
   # For server status through all layers
-  class Prompt < Upd
+  class Prompt < Varx
     NS_COLOR = 9
     attr_reader :db
-    def initialize
-      super()
+    def initialize(id)
+      super('server',id)
       @db = {}
       self['msg'] = ''
     end

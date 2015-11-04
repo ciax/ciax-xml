@@ -55,7 +55,7 @@ module CIAX
         self
       end
 
-      def ext_rsp(stat, sv_stat = Prompt.new)
+      def ext_rsp(stat, sv_stat = nil)
         extend(Rsp).ext_rsp(stat, sv_stat)
       end
     end

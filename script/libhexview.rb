@@ -7,12 +7,12 @@ module CIAX
   module Hex
     class View < Varx
       # hint should have server status (isu,watch,exe..) like App::Exe
-      def initialize(stat, sv_stat = Prompt.new)
+      def initialize(stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
         super('hex', @stat['id'], @stat['ver'])
-        @sv_stat = type?(sv_stat, Prompt)
         # Server Status
         id = self['id'] || id_err("NO ID(#{id}) in Stat")
+        @sv_stat = sv_stat || Prompt.new(id)
         file = View.sdb(id) || id_err("Hex/Can't found sdb_#{id}.txt")
         @res = ['%', id, '_', '0', '0', '_', '']
         @list = []

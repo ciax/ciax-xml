@@ -16,9 +16,10 @@ module CIAX
       #       => @data['crnt']<-@stat.data(picked)
       #       => check(@data['crnt'] <> @data['last']?)
       # Stat no changed -> clear exec, no eval
-      def ext_rsp(stat, sv_stat = Prompt.new)
+      def ext_rsp(stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
-        @sv_stat = type?(sv_stat, Prompt)
+        @sv_stat = sv_stat || Prompt.new(self['id'])
+        type?(sv_stat, Prompt)
         wdb = @dbi[:watch] || {}
         @windex = wdb[:index] || {}
         @interval = wdb['interval'].to_f if wdb.key?('interval')
@@ -99,15 +100,15 @@ module CIAX
         self
       end
 
-      # @sv_stat['event'] is internal var
+      # @sv_stat['busy'] is internal var
 
       ## Timing chart in active mode
       # isu   :__--__--__--==__--___
-      # act?  :___--------__----____
-      # evnt :_____---------------__
+      # actv  :___--------__----____
+      # busy :_____---------------__
 
       ## Trigger Table
-      # isu | act?| evnt| action
+      # isu | actv| busy| action
       #  o  |  o  |  o  |  -
       #  o  |  x  |  o  |  -
       #  o  |  o  |  x  |  up

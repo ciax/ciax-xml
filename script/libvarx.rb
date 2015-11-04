@@ -14,7 +14,7 @@ module CIAX
       # Headers
       self['time'] = now_msec
       self['id'] = id
-      self['ver'] = ver
+      self['ver'] = ver if ver
       self['host'] = host || `hostname`.strip
       # Setting (Not shown in JSON)
       @thread = Thread.current # For Thread safe

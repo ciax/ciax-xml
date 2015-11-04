@@ -27,11 +27,11 @@ module CIAX
   class Buffer < Varx
     NS_COLOR = 11
     # sv_stat: Server Status
-    def initialize(id, ver, sv_stat = Prompt.new)
+    def initialize(id, ver, sv_stat = nil)
       super('issue', id, ver)
       update('pri' => '', 'cid' => '')
-      @sv_stat = type?(sv_stat, Prompt).add_db('isu' => '*')
-      @sv_stat.put('busy', [])
+      @sv_stat = sv_stat || Prompt.new(id)
+      @sv_stat.add_db('isu' => '*').put('busy', [])
       # element of @q is bunch of frm args corresponding an appcmd
       @q = Queue.new
       @tid = nil

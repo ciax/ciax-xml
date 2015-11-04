@@ -133,13 +133,13 @@ module CIAX
         # Frm: Update after each single command finish
         # @stat file output should be done before 'isu' flag is reset
         buf.post_upd_procs << proc do
-          verbose { 'Propagate Buffer#upd -> Status#upd' }
-          @stat.upd
+          verbose { 'Propagate Buffer#upd -> Field#flush' }
+          @sub.stat.flush
         end
         # Field: Update after each Batch Frm command finish
         @sub.stat.flush_procs << proc do
-          verbose { 'Propagate Field#flush -> Buffer#upd' }
-          buf.upd
+          verbose { 'Propagate Field#flush -> Status#upd' }
+          @stat.upd
         end
         # Start buffer server thread
         buf.server

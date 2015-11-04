@@ -59,8 +59,6 @@ module CIAX
         @q.push(pri: n, batch: batch, cid: cid)
       end
       self
-    ensure
-      post_upd
     end
 
     def server
@@ -100,8 +98,7 @@ module CIAX
       while (args = pick)
         @recv_proc.call(args, 'buffer')
       end
-      @sv_stat.reset('isu')
-      @sv_stat['busy'].clear
+      clear
       false
     rescue
       clear
@@ -113,8 +110,9 @@ module CIAX
       args = nil
       cids = []
       @outbuf.each { |ary| args = fetch_arg(args, ary, cids) }
-      rep = @sv_stat['busy'] & cids
-      @sv_stat['busy'].replace(rep)
+      cids.uniq!
+      post_upd if cids.size < @sv_stat['busy'].size
+      @sv_stat['busy'].replace(cids)
       args
     end
 
@@ -132,9 +130,11 @@ module CIAX
 
     def clear
       @sv_stat.reset('isu')
+      @sv_stat['busy'].clear
       @outbuf = [[], [], []]
       @q.clear
       @tid && @tid.run
+      post_upd
     end
   end
 end

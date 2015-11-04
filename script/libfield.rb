@@ -68,6 +68,7 @@ module CIAX
 
       # Replace value with mixed key
       def rep(key, val)
+        pre_upd
         akey = key.split(':')
         Msg.par_err('No such Key') unless @data.key?(akey.shift)
         conv = subst(val).to_s
@@ -83,10 +84,12 @@ module CIAX
           end
         end
         verbose { "Evaluated[#{key}]=[#{@data[key]}]" }
-        upd
         val
+      ensure
+        post_upd
       end
 
+      # For propagate to Status update
       def flush
         @flush_procs.each { |p| p.call(self) }
         self

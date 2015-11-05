@@ -2,24 +2,21 @@
 require 'libwatrsp'
 
 # View is not used for computing, just for apperance for user.
-# So the convert process (upd) will be included in to_s
+# So the convert process (upd_view) will be included in to_s
 module CIAX
   # Watch Layer
   module Wat
     # Decorate the event data (Put caption,symbole,etc.) from WDB
-    class View < Upd
+    class View < Hashx
       def initialize(event)
         super()
         @event = type?(event, Event)
         wdb = type?(event.dbi, Dbi)[:watch]
         init_stat(wdb || { index: [] })
-        @event.post_upd_procs << proc do
-          verbose { 'Propagate Event#upd -> upd' }
-          upd
-        end
       end
 
       def to_v
+        upd_view
         vw = ''
         view_time(vw)
         vw << item('Issuing', self['exec'])
@@ -54,7 +51,7 @@ module CIAX
         self
       end
 
-      def upd_core
+      def upd_view
         self['time'] = @event['time']
         %w(exec block int act_start act_end upd_next).each do |id|
           self[id] = @event.get(id)

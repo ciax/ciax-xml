@@ -2,12 +2,12 @@
 require 'libappsym'
 
 # View is not used for computing, just for apperance for user.
-# So the convert process (upd) will be included in to_v
+# So the convert process (upd_view) will be included in to_v
 # Updated at to_v.
 module CIAX
   module App
     # Hash of App Groups
-    class View < Upd
+    class View < Hashx
       def initialize(stat)
         super()
         @stat = type?(stat, Status)
@@ -15,15 +15,12 @@ module CIAX
         @group = adbs[:group]
         @index = adbs[:index].dup
         @index.update(adbs[:alias]) if adbs.key?(:alias)
-        @stat.post_upd_procs << proc do
-          verbose { 'Propagate Status#upd -> upd' }
-          upd
-        end
         # Just additional data should be provided
         %w(data class msg).each { |key| stat[key] ||= {} }
       end
 
       def to_csv
+        upd_view
         str = ''
         @group.values.each do|gdb|
           cap = gdb['caption'] || next
@@ -40,7 +37,7 @@ module CIAX
       end
 
       def to_v
-        upd
+        upd_view
         cm = Hash.new(2).update('active' => 5, 'alarm' => 1, 'warn' => 3, 'hide' => 0)
         lines = []
         values.each do|v|
@@ -58,7 +55,7 @@ module CIAX
 
       private
 
-      def upd_core
+      def upd_view
         self['gtime'] = { 'caption' => '', 'lines' => [hash = {}] }
         hash['time'] = { 'label' => 'TIMESTAMP', 'msg' => Msg.date(@stat['time']) }
         hash['elapsed'] = { 'label' => 'ELAPSED', 'msg' => Msg.elps_date(@stat['time']) }

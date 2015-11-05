@@ -37,7 +37,7 @@ module CIAX
     # src can be 'local','shell','auto','udp:xxx'
     def exe(args, src = 'local', pri = 1)
       type?(args, Array)
-      verbose { "Command #{args} recieved from '#{src}' as ##{pri}" }
+      verbose { "Executing Command #{args} from '#{src}' as ##{pri}" }
       @pre_exe_procs.each { |p| p.call(args, src) }
       @sv_stat.msg(@cobj.set_cmd(args).exe_cmd(src, pri))
       @post_exe_procs.each { |p| p.call(args, src) }

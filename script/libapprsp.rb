@@ -49,7 +49,6 @@ module CIAX
           end
         end
         self['time'] = @field['time']
-        verbose { "Update(#{self['time']})" }
         self
       end
 

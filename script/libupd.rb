@@ -8,16 +8,16 @@ module CIAX
       super()
       # Updater
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @pre_upd_procs = [proc { verbose { 'Processing PreUpdProcs' } }]
+      @pre_upd_procs = []
       # Proc Array for Post-Process of Update Propagation to the upper Layers
-      @post_upd_procs = [proc { verbose { 'Processing PostUpdProcs' } }]
+      @post_upd_procs = []
     end
 
     # update after processing, never iniherit (use upd_core() instead)
     def upd
       pre_upd # Time setting, Loading file at client
-      verbose { 'Update' }
       upd_core # Data conversion
+      verbose { "Update(#{_time_id}) Core" }
       self
     ensure
       post_upd # Save & Update super layer
@@ -41,6 +41,7 @@ module CIAX
 
     def pre_upd
       @pre_upd_procs.each { |p| p.call(self) }
+      verbose { "Update(#{_time_id}) Pre Procs" }
       self
     end
 
@@ -51,7 +52,12 @@ module CIAX
 
     def post_upd
       @post_upd_procs.each { |p| p.call(self) }
+      verbose { "Update(#{_time_id}) Post Procs" }
       self
+    end
+
+    def _time_id
+      self['time'].to_s[-6,6]
     end
   end
 end

@@ -29,7 +29,7 @@ module CIAX
         end
         @pre_upd_procs << proc { self['time'] = @stat['time'] }
         @stat.post_upd_procs << proc do
-          verbose { 'Propagate Status#upd -> upd' }
+          verbose { 'Propagate Status#upd -> Event#upd' }
           upd
         end
         init_auto(wdb)

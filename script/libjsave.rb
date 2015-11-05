@@ -13,10 +13,7 @@ module CIAX
       verbose { "Save Initialize [#{file_base}]" }
       self['id'] || Msg.cfg_err('No ID')
       @jsondir = vardir('json')
-      @post_upd_procs << proc do
-        verbose { 'Propagate upd -> Save#save' }
-        save
-      end
+      @post_upd_procs << proc { save }
       self
     end
 

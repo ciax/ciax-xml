@@ -54,7 +54,7 @@ module CIAX
 
       def ext_non_client
         @stat.post_upd_procs << proc do|ev|
-          verbose { 'Propagate Event#upd -> upd' }
+          verbose { 'Propagate Event#upd -> Watch#upd' }
           block = ev.get('block').map { |id, par| par ? nil : id }.compact
           @cobj.rem.ext.valid_sub(block)
         end

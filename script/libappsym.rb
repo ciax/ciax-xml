@@ -17,7 +17,7 @@ module CIAX
         self['class'] = {}
         self['msg'] = {}
         @post_upd_procs << proc do # post process
-          verbose { 'Propagate upd -> Symbol#upd' }
+          verbose { 'Propagate Status#upd -> Symbol#upd' }
           store_sym(adbs[:index].dup.update(adbs[:alias] || {}))
         end
         self

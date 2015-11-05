@@ -47,6 +47,7 @@ module CIAX
           @frame.cc_check(@cache.delete('cc'))
         end
         @data = @cache
+        verbose{ 'Propagate Stream#rcv Field#upd' }
         self
       ensure
         post_upd

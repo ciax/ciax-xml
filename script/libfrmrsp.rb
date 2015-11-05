@@ -16,9 +16,7 @@ module CIAX
       end
 
       # Ent is needed which includes response_id and cmd_parameters
-      # Takes a block for taking stream data
-      def ext_rsp(&input_proc)
-        @input_proc = input_proc
+      def ext_rsp
         type?(@dbi, Dbi)
         fdbr = @dbi[:response]
         @skel = fdbr[:frame]
@@ -33,14 +31,13 @@ module CIAX
 
       # Convert with corresponding cmd
       def conv(ent,stream)
-        pre_upd
         @sel = Hash[@skel]
+        self['time'] = type?(stream, Stream)['time']
         rid = type?(ent, Entity)['response']
         @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
         @sel.update(@fds[rid])
         @sel[:body] = ent.deep_subst(@sel[:body])
         verbose { "Selected DB for #{rid}\n" + @sel.inspect }
-        # Recv from stream if response needed
         @frame.set(stream.binary)
         @cache = @data.deep_copy
         if @fds[rid].key?('noaffix')
@@ -50,8 +47,6 @@ module CIAX
           @frame.cc_check(@cache.delete('cc'))
         end
         @data = @cache
-        self['time'] = stream['time']
-        verbose { "Updated(#{self['time']})" } # Field::get
         self
       ensure
         post_upd
@@ -135,14 +130,14 @@ module CIAX
       id = res['id']
       cid = res['cmd']
       dbi = Dev::Db.new.get(id)
-      field = Field.new.setdbi(dbi).ext_rsp { res }
+      field = Field.new.setdbi(dbi).ext_rsp
       field.ext_save.ext_load if OPT['m']
       if cid
         cfg = Config.new.update(dbi: dbi, field: field)
         cobj = Index.new(cfg)
         cobj.add_rem.add_ext(Ext)
         ent = cobj.set_cmd(cid.split(':'))
-        field.conv(ent)
+        field.conv(ent,res)
       end
       puts STDOUT.tty? ? field : field.to_j
     end

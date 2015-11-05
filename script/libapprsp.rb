@@ -14,6 +14,7 @@ module CIAX
       def ext_rsp(field)
         @field = type?(field, Frm::Field)
         type?(@dbi, Dbi)
+        @pre_upd_procs << proc { self['time'] = @field['time'] }
         upd
         self
       end
@@ -48,7 +49,6 @@ module CIAX
             @data[id] = data.to_s
           end
         end
-        self['time'] = @field['time']
         self
       end
 

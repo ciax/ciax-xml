@@ -7,8 +7,9 @@ module CIAX
     def initialize
       super()
       # Updater
+      self['time'] = now_msec
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @pre_upd_procs = []
+      @pre_upd_procs = [ proc { self['time'] = now_msec } ]
       # Proc Array for Post-Process of Update Propagation to the upper Layers
       @post_upd_procs = []
     end
@@ -17,7 +18,7 @@ module CIAX
     def upd
       pre_upd
       upd_core || warning('No core_upd')
-      verbose { "Update(#{_time_id}) Core" }
+      verbose { "Update(#{time_id}) Core" }
       self
     ensure
       post_upd
@@ -37,12 +38,16 @@ module CIAX
       post_upd
     end
 
+    def time_id
+      self['time'].to_s[-6, 6]
+    end
+
     private
 
     # Time setting, Loading file at client
     def pre_upd
       @pre_upd_procs.each { |p| p.call(self) }
-      verbose { "Update(#{_time_id}) Pre Procs" }
+      verbose { "Update(#{time_id}) Pre Procs" }
       self
     end
 
@@ -53,12 +58,9 @@ module CIAX
     # Save & Update super layer
     def post_upd
       @post_upd_procs.each { |p| p.call(self) }
-      verbose { "Update(#{_time_id}) Post Procs" }
+      verbose { "Update(#{time_id}) Post Procs" }
       self
     end
 
-    def _time_id
-      self['time'].to_s[-6, 6]
-    end
   end
 end

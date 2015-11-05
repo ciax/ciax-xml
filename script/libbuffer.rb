@@ -46,7 +46,6 @@ module CIAX
 
     # Send app entity
     def send(ent, n = 1)
-      pre_upd
       clear if n == 0 # interrupt
       cid = type?(ent, Entity).id
       verbose { "Send to Buffer [#{cid}]" }

@@ -27,6 +27,7 @@ module CIAX
         @windex.values.each do|v|
           @list |= v[:cnd].map { |i| i['var'] }
         end
+        @pre_upd_procs << proc { self['time'] = @stat['time'] }
         @stat.post_upd_procs << proc do
           verbose { 'Propagate Status#upd -> upd' }
           upd
@@ -36,12 +37,10 @@ module CIAX
       end
 
       def queue(src, pri, batch = [])
-        pre_upd
         @last_updated = self['time']
         batch.each do|args|
           @data['exec'] << [src, pri, args]
         end
-        post_upd
         self
       end
 
@@ -79,7 +78,7 @@ module CIAX
       # @data['int'] : List of interrupt commands which is effectie during busy
       def upd_core
         return self unless @stat['time'] > @last_updated
-        @last_updated = self['time'] = @stat['time']
+        @last_updated = self['time']
         sync
         @data.values.each { |a| a.clear if a.is_a? Array }
         @windex.each do|id, item|
@@ -96,7 +95,6 @@ module CIAX
           @data['active'] << id
         end
         upd_event
-        verbose { "Updated(#{@stat['time']})" }
         self
       end
 

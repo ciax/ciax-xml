@@ -66,8 +66,8 @@ module CIAX
           verbose { 'Recieved incomplete data, retry' }
         end
         verbose { "Recieved #{str.size} byte on #{self['cmd']}" }
-        verbose { "Data Recieved\n" + str.inspect }
         convert('rcv', str)
+        verbose { "Data Recieved(#{time_id})\n" + str.inspect }
         self
       end
 

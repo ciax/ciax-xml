@@ -35,7 +35,7 @@ module CIAX
           kary << k.inspect
           vary << (k == 'time' ? v.to_i : v.inspect)
         end
-        verbose { "Update(#{@stat['time']})" }
+        verbose { "Update(#{@stat.time_id})" }
         ks = kary.join(',')
         vs = vary.join(',')
         "insert or ignore into #{@tid} (#{ks}) values (#{vs});"

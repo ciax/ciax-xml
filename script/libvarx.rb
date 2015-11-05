@@ -12,13 +12,11 @@ module CIAX
       super()
       @type = type
       # Headers
-      self['time'] = now_msec
       self['id'] = id
       self['ver'] = ver if ver
       self['host'] = host || `hostname`.strip
       # Setting (Not shown in JSON)
       @thread = Thread.current # For Thread safe
-      @pre_upd_procs << proc { self['time'] = now_msec }
     end
 
     def setdbi(dbi)

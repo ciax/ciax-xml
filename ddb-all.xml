@@ -49,5 +49,6 @@
   <project id="dmy" caption="Dummy Simulator" column="2">
     <site id="tsl" frm_id="slo" host="localhost" port="24699" iocmd="socat - tcp:localhost:10001" label="Slosyn dummy"/>
     <site id="tfp" frm_id="cfp" host="localhost" port="24698" iocmd="socat - tcp:localhost:10002" label="Field Point dummy"/>
+    <site id="tbb" frm_id="bbe" host="localhost" port="24697" iocmd="socat - tcp:localhost:10003" label="BBE dummy"/>
   </project>
 </ddb>

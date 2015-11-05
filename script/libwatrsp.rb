@@ -120,7 +120,6 @@ module CIAX
 
       def upd_event
         if @sv_stat['event']
-          pre_upd
           if !active? && !@sv_stat['isu']
             @sv_stat.reset('event')
             @on_deact_procs.each { |p| p.call(self) }

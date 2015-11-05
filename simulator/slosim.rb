@@ -9,7 +9,7 @@ class Slosyn < GServer
   P_MAX = 9999
   P_MIN = 0
   POS = [1230, 128, 2005, 0, 1850]
-  def initialize(port = 2103, *args)
+  def initialize(port = 10001, *args)
     super(port, *args)
     Thread.abort_on_exception = true
     @pulse = 0 # Integer

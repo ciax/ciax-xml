@@ -73,7 +73,7 @@ module CIAX
       def valid_proj
         return if @projects.keys.empty?
         vl = @valid_proj.empty? ? @projects.keys : @projects.keys & @valid_proj
-        pl = vl.map{ |pid| @projects[pid] }
+        pl = vl.map { |pid| @projects[pid] }
         if @type == 'mdb'
           pl.each { |proj| store_doc(proj, @displist) }
         else

@@ -13,7 +13,7 @@ module CIAX
 
       def doc_to_db(doc)
         hash = Dbi[doc[:attr]]
-        @id=hash['id']
+        @id = hash['id']
         hash[:command] = init_command(doc[:top])
         hash
       end

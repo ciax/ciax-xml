@@ -25,6 +25,7 @@ module CIAX
         # @sel structure: { terminator, :main{}, :body{} <- changes on every upd }
         @fds = fdbr[:index]
         sp = @dbi[:stream]
+        # Frame structure: main(total){ ccrange{ body(selected str) } }
         @frame = Frame.new(sp['endian'], sp['ccmethod'], sp['terminator'])
         # terminator: frame pointer will jump to terminator if no length or delimiter is specified
         self
@@ -39,7 +40,8 @@ module CIAX
           @sel.update(@fds[rid])
           @sel[:body] = ent.deep_subst(@sel[:body])
           verbose { "Selected DB for #{rid}\n" + @sel.inspect }
-          # Frame structure: main(total){ ccrange{ body(selected str) } }
+          # Recv from stream if response needed
+
           stream = @input_proc.call
           @frame.set(stream.binary)
           @cache = @data.deep_copy

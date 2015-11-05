@@ -6,7 +6,7 @@ module CIAX
     NS_COLOR = 9
     attr_reader :db
     def initialize(id)
-      super('server',id)
+      super('server', id)
       @db = {}
       self['msg'] = ''
     end

@@ -9,7 +9,7 @@ module CIAX
       def initialize(init_struct = {})
         super('field', init_struct)
         # Proc for Terminate process of each individual commands (Set upper layer's update);
-        @flush_procs = [proc { verbose { 'Processing FlushProcs' } }]
+        @flush_procs = []
       end
 
       def setdbi(db)
@@ -91,6 +91,7 @@ module CIAX
 
       # For propagate to Status update
       def flush
+        verbose { 'Processing FlushProcs' }
         @flush_procs.each { |p| p.call(self) }
         self
       end

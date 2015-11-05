@@ -49,7 +49,7 @@ module CIAX
       pre_upd
       clear if n == 0 # interrupt
       cid = type?(ent, Entity).id
-      verbose{ "Send to Buffer [#{cid}]" }
+      verbose { "Send to Buffer [#{cid}]" }
       batch = ent[:batch]
       # batch is frm batch (ary of ary)
       update('pri' => n, 'cid' => cid)

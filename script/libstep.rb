@@ -81,6 +81,7 @@ module CIAX
 
       def upd_core
         show result
+        self
       end
 
       def show(msg)

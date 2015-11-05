@@ -15,12 +15,12 @@ module CIAX
 
     # update after processing, never iniherit (use upd_core() instead)
     def upd
-      pre_upd # Time setting, Loading file at client
-      upd_core # Data conversion
+      pre_upd
+      upd_core || warning('No core_upd')
       verbose { "Update(#{_time_id}) Core" }
       self
     ensure
-      post_upd # Save & Update super layer
+      post_upd
     end
 
     def read(json_str = nil)
@@ -39,17 +39,18 @@ module CIAX
 
     private
 
+    # Time setting, Loading file at client
     def pre_upd
       @pre_upd_procs.each { |p| p.call(self) }
       verbose { "Update(#{_time_id}) Pre Procs" }
       self
     end
 
+    # Data conversion
     # Inherit upd_core() for upd function
-    def upd_core
-      self
-    end
+    def upd_core; end
 
+    # Save & Update super layer
     def post_upd
       @post_upd_procs.each { |p| p.call(self) }
       verbose { "Update(#{_time_id}) Post Procs" }
@@ -57,7 +58,7 @@ module CIAX
     end
 
     def _time_id
-      self['time'].to_s[-6,6]
+      self['time'].to_s[-6, 6]
     end
   end
 end

@@ -37,7 +37,7 @@ module CIAX
       end
 
       def refresh
-        verbose { 'Status Updated' }
+        verbose { 'Status Refreshed' }
         @last.update(@data)
         @updated = self['time']
         self

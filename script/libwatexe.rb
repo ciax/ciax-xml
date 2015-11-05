@@ -51,7 +51,7 @@ module CIAX
         @stat.ext_log if OPT['e']
         @stat.post_upd_procs << proc do|ev|
           ev.get('exec').each do|src, pri, args|
-            verbose { "Executing:#{args} from [#{src}] by [#{pri}]" }
+            verbose { "Executing:#{args} in accordance with Condition from [#{src}] by [#{pri}]" }
             @sub.exe(args, src, pri)
             sleep ev.interval
           end.clear

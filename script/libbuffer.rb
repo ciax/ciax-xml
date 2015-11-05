@@ -24,24 +24,20 @@ require 'libgroup'
 #  3:Periodic Update
 module CIAX
   # Command Buffering
-  class Buffer < Varx
+  class Buffer
+    include Msg
     NS_COLOR = 11
+    attr_accessor :flush_proc, :recv_proc
     # sv_stat: Server Status
-    def initialize(id, ver, sv_stat = nil)
-      super('issue', id, ver)
-      update('pri' => '', 'cid' => '')
-      @sv_stat = type?(sv_stat || Prompt.new(id), Prompt)
+    def initialize(sv_stat)
+      @sv_stat = type?(sv_stat, Prompt)
       @sv_stat.add_db('isu' => '*').put('busy', [])
       # element of @q is bunch of frm args corresponding an appcmd
       @q = Queue.new
       @tid = nil
+      @flush_proc = proc {}
       @recv_proc = proc {}
       clear
-    end
-
-    def recv_proc
-      @recv_proc = proc { |args, src| yield args, src }
-      self
     end
 
     # Send app entity
@@ -49,9 +45,8 @@ module CIAX
       clear if n == 0 # interrupt
       cid = type?(ent, Entity).id
       verbose { "Send to Buffer [#{cid}]" }
-      batch = ent[:batch]
       # batch is frm batch (ary of ary)
-      update('pri' => n, 'cid' => cid)
+      batch = ent[:batch]
       unless batch.empty?
         @sv_stat['busy'] << cid
         @sv_stat.set('isu')
@@ -61,7 +56,7 @@ module CIAX
     end
 
     def server
-      @tid = ThreadLoop.new("Buffer(#{self['id']})", 12) do
+      @tid = ThreadLoop.new("Buffer", 12) do
         next if @q.empty? && exec
         verbose { 'SUB:Waiting' }
         pri_sort(@q.shift)
@@ -110,7 +105,7 @@ module CIAX
       cids = []
       @outbuf.each { |ary| args = fetch_arg(args, ary, cids) }
       cids.uniq!
-      post_upd if cids.size < @sv_stat['busy'].size
+      flush if cids.size < @sv_stat['busy'].size
       @sv_stat['busy'].replace(cids)
       args
     end
@@ -133,7 +128,12 @@ module CIAX
       @outbuf = [[], [], []]
       @q.clear
       @tid && @tid.run
-      post_upd
+      flush
+    end
+
+    def flush
+      @flush_proc.call(self)
+      self
     end
   end
 end

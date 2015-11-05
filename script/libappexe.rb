@@ -109,7 +109,7 @@ module CIAX
       #      Batch: Update Field by Frm response
       #      Batch: Repeat until outbuffer is empty
       def init_buf
-        buf = Buffer.new(@stat['id'], @stat['ver'], @sv_stat)
+        buf = Buffer.new(@sv_stat)
         # App: Sendign a first priority command (interrupt)
         @cobj.get('interrupt').def_proc do|_, src|
           @batch_interrupt.each do|args|
@@ -126,14 +126,14 @@ module CIAX
           'ISSUED'
         end
         # Frm: Execute single command
-        buf.recv_proc do|args, src|
+        buf.recv_proc = proc do|args, src|
           verbose { "Processing #{args}" }
           @sub.exe(args, src)
         end
         # Frm: Update after each single command finish
         # @stat file output should be done before 'isu' flag is reset
-        buf.post_upd_procs << proc do
-          verbose { 'Propagate Buffer#upd -> Field#flush' }
+        buf.flush_proc = proc do
+          verbose { 'Propagate Buffer#flush -> Field#flush' }
           @sub.stat.flush
         end
         # Field: Update after each Batch Frm command finish

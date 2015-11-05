@@ -70,12 +70,11 @@ module CIAX
         @stream.pre_open_proc = proc { @sv_stat.set('strerr') }
         @stream.post_open_proc = proc { @sv_stat.reset('strerr') }
         @sv_stat.add_db('comerr' => 'X', 'strerr' => 'E')
-        @stat.ext_save.ext_load
-        @stat.ext_rsp { @stream.rcv }
+        @stat.ext_save.ext_load.ext_rsp
         @cobj.rem.ext.def_proc do|ent, src|
           @sv_stat.reset('comerr')
           @stream.snd(ent[:frame], ent.id)
-          @stat.conv(ent)
+          @stat.conv(ent, @stream.rcv) if ent['response']
           @stat.flush if src != 'buffer'
           'OK'
         end

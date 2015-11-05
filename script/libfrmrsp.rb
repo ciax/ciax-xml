@@ -32,33 +32,29 @@ module CIAX
       end
 
       # Convert with corresponding cmd
-      def conv(ent)
-        type?(ent, Entity)
+      def conv(ent,stream)
+        pre_upd
         @sel = Hash[@skel]
-        if (rid = ent['response'])
-          @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
-          @sel.update(@fds[rid])
-          @sel[:body] = ent.deep_subst(@sel[:body])
-          verbose { "Selected DB for #{rid}\n" + @sel.inspect }
-          # Recv from stream if response needed
-
-          stream = @input_proc.call
-          @frame.set(stream.binary)
-          @cache = @data.deep_copy
-          if @fds[rid].key?('noaffix')
-            getfield_rec(['body'])
-          else
-            getfield_rec(@sel[:main])
-            @frame.cc_check(@cache.delete('cc'))
-          end
-          @data = @cache
-          self['time'] = stream['time']
-          verbose { "Updated(#{self['time']})" } # Field::get
-          upd
+        rid = type?(ent, Entity)['response']
+        @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
+        @sel.update(@fds[rid])
+        @sel[:body] = ent.deep_subst(@sel[:body])
+        verbose { "Selected DB for #{rid}\n" + @sel.inspect }
+        # Recv from stream if response needed
+        @frame.set(stream.binary)
+        @cache = @data.deep_copy
+        if @fds[rid].key?('noaffix')
+          getfield_rec(['body'])
         else
-          verbose { 'Send Only' }
+          getfield_rec(@sel[:main])
+          @frame.cc_check(@cache.delete('cc'))
         end
+        @data = @cache
+        self['time'] = stream['time']
+        verbose { "Updated(#{self['time']})" } # Field::get
         self
+      ensure
+        post_upd
       end
 
       private
@@ -124,8 +120,8 @@ module CIAX
     end
 
     class Field
-      def ext_rsp(&input_proc)
-        extend(Frm::Rsp).ext_rsp(&input_proc)
+      def ext_rsp
+        extend(Frm::Rsp).ext_rsp
       end
     end
 

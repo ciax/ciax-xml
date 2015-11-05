@@ -30,7 +30,7 @@ module CIAX
       end
 
       # Convert with corresponding cmd
-      def conv(ent,stream)
+      def conv(ent, stream)
         @sel = Hash[@skel]
         self['time'] = type?(stream, Stream)['time']
         rid = type?(ent, Entity)['response']
@@ -47,7 +47,7 @@ module CIAX
           @frame.cc_check(@cache.delete('cc'))
         end
         @data = @cache
-        verbose{ 'Propagate Stream#rcv Field#upd' }
+        verbose { 'Propagate Stream#rcv Field#upd' }
         self
       ensure
         post_upd
@@ -138,7 +138,7 @@ module CIAX
         cobj = Index.new(cfg)
         cobj.add_rem.add_ext(Ext)
         ent = cobj.set_cmd(cid.split(':'))
-        field.conv(ent,res)
+        field.conv(ent, res)
       end
       puts STDOUT.tty? ? field : field.to_j
     end

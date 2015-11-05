@@ -9,7 +9,7 @@ module CIAX
       # Updater
       self['time'] = now_msec
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @pre_upd_procs = [ proc { self['time'] = now_msec } ]
+      @pre_upd_procs = [proc { self['time'] = now_msec }]
       # Proc Array for Post-Process of Update Propagation to the upper Layers
       @post_upd_procs = []
     end
@@ -61,6 +61,5 @@ module CIAX
       verbose { "Update(#{time_id}) Post Procs" }
       self
     end
-
   end
 end

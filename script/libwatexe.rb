@@ -35,6 +35,17 @@ module CIAX
         self
       end
 
+      def ext_non_client
+        @stat.post_upd_procs << proc do|ev|
+          verbose { 'Propagate Event#upd -> Watch#upd' }
+          block = ev.get('block').map { |id, par| par ? nil : id }.compact
+          @cobj.rem.ext.valid_sub(block)
+        end
+        @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
+        @stat.ext_rsp(@sub.stat, @sv_stat).ext_save.ext_load
+        self
+      end
+
       def ext_driver
         ext_non_client
         @stat.ext_log if OPT['e']
@@ -49,17 +60,6 @@ module CIAX
         @sub.post_exe_procs << proc do
           @sv_stat.put('auto', @tid_auto && @tid_auto.alive?)
         end
-        self
-      end
-
-      def ext_non_client
-        @stat.post_upd_procs << proc do|ev|
-          verbose { 'Propagate Event#upd -> Watch#upd' }
-          block = ev.get('block').map { |id, par| par ? nil : id }.compact
-          @cobj.rem.ext.valid_sub(block)
-        end
-        @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
-        @stat.ext_rsp(@sub.stat, @sv_stat).ext_save.ext_load
         self
       end
 

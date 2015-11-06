@@ -29,7 +29,6 @@ module CIAX
           verbose { 'Propagate Step#upd -> Record#upd' }
           post_upd
         end
-        step['time'] = Msg.elps_sec(self['time'])
         step['depth'] = depth
         @data << step
         step

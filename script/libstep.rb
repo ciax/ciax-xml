@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libupd'
-require 'libmcrprt'
+require 'libinterlock'
 
 module CIAX
   module Mcr
@@ -11,8 +11,7 @@ module CIAX
         super()
         update db
         # [:stat_proc,:exec_proc,:submcr_proc,:query]
-        @dev_list = type?(dev_list, App::List)
-        @condition = delete('cond')
+        @interlock=Interlock.new(delete('cond'),dev_list,self)
         @break = nil
       end
 
@@ -24,7 +23,7 @@ module CIAX
         max = self['max'] = self['retry']
         res = max.to_i.times do|n| # gives number or nil(if break)
           self['retry'] = n
-          break if condition_ok?
+          break if @interlock.ok?
           sleep itv
           yield
           post_upd
@@ -42,14 +41,14 @@ module CIAX
 
       def skip?
         show title
-        res = condition_ok?('skip', 'pass')
+        res = @interlock.ok?('skip', 'pass')
         upd
         res
       end
 
       def fail?
         show title
-        res = !condition_ok?('pass', 'failed')
+        res = !@interlock.ok?('pass', 'failed')
         upd
         res
       end
@@ -90,70 +89,6 @@ module CIAX
 
       def dryrun?
         !OPT['m'] && self['action'] = 'dryrun'
-      end
-
-      # Sub methods
-      def condition_ok?(t = nil, f = nil)
-        stats = scan
-        conds = @condition.map do|h|
-          cond = {}
-          site = cond['site'] = h['site']
-          var = cond['var'] = h['var']
-          stat = stats[site]
-          cmp = cond['cmp'] = h['cmp']
-          cri = cond['cri'] = h['val']
-          form = cond['form'] = h['form']
-          case form
-          when 'class', 'msg'
-            warning("No key value [#{var}] in Status[#{form}]") unless stat[form].key?(var)
-            real = stat[form][var]
-          when 'data'
-            real = stat.get(var)
-          else
-            warning('No form specified')
-          end
-          verbose { "site=#{site},var=#{var},form=#{form},cmp=#{cmp},cri=#{cri},real=#{real}" }
-          cond['real'] = real
-          cond['res'] = match?(real, cri, cond['cmp'])
-          cond
-        end
-        res = conds.all? { |h| h['res'] }
-        self['conditions'] = conds
-        self['result'] = (res ? t : f) if t || f
-        res
-      end
-
-      def scan
-        sites.each_with_object({}) do|site, hash|
-          verbose { "Scanning Status #{site}" }
-          hash[site] = @dev_list.get(site).stat
-        end
-      end
-
-      def refresh
-        sites.each do|site|
-          verbose { "Refresh Status #{site}" }
-          @dev_list.get(site).stat.refresh
-        end
-      end
-
-      def sites
-        @condition.map { |h| h['site'] }.uniq
-      end
-
-      def match?(real, cri, cmp)
-        case cmp
-        when 'equal'
-          cri == real
-        when 'not'
-          cri != real
-        when 'match'
-          /#{cri}/ =~ real
-        when 'unmatch'
-          /#{cri}/ !~ real
-        else
-          false
-        end
       end
     end
   end

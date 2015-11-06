@@ -190,8 +190,8 @@ module CIAX
 
     # Add extend method in Event
     class Event
-      def ext_rsp(event, sv_stat = nil)
-        extend(Wat::Rsp).ext_rsp(event, sv_stat)
+      def ext_rsp(stat, sv_stat = nil)
+        extend(Wat::Rsp).ext_rsp(stat, sv_stat)
       end
     end
 

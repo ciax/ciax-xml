@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require 'libstatus'
-require 'libstep'
+require 'libdatax'
+require 'libmcrprt'
 
 module CIAX
   module Mcr
@@ -9,39 +9,6 @@ module CIAX
       def initialize(id = nil) # Session ID for Loading
         super('record', [], 'steps')
         self['id'] = id || self['time'].to_s # Session ID
-      end
-
-      # cfg will come from Entity, which should have [:cid],['label'],@layers[:wat]
-      # cfg doesn't change
-      def start(cfg)
-        @cfg = type?(cfg, Config)
-        self['start'] = now_msec.to_s
-        self['ver'] = @cfg['ver'] || '0' # Version
-        self['cid'] = @cfg[:cid] # Command ID (cmd:par)
-        self['label'] = @cfg['label'] # Label for CID
-        self['result'] = 'busy'
-        self['original_steps'] = @cfg[:sequence].size
-        self
-      end
-
-      def add_step(e1, depth)
-        step = Step.new(e1, @cfg[:dev_list])
-        step.post_upd_procs << proc do
-          verbose { 'Propagate Step#upd -> Record#upd' }
-          post_upd
-        end
-        step['depth'] = depth
-        @data << step
-        step
-      ensure
-        post_upd
-      end
-
-      def finish
-        self['total_time'] = Msg.elps_sec(self['time'])
-        self['result']
-      ensure
-        post_upd
       end
 
       def read(json_str = nil)

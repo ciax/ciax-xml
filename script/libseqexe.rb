@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libmcrcmd'
-require 'librecord'
+require 'libmcrrsp'
 require 'libwatexe'
 
 module CIAX
@@ -88,7 +88,7 @@ module CIAX
         end
 
         def macro
-          @record.start(@mcfg)
+          @record.ext_rsp(@mcfg)
           show { @record }
           sub_macro(@mcfg[:sequence], @record)
         rescue Interrupt

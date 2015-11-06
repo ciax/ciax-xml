@@ -98,8 +98,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
+      PROJ ||= ARGV.shift
       begin
-        PROJ ||= ARGV.shift
         mdb = Db.new.get(PROJ)
       rescue InvalidID
         Msg.usage '[id] (key) ..'

@@ -24,13 +24,6 @@ module CIAX
       post_upd
     end
 
-    def read(json_str = nil)
-      pre_upd
-      super
-    ensure
-      post_upd
-    end
-
     def put(key, val)
       pre_upd
       super

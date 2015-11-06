@@ -113,7 +113,7 @@ module CIAX
         # App: Sendign a first priority command (interrupt)
         @cobj.get('interrupt').def_proc do|_, src|
           @batch_interrupt.each do|args|
-            verbose { "#{@id}/Issuing:#{args} for Interrupt" }
+            verbose { "Issuing:#{args} for Interrupt" }
             buf.send(@cobj.set_cmd(args), 0)
           end
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
@@ -121,7 +121,7 @@ module CIAX
         end
         # App: Sending a general App command (Frm batch)
         @cobj.rem.ext.def_proc do|ent, src, pri|
-          verbose { "#{@id}/Issuing:#{ent.id} from #{src} with priority #{pri}" }
+          verbose { "Issuing:[#{ent.id}] from #{src} with priority #{pri}" }
           buf.send(ent, pri)
           'ISSUED'
         end

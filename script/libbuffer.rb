@@ -44,21 +44,18 @@ module CIAX
     def send(ent, n = 1)
       clear if n == 0 # interrupt
       cid = type?(ent, Entity).id
-      verbose { "Send to Buffer [#{cid}]" }
       # batch is frm batch (ary of ary)
       batch = ent[:batch]
-      unless batch.empty?
-        @sv_stat['busy'] << cid
-        @sv_stat.set('isu')
-        @q.push(pri: n, batch: batch, cid: cid)
-      end
+      return self if batch.empty?
+      sv_up(cid)
+      @q.push(pri: n, batch: batch, cid: cid)
       self
     end
 
     def server
       @tid = ThreadLoop.new('Buffer', 12) do
-        next if @q.empty? && exec
-        verbose { 'SUB:Waiting' }
+        exec_buf if @q.empty?
+        verbose { 'Waiting' }
         pri_sort(@q.shift)
       end
       self
@@ -80,6 +77,7 @@ module CIAX
     #  Args: ['cmd','par','par'..]
 
     def pri_sort(rcv)
+      verbose { "Recieved #{rcv}" }
       buf = (@outbuf[rcv[:pri]] ||= [])
       buf.concat rcv[:batch].map { |args| [args, rcv[:cid]] }
       verbose do
@@ -88,15 +86,15 @@ module CIAX
     end
 
     # Execute recieved command
-    def exec
+    def exec_buf
       while (args = pick)
         @recv_proc.call(args, 'buffer')
       end
-      clear
-      false
     rescue
       clear
       alert($ERROR_INFO.to_s)
+    ensure
+      sv_dw
     end
 
     # Remove duplicated args and pop one
@@ -122,9 +120,17 @@ module CIAX
       args
     end
 
-    def clear
+    def sv_up(cid)
+      @sv_stat['busy'] << cid
+      @sv_stat.set('isu')
+    end
+
+    def sv_dw
       @sv_stat.reset('isu')
       @sv_stat['busy'].clear
+    end
+
+    def clear
       @outbuf = [[], [], []]
       @q.clear
       @tid && @tid.run

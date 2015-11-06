@@ -12,7 +12,7 @@ module CIAX
       end
 
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
-      # cfg will come from Entity, which should have [:cid],['label'],@layers[:wat]
+      # cfg will come from Entity, which contains [:cid],['label'],@layers[:wat]
       # cfg doesn't change
       def ext_rsp(cfg)
         @cfg = type?(cfg, Config)

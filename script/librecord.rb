@@ -3,7 +3,9 @@ require 'libdatax'
 require 'libmcrprt'
 
 module CIAX
+  # Macro Layer
   module Mcr
+    # Macro Record
     class Record < Datax
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       def initialize(id = nil) # Session ID for Loading
@@ -18,12 +20,17 @@ module CIAX
       end
 
       def to_v
-        date = Time.at((self['time'] / 1000).round)
-        msg = Msg.color('MACRO', 3) + ":#{self['label']} (#{date})\n"
+        msg = _title
         @data.each { |i| msg << i.title + i.result }
-        msg << " (#{self['result']})" if self['result']
-        msg << " [#{@data.size}/#{self['original_steps']}]"
-        msg
+        msg << format(' (%s) [%d/%d]',
+                      self['result'], @data.size, self['original_steps'])
+      end
+
+      private
+
+      def _title
+        date = Time.at((self['time'] / 1000).round)
+        Msg.color('MACRO', 3) + format(":%s (%s)\n", self['label'], date)
       end
     end
 

@@ -2,6 +2,7 @@
 require 'libmcrcmd'
 require 'libmcrrsp'
 require 'libwatexe'
+require 'libseqqry'
 
 module CIAX
   # Modes Legend:
@@ -30,7 +31,7 @@ module CIAX
     module Seq
       class Exe < Exe
         # required cfg keys: app,db,body,stat,(:submcr_proc)
-        attr_reader :cfg, :record, :que_cmd, :que_res,
+        attr_reader :cfg, :record,
                     :post_stat_procs, :pre_mcr_procs, :post_mcr_procs, :th_mcr
         # cfg[:submcr_proc] for executing asynchronous submacro,
         #   which must returns hash with ['id']
@@ -41,25 +42,22 @@ module CIAX
           type?(@mcfg[:dev_list], CIAX::List)
           @record = Record.new.ext_save.ext_load.mklink # Make latest link
           @record['pid'] = pid
-          @record['status'] = 'ready'
+          @qry=Query.new(@record)
           @submcr_proc = @mcfg[:submcr_proc] || proc do|args|
             show { "Sub Macro #{args} issued\n" }
             { 'id' => 'dmy' }
           end
           # execute on stat changes
-          @post_stat_procs = [proc { verbose { 'Processing PostStatProcs' } }]
           @pre_mcr_procs = [proc { verbose { 'Processing PreMcrProcs' } }]
           @post_mcr_procs = [proc { verbose { 'Processing PostMcrProcs' } }]
           @th_mcr = Thread.current
-          @que_cmd = Queue.new
-          @que_res = Queue.new
           @running = []
           @depth = 0
           # For Thread mode
           @cobj.add_rem.add_hid
           int = @cobj.rem.add_int(Int)
-          @option = @record['option'] = int.valid_keys.clear
-          int.def_proc { |ent| reply(ent.id) }
+          @record['option'] = int.valid_keys.clear
+          int.def_proc { |ent| @qry.reply(ent.id) }
         end
 
         def fork
@@ -72,16 +70,12 @@ module CIAX
         end
 
         def to_v
-          msg = @record.to_v
-          msg << "(#{@record['status']})"
-          msg << optlist(@option)
+          @record.to_v + @qry.to_v
         end
 
         def ext_shell
           super
-          @prompt_proc = proc do
-            "(#{@record['status']})" + optlist(@option)
-          end
+          @prompt_proc = proc { @qry.to_v }
           @cfg[:output] = @record
           @cobj.loc.add_view
           self
@@ -98,10 +92,10 @@ module CIAX
           end
         ensure
           @running.clear
-          @option.clear
+          @record['option'].clear
           res = @record.finish
           show { "#{res}" }
-          store_stat(res)
+          @record['status']=res
           @post_mcr_procs.each { |p| p.call(self) }
         end
 
@@ -110,43 +104,43 @@ module CIAX
         # macro returns result (true/false)
         def sub_macro(sequence, mstat)
           @depth += 1
-          store_stat('run')
+          @record['status']='run'
           result = 'complete'
           sequence.each do|e1|
             begin
-              @step = @record.add_step(e1, @depth)
+              step = @record.add_step(e1, @depth)
               case e1['type']
               when 'mesg'
-                @step.ok?
-                query(['ok'])
+                step.ok?
+                @qry.query(['ok'],step)
               when 'goal'
-                if @step.skip? && query(%w(skip force))
+                if step.skip? && @qry.query(%w(skip force),step)
                   result = 'skipped'
                   break true
                 end
               when 'check'
-                if @step.fail? && query(%w(drop force retry))
+                if step.fail? && @qry.query(%w(drop force retry),step)
                   result = 'error'
                   break
                 end
               when 'wait'
-                if @step.timeout? { show('.') } && query(%w(drop force retry))
+                if step.timeout? { show('.') } && @qry.query(%w(drop force retry),step)
                   result = 'timeout'
                   break
                 end
               when 'exec'
-                if @step.exec? && query(%w(exec pass))
+                if step.exec? && @qry.query(%w(exec pass),step)
                   @running << e1['site']
                   @mcfg[:dev_list].get(e1['site']).exe(e1['args'], 'macro')
                 end
               when 'mcr'
-                if @step.async?
+                if step.async?
                   if @submcr_proc.is_a?(Proc)
-                    @step['id'] = @submcr_proc.call(e1['args'], @record['id'])['id']
+                    step['id'] = @submcr_proc.call(e1['args'], @record['id'])['id']
                   end
                 else
-                  res = sub_macro(@mcfg.ancestor(2).set_cmd(e1['args'])[:sequence], @step)
-                  result = @step['result']
+                  res = sub_macro(@mcfg.ancestor(2).set_cmd(e1['args'])[:sequence], step)
+                  result = step['result']
                   break unless res
                 end
               end
@@ -160,64 +154,6 @@ module CIAX
         ensure
           mstat['result'] = result
           @depth -= 1
-        end
-
-        # Communicate with forked macro
-        def reply(ans)
-          if @record['status'] == 'query'
-            @que_cmd << ans
-            @que_res.pop
-          else
-            'IGNORE'
-          end
-        end
-
-        def store_stat(str)
-          @record['status'] = str
-        ensure
-          @post_stat_procs.each { |p| p.call(self) }
-        end
-
-        def query(cmds)
-          return true if OPT['n']
-          @option.replace(cmds)
-          store_stat 'query'
-          res = input(cmds)
-          @option.clear
-          store_stat 'run'
-          @step['action'] = res
-          case res
-          when 'retry'
-            fail(Retry)
-          when 'interrupt'
-            fail(Interrupt)
-          when 'force', 'pass'
-            false
-          else
-            true
-          end
-        end
-
-        def input(cmds)
-          Readline.completion_proc = proc { |word| cmds.grep(/^#{word}/) } if Msg.fg?
-          loop do
-            if Msg.fg?
-              prom = @step.body(optlist(@option))
-              line = Readline.readline(prom, true)
-              break 'interrupt' unless line
-              id = line.rstrip
-            else
-              id = @que_cmd.pop.split(/[ :]/).first
-            end
-            if cmds.include?(id)
-              @que_res << 'ACCEPT'
-              break id
-            elsif !id
-              @que_res << ''
-            else
-              @que_res << 'INVALID'
-            end
-          end
         end
 
         # Print section

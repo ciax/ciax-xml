@@ -35,6 +35,7 @@ module CIAX
       @data.size
     end
 
+    # put() still access to self[]
     def get(id)
       @data[id]
     end

@@ -52,8 +52,11 @@ module CIAX
     end
 
     def msg(msg = nil)
+      pre_upd
       self['msg'] = msg if msg
       self['msg']
+    ensure
+      post_upd
     end
 
     def to_s

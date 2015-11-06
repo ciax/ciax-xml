@@ -3,7 +3,7 @@ require 'libseqexe'
 module CIAX
   module Mcr
     # Sequencer Layer List which provides sequencer list as a server
-    #  Maanipulating: add(),clean(),interrupt()
+    #  Drv mode: add(),clean(),interrupt()
     #  For client: get_cid()(id to command name), get_exe()(number to element)
     module Seq
       # @cfg[:db] associated site/layer should be set

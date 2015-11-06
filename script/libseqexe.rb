@@ -38,7 +38,6 @@ module CIAX
         def initialize(ment, pid = '0')
           super(type?(ment, Entity).id)
           @mcfg = ment
-          @sequence = ment.sequence
           type?(@mcfg[:dev_list], CIAX::List)
           @record = Record.new.ext_save.ext_load.mklink # Make latest link
           @record['pid'] = pid
@@ -54,7 +53,7 @@ module CIAX
           @que_cmd = Queue.new
           @que_res = Queue.new
           update('id' => @record['id'], 'cid' => @mcfg[:cid], 'pid' => pid,
-                 'step' => 0, 'total_steps' => @sequence.size, 'stat' => 'ready')
+                 'step' => 0, 'total_steps' => @mcfg[:sequence].size, 'stat' => 'ready')
           @running = []
           @depth = 0
           # For Thread mode
@@ -93,7 +92,7 @@ module CIAX
         def macro
           @record.start(@mcfg)
           show { @record }
-          sub_macro(@sequence, @record)
+          sub_macro(@mcfg[:sequence], @record)
         rescue Interrupt
           msg("\nInterrupt Issued to running devices #{@running}", 3)
           @running.each do|site|
@@ -149,7 +148,7 @@ module CIAX
                     @step['id'] = @submcr_proc.call(e1['args'], @record['id'])['id']
                   end
                 else
-                  res = sub_macro(@mcfg.ancestor(2).set_cmd(e1['args']).sequence, @step)
+                  res = sub_macro(@mcfg.ancestor(2).set_cmd(e1['args'])[:sequence], @step)
                   result = @step['result']
                   break unless res
                 end

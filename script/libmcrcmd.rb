@@ -39,13 +39,11 @@ module CIAX
       class Item < Ext::Item; end
       # External Entity
       class Entity < Ext::Entity
-        attr_reader :sequence
         def initialize(cfg, crnt = {})
           super
           # @cfg[:body] expansion
-          seq = Arrayx.new
+          seq = self[:sequence] = Arrayx.new
           init_sel(seq)
-          @sequence = self[:sequence] = seq
         end
 
         private
@@ -77,7 +75,7 @@ module CIAX
         cobj.rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)
         puts ent.path
-        puts ent.sequence.to_v
+        puts ent[:sequence].to_v
       rescue InvalidID
         OPT.usage('[cmd] (par)')
       end

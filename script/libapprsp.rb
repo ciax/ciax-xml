@@ -6,7 +6,6 @@ module CIAX
   module App
     # Convert Response
     module Rsp
-      # @< (base),(prefix)
       def self.extended(obj)
         Msg.type?(obj, Status)
       end

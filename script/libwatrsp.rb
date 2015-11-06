@@ -188,6 +188,13 @@ module CIAX
       end
     end
 
+    # Add extend method in Event
+    class Event
+      def ext_rsp(event, sv_stat = nil)
+        extend(Wat::Rsp).ext_rsp(event, sv_stat)
+      end
+    end
+
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
 

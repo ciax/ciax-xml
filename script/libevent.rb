@@ -54,10 +54,6 @@ module CIAX
         end
         self
       end
-
-      def ext_rsp(stat, sv_stat = nil)
-        extend(Rsp).ext_rsp(stat, sv_stat)
-      end
     end
 
     if __FILE__ == $PROGRAM_NAME

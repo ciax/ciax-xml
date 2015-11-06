@@ -11,43 +11,37 @@ module CIAX
         super()
         update db
         # [:stat_proc,:exec_proc,:submcr_proc,:query]
-        @interlock=Interlock.new(delete('cond'),dev_list,self)
+        @interlock = Interlock.new(delete('cond'), dev_list, self)
         @break = nil
       end
 
       # Conditional judgment section
-      def timeout?
+      def timeout?(&prog)
         itv = (OPT['e'] || OPT['s']) ? 0.1 : 0
         itv *= 10 if OPT['m']
-        show title
-        max = self['max'] = self['retry']
-        res = max.to_i.times do|n| # gives number or nil(if break)
-          self['retry'] = n
-          break if @interlock.ok?
-          sleep itv
-          yield
-          post_upd
-        end
+        _show title
+        self['max'] = self['retry']
+        res = _progress(itv, &prog)
         self['result'] = res ? 'timeout' : 'pass'
         upd
         res
       end
 
       def ok?
-        show title
+        _show title
         upd
         'ok'
       end
 
       def skip?
-        show title
+        _show title
         res = @interlock.ok?('skip', 'pass')
         upd
         res
       end
 
       def fail?
-        show title
+        _show title
         res = !@interlock.ok?('pass', 'failed')
         upd
         res
@@ -55,7 +49,7 @@ module CIAX
 
       # Interactive section
       def exec?
-        show title
+        _show title
         res = !dryrun?
         self['result'] = res ? 'exec' : 'skip'
         upd
@@ -64,7 +58,7 @@ module CIAX
 
       # Execution section
       def async?
-        show title
+        _show title
         res = (/true|1/ =~ self['async'])
         self['result'] = res ? 'forked' : 'entering'
         upd
@@ -79,16 +73,26 @@ module CIAX
       private
 
       def upd_core
-        show result
+        _show result
         self
       end
 
-      def show(msg)
+      def _show(msg)
         print msg if Msg.fg?
       end
 
       def dryrun?
         !OPT['m'] && self['action'] = 'dryrun'
+      end
+
+      def _progress(itv, &prog)
+        self['max'].to_i.times do|n| # gives number or nil(if break)
+          self['retry'] = n
+          break if @interlock.ok?
+          sleep itv
+          prog.call
+          post_upd
+        end
       end
     end
   end

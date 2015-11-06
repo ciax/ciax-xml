@@ -42,7 +42,6 @@ module CIAX
           type?(@mcfg[:dev_list], CIAX::List)
           @record = Record.new.ext_save.ext_load.mklink # Make latest link
           @record['pid'] = pid
-          @qry=Query.new(@record)
           @submcr_proc = @mcfg[:submcr_proc] || proc do|args|
             show { "Sub Macro #{args} issued\n" }
             { 'id' => 'dmy' }
@@ -56,7 +55,7 @@ module CIAX
           # For Thread mode
           @cobj.add_rem.add_hid
           int = @cobj.rem.add_int(Int)
-          @record['option'] = int.valid_keys.clear
+          @qry = Query.new(@record, int.valid_keys.clear)
           int.def_proc { |ent| @qry.reply(ent.id) }
         end
 
@@ -92,10 +91,9 @@ module CIAX
           end
         ensure
           @running.clear
-          @record['option'].clear
           res = @record.finish
           show { "#{res}" }
-          @record['status']=res
+          @record['status'] = res
           @post_mcr_procs.each { |p| p.call(self) }
         end
 
@@ -104,7 +102,7 @@ module CIAX
         # macro returns result (true/false)
         def sub_macro(sequence, mstat)
           @depth += 1
-          @record['status']='run'
+          @record['status'] = 'run'
           result = 'complete'
           sequence.each do|e1|
             begin
@@ -112,24 +110,24 @@ module CIAX
               case e1['type']
               when 'mesg'
                 step.ok?
-                @qry.query(['ok'],step)
+                @qry.query(['ok'], step)
               when 'goal'
-                if step.skip? && @qry.query(%w(skip force),step)
+                if step.skip? && @qry.query(%w(skip force), step)
                   result = 'skipped'
                   break true
                 end
               when 'check'
-                if step.fail? && @qry.query(%w(drop force retry),step)
+                if step.fail? && @qry.query(%w(drop force retry), step)
                   result = 'error'
                   break
                 end
               when 'wait'
-                if step.timeout? { show('.') } && @qry.query(%w(drop force retry),step)
+                if step.timeout? { show('.') } && @qry.query(%w(drop force retry), step)
                   result = 'timeout'
                   break
                 end
               when 'exec'
-                if step.exec? && @qry.query(%w(exec pass),step)
+                if step.exec? && @qry.query(%w(exec pass), step)
                   @running << e1['site']
                   @mcfg[:dev_list].get(e1['site']).exe(e1['args'], 'macro')
                 end

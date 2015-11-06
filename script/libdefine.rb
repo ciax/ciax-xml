@@ -3,7 +3,7 @@
 module CIAX
   require 'English' # To use $! -> $ERROR_INFO
   require 'debug' if ENV['DEBUG']
-  PROJ = ENV['PROJ']
+  PROJ = ENV['PROJ'] if ENV.key?('PROJ')
   SIMCMD = ENV['SIMCMD'] || 'frmsim'
   VERBOSE = ENV['VER'] || 'initialize'
   NOCACHE = ENV['NOCACHE']

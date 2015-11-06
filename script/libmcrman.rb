@@ -136,7 +136,7 @@ module CIAX
         def get_record(seq)
           case seq
           when Hash
-            Record.new(seq['id']).ext_http
+#            Record.new(seq['id']).ext_http
           when Seq::Exe
             seq.record
           end

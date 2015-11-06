@@ -41,6 +41,7 @@ module CIAX
           type?(@mcfg[:dev_list], CIAX::List)
           @record = Record.new.ext_save.ext_load.mklink # Make latest link
           @record['pid'] = pid
+          @record['status'] = 'ready'
           @submcr_proc = @mcfg[:submcr_proc] || proc do|args|
             show { "Sub Macro #{args} issued\n" }
             { 'id' => 'dmy' }
@@ -52,14 +53,12 @@ module CIAX
           @th_mcr = Thread.current
           @que_cmd = Queue.new
           @que_res = Queue.new
-          update('id' => @record['id'], 'cid' => @mcfg[:cid], 'pid' => pid,
-                 'step' => 0, 'total_steps' => @mcfg[:sequence].size, 'stat' => 'ready')
           @running = []
           @depth = 0
           # For Thread mode
           @cobj.add_rem.add_hid
           int = @cobj.rem.add_int(Int)
-          self['option'] = int.valid_keys.clear
+          @option = @record['option'] = int.valid_keys.clear
           int.def_proc { |ent| reply(ent.id) }
         end
 
@@ -74,15 +73,14 @@ module CIAX
 
         def to_v
           msg = @record.to_v
-          msg << "  [#{self['step']}/#{self['total_steps']}]"
-          msg << "(#{self['stat']})"
-          msg << optlist(self['option'])
+          msg << "(#{@record['status']})"
+          msg << optlist(@option)
         end
 
         def ext_shell
           super
           @prompt_proc = proc do
-            "(#{self['stat']})" + optlist(self['option'])
+            "(#{@record['status']})" + optlist(@option)
           end
           @cfg[:output] = @record
           @cobj.loc.add_view
@@ -100,7 +98,7 @@ module CIAX
           end
         ensure
           @running.clear
-          self['option'].clear
+          @option.clear
           res = @record.finish
           show { "#{res}" }
           store_stat(res)
@@ -115,7 +113,6 @@ module CIAX
           store_stat('run')
           result = 'complete'
           sequence.each do|e1|
-            self['step'] += 1
             begin
               @step = @record.add_step(e1, @depth)
               case e1['type']
@@ -167,7 +164,7 @@ module CIAX
 
         # Communicate with forked macro
         def reply(ans)
-          if self['stat'] == 'query'
+          if @record['status'] == 'query'
             @que_cmd << ans
             @que_res.pop
           else
@@ -176,17 +173,17 @@ module CIAX
         end
 
         def store_stat(str)
-          self['stat'] = str
+          @record['status'] = str
         ensure
           @post_stat_procs.each { |p| p.call(self) }
         end
 
         def query(cmds)
           return true if OPT['n']
-          self['option'].replace(cmds)
+          @option.replace(cmds)
           store_stat 'query'
           res = input(cmds)
-          self['option'].clear
+          @option.clear
           store_stat 'run'
           @step['action'] = res
           case res
@@ -205,7 +202,7 @@ module CIAX
           Readline.completion_proc = proc { |word| cmds.grep(/^#{word}/) } if Msg.fg?
           loop do
             if Msg.fg?
-              prom = @step.body(optlist(self['option']))
+              prom = @step.body(optlist(@option))
               line = Readline.readline(prom, true)
               break 'interrupt' unless line
               id = line.rstrip

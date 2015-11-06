@@ -20,6 +20,7 @@ module CIAX
         self['cid'] = @cfg[:cid] # Command ID (cmd:par)
         self['label'] = @cfg['label'] # Label for CID
         self['result'] = 'busy'
+        self['original_steps'] = @cfg[:sequence].size
         self
       end
 
@@ -54,6 +55,7 @@ module CIAX
         msg = Msg.color('MACRO', 3) + ":#{self['label']} (#{date})\n"
         @data.each { |i| msg << i.title + i.result }
         msg << " (#{self['result']})" if self['result']
+        msg << " [#{@data.size}/#{self['original_steps']}]"
         msg
       end
     end

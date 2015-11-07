@@ -8,6 +8,7 @@ module CIAX
       attr_reader :db, :sub_list
       def initialize(cfg, top_list, sub_mod = nil)
         cfg[:top_list] ||= top_list
+        cfg[:layer_type] = 'site'
         super(cfg, column: 2)
         @sub_list = @cfg[:sub_list] = sub_mod.new(cfg) if sub_mod
       end

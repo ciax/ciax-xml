@@ -9,6 +9,7 @@ module CIAX
         # cfg should have [:dev_list]
         def initialize(cfg, attr = {})
           attr[:db] = Db.new
+          attr[:layer_type] = 'mcr'
           super(PROJ, cfg, attr)
           @stat = Seq::List.new(@id, @cfg)
           @lastsize = 0
@@ -136,7 +137,7 @@ module CIAX
         def get_record(seq)
           case seq
           when Hash
-#            Record.new(seq['id']).ext_http
+            Record.new(seq['id']).ext_http
           when Seq::Exe
             seq.record
           end

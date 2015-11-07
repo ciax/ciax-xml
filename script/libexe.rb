@@ -22,7 +22,7 @@ module CIAX
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @id = id
       @layer = class_path.first.downcase
-      @sv_stat = Prompt.new(id) # Site Status shared among layers
+      @sv_stat = Prompt.new(@cfg[:layer_type],id) # Site Status shared among layers
       @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }] # Proc for Server Command (by User query}
       @post_exe_procs = [proc { verbose { 'Processing PostExeProcs' } }] # Proc for Server Status Update (by User query}
       @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }] # Proc for program terminated

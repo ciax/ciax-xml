@@ -5,7 +5,6 @@ require 'libmcrman'
 module CIAX
   OPT.parse('csenmr')
   cfg = Config.new
-  PROJ ||= ARGV.shift
   begin
     cfg[:dev_list] = Wat::List.new(cfg).sub_list
     Mcr::Man::Exe.new(cfg).ext_server.server

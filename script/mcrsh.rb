@@ -4,7 +4,6 @@ require 'libmcrlayer'
 # CIAX-XML Macro Shell
 module CIAX
   OPT.parse('cemlnr')
-  PROJ ||= ARGV.shift
   begin
     Layer.new.ext_mcr.ext_shell.shell
   rescue InvalidID

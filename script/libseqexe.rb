@@ -167,7 +167,6 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         OPT.parse('icemntr')
-        PROJ ||= ARGV.shift
         cfg = Config.new
         al = Wat::List.new(cfg).sub_list # Take App List
         cfg[:dev_list] = al

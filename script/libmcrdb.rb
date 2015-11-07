@@ -98,7 +98,6 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      PROJ ||= ARGV.shift
       begin
         mdb = Db.new.get(PROJ)
       rescue InvalidID

@@ -146,7 +146,6 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         OPT.parse('cmnlrt')
-        PROJ ||= ARGV.shift
         begin
           cfg = Config.new
           cfg[:dev_list] = Wat::List.new(cfg).sub_list

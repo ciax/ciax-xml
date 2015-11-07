@@ -65,7 +65,6 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libwatexe'
-      PROJ ||= ARGV.shift
       cfg = Config.new
       cfg[:dev_list] = Wat::List.new(cfg).sub_list
       begin

@@ -116,7 +116,6 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         OPT.parse('tenr')
-        PROJ ||= ARGV.shift
         cfg = Config.new
         cfg[:dev_list] = Wat::List.new(cfg).sub_list # Take App List
         begin

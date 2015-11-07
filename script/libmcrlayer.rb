@@ -14,7 +14,6 @@ module CIAX
   end
 
   if __FILE__ == $PROGRAM_NAME
-    PROJ ||= ARGV.shift
     OPT.parse('els')
     begin
       Layer.new.ext_mcr.ext_shell.shell

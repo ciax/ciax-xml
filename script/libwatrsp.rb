@@ -18,7 +18,7 @@ module CIAX
       # Stat no changed -> clear exec, no eval
       def ext_rsp(stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
-        @sv_stat = type?(sv_stat || Prompt.new('site',self['id']), Prompt)
+        @sv_stat = type?(sv_stat || Prompt.new('site', self['id']), Prompt)
         wdb = @dbi[:watch] || {}
         @windex = wdb[:index] || {}
         @interval = wdb['interval'].to_f if wdb.key?('interval')

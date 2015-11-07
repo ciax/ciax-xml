@@ -1,28 +1,25 @@
 #!/usr/bin/ruby
 require 'libmcrman'
-require 'libsitelayer'
+require 'liblayer'
 
 module CIAX
-  module Mcr
-    # list object can be (Frm,App,Wat,Hex)
-    # attr can have [:top_layer]
-    class Layer < Site::Layer
-      def initialize(attr = {})
-        super
-        put('mcr', Man::Exe.new(@cfg, dev_list: get('app')))
-        @current = 'mcr'
-      end
+  # list object can be (Frm,App,Wat,Hex)
+  # attr can have [:top_layer]
+  class Layer
+    def ext_mcr
+      put('mcr', Mcr::Man::Exe.new(@cfg, dev_list: get('app')))
+      @current = 'mcr'
+      self
     end
+  end
 
-    if __FILE__ == $PROGRAM_NAME
-      require 'libhexexe'
-      PROJ ||= ARGV.shift
-      OPT.parse('els')
-      begin
-        Layer.new.ext_shell.shell
-      rescue InvalidID
-        OPT.usage('(opt) [id]')
-      end
+  if __FILE__ == $PROGRAM_NAME
+    PROJ ||= ARGV.shift
+    OPT.parse('els')
+    begin
+      Layer.new.ext_mcr.ext_shell.shell
+    rescue InvalidID
+      OPT.usage('(opt) [id]')
     end
   end
 end

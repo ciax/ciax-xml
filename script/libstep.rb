@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libupd'
-require 'libinterlock'
+require 'libmcrprt'
+require 'libmcrcond'
 
 module CIAX
   module Mcr
@@ -11,7 +12,7 @@ module CIAX
         super()
         update db
         # [:stat_proc,:exec_proc,:submcr_proc,:query]
-        @interlock = Interlock.new(delete('cond'), dev_list, self)
+        @cond = Condition.new(delete('cond'), dev_list, self)
         @break = nil
       end
 
@@ -35,14 +36,14 @@ module CIAX
 
       def skip?
         _show title
-        res = @interlock.ok?('skip', 'pass')
+        res = @cond.ok?('skip', 'pass')
         upd
         res
       end
 
       def fail?
         _show title
-        res = !@interlock.ok?('pass', 'failed')
+        res = !@cond.ok?('pass', 'failed')
         upd
         res
       end
@@ -88,7 +89,7 @@ module CIAX
       def _progress(itv, &prog)
         self['max'].to_i.times do|n| # gives number or nil(if break)
           self['retry'] = n
-          break if @interlock.ok?
+          break if @cond.ok?
           sleep itv
           prog.call
           post_upd

@@ -4,9 +4,8 @@ require 'libenumx'
 module CIAX
   # Macro Layer
   module Mcr
-    # Element of Record
-    class Interlock < Hashx
-      include PrtShare
+    # Check Coindition
+    class Condition < Hashx
       def initialize(cond, dev_list, step)
         super()
         @dev_list = type?(dev_list, App::List)
@@ -28,7 +27,7 @@ module CIAX
       end
 
       def refresh
-        sites.each do|site|
+        _sites.each do|site|
           verbose { "Refresh Status #{site}" }
           @dev_list.get(site).stat.refresh
         end
@@ -37,13 +36,13 @@ module CIAX
       private
 
       def _scan
-        sites.each_with_object({}) do|site, hash|
+        _sites.each_with_object({}) do|site, hash|
           verbose { "Scanning Status #{site}" }
           hash[site] = @dev_list.get(site).stat
         end
       end
 
-      def sites
+      def _sites
         @condition.map { |h| h['site'] }.uniq
       end
 

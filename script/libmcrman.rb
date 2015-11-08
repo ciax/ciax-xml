@@ -20,7 +20,7 @@ module CIAX
           @parameter = @cobj.rem.int.par
           @stat.post_upd_procs << proc do
             verbose { 'Propagate List#upd -> Parameter#upd' }
-            @parameter[:list] = @stat.keys
+            @sv_stat[:list] = @parameter[:list] = @stat.keys
           end
           @host ||= @dbi['host']
           @port ||= (@dbi['port'] || 55_555)

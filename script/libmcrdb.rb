@@ -9,8 +9,8 @@ module CIAX
         super('mdb')
       end
 
-      def get
-        super(PROJ || ARGV.shift)
+      def get(id = nil)
+        super(id || PROJ || ARGV.shift)
       end
 
       private

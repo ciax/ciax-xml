@@ -9,12 +9,11 @@ module CIAX
     class Seq
       include Msg
       # required cfg keys: app,db,body,stat,(:submcr_proc)
-      attr_reader :cfg, :record
+      attr_reader :cfg, :record, :qry
       # cfg[:submcr_proc] for executing asynchronous submacro,
       #   which must returns hash with ['id']
       # ent should have [:sequence]'[:dev_list],[:submcr_proc]
-      def initialize(ment, pid = '0')
-        @id = type?(ment, Entity).id
+      def initialize(ment, pid = '0', valid_keys = [])
         @cfg = ment
         type?(@cfg[:dev_list], CIAX::List)
         @record = Record.new.ext_save.ext_load.mklink # Make latest link
@@ -26,11 +25,11 @@ module CIAX
         @running = []
         @depth = 0
         # For Thread mode
-        @qry = Query.new(@record, [])
+        @qry = Query.new(@record, valid_keys)
       end
 
       def to_v
-        @record.to_v + @qry.to_v
+        record.to_v + @qry.to_v
       end
 
       def macro

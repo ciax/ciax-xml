@@ -40,7 +40,7 @@ module CIAX
 
       def finish
         self['total_time'] = Msg.elps_sec(self['time'])
-        self['result']
+        self['status'] = self['result']
       ensure
         post_upd
       end

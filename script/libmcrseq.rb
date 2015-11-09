@@ -49,7 +49,6 @@ module CIAX
         @running.clear
         res = @record.finish
         show { "#{res}" }
-        @record['status'] = res
       end
 
       private

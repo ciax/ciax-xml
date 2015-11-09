@@ -38,7 +38,7 @@ module CIAX
         @valid_keys.replace(cmds)
         sub_stat.put('option', cmds)
         @stat.put('status', 'query')
-        res = Msg.fg? ? _input_tty(sub_stat) : _input_que
+        res = Msg.fg? ? _input_tty : _input_que
         sub_stat.put('action', res)
         @valid_keys.clear
         @stat.put('status', 'run')
@@ -51,11 +51,10 @@ module CIAX
         optlist(@valid_keys)
       end
 
-      def _input_tty(sub_stat)
+      def _input_tty
         Readline.completion_proc = proc { |w| @valid_keys.grep(/^#{w}/) }
         loop do
-          prom = sub_stat.body(_options)
-          line = Readline.readline(prom, true)
+          line = Readline.readline(_options, true)
           break 'interrupt' unless line
           id = line.rstrip
           break id if _response(id)

@@ -9,6 +9,10 @@ module CIAX
         super('mdb')
       end
 
+      def get
+        super(PROJ || ARGV.shift)
+      end
+
       private
 
       def doc_to_db(doc)
@@ -99,7 +103,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       begin
-        mdb = Db.new.get(PROJ)
+        mdb = Db.new.get
       rescue InvalidID
         Msg.usage '[id] (key) ..'
       end

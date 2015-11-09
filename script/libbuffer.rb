@@ -115,7 +115,7 @@ module CIAX
         end
       else
         args, cid = ary.shift
-        cids << cid
+        cids << cid if cid
       end
       args
     end

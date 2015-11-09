@@ -9,24 +9,20 @@ module CIAX
     class Seq
       include Msg
       # required cfg keys: app,db,body,stat,(:submcr_proc)
-      attr_reader :cfg, :record,
-                  :post_stat_procs, :pre_mcr_procs, :post_mcr_procs, :th_mcr
+      attr_reader :cfg, :record
       # cfg[:submcr_proc] for executing asynchronous submacro,
       #   which must returns hash with ['id']
       # ent should have [:sequence]'[:dev_list],[:submcr_proc]
       def initialize(ment, pid = '0')
         @id = type?(ment, Entity).id
-        @mcfg = ment
-        type?(@mcfg[:dev_list], CIAX::List)
+        @cfg = ment
+        type?(@cfg[:dev_list], CIAX::List)
         @record = Record.new.ext_save.ext_load.mklink # Make latest link
         @record['pid'] = pid
-        @submcr_proc = @mcfg[:submcr_proc] || proc do|args|
+        @submcr_proc = @cfg[:submcr_proc] || proc do|args|
           show { "Sub Macro #{args} issued\n" }
           { 'id' => 'dmy' }
         end
-        # execute on stat changes
-        @pre_mcr_procs = [proc { verbose { 'Processing PreMcrProcs' } }]
-        @post_mcr_procs = [proc { verbose { 'Processing PostMcrProcs' } }]
         @running = []
         @depth = 0
         # For Thread mode
@@ -38,20 +34,19 @@ module CIAX
       end
 
       def macro
-        @record.ext_rsp(@mcfg)
+        @record.ext_rsp(@cfg)
         show { @record }
-        sub_macro(@mcfg[:sequence], @record)
+        sub_macro(@cfg[:sequence], @record)
       rescue Interrupt
         msg("\nInterrupt Issued to running devices #{@running}", 3)
         @running.each do|site|
-          @mcfg[:dev_list].get(site).exe(['interrupt'], 'user')
+          @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
         end
       ensure
         @running.clear
         res = @record.finish
         show { "#{res}" }
         @record['status'] = res
-        @post_mcr_procs.each { |p| p.call(self) }
       end
 
       private
@@ -109,7 +104,7 @@ module CIAX
       def exec(step,mstat)
         if step.exec? && @qry.query(%w(exec pass), step)
           @running << e1['site']
-          @mcfg[:dev_list].get(e1['site']).exe(e1['args'], 'macro')
+          @cfg[:dev_list].get(e1['site']).exe(e1['args'], 'macro')
         end
       end
 
@@ -119,7 +114,7 @@ module CIAX
             step['id'] = @submcr_proc.call(e1['args'], @record['id'])['id']
           end
         else
-          res = sub_macro(@mcfg.ancestor(2).set_cmd(e1['args'])[:sequence], step)
+          res = sub_macro(@cfg.ancestor(2).set_cmd(e1['args'])[:sequence], step)
           mstat['result'] = step['result']
           raise Interlock unless res
         end
@@ -137,7 +132,6 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-#      OPT.parse('icemntr')
       cfg = Config.new
       al = Wat::List.new(cfg).sub_list # Take App List
       cfg[:dev_list] = al

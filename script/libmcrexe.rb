@@ -15,7 +15,7 @@ module CIAX
         @cobj.add_rem.add_hid
         int = @cobj.rem.add_int(Int)
         @seq=Seq.new(ment, pid, int.valid_keys.clear)
-        int.def_proc { |ent| @seq.qry.reply(ent.id) }
+        int.def_proc { |ent| @seq.reply(ent.id) }
       end
 
       def fork
@@ -29,7 +29,7 @@ module CIAX
 
       def ext_shell
         super
-        @prompt_proc = proc { @seq.qry.to_v }
+        @prompt_proc = proc { @seq.to_v }
         @cfg[:output] = @seq.record
         @cobj.loc.add_view
         self

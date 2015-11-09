@@ -29,7 +29,11 @@ module CIAX
       end
 
       def to_v
-        record.to_v + @qry.to_v
+        @qry.to_v
+      end
+
+      def reply(str)
+        @qry.reply(str)
       end
 
       def macro
@@ -54,7 +58,7 @@ module CIAX
       def sub_macro(sequence, mstat)
         @depth += 1
         @record['status'] = 'run'
-        result = 'complete'
+        mstat['result'] = 'complete'
         begin
           sequence.each do|e1|
             step = @record.add_step(e1, @depth)

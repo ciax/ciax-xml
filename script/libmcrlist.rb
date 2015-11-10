@@ -34,49 +34,47 @@ module CIAX
       def ext_shell
         extend(Shell).ext_shell
       end
-    end
 
-    module Shell
-      include CIAX::List::Shell
-      class Jump < LongJump; end
+      module Shell
+        include CIAX::List::Shell
+        class Jump < LongJump; end
 
-      def ext_shell
-        super(Jump)
-        # Limit self level
-        # :dev_list is App::List
-        @cfg[:dev_list].ext_shell if @cfg.key?(:dev_list)
-        @cfg[:jump_mcr] = @jumpgrp
-@jumpgrp.add_item('dmy','dummy')
-        @post_upd_procs << proc do
-          verbose { 'Propagate List#upd -> JumpGrp#upd' }
-          @jumpgrp.number_item(@data.values.map { |seq| seq['id'] })
+        def ext_shell
+          super(Jump)
+          # Limit self level
+          # :dev_list is App::List
+          @cfg[:dev_list].ext_shell if @cfg.key?(:dev_list)
+          @cfg[:jump_mcr] = @jumpgrp
+          @jumpgrp.add_item('dmy','dummy')
+          @post_upd_procs << proc do
+            verbose { 'Propagate List#upd -> JumpGrp#upd' }
+            @jumpgrp.number_item(@data.values.map { |seq| seq['id'] })
+          end
+          self
         end
-        self
-      end
 
-      def add(ent, pid = '0')
-        seq = super.ext_shell
-warn seq.cobj.loc.cfg
-        seq.cobj.loc.add_jump
-warn seq.cobj.loc.cfg
-        seq
-      end
+        def add(ent, pid = '0')
+          seq = super.ext_shell
+          seq.cobj.loc.add_jump
+          seq
+        end
 
-      def get_exe(num)
-        n = num.to_i - 1
-        par_err('Invalid ID') if n < 0 || n > @data.size
-        @data[keys[n]]
-      end
+        def get_exe(num)
+          n = num.to_i - 1
+          par_err('Invalid ID') if n < 0 || n > @data.size
+          @data[keys[n]]
+        end
 
-      def shell
-        num = @data.size.to_s
-        begin
-          get_exe(num).shell
-        rescue Jump
-          num = $ERROR_INFO.to_s
-          retry
-        rescue InvalidID
-          OPT.usage('(opt) [site]')
+        def shell
+          num = @data.size.to_s
+          begin
+            get_exe(num).shell
+          rescue Jump
+            num = $ERROR_INFO.to_s
+            retry
+          rescue InvalidID
+            OPT.usage('(opt) [site]')
+          end
         end
       end
     end

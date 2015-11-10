@@ -10,8 +10,9 @@ module CIAX
       #   which must returns hash with ['id']
       # ent should have [:sequence]'[:dev_list],[:submcr_proc]
       def initialize(ment, pid = '0')
-        super(type?(ment, Entity).id)
-         # For Thread mode
+        cfg = Config.new(jump_groups: ment[:jump_groups])
+        super(type?(ment, Entity).id, cfg)
+        # For Thread mode
         @cobj.add_rem.add_hid
         int = @cobj.rem.add_int(Int)
         @seq=Seq.new(ment, pid, int.valid_keys.clear)
@@ -41,6 +42,7 @@ module CIAX
       cfg = Config.new
       al = Wat::List.new(cfg).sub_list # Take App List
       cfg[:dev_list] = al
+      cfg[:jump_groups] = []
       begin
         mobj = Remote::Index.new(cfg, dbi: Db.new.get)
         mobj.add_rem.add_ext(Ext)

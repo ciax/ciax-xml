@@ -15,7 +15,7 @@ module CIAX
     attr_accessor :sv_stat, :shell_input_procs, :shell_output_proc, :server_input_proc, :server_output_proc
     # attr contains the parameter for each layer individually (might have [:db])
     # cfg should have [:db] shared in the site (among layers)
-    def initialize(id, cfg = Config.new, attr = {})
+    def initialize(id, cfg, attr = {})
       super()
       @cls_color = 13
       @cfg = type?(cfg, Config).gen(self).update(attr)

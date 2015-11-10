@@ -18,6 +18,7 @@ module CIAX
         @que_res = Queue.new
       end
 
+      # For prompt
       def to_v
         st = @stat['status']
         "(#{st})" + _options

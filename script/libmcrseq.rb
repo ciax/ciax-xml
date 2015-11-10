@@ -29,6 +29,7 @@ module CIAX
         @qry = Query.new(@record, valid_keys)
       end
 
+      # For prompt '(stat) [option]'
       def to_v
         @qry.to_v
       end

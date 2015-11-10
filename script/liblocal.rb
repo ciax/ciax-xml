@@ -18,7 +18,7 @@ module CIAX
       end
 
       def add_jump
-        (@cfg[:jump_groups] || []).each { |grp| append(grp) }
+        @cfg[:jump_groups].each { |grp| append(grp) }
         append(@cfg[:jump_site]) if @cfg[:jump_site]
       end
 
@@ -75,14 +75,17 @@ module CIAX
         end
       end
     end
-  end
 
-  if __FILE__ == $PROGRAM_NAME
-    cfg = Config.new
-    loc = Local::Index.new(cfg).loc
-    vg = loc.add_view
-    loc.add_jump
-    loc.add_shell
-    puts loc.view_list
+    if __FILE__ == $PROGRAM_NAME
+      cfg = Config.new(jump_class: CIAX::Local::Jump)
+      jg = Jump::Group.new(cfg)
+      jg.add_item('site','Jump to site')
+      cfg[:jump_groups] = [jg]
+      loc = Index.new(cfg).loc
+      vg = loc.add_view
+      loc.add_jump
+      loc.add_shell
+      puts loc.view_list
+    end
   end
 end

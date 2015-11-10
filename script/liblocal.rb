@@ -20,6 +20,7 @@ module CIAX
       def add_jump
         @cfg[:jump_groups].each { |grp| append(grp) }
         append(@cfg[:jump_site]) if @cfg[:jump_site]
+        append(@cfg[:jump_mcr]) if @cfg[:jump_mcr]
       end
 
       def add_view(atrb = {})

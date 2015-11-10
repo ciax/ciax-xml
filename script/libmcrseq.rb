@@ -59,10 +59,10 @@ module CIAX
         @record['status'] = 'run'
         mstat['result'] = 'complete'
         begin
-          sequence.each do|e1|
-            step = @record.add_step(e1, @depth)
+          sequence.each do|e|
+            step = @record.add_step(e, @depth)
             begin
-              break true if method(e1['type']).call(step,mstat)
+              break true if method(e['type']).call(e,step,mstat)
             rescue Retry
               retry
             end
@@ -77,46 +77,46 @@ module CIAX
         @depth -= 1
       end
 
-      def mesg(step,mstat)
+      def mesg(e,step,mstat)
         step.ok?
         @qry.query(['ok'], step)
         false
       end
 
-      def goal(step,mstat)
+      def goal(e,step,mstat)
         if step.skip? && @qry.query(%w(skip force), step)
           mstat['result'] = 'skipped'
         end
       end
 
-      def check(step,mstat)
+      def check(e,step,mstat)
         if step.fail? && @qry.query(%w(drop force retry), step)
           mstat['result'] = 'error'
           raise Interlock
         end
       end
 
-      def wait(step,mstat)
+      def wait(e,step,mstat)
         if step.timeout? { show('.') } && @qry.query(%w(drop force retry), step)
           mstat['result'] = 'timeout'
           raise Interlock
         end
       end
 
-      def exec(step,mstat)
+      def exec(e,step,mstat)
         if step.exec? && @qry.query(%w(exec pass), step)
-          @running << e1['site']
-          @cfg[:dev_list].get(e1['site']).exe(e1['args'], 'macro')
+          @running << e['site']
+          @cfg[:dev_list].get(e['site']).exe(e['args'], 'macro')
         end
       end
 
-      def mcr(step,mstat)
+      def mcr(e,step,mstat)
         if step.async?
           if @submcr_proc.is_a?(Proc)
-            step['id'] = @submcr_proc.call(e1['args'], @record['id'])['id']
+            step['id'] = @submcr_proc.call(e['args'], @record['id'])['id']
           end
         else
-          res = sub_macro(@cfg.ancestor(2).set_cmd(e1['args'])[:sequence], step)
+          res = sub_macro(@cfg.ancestor(2).set_cmd(e['args'])[:sequence], step)
           mstat['result'] = step['result']
           raise Interlock unless res
         end

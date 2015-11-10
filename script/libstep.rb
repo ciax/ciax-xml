@@ -17,12 +17,12 @@ module CIAX
       end
 
       # Conditional judgment section
-      def timeout?(&prog)
+      def timeout?
         itv = (OPT['e'] || OPT['s']) ? 0.1 : 0
         itv *= 10 if OPT['m']
         _show title
         self['max'] = self['retry']
-        res = _progress(itv, &prog)
+        res = _progress(itv)
         self['result'] = res ? 'timeout' : 'pass'
         upd
         res
@@ -86,12 +86,12 @@ module CIAX
         !OPT['m'] && self['action'] = 'dryrun'
       end
 
-      def _progress(itv, &prog)
+      def _progress(itv)
         self['max'].to_i.times do|n| # gives number or nil(if break)
           self['retry'] = n
           break if @cond.ok?
           sleep itv
-          prog.call
+          _show('.')
           post_upd
         end
       end

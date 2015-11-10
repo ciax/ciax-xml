@@ -99,7 +99,7 @@ module CIAX
       end
 
       def wait(e,step,mstat)
-        if step.timeout? { show('.') } && @qry.query(%w(drop force retry), step)
+        if step.timeout? && @qry.query(%w(drop force retry), step)
           mstat['result'] = 'timeout'
           raise Interlock
         end

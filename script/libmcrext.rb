@@ -4,7 +4,7 @@ require 'libmcrlist'
 
 module CIAX
   module Mcr
-    class Exe < CIAX::Exe
+    class Man < CIAX::Exe
       # cfg should have [:dev_list]
       def initialize(cfg, attr = {})
         attr[:db] = Db.new
@@ -40,15 +40,14 @@ module CIAX
       def ext_driver
         @sv_stat['sid'] = '' # For server response
         @pre_exe_procs << proc { @sv_stat['sid'] = '' }
-        @sub_list.ext_drv
         # External Command Group
         @cobj.rem.ext.def_proc do |ent|
-          @sv_stat['sid'] = add(ent).record['id']
+          @sv_stat['sid'] = @sub_list.add(ent).seq.record['id']
           'ACCEPT'
         end
         # Internal Command Group
         @cfg[:submcr_proc] = proc do|args, pid|
-          add(@cobj.set_cmd(args), pid)
+          @sub_list.add(@cobj.set_cmd(args), pid)
         end
         @cobj.rem.int.def_proc do|ent|
           seq = @sub_list.get(ent.par[0])
@@ -71,10 +70,6 @@ module CIAX
         @terminate_procs << proc { @sub_list.clean }
         super
       end
-
-      def add(ent, pid = '0')
-        @sub_list.add(ent, pid)
-      end
     end
 
     if __FILE__ == $PROGRAM_NAME
@@ -82,7 +77,8 @@ module CIAX
       begin
         cfg = Config.new
         cfg[:dev_list] = Wat::List.new(cfg).sub_list
-        Exe.new(cfg).ext_shell.shell
+        cfg[:jump_groups] = []
+        Man.new(cfg).ext_shell.shell
       rescue InvalidCMD
         OPT.usage('[cmd] (par)')
       rescue InvalidID

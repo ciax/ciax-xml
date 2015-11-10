@@ -9,7 +9,7 @@ module CIAX
     class Seq
       include Msg
       # required cfg keys: app,db,body,stat,(:submcr_proc)
-      attr_reader :cfg, :record, :qry
+      attr_reader :cfg, :record, :qry ,:id
       # cfg[:submcr_proc] for executing asynchronous submacro,
       #   which must returns hash with ['id']
       # ent should have [:sequence]'[:dev_list],[:submcr_proc]
@@ -18,6 +18,7 @@ module CIAX
         type?(@cfg[:dev_list], CIAX::List)
         @record = Record.new.ext_save.ext_load.mklink # Make latest link
         @record['pid'] = pid
+        @id = @record['id']
         @submcr_proc = @cfg[:submcr_proc] || proc do|args|
           show { "Sub Macro #{args} issued\n" }
           { 'id' => 'dmy' }

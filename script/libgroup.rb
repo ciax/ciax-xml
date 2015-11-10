@@ -17,7 +17,6 @@ module CIAX
 
     # crnt could have 'label',:body,'unit','group'
     def add_item(id, title = nil, crnt = {})
-      crnt['label'] = title
       @displist.put_item(id, title)
       new_item(id, crnt)
     end
@@ -34,6 +33,7 @@ module CIAX
 
     def merge_items(displist)
       @displist.merge_sub(type?(displist, Disp))
+      displist.keys.each { |id| new_item(id) }
       self
     end
 

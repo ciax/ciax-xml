@@ -17,10 +17,7 @@ module CIAX
         int = @cobj.rem.add_int(Int)
         @seq=Seq.new(ment, pid, int.valid_keys.clear)
         int.def_proc { |ent| @seq.reply(ent.id) }
-      end
-
-      def fork
-        @th_mcr = Threadx.new("Macro(#{@id})", 10) { @seq.macro }
+        @th_mcr = @seq.fork
         @cobj.get('interrupt').def_proc do
           @th_mcr.raise(Interrupt)
           'INTERRUPT'
@@ -48,7 +45,7 @@ module CIAX
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(ARGV)
         seq = Exe.new(ent)
-        seq.fork.ext_shell.shell
+        seq.ext_shell.shell
       rescue InvalidCMD
         OPT.usage('[cmd] (par)')
       rescue InvalidID

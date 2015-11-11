@@ -53,6 +53,10 @@ module CIAX
         show { "#{res}" }
       end
 
+      def fork
+        Threadx.new("Macro(#{@id})", 10) { macro }
+      end
+
       private
 
       # macro returns result (true/false)

@@ -65,16 +65,13 @@ module CIAX
 
     private
 
-    def _merge_data_(data)
-      verbose { "Version compare [#{data['ver']}] vs. <#{self['ver']}>" }
-      if data['ver'] == self['ver']
-        if @data.is_a? Hash
-          @data.deep_update(data[@data_name])
-        else
-          @data << data[@data_name]
-        end
+    def _merge_data_(h)
+      verbose { "Version compare [#{h['ver']}] vs. <#{self['ver']}>" }
+      alert("Version mismatch [#{h['ver']}] should be <#{self['ver']}>") if h['ver'] != self['ver']
+      if @data.is_a? Hash
+        @data.deep_update(h[@data_name])
       else
-        alert("Version mismatch [#{data['ver']}] should be <#{self['ver']}>")
+        @data << h[@data_name]
       end
     end
   end

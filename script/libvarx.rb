@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require 'libupd'
 require 'libdb'
-require 'libjsave'
 
 module CIAX
   # Variable Status Data with Saving, Logging feature
@@ -17,6 +16,7 @@ module CIAX
       self['host'] = host || `hostname`.strip
       # Setting (Not shown in JSON)
       @thread = Thread.current # For Thread safe
+      @jsondir = vardir('json')
     end
 
     def setdbi(dbi)
@@ -45,8 +45,13 @@ module CIAX
       self
     end
 
-    def file_base(tag = nil)
+    def _file_base(tag = nil)
       [@type, self['id'], tag].compact.join('_')
     end
+
+    def _file_path(tag = nil)
+      @jsondir + _file_base(tag) + '.json'
+    end
+
   end
 end

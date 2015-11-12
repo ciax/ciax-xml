@@ -29,14 +29,14 @@ module CIAX
         Msg.msg("Status Saving for [#{tag}]")
         output = Hashx.new(self)
         output[@data_name] = hash
-        write_json(output.to_j, tag)
+        _write_json(output.to_j, tag)
       end
       self
     end
 
     def load(tag = nil)
-      base = file_base(tag)
-      fname = file_path(tag)
+      base = _file_base(tag)
+      fname = _file_path(tag)
       json_str = ''
       open(fname) do|f|
         verbose { "Loading [#{base}](#{f.size})" }
@@ -55,7 +55,7 @@ module CIAX
     end
 
     def tag_list
-      Dir.glob(file_path('*')).map do|f|
+      Dir.glob(_file_path('*')).map do|f|
         f.slice(/.+_(.+)\.json/, 1)
       end.sort
     end

@@ -13,7 +13,7 @@ module CIAX
       verbose { "Log Initialize [#{id}/Ver.#{ver}]" }
       @queue = Queue.new
       @post_upd_procs << proc { @queue.push(to_j) }
-      logfile = vardir('log') + file_base + "_#{Time.now.year}.log"
+      logfile = vardir('log') + _file_base + "_#{Time.now.year}.log"
       ThreadLoop.new("Logging(#{@type}:#{id})", 11) do
         logary = []
         loop do
@@ -40,6 +40,13 @@ module CIAX
         end
       end
       h
+    end
+  end
+
+  # Add extend method to Varx
+  class Varx
+    def ext_log
+      extend(JsLog).ext_log
     end
   end
 end

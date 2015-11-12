@@ -128,4 +128,18 @@ module CIAX
       get(keys.last)
     end
   end
+
+  class DataA < Datax
+    def initialize(type, data_name = 'data')
+      super(type,[],data_name)
+    end
+
+    def add(val)
+      @data << val
+    end
+
+    def last
+      @data.last
+    end
+  end
 end

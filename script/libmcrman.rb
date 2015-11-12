@@ -12,7 +12,6 @@ module CIAX
         attr[:layer_type] = 'mcr'
         super(PROJ, cfg, attr)
         @sub_list = List.new
-        @lastsize = 0
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)

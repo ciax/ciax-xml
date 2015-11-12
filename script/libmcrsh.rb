@@ -10,6 +10,7 @@ module CIAX
       def ext_shell
         super
         list_mode
+        @lastsize = 0
         @cfg[:output]=View.new(@id,@valid_keys)
         @cobj.loc.add_view
         @prompt_proc = proc { upd_current }

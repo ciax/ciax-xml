@@ -14,7 +14,6 @@ module CIAX
         @lastsize = 0
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
-        @cobj.rem.int.add_item('clean', 'Clean list')
         @cobj.rem.add_ext(Ext)
         @parameter = @cobj.rem.int.par
         @valid_keys = @sv_stat[:list] = @parameter[:list] = []
@@ -59,10 +58,6 @@ module CIAX
           else
             'NOSID'
           end
-        end
-        @cobj.get('clean').def_proc do
-          @sub_list.clean
-          'ACCEPT'
         end
         @cobj.get('interrupt').def_proc do
           @sub_list.interrupt

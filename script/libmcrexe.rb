@@ -18,6 +18,7 @@ module CIAX
         @seq=Seq.new(ment, pid, int.valid_keys.clear)
         int.def_proc { |ent| @seq.reply(ent.id) }
         @th_mcr = @seq.fork
+        # interrupt is in rem.hid group
         @cobj.get('interrupt').def_proc do
           @th_mcr.raise(Interrupt)
           'INTERRUPT'

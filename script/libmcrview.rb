@@ -16,7 +16,7 @@ module CIAX
           title = "[#{idx}] (#{id})(by #{rec['cid']})"
           msg = "#{rec['cid']} [#{rec['step']}/#{rec['total_steps']}]"
           msg << "(#{rec['stat']})"
-          msg << optlist(rec['option'])
+          msg << optlist(rec.last['option']) if rec.last
           page << Msg.item(title, msg)
           idx += 1
         end

@@ -39,6 +39,7 @@ module CIAX
       end
 
       def macro
+        Thread.current[:id] = @id
         @record.ext_rsp(@cfg)
         show { @record }
         sub_macro(@cfg[:sequence], @record)

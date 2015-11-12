@@ -30,6 +30,7 @@
   - set(val) [store_*] : stores value to self, returns self.
   - get(id)  [fetch_*] : fetch value from existent key/index, which can includes cache access or data generation.
   - add(par) [add_*] : generate and store new element with parameter, returns generated object.
+  - gen(par) [gen_*] : generate and store new element with parameter, returns generated object.
  #For Array
   - append(obj) [append_*] : stores and returns object.
  #For Hash

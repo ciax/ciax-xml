@@ -10,17 +10,14 @@ module CIAX
         attr[:db] = Db.new
         attr[:layer_type] = 'mcr'
         super(PROJ, cfg, attr)
-        @sub_list = List.new(@id, @cfg)
+        @sub_list = List.new
         @lastsize = 0
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.int.add_item('clean', 'Clean list')
         @cobj.rem.add_ext(Ext)
         @parameter = @cobj.rem.int.par
-        @sub_list.post_upd_procs << proc do
-          verbose { 'Propagate List#upd -> Parameter#upd' }
-          @sv_stat[:list] = @parameter[:list] = @sub_list.keys
-        end
+        @valid_keys = @sv_stat[:list] = @parameter[:list] = []
         @host ||= @dbi['host']
         @port ||= (@dbi['port'] || 55_555)
         @mode = 'MCR'
@@ -39,10 +36,15 @@ module CIAX
 
       def ext_driver
         @sv_stat['sid'] = '' # For server response
-        @pre_exe_procs << proc { @sv_stat['sid'] = '' }
+        @pre_exe_procs << proc do
+          @valid_keys.replace @sub_list.clean.keys
+          @sv_stat['sid'] = ''
+        end
         # External Command Group
         @cobj.rem.ext.def_proc do |ent|
-          @sv_stat['sid'] = @sub_list.add(ent).seq.record['id']
+          sid = @sub_list.add(ent).id
+          @sv_stat['sid'] = sid
+          @valid_keys << sid if sid
           'ACCEPT'
         end
         # Internal Command Group
@@ -52,9 +54,8 @@ module CIAX
         @cobj.rem.int.def_proc do|ent|
           seq = @sub_list.get(ent.par[0])
           if seq
-            @sv_stat['sid'] = seq.record['id']
-            seq.exe(ent.id.split(':'))
-            'ACCEPT'
+            @sv_stat['sid'] = seq.id
+            seq.reply(ent[:id])
           else
             'NOSID'
           end

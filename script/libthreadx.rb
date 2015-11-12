@@ -17,7 +17,7 @@ module CIAX
     end
 
     def self.list
-      Thread.list.map { |t| t['name'] }
+      Thread.list.map { |t| t[:name] }
     end
   end
 

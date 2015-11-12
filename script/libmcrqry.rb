@@ -41,9 +41,10 @@ module CIAX
         @stat.put('status', 'query')
         res = Msg.fg? ? _input_tty : _input_que
         sub_stat.put('action', res)
-        @valid_keys.clear
         @stat.put('status', 'run')
         _judge(res)
+      ensure
+        @valid_keys.clear
       end
 
       private

@@ -9,7 +9,9 @@
 ## Naming rule recommendation
  # general
   - method name : snake case to privent to mix up with local var (verb_noun).
-  - shared method name (mixin module) : start under bar to distinct with system method. 
+  - private method name (mixin module)
+    = shared among inherited classes : under bar prefix to distinct with system method or local var. (_name)
+    = used only its own class : under bar prefix and suffix to distinct with private shared method.  (_name_)
   - local var name : abbrev word (as short as possible < 4 letter).
     (i.e. i,j,k,idx,grp,key(k),hsh(h),ary(a),val(v)...).
   - DB key which contains Hash or Array : Symbol. Other keys are String.
@@ -23,13 +25,13 @@
  #block rerutn value
    set return value to local var 'res' at the end of block if it is expressly provided.
 
-## Method rule (Container objects)
+## Specialized method naming (Container objects)
   - list()   [list_*] : returns Hash or Array.
   - view()   [view_*] : returns String.
-  - upd()    [upd_*] : Update for triggering execute the implicit procs (upper layer).
+  - upd()    [upd_*] : Update for triggering execute the implicit procs (upper layer). returns self.
   - set(val) [store_*] : stores value to self, returns self.
   - get(id)  [fetch_*] : fetch value from existent key/index, which can includes cache access or data generation.
-  - add(par) [add_*] : generate and store new element with parameter, returns generated object.
+  - add(par) [add_*] : generate and store new element with parameter, returns self.
   - gen(par) [gen_*] : generate and store new element with parameter, returns generated object.
  #For Array
   - append(obj) [append_*] : stores and returns object.

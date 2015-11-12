@@ -46,13 +46,7 @@ module CIAX
       if json_str.empty?
         warning(" -- json file (#{base}) is empty at loading")
       else
-        data = j2h(json_str)
-        verbose { "Version compare [#{data['ver']}] vs. <#{self['ver']}>" }
-        if data['ver'] == self['ver']
-          @data.deep_update(data[@data_name])
-        else
-          alert("Version mismatch [#{data['ver']}] should be <#{self['ver']}>")
-        end
+        _merge_data_(j2h(json_str))
       end
       self
     rescue Errno::ENOENT
@@ -67,6 +61,21 @@ module CIAX
       Dir.glob(file_path('*')).map do|f|
         f.slice(/.+_(.+)\.json/, 1)
       end.sort
+    end
+
+    private
+
+    def _merge_data_(data)
+      verbose { "Version compare [#{data['ver']}] vs. <#{self['ver']}>" }
+      if data['ver'] == self['ver']
+        if @data.is_a? Hash
+          @data.deep_update(data[@data_name])
+        else
+          @data << data[@data_name]
+        end
+      else
+        alert("Version mismatch [#{data['ver']}] should be <#{self['ver']}>")
+      end
     end
   end
 end

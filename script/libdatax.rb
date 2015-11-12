@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libjsave'
+require 'libjslog'
 require 'libhttp'
 require 'libjload'
 

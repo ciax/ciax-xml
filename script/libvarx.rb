@@ -26,18 +26,6 @@ module CIAX
       self
     end
 
-    def ext_save # Save data at every after update
-      extend JSave
-      ext_save
-      self
-    end
-
-    def ext_log # Write only for server
-      extend JsLog
-      ext_log
-      self
-    end
-
     private
 
     def _setid(id)

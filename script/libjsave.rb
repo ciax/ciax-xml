@@ -52,8 +52,8 @@ module CIAX
 
   # Add extend method to Varx
   class Varx
-    def ext_log
-      extend(JSave).ext_log
+    def ext_save
+      extend(JSave).ext_save
     end
   end
 end

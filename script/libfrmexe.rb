@@ -111,6 +111,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
       cfg = Config.new
+      cfg[:jump_groups] = []
       cfg[:site] = ARGV.shift
       begin
         List.new(cfg).ext_shell.shell

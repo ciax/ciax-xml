@@ -67,8 +67,28 @@ module CIAX
 
     def _setdata
       verbose { 'Convert [:data] to @data' }
-      @data = delete(@data_name).extend(Enumx)
+      inc = delete(@data_name)
+      return unless _check_setdata_(inc)
+      case @data
+      when Hash
+        @data.deep_update(inc)
+      when Array
+        @data.concat(inc)
+      end
       self
+    end
+
+    def _check_setdata_(data)
+      if data
+        alert("[#{@data_name}] is empty")
+      elsif ! data.is_a? Enumerable
+        alert("[#{@data_name}] is not Enumerablee")
+      elsif @data.class === data.class
+        return true
+      else
+        alert("[#{@data_name}] class is mismatch (#{@data.class} vs. #{data.class})")
+      end
+      false
     end
   end
 

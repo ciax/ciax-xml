@@ -43,11 +43,8 @@ module CIAX
         f.flock(::File::LOCK_SH)
         json_str = f.read
       end
-      if json_str.empty?
-        warning(" -- json file (#{base}) is empty at loading")
-      else
-        _merge_data_(j2h(json_str))
-      end
+      _check_load_(json_str)
+      read(json_str)
       self
     rescue Errno::ENOENT
       if tag
@@ -65,13 +62,15 @@ module CIAX
 
     private
 
-    def _merge_data_(h)
-      verbose { "Version compare [#{h['ver']}] vs. <#{self['ver']}>" }
-      alert("Version mismatch [#{h['ver']}] should be <#{self['ver']}>") if h['ver'] != self['ver']
-      if @data.is_a? Hash
-        @data.deep_update(h[@data_name])
+    def _check_load_(json_str)
+      if json_str.empty?
+        warning(" -- json file (#{base}) is empty at loading")
       else
-        @data << h[@data_name]
+        h = j2h(json_str)
+        verbose { "Version compare [#{h['ver']}] vs. <#{self['ver']}>" }
+        if h['ver'] != self['ver']
+          alert("Version mismatch [#{h['ver']}] should be <#{self['ver']}>")
+        end
       end
     end
   end

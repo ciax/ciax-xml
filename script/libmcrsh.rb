@@ -6,9 +6,12 @@ module CIAX
   module Mcr
     module Shell
       include CIAX::Shell
+      # cfg should have [:jump_groups]
       def ext_shell
         super
         list_mode
+        @cfg[:output]=View.new(@id,@valid_keys)
+        @cobj.loc.add_view
         @prompt_proc = proc { upd_current }
         # Convert as command
         input_conv_num do|i|

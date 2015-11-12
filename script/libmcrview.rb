@@ -1,64 +1,37 @@
 #!/usr/bin/ruby
-require 'libseqexe'
+require 'libupd'
 module CIAX
   module Mcr
     class View < Upd
-      def initialize(valid_keys)
+      def initialize(id,valid_keys)
         @valid_keys = valid_keys
-        self['id'] = proj
+        @id = id
       end
 
       def to_v
         idx = 1
-        page = ['<<< ' + Msg.color("Active Macros [#{self['id']}]", 2) + ' >>>']
-        @data.each do|id, seq|
-          title = "[#{idx}] (#{id})(by #{get_cid(seq['pid'])})"
-          msg = "#{seq['cid']} [#{seq['step']}/#{seq['total_steps']}]"
-          msg << "(#{seq['stat']})"
-          msg << optlist(seq['option'])
+        page = ['<<< ' + Msg.color("Active Macros [#{@id}]", 2) + ' >>>']
+        each do|id, rec|
+          title = "[#{idx}] (#{id})(by #{get_cid(rec['pid'])})"
+          msg = "#{rec['cid']} [#{rec['step']}/#{rec['total_steps']}]"
+          msg << "(#{rec['stat']})"
+          msg << optlist(rec['option'])
           page << Msg.item(title, msg)
           idx += 1
         end
         page.join("\n")
       end
 
-      module Shell
-        include CIAX::List::Shell
-        class Jump < LongJump; end
-
-        def ext_shell
-          super(Jump)
-          # Limit self level
-          # :dev_list is App::List
-          @cfg[:dev_list].ext_shell if @cfg.key?(:dev_list)
-          @post_upd_procs << proc do
-            verbose { 'Propagate List#upd -> JumpGrp#upd' }
-            @jumpgrp.number_item(@data.values.map { |seq| seq['id'] })
-          end
-          self
+      def core_upd
+        @valid_keys.each do |id|
+          put(id,get_rec(id)) unless key?(id)
         end
+        each{ |rec| rec.upd }
+        self
+      end
 
-        def add(ent, pid = '0')
-          super.ext_shell
-        end
-
-        def get_exe(num)
-          n = num.to_i - 1
-          par_err('Invalid ID') if n < 0 || n > @data.size
-          @data[keys[n]]
-        end
-
-        def shell
-          num = size.to_s
-          begin
-            get_exe(num).shell
-          rescue Jump
-            num = $ERROR_INFO.to_s
-            retry
-          rescue InvalidID
-            OPT.usage('(opt) [site]')
-          end
-        end
+      def get_rec(id)
+        Record.new(id).ext_save.ext_load
       end
 
       if __FILE__ == $PROGRAM_NAME

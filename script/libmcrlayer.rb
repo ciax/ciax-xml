@@ -7,7 +7,7 @@ module CIAX
   # attr can have [:top_layer]
   class Layer
     def ext_mcr
-      put('mcr', Mcr::Man::Exe.new(@cfg, dev_list: get('app')))
+      put('mcr', Mcr::Man.new(@cfg, dev_list: get('app')))
       @current = 'mcr'
       self
     end

@@ -7,7 +7,7 @@ module CIAX
   cfg = Config.new
   begin
     cfg[:dev_list] = Wat::List.new(cfg).sub_list
-    Mcr::Man::Exe.new(cfg).ext_server.server
+    Mcr::Man.new(cfg).ext_server.server
     sleep
   rescue InvalidID
     OPT.usage('[proj] [cmd] (par)')

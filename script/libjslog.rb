@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libvarx'
+require 'libsqlog'
 module CIAX
   # Add Data Logging feature
   module JsLog
@@ -41,12 +41,11 @@ module CIAX
       end
       h
     end
-  end
 
-  # Add extend method to Varx
-  class Varx
-    def ext_log
-      extend(JsLog).ext_log
+    def ext_sqlog
+      # Logging if version number exists
+      SqLog::Save.new(self['id'], @type).add_table(self)
+      self
     end
   end
 end

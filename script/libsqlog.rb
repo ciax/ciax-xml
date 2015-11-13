@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # For sqlite3
-require 'libvarx'
+require 'libmsg'
 require 'thread'
 
 module CIAX
@@ -146,15 +146,6 @@ module CIAX
         verbose { 'Initialize: invalid Version(0): No Log' }
         stat.post_upd_procs << proc { verbose { "Insert\n" + sqlog.upd } }
       end
-    end
-  end
-
-  # Add extend method to Varx
-  class Varx
-    def ext_sqlog
-      # Logging if version number exists
-      SqLog::Save.new(self['id'], @type).add_table(self)
-      self
     end
   end
 

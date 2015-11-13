@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libjslog'
 module CIAX
   # Add File I/O feature
   module JFile
@@ -42,6 +43,10 @@ module CIAX
       ::File.symlink(_file_path_, sname)
       verbose { "Symboliclink to [#{sname}]" }
       self
+    end
+
+    def ext_log
+      extend(JsLog).ext_log
     end
 
     private

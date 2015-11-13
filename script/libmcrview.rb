@@ -35,7 +35,8 @@ module CIAX
       end
 
       def get_rec(id)
-        Record.new(id).ext_file.auto_load
+        #Record.new(id).ext_file.auto_load
+        Record.new(id).ext_http
       end
 
       def _list_

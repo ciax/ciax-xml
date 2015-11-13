@@ -16,8 +16,6 @@ module CIAX
         @cobj.rem.add_ext(Ext)
         @parameter = @cobj.rem.int.par
         @valid_keys = @sv_stat[:list] = @parameter[:list] = []
-        @stat=View.new(@id,@valid_keys)
-        @post_exe_procs << proc { @stat.upd }
         @host ||= @dbi['host']
         @port ||= (@dbi['port'] || 55_555)
         @mode = 'MCR'
@@ -25,7 +23,8 @@ module CIAX
       end
 
       def ext_shell
-        @cfg[:output] = @stat
+        @cfg[:output] = View.new(@id,@valid_keys)
+        @post_exe_procs << proc { @cfg[:output].upd }
         extend(Shell).ext_shell
       end
 

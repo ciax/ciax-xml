@@ -51,7 +51,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libgetopts'
       unless ARGV.empty?
-        puts View.new('test', ARGV).upd.to_v
+        puts View.new('test', ARGV).upd
       else
         OPT.usage('[id] ..')
       end

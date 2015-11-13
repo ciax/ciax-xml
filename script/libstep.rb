@@ -11,7 +11,7 @@ module CIAX
       def initialize(db, dev_list)
         super()
         update db
-        # [:stat_proc,:exec_proc,:submcr_proc,:query]
+        # [:stat_proc,:exec_proc,:query]
         @cond = Condition.new(delete('cond'), dev_list, self)
         @break = nil
       end

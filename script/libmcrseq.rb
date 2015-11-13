@@ -8,19 +8,18 @@ module CIAX
   module Mcr
     class Seq
       include Msg
-      # required cfg keys: app,db,body,stat,(:submcr_proc)
       attr_reader :cfg, :record, :qry ,:id, :title
-      # cfg[:submcr_proc] for executing asynchronous submacro,
-      #   which must returns hash with ['id']
-      # ent should have [:sequence]'[:dev_list],[:submcr_proc]
-      def initialize(ment, pid = '0', valid_keys = [])
+      # &submcr_proc for executing asynchronous submacro,
+      #    which must returns hash with ['id']
+      # ent should have [:sequence]'[:dev_list]
+      def initialize(ment, pid = '0', valid_keys = [], &submcr_proc)
         @cfg = ment
         type?(@cfg[:dev_list], CIAX::List)
         @record = Record.new.ext_file.auto_save.mklink # Make latest link
         @record['pid'] = pid
         @id = @record['id']
         @title = @record.title
-        @submcr_proc = @cfg[:submcr_proc]
+        @submcr_proc = submcr_proc
         @running = []
         @depth = 0
         # For Thread mode
@@ -62,7 +61,7 @@ module CIAX
       def sub_macro(ment, mstat)
         @depth += 1
         @record['status'] = 'run'
-        mstat['result'] = 'complete'
+        mstat['result'] = 'busy'
         begin
           ment[:sequence].each do|e|
             step = @record.add_step(e, @depth)
@@ -79,6 +78,7 @@ module CIAX
         mstat['result'] = 'interrupted'
         raise Interrupt
       ensure
+        mstat['result'] = 'complete' if mstat['result'] == 'busy'
         @depth -= 1
       end
 

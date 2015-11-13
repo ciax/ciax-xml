@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libmcrsh'
+require 'libsh'
 require 'libmcrlist'
 require 'libmcrview'
 

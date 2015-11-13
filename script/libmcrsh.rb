@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
-require 'libsh'
-require 'libmcrlist'
+require 'libmcrman'
 
 module CIAX
   module Mcr
@@ -78,8 +77,9 @@ module CIAX
       OPT.parse('cmnlrt')
       begin
         cfg = Config.new
+        cfg[:jump_groups] = []
         cfg[:dev_list] = Wat::List.new(cfg).sub_list
-        Exe.new(cfg).ext_shell.shell
+        Man.new(cfg).ext_shell.shell
       rescue InvalidCMD
         OPT.usage('[cmd] (par)')
       rescue InvalidID

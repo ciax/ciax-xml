@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libvarx'
 require 'libjslog'
-require 'libhttp'
+require 'libjhttp'
 
 module CIAX
   # Header and Data Container(Hash or Array) with Loading feature
@@ -45,7 +45,7 @@ module CIAX
     end
 
     def ext_http(host = nil) # Read only as a client
-      extend Http
+      extend JHttp
       ext_http(host)
       self
     end

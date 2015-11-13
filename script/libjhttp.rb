@@ -2,7 +2,7 @@
 require 'open-uri'
 
 module CIAX
-  module Http
+  module JHttp
     def self.extended(obj)
       Msg.type?(obj, Datax)
     end

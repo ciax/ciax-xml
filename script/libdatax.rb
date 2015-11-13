@@ -73,11 +73,11 @@ module CIAX
     end
 
     def _check_setdata_(data)
-      if data
+      if !data
         alert("[#{@data_name}] is empty")
       elsif !data.is_a? Enumerable
         alert("[#{@data_name}] is not Enumerablee")
-      elsif @data.class === data.class
+      elsif data.is_a? @data.class
         return true
       else
         alert("[#{@data_name}] class is mismatch (#{@data.class} vs. #{data.class})")

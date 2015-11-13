@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 # For sqlite3
 require 'libmsg'
+require 'libvarx'
 require 'thread'
 
 module CIAX
@@ -12,7 +13,7 @@ module CIAX
       include Msg
       def initialize(stat)
         @cls_color = 14
-        @stat = type?(stat, Verx)
+        @stat = type?(stat, Varx)
         @tid = "#{@stat.type}_#{@stat['ver']}"
         @tname = @stat.type.capitalize
         verbose { "Initialize Table '#{@tid}'" }

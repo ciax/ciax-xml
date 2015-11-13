@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libjslog'
 require 'libjfile'
 require 'libupd'
 require 'libdb'
@@ -28,7 +29,11 @@ module CIAX
     def ext_file
       extend(JFile).ext_file
     end
-    
+
+    def ext_log
+      extend(JsLog).ext_log
+    end
+
     private
 
     def _setid(id)

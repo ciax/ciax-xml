@@ -32,7 +32,7 @@ module CIAX
       # Convert with corresponding cmd
       def conv(ent, stream)
         @sel = Hash[@skel]
-        self['time'] = type?(stream, Stream)['time']
+        self['time'] = type?(stream, Hash)['time']
         rid = type?(ent, Entity)['response']
         @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
         @sel.update(@fds[rid])

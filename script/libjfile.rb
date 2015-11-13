@@ -45,10 +45,6 @@ module CIAX
       self
     end
 
-    def ext_log
-      extend(JsLog).ext_log
-    end
-
     private
 
     def _check_load(json_str)

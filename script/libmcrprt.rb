@@ -62,7 +62,7 @@ module CIAX
       end
 
       def rindent(add = 0)
-        Msg.indent(self['depth'].to_i + add)
+        Msg.indent((self['depth'].to_i + add) * 2)
       end
     end
   end

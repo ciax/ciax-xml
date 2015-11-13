@@ -89,7 +89,7 @@ module CIAX
     def pick(*keyary)
       hash = Hashx.new
       keyary.each do|key|
-        hash[key] = self[key]
+        hash[key] = self[key] if key?(key)
       end
       hash
     end

@@ -33,7 +33,7 @@ module CIAX
       end
 
       def upd_core
-        pids = values.map { |rec| rec['pid'] }
+        pids = values.map { |rec| rec['pid'] if rec['pid'].to_i > 0 }.compact
         @all_keys.concat(pids + @valid_keys).uniq!
         @all_keys.each do |id|
           next if @data.key?(id)

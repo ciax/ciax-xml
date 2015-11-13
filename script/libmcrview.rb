@@ -24,15 +24,18 @@ module CIAX
         pids = values.map { |rec| rec['pid'] if rec['pid'].to_i > 0 }.compact
         @all_keys.concat(pids + @valid_keys).uniq!
         @all_keys.each do |id|
-          next if @data.key?(id)
-          rec = put(id, get_rec(id))
-          @ciddb[id] = rec['cid'] unless @ciddb.key?(id)
+          if @data.key?(id)
+            @data[id].upd
+          else
+            rec = put(id, get_rec(id))
+            @ciddb[id] = rec['cid'] unless @ciddb.key?(id)
+          end
         end
         self
       end
 
       def get_rec(id)
-        Record.new(id).ext_file
+        Record.new(id).ext_file.auto_load
       end
 
       def _list_

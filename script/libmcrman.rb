@@ -11,12 +11,13 @@ module CIAX
         attr[:db] = Db.new
         attr[:layer_type] = 'mcr'
         super(PROJ, cfg, attr)
-        @sub_list = List.new
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
         @parameter = @cobj.rem.int.par
         @valid_keys = @sv_stat[:list] = @parameter[:list] = []
+        @stat=View.new(@id,@valid_keys)
+        @post_exe_procs << proc { @stat.upd }
         @host ||= @dbi['host']
         @port ||= (@dbi['port'] || 55_555)
         @mode = 'MCR'
@@ -24,6 +25,7 @@ module CIAX
       end
 
       def ext_shell
+        @cfg[:output] = @stat
         extend(Shell).ext_shell
       end
 
@@ -34,6 +36,7 @@ module CIAX
       end
 
       def ext_driver
+        @sub_list = List.new
         @sv_stat['sid'] = '' # For server response
         @pre_exe_procs << proc do
           @valid_keys.replace @sub_list.clean.keys

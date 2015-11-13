@@ -63,12 +63,7 @@ module CIAX
       verbose { 'Convert [:data] to @data' }
       inc = delete(@data_name)
       return unless _check_setdata_(inc)
-      case @data
-      when Hash
-        @data.deep_update(inc)
-      when Array
-        @data.concat(inc)
-      end
+      @data.replace(inc)
       self
     end
 

@@ -128,7 +128,7 @@ module CIAX
         dbi = Ins::Db.new.get(id)
         event.setdbi(dbi)
         wview = View.new(event)
-        event.ext_file if STDIN.tty?
+        event.ext_file.load if STDIN.tty?
         puts STDOUT.tty? ? wview : wview.to_j
       rescue InvalidID
         OPT.usage('(opt) [site] | < event_file')

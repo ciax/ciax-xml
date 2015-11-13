@@ -54,7 +54,7 @@ module CIAX
         if OPT.host
           stat.ext_http(OPT.host)
         else
-          stat.ext_file
+          stat.ext_file.load
         end
         puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID

@@ -42,12 +42,13 @@ module CIAX
           @cobj.rem.ext.valid_sub(block)
         end
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
-        @stat.ext_rsp(@sub.stat, @sv_stat).ext_file
+        @stat.ext_rsp(@sub.stat, @sv_stat)
         self
       end
 
       def ext_driver
         ext_non_client
+        @stat.ext_file.auto_save
         @stat.ext_log if OPT['e']
         @stat.post_upd_procs << proc do|ev|
           ev.get('exec').each do|src, pri, args|

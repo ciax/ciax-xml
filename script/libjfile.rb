@@ -13,16 +13,18 @@ module CIAX
       self['id'] || Msg.cfg_err('No ID')
       @jsondir = vardir('json')
       @thread = Thread.current # For Thread safe
-      load
+      self
     end
 
     def auto_save
       @post_upd_procs << proc { save }
+      upd
       self
     end
 
     def auto_load
       @pre_upd_procs << proc { load }
+      upd
       self
     end
 

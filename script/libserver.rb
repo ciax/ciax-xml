@@ -20,7 +20,7 @@ module CIAX
           raise 'NOT JSON'
         end
       end
-      @sv_stat.ext_file
+      @sv_stat.ext_file.auto_save
       @server_output_proc = proc { merge(@sv_stat).to_j }
       self
     end

@@ -121,7 +121,7 @@ module CIAX
         idb = Ins::Db.new.get(id)
         ddb = Dev::Db.new.get(idb['frm_site'])
         field.setdbi(ddb).ext_rsp
-        field.ext_file if STDIN.tty?
+        field.ext_file.load if STDIN.tty?
         stat = Status.new.setdbi(idb).ext_rsp(field)
         puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID

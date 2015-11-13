@@ -55,7 +55,7 @@ module CIAX
 
       def ext_test
         @mode = 'TEST'
-        @stat.ext_sym.ext_file.upd
+        @stat.ext_sym.ext_file.load
         @cobj.get('interrupt').def_proc do
           "INTERRUPT(#{@batch_interrupt})"
         end
@@ -68,7 +68,7 @@ module CIAX
 
       def ext_driver
         @mode = 'DRV'
-        @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save.upd
+        @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
         @stat.ext_log.ext_sqlog if OPT['e']
         init_buf
         if @cfg[:exe_mode]
@@ -157,6 +157,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
       cfg = Config.new
+      cfg[:jump_groups] = []
       cfg[:site] = ARGV.shift
       begin
         List.new(cfg).ext_shell.shell

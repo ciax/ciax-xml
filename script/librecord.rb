@@ -22,8 +22,11 @@ module CIAX
       def to_v
         msg = _title_
         @data.each { |i| msg << i.title + i.result }
-        msg << format(' (%s) [%d/%d]',
-                      self['result'], @data.size, self['original_steps'])
+        msg << " (#{self['result']}) #{step}"
+      end
+
+      def step
+        "[#{size}/#{self['original_steps']}]"
       end
 
       private

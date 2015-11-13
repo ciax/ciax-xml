@@ -15,22 +15,10 @@ module CIAX
       end
 
       def to_v
-        idx = 1
-        page = ['<<< ' + Msg.color("Active Macros [#{@id}]", 2) + ' >>>']
-        @data.each do|id, rec|
-          title = "[#{idx}] (#{id})(by #{@ciddb[rec['pid']]})"
-          msg = "#{rec['cid']} [#{rec.size}/#{rec['original_steps']}]"
-          if rec['status'] == 'end'
-            msg << "(#{rec['result']})"
-          else
-            msg << "(#{rec['status']})"
-            msg << optlist(rec.last['option']) if rec.last
-          end
-          page << Msg.item(title, msg)
-          idx += 1
-        end
-        page.join("\n")
+        _list_
       end
+
+      private
 
       def upd_core
         pids = values.map { |rec| rec['pid'] if rec['pid'].to_i > 0 }.compact
@@ -46,14 +34,37 @@ module CIAX
       def get_rec(id)
         Record.new(id).ext_file
       end
+
+      def _list_
+        idx = 1
+        page = ['<<< ' + Msg.color("Active Macros [#{@id}]", 2) + ' >>>']
+        @data.each do|id, rec|
+          title = "[#{idx}] (#{id})(by #{@ciddb[rec['pid']]})"
+          msg = "#{rec['cid']} #{rec.step}"
+          msg << _result_(rec)
+          page << Msg.item(title, msg)
+          idx += 1
+        end
+        page.join("\n")
+      end
+
+      def _result_(rec)
+        if rec['status'] == 'end'
+          "(#{rec['result']})"
+        else
+          msg = "(#{rec['status']})"
+          msg << optlist(rec.last['option']) if rec.last
+        end
+      end
+
     end
 
     if __FILE__ == $PROGRAM_NAME
       require 'libgetopts'
-      unless ARGV.empty?
-        puts View.new('test', ARGV).upd
-      else
+      if ARGV.empty?
         OPT.usage('[id] ..')
+      else
+        puts View.new('test', ARGV).upd
       end
     end
   end

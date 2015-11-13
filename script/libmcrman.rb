@@ -10,7 +10,7 @@ module CIAX
       def initialize(cfg, attr = {})
         attr[:db] = Db.new
         attr[:layer_type] = 'mcr'
-        super(PROJ, cfg, attr)
+        super(nil, cfg, attr)
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)

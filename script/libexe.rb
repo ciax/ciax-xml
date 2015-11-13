@@ -20,7 +20,8 @@ module CIAX
       @cls_color = 13
       @cfg = type?(cfg, Config).gen(self).update(attr)
       # layer is Frm,App,Wat,Hex,Mcr,Man
-      @id = id
+      @dbi = @cfg[:dbi] = type?(@cfg[:db].get(id), Dbi) if @cfg.key?(:db)
+      @id = id || @dbi['id']
       @layer = class_path.first.downcase
       @sv_stat = Prompt.new(@cfg[:layer_type], id) # Site Status shared among layers
       @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }] # Proc for Server Command (by User query}
@@ -28,7 +29,6 @@ module CIAX
       @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }] # Proc for program terminated
       Thread.abort_on_exception = true
       verbose { "initialize [#{@id}]" }
-      @dbi = @cfg[:dbi] = type?(@cfg[:db].get(id), Dbi) if @cfg.key?(:db)
       @cobj = Remote::Index.new(@cfg)
       @host = OPT.host
     end

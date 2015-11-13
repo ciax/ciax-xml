@@ -55,7 +55,7 @@ module CIAX
 
       def ext_test
         @mode = 'TEST'
-        @stat.ext_sym.ext_save.ext_load.upd
+        @stat.ext_sym.ext_file.upd
         @cobj.get('interrupt').def_proc do
           "INTERRUPT(#{@batch_interrupt})"
         end
@@ -68,7 +68,7 @@ module CIAX
 
       def ext_driver
         @mode = 'DRV'
-        @stat.ext_rsp(@sub.stat).ext_sym.ext_save.ext_load.upd
+        @stat.ext_rsp(@sub.stat).ext_sym.ext_file.upd
         @stat.ext_log.ext_sqlog if OPT['e']
         init_buf
         if @cfg[:exe_mode]

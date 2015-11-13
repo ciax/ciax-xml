@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
+require 'libvarx'
 require 'libjslog'
 require 'libhttp'
-require 'libjload'
 
 module CIAX
   # Header and Data Container(Hash or Array) with Loading feature
@@ -44,12 +44,6 @@ module CIAX
       get(@data.keys.sort[n])
     end
 
-    def ext_load # File I/O
-      extend JLoad
-      ext_load
-      self
-    end
-
     def ext_http(host = nil) # Read only as a client
       extend Http
       ext_http(host)
@@ -81,7 +75,7 @@ module CIAX
     def _check_setdata_(data)
       if data
         alert("[#{@data_name}] is empty")
-      elsif ! data.is_a? Enumerable
+      elsif !data.is_a? Enumerable
         alert("[#{@data_name}] is not Enumerablee")
       elsif @data.class === data.class
         return true
@@ -89,6 +83,15 @@ module CIAX
         alert("[#{@data_name}] class is mismatch (#{@data.class} vs. #{data.class})")
       end
       false
+    end
+
+    def _check_load(json_str)
+      h = j2h(json_str)
+      verbose { "Version compare [#{h['ver']}] vs. <#{self['ver']}>" }
+      if h.key?('ver') && h['ver'] != self['ver']
+        alert("Version mismatch [#{h['ver']}] should be <#{self['ver']}>")
+      end
+      true
     end
   end
 
@@ -140,6 +143,10 @@ module CIAX
       @data.key?(key)
     end
 
+    def empty?
+      @data.empty?
+    end
+
     def values
       @data.values
     end
@@ -147,11 +154,26 @@ module CIAX
     def lastval
       get(keys.last)
     end
+
+    # Generate DataH
+    def pick(*keyary)
+      dh = DataH.new(@type, {}, @data_name)
+      keyary.each do|k|
+        if @data.key?(k)
+          dh.put(k, get(k))
+        else
+          warning("No such Key [#{k}]")
+        end
+      end
+      Msg.par_err('No Keys') if dh.empty?
+      dh
+    end
   end
 
+  # Data container is Array
   class DataA < Datax
     def initialize(type, data_name = 'data')
-      super(type,[],data_name)
+      super(type, [], data_name)
     end
 
     def add(val)

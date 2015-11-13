@@ -44,28 +44,6 @@ module CIAX
       end
     end
 
-    # Loading feature
-    module JLoad
-      # @< (db),(base),(prefix)
-      # @< (last)
-      # @ lastsave
-      include CIAX::JLoad
-      def self.extended(obj)
-        Msg.type?(obj, Status)
-      end
-
-      def save(tag = nil)
-        time = self['time']
-        if time > @lastsave
-          super
-          @lastsave = time
-        else
-          verbose { "Skip Save for #{time}" }
-        end
-        self
-      end
-    end
-
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       OPT.parse('h:')
@@ -76,7 +54,7 @@ module CIAX
         if OPT.host
           stat.ext_http(OPT.host)
         else
-          stat.ext_save.ext_load
+          stat.ext_file
         end
         puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID

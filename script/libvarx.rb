@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libjfile'
 require 'libupd'
 require 'libdb'
 
@@ -15,8 +16,6 @@ module CIAX
       self['ver'] = ver if ver
       self['host'] = host || `hostname`.strip
       # Setting (Not shown in JSON)
-      @thread = Thread.current # For Thread safe
-      @jsondir = vardir('json')
     end
 
     def setdbi(dbi)
@@ -26,6 +25,10 @@ module CIAX
       self
     end
 
+    def ext_file
+      extend(JFile).ext_file
+    end
+    
     private
 
     def _setid(id)
@@ -36,10 +39,5 @@ module CIAX
     def _file_base(tag = nil)
       [@type, self['id'], tag].compact.join('_')
     end
-
-    def _file_path(tag = nil)
-      @jsondir + _file_base(tag) + '.json'
-    end
-
   end
 end

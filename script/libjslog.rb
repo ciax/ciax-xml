@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libjsave'
+require 'libvarx'
 module CIAX
   # Add Data Logging feature
   module JsLog

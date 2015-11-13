@@ -16,7 +16,7 @@ module CIAX
       def initialize(ment, pid = '0', valid_keys = [])
         @cfg = ment
         type?(@cfg[:dev_list], CIAX::List)
-        @record = Record.new.ext_save.ext_load.mklink # Make latest link
+        @record = Record.new.ext_file.mklink # Make latest link
         @record['pid'] = pid
         @id = @record['id']
         @submcr_proc = @cfg[:submcr_proc] || proc do|args|

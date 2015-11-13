@@ -32,7 +32,7 @@ module CIAX
       end
 
       def get_rec(id)
-        Record.new(id).ext_save.ext_load
+        Record.new(id).ext_file
       end
     end
 

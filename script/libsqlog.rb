@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # For sqlite3
-require 'libmsg'
+require 'libvarx'
 require 'thread'
 
 module CIAX
@@ -12,7 +12,7 @@ module CIAX
       include Msg
       def initialize(stat)
         @cls_color = 14
-        @stat = type?(stat, Datax)
+        @stat = type?(stat, Verx)
         @tid = "#{@stat.type}_#{@stat['ver']}"
         @tname = @stat.type.capitalize
         verbose { "Initialize Table '#{@tid}'" }
@@ -147,21 +147,30 @@ module CIAX
         stat.post_upd_procs << proc { verbose { "Insert\n" + sqlog.upd } }
       end
     end
+  end
 
-    if __FILE__ == $PROGRAM_NAME
-      require 'libappexe'
-      id = ARGV.shift
-      ARGV.clear
-      begin
-        dbi = Ins::Db.new.get(id)
-        stat = App::Status.new.setdbi(dbi).ext_save.ext_load
-        sqlog = Table.new(stat)
-        puts stat
-        puts sqlog.create
-        puts sqlog.upd
-      rescue InvalidID
-        Msg.usage '[id]'
-      end
+  # Add extend method to Varx
+  class Varx
+    def ext_sqlog
+      # Logging if version number exists
+      SqLog::Save.new(self['id'], @type).add_table(self)
+      self
+    end
+  end
+
+  if __FILE__ == $PROGRAM_NAME
+    require 'libappexe'
+    id = ARGV.shift
+    ARGV.clear
+    begin
+      dbi = Ins::Db.new.get(id)
+      stat = App::Status.new.setdbi(dbi).ext_file
+      sqlog = Table.new(stat)
+      puts stat
+      puts sqlog.create
+      puts sqlog.upd
+    rescue InvalidID
+      Msg.usage '[id]'
     end
   end
 end

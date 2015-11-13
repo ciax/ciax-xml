@@ -21,6 +21,11 @@ module CIAX
       self
     end
 
+    def auto_load
+      @pre_upd_procs << proc { load }
+      self
+    end
+
     def save(tag = nil)
       _write_json(to_j, tag)
     end

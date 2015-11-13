@@ -5,7 +5,7 @@ module CIAX
   require 'debug' if ENV['DEBUG']
   PROJ = ENV['PROJ']
   SIMCMD = ENV['SIMCMD'] || 'frmsim'
-  VERBOSE = ENV['VER'] || 'initialize'
+  VERBOSE = ENV['VER']
   NOCACHE = ENV['NOCACHE']
   NOLOG = ENV['NOLOG']
 

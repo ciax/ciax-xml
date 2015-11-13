@@ -20,7 +20,7 @@ module CIAX
       end
 
       def to_v
-        msg = _title_
+        msg = title
         @data.each { |i| msg << i.title + i.result }
         msg << " (#{self['result']}) #{step}"
       end
@@ -29,9 +29,7 @@ module CIAX
         "[#{size}/#{self['original_steps']}]"
       end
 
-      private
-
-      def _title_
+      def title
         date = Time.at((self['time'] / 1000).round)
         Msg.color('MACRO', 3) + format(":%s (%s)\n", self['label'], date)
       end

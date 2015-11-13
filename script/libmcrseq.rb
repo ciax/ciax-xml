@@ -9,7 +9,7 @@ module CIAX
     class Seq
       include Msg
       # required cfg keys: app,db,body,stat,(:submcr_proc)
-      attr_reader :cfg, :record, :qry ,:id
+      attr_reader :cfg, :record, :qry ,:id, :title
       # cfg[:submcr_proc] for executing asynchronous submacro,
       #   which must returns hash with ['id']
       # ent should have [:sequence]'[:dev_list],[:submcr_proc]
@@ -19,6 +19,7 @@ module CIAX
         @record = Record.new.ext_file.auto_save.mklink # Make latest link
         @record['pid'] = pid
         @id = @record['id']
+        @title = @record.title
         @submcr_proc = @cfg[:submcr_proc]
         @running = []
         @depth = 0
@@ -38,8 +39,8 @@ module CIAX
       def macro
         Thread.current[:id] = @id
         @record.ext_rsp(@cfg)
-        show { @record }
-        sub_macro(@cfg[:sequence], @record)
+        show { @record.title }
+        sub_macro(@cfg, @record)
       rescue Interrupt
         msg("\nInterrupt Issued to running devices #{@running}", 3)
         @running.each do|site|
@@ -58,12 +59,12 @@ module CIAX
       private
 
       # macro returns result (true/false)
-      def sub_macro(sequence, mstat)
+      def sub_macro(ment, mstat)
         @depth += 1
         @record['status'] = 'run'
         mstat['result'] = 'complete'
         begin
-          sequence.each do|e|
+          ment[:sequence].each do|e|
             step = @record.add_step(e, @depth)
             begin
               break true if method(e['type']).call(e,step,mstat)
@@ -119,7 +120,7 @@ module CIAX
         if step.async? && @submcr_proc.is_a?(Proc)
           step['id'] = @submcr_proc.call(seq, @id).id
         else
-          res = sub_macro(seq[:sequence], step)
+          res = sub_macro(seq, step)
           mstat['result'] = step['result']
           raise Interlock unless res
         end

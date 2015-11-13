@@ -54,6 +54,7 @@ module CIAX
         else
           msg = "(#{rec['status']})"
           msg << optlist(rec.last['option']) if rec.last
+          msg
         end
       end
 

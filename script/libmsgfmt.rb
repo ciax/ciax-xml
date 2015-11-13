@@ -43,7 +43,7 @@ module CIAX
 
     # Query options
     def optlist(list)
-      return '' if ! list || list.empty?
+      return '' if !list || list.empty?
       color("[#{list.join('/')}]?", 5)
     end
 

@@ -1,11 +1,16 @@
 #!/usr/bin/ruby
 require 'librecord'
+# CIAX-XML
 module CIAX
+  # Macro Layer
   module Mcr
+    # Macro Man View
     class View < DataH
-      def initialize(id,valid_keys)
+      def initialize(id, valid_keys)
         super('mcr')
         @valid_keys = valid_keys
+        @all_keys = []
+        @ciddb = { '0' => 'user' }
         @id = id
       end
 
@@ -13,10 +18,14 @@ module CIAX
         idx = 1
         page = ['<<< ' + Msg.color("Active Macros [#{@id}]", 2) + ' >>>']
         @data.each do|id, rec|
-          title = "[#{idx}] (#{id})(by #{rec['cid']})"
-          msg = "#{rec['cid']} [#{rec['step']}/#{rec['total_steps']}]"
-          msg << "(#{rec['stat']})"
-          msg << optlist(rec.last['option']) if rec.last
+          title = "[#{idx}] (#{id})(by #{@ciddb[rec['pid']]})"
+          msg = "#{rec['cid']} [#{rec.size}/#{rec['original_steps']}]"
+          if rec['status'] == 'end'
+            msg << "(#{rec['result']})"
+          else
+            msg << "(#{rec['status']})"
+            msg << optlist(rec.last['option']) if rec.last
+          end
           page << Msg.item(title, msg)
           idx += 1
         end
@@ -24,10 +33,13 @@ module CIAX
       end
 
       def upd_core
-        @valid_keys.each do |id|
-          put(id,get_rec(id)) unless @data.key?(id)
+        pids = values.map { |rec| rec['pid'] }
+        @all_keys.concat(pids + @valid_keys).uniq!
+        @all_keys.each do |id|
+          next if @data.key?(id)
+          rec = put(id, get_rec(id))
+          @ciddb[id] = rec['cid'] unless @ciddb.key?(id)
         end
-        values.each{ |rec| rec.upd }
         self
       end
 
@@ -39,7 +51,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libgetopts'
       unless ARGV.empty?
-        puts View.new('test',ARGV).upd.to_v
+        puts View.new('test', ARGV).upd.to_v
       else
         OPT.usage('[id] ..')
       end

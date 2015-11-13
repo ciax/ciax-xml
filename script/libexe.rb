@@ -10,7 +10,8 @@ require 'libremote'
 # Add Server Command to Combine Lower Layer (Stream,Frm,App)
 
 module CIAX
-  class Exe < Hashx # Having server status {id,msg,...}
+  class Exe
+    include Msg
     attr_reader :layer, :id, :mode, :cobj, :stat, :sub, :pre_exe_procs, :post_exe_procs, :cfg, :prompt_proc, :host, :port
     attr_accessor :sv_stat, :shell_input_procs, :shell_output_proc, :server_input_proc, :server_output_proc
     # attr contains the parameter for each layer individually (might have [:db])
@@ -23,7 +24,7 @@ module CIAX
       @dbi = @cfg[:dbi] = type?(@cfg[:db].get(id), Dbi) if @cfg.key?(:db)
       @id = id || @dbi['id']
       @layer = class_path.first.downcase
-      @sv_stat = Prompt.new(@cfg[:layer_type], id) # Site Status shared among layers
+      @sv_stat = Prompt.new(@cfg[:layer_type], @id) # Site Status shared among layers
       @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }] # Proc for Server Command (by User query}
       @post_exe_procs = [proc { verbose { 'Processing PostExeProcs' } }] # Proc for Server Status Update (by User query}
       @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }] # Proc for program terminated

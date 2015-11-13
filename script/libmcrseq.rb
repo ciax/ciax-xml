@@ -19,10 +19,7 @@ module CIAX
         @record = Record.new.ext_file.auto_save.mklink # Make latest link
         @record['pid'] = pid
         @id = @record['id']
-        @submcr_proc = @cfg[:submcr_proc] || proc do|args|
-          show { "Sub Macro #{args} issued\n" }
-          { 'id' => 'dmy' }
-        end
+        @submcr_proc = @cfg[:submcr_proc]
         @running = []
         @depth = 0
         # For Thread mode
@@ -118,12 +115,11 @@ module CIAX
       end
 
       def mcr(e,step,mstat)
-        if step.async?
-          if @submcr_proc.is_a?(Proc)
-            step['id'] = @submcr_proc.call(e['args'], @record['id'])['id']
-          end
+        seq = @cfg.ancestor(2).set_cmd(e['args'])
+        if step.async? && @submcr_proc.is_a?(Proc)
+          step['id'] = @submcr_proc.call(seq, @id).id
         else
-          res = sub_macro(@cfg.ancestor(2).set_cmd(e['args'])[:sequence], step)
+          res = sub_macro(seq[:sequence], step)
           mstat['result'] = step['result']
           raise Interlock unless res
         end

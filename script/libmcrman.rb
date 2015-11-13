@@ -47,8 +47,8 @@ module CIAX
           'ACCEPT'
         end
         # Internal Command Group
-        @cfg[:submcr_proc] = proc do|args, pid|
-          @sub_list.add(@cobj.set_cmd(args), pid)
+        @cfg[:submcr_proc] = proc do|ent, pid|
+          @sub_list.add(ent, pid)
         end
         @cobj.rem.int.def_proc do|ent|
           seq = @sub_list.get(ent.par[0])

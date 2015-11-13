@@ -27,13 +27,13 @@ module CIAX
     end
 
     def read(json_str = nil)
-      deep_update(j2h(json_str))
+      deep_update(j2h(json_str || gets(nil)))
     end
 
     private
 
     def j2h(json_str = nil)
-      inp = json_str || gets(nil) || Msg.give_up("No data in file(#{ARGV})")
+      inp = json_str || Msg.give_up("No data in file(#{ARGV})")
       JSON.load(inp)
     end
 

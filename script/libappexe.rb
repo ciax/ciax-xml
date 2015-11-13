@@ -68,7 +68,7 @@ module CIAX
 
       def ext_driver
         @mode = 'DRV'
-        @stat.ext_rsp(@sub.stat).ext_sym.ext_file.upd
+        @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save.upd
         @stat.ext_log.ext_sqlog if OPT['e']
         init_buf
         if @cfg[:exe_mode]

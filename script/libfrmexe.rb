@@ -70,7 +70,7 @@ module CIAX
         @stream.pre_open_proc = proc { @sv_stat.set('strerr') }
         @stream.post_open_proc = proc { @sv_stat.reset('strerr') }
         @sv_stat.add_db('comerr' => 'X', 'strerr' => 'E')
-        @stat.ext_file.ext_rsp
+        @stat.ext_file.auto_save.ext_rsp
         @cobj.rem.ext.def_proc do|ent, src|
           @sv_stat.reset('comerr')
           @stream.snd(ent[:frame], ent.id)

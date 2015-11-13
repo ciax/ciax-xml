@@ -13,6 +13,11 @@ module CIAX
       self['id'] || Msg.cfg_err('No ID')
       @jsondir = vardir('json')
       @thread = Thread.current # For Thread safe
+      load
+    end
+
+    def auto_save
+      @post_upd_procs << proc { save }
       self
     end
 
@@ -24,6 +29,7 @@ module CIAX
       json_str = _read_json(tag)
       if json_str.empty?
         warning(" -- json file (#{_file_path_(tag)}) is empty at loading")
+        return self
       end
       read(json_str) if _check_load(json_str)
       self
@@ -87,6 +93,7 @@ module CIAX
       else
         warning("  -- no json file (#{fname})")
       end
+      ''
     end
   end
 end

@@ -23,7 +23,7 @@ module CIAX
 
       def sel(num)
         num = _reg_crnt_(num)
-        @current = @valid_keys[num - 1]
+        @current = num ? @valid_keys[num - 1] : nil
       end
 
       def num
@@ -91,7 +91,7 @@ module CIAX
       end
 
       def _reg_crnt_(num)
-        num = 0 if num < 0
+        return if num < 0
         num = @valid_keys.size if num > @valid_keys.size
         num
       end

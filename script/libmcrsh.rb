@@ -10,64 +10,31 @@ module CIAX
         super
         list_mode
         @lastsize = 0
-        @cobj.loc.add_view
-        @prompt_proc = proc { upd_current }
+        @prompt_proc = proc { @view.upd.num }
         # Convert as command
         input_conv_num do|i|
-          store_current(i)
+          _set_crnt_(i)
         end
         # Convert as parameter
         input_conv_num(@cobj.rem.int.keys) do|i|
-          store_current(i)
+          _set_crnt_(i)
         end
         vg = @cobj.loc.add_view
         vg.add_item('list', 'List mode').def_proc { list_mode }
         vg.add_dummy('[1-n]', 'Sequencer mode')
-        @records = { nil => @stat }
         self
       end
 
       private
 
-      def upd_current
-        @stat.upd
-        if @current > @stat.size || @stat.size > @lastsize
-          store_current(@lastsize = @stat.size)
-        end
-        msg = format('[%d]', @current)
-        if @current > 0
-          seq = @stat.get(@parameter[:default])
-          msg << "(#{seq['stat']})" + optlist(seq['option'])
-        end
-        msg
-      end
-
-      def store_current(i)
-        return i.to_s if i > @stat.size
-        @current = i
-        if i > 0
-          id = @stat.keys[i - 1]
-          @records[id] ||= get_record(@stat.get(id))
-        end
-        @parameter[:default] = id
-        @cfg[:output] = @records[id]
+      def _set_crnt_(i)
+        @parameter[:default] = @view.sel(i)
         nil
       end
 
       def list_mode
-        @current = 0
-        @cfg[:output] = @stat
         @parameter[:default] = nil
         ''
-      end
-
-      def get_record(seq)
-        case seq
-        when Hash
-          Record.new(seq['id']).ext_http
-        when Seq::Exe
-          seq.record
-        end
       end
     end
 

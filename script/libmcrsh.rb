@@ -20,7 +20,6 @@ module CIAX
         input_conv_num(@cobj.rem.int.keys) do|i|
           store_current(i)
         end
-        @post_exe_procs << proc { @cfg[:output].upd }
         vg = @cobj.loc.add_view
         vg.add_item('list', 'List mode').def_proc { list_mode }
         vg.add_dummy('[1-n]', 'Sequencer mode')

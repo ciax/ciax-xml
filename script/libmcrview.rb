@@ -6,36 +6,48 @@ module CIAX
   module Mcr
     # Macro Man View
     class View < DataH
+      attr_reader :current
       def initialize(id, valid_keys)
         super('mcr')
         @valid_keys = valid_keys
         @all_keys = []
         @ciddb = { '0' => 'user' }
+        @current = '0'
         @id = id
       end
 
       def to_v
-        _list_
+        @current = '0' unless @data.key?(@current)
+        if @current == '0'
+          _list_
+        else
+          @data[@current].to_v
+        end
+      end
+
+      def sel(num)
+        num = 0 if num < 0
+        num = @data.size if num > @data.size
+        @current = @data.keys[num - 1] || '0'
       end
 
       private
 
       def upd_core
-        pids = values.map { |rec| rec['pid'] if rec['pid'].to_i > 0 }.compact
+        pids = values.map { |r| r['pid'] }.delete('0')
         @all_keys.concat(pids + @valid_keys).uniq!
-        @all_keys.each do |id|
-          if @data.key?(id)
-            @data[id].upd
-          else
-            rec = put(id, get_rec(id))
-            @ciddb[id] = rec['cid'] unless @ciddb.key?(id)
-          end
-        end
+        @all_keys.each { |id| _upd_gen_(id) }
         self
       end
 
+      def _upd_gen_(id)
+        return @data[id].upd if @data.key?(id)
+        r = put(id, get_rec(id))
+        @ciddb[id] = r['cid'] unless @ciddb.key?(id)
+      end
+
       def get_rec(id)
-        #Record.new(id).ext_file.auto_load
+        # Record.new(id).ext_file.auto_load
         Record.new(id).ext_http
       end
 
@@ -62,6 +74,11 @@ module CIAX
         end
       end
 
+      def _reg_crnt_(num)
+        num = 0 if num < 0
+        num = @data.size if num > @data.size
+        num
+      end
     end
 
     if __FILE__ == $PROGRAM_NAME

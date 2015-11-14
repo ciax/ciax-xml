@@ -23,7 +23,23 @@ module CIAX
 
       def sel(num)
         num = _reg_crnt_(num)
-        @current = @data.keys[num - 1]
+        @current = @valid_keys[num - 1]
+      end
+
+      def num
+        id = @current
+        n = @data.keys.index(id) if id
+        if n
+          "[#{n+1}]"
+        else
+          @current = nil
+          '[0]'
+        end
+      end
+
+      def clear
+        (keys - @all_keys).each{ |id| delete(id) }
+        self
       end
 
       private
@@ -34,7 +50,7 @@ module CIAX
         @all_keys.concat(pids + @valid_keys).uniq!
         @all_keys.each { |id| _upd_gen_(id) }
         if @current
-          @current = @all_keys.last unless @all_keys.include?(@current)
+          @current = @valid_keys.last unless @valid_keys.include?(@current)
         end
         self
       end
@@ -53,7 +69,8 @@ module CIAX
       def _list_
         idx = 1
         page = ['<<< ' + Msg.color("Active Macros [#{@id}]", 2) + ' >>>']
-        @data.each do|id, rec|
+        @valid_keys.each do|id|
+          rec = @data[id]
           title = "[#{idx}] (#{id})(by #{@ciddb[rec['pid']]})"
           msg = "#{rec['cid']} #{rec.step}"
           msg << _result_(rec)
@@ -75,7 +92,7 @@ module CIAX
 
       def _reg_crnt_(num)
         num = 0 if num < 0
-        num = @data.size if num > @data.size
+        num = @valid_keys.size if num > @valid_keys.size
         num
       end
     end

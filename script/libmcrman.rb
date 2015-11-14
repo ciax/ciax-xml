@@ -23,8 +23,8 @@ module CIAX
       end
 
       def ext_shell
-        @cfg[:output] = View.new(@id,@valid_keys)
-        @post_exe_procs << proc { @cfg[:output].upd }
+        @view = @cfg[:output] = View.new(@id,@valid_keys)
+        @post_exe_procs << proc { @view.upd }
         extend(Shell).ext_shell
       end
 

@@ -41,12 +41,18 @@
           <frmcmd name="bs" />
         </item>
         <item id="cwhome" label="Goto Home from CW Limit">
+          <frmcmd name="hl">
+            <argv>0</argv>
+          </frmcmd>
           <frmcmd name="mi">
             <argv>-0.41</argv>
           </frmcmd>
         </item>
         <item id="cwset0" label="Set 0 at S00">
           <frmcmd name="set0" />
+          <frmcmd name="hl">
+            <argv>1</argv>
+          </frmcmd>
         </item>
         <item id="cw" label="Move CW(TopView) Decreasing [1-5]">
           <par_num>1:5</par_num>

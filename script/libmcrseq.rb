@@ -138,6 +138,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
+      OPT.parse('e')
       cfg = Config.new
       al = Wat::List.new(cfg).sub_list # Take App List
       cfg[:dev_list] = al

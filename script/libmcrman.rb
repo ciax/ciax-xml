@@ -68,7 +68,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('cmnlrt')
+      OPT.parse('cemnlrt')
       begin
         cfg = Config.new
         cfg[:jump_groups] = []

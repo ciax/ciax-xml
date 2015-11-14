@@ -12,31 +12,30 @@ module CIAX
         @valid_keys = valid_keys
         @all_keys = []
         @ciddb = { '0' => 'user' }
-        @current = '0'
+        @current = nil
         @id = id
       end
 
       def to_v
-        @current = '0' unless @data.key?(@current)
-        if @current == '0'
-          _list_
-        else
-          @data[@current].to_v
-        end
+        @current = nil unless @data.key?(@current)
+        @current ? @data[@current].to_v : _list_
       end
 
       def sel(num)
-        num = 0 if num < 0
-        num = @data.size if num > @data.size
-        @current = @data.keys[num - 1] || '0'
+        num = _reg_crnt_(num)
+        @current = @data.keys[num - 1]
       end
 
       private
 
       def upd_core
-        pids = values.map { |r| r['pid'] }.delete('0')
+        pids = values.map { |r| r['pid'] }
+        pids.delete('0')
         @all_keys.concat(pids + @valid_keys).uniq!
         @all_keys.each { |id| _upd_gen_(id) }
+        if @current
+          @current = @all_keys.last unless @all_keys.include?(@current)
+        end
         self
       end
 

@@ -57,7 +57,8 @@ module CIAX
         @mode = 'TEST'
         @stat.ext_sym.ext_file.load
         @cobj.get('interrupt').def_proc do
-          "INTERRUPT(#{@batch_interrupt})"
+          # "INTERRUPT(#{@batch_interrupt})"
+          "INTERRUPT"
         end
         @cobj.rem.ext.def_proc do
           @stat['time'] = now_msec
@@ -82,11 +83,13 @@ module CIAX
       def ext_non_client
         @cobj.get('set').def_proc do|ent|
           @stat.rep(ent.par[0], ent.par[1])
-          "SET:#{ent.par[0]}=#{ent.par[1]}"
+          # "SET:#{ent.par[0]}=#{ent.par[1]}"
+          "ISSUED"
         end
         @cobj.get('del').def_proc do|ent|
           ent.par[0].split(',').each { |key| @stat.del(key) }
-          "DELETE:#{ent.par[0]}"
+          # "DELETE:#{ent.par[0]}"
+          "ISSUED"
         end
         self
       end

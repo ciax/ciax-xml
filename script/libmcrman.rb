@@ -23,7 +23,7 @@ module CIAX
       end
 
       def ext_shell
-        @view = @cfg[:output] = View.new(@id,@valid_keys)
+        @view = @cfg[:output] = View.new(@id,@valid_keys,@records)
         @post_exe_procs << proc { @view.upd }
         extend(Shell).ext_shell
       end
@@ -36,6 +36,7 @@ module CIAX
 
       def ext_driver
         @sub_list = List.new
+        @records = @sub_list.records
         @sv_stat['sid'] = '' # For server response
         @pre_exe_procs << proc do
           @valid_keys.replace @sub_list.clean.keys

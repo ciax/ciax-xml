@@ -7,9 +7,10 @@ module CIAX
     # Macro Man View
     class View < DataH
       attr_reader :current
-      def initialize(id, valid_keys)
+      def initialize(id, valid_keys,records = {})
         super('mcr')
         @valid_keys = valid_keys
+        @records = records
         @all_keys = []
         @ciddb = { '0' => 'user' }
         @current = nil
@@ -62,8 +63,9 @@ module CIAX
       end
 
       def get_rec(id)
+        @records[id]
         # Record.new(id).ext_file.auto_load
-        Record.new(id).ext_http
+        # Record.new(id).ext_http
       end
 
       def _list_

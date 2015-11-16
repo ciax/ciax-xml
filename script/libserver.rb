@@ -17,7 +17,7 @@ module CIAX
         begin
           JSON.load(line)
         rescue JSON::ParserError
-          raise 'NOT JSON'
+          usr_err('NOT JSON')
         end
       end
       @sv_stat.ext_save

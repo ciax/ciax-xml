@@ -36,9 +36,9 @@ module CIAX
 
     # Substitute each element from number to value stored in cmdlist
     # number range is be > 0 ('0' won't be converted)
-    def input_conv_num(cmdlist = [])
+    def input_conv_num
       @shell_input_procs << proc do|args|
-        args.map { |e| ([nil] + cmdlist)[e.to_i] || e }
+        args.map { |e| (/^[0-9]+$/ =~ e) ? yield(e.to_i) : e }
       end
       self
     end

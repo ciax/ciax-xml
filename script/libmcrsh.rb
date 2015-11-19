@@ -1,40 +1,29 @@
 #!/usr/bin/ruby
 require 'libmcrman'
-
 module CIAX
+  # Macro Layer
   module Mcr
+    # Shell
     module Shell
       include CIAX::Shell
       # cfg should have [:jump_groups]
       def ext_shell
         super
-        list_mode
-        @lastsize = 0
+        _set_crnt_
         @prompt_proc = proc { @view.upd.num }
-        # Convert as command
-        input_conv_num do|i|
-          _set_crnt_(i)
-        end
-        # Convert as parameter
-        input_conv_num(@cobj.rem.int.keys) do|i|
-          _set_crnt_(i)
-        end
+        # Convert number as command
+        input_conv_num { |i| _set_crnt_(i) }
         vg = @cobj.loc.add_view
-        vg.add_item('list', 'List mode').def_proc { list_mode }
+        vg.add_item('0', 'List mode').def_proc { _set_crnt_ }
         vg.add_dummy('[1-n]', 'Sequencer mode')
         self
       end
 
       private
 
-      def _set_crnt_(i)
+      # Set Current ID by number
+      def _set_crnt_(i = nil)
         @parameter[:default] = @view.sel(i)
-        nil
-      end
-
-      def list_mode
-        @parameter[:default] = nil
-        ''
       end
     end
 

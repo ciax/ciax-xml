@@ -34,12 +34,11 @@ module CIAX
       self
     end
 
-    # Convert Shell input from number to string
+    # Substitute each element from number to value stored in cmdlist
+    # number range is be > 0 ('0' won't be converted)
     def input_conv_num(cmdlist = [])
       @shell_input_procs << proc do|args|
-        n = cmdlist.include?(args[0]) ? 1 : 0
-        args[n] = yield(args[n].to_i) if args[n] && /^[0-9]/ =~ args[n]
-        args
+        args.map { |e| ([nil] + cmdlist)[e.to_i] || e }
       end
       self
     end
@@ -51,35 +50,18 @@ module CIAX
       str + '>'
     end
 
-    # invoked many times.
-    # '^D' gives interrupt
-    # mode gives special break (loop returns mode).
+    # * 'shell' is separated from 'ext_shell',
+    #    because it will repeat being invoked and exit multiple times.
+    # * '^D' gives interrupt
+    # * 'exe' returns String or nil
+    #    if 'exe' returns nil, @cfg[:output] (@shell_output_proc) is shown.
     def shell
       verbose { "Shell(#{@id})" }
-      Readline.completion_proc = proc {|word|
-        (@cobj.valid_keys + @cobj.valid_pars).grep(/^#{word}/)
-      }
+      _init_readline_
       loop do
-        begin
-          line = Readline.readline(prompt, true) || 'interrupt'
-        rescue Interrupt
-          line = 'interrupt'
-        end
-        break if /^q/ =~ line
-        cmds = line.split(';')
-        cmds = [''] if cmds.empty?
-        begin
-          cmds.each do|token|
-            exe(convert(token), 'shell')
-          end
-        rescue UserError
-          nil
-        rescue ServerError
-          warning($ERROR_INFO)
-        end
+        line = _input_ || break
+        _exe_(_cmds_(line))
         puts @sv_stat.msg.empty? ? @shell_output_proc.call : @sv_stat.msg
-        verbose { "Threads\n#{Threadx.list}" }
-        verbose { "Valid Commands #{@cobj.valid_keys}" }
       end
       @terminate_procs.inject(self) { |a, e| e.call(a) }
       Msg.msg('Quit Shell', 3)
@@ -87,7 +69,36 @@ module CIAX
 
     private
 
-    def convert(token)
+    def _init_readline_
+      Readline.completion_proc = proc {|word|
+        (@cobj.valid_keys + @cobj.valid_pars).grep(/^#{word}/)
+      }
+    end
+
+    def _input_
+      verbose { "Threads\n#{Threadx.list}" }
+      verbose { "Valid Commands #{@cobj.valid_keys}" }
+      inp = Readline.readline(prompt, true) || 'interrupt'
+      /^q/ =~ inp ? nil : inp
+    rescue Interrupt
+      'interrupt'
+    end
+
+    def _cmds_(line)
+      cmds = line.split(';')
+      cmds = [''] if cmds.empty?
+      cmds
+    end
+
+    def _exe_(cmds)
+      cmds.each { |s| exe(_conv_(s), 'shell') }
+    rescue UserError
+      nil
+    rescue ServerError
+      warning($ERROR_INFO)
+    end
+
+    def _conv_(token)
       @shell_input_procs.inject(token.split(' ')) do|args, proc|
         proc.call(args)
       end

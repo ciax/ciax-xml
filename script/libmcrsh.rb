@@ -14,7 +14,7 @@ module CIAX
         # Convert number as command
         input_conv_num { |i| _set_crnt_(i) }
         vg = @cobj.loc.add_view
-        vg.add_item('0', 'List mode').def_proc { _set_crnt_ }
+        vg.add_dummy('0', 'List mode')
         vg.add_dummy('[1-n]', 'Sequencer mode')
         self
       end

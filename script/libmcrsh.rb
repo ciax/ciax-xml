@@ -22,6 +22,7 @@ module CIAX
       private
 
       # Set Current ID by number
+      #  returns id (i = 1..size) or nil
       def _set_crnt_(i = nil)
         @parameter[:default] = @view.sel(i)
       end

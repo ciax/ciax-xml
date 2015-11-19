@@ -34,11 +34,11 @@ module CIAX
       self
     end
 
-    # Substitute each element from number to value stored in cmdlist
-    # number range is be > 0 ('0' won't be converted)
+    # Substitute command from number to value
     def input_conv_num
       @shell_input_procs << proc do|args|
-        args.map { |e| (/^[0-9]+$/ =~ e) ? yield(e.to_i) : e }
+        args[0] = yield(args[0].to_i) if /^[0-9]+$/ =~ args[0]
+        args
       end
       self
     end

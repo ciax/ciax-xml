@@ -22,9 +22,11 @@ module CIAX
         @current ? @data[@current].to_v : _list_
       end
 
+      # select id by number (1~max)
+      #  return id otherwise nil
       def sel(num)
         num = _reg_crnt_(num)
-        @current = num ? @valid_keys[num - 1] : nil
+        @current = (num && num > 0) ? @valid_keys[num - 1] : nil
       end
 
       def num
@@ -93,6 +95,7 @@ module CIAX
         end
       end
 
+      # num is regurated within 0 to max
       def _reg_crnt_(num)
         return if !num || num < 0
         num = @valid_keys.size if num > @valid_keys.size

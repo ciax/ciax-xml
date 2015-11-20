@@ -21,7 +21,7 @@ module CIAX
         end
       end
       @sv_stat.ext_file.auto_save
-      @server_output_proc = proc { merge(@sv_stat).to_j }
+      @server_output_proc = proc { @sv_stat.to_j }
       self
     end
 

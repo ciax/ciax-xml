@@ -14,7 +14,7 @@ module CIAX
         id = self['id'] || id_err("NO ID(#{id}) in Stat")
         @sv_stat = type?(sv_stat || Prompt.new('site', id), Prompt)
         @list = _get_sdb_(id)
-        @vmode = 'x'
+        @vmode = :x
         _init_upd_
       end
 
@@ -28,8 +28,7 @@ module CIAX
       end
 
       def to_s
-        case @vmode
-        when 'x'
+        if @vmode == :x
           to_x
         else
           super

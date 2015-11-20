@@ -6,11 +6,11 @@ module CIAX
     include Msg
     def to_s
       case @vmode
-      when 'v'
+      when :v
         to_v
-      when 'j'
+      when :j
         to_j
-      when 'r'
+      when :r
         to_r
       else
         super

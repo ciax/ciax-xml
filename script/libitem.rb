@@ -70,7 +70,7 @@ module CIAX
         str = pary.shift
         unless str
           if par.key?(:default)
-            verbose{ "Validate: Using default value [#{par[:default]}]" }
+            verbose { "Validate: Using default value [#{par[:default]}]" }
             next par[:default]
           end
           mary = []

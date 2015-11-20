@@ -8,7 +8,7 @@ module CIAX
   module Mcr
     class Seq
       include Msg
-      attr_reader :cfg, :record, :qry ,:id, :title
+      attr_reader :cfg, :record, :qry, :id, :title
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
       # ent should have [:sequence]'[:dev_list]
@@ -66,7 +66,7 @@ module CIAX
           ment[:sequence].each do|e|
             step = @record.add_step(e, @depth)
             begin
-              break true if method(e['type']).call(e,step,mstat)
+              break true if method(e['type']).call(e, step, mstat)
             rescue Retry
               retry
             end
@@ -82,47 +82,47 @@ module CIAX
         @depth -= 1
       end
 
-      def mesg(e,step,mstat)
+      def mesg(_e, step, _mstat)
         step.ok?
         @qry.query(['ok'], step)
         false
       end
 
-      def goal(e,step,mstat)
+      def goal(_e, step, mstat)
         if step.skip? && @qry.query(%w(skip force), step)
           mstat['result'] = 'skipped'
         end
       end
 
-      def check(e,step,mstat)
+      def check(_e, step, mstat)
         if step.fail? && @qry.query(%w(drop force retry), step)
           mstat['result'] = 'error'
-          raise Interlock
+          fail Interlock
         end
       end
 
-      def wait(e,step,mstat)
+      def wait(_e, step, mstat)
         if step.timeout? && @qry.query(%w(drop force retry), step)
           mstat['result'] = 'timeout'
-          raise Interlock
+          fail Interlock
         end
       end
 
-      def exec(e,step,mstat)
+      def exec(e, step, _mstat)
         if step.exec? && @qry.query(%w(exec pass), step)
           @running << e['site']
           @cfg[:dev_list].get(e['site']).exe(e['args'], 'macro')
         end
       end
 
-      def mcr(e,step,mstat)
+      def mcr(e, step, mstat)
         seq = @cfg.ancestor(2).set_cmd(e['args'])
         if step.async? && @submcr_proc.is_a?(Proc)
           step['id'] = @submcr_proc.call(seq, @id).id
         else
           res = sub_macro(seq, step)
           mstat['result'] = step['result']
-          raise Interlock unless res
+          fail Interlock unless res
         end
       end
 

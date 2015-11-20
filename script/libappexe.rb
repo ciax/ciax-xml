@@ -58,7 +58,7 @@ module CIAX
         @stat.ext_sym.ext_file.load
         @cobj.get('interrupt').def_proc do
           # "INTERRUPT(#{@batch_interrupt})"
-          "INTERRUPT"
+          'INTERRUPT'
         end
         @cobj.rem.ext.def_proc do
           @stat['time'] = now_msec
@@ -84,12 +84,12 @@ module CIAX
         @cobj.get('set').def_proc do|ent|
           @stat.rep(ent.par[0], ent.par[1])
           # "SET:#{ent.par[0]}=#{ent.par[1]}"
-          "ISSUED"
+          'ISSUED'
         end
         @cobj.get('del').def_proc do|ent|
           ent.par[0].split(',').each { |key| @stat.del(key) }
           # "DELETE:#{ent.par[0]}"
-          "ISSUED"
+          'ISSUED'
         end
         self
       end

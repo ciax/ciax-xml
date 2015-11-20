@@ -21,7 +21,7 @@ module CIAX
 
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent, pid = '0')
-        seq = Seq.new(ent, pid){ |e,p| add(e,p) }
+        seq = Seq.new(ent, pid) { |e, p| add(e, p) }
         @threads.add(seq.fork) # start immediately
         @records[seq.id] = seq.record
         put(seq.id, seq)
@@ -29,10 +29,10 @@ module CIAX
 
       def clean
         alive = @threads.list.map { |th| th[:id] }.compact
-        (keys - alive).each { |id|
+        (keys - alive).each do |id|
           delete(id)
           @records.delete(id)
-        }
+        end
         self
       end
     end

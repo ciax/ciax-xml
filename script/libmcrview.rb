@@ -34,7 +34,7 @@ module CIAX
         id = @current
         n = @valid_keys.index(id) if id
         if n
-          "[#{n + 1}]"+optlist(@data[@current].last['option'])
+          "[#{n + 1}]" + optlist(@data[@current].last['option'])
         else
           @current = nil
           '[0]'
@@ -54,9 +54,7 @@ module CIAX
         pids.delete('0')
         @all_keys.concat(pids + @valid_keys).uniq!
         @all_keys.each { |id| _upd_or_gen_(id) }
-        if @current
-          @current = nil unless @valid_keys.include?(@current)
-        end
+        @current = nil unless @valid_keys.include?(@current) if @current
         clear
         self
       end

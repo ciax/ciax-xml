@@ -49,6 +49,7 @@ module CIAX
       def commit
         'commit;'
       end
+
       private
 
       def expand

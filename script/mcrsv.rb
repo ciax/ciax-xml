@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-ENV['VER']||='Initialize'
+ENV['VER'] ||= 'Initialize'
 require 'libmcrman'
 # CIAX-XML Macro Server
 module CIAX

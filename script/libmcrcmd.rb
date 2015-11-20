@@ -24,7 +24,7 @@ module CIAX
         attr_reader :par
         def initialize(cfg, crnt = {})
           super
-          @par = Parameter.new('str','0')
+          @par = Parameter.new('str', '0')
           # Shared Parameter
           @cfg[:parameters] = [@par]
           INTCMD.each do|id, cap|

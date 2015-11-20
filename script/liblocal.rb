@@ -80,7 +80,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       cfg = Config.new(jump_class: CIAX::Local::Jump)
       jg = Jump::Group.new(cfg)
-      jg.add_item('site','Jump to site')
+      jg.add_item('site', 'Jump to site')
       cfg[:jump_groups] = [jg]
       loc = Index.new(cfg).loc
       vg = loc.add_view

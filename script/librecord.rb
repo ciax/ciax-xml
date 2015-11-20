@@ -15,7 +15,7 @@ module CIAX
 
       def read(json_str = nil)
         super
-        @data.each { |i| i.extend(PrtShare)}
+        @data.each { |i| i.extend(PrtShare) }
         self
       end
 

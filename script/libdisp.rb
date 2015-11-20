@@ -85,7 +85,7 @@ module CIAX
       update(other)
       osub = type?(other, Disp).sub
       if osub.is_a? Hash
-        rec_merge_index(osub) 
+        rec_merge_index(osub)
         put_sec.update(osub)
       end
       reset!

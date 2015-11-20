@@ -26,7 +26,7 @@ module CIAX
 
       private
 
-      def _init_cmd_(ment,pid)
+      def _init_cmd_(ment, pid)
         @cobj.add_rem.add_hid
         int = @cobj.rem.add_int(Int)
         @seq = Seq.new(ment, pid, int.valid_keys.clear)

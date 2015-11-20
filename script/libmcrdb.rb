@@ -1,9 +1,10 @@
 #!/usr/bin/ruby
 require 'librepeat'
 require 'libdb'
-
 module CIAX
+  # Macro Layer
   module Mcr
+    # Macro Db
     class Db < Db
       def initialize
         super('mdb')
@@ -18,7 +19,9 @@ module CIAX
       def doc_to_db(doc)
         hash = Dbi[doc[:attr]]
         @id = hash['id']
+        @sites = []
         hash[:command] = init_command(doc[:top])
+        hash[:sites] = @sites.uniq
         hash
       end
 
@@ -42,30 +45,31 @@ module CIAX
           body = (item[:body] ||= [])
           final = {}
           e0.each do|e1|
-            attr = e1.to_h
+            atrb = e1.to_h
+            _get_sites_(atrb)
             par2item(e1, item) && next
-            attr['type'] = e1.name
+            atrb['type'] = e1.name
             case e1.name
             when 'mesg'
-              body << attr
+              body << atrb
             when 'check', 'wait'
-              body << make_condition(e1, attr)
+              body << make_condition(e1, atrb)
             when 'goal'
-              body << make_condition(e1, attr)
-              final.update(attr.extend(Enumx).deep_copy)['type'] = 'check'
+              body << make_condition(e1, atrb)
+              final.update(atrb.extend(Enumx).deep_copy)['type'] = 'check'
             when 'exec'
-              attr['args'] = getcmd(e1)
-              attr.delete('name')
-              body << attr
+              atrb['args'] = getcmd(e1)
+              atrb.delete('name')
+              body << atrb
               verbose { "COMMAND:[#{e1['name']}]" }
             when 'mcr'
-              attr['args'] = getcmd(e1)
-              attr.delete('name')
-              body << attr
+              atrb['args'] = getcmd(e1)
+              atrb.delete('name')
+              body << atrb
             when 'select'
-              attr['select'] = get_option(e1)
-              attr.delete('name')
-              body << attr
+              atrb['select'] = get_option(e1)
+              atrb.delete('name')
+              body << atrb
             end
           end
           body << final unless final.empty?
@@ -73,13 +77,13 @@ module CIAX
         idx
       end
 
-      def make_condition(e1, attr)
+      def make_condition(e1, atrb)
         e1.each do|e2|
           hash = e2.to_h
           hash['cmp'] = e2.name
-          (attr['cond'] ||= []) << hash
+          (atrb['cond'] ||= []) << hash
         end
-        attr
+        atrb
       end
 
       def getcmd(e1)
@@ -98,6 +102,13 @@ module CIAX
           end
         end
         options
+      end
+
+      private
+
+      def _get_sites_(atrb)
+        @sites << atrb['site'] if atrb['site'] && /\$/ !~ atrb['site']
+        @sites.concat(atrb['val'].split(',')) if atrb['label'] == 'site'
       end
     end
 

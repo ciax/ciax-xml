@@ -6,7 +6,6 @@ module CIAX
   module Mcr
     # Macro Man View
     class View < DataH
-      attr_reader :current
       def initialize(id, par, records = {})
         super('mcr')
         @par = par
@@ -31,7 +30,7 @@ module CIAX
         @par[:default] = @current
       end
 
-      def num
+      def current
         id = @current
         n = @valid_keys.index(id) if id
         if n

@@ -10,7 +10,7 @@ module CIAX
       def ext_shell
         super
         _set_crnt_
-        @prompt_proc = proc { @view.upd.num }
+        @prompt_proc = proc { @view.upd.current }
         # Convert number as command
         input_conv_num { |i| _set_crnt_(i) }
         vg = @cobj.loc.add_view

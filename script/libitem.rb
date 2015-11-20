@@ -69,7 +69,10 @@ module CIAX
         disp = list.join(',')
         str = pary.shift
         unless str
-          next par[:default] if par.key?(:default)
+          if par.key?(:default)
+            verbose{ "Validate: Using default value [#{par[:default]}]" }
+            next par[:default]
+          end
           mary = []
           mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameters].size})"
           mary << Msg.item(@cfg[:id], @cfg['label'])

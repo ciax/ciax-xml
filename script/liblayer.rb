@@ -9,7 +9,7 @@ module CIAX
     def initialize(atrb = {})
       atrb[:column] = 3
       super(Config.new, atrb)
-      obj = (OPT['x'] ? Hex::List : Wat::List).new(@cfg)
+      obj = (OPT[:x] ? Hex::List : Wat::List).new(@cfg)
       loop do
         put(m2id(obj.class, -2), obj)
         obj = obj.sub_list || break

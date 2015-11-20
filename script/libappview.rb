@@ -79,7 +79,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      OPT.parse('rc', 'c' => 'CSV output')
+      OPT.parse('rc', c: 'CSV output')
       stat = Status.new
       begin
         id = STDIN.tty? ? ARGV.shift : stat.read['id']
@@ -88,7 +88,7 @@ module CIAX
         view = View.new(stat)
         stat.ext_file.load if STDIN.tty?
         stat.ext_sym.upd
-        if OPT['c']
+        if OPT[:c]
           puts view.to_csv
         else
           puts STDOUT.tty? ? view : view.to_j

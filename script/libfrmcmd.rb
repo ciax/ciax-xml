@@ -92,7 +92,7 @@ module CIAX
         cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?
         res = cobj.set_cmd(args).exe_cmd('test')
-        puts(OPT['r'] ? res : res.inspect)
+        puts(OPT[:r] ? res : res.inspect)
       rescue InvalidCMD
         OPT.usage("#{id} [cmd] (par) < field_file")
       rescue InvalidID

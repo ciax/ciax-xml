@@ -18,8 +18,8 @@ module CIAX
 
       # Conditional judgment section
       def timeout?
-        itv = (OPT['e'] || OPT['s']) ? 0.1 : 0
-        itv *= 10 if OPT['m']
+        itv = (OPT[:e] || OPT[:s]) ? 0.1 : 0
+        itv *= 10 if OPT[:m]
         _show title
         self['max'] = self['retry']
         res = _progress(itv)
@@ -83,7 +83,7 @@ module CIAX
       end
 
       def dryrun?
-        !OPT['m'] && self['action'] = 'dryrun'
+        !OPT[:m] && self['action'] = 'dryrun'
       end
 
       def _progress(itv)

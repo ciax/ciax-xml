@@ -198,8 +198,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
 
-      list = { 't:' => 'test conditions[key=val,..]' }
-      OPT.parse('', list)
+      OPT.parse('t:', t: 'test conditions[key=val,..]')
       begin
         stat = App::Status.new
         id = STDIN.tty? ? ARGV.shift : stat.read['id']
@@ -207,7 +206,7 @@ module CIAX
         stat.setdbi(dbi)
         stat.ext_file.load if STDIN.tty?
         event = Event.new.setdbi(dbi).ext_rsp(stat)
-        if (t = OPT['t'])
+        if (t = OPT[:t])
           stat.str_update(t)
         end
         puts STDOUT.tty? ? event : event.to_j

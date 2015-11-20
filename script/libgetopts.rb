@@ -16,22 +16,22 @@ module CIAX
     def parse(str, db = {})
       Msg.type?(str, String)
       @optdb.update(db)
-      optary = current_options(str) + db.keys
+      update(_sym_key_(str))
+      optary = current_options(str, db.keys)
       make_usage(optary)
-      update(ARGV.getopts(optary.join('')))
       make_layer
     end
 
     def sv?
-      %w(s e).any? { |k| self[k] }
+      %i(s e).any? { |k| self[k] }
     end
 
     def cl?
-      %w(h c l).any? { |k| self[k] }
+      %i(h c l).any? { |k| self[k] }
     end
 
     def host
-      self['h'] || 'localhost' unless self['c']
+      self[:h] || 'localhost' unless self[:c]
     end
 
     def usage(str)
@@ -40,6 +40,12 @@ module CIAX
 
     private
 
+    def _sym_key_(str)
+      ARGV.getopts(str).each do |k,v|
+        self[k.to_sym] = v
+      end
+    end
+      
     def make_db
       layer_db
       cli_db
@@ -50,48 +56,58 @@ module CIAX
 
     # Layer option
     def layer_db
-      @optdb['w'] = 'wat layer'
-      @optdb['a'] = 'app layer(default)'
-      @optdb['f'] = 'frm layer'
-      @optdb['x'] = 'hex layer'
+      @optdb.update(
+        w: 'wat layer',
+        a: 'app layer(default)',
+        f: 'frm layer',
+        x: 'hex layer'
+      )
       self
     end
 
     # Client option
     def cli_db
-      @optdb['c'] = 'client'
-      @optdb['l'] = 'local client'
-      @optdb['h'] = 'client for [host]'
+      @optdb.update(
+        c: 'client',
+        l: 'local client',
+        h: 'client for [host]'
+      )
       self
     end
 
     # Comm to devices
     def mode_db
-      @optdb['t'] = 'test mode (default)'
-      @optdb['s'] = 'simulation mode'
-      @optdb['e'] = 'execution mode'
+      @optdb.update(
+        t: 'test mode (default)',
+        s: 'simulation mode',
+        e: 'execution mode'
+      )
       self
     end
 
     # For visual
     def vis_db
-      @optdb['v'] = 'visual output (default)'
-      @optdb['r'] = 'raw data output'
-      @optdb['j'] = 'json data output'
+      @optdb.update(
+        v: 'visual output (default)',
+        r: 'raw data output',
+        j: 'json data output'
+      )
       self
     end
 
     # For macro
     def mcr_db
-      @optdb['i'] = 'interactive mode'
-      @optdb['n'] = 'non-stop mode'
-      @optdb['m'] = 'movable mode'
+      @optdb.update(
+        i: 'interactive mode',
+        n: 'non-stop mode',
+        m: 'movable mode'
+      )
       self
     end
 
     # Current Options
-    def current_options(str)
-      (str.split('') & @optdb.keys)
+    def current_options(str, ext_keys)
+      (str.split('').map{|s| s.to_sym} & (@optdb.keys+ext_keys))
     end
 
     # Make usage text
@@ -105,7 +121,7 @@ module CIAX
 
     # Set @layer (default 'Wat')
     def make_layer
-      lopt = %w(x a f w).find { |c| self[c] } || 'a'
+      lopt = %i(x a f w).find { |c| self[c] } || :a
       @layer = @optdb[lopt].split(' ').first
       self
     end

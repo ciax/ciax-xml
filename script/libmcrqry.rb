@@ -35,7 +35,7 @@ module CIAX
       end
 
       def query(cmds, sub_stat)
-        return true if OPT['n']
+        return true if OPT[:n]
         @valid_keys.replace(cmds)
         sub_stat.put('option', cmds)
         @stat.put('status', 'query')

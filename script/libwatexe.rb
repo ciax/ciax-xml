@@ -49,7 +49,7 @@ module CIAX
       def ext_driver
         ext_non_client
         @stat.ext_file.auto_save
-        @stat.ext_log if OPT['e']
+        @stat.ext_log if OPT[:e]
         @stat.post_upd_procs << proc do|ev|
           ev.get('exec').each do|src, pri, args|
             verbose { "Executing:#{args} in accordance with Condition from [#{src}] by [#{pri}]" }

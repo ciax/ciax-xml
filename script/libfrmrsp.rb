@@ -124,7 +124,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libdevdb'
       require 'libfrmcmd'
-      OPT.parse('', 'm' => 'merge file')
+      OPT.parse('m', m: 'merge file')
       OPT.usage('(opt) < logline') if STDIN.tty?
       str = gets(nil) || exit
       res = JsLog.load(str)
@@ -132,7 +132,7 @@ module CIAX
       cid = res['cmd']
       dbi = Dev::Db.new.get(id)
       field = Field.new.setdbi(dbi).ext_rsp
-      field.ext_file.auto_save if OPT['m']
+      field.ext_file.auto_save if OPT[:m]
       if cid
         cfg = Config.new.update(dbi: dbi, field: field)
         cobj = Index.new(cfg)

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libmcrman'
+require 'libmcrsh'
 require 'liblayer'
 
 module CIAX

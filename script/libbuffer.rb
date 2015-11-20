@@ -31,7 +31,7 @@ module CIAX
     # sv_stat: Server Status
     def initialize(sv_stat)
       @sv_stat = type?(sv_stat, Prompt)
-      @sv_stat.add_db('isu' => '*').put('busy', [])
+      @sv_stat.put('busy', [])
       # element of @q is bunch of frm args corresponding an appcmd
       @q = Queue.new
       @tid = nil

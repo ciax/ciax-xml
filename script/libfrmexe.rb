@@ -21,6 +21,7 @@ module CIAX
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
+        @sv_stat.add_db('comerr' => 'X', 'strerr' => 'E')
         # Post internal command procs
         @host ||= @dbi['host']
         @port ||= @dbi['port']
@@ -69,7 +70,6 @@ module CIAX
         @stream.ext_log unless OPT['s']
         @stream.pre_open_proc = proc { @sv_stat.set('strerr') }
         @stream.post_open_proc = proc { @sv_stat.reset('strerr') }
-        @sv_stat.add_db('comerr' => 'X', 'strerr' => 'E')
         @stat.ext_rsp.ext_file.auto_save
         @cobj.rem.ext.def_proc do|ent, src|
           @sv_stat.reset('comerr')

@@ -23,7 +23,6 @@ module CIAX
         @cfg[:frm_site] = @dbi['frm_site']
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
         @stat = Status.new.setdbi(@dbi)
-        @sv_stat.add_db('isu' => '*')
         @batch_interrupt = []
         init_server
         init_command
@@ -41,7 +40,7 @@ module CIAX
       private
 
       def init_server
-        @sv_stat = @sub.sv_stat
+        @sv_stat = @sub.sv_stat.add_db('isu' => '*')
         @host ||= @dbi['host']
         @port ||= @dbi['port']
         self

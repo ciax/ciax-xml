@@ -45,7 +45,7 @@ module CIAX
         get(attr['site']).stat.get(attr['var'])
       end
 
-      def server(ary)
+      def server(*ary)
         ary.each do|site|
           sleep 0.3
           get(site).ext_server.server

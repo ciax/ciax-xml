@@ -12,10 +12,12 @@ module CIAX
         @sub = @cfg[:sub_list].get(id).sub
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
-        @cfg[:output] = View.new(@sub.stat, @sub.sv_stat)
+        @sv_stat = @sub.sv_stat
         @post_exe_procs.concat(@sub.post_exe_procs)
         @port = @sub.port.to_i + 1000
-        @cfg[:output].ext_log if OPT[:e]
+        view = View.new(@sub.stat, @sv_stat)
+        view.ext_log if OPT[:e]
+        @shell_output_proc = proc {view}
       end
 
       def ext_server

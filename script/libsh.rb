@@ -13,9 +13,7 @@ module CIAX
 
     # Separate initialize part because shell() could be called multiple times
     def ext_shell
-      @shell_input_procs = [] # proc takes args(Array)
-      @shell_output_proc = proc { @cfg[:output].to_s }
-      @prompt_proc = proc { @sv_stat.to_s }
+      _init_procs_
       @cobj.loc.add_shell
       @cobj.loc.add_jump
       Thread.current['name'] = 'Main'
@@ -61,13 +59,25 @@ module CIAX
       loop do
         line = _input_ || break
         _exe_(_cmds_(line))
-        puts @sv_stat.msg.empty? ? @shell_output_proc.call : @sv_stat.msg
+        puts @shell_output_proc.call
       end
       @terminate_procs.inject(self) { |a, e| e.call(a) }
       Msg.msg('Quit Shell', 3)
     end
 
     private
+
+    def _init_procs_
+      @shell_input_procs = [] # proc takes args(Array)
+      @shell_output_proc ||= proc do
+        if @sv_stat.msg.empty?
+          @cfg[:output].to_s
+        else
+          @sv_stat.msg
+        end
+      end
+      @prompt_proc = proc { @sv_stat.to_s }
+    end
 
     def _init_readline_
       Readline.completion_proc = proc {|word|
@@ -91,14 +101,14 @@ module CIAX
     end
 
     def _exe_(cmds)
-      cmds.each { |s| exe(_conv_(s), 'shell') }
+      cmds.each { |s| exe(_input_conv_(s), 'shell') }
     rescue UserError
       nil
     rescue ServerError
       warning($ERROR_INFO)
     end
 
-    def _conv_(token)
+    def _input_conv_(token)
       @shell_input_procs.inject(token.split(' ')) do|args, proc|
         proc.call(args)
       end

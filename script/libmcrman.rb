@@ -44,8 +44,6 @@ module CIAX
         super
       end
 
-      private
-
       def _init_cmd_
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)

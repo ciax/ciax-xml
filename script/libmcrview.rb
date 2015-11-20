@@ -7,9 +7,10 @@ module CIAX
     # Macro Man View
     class View < DataH
       attr_reader :current
-      def initialize(id, valid_keys, records = {})
+      def initialize(id, par, records = {})
         super('mcr')
-        @valid_keys = valid_keys
+        @par = par
+        @valid_keys = par[:list]
         @records = records
         @all_keys = []
         @ciddb = { '0' => 'user' }
@@ -27,11 +28,12 @@ module CIAX
       def sel(num)
         num = _reg_crnt_(num)
         @current = (num && num > 0) ? @valid_keys[num - 1] : nil
+        @par[:default] = @current
       end
 
       def num
         id = @current
-        n = @data.keys.index(id) if id
+        n = @valid_keys.index(id) if id
         if n
           "[#{n + 1}]"
         else
@@ -42,6 +44,7 @@ module CIAX
 
       def clear
         (keys - @all_keys).each { |id| delete(id) }
+        @par[:default] = nil unless @valid_keys.include?(@par[:default])
         self
       end
 
@@ -51,14 +54,15 @@ module CIAX
         pids = values.map { |r| r['pid'] }
         pids.delete('0')
         @all_keys.concat(pids + @valid_keys).uniq!
-        @all_keys.each { |id| _upd_gen_(id) }
+        @all_keys.each { |id| _upd_or_gen_(id) }
         if @current
-          @current = @valid_keys.last unless @valid_keys.include?(@current)
+          @current = nil unless @valid_keys.include?(@current)
         end
+        clear
         self
       end
 
-      def _upd_gen_(id)
+      def _upd_or_gen_(id)
         return @data[id].upd if @data.key?(id)
         r = put(id, get_rec(id))
         @ciddb[id] = r['cid'] unless @ciddb.key?(id)

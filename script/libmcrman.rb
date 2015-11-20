@@ -8,20 +8,20 @@ module CIAX
     # Macro Manager
     class Man < CIAX::Exe
       # cfg should have [:dev_list]
-      def initialize(cfg, attr = {})
-        attr[:db] = Db.new
-        attr[:layer_type] = 'mcr'
-        super(nil, cfg, attr)
+      def initialize(cfg, atrb = {})
+        atrb[:db] = Db.new
+        atrb[:layer_type] = 'mcr'
+        super(nil, cfg, atrb)
         _init_cmd_
         @par = @cobj.rem.int.par
-        @valid_keys = @sv_stat[:list] = @par[:list]
+        @sv_stat[:list] = @par[:list]
         _init_net_
         @mode = 'MCR'
         opt_mode
       end
 
       def ext_shell
-        @view = @cfg[:output] = View.new(@id, @valid_keys, @records)
+        @view = @cfg[:output] = View.new(@id, @par, @records)
         @post_exe_procs << proc { @view.upd }
         extend(Shell).ext_shell
       end
@@ -54,7 +54,7 @@ module CIAX
 
       def _init_pre_exe_
         @pre_exe_procs << proc do
-          _refresh_list_
+          @par[:list].replace @sub_list.clean.keys
           @sv_stat['sid'] = ''
         end
       end
@@ -64,7 +64,7 @@ module CIAX
         @cobj.rem.ext.def_proc do |ent|
           sid = @sub_list.add(ent).id
           @sv_stat['sid'] = sid
-          @valid_keys << sid if sid
+          @par[:list] << sid if sid
           'ACCEPT'
         end
       end
@@ -92,11 +92,6 @@ module CIAX
       def _init_net_
         @host ||= @dbi['host']
         @port ||= (@dbi['port'] || 55_555)
-      end
-
-      def _refresh_list_
-        @valid_keys.replace @sub_list.clean.keys
-        @par[:default] = nil unless @valid_keys.include?(@par[:default])
       end
     end
 

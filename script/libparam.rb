@@ -10,5 +10,12 @@ module CIAX
         self[:list] << '.'
       end
     end
+
+    #replace (default is decresed)
+    def flush(other);end
+    #add to list (default is incresed)
+    def add(e);end
+    #set default
+    def set_def(id);end
   end
 end

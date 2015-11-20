@@ -17,7 +17,7 @@ module CIAX
     # update after processing, never iniherit (use upd_core() instead)
     def upd
       pre_upd
-      upd_core || verbose('No upd_core')
+      upd_core || verbose{'No upd_core'}
       verbose { "Update(#{time_id}) Core" }
       self
     ensure

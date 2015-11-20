@@ -53,6 +53,7 @@ module CIAX
         def initialize(dom_cfg, atrb = {})
           atrb[:caption] = 'Internal Commands'
           super
+          @cfg['nocache'] = true
         end
 
         def def_pars(n = 1)

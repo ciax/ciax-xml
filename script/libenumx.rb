@@ -34,7 +34,7 @@ module CIAX
 
     def j2h(json_str = nil)
       inp = json_str || Msg.give_up("No data in file(#{ARGV})")
-      JSON.load(inp)
+      JSON.parse(inp)
     end
 
     def rec_proc(db)

@@ -15,7 +15,7 @@ module CIAX
       verbose { "Initialize UDP server (#{@id}) [#{@port}]" }
       @server_input_proc = proc do|line|
         begin
-          JSON.load(line)
+          JSON.parse(line)
         rescue JSON::ParserError
           usr_err('NOT JSON')
         end

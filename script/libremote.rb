@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'liblocal'
-
+require 'libparam'
 module CIAX
   # Remote Command Domain
   module Remote
@@ -56,9 +56,8 @@ module CIAX
         end
 
         def def_pars(n = 1)
-          any = { type: 'reg', list: ['.'] }
           ary = []
-          n.times { ary << any }
+          n.times { ary << Parameter.new }
           { parameters: ary }
         end
       end

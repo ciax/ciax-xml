@@ -25,7 +25,7 @@ module CIAX
           res = @udp.recv(1024)
           @sv_stat.reset('udperr')
           verbose { "UDP Recv #{res}" }
-          update(@sv_stat.update(JSON.load(res))) unless res.empty?
+          @sv_stat.update(JSON.load(res)) unless res.empty?
           @sv_stat.msg
         else
           @sv_stat.set('udperr')

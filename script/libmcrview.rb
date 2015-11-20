@@ -34,7 +34,7 @@ module CIAX
         id = @current
         n = @valid_keys.index(id) if id
         if n
-          "[#{n + 1}]"
+          "[#{n + 1}]"+optlist(@data[@current].last['option'])
         else
           @current = nil
           '[0]'

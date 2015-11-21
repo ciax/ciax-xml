@@ -13,18 +13,23 @@ module CIAX
     #   Attributes (one level): color(#), level(#)
     #   Attributes (one group): caption(text)
     SEPTBL = [['****', 2], ['===', 6], ['--', 12], ['_', 14]]
-    attr_reader :valid_keys, :sub
-    def initialize(caption: nil, color: nil, **atrb)
+    attr_reader :valid_keys, :sub, :column, :line_number
+    def initialize(caption: nil, color: nil, column: 2, line_number: false)
       @valid_keys = Arrayx.new
       @caption = caption
       @color = color
-      @atrb = atrb
-      @sub = Group.new(self, caption: @caption, color: @color)
+      @column = column
+      @line_number = line_number
+      @sub = Dummy.new(self, caption: @caption, color: @color)
     end
 
     def put_sec
-      return @sub if @sub.is_a? Section
-      @sub = Section.new(self, caption: @caption, color: @color)
+      _put_(Section)
+    end
+
+    # Add group with valid_keys
+    def put_grp
+      _put_(Group)
     end
 
     def put_item(k, v)
@@ -61,18 +66,6 @@ module CIAX
       @sub.view
     end
 
-    def view(select, caption: nil, color: nil, level: nil)
-      list = {}
-      (@valid_keys & select).compact.sort.each_with_index do|id, num|
-        title = @atrb[:line_number] ? "[#{num}](#{id})" : id
-        list[title] = self[id]
-      end
-      return if list.empty?
-      columns(list, @atrb[:column], level,
-              mk_caption(caption, color: color, level: level)
-             )
-    end
-
     def mk_caption(caption, color: nil, level: nil)
       return unless caption
       level = level.to_i
@@ -93,6 +86,11 @@ module CIAX
 
     private
 
+    def _put_(mod)
+      return @sub if @sub.is_a? mod
+      @sub = mod.new(self, caption: @caption, color: @color)
+    end
+
     def rec_merge_index(gr)
       type?(gr, Hash).values.each do |sg|
         rec_merge_index(sg) if sg.is_a? Hash
@@ -112,15 +110,15 @@ module CIAX
 
       # add sub caption if sub is true
       def put_sec(id, cap, color = nil)
-        return self[id] if self[id]
-        level = @level.to_i + 1
-        self[id] = Section.new(@index, caption: cap, color: color, level: level)
+        _put_(Section, id, cap, color)
       end
 
       def put_grp(id, cap, color = nil)
-        return self[id] if self[id]
-        level = @level.to_i + 1
-        self[id] = Group.new(@index, caption: cap, color: color, level: level)
+        _put_(Group, id, cap, color)
+      end
+
+      def put_dmy(id, cap, color = nil)
+        _put_(Group, id, cap, color)
       end
 
       def reset!
@@ -143,10 +141,18 @@ module CIAX
       def to_s
         view
       end
+
+      private
+
+      def _put_(mod, id, cap, color = nil)
+        return self[id] if self[id]
+        level = @level.to_i + 1
+        self[id] = mod.new(@index, caption: cap, color: color, level: level)
+      end
     end
 
     # It has members of item
-    class Group < Arrayx
+    class Dummy < Arrayx
       attr_accessor :index, :level
       def initialize(index, caption: nil, color: nil, level: 0)
         @index = index
@@ -158,8 +164,32 @@ module CIAX
       # add item
       def put_item(k, v)
         push k
-        @index.valid_keys << k
         @index[k] = v
+      end
+
+      def view(select = self)
+        list = {}
+        select.compact.sort.each_with_index do|id, num|
+          title = @index.line_number ? "[#{num}](#{id})" : id
+          list[title] = @index[id]
+        end
+        return if list.empty?
+        columns(list, @index.column, @level,
+                @index.mk_caption(@caption, color: @color, level: @level)
+               )
+      end
+
+      def to_s
+        view.to_s
+      end
+    end
+
+    # With valid_keys
+    class Group < Dummy
+      # add item
+      def put_item(k, v)
+        @index.valid_keys << k
+        super
       end
 
       def reset!
@@ -172,11 +202,7 @@ module CIAX
       end
 
       def view
-        @index.view(self, caption: @caption, color: @color, level: @level)
-      end
-
-      def to_s
-        view.to_s
+        super(@index.valid_keys & self)
       end
     end
   end

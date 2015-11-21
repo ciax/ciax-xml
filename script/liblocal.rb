@@ -69,6 +69,7 @@ module CIAX
       class Group < Group
         def initialize(cfg, atrb = {})
           atrb[:caption] = 'Change View Mode'
+          atrb[:column] = 2
           atrb[:color] = 9
           super
           add_item('vis', 'Visual mode').def_proc { @cfg[:output].vmode(:v) }

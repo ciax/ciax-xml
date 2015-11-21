@@ -7,7 +7,7 @@ module CIAX
   # atrb can have [:top_layer]
   class Layer < CIAX::List
     def initialize(atrb = {})
-      atrb[:column] = 3
+      atrb[:column] = 4
       super(Config.new, atrb)
       obj = (OPT[:x] ? Hex::List : Wat::List).new(@cfg)
       loop do

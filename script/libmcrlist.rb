@@ -11,7 +11,7 @@ module CIAX
       def initialize(&post_add_proc)
         super
         @post_add_proc = post_add_proc
-        @records = {}
+        @records = Hashx.new
         @threads = ThreadGroup.new
       end
 

@@ -9,8 +9,11 @@ module CIAX
       # cfg should have [:jump_groups]
       def ext_shell
         super
-        @par.sel
+        @view = View.new(@id, @par, @records)
+        @cfg[:output] = @view
+        @post_exe_procs << proc { @view.upd }
         @prompt_proc = proc { @view.upd.index }
+        @par.sel
         # Convert number as command
         input_conv_num { |i| _set_crnt_(i) }
         vg = @cobj.loc.add_view

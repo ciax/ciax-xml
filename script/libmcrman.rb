@@ -21,8 +21,7 @@ module CIAX
       end
 
       def ext_shell
-        @view = @cfg[:output] = View.new(@id, @par, @records)
-        @post_exe_procs << proc { @view.upd }
+        @cfg[:output] = @sub_list.records
         extend(Shell).ext_shell
       end
 

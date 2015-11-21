@@ -75,7 +75,7 @@ module CIAX
       def _item_(id, idx)
         rec = @data[id]
         title = "[#{idx}] (#{id})(by #{@ciddb[rec['pid']]})"
-        msg = "#{rec['cid']} #{rec.step}"
+        msg = "#{rec['cid']} #{rec.step_num}"
         msg << _result_(rec)
         Msg.item(title, msg)
       end

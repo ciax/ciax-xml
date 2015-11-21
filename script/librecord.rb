@@ -24,10 +24,10 @@ module CIAX
       def to_v
         msg = title
         @data.each { |i| msg << i.title + i.result }
-        msg << " (#{self['result']}) #{step}"
+        msg << " (#{self['result']}) #{step_num}"
       end
 
-      def step
+      def step_num
         "[#{size}/#{self['original_steps']}]"
       end
 

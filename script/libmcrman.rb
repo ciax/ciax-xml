@@ -14,7 +14,7 @@ module CIAX
         super(nil, cfg, atrb)
         _init_cmd_
         @par = @cobj.rem.int.par
-        @sv_stat[:list] = @par[:list]
+        @sv_stat[:list] = @par.list
         _init_net_
         @mode = 'MCR'
         opt_mode
@@ -52,7 +52,7 @@ module CIAX
 
       def _init_pre_exe_
         @pre_exe_procs << proc do
-          @par[:list].replace @sub_list.clean.keys
+          @par.flush(@sub_list.clean.keys)
           @sv_stat['sid'] = ''
         end
       end
@@ -62,7 +62,7 @@ module CIAX
         @cobj.rem.ext.def_proc do |ent|
           sid = @sub_list.add(ent).id
           @sv_stat['sid'] = sid
-          @par[:list] << sid if sid
+          @par.add(sid) if sid
           'ACCEPT'
         end
       end

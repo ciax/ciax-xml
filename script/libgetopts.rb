@@ -41,11 +41,11 @@ module CIAX
     private
 
     def _sym_key_(str)
-      ARGV.getopts(str).each do |k,v|
+      ARGV.getopts(str).each do |k, v|
         self[k.to_sym] = v
       end
     end
-      
+
     def make_db
       layer_db
       cli_db
@@ -107,7 +107,7 @@ module CIAX
 
     # Current Options
     def current_options(str, ext_keys)
-      (str.split('').map{|s| s.to_sym} & (@optdb.keys+ext_keys))
+      (str.split('').map(&:to_sym) & (@optdb.keys + ext_keys))
     end
 
     # Make usage text

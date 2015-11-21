@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libparam'
 require 'librecord'
 # CIAX-XML
 module CIAX
@@ -8,42 +9,29 @@ module CIAX
     class View < DataH
       def initialize(id, par, records = {})
         super('mcr')
-        @par = par
-        @valid_keys = par[:list]
+        @par = type?(par, Parameter)
         @records = records
         @all_keys = []
         @ciddb = { '0' => 'user' }
-        @current = nil
         @id = id
       end
 
       def to_v
-        @current = nil unless @data.key?(@current)
-        @current ? @data[@current].to_v : _list_
+        _crnt_ || _list_
       end
 
-      # select id by number (1~max)
-      #  return id otherwise nil
-      def sel(num)
-        num = _reg_crnt_(num)
-        @current = (num && num > 0) ? @valid_keys[num - 1] : nil
-        @par[:default] = @current
-      end
-
-      def current
-        id = @current
-        n = @valid_keys.index(id) if id
+      def index
+        n = @par.index
         if n
-          "[#{n + 1}]" + optlist(@data[@current].last['option'])
+          opt = optlist(_crnt_.last['option']) if _crnt_.last
+          "[#{n + 1}]#{opt}"
         else
-          @current = nil
           '[0]'
         end
       end
 
       def clear
         (keys - @all_keys).each { |id| delete(id) }
-        @par[:default] = nil unless @valid_keys.include?(@par[:default])
         self
       end
 
@@ -52,9 +40,8 @@ module CIAX
       def upd_core
         pids = values.map { |r| r['pid'] }
         pids.delete('0')
-        @all_keys.concat(pids + @valid_keys).uniq!
+        @all_keys.concat(pids + @par.list).uniq!
         @all_keys.each { |id| _upd_or_gen_(id) }
-        @current = nil unless @valid_keys.include?(@current) if @current
         clear
         self
       end
@@ -63,6 +50,10 @@ module CIAX
         return @data[id].upd if @data.key?(id)
         r = put(id, get_rec(id))
         @ciddb[id] = r['cid'] unless @ciddb.key?(id)
+      end
+
+      def _crnt_
+        @data[@par.current]
       end
 
       def get_rec(id)
@@ -74,7 +65,7 @@ module CIAX
       def _list_
         page = ['<<< ' + Msg.color("Active Macros [#{@id}]", 2) + ' >>>']
         idx = 0
-        @valid_keys.each { |id| page << _item_(id, idx += 1) }
+        @par.list.each { |id| page << _item_(id, idx += 1) }
         page.join("\n")
       end
 
@@ -95,13 +86,6 @@ module CIAX
           msg
         end
       end
-
-      # num is regurated within 0 to max
-      def _reg_crnt_(num)
-        return if !num || num < 0
-        num = @valid_keys.size if num > @valid_keys.size
-        num
-      end
     end
 
     if __FILE__ == $PROGRAM_NAME
@@ -109,7 +93,8 @@ module CIAX
       if ARGV.empty?
         OPT.usage('[id] ..')
       else
-        puts View.new('test', ARGV).upd
+        par = Parameter.new.flush(ARGV)
+        puts View.new('test', par).upd
       end
     end
   end

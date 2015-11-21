@@ -10,7 +10,7 @@ module CIAX
       def ext_shell
         super
         _set_crnt_
-        @prompt_proc = proc { @view.upd.current }
+        @prompt_proc = proc { @view.upd.index }
         # Convert number as command
         input_conv_num { |i| _set_crnt_(i) }
         vg = @cobj.loc.add_view
@@ -24,7 +24,7 @@ module CIAX
       # Set Current ID by number
       #  returns id (i = 1..size) or nil
       def _set_crnt_(i = nil)
-        @view.sel(i)
+        @par.sel(i)
         nil
       end
     end

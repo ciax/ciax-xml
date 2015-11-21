@@ -27,7 +27,7 @@ module CIAX
       def index
         n = @par.index
         if n
-          opt = optlist(_crnt_.last['option']) if _crnt_.last
+          opt = optlist(_crnt_.last['option']) if _crnt_.busy? && _crnt_.last
           "[#{n + 1}]#{opt}"
         else
           '[0]'
@@ -68,7 +68,6 @@ module CIAX
 
       def _list_
         page = ['<<< ' + Msg.color("Active Macros [#{@id}]", 2) + ' >>>']
-        idx = 0
         @par.list.each_with_index { |id, idx| page << _item_(id, idx + 1) }
         page.join("\n")
       end

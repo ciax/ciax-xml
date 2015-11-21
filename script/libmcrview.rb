@@ -17,7 +17,11 @@ module CIAX
       end
 
       def to_v
-        _crnt_ || _list_
+        _crnt_ ? _crnt_.to_v : _list_
+      end
+
+      def to_r
+        _crnt_ ? _crnt_.to_r : super
       end
 
       def index

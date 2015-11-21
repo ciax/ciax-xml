@@ -7,7 +7,7 @@ module CIAX
     # Sequencer List which provides sequencer list as a server
     # @cfg[:db] associated site/layer should be set
     class List < Hashx
-      attr_reader :records
+      attr_reader :records, :threads
       def initialize(&post_add_proc)
         super
         @post_add_proc = post_add_proc
@@ -30,9 +30,16 @@ module CIAX
         seq
       end
 
+      def alives
+        @threads.list.map { |th| th[:id] }.compact
+      end
+
+      def alive?(id)
+        alives.include?(id)
+      end
+
       def clean
-        alive = @threads.list.map { |th| th[:id] }.compact
-        (keys - alive).each do |id|
+        (keys - alives).each do |id|
           delete(id)
           @records.delete(id)
         end

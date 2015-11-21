@@ -15,7 +15,7 @@ module CIAX
 
     # select id by number (1~max)
     #  return id otherwise nil
-    def sel(num)
+    def sel(num = nil)
       num = _reg_crnt_(num)
       self[:default] = (num && num > 0) ? @list[num - 1] : nil
     end

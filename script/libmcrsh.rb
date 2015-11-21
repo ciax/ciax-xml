@@ -9,7 +9,7 @@ module CIAX
       # cfg should have [:jump_groups]
       def ext_shell
         super
-        _set_crnt_
+        @par.sel
         @prompt_proc = proc { @view.upd.index }
         # Convert number as command
         input_conv_num { |i| _set_crnt_(i) }

@@ -33,7 +33,10 @@ module CIAX
       end
 
       def ext_driver
-        @sub_list = List.new
+        @sub_list = List.new do |sid|
+          @sv_stat['sid'] = sid
+          @par.add(sid) if sid
+        end
         @records = @sub_list.records
         @sv_stat['sid'] = '' # For server response
         _init_pre_exe_
@@ -52,7 +55,7 @@ module CIAX
 
       def _init_pre_exe_
         @pre_exe_procs << proc do
-          @par.flush(@sub_list.clean.keys)
+          @par.flush(@sub_list.keys)
           @sv_stat['sid'] = ''
         end
       end
@@ -60,9 +63,7 @@ module CIAX
       # External Command Group
       def _init_extcmd_
         @cobj.rem.ext.def_proc do |ent|
-          sid = @sub_list.add(ent).id
-          @sv_stat['sid'] = sid
-          @par.add(sid) if sid
+          @sub_list.add(ent)
           'ACCEPT'
         end
       end

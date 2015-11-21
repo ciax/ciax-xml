@@ -8,8 +8,9 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     class List < Hashx
       attr_reader :records
-      def initialize
+      def initialize(&post_add_proc)
         super
+        @post_add_proc = post_add_proc
         @records = {}
         @threads = ThreadGroup.new
       end
@@ -25,6 +26,8 @@ module CIAX
         @threads.add(seq.fork) # start immediately
         @records[seq.id] = seq.record
         put(seq.id, seq)
+        @post_add_proc.call(seq.id) if @post_add_proc
+        seq
       end
 
       def clean

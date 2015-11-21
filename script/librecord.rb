@@ -11,6 +11,8 @@ module CIAX
       def initialize(id = nil) # Session ID for Loading
         super('record', 'steps')
         self['id'] = id || self['time'].to_s # Session ID
+        self['status'] = 'ready'
+        self['result'] = 'busy'
       end
 
       def read(json_str = nil)

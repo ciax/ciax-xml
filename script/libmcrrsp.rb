@@ -16,13 +16,16 @@ module CIAX
       # cfg doesn't change
       def ext_rsp(cfg)
         @cfg = type?(cfg, Config)
-        self['start'] = now_msec.to_s
         self['ver'] = @cfg['ver'] || '0' # Version
         self['cid'] = @cfg[:cid] # Command ID (cmd:par)
         self['label'] = @cfg['label'] # Label for CID
-        self['result'] = 'busy'
         self['original_steps'] = @cfg[:sequence].size
         self
+      end
+
+      def start
+        self['start'] = now_msec.to_s
+        title
       end
 
       def add_step(e1, depth)

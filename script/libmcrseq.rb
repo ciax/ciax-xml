@@ -16,6 +16,7 @@ module CIAX
         @cfg = ment
         type?(@cfg[:dev_list], CIAX::List)
         @record = Record.new.ext_file.auto_save.mklink # Make latest link
+        @record.ext_rsp(@cfg)
         @record['pid'] = pid
         @id = @record['id']
         @title = @record.title
@@ -37,8 +38,7 @@ module CIAX
 
       def macro
         Thread.current[:id] = @id
-        @record.ext_rsp(@cfg)
-        show { @record.title }
+        show(@record.start)
         sub_macro(@cfg, @record)
       rescue Interrupt
         msg("\nInterrupt Issued to running devices #{@running}", 3)
@@ -47,8 +47,7 @@ module CIAX
         end
       ensure
         @running.clear
-        res = @record.finish
-        show { "#{res}" }
+        show(@record.finish)
       end
 
       def fork

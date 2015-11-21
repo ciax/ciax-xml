@@ -17,7 +17,7 @@ module CIAX
         @port = @sub.port.to_i + 1000
         view = View.new(@sub.stat, @sv_stat)
         view.ext_log if OPT[:e]
-        @shell_output_proc = proc {view}
+        @shell_output_proc = proc {view.to_x}
       end
 
       def ext_server
@@ -25,7 +25,7 @@ module CIAX
         @server_input_proc = proc do|line|
           /^(strobe|stat)/ =~ line ? [] : line.split(' ')
         end
-        @server_output_proc = proc { @cfg[:output].to_s }
+        @server_output_proc = @shell_output_proc
         self
       end
     end

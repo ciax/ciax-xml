@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
+ENV['VER'] ||= 'Initialize'
 require 'libwatexe'
 # CIAX-XML Device Server
 module CIAX

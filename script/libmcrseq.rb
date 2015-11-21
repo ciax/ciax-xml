@@ -113,6 +113,7 @@ module CIAX
           @running << e['site']
           @cfg[:dev_list].get(e['site']).exe(e['args'], 'macro')
         end
+        false
       end
 
       def mcr(e, step, mstat)
@@ -124,6 +125,7 @@ module CIAX
           mstat['result'] = step['result']
           fail Interlock unless res
         end
+        false
       end
 
       # Print section

@@ -12,7 +12,7 @@ module CIAX
         atrb[:db] = Db.new
         atrb[:layer_type] = 'mcr'
         super(nil, cfg, atrb)
-        _init_cmd_
+        _init_domain_
         @par = @cobj.rem.int.par
         @sv_stat[:list] = @par.list
         _init_net_
@@ -33,13 +33,8 @@ module CIAX
       end
 
       def ext_driver
-        @sub_list = List.new do |sid|
-          @sv_stat['sid'] = sid
-          @par.add(sid) if sid
-        end
-        @records = @sub_list.records
         @sv_stat['sid'] = '' # For server response
-        _init_pre_exe_
+        _init_sub_list_
         _init_extcmd_
         _init_intcmd_
         _init_intrpt_
@@ -47,13 +42,18 @@ module CIAX
         super
       end
 
-      def _init_cmd_
+      def _init_domain_
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
       end
 
-      def _init_pre_exe_
+      def _init_sub_list_
+        @sub_list = List.new do |sid|
+          @sv_stat['sid'] = sid
+          @par.add(sid) if sid
+        end
+        @records = @sub_list.records
         @pre_exe_procs << proc do
           @par.flush(@sub_list.keys)
           @sv_stat['sid'] = ''

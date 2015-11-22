@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libmsg'
 require 'socket'
 
 # Provide Client

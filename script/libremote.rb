@@ -108,7 +108,7 @@ module CIAX
           unit = item['unit']
           label = "#{cdb[:unit][unit]['label']} #{label}" if unit
           if item[:parameters].is_a? Array
-            label = label.gsub(/\$([\d]+)/, '%s') % item[:parameters].map { |e| e['label'] }
+            label.gsub(/\$([\d]+)/, '%s') % item[:parameters].map { |e| e['label'] }
           end
           new_item(id, item)
         end

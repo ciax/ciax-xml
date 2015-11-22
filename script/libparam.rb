@@ -8,10 +8,9 @@ module CIAX
     def initialize(type = nil, default = nil)
       super(type: type, list: [], default: default)
       @list = self[:list]
-      unless type
-        self[:type] = 'reg'
-        self[:list] << '.'
-      end
+      return if type
+      self[:type] = 'reg'
+      self[:list] << '.'
     end
 
     # select id by number (1~max)

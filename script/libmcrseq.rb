@@ -90,23 +90,20 @@ module CIAX
       end
 
       def goal(_e, step, mstat)
-        if step.skip? && @qry.query(%w(skip force), step)
-          mstat['result'] = 'skipped'
-        end
+        return unless step.skip? && @qry.query(%w(skip force), step)
+        mstat['result'] = 'skipped'
       end
 
       def check(_e, step, mstat)
-        if step.fail? && @qry.query(%w(drop force retry), step)
-          mstat['result'] = 'error'
-          fail Interlock
-        end
+        return unless step.fail? && @qry.query(%w(drop force retry), step)
+        mstat['result'] = 'error'
+        fail Interlock
       end
 
       def wait(_e, step, mstat)
-        if step.timeout? && @qry.query(%w(drop force retry), step)
-          mstat['result'] = 'timeout'
-          fail Interlock
-        end
+        return unless step.timeout? && @qry.query(%w(drop force retry), step)
+        mstat['result'] = 'timeout'
+        fail Interlock
       end
 
       def exec(e, step, _mstat)

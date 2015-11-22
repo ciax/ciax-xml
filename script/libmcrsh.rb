@@ -9,26 +9,31 @@ module CIAX
       # cfg should have [:jump_groups]
       def ext_shell
         super
-        @view = View.new(@id, @par, @records)
-        @cfg[:output] = @view
-        @post_exe_procs << proc { @view.upd }
-        @prompt_proc = proc { @view.upd.index }
         @par.sel
-        # Convert number as command
-        input_conv_num { |i| _set_crnt_(i) }
-        vg = @cobj.loc.add_view
-        vg.add_dummy('0', 'List mode')
-        vg.add_dummy('[1-n]', 'Sequencer mode')
+        _init_view_
+        _init_lcmd_
+        # Set Current ID by number
+        input_conv_num do|i|
+          @par.sel(i)
+          nil
+        end
         self
       end
 
       private
 
-      # Set Current ID by number
-      #  returns id (i = 1..size) or nil
-      def _set_crnt_(i = nil)
-        @par.sel(i)
-        nil
+      def _init_view_
+        @view = View.new(@id, @par, @records)
+        @cfg[:output] = @view
+        @post_exe_procs << proc { @view.upd }
+        @prompt_proc = proc { @view.upd.index }
+      end
+
+      def _init_lcmd_
+        sg = @cobj.loc.add(Dummy, caption: 'Switch Pages', color: 5)
+        sg.add_item('0', 'List page')
+        sg.add_item('[1-n]', 'Sequencer page')
+        @cobj.loc.add_view
       end
     end
 

@@ -17,15 +17,28 @@ module CIAX
     end
 
     # crnt could have 'label',:body,'unit','group'
-    def add_item(id, title = nil, _crnt = {})
+    def add_dummy(id, title = nil)
       @displist.put_item(id, title)
     end
 
-    def valid_pars; end
+    def add_item(id, title = nil)
+      @displist.put_item(id, title)
+      @valid_keys << id
+      self[id] = Item.new(@cfg, id: id)
+    end
+
+    # Generate Entity
+    def set_cmd(args, opt = {})
+      id, *par = type?(args, Array)
+      @valid_keys.include?(id) || fail(InvalidCMD, view_list)
+      get(id).set_par(par, opt)
+    end
 
     def view_list
       @displist.to_s
     end
+
+    def valid_pars; end
   end
 
   # Command Group
@@ -38,7 +51,7 @@ module CIAX
 
     # crnt could have 'label',:body,'unit','group'
     def add_item(id, title = nil, crnt = {})
-      super
+      @displist.put_item(id, title)
       new_item(id, crnt)
     end
 
@@ -70,13 +83,6 @@ module CIAX
 
     def valid_pars
       values.map(&:valid_pars).flatten
-    end
-
-    # Generate Entity
-    def set_cmd(args, opt = {})
-      id, *par = type?(args, Array)
-      @valid_keys.include?(id) || fail(InvalidCMD, view_list)
-      get(id).set_par(par, opt)
     end
 
     private

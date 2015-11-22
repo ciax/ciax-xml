@@ -174,9 +174,8 @@ module CIAX
           list[title] = @index[id]
         end
         return if list.empty?
-        columns(list, @index.column, @level,
-                @index.mk_caption(@caption, color: @color, level: @level)
-               )
+        cap = @index.mk_caption(@caption, color: @color, level: @level)
+        columns(list, @index.column, @level, cap)
       end
 
       def to_s

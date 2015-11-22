@@ -20,6 +20,8 @@ module CIAX
       @displist.put_item(id, title)
     end
 
+    def valid_pars; end
+
     def view_list
       @displist.to_s
     end

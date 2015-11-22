@@ -15,7 +15,7 @@ module CIAX
     end
 
     def valid_keys
-      map(&:valid_keys).flatten
+      map(&:valid_keys).compact.flatten
     end
 
     def set_cmd(args = [], opt = {})
@@ -25,11 +25,11 @@ module CIAX
     end
 
     def valid_pars
-      map(&:valid_pars).flatten
+      map(&:valid_pars).compact.flatten
     end
 
     def view_list
-      map(&:view_list).grep(/./).join("\n")
+      map(&:view_list).compact.grep(/./).join("\n")
     end
 
     # Add sub group

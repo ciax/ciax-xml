@@ -4,7 +4,7 @@ require 'libview'
 module CIAX
   # Extended Enumerable
   module Enumx
-    include ViewStruct
+    include View
     def self.extended(obj)
       fail('Not Enumerable') unless obj.is_a? Enumerable
     end

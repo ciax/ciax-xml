@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
 # Common Module
-require 'fileutils'
 require 'libmsgdbg'
+require 'fileutils'
+require 'json'
 module CIAX
   ### Checking Methods ###
   module Msg
@@ -15,6 +16,11 @@ module CIAX
     def esc_code(str)
       return unless str
       eval('"' + str + '"')
+    end
+
+    def j2h(json_str = nil)
+      inp = json_str || Msg.give_up("No data in file(#{ARGV})")
+      JSON.parse(inp)
     end
 
     # Thread is main

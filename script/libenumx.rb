@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require 'libview'
-require 'json'
 # Extened Hash
 module CIAX
   # Extended Enumerable
@@ -31,11 +30,6 @@ module CIAX
     end
 
     private
-
-    def j2h(json_str = nil)
-      inp = json_str || Msg.give_up("No data in file(#{ARGV})")
-      JSON.parse(inp)
-    end
 
     def rec_proc(db)
       each_idx(db) do|i|

@@ -32,7 +32,7 @@ module CIAX
 
     # Load JSON Logfile
     def self.load(str)
-      h = JSON.parse(str)
+      h = Msg.j2h(str)
       give_up('Logline:Line is not rcv') unless /rcv/ =~ h['dir']
       if h['base64']
         def h.binary

@@ -3,7 +3,7 @@ require 'libitem'
 require 'libdisp'
 
 module CIAX
-  class Group < Hashx
+  class Dummy < Hashx
     include CmdProc
     attr_reader :valid_keys
     # cfg keys: caption,color,column
@@ -18,6 +18,23 @@ module CIAX
     # crnt could have 'label',:body,'unit','group'
     def add_item(id, title = nil, crnt = {})
       @displist.put_item(id, title)
+    end
+
+    def view_list
+      @displist.to_s
+    end
+  end
+
+  class Group < Dummy
+    # cfg keys: caption,color,column
+    def initialize(cfg, atrb = {})
+      super
+      @displist.put_grp
+    end
+
+    # crnt could have 'label',:body,'unit','group'
+    def add_item(id, title = nil, crnt = {})
+      super
       new_item(id, crnt)
     end
 
@@ -37,11 +54,6 @@ module CIAX
       self
     end
 
-    def add_dummy(id, title)
-      @displist.put_item(id, title) # never put into valid_key
-      self
-    end
-
     def valid_reset
       @displist.index.reset!
       self
@@ -52,14 +64,11 @@ module CIAX
       self
     end
 
-    def view_list
-      @displist.to_s
-    end
-
     def valid_pars
       values.map(&:valid_pars).flatten
     end
 
+    # Generate Entity
     def set_cmd(args, opt = {})
       id, *par = type?(args, Array)
       @valid_keys.include?(id) || fail(InvalidCMD, view_list)

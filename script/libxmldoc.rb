@@ -26,6 +26,7 @@ module CIAX
         @type = type
         @projects = Hashx.new
         @displist = Disp.new
+        @displist.put_grp
         @level = 0
         read_files(Msg.xmlfiles(@type))
         valid_proj

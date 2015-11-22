@@ -29,13 +29,13 @@ module CIAX
     end
 
     module Sh
-      class Group < Group
+      class Group < Dummy
         def initialize(cfg, atrb = {})
           atrb[:caption] = 'Shell Command'
           atrb[:color] = 1
           super
-          add_dummy('q', 'Quit')
-          add_dummy('^D,^C', 'Interrupt')
+          add_item('q', 'Quit')
+          add_item('^D,^C', 'Interrupt')
         end
       end
     end

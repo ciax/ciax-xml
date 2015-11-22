@@ -5,7 +5,9 @@ require 'libwatexe'
 require 'libmcrqry'
 
 module CIAX
+  # Macro Layer
   module Mcr
+    # Sequencer
     class Seq
       include Msg
       attr_reader :cfg, :record, :qry, :id, :title

@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 
 module CIAX
+  # Real number Range class
   class ReRange
     include Comparable
     # Range format (limit) "X","X:",":X","X<","<X"

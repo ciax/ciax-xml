@@ -2,7 +2,9 @@
 require 'libdatax'
 
 module CIAX
+  # Frame Layer
   module Frm
+    # Frame Field
     class Field < DataH
       attr_reader :flush_procs
       attr_accessor :echo

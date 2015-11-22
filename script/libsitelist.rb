@@ -67,6 +67,7 @@ module CIAX
         put(site, obj)
       end
 
+      # Shell extension for Site::List
       module Shell
         include CIAX::List::Shell
         class Jump < LongJump; end

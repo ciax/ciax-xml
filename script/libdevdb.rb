@@ -2,7 +2,9 @@
 require 'libfrmdb'
 
 module CIAX
+  # Device Layer
   module Dev
+    # Device DB
     class Db < Db
       def initialize
         super('ddb')

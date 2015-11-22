@@ -3,6 +3,7 @@
 
 module CIAX
   module Mcr
+    # Macro Printing Mix-in module
     module PrtShare
       def body(msg, col = 5)
         rindent(1) + Msg.color(msg, col)

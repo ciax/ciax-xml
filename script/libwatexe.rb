@@ -3,6 +3,7 @@ require 'libappexe'
 require 'libwatview'
 
 module CIAX
+  # Watch Layer
   module Wat
     # cfg should have [:sub_list]
     class Exe < Exe
@@ -72,6 +73,7 @@ module CIAX
       end
     end
 
+    # Watch List
     class List < Site::List
       def initialize(cfg, top_list = nil)
         super(cfg, top_list || self, App::List)

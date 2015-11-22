@@ -4,7 +4,9 @@ require 'librerange'
 
 # id = Table Group ID
 module CIAX
+  # Symbol module
   module Sym
+    # Symbole DB
     class Db < Db
       def initialize
         super('sdb')

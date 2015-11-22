@@ -3,7 +3,9 @@ require 'librepeat'
 require 'libdb'
 
 module CIAX
+  # Frame Layer
   module Frm
+    # Frame DB
     class Db < Db
       def initialize
         super('fdb')

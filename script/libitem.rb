@@ -4,6 +4,7 @@ require 'librerange'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
 module CIAX
+  # Default Proc Setting method
   module CmdProc
     include Msg
     attr_reader :cfg

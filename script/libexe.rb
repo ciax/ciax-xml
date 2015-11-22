@@ -10,6 +10,7 @@ require 'libremote'
 # Add Server Command to Combine Lower Layer (Stream,Frm,App)
 
 module CIAX
+  # Device Execution Engine
   class Exe
     include Msg
     attr_reader :layer, :id, :mode, :cobj, :stat, :sub, :pre_exe_procs, :post_exe_procs, :cfg, :prompt_proc, :host, :port

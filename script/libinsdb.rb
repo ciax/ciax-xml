@@ -2,7 +2,9 @@
 require 'libappdb'
 
 module CIAX
+  # Instance Layer
   module Ins
+    # Instance DB
     class Db < Db
       include Wat::Db
       def initialize

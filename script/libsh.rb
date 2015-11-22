@@ -5,7 +5,7 @@ require 'libthreadx'
 
 module CIAX
   # Provide Shell related modules
-  # Add Shell Command (by Shell extention)
+  # Add Shell Command (by Shell extension)
   module Shell
     def self.extended(obj)
       Msg.type?(obj, Exe)

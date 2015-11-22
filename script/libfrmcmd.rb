@@ -4,10 +4,12 @@ require 'libframe'
 require 'libfield'
 
 module CIAX
+  # Frame Layer
   module Frm
     include Remote
     # cfg should have [:field]
     module Int
+      # Internal Command Group
       class Group < Remote::Int::Group
         def initialize(cfg, attr = {})
           super
@@ -18,11 +20,12 @@ module CIAX
         end
       end
     end
-
+    # External Command Group
     module Ext
       include Remote::Ext
       class Group < Ext::Group; end
       class Item < Ext::Item; end
+      # Entity
       class Entity < Ext::Entity
         def initialize(cfg, attr = {})
           super

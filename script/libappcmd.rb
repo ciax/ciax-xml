@@ -1,13 +1,15 @@
 #!/usr/bin/ruby
 require 'libremote'
 require 'libappdb'
-
+# CIAX-XML Command module
 module CIAX
+  # Application Mode
   module App
     include Remote
     # cfg should have [:dbi] and [:stat]
     module Int
       include Remote::Int
+      # Internal Command
       class Group < Int::Group
         def initialize(cfg, attr = {})
           super
@@ -16,11 +18,12 @@ module CIAX
         end
       end
     end
-
+    # External Command
     module Ext
       include Remote::Ext
       class Group < Ext::Group; end
       class Item < Ext::Item; end
+      # Ext entity
       class Entity < Ext::Entity
         include Math
         # batch is ary of args(ary)

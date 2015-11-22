@@ -2,7 +2,9 @@
 require 'libwatdb'
 
 module CIAX
+  # Application Layer
   module App
+    # Application DB
     class Db < Db
       include Wat::Db
       def initialize

@@ -4,6 +4,7 @@ require 'libwatexe'
 require 'libhexview'
 
 module CIAX
+  # Ascii Hex Layer for OLD CIAX
   module Hex
     # cfg should have [:sub_list]
     class Exe < Exe
@@ -30,6 +31,7 @@ module CIAX
       end
     end
 
+    # Hex Exe List
     class List < Site::List
       def initialize(cfg, top_list = nil)
         super(cfg, top_list || self, Wat::List)

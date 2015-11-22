@@ -3,6 +3,7 @@ require 'socket'
 
 # Provide Client
 module CIAX
+  # Client module
   module Client
     def self.extended(obj)
       Msg.type?(obj, Exe)

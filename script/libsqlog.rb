@@ -4,6 +4,7 @@ require 'libmsg'
 require 'libvarx'
 require 'thread'
 
+# CIAX-XML
 module CIAX
   # Generate SQL command string
   module SqLog

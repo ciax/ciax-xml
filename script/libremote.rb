@@ -34,8 +34,8 @@ module CIAX
       end
     end
 
-    # Hidden Command Group
     module Hid
+      # Hidden Command Group
       class Group < Group
         def initialize(dom_cfg, atrb = {})
           atrb[:caption] = 'Hidden Commands'
@@ -47,8 +47,8 @@ module CIAX
       end
     end
 
-    # Internal Command Group
     module Int
+      # Internal Command Group
       class Group < Group
         def initialize(dom_cfg, atrb = {})
           atrb[:caption] = 'Internal Commands'

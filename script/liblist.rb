@@ -17,6 +17,7 @@ module CIAX
       extend(Shell).ext_shell(jump_class)
     end
 
+    # Shell module
     module Shell
       attr_reader :jumpgrp
       def self.extended(obj)

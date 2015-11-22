@@ -4,7 +4,9 @@ require 'libsymdb'
 
 # Status to App::Sym (String with attributes)
 module CIAX
+  # Application Layer
   module App
+    # Symbol Converter
     module Symbol
       def self.extended(obj)
         Msg.type?(obj, Status)
@@ -65,6 +67,7 @@ module CIAX
       end
     end
 
+    # Status class
     class Status
       def ext_sym
         extend(Symbol).ext_sym

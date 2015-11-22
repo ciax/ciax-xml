@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
 require 'libmsg'
-
+# CIAX-XML
 module CIAX
+  # HTML Table generation
   class HtmlTbl < Array
     include Msg
     def initialize(dbi)

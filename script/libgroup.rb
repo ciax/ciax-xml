@@ -1,8 +1,9 @@
 #!/usr/bin/ruby
 require 'libitem'
 require 'libdisp'
-
+# CIAX-XML
 module CIAX
+  # Dummy Command Group
   class Dummy < Hashx
     include CmdProc
     attr_reader :valid_keys
@@ -16,7 +17,7 @@ module CIAX
     end
 
     # crnt could have 'label',:body,'unit','group'
-    def add_item(id, title = nil, crnt = {})
+    def add_item(id, title = nil, _crnt = {})
       @displist.put_item(id, title)
     end
 
@@ -27,6 +28,7 @@ module CIAX
     end
   end
 
+  # Command Group
   class Group < Dummy
     # cfg keys: caption,color,column
     def initialize(cfg, atrb = {})

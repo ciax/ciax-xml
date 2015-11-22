@@ -9,7 +9,9 @@ require 'libdevdb'
 require 'libsitelist'
 
 module CIAX
+  # Frame Layer
   module Frm
+    # Frame Exe module
     class Exe < Exe
       # cfg must have [:db]
       def initialize(id, cfg)
@@ -101,6 +103,7 @@ module CIAX
       end
     end
 
+    # Frame List module
     class List < Site::List
       def initialize(cfg, top_list = nil)
         super(cfg, top_list || self)

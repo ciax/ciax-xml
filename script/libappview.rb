@@ -5,6 +5,7 @@ require 'libappsym'
 # So the convert process (upd_view) will be included in to_v
 # Updated at to_v.
 module CIAX
+  # Application Layer
   module App
     # Hash of App Groups
     class View < Hashx

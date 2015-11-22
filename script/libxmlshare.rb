@@ -3,6 +3,7 @@ require 'libmsg'
 
 module CIAX
   module Xml
+    # Shared module for XML LIB
     module Share
       include Msg
       # Common with LIBXML,REXML

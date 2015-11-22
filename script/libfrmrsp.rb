@@ -7,7 +7,9 @@ require 'libstream'
 # Input  : upd block(frame,time)
 # Output : Field
 module CIAX
+  # Frame Layer
   module Frm
+    # Frame Response module
     module Rsp
       # @< (base),(prefix)
       # @ cobj,sel,fds,frame,fary,cc
@@ -115,6 +117,7 @@ module CIAX
       end
     end
 
+    # Field class
     class Field
       def ext_rsp
         extend(Frm::Rsp).ext_rsp

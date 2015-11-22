@@ -2,7 +2,9 @@
 require 'libcommand'
 
 module CIAX
+  # Local Commands
   module Local
+    # Top level
     class Index < GrpAry
       # cfg should have [:jump_class]
       attr_reader :loc
@@ -12,6 +14,7 @@ module CIAX
       end
     end
 
+    # Local Domain
     class Domain < GrpAry
       def add_shell
         add(Sh::Group)
@@ -29,6 +32,7 @@ module CIAX
     end
 
     module Sh
+      # Shell Group
       class Group < Dummy
         def initialize(cfg, atrb = {})
           atrb[:caption] = 'Shell Command'
@@ -41,6 +45,7 @@ module CIAX
     end
 
     module Jump
+      # Jump Group
       class Group < Group
         def initialize(cfg, atrb = {})
           name = m2id(cfg[:jump_class], 1).capitalize
@@ -48,7 +53,8 @@ module CIAX
           atrb[:color] = 5
           super
           def_proc do|ent|
-            # Use shell() of top level class (ie. List.new.get(id).shell -> List.new.shell(id) )
+            # Use shell() of top level class
+            #  (ie. List.new.get(id).shell -> List.new.shell(id) )
             fail(ent[:jump_class], ent.id)
           end
         end
@@ -65,6 +71,7 @@ module CIAX
     end
 
     module View
+      # Switch View Group
       # cfg should have [:output]
       class Group < Group
         def initialize(cfg, atrb = {})
@@ -84,7 +91,7 @@ module CIAX
       jg.add_item('site', 'Jump to site')
       cfg[:jump_groups] = [jg]
       loc = Index.new(cfg).loc
-      vg = loc.add_view
+      loc.add_view
       loc.add_jump
       loc.add_shell
       puts loc.view_list

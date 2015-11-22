@@ -4,6 +4,7 @@ require 'xml'
 
 module CIAX
   module Xml
+    # Gnu XML LIB
     class Gnu
       include Share
       def initialize(f = nil)

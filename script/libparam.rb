@@ -2,6 +2,7 @@
 require 'libenumx'
 
 module CIAX
+  # Command Parameter validation
   class Parameter < Hashx
     attr_reader :list
     def initialize(type = nil, default = nil)

@@ -21,6 +21,7 @@ module CIAX
     end
   end
 
+  # DB class
   class Db < Hashx
     attr_reader :displist
     def initialize(type)

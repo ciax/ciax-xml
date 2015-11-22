@@ -3,6 +3,7 @@ require 'libmsg'
 require 'thread'
 
 module CIAX
+  # Extended Thread class
   class Threadx < Thread
     NS_COLOR = 4
     include Msg
@@ -21,6 +22,7 @@ module CIAX
     end
   end
 
+  # Thread with Loop
   class ThreadLoop < Threadx
     def initialize(name, color = 4)
       super do

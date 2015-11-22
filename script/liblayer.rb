@@ -20,6 +20,7 @@ module CIAX
       extend(Shell).ext_shell
     end
 
+    # Shell Extension
     module Shell
       include CIAX::List::Shell
       class Jump < LongJump; end

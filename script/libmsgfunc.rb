@@ -19,8 +19,11 @@ module CIAX
     end
 
     def j2h(json_str = nil)
-      inp = json_str || Msg.give_up("No data in file(#{ARGV})")
-      JSON.parse(inp)
+      begin
+        JSON.parse(json_str)
+      rescue JSON::ParserError
+        usr_err('NOT JSON')
+      end
     end
 
     # Thread is main

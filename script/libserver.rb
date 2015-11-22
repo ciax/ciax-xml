@@ -14,13 +14,7 @@ module CIAX
       @sub.ext_server if @sub
       return self unless @port
       verbose { "Initialize UDP server (#{@id}) [#{@port}]" }
-      @server_input_proc = proc do|line|
-        begin
-          JSON.parse(line)
-        rescue JSON::ParserError
-          usr_err('NOT JSON')
-        end
-      end
+      @server_input_proc = proc { |line| j2h(line) }
       @sv_stat.ext_file.auto_save
       @server_output_proc = proc { @sv_stat.to_j }
       self

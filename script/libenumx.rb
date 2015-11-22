@@ -26,7 +26,8 @@ module CIAX
     end
 
     def read(json_str = nil)
-      deep_update(j2h(json_str || gets(nil)))
+      inp = json_str || gets(nil) || usr_err("No data in file(#{ARGV})")
+      deep_update(j2h(inp))
     end
 
     private

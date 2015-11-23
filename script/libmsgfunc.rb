@@ -19,7 +19,7 @@ module CIAX
     end
 
     def j2h(json_str = nil)
-      JSON.parse(json_str)
+      JSON.parse(json_str, symbolize_names: true)
     rescue JSON::ParserError
       usr_err('NOT JSON')
     end

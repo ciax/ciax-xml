@@ -32,7 +32,7 @@ module CIAX
       end
 
       def ext_driver
-        @sv_stat['sid'] = '' # For server response
+        @sv_stat[:sid] = '' # For server response
         _init_sub_list_
         _init_extcmd_
         _init_intcmd_
@@ -49,13 +49,13 @@ module CIAX
 
       def _init_sub_list_
         @sub_list = List.new do |sid|
-          @sv_stat['sid'] = sid
+          @sv_stat[:sid] = sid
           @par.add(sid) if sid
         end
         @records = @sub_list.records
         @pre_exe_procs << proc do
           @par.flush(@sub_list.keys)
-          @sv_stat['sid'] = ''
+          @sv_stat[:sid] = ''
         end
       end
 
@@ -72,7 +72,7 @@ module CIAX
         @cobj.rem.int.def_proc do|ent|
           seq = @sub_list.get(ent.par[0])
           if seq
-            @sv_stat['sid'] = seq.id
+            @sv_stat[:sid] = seq.id
             seq.reply(ent[:id])
           else
             'NOSID'

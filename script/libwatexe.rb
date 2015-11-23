@@ -13,7 +13,7 @@ module CIAX
         @sub = @cfg[:sub_list].get(@id)
         @cobj.add_rem(@sub.cobj.rem)
         @stat = Event.new.setdbi(@dbi)
-        @sv_stat = @sub.sv_stat.add_db('auto' => '&', 'event' => '@')
+        @sv_stat = @sub.sv_stat.add_db(auto: '&', event: '@')
         @sub.batch_interrupt = @stat.get('int')
         @mode = @sub.mode
         @host = @sub.host
@@ -60,7 +60,7 @@ module CIAX
         end
         @tid_auto = auto_update
         @sub.post_exe_procs << proc do
-          @sv_stat.put('auto', @tid_auto && @tid_auto.alive?)
+          @sv_stat.put(:auto, @tid_auto && @tid_auto.alive?)
         end
         self
       end

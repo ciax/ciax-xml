@@ -45,10 +45,10 @@ module CIAX
 
       def _get_header_
         ary = ['%', self['id']]
-        ary << b2e(@sv_stat['udperr'])
-        ary << b2i(@sv_stat['event'])
-        ary << b2i(@sv_stat['isu'])
-        ary << b2e(@sv_stat['comerr'])
+        ary << b2e(@sv_stat[:udperr])
+        ary << b2i(@sv_stat[:event])
+        ary << b2i(@sv_stat[:isu])
+        ary << b2e(@sv_stat[:comerr])
         ary.join('')
       end
 

@@ -23,7 +23,7 @@ module CIAX
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
-        @sv_stat.add_db('comerr' => 'X', 'strerr' => 'E')
+        @sv_stat.add_db(comerr: 'X', strerr: 'E')
         # Post internal command procs
         @host ||= @dbi['host']
         @port ||= @dbi['port']
@@ -33,7 +33,7 @@ module CIAX
       def exe(args, src = 'local', pri = 1)
         super
       rescue CommError
-        @sv_stat.set('comerr').msg($ERROR_INFO.to_s)
+        @sv_stat.set(:comerr).msg($ERROR_INFO.to_s)
         raise $ERROR_INFO
       end
 
@@ -70,11 +70,11 @@ module CIAX
         end
         @stream = Stream.new(@id, @dbi['version'], iocmd, sp['wait'], timeout, esc_code(sp['terminator']))
         @stream.ext_log unless OPT[:s]
-        @stream.pre_open_proc = proc { @sv_stat.set('strerr') }
-        @stream.post_open_proc = proc { @sv_stat.reset('strerr') }
+        @stream.pre_open_proc = proc { @sv_stat.set(:strerr) }
+        @stream.post_open_proc = proc { @sv_stat.reset(:strerr) }
         @stat.ext_rsp.ext_file.auto_save
         @cobj.rem.ext.def_proc do|ent, src|
-          @sv_stat.reset('comerr')
+          @sv_stat.reset(:comerr)
           @stream.snd(ent[:frame], ent.id)
           @stat.conv(ent, @stream.rcv) if ent['response']
           @stat.flush if src != 'buffer'

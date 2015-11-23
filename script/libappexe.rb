@@ -40,7 +40,7 @@ module CIAX
       private
 
       def init_server
-        @sv_stat = @sub.sv_stat.add_db('isu' => '*')
+        @sv_stat = @sub.sv_stat.add_db(:isu => '*')
         @host ||= @dbi['host']
         @port ||= @dbi['port']
         self
@@ -100,7 +100,7 @@ module CIAX
 
       # Process of command execution:
       #  Main: Recieve App command with validation
-      #  Main: Set 'isu' flag in Server status
+      #  Main: Set :isu flag in Server status
       #  Main: Send command to queue of Buffer thread (Async)
       #  Main: Send back App response with msg 'ISSUED' in Server Status
       #    Buffer: Recieve the command from queue
@@ -134,7 +134,7 @@ module CIAX
           @sub.exe(args, src)
         end
         # Frm: Update after each single command finish
-        # @stat file output should be done before 'isu' flag is reset
+        # @stat file output should be done before :isu flag is reset
         buf.flush_proc = proc do
           verbose { 'Propagate Buffer#flush -> Field#flush' }
           @sub.stat.flush

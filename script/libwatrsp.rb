@@ -98,7 +98,7 @@ module CIAX
         self
       end
 
-      # @sv_stat['busy'] is internal var
+      # @sv_stat[:busy] is internal var
 
       ## Timing chart in active mode
       # isu   :__--__--__--==__--___
@@ -117,13 +117,13 @@ module CIAX
       #  x  |  x  |  x  |  -
 
       def upd_event
-        if @sv_stat['event']
-          if !active? && !@sv_stat['isu']
-            @sv_stat.reset('event')
+        if @sv_stat[:event]
+          if !active? && !@sv_stat[:isu]
+            @sv_stat.reset(:event)
             @on_deact_procs.each { |p| p.call(self) }
           end
         elsif active?
-          @sv_stat.set('event')
+          @sv_stat.set(:event)
           @data['act_start'] = @data['act_end'] = @last_updated
           @on_act_procs.each { |p| p.call(self) }
         end

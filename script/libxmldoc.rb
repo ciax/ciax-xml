@@ -119,7 +119,7 @@ module CIAX
       Msg.usage('[type] (adb,fdb,idb,ddb,mdb,sdb)')
     end
     begin
-      puts doc.get(ARGV.shift).path
+      puts doc.get(ARGV.shift).path(ARGV)
     rescue InvalidID
       Msg.usage('[type] [id]')
     end

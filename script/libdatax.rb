@@ -151,7 +151,7 @@ module CIAX
     end
 
     # Generate DataH
-    def pick(*keyary)
+    def pick(keyary)
       dh = DataH.new(@type, {}, @data_name)
       keyary.each do|k|
         if @data.key?(k)

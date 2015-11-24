@@ -12,6 +12,124 @@
         <exec site="mfp" name="upd"/>
         <exec site="map" name="upd"/>
       </item>
+      <item id="start" label="startmask">
+        <check>
+          <equal site="mfp" var="gv" form="msg">OPEN</equal>
+          <match site="map" var="ch1" form="msg">OK</match>
+          <match site="mmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="upd"/>
+        <mcr name="t-w"/>
+      </item>
+      <item id="store" label="storemask">
+        <check>
+          <equal site="mfp" var="gv" form="msg">OPEN</equal>
+          <match site="map" var="ch1" form="msg">OK</match>
+          <match site="mmc" var="abs" form="msg">S</match>
+          <not site="mmc" var="in1" form="msg">ON</not>
+        </check>
+        <mcr name="upd"/>
+        <mcr name="s-w"/>
+      </item>
+      <item id="load" label="loadmask">
+        <check>
+          <equal site="mfp" var="gv" form="msg">OPEN</equal>
+          <match site="map" var="ch1" form="msg">OK</match>
+          <match site="mmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="upd"/>
+        <mcr name="l-i"/>
+      </item>
+      <item id="kapa" label="align mask">
+        <check>
+          <equal site="mfp" var="gv" form="msg">OPEN</equal>
+          <match site="map" var="ch1" form="msg">OK</match>
+          <match site="mmc" var="abs" form="msg">S</match>
+          <equal site="mma" var="pos" form="msg">INIT</equal>
+        </check>
+        <mcr name="rc_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="ro_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="rc_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="ro_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="rc_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="ro_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="rc_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="ro_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="rc_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="ro_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="rc_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="ro_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="rc_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="ro_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="rc_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="ro_k"/>
+        <exec site="map" name="upd"/>
+        <mcr name="rc_k"/>
+      </item>
+      <item id="kapa1" label="rail-up">
+        <check>
+          <equal site="mfp" var="gv" form="msg">OPEN</equal>
+          <match site="map" var="ch1" form="msg">OK</match>
+          <match site="mmc" var="abs" form="msg">S</match>
+          <equal site="mma" var="pos" form="msg">INIT</equal>
+        </check>
+        <mcr name="ro_k1"/>
+        <exec site="map" name="upd"/>
+        <mcr name="rc_k1"/>
+      </item>
+      <item id="fin" label="finish mos">
+        <goal>
+          <unmatch site="mma" var="abs" form="msg">WAIT</unmatch>
+          <not site="mma" var="pos" form="msg">ROT</not>
+          <not site="mma" var="pos" form="msg">INIT</not>
+          <not site="mma" var="pos" form="msg">FOCUS</not>
+        </goal>
+        <check>
+          <equal site="mfp" var="gv" form="msg">OPEN</equal>
+          <match site="map" var="ch1" form="msg">OK</match>
+          <match site="mmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="upd"/>
+        <mcr name="f-i"/>
+      </item>
+      <item id="cinit" label="carousel initialize">
+        <check>
+          <equal site="mma" var="pos" form="msg">INIT</equal>
+          <not site="mfp" var="ao" form="msg">OPEN</not>
+        </check>
+        <exec site="mfp" name="upd"/>
+        <exec site="mma" name="upd"/>
+        <exec site="mmc" name="upd"/>
+        <exec site="map" name="upd"/>
+        <exec site="mmc" name="lowspd"/>
+        <exec site="map" name="upd"/>
+        <exec site="mmc" name="cw"/>
+        <exec site="map" name="upd"/>
+        <exec site="mmc" name="gh-cw"/>
+        <exec site="map" name="upd"/>
+        <exec site="mmc" name="cw"/>
+        <exec site="map" name="upd"/>
+        <exec site="mmc" name="gh-cw"/>
+        <exec site="map" name="upd"/>
+        <exec site="mmc" name="set0"/>
+      </item>
+    </group>
+    <group id="mo_sub" caption="MOIRCS Sub">
       <item id="chk" label="Check Status(No actual motion)">
       </item>
       <item id="ah_t-i" label="Arm Hor">
@@ -903,15 +1021,6 @@
         </check>
         <mcr name="chk"/>
       </item>
-      <item id="start" label="startmask">
-        <check>
-          <equal site="mfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="ch1" form="msg">OK</match>
-          <match site="mmc" var="abs" form="msg">S</match>
-        </check>
-        <mcr name="upd"/>
-        <mcr name="t-w"/>
-      </item>
       <item id="t-i" label="startmask (INIT)">
         <goal>
           <not site="mma" var="pos" form="msg">INIT</not>
@@ -975,16 +1084,6 @@
         <mcr name="t-r"/>
         <mcr name="gw_t-w"/>
         <mcr name="check_start"/>
-      </item>
-      <item id="store" label="storemask">
-        <check>
-          <equal site="mfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="ch1" form="msg">OK</match>
-          <match site="mmc" var="abs" form="msg">S</match>
-          <not site="mmc" var="in1" form="msg">ON</not>
-        </check>
-        <mcr name="upd"/>
-        <mcr name="s-w"/>
       </item>
       <item id="s-i" label="storemask 1(INIT)">
         <goal>
@@ -1073,15 +1172,6 @@
         <exec site="map" name="upd"/>
         <mcr name="gw_s-w"/>
         <mcr name="check_store"/>
-      </item>
-      <item id="load" label="loadmask">
-        <check>
-          <equal site="mfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="ch1" form="msg">OK</match>
-          <match site="mmc" var="abs" form="msg">S</match>
-        </check>
-        <mcr name="upd"/>
-        <mcr name="l-i"/>
       </item>
       <item id="l-w" label="loadmask 1(WAIT)">
         <goal>
@@ -1248,73 +1338,6 @@
         <mcr name="fc-f1"/>
         <mcr name="gr_fc-r1"/>
       </item>
-      <item id="kapa" label="align mask">
-        <check>
-          <equal site="mfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="ch1" form="msg">OK</match>
-          <match site="mmc" var="abs" form="msg">S</match>
-          <equal site="mma" var="pos" form="msg">INIT</equal>
-        </check>
-        <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
-        <mcr name="rc_k"/>
-      </item>
-      <item id="kapa1" label="rail-up">
-        <check>
-          <equal site="mfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="ch1" form="msg">OK</match>
-          <match site="mmc" var="abs" form="msg">S</match>
-          <equal site="mma" var="pos" form="msg">INIT</equal>
-        </check>
-        <mcr name="ro_k1"/>
-        <exec site="map" name="upd"/>
-        <mcr name="rc_k1"/>
-      </item>
-      <item id="fin" label="finish mos">
-        <goal>
-          <unmatch site="mma" var="abs" form="msg">WAIT</unmatch>
-          <not site="mma" var="pos" form="msg">ROT</not>
-          <not site="mma" var="pos" form="msg">INIT</not>
-          <not site="mma" var="pos" form="msg">FOCUS</not>
-        </goal>
-        <check>
-          <equal site="mfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="ch1" form="msg">OK</match>
-          <match site="mmc" var="abs" form="msg">S</match>
-        </check>
-        <mcr name="upd"/>
-        <mcr name="f-i"/>
-      </item>
       <item id="f-r" label="fin 1(WAIT~ROT)">
         <goal>
           <unmatch site="mma" var="abs" form="msg">WAIT</unmatch>
@@ -1352,27 +1375,6 @@
         <mcr name="set0_a"/>
         <mcr name="rc_f-i"/>
         <mcr name="check_fin"/>
-      </item>
-      <item id="cinit" label="carousel initialize">
-        <check>
-          <equal site="mma" var="pos" form="msg">INIT</equal>
-          <not site="mfp" var="ao" form="msg">OPEN</not>
-        </check>
-        <exec site="mfp" name="upd"/>
-        <exec site="mma" name="upd"/>
-        <exec site="mmc" name="upd"/>
-        <exec site="map" name="upd"/>
-        <exec site="mmc" name="lowspd"/>
-        <exec site="map" name="upd"/>
-        <exec site="mmc" name="cw"/>
-        <exec site="map" name="upd"/>
-        <exec site="mmc" name="gh-cw"/>
-        <exec site="map" name="upd"/>
-        <exec site="mmc" name="cw"/>
-        <exec site="map" name="upd"/>
-        <exec site="mmc" name="gh-cw"/>
-        <exec site="map" name="upd"/>
-        <exec site="mmc" name="set0"/>
       </item>
       <item id="cinit_a" label="carousel initialize">
         <exec site="mfp" name="upd"/>

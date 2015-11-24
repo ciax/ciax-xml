@@ -17,7 +17,7 @@ module CIAX
         @sv_stat[:list] = @par.list
         _init_net_
         @mode = 'MCR'
-        opt_mode
+        ext_driver
       end
 
       def ext_shell
@@ -26,10 +26,6 @@ module CIAX
       end
 
       private
-
-      def ext_test
-        ext_driver
-      end
 
       def ext_driver
         @sv_stat[:sid] = '' # For server response

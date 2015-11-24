@@ -6,11 +6,12 @@ module CIAX
   class Parameter < Hashx
     attr_reader :list
     def initialize(type = nil, default = nil)
-      super(type: type, list: [], default: default)
+      super(type: type, list: [])
       @list = self[:list]
       return if type
       self[:type] = 'reg'
       self[:list] << '.'
+      self[:default] if default
     end
 
     # select id by number (1~max)

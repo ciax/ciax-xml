@@ -19,7 +19,7 @@ module CIAX
         super(id, cfg)
         @cfg[:site_id] = id
         # LayerDB might generated in List level
-        @cfg['ver'] = @dbi['version']
+        @cfg[:ver] = @dbi['version']
         @cfg[:frm_site] = @dbi['frm_site']
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
         @stat = Status.new.setdbi(@dbi)

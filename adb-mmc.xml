@@ -21,7 +21,7 @@
         </item>
         <item id="lowspd" label="Default Config(LowSpd)">
           <frmcmd name="hl">
-            <argv>0</argv>
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="e1">
             <argv>0</argv>

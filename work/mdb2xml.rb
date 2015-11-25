@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # IDB CSV(CIAX-v1) to XML
-# alias m2x
+#alias m2x
 require 'json'
 
 def mktag(tag, attr)

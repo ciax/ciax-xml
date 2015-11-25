@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # IDB,CDB CSV(CIAX-v1) to MDB
-# alias c2m
+#alias c2m
 require 'optparse'
 require 'json'
 abort "Usage: csv2mdb -m(proj) [sites]\n"\
@@ -25,7 +25,8 @@ end
 def mk_cond(site, cond)
   case cond
   when /[~!=^]/
-    ary = [@ope[$&], $', site, $`]
+    cri = $'.delete('/') # for '/S'
+    ary = [@ope[$&], cri, site, $`]
     ary << @skip if @skip
     ary
   when '*', '', nil
@@ -140,7 +141,8 @@ if proj
       sel['var'] = var[1]
       op = sel['option'] = {}
       dbi['list'].each do|k, v|
-        op[k] = str.sub(/%./, v)
+        # For '/S' -> 'S'
+        op[k.delete('/')] = str.sub(/%./, v)
       end
     end
   end

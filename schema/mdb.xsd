@@ -41,6 +41,7 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:group ref="mdb:validate" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:element ref="mdb:exec" minOccurs="0" maxOccurs="unbounded" />
         <xsd:element ref="mdb:goal" minOccurs="0" maxOccurs="1" />
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="mdb:select" />
@@ -131,6 +132,7 @@
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="mdb:command">
+          <xsd:attribute name="retry" type="xsd:int" />
           <xsd:attribute name="async" type="xsd:boolean" />
           <xsd:attribute name="skip" type="xsd:boolean" />
         </xsd:extension>

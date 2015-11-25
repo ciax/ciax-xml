@@ -2,11 +2,8 @@
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="turret" version="0" label="Turret Control" port="55555">
     <group id="tr_main" caption="Turret Commands" column="2">
-      <item id="init_hall" label="Initialize Hall sensor">
-        <exec site="mft" name="set6v"/>
-        <exec site="mft" name="upd"/>
-      </item>
       <item id="gh_wheel" label="Go to Home Position">
+        <exec site="mft" name="upd"/>
         <goal label="All Home?">
           <match form="msg" site="mft" var="v1">HOME</match>
           <match form="msg" site="mft" var="v2">HOME</match>
@@ -24,11 +21,10 @@
         </wait>
       </item>
       <item id="init" label="Initialize Turret">
+        <exec site="mft" name="set6v"/>
         <exec site="mix" name="upd"/>
-        <mcr name="init_hall"/>
-        <mcr name="gh_wheel"/>
-        <mcr name="gh_wheel"/>
-        <mcr name="gh_wheel"/>
+        <mcr name="gh_wheel" retry="3"/>
+        <exec site="mix" name="resetp"/>
       </item>
     </group>
   </macro>

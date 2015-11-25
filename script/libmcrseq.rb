@@ -119,11 +119,19 @@ module CIAX
         if step.async? && @submcr_proc.is_a?(Proc)
           step['id'] = @submcr_proc.call(seq, @id).id
         else
-          res = sub_macro(seq, step)
+          res = mcr_fg(e, seq, step)
           mstat['result'] = step['result']
           fail Interlock unless res
         end
         false
+      end
+
+      def mcr_fg(e, seq, step)
+        (e['retry'] || 1).to_i.times do
+          res = sub_macro(seq, step)
+          return res if res
+        end
+        nil
       end
 
       # Print section

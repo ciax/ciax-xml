@@ -31,6 +31,13 @@ module CIAX
       self
     end
 
+    def jmerge(json_str)
+      inp = json_str
+      deep_update(j2h(json_str))
+      _mergedata
+      self
+    end
+
     def size
       @data.size
     end
@@ -64,6 +71,14 @@ module CIAX
       inc = delete(@data_name)
       return unless _check_setdata_(inc)
       @data.replace(inc)
+      self
+    end
+
+    def _mergedata
+      verbose { 'Convert [:data] to @data' }
+      inc = delete(@data_name)
+      return unless _check_setdata_(inc)
+      @data.deep_update(inc)
       self
     end
 

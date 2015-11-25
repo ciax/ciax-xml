@@ -13,7 +13,7 @@ module CIAX
         atrb[:layer_type] = 'mcr'
         super(nil, cfg, atrb)
         _init_domain_
-        @par = @cobj.rem.int.par
+        @par = @cobj.rem.int.ext_par.par
         @sv_stat[:list] = @par.list
         _init_net_
         @mode = 'MCR'

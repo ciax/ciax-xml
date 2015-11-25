@@ -75,7 +75,7 @@ module CIAX
     end
 
     def _mergedata
-      verbose { 'Convert [:data] to @data' }
+      verbose { 'Marge [:data] to @data' }
       inc = delete(@data_name)
       return unless _check_setdata_(inc)
       @data.deep_update(inc)

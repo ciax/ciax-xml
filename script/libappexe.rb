@@ -37,6 +37,11 @@ module CIAX
         self
       end
 
+      def join
+        @buf.join if @buf
+        self
+      end
+
       private
 
       def init_server
@@ -71,7 +76,7 @@ module CIAX
         @mode = 'DRV'
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
         @stat.ext_log.ext_sqlog if OPT[:e]
-        init_buf
+        @buf = init_buf
         if @cfg[:exe_mode]
           tc = Thread.current
           @stat.post_upd_procs << proc { tc.run }

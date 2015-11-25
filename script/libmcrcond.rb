@@ -38,7 +38,7 @@ module CIAX
       def _scan
         _sites.each_with_object({}) do|site, hash|
           verbose { "Scanning Status #{site}" }
-          hash[site] = @dev_list.get(site).stat
+          hash[site] = @dev_list.get(site).join.stat
         end
       end
 

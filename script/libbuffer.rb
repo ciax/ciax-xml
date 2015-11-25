@@ -34,6 +34,7 @@ module CIAX
       @sv_stat.put(:busy, [])
       # element of @q is bunch of frm args corresponding an appcmd
       @q = Queue.new
+      @res = Queue.new
       @tid = nil
       @flush_proc = proc {}
       @recv_proc = proc {}
@@ -50,6 +51,11 @@ module CIAX
       sv_up(cid)
       @q.push(pri: n, batch: batch, cid: cid)
       self
+    end
+
+    # Wait for status update
+    def join
+      @res.shift
     end
 
     def server
@@ -123,11 +129,13 @@ module CIAX
     def sv_up(cid)
       @sv_stat[:busy] << cid
       @sv_stat.set(:isu)
+      @res.clear
     end
 
     def sv_dw
       @sv_stat.reset(:isu)
       @sv_stat[:busy].clear
+      @res.push(true)
     end
 
     def clear

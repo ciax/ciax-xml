@@ -130,6 +130,7 @@ module CIAX
         (e['retry'] || 1).to_i.times do
           res = sub_macro(seq, step)
           return res if res
+          step['action'] = 'retry'
         end
         nil
       end

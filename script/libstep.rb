@@ -92,7 +92,6 @@ module CIAX
           break if @cond.ok?
           sleep itv
           _show('.')
-          post_upd
         end
       end
     end

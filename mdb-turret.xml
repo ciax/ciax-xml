@@ -19,6 +19,7 @@
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
         </wait>
+        <exec site="mft" name="upd"/>
       </item>
       <item id="init" label="Initialize Turret">
         <exec site="mft" name="set6v"/>

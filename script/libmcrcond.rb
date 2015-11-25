@@ -50,7 +50,7 @@ module CIAX
         cond = {}
         %w(site var form cmp cri).each { |k| cond[k] = h[k] }
         real = _fetch_form(stat, cond['form'], cond['var'])
-        res = method(cond['cmp']).call(real, cond['cri'])
+        res = method(cond['cmp']).call(cond['cri'], real)
         cond.update('real' => real, 'res' => res)
         verbose { cond.map { |k, v| format('%s=%s', k, v) }.join(',') }
         cond

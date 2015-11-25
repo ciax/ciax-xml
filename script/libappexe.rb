@@ -40,7 +40,7 @@ module CIAX
       private
 
       def init_server
-        @sv_stat = @sub.sv_stat.add_db(:isu => '*')
+        @sv_stat = @sub.sv_stat.add_db(isu: '*')
         @host ||= @dbi['host']
         @port ||= @dbi['port']
         self

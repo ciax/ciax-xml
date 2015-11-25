@@ -78,12 +78,13 @@
         <item id="backup" label="Backup Pulse,Speed,Offset">
           <frmcmd name="save">
             <argv>p,spd,ofs</argv>
+            <argv>temp</argv>
           </frmcmd>
-          <frmcmd name="deact" />
         </item>
         <item id="restore" label="Restore Pulse,Speed,Offset">
-          <frmcmd name="act" />
-          <frmcmd name="load" />
+          <frmcmd name="load">
+            <argv>temp</argv>
+          </frmcmd>
           <repeat from="1" to="6">
             <frmcmd name="setp">
               <argv>$_</argv>

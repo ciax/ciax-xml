@@ -18,7 +18,7 @@ module CIAX
         super(id, cfg)
         # DB is generated in List level
         @cfg[:site_id] = id
-        @cfg['ver'] = @dbi['version']
+        @cfg[:ver] = @dbi['version']
         @stat = @cfg[:field] = Field.new.setdbi(@dbi)
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)

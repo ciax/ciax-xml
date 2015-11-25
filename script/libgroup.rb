@@ -12,7 +12,7 @@ module CIAX
       super()
       @cls_color = 3
       @cfg = cfg.gen(self).update(atrb)
-      @displist = Disp.new(@cfg.pick(:caption, :color, :column, :line_number))
+      @displist = Disp.new(@cfg.pick(%i(caption color column line_number)))
       @valid_keys = @displist.valid_keys
     end
 

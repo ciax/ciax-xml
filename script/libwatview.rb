@@ -71,7 +71,7 @@ module CIAX
       def upd_cond(id, cond)
         cond.each_with_index do |h, i|
           v = h['var']
-          h['res'] = @event.get('res')[id][i]
+          h['res'] = (@event.get('res')[id]||[])[i]
           h['val'] = @event.get('crnt')[v]
           h['cri'] = @event.get('last')[v] if h['type'] == 'onchange'
         end

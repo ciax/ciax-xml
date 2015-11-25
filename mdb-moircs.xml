@@ -119,12 +119,24 @@
         <exec site="mmc" name="lowspd"/>
         <exec site="map" name="upd"/>
         <exec site="mmc" name="cw"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <exec site="map" name="upd"/>
         <exec site="mmc" name="gh-cw"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <exec site="map" name="upd"/>
         <exec site="mmc" name="cw"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <exec site="map" name="upd"/>
         <exec site="mmc" name="gh-cw"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <exec site="map" name="upd"/>
         <exec site="mmc" name="set0"/>
       </item>

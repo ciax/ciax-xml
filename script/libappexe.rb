@@ -37,6 +37,7 @@ module CIAX
         self
       end
 
+      # for local only
       def join
         @buf.join if @buf
         self

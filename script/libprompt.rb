@@ -8,7 +8,7 @@ module CIAX
     def initialize(type, id)
       super(['server', type].compact.join('_'), id)
       @db = {}
-      self['msg'] = ''
+      self[:msg] = ''
     end
 
     def add_db(db = {})
@@ -53,8 +53,8 @@ module CIAX
 
     def msg(msg = nil)
       pre_upd
-      self['msg'] = msg if msg
-      self['msg']
+      self[:msg] = msg if msg
+      self[:msg]
     ensure
       post_upd
     end

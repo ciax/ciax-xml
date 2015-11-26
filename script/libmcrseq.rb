@@ -21,9 +21,11 @@ module CIAX
         @record.ext_rsp(@cfg)
         @record['pid'] = pid
         @id = @record['id']
+        @sv_stat = (@cfg[:sv_stat]||{})
+        @sv_stat[:run]||= []
+        @sv_stat[:sid] = @id
         @title = @record.title
         @submcr_proc = submcr_proc
-        @running = []
         @depth = 0
         # For Thread mode
         @qry = Query.new(@record, valid_keys)
@@ -43,12 +45,12 @@ module CIAX
         show(@record.start)
         sub_macro(@cfg, @record)
       rescue Interrupt
-        msg("\nInterrupt Issued to running devices #{@running}", 3)
-        @running.each do|site|
+        msg("\nInterrupt Issued to running devices #{@sv_stat[:run]}", 3)
+        @sv_stat[:run].each do|site|
           @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
         end
       ensure
-        @running.clear
+        @sv_stat[:run].clear
         show(@record.finish)
       end
 
@@ -108,7 +110,7 @@ module CIAX
 
       def exec(e, step, _mstat)
         if step.exec? && @qry.query(%w(exec pass), step)
-          @running << e['site']
+          @sv_stat[:run].push(e['site']).uniq!
           @cfg[:dev_list].get(e['site']).exe(e['args'], 'macro')
         end
         false

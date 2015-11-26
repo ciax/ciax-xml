@@ -13,8 +13,7 @@ module CIAX
         atrb[:layer_type] = 'mcr'
         super(nil, cfg, atrb)
         _init_domain_
-        @par = @cobj.rem.int.ext_par.par
-        @sv_stat[:list] = @par.list
+        _init_sv_stat_
         _init_net_
         @mode = 'MCR'
         ext_driver
@@ -37,6 +36,12 @@ module CIAX
         super
       end
 
+      def _init_sv_stat_
+        @par = @cobj.rem.int.ext_par.par
+        @sv_stat[:list] = @par.list
+        @cfg[:sv_stat] = @sv_stat
+      end
+        
       def _init_domain_
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
@@ -45,7 +50,6 @@ module CIAX
 
       def _init_sub_list_
         @sub_list = List.new do |sid|
-          @sv_stat[:sid] = sid
           @par.add(sid) if sid
         end
         @records = @sub_list.records

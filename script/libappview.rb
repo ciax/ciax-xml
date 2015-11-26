@@ -43,11 +43,11 @@ module CIAX
         lines = []
         values.each do|v|
           cap = v['caption']
-          lines << ' ***' + color(cap, 10) + '***' unless cap.empty?
+          lines << ' ***' + colorize(cap, 10) + '***' unless cap.empty?
           lines.concat(v['lines'].map do|ele|
             '  ' + ele.values.map do|val|
               c = cm[val['class']] + 8
-              '[' + color(val['label'], 14) + ':' + color(val['msg'], c) + ']'
+              '[' + colorize(val['label'], 14) + ':' + colorize(val['msg'], c) + ']'
             end.join(' ')
           end)
         end

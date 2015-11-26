@@ -27,17 +27,17 @@ module CIAX
     end
 
     def warning(title)
-      Kernel.warn make_msg(Msg.color(title.to_s, 3))
+      Kernel.warn make_msg(Msg.colorize(title.to_s, 3))
       self
     end
 
     def alert(title)
-      Kernel.warn make_msg(Msg.color(title.to_s, 5))
+      Kernel.warn make_msg(Msg.colorize(title.to_s, 5))
       self
     end
 
     def errmsg
-      Kernel.warn make_msg(Msg.color("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1))
+      Kernel.warn make_msg(Msg.colorize("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1))
     end
 
     # @hide_inside is flag for hiding inside of enclose
@@ -84,7 +84,7 @@ module CIAX
 
     def make_head
       Msg.indent(Msg.ver_indent) + head_ary.map do|str, color|
-        Msg.color("#{str}", color)
+        Msg.colorize("#{str}", color)
       end.join(':')
     end
 

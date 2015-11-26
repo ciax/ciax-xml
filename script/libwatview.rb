@@ -111,7 +111,7 @@ module CIAX
       end
 
       def rslt(res)
-        color(res ? 'o' : 'x', res ? 2 : 1)
+        colorize(res ? 'o' : 'x', res ? 2 : 1)
       end
 
       def item(str, res = nil)

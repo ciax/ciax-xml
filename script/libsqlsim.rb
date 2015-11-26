@@ -39,14 +39,14 @@ module CIAX
         rescue
           raise("NO record for #{str}") if @index == 0
           @index = 0
-          verbose { color('LINE:REWINDED', 3) }
+          verbose { colorize('LINE:REWINDED', 3) }
           retry
         end
         verbose { 'Search corresponding RES' }
         sql = "select min(time),count(*),cmd,base64 from #{@tbl} where dir='rcv' and cmd='#{cmd}' and time > #{tim};"
         ans = query(sql)
         tim, count, = ans.split('|')
-        verbose { color("LINE:[#{cmd}](#{@total - count.to_i}/#{@total})<#{wait(tim)}>", 2) }
+        verbose { colorize("LINE:[#{cmd}](#{@total - count.to_i}/#{@total})<#{wait(tim)}>", 2) }
         sql = "select base64 from #{@tbl} where time = #{tim};"
         query(sql)
       end

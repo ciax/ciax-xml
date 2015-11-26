@@ -17,13 +17,13 @@ module CIAX
     def cformat(fmt, *ary)
       fmt.gsub!(/%.*?[a-zA-Z]/) do |m|
         m.sub!(/:(.)/, '')
-        $+ ? color(m, $+.hex) : m
+        $+ ? colorize(m, $+.hex) : m
       end
       format(fmt, *ary)
     end
 
     # Color 1=red,2=green,4=blue,8=bright
-    def color(text, c = nil)
+    def colorize(text, c = nil)
       return '' if text == ''
       return text unless STDERR.tty? && c
       (c ||= 7).to_i
@@ -33,18 +33,18 @@ module CIAX
     # Display DB item in one line fromat.
     #    title : description
     def item(key, val, kmax = nil)
-      indent(1) + color(key, 3).ljust((kmax || 3) + 11) + ": #{val}"
+      indent(1) + colorize(key, 3).ljust((kmax || 3) + 11) + ": #{val}"
     end
 
     def caption(text, c = nil, sep = nil)
       sep ||= '~'
-      [sep, color(text, c || 2), sep].join(' ')
+      [sep, colorize(text, c || 2), sep].join(' ')
     end
 
     # Query options
     def optlist(list)
       return '' if !list || list.empty?
-      color("[#{list.join('/')}]?", 5)
+      colorize("[#{list.join('/')}]?", 5)
     end
 
     # Display methods

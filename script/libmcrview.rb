@@ -67,7 +67,7 @@ module CIAX
       end
 
       def _list_
-        page = ['<<< ' + Msg.color("Active Macros [#{@id}]", 2) + ' >>>']
+        page = ['<<< ' + Msg.colorize("Active Macros [#{@id}]", 2) + ' >>>']
         @par.list.each_with_index { |id, idx| page << _item_(id, idx + 1) }
         page.join("\n")
       end

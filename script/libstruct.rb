@@ -19,13 +19,13 @@ module CIAX
         case title
         when Numeric
           title = "[#{title}]"
-          str << indent(ind) + color(format('%-6s', title), 6)
+          str << indent(ind) + colorize(format('%-6s', title), 6)
         when /@/
-          str << indent(ind) + color(format('%-6s', title.inspect), 1)
+          str << indent(ind) + colorize(format('%-6s', title.inspect), 1)
         else
-          str << indent(ind) + color(format('%-6s', title.inspect), 2)
+          str << indent(ind) + colorize(format('%-6s', title.inspect), 2)
         end
-        str << color("(#{id})", 4) if show_id && data.is_a?(Enumerable)
+        str << colorize("(#{id})", 4) if show_id && data.is_a?(Enumerable)
         str << " :\n"
         ind += 1
       else
@@ -78,7 +78,7 @@ module CIAX
     def _only_hash(str, data, ind, title)
       data.keys.each_slice(title ? 2 : 1) do|a|
         str << indent(ind) + a.map do|k|
-          color(format('%-8s', k.inspect), 3) + format(': %-10s', data[k].inspect)
+          colorize(format('%-8s', k.inspect), 3) + format(': %-10s', data[k].inspect)
         end.join("\t") + "\n"
       end
       str

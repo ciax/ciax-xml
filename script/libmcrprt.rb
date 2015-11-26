@@ -6,7 +6,7 @@ module CIAX
     # Macro Printing Mix-in module
     module PrtShare
       def body(msg, col = 5)
-        rindent(1) + Msg.color(msg, col)
+        rindent(1) + Msg.colorize(msg, col)
       end
 
       def title
@@ -36,7 +36,7 @@ module CIAX
         if res
           cap = res.capitalize
           color = (/failed|timeout/ =~ res) ? 1 : 2
-          mary[0] << ' -> ' + Msg.color(cap, color)
+          mary[0] << ' -> ' + Msg.colorize(cap, color)
           (self['conditions'] || {}).each do|h|
             res = h['res'] ? body('o', 2) : body('x', 1)
             case h['cmp']
@@ -59,7 +59,7 @@ module CIAX
       private
 
       def head(msg, col, label = nil)
-        rindent + Msg.color(msg, col) + ':' + (label || self['label'] || 'noname')
+        rindent + Msg.colorize(msg, col) + ':' + (label || self['label'] || 'noname')
       end
 
       def rindent(add = 0)

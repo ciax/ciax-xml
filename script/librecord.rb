@@ -37,7 +37,7 @@ module CIAX
 
       def title
         date = Time.at((self['time'] / 1000).round)
-        Msg.color('MACRO', 3) + format(":%s (%s)\n", self['label'], date)
+        Msg.colorize('MACRO', 3) + format(":%s (%s)\n", self['label'], date)
       end
     end
 

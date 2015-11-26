@@ -76,7 +76,7 @@ module CIAX
           end
           mary = []
           mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameters].size})"
-          mary << Msg.item(@cfg[:id], @cfg[:label])
+          mary << @cfg[:disp].item(@cfg[:id])
           mary << ' ' * 10 + "key=(#{disp})"
           Msg.par_err(*mary)
         end

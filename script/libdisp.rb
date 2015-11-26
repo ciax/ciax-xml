@@ -66,6 +66,10 @@ module CIAX
       @sub.view
     end
 
+    def item(id)
+      Msg.item(id, self[id])
+    end
+      
     def mk_caption(caption, color: nil, level: nil)
       return unless caption
       level = level.to_i

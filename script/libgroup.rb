@@ -13,6 +13,7 @@ module CIAX
       @cls_color = 3
       @cfg = cfg.gen(self).update(atrb)
       @displist = Disp.new(@cfg.pick(%i(caption color column line_number)))
+      @cfg[:disp] = @displist
       @valid_keys = @displist.valid_keys
     end
 
@@ -24,7 +25,7 @@ module CIAX
     def add_item(id, title = nil)
       @displist.put_item(id, title)
       @valid_keys << id
-      self[id] = Item.new(@cfg, id: id, label: title)
+      self[id] = Item.new(@cfg, id: id)
     end
 
     # Generate Entity
@@ -52,7 +53,6 @@ module CIAX
     # crnt could have 'label',:body,'unit','group'
     def add_item(id, title = nil, crnt = {})
       @displist.put_item(id, title)
-      crnt[:label] = title
       new_item(id, crnt)
     end
 
@@ -89,6 +89,7 @@ module CIAX
     private
 
     def new_item(id, crnt = {})
+      # crnt could be dbi[:index][id]
       crnt[:id] = id
       self[id] = context_constant('Item').new(@cfg, crnt)
     end

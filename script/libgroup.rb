@@ -24,7 +24,7 @@ module CIAX
     def add_item(id, title = nil)
       @displist.put_item(id, title)
       @valid_keys << id
-      self[id] = Item.new(@cfg, id: id)
+      self[id] = Item.new(@cfg, id: id, label: title)
     end
 
     # Generate Entity
@@ -52,6 +52,7 @@ module CIAX
     # crnt could have 'label',:body,'unit','group'
     def add_item(id, title = nil, crnt = {})
       @displist.put_item(id, title)
+      crnt[:label] = title
       new_item(id, crnt)
     end
 

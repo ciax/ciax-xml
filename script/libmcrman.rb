@@ -41,7 +41,7 @@ module CIAX
         @sv_stat[:list] = @par.list
         @cfg[:sv_stat] = @sv_stat
       end
-        
+
       def _init_domain_
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)

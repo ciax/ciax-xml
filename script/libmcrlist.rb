@@ -8,7 +8,7 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     class List < Hashx
       attr_reader :records, :threads
-      def initialize(sv_stat = Prompt.new,&post_add_proc)
+      def initialize(&post_add_proc)
         super
         @post_add_proc = post_add_proc
         @records = Hashx.new

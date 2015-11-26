@@ -5,6 +5,7 @@ module CIAX
   class Prompt < Varx
     NS_COLOR = 9
     attr_reader :db
+    # type = site,mcr
     def initialize(type, id)
       super(['server', type].compact.join('_'), id)
       @db = {}

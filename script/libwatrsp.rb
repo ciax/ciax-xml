@@ -98,15 +98,15 @@ module CIAX
         self
       end
 
-      # @sv_stat[:busy] is internal var
+      # @sv_stat[:event] is internal var
 
       ## Timing chart in active mode
       # isu   :__--__--__--==__--___
       # actv  :___--------__----____
-      # busy :_____---------------__
+      # event :_____---------------__
 
       ## Trigger Table
-      # isu | actv| busy| action
+      # isu | actv|event| action
       #  o  |  o  |  o  |  -
       #  o  |  x  |  o  |  -
       #  o  |  o  |  x  |  up

@@ -23,7 +23,8 @@ module CIAX
         when /@/
           str << indent(ind) + colorize(format('%-6s', title.inspect), 1)
         else
-          str << indent(ind) + colorize(format('%-6s', title.inspect), 2)
+          c = title.is_a?(String) ? 2 : 5
+          str << indent(ind) + colorize(format('%-6s', title.inspect), c)
         end
         str << colorize("(#{id})", 4) if show_id && data.is_a?(Enumerable)
         str << " :\n"

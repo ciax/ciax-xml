@@ -23,7 +23,7 @@ module CIAX
         when /@/
           str << indent(ind) + colorize(format('%-6s', title.inspect), 1)
         else
-          c = title.is_a?(String) ? 2 : 5
+          c = title.is_a?(String) ? 5 : 2
           str << indent(ind) + colorize(format('%-6s', title.inspect), c)
         end
         str << colorize("(#{id})", 4) if show_id && data.is_a?(Enumerable)
@@ -79,7 +79,8 @@ module CIAX
     def _only_hash(str, data, ind, title)
       data.keys.each_slice(title ? 2 : 1) do|a|
         str << indent(ind) + a.map do|k|
-          colorize(format('%-8s', k.inspect), 3) + format(': %-10s', data[k].inspect)
+          c = k.is_a?(String) ? 5 : 3
+          colorize(format('%-8s', k.inspect), c) + format(': %-10s', data[k].inspect)
         end.join("\t") + "\n"
       end
       str

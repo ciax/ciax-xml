@@ -69,7 +69,7 @@ module CIAX
     def item(id)
       Msg.item(id, self[id])
     end
-      
+
     def mk_caption(caption, color: nil, level: nil)
       return unless caption
       level = level.to_i
@@ -174,8 +174,8 @@ module CIAX
       def view(select = self)
         list = {}
         select.compact.sort.each_with_index do|id, num|
-          title = @index.line_number ? "[#{num}](#{id})" : id
-          list[title] = @index[id]
+          name = @index.line_number ? "[#{num}](#{id})" : id
+          list[name] = @index[id] if @index[id]
         end
         return if list.empty?
         cap = @index.mk_caption(@caption, color: @color, level: @level)

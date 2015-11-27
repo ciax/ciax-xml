@@ -76,11 +76,7 @@ module CIAX
         vkeys = @valid_proj & @projects.keys
         vl = vkeys.empty? ? @projects.keys : vkeys
         pl = vl.map { |pid| @projects[pid] }
-        if @type == 'mdb'
-          pl.each { |proj| store_doc(proj, @displist) }
-        else
-          pl.each { |proj| store_proj(proj, @displist.put_sec) }
-        end
+        pl.each { |proj| store_proj(proj, @displist.put_sec) }
       end
 
       def store_proj(proj, sec)

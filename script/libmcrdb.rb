@@ -11,18 +11,22 @@ module CIAX
       end
 
       def get(id = nil)
-        super(id || PROJ || ARGV.shift)
+        dbi = super(id || PROJ || ARGV.shift)
+        if inc = dbi['include']
+          dbi=super(inc).cover(dbi)
+        end
+        dbi
       end
 
       private
 
       def doc_to_db(doc)
-        hash = Dbi[doc[:attr]]
-        @id = hash['id']
+        dbi = Dbi[doc[:attr]]
+        @id = dbi['id']
         @sites = []
-        hash[:command] = init_command(doc[:top])
-        hash[:sites] = @sites.uniq
-        hash
+        dbi[:command] = init_command(doc[:top])
+        dbi[:sites] = @sites.uniq
+        dbi
       end
 
       def init_command(mdbc)

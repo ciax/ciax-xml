@@ -30,7 +30,7 @@ module CIAX
       # Command Domain
       def init_command(doc, dbi)
         hcmd = dbi[:command] = {}
-        init_unit(doc[:domain]['alias'], hcmd)
+        init_unit(doc[:domain][:alias], hcmd)
         self
       end
 
@@ -67,7 +67,7 @@ module CIAX
       def init_status(doc, dbi)
         hst = dbi[:status] = {}
         grp = hst[:group] = {}
-        (doc[:domain]['status'] || []).each do|e0|
+        (doc[:domain][:status] || []).each do|e0|
           p = (hst[e0.name.to_sym] ||= {})
           case e0.name
           when 'alias'

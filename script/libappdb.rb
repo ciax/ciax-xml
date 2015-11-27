@@ -25,7 +25,7 @@ module CIAX
 
       # Command Db
       def init_command(doc, db)
-        adbc = doc[:domain]['command']
+        adbc = doc[:domain][:command]
         @cidx = {}
         @cgrps = {}
         @units = {}
@@ -81,7 +81,7 @@ module CIAX
 
       # Status Db
       def init_stat(doc, db)
-        adbs = doc[:domain]['status']
+        adbs = doc[:domain][:status]
         grp = {}
         idx = Hashx.new
         Repeat.new.each(adbs) do|e, r|

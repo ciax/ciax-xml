@@ -9,8 +9,8 @@ module CIAX
     module Db
       # structure of exec=[cond1,2,...]; cond=[args1,2,..]; args1=['cmd','par1',..]
       def init_watch(doc, db)
-        return {} unless doc[:domain].key?('watch')
-        wdb = doc[:domain]['watch']
+        return {} unless doc[:domain].key?(:watch)
+        wdb = doc[:domain][:watch]
         cmdgrp = db[:command][:group]
         idx = {}
         regular = { 'period' => 300, :exec => [] }

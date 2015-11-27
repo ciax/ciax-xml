@@ -105,7 +105,7 @@ module CIAX
         grp.put_item(id, top['label'])
         item = Hashx[top: top, attr: top.to_h, domain: {}, property: {}]
         top.each do|e1|
-          item[top.ns == e1.ns ? :property : :domain][e1.name] = e1
+          item[top.ns == e1.ns ? :property : :domain][e1.name.to_sym] = e1
         end
         self[id] = item
       end

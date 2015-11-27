@@ -15,7 +15,7 @@ module CIAX
 
       def doc_to_db(doc)
         dbi = Dbi[doc[:attr]]
-        dbi[:stream] = doc[:property]['stream'].to_h
+        dbi[:stream] = doc[:property][:stream].to_h
         init_command(doc, dbi)
         init_stat(doc, dbi)
         dbi
@@ -23,8 +23,8 @@ module CIAX
 
       # Command section
       def init_command(doc, dbi)
-        frm = init_frame(doc[:domain]['cmdframe']) { |e, r| init_cmd(e, r) }
-        idx = init_index(doc[:domain]['command']) { |e, r| init_cmd(e, r) }
+        frm = init_frame(doc[:domain][:cmdframe]) { |e, r| init_cmd(e, r) }
+        idx = init_index(doc[:domain][:command]) { |e, r| init_cmd(e, r) }
         grp = { 'main' => { caption: 'Device Commands', members: idx.keys } }
         dbi[:command] = { group: grp, index: idx, frame: frm }
         dbi
@@ -33,8 +33,8 @@ module CIAX
       # Status section
       def init_stat(doc, dbi)
         dbi[:field] = fld = {}
-        frm = init_frame(doc[:domain]['rspframe']) { |e| init_rsp(e, fld) }
-        idx = init_index(doc[:domain]['response']) { |e| init_rsp(e, fld) }
+        frm = init_frame(doc[:domain][:rspframe]) { |e| init_rsp(e, fld) }
+        idx = init_index(doc[:domain][:response]) { |e| init_rsp(e, fld) }
         dbi['frm_id'] = dbi['id']
         dbi[:response] = { index: idx, frame: frm }
         dbi

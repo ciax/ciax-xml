@@ -361,7 +361,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot01" label="check_slot">
         <check>
@@ -369,7 +368,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot02" label="check_slot">
         <check>
@@ -377,7 +375,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot03" label="check_slot">
         <check>
@@ -385,7 +382,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot04" label="check_slot">
         <check>
@@ -393,7 +389,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot05" label="check_slot">
         <check>
@@ -401,7 +396,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot06" label="check_slot">
         <check>
@@ -409,7 +403,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot07" label="check_slot">
         <check>
@@ -417,7 +410,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot08" label="check_slot">
         <check>
@@ -425,7 +417,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot09" label="check_slot">
         <check>
@@ -433,7 +424,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot10" label="check_slot">
         <check>
@@ -441,7 +431,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot11" label="check_slot">
         <check>
@@ -449,7 +438,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot12" label="check_slot">
         <check>
@@ -457,7 +445,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot13" label="check_slot">
         <check>
@@ -465,7 +452,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot14" label="check_slot">
         <check>
@@ -473,7 +459,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot15" label="check_slot">
         <check>
@@ -481,7 +466,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot16" label="check_slot">
         <check>
@@ -489,7 +473,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot17" label="check_slot">
         <check>
@@ -497,7 +480,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot18" label="check_slot">
         <check>
@@ -505,7 +487,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot19" label="check_slot">
         <check>
@@ -513,7 +494,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot20" label="check_slot">
         <check>
@@ -521,7 +501,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot21" label="check_slot">
         <check>
@@ -529,7 +508,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot22" label="check_slot">
         <check>
@@ -537,7 +515,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_slot23" label="check_slot">
         <check>
@@ -545,7 +522,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="slot00_00" label="carousel">
         <check>
@@ -7470,7 +7446,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access01" label="check_access">
         <check>
@@ -7478,7 +7453,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access02" label="check_access">
         <check>
@@ -7486,7 +7460,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access03" label="check_access">
         <check>
@@ -7494,7 +7467,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access04" label="check_access">
         <check>
@@ -7502,7 +7474,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access05" label="check_access">
         <check>
@@ -7510,7 +7481,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access06" label="check_access">
         <check>
@@ -7518,7 +7488,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access07" label="check_access">
         <check>
@@ -7526,7 +7495,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access08" label="check_access">
         <check>
@@ -7534,7 +7502,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access09" label="check_access">
         <check>
@@ -7542,7 +7509,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access10" label="check_access">
         <check>
@@ -7550,7 +7516,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access11" label="check_access">
         <check>
@@ -7558,7 +7523,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access12" label="check_access">
         <check>
@@ -7566,7 +7530,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access13" label="check_access">
         <check>
@@ -7574,7 +7537,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access14" label="check_access">
         <check>
@@ -7582,7 +7544,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access15" label="check_access">
         <check>
@@ -7590,7 +7551,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access16" label="check_access">
         <check>
@@ -7598,7 +7558,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access17" label="check_access">
         <check>
@@ -7606,7 +7565,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access18" label="check_access">
         <check>
@@ -7614,7 +7572,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access19" label="check_access">
         <check>
@@ -7622,7 +7579,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access20" label="check_access">
         <check>
@@ -7630,7 +7586,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access21" label="check_access">
         <check>
@@ -7638,7 +7593,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access22" label="check_access">
         <check>
@@ -7646,7 +7600,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="check_access23" label="check_access">
         <check>
@@ -7654,7 +7607,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-        <mcr name="chk"/>
       </item>
       <item id="rac_l-f" label="Rh1 2 Close">
         <exec site="mfp" name="rac"/>

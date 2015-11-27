@@ -27,19 +27,11 @@ module CIAX
         ary
       end
 
-      def attr2db(db, id = 'id') # deprecated
+      def attr2db(db, id = 'id', &at_proc) # deprecated
         # <xml id='id' a='1' b='2'> => db[:a][id]='1', db[:b][id]='2'
         type?(db, Hash)
-        attr = {}
-        to_h.each do|k, v|
-          if defined?(yield)
-            attr[k] = yield k, v
-          else
-            attr[k] = v
-          end
-        end
-        key = attr.delete(id) || Msg.give_up("No such key (#{id})")
-        attr.each do|str, v|
+        key, atrb = _get_attr_(id, &at_proc)
+        atrb.each do|str, v|
           sym = str.to_sym
           db[sym] = {} unless db.key?(sym)
           db[sym][key] = v
@@ -48,21 +40,26 @@ module CIAX
         key
       end
 
-      def attr2item(db, id = 'id') # deprecated
+      def attr2item(db, id = 'id', &at_proc) # deprecated
         # <xml id='id' a='1' b='2'> => db[id][a]='1', db[id][b]='2'
         type?(db, Hash)
-        attr = {}
+        key, atrb = _get_attr_(id, &at_proc)
+        alert("ATTRDB: Dupricated ID [#{key}]") if db.key?(key)
+        db[key] = atrb
+        key
+      end
+
+      def _get_attr_(id, &at_proc)
+        atrb = {}
         to_h.each do|k, v|
-          if defined?(yield)
-            attr[k] = yield k, v
+          if at_proc
+            atrb[k] = at_proc.call(k, v)
           else
-            attr[k] = v
+            atrb[k] = v
           end
         end
-        key = attr.delete(id) || Msg.give_up("No such key (#{id})")
-        alert("ATTRDB: Dupricated ID [#{key}]") if db.key?(key)
-        db[key] = attr
-        key
+        key = atrb.delete(id) || Msg.give_up("No such key (#{id})")
+        [key, atrb]
       end
     end
   end

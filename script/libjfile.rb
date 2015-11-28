@@ -43,7 +43,7 @@ module CIAX
         warning(" -- json file (#{_file_path_(tag)}) is empty at loading")
         return self
       end
-      jmerge(json_str) if _check_load(json_str)
+      super(json_str) if _check_load(json_str)
       self
     end
 

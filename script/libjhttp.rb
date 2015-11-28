@@ -27,7 +27,7 @@ module CIAX
       if json_str.empty?
         warning(" -- json url file (#{url}) is empty at loading")
       else
-        deep_update(j2h(json_str))
+        super(json_str)
       end
       self
     rescue OpenURI::HTTPError

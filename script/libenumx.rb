@@ -25,7 +25,14 @@ module CIAX
       self
     end
 
+    # Override data
     def read(json_str = nil)
+      inp = json_str || gets(nil) || usr_err("No data in file(#{ARGV})")
+      replace(j2h(inp))
+    end
+
+    # Merge data
+    def load(json_str = nil)
       inp = json_str || gets(nil) || usr_err("No data in file(#{ARGV})")
       deep_update(j2h(inp))
     end

@@ -17,11 +17,7 @@ module CIAX
       def setdbi(db)
         super
         # Field Initialize
-        if @data.empty?
-          @dbi[:field].each do|id, val|
-            put(id, val[:val]) || Arrayx.new.skeleton(val[:struct])
-          end
-        end
+        _init_field_ if @data.empty?
         self
       end
 
@@ -46,8 +42,7 @@ module CIAX
       def get(id)
         verbose { "Getting[#{id}]" }
         Msg.give_up('Nill Id') unless id
-        val = super(id)
-        return val if val
+        return @data[id] if @data.key?(id)
         vname = []
         dat = id.split(':').inject(@data) do|h, i|
           case h
@@ -78,7 +73,7 @@ module CIAX
         verbose { "Put[#{id}]=[#{conv}]" }
         case p = get(id)
         when Array
-          merge_ary(p, conv.split(','))
+          _merge_ary_(p, conv.split(','))
         when String
           begin
             p.replace(expr(conv).to_s)
@@ -101,11 +96,17 @@ module CIAX
 
       private
 
-      def merge_ary(p, r)
+      def _init_field_
+        @dbi[:field].each do|id, val|
+          put(id, val[:val] || Arrayx.new.skeleton(val[:struct]))
+        end
+      end
+
+      def _merge_ary_(p, r)
         r = [r] unless r.is_a? Array
         p.map! do|i|
           if i.is_a? Array
-            merge_ary(i, r.shift)
+            _merge_ary_(i, r.shift)
           else
             r.shift || i
           end

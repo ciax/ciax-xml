@@ -1,24 +1,31 @@
 #!/usr/bin/ruby
 require 'libdatax'
+require 'libinsdb'
 
 module CIAX
   # Application Layer
   module App
     # Status Data
+    # All elements of @data are String
     class Status < DataH
       # @ last*
       attr_reader :last
-      def initialize(init_struct = {})
-        super('status', init_struct)
+      def initialize(id = nil, db = Ins::Db.new)
+        super('status')
         @last = {}
         @updated = now_msec
         @lastsave = now_msec
+        @adb = type?(db, CIAX::Db)
+        id = read[:id] unless STDIN.tty?
+p self
+p @data
+setdbi(@adb.get(id))
       end
 
       def setdbi(db)
         super
+        @adbs = @dbi[:status][:index]
         if @data.empty?
-          @adbs = @dbi[:status][:index]
           @data.update(@adbs.skeleton)
         end
         self
@@ -45,13 +52,11 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libinsdb'
       OPT.parse('h:')
-      stat = Status.new
       begin
-        dbi = Ins::Db.new.get(ARGV.shift)
-        stat.setdbi(dbi)
-        if OPT.host
+        stat = Status.new(ARGV.shift)
+puts stat
+        if OPT[:h]
           stat.ext_http(OPT.host)
         else
           stat.ext_file

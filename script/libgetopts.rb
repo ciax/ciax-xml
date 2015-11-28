@@ -31,7 +31,7 @@ module CIAX
     end
 
     def host
-      self[:h] || 'localhost' unless self[:c]
+      (self[:h] || 'localhost') unless self[:c]
     end
 
     def usage(str)

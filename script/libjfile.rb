@@ -39,6 +39,7 @@ module CIAX
 
     def load(tag = nil)
       json_str = _read_json(tag)
+      verbose { "Loading #{_file_path_(tag)}" }
       if json_str.empty?
         warning(" -- json file (#{_file_path_(tag)}) is empty at loading")
         return self
@@ -92,19 +93,14 @@ module CIAX
 
     def _read_json(tag = nil)
       fname = _file_path_(tag)
-      json_str = ''
       open(fname) do|f|
-        verbose { "Loading [#{fname}](#{f.size})" }
+        verbose { "Reading [#{fname}](#{f.size})" }
         f.flock(::File::LOCK_SH)
-        json_str = f.read
-      end
-      json_str
+        f.read
+      end || ''
     rescue Errno::ENOENT
-      if tag
-        Msg.par_err('No such Tag', "Tag=#{_tag_list_}")
-      else
-        warning("  -- no json file (#{fname})")
-      end
+      Msg.par_err('No such Tag', "Tag=#{_tag_list_}") if tag
+      warning("  -- no json file (#{fname})")
       ''
     end
   end

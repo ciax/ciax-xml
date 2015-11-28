@@ -51,12 +51,6 @@ module CIAX
       get(@data.keys.sort[n])
     end
 
-    def ext_http(host = nil) # Read only as a client
-      extend JHttp
-      ext_http(host)
-      self
-    end
-
     private
 
     def _getdata

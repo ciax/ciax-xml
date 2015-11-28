@@ -5,7 +5,7 @@ module CIAX
   # JSON Http Loading module
   module JHttp
     def self.extended(obj)
-      Msg.type?(obj, Datax)
+      Msg.type?(obj, Varx)
     end
 
     def ext_http(host)
@@ -27,7 +27,7 @@ module CIAX
       if json_str.empty?
         warning(" -- json url file (#{url}) is empty at loading")
       else
-        read(json_str)
+        deep_update(j2h(json_str))
       end
       self
     rescue OpenURI::HTTPError

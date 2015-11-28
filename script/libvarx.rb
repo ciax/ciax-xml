@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libjslog'
 require 'libjfile'
+require 'libjhttp'
 require 'libupd'
 require 'libdb'
 
@@ -24,6 +25,11 @@ module CIAX
       _setid(dbi[:site_id] || dbi[:id])
       self[:ver] = dbi[:version].to_i
       self
+    end
+
+    # Read only as a client
+    def ext_http(host = nil)
+      extend(JHttp).ext_http(host)
     end
 
     def ext_file

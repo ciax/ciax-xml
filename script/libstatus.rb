@@ -24,12 +24,12 @@ module CIAX
         self
       end
 
-      def change?(id)
+      def change?(k)
         verbose do
-          "Compare(#{id}) current=[#{@data[id]}]"\
-          " vs last=[#{@last[id]}]"
+          "Compare(#{k}) current=[#{@data[k]}]"\
+          " vs last=[#{@last[k]}]"
         end
-        @data[id] != @last[id]
+        @data[k] != @last[k]
       end
 
       def update?

@@ -25,27 +25,27 @@ module CIAX
           enclose("GetStatus:[#{id}]", "GetStatus:#{id}=[%s]") do
             flds = hash[:fields]
             if flds.empty?
-              @data[id] ||= (hash[:default] || '')
+              put(id, hash[:default] || '') unless get(id)
               next
             end
             case hash[:type]
             when 'binary'
-              data = conv_bin(hash)
+              val = conv_bin(hash)
             when 'float'
-              data = conv_num(hash).to_f
+              val = conv_num(hash).to_f
             when 'integer'
-              data = conv_num(hash).to_i
+              val = conv_num(hash).to_i
             else
-              data = hash[:fields].map { |e| get_field(e) }.join
+              val = hash[:fields].map { |e| get_field(e) }.join
             end
-            verbose { "GetData[#{data}](#{id})" }
+            verbose { "GetData[#{val}](#{id})" }
             if hash.key?(:formula)
-              f = hash[:formula].gsub(/\$#/, data.to_s)
-              data = expr(f)
-              verbose { "Formula:#{f}(#{data})(#{id})" }
+              f = hash[:formula].gsub(/\$#/, val.to_s)
+              val = expr(f)
+              verbose { "Formula:#{f}(#{val})(#{id})" }
             end
-            data = hash[:format] % data if hash.key?(:format)
-            @data[id] = data.to_s
+            val = hash[:format] % val if hash.key?(:format)
+            put(id, val)
           end
         end
         self

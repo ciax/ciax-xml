@@ -102,7 +102,7 @@ module CIAX
           atrb = e.to_h
           idx = atrb[:index] = []
           e.each { |e1| idx << e1.to_h }
-          item[:struct] = idx.map { |h| h['size'] } if item
+          item[:struct] = idx.map { |h| h[:size] } if item
           verbose { "InitArray: #{atrb}" }
           atrb
         when 'ccrange', 'body', 'echo'

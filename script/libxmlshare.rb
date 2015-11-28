@@ -58,7 +58,7 @@ module CIAX
             atrb[k] = v
           end
         end
-        key = atrb.delete(id).to_s || Msg.give_up("No such key (#{id})")
+        key = atrb.delete(id) || Msg.give_up("No such key (#{id})")
         [key, atrb]
       end
     end

@@ -19,7 +19,7 @@ module CIAX
         # Field Initialize
         if @data.empty?
           @dbi[:field].each do|id, val|
-            @data[id] = val[:val] || Arrayx.new.skeleton(val[:struct])
+            put(id, val[:val]) || Arrayx.new.skeleton(val[:struct])
           end
         end
         self
@@ -39,16 +39,17 @@ module CIAX
         end
       end
 
-      # First key is taken as is (key:x:y) or ..
-      # Get value for key with multiple dimention
+      # First id is taken as is (id:x:y) or ..
+      # Get value for id with multiple dimention
       # - index should be numerical or formula
-      # - ${key:idx1:idx2} => hash[key][idx1][idx2]
-      def get(key)
-        verbose { "Getting[#{key}]" }
-        Msg.give_up('Nill Key') unless key
-        return @data[key] if @data.key?(key)
+      # - ${id:idx1:idx2} => hash[id][idx1][idx2]
+      def get(id)
+        verbose { "Getting[#{id}]" }
+        Msg.give_up('Nill Id') unless id
+        val = super(id)
+        return val if val
         vname = []
-        dat = key.split(':').inject(@data) do|h, i|
+        dat = id.split(':').inject(@data) do|h, i|
           case h
           when Array
             begin
@@ -58,24 +59,26 @@ module CIAX
             end
           when nil
             break
+          else
+            i = i.to_sym
           end
           vname << i
           verbose { "Type[#{h.class}] Name[#{i}]" }
           verbose { "Content[#{h[i]}]" }
           h[i] || alert("No such Value #{vname.inspect} in :data")
         end
-        verbose { "Get[#{key}]=[#{dat}]" }
+        verbose { "Get[#{id}]=[#{dat}]" }
         dat
       end
 
-      # Replace value with mixed key
-      def rep(key, val)
+      # Replace value with mixed id
+      def rep(id, val)
         pre_upd
-        akey = key.split(':')
-        Msg.par_err('No such Key') unless @data.key?(akey.shift)
+        akey = id.split(':')
+        Msg.par_err('No such Id') unless key?(akey.shift)
         conv = subst(val).to_s
-        verbose { "Put[#{key}]=[#{conv}]" }
-        case p = get(key)
+        verbose { "Put[#{id}]=[#{conv}]" }
+        case p = get(id)
         when Array
           merge_ary(p, conv.split(','))
         when String
@@ -85,7 +88,7 @@ module CIAX
             par_err('Value is not numerical')
           end
         end
-        verbose { "Evaluated[#{key}]=[#{@data[key]}]" }
+        verbose { "Evaluated[#{id}]=[#{get(id)}]" }
         val
       ensure
         post_upd

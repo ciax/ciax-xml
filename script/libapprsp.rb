@@ -45,7 +45,7 @@ module CIAX
               verbose { "Formula:#{f}(#{val})(#{id})" }
             end
             val = hash[:format] % val if hash.key?(:format)
-            put(id, val)
+            put(id, val.to_s)
           end
         end
         self

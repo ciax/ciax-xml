@@ -32,7 +32,6 @@ module CIAX
     end
 
     def jmerge(json_str)
-      inp = json_str
       deep_update(j2h(json_str))
       _mergedata
       self

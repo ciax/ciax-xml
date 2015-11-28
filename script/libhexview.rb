@@ -9,9 +9,9 @@ module CIAX
       # hint should have server status (isu,watch,exe..) like App::Exe
       def initialize(stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
-        super('hex', @stat['id'], @stat['ver'])
+        super('hex', @stat[:id], @stat[:ver])
         # Server Status
-        id = self['id'] || id_err("NO ID(#{id}) in Stat")
+        id = self[:id] || id_err("NO ID(#{id}) in Stat")
         @sv_stat = type?(sv_stat || Prompt.new('site', id), Prompt)
         @list = _get_sdb_(id)
         @vmode = :x
@@ -24,7 +24,7 @@ module CIAX
       end
 
       def to_x
-        self['hex']
+        self[:hex]
       end
 
       def to_s
@@ -39,12 +39,12 @@ module CIAX
 
       def upd_core
         _get_body_
-        self['hex'] = _get_header_ + @str
+        self[:hex] = _get_header_ + @str
         self
       end
 
       def _get_header_
-        ary = ['%', self['id']]
+        ary = ['%', self[:id]]
         ary << b2e(@sv_stat[:udperr])
         ary << b2i(@sv_stat[:event])
         ary << b2i(@sv_stat[:isu])
@@ -96,7 +96,9 @@ module CIAX
         file = View.sdb(id) || id_err("Hex/Can't found sdb_#{id}.txt")
         open(file) do|f|
           f.readlines.grep(/^[^#].+/).map do |line|
-            line.split(',')
+            ary = line.split(',')
+            ary[0] = ary[0].to_sym
+            ary
           end
         end
       end

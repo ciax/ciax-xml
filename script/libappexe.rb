@@ -19,8 +19,8 @@ module CIAX
         super(id, cfg)
         @cfg[:site_id] = id
         # LayerDB might generated in List level
-        @cfg[:ver] = @dbi['version']
-        @cfg[:frm_site] = @dbi['frm_site']
+        @cfg[:ver] = @dbi[:version]
+        @cfg[:frm_site] = @dbi[:frm_site]
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
         @stat = Status.new.setdbi(@dbi)
         @batch_interrupt = []
@@ -41,8 +41,8 @@ module CIAX
 
       def init_server
         @sv_stat = @sub.sv_stat.add_db(isu: '*')
-        @host ||= @dbi['host']
-        @port ||= @dbi['port']
+        @host ||= @dbi[:host]
+        @port ||= @dbi[:port]
         self
       end
 
@@ -61,7 +61,7 @@ module CIAX
           'INTERRUPT'
         end
         @cobj.rem.ext.def_proc do
-          @stat['time'] = now_msec
+          @stat[:time] = now_msec
           'TEST'
         end
         ext_non_client

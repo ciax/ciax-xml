@@ -9,7 +9,7 @@ module CIAX
     # @data is hidden from access by '[]'.
     # @data will be appeared as self['data'] in json file.
     # @data never contains object which can't save with JSON
-    def initialize(type, init_struct = {}, data_name = 'data')
+    def initialize(type, init_struct = {}, data_name = :data)
       super(type)
       # Variable Data (Shown as 'data'(data_name) hash in JSON)
       @data_name = data_name
@@ -70,6 +70,7 @@ module CIAX
       verbose { 'Convert [:data] to @data' }
       inc = delete(@data_name)
       return unless _check_setdata_(inc)
+      inc=_key2str(inc) if @data.is_a?(Hash)
       @data.replace(inc)
       self
     end
@@ -78,6 +79,7 @@ module CIAX
       verbose { 'Marge [:data] to @data' }
       inc = delete(@data_name)
       return unless _check_setdata_(inc)
+      inc=_key2str(inc) if @data.is_a?(Hash)
       @data.deep_update(inc)
       self
     end
@@ -97,11 +99,17 @@ module CIAX
 
     def _check_load(json_str)
       h = j2h(json_str)
-      verbose { "Version compare [#{h['ver']}] vs. <#{self['ver']}>" }
-      if h.key?('ver') && h['ver'] != self['ver']
-        alert("Version mismatch [#{h['ver']}] should be <#{self['ver']}>")
+      verbose { "Version compare [#{h[:ver]}] vs. <#{self[:ver]}>" }
+      if h.key?(:ver) && h[:ver] != self[:ver]
+        alert("Version mismatch [#{h[:ver]}] should be <#{self[:ver]}>")
       end
       true
+    end
+
+    def _key2str(hash)
+      res={}
+      hash.each{ |k,v| res[k.to_s] = v}
+      res
     end
   end
 
@@ -182,7 +190,7 @@ module CIAX
 
   # Data container is Array
   class DataA < Datax
-    def initialize(type, data_name = 'data')
+    def initialize(type, data_name = :data)
       super(type, [], data_name)
     end
 

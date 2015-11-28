@@ -13,13 +13,13 @@ module CIAX
         wdb = doc[:domain][:watch]
         cmdgrp = db[:command][:group]
         idx = {}
-        regular = { 'period' => 300, :exec => [] }
+        regular = { :period => 300, :exec => [] }
         Repeat.new.each(wdb) do|e0, r0|
           case e0.name
           when 'regular'
             regular.update(e0.to_h)
             e0.each do|e1|
-              args = [e1['name']]
+              args = [e1[:name]]
               e1.each do|e2|
                 args << e2.text
               end
@@ -33,18 +33,18 @@ module CIAX
             e0.each do|e1|
               case name = e1.name.to_sym
               when :block, :int, :exec
-                args = [e1['name']]
+                args = [e1[:name]]
                 e1.each do|e2|
                   args << r0.subst(e2.text)
                 end
                 (act[name] ||= []) << args
               when :block_grp
                 blk = (act[:block] ||= [])
-                cmdgrp[e1['ref']][:members].each { |k| blk << [k] }
+                cmdgrp[e1[:ref]][:members].each { |k| blk << [k] }
               else
                 h = e1.to_h
                 h.each_value { |v| v.replace(r0.formatting(v)) }
-                h['type'] = e1.name
+                h[:type] = e1.name
                 cnd << h
               end
             end

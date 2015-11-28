@@ -24,24 +24,25 @@ module CIAX
       def doc_to_db(doc)
         db = Dbi.new
         doc[:top].each do|e1|
-          id = e1['id'].to_sym
-          label = e1['label']
+          id = e1[:id]
+          label = e1[:label]
           e1.each do|e2| # case
-            (db[id] ||= []) << e2.to_h.update('type' => e2.name)
+            (db[id] ||= []) << e2.to_h.update(:type => e2.name)
           end
           verbose { "Symbol Table:#{id} : #{label}" }
         end
         db
       end
     end
-  end
 
-  if __FILE__ == $PROGRAM_NAME
-    begin
-      sdb = Sym::Db.new.get(ARGV.shift)
-    rescue InvalidID
-      Msg.usage '[id] ...'
+    if __FILE__ == $PROGRAM_NAME
+      OPT.parse('r')
+      begin
+        dbi = Db.new.get(ARGV.shift)
+      rescue InvalidID
+        OPT.usage('[id] (key) ..')
+      end
+      puts OPT['r'] ? dbi.to_v : dbi.path(ARGV)
     end
-    puts sdb.path(ARGV)
   end
 end

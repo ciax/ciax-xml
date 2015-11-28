@@ -27,7 +27,7 @@ module CIAX
       def index
         n = @par.index
         if n
-          opt = optlist(_crnt_.last['option']) if _crnt_.busy? && _crnt_.last
+          opt = optlist(_crnt_.last[:option]) if _crnt_.busy? && _crnt_.last
           "[#{n + 1}]#{opt}"
         else
           '[0]'
@@ -42,7 +42,7 @@ module CIAX
       private
 
       def upd_core
-        pids = values.map { |r| r['pid'] }
+        pids = values.map { |r| r[:pid] }
         pids.delete('0')
         @all_keys.concat(pids + @par.list).uniq!
         @all_keys.each { |id| _upd_or_gen_(id) }
@@ -53,7 +53,7 @@ module CIAX
       def _upd_or_gen_(id)
         return @data[id].upd if @data.key?(id)
         r = put(id, get_rec(id))
-        @ciddb[id] = r['cid'] unless @ciddb.key?(id)
+        @ciddb[id] = r[:cid] unless @ciddb.key?(id)
       end
 
       def _crnt_
@@ -74,18 +74,18 @@ module CIAX
 
       def _item_(id, idx)
         rec = @data[id]
-        title = "[#{idx}] (#{id})(by #{@ciddb[rec['pid']]})"
-        msg = "#{rec['cid']} #{rec.step_num}"
+        title = "[#{idx}] (#{id})(by #{@ciddb[rec[:pid]]})"
+        msg = "#{rec[:cid]} #{rec.step_num}"
         msg << _result_(rec)
         Msg.item(title, msg)
       end
 
       def _result_(rec)
-        if rec['status'] == 'end'
-          "(#{rec['result']})"
+        if rec[:status] == 'end'
+          "(#{rec[:result]})"
         else
-          msg = "(#{rec['status']})"
-          msg << optlist(rec.last['option']) if rec.last
+          msg = "(#{rec[:status]})"
+          msg << optlist(rec.last[:option]) if rec.last
           msg
         end
       end

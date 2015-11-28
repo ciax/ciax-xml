@@ -26,7 +26,7 @@ module CIAX
         @fds = fdbr[:index]
         sp = @dbi[:stream]
         # Frame structure: main(total){ ccrange{ body(selected str) } }
-        @frame = Frame.new(sp['endian'], sp['ccmethod'], sp['terminator'])
+        @frame = Frame.new(sp[:endian], sp[:ccmethod], sp[:terminator])
         # terminator: frame pointer will jump to terminator if no length or delimiter is specified
         self
       end
@@ -34,15 +34,15 @@ module CIAX
       # Convert with corresponding cmd
       def conv(ent, stream)
         @sel = Hash[@skel]
-        self['time'] = type?(stream, Hash)['time']
-        rid = type?(ent, Entity)['response']
+        self[:time] = type?(stream, Hash)[:time]
+        rid = type?(ent, Entity)[:response]
         @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
         @sel.update(@fds[rid])
         @sel[:body] = ent.deep_subst(@sel[:body])
         verbose { "Selected DB for #{rid}\n" + @sel.inspect }
         @frame.set(stream.binary)
         @cache = @data.deep_copy
-        if @fds[rid].key?('noaffix')
+        if @fds[rid].key?(:noaffix)
           getfield_rec(['body'])
         else
           getfield_rec(@sel[:main])
@@ -73,7 +73,7 @@ module CIAX
             end
           when 'echo' # Send back the command string
             verbose { "Set Command Echo [#{@echo.inspect}]" }
-            @frame.cut('label' => 'Command Echo', 'val' => @echo)
+            @frame.cut(label: 'Command Echo', val: @echo)
           when Hash
             frame_to_field(e1) { @frame.cut(e1) }
           end
@@ -81,13 +81,13 @@ module CIAX
       end
 
       def frame_to_field(e0)
-        enclose("#{e0['label']}", 'Field:End') do
+        enclose("#{e0[:label]}", 'Field:End') do
           if e0[:index]
             # Array
-            akey = e0['assign'] || Msg.cfg_err('No key for Array')
+            akey = e0[:assign] || Msg.cfg_err('No key for Array')
             # Insert range depends on command param
             idxs = e0[:index].map do|e1|
-              e1['range'] || "0:#{e1['size'].to_i - 1}"
+              e1[:range] || "0:#{e1[:size].to_i - 1}"
             end
             enclose("Array:[#{akey}]:Range#{idxs}", "Array:Assign[#{akey}]") do
               @cache[akey] = mk_array(idxs, get(akey)) { yield }
@@ -95,7 +95,7 @@ module CIAX
           else
             # Field
             data = yield
-            if (akey = e0['assign'])
+            if (akey = e0[:assign])
               @cache[akey] = data
               verbose { "Assign:[#{akey}] <- <#{data}>" }
             end
@@ -131,8 +131,8 @@ module CIAX
       OPT.usage('(opt) < logline') if STDIN.tty?
       str = gets(nil) || exit
       res = JsLog.load(str)
-      id = res['id']
-      cid = res['cmd']
+      id = res[:id]
+      cid = res[:cmd]
       dbi = Dev::Db.new.get(id)
       field = Field.new.setdbi(dbi).ext_rsp
       field.ext_file.auto_save if OPT[:m]

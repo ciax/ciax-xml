@@ -39,7 +39,7 @@ module CIAX
       def ext_non_client
         @stat.post_upd_procs << proc do|ev|
           verbose { 'Propagate Event#upd -> Watch#upd' }
-          block = ev.get('block').map { |id, par| par ? nil : id }.compact
+          block = ev.get(:block).map { |id, par| par ? nil : id }.compact
           @cobj.rem.ext.valid_sub(block)
         end
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
@@ -52,7 +52,7 @@ module CIAX
         @stat.ext_file.auto_save
         @stat.ext_log if OPT[:e]
         @stat.post_upd_procs << proc do|ev|
-          ev.get('exec').each do|src, pri, args|
+          ev.get(:exec).each do|src, pri, args|
             verbose { "Executing:#{args} in accordance with Condition from [#{src}] by [#{pri}]" }
             @sub.exe(args, src, pri)
             sleep ev.interval

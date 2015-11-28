@@ -33,13 +33,13 @@ module CIAX
       end
 
       def update?
-        self['time'] > @updated
+        self[:time] > @updated
       end
 
       def refresh
         verbose { 'Status Refreshed' }
         @last.update(@data)
-        @updated = self['time']
+        @updated = self[:time]
         self
       end
     end

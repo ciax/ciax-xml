@@ -18,16 +18,16 @@ module CIAX
       # Stat no changed -> clear exec, no eval
       def ext_rsp(stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
-        @sv_stat = type?(sv_stat || Prompt.new('site', self['id']), Prompt)
+        @sv_stat = type?(sv_stat || Prompt.new('site', self[:id]), Prompt)
         wdb = @dbi[:watch] || {}
         @windex = wdb[:index] || {}
-        @interval = wdb['interval'].to_f if wdb.key?('interval')
+        @interval = wdb[:interval].to_f if wdb.key?(:interval)
         # Pick usable val
         @list = []
         @windex.values.each do|v|
-          @list |= v[:cnd].map { |i| i['var'] }
+          @list |= v[:cnd].map { |i| i[:var] }
         end
-        @pre_upd_procs << proc { self['time'] = @stat['time'] }
+        @pre_upd_procs << proc { self[:time] = @stat[:time] }
         @stat.post_upd_procs << proc do
           verbose { 'Propagate Status#upd -> Event#upd' }
           upd
@@ -37,16 +37,16 @@ module CIAX
       end
 
       def queue(src, pri, batch = [])
-        @last_updated = self['time']
+        @last_updated = self[:time]
         batch.each do|args|
-          @data['exec'] << [src, pri, args]
+          @data[:exec] << [src, pri, args]
         end
         self
       end
 
       def auto_exec
-        return self unless @data['exec'].empty?
-        verbose { format('Auto Update(%s, %s)', self['time'], @regexe) }
+        return self unless @data[:exec].empty?
+        verbose { format('Auto Update(%s, %s)', self[:time], @regexe) }
         begin
           queue('auto', 3, @regexe)
         rescue InvalidID
@@ -62,7 +62,7 @@ module CIAX
       # Initialize for Auto Update
       def init_auto(wdb)
         reg = wdb[:regular] || {}
-        per = reg['period'].to_i
+        per = reg[:period].to_i
         @period = per > 1 ? per : 300
         @regexe = reg[:exec] || [['upd']]
         verbose do
@@ -72,13 +72,13 @@ module CIAX
         self
       end
 
-      # @data['active'] : Array of event ids which meet criteria
-      # @data['exec'] : Command queue which contains commands issued as event
-      # @data['block'] : Array of commands (units) which are blocked during busy
-      # @data['int'] : List of interrupt commands which is effectie during busy
+      # @data[:active] : Array of event ids which meet criteria
+      # @data[:exec] : Command queue which contains commands issued as event
+      # @data[:block] : Array of commands (units) which are blocked during busy
+      # @data[:int] : List of interrupt commands which is effectie during busy
       def upd_core
-        return self unless @stat['time'] > @last_updated
-        @last_updated = self['time']
+        return self unless @stat[:time] > @last_updated
+        @last_updated = self[:time]
         sync
         @data.values.each { |a| a.clear if a.is_a? Array }
         @windex.each do|id, item|
@@ -86,13 +86,13 @@ module CIAX
           item[:act].each do|key, ary|
             if key == :exec
               ary.each do|args|
-                @data['exec'] << ['event', 2, args]
+                @data[:exec] << ['event', 2, args]
               end
             else
               @data[key.to_s].concat(ary)
             end
           end
-          @data['active'] << id
+          @data[:active] << id
         end
         upd_event
         self
@@ -124,7 +124,7 @@ module CIAX
           end
         elsif active?
           @sv_stat.set(:event)
-          @data['act_start'] = @data['act_end'] = @last_updated
+          @data[:act_start] = @data[:act_end] = @last_updated
           @on_act_procs.each { |p| p.call(self) }
         end
         self
@@ -132,8 +132,8 @@ module CIAX
 
       def sync
         @list.each do|i|
-          @data['last'][i] = @data['crnt'][i]
-          @data['crnt'][i] = @stat.get(i)
+          @data[:last][i] = @data[:crnt][i]
+          @data[:crnt][i] = @stat.get(i)
         end
       end
 
@@ -142,13 +142,13 @@ module CIAX
         verbose { "Check: <#{item['label']}>" }
         rary = []
         cklst.each do|ckitm|
-          vn = ckitm['var']
+          vn = ckitm[:var]
           val = @stat.get(vn)
-          case ckitm['type']
+          case ckitm[:type]
           when 'onchange'
-            cri = @data['last'][vn]
+            cri = @data[:last][vn]
             if cri
-              if (tol = ckitm['tolerance'])
+              if (tol = ckitm[:tolerance])
                 res = ((cri.to_f - val.to_f).abs > tol.to_f)
                 verbose do
                   format('  onChange(%s): |[%s]-<%s>| > %s =>%s',
@@ -165,14 +165,14 @@ module CIAX
               res = nil
             end
           when 'pattern'
-            cri = ckitm['val']
+            cri = ckitm[:val]
             res = Regexp.new(cri).match(val)
             verbose do
               format('  Pattern(%s): [%s] vs <%s> =>%s',
                      vn, cri, val, res.inspect)
             end
           when 'range'
-            cri = ckitm['val']
+            cri = ckitm[:val]
             f = format('%.3f', val.to_f)
             res = (ReRange.new(cri) == f)
             verbose do
@@ -183,7 +183,7 @@ module CIAX
           res = !res if /true|1/ =~ ckitm['inv']
           rary << res
         end
-        @data['res'][id] = rary
+        @data[:res][id] = rary
         rary.all?
       end
     end

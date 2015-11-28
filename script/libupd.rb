@@ -7,9 +7,9 @@ module CIAX
     def initialize
       super()
       # Updater
-      self['time'] = now_msec
+      self[:time] = now_msec
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @pre_upd_procs = [proc { self['time'] = now_msec }]
+      @pre_upd_procs = [proc { self[:time] = now_msec }]
       # Proc Array for Post-Process of Update Propagation to the upper Layers
       @post_upd_procs = []
     end
@@ -32,7 +32,7 @@ module CIAX
     end
 
     def time_id
-      self['time'].to_s[-6, 6]
+      self[:time].to_s[-6, 6]
     end
 
     private

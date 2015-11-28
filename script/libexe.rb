@@ -23,7 +23,7 @@ module CIAX
       @cfg = type?(cfg, Config).gen(self).update(attr)
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @dbi = @cfg[:dbi] = type?(@cfg[:db].get(id), Dbi) if @cfg.key?(:db)
-      @id = id || @dbi['id']
+      @id = id || @dbi[:id]
       @layer = class_path.first.downcase
       @sv_stat = Prompt.new(@cfg[:layer_type], @id) # Site Status shared among layers
       @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }] # Proc for Server Command (by User query}
@@ -52,7 +52,7 @@ module CIAX
     end
 
     def to_s
-      @sv_stat['msg']
+      @sv_stat[:msg]
     end
 
     def ext_server

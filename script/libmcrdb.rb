@@ -12,7 +12,7 @@ module CIAX
 
       def get(id = nil)
         dbi = super(id || PROJ || ARGV.shift)
-        if inc = dbi['include']
+        if inc = dbi[:include]
           dbi=super(inc).cover(dbi)
         end
         dbi
@@ -22,7 +22,7 @@ module CIAX
 
       def doc_to_db(doc)
         dbi = Dbi[doc[:attr]]
-        @id = dbi['id']
+        @id = dbi[:id]
         @sites = []
         dbi[:command] = init_command(doc[:top])
         dbi[:sites] = @sites.uniq
@@ -52,7 +52,7 @@ module CIAX
             atrb = e1.to_h
             _get_sites_(atrb)
             par2item(e1, item) && next
-            atrb['type'] = e1.name
+            atrb[:type] = e1.name
             case e1.name
             when 'mesg'
               body << atrb
@@ -60,19 +60,19 @@ module CIAX
               body << make_condition(e1, atrb)
             when 'goal'
               body << make_condition(e1, atrb)
-              final.update(atrb.extend(Enumx).deep_copy)['type'] = 'check'
+              final.update(atrb.extend(Enumx).deep_copy)[:type] = 'check'
             when 'exec'
-              atrb['args'] = getcmd(e1)
-              atrb.delete('name')
+              atrb[:args] = getcmd(e1)
+              atrb.delete(:name)
               body << atrb
-              verbose { "COMMAND:[#{e1['name']}]" }
+              verbose { "COMMAND:[#{e1[:name]}]" }
             when 'mcr'
-              atrb['args'] = getcmd(e1)
-              atrb.delete('name')
+              atrb[:args] = getcmd(e1)
+              atrb.delete(:name)
               body << atrb
             when 'select'
-              atrb['select'] = get_option(e1)
-              atrb.delete('name')
+              atrb[:select] = get_option(e1)
+              atrb.delete(:name)
               body << atrb
             end
           end
@@ -83,15 +83,15 @@ module CIAX
 
       def make_condition(e1, atrb)
         e1.each do|e2|
-          hash = e2.to_h('cri')
-          hash['cmp'] = e2.name
-          (atrb['cond'] ||= []) << hash
+          hash = e2.to_h(:cri)
+          hash[:cmp] = e2.name
+          (atrb[:cond] ||= []) << hash
         end
         atrb
       end
 
       def getcmd(e1)
-        args = [e1['name']]
+        args = [e1[:name]]
         e1.each do|e2|
           args << e2.text
         end
@@ -102,7 +102,7 @@ module CIAX
         options = {}
         e1.each do|e2|
           e2.each do|e3|
-            options[e2['val'] || '*'] = getcmd(e3)
+            options[e2[:val] || '*'] = getcmd(e3)
           end
         end
         options
@@ -111,18 +111,19 @@ module CIAX
       private
 
       def _get_sites_(atrb)
-        @sites << atrb['site'] if atrb['site'] && /\$/ !~ atrb['site']
-        @sites.concat(atrb['val'].split(',')) if atrb['label'] == 'site'
+        @sites << atrb[:site] if atrb[:site] && /\$/ !~ atrb[:site]
+        @sites.concat(atrb[:val].split(',')) if atrb[:label] == 'site'
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
+      OPT.parse('r')
       begin
-        mdb = Db.new.get
+        dbi = Db.new.get(ARGV.shift)
       rescue InvalidID
-        Msg.usage '[id] (key) ..'
+        OPT.usage('[id] (key) ..')
       end
-      puts mdb.path(ARGV)
+      puts OPT['r'] ? dbi.to_v : dbi.path(ARGV)
     end
   end
 end

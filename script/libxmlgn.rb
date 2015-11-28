@@ -29,8 +29,11 @@ module CIAX
       end
 
       # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
-      def to_h(key = 'val')
-        h = @e.attributes.to_h
+      def to_h(key = :val)
+        h = {}
+        @e.attributes.to_h.each do |k, v|
+          h[k.to_sym] = v
+        end
         t = text
         h[key] = t if t
         h

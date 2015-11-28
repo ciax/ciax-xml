@@ -12,7 +12,7 @@ module CIAX
         super()
         update db
         # [:stat_proc,:exec_proc,:query]
-        @cond = Condition.new(delete('cond'), dev_list, self)
+        @cond = Condition.new(delete(:cond), dev_list, self)
         @break = nil
       end
 
@@ -21,9 +21,9 @@ module CIAX
         itv = (OPT[:e] || OPT[:s]) ? 0.1 : 0
         itv *= 10 if OPT[:m]
         _show title
-        self['max'] = self['retry']
+        self[:max] = self[:retry]
         res = _progress(itv)
-        self['result'] = res ? 'timeout' : 'pass'
+        self[:result] = res ? 'timeout' : 'pass'
         upd
         res
       end
@@ -52,7 +52,7 @@ module CIAX
       def exec?
         _show title
         res = !dryrun?
-        self['result'] = res ? 'exec' : 'skip'
+        self[:result] = res ? 'exec' : 'skip'
         upd
         res
       end
@@ -60,8 +60,8 @@ module CIAX
       # Execution section
       def async?
         _show title
-        res = (/true|1/ =~ self['async'])
-        self['result'] = res ? 'forked' : 'entering'
+        res = (/true|1/ =~ self[:async])
+        self[:result] = res ? 'forked' : 'entering'
         upd
         res
       end
@@ -83,12 +83,12 @@ module CIAX
       end
 
       def dryrun?
-        !OPT[:m] && self['action'] = 'dryrun'
+        !OPT[:m] && self[:action] = 'dryrun'
       end
 
       def _progress(itv)
-        self['max'].to_i.times do|n| # gives number or nil(if break)
-          self['retry'] = n
+        self[:max].to_i.times do|n| # gives number or nil(if break)
+          self[:retry] = n
           break if @cond.ok?
           sleep itv
           _show('.')

@@ -15,9 +15,9 @@ module CIAX
       def ext_sym
         adbs = @dbi[:status]
         @symbol = adbs[:symbol] || {}
-        @symdb = Sym::Db.pack(['share', adbs['symtbl']])
-        self['class'] = {}
-        self['msg'] = {}
+        @symdb = Sym::Db.pack(['share', adbs[:symtbl]])
+        self[:class] = {}
+        self[:msg] = {}
         @post_upd_procs << proc do # post process
           verbose { 'Propagate Status#upd -> Symbol#upd' }
           store_sym(adbs[:index].dup.update(adbs[:alias] || {}))
@@ -27,40 +27,40 @@ module CIAX
 
       def store_sym(index)
         index.each do|key, hash|
-          sid = hash['symbol'] || next
-          tbl = @symdb[sid.to_sym]
+          sid = hash[:symbol] || next
+          tbl = @symdb[sid]
           unless tbl
             alert("Table[#{sid}] not exist")
             next
           end
           verbose { "ID=#{key},Table=#{sid}" }
-          self['class'][key] = 'alarm'
-          val = @data[hash['ref'] || key]
-          self['msg'][key] = "N/A(#{val})"
+          self[:class][key] = 'alarm'
+          val = @data[hash[:ref] || key]
+          self[:msg][key] = "N/A(#{val})"
           numeric = false
           tbl.each do|sym|
-            case sym['type']
+            case sym[:type]
             when 'numeric'
               numeric = true
-              tol = sym['tolerance'].to_f
-              next if sym['val'].split(',').all? do|cri|
+              tol = sym[:tolerance].to_f
+              next if sym[:val].split(',').all? do|cri|
                 val.to_f > cri.to_f + tol || val.to_f < cri.to_f - tol
               end
-              verbose { "VIEW:Numeric:[#{sym['val']}+-#{tol}] and [#{val}]" }
+              verbose { "VIEW:Numeric:[#{sym[:val]}+-#{tol}] and [#{val}]" }
             when 'range'
               numeric = true
-              next unless ReRange.new(sym['val']) == val
-              verbose { "VIEW:Range:[#{sym['val']}] and [#{val}]" }
+              next unless ReRange.new(sym[:val]) == val
+              verbose { "VIEW:Range:[#{sym[:val]}] and [#{val}]" }
             when 'pattern'
-              next unless /#{sym['val']}/ =~ val || val == 'default'
-              verbose { "VIEW:Regexp:[#{sym['val']}] and [#{val}]" }
+              next unless /#{sym[:val]}/ =~ val || val == 'default'
+              verbose { "VIEW:Regexp:[#{sym[:val]}] and [#{val}]" }
             end
             if numeric
-              self['msg'][key] = format(sym['msg'], val)
+              self[:msg][key] = format(sym[:msg], val)
             else
-              self['msg'][key] = sym['msg'] || "N/A(#{val})"
+              self[:msg][key] = sym[:msg] || "N/A(#{val})"
             end
-            self['class'][key] = sym['class']
+            self[:class][key] = sym[:class]
             break
           end
         end
@@ -78,7 +78,7 @@ module CIAX
       require 'libinsdb'
       begin
         stat = Status.new
-        id = STDIN.tty? ? ARGV.shift : stat.read['id']
+        id = STDIN.tty? ? ARGV.shift : stat.read[:id]
         dbi = Ins::Db.new.get(id)
         stat.setdbi(dbi).ext_sym
         stat.ext_file.load if STDIN.tty?

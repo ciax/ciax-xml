@@ -12,22 +12,22 @@ module CIAX
 
       def get(id = nil)
         dbi = super
-        dbi.cover(Frm::Db.new.get(dbi['frm_id']))
+        dbi.cover(Frm::Db.new.get(dbi[:frm_id]))
       end
 
       private
 
       def doc_to_db(doc)
         db = rec_db(doc[:top])
-        db['proj'] = PROJ
-        db['site_id'] = db['id']
+        db[:proj] = PROJ
+        db[:site_id] = db[:id]
         db
       end
 
       def rec_db(e0, dbi = Dbi.new)
         (dbi ||= Dbi.new).update(e0.to_h)
         e0.each do|e|
-          if e['id']
+          if e[:id]
             e.attr2item(dbi)
           else
             id = e.name.to_sym
@@ -40,12 +40,13 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
+      OPT.parse('r')
       begin
         dbi = Db.new.get(ARGV.shift)
-      rescue
-        Msg.usage('(opt) [id] (key) ..')
+      rescue InvalidID
+        OPT.usage('[id] (key) ..')
       end
-      puts dbi.path(ARGV)
+      puts OPT['r'] ? dbi.to_v : dbi.path(ARGV)
     end
   end
 end

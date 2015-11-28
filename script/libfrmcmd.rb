@@ -31,16 +31,16 @@ module CIAX
           super
           @field = type?(self[:field], Field)
           @fstr = {}
-          if /true|1/ =~ self['noaffix']
-            @sel = { main: ['body'] }
+          if /true|1/ =~ self[:noaffix]
+            @sel = { main: [:body] }
           else
             @sel = Hash[self[:dbi][:command][:frame]]
           end
           sp = self[:dbi][:stream]
-          @frame = Frame.new(sp['endian'], sp['ccmethod'])
+          @frame = Frame.new(sp[:endian], sp[:ccmethod])
           return unless @body
           @sel[:body] = @body
-          verbose { "Body:#{self['label']}(#{@id})" }
+          verbose { "Body:#{self[:label]}(#{@id})" }
           conv = mk_frame(:body)
           if @sel.key?(:ccrange)
             @frame.cc_mark
@@ -48,7 +48,7 @@ module CIAX
             @frame.cc_set
           end
           conv |= mk_frame(:main)
-          warning('Frame was converted by Status but chache is still effective') if conv && !self['nocache']
+          warning('Frame was converted by Status but chache is still effective') if conv && !self[:nocache]
           frame = @fstr[:main]
           verbose { "Cmd Generated [#{@id}]" }
           self[:frame] = frame
@@ -64,9 +64,9 @@ module CIAX
           @sel[domain].each do|a|
             case a
             when Hash
-              frame = a['val'].gsub(/\$\{cc\}/) { @frame.cc }
+              frame = a[:val].gsub(/\$\{cc\}/) { @frame.cc }
               frame = @field.subst(frame)
-              conv = true if frame != a['val']
+              conv = true if frame != a[:val]
               frame.split(',').each do|s|
                 @frame.add(s, a)
               end

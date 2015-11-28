@@ -19,7 +19,7 @@ module CIAX
         # Field Initialize
         if @data.empty?
           @dbi[:field].each do|id, val|
-            @data[id] = val['val'] || Arrayx.new.skeleton(val[:struct])
+            @data[id] = val[:val] || Arrayx.new.skeleton(val[:struct])
           end
         end
         self
@@ -48,6 +48,7 @@ module CIAX
         Msg.give_up('Nill Key') unless key
         return @data[key] if @data.key?(key)
         vname = []
+p @data
         dat = key.split(':').inject(@data) do|h, i|
           case h
           when Array
@@ -62,7 +63,7 @@ module CIAX
           vname << i
           verbose { "Type[#{h.class}] Name[#{i}]" }
           verbose { "Content[#{h[i]}]" }
-          h[i] || alert("No such Value [#{vname.join(':')}] in 'data'")
+          h[i] || alert("No such Value #{vname.inspect} in :data")
         end
         verbose { "Get[#{key}]=[#{dat}]" }
         dat
@@ -113,16 +114,15 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      f = Field.new('a' => [['0'], '1'])
-      puts f.to_j
-      s = ARGV.shift
-      if s
-        k, v = s.split('=')
-        if v
-          puts f.rep(k, v)
-        else
-          puts f.get(s)
-        end
+      require 'libdevdb'
+      stat = Field.new
+      begin
+        dbi = Dev::Db.new.get(ARGV.shift)
+        stat.setdbi(dbi)
+        stat.ext_file.read
+        puts STDOUT.tty? ? stat : stat.to_j
+      rescue InvalidID
+        OPT.usage '(opt) [id]'
       end
     end
   end

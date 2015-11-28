@@ -88,8 +88,8 @@ module CIAX
       end
 
       def _init_net_
-        @host ||= @dbi['host']
-        @port ||= (@dbi['port'] || 55_555)
+        @host ||= @dbi[:host]
+        @port ||= (@dbi[:port] || 55_555)
       end
     end
 

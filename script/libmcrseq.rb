@@ -19,8 +19,8 @@ module CIAX
         type?(@cfg[:dev_list], CIAX::List)
         @record = Record.new.ext_file.auto_save.mklink # Make latest link
         @record.ext_rsp(@cfg)
-        @record['pid'] = pid
-        @id = @record['id']
+        @record[:pid] = pid
+        @id = @record[:id]
         @sv_stat = (@cfg[:sv_stat]||{})
         @sv_stat[:run]||= []
         @sv_stat[:sid] = @id
@@ -63,13 +63,13 @@ module CIAX
       # macro returns result (true/false)
       def sub_macro(ment, mstat)
         @depth += 1
-        @record['status'] = 'run'
-        mstat['result'] = 'busy'
+        @record[:status] = 'run'
+        mstat[:result] = 'busy'
         begin
           ment[:sequence].each do|e|
             step = @record.add_step(e, @depth)
             begin
-              break true if method(e['type']).call(e, step, mstat)
+              break true if method(e[:type]).call(e, step, mstat)
             rescue Retry
               retry
             end
@@ -78,10 +78,10 @@ module CIAX
           false
         end
       rescue Interrupt
-        mstat['result'] = 'interrupted'
+        mstat[:result] = 'interrupted'
         raise Interrupt
       ensure
-        mstat['result'] = 'complete' if mstat['result'] == 'busy'
+        mstat[:result] = 'complete' if mstat[:result] == 'busy'
         @depth -= 1
       end
 
@@ -93,46 +93,46 @@ module CIAX
 
       def goal(_e, step, mstat)
         return unless step.skip? && @qry.query(%w(skip force), step)
-        mstat['result'] = 'skipped'
+        mstat[:result] = 'skipped'
       end
 
       def check(_e, step, mstat)
         return unless step.fail? && @qry.query(%w(drop force retry), step)
-        mstat['result'] = 'error'
+        mstat[:result] = 'error'
         fail Interlock
       end
 
       def wait(_e, step, mstat)
         return unless step.timeout? && @qry.query(%w(drop force retry), step)
-        mstat['result'] = 'timeout'
+        mstat[:result] = 'timeout'
         fail Interlock
       end
 
       def exec(e, step, _mstat)
         if step.exec? && @qry.query(%w(exec pass), step)
-          @sv_stat[:run].push(e['site']).uniq!
-          @cfg[:dev_list].get(e['site']).exe(e['args'], 'macro')
+          @sv_stat[:run].push(e[:site]).uniq!
+          @cfg[:dev_list].get(e[:site]).exe(e[:args], 'macro')
         end
         false
       end
 
       def mcr(e, step, mstat)
-        seq = @cfg.ancestor(2).set_cmd(e['args'])
+        seq = @cfg.ancestor(2).set_cmd(e[:args])
         if step.async? && @submcr_proc.is_a?(Proc)
-          step['id'] = @submcr_proc.call(seq, @id).id
+          step[:id] = @submcr_proc.call(seq, @id).id
         else
           res = mcr_fg(e, seq, step)
-          mstat['result'] = step['result']
+          mstat[:result] = step[:result]
           fail Interlock unless res
         end
         false
       end
 
       def mcr_fg(e, seq, step)
-        (e['retry'] || 1).to_i.times do
+        (e[:retry] || 1).to_i.times do
           res = sub_macro(seq, step)
           return res if res
-          step['action'] = 'retry'
+          step[:action] = 'retry'
         end
         nil
       end

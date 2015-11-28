@@ -19,11 +19,11 @@ module CIAX
         upd_view
         vw = ''
         view_time(vw)
-        vw << item('Issuing', self['exec'])
-        return vw if self['stat'].empty?
+        vw << item('Issuing', self[:exec])
+        return vw if self[:stat].empty?
         view_cond(vw)
-        vw << item('Interrupt', self['int'])
-        vw << item('Blocked', self['block'])
+        vw << item('Interrupt', self[:int])
+        vw << item('Blocked', self[:block])
       end
 
       def to_r
@@ -33,11 +33,11 @@ module CIAX
       private
 
       def init_stat(wdb)
-        self['stat'] = {}
+        self[:stat] = {}
         wdb[:index].each do |id, evnt|
-          hash = (self['stat'][id] ||= {})
-          hash['label'] = evnt['label']
-          init_cond(evnt[:cnd], (hash['cond'] ||= []))
+          hash = (self[:stat][id] ||= {})
+          hash[:label] = evnt[:label]
+          init_cond(evnt[:cnd], (hash[:cond] ||= []))
         end
         self
       end
@@ -45,15 +45,15 @@ module CIAX
       def init_cond(cond, m)
         cond.each do |cnd|
           h = Hash[cnd]
-          h['cri'] = cnd['val'] if cnd['type'] != 'onchange'
+          h[:cri] = cnd[:val] if cnd[:type] != 'onchange'
           m << h
         end
         self
       end
 
       def upd_view
-        self['time'] = @event['time']
-        %w(exec block int act_start act_end upd_next).each do |id|
+        self[:time] = @event[:time]
+        %i(exec block int act_start act_end upd_next).each do |id|
           self[id] = @event.get(id)
         end
         upd_stat
@@ -61,51 +61,51 @@ module CIAX
       end
 
       def upd_stat
-        self['stat'].each do |id, v|
-          upd_cond(id, v['cond'])
-          v['active'] = @event.get('active').include?(id)
+        self[:stat].each do |id, v|
+          upd_cond(id, v[:cond])
+          v[:active] = @event.get(:active).include?(id)
         end
         self
       end
 
       def upd_cond(id, cond)
         cond.each_with_index do |h, i|
-          v = h['var']
-          h['res'] = (@event.get('res')[id]||[])[i]
-          h['val'] = @event.get('crnt')[v]
-          h['cri'] = @event.get('last')[v] if h['type'] == 'onchange'
+          v = h[:var]
+          h[:res] = (@event.get(:res)[id]||[])[i]
+          h[:val] = @event.get(:crnt)[v]
+          h[:cri] = @event.get(:last)[v] if h[:type] == 'onchange'
         end
         self
       end
 
       def view_time(vw)
-        vw << item('Elapsed', elps_date(self['time'], now_msec))
-        vw << item('ActiveTime', elps_sec(self['act_start'], self['act_end']))
-        vw << item('ToNextUpdate', elps_sec(now_msec, self['upd_next']))
+        vw << item('Elapsed', elps_date(self[:time], now_msec))
+        vw << item('ActiveTime', elps_sec(self[:act_start], self[:act_end]))
+        vw << item('ToNextUpdate', elps_sec(now_msec, self[:upd_next]))
       end
 
       def view_cond(vw)
         vw << item('Conditions')
-        self['stat'].values.each do |i|
-          vw << cformat("    %:6s\t: %s\n", i['label'], rslt(i['active']))
-          view_event(vw, i['cond'])
+        self[:stat].values.each do |i|
+          vw << cformat("    %:6s\t: %s\n", i[:label], rslt(i[:active]))
+          view_event(vw, i[:cond])
         end
       end
 
       def view_event(vw, cond)
         cond.each do |j|
           vw << cformat("      %s %:3s  (%s: %s)\n",
-                        rslt(j['res']), j['var'], j['type'], frml(j))
+                        rslt(j[:res]), j[:var], j[:type], frml(j))
         end
       end
 
       def frml(j)
-        cri = j['cri']
-        val = j['val']
-        if j['type'] == 'onchange'
+        cri = j[:cri]
+        val = j[:val]
+        if j[:type] == 'onchange'
           format('%s => %s', cri, val)
         else
-          ope = j['inv'] ? '!' : '='
+          ope = j[:inv] ? '!' : '='
           format('/%s/ %s~ %s', cri, ope, val)
         end
       end

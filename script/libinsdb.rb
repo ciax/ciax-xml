@@ -15,7 +15,7 @@ module CIAX
       # overwrite App::Db
       def get(id = nil)
         dbi = super
-        dbi.cover(@adb.get(dbi['app_id']))
+        dbi.cover(@adb.get(dbi[:app_id]))
       end
 
       private
@@ -46,7 +46,7 @@ module CIAX
             e0.each do|e1|
               id = init_item(e1, hcmd)
               (uni[:members] ||= []) << id
-              hcmd[:alias][id]['unit'] = uid
+              hcmd[:alias][id][:unit] = uid
             end
           when 'item'
             init_item(e0, hcmd)
@@ -58,7 +58,7 @@ module CIAX
       def init_item(e0, hcmd)
         id = e0.attr2item(hcmd[:alias] ||= {})
         e0.each do|e1|
-          (hcmd[:alias][id]['argv'] ||= []) << e1.text
+          (hcmd[:alias][id][:argv] ||= []) << e1.text
         end
         id
       end
@@ -72,26 +72,27 @@ module CIAX
           case e0.name
           when 'alias'
             e0.attr2item(p)
-            ag = (grp['alias'] ||= { caption: 'Alias', members: [] })
+            ag = (grp[:alias] ||= { caption: 'Alias', members: [] })
             ag[:members] << e0['id']
           else
-            e0.attr2item(p, 'ref')
+            e0.attr2item(p, :ref)
           end
         end
         init_watch(doc, dbi)
-        dbi['proj'] = PROJ
-        dbi['site_id'] = dbi['ins_id'] = dbi['id']
-        dbi['frm_site'] ||= dbi['id']
+        dbi[:proj] = PROJ
+        dbi[:site_id] = dbi[:ins_id] = dbi[:id]
+        dbi[:frm_site] ||= dbi[:id]
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
+      OPT.parse('r')
       begin
         dbi = Db.new.get(ARGV.shift)
-      rescue
-        Msg.usage('(opt) [id] (key) ..')
+      rescue InvalidID
+        OPT.usage('[id] (key) ..')
       end
-      puts dbi.path(ARGV)
+      puts OPT['r'] ? dbi.to_v : dbi.path(ARGV)
     end
   end
 end

@@ -25,7 +25,7 @@ module CIAX
       def init_command(doc, dbi)
         frm = init_frame(doc[:domain][:cmdframe]) { |e, r| init_cmd(e, r) }
         idx = init_index(doc[:domain][:command]) { |e, r| init_cmd(e, r) }
-        grp = { 'main' => { caption: 'Device Commands', members: idx.keys } }
+        grp = { :main => { caption: 'Device Commands', members: idx.keys } }
         dbi[:command] = { group: grp, index: idx, frame: frm }
         dbi
       end
@@ -35,7 +35,7 @@ module CIAX
         dbi[:field] = fld = {}
         frm = init_frame(doc[:domain][:rspframe]) { |e| init_rsp(e, fld) }
         idx = init_index(doc[:domain][:response]) { |e| init_rsp(e, fld) }
-        dbi['frm_id'] = dbi['id']
+        dbi[:frm_id] = dbi[:id]
         dbi[:response] = { index: idx, frame: frm }
         dbi
       end
@@ -78,10 +78,10 @@ module CIAX
       def init_cmd(e, rep = nil)
         case e.name
         when 'char', 'string'
-          attr = e.to_h
-          attr['val'] = rep.subst(attr['val']) if rep
-          verbose { "Data:[#{attr}]" }
-          attr
+          atrb = e.to_h
+          atrb[:val] = rep.subst(atrb[:val]) if rep
+          verbose { "Data:[#{atrb}]" }
+          atrb
         else
           e.name
         end
@@ -89,22 +89,22 @@ module CIAX
 
       def init_rsp(e, field)
         # Avoid override duplicated id
-        if (id = e['assign']) && !field.key?(id)
-          item = field[id] = { 'label' => e['label'] }
+        if (id = e[:assign]) && !field.key?(id)
+          item = field[id] = { :label => e[:label] }
         end
         case e.name
         when 'field'
-          attr = e.to_h
+          atrb = e.to_h
           item[:struct] = [] if item
-          verbose { "InitElement: #{attr}" }
-          attr
+          verbose { "InitElement: #{atrb}" }
+          atrb
         when 'array'
-          attr = e.to_h
-          idx = attr[:index] = []
+          atrb = e.to_h
+          idx = atrb[:index] = []
           e.each { |e1| idx << e1.to_h }
           item[:struct] = idx.map { |h| h['size'] } if item
-          verbose { "InitArray: #{attr}" }
-          attr
+          verbose { "InitArray: #{atrb}" }
+          atrb
         when 'ccrange', 'body', 'echo'
           e.name
         end
@@ -112,12 +112,13 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
+      OPT.parse('r')
       begin
         dbi = Db.new.get(ARGV.shift)
       rescue InvalidID
-        Msg.usage('[id] (key) ..')
+        OPT.usage('[id] (key) ..')
       end
-      puts dbi.path(ARGV)
+      puts OPT['r'] ? dbi.to_v : dbi.path(ARGV)
     end
   end
 end

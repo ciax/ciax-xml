@@ -17,21 +17,21 @@ module CIAX
         @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
         @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
         # For Array element
-        %w(active exec block int).each { |i| @data[i] ||= [] }
+        %i(active exec block int).each { |i| @data[i] ||= [] }
         # For Hash element
-        %w(crnt last res).each { |i| @data[i] ||= {} }
+        %i(crnt last res).each { |i| @data[i] ||= {} }
         # For Time element
-        %w(act_start act_end).each { |i| @data[i] ||= now_msec }
+        %i(act_start act_end).each { |i| @data[i] ||= now_msec }
         self
       end
 
       def active?
-        ! @data['active'].empty?
+        ! @data[:active].empty?
       end
 
       def block?(args)
         cid = args.join(':')
-        blkcmd = @data['block'].map { |ary| ary.join(':') }
+        blkcmd = @data[:block].map { |ary| ary.join(':') }
         verbose(!blkcmd.empty?) { "BLOCKING:#{blkcmd}" }
         return unless blkcmd.any? { |blk| Regexp.new(blk).match(cid) }
         Msg.cmd_err("Blocking(#{args})")
@@ -40,9 +40,9 @@ module CIAX
       # Update the next update time
       # Return rest time unless expired
       def next_upd
-        dif = ((@data['upd_next'] || 0) - now_msec) / 1000
+        dif = ((@data[:upd_next] || 0) - now_msec) / 1000
         return dif if dif.between?(0, @period)
-        @data['upd_next'] = now_msec + @period * 1000
+        @data[:upd_next] = now_msec + @period * 1000
         nil
       end
 

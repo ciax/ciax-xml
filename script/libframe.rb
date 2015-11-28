@@ -58,9 +58,9 @@ module CIAX
       # If cut str incldes terminetor, str will be trimmed
       def cut(e0)
         verbose { "Cut Start for [#{@frame.inspect}](#{@frame.size})" }
-        return verify(e0) if e0['val'] # Verify value
-        len = e0['length']
-        del = e0['delimiter']
+        return verify(e0) if e0[:val] # Verify value
+        len = e0[:length]
+        del = e0[:delimiter]
         if len
           verbose { "Cut by Size [#{len}]" }
           if len.to_i > @frame.size
@@ -88,7 +88,7 @@ module CIAX
         len = str.size
         verbose { "Cut String: [#{str.inspect}]" }
         # Pick Part
-        r = e0['slice']
+        r = e0[:slice]
         if r
           str = str.slice(*r.split(':').map(&:to_i))
           verbose { "Pick: [#{str.inspect}] by range=[#{r}]" }
@@ -141,26 +141,26 @@ module CIAX
       private
 
       def verify(e0)
-        ref = e0['val']
-        len = e0['length'] || ref.size
+        ref = e0[:val]
+        len = e0[:length] || ref.size
         str = @frame.slice!(0, len.to_i)
-        if e0['decode']
+        if e0[:decode]
           val = decode(e0, str)
           ref = expr(ref).to_s
         else
           val = str
         end
         if ref == val
-          verbose { "Verify:(#{e0['label']}) [#{ref.inspect}] OK" }
+          verbose { "Verify:(#{e0[:label]}) [#{ref.inspect}] OK" }
         else
-          cc_err("Mismatch(#{e0['label']}/#{e0['decode']}):[#{val.inspect}] (should be [#{ref.inspect}])")
+          cc_err("Mismatch(#{e0[:label]}/#{e0[:decode]}):[#{val.inspect}] (should be [#{ref.inspect}])")
         end
         cc_add(str)
         str
       end
 
       def decode(e0, code) # Chr -> Num
-        cdc = e0['decode']
+        cdc = e0[:decode]
         return code.to_s unless cdc
         case cdc
         when 'hexstr' # "FF" -> "255"
@@ -182,7 +182,7 @@ module CIAX
           num = ary.inject(0) { |a, e| a * 256 + e }
           base = 256
         end
-        case e0['sign']
+        case e0[:sign]
         when 'msb'
           range = base**code.size
           num = num < range / 2 ? num : num - range
@@ -192,8 +192,8 @@ module CIAX
       end
 
       def encode(e0, str) # Num -> Chr
-        str = e0['format'] % expr(str) if e0['format']
-        len = e0['length']
+        str = e0[:format] % expr(str) if e0[:format]
+        len = e0[:length]
         if len
           code = ''
           num = expr(str)

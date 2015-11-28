@@ -10,9 +10,9 @@ module CIAX
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       def initialize(id = nil) # Session ID for Loading
         super('record', 'steps')
-        self['id'] = id || self['time'].to_s # Session ID
-        self['status'] = 'ready'
-        self['result'] = 'busy'
+        self[:id] = id || self[:time].to_s # Session ID
+        self[:status] = 'ready'
+        self[:result] = 'busy'
       end
 
       def read(json_str = nil)
@@ -24,20 +24,20 @@ module CIAX
       def to_v
         msg = title
         @data.each { |i| msg << i.title + i.result }
-        msg << " (#{self['result']}) #{step_num}"
+        msg << " (#{self[:result]}) #{step_num}"
       end
 
       def step_num
-        "[#{size}/#{self['original_steps']}]"
+        "[#{size}/#{self[:original_steps]}]"
       end
 
       def busy?
-        self['result'] == 'busy'
+        self[:result] == 'busy'
       end
 
       def title
-        date = Time.at((self['time'] / 1000).round)
-        Msg.colorize('MACRO', 3) + format(":%s (%s)\n", self['label'], date)
+        date = Time.at((self[:time] / 1000).round)
+        Msg.colorize('MACRO', 3) + format(":%s (%s)\n", self[:label], date)
       end
     end
 

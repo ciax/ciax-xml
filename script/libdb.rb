@@ -100,11 +100,11 @@ module CIAX
       case e.name
       when 'par_num'
         attr = { type: 'num', list: e.text.split(',') }
-        attr['label'] = e['label'] if e['label']
+        attr[:label] = e[:label] if e[:label]
         (item[:parameters] ||= []) << attr
       when 'par_str'
         attr = { type: 'str', list: e.text.split(',') }
-        attr['label'] = e['label'] if e['label']
+        attr[:label] = e[:label] if e[:label]
         (item[:parameters] ||= []) << attr
       end
     end

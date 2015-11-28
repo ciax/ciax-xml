@@ -40,7 +40,7 @@ module CIAX
         key
       end
 
-      def attr2item(db, id = 'id', &at_proc) # deprecated
+      def attr2item(db, id = :id, &at_proc) # deprecated
         # <xml id='id' a='1' b='2'> => db[id][a]='1', db[id][b]='2'
         type?(db, Hash)
         key, atrb = _get_attr_(id, &at_proc)
@@ -58,7 +58,7 @@ module CIAX
             atrb[k] = v
           end
         end
-        key = atrb.delete(id) || Msg.give_up("No such key (#{id})")
+        key = atrb.delete(id).to_s || Msg.give_up("No such key (#{id})")
         [key, atrb]
       end
     end

@@ -65,10 +65,10 @@ module CIAX
           timeout = 60
         else
           @mode = 'DRV'
-          iocmd = @dbi['iocmd'].split(' ')
-          timeout = (sp['timeout'] || 10).to_i
+          iocmd = @dbi[:iocmd].split(' ')
+          timeout = (sp[:timeout] || 10).to_i
         end
-        @stream = Stream.new(@id, @dbi['version'], iocmd, sp['wait'], timeout, esc_code(sp['terminator']))
+        @stream = Stream.new(@id, @dbi[:version], iocmd, sp[:wait], timeout, esc_code(sp[:terminator]))
         @stream.ext_log unless OPT[:s]
         @stream.pre_open_proc = proc { @sv_stat.set(:strerr) }
         @stream.post_open_proc = proc { @sv_stat.reset(:strerr) }
@@ -76,7 +76,7 @@ module CIAX
         @cobj.rem.ext.def_proc do|ent, src|
           @sv_stat.reset(:comerr)
           @stream.snd(ent[:frame], ent.id)
-          @stat.conv(ent, @stream.rcv) if ent['response']
+          @stat.conv(ent, @stream.rcv) if ent[:response]
           @stat.flush if src != 'buffer'
           'OK'
         end

@@ -28,8 +28,8 @@ module CIAX
 
     def set_par(par, opt = {})
       cid = @cfg[:id]
-      if @cfg['argv'].is_a? Array
-        par = @cfg['argv']
+      if @cfg[:argv].is_a? Array
+        par = @cfg[:argv]
       else
         cid = [cid, *par].join(':')
       end
@@ -41,7 +41,7 @@ module CIAX
         self[cid]
       else
         ent = context_constant('Entity').new(@cfg, opt)
-        if @cfg['nocache']
+        if @cfg[:nocache]
           verbose { "SetPAR: Entity No Cache Saved (#{cid})" }
         else
           self[cid] = ent

@@ -8,8 +8,8 @@ module CIAX
     end
 
     def ext_log # logging with flatten
-      id = self['id']
-      ver = self['ver']
+      id = self[:id]
+      ver = self[:ver]
       verbose { "Log Initialize [#{id}/Ver.#{ver}]" }
       @queue = Queue.new
       @post_upd_procs << proc { @queue.push(to_j) }
@@ -32,11 +32,11 @@ module CIAX
 
     # Load JSON Logfile
     def self.load(str)
-      h = Msg.j2h(str)
-      give_up('Logline:Line is not rcv') unless /rcv/ =~ h['dir']
-      if h['base64']
+      h = Msg.j2sn(str)
+      give_up('Logline:Line is not rcv') unless /rcv/ =~ h[:dir]
+      if h[:base64]
         def h.binary
-          self['base64'].unpack('m').first
+          self[:base64].unpack('m').first
         end
       end
       h
@@ -44,7 +44,7 @@ module CIAX
 
     def ext_sqlog
       # Logging if version number exists
-      SqLog::Save.new(self['id'], @type).add_table(self)
+      SqLog::Save.new(self[:id], @type).add_table(self)
       self
     end
   end

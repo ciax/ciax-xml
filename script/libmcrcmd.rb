@@ -55,11 +55,11 @@ module CIAX
 
         def init_sel(seq)
           @body.each do|elem|
-            case elem['type']
+            case elem[:type]
             when 'select'
-              sel = elem['select']
+              sel = elem[:select]
               val = type?(self[:dev_list], App::List).getstat(elem)
-              seq << { 'type' => 'mcr', 'args' => sel[val] || sel['*'] }
+              seq << { :type => 'mcr', :args => sel[val] || sel['*'] }
             else
               seq << elem
             end

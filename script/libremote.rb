@@ -53,7 +53,7 @@ module CIAX
         def initialize(dom_cfg, atrb = {})
           atrb[:caption] = 'Internal Commands'
           super
-          @cfg['nocache'] = true
+          @cfg[:nocache] = true
         end
 
         def def_pars(n = 1)
@@ -76,15 +76,15 @@ module CIAX
           atrb[:caption] = 'External Commands'
           super
           dbi = type?(@cfg[:dbi], Dbi)
-          @cfg[:ver] ||= dbi['version']
+          @cfg[:ver] ||= dbi[:version]
           # Set items by DB
           cdb = dbi[:command]
           idx = cdb[:index]
           @dispgrp = @displist.put_sec
           cdb[:group].each do|gid, gat|
-            sg = @dispgrp.put_grp(gid, gat['caption'])
+            sg = @dispgrp.put_grp(gid, gat[:caption])
             gat[:members].each do|id|
-              sg.put_item(id, idx[id]['label'])
+              sg.put_item(id, idx[id][:label])
               add_item(id, cdb, idx[id])
             end
           end
@@ -96,19 +96,19 @@ module CIAX
           return unless cdb[:alias]
           sg = @dispgrp.put_grp('gal', 'Alias')
           cdb[:alias].each do|id, att|
-            item = idx[att['ref']].dup
+            item = idx[att[:ref]].dup
             item.update(att)
-            sg.put_item(id, att['label'])
+            sg.put_item(id, att[:label])
             add_item(id, cdb, item)
           end
         end
 
         def add_item(id, cdb, item)
-          label = item['label']
-          unit = item['unit']
-          label = "#{cdb[:unit][unit]['label']} #{label}" if unit
+          label = item[:label]
+          unit = item[:unit]
+          label = "#{cdb[:unit][unit][:label]} #{label}" if unit
           if item[:parameters].is_a? Array
-            label.gsub(/\$([\d]+)/, '%s') % item[:parameters].map { |e| e['label'] }
+            label.gsub(/\$([\d]+)/, '%s') % item[:parameters].map { |e| e[:label] }
           end
           new_item(id, item)
         end

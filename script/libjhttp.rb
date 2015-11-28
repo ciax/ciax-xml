@@ -11,7 +11,7 @@ module CIAX
     def ext_http(host)
       @host = host || 'localhost'
       verbose { "Initialize(#{@host})" }
-      self['id'] || Msg.cfg_err('ID')
+      self[:id] || Msg.cfg_err('ID')
       @pre_upd_procs << proc { load }
       load
       self

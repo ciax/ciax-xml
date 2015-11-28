@@ -25,7 +25,7 @@ module CIAX
           enclose("GetStatus:[#{id}]", "GetStatus:#{id}=[%s]") do
             flds = hash[:fields]
             if flds.empty?
-              put(id, hash[:default] || '') unless get(id)
+              self[:data][id] = hash[:default] || '' unless get(id)
               next
             end
             case hash[:type]
@@ -45,7 +45,7 @@ module CIAX
               verbose { "Formula:#{f}(#{val})(#{id})" }
             end
             val = hash[:format] % val if hash.key?(:format)
-            put(id, val.to_s)
+            self[:data][id] = val.to_s
           end
         end
         self
@@ -67,26 +67,26 @@ module CIAX
       def conv_num(hash)
         ary = hash[:fields].map { |e| get_field(e) }
         sign = (/^[+-]$/ =~ ary[0]) ? (ary.shift + '1').to_i : 1
-        data = ary.map(&:to_f).inject(0) { |a, e| a + e }
-        data /= ary.size if hash[:opration] == 'average'
-        sign * data
+        val = ary.map(&:to_f).inject(0) { |a, e| a + e }
+        val /= ary.size if hash[:opration] == 'average'
+        sign * val
       end
 
       def get_field(e)
         fld = type?(e, Hash)[:ref] || give_up("No field Key in #{e}")
-        data = @field.get(fld)
-        verbose(data.empty?) { "NoFieldContent in [#{fld}]" }
-        data = e[:conv][data] if e.key?(:conv)
-        data = (data == e[:negative]) ? '-' : '+' if /true|1/ =~ e[:sign]
-        verbose { "GetField[#{fld}]=[#{data.inspect}]" }
-        data
+        val = @field.get(fld)
+        verbose(val.empty?) { "NoFieldContent in [#{fld}]" }
+        val = e[:conv][val] if e.key?(:conv)
+        val = (val == e[:negative]) ? '-' : '+' if /true|1/ =~ e[:sign]
+        verbose { "GetField[#{fld}]=[#{val.inspect}]" }
+        val
       end
 
       def get_bin(e)
-        data = get_field(e).to_i
+        val = get_field(e).to_i
         inv = (/true|1/ =~ e[:inv])
         str = index_range(e[:bit]).map do|sft|
-          bit = (data >> sft & 1)
+          bit = (val >> sft & 1)
           bit = -(bit - 1) if inv
           bit.to_s
         end.join
@@ -112,17 +112,15 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libdevdb'
-      require 'libinsdb'
       require 'libfrmrsp'
       require 'libstatus'
       begin
+        stat = Status.new
         field = Frm::Field.new
-        id = STDIN.tty? ? ARGV.shift : field.read[:id]
-        idb = Ins::Db.new.get(id)
-        ddb = Dev::Db.new.get(idb[:frm_site])
+        ddb = Dev::Db.new.get(stat.dbi[:frm_site])
         field.setdbi(ddb).ext_rsp
         field.ext_file if STDIN.tty?
-        puts Status.new.setdbi(idb).ext_rsp(field)
+        puts stat.ext_rsp(field)
       rescue InvalidID
         Msg.usage '[site] | < field_file'
       end

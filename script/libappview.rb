@@ -87,11 +87,8 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       OPT.parse('rc', c: 'CSV output')
-      stat = Status.new
       begin
-        id = STDIN.tty? ? ARGV.shift : stat.read[:id]
-        dbi = Ins::Db.new.get(id)
-        stat.setdbi(dbi)
+        stat = Status.new
         view = View.new(stat)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd

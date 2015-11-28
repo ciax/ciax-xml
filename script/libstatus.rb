@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libdatax'
+require 'libvarx'
 require 'libinsdb'
 
 module CIAX
@@ -7,36 +7,25 @@ module CIAX
   module App
     # Status Data
     # All elements of @data are String
-    class Status < DataH
+    class Status < Varx
       # @ last*
       attr_reader :last
-      def initialize(id = nil, db = Ins::Db.new)
+      def initialize(dbi = nil)
         super('status')
         @last = {}
         @updated = now_msec
         @lastsave = now_msec
-        @adb = type?(db, CIAX::Db)
-        id = read[:id] unless STDIN.tty?
-p self
-p @data
-setdbi(@adb.get(id))
-      end
-
-      def setdbi(db)
-        super
+        setdbi(dbi||Ins::Db)
         @adbs = @dbi[:status][:index]
-        if @data.empty?
-          @data.update(@adbs.skeleton)
-        end
-        self
+        self[:data]=Hashx[@adbs.skeleton] unless self[:data]
       end
 
       def change?(k)
         verbose do
-          "Compare(#{k}) current=[#{@data[k]}]"\
+          "Compare(#{k}) current=[#{self[:data][k]}]"\
           " vs last=[#{@last[k]}]"
         end
-        @data[k] != @last[k]
+        self[:data][k] != @last[k]
       end
 
       def update?
@@ -45,7 +34,7 @@ setdbi(@adb.get(id))
 
       def refresh
         verbose { 'Status Refreshed' }
-        @last.update(@data)
+        @last.update(self[:data])
         @updated = self[:time]
         self
       end
@@ -54,8 +43,7 @@ setdbi(@adb.get(id))
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('h:')
       begin
-        stat = Status.new(ARGV.shift)
-puts stat
+        stat = Status.new
         if OPT[:h]
           stat.ext_http(OPT.host)
         else

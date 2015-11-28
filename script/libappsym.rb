@@ -35,7 +35,7 @@ module CIAX
           end
           verbose { "ID=#{key},Table=#{sid}" }
           self[:class][key] = 'alarm'
-          val = @data[hash[:ref] || key]
+          val = self[:data][hash[:ref] || key]
           self[:msg][key] = "N/A(#{val})"
           numeric = false
           tbl.each do|sym|
@@ -75,12 +75,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libinsdb'
       begin
         stat = Status.new
-        id = STDIN.tty? ? ARGV.shift : stat.read[:id]
-        dbi = Ins::Db.new.get(id)
-        stat.setdbi(dbi).ext_sym
+        stat.ext_sym
         stat.ext_file if STDIN.tty?
         puts stat.upd
       rescue InvalidID

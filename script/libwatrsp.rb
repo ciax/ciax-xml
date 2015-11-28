@@ -134,7 +134,7 @@ module CIAX
       def sync
         @list.each do|i|
           self[:last][i] = self[:crnt][i]
-          self[:crnt][i] = @stat.get(i)
+          self[:crnt][i] = @stat[:data][i]
         end
       end
 
@@ -144,7 +144,7 @@ module CIAX
         rary = []
         cklst.each do|ckitm|
           vn = ckitm[:var]
-          val = @stat.get(vn)
+          val = @stat[:data][vn]
           case ckitm[:type]
           when 'onchange'
             cri = self[:last][vn]
@@ -202,11 +202,8 @@ module CIAX
       OPT.parse('t:', t: 'test conditions[key=val,..]')
       begin
         stat = App::Status.new
-        id = STDIN.tty? ? ARGV.shift : stat.read['id']
-        dbi = Ins::Db.new.get(id)
-        stat.setdbi(dbi)
         stat.ext_file if STDIN.tty?
-        event = Event.new.setdbi(dbi).ext_rsp(stat)
+        event = Event.new.setdbi(stat.dbi).ext_rsp(stat)
         if (t = OPT[:t])
           stat.str_update(t)
         end

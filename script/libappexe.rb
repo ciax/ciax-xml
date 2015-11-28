@@ -22,7 +22,7 @@ module CIAX
         @cfg[:ver] = @dbi[:version]
         @cfg[:frm_site] = @dbi[:frm_site]
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
-        @stat = Status.new.setdbi(@dbi)
+        @stat = Status.new(@dbi)
         @batch_interrupt = []
         init_server
         init_command

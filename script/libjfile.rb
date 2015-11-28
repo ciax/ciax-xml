@@ -13,7 +13,7 @@ module CIAX
       self[:id] || Msg.cfg_err('No ID')
       @jsondir = vardir('json')
       @thread = Thread.current # For Thread safe
-      read
+      load
       self
     end
 

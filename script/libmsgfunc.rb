@@ -19,12 +19,6 @@ module CIAX
     end
 
     def j2h(json_str = nil)
-      JSON.parse(json_str)
-    rescue JSON::ParserError
-      usr_err('NOT JSON')
-    end
-
-    def j2sn(json_str = nil)
       JSON.parse(json_str, symbolize_names: true)
     rescue JSON::ParserError
       usr_err('NOT JSON')

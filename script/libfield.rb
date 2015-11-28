@@ -59,8 +59,6 @@ module CIAX
             end
           when nil
             break
-          else
-            i = i.to_sym
           end
           vname << i
           verbose { "Type[#{h.class}] Name[#{i}]" }

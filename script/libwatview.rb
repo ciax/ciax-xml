@@ -53,7 +53,7 @@ module CIAX
 
       def upd_view
         self[:time] = @event[:time]
-        %i(exec block int act_start act_end upd_next).each do |id|
+        %i(exec block int act_time upd_next).each do |id|
           self[id] = @event.get(id)
         end
         upd_stat
@@ -80,7 +80,7 @@ module CIAX
 
       def view_time(vw)
         vw << item('Elapsed', elps_date(self[:time], now_msec))
-        vw << item('ActiveTime', elps_sec(self[:act_start], self[:act_end]))
+        vw << item('ActiveTime', elps_sec(*self[:act_time]))
         vw << item('ToNextUpdate', elps_sec(now_msec, self[:upd_next]))
       end
 
@@ -124,7 +124,7 @@ module CIAX
       OPT.parse('r')
       event = Event.new
       begin
-        id = STDIN.tty? ? ARGV.shift : event.read['id']
+        id = STDIN.tty? ? ARGV.shift : event.read[:id]
         dbi = Ins::Db.new.get(id)
         event.setdbi(dbi)
         wview = View.new(event)

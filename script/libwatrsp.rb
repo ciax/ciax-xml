@@ -33,19 +33,20 @@ module CIAX
           upd
         end
         init_auto(wdb)
+        upd
         self
       end
 
       def queue(src, pri, batch = [])
         @last_updated = self[:time]
         batch.each do|args|
-          @data[:exec] << [src, pri, args]
+          self[:exec] << [src, pri, args]
         end
         self
       end
 
       def auto_exec
-        return self unless @data[:exec].empty?
+        return self unless self[:exec].empty?
         verbose { format('Auto Update(%s, %s)', self[:time], @regexe) }
         begin
           queue('auto', 3, @regexe)
@@ -72,27 +73,27 @@ module CIAX
         self
       end
 
-      # @data[:active] : Array of event ids which meet criteria
-      # @data[:exec] : Command queue which contains commands issued as event
-      # @data[:block] : Array of commands (units) which are blocked during busy
-      # @data[:int] : List of interrupt commands which is effectie during busy
+      # self[:active] : Array of event ids which meet criteria
+      # self[:exec] : Command queue which contains commands issued as event
+      # self[:block] : Array of commands (units) which are blocked during busy
+      # self[:int] : List of interrupt commands which is effectie during busy
       def upd_core
         return self unless @stat[:time] > @last_updated
         @last_updated = self[:time]
         sync
-        @data.values.each { |a| a.clear if a.is_a? Array }
+        %i(active exec block int).each { |s| self[s].clear }
         @windex.each do|id, item|
           next unless check(id, item)
           item[:act].each do|key, ary|
             if key == :exec
               ary.each do|args|
-                @data[:exec] << ['event', 2, args]
+                self[:exec] << ['event', 2, args]
               end
             else
-              @data[key.to_s].concat(ary)
+              self[key.to_s].concat(ary)
             end
           end
-          @data[:active] << id
+          self[:active] << id
         end
         upd_event
         self
@@ -124,7 +125,7 @@ module CIAX
           end
         elsif active?
           @sv_stat.set(:event)
-          @data[:act_start] = @data[:act_end] = @last_updated
+          self[:act_time][1] = @last_updated
           @on_act_procs.each { |p| p.call(self) }
         end
         self
@@ -132,8 +133,8 @@ module CIAX
 
       def sync
         @list.each do|i|
-          @data[:last][i] = @data[:crnt][i]
-          @data[:crnt][i] = @stat.get(i)
+          self[:last][i] = self[:crnt][i]
+          self[:crnt][i] = @stat.get(i)
         end
       end
 
@@ -146,7 +147,7 @@ module CIAX
           val = @stat.get(vn)
           case ckitm[:type]
           when 'onchange'
-            cri = @data[:last][vn]
+            cri = self[:last][vn]
             if cri
               if (tol = ckitm[:tolerance])
                 res = ((cri.to_f - val.to_f).abs > tol.to_f)
@@ -183,7 +184,7 @@ module CIAX
           res = !res if /true|1/ =~ ckitm['inv']
           rary << res
         end
-        @data[:res][id] = rary
+        self[:res][id] = rary
         rary.all?
       end
     end

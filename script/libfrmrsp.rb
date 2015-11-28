@@ -143,7 +143,7 @@ module CIAX
         ent = cobj.set_cmd(cid.split(':'))
         field.conv(ent, res)
       end
-      puts STDOUT.tty? ? field : field.to_j
+      puts field
     end
   end
 end

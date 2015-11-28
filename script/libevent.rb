@@ -26,7 +26,7 @@ module CIAX
       end
 
       def active?
-        ! self[:active].empty?
+        !self[:active].empty?
       end
 
       def block?(args)
@@ -68,7 +68,7 @@ module CIAX
         else
           event.ext_file
         end
-        puts STDOUT.tty? ? event : event.to_j
+        puts event
       rescue InvalidID
         OPT.usage('(opt) [site]')
       end

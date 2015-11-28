@@ -59,7 +59,7 @@ module CIAX
             when 'select'
               sel = elem[:select]
               val = type?(self[:dev_list], App::List).getstat(elem)
-              seq << { :type => 'mcr', :args => sel[val] || sel['*'] }
+              seq << { type: 'mcr', args: sel[val] || sel['*'] }
             else
               seq << elem
             end

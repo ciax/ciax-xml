@@ -13,7 +13,7 @@ module CIAX
         wdb = doc[:domain][:watch]
         cmdgrp = db[:command][:group]
         idx = {}
-        regular = { :period => 300, :exec => [] }
+        regular = { period: 300, exec: [] }
         Repeat.new.each(wdb) do|e0, r0|
           case e0.name
           when 'regular'

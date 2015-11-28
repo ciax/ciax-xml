@@ -13,7 +13,7 @@ module CIAX
       def get(id = nil)
         dbi = super(id || PROJ || ARGV.shift)
         if inc = dbi[:include]
-          dbi=super(inc).cover(dbi)
+          dbi = super(inc).cover(dbi)
         end
         dbi
       end

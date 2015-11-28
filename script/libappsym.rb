@@ -82,8 +82,7 @@ module CIAX
         dbi = Ins::Db.new.get(id)
         stat.setdbi(dbi).ext_sym
         stat.ext_file if STDIN.tty?
-        stat.upd
-        puts STDOUT.tty? ? stat : stat.to_j
+        puts stat.upd
       rescue InvalidID
         Msg.usage '[site] | < status_file'
       end

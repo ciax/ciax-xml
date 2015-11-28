@@ -6,6 +6,7 @@ module CIAX
     include ViewPath
 
     def to_s
+      return to_j unless STDOUT.tty?
       case @vmode
       when :v
         to_v
@@ -35,8 +36,9 @@ module CIAX
       to_r
     end
 
+    # For Exe @def_proc
     def vmode(mode)
-      @vmode = mode
+      @vmode = mode.to_sym
       ''
     end
   end

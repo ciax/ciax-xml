@@ -18,6 +18,12 @@ module CIAX
         @index.update(adbs[:alias]) if adbs.key?(:alias)
         # Just additional data should be provided
         %i(data class msg).each { |key| stat[key] ||= {} }
+        upd_view
+      end
+
+      # For Shell raw mode
+      def to_r
+        @stat.to_r
       end
 
       def to_csv
@@ -31,10 +37,6 @@ module CIAX
           end
         end
         str
-      end
-
-      def to_r
-        @stat.to_r
       end
 
       def to_v
@@ -54,20 +56,24 @@ module CIAX
         lines.join("\n")
       end
 
+      def to_s
+        @vmode == :c ? to_csv : super
+      end
+
       private
 
       def upd_view
-        self['gtime'] = { :caption => '', :lines => [hash = {}] }
-        hash[:time] = { :label => 'TIMESTAMP', :msg => Msg.date(@stat[:time]) }
-        hash['elapsed'] = { :label => 'ELAPSED', :msg => Msg.elps_date(@stat[:time]) }
+        self['gtime'] = { caption: '', lines: [hash = {}] }
+        hash[:time] = { label: 'TIMESTAMP', msg: Msg.date(@stat[:time]) }
+        hash['elapsed'] = { label: 'ELAPSED', msg: Msg.elps_date(@stat[:time]) }
         @group.each do|k, gdb|
           cap = gdb[:caption] || next
-          self[k] = { :caption => cap, :lines => [] }
+          self[k] = { caption: cap, lines: [] }
           col = gdb[:column] || 1
           gdb[:members].each_slice(col.to_i) do|hline|
             hash = {}
             hline.each do|id|
-              h = hash[id] = { :label => @index[id][:label] || id.upcase }
+              h = hash[id] = { label: @index[id][:label] || id.upcase }
               h[:msg] = @stat[:msg][id] || @stat.get(id)
               h[:class] = @stat[:class][id] if @stat[:class].key?(id)
             end
@@ -89,11 +95,8 @@ module CIAX
         view = View.new(stat)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
-        if OPT[:c]
-          puts view.to_csv
-        else
-          puts STDOUT.tty? ? view : view.to_j
-        end
+        view.vmode(:c) if OPT[:c]
+        puts view
       rescue InvalidID
         OPT.usage '(opt) [site] | < status_file'
       end

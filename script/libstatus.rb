@@ -56,7 +56,7 @@ module CIAX
         else
           stat.ext_file
         end
-        puts STDOUT.tty? ? stat : stat.to_j
+        puts stat
       rescue InvalidID
         OPT.usage '(opt) [id]'
       end

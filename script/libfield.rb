@@ -120,8 +120,7 @@ module CIAX
       begin
         dbi = Dev::Db.new.get(ARGV.shift)
         stat.setdbi(dbi)
-        stat.ext_file
-        puts STDOUT.tty? ? stat : stat.to_j
+        puts stat.ext_file
       rescue InvalidID
         OPT.usage '(opt) [id]'
       end

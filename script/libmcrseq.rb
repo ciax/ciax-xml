@@ -21,8 +21,8 @@ module CIAX
         @record.ext_rsp(@cfg)
         @record[:pid] = pid
         @id = @record[:id]
-        @sv_stat = (@cfg[:sv_stat]||{})
-        @sv_stat[:run]||= []
+        @sv_stat = (@cfg[:sv_stat] || {})
+        @sv_stat[:run] ||= []
         @sv_stat[:sid] = @id
         @title = @record.title
         @submcr_proc = submcr_proc

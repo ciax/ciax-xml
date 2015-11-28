@@ -71,7 +71,7 @@ module CIAX
       def upd_cond(id, cond)
         cond.each_with_index do |h, i|
           v = h[:var]
-          h[:res] = (@event.get(:res)[id]||[])[i]
+          h[:res] = (@event.get(:res)[id] || [])[i]
           h[:val] = @event.get(:crnt)[v]
           h[:cri] = @event.get(:last)[v] if h[:type] == 'onchange'
         end
@@ -129,7 +129,7 @@ module CIAX
         event.setdbi(dbi)
         wview = View.new(event)
         event.ext_file if STDIN.tty?
-        puts STDOUT.tty? ? wview : wview.to_j
+        puts wview
       rescue InvalidID
         OPT.usage('(opt) [site] | < event_file')
       end

@@ -210,7 +210,7 @@ module CIAX
         if (t = OPT[:t])
           stat.str_update(t)
         end
-        puts STDOUT.tty? ? event : event.to_j
+        puts event
       rescue InvalidID
         OPT.usage('(opt) [site] | < status_file')
       end

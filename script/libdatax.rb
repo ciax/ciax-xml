@@ -64,7 +64,7 @@ module CIAX
       verbose { 'Convert [:data] to @data' }
       inc = delete(@data_name)
       return unless _check_setdata_(inc)
-      inc=_key2str(inc) if @data.is_a?(Hash)
+      inc = _key2str(inc) if @data.is_a?(Hash)
       @data.replace(inc)
       self
     end
@@ -73,7 +73,7 @@ module CIAX
       verbose { 'Marge [:data] to @data' }
       inc = delete(@data_name)
       return unless _check_setdata_(inc)
-      inc=_key2str(inc) if @data.is_a?(Hash)
+      inc = _key2str(inc) if @data.is_a?(Hash)
       @data.deep_update(inc)
       self
     end
@@ -101,8 +101,8 @@ module CIAX
     end
 
     def _key2str(hash)
-      res={}
-      hash.each{ |k,v| res[k.to_s] = v}
+      res = {}
+      hash.each { |k, v| res[k.to_s] = v }
       res
     end
   end

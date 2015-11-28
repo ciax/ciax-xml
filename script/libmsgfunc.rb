@@ -18,8 +18,17 @@ module CIAX
       eval('"' + str + '"')
     end
 
+    # variable keys of db is String
+    # other fixed keys are Symbol
     def j2h(json_str = nil)
-      JSON.parse(json_str, symbolize_names: true)
+      res = JSON.parse(json_str, symbolize_names: true)
+      res.values.each do |v|
+        next unless v.is_a? Hash
+        sv = {}
+        v.each{ |k,v| sv[k.to_s] = v }
+        v.replace sv
+      end
+      res
     rescue JSON::ParserError
       usr_err('NOT JSON')
     end

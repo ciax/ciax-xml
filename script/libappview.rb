@@ -87,7 +87,7 @@ module CIAX
         dbi = Ins::Db.new.get(id)
         stat.setdbi(dbi)
         view = View.new(stat)
-        stat.ext_file.load if STDIN.tty?
+        stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
         if OPT[:c]
           puts view.to_csv

@@ -130,7 +130,7 @@ module CIAX
       OPT.parse('m', m: 'merge file')
       OPT.usage('(opt) < logline') if STDIN.tty?
       str = gets(nil) || exit
-      res = JsLog.load(str)
+      res = JsLog.read(str)
       id = res[:id]
       cid = res[:cmd]
       dbi = Dev::Db.new.get(id)

@@ -55,7 +55,7 @@ module CIAX
 
       def ext_test
         @mode = 'TEST'
-        @stat.ext_sym.ext_file.load
+        @stat.ext_sym.ext_file
         @cobj.get('interrupt').def_proc do
           # "INTERRUPT(#{@batch_interrupt})"
           'INTERRUPT'

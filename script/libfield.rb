@@ -48,7 +48,6 @@ module CIAX
         Msg.give_up('Nill Key') unless key
         return @data[key] if @data.key?(key)
         vname = []
-p @data
         dat = key.split(':').inject(@data) do|h, i|
           case h
           when Array
@@ -119,7 +118,7 @@ p @data
       begin
         dbi = Dev::Db.new.get(ARGV.shift)
         stat.setdbi(dbi)
-        stat.ext_file.read
+        stat.ext_file
         puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID
         OPT.usage '(opt) [id]'

@@ -48,7 +48,7 @@ module CIAX
 
       def ext_test
         @mode = 'TEST'
-        @stat.ext_file.load
+        @stat.ext_file
         @cobj.rem.ext.def_proc { 'TEST' }
         @cobj.get('set').def_proc do|ent|
           @stat.rep(ent.par[0], ent.par[1])

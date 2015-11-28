@@ -45,7 +45,7 @@ module CIAX
       OPT.parse('r')
       OPT.usage '(-r) [id] (< file)' if STDIN.tty? && ARGV.size < 1
       if STDIN.tty?
-        puts Record.new(ARGV.shift).ext_file.load
+        puts Record.new(ARGV.shift).ext_file
       else
         puts Record.new.read
       end

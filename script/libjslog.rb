@@ -30,8 +30,8 @@ module CIAX
       self
     end
 
-    # Load JSON Logfile
-    def self.load(str)
+    # Read JSON Logfile
+    def self.read(str)
       h = Msg.j2sn(str)
       give_up('Logline:Line is not rcv') unless /rcv/ =~ h[:dir]
       if h[:base64]

@@ -8,11 +8,11 @@ module CIAX
     # Query options
     class Query
       include Msg
-      # Record should have ['option'] key
+      # Record should have [:option] key
       def initialize(stat, valid_keys)
         # Datax#put() will access to header, but get() will access @data
         @stat = type?(stat, Datax)
-        @stat.put('status', 'ready')
+        @stat.put(:status, 'ready')
         @valid_keys = valid_keys
         @que_cmd = Queue.new
         @que_res = Queue.new
@@ -20,13 +20,13 @@ module CIAX
 
       # For prompt
       def to_v
-        st = @stat['status']
+        st = @stat[:status]
         "(#{st})" + _options
       end
 
       # Communicate with forked macro
       def reply(ans)
-        if @stat['status'] == 'query'
+        if @stat[:status] == 'query'
           @que_cmd << ans
           @que_res.pop
         else
@@ -37,11 +37,11 @@ module CIAX
       def query(cmds, sub_stat)
         return true if OPT[:n]
         @valid_keys.replace(cmds)
-        sub_stat.put('option', cmds)
-        @stat.put('status', 'query')
+        sub_stat.put(:option, cmds)
+        @stat.put(:status, 'query')
         res = Msg.fg? ? _input_tty : _input_que
-        sub_stat.put('action', res)
-        @stat.put('status', 'run')
+        sub_stat.put(:action, res)
+        @stat.put(:status, 'run')
         _judge(res)
       ensure
         @valid_keys.clear

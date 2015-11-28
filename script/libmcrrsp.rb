@@ -16,15 +16,15 @@ module CIAX
       # cfg doesn't change
       def ext_rsp(cfg)
         @cfg = type?(cfg, Config)
-        self['ver'] = @cfg[:ver] || '0' # Version
-        self['cid'] = @cfg[:cid] # Command ID (cmd:par)
-        self['label'] = @cfg[:label] # Label for CID
-        self['original_steps'] = @cfg[:sequence].size
+        self[:ver] = @cfg[:ver] || '0' # Version
+        self[:cid] = @cfg[:cid] # Command ID (cmd:par)
+        self[:label] = @cfg[:label] # Label for CID
+        self[:original_steps] = @cfg[:sequence].size
         self
       end
 
       def start
-        self['start'] = now_msec.to_s
+        self[:start] = now_msec.to_s
         title
       end
 
@@ -34,7 +34,7 @@ module CIAX
           verbose { 'Propagate Step#upd -> Record#upd' }
           post_upd
         end
-        step['depth'] = depth
+        step[:depth] = depth
         @data << step
         step
       ensure
@@ -42,9 +42,9 @@ module CIAX
       end
 
       def finish
-        self['total_time'] = Msg.elps_sec(self['time'])
-        self['status'] = 'end'
-        self['result']
+        self[:total_time] = Msg.elps_sec(self[:time])
+        self[:status] = 'end'
+        self[:result]
       ensure
         post_upd
       end

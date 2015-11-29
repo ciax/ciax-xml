@@ -25,6 +25,10 @@ module CIAX
         self
       end
 
+      def setdbi(dbi = nil)
+        super(dbi||Ins::Db)
+      end
+
       def active?
         !self[:active].empty?
       end
@@ -59,10 +63,8 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       OPT.parse('h:')
-      event = Event.new
       begin
-        dbi = Ins::Db.new.get(ARGV.shift)
-        event.setdbi(dbi)
+        event = Event.new.setdbi
         if OPT.host
           event.ext_http(OPT.host)
         else

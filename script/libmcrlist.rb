@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libmcrseq'
+require 'libparam'
 # CIAX-XML
 module CIAX
   # Macro Layer
@@ -8,9 +9,9 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     class List < Hashx
       attr_reader :records, :threads
-      def initialize(&post_add_proc)
+      def initialize(par)
         super
-        @post_add_proc = post_add_proc
+        @par = type?(par, Parameter)
         @records = Hashx.new
         @threads = ThreadGroup.new
       end
@@ -26,7 +27,7 @@ module CIAX
         @threads.add(seq.fork) # start immediately
         @records[seq.id] = seq.record
         put(seq.id, seq)
-        @post_add_proc.call(seq.id) if @post_add_proc
+        @par.add(seq.id)
         seq
       end
 
@@ -43,6 +44,7 @@ module CIAX
           delete(id)
           @records.delete(id)
         end
+        @par.clean(alives)
         self
       end
     end

@@ -49,12 +49,9 @@ module CIAX
       end
 
       def _init_sub_list_
-        @sub_list = List.new do |sid|
-          @par.add(sid) if sid
-        end
+        @sub_list = List.new(@par)
         @records = @sub_list.records
         @pre_exe_procs << proc do
-          @par.flush(@sub_list.keys)
           @sv_stat[:sid] = ''
         end
       end

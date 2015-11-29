@@ -26,7 +26,7 @@ module CIAX
       end
 
       def setdbi(dbi = nil)
-        super(dbi||Ins::Db)
+        super(dbi || Ins::Db)
       end
 
       def active?

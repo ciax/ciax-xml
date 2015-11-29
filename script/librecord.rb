@@ -1,29 +1,31 @@
 #!/usr/bin/ruby
-require 'libdatax'
+require 'libvarx'
 require 'libmcrprt'
 
 module CIAX
   # Macro Layer
   module Mcr
     # Macro Record
-    class Record < DataA
+    class Record < Varx
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       def initialize(id = nil) # Session ID for Loading
-        super('record', 'steps')
+        super('record')
         self[:id] = id || self[:time].to_s # Session ID
+        @steps = self[:steps] = Arrayx.new
         self[:status] = 'ready'
         self[:result] = 'busy'
+
       end
 
       def read(json_str = nil)
         super
-        @data.each { |i| i.extend(PrtShare) }
+        @steps.each { |i| i.extend(PrtShare) }
         self
       end
 
       def to_v
         msg = title
-        @data.each { |i| msg << i.title + i.result }
+        @steps.each { |i| msg << i.title + i.result }
         msg << " (#{self[:result]}) #{step_num}"
       end
 
@@ -33,6 +35,10 @@ module CIAX
 
       def busy?
         self[:result] == 'busy'
+      end
+
+      def last
+        @steps.last
       end
 
       def title

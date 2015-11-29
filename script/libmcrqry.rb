@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'thread'
-require 'libdatax'
+require 'libvarx'
 
 module CIAX
   # Macro layer
@@ -11,7 +11,7 @@ module CIAX
       # Record should have [:option] key
       def initialize(stat, valid_keys)
         # Datax#put() will access to header, but get() will access @data
-        @stat = type?(stat, Datax)
+        @stat = type?(stat, Varx)
         @stat.put(:status, 'ready')
         @valid_keys = valid_keys
         @que_cmd = Queue.new

@@ -87,7 +87,7 @@ module CIAX
 
     # Execute recieved command
     def exec_buf
-      while (args = pick)
+      while (args = _reorder_cmd_)
         @recv_proc.call(args, 'buffer')
       end
     rescue
@@ -97,18 +97,18 @@ module CIAX
       sv_dw
     end
 
-    # Remove duplicated args and pop one
-    def pick
+    # Remove duplicated args and unshift one
+    def _reorder_cmd_
       args = nil
       cids = []
-      @outbuf.each { |ary| args = fetch_arg(args, ary, cids) }
+      @outbuf.each { |ary| args = _get_args_(args, ary, cids) }
       cids.uniq!
       flush if cids.size < @sv_stat[:busy].size
       @sv_stat[:busy].replace(cids)
       args
     end
 
-    def fetch_arg(args, ary, cids)
+    def _get_args_(args, ary, cids)
       if args
         ary.delete_if do |p|
           warning("remove duplicated cmd #{args.inspect}") if p[0] == args

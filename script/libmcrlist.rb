@@ -9,10 +9,10 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     class List < Hashx
       attr_reader :records, :threads
-      def initialize(par)
-        super
+      def initialize(par, records = Records.new)
+        super()
         @par = type?(par, Parameter)
-        @records = Hashx.new
+        @records = type?(records, Records)
         @threads = ThreadGroup.new
       end
 
@@ -46,6 +46,23 @@ module CIAX
         end
         @par.clean(alives)
         self
+      end
+    end
+
+    class Records < Hashx
+      def ext_http(host)
+        @host = host
+        self
+      end
+
+      def upd
+        values.each{|rec| rec.upd }
+        self
+      end
+
+      def get(id)
+        return self[id] if self[id]
+        self[id] = Record.new(id).ext_http(@host)
       end
     end
   end

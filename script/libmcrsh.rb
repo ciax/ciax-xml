@@ -23,7 +23,7 @@ module CIAX
       private
 
       def _init_view_
-        @view = View.new(@id, @par, @records)
+        @view = View.new(@id, @par, @stat)
         @cfg[:output] = @view
         @post_exe_procs << proc { @view.upd }
         @prompt_proc = proc { @view.upd.index }

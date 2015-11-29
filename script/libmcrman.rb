@@ -15,12 +15,13 @@ module CIAX
         _init_domain_
         _init_sv_stat_
         _init_net_
+        @stat = Records.new
         @mode = 'MCR'
-        ext_driver
+        OPT[:l] ? ext_client : ext_driver
       end
 
       def ext_shell
-        @cfg[:output] = @sub_list.records
+        @cfg[:output] = @stat
         extend(Shell).ext_shell
       end
 
@@ -49,8 +50,8 @@ module CIAX
       end
 
       def _init_sub_list_
-        @sub_list = List.new(@par)
-        @records = @sub_list.records
+        @sub_list = List.new(@par,@stat)
+        @stat = @sub_list.records
         @pre_exe_procs << proc do
           @sv_stat[:sid] = ''
         end

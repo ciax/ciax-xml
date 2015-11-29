@@ -60,7 +60,7 @@ module CIAX
       post_upd
     end
 
-    def to_s
+    def to_v
       verbose { "Shell\n" + inspect }
       @db.map { |k, v| v if self[k] }.join('')
     end

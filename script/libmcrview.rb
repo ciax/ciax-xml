@@ -6,11 +6,12 @@ module CIAX
   # Macro Layer
   module Mcr
     # Macro Man View
-    class View < DataH
+    class View < Varx
       def initialize(id, par, records = {})
         super('mcr')
         @par = type?(par, Parameter)
         @records = records
+        @list = Hashx.new
         @all_keys = []
         @ciddb = { '0' => 'user' }
         @id = id
@@ -35,14 +36,14 @@ module CIAX
       end
 
       def clear
-        (keys - @all_keys).each { |id| delete(id) }
+        (keys - @all_keys).each { |id| @list.delete(id) }
         self
       end
 
       private
 
       def upd_core
-        pids = values.map { |r| r[:pid] }
+        pids = @list.values.map { |r| r[:pid] }
         pids.delete('0')
         @all_keys.concat(pids + @par.list).uniq!
         @all_keys.each { |id| _upd_or_gen_(id) }
@@ -51,13 +52,13 @@ module CIAX
       end
 
       def _upd_or_gen_(id)
-        return @data[id].upd if @data.key?(id)
-        r = put(id, get_rec(id))
+        return @list.get(id).upd if @list.key?(id)
+        r = @list.put(id, get_rec(id))
         @ciddb[id] = r[:cid] unless @ciddb.key?(id)
       end
 
       def _crnt_
-        @data[@par.current]
+        @list.get(@par.current)
       end
 
       def get_rec(id)
@@ -73,7 +74,7 @@ module CIAX
       end
 
       def _item_(id, idx)
-        rec = @data[id]
+        rec = @list[id]
         title = "[#{idx}] (#{id})(by #{@ciddb[rec[:pid]]})"
         msg = "#{rec[:cid]} #{rec.step_num}"
         msg << _result_(rec)

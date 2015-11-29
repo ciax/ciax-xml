@@ -13,7 +13,7 @@ module CIAX
         super('field')
         # Proc for Terminate process of each individual commands (Set upper layer's update);
         @flush_procs = []
-        setdbi(dbi || Dev::Db)
+        setdbi(dbi,Dev::Db)
         self[:data] = _init_field_ unless self[:data]
       end
 

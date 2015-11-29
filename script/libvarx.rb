@@ -20,13 +20,15 @@ module CIAX
       # Setting (Not shown in JSON)
     end
 
-    def setdbi(obj = nil)
+    def setdbi(obj = nil,mod = Db)
       case obj
       when Dbi
         dbi = obj
-      when Module
+      when String
+        dbi = mod.new.get(obj)
+      else
         id = STDIN.tty? ? ARGV.shift : read[:id]
-        dbi = obj.new.get(id)
+        dbi = mod.new.get(id)
       end
       @dbi = type?(dbi, Dbi)
       _setid(dbi[:site_id] || dbi[:id])

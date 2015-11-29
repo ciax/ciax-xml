@@ -115,10 +115,8 @@ module CIAX
       require 'libfrmrsp'
       require 'libstatus'
       begin
-        stat = Status.new
-        field = Frm::Field.new
-        ddb = Dev::Db.new.get(stat.dbi[:frm_site])
-        field.setdbi(ddb).ext_rsp
+        field = Frm::Field.new.ext_rsp
+        stat = Status.new(field[:id])
         field.ext_file if STDIN.tty?
         puts stat.ext_rsp(field)
       rescue InvalidID

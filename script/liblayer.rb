@@ -11,7 +11,7 @@ module CIAX
       super(Config.new, atrb)
       obj = (OPT[:x] ? Hex::List : Wat::List).new(@cfg)
       loop do
-        put(m2id(obj.class, -2), obj)
+        @list.put(m2id(obj.class, -2), obj)
         obj = obj.sub_list || break
       end
     end
@@ -28,11 +28,11 @@ module CIAX
       def ext_shell
         super(Jump)
         @cfg[:jump_groups] = [@jumpgrp]
-        keys.each do|id|
-          get(id).ext_shell
+        @list.keys.each do|id|
+          @list.get(id).ext_shell
           @jumpgrp.add_item(id, id.capitalize + ' mode')
         end
-        @current ||= OPT.layer || keys.first
+        @current ||= OPT.layer || @list.keys.first
         self
       end
     end

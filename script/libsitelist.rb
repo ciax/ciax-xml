@@ -31,8 +31,8 @@ module CIAX
       end
 
       def get(site)
-        if @data.key?(site)
-          cobj = super
+        if @list.key?(site)
+          cobj = @list.get(site)
           @sub_list.get(cobj.sub.id) if @sub_list
         else
           cobj = add(site)
@@ -41,8 +41,8 @@ module CIAX
         cobj
       end
 
-      def getstat(attr)
-        get(attr['site']).stat.get(attr['var'])
+      def getstat(atrb)
+        get(atrb[:site]).stat.get(atrb[:var])
       end
 
       def server(ary)
@@ -64,7 +64,7 @@ module CIAX
       def add(site)
         # layer_module can be Frm,App,Wat,Hex
         obj = layer_module::Exe.new(site, @cfg)
-        put(site, obj)
+        @list.put(site, obj)
       end
 
       # Shell extension for Site::List

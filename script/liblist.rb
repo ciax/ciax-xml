@@ -1,16 +1,17 @@
 #!/usr/bin/ruby
-require 'libdatax'
+require 'libvarx'
 require 'liblocal'
 
 module CIAX
   # This is parent of Layer List, Site List.
-  class List < DataH
+  class List < Varx
     attr_reader :cfg
     # level can be Layer or Site
     def initialize(cfg, attr = {})
       @cfg = cfg.gen(self).update(attr)
-      super(m2id(@cfg[:obj].class, -2), {}, 'list')
+      super(m2id(@cfg[:obj].class, -2))
       @cls_color = 6
+      @list = self[:list] = Hashx.new
     end
 
     def ext_shell(jump_class)
@@ -43,7 +44,7 @@ module CIAX
       private
 
       def switch(id)
-        get(id)
+        @list.get(id)
       end
     end
   end

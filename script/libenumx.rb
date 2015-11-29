@@ -70,12 +70,19 @@ module CIAX
       @cls_color = 6
     end
 
-    def get(id)
-      self[id]
+    def get(key)
+      self[key]
     end
 
     def put(key, val)
       store(key, val)
+    end
+
+    # Replace value
+    def rep(key, val)
+      Msg.par_err("No such Key [#{key}]") unless key?(key)
+      (self[key] ||= '').replace(val)
+      val
     end
 
     # Make empty copy

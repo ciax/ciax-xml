@@ -41,14 +41,14 @@ module CIAX
         @sel[:body] = ent.deep_subst(@sel[:body])
         verbose { "Selected DB for #{rid}\n" + @sel.inspect }
         @frame.set(stream.binary)
-        @cache = @data.deep_copy
+        @cache = self[:data].deep_copy
         if @fds[rid].key?(:noaffix)
           getfield_rec(['body'])
         else
           getfield_rec(@sel[:main])
           @frame.cc_check(@cache.delete('cc'))
         end
-        @data = @cache
+        self[:data] = @cache
         verbose { 'Propagate Stream#rcv Field#upd' }
         self
       ensure
@@ -90,7 +90,7 @@ module CIAX
               e1[:range] || "0:#{e1[:size].to_i - 1}"
             end
             enclose("Array:[#{akey}]:Range#{idxs}", "Array:Assign[#{akey}]") do
-              @cache[akey] = mk_array(idxs, get(akey)) { yield }
+              @cache[akey] = mk_array(idxs, self[:data][akey]) { yield }
             end
           else
             # Field
@@ -125,7 +125,6 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libdevdb'
       require 'libfrmcmd'
       OPT.parse('m', m: 'merge file')
       OPT.usage('(opt) < logline') if STDIN.tty?
@@ -134,7 +133,7 @@ module CIAX
       id = res[:id]
       cid = res[:cmd]
       dbi = Dev::Db.new.get(id)
-      field = Field.new.setdbi(dbi).ext_rsp
+      field = Field.new(dbi).ext_rsp
       field.ext_file.auto_save if OPT[:m]
       if cid
         cfg = Config.new.update(dbi: dbi, field: field)

@@ -82,12 +82,12 @@ module CIAX
 
       def ext_non_client
         @cobj.get('set').def_proc do|ent|
-          @stat.rep(ent.par[0], ent.par[1])
+          @stat[:data].rep(ent.par[0], ent.par[1])
           # "SET:#{ent.par[0]}=#{ent.par[1]}"
           'ISSUED'
         end
         @cobj.get('del').def_proc do|ent|
-          ent.par[0].split(',').each { |key| @stat.del(key) }
+          ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
           # "DELETE:#{ent.par[0]}"
           'ISSUED'
         end

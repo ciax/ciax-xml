@@ -1,24 +1,20 @@
 #!/usr/bin/ruby
-require 'libdatax'
+require 'libvarx'
+require 'libdevdb'
 
 module CIAX
   # Frame Layer
   module Frm
     # Frame Field
-    class Field < DataH
+    class Field < Varx
       attr_reader :flush_procs
       attr_accessor :echo
-      def initialize(init_struct = {})
-        super('field', init_struct)
+      def initialize(dbi = nil)
+        super('field')
         # Proc for Terminate process of each individual commands (Set upper layer's update);
         @flush_procs = []
-      end
-
-      def setdbi(db)
-        super
-        # Field Initialize
-        _init_field_ if @data.empty?
-        self
+        setdbi(dbi||Dev::Db)
+        self[:data] = _init_field_ unless self[:data]
       end
 
       # Substitute str by Field data
@@ -42,9 +38,9 @@ module CIAX
       def get(id)
         verbose { "Getting[#{id}]" }
         Msg.give_up('Nill Id') unless id
-        return @data[id] if @data.key?(id)
+        return self[:data][id] if self[:data].key?(id)
         vname = []
-        dat = id.split(':').inject(@data) do|h, i|
+        dat = id.split(':').inject(self[:data]) do|h, i|
           case h
           when Array
             begin
@@ -67,8 +63,6 @@ module CIAX
       # Replace value with mixed id
       def rep(id, val)
         pre_upd
-        akey = id.split(':')
-        Msg.par_err('No such Id') unless key?(akey.shift)
         conv = subst(val).to_s
         verbose { "Put[#{id}]=[#{conv}]" }
         case p = get(id)
@@ -97,9 +91,11 @@ module CIAX
       private
 
       def _init_field_
+        data = Hashx.new
         @dbi[:field].each do|id, val|
-          put(id, val[:val] || Arrayx.new.skeleton(val[:struct]))
+          data.put(id, val[:val] || Arrayx.new.skeleton(val[:struct]))
         end
+        data
       end
 
       def _merge_ary_(p, r)
@@ -115,12 +111,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libdevdb'
-      stat = Field.new
       begin
-        dbi = Dev::Db.new.get(ARGV.shift)
-        stat.setdbi(dbi)
-        puts stat.ext_file
+        puts Field.new.ext_file
       rescue InvalidID
         OPT.usage '(opt) [id]'
       end

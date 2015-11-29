@@ -27,7 +27,7 @@ module CIAX
         sv = {}
         val.each { |k, v| sv[k.to_s] = v }
         val.replace sv
-      end
+      end if res.is_a? Hash
       res
     rescue JSON::ParserError
       usr_err('NOT JSON')

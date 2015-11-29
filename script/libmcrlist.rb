@@ -21,6 +21,15 @@ module CIAX
         self
       end
 
+      def reply(cid)
+        cmd, id=cid.split(':')
+        sequences.each do |seq|
+          next if seq.id != id
+          return seq.reply(cmd)
+        end
+        nil
+      end
+
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent, pid = '0')
         seq = Seq.new(ent, pid) { |e, p| add(e, p) }
@@ -33,6 +42,10 @@ module CIAX
 
       def alives
         @threads.list.map { |th| th[:id] }.compact
+      end
+
+      def sequences
+        @threads.list.map { |th| th[:obj] }.compact
       end
 
       def alive?(id)

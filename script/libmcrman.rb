@@ -68,13 +68,8 @@ module CIAX
       # Internal Command Group
       def _init_intcmd_
         @cobj.rem.int.def_proc do|ent|
-          seq = @sub_list.get(ent.par[0])
-          if seq
-            @sv_stat[:sid] = seq.id
-            seq.reply(ent[:id])
-          else
-            'NOSID'
-          end
+          @sv_stat[:sid] = ent.par[0]
+          @sub_list.reply(ent.id) ||'NOSID'
         end
       end
 

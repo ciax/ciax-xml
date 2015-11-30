@@ -20,21 +20,6 @@ module CIAX
       # Setting (Not shown in JSON)
     end
 
-    def setdbi(obj = nil,mod = Db)
-      case obj
-      when Dbi
-        dbi = obj
-      when String
-        dbi = mod.new.get(obj)
-      else
-        id = STDIN.tty? ? ARGV.shift : read[:id]
-        dbi = mod.new.get(id)
-      end
-      @dbi = type?(dbi, Dbi)
-      _setid(dbi[:site_id] || dbi[:id])
-      self[:ver] = dbi[:version].to_i
-      self
-    end
 
     # Read only as a client
     def ext_http(host = nil)
@@ -50,6 +35,22 @@ module CIAX
     end
 
     private
+
+    def _setdbi(obj = nil,mod = Db)
+      case obj
+      when Dbi
+        dbi = obj
+      when String
+        dbi = mod.new.get(obj)
+      else
+        id = STDIN.tty? ? ARGV.shift : read[:id]
+        dbi = mod.new.get(id)
+      end
+      @dbi = type?(dbi, Dbi)
+      _setid(dbi[:site_id] || dbi[:id])
+      self[:ver] = dbi[:version].to_i
+      self
+    end
 
     def _setid(id)
       self[:id] = id || Msg.cfg_err('ID')

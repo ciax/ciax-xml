@@ -122,11 +122,8 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       OPT.parse('r')
-      event = Event.new
       begin
-        id = STDIN.tty? ? ARGV.shift : event.read[:id]
-        dbi = Ins::Db.new.get(id)
-        event.setdbi(dbi)
+        event = Event.new
         wview = View.new(event)
         event.ext_file if STDIN.tty?
         puts wview

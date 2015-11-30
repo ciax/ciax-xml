@@ -9,11 +9,12 @@ module CIAX
     # Event Data
     class Event < Varx
       attr_reader :on_act_procs, :on_deact_procs, :interval
-      def initialize
+      def initialize(dbi = nil)
         super('event')
         @interval = 0.1
         @period = 300
         @last_updated = 0
+        _setdbi(dbi,Ins::Db)
         @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
         @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
         # For Array element
@@ -23,10 +24,6 @@ module CIAX
         # For Time element
         self[:act_time] = [now_msec, now_msec]
         self
-      end
-
-      def setdbi(dbi = nil)
-        super(dbi,Ins::Db)
       end
 
       def active?
@@ -64,7 +61,7 @@ module CIAX
       require 'libinsdb'
       OPT.parse('h:')
       begin
-        event = Event.new.setdbi
+        event = Event.new
         if OPT.host
           event.ext_http(OPT.host)
         else

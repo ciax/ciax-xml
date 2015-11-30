@@ -111,7 +111,6 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libdevdb'
       require 'libfrmrsp'
       require 'libstatus'
       begin

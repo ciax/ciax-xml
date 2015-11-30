@@ -89,7 +89,7 @@ module CIAX
       begin
         dbi = Db.new.get(id)
         cfg = Config.new
-        fld = cfg[:field] = Field.new.setdbi(dbi)
+        fld = cfg[:field] = Field.new(dbi)
         cobj = Index.new(cfg, dbi: dbi)
         cobj.add_rem.def_proc { |ent| ent[:frame] }
         cobj.rem.add_ext(Ext)

@@ -19,7 +19,6 @@ module CIAX
       def ext_rsp(stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
         @sv_stat = type?(sv_stat || Prompt.new('site', self[:id]), Prompt)
-        setdbi(stat.dbi)
         wdb = @dbi[:watch] || {}
         @windex = wdb[:index] || {}
         @interval = wdb[:interval].to_f if wdb.key?(:interval)
@@ -204,7 +203,7 @@ module CIAX
       begin
         stat = App::Status.new
         stat.ext_file if STDIN.tty?
-        event = Event.new.ext_rsp(stat)
+        event = Event.new(stat[:id]).ext_rsp(stat)
         if (t = OPT[:t])
           stat.str_update(t)
         end

@@ -150,21 +150,21 @@ module CIAX
         stat.post_upd_procs << proc { verbose { "Insert\n" + sqlog.upd } }
       end
     end
-  end
 
-  if __FILE__ == $PROGRAM_NAME
-    require 'libappexe'
-    id = ARGV.shift
-    ARGV.clear
-    begin
-      dbi = Ins::Db.new.get(id)
-      stat = App::Status.new.setdbi(dbi).ext_file
-      sqlog = Table.new(stat)
-      puts stat
-      puts sqlog.create
-      puts sqlog.upd
-    rescue InvalidID
-      Msg.usage '[id]'
+    if __FILE__ == $PROGRAM_NAME
+      require 'libappexe'
+      id = ARGV.shift
+      ARGV.clear
+      begin
+        dbi = Ins::Db.new.get(id)
+        stat = App::Status.new(dbi).ext_file
+        sqlog = Table.new(stat)
+        puts stat
+        puts sqlog.create
+        puts sqlog.upd
+      rescue InvalidID
+        Msg.usage '[id]'
+      end
     end
   end
 end

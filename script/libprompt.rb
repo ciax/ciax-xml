@@ -14,7 +14,7 @@ module CIAX
 
     # For String Data
     def add_str(key, val = '')
-      self[key] = type?(val, String)
+      self[key] = type?(val.dup, String)
       self
     end
 

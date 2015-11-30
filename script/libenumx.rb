@@ -81,7 +81,7 @@ module CIAX
     # Replace value
     def rep(key, val)
       Msg.par_err("No such Key [#{key}]") unless key?(key)
-      (self[key] ||= '').replace(val)
+      fetch(key).replace(val)
       val
     end
 

@@ -52,7 +52,7 @@ module CIAX
     end
 
     def to_s
-      @sv_stat[:msg]
+      @sv_stat.msg
     end
 
     def ext_server

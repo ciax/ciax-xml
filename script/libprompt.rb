@@ -12,6 +12,19 @@ module CIAX
       self[:msg] = ''
     end
 
+    # For String Data
+    def add_str(key, val = '')
+      self[key] = type?(val, String)
+      self
+    end
+
+    def rep(key, val)
+      cfg_err('Value should be String') unless val.is_a?(String)
+      verbose { "Change [#{key}] -> #{val}" }
+      super
+    end
+
+    # For Binary Data
     def add_db(db = {})
       @db.update(type?(db, Hash))
       self
@@ -35,9 +48,49 @@ module CIAX
       post_upd
     end
 
-    def put(key, val)
-      verbose { "Change [#{key}] -> #{val}" }
-      super
+    # For Array Data
+    def add_array(key, ary = [])
+      self[key] = type?(ary, Array) unless self[key].is_a? Array
+      self
+    end
+
+    def flush(key, ary = [])
+      pre_upd
+      type?(self[key], Array).replace(ary)
+      self
+    ensure
+      post_upd
+    end
+
+    def push(key, elem)
+      pre_upd
+      type?(self[key], Array).push(elem)
+      self
+    ensure
+      post_upd
+    end
+
+    # Manipulate Message
+    def msg(msg = nil)
+      pre_upd
+      self[:msg] = msg if msg
+      self[:msg]
+    ensure
+      post_upd
+    end
+
+    def to_v
+      verbose { "Shell\n" + inspect }
+      @db.map { |k, v| v if self[k] }.join('')
+    end
+
+    def server
+      ThreadLoop.new('Prompt', 12) do
+        exec_buf if @q.empty?
+        verbose { 'Waiting' }
+        pri_sort(@q.shift)
+      end
+      self
     end
 
     # Subtract and merge to self data, return rest of the data
@@ -52,17 +105,6 @@ module CIAX
       post_upd
     end
 
-    def msg(msg = nil)
-      pre_upd
-      self[:msg] = msg if msg
-      self[:msg]
-    ensure
-      post_upd
-    end
-
-    def to_v
-      verbose { "Shell\n" + inspect }
-      @db.map { |k, v| v if self[k] }.join('')
-    end
+    private(:[],:[]=)
   end
 end

@@ -28,7 +28,7 @@ module CIAX
       private
 
       def ext_driver
-        @sv_stat[:sid] = '' # For server response
+        @sv_stat.rep(:sid, '') # For server response
         _init_sub_list_
         _init_extcmd_
         _init_intcmd_
@@ -39,7 +39,8 @@ module CIAX
 
       def _init_sv_stat_
         @par = @cobj.rem.int.ext_par.par
-        @sv_stat[:list] = @par.list
+        @sv_stat.add_array(:list, @par.list)
+        @sv_stat.add_str(:sid)
         @cfg[:sv_stat] = @sv_stat
       end
 
@@ -53,7 +54,7 @@ module CIAX
         @sub_list = List.new(@par,@stat)
         @stat = @sub_list.records
         @pre_exe_procs << proc do
-          @sv_stat[:sid] = ''
+          @sv_stat.rep(:sid, '')
         end
       end
 
@@ -68,7 +69,7 @@ module CIAX
       # Internal Command Group
       def _init_intcmd_
         @cobj.rem.int.def_proc do|ent|
-          @sv_stat[:sid] = ent.par[0]
+          @sv_stat.rep(:sid, ent.par[0])
           @sub_list.reply(ent.id) ||'NOSID'
         end
       end

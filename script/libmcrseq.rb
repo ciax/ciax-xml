@@ -22,8 +22,8 @@ module CIAX
         @record[:pid] = pid
         @id = @record[:id]
         @sv_stat = (@cfg[:sv_stat] || {})
-        @sv_stat[:run] ||= []
-        @sv_stat[:sid] = @id
+        @sv_stat.add_array(:run)
+        @sv_stat.add_str(:sid, @id)
         @title = @record.title
         @submcr_proc = submcr_proc
         @depth = 0
@@ -47,11 +47,11 @@ module CIAX
         sub_macro(@cfg, @record)
       rescue Interrupt
         msg("\nInterrupt Issued to running devices #{@sv_stat[:run]}", 3)
-        @sv_stat[:run].each do|site|
+        @sv_stat.get(:run).each do|site|
           @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
         end
       ensure
-        @sv_stat[:run].clear
+        @sv_stat.flush(:run)
         show(@record.finish)
       end
 
@@ -111,7 +111,7 @@ module CIAX
 
       def exec(e, step, _mstat)
         if step.exec? && @qry.query(%w(exec pass), step)
-          @sv_stat[:run].push(e[:site]).uniq!
+          @sv_stat.push(:run, e[:site]).uniq!
           @cfg[:dev_list].get(e[:site]).exe(e[:args], 'macro')
         end
         false

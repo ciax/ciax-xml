@@ -41,14 +41,14 @@ module CIAX
           return unless @body
           @sel[:body] = @body
           verbose { "Body:#{self[:label]}(#{@id})" }
-          conv = mk_frame(:body)
+          chg_flg = mk_frame(:body)
           if @sel.key?(:ccrange)
             @frame.cc_mark
-            conv |= mk_frame(:ccrange)
+            chg_flg |= mk_frame(:ccrange)
             @frame.cc_set
           end
-          conv |= mk_frame(:main)
-          warning('Frame was converted by Status but chache is still effective') if conv && !self[:nocache]
+          chg_flg |= mk_frame(:main)
+          warning('Cache stored despite Frame includes Status') if chg_flg && !self[:nocache]
           frame = @fstr[:main]
           verbose { "Cmd Generated [#{@id}]" }
           self[:frame] = frame
@@ -59,15 +59,15 @@ module CIAX
 
         # instance var frame,sel,field,fstr
         def mk_frame(domain)
-          conv = nil
+          chg_flg = nil
           @frame.reset
           @sel[domain].each do|a|
             case a
             when Hash
               frame = a[:val].gsub(/\$\{cc\}/) { @frame.cc }
-              frame = @field.subst(frame)
-              conv = true if frame != a[:val]
-              frame.split(',').each do|s|
+              subfrm = @field.subst(frame)
+              chg_flg = true if subfrm != frame
+              subfrm.split(',').each do|s|
                 @frame.add(s, a)
               end
             else # ccrange,body ...
@@ -75,7 +75,7 @@ module CIAX
             end
           end
           @fstr[domain] = @frame.copy
-          conv
+          chg_flg
         end
       end
     end

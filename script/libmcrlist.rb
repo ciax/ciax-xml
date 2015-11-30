@@ -5,14 +5,13 @@ require 'libparam'
 module CIAX
   # Macro Layer
   module Mcr
-    # Sequencer List which provides sequencer list as a server
+    # Record List which provides sequencer list as a server
     # @cfg[:db] associated site/layer should be set
     class List < Hashx
       attr_reader :records, :threads
-      def initialize(par, records = Records.new)
+      def initialize(par)
         super()
         @par = type?(par, Parameter)
-        @records = type?(records, Records)
         @threads = ThreadGroup.new
       end
 
@@ -23,7 +22,8 @@ module CIAX
 
       def reply(cid)
         cmd, id=cid.split(':')
-        sequences.each do |seq|
+        @threads.list.each do |th|
+          seq = th[:obj]
           next if seq.id != id
           return seq.reply(cmd)
         end
@@ -34,18 +34,13 @@ module CIAX
       def add(ent, pid = '0')
         seq = Seq.new(ent, pid) { |e, p| add(e, p) }
         @threads.add(seq.fork) # start immediately
-        @records[seq.id] = seq.record
-        put(seq.id, seq)
+        put(seq.id, seq.record)
         @par.add(seq.id)
         seq
       end
 
       def alives
-        @threads.list.map { |th| th[:id] }.compact
-      end
-
-      def sequences
-        @threads.list.map { |th| th[:obj] }.compact
+        @threads.list.map { |th| th[:obj].id }.compact
       end
 
       def alive?(id)
@@ -55,14 +50,11 @@ module CIAX
       def clean
         (keys - alives).each do |id|
           delete(id)
-          @records.delete(id)
         end
         @par.clean(alives)
         self
       end
-    end
 
-    class Records < Hashx
       def ext_http(host)
         @host = host
         self

@@ -41,7 +41,6 @@ module CIAX
       end
 
       def macro
-        Thread.current[:id] = @id
         Thread.current[:obj] = self
         show(@record.start)
         sub_macro(@cfg, @record)

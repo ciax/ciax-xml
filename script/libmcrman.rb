@@ -13,9 +13,8 @@ module CIAX
         atrb[:layer_type] = 'mcr'
         super(nil, cfg, atrb)
         _init_domain_
-        _init_sv_stat_
+        _init_stat_
         _init_net_
-        @stat = Records.new
         @mode = 'MCR'
         OPT[:l] ? ext_client : ext_driver
       end
@@ -27,32 +26,38 @@ module CIAX
 
       private
 
-      def ext_driver
-        @sv_stat.rep(:sid, '') # For server response
-        _init_sub_list_
-        _init_extcmd_
-        _init_intcmd_
-        _init_intrpt_
-        @terminate_procs << proc { @sub_list.clean }
-        super
-      end
-
-      def _init_sv_stat_
-        @par = @cobj.rem.int.ext_par.par
-        @sv_stat.add_array(:list, @par.list)
-        @sv_stat.add_str(:sid)
-        @cfg[:sv_stat] = @sv_stat
-      end
-
+      # Initialize for all mode
       def _init_domain_
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
       end
 
-      def _init_sub_list_
-        @sub_list = List.new(@par,@stat)
-        @stat = @sub_list.records
+      def _init_stat_
+        @par = @cobj.rem.int.ext_par.par
+        @stat = List.new(@par)
+        @sv_stat.add_array(:list, @par.list)
+        @sv_stat.add_str(:sid)
+        @cfg[:sv_stat] = @sv_stat
+      end
+
+      def _init_net_
+        @host ||= @dbi[:host]
+        @port ||= (@dbi[:port] || 55_555)
+      end
+
+      # Initialize for driver
+      def ext_driver
+        @sv_stat.rep(:sid, '') # For server response
+        _init_pre_exe_
+        _init_extcmd_
+        _init_intcmd_
+        _init_intrpt_
+        @terminate_procs << proc { @stat.clean }
+        super
+      end
+
+      def _init_pre_exe_
         @pre_exe_procs << proc do
           @sv_stat.rep(:sid, '')
         end
@@ -61,7 +66,7 @@ module CIAX
       # External Command Group
       def _init_extcmd_
         @cobj.rem.ext.def_proc do |ent|
-          @sub_list.add(ent)
+          @stat.add(ent)
           'ACCEPT'
         end
       end
@@ -70,21 +75,17 @@ module CIAX
       def _init_intcmd_
         @cobj.rem.int.def_proc do|ent|
           @sv_stat.rep(:sid, ent.par[0])
-          @sub_list.reply(ent.id) ||'NOSID'
+          @stat.reply(ent.id) ||'NOSID'
         end
       end
 
       def _init_intrpt_
         @cobj.get('interrupt').def_proc do
-          @sub_list.interrupt
+          @stat.interrupt
           'INTERRUPT'
         end
       end
 
-      def _init_net_
-        @host ||= @dbi[:host]
-        @port ||= (@dbi[:port] || 55_555)
-      end
     end
 
     if __FILE__ == $PROGRAM_NAME

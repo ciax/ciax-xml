@@ -35,8 +35,8 @@ module CIAX
 
       def _init_stat_
         @par = @cobj.rem.int.ext_par.par
-        @stat = List.new(@par)
-        @sv_stat.add_array(:list, @par.list)
+        @stat = List.new
+        @sv_stat.add_array(:list)
         @sv_stat.add_str(:sid)
         @cfg[:sv_stat] = @sv_stat
       end
@@ -60,7 +60,11 @@ module CIAX
       def _init_pre_exe_
         @pre_exe_procs << proc do
           @sv_stat.rep(:sid, '')
+          alv = @stat.alives
+          @sv_stat.flush(:list, alv)
+          (alv - @par.list).each { |id| @par.add(id)}
         end
+        @post_exe_procs << proc {p @sv_stat}#
       end
 
       # External Command Group

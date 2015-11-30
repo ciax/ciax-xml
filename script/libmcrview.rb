@@ -7,10 +7,10 @@ module CIAX
   module Mcr
     # Macro Man View
     class View < Varx
-      def initialize(id, par, records = {})
+      def initialize(id, par, stat = {})
         super('mcr')
+        @stat = stat
         @par = type?(par, Parameter)
-        @records = records
         @list = Hashx.new
         @all_keys = []
         @ciddb = { '0' => 'user' }
@@ -62,7 +62,7 @@ module CIAX
       end
 
       def get_rec(id)
-        @records.get(id)
+        @stat.get(id)
       end
 
       def _list_

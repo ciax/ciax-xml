@@ -11,7 +11,7 @@ module CIAX
       return if type
       self[:type] = 'reg'
       self[:list] << '.'
-      self[:default] if default
+      self[:default] = default if default
     end
 
     # select id by number (1~max)

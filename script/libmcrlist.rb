@@ -5,16 +5,17 @@ require 'libparam'
 module CIAX
   # Macro Layer
   module Mcr
-    # Record List which provides sequencer list as a server
+    # List which provides records
+    # @threads provides sequencer list as a server
     # @cfg[:db] associated site/layer should be set
     class List < Hashx
-      attr_reader :records, :threads
-      def initialize(par)
+      attr_reader :par, :threads
+      def initialize
         super()
-        @par = type?(par, Parameter)
         @threads = ThreadGroup.new
       end
 
+      #### Driver Methods ####
       def interrupt
         @threads.list.each { |th| th.raise(Interrupt) }
         self
@@ -35,7 +36,6 @@ module CIAX
         seq = Seq.new(ent, pid) { |e, p| add(e, p) }
         @threads.add(seq.fork) # start immediately
         put(seq.id, seq.record)
-        @par.add(seq.id)
         seq
       end
 
@@ -51,10 +51,10 @@ module CIAX
         (keys - alives).each do |id|
           delete(id)
         end
-        @par.clean(alives)
         self
       end
 
+      #### Client Methods ####
       def ext_http(host)
         @host = host
         self

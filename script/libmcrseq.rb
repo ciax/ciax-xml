@@ -21,7 +21,7 @@ module CIAX
         @record.ext_rsp(@cfg)
         @record[:pid] = pid
         @id = @record[:id]
-        @sv_stat = (@cfg[:sv_stat] || {})
+        @sv_stat = (@cfg[:sv_stat] || Prompt.new('mcr', @id))
         @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid, @id)
         @title = @record.title

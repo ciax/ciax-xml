@@ -22,7 +22,7 @@ module CIAX
     end
 
     # replace (default is decresed)
-    def clean(other)
+    def flush(other)
       @list.replace other
       if self[:default] && ! @list.include?(self[:default])
         self[:default] = @list.last

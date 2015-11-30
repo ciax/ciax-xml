@@ -30,7 +30,7 @@ module CIAX
       end
 
       def step_num
-        "[#{size}/#{self[:original_steps]}]"
+        "[#{@steps.size}/#{self[:original_steps]}]"
       end
 
       def busy?

@@ -15,7 +15,7 @@ module CIAX
     def ext_client
       @sub.ext_client if @sub
       return self unless @port
-      @sv_stat.add_db(udperr: 'x')
+      @sv_stat.add_flg(udperr: 'x')
       @udp = UDPSocket.open
       verbose { "Initialize UDP client (#{@id}) [#{@host}:#{@port}]" }
       @cobj.rem.def_proc do|ent|

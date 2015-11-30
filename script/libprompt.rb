@@ -24,8 +24,8 @@ module CIAX
       super
     end
 
-    # For Binary Data
-    def add_db(db = {})
+    # For Binary Data with display db
+    def add_flg(db = {})
       @db.update(type?(db, Hash))
       self
     end

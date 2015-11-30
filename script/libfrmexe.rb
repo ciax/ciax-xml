@@ -23,7 +23,7 @@ module CIAX
         @cobj.add_rem.add_hid
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
-        @sv_stat.add_db(comerr: 'X', strerr: 'E')
+        @sv_stat.add_flg(comerr: 'X', strerr: 'E')
         # Post internal command procs
         @host ||= @dbi['host']
         @port ||= @dbi['port']

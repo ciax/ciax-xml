@@ -90,10 +90,10 @@ module CIAX
                 self[:exec] << ['event', 2, args]
               end
             else
-              self[key.to_s].concat(ary)
+              fetch(key).concat(ary)
             end
           end
-          self[:active] << id
+          fetch(:active) << id
         end
         upd_event
         self

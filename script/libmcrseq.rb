@@ -50,7 +50,6 @@ module CIAX
           @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
         end
       ensure
-        @sv_stat.flush(:run)
         show(@record.finish)
       end
 

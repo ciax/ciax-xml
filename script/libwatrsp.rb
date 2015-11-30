@@ -11,10 +11,10 @@ module CIAX
         Msg.type?(obj, Event)
       end
 
-      # @stat.data(picked) = @data['crnt'](picked) > @data['last']
-      # upd() => @data['last']<-@data['crnt']
-      #       => @data['crnt']<-@stat.data(picked)
-      #       => check(@data['crnt'] <> @data['last']?)
+      # @stat[:data](picked) = self[:crnt](picked) > self[:last]
+      # upd() => self[:last]<-self[:crnt]
+      #       => self[:crnt]<-@stat.data(picked)
+      #       => check(self[:crnt] <> self[:last]?)
       # Stat no changed -> clear exec, no eval
       def ext_rsp(stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
@@ -140,7 +140,7 @@ module CIAX
 
       def check(id, item)
         return true unless (cklst = item[:cnd])
-        verbose { "Check: <#{item['label']}>" }
+        verbose { "Check: <#{item[:label]}>" }
         rary = []
         cklst.each do|ckitm|
           vn = ckitm[:var]
@@ -163,7 +163,7 @@ module CIAX
                 end
               end
             else
-              res = nil
+              res = false
             end
           when 'pattern'
             cri = ckitm[:val]
@@ -181,7 +181,7 @@ module CIAX
                      vn, cri, f, val.class, res.inspect)
             end
           end
-          res = !res if /true|1/ =~ ckitm['inv']
+          res = !res if /true|1/ =~ ckitm[:inv]
           rary << res
         end
         self[:res][id] = rary

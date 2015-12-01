@@ -46,7 +46,7 @@
         <exec site="mmc" name="set0"/>
       </item>
     </group>
-    <group id="mo_sub" caption="MOIRCS Sub">
+    <group id="mo_car_sub" caption="MOIRCS Carousel Sub">
       <item id="cinit_a" label="carousel initialize">
         <exec site="mfp" name="upd"/>
         <mcr name="cinit_a_exec"/>

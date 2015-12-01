@@ -72,14 +72,14 @@ module CIAX
       end
 
       def _get_bin_(key)
-        @bin += @stat.get(key).to_i
+        @bin += @stat[:data][key].to_i
         @bin << 1
         @pck -= 1
         format('%x', @bin) if @pck == 0
       end
 
       def _get_str_(key, title, len, type)
-        v = @stat.get(key)
+        v = @stat[:data][key]
         if v
           str = _get_elem_(type, len, v)
           verbose { "#{title}/#{type}(#{len}) = #{str}" }
@@ -97,7 +97,7 @@ module CIAX
         open(file) do|f|
           f.readlines.grep(/^[^#].+/).map do |line|
             ary = line.split(',')
-            ary[0] = ary[0].to_sym
+            ary[0] = ary[0]
             ary
           end
         end
@@ -141,8 +141,7 @@ module CIAX
       require 'libinsdb'
       require 'libstatus'
       begin
-        fail(InvalidID) if STDIN.tty?
-        stat = App::Status.new.read
+        stat = App::Status.new
         puts View.new(stat).upd
       rescue InvalidID
         Msg.usage(' < status_file')

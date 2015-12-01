@@ -45,7 +45,7 @@ module CIAX
         show(@record.start)
         sub_macro(@cfg, @record)
       rescue Interrupt
-        msg("\nInterrupt Issued to running devices #{@sv_stat[:run]}", 3)
+        msg("\nInterrupt Issued to running devices #{@sv_stat.get(:run)}", 3)
         @sv_stat.get(:run).each do|site|
           @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
         end
@@ -109,9 +109,9 @@ module CIAX
 
       def exec(e, step, _mstat)
         if step.exec? && @qry.query(%w(exec pass), step)
-          @sv_stat.push(:run, e[:site]).uniq!
           @cfg[:dev_list].get(e[:site]).exe(e[:args], 'macro')
         end
+        @sv_stat.push(:run, e[:site])
         false
       end
 

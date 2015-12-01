@@ -64,7 +64,7 @@ module CIAX
 
     def push(key, elem)
       pre_upd
-      type?(self[key], Array).push(elem)
+      self[key].push(elem) unless type?(self[key], Array).include?(elem)
       self
     ensure
       post_upd

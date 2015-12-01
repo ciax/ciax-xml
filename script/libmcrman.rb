@@ -37,6 +37,7 @@ module CIAX
         @par = @cobj.rem.int.ext_par.par
         @stat = List.new
         @sv_stat.add_array(:list)
+        @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid)
         @cfg[:sv_stat] = @sv_stat
         @post_exe_procs << proc {

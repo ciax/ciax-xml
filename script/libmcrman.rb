@@ -65,7 +65,6 @@ module CIAX
           @sv_stat.rep(:sid, '')
           @sv_stat.flush(:list, @stat.alives)
         end
-        @post_exe_procs << proc {p @sv_stat}#
       end
 
       # External Command Group

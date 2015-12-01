@@ -35,7 +35,7 @@ module CIAX
           post_upd
         end
         step[:depth] = depth
-        @steps << step
+        self[:steps] << step
         step
       ensure
         post_upd

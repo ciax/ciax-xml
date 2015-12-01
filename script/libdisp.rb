@@ -135,10 +135,10 @@ module CIAX
       end
 
       def view
+        return '' if @color == 0
         ary = values.reverse.map(&:view).grep(/./)
-        if @caption
-          ary.unshift(@index.mk_caption(@caption, color: @color, level: @level))
-        end
+        return '' if ary.empty?
+        ary.unshift(@index.mk_caption(@caption, color: @color, level: @level)) if @caption
         ary.join("\n")
       end
 
@@ -172,6 +172,7 @@ module CIAX
       end
 
       def view(select = self)
+        return '' if @color == 0
         list = {}
         select.compact.sort.each_with_index do|id, num|
           name = @index.line_number ? "[#{num}](#{id})" : id

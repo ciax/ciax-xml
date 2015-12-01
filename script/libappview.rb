@@ -74,7 +74,7 @@ module CIAX
             hash = {}
             hline.each do|id|
               h = hash[id] = { label: @index[id][:label] || id.upcase }
-              h[:msg] = @stat[:msg][id] || @stat.get(id)
+              h[:msg] = @stat[:msg][id] || @stat[:data][id]
               h[:class] = @stat[:class][id] if @stat[:class].key?(id)
             end
             self[k][:lines] << hash

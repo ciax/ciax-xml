@@ -36,7 +36,7 @@ module CIAX
 
       def skip?
         _show title
-        res = @cond.ok?('skip', 'pass')
+        res = @cond.ok?('skip', 'enter')
         upd
         res
       end

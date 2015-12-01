@@ -39,6 +39,9 @@ module CIAX
         @sv_stat.add_array(:list)
         @sv_stat.add_str(:sid)
         @cfg[:sv_stat] = @sv_stat
+        @post_exe_procs << proc {
+          (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id)}
+        }
       end
 
       def _init_net_
@@ -60,9 +63,7 @@ module CIAX
       def _init_pre_exe_
         @pre_exe_procs << proc do
           @sv_stat.rep(:sid, '')
-          alv = @stat.alives
-          @sv_stat.flush(:list, alv)
-          (alv - @par.list).each { |id| @par.add(id)}
+          @sv_stat.flush(:list, @stat.alives)
         end
         @post_exe_procs << proc {p @sv_stat}#
       end

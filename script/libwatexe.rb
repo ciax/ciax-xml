@@ -36,39 +36,47 @@ module CIAX
         self
       end
 
-      def ext_non_client
-        @stat.post_upd_procs << proc do|ev|
-          verbose { 'Propagate Event#upd -> Watch#upd' }
-          block = ev.get(:block).map { |id, par| par ? nil : id }.compact
-          @cobj.rem.ext.valid_sub(block)
-        end
-        @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
-        @stat.ext_rsp(@sub.stat, @sv_stat)
-        self
-      end
-
       def ext_driver
         ext_non_client
         @stat.ext_file.auto_save
         @stat.ext_log if OPT[:e]
-        @stat.post_upd_procs << proc do|ev|
-          ev.get(:exec).each do|src, pri, args|
-            verbose { "Executing:#{args} in accordance with Condition from [#{src}] by [#{pri}]" }
-            @sub.exe(args, src, pri)
-            sleep ev.interval
-          end.clear
-        end
-        @tid_auto = auto_update
+        _init_upd_drv_
+        @tid_auto = _init_auto_thread_
         @sub.post_exe_procs << proc do
           @sv_stat.put(:auto, @tid_auto && @tid_auto.alive?)
         end
         self
       end
 
-      def auto_update
+      def ext_non_client
+        _init_upd_
+        @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
+        @stat.ext_rsp(@sub.stat, @sv_stat)
+        self
+      end
+
+      def _init_upd_
+        @stat.post_upd_procs << proc do|ev|
+          verbose { 'Propagate Event#upd -> Watch#upd' }
+          block = ev.get(:block).map { |id, par| par ? nil : id }.compact
+          @cobj.rem.ext.valid_sub(block)
+        end
+      end
+
+      def _init_upd_drv_
+        @stat.post_upd_procs << proc do|ev|
+          ev.get(:exec).each do|src, pri, args|
+            verbose { "Exec:#{args} by Condition from [#{src}] by [#{pri}]" }
+            @sub.exe(args, src, pri)
+            sleep ev.interval
+          end.clear
+        end
+      end
+
+      def _init_auto_thread_
         @stat.next_upd
         ThreadLoop.new("Watch:Regular(#{@id})", 14) do
-          @stat.upd.auto_exec.sleep
+          @stat.auto_exec.upd.sleep
         end
       end
     end

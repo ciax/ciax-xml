@@ -18,7 +18,7 @@ module CIAX
 
       # Conditional judgment section
       def timeout?
-        itv = (OPT[:e] || OPT[:s]) ? 0.1 : 0
+        itv = OPT.test? ? 0 : 0.1
         itv *= 10 if OPT[:m]
         _show title
         self[:max] = self[:retry]

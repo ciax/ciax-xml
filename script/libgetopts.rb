@@ -30,6 +30,10 @@ module CIAX
       %i(h c l).any? { |k| self[k] }
     end
 
+    def test?
+      !sv? && !cl?
+    end
+
     def host
       (self[:h] || 'localhost') unless self[:c]
     end

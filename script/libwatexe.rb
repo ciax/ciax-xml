@@ -14,7 +14,7 @@ module CIAX
         @cobj.add_rem(@sub.cobj.rem)
         @stat = Event.new(@sub.id)
         @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')
-        @sub.batch_interrupt = @stat.get(:int)
+
         @mode = @sub.mode
         @host = @sub.host
         opt_mode
@@ -39,6 +39,8 @@ module CIAX
       def ext_driver
         ext_non_client
         @stat.ext_file.auto_save
+        # @stat[:int] is overwritten by initial loading
+        @sub.batch_interrupt = @stat.get(:int)
         @stat.ext_log if OPT[:e]
         _init_upd_drv_
         @tid_auto = _init_auto_thread_

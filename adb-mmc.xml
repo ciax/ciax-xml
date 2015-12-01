@@ -54,6 +54,7 @@
           <frmcmd name="mi">
             <argv>-0.41</argv>
           </frmcmd>
+          <frmcmd name="bs" />
         </item>
         <item id="gh-ccw" label="Goto Home from CCW Limit">
           <frmcmd name="hl">
@@ -62,6 +63,7 @@
           <frmcmd name="mi">
             <argv>+0.49</argv>
           </frmcmd>
+          <frmcmd name="bs" />
         </item>
         <item id="set0" label="Set 0 at S00">
           <frmcmd name="hl">

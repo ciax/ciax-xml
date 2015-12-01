@@ -109,7 +109,7 @@ module CIAX
 
       def exec(e, step, _mstat)
         if step.exec? && @qry.query(%w(exec pass), step)
-          @cfg[:dev_list].get(e[:site]).exe(e[:args], 'macro')
+          @cfg[:dev_list].get(e[:site]).exe(e[:args], 'macro').join('macro')
         end
         @sv_stat.push(:run, e[:site])
         false
@@ -148,7 +148,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ecm')
+      OPT.parse('ecmn')
       cfg = Config.new
       al = Wat::List.new(cfg).sub_list # Take App List
       cfg[:dev_list] = al

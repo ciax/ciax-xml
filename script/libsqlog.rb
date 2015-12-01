@@ -15,7 +15,7 @@ module CIAX
       def initialize(stat)
         @cls_color = 14
         @stat = type?(stat, Varx)
-        @tid = "#{@stat.type}_#{@stat['ver']}"
+        @tid = "#{@stat.type}_#{@stat[:ver]}"
         @tname = @stat.type.capitalize
         verbose { "Initialize Table '#{@tid}'" }
       end
@@ -54,13 +54,13 @@ module CIAX
       private
 
       def expand
-        val = { 'time' => @stat['time'] }
-        @stat.keys.select { |k| /type/ !~ k }.each do |k|
+        val = { 'time' => @stat[:time] }
+        @stat[:data].keys.select { |k| /type/ !~ k.to_s }.each do |k|
           v = @stat[:data][k]
           if v.is_a? Array
             rec_expand(k, v, val)
           else
-            val[k] = v
+            val[k.to_s] = v
           end
         end
         val

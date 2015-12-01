@@ -11,26 +11,23 @@ module CIAX
       def initialize(id = nil) # Session ID for Loading
         super('record')
         self[:id] = id || self[:time].to_s # Session ID
-        @steps = self[:steps] = Arrayx.new
+        self[:steps] = Arrayx.new
         self[:status] = 'ready'
         self[:result] = 'busy'
 
       end
 
-      def read(json_str = nil)
-        super
-        @steps.each { |i| i.extend(PrtShare) }
-        self
-      end
-
       def to_v
         msg = title
-        @steps.each { |i| msg << i.title + i.result }
+        self[:steps].each { |i|
+          i.extend(PrtShare) unless i.is_a? PrtShare
+          msg << i.title + i.result
+        }
         msg << " (#{self[:result]}) #{step_num}"
       end
 
       def step_num
-        "[#{@steps.size}/#{self[:original_steps]}]"
+        "[#{self[:steps].size}/#{self[:original_steps]}]"
       end
 
       def busy?
@@ -38,7 +35,7 @@ module CIAX
       end
 
       def last
-        @steps.last
+        self[:steps].last
       end
 
       def title

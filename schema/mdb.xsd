@@ -30,12 +30,23 @@
   </xsd:element>
   <xsd:element name="group">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="mdb:item" minOccurs="1" maxOccurs="unbounded"></xsd:element>
-      </xsd:sequence>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="mdb:item" />
+        <xsd:element ref="mdb:unit" />
+      </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="caption" type="xsd:token" use="optional" />
       <xsd:attribute name="column" type="xsd:int" />
+      <xsd:attribute name="hidden" type="xsd:boolean" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="unit">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="mdb:item" />
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:NCName" use="required" />
+      <xsd:attribute name="label" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="item">

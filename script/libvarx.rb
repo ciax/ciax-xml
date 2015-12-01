@@ -20,7 +20,6 @@ module CIAX
       # Setting (Not shown in JSON)
     end
 
-
     # Read only as a client
     def ext_http(host = nil)
       extend(JHttp).ext_http(host)
@@ -36,7 +35,7 @@ module CIAX
 
     private
 
-    def _setdbi(obj = nil,mod = Db)
+    def _setdbi(obj = nil, mod = Db)
       case obj
       when Dbi
         dbi = obj

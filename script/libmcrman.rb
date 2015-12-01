@@ -41,7 +41,7 @@ module CIAX
         @sv_stat.add_str(:sid)
         @cfg[:sv_stat] = @sv_stat
         @post_exe_procs << proc {
-          (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id)}
+          (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id) }
         }
       end
 
@@ -80,7 +80,7 @@ module CIAX
       def _init_intcmd_
         @cobj.rem.int.def_proc do|ent|
           @sv_stat.rep(:sid, ent.par[0])
-          @stat.reply(ent.id) ||'NOSID'
+          @stat.reply(ent.id) || 'NOSID'
         end
       end
 
@@ -90,7 +90,6 @@ module CIAX
           'INTERRUPT'
         end
       end
-
     end
 
     if __FILE__ == $PROGRAM_NAME

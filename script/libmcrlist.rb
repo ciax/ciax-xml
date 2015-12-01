@@ -22,7 +22,7 @@ module CIAX
       end
 
       def reply(cid)
-        cmd, id=cid.split(':')
+        cmd, id = cid.split(':')
         @threads.list.each do |th|
           seq = th[:obj]
           next if seq.id != id
@@ -61,7 +61,7 @@ module CIAX
       end
 
       def upd
-        values.each{|rec| rec.upd }
+        values.each(&:upd)
         self
       end
 

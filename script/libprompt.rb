@@ -105,6 +105,6 @@ module CIAX
       post_upd
     end
 
-    private(:[],:[]=)
+    private(:[], :[]=)
   end
 end

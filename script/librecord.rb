@@ -14,7 +14,6 @@ module CIAX
         self[:steps] = Arrayx.new
         self[:status] = 'ready'
         self[:result] = 'busy'
-
       end
 
       def to_v

@@ -14,7 +14,7 @@ module CIAX
         @interval = 0.1
         @period = 300
         @last_updated = 0
-        _setdbi(dbi,Ins::Db)
+        _setdbi(dbi, Ins::Db)
         @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
         @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
         # For Array element

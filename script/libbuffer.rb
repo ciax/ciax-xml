@@ -92,7 +92,7 @@ module CIAX
       end
     rescue
       clear
-      alert($ERROR_INFO.to_s+$@.to_s)
+      alert($ERROR_INFO.to_s + $ERROR_POSITION.to_s)
     ensure
       sv_dw
     end

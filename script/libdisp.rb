@@ -135,7 +135,7 @@ module CIAX
       end
 
       def view
-        ary = values.map(&:view).grep(/./)
+        ary = values.reverse.map(&:view).grep(/./)
         if @caption
           ary.unshift(@index.mk_caption(@caption, color: @color, level: @level))
         end

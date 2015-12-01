@@ -46,7 +46,7 @@
         <exec site="mmc" name="set0"/>
       </item>
     </group>
-    <group id="mo_car_sub" caption="MOIRCS Carousel Sub">
+    <group id="mc_slot" caption="MOIRCS Carousel Slot">
       <item id="cinit_a" label="carousel initialize">
         <exec site="mfp" name="upd"/>
         <mcr name="cinit_a_exec"/>
@@ -355,6 +355,8 @@
         <mcr name="slotX_21"/>
         <mcr name="check_slot21"/>
       </item>
+    </group>
+    <group id="mc_slot_chk" caption="MOIRCS Carousel Slot Check">
       <item id="check_slot00" label="check_slot">
         <check>
           <match site="mmc" var="abs" form="msg">S00</match>
@@ -523,6 +525,8 @@
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
       </item>
+    </group>
+    <group id="mc_slot_comb" caption="MOIRCS Carousel Slot Combination" hidden="true">
       <item id="slot00_00" label="carousel">
         <check>
           <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -7262,6 +7266,8 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
       </item>
+    </group>
+    <group id="mc_access" caption="MOIRCS Carousel Access Port">
       <item id="access[0-23]">
       </item>
       <item id="access0" label="Access to Slot0">
@@ -7440,6 +7446,8 @@
         <exec site="mmc" name="access21"/>
         <mcr name="check_access21"/>
       </item>
+    </group>
+    <group id="mc_access_chk" caption="MOIRCS Carousel Access Port Check">
       <item id="check_access00" label="check_access">
         <check>
           <match site="mmc" var="abs" form="msg">S06</match>
@@ -7607,12 +7615,6 @@
           <match site="mmc" var="in3" form="msg">OFF</match>
           <match site="mmc" var="in4" form="msg">OFF</match>
         </check>
-      </item>
-      <item id="rac_l-f" label="Rh1 2 Close">
-        <exec site="mfp" name="rac"/>
-      </item>
-      <item id="rbc_l-f" label="Rh3 4 Close">
-        <exec site="mfp" name="rbc"/>
       </item>
     </group>
     <group id="mo_select" caption="MOIRCS select">

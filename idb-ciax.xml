@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
+  <project id="ciax" caption="CIAX" include="cmp" column="2">
+    <group id="sum" caption="CIAX Summit">
+      <instance id="crt" app_id="mel" host="cxws2" port="25101" label="CIAX CART 3"/>
+      <instance id="dsi" app_id="cj2" host="cxws2" port="25102" label="IR Stand-by"/>
+      <instance id="dso" app_id="cj2" host="cxws2" port="25103" label="OPT Stand-by"/>
+      <instance id="det" app_id="srm" host="cxws2" port="25104" label="CsEtr Control"/>
+      <instance id="dts" app_id="oss" host="cxws2" port="25105" label="TSC Control"/>
+    </group>
+    <group id="sim" caption="SimLab">
+      <instance id="cr2" app_id="mel" host="ciax" port="25502" label="CIAX CART 2"/>
+    </group>
+    <group id="cfg" caption="Setting">
+      <instance id="c3j" app_id="cjk" host="ciax" port="25501" frm_site="crt" label="CART 3 Jack Setting">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="id0t0" caption="COMICS/CAS" />
+          <group ref="id0t1" caption="COMICS/OPT/MOV" />
+          <group ref="id1t0" caption="CIAO/CAS" />
+          <group ref="id1t2" caption="CIAO/OPT/FIX" />
+          <group ref="id2t0" caption="FOCAS/CAS" />
+          <group ref="id2t4" caption="FOCAS/IR/FIX" />
+          <group ref="id3t0" caption="MOIRCS/CAS" />
+          <group ref="id3t3" caption="MOIRCS/IR/MOV" />
+          <group ref="id4t0" caption="KYOTO3D/CAS" />
+        </status>
+      </instance>
+      <instance id="c2j" app_id="cjk" host="ciax" port="25503" frm_site="cr2" label="CART 2 Jack Setting"/>
+    </group>
+  </project>
+</idb>

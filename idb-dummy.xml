@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
+  <project id="dummy" caption="Dummy simulator">
+    <group id="dmy" caption="Dummy simulator">
+      <instance id="tsl" app_id="mma" frm_site="tsl" host="localhost" port="25699" label="TEST Slosyn"/>
+      <instance id="tfp" app_id="cfp" frm_site="tfp" host="localhost" port="25698" label="TEST Field Point"/>
+      <instance id="tbb" app_id="bbe" frm_site="tbb" host="localhost" port="25697" label="TEST BBE">
+        <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+          <item id="on" label="Alias for X0 ON" ref="x0on" />
+          <item id="off" label="Alias for X0 OFF" ref="x0off" />
+        </alias>
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="g0" caption="X0-3" />
+          <group ref="g1" caption="X4-7" />
+          <group ref="g2" caption="X8-11" />
+          <group ref="g3" caption="X12-15" />
+        </status>
+        <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.2">
+          <event label="ON Executed 1" id="on1">
+            <onchange var="xsw0"/>
+            <pattern var="xsw0">1</pattern>
+            <pattern var="xsw1">0</pattern>
+            <exec name="x1on"/>
+          </event>
+          <event label="ON Executed 2" id="on2">
+            <onchange var="xsw1"/>
+            <pattern var="xsw1">1</pattern>
+            <pattern var="xsw2">0</pattern>
+            <exec name="x2on"/>
+          </event>
+          <event label="ON Executed 3" id="on3">
+            <onchange var="xsw2"/>
+            <pattern var="xsw2">1</pattern>
+            <pattern var="xsw3">0</pattern>
+            <exec name="x3on"/>
+          </event>
+          <event label="OFF Executed 1" id="off1">
+            <onchange var="xsw0"/>
+            <pattern var="xsw0">0</pattern>
+            <pattern var="xsw1">1</pattern>
+            <exec name="x1off"/>
+          </event>
+          <event label="OFF Executed 2" id="off2">
+            <onchange var="xsw1"/>
+            <pattern var="xsw1">0</pattern>
+            <pattern var="xsw2">1</pattern>
+            <exec name="x2off"/>
+          </event>
+          <event label="OFF Executed 3" id="off3">
+            <onchange var="xsw2"/>
+            <pattern var="xsw2">0</pattern>
+            <pattern var="xsw3">1</pattern>
+            <exec name="x3off"/>
+          </event>
+        </watch>
+      </instance>
+    </group>
+  </project>
+</idb>

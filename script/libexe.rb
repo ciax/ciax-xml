@@ -13,8 +13,10 @@ module CIAX
   # Device Execution Engine
   class Exe
     include Msg
-    attr_reader :layer, :id, :mode, :cobj, :stat, :sub, :pre_exe_procs, :post_exe_procs, :cfg, :prompt_proc, :host, :port
-    attr_accessor :sv_stat, :shell_input_procs, :shell_output_proc, :server_input_proc, :server_output_proc
+    attr_reader :layer, :id, :mode, :cobj, :stat, :sub, :cfg,
+                :pre_exe_procs, :post_exe_procs, :prompt_proc, :host, :port
+    attr_accessor :sv_stat, :shell_input_procs, :shell_output_proc,
+                  :server_input_proc, :server_output_proc
     # attr contains the parameter for each layer individually (might have [:db])
     # cfg should have [:db] shared in the site (among layers)
     def initialize(id, cfg, attr = {})
@@ -25,10 +27,14 @@ module CIAX
       @dbi = @cfg[:dbi] = type?(@cfg[:db].get(id), Dbi) if @cfg.key?(:db)
       @id = id || @dbi[:id]
       @layer = class_path.first.downcase
-      @sv_stat = Prompt.new(@cfg[:layer_type], @id) # Site Status shared among layers
-      @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }] # Proc for Server Command (by User query}
-      @post_exe_procs = [proc { verbose { 'Processing PostExeProcs' } }] # Proc for Server Status Update (by User query}
-      @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }] # Proc for program terminated
+      # Site Status shared among layers
+      @sv_stat = Prompt.new(@cfg[:layer_type], @id)
+      # Proc for Server Command (by User query}
+      @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }]
+      # Proc for Server Status Update (by User query}
+      @post_exe_procs = [proc { verbose { 'Processing PostExeProcs' } }]
+      # Proc for program terminated
+      @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }]
       Thread.abort_on_exception = true
       verbose { "initialize [#{@id}]" }
       @cobj = Remote::Index.new(@cfg)

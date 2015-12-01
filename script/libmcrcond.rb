@@ -49,7 +49,7 @@ module CIAX
       def _condition(stat, h)
         cond = {}
         %i(site var form cmp cri).each { |k| cond[k] = h[k] }
-        real = _fetch_form(stat, cond[:form], cond[:var])
+        real = _fetch_form(stat, cond[:form].to_sym, cond[:var])
         res = method(cond[:cmp]).call(cond[:cri], real)
         cond.update(real: real, res: res)
         verbose { cond.map { |k, v| format('%s=%s', k, v) }.join(',') }
@@ -58,10 +58,10 @@ module CIAX
 
       def _fetch_form(stat, form, var)
         case form
-        when 'class', 'msg'
-          warning("No [#{var}] in Status[#{form}]") unless stat[form.to_sym].key?(var)
-          stat[form.to_sym][var]
-        when 'data'
+        when :class, :msg
+          warning("No [#{var}] in Status[#{form}]") unless stat[form].key?(var)
+          stat[form][var]
+        when :data
           stat.get(var)
         else
           warning('No form specified')

@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libevent'
 require 'librerange'
+require 'libwatcond'
 
 module CIAX
   # Watch Layer
@@ -20,13 +21,8 @@ module CIAX
         @stat = type?(stat, App::Status)
         @sv_stat = type?(sv_stat || Prompt.new('site', self[:id]), Prompt)
         wdb = @dbi[:watch] || {}
-        @windex = wdb[:index] || {}
         @interval = wdb[:interval].to_f if wdb.key?(:interval)
-        # Pick usable val
-        @list = []
-        @windex.values.each do|v|
-          @list |= v[:cnd].map { |i| i[:var] }
-        end
+        @cond = Condition.new(wdb[:index] || {}, stat, self)
         @pre_upd_procs << proc { self[:time] = @stat[:time] }
         @stat.post_upd_procs << proc do
           verbose { 'Propagate Status#upd -> Event#upd' }
@@ -80,21 +76,7 @@ module CIAX
       def upd_core
         return self unless @stat[:time] > @last_updated
         @last_updated = self[:time]
-        sync
-        %i(active exec block int).each { |s| self[s].clear }
-        @windex.each do|id, item|
-          next unless check(id, item)
-          item[:act].each do|key, ary|
-            if key == :exec
-              ary.each do|args|
-                self[:exec] << ['event', 2, args]
-              end
-            else
-              fetch(key).concat(ary)
-            end
-          end
-          fetch(:active) << id
-        end
+        @cond.upd
         upd_event
         self
       end
@@ -129,63 +111,6 @@ module CIAX
           @on_act_procs.each { |p| p.call(self) }
         end
         self
-      end
-
-      def sync
-        @list.each do|i|
-          self[:last][i] = self[:crnt][i]
-          self[:crnt][i] = @stat[:data][i]
-        end
-      end
-
-      def check(id, item)
-        return true unless (cklst = item[:cnd])
-        verbose { "Check: <#{item[:label]}>" }
-        rary = []
-        cklst.each do|ckitm|
-          vn = ckitm[:var]
-          val = @stat[:data][vn]
-          case ckitm[:type]
-          when 'onchange'
-            cri = self[:last][vn]
-            if cri
-              if (tol = ckitm[:tolerance])
-                res = ((cri.to_f - val.to_f).abs > tol.to_f)
-                verbose do
-                  format('  onChange(%s): |[%s]-<%s>| > %s =>%s',
-                         vn, cri, val, tol, res.inspect)
-                end
-              else
-                res = (cri != val)
-                verbose do
-                  format('  onChange(%s): [%s] vs <%s> =>%s',
-                         vn, cri.inspect, val, res.inspect)
-                end
-              end
-            else
-              res = false
-            end
-          when 'pattern'
-            cri = ckitm[:val]
-            res = Regexp.new(cri).match(val)
-            verbose do
-              format('  Pattern(%s): [%s] vs <%s> =>%s',
-                     vn, cri, val, res.inspect)
-            end
-          when 'range'
-            cri = ckitm[:val]
-            f = format('%.3f', val.to_f)
-            res = (ReRange.new(cri) == f)
-            verbose do
-              format('  Range(%s): [%s] vs <%s>(%s) =>%s',
-                     vn, cri, f, val.class, res.inspect)
-            end
-          end
-          res = !res if /true|1/ =~ ckitm[:inv]
-          rary << res
-        end
-        self[:res][id] = rary
-        rary.all?
       end
     end
 

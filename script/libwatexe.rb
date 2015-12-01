@@ -14,7 +14,7 @@ module CIAX
         @cobj.add_rem(@sub.cobj.rem)
         @stat = Event.new(@sub.id)
         @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')
-        @sub.batch_interrupt = @stat.get('int')
+        @sub.batch_interrupt = @stat.get(:int)
         @mode = @sub.mode
         @host = @sub.host
         opt_mode

@@ -56,7 +56,7 @@ module CIAX
       def expand
         val = { 'time' => @stat['time'] }
         @stat.keys.select { |k| /type/ !~ k }.each do |k|
-          v = @stat.get(k)
+          v = @stat[:data][k]
           if v.is_a? Array
             rec_expand(k, v, val)
           else

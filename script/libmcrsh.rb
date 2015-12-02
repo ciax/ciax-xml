@@ -26,7 +26,7 @@ module CIAX
         @view = View.new(@id, @par, @stat)
         @cfg[:output] = @view
         @post_exe_procs << proc { @view.upd }
-        @prompt_proc = proc { @view.upd.index }
+        @prompt_proc = proc { @sv_stat.to_s+@view.upd.index }
       end
 
       def _init_lcmd_

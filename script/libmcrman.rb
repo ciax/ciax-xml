@@ -31,8 +31,8 @@ module CIAX
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
-        @cobj.rem.sys.add_item('nonstop','Mode').def_proc{ OPT[:n]='' }
-        @cobj.rem.sys.add_item('inter','Mode').def_proc{ OPT[:n]=nil;'' }
+        @cobj.rem.sys.add_item('nonstop','Mode').def_proc{ @sv_stat.set(:nonstop);'' }
+        @cobj.rem.sys.add_item('inter','Mode').def_proc{ @sv_stat.reset(:nonstop);'' }
       end
 
       def _init_stat_
@@ -41,6 +41,8 @@ module CIAX
         @sv_stat.add_array(:list)
         @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid)
+        @sv_stat.add_flg(nonstop: '(nonstop)')
+        @sv_stat.set(:nonstop) if OPT[:n]
         @cfg[:sv_stat] = @sv_stat
         @post_exe_procs << proc {
           (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id) }

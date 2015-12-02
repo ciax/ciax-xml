@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'thread'
-require 'libvarx'
+require 'librecord'
 
 module CIAX
   # Macro layer
@@ -9,10 +9,11 @@ module CIAX
     class Query
       include Msg
       # Record should have [:option] key
-      def initialize(stat, valid_keys)
+      def initialize(stat, sv_stat, valid_keys)
         # Datax#put() will access to header, but get() will access @data
-        @stat = type?(stat, Varx)
+        @stat = type?(stat, Record)
         @stat.put(:status, 'ready')
+        @sv_stat = type?(sv_stat, Prompt)
         @valid_keys = valid_keys
         @que_cmd = Queue.new
         @que_res = Queue.new
@@ -35,7 +36,7 @@ module CIAX
       end
 
       def query(cmds, sub_stat)
-        return true if OPT[:n]
+        return true if @sv_stat.get(:nonstop)
         @valid_keys.replace(cmds)
         sub_stat.put(:option, cmds)
         @stat.put(:status, 'query')

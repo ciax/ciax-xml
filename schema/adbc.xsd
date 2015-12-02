@@ -37,6 +37,15 @@
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="label" type="xsd:token" />
+      <xsd:attribute name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="motion" />
+            <xsd:enumeration value="config" />
+            <xsd:enumeration value="update" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="item">

@@ -25,6 +25,8 @@ module CIAX
           msg << '(async)' if self[:async]
         when 'exec'
           msg = head('EXEC', 13, "[#{self[:site]}:#{args}]")
+        when 'upd'
+          msg = head('UPD', 10, "[#{self[:site]}]")
         end
         msg
       end

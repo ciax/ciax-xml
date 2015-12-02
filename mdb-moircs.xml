@@ -7,10 +7,10 @@
         <exec site="mmc" name="astop"/>
       </item>
       <item id="upd" label="Update">
-        <exec site="mma" name="upd"/>
-        <exec site="mmc" name="upd"/>
-        <exec site="mfp" name="upd"/>
-        <exec site="map" name="upd"/>
+        <upd site="mma"/>
+        <upd site="mmc"/>
+        <upd site="mfp"/>
+        <upd site="map"/>
       </item>
       <item id="start" label="startmask">
         <check>
@@ -65,37 +65,37 @@
           <equal site="mma" var="pos" form="msg">INIT</equal>
         </check>
         <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="rc_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="ro_k"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="rc_k"/>
       </item>
       <item id="kapa1" label="rail-up">
@@ -106,7 +106,7 @@
           <equal site="mma" var="pos" form="msg">INIT</equal>
         </check>
         <mcr name="ro_k1"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="rc_k1"/>
       </item>
     </group>
@@ -1034,7 +1034,7 @@
         <mcr name="fc-i1"/>
         <mcr name="gf_fc-f1"/>
         <mcr name="ac_fc-f1"/>
-        <exec site="mma" name="upd"/>
+        <upd site="mma"/>
         <mcr name="ro_fc-f1"/>
       </item>
       <item id="fc-r1" label="fieldcheck (FOCUS~ROT)">
@@ -1092,10 +1092,10 @@
         <mcr name="t-i"/>
         <mcr name="gf_t-f"/>
         <mcr name="ac_t-f"/>
-        <exec site="mma" name="upd"/>
+        <upd site="mma"/>
         <mcr name="ro_t-f"/>
-        <exec site="mma" name="upd"/>
-        <exec site="map" name="upd"/>
+        <upd site="mma"/>
+        <upd site="map"/>
       </item>
       <item id="t-r" label="startmask (FOCUS~ROT)">
         <goal>
@@ -1111,7 +1111,7 @@
         <mcr name="t-f"/>
         <mcr name="gr_t-r"/>
         <mcr name="av_t-r"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="ao_t-r"/>
       </item>
       <item id="t-w" label="startmask (ROT~WAIT)">
@@ -1158,7 +1158,7 @@
         <mcr name="s-i"/>
         <mcr name="gf_s-f"/>
         <mcr name="ac_s-f"/>
-        <exec site="mma" name="upd"/>
+        <upd site="mma"/>
         <mcr name="ro_s-f"/>
       </item>
       <item id="s-r" label="storemask 3(FOCUS~ROT)">
@@ -1190,13 +1190,13 @@
         </check>
         <mcr name="s-r"/>
         <mcr name="gs_s-s"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="setstk_a"/>
-        <exec site="map" name="upd"/>
-        <exec site="mma" name="upd"/>
+        <upd site="map"/>
+        <upd site="mma"/>
         <mcr name="ao_s-s"/>
-        <exec site="mma" name="upd"/>
-        <exec site="map" name="upd"/>
+        <upd site="mma"/>
+        <upd site="map"/>
         <mcr name="gs_s-s2"/>
         <mcr name="chk_stkpos"/>
       </item>
@@ -1214,9 +1214,9 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="s-s"/>
-        <exec site="mmc" name="upd"/>
-        <exec site="mma" name="upd"/>
-        <exec site="map" name="upd"/>
+        <upd site="mmc"/>
+        <upd site="mma"/>
+        <upd site="map"/>
         <mcr name="gw_s-w"/>
         <mcr name="check_store"/>
       </item>
@@ -1247,7 +1247,7 @@
         </check>
         <mcr name="l-w"/>
         <mcr name="gs_l-s"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="setstk_a"/>
         <mcr name="ac_l-s"/>
       </item>
@@ -1264,10 +1264,10 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="l-s"/>
-        <exec site="mma" name="upd"/>
-        <exec site="map" name="upd"/>
+        <upd site="mma"/>
+        <upd site="map"/>
         <mcr name="gr_l-r"/>
-        <exec site="mmc" name="upd"/>
+        <upd site="mmc"/>
         <mcr name="ah_l-r"/>
       </item>
       <item id="l-f" label="loadmask 4(ROT~FOCUS)">
@@ -1286,7 +1286,7 @@
         <mcr name="l-r"/>
         <mcr name="gf_l-f"/>
         <mcr name="rc_l-f"/>
-        <exec site="mma" name="upd"/>
+        <upd site="mma"/>
         <mcr name="ao_l-f"/>
       </item>
       <item id="l-mskon" label="loadmask (Mask Sensor Check)">
@@ -1309,9 +1309,9 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="ro_l-f"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="rc_l-f"/>
-        <exec site="mma" name="upd"/>
+        <upd site="mma"/>
       </item>
       <item id="l-i" label="loadmask 5(FOCUS~INIT)">
         <goal>
@@ -1330,7 +1330,7 @@
         </check>
         <mcr name="l-f"/>
         <mcr name="ini_l-i"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="set0_a"/>
         <mcr name="check_load"/>
       </item>
@@ -1350,7 +1350,7 @@
         </check>
         <mcr name="gr_f-r"/>
         <mcr name="ac_f-r"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="ah_f-r"/>
       </item>
       <item id="f-i" label="fin 2(ROT~INIT)">
@@ -1369,7 +1369,7 @@
         </check>
         <mcr name="f-r"/>
         <mcr name="ini_f-i"/>
-        <exec site="map" name="upd"/>
+        <upd site="map"/>
         <mcr name="set0_a"/>
         <mcr name="rc_f-i"/>
         <mcr name="check_fin"/>

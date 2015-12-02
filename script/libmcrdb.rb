@@ -61,6 +61,9 @@ module CIAX
             when 'goal'
               body << make_condition(e1, atrb)
               final.update(atrb.extend(Enumx).deep_copy)[:type] = 'check'
+            when 'upd'
+              body << atrb
+              verbose { "UPDATE:[#{e1[:name]}]" }
             when 'exec'
               atrb[:args] = getcmd(e1)
               atrb.delete(:name)

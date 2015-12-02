@@ -115,6 +115,12 @@ module CIAX
         false
       end
 
+      def upd(e, step, _mstat)
+        step.ok?
+        @cfg[:dev_list].get(e[:site]).exe(["upd"], 'macro').join('macro')
+        false
+      end
+
       def mcr(e, step, mstat)
         seq = @cfg.ancestor(2).set_cmd(e[:args])
         if step.async? && @submcr_proc.is_a?(Proc)

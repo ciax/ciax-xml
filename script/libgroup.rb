@@ -47,7 +47,7 @@ module CIAX
     # cfg keys: caption,color,column
     def initialize(cfg, atrb = {})
       super
-      @displist.put_grp
+      @displist.set_grp
     end
 
     # crnt could have 'label',:body,'unit','group'

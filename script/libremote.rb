@@ -81,7 +81,7 @@ module CIAX
           # Set items by DB
           cdb = dbi[:command]
           idx = cdb[:index]
-          @dispgrp = @displist.put_sec
+          @dispgrp = @displist.set_sec
           cdb[:group].each do|gid, gat|
             c = 0 if /true|1/ =~ gat[:hidden]
             sg = @dispgrp.put_grp(gid, gat[:caption], c)

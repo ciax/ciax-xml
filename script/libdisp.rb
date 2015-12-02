@@ -23,13 +23,13 @@ module CIAX
       @sub = Dummy.new(self, caption: @caption, color: @color)
     end
 
-    def put_sec
-      _put_(Section)
+    def set_sec
+      _set_(Section)
     end
 
     # Add group with valid_keys
-    def put_grp
-      _put_(Group)
+    def set_grp
+      _set_(Group)
     end
 
     def put_item(k, v)
@@ -83,14 +83,14 @@ module CIAX
       osub = type?(other, Disp).sub
       if osub.is_a? Hash
         rec_merge_index(osub)
-        put_sec.update(osub)
+        set_sec.update(osub)
       end
       reset!
     end
 
     private
 
-    def _put_(mod)
+    def _set_(mod)
       return @sub if @sub.is_a? mod
       @sub = mod.new(self, caption: @caption, color: @color)
     end
@@ -219,7 +219,7 @@ module CIAX
     puts '--'
     # Three level groups
     idx1 = Disp.new(column: 3, caption: 'top1', color: 4)
-    grp1 = idx1.put_sec
+    grp1 = idx1.set_sec
     2.times do |i|
       s11 = grp1.put_sec("g#{i}", "Group#{i}")
       2.times do |j|
@@ -234,7 +234,7 @@ module CIAX
     puts '--'
     # Two level groups with item number
     idx2 = Disp.new(line_number: true, caption: 'top2')
-    grp2 = idx2.put_sec
+    grp2 = idx2.set_sec
     3.times do |i|
       s21 = grp2.put_grp("g2#{i}", "Gp#{i}")
       3.times do |j|

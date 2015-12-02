@@ -117,7 +117,7 @@ module CIAX
 
       def upd(e, step, _mstat)
         step.ok?
-        @cfg[:dev_list].get(e[:site]).exe(["upd"], 'macro').join('macro')
+        @cfg[:dev_list].get(e[:site]).exe(['upd'], 'macro').join('macro')
         false
       end
 

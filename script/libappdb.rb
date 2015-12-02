@@ -128,7 +128,7 @@ module CIAX
       rescue InvalidID
         OPT.usage('[id] (key) ..')
       end
-      puts OPT['r'] ? dbi.to_v : dbi.path(ARGV)
+      puts OPT[:r] ? dbi.to_v : dbi.path(ARGV)
     end
   end
 end

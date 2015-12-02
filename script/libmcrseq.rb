@@ -64,24 +64,24 @@ module CIAX
         @depth += 1
         @record[:status] = 'run'
         mstat[:result] = 'busy'
-        begin
-          ment[:sequence].each do|e|
-            step = @record.add_step(e, @depth)
-            begin
-              break true if method(e[:type]).call(e, step, mstat)
-            rescue Retry
-              retry
-            end
-          end
-        rescue Interlock
-          false
-        end
+        ment[:sequence].each { |e| break(true) if do_step(e, mstat) }
+      rescue Interlock
+        false
       rescue Interrupt
         mstat[:result] = 'interrupted'
         raise Interrupt
       ensure
         mstat[:result] = 'complete' if mstat[:result] == 'busy'
         @depth -= 1
+      end
+
+      def do_step(e, mstat)
+        step = @record.add_step(e, @depth)
+        begin
+          return true if method(e[:type]).call(e, step, mstat)
+        rescue Retry
+          retry
+        end
       end
 
       def mesg(_e, step, _mstat)

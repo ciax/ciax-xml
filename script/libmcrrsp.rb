@@ -19,7 +19,7 @@ module CIAX
         self[:ver] = @cfg[:ver] || '0' # Version
         self[:cid] = @cfg[:cid] # Command ID (cmd:par)
         self[:label] = @cfg[:label] # Label for CID
-        self[:original_steps] = @cfg[:sequence].size
+        self[:original_steps] = 0
         self
       end
 

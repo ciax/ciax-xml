@@ -64,6 +64,7 @@ module CIAX
       def sub_macro(ment, mstat)
         @depth += 1
         @record[:status] = 'run'
+        @record[:original_steps] += ment[:sequence].size
         mstat[:result] = 'busy'
         ment[:sequence].each { |e| break(true) if do_step(e, mstat) }
       rescue Interlock

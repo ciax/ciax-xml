@@ -62,6 +62,7 @@
           <xsd:element ref="mdb:mesg" />
           <xsd:element ref="mdb:mcr" />
           <xsd:element ref="mdb:exec" />
+          <xsd:element ref="mdb:cfg" />
           <xsd:element ref="mdb:upd" />
         </xsd:choice>
       </xsd:sequence>
@@ -158,6 +159,15 @@
         <xsd:extension base="mdb:command">
           <xsd:attribute name="site" type="xsd:token" use="required" />
           <xsd:attribute name="skip" type="xsd:boolean" />
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="cfg">
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="mdb:command">
+          <xsd:attribute name="site" type="xsd:token" use="required" />
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>

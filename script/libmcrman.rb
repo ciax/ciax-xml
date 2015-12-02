@@ -31,6 +31,8 @@ module CIAX
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
+        @cobj.rem.sys.add_item('nonstop','Mode').def_proc{ OPT[:n]='' }
+        @cobj.rem.sys.add_item('inter','Mode').def_proc{ OPT[:n]=nil;'' }
       end
 
       def _init_stat_

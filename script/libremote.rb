@@ -15,14 +15,14 @@ module CIAX
 
     # @cfg should have [:dbi]
     class Domain < GrpAry
-      attr_reader :hid, :ext, :int
+      attr_reader :sys, :ext, :int
       def initialize(cfg, atrb = {})
         super
         @cfg[:def_proc] = proc { '' } # proc is re-defined
       end
 
       def add_sys(ns = Sys)
-        @hid = add(ns::Group)
+        @sys = add(ns::Group)
       end
 
       def add_ext(ns = Ext)

@@ -13,7 +13,7 @@ module CIAX
     #   Attributes (one level): color(#), level(#)
     #   Attributes (one group): caption(text)
     SEPTBL = [['****', 2], ['===', 6], ['--', 12], ['_', 14]]
-    attr_reader :valid_keys, :sub, :column, :line_number
+    attr_reader :valid_keys, :sub, :column, :line_number, :rank
     def initialize(caption: nil, color: nil, column: 2, line_number: false)
       @valid_keys = Arrayx.new
       @caption = caption
@@ -21,6 +21,7 @@ module CIAX
       @column = column
       @line_number = line_number
       @sub = Dummy.new(self, caption: @caption, color: @color)
+      @rank = 0
     end
 
     def set_sec
@@ -72,10 +73,9 @@ module CIAX
 
     def mk_caption(caption, color: nil, level: nil)
       return unless caption
-      level = level.to_i
+      @level = level.to_i
       sep, col = SEPTBL[level]
-      indent(level) +
-        caption(caption, color || col, sep)
+      indent(level) + caption(caption, color || col, sep)
     end
 
     def merge_sub(other)
@@ -105,11 +105,12 @@ module CIAX
     # Parent of Group
     class Section < Hashx
       attr_accessor :index, :level
-      def initialize(index, caption: nil, color: nil, level: nil)
+      def initialize(index, caption: nil, color: nil, level: nil, rank: nil)
         @index = index
         @caption = caption
         @color = color
         @level = level.to_i
+        @rank = rank.to_i
       end
 
       # add sub caption if sub is true
@@ -117,12 +118,12 @@ module CIAX
         _put_(Section, id, cap, color)
       end
 
-      def put_grp(id, cap, color = nil)
-        _put_(Group, id, cap, color)
+      def put_grp(id, cap, color = nil, rank = nil)
+        _put_(Group, id, cap, color, rank)
       end
 
-      def put_dmy(id, cap, color = nil)
-        _put_(Group, id, cap, color)
+      def put_dmy(id, cap, color = nil, rank = nil)
+        _put_(Group, id, cap, color, rank)
       end
 
       def reset!
@@ -135,7 +136,7 @@ module CIAX
       end
 
       def view
-        return '' if @color == 0
+        return '' if @rank > @index.rank
         ary = values.reverse.map(&:view).grep(/./)
         return '' if ary.empty?
         ary.unshift(@index.mk_caption(@caption, color: @color, level: @level)) if @caption
@@ -148,21 +149,22 @@ module CIAX
 
       private
 
-      def _put_(mod, id, cap, color = nil)
+      def _put_(mod, id, cap, color = nil, rank = nil)
         return self[id] if self[id]
-        level = @level.to_i + 1
-        self[id] = mod.new(@index, caption: cap, color: color, level: level)
+        level = @level + 1
+        self[id] = mod.new(@index, caption: cap, color: color, level: level, rank: rank)
       end
     end
 
     # It has members of item
     class Dummy < Arrayx
       attr_accessor :index, :level
-      def initialize(index, caption: nil, color: nil, level: 0)
+      def initialize(index, caption: nil, color: nil, level: nil, rank: nil)
         @index = index
         @caption = caption
         @color = color
-        @level = level
+        @level = level.to_i
+        @rank = rank.to_i
       end
 
       # add item
@@ -172,7 +174,7 @@ module CIAX
       end
 
       def view(select = self)
-        return '' if @color == 0
+        return '' if @rank > @index.rank
         list = {}
         select.compact.sort.each_with_index do|id, num|
           name = @index.line_number ? "[#{num}](#{id})" : id

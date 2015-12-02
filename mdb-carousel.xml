@@ -356,7 +356,7 @@
         <mcr name="check_slot21"/>
       </item>
     </group>
-    <group id="mc_slot_chk" caption="MOIRCS Carousel Slot Check">
+    <group id="mc_slot_chk" caption="MOIRCS Carousel Slot Check" rank="1">
       <item id="check_slot00" label="check_slot">
         <check>
           <match site="mmc" var="abs" form="msg">S00</match>
@@ -526,7 +526,7 @@
         </check>
       </item>
     </group>
-    <group id="mc_slot_comb" caption="MOIRCS Carousel Slot Combination" hidden="true">
+    <group id="mc_slot_comb" caption="MOIRCS Carousel Slot Combination" rank="2">
       <item id="slot00_00" label="carousel">
         <check>
           <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -7268,8 +7268,6 @@
       </item>
     </group>
     <group id="mc_access" caption="MOIRCS Carousel Access Port">
-      <item id="access[0-23]">
-      </item>
       <item id="access0" label="Access to Slot0">
         <check>
           <equal site="mfp" var="gv" form="msg">CLOSE</equal>
@@ -7447,7 +7445,7 @@
         <mcr name="check_access21"/>
       </item>
     </group>
-    <group id="mc_access_chk" caption="MOIRCS Carousel Access Port Check">
+    <group id="mc_access_chk" caption="MOIRCS Carousel Access Port Check" rank="1">
       <item id="check_access00" label="check_access">
         <check>
           <match site="mmc" var="abs" form="msg">S06</match>
@@ -7617,7 +7615,7 @@
         </check>
       </item>
     </group>
-    <group id="mo_select" caption="MOIRCS select">
+    <group id="mo_select" caption="MOIRCS select" rank="2">
       <item id="slotX_00" label="Select Macro">
         <select site="mmc" var="abs" form="msg">
           <option val="S00">

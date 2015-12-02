@@ -663,7 +663,7 @@
         <exec site="mfp" name="rc"/>
       </item>
     </group>
-    <group id="mo_robo" caption="MOIRCS Arm Extension">
+    <group id="mo_arm" caption="MOIRCS Arm Extension">
       <item id="gf_t-f" label="Go to FCS">
         <goal>
           <equal site="mma" var="pos" form="msg">FOCUS</equal>

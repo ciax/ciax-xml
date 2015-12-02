@@ -2,40 +2,42 @@
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro" port="55555">
     <group id="cx_main" caption="Macro Commands" column="2">
-      <item id="runf" label="Run Forward to Tag">
-        <goal label="On Tag?">
-          <not form="data" site="crt" var="cps">0</not>
-        </goal>
-        <mesg label="Clear the way?"/>
-        <wait retry="5" label="Ready?">
-          <equal form="msg" var="rdy" site="crt">ON</equal>
-        </wait>
-        <exec site="crt" name="runf"/>
-        <wait retry="5" label="Run start?">
-          <equal form="msg" var="run" site="crt">ON</equal>
-        </wait>
-        <wait retry="40" label="Run end?">
-          <equal form="msg" var="run" site="crt">OFF</equal>
-        </wait>
-      </item>
-      <item id="run" label="Run to Tag [1-12]">
-        <par_num label="1-12">1:12</par_num>
-        <goal label="On Destination Tag?">
-          <equal form="data" var="cps" site="crt">$1</equal>
-        </goal>
-        <check label="Ready?">
-          <equal form="msg" var="rdy" site="crt">ON</equal>
-        </check>
-        <exec site="crt" name="run">
-          <argv>$1</argv>
-        </exec>
-        <wait retry="5" label="Run start?">
-          <equal form="msg" var="run" site="crt">ON</equal>
-        </wait>
-        <wait retry="120" label="Run end?">
-          <equal form="msg" var="run" site="crt">OFF</equal>
-        </wait>
-      </item>
+      <unit id="run" label="Cart Run">
+        <item id="runf" label="Run Forward to Tag">
+          <goal label="On Tag?">
+            <not form="data" site="crt" var="cps">0</not>
+          </goal>
+          <mesg label="Clear the way?"/>
+          <wait retry="5" label="Ready?">
+            <equal form="msg" var="rdy" site="crt">ON</equal>
+          </wait>
+          <exec site="crt" name="runf"/>
+          <wait retry="5" label="Run start?">
+            <equal form="msg" var="run" site="crt">ON</equal>
+          </wait>
+          <wait retry="40" label="Run end?">
+            <equal form="msg" var="run" site="crt">OFF</equal>
+          </wait>
+        </item>
+        <item id="run" label="Run to Tag [1-12]">
+          <par_num label="1-12">1:12</par_num>
+          <goal label="On Destination Tag?">
+            <equal form="data" var="cps" site="crt">$1</equal>
+          </goal>
+          <check label="Ready?">
+            <equal form="msg" var="rdy" site="crt">ON</equal>
+          </check>
+          <exec site="crt" name="run">
+            <argv>$1</argv>
+          </exec>
+          <wait retry="5" label="Run start?">
+            <equal form="msg" var="run" site="crt">ON</equal>
+          </wait>
+          <wait retry="120" label="Run end?">
+            <equal form="msg" var="run" site="crt">OFF</equal>
+          </wait>
+        </item>
+      </unit>
       <item id="lift" label="Jack UP Level [1-4]">
         <par_num>1:4</par_num>
         <goal label="On Destination Level?">

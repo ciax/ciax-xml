@@ -24,64 +24,80 @@ module CIAX
         dbi = Dbi[doc[:attr]]
         @id = dbi[:id]
         @sites = []
-        dbi[:command] = init_command(doc[:top])
+        init_command(doc[:top], dbi)
         dbi[:sites] = @sites.uniq
         dbi
       end
 
-      def init_command(mdbc)
-        idx = {}
-        grp = {}
+      def init_command(mdbc, dbi)
+        @idx = {}
+        @grps = {}
+        @units = {}
         mdbc.each do|e|
           Msg.give_up('No group in mdbc') unless e.name == 'group'
-          gid = e.attr2item(grp)
-          arc_command(e, idx, grp[gid])
+          gid = e.attr2item(@grps)
+          arc_unit(e, gid)
         end
-        { group: grp, index: idx }
+        dbi[:command]  = { group: @grps, index: @idx }
+        dbi[:command][:unit] = @units unless @units.empty?
       end
 
-      def arc_command(e, idx, grp)
+      def arc_unit(e, gid)
         e.each do|e0|
-          id = e0.attr2item(idx)
-          verbose { "MACRO:[#{id}]" }
-          item = idx[id]
-          (grp[:members] ||= []) << id
-          body = (item[:body] ||= [])
-          final = {}
-          e0.each do|e1|
-            atrb = e1.to_h
-            _get_sites_(atrb)
-            par2item(e1, item) && next
-            atrb[:type] = e1.name
-            case e1.name
-            when 'mesg'
-              body << atrb
-            when 'check', 'wait'
-              body << make_condition(e1, atrb)
-            when 'goal'
-              body << make_condition(e1, atrb)
-              final.update(atrb.extend(Enumx).deep_copy)[:type] = 'check'
-            when 'upd'
-              body << atrb
-              verbose { "UPDATE:[#{e1[:name]}]" }
-            when 'exec'
-              atrb[:args] = getcmd(e1)
-              atrb.delete(:name)
-              body << atrb
-              verbose { "COMMAND:[#{e1[:name]}]" }
-            when 'mcr'
-              atrb[:args] = getcmd(e1)
-              atrb.delete(:name)
-              body << atrb
-            when 'select'
-              atrb[:select] = get_option(e1)
-              atrb.delete(:name)
-              body << atrb
+          case e0.name
+          when 'unit'
+            uid = e0.attr2item(@units)
+            e0.each do|e1|
+              id = arc_command(e1, gid)
+              @idx[id][:unit] = uid
+              (@units[uid][:members] ||= []) << id
             end
+          when 'item'
+            arc_command(e0, gid)
           end
-          body << final unless final.empty?
         end
-        idx
+      end
+
+      def arc_command(e0, gid)
+        id = e0.attr2item(@idx)
+        verbose { "MACRO:[#{id}]" }
+        item = @idx[id]
+        (@grps[gid][:members] ||= []) << id
+        body = (item[:body] ||= [])
+        final = {}
+        e0.each do|e1|
+          atrb = e1.to_h
+          _get_sites_(atrb)
+          par2item(e1, item) && next
+          atrb[:type] = e1.name
+          case e1.name
+          when 'mesg'
+            body << atrb
+          when 'check', 'wait'
+            body << make_condition(e1, atrb)
+          when 'goal'
+            body << make_condition(e1, atrb)
+            final.update(atrb.extend(Enumx).deep_copy)[:type] = 'check'
+          when 'upd'
+            body << atrb
+            verbose { "UPDATE:[#{e1[:name]}]" }
+          when 'exec'
+            atrb[:args] = getcmd(e1)
+            atrb.delete(:name)
+            body << atrb
+            verbose { "COMMAND:[#{e1[:name]}]" }
+          when 'mcr'
+            atrb[:args] = getcmd(e1)
+            atrb.delete(:name)
+            body << atrb
+          when 'select'
+            atrb[:select] = get_option(e1)
+            atrb.delete(:name)
+            body << atrb
+          end
+        end
+        body << final unless final.empty?
+        id
       end
 
       def make_condition(e1, atrb)

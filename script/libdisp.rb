@@ -213,10 +213,10 @@ module CIAX
 
   if __FILE__ == $PROGRAM_NAME
     # Top level only
-    idx0 = Disp.new(column: 3, caption: 'top')
+    idx0 = Disp.new(column: 3, caption: 'top', color: 1)
     10.times { |i| idx0.put_item("x#{i}", "caption #{i}") }
     puts idx0
-    puts
+    puts '--'
     # Three level groups
     idx1 = Disp.new(column: 3, caption: 'top1', color: 4)
     grp1 = idx1.put_sec
@@ -231,7 +231,7 @@ module CIAX
       end
     end
     puts idx1
-    puts
+    puts '--'
     # Two level groups with item number
     idx2 = Disp.new(line_number: true, caption: 'top2')
     grp2 = idx2.put_sec
@@ -243,11 +243,11 @@ module CIAX
       end
     end
     puts idx2
-    puts
+    puts '--'
     # Merging groups
     idx1.merge_sub(idx2)
     puts idx1
-    puts
+    puts '--'
     # Confirm merged index
     idx1.valid_keys.delete('0-0')
     puts idx1

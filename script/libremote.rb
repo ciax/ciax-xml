@@ -83,7 +83,8 @@ module CIAX
           idx = cdb[:index]
           @dispgrp = @displist.put_sec
           cdb[:group].each do|gid, gat|
-            sg = @dispgrp.put_grp(gid, gat[:caption])
+            c = 0 if /true|1/ =~ gat[:hidden]
+            sg = @dispgrp.put_grp(gid, gat[:caption], c)
             gat[:members].each do|id|
               sg.put_item(id, idx[id][:label])
               add_item(id, cdb, idx[id])

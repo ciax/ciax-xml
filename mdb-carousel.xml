@@ -60,12 +60,24 @@
         <exec site="mmc" name="lowspd"/>
         <upd site="map"/>
         <exec site="mmc" name="cw"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="gh-cw"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="cw"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="gh-cw"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="set0"/>
       </item>
@@ -534,6 +546,9 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot01_00" label="carousel">
         <check>
@@ -542,6 +557,9 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot02_00" label="carousel">
         <check>
@@ -550,6 +568,9 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot03_00" label="carousel">
         <check>
@@ -558,8 +579,14 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot1"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot04_00" label="carousel">
         <check>
@@ -568,8 +595,14 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot2"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot05_00" label="carousel">
         <check>
@@ -578,10 +611,19 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot3"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot1"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot06_00" label="carousel">
         <check>
@@ -590,10 +632,19 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot4"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot2"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot07_00" label="carousel">
         <check>
@@ -602,12 +653,24 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot5"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot3"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot1"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot08_00" label="carousel">
         <check>
@@ -616,12 +679,24 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot6"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot4"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot2"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot09_00" label="carousel">
         <check>
@@ -630,14 +705,29 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot7"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot5"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot3"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot1"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot10_00" label="carousel">
         <check>
@@ -646,14 +736,29 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot8"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot6"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot4"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot2"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot11_00" label="carousel">
         <check>
@@ -662,16 +767,34 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot9"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot7"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot5"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot3"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot1"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot12_00" label="carousel">
         <check>
@@ -680,16 +803,34 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot10"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot8"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot6"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot4"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot2"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot13_00" label="carousel">
         <check>
@@ -698,18 +839,39 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot11"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot9"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot7"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot5"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot3"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot1"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot14_00" label="carousel">
         <check>
@@ -718,18 +880,39 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot12"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot10"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot8"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot6"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot4"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot2"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot15_00" label="carousel">
         <check>
@@ -738,20 +921,44 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot13"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot11"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot9"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot7"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot5"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot3"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot1"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot16_00" label="carousel">
         <check>
@@ -760,20 +967,44 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <exec site="mmc" name="slot14"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot12"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot10"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot8"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot6"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot4"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot2"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
         <upd site="map"/>
         <exec site="mmc" name="slot0"/>
+        <wait retry="40" label="Run end?">
+          <equal form="msg" var="bs" site="mmc">OFF</equal>
+        </wait>
       </item>
       <item id="slot17_00" label="carousel">
         <check>

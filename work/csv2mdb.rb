@@ -24,9 +24,10 @@ end
 
 def mk_cond(site, cond)
   case cond
-  when /[~!=^]/
+  when /[~!=^]+/
     cri = $'.delete('/') # for '/S'
-    ary = [@ope[$&], cri, site, $`]
+    ope = @ope[$&[0]] # for '=='
+    ary = [ope, cri, site, $`]
     ary << @skip if @skip
     ary
   when '*', '', nil

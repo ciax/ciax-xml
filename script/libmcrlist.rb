@@ -9,7 +9,7 @@ module CIAX
     # @threads provides sequencer list as a server
     # @cfg[:db] associated site/layer should be set
     class List < Hashx
-      attr_reader :par, :threads
+      attr_reader :threads
       def initialize
         super()
         @threads = ThreadGroup.new

@@ -56,7 +56,7 @@ module CIAX
       end
 
       def init_command
-        @cobj.add_rem.add_hid
+        @cobj.add_rem.add_sys
         @cobj.rem.add_ext(Ext)
         @cobj.rem.add_int(Int)
         self

@@ -219,13 +219,13 @@
           </repeat>
         </item>
       </group>
-      <group id='gsys' caption="System Commands">
-        <item id="sysinit" label="System Initialize">
+      <group id='gsys' caption="Device System Commands">
+        <item id="sysinit" label="Device Initialize">
           <frmcmd name="initrot" />
           <frmcmd name="initunit" />
           <frmcmd name="initfactor" />
         </item>
-        <item id="sysupd" label="Update System Status">
+        <item id="sysupd" label="Update Device Status">
           <frmcmd name="getstat" />
           <repeat from="1" to="6">
             <frmcmd name="chkrun">

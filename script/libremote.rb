@@ -21,7 +21,7 @@ module CIAX
         @cfg[:def_proc] = proc { '' } # proc is re-defined
       end
 
-      def add_hid(ns = Hid)
+      def add_sys(ns = Sys)
         @hid = add(ns::Group)
       end
 
@@ -35,11 +35,11 @@ module CIAX
       end
     end
 
-    module Hid
-      # Hidden Command Group
+    module Sys
+      # System Command Group
       class Group < Group
         def initialize(dom_cfg, atrb = {})
-          atrb[:caption] = 'Hidden Commands'
+          atrb[:caption] = 'System Commands'
           super
           add_item('interrupt')
           # Accept empty command

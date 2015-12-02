@@ -14,7 +14,8 @@ module CIAX
       'force' => 'Proceed',
       'pass' => 'Execution',
       'ok' => 'for the message',
-      'retry' => 'Checking'
+      'retry' => 'Checking',
+      'nonstop' => 'mode'
     }
     # Internal Commands
     module Int

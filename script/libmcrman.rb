@@ -28,7 +28,7 @@ module CIAX
 
       # Initialize for all mode
       def _init_domain_
-        @cobj.add_rem.add_hid
+        @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
       end

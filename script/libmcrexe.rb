@@ -27,7 +27,7 @@ module CIAX
       private
 
       def _init_cmd_(ment, pid)
-        @cobj.add_rem.add_hid
+        @cobj.add_rem.add_sys
         int = @cobj.rem.add_int(Int)
         @seq = Seq.new(ment, pid, int.valid_keys.clear)
         int.def_proc { |ent| @seq.reply(ent.id) }

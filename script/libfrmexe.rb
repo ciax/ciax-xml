@@ -20,7 +20,7 @@ module CIAX
         @cfg[:site_id] = id
         @cfg[:ver] = @dbi['version']
         @stat = @cfg[:field] = Field.new(@dbi)
-        @cobj.add_rem.add_hid
+        @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
         @sv_stat.add_flg(comerr: 'X', strerr: 'E')

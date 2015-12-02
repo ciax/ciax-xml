@@ -43,6 +43,7 @@ module CIAX
       def macro
         Thread.current[:obj] = self
         show(@record.start)
+        init_sites
         sub_macro(@cfg, @record)
       rescue Interrupt
         msg("\nInterrupt Issued to running devices #{@sv_stat.get(:run)}", 3)
@@ -81,6 +82,12 @@ module CIAX
           return true if method(e[:type]).call(e, step, mstat)
         rescue Retry
           retry
+        end
+      end
+
+      def init_sites
+        @cfg[:dbi][:sites].each do |site|
+          @cfg[:dev_list].get(site).exe(['upd'], 'macro').join('macro')
         end
       end
 

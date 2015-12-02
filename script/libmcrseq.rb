@@ -137,7 +137,6 @@ module CIAX
           step[:id] = @submcr_proc.call(seq, @id).id
         else
           res = mcr_fg(e, seq, step)
-          mstat[:result] = step[:result]
           fail Interlock unless res
         end
         false

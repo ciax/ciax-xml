@@ -55,20 +55,27 @@ def prt_cond(fld)
   end
 end
 
-def prt_exe(ary)
-  indent(:exec, mkattr(ary, 'site', 'name', 'skip'))
-end
-
-def prt_cfg(ary)
-  indent(:cfg, mkattr(ary, 'site', 'name', 'skip'))
-end
-
-def prt_seq(seq)
-  seq.each do|ary|
-    if ary[0].to_s == 'mcr'
-      indent(ary[0], name: ary[1])
+def prt_seq(ary)
+  ary.each do|e|
+    case e
+    when Array
+      if e[0].to_s == 'mcr'
+        indent(e[0], name: e[1])
+      else
+        indent(e.shift, mkattr(e,'site', 'name', 'skip'))
+      end
     else
-      prt_exe(ary)
+      prt_wait(e)
+    end
+  end
+end
+
+def prt_wait(e)
+  if e['sleep']
+    indent(:wait, sleep: e['sleep'])
+  else
+    enclose(:wait, retry: e['retry']) do
+      prt_cond(e['until'])
     end
   end
 end
@@ -107,20 +114,8 @@ enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
                 enclose(:check) do
                   prt_cond(ary)
                 end
-              when 'exec'
-                prt_exe(ary.first)
-              when 'cfg'
-                prt_cfg(ary.first)
               when 'seq'
                 prt_seq(ary)
-              when 'wait'
-                if ary['sleep']
-                  indent(:wait, sleep: ary['sleep'])
-                else
-                  enclose(:wait, retry: ary['retry']) do
-                    prt_cond(ary['until'])
-                  end
-                end
               when 'select'
                 attr = { site: ary['site'], var: ary['var'], form: 'msg' }
                 enclose(:select, attr) do

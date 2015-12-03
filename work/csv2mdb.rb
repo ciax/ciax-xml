@@ -51,6 +51,9 @@ def spl_cmd(line, del = ' ')
       ary[0] = $'
       ary << true
     end
+    # take macro if device macro exists
+    id = ary.join('_')
+    ary = @index.key?(id) ? ['mcr', id] : ary
     # add cfg or upd or exec
     unless ary[0] == 'mcr'
       if ary[1] == 'upd'
@@ -78,7 +81,7 @@ end
 
 mdb = {}
 @cfgs = {}
-index = {}
+@index = {}
 @ucap = mdb[:caption_unit]={}
 @gcap = mdb[:caption_group]={}
 # Convert device
@@ -91,13 +94,14 @@ ARGV.each do|site|
     con['check'] = spl_cond(ck) { |cond| [site, cond] } if ck && !ck.empty?
   end
   get_csv("cdb_#{site}") do|id, label, _inv, type, cmd|
+    label.gsub!(/&/, 'and')
     if type == 'cap'
       @unit = 'unit_'+id.tr('^a-zA-Z0-9','')
       @ucap[@unit] = label
       next
     end
     con = (grp["#{site}_#{id}"] ||= {})
-    con['label'] = label.gsub(/&/, 'and')
+    con['label'] = label
     con['unit']=@unit if @unit
     seq=con['seq']=[]
     case type
@@ -111,7 +115,7 @@ ARGV.each do|site|
       _, mid, post = cmd.split('/')
       if mid
         rtry, cri, = mid.split(':')
-        wait = con['wait'] = {}
+        wait = {}
         if cri
           wait['retry'] = rtry
           wait['until'] = spl_cond(cri) { |cond| [site, cond] }
@@ -119,14 +123,15 @@ ARGV.each do|site|
           wait['sleep'] = rtry
         end
         wait['post'] = spl_cmd(post, '&') if post
+        seq << wait
       end
     end
   end
   @gcap["grp_#{site}"] = "#{site.upcase} Group"
   mdb["grp_#{site}"] = grp.select! do|_k, v|
-    %w(wait goal check).any? { |f| v.key?(f) }
+    v.key?('seq') && %w(wait goal check).any? { |f| v.key?(f) }
   end
-  index.update(grp)
+  @index.update(grp)
 end
 
 # Convert mdb
@@ -149,9 +154,8 @@ if proj
     con = (grp[id] ||= {})
     con['label'] = label.gsub(/&/, 'and')
     con['unit']=@unit if @unit
+    # For select feature (substitute %? to current status)
     con['seq'] = spl_cmd(seq).map do|ary|
-      id = ary.join('_')
-      ary = index.key?(id) ? ['mcr', id] : ary
       if /%./ =~ ary[1]
         select << ary[1]
         ary[1] = ary[1].sub(/%(.)/, 'X')

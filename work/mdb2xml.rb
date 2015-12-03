@@ -50,6 +50,10 @@ def prt_exe(ary)
   indent(:exec, mkattr(ary, 'site', 'name', 'skip'))
 end
 
+def prt_cfg(ary)
+  indent(:cfg, mkattr(ary, 'site', 'name', 'skip'))
+end
+
 def prt_seq(seq)
   seq.each do|ary|
     if ary[0].to_s == 'mcr'
@@ -88,6 +92,8 @@ enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
                 end
               when 'exec'
                 prt_exe(ary.first)
+              when 'cfg'
+                prt_cfg(ary.first)
               when 'seq'
                 prt_seq(ary)
               when 'wait'

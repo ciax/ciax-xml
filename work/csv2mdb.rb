@@ -8,6 +8,7 @@ abort "Usage: csv2mdb -m(proj) [sites]\n"\
       '  sites for specific macro for devices' if ARGV.size < 1
 opt = ARGV.getopts('m:')
 @ope = { '~' => 'match', '!' => 'not', '=' => 'equal', '^' => 'unmatch' }
+@unit=nil
 
 def get_site(elem)
   @skip = nil
@@ -58,6 +59,7 @@ end
 def get_csv(base)
   open(ENV['HOME'] + "/config/#{base}.txt") do|f|
     f.readlines.each do|line|
+      @unit=nil if line.empty?
       next if /^[a-zA-Z0-9]/ !~ line
       yield line.chomp.split(',')
     end
@@ -65,20 +67,34 @@ def get_csv(base)
 end
 
 mdb = {}
+cfgs = {}
 index = {}
 # Convert device
 ARGV.each do|site|
   grp = {}
+  cfga = cfgs[site] = []
   get_csv("idb_#{site}") do|id, gl, ck|
     con = grp["#{site}_#{id}"] = {}
     con['goal'] = spl_cond(gl) { |cond| [site, cond] } if gl && !gl.empty?
     con['check'] = spl_cond(ck) { |cond| [site, cond] } if ck && !ck.empty?
   end
   get_csv("cdb_#{site}") do|id, label, _inv, type, cmd|
-    next if type == 'cap'
+    if type == 'cap'
+      @unit = id
+      next
+    end
     con = (grp["#{site}_#{id}"] ||= {})
     con['label'] = label.gsub(/&/, 'and')
-    con['exec'] = [[site, id]]
+    con['unit']=@unit if @unit
+    case type
+    when 'cmd'
+      cfga << id
+      con['cfg'] = [[site, id]]
+    when 'act'
+      con['exec'] = [[site, id]]
+    else
+      con['upd'] = [[site, id]]
+    end
     if cmd
       _, mid, post = cmd.split('/')
       if mid
@@ -111,9 +127,13 @@ if proj
   end
   select = []
   get_csv("cdb_mcr-#{proj}") do|id, label, _inv, type, seq|
-    next if type == 'cap'
+    if type == 'cap'
+      @unit = id
+      next
+    end
     con = (grp[id] ||= {})
     con['label'] = label.gsub(/&/, 'and')
+    con['unit']=@unit if @unit
     con['seq'] = spl_cmd(seq).map do|ary|
       id = ary.join('_')
       ary = index.key?(id) ? ['mcr', id] : ary

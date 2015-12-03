@@ -9,7 +9,7 @@ for i ; do
         ?db-*.xml)
             schema=$sdir/${i%%-*}.xsd;;
         *)
-            echo "$1 isn't Target"
+            echo "$1 isn't Target (name should be ?db-*.xml)"
             continue;;
     esac
     xmllint --noout --schema $schema $i

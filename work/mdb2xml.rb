@@ -19,13 +19,21 @@ def indent(tag, attr = {}, text = nil)
   end
 end
 
-def enclose(tag, attr = {})
+def topen(tag, attr = {})
   mktag(tag, attr)
   puts '>'
   @indent += 1
-  yield
+end
+
+def tclose(tag)
   @indent -= 1
   printf('  ' * @indent + "</%s>\n", tag)
+end
+
+def enclose(tag, attr = {})
+  topen(tag, attr)
+  yield
+  tclose(tag)
 end
 
 def mkattr(vals, *tags)
@@ -69,7 +77,9 @@ abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.size < 1
 proj = ENV['PROJ'] || 'moircs'
 
 @mdb = JSON.load(gets(nil))
+@ucap = @mdb.delete('caption_unit') || {}
 @indent = 0
+@unit=nil
 puts '<?xml version="1.0" encoding="utf-8"?>'
 enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
   label = "#{proj.upcase} Macro"
@@ -77,6 +87,11 @@ enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
     @mdb.each do|grp, mem|
       enclose(:group, id: grp) do
         mem.each do|id, db|
+          if @unit != db['unit']
+            tclose('unit') if @unit
+            @unit = db['unit']
+            topen('unit',id: @unit, label: @ucap[@unit]) if @unit
+          end
           attr = { id: id }
           attr[:label] = db['label'] if db['label']
           enclose(:item, attr) do
@@ -117,6 +132,7 @@ enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
             end
           end
         end
+        tclose('unit') if @unit
       end
     end
   end

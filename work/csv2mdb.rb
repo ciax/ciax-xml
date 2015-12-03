@@ -69,6 +69,7 @@ end
 mdb = {}
 cfgs = {}
 index = {}
+@ucap = mdb[:caption_unit]={}
 # Convert device
 ARGV.each do|site|
   grp = {}
@@ -80,7 +81,8 @@ ARGV.each do|site|
   end
   get_csv("cdb_#{site}") do|id, label, _inv, type, cmd|
     if type == 'cap'
-      @unit = id
+      @unit = 'unit_'+id.tr('^a-zA-Z0-9','')
+      @ucap[@unit] = label
       next
     end
     con = (grp["#{site}_#{id}"] ||= {})
@@ -128,7 +130,8 @@ if proj
   select = []
   get_csv("cdb_mcr-#{proj}") do|id, label, _inv, type, seq|
     if type == 'cap'
-      @unit = id
+      @unit = 'unit_'+id.tr('^a-zA-Z0-9','')
+      @ucap[@unit] = label
       next
     end
     con = (grp[id] ||= {})

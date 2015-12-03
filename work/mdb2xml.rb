@@ -28,6 +28,7 @@ end
 def tclose(tag)
   @indent -= 1
   printf('  ' * @indent + "</%s>\n", tag)
+  nil
 end
 
 def enclose(tag, attr = {})
@@ -78,6 +79,7 @@ proj = ENV['PROJ'] || 'moircs'
 
 @mdb = JSON.load(gets(nil))
 @ucap = @mdb.delete('caption_unit') || {}
+@gcap = @mdb.delete('caption_group') || {}
 @indent = 0
 @unit=nil
 puts '<?xml version="1.0" encoding="utf-8"?>'
@@ -132,7 +134,7 @@ enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
             end
           end
         end
-        tclose('unit') if @unit
+        @unit=tclose('unit') if @unit
       end
     end
   end

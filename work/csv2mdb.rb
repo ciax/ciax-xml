@@ -9,7 +9,6 @@ abort "Usage: csv2mdb -m(proj) [sites]\n"\
 opt = ARGV.getopts('m:')
 @ope = { '~' => 'match', '!' => 'not', '=' => 'equal', '^' => 'unmatch' }
 @unit=nil
-
 def get_site(elem)
   @skip = nil
   elem.split(':').map do|e|
@@ -52,6 +51,17 @@ def spl_cmd(line, del = ' ')
       ary[0] = $'
       ary << true
     end
+    # add cfg or upd or exec
+    unless ary[0] == 'mcr'
+      if ary[1] == 'upd'
+        ary[1]=ary[0]
+        ary[0]='upd'
+      else
+        td = @cfgs[ary[0]] || []
+        type = td.include?(ary[1]) ? 'cfg' : 'exec'
+        ary.unshift type
+      end
+    end
     ary
   end
 end
@@ -67,13 +77,14 @@ def get_csv(base)
 end
 
 mdb = {}
-cfgs = {}
+@cfgs = {}
 index = {}
 @ucap = mdb[:caption_unit]={}
+@gcap = mdb[:caption_group]={}
 # Convert device
 ARGV.each do|site|
   grp = {}
-  cfga = cfgs[site] = []
+  cfga = @cfgs[site] = []
   get_csv("idb_#{site}") do|id, gl, ck|
     con = grp["#{site}_#{id}"] = {}
     con['goal'] = spl_cond(gl) { |cond| [site, cond] } if gl && !gl.empty?
@@ -88,14 +99,13 @@ ARGV.each do|site|
     con = (grp["#{site}_#{id}"] ||= {})
     con['label'] = label.gsub(/&/, 'and')
     con['unit']=@unit if @unit
+    seq=con['seq']=[]
     case type
-    when 'cmd'
-      cfga << id
-      con['cfg'] = [[site, id]]
     when 'act'
-      con['exec'] = [[site, id]]
+      seq << ['exec',site, id]
     else
-      con['upd'] = [[site, id]]
+      cfga << id
+      seq << ['cfg',site, id]
     end
     if cmd
       _, mid, post = cmd.split('/')
@@ -112,6 +122,7 @@ ARGV.each do|site|
       end
     end
   end
+  @gcap["grp_#{site}"] = "#{site.upcase} Group"
   mdb["grp_#{site}"] = grp.select! do|_k, v|
     %w(wait goal check).any? { |f| v.key?(f) }
   end
@@ -129,6 +140,7 @@ if proj
   end
   select = []
   get_csv("cdb_mcr-#{proj}") do|id, label, _inv, type, seq|
+    # Line with 'cap' type will enclose following lines in <unit> until next blank line
     if type == 'cap'
       @unit = 'unit_'+id.tr('^a-zA-Z0-9','')
       @ucap[@unit] = label

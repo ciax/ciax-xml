@@ -21,7 +21,7 @@
         </wait>
         <exec site="mft" name="upd"/>
       </item>
-      <item id="init" label="Initialize Turret">
+      <item id="tinit" label="Initialize Turret">
         <exec site="mft" name="set6v"/>
         <exec site="mix" name="upd"/>
         <mcr name="gh_wheel" retry="3"/>

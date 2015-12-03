@@ -79,13 +79,14 @@ def get_csv(base)
   end
 end
 
-mdb = {}
+mdb = {caption_macro: "macro"}
 @cfgs = {}
 @index = {}
 @ucap = mdb[:caption_unit]={}
 @gcap = mdb[:caption_group]={}
 # Convert device
 ARGV.each do|site|
+  mdb[:caption_macro]=site
   grp = {}
   cfga = @cfgs[site] = []
   get_csv("idb_#{site}") do|id, gl, ck|
@@ -137,6 +138,7 @@ end
 # Convert mdb
 proj = opt['m']
 if proj
+  mdb[:caption_macro]=proj
   grp = mdb['grp_mcr'] = {}
   get_csv("idb_mcr-#{proj}") do|id, gl, ck|
     con = grp[id] = {}

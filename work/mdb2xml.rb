@@ -82,17 +82,16 @@ end
 
 abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.size < 1
 
-proj = ENV['PROJ'] || 'moircs'
-
 @mdb = JSON.load(gets(nil))
+@mcap = @mdb.delete('caption_macro') || 'ciax'
 @ucap = @mdb.delete('caption_unit') || {}
 @gcap = @mdb.delete('caption_group') || {}
 @indent = 0
 @unit=nil
 puts '<?xml version="1.0" encoding="utf-8"?>'
 enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
-  label = "#{proj.upcase} Macro"
-  enclose(:macro, id: proj, version: '1', label: label, port: '55555') do
+  label = "#{@mcap.upcase} Macro"
+  enclose(:macro, id: @mcap, version: '1', label: label, port: '55555') do
     @mdb.each do|grp, mem|
       enclose(:group, id: grp) do
         mem.each do|id, db|

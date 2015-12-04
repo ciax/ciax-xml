@@ -172,7 +172,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ah"/>
         </item>
@@ -186,14 +186,16 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ao"/>
         </item>
         <item id="rc_t-i" label="Rh Close">
           <goal>
+            <equal site="mfp" var="rao" skip="true" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" skip="true" form="msg">CLOSE</equal>
             <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
+            <not site="mfp" var="rh2" skip="true" form="msg">OPEN</not>
             <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
             <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
           </goal>
@@ -204,7 +206,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_rc"/>
         </item>
@@ -216,14 +218,16 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" skip="true" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" skip="true" form="msg">CLOSE</equal>
             <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
+            <not site="mfp" var="rh2" skip="true" form="msg">OPEN</not>
             <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
             <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gf"/>
         </item>
@@ -235,20 +239,24 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" skip="true" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" skip="true" form="msg">CLOSE</equal>
             <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
+            <not site="mfp" var="rh2" skip="true" form="msg">OPEN</not>
             <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
             <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ac"/>
         </item>
         <item id="ro_t-f" label="Rh Open">
           <goal>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
+            <equal site="mfp" var="rh2" skip="true" form="msg">OPEN</equal>
             <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
           </goal>
@@ -256,13 +264,15 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
+            <not site="mfp" var="rh2" skip="true" form="msg">OPEN</not>
             <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
             <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ro"/>
         </item>
@@ -280,7 +290,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gr"/>
         </item>
@@ -298,7 +308,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_av"/>
         </item>
@@ -316,7 +326,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ao"/>
         </item>
@@ -334,7 +344,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gw"/>
         </item>
@@ -349,7 +359,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <match site="mma" var="abs" form="msg">WAIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="chk"/>
         </item>
@@ -364,7 +374,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ah"/>
         </item>
@@ -378,7 +388,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ao"/>
         </item>
@@ -396,7 +406,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_rc"/>
         </item>
@@ -415,7 +425,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gf"/>
         </item>
@@ -433,7 +443,7 @@
             <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ac"/>
         </item>
@@ -455,7 +465,7 @@
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <equal site="mma" var="con" form="msg">ON</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ro"/>
         </item>
@@ -473,7 +483,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gr"/>
         </item>
@@ -491,7 +501,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_av"/>
         </item>
@@ -509,7 +519,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gs"/>
         </item>
@@ -527,7 +537,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">STOCK</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ao"/>
         </item>
@@ -546,7 +556,7 @@
             <equal site="mma" var="con" form="msg">OFF</equal>
             <equal site="mma" var="pos" form="msg">STOCK</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gw"/>
         </item>
@@ -561,7 +571,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <match site="mma" var="abs" form="msg">WAIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="chk"/>
         </item>
@@ -575,7 +585,7 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <match site="mma" var="abs" form="msg">WAIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_av"/>
         </item>
@@ -588,7 +598,7 @@
             <equal site="mfp" var="hv" form="msg">Vertical</equal>
             <match site="mma" var="abs" form="msg">WAIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ao"/>
         </item>
@@ -602,7 +612,7 @@
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
             <match site="mma" var="abs" form="msg">WAIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gs"/>
         </item>
@@ -616,7 +626,7 @@
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">STOCK</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ac"/>
         </item>
@@ -631,7 +641,7 @@
             <equal site="mma" var="pos" form="msg">STOCK</equal>
             <equal site="mma" var="con" form="msg">ON</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gr"/>
         </item>
@@ -645,7 +655,7 @@
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <equal site="mmc" var="in1" form="msg">OFF</equal>
           </check>
           <mcr name="mfp_ah"/>
@@ -664,7 +674,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gf"/>
         </item>
@@ -685,7 +695,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_rc"/>
         </item>
@@ -706,7 +716,7 @@
             <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ro"/>
         </item>
@@ -725,7 +735,7 @@
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <equal site="mma" var="con" form="msg">ON</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ao"/>
         </item>
@@ -743,7 +753,7 @@
             <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_ini"/>
         </item>
@@ -773,7 +783,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="chk"/>
         </item>
@@ -792,7 +802,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ah"/>
         </item>
@@ -810,7 +820,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ao"/>
         </item>
@@ -832,7 +842,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_rc"/>
         </item>
@@ -851,7 +861,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gf"/>
         </item>
@@ -869,7 +879,7 @@
             <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ac"/>
         </item>
@@ -890,7 +900,7 @@
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <equal site="mma" var="con" form="msg">ON</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ro"/>
         </item>
@@ -908,7 +918,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gr"/>
         </item>
@@ -924,7 +934,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_rc"/>
         </item>
@@ -938,7 +948,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ro"/>
         </item>
@@ -950,7 +960,7 @@
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_rc"/>
         </item>
@@ -962,7 +972,7 @@
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ro"/>
         </item>
@@ -982,7 +992,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <match site="mma" var="abs" form="msg">WAIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_gr"/>
         </item>
@@ -1000,7 +1010,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ac"/>
         </item>
@@ -1018,7 +1028,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_ah"/>
         </item>
@@ -1036,7 +1046,7 @@
             <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mma_ini"/>
         </item>
@@ -1058,7 +1068,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="mfp_rc"/>
         </item>
@@ -1074,7 +1084,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
           </check>
           <mcr name="chk"/>
         </item>
@@ -1083,7 +1093,7 @@
         <item id="start" label="startmask">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="upd"/>
@@ -1097,7 +1107,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="ah_t-i"/>
@@ -1111,7 +1121,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="t-i"/>
@@ -1128,7 +1138,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="t-f"/>
@@ -1146,7 +1156,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="t-r"/>
@@ -1158,7 +1168,7 @@
         <item id="store" label="storemask">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="upd"/>
@@ -1172,7 +1182,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="ah_s-i"/>
@@ -1186,7 +1196,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="s-i"/>
@@ -1203,7 +1213,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="s-f"/>
@@ -1219,7 +1229,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="s-r"/>
@@ -1240,7 +1250,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="s-s"/>
@@ -1255,7 +1265,7 @@
         <item id="load" label="loadmask">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="upd"/>
@@ -1269,7 +1279,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="av_l-w"/>
@@ -1283,7 +1293,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="l-w"/>
@@ -1301,7 +1311,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="l-s"/>
@@ -1321,7 +1331,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="l-r"/>
@@ -1336,7 +1346,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
         </item>
@@ -1346,7 +1356,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="ro_l-f"/>
@@ -1366,7 +1376,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S </match>
           </check>
           <mcr name="l-f"/>
@@ -1379,7 +1389,7 @@
       <item id="fcheck">
         <check>
           <equal site="mfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">OK</match>
+          <match site="map" var="pres" form="msg">H|M|L</match>
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
       </item>
@@ -1391,7 +1401,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="ah_fc-i1"/>
@@ -1406,7 +1416,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="fc-i1"/>
@@ -1424,7 +1434,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="fc-f1"/>
@@ -1435,7 +1445,7 @@
         <item id="kapa" label="align mask">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
             <equal site="mma" var="pos" form="msg">INIT</equal>
           </check>
@@ -1476,7 +1486,7 @@
         <item id="kapa1" label="rail-up">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
             <equal site="mma" var="pos" form="msg">INIT</equal>
           </check>
@@ -1493,7 +1503,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
           </check>
           <mcr name="upd"/>
@@ -1509,7 +1519,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
             <not site="mma" var="pos" form="msg">FOCUS</not>
           </check>
@@ -1527,7 +1537,7 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <match site="map" var="pres" form="msg">OK</match>
+            <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
             <not site="mma" var="pos" form="msg">FOCUS</not>
             <equal site="mmc" var="in1" form="msg">ON</equal>

@@ -1,0 +1,11 @@
+#2007/4/14 in1 logic swithed by omata
+bus,On Motion,1,ENUM,1=ON 0=OFF
+in1,Mask at STOCK,1,ENUM,0=OFF 1=ON
+,,1
+
+in3,CW Limit,1,ENUM,1=ON 0=OFF
+in4,CCW Limit,1,ENUM,1=ON 0=OFF
+
+err,ERRCODE,3,INT,%03d
+abs,ABS position,10,CHAR,%+10.6f 0:S00/-1:S01/-2:S02/-3:S03/-4:S04:/-5:S05/-6:S06/-7:S07/-8:S08/-9:S09/-10:S10/-11:S11/-12:S12/-13:S13/-14:S14/-15:S15/-16:S16/-17:S17/-18:S18/-19:S19/-20:S20/-21:S21/-22:S22/+1:S23 0.1
+spd,SPEED,5,CHAR,%03.2f 12.5:HIGH/0.2:LOW 0.1

@@ -1,0 +1,11 @@
+upd,,
+stop,,
+drc,ro~CLOSE
+ro,ro~OPEN
+rc,ro~CLOSE
+go,gv~OPEN
+gc,gv~CLOSE
+av,hv~Ver
+ah,hv~Hor
+ao,ao~OPEN
+ac,ao~CLOSE

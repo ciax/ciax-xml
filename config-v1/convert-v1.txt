@@ -1,0 +1,5 @@
+# Status id
+map:ch1 pres
+
+#Macro criteia
+map:pres OK H|M|L

@@ -1,0 +1,16 @@
+## FORM
+#cmd,skip,motion
+
+upd,,
+stop,,
+astop,,
+set0,abs~0.000000,pos=INIT&abs~INIT
+mres,,pos=INIT
+ini,pos=INIT,
+gf,pos=FOCUS,
+gr,pos=ROT,
+gw,abs~WAIT,
+gs,pos=STOCK,
+setstk,,pos=STOCK&abs~STOCK
+rini,pos=ROT,
+setrot,,pos=ROT&abs~ROT

@@ -1,0 +1,23 @@
+!1,---------- Command ----------
+upd,Update Status and Print,,cmd,bs|1&in(1)|1&in(2)|1&in(3)|1&in(4)|1&in(5)|1&err|3&p|10
+stop,Stop Action,,cmd
+
+!2,---------- Action ----------
+set0,Set 0 Counter,,cmd,abspos=0
+mres,Motor Reset,,act,reset&e1=0&e2=0&hl1
+ini,Initialize Position,,act,j=-1/95:bs==0:p:in(5),astop
+rsm,Resume Pulses,,act,<resume_mma.txt>
+#gb,Go to Standby Focal Position,,act,ma=2/60:bs==0:p,astop
+gf,Go to Focal Position,,act,ma=12.8/80:bs==0:p:in(5):in(3),astop
+gr,Go to Rotate Position,,act,ma=123/60:bs==0:p:in(5):in(3),astop
+gw,Go to Waiting Position,,act,ma=185/60:bs==0:p:in(5),astop
+#gl,Go to Release Position,,act,ma=192/60:bs==0:p,astop
+gs,Go to Stock Position,,act,j=1/95:bs==0:p:in(5),astop
+astop,STOP,1,act,stop
+#f23,failure mode 1,,act,ma=23.33/60:bs==0:p,astop
+#f78,failure mode 2,,act,ma=78.41/60:bs==0:p,astop
+#f87,failure mode 3,,act,ma=87.12/60:bs==0:p,astop
+setstk,Initialize at Stock,,cmd,P=200.44
+# rini added by Omata 3/13/07
+rini,Init to RP at AV,,act,e2=1&mh=-1/95:bs==0:p:in(5)/e2=0&abspos=123,astop
+setrot,Set RP Pulse,,cmd,abspos=123

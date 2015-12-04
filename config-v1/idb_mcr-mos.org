@@ -1,0 +1,151 @@
+# 2008.08.14   slot?? : added/deleted to match to new sensor positions.
+
+
+# ____________________________________________________________________________
+# shared command
+
+stop,,
+upd,,
+chk,,
+
+# ____________________________________________________________________________
+# device command
+
+# startmask
+ah_t-i,mfp:hv=Horizontal,mfp:gv=OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+ao_t-i,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+rc_t-i,!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+gf_t-f,mma:pos=FOCUS,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+ac_t-f,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=FOCUS&mmc:abs~/S&map:ch1~OK
+#ro_t-f,!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=FOCUS&mma:con=OFF&mmc:abs~/S&map:ch1~OK
+ro_t-f,!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=FOCUS&mmc:abs~/S&map:ch1~OK
+gr_t-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=FOCUS&mmc:abs~/S&map:ch1~OK
+av_t-r,mfp:hv=Vertical,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=ROT&mmc:abs~/S&map:ch1~OK
+ao_t-r,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=ROT&mmc:abs~/S&map:ch1~OK
+gw_t-w,mma:abs~WAIT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=ROT&mmc:abs~/S&map:ch1~OK
+check_start,,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:abs~WAIT&mmc:abs~/S&map:ch1~OK
+
+## OBSOLETE MACRO ###########################################################
+# checkmask
+#ah_c-i,mfp:hv=Horizontal,mfp:gv=OPEN&mma:pos=INIT&mmc:abs~/S&map:ch1~OK
+#ao_c-i,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mma:pos=INIT&mmc:abs~/S&map:ch1~OK
+#rc_c-i,mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mma:pos=INIT&mmc:abs~/S&map:ch1~OK
+#gf_c-f,mma:pos=FOCUS,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=INIT&mmc:abs~/S&map:ch1~OK
+#ac_c-f,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=FOCUS&mmc:abs~/S&map:ch1~OK
+#############################################################################
+
+# storemask
+ah_s-i,mfp:hv=Horizontal,mfp:gv=OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+ao_s-i,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+rc_s-i,!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+gf_s-f,mma:pos=FOCUS,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+ac_s-f,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=FOCUS&mmc:abs~/S&map:ch1~OK
+ro_s-f,!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=FOCUS&mma:con=ON&mmc:abs~/S&map:ch1~OK
+gr_s-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=FOCUS&mmc:abs~/S&map:ch1~OK
+av_s-r,mfp:hv=Vertical,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=ROT&mmc:abs~/S&map:ch1~OK
+gs_s-s,mma:pos=STOCK,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=ROT&mmc:abs~/S&map:ch1~OK
+ao_s-s,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=STOCK&mmc:abs~/S&map:ch1~OK
+gw_s-w,mma:abs~WAIT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:con=OFF&mma:pos=STOCK&mmc:abs~/S&map:ch1~OK
+#gw_s-w,mma:abs~WAIT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:con=OFF&mma:pos=STOCK&mmc:abs~/S&mmc:in1=ON&map:ch1~OK
+check_store,,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:abs~WAIT&mmc:abs~/S&map:ch1~OK
+
+# loadmask
+av_l-w,mfp:hv=Vertical,mfp:gv=OPEN&mma:abs~WAIT&mmc:abs~/S&map:ch1~OK
+ao_l-w,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Vertical&mma:abs~WAIT&mmc:abs~/S&map:ch1~OK
+gs_l-s,mma:pos=STOCK,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mma:abs~WAIT&mmc:abs~/S&map:ch1~OK
+ac_l-s,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mma:pos=STOCK&mmc:abs~/S&map:ch1~OK
+#ac_l-s,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mmc:in1=ON&mma:pos=STOCK&mmc:abs~/S&map:ch1~OK
+gr_l-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=STOCK&mma:con=ON&mmc:abs~/S&map:ch1~OK
+#gr_l-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=STOCK&mmc:in1=ON&mmc:abs~/S&map:ch1~OK
+ah_l-r,mfp:hv=Horizontal,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=ROT&mmc:abs~/S&map:ch1~OK&mmc:in1=OFF
+gf_l-f,mma:pos=FOCUS,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=ROT&mmc:abs~/S&map:ch1~OK
+#rac_l-f,mfp:rh1!OPEN&mfp:rh2!OPEN,mfp:gv=OPEN&mma:pos=FOCUS&mfp:hv=Horizontal&map:ch1~OK
+#rbc_l-f,mfp:rh3!OPEN&!mfp:rh4!OPEN,mfp:gv=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&mma:pos=FOCUS&mfp:hv=Horizontal&map:ch1~OK
+rc_l-f,mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=FOCUS&mmc:abs~/S&map:ch1~OK
+ro_l-f,!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=FOCUS&mmc:abs~/S&map:ch1~OK
+ao_l-f,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=FOCUS&mma:con=ON&mmc:abs~/S&map:ch1~OK
+ini_l-i,mma:pos=INIT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=FOCUS&mmc:abs~/S&map:ch1~OK
+set0_a,,mma:pos=INIT&mma:abs~INIT
+setstk_a,,mma:pos=STOCK&mma:abs~STOCK
+check_load,,mfp:gv=OPEN&mfp:hv=Horizontal&!mfp:ao=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+
+# fcheck
+ah_fc-i1,mfp:hv=Horizontal,mfp:gv=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+ao_fc-i1,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+rc_fc-i1,mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+gf_fc-f1,mma:pos=FOCUS,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+ac_fc-f1,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=FOCUS&mmc:abs~/S&map:ch1~OK
+ro_fc-f1,mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&mfprh4=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1!OPEN&mfp:rh2!OPEN&!mfp:rh3!OPEN&!mfp:rh4!OPEN&mma:pos=FOCUS&mma:con=ON&mmc:abs~/S&map:ch1~OK
+gr_fc-r1,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=FOCUS&mmc:abs~/S&map:ch1~OK
+set0_a,,
+
+# kapamask
+rc_k,mfp:ro=CLOSE,mfp:hv=Horizontal&mfp:ao=OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+ro_k,mfp:ro=OPEN,mfp:hv=Horizontal&mfp:ao=OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+rc_k1,mfp:ro=CLOSE,mfp:hv=Horizontal&mma:pos=INIT&mma:abs~INIT&map:ch1~OK
+ro_k1,mfp:ro=OPEN,mfp:hv=Horizontal&mma:pos=INIT&mma:abs~INIT&map:ch1~OK
+
+# fin
+gr_f-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:abs~WAIT&mmc:abs~/S&map:ch1~OK
+ac_f-r,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=ROT&mmc:abs~/S&map:ch1~OK
+ah_f-r,mfp:hv=Horizontal,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=ROT&mmc:abs~/S&map:ch1~OK
+ini_f-i,mma:pos=INIT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=ROT&mmc:abs~/S&map:ch1~OK
+rc_f-i,mfp:rh1=CLOSE&mfp:rh2=CLOSE&!mfp:rh3=CLOSE&!mfp:rh4=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1=OPEN&mfp:rh2=OPEN&!mfp:rh3=OPEN&!mfp:rh4=OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+check_fin,,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&!mfp:rh1=CLOSE&!mfp:rh2=CLOSE&!mfp:rh3=CLOSE&!mfp:rh4=CLOSE&mma:pos=INIT&mma:abs~INIT&mmc:abs~/S&map:ch1~OK
+
+
+# ____________________________________________________________________________
+# macro command
+
+# startmask
+start,,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+t-i,mma:pos!INIT,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+t-f,mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+t-r,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+t-w,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:abs!WAIT,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+
+## OBSOLETE MACRO ############################################################
+# checkmask
+#check,,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+#c-i,mma:pos!N/A&mma:pos!INIT,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+#c-f,mma:pos!N/A&mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+#c-mskon,,mfp:gv=OPEN&!mma:con=ON&map:ch1~OK&mmc:abs~/S
+#c-mskoff,,mfp:gv=OPEN&!mma:con=OFF&map:ch1~OK&mmc:abs~/S
+##############################################################################
+
+# storemask
+store,,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+s-i,mma:pos!INIT,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+s-f,mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+s-r,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+s-s,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STOCK,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+s-w,mma:abs^WAIT&mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STOCK,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+
+# loadmask (must not add "mma:pos!N/A in l-w)
+load,,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+l-w,mma:abs^WAIT,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+l-s,mma:pos!N/A&mma:abs^WAIT&mma:pos!STOCK,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+l-r,mma:pos!N/A&mma:abs^WAIT&mma:pos!STOCK&mma:pos!ROT,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+l-f,mma:pos!N/A&mma:abs^WAIT&mma:pos!STOCK&mma:pos!ROT&mma:pos!FOCUS,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+l-mskon,mma:con=ON,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+l-mskoff,mma:con!ON,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+l-i,mma:pos!N/A&mma:abs^WAIT&mma:pos!STOCK&mma:pos!ROT&mma:pos!FOCUS&mma:pos!INIT&mma:abs^INIT,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S 
+
+# fcheck
+fcheck,,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+fc-i1,mma:pos!N/A&mma:pos!INIT,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+fc-f1,mma:pos!N/A&mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+fc-r1,mma:pos!N/A&mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+
+#fcheck2,,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+#fc-f2,,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+#fc-i2,,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+
+# kapamask
+kapa,,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S&mma:pos=INIT
+kapa1,,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S&mma:pos=INIT
+
+# fin
+fin,mma:abs^WAIT&mma:pos!ROT&mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S
+f-r,mma:abs^WAIT&mma:pos!ROT&mma:pos!FOCUS,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S&mma:pos!FOCUS
+f-i,mma:abs^WAIT&mma:pos!ROT&mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:ch1~OK&mmc:abs~/S&mma:pos!FOCUS&mmc:in1=ON

@@ -1,0 +1,28 @@
+%pck,,4
+hr,Arm Hor/Ver(Cmd),2,CHAR,10=Horizontal 01=Vertical
+hs,Heater1 SW,1,CHAR,1=Main 0=Carr
+,,1
+
+%pck,,4
+,,2
+ao,Arm Gripper(Cmd),2,CHAR,01=OPEN 10=CLOSE
+%pck,,4
+rbo,Robohand B(Cmd),2,CHAR,01=OPEN 10=CLOSE
+
+go,Gate Valve(Cmd),2,CHAR,01=OPEN 10=CLOSE
+%pck,,4
+,,2
+rao,Robohand A(Cmd),2,CHAR,01=OPEN 10=CLOSE
+
+,,1
+%pck,,4
+rh3,Robohand 3,2,CHAR,00=ERR% 01=OPEN 10=CLOSE 11=N/A%
+rh4,Robohand 4,2,CHAR,00=ERR% 01=OPEN 10=CLOSE 11=N/A%
+
+%pck,,4
+rh1,Robohand 1,2,CHAR,00=ERR% 01=OPEN 10=CLOSE 11=N/A%
+rh2,Robohand 2,2,CHAR,00=ERR% 01=OPEN 10=CLOSE 11=N/A%
+
+%pck,,4
+gv,Gate Valve,2,CHAR,01=OPEN 10=CLOSE 11=ERR 00=TOCHU
+hv,Arm Hor/Ver,2,CHAR,01=Vertical 10=Horizontal 11=ERR 00=N/A

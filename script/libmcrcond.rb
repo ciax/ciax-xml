@@ -8,7 +8,7 @@ module CIAX
     class Condition < Hashx
       def initialize(cond, dev_list, step)
         super()
-        @dev_list = type?(dev_list, App::List)
+        @dev_list = type?(dev_list, Wat::List)
         @condition = cond
         @step = step
       end
@@ -37,8 +37,8 @@ module CIAX
 
       def _scan
         _sites.each_with_object({}) do|site, hash|
-          st = hash[site] = @dev_list.get(site).stat.upd
-          verbose { "Scanning Status #{site} (#{st[:time]})" }
+          st = hash[site] = @dev_list.get(site).sub.stat.upd
+          verbose { "Scanning GetStatus #{site} (#{st[:time]})/(#{st.object_id})" }
         end
       end
 

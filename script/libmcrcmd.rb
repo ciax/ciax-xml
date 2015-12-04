@@ -54,14 +54,15 @@ module CIAX
         private
 
         def init_sel(seq)
-          @body.each do|elem|
-            case elem[:type]
+          @body.each do|e|
+            case e[:type]
             when 'select'
-              sel = elem[:select]
-              val = type?(self[:dev_list], App::List).getstat(elem)
+              sel = e[:select]
+              wat = type?(self[:dev_list], Wat::List).get(e[:site])
+              val = wat.sub.stat[e[:var]]
               seq << { type: 'mcr', args: sel[val] || sel['*'] }
             else
-              seq << elem
+              seq << e
             end
           end
         end

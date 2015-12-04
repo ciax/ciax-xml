@@ -41,10 +41,6 @@ module CIAX
         cobj
       end
 
-      def getstat(atrb)
-        get(atrb[:site]).stat.get(atrb[:var])
-      end
-
       def server(ary)
         ary.each do|site|
           sleep 0.3

@@ -22,7 +22,7 @@ module CIAX
 
       def upd_core
         @adbs.each do|id, hash|
-          enclose("GetStatus:[#{id}]", "GetStatus:#{id}=[%s]") do
+          enclose("GetStatus:[#{id}](#{object_id})", "GetStatus:#{id}=[%s]") do
             flds = hash[:fields]
             if flds.empty?
               self[:data][id] = hash[:default] || '' unless get(id)

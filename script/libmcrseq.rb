@@ -16,7 +16,7 @@ module CIAX
       # ent should have [:sequence]'[:dev_list]
       def initialize(ment, pid = '0', valid_keys = [], &submcr_proc)
         @cfg = ment
-        type?(@cfg[:dev_list], CIAX::List)
+        type?(@cfg[:dev_list], CIAX::Wat::List)
         @record = Record.new.ext_file.auto_save.mklink # Make latest link
         @record.ext_rsp(@cfg)
         @record[:pid] = pid
@@ -168,8 +168,8 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ecmn')
       cfg = Config.new
-      al = Wat::List.new(cfg).sub_list # Take App List
-      cfg[:dev_list] = al
+      wl = Wat::List.new(cfg) # Take App List
+      cfg[:dev_list] = wl
       begin
         mobj = Remote::Index.new(cfg, dbi: Db.new.get)
         mobj.add_rem.add_ext(Ext)

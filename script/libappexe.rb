@@ -29,15 +29,6 @@ module CIAX
         opt_mode
       end
 
-      def join(src = 'local')
-        100.times do
-          sleep 0.1
-          @server_upd_proc.call(src) if @server_upd_proc
-          return true unless @sv_stat.get(:isu)
-        end
-        false
-      end
-
       def ext_shell
         super
         @cfg[:output] = View.new(@stat)
@@ -101,11 +92,6 @@ module CIAX
           'ISSUED'
         end
         self
-      end
-
-      def ext_client
-        @server_upd_proc = proc { |src| exe([], src, 2) }
-        super
       end
 
       def server_output

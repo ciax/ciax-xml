@@ -14,10 +14,18 @@ module CIAX
         @cobj.add_rem(@sub.cobj.rem)
         @stat = Event.new(@sub.id)
         @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')
-
         @mode = @sub.mode
         @host = @sub.host
         opt_mode
+      end
+
+      def join(src = 'local')
+        100.times do
+          sleep 0.1
+          @server_upd_proc.call(src) if @server_upd_proc
+          return true unless @sv_stat.get(:isu)
+        end
+        false
       end
 
       def ext_shell
@@ -29,6 +37,11 @@ module CIAX
       end
 
       private
+
+      def ext_client
+        @server_upd_proc = proc { |src| exe([], src, 2) }
+        super
+      end
 
       def ext_test
         ext_non_client

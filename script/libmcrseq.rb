@@ -113,7 +113,12 @@ module CIAX
 
       alias verify check
 
-      def wait(_e, step, mstat)
+      def wait(e, step, mstat)
+        if (s = e[:sleep])
+          step[:result] = "slept#{s}s"
+          sleep s.to_i
+          return
+        end
         return unless step.timeout? &&
                       @qry.query(%w(drop force retry), step)
         mstat[:result] = 'timeout'

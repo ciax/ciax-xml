@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="slo" id="mmc" label="MOIRCS Carrousel">
+  <app frm_id="slo" id="mmc" label="MOIRCS Carrousel" version="1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <unit id='upd' label="Status">
@@ -118,7 +118,7 @@
           <field ref="bs" />
         </string>
         <string id="con" label="Contact Sensor" symbol="normal">
-          <field ref="in" index="1" />
+          <field ref="in" index="0" />
         </string>
         <float id="spd" label="Speed" format="%.2f">
           <field ref="spd" />
@@ -127,10 +127,10 @@
           <field ref="err" />
         </integer>
         <string id="lcw" label="CW Limit" symbol="normal">
-          <field ref="in" index="3" />
+          <field ref="in" index="2" />
         </string>
         <string id="lccw" label="CCW Limit" symbol="normal">
-          <field ref="in" index="4" />
+          <field ref="in" index="3" />
         </string>
         <float id="abs" label="ABS position" symbol="abs" format="%.2f">
           <field ref="p" />

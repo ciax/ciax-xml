@@ -17,7 +17,7 @@
       <default class="alarm" msg="N/A" />
     </table>
     <table id="abs">
-      <range class="normal" msg="INIT">0:0.5</range>
+      <range class="normal" msg="INIT">-0.1:0.5</range>
       <range class="normal" msg="FOCUS">12.3:13.2</range>
       <range class="normal" msg="ROT">122.5:123.5</range>
       <range class="normal" msg="WAIT">184.5:185.5</range>

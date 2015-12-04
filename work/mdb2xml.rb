@@ -80,6 +80,15 @@ def prt_wait(e)
   end
 end
 
+def reorder(mem)
+  units = {}
+  mem.each{ |k,v|
+    uni = v['unit'] || 'all'
+    (units[v['unit']]||=[]) << k
+  }
+  units.values.flatten
+end
+
 abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.size < 1
 
 @mdb = JSON.load(gets(nil))
@@ -93,8 +102,10 @@ enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
   label = "#{@mcap.upcase} Macro"
   enclose(:macro, id: @mcap, version: '1', label: label, port: '55555') do
     @mdb.each do|grp, mem|
+      ary = reorder(mem)
       enclose(:group, id: grp) do
-        mem.each do|id, db|
+        ary.each do|id|
+          db=mem[id]
           if @unit != db['unit']
             tclose('unit') if @unit
             @unit = db['unit']

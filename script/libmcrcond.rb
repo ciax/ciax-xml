@@ -38,7 +38,7 @@ module CIAX
       def _scan
         _sites.each_with_object({}) do|site, hash|
           st = hash[site] = @dev_list.get(site).sub.stat.upd
-          verbose { "Scanning GetStatus #{site} (#{st[:time]})/(#{st.object_id})" }
+          verbose { "Scanning #{site} (#{st[:time]})/(#{st.object_id})" }
         end
       end
 
@@ -47,21 +47,19 @@ module CIAX
       end
 
       def _condition(stat, h)
-        cond = {}
-        %i(site var form cmp cri).each { |k| cond[k] = h[k] }
-        real = _fetch_form(stat, cond[:form].to_sym, cond[:var])
-        res = method(cond[:cmp]).call(cond[:cri], real)
-        verbose { "Compare #{cond[:cri].inspect} vs #{real.inspect}(#{cond[:form]})" }
-        cond.update(real: real, res: res)
-        verbose { cond.map { |k, v| format('%s=%s', k, v) }.join(',') }
-        cond
+        c = {}
+        %i(site var form cmp cri).each { |k| c[k] = h[k] }
+        real = _get_real(stat, c)
+        res = method(c[:cmp]).call(c[:cri], real)
+        c.update(real: real, res: res)
+        verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
+        c
       end
 
-      def _fetch_form(stat, form, var)
-        unless form
-          warning('No form specified')
-          form = :data
-        end
+      def _get_real(stat, h)
+        warning('No form specified') unless h[:form]
+        form = (h[:form] || :data).to_sym
+        var = h[:var]
         warning("No [#{var}] in Status[#{form}]") unless stat[form].key?(var)
         stat[form][var]
       end

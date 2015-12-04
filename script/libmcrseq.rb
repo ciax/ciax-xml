@@ -111,6 +111,8 @@ module CIAX
         fail Interlock
       end
 
+      alias verify check
+
       def wait(_e, step, mstat)
         return unless step.timeout? &&
                       @qry.query(%w(drop force retry), step)

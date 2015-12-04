@@ -18,6 +18,8 @@ module CIAX
           msg = head('Done?', 6)
         when 'check'
           msg = head('Check', 6)
+        when 'verify'
+          msg = head('Verify', 6)
         when 'wait'
           msg = head('Waiting', 6)
         when 'mcr'

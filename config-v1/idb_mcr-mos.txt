@@ -88,7 +88,7 @@ ac_f-r,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mfp:rao=OPEN&mfp:rbo
 ah_f-r,mfp:hv=Horizontal,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
 ini_f-i,mma:pos=INIT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
 rc_f-i,mfp:rao=CLOSE&mfp:rbo=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
-check_fin,,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSEE&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
+check_fin,,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
 
 
 # ____________________________________________________________________________

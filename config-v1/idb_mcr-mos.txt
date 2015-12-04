@@ -53,10 +53,10 @@ av_l-w,mfp:hv=Vertical,mfp:gv=OPEN&mma:abs~WAIT&mmc:abs~S&map:pres~H|M|L
 ao_l-w,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Vertical&mma:abs~WAIT&mmc:abs~S&map:pres~H|M|L
 gs_l-s,mma:pos=STOCK,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mma:abs~WAIT&mmc:abs~S&map:pres~H|M|L
 ac_l-s,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mma:pos=STOCK&mmc:abs~S&map:pres~H|M|L
-#ac_l-s,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mmc:in1=ON&mma:pos=STOCK&mmc:abs~S&map:pres~H|M|L
+#ac_l-s,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mmc:con=ON&mma:pos=STOCK&mmc:abs~S&map:pres~H|M|L
 gr_l-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=STOCK&mma:con=ON&mmc:abs~S&map:pres~H|M|L
-#gr_l-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=STOCK&mmc:in1=ON&mmc:abs~S&map:pres~H|M|L
-ah_l-r,mfp:hv=Horizontal,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L&mmc:in1=OFF
+#gr_l-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=STOCK&mmc:con=ON&mmc:abs~S&map:pres~H|M|L
+ah_l-r,mfp:hv=Horizontal,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L&mmc:con=OFF
 gf_l-f,mma:pos=FOCUS,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
 rc_l-f,mfp:rao=CLOSE&mfp:rbo=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 ro_l-f,mfp:rao=OPEN&mfp:rbo=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
@@ -145,4 +145,4 @@ kapa1,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
 # fin
 fin,mma:abs^WAIT&mma:pos!ROT&mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 f-r,mma:abs^WAIT&mma:pos!ROT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS
-f-i,mma:abs^WAIT&mma:pos!ROT&mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS&mmc:in1=ON
+f-i,mma:abs^WAIT&mma:pos!ROT&mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS&mmc:con=ON

@@ -65,7 +65,7 @@
       <unit id="unit_raboc" label="Robohand 1and2(a)/3and4(b) Open/Close">
         <item id="mma_set0" label="Set 0 Counter">
           <goal>
-            <match site="mma" var="abs" form="msg">0.000000</match>
+            <match site="mma" var="abs" form="msg">INIT</match>
           </goal>
           <check>
             <equal site="mma" var="pos" form="msg">INIT</equal>
@@ -752,7 +752,7 @@
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
-            <equal site="mmc" var="in1" form="msg">OFF</equal>
+            <equal site="mmc" var="con" form="msg">OFF</equal>
           </check>
           <mcr name="mfp_ah"/>
         </item>
@@ -1326,7 +1326,7 @@
             <match site="map" var="pres" form="msg">H|M|L</match>
             <match site="mmc" var="abs" form="msg">S</match>
             <not site="mma" var="pos" form="msg">FOCUS</not>
-            <equal site="mmc" var="in1" form="msg">ON</equal>
+            <equal site="mmc" var="con" form="msg">ON</equal>
           </check>
           <mcr name="f-r"/>
           <mcr name="ini_f-i"/>

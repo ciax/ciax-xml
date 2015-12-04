@@ -64,7 +64,7 @@ module CIAX
       def sub_macro(ment, mstat)
         @depth += 1
         @record[:status] = 'run'
-        @record[:original_steps] += ment[:sequence].size
+        @record[:total_steps] += ment[:sequence].size
         mstat[:result] = 'busy'
         ment[:sequence].each { |e| break(true) if do_step(e, mstat) }
       rescue Interlock
@@ -115,7 +115,7 @@ module CIAX
 
       def wait(e, step, mstat)
         if (s = e[:sleep])
-          step.sleep(s)
+          step.sleeping(s)
           return
         end
         return unless step.timeout? &&

@@ -26,7 +26,7 @@ module CIAX
       end
 
       def step_num
-        "[#{self[:steps].size}/#{self[:original_steps]}]"
+        "[#{self[:steps].size}/#{self[:total_steps]}]"
       end
 
       def busy?

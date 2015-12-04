@@ -39,15 +39,22 @@ module CIAX
 
       def title
         date = Time.at((self[:time] / 1000).round)
-        Msg.colorize('MACRO', 3) + format(":%s (%s)\n", self[:label], date)
+        Msg.colorize('MACRO', 3) + 
+          format(":%s (%s) [%s]\n", self[:label], self[:cid], date)
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('r')
-      OPT.usage '(-r) [id] (< file)' if STDIN.tty? && ARGV.size < 1
+      OPT.usage '(-r) [cid] (< file)' if STDIN.tty? && ARGV.size < 1
       if STDIN.tty?
-        puts Record.new(ARGV.shift).ext_file
+        cid = '"cid":"'+ARGV.shift+'"'
+        ary = Dir.glob(Msg.vardir('json')+'record_1*').sort.reverse
+        fname = ary.find do |fn|
+          fn if File.readlines(fn).grep(/#{cid}/)
+       end
+        /[0-9]{13}/ =~ fname
+        puts Record.new($&).ext_file if $&
       else
         puts Record.new.read
       end

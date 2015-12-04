@@ -4,7 +4,7 @@
 upd,,
 stop,,
 astop,,
-set0,abs~0.000000,pos=INIT&abs~INIT
+set0,abs~INIT,pos=INIT&abs~INIT
 mres,,pos=INIT
 ini,pos=INIT,
 gf,pos=FOCUS,

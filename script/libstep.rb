@@ -21,14 +21,13 @@ module CIAX
         itv = OPT.test? ? 0 : 0.1
         itv *= 10 if OPT[:m]
         _show title
-        self[:max] = self[:retry]
-        res = _progress(itv)
+        res = _progress(self[:retry], itv)
         self[:result] = res ? 'timeout' : 'pass'
         upd
         res
       end
 
-      def sleep(s)
+      def sleeping(s)
         _show title
         Kernel.sleep s.to_i
         self[:result] = "slept(#{s})"
@@ -94,9 +93,9 @@ module CIAX
         !OPT[:m] && self[:action] = 'dryrun'
       end
 
-      def _progress(itv)
-        self[:max].to_i.times do|n| # gives number or nil(if break)
-          self[:retry] = n
+      def _progress(total,itv)
+        total.to_i.times do|n| # gives number or nil(if break)
+          self[:count] = n
           break if @cond.ok?
           Kernel.sleep itv
           _show('.')

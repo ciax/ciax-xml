@@ -35,7 +35,7 @@ module CIAX
 
       def result
         mary = ['']
-        mary[0] << "(#{self[:retry]}/#{self[:max]})" if self[:max]
+        mary[0] << "(#{self[:count]}/#{self[:retry]})" if self[:retry]
         res = self[:result]
         if res
           cap = res.capitalize

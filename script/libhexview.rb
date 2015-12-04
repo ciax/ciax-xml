@@ -19,7 +19,7 @@ module CIAX
       end
 
       def self.sdb(id)
-        file = ENV['HOME'] + "/config/sdb_#{id}.txt"
+        file = Msg.v1cfgdir + "/sdb_#{id}.txt"
         test('r', file) && file
       end
 

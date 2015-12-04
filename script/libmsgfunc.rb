@@ -42,6 +42,10 @@ module CIAX
       Dir.glob("#{__dir__}/../#{type}-*.xml")
     end
 
+    def v1cfgdir
+      "#{__dir__}/../config-v1"
+    end
+
     # Make Var dir if not exist
     def vardir(subdir)
       dir = "#{ENV['HOME']}/.var/#{subdir}/"

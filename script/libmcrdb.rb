@@ -38,7 +38,7 @@ module CIAX
           gid = e.attr2item(@grps)
           arc_unit(e, gid)
         end
-        dbi[:command]  = { group: @grps, index: @idx }
+        dbi[:command] = { group: @grps, index: @idx }
         dbi[:command][:unit] = @units unless @units.empty?
       end
 
@@ -77,7 +77,7 @@ module CIAX
             body << make_condition(e1, atrb)
           when 'goal'
             body << make_condition(e1, atrb)
-#            final.update(atrb.extend(Enumx).deep_copy)[:type] = 'verify'
+          #            final.update(atrb.extend(Enumx).deep_copy)[:type] = 'verify'
           when 'upd'
             body << atrb
             verbose { "UPDATE:[#{e1[:name]}]" }

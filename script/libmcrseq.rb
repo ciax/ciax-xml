@@ -111,7 +111,7 @@ module CIAX
         fail Interlock
       end
 
-      alias verify check
+      alias_method :verify, :check
 
       def wait(e, step, mstat)
         if (s = e[:sleep])
@@ -138,7 +138,7 @@ module CIAX
         false
       end
 
-      def mcr(e, step, mstat)
+      def mcr(e, step, _mstat)
         seq = @cfg.ancestor(2).set_cmd(e[:args])
         if step.async? && @submcr_proc.is_a?(Proc)
           step[:id] = @submcr_proc.call(seq, @id).id

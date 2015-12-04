@@ -47,8 +47,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('icemntr')
       cfg = Config.new
-      al = Wat::List.new(cfg).sub_list # Take App List
-      cfg[:dev_list] = al
+      cfg[:dev_list] = Wat::List.new(cfg)
       cfg[:jump_groups] = []
       begin
         mobj = Remote::Index.new(cfg, dbi: Db.new.get)

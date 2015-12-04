@@ -72,7 +72,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libwatexe'
       cfg = Config.new
-      cfg[:dev_list] = Wat::List.new(cfg).sub_list
+      cfg[:dev_list] = Wat::List.new(cfg)
       begin
         cobj = Index.new(cfg, dbi: Db.new.get)
         cobj.add_rem

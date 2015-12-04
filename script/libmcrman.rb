@@ -101,7 +101,7 @@ module CIAX
       begin
         cfg = Config.new
         cfg[:jump_groups] = []
-        cfg[:dev_list] = Wat::List.new(cfg).sub_list
+        cfg[:dev_list] = Wat::List.new(cfg)
         Man.new(cfg).ext_shell.shell
       rescue InvalidCMD
         OPT.usage('[cmd] (par)')

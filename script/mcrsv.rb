@@ -7,7 +7,7 @@ module CIAX
   OPT.parse('csenmr')
   cfg = Config.new
   begin
-    cfg[:dev_list] = Wat::List.new(cfg).sub_list
+    cfg[:dev_list] = Wat::List.new(cfg)
     Mcr::Man.new(cfg).ext_server.server
     sleep
   rescue InvalidID

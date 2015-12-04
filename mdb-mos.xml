@@ -85,7 +85,7 @@
           </goal>
           <exec site="mma" name="ini"/>
           <wait retry="95">
-            <equal site="mma" var="bs" form="msg">0</equal>
+            <equal site="mma" var="bs" form="data">0</equal>
           </wait>
         </item>
         <item id="mma_gf" label="Go to Focal Position">
@@ -94,7 +94,7 @@
           </goal>
           <exec site="mma" name="gf"/>
           <wait retry="80">
-            <equal site="mma" var="bs" form="msg">0</equal>
+            <equal site="mma" var="bs" form="data">0</equal>
           </wait>
         </item>
         <item id="mma_gr" label="Go to Rotate Position">
@@ -103,7 +103,7 @@
           </goal>
           <exec site="mma" name="gr"/>
           <wait retry="60">
-            <equal site="mma" var="bs" form="msg">0</equal>
+            <equal site="mma" var="bs" form="data">0</equal>
           </wait>
         </item>
         <item id="mma_gw" label="Go to Waiting Position">
@@ -112,7 +112,7 @@
           </goal>
           <exec site="mma" name="gw"/>
           <wait retry="60">
-            <equal site="mma" var="bs" form="msg">0</equal>
+            <equal site="mma" var="bs" form="data">0</equal>
           </wait>
         </item>
         <item id="mma_gs" label="Go to Stock Position">
@@ -121,7 +121,7 @@
           </goal>
           <exec site="mma" name="gs"/>
           <wait retry="95">
-            <equal site="mma" var="bs" form="msg">0</equal>
+            <equal site="mma" var="bs" form="data">0</equal>
           </wait>
         </item>
         <item id="mma_setstk" label="Initialize at Stock">
@@ -137,7 +137,7 @@
           </goal>
           <exec site="mma" name="rini"/>
           <wait retry="95">
-            <equal site="mma" var="bs" form="msg">0</equal>
+            <equal site="mma" var="bs" form="data">0</equal>
           </wait>
         </item>
         <item id="mma_setrot" label="Set RP Pulse">

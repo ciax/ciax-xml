@@ -45,12 +45,12 @@ def mkattr(vals, *tags)
   attr
 end
 
-def prt_cond(fld)
+def prt_cond(fld, form = 'msg')
   fld.each do|ary|
     ope = ary.shift
     val = ary.shift
     attr = mkattr(ary, 'site', 'var', 'skip')
-    attr[:form] = 'msg'
+    attr[:form] = form
     indent(ope, attr, val)
   end
 end
@@ -75,7 +75,7 @@ def prt_wait(e)
     indent(:wait, sleep: e['sleep'])
   else
     enclose(:wait, retry: e['retry']) do
-      prt_cond(e['until'])
+      prt_cond(e['until'],'data')
     end
   end
 end

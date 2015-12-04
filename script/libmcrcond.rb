@@ -37,8 +37,8 @@ module CIAX
 
       def _scan
         _sites.each_with_object({}) do|site, hash|
-          verbose { "Scanning Status #{site}" }
-          hash[site] = @dev_list.get(site).stat.upd
+          st = hash[site] = @dev_list.get(site).stat.upd
+          verbose { "Scanning Status #{site} (#{st[:time]})" }
         end
       end
 
@@ -51,22 +51,19 @@ module CIAX
         %i(site var form cmp cri).each { |k| cond[k] = h[k] }
         real = _fetch_form(stat, cond[:form].to_sym, cond[:var])
         res = method(cond[:cmp]).call(cond[:cri], real)
+        verbose { "Compare #{cond[:cri].inspect} vs #{real.inspect}(#{cond[:form]})" }
         cond.update(real: real, res: res)
         verbose { cond.map { |k, v| format('%s=%s', k, v) }.join(',') }
         cond
       end
 
       def _fetch_form(stat, form, var)
-        case form
-        when :class, :msg
-          warning("No [#{var}] in Status[#{form}]") unless stat[form].key?(var)
-          stat[form][var]
-        when :data
-          stat.get(var)
-        else
+        unless form
           warning('No form specified')
-          stat.get(var)
+          form = :data
         end
+        warning("No [#{var}] in Status[#{form}]") unless stat[form].key?(var)
+        stat[form][var]
       end
 
       # Operators

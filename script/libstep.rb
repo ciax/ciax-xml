@@ -12,7 +12,7 @@ module CIAX
         super()
         update db
         # [:stat_proc,:exec_proc,:query]
-        @cond = Condition.new(delete(:cond), dev_list, self)
+        @cond = Condition.new(delete(:cond), dev_list, self) if db.key?(:cond)
         @break = nil
       end
 
@@ -29,7 +29,7 @@ module CIAX
 
       def sleeping(s)
         _show title
-        Kernel.sleep s.to_i
+        _progress(s)
         self[:result] = "slept(#{s})"
         upd
         false
@@ -93,10 +93,10 @@ module CIAX
         !OPT[:m] && self[:action] = 'dryrun'
       end
 
-      def _progress(total,itv)
+      def _progress(total, itv = 1)
         total.to_i.times do|n| # gives number or nil(if break)
           self[:count] = n
-          break if @cond.ok?
+          break if @cond && @cond.ok?
           Kernel.sleep itv
           _show('.')
         end

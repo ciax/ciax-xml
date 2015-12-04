@@ -24,7 +24,7 @@ module CIAX
       def reply(cid)
         cmd, id = cid.split(':')
         @threads.list.each do |th|
-          seq = th[:obj]
+          seq = th[:obj] || next
           next if seq.id != id
           return seq.reply(cmd)
         end

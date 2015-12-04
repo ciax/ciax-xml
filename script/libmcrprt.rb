@@ -35,7 +35,8 @@ module CIAX
 
       def result
         mary = ['']
-        mary[0] << "(#{self[:count]}/#{self[:retry]})" if self[:retry]
+        total = self[:retry] || self[:sleep]
+        mary[0] << "(#{self[:count]}/#{total})" if total
         res = self[:result]
         if res
           cap = res.capitalize
@@ -51,8 +52,9 @@ module CIAX
             when 'pattern'
               ope = '=~'
             end
-            line = res + " #{h[:site]}:#{h[:var]}(#{h[:form]}) #{ope} #{h[:cri]}"
-            line += " (#{h[:real]})" if !h[:res] || ope != '='
+            line = res + " #{h[:site]}:#{h[:var]}(#{h[:form]})"
+            line << "#{ope} #{h[:cri]} ?"
+            line << " (#{h[:real]})" if !h[:res] || ope != '='
             mary << line
           end
         end

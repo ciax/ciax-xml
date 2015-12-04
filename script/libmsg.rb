@@ -27,17 +27,17 @@ module CIAX
     end
 
     def warning(title)
-      Kernel.warn make_msg(Msg.colorize(title.to_s, 3))
+      warn make_msg(Msg.colorize(title.to_s, 3))
       self
     end
 
     def alert(title)
-      Kernel.warn make_msg(Msg.colorize(title.to_s, 5))
+      warn make_msg(Msg.colorize(title.to_s, 5))
       self
     end
 
     def errmsg
-      Kernel.warn make_msg(Msg.colorize("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1))
+      warn make_msg(Msg.colorize("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1))
     end
 
     # @hide_inside is flag for hiding inside of enclose
@@ -47,7 +47,7 @@ module CIAX
       res = yield
     ensure
       Msg.ver_indent(-1)
-      verbose { Kernel.format(title2, res) }
+      verbose { format(title2, res) }
       @hide_inside = false
     end
 
@@ -57,7 +57,7 @@ module CIAX
       ind = 0
       base = Msg.ver_indent
       data.each_line do|line|
-        Kernel.warn Msg.indent(base + ind) + line
+        warn Msg.indent(base + ind) + line
         ind = 2
       end
       true
@@ -68,7 +68,7 @@ module CIAX
       @head ||= make_head
       ts = "#{@head}:#{title}"
       return ts if STDERR.tty?
-      pass = Kernel.format('%5.4f', Time.now - START_TIME)
+      pass = format('%5.4f', Time.now - START_TIME)
       "[#{pass}]" + ts
     end
 

@@ -18,10 +18,10 @@ module CIAX
 
       def to_v
         msg = title
-        self[:steps].each { |i|
+        self[:steps].each do |i|
           i.extend(PrtShare) unless i.is_a? PrtShare
           msg << i.title + i.result
-        }
+        end
         msg << " (#{self[:result]}) #{step_num}"
       end
 

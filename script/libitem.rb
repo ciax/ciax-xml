@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 require 'libconf'
 require 'librerange'
-
-# @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
+# @cfg[:def_proc] should be Proc which is given |Entity| as param
+#   returns String as message.
 module CIAX
   # Default Proc Setting method
   module CmdProc
@@ -49,12 +49,15 @@ module CIAX
     end
 
     def valid_pars
-      (@cfg[:parameters] || []).map { |e| e[:list] if e[:type] == 'str' }.flatten
+      (@cfg[:parameters] || []).map do |e|
+        e[:list] if e[:type] == 'str'
+      end.flatten
     end
 
     private
 
-    # Parameter for validate(cfg[:paremeters]) structure:  [{:type,:list,:default}, ...]
+    # Parameter for validate(cfg[:paremeters])
+    #   structure:  [{:type,:list,:default}, ...]
     # *Empty parameter will replaced to :default
     # *Error if str doesn't match with strings listed in :list
     # *If no :list, returns :default

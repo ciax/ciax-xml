@@ -68,7 +68,8 @@ module CIAX
           iocmd = @dbi[:iocmd].split(' ')
           timeout = (sp[:timeout] || 10).to_i
         end
-        @stream = Stream.new(@id, @dbi[:version], iocmd, sp[:wait], timeout, esc_code(sp[:terminator]))
+        @stream = Stream.new(@id, @dbi[:version], iocmd,
+                             sp[:wait], timeout, esc_code(sp[:terminator]))
         @stream.ext_log unless OPT[:s]
         @stream.pre_open_proc = proc { @sv_stat.set(:strerr) }
         @stream.post_open_proc = proc { @sv_stat.reset(:strerr) }

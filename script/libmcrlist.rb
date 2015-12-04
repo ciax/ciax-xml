@@ -34,13 +34,13 @@ module CIAX
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent, pid = '0')
         seq = Seq.new(ent, pid) { |e, p| add(e, p) }
-        @threads.add(seq.fork) # start immediately
+        @threads.add(type?(seq.fork, Threadx)) # start immediately
         put(seq.id, seq.record)
         seq
       end
 
       def alives
-        @threads.list.map { |th| th[:obj].id }.compact
+        @threads.list.map{|th| th[:obj]}.compact.map{ |seq| type?(seq,Seq).id }
       end
 
       def alive?(id)

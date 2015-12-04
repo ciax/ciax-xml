@@ -4,14 +4,16 @@
     <group id="grp_mfp">
       <item id="mfp_ro" label="Robohand All Open">
         <goal>
-          <match site="mfp" var="ro" form="msg">OPEN</match>
+          <match site="mfp" var="rao" form="msg">OPEN</match>
+          <match site="mfp" var="rbo" form="msg">OPEN</match>
         </goal>
         <exec site="mfp" name="ro"/>
         <wait sleep="4"/>
       </item>
       <item id="mfp_rc" label="Robohand All Close">
         <goal>
-          <match site="mfp" var="ro" form="msg">CLOSE</match>
+          <match site="mfp" var="rao" form="msg">CLOSE</match>
+          <match site="mfp" var="rbo" form="msg">CLOSE</match>
         </goal>
         <exec site="mfp" name="rc"/>
         <wait sleep="4"/>

@@ -115,8 +115,7 @@ module CIAX
 
       def wait(e, step, mstat)
         if (s = e[:sleep])
-          step[:result] = "slept#{s}s"
-          sleep s.to_i
+          step.sleep(s)
           return
         end
         return unless step.timeout? &&

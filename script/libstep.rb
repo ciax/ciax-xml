@@ -28,6 +28,14 @@ module CIAX
         res
       end
 
+      def sleep(s)
+        _show title
+        Kernel.sleep s.to_i
+        self[:result] = "slept(#{s})"
+        upd
+        false
+      end
+
       def ok?
         _show title
         upd
@@ -90,7 +98,7 @@ module CIAX
         self[:max].to_i.times do|n| # gives number or nil(if break)
           self[:retry] = n
           break if @cond.ok?
-          sleep itv
+          Kernel.sleep itv
           _show('.')
         end
       end

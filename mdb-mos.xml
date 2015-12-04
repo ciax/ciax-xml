@@ -8,7 +8,7 @@
           <match site="mfp" var="rbo" form="msg">OPEN</match>
         </goal>
         <exec site="mfp" name="ro"/>
-        <wait sleep="4"/>
+        <wait sleep="4" label="sleep"/>
       </item>
       <item id="mfp_rc" label="Robohand All Close">
         <goal>
@@ -16,49 +16,49 @@
           <match site="mfp" var="rbo" form="msg">CLOSE</match>
         </goal>
         <exec site="mfp" name="rc"/>
-        <wait sleep="4"/>
+        <wait sleep="4" label="sleep"/>
       </item>
       <item id="mfp_go" label="Gate Valve Open">
         <goal>
           <match site="mfp" var="gv" form="msg">OPEN</match>
         </goal>
         <exec site="mfp" name="go"/>
-        <wait sleep="5"/>
+        <wait sleep="5" label="sleep"/>
       </item>
       <item id="mfp_gc" label="Gate Valve Close">
         <goal>
           <match site="mfp" var="gv" form="msg">CLOSE</match>
         </goal>
         <exec site="mfp" name="gc"/>
-        <wait sleep="2"/>
+        <wait sleep="2" label="sleep"/>
       </item>
       <item id="mfp_av" label="Arm Vertical">
         <goal>
           <match site="mfp" var="hv" form="msg">Ver</match>
         </goal>
         <exec site="mfp" name="av"/>
-        <wait sleep="8"/>
+        <wait sleep="8" label="sleep"/>
       </item>
       <item id="mfp_ah" label="Arm Horizontal">
         <goal>
           <match site="mfp" var="hv" form="msg">Hor</match>
         </goal>
         <exec site="mfp" name="ah"/>
-        <wait sleep="8"/>
+        <wait sleep="8" label="sleep"/>
       </item>
       <item id="mfp_ao" label="Arm Open">
         <goal>
           <match site="mfp" var="ao" form="msg">OPEN</match>
         </goal>
         <exec site="mfp" name="ao"/>
-        <wait sleep="3"/>
+        <wait sleep="3" label="sleep"/>
       </item>
       <item id="mfp_ac" label="Arm Close">
         <goal>
           <match site="mfp" var="ao" form="msg">CLOSE</match>
         </goal>
         <exec site="mfp" name="ac"/>
-        <wait sleep="3"/>
+        <wait sleep="3" label="sleep"/>
       </item>
     </group>
     <group id="grp_mma">
@@ -84,7 +84,7 @@
             <equal site="mma" var="pos" form="msg">INIT</equal>
           </goal>
           <exec site="mma" name="ini"/>
-          <wait retry="95">
+          <wait retry="95" label="end of motion">
             <equal site="mma" var="bs" form="data">0</equal>
           </wait>
         </item>
@@ -93,7 +93,7 @@
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
           </goal>
           <exec site="mma" name="gf"/>
-          <wait retry="80">
+          <wait retry="80" label="end of motion">
             <equal site="mma" var="bs" form="data">0</equal>
           </wait>
         </item>
@@ -102,7 +102,7 @@
             <equal site="mma" var="pos" form="msg">ROT</equal>
           </goal>
           <exec site="mma" name="gr"/>
-          <wait retry="60">
+          <wait retry="60" label="end of motion">
             <equal site="mma" var="bs" form="data">0</equal>
           </wait>
         </item>
@@ -111,7 +111,7 @@
             <match site="mma" var="abs" form="msg">WAIT</match>
           </goal>
           <exec site="mma" name="gw"/>
-          <wait retry="60">
+          <wait retry="60" label="end of motion">
             <equal site="mma" var="bs" form="data">0</equal>
           </wait>
         </item>
@@ -120,7 +120,7 @@
             <equal site="mma" var="pos" form="msg">STOCK</equal>
           </goal>
           <exec site="mma" name="gs"/>
-          <wait retry="95">
+          <wait retry="95" label="end of motion">
             <equal site="mma" var="bs" form="data">0</equal>
           </wait>
         </item>
@@ -136,7 +136,7 @@
             <equal site="mma" var="pos" form="msg">ROT</equal>
           </goal>
           <exec site="mma" name="rini"/>
-          <wait retry="95">
+          <wait retry="95" label="end of motion">
             <equal site="mma" var="bs" form="data">0</equal>
           </wait>
         </item>

@@ -192,12 +192,8 @@
         </item>
         <item id="rc_t-i" label="Rh Close">
           <goal>
-            <equal site="mfp" var="rao" skip="true" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rbo" skip="true" form="msg">CLOSE</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -218,12 +214,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <equal site="mfp" var="rao" skip="true" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rbo" skip="true" form="msg">CLOSE</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
@@ -239,12 +231,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <equal site="mfp" var="rao" skip="true" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rbo" skip="true" form="msg">CLOSE</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -253,12 +241,8 @@
         </item>
         <item id="ro_t-f" label="Rh Open">
           <goal>
-            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -266,10 +250,6 @@
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
             <equal site="mfp" var="rao" form="msg">CLOSE</equal>
             <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -284,10 +264,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -302,10 +280,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -320,10 +296,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Vertical</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -338,10 +312,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Vertical</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -353,10 +325,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Vertical</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <match site="mma" var="abs" form="msg">WAIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -394,10 +364,8 @@
         </item>
         <item id="rc_s-i" label="Rh Close">
           <goal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -418,10 +386,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
@@ -437,10 +403,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -449,19 +413,15 @@
         </item>
         <item id="ro_s-f" label="Rh Open">
           <goal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <equal site="mma" var="con" form="msg">ON</equal>
             <match site="mmc" var="abs" form="msg">S</match>
@@ -477,10 +437,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -495,10 +453,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -513,10 +469,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Vertical</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -531,10 +485,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Vertical</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">STOCK</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -549,10 +501,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Vertical</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="con" form="msg">OFF</equal>
             <equal site="mma" var="pos" form="msg">STOCK</equal>
             <match site="mmc" var="abs" form="msg">S</match>
@@ -565,10 +515,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Vertical</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <match site="mma" var="abs" form="msg">WAIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -668,10 +616,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -680,19 +626,15 @@
         </item>
         <item id="rc_l-f" label="Rh All Close">
           <goal>
-            <not site="mfp" var="rh1" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -701,19 +643,15 @@
         </item>
         <item id="ro_l-f" label="Rh All Open">
           <goal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -728,10 +666,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <equal site="mma" var="con" form="msg">ON</equal>
             <match site="mmc" var="abs" form="msg">S</match>
@@ -747,10 +683,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -776,10 +710,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" skip="true" form="msg">OPEN</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
@@ -795,10 +727,8 @@
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
@@ -813,10 +743,8 @@
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
@@ -826,19 +754,15 @@
         </item>
         <item id="rc_fc-i1" label="Rh All Close">
           <goal>
-            <not site="mfp" var="rh1" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
@@ -854,10 +778,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
@@ -873,10 +795,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -885,18 +805,15 @@
         </item>
         <item id="ro_fc-f1" label="Rh All Open">
           <goal>
-            <equal site="mfp" var="rh1" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <not site="mfp" var="rh1" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh2" form="msg">OPEN</not>
-            <not site="mfp" var="rh3" skip="true" form="msg">OPEN</not>
-            <not site="mfp" var="rh4" skip="true" form="msg">OPEN</not>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <equal site="mma" var="con" form="msg">ON</equal>
             <match site="mmc" var="abs" form="msg">S</match>
@@ -912,10 +829,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">FOCUS</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -986,10 +901,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Vertical</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <match site="mma" var="abs" form="msg">WAIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -1004,10 +917,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Vertical</equal>
             <equal site="mfp" var="ao" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -1022,10 +933,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Vertical</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -1040,10 +949,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">ROT</equal>
             <match site="mmc" var="abs" form="msg">S</match>
             <match site="map" var="pres" form="msg">H|M|L</match>
@@ -1052,19 +959,15 @@
         </item>
         <item id="rc_f-i" label="Rh All Close">
           <goal>
-            <equal site="mfp" var="rh1" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh2" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
           </goal>
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh2" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">OPEN</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">OPEN</equal>
+            <equal site="mfp" var="rao" form="msg">OPEN</equal>
+            <equal site="mfp" var="rbo" form="msg">OPEN</equal>
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>
@@ -1077,10 +980,8 @@
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
             <equal site="mfp" var="hv" form="msg">Horizontal</equal>
             <equal site="mfp" var="ao" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh1" skip="true" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh2" skip="true" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh3" skip="true" form="msg">CLOSE</equal>
-            <equal site="mfp" var="rh4" skip="true" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rao" form="msg">CLOSE</equal>
+            <equal site="mfp" var="rbo" form="msg">CLOSEE</equal>
             <equal site="mma" var="pos" form="msg">INIT</equal>
             <match site="mma" var="abs" form="msg">INIT</match>
             <match site="mmc" var="abs" form="msg">S</match>

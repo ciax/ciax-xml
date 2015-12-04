@@ -6,29 +6,29 @@ module CIAX
     # Macro Printing Mix-in module
     module PrtShare
       def body(msg, col = 5)
-        rindent(1) + Msg.colorize(msg, col)
+        _rindent_(1) + Msg.colorize(msg, col)
       end
 
       def title
         args = self[:args].join(':') if key?(:args)
         case self[:type]
         when 'mesg'
-          msg = head('Mesg', 5)
+          msg = _head_('Mesg', 5)
         when 'goal'
-          msg = head('Done?', 6)
+          msg = _head_('Done?', 6, 'skip if satisfied')
         when 'check'
-          msg = head('Check', 6)
+          msg = _head_('Check', 6, 'interlock')
         when 'verify'
-          msg = head('Verify', 6)
+          msg = _head_('Verify', 6, 'at the end')
         when 'wait'
-          msg = head('Waiting', 6)
+          msg = _head_('Waiting', 6)
         when 'mcr'
-          msg = head('MACRO', 3, "#{self[:label]}(#{args})")
+          msg = _head_('MACRO', 3, "#{self[:label]}(#{args})")
           msg << '(async)' if self[:async]
         when 'exec'
-          msg = head('EXEC', 13, "[#{self[:site]}:#{args}]")
+          msg = _head_('EXEC', 13, "[#{self[:site]}:#{args}]")
         when 'upd'
-          msg = head('Update', 10, "[#{self[:site]}]")
+          msg = _head_('Update', 10, "[#{self[:site]}]")
         end
         msg
       end
@@ -43,17 +43,22 @@ module CIAX
           color = (/failed|timeout/ =~ res) ? 1 : 2
           mary[0] << ' -> ' + Msg.colorize(cap, color)
           (self[:conditions] || {}).each do|h|
-            res = h[:res] ? body('o', 2) : body('x', 1)
+            res = h[:res] ? body('o', 2) : body('x', _fail_color_)
+            cri = h[:cri]
             case h[:cmp]
             when 'equal'
               ope = '='
             when 'not'
               ope = '!='
-            when 'pattern'
+            when 'match'
               ope = '=~'
+              cri = "/#{cri}/"
+            when 'unmatch'
+              ope = '!~'
+              cri = "/#{cri}/"
             end
             line = res + " #{h[:site]}:#{h[:var]}(#{h[:form]})"
-            line << "#{ope} #{h[:cri]} ?"
+            line << " #{ope} #{cri}?"
             line << " (#{h[:real]})" if !h[:res] || ope != '='
             mary << line
           end
@@ -64,11 +69,15 @@ module CIAX
 
       private
 
-      def head(msg, col, label = nil)
-        rindent + Msg.colorize(msg, col) + ':' + (label || self[:label] || 'noname')
+      def _head_(msg, col, label = 'noname')
+        _rindent_ + Msg.colorize(msg, col) + ':' + (self[:label] || label)
       end
 
-      def rindent(add = 0)
+      def _fail_color_
+        self[:type] == 'goal' ? 4 : 1
+      end
+
+      def _rindent_(add = 0)
         Msg.indent((self[:depth].to_i + add) * 2)
       end
     end

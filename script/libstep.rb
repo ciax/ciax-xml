@@ -95,7 +95,7 @@ module CIAX
 
       def _progress(total, itv = 1)
         total.to_i.times do|n| # gives number or nil(if break)
-          self[:count] = n
+          self[:count] = n + 1
           break if @cond && @cond.ok?
           Kernel.sleep itv
           _show('.')

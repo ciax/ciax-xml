@@ -70,7 +70,7 @@ def spl_cmd(line, del = ' ')
 end
 
 def get_csv(base)
-  open(ENV['HOME'] + "/config/#{base}.txt") do|f|
+  open(ENV['HOME'] + "/ciax-xml/config-v1/#{base}.txt") do|f|
     f.readlines.each do|line|
       @unit=nil if line.empty?
       next if /^[a-zA-Z0-9]/ !~ line

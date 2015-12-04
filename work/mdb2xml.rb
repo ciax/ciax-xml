@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # IDB CSV(CIAX-v1) to XML
-#alias m2x
+# alias m2x
 require 'json'
 
 def mktag(tag, attr)
@@ -37,7 +37,7 @@ def enclose(tag, attr = {})
   tclose(tag)
 end
 
-def mkattr(vals, *tags)
+def a2attr(vals, *tags)
   attr = {}
   vals.each do|val|
     attr[tags.shift] = val
@@ -45,11 +45,17 @@ def mkattr(vals, *tags)
   attr
 end
 
+def hpick(hash, *tags)
+  res = {}
+  tags.each { |k| res[k] = hash[k.to_s] }
+  res
+end
+
 def prt_cond(fld, form = 'msg')
   fld.each do|ary|
     ope = ary.shift
     val = ary.shift
-    attr = mkattr(ary, 'site', 'var', 'skip')
+    attr = a2attr(ary, 'site', 'var', 'skip')
     attr[:form] = form
     indent(ope, attr, val)
   end
@@ -62,7 +68,7 @@ def prt_seq(ary)
       if e[0].to_s == 'mcr'
         indent(e[0], name: e[1])
       else
-        indent(e.shift, mkattr(e,'site', 'name', 'skip'))
+        indent(e.shift, a2attr(e, 'site', 'name', 'skip'))
       end
     else
       prt_wait(e)
@@ -72,20 +78,20 @@ end
 
 def prt_wait(e)
   if e['sleep']
-    indent(:wait, sleep: e['sleep'])
+    indent(:wait, hpick(e, :sleep, :label))
   else
-    enclose(:wait, retry: e['retry']) do
-      prt_cond(e['until'],'data')
+    enclose(:wait, hpick(e, :retry, :label)) do
+      prt_cond(e['until'], 'data')
     end
   end
 end
 
 def reorder(mem)
   units = {}
-  mem.each{ |k,v|
+  mem.each do |k, v|
     uni = v['unit'] || 'all'
-    (units[v['unit']]||=[]) << k
-  }
+    (units[uni] ||= []) << k
+  end
   units.values.flatten
 end
 
@@ -96,20 +102,20 @@ abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.size < 1
 @ucap = @mdb.delete('caption_unit') || {}
 @gcap = @mdb.delete('caption_group') || {}
 @indent = 0
-@unit=nil
+@unit = nil
 puts '<?xml version="1.0" encoding="utf-8"?>'
 enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
   label = "#{@mcap.upcase} Macro"
   enclose(:macro, id: @mcap, version: '1', label: label, port: '55555') do
     @mdb.each do|grp, mem|
-      ary = reorder(mem)
+      mary = reorder(mem)
       enclose(:group, id: grp) do
-        ary.each do|id|
-          db=mem[id]
+        mary.each do|id|
+          db = mem[id]
           if @unit != db['unit']
             tclose('unit') if @unit
             @unit = db['unit']
-            topen('unit',id: @unit, label: @ucap[@unit]) if @unit
+            topen('unit', id: @unit, label: @ucap[@unit]) if @unit
           end
           attr = { id: id }
           attr[:label] = db['label'] if db['label']
@@ -139,7 +145,7 @@ enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
             end
           end
         end
-        @unit=tclose('unit') if @unit
+        @unit = tclose('unit') if @unit
       end
     end
   end

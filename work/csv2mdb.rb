@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # IDB,CDB CSV(CIAX-v1) to MDB
-#alias c2m
+# alias c2m
 require 'optparse'
 require 'json'
 abort "Usage: csv2mdb -m(proj) [sites]\n"\
@@ -8,7 +8,7 @@ abort "Usage: csv2mdb -m(proj) [sites]\n"\
       '  sites for specific macro for devices' if ARGV.size < 1
 opt = ARGV.getopts('m:')
 @ope = { '~' => 'match', '!' => 'not', '=' => 'equal', '^' => 'unmatch' }
-@unit=nil
+@unit = nil
 def get_site(elem)
   @skip = nil
   elem.split(':').map do|e|
@@ -57,8 +57,8 @@ def spl_cmd(line, del = ' ')
     # add cfg or upd or exec
     unless ary[0] == 'mcr'
       if ary[1] == 'upd'
-        ary[1]=ary[0]
-        ary[0]='upd'
+        ary[1] = ary[0]
+        ary[0] = 'upd'
       else
         td = @cfgs[ary[0]] || []
         type = td.include?(ary[1]) ? 'cfg' : 'exec'
@@ -72,21 +72,21 @@ end
 def get_csv(base)
   open(ENV['HOME'] + "/ciax-xml/config-v1/#{base}.txt") do|f|
     f.readlines.each do|line|
-      @unit=nil if line.empty?
+      @unit = nil if line.empty?
       next if /^[a-zA-Z0-9]/ !~ line
       yield line.chomp.split(',')
     end
   end
 end
 
-mdb = {caption_macro: "macro"}
+mdb = { caption_macro: 'macro' }
 @cfgs = {}
 @index = {}
-@ucap = mdb[:caption_unit]={}
-@gcap = mdb[:caption_group]={}
+@ucap = mdb[:caption_unit] = {}
+@gcap = mdb[:caption_group] = {}
 # Convert device
 ARGV.each do|site|
-  mdb[:caption_macro]=site
+  mdb[:caption_macro] = site
   grp = {}
   cfga = @cfgs[site] = []
   get_csv("idb_#{site}") do|id, gl, ck|
@@ -97,20 +97,20 @@ ARGV.each do|site|
   get_csv("cdb_#{site}") do|id, label, _inv, type, cmd|
     label.gsub!(/&/, 'and')
     if type == 'cap'
-      @unit = 'unit_'+id.tr('^a-zA-Z0-9','')
+      @unit = 'unit_' + id.tr('^a-zA-Z0-9', '')
       @ucap[@unit] = label
       next
     end
     con = (grp["#{site}_#{id}"] ||= {})
     con['label'] = label
-    con['unit']=@unit if @unit
-    seq=con['seq']=[]
+    con['unit'] = @unit if @unit
+    seq = con['seq'] = []
     case type
     when 'act'
-      seq << ['exec',site, id]
+      seq << ['exec', site, id]
     else
       cfga << id
-      seq << ['cfg',site, id]
+      seq << ['cfg', site, id]
     end
     if cmd
       _, mid, post = cmd.split('/')
@@ -119,9 +119,11 @@ ARGV.each do|site|
         wait = {}
         if cri
           wait['retry'] = rtry
+          wait['label'] = 'end of motion'
           wait['until'] = spl_cond(cri) { |cond| [site, cond] }
         else
           wait['sleep'] = rtry
+          wait['label'] = 'sleep'
         end
         wait['post'] = spl_cmd(post, '&') if post
         seq << wait
@@ -138,7 +140,7 @@ end
 # Convert mdb
 proj = opt['m']
 if proj
-  mdb[:caption_macro]=proj
+  mdb[:caption_macro] = proj
   grp = mdb['grp_mcr'] = {}
   get_csv("idb_mcr-#{proj}") do|id, gl, ck|
     con = grp[id] = {}
@@ -149,13 +151,13 @@ if proj
   get_csv("cdb_mcr-#{proj}") do|id, label, _inv, type, seq|
     # Line with 'cap' type will enclose following lines in <unit> until next blank line
     if type == 'cap'
-      @unit = 'unit_'+id.tr('^a-zA-Z0-9','')
+      @unit = 'unit_' + id.tr('^a-zA-Z0-9', '')
       @ucap[@unit] = label
       next
     end
     con = (grp[id] ||= {})
     con['label'] = label.gsub(/&/, 'and')
-    con['unit']=@unit if @unit
+    con['unit'] = @unit if @unit
     # For select feature (substitute %? to current status)
     con['seq'] = spl_cmd(seq).map do|ary|
       if /%./ =~ ary[1]

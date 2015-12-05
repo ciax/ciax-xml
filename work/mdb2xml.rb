@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # IDB CSV(CIAX-v1) to XML
-# alias m2x
+#alias m2x
 require 'json'
 
 def mktag(tag, attr)
@@ -102,7 +102,8 @@ abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.size < 1
 @ucap = @mdb.delete('caption_unit') || {}
 @gcap = @mdb.delete('caption_group') || {}
 @indent = 0
-@unit = nil
+@uid = nil
+@gid = nil
 puts '<?xml version="1.0" encoding="utf-8"?>'
 enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
   label = "#{@mcap.upcase} Macro"
@@ -112,10 +113,10 @@ enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
       enclose(:group, id: grp) do
         mary.each do|id|
           db = mem[id]
-          if @unit != db['unit']
-            tclose('unit') if @unit
-            @unit = db['unit']
-            topen('unit', id: @unit, label: @ucap[@unit]) if @unit
+          if @uid != db['unit']
+            tclose('unit') if @uid
+            @uid = db['unit']
+            topen('unit', id: @uid, label: @ucap[@uid]) if @uid
           end
           attr = { id: id }
           attr[:label] = db['label'] if db['label']
@@ -145,7 +146,7 @@ enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
             end
           end
         end
-        @unit = tclose('unit') if @unit
+        @uid = tclose('unit') if @uid
       end
     end
   end

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # IDB,CDB CSV(CIAX-v1) to MDB
-# alias c2m
+#alias c2m
 require 'optparse'
 require 'json'
 abort "Usage: csv2mdb -m(proj) [sites]\n"\
@@ -8,7 +8,8 @@ abort "Usage: csv2mdb -m(proj) [sites]\n"\
       '  sites for specific macro for devices' if ARGV.size < 1
 opt = ARGV.getopts('m:')
 @ope = { '~' => 'match', '!' => 'not', '=' => 'equal', '^' => 'unmatch' }
-@unit = nil
+@gid = nil
+@uid = nil
 def get_site(elem)
   @skip = nil
   elem.split(':').map do|e|
@@ -53,14 +54,14 @@ def spl_cmd(line, del = ' ')
     end
     # take macro if device macro exists
     id = ary.join('_')
-    ary = @index.key?(id) ? ['mcr', id] : ary
+    ary = @devmcrs.include?(id) ? ['mcr', id] : ary
     # add cfg or upd or exec
     unless ary[0] == 'mcr'
       if ary[1] == 'upd'
         ary[1] = ary[0]
         ary[0] = 'upd'
       else
-        td = @cfgs[ary[0]] || []
+        td = @cfgitems[ary[0]] || []
         type = td.include?(ary[1]) ? 'cfg' : 'exec'
         ary.unshift type
       end
@@ -69,41 +70,78 @@ def spl_cmd(line, del = ' ')
   end
 end
 
+# Group is enclosed by starting !?,----- Title ----- to next title
+def grouping(id, label, name, mid)
+  if /^!/ =~ id
+    @gid = "grp_#{name}_$'"
+    @gcap[@gid] = label.gsub(/-{2,}/, '')
+    @gmem[@gid] = []
+    return
+  elsif !@gid
+    @gid = "grp_#{name}"
+    @gcap[@gid] = "#{name.upcase} Group"
+    @gmem[@gid] = []
+  end
+  if @gid
+    if @uid
+      @gmem[@gid] << @uid unless @gmem[@gid].include?(@uid)
+    else
+      @gmem[@gid] << mid
+    end
+  end
+  id
+end
+
+# Unit is enclosed by ???, Title,,cap
+def unitting(id, label, inv, type, prefix = nil)
+  if type == 'cap'
+    @uid = 'unit_' + id.tr('^_a-zA-Z0-9', '')
+    @ucap[@uid] = label
+    @umem[@uid] = []
+    return
+  elsif inv.empty?
+    @uid = nil
+  end
+  id = "#{prefix}_#{id}" if prefix
+  @umem[@uid] << id if @uid
+  id
+end
+
 def get_csv(base)
   open(ENV['HOME'] + "/ciax-xml/config-v1/#{base}.txt") do|f|
     f.readlines.each do|line|
-      @unit = nil if line.empty?
       next if /^[a-zA-Z0-9]/ !~ line
       yield line.chomp.split(',')
     end
   end
 end
 
-mdb = { caption_macro: 'macro' }
-@cfgs = {}
-@index = {}
-@ucap = mdb[:caption_unit] = {}
-@gcap = mdb[:caption_group] = {}
+@mdb = { caption_macro: 'macro' }
+@cfgitems = {}
+@devmcrs = []
+@ucap = @mdb[:caption_unit] = {}
+@gcap = @mdb[:caption_group] = {}
+@umem = @mdb[:member_unit] = {}
+@gmem = @mdb[:member_group] = {}
+@mdb[:index] = {}
 # Convert device
 ARGV.each do|site|
-  mdb[:caption_macro] = site
-  grp = {}
-  cfga = @cfgs[site] = []
+  @mdb[:caption_macro] = site
+  index = {}
+  cfga = @cfgitems[site] = []
+  # Item name = site_id
   get_csv("idb_#{site}") do|id, gl, ck|
-    con = grp["#{site}_#{id}"] = {}
+    con = index["#{site}_#{id}"] = {}
     con['goal'] = spl_cond(gl) { |cond| [site, cond] } if gl && !gl.empty?
     con['check'] = spl_cond(ck) { |cond| [site, cond] } if ck && !ck.empty?
   end
-  get_csv("cdb_#{site}") do|id, label, _inv, type, cmd|
+  # Grouping by cdb
+  get_csv("cdb_#{site}") do|id, label, inv, type, cmd|
     label.gsub!(/&/, 'and')
-    if type == 'cap'
-      @unit = 'unit_' + id.tr('^a-zA-Z0-9', '')
-      @ucap[@unit] = label
-      next
-    end
-    con = (grp["#{site}_#{id}"] ||= {})
+    mid = unitting(id, label, inv, type, site) || next
+    grouping(id, label, site, mid) || next
+    con = (index[mid] ||= {})
     con['label'] = label
-    con['unit'] = @unit if @unit
     seq = con['seq'] = []
     case type
     when 'act'
@@ -130,34 +168,32 @@ ARGV.each do|site|
       end
     end
   end
-  @gcap["grp_#{site}"] = "#{site.upcase} Group"
-  mdb["grp_#{site}"] = grp.select! do|_k, v|
-    v.key?('seq') && %w(wait goal check).any? { |f| v.key?(f) }
+  index.select! do|_k, v|
+    v.key?('seq') && v['seq'].any? { |f| f.is_a? Hash }
   end
-  @index.update(grp)
+  @mdb[:index].update(index)
+  @devmcrs.concat index.keys
 end
 
-# Convert mdb
+# Convert @mdb
 proj = opt['m']
 if proj
-  mdb[:caption_macro] = proj
-  grp = mdb['grp_mcr'] = {}
+  @mdb[:caption_macro] = proj
+  index = {}
+  # Interlock DB reading
   get_csv("idb_mcr-#{proj}") do|id, gl, ck|
-    con = grp[id] = {}
+    con = index[id] = {}
     con['goal'] = spl_cond(gl) { |e| get_site(e) } if gl && !gl.empty?
     con['check'] = spl_cond(ck) { |e| get_site(e) } if ck && !ck.empty?
   end
   select = []
-  get_csv("cdb_mcr-#{proj}") do|id, label, _inv, type, seq|
-    # Line with 'cap' type will enclose following lines in <unit> until next blank line
-    if type == 'cap'
-      @unit = 'unit_' + id.tr('^a-zA-Z0-9', '')
-      @ucap[@unit] = label
-      next
-    end
-    con = (grp[id] ||= {})
+  # Command DB reading
+  get_csv("cdb_mcr-#{proj}") do|id, label, inv, type, seq|
+    label.gsub!(/&/, 'and')
+    unitting(id, label, inv, type) || next
+    grouping(id, label, proj, id) || next
+    con = (index[id] ||= {})
     con['label'] = label.gsub(/&/, 'and')
-    con['unit'] = @unit if @unit
     # For select feature (substitute %? to current status)
     con['seq'] = spl_cmd(seq).map do|ary|
       if /%./ =~ ary[1]
@@ -167,16 +203,20 @@ if proj
       ary
     end if seq && !seq.empty?
   end
+  @mdb[:index].update(index)
+  # Generate Select (Branch) Macros
   unless select.empty?
     db = {}
     get_csv("db_mcv-#{proj}") do|id, var, list|
       ary = list.to_s.split(' ').map { |str| str.split('=') }
       db[id] = { 'var' => var, 'list' => ary }
     end
-    grp = mdb['select'] = {}
+    gid = "sel_#{proj}"
+    @gcap[gid] = "#{proj.upcase} Select Group"
+    index = {}
     select.each do|str|
       id = str.sub(/%(.)/, 'X')
-      con = grp[id] = {}
+      con = index[id] = {}
       dbi = db[$+]
       var = dbi['var'].split(':')
       con['label'] = 'Select Macro'
@@ -189,6 +229,7 @@ if proj
         op[k.delete('/')] = str.sub(/%./, v)
       end
     end
+    @mdb[:index].update(index)
   end
 end
-puts JSON.dump mdb
+puts JSON.dump @mdb

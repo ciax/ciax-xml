@@ -73,8 +73,8 @@ end
 # Group is enclosed by starting !?,----- Title ----- to next title
 def grouping(id, label, name, mid)
   if /^!/ =~ id
-    @gid = "grp_#{name}_$'"
-    @gcap[@gid] = label.gsub(/-{2,}/, '')
+    @gid = "grp_#{name}#{$'}"
+    @gcap[@gid] = label.gsub(/ *-{2,} */, '')
     @gmem[@gid] = []
     return
   elsif !@gid
@@ -99,7 +99,7 @@ def unitting(id, label, inv, type, prefix = nil)
     @ucap[@uid] = label
     @umem[@uid] = []
     return
-  elsif inv.empty?
+  elsif !inv || inv.empty?
     @uid = nil
   end
   id = "#{prefix}_#{id}" if prefix
@@ -109,8 +109,7 @@ end
 
 def get_csv(base)
   open(ENV['HOME'] + "/ciax-xml/config-v1/#{base}.txt") do|f|
-    f.readlines.each do|line|
-      next if /^[a-zA-Z0-9]/ !~ line
+    f.readlines.grep(/^[!a-zA-Z0-9]/).each do|line|
       yield line.chomp.split(',')
     end
   end

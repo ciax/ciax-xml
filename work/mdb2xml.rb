@@ -97,6 +97,8 @@ end
 def tag_item(id)
   db = @mdb['index'][id]
   return unless db
+  return if @index.include?(id)
+  @index << id
   atrb = { id: id }
   atrb[:label] = db['label'] if db['label']
   enclose(:item, atrb, db) do|key, ary|
@@ -139,7 +141,7 @@ abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.size < 1
 @gcap = @mdb.delete('caption_group') || {}
 @umem = @mdb.delete('member_unit') || {}
 @gmem = @mdb.delete('member_group') || {}
-
+@index = []
 @indent = 0
 puts '<?xml version="1.0" encoding="utf-8"?>'
 puts enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') {

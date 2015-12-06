@@ -245,10 +245,12 @@ end
 def select_mcr(select, index, proj)
   return if select.empty?
   db = read_sel_table(proj)
-  gid = "sel_#{proj}"
+  gid = "grp_sel_#{proj}"
   @gcap[gid] = "#{proj.upcase} Select Group"
+  @gmem[gid] = []
   select.each do|str|
     id = str.sub(/%(.)/, 'X')
+    @gmem[gid] << id
     item = index[id] = {}
     dbi = db[$+]
     var = dbi['var'].split(':')
@@ -275,10 +277,10 @@ opt = ARGV.getopts('m:')
 @cfgitems = {}
 @devmcrs = []
 @mdb = { caption_macro: 'macro' }
-@ucap = @mdb[:caption_unit] = {}
 @gcap = @mdb[:caption_group] = {}
-@umem = @mdb[:member_unit] = {}
 @gmem = @mdb[:member_group] = {}
+@ucap = @mdb[:caption_unit] = {}
+@umem = @mdb[:member_unit] = {}
 @mdb[:index] = {}
 
 # Convert device macro

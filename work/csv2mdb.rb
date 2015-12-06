@@ -241,6 +241,23 @@ def read_sel_table(proj)
   db
 end
 
+def mk_sel(str, index, db)
+  id = str.sub(/%(.)/, 'X')
+  @gmem[gid] << id
+  item = index[id] = {}
+  dbi = db[$+].dup
+  var = dbi['var'].split(':')
+  item['label'] = 'Select Macro'
+  sel = item['select'] = a2h(var,'site','var')
+  op = sel['option'] = {}
+  dbi['list'].keep_if do |k,v|
+    index.include?(k)
+  end.each do|k, v|
+    # For '/S' -> 'S'
+    op[k.delete('/')] = str.sub(/%./, v)
+  end
+end
+
 # Generate Select (Branch) Macros
 def select_mcr(select, index, proj)
   return if select.empty?
@@ -249,20 +266,7 @@ def select_mcr(select, index, proj)
   @gcap[gid] = "#{proj.upcase} Select Group"
   @gmem[gid] = []
   select.each do|str|
-    id = str.sub(/%(.)/, 'X')
-    @gmem[gid] << id
-    item = index[id] = {}
-    dbi = db[$+]
-    var = dbi['var'].split(':')
-    item['label'] = 'Select Macro'
-    sel = item['select'] = {}
-    sel['site'] = var[0]
-    sel['var'] = var[1]
-    op = sel['option'] = {}
-    dbi['list'].each do|k, v|
-      # For '/S' -> 'S'
-      op[k.delete('/')] = str.sub(/%./, v)
-    end
+    mk_sel(str, index, db)
   end
 end
 

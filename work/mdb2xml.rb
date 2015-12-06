@@ -75,7 +75,7 @@ def tag_seq(ary)
       # Don't use e.shift which will affect following process
       cmd,*args = e
       if cmd.to_s == 'mcr'
-        indent(cmd, name: args[1])
+        indent(cmd, a2h(args, :name))
       else
         indent(cmd, a2h(args, :site, :name, :skip))
       end

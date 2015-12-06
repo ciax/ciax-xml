@@ -5,7 +5,6 @@
 sha,Shared Command,1,cap
 stop,Emergency STOP,,mcr,mma:astop mmc:astop
 upd,Update,,cmd,mma:upd mmc:upd mfp:upd map:upd
-chk,Check Status(No actual motion),1,cmd,
 
 # ____________________________________________________________________________
 # device command
@@ -26,7 +25,7 @@ gr_t-r,Go to ROT,1,mcr,mma:gr
 av_t-r,Arm Ver,1,mcr,mfp:av
 ao_t-r,Arm Open,1,mcr,mfp:ao
 gw_t-w,Go to WAIT,1,mcr,mma:gw
-check_start,Check Status(No actual motion),1,cmd,mcr:chk
+check_start,Check Status(No actual motion),1,cmd,
 
 # storemask
 stom,Sub Store Mask,1,cap
@@ -46,7 +45,7 @@ av_s-r,Arm Ver,1,mcr,mfp:av
 gs_s-s,Go to STK,1,mcr,mma:gs
 ao_s-s,Arm Open,1,mcr,mfp:ao
 gw_s-w,Go to WAIT,1,mcr,mma:gw
-check_store,Check Status(No actual motion),1,cmd,mcr:chk
+check_store,Check Status(No actual motion),1,cmd,
 
 # loadmask
 lom,Sub Load Mask,1,cap
@@ -73,7 +72,7 @@ ao_l-f,Arm Open,1,mcr,mfp:ao
 ini_l-i,Go to INIT,1,mcr,mma:ini
 set0_a,Motor Reset,1,mcr,mma:set0
 setstk_a,Motor Reset at STK,1,mcr,mma:setstk
-check_load,Check Status(No actual motion),1,cmd,mcr:chk
+check_load,Check Status(No actual motion),1,cmd,
 
 # fcheck
 fchk,Sub Field Check,1,cap
@@ -87,7 +86,6 @@ gf_fc-f1,Go to FOCUS,1,mcr,mma:gf
 ac_fc-f1,Arm Close,1,mcr,mfp:ac
 ro_fc-f1,Rh All Open,1,mcr,mfp:ro
 gr_fc-r1,Go to ROT,1,mcr,mma:gr
-set0_a,Motor Reset,1,mcr,mma:set0
 
 # kapamask
 kapam,Sub Kapa Mask,1,cap
@@ -105,7 +103,7 @@ ac_f-r,Arm Close,1,mcr,mfp:ac
 ah_f-r,Arm Hor,1,mcr,mfp:ah
 ini_f-i,Go to INIT,1,mcr,mma:ini
 rc_f-i,Rh All Close,1,mcr,mfp:rc
-check_fin,Check Status(No actual motion),1,cmd,mcr:chk
+check_fin,Check Status(No actual motion),1,cmd,
 
 # ____________________________________________________________________________
 # macro command

@@ -43,30 +43,30 @@ slot21,carousel,1,mcr,mcr:upd mmc:lowspd mcr:slot%S_21 mcr:check_slot21
 #slot23,carousel,1,mcr,mcr:upd mmc:lowspd mcr:slot%S_23 mcr:check_slot23
 
 chk_slot[0-23],Check Slot[0-23],1,cap,
-check_slot00,check_slot,1,mcr,mcr:chk
-check_slot01,check_slot,1,mcr,mcr:chk
-check_slot02,check_slot,1,mcr,mcr:chk
-check_slot03,check_slot,1,mcr,mcr:chk
-check_slot04,check_slot,1,mcr,mcr:chk
-check_slot05,check_slot,1,mcr,mcr:chk
-check_slot06,check_slot,1,mcr,mcr:chk
-check_slot07,check_slot,1,mcr,mcr:chk
-check_slot08,check_slot,1,mcr,mcr:chk
-check_slot09,check_slot,1,mcr,mcr:chk
-check_slot10,check_slot,1,mcr,mcr:chk
-check_slot11,check_slot,1,mcr,mcr:chk
-check_slot12,check_slot,1,mcr,mcr:chk
-check_slot13,check_slot,1,mcr,mcr:chk
-check_slot14,check_slot,1,mcr,mcr:chk
-check_slot15,check_slot,1,mcr,mcr:chk
-check_slot16,check_slot,1,mcr,mcr:chk
-check_slot17,check_slot,1,mcr,mcr:chk
-check_slot18,check_slot,1,mcr,mcr:chk
-check_slot19,check_slot,1,mcr,mcr:chk
-check_slot20,check_slot,1,mcr,mcr:chk
-check_slot21,check_slot,1,mcr,mcr:chk
-check_slot22,check_slot,1,mcr,mcr:chk
-check_slot23,check_slot,1,mcr,mcr:chk
+check_slot00,check_slot,1,mcr,
+check_slot01,check_slot,1,mcr,
+check_slot02,check_slot,1,mcr,
+check_slot03,check_slot,1,mcr,
+check_slot04,check_slot,1,mcr,
+check_slot05,check_slot,1,mcr,
+check_slot06,check_slot,1,mcr,
+check_slot07,check_slot,1,mcr,
+check_slot08,check_slot,1,mcr,
+check_slot09,check_slot,1,mcr,
+check_slot10,check_slot,1,mcr,
+check_slot11,check_slot,1,mcr,
+check_slot12,check_slot,1,mcr,
+check_slot13,check_slot,1,mcr,
+check_slot14,check_slot,1,mcr,
+check_slot15,check_slot,1,mcr,
+check_slot16,check_slot,1,mcr,
+check_slot17,check_slot,1,mcr,
+check_slot18,check_slot,1,mcr,
+check_slot19,check_slot,1,mcr,
+check_slot20,check_slot,1,mcr,
+check_slot21,check_slot,1,mcr,
+check_slot22,check_slot,1,mcr,
+check_slot23,check_slot,1,mcr,
 
 to_slot00,Slot to 00,1,cap,
 slot00_00,carousel,1,mcr,mmc:slot0
@@ -719,27 +719,27 @@ access21,Access to Slot21,1,mcr,mmc:access21 mcr:check_access21
 #access23,Access to Slot23,1,mcr,mmc:access23 mcr:check_access23
 
 chk_access[0-23],Check Access[0-23],1,cap,
-check_access00,check_access,1,mcr,mcr:chk
-check_access01,check_access,1,mcr,mcr:chk
-check_access02,check_access,1,mcr,mcr:chk
-check_access03,check_access,1,mcr,mcr:chk
-check_access04,check_access,1,mcr,mcr:chk
-check_access05,check_access,1,mcr,mcr:chk
-check_access06,check_access,1,mcr,mcr:chk
-check_access07,check_access,1,mcr,mcr:chk
-check_access08,check_access,1,mcr,mcr:chk
-check_access09,check_access,1,mcr,mcr:chk
-check_access10,check_access,1,mcr,mcr:chk
-check_access11,check_access,1,mcr,mcr:chk
-check_access12,check_access,1,mcr,mcr:chk
-check_access13,check_access,1,mcr,mcr:chk
-check_access14,check_access,1,mcr,mcr:chk
-check_access15,check_access,1,mcr,mcr:chk
-check_access16,check_access,1,mcr,mcr:chk
-check_access17,check_access,1,mcr,mcr:chk
-check_access18,check_access,1,mcr,mcr:chk
-check_access19,check_access,1,mcr,mcr:chk
-check_access20,check_access,1,mcr,mcr:chk
-check_access21,check_access,1,mcr,mcr:chk
-check_access22,check_access,1,mcr,mcr:chk
-check_access23,check_access,1,mcr,mcr:chk
+check_access00,check_access,1,mcr,
+check_access01,check_access,1,mcr,
+check_access02,check_access,1,mcr,
+check_access03,check_access,1,mcr,
+check_access04,check_access,1,mcr,
+check_access05,check_access,1,mcr,
+check_access06,check_access,1,mcr,
+check_access07,check_access,1,mcr,
+check_access08,check_access,1,mcr,
+check_access09,check_access,1,mcr,
+check_access10,check_access,1,mcr,
+check_access11,check_access,1,mcr,
+check_access12,check_access,1,mcr,
+check_access13,check_access,1,mcr,
+check_access14,check_access,1,mcr,
+check_access15,check_access,1,mcr,
+check_access16,check_access,1,mcr,
+check_access17,check_access,1,mcr,
+check_access18,check_access,1,mcr,
+check_access19,check_access,1,mcr,
+check_access20,check_access,1,mcr,
+check_access21,check_access,1,mcr,
+check_access22,check_access,1,mcr,
+check_access23,check_access,1,mcr,

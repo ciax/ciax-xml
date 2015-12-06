@@ -72,10 +72,12 @@ def tag_seq(ary)
   ary.map do|e|
     case e
     when Array
-      if e[0].to_s == 'mcr'
-        indent(e[0], name: e[1])
+      # Don't use e.shift which will affect following process
+      cmd,*args = e
+      if cmd.to_s == 'mcr'
+        indent(cmd, name: args[1])
       else
-        indent(e.shift, a2h(e, :site, :name, :skip))
+        indent(cmd, a2h(args, :site, :name, :skip))
       end
     else
       tag_wait(e)

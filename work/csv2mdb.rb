@@ -241,20 +241,18 @@ def read_sel_table(proj)
   db
 end
 
-def mk_sel(str, index, db)
+def mk_sel(str, index, gid, db)
   id = str.sub(/%(.)/, 'X')
+  dbi = db[$+].dup
   @gmem[gid] << id
   item = index[id] = {}
-  dbi = db[$+].dup
   var = dbi['var'].split(':')
   item['label'] = 'Select Macro'
-  sel = item['select'] = a2h(var,'site','var')
+  sel = item['select'] = {'site' => var[0],'var' => var[1]}
   op = sel['option'] = {}
-  dbi['list'].keep_if do |k,v|
-    index.include?(k)
-  end.each do|k, v|
-    # For '/S' -> 'S'
-    op[k.delete('/')] = str.sub(/%./, v)
+  dbi['list'].each do|k, v|
+    val = str.sub(/%./, v)
+    op[k] = val if index.include?(val)
   end
 end
 
@@ -266,7 +264,7 @@ def select_mcr(select, index, proj)
   @gcap[gid] = "#{proj.upcase} Select Group"
   @gmem[gid] = []
   select.each do|str|
-    mk_sel(str, index, db)
+    mk_sel(str, index, gid, db)
   end
 end
 

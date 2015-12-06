@@ -1,15 +1,11 @@
 #!/usr/bin/ruby
 # IDB,CDB CSV(CIAX-v1) to MDB
-#alias c2m
+# alias c2m
 require 'optparse'
 require 'json'
-abort "Usage: csv2mdb -m(proj) [sites]\n"\
-      "  mcr is taken by -m\n"\
-      '  sites for specific macro for devices' if ARGV.size < 1
-opt = ARGV.getopts('m:')
-@ope = { '~' => 'match', '!' => 'not', '=' => 'equal', '^' => 'unmatch' }
-@gid = nil
-@uid = nil
+
+######### Shared Methods ##########
+
 def get_site(elem)
   @skip = nil
   elem.split(':').map do|e|
@@ -38,73 +34,89 @@ def mk_cond(site, cond)
   end
 end
 
-def spl_cond(line)
+def sep_cond(line)
   line.split('&').map do|s|
     site, cond = yield s
     mk_cond(site, cond)
   end.compact
 end
 
-def spl_cmd(line, del = ' ')
-  line.split(del).map do|s|
-    ary = s.split(':')
-    if /^!/ =~ ary[0]
-      ary[0] = $'
-      ary << true
-    end
-    # take macro if device macro exists
-    id = ary.join('_')
-    ary = @devmcrs.include?(id) ? ['mcr', id] : ary
-    # add cfg or upd or exec
-    unless ary[0] == 'mcr'
-      if ary[1] == 'upd'
-        ary[1] = ary[0]
-        ary[0] = 'upd'
-      else
-        td = @cfgitems[ary[0]] || []
-        type = td.include?(ary[1]) ? 'cfg' : 'exec'
-        ary.unshift type
-      end
-    end
-    ary
-  end
+def _gid
+  'grp_' + @gcore
+end
+
+def _uid
+  'unit_' + @ucore
 end
 
 # Group is enclosed by starting !?,----- Title ----- to next title
-def grouping(id, label, name, mid)
+def grouping(id, label, name)
   if /^!/ =~ id
-    @gid = "grp_#{name}#{$'}"
-    @gcap[@gid] = label.gsub(/ *-{2,} */, '')
-    @gmem[@gid] = []
+    @gcore = "#{name}_#{$'}"
+    @gcap[_gid] = label.gsub(/ *-{2,} */, '')
+    @gmem[_gid] = []
     return
-  elsif !@gid
-    @gid = "grp_#{name}"
-    @gcap[@gid] = "#{name.upcase} Group"
-    @gmem[@gid] = []
-  end
-  if @gid
-    if @uid
-      @gmem[@gid] << @uid unless @gmem[@gid].include?(@uid)
-    else
-      @gmem[@gid] << mid
-    end
+  elsif !@gcore # default group
+    @gcore = "#{name}"
+    @gcap[_gid] = "#{name.upcase} Group"
+    @gmem[_gid] = []
   end
   id
 end
 
 # Unit is enclosed by ???, Title,,cap
-def unitting(id, label, inv, type, prefix = nil)
+def unitting(id, label, inv, type)
   if type == 'cap'
-    @uid = 'unit_' + id.tr('^_a-zA-Z0-9', '')
-    @ucap[@uid] = label
-    @umem[@uid] = []
+    @ucore = @gcore + id.tr('^_a-zA-Z0-9', '')
+    @ucap[_uid] = label
+    @umem[_uid] = []
+    @gmem[_gid] << _uid
     return
   elsif !inv || inv.empty?
-    @uid = nil
+    @ucore = @gcore
+    unless @umem[_uid]
+      @umem[_uid] = []
+      @gmem[_gid] << _uid
+    end
   end
-  id = "#{prefix}_#{id}" if prefix
-  @umem[@uid] << id if @uid
   id
+end
+
+def iteming(id, label, index)
+  @umem[_uid] << id
+  item = (index[id] ||= {})
+  item['label'] = label
+  item
+end
+
+# convert flag of ignore
+def ignore_flg(args)
+  return unless /^!/ =~ args[0]
+  args[0] = $'
+  args << true
+end
+
+# coovert cfg or upd or exec
+def conv_type(args)
+  return if args[0] == 'mcr'
+  if args[1] == 'upd'
+    args[1] = args[0]
+    args[0] = 'upd'
+  else
+    td = @cfgitems[args[0]] || []
+    type = td.include?(args[1]) ? 'cfg' : 'exec'
+    args.unshift type
+  end
+end
+
+# convert commad array
+def sep_cmd(line, del = ' ')
+  line.split(del).map do|s|
+    args = s.split(':')
+    ignore_flg(args)
+    conv_type(args)
+    args
+  end
 end
 
 def get_csv(base)
@@ -115,6 +127,149 @@ def get_csv(base)
   end
 end
 
+######### Device Macro DB ##########
+
+# Item name = site_id
+def read_dev_idb(index, site)
+  get_csv("idb_#{site}") do|id, gl, ck|
+    item = index["#{site}_#{id}"] = {}
+    item['goal'] = sep_cond(gl) { |cond| [site, cond] } if gl && !gl.empty?
+    item['check'] = sep_cond(ck) { |cond| [site, cond] } if ck && !ck.empty?
+  end
+end
+
+def exe_type(type, site, id, cfga)
+  case type
+  when 'act'
+    ['exec', site, id]
+  else
+    cfga << id
+    ['cfg', site, id]
+  end
+end
+
+def wait_loop(event, site)
+  return unless event
+  _frmcmd, lop, post = event.split('/')
+  return unless lop
+  count, cri = lop.split(':')
+  wdb = {}
+  if cri
+    wdb['label'] = 'end of motion'
+    wdb['retry'] = count
+    wdb['until'] = sep_cond(cri) { |cond| [site, cond] }
+  else
+    wdb['label'] = 'sleep'
+    wdb['sleep'] = count
+  end
+  wdb['post'] = sep_cmd(post, '&') if post
+  wdb
+end
+
+# Grouping by cdb
+def read_dev_cdb(index, site)
+  cfga = @cfgitems[site] = []
+  get_csv("cdb_#{site}") do|id, label, inv, type, cond|
+    label.gsub!(/&/, 'and')
+    grouping(id, label, site) || next
+    unitting(id, label, inv, type) || next
+    item = iteming("#{site}_#{id}", label, index)
+    seq = item['seq'] = []
+    seq << exe_type(type, site, id, cfga)
+    seq << wait_loop(cond, site)
+  end
+end
+
+def mdb_reduction(index)
+  index.select! do|_k, v|
+    v.key?('seq') && v['seq'].any? { |f| f.is_a? Hash }
+  end
+  @umem.values.each { |a| a.replace(a & index.keys) }
+end
+
+######### Macro DB ##########
+
+# Interlock DB reading
+def read_mcr_idb(index, proj)
+  get_csv("idb_mcr-#{proj}") do|id, gl, ck|
+    con = index[id] = {}
+    con['goal'] = sep_cond(gl) { |e| get_site(e) } if gl && !gl.empty?
+    con['check'] = sep_cond(ck) { |e| get_site(e) } if ck && !ck.empty?
+  end
+end
+
+# take macro if device macro exists
+def dev_mcr(ary)
+  id = ary.join('_')
+  ary.replace(['mcr', id]) if @devmcrs.include?(id)
+end
+
+# For select feature (substitute %? to current status)
+def conv_sel(ary, select)
+  return if /%./ !~ ary[1]
+  select << ary[1]
+  ary[1] = ary[1].sub(/%(.)/, 'X')
+end
+
+# Command DB reading
+def read_mcr_cdb(index, proj)
+  select = []
+  get_csv("cdb_mcr-#{proj}") do|id, label, inv, type, cmds|
+    label.gsub!(/&/, 'and')
+    grouping(id, label, proj) || next
+    unitting(id, label, inv, type) || next
+    item = iteming(id, label, index)
+    next unless cmds && !cmds.empty?
+    seq = item['seq'] = sep_cmd(cmds)
+    seq.map do |ary|
+      dev_mcr(ary)
+      conv_sel(ary, select)
+    end
+  end
+  select
+end
+
+def read_sel_table(proj)
+  db = {}
+  get_csv("db_mcv-#{proj}") do|id, var, list|
+    ary = list.to_s.split(' ').map { |str| str.split('=') }
+    db[id] = { 'var' => var, 'list' => ary }
+  end
+  db
+end
+
+# Generate Select (Branch) Macros
+def select_mcr(select, index, proj)
+  return if select.empty?
+  db = read_sel_table(proj)
+  gid = "sel_#{proj}"
+  @gcap[gid] = "#{proj.upcase} Select Group"
+  select.each do|str|
+    id = str.sub(/%(.)/, 'X')
+    item = index[id] = {}
+    dbi = db[$+]
+    var = dbi['var'].split(':')
+    item['label'] = 'Select Macro'
+    sel = item['select'] = {}
+    sel['site'] = var[0]
+    sel['var'] = var[1]
+    op = sel['option'] = {}
+    dbi['list'].each do|k, v|
+      # For '/S' -> 'S'
+      op[k.delete('/')] = str.sub(/%./, v)
+    end
+  end
+end
+
+######### Main ##########
+
+abort "Usage: csv2mdb -m(proj) [sites]\n"\
+      "  mcr is taken by -m\n"\
+      '  sites for specific macro for devices' if ARGV.size < 1
+opt = ARGV.getopts('m:')
+@ope = { '~' => 'match', '!' => 'not', '=' => 'equal', '^' => 'unmatch' }
+@gcore = nil
+@ucore = nil
 @mdb = { caption_macro: 'macro' }
 @cfgitems = {}
 @devmcrs = []
@@ -123,112 +278,26 @@ end
 @umem = @mdb[:member_unit] = {}
 @gmem = @mdb[:member_group] = {}
 @mdb[:index] = {}
-# Convert device
+
+# Convert device macro
 ARGV.each do|site|
   @mdb[:caption_macro] = site
   index = {}
-  cfga = @cfgitems[site] = []
-  # Item name = site_id
-  get_csv("idb_#{site}") do|id, gl, ck|
-    con = index["#{site}_#{id}"] = {}
-    con['goal'] = spl_cond(gl) { |cond| [site, cond] } if gl && !gl.empty?
-    con['check'] = spl_cond(ck) { |cond| [site, cond] } if ck && !ck.empty?
-  end
-  # Grouping by cdb
-  get_csv("cdb_#{site}") do|id, label, inv, type, cmd|
-    label.gsub!(/&/, 'and')
-    mid = unitting(id, label, inv, type, site) || next
-    grouping(id, label, site, mid) || next
-    con = (index[mid] ||= {})
-    con['label'] = label
-    seq = con['seq'] = []
-    case type
-    when 'act'
-      seq << ['exec', site, id]
-    else
-      cfga << id
-      seq << ['cfg', site, id]
-    end
-    if cmd
-      _, mid, post = cmd.split('/')
-      if mid
-        rtry, cri, = mid.split(':')
-        wait = {}
-        if cri
-          wait['retry'] = rtry
-          wait['label'] = 'end of motion'
-          wait['until'] = spl_cond(cri) { |cond| [site, cond] }
-        else
-          wait['sleep'] = rtry
-          wait['label'] = 'sleep'
-        end
-        wait['post'] = spl_cmd(post, '&') if post
-        seq << wait
-      end
-    end
-  end
-  index.select! do|_k, v|
-    v.key?('seq') && v['seq'].any? { |f| f.is_a? Hash }
-  end
+  read_dev_idb(index, site)
+  read_dev_cdb(index, site)
+  mdb_reduction(index)
   @mdb[:index].update(index)
   @devmcrs.concat index.keys
 end
 
-# Convert @mdb
+# Convert macro
 proj = opt['m']
 if proj
   @mdb[:caption_macro] = proj
   index = {}
-  # Interlock DB reading
-  get_csv("idb_mcr-#{proj}") do|id, gl, ck|
-    con = index[id] = {}
-    con['goal'] = spl_cond(gl) { |e| get_site(e) } if gl && !gl.empty?
-    con['check'] = spl_cond(ck) { |e| get_site(e) } if ck && !ck.empty?
-  end
-  select = []
-  # Command DB reading
-  get_csv("cdb_mcr-#{proj}") do|id, label, inv, type, seq|
-    label.gsub!(/&/, 'and')
-    unitting(id, label, inv, type) || next
-    grouping(id, label, proj, id) || next
-    con = (index[id] ||= {})
-    con['label'] = label.gsub(/&/, 'and')
-    # For select feature (substitute %? to current status)
-    con['seq'] = spl_cmd(seq).map do|ary|
-      if /%./ =~ ary[1]
-        select << ary[1]
-        ary[1] = ary[1].sub(/%(.)/, 'X')
-      end
-      ary
-    end if seq && !seq.empty?
-  end
+  read_mcr_idb(index, proj)
+  select = read_mcr_cdb(index, proj)
+  select_mcr(select, index, proj)
   @mdb[:index].update(index)
-  # Generate Select (Branch) Macros
-  unless select.empty?
-    db = {}
-    get_csv("db_mcv-#{proj}") do|id, var, list|
-      ary = list.to_s.split(' ').map { |str| str.split('=') }
-      db[id] = { 'var' => var, 'list' => ary }
-    end
-    gid = "sel_#{proj}"
-    @gcap[gid] = "#{proj.upcase} Select Group"
-    index = {}
-    select.each do|str|
-      id = str.sub(/%(.)/, 'X')
-      con = index[id] = {}
-      dbi = db[$+]
-      var = dbi['var'].split(':')
-      con['label'] = 'Select Macro'
-      sel = con['select'] = {}
-      sel['site'] = var[0]
-      sel['var'] = var[1]
-      op = sel['option'] = {}
-      dbi['list'].each do|k, v|
-        # For '/S' -> 'S'
-        op[k.delete('/')] = str.sub(/%./, v)
-      end
-    end
-    @mdb[:index].update(index)
-  end
 end
 puts JSON.dump @mdb

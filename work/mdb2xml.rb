@@ -4,44 +4,36 @@
 require 'json'
 OPETBL = { '=~' => 'match', '!=' => 'not', '==' => 'equal', '!~' => 'unmatch' }
 def mktag(tag, atrb)
-  printf('  ' * @indent + '<%s', tag)
+  str = format('  ' * @indent + '<%s', tag)
   atrb.each do|k, v|
-    printf(' %s="%s"', k, v)
+    str << format(' %s="%s"', k, v)
   end
+  str
 end
 
 # single line element
 def indent(tag, atrb = {}, text = nil)
-  mktag(tag, atrb)
+  str = mktag(tag, atrb)
   if text
-    printf(">%s</%s>", text, tag)
-    puts
+    str << format(">%s</%s>", text, tag)
   else
-    puts '/>'
+    str << '/>'
   end
-end
-
-def topen(tag, atrb = {})
-  mktag(tag, atrb)
-  puts '>'
-  @indent += 1
-end
-
-def tclose(tag)
-  @indent -= 1
-  printf('  ' * @indent + "</%s>", tag)
-  puts
+  str
 end
 
 def enclose(tag, atrb = {}, enum = nil)
-  return if enum && enum.empty?
-  topen(tag, atrb)
+  @indent += 1
   if enum
-    enum.each{ |a| yield a}
+    ary = enum.map{ |a| yield a}.compact
   else
-    yield
+    ary = [yield].compact
   end
-  tclose(tag)
+  @indent -= 1
+  return if ary.empty?
+  ary.unshift(mktag(tag, atrb)+'>')
+  ary << format('  ' * @indent + "</%s>", tag)
+  ary.join("\n")
 end
 
 def a2h(vals, *tags)
@@ -77,7 +69,7 @@ def tag_wait(e)
 end
 
 def tag_seq(ary)
-  ary.each do|e|
+  ary.map do|e|
     case e
     when Array
       if e[0].to_s == 'mcr'
@@ -88,7 +80,7 @@ def tag_seq(ary)
     else
       tag_wait(e)
     end
-  end
+  end.join("\n")
 end
 
 def tag_select(ary)
@@ -127,7 +119,7 @@ def tag_unit(uid)
 end
 
 def tag_group(gid, gary)
-atrb = {id: gid, caption: @gcap[gid]}
+  atrb = {id: gid, caption: @gcap[gid]}
   enclose(:group, atrb, gary) do|uid|
     if /unit_/ =~ uid
       tag_unit(uid)

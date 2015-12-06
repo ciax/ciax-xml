@@ -112,9 +112,10 @@ def conv_type(args)
 end
 
 # convert commad array
-def sep_cmd(line, del = ' ')
+def sep_cmd(line, del = ' ', name = nil)
   line.split(del).map do|s|
     args = s.split(':')
+    args.unshift(name) if name
     ignore_flg(args)
     conv_type(args)
     args
@@ -164,7 +165,7 @@ def wait_loop(event, site)
     wdb['label'] = 'sleep'
     wdb['sleep'] = count
   end
-  wdb['post'] = sep_cmd(post, '&') if post
+  wdb['post'] = sep_cmd(post, '&', site) if post
   wdb
 end
 

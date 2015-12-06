@@ -123,7 +123,7 @@ def tag_item(id)
 end
 
 def tag_unit(uid)
-  enclose(:unit, id: uid, caption: @ucap[uid]) do
+  enclose(:unit, id: uid, label: @ucap[uid]) do
     @umem[uid].each do |id|
       tag_item(id)
     end

@@ -2,7 +2,7 @@
 # IDB CSV(CIAX-v1) to XML
 #alias m2x
 require 'json'
-
+OPETBL = { '=~' => 'match', '!=' => 'not', '==' => 'equal', '!~' => 'unmatch' }
 def mktag(tag, atrb)
   printf('  ' * @indent + '<%s', tag)
   atrb.each do|k, v|
@@ -53,11 +53,11 @@ end
 
 def prt_cond(fld, form = 'msg')
   fld.each do|ary|
-    ope = ary.shift
-    val = ary.shift
-    atrb = a2h(ary, :site, :var, :skip)
+    atrb = a2h(ary, :site, :var, :ope, :cri, :skip)
     atrb[:form] = form
-    indent(ope, atrb, val)
+    ope = OPETBL[atrb.delete(:ope)]
+    cri = atrb.delete(:cri)
+    indent(ope, atrb, cri)
   end
 end
 

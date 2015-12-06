@@ -4,6 +4,8 @@
 require 'optparse'
 require 'json'
 
+OPETBL = { '~' => '=~', '!' => '!=', '=' => '==', '^' => '!~' }
+
 ######### Shared Methods ##########
 
 def get_site(elem)
@@ -23,8 +25,8 @@ def mk_cond(site, cond)
   case cond
   when /[~!=^]+/
     cri = $'.delete('/') # for '/S'
-    ope = @ope[$&[0]] # for '=='
-    ary = [ope, cri, site, $`]
+    ope = OPETBL[$&[0]] # for '=='
+    ary = [site, $`, ope, cri]
     ary << @skip if @skip
     ary
   when '*', '', nil
@@ -267,7 +269,6 @@ abort "Usage: csv2mdb -m(proj) [sites]\n"\
       "  mcr is taken by -m\n"\
       '  sites for specific macro for devices' if ARGV.size < 1
 opt = ARGV.getopts('m:')
-@ope = { '~' => 'match', '!' => 'not', '=' => 'equal', '^' => 'unmatch' }
 @gcore = nil
 @ucore = nil
 @cfgitems = {}

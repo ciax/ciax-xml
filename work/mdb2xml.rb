@@ -98,7 +98,7 @@ def tag_select(ary)
 end
 
 def tag_item(id)
-  db=@mdb['index'][id]
+  db = @mdb['index'][id]
   return unless db
   atrb = { id: id }
   atrb[:label] = db['label'] if db['label']
@@ -157,7 +157,7 @@ puts '<?xml version="1.0" encoding="utf-8"?>'
 enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') do
   label = "#{@mcap.upcase} Macro"
   enclose(:macro, id: @mcap, version: '1', label: label, port: '55555') do
-    @gmem.each do |gid,mary|
+    @gmem.each do |gid, mary|
       tag_group(gid, mary)
     end
   end

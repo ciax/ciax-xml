@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # IDB,CDB CSV(CIAX-v1) to MDB
-# alias c2m
+#alias c2m
 require 'optparse'
 require 'json'
 
@@ -270,9 +270,9 @@ opt = ARGV.getopts('m:')
 @ope = { '~' => 'match', '!' => 'not', '=' => 'equal', '^' => 'unmatch' }
 @gcore = nil
 @ucore = nil
-@mdb = { caption_macro: 'macro' }
 @cfgitems = {}
 @devmcrs = []
+@mdb = { caption_macro: 'macro' }
 @ucap = @mdb[:caption_unit] = {}
 @gcap = @mdb[:caption_group] = {}
 @umem = @mdb[:member_unit] = {}

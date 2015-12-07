@@ -27,6 +27,8 @@ module CIAX
           msg << '(async)' if self[:async]
         when 'exec'
           msg = _head_('EXEC', 13, "[#{self[:site]}:#{args}]")
+        when 'cfg'
+          msg = _head_('Config', 14, "[#{self[:site]}:#{args}]")
         when 'upd'
           msg = _head_('Update', 10, "[#{self[:site]}]")
         end

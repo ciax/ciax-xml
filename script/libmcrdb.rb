@@ -77,10 +77,15 @@ module CIAX
             body << make_condition(e1, atrb)
           when 'goal'
             body << make_condition(e1, atrb)
-          #            final.update(atrb.extend(Enumx).deep_copy)[:type] = 'verify'
+            final.update(atrb.extend(Enumx).deep_copy)[:type] = 'verify'
           when 'upd'
             body << atrb
             verbose { "UPDATE:[#{e1[:name]}]" }
+          when 'cfg'
+            atrb[:args] = getcmd(e1)
+            atrb.delete(:name)
+            body << atrb
+            verbose { "CONFIG:[#{e1[:name]}]" }
           when 'exec'
             atrb[:args] = getcmd(e1)
             atrb.delete(:name)

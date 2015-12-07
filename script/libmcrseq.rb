@@ -132,6 +132,12 @@ module CIAX
         false
       end
 
+      def cfg(e, step, _mstat)
+        step.ok?
+        @cfg[:dev_list].get(e[:site]).exe(e[:args], 'macro').join('macro')
+        false
+      end
+
       def upd(e, step, _mstat)
         step.ok?
         @cfg[:dev_list].get(e[:site]).exe(['upd'], 'macro').join('macro')

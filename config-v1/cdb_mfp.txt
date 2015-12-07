@@ -3,12 +3,12 @@ upd,Update Status and Print,,cmd,02!J|4&03!J|4
 stop,Stop Action,,cmd
 fpres,Reset FP,,cmd,01B&02B
 !2,---------- Action ----------
-ro,Robohand All Open,,act,%2:2=0:4=0:3=1:5=1/4
-rc,Robohand All Close,,act,%2:3=0:5=0:2=1:4=1/4
-go,Gate Valve Open,,act,%2:6=0:7=1/5
-gc,Gate Valve Close,,act,%2:6=1:7=0/2
-av,Arm Vertical,,act,%2:12=0:13=1/8
-ah,Arm Horizontal,,act,%2:13=0:12=1/8
+ro,Robohand All Open,,act,%2:2=0:4=0:3=1:5=1/4/upd
+rc,Robohand All Close,,act,%2:3=0:5=0:2=1:4=1/4/upd
+go,Gate Valve Open,,act,%2:6=0:7=1/5/upd
+gc,Gate Valve Close,,act,%2:6=1:7=0/2/upd
+av,Arm Vertical,,act,%2:12=0:13=1/8/upd
+ah,Arm Horizontal,,act,%2:13=0:12=1/8/upd
 ao,Arm Open,,act,%2:11=1:10=0/3
 ac,Arm Close,,act,%2:10=1:11=0/3
 hc,Heater1 SW to Carrousel,,act,%2:14=0

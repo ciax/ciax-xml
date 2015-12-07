@@ -95,7 +95,7 @@ rc_k1,Rh All Close,1,mcr,mfp:rc
 ro_k1,Rh All Open,1,mcr,mfp:ro
 
 # fin
-!7,Sub Fin Mask
+!7,Sub Fin Mask,1
 f-r,fin 1(WAIT~ROT),1,mcr,mcr:gr_f-r mcr:ac_f-r map:upd mcr:ah_f-r
 f-i,fin 2(ROT~INIT),1,mcr,mcr:f-r mcr:ini_f-i map:upd mcr:set0_a mcr:rc_f-i mcr:check_fin
 gr_f-r,Go to ROT,1,mcr,mma:gr

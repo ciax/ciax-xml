@@ -68,6 +68,10 @@ def tag_wait(e)
   end
 end
 
+def tag_post(e)
+  e['post'] ? "\n"+tag_seq(e['post']) : ''
+end
+
 def tag_seq(ary)
   ary.map do|e|
     case e
@@ -80,7 +84,7 @@ def tag_seq(ary)
         indent(cmd, a2h(args, :site, :name, :skip))
       end
     else
-      tag_wait(e)
+      tag_wait(e)+tag_post(e)
     end
   end.join("\n")
 end

@@ -46,6 +46,7 @@
         <xsd:element ref="mdb:item" />
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
+      <xsd:attribute name="title" type="xsd:token" />
       <xsd:attribute name="label" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>

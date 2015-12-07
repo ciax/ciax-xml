@@ -2,7 +2,7 @@
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="mos" version="1" label="MOS Macro" port="55555">
     <group id="grp_mma_2" caption="Action">
-      <unit id="unit_mma_2" label="">
+      <unit id="unit_mma_2" title="" label="">
         <item id="mma_ini" label="Initialize Position">
           <goal>
             <equal site="mma" var="pos" form="msg">INIT</equal>
@@ -162,7 +162,7 @@
           <mcr name="f-i"/>
         </item>
       </unit>
-      <unit id="unit_mma_2stam" label="Sub Start Mask">
+      <unit id="unit_mma_2stam" title="stam" label="Sub Start Mask">
         <item id="t-i" label="startmask (INIT)">
           <goal>
             <not site="mma" var="pos" form="msg">INIT</not>
@@ -395,7 +395,7 @@
           </check>
         </item>
       </unit>
-      <unit id="unit_mma_2stom" label="Sub Store Mask">
+      <unit id="unit_mma_2stom" title="stom" label="Sub Store Mask">
         <item id="s-i" label="storemask 1(INIT)">
           <goal>
             <not site="mma" var="pos" form="msg">INIT</not>
@@ -668,7 +668,7 @@
           </check>
         </item>
       </unit>
-      <unit id="unit_mma_2lom" label="Sub Load Mask">
+      <unit id="unit_mma_2lom" title="lom" label="Sub Load Mask">
         <item id="l-w" label="loadmask 1(WAIT)">
           <goal>
             <unmatch site="mma" var="abs" form="msg">WAIT</unmatch>
@@ -977,7 +977,7 @@
           </check>
         </item>
       </unit>
-      <unit id="unit_mma_2fchk" label="Sub Field Check">
+      <unit id="unit_mma_2fchk" title="fchk" label="Sub Field Check">
         <item id="fc-i1" label="fieldcheck (INIT)">
           <goal>
             <not site="mma" var="pos" form="msg">NA</not>
@@ -1141,7 +1141,7 @@
           <exec site="mma" name="gr"/>
         </item>
       </unit>
-      <unit id="unit_mma_2kapam" label="Sub Kapa Mask">
+      <unit id="unit_mma_2kapam" title="kapam" label="Sub Kapa Mask">
         <item id="rc_k" label="Rh All Close">
           <goal>
             <equal site="mfp" var="ro" form="msg">CLOSE</equal>
@@ -1195,7 +1195,7 @@
           <exec site="mfp" name="ro"/>
         </item>
       </unit>
-      <unit id="unit_mma_2finm" label="Sub Fin Mask">
+      <unit id="unit_mma_2finm" title="finm" label="Sub Fin Mask">
         <item id="f-r" label="fin 1(WAIT~ROT)">
           <goal>
             <unmatch site="mma" var="abs" form="msg">WAIT</unmatch>

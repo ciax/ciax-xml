@@ -116,7 +116,7 @@ def tag_item(id)
 end
 
 def tag_unit(uid)
-  atrb = {id: uid, label: @ucap[uid]}
+  atrb = {id: uid, title: @uttl[uid], label: @ucap[uid]}
   enclose(:unit, atrb, @umem[uid]) do |id|
     tag_item(id)
   end
@@ -137,10 +137,11 @@ abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.size < 1
 
 @mdb = JSON.load(gets(nil))
 @mcap = @mdb.delete('caption_macro') || 'ciax'
-@ucap = @mdb.delete('caption_unit') || {}
 @gcap = @mdb.delete('caption_group') || {}
-@umem = @mdb.delete('member_unit') || {}
 @gmem = @mdb.delete('member_group') || {}
+@uttl = @mdb.delete('title_unit') || {}
+@ucap = @mdb.delete('caption_unit') || {}
+@umem = @mdb.delete('member_unit') || {}
 @index = []
 @indent = 0
 puts '<?xml version="1.0" encoding="utf-8"?>'

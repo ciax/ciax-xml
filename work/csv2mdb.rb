@@ -70,6 +70,7 @@ end
 def unitting(id, label, inv, type)
   if type == 'cap'
     @ucore = @gcore + id.tr('^_a-zA-Z0-9', '')
+    @uttl[_uid] = id
     @ucap[_uid] = label
     @umem[_uid] = []
     @gmem[_gid] << _uid
@@ -281,6 +282,7 @@ opt = ARGV.getopts('m:')
 @mdb = { caption_macro: 'macro' }
 @gcap = @mdb[:caption_group] = {}
 @gmem = @mdb[:member_group] = {}
+@uttl = @mdb[:title_unit] = {}
 @ucap = @mdb[:caption_unit] = {}
 @umem = @mdb[:member_unit] = {}
 @mdb[:index] = {}

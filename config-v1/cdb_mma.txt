@@ -19,5 +19,5 @@ astop,STOP,1,act,stop
 #f87,failure mode 3,,act,ma=87.12/60:bs==0:p,astop
 setstk,Initialize at Stock,,cmd,P=200.44
 # rini added by Omata 3/13/07
-rini,Init to RP at AV,,act,e2=1&mh=-1/95:bs==0:p:in(5)/e2=0&abspos=123,astop
+#rini,Init to RP at AV,,act,e2=1&mh=-1/95:bs==0:p:in(5)/e2=0&abspos=123,astop
 setrot,Set RP Pulse,,cmd,abspos=123

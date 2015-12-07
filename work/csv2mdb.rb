@@ -24,9 +24,8 @@ end
 def mk_cond(site, cond)
   case cond
   when /[~!=^]+/
-    cri = $'.delete('/') # for '/S'
     ope = OPETBL[$&[0]] # for '=='
-    ary = [site, $`, ope, cri]
+    ary = [site, $`, ope, $']
     ary << @skip if @skip
     ary
   when '*', '', nil
@@ -67,11 +66,11 @@ end
 def grouping(id, label, name)
   if /^!/ =~ id
     @gcore = "#{name}_#{$'}"
-    @group[_gid]={caption: label.gsub(/ *-{2,} */, '')}
+    @group[_gid]={caption: label.gsub(/ *-{2,} */, ''), rank: 1}
     return
   elsif !@gcore # default group
     @gcore = "#{name}"
-    @group[_gid]={caption: "#{name.upcase} Group"}
+    @group[_gid]={caption: "#{name.upcase} Group", rank: 0}
   end
   id
 end
@@ -84,15 +83,17 @@ def unitting(id, label, inv, type)
     _gadd(_gid,_uid)
     return
   elsif !inv || inv.empty?
-    @ucore = @gcore
-    @unit[_uid]||={}
-    _gadd(_gid,_uid)
+    @ucore = nil
   end
   id
 end
 
 def iteming(id, label, index)
-  _uadd(_uid, id)
+  if @ucore
+    _uadd(_uid, id)
+  else
+    _gadd(_gid, id)
+  end
   item = (index[id] ||= {})
   item['label'] = label
   item

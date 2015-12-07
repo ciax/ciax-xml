@@ -5,6 +5,7 @@ stop,Emergency STOP,,mcr,mma:astop mmc:astop
 upd,Update,,cmd,mma:upd mmc:upd mfp:upd map:upd
 chk,Check Status(No actual motion),1,cmd,
 
+!1,Initialize
 # cinit
 crinit,Carousel Initialize,,cap,
 cinit,carousel initialize,,mcr,mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
@@ -15,7 +16,7 @@ cinit_a_exec,carousel initialize,1,mcr,mmc:upd map:upd mmc:lowspd map:upd mmc:cw
 
 # ____________________________________________________________________________
 # mmc command
-
+!2,Slot Command
 slot[0-23],Move to Slot[0-23],,cap,
 slot0,carousel,1,mcr,mcr:upd mmc:lowspd mcr:slot%S_00 mcr:check_slot00
 slot1,carousel,1,mcr,mcr:upd mmc:lowspd mcr:slot%S_01 mcr:check_slot01
@@ -42,6 +43,7 @@ slot21,carousel,1,mcr,mcr:upd mmc:lowspd mcr:slot%S_21 mcr:check_slot21
 #slot22,carousel,1,mcr,mcr:upd mmc:lowspd mcr:slot%S_22 mcr:check_slot22
 #slot23,carousel,1,mcr,mcr:upd mmc:lowspd mcr:slot%S_23 mcr:check_slot23
 
+!3,Slot Sub,1
 chk_slot[0-23],Check Slot[0-23],1,cap,
 check_slot00,check_slot,1,mcr,
 check_slot01,check_slot,1,mcr,
@@ -692,6 +694,7 @@ to_slot23,Slot to 23,1,cap,
 #slot22_23,carousel,1,mcr,mmc:slot23
 #slot23_23,carousel,1,mcr,mmc:slot23
 
+!4,Access Slot
 access[0-23],Access to Slot[0-23],,cap,
 access0,Access to Slot0,1,mcr,mmc:access0 mcr:check_access00
 access1,Access to Slot1,1,mcr,mmc:access1 mcr:check_access01
@@ -718,6 +721,7 @@ access21,Access to Slot21,1,mcr,mmc:access21 mcr:check_access21
 #access22,Access to Slot22,1,mcr,mmc:access22 mcr:check_access22
 #access23,Access to Slot23,1,mcr,mmc:access23 mcr:check_access23
 
+!5,Access Sub,1
 chk_access[0-23],Check Access[0-23],1,cap,
 check_access00,check_access,1,mcr,
 check_access01,check_access,1,mcr,

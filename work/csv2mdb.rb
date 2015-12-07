@@ -210,9 +210,13 @@ def read_mcr_idb(index, proj)
 end
 
 # take macro if device macro exists
-def dev_mcr(ary)
-  id = ary.join('_')
-  ary.replace(['mcr', id]) if @devmcrs.include?(id)
+def conv_dev_mcr(ary)
+  cmd, *args = ary
+  if /exec/ =~ cmd
+    id=args.join('_')
+    ary.replace(['mcr',id]) if @mdb[:index].key?(id)
+  end
+  ary
 end
 
 # For select feature (substitute %? to current status)
@@ -233,7 +237,7 @@ def read_mcr_cdb(index, proj)
     next unless cmds && !cmds.empty?
     seq = item['seq'] = sep_cmd(cmds)
     seq.map do |ary|
-      dev_mcr(ary)
+      conv_dev_mcr(ary)
       conv_sel(ary, select)
     end
   end

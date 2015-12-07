@@ -14,10 +14,10 @@ ac,Arm Close,,act,%2:10=1:11=0/3
 hc,Heater1 SW to Carrousel,,act,%2:14=0
 hm,Heater1 SW to Maindewar,,act,%2:14=1
 r[ab][oc],Robohand 1&2(a)/3&4(b) Open/Close,,cap
-rao,Robohand 1&2 Open,1,act,%2:2=0:3=1/2
-rac,Robohand 1&2 Close,1,act,%2:2=1:3=0/2
-rbo,Robohand 3&4 Open,1,act,%2:4=0:5=1/2
-rbc,Robohand 3&4 Close,1,act,%2:4=1:5=0/2
+#rao,Robohand 1&2 Open,1,act,%2:2=0:3=1/2
+#rac,Robohand 1&2 Close,1,act,%2:2=1:3=0/2
+#rbo,Robohand 3&4 Open,1,act,%2:4=0:5=1/2
+#rbc,Robohand 3&4 Close,1,act,%2:4=1:5=0/2
 [0-15]on/off,RELAY 0-15 ON/OFF,,cap
 0on,RELAY 0 ON,1,act,%2:0=1
 0off,RELAY 0 OFF,1,act,%2:0=0

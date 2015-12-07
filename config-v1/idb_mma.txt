@@ -10,7 +10,7 @@ ini,pos=INIT,
 gf,pos=FOCUS,
 gr,pos=ROT,
 gw,abs~WAIT,
-gs,pos=STOCK,
-setstk,,pos=STOCK&abs~STOCK
+gs,pos=STORE,
+setstk,,pos=STORE&abs~STORE
 rini,pos=ROT,
 setrot,,pos=ROT&abs~ROT

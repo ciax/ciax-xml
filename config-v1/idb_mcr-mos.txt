@@ -43,19 +43,19 @@ ac_s-f,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mfp:rao=CLOSE&mfp:
 ro_s-f,mfp:rao=OPEN&mfp:rbo=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mma:con=ON&mmc:abs~S&map:pres~H|M|L
 gr_s-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 av_s-r,mfp:hv=Vertical,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
-gs_s-s,mma:pos=STOCK,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
-ao_s-s,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=STOCK&mmc:abs~S&map:pres~H|M|L
-gw_s-w,mma:abs~WAIT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mfp:rao=OPEN&mfp:rbo=OPEN&mma:con=OFF&mma:pos=STOCK&mmc:abs~S&map:pres~H|M|L
+gs_s-s,mma:pos=STORE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
+ao_s-s,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=STORE&mmc:abs~S&map:pres~H|M|L
+gw_s-w,mma:abs~WAIT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mfp:rao=OPEN&mfp:rbo=OPEN&mma:con=OFF&mma:pos=STORE&mmc:abs~S&map:pres~H|M|L
 check_store,,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mfp:rao=OPEN&mfp:rbo=OPEN&mma:abs~WAIT&mmc:abs~S&map:pres~H|M|L
 
 # loadmask
 av_l-w,mfp:hv=Vertical,mfp:gv=OPEN&mma:abs~WAIT&mmc:abs~S&map:pres~H|M|L
 ao_l-w,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Vertical&mma:abs~WAIT&mmc:abs~S&map:pres~H|M|L
-gs_l-s,mma:pos=STOCK,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mma:abs~WAIT&mmc:abs~S&map:pres~H|M|L
-ac_l-s,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mma:pos=STOCK&mmc:abs~S&map:pres~H|M|L
-#ac_l-s,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mmc:con=ON&mma:pos=STOCK&mmc:abs~S&map:pres~H|M|L
-gr_l-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=STOCK&mma:con=ON&mmc:abs~S&map:pres~H|M|L
-#gr_l-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=STOCK&mmc:con=ON&mmc:abs~S&map:pres~H|M|L
+gs_l-s,mma:pos=STORE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mma:abs~WAIT&mmc:abs~S&map:pres~H|M|L
+ac_l-s,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mma:pos=STORE&mmc:abs~S&map:pres~H|M|L
+#ac_l-s,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=OPEN&mmc:con=ON&mma:pos=STORE&mmc:abs~S&map:pres~H|M|L
+gr_l-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=STORE&mma:con=ON&mmc:abs~S&map:pres~H|M|L
+#gr_l-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=STORE&mmc:con=ON&mmc:abs~S&map:pres~H|M|L
 ah_l-r,mfp:hv=Horizontal,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L&mmc:con=OFF
 gf_l-f,mma:pos=FOCUS,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
 rc_l-f,mfp:rao=CLOSE&mfp:rbo=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
@@ -63,7 +63,7 @@ ro_l-f,mfp:rao=OPEN&mfp:rbo=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:
 ao_l-f,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mma:con=ON&mmc:abs~S&map:pres~H|M|L
 ini_l-i,mma:pos=INIT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 set0_a,,mma:pos=INIT&mma:abs~INIT
-setstk_a,,mma:pos=STOCK&mma:abs~STOCK
+setstk_a,,mma:pos=STORE&mma:abs~STORE
 check_load,,mfp:gv=OPEN&mfp:hv=Horizontal&!mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
 
 # fcheck
@@ -115,18 +115,18 @@ store,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-i,mma:pos!INIT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-f,mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-r,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-s-s,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STOCK,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-s-w,mma:abs^WAIT&mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STOCK,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+s-s,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STORE,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+s-w,mma:abs^WAIT&mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STORE,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 
 # loadmask (must not add "mma:pos!N/A in l-w)
 load,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 l-w,mma:abs^WAIT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-l-s,mma:pos!N/A&mma:abs^WAIT&mma:pos!STOCK,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-l-r,mma:pos!N/A&mma:abs^WAIT&mma:pos!STOCK&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-l-f,mma:pos!N/A&mma:abs^WAIT&mma:pos!STOCK&mma:pos!ROT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+l-s,mma:pos!N/A&mma:abs^WAIT&mma:pos!STORE,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+l-r,mma:pos!N/A&mma:abs^WAIT&mma:pos!STORE&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+l-f,mma:pos!N/A&mma:abs^WAIT&mma:pos!STORE&mma:pos!ROT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 l-mskon,mma:con=ON,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 l-mskoff,mma:con!ON,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-l-i,mma:pos!N/A&mma:abs^WAIT&mma:pos!STOCK&mma:pos!ROT&mma:pos!FOCUS&mma:pos!INIT&mma:abs^INIT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S 
+l-i,mma:pos!N/A&mma:abs^WAIT&mma:pos!STORE&mma:pos!ROT&mma:pos!FOCUS&mma:pos!INIT&mma:abs^INIT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 
 # fcheck
 fcheck,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S

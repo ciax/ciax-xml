@@ -1,7 +1,7 @@
 #2007/4/14 in1 logic swithed by omata
 bus,On Motion,1,ENUM,1=ON 0=OFF
 # in1 -> con at CIAX-V2
-in1,Mask at STOCK,1,ENUM,0=OFF 1=ON
+in1,Mask at STORE,1,ENUM,0=OFF 1=ON
 ,,1
 
 in3,CW Limit,1,ENUM,1=ON 0=OFF

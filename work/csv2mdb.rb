@@ -269,7 +269,7 @@ def select_mcr(select, index, proj)
   return if select.empty?
   db = read_sel_table(proj)
   gid = "grp_sel_#{proj}"
-  @group[gid]={caption: "#{proj.upcase} Select Group", member: []}
+  @group[gid]={caption: "#{proj.upcase} Select Group", rank: 2}
   select.each do|str|
     mk_sel(str, index, gid, db)
   end

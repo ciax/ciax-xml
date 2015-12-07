@@ -124,7 +124,8 @@ def tag_unit(uid)
 end
 
 def tag_group(gid, gary)
-  atrb = {id: gid, caption: @group[gid]['caption']}
+  gat=@group[gid]
+  atrb = {id: gid, caption: gat['caption'], rank: gat['rank']}
   enclose(:group, atrb, gary) do|uid|
     if /unit_/ =~ uid
       tag_unit(uid)

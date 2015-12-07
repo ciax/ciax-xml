@@ -63,14 +63,14 @@ def _uadd(uid,iid)
 end
 
 # Group is enclosed by starting !?,----- Title ----- to next title
-def grouping(id, label, name)
+def grouping(id, label, inv, name)
   if /^!/ =~ id
     @gcore = "#{name}_#{$'}"
-    @group[_gid]={caption: label.gsub(/ *-{2,} */, ''), rank: 1}
+    @group[_gid]={caption: label.gsub(/ *-{2,} */, ''), rank: inv.to_i}
     return
   elsif !@gcore # default group
     @gcore = "#{name}"
-    @group[_gid]={caption: "#{name.upcase} Group", rank: 0}
+    @group[_gid]={caption: "#{name.upcase} Group", rank: inv.to_i}
   end
   id
 end
@@ -182,7 +182,7 @@ def read_dev_cdb(index, site)
   cfga = @cfgitems[site] = []
   get_csv("cdb_#{site}") do|id, label, inv, type, cond|
     label.gsub!(/&/, 'and')
-    grouping(id, label, site) || next
+    grouping(id, label, 2, site) || next
     unitting(id, label, inv, type) || next
     item = iteming("#{site}_#{id}", label, index)
     seq = item['seq'] = []
@@ -227,7 +227,7 @@ def read_mcr_cdb(index, proj)
   select = []
   get_csv("cdb_mcr-#{proj}") do|id, label, inv, type, cmds|
     label.gsub!(/&/, 'and')
-    grouping(id, label, proj) || next
+    grouping(id, label, inv, proj) || next
     unitting(id, label, inv, type) || next
     item = iteming(id, label, index)
     next unless cmds && !cmds.empty?

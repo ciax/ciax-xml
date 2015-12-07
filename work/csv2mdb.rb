@@ -51,17 +51,27 @@ def _uid
   'unit_' + @ucore
 end
 
+def _gadd(gid,uid)
+  ary = @group[gid][:member]||=[]
+  ary << uid unless ary.include?(uid)
+  ary
+end
+
+def _uadd(uid,iid)
+  ary = @unit[uid][:member]||=[]
+  ary << iid unless ary.include?(iid)
+  ary
+end
+
 # Group is enclosed by starting !?,----- Title ----- to next title
 def grouping(id, label, name)
   if /^!/ =~ id
     @gcore = "#{name}_#{$'}"
-    @gcap[_gid] = label.gsub(/ *-{2,} */, '')
-    @gmem[_gid] = []
+    @group[_gid]={caption: label.gsub(/ *-{2,} */, '')}
     return
   elsif !@gcore # default group
     @gcore = "#{name}"
-    @gcap[_gid] = "#{name.upcase} Group"
-    @gmem[_gid] = []
+    @group[_gid]={caption: "#{name.upcase} Group"}
   end
   id
 end
@@ -70,23 +80,19 @@ end
 def unitting(id, label, inv, type)
   if type == 'cap'
     @ucore = @gcore + id.tr('^_a-zA-Z0-9', '')
-    @uttl[_uid] = id
-    @ucap[_uid] = label
-    @umem[_uid] = []
-    @gmem[_gid] << _uid
+    @unit[_uid]={title: id, caption: label}
+    _gadd(_gid,_uid)
     return
   elsif !inv || inv.empty?
     @ucore = @gcore
-    unless @umem[_uid]
-      @umem[_uid] = []
-      @gmem[_gid] << _uid
-    end
+    @unit[_uid]||={}
+    _gadd(_gid,_uid)
   end
   id
 end
 
 def iteming(id, label, index)
-  @umem[_uid] << id
+  _uadd(_uid, id)
   item = (index[id] ||= {})
   item['label'] = label
   item
@@ -188,7 +194,7 @@ def mdb_reduction(index)
   index.select! do|_k, v|
     v.key?('seq') && v['seq'].any? { |f| f.is_a? Hash }
   end
-  @umem.values.each { |a| a.replace(a & index.keys) }
+  @unit.values.each{ |a| a[:member].replace(a[:member] & index.keys) }
 end
 
 ######### Macro DB ##########
@@ -245,7 +251,7 @@ end
 def mk_sel(str, index, gid, db)
   id = str.sub(/%(.)/, 'X')
   dbi = db[$+].dup
-  @gmem[gid] << id
+  _gadd(gid, id)
   item = index[id] = {}
   var = dbi['var'].split(':')
   item['label'] = 'Select Macro'
@@ -262,8 +268,7 @@ def select_mcr(select, index, proj)
   return if select.empty?
   db = read_sel_table(proj)
   gid = "grp_sel_#{proj}"
-  @gcap[gid] = "#{proj.upcase} Select Group"
-  @gmem[gid] = []
+  @group[gid]={caption: "#{proj.upcase} Select Group", member: []}
   select.each do|str|
     mk_sel(str, index, gid, db)
   end
@@ -280,11 +285,8 @@ opt = ARGV.getopts('m:')
 @cfgitems = {}
 @devmcrs = []
 @mdb = { caption_macro: 'macro' }
-@gcap = @mdb[:caption_group] = {}
-@gmem = @mdb[:member_group] = {}
-@uttl = @mdb[:title_unit] = {}
-@ucap = @mdb[:caption_unit] = {}
-@umem = @mdb[:member_unit] = {}
+@group = @mdb[:group] = {}
+@unit = @mdb[:unit] = {}
 @mdb[:index] = {}
 
 # Convert device macro

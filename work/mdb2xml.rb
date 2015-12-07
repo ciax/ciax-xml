@@ -116,14 +116,15 @@ def tag_item(id)
 end
 
 def tag_unit(uid)
-  atrb = {id: uid, title: @uttl[uid], label: @ucap[uid]}
-  enclose(:unit, atrb, @umem[uid]) do |id|
+  uat=@unit[uid]
+  atrb = {id: uid, title: uat['title'], label: uat['caption']}
+  enclose(:unit, atrb, uat['member']) do |id|
     tag_item(id)
   end
 end
 
 def tag_group(gid, gary)
-  atrb = {id: gid, caption: @gcap[gid]}
+  atrb = {id: gid, caption: @group[gid]['caption']}
   enclose(:group, atrb, gary) do|uid|
     if /unit_/ =~ uid
       tag_unit(uid)
@@ -137,18 +138,15 @@ abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.size < 1
 
 @mdb = JSON.load(gets(nil))
 @mcap = @mdb.delete('caption_macro') || 'ciax'
-@gcap = @mdb.delete('caption_group') || {}
-@gmem = @mdb.delete('member_group') || {}
-@uttl = @mdb.delete('title_unit') || {}
-@ucap = @mdb.delete('caption_unit') || {}
-@umem = @mdb.delete('member_unit') || {}
+@group = @mdb.delete('group') || {}
+@unit = @mdb.delete('unit') || {}
 @index = []
 @indent = 0
 puts '<?xml version="1.0" encoding="utf-8"?>'
 puts enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') {
   label = "#{@mcap.upcase} Macro"
   atrb = { id: @mcap, version: '1', label: label, port: '55555'}
-  enclose(:macro, atrb, @gmem) do |gid, mem|
-    tag_group(gid, mem)
+  enclose(:macro, atrb, @group) do |gid, at|
+    tag_group(gid, at['member'])
   end
 }

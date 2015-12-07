@@ -81,6 +81,10 @@ module CIAX
         post_upd
       end
 
+      def pick(keylist)
+        Hashx.new(data: super(keylist,self[:data]))
+      end
+
       # For propagate to Status update
       def flush
         verbose { 'Processing FlushProcs' }

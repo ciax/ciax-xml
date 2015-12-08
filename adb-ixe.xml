@@ -192,6 +192,30 @@
             <argv>6</argv>
           </frmcmd>
         </item>
+        <item id="bk_all" label="Move Backward All Turret [1-(hole)]">
+          <par_num>1:</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="bk">
+              <argv>$_</argv>
+              <argv format="%d">$1 * 8000</argv>
+            </frmcmd>
+            <frmcmd name="chkrun">
+              <argv>$_</argv>
+          </frmcmd>
+          </repeat>
+        </item>
+        <item id="fw_all" label="Move Forward All Turret [1-(hole)]">
+          <par_num>1:</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="fw">
+              <argv>$_</argv>
+              <argv format="%d">$1 * 8000</argv>
+            </frmcmd>
+            <frmcmd name="chkrun">
+              <argv>$_</argv>
+          </frmcmd>
+          </repeat>
+        </item>
       </group>
       <group id='gcfg' caption="Configuration Commands">
         <item id="speed" label="Set Speed [25-800]">

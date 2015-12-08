@@ -14,6 +14,7 @@ module CIAX
         # Proc for Terminate process of each individual commands (Set upper layer's update);
         @flush_procs = []
         _setdbi(dbi, Dev::Db)
+        self[:comerr] = false
         self[:data] = _init_field_ unless self[:data]
       end
 
@@ -89,6 +90,7 @@ module CIAX
       def flush
         verbose { 'Processing FlushProcs' }
         @flush_procs.each { |p| p.call(self) }
+        self[:comerr] = false
         self
       end
 

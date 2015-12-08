@@ -34,6 +34,7 @@ module CIAX
         super
       rescue CommError
         @sv_stat.set(:comerr).msg($ERROR_INFO.to_s)
+        @stat[:comerr]=true
         raise $ERROR_INFO
       end
 

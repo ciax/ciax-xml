@@ -41,6 +41,8 @@ module CIAX
         @f.write(str)
         convert('snd', str, cid)
         self
+      ensure
+        post_upd
       end
 
       def rcv
@@ -69,6 +71,8 @@ module CIAX
         convert('rcv', str)
         verbose { "Data Recieved(#{time_id})\n" + visible(str) }
         self
+      ensure
+        post_upd
       end
 
       def reopen
@@ -110,8 +114,6 @@ module CIAX
         update('dir' => dir, 'base64' => encode(data))
         self['cmd'] = cid if cid
         self
-      ensure
-        post_upd
       end
 
       def encode(str)

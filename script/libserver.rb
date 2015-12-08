@@ -15,7 +15,7 @@ module CIAX
       return self unless @port
       verbose { "Initialize UDP server (#{@id}) [#{@port}]" }
       @server_input_proc = proc { |line| j2h(line) }
-      @sv_stat.ext_file.auto_save
+      @sv_stat.ext_file.auto_save.ext_log
       @server_output_proc = proc { @sv_stat.to_j }
       self
     end

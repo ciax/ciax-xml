@@ -94,6 +94,11 @@ module CIAX
         self
       end
 
+      def seterr
+        self[:comerr] = false
+        post_upd
+      end
+
       private
 
       def _init_field_

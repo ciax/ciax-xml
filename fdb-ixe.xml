@@ -17,22 +17,19 @@
         <string>ST</string>
       </item>
       <item id="initrot" label="Parameter set for rotation" response="default" type="config">
-        <repeat from="1" to="6">
-          <string>$_</string>
-          <string>P01S0</string>
-        </repeat>
+        <par_num>1:6</par_num>
+        <string>$1</string>
+        <string>P01S0</string>
       </item>
       <item id="initunit" label="Parameter unit set to pulse step" response="default" type="config">
-        <repeat from="1" to="6">
-          <string>$_</string>
-          <string>P02S1</string>
-        </repeat>
+        <par_num>1:6</par_num>
+        <string>$1</string>
+        <string>P02S1</string>
       </item>
       <item id="initfactor" label="Parameter unit factor set to 1" response="default" type="config">
-        <repeat from="1" to="6">
-          <string>$_</string>
-          <string>P03S1</string>
-        </repeat>
+        <par_num>1:6</par_num>
+        <string>$1</string>
+        <string>P03S1</string>
       </item>
       <item id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
         <par_num>1:6</par_num>
@@ -110,16 +107,14 @@
         <string>${ofs:$1-1}</string>
       </item>
       <item id="act" label="Activate (Servo) All" response="default" type="action">
-        <repeat from="1" to="6">
-          <string>$_</string>
-          <string>MA</string>
-        </repeat>
+        <par_num>1:6</par_num>
+        <string>$1</string>
+        <string>MA</string>
       </item>
       <item id="deact" label="Deactivate (Free) All" response="default" type="action">
-        <repeat from="1" to="6">
-          <string>$_</string>
-          <string>MD</string>
-        </repeat>
+        <par_num>1:6</par_num>
+        <string>$1</string>
+        <string>MD</string>
       </item>
       <item id="stop" label="Stop Moving [1-6]" response="default" type="action">
         <par_num>1:6</par_num>

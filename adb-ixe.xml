@@ -82,6 +82,7 @@
           </frmcmd>
         </item>
         <item id="restore" label="Restore Pulse,Speed,Offset">
+          <frmcmd name="dummy"/>
           <frmcmd name="load">
             <argv>temp</argv>
           </frmcmd>

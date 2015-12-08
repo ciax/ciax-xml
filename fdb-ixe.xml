@@ -13,6 +13,9 @@
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <!--String Length must be <32-->
+      <item id="dummy" label="Dummy Command" response="dummy" type="stat">
+        <string>ST</string>
+      </item>
       <item id="getstat" label="Get status" response="getstat" type="stat">
         <string>ST</string>
       </item>
@@ -210,6 +213,7 @@
         </array>
       </item>
       <item id="default" />
+      <item id="dummy" noaffix="true" />
     </response>
   </frame>
 </fdb>

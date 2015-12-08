@@ -8,6 +8,7 @@ module CIAX
   VERBOSE = ENV['VER']
   NOCACHE = ENV['NOCACHE']
   NOLOG = ENV['NOLOG']
+  NOCOLOR = ENV['NOCOLOR']
   NS_COLOR = 15
 
   # Site Domain

@@ -58,15 +58,16 @@ module CIAX
   # Server error (Handled in Server)
   class ServerError < RuntimeError; end
 
-  # No Data in Field for Status
-  class NoData < ServerError; end
-
-  # Stream Open Error
-  class StreamError < ServerError; end
-  # Communication Error
-  class CommError < ServerError; end
-  # CC Verification Error
-  class VerifyError < ServerError; end
   # Configuration Error
   class ConfigError < ServerError; end
+
+  # Communication Error
+  class CommError < ServerError; end
+
+  # Stream Open Error
+  class StreamError < CommError; end
+  # CC Verification Error
+  class VerifyError < CommError; end
+  # No Data in Field for Status
+  class NoData < CommError; end
 end

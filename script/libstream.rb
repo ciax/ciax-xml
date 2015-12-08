@@ -49,7 +49,7 @@ module CIAX
         verbose { 'Wait for Recieving' }
         reopen
         str = ''
-        loop do
+        20.times do
           if IO.select([@f], nil, nil, @timeout)
             begin
               str << @f.sysread(4096)

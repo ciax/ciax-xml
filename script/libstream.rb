@@ -36,7 +36,7 @@ module CIAX
       def snd(str, cid)
         return if str.to_s.empty?
         verbose { "Sending #{str.size} byte on #{cid}" }
-        verbose { "Data Sending\n" + str.inspect }
+        verbose { "Data Sending\n" + visible(str) }
         reopen
         @f.write(str)
         convert('snd', str, cid)
@@ -53,7 +53,7 @@ module CIAX
           if IO.select([@f], nil, nil, @timeout)
             begin
               str << @f.sysread(4096)
-              verbose { "Binary Getting\n" + str.inspect }
+              verbose { "Binary Getting\n" + visible(str) }
             rescue EOFError
               # Jumped at quit
               @f.close
@@ -67,7 +67,7 @@ module CIAX
         end
         verbose { "Recieved #{str.size} byte on #{self['cmd']}" }
         convert('rcv', str)
-        verbose { "Data Recieved(#{time_id})\n" + str.inspect }
+        verbose { "Data Recieved(#{time_id})\n" + visible(str) }
         self
       end
 

@@ -4,7 +4,9 @@ module CIAX
   ### Formatting methods ###
   module Msg
     INDENT = ' '
-
+    CTLCODE = %i(NUL SOH STX ETX EOT ENQ ACK BEL BS HT LF VT FF CR SO SI
+ DLE DC1 DC2 DC3 DC4 NAK SYN ETB CAN EM SUB ESC FS GS RS US)
+    
     module_function
 
     def indent(ind = 0)
@@ -30,6 +32,22 @@ module CIAX
       "\033[#{c >> 3};3#{c & 7}m#{text}\33[0m"
     end
 
+    # Show Control Charactor with Color
+    def visible(text)
+      str = ''
+      text.each_byte do |c|
+        n = c.ord
+        if n > 126
+          str << colorize('(%x)' % c, 4)
+        elsif n < 32
+          str << colorize('(%s)' % CTLCODE[n], 4)
+        else
+          str << c
+        end
+      end
+      str
+    end
+    
     # Display DB item in one line fromat.
     #    title : description
     def item(key, val, kmax = nil)

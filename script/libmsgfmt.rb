@@ -5,8 +5,8 @@ module CIAX
   module Msg
     INDENT = ' '
     CTLCODE = %i(NUL SOH STX ETX EOT ENQ ACK BEL BS HT LF VT FF CR SO SI
- DLE DC1 DC2 DC3 DC4 NAK SYN ETB CAN EM SUB ESC FS GS RS US)
-    
+                 DLE DC1 DC2 DC3 DC4 NAK SYN ETB CAN EM SUB ESC FS GS RS US)
+
     module_function
 
     def indent(ind = 0)
@@ -38,16 +38,16 @@ module CIAX
       text.each_byte do |c|
         n = c.ord
         if n > 126
-          str << colorize('(%x)' % c, 4)
+          str << colorize(format('(%x)', c), 4)
         elsif n < 32
-          str << colorize('(%s)' % CTLCODE[n], 4)
+          str << colorize(format('(%s)', CTLCODE[n]), 4)
         else
           str << c
         end
       end
       str
     end
-    
+
     # Display DB item in one line fromat.
     #    title : description
     def item(key, val, kmax = nil)
@@ -66,27 +66,31 @@ module CIAX
     end
 
     # Display methods
-    def columns(h, clm = nil, ind = nil, cap = nil)
+    #   colm can be Array [[kn,vn], [kn,vn],...] or number
+    def columns(h, colm = nil, ind = nil, cap = nil)
       return '' unless h
-      kary = h.keys
-      clm ||= 2
-      kx = __ary_max(kary, clm)
-      vx = __ary_max(kary.map { |k| h[k] }, clm)
-      lary = kary.each_slice(clm).map { |a| __mk_line(h, a, kx, vx, ind) }
+      cary = colm.is_a?(Array) ? colm : Array.new(colm || 2) { [0, 0] }
+      lary = __upd_cary_(h, cary).map! { |a| __mk_line(h, a, cary, ind) }
       (cap ? lary.unshift(cap) : lary).join("\n")
     end
 
-    def __mk_line(h, a, kx, vx, ind)
+    def __mk_line(h, a, cary, ind)
       a.map.with_index do|k, i|
-        indent(ind.to_i) + item(k, h[k], kx[i]).ljust(vx[i] + kx[i] + 15)
+        kx, vx = cary[i]
+        indent(ind.to_i) + item(k, h[k], kx).ljust(kx + vx + 15)
       end.join('').rstrip
     end
 
     # max string length of value and key in hash at each column
-    def __ary_max(ary, clm)
-      cols = Array.new(clm).map { [] }
-      ary.each_with_index { |s, i| cols[i % clm] << s.to_s.size }
-      cols.map(&:max)
+    def __upd_cary_(h, cary)
+      h.keys.each_slice(cary.size).map do |al|
+        al.each_with_index do |k, i|
+          pair = cary[i]
+          pair[0] = [k.size, pair[0]].max
+          pair[1] = [h[k].size, pair[1]].max
+        end
+        al
+      end
     end
   end
 end

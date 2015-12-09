@@ -69,7 +69,7 @@ def grouping(id, label, inv, name)
     @group[_gid]={caption: label.gsub(/ *-{2,} */, ''), rank: inv.to_i}
     return
   elsif !@gcore # default group
-    @gcore = "#{name}"
+    @gcore = name
     @group[_gid]={caption: "#{name.upcase} Group", rank: inv.to_i}
   end
   id
@@ -78,7 +78,7 @@ end
 # Unit is enclosed by ???, Title,,cap
 def unitting(id, label, inv, type)
   if type == 'cap'
-    @ucore = @gcore + id.tr('^_a-zA-Z0-9', '')
+    @ucore = @gcore + '_' + id.tr('^_a-zA-Z0-9', '')
     @unit[_uid]={title: id, caption: label}
     _gadd(_gid,_uid)
     return

@@ -32,7 +32,7 @@ module CIAX
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
         @cobj.rem.sys.add_item('nonstop', 'Mode').def_proc { @sv_stat.set(:nonstop); '' }
-        @cobj.rem.sys.add_item('inter', 'Mode').def_proc { @sv_stat.reset(:nonstop); '' }
+        @cobj.rem.sys.add_item('interactive', 'Mode').def_proc { @sv_stat.reset(:nonstop); '' }
       end
 
       def _init_stat_

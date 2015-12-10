@@ -13,37 +13,37 @@ module CIAX
     #   Attributes (one level): color(#), level(#)
     #   Attributes (one group): caption(text)
     SEPTBL = [['****', 2], ['===', 6], ['--', 12], ['_', 14]]
-    attr_reader :valid_keys, :sub, :column, :line_number, :rank
+    attr_reader :valid_keys, :line_number, :dummy, :rank
+    attr_accessor :num
     def initialize(caption: nil, color: nil, column: 2, line_number: false)
       @valid_keys = Arrayx.new
       @caption = caption
       @color = color
-      @column = column
+      @column = Array.new(column) { [0, 0] }
       @line_number = line_number
-      @sub = Dummy.new(self, caption: @caption, color: @color)
+      @dummy = Hashx.new
+      @num = -1
       @rank = 0
     end
 
-    def set_sec
-      _set_(Section)
-    end
-
-    # Add group with valid_keys
-    def set_grp
-      _set_(Group)
-    end
-
+    # New Item
     def put_item(k, v)
-      @sub.put_item(k, v)
+      self[k] = v
+      @valid_keys << k
+      self
     end
 
-    # For ver 1.9 or more
+    def put_dummy(k, v)
+      @dummy[k] = v
+      self
+    end
+
+    # Data Handling
     def sort!
       @valid_keys.sort!
       self
     end
 
-    # Reset @valid_keys(could be shared)
     def reset!
       @valid_keys.concat(keys).uniq!
       self
@@ -63,42 +63,78 @@ module CIAX
       super
     end
 
+    # Display part
     def to_s
-      @sub.view
-    end
-
-    def item(id)
-      Msg.item(id, self[id])
+      @num = -1
+      view(keys, @caption, @color, @level).to_s
     end
 
     def mk_caption(caption, color: nil, level: nil)
       return unless caption
-      @level = level.to_i
+      level = level.to_i
       sep, col = SEPTBL[level]
       indent(level) + caption(caption, color || col, sep)
     end
 
-    def merge_sub(other)
-      update(other)
-      osub = type?(other, Disp).sub
-      if osub.is_a? Hash
-        rec_merge_index(osub)
-        set_sec.update(osub)
+    def view(select, caption, color, level)
+      list = {}
+      displist = (@valid_keys + @dummy.keys) & select
+      displist.compact.sort.each do|id|
+        name = @line_number ? "[#{@num += 1}](#{id})" : id
+        list[name] = self[id] if self[id]
       end
-      reset!
+      return if list.empty?
+      cap = mk_caption(caption, color: color, level: level)
+      columns(list, @column, level, cap)
     end
 
-    private
-
-    def _set_(mod)
-      return @sub if @sub.is_a? mod
-      @sub = mod.new(self, caption: @caption, color: @color)
+    # Making Sub Section/Group
+    def ext_grp
+      extend(Grouping).ext_grp
     end
 
-    def rec_merge_index(gr)
-      type?(gr, Hash).values.each do |sg|
-        rec_merge_index(sg) if sg.is_a? Hash
-        sg.index = self
+    ####### Sub Group Handling #######
+    module Grouping
+      attr_reader :sub
+      def ext_grp
+        @sub = Section.new(self, caption: @caption, color: @color)
+        self
+      end
+
+      def put_sec(id, cap, color = nil)
+        sec = @sub.put_sec(id, cap, color)
+        sec
+      end
+
+      def put_grp(id, cap, color = nil, rank = nil)
+        grp = @sub.put_grp(id, cap, color, rank)
+        grp
+      end
+
+      def to_s
+        @num = -1
+        @sub.view.to_s
+      end
+
+      def merge_sub(other)
+        update(type?(other, Disp))
+        _rec_merge_(other.sub)
+        @sub.update(other.sub)
+        reset!
+        self
+      end
+
+      private
+
+      def _rec_merge_(gr)
+        type?(gr, Section).index = self
+        gr.values.each do |sg|
+          if sg.is_a? Section
+            _rec_merge_(sg)
+          else
+            sg.index = self
+          end
+        end
       end
     end
 
@@ -106,7 +142,7 @@ module CIAX
     class Section < Hashx
       attr_accessor :index, :level
       def initialize(index, caption: nil, color: nil, level: nil, rank: nil)
-        @index = index
+        @index = type?(index, Disp)
         @caption = caption
         @color = color
         @level = level.to_i
@@ -115,41 +151,30 @@ module CIAX
 
       # add sub caption if sub is true
       def put_sec(id, cap, color = nil)
-        _put_(Section, id, cap, color)
+        _put_sub_(Section, id, cap, color)
       end
 
       def put_grp(id, cap, color = nil, rank = nil)
-        _put_(Group, id, cap, color, rank)
-      end
-
-      def put_dmy(id, cap, color = nil, rank = nil)
-        _put_(Group, id, cap, color, rank)
-      end
-
-      def reset!
-        @index.reset!
-        self
-      end
-
-      def valid?(id)
-        @index.valid?(id)
+        _put_sub_(Group, id, cap, color, rank)
       end
 
       def view
         return '' if @rank > @index.rank
-        ary = values.reverse.map(&:view).grep(/./)
+        ary = values.map(&:view).grep(/./)
         return '' if ary.empty?
-        ary.unshift(@index.mk_caption(@caption, color: @color, level: @level)) if @caption
+        if @caption
+          ary.unshift(@index.mk_caption(@caption, color: @color, level: @level))
+        end
         ary.join("\n")
       end
 
       def to_s
-        view
+        view.to_s
       end
 
       private
 
-      def _put_(mod, id, cap, color = nil, rank = nil)
+      def _put_sub_(mod, id, cap, color = nil, rank = nil)
         return self[id] if self[id]
         level = @level + 1
         self[id] = mod.new(@index, caption: cap, color: color, level: level, rank: rank)
@@ -157,101 +182,82 @@ module CIAX
     end
 
     # It has members of item
-    class Dummy < Arrayx
+    class Group < Arrayx
       attr_accessor :index, :level
       def initialize(index, caption: nil, color: nil, level: nil, rank: nil)
-        @index = index
+        @index = type?(index, Disp)
         @caption = caption
         @color = color
         @level = level.to_i
         @rank = rank.to_i
+        @units = []
       end
 
       # add item
       def put_item(k, v)
+        @index.put_item(k, v)
         push k
-        @index[k] = v
+      end
+
+      def put_dummy(k, v)
+        @index.put_dummy(k, v)
+        push k
+      end
+
+      def put_unit
+        @units << Unit.new
       end
 
       def view(select = self)
         return '' if @rank > @index.rank
-        list = {}
-        select.compact.sort.each_with_index do|id, num|
-          name = @index.line_number ? "[#{num}](#{id})" : id
-          list[name] = @index[id] if @index[id]
-        end
-        return if list.empty?
-        cap = @index.mk_caption(@caption, color: @color, level: @level)
-        columns(list, @index.column, @level, cap)
+        @index.view(select, @caption, @color, @level)
       end
 
       def to_s
         view.to_s
       end
     end
-
-    # With valid_keys
-    class Group < Dummy
-      # add item
-      def put_item(k, v)
-        @index.valid_keys << k
-        super
-      end
-
-      def reset!
-        @index.reset!
-        self
-      end
-
-      def valid?(id)
-        @index.valid?(id)
-      end
-
-      def view
-        super(@index.valid_keys & self)
-      end
-    end
   end
 
   if __FILE__ == $PROGRAM_NAME
     # Top level only
-    idx0 = Disp.new(column: 3, caption: 'top', color: 1)
-    10.times { |i| idx0.put_item("x#{i}", "caption #{i}") }
-    puts idx0
+    idx = Disp.new(column: 3, caption: 'top1')
+    6.times { |i| idx.put_item("x#{i}", "caption #{i}") }
+    puts idx
     puts '--'
-    # Three level groups
-    idx1 = Disp.new(column: 3, caption: 'top1', color: 4)
-    grp1 = idx1.set_sec
-    2.times do |i|
-      s11 = grp1.put_sec("g#{i}", "Group#{i}")
-      2.times do |j|
-        s12 = s11.put_grp("sg#{j}", "SubGroup#{j}", 1)
-        2.times do |k|
-          cstr = '*' * rand(5)
-          s12.put_item("#{i}-#{j}-#{k}", "caption#{i}-#{j}-#{k},#{cstr}")
-        end
+    # Two level groups with item number
+    cap2 = 'top2'
+    idx1 = Disp.new(column: 3, caption: cap2, line_number: true).ext_grp
+    3.times do |i|
+      grp1 = idx1.put_grp("g1#{i}", "Gp#{i}")
+      3.times do |j|
+        cstr = '*' * rand(5)
+        grp1.put_item("x#{i}-#{j}", "cap#{i}-#{j},#{cstr}")
       end
     end
     puts idx1
     puts '--'
-    # Two level groups with item number
-    idx2 = Disp.new(line_number: true, caption: 'top2')
-    grp2 = idx2.set_sec
-    3.times do |i|
-      s21 = grp2.put_grp("g2#{i}", "Gp#{i}")
-      3.times do |j|
-        cstr = '*' * rand(5)
-        s21.put_item("#{i}-#{j}", "cp#{i}-#{j},#{cstr}")
+    # Three level groups
+    idx2 = Disp.new(column: 2, caption: 'top3', color: 4).ext_grp
+    2.times do |i|
+      sec = idx2.put_sec("g2#{i}", "Group#{i}")
+      2.times do |j|
+        grp2 = sec.put_grp("sg#{j}", "SubGroup#{j}")
+        2.times do |k|
+          cstr = '*' * rand(5)
+          grp2.put_item("x#{i}-#{j}-#{k}", "caption#{i}-#{j}-#{k},#{cstr}")
+        end
       end
     end
     puts idx2
     puts '--'
     # Merging groups
+    cap2 << ' (merged with top3)'
     idx1.merge_sub(idx2)
     puts idx1
     puts '--'
     # Confirm merged index
-    idx1.valid_keys.delete('0-0')
+    idx1.valid_keys.delete('x0-0')
     puts idx1
   end
 end

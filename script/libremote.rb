@@ -81,9 +81,9 @@ module CIAX
           # Set items by DB
           cdb = dbi[:command]
           idx = cdb[:index]
-          @dispgrp = @displist.set_sec
+          @displist = @displist.ext_grp
           cdb[:group].each do|gid, gat|
-            sg = @dispgrp.put_grp(gid, gat[:caption], nil, gat[:rank])
+            sg = @displist.put_grp(gid, gat[:caption], nil, gat[:rank])
             gat[:members].each do|id|
               sg.put_item(id, idx[id][:label])
               add_item(id, cdb, idx[id])
@@ -95,7 +95,7 @@ module CIAX
 
         def init_alias(cdb, idx)
           return unless cdb[:alias]
-          sg = @dispgrp.put_grp('gal', 'Alias')
+          sg = @displist.put_grp('gal', 'Alias')
           cdb[:alias].each do|id, att|
             item = idx[att[:ref]].dup
             item.update(att)

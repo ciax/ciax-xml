@@ -26,7 +26,6 @@ module CIAX
         @type = type
         @projects = Hashx.new
         @displist = Disp.new
-        @displist.set_grp
         @level = 0
         read_files(Msg.xmlfiles(@type))
         valid_proj
@@ -57,7 +56,8 @@ module CIAX
         when 'project'
           read_proj(e)
         when 'group'
-          store_grp(e, @displist.set_sec)
+          @displist = @displist.ext_grp
+          store_grp(e, @cisplist)
         else
           store_doc(e, @displist)
         end
@@ -76,7 +76,8 @@ module CIAX
         vkeys = @valid_proj & @projects.keys
         vl = vkeys.empty? ? @projects.keys : vkeys
         pl = vl.map { |pid| @projects[pid] }
-        pl.each { |proj| store_proj(proj, @displist.set_sec) }
+        @displist = @displist.ext_grp
+        pl.each { |proj| store_proj(proj, @displist) }
       end
 
       def store_proj(proj, sec)

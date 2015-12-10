@@ -47,7 +47,6 @@ module CIAX
     # cfg keys: caption,color,column
     def initialize(cfg, atrb = {})
       super
-      @displist.set_grp
     end
 
     # crnt could have 'label',:body,'unit','group'
@@ -67,7 +66,7 @@ module CIAX
     end
 
     def merge_items(displist)
-      @displist.merge_sub(type?(displist, Disp))
+      @displist.merge_sub(displist)
       displist.keys.each { |id| new_item(id) }
       self
     end

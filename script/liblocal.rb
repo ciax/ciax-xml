@@ -52,6 +52,7 @@ module CIAX
           atrb[:caption] = "Switch #{name}s"
           atrb[:color] = 5
           super
+          @displist = @displist.ext_grp
           def_proc do|ent|
             # Use shell() of top level class
             #  (ie. List.new.get(id).shell -> List.new.shell(id) )

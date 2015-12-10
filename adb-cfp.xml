@@ -9,7 +9,7 @@
             <frmcmd name="getstat2" />
           </item>
         </unit>
-        <unit id="rh" label="Robohand All">
+        <unit id="rh" title="r[o/c]" label="Robohand All OPEN/CLOSE">
           <item id="ro" label="Open">
             <frmcmd name="putdata">
               <argv>0x3c</argv>
@@ -25,7 +25,7 @@
             <frmcmd name="getstat" />
           </item>
         </unit>
-        <unit id="gv" label="Gate Valve">
+        <unit id="gv" title="g[o/c]" label="Gate Valve OPEN/CLOSE">
           <item id="go" label="Open">
             <frmcmd name="putdata">
               <argv>0xc0</argv>
@@ -41,7 +41,7 @@
             <frmcmd name="getstat" />
           </item>
         </unit>
-        <unit id="ar" label="Arm Rotation">
+        <unit id="ar" title="a[v/h]" label="Arm Rotation Vertical/Holizontal">
           <item id="av" label="Vertical">
             <frmcmd name="putdata">
               <argv>0x3000</argv>
@@ -57,7 +57,7 @@
             <frmcmd name="getstat" />
           </item>
         </unit>
-        <unit id="ag" label="Arm Gripper">
+        <unit id="ag" title="a[o/c]" label="Arm Gripper OPEN/CLOSE">
           <item id="ao" label="Open">
             <frmcmd name="putdata">
               <argv>0xc00</argv>

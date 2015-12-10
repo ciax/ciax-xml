@@ -23,6 +23,7 @@ module CIAX
       class Group < Int::Group
         attr_reader :par
         def initialize(cfg, crnt = {})
+          crnt[:caption] = 'Control Macro'
           super
           INTCMD.each do|id, cap|
             add_item(id, id.capitalize + ' ' + cap)
@@ -40,7 +41,12 @@ module CIAX
     # External Command
     module Ext
       include Remote::Ext
-      class Group < Ext::Group; end
+      class Group < Ext::Group
+        def initialize(cfg, crnt = {})
+          crnt[:caption] = 'Start Macro'
+          super
+        end
+      end
       class Item < Ext::Item; end
       # External Entity
       class Entity < Ext::Entity

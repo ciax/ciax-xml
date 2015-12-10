@@ -39,7 +39,7 @@ module CIAX
       # System Command Group
       class Group < Group
         def initialize(dom_cfg, atrb = {})
-          atrb[:caption] = 'System Commands'
+          atrb[:caption] ||= 'System Commands'
           super
           add_item('interrupt')
           # Accept empty command
@@ -52,7 +52,7 @@ module CIAX
       # Internal Command Group
       class Group < Group
         def initialize(dom_cfg, atrb = {})
-          atrb[:caption] = 'Internal Commands'
+          atrb[:caption] ||= 'Internal Commands'
           super
           @cfg[:nocache] = true
         end
@@ -74,7 +74,7 @@ module CIAX
       # External Command Group
       class Group < Group
         def initialize(cfg, atrb = {})
-          atrb[:caption] = 'External Commands'
+          atrb[:caption] ||= 'External Commands'
           super
           dbi = type?(@cfg[:dbi], Dbi)
           @cfg[:ver] ||= dbi[:version]

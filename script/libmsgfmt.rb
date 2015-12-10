@@ -70,19 +70,12 @@ module CIAX
     def columns(h, colm = nil, ind = nil, cap = nil)
       return '' unless h
       cary = colm.is_a?(Array) ? colm : Array.new(colm || 2) { [0, 0] }
-      lary = __upd_cary_(h, cary).map! { |a| __mk_line(h, a, cary, ind) }
+      lary = upd_column_ary(h, cary).map! { |a| __mk_line(h, a, cary, ind) }
       (cap ? lary.unshift(cap) : lary).join("\n")
     end
 
-    def __mk_line(h, a, cary, ind)
-      a.map.with_index do|k, i|
-        kx, vx = cary[i]
-        indent(ind.to_i) + item(k, h[k], kx).ljust(kx + vx + 15)
-      end.join('').rstrip
-    end
-
     # max string length of value and key in hash at each column
-    def __upd_cary_(h, cary)
+    def upd_column_ary(h, cary)
       h.keys.each_slice(cary.size).map do |al|
         al.each_with_index do |k, i|
           pair = cary[i]
@@ -91,6 +84,13 @@ module CIAX
         end
         al
       end
+    end
+
+    def __mk_line(h, a, cary, ind)
+      a.map.with_index do|k, i|
+        kx, vx = cary[i]
+        indent(ind.to_i) + item(k, h[k], kx).ljust(kx + vx + 15)
+      end.join('').rstrip
     end
   end
 end

@@ -70,14 +70,14 @@ module CIAX
       view(keys, @caption, @color, @level).to_s
     end
 
-    def mk_caption(caption, color: nil, level: nil)
-      return unless caption
+    def mk_caption(cap, color: nil, level: nil)
+      return unless cap
       level = level.to_i
       sep, col = SEPTBL[level]
-      indent(level) + caption(caption, color || col, sep)
+      indent(level) + [sep, colorize(cap, color || col), sep].join(' ')
     end
 
-    def view(select, caption, color, level)
+    def view(select, cap, color, level)
       list = {}
       displist = (@valid_keys + @dummy_keys) & select
       displist.compact.sort.each do|id|
@@ -85,7 +85,7 @@ module CIAX
         list[name] = self[id] if self[id]
       end
       return if list.empty?
-      cap = mk_caption(caption, color: color, level: level)
+      cap = mk_caption(cap, color: color, level: level)
       columns(list, @column, level, cap)
     end
 

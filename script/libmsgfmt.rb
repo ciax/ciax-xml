@@ -54,11 +54,6 @@ module CIAX
       indent(1) + colorize(key, 3).ljust((kmax || 3) + 11) + ": #{val}"
     end
 
-    def caption(text, c = nil, sep = nil)
-      sep ||= '~'
-      [sep, colorize(text, c || 2), sep].join(' ')
-    end
-
     # Query options
     def optlist(list)
       return '' if !list || list.empty?

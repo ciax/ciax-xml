@@ -8,7 +8,7 @@
 
 ## Naming rule recommendation
  # general
-  - method name : snake case to privent to mix up with local var (verb_noun).
+  - method name : verb, verbal noun (~ing) or snake case (verb_noun) to privent to mix up with local var.
   - private method name (mixin module)
     = shared among inherited classes : under bar prefix to distinct with system method or local var. (_name)
     = used only its own class : under bar prefix and suffix to distinct with private shared method.  (_name_)

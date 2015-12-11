@@ -3,13 +3,11 @@
   <app frm_id="cfp" id="cfp" label="MOIRCS Field Point" version="1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id="upd" label="Status">
-          <item id="upd" label="Upd">
-            <frmcmd name="getstat" />
-            <frmcmd name="getstat2" />
-          </item>
-        </unit>
-        <unit id="rh" title="r[o/c]" label="Robohand All OPEN/CLOSE">
+        <item id="upd" label="Upd">
+          <frmcmd name="getstat" />
+          <frmcmd name="getstat2" />
+        </item>
+        <unit id="u_rh" title="r[o/c]" label="Robohand All OPEN/CLOSE">
           <item id="ro" label="Open">
             <frmcmd name="putdata">
               <argv>0x3c</argv>
@@ -25,7 +23,7 @@
             <frmcmd name="getstat" />
           </item>
         </unit>
-        <unit id="gv" title="g[o/c]" label="Gate Valve OPEN/CLOSE">
+        <unit id="u_gv" title="g[o/c]" label="Gate Valve OPEN/CLOSE">
           <item id="go" label="Open">
             <frmcmd name="putdata">
               <argv>0xc0</argv>
@@ -41,7 +39,7 @@
             <frmcmd name="getstat" />
           </item>
         </unit>
-        <unit id="ar" title="a[v/h]" label="Arm Rotation Vertical/Holizontal">
+        <unit id="u_ar" title="a[v/h]" label="Arm Rotation Vertical/Holizontal">
           <item id="av" label="Vertical">
             <frmcmd name="putdata">
               <argv>0x3000</argv>
@@ -57,7 +55,7 @@
             <frmcmd name="getstat" />
           </item>
         </unit>
-        <unit id="ag" title="a[o/c]" label="Arm Gripper OPEN/CLOSE">
+        <unit id="u_ag" title="a[o/c]" label="Arm Gripper OPEN/CLOSE">
           <item id="ao" label="Open">
             <frmcmd name="putdata">
               <argv>0xc00</argv>
@@ -73,7 +71,7 @@
             <frmcmd name="getstat" />
           </item>
         </unit>
-        <unit id="file" label="Output Status">
+        <unit id="u_file" label="Output Status">
           <item id="save" label="Save">
             <frmcmd name="save"/>
           </item>

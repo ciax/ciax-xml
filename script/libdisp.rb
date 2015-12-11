@@ -35,7 +35,7 @@ module CIAX
 
     def put_dummy(k, v)
       self[k] = v
-      @dummy_keys[k] = v
+      @dummy_keys << v
       self
     end
 

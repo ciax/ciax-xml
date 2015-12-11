@@ -84,10 +84,8 @@ module CIAX
           @displist = @displist.ext_grp
           cdb[:group].each do|gid, gat|
             sg = @displist.put_grp(gid, gat[:caption], nil, gat[:rank])
-            gat[:members].each do|id|
-              sg.put_item(id, idx[id][:label])
-              add_item(id, cdb, idx[id])
-            end
+            _init_member_(idx, cdb, gat[:members], sg)
+            _init_unit_(cdb[:unit], gat[:units], sg)
           end
           init_alias(cdb, idx)
           @displist.reset!
@@ -97,10 +95,9 @@ module CIAX
           return unless cdb[:alias]
           sg = @displist.put_grp('gal', 'Alias')
           cdb[:alias].each do|id, att|
-            item = idx[att[:ref]].dup
-            item.update(att)
+            itm = idx[att[:ref]].dup
             sg.put_item(id, att[:label])
-            add_item(id, cdb, item)
+            add_item(id, cdb, itm)
           end
         end
 
@@ -112,6 +109,27 @@ module CIAX
             label.gsub(/\$([\d]+)/, '%s') % item[:parameters].map { |e| e[:label] }
           end
           new_item(id, item)
+        end
+
+        private
+
+        def _init_member_(idx, cdb, mem, sg)
+          mem.each do|id|
+            itm = idx[id]
+            sg.put_item(id, itm[:label])
+            add_item(id, cdb, itm)
+          end
+        end
+
+        def _init_unit_(cuni, guni, sg)
+          return unless guni
+          guni.each do|u|
+            uat = cuni[u]
+            if uat.key?(:title)
+              sg.put_dummy(uat[:title], uat[:label])
+              sg.replace(sg - uat[:members])
+            end
+          end
         end
       end
 

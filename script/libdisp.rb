@@ -70,6 +70,10 @@ module CIAX
       view(keys, @caption, @color, @level).to_s
     end
 
+    def item(id)
+      itemize(id, self[id])
+    end
+
     def mk_caption(cap, color: nil, level: nil)
       return unless cap
       level = level.to_i

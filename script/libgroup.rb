@@ -15,6 +15,7 @@ module CIAX
       @displist = Disp.new(@cfg.pick(%i(caption color column line_number)))
       @cfg[:disp] = @displist
       @valid_keys = @displist.valid_keys
+      @displist.rank = RANK.to_i
     end
 
     # crnt could have 'label',:body,'unit','group'

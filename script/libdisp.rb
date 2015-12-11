@@ -13,8 +13,8 @@ module CIAX
     #   Attributes (one level): color(#), level(#)
     #   Attributes (one group): caption(text)
     SEPTBL = [['****', 2], ['===', 6], ['--', 12], ['_', 14]]
-    attr_reader :valid_keys, :line_number, :dummy_keys, :rank
-    attr_accessor :num
+    attr_reader :valid_keys, :line_number, :dummy_keys
+    attr_accessor :num, :rank
     def initialize(caption: nil, color: nil, column: 2, line_number: false)
       @valid_keys = Arrayx.new
       @dummy_keys = Arrayx.new

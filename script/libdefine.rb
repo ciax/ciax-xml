@@ -9,6 +9,7 @@ module CIAX
   NOCACHE = ENV['NOCACHE']
   NOLOG = ENV['NOLOG']
   NOCOLOR = ENV['NOCOLOR']
+  RANK = ENV['RANK']
   NS_COLOR = 15
 
   # Site Domain

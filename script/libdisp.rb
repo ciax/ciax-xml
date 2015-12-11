@@ -35,7 +35,7 @@ module CIAX
 
     def put_dummy(k, v)
       self[k] = v
-      @dummy_keys << v
+      @dummy_keys << k
       self
     end
 
@@ -46,7 +46,7 @@ module CIAX
     end
 
     def reset!
-      @valid_keys.concat(keys-@dummy_keys).uniq!
+      @valid_keys.replace(keys-@dummy_keys)
       self
     end
 

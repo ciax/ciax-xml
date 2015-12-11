@@ -142,6 +142,10 @@ module CIAX
       end
     end
 
-    def arc_command(e0,gid);end
+    def arc_command(e0,gid)
+      id = e0.attr2item(@idx)
+      (@grps[gid][:members] ||= []) << id
+      id
+    end
   end
 end

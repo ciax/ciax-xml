@@ -24,12 +24,10 @@ module CIAX
       end
 
       def arc_command(e0, gid)
-        id = e0.attr2item(@idx)
-        item = @idx[id]
-        item[:group] = gid
-        (@grps[gid][:members] ||= []) << id
+        id = super
+        itm = @idx[id]
         Repeat.new.each(e0) do|e1, rep|
-          par2item(e1, item) && next
+          par2item(e1, itm) && next
           case e1.name
           when 'frmcmd'
             command = [e1[:name]]
@@ -42,7 +40,7 @@ module CIAX
               end
               command << argv
             end
-            (item[:body] ||= []) << command
+            (itm[:body] ||= []) << command
           end
         end
         id
@@ -63,10 +61,10 @@ module CIAX
       def rec_stat(e, idx, grp, rep)
         rep.each(e) do|e0, r0|
           id = e0.attr2item(idx) { |_, v| r0.formatting(v) }
-          item = idx[id]
+          itm = idx[id]
           (grp[:members] ||= []) << id
-          item[:type] = e0.name
-          item[:fields] = []
+          itm[:type] = e0.name
+          itm[:fields] = []
           r0.each(e0) do|e1, r1|
             st = {}
             st[:sign] = 'true' if e1.name == 'sign'
@@ -83,7 +81,7 @@ module CIAX
             e1.each do|e2|
               (st[:conv] ||= {})[e2.text] = e2[:msg]
             end
-            item[:fields] << st
+            itm[:fields] << st
           end
         end
         idx

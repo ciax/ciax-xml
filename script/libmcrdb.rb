@@ -22,7 +22,6 @@ module CIAX
 
       def doc_to_db(doc)
         dbi = Dbi[doc[:attr]]
-        @id = dbi[:id]
         @sites = []
         init_command(doc[:top], dbi)
         dbi[:sites] = @sites.uniq
@@ -30,16 +29,15 @@ module CIAX
       end
 
       def arc_command(e0, gid)
-        id = e0.attr2item(@idx)
+        id = super
+        itm = @idx[id]
         verbose { "MACRO:[#{id}]" }
-        item = @idx[id]
-        (@grps[gid][:members] ||= []) << id
-        body = (item[:body] ||= [])
+        body = (itm[:body] ||= [])
         final = {}
         e0.each do|e1|
           atrb = e1.to_h
           _get_sites_(atrb)
-          par2item(e1, item) && next
+          par2item(e1, itm) && next
           atrb[:type] = e1.name
           case e1.name
           when 'mesg'

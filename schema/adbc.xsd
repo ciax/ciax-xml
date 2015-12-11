@@ -51,7 +51,7 @@
   <xsd:element name="item">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="adbc:validate"></xsd:group>
+        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="adbc:parameter"></xsd:group>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="adbc:frmcmd" />
           <xsd:element ref="adbc:repeat" />

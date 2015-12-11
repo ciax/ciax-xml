@@ -18,7 +18,7 @@
     </xsd:complexType>
     <!--evaluated if format exists-->
   </xsd:element>
-  <xsd:group name="validate">
+  <xsd:group name="parameter">
     <xsd:choice>
       <xsd:element ref="par_num" />
       <xsd:element ref="par_str" />

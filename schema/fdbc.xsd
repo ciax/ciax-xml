@@ -14,7 +14,7 @@
   <xsd:element name="item">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:group ref="fdbc:validate" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:group ref="fdbc:parameter" minOccurs="0" maxOccurs="unbounded" />
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
           <xsd:element ref="fdbc:repeat" />
           <xsd:group ref="fdbc:data" />

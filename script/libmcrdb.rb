@@ -47,6 +47,7 @@ module CIAX
           case e0.name
           when 'unit'
             uid = e0.attr2item(@units)
+            (@grps[gid][:units] ||= []) << uid
             e0.each do|e1|
               id = arc_command(e1, gid)
               @idx[id][:unit] = uid

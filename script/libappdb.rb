@@ -14,28 +14,27 @@ module CIAX
       private
 
       def doc_to_db(doc)
-        db = Dbi[doc[:attr]]
+        dbi = Dbi[doc[:attr]]
         # Domains
-        init_command(doc, db)
-        init_stat(doc, db)
-        init_watch(doc, db)
-        db[:app_id] = db[:id]
-        db
+        init_command(doc[:domain][:command], dbi)
+        init_stat(doc, dbi)
+        init_watch(doc, dbi)
+        dbi[:app_id] = dbi[:id]
+        dbi
       end
 
       # Command Db
-      def init_command(doc, db)
-        adbc = doc[:domain][:command]
-        @cidx = {}
-        @cgrps = {}
+      def init_command(dbc, dbi)
+        @idx = {}
+        @grps = {}
         @units = {}
-        adbc.each do|e| # e.name should be group
-          Msg.give_up('No group in adbc') unless e.name == 'group'
-          gid = e.attr2item(@cgrps)
+        dbc.each do|e| # e.name should be group
+          Msg.give_up('No group in dbc') unless e.name == 'group'
+          gid = e.attr2item(@grps)
           arc_unit(e, gid)
         end
-        db[:command] = { group: @cgrps, index: @cidx }
-        db[:command][:unit] = @units unless @units.empty?
+        dbi[:command] = { group: @grps, index: @idx }
+        dbi[:command][:unit] = @units unless @units.empty?
       end
 
       def arc_unit(e, gid)
@@ -43,9 +42,10 @@ module CIAX
           case e0.name
           when 'unit'
             uid = e0.attr2item(@units)
+            (@grps[gid][:units] ||= []) << uid
             e0.each do|e1|
               id = arc_command(e1, gid)
-              @cidx[id][:unit] = uid
+              @idx[id][:unit] = uid
               (@units[uid][:members] ||= []) << id
             end
           when 'item'
@@ -55,10 +55,10 @@ module CIAX
       end
 
       def arc_command(e0, gid)
-        id = e0.attr2item(@cidx)
-        item = @cidx[id]
+        id = e0.attr2item(@idx)
+        item = @idx[id]
         item[:group] = gid
-        (@cgrps[gid][:members] ||= []) << id
+        (@grps[gid][:members] ||= []) << id
         Repeat.new.each(e0) do|e1, rep|
           par2item(e1, item) && next
           case e1.name
@@ -80,7 +80,7 @@ module CIAX
       end
 
       # Status Db
-      def init_stat(doc, db)
+      def init_stat(doc, dbi)
         adbs = doc[:domain][:status]
         grp = {}
         idx = Hashx.new
@@ -88,7 +88,7 @@ module CIAX
           gid = e.attr2item(grp) { |_, v| r.formatting(v) }
           rec_stat(e, idx, grp[gid], r)
         end
-        db[:status] = adbs.to_h.update(group: grp, index: idx)
+        dbi[:status] = adbs.to_h.update(group: grp, index: idx)
       end
 
       def rec_stat(e, idx, grp, rep)

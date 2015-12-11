@@ -66,7 +66,7 @@ module CIAX
       end
 
       def _list_
-        page = ['<<< ' + Msg.colorize("Active Macros [#{@id}]", 2) + ' >>>']
+        page = ['<<< ' + colorize("Active Macros [#{@id}]", 2) + ' >>>']
         @par.list.each_with_index { |id, idx| page << _item_(id, idx + 1) }
         page.join("\n")
       end
@@ -76,7 +76,7 @@ module CIAX
         title = "[#{idx}] (#{id})(by #{@ciddb[rec[:pid]]})"
         msg = "#{rec[:cid]} #{rec.step_num}"
         msg << _result_(rec)
-        Msg.item(title, msg)
+        itemize(title, msg)
       end
 
       def _result_(rec)

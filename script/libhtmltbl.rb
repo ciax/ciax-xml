@@ -58,7 +58,7 @@ module CIAX
           end
           push '</td>'
         else
-          give_up("Wrong CTL Unit\n" + uidx.map { |k, v| item(k, v[:label]) }.join("\n"))
+          give_up("Wrong CTL Unit\n" + uidx.map { |k, v| itemize(k, v[:label]) }.join("\n"))
         end
       end
       push '</tr>'

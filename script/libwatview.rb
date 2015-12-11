@@ -19,11 +19,11 @@ module CIAX
         upd_view
         vw = ''
         view_time(vw)
-        vw << item('Issuing', self[:exec])
+        vw << itemize('Issuing', self[:exec])
         return vw if self[:stat].empty?
         view_cond(vw)
-        vw << item('Interrupt', self[:int])
-        vw << item('Blocked', self[:block])
+        vw << itemize('Interrupt', self[:int])
+        vw << itemize('Blocked', self[:block])
       end
 
       def to_r
@@ -79,13 +79,13 @@ module CIAX
       end
 
       def view_time(vw)
-        vw << item('Elapsed', elps_date(self[:time], now_msec))
-        vw << item('ActiveTime', elps_sec(*self[:act_time]))
-        vw << item('ToNextUpdate', elps_sec(now_msec, self[:upd_next]))
+        vw << itemize('Elapsed', elps_date(self[:time], now_msec))
+        vw << itemize('ActiveTime', elps_sec(*self[:act_time]))
+        vw << itemize('ToNextUpdate', elps_sec(now_msec, self[:upd_next]))
       end
 
       def view_cond(vw)
-        vw << item('Conditions')
+        vw << itemize('Conditions')
         self[:stat].values.each do |i|
           vw << cformat("    %:6s\t: %s\n", i[:label], rslt(i[:active]))
           view_event(vw, i[:cond])
@@ -114,7 +114,7 @@ module CIAX
         colorize(res ? 'o' : 'x', res ? 2 : 1)
       end
 
-      def item(str, res = nil)
+      def itemize(str, res = nil)
         cformat("  %:2s\t: %s\n", str, res)
       end
     end

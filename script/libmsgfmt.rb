@@ -50,7 +50,7 @@ module CIAX
 
     # Display DB item in one line fromat.
     #    title : description
-    def item(key, val, kmax = nil)
+    def itemize(key, val, kmax = nil)
       indent(1) + colorize(key, 3).ljust((kmax || 3) + 11) + ": #{val}"
     end
 
@@ -84,7 +84,7 @@ module CIAX
     def __mk_line(h, a, cary, ind)
       a.map.with_index do|k, i|
         kx, vx = cary[i]
-        indent(ind.to_i) + item(k, h[k], kx).ljust(kx + vx + 15)
+        indent(ind.to_i) + itemize(k, h[k], kx).ljust(kx + vx + 15)
       end.join('').rstrip
     end
   end

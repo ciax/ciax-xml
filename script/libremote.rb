@@ -78,53 +78,52 @@ module CIAX
           super
           dbi = type?(@cfg[:dbi], Dbi)
           @cfg[:ver] ||= dbi[:version]
+          @displist = @displist.ext_grp
           # Set items by DB
           cdb = dbi[:command]
-          idx = cdb[:index]
-          @displist = @displist.ext_grp
           cdb[:group].each do|gid, gat|
             sg = @displist.put_grp(gid, gat[:caption], nil, gat[:rank])
-            _init_member_(idx, cdb, gat[:members], sg)
-            _init_unit_(cdb[:unit], gat[:units], sg)
+            _init_member_(cdb, gat[:members], sg)
+            _init_unit_(cdb, gat[:units], sg)
           end
-          init_alias(cdb, idx)
+          init_alias(cdb)
           @displist.reset!
         end
 
-        def init_alias(cdb, idx)
+        def init_alias(cdb)
           return unless cdb[:alias]
           sg = @displist.put_grp('gal', 'Alias')
           cdb[:alias].each do|id, att|
-            itm = idx[att[:ref]].dup
+            itm = cdb[:index][att[:ref]].dup
             sg.put_item(id, att[:label])
             add_item(id, cdb, itm)
           end
         end
 
-        def add_item(id, cdb, item)
-          label = item[:label]
-          unit = item[:unit]
+        def add_item(id, cdb, itm)
+          label = itm[:label]
+          unit = itm[:unit]
           label = "#{cdb[:unit][unit][:label]} #{label}" if unit
-          if item[:parameters].is_a? Array
-            label.gsub(/\$([\d]+)/, '%s') % item[:parameters].map { |e| e[:label] }
+          if itm[:parameters].is_a? Array
+            label.gsub(/\$([\d]+)/, '%s') % itm[:parameters].map { |e| e[:label] }
           end
-          new_item(id, item)
+          new_item(id, itm)
         end
 
         private
 
-        def _init_member_(idx, cdb, mem, sg)
+        def _init_member_(cdb, mem, sg)
           mem.each do|id|
-            itm = idx[id]
+            itm = cdb[:index][id]
             sg.put_item(id, itm[:label])
             add_item(id, cdb, itm)
           end
         end
 
-        def _init_unit_(cuni, guni, sg)
+        def _init_unit_(cdb, guni, sg)
           return unless guni
           guni.each do|u|
-            uat = cuni[u]
+            uat = cdb[:unit][u]
             if uat.key?(:title)
               sg.put_dummy(uat[:title], uat[:label])
               sg.replace(sg - uat[:members])
@@ -164,14 +163,10 @@ module CIAX
           case data
           when Array
             res = []
-            data.each do|v|
-              res << deep_subst(v)
-            end
+            data.each { |v| res << deep_subst(v) }
           when Hash
             res = {}
-            data.each do|k, v|
-              res[k] = deep_subst(v)
-            end
+            data.each { |k, v| res[k] = deep_subst(v) }
           else
             res = subst(data)
           end

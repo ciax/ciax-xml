@@ -35,9 +35,10 @@ module CIAX
     end
 
     def get(id)
-      fail(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s) unless @displist.valid?(id)
-      cache(id) do|doc|
-        doc_to_db(doc.get(id))
+      if @displist.valid?(id)
+        cache(id) { |doc| doc_to_db(doc.get(id))}
+      else
+        fail(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s)
       end
     end
 
@@ -108,5 +109,39 @@ module CIAX
         (item[:parameters] ||= []) << attr
       end
     end
+
+    # For Command DB
+    def init_command(dbc, dbi)
+      @idx = {}
+      @grps = {}
+      @units = {}
+      dbc.each do|e| # e.name should be group
+        Msg.give_up('No group in dbc') unless e.name == 'group'
+        gid = e.attr2item(@grps)
+        arc_unit(e, gid)
+      end
+      dbi[:command] = { group: @grps, index: @idx }
+      dbi[:command][:unit] = @units unless @units.empty?
+    end
+
+    def arc_unit(e, gid)
+      return unless e
+      e.each do|e0|
+        case e0.name
+        when 'unit'
+          uid = e0.attr2item(@units)
+          (@grps[gid][:units] ||= []) << uid
+          e0.each do|e1|
+            id = arc_command(e1, gid)
+            @idx[id][:unit] = uid
+            (@units[uid][:members] ||= []) << id
+          end
+        when 'item'
+          arc_command(e0, gid)
+        end
+      end
+    end
+
+    def arc_command(e0,gid);end
   end
 end

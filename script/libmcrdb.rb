@@ -29,36 +29,6 @@ module CIAX
         dbi
       end
 
-      def init_command(mdbc, dbi)
-        @idx = {}
-        @grps = {}
-        @units = {}
-        mdbc.each do|e|
-          Msg.give_up('No group in mdbc') unless e.name == 'group'
-          gid = e.attr2item(@grps)
-          arc_unit(e, gid)
-        end
-        dbi[:command] = { group: @grps, index: @idx }
-        dbi[:command][:unit] = @units unless @units.empty?
-      end
-
-      def arc_unit(e, gid)
-        e.each do|e0|
-          case e0.name
-          when 'unit'
-            uid = e0.attr2item(@units)
-            (@grps[gid][:units] ||= []) << uid
-            e0.each do|e1|
-              id = arc_command(e1, gid)
-              @idx[id][:unit] = uid
-              (@units[uid][:members] ||= []) << id
-            end
-          when 'item'
-            arc_command(e0, gid)
-          end
-        end
-      end
-
       def arc_command(e0, gid)
         id = e0.attr2item(@idx)
         verbose { "MACRO:[#{id}]" }

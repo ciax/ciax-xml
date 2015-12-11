@@ -13,15 +13,15 @@ module CIAX
     #   Attributes (one level): color(#), level(#)
     #   Attributes (one group): caption(text)
     SEPTBL = [['****', 2], ['===', 6], ['--', 12], ['_', 14]]
-    attr_reader :valid_keys, :line_number, :dummy, :rank
+    attr_reader :valid_keys, :line_number, :dummy_keys, :rank
     attr_accessor :num
     def initialize(caption: nil, color: nil, column: 2, line_number: false)
       @valid_keys = Arrayx.new
+      @dummy_keys = Arrayx.new
       @caption = caption
       @color = color
       @column = Array.new(column) { [0, 0] }
       @line_number = line_number
-      @dummy = Hashx.new
       @num = -1
       @rank = 0
     end
@@ -34,7 +34,8 @@ module CIAX
     end
 
     def put_dummy(k, v)
-      @dummy[k] = v
+      self[k] = v
+      @dummy_keys[k] = v
       self
     end
 
@@ -45,7 +46,7 @@ module CIAX
     end
 
     def reset!
-      @valid_keys.concat(keys).uniq!
+      @valid_keys.concat(keys-@dummy_keys).uniq!
       self
     end
 
@@ -78,7 +79,7 @@ module CIAX
 
     def view(select, caption, color, level)
       list = {}
-      displist = (@valid_keys + @dummy.keys) & select
+      displist = (@valid_keys + @dummy_keys) & select
       displist.compact.sort.each do|id|
         name = @line_number ? "[#{@num += 1}](#{id})" : id
         list[name] = self[id] if self[id]
@@ -181,7 +182,7 @@ module CIAX
       end
     end
 
-    # It has members of item
+    # Group has member of visible item
     class Group < Arrayx
       attr_accessor :index, :level
       def initialize(index, caption: nil, color: nil, level: nil, rank: nil)
@@ -190,22 +191,19 @@ module CIAX
         @color = color
         @level = level.to_i
         @rank = rank.to_i
-        @units = []
       end
 
       # add item
       def put_item(k, v)
-        @index.put_item(k, v)
         push k
+        @index.put_item(k, v).sub.view
+        self
       end
 
       def put_dummy(k, v)
-        @index.put_dummy(k, v)
         push k
-      end
-
-      def put_unit
-        @units << Unit.new
+        @index.put_dummy(k, v).sub.view
+        self
       end
 
       def view(select = self)
@@ -257,6 +255,7 @@ module CIAX
     puts idx1
     puts '--'
     # Confirm merged index
+    cap2 << ' (delete x0-0)'
     idx1.valid_keys.delete('x0-0')
     puts idx1
   end

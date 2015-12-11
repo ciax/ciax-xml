@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libmsg'
+require 'libinsdb'
 # CIAX-XML
 module CIAX
   # HTML Table generation
@@ -89,7 +89,6 @@ module CIAX
   end
 
   if __FILE__ == $PROGRAM_NAME
-    require 'libinsdb'
     id = ARGV.shift
     begin
       dbi = Ins::Db.new.get(id)

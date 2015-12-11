@@ -18,10 +18,8 @@ module CIAX
 
       # Conditional judgment section
       def timeout?
-        itv = OPT.test? ? 0 : 0.1
-        itv *= 10 if OPT[:m]
         _show title
-        res = _progress(self[:retry], itv)
+        res = _progress(self[:retry])
         self[:result] = res ? 'timeout' : 'pass'
         upd
         res
@@ -93,7 +91,9 @@ module CIAX
         !OPT[:m] && self[:action] = 'dryrun'
       end
 
-      def _progress(total, itv = 1)
+      def _progress(total)
+        itv = OPT.test? ? 0 : 0.1
+        itv *= 10 if OPT[:m]
         total.to_i.times do|n| # gives number or nil(if break)
           self[:count] = n + 1
           break if @cond && @cond.ok?

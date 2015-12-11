@@ -17,7 +17,7 @@ module CIAX
         dbi = Dbi[doc[:attr]]
         # Domains
         init_command(doc[:domain][:command], dbi)
-        init_stat(doc, dbi)
+        init_stat(doc[:domain][:status], dbi)
         init_watch(doc, dbi)
         dbi[:app_id] = dbi[:id]
         dbi
@@ -47,8 +47,7 @@ module CIAX
       end
 
       # Status Db
-      def init_stat(doc, dbi)
-        adbs = doc[:domain][:status]
+      def init_stat(adbs, dbi)
         grp = {}
         idx = Hashx.new
         Repeat.new.each(adbs) do|e, r|

@@ -29,36 +29,36 @@ module CIAX
 
       # Command Domain
       def init_command(doc, dbi)
-        hcmd = dbi[:command] = {}
-        init_unit(doc[:domain][:alias], hcmd)
+        @idx = {}
+        @units = {}
+        arc_unit(doc[:domain][:alias])
+        dbi[:command] = {alias: @idx}
         self
       end
 
       # identical with App::Db#arc_unit()
-      def init_unit(e, hcmd)
+      def arc_unit(e)
         return unless e
         e.each do|e0|
           case e0.name
           when 'unit'
-            units = (hcmd[:unit] ||= {})
-            uid = e0.attr2item(units)
-            uni = units[uid]
+            uid = e0.attr2item(@units)
             e0.each do|e1|
-              id = init_item(e1, hcmd)
-              (uni[:members] ||= []) << id
-              hcmd[:alias][id][:unit] = uid
+              id = arc_command(e1, hcmd)
+              @idx[id][:unit] = uid
+              (@units[uid][:members] ||= []) << id
             end
           when 'item'
-            init_item(e0, hcmd)
+            arc_command(e0)
           end
         end
         self
       end
 
-      def init_item(e0, hcmd)
-        id = e0.attr2item(hcmd[:alias] ||= {})
+      def arc_command(e0)
+        id = e0.attr2item(@idx)
         e0.each do|e1|
-          (hcmd[:alias][id][:argv] ||= []) << e1.text
+          (@idx[id][:argv] ||= []) << e1.text
         end
         id
       end

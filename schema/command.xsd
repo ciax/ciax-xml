@@ -12,16 +12,17 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
+          <!--evaluated if format exists-->
           <xsd:attribute name="format" type="xsd:token"></xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
-    <!--evaluated if format exists-->
   </xsd:element>
   <xsd:group name="parameter">
     <xsd:choice>
       <xsd:element ref="par_num" />
       <xsd:element ref="par_str" />
+      <xsd:element ref="par_enum" />
     </xsd:choice>
   </xsd:group>
   <xsd:element name="par_num">
@@ -38,6 +39,25 @@
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
           <xsd:attribute name="label" type="xsd:token"></xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!--parameter is converted accoring to options-->
+  <xsd:element name="par_enum">
+    <xsd:complexType>
+      <xsd:choice  minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="opt"/>
+      </xsd:choice>
+      <xsd:attribute name="label" type="xsd:token"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="opt">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="label" type="xsd:token" />
+          <xsd:attribute name="par" type="xsd:token" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

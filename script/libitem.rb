@@ -37,7 +37,7 @@ module CIAX
         verbose { "SetPAR: Entity Cache found(#{cid})" }
         self[cid]
       else
-        ent = context_constant('Entity').new(@cfg, opt)
+        ent = gen_entity(opt)
         if @cfg[:nocache]
           verbose { "SetPAR: Entity No Cache Saved (#{cid})" }
         else
@@ -55,6 +55,10 @@ module CIAX
     end
 
     private
+
+    def gen_entity(opt)
+      context_constant('Entity').new(@cfg, opt)
+    end
 
     # Parameter for validate(cfg[:paremeters])
     #   structure:  [{:type,:list,:default}, ...]

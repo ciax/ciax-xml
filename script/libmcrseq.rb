@@ -42,7 +42,7 @@ module CIAX
 
       def macro
         Thread.current[:obj] = self
-        show(@record.start)
+        _show(@record.start)
         init_sites
         sub_macro(@cfg, @record)
       rescue Interrupt
@@ -51,7 +51,7 @@ module CIAX
           @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
         end
       ensure
-        show(@record.finish)
+        _show(@record.finish)
       end
 
       def fork
@@ -80,7 +80,7 @@ module CIAX
       def do_step(e, mstat)
         step = @record.add_step(e, @depth)
         begin
-          return true if method(e[:type]).call(e, step, mstat)
+          return true if method('_'+e[:type]).call(e, step, mstat)
         rescue Retry
           retry
         end
@@ -92,28 +92,28 @@ module CIAX
         end
       end
 
-      def mesg(_e, step, _mstat)
+      def _mesg(_e, step, _mstat)
         step.ok?
         @qry.query(['ok'], step)
         false
       end
 
-      def goal(_e, step, mstat)
+      def _goal(_e, step, mstat)
         return unless step.skip?
         return if OPT.test? && !@qry.query(%w(skip force), step)
         mstat[:result] = 'skipped'
       end
 
-      def check(_e, step, mstat)
+      def _check(_e, step, mstat)
         return unless step.fail? &&
                       @qry.query(%w(drop force retry), step)
         mstat[:result] = 'error'
         fail Interlock
       end
 
-      alias_method :verify, :check
+      alias_method :_verify, :_check
 
-      def wait(e, step, mstat)
+      def _wait(e, step, mstat)
         if (s = e[:sleep])
           step.sleeping(s)
           return
@@ -124,38 +124,45 @@ module CIAX
         fail Interlock
       end
 
-      def exec(e, step, _mstat)
+      def _exec(e, step, _mstat)
         if step.exec? && @qry.query(%w(exec pass), step)
-          @cfg[:dev_list].get(e[:site]).exe(e[:args], 'macro').join('macro')
+          _exe_site(e)
         end
         @sv_stat.push(:run, e[:site])
         false
       end
 
-      def cfg(e, step, _mstat)
+      def _cfg(e, step, _mstat)
         step.ok?
-        @cfg[:dev_list].get(e[:site]).exe(e[:args], 'macro').join('macro')
+        _exe_site(e)
         false
       end
 
-      def upd(e, step, _mstat)
+      def _upd(e, step, _mstat)
         step.ok?
-        @cfg[:dev_list].get(e[:site]).exe(['upd'], 'macro').join('macro')
+        e[:args] = ['upd']
+        _exe_site(e)
         false
       end
 
-      def mcr(e, step, _mstat)
+      def _mcr(e, step, _mstat)
         seq = @cfg.ancestor(2).set_cmd(e[:args])
         if step.async? && @submcr_proc.is_a?(Proc)
           step[:id] = @submcr_proc.call(seq, @id).id
         else
-          res = mcr_fg(e, seq, step)
+          res = _mcr_fg(e, seq, step)
           fail Interlock unless res
         end
         false
       end
 
-      def mcr_fg(e, seq, step)
+      def _select(e, step, _mstat)
+        var = _get_stat(e)
+        e[:args] = e[:select][var]
+        _mcr(e, step, nil)
+      end
+
+      def _mcr_fg(e, seq, step)
         (e[:retry] || 1).to_i.times do
           res = sub_macro(seq, step)
           return res if res
@@ -165,13 +172,25 @@ module CIAX
       end
 
       # Print section
-      def show(str = nil)
+      def _show(str = nil)
         return unless Msg.fg?
         if defined? yield
           puts indent(@depth) + yield.to_s
         else
           print str
         end
+      end
+
+      def _get_site(e)
+        @cfg[:dev_list].get(e[:site])
+      end
+
+      def _exe_site(e)
+        _get_site(e).exe(e[:args], 'macro').join('macro')
+      end
+
+      def _get_stat(e)
+        _get_site(e).sub.stat[e[:form].to_sym][e[:var]]
       end
     end
 

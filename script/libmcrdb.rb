@@ -67,7 +67,7 @@ module CIAX
           when 'select'
             atrb[:select] = get_option(e1)
             atrb.delete(:name)
-            itm[:parameters] = [{type: 'str', list: atrb[:select].keys }]
+#            itm[:parameters] = [{type: 'str', list: atrb[:select].keys }]
             body << atrb
           end
         end

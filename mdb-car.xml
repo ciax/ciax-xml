@@ -1154,7 +1154,7 @@
       </unit>
     </group>
     <group id="grp_car_3" caption="Slot Sub" rank="1">
-      <unit id="unit_car_3_chk_slot023" title="chk_slot[0-23]" label="Check Slot[0-23]">
+      <unit id="unit_car_3_check_slot023" title="check_slot[0-23]" label="Check Slot[0-23]">
         <item id="check_slot00" label="check_slot">
           <check>
             <match site="mmc" var="abs" form="msg">S00</match>
@@ -1324,7 +1324,7 @@
           </check>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot00" title="to_slot00" label="Slot to 00">
+      <unit id="unit_car_3_slot0023_00" title="slot[00-23]_00" label="Slot to 00">
         <item id="slot00_00" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -1702,7 +1702,7 @@
           <mcr name="mmc_slot0"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot01" title="to_slot01" label="Slot to 01">
+      <unit id="unit_car_3_slot0023_01" title="slot[00-23]_01" label="Slot to 01">
         <item id="slot00_01" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -2060,7 +2060,7 @@
           <mcr name="mmc_slot1"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot02" title="to_slot02" label="Slot to 02">
+      <unit id="unit_car_3_slot0023_02" title="slot[00-23]_02" label="Slot to 02">
         <item id="slot00_02" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -2400,7 +2400,7 @@
           <mcr name="mmc_slot2"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot03" title="to_slot03" label="Slot to 03">
+      <unit id="unit_car_3_slot0023_03" title="slot[00-23]_03" label="Slot to 03">
         <item id="slot00_03" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -2724,7 +2724,7 @@
           <mcr name="mmc_slot3"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot04" title="to_slot04" label="Slot to 04">
+      <unit id="unit_car_3_slot0023_04" title="slot[00-23]_04" label="Slot to 04">
         <item id="slot00_04" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -3034,7 +3034,7 @@
           <mcr name="mmc_slot4"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot05" title="to_slot05" label="Slot to 05">
+      <unit id="unit_car_3_slot0023_05" title="slot[00-23]_05" label="Slot to 05">
         <item id="slot00_05" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -3332,7 +3332,7 @@
           <mcr name="mmc_slot5"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot06" title="to_slot06" label="Slot to 06">
+      <unit id="unit_car_3_slot0023_06" title="slot[00-23]_06" label="Slot to 06">
         <item id="slot00_06" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -3620,7 +3620,7 @@
           <mcr name="mmc_slot6"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot07" title="to_slot07" label="Slot to 07">
+      <unit id="unit_car_3_slot0023_07" title="slot[00-23]_07" label="Slot to 07">
         <item id="slot00_07" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -3900,7 +3900,7 @@
           <mcr name="mmc_slot7"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot08" title="to_slot08" label="Slot to 08">
+      <unit id="unit_car_3_slot0023_08" title="slot[00-23]_08" label="Slot to 08">
         <item id="slot00_08" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -4174,7 +4174,7 @@
           <mcr name="mmc_slot8"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot09" title="to_slot09" label="Slot to 09">
+      <unit id="unit_car_3_slot0023_09" title="slot[00-23]_09" label="Slot to 09">
         <item id="slot00_09" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -4444,7 +4444,7 @@
           <mcr name="mmc_slot9"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot10" title="to_slot10" label="Slot to 10">
+      <unit id="unit_car_3_slot0023_10" title="slot[00-23]_10" label="Slot to 10">
         <item id="slot00_10" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -4712,7 +4712,7 @@
           <mcr name="mmc_slot10"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot11" title="to_slot11" label="Slot to 11">
+      <unit id="unit_car_3_slot0023_11" title="slot[00-23]_11" label="Slot to 11">
         <item id="slot00_11" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -4980,7 +4980,7 @@
           <mcr name="mmc_slot11"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot12" title="to_slot12" label="Slot to 12">
+      <unit id="unit_car_3_slot0023_12" title="slot[00-23]_12" label="Slot to 12">
         <item id="slot00_12" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -5250,7 +5250,7 @@
           <mcr name="mmc_slot12"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot13" title="to_slot13" label="Slot to 13">
+      <unit id="unit_car_3_slot0023_13" title="slot[00-23]_13" label="Slot to 13">
         <item id="slot00_13" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -5524,7 +5524,7 @@
           <mcr name="mmc_slot13"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot14" title="to_slot14" label="Slot to 14">
+      <unit id="unit_car_3_slot0023_14" title="slot[00-23]_14" label="Slot to 14">
         <item id="slot00_14" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -5804,7 +5804,7 @@
           <mcr name="mmc_slot14"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot15" title="to_slot15" label="Slot to 15">
+      <unit id="unit_car_3_slot0023_15" title="slot[00-23]_15" label="Slot to 15">
         <item id="slot00_15" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -6092,7 +6092,7 @@
           <mcr name="mmc_slot15"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot16" title="to_slot16" label="Slot to 16">
+      <unit id="unit_car_3_slot0023_16" title="slot[00-23]_16" label="Slot to 16">
         <item id="slot00_16" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -6390,7 +6390,7 @@
           <mcr name="mmc_slot16"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot17" title="to_slot17" label="Slot to 17">
+      <unit id="unit_car_3_slot0023_17" title="slot[00-23]_17" label="Slot to 17">
         <item id="slot00_17" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -6700,7 +6700,7 @@
           <mcr name="mmc_slot17"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot18" title="to_slot18" label="Slot to 18">
+      <unit id="unit_car_3_slot0023_18" title="slot[00-23]_18" label="Slot to 18">
         <item id="slot00_18" label="carousel">
           <check>
             <equal site="mfp" var="gv" form="msg">OPEN</equal>
@@ -7024,7 +7024,7 @@
           <mcr name="mmc_slot18"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot19" title="to_slot19" label="Slot to 19">
+      <unit id="unit_car_3_slot0023_19" title="slot[00-23]_19" label="Slot to 19">
         <item id="slot00_19" label="carousel">
           <mcr name="mmc_slot2"/>
           <upd site="map"/>
@@ -7314,7 +7314,7 @@
           <mcr name="mmc_slot19"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot20" title="to_slot20" label="Slot to 20">
+      <unit id="unit_car_3_slot0023_20" title="slot[00-23]_20" label="Slot to 20">
         <item id="slot00_20" label="carousel">
           <mcr name="mmc_slot2"/>
           <upd site="map"/>
@@ -7622,7 +7622,7 @@
           <mcr name="mmc_slot20"/>
         </item>
       </unit>
-      <unit id="unit_car_3_to_slot21" title="to_slot21" label="Slot to 21">
+      <unit id="unit_car_3_slot0023_21" title="slot[00-23]_21" label="Slot to 21">
         <item id="slot00_21" label="carousel">
           <mcr name="mmc_slot2"/>
           <upd site="map"/>
@@ -8132,7 +8132,7 @@
       </unit>
     </group>
     <group id="grp_car_5" caption="Access Sub" rank="1">
-      <unit id="unit_car_5_chk_access023" title="chk_access[0-23]" label="Check Access[0-23]">
+      <unit id="unit_car_5_check_access023" title="check_access[0-23]" label="Check Access[0-23]">
         <item id="check_access00" label="check_access">
           <check>
             <match site="mmc" var="abs" form="msg">S06</match>

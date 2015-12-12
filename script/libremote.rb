@@ -147,7 +147,23 @@ module CIAX
           @body = deep_subst(self[:body])
         end
 
-        def subst(str) # subst by parameters ($1,$2...)
+
+        def deep_subst(data)
+          case data
+          when Array
+            res = []
+            data.each { |v| res << deep_subst(v) }
+          when Hash
+            res = {}
+            data.each { |k, v| res[k] = deep_subst(v) }
+          else
+            res = _subst_(data)
+          end
+          res
+        end
+        private
+
+        def _subst_(str) # subst by parameters ($1,$2...)
           return str unless /\$([\d]+)/ =~ str
           enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
             num = true
@@ -160,20 +176,6 @@ module CIAX
             Msg.cfg_err('Nil string') if res == ''
             res
           end
-        end
-
-        def deep_subst(data)
-          case data
-          when Array
-            res = []
-            data.each { |v| res << deep_subst(v) }
-          when Hash
-            res = {}
-            data.each { |k, v| res[k] = deep_subst(v) }
-          else
-            res = subst(data)
-          end
-          res
         end
       end
     end

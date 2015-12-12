@@ -44,7 +44,7 @@ slot21,carousel,1,mcr,mcr:upd mmc:lowspd mcr:slot%S_21 mcr:check_slot21
 #slot23,carousel,1,mcr,mcr:upd mmc:lowspd mcr:slot%S_23 mcr:check_slot23
 
 !3,Slot Sub,1
-chk_slot[0-23],Check Slot[0-23],1,cap,
+check_slot[0-23],Check Slot[0-23],1,cap,
 check_slot00,check_slot,1,mcr,
 check_slot01,check_slot,1,mcr,
 check_slot02,check_slot,1,mcr,
@@ -70,7 +70,7 @@ check_slot21,check_slot,1,mcr,
 check_slot22,check_slot,1,mcr,
 check_slot23,check_slot,1,mcr,
 
-to_slot00,Slot to 00,1,cap,
+slot[00-23]_00,Slot to 00,1,cap,
 slot00_00,carousel,1,mcr,mmc:slot0
 slot01_00,carousel,1,mcr,mmc:slot0
 slot02_00,carousel,1,mcr,mmc:slot0
@@ -96,7 +96,7 @@ slot21_00,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_00,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12 map:upd mmc:slot10 map:upd mmc:slot8 map:upd mmc:slot6 map:upd mmc:slot4 map:upd mmc:slot2 map:upd mmc:slot0
 #slot23_00,carousel,1,mcr,mmc:slot0
 
-to_slot01,Slot to 01,1,cap,
+slot[00-23]_01,Slot to 01,1,cap,
 slot00_01,carousel,1,mcr,mmc:slot1
 slot01_01,carousel,1,mcr,mmc:slot1
 slot02_01,carousel,1,mcr,mmc:slot1
@@ -122,7 +122,7 @@ slot21_01,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_01,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12 map:upd mmc:slot10 map:upd mmc:slot8 map:upd mmc:slot6 map:upd mmc:slot4 map:upd mmc:slot2 map:upd mmc:slot1
 #slot23_01,carousel,1,mcr,mmc:slot1
 
-to_slot02,Slot to 02,1,cap,
+slot[00-23]_02,Slot to 02,1,cap,
 slot00_02,carousel,1,mcr,mmc:slot2
 slot01_02,carousel,1,mcr,mmc:slot2
 slot02_02,carousel,1,mcr,mmc:slot2
@@ -148,7 +148,7 @@ slot21_02,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_02,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12 map:upd mmc:slot10 map:upd mmc:slot8 map:upd mmc:slot6 map:upd mmc:slot4 map:upd mmc:slot2
 #slot23_02,carousel,1,mcr,mmc:slot1 map:upd mmc:slot2
 
-to_slot03,Slot to 03,1,cap,
+slot[00-23]_03,Slot to 03,1,cap,
 slot00_03,carousel,1,mcr,mmc:slot2 map:upd mmc:slot3
 slot01_03,carousel,1,mcr,mmc:slot3
 slot02_03,carousel,1,mcr,mmc:slot3
@@ -174,7 +174,7 @@ slot21_03,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_03,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12 map:upd mmc:slot10 map:upd mmc:slot8 map:upd mmc:slot6 map:upd mmc:slot4 map:upd mmc:slot3
 #slot23_03,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3
 
-to_slot04,Slot to 04,1,cap,
+slot[00-23]_04,Slot to 04,1,cap,
 slot00_04,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4
 slot01_04,carousel,1,mcr,mmc:slot3 map:upd mmc:slot4
 slot02_04,carousel,1,mcr,mmc:slot4
@@ -200,7 +200,7 @@ slot21_04,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_04,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12 map:upd mmc:slot10 map:upd mmc:slot8 map:upd mmc:slot6 map:upd mmc:slot4
 #slot23_04,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot4
 
-to_slot05,Slot to 05,1,cap,
+slot[00-23]_05,Slot to 05,1,cap,
 slot00_05,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot5
 slot01_05,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5
 slot02_05,carousel,1,mcr,mmc:slot4 map:upd mmc:slot5
@@ -226,7 +226,7 @@ slot21_05,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_05,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12 map:upd mmc:slot10 map:upd mmc:slot8 map:upd mmc:slot6 map:upd mmc:slot5
 #slot23_05,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5
 
-to_slot06,Slot to 06,1,cap,
+slot[00-23]_06,Slot to 06,1,cap,
 slot00_06,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6
 slot01_06,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot6
 slot02_06,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6
@@ -252,7 +252,7 @@ slot21_06,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_06,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12 map:upd mmc:slot10 map:upd mmc:slot8 map:upd mmc:slot6
 #slot23_06,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot6
 
-to_slot07,Slot to 07,1,cap,
+slot[00-23]_07,Slot to 07,1,cap,
 slot00_07,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot7
 slot01_07,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7
 slot02_07,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot7
@@ -278,7 +278,7 @@ slot21_07,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_07,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12 map:upd mmc:slot10 map:upd mmc:slot8 map:upd mmc:slot7
 #slot23_07,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7
 
-to_slot08,Slot to 08,1,cap,
+slot[00-23]_08,Slot to 08,1,cap,
 slot00_08,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8
 slot01_08,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot8
 slot02_08,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8
@@ -304,7 +304,7 @@ slot21_08,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_08,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12 map:upd mmc:slot10 map:upd mmc:slot8
 #slot23_08,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot8
 
-to_slot09,Slot to 09,1,cap,
+slot[00-23]_09,Slot to 09,1,cap,
 slot00_09,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot9
 slot01_09,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9
 slot02_09,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot9
@@ -330,7 +330,7 @@ slot21_09,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_09,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12 map:upd mmc:slot10 map:upd mmc:slot9
 #slot23_09,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9
 
-to_slot10,Slot to 10,1,cap,
+slot[00-23]_10,Slot to 10,1,cap,
 slot00_10,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10
 slot01_10,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot10
 slot02_10,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10
@@ -356,7 +356,7 @@ slot21_10,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_10,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12 map:upd mmc:slot10
 #slot23_10,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot10
 
-to_slot11,Slot to 11,1,cap,
+slot[00-23]_11,Slot to 11,1,cap,
 slot00_11,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot11
 slot01_11,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11
 slot02_11,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot11
@@ -382,7 +382,7 @@ slot21_11,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_11,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12 map:upd mmc:slot11
 #slot23_11,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11
 
-to_slot12,Slot to 12,1,cap,
+slot[00-23]_12,Slot to 12,1,cap,
 slot00_12,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12
 slot01_12,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot12
 slot02_12,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12
@@ -408,7 +408,7 @@ slot21_12,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_12,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot12
 #slot23_12,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot12
 
-to_slot13,Slot to 13,1,cap,
+slot[00-23]_13,Slot to 13,1,cap,
 slot00_13,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot13
 slot01_13,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13
 slot02_13,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot13
@@ -434,7 +434,7 @@ slot21_13,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_13,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14 map:upd mmc:slot13
 #slot23_13,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13
 
-to_slot14,Slot to 14,1,cap,
+slot[00-23]_14,Slot to 14,1,cap,
 slot00_14,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14
 slot01_14,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot14
 slot02_14,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14
@@ -460,7 +460,7 @@ slot21_14,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15 map:up
 #slot22_14,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot14
 #slot23_14,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot14
 
-to_slot15,Slot to 15,1,cap,
+slot[00-23]_15,Slot to 15,1,cap,
 slot00_15,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot15
 slot01_15,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15
 slot02_15,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot15
@@ -486,7 +486,7 @@ slot21_15,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot15
 #slot22_15,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16 map:upd mmc:slot15
 #slot23_15,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15
 
-to_slot16,Slot to 16,1,cap,
+slot[00-23]_16,Slot to 16,1,cap,
 slot00_16,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16
 slot01_16,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15 map:upd mmc:slot16
 slot02_16,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16
@@ -512,7 +512,7 @@ slot21_16,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17 map:upd mmc:slot16
 #slot22_16,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot16
 #slot23_16,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15 map:upd mmc:slot16
 
-to_slot17,Slot to 17,1,cap,
+slot[00-23]_17,Slot to 17,1,cap,
 slot00_17,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot17
 slot01_17,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15 map:upd mmc:slot17
 slot02_17,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot17
@@ -538,7 +538,7 @@ slot21_17,carousel,1,mcr,mmc:slot19 map:upd mmc:slot17
 #slot22_17,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18 map:upd mmc:slot17
 #slot23_17,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15 map:upd mmc:slot17
 
-to_slot18,Slot to 18,1,cap,
+slot[00-23]_18,Slot to 18,1,cap,
 slot00_18,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot18
 slot01_18,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15 map:upd mmc:slot17 map:upd mmc:slot18
 slot02_18,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot18
@@ -564,7 +564,7 @@ slot21_18,carousel,1,mcr,mmc:slot19 map:upd mmc:slot18
 #slot22_18,carousel,1,mcr,mmc:slot20 map:upd mmc:slot18
 #slot23_18,carousel,1,mcr,mmc:slot1 map:upd mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15 map:upd mmc:slot17 map:upd mmc:slot18
 
-to_slot19,Slot to 19,1,cap,
+slot[00-23]_19,Slot to 19,1,cap,
 slot00_19,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot18 map:upd mmc:slot19
 slot01_19,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15 map:upd mmc:slot17 map:upd mmc:slot19
 slot02_19,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot18 map:upd mmc:slot19
@@ -590,7 +590,7 @@ slot21_19,carousel,1,mcr,mmc:slot19
 #slot22_19,carousel,1,mcr,mmc:slot20 map:upd mmc:slot19
 #slot23_19,carousel,1,mcr,mmc:slot21 map:upd mmc:slot19
 
-to_slot20,Slot to 20,1,cap,
+slot[00-23]_20,Slot to 20,1,cap,
 slot00_20,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot18 map:upd mmc:slot20
 slot01_20,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15 map:upd mmc:slot17 map:upd mmc:slot19 map:upd mmc:slot20
 slot02_20,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot18 map:upd mmc:slot20
@@ -616,7 +616,7 @@ slot21_20,carousel,1,mcr,mmc:slot20
 #slot22_20,carousel,1,mcr,mmc:slot20
 #slot23_20,carousel,1,mcr,mmc:slot21 map:upd mmc:slot20
 
-to_slot21,Slot to 21,1,cap,
+slot[00-23]_21,Slot to 21,1,cap,
 slot00_21,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot18 map:upd mmc:slot20 map:upd mmc:slot21
 slot01_21,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15 map:upd mmc:slot17 map:upd mmc:slot19 map:upd mmc:slot21
 slot02_21,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot18 map:upd mmc:slot20 map:upd mmc:slot21
@@ -642,7 +642,7 @@ slot21_21,carousel,1,mcr,mmc:slot21
 #slot22_21,carousel,1,mcr,mmc:slot21
 #slot23_21,carousel,1,mcr,mmc:slot21
 
-to_slot22,Slot to 22,1,cap,
+slot[00-23]_22,Slot to 22,1,cap,
 #slot00_22,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot18 map:upd mmc:slot20 map:upd mmc:slot22
 #slot01_22,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15 map:upd mmc:slot17 map:upd mmc:slot19 map:upd mmc:slot21 map:upd mmc:slot22
 #slot02_22,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot18 map:upd mmc:slot20 map:upd mmc:slot22
@@ -668,7 +668,7 @@ to_slot22,Slot to 22,1,cap,
 #slot22_22,carousel,1,mcr,mmc:slot22
 #slot23_22,carousel,1,mcr,mmc:slot22
 
-to_slot23,Slot to 23,1,cap,
+slot[00-23]_23,Slot to 23,1,cap,
 #slot00_23,carousel,1,mcr,mmc:slot23
 #slot01_23,carousel,1,mcr,mmc:slot23
 #slot02_23,carousel,1,mcr,mmc:slot0 map:upd mmc:slot23
@@ -722,7 +722,7 @@ access21,Access to Slot21,1,mcr,mmc:access21 mcr:check_access21
 #access23,Access to Slot23,1,mcr,mmc:access23 mcr:check_access23
 
 !5,Access Sub,1
-chk_access[0-23],Check Access[0-23],1,cap,
+check_access[0-23],Check Access[0-23],1,cap,
 check_access00,check_access,1,mcr,
 check_access01,check_access,1,mcr,
 check_access02,check_access,1,mcr,

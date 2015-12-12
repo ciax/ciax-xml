@@ -21,13 +21,15 @@ module CIAX
       # Substitute str by Field data
       # - str format: ${key}
       # - output csv if array
-      def subst(str) # subst by field
+      def subst(str, substed = []) # subst by field
         return str unless /\$\{/ =~ str
         enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
           str.gsub(/\$\{(.+)\}/) do
             ary = [*get(Regexp.last_match(1))].map! { |i| expr(i) }
             Msg.give_up("No value for subst [#{Regexp.last_match(1)}]") if ary.empty?
-            ary.join(',')
+            res = ary.join(',')
+            substed << res
+            res
           end
         end
       end

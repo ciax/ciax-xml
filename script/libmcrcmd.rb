@@ -47,30 +47,10 @@ module CIAX
           super
         end
       end
-      class Item < Ext::Item; end
-      # External Entity
-      class Entity < Ext::Entity
-        def initialize(cfg, crnt = {})
+      class Item < Ext::Item
+        def gen_entity(opt)
+          opt[:sequence] = Arrayx.new(@cfg[:body])
           super
-          # @cfg[:body] expansion
-          seq = self[:sequence] = Arrayx.new
-          init_sel(seq)
-        end
-
-        private
-
-        def init_sel(seq)
-          @body.each do|e|
-            case e[:type]
-            when 'select'
-              sel = e[:select]
-              wat = type?(self[:dev_list], Wat::List).get(e[:site])
-              val = wat.sub.stat[e[:var]]
-              seq << { type: 'mcr', args: sel[val] || sel['*'] }
-            else
-              seq << e
-            end
-          end
         end
       end
     end

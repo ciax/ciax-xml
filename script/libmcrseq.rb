@@ -80,7 +80,7 @@ module CIAX
       def do_step(e, mstat)
         step = @record.add_step(e, @depth)
         begin
-          return true if method('_'+e[:type]).call(e, step, mstat)
+          return true if method('_' + e[:type]).call(e, step, mstat)
         rescue Retry
           retry
         end
@@ -105,8 +105,7 @@ module CIAX
       end
 
       def _check(_e, step, mstat)
-        return unless step.fail? &&
-                      @qry.query(%w(drop force retry), step)
+        return unless step.fail? && _giveup?(step)
         mstat[:result] = 'error'
         fail Interlock
       end
@@ -118,16 +117,13 @@ module CIAX
           step.sleeping(s)
           return
         end
-        return unless step.timeout? &&
-                      @qry.query(%w(drop force retry), step)
+        return unless step.timeout? && _giveup?(step)
         mstat[:result] = 'timeout'
         fail Interlock
       end
 
       def _exec(e, step, _mstat)
-        if step.exec? && @qry.query(%w(exec pass), step)
-          _exe_site(e)
-        end
+        _exe_site(e) if step.exec? && @qry.query(%w(exec pass), step)
         @sv_stat.push(:run, e[:site])
         false
       end
@@ -191,6 +187,10 @@ module CIAX
 
       def _get_stat(e)
         _get_site(e).sub.stat[e[:form].to_sym][e[:var]]
+      end
+
+      def _giveup?(step)
+        @qry.query(%w(drop force retry), step)
       end
     end
 

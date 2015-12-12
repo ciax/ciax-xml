@@ -79,25 +79,8 @@ module CIAX
           dbi = type?(@cfg[:dbi], Dbi)
           @cfg[:ver] ||= dbi[:version]
           @displist = @displist.ext_grp
-          # Set items by DB
-          cdb = dbi[:command]
-          cdb[:group].each do|gid, gat|
-            sg = @displist.put_grp(gid, gat[:caption], nil, gat[:rank])
-            _init_member_(cdb, gat[:members], sg)
-            _init_unit_(cdb, gat[:units], sg)
-          end
-          init_alias(cdb)
+          _init_items(dbi[:command])
           @displist.reset!
-        end
-
-        def init_alias(cdb)
-          return unless cdb[:alias]
-          sg = @displist.put_grp('gal', 'Alias')
-          cdb[:alias].each do|id, att|
-            itm = cdb[:index][att[:ref]].dup
-            sg.put_item(id, att[:label])
-            add_item(id, cdb, itm)
-          end
         end
 
         def add_item(id, cdb, itm)
@@ -111,6 +94,16 @@ module CIAX
         end
 
         private
+
+        # Set items by DB
+        def _init_items(cdb)
+          cdb[:group].each do|gid, gat|
+            sg = @displist.put_grp(gid, gat[:caption], nil, gat[:rank])
+            _init_member_(cdb, gat[:members], sg)
+            _init_unit_(cdb, gat[:units], sg)
+          end
+          _init_alias_(cdb)
+        end
 
         def _init_member_(cdb, mem, sg)
           mem.each do|id|
@@ -128,6 +121,16 @@ module CIAX
               sg.put_dummy(uat[:title], uat[:label])
               sg.replace(sg - uat[:members])
             end
+          end
+        end
+
+        def _init_alias_(cdb)
+          return unless cdb[:alias]
+          sg = @displist.put_grp('gal', 'Alias')
+          cdb[:alias].each do|id, att|
+            itm = cdb[:index][att[:ref]].dup
+            sg.put_item(id, att[:label])
+            add_item(id, cdb, itm)
           end
         end
       end

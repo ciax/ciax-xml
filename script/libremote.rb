@@ -135,19 +135,12 @@ module CIAX
         end
       end
 
-      class Item < Item; end
+      class Item < Item;end
 
       # Substitute string($+number) with parameters
       # par={ val,range,format } or String
       # str could include Math functions
       class Entity < Entity
-        def initialize(grp_cfg, atrb = {})
-          super
-          type?(self[:dbi], Dbi)
-          @body = deep_subst(self[:body])
-        end
-
-
         def deep_subst(data)
           case data
           when Array

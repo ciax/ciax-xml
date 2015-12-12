@@ -22,14 +22,13 @@ module CIAX
     module Ext
       include Remote::Ext
       class Group < Ext::Group; end
-      class Item < Ext::Item; end
+      class Item < Ext::Item
       # Ext entity
-      class Entity < Ext::Entity
         include Math
         # batch is ary of args(ary)
-        def initialize(cfg, attr = {})
-          super
-          self[:batch] = @body.map do|e1|
+        def gen_entity(opt)
+          ent = super
+          ent[:batch] = ent.deep_subst(@cfg[:body]).map do|e1|
             args = []
             enclose("GetCmd(FDB):#{e1.first}", 'Exec(FDB):%s') do
               e1.each do|e2| # //argv
@@ -46,6 +45,7 @@ module CIAX
             end
             args
           end.extend(Enumx)
+          ent
         end
       end
     end

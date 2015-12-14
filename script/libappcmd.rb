@@ -23,7 +23,7 @@ module CIAX
       include Remote::Ext
       class Group < Ext::Group; end
       class Item < Ext::Item
-      # Ext entity
+        # Ext entity
         include Math
         # batch is ary of args(ary)
         def gen_entity(opt)

@@ -135,7 +135,7 @@ module CIAX
         end
       end
 
-      class Item < Item;end
+      class Item < Item; end
 
       # Substitute string($+number) with parameters
       # par={ val,range,format } or String
@@ -154,6 +154,7 @@ module CIAX
           end
           res
         end
+
         private
 
         def _subst_(str) # subst by parameters ($1,$2...)

@@ -46,7 +46,7 @@ module CIAX
     end
 
     def reset!
-      @valid_keys.replace(keys-@dummy_keys)
+      @valid_keys.replace(keys - @dummy_keys)
       self
     end
 

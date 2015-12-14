@@ -32,7 +32,7 @@ module CIAX
         @idx = {}
         @units = {}
         arc_unit(doc[:domain][:alias])
-        dbi[:command] = {alias: @idx}
+        dbi[:command] = { alias: @idx }
         self
       end
 

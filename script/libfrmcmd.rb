@@ -67,11 +67,11 @@ module CIAX
         def _init_cc
           if @sel.key?(:ccrange)
             @frame.cc_mark
-            chg_flg |= _add_frame(:ccrange)
+            _add_frame(:ccrange)
             @frame.cc_set
           end
         end
-        
+
         # instance var frame,sel,field,fstr
         def _add_frame(domain)
           @frame.reset

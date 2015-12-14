@@ -36,7 +36,7 @@ module CIAX
 
     def get(id)
       if @displist.valid?(id)
-        cache(id) { |doc| doc_to_db(doc.get(id))}
+        cache(id) { |doc| doc_to_db(doc.get(id)) }
       else
         fail(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s)
       end
@@ -142,7 +142,7 @@ module CIAX
       end
     end
 
-    def arc_command(e0,gid)
+    def arc_command(e0, gid)
       id = e0.attr2item(@idx)
       (@grps[gid][:members] ||= []) << id
       id

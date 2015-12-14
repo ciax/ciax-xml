@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libremote'
+require 'libextcmd'
 require 'libframe'
 require 'libfield'
 

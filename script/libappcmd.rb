@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libremote'
+require 'libextcmd'
 require 'libappdb'
 # CIAX-XML Command module
 module CIAX

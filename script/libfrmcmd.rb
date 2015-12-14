@@ -24,6 +24,7 @@ module CIAX
     module Ext
       include Remote::Ext
       class Group < Ext::Group; end
+      # Generate [:frame]
       class Item < Ext::Item
         def gen_entity(opt)
           ent = super
@@ -65,11 +66,10 @@ module CIAX
         end
 
         def _init_cc
-          if @sel.key?(:ccrange)
-            @frame.cc_mark
-            _add_frame(:ccrange)
-            @frame.cc_set
-          end
+          return unless @sel.key?(:ccrange)
+          @frame.cc_mark
+          _add_frame(:ccrange)
+          @frame.cc_set
         end
 
         # instance var frame,sel,field,fstr

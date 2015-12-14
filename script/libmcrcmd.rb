@@ -41,12 +41,14 @@ module CIAX
     # External Command
     module Ext
       include Remote::Ext
+      # Caption change
       class Group < Ext::Group
         def initialize(cfg, crnt = {})
           crnt[:caption] = 'Start Macro'
           super
         end
       end
+      # generate [:sequence]
       class Item < Ext::Item
         def gen_entity(opt)
           opt[:sequence] = Arrayx.new(@cfg[:body])

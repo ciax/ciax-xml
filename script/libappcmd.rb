@@ -22,6 +22,7 @@ module CIAX
     module Ext
       include Remote::Ext
       class Group < Ext::Group; end
+      # Generate [:batch]
       class Item < Ext::Item
         # Ext entity
         include Math

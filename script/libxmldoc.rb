@@ -61,22 +61,25 @@ module CIAX
         grp.put_item(id, top['label'])
         item = Hashx[top: top, attr: top.to_h]
         top.each do|e1|
+          # Should have child
           if top.ns != e1.ns
-            (item[:domain]||={})[e1.name.to_sym] = e1 
+            (item[:domain] ||= {})[e1.name.to_sym] = e1
+          elsif e1['id']
+            @subid = e1.name.to_sym
+            (item[@subid] ||= {})[e1['id']] = e1
           elsif e1.name == 'include'
-            (item[:include]||=[]) << e1['ref'] 
-          else
-            @subid=e1.name.to_sym
-            (item[@subid]||={})[e1['id']] = e1
+            (item[:include] ||= []) << e1['ref']
+          else # Property (stream info, serial info, etc.)
+            item[e1.name.to_sym] = e1.to_h
           end
         end
         self[id] = item
       end
 
       def store_includes
-        each do |id, item|
+        each do |_id, item|
           if (ary = item.delete(:include))
-            ary.each { |ref| (item[@subid]||={}).update(self[ref][@subid]) }
+            ary.each { |ref| (item[@subid] ||= {}).update(self[ref][@subid]) }
           end
         end
       end

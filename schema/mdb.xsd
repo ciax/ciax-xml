@@ -10,9 +10,10 @@
   </xsd:element>
   <xsd:element name="macro">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="mdb:group" />
-      </xsd:choice>
+      <xsd:sequence  minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="mdb:include" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element ref="mdb:group" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
       <xsd:attribute name="id" type="xsd:token" use="required" />
       <xsd:attribute name="version" type="xsd:int" />
       <xsd:attribute name="label" type="xsd:token" use="optional" />
@@ -27,6 +28,12 @@
       <xsd:selector xpath=".//mdb:mcr" />
       <xsd:field xpath="@name" />
     </xsd:keyref>
+  </xsd:element>
+  <xsd:element name="include">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:token" use="required" />
+      <xsd:attribute name="label" type="xsd:token"/>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="group">
     <xsd:complexType>

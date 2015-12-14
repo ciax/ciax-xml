@@ -2,7 +2,7 @@
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="cfp" label="Compact Field Point">
     <stream ccmethod="sum" wait="0"/>
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">&gt;</string>
       <ccrange>
@@ -39,7 +39,7 @@
       <ccrange>
         <body/>
       </ccrange>
-      <field assign="cc" decode="hexstr" label="BCC" length="2" />
+      <field assign="cc" decode="hexstr" label="BCC" length="2"/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">

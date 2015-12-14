@@ -3,11 +3,11 @@
   <app frm_id="slo" id="mma" label="MOIRCS Arm" version="1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id='upd' label="Status">
+        <unit id="upd" label="Status">
           <item id="upd" label="Upd">
-            <frmcmd name="getstat" />
-            <frmcmd name="bs" />
-            <frmcmd name="p" />
+            <frmcmd name="getstat"/>
+            <frmcmd name="bs"/>
+            <frmcmd name="p"/>
             <repeat from="1" to="5">
               <frmcmd name="in">
                 <argv>$_</argv>
@@ -16,7 +16,7 @@
           </item>
         </unit>
         <item id="mres" label="Motor Reset">
-          <frmcmd name="reset" />
+          <frmcmd name="reset"/>
         </item>
         <item id="defcon" label="Default Config">
           <frmcmd name="hl">
@@ -31,7 +31,7 @@
         </item>
         <unit id="setp" label="Set Puls">
           <item id="set0" label="0">
-            <frmcmd name="set0" />
+            <frmcmd name="set0"/>
           </item>
           <item id="sets" label="Store Pos">
             <frmcmd name="setp">
@@ -42,35 +42,35 @@
             <frmcmd name="setp">
               <argv>123</argv>
             </frmcmd>
-            <frmcmd name="bs" />
+            <frmcmd name="bs"/>
           </item>
         </unit>
-        <unit id="go" label="Goto Pos"> 
+        <unit id="go" label="Goto Pos">
           <item id="ini" label="Initial">
             <frmcmd name="jn"/>
-            <frmcmd name="bs" />
+            <frmcmd name="bs"/>
           </item>
           <item id="gf" label="Focal">
             <frmcmd name="ma">
               <argv>12.8</argv>
             </frmcmd>
-            <frmcmd name="bs" />
+            <frmcmd name="bs"/>
           </item>
           <item id="gr" label="Rotate">
-          <frmcmd name="ma">
-            <argv>123</argv>
-          </frmcmd>
-          <frmcmd name="bs" />
+            <frmcmd name="ma">
+              <argv>123</argv>
+            </frmcmd>
+            <frmcmd name="bs"/>
           </item>
           <item id="gw" label="Waiting">
             <frmcmd name="ma">
               <argv>185</argv>
             </frmcmd>
-            <frmcmd name="bs" />
+            <frmcmd name="bs"/>
           </item>
           <item id="gs" label="Store">
             <frmcmd name="jp"/>
-            <frmcmd name="bs" />
+            <frmcmd name="bs"/>
           </item>
         </unit>
         <item id="rini" label="Init to RP at AV">
@@ -80,40 +80,40 @@
           <frmcmd name="mhn"/>
         </item>
         <item id="stop" label="Stop Run" hidden="true">
-          <frmcmd name="stop" />
+          <frmcmd name="stop"/>
         </item>
       </group>
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="mma">
       <group id="g1" caption="" column="3">
         <string id="bs" label="Moter Moving" symbol="warn">
-          <field ref="bs" />
+          <field ref="bs"/>
         </string>
         <string id="con" label="Contact Sensor" symbol="normal">
-          <field ref="in" index="4" />
+          <field ref="in" index="4"/>
         </string>
         <integer id="err" label="Error Code" symbol="err">
-          <field ref="err" />
+          <field ref="err"/>
         </integer>
         <string id="pos" label="Arm Position" symbol="pos">
-          <field ref="in" index="0" />
-          <field ref="in" index="1" />
-          <field ref="in" index="2" />
-          <field ref="in" index="3" />
+          <field ref="in" index="0"/>
+          <field ref="in" index="1"/>
+          <field ref="in" index="2"/>
+          <field ref="in" index="3"/>
         </string>
         <float id="abs" label="ABS position" symbol="abs">
-          <field ref="p" />
+          <field ref="p"/>
         </float>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event id="mot" label="On Motion">
         <range var="bs">1</range>
-        <block name="gf" />
-        <block name="gr" />
-        <block name="gw" />
-        <block name="gs" />
-        <int name="stop" />
+        <block name="gf"/>
+        <block name="gr"/>
+        <block name="gw"/>
+        <block name="gs"/>
+        <int name="stop"/>
         <exec name="upd"/>
       </event>
       <event label="Reset Config" id="res">

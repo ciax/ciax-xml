@@ -4,8 +4,8 @@
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <item id="upd" label="Upd">
-          <frmcmd name="getstat" />
-          <frmcmd name="getstat2" />
+          <frmcmd name="getstat"/>
+          <frmcmd name="getstat2"/>
         </item>
         <unit id="u_rh" title="r[o/c]" label="Robohand All OPEN/CLOSE">
           <item id="ro" label="Open">
@@ -13,14 +13,14 @@
               <argv>0x3c</argv>
               <argv>0x28</argv>
             </frmcmd>
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
           <item id="rc" label="Close">
             <frmcmd name="putdata">
               <argv>0x3c</argv>
               <argv>0x14</argv>
             </frmcmd>
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
         </unit>
         <unit id="u_gv" title="g[o/c]" label="Gate Valve OPEN/CLOSE">
@@ -29,14 +29,14 @@
               <argv>0xc0</argv>
               <argv>0x80</argv>
             </frmcmd>
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
           <item id="gc" label="Close">
             <frmcmd name="putdata">
               <argv>0xc0</argv>
               <argv>0x40</argv>
             </frmcmd>
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
         </unit>
         <unit id="u_ar" title="a[v/h]" label="Arm Rotation Vertical/Holizontal">
@@ -45,14 +45,14 @@
               <argv>0x3000</argv>
               <argv>0x2000</argv>
             </frmcmd>
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
           <item id="ah" label="Horizontal">
             <frmcmd name="putdata">
               <argv>0x3000</argv>
               <argv>0x1000</argv>
             </frmcmd>
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
         </unit>
         <unit id="u_ag" title="a[o/c]" label="Arm Gripper OPEN/CLOSE">
@@ -61,14 +61,14 @@
               <argv>0xc00</argv>
               <argv>0x800</argv>
             </frmcmd>
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
           <item id="ac" label="Close">
             <frmcmd name="putdata">
               <argv>0xc00</argv>
               <argv>0x400</argv>
             </frmcmd>
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
         </unit>
         <unit id="u_file" label="Output Status">
@@ -87,50 +87,50 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="cfp">
       <group caption="Output" id="g1" column="2">
         <binary id="ao" label="Arm Gripper(out)" symbol="oc">
-          <field bit="10" ref="output" />
-          <field bit="11" ref="output" />
+          <field bit="10" ref="output"/>
+          <field bit="11" ref="output"/>
         </binary>
         <binary id="hr" label="Arm Rotation(out)" symbol="rot">
-          <field bit="12" ref="output" />
-          <field bit="13" ref="output" />
+          <field bit="12" ref="output"/>
+          <field bit="13" ref="output"/>
         </binary>
         <binary id="rao" label="Robohand A(out)" symbol="oc">
-          <field bit="2" ref="output" />
-          <field bit="3" ref="output" />
+          <field bit="2" ref="output"/>
+          <field bit="3" ref="output"/>
         </binary>
         <binary id="rbo" label="Robohand B(out)" symbol="oc">
-          <field bit="4" ref="output" />
-          <field bit="5" ref="output" />
+          <field bit="4" ref="output"/>
+          <field bit="5" ref="output"/>
         </binary>
         <binary id="go" label="Gate Valve(out)" symbol="oc">
-          <field bit="6" ref="output" />
-          <field bit="7" ref="output" />
+          <field bit="6" ref="output"/>
+          <field bit="7" ref="output"/>
         </binary>
       </group>
       <group caption="Input" id="g2" column="2">
         <binary id="rh1" label="RoboHand 1(in)" symbol="oc">
-          <field bit="4" ref="input" />
-          <field bit="5" ref="input" />
+          <field bit="4" ref="input"/>
+          <field bit="5" ref="input"/>
         </binary>
         <binary id="rh2" label="RoboHand 2(in)" symbol="oc">
-          <field bit="6" ref="input" />
-          <field bit="7" ref="input" />
+          <field bit="6" ref="input"/>
+          <field bit="7" ref="input"/>
         </binary>
         <binary id="rh3" label="RoboHand 3(in)" symbol="oc">
-          <field bit="8" ref="input" />
-          <field bit="9" ref="input" />
+          <field bit="8" ref="input"/>
+          <field bit="9" ref="input"/>
         </binary>
         <binary id="rh4" label="RoboHand 4(in)" symbol="oc">
-          <field bit="10" ref="input" />
-          <field bit="11" ref="input" />
+          <field bit="10" ref="input"/>
+          <field bit="11" ref="input"/>
         </binary>
         <binary id="gv" label="Gate Valve(in)" symbol="oc">
-          <field bit="0" ref="input" />
-          <field bit="1" ref="input" />
+          <field bit="0" ref="input"/>
+          <field bit="1" ref="input"/>
         </binary>
         <binary id="hv" label="Arm Rotation(in)" symbol="rot">
-          <field bit="2" ref="input" />
-          <field bit="3" ref="input" />
+          <field bit="2" ref="input"/>
+          <field bit="3" ref="input"/>
         </binary>
       </group>
     </status>

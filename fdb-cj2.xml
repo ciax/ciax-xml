@@ -13,7 +13,7 @@
       <char length="1" label="FINS Header:SA1">${ipl}</char>
       <char length="1" label="FINS Header:SA2">0x00</char>
       <char length="1" label="FINS Header:SID">0xFF</char>
-      <body />
+      <body/>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="getstat" label="Get all status" response="getstat" type="stat">
@@ -100,13 +100,13 @@
       <field decode="integer" label="FINS Header:RSV" length="1">0x00</field>
       <field decode="integer" label="FINS Header:GCT" length="1">0x02</field>
       <field decode="integer" label="FINS Header:DNA" length="1">0x00</field>
-      <field decode="integer" label="FINS Header:DA1" length="1" assign="ipl" />
+      <field decode="integer" label="FINS Header:DA1" length="1" assign="ipl"/>
       <field decode="integer" label="FINS Header:DA2" length="1">0x00</field>
       <field decode="integer" label="FINS Header:SNA" length="1">0x00</field>
-      <field decode="integer" label="FINS Header:SA1" length="1" assign="ipr" />
+      <field decode="integer" label="FINS Header:SA1" length="1" assign="ipr"/>
       <field decode="integer" label="FINS Header:SA2" length="1">0x00</field>
       <field decode="integer" label="FINS Header:SID" length="1">0xFF</field>
-      <body />
+      <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
@@ -115,7 +115,7 @@
         <field decode="integer" label="FINS Command:MRES" length="1">0x00</field>
         <field decode="integer" label="FINS Command:SRES" length="1">0x00</field>
         <array assign="w" decode="integer" label="Status" length="2">
-          <index size="13" />
+          <index size="13"/>
         </array>
       </item>
       <item id="getexe">
@@ -124,7 +124,7 @@
         <field decode="integer" label="FINS Command:MRES" length="1">0x00</field>
         <field decode="integer" label="FINS Command:SRES" length="1">0x00</field>
         <array assign="c" decode="integer" label="Status" length="2">
-          <index size="4" />
+          <index size="4"/>
         </array>
       </item>
       <item id="geterr">
@@ -140,7 +140,7 @@
         <field decode="integer" label="FINS Command:MRES" length="1">0x00</field>
         <field decode="integer" label="FINS Command:SRES" length="1">0x00</field>
         <array assign="d" decode="integer" sign="msb" label="Status" length="2">
-          <index size="10" />
+          <index size="10"/>
         </array>
       </item>
       <item id="cmdrsp" label="command resp">

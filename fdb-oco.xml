@@ -3,7 +3,7 @@
   <frame id="oco" label="OMEGA Current Output(D4251)">
     <spec mfr="OMEGA" type="Current Output" model="D4251" reference="http://www.omega.com/manuals/manualpdf/M1552.pdf"/>
     <stream wait="1"/>
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">$</string>
       <body/>
@@ -25,7 +25,7 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field assign="crnt" length="9" />
+        <field assign="crnt" length="9"/>
       </item>
     </response>
   </frame>

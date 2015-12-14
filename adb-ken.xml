@@ -3,7 +3,7 @@
   <app frm_id="ken" id="ken" label="Kenwood Power Supply 1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id='upd' label="Status">
+        <unit id="upd" label="Status">
           <item id="upd" label="Upd">
             <repeat from="0" to="2" counter="u">
               <frmcmd name="getst0">
@@ -130,10 +130,10 @@
         <group id="go$u" caption="Output [UNIT$u]" column="3">
           <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
             <float id="v$u$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
-              <field ref="ms0" index="$u:$c:0" />
+              <field ref="ms0" index="$u:$c:0"/>
             </float>
             <float id="i$u$c" label="Current(A) CH$c" format="%5.2f" formula="$#/100">
-              <field ref="ms0" index="$u:$c:1" />
+              <field ref="ms0" index="$u:$c:1"/>
             </float>
             <string id="mch$u$c" label="Mode CH$c" symbol="cmode">
               <field ref="cst" index="$u:$c"/>
@@ -144,12 +144,12 @@
           <repeat_var from="0" to="($u&amp;1)*2+1" counter="c">
             <repeat_var from="0" to="3" counter="p">
               <float id="pv$u$p$c" label="#$p CH$c (V)" format="%5.2f" formula="$#/100">
-                <field ref="ms1" index="$u:$p:$c*2" />
+                <field ref="ms1" index="$u:$p:$c*2"/>
               </float>
             </repeat_var>
             <repeat_var from="0" to="3" counter="p">
               <float id="pi$u$p$c" label="#$p CH$c (A)" format="%5.2f" formula="$#/100">
-                <field ref="ms1" index="$u:$p:$c*2+1" />
+                <field ref="ms1" index="$u:$p:$c*2+1"/>
               </float>
             </repeat_var>
           </repeat_var>
@@ -160,7 +160,7 @@
               <field ref="st0" index="$u:$c:0"/>
             </integer>
             <float id="dt$u$c" label="Delay time CH$c" format="%5.2f" formula="$#/100">
-              <field ref="st0" index="$u:$c:4" />
+              <field ref="st0" index="$u:$c:4"/>
             </float>
           </repeat_var>
         </group>
@@ -170,10 +170,10 @@
               <field ref="st0" index="$u:$c:1"/>
             </integer>
             <float id="tlv$u$c" label="Level (V) CH$c" format="%5.2f">
-              <field ref="st0" index="$u:$c:2" />
+              <field ref="st0" index="$u:$c:2"/>
             </float>
             <float id="tlc$u$c" label="Level (A) CH$c" format="%5.2f">
-              <field ref="st0" index="$u:$c:3" />
+              <field ref="st0" index="$u:$c:3"/>
             </float>
           </repeat_var>
         </group>
@@ -181,12 +181,12 @@
           <repeat_var from="0" to="3" counter="p">
             <float id="pdt$u$p" label="#$p Delay time" format="%5.2f" formula="$#/100">
               <sign ref="ms1" index="$u:$p:4" negative="1"/>
-              <field ref="ms1" index="$u:$p:5" />
+              <field ref="ms1" index="$u:$p:5"/>
             </float>
           </repeat_var>
           <repeat_var from="0" to="3" counter="p">
             <integer id="ptr$u$p" label="#$p Tracking" symbol="action">
-              <field ref="ms1" index="$u:$p:6" />
+              <field ref="ms1" index="$u:$p:6"/>
             </integer>
           </repeat_var>
         </group>

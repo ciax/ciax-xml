@@ -4,63 +4,63 @@
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrupt Commands" column="2">
         <item id="upd" label="Status update">
-          <frmcmd name="getstat" />
-          <frmcmd name="getcmd" />
+          <frmcmd name="getstat"/>
+          <frmcmd name="getcmd"/>
         </item>
         <item id="ready" label="Ready mode">
           <frmcmd name="int">
             <argv>6</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
-          <frmcmd name="getstat" />
+          <frmcmd name="getcmd"/>
+          <frmcmd name="getstat"/>
         </item>
         <item id="emstop" label="Emergency Stop">
           <frmcmd name="int">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="clr_int" />
-          <frmcmd name="getstat" />
+          <frmcmd name="clr_int"/>
+          <frmcmd name="getstat"/>
         </item>
         <item id="clear" label="Clear Error">
           <frmcmd name="int">
             <argv>5</argv>
           </frmcmd>
-          <frmcmd name="clr_int" />
-          <frmcmd name="getstat" />
+          <frmcmd name="clr_int"/>
+          <frmcmd name="getstat"/>
         </item>
         <item id="pause" label="Pause Action">
           <frmcmd name="int">
             <argv>0</argv>
           </frmcmd>
-          <frmcmd name="clr_int" />
-          <frmcmd name="clr_act" />
-          <frmcmd name="getcmd" />
-          <frmcmd name="getstat" />
+          <frmcmd name="clr_int"/>
+          <frmcmd name="clr_act"/>
+          <frmcmd name="getcmd"/>
+          <frmcmd name="getstat"/>
         </item>
         <item id="resume" label="Resume from Pause">
           <frmcmd name="int">
             <argv>5</argv>
           </frmcmd>
-          <frmcmd name="clr_int" />
-          <frmcmd name="getstat" />
+          <frmcmd name="clr_int"/>
+          <frmcmd name="getstat"/>
         </item>
         <item id="cancel" label="Command Cancel">
           <frmcmd name="int">
             <argv>4</argv>
           </frmcmd>
-          <frmcmd name="clr_int" />
-          <frmcmd name="getstat" />
+          <frmcmd name="clr_int"/>
+          <frmcmd name="getstat"/>
         </item>
         <item id="cstop" label="Stop at Next Tag">
           <frmcmd name="int">
             <argv>7</argv>
           </frmcmd>
-          <frmcmd name="clr_int" />
-          <frmcmd name="getstat" />
+          <frmcmd name="clr_int"/>
+          <frmcmd name="getstat"/>
         </item>
         <item id="reset" label="Reset Cmd Flag" hidden="true">
-          <frmcmd name="clr_act" />
-          <frmcmd name="getcmd" />
+          <frmcmd name="clr_act"/>
+          <frmcmd name="getcmd"/>
         </item>
       </group>
       <group id="grun" caption="Run Commands" column="2">
@@ -72,9 +72,9 @@
           <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getcmd"/>
         </item>
-        <unit id='unit_run' title="run[1-12]" label="Run to 1-12">
+        <unit id="unit_run" title="run[1-12]" label="Run to 1-12">
           <item id="run1" label="Run to Tag 1">
             <frmcmd name="set_tag">
               <argv>1</argv>
@@ -82,7 +82,7 @@
             <frmcmd name="act">
               <argv>0</argv>
             </frmcmd>
-            <frmcmd name="getcmd" />
+            <frmcmd name="getcmd"/>
           </item>
           <item id="run2" label="Run to Tag 2">
             <frmcmd name="set_tag">
@@ -91,7 +91,7 @@
             <frmcmd name="act">
               <argv>0</argv>
             </frmcmd>
-            <frmcmd name="getcmd" />
+            <frmcmd name="getcmd"/>
           </item>
           <item id="run3" label="Run to Tag 3">
             <frmcmd name="set_tag">
@@ -100,7 +100,7 @@
             <frmcmd name="act">
               <argv>0</argv>
             </frmcmd>
-            <frmcmd name="getcmd" />
+            <frmcmd name="getcmd"/>
           </item>
           <item id="run7" label="Run to Tag 7">
             <frmcmd name="set_tag">
@@ -109,7 +109,7 @@
             <frmcmd name="act">
               <argv>0</argv>
             </frmcmd>
-            <frmcmd name="getcmd" />
+            <frmcmd name="getcmd"/>
           </item>
           <item id="run8" label="Run to Tag 8">
             <frmcmd name="set_tag">
@@ -118,7 +118,7 @@
             <frmcmd name="act">
               <argv>0</argv>
             </frmcmd>
-            <frmcmd name="getcmd" />
+            <frmcmd name="getcmd"/>
           </item>
           <item id="run9" label="Run to Tag 9">
             <frmcmd name="set_tag">
@@ -127,7 +127,7 @@
             <frmcmd name="act">
               <argv>0</argv>
             </frmcmd>
-            <frmcmd name="getcmd" />
+            <frmcmd name="getcmd"/>
           </item>
           <item id="run10" label="Run to Tag 10">
             <frmcmd name="set_tag">
@@ -136,7 +136,7 @@
             <frmcmd name="act">
               <argv>0</argv>
             </frmcmd>
-            <frmcmd name="getcmd" />
+            <frmcmd name="getcmd"/>
           </item>
           <item id="run11" label="Run to Tag 11">
             <frmcmd name="set_tag">
@@ -145,7 +145,7 @@
             <frmcmd name="act">
               <argv>0</argv>
             </frmcmd>
-            <frmcmd name="getcmd" />
+            <frmcmd name="getcmd"/>
           </item>
           <item id="run12" label="Run to Tag 12">
             <frmcmd name="set_tag">
@@ -154,7 +154,7 @@
             <frmcmd name="act">
               <argv>0</argv>
             </frmcmd>
-            <frmcmd name="getcmd" />
+            <frmcmd name="getcmd"/>
           </item>
         </unit>
         <item id="runf" label="Run Forward">
@@ -164,7 +164,7 @@
           <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getcmd"/>
         </item>
         <item id="runb" label="Run Backword">
           <frmcmd name="set_tag">
@@ -173,7 +173,7 @@
           <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getcmd"/>
         </item>
       </group>
       <group id="gjak" caption="Jak Commands" column="2">
@@ -184,9 +184,9 @@
           <frmcmd name="act">
             <argv>8</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getcmd"/>
         </item>
-        <unit id='unit_lftup' title="lftup[1-3]" label="Lift up to 1-3">
+        <unit id="unit_lftup" title="lftup[1-3]" label="Lift up to 1-3">
           <item id="lftup1" label="Lift Low Level">
             <frmcmd name="set_pos">
               <argv>1</argv>
@@ -194,7 +194,7 @@
             <frmcmd name="act">
               <argv>8</argv>
             </frmcmd>
-            <frmcmd name="getcmd" />
+            <frmcmd name="getcmd"/>
           </item>
           <item id="lftup2" label="Lift Mid Level">
             <frmcmd name="set_pos">
@@ -203,7 +203,7 @@
             <frmcmd name="act">
               <argv>8</argv>
             </frmcmd>
-            <frmcmd name="getcmd" />
+            <frmcmd name="getcmd"/>
           </item>
           <item id="lftup3" label="Lift High Level">
             <frmcmd name="set_pos">
@@ -212,7 +212,7 @@
             <frmcmd name="act">
               <argv>8</argv>
             </frmcmd>
-            <frmcmd name="getcmd" />
+            <frmcmd name="getcmd"/>
           </item>
         </unit>
         <item id="lftchg" label="Lift Charge Level">
@@ -222,7 +222,7 @@
           <frmcmd name="act">
             <argv>8</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getcmd"/>
         </item>
       </group>
       <group id="gins" caption="Instrument Assign" column="2">
@@ -230,31 +230,31 @@
           <frmcmd name="set_ins">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="getstat" />
+          <frmcmd name="getstat"/>
         </item>
         <item id="ciao" label="CIAO">
           <frmcmd name="set_ins">
             <argv>2</argv>
           </frmcmd>
-          <frmcmd name="getstat" />
+          <frmcmd name="getstat"/>
         </item>
         <item id="focas" label="FOCAS">
           <frmcmd name="set_ins">
             <argv>3</argv>
           </frmcmd>
-          <frmcmd name="getstat" />
+          <frmcmd name="getstat"/>
         </item>
         <item id="moircs" label="MOIRCS">
           <frmcmd name="set_ins">
             <argv>4</argv>
           </frmcmd>
-          <frmcmd name="getstat" />
+          <frmcmd name="getstat"/>
         </item>
         <item id="mc-box" label="Meteorogy Box">
           <frmcmd name="set_ins">
             <argv>5</argv>
           </frmcmd>
-          <frmcmd name="getstat" />
+          <frmcmd name="getstat"/>
         </item>
       </group>
       <group id="gchg" caption="Charging Commands" column="2">
@@ -269,8 +269,8 @@
             <frmcmd name="int">
               <argv format="%d">3</argv>
             </frmcmd>
-            <frmcmd name="clr_int" />
-            <frmcmd name="getstat" />
+            <frmcmd name="clr_int"/>
+            <frmcmd name="getstat"/>
           </item>
         </unit>
       </group>
@@ -306,89 +306,89 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="mel">
       <group id="gs" caption="Status" column="3">
         <binary id="ctl" label="CONTROL" symbol="ctl_mode">
-          <field ref="x" index="0" bit="14:15" />
+          <field ref="x" index="0" bit="14:15"/>
         </binary>
         <binary id="rdy" label="READY" symbol="off_alarm">
-          <field ref="x" index="0" bit="0" />
+          <field ref="x" index="0" bit="0"/>
         </binary>
         <binary id="stp" label="STOPPING" symbol="off_warn">
-          <field ref="x" index="0" bit="3" />
+          <field ref="x" index="0" bit="3"/>
         </binary>
         <binary id="pse" label="PAUSE" symbol="action">
-          <field ref="x" index="0" bit="1" />
+          <field ref="x" index="0" bit="1"/>
         </binary>
         <binary id="emg" label="ENERGENCY" symbol="alarm">
-          <field ref="x" index="0" bit="2" />
+          <field ref="x" index="0" bit="2"/>
         </binary>
         <integer id="exc" label="EXIT CODE" symbol="ecode" format="%04X">
-          <field ref="ecode" />
+          <field ref="ecode"/>
         </integer>
         <binary id="flt" label="Fault" symbol="alarm">
-          <field ref="x" index="0" bit="7" />
+          <field ref="x" index="0" bit="7"/>
         </binary>
       </group>
       <group id="gt" caption="Trigger" column="4">
         <binary id="acp" label="CMD ENB" symbol="acp">
-          <field label="Command Receive Enable" ref="x" index="32" bit="0" />
+          <field label="Command Receive Enable" ref="x" index="32" bit="0"/>
         </binary>
         <binary id="isu" label="ISSUED" symbol="nonzero">
-          <field ref="c" index="2" bit="0" />
-          <field ref="c" index="2" bit="8" />
-          <field ref="c" index="2" bit="15" />
+          <field ref="c" index="2" bit="0"/>
+          <field ref="c" index="2" bit="8"/>
+          <field ref="c" index="2" bit="15"/>
         </binary>
       </group>
       <group id="gins" caption="Instrument" column="2">
         <integer id="ist" label="ID" symbol="ist">
-          <field ref="x" index="23" />
+          <field ref="x" index="23"/>
         </integer>
         <binary id="ion" label="Loading" symbol="corn">
-          <field ref="x" index="4" bit="8" />
-          <field ref="x" index="4" bit="9" />
-          <field ref="x" index="4" bit="10" />
-          <field ref="x" index="4" bit="11" />
+          <field ref="x" index="4" bit="8"/>
+          <field ref="x" index="4" bit="9"/>
+          <field ref="x" index="4" bit="10"/>
+          <field ref="x" index="4" bit="11"/>
         </binary>
       </group>
       <group id="gact" caption="Motion Status" column="3">
         <binary id="run" label="RUNNING" symbol="action">
-          <field ref="x" index="0" bit="4" />
+          <field ref="x" index="0" bit="4"/>
         </binary>
         <integer id="cps" label="Current Tag">
-          <field ref="x" index="25" />
+          <field ref="x" index="25"/>
         </integer>
         <integer id="dps" label="Destination Tag">
-          <field ref="x" index="26" />
+          <field ref="x" index="26"/>
         </integer>
         <binary id="jak" label="JACKING" symbol="action">
-          <field ref="x" index="0" bit="5" />
+          <field ref="x" index="0" bit="5"/>
         </binary>
         <integer id="jlv" label="Jack Level" symbol="jlv">
-          <field ref="x" index="27" />
+          <field ref="x" index="27"/>
         </integer>
         <binary id="con" label="Corn" symbol="corn">
-          <field ref="x" index="19" bit="5" />
-          <field ref="x" index="19" bit="13" />
-          <field ref="x" index="20" bit="5" />
-          <field ref="x" index="20" bit="13" />
+          <field ref="x" index="19" bit="5"/>
+          <field ref="x" index="19" bit="13"/>
+          <field ref="x" index="20" bit="5"/>
+          <field ref="x" index="20" bit="13"/>
         </binary>
         <binary id="chg" label="CHARGING" symbol="action">
-          <field ref="x" index="0" bit="6" />
+          <field ref="x" index="0" bit="6"/>
         </binary>
         <float id="vol" label="Battery(V)" symbol="bvl" format="%02.2f" formula="$#/100">
-          <field ref="x" index="22" />
+          <field ref="x" index="22"/>
         </float>
       </group>
       <group id="gmot" caption="Running Motor Stat" column="2">
         <binary id="msr" label="Servo R" symbol="action">
-          <field ref="x" index="0" bit="8" inv="true" />
+          <field ref="x" index="0" bit="8" inv="true"/>
         </binary>
         <float id="mdr" label="D/A R" formula="-$#">
-          <field ref="x" index="7" />
+          <field ref="x" index="7"/>
         </float>
         <binary id="msl" label="Servo L" symbol="action">
           <field ref="x" index="0" bit="9" inv="true"/>
         </binary>
         <float id="mdl" label="D/A L">
-          <field ref="x" index="8" />
+          <field ref="x" index="8"/>
         </float>
       </group>
       <group id="gjm" caption="Jacking Motor Stat" column="5">
@@ -397,20 +397,20 @@
             <field ref="x" index="0" bit="9+$_" inv="true"/>
           </binary>
           <float id="jh$_" label="H(mm) $_" formula="$#/100">
-            <field ref="x" index="8+2*$_" />
+            <field ref="x" index="8+2*$_"/>
           </float>
           <binary id="cn$_" label="Corn $_" symbol="con">
-            <field ref="x" index="19+($_-1)/2" bit="13-($_%2)*8" />
+            <field ref="x" index="19+($_-1)/2" bit="13-($_%2)*8"/>
           </binary>
           <integer id="ld$_" label="LD(Kgf) $_">
-            <field ref="x" index="$_+47" />
+            <field ref="x" index="$_+47"/>
           </integer>
           <binary id="lc$_" label="LD(S) $_" symbol="load">
-            <field ref="x" index="19+($_-1)/2" bit="8-($_%2)*8" />
-            <field ref="x" index="19+($_-1)/2" bit="9-($_%2)*8" />
-            <field ref="x" index="19+($_-1)/2" bit="10-($_%2)*8" />
-            <field ref="x" index="19+($_-1)/2" bit="11-($_%2)*8" />
-            <field ref="x" index="19+($_-1)/2" bit="12-($_%2)*8" />
+            <field ref="x" index="19+($_-1)/2" bit="8-($_%2)*8"/>
+            <field ref="x" index="19+($_-1)/2" bit="9-($_%2)*8"/>
+            <field ref="x" index="19+($_-1)/2" bit="10-($_%2)*8"/>
+            <field ref="x" index="19+($_-1)/2" bit="11-($_%2)*8"/>
+            <field ref="x" index="19+($_-1)/2" bit="12-($_%2)*8"/>
           </binary>
         </repeat_var>
       </group>
@@ -428,19 +428,19 @@
       </event>
       <event label="While Running" id="run">
         <range var="run">1</range>
-        <block_grp ref="grun" />
-        <block_grp ref="gjak" />
-        <block_grp ref="gchg" />
-        <int name="pause" />
+        <block_grp ref="grun"/>
+        <block_grp ref="gjak"/>
+        <block_grp ref="gchg"/>
+        <int name="pause"/>
         <exec name="upd"/>
       </event>
       <event label="While Jacking" id="jak">
         <range var="jak">1</range>
-        <block_grp ref="grun" />
-        <block_grp ref="gjak" />
-        <block_grp ref="gchg" />
-        <int name="pause" />
-        <exec name="upd" />
+        <block_grp ref="grun"/>
+        <block_grp ref="gjak"/>
+        <block_grp ref="gchg"/>
+        <int name="pause"/>
+        <exec name="upd"/>
       </event>
     </watch>
   </app>

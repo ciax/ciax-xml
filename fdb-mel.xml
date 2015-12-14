@@ -136,7 +136,7 @@
       <field decode="integer" label="Q Header: PC Number" length="1">255</field>
       <field decode="integer" label="Q Header: Request Unit I/O Number" length="2">1023</field>
       <field decode="integer" label="Q Header: Request Unit Station Number" length="1">0</field>
-      <field assign="cc" decode="integer" label="Response Data Length" length="2" />
+      <field assign="cc" decode="integer" label="Response Data Length" length="2"/>
       <ccrange>
         <field assign="ecode" decode="integer" label="Error Code" length="2">0</field>
         <body/>
@@ -145,23 +145,23 @@
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat" label="get status">
         <array assign="x" decode="integer" sign="msb" label="Status Flags" length="2">
-          <index size="52" />
+          <index size="52"/>
         </array>
       </item>
       <item id="getcmd" label="get cmd status">
         <array assign="c" decode="integer" sign="msb" label="Command Flags" length="2">
-          <index size="5" />
+          <index size="5"/>
         </array>
       </item>
-      <item id="cmdrsp" label="command resp" />
+      <item id="cmdrsp" label="command resp"/>
       <item id="get_tbl">
         <array assign="t" decode="integer" label="Jack Pulse Tables" length="2">
           <!--Tag-->
           <index range="$1" size="6"/>
           <!--Jak-->
-          <index range="$2" size="4" />
+          <index range="$2" size="4"/>
           <!--ID[0-10],Level[0-3]-->
-          <index size="44" />
+          <index size="44"/>
         </array>
       </item>
     </response>

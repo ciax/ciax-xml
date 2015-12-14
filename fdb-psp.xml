@@ -3,7 +3,7 @@
   <frame id="psp" label="Power Supply Instek PSP-603">
     <spec type="Power Supply" mfr="Instek" model="PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf"/>
     <stream wait="0.3" terminator="\r\n"/>
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
       <char length="1">0xd</char>
@@ -45,24 +45,24 @@
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
         <field>V</field>
-        <field assign="v" label="Output(V)" length="5" />
+        <field assign="v" label="Output(V)" length="5"/>
         <field>A</field>
-        <field assign="a" label="Output(A)" length="5" />
+        <field assign="a" label="Output(A)" length="5"/>
         <field>W</field>
-        <field assign="w" label="Output(W)" length="5" />
+        <field assign="w" label="Output(W)" length="5"/>
         <field>U</field>
-        <field assign="u" label="Limit(V)" length="2" />
+        <field assign="u" label="Limit(V)" length="2"/>
         <field>I</field>
-        <field assign="i" label="Limit(A)" length="4" />
+        <field assign="i" label="Limit(A)" length="4"/>
         <field>P</field>
-        <field assign="p" label="Limit(W)" length="3" />
+        <field assign="p" label="Limit(W)" length="3"/>
         <field>F</field>
-        <field assign="f1" label="Output(ON/OFF)" length="1" />
-        <field assign="f2" label="OverHeat" length="1" />
-        <field assign="f3" label="ADJ Fine" length="1" />
-        <field assign="f4" label="ADJ Unlock" length="1" />
-        <field assign="f5" label="Remote" length="1" />
-        <field assign="f6" label="Local Lock" length="1" />
+        <field assign="f1" label="Output(ON/OFF)" length="1"/>
+        <field assign="f2" label="OverHeat" length="1"/>
+        <field assign="f3" label="ADJ Fine" length="1"/>
+        <field assign="f4" label="ADJ Unlock" length="1"/>
+        <field assign="f5" label="Remote" length="1"/>
+        <field assign="f6" label="Local Lock" length="1"/>
       </item>
     </response>
   </frame>

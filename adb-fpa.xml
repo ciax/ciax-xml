@@ -3,20 +3,20 @@
   <app frm_id="fpa" id="fpa" label="MOIRCS Field Point Analog Input" version="1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id='upd' label="Status">
+        <unit id="upd" label="Status">
           <item id="upd" label="Upd">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
         </unit>
         <unit id="setr" label="Set Range">
           <item id="set1v" label="+-1.2V">
-            <frmcmd name="setr1" />
+            <frmcmd name="setr1"/>
           </item>
           <item id="set6v" label="+-6V(output is +-3V for moircs hall sensor)">
-            <frmcmd name="setr6" />
+            <frmcmd name="setr6"/>
           </item>
           <item id="set15v" label="+-15V">
-            <frmcmd name="setr15" />
+            <frmcmd name="setr15"/>
           </item>
         </unit>
       </group>
@@ -25,7 +25,7 @@
       <group id="g1" column="3" caption="Voltage">
         <repeat_var from="1" to="6">
           <float id="v$_" label="OUTPUT$_ (V)" format="%2.2f" formula="($#-32768)/32768*6" symbol="volt">
-            <field ref="stat" index="$_-1" />
+            <field ref="stat" index="$_-1"/>
           </float>
         </repeat_var>
       </group>

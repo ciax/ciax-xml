@@ -3,9 +3,9 @@
   <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Motion Commands">
-        <unit id='upd' label="Status">
+        <unit id="upd" label="Status">
           <item id="upd" label="Upd">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <repeat from="1" to="6">
               <frmcmd name="chkrun">
                 <argv>$_</argv>
@@ -202,7 +202,7 @@
             </frmcmd>
             <frmcmd name="chkrun">
               <argv>$_</argv>
-          </frmcmd>
+            </frmcmd>
           </repeat>
         </item>
         <item id="fw_all" label="Move Forward All Turret [1-(hole)]">
@@ -214,11 +214,11 @@
             </frmcmd>
             <frmcmd name="chkrun">
               <argv>$_</argv>
-          </frmcmd>
+            </frmcmd>
           </repeat>
         </item>
       </group>
-      <group id='gcfg' caption="Configuration Commands">
+      <group id="gcfg" caption="Configuration Commands">
         <item id="speed" label="Set Speed [25-800]">
           <par_num>25:800</par_num>
           <repeat from="1" to="6">
@@ -244,14 +244,14 @@
           </repeat>
         </item>
       </group>
-      <group id='gsys' caption="Device System Commands">
+      <group id="gsys" caption="Device System Commands">
         <item id="sysinit" label="Device Initialize">
-          <frmcmd name="initrot" />
-          <frmcmd name="initunit" />
-          <frmcmd name="initfactor" />
+          <frmcmd name="initrot"/>
+          <frmcmd name="initunit"/>
+          <frmcmd name="initfactor"/>
         </item>
         <item id="sysupd" label="Update Device Status">
-          <frmcmd name="getstat" />
+          <frmcmd name="getstat"/>
           <repeat from="1" to="6">
             <frmcmd name="chkrun">
               <argv>$_</argv>
@@ -296,65 +296,65 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ixe">
       <group caption="Mode" id="gm" column="2">
         <binary id="trm" label="Terminal Mode" symbol="off_warn">
-          <field bit="2" ref="stat" />
+          <field bit="2" ref="stat"/>
         </binary>
         <binary id="cmd" label="Computer Mode" symbol="off_warn">
-          <field bit="7" ref="stat" />
+          <field bit="7" ref="stat"/>
         </binary>
       </group>
       <group id="gs" caption="Stat" column="3">
         <binary id="rdy" label="Comm Ready" symbol="off_warn">
-          <field bit="0" ref="stat" />
+          <field bit="0" ref="stat"/>
         </binary>
         <binary id="srq" label="SRQ" symbol="off_warn">
-          <field bit="1" ref="stat" />
+          <field bit="1" ref="stat"/>
         </binary>
         <string id="stp" label="Stop All" symbol="stp">
           <repeat_field from="1" to="6">
-            <field ref="run" index="$_-1" />
+            <field ref="run" index="$_-1"/>
           </repeat_field>
         </string>
       </group>
       <group caption="Error" id="ge" column="2">
         <binary id="pme" label="Program Error" symbol="alarm">
-          <field bit="3" ref="stat" />
+          <field bit="3" ref="stat"/>
         </binary>
         <binary id="pse" label="Power Stage Error" symbol="alarm">
-          <field bit="4" ref="stat" />
+          <field bit="4" ref="stat"/>
         </binary>
         <binary id="oes" label="ONE EM Stop" symbol="alarm">
-          <field bit="5" ref="stat" />
+          <field bit="5" ref="stat"/>
         </binary>
         <binary id="ees" label="EXT EM Stop" symbol="alarm">
-          <field bit="6" ref="stat" />
+          <field bit="6" ref="stat"/>
         </binary>
       </group>
       <group id="g3" caption="Turret Status" column="3">
         <repeat_var from="1" to="6">
           <string id="r$_" label="Running $_">
-            <field ref="run" index="$_-1" />
+            <field ref="run" index="$_-1"/>
           </string>
           <float id="p$_" label="Select Slot $_" symbol="pos" format="%.1f" formula="($# % 96000)/8000">
-            <field ref="p" index="$_-1" />
+            <field ref="p" index="$_-1"/>
           </float>
           <float id="mp$_" label="Access Slot $_" symbol="pos" format="%.1f" formula="($# % 96000)/8000">
-            <field ref="mp" index="$_-1" />
+            <field ref="mp" index="$_-1"/>
           </float>
         </repeat_var>
       </group>
       <group id="g4" caption="Turret Config" column="4">
         <repeat_var from="1" to="6">
           <float id="spd$_" label="Speed $_(/s)" format="%.1f" formula="$#/8000">
-            <field ref="spd" index="$_-1" />
+            <field ref="spd" index="$_-1"/>
           </float>
           <float id="rmp$_" label="Ramp $_(/s2)" format="%.1f" formula="$#/8000">
-            <field ref="rmp" index="$_-1" />
+            <field ref="rmp" index="$_-1"/>
           </float>
           <float id="ispd$_" label="Init Speed $_(/s)" format="%.1f" formula="$#/8000">
-            <field ref="ispd" index="$_-1" />
+            <field ref="ispd" index="$_-1"/>
           </float>
           <float id="ofs$_" label="Init Offset $_" format="%.1f" formula="$#/8000">
-            <field ref="ofs" index="$_-1" />
+            <field ref="ofs" index="$_-1"/>
           </float>
         </repeat_var>
       </group>

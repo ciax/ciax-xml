@@ -2,7 +2,7 @@
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="bbe" label="BB Electric 232SDD16">
     <stream endian="big" wait="0.2"/>
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">!0</string>
       <body/>
@@ -26,7 +26,7 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field assign="stat" decode="integer" label="Status" length="2" />
+        <field assign="stat" decode="integer" label="Status" length="2"/>
       </item>
     </response>
   </frame>

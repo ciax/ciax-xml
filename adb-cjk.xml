@@ -3,10 +3,10 @@
   <app frm_id="mel" id="cjk" label="Cart Jack Table" version="0">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gmtn" caption="Maintenance Commands" column="2">
-        <unit id='upd' label="Update All Status">
+        <unit id="upd" label="Update All Status">
           <item id="upd" label="Upd">
-            <frmcmd name="getstat" />
-            <frmcmd name="getcmd" />
+            <frmcmd name="getstat"/>
+            <frmcmd name="getcmd"/>
           </item>
         </unit>
         <item id="get_tbl" label="Get Jack Table">
@@ -44,7 +44,7 @@
             <repeat_var from="0" to="3" counter="l">
               <repeat_var from="0" to="3" counter="j">
                 <float id="i$it$tl$lj$j" label="Lev$l,Jak$j" format="%.2f" formula="$#/100">
-                  <field ref="t" index="$t:$j:$i*4+$l" />
+                  <field ref="t" index="$t:$j:$i*4+$l"/>
                 </float>
               </repeat_var>
             </repeat_var>

@@ -3,7 +3,7 @@
   <frame id="slo" label="SLOSYN SS6000i">
     <spec mfr="slosyn" type="motor driver" model="SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf"/>
     <stream wait="0.1" terminator="\r\n"/>
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
       <char length="1">0xd</char>
@@ -86,20 +86,20 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field assign="err" label="ErrorCode" />
+        <field assign="err" label="ErrorCode"/>
       </item>
       <item id="bs">
-        <field assign="bs" label="Moving" />
+        <field assign="bs" label="Moving"/>
       </item>
       <item id="p">
-        <field assign="p" label="Pulse" />
+        <field assign="p" label="Pulse"/>
       </item>
       <item id="spd">
-        <field assign="spd" label="Speed" />
+        <field assign="spd" label="Speed"/>
       </item>
       <item id="in">
         <array assign="in" label="Input">
-          <index range="$1-1" size="5" />
+          <index range="$1-1" size="5"/>
         </array>
       </item>
       <item id="default">

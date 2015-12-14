@@ -6,14 +6,14 @@
       <instance id="tfp" app_id="cfp" frm_site="tfp" host="localhost" port="25698" label="TEST Field Point"/>
       <instance id="tbb" app_id="bbe" frm_site="tbb" host="localhost" port="25697" label="TEST BBE">
         <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <item id="on" label="Alias for X0 ON" ref="x0on" />
-          <item id="off" label="Alias for X0 OFF" ref="x0off" />
+          <item id="on" label="Alias for X0 ON" ref="x0on"/>
+          <item id="off" label="Alias for X0 OFF" ref="x0off"/>
         </alias>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <group ref="g0" caption="X0-3" />
-          <group ref="g1" caption="X4-7" />
-          <group ref="g2" caption="X8-11" />
-          <group ref="g3" caption="X12-15" />
+          <group ref="g0" caption="X0-3"/>
+          <group ref="g1" caption="X4-7"/>
+          <group ref="g2" caption="X8-11"/>
+          <group ref="g3" caption="X12-15"/>
         </status>
         <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.2">
           <event label="ON Executed 1" id="on1">

@@ -23,7 +23,7 @@
         <field decode="integer">6</field>
       </item>
       <item id="getstat">
-        <array assign="stat"  delimiter=",">
+        <array assign="stat" delimiter=",">
           <index size="2"/>
           <index size="2"/>
         </array>

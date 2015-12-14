@@ -3,7 +3,7 @@
   <frame id="mic" label="Piezo Motor(Micronix MMC-100)">
     <spec type="Piezo Motor" mfr="Micronix" model="MMC-100" reference="http://www.micronixusa.com/motion/assets/docs/manuals/MMC-100%20Manual%20Rev2.00.pdf"/>
     <stream wait="0.1" terminator="\n\r"/>
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="38400" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="38400" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
       <char length="1">0xa</char>
@@ -40,18 +40,18 @@
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getst">
         <array assign="st" label="Status">
-          <index range="$1-1" size="6" />
+          <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getp">
         <array assign="pos" label="Position" delimiter=",">
-          <index range="$1-1" size="6" />
-          <index size="2" />
+          <index range="$1-1" size="6"/>
+          <index size="2"/>
         </array>
       </item>
       <item id="geta">
         <array assign="acc" label="Acceleration">
-          <index range="$1-1" size="6" />
+          <index range="$1-1" size="6"/>
         </array>
       </item>
     </response>

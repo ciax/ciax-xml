@@ -2,8 +2,8 @@
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="ixe" label="Phytron IXEa-A">
     <spec mfr="Phytron" model="IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf"/>
-    <stream maxlength="31" wait="0.001" timeout="30"  terminator="\r\n"/>
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
+    <stream maxlength="31" wait="0.001" timeout="30" terminator="\r\n"/>
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="Prefix">2</char>
       <body/>
@@ -169,51 +169,51 @@
       </item>
       <item id="chkrun">
         <array assign="run" label="Moving" delimiter="\003">
-          <index range="$1-1" size="6" />
+          <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="chkems">
         <array assign="ems" label="Emergency" delimiter="\003">
-          <index range="$1-1" size="6" />
+          <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="chkpse">
         <array assign="pse" label="Power Stage Err" delimiter="\003">
-          <index range="$1-1" size="6" />
+          <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getp">
         <array assign="p" label="Pulse" delimiter="\003">
-          <index range="$1-1" size="6" />
+          <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getmp">
         <array assign="mp" label="Mechanical Pulse" delimiter="\003">
-          <index range="$1-1" size="6" />
+          <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getspd">
         <array assign="spd" label="Speed" delimiter="\003">
-          <index range="$1-1" size="6" />
+          <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getrmp">
         <array assign="rmp" label="Ramp Speed" delimiter="\003">
-          <index range="$1-1" size="6" />
+          <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getispd">
         <array assign="ispd" label="Init Speed" delimiter="\003">
-          <index range="$1-1" size="6" />
+          <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getofs">
         <array assign="ofs" label="Init Offset" delimiter="\003">
-          <index range="$1-1" size="6" />
+          <index range="$1-1" size="6"/>
         </array>
       </item>
-      <item id="default" />
-      <item id="dummy" noaffix="true" />
+      <item id="default"/>
+      <item id="dummy" noaffix="true"/>
     </response>
   </frame>
 </fdb>

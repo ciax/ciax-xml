@@ -3,236 +3,236 @@
   <app frm_id="oss" id="oss" label="TSC Control" version="5">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id='upd' label="Status">
+        <unit id="upd" label="Status">
           <item id="upd" label="Upd">
-            <frmcmd name="logstat" />
-            <frmcmd name="getstat" />
-            <frmcmd name="iststat" />
-            <frmcmd name="jakstat" />
-            <frmcmd name="inrstat" />
-            <frmcmd name="jaklen" />
-            <frmcmd name="zlen" />
+            <frmcmd name="logstat"/>
+            <frmcmd name="getstat"/>
+            <frmcmd name="iststat"/>
+            <frmcmd name="jakstat"/>
+            <frmcmd name="inrstat"/>
+            <frmcmd name="jaklen"/>
+            <frmcmd name="zlen"/>
           </item>
         </unit>
         <item id="login" label="Login">
-          <frmcmd name="login" />
-          <frmcmd name="logstat" />
+          <frmcmd name="login"/>
+          <frmcmd name="logstat"/>
         </item>
         <item id="logout" label="Logout">
-          <frmcmd name="logout" />
-          <frmcmd name="logstat" />
+          <frmcmd name="logout"/>
+          <frmcmd name="logstat"/>
         </item>
         <item id="init" label="Start TCP Status Request">
-          <frmcmd name="init" />
+          <frmcmd name="init"/>
         </item>
         <item id="startup" label="Start Up CIAX operation">
-          <frmcmd name="login" />
-          <frmcmd name="tsconly" label="TSC Only Mode(CIAX Mode)" />
-          <frmcmd name="ron" />
-          <frmcmd name="jon" />
+          <frmcmd name="login"/>
+          <frmcmd name="tsconly" label="TSC Only Mode(CIAX Mode)"/>
+          <frmcmd name="ron"/>
+          <frmcmd name="jon"/>
         </item>
         <item id="shutdown" label="Shutdown CIAX operation">
-          <frmcmd name="joff" />
-          <frmcmd name="roff" />
-          <frmcmd name="tscpri" label="TSC Primaly Mode" />
-          <frmcmd name="logout" />
+          <frmcmd name="joff"/>
+          <frmcmd name="roff"/>
+          <frmcmd name="tscpri" label="TSC Primaly Mode"/>
+          <frmcmd name="logout"/>
         </item>
         <item id="rhook" label="InR Hook">
-          <frmcmd name="rhook" />
-          <frmcmd name="inrstat" />
+          <frmcmd name="rhook"/>
+          <frmcmd name="inrstat"/>
         </item>
         <item id="runhk" label="InR UnHook">
-          <frmcmd name="runhk" />
-          <frmcmd name="inrstat" />
+          <frmcmd name="runhk"/>
+          <frmcmd name="inrstat"/>
         </item>
         <item id="rstop" label="InR Stop">
-          <frmcmd name="rstop" />
-          <frmcmd name="inrstat" />
+          <frmcmd name="rstop"/>
+          <frmcmd name="inrstat"/>
         </item>
         <item id="jup" label="All EJB Up">
-          <frmcmd name="ajup" />
-          <frmcmd name="jakstat" />
+          <frmcmd name="ajup"/>
+          <frmcmd name="jakstat"/>
         </item>
         <item id="jdw" label="All EJB Down">
-          <frmcmd name="ajdw" />
-          <frmcmd name="jakstat" />
+          <frmcmd name="ajdw"/>
+          <frmcmd name="jakstat"/>
         </item>
         <item id="jstop" label="All EJB Stop">
-          <frmcmd name="ajstop" />
-          <frmcmd name="jakstat" />
+          <frmcmd name="ajstop"/>
+          <frmcmd name="jakstat"/>
         </item>
         <item id="moircs" label="Set IID MOIRCS">
           <frmcmd name="setinst">
             <argv>12</argv>
           </frmcmd>
-          <frmcmd name="iststat" />
+          <frmcmd name="iststat"/>
         </item>
         <item id="focas" label="Set IID FOCAS">
           <frmcmd name="setinst">
             <argv>5</argv>
           </frmcmd>
-          <frmcmd name="iststat" />
+          <frmcmd name="iststat"/>
         </item>
         <item id="comics" label="Set IID COMICS">
           <frmcmd name="setinst">
             <argv>7</argv>
           </frmcmd>
-          <frmcmd name="iststat" />
+          <frmcmd name="iststat"/>
         </item>
         <item id="updjak" label="Update Jak Status" hidden="true">
-          <frmcmd name="jakstat" />
-          <frmcmd name="getexit" />
-          <frmcmd name="getpid" />
+          <frmcmd name="jakstat"/>
+          <frmcmd name="getexit"/>
+          <frmcmd name="getpid"/>
         </item>
         <item id="updinr" label="Update Inr Status" hidden="true">
-          <frmcmd name="inrstat" />
-          <frmcmd name="getexit" />
-          <frmcmd name="getpid" />
+          <frmcmd name="inrstat"/>
+          <frmcmd name="getexit"/>
+          <frmcmd name="getpid"/>
         </item>
       </group>
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="oss">
       <group id="g1" caption="Main" column="3">
         <integer id="exit" label="Exit Code">
-          <field ref="exit" />
+          <field ref="exit"/>
         </integer>
         <binary id="nfb" label="BOLT NFB TRIP">
-          <field bit="6" ref="bstat" />
+          <field bit="6" ref="bstat"/>
         </binary>
         <string id="login" label="Login Status" symbol="login">
-          <field ref="login0" />
-          <field ref="login1" />
-          <field ref="login2" />
-          <field ref="login3" />
+          <field ref="login0"/>
+          <field ref="login1"/>
+          <field ref="login2"/>
+          <field ref="login3"/>
         </string>
         <integer id="rts" label="ROT SEL" symbol="rts">
-          <field ref="rsel" />
+          <field ref="rsel"/>
         </integer>
         <integer id="iid" label="CAS INST ID" symbol="iid">
-          <field ref="iid" />
+          <field ref="iid"/>
         </integer>
       </group>
       <group id="g2" caption="Drive Stat" column="4">
         <binary id="azd" label="AZ" symbol="drv">
-          <field label="ON" bit="0" ref="teldrive" />
-          <field label="OFF" bit="1" ref="teldrive" />
-          <field label="Ready" bit="2" ref="teldrive" />
+          <field label="ON" bit="0" ref="teldrive"/>
+          <field label="OFF" bit="1" ref="teldrive"/>
+          <field label="Ready" bit="2" ref="teldrive"/>
         </binary>
         <binary id="eld" label="EL" symbol="drv">
-          <field label="ON" bit="3" ref="teldrive" />
-          <field label="OFF" bit="4" ref="teldrive" />
-          <field label="Ready" bit="5" ref="teldrive" />
+          <field label="ON" bit="3" ref="teldrive"/>
+          <field label="OFF" bit="4" ref="teldrive"/>
+          <field label="Ready" bit="5" ref="teldrive"/>
         </binary>
         <integer id="rpw" label="ROT" symbol="rpw">
-          <field ref="rpw" />
+          <field ref="rpw"/>
         </integer>
         <binary id="jpw" label="JAK" symbol="warn">
-          <field bit="7" ref="bstat" />
+          <field bit="7" ref="bstat"/>
         </binary>
       </group>
       <group id="g3" caption="Position" column="4">
         <binary id="stw" label="EL STOW" symbol="off_warn">
-          <field bit="2" ref="stow_1" />
+          <field bit="2" ref="stow_1"/>
         </binary>
         <float id="elv" label="EL" format="%.3f">
-          <field ref="el" />
+          <field ref="el"/>
         </float>
         <float id="iang" label="InR" format="%.3f">
-          <field ref="iang" />
+          <field ref="iang"/>
         </float>
         <binary id="rps" label="ROT SENSOR" symbol="rps">
-          <field bit="4" ref="bstat" />
-          <field bit="5" ref="bstat" />
+          <field bit="4" ref="bstat"/>
+          <field bit="5" ref="bstat"/>
         </binary>
         <binary id="abs" label="JACK STOP" symbol="warn">
-          <field ref="abs" bit="2" />
+          <field ref="abs" bit="2"/>
         </binary>
         <binary id="abc" label="JACK CLMP" symbol="warn">
-          <field ref="abs" bit="0" />
+          <field ref="abs" bit="0"/>
         </binary>
         <binary id="abr" label="JACK RDY" symbol="warn">
-          <field ref="abs" bit="4" />
+          <field ref="abs" bit="4"/>
         </binary>
         <binary id="bsa" label="JACK ALM" symbol="warn">
-          <field ref="bsa" bit="1" />
+          <field ref="bsa" bit="1"/>
         </binary>
       </group>
       <group id="g4" caption="[Stop] [Clmp] [Rdy] [Pos] [Jack Len]  [Clnt Lmt] [Alm]" column="7">
         <repeat_var from="1" to="16" format="%02d">
           <!--Order:1,0;3,2;5,4;7,6;...-->
           <binary id="bs$_" symbol="warn" label="$_">
-            <field ref="bs" index="$_-($_+1)%2*2" bit="2" />
+            <field ref="bs" index="$_-($_+1)%2*2" bit="2"/>
           </binary>
           <binary id="bc$_" label="$_" symbol="warn">
-            <field ref="bs" index="$_-($_+1)%2*2" bit="0" />
+            <field ref="bs" index="$_-($_+1)%2*2" bit="0"/>
           </binary>
           <binary id="br$_" label="$_" symbol="warn">
-            <field ref="bs" bit="3" index="$_-($_+1)%2*2" />
+            <field ref="bs" bit="3" index="$_-($_+1)%2*2"/>
           </binary>
           <binary id="bl$_" label="$_" symbol="bl">
-            <field ref="bl" index="$_-($_+1)%2*2" bit="1" />
-            <field ref="bl" bit="2" index="$_-($_+1)%2*2" />
+            <field ref="bl" index="$_-($_+1)%2*2" bit="1"/>
+            <field ref="bl" bit="2" index="$_-($_+1)%2*2"/>
           </binary>
           <float id="jk$_" label="$_" format="%5.2f" formula="$#/100">
-            <field ref="jk" index="$_-($_+1)%2*2" />
+            <field ref="jk" index="$_-($_+1)%2*2"/>
           </float>
           <binary id="cl$_" label="$_" symbol="normal">
-            <field ref="clm" index="1-($_-1)/8" bit="($_-1)%8" />
+            <field ref="clm" index="1-($_-1)/8" bit="($_-1)%8"/>
           </binary>
           <binary id="ba$_" label="$_" symbol="ba">
             <field ref="bl" index="$_-($_+1)%2*2" bit="0"/>
-            <field ref="bl" index="$_-($_+1)%2*2" bit="4" />
+            <field ref="bl" index="$_-($_+1)%2*2" bit="4"/>
           </binary>
         </repeat_var>
       </group>
       <group id="g5" caption="[Z Sensor Len]" column="4">
         <repeat_var from="1" to="4">
           <float id="z$_" label="$_" format="%5.2f" formula="$#/100000">
-            <field ref="zp" index="$_-1" />
+            <field ref="zp" index="$_-1"/>
           </float>
         </repeat_var>
       </group>
       <group id="g6" caption="Statstic of all Jack" column="7">
         <binary id="bsx" operation="uneven" symbol="uni" label="Stop">
           <repeat_field from="0" to="15">
-            <field ref="bs" index="$_" bit="2" />
+            <field ref="bs" index="$_" bit="2"/>
           </repeat_field>
         </binary>
         <binary id="bcx" operation="uneven" symbol="uni" label="Clmp">
           <repeat_field from="0" to="15">
-            <field ref="bs" index="$_" bit="0" />
+            <field ref="bs" index="$_" bit="0"/>
           </repeat_field>
         </binary>
         <binary id="blx" operation="uneven" symbol="uni" label="Pos">
           <repeat_field from="0" to="15">
-            <field ref="bs" index="$_" bit="1" />
+            <field ref="bs" index="$_" bit="1"/>
           </repeat_field>
         </binary>
         <binary id="clx" operation="uneven" symbol="uni" label="Lmt">
           <repeat_field from="0" to="15">
-            <field ref="clm" index="1-$_/8" bit="$_%8" />
+            <field ref="clm" index="1-$_/8" bit="$_%8"/>
           </repeat_field>
         </binary>
         <float id="jkm" operation="average" format="%5.2f" formula="$#/100" label="Len Av">
           <repeat_field from="0" to="15">
-            <field ref="jk" index="$_" />
+            <field ref="jk" index="$_"/>
           </repeat_field>
         </float>
       </group>
     </status>
-    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event label="Moving Jack" id="jak">
         <onchange var="jkm"/>
         <block name="jup"/>
         <block name="jdw"/>
-        <int name="jstop" />
+        <int name="jstop"/>
         <exec name="updjak"/>
       </event>
       <event label="Moving InR" id="inr">
         <onchange var="iang"/>
         <block name="rhook"/>
         <block name="runhk"/>
-        <int name="rstop" />
+        <int name="rstop"/>
         <exec name="updinr"/>
       </event>
     </watch>

@@ -158,19 +158,19 @@
         <field assign="mba" label="MLP3-BOLT COMM ALM(18:B0)" length="2" decode="hexstr"/>
         <field assign="loc" label="CS BOLT LOCAL(19:B0)" length="2" decode="hexstr"/>
         <array assign="clm" label="CS BOLT Cullent Limit(20-21)" length="2" decode="hexstr">
-          <index size="2" />
+          <index size="2"/>
         </array>
       </item>
       <item id="jaklen">
         <!--POWER_V2-->
         <array assign="jk" label="Bolt Position" length="12" slice="0:6" decode="decstr">
-          <index size="16" />
+          <index size="16"/>
         </array>
       </item>
       <item id="zlen">
         <!--Z_SENSOR-->
         <array assign="zp" label="Zsensor Position" length="12" slice="0:6">
-          <index size="4" />
+          <index size="4"/>
         </array>
       </item>
       <item id="inrstat">

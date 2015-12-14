@@ -3,12 +3,12 @@
   <app frm_id="slo" id="mmc" label="MOIRCS Carrousel" version="1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id='upd' label="Status">
+        <unit id="upd" label="Status">
           <item id="upd" label="Upd">
-            <frmcmd name="getstat" />
-            <frmcmd name="bs" />
-            <frmcmd name="p" />
-            <frmcmd name="spd" />
+            <frmcmd name="getstat"/>
+            <frmcmd name="bs"/>
+            <frmcmd name="p"/>
+            <frmcmd name="spd"/>
             <repeat from="1" to="5">
               <frmcmd name="in">
                 <argv>$_</argv>
@@ -17,7 +17,7 @@
           </item>
         </unit>
         <item id="mres" label="Motor Reset">
-          <frmcmd name="reset" />
+          <frmcmd name="reset"/>
         </item>
         <item id="lowspd" label="Default Config(LowSpd)">
           <frmcmd name="hl">
@@ -37,15 +37,15 @@
           <frmcmd name="hl">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="jp" />
-          <frmcmd name="bs" />
+          <frmcmd name="jp"/>
+          <frmcmd name="bs"/>
         </item>
         <item id="ccw" label="Goto CCW Limit (Slot 23)">
           <frmcmd name="hl">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="jn" />
-          <frmcmd name="bs" />
+          <frmcmd name="jn"/>
+          <frmcmd name="bs"/>
         </item>
         <item id="gh-cw" label="Goto Home from CW Limit">
           <frmcmd name="hl">
@@ -54,7 +54,7 @@
           <frmcmd name="mi">
             <argv>-0.41</argv>
           </frmcmd>
-          <frmcmd name="bs" />
+          <frmcmd name="bs"/>
         </item>
         <item id="gh-ccw" label="Goto Home from CCW Limit">
           <frmcmd name="hl">
@@ -63,85 +63,85 @@
           <frmcmd name="mi">
             <argv>+0.49</argv>
           </frmcmd>
-          <frmcmd name="bs" />
+          <frmcmd name="bs"/>
         </item>
         <item id="set0" label="Set 0 at S00">
           <frmcmd name="hl">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="set0" />
+          <frmcmd name="set0"/>
         </item>
         <item id="cwi" label="Move CW(TopView) Decreasing [1-5]">
           <par_num>1:5</par_num>
           <frmcmd name="mi">
             <argv>$1</argv>
           </frmcmd>
-          <frmcmd name="bs" />
+          <frmcmd name="bs"/>
         </item>
         <item id="ccwi" label="Move CCW(TopView) Increasing [1-5]">
           <par_num>1:5</par_num>
           <frmcmd name="mi">
             <argv>-$1</argv>
           </frmcmd>
-          <frmcmd name="bs" />
+          <frmcmd name="bs"/>
         </item>
         <item id="slot" label="Move to Slot [0-23]">
           <par_num>0:23</par_num>
           <frmcmd name="ma">
             <argv>-$1</argv>
           </frmcmd>
-          <frmcmd name="bs" />
+          <frmcmd name="bs"/>
         </item>
         <item id="access" label="Move to Access Door [0-23]">
           <par_num>0:23</par_num>
           <frmcmd name="ma">
             <argv format="%d">$1&gt;18?-$1+18:-$1-6</argv>
           </frmcmd>
-          <frmcmd name="bs" />
+          <frmcmd name="bs"/>
         </item>
         <item id="updp" label="Update Pulse" hidden="true">
-          <frmcmd name="bs" />
-          <frmcmd name="p" />
+          <frmcmd name="bs"/>
+          <frmcmd name="p"/>
           <frmcmd name="in">
             <argv>1</argv>
           </frmcmd>
         </item>
         <item id="stop" label="Stop Run" hidden="true">
-          <frmcmd name="stop" />
-          <frmcmd name="bs" />
+          <frmcmd name="stop"/>
+          <frmcmd name="bs"/>
         </item>
       </group>
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="mmc">
       <group id="g1" caption="" column="4">
         <string id="bs" label="Moter Moving" symbol="warn">
-          <field ref="bs" />
+          <field ref="bs"/>
         </string>
         <string id="con" label="Contact Sensor" symbol="normal">
-          <field ref="in" index="0" />
+          <field ref="in" index="0"/>
         </string>
         <float id="spd" label="Speed" format="%.2f">
-          <field ref="spd" />
+          <field ref="spd"/>
         </float>
         <integer id="err" label="Error Code" symbol="err">
-          <field ref="err" />
+          <field ref="err"/>
         </integer>
         <string id="lcw" label="CW Limit" symbol="normal">
-          <field ref="in" index="2" />
+          <field ref="in" index="2"/>
         </string>
         <string id="lccw" label="CCW Limit" symbol="normal">
-          <field ref="in" index="3" />
+          <field ref="in" index="3"/>
         </string>
         <float id="abs" label="ABS position" symbol="abs" format="%.2f">
-          <field ref="p" />
+          <field ref="p"/>
         </float>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event id="mot" label="On Motion">
         <range var="bs">1</range>
-        <block name="cwi" />
-        <int name="stop" />
+        <block name="cwi"/>
+        <int name="stop"/>
         <exec name="updp"/>
       </event>
     </watch>

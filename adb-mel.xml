@@ -3,12 +3,10 @@
   <app frm_id="mel" id="mel" label="Cart PLC" version="7">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrupt Commands" column="2">
-        <unit id='upd' label="Status">
-          <item id="upd" label="Status update">
-            <frmcmd name="getstat" />
-            <frmcmd name="getcmd" />
-          </item>
-        </unit>
+        <item id="upd" label="Status update">
+          <frmcmd name="getstat" />
+          <frmcmd name="getcmd" />
+        </item>
         <item id="ready" label="Ready mode">
           <frmcmd name="int">
             <argv>6</argv>
@@ -76,87 +74,89 @@
           </frmcmd>
           <frmcmd name="getcmd" />
         </item>
-        <item id="run1" label="Run to Tag 1">
-          <frmcmd name="set_tag">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </item>
-        <item id="run2" label="Run to Tag 2">
-          <frmcmd name="set_tag">
-            <argv>2</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </item>
-        <item id="run3" label="Run to Tag 3">
-          <frmcmd name="set_tag">
-            <argv>3</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </item>
-        <item id="run7" label="Run to Tag 7">
-          <frmcmd name="set_tag">
-            <argv>7</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </item>
-        <item id="run8" label="Run to Tag 8">
-          <frmcmd name="set_tag">
-            <argv>8</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </item>
-        <item id="run9" label="Run to Tag 9">
-          <frmcmd name="set_tag">
-            <argv>9</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </item>
-        <item id="run10" label="Run to Tag 10">
-          <frmcmd name="set_tag">
-            <argv>10</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </item>
-        <item id="run11" label="Run to Tag 11">
-          <frmcmd name="set_tag">
-            <argv>11</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </item>
-        <item id="run12" label="Run to Tag 12">
-          <frmcmd name="set_tag">
-            <argv>12</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </item>
+        <unit id='unit_run' title="run[1-12]" label="Run to 1-12">
+          <item id="run1" label="Run to Tag 1">
+            <frmcmd name="set_tag">
+              <argv>1</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="getcmd" />
+          </item>
+          <item id="run2" label="Run to Tag 2">
+            <frmcmd name="set_tag">
+              <argv>2</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="getcmd" />
+          </item>
+          <item id="run3" label="Run to Tag 3">
+            <frmcmd name="set_tag">
+              <argv>3</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="getcmd" />
+          </item>
+          <item id="run7" label="Run to Tag 7">
+            <frmcmd name="set_tag">
+              <argv>7</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="getcmd" />
+          </item>
+          <item id="run8" label="Run to Tag 8">
+            <frmcmd name="set_tag">
+              <argv>8</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="getcmd" />
+          </item>
+          <item id="run9" label="Run to Tag 9">
+            <frmcmd name="set_tag">
+              <argv>9</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="getcmd" />
+          </item>
+          <item id="run10" label="Run to Tag 10">
+            <frmcmd name="set_tag">
+              <argv>10</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="getcmd" />
+          </item>
+          <item id="run11" label="Run to Tag 11">
+            <frmcmd name="set_tag">
+              <argv>11</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="getcmd" />
+          </item>
+          <item id="run12" label="Run to Tag 12">
+            <frmcmd name="set_tag">
+              <argv>12</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="getcmd" />
+          </item>
+        </unit>
         <item id="runf" label="Run Forward">
           <frmcmd name="set_tag">
             <argv>98</argv>
@@ -186,33 +186,35 @@
           </frmcmd>
           <frmcmd name="getcmd" />
         </item>
-        <item id="lftup1" label="Lift Low Level">
-          <frmcmd name="set_pos">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>8</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </item>
-        <item id="lftup2" label="Lift Mid Level">
-          <frmcmd name="set_pos">
-            <argv>2</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>8</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </item>
-        <item id="lftup3" label="Lift High Level">
-          <frmcmd name="set_pos">
-            <argv>3</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>8</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </item>
+        <unit id='unit_lftup' title="lftup[1-3]" label="Lift up to 1-3">
+          <item id="lftup1" label="Lift Low Level">
+            <frmcmd name="set_pos">
+              <argv>1</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>8</argv>
+            </frmcmd>
+            <frmcmd name="getcmd" />
+          </item>
+          <item id="lftup2" label="Lift Mid Level">
+            <frmcmd name="set_pos">
+              <argv>2</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>8</argv>
+            </frmcmd>
+            <frmcmd name="getcmd" />
+          </item>
+          <item id="lftup3" label="Lift High Level">
+            <frmcmd name="set_pos">
+              <argv>3</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>8</argv>
+            </frmcmd>
+            <frmcmd name="getcmd" />
+          </item>
+        </unit>
         <item id="lftchg" label="Lift Charge Level">
           <frmcmd name="set_pos">
             <argv>4</argv>
@@ -256,19 +258,21 @@
         </item>
       </group>
       <group id="gchg" caption="Charging Commands" column="2">
-        <item id="chgon" label="Start Charging">
-          <frmcmd name="act">
-            <argv>15</argv>
-          </frmcmd>
-          <frmcmd name="getcmd"/>
-        </item>
-        <item id="chgoff" label="Stop Charging">
-          <frmcmd name="int">
-            <argv format="%d">3</argv>
-          </frmcmd>
-          <frmcmd name="clr_int" />
-          <frmcmd name="getstat" />
-        </item>
+        <unit id="unit_chg" title="chg[on|off]" label="Charge ON/OFF">
+          <item id="chgon" label="Start">
+            <frmcmd name="act">
+              <argv>15</argv>
+            </frmcmd>
+            <frmcmd name="getcmd"/>
+          </item>
+          <item id="chgoff" label="Stop">
+            <frmcmd name="int">
+              <argv format="%d">3</argv>
+            </frmcmd>
+            <frmcmd name="clr_int" />
+            <frmcmd name="getstat" />
+          </item>
+        </unit>
       </group>
       <group id="gmtn" caption="Maintenance Commands" column="2">
         <item id="get_tbl" label="Get Jack Table">

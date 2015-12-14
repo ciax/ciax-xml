@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/idbs" xmlns:idbs="http://ciax.sum.naoj.org/ciax-xml/idbs">
-  <xsd:include schemaLocation="repeat.xsd" />
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:idbs="http://ciax.sum.naoj.org/ciax-xml/idbs" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/idbs">
+  <xsd:include schemaLocation="repeat.xsd"/>
   <!--status-->
   <xsd:group name="titles">
     <xsd:choice>
-      <xsd:element ref="idbs:alias"></xsd:element>
-      <xsd:element ref="idbs:index"></xsd:element>
-      <xsd:element ref="idbs:group"></xsd:element>
-      <xsd:element ref="idbs:repeat"></xsd:element>
+      <xsd:element ref="idbs:alias"/>
+      <xsd:element ref="idbs:index"/>
+      <xsd:element ref="idbs:group"/>
+      <xsd:element ref="idbs:repeat"/>
     </xsd:choice>
   </xsd:group>
   <xsd:element name="status">
     <xsd:complexType>
-      <xsd:group minOccurs="1" maxOccurs="unbounded" ref="idbs:titles" />
-      <xsd:attribute name="ref" type="xsd:NCName" use="optional" />
+      <xsd:group minOccurs="1" maxOccurs="unbounded" ref="idbs:titles"/>
+      <xsd:attribute name="ref" type="xsd:NCName" use="optional"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="repeat">
     <xsd:complexType>
-      <xsd:group minOccurs="1" maxOccurs="unbounded" ref="idbs:titles" />
-      <xsd:attributeGroup ref="idbs:repeat" />
+      <xsd:group minOccurs="1" maxOccurs="unbounded" ref="idbs:titles"/>
+      <xsd:attributeGroup ref="idbs:repeat"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="group">
     <xsd:complexType>
-      <xsd:attribute name="ref" type="xsd:NCName" use="required" />
-      <xsd:attribute name="caption" type="xsd:token" />
+      <xsd:attribute name="ref" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="caption" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="index">
     <xsd:complexType>
-      <xsd:attribute name="ref" type="xsd:NCName" use="required" />
-      <xsd:attribute name="symbol" type="xsd:NCName" />
-      <xsd:attribute name="label" type="xsd:token" />
+      <xsd:attribute name="ref" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="symbol" type="xsd:NCName"/>
+      <xsd:attribute name="label" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="alias">
     <xsd:complexType>
-      <xsd:attribute name="id" type="xsd:NCName" use="required" />
-      <xsd:attribute name="ref" type="xsd:NCName" use="required" />
-      <xsd:attribute name="symbol" type="xsd:NCName" />
-      <xsd:attribute name="label" type="xsd:token" />
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="ref" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="symbol" type="xsd:NCName"/>
+      <xsd:attribute name="label" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

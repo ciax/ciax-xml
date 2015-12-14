@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adb="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:adbc="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:adbs="http://ciax.sum.naoj.org/ciax-xml/adbs" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb">
-  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/adbc" schemaLocation="adbc.xsd" />
-  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/adbs" schemaLocation="adbs.xsd" />
-  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/wdb" schemaLocation="wdb.xsd" />
-  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/sdb" schemaLocation="sdb.xsd" />
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adb="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:adbc="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:adbs="http://ciax.sum.naoj.org/ciax-xml/adbs" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adb" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/adbc" schemaLocation="adbc.xsd"/>
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/adbs" schemaLocation="adbs.xsd"/>
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/wdb" schemaLocation="wdb.xsd"/>
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/sdb" schemaLocation="sdb.xsd"/>
   <xsd:element name="adb">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="adb:app" minOccurs="1" maxOccurs="1" />
-        <xsd:element ref="sdb:symbol" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="adb:app" minOccurs="1" maxOccurs="1"/>
+        <xsd:element ref="sdb:symbol" minOccurs="0" maxOccurs="1"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="id_attr">
-    <xsd:attribute name="id" type="xsd:NCName" use="required" />
-    <xsd:attribute name="label" type="xsd:token" use="optional" />
+    <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+    <xsd:attribute name="label" type="xsd:token" use="optional"/>
   </xsd:attributeGroup>
   <xsd:element name="app">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="adbc:command" minOccurs="0" maxOccurs="1" />
-        <xsd:element ref="adbs:status" minOccurs="1" maxOccurs="1" />
-        <xsd:element ref="wdb:watch" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="adbc:command" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="adbs:status" minOccurs="1" maxOccurs="1"/>
+        <xsd:element ref="wdb:watch" minOccurs="0" maxOccurs="1"/>
       </xsd:sequence>
-      <xsd:attributeGroup ref="adb:id_attr" />
-      <xsd:attribute name="frm_id" type="xsd:NCName" use="required" />
-      <xsd:attribute name="version" type="xsd:int" />
+      <xsd:attributeGroup ref="adb:id_attr"/>
+      <xsd:attribute name="frm_id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="version" type="xsd:int"/>
     </xsd:complexType>
     <xsd:key name="group_id">
-      <xsd:selector xpath=".//adbc:group" />
-      <xsd:field xpath="@id" />
+      <xsd:selector xpath=".//adbc:group"/>
+      <xsd:field xpath="@id"/>
     </xsd:key>
     <xsd:keyref name="event_grp" refer="adb:group_id">
-      <xsd:selector xpath=".//wdb:event/*" />
-      <xsd:field xpath="@ref" />
+      <xsd:selector xpath=".//wdb:event/*"/>
+      <xsd:field xpath="@ref"/>
     </xsd:keyref>
     <xsd:key name="command_id">
-      <xsd:selector xpath=".//adbc:item" />
-      <xsd:field xpath="@id" />
+      <xsd:selector xpath=".//adbc:item"/>
+      <xsd:field xpath="@id"/>
     </xsd:key>
     <xsd:keyref name="event_exec" refer="adb:command_id">
-      <xsd:selector xpath=".//wdb:event/*" />
-      <xsd:field xpath="@name" />
+      <xsd:selector xpath=".//wdb:event/*"/>
+      <xsd:field xpath="@name"/>
     </xsd:keyref>
     <xsd:key name="value_id">
-      <xsd:selector xpath=".//adbs:binary|.//adbs:float|.//adbs:integer|.//adbs:string" />
-      <xsd:field xpath="@id" />
+      <xsd:selector xpath=".//adbs:binary|.//adbs:float|.//adbs:integer|.//adbs:string"/>
+      <xsd:field xpath="@id"/>
     </xsd:key>
     <xsd:keyref name="event_pat" refer="adb:value_id">
-      <xsd:selector xpath=".//wdb:event/*" />
-      <xsd:field xpath="@var" />
+      <xsd:selector xpath=".//wdb:event/*"/>
+      <xsd:field xpath="@var"/>
     </xsd:keyref>
   </xsd:element>
 </xsd:schema>

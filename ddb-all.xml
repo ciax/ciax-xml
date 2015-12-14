@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ddb xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb">
-  <project id="ciax" label="CIAX" include="cmp" column="2">
+  <project id="ciax" label="CIAX" column="2">
+    <include ref="cmp"/>
     <site id="crt" frm_id="mel" host="cxws2" port="24101" iocmd="socat - udp:cart3:5000" label="CIAX CART 3"/>
     <site id="dsi" frm_id="cj2" host="cxws2" port="24102" iocmd="socat - udp:cst-i:9600" label="IR Stand-by Flange">
       <field>
@@ -19,6 +20,7 @@
     <site id="cr2" frm_id="mel" host="ciax" port="24502" iocmd="socat - udp:cart2:5000" label="CIAX CART 2"/>
   </project>
   <project id="moircs" label="MOIRCS" include="cmp" column="2">
+    <include ref="cmp"/>
     <site id="mfp" frm_id="cfp" host="moircsobcp" port="24601" iocmd="socat - tcp:133.40.161.140:2101" label="MOIRCS Pneumatic Actuator"/>
     <site id="map" frm_id="oma" host="moircsobcp" port="24602" iocmd="socat - tcp:133.40.161.140:2102" label="MOIRCS Air Pressure"/>
     <site id="mma" frm_id="slo" host="moircsobcp" port="24603" iocmd="socat - tcp:133.40.161.140:2103" label="MOIRCS Extension Arm"/>

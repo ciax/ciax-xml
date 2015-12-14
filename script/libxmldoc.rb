@@ -4,7 +4,15 @@ require 'libdispgrp'
 require 'libenumx'
 require 'libxmlgn'
 
-# Domain is the top node of each name spaces
+# Structure for Command: (doctop),<domain>,[item]
+#   ADB:/adb/(app)/<command>/group/unit/[item]
+#   FDB:/fdb/(frame)/<command>/[item]
+#   SDB:/sdb/(symbol)/[table]
+#   DDB:/ddb/(project)/[site]
+#   IDB:/idb/(project)/group/[instance]
+#   MDB:/mdb/(macro)/group/unit/[item]
+# Domain is the top node of each name spaces (different from top ns),
+#   otherwise element is stored in Property
 module CIAX
   # Regular Doc: accessible, display in help list
   # Hidden Doc: accessible, but not displayed in help list(sub command, etc.)
@@ -18,17 +26,14 @@ module CIAX
     # in another file.
     class Doc < Hashx
       attr_reader :top, :displist
-      def initialize(type, proj)
+      def initialize(type)
         super()
         @cls_color = 2
-        @valid_proj = [proj].compact
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
-        @projects = Hashx.new
         @displist = Disp.new
-        @level = 0
         read_files(Msg.xmlfiles(@type))
-        valid_proj
+        store_includes
       end
 
       # get generates document branch of db items(Hash),
@@ -47,64 +52,33 @@ module CIAX
       def read_files(files)
         files.each do|xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
-          Gnu.new(xml).each { |e| read_xml(e) }
+          Gnu.new(xml).each { |e| store_doc(e, @displist) }
         end.empty? && Msg.cfg_err("No XML file for #{@type}-*.xml")
-      end
-
-      def read_xml(e)
-        case e.name
-        when 'project'
-          read_proj(e)
-        when 'group'
-          @displist = @displist.ext_grp
-          store_grp(e, @cisplist)
-        else
-          store_doc(e, @displist)
-        end
-      end
-
-      def read_proj(e)
-        pid = e['id']
-        @projects[pid] = e
-        return if @valid_proj.empty?
-        return unless  @valid_proj.include?(pid) && e['include']
-        @valid_proj << e['include']
-      end
-
-      def valid_proj
-        return if @projects.keys.empty?
-        vkeys = @valid_proj & @projects.keys
-        vl = vkeys.empty? ? @projects.keys : vkeys
-        pl = vl.map { |pid| @projects[pid] }
-        @displist = @displist.ext_grp
-        pl.each { |proj| store_proj(proj, @displist) }
-      end
-
-      def store_proj(proj, sec)
-        pid = proj['id']
-        cap = proj['caption']
-        proj.each do |e|
-          if e.name == 'group'
-            store_grp(e, sec.put_sec(pid, cap))
-          else
-            store_doc(e, sec.put_grp(pid, cap))
-          end
-        end
-      end
-
-      def store_grp(e, sec)
-        sg = sec.put_grp(e['id'], e['caption'])
-        e.each { |e0| store_doc(e0, sg) }
       end
 
       def store_doc(top, grp)
         id = top['id'] # site_id or macro_proj
         grp.put_item(id, top['label'])
-        item = Hashx[top: top, attr: top.to_h, domain: {}, property: {}]
+        item = Hashx[top: top, attr: top.to_h]
         top.each do|e1|
-          item[top.ns == e1.ns ? :property : :domain][e1.name.to_sym] = e1
+          if top.ns != e1.ns
+            (item[:domain]||={})[e1.name.to_sym] = e1 
+          elsif e1.name == 'include'
+            (item[:include]||=[]) << e1['ref'] 
+          else
+            @subid=e1.name.to_sym
+            (item[@subid]||={})[e1['id']] = e1
+          end
         end
         self[id] = item
+      end
+
+      def store_includes
+        each do |id, item|
+          if (ary = item.delete(:include))
+            ary.each { |ref| (item[@subid]||={}).update(self[ref][@subid]) }
+          end
+        end
       end
     end
   end
@@ -112,7 +86,7 @@ module CIAX
   if __FILE__ == $PROGRAM_NAME
     type = ARGV.shift
     begin
-      doc = Xml::Doc.new(type, PROJ)
+      doc = Xml::Doc.new(type)
     rescue ConfigError
       Msg.usage('[type] (adb,fdb,idb,ddb,mdb,sdb)')
     end

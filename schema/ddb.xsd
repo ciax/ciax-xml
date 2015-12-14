@@ -9,13 +9,19 @@
   </xsd:element>
   <xsd:element name="project">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="ddb:site"/>
-      </xsd:choice>
+      <xsd:sequence>
+        <xsd:element ref="ddb:include" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element ref="ddb:site" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
       <xsd:attribute name="caption" type="xsd:token" use="optional"/>
-      <xsd:attribute name="include" type="xsd:NCName"/>
       <xsd:attribute name="column" type="xsd:int"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="include">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:token" use="required"/>
+      <xsd:attribute name="label" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="site">

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <project id="moircs" caption="MOIRCS" include="cmp" column="2">
+  <project id="moircs" caption="MOIRCS" column="2">
+    <include ref="cmp"/>
     <group id="mos" caption="MOS Mask Exchanger">
       <instance id="mfp" app_id="cfp" host="moircsobcp" port="25601" label="MOIRCS Pneumatic Actuator"/>
       <instance id="map" app_id="oma" host="moircsobcp" port="25602" label="MOIRCS Air Pressure"/>

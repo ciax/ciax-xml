@@ -8,7 +8,8 @@ module CIAX
     class Frame
       include Msg
       attr_reader :cc
-      # terminator: used for detecting end of stream, cut off before processing in Frame#set().
+      # terminator: used for detecting end of stream,
+      #             cut off before processing in Frame#set().
       #             never being included in CC range
       # delimiter: cut 'variable length data' by delimiter
       #             can be included in CC range
@@ -153,7 +154,7 @@ module CIAX
         if ref == val
           verbose { "Verify:(#{e0[:label]}) [#{ref.inspect}] OK" }
         else
-          cc_err("Mismatch(#{e0[:label]}/#{e0[:decode]}):[#{val.inspect}] (should be [#{ref.inspect}])")
+          cc_err("Mismatch(#{e0[:label]}/#{e0[:decode]}):#{val.inspect} for #{ref.inspect}")
         end
         cc_add(str)
         str

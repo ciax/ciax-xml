@@ -43,7 +43,8 @@ module CIAX
           retry
         end
         verbose { 'Search corresponding RES' }
-        sql = "select min(time),count(*),cmd,base64 from #{@tbl} where dir='rcv' and cmd='#{cmd}' and time > #{tim};"
+        sql = "select min(time),count(*),cmd,base64 from #{@tbl} "
+        sql << "where dir='rcv' and cmd='#{cmd}' and time > #{tim};"
         ans = query(sql)
         tim, count, = ans.split('|')
         verbose { colorize("LINE:[#{cmd}](#{@total - count.to_i}/#{@total})<#{wait(tim)}>", 2) }

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <project id="ciax" caption="CIAX" column="2">
+  <project id="ciax" label="CIAX" column="2">
     <include ref="cmp"/>
-    <group id="sum" caption="CIAX Summit">
+    <group id="cx_sum" caption="CIAX Summit">
       <instance id="crt" app_id="mel" host="cxws2" port="25101" label="CIAX CART 3"/>
       <instance id="dsi" app_id="cj2" host="cxws2" port="25102" label="IR Stand-by"/>
       <instance id="dso" app_id="cj2" host="cxws2" port="25103" label="OPT Stand-by"/>
       <instance id="det" app_id="srm" host="cxws2" port="25104" label="CsEtr Control"/>
       <instance id="dts" app_id="oss" host="cxws2" port="25105" label="TSC Control"/>
     </group>
-    <group id="sim" caption="SimLab">
+    <group id="cx_sim" caption="SimLab">
       <instance id="cr2" app_id="mel" host="ciax" port="25502" label="CIAX CART 2"/>
     </group>
-    <group id="cfg" caption="Setting">
+    <group id="cx_cfg" caption="Setting">
       <instance id="c3j" app_id="cjk" host="ciax" port="25501" frm_site="crt" label="CART 3 Jack Setting">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="id0t0" caption="COMICS/CAS"/>

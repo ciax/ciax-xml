@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libitem'
-require 'libdisp'
+require 'libdispgrp'
 # CIAX-XML
 module CIAX
   # Dummy Command Group

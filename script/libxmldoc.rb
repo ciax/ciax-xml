@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libgetopts'
-require 'libdisp'
+require 'libdispgrp'
 require 'libenumx'
 require 'libxmlgn'
 

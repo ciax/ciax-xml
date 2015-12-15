@@ -49,6 +49,7 @@ module CIAX
       Dbi.new
     end
 
+    # Returns Dbi
     def cache(id)
       @base = "#{@type}-#{id}"
       @marfile = vardir('cache') + "#{@base}.mar"

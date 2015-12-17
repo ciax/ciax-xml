@@ -33,7 +33,6 @@ module CIAX
         @type = type
         @displist = Disp.new
         @index = Hashx.new
-        @displist.ext_grp if @type == 'ddb'
         read_files(Msg.xmlfiles(@type))
         store_includes
       end
@@ -62,6 +61,7 @@ module CIAX
         id = top['id'] # site_id or macro_proj
         return unless id
         if top.name == 'group'
+          @displist.ext_grp unless @displist.is_a? Disp::Grouping
           sub = grp.put_grp(id, top['label'])
           top.each{|e| store_doc(e, sub)}
         else

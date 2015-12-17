@@ -4,7 +4,7 @@ require 'libdispgrp'
 require 'libenumx'
 require 'libxmlgn'
 
-# Structure for Command: (doctop)
+# Structure for Command: (doctop) = @toptag
 #   ADB:/adb/(app)/command/group
 #   FDB:/fdb/(frame)/command/group
 #   SDB:/sdb/(symbol)/table
@@ -25,16 +25,15 @@ module CIAX
     # The project named file can conatin referenced item whose entity is
     # in another file.
     class Doc < Hashx
-      attr_reader :top, :displist, :index
+      attr_reader :top, :displist
       def initialize(type)
         super()
         @cls_color = 2
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
         @displist = Disp.new
-        @index = Hashx.new
-        read_files(Msg.xmlfiles(@type))
-        store_includes
+        _read_files(Msg.xmlfiles(@type))
+        _set_includes
       end
 
       # get generates document branch of db items(Hash),
@@ -50,45 +49,82 @@ module CIAX
 
       private
 
-      def read_files(files)
+      def _read_files(files)
         files.each do|xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
-          Gnu.new(xml).each { |e| store_doc(e, @displist) }
+          Gnu.new(xml).each { |top| _set_doc(top) }
         end.empty? && Msg.cfg_err("No XML file for #{@type}-*.xml")
       end
 
-      def store_doc(top, grp)
+      def _set_doc(top)
         id = top['id'] # site_id or macro_proj
         return unless id
-        if top.name == 'group'
-          @displist.ext_grp unless @displist.is_a? Disp::Grouping
-          sub = grp.put_grp(id, top['label'])
-          top.each { |e| store_doc(e, sub) }
+        case top.name
+        when 'group' # ddb
+          _mk_top_group(top)
+        when 'app', 'frame'
+          _mk_domain(top)
+        when 'project', 'macro'
+          _mk_sub_groups(top)
         else
-          grp.put_item(id, top['label'])
-          item = Hashx[top: top, attr: top.to_h]
-          top.each do|e1|
-            # Should have child
-            if top.ns != e1.ns
-              (item[:domain] ||= {})[e1.name.to_sym] = e1
-            elsif e1['id'] # group, item ..
-              @subid = e1.name.to_sym
-              (item[@subid] ||= {})[e1['id']] = e1
-              @index[e1['id']] = e1
-            elsif e1.name == 'include'
-              (item[:include] ||= []) << e1['ref']
-            else # Property (stream info, serial info, etc.)
-              item[e1.name.to_sym] = e1.to_h
-            end
-          end
-          self[id] = item
+          _mk_items(top)
         end
       end
 
-      def store_includes
-        each do |_id, item|
+      def _mk_top_group(top)
+        @displist.ext_grp unless @displist.is_a? Disp::Grouping
+        sub = @displist.put_grp(top['id'], top['label'])
+        top.each do |e|
+          _mk_items(e, sub)
+        end
+      end
+
+      def _mk_domain(top)
+        item = _set_item(top)
+        top.each do|e1|
+          tag = e1.name.to_sym
+          if top.ns != e1.ns # command, status, ..
+            (item[:domain] ||= {})[tag] = e1
+          else # Property (stream, serial, etc.)
+            item[tag] = e1.to_h
+          end
+        end
+      end
+
+      def _mk_sub_groups(top)
+        item = _set_item(top)
+        top.each do|e1|
+          tag = e1.name.to_sym
+          case tag
+          when :include # include group
+            (item[:include] ||= []) << e1['ref']
+          when :group # group(mdb,adb)
+            @inctag = tag
+            (item[tag] ||= {})[e1['id']] = e1
+          else # Property (stream, serial, etc.)
+            item[tag] = e1.to_h
+          end
+        end
+      end
+
+      def _mk_items(top, disp = @displist)
+        item = _set_item(top, disp)
+        top.each do|e1|
+          (item[e1.name.to_sym] ||= {})[e1['id']] = e1
+        end
+      end
+
+      def _set_item(top, disp = @displist)
+        id = top['id'] # site_id or macro_proj
+        item = Hashx[top: top, attr: top.to_h]
+        disp.put_item(id, top['label'])
+        self[id] = item
+      end
+
+      def _set_includes
+        each_value do |item|
           if (ary = item.delete(:include))
-            ary.each { |ref| (item[@subid] ||= {}).update(self[ref][@subid]) }
+            ary.each { |ref| (item[@inctag] ||= {}).update(self[ref][@inctag]) }
           end
         end
       end

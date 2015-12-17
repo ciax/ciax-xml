@@ -4,13 +4,13 @@ require 'libdispgrp'
 require 'libenumx'
 require 'libxmlgn'
 
-# Structure for Command: (doctop),<domain>,[item]
-#   ADB:/adb/(app)/<command>/group/unit/[item]
-#   FDB:/fdb/(frame)/<command>/[item]
-#   SDB:/sdb/(symbol)/[table]
-#   DDB:/ddb/(project)/[site]
-#   IDB:/idb/(project)/group/[instance]
-#   MDB:/mdb/(macro)/group/unit/[item]
+# Structure for Command: (doctop)
+#   ADB:/adb/(app)/command/group
+#   FDB:/fdb/(frame)/command/group
+#   SDB:/sdb/(symbol)/table
+#   DDB:/ddb/group/(site)
+#   IDB:/idb/(project)/include|group
+#   MDB:/mdb/(macro)/include|group
 # Domain is the top node of each name spaces (different from top ns),
 #   otherwise element is stored in Property
 module CIAX
@@ -25,13 +25,15 @@ module CIAX
     # The project named file can conatin referenced item whose entity is
     # in another file.
     class Doc < Hashx
-      attr_reader :top, :displist
+      attr_reader :top, :displist, :index
       def initialize(type)
         super()
         @cls_color = 2
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
         @displist = Disp.new
+        @index = Hashx.new
+        @displist.ext_grp if @type == 'ddb'
         read_files(Msg.xmlfiles(@type))
         store_includes
       end
@@ -58,22 +60,29 @@ module CIAX
 
       def store_doc(top, grp)
         id = top['id'] # site_id or macro_proj
-        grp.put_item(id, top['label'])
-        item = Hashx[top: top, attr: top.to_h]
-        top.each do|e1|
-          # Should have child
-          if top.ns != e1.ns
-            (item[:domain] ||= {})[e1.name.to_sym] = e1
-          elsif e1['id']
-            @subid = e1.name.to_sym
-            (item[@subid] ||= {})[e1['id']] = e1
-          elsif e1.name == 'include'
-            (item[:include] ||= []) << e1['ref']
-          else # Property (stream info, serial info, etc.)
-            item[e1.name.to_sym] = e1.to_h
+        return unless id
+        if top.name == 'group'
+          sub = grp.put_grp(id, top['label'])
+          top.each{|e| store_doc(e, sub)}
+        else
+          grp.put_item(id, top['label'])
+          item = Hashx[top: top, attr: top.to_h]
+          top.each do|e1|
+            # Should have child
+            if top.ns != e1.ns
+              (item[:domain] ||= {})[e1.name.to_sym] = e1
+            elsif e1['id'] # group, item ..
+              @subid = e1.name.to_sym
+              (item[@subid] ||= {})[e1['id']] = e1
+              @index[e1['id']] = e1
+            elsif e1.name == 'include'
+              (item[:include] ||= []) << e1['ref']
+            else # Property (stream info, serial info, etc.)
+              item[e1.name.to_sym] = e1.to_h
+            end
           end
+          self[id] = item
         end
-        self[id] = item
       end
 
       def store_includes

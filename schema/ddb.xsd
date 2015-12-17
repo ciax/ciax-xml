@@ -3,18 +3,18 @@
   <xsd:element name="ddb">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="ddb:project"/>
+        <xsd:element ref="ddb:group"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="project">
+  <xsd:element name="group">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="ddb:include" minOccurs="0" maxOccurs="unbounded"/>
         <xsd:element ref="ddb:site" minOccurs="0" maxOccurs="unbounded"/>
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
-      <xsd:attribute name="caption" type="xsd:token" use="optional"/>
+      <xsd:attribute name="label" type="xsd:token" use="optional"/>
       <xsd:attribute name="column" type="xsd:int"/>
     </xsd:complexType>
   </xsd:element>

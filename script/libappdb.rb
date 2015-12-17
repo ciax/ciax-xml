@@ -14,7 +14,7 @@ module CIAX
       private
 
       def doc_to_db(doc)
-        dbi = Dbi[doc[:attr]]
+        dbi = Dbi.new(doc[:attr])
         # Domains
         init_command(doc[:domain][:command], dbi)
         init_stat(doc[:domain][:status], dbi)

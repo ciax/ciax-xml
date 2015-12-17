@@ -31,12 +31,13 @@ module CIAX
       # @displist is Display
       lid = 'list'
       lid += "_#{PROJ}" if PROJ
+      # Show site list
       @displist = cache(lid, &:displist)
     end
 
     def get(id)
       if @displist.valid?(id)
-        cache(id) { |doc| doc_to_db(doc.get(id)) }
+        cache(id) { |docs| doc_to_db(docs.get(id)) }
       else
         fail(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s)
       end
@@ -45,29 +46,39 @@ module CIAX
     private
 
     # Returns Hash
-    def doc_to_db(_)
+    def doc_to_db(_doc)
       Dbi.new
     end
 
-    # Returns Dbi
+    # Returns Dbi(command list) or Disp(site list)
     def cache(id)
       @base = "#{@type}-#{id}"
       @marfile = vardir('cache') + "#{@base}.mar"
       if newest?
-        verbose { "Cache Loading (#{id})" }
-        return self[id] if key?(id)
-        begin
-          res = Marshal.load(IO.read(@marfile))
-        rescue ArgumentError # if empty
-          res = {}
-        end
+        res = _load_cache(id)
       else
-        warning("Cache Refresh (#{id})")
-        res = yield(@doc ||= Xml::Doc.new(@type))
-        open(@marfile, 'w') do|f|
-          f << Marshal.dump(res)
-          verbose { "Cache Saved(#{id})" }
-        end
+        @docs = Xml::Doc.new(@type) unless @docs
+        res = yield(@docs)
+        _save_cache(id, res)
+      end
+      res
+    end
+
+    def _load_cache(id)
+      verbose { "Cache Loading (#{id})" }
+      return self[id] if key?(id)
+      begin
+        Marshal.load(IO.read(@marfile))
+      rescue ArgumentError # if empty
+        {}
+      end
+    end
+
+    def _save_cache(id, res)
+      warning("Cache Refresh (#{id})")
+      open(@marfile, 'w') do|f|
+        f << Marshal.dump(res)
+        verbose { "Cache Saved(#{id})" }
       end
       self[id] = res
     end

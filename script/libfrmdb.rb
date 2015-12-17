@@ -14,7 +14,7 @@ module CIAX
       private
 
       def doc_to_db(doc)
-        dbi = Dbi[doc[:attr]]
+        dbi = Dbi.new(doc[:attr])
         dbi[:stream] = doc[:stream]
         init_command(doc, dbi)
         init_stat(doc, dbi)

@@ -63,7 +63,7 @@ module CIAX
         if top.name == 'group'
           @displist.ext_grp unless @displist.is_a? Disp::Grouping
           sub = grp.put_grp(id, top['label'])
-          top.each{|e| store_doc(e, sub)}
+          top.each { |e| store_doc(e, sub) }
         else
           grp.put_item(id, top['label'])
           item = Hashx[top: top, attr: top.to_h]

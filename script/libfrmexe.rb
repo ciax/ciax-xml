@@ -16,7 +16,6 @@ module CIAX
       # cfg must have [:db]
       def initialize(id, cfg)
         super(id, cfg)
-        @dbi.cover
         # DB is generated in List level
         @cfg[:site_id] = id
         @cfg[:ver] = @dbi['version']

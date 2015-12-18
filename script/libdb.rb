@@ -43,8 +43,8 @@ module CIAX
     private
 
     # Returns Hash
-    def doc_to_db(_doc)
-      Dbi.new
+    def doc_to_db(doc)
+      Dbi.new(doc[:attr])
     end
 
     # Returns Dbi(command list) or Disp(site list)

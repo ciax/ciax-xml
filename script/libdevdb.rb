@@ -4,23 +4,18 @@ require 'libfrmdb'
 module CIAX
   # Device Layer
   module Dev
-    # overwrite Frm::Db
-    class Dbi < Dbi
-      def cover
-        super(Frm::Db.new.get(self[:frm_id]))
-      end
-    end
-
     # Device DB
     class Db < Db
       def initialize
         super('ddb')
+        @fdb = Frm::Db.new
       end
 
       private
 
       def doc_to_db(doc)
-        dbi = Dbi.new(doc[:attr])
+        dbi = @fdb.get(doc[:attr][:frm_id])
+        dbi.update(doc[:attr])
         rec_db(doc[:top], dbi)
         dbi[:site_id] = dbi[:id]
         dbi

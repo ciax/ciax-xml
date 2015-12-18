@@ -4,6 +4,7 @@ require 'libfrmdb'
 module CIAX
   # Device Layer
   module Dev
+    # overwrite Frm::Db
     class Dbi < Dbi
       def cover
         super(Frm::Db.new.get(self[:frm_id]))
@@ -47,7 +48,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('r')
       begin
-        dbi = Db.new.get(ARGV.shift).cover
+        dbi = Db.new.get(ARGV.shift)
       rescue InvalidID
         OPT.usage('[id] (key) ..')
       end

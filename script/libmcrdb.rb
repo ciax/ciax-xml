@@ -11,11 +11,7 @@ module CIAX
       end
 
       def get(id = nil)
-        dbi = super(id || PROJ || ARGV.shift)
-        if (inc = dbi[:include])
-          dbi = super(inc).cover(dbi)
-        end
-        dbi
+        super(id || PROJ || ARGV.shift)
       end
 
       private
@@ -23,7 +19,7 @@ module CIAX
       def doc_to_db(doc)
         dbi = Dbi[doc[:attr]]
         @sites = []
-        init_command(doc[:top], dbi)
+        init_command(doc[:group], dbi)
         dbi[:sites] = @sites.uniq
         dbi
       end

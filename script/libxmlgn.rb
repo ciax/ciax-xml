@@ -63,6 +63,9 @@ module CIAX
           end
         end
       end
+
+      # Adapt to both Gnu, Hash
+      alias_method :each_value, :each
     end
   end
 end

@@ -124,7 +124,9 @@ module CIAX
       @idx = {}
       @grps = {}
       @units = {}
-      dbc.each do|e| # e.name should be group
+      # Adapt to both XML::Gnu, Hash
+      dbc.each_value do|e|
+        # e.name should be group
         Msg.give_up('No group in dbc') unless e.name == 'group'
         gid = e.attr2item(@grps)
         arc_unit(e, gid)

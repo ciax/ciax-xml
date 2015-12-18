@@ -132,7 +132,7 @@ module CIAX
       res = JsLog.read(str)
       id = res[:id]
       cid = res[:cmd]
-      dbi = Dev::Db.new.get(id)
+      dbi = Dev::Db.new.get(id).cover
       field = Field.new(dbi).ext_rsp
       field.ext_file.auto_save if OPT[:m]
       if cid

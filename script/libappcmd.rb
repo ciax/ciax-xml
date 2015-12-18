@@ -53,10 +53,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      OPT.parse('d', d: 'Device Mode')
+      OPT.parse('i', i: 'Instance Mode')
       id = ARGV.shift
       cfg = Config.new
-      dbm = OPT[:d] ? Db : Ins::Db
+      dbm = OPT[:i] ? Ins::Db : Db
       begin
         cobj = Index.new(cfg, dbi: dbm.new.get(id))
         cobj.add_rem.def_proc(&:path)

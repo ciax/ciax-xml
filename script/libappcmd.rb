@@ -64,9 +64,9 @@ module CIAX
         ent = cobj.set_cmd(ARGV)
         puts ent[:batch].to_s
       rescue InvalidCMD
-        Msg.usage("#{id} (-d) [cmd] (par)", 2)
+        OPT.usage("#{id} (-i) [cmd] (par)")
       rescue InvalidID
-        Msg.usage('(-d) [id] [cmd] (par)')
+        OPT.usage('(-i) [id] [cmd] (par)')
       end
     end
   end

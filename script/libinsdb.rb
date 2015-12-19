@@ -20,6 +20,7 @@ module CIAX
         at = doc[:attr]
         dbi = @adb.get(at[:app_id])
         dbi.update(at)
+        init_general(dbi)
         if (dom = doc[:domain])
           init_command(dom, dbi)
           init_status(dom, dbi)
@@ -80,6 +81,9 @@ module CIAX
             e0.attr2item(p, :ref)
           end
         end
+      end
+
+      def init_general(dbi)
         dbi[:proj] = PROJ
         dbi[:site_id] = dbi[:ins_id] = dbi[:id]
         dbi[:frm_site] ||= dbi[:id]

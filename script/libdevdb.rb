@@ -14,8 +14,9 @@ module CIAX
       private
 
       def doc_to_db(doc)
-        dbi = @fdb.get(doc[:attr][:frm_id])
-        dbi.update(doc[:attr])
+        at = doc[:attr]
+        dbi = @fdb.get(at[:frm_id])
+        dbi.update(at)
         rec_db(doc[:top], dbi)
         dbi[:site_id] = dbi[:id]
         dbi

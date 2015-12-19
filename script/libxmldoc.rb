@@ -4,13 +4,13 @@ require 'libdispgrp'
 require 'libenumx'
 require 'libxmlgn'
 
-# Structure for Command: (doctop) = @toptag
-#   ADB:/adb/(app)/command/group
-#   FDB:/fdb/(frame)/command/group
-#   SDB:/sdb/(symbol)/table
+# Structure for Command: (top: listed in disp), <doclist: separated>
+#   ADB:/adb/(app)/<command>/group
+#   FDB:/fdb/(frame)/<command>/group
+#   SDB:/sdb/(symbol)/<table>
 #   DDB:/ddb/group/(site)
-#   IDB:/idb/(project)/include|group
-#   MDB:/mdb/(macro)/include|group
+#   IDB:/idb/project/include|group/(instance)
+#   MDB:/mdb/(macro)/include|<group>
 # Domain is the top node of each name spaces (different from top ns),
 #   otherwise element is stored in Property
 module CIAX
@@ -52,68 +52,85 @@ module CIAX
       def _read_files(files)
         files.each do|xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
-          Gnu.new(xml).each { |top| _set_doc(top) }
+          Gnu.new(xml).each { |top| _mk_db(top) }
         end.empty? && Msg.cfg_err("No XML file for #{@type}-*.xml")
       end
 
-      def _set_doc(top)
+      def _mk_db(top)
         id = top['id'] # site_id or macro_proj
         return unless id
         case top.name
-        when 'group' # ddb
-          _mk_top_group(top)
         when 'app', 'frame'
           _mk_domain(top)
-        when 'project', 'macro'
+        when 'group' # ddb
+          _mk_top_group(top)
+        when 'macro'
           _mk_sub_groups(top)
-        else
-          _mk_items(top)
+        when 'project'
+          _mk_project(top)
+        else # symbol tables
+          _mk_docs(top)
         end
       end
 
+      def _mk_domain(top, sub = @displist)
+        item = _set_item(top, sub)
+        top.each do|e|
+          tag = e.name.to_sym
+          if top.ns != e.ns # command, status, ..
+            (item[:domain] ||= {})[tag] = e
+          else # Property (stream, serial, etc.)
+            item[tag] = e.to_h
+          end
+        end
+      end
+
+      # Takes second level (use group for display only)
       def _mk_top_group(top)
         @displist.ext_grp unless @displist.is_a? Disp::Grouping
         sub = @displist.put_grp(top['id'], top['label'])
-        top.each do |e|
-          _mk_items(e, sub)
-        end
+        top.each { |e| _mk_docs(e, sub)}
       end
 
-      def _mk_domain(top)
-        item = _set_item(top)
-        top.each do|e1|
-          tag = e1.name.to_sym
-          if top.ns != e1.ns # command, status, ..
-            (item[:domain] ||= {})[tag] = e1
-          else # Property (stream, serial, etc.)
-            item[tag] = e1.to_h
-          end
-        end
-      end
-
-      def _mk_sub_groups(top)
-        item = _set_item(top)
-        top.each do|e1|
-          tag = e1.name.to_sym
+      # Includable (instance)
+      def _mk_project(top)
+        @displist.ext_grp unless @displist.is_a? Disp::Grouping
+        top.each do |g| # g.name is include or group 
+          tag = g.name.to_sym
           case tag
           when :include # include group
-            (item[:include] ||= []) << e1['ref']
           when :group # group(mdb,adb)
-            @inctag = tag
-            (item[tag] ||= {})[e1['id']] = e1
-          else # Property (stream, serial, etc.)
-            item[tag] = e1.to_h
+            sub = @displist.put_grp(g['id'], g['caption'])
+            g.each { |e| _mk_domain(e, sub) }
           end
         end
       end
 
-      def _mk_items(top, disp = @displist)
-        item = _set_item(top, disp)
-        top.each do|e1|
-          (item[e1.name.to_sym] ||= {})[e1['id']] = e1
+      # Includable (macro)
+      def _mk_sub_groups(top)
+        item = _set_item(top)
+        top.each do|e| # e.name is include or group
+          tag = e.name.to_sym
+          case tag
+          when :include # include group
+            (item[tag] ||= []) << e['ref']
+          when :group # group(mdb,adb)
+            (item[tag] ||= {})[e['id']] = e
+          else # Property (stream, serial, etc.)
+            item[tag] = e.to_h
+          end
         end
       end
 
+      # takes item list (for symbol table)
+      def _mk_docs(top, disp = @displist)
+        item = _set_item(top, disp)
+        top.each do|e|
+          (item[e.name.to_sym] ||= {})[e['id']] = e
+        end
+      end
+
+      # set single item to self
       def _set_item(top, disp = @displist)
         id = top['id'] # site_id or macro_proj
         item = Hashx[top: top, attr: top.to_h]
@@ -121,10 +138,11 @@ module CIAX
         self[id] = item
       end
 
+      # Include will be done for //group
       def _set_includes
         each_value do |item|
           if (ary = item.delete(:include))
-            ary.each { |ref| (item[@inctag] ||= {}).update(self[ref][@inctag]) }
+            ary.each { |ref| (item[:group] ||= {}).update(self[ref][:group]) }
           end
         end
       end

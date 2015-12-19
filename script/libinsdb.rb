@@ -12,26 +12,28 @@ module CIAX
         @adb = App::Db.new
       end
 
-      # overwrite App::Db
-      def get(id = nil)
-        dbi = super
-        dbi.cover(@adb.get(dbi[:app_id]))
-      end
-
       private
 
+      # doc is <project>
+      # return //project/group/instance
       def doc_to_db(doc)
-        dbi = Dbi[doc[:attr]]
-        init_command(doc, dbi)
-        init_status(doc, dbi)
+        at = doc[:attr]
+        dbi = @adb.get(at[:app_id])
+        dbi.update(at)
+        if (dom = doc[:domain])
+          init_command(dom, dbi)
+          init_status(dom, dbi)
+          init_watch(doc, dbi)
+        end
         dbi
       end
 
       # Command Domain
-      def init_command(doc, dbi)
+      def init_command(dom, dbi)
         @idx = {}
         @units = {}
-        arc_unit(doc[:domain][:alias])
+        return self unless dom.key?(:alias)
+        arc_unit(dom[:alias])
         dbi[:command] = { alias: @idx }
         self
       end
@@ -64,10 +66,10 @@ module CIAX
       end
 
       # Status Domain
-      def init_status(doc, dbi)
+      def init_status(dom, dbi)
         hst = dbi[:status] = {}
         grp = hst[:group] = {}
-        (doc[:domain][:status] || []).each do|e0|
+        (dom[:status] || []).each do|e0|
           p = (hst[e0.name.to_sym] ||= {})
           case e0.name
           when 'alias'
@@ -78,7 +80,6 @@ module CIAX
             e0.attr2item(p, :ref)
           end
         end
-        init_watch(doc, dbi)
         dbi[:proj] = PROJ
         dbi[:site_id] = dbi[:ins_id] = dbi[:id]
         dbi[:frm_site] ||= dbi[:id]

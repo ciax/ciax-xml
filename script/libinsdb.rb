@@ -23,7 +23,7 @@ module CIAX
         if (dom = doc[:domain])
           init_command(dom, dbi)
           init_status(dom, dbi)
-          init_watch(doc, dbi)
+          init_watch(dom, dbi)
         end
         dbi
       end

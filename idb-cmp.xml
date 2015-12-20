@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="cmp" label="Helium Compressor">
-    <group id="cp_sum" caption="Summit Helium Compressor">
+    <group id="cp_sum" label="Summit Helium Compressor">
       <instance id="cci" app_id="bbe" host="ciax" port="25108" label="IR Helium Compressor">
         <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
           <item id="c2on" label="CAS2(S1) ON" ref="x0on"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="dummy" label="Dummy simulator">
-    <group id="dmy" caption="Dummy simulator">
+    <group id="dmy" label="Dummy simulator">
       <instance id="tsl" app_id="mma" frm_site="tsl" host="localhost" port="25699" label="TEST Slosyn"/>
       <instance id="tfp" app_id="cfp" frm_site="tfp" host="localhost" port="25698" label="TEST Field Point"/>
       <instance id="tbb" app_id="bbe" frm_site="tbb" host="localhost" port="25697" label="TEST BBE">

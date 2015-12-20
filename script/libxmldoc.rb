@@ -100,7 +100,7 @@ module CIAX
           case tag
           when :include # include group
           when :group # group(mdb,adb)
-            sub = @displist.put_grp(g['id'], g['caption'])
+            sub = @displist.put_grp(g['id'], g['label'])
             g.each { |e| _mk_domain(e, sub) }
           end
         end

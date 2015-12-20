@@ -2,7 +2,7 @@
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="moircs" label="MOIRCS" column="2">
     <include ref="cmp"/>
-    <group id="mc_mos" caption="MOS Mask Exchanger">
+    <group id="mc_mos" label="MOS Mask Exchanger">
       <instance id="mfp" app_id="cfp" host="moircsobcp" port="25601" label="MOIRCS Pneumatic Actuator"/>
       <instance id="map" app_id="oma" host="moircsobcp" port="25602" label="MOIRCS Air Pressure"/>
       <instance id="mma" app_id="mma" host="moircsobcp" port="25603" label="MOIRCS Extension Arm"/>
@@ -196,7 +196,7 @@
         </status>
       </instance>
     </group>
-    <group id="mc_turret" caption="Turret control">
+    <group id="mc_turret" label="Turret control">
       <instance id="mft" app_id="fpa" host="moircsobcp" port="25612" label="MOIRCS Hall Sensor"/>
       <instance id="mix" app_id="ixe" host="moircsobcp" port="25607" label="MOIRCS Turret">
         <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
@@ -511,7 +511,7 @@
         </status>
       </instance>
     </group>
-    <group id="mc_tele" caption="Telemetory">
+    <group id="mc_tele" label="Telemetory">
       <instance id="ml1" app_id="lk8" host="moircsobcp" port="25605" label="MOIRCS Temperature 1">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <index ref="ch0" label="MosCold2"/>
@@ -562,7 +562,7 @@
         </status>
       </instance>
     </group>
-    <group id="mc_mtn" caption="Maintenance">
+    <group id="mc_mtn" label="Maintenance">
       <instance id="mp1" app_id="ken" host="moircsobcp" port="25613" label="MOIRCS Power Supply 1">
         <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
           <item id="getconf" label="Get Config" ref="getconf1"/>

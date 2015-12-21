@@ -89,14 +89,14 @@ module CIAX
       def _mk_top_group(top)
         @displist.ext_grp unless @displist.is_a? Disp::Grouping
         sub = @displist.put_grp(top['id'], top['label'])
-        top.each { |e| _mk_docs(e, sub)}
+        top.each { |e| _mk_docs(e, sub) }
       end
 
       # Includable (instance)
       def _mk_project(top)
         @displist.ext_grp unless @displist.is_a? Disp::Grouping
-        grp = (@grps||={})[top['id']]=[]
-        ref = (@refs||={})[top['id']]=[]
+        grp = (@grps ||= {})[top['id']] = []
+        ref = (@refs ||= {})[top['id']] = []
         top.each do |g| # g.name is include or group
           tag = g.name.to_sym
           case tag
@@ -145,7 +145,7 @@ module CIAX
       # Include will be done for //group
       def _set_includes
         if @grps && PROJ
-          ary = (@grps[PROJ] + @refs[PROJ].map{|k| @grps[k]}.flatten)
+          ary = (@grps[PROJ] + @refs[PROJ].map { |k| @grps[k] }.flatten)
           @displist.sub.valid_grps.replace(ary)
         end
         each_value do |item|

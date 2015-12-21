@@ -78,7 +78,7 @@ module CIAX
 
       def view
         return '' if @rank > @index.rank
-        ary = (@valid_grps & keys).map{|k| self[k].view}.grep(/./)
+        ary = (@valid_grps & keys).map { |k| self[k].view }.grep(/./)
         return '' if ary.empty?
         if @caption
           ary.unshift(@index.mk_caption(@caption, color: @color, level: @level))

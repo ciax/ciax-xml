@@ -35,7 +35,7 @@ module CIAX
         @units = {}
         return self unless dom.key?(:alias)
         arc_unit(dom[:alias])
-        dbi[:command][:alias]= @idx
+        dbi[:command][:alias] = @idx
         self
       end
 

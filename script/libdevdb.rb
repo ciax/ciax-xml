@@ -28,7 +28,7 @@ module CIAX
             e.attr2item(dbi)
           else
             id = e.name.to_sym
-            rec_db(e, dbi[id]={})
+            rec_db(e, dbi[id] = {})
           end
         end
       end

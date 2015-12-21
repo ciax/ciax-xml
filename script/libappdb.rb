@@ -50,7 +50,7 @@ module CIAX
       # Status Db
       def init_stat(adbs, dbi)
         grp = {}
-        idx = Hashx.new
+        idx = {}
         Repeat.new.each(adbs) do|e, r|
           gid = e.attr2item(grp) { |_, v| r.formatting(v) }
           rec_stat(e, idx, grp[gid], r)

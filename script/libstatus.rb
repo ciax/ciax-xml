@@ -17,7 +17,7 @@ module CIAX
         @lastsave = now_msec
         _setdbi(dbi, Ins::Db)
         @adbs = @dbi[:status][:index]
-        self[:data] = Hashx[@adbs.skeleton] unless self[:data]
+        self[:data] = Hashx[@adbs].skeleton unless self[:data]
       end
 
       def change?(k)

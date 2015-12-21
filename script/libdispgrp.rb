@@ -20,13 +20,11 @@ module CIAX
       end
 
       def put_sec(id, cap, color = nil)
-        sec = @sub.put_sec(id, cap, color)
-        sec
+        @sub.put_sec(id, cap, color)
       end
 
       def put_grp(id, cap, color = nil, rank = nil)
-        grp = @sub.put_grp(id, cap, color, rank)
-        grp
+        @sub.put_grp(id, cap, color, rank)
       end
 
       def to_s
@@ -59,12 +57,14 @@ module CIAX
     # Parent of Group
     class Section < Hashx
       attr_accessor :index, :level
+      attr_reader :valid_grps
       def initialize(index, caption: nil, color: nil, level: nil, rank: nil)
         @index = type?(index, Disp)
         @caption = caption
         @color = color
         @level = level.to_i
         @rank = rank.to_i
+        @valid_grps = []
       end
 
       # add sub caption if sub is true
@@ -78,7 +78,7 @@ module CIAX
 
       def view
         return '' if @rank > @index.rank
-        ary = values.map(&:view).grep(/./)
+        ary = (@valid_grps & keys).map{|k| self[k].view}.grep(/./)
         return '' if ary.empty?
         if @caption
           ary.unshift(@index.mk_caption(@caption, color: @color, level: @level))
@@ -94,6 +94,7 @@ module CIAX
 
       def _put_sub_(mod, id, cap, color = nil, rank = nil)
         return self[id] if self[id]
+        @valid_grps << id
         level = @level + 1
         self[id] = mod.new(@index, caption: cap, color: color, level: level, rank: rank)
       end

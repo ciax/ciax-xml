@@ -95,11 +95,15 @@ module CIAX
       # Includable (instance)
       def _mk_project(top)
         @displist.ext_grp unless @displist.is_a? Disp::Grouping
-        top.each do |g| # g.name is include or group 
+        grp = (@grps||={})[top['id']]=[]
+        ref = (@refs||={})[top['id']]=[]
+        top.each do |g| # g.name is include or group
           tag = g.name.to_sym
           case tag
-          when :include # include group
+          when :include # include project
+            ref << g['ref']
           when :group # group(mdb,adb)
+            grp << g['id']
             sub = @displist.put_grp(g['id'], g['label'])
             g.each { |e| _mk_domain(e, sub) }
           end
@@ -140,6 +144,10 @@ module CIAX
 
       # Include will be done for //group
       def _set_includes
+        if @grps && PROJ
+          ary = (@grps[PROJ] + @refs[PROJ].map{|k| @grps[k]}.flatten)
+          @displist.sub.valid_grps.replace(ary)
+        end
         each_value do |item|
           if (ary = item.delete(:include))
             ary.each { |ref| (item[:group] ||= {}).update(self[ref][:group]) }

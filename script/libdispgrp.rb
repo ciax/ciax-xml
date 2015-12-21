@@ -36,6 +36,7 @@ module CIAX
         update(type?(other, Disp))
         _rec_merge_(other.sub)
         @sub.update(other.sub)
+        @sub.valid_grps.concat(other.sub.valid_grps)
         reset!
         self
       end

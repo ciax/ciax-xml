@@ -35,7 +35,7 @@ module CIAX
         @units = {}
         return self unless dom.key?(:alias)
         arc_unit(dom[:alias])
-        dbi[:command] = { alias: @idx }
+        dbi[:command][:alias]= @idx
         self
       end
 
@@ -68,8 +68,8 @@ module CIAX
 
       # Status Domain
       def init_status(dom, dbi)
-        hst = dbi[:status] = {}
-        grp = hst[:group] = {}
+        hst = (dbi[:status] ||= {})
+        grp = (hst[:group] ||= {})
         (dom[:status] || []).each do|e0|
           p = (hst[e0.name.to_sym] ||= {})
           case e0.name

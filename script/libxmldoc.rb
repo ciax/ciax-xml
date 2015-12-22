@@ -95,13 +95,14 @@ module CIAX
       # Includable (instance)
       def _mk_project(top)
         @displist.ext_grp unless @displist.is_a? Disp::Grouping
-        grp = (@grps ||= {})[top['id']] = []
-        ref = (@refs ||= {})[top['id']] = []
+        pid = top['id']
+        vpary = (@valid_proj||=[]).push(pid) if PROJ == pid
+        grp = (@grps ||= {})[pid] = []
         top.each do |g| # g.name is include or group
           tag = g.name.to_sym
           case tag
           when :include # include project
-            ref << g['ref']
+            vpary << g['ref'] if vpary
           when :group # group(mdb,adb)
             grp << g['id']
             sub = @displist.put_grp(g['id'], g['label'])
@@ -144,9 +145,9 @@ module CIAX
 
       # Include will be done for //group
       def _set_includes
-        if @grps && PROJ
-          ary = (@grps[PROJ] + @refs[PROJ].map { |k| @grps[k] }.flatten)
-          @displist.sub.valid_grps.replace(ary)
+        if @valid_proj
+          vk = @valid_proj.map{|proj| @grps[proj]}.flatten.map{|gid| @displist.sub[gid]}.flatten
+          @displist.valid_keys.replace(vk)
         end
         each_value do |item|
           if (ary = item.delete(:include))

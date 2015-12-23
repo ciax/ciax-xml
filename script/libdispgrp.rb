@@ -34,9 +34,9 @@ module CIAX
 
       def merge_sub(other)
         update(type?(other, Disp))
+        @valid_keys.concat(other.valid_keys)
         _rec_merge_(other.sub)
         @sub.update(other.sub)
-        reset!
         self
       end
 

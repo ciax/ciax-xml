@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libmcrcmd'
 require 'libmcrrsp'
-require 'libwatexe'
+require 'libwatlist'
 require 'libmcrqry'
 
 module CIAX

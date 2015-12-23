@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
 ENV['VER'] ||= 'Initialize'
-require 'libwatexe'
+require 'libwatlist'
 # CIAX-XML Device Server
 module CIAX
   OPT.parse('es')

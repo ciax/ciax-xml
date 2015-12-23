@@ -1,12 +1,10 @@
 #!/usr/bin/ruby
-require 'libfrmexe'
-require 'libappdb'
-require 'libappview'
-require 'libappcmd'
-require 'libapprsp'
-require 'libappsym'
+require 'libfrmlist'
 require 'libbuffer'
 require 'libinsdb'
+require 'libappcmd'
+require 'libapprsp'
+require 'libappview'
 # CIAX-XML
 module CIAX
   # Application Layer
@@ -149,21 +147,14 @@ module CIAX
       end
     end
 
-    # Application List
-    class List < Site::List
-      def initialize(cfg, top_list = nil)
-        super(cfg, top_list || self, Frm::List)
-        store_db(Ins::Db.new)
-      end
-    end
-
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
       cfg = Config.new
       cfg[:jump_groups] = []
-      cfg[:site] = ARGV.shift
+      cfg[:sub_list] = Frm::List.new(cfg)
+      cfg[:db] = Ins::Db.new
       begin
-        List.new(cfg).ext_shell.shell
+        Exe.new(ARGV.shift,cfg).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

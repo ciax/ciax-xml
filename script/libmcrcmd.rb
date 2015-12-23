@@ -58,7 +58,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libwatexe'
+      require 'libwatlist'
       cfg = Config.new
       cfg[:dev_list] = Wat::List.new(cfg)
       begin

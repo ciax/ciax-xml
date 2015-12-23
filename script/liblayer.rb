@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
-require 'liblist'
-require 'libhexexe'
+require 'libhexlist'
 
 module CIAX
   # list object can be (Frm,App,Wat,Hex)
@@ -8,6 +7,7 @@ module CIAX
   class Layer < CIAX::List
     def initialize(atrb = {})
       atrb[:column] = 4
+      atrb[:db] = Ins::Db.new
       super(Config.new, atrb)
       obj = (OPT[:x] ? Hex::List : Wat::List).new(@cfg)
       loop do

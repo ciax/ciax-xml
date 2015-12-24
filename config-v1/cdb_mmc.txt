@@ -20,73 +20,73 @@ rsm,Resume Pulses,,cmd,<resume_mmc.txt>
 astop,STOP,1,act,stop
 lowspd,Low Speed,,cmd,SPD=0.2
 cw-[1-5],Move [1-5] unit CW,,cap
-cw-1,Move 1 unit CW,1,act,mi=1/12:bs==0:p:in(1)/astop,astop
-cw-2,Move 2 unit CW,1,act,mi=2/24:bs==0:p:in(1)/astop,astop
-cw-3,Move 3 unit CW,1,act,mi=3/36:bs==0:p:in(1)/astop,astop
-cw-4,Move 4 unit CW,1,act,mi=4/48:bs==0:p:in(1)/astop,astop
-cw-5,Move 5 unit CW,1,act,mi=5/60:bs==0:p:in(1)/astop,astop
+cw-1,Move 1 unit CW,1,act,mi=1/12:bs==0:p:in(1)/upd,astop
+cw-2,Move 2 unit CW,1,act,mi=2/24:bs==0:p:in(1)/upd,astop
+cw-3,Move 3 unit CW,1,act,mi=3/36:bs==0:p:in(1)/upd,astop
+cw-4,Move 4 unit CW,1,act,mi=4/48:bs==0:p:in(1)/upd,astop
+cw-5,Move 5 unit CW,1,act,mi=5/60:bs==0:p:in(1)/upd,astop
 ccw-[1-5],Move [1-5] unit CCW,,cap
-ccw-1,Move 1 unit CCW,1,act,mi=-1/12:bs==0:p:in(1)/astop,astop
-ccw-2,Move 2 unit CCW,1,act,mi=-2/24:bs==0:p:in(1)/astop,astop
-ccw-3,Move 3 unit CCW,1,act,mi=-3/36:bs==0:p:in(1)/astop,astop
-ccw-4,Move 4 unit CCW,1,act,mi=-4/48:bs==0:p:in(1)/astop,astop
-ccw-5,Move 5 unit CCW,1,act,mi=-5/60:bs==0:p:in(1)/astop,astop
-cw-0.1,Move 0.1 unit CW,,cmd,mi=0.1/10:bs==0:p:in(1)/astop,astop
-ccw-0.1,Move 0.1 unit CCW,,cmd,mi=-0.1/10:bs==0:p:in(1)/astop,astop
+ccw-1,Move 1 unit CCW,1,act,mi=-1/12:bs==0:p:in(1)/upd,astop
+ccw-2,Move 2 unit CCW,1,act,mi=-2/24:bs==0:p:in(1)/upd,astop
+ccw-3,Move 3 unit CCW,1,act,mi=-3/36:bs==0:p:in(1)/upd,astop
+ccw-4,Move 4 unit CCW,1,act,mi=-4/48:bs==0:p:in(1)/upd,astop
+ccw-5,Move 5 unit CCW,1,act,mi=-5/60:bs==0:p:in(1)/upd,astop
+cw-0.1,Move 0.1 unit CW,,cmd,mi=0.1/10:bs==0:p:in(1)/upd,astop
+ccw-0.1,Move 0.1 unit CCW,,cmd,mi=-0.1/10:bs==0:p:in(1)/upd,astop
 
-cw,Initialize(CW),,act,j=+1/300:bs==0:p:in(1)/astop,astop
-ccw,Initialize(CCW),,act,j=-1/300:bs==0:p:in(1)/astop,astop
-gh-cw,Go to Home from CW end,,act,mi=-0.51/30:bs==0:p:in(1)/astop,astop
-gh-ccw,Go to Home from CCW end,,act,mi=+0.49/240:bs==0:p:in(1)/astop,astop
+cw,Initialize(CW),,act,j=+1/300:bs==0:p:in(1)/upd,astop
+ccw,Initialize(CCW),,act,j=-1/300:bs==0:p:in(1)/upd,astop
+gh-cw,Go to Home from CW end,,act,mi=-0.51/30:bs==0:p:in(1)/upd,astop
+gh-ccw,Go to Home from CCW end,,act,mi=+0.49/240:bs==0:p:in(1)/upd,astop
 slot[0-23],Move to Slot [0-23],,cap
-slot0,Move to Slot 0,1,act,ma=0/24:bs==0:p:in(1)/astop,astop
-slot1,Move to Slot 1,1,act,ma=-1/24:bs==0:p:in(1)/astop,astop
-slot2,Move to Slot 2,1,act,ma=-2/24:bs==0:p:in(1)/astop,astop
-slot3,Move to Slot 3,1,act,ma=-3/24:bs==0:p:in(1)/astop,astop
-slot4,Move to Slot 4,1,act,ma=-4/24:bs==0:p:in(1)/astop,astop
-slot5,Move to Slot 5,1,act,ma=-5/24:bs==0:p:in(1)/astop,astop
-slot6,Move to Slot 6,1,act,ma=-6/24:bs==0:p:in(1)/astop,astop
-slot7,Move to Slot 7,1,act,ma=-7/24:bs==0:p:in(1)/astop,astop
-slot8,Move to Slot 8,1,act,ma=-8/24:bs==0:p:in(1)/astop,astop
-slot9,Move to Slot 9,1,act,ma=-9/24:bs==0:p:in(1)/astop,astop
-slot10,Move to Slot 10,1,act,ma=-10/24:bs==0:p:in(1)/astop,astop
-slot11,Move to Slot 11,1,act,ma=-11/24:bs==0:p:in(1)/astop,astop
-slot12,Move to Slot 12,1,act,ma=-12/24:bs==0:p:in(1)/astop,astop
-slot13,Move to Slot 13,1,act,ma=-13/24:bs==0:p:in(1)/astop,astop
-slot14,Move to Slot 14,1,act,ma=-14/24:bs==0:p:in(1)/astop,astop
-slot15,Move to Slot 15,1,act,ma=-15/24:bs==0:p:in(1)/astop,astop
-slot16,Move to Slot 16,1,act,ma=-16/24:bs==0:p:in(1)/astop,astop
-slot17,Move to Slot 17,1,act,ma=-17/24:bs==0:p:in(1)/astop,astop
-slot18,Move to Slot 18,1,act,ma=-18/24:bs==0:p:in(1)/astop,astop
-slot19,Move to Slot 19,1,act,ma=-19/24:bs==0:p:in(1)/astop,astop
-slot20,Move to Slot 20,1,act,ma=-20/24:bs==0:p:in(1)/astop,astop
-slot21,Move to Slot 21,1,act,ma=-21/24:bs==0:p:in(1)/astop,astop
-#slot22,Move to Slot 22,1,act,ma=-22/24:bs==0:p:in(1)/astop,astop
-#slot23,Move to Slot 23,1,act,ma=+1/24:bs==0:p:in(1)/astop,astop
-slot0_FIN,Move to Slot 0,,cmd,ma=-0/150:bs==0:p:in(1)/astop,astop
+slot0,Move to Slot 0,1,act,ma=0/24:bs==0:p:in(1)/upd,astop
+slot1,Move to Slot 1,1,act,ma=-1/24:bs==0:p:in(1)/upd,astop
+slot2,Move to Slot 2,1,act,ma=-2/24:bs==0:p:in(1)/upd,astop
+slot3,Move to Slot 3,1,act,ma=-3/24:bs==0:p:in(1)/upd,astop
+slot4,Move to Slot 4,1,act,ma=-4/24:bs==0:p:in(1)/upd,astop
+slot5,Move to Slot 5,1,act,ma=-5/24:bs==0:p:in(1)/upd,astop
+slot6,Move to Slot 6,1,act,ma=-6/24:bs==0:p:in(1)/upd,astop
+slot7,Move to Slot 7,1,act,ma=-7/24:bs==0:p:in(1)/upd,astop
+slot8,Move to Slot 8,1,act,ma=-8/24:bs==0:p:in(1)/upd,astop
+slot9,Move to Slot 9,1,act,ma=-9/24:bs==0:p:in(1)/upd,astop
+slot10,Move to Slot 10,1,act,ma=-10/24:bs==0:p:in(1)/upd,astop
+slot11,Move to Slot 11,1,act,ma=-11/24:bs==0:p:in(1)/upd,astop
+slot12,Move to Slot 12,1,act,ma=-12/24:bs==0:p:in(1)/upd,astop
+slot13,Move to Slot 13,1,act,ma=-13/24:bs==0:p:in(1)/upd,astop
+slot14,Move to Slot 14,1,act,ma=-14/24:bs==0:p:in(1)/upd,astop
+slot15,Move to Slot 15,1,act,ma=-15/24:bs==0:p:in(1)/upd,astop
+slot16,Move to Slot 16,1,act,ma=-16/24:bs==0:p:in(1)/upd,astop
+slot17,Move to Slot 17,1,act,ma=-17/24:bs==0:p:in(1)/upd,astop
+slot18,Move to Slot 18,1,act,ma=-18/24:bs==0:p:in(1)/upd,astop
+slot19,Move to Slot 19,1,act,ma=-19/24:bs==0:p:in(1)/upd,astop
+slot20,Move to Slot 20,1,act,ma=-20/24:bs==0:p:in(1)/upd,astop
+slot21,Move to Slot 21,1,act,ma=-21/24:bs==0:p:in(1)/upd,astop
+#slot22,Move to Slot 22,1,act,ma=-22/24:bs==0:p:in(1)/upd,astop
+#slot23,Move to Slot 23,1,act,ma=+1/24:bs==0:p:in(1)/upd,astop
+slot0_FIN,Move to Slot 0,,cmd,ma=-0/150:bs==0:p:in(1)/upd,astop
 
 access[0-23],Access to Slot[0-23],,cap
-access0,Access to Slot0,1,act,ma=-6/240:bs==0:p:in(1)/astop,astop
-access1,Access to Slot1,1,act,ma=-7/240:bs==0:p:in(1)/astop,astop
-access2,Access to Slot2,1,act,ma=-8/240:bs==0:p:in(1)/astop,astop
-access3,Access to Slot3,1,act,ma=-9/240:bs==0:p:in(1)/astop,astop
-access4,Access to Slot4,1,act,ma=-10/240:bs==0:p:in(1)/astop,astop
-access5,Access to Slot5,1,act,ma=-11/240:bs==0:p:in(1)/astop,astop
-access6,Access to Slot6,1,act,ma=-12/240:bs==0:p:in(1)/astop,astop
-access7,Access to Slot7,1,act,ma=-13/240:bs==0:p:in(1)/astop,astop
-access8,Access to Slot8,1,act,ma=-14/240:bs==0:p:in(1)/astop,astop
-access9,Access to Slot9,1,act,ma=-15/240:bs==0:p:in(1)/astop,astop
-access10,Access to Slot10,1,act,ma=-16/240:bs==0:p:in(1)/astop,astop
-access11,Access to Slot11,1,act,ma=-17/240:bs==0:p:in(1)/astop,astop
-access12,Access to Slot12,1,act,ma=-18/240:bs==0:p:in(1)/astop,astop
-access13,Access to Slot13,1,act,ma=-19/240:bs==0:p:in(1)/astop,astop
-access14,Access to Slot14,1,act,ma=-20/240:bs==0:p:in(1)/astop,astop
-access15,Access to Slot15,1,act,ma=-21/240:bs==0:p:in(1)/astop,astop
-access16,Access to Slot16,1,act,ma=-22/240:bs==0:p:in(1)/astop,astop
-access17,Access to Slot17,1,act,ma=+1/240:bs==0:p:in(1)/astop,astop
-access18,Access to Slot18,1,act,ma=0/240:bs==0:p:in(1)/astop,astop
-access19,Access to Slot19,1,act,ma=-1/240:bs==0:p:in(1)/astop,astop
-access20,Access to Slot20,1,act,ma=-2/240:bs==0:p:in(1)/astop,astop
-access21,Access to Slot21,1,act,ma=-3/240:bs==0:p:in(1)/astop,astop
-#access22,Access to Slot22,1,act,ma=-4/240:bs==0:p:in(1)/astop,astop
-#access23,Access to Slot23,1,act,ma=-5/240:bs==0:p:in(1)/astop,astop
+access0,Access to Slot0,1,act,ma=-6/240:bs==0:p:in(1)/upd,astop
+access1,Access to Slot1,1,act,ma=-7/240:bs==0:p:in(1)/upd,astop
+access2,Access to Slot2,1,act,ma=-8/240:bs==0:p:in(1)/upd,astop
+access3,Access to Slot3,1,act,ma=-9/240:bs==0:p:in(1)/upd,astop
+access4,Access to Slot4,1,act,ma=-10/240:bs==0:p:in(1)/upd,astop
+access5,Access to Slot5,1,act,ma=-11/240:bs==0:p:in(1)/upd,astop
+access6,Access to Slot6,1,act,ma=-12/240:bs==0:p:in(1)/upd,astop
+access7,Access to Slot7,1,act,ma=-13/240:bs==0:p:in(1)/upd,astop
+access8,Access to Slot8,1,act,ma=-14/240:bs==0:p:in(1)/upd,astop
+access9,Access to Slot9,1,act,ma=-15/240:bs==0:p:in(1)/upd,astop
+access10,Access to Slot10,1,act,ma=-16/240:bs==0:p:in(1)/upd,astop
+access11,Access to Slot11,1,act,ma=-17/240:bs==0:p:in(1)/upd,astop
+access12,Access to Slot12,1,act,ma=-18/240:bs==0:p:in(1)/upd,astop
+access13,Access to Slot13,1,act,ma=-19/240:bs==0:p:in(1)/upd,astop
+access14,Access to Slot14,1,act,ma=-20/240:bs==0:p:in(1)/upd,astop
+access15,Access to Slot15,1,act,ma=-21/240:bs==0:p:in(1)/upd,astop
+access16,Access to Slot16,1,act,ma=-22/240:bs==0:p:in(1)/upd,astop
+access17,Access to Slot17,1,act,ma=+1/240:bs==0:p:in(1)/upd,astop
+access18,Access to Slot18,1,act,ma=0/240:bs==0:p:in(1)/upd,astop
+access19,Access to Slot19,1,act,ma=-1/240:bs==0:p:in(1)/upd,astop
+access20,Access to Slot20,1,act,ma=-2/240:bs==0:p:in(1)/upd,astop
+access21,Access to Slot21,1,act,ma=-3/240:bs==0:p:in(1)/upd,astop
+#access22,Access to Slot22,1,act,ma=-4/240:bs==0:p:in(1)/upd,astop
+#access23,Access to Slot23,1,act,ma=-5/240:bs==0:p:in(1)/upd,astop

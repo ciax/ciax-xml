@@ -79,7 +79,7 @@
           </frmcmd>
           <frmcmd name="mhn"/>
         </item>
-        <item id="stop" label="Stop Run" hidden="true">
+        <item id="astop" label="Stop Run" hidden="true">
           <frmcmd name="stop"/>
         </item>
       </group>

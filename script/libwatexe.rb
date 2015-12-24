@@ -103,7 +103,7 @@ module CIAX
       cfg[:db] = Ins::Db.new
       cfg[:sub_list] = App::List.new(cfg)
       begin
-        Exe.new(ARGV.shift,cfg).ext_shell.shell
+        Exe.new(ARGV.shift, cfg).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

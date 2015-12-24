@@ -154,7 +154,7 @@ module CIAX
       cfg[:sub_list] = Frm::List.new(cfg)
       cfg[:db] = Ins::Db.new
       begin
-        Exe.new(ARGV.shift,cfg).ext_shell.shell
+        Exe.new(ARGV.shift, cfg).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

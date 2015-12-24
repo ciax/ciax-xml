@@ -107,9 +107,9 @@ module CIAX
       OPT.parse('ceh:lts')
       cfg = Config.new
       cfg[:jump_groups] = []
-      cfg[:db] = Dev::Db.new 
+      cfg[:db] = Dev::Db.new
       begin
-        Exe.new(ARGV.shift,cfg).ext_shell.shell
+        Exe.new(ARGV.shift, cfg).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

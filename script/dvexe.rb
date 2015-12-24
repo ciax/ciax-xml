@@ -8,5 +8,5 @@ module CIAX
   cfg[:exe_mode] = true
   wex = Wat::List.new(cfg).exe(ARGV)
   puts wex
-  puts wex.join ? 'COMPLETE' : 'TIMEOUT' 
+  puts wex.join ? 'COMPLETE' : 'TIMEOUT'
 end

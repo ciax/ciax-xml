@@ -13,8 +13,9 @@ module CIAX
     def ext_server
       @sub.ext_server if @sub
       return self unless @port
-      verbose do "Initialize UDP server (#{@id}) port:[#{@port}] git:[" +
-                 `cd #{__dir__};git reflog`.split(' ').first+']'
+      verbose do
+        "Initialize UDP server (#{@id}) port:[#{@port}] git:[" +
+          `cd #{__dir__};git reflog`.split(' ').first + ']'
       end
       @server_input_proc = proc { |line| j2h(line) }
       @sv_stat.ext_file.auto_save.ext_log

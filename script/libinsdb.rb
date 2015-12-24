@@ -77,7 +77,7 @@ module CIAX
             e0.attr2item(p)
             ag = (grp[:alias] ||= { caption: 'Alias', members: [] })
             ag[:members] << e0['id']
-          else
+          else # group, index
             e0.attr2item(p, :ref)
           end
         end

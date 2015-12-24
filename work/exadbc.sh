@@ -8,6 +8,7 @@ show(){
             echo "$C3$id$C0"
             $appcmd $site $id 1 1
         done
+        read -t 0 && break
     done
 }
 out=`mktemp`

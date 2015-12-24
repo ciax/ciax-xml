@@ -95,6 +95,7 @@ module CIAX
           sg = @displist.put_grp('gal', 'Alias')
           cdb[:alias].each do|id, att|
             itm = cdb[:index][att[:ref]].dup
+            itm[:argv] = att[:argv] if att[:argv]
             sg.put_item(id, att[:label])
             add_item(id, cdb, itm)
           end

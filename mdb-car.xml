@@ -13,7 +13,7 @@
           <wait retry="12" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_cw-2" label="Move 2 unit CW">
           <check>
@@ -25,7 +25,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_cw-3" label="Move 3 unit CW">
           <check>
@@ -37,7 +37,7 @@
           <wait retry="36" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_cw-4" label="Move 4 unit CW">
           <check>
@@ -49,7 +49,7 @@
           <wait retry="48" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_cw-5" label="Move 5 unit CW">
           <check>
@@ -61,7 +61,7 @@
           <wait retry="60" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
       </unit>
       <unit id="unit_mmc_2_ccw15" title="ccw-[1-5]" label="Move [1-5] unit CCW">
@@ -75,7 +75,7 @@
           <wait retry="12" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_ccw-2" label="Move 2 unit CCW">
           <check>
@@ -87,7 +87,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_ccw-3" label="Move 3 unit CCW">
           <check>
@@ -99,7 +99,7 @@
           <wait retry="36" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_ccw-4" label="Move 4 unit CCW">
           <check>
@@ -111,7 +111,7 @@
           <wait retry="48" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_ccw-5" label="Move 5 unit CCW">
           <check>
@@ -123,7 +123,7 @@
           <wait retry="60" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
       </unit>
       <item id="mmc_cw-0.1" label="Move 0.1 unit CW">
@@ -136,7 +136,7 @@
         <wait retry="10" label="end of motion">
           <equal site="mmc" var="bs" form="data">0</equal>
         </wait>
-        <exec site="mmc" name="astop"/>
+        <upd site="mmc"/>
       </item>
       <item id="mmc_ccw-0.1" label="Move 0.1 unit CCW">
         <check>
@@ -148,7 +148,7 @@
         <wait retry="10" label="end of motion">
           <equal site="mmc" var="bs" form="data">0</equal>
         </wait>
-        <exec site="mmc" name="astop"/>
+        <upd site="mmc"/>
       </item>
       <item id="mmc_cw" label="Initialize(CW)">
         <goal>
@@ -161,7 +161,7 @@
         <wait retry="300" label="end of motion">
           <equal site="mmc" var="bs" form="data">0</equal>
         </wait>
-        <exec site="mmc" name="astop"/>
+        <upd site="mmc"/>
       </item>
       <item id="mmc_ccw" label="Initialize(CCW)">
         <goal>
@@ -174,7 +174,7 @@
         <wait retry="300" label="end of motion">
           <equal site="mmc" var="bs" form="data">0</equal>
         </wait>
-        <exec site="mmc" name="astop"/>
+        <upd site="mmc"/>
       </item>
       <item id="mmc_gh-cw" label="Go to Home from CW end">
         <goal>
@@ -188,7 +188,7 @@
         <wait retry="30" label="end of motion">
           <equal site="mmc" var="bs" form="data">0</equal>
         </wait>
-        <exec site="mmc" name="astop"/>
+        <upd site="mmc"/>
       </item>
       <item id="mmc_gh-ccw" label="Go to Home from CCW end">
         <goal>
@@ -202,7 +202,7 @@
         <wait retry="240" label="end of motion">
           <equal site="mmc" var="bs" form="data">0</equal>
         </wait>
-        <exec site="mmc" name="astop"/>
+        <upd site="mmc"/>
       </item>
       <unit id="unit_mmc_2_slot023" title="slot[0-23]" label="Move to Slot [0-23]">
         <item id="mmc_slot0" label="Move to Slot 0">
@@ -218,7 +218,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot1" label="Move to Slot 1">
           <goal>
@@ -233,7 +233,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot2" label="Move to Slot 2">
           <goal>
@@ -248,7 +248,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot3" label="Move to Slot 3">
           <goal>
@@ -263,7 +263,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot4" label="Move to Slot 4">
           <goal>
@@ -278,7 +278,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot5" label="Move to Slot 5">
           <goal>
@@ -293,7 +293,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot6" label="Move to Slot 6">
           <goal>
@@ -308,7 +308,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot7" label="Move to Slot 7">
           <goal>
@@ -323,7 +323,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot8" label="Move to Slot 8">
           <goal>
@@ -338,7 +338,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot9" label="Move to Slot 9">
           <goal>
@@ -353,7 +353,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot10" label="Move to Slot 10">
           <goal>
@@ -368,7 +368,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot11" label="Move to Slot 11">
           <goal>
@@ -383,7 +383,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot12" label="Move to Slot 12">
           <goal>
@@ -398,7 +398,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot13" label="Move to Slot 13">
           <goal>
@@ -413,7 +413,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot14" label="Move to Slot 14">
           <goal>
@@ -428,7 +428,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot15" label="Move to Slot 15">
           <goal>
@@ -443,7 +443,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot16" label="Move to Slot 16">
           <goal>
@@ -458,7 +458,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot17" label="Move to Slot 17">
           <goal>
@@ -473,7 +473,7 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot18" label="Move to Slot 18">
           <goal>
@@ -488,28 +488,28 @@
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot19" label="Move to Slot 19">
           <exec site="mmc" name="slot19"/>
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot20" label="Move to Slot 20">
           <exec site="mmc" name="slot20"/>
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_slot21" label="Move to Slot 21">
           <exec site="mmc" name="slot21"/>
           <wait retry="24" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
       </unit>
       <item id="mmc_slot0_FIN" label="Move to Slot 0">
@@ -525,7 +525,7 @@
         <wait retry="150" label="end of motion">
           <equal site="mmc" var="bs" form="data">0</equal>
         </wait>
-        <exec site="mmc" name="astop"/>
+        <upd site="mmc"/>
       </item>
       <unit id="unit_mmc_2_access023" title="access[0-23]" label="Access to Slot[0-23]">
         <item id="mmc_access0" label="Access to Slot0">
@@ -541,7 +541,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access1" label="Access to Slot1">
           <goal>
@@ -556,7 +556,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access2" label="Access to Slot2">
           <goal>
@@ -571,7 +571,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access3" label="Access to Slot3">
           <goal>
@@ -586,7 +586,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access4" label="Access to Slot4">
           <goal>
@@ -601,7 +601,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access5" label="Access to Slot5">
           <goal>
@@ -616,7 +616,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access6" label="Access to Slot6">
           <goal>
@@ -631,7 +631,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access7" label="Access to Slot7">
           <goal>
@@ -646,21 +646,21 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access8" label="Access to Slot8">
           <exec site="mmc" name="access8"/>
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access9" label="Access to Slot9">
           <exec site="mmc" name="access9"/>
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access10" label="Access to Slot10">
           <goal>
@@ -675,7 +675,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access11" label="Access to Slot11">
           <goal>
@@ -690,7 +690,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access12" label="Access to Slot12">
           <goal>
@@ -705,35 +705,35 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access13" label="Access to Slot13">
           <exec site="mmc" name="access13"/>
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access14" label="Access to Slot14">
           <exec site="mmc" name="access14"/>
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access15" label="Access to Slot15">
           <exec site="mmc" name="access15"/>
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access16" label="Access to Slot16">
           <exec site="mmc" name="access16"/>
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access17" label="Access to Slot17">
           <goal>
@@ -748,7 +748,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access18" label="Access to Slot18">
           <goal>
@@ -763,7 +763,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access19" label="Access to Slot19">
           <goal>
@@ -778,7 +778,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access20" label="Access to Slot20">
           <goal>
@@ -793,7 +793,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
         <item id="mmc_access21" label="Access to Slot21">
           <goal>
@@ -808,7 +808,7 @@
           <wait retry="240" label="end of motion">
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
-          <exec site="mmc" name="astop"/>
+          <upd site="mmc"/>
         </item>
       </unit>
       <item id="stop" label="Emergency STOP">

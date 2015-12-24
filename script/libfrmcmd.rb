@@ -34,7 +34,13 @@ module CIAX
           @chg_flg = nil
           @frame = _init_frame
           @sel[:body] = ent.deep_subst(@cfg[:body])
-          return ent unless @sel[:body]
+          _init_body(ent) if @sel[:body]
+          ent
+        end
+
+        private
+
+        def _init_body(ent)
           verbose { "Body:#{@cfg[:label]}(#{@cfg[:id]})" }
           _add_frame(:body)
           _init_cc
@@ -49,8 +55,6 @@ module CIAX
           ent[:frame] = frame
           ent
         end
-
-        private
 
         def _init_sel
           if /true|1/ =~ @cfg[:noaffix]

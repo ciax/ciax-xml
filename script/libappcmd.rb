@@ -32,21 +32,27 @@ module CIAX
           ent[:batch] = ent.deep_subst(@cfg[:body]).map do|e1|
             args = []
             enclose("GetCmd(FDB):#{e1.first}", 'Exec(FDB):%s') do
-              e1.each do|e2| # //argv
-                case e2
-                when String
-                  args << e2
-                when Hash
-                  str = e2[:val]
-                  str = e2[:format] % expr(str) if e2[:format]
-                  verbose { "Calculated [#{str}]" }
-                  args << str
-                end
-              end
+              _get_args(e1, args)
             end
             args
           end.extend(Enumx)
           ent
+        end
+
+        private
+
+        def _get_args(e1, args)
+          e1.each do|e2| # //argv
+            case e2
+            when String
+              args << e2
+            when Hash
+              str = e2[:val]
+              str = e2[:format] % expr(str) if e2[:format]
+              verbose { "Calculated [#{str}]" }
+              args << str
+            end
+          end
         end
       end
     end

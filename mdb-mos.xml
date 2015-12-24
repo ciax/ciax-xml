@@ -419,7 +419,7 @@
         <mcr name="s-r"/>
         <mcr name="gs_s-s"/>
         <upd site="map"/>
-        <mcr name="setstk_a"/>
+        <mcr name="sets_a"/>
         <upd site="map"/>
         <upd site="mma"/>
         <mcr name="ao_s-s"/>
@@ -659,7 +659,7 @@
         <mcr name="l-w"/>
         <mcr name="gs_l-s"/>
         <upd site="map"/>
-        <mcr name="setstk_a"/>
+        <mcr name="sets_a"/>
         <mcr name="ac_l-s"/>
       </item>
       <item id="l-r" label="loadmask 3(STORE~ROT)">
@@ -920,12 +920,12 @@
       <item id="set0_a" label="Motor Reset">
         <cfg site="mma" name="set0"/>
       </item>
-      <item id="setstk_a" label="Motor Reset at STK">
+      <item id="sets_a" label="Motor Reset at STK">
         <check>
           <equal site="mma" var="pos" form="msg">STORE</equal>
           <match site="mma" var="abs" form="msg">STORE</match>
         </check>
-        <cfg site="mma" name="setstk"/>
+        <cfg site="mma" name="sets"/>
       </item>
       <item id="check_load" label="Check Status(No actual motion)">
         <check>

@@ -45,7 +45,7 @@ module CIAX
         type?(db, Hash)
         key, atrb = _get_attr_(id, &at_proc)
         alert("ATTRDB: Dupricated ID [#{key}]") if db.key?(key)
-        db[key] = atrb
+        (db[key] ||= {}).update(atrb)
         key
       end
 

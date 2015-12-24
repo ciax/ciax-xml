@@ -106,7 +106,7 @@
             <argv>1</argv>
           </frmcmd>
         </item>
-        <item id="stop" label="Stop Run" hidden="true">
+        <item id="astop" label="Stop Run" hidden="true">
           <frmcmd name="stop" />
           <frmcmd name="bs" />
         </item>

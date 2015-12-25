@@ -40,7 +40,7 @@ module CIAX
       def macro
         Thread.current[:obj] = self
         _show(@record.start)
-        sub_macro(@cfg[:sequence], @record)
+        sub_macro(upd_sites + @cfg[:sequence], @record)
       rescue Interrupt
         msg("\nInterrupt Issued to running devices #{@sv_stat.get(:run)}", 3)
         @sv_stat.get(:run).each do|site|
@@ -62,7 +62,6 @@ module CIAX
         @record[:status] = 'run'
         @record[:total_steps] += type?(seqary,Array).size
         mstat[:result] = 'busy'
-        upd_sites
         seqary.each { |e| break(true) if do_step(e, mstat) }
       rescue Interlock
         false
@@ -85,8 +84,8 @@ module CIAX
       end
 
       def upd_sites
-        @cfg[:dbi][:sites].each do |site|
-          return true if do_step({site: site, type: 'upd'}, @record)
+        @cfg[:dbi][:sites].map do |site|
+          {site: site, type: 'upd'}
         end
       end
 

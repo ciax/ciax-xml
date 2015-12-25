@@ -10,7 +10,7 @@ module CIAX
     # Sub Class
     class Seq
       # Step functions
-
+      #  Continue sequence if returns nil
       private
 
       def _mesg(_e, step, _mstat)
@@ -31,7 +31,11 @@ module CIAX
         fail Interlock
       end
 
-      alias_method :_verify, :_check
+      def _verify(_e, step, mstat)
+        return unless step.fail?
+        mstat[:result] = 'failed'
+        fail Interlock
+      end
 
       def _wait(e, step, mstat)
         if (s = e[:sleep])

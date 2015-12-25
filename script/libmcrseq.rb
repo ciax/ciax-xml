@@ -56,7 +56,7 @@ module CIAX
 
       private
 
-      # macro returns result (true/false)
+      # macro returns result (true=complete /false=error)
       def sub_macro(ment, mstat)
         @depth += 1
         @record[:status] = 'run'
@@ -74,6 +74,7 @@ module CIAX
         @depth -= 1
       end
 
+      # Return true if sequence is broken
       def do_step(e, mstat)
         step = @record.add_step(e, @depth)
         begin

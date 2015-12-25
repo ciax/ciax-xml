@@ -67,11 +67,11 @@ module CIAX
       end
 
       def _mcr(e, step, _mstat)
-        seq = @cfg.ancestor(2).set_cmd(e[:args])
+        ment = @cfg.ancestor(2).set_cmd(e[:args])
         if step.async? && @submcr_proc.is_a?(Proc)
-          step[:id] = @submcr_proc.call(seq, @id).id
+          step[:id] = @submcr_proc.call(ment, @id).id
         else
-          res = _mcr_fg(e, seq, step)
+          res = _mcr_fg(e, ment, step)
           fail Interlock unless res
         end
         false
@@ -84,9 +84,9 @@ module CIAX
       end
 
       # Sub Method
-      def _mcr_fg(e, seq, step)
+      def _mcr_fg(e, ment, step)
         (e[:retry] || 1).to_i.times do
-          res = sub_macro(seq, step)
+          res = sub_macro(ment[:sequence], step)
           return res if res
           step[:action] = 'retry'
         end

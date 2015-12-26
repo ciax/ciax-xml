@@ -84,14 +84,16 @@ module CIAX
 
       def _mcr(e, step, mstat)
         ment = @cfg.ancestor(2).set_cmd(e[:args])
-        count = (e[:retry] || 1).to_i
+        step[:count] = 1
+        total = (e[:retry] || 1).to_i
+        step.upd
         begin
           return sub_macro(ment[:sequence], step)
         rescue Verification
           step[:action] = 'retry'
-          count -= 1
-          if count > 0
-            step.show_title
+          step[:count] += 1
+          if step[:count] <= total
+            step.show_title.upd
             retry
           end
         end

@@ -71,6 +71,7 @@ module CIAX
 
       def show_title
         print title if Msg.fg?
+        self
       end
 
       private

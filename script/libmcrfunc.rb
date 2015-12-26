@@ -34,7 +34,7 @@ module CIAX
       def _verify(_e, step, mstat)
         return unless step.fail?
         mstat[:result] = 'failed'
-        fail Interlock
+        fail Verification
       end
 
       def _wait(e, step, mstat)
@@ -66,12 +66,12 @@ module CIAX
         false
       end
 
-      def _mcr(e, step, _mstat)
+      def _mcr(e, step, mstat)
         ment = @cfg.ancestor(2).set_cmd(e[:args])
         if step.async? && @submcr_proc.is_a?(Proc)
           step[:id] = @submcr_proc.call(ment, @id).id
         else
-          res = _mcr_fg(e, ment, step)
+          res = _mcr_fg(e, ment, step, mstat)
           fail Interlock unless res
         end
         false
@@ -84,13 +84,16 @@ module CIAX
       end
 
       # Sub Method
-      def _mcr_fg(e, ment, step)
+      def _mcr_fg(e, ment, step, mstat)
         (e[:retry] || 1).to_i.times do
-          res = sub_macro(ment[:sequence], step)
-          return res if res
-          step[:action] = 'retry'
+          begin
+            return sub_macro(ment[:sequence], step)
+          rescue Verification
+            step[:action] = 'retry'
+          end
         end
-        nil
+        mstat[:result] = 'failed'
+        fail Interlock
       end
 
       def _get_site(e)

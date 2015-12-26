@@ -18,7 +18,6 @@ module CIAX
 
       # Conditional judgment section
       def timeout?
-        _show title
         res = _progress(self[:retry])
         self[:result] = res ? 'timeout' : 'pass'
         upd
@@ -26,7 +25,6 @@ module CIAX
       end
 
       def sleeping(s)
-        _show title
         _progress(s)
         self[:result] = "slept(#{s})"
         upd
@@ -34,20 +32,17 @@ module CIAX
       end
 
       def ok?
-        _show title
         upd
         'ok'
       end
 
       def skip?
-        _show title
         res = @cond.ok?('skip', 'enter')
         upd
         res
       end
 
       def fail?
-        _show title
         res = !@cond.ok?('pass', 'failed')
         upd
         res
@@ -55,7 +50,6 @@ module CIAX
 
       # Interactive section
       def exec?
-        _show title
         res = !dryrun?
         self[:result] = res ? 'exec' : 'skip'
         upd
@@ -64,7 +58,6 @@ module CIAX
 
       # Execution section
       def async?
-        _show title
         res = (/true|1/ =~ self[:async])
         self[:result] = res ? 'forked' : 'entering'
         upd
@@ -76,6 +69,10 @@ module CIAX
         title + result
       end
 
+      def show_title
+        print title if Msg.fg?
+      end
+
       private
 
       def upd_core
@@ -85,6 +82,11 @@ module CIAX
 
       def _show(msg)
         print msg if Msg.fg?
+      end
+
+      def _result(msg)
+        self[:result] = msg
+        upd
       end
 
       def dryrun?

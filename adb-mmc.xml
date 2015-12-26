@@ -141,7 +141,7 @@
       <event id="mot" label="On Motion">
         <range var="bs">1</range>
         <block name="cwi"/>
-        <int name="stop"/>
+        <int name="astop"/>
         <exec name="updp"/>
       </event>
     </watch>

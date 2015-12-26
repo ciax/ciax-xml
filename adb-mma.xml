@@ -113,7 +113,7 @@
         <block name="gr"/>
         <block name="gw"/>
         <block name="gs"/>
-        <int name="stop"/>
+        <int name="astop"/>
         <exec name="upd"/>
       </event>
       <event label="Reset Config" id="res">

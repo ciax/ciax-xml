@@ -252,9 +252,9 @@
         <wait retry="5" label="Run start?">
           <equal form="msg" var="run" site="crt">ON</equal>
         </wait>
-        <mcr async="true" name="trsi">
+        <mcr_async name="trsi">
           <argv>dsi</argv>
-        </mcr>
+        </mcr_async>
         <wait retry="120" label="Run end?">
           <equal form="msg" label="Running" site="crt" var="run">OFF</equal>
         </wait>

@@ -7,6 +7,7 @@ module CIAX
     # Sequencer
     class Seq
       include Msg
+      include Func
       attr_reader :cfg, :record, :qry, :id, :title
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
@@ -76,6 +77,7 @@ module CIAX
 
       # Return true if sequence is broken
       def do_step(e, mstat)
+        return _mcr_retry(e, mstat) if e[:type] == 'mcr' && e[:retry]
         step = @record.add_step(e, @depth)
         begin
           step.show_title

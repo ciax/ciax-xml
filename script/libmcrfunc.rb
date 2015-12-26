@@ -8,7 +8,7 @@ module CIAX
   # Macro Layer
   module Mcr
     # Sub Class
-    class Seq
+    module Func
       # Step functions
       #  Continue sequence if returns nil
       private
@@ -67,9 +67,8 @@ module CIAX
       end
 
       def _mcr_async(e, step, mstat)
-        ment = @cfg.ancestor(2).set_cmd(e[:args])
         if @submcr_proc.is_a?(Proc)
-          step[:id] = @submcr_proc.call(ment, @id).id
+          step[:id] = @submcr_proc.call(_get_ment(e), @id).id
         else
           _mcr(e, step, mstat)
         end
@@ -83,22 +82,24 @@ module CIAX
       end
 
       def _mcr(e, step, mstat)
-        ment = @cfg.ancestor(2).set_cmd(e[:args])
-        step[:count] = 1
-        total = (e[:retry] || 1).to_i
-        step.upd
-        begin
-          return sub_macro(ment[:sequence], step)
-        rescue Verification
-          step[:action] = 'retry'
-          step[:count] += 1
-          if step[:count] <= total
-            step.show_title.upd
-            retry
-          end
-        end
+        res = sub_macro(_get_ment(e)[:sequence], step)
+        return res if res
         mstat[:result] = 'failed'
         fail Interlock
+      end
+
+      def _mcr_retry(e, mstat)
+        count = 1
+        begin
+          step = @record.add_step(e, @depth)
+          step[:count] = count
+          step.show_title.upd
+          _mcr(e, step, mstat)
+        rescue Verification
+          step[:action] = 'retry'
+          count += 1
+          retry if count <= step[:retry].to_i
+        end
       end
 
       # Sub Method
@@ -112,6 +113,11 @@ module CIAX
 
       def _get_stat(e)
         _get_site(e).sub.stat[e[:form].to_sym][e[:var]]
+      end
+
+      # Mcr::Entity
+      def _get_ment(e)
+        @cfg.ancestor(2).set_cmd(e[:args])
       end
 
       def _giveup?(step)

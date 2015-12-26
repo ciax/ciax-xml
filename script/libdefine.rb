@@ -69,7 +69,7 @@ module CIAX
   # Stream Open Error
   class StreamError < CommError; end
   # CC Verification Error
-  class VerifyError < CommError; end
+  class CheckCodeError < CommError; end
   # No Data in Field for Status
   class NoData < CommError; end
 end

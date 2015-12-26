@@ -66,13 +66,12 @@ module CIAX
         false
       end
 
-      def _mcr(e, step, mstat)
+      def _mcr_async(e, step, mstat)
         ment = @cfg.ancestor(2).set_cmd(e[:args])
-        if step.async? && @submcr_proc.is_a?(Proc)
+        if @submcr_proc.is_a?(Proc)
           step[:id] = @submcr_proc.call(ment, @id).id
         else
-          res = _mcr_fg(e, ment, step, mstat)
-          fail Interlock unless res
+          _mcr(e, step, mstat)
         end
         false
       end
@@ -83,19 +82,24 @@ module CIAX
         _mcr(e, step, nil)
       end
 
-      # Sub Method
-      def _mcr_fg(e, ment, step, mstat)
-        (e[:retry] || 1).to_i.times do
-          begin
-            return sub_macro(ment[:sequence], step)
-          rescue Verification
-            step[:action] = 'retry'
+      def _mcr(e, step, mstat)
+        ment = @cfg.ancestor(2).set_cmd(e[:args])
+        count = (e[:retry] || 1).to_i
+        begin
+          return sub_macro(ment[:sequence], step)
+        rescue Verification
+          step[:action] = 'retry'
+          count -= 1
+          if count > 0
+            step.show_title
+            retry
           end
         end
         mstat[:result] = 'failed'
         fail Interlock
       end
 
+      # Sub Method
       def _get_site(e)
         @cfg[:dev_list].get(e[:site])
       end

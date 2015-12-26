@@ -46,6 +46,7 @@ module CIAX
         @sv_stat.get(:run).each do|site|
           @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
         end
+      rescue Verification
       ensure
         _show(@record.finish)
       end

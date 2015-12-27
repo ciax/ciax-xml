@@ -64,7 +64,7 @@ module CIAX
         @record[:status] = 'run'
         @record[:total_steps] += type?(seqary,Array).size
         mstat[:result] = 'busy'
-        seqary.each { |e| break(true) if do_step(e, mstat) }
+        seqary.each { |e| break(true) unless do_step(e, mstat) }
       rescue Interlock
         false
       rescue Interrupt
@@ -75,7 +75,7 @@ module CIAX
         @depth -= 1
       end
 
-      # Return true if sequence is broken
+      # Return false if sequence is broken
       def do_step(e, mstat)
         return _mcr_retry(e, mstat) if e[:type] == 'mcr' && e[:retry]
         step = @record.add_step(e, @depth)

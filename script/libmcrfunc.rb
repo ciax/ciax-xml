@@ -16,23 +16,24 @@ module CIAX
       def _mesg(_e, step, _mstat)
         step.ok?
         @qry.query(['ok'], step)
-        false
+        true
       end
 
       def _goal(_e, step, mstat)
-        return unless step.skip?
-        return if OPT.test? && !@qry.query(%w(skip force), step)
+        return true unless step.skip?
+        return true if OPT.test? && !@qry.query(%w(skip force), step)
         mstat[:result] = 'skipped'
+        false
       end
 
       def _check(_e, step, mstat)
-        return unless step.fail? && _giveup?(step)
+        return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'error'
         fail Interlock
       end
 
       def _verify(_e, step, mstat)
-        return unless step.fail?
+        return true unless step.fail?
         mstat[:result] = 'failed'
         fail Verification
       end
@@ -40,9 +41,9 @@ module CIAX
       def _wait(e, step, mstat)
         if (s = e[:sleep])
           step.sleeping(s)
-          return
+          return true
         end
-        return unless step.timeout? && _giveup?(step)
+        return true unless step.timeout? && _giveup?(step)
         mstat[:result] = 'timeout'
         fail Interlock
       end
@@ -50,20 +51,20 @@ module CIAX
       def _exec(e, step, _mstat)
         _exe_site(e) if step.exec? && @qry.query(%w(exec pass), step)
         @sv_stat.push(:run, e[:site])
-        false
+        true
       end
 
       def _cfg(e, step, _mstat)
         step.ok?
         _exe_site(e)
-        false
+        true
       end
 
       def _upd(e, step, _mstat)
         step.ok?
         e[:args] = ['upd']
         _exe_site(e)
-        false
+        true
       end
 
       def _mcr_async(e, step, mstat)
@@ -72,7 +73,7 @@ module CIAX
         else
           _mcr(e, step, mstat)
         end
-        false
+        true
       end
 
       def _select(e, step, _mstat)

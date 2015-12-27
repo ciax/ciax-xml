@@ -77,7 +77,7 @@ module CIAX
 
       def _select(e, step, _mstat)
         var = _get_stat(e)
-        e[:args] = e[:select][var]
+        e[:args] = e[:select][var]||[]
         _mcr(e, step, nil)
       end
 

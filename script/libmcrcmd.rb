@@ -51,8 +51,9 @@ module CIAX
       # generate [:sequence]
       class Item < Ext::Item
         def gen_entity(opt)
-          opt[:sequence] = Arrayx.new(@cfg[:body])
-          super
+          ent = super
+          ent[:sequence] = ent.deep_subst(@cfg[:body])
+          ent
         end
       end
     end
@@ -68,7 +69,7 @@ module CIAX
         cobj.rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)
         puts ent.path
-        puts ent[:sequence].to_v
+        puts ent[:sequence]
       rescue InvalidID
         OPT.usage('[cmd] (par)')
       end

@@ -77,7 +77,6 @@ module CIAX
 
       # Return false if sequence is broken
       def do_step(e, mstat)
-        return _mcr_retry(e, mstat) if e[:type] == 'mcr' && e[:retry]
         step = @record.add_step(e, @depth)
         begin
           step.show_title

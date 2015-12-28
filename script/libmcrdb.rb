@@ -31,10 +31,10 @@ module CIAX
         body = (itm[:body] ||= [])
         final = {}
         e0.each do|e1|
-          atrb = e1.to_h
+          atrb = {type: e1.name}
+          atrb.update(e1.to_h)
           _get_sites_(atrb)
           par2item(e1, itm) && next
-          atrb[:type] = e1.name
           case e1.name
           when 'mesg'
             body << atrb

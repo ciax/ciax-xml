@@ -67,15 +67,6 @@ module CIAX
         true
       end
 
-      def _mcr_async(e, step, mstat)
-        if @submcr_proc.is_a?(Proc)
-          step[:id] = @submcr_proc.call(_get_ment(e), @id).id
-        else
-          _mcr(e, step, mstat)
-        end
-        true
-      end
-
       def _select(e, step, _mstat)
         var = _get_stat(e)
         e[:args] = e[:select][var]||[]
@@ -83,27 +74,31 @@ module CIAX
       end
 
       def _mcr(e, step, mstat)
-        count = step[:count] = 1 if step[:retry]
-        step.upd
-        begin
-          res = sub_macro(_get_ment(e)[:sequence], step)
-          return res if res
-          mstat[:result] = 'failed'
-          fail Interlock
-        rescue Verification
-          if step[:retry]
-            step[:action] = 'retry'
-            count += 1
-            if count <= step[:retry].to_i
-              step = @record.add_step(e, @depth)
-              step[:count] = count
-              step.show_title.upd
-              retry
-            end
-          else
+        if e[:async] && @submcr_proc.is_a?(Proc)
+          step[:id] = @submcr_proc.call(_get_ment(e), @id).id
+        else
+          count = step[:count] = 1 if step[:retry]
+          step.upd
+          begin
+            res = sub_macro(_get_ment(e)[:sequence], step)
+            return res if res
             mstat[:result] = 'failed'
+            fail Interlock
+          rescue Verification
+            if step[:retry]
+              step[:action] = 'retry'
+              count += 1
+              if count <= step[:retry].to_i
+                step = @record.add_step(e, @depth)
+                step[:count] = count
+                step.show_title.upd
+                retry
+              end
+            else
+              mstat[:result] = 'failed'
+            end
+            return true
           end
-          return true
         end
       end
 

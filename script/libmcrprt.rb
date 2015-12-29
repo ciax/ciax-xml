@@ -32,7 +32,7 @@ module CIAX
         when 'upd'
           msg = _head_('Update', 10, "[#{self[:site]}]")
         when 'select'
-          msg = _head_('Select', 10, "[#{self[:site]}]")
+          msg = _head_('Select', 10, "[#{self[:site]}:#{self[:var]}]")
         else
           Msg.msg("No such type #{self[:type]}")
           msg = self[:type]

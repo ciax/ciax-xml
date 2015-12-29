@@ -69,8 +69,13 @@ module CIAX
 
       def _select(e, step, _mstat)
         var = _get_stat(e)
-        e[:args] = e[:select][var]||[]
-        _mcr(e, step, nil)
+        cfg_err("No data in status") unless var
+        step.upd
+        sel = e[:select]
+        me = {type: 'mcr', args: sel[var]||sel['*']}
+        mstep = @record.add_step(me, @depth)
+        mstep.show_title
+        _mcr(me, mstep, {})
       end
 
       def _mcr(e, step, mstat)

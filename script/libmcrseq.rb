@@ -48,6 +48,7 @@ module CIAX
           @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
         end
       rescue Verification
+        false
       ensure
         _show(@record.finish)
       end

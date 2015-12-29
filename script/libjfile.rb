@@ -41,7 +41,7 @@ module CIAX
       json_str = _read_json(tag)
       verbose { "Loading #{_file_path_(tag)}" }
       if json_str.empty?
-        verbose{" -- json file (#{_file_path_(tag)}) is empty at loading"}
+        verbose { " -- json file (#{_file_path_(tag)}) is empty at loading" }
         return self
       end
       super(json_str) if _check_load(json_str)
@@ -100,7 +100,7 @@ module CIAX
       end || ''
     rescue Errno::ENOENT
       Msg.par_err('No such Tag', "Tag=#{_tag_list_}") if tag
-      verbose{"  -- no json file (#{fname})"}
+      verbose { "  -- no json file (#{fname})" }
       ''
     end
   end

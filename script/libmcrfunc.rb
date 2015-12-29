@@ -75,7 +75,7 @@ module CIAX
         step.upd
         sel = e[:select]
         me = { type: 'mcr', args: sel[var] || sel['*'] }
-        sub_macro([me],step)
+        sub_macro([me], step)
       end
 
       def _mcr(e, step, mstat)

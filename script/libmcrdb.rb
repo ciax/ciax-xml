@@ -31,7 +31,7 @@ module CIAX
         body = (itm[:body] ||= [])
         final = {}
         e0.each do|e1|
-          atrb = {type: e1.name}
+          atrb = { type: e1.name }
           atrb.update(e1.to_h)
           _get_sites_(atrb)
           par2item(e1, itm) && next

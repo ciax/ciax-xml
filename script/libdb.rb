@@ -72,7 +72,7 @@ module CIAX
     end
 
     def _save_cache(id, res)
-      warning("Cache Refresh (#{id})")
+      verbose{"Cache Refresh (#{id})"}
       open(@marfile, 'w') do|f|
         f << Marshal.dump(res)
         verbose { "Cache Saved(#{id})" }

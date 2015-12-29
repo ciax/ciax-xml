@@ -62,7 +62,7 @@ module CIAX
       def sub_macro(seqary, mstat)
         @depth += 1
         @record[:status] = 'run'
-        @record[:total_steps] += type?(seqary,Array).size
+        @record[:total_steps] += type?(seqary, Array).size
         mstat[:result] = 'busy'
         seqary.each { |e| break(true) unless do_step(e, mstat) }
       rescue Interlock
@@ -88,7 +88,7 @@ module CIAX
 
       def upd_sites
         @cfg[:dbi][:sites].map do |site|
-          {site: site, type: 'upd'}
+          { site: site, type: 'upd' }
         end
       end
 

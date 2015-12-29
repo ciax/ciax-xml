@@ -11,6 +11,7 @@ module CIAX
     module Func
       # Step functions
       #  Continue sequence if returns nil
+
       private
 
       def _mesg(_e, step, _mstat)
@@ -69,10 +70,10 @@ module CIAX
 
       def _select(e, step, _mstat)
         var = _get_stat(e)
-        cfg_err("No data in status") unless var
+        cfg_err('No data in status') unless var
         step.upd
         sel = e[:select]
-        me = {type: 'mcr', args: sel[var]||sel['*']}
+        me = { type: 'mcr', args: sel[var] || sel['*'] }
         mstep = @record.add_step(me, @depth)
         mstep.show_title
         _mcr(me, mstep, {})

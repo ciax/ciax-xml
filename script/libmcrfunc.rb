@@ -15,7 +15,7 @@ module CIAX
       private
 
       def _mesg(_e, step, _mstat)
-        step.ok?
+        step.upd
         @qry.query(['ok'], step)
         true
       end
@@ -56,13 +56,13 @@ module CIAX
       end
 
       def _cfg(e, step, _mstat)
-        step.ok?
+        step.upd
         _exe_site(e)
         true
       end
 
       def _upd(e, step, _mstat)
-        step.ok?
+        step.upd
         e[:args] = ['upd']
         _exe_site(e)
         true

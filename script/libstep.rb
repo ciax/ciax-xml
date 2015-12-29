@@ -31,11 +31,6 @@ module CIAX
         false
       end
 
-      def ok?
-        upd
-        'ok'
-      end
-
       def skip?
         res = @cond.ok?('skip', 'enter')
         upd

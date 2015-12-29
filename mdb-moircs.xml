@@ -3,5 +3,6 @@
   <macro id="moircs" version="1" label="MOIRCS Macro" port="55555">
     <include ref="mos"/>
     <include ref="car"/>
+    <include ref="turret"/>
   </macro>
 </mdb>

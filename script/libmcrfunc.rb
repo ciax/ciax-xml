@@ -71,12 +71,11 @@ module CIAX
       def _select(e, step, _mstat)
         var = _get_stat(e)
         cfg_err('No data in status') unless var
+        step[:result] = var
         step.upd
         sel = e[:select]
         me = { type: 'mcr', args: sel[var] || sel['*'] }
-        mstep = @record.add_step(me, @depth)
-        mstep.show_title
-        _mcr(me, mstep, {})
+        sub_macro([me],step)
       end
 
       def _mcr(e, step, mstat)

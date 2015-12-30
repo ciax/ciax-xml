@@ -42,7 +42,7 @@
               <argv>5</argv>
             </item>
           </unit>
-          <unit id="access" label="Access motion">
+          <unit id="access" title="access[0-23]" label="Access motion">
             <item id="access0" label="Move to access 0" ref="access">
               <argv>0</argv>
             </item>
@@ -116,7 +116,7 @@
               <argv>23</argv>
             </item>
           </unit>
-          <unit id="slot" label="Slot motion">
+          <unit id="slot" title="slot[0-23]" label="Slot motion">
             <item id="slot0" label="Move to slot 0" ref="slot">
               <argv>0</argv>
             </item>

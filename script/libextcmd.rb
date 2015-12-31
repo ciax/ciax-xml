@@ -38,7 +38,7 @@ module CIAX
             _init_member_(cdb, gat[:members], sg)
             _init_unit_(cdb, gat[:units], sg)
           end
-          _init_alias_(cdb)
+          self
         end
 
         def _init_member_(cdb, mem, sg)
@@ -57,17 +57,6 @@ module CIAX
               sg.put_dummy(uat[:title], uat[:label])
               sg.replace(sg - uat[:members])
             end
-          end
-        end
-
-        def _init_alias_(cdb)
-          return unless cdb[:alias]
-          sg = @displist.put_grp('gal', 'Alias')
-          cdb[:alias].each do|id, att|
-            itm = cdb[:index][att[:ref]].dup
-            itm[:argv] = att[:argv] if att[:argv]
-            sg.put_item(id, att[:label])
-            add_item(id, cdb, itm)
           end
         end
       end

@@ -31,11 +31,15 @@ module CIAX
 
       # Command Domain
       def init_command(dom, dbi)
-        @idx = {}
-        @units = {}
         return self unless dom.key?(:alias)
+        cdb = dbi[:command]
+        @idx = cdb[:index]
+        agrp = cdb[:group]['gals'] = Hashx.new
+        agrp[:caption] = 'Alias'
+        @umem =  agrp[:units] = []
+        @units = cdb[:unit]
+        @gmem = agrp[:members] = []
         arc_unit(dom[:alias])
-        dbi[:command][:alias] = @idx
         self
       end
 
@@ -46,10 +50,12 @@ module CIAX
           case e0.name
           when 'unit'
             uid = e0.attr2item(@units)
+            @umem << uid
             e0.each do|e1|
               id = arc_command(e1)
               @idx[id][:unit] = uid
               (@units[uid][:members] ||= []) << id
+              @gmem << id
             end
           when 'item'
             arc_command(e0)
@@ -60,8 +66,11 @@ module CIAX
 
       def arc_command(e0)
         id = e0.attr2item(@idx)
+        item = @idx[id]
+        ref = item.delete(:ref)
+        item.update(@idx[ref].pick([:parameters, :body]))
         e0.each do|e1|
-          (@idx[id][:argv] ||= []) << e1.text
+          (item[:argv] ||= []) << e1.text
         end
         id
       end

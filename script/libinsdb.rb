@@ -55,7 +55,6 @@ module CIAX
               id = arc_command(e1)
               @idx[id][:unit] = uid
               (@units[uid][:members] ||= []) << id
-              @gmem << id
             end
           when 'item'
             arc_command(e0)
@@ -66,6 +65,7 @@ module CIAX
 
       def arc_command(e0)
         id = e0.attr2item(@idx)
+        @gmem << id
         item = @idx[id]
         ref = item.delete(:ref)
         item.update(@idx[ref].pick([:parameters, :body]))

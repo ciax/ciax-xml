@@ -8,7 +8,7 @@
       <instance id="mma" app_id="mma" host="moircsobcp" port="25603" label="Extension Arm"/>
       <instance id="mmc" app_id="mmc" host="moircsobcp" port="25604" label="Carrousel">
         <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <unit id="cw" label="CW motion">
+          <unit id="ucw" label="CW motion">
             <item id="cw-1" label="Move 1 unit CW" ref="cwi">
               <argv>1</argv>
             </item>
@@ -25,7 +25,7 @@
               <argv>5</argv>
             </item>
           </unit>
-          <unit id="ccw" label="CCW motion">
+          <unit id="uccw" label="CCW motion">
             <item id="ccw-1" label="Move 1 unit CCW" ref="ccwi">
               <argv>1</argv>
             </item>
@@ -42,7 +42,7 @@
               <argv>5</argv>
             </item>
           </unit>
-          <unit id="access" title="access[0-23]" label="Access motion">
+          <unit id="uaccess" title="access[0-23]" label="Access motion">
             <item id="access0" label="Move to access 0" ref="access">
               <argv>0</argv>
             </item>
@@ -116,7 +116,7 @@
               <argv>23</argv>
             </item>
           </unit>
-          <unit id="slot" title="slot[0-23]" label="Slot motion">
+          <unit id="uslot" title="slot[0-23]" label="Slot motion">
             <item id="slot0" label="Move to slot 0" ref="slot">
               <argv>0</argv>
             </item>
@@ -200,7 +200,7 @@
       <instance id="mft" app_id="fpa" host="moircsobcp" port="25612" label="Hall Sensor"/>
       <instance id="mix" app_id="ixe" host="moircsobcp" port="25607" label="Turret">
         <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <unit id="t1" title="[co,none,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]_1" label="Turret 1">
+          <unit id="ut1" title="a:*_1" label="Turret 1 [co,none,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
             <item id="co_1" label="CO Filter for Turret 1" ref="opt">
               <argv>1</argv>
               <argv>0</argv>
@@ -250,7 +250,7 @@
               <argv>11</argv>
             </item>
           </unit>
-          <unit id="t2" title="[csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,none]_2" label="Turret 2">
+          <unit id="ut2" title="b:*_2" label="Turret 2 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,none]">
             <item id="csl_2" label="Cold Stop Large for Turret 2" ref="opt">
               <argv>2</argv>
               <argv>0</argv>
@@ -300,7 +300,7 @@
               <argv>11</argv>
             </item>
           </unit>
-          <unit id="t3" title="[vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,none]_3" label="Turret 3">
+          <unit id="ut3" title="c:*_3" label="Turret 3 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,none]">
             <item id="vph_h_3" label="VPH H Grism for Turret 3" ref="opt">
               <argv>3</argv>
               <argv>0</argv>
@@ -350,7 +350,7 @@
               <argv>11</argv>
             </item>
           </unit>
-          <unit id="t4" label="Turret 4">
+          <unit id="ut4" title="a:*_4" label="Turret 4 [co,none,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
             <item id="co_4" label="CO Filter for Turret 4" ref="opt">
               <argv>4</argv>
               <argv>0</argv>
@@ -400,7 +400,7 @@
               <argv>11</argv>
             </item>
           </unit>
-          <unit id="t5" label="Turret 5">
+          <unit id="ut5" title="b:*_5" label="Turret 5 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,none]">
             <item id="csl_5" label="Cold Stop Large for Turret 5" ref="opt">
               <argv>5</argv>
               <argv>0</argv>
@@ -450,7 +450,7 @@
               <argv>11</argv>
             </item>
           </unit>
-          <unit id="t6" label="Turret 6">
+          <unit id="ut6" title="c:*_6" label="Turret 6 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,none]">
             <item id="vph_h_6" label="VPH H Grism for Turret 6" ref="opt">
               <argv>6</argv>
               <argv>0</argv>

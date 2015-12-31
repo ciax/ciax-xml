@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libmsg'
+require 'libenumx'
 
 module CIAX
   module Xml
@@ -33,7 +33,7 @@ module CIAX
         key, atrb = _get_attr_(id, &at_proc)
         atrb.each do|str, v|
           sym = str.to_sym
-          db[sym] = {} unless db.key?(sym)
+          db[sym] = Hashx.new unless db.key?(sym)
           db[sym][key] = v
           verbose { 'ATTRDB:' + str.upcase + ":[#{key}] : #{v}" }
         end
@@ -45,12 +45,12 @@ module CIAX
         type?(db, Hash)
         key, atrb = _get_attr_(id, &at_proc)
         alert("ATTRDB: Dupricated ID [#{key}]") if db.key?(key)
-        (db[key] ||= {}).update(atrb)
+        (db[key] ||= Hashx.new).update(atrb)
         key
       end
 
       def _get_attr_(id, &at_proc)
-        atrb = {}
+        atrb = Hashx.new
         to_h.each do|k, v|
           if at_proc
             atrb[k] = at_proc.call(k, v)

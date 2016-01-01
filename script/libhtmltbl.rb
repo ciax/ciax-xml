@@ -11,7 +11,7 @@ module CIAX
       push '<head>'
       push '<title>CIAX-XML</title>'
       push '<link rel="stylesheet" type="text/css" href="ciax-xml.css" />'
-      push '<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>'
+      push '<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>'
       push '<script type="text/javascript">var Type="status",Site="' + @dbi[:id] + '",Port="' + @dbi[:port] + '";</script>'
       push '<script type="text/javascript" src="ciax-xml.js"></script>'
       push '</head>'

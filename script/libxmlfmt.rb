@@ -14,7 +14,7 @@ module CIAX
       def element(tag, text, atrb = {})
         str = tag_begin(tag, atrb)
         if text
-          str << format(">%s</%s>", text, tag)
+          str << format('>%s</%s>', text, tag)
         else
           str << '/>'
         end
@@ -23,7 +23,7 @@ module CIAX
 
       def enclose(tag, atrb = {})
         sub = Format.new(@indent + 1)
-        push(tag_begin(tag, atrb)+'>')
+        push(tag_begin(tag, atrb) + '>')
         push sub
         push(tag_end(tag))
         sub
@@ -58,7 +58,7 @@ module CIAX
       end
 
       def tag_end(tag)
-        format('  ' * @indent + "</%s>", tag)
+        format('  ' * @indent + '</%s>', tag)
       end
     end
 
@@ -67,7 +67,7 @@ module CIAX
       doc << HEADER
       html = doc.enclose('html')
       body = html.enclose('body')
-      body.element('a','ok')
+      body.element('a', 'ok')
       puts doc
     end
   end

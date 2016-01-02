@@ -46,7 +46,8 @@ module CIAX
       push '<th colspan="6">Controls</th></tr>'
       push '<tr>'
       grpary.each{ |gid|
-        get_ctl_unit(gidx[gid][:units],gid) if gidx.key?(gid)
+        id_err(gidx.keys.inspect) unless gidx.key?(gid)
+        get_ctl_unit(gidx[gid][:units]||[],gid)
       }
       push '</tr>'
       push '</tbody></table>'
@@ -60,8 +61,10 @@ module CIAX
         udb = uidx[uid]
         if udb
           push '<td class="item">'
-          label = udb[:label].gsub(/\[.*\]/,'')
-          push '<span class="ctllabel">' + label + '</span>'
+          if udb[:label]
+            label = udb[:label].gsub(/\[.*\]/,'')
+            push '<span class="ctllabel">' + label + '</span>'
+          end
           umem = udb[:members]
           if umem.size > 2
             get_select(umem,uid)
@@ -126,7 +129,11 @@ module CIAX
     end
     tbl = HtmlTbl.new(dbi)
     tbl.fetch_stat
-    tbl.get_ctl_grp(ARGV)
-    puts tbl.fin
+    begin
+      tbl.get_ctl_grp(ARGV)
+      puts tbl.fin
+    rescue InvalidID
+      Msg.usage '[id] (ctl)'
+    end
   end
 end

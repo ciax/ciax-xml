@@ -19,37 +19,37 @@ module CIAX
       head.element('title', 'CIAX-XML')
       head.element('link', nil, rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css')
       script = format('var Type="status",Site="%s",Port="%s";', @dbi[:id], @dbi[:port])
-      mk_script(head, '', JQUERY)
-      mk_script(head, script)
-      mk_script(head, '', 'ciax-xml.js')
+      _mk_script(head, '', JQUERY)
+      _mk_script(head, script)
+      _mk_script(head, '', 'ciax-xml.js')
       self
     end
 
     def mk_stat
       adbs = @dbi[:status]
       @index = adbs[:index]
-      get_element(%i(time elapsed), '', 2)
+      _mk_element(%i(time elapsed), '', 2)
       adbs[:group].values.each do|g|
         cap = g[:caption] || next
-        get_element(g[:members], cap, g['column'])
+        _mk_element(g[:members], cap, g['column'])
       end
       self
     end
 
-    def get_ctl_grp(grpary)
+    def mk_ctl_grp(grpary)
       return if grpary.empty?
       gidx = @dbi[:command][:group] || return
-      tr = mk_tbody('Controls').enclose('tr')
+      tr = _mk_tbody('Controls').enclose('tr')
       grpary.each{ |gid|
         id_err(gidx.keys.inspect) unless gidx.key?(gid)
-        get_ctl_unit(gidx[gid][:units] || [], tr)
+        mk_ctl_unit(gidx[gid][:units] || [], tr)
       }
       self
     end
 
-    def get_ctl_unit(unitary, tr = nil)
+    def mk_ctl_unit(unitary, tr = nil)
       return if unitary.empty?
-      tr ||= mk_tbody('Controls').enclose('tr')
+      tr ||= _mk_tbody('Controls').enclose('tr')
       uidx = @dbi[:command][:unit] || return
       unitary.each do|uid|
         udb = uidx[uid]
@@ -61,9 +61,9 @@ module CIAX
           end
           umem = udb[:members]
           if umem.size > 2
-            get_select(td, umem, uid)
+            _mk_select(td, umem, uid)
           else
-            get_button(td, umem)
+            _mk_button(td, umem)
           end
         else
           give_up("Wrong CTL Unit\n" + uidx.map { |k, v| itemize(k, v[:label]) }.join("\n"))
@@ -74,22 +74,22 @@ module CIAX
 
     private
 
-    def mk_script(head, text, src = nil)
+    def _mk_script(head, text, src = nil)
       atrb = { type: 'text/javascript' }
       atrb[:src] = src if src
       head.element('script', text, atrb)
       self
     end
 
-    def mk_tbody(cap = nil)
+    def _mk_tbody(cap = nil)
       tbody = @div.enclose('table').enclose('tbody')
       tbody.enclose('tr').element('th', cap, colspan: 6) if cap
       tbody
     end
 
-    def get_element(members, cap = '', col = nil)
+    def _mk_element(members, cap = '', col = nil)
       col = col.to_i > 0 ? col.to_i : 6
-      tbody = mk_tbody(cap)
+      tbody = _mk_tbody(cap)
       members.each_slice(col) do|da|
         tr = tbody.enclose('tr')
         da.each do|id|
@@ -102,7 +102,7 @@ module CIAX
       self
     end
 
-    def get_select(td, umem, uid)
+    def _mk_select(td, umem, uid)
       span = td.enclose('span', class: 'center')
       sel = span.enclose('select', id: uid, onchange: 'seldv(this)')
       umem.each do|id|
@@ -111,7 +111,7 @@ module CIAX
       self
     end
 
-    def get_button(td, umem)
+    def _mk_button(td, umem)
       umem.each do|id|
         span = td.enclose('span', class: 'center')
         label = @dbi[:command][:index][id][:label].upcase
@@ -132,7 +132,7 @@ module CIAX
     tbl = HtmlTbl.new(dbi)
     tbl.mk_stat
     begin
-      tbl.get_ctl_grp(ARGV)
+      tbl.mk_ctl_grp(ARGV)
       puts tbl
     rescue InvalidID
       Msg.usage '[id] (ctl)'

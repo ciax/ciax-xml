@@ -54,8 +54,10 @@ module CIAX
           guni.each do|u|
             uat = cdb[:unit][u]
             if uat.key?(:title)
-              sg.put_dummy(uat[:title], uat[:label])
-              sg.replace(sg - uat[:members])
+              umem = uat[:members]
+              il = umem.map{|m| cdb[:index][m][:label]}.join('/')
+              sg.put_dummy(uat[:title], uat[:label] % il)
+              sg.replace(sg - umem)
             end
           end
         end

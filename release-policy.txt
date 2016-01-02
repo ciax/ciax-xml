@@ -1,0 +1,17 @@
+master  : stable version
+testing : in normal operation
+beta    : stable in adding new feature
+develop : unstable in adding new feature
+
+release order:
+ develop -> beta -> testing -> master
+
+In operation:
+ Usually, use testing version at first time in every operation.
+ If something wrong is found, get back to master version.
+ If it goes well on several time operation, version will be shifted.
+ (testing -> master, beta -> testing, develop -> beta)
+
+Debug:
+ Debug will be done at operating version (usually testing).
+ Then it is merged into beta -> develop.

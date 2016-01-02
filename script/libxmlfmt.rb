@@ -4,41 +4,31 @@ require 'libenumx'
 module CIAX
   module Xml
     class Format < Arrayx
-      def initialize
-        @indent = 0
-        push '<?xml version="1.0" encoding="utf-8"?>'
+      def initialize(ind = 0)
+        @indent = ind
       end
 
-      def mktag(tag, atrb = {})
-        str = format('  ' * @indent + '<%s', tag)
-        atrb.each do|k, v|
-          str << format(' %s="%s"', k, v)
-        end
-        str
+      def xmlheader
+        push('<?xml version="1.0" encoding="utf-8"?>')
       end
 
       # single line element
-      def indent(tag, atrb = {}, text = nil)
-        str = mktag(tag, atrb)
+      def element(tag, text, atrb = {})
+        str = tag_begin(tag, atrb)
         if text
           str << format(">%s</%s>", text, tag)
         else
           str << '/>'
         end
-        str
+        push(str)
       end
 
       def enclose(tag, atrb = {}, enum = nil)
-        @indent += 1
-        if enum
-          ary = enum.map{ |a| yield a}.compact
-        else
-          ary = [yield].compact
-        end
-        @indent -= 1
-        return if ary.empty?
-        ary.unshift(mktag(tag, atrb)+'>')
-        ary << format('  ' * @indent + "</%s>", tag)
+        sub = Format.new(@indent + 1)
+        push(tag_begin(tag, atrb)+'>')
+        push sub
+        push(tag_end(tag))
+        sub
       end
 
       def a2h(vals, *tags)
@@ -54,15 +44,32 @@ module CIAX
         tags.each { |k| res[k] = hash[k.to_s] }
         res
       end
+
+      def to_s
+        super flatten(@indent)
+      end
+
+      private
+
+      def tag_begin(tag, atrb = {})
+        str = format('  ' * @indent + '<%s', tag)
+        atrb.each do|k, v|
+          str << format(' %s="%s"', k, v)
+        end
+        str
+      end
+
+      def tag_end(tag)
+        format('  ' * @indent + "</%s>", tag)
+      end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      doc = Format.new
-      puts doc.enclose('html'){
-        doc.enclose('body'){
-          doc.indent('a',{},'ok')
-        }
-      }
+      doc = Format.new.xmlheader
+      html = doc.enclose('html')
+      body = html.enclose('body')
+      body.element('a','ok')
+      puts doc
     end
   end
 end

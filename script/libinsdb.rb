@@ -34,7 +34,7 @@ module CIAX
         return self unless dom.key?(:alias)
         cdb = dbi[:command]
         @idx = cdb[:index]
-        agrp = cdb[:group]['gals'] = Hashx.new
+        agrp = cdb[:group]['gal'] = Hashx.new
         agrp[:caption] = 'Alias'
         @umem =  agrp[:units] = []
         @units = cdb[:unit]

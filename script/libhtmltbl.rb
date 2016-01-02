@@ -38,35 +38,64 @@ module CIAX
       self
     end
 
-    def get_ctl(unitary)
-      return if unitary.empty?
-      uidx = @dbi[:command][:unit] || return
+    def get_ctl_grp(grpary)
+      return if grpary.empty?
+      gidx = @dbi[:command][:group] || return
       push '<table><tbody>'
       push '<tr>'
       push '<th colspan="6">Controls</th></tr>'
       push '<tr>'
-      unitary.each do|unit|
-        udb = uidx[unit]
+      grpary.each{ |gid|
+        get_ctl_unit(gidx[gid][:units],gid) if gidx.key?(gid)
+      }
+      push '</tr>'
+      push '</tbody></table>'
+      self
+    end
+
+    def get_ctl_unit(unitary,gid)
+      return if unitary.empty?
+      uidx = @dbi[:command][:unit] || return
+      unitary.each do|uid|
+        udb = uidx[uid]
         if udb
           push '<td class="item">'
-          push '<span class="ctllabel">' + udb[:label] + '</span>'
-          udb[:members].each do|id|
-            push '<span class="center">'
-            label = @dbi[:command][:index][id][:label].upcase
-            push '<input class="button" type="button" value="' + label + '" onclick="dvctl(' + "'#{id}'" + ')"/>'
-            push '</span>'
+          label = udb[:label].gsub(/\[.*\]/,'')
+          push '<span class="ctllabel">' + label + '</span>'
+          umem = udb[:members]
+          if umem.size > 2
+            get_select(umem,uid)
+          else
+            get_button(umem)
           end
           push '</td>'
         else
           give_up("Wrong CTL Unit\n" + uidx.map { |k, v| itemize(k, v[:label]) }.join("\n"))
         end
       end
-      push '</tr>'
-      push '</tbody></table>'
       self
     end
 
     private
+
+    def get_select(umem,uid)
+      push '<span class="center">'
+      push '<select id="'+uid+'" onchange="seldv(this)">'
+      umem.each do|id|
+        push "<option>#{id}</option>"
+      end
+      push '</select>'
+      push '</span>'
+    end
+
+    def get_button(umem)
+      umem.each do|id|
+        push '<span class="center">'
+        label = @dbi[:command][:index][id][:label].upcase
+        push '<input class="button" type="button" value="' + label + '" onclick="dvctl(' + "'#{id}'" + ')"/>'
+        push '</span>'
+      end
+    end
 
     def get_element(members, cap = '', col = nil)
       col = col.to_i > 0 ? col.to_i : 6
@@ -97,7 +126,7 @@ module CIAX
     end
     tbl = HtmlTbl.new(dbi)
     tbl.fetch_stat
-    tbl.get_ctl(ARGV)
+    tbl.get_ctl_grp(ARGV)
     puts tbl.fin
   end
 end

@@ -1,36 +1,34 @@
 #!/usr/bin/ruby
+require 'libxmlfmt'
 require 'libinsdb'
 # CIAX-XML
 module CIAX
   # HTML Table generation
-  class HtmlTbl < Array
-    include Msg
+  class HtmlTbl < Xml::Format
+    JQUERY = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"
     def initialize(dbi)
+      super()
       @dbi = type?(dbi, Dbi)
-      push '<html>'
-      push '<head>'
-      push '<title>CIAX-XML</title>'
-      push '<link rel="stylesheet" type="text/css" href="ciax-xml.css" />'
-      push '<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>'
-      push '<script type="text/javascript">var Type="status",Site="' + @dbi[:id] + '",Port="' + @dbi[:port] + '";</script>'
-      push '<script type="text/javascript" src="ciax-xml.js"></script>'
-      push '</head>'
-      push '<body>'
-      push '<div class="outline">'
-      push '<div class="title">' + @dbi[:label] + '</div>'
+      html = enclose('html')
+      mk_head(html.enclose('head'))
+      @div = html.enclose('body').enclose('div', class: "outline")
+      @div.element('div', @dbi[:label], class: 'title')
     end
 
-    def fin
-      push '</div>'
-      push '</body>'
-      push '</html>'
+    def mk_head(head)
+      head.element('title','CIAX-XML')
+      head.element('link', nil, rel: "stylesheet",type:"text/css", href:"ciax-xml.css")
+      script = format('var Type="status",Site="%s",Port="%s";',@dbi[:id],@dbi[:port])
+      mk_script(head,'',JQUERY)
+      mk_script(head, script)
+      mk_script(head,'',"ciax-xml.js")
       self
     end
 
-    def fetch_stat
+    def get_stat
       adbs = @dbi[:status]
       @index = adbs[:index]
-      get_element(%i(time elapsed), '', 2)
+      get_element( %i(time elapsed), '', 2)
       adbs[:group].values.each do|g|
         cap = g[:caption] || next
         get_element(g[:members], cap, g['column'])
@@ -41,37 +39,31 @@ module CIAX
     def get_ctl_grp(grpary)
       return if grpary.empty?
       gidx = @dbi[:command][:group] || return
-      push '<table><tbody>'
-      push '<tr>'
-      push '<th colspan="6">Controls</th></tr>'
-      push '<tr>'
+      tr = mk_tbody('Controls').enclose('tr')
       grpary.each{ |gid|
         id_err(gidx.keys.inspect) unless gidx.key?(gid)
-        get_ctl_unit(gidx[gid][:units]||[],gid)
+        get_ctl_unit(tr, gidx[gid][:units]||[],gid)
       }
-      push '</tr>'
-      push '</tbody></table>'
       self
     end
 
-    def get_ctl_unit(unitary,gid)
+    def get_ctl_unit(tr, unitary,gid)
       return if unitary.empty?
       uidx = @dbi[:command][:unit] || return
       unitary.each do|uid|
         udb = uidx[uid]
         if udb
-          push '<td class="item">'
+          td = tr.enclose('td', class:"item")
           if udb[:label]
             label = udb[:label].gsub(/\[.*\]/,'')
-            push '<span class="ctllabel">' + label + '</span>'
+            td.element('span',  label, class:"ctllabel")
           end
           umem = udb[:members]
           if umem.size > 2
-            get_select(umem,uid)
+            get_select(td,umem,uid)
           else
-            get_button(umem)
+            get_button(td, umem)
           end
-          push '</td>'
         else
           give_up("Wrong CTL Unit\n" + uidx.map { |k, v| itemize(k, v[:label]) }.join("\n"))
         end
@@ -81,41 +73,50 @@ module CIAX
 
     private
 
-    def get_select(umem,uid)
-      push '<span class="center">'
-      push '<select id="'+uid+'" onchange="seldv(this)">'
-      umem.each do|id|
-        push "<option>#{id}</option>"
-      end
-      push '</select>'
-      push '</span>'
+    def mk_script(head, text, src =nil)
+      atrb = {type: "text/javascript"}
+      atrb[:src] = src if src
+      head.element('script', text, atrb)
+      self
     end
 
-    def get_button(umem)
-      umem.each do|id|
-        push '<span class="center">'
-        label = @dbi[:command][:index][id][:label].upcase
-        push '<input class="button" type="button" value="' + label + '" onclick="dvctl(' + "'#{id}'" + ')"/>'
-        push '</span>'
-      end
+    def mk_tbody(cap = nil)
+      tbody = @div.enclose('table').enclose('tbody')
+      tbody.enclose('tr').element('th', cap, colspan: 6) if cap
+      tbody
     end
 
     def get_element(members, cap = '', col = nil)
       col = col.to_i > 0 ? col.to_i : 6
-      push '<table><tbody>'
-      push "<tr><th colspan=\"6\">#{cap}</th></tr>" unless cap.empty?
+      tbody = mk_tbody(cap)
       members.each_slice(col) do|da|
-        push '<tr>'
+        tr = tbody.enclose('tr')
         da.each do|id|
           label = (@index[id] || {})[:label] || id.upcase
-          push "<td class=\"item\">"
-          push "<span class=\"label\">#{label}</span>"
-          push "<span id=\"#{id}\" class=\"normal\">*******</span>"
-          push '</td>'
+          td = tr.enclose('td', class: 'item')
+          td.element('span', label, class: 'label')
+          td.element('span', '*******', id: id, class: "normal")
         end
-        push '</tr>'
       end
-      push '</tbody></table>'
+      self
+    end
+
+    def get_select(td, umem,uid)
+      span = td.enclose('span', class:"center")
+      sel = span.enclose('select', id: uid, onchange:"seldv(this)")
+      umem.each do|id|
+        sel.element("option",id)
+      end
+      self
+    end
+
+    def get_button(td, umem)
+      umem.each do|id|
+        span = td.enclose('span', class:"center")
+        label = @dbi[:command][:index][id][:label].upcase
+        span.element('input',nil,  class:"button", type:"button", value: label,
+                     onclick: "dvctl('#{id}')")
+      end
       self
     end
   end
@@ -128,10 +129,10 @@ module CIAX
       Msg.usage '[id] (ctl)'
     end
     tbl = HtmlTbl.new(dbi)
-    tbl.fetch_stat
+    tbl.get_stat
     begin
       tbl.get_ctl_grp(ARGV)
-      puts tbl.fin
+      puts tbl
     rescue InvalidID
       Msg.usage '[id] (ctl)'
     end

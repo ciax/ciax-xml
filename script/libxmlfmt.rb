@@ -3,13 +3,11 @@ require 'libenumx'
 
 module CIAX
   module Xml
+    HEADER = '<?xml version="1.0" encoding="utf-8"?>'
+    # XML Formatting Class
     class Format < Arrayx
       def initialize(ind = 0)
         @indent = ind
-      end
-
-      def xmlheader
-        push('<?xml version="1.0" encoding="utf-8"?>')
       end
 
       # single line element
@@ -23,7 +21,7 @@ module CIAX
         push(str)
       end
 
-      def enclose(tag, atrb = {}, enum = nil)
+      def enclose(tag, atrb = {})
         sub = Format.new(@indent + 1)
         push(tag_begin(tag, atrb)+'>')
         push sub
@@ -65,7 +63,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      doc = Format.new.xmlheader
+      doc = Format.new
+      doc << HEADER
       html = doc.enclose('html')
       body = html.enclose('body')
       body.element('a','ok')

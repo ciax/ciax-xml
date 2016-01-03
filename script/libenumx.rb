@@ -62,7 +62,7 @@ module CIAX
   class Hashx < Hash
     include Enumx
     def initialize(hash = {})
-      update(hash)
+      update(hash) if hash
       vmode(:v) # v|r|j
       %i(v r j).each do|k|
         vmode(k) if OPT[k]
@@ -101,6 +101,17 @@ module CIAX
         hash[key] = src[key] if src.key?(key)
       end
       hash
+    end
+
+    # Pick Hash which isn't Array or Hash for XML attributes
+    def attribute(id = nil)
+      atrb = Hashx.new
+      atrb[:id] = id if id
+      each do |k, v|
+        next if v.is_a? Enumerable
+        atrb[k] = v
+      end
+      atrb
     end
   end
 

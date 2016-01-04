@@ -41,6 +41,7 @@ module CIAX
           self
         end
 
+        # Group Member will get into Index and Disp 
         def _init_member_(cdb, mem, sg)
           mem.each do|id|
             itm = cdb[:index][id]
@@ -49,6 +50,8 @@ module CIAX
           end
         end
 
+        # Unit Title will be set to Disp,
+        # Unit Member will be removed from Disp instead
         def _init_unit_(cdb, guni, sg)
           return unless guni
           guni.each do|u|

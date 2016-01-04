@@ -315,4 +315,4 @@ if proj
   select_mcr(select, index, proj)
   @mdb[:index].update(index)
 end
-puts JSON.dump @mdb
+jj @mdb

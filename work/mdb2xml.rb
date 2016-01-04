@@ -2,156 +2,118 @@
 # IDB CSV(CIAX-v1) to XML
 #alias m2x
 require 'json'
-OPETBL = { '=~' => 'match', '!=' => 'not', '==' => 'equal', '!~' => 'unmatch' }
-def mktag(tag, atrb)
-  str = format('  ' * @indent + '<%s', tag)
-  atrb.each do|k, v|
-    str << format(' %s="%s"', k, v)
-  end
-  str
-end
-
-# single line element
-def indent(tag, atrb = {}, text = nil)
-  str = mktag(tag, atrb)
-  if text
-    str << format(">%s</%s>", text, tag)
-  else
-    str << '/>'
-  end
-  str
-end
-
-def enclose(tag, atrb = {}, enum = nil)
-  @indent += 1
-  if enum
-    ary = enum.map{ |a| yield a}.compact
-  else
-    ary = [yield].compact
-  end
-  @indent -= 1
-  return if ary.empty?
-  ary.unshift(mktag(tag, atrb)+'>')
-  ary << format('  ' * @indent + "</%s>", tag)
-  ary.join("\n")
-end
-
-def a2h(vals, *tags)
-  atrb = {}
-  vals.each do|val|
-    atrb[tags.shift] = val
-  end
-  atrb
-end
-
-def hpick(hash, *tags)
-  res = {}
-  tags.each { |k| res[k] = hash[k.to_s] }
-  res
-end
-
-def prt_cond(cond, form = 'msg')
-  atrb = a2h(cond, :site, :var, :ope, :cri, :skip)
-  atrb[:form] = form
-  ope = OPETBL[atrb.delete(:ope)]
-  cri = atrb.delete(:cri)
-  indent(ope, atrb, cri)
-end
-
-def tag_wait(e)
-  if e['sleep']
-    indent(:wait, hpick(e, :sleep, :label))
-  else
-    enclose(:wait, hpick(e, :retry, :label), e['until']) do |cond|
-      prt_cond(cond, 'data')
+require 'libxmlfmt'
+module CIAX
+  class Mdb2Xml < Xml::Format
+    OPETBL = { '=~' => 'match', '!=' => 'not', '==' => 'equal', '!~' => 'unmatch' }
+    def initialize(mdb)
+      super()
+      @mdb = mdb
+      @mcap = @mdb.delete(:caption_macro) || 'ciax'
+      @group = @mdb.delete(:group) || {}
+      @unit = @mdb.delete(:unit) || {}
+      @index = []
+      push(Xml::HEADER)
+      mdb = enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb')
+      mat = Hashx.new( id: @mcap, version: '1', port: '55555')
+      mat[:label] = "#{@mcap.upcase} Macro"
+      mcr = mdb.enclose(:macro, mat)
+      @group.each_key do |gid|
+        tag_group(mcr, gid)
+      end
     end
-  end
-end
 
-def tag_post(e)
-  e['post'] ? "\n"+tag_seq(e['post']) : ''
-end
+    def prt_cond(doc, cond, form = 'msg')
+      atrb = a2h(cond, :site, :var, :ope, :cri, :skip)
+      atrb[:form] = form
+      ope = OPETBL[atrb.delete(:ope)]
+        cri = atrb.delete(:cri)
+      doc.element(ope, cri, atrb)
+    end
 
-def tag_seq(ary)
-  ary.map do|e|
-    case e
-    when Array
-      # Don't use e.shift which will affect following process
-      cmd,*args = e
-      if cmd.to_s == 'mcr'
-        indent(cmd, a2h(args, :name))
+    def tag_wait(doc, e)
+      if e[:sleep]
+        doc.element(:wait, nil, hpick(e, :sleep, :label))
       else
-        indent(cmd, a2h(args, :site, :name, :skip))
+        sd = doc.enclose(:wait, hpick(e, :retry, :label))
+        e[:until].each do |cond|
+          prt_cond(sd, cond, 'data')
+        end
       end
-    else
-      tag_wait(e)+tag_post(e)
     end
-  end.join("\n")
-end
 
-def tag_select(ary)
-  atrb = { site: ary['site'], var: ary['var'], form: 'msg' }
-  enclose(:select, atrb, ary['option']) do|val, mcr|
-    enclose(:option, val: val) do
-      indent(:mcr, name: mcr)
-    end
-  end
-end
-
-def tag_item(id)
-  db = @mdb['index'][id]
-  return unless db
-  return if @index.include?(id)
-  @index << id
-  atrb = { id: id }
-  atrb[:label] = db['label'] if db['label']
-  enclose(:item, atrb, db) do|key, ary|
-    case key
-    when 'goal','check'
-      enclose(key, {}, ary) do |cond|
-        prt_cond(cond)
+    def tag_seq(doc, ary)
+      ary.each do|e|
+        case e
+        when Array
+          # Don't use e.shift which will affect following process
+          cmd,*args = e
+          if cmd.to_s == 'mcr'
+            doc.element(cmd, nil, a2h(args, :name))
+          else
+            doc.element(cmd, nil, a2h(args, :site, :name, :skip))
+          end
+        else
+          tag_wait(doc, e)
+          tag_seq(doc, e[:post]) if e[:post]
+        end
       end
-    when 'seq'
-      tag_seq(ary)
-    when 'select'
-      tag_select(ary)
+    end
+
+    def tag_select(doc, elem)
+      sat = Hashx.new(elem).attributes
+      sat[:form] = 'msg'
+      sd = doc.enclose(:select, sat)
+      elem[:option].each do|val, name|
+        sd.enclose(:option, val: val).element(:mcr, nil, name: name)
+      end
+    end
+
+    def tag_item(doc, id)
+      ie =@mdb[:index][id.to_sym]
+      return unless ie
+      return if @index.include?(id)
+      @index << id
+      itm = doc.enclose(:item, Hashx.new(ie).attribute(id))
+      ie.each do|key, ary|
+        case key
+        when :goal,:check
+          sd = itm.enclose(key)
+          ary.each do |cond|
+            prt_cond(sd, cond)
+          end
+        when :seq
+          tag_seq(itm, ary)
+        when :select
+          tag_select(itm, ary)
+        end
+      end
+    end
+
+    def tag_unit(doc, uid)
+      ue=@unit[uid.to_sym]
+      ud = doc.enclose(:unit, Hashx.new(ue).attribute(uid))
+      ue[:member].each do |id|
+        tag_item(ud, id)
+      end
+    end
+
+    def tag_group(doc, gid)
+      ge = @group[gid.to_sym]
+      gd = doc.enclose(:group, Hashx.new(ge).attribute(gid))
+      ge[:member].each do |id|
+        if /unit_/ =~ id
+          tag_unit(gd, id)
+        else
+          tag_item(gd, id)
+        end
+      end
     end
   end
+
+  abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.size < 1
+
+  mdb = JSON.parse(gets(nil), symbolize_names: true)
+  doc = Mdb2Xml.new(mdb)
+  puts doc
 end
-
-def tag_unit(uid)
-  uat=@unit[uid]
-  atrb = {id: uid, title: uat['title'], label: uat['caption']}
-  enclose(:unit, atrb, uat['member']) do |id|
-    tag_item(id)
-  end
-end
-
-def tag_group(gid, gary)
-  gat=@group[gid]
-  atrb = {id: gid, caption: gat['caption'], rank: gat['rank']}
-  enclose(:group, atrb, gary) do|uid|
-    if /unit_/ =~ uid
-      tag_unit(uid)
-    else
-      tag_item(uid)
-    end
-  end
-end
-
-abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.size < 1
-
-@mdb = JSON.load(gets(nil))
-@mcap = @mdb.delete('caption_macro') || 'ciax'
-@group = @mdb.delete('group') || {}
-@unit = @mdb.delete('unit') || {}
-@index = []
-@indent = 0
-puts '<?xml version="1.0" encoding="utf-8"?>'
-puts enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb') {
-  label = "#{@mcap.upcase} Macro"
-  atrb = { id: @mcap, version: '1', label: label, port: '55555'}
-  enclose(:macro, atrb, @group) do |gid, at|
-    tag_group(gid, at['member'])
-  end
-}

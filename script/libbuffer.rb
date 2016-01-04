@@ -122,11 +122,11 @@ module CIAX
 
     def sv_up(cid)
       @sv_stat.push(:busy, cid)
-      @sv_stat.set(:isu)
+      @sv_stat.up(:isu)
     end
 
     def sv_dw
-      @sv_stat.reset(:isu)
+      @sv_stat.dw(:isu)
       @sv_stat.flush(:busy)
     end
 

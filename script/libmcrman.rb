@@ -32,11 +32,11 @@ module CIAX
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
         @cobj.rem.sys.add_item('nonstop', 'Mode').def_proc do
-          @sv_stat.set(:nonstop)
+          @sv_stat.up(:nonstop)
           ''
         end
         @cobj.rem.sys.add_item('interactive', 'Mode').def_proc do
-          @sv_stat.reset(:nonstop)
+          @sv_stat.dw(:nonstop)
           ''
         end
       end
@@ -48,7 +48,7 @@ module CIAX
         @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid)
         @sv_stat.add_flg(nonstop: '(nonstop)')
-        @sv_stat.set(:nonstop) if OPT[:n]
+        @sv_stat.up(:nonstop) if OPT[:n]
         @cfg[:sv_stat] = @sv_stat
         @post_exe_procs << proc do
           (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id) }

@@ -25,12 +25,12 @@ module CIAX
         verbose { "UDP Send #{args}" }
         if IO.select([@udp], nil, nil, 1)
           res = @udp.recv(1024)
-          @sv_stat.reset(:udperr)
+          @sv_stat.dw(:udperr)
           verbose { "UDP Recv #{res}" }
           @sv_stat.load(res) unless res.empty?
           @sv_stat.msg
         else
-          @sv_stat.set(:udperr)
+          @sv_stat.up(:udperr)
           'TIMEOUT'
         end
       end

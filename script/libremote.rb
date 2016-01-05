@@ -33,8 +33,34 @@ module CIAX
       def add_int(ns = Int)
         @int = add(ns::Group)
       end
+
+      def ext_log(tag = nil)
+        id = [tag, @cfg[:site_id] || @cfg[:layer_type]].compact.join('_')
+        @cfg[:input] = Input.new(id)
+        self
+      end
     end
 
+    # Command Logging
+    class Input < Varx
+      def initialize(id)
+        super('input',id)
+        ext_file
+        ext_log
+      end
+    end
+
+    class Entity < Entity
+      # For input logging (returns String)
+      def exe_cmd(src, pri = 1)
+        if self[:input]
+          self[:input].update(cmd: self[:cid], src: src, pri: pri).upd
+        end
+        super
+      end
+    end
+
+    #### Groups ####
     module Sys
       # System Command Group
       class Group < Group
@@ -43,7 +69,7 @@ module CIAX
           super
           add_item('interrupt')
           # Accept empty command
-          add_item(nil) unless @cfg[:exe_mode]
+          add_item(nil) unless @cfg[:cmd_line_mode]
         end
       end
     end

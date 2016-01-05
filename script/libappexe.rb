@@ -65,16 +65,18 @@ module CIAX
         ext_non_client
       end
 
+      # type of usage: shell/command line
+      # type of semantics: execution/test
       def ext_driver
         @mode = 'DRV'
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
-        @stat.ext_log.ext_sqlog if OPT[:e]
         @buf = init_buf
-        if @cfg[:exe_mode]
+        if @cfg[:cmd_line_mode] # command line mode
           tc = Thread.current
           @stat.post_upd_procs << proc { tc.run }
           @post_exe_procs << proc { sleep }
         end
+        ext_exec_mode
         ext_non_client
       end
 
@@ -90,6 +92,12 @@ module CIAX
           'ISSUED'
         end
         self
+      end
+
+      def ext_exec_mode
+        return unless OPT[:e]
+        @stat.ext_log.ext_sqlog
+        @cobj.rem.ext_log('app')
       end
 
       def server_output

@@ -5,7 +5,7 @@ require 'libwatlist'
 module CIAX
   OPT.parse('elch:')
   cfg = Config.new
-  cfg[:exe_mode] = true
+  cfg[:cmd_line_mode] = true # exclude empty command
   wex = Wat::List.new(cfg).exe(ARGV)
   puts wex
   puts wex.join ? 'COMPLETE' : 'TIMEOUT'

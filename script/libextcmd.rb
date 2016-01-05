@@ -68,10 +68,10 @@ module CIAX
 
       class Item < Item; end
 
-      # Substitute string($+number) with parameters
-      # par={ val,range,format } or String
-      # str could include Math functions
       class Entity < Entity
+        # Substitute string($+number) with parameters, which is called by others
+        #  par={ val,range,format } or String
+        #  str could include Math functions
         def deep_subst(data)
           case data
           when Array

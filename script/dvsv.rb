@@ -6,5 +6,6 @@ require 'libwatlist'
 module CIAX
   OPT.parse('es')
   cfg = Config.new
+  $stderr.reopen(Msg.vardir('log') + "error_dvsv.out","a")
   Wat::List.new(cfg).server(ARGV)
 end

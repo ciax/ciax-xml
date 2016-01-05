@@ -64,7 +64,7 @@ module CIAX
   # Configuration Error
   class ConfigError < ServerError; end
 
-  # Communication Error
+  # Device Communication Error
   class CommError < ServerError; end
 
   # Stream Open Error

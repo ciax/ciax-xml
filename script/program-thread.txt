@@ -10,3 +10,17 @@
    SqLog:   Save to Sqlite
    Logging: Save to Logfile
    Prompt:  Save Thread info to File
+
+#### Status Update Timing ####
+
+ user: Main/Server
+ device: Buffer
+ auto : Watch
+
+_var___|_user_|_device_|_auto_|__status_file___
+-----------------------------------------------
+Prompt |  o   |   o    |  o   | server_site_(id)
+Watch  |  x   |   o    |  o   | event_(id)
+Status |  x   |   o    |  o   | status_(id)
+Field  |  x   |   o    |  x   | field_(id)
+Stream |  x   |   o    |  x   | stream_(id)

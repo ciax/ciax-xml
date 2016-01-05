@@ -90,6 +90,9 @@ module CIAX
       while (args = _reorder_cmd_)
         @recv_proc.call(args, 'buffer')
       end
+    rescue CommError
+      clear
+      alert($ERROR_INFO.to_s)
     rescue
       clear
       alert($ERROR_INFO.to_s + $ERROR_POSITION.to_s)

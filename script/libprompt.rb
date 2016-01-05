@@ -70,13 +70,9 @@ module CIAX
       post_upd
     end
 
-    # Manipulate Message
-    def msg(msg = nil)
-      pre_upd
-      self[:msg] = msg if msg
+    # Show Message
+    def msg
       self[:msg]
-    ensure
-      post_upd
     end
 
     def to_v

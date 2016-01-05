@@ -21,7 +21,7 @@ module CIAX
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
-        @sv_stat.add_flg(comerr: 'X', strerr: 'E')
+        @sv_stat.add_flg(comerr: 'X', ioerr: 'E')
         # Post internal command procs
         @host ||= @dbi['host']
         @port ||= @dbi['port']
@@ -31,7 +31,8 @@ module CIAX
       def exe(args, src = 'local', pri = 1)
         super
       rescue CommError
-        @sv_stat.up(:comerr).msg($ERROR_INFO.to_s)
+        @sv_stat.up(:comerr)
+        @sv_stat.rep(:msg, $ERROR_INFO.to_s)
         @stat.seterr
         raise $ERROR_INFO
       end
@@ -70,8 +71,8 @@ module CIAX
         @stream = Stream.new(@id, @dbi[:version], iocmd,
                              sp[:wait], timeout, esc_code(sp[:terminator]))
         @stream.ext_log unless OPT[:s]
-        @stream.pre_open_proc = proc { @sv_stat.up(:strerr) }
-        @stream.post_open_proc = proc { @sv_stat.dw(:strerr) }
+        @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
+        @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }
         @stat.ext_rsp.ext_file.auto_save
         @cobj.rem.ext.def_proc do|ent, src|
           @sv_stat.dw(:comerr)

@@ -31,7 +31,7 @@ module CIAX
     # sv_stat: Server Status
     def initialize(sv_stat)
       @sv_stat = type?(sv_stat, Prompt)
-      @sv_stat.add_array(:busy)
+      @sv_stat.add_array(:queue)
       # element of @q is bunch of frm args corresponding an appcmd
       @q = Queue.new
       @tid = nil
@@ -106,8 +106,8 @@ module CIAX
       cids = []
       @outbuf.each { |ary| args = _get_args_(args, ary, cids) }
       cids.uniq!
-      flush if cids.size < @sv_stat.get(:busy).size
-      @sv_stat.flush(:busy, cids)
+      flush if cids.size < @sv_stat.get(:queue).size
+      @sv_stat.flush(:queue, cids)
       args
     end
 
@@ -124,13 +124,13 @@ module CIAX
     end
 
     def sv_up(cid)
-      @sv_stat.push(:busy, cid)
-      @sv_stat.up(:isu)
+      @sv_stat.push(:queue, cid)
+      @sv_stat.up(:busy)
     end
 
     def sv_dw
-      @sv_stat.dw(:isu)
-      @sv_stat.flush(:busy)
+      @sv_stat.dw(:busy)
+      @sv_stat.flush(:queue)
     end
 
     def clear

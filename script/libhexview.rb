@@ -47,7 +47,7 @@ module CIAX
         ary = ['%', self[:id]]
         ary << b2e(@sv_stat.get(:udperr))
         ary << b2i(@sv_stat.get(:event))
-        ary << b2i(@sv_stat.get(:isu))
+        ary << b2i(@sv_stat.get(:busy))
         ary << b2e(@sv_stat.get(:comerr))
         ary.join('')
       end

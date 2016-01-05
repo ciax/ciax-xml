@@ -23,7 +23,7 @@ module CIAX
         100.times do
           sleep 0.1
           @server_upd_proc.call(src) if @server_upd_proc
-          return true unless @sv_stat.get(:isu)
+          return true unless @sv_stat.get(:busy)
         end
         false
       end

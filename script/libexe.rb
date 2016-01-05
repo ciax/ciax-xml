@@ -29,7 +29,6 @@ module CIAX
       @layer = class_path.first.downcase
       # Site Status shared among layers
       @sv_stat = Prompt.new(@cfg[:layer_type], @id)
-      @sv_stat.add_str(:src).add_str(:pri).add_str(:rcv)
       # Proc for Server Command (by User query}
       @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }]
       # Proc for Server Status Update (by User query}
@@ -48,9 +47,6 @@ module CIAX
       type?(args, Array)
       verbose { "Executing Command #{args} from '#{src}' as ##{pri}" }
       @pre_exe_procs.each { |p| p.call(args, src) }
-      @sv_stat.rep(:src, src)
-      @sv_stat.rep(:pri, pri.to_s)
-      @sv_stat.rep(:rcv, args.join(':'))
       @sv_stat.rep(:msg, @cobj.set_cmd(args).exe_cmd(src, pri))
       @post_exe_procs.each { |p| p.call(args, src) }
       self

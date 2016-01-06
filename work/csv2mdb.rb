@@ -72,11 +72,11 @@ end
 def grouping(id, label, inv, name)
   if /^!/ =~ id
     @gcore = "#{name}_#{$'}"
-    @group[_gid] = { label: label.gsub(/ *-{2,} */, ''), rank: inv.to_i }
+    @group[_gid] = { caption: label.gsub(/ *-{2,} */, ''), rank: inv.to_i }
     return
   elsif !@gcore # default group
     @gcore = name
-    @group[_gid] = { label: "#{name.upcase} Group", rank: inv.to_i }
+    @group[_gid] = { caption: "#{name.upcase} Group", rank: inv.to_i }
   end
   id
 end

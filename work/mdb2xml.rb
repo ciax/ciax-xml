@@ -24,7 +24,7 @@ module CIAX
     end
 
     def prt_cond(doc, cond, form = 'msg')
-      atrb = a2h(cond, :site, :var, :ope, :cri, :skip)
+      atrb = Arrayx.new(cond).a2h(:site, :var, :ope, :cri, :skip)
       atrb[:form] = form
       ope = OPETBL[atrb.delete(:ope)]
         cri = atrb.delete(:cri)
@@ -32,10 +32,11 @@ module CIAX
     end
 
     def tag_wait(doc, e)
+      ex = Hashx.new(e)
       if e[:sleep]
-        doc.element(:wait, nil, hpick(e, :sleep, :label))
+        doc.element(:wait, nil, ex.pick([:sleep, :label]))
       else
-        sd = doc.enclose(:wait, hpick(e, :retry, :label))
+        sd = doc.enclose(:wait, ex.pick([:retry, :label]))
         e[:until].each do |cond|
           prt_cond(sd, cond, 'data')
         end
@@ -47,11 +48,12 @@ module CIAX
         case e
         when Array
           # Don't use e.shift which will affect following process
-          cmd,*args = e
+          args = Arrayx.new(e)
+          cmd = args.shift
           if cmd.to_s == 'mcr'
-            doc.element(cmd, nil, a2h(args, :name))
+            doc.element(cmd, nil, args.a2h(:name))
           else
-            doc.element(cmd, nil, a2h(args, :site, :name, :skip))
+            doc.element(cmd, nil, args.a2h(:site, :name, :skip))
           end
         else
           tag_wait(doc, e)
@@ -74,7 +76,7 @@ module CIAX
       return unless ie
       return if @index.include?(id)
       @index << id
-      itm = doc.enclose(:item, Hashx.new(ie).attribute(id))
+      itm = doc.enclose(:item, Hashx.new(ie).attributes(id))
       ie.each do|key, ary|
         case key
         when :goal,:check
@@ -92,19 +94,21 @@ module CIAX
 
     def tag_unit(doc, uid)
       ue=@unit[uid.to_sym]
-      ud = doc.enclose(:unit, Hashx.new(ue).attribute(uid))
-      ue[:member].each do |id|
+      ud = doc.enclose(:unit, Hashx.new(ue).attributes(uid))
+      (ue[:member]||[]).each do |id|
         tag_item(ud, id)
       end
     end
 
     def tag_group(doc, gid)
       ge = @group[gid.to_sym]
-      gd = doc.enclose(:group, Hashx.new(ge).attribute(gid))
-      ge[:member].each do |id|
-        if /unit_/ =~ id
+      gd = doc.enclose(:group, Hashx.new(ge).attributes(gid))
+      if ge[:units]
+        ge[:units].each do |id|
           tag_unit(gd, id)
-        else
+        end
+      else
+        ge[:member].each do |id|
           tag_item(gd, id)
         end
       end

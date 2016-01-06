@@ -104,7 +104,7 @@ module CIAX
     end
 
     # Pick Hash which isn't Array or Hash for XML attributes
-    def attribute(id = nil)
+    def attributes(id = nil)
       atrb = Hashx.new
       atrb[:id] = id if id
       each do |k, v|
@@ -136,6 +136,16 @@ module CIAX
         return res if res
       end
       nil
+    end
+
+    # Generate Hash with key array
+    def a2h(*keys)
+      atrb = {}
+      each do |val|
+        key = keys.shift 
+        atrb[key] = val if key
+      end
+      atrb
     end
   end
 

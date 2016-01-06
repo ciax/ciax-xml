@@ -29,22 +29,8 @@ module CIAX
         sub
       end
 
-      def a2h(vals, *tags)
-        atrb = {}
-        vals.each do|val|
-          atrb[tags.shift] = val
-        end
-        atrb
-      end
-
-      def hpick(hash, *tags)
-        res = {}
-        tags.each { |k| res[k] = hash[k.to_s] }
-        res
-      end
-
       def to_s
-        super flatten(@indent)
+        flatten(@indent)
       end
 
       private

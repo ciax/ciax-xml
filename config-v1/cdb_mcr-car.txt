@@ -1,14 +1,14 @@
 # Splitted off 12/3/15
 
 sha,Shared Command,1,cap
-stop,Emergency STOP,,mcr,mma:astop mmc:astop
-upd,Update,,cmd,mma:upd mmc:upd mfp:upd map:upd
+stop,Emergency STOP,1,mcr,mma:astop mmc:astop
+upd,Update,1,cmd,mma:upd mmc:upd mfp:upd map:upd
 chk,Check Status(No actual motion),1,cmd,
 
 !1,Initialize
 # cinit
 crinit,Carousel Initialize,,cap,
-cinit,carousel initialize,,mcr,mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
+cinit,carousel initialize,1,mcr,mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
 # cinit_a (cinit for web-operation)
 #cinit_a,carousel initialize,1,mcr,mmc:upd map:upd mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
 cinit_a,carousel initialize,1,mcr,mfp:upd mcr:cinit_a_exec

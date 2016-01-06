@@ -205,13 +205,29 @@ def mdb_reduction(index)
   end
 end
 
+def clean_unit
+  @unit.values.each { |a| chk_member(a) }
+  @unit.select! { |_k, v| v[:member] }
+end
+
 def clean_grp
-  @unit.values.each { |a| a[:member].replace(a[:member] & @index.keys) }
-  @unit.select! { |_k, v| v[:member] && !v[:member].empty? }
-  @group.values.each { |a| a[:member].replace(a[:member] & @index.keys) }
-  @group.select! do |_k, v|
-    (v[:member] && !v[:member].empty?) || (v[:units] && !v[:units].empty?)
+  @group.values.each do |a|
+    chk_member(a)
+    chk_units(a)
   end
+  @group.select! { |_k, v| v[:member] || v[:units] }
+end
+
+def chk_member(a)
+  return unless a[:member]
+  a[:member].replace(a[:member] & @index.keys)
+  a.delete(:member) if a[:member].empty?
+end
+
+def chk_units(a)
+  return unless a[:units]
+  a[:units].replace(a[:units] & @unit.keys)
+  a.delete(:units) if a[:units].empty?
 end
 
 ######### Macro DB ##########
@@ -320,7 +336,6 @@ ARGV.each do|site|
   @index.update(index)
   @devmcrs.concat index.keys
 end
-clean_grp
 
 # Convert macro
 proj = opt['m']
@@ -332,4 +347,6 @@ if proj
   select_mcr(select, index, proj)
   @index.update(index)
 end
+clean_unit
+clean_grp
 jj @mdb

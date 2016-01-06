@@ -203,9 +203,12 @@ def mdb_reduction(index)
   index.select! do|_k, v|
     v.key?('seq') && v['seq'].any? { |f| f.is_a? Hash }
   end
-  @unit.values.each { |a| a[:member].replace(a[:member] & index.keys) }
+end
+
+def clean_grp
+  @unit.values.each { |a| a[:member].replace(a[:member] & @index.keys) }
   @unit.select!{ |k,v| v[:member] && !v[:member].empty? }
-  @group.values.each { |a| a[:member].replace(a[:member] & index.keys) }
+  @group.values.each { |a| a[:member].replace(a[:member] & @index.keys) }
   @group.select!{ |k,v| (v[:member] && !v[:member].empty?) || (v[:units] && !v[:units].empty?)}
 end
 
@@ -284,7 +287,7 @@ def select_mcr(select, index, proj)
   return if select.empty?
   db = read_sel_table(proj)
   gid = "grp_sel_#{proj}"
-  @group[gid] = { label: "#{proj.upcase} Select Group", rank: 2 }
+  @group[gid] = { caption: "#{proj.upcase} Select Group", rank: 2 }
   select.each do|str|
     mk_sel(str, index, gid, db)
   end
@@ -303,7 +306,7 @@ opt = ARGV.getopts('m:')
 @mdb = { caption_macro: 'macro' }
 @group = @mdb[:group] = {}
 @unit = @mdb[:unit] = {}
-@mdb[:index] = {}
+@index = @mdb[:index] = {}
 
 # Convert device macro
 ARGV.each do|site|
@@ -312,9 +315,10 @@ ARGV.each do|site|
   read_dev_idb(index, site)
   read_dev_cdb(index, site)
   mdb_reduction(index)
-  @mdb[:index].update(index)
+  @index.update(index)
   @devmcrs.concat index.keys
 end
+clean_grp
 
 # Convert macro
 proj = opt['m']
@@ -324,6 +328,6 @@ if proj
   read_mcr_idb(index, proj)
   select = read_mcr_cdb(index, proj)
   select_mcr(select, index, proj)
-  @mdb[:index].update(index)
+  @index.update(index)
 end
 jj @mdb

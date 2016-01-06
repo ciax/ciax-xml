@@ -24,7 +24,7 @@ module CIAX
 
       def sleeping(s)
         _progress(s)
-        _set_result("slept(#{s})")
+        ! _set_result("slept(#{s})")
       end
 
       def skip?
@@ -41,7 +41,7 @@ module CIAX
 
       # Interactive section
       def exec?
-        _set_result('exec', 'skip', dryrun?)
+        ! _set_result('approval', 'skip', dryrun?)
       end
 
       # Execution section

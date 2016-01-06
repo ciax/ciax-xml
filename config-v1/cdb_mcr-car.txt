@@ -7,12 +7,12 @@ upd,Update,1,cmd,mma:upd mmc:upd mfp:upd map:upd
 
 !1,Initialize
 # cinit
-crinit,Carousel Initialize,,cap,
-cinit,carousel initialize,1,mcr,mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
+#crinit,Carousel Initialize,,cap,
+cinit,carousel initialize,,mcr,mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
 # cinit_a (cinit for web-operation)
 #cinit_a,carousel initialize,1,mcr,mmc:upd map:upd mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
-cinit_a,carousel initialize,1,mcr,mfp:upd mcr:cinit_a_exec
-cinit_a_exec,carousel initialize,1,mcr,mmc:upd map:upd mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
+#cinit_a,carousel initialize,1,mcr,mfp:upd mcr:cinit_a_exec
+#cinit_a_exec,carousel initialize,1,mcr,mmc:upd map:upd mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
 
 # ____________________________________________________________________________
 # mmc command

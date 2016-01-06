@@ -3,7 +3,9 @@
 #alias m2x
 require 'json'
 require 'libxmlfmt'
+# CIAX-XML
 module CIAX
+  # Config File converter
   class Mdb2Xml < Xml::Format
     OPETBL = { '=~' => 'match', '!=' => 'not', '==' => 'equal', '!~' => 'unmatch' }
     def initialize(mdb)
@@ -15,7 +17,7 @@ module CIAX
       @index = []
       push(Xml::HEADER)
       mdb = enclose(:mdb, xmlns: 'http://ciax.sum.naoj.org/ciax-xml/mdb')
-      mat = Hashx.new( id: @mcap, version: '1', port: '55555')
+      mat = Hashx.new(id: @mcap, version: '1', port: '55555')
       mat[:label] = "#{@mcap.upcase} Macro"
       mcr = mdb.enclose(:macro, mat)
       @group.each_key do |gid|
@@ -27,7 +29,7 @@ module CIAX
       atrb = Arrayx.new(cond).a2h(:site, :var, :ope, :cri, :skip)
       atrb[:form] = form
       ope = OPETBL[atrb.delete(:ope)]
-        cri = atrb.delete(:cri)
+      cri = atrb.delete(:cri)
       doc.element(ope, cri, atrb)
     end
 
@@ -71,47 +73,47 @@ module CIAX
       end
     end
 
-    def tag_item(doc, id)
-      ie =@mdb[:index][id.to_sym]
-      return unless ie
-      return if @index.include?(id)
-      @index << id
-      itm = doc.enclose(:item, Hashx.new(ie).attributes(id))
-      ie.each do|key, ary|
+    def tag_item(db, doc)
+      db.each do|key, ary|
         case key
-        when :goal,:check
-          sd = itm.enclose(key)
+        when :goal, :check
+          sd = doc.enclose(key)
           ary.each do |cond|
             prt_cond(sd, cond)
           end
         when :seq
-          tag_seq(itm, ary)
+          tag_seq(doc, ary)
         when :select
-          tag_select(itm, ary)
+          tag_select(doc, ary)
         end
       end
     end
 
-    def tag_unit(doc, uid)
-      ue=@unit[uid.to_sym]
-      ud = doc.enclose(:unit, Hashx.new(ue).attributes(uid))
-      (ue[:member]||[]).each do |id|
-        tag_item(ud, id)
+    def tag_items(db, doc)
+      return unless db[:member]
+      db[:member].each do |iid|
+        next if @index.include?(iid)
+        iat = @mdb[:index][iid.to_sym] || next
+        @index << iid
+        idoc = doc.enclose(:item, Hashx.new(iat).attributes(iid))
+        tag_item(iat, idoc)
+      end
+    end
+
+    def tag_units(db, doc)
+      return unless db[:units]
+      db[:units].each do |uid|
+        uat = @unit[uid.to_sym]
+        udoc = doc.enclose(:unit, Hashx.new(uat).attributes(uid))
+        tag_items(uat, udoc)
       end
     end
 
     def tag_group(doc, gid)
-      ge = @group[gid.to_sym]
-      gd = doc.enclose(:group, Hashx.new(ge).attributes(gid))
-      if ge[:units]
-        ge[:units].each do |id|
-          tag_unit(gd, id)
-        end
-      else
-        ge[:member].each do |id|
-          tag_item(gd, id)
-        end
-      end
+      gat = @group[gid.to_sym]
+      gdoc = doc.enclose(:group, Hashx.new(gat).attributes(gid))
+      tag_units(gat, gdoc)
+      tag_items(gat, gdoc)
     end
   end
 

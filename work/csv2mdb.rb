@@ -207,9 +207,11 @@ end
 
 def clean_grp
   @unit.values.each { |a| a[:member].replace(a[:member] & @index.keys) }
-  @unit.select!{ |k,v| v[:member] && !v[:member].empty? }
+  @unit.select! { |_k, v| v[:member] && !v[:member].empty? }
   @group.values.each { |a| a[:member].replace(a[:member] & @index.keys) }
-  @group.select!{ |k,v| (v[:member] && !v[:member].empty?) || (v[:units] && !v[:units].empty?)}
+  @group.select! do |_k, v|
+    (v[:member] && !v[:member].empty?) || (v[:units] && !v[:units].empty?)
+  end
 end
 
 ######### Macro DB ##########

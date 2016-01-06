@@ -32,6 +32,7 @@
           <frmcmd name="setspd">
             <argv>0.2</argv>
           </frmcmd>
+          <frmcmd name="spd"/>
         </item>
         <item id="cw" label="Goto CW Limit (Slot 0)">
           <frmcmd name="hl">
@@ -70,6 +71,7 @@
             <argv>1</argv>
           </frmcmd>
           <frmcmd name="set0"/>
+          <frmcmd name="p"/>
         </item>
         <item id="cwi" label="Move CW(TopView) Decreasing [1-5]">
           <par_num>1:5</par_num>

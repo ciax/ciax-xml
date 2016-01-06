@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libvarx'
 require 'liblocal'
 require 'libparam'
 module CIAX

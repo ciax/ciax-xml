@@ -189,12 +189,13 @@ def read_dev_cdb(index, site)
   cfga = @cfgitems[site] = []
   get_csv("cdb_#{site}") do|id, label, inv, type, cond|
     label.gsub!(/&/, 'and')
-    unitting(id, label, inv, type) || next
-    grouping(id, label, 2, site) || next
+    unitting(id, label, inv, type) || next # line with cap field
+    grouping(id, label, 2, site) || next   # line with ! header
     item = iteming("#{site}_#{id}", label, index)
     seq = item['seq'] = []
     seq << exe_type(type, site, id, cfga)
-    seq << wait_loop(cond, site)
+    wdb = wait_loop(cond, site)
+    seq << wdb if wdb
   end
 end
 
@@ -203,6 +204,9 @@ def mdb_reduction(index)
     v.key?('seq') && v['seq'].any? { |f| f.is_a? Hash }
   end
   @unit.values.each { |a| a[:member].replace(a[:member] & index.keys) }
+  @unit.select!{ |k,v| v[:member] && !v[:member].empty? }
+  @group.values.each { |a| a[:member].replace(a[:member] & index.keys) }
+  @group.select!{ |k,v| (v[:member] && !v[:member].empty?) || (v[:units] && !v[:units].empty?)}
 end
 
 ######### Macro DB ##########
@@ -294,7 +298,7 @@ abort "Usage: csv2mdb -m(proj) [sites]\n"\
 opt = ARGV.getopts('m:')
 @gcore = nil
 @ucore = nil
-@cfgitems = {}
+@cfgitems = {} # config command list (not action)
 @devmcrs = []
 @mdb = { caption_macro: 'macro' }
 @group = @mdb[:group] = {}

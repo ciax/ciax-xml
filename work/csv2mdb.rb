@@ -50,14 +50,20 @@ def _uid
   'unit_' + @ucore
 end
 
-def _gadd(gid,uid)
-  ary = @group[gid][:member]||=[]
+def _add_i2g(gid, iid)
+  ary = @group[gid][:member] ||= []
+  ary << iid unless ary.include?(iid)
+  ary
+end
+
+def _add_u2g(gid, uid)
+  ary = @group[gid][:units] ||= []
   ary << uid unless ary.include?(uid)
   ary
 end
 
-def _uadd(uid,iid)
-  ary = @unit[uid][:member]||=[]
+def _add_i2u(uid, iid)
+  ary = @unit[uid][:member] ||= []
   ary << iid unless ary.include?(iid)
   ary
 end
@@ -66,21 +72,22 @@ end
 def grouping(id, label, inv, name)
   if /^!/ =~ id
     @gcore = "#{name}_#{$'}"
-    @group[_gid]={caption: label.gsub(/ *-{2,} */, ''), rank: inv.to_i}
+    @group[_gid] = { label: label.gsub(/ *-{2,} */, ''), rank: inv.to_i }
     return
   elsif !@gcore # default group
     @gcore = name
-    @group[_gid]={caption: "#{name.upcase} Group", rank: inv.to_i}
+    @group[_gid] = { label: "#{name.upcase} Group", rank: inv.to_i }
   end
   id
 end
 
 # Unit is enclosed by ???, Title,,cap
+#  and member should be invisible
 def unitting(id, label, inv, type)
   if type == 'cap'
     @ucore = @gcore + '_' + id.tr('^_a-zA-Z0-9', '')
-    @unit[_uid]={title: id, caption: label}
-    _gadd(_gid,_uid)
+    @unit[_uid] = { title: id, label: label }
+    _add_u2g(_gid, _uid)
     return
   elsif !inv || inv.empty?
     @ucore = nil
@@ -90,9 +97,9 @@ end
 
 def iteming(id, label, index)
   if @ucore
-    _uadd(_uid, id)
+    _add_i2u(_uid, id)
   else
-    _gadd(_gid, id)
+    _add_i2g(_gid, id)
   end
   item = (index[id] ||= {})
   item['label'] = label
@@ -182,8 +189,8 @@ def read_dev_cdb(index, site)
   cfga = @cfgitems[site] = []
   get_csv("cdb_#{site}") do|id, label, inv, type, cond|
     label.gsub!(/&/, 'and')
-    grouping(id, label, 2, site) || next
     unitting(id, label, inv, type) || next
+    grouping(id, label, 2, site) || next
     item = iteming("#{site}_#{id}", label, index)
     seq = item['seq'] = []
     seq << exe_type(type, site, id, cfga)
@@ -195,7 +202,7 @@ def mdb_reduction(index)
   index.select! do|_k, v|
     v.key?('seq') && v['seq'].any? { |f| f.is_a? Hash }
   end
-  @unit.values.each{ |a| a[:member].replace(a[:member] & index.keys) }
+  @unit.values.each { |a| a[:member].replace(a[:member] & index.keys) }
 end
 
 ######### Macro DB ##########
@@ -213,8 +220,8 @@ end
 def conv_dev_mcr(ary)
   cmd, *args = ary
   if /exec/ =~ cmd
-    id=args.join('_')
-    ary.replace(['mcr',id]) if @mdb[:index].key?(id)
+    id = args.join('_')
+    ary.replace(['mcr', id]) if @mdb[:index].key?(id)
   end
   ary
 end
@@ -256,11 +263,11 @@ end
 def mk_sel(str, index, gid, db)
   id = str.sub(/%(.)/, 'X')
   dbi = db[$+].dup
-  _gadd(gid, id)
+  _add_i2g(gid, id)
   item = index[id] = {}
   var = dbi['var'].split(':')
   item['label'] = 'Select Macro'
-  sel = item['select'] = {'site' => var[0],'var' => var[1]}
+  sel = item['select'] = { 'site' => var[0], 'var' => var[1] }
   op = sel['option'] = {}
   dbi['list'].each do|k, v|
     val = str.sub(/%./, v)
@@ -273,7 +280,7 @@ def select_mcr(select, index, proj)
   return if select.empty?
   db = read_sel_table(proj)
   gid = "grp_sel_#{proj}"
-  @group[gid]={caption: "#{proj.upcase} Select Group", rank: 2}
+  @group[gid] = { label: "#{proj.upcase} Select Group", rank: 2 }
   select.each do|str|
     mk_sel(str, index, gid, db)
   end

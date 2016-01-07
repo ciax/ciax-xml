@@ -21,8 +21,7 @@ module CIAX
       end
 
       def _goal(_e, step, mstat)
-        return true unless step.skip?
-        return true if OPT.test? && !@qry.query(%w(skip force), step)
+        return true unless step.skip? && @qry.query(%w(skip force), step)
         mstat[:result] = 'skipped'
         false
       end

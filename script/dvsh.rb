@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-require 'liblayer'
+require 'libsitelayer'
 require 'libhexexe'
 # CIAX-XML Device Shell
 module CIAX

@@ -5,7 +5,7 @@ require 'liblayer'
 module CIAX
   OPT.parse('cemlnr')
   begin
-    Layer.new.ext_mcr.ext_shell.shell
+    Layer.new.ext_shell.shell
   rescue InvalidID
     OPT.usage('[proj] [cmd] (par)')
   end

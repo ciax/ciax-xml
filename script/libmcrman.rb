@@ -6,7 +6,7 @@ module CIAX
   # Macro Layer
   module Mcr
     # Macro Manager
-    class Man < CIAX::Exe
+    class Man < Exe
       # cfg should have [:dev_list]
       def initialize(cfg, atrb = {})
         atrb[:db] = Db.new
@@ -31,6 +31,10 @@ module CIAX
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
+        _add_swmode_
+      end
+
+      def _add_swmode_
         @cobj.rem.sys.add_item('nonstop', 'Mode').def_proc do
           @sv_stat.up(:nonstop)
           ''
@@ -44,15 +48,19 @@ module CIAX
       def _init_stat_
         @par = @cobj.rem.int.ext_par.par
         @stat = List.new
+        _init_prompt_
+        @post_exe_procs << proc do
+          (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id) }
+        end
+      end
+
+      def _init_prompt_
         @sv_stat.add_array(:list)
         @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid)
         @sv_stat.add_flg(nonstop: '(nonstop)')
         @sv_stat.up(:nonstop) if OPT[:n]
         @cfg[:sv_stat] = @sv_stat
-        @post_exe_procs << proc do
-          (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id) }
-        end
       end
 
       def _init_net_

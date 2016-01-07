@@ -93,7 +93,6 @@ module CIAX
       cfg[:jump_groups] = [jg]
       loc = Index.new(cfg).loc
       loc.add_view
-      loc.add_jump
       loc.add_shell
       puts loc.view_list
     end

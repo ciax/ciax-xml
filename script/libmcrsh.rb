@@ -40,6 +40,7 @@ module CIAX
             'CLEAN'
           end
           @cobj.loc.add_view
+          @cobj.loc.add_jump
         end
       end
 

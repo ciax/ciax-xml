@@ -107,7 +107,6 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
       cfg = Config.new
-      cfg[:jump_groups] = []
       cfg[:db] = Dev::Db.new
       begin
         Exe.new(ARGV.shift, cfg).ext_shell.shell

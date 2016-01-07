@@ -158,7 +158,6 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
       cfg = Config.new
-      cfg[:jump_groups] = []
       cfg[:sub_list] = Frm::List.new(cfg)
       cfg[:db] = Ins::Db.new
       begin

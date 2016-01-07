@@ -16,7 +16,6 @@ module CIAX
       def ext_shell
         _init_procs_
         @cobj.loc.add_shell
-        @cobj.loc.add_jump
         Thread.current[:name] = 'Main'
         self
       end

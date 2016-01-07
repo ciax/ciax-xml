@@ -78,7 +78,9 @@ module CIAX
         end
 
         def add(site)
-          super.ext_shell
+          obj = super.ext_shell
+          obj.cobj.loc.add_jump
+          obj
         end
 
         def switch(site)

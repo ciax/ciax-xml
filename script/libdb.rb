@@ -8,15 +8,7 @@ module CIAX
   # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
   # set() generates HashDb
   # Cache is available
-  class Dbi < Hashx # DB Item
-    # cover() will deeply merge self and given db
-    # (If end of the element confricts, self content will be taken)
-    def cover(db)
-      type?(db, Dbi)
-      tmp = db.deep_copy.deep_update(self)
-      deep_update(tmp)
-    end
-  end
+  class Dbi < Hashx; end # DB Item
 
   # DB class
   class Db < Hashx

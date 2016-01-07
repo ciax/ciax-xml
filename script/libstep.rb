@@ -18,13 +18,12 @@ module CIAX
 
       # Conditional judgment section
       def timeout?
-        res = _progress(self[:retry])
-        _set_result('pass', 'timeout', res)
+        _set_result('timeout', 'pass', _progress(self[:retry]))
       end
 
       def sleeping(s)
         _progress(s)
-        ! _set_result("slept(#{s})")
+        _set_result("slept(#{s})")
       end
 
       def skip?
@@ -41,13 +40,12 @@ module CIAX
 
       # Interactive section
       def exec?
-        ! _set_result('approval', 'skip', dryrun?)
+        _set_result('skip', 'approval', dryrun?)
       end
 
       # Execution section
       def async?
-        res = (/true|1/ =~ self[:async])
-        _set_result('entering', 'forked', res)
+        _set_result('forked', 'entering', /true|1/ =~ self[:async])
       end
 
       # Display section
@@ -71,7 +69,7 @@ module CIAX
         print msg if Msg.fg?
       end
 
-      def _set_result(fmsg, tmsg = nil, tf = nil)
+      def _set_result(tmsg, fmsg = nil, tf = true)
         self[:result] = tf ? tmsg : fmsg
         tf
       ensure

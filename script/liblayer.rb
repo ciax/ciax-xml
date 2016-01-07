@@ -8,24 +8,21 @@ module CIAX
   class Layer < CIAX::List
     def initialize(atrb = {})
       atrb[:column] = 4
-      atrb[:db] = Ins::Db.new
       super(Config.new, atrb)
-      ext_site
-    end
-
-    def ext_site
-      obj = (OPT[:x] ? Hex::List : Wat::List).new(@cfg)
+      if !atrb.key?(:site)
+        mod = Mcr::Man
+        @current = 'mcr'
+      elsif OPT[:x]
+        mod = Hex::List
+      else
+        mod = Wat::List
+      end
+      obj = mod.new(@cfg)
       loop do
         ns = m2id(obj.class, -2)
         @list.put(ns, obj)
         obj = obj.sub_list || break
       end
-      self
-    end
-
-    def ext_mcr(site = nil)
-      @list.put('mcr', Mcr::Man.new(@cfg, db: Mcr::Db.new, dev_list: @list.get('wat')))
-      @current = 'mcr'
       self
     end
 
@@ -51,7 +48,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('els')
+      OPT.parse('elsx')
       begin
         Layer.new(site: ARGV.shift).ext_shell.shell
       rescue InvalidID

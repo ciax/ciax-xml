@@ -7,11 +7,14 @@ module CIAX
   module Mcr
     # Macro Manager
     class Man < Exe
+      attr_reader :sub_list
       # cfg should have [:dev_list]
       def initialize(cfg, atrb = {})
+        atrb[:dev_list] ||= Wat::List.new(cfg)
         atrb[:db] = Db.new
         atrb[:layer_type] = 'mcr'
         super(nil, cfg, atrb)
+        @sub_list = @cfg[:dev_list]
         _init_domain_
         _init_stat_
         _init_net_
@@ -114,7 +117,6 @@ module CIAX
       OPT.parse('cemnlrt')
       begin
         cfg = Config.new
-        cfg[:dev_list] = Wat::List.new(cfg)
         Man.new(cfg).ext_shell.shell
       rescue InvalidCMD
         OPT.usage('[cmd] (par)')

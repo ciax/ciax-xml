@@ -40,8 +40,9 @@ module CIAX
     private
 
     def rec_proc(db)
-      each_idx(db) do|i|
-        rec_proc(db[i]) { |d| yield d }
+      return unless db.is_a? Enumerable
+      db.each do |k,v| # v=nil if db is Array
+        rec_proc(v || k) { |d| yield d }
       end
       yield db
     end

@@ -9,7 +9,7 @@ module CIAX
       def initialize(atrb = {})
         atrb[:column] = 4
         atrb[:db] = Ins::Db.new
-        super(Config.new, atrb)
+        super(List::Config.new, atrb)
         obj = (OPT[:x] ? Hex::List : Wat::List).new(@cfg)
         loop do
           @list.put(m2id(obj.class, -2), obj)
@@ -28,7 +28,7 @@ module CIAX
 
         def ext_shell
           super(Jump)
-          @cfg[:jump_groups] = [@jumpgrp]
+          @cfg[:jump_groups] << @jumpgrp
           @list.keys.each do|id|
             @list.get(id).ext_shell
             @jumpgrp.add_item(id, id.capitalize + ' mode')

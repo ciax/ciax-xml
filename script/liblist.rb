@@ -47,5 +47,11 @@ module CIAX
         @list.get(id)
       end
     end
+    # Config
+    class Config < Config
+      def initialize
+        super(jump_groups: [])
+      end
+    end
   end
 end

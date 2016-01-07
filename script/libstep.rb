@@ -34,9 +34,9 @@ module CIAX
       end
 
       def fail?
-        res = !@cond.ok?('pass', 'failed')
+        !@cond.ok?('pass', 'failed')
+      ensure
         upd
-        res
       end
 
       # Interactive section
@@ -73,8 +73,9 @@ module CIAX
 
       def _set_result(fmsg, tmsg = nil, tf = nil)
         self[:result] = tf ? tmsg : fmsg
-        upd
         tf
+      ensure
+        upd
       end
 
       def dryrun?

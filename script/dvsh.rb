@@ -5,5 +5,5 @@ require 'libhexexe'
 # CIAX-XML Device Shell
 module CIAX
   OPT.parse('fawxelrsch:')
-  Layer.new(site: ARGV.shift).ext_shell.shell
+  Site::Layer.new(site: ARGV.shift).ext_shell.shell
 end

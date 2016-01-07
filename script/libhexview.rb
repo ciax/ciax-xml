@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libvarx'
 require 'libprompt'
 module CIAX
   # Ascii Hex Pack

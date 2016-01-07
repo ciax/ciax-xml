@@ -104,7 +104,6 @@ module CIAX
       @optdb.update(
         i: 'interactive mode',
         n: 'non-stop mode',
-        m: 'movable mode'
       )
       self
     end

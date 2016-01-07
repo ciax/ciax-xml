@@ -45,7 +45,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('icemntr')
+      OPT.parse('icentr')
       cfg = Config.new
       cfg[:dev_list] = Wat::List.new(cfg)
       begin

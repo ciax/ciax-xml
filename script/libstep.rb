@@ -40,7 +40,7 @@ module CIAX
 
       # Interactive section
       def exec?
-        _set_result('skip', 'approval', dryrun?)
+        _set_result('approval', 'dryrun', !OPT.test?)
       end
 
       # Execution section
@@ -70,19 +70,16 @@ module CIAX
       end
 
       def _set_result(tmsg, fmsg = nil, tf = true)
-        self[:result] = tf ? tmsg : fmsg
+        res = tf ? tmsg : fmsg
+        self[:result] = res if res
         tf
       ensure
         upd
       end
 
-      def dryrun?
-        !OPT[:m] && self[:action] = 'dryrun'
-      end
 
       def _progress(total)
-        itv = OPT.test? ? 0 : 0.1
-        itv *= 10 if OPT[:m]
+        itv = OPT.test? ? 0 : 1
         total.to_i.times do|n| # gives number or nil(if break)
           self[:count] = n + 1
           break if @cond && @cond.ok?

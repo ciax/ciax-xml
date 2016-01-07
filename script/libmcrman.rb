@@ -114,7 +114,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('cemnlrt')
+      OPT.parse('cenlrt')
       begin
         cfg = Config.new
         Man.new(cfg).ext_shell.shell

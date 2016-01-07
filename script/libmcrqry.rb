@@ -36,7 +36,7 @@ module CIAX
       end
 
       def query(cmds, sub_stat)
-        return true if @sv_stat.get(:nonstop)
+        return sub_stat.put(:action, 'nonstop') if @sv_stat.get(:nonstop)
         @valid_keys.replace(cmds)
         sub_stat.put(:option, cmds)
         @stat.put(:status, 'query')

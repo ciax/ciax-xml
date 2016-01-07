@@ -15,7 +15,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
-      cfg = List::Config.new
+      cfg = Config.new
       cfg[:site] = ARGV.shift
       begin
         List.new(cfg).ext_shell.shell

@@ -2,11 +2,13 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="cfp" id="cfp" label="MOIRCS Field Point" version="1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="g0" caption="Device">
+      <group id="gs" caption="Status">
         <item id="upd" label="Upd">
           <frmcmd name="getstat"/>
           <frmcmd name="getstat2"/>
         </item>
+      </group>
+      <group id="gmm" caption="MOS Motion">
         <unit id="u_rh" title="r[o/c]" label="Robohand All [%s]">
           <item id="ro" label="Open">
             <frmcmd name="putdata">
@@ -19,22 +21,6 @@
             <frmcmd name="putdata">
               <argv>0x3c</argv>
               <argv>0x14</argv>
-            </frmcmd>
-            <frmcmd name="getstat"/>
-          </item>
-        </unit>
-        <unit id="u_gv" title="g[o/c]" label="Gate Valve [%s]">
-          <item id="go" label="Open">
-            <frmcmd name="putdata">
-              <argv>0xc0</argv>
-              <argv>0x80</argv>
-            </frmcmd>
-            <frmcmd name="getstat"/>
-          </item>
-          <item id="gc" label="Close">
-            <frmcmd name="putdata">
-              <argv>0xc0</argv>
-              <argv>0x40</argv>
             </frmcmd>
             <frmcmd name="getstat"/>
           </item>
@@ -71,6 +57,26 @@
             <frmcmd name="getstat"/>
           </item>
         </unit>
+      </group>
+      <group id="gom" caption="Other Motion">
+        <unit id="u_gv" title="g[o/c]" label="Gate Valve [%s]">
+          <item id="go" label="Open">
+            <frmcmd name="putdata">
+              <argv>0xc0</argv>
+              <argv>0x80</argv>
+            </frmcmd>
+            <frmcmd name="getstat"/>
+          </item>
+          <item id="gc" label="Close">
+            <frmcmd name="putdata">
+              <argv>0xc0</argv>
+              <argv>0x40</argv>
+            </frmcmd>
+            <frmcmd name="getstat"/>
+          </item>
+        </unit>
+      </group>
+      <group id="gfile" caption="Save/Load">
         <unit id="u_file" label="Output Status">
           <item id="save" label="Save">
             <frmcmd name="save"/>

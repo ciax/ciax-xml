@@ -132,7 +132,7 @@ module CIAX
     def _mk_button(parent, umem)
       umem.each do|id|
         label = @cdb[id][:label].upcase
-        _elem_button(span, id, label)
+        _elem_button(parent, id, label)
       end
       self
     end

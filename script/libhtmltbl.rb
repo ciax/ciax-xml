@@ -9,6 +9,7 @@ module CIAX
     def initialize(dbi)
       super()
       @dbi = type?(dbi, Dbi)
+      @cdb = @dbi[:command][:index]
       @gdb = @dbi[:command][:group]
       @udb = @dbi[:command][:unit]
       html = enclose('html')
@@ -17,22 +18,23 @@ module CIAX
       @div.element('div', @dbi[:label], class: 'title')
     end
 
-    def mk_head(head)
-      head.element('title', 'CIAX-XML')
-      head.element('link', nil,
+    def mk_head(parent)
+      parent.element('title', 'CIAX-XML')
+      parent.element('link', nil,
                    rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css')
       script = format('var Type="status",Site="%s",Port="%s";',
                       @dbi[:id], @dbi[:port])
-      _mk_script(head, '', JQUERY)
-      _mk_script(head, script)
-      _mk_script(head, '', 'ciax-xml.js')
+      _mk_script(parent, '', JQUERY)
+      _mk_script(parent, script)
+      _mk_script(parent, '', 'ciax-xml.js')
       self
     end
 
     def mk_stat
       adbs = @dbi[:status]
-      @index = adbs[:index]
-      _mk_line(_mk_tbody,%i(time elapsed))
+      @sdb = adbs[:index]
+      td = _mk_line(_mk_tbody,%i(time elapsed)).enclose('td', class: 'center')
+      _elem_button(td, 'upd')
       adbs[:group].values.each do|g|
         cap = g[:caption] || next
         _mk_column(g[:members], cap, g['column'])
@@ -64,11 +66,11 @@ module CIAX
       self
     end
 
-    def mk_ctl_unit(form, uid)
+    def mk_ctl_unit(parent, uid)
       return unless @udb.key?(uid)
-      td = form.enclose('td', class: 'item')
+      td = parent.enclose('td', class: 'item')
       uat = @udb[uid]
-      mk_ctl_label(td, uat)
+      _mk_label(td, uat)
       umem = uat[:members]
       if umem.size > 2
         _mk_select(td, umem, uid)
@@ -77,18 +79,18 @@ module CIAX
       end
     end
 
-    def mk_ctl_label(td, udb)
-      return unless udb[:label]
-      label = udb[:label].gsub(/\[.*\]/, '')
-      td.element('span', label, class: 'ctllabel')
-    end
-
     private
 
-    def _mk_script(head, text, src = nil)
+    def _mk_label(parent, atrb)
+      return unless atrb[:label]
+      label = atrb[:label].gsub(/\[.*\]/, '')
+      parent.element('span', label, class: 'ctllabel')
+    end
+
+    def _mk_script(parent, text, src = nil)
       atrb = { type: 'text/javascript' }
       atrb[:src] = src if src
-      head.element('script', text, atrb)
+      parent.element('script', text, atrb)
       self
     end
 
@@ -107,10 +109,10 @@ module CIAX
       tbody
     end
 
-    def _mk_line(tbody, member)
-      tr = tbody.enclose('tr')
+    def _mk_line(parent, member)
+      tr = parent.enclose('tr')
       member.each do|id|
-        label = (@index[id] || {})[:label] || id.upcase
+        label = (@sdb[id] || {})[:label] || id.upcase
         td = tr.enclose('td', class: 'item')
         td.element('span', label, class: 'label')
         td.element('span', '*******', id: id, class: 'normal')
@@ -118,8 +120,8 @@ module CIAX
       tr
     end
 
-    def _mk_select(td, umem, uid)
-      span = td.enclose('span', class: 'center')
+    def _mk_select(parent, umem, uid)
+      span = parent.enclose('span', class: 'center')
       sel = span.enclose('select', name: uid, onchange: 'seldv(this)')
       umem.each do|id|
         sel.element('option', id)
@@ -127,14 +129,20 @@ module CIAX
       self
     end
 
-    def _mk_button(td, umem)
+    def _mk_button(parent, umem)
       umem.each do|id|
-        span = td.enclose('span', class: 'center')
-        label = @dbi[:command][:index][id][:label].upcase
-        atrb = {class: 'button', type: 'button', value: label, onclick: "dvctl('#{id}')"}
-        span.element('input', nil, atrb)
+        label = @cdb[id][:label].upcase
+        _elem_button(span, id, label)
       end
       self
+    end
+
+    def _elem_button(parent, id, label = nil)
+      span = parent.enclose('span', class: 'center')
+      atrb = {class: 'button', type: 'button'}
+      atrb[:value] = label || id
+      atrb[:onclick] = "dvctl('#{id}')"
+      span.element('input', nil, atrb)
     end
   end
 

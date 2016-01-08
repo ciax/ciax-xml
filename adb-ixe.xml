@@ -311,6 +311,17 @@
             </frmcmd>
           </repeat>
         </item>
+        <item id="offset" label="Set offset [1-6(Turret)] [+-2000]">
+          <par_num>1:6</par_num>
+          <par_num>-2000:2000</par_num>
+          <frmcmd name="set">
+            <argv format="ofs:%d">$1-1</argv>
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="setofs">
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
       </group>
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ixe">

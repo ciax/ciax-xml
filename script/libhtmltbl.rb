@@ -30,10 +30,10 @@ module CIAX
     def mk_stat
       adbs = @dbi[:status]
       @index = adbs[:index]
-      _mk_element(%i(time elapsed), '', 2)
+      _mk_column(%i(time elapsed), '', 2)
       adbs[:group].values.each do|g|
         cap = g[:caption] || next
-        _mk_element(g[:members], cap, g['column'])
+        _mk_column(g[:members], cap, g['column'])
       end
       self
     end
@@ -54,7 +54,7 @@ module CIAX
       tr ||= _mk_tbody('Controls').enclose('tr')
       uidx = @dbi[:command][:unit] || return
       form = tr.enclose('form', name: gid, action: '')
-      unitary.each do|uid|
+      unitary.sort.each do|uid|
         next if mk_ctl_unit(form, uidx[uid], uid)
         ary = uidx.map { |k, v| itemize(k, v[:label]) }
         ary.unshift('Wrong CTL Unit')
@@ -96,19 +96,24 @@ module CIAX
       tbody
     end
 
-    def _mk_element(members, cap = '', col = nil)
+    def _mk_column(members, cap = '', col = nil)
       col = col.to_i > 0 ? col.to_i : 6
       tbody = _mk_tbody(cap)
       members.each_slice(col) do|da|
-        tr = tbody.enclose('tr')
-        da.each do|id|
-          label = (@index[id] || {})[:label] || id.upcase
-          td = tr.enclose('td', class: 'item')
-          td.element('span', label, class: 'label')
-          td.element('span', '*******', id: id, class: 'normal')
-        end
+        _mk_line(tbody, da)
       end
-      self
+      tbody
+    end
+
+    def _mk_line(tbody, member)
+      tr = tbody.enclose('tr')
+      member.each do|id|
+        label = (@index[id] || {})[:label] || id.upcase
+        td = tr.enclose('td', class: 'item')
+        td.element('span', label, class: 'label')
+        td.element('span', '*******', id: id, class: 'normal')
+      end
+      tr
     end
 
     def _mk_select(td, umem, uid)
@@ -124,9 +129,8 @@ module CIAX
       umem.each do|id|
         span = td.enclose('span', class: 'center')
         label = @dbi[:command][:index][id][:label].upcase
-        span.element('input', nil, class: 'button',
-                                   type: 'button', value: label,
-                                   onclick: "dvctl('#{id}')")
+        atrb = {class: 'button', type: 'button', value: label, onclick: "dvctl('#{id}')"}
+        span.element('input', nil, atrb)
       end
       self
     end

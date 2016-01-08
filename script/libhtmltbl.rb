@@ -17,8 +17,10 @@ module CIAX
 
     def mk_head(head)
       head.element('title', 'CIAX-XML')
-      head.element('link', nil, rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css')
-      script = format('var Type="status",Site="%s",Port="%s";', @dbi[:id], @dbi[:port])
+      head.element('link', nil,
+                   rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css')
+      script = format('var Type="status",Site="%s",Port="%s";',
+                      @dbi[:id], @dbi[:port])
       _mk_script(head, '', JQUERY)
       _mk_script(head, script)
       _mk_script(head, '', 'ciax-xml.js')
@@ -40,10 +42,10 @@ module CIAX
       return if grpary.empty?
       gidx = @dbi[:command][:group] || return
       tr = _mk_tbody('Controls').enclose('tr')
-      grpary.each{ |gid|
+      grpary.each do |gid|
         id_err(gidx.keys.inspect) unless gidx.key?(gid)
         mk_ctl_unit(gidx[gid][:units] || [], tr)
-      }
+      end
       self
     end
 
@@ -52,24 +54,30 @@ module CIAX
       tr ||= _mk_tbody('Controls').enclose('tr')
       uidx = @dbi[:command][:unit] || return
       unitary.each do|uid|
-        udb = uidx[uid]
-        if udb
-          td = tr.enclose('td', class: 'item')
-          if udb[:label]
-            label = udb[:label].gsub(/\[.*\]/, '')
-            td.element('span', label, class: 'ctllabel')
-          end
-          umem = udb[:members]
-          if umem.size > 2
-            _mk_select(td, umem, uid)
-          else
-            _mk_button(td, umem)
-          end
-        else
-          give_up("Wrong CTL Unit\n" + uidx.map { |k, v| itemize(k, v[:label]) }.join("\n"))
-        end
+        next if mk_ctl_form(tr, uidx[uid], uid)
+        ary = uidx.map { |k, v| itemize(k, v[:label]) }
+        ary.unshift('Wrong CTL Unit')
+        give_up(ary.join("\n"))
       end
       self
+    end
+
+    def mk_ctl_form(tr, udb, uid)
+      return unless udb
+      td = tr.enclose('td', class: 'item')
+      mk_ctl_label(td, udb)
+      umem = udb[:members]
+      if umem.size > 2
+        _mk_select(td, umem, uid)
+      else
+        _mk_button(td, umem)
+      end
+    end
+
+    def mk_ctl_label(td, udb)
+      return unless udb[:label]
+      label = udb[:label].gsub(/\[.*\]/, '')
+      td.element('span', label, class: 'ctllabel')
     end
 
     private
@@ -115,8 +123,9 @@ module CIAX
       umem.each do|id|
         span = td.enclose('span', class: 'center')
         label = @dbi[:command][:index][id][:label].upcase
-        span.element('input', nil,  class: 'button', type: 'button', value: label,
-                                    onclick: "dvctl('#{id}')")
+        span.element('input', nil, class: 'button',
+                                   type: 'button', value: label,
+                                   onclick: "dvctl('#{id}')")
       end
       self
     end

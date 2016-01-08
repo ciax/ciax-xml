@@ -75,7 +75,7 @@ module CIAX
       ts << (c ? Msg.colorize(title.to_s, c) : title.to_s)
       return ts if STDERR.tty?
       pass = format('%5.4f', Time.now - START_TIME)
-      "[#{Time.now.to_s}/#{pass}]" + ts
+      "[#{Time.now}/#{pass}]" + ts
     end
 
     def head_ary

@@ -77,7 +77,6 @@ module CIAX
         upd
       end
 
-
       def _progress(total)
         itv = OPT.test? ? 0 : 1
         total.to_i.times do|n| # gives number or nil(if break)

@@ -103,7 +103,7 @@ module CIAX
     def mcr_db
       @optdb.update(
         i: 'interactive mode',
-        n: 'non-stop mode',
+        n: 'non-stop mode'
       )
       self
     end

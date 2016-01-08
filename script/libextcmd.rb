@@ -41,7 +41,7 @@ module CIAX
           self
         end
 
-        # Group Member will get into Index and Disp 
+        # Group Member will get into Index and Disp
         def _init_member_(cdb, mem, sg)
           mem.each do|id|
             itm = cdb[:index][id]
@@ -58,7 +58,7 @@ module CIAX
             uat = cdb[:unit][u]
             if uat.key?(:title)
               umem = uat[:members]
-              il = umem.map{|m| cdb[:index][m][:label]}.join('/')
+              il = umem.map { |m| cdb[:index][m][:label] }.join('/')
               sg.put_dummy(uat[:title], uat[:label] % il)
               sg.replace(sg - umem)
             end

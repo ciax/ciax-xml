@@ -45,7 +45,7 @@ module CIAX
     # Command Logging
     class Input < Varx
       def initialize(id)
-        super('input',id)
+        super('input', id)
         ext_file
         ext_log
       end

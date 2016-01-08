@@ -41,7 +41,7 @@ module CIAX
 
     def rec_proc(db)
       return unless db.is_a? Enumerable
-      db.each do |k,v| # v=nil if db is Array
+      db.each do |k, v| # v=nil if db is Array
         rec_proc(v || k) { |d| yield d }
       end
       yield db
@@ -143,7 +143,7 @@ module CIAX
     def a2h(*keys)
       atrb = {}
       each do |val|
-        key = keys.shift 
+        key = keys.shift
         atrb[key] = val if key
       end
       atrb

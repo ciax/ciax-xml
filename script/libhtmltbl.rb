@@ -9,6 +9,8 @@ module CIAX
     def initialize(dbi)
       super()
       @dbi = type?(dbi, Dbi)
+      @gdb = @dbi[:command][:group]
+      @udb = @dbi[:command][:unit]
       html = enclose('html')
       mk_head(html.enclose('head'))
       @div = html.enclose('body').enclose('div', class: 'outline')
@@ -30,7 +32,7 @@ module CIAX
     def mk_stat
       adbs = @dbi[:status]
       @index = adbs[:index]
-      _mk_column(%i(time elapsed), '', 2)
+      _mk_line(_mk_tbody,%i(time elapsed))
       adbs[:group].values.each do|g|
         cap = g[:caption] || next
         _mk_column(g[:members], cap, g['column'])
@@ -39,35 +41,35 @@ module CIAX
     end
 
     def mk_ctl_grp(grpary)
-      return if grpary.empty?
-      gidx = @dbi[:command][:group] || return
+      return if !@gdb || grpary.empty?
       tr = _mk_tbody('Controls').enclose('tr')
       grpary.each do |gid|
-        id_err(gidx.keys.inspect) unless gidx.key?(gid)
-        mk_ctl_form(gid, gidx[gid][:units] || [], tr)
+        id_err(@gdb.keys.inspect) unless @gdb.key?(gid)
+        mk_ctl_form(gid, tr)
       end
       self
     end
 
-    def mk_ctl_form(gid, unitary, tr = nil)
-      return if unitary.empty?
+    def mk_ctl_form(gid, tr = nil)
+      return unless @udb
+      uary = @gdb[gid][:units] || return
       tr ||= _mk_tbody('Controls').enclose('tr')
-      uidx = @dbi[:command][:unit] || return
       form = tr.enclose('form', name: gid, action: '')
-      unitary.sort.each do|uid|
-        next if mk_ctl_unit(form, uidx[uid], uid)
-        ary = uidx.map { |k, v| itemize(k, v[:label]) }
-        ary.unshift('Wrong CTL Unit')
-        give_up(ary.join("\n"))
+      uary.sort.each do|uid|
+        next if mk_ctl_unit(form, uid)
+        errary = @udb.map { |k, v| itemize(k, v[:label]) }
+        errary.unshift('Wrong CTL Unit')
+        give_up(errary.join("\n"))
       end
       self
     end
 
-    def mk_ctl_unit(form, udb, uid)
-      return unless udb
+    def mk_ctl_unit(form, uid)
+      return unless @udb.key?(uid)
       td = form.enclose('td', class: 'item')
-      mk_ctl_label(td, udb)
-      umem = udb[:members]
+      uat = @udb[uid]
+      mk_ctl_label(td, uat)
+      umem = uat[:members]
       if umem.size > 2
         _mk_select(td, umem, uid)
       else

@@ -11,15 +11,15 @@ function update(){
     var pars='file='+fname+'&fp='+fp+'&cache='+(new Date()).getTime();
     new Ajax.Request(url,{
         method:"GET",
-	parameters: pars,
-	onComplete:append});
+        parameters: pars,
+        onComplete:append});
 }
 function append(n){
     lines=eval("("+n.responseText+")");
     fp=lines.pop();
     for(i=0;i<lines.length;i++){
-	tbody.appendChild(logline(lines[i]));
-	scrollBy(0,30);
+        tbody.appendChild(logline(lines[i]));
+        scrollBy(0,30);
     }
 }
 function logline(line){

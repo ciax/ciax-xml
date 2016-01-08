@@ -29,7 +29,9 @@ module CIAX
 
       def to_s
         @num = -1
-        @sub.view.to_s
+        res = @sub.view.to_s
+        warning("SubGroup [#{@caption}] is empty") if res.empty?
+        res
       end
 
       def merge_sub(other)

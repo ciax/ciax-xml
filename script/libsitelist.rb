@@ -72,7 +72,7 @@ module CIAX
           super(Jump)
           @cfg[:jump_site] = @jumpgrp
           sites = @cfg[:db].displist
-          @jumpgrp.merge_items(sites)
+          @jumpgrp.ext_grp.merge_items(sites)
           @sub_list.ext_shell if @sub_list
           self
         end

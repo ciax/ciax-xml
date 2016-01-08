@@ -3,13 +3,13 @@
 <title>MCR LOG</title>
 <link rel="stylesheet" type="text/css" href="mcr_style.css">
 <?php
-include("libmcr.php");
+include("mcr_pshare.php");
 $ld=new LogDate;
 $logfile=$ld->getFname();
 $ml=new McrLog($logfile);
 if($ld->isToday()){
   echo '<script type="text/javascript" src="prototype.js"></script>'."\n";
-  echo '<script type="text/javascript" src="libmcr.js"></script>'."\n";
+  echo '<script type="text/javascript" src="mcr_jshare.js"></script>'."\n";
   echo '</head>'."\n";
   echo '<body'.' onLoad=init("'.$logfile.'","'.$ml->getFp().'")>'."\n";
 }else{

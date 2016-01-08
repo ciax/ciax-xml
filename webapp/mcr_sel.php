@@ -6,7 +6,7 @@
 <BODY>
 <H2>SELECT DATE</H2>
 <?php
-include("libmcr.php");
+include("mcr_pshare.php");
 $ld=new LogDate;
 foreach($ld->getList() as $val){
     echo '<li><a href="mcr_log.php?file=';

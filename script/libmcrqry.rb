@@ -13,7 +13,7 @@ module CIAX
         # Datax#put() will access to header, but get() will access @data
         @stat = type?(stat, Record)
         @stat.put(:status, 'ready')
-        @sv_stat = type?(sv_stat, Prompt)
+        _init_prompt(sv_stat)
         @valid_keys = valid_keys
         @que_cmd = Queue.new
         @que_res = Queue.new
@@ -49,6 +49,13 @@ module CIAX
       end
 
       private
+
+      def _init_prompt(sv_stat)
+        @sv_stat = type?(sv_stat, Prompt)
+        return if @sv_stat.key?(:nonstop)
+        @sv_stat.add_flg(nonstop: '(nonstop)')
+        @sv_stat.up(:nonstop) if OPT[:n]
+      end
 
       def _options
         optlist(@valid_keys)

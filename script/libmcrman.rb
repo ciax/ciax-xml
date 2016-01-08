@@ -61,8 +61,6 @@ module CIAX
         @sv_stat.add_array(:list)
         @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid)
-        @sv_stat.add_flg(nonstop: '(nonstop)')
-        @sv_stat.up(:nonstop) if OPT[:n]
         @cfg[:sv_stat] = @sv_stat
       end
 

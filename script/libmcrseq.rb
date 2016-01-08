@@ -50,7 +50,7 @@ module CIAX
       rescue Verification
         false
       ensure
-        _show(@record.finish)
+        _show(@record.finish+"\n")
       end
 
       def fork

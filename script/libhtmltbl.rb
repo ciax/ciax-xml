@@ -44,17 +44,18 @@ module CIAX
       tr = _mk_tbody('Controls').enclose('tr')
       grpary.each do |gid|
         id_err(gidx.keys.inspect) unless gidx.key?(gid)
-        mk_ctl_unit(gidx[gid][:units] || [], tr)
+        mk_ctl_form(gid, gidx[gid][:units] || [], tr)
       end
       self
     end
 
-    def mk_ctl_unit(unitary, tr = nil)
+    def mk_ctl_form(gid, unitary, tr = nil)
       return if unitary.empty?
       tr ||= _mk_tbody('Controls').enclose('tr')
       uidx = @dbi[:command][:unit] || return
+      form = tr.enclose('form', name: gid, action: '')
       unitary.each do|uid|
-        next if mk_ctl_form(tr, uidx[uid], uid)
+        next if mk_ctl_unit(form, uidx[uid], uid)
         ary = uidx.map { |k, v| itemize(k, v[:label]) }
         ary.unshift('Wrong CTL Unit')
         give_up(ary.join("\n"))
@@ -62,9 +63,9 @@ module CIAX
       self
     end
 
-    def mk_ctl_form(tr, udb, uid)
+    def mk_ctl_unit(form, udb, uid)
       return unless udb
-      td = tr.enclose('td', class: 'item')
+      td = form.enclose('td', class: 'item')
       mk_ctl_label(td, udb)
       umem = udb[:members]
       if umem.size > 2
@@ -112,7 +113,7 @@ module CIAX
 
     def _mk_select(td, umem, uid)
       span = td.enclose('span', class: 'center')
-      sel = span.enclose('select', id: uid, onchange: 'seldv(this)')
+      sel = span.enclose('select', name: uid, onchange: 'seldv(this)')
       umem.each do|id|
         sel.element('option', id)
       end

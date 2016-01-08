@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="1">
+  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="2">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="g0" caption="Motion Commands">
+      <group id="g0" caption="Status Commands">
         <unit id="upd" label="Status">
           <item id="upd" label="Upd">
             <frmcmd name="getstat"/>
@@ -16,6 +16,72 @@
             </repeat>
           </item>
         </unit>
+        <item id="sysupd" label="Update Device Status">
+          <frmcmd name="getstat"/>
+          <repeat from="1" to="6">
+            <frmcmd name="chkrun">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getp">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getspd">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getrmp">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getofs">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getispd">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getmp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="updp" label="Update Pulse [1-6(Turret)]">
+          <par_num>1:6</par_num>
+          <frmcmd name="chkrun">
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="getp">
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
+      </group>
+      <group id="gsys" caption="Device System Commands">
+        <unit id="drv" title="drv[on|off]" label="Drive [%s]">
+          <item id="drvon" label="ON">
+            <repeat from="1" to="6">
+              <frmcmd name="act">
+                <argv>$1</argv>
+              </frmcmd>
+            </repeat>
+          </item>
+          <item id="drvoff" label="OFF">
+            <repeat from="1" to="6">
+              <frmcmd name="deact">
+                <argv>$1</argv>
+              </frmcmd>
+            </repeat>
+          </item>
+        </unit>
+        <item id="sysinit" label="Device Initialize">
+          <frmcmd name="initrot"/>
+          <frmcmd name="initunit"/>
+          <frmcmd name="initfactor"/>
+        </item>
+        <item id="stop" label="Stop Run [1-6(Turret)]">
+          <par_num>1:6</par_num>
+          <frmcmd name="stop">
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
+      </group>
+      <group id="gmot" caption="Motion Commands">
         <item id="posinit" label="Position Initialize">
           <repeat from="1" to="6">
             <frmcmd name="init">
@@ -26,77 +92,16 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="resetp" label="Set Pulse Zero for OBS mode">
-          <frmcmd name="set">
-            <argv>p:0</argv>
-            <argv>40000</argv>
+        <item id="abs" label="Move Absolute [1-6(Turret)] [0-11(hole)]">
+          <par_num>1:6</par_num>
+          <par_num>0:11</par_num>
+          <frmcmd name="abs">
+            <argv>$1</argv>
+            <argv format="%d">$2 * 8000</argv>
           </frmcmd>
-          <frmcmd name="set">
-            <argv>p:1</argv>
-            <argv>56000</argv>
+          <frmcmd name="chkrun">
+            <argv>$1</argv>
           </frmcmd>
-          <frmcmd name="set">
-            <argv>p:2</argv>
-            <argv>40000</argv>
-          </frmcmd>
-          <frmcmd name="set">
-            <argv>p:3</argv>
-            <argv>56000</argv>
-          </frmcmd>
-          <frmcmd name="set">
-            <argv>p:4</argv>
-            <argv>40000</argv>
-          </frmcmd>
-          <frmcmd name="set">
-            <argv>p:5</argv>
-            <argv>56000</argv>
-          </frmcmd>
-          <repeat from="1" to="6">
-            <frmcmd name="setp">
-              <argv>$_</argv>
-            </frmcmd>
-          </repeat>
-        </item>
-        <item id="resetm" label="Set Pulse Zero for MTN mode">
-          <repeat from="1" to="6">
-            <frmcmd name="set">
-              <argv format="p:%d">$_</argv>
-              <argv>0</argv>
-            </frmcmd>
-            <frmcmd name="setp">
-              <argv>$_</argv>
-            </frmcmd>
-          </repeat>
-        </item>
-        <item id="resetr" label="Set Regulated Pulse">
-          <repeat from="1" to="6">
-            <frmcmd name="setp">
-              <argv>$_</argv>
-            </frmcmd>
-          </repeat>
-        </item>
-        <item id="backup" label="Backup Pulse,Speed,Offset">
-          <frmcmd name="save">
-            <argv>p,spd,ofs</argv>
-            <argv>temp</argv>
-          </frmcmd>
-        </item>
-        <item id="restore" label="Restore Pulse,Speed,Offset">
-          <frmcmd name="dummy"/>
-          <frmcmd name="load">
-            <argv>temp</argv>
-          </frmcmd>
-          <repeat from="1" to="6">
-            <frmcmd name="setp">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="setspd">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="setofs">
-              <argv>$_</argv>
-            </frmcmd>
-          </repeat>
         </item>
         <item id="fw" label="Move Forward [1-6(Turret)] [1-(hole)]">
           <par_num>1:6</par_num>
@@ -109,6 +114,18 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
+        <item id="fw_all" label="Move Forward All Turret [1-(hole)]">
+          <par_num>1:</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="fw">
+              <argv>$_</argv>
+              <argv format="%d">$1 * 8000</argv>
+            </frmcmd>
+            <frmcmd name="chkrun">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
         <item id="bk" label="Move Backward [1-6(Turret)] [1-(hole)]">
           <par_num>1:6</par_num>
           <par_num>1:</par_num>
@@ -120,16 +137,17 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="abs" label="Move Absolute [1-6(Turret)] [0-11(hole)]">
-          <par_num>1:6</par_num>
-          <par_num>0:11</par_num>
-          <frmcmd name="abs">
-            <argv>$1</argv>
-            <argv format="%d">$2 * 8000</argv>
-          </frmcmd>
-          <frmcmd name="chkrun">
-            <argv>$1</argv>
-          </frmcmd>
+        <item id="bk_all" label="Move Backward All Turret [1-(hole)]">
+          <par_num>1:</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="bk">
+              <argv>$_</argv>
+              <argv format="%d">$1 * 8000</argv>
+            </frmcmd>
+            <frmcmd name="chkrun">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
         </item>
         <item id="opt" label="Move Optimal way [1-6(Turret)] [0-11(hole)]">
           <par_num>1:6</par_num>
@@ -193,32 +211,82 @@
             <argv>6</argv>
           </frmcmd>
         </item>
-        <item id="bk_all" label="Move Backward All Turret [1-(hole)]">
-          <par_num>1:</par_num>
-          <repeat from="1" to="6">
-            <frmcmd name="bk">
-              <argv>$_</argv>
-              <argv format="%d">$1 * 8000</argv>
-            </frmcmd>
-            <frmcmd name="chkrun">
-              <argv>$_</argv>
-            </frmcmd>
-          </repeat>
+      </group>
+      <group id="gbkup" caption="Backup/Restore Commands">
+        <item id="backup" label="Backup Pulse,Speed,Offset">
+          <frmcmd name="save">
+            <argv>p,spd,ofs</argv>
+            <argv>temp</argv>
+          </frmcmd>
         </item>
-        <item id="fw_all" label="Move Forward All Turret [1-(hole)]">
-          <par_num>1:</par_num>
+        <item id="restore" label="Restore Pulse,Speed,Offset">
+          <frmcmd name="dummy"/>
+          <frmcmd name="load">
+            <argv>temp</argv>
+          </frmcmd>
           <repeat from="1" to="6">
-            <frmcmd name="fw">
+            <frmcmd name="setp">
               <argv>$_</argv>
-              <argv format="%d">$1 * 8000</argv>
             </frmcmd>
-            <frmcmd name="chkrun">
+            <frmcmd name="setspd">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="setofs">
               <argv>$_</argv>
             </frmcmd>
           </repeat>
         </item>
       </group>
       <group id="gcfg" caption="Configuration Commands">
+        <item id="resetp" label="Set Pulse Zero for OBS mode">
+          <frmcmd name="set">
+            <argv>p:0</argv>
+            <argv>40000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>p:1</argv>
+            <argv>56000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>p:2</argv>
+            <argv>40000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>p:3</argv>
+            <argv>56000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>p:4</argv>
+            <argv>40000</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>p:5</argv>
+            <argv>56000</argv>
+          </frmcmd>
+          <repeat from="1" to="6">
+            <frmcmd name="setp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="resetm" label="Set Pulse Zero for MTN mode">
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="p:%d">$_</argv>
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="setp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="resetr" label="Set Regulated Pulse">
+          <repeat from="1" to="6">
+            <frmcmd name="setp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
         <item id="speed" label="Set Speed [25-800]">
           <par_num>25:800</par_num>
           <repeat from="1" to="6">
@@ -242,54 +310,6 @@
               <argv>$_</argv>
             </frmcmd>
           </repeat>
-        </item>
-      </group>
-      <group id="gsys" caption="Device System Commands">
-        <item id="sysinit" label="Device Initialize">
-          <frmcmd name="initrot"/>
-          <frmcmd name="initunit"/>
-          <frmcmd name="initfactor"/>
-        </item>
-        <item id="sysupd" label="Update Device Status">
-          <frmcmd name="getstat"/>
-          <repeat from="1" to="6">
-            <frmcmd name="chkrun">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="getp">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="getspd">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="getrmp">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="getofs">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="getispd">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="getmp">
-              <argv>$_</argv>
-            </frmcmd>
-          </repeat>
-        </item>
-        <item id="updp" label="Update Pulse [1-6(Turret)]">
-          <par_num>1:6</par_num>
-          <frmcmd name="chkrun">
-            <argv>$1</argv>
-          </frmcmd>
-          <frmcmd name="getp">
-            <argv>$1</argv>
-          </frmcmd>
-        </item>
-        <item id="stop" label="Stop Run [1-6(Turret)]">
-          <par_num>1:6</par_num>
-          <frmcmd name="stop">
-            <argv>$1</argv>
-          </frmcmd>
         </item>
       </group>
     </command>

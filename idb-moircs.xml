@@ -200,7 +200,7 @@
       <instance id="mft" app_id="fpa" host="moircsobcp" port="25612" label="Hall Sensor"/>
       <instance id="mix" app_id="ixe" host="moircsobcp" port="25607" label="Turret">
         <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <unit id="ut1" title="a:*_1" label="Turret 1 [co,none,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
+          <unit id="ut1" title="[*]_1" label="Turret 1 [co,none,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
             <item id="co_1" label="CO Filter for Turret 1" ref="opt">
               <argv>1</argv>
               <argv>0</argv>
@@ -250,107 +250,7 @@
               <argv>11</argv>
             </item>
           </unit>
-          <unit id="ut2" title="b:*_2" label="Turret 2 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,none]">
-            <item id="csl_2" label="Cold Stop Large for Turret 2" ref="opt">
-              <argv>2</argv>
-              <argv>0</argv>
-            </item>
-            <item id="oc_hk_2" label="OC HK Filter for Turret 2" ref="opt">
-              <argv>2</argv>
-              <argv>1</argv>
-            </item>
-            <item id="oc_zj_2" label="OC ZJ Filter for Turret 2" ref="opt">
-              <argv>2</argv>
-              <argv>2</argv>
-            </item>
-            <item id="nb1657_2" label="NB1657 Filter for Turret 2" ref="opt">
-              <argv>2</argv>
-              <argv>3</argv>
-            </item>
-            <item id="nb2071_2" label="NB2071 Filter for Turret 2" ref="opt">
-              <argv>2</argv>
-              <argv>4</argv>
-            </item>
-            <item id="b05_2" label="B05 Filter for Turret 2" ref="opt">
-              <argv>2</argv>
-              <argv>5</argv>
-            </item>
-            <item id="css_2" label="Cold Stop Small for Turret 2" ref="opt">
-              <argv>2</argv>
-              <argv>6</argv>
-            </item>
-            <item id="csl2_2" label="Cold Stop Large 2 for Turret 2" ref="opt">
-              <argv>2</argv>
-              <argv>7</argv>
-            </item>
-            <item id="nb2315_2" label="NB2315 Filter for Turret 2" ref="opt">
-              <argv>2</argv>
-              <argv>8</argv>
-            </item>
-            <item id="nb2095_2" label="NB2095 Filter for Turret 2" ref="opt">
-              <argv>2</argv>
-              <argv>9</argv>
-            </item>
-            <item id="nb1550_2" label="NB1550 Filter for Turret 2" ref="opt">
-              <argv>2</argv>
-              <argv>10</argv>
-            </item>
-            <item id="none_2" label="No Filter for Turret 2" ref="opt">
-              <argv>2</argv>
-              <argv>11</argv>
-            </item>
-          </unit>
-          <unit id="ut3" title="c:*_3" label="Turret 3 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,none]">
-            <item id="vph_h_3" label="VPH H Grism for Turret 3" ref="opt">
-              <argv>3</argv>
-              <argv>0</argv>
-            </item>
-            <item id="nd_3" label="ND Filter for Turret 3" ref="opt">
-              <argv>3</argv>
-              <argv>1</argv>
-            </item>
-            <item id="pv_3" label="Pupile Viewr for Turret 3" ref="opt">
-              <argv>3</argv>
-              <argv>2</argv>
-            </item>
-            <item id="vph_k_3" label="VPH K Grism for Turret 3" ref="opt">
-              <argv>3</argv>
-              <argv>3</argv>
-            </item>
-            <item id="none_3" label="No Filter for Turret 3" ref="opt">
-              <argv>3</argv>
-              <argv>4</argv>
-            </item>
-            <item id="hk500_3" label="HK500 Grism for Turret 3" ref="opt">
-              <argv>3</argv>
-              <argv>5</argv>
-            </item>
-            <item id="vph_j_3" label="VPH J Grism for Turret 3" ref="opt">
-              <argv>3</argv>
-              <argv>6</argv>
-            </item>
-            <item id="k_cont_3" label="K CONT Filter for Turret 3" ref="opt">
-              <argv>3</argv>
-              <argv>7</argv>
-            </item>
-            <item id="zj500_3" label="ZJ500 Grism for Turret 3" ref="opt">
-              <argv>3</argv>
-              <argv>8</argv>
-            </item>
-            <item id="vph_y_3" label="VPH Y Grism for Turret 3" ref="opt">
-              <argv>3</argv>
-              <argv>9</argv>
-            </item>
-            <item id="bp_3" label="Blind Plate for Turret 3" ref="opt">
-              <argv>3</argv>
-              <argv>10</argv>
-            </item>
-            <item id="r1300_3" label="R1300 Grism for Turret 3" ref="opt">
-              <argv>3</argv>
-              <argv>11</argv>
-            </item>
-          </unit>
-          <unit id="ut4" title="a:*_4" label="Turret 4 [co,none,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
+          <unit id="ut4" title="[*]_4" label="Turret 4 [co,none,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
             <item id="co_4" label="CO Filter for Turret 4" ref="opt">
               <argv>4</argv>
               <argv>0</argv>
@@ -400,7 +300,57 @@
               <argv>11</argv>
             </item>
           </unit>
-          <unit id="ut5" title="b:*_5" label="Turret 5 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,none]">
+          <unit id="ut2" title="[*]_2" label="Turret 2 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,none]">
+            <item id="csl_2" label="Cold Stop Large for Turret 2" ref="opt">
+              <argv>2</argv>
+              <argv>0</argv>
+            </item>
+            <item id="oc_hk_2" label="OC HK Filter for Turret 2" ref="opt">
+              <argv>2</argv>
+              <argv>1</argv>
+            </item>
+            <item id="oc_zj_2" label="OC ZJ Filter for Turret 2" ref="opt">
+              <argv>2</argv>
+              <argv>2</argv>
+            </item>
+            <item id="nb1657_2" label="NB1657 Filter for Turret 2" ref="opt">
+              <argv>2</argv>
+              <argv>3</argv>
+            </item>
+            <item id="nb2071_2" label="NB2071 Filter for Turret 2" ref="opt">
+              <argv>2</argv>
+              <argv>4</argv>
+            </item>
+            <item id="b05_2" label="B05 Filter for Turret 2" ref="opt">
+              <argv>2</argv>
+              <argv>5</argv>
+            </item>
+            <item id="css_2" label="Cold Stop Small for Turret 2" ref="opt">
+              <argv>2</argv>
+              <argv>6</argv>
+            </item>
+            <item id="csl2_2" label="Cold Stop Large 2 for Turret 2" ref="opt">
+              <argv>2</argv>
+              <argv>7</argv>
+            </item>
+            <item id="nb2315_2" label="NB2315 Filter for Turret 2" ref="opt">
+              <argv>2</argv>
+              <argv>8</argv>
+            </item>
+            <item id="nb2095_2" label="NB2095 Filter for Turret 2" ref="opt">
+              <argv>2</argv>
+              <argv>9</argv>
+            </item>
+            <item id="nb1550_2" label="NB1550 Filter for Turret 2" ref="opt">
+              <argv>2</argv>
+              <argv>10</argv>
+            </item>
+            <item id="none_2" label="No Filter for Turret 2" ref="opt">
+              <argv>2</argv>
+              <argv>11</argv>
+            </item>
+          </unit>
+          <unit id="ut5" title="[*]_5" label="Turret 5 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,none]">
             <item id="csl_5" label="Cold Stop Large for Turret 5" ref="opt">
               <argv>5</argv>
               <argv>0</argv>
@@ -450,7 +400,57 @@
               <argv>11</argv>
             </item>
           </unit>
-          <unit id="ut6" title="c:*_6" label="Turret 6 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,none]">
+          <unit id="ut3" title="[*]_3" label="Turret 3 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,none]">
+            <item id="vph_h_3" label="VPH H Grism for Turret 3" ref="opt">
+              <argv>3</argv>
+              <argv>0</argv>
+            </item>
+            <item id="nd_3" label="ND Filter for Turret 3" ref="opt">
+              <argv>3</argv>
+              <argv>1</argv>
+            </item>
+            <item id="pv_3" label="Pupile Viewr for Turret 3" ref="opt">
+              <argv>3</argv>
+              <argv>2</argv>
+            </item>
+            <item id="vph_k_3" label="VPH K Grism for Turret 3" ref="opt">
+              <argv>3</argv>
+              <argv>3</argv>
+            </item>
+            <item id="none_3" label="No Filter for Turret 3" ref="opt">
+              <argv>3</argv>
+              <argv>4</argv>
+            </item>
+            <item id="hk500_3" label="HK500 Grism for Turret 3" ref="opt">
+              <argv>3</argv>
+              <argv>5</argv>
+            </item>
+            <item id="vph_j_3" label="VPH J Grism for Turret 3" ref="opt">
+              <argv>3</argv>
+              <argv>6</argv>
+            </item>
+            <item id="k_cont_3" label="K CONT Filter for Turret 3" ref="opt">
+              <argv>3</argv>
+              <argv>7</argv>
+            </item>
+            <item id="zj500_3" label="ZJ500 Grism for Turret 3" ref="opt">
+              <argv>3</argv>
+              <argv>8</argv>
+            </item>
+            <item id="vph_y_3" label="VPH Y Grism for Turret 3" ref="opt">
+              <argv>3</argv>
+              <argv>9</argv>
+            </item>
+            <item id="bp_3" label="Blind Plate for Turret 3" ref="opt">
+              <argv>3</argv>
+              <argv>10</argv>
+            </item>
+            <item id="r1300_3" label="R1300 Grism for Turret 3" ref="opt">
+              <argv>3</argv>
+              <argv>11</argv>
+            </item>
+          </unit>
+          <unit id="ut6" title="[*]_6" label="Turret 6 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,none]">
             <item id="vph_h_6" label="VPH H Grism for Turret 6" ref="opt">
               <argv>6</argv>
               <argv>0</argv>

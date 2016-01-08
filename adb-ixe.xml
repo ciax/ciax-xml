@@ -325,15 +325,13 @@
       </group>
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ixe">
-      <group caption="Mode" id="gm" column="2">
+      <group id="gs" caption="Stat" column="3">
         <binary id="trm" label="Terminal Mode" symbol="off_warn">
           <field bit="2" ref="stat"/>
         </binary>
         <binary id="cmd" label="Computer Mode" symbol="off_warn">
           <field bit="7" ref="stat"/>
         </binary>
-      </group>
-      <group id="gs" caption="Stat" column="3">
         <binary id="rdy" label="Comm Ready" symbol="off_warn">
           <field bit="0" ref="stat"/>
         </binary>

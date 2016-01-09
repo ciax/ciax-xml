@@ -96,7 +96,7 @@ module CIAX
           fail(Retry)
         when 'interrupt'
           fail(Interrupt)
-        when 'force', 'pass'
+        when 'force', 'skip'
           false
         else
           true

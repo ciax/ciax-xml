@@ -89,7 +89,7 @@
         <string id="bs" label="Moter Moving" symbol="warn">
           <field ref="bs"/>
         </string>
-        <string id="con" label="Contact Sensor" symbol="normal">
+        <string id="con" label="Contact Sensor" symbol="action">
           <field ref="in" index="4"/>
         </string>
         <integer id="err" label="Error Code" symbol="err">

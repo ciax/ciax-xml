@@ -69,6 +69,31 @@
             </repeat>
           </item>
         </unit>
+       <unit id="ubkup" label="Pulse,Speed,Offset">
+          <item id="backup" label="Backup">
+            <frmcmd name="save">
+              <argv>p,spd,ofs</argv>
+              <argv>temp</argv>
+            </frmcmd>
+          </item>
+          <item id="restore" label="Restore">
+            <frmcmd name="dummy"/>
+            <frmcmd name="load">
+              <argv>temp</argv>
+            </frmcmd>
+            <repeat from="1" to="6">
+              <frmcmd name="setp">
+                <argv>$_</argv>
+              </frmcmd>
+              <frmcmd name="setspd">
+                <argv>$_</argv>
+              </frmcmd>
+              <frmcmd name="setofs">
+                <argv>$_</argv>
+              </frmcmd>
+            </repeat>
+          </item>
+        </unit>
         <item id="sysinit" label="Device Initialize">
           <frmcmd name="initrot"/>
           <frmcmd name="initunit"/>
@@ -211,33 +236,6 @@
             <argv>6</argv>
           </frmcmd>
         </item>
-      </group>
-      <group id="gbkup" caption="Backup/Restore Commands">
-        <unit id="ubkup" label="Pulse,Speed,Offset">
-          <item id="backup" label="Backup">
-            <frmcmd name="save">
-              <argv>p,spd,ofs</argv>
-              <argv>temp</argv>
-            </frmcmd>
-          </item>
-          <item id="restore" label="Restore">
-            <frmcmd name="dummy"/>
-            <frmcmd name="load">
-              <argv>temp</argv>
-            </frmcmd>
-            <repeat from="1" to="6">
-              <frmcmd name="setp">
-                <argv>$_</argv>
-              </frmcmd>
-              <frmcmd name="setspd">
-                <argv>$_</argv>
-              </frmcmd>
-              <frmcmd name="setofs">
-                <argv>$_</argv>
-              </frmcmd>
-            </repeat>
-          </item>
-        </unit>
       </group>
       <group id="gcfg" caption="Configuration Commands">
         <item id="resetp" label="Set Pulse Zero for OBS mode">

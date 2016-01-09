@@ -15,7 +15,7 @@ module CIAX
 
     # Freeze one level deepth or more
     def deep_freeze
-      rec_proc(self, &:freeze)
+      rec_proc4enum(self, &:freeze)
       self
     end
 
@@ -23,6 +23,19 @@ module CIAX
     def deep_update(ope)
       rec_merge(self, ope)
       self
+    end
+
+    # Search String
+    def deep_search(reg)
+      path = []
+      rec_proc4str(self, path) do |obj|
+        next unless obj.is_a?(String)
+        if  /#{reg}/ =~ obj
+          path << obj
+          break
+        end
+      end
+      path
     end
 
     # Override data
@@ -39,12 +52,24 @@ module CIAX
 
     private
 
-    def rec_proc(db)
-      return unless db.is_a? Enumerable
-      db.each do |k, v| # v=nil if db is Array
-        rec_proc(v || k) { |d| yield d }
+    def rec_proc4enum(enum, &block)
+      return unless enum.is_a? Enumerable
+      enum.each do |k, v| # v=nil if enum is Array
+        rec_proc4enum(v || k, &block)
       end
-      yield db
+      block.call(enum)
+    end
+
+    def rec_proc4str(enum, path = [], &block)
+      if enum.is_a? Enumerable
+        enum.each do |k, v| # v=nil if enum is Array
+          path.push(k)
+          rec_proc4str(v || k, path, &block)
+          path.pop
+        end
+      else
+        block.call(enum,path)
+      end
     end
 
     # r(operand) will be merged to w (w is changed)

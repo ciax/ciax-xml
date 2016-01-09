@@ -47,17 +47,17 @@ module CIAX
       tbody = _mk_tbody('Controls')
       grpary.each do |gid|
         id_err(@gdb.keys.inspect) unless @gdb.key?(gid)
-        mk_ctl_form(gid, tbody)
+        mk_ctl_line(gid, tbody)
       end
       self
     end
 
-    def mk_ctl_form(gid, tbody)
+    def mk_ctl_line(gid, tbody)
       return unless @udb
       uary = @gdb[gid][:units] || return
-      form = tbody.enclose('tr').enclose('form', name: gid, action: '')
+      td = tbody.enclose('tr').enclose('td', class: 'item')
       uary.sort.each do|uid|
-        next if mk_ctl_unit(form, uid)
+        next if mk_ctl_unit(td, uid)
         errary = @udb.map { |k, v| itemize(k, v[:label]) }
         errary.unshift('Wrong CTL Unit')
         give_up(errary.join("\n"))
@@ -67,14 +67,13 @@ module CIAX
 
     def mk_ctl_unit(parent, uid)
       return unless @udb.key?(uid)
-      td = parent.enclose('td', class: 'item')
       uat = @udb[uid]
-      _mk_label(td, uat)
+      _mk_label(parent, uat)
       umem = uat[:members]
       if umem.size > 2
-        _mk_select(td, umem, uid)
+        _mk_select(parent, umem, uid)
       else
-        _mk_button(td, umem)
+        _mk_button(parent, umem)
       end
     end
 

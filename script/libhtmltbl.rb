@@ -20,10 +20,10 @@ module CIAX
 
     def mk_head(parent)
       parent.element('title', 'CIAX-XML')
-      parent.element('link', nil,
-                   rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css')
-      script = format('var Type="status",Site="%s",Port="%s";',
-                      @dbi[:id], @dbi[:port])
+      atrb = {rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css'}
+      parent.element('link', nil,atrb)
+      fmt = 'var Type="status",Site="%s",Port="%s";' 
+      script = format(fmt, @dbi[:id], @dbi[:port])
       _mk_script(parent, '', JQUERY)
       _mk_script(parent, script)
       _mk_script(parent, '', 'ciax-xml.js')
@@ -33,30 +33,29 @@ module CIAX
     def mk_stat
       adbs = @dbi[:status]
       @sdb = adbs[:index]
-      td = _mk_line(_mk_tbody,%i(time elapsed)).enclose('td', class: 'center')
+      td = _mk_stat_line(_mk_tbody,%i(time elapsed)).enclose('td', class: 'center')
       _elem_button(td, 'upd')
       adbs[:group].values.each do|g|
         cap = g[:caption] || next
-        _mk_column(g[:members], cap, g['column'])
+        _mk_stat_column(g[:members], cap, g['column'])
       end
       self
     end
 
     def mk_ctl_grp(grpary)
       return if !@gdb || grpary.empty?
-      tr = _mk_tbody('Controls').enclose('tr')
+      tbody = _mk_tbody('Controls')
       grpary.each do |gid|
         id_err(@gdb.keys.inspect) unless @gdb.key?(gid)
-        mk_ctl_form(gid, tr)
+        mk_ctl_form(gid, tbody)
       end
       self
     end
 
-    def mk_ctl_form(gid, tr = nil)
+    def mk_ctl_form(gid, tbody)
       return unless @udb
       uary = @gdb[gid][:units] || return
-      tr ||= _mk_tbody('Controls').enclose('tr')
-      form = tr.enclose('form', name: gid, action: '')
+      form = tbody.enclose('tr').enclose('form', name: gid, action: '')
       uary.sort.each do|uid|
         next if mk_ctl_unit(form, uid)
         errary = @udb.map { |k, v| itemize(k, v[:label]) }
@@ -100,16 +99,16 @@ module CIAX
       tbody
     end
 
-    def _mk_column(members, cap = '', col = nil)
+    def _mk_stat_column(members, cap = '', col = nil)
       col = col.to_i > 0 ? col.to_i : 6
       tbody = _mk_tbody(cap)
       members.each_slice(col) do|da|
-        _mk_line(tbody, da)
+        _mk_stat_line(tbody, da)
       end
       tbody
     end
 
-    def _mk_line(parent, member)
+    def _mk_stat_line(parent, member)
       tr = parent.enclose('tr')
       member.each do|id|
         label = (@sdb[id] || {})[:label] || id.upcase
@@ -130,19 +129,19 @@ module CIAX
     end
 
     def _mk_button(parent, umem)
+      span = parent.enclose('span', class: 'center')
       umem.each do|id|
-        label = @cdb[id][:label].upcase
-        _elem_button(parent, id, label)
+        label = @cdb[id][:label]
+        _elem_button(span, id, label)
       end
       self
     end
 
     def _elem_button(parent, id, label = nil)
-      span = parent.enclose('span', class: 'center')
       atrb = {class: 'button', type: 'button'}
-      atrb[:value] = label || id
+      atrb[:value] = (label || id).upcase
       atrb[:onclick] = "dvctl('#{id}')"
-      span.element('input', nil, atrb)
+      parent.element('input', nil, atrb)
     end
   end
 

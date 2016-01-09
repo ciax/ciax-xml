@@ -21,7 +21,7 @@ module CIAX
       end
 
       def _goal(_e, step, mstat)
-        return true unless step.skip? && @qry.query(%w(skip force), step)
+        return true unless step.skip? && @qry.query(%w(pass enter), step)
         mstat[:result] = 'skipped'
         false
       end
@@ -49,7 +49,7 @@ module CIAX
       end
 
       def _exec(e, step, _mstat)
-        _exe_site(e) if step.exec? && @qry.query(%w(exec pass), step)
+        _exe_site(e) if step.exec? && @qry.query(%w(exec skip), step)
         @sv_stat.push(:run, e[:site])
         true
       end

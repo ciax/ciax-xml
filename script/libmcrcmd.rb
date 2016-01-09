@@ -8,11 +8,11 @@ module CIAX
     include Remote
     INTCMD = {
       'exec' => 'Command',
-      'skip' => 'Macro',
+      'pass' => 'Macro',
       'drop' => ' Macro',
       'suppress' => 'and Memorize',
       'force' => 'Proceed',
-      'pass' => 'Execution',
+      'skip' => 'Execution',
       'ok' => 'for the message',
       'retry' => 'Checking'
     }

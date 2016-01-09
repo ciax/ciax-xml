@@ -8,7 +8,7 @@
       <instance id="mma" app_id="mma" host="moircsobcp" port="25603" label="Extension Arm"/>
       <instance id="mmc" app_id="mmc" host="moircsobcp" port="25604" label="Carrousel">
         <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <unit id="ucw" label="CW motion">
+          <unit id="ucw" title="cw-[1-5]" label="CW motion">
             <item id="cw-1" label="Move 1 unit CW" ref="cwi">
               <argv>1</argv>
             </item>
@@ -25,7 +25,7 @@
               <argv>5</argv>
             </item>
           </unit>
-          <unit id="uccw" label="CCW motion">
+          <unit id="uccw" title="ccw-[1-5]" label="CCW motion">
             <item id="ccw-1" label="Move 1 unit CCW" ref="ccwi">
               <argv>1</argv>
             </item>

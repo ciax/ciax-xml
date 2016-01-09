@@ -57,14 +57,14 @@
           <item id="drvon" label="ON">
             <repeat from="1" to="6">
               <frmcmd name="act">
-                <argv>$1</argv>
+                <argv>$_</argv>
               </frmcmd>
             </repeat>
           </item>
           <item id="drvoff" label="OFF">
             <repeat from="1" to="6">
               <frmcmd name="deact">
-                <argv>$1</argv>
+                <argv>$_</argv>
               </frmcmd>
             </repeat>
           </item>

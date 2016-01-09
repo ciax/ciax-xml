@@ -6,7 +6,7 @@
       <instance id="tfp" app_id="cfp" frm_site="tfp" host="localhost" port="25698" label="TEST Field Point"/>
       <instance id="tbb" app_id="bbe" frm_site="tbb" host="localhost" port="25697" label="TEST BBE">
         <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <unit id="u1" tiltle="[on|off]" label="Alias for X0">
+          <unit id="u1" title="[on|off]" label="Alias for X0">
             <item id="on" label="ON" ref="x0on"/>
             <item id="off" label="OFF" ref="x0off"/>
           </unit>

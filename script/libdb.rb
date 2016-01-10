@@ -22,6 +22,7 @@ module CIAX
       lid += "_#{PROJ}" if PROJ
       # Show site list
       @displist = cache(lid, &:displist)
+      @argc = 0
     end
 
     def get(id)
@@ -47,7 +48,7 @@ module CIAX
         res = _load_cache(id)
       else
         @docs = Xml::Doc.new(@type) unless @docs
-        res = _validate(yield(@docs))
+        res = _validate_rep(yield(@docs))
         _save_cache(id, res)
       end
       res
@@ -73,10 +74,10 @@ module CIAX
     end
 
     # counter must not remain
-    def _validate(db)
+    def _validate_rep(db)
       res = db.deep_search('\$[_a-z]')
-      cfg_err("Counter remained #{res.join('/')}") unless res.empty?
-      db
+      return db if res.empty?
+      cfg_err("Counter remained at [#{res.join('/')}]")
     end
 
     def newest?
@@ -106,16 +107,19 @@ module CIAX
     end
 
     def par2item(e, item)
-      case e.name
-      when 'par_num'
-        attr = { type: 'num', list: e.text.split(',') }
-        attr[:label] = e[:label] if e[:label]
-        (item[:parameters] ||= []) << attr
-      when 'par_str'
-        attr = { type: 'str', list: e.text.split(',') }
-        attr[:label] = e[:label] if e[:label]
-        (item[:parameters] ||= []) << attr
-      end
+      return unless /par_(num|str)/ =~ e.name
+      @argc +=1
+      attr = { type: $1, list: e.text.split(',') }
+      attr[:label] = e[:label] if e[:label]
+      (item[:parameters] ||= []) << attr
+    end
+
+    def validate_par(e)
+      res = e.deep_search(format('\$[%d-9]', @argc+1))
+      return e if res.empty?
+      cfg_err("Parameter var out of range [#{res.join('/')}] for #{@argc}")
+    ensure
+      @argc = 0
     end
 
     # For Command DB

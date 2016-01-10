@@ -44,6 +44,7 @@ module CIAX
             (itm[:body] ||= []) << command
           end
         end
+        validate_par(itm)
         id
       end
 

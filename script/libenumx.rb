@@ -62,9 +62,10 @@ module CIAX
 
     def rec_proc4str(enum, path = [], &block)
       if enum.is_a? Enumerable
-        enum.each do |k, v| # v=nil if enum is Array
-          path.push(k)
-          rec_proc4str(v || k, path, &block)
+        enum.each_with_index do |e, i| # e = Array if enum is Hash
+          k, v = e.is_a?(Array) ? e : [i, e]
+          path.push(k.to_s)
+          rec_proc4str(v, path, &block)
           path.pop
         end
       else

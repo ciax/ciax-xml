@@ -47,7 +47,7 @@ module CIAX
         res = _load_cache(id)
       else
         @docs = Xml::Doc.new(@type) unless @docs
-        res = yield(@docs)
+        res = _validate(yield(@docs))
         _save_cache(id, res)
       end
       res
@@ -70,6 +70,13 @@ module CIAX
         verbose { "Cache Saved(#{id})" }
       end
       self[id] = res
+    end
+
+    # counter must not remain
+    def _validate(db)
+      res = db.deep_search('\$[_a-z]')
+      cfg_err("Counter remained #{res.join('/')}") unless res.empty?
+      db
     end
 
     def newest?

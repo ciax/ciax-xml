@@ -106,6 +106,9 @@ module CIAX
       false
     end
 
+    ####### For Command DB #######
+
+    # Take parameter and next line
     def par2item(e, item)
       return unless /par_(num|str)/ =~ e.name
       @argc +=1
@@ -114,15 +117,15 @@ module CIAX
       (item[:parameters] ||= []) << attr
     end
 
-    def validate_par(e)
-      res = e.deep_search(format('\$[%d-9]', @argc+1))
-      return e if res.empty?
+    # Check parameter var for subst in db
+    def validate_par(db)
+      res = db.deep_search(format('\$[%d-9]', @argc+1))
+      return db if res.empty?
       cfg_err("Parameter var out of range [#{res.join('/')}] for #{@argc}")
     ensure
       @argc = 0
     end
 
-    # For Command DB
     def init_command(dbc, dbi)
       @idx = {}
       @grps = {}

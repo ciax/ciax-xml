@@ -22,25 +22,6 @@ module CIAX
         dbi
       end
 
-      # Command section
-      def init_command(dom, dbi)
-        frm = init_frame(dom[:cmdframe]) { |e, r| init_cmd(e, r) }
-        idx = init_index(dom[:command]) { |e, r| init_cmd(e, r) }
-        grp = { main: { caption: 'Device Commands', members: idx.keys } }
-        dbi[:command] = { group: grp, index: idx, frame: frm }
-        dbi
-      end
-
-      # Status section
-      def init_stat(dom, dbi)
-        dbi[:field] = fld = {}
-        frm = init_frame(dom[:rspframe]) { |e| init_rsp(e, fld) }
-        idx = init_index(dom[:response]) { |e| init_rsp(e, fld) }
-        dbi[:frm_id] = dbi[:id]
-        dbi[:response] = { index: idx, frame: frm }
-        dbi
-      end
-
       def init_frame(domain)
         db = domain.to_h
         enclose('INIT:Main Frame <-', '-> INIT:Main Frame') do
@@ -60,7 +41,16 @@ module CIAX
         db
       end
 
-      def init_index(domain)
+      # Command section
+      def init_command(dom, dbi)
+        frm = init_frame(dom[:cmdframe]) { |e, r| init_cmd(e, r) }
+        idx = arc_command(dom[:command])
+        grp = { main: { caption: 'Device Commands', members: idx.keys } }
+        dbi[:command] = { group: grp, index: idx, frame: frm }
+        dbi
+      end
+
+      def arc_command(domain)
         db = {}
         domain.each do|e0|
           id = e0.attr2item(db)
@@ -68,9 +58,10 @@ module CIAX
           enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
             Repeat.new.each(e0) do|e1, r1|
               par2item(e1, item) && next
-              e = yield(e1, r1) || next
+              e = init_cmd(e1, r1) || next
               (item[:body] ||= []) << e
             end
+            validate_par(item)
           end
         end
         db
@@ -86,6 +77,31 @@ module CIAX
         else
           e.name
         end
+      end
+
+      # Status section
+      def init_stat(dom, dbi)
+        dbi[:field] = fld = {}
+        frm = init_frame(dom[:rspframe]) { |e| init_rsp(e, fld) }
+        idx = arc_stat(dom[:response], fld)
+        dbi[:frm_id] = dbi[:id]
+        dbi[:response] = { index: idx, frame: frm }
+        dbi
+      end
+
+      def arc_stat(domain, fld)
+        db = {}
+        domain.each do|e0|
+          id = e0.attr2item(db)
+          item = db[id]
+          enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
+            Repeat.new.each(e0) do|e1, r1|
+              e = init_rsp(e1, fld) || next
+              (item[:body] ||= []) << e
+            end
+          end
+        end
+        db
       end
 
       def init_rsp(e, field)

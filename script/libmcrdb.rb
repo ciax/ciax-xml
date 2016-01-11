@@ -29,7 +29,7 @@ module CIAX
         itm = @idx[id]
         verbose { "MACRO:[#{id}]" }
         body = (itm[:body] ||= [])
-        final = {}
+        final = Hashx.new
         e0.each do|e1|
           atrb = { type: e1.name }
           atrb.update(e1.to_h)
@@ -67,7 +67,10 @@ module CIAX
             body << atrb
           end
         end
-        body << final unless final.empty?
+        unless final.empty?
+          validate_par(final)
+          body << final
+        end
         id
       end
 

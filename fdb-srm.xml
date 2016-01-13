@@ -14,22 +14,26 @@
       <char length="1" label="Delimiter">0xd</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <item id="getmodel" label="Get Model Code" response="getmodel" type="stat">
-        <string label="Header Code">MM</string>
-      </item>
-      <item id="getstat" label="Get Status" response="getstat" type="stat">
-        <string label="Header Code">RR</string>
-        <string label="Start Channel">0000</string>
-        <string label="length">0001</string>
-      </item>
-      <item id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
-        <par_num>0:500000</par_num>
-        <string label="Header Code">FK</string>
-        <string label="Operand">CIO </string>
-        <string label="Channel">0000</string>
-        <!--[000..04(5)]-->
-        <string format="%016d">$1</string>
-      </item>
+      <group id="gst" caption="Status">
+        <item id="getmodel" label="Get Model Code" response="getmodel" type="stat">
+          <string label="Header Code">MM</string>
+        </item>
+        <item id="getstat" label="Get Status" response="getstat" type="stat">
+          <string label="Header Code">RR</string>
+          <string label="Start Channel">0000</string>
+          <string label="length">0001</string>
+        </item>
+      </group>
+      <group id="gact" caption="Action">
+        <item id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
+          <par_num>0:500000</par_num>
+          <string label="Header Code">FK</string>
+          <string label="Operand">CIO </string>
+          <string label="Channel">0000</string>
+          <!--[000..04(5)]-->
+          <string format="%016d">$1</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <ccrange>

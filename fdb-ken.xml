@@ -13,83 +13,89 @@
       <string format="%02X">${cc}</string>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <!-- Ack Commands -->
-      <item id="ack" label="ACK" noaffix="true" response="ack">
-        <char length="1" label="ACK">6</char>
-        <string>@</string>
-      </item>
-      <item id="clr" label="ACK" noaffix="true" response="default">
-        <char length="1" label="ACK">6</char>
-        <string>@</string>
-      </item>
-      <item id="rcv" label="Rcv Status" response="getstat"/>
-      <!-- Status Commands -->
-      <item id="getid" label="Get Unit ID(NEW)" type="stat" response="getstat">
-        <par_num>0:2</par_num>
-        <char length="1">$1+0x41</char>
-        <string>PWID</string>
-      </item>
-      <item id="getst0" label="Get Status in INT [UNIT] [N of CH]" type="stat" response="getst0">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST0</string>
-      </item>
-      <item id="getst1" label="Get Presets(NEW) in INT [UNIT] [N of CH]" type="stat" response="getst1">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST1</string>
-      </item>
-      <item id="getst1o" label="Get Presets(OLD) in INT [UNIT] [N of CH]" type="stat" response="getst1o">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST1</string>
-      </item>
-      <item id="getst2" label="Get status(NEW) [UNIT] [N of CH]" type="stat" response="getst2">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST2</string>
-      </item>
-      <item id="getst2o" label="Get status(OLD) [UNIT] [N of CH]" type="stat" response="getst2o">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST2</string>
-      </item>
-      <item id="getst3" label="Get status(NEW) [UNIT]" type="stat" response="getst3">
-        <par_num>0:2</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST3</string>
-      </item>
-      <item id="getst4" label="Get Status(NEW) in Float [UNIT] [N of CH]" type="stat" response="getst4">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST4</string>
-      </item>
-      <item id="getst5" label="Get Presets(NEW) in Float [UNIT] [N of CH]" type="stat" response="getst5">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST5</string>
-      </item>
-      <!-- Action Command -->
-      <!-- No response if Addr is # -->
-      <item id="tron" label="All Tracking ON(NEW)" type="action">
-        <string>#TR1</string>
-      </item>
-      <item id="troff" label="All Tracking OFF(NEW)" type="action">
-        <string>#TR0</string>
-      </item>
-      <item id="aon" label="All Output ON" type="action">
-        <string>#SW1</string>
-      </item>
-      <item id="aoff" label="All Output OFF" type="action">
-        <string>#SW0</string>
-      </item>
+      <group id="gst" caption="Protocol">
+        <!-- Ack Commands -->
+        <item id="ack" label="ACK" noaffix="true" response="ack">
+          <char length="1" label="ACK">6</char>
+          <string>@</string>
+        </item>
+        <item id="clr" label="ACK" noaffix="true" response="default">
+          <char length="1" label="ACK">6</char>
+          <string>@</string>
+        </item>
+        <item id="rcv" label="Rcv Status" response="getstat"/>
+      </group>
+      <group id="gst" caption="Status">
+        <!-- Status Commands -->
+        <item id="getid" label="Get Unit ID(NEW)" type="stat" response="getstat">
+          <par_num>0:2</par_num>
+          <char length="1">$1+0x41</char>
+          <string>PWID</string>
+        </item>
+        <item id="getst0" label="Get Status in INT [UNIT] [N of CH]" type="stat" response="getst0">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST0</string>
+        </item>
+        <item id="getst1" label="Get Presets(NEW) in INT [UNIT] [N of CH]" type="stat" response="getst1">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST1</string>
+        </item>
+        <item id="getst1o" label="Get Presets(OLD) in INT [UNIT] [N of CH]" type="stat" response="getst1o">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST1</string>
+        </item>
+        <item id="getst2" label="Get status(NEW) [UNIT] [N of CH]" type="stat" response="getst2">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST2</string>
+        </item>
+        <item id="getst2o" label="Get status(OLD) [UNIT] [N of CH]" type="stat" response="getst2o">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST2</string>
+        </item>
+        <item id="getst3" label="Get status(NEW) [UNIT]" type="stat" response="getst3">
+          <par_num>0:2</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST3</string>
+        </item>
+        <item id="getst4" label="Get Status(NEW) in Float [UNIT] [N of CH]" type="stat" response="getst4">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST4</string>
+        </item>
+        <item id="getst5" label="Get Presets(NEW) in Float [UNIT] [N of CH]" type="stat" response="getst5">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST5</string>
+        </item>
+      </group>
+      <group id="gact" caption="Action">
+        <!-- Action Command -->
+        <!-- No response if Addr is # -->
+        <item id="tron" label="All Tracking ON(NEW)" type="action">
+          <string>#TR1</string>
+        </item>
+        <item id="troff" label="All Tracking OFF(NEW)" type="action">
+          <string>#TR0</string>
+        </item>
+        <item id="aon" label="All Output ON" type="action">
+          <string>#SW1</string>
+        </item>
+        <item id="aoff" label="All Output OFF" type="action">
+          <string>#SW0</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <echo/>

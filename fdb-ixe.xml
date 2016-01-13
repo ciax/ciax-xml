@@ -12,150 +12,156 @@
       <char length="1">10</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <!--String Length must be <32-->
-      <item id="dummy" label="Dummy Command" response="dummy" type="stat">
-        <string>ST</string>
-      </item>
-      <item id="getstat" label="Get status" response="getstat" type="stat">
-        <string>ST</string>
-      </item>
-      <item id="initrot" label="Parameter set for rotation" response="default" type="config">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P01S0</string>
-      </item>
-      <item id="initunit" label="Parameter unit set to pulse step" response="default" type="config">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P02S1</string>
-      </item>
-      <item id="initfactor" label="Parameter unit factor set to 1" response="default" type="config">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P03S1</string>
-      </item>
-      <item id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>=N</string>
-      </item>
-      <item id="chkpse" label="Check Power Stage Err [1-6]" response="chkpse" type="stat">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>=E</string>
-      </item>
-      <item id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>=H</string>
-      </item>
-      <item id="getmp" label="Get mechanical pulse [1-6]" response="getmp" type="stat">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P20R</string>
-      </item>
-      <item id="getp" label="Get absolute pulse [1-6]" response="getp" type="stat">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P21R</string>
-      </item>
-      <item id="setp" label="Set absolute pulse from buffer[1-6]" nocache="true" response="default" type="config">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P21S</string>
-        <string format="%d">${p:$1-1} % 96000</string>
-      </item>
-      <item id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P14R</string>
-      </item>
-      <item id="setspd" label="Set speed from buffer [1-6]" nocache="true" response="default" type="config">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P14S</string>
-        <string>${spd:$1-1}</string>
-      </item>
-      <item id="getispd" label="Get init speed [1-6]" response="getispd" type="stat">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P10R</string>
-      </item>
-      <item id="setispd" label="Set init speed from buffer [1-6]" nocache="true" response="default" type="config">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P10S</string>
-        <string>${ispd:$1-1}</string>
-      </item>
-      <item id="getrmp" label="Get ramp [1-6]" response="getrmp" type="stat">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P15R</string>
-      </item>
-      <item id="setrmp" label="Set ramp from buffer [1-6]" nocache="true" response="default" type="config">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P15S</string>
-        <string>${rmp:$1-1}</string>
-      </item>
-      <item id="getofs" label="Get mechanical offset [1-6]" response="getofs" type="stat">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P12R</string>
-      </item>
-      <item id="setofs" label="Set mechanical offset from buffer[1-6]" nocache="true" response="default" type="config">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>P12S</string>
-        <string>${ofs:$1-1}</string>
-      </item>
-      <item id="act" label="Activate (Servo) All" response="default" type="action">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>MA</string>
-      </item>
-      <item id="deact" label="Deactivate (Free) All" response="default" type="action">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>MD</string>
-      </item>
-      <item id="stop" label="Stop Moving [1-6]" response="default" type="action">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>S</string>
-      </item>
-      <item id="init" label="Initialize [1-6]" response="default" type="action">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>0</string>
-      </item>
-      <item id="fw" label="Move forward [T] [H}(8000/hole)" response="default" type="action">
-        <par_num>1:6</par_num>
-        <par_num>0:</par_num>
-        <string>$1</string>
-        <string>+</string>
-        <string>$2</string>
-      </item>
-      <item id="bk" label="Move backward [T] [H](8000/hole)" response="default" type="action">
-        <par_num>1:6</par_num>
-        <par_num>0:</par_num>
-        <string>$1</string>
-        <string>-</string>
-        <string>$2</string>
-      </item>
-      <item id="abs" label="Move to absolute pos [0-192000] (8000/hole)" response="default" type="action">
-        <par_num>1:6</par_num>
-        <par_num>0:384000</par_num>
-        <string>$1</string>
-        <string>A</string>
-        <string>$2</string>
-      </item>
-      <item id="opt" label="Move abs by optimal [0-96000] (8000/hole)" nocache="true" response="default" type="action">
-        <par_num>1:6</par_num>
-        <par_num>0:96000</par_num>
-        <string>$1</string>
-        <string format="%+d">(($2-${p:$1-1}+48000) % 96000)-48000</string>
-      </item>
+      <group id="gst" caption="Status">
+        <!--String Length must be <32-->
+        <item id="dummy" label="Dummy Command" response="dummy" type="stat">
+          <string>ST</string>
+        </item>
+        <item id="getstat" label="Get status" response="getstat" type="stat">
+          <string>ST</string>
+        </item>
+        <item id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>=N</string>
+        </item>
+        <item id="chkpse" label="Check Power Stage Err [1-6]" response="chkpse" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>=E</string>
+        </item>
+        <item id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>=H</string>
+        </item>
+        <item id="getmp" label="Get mechanical pulse [1-6]" response="getmp" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P20R</string>
+        </item>
+        <item id="getp" label="Get absolute pulse [1-6]" response="getp" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P21R</string>
+        </item>
+        <item id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P14R</string>
+        </item>
+        <item id="setspd" label="Set speed from buffer [1-6]" nocache="true" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P14S</string>
+          <string>${spd:$1-1}</string>
+        </item>
+        <item id="getrmp" label="Get ramp [1-6]" response="getrmp" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P15R</string>
+        </item>
+      </group>
+      <group id="gcfg" caption="Configuration">
+        <item id="initrot" label="Parameter set for rotation" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P01S0</string>
+        </item>
+        <item id="initunit" label="Parameter unit set to pulse step" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P02S1</string>
+        </item>
+        <item id="initfactor" label="Parameter unit factor set to 1" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P03S1</string>
+        </item>
+        <item id="setp" label="Set absolute pulse from buffer[1-6]" nocache="true" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P21S</string>
+          <string format="%d">${p:$1-1} % 96000</string>
+        </item>
+        <item id="getispd" label="Get init speed [1-6]" response="getispd" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P10R</string>
+        </item>
+        <item id="setispd" label="Set init speed from buffer [1-6]" nocache="true" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P10S</string>
+          <string>${ispd:$1-1}</string>
+        </item>
+        <item id="setrmp" label="Set ramp from buffer [1-6]" nocache="true" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P15S</string>
+          <string>${rmp:$1-1}</string>
+        </item>
+        <item id="getofs" label="Get mechanical offset [1-6]" response="getofs" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P12R</string>
+        </item>
+        <item id="setofs" label="Set mechanical offset from buffer[1-6]" nocache="true" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P12S</string>
+          <string>${ofs:$1-1}</string>
+        </item>
+      </group>
+      <group id="gact" caption="Action">
+        <item id="act" label="Activate (Servo) All" response="default" type="action">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>MA</string>
+        </item>
+        <item id="deact" label="Deactivate (Free) All" response="default" type="action">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>MD</string>
+        </item>
+        <item id="stop" label="Stop Moving [1-6]" response="default" type="action">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>S</string>
+        </item>
+        <item id="init" label="Initialize [1-6]" response="default" type="action">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>0</string>
+        </item>
+        <item id="fw" label="Move forward [T] [H}(8000/hole)" response="default" type="action">
+          <par_num>1:6</par_num>
+          <par_num>0:</par_num>
+          <string>$1</string>
+          <string>+</string>
+          <string>$2</string>
+        </item>
+        <item id="bk" label="Move backward [T] [H](8000/hole)" response="default" type="action">
+          <par_num>1:6</par_num>
+          <par_num>0:</par_num>
+          <string>$1</string>
+          <string>-</string>
+          <string>$2</string>
+        </item>
+        <item id="abs" label="Move to absolute pos [0-192000] (8000/hole)" response="default" type="action">
+          <par_num>1:6</par_num>
+          <par_num>0:384000</par_num>
+          <string>$1</string>
+          <string>A</string>
+          <string>$2</string>
+        </item>
+        <item id="opt" label="Move abs by optimal [0-96000] (8000/hole)" nocache="true" response="default" type="action">
+          <par_num>1:6</par_num>
+          <par_num>0:96000</par_num>
+          <string>$1</string>
+          <string format="%+d">(($2-${p:$1-1}+48000) % 96000)-48000</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <!--Acknowlege message: STX ACK ETX CR LF (Manual Section 12.5)-->

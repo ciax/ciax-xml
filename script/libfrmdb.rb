@@ -44,27 +44,21 @@ module CIAX
       # Command section
       def init_command(dom, dbi)
         frm = init_frame(dom[:cmdframe]) { |e, r| _add_cmdfrm(e, r) }
-        idx = _add_item(dom[:command])
-        grp = { main: { caption: 'Device Commands', members: idx.keys } }
-        dbi[:command] = { group: grp, index: idx, frame: frm }
-        dbi
+        super(dom[:command], dbi)
       end
 
-      def _add_item(domain)
-        db = {}
-        domain.each do|e0|
-          id = e0.attr2item(db)
-          item = db[id]
-          enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
-            Repeat.new.each(e0) do|e1, r1|
-              par2item(e1, item) && next
-              e = _add_cmdfrm(e1, r1) || next
-              (item[:body] ||= []) << e
-            end
-            validate_par(item)
+      def _add_item(e0, gid)
+        id, itm = super
+        enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
+          Repeat.new.each(e0) do|e1, r1|
+            par2item(e1, itm) && next
+            e = _add_cmdfrm(e1, r1) || next
+            (itm[:body] ||= []) << e
+            verbose{"Body Frame [#{e.inspect}]"}
           end
+          validate_par(itm)
         end
-        db
+        [id, itm]
       end
 
       def _add_cmdfrm(e, rep = nil)
@@ -81,11 +75,11 @@ module CIAX
 
       # Status section
       def init_response(dom, dbi)
-        dbi[:field] = fld = {}
+        dbi[:field] = fld = Hashx.new
         frm = init_frame(dom[:rspframe]) { |e| _add_rspfrm(e, fld) }
         idx = _add_response(dom[:response], fld)
         dbi[:frm_id] = dbi[:id]
-        dbi[:response] = { index: idx, frame: frm }
+        dbi[:response] = Hashx.new(index: idx, frame: frm )
         dbi
       end
 
@@ -93,11 +87,11 @@ module CIAX
         db = {}
         domain.each do|e0|
           id = e0.attr2item(db)
-          item = db[id]
+          itm = db[id]
           enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
             Repeat.new.each(e0) do|e1, r1|
               e = _add_rspfrm(e1, fld) || next
-              (item[:body] ||= []) << e
+              (itm[:body] ||= []) << e
             end
           end
         end
@@ -107,19 +101,19 @@ module CIAX
       def _add_rspfrm(e, field)
         # Avoid override duplicated id
         if (id = e[:assign]) && !field.key?(id)
-          item = field[id] = { label: e[:label] }
+          itm = field[id] = { label: e[:label] }
         end
         case e.name
         when 'field'
           atrb = e.to_h
-          item[:struct] = [] if item
+          itm[:struct] = [] if itm
           verbose { "InitElement: #{atrb}" }
           atrb
         when 'array'
           atrb = e.to_h
           idx = atrb[:index] = []
           e.each { |e1| idx << e1.to_h }
-          item[:struct] = idx.map { |h| h[:size] } if item
+          itm[:struct] = idx.map { |h| h[:size] } if itm
           verbose { "InitArray: #{atrb}" }
           atrb
         when 'ccrange', 'body', 'echo'

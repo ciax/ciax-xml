@@ -10,28 +10,32 @@
       <char length="1">0xd</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <!-- Status Commands -->
-      <item id="getst" label="Get Status" response="getst" type="stat">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>STA?</string>
-      </item>
-      <item id="getp" label="Get position [1-6]" response="getp" type="stat">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>POS?</string>
-      </item>
-      <item id="geta" label="Get acceleration [1-6]" response="geta" type="stat">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>ACC?</string>
-      </item>
-      <!-- Motion Commands -->
-      <item id="home" label="Move to Home position [1-6]" type="action">
-        <par_num>1:6</par_num>
-        <string>$1</string>
-        <string>HOM</string>
-      </item>
+      <group id="gst" caption="Status">
+        <!-- Status Commands -->
+        <item id="getst" label="Get Status" response="getst" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>STA?</string>
+        </item>
+        <item id="getp" label="Get position [1-6]" response="getp" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>POS?</string>
+        </item>
+        <item id="geta" label="Get acceleration [1-6]" response="geta" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>ACC?</string>
+        </item>
+      </group>
+      <group id="gact" caption="Action">
+        <!-- Motion Commands -->
+        <item id="home" label="Move to Home position [1-6]" type="action">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>HOM</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">#</field>

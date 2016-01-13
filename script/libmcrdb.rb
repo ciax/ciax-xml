@@ -70,7 +70,7 @@ module CIAX
           validate_par(final)
           body << final
         end
-        id
+        [id, itm]
       end
 
       def make_condition(e1, atrb)

@@ -12,17 +12,19 @@
       <char length="1">${cc}</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <item id="getstat" label="Get Status" response="getstat" type="stat">
-        <string label="Node No.">00</string>
-        <string label="Sub Address">00</string>
-        <string label="SID">0</string>
-        <string label="MRC">01</string>
-        <string label="SRC">01</string>
-        <string label="Variable type">C0</string>
-        <string label="Start Address">0000</string>
-        <string label="Void">00</string>
-        <string label="Number of element">0001</string>
-      </item>
+      <group id="gst" caption="Status">
+        <item id="getstat" label="Get Status" response="getstat" type="stat">
+          <string label="Node No.">00</string>
+          <string label="Sub Address">00</string>
+          <string label="SID">0</string>
+          <string label="MRC">01</string>
+          <string label="SRC">01</string>
+          <string label="Variable type">C0</string>
+          <string label="Start Address">0000</string>
+          <string label="Void">00</string>
+          <string label="Number of element">0001</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="integer" label="Prefix" length="1">2</field>

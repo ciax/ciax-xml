@@ -7,15 +7,19 @@
       <char length="1">13</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <item id="getstat" label="Get Status" type="stat">
-        <string>*X01</string>
-      </item>
-      <item id="setd" label="Set default" type="config">
-        <string>*W1F14</string>
-      </item>
-      <item id="init" label="Initialize" type="config">
-        <string>*Z02</string>
-      </item>
+      <group id="gst" caption="Status">
+        <item id="getstat" label="Get Status" type="stat">
+          <string>*X01</string>
+        </item>
+      </group>
+      <group id="gcfg" caption="Configuration">
+        <item id="setd" label="Set default" type="config">
+          <string>*W1F14</string>
+        </item>
+        <item id="init" label="Initialize" type="config">
+          <string>*Z02</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <body/>

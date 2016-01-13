@@ -39,12 +39,12 @@ module CIAX
         @umem =  agrp[:units] = []
         @units = cdb[:unit]
         @gmem = agrp[:members] = []
-        rec_unit(dom[:alias])
+        _add_unit(dom[:alias])
         self
       end
 
-      # identical with App::Db#rec_unit()
-      def rec_unit(e)
+      # identical with App::Db#_add_unit()
+      def _add_unit(e)
         return unless e
         e.each do|e0|
           case e0.name
@@ -52,18 +52,18 @@ module CIAX
             uid = e0.attr2item(@units)
             @umem << uid
             e0.each do|e1|
-              id = rec_command(e1)
+              id = _add_item(e1)
               @idx[id][:unit] = uid
               (@units[uid][:members] ||= []) << id
             end
           when 'item'
-            rec_command(e0)
+            _add_item(e0)
           end
         end
         self
       end
 
-      def rec_command(e0)
+      def _add_item(e0)
         id = e0.attr2item(@idx)
         @gmem << id
         item = @idx[id]

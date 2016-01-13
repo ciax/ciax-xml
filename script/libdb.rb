@@ -109,11 +109,11 @@ module CIAX
     ####### For Command DB #######
 
     # Take parameter and next line
-    def par2item(e, item)
-      return unless /par_(num|str)/ =~ e.name
+    def par2item(doc, item)
+      return unless /par_(num|str)/ =~ doc.name
       @argc +=1
-      attr = { type: $1, list: e.text.split(',') }
-      attr[:label] = e[:label] if e[:label]
+      attr = { type: $1, list: doc.text.split(',') }
+      attr[:label] = doc[:label] if doc[:label]
       (item[:parameters] ||= []) << attr
     end
 
@@ -135,32 +135,33 @@ module CIAX
         # e.name should be group
         Msg.give_up('No group in dbc') unless e.name == 'group'
         gid = e.attr2item(@grps)
-        rec_unit(e, gid)
+        _add_unit(e, gid)
       end
       dbi[:command] = { group: @grps, index: @idx }
       dbi[:command][:unit] = @units unless @units.empty?
+      dbi
     end
 
-    def rec_unit(e, gid)
-      return unless e
-      e.each do|e0|
+    def _add_unit(doc, gid)
+      return unless doc
+      doc.each do|e0|
         case e0.name
         when 'unit'
           uid = e0.attr2item(@units)
           (@grps[gid][:units] ||= []) << uid
           e0.each do|e1|
-            id = rec_command(e1, gid)
+            id = _add_item(e1, gid)
             @idx[id][:unit] = uid
             (@units[uid][:members] ||= []) << id
           end
         when 'item'
-          rec_command(e0, gid)
+          _add_item(e0, gid)
         end
       end
     end
 
-    def rec_command(e0, gid)
-      id = e0.attr2item(@idx)
+    def _add_item(doc, gid)
+      id = doc.attr2item(@idx)
       (@grps[gid][:members] ||= []) << id
       id
     end

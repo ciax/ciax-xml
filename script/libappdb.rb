@@ -24,7 +24,7 @@ module CIAX
         dbi
       end
 
-      def rec_command(e0, gid)
+      def _add_item(e0, gid)
         id = super
         itm = @idx[id]
         Repeat.new.each(e0) do|e1, rep|

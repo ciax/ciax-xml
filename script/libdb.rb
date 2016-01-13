@@ -137,9 +137,9 @@ module CIAX
         gid = e.attr2item(@grps)
         _add_unit(e, gid)
       end
-      dbi[:command] = Hashx.new( group: @grps, index: @idx )
-      dbi[:command][:unit] = @units unless @units.empty?
-      dbi
+      cdb = dbi[:command] = Hashx.new( group: @grps, index: @idx )
+      cdb[:unit] = @units unless @units.empty?
+      cdb
     end
 
     def _add_unit(doc, gid)

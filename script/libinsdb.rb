@@ -38,7 +38,7 @@ module CIAX
         @units = cdb[:unit]
         cdb[:group]['gal'] = Hashx.new(caption: 'Alias')
         _add_unit(dom[:alias], 'gal')
-        self
+        cdb
       end
 
       def _add_item(e0, gid)

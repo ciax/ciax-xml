@@ -43,8 +43,9 @@ module CIAX
 
       # Command section
       def init_command(dom, dbi)
-        frm = init_frame(dom[:cmdframe]) { |e, r| _add_cmdfrm(e, r) }
-        super(dom[:command], dbi)
+        cdb = super(dom[:command], dbi)
+        cdb[:frame] = init_frame(dom[:cmdframe]) { |e, r| _add_cmdfrm(e, r) } 
+        cdb
       end
 
       def _add_item(e0, gid)

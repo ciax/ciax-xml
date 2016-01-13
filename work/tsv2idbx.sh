@@ -9,7 +9,7 @@ prtf(){
     printf "$@"
 }
 
-xmlheadi(){
+xmlhead(){
     puts '<?xml version="1.0" encoding="utf-8"?>'
     puts '<idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">'
     inc
@@ -22,13 +22,6 @@ xmlheadi(){
     puts '<alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">'
     inc
 }
-xmlheads(){
-    puts '<?xml version="1.0" encoding="utf-8"?>'
-    inc
-    puts '<symbol id="ixe" label="MOIRCS Turret">'
-    inc
-}
-
 mkidb(){
     prtf '<item id="%s" label="%s for Turret %s ref="opt">\n' "$@"
     inc
@@ -40,71 +33,45 @@ mkpar(){
     dec
     puts "</item>"
 }
-mksdb(){
-    prtf '<numeric class="%s" msg="%s" tolerance="%s">%s</numeric>\n' "$@"
-}
-openi(){
+open(){
     prtf '<unit id="ut%s" title="[*]_%s" label="[FilterName]_%s">\n' $1 $1 $1
     inc
+    id=$1
 }
-opens(){
-    prtf '<table id="t%s">\n' $1
-    inc
-}
-closei(){
+close(){
     dec
     puts "</unit>"
 }
-
-closes(){
+xmltail(){
+    close
     dec
-    puts "</table>"
-}
-    
+    puts "</alias>"
+    dec
+    puts "</instance>"
+    dec
+    puts "</group>"
+    dec
+    puts "</project>"
+    dec
+    puts "</idb>"
+}    
+
 
 ind=""
 dldir=~/.var/download
 sheet="moircs-filter"
 tsvfile=$dldir/$sheet.tsv
 # make xml
-sdb=$dldir/sdb-mix.xml
 idb=$dldir/idb-mix.xml
 
-xmlheadi
+xmlhead
 id=''
 while read tid t slot tor cls msg desc; do
     if [ "$id" != "$t" ]; then
-        [ "$id" ] && closei
-        openi $t
-        id=$t
+        [ "$id" ] && close
+        open $t
     fi
     mkidb "${msg,,*}_$t" "${desc:-$msg Filter}" $t
     mkpar $t $slot
 done < <(grep -v '^!' $tsvfile)
-closei
-dec
-puts "</alias>"
-dec
-puts "</instance>"
-dec
-puts "</group>"
-dec
-puts "</project>"
-dec
-puts "</idb>"
-
-id=''
-xmlheads
-while read tid t slot tor cls msg desc; do
-    if [ "$id" != "$t" ]; then
-        [ "$id" ] && closes
-        opens $t
-        id=$t
-    fi
-    mksdb $cls $msg $tor $slot
-done < <(grep -v '^!' $tsvfile)
-closes
-dec
-puts "</symbol>"
-dec
-puts "</sdb>"
+xmltail

@@ -32,7 +32,8 @@
         </item>
       </group>
     </command>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ken">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <symtbl ref="ken"/>
       <repeat_group from="1" to="1" counter="u">
         <group id="gu$u" caption="Setting (UNIT$u)" column="4">
           <integer id="disp$u" label="Display CH" symbol="disp">

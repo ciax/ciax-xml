@@ -23,21 +23,26 @@
   <!--status & group-->
   <xsd:element name="status">
     <xsd:complexType>
-      <xsd:choice>
+      <xsd:sequence>
+        <xsd:element ref="adbs:symtbl" minOccurs="0" maxOccurs="unbounded"/>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="adbs:group"/>
           <xsd:element ref="adbs:repeat_group"/>
         </xsd:choice>
-      </xsd:choice>
-      <xsd:attribute name="symtbl" type="xsd:NCName" use="optional"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="symtbl">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:NCName" use="required"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="repeat_group">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbs:group"/>
-        <xsd:element ref="adbs:repeat_group"/>
-      </xsd:choice>
+        <xsd:choice minOccurs="1" maxOccurs="unbounded">
+          <xsd:element ref="adbs:group"/>
+          <xsd:element ref="adbs:repeat_group"/>
+        </xsd:choice>
       <xsd:attributeGroup ref="adbs:repeat"/>
     </xsd:complexType>
   </xsd:element>

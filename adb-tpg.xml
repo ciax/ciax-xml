@@ -11,7 +11,8 @@
         </unit>
       </group>
     </command>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="tpg">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <symtbl ref="tpg"/>
       <group id="g1" caption="" column="2">
         <string id="st1" label="Turbo Pump Stat" symbol="stat">
           <field ref="stat" index="0:0"/>

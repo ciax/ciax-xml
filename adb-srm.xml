@@ -82,7 +82,8 @@
         </unit>
       </group>
     </command>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="srm">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <symtbl ref="srm"/>
       <group id="g1" caption="" column="3">
         <string id="cod" label="RESPONSE CODE" symbol="cod">
           <field ref="cod"/>

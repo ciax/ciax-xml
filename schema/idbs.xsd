@@ -12,8 +12,16 @@
   </xsd:group>
   <xsd:element name="status">
     <xsd:complexType>
-      <xsd:group minOccurs="1" maxOccurs="unbounded" ref="idbs:titles"/>
+      <xsd:sequence>
+        <xsd:element ref="idbs:symtbl" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:group minOccurs="1" maxOccurs="unbounded" ref="idbs:titles"/>
+      </xsd:sequence>
       <xsd:attribute name="ref" type="xsd:NCName" use="optional"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="symtbl">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:NCName" use="required"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="repeat">

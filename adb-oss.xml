@@ -91,7 +91,8 @@
         </item>
       </group>
     </command>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="oss">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <symtbl ref="oss"/>
       <group id="g1" caption="Main" column="3">
         <integer id="exit" label="Exit Code">
           <field ref="exit"/>

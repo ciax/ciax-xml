@@ -18,7 +18,7 @@ module CIAX
         # Domains
         dom = doc[:domain]
         init_command(dom[:command], dbi)
-        init_stat(dom[:status], dbi)
+        init_status(dom[:status], dbi)
         init_watch(dom, dbi)
         dbi[:app_id] = dbi[:id]
         dbi
@@ -48,14 +48,20 @@ module CIAX
       end
 
       # Status Db
-      def init_stat(adbs, dbi)
-        grp = {}
-        idx = {}
+      def init_status(adbs, dbi)
+        grp = Hashx.new
+        idx = Hashx.new
+        symtbl = []
         Repeat.new.each(adbs) do|e, r|
-          gid = e.attr2item(grp) { |_, v| r.formatting(v) }
-          rec_stat(e, idx, grp[gid], r)
+          case e.name
+          when 'group'
+            gid = e.attr2item(grp) { |_, v| r.formatting(v) }
+            rec_stat(e, idx, grp[gid], r)
+          when 'symtbl'
+            symtbl << e['ref']
+          end
         end
-        dbi[:status] = adbs.to_h.update(group: grp, index: idx)
+        dbi[:status] = adbs.to_h.update(group: grp, index: idx, symtbl: symtbl)
       end
 
       # recursive method

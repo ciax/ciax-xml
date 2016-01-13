@@ -291,7 +291,8 @@
         </unit>
       </group>
     </command>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="cj2">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <symtbl ref="cj2"/>
       <group id="g1" caption="MAIN" column="3">
         <binary id="ctl" label="CONTROL" symbol="ctl_mode">
           <field ref="w" index="0" bit="6:7"/>

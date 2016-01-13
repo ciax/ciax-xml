@@ -307,6 +307,7 @@
           </unit>
         </alias>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <symtbl ref="mix"/>
           <index ref="p1" symbol="t1"/>
           <index ref="p2" symbol="t2"/>
           <index ref="p3" symbol="t3"/>

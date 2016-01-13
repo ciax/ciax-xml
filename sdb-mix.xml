@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+  <symbol id="mix" label="MOIRCS Turret">
+    <table id="t1">
+      <numeric class="warn" msg="CO" tolerance="0.1">0</numeric>
+      <numeric class="warn" msg="NONE" tolerance="0.1">1</numeric>
+      <numeric class="warn" msg="BrG" tolerance="0.1">2</numeric>
+      <numeric class="warn" msg="NB119" tolerance="0.1">3</numeric>
+      <numeric class="warn" msg="STD_K" tolerance="0.1">4</numeric>
+      <numeric class="warn" msg="Y" tolerance="0.1">5</numeric>
+      <numeric class="warn" msg="OC1_3" tolerance="0.1">6</numeric>
+      <numeric class="warn" msg="J" tolerance="0.1">7</numeric>
+      <numeric class="warn" msg="H" tolerance="0.1">8</numeric>
+      <numeric class="warn" msg="Ks" tolerance="0.1">9</numeric>
+      <numeric class="warn" msg="H2" tolerance="0.1">10</numeric>
+      <numeric class="warn" msg="Fe2" tolerance="0.1">11</numeric>
+    </table>
+    <table id="t2">
+      <numeric class="warn" msg="CSL" tolerance="0.1">0</numeric>
+      <numeric class="warn" msg="OC_HK" tolerance="0.1">1</numeric>
+      <numeric class="warn" msg="OC_ZJ" tolerance="0.1">2</numeric>
+      <numeric class="warn" msg="NB1657" tolerance="0.1">3</numeric>
+      <numeric class="warn" msg="NB2071" tolerance="0.1">4</numeric>
+      <numeric class="warn" msg="B05" tolerance="0.1">5</numeric>
+      <numeric class="warn" msg="CSS" tolerance="0.1">6</numeric>
+      <numeric class="warn" msg="CSL2" tolerance="0.1">7</numeric>
+      <numeric class="warn" msg="NB2315" tolerance="0.1">8</numeric>
+      <numeric class="warn" msg="NB2095" tolerance="0.1">9</numeric>
+      <numeric class="warn" msg="NB1550" tolerance="0.1">10</numeric>
+      <numeric class="warn" msg="NONE" tolerance="0.1">11</numeric>
+    </table>
+    <table id="t3">
+      <numeric class="warn" msg="VPH_H" tolerance="0.1">0</numeric>
+      <numeric class="warn" msg="ND" tolerance="0.1">1</numeric>
+      <numeric class="warn" msg="PV" tolerance="0.1">2</numeric>
+      <numeric class="warn" msg="VPH_K" tolerance="0.1">3</numeric>
+      <numeric class="warn" msg="NONE" tolerance="0.1">4</numeric>
+      <numeric class="warn" msg="HK500" tolerance="0.1">5</numeric>
+      <numeric class="warn" msg="VPH_J" tolerance="0.1">6</numeric>
+      <numeric class="warn" msg="K_CONT" tolerance="0.1">7</numeric>
+      <numeric class="warn" msg="ZJ500" tolerance="0.1">8</numeric>
+      <numeric class="warn" msg="VPH_Y" tolerance="0.1">9</numeric>
+      <numeric class="warn" msg="BP" tolerance="0.1">10</numeric>
+      <numeric class="warn" msg="R1300" tolerance="0.1">11</numeric>
+    </table>
+  </symbol>
+</sdb>

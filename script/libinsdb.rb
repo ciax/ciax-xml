@@ -53,19 +53,22 @@ module CIAX
 
       # Status Domain
       def init_status(dom, dbi)
-        hst = (dbi[:status] ||= {})
-        grp = (hst[:group] ||= {})
+        sdb = (dbi[:status] ||= {})
+        grp = (sdb[:group] ||= {})
         (dom[:status] || []).each do|e0|
-          p = (hst[e0.name.to_sym] ||= {})
+          p = (sdb[e0.name.to_sym] ||= {})
           case e0.name
           when 'alias'
             e0.attr2item(p)
             ag = (grp[:alias] ||= { caption: 'Alias', members: [] })
             ag[:members] << e0['id']
+          when 'symtbl'
+            sdb[:symtbl] << e0['ref']
           else # group, index
             e0.attr2item(p, :ref)
           end
         end
+        sdb
       end
 
       def init_general(dbi)

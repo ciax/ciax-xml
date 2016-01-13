@@ -90,7 +90,8 @@
         </unit>
       </group>
     </command>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="cfp">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <symtbl ref="cfp"/>
       <group caption="Output" id="g1" column="2">
         <binary id="ao" label="Arm Gripper(out)" symbol="oc">
           <field bit="10" ref="output"/>

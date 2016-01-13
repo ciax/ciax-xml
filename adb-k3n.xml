@@ -10,7 +10,8 @@
         </unit>
       </group>
     </command>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="k3n">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <symtbl ref="k3n"/>
       <group id="g1" caption="">
         <string id="rcode" label="Return Code" symbol="rcode">
           <field ref="rcode"/>

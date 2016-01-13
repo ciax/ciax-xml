@@ -119,6 +119,7 @@
       </group>
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <symtbl ref="slo"/>
       <symtbl ref="mmc"/>
       <group id="g1" caption="" column="4">
         <string id="bs" label="Moter Moving" symbol="warn">

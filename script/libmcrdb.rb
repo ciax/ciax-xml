@@ -25,8 +25,7 @@ module CIAX
       end
 
       def _add_item(e0, gid)
-        id = super
-        itm = @idx[id]
+        id, itm = super
         verbose { "MACRO:[#{id}]" }
         body = (itm[:body] ||= [])
         final = Hashx.new

@@ -25,8 +25,7 @@ module CIAX
       end
 
       def _add_item(e0, gid)
-        id = super
-        itm = @idx[id]
+        id, itm = super
         Repeat.new.each(e0) do|e1, rep|
           par2item(e1, itm) && next
           case e1.name
@@ -45,7 +44,7 @@ module CIAX
           end
         end
         validate_par(itm)
-        id
+        [id, itm]
       end
 
       # Status Db

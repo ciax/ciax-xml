@@ -34,45 +34,21 @@ module CIAX
         return self unless dom.key?(:alias)
         cdb = dbi[:command]
         @idx = cdb[:index]
-        agrp = cdb[:group]['gal'] = Hashx.new
-        agrp[:caption] = 'Alias'
-        @umem =  agrp[:units] = []
+        @grps = cdb[:group]
         @units = cdb[:unit]
-        @gmem = agrp[:members] = []
-        _add_unit(dom[:alias])
+        cdb[:group]['gal'] = Hashx.new(caption: 'Alias')
+        _add_unit(dom[:alias], 'gal')
         self
       end
 
-      # identical with App::Db#_add_unit()
-      def _add_unit(e)
-        return unless e
-        e.each do|e0|
-          case e0.name
-          when 'unit'
-            uid = e0.attr2item(@units)
-            @umem << uid
-            e0.each do|e1|
-              id = _add_item(e1)
-              @idx[id][:unit] = uid
-              (@units[uid][:members] ||= []) << id
-            end
-          when 'item'
-            _add_item(e0)
-          end
-        end
-        self
-      end
-
-      def _add_item(e0)
-        id = e0.attr2item(@idx)
-        @gmem << id
-        item = @idx[id]
-        ref = item.delete(:ref)
-        item.update(@idx[ref].pick([:parameters, :body]))
+      def _add_item(e0, gid)
+        id, itm = super
+        ref = itm.delete(:ref)
+        itm.update(@idx[ref].pick([:parameters, :body]))
         e0.each do|e1|
-          (item[:argv] ||= []) << e1.text
+          (itm[:argv] ||= []) << e1.text
         end
-        id
+        [id, itm]
       end
 
       # Status Domain

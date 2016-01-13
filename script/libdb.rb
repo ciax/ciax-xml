@@ -150,20 +150,21 @@ module CIAX
           uid = e0.attr2item(@units)
           (@grps[gid][:units] ||= []) << uid
           e0.each do|e1|
-            id = _add_item(e1, gid)
-            @idx[id][:unit] = uid
+            id, itm = _add_item(e1, gid)
+            itm[:unit] = uid
             (@units[uid][:members] ||= []) << id
           end
         when 'item'
           _add_item(e0, gid)
         end
       end
+      self
     end
 
     def _add_item(doc, gid)
       id = doc.attr2item(@idx)
       (@grps[gid][:members] ||= []) << id
-      id
+      [id, @idx[id]]
     end
   end
 end

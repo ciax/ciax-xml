@@ -44,7 +44,7 @@ module CIAX
     def cache(id)
       @base = "#{@type}-#{id}"
       @marfile = vardir('cache') + "#{@base}.mar"
-      if newest?
+      if _newest?
         res = _load_cache(id)
       else
         @docs = Xml::Doc.new(@type) unless @docs
@@ -60,7 +60,7 @@ module CIAX
       begin
         Marshal.load(IO.read(@marfile))
       rescue ArgumentError # if empty
-        {}
+        Hashx.new
       end
     end
 
@@ -80,7 +80,7 @@ module CIAX
       cfg_err("Counter remained at [#{res.join('/')}]")
     end
 
-    def newest?
+    def _newest?
       if NOCACHE
         verbose { "#{@type}/Cache NOCACHE is set" }
         return false
@@ -88,7 +88,7 @@ module CIAX
         verbose { "#{@type}/Cache MAR file(#{@base}) not exist" }
         return false
       else
-        newer = cmp($LOADED_FEATURES.grep(/#{__dir__}/) + Msg.xmlfiles(@type))
+        newer = _cmp_($LOADED_FEATURES.grep(/#{__dir__}/) + Msg.xmlfiles(@type))
         if newer
           verbose { "#{@type}/Cache File(#{newer}) is newer than cache" }
           verbose { "#{@type}/Cache cache=#{::File::Stat.new(@marfile).mtime}" }
@@ -99,7 +99,7 @@ module CIAX
       true
     end
 
-    def cmp(ary)
+    def _cmp_(ary)
       ary.each do|f|
         return f if ::File.file?(f) && test('>', f, @marfile)
       end
@@ -127,9 +127,9 @@ module CIAX
     end
 
     def init_command(dbc, dbi)
-      @idx = {}
-      @grps = {}
-      @units = {}
+      @idx = Hashx.new
+      @grps = Hashx.new
+      @units = Hashx.new
       # Adapt to both XML::Gnu, Hash
       dbc.each_value do|e|
         # e.name should be group
@@ -137,7 +137,7 @@ module CIAX
         gid = e.attr2item(@grps)
         _add_unit(e, gid)
       end
-      dbi[:command] = { group: @grps, index: @idx }
+      dbi[:command] = Hashx.new( group: @grps, index: @idx )
       dbi[:command][:unit] = @units unless @units.empty?
       dbi
     end

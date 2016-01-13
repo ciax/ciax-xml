@@ -44,13 +44,13 @@ module CIAX
       # Command section
       def init_command(dom, dbi)
         frm = init_frame(dom[:cmdframe]) { |e, r| init_cmd(e, r) }
-        idx = arc_command(dom[:command])
+        idx = rec_command(dom[:command])
         grp = { main: { caption: 'Device Commands', members: idx.keys } }
         dbi[:command] = { group: grp, index: idx, frame: frm }
         dbi
       end
 
-      def arc_command(domain)
+      def rec_command(domain)
         db = {}
         domain.each do|e0|
           id = e0.attr2item(db)
@@ -83,13 +83,13 @@ module CIAX
       def init_stat(dom, dbi)
         dbi[:field] = fld = {}
         frm = init_frame(dom[:rspframe]) { |e| init_rsp(e, fld) }
-        idx = arc_stat(dom[:response], fld)
+        idx = rec_stat(dom[:response], fld)
         dbi[:frm_id] = dbi[:id]
         dbi[:response] = { index: idx, frame: frm }
         dbi
       end
 
-      def arc_stat(domain, fld)
+      def rec_stat(domain, fld)
         db = {}
         domain.each do|e0|
           id = e0.attr2item(db)

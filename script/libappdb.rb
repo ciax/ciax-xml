@@ -24,7 +24,7 @@ module CIAX
         dbi
       end
 
-      def arc_command(e0, gid)
+      def rec_command(e0, gid)
         id = super
         itm = @idx[id]
         Repeat.new.each(e0) do|e1, rep|
@@ -59,6 +59,7 @@ module CIAX
         dbi[:status] = adbs.to_h.update(group: grp, index: idx)
       end
 
+      # recursive method
       def rec_stat(e, idx, grp, rep)
         rep.each(e) do|e0, r0|
           id = e0.attr2item(idx) { |_, v| r0.formatting(v) }

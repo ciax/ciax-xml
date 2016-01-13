@@ -24,7 +24,7 @@ module CIAX
         dbi
       end
 
-      def arc_command(e0, gid)
+      def rec_command(e0, gid)
         id = super
         itm = @idx[id]
         verbose { "MACRO:[#{id}]" }

@@ -21,23 +21,21 @@ module CIAX
         dbi = @adb.get(at[:app_id])
         dbi.update(at)
         init_general(dbi)
-        if (dom = doc[:domain])
-          init_command(dom, dbi)
-          init_status(dom, dbi)
-          init_watch(dom, dbi)
-        end
+        init_command(doc, dbi)
+        init_status(doc, dbi)
+        init_watch(doc, dbi)
         dbi
       end
 
       # Command Domain
-      def init_command(dom, dbi)
-        return self unless dom.key?(:alias)
+      def init_command(doc, dbi)
+        return self unless doc.key?(:alias)
         cdb = dbi[:command]
         @idx = cdb[:index]
         @grps = cdb[:group]
         @units = cdb[:unit]
         cdb[:group]['gal'] = Hashx.new(caption: 'Alias')
-        _add_unit(dom[:alias], 'gal')
+        _add_unit(doc[:alias], 'gal')
         cdb
       end
 
@@ -52,10 +50,10 @@ module CIAX
       end
 
       # Status Domain
-      def init_status(dom, dbi)
+      def init_status(doc, dbi)
         sdb = (dbi[:status] ||= {})
         grp = (sdb[:group] ||= {})
-        (dom[:status] || []).each do|e0|
+        (doc[:status] || []).each do|e0|
           p = (sdb[e0.name.to_sym] ||= {})
           case e0.name
           when 'alias'

@@ -16,9 +16,8 @@ module CIAX
       def doc_to_db(doc)
         dbi = Dbi.new(doc[:attr])
         dbi[:stream] = doc[:stream]
-        dom = doc[:domain]
-        init_command(dom, dbi)
-        init_response(dom, dbi)
+        init_command(doc, dbi)
+        init_response(doc, dbi)
         dbi
       end
 

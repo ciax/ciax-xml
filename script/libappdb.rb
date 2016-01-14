@@ -15,11 +15,9 @@ module CIAX
 
       def doc_to_db(doc)
         dbi = Dbi.new(doc[:attr])
-        # Domains
-        dom = doc[:domain]
-        init_command(dom[:command], dbi)
-        init_status(dom[:status], dbi)
-        init_watch(dom, dbi)
+        init_command(doc[:command], dbi)
+        init_status(doc[:status], dbi)
+        init_watch(doc, dbi)
         dbi[:app_id] = dbi[:id]
         dbi
       end

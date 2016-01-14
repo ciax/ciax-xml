@@ -73,12 +73,13 @@ module CIAX
         end
       end
 
+      # Domain is grouped by name space 
       def _mk_domain(top, sub = @displist)
         item = _set_item(top, sub)
         top.each do|e|
           tag = e.name.to_sym
           if top.ns != e.ns # command, status, ..
-            (item[:domain] ||= {})[tag] = e
+            item[tag] = e
           else # Property (stream, serial, etc.)
             item[tag] = e.to_h
           end

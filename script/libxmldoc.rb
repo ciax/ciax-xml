@@ -60,15 +60,15 @@ module CIAX
         id = top['id'] # site_id or macro_proj
         return unless id
         case top.name
-        when 'app', 'frame'
+        when 'app', 'frame' # adb, fdb
           _mk_domain(top)
         when 'group' # ddb
           _mk_top_group(top)
-        when 'macro'
+        when 'macro' # mdb
           _mk_sub_groups(top)
-        when 'project'
+        when 'project' # idb
           _mk_project(top)
-        else # symbol tables
+        else # sdb
           _mk_docs(top)
         end
       end

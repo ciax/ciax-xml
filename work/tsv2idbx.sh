@@ -23,7 +23,7 @@ xmlhead(){
     inc
 }
 mkidb(){
-    prtf '<item id="%s" label="%s for Turret %s ref="opt">\n' "$@"
+    prtf '<item id="%s" label="%s for Turret %s" ref="opt">\n' "$@"
     inc
 }
 

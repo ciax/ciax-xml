@@ -11,6 +11,7 @@ prtf(){
 
 xmlhead(){
     puts '<?xml version="1.0" encoding="utf-8"?>'
+    puts '<sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">'
     inc
     puts '<symbol id="ixe" label="MOIRCS Turret">'
     inc

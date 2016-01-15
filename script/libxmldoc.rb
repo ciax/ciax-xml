@@ -5,12 +5,12 @@ require 'libenumx'
 require 'libxmlgn'
 
 # Structure for Command: (top: listed in disp), <doclist: separated>
-#   ADB:/adb/(app)/<command>/group
-#   FDB:/fdb/(frame)/<command>/group
-#   SDB:/sdb/(symbol)/<table>
-#   DDB:/ddb/group/(site)
-#   IDB:/idb/project/include|group/(instance)
-#   MDB:/mdb/(macro)/include|<group>
+#   ADB:/adb/(app)/<command>/group/unit/item
+#   FDB:/fdb/(frame)/<command>/group/item
+#   SDB:/sdb/(symbol)/<table>/pattern
+#   DDB:/ddb/group/(site)/field
+#   IDB:/idb/project/include|group/(instance)/<alias>/include|group/unit/item
+#   MDB:/mdb/(macro)/include|<group>/unit/item
 # Domain is the top node of each name spaces (different from top ns),
 #   otherwise element is stored in Property
 module CIAX
@@ -60,37 +60,17 @@ module CIAX
         id = top['id'] # site_id or macro_proj
         return unless id
         case top.name
-        when 'app', 'frame' # adb, fdb
-          _mk_domain(top)
-        when 'group' # ddb
-          _mk_top_group(top)
-        when 'macro' # mdb
-          _mk_sub_groups(top)
         when 'project' # idb
           _mk_project(top)
+        when 'group' # ddb
+          _mk_top_group(top)
+        when 'app', 'frame' # adb, fdb
+          _mk_domain(top)
+        when 'macro' # mdb
+          _mk_sub_groups(top)
         else # sdb
           _mk_docs(top)
         end
-      end
-
-      # Domain is grouped by name space 
-      def _mk_domain(top, sub = @displist)
-        item = _set_item(top, sub)
-        top.each do|e|
-          tag = e.name.to_sym
-          if top.ns != e.ns # command, status, ..
-            item[tag] = e
-          else # Property (stream, serial, etc.)
-            item[tag] = e.to_h
-          end
-        end
-      end
-
-      # Takes second level (use group for display only)
-      def _mk_top_group(top)
-        @displist.ext_grp unless @displist.is_a? Disp::Grouping
-        sub = @displist.put_grp(top['id'], top['label'])
-        top.each { |e| _mk_docs(e, sub) }
       end
 
       # Includable (instance)
@@ -112,10 +92,30 @@ module CIAX
         end
       end
 
+      # Takes second level (use group for display only)
+      def _mk_top_group(top)
+        @displist.ext_grp unless @displist.is_a? Disp::Grouping
+        sub = @displist.put_grp(top['id'], top['label'])
+        top.each { |e| _mk_docs(e, sub) }
+      end
+
+      # Domain is grouped by name space 
+      def _mk_domain(top, sub = @displist)
+        item = _set_item(top, sub)
+        top.each do|e| # e.name can be command, status, stream, serial ..
+          tag = e.name.to_sym
+          if top.ns != e.ns # command, status, ..
+            item[tag] = e
+          else # Property (stream, serial, etc.)
+            item[tag] = e.to_h
+          end
+        end
+      end
+
       # Includable (macro)
       def _mk_sub_groups(top)
         item = _set_item(top)
-        top.each do|e| # e.name is include or group
+        top.each do|e| # e.name can be include or group
           tag = e.name.to_sym
           case tag
           when :include # include group

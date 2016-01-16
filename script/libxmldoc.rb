@@ -63,7 +63,7 @@ module CIAX
         when 'project' # idb
           _mk_project(top)
         when 'group' # ddb
-          _mk_top_group(top)
+          _mk_group(top)
         else # sdb, adb, fdb, mdb
           _mk_sub_db(top)
         end
@@ -71,28 +71,26 @@ module CIAX
 
       # Includable (instance)
       def _mk_project(top)
-        @displist.ext_grp unless @displist.is_a? Disp::Grouping
         pid = top['id']
         vpary = (@valid_proj ||= []).push(pid) if PROJ == pid
         grp = (@grps ||= {})[pid] = []
-        top.each do |g| # g.name is include or group
-          tag = g.name.to_sym
+        top.each do |gdoc| # g.name is include or group
+          tag = gdoc.name.to_sym
           case tag
           when :include # include project
-            vpary << g['ref'] if vpary
+            vpary << gdoc['ref'] if vpary
           when :group # group(mdb,adb)
-            grp << g['id']
-            sub = @displist.put_grp(g['id'], g['label'])
-            g.each { |e| _mk_sub_db(e, sub) }
+            grp << gdoc['id']
+            _mk_group(gdoc)
           end
         end
       end
 
       # Takes second level (use group for display only)
-      def _mk_top_group(top)
+      def _mk_group(gdoc)
         @displist.ext_grp unless @displist.is_a? Disp::Grouping
-        sub = @displist.put_grp(top['id'], top['label'])
-        top.each { |e| _mk_sub_db(e, sub) }
+        sub = @displist.put_grp(gdoc['id'], gdoc['label'])
+        gdoc.each { |e| _mk_sub_db(e, sub) }
       end
 
       # Includable (macro)

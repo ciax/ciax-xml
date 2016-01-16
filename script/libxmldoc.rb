@@ -64,12 +64,8 @@ module CIAX
           _mk_project(top)
         when 'group' # ddb
           _mk_top_group(top)
-        when 'app', 'frame' # adb, fdb
-          _mk_domain(top)
-        when 'macro' # mdb
-          _mk_sub_groups(top)
-        else # sdb
-          _mk_docs(top)
+        else # sdb, adb, fdb, mdb
+          _mk_sub_db(top)
         end
       end
 
@@ -87,7 +83,7 @@ module CIAX
           when :group # group(mdb,adb)
             grp << g['id']
             sub = @displist.put_grp(g['id'], g['label'])
-            g.each { |e| _mk_domain(e, sub) }
+            g.each { |e| _mk_sub_db(e, sub) }
           end
         end
       end
@@ -96,25 +92,12 @@ module CIAX
       def _mk_top_group(top)
         @displist.ext_grp unless @displist.is_a? Disp::Grouping
         sub = @displist.put_grp(top['id'], top['label'])
-        top.each { |e| _mk_docs(e, sub) }
-      end
-
-      # Domain is grouped by name space 
-      def _mk_domain(top, sub = @displist)
-        item = _set_item(top, sub)
-        top.each do|e| # e.name can be command, status, stream, serial ..
-          tag = e.name.to_sym
-          if top.ns != e.ns # command, status, ..
-            item[tag] = e
-          else # Property (stream, serial, etc.)
-            item[tag] = e.to_h
-          end
-        end
+        top.each { |e| _mk_sub_db(e, sub) }
       end
 
       # Includable (macro)
-      def _mk_sub_groups(top)
-        item = _set_item(top)
+      def _mk_sub_db(top, sub = @displist)
+        item = _set_item(top, sub)
         top.each do|e| # e.name can be include or group
           tag = e.name.to_sym
           case tag
@@ -122,17 +105,9 @@ module CIAX
             (item[tag] ||= []) << e['ref']
           when :group # group(mdb,adb)
             (item[tag] ||= {})[e['id']] = e
-          else # Property (stream, serial, etc.)
-            item[tag] = e.to_h
+          else # Command, Status(different ns), Property (stream, serial, etc.)
+            item[tag] = (top.ns != e.ns) ? e : e.to_h
           end
-        end
-      end
-
-      # takes item list (for symbol table)
-      def _mk_docs(top, disp = @displist)
-        item = _set_item(top, disp)
-        top.each do|e|
-          (item[e.name.to_sym] ||= {})[e['id']] = e
         end
       end
 

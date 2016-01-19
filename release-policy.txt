@@ -1,7 +1,7 @@
-master  : stable version
+master  : stable version (having good track record, back up for the actual operation)
 testing : in normal operation
-beta    : stable in adding new feature
-develop : unstable in adding new feature
+beta    : stable in adding new feature (works)
+develop : unstable in adding new feature (no work)
 
 release order:
  develop -> beta -> testing -> master

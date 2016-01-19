@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="slo" id="mmc" label="MOIRCS Carrousel" version="2">
+  <app frm_id="slo" id="mmc" label="MOIRCS Carrousel" version="3">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gu" caption="Status">
         <unit id="upd" label="Status">
           <item id="upd" label="Upd">
             <frmcmd name="getstat"/>
+            <frmcmd name="drv"/>
             <frmcmd name="bs"/>
             <frmcmd name="p"/>
             <frmcmd name="spd"/>
@@ -50,6 +51,16 @@
           <frmcmd name="set0"/>
           <frmcmd name="p"/>
         </item>
+        <unit id="udrv" title="drv[on|off]" label="Drive [%s]">
+          <item id="drvon" label="ON">
+            <frmcmd name="drvon"/>
+            <frmcmd name="drv"/>
+          </item>
+          <item id="drvoff" label="OFF">
+            <frmcmd name="drvoff"/>
+            <frmcmd name="drv"/>
+          </item>
+        </unit>
       </group>
       <group id="gm" caption="Motion">
         <item id="cw" label="Goto CW Limit (Slot 0)">
@@ -122,11 +133,11 @@
       <symtbl ref="slo"/>
       <symtbl ref="mmc"/>
       <group id="g1" caption="" column="4">
+        <string id="drv" label="Drive Status" symbol="off_warn">
+          <field ref="drv"/>
+        </string>
         <string id="bs" label="Moter Moving" symbol="warn">
           <field ref="bs"/>
-        </string>
-        <string id="con" label="Contact Sensor" symbol="action">
-          <field ref="in" index="0"/>
         </string>
         <float id="spd" label="Speed" symbol="spd" format="%.2f">
           <field ref="spd"/>
@@ -143,6 +154,9 @@
         <float id="abs" label="ABS position" symbol="abs" format="%.2f">
           <field ref="p"/>
         </float>
+        <string id="con" label="Contact Sensor" symbol="action">
+          <field ref="in" index="0"/>
+        </string>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">

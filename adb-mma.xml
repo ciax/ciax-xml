@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="slo" id="mma" label="MOIRCS Arm" version="1">
+  <app frm_id="slo" id="mma" label="MOIRCS Arm" version="2">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gu" caption="Status">
         <unit id="upd" label="Status">
           <item id="upd" label="Upd">
             <frmcmd name="getstat"/>
+            <frmcmd name="drv"/>
             <frmcmd name="bs"/>
             <frmcmd name="p"/>
             <repeat from="1" to="5">
@@ -45,6 +46,16 @@
               <argv>123</argv>
             </frmcmd>
             <frmcmd name="bs"/>
+          </item>
+        </unit>
+        <unit id="udrv" title="drv[on|off]" label="Drive [%s]">
+          <item id="drvon" label="ON">
+            <frmcmd name="drvon"/>
+            <frmcmd name="drv"/>
+          </item>
+          <item id="drvoff" label="OFF">
+            <frmcmd name="drvoff"/>
+            <frmcmd name="drv"/>
           </item>
         </unit>
       </group>
@@ -92,15 +103,18 @@
       <symtbl ref="slo"/>
       <symtbl ref="mma"/>
       <group id="g1" caption="" column="3">
-        <string id="bs" label="Moter Moving" symbol="warn">
-          <field ref="bs"/>
+        <string id="drv" label="Drive Status" symbol="off_warn">
+          <field ref="drv"/>
         </string>
-        <string id="con" label="Contact Sensor" symbol="action">
-          <field ref="in" index="4"/>
+        <string id="bs" label="Moter Moving" symbol="action">
+          <field ref="bs"/>
         </string>
         <integer id="err" label="Error Code" symbol="err">
           <field ref="err"/>
         </integer>
+        <string id="con" label="Contact Sensor" symbol="action">
+          <field ref="in" index="4"/>
+        </string>
         <string id="pos" label="Arm Position" symbol="pos">
           <field ref="in" index="0"/>
           <field ref="in" index="1"/>

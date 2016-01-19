@@ -9,7 +9,7 @@ require 'libxmlgn'
 #   FDB:/fdb/(frame)/<command>/group/item
 #   SDB:/sdb/(symbol)/<table>/pattern
 #   DDB:/ddb/group/(site)/field
-#   IDB:/idb/project/include|group/(instance)/<alias>/include|group/unit/item
+#   IDB:/idb/project/include|group/(instance)/include|<alias>/unit/item
 #   MDB:/mdb/(macro)/include|<group>/unit/item
 # Domain is the top node of each name spaces (different from top ns),
 #   otherwise element is stored in Property

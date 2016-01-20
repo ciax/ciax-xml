@@ -18,7 +18,7 @@ module CIAX
       # return //project/group/instance
       def doc_to_db(doc)
         at = doc[:attr]
-        dbi = @adb.get(at[:app_id])
+        dbi = @adb.get(at[:app_id]).deep_copy
         dbi.update(at)
         init_general(dbi)
         init_command(doc, dbi)

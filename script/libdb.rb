@@ -110,7 +110,7 @@ module CIAX
 
     # Take parameter and next line
     def par2item(doc, item)
-      return unless /par_(num|str)/ =~ doc.name
+      return unless /par_(num|str|reg)/ =~ doc.name
       @argc +=1
       attr = { type: $1, list: doc.text.split(',') }
       attr[:label] = doc[:label] if doc[:label]
@@ -121,7 +121,7 @@ module CIAX
     def validate_par(db)
       res = db.deep_search(format('\$[%d-9]', @argc+1))
       return db if res.empty?
-      cfg_err("Parameter var out of range [#{res.join('/')}] for #{@argc}")
+      cfg_err("Too much parameter variables [#{res.join('/')}] for #{@argc}")
     ensure
       @argc = 0
     end

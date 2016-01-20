@@ -27,7 +27,7 @@ module CIAX
       end
 
       def skip?
-        @cond.ok?('skip', 'enter') && !OPT.test?
+        @cond.ok?('skip', 'enter')
       ensure
         upd
       end

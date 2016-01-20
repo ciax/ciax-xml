@@ -178,7 +178,8 @@
           <not site="mma" var="pos" form="msg">INIT</not>
           <not site="mma" var="pos" form="msg">FOCUS</not>
           <not site="mma" var="pos" form="msg">ROT</not>
-          <not site="mma" var="abs" form="msg">WAIT</not>
+          <equal site="mma" var="abs" form="msg">WAIT</equal>
+          <equal site="mfp" var="ao" form="msg">OPEN</equal>
         </goal>
         <check>
           <equal site="mfp" var="gv" form="msg">OPEN</equal>

@@ -99,7 +99,7 @@ start,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 t-i,mma:pos!INIT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 t-f,mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 t-r,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-t-w,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:abs!WAIT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+t-w,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:abs=WAIT&mfp:ao=OPEN,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 
 ## OBSOLETE MACRO ############################################################
 # checkmask

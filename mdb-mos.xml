@@ -427,7 +427,7 @@
       </item>
       <item id="s-w" label="storemask 5(STORE~WAIT)">
         <goal>
-          <unmatch site="mma" var="abs" form="msg">WAIT</unmatch>
+          <equal site="mma" var="abs" form="msg">WAIT</equal>
           <not site="mma" var="pos" form="msg">INIT</not>
           <not site="mma" var="pos" form="msg">FOCUS</not>
           <not site="mma" var="pos" form="msg">ROT</not>
@@ -1182,7 +1182,7 @@
         <goal>
           <unmatch site="mma" var="abs" form="msg">WAIT</unmatch>
           <not site="mma" var="pos" form="msg">ROT</not>
-          <not site="mma" var="pos" form="msg">INIT</not>
+          <equal site="mma" var="pos" form="msg">INIT</equal>
           <not site="mma" var="pos" form="msg">FOCUS</not>
         </goal>
         <check>
@@ -1379,7 +1379,7 @@
         <goal>
           <unmatch site="mma" var="abs" form="msg">WAIT</unmatch>
           <not site="mma" var="pos" form="msg">ROT</not>
-          <not site="mma" var="pos" form="msg">INIT</not>
+          <equal site="mma" var="pos" form="msg">INIT</equal>
           <not site="mma" var="pos" form="msg">FOCUS</not>
         </goal>
         <check>

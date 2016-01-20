@@ -116,7 +116,7 @@ s-i,mma:pos!INIT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-f,mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-r,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-s,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STORE,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-s-w,mma:abs^WAIT&mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STORE,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+s-w,mma:abs=WAIT&mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STORE,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 
 # loadmask (must not add "mma:pos!N/A in l-w)
 load,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
@@ -143,6 +143,6 @@ kapa,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
 kapa1,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
 
 # fin
-fin,mma:abs^WAIT&mma:pos!ROT&mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+fin,mma:abs^WAIT&mma:pos!ROT&mma:pos=INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 f-r,mma:abs^WAIT&mma:pos!ROT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS
-f-i,mma:abs^WAIT&mma:pos!ROT&mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS&mmc:con=ON
+f-i,mma:abs^WAIT&mma:pos!ROT&mma:pos=INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS&mmc:con=ON

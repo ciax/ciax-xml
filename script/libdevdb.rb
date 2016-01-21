@@ -8,34 +8,36 @@ module CIAX
     class Db < Db
       def initialize
         super('ddb')
-      end
-
-      def get(id = nil)
-        dbi = super
-        dbi.cover(Frm::Db.new.get(dbi[:frm_id]))
+        @fdb = Frm::Db.new
       end
 
       private
 
       def doc_to_db(doc)
-        db = rec_db(doc[:top])
-        db[:proj] = PROJ
-        db[:site_id] = db[:id]
-        db
+        at = doc[:attr]
+        dbi = @fdb.get(at[:frm_id]).deep_copy
+        dbi.update(at)
+        rec_db(doc[:top], dbi)
+        dbi[:site_id] = dbi[:id]
+        dbi
       end
 
-      def rec_db(e0, dbi = Dbi.new)
-        (dbi ||= Dbi.new).update(e0.to_h)
-        e0.each do|e|
+      def rec_db(doc, dbi)
+        doc.each do |e|
           if e[:id]
             e.attr2item(dbi)
           else
             id = e.name.to_sym
-            verbose { "Override [#{id}]" }
-            rec_db(e, dbi[id] ||= {})
+            rec_db(e, dbi[id] = {})
           end
         end
-        dbi
+      end
+
+      def _site_list(prj, gr)
+        prj[:site].each do |k, v|
+          gr.put_item(k, v[:label])
+        end
+        gr
       end
     end
 

@@ -3,21 +3,25 @@
   <frame id="oco" label="OMEGA Current Output(D4251)">
     <spec mfr="OMEGA" type="Current Output" model="D4251" reference="http://www.omega.com/manuals/manualpdf/M1552.pdf"/>
     <stream wait="1"/>
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">$</string>
       <body/>
       <char length="1" label="Suffix">0xd</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <item id="getstat" label="Get Status" response="getstat" type="stat">
-        <string>1RD</string>
-      </item>
-      <item id="i" label="Set Current by argv [DD.DD]" type="action">
-        <par_num>0:99</par_num>
-        <string>1AO+000</string>
-        <string format="%05.2f">$1</string>
-      </item>
+      <group id="gst" caption="Status">
+        <item id="getstat" label="Get Status" response="getstat" type="stat">
+          <string>1RD</string>
+        </item>
+      </group>
+      <group id="gact" caption="Action">
+        <item id="i" label="Set Current by argv [DD.DD]" type="action">
+          <par_num>0:99</par_num>
+          <string>1AO+000</string>
+          <string format="%05.2f">$1</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix">*</field>
@@ -25,7 +29,7 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field assign="crnt" length="9" />
+        <field assign="crnt" length="9"/>
       </item>
     </response>
   </frame>

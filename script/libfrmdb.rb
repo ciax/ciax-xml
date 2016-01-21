@@ -14,29 +14,10 @@ module CIAX
       private
 
       def doc_to_db(doc)
-        dbi = Dbi[doc[:attr]]
-        dbi[:stream] = doc[:property][:stream].to_h
+        dbi = Dbi.new(doc[:attr])
+        dbi[:stream] = doc[:stream]
         init_command(doc, dbi)
-        init_stat(doc, dbi)
-        dbi
-      end
-
-      # Command section
-      def init_command(doc, dbi)
-        frm = init_frame(doc[:domain][:cmdframe]) { |e, r| init_cmd(e, r) }
-        idx = init_index(doc[:domain][:command]) { |e, r| init_cmd(e, r) }
-        grp = { main: { caption: 'Device Commands', members: idx.keys } }
-        dbi[:command] = { group: grp, index: idx, frame: frm }
-        dbi
-      end
-
-      # Status section
-      def init_stat(doc, dbi)
-        dbi[:field] = fld = {}
-        frm = init_frame(doc[:domain][:rspframe]) { |e| init_rsp(e, fld) }
-        idx = init_index(doc[:domain][:response]) { |e| init_rsp(e, fld) }
-        dbi[:frm_id] = dbi[:id]
-        dbi[:response] = { index: idx, frame: frm }
+        init_response(doc, dbi)
         dbi
       end
 
@@ -59,23 +40,28 @@ module CIAX
         db
       end
 
-      def init_index(domain)
-        db = {}
-        domain.each do|e0|
-          id = e0.attr2item(db)
-          item = db[id]
-          enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
-            Repeat.new.each(e0) do|e1, r1|
-              par2item(e1, item) && next
-              e = yield(e1, r1) || next
-              (item[:body] ||= []) << e
-            end
-          end
-        end
-        db
+      # Command section
+      def init_command(dom, dbi)
+        cdb = super(dom[:command], dbi)
+        cdb[:frame] = init_frame(dom[:cmdframe]) { |e, r| _add_cmdfrm(e, r) } 
+        cdb
       end
 
-      def init_cmd(e, rep = nil)
+      def _add_item(e0, gid)
+        id, itm = super
+        enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
+          Repeat.new.each(e0) do|e1, r1|
+            par2item(e1, itm) && next
+            e = _add_cmdfrm(e1, r1) || next
+            (itm[:body] ||= []) << e
+            verbose{"Body Frame [#{e.inspect}]"}
+          end
+          validate_par(itm)
+        end
+        [id, itm]
+      end
+
+      def _add_cmdfrm(e, rep = nil)
         case e.name
         when 'char', 'string'
           atrb = e.to_h
@@ -87,22 +73,47 @@ module CIAX
         end
       end
 
-      def init_rsp(e, field)
+      # Status section
+      def init_response(dom, dbi)
+        dbi[:field] = fld = Hashx.new
+        frm = init_frame(dom[:rspframe]) { |e| _add_rspfrm(e, fld) }
+        idx = _add_response(dom[:response], fld)
+        dbi[:frm_id] = dbi[:id]
+        dbi[:response] = Hashx.new(index: idx, frame: frm )
+        dbi
+      end
+
+      def _add_response(domain, fld)
+        db = {}
+        domain.each do|e0|
+          id = e0.attr2item(db)
+          itm = db[id]
+          enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
+            Repeat.new.each(e0) do|e1, r1|
+              e = _add_rspfrm(e1, fld) || next
+              (itm[:body] ||= []) << e
+            end
+          end
+        end
+        db
+      end
+
+      def _add_rspfrm(e, field)
         # Avoid override duplicated id
         if (id = e[:assign]) && !field.key?(id)
-          item = field[id] = { label: e[:label] }
+          itm = field[id] = { label: e[:label] }
         end
         case e.name
         when 'field'
           atrb = e.to_h
-          item[:struct] = [] if item
+          itm[:struct] = [] if itm
           verbose { "InitElement: #{atrb}" }
           atrb
         when 'array'
           atrb = e.to_h
           idx = atrb[:index] = []
           e.each { |e1| idx << e1.to_h }
-          item[:struct] = idx.map { |h| h[:size] } if item
+          itm[:struct] = idx.map { |h| h[:size] } if itm
           verbose { "InitArray: #{atrb}" }
           atrb
         when 'ccrange', 'body', 'echo'

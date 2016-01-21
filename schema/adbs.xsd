@@ -1,66 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adbs" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adbs="http://ciax.sum.naoj.org/ciax-xml/adbs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
-  <xsd:include schemaLocation="repeat.xsd" />
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adbs="http://ciax.sum.naoj.org/ciax-xml/adbs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adbs" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="repeat.xsd"/>
   <xsd:attributeGroup name="id_attr">
-    <xsd:attribute name="id" type="xsd:token" use="required" />
-    <xsd:attribute name="label" type="xsd:token" use="optional" />
-    <xsd:attribute name="symbol" type="xsd:NCName" />
-    <xsd:attribute name="default" type="xsd:token" />
+    <xsd:attribute name="id" type="xsd:token" use="required"/>
+    <xsd:attribute name="label" type="xsd:token" use="optional"/>
+    <xsd:attribute name="symbol" type="xsd:NCName"/>
+    <xsd:attribute name="default" type="xsd:token"/>
   </xsd:attributeGroup>
   <xsd:attributeGroup name="ref_attr">
-    <xsd:attribute name="ref" type="xsd:NCName" use="required" />
-    <xsd:attribute name="label" type="xsd:token" use="optional" />
-    <xsd:attribute name="index" type="xsd:token" use="optional" />
+    <xsd:attribute name="ref" type="xsd:NCName" use="required"/>
+    <xsd:attribute name="label" type="xsd:token" use="optional"/>
+    <xsd:attribute name="index" type="xsd:token" use="optional"/>
   </xsd:attributeGroup>
   <xsd:group name="var_type">
     <xsd:choice>
-      <xsd:element ref="adbs:binary" maxOccurs="unbounded" />
-      <xsd:element ref="adbs:float" maxOccurs="unbounded" />
-      <xsd:element ref="adbs:integer" maxOccurs="unbounded" />
-      <xsd:element ref="adbs:string" maxOccurs="unbounded" />
+      <xsd:element ref="adbs:binary" maxOccurs="unbounded"/>
+      <xsd:element ref="adbs:float" maxOccurs="unbounded"/>
+      <xsd:element ref="adbs:integer" maxOccurs="unbounded"/>
+      <xsd:element ref="adbs:string" maxOccurs="unbounded"/>
     </xsd:choice>
   </xsd:group>
   <!--status & group-->
   <xsd:element name="status">
     <xsd:complexType>
-      <xsd:choice>
+      <xsd:sequence>
+        <xsd:element ref="adbs:symtbl" minOccurs="0" maxOccurs="unbounded"/>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
-          <xsd:element ref="adbs:group"></xsd:element>
-          <xsd:element ref="adbs:repeat_group"></xsd:element>
+          <xsd:element ref="adbs:group"/>
+          <xsd:element ref="adbs:repeat_group"/>
         </xsd:choice>
-      </xsd:choice>
-      <xsd:attribute name="symtbl" type="xsd:NCName" use="optional" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="symtbl">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:NCName" use="required"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="repeat_group">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbs:group"></xsd:element>
-        <xsd:element ref="adbs:repeat_group"></xsd:element>
-      </xsd:choice>
-      <xsd:attributeGroup ref="adbs:repeat" />
+        <xsd:choice minOccurs="1" maxOccurs="unbounded">
+          <xsd:element ref="adbs:group"/>
+          <xsd:element ref="adbs:repeat_group"/>
+        </xsd:choice>
+      <xsd:attributeGroup ref="adbs:repeat"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="group">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbs:repeat_var"></xsd:element>
-        <xsd:group ref="adbs:var_type" />
+        <xsd:element ref="adbs:repeat_var"/>
+        <xsd:group ref="adbs:var_type"/>
       </xsd:choice>
-      <xsd:attribute name="id" type="xsd:token" use="required" />
-      <xsd:attribute name="caption" type="xsd:token" use="optional" />
-      <xsd:attribute name="label" type="xsd:token" use="optional" />
-      <xsd:attribute name="column" type="xsd:int" use="optional" />
+      <xsd:attribute name="id" type="xsd:token" use="required"/>
+      <xsd:attribute name="caption" type="xsd:token" use="optional"/>
+      <xsd:attribute name="label" type="xsd:token" use="optional"/>
+      <xsd:attribute name="column" type="xsd:int" use="optional"/>
     </xsd:complexType>
   </xsd:element>
   <!--values-->
   <xsd:element name="repeat_var">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbs:repeat_var"></xsd:element>
-        <xsd:group ref="adbs:var_type" />
+        <xsd:element ref="adbs:repeat_var"/>
+        <xsd:group ref="adbs:var_type"/>
       </xsd:choice>
-      <xsd:attributeGroup ref="adbs:repeat" />
+      <xsd:attributeGroup ref="adbs:repeat"/>
     </xsd:complexType>
   </xsd:element>
   <!--data type in value-->
@@ -68,13 +73,13 @@
     <xsd:sequence>
       <xsd:element ref="adbs:sign" minOccurs="0" maxOccurs="1"/>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbs:field" />
-        <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded" />
+        <xsd:element ref="adbs:field"/>
+        <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded"/>
       </xsd:choice>
     </xsd:sequence>
-    <xsd:attributeGroup ref="adbs:id_attr" />
-    <xsd:attribute name="format" type="xsd:token" use="optional" />
-    <xsd:attribute name="formula" type="xsd:token" />
+    <xsd:attributeGroup ref="adbs:id_attr"/>
+    <xsd:attribute name="format" type="xsd:token" use="optional"/>
+    <xsd:attribute name="formula" type="xsd:token"/>
     <xsd:attribute name="operation" use="optional" default="sum">
       <xsd:simpleType>
         <xsd:restriction base="xsd:token">
@@ -84,15 +89,15 @@
       </xsd:simpleType>
     </xsd:attribute>
   </xsd:complexType>
-  <xsd:element name="float" type="adbs:numerical"></xsd:element>
-  <xsd:element name="integer" type="adbs:numerical"></xsd:element>
+  <xsd:element name="float" type="adbs:numerical"/>
+  <xsd:element name="integer" type="adbs:numerical"/>
   <xsd:element name="binary">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbs:field" />
-        <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded" />
+        <xsd:element ref="adbs:field"/>
+        <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded"/>
       </xsd:choice>
-      <xsd:attributeGroup ref="adbs:id_attr" />
+      <xsd:attributeGroup ref="adbs:id_attr"/>
       <xsd:attribute name="operation" use="optional" default="concat">
         <xsd:simpleType>
           <xsd:restriction base="xsd:token">
@@ -108,43 +113,43 @@
   <xsd:element name="string">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="adbs:field" />
-        <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded" />
+        <xsd:element ref="adbs:field"/>
+        <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded"/>
       </xsd:choice>
-      <xsd:attributeGroup ref="adbs:id_attr" />
+      <xsd:attributeGroup ref="adbs:id_attr"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="repeat_field">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbs:field" />
+        <xsd:element ref="adbs:field"/>
       </xsd:choice>
-      <xsd:attributeGroup ref="adbs:repeat" />
+      <xsd:attributeGroup ref="adbs:repeat"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="sign">
     <xsd:complexType>
-      <xsd:attributeGroup ref="adbs:ref_attr" />
-      <xsd:attribute name="type" type="xsd:token" />
-      <xsd:attribute name="negative" type="xsd:token" />
+      <xsd:attributeGroup ref="adbs:ref_attr"/>
+      <xsd:attribute name="type" type="xsd:token"/>
+      <xsd:attribute name="negative" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="field">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="adbs:conv" />
+        <xsd:element ref="adbs:conv"/>
       </xsd:choice>
-      <xsd:attributeGroup ref="adbs:ref_attr" />
-      <xsd:attribute name="bit" type="xsd:token" />
-        <!--negative logic for binary-->
-      <xsd:attribute name="inv" type="xsd:boolean" />
+      <xsd:attributeGroup ref="adbs:ref_attr"/>
+      <xsd:attribute name="bit" type="xsd:token"/>
+      <!--negative logic for binary-->
+      <xsd:attribute name="inv" type="xsd:boolean"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="conv">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
-          <xsd:attribute name="msg" type="xsd:token" />
+          <xsd:attribute name="msg" type="xsd:token"/>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

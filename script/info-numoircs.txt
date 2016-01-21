@@ -1,0 +1,4 @@
+MOIRCS Contorol: moircsobcp.sum.subaru.nao.ac.jp/cgi-bin/moircscontrol
+PDU for MOS/Turret: 133.40.161.124 @moircs:moircs
+PDU for MainValve: 133.40.161.126 @moircs:moircs
+DIGI: 133.40.161.140 @root:dbps

@@ -9,8 +9,8 @@ module CIAX
     module_function
 
     def expr(str)
-      num = str ? eval(str) : 0
-      type?(num, Numeric)
+      return unless str
+      eval(str) || 0
     end
 
     def esc_code(str)

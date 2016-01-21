@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/sdb">
-  <xsd:include schemaLocation="range.xsd" />
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/sdb">
+  <xsd:include schemaLocation="range.xsd"/>
   <xsd:attributeGroup name="id_attr">
-    <xsd:attribute name="id" type="xsd:token" use="required" />
-    <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
+    <xsd:attribute name="id" type="xsd:token" use="required"/>
+    <xsd:attribute name="label" type="xsd:token" use="optional"/>
   </xsd:attributeGroup>
   <!--root-->
   <xsd:element name="sdb">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="sdb:symbol" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="sdb:symbol" minOccurs="1" maxOccurs="unbounded"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -17,33 +17,33 @@
   <xsd:element name="symbol">
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element ref="sdb:table" />
+        <xsd:element ref="sdb:table"/>
       </xsd:choice>
-      <xsd:attributeGroup ref="sdb:id_attr" />
+      <xsd:attributeGroup ref="sdb:id_attr"/>
     </xsd:complexType>
     <xsd:key name="response_id">
-      <xsd:selector xpath=".//sdb:table" />
-      <xsd:field xpath="@id" />
+      <xsd:selector xpath=".//sdb:table"/>
+      <xsd:field xpath="@id"/>
     </xsd:key>
   </xsd:element>
   <xsd:element name="table">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:choice>
-          <xsd:element ref="sdb:pattern" maxOccurs="unbounded" />
-          <xsd:element ref="sdb:range" maxOccurs="unbounded" />
-          <xsd:element ref="sdb:numeric" maxOccurs="unbounded" />
+          <xsd:element ref="sdb:pattern" maxOccurs="unbounded"/>
+          <xsd:element ref="sdb:range" maxOccurs="unbounded"/>
+          <xsd:element ref="sdb:numeric" maxOccurs="unbounded"/>
         </xsd:choice>
-        <xsd:element ref="sdb:default" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="sdb:default" minOccurs="0" maxOccurs="1"/>
       </xsd:sequence>
-      <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
+      <xsd:attributeGroup ref="sdb:id_attr"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="pattern">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
-          <xsd:attributeGroup ref="sdb:sym_attr" />
+          <xsd:attributeGroup ref="sdb:sym_attr"/>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -52,8 +52,8 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:decimal">
-          <xsd:attributeGroup ref="sdb:sym_attr" />
-          <xsd:attribute name="tolerance" type="xsd:decimal" />
+          <xsd:attributeGroup ref="sdb:sym_attr"/>
+          <xsd:attribute name="tolerance" type="xsd:decimal"/>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -62,27 +62,27 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="sdb:rerange">
-          <xsd:attributeGroup ref="sdb:sym_attr" />
+          <xsd:attributeGroup ref="sdb:sym_attr"/>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="default">
     <xsd:complexType>
-      <xsd:attributeGroup ref="sdb:sym_attr" />
+      <xsd:attributeGroup ref="sdb:sym_attr"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="sym_attr">
-    <xsd:attribute name="class" type="sdb:type_hl" use="required" />
-    <xsd:attribute name="msg" type="xsd:token" use="required" />
+    <xsd:attribute name="class" type="sdb:type_hl" use="required"/>
+    <xsd:attribute name="msg" type="xsd:token" use="required"/>
   </xsd:attributeGroup>
   <xsd:simpleType name="type_hl">
     <xsd:restriction base="xsd:token">
-      <xsd:enumeration value="normal" />
-      <xsd:enumeration value="warn" />
-      <xsd:enumeration value="alarm" />
-      <xsd:enumeration value="active" />
-      <xsd:enumeration value="hide" />
+      <xsd:enumeration value="normal"/>
+      <xsd:enumeration value="warn"/>
+      <xsd:enumeration value="alarm"/>
+      <xsd:enumeration value="active"/>
+      <xsd:enumeration value="hide"/>
     </xsd:restriction>
   </xsd:simpleType>
 </xsd:schema>

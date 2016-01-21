@@ -8,7 +8,7 @@
     </table>
     <table id="ba">
       <pattern class="hide" msg="OK">0</pattern>
-      <default class="alarm" msg="ON" />
+      <default class="alarm" msg="ON"/>
     </table>
     <table id="rts">
       <pattern class="warn" msg="PFO">1</pattern>
@@ -16,7 +16,7 @@
       <pattern class="normal" msg="CAS">4</pattern>
       <pattern class="warn" msg="NSO">8</pattern>
       <pattern class="warn" msg="NSI">10</pattern>
-      <default class="alarm" msg="N/A" />
+      <default class="alarm" msg="N/A"/>
     </table>
     <table id="iid">
       <pattern class="warn" msg="NONE">^0$</pattern>
@@ -27,12 +27,12 @@
       <pattern class="normal" msg="MC-BOX">10</pattern>
       <pattern class="normal" msg="MOIRCS">12</pattern>
       <pattern class="normal" msg="CIAX3">13</pattern>
-      <default class="warn" msg="N/A" />
+      <default class="warn" msg="N/A"/>
     </table>
     <table id="login">
       <pattern class="alarm" msg="OSS Login">OSS</pattern>
       <pattern class="normal" msg="LOGIN">CXWS</pattern>
-      <default class="warn" msg="LOGOUT" />
+      <default class="warn" msg="LOGOUT"/>
     </table>
     <table id="rpw">
       <pattern class="warn" msg="ON">1</pattern>
@@ -42,17 +42,17 @@
       <pattern class="alarm" msg="OFF">3</pattern>
       <pattern class="normal" msg="0DEG">2</pattern>
       <pattern class="normal" msg="-4DEG">1</pattern>
-      <default class="alarm" msg="N/A" />
+      <default class="alarm" msg="N/A"/>
     </table>
     <table id="drv">
       <pattern class="alarm" msg="ON">5</pattern>
       <pattern class="normal" msg="OFF">3</pattern>
       <pattern class="normal" msg="RDY">1</pattern>
-      <default class="alarm" msg="N/A" />
+      <default class="alarm" msg="N/A"/>
     </table>
     <table id="uni">
       <pattern class="normal" msg="EVEN">0</pattern>
-      <default class="alarm" msg="UNEVEN" />
+      <default class="alarm" msg="UNEVEN"/>
     </table>
   </symbol>
 </sdb>

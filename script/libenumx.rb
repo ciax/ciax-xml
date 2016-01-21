@@ -15,7 +15,7 @@ module CIAX
 
     # Freeze one level deepth or more
     def deep_freeze
-      rec_proc(self, &:freeze)
+      rec_proc4enum(self, &:freeze)
       self
     end
 
@@ -23,6 +23,19 @@ module CIAX
     def deep_update(ope)
       rec_merge(self, ope)
       self
+    end
+
+    # Search String
+    def deep_search(reg)
+      path = []
+      rec_proc4str(self, path) do |obj|
+        next unless obj.is_a?(String)
+        if  /#{reg}/ =~ obj
+          path << obj
+          break
+        end
+      end
+      path
     end
 
     # Override data
@@ -39,11 +52,25 @@ module CIAX
 
     private
 
-    def rec_proc(db)
-      each_idx(db) do|i|
-        rec_proc(db[i]) { |d| yield d }
+    def rec_proc4enum(enum, &block)
+      return unless enum.is_a? Enumerable
+      enum.each do |k, v| # v=nil if enum is Array
+        rec_proc4enum(v || k, &block)
       end
-      yield db
+      block.call(enum)
+    end
+
+    def rec_proc4str(enum, path = [], &block)
+      if enum.is_a? Enumerable
+        enum.each_with_index do |e, i| # e = Array if enum is Hash
+          k, v = e.is_a?(Array) ? e : [i, e]
+          path.push(k.to_s)
+          rec_proc4str(v, path, &block)
+          path.pop
+        end
+      else
+        block.call(enum,path)
+      end
     end
 
     # r(operand) will be merged to w (w is changed)
@@ -62,7 +89,7 @@ module CIAX
   class Hashx < Hash
     include Enumx
     def initialize(hash = {})
-      update(hash)
+      update(hash) if hash
       vmode(:v) # v|r|j
       %i(v r j).each do|k|
         vmode(k) if OPT[k]
@@ -102,6 +129,17 @@ module CIAX
       end
       hash
     end
+
+    # Pick Hash which isn't Array or Hash for XML attributes
+    def attributes(id = nil)
+      atrb = Hashx.new
+      atrb[:id] = id if id
+      each do |k, v|
+        next if v.is_a? Enumerable
+        atrb[k] = v
+      end
+      atrb
+    end
   end
 
   # Extended Array
@@ -125,6 +163,16 @@ module CIAX
         return res if res
       end
       nil
+    end
+
+    # Generate Hash with key array
+    def a2h(*keys)
+      atrb = {}
+      each do |val|
+        key = keys.shift
+        atrb[key] = val if key
+      end
+      atrb
     end
   end
 

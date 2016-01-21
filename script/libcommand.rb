@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require 'libconf'
 require 'libgroup'
 
-# @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
+# @cfg[:def_proc] should be Proc which is given |Entity| as param,
+#   returns String as message.
 module CIAX
   # Inherited by Index,Domain
   class GrpAry < Arrayx

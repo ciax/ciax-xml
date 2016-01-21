@@ -25,6 +25,6 @@ $len=strlen($buf);
 socket_sendto($soc,$buf,$len,0,"127.0.0.1",$port);
 $from="";
 $port=0;
-socket_recvfrom($soc,$buf,128,0,$from,$port);
+socket_recvfrom($soc,$buf,1024,0,$from,$port);
 print($buf);
 ?>

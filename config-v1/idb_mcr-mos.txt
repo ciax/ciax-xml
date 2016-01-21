@@ -63,7 +63,7 @@ ro_l-f,mfp:rao=OPEN&mfp:rbo=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:
 ao_l-f,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mma:con=ON&mmc:abs~S&map:pres~H|M|L
 ini_l-i,mma:pos=INIT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 set0_a,,mma:pos=INIT&mma:abs~INIT
-setstk_a,,mma:pos=STORE&mma:abs~STORE
+sets_a,,mma:pos=STORE&mma:abs~STORE
 check_load,,mfp:gv=OPEN&mfp:hv=Horizontal&!mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
 
 # fcheck
@@ -99,7 +99,7 @@ start,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 t-i,mma:pos!INIT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 t-f,mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 t-r,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-t-w,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:abs!WAIT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+t-w,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:abs=WAIT&mfp:ao=OPEN,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 
 ## OBSOLETE MACRO ############################################################
 # checkmask
@@ -116,7 +116,7 @@ s-i,mma:pos!INIT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-f,mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-r,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-s,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STORE,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-s-w,mma:abs^WAIT&mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STORE,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+s-w,mma:abs=WAIT&mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STORE,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 
 # loadmask (must not add "mma:pos!N/A in l-w)
 load,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
@@ -143,6 +143,6 @@ kapa,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
 kapa1,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
 
 # fin
-fin,mma:abs^WAIT&mma:pos!ROT&mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+fin,mma:abs^WAIT&mma:pos!ROT&mma:pos=INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 f-r,mma:abs^WAIT&mma:pos!ROT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS
-f-i,mma:abs^WAIT&mma:pos!ROT&mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS&mmc:con=ON
+f-i,mma:abs^WAIT&mma:pos!ROT&mma:pos=INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS&mmc:con=ON

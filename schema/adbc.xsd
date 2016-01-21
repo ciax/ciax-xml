@@ -1,48 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adbc="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
-  <xsd:include schemaLocation="repeat.xsd" />
-  <xsd:include schemaLocation="command.xsd" />
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adbc="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adbc" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="repeat.xsd"/>
+  <xsd:include schemaLocation="command.xsd"/>
   <!--command select-->
   <xsd:element name="command">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbc:group" />
+        <xsd:element ref="adbc:group"/>
       </xsd:choice>
     </xsd:complexType>
     <xsd:key name="group_id">
-      <xsd:selector xpath="adbc:group" />
-      <xsd:field xpath="@id" />
+      <xsd:selector xpath="adbc:group"/>
+      <xsd:field xpath="@id"/>
     </xsd:key>
   </xsd:element>
   <xsd:element name="group">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbc:item" />
-        <xsd:element ref="adbc:unit" />
+        <xsd:element ref="adbc:item"/>
+        <xsd:element ref="adbc:unit"/>
       </xsd:choice>
-      <xsd:attribute name="id" type="xsd:NCName" use="required" />
-      <xsd:attribute name="caption" type="xsd:token" use="optional" />
-      <xsd:attribute name="column" type="xsd:int" />
-      <xsd:attribute name="hidden" type="xsd:boolean" />
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="caption" type="xsd:token" use="optional"/>
+      <xsd:attribute name="column" type="xsd:int"/>
+      <xsd:attribute name="hidden" type="xsd:boolean"/>
     </xsd:complexType>
     <xsd:key name="command_id">
-      <xsd:selector xpath="adbc:item" />
-      <xsd:field xpath="@id" />
+      <xsd:selector xpath="adbc:item"/>
+      <xsd:field xpath="@id"/>
     </xsd:key>
   </xsd:element>
   <xsd:element name="unit">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbc:item" />
+        <xsd:element ref="adbc:item"/>
       </xsd:choice>
-      <xsd:attribute name="id" type="xsd:NCName" use="required" />
-      <xsd:attribute name="label" type="xsd:token" />
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="title" type="xsd:token"/>
+      <xsd:attribute name="label" type="xsd:token"/>
       <xsd:attribute name="type">
         <xsd:simpleType>
           <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="motion" />
-            <xsd:enumeration value="config" />
-            <xsd:enumeration value="update" />
+            <xsd:enumeration value="motion"/>
+            <xsd:enumeration value="config"/>
+            <xsd:enumeration value="update"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>
@@ -51,26 +52,26 @@
   <xsd:element name="item">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="adbc:parameter"></xsd:group>
+        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="adbc:parameter"/>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
-          <xsd:element ref="adbc:frmcmd" />
-          <xsd:element ref="adbc:repeat" />
+          <xsd:element ref="adbc:frmcmd"/>
+          <xsd:element ref="adbc:repeat"/>
         </xsd:choice>
       </xsd:sequence>
-      <xsd:attribute name="id" type="xsd:NCName" use="required" />
-      <xsd:attribute name="label" type="xsd:token" use="optional" />
-      <xsd:attribute name="hidden" type="xsd:boolean" />
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="label" type="xsd:token" use="optional"/>
+      <xsd:attribute name="hidden" type="xsd:boolean"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="repeat">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbc:repeat" />
-        <xsd:element ref="adbc:frmcmd"></xsd:element>
+        <xsd:element ref="adbc:repeat"/>
+        <xsd:element ref="adbc:frmcmd"/>
       </xsd:choice>
-      <xsd:attributeGroup ref="adbc:repeat" />
+      <xsd:attributeGroup ref="adbc:repeat"/>
     </xsd:complexType>
   </xsd:element>
   <!--command statement-->
-  <xsd:element name="frmcmd" type="adbc:command"></xsd:element>
+  <xsd:element name="frmcmd" type="adbc:command"/>
 </xsd:schema>

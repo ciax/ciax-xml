@@ -2,130 +2,132 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="bbe" id="bbe" label="Helium Compressor">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="g0" caption="Device" column="2">
-        <unit id='upd' label="Status">
+      <group id="gu" caption="Update" column="2">
+        <unit id="uu" label="Status">
           <item id="upd" label="Upd">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
         </unit>
-        <unit id='x0' label="X0">
+      </group>
+      <group id="g0" caption="Device" column="2">
+        <unit id="x0" label="X0">
           <item id="x0on" label="ON">
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
               <argv>${stat}|0x01</argv>
             </frmcmd>
-            <frmcmd name="outfld" />
-            <frmcmd name="getstat" />
+            <frmcmd name="outfld"/>
+            <frmcmd name="getstat"/>
           </item>
           <item id="x0off" label="OFF">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
               <argv>${stat}&amp;0xfffe</argv>
             </frmcmd>
-            <frmcmd name="outfld" />
-            <frmcmd name="getstat" />
+            <frmcmd name="outfld"/>
+            <frmcmd name="getstat"/>
           </item>
         </unit>
-        <unit id='x1' label="X1">
+        <unit id="x1" label="X1">
           <item id="x1on" label="ON">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
               <argv>${stat}|0x10</argv>
             </frmcmd>
-            <frmcmd name="outfld" />
-            <frmcmd name="getstat" />
+            <frmcmd name="outfld"/>
+            <frmcmd name="getstat"/>
           </item>
           <item id="x1off" label="OFF">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
               <argv>${stat}&amp;0xffef</argv>
             </frmcmd>
-            <frmcmd name="outfld" />
-            <frmcmd name="getstat" />
+            <frmcmd name="outfld"/>
+            <frmcmd name="getstat"/>
           </item>
         </unit>
-        <unit id='x2' label="X2">
+        <unit id="x2" label="X2">
           <item id="x2on" label="ON">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
               <argv>${stat}|0x100</argv>
             </frmcmd>
-            <frmcmd name="outfld" />
-            <frmcmd name="getstat" />
+            <frmcmd name="outfld"/>
+            <frmcmd name="getstat"/>
           </item>
           <item id="x2off" label="OFF">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
               <argv>${stat}&amp;0xfeff</argv>
             </frmcmd>
-            <frmcmd name="outfld" />
-            <frmcmd name="getstat" />
+            <frmcmd name="outfld"/>
+            <frmcmd name="getstat"/>
           </item>
         </unit>
-        <unit id='x3' label="X3">
+        <unit id="x3" label="X3">
           <item id="x3on" label="ON">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
               <argv>${stat}|0x1000</argv>
             </frmcmd>
-            <frmcmd name="outfld" />
-            <frmcmd name="getstat" />
+            <frmcmd name="outfld"/>
+            <frmcmd name="getstat"/>
           </item>
           <item id="x3off" label="OFF">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
               <argv>${stat}&amp;0xefff</argv>
             </frmcmd>
-            <frmcmd name="outfld" />
-            <frmcmd name="getstat" />
+            <frmcmd name="outfld"/>
+            <frmcmd name="getstat"/>
           </item>
         </unit>
-        <unit id='x01' label="X0 and X1">
+        <unit id="x01" label="X0 and X1">
           <item id="x01on" label="ON">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
               <argv>${stat}|0x0011</argv>
             </frmcmd>
-            <frmcmd name="outfld" />
-            <frmcmd name="getstat" />
+            <frmcmd name="outfld"/>
+            <frmcmd name="getstat"/>
           </item>
           <item id="x01off" label="OFF">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
               <argv>${stat}&amp;0xffee</argv>
             </frmcmd>
-            <frmcmd name="outfld" />
-            <frmcmd name="getstat" />
+            <frmcmd name="outfld"/>
+            <frmcmd name="getstat"/>
           </item>
-        </unit>        
-        <unit id='x23' label="X2 and X3">
+        </unit>
+        <unit id="x23" label="X2 and X3">
           <item id="x23on" label="ON">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
               <argv>${stat}|0x1100</argv>
             </frmcmd>
-            <frmcmd name="outfld" />
-            <frmcmd name="getstat" />
+            <frmcmd name="outfld"/>
+            <frmcmd name="getstat"/>
           </item>
           <item id="x23off" label="OFF">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
               <argv>${stat}&amp;0xeeff</argv>
             </frmcmd>
-            <frmcmd name="outfld" />
-            <frmcmd name="getstat" />
+            <frmcmd name="outfld"/>
+            <frmcmd name="getstat"/>
           </item>
         </unit>
       </group>
@@ -134,16 +136,16 @@
       <repeat_group from="0" to="3">
         <group id="g$_" column="4">
           <binary id="xsw$_" label="SWITCH" symbol="off_warn">
-            <field bit="$_*4" ref="stat" />
+            <field bit="$_*4" ref="stat"/>
           </binary>
           <binary id="xdr$_" label="DRIVE" symbol="off_warn">
-            <field bit="$_*4+1" ref="stat" />
+            <field bit="$_*4+1" ref="stat"/>
           </binary>
           <binary id="xtm$_" label="TEMP ALM" symbol="alarm">
-            <field bit="$_*4+2" ref="stat" />
+            <field bit="$_*4+2" ref="stat"/>
           </binary>
           <binary id="xpr$_" label="PRES ALM" symbol="alarm">
-            <field bit="$_*4+3" ref="stat" />
+            <field bit="$_*4+3" ref="stat"/>
           </binary>
         </group>
       </repeat_group>

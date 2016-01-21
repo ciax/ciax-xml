@@ -2,9 +2,9 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <!--Repeat-->
   <xsd:attributeGroup name="repeat">
-    <xsd:attribute name="from" use="required" type="xsd:token" />
-    <xsd:attribute name="to" use="required" type="xsd:token" />
-    <xsd:attribute name="counter" type="xsd:token" />
-    <xsd:attribute name="format" type="xsd:token" />
+    <xsd:attribute name="from" use="required" type="xsd:token"/>
+    <xsd:attribute name="to" use="required" type="xsd:token"/>
+    <xsd:attribute name="counter" type="xsd:token"/>
+    <xsd:attribute name="format" type="xsd:token"/>
   </xsd:attributeGroup>
 </xsd:schema>

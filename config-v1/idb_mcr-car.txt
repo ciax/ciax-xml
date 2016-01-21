@@ -1,15 +1,15 @@
 
 stop,,
 upd,,
-chk,,
+#chk,,
 
 # cinit
 cinit,,mma:pos=INIT&mfp:ao!OPEN
 
 # cinit_a (cinit for web-operation)
 #cinit_a,,mfp:gv=CLOSE
-cinit_a,,
-cinit_a_exec,,mfp:gv=CLOSE
+#cinit_a,,
+#cinit_a_exec,,mfp:gv=CLOSE
 
 
 # ____________________________________________________________________________

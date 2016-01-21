@@ -9,7 +9,7 @@ module CIAX
       attr_reader :th_mcr, :seq
       # ment should have [:sequence]'[:dev_list],[:submcr_proc]
       def initialize(ment, pid = '0')
-        cfg = Config.new(jump_groups: ment[:jump_groups])
+        cfg = Config.new
         super(type?(ment, Entity).id, cfg)
         _init_cmd_(ment, pid)
         _init_thread_
@@ -45,10 +45,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('icemntr')
+      OPT.parse('icentr')
       cfg = Config.new
       cfg[:dev_list] = Wat::List.new(cfg)
-      cfg[:jump_groups] = []
       begin
         mobj = Remote::Index.new(cfg, dbi: Db.new.get)
         mobj.add_rem.add_ext(Ext)

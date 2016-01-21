@@ -14,18 +14,16 @@ module CIAX
       private
 
       def doc_to_db(doc)
-        dbi = Dbi[doc[:attr]]
-        # Domains
-        init_command(doc[:domain][:command], dbi)
-        init_stat(doc[:domain][:status], dbi)
+        dbi = Dbi.new(doc[:attr])
+        init_command(doc[:command], dbi)
+        init_status(doc[:status], dbi)
         init_watch(doc, dbi)
         dbi[:app_id] = dbi[:id]
         dbi
       end
 
-      def arc_command(e0, gid)
-        id = super
-        itm = @idx[id]
+      def _add_item(e0, gid)
+        id, itm = super
         Repeat.new.each(e0) do|e1, rep|
           par2item(e1, itm) && next
           case e1.name
@@ -43,20 +41,28 @@ module CIAX
             (itm[:body] ||= []) << command
           end
         end
-        id
+        validate_par(itm)
+        [id, itm]
       end
 
       # Status Db
-      def init_stat(adbs, dbi)
-        grp = {}
+      def init_status(adbs, dbi)
+        grp = Hashx.new
         idx = Hashx.new
+        symtbl = []
         Repeat.new.each(adbs) do|e, r|
-          gid = e.attr2item(grp) { |_, v| r.formatting(v) }
-          rec_stat(e, idx, grp[gid], r)
+          case e.name
+          when 'group'
+            gid = e.attr2item(grp) { |_, v| r.formatting(v) }
+            rec_stat(e, idx, grp[gid], r)
+          when 'symtbl'
+            symtbl << e['ref']
+          end
         end
-        dbi[:status] = adbs.to_h.update(group: grp, index: idx)
+        dbi[:status] = adbs.to_h.update(group: grp, index: idx, symtbl: symtbl)
       end
 
+      # recursive method
       def rec_stat(e, idx, grp, rep)
         rep.each(e) do|e0, r0|
           id = e0.attr2item(idx) { |_, v| r0.formatting(v) }

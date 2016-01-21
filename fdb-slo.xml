@@ -1,105 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="slo" label="SLOSYN SS6000i">
+  <frame id="slo" label="SLOSYN SS6000i" version="1">
     <spec mfr="slosyn" type="motor driver" model="SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf"/>
     <stream wait="0.1" terminator="\r\n"/>
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
       <char length="1">0xd</char>
       <char length="1">0xa</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <item id="getstat" label="Error Status" response="getstat" type="stat">
-        <string>err</string>
-      </item>
-      <item id="bs" label="Running Status" response="bs" type="stat">
-        <string>bs</string>
-      </item>
-      <item id="in" label="Input Status (1-5)" response="in" type="stat">
-        <par_num>1:5</par_num>
-        <string>in</string>
-        <string format="(%d)">$1</string>
-      </item>
-      <item id="p" label="Pulse Number" response="p" type="stat">
-        <string>p</string>
-      </item>
-      <item id="spd" label="Spped Number" response="spd" type="stat">
-        <string>spd</string>
-      </item>
-      <item id="reset" label="Reset" response="default" type="config">
-        <string>reset</string>
-      </item>
-      <item id="hl" label="Hard Limit ON/OFF" response="default" type="config">
-        <par_num>0:1</par_num>
-        <string>hl</string>
-        <string>$1</string>
-      </item>
-      <item id="e1" label="Event1 Enable/Disable" response="default" type="config">
-        <par_num>0:1</par_num>
-        <string>e1=</string>
-        <string>$1</string>
-      </item>
-      <item id="e2" label="Event2 Enable/Disable" response="default" type="config">
-        <par_num>0:1</par_num>
-        <string>e2=</string>
-        <string>$1</string>
-      </item>
-      <item id="set0" label="Set 0 ABS Counter" response="default" type="config">
-        <string>abspos=0</string>
-      </item>
-      <item id="setp" label="Set Pulse Number" response="default" type="config">
-        <par_num>-999:999</par_num>
-        <string>p=</string>
-        <string format="%5.2f">$1</string>
-      </item>
-      <item id="setspd" label="Set Speed Number" response="default" type="config">
-        <par_num>0:999</par_num>
-        <string>spd=</string>
-        <string format="%5.2f">$1</string>
-      </item>
-      <item id="stop" label="Stop Running" response="default" type="action">
-        <string>stop</string>
-      </item>
-      <item id="jp" label="JOG Positive" response="default" type="action">
-        <string>j=1</string>
-      </item>
-      <item id="jn" label="JOG Negative" response="default" type="action">
-        <string>j=-1</string>
-      </item>
-      <item id="ma" label="Move Absolute Position" response="default" type="action">
-        <par_num>-999:999</par_num>
-        <string>ma=</string>
-        <string format="%3.1f">$1</string>
-      </item>
-      <item id="mi" label="Move Incremental" response="default" type="action">
-        <par_num>-999:999</par_num>
-        <string>mi=</string>
-        <string format="%3.1f">$1</string>
-      </item>
-      <item id="mhn" label="Move To e2 Sensor Negative" response="default" type="action">
-        <string>mh=-1</string>
-      </item>
+      <group id="gst" caption="Status">
+        <item id="getstat" label="Error Status" response="getstat" type="stat">
+          <string>err</string>
+        </item>
+        <item id="bs" label="Running Status" response="bs" type="stat">
+          <string>bs</string>
+        </item>
+        <item id="drv" label="Drive Status" response="drv" type="stat">
+          <string>wn</string>
+        </item>
+        <item id="in" label="Input Status (1-5)" response="in" type="stat">
+          <par_num>1:5</par_num>
+          <string>in</string>
+          <string format="(%d)">$1</string>
+        </item>
+        <item id="p" label="Pulse Number" response="p" type="stat">
+          <string>p</string>
+        </item>
+        <item id="spd" label="Spped Number" response="spd" type="stat">
+          <string>spd</string>
+        </item>
+        <item id="reset" label="Reset" response="default" type="config">
+          <string>reset</string>
+        </item>
+      </group>
+      <group id="gcfg" caption="Configuration">
+        <item id="hl" label="Hard Limit ON/OFF" response="default" type="config">
+          <par_num>0:1</par_num>
+          <string>hl</string>
+          <string>$1</string>
+        </item>
+        <item id="drvon" label="Drive ON" response="default" type="config">
+          <string>wn=1</string>
+        </item>
+        <item id="drvoff" label="Drive ON" response="default" type="config">
+          <string>wn=0</string>
+        </item>
+        <item id="e1" label="Event1 Enable/Disable" response="default" type="config">
+          <par_num>0:1</par_num>
+          <string>e1=</string>
+          <string>$1</string>
+        </item>
+        <item id="e2" label="Event2 Enable/Disable" response="default" type="config">
+          <par_num>0:1</par_num>
+          <string>e2=</string>
+          <string>$1</string>
+        </item>
+        <item id="set0" label="Set 0 ABS Counter" response="default" type="config">
+          <string>abspos=0</string>
+        </item>
+        <item id="setp" label="Set Pulse Number" response="default" type="config">
+          <par_num>-999:999</par_num>
+          <string>p=</string>
+          <string format="%5.2f">$1</string>
+        </item>
+        <item id="setspd" label="Set Speed Number" response="default" type="config">
+          <par_num>0:999</par_num>
+          <string>spd=</string>
+          <string format="%5.2f">$1</string>
+        </item>
+      </group>
+      <group id="gact" caption="Action">
+        <item id="stop" label="Stop Running" response="default" type="action">
+          <string>stop</string>
+        </item>
+        <item id="jp" label="JOG Positive" response="default" type="action">
+          <string>j=1</string>
+        </item>
+        <item id="jn" label="JOG Negative" response="default" type="action">
+          <string>j=-1</string>
+        </item>
+        <item id="ma" label="Move Absolute Position" response="default" type="action">
+          <par_num>-999:999</par_num>
+          <string>ma=</string>
+          <string format="%3.1f">$1</string>
+        </item>
+        <item id="mi" label="Move Incremental" response="default" type="action">
+          <par_num>-999:999</par_num>
+          <string>mi=</string>
+          <string format="%3.1f">$1</string>
+        </item>
+        <item id="mhn" label="Move To e2 Sensor Negative" response="default" type="action">
+          <string>mh=-1</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field assign="err" label="ErrorCode" />
+        <field assign="err" label="ErrorCode"/>
+      </item>
+      <item id="drv">
+        <field assign="drv" label="Drive"/>
       </item>
       <item id="bs">
-        <field assign="bs" label="Moving" />
+        <field assign="bs" label="Moving"/>
       </item>
       <item id="p">
-        <field assign="p" label="Pulse" />
+        <field assign="p" label="Pulse"/>
       </item>
       <item id="spd">
-        <field assign="spd" label="Speed" />
+        <field assign="spd" label="Speed"/>
       </item>
       <item id="in">
         <array assign="in" label="Input">
-          <index range="$1-1" size="5" />
+          <index range="$1-1" size="5"/>
         </array>
       </item>
       <item id="default">

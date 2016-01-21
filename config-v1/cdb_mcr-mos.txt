@@ -32,7 +32,7 @@ check_start,Check Status(No actual motion),1,cmd,
 s-i,storemask 1(INIT),1,mcr,mcr:ah_s-i mcr:ao_s-i mcr:rc_s-i
 s-f,storemask 2(INIT~FOCUS),1,mcr,mcr:s-i mcr:gf_s-f mcr:ac_s-f mma:upd mcr:ro_s-f
 s-r,storemask 3(FOCUS~ROT),1,mcr,mcr:s-f mcr:gr_s-r mcr:av_s-r
-s-s,storemask 4(ROT~STORE),1,mcr,mcr:s-r mcr:gs_s-s map:upd mcr:setstk_a map:upd mma:upd mcr:ao_s-s
+s-s,storemask 4(ROT~STORE),1,mcr,mcr:s-r mcr:gs_s-s map:upd mcr:sets_a map:upd mma:upd mcr:ao_s-s
 s-w,storemask 5(STORE~WAIT),1,mcr,mcr:s-s mma:upd mmc:upd map:upd mcr:gw_s-w mcr:check_store
 ah_s-i,Arm Hor,1,mcr,mfp:ah
 ao_s-i,Arm Open,1,mcr,mfp:ao
@@ -50,7 +50,7 @@ check_store,Check Status(No actual motion),1,cmd,
 # loadmask
 !4,Sub Load Mask,1
 l-w,loadmask 1(WAIT),1,mcr,mcr:av_l-w mcr:ao_l-w
-l-s,loadmask 2(WAIT~STORE),1,mcr,mcr:l-w mcr:gs_l-s map:upd mcr:setstk_a mcr:ac_l-s
+l-s,loadmask 2(WAIT~STORE),1,mcr,mcr:l-w mcr:gs_l-s map:upd mcr:sets_a mcr:ac_l-s
 l-r,loadmask 3(STORE~ROT),1,mcr,mcr:l-s mma:upd map:upd mcr:gr_l-r mmc:upd mcr:ah_l-r
 l-f,loadmask 4(ROT~FOCUS),1,mcr,mcr:l-r mcr:gf_l-f mcr:rc_l-f mma:upd mcr:ao_l-f
 #l-f,loadmask 4(ROT~FOCUS),1,mcr,mcr:l-r mcr:gf_l-f mcr:rc_l-f mma:upd mcr:l-msk%M mcr:ao_l-f
@@ -71,7 +71,7 @@ ro_l-f,Rh All Open,1,mcr,mfp:ro
 ao_l-f,Arm Open,1,mcr,mfp:ao
 ini_l-i,Go to INIT,1,mcr,mma:ini
 set0_a,Motor Reset,1,mcr,mma:set0
-setstk_a,Motor Reset at STK,1,mcr,mma:setstk
+sets_a,Motor Reset at STK,1,mcr,mma:sets
 check_load,Check Status(No actual motion),1,cmd,
 
 # fcheck

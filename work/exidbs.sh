@@ -11,7 +11,7 @@ for id in $ids; do
     then
         json_view <$stat
     else
-        libappview < $stat
+        libappview < $stat || exit
     fi
     read -t 0 && break
 done

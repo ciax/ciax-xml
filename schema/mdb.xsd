@@ -1,99 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/mdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:mdb="http://ciax.sum.naoj.org/ciax-xml/mdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
-  <xsd:include schemaLocation="command.xsd" />
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:mdb="http://ciax.sum.naoj.org/ciax-xml/mdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/mdb" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="command.xsd"/>
   <xsd:element name="mdb">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="mdb:macro" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+        <xsd:element ref="mdb:macro" minOccurs="1" maxOccurs="unbounded"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="macro">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="mdb:group" />
-      </xsd:choice>
-      <xsd:attribute name="id" type="xsd:token" use="required" />
-      <xsd:attribute name="version" type="xsd:int" />
-      <xsd:attribute name="label" type="xsd:token" use="optional" />
-      <xsd:attribute name="port" type="xsd:int" />
-      <xsd:attribute name="include" type="xsd:NCName" />
+      <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="mdb:include" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element ref="mdb:group" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:token" use="required"/>
+      <xsd:attribute name="version" type="xsd:int"/>
+      <xsd:attribute name="label" type="xsd:token" use="optional"/>
+      <xsd:attribute name="port" type="xsd:int"/>
     </xsd:complexType>
     <xsd:key name="macro_id">
-      <xsd:selector xpath=".//mdb:item" />
-      <xsd:field xpath="@id" />
+      <xsd:selector xpath=".//mdb:item"/>
+      <xsd:field xpath="@id"/>
     </xsd:key>
     <xsd:keyref name="sub_macro" refer="mdb:macro_id">
-      <xsd:selector xpath=".//mdb:mcr" />
-      <xsd:field xpath="@name" />
+      <xsd:selector xpath=".//mdb:mcr"/>
+      <xsd:field xpath="@name"/>
     </xsd:keyref>
+  </xsd:element>
+  <xsd:element name="include">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:token" use="required"/>
+      <xsd:attribute name="label" type="xsd:token"/>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="group">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="mdb:item" />
-        <xsd:element ref="mdb:unit" />
+        <xsd:element ref="mdb:item"/>
+        <xsd:element ref="mdb:unit"/>
       </xsd:choice>
-      <xsd:attribute name="id" type="xsd:NCName" use="required" />
-      <xsd:attribute name="caption" type="xsd:token" use="optional" />
-      <xsd:attribute name="column" type="xsd:int" />
-      <xsd:attribute name="rank" type="xsd:int" />
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="caption" type="xsd:token" use="optional"/>
+      <xsd:attribute name="column" type="xsd:int"/>
+      <xsd:attribute name="rank" type="xsd:int"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="unit">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="mdb:item" />
+        <xsd:element ref="mdb:item"/>
       </xsd:choice>
-      <xsd:attribute name="id" type="xsd:NCName" use="required" />
-      <xsd:attribute name="title" type="xsd:token" />
-      <xsd:attribute name="label" type="xsd:token" />
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="title" type="xsd:token"/>
+      <xsd:attribute name="label" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="item">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:group ref="mdb:parameter" minOccurs="0" maxOccurs="unbounded" />
-        <xsd:element ref="mdb:exec" minOccurs="0" maxOccurs="unbounded" />
-        <xsd:element ref="mdb:goal" minOccurs="0" maxOccurs="1" />
+        <xsd:group ref="mdb:parameter" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element ref="mdb:exec" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element ref="mdb:goal" minOccurs="0" maxOccurs="1"/>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
-          <xsd:element ref="mdb:select" />
-          <xsd:element ref="mdb:check" />
-          <xsd:element ref="mdb:wait" />
-          <xsd:element ref="mdb:mesg" />
-          <xsd:element ref="mdb:mcr" />
-          <xsd:element ref="mdb:exec" />
-          <xsd:element ref="mdb:cfg" />
-          <xsd:element ref="mdb:upd" />
+          <xsd:element ref="mdb:select"/>
+          <xsd:element ref="mdb:check"/>
+          <xsd:element ref="mdb:wait"/>
+          <xsd:element ref="mdb:mesg"/>
+          <xsd:element ref="mdb:mcr"/>
+          <xsd:element ref="mdb:exec"/>
+          <xsd:element ref="mdb:cfg"/>
+          <xsd:element ref="mdb:upd"/>
         </xsd:choice>
       </xsd:sequence>
-      <xsd:attribute name="id" type="xsd:token" use="required" />
-      <xsd:attribute name="label" type="xsd:token" use="optional" />
-      <xsd:attribute name="argc" type="xsd:int" use="optional" />
+      <xsd:attribute name="id" type="xsd:token" use="required"/>
+      <xsd:attribute name="label" type="xsd:token" use="optional"/>
+      <xsd:attribute name="argc" type="xsd:int" use="optional"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="attr_stat">
-    <xsd:attribute name="label" type="xsd:token" use="optional" />
+    <xsd:attribute name="label" type="xsd:token" use="optional"/>
     <xsd:attribute name="join">
       <xsd:simpleType>
         <xsd:restriction base="xsd:token">
-          <xsd:enumeration value="all" />
-          <xsd:enumeration value="any" />
+          <xsd:enumeration value="all"/>
+          <xsd:enumeration value="any"/>
         </xsd:restriction>
       </xsd:simpleType>
     </xsd:attribute>
   </xsd:attributeGroup>
   <xsd:attributeGroup name="attr_cond">
-    <xsd:attribute name="label" type="xsd:token" />
-    <xsd:attribute name="skip" type="xsd:boolean" />
-    <xsd:attribute name="site" type="xsd:token" use="required" />
-    <xsd:attribute name="var" type="xsd:token" use="required" />
+    <xsd:attribute name="label" type="xsd:token"/>
+    <xsd:attribute name="skip" type="xsd:boolean"/>
+    <xsd:attribute name="site" type="xsd:token" use="required"/>
+    <xsd:attribute name="var" type="xsd:token" use="required"/>
     <xsd:attribute name="form" use="required">
       <xsd:simpleType>
         <xsd:restriction base="xsd:token">
-          <xsd:enumeration value="class" />
-          <xsd:enumeration value="msg" />
-          <xsd:enumeration value="data" />
+          <xsd:enumeration value="class"/>
+          <xsd:enumeration value="msg"/>
+          <xsd:enumeration value="data"/>
         </xsd:restriction>
       </xsd:simpleType>
     </xsd:attribute>
@@ -101,42 +107,42 @@
   <xsd:complexType name="condition">
     <xsd:simpleContent>
       <xsd:extension base="xsd:token">
-      <xsd:attributeGroup ref="mdb:attr_cond" />
+        <xsd:attributeGroup ref="mdb:attr_cond"/>
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
   <xsd:group name="conditions">
     <xsd:choice>
-      <xsd:element ref="mdb:equal" minOccurs="0" maxOccurs="unbounded" />
-      <xsd:element ref="mdb:not" minOccurs="0" maxOccurs="unbounded" />
-      <xsd:element ref="mdb:match" minOccurs="0" maxOccurs="unbounded" />
-      <xsd:element ref="mdb:unmatch" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element ref="mdb:equal" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element ref="mdb:not" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element ref="mdb:match" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element ref="mdb:unmatch" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:choice>
   </xsd:group>
   <xsd:element name="goal">
     <xsd:complexType>
-      <xsd:sequence  minOccurs="0" maxOccurs="unbounded">
+      <xsd:sequence minOccurs="0" maxOccurs="unbounded">
         <xsd:group ref="mdb:conditions"/>
       </xsd:sequence>
-      <xsd:attributeGroup ref="mdb:attr_stat" />
+      <xsd:attributeGroup ref="mdb:attr_stat"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="check">
     <xsd:complexType>
-      <xsd:sequence  minOccurs="0" maxOccurs="unbounded">
+      <xsd:sequence minOccurs="0" maxOccurs="unbounded">
         <xsd:group ref="mdb:conditions"/>
       </xsd:sequence>
-      <xsd:attributeGroup ref="mdb:attr_stat" />
+      <xsd:attributeGroup ref="mdb:attr_stat"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="wait">
     <xsd:complexType>
-      <xsd:sequence  minOccurs="0" maxOccurs="unbounded">
+      <xsd:sequence minOccurs="0" maxOccurs="unbounded">
         <xsd:group ref="mdb:conditions"/>
       </xsd:sequence>
-      <xsd:attributeGroup ref="mdb:attr_stat" />
-      <xsd:attribute name="retry" type="xsd:int" use="optional" />
-      <xsd:attribute name="sleep" type="xsd:int" use="optional" />
+      <xsd:attributeGroup ref="mdb:attr_stat"/>
+      <xsd:attribute name="retry" type="xsd:int" use="optional"/>
+      <xsd:attribute name="sleep" type="xsd:int" use="optional"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="equal" type="mdb:condition"/>
@@ -147,9 +153,9 @@
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="mdb:command">
-          <xsd:attribute name="retry" type="xsd:int" />
-          <xsd:attribute name="async" type="xsd:boolean" />
-          <xsd:attribute name="skip" type="xsd:boolean" />
+          <xsd:attribute name="retry" type="xsd:int"/>
+          <xsd:attribute name="skip" type="xsd:boolean"/>
+          <xsd:attribute name="async" type="xsd:boolean"/>
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
@@ -158,8 +164,8 @@
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="mdb:command">
-          <xsd:attribute name="site" type="xsd:token" use="required" />
-          <xsd:attribute name="skip" type="xsd:boolean" />
+          <xsd:attribute name="site" type="xsd:token" use="required"/>
+          <xsd:attribute name="skip" type="xsd:boolean"/>
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
@@ -168,36 +174,36 @@
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="mdb:command">
-          <xsd:attribute name="site" type="xsd:token" use="required" />
+          <xsd:attribute name="site" type="xsd:token" use="required"/>
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="upd">
     <xsd:complexType>
-      <xsd:attribute name="site" type="xsd:token" use="required" />
+      <xsd:attribute name="site" type="xsd:token" use="required"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="mesg">
     <xsd:complexType>
-      <xsd:attribute name="label" type="xsd:token" use="required" />
+      <xsd:attribute name="label" type="xsd:token" use="required"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="select">
     <xsd:complexType>
-      <xsd:sequence  minOccurs="1" maxOccurs="1">
-        <xsd:element ref="mdb:option" minOccurs="1" maxOccurs="unbounded" />
+      <xsd:sequence minOccurs="1" maxOccurs="1">
+        <xsd:element ref="mdb:option" minOccurs="1" maxOccurs="unbounded"/>
       </xsd:sequence>
-      <xsd:attributeGroup ref="mdb:attr_cond" />
+      <xsd:attributeGroup ref="mdb:attr_cond"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="option">
     <xsd:complexType>
-      <xsd:sequence  minOccurs="1" maxOccurs="1">
-        <xsd:element ref="mdb:mcr" minOccurs="1" maxOccurs="1" />
+      <xsd:sequence minOccurs="1" maxOccurs="1">
+        <xsd:element ref="mdb:mcr" minOccurs="1" maxOccurs="1"/>
       </xsd:sequence>
-      <xsd:attribute name="label" type="xsd:token" />
-      <xsd:attribute name="val" type="xsd:token" />
+      <xsd:attribute name="label" type="xsd:token"/>
+      <xsd:attribute name="val" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

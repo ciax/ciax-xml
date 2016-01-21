@@ -6,12 +6,15 @@ module CIAX
   # Macro Layer
   module Mcr
     # Macro Manager
-    class Man < CIAX::Exe
+    class Man < Exe
+      attr_reader :sub_list
       # cfg should have [:dev_list]
       def initialize(cfg, atrb = {})
+        atrb[:dev_list] ||= Wat::List.new(cfg)
         atrb[:db] = Db.new
         atrb[:layer_type] = 'mcr'
         super(nil, cfg, atrb)
+        @sub_list = @cfg[:dev_list]
         _init_domain_
         _init_stat_
         _init_net_
@@ -31,22 +34,34 @@ module CIAX
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
-        @cobj.rem.sys.add_item('nonstop', 'Mode').def_proc { @sv_stat.set(:nonstop); '' }
-        @cobj.rem.sys.add_item('interactive', 'Mode').def_proc { @sv_stat.reset(:nonstop); '' }
+        _add_swmode_
+      end
+
+      def _add_swmode_
+        @cobj.rem.sys.add_item('nonstop', 'Mode').def_proc do
+          @sv_stat.up(:nonstop)
+          ''
+        end
+        @cobj.rem.sys.add_item('interactive', 'Mode').def_proc do
+          @sv_stat.dw(:nonstop)
+          ''
+        end
       end
 
       def _init_stat_
         @par = @cobj.rem.int.ext_par.par
         @stat = List.new
+        _init_prompt_
+        @post_exe_procs << proc do
+          (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id) }
+        end
+      end
+
+      def _init_prompt_
         @sv_stat.add_array(:list)
         @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid)
-        @sv_stat.add_flg(nonstop: '(nonstop)')
-        @sv_stat.set(:nonstop) if OPT[:n]
         @cfg[:sv_stat] = @sv_stat
-        @post_exe_procs << proc {
-          (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id) }
-        }
       end
 
       def _init_net_
@@ -97,11 +112,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('cemnlrt')
+      OPT.parse('cenlrt')
       begin
         cfg = Config.new
-        cfg[:jump_groups] = []
-        cfg[:dev_list] = Wat::List.new(cfg)
         Man.new(cfg).ext_shell.shell
       rescue InvalidCMD
         OPT.usage('[cmd] (par)')

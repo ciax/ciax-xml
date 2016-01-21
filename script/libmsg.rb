@@ -26,18 +26,23 @@ module CIAX
       end.compact.empty?
     end
 
+    def info(title)
+      warn make_msg(title, 2) unless STDERR.tty?
+      self
+    end
+
     def warning(title)
-      warn make_msg(Msg.colorize(title.to_s, 3))
+      warn make_msg(title, 3)
       self
     end
 
     def alert(title)
-      warn make_msg(Msg.colorize(title.to_s, 5))
+      warn make_msg(title, 5)
       self
     end
 
     def errmsg
-      warn make_msg(Msg.colorize("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1))
+      warn make_msg("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
     end
 
     # @hide_inside is flag for hiding inside of enclose
@@ -63,13 +68,14 @@ module CIAX
       true
     end
 
-    def make_msg(title)
+    def make_msg(title, c = nil)
       return unless title
       @head ||= make_head
-      ts = "#{@head}:#{title}"
+      ts = "#{@head}:"
+      ts << (c ? Msg.colorize(title.to_s, c) : title.to_s)
       return ts if STDERR.tty?
       pass = format('%5.4f', Time.now - START_TIME)
-      "[#{pass}]" + ts
+      "[#{Time.now}/#{pass}]" + ts
     end
 
     def head_ary

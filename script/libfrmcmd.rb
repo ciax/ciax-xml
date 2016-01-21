@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libremote'
+require 'libextcmd'
 require 'libframe'
 require 'libfield'
 
@@ -24,49 +24,67 @@ module CIAX
     module Ext
       include Remote::Ext
       class Group < Ext::Group; end
-      class Item < Ext::Item; end
-      # Entity
-      class Entity < Ext::Entity
-        def initialize(cfg, attr = {})
-          super
-          @field = type?(self[:field], Field)
+      # Generate [:frame]
+      class Item < Ext::Item
+        def gen_entity(opt)
+          ent = super
+          @field = type?(@cfg[:field], Field)
           @fstr = {}
-          if /true|1/ =~ self[:noaffix]
-            @sel = { main: [:body] }
-          else
-            @sel = Hash[self[:dbi][:command][:frame]]
-          end
-          sp = self[:dbi][:stream]
-          @frame = Frame.new(sp[:endian], sp[:ccmethod])
-          return unless @body
-          @sel[:body] = @body
-          verbose { "Body:#{self[:label]}(#{@id})" }
-          chg_flg = mk_frame(:body)
-          if @sel.key?(:ccrange)
-            @frame.cc_mark
-            chg_flg |= mk_frame(:ccrange)
-            @frame.cc_set
-          end
-          chg_flg |= mk_frame(:main)
-          warning('Cache stored despite Frame includes Status') if chg_flg && !self[:nocache]
-          frame = @fstr[:main]
-          verbose { "Cmd Generated [#{@id}]" }
-          self[:frame] = frame
-          @field.echo = frame # For send back
+          @sel = _init_sel
+          @chg_flg = nil
+          @frame = _init_frame
+          @sel[:body] = ent.deep_subst(@cfg[:body])
+          _init_body(ent) if @sel[:body]
+          ent
         end
 
         private
 
+        def _init_body(ent)
+          verbose { "Body:#{@cfg[:label]}(#{@cfg[:id]})" }
+          _add_frame(:body)
+          _init_cc
+          _add_frame(:main)
+          if @chg_flg && !@cfg[:nocache]
+            warning('Cache stored despite Frame includes Status')
+            @cfg[:nocache] = true
+          end
+          frame = @fstr[:main]
+          verbose { "Cmd Generated [#{@cfg[:id]}]" }
+          @field.echo = frame # For send back
+          ent[:frame] = frame
+          ent
+        end
+
+        def _init_sel
+          if /true|1/ =~ @cfg[:noaffix]
+            { main: [:body] }
+          else
+            Hashx.new(@cfg[:dbi][:command][:frame])
+          end
+        end
+
+        def _init_frame
+          sp = @cfg[:dbi][:stream]
+          Frame.new(sp[:endian], sp[:ccmethod])
+        end
+
+        def _init_cc
+          return unless @sel.key?(:ccrange)
+          @frame.cc_mark
+          _add_frame(:ccrange)
+          @frame.cc_set
+        end
+
         # instance var frame,sel,field,fstr
-        def mk_frame(domain)
-          chg_flg = nil
+        def _add_frame(domain)
           @frame.reset
           @sel[domain].each do|a|
             case a
             when Hash
               frame = a[:val].gsub(/\$\{cc\}/) { @frame.cc }
               subfrm = @field.subst(frame)
-              chg_flg = true if subfrm != frame
+              @chg_flg = true if subfrm != frame
               subfrm.split(',').each do|s|
                 @frame.add(s, a)
               end
@@ -75,7 +93,6 @@ module CIAX
             end
           end
           @fstr[domain] = @frame.copy
-          chg_flg
         end
       end
     end

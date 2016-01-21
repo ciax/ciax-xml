@@ -3,11 +3,11 @@
   <app frm_id="lk8" id="lk8" label="MOIRCS LakeShore">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id='upd' label="Status">
+        <unit id="upd" label="Status">
           <item id="upd" label="Upd">
-            <frmcmd name="getstat" />
-            <frmcmd name="htrstat" />
-            <frmcmd name="spstat" />
+            <frmcmd name="getstat"/>
+            <frmcmd name="htrstat"/>
+            <frmcmd name="spstat"/>
           </item>
         </unit>
       </group>
@@ -16,14 +16,14 @@
       <group id="g1" caption="" column="4">
         <repeat_var from="0" to="7">
           <float id="ch$_" label="CH $_" format="%3.2f">
-            <field ref="ch" index="$_" />
+            <field ref="ch" index="$_"/>
           </float>
         </repeat_var>
         <float id="sp" label="SetPoint1 (K)" format="%3.2f">
-          <field ref="sp" />
+          <field ref="sp"/>
         </float>
         <float id="htr" label="HeaterPower1(percent)" format="%3.2f">
-          <field ref="htr" />
+          <field ref="htr"/>
         </float>
       </group>
     </status>

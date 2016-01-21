@@ -55,6 +55,7 @@ module CIAX
 
   # Macro
   class Interlock < LongJump; end
+  class Verification < LongJump; end
   class Retry < LongJump; end
 
   # Server error (Handled in Server)
@@ -63,13 +64,13 @@ module CIAX
   # Configuration Error
   class ConfigError < ServerError; end
 
-  # Communication Error
+  # Device Communication Error
   class CommError < ServerError; end
 
   # Stream Open Error
   class StreamError < CommError; end
   # CC Verification Error
-  class VerifyError < CommError; end
+  class CheckCodeError < CommError; end
   # No Data in Field for Status
   class NoData < CommError; end
 end

@@ -3,17 +3,18 @@
   <app frm_id="oma" id="oma" label="Compressed Air Pressure at MOIRCS" version="1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id='upd' label="Status">
+        <unit id="upd" label="Status">
           <item id="upd" label="Upd">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
         </unit>
       </group>
     </command>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="oma">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <symtbl ref="oma"/>
       <group id="g1" caption="">
         <float id="pres" label="Air Pressure (Psi)" symbol="pres" format="%4.2f">
-          <field ref="stat" />
+          <field ref="stat"/>
         </float>
       </group>
     </status>

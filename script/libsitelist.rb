@@ -7,7 +7,7 @@ module CIAX
     class List < CIAX::List
       attr_reader :db, :sub_list
       def initialize(cfg, top_list, sub_mod = nil)
-        cfg[:top_list] ||= top_list
+        cfg[:top_list] ||= type?(top_list, Hashx)
         cfg[:layer_type] = 'site'
         super(cfg, column: 2)
         @sub_list = @cfg[:sub_list] = sub_mod.new(cfg) if sub_mod
@@ -72,13 +72,15 @@ module CIAX
           super(Jump)
           @cfg[:jump_site] = @jumpgrp
           sites = @cfg[:db].displist
-          @jumpgrp.merge_items(sites)
+          @jumpgrp.ext_grp.merge_items(sites)
           @sub_list.ext_shell if @sub_list
           self
         end
 
         def add(site)
-          super.ext_shell
+          obj = super.ext_shell
+          obj.cobj.loc.add_jump
+          obj
         end
 
         def switch(site)

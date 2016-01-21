@@ -3,9 +3,9 @@
   <app frm_id="psp" id="psp" label="MOIRCS Ext Heater">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id='upd' label="Status">
+        <unit id="upd" label="Status">
           <item id="upd" label="Upd">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
         </unit>
         <item id="setlmt" label="Set Limit 20V/5A/100W">
@@ -18,61 +18,61 @@
           <frmcmd name="setpl">
             <argv>100</argv>
           </frmcmd>
-          <frmcmd name="getstat" />
+          <frmcmd name="getstat"/>
         </item>
         <item id="setv" label="Set Voltage 0-50[V]">
           <par_num>0:50</par_num>
           <frmcmd name="setv">
             <argv>$1</argv>
           </frmcmd>
-          <frmcmd name="getstat" />
+          <frmcmd name="getstat"/>
         </item>
         <item id="setp" label="Set Power 0-100[W]">
           <par_num>0:100</par_num>
           <frmcmd name="setv">
             <argv format="%5.2f">sqrt($1*26)</argv>
           </frmcmd>
-          <frmcmd name="getstat" />
+          <frmcmd name="getstat"/>
         </item>
       </group>
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
-      <group id="g1" caption="" column="3" >
+      <group id="g1" caption="" column="3">
         <float id="vol" label="OUTPUT (V)" format="%3.2f">
-          <field ref="v" />
+          <field ref="v"/>
         </float>
         <float id="amp" label="OUTPUT (A)" format="%3.2f">
-          <field ref="a" />
+          <field ref="a"/>
         </float>
         <float id="wat" label="OUTPUT (W)" format="%3.2f">
-          <field ref="w" />
+          <field ref="w"/>
         </float>
         <float id="vl" label="Limit (V)" format="%3.2f">
-          <field ref="u" />
+          <field ref="u"/>
         </float>
         <float id="il" label="Limit (A)" format="%3.2f">
-          <field ref="i" />
+          <field ref="i"/>
         </float>
         <float id="pl" label="Limit (W)" format="%3.2f">
-          <field ref="p" />
+          <field ref="p"/>
         </float>
         <string id="sw" label="OUTPUT ON/OFF" symbol="warn">
-          <field ref="f1" />
+          <field ref="f1"/>
         </string>
         <string id="tmp" label="OverHeat" symbol="alarm">
-          <field ref="f2" />
+          <field ref="f2"/>
         </string>
         <string id="kn1" label="Wheel Knov Fine" symbol="normal">
-          <field ref="f3" />
+          <field ref="f3"/>
         </string>
         <string id="kn2" label="Wheel Knov Unlock" symbol="normal">
-          <field ref="f4" />
+          <field ref="f4"/>
         </string>
         <string id="rem" label="REMOTE" symbol="normal">
-          <field ref="f5" />
+          <field ref="f5"/>
         </string>
         <string id="loc" label="Local Lock" symbol="normal">
-          <field ref="f6" />
+          <field ref="f6"/>
         </string>
       </group>
     </status>

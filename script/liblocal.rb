@@ -22,8 +22,9 @@ module CIAX
 
       def add_jump
         @cfg[:jump_groups].each { |grp| append(grp) }
-        append(@cfg[:jump_site]) if @cfg[:jump_site]
-        append(@cfg[:jump_mcr]) if @cfg[:jump_mcr]
+        [:jump_site, :jump_layer].each do |jk|
+          append(@cfg[jk]) if @cfg[jk]
+        end
       end
 
       def add_view(atrb = {})
@@ -52,7 +53,6 @@ module CIAX
           atrb[:caption] = "Switch #{name}s"
           atrb[:color] = 5
           super
-          @displist = @displist.ext_grp
           def_proc do|ent|
             # Use shell() of top level class
             #  (ie. List.new.get(id).shell -> List.new.shell(id) )
@@ -66,6 +66,11 @@ module CIAX
           type?(ary, Array).each do|str|
             add_item((i += 1).to_s, str)
           end
+          self
+        end
+
+        def ext_grp
+          @displist = @displist.ext_grp
           self
         end
       end
@@ -93,7 +98,6 @@ module CIAX
       cfg[:jump_groups] = [jg]
       loc = Index.new(cfg).loc
       loc.add_view
-      loc.add_jump
       loc.add_shell
       puts loc.view_list
     end

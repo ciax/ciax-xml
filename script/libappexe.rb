@@ -1,12 +1,10 @@
 #!/usr/bin/ruby
-require 'libfrmexe'
-require 'libappdb'
-require 'libappview'
-require 'libappcmd'
-require 'libapprsp'
-require 'libappsym'
+require 'libfrmlist'
 require 'libbuffer'
 require 'libinsdb'
+require 'libappcmd'
+require 'libapprsp'
+require 'libappview'
 # CIAX-XML
 module CIAX
   # Application Layer
@@ -40,7 +38,7 @@ module CIAX
       private
 
       def init_server
-        @sv_stat = @sub.sv_stat.add_flg(isu: '*')
+        @sv_stat = @sub.sv_stat.add_flg(busy: '*')
         @host ||= @dbi[:host]
         @port ||= @dbi[:port]
         self
@@ -67,16 +65,18 @@ module CIAX
         ext_non_client
       end
 
+      # type of usage: shell/command line
+      # type of semantics: execution/test
       def ext_driver
         @mode = 'DRV'
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
-        @stat.ext_log.ext_sqlog if OPT[:e]
         @buf = init_buf
-        if @cfg[:exe_mode]
+        if @cfg[:cmd_line_mode] # command line mode
           tc = Thread.current
           @stat.post_upd_procs << proc { tc.run }
           @post_exe_procs << proc { sleep }
         end
+        ext_exec_mode
         ext_non_client
       end
 
@@ -94,13 +94,19 @@ module CIAX
         self
       end
 
+      def ext_exec_mode
+        return unless OPT[:e]
+        @stat.ext_log.ext_sqlog
+        @cobj.rem.ext_log('app')
+      end
+
       def server_output
         Hashx.new.update(@sv_stat).update(self).to_j
       end
 
       # Process of command execution:
       #  Main: Recieve App command with validation
-      #  Main: Set :isu flag in Server status
+      #  Main: Set :busy flag in Server status
       #  Main: Send command to queue of Buffer thread (Async)
       #  Main: Send back App response with msg 'ISSUED' in Server Status
       #    Buffer: Recieve the command from queue
@@ -134,7 +140,7 @@ module CIAX
           @sub.exe(args, src)
         end
         # Frm: Update after each single command finish
-        # @stat file output should be done before :isu flag is reset
+        # @stat file output should be done before :busy flag is reset
         buf.flush_proc = proc do
           verbose { 'Propagate Buffer#flush -> Field#flush' }
           @sub.stat.flush
@@ -149,21 +155,13 @@ module CIAX
       end
     end
 
-    # Application List
-    class List < Site::List
-      def initialize(cfg, top_list = nil)
-        super(cfg, top_list || self, Frm::List)
-        store_db(Ins::Db.new)
-      end
-    end
-
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
       cfg = Config.new
-      cfg[:jump_groups] = []
-      cfg[:site] = ARGV.shift
+      cfg[:sub_list] = Frm::List.new(cfg)
+      cfg[:db] = Ins::Db.new
       begin
-        List.new(cfg).ext_shell.shell
+        Exe.new(ARGV.shift, cfg).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

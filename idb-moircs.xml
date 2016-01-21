@@ -1,612 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <project id="moircs" caption="MOIRCS" include="cmp" column="2">
-    <group id="mos" caption="MOS Mask Exchanger">
-      <instance id="mfp" app_id="cfp" host="moircsobcp" port="25601" label="MOIRCS Pneumatic Actuator"/>
-      <instance id="map" app_id="oma" host="moircsobcp" port="25602" label="MOIRCS Air Pressure"/>
-      <instance id="mma" app_id="mma" host="moircsobcp" port="25603" label="MOIRCS Extension Arm"/>
-      <instance id="mmc" app_id="mmc" host="moircsobcp" port="25604" label="MOIRCS Carrousel">
-        <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <unit id="cw" label="CW motion">
-            <item id="cw-1" label="Move 1 unit CW" ref="cwi">
-              <argv>1</argv>
-            </item>
-            <item id="cw-2" label="Move 2 unit CW" ref="cwi">
-              <argv>2</argv>
-            </item>
-            <item id="cw-3" label="Move 3 unit CW" ref="cwi">
-              <argv>3</argv>
-            </item>
-            <item id="cw-4" label="Move 4 unit CW" ref="cwi">
-              <argv>4</argv>
-            </item>
-            <item id="cw-5" label="Move 5 unit CW" ref="cwi">
-              <argv>5</argv>
-            </item>
-          </unit>
-          <unit id="ccw" label="CCW motion">
-            <item id="ccw-1" label="Move 1 unit CCW" ref="ccwi">
-              <argv>1</argv>
-            </item>
-            <item id="ccw-2" label="Move 2 unit CCW" ref="ccwi">
-              <argv>2</argv>
-            </item>
-            <item id="ccw-3" label="Move 3 unit CCW" ref="ccwi">
-              <argv>3</argv>
-            </item>
-            <item id="ccw-4" label="Move 4 unit CCW" ref="ccwi">
-              <argv>4</argv>
-            </item>
-            <item id="ccw-5" label="Move 5 unit CCW" ref="ccwi">
-              <argv>5</argv>
-            </item>
-          </unit>
-          <unit id="access" label="Access motion">
-            <item id="access0" label="Move to access 0" ref="access">
-              <argv>0</argv>
-            </item>
-            <item id="access1" label="Move to access 1" ref="access">
-              <argv>1</argv>
-            </item>
-            <item id="access2" label="Move to access 2" ref="access">
-              <argv>2</argv>
-            </item>
-            <item id="access3" label="Move to access 3" ref="access">
-              <argv>3</argv>
-            </item>
-            <item id="access4" label="Move to access 4" ref="access">
-              <argv>4</argv>
-            </item>
-            <item id="access5" label="Move to access 5" ref="access">
-              <argv>5</argv>
-            </item>
-            <item id="access6" label="Move to access 6" ref="access">
-              <argv>6</argv>
-            </item>
-            <item id="access7" label="Move to access 7" ref="access">
-              <argv>7</argv>
-            </item>
-            <item id="access8" label="Move to access 8" ref="access">
-              <argv>8</argv>
-            </item>
-            <item id="access9" label="Move to access 9" ref="access">
-              <argv>9</argv>
-            </item>
-            <item id="access10" label="Move to access 10" ref="access">
-              <argv>10</argv>
-            </item>
-            <item id="access11" label="Move to access 11" ref="access">
-              <argv>11</argv>
-            </item>
-            <item id="access12" label="Move to access 12" ref="access">
-              <argv>12</argv>
-            </item>
-            <item id="access13" label="Move to access 13" ref="access">
-              <argv>13</argv>
-            </item>
-            <item id="access14" label="Move to access 14" ref="access">
-              <argv>14</argv>
-            </item>
-            <item id="access15" label="Move to access 15" ref="access">
-              <argv>15</argv>
-            </item>
-            <item id="access16" label="Move to access 16" ref="access">
-              <argv>16</argv>
-            </item>
-            <item id="access17" label="Move to access 17" ref="access">
-              <argv>17</argv>
-            </item>
-            <item id="access18" label="Move to access 18" ref="access">
-              <argv>18</argv>
-            </item>
-            <item id="access19" label="Move to access 19" ref="access">
-              <argv>19</argv>
-            </item>
-            <item id="access20" label="Move to access 20" ref="access">
-              <argv>20</argv>
-            </item>
-            <item id="access21" label="Move to access 21" ref="access">
-              <argv>21</argv>
-            </item>
-            <item id="access22" label="Move to access 22" ref="access">
-              <argv>22</argv>
-            </item>
-            <item id="access23" label="Move to access 23" ref="access">
-              <argv>23</argv>
-            </item>
-          </unit>
-          <unit id="slot" label="Slot motion">
-            <item id="slot0" label="Move to slot 0" ref="slot">
-              <argv>0</argv>
-            </item>
-            <item id="slot1" label="Move to slot 1" ref="slot">
-              <argv>1</argv>
-            </item>
-            <item id="slot2" label="Move to slot 2" ref="slot">
-              <argv>2</argv>
-            </item>
-            <item id="slot3" label="Move to slot 3" ref="slot">
-              <argv>3</argv>
-            </item>
-            <item id="slot4" label="Move to slot 4" ref="slot">
-              <argv>4</argv>
-            </item>
-            <item id="slot5" label="Move to slot 5" ref="slot">
-              <argv>5</argv>
-            </item>
-            <item id="slot6" label="Move to slot 6" ref="slot">
-              <argv>6</argv>
-            </item>
-            <item id="slot7" label="Move to slot 7" ref="slot">
-              <argv>7</argv>
-            </item>
-            <item id="slot8" label="Move to slot 8" ref="slot">
-              <argv>8</argv>
-            </item>
-            <item id="slot9" label="Move to slot 9" ref="slot">
-              <argv>9</argv>
-            </item>
-            <item id="slot10" label="Move to slot 10" ref="slot">
-              <argv>10</argv>
-            </item>
-            <item id="slot11" label="Move to slot 11" ref="slot">
-              <argv>11</argv>
-            </item>
-            <item id="slot12" label="Move to slot 12" ref="slot">
-              <argv>12</argv>
-            </item>
-            <item id="slot13" label="Move to slot 13" ref="slot">
-              <argv>13</argv>
-            </item>
-            <item id="slot14" label="Move to slot 14" ref="slot">
-              <argv>14</argv>
-            </item>
-            <item id="slot15" label="Move to slot 15" ref="slot">
-              <argv>15</argv>
-            </item>
-            <item id="slot16" label="Move to slot 16" ref="slot">
-              <argv>16</argv>
-            </item>
-            <item id="slot17" label="Move to slot 17" ref="slot">
-              <argv>17</argv>
-            </item>
-            <item id="slot18" label="Move to slot 18" ref="slot">
-              <argv>18</argv>
-            </item>
-            <item id="slot19" label="Move to slot 19" ref="slot">
-              <argv>19</argv>
-            </item>
-            <item id="slot20" label="Move to slot 20" ref="slot">
-              <argv>20</argv>
-            </item>
-            <item id="slot21" label="Move to slot 21" ref="slot">
-              <argv>21</argv>
-            </item>
-            <item id="slot22" label="Move to slot 22" ref="slot">
-              <argv>22</argv>
-            </item>
-            <item id="slot23" label="Move to slot 23" ref="slot">
-              <argv>23</argv>
-            </item>
-          </unit>
-        </alias>
+  <project id="moircs" label="MOIRCS" column="3">
+    <include ref="mos"/>
+    <include ref="turret"/>
+    <include ref="cmp"/>
+    <group id="mc_tele" label="Telemetory">
+      <instance id="ml1" app_id="lk8" host="moircsobcp" port="25605" label="Temperature 1">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <alias id="acs" ref="abs" label="Access Hole Position" symbol="acs" />
+          <index ref="ch0" label="MosCold2"/>
+          <index ref="ch1" label="MosCold1"/>
+          <index ref="ch2" label="Mask"/>
+          <index ref="ch3" label="Wheel"/>
+          <index ref="ch4" label="D1(NONE)"/>
+          <index ref="ch5" label="D2(NONE)"/>
+          <index ref="ch6" label="ChipBox1"/>
+          <index ref="ch7" label="Det1"/>
+          <index ref="sp" label="SetPoint1 (K)"/>
+          <index ref="htr" label="HeaterPower1(%%)"/>
+        </status>
+      </instance>
+      <instance id="ml2" app_id="lk8" host="moircsobcp" port="25606" label="Temperature 2">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <index ref="ch0" label="Robohand"/>
+          <index ref="ch1" label="CollBench"/>
+          <index ref="ch2" label="BulkHead"/>
+          <index ref="ch3" label="HeatPath"/>
+          <index ref="ch4" label="D1(NONE)"/>
+          <index ref="ch5" label="D2(NONE)"/>
+          <index ref="ch6" label="ChipBox2"/>
+          <index ref="ch7" label="Det2"/>
+          <index ref="sp" label="SetPoint2 (K)"/>
+          <index ref="htr" label="HeaterPower2(%%)"/>
+        </status>
+      </instance>
+      <instance id="mva" app_id="var" host="moircsobcp" port="25608" label="Pumping"/>
+      <instance id="mt1" app_id="tpg" host="moircsobcp" port="25609" label="Pressure Main">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <index ref="st1" label="Main Dewar Stat"/>
+          <index ref="ch1" label="Main Dewar (Torr)"/>
+        </status>
+      </instance>
+      <instance id="mt2" app_id="tpg" host="moircsobcp" port="25610" label="Pressure Main">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <index ref="st1" label="Throat Stat"/>
+          <index ref="ch1" label="Throat (Torr)"/>
+        </status>
+      </instance>
+      <instance id="mt3" app_id="tpg" host="moircsobcp" port="25611" label="Pressure Pump">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <index ref="st1" label="Turbo Pump Stat"/>
+          <index ref="ch1" label="Turbo Pump (Torr)"/>
+          <index ref="st2" label="Scroll Pump Stat"/>
+          <index ref="ch2" label="Scroll Pump (Torr)"/>
         </status>
       </instance>
     </group>
-    <group id="turret" caption="Turret control">
-      <instance id="mft" app_id="fpa" host="moircsobcp" port="25612" label="MOIRCS Hall Sensor"/>
-      <instance id="mix" app_id="ixe" host="moircsobcp" port="25607" label="MOIRCS Turret">
+    <group id="mc_mtn" label="Maintenance">
+      <instance id="mp1" app_id="ken" host="moircsobcp" port="25613" label="Power Supply 1">
         <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <unit id="t1" label="Turret 1">
-            <item id="co_1" label="CO Filter for Turret 1" ref="opt">
-              <argv>1</argv>
-              <argv>0</argv>
-            </item>
-            <item id="none_1" label="No Filter for Turret 1" ref="opt">
-              <argv>1</argv>
-              <argv>1</argv>
-            </item>
-            <item id="brg_1" label="BrG Filter for Turret 1" ref="opt">
-              <argv>1</argv>
-              <argv>2</argv>
-            </item>
-            <item id="nb119_1" label="NB119 Filter for Turret 1" ref="opt">
-              <argv>1</argv>
-              <argv>3</argv>
-            </item>
-            <item id="std_k_1" label="STD K Filter for Turret 1" ref="opt">
-              <argv>1</argv>
-              <argv>4</argv>
-            </item>
-            <item id="y_1" label="Y Filter for Turret 1" ref="opt">
-              <argv>1</argv>
-              <argv>5</argv>
-            </item>
-            <item id="oc1_3_1" label="OC1 3 Filter for Turret 1" ref="opt">
-              <argv>1</argv>
-              <argv>6</argv>
-            </item>
-            <item id="j_1" label="J Filter for Turret 1" ref="opt">
-              <argv>1</argv>
-              <argv>7</argv>
-            </item>
-            <item id="h_1" label="H Filter for Turret 1" ref="opt">
-              <argv>1</argv>
-              <argv>8</argv>
-            </item>
-            <item id="ks_1" label="Ks Filter for Turret 1" ref="opt">
-              <argv>1</argv>
-              <argv>9</argv>
-            </item>
-            <item id="h2_1" label="H2 Filter for Turret 1" ref="opt">
-              <argv>1</argv>
-              <argv>10</argv>
-            </item>
-            <item id="fe2_1" label="Fe2 Filter for Turret 1" ref="opt">
-              <argv>1</argv>
-              <argv>11</argv>
-            </item>
-          </unit>
-          <unit id="t2" label="Turret 2">
-          <item id="csl_2" label="Cold Stop Large for Turret 2" ref="opt">
-            <argv>2</argv>
-            <argv>0</argv>
-          </item>
-          <item id="oc_hk_2" label="OC HK Filter for Turret 2" ref="opt">
-            <argv>2</argv>
-            <argv>1</argv>
-          </item>
-          <item id="oc_zj_2" label="OC ZJ Filter for Turret 2" ref="opt">
-            <argv>2</argv>
-            <argv>2</argv>
-          </item>
-          <item id="nb1657_2" label="NB1657 Filter for Turret 2" ref="opt">
-            <argv>2</argv>
-            <argv>3</argv>
-          </item>
-          <item id="nb2071_2" label="NB2071 Filter for Turret 2" ref="opt">
-            <argv>2</argv>
-            <argv>4</argv>
-          </item>
-          <item id="b05_2" label="B05 Filter for Turret 2" ref="opt">
-            <argv>2</argv>
-            <argv>5</argv>
-          </item>
-          <item id="css_2" label="Cold Stop Small for Turret 2" ref="opt">
-            <argv>2</argv>
-            <argv>6</argv>
-          </item>
-          <item id="csl2_2" label="Cold Stop Large 2 for Turret 2" ref="opt">
-            <argv>2</argv>
-            <argv>7</argv>
-          </item>
-          <item id="nb2315_2" label="NB2315 Filter for Turret 2" ref="opt">
-            <argv>2</argv>
-            <argv>8</argv>
-          </item>
-          <item id="nb2095_2" label="NB2095 Filter for Turret 2" ref="opt">
-            <argv>2</argv>
-            <argv>9</argv>
-          </item>
-          <item id="nb1550_2" label="NB1550 Filter for Turret 2" ref="opt">
-            <argv>2</argv>
-            <argv>10</argv>
-          </item>
-          <item id="none_2" label="No Filter for Turret 2" ref="opt">
-            <argv>2</argv>
-            <argv>11</argv>
-          </item>
-          </unit>
-          <unit id="t3" label="Turret 3">
-          <item id="vph_h_3" label="VPH H Grism for Turret 3" ref="opt">
-            <argv>3</argv>
-            <argv>0</argv>
-          </item>
-          <item id="nd_3" label="ND Filter for Turret 3" ref="opt">
-            <argv>3</argv>
-            <argv>1</argv>
-          </item>
-          <item id="pv_3" label="Pupile Viewr for Turret 3" ref="opt">
-            <argv>3</argv>
-            <argv>2</argv>
-          </item>
-          <item id="vph_k_3" label="VPH K Grism for Turret 3" ref="opt">
-            <argv>3</argv>
-            <argv>3</argv>
-          </item>
-          <item id="none_3" label="No Filter for Turret 3" ref="opt">
-            <argv>3</argv>
-            <argv>4</argv>
-          </item>
-          <item id="hk500_3" label="HK500 Grism for Turret 3" ref="opt">
-            <argv>3</argv>
-            <argv>5</argv>
-          </item>
-          <item id="vph_j_3" label="VPH J Grism for Turret 3" ref="opt">
-            <argv>3</argv>
-            <argv>6</argv>
-          </item>
-          <item id="k_cont_3" label="K CONT Filter for Turret 3" ref="opt">
-            <argv>3</argv>
-            <argv>7</argv>
-          </item>
-          <item id="zj500_3" label="ZJ500 Grism for Turret 3" ref="opt">
-            <argv>3</argv>
-            <argv>8</argv>
-          </item>
-          <item id="vph_y_3" label="VPH Y Grism for Turret 3" ref="opt">
-            <argv>3</argv>
-            <argv>9</argv>
-          </item>
-          <item id="bp_3" label="Blind Plate for Turret 3" ref="opt">
-            <argv>3</argv>
-            <argv>10</argv>
-          </item>
-          <item id="r1300_3" label="R1300 Grism for Turret 3" ref="opt">
-            <argv>3</argv>
-            <argv>11</argv>
-          </item>
-          </unit>
-          <unit id="t4" label="Turret 4">
-          <item id="co_4" label="CO Filter for Turret 4" ref="opt">
-            <argv>4</argv>
-            <argv>0</argv>
-          </item>
-          <item id="none_4" label="No Filter for Turret 4" ref="opt">
-            <argv>4</argv>
-            <argv>1</argv>
-          </item>
-          <item id="brg_4" label="BrG Filter for Turret 4" ref="opt">
-            <argv>4</argv>
-            <argv>2</argv>
-          </item>
-          <item id="nb119_4" label="NB119 Filter for Turret 4" ref="opt">
-            <argv>4</argv>
-            <argv>3</argv>
-          </item>
-          <item id="std_k_4" label="STD K Filter for Turret 4" ref="opt">
-            <argv>4</argv>
-            <argv>4</argv>
-          </item>
-          <item id="y_4" label="Y Filter for Turret 4" ref="opt">
-            <argv>4</argv>
-            <argv>5</argv>
-          </item>
-          <item id="oc1_3_4" label="OC1 3 Filter for Turret 4" ref="opt">
-            <argv>4</argv>
-            <argv>6</argv>
-          </item>
-          <item id="j_4" label="J Filter for Turret 4" ref="opt">
-            <argv>4</argv>
-            <argv>7</argv>
-          </item>
-          <item id="h_4" label="H Filter for Turret 4" ref="opt">
-            <argv>4</argv>
-            <argv>8</argv>
-          </item>
-          <item id="ks_4" label="Ks Filter for Turret 4" ref="opt">
-            <argv>4</argv>
-            <argv>9</argv>
-          </item>
-          <item id="h2_4" label="H2 Filter for Turret 4" ref="opt">
-            <argv>4</argv>
-            <argv>10</argv>
-          </item>
-          <item id="fe2_4" label="Fe2 Filter for Turret 4" ref="opt">
-            <argv>4</argv>
-            <argv>11</argv>
-          </item>
-          </unit>
-          <unit id="t5" label="Turret 5">
-          <item id="csl_5" label="Cold Stop Large for Turret 5" ref="opt">
-            <argv>5</argv>
-            <argv>0</argv>
-          </item>
-          <item id="oc_hk_5" label="OC HK Filter for Turret 5" ref="opt">
-            <argv>5</argv>
-            <argv>1</argv>
-          </item>
-          <item id="oc_zj_5" label="OC ZJ Filter for Turret 5" ref="opt">
-            <argv>5</argv>
-            <argv>2</argv>
-          </item>
-          <item id="nb1657_5" label="NB1657 Filter for Turret 5" ref="opt">
-            <argv>5</argv>
-            <argv>3</argv>
-          </item>
-          <item id="nb2071_5" label="NB2071 Filter for Turret 5" ref="opt">
-            <argv>5</argv>
-            <argv>4</argv>
-          </item>
-          <item id="b05_5" label="B05 Filter for Turret 5" ref="opt">
-            <argv>5</argv>
-            <argv>5</argv>
-          </item>
-          <item id="css_5" label="Cold Stop Small for Turret 5" ref="opt">
-            <argv>5</argv>
-            <argv>6</argv>
-          </item>
-          <item id="csl2_5" label="Cold Stop Large 2 for Turret 5" ref="opt">
-            <argv>5</argv>
-            <argv>7</argv>
-          </item>
-          <item id="nb2315_5" label="NB2315 Filter for Turret 5" ref="opt">
-            <argv>5</argv>
-            <argv>8</argv>
-          </item>
-          <item id="nb2095_5" label="NB2095 Filter for Turret 5" ref="opt">
-            <argv>5</argv>
-            <argv>9</argv>
-          </item>
-          <item id="nb1550_5" label="NB1550 Filter for Turret 5" ref="opt">
-            <argv>5</argv>
-            <argv>10</argv>
-          </item>
-          <item id="none_5" label="No Filter for Turret 5" ref="opt">
-            <argv>5</argv>
-            <argv>11</argv>
-          </item>
-          </unit>
-          <unit id="t6" label="Turret 6">
-          <item id="vph_h_6" label="VPH H Grism for Turret 6" ref="opt">
-            <argv>6</argv>
-            <argv>0</argv>
-          </item>
-          <item id="nd_6" label="ND Filter for Turret 6" ref="opt">
-            <argv>6</argv>
-            <argv>1</argv>
-          </item>
-          <item id="pv_6" label="Pupile Viewr for Turret 6" ref="opt">
-            <argv>6</argv>
-            <argv>2</argv>
-          </item>
-          <item id="vph_k_6" label="VPH K Grism for Turret 6" ref="opt">
-            <argv>6</argv>
-            <argv>6</argv>
-          </item>
-          <item id="none_6" label="No Filter for Turret 6" ref="opt">
-            <argv>6</argv>
-            <argv>4</argv>
-          </item>
-          <item id="hk500_6" label="HK500 Grism for Turret 6" ref="opt">
-            <argv>6</argv>
-            <argv>5</argv>
-          </item>
-          <item id="vph_j_6" label="VPH J Grism for Turret 6" ref="opt">
-            <argv>6</argv>
-            <argv>6</argv>
-          </item>
-          <item id="k_cont_6" label="K CONT Filter for Turret 6" ref="opt">
-            <argv>6</argv>
-            <argv>7</argv>
-          </item>
-          <item id="zj500_6" label="ZJ500 Grism for Turret 6" ref="opt">
-            <argv>6</argv>
-            <argv>8</argv>
-          </item>
-          <item id="vph_y_6" label="VPH Y Grism for Turret 6" ref="opt">
-            <argv>6</argv>
-            <argv>9</argv>
-          </item>
-          <item id="bp_6" label="Blind Plate for Turret 6" ref="opt">
-            <argv>6</argv>
-            <argv>10</argv>
-          </item>
-          <item id="r1300_6" label="R1300 Grism for Turret 6" ref="opt">
-            <argv>6</argv>
-            <argv>11</argv>
-          </item>
-          </unit>
+          <item id="getconf" label="Get Config" ref="getconf1"/>
         </alias>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <index ref="p1" symbol="t1" />
-          <index ref="p2" symbol="t2" />
-          <index ref="p3" symbol="t3" />
-          <index ref="p4" symbol="t1" />
-          <index ref="p5" symbol="t2" />
-          <index ref="p6" symbol="t3" />
+          <group ref="go0" caption="Output [UNIT A]"/>
+          <group ref="go1" caption="Output [UNIT B]"/>
+          <group ref="go2" caption="Output [UNIT C]"/>
+          <group ref="gp0" caption="Preset [UNIT A]"/>
+          <group ref="gp1" caption="Preset [UNIT B]"/>
+          <group ref="gp2" caption="Preset [UNIT C]"/>
+          <group ref="guo0" caption="Setting [UNIT A]"/>
+          <group ref="guo1" caption="Setting [UNIT B]"/>
+          <group ref="gu2" caption="Setting [UNIT C]"/>
+          <group ref="gdo0" caption="Delay/CH [UNIT A]"/>
+          <group ref="gdo1" caption="Delay/CH [UNIT B]"/>
+          <group ref="gc2" caption="Setting/CH [UNIT C]"/>
+          <group ref="gt2" caption="Tracking/CH [UNIT C]"/>
         </status>
       </instance>
-    </group>
-    <group id="tele" caption="Telemetory">
-      <instance id="ml1" app_id="lk8" host="moircsobcp" port="25605" label="MOIRCS Temperature 1">
-        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <index ref="ch0" label="MosCold2" />
-          <index ref="ch1" label="MosCold1" />
-          <index ref="ch2" label="Mask" />
-          <index ref="ch3" label="Wheel" />
-          <index ref="ch4" label="D1(NONE)" />
-          <index ref="ch5" label="D2(NONE)" />
-          <index ref="ch6" label="ChipBox1" />
-          <index ref="ch7" label="Det1" />
-          <index ref="sp" label="SetPoint1 (K)" />
-          <index ref="htr" label="HeaterPower1(%%)" />
-        </status>
-      </instance>
-      <instance id="ml2" app_id="lk8" host="moircsobcp" port="25606" label="MOIRCS Temperature 2">
-        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <index ref="ch0" label="Robohand" />
-          <index ref="ch1" label="CollBench" />
-          <index ref="ch2" label="BulkHead" />
-          <index ref="ch3" label="HeatPath" />
-          <index ref="ch4" label="D1(NONE)" />
-          <index ref="ch5" label="D2(NONE)" />
-          <index ref="ch6" label="ChipBox2" />
-          <index ref="ch7" label="Det2" />
-          <index ref="sp" label="SetPoint2 (K)" />
-          <index ref="htr" label="HeaterPower2(%%)" />
-        </status>
-      </instance>
-      <instance id="mva" app_id="var" host="moircsobcp" port="25608" label="MOIRCS Pumping"/>
-      <instance id="mt1" app_id="tpg" host="moircsobcp" port="25609" label="MOIRCS Pressure Main">
-        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <index ref="st1" label="Main Dewar Stat" />
-          <index ref="ch1" label="Main Dewar (Torr)" />
-        </status>
-      </instance>
-      <instance id="mt2" app_id="tpg" host="moircsobcp" port="25610" label="MOIRCS Pressure Main">
-        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <index ref="st1" label="Throat Stat" />
-          <index ref="ch1" label="Throat (Torr)" />
-        </status>
-      </instance>
-      <instance id="mt3" app_id="tpg" host="moircsobcp" port="25611" label="MOIRCS Pressure Pump">
-        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <index ref="st1" label="Turbo Pump Stat" />
-          <index ref="ch1" label="Turbo Pump (Torr)" />
-          <index ref="st2" label="Scroll Pump Stat" />
-          <index ref="ch2" label="Scroll Pump (Torr)" />
-        </status>
-      </instance>
-    </group>
-    <group id="mtn" caption="Maintenance">
-      <instance id="mp1" app_id="ken" host="moircsobcp" port="25613" label="MOIRCS Power Supply 1">
+      <instance id="mp2" app_id="ken" host="moircsobcp" port="25614" label="Power Supply 2">
         <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <item id="getconf" label="Get Config" ref="getconf1" />
+          <item id="getconf" label="Get Config" ref="getconf2"/>
         </alias>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <group ref="go0" caption="Output [UNIT A]" />
-          <group ref="go1" caption="Output [UNIT B]" />
-          <group ref="go2" caption="Output [UNIT C]" />
-          <group ref="gp0" caption="Preset [UNIT A]" />
-          <group ref="gp1" caption="Preset [UNIT B]" />
-          <group ref="gp2" caption="Preset [UNIT C]" />
-          <group ref="guo0" caption="Setting [UNIT A]" />
-          <group ref="guo1" caption="Setting [UNIT B]" />
-          <group ref="gu2"  caption="Setting [UNIT C]" />
-          <group ref="gdo0" caption="Delay/CH [UNIT A]" />
-          <group ref="gdo1" caption="Delay/CH [UNIT B]" />
-          <group ref="gc2" caption="Setting/CH [UNIT C]" />
-          <group ref="gt2" caption="Tracking/CH [UNIT C]" />
+          <group ref="go0" caption="Output [UNIT A]"/>
+          <group ref="go1" caption="Output [UNIT B]"/>
+          <group ref="go2" caption="Output [UNIT C]"/>
+          <group ref="gp0" caption="Preset [UNIT A]"/>
+          <group ref="gp1" caption="Preset [UNIT B]"/>
+          <group ref="gp2" caption="Preset [UNIT C]"/>
+          <group ref="gu0" caption="Setting [UNIT A]"/>
+          <group ref="gu1" caption="Setting [UNIT B]"/>
+          <group ref="guo2" caption="Setting [UNIT C]"/>
+          <group ref="gc0" caption="Setting/CH [UNIT A]"/>
+          <group ref="gc1" caption="Setting/CH [UNIT B]"/>
+          <group ref="gt0" caption="Tracking/CH [UNIT A]"/>
+          <group ref="gt1" caption="Tracking/CH [UNIT B]"/>
+          <group ref="gdo2" caption="Delay/CH [UNIT C]"/>
         </status>
       </instance>
-      <instance id="mp2" app_id="ken" host="moircsobcp" port="25614" label="MOIRCS Power Supply 2">
-        <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <item id="getconf" label="Get Config" ref="getconf2" />
-        </alias>
-        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <group ref="go0" caption="Output [UNIT A]" />
-          <group ref="go1" caption="Output [UNIT B]" />
-          <group ref="go2" caption="Output [UNIT C]" />
-          <group ref="gp0" caption="Preset [UNIT A]" />
-          <group ref="gp1" caption="Preset [UNIT B]" />
-          <group ref="gp2" caption="Preset [UNIT C]" />
-          <group ref="gu0"  caption="Setting [UNIT A]" />
-          <group ref="gu1"  caption="Setting [UNIT B]" />
-          <group ref="guo2" caption="Setting [UNIT C]" />
-          <group ref="gc0" caption="Setting/CH [UNIT A]" />
-          <group ref="gc1" caption="Setting/CH [UNIT B]" />
-          <group ref="gt0" caption="Tracking/CH [UNIT A]" />
-          <group ref="gt1" caption="Tracking/CH [UNIT B]" />
-          <group ref="gdo2" caption="Delay/CH [UNIT C]" />
-        </status>
-      </instance>
-      <instance id="mph" app_id="mph" host="moircsobcp" port="25615" label="MOIRCS Power Supply Hilo"/>
-      <instance id="mh1" app_id="psp" host="merope" port="25621" label="MOIRCS Carrousel Heater"/>
-      <instance id="mh2" app_id="psp" host="atlas" port="25622" label="MOIRCS Main Heater"/>
-      <instance id="mmf" app_id="mic" host="elextra" port="25623" label="MOIRCS Focus Control"/>
+      <instance id="mph" app_id="mph" host="moircsobcp" port="25615" label="Power Supply Hilo"/>
+      <instance id="mh1" app_id="psp" host="merope" port="25621" label="Carrousel Heater"/>
+      <instance id="mh2" app_id="psp" host="atlas" port="25622" label="Main Heater"/>
+      <instance id="mmf" app_id="mic" host="elextra" port="25623" label="Focus Control"/>
     </group>
   </project>
 </idb>

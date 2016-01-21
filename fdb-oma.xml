@@ -2,16 +2,18 @@
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="oma" label="OMEGA Air Pressure Sensor(PX971)">
     <stream wait="0.2" terminator="\r"/>
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">*</string>
       <body/>
       <char length="1" label="Suffix">0xd</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <item id="getstat" label="Get Status" response="getstat" type="stat">
-        <string>00P1</string>
-      </item>
+      <group id="gst" caption="Status">
+        <item id="getstat" label="Get Status" response="getstat" type="stat">
+          <string>00P1</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix">?</field>
@@ -20,7 +22,7 @@
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
         <field label="Command Rseponse">01CP=</field>
-        <field assign="stat" label="Status" length="6" />
+        <field assign="stat" label="Status" length="6"/>
       </item>
     </response>
   </frame>

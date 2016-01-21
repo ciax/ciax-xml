@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libremote'
+require 'libextcmd'
 require 'libappdb'
 # CIAX-XML Command module
 module CIAX
@@ -22,40 +22,47 @@ module CIAX
     module Ext
       include Remote::Ext
       class Group < Ext::Group; end
-      class Item < Ext::Item; end
-      # Ext entity
-      class Entity < Ext::Entity
+      # Generate [:batch]
+      class Item < Ext::Item
+        # Ext entity
         include Math
         # batch is ary of args(ary)
-        def initialize(cfg, attr = {})
-          super
-          self[:batch] = @body.map do|e1|
+        def gen_entity(opt)
+          ent = super
+          ent[:batch] = ent.deep_subst(@cfg[:body]).map do|e1|
             args = []
             enclose("GetCmd(FDB):#{e1.first}", 'Exec(FDB):%s') do
-              e1.each do|e2| # //argv
-                case e2
-                when String
-                  args << e2
-                when Hash
-                  str = e2[:val]
-                  str = e2[:format] % expr(str) if e2[:format]
-                  verbose { "Calculated [#{str}]" }
-                  args << str
-                end
-              end
+              _get_args(e1, args)
             end
             args
           end.extend(Enumx)
+          ent
+        end
+
+        private
+
+        def _get_args(e1, args)
+          e1.each do|e2| # //argv
+            case e2
+            when String
+              args << e2
+            when Hash
+              str = e2[:val]
+              str = e2[:format] % expr(str) if e2[:format]
+              verbose { "Calculated [#{str}]" }
+              args << str
+            end
+          end
         end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      OPT.parse('d', d: 'Device Mode')
+      OPT.parse('i', i: 'Instance Mode')
       id = ARGV.shift
       cfg = Config.new
-      dbm = OPT[:d] ? Db : Ins::Db
+      dbm = OPT[:i] ? Ins::Db : Db
       begin
         cobj = Index.new(cfg, dbi: dbm.new.get(id))
         cobj.add_rem.def_proc(&:path)
@@ -63,9 +70,9 @@ module CIAX
         ent = cobj.set_cmd(ARGV)
         puts ent[:batch].to_s
       rescue InvalidCMD
-        Msg.usage("#{id} (-d) [cmd] (par)", 2)
+        OPT.usage("#{id} (-i) [cmd] (par)")
       rescue InvalidID
-        Msg.usage('(-d) [id] [cmd] (par)')
+        OPT.usage('(-i) [id] [cmd] (par)')
       end
     end
   end

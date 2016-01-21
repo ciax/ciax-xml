@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libremote'
+require 'libextcmd'
 require 'libmcrdb'
 # CIAX_XML
 module CIAX
@@ -8,11 +8,11 @@ module CIAX
     include Remote
     INTCMD = {
       'exec' => 'Command',
-      'skip' => 'Macro',
+      'pass' => 'Macro',
       'drop' => ' Macro',
       'suppress' => 'and Memorize',
       'force' => 'Proceed',
-      'pass' => 'Execution',
+      'skip' => 'Execution',
       'ok' => 'for the message',
       'retry' => 'Checking'
     }
@@ -41,22 +41,25 @@ module CIAX
     # External Command
     module Ext
       include Remote::Ext
+      # Caption change
       class Group < Ext::Group
         def initialize(cfg, crnt = {})
           crnt[:caption] = 'Start Macro'
           super
         end
       end
+      # generate [:sequence]
       class Item < Ext::Item
         def gen_entity(opt)
-          opt[:sequence] = Arrayx.new(@cfg[:body])
-          super
+          ent = super
+          ent[:sequence] = ent.deep_subst(@cfg[:body])
+          ent
         end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libwatexe'
+      require 'libwatlist'
       cfg = Config.new
       cfg[:dev_list] = Wat::List.new(cfg)
       begin
@@ -66,7 +69,7 @@ module CIAX
         cobj.rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)
         puts ent.path
-        puts ent[:sequence].to_v
+        puts ent[:sequence]
       rescue InvalidID
         OPT.usage('[cmd] (par)')
       end

@@ -1,10 +1,18 @@
 #!/usr/bin/ruby
 require 'libgetopts'
-require 'libdisp'
+require 'libdispgrp'
 require 'libenumx'
 require 'libxmlgn'
 
-# Domain is the top node of each name spaces
+# Structure for Command: (top: listed in disp), <doclist: separated>
+#   ADB:/adb/(app)/<command>/group/unit/item
+#   FDB:/fdb/(frame)/<command>/group/item
+#   SDB:/sdb/(symbol)/<table>/pattern
+#   DDB:/ddb/group/(site)/field
+#   IDB:/idb/project/include|group/(instance)/include|<alias>/unit/item
+#   MDB:/mdb/(macro)/include|<group>/unit/item
+# Domain is the top node of each name spaces (different from top ns),
+#   otherwise element is stored in Property
 module CIAX
   # Regular Doc: accessible, display in help list
   # Hidden Doc: accessible, but not displayed in help list(sub command, etc.)
@@ -18,17 +26,14 @@ module CIAX
     # in another file.
     class Doc < Hashx
       attr_reader :top, :displist
-      def initialize(type, proj)
+      def initialize(type)
         super()
         @cls_color = 2
-        @valid_proj = [proj].compact
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
-        @projects = Hashx.new
         @displist = Disp.new
-        @level = 0
-        read_files(Msg.xmlfiles(@type))
-        valid_proj
+        _read_files(Msg.xmlfiles(@type))
+        _set_includes
       end
 
       # get generates document branch of db items(Hash),
@@ -44,67 +49,85 @@ module CIAX
 
       private
 
-      def read_files(files)
+      def _read_files(files)
         files.each do|xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
-          Gnu.new(xml).each { |e| read_xml(e) }
+          Gnu.new(xml).each { |top| _mk_db(top) }
         end.empty? && Msg.cfg_err("No XML file for #{@type}-*.xml")
       end
 
-      def read_xml(e)
-        case e.name
-        when 'project'
-          read_proj(e)
-        when 'group'
-          @displist = @displist.ext_grp
-          store_grp(e, @cisplist)
-        else
-          store_doc(e, @displist)
+      def _mk_db(top)
+        id = top['id'] # site_id or macro_proj
+        return unless id
+        case top.name
+        when 'project' # idb
+          _mk_project(top)
+        when 'group' # ddb
+          _mk_group(top)
+        else # sdb, adb, fdb, mdb
+          _mk_sub_db(top)
         end
       end
 
-      def read_proj(e)
-        pid = e['id']
-        @projects[pid] = e
-        return if @valid_proj.empty?
-        return unless  @valid_proj.include?(pid) && e['include']
-        @valid_proj << e['include']
-      end
-
-      def valid_proj
-        return if @projects.keys.empty?
-        vkeys = @valid_proj & @projects.keys
-        vl = vkeys.empty? ? @projects.keys : vkeys
-        pl = vl.map { |pid| @projects[pid] }
-        @displist = @displist.ext_grp
-        pl.each { |proj| store_proj(proj, @displist) }
-      end
-
-      def store_proj(proj, sec)
-        pid = proj['id']
-        cap = proj['caption']
-        proj.each do |e|
-          if e.name == 'group'
-            store_grp(e, sec.put_sec(pid, cap))
-          else
-            store_doc(e, sec.put_grp(pid, cap))
+      # Includable (instance)
+      def _mk_project(top)
+        pid = top['id']
+        vpary = (@valid_proj ||= []).push(pid) if PROJ == pid
+        grp = (@grps ||= {})[pid] = []
+        top.each do |gdoc| # g.name is include or group
+          tag = gdoc.name.to_sym
+          case tag
+          when :include # include project
+            vpary << gdoc['ref'] if vpary
+          when :group # group(mdb,adb)
+            grp << gdoc['id']
+            _mk_group(gdoc)
           end
         end
       end
 
-      def store_grp(e, sec)
-        sg = sec.put_grp(e['id'], e['caption'])
-        e.each { |e0| store_doc(e0, sg) }
+      # Takes second level (use group for display only)
+      def _mk_group(gdoc)
+        @displist.ext_grp unless @displist.is_a? Disp::Grouping
+        sub = @displist.put_grp(gdoc['id'], gdoc['label'])
+        gdoc.each { |e| _mk_sub_db(e, sub) }
       end
 
-      def store_doc(top, grp)
-        id = top['id'] # site_id or macro_proj
-        grp.put_item(id, top['label'])
-        item = Hashx[top: top, attr: top.to_h, domain: {}, property: {}]
-        top.each do|e1|
-          item[top.ns == e1.ns ? :property : :domain][e1.name.to_sym] = e1
+      # Includable (macro)
+      def _mk_sub_db(top, sub = @displist)
+        item = _set_item(top, sub)
+        top.each do|e| # e.name can be include or group
+          tag = e.name.to_sym
+          case tag
+          when :include # include group
+            (item[tag] ||= []) << e['ref']
+          when :group # group(mdb,adb)
+            (item[tag] ||= {})[e['id']] = e
+          else # Command, Status(different ns), Property (stream, serial, etc.)
+            item[tag] = (top.ns != e.ns) ? e : e.to_h
+          end
         end
+      end
+
+      # set single item to self
+      def _set_item(top, disp = @displist)
+        id = top['id'] # site_id or macro_proj
+        item = Hashx[top: top, attr: top.to_h]
+        disp.put_item(id, top['label'])
         self[id] = item
+      end
+
+      # Include will be done for //group
+      def _set_includes
+        if @valid_proj
+          vk = @valid_proj.map { |proj| @grps[proj] }.flatten.map { |gid| @displist.sub[gid] }.flatten
+          @displist.valid_keys.replace(vk)
+        end
+        each_value do |item|
+          if (ary = item.delete(:include))
+            ary.each { |ref| (item[:group] ||= {}).update(self[ref][:group]) }
+          end
+        end
       end
     end
   end
@@ -112,7 +135,7 @@ module CIAX
   if __FILE__ == $PROGRAM_NAME
     type = ARGV.shift
     begin
-      doc = Xml::Doc.new(type, PROJ)
+      doc = Xml::Doc.new(type)
     rescue ConfigError
       Msg.usage('[type] (adb,fdb,idb,ddb,mdb,sdb)')
     end

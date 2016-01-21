@@ -12,73 +12,64 @@ module CIAX
         @adb = App::Db.new
       end
 
-      # overwrite App::Db
-      def get(id = nil)
-        dbi = super
-        dbi.cover(@adb.get(dbi[:app_id]))
-      end
-
       private
 
+      # doc is <project>
+      # return //project/group/instance
       def doc_to_db(doc)
-        dbi = Dbi[doc[:attr]]
+        at = doc[:attr]
+        dbi = @adb.get(at[:app_id]).deep_copy
+        dbi.update(at)
+        init_general(dbi)
         init_command(doc, dbi)
         init_status(doc, dbi)
+        init_watch(doc, dbi)
         dbi
       end
 
       # Command Domain
       def init_command(doc, dbi)
-        @idx = {}
-        @units = {}
-        arc_unit(doc[:domain][:alias])
-        dbi[:command] = {alias: @idx}
-        self
+        return self unless doc.key?(:alias)
+        cdb = dbi[:command]
+        @idx = cdb[:index]
+        @grps = cdb[:group]
+        @units = cdb[:unit]
+        cdb[:group]['gal'] = Hashx.new(caption: 'Alias')
+        _add_unit(doc[:alias], 'gal')
+        cdb
       end
 
-      # identical with App::Db#arc_unit()
-      def arc_unit(e)
-        return unless e
-        e.each do|e0|
-          case e0.name
-          when 'unit'
-            uid = e0.attr2item(@units)
-            e0.each do|e1|
-              id = arc_command(e1)
-              @idx[id][:unit] = uid
-              (@units[uid][:members] ||= []) << id
-            end
-          when 'item'
-            arc_command(e0)
-          end
-        end
-        self
-      end
-
-      def arc_command(e0)
-        id = e0.attr2item(@idx)
+      def _add_item(e0, gid)
+        id, itm = super
+        ref = itm.delete(:ref)
+        itm.update(@idx[ref].pick([:parameters, :body]))
         e0.each do|e1|
-          (@idx[id][:argv] ||= []) << e1.text
+          (itm[:argv] ||= []) << e1.text
         end
-        id
+        [id, itm]
       end
 
       # Status Domain
       def init_status(doc, dbi)
-        hst = dbi[:status] = {}
-        grp = hst[:group] = {}
-        (doc[:domain][:status] || []).each do|e0|
-          p = (hst[e0.name.to_sym] ||= {})
+        sdb = (dbi[:status] ||= {})
+        grp = (sdb[:group] ||= {})
+        (doc[:status] || []).each do|e0|
+          p = (sdb[e0.name.to_sym] ||= {})
           case e0.name
           when 'alias'
             e0.attr2item(p)
             ag = (grp[:alias] ||= { caption: 'Alias', members: [] })
             ag[:members] << e0['id']
-          else
+          when 'symtbl'
+            sdb[:symtbl] << e0['ref']
+          else # group, index
             e0.attr2item(p, :ref)
           end
         end
-        init_watch(doc, dbi)
+        sdb
+      end
+
+      def init_general(dbi)
         dbi[:proj] = PROJ
         dbi[:site_id] = dbi[:ins_id] = dbi[:id]
         dbi[:frm_site] ||= dbi[:id]

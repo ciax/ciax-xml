@@ -261,7 +261,7 @@
       </item>
       <item id="runi" label="Run with interlock to Tag [1-12]">
         <par_num label="1-12">1:12</par_num>
-        <select form="msg" site="crt" var="cps">
+        <select form="data" site="crt" var="cps">
           <option val="8">
             <mcr name="r08to">
               <argv>$1</argv>

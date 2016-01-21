@@ -3,7 +3,7 @@
   <frame id="ken" version="1" label="Kenwood PW-A Series (IF-41RS)">
     <spec mfr="Kenwood" brand="PW-A Series" model="IF-41RS" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf"/>
     <stream ccmethod="sum" maxlength="255" stream_ver="5" wait="0.5"/>
-    <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
+    <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="ENQ">5</char>
       <ccrange>
@@ -13,83 +13,89 @@
       <string format="%02X">${cc}</string>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <!-- Ack Commands -->
-      <item id="ack" label="ACK" noaffix="true" response="ack">
-        <char length="1" label="ACK">6</char>
-        <string>@</string>
-      </item>
-      <item id="clr" label="ACK" noaffix="true" response="default">
-        <char length="1" label="ACK">6</char>
-        <string>@</string>
-      </item>
-      <item id="rcv" label="Rcv Status" response="getstat" />
-      <!-- Status Commands -->
-      <item id="getid" label="Get Unit ID(NEW)" type="stat" response="getstat">
-        <par_num>0:2</par_num>
-        <char length="1">$1+0x41</char>
-        <string>PWID</string>
-      </item>
-      <item id="getst0" label="Get Status in INT [UNIT] [N of CH]" type="stat" response="getst0">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST0</string>
-      </item>
-      <item id="getst1" label="Get Presets(NEW) in INT [UNIT] [N of CH]" type="stat" response="getst1">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST1</string>
-      </item>
-      <item id="getst1o" label="Get Presets(OLD) in INT [UNIT] [N of CH]" type="stat" response="getst1o">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST1</string>
-      </item>
-      <item id="getst2" label="Get status(NEW) [UNIT] [N of CH]" type="stat" response="getst2">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST2</string>
-      </item>
-      <item id="getst2o" label="Get status(OLD) [UNIT] [N of CH]" type="stat" response="getst2o">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST2</string>
-      </item>
-      <item id="getst3" label="Get status(NEW) [UNIT]" type="stat" response="getst3">
-        <par_num>0:2</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST3</string>
-      </item>
-      <item id="getst4" label="Get Status(NEW) in Float [UNIT] [N of CH]" type="stat" response="getst4">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST4</string>
-      </item>
-      <item id="getst5" label="Get Presets(NEW) in Float [UNIT] [N of CH]" type="stat" response="getst5">
-        <par_num>0:2</par_num>
-        <par_num>1:4</par_num>
-        <char length="1">$1+0x41</char>
-        <string>ST5</string>
-      </item>
-      <!-- Action Command -->
-      <!-- No response if Addr is # -->
-      <item id="tron" label="All Tracking ON(NEW)" type="action">
-        <string>#TR1</string>
-      </item>
-      <item id="troff" label="All Tracking OFF(NEW)" type="action">
-        <string>#TR0</string>
-      </item>
-      <item id="aon" label="All Output ON" type="action">
-        <string>#SW1</string>
-      </item>
-      <item id="aoff" label="All Output OFF" type="action">
-        <string>#SW0</string>
-      </item>
+      <group id="gst" caption="Protocol">
+        <!-- Ack Commands -->
+        <item id="ack" label="ACK" noaffix="true" response="ack">
+          <char length="1" label="ACK">6</char>
+          <string>@</string>
+        </item>
+        <item id="clr" label="ACK" noaffix="true" response="default">
+          <char length="1" label="ACK">6</char>
+          <string>@</string>
+        </item>
+        <item id="rcv" label="Rcv Status" response="getstat"/>
+      </group>
+      <group id="gst" caption="Status">
+        <!-- Status Commands -->
+        <item id="getid" label="Get Unit ID(NEW)" type="stat" response="getstat">
+          <par_num>0:2</par_num>
+          <char length="1">$1+0x41</char>
+          <string>PWID</string>
+        </item>
+        <item id="getst0" label="Get Status in INT [UNIT] [N of CH]" type="stat" response="getst0">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST0</string>
+        </item>
+        <item id="getst1" label="Get Presets(NEW) in INT [UNIT] [N of CH]" type="stat" response="getst1">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST1</string>
+        </item>
+        <item id="getst1o" label="Get Presets(OLD) in INT [UNIT] [N of CH]" type="stat" response="getst1o">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST1</string>
+        </item>
+        <item id="getst2" label="Get status(NEW) [UNIT] [N of CH]" type="stat" response="getst2">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST2</string>
+        </item>
+        <item id="getst2o" label="Get status(OLD) [UNIT] [N of CH]" type="stat" response="getst2o">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST2</string>
+        </item>
+        <item id="getst3" label="Get status(NEW) [UNIT]" type="stat" response="getst3">
+          <par_num>0:2</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST3</string>
+        </item>
+        <item id="getst4" label="Get Status(NEW) in Float [UNIT] [N of CH]" type="stat" response="getst4">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST4</string>
+        </item>
+        <item id="getst5" label="Get Presets(NEW) in Float [UNIT] [N of CH]" type="stat" response="getst5">
+          <par_num>0:2</par_num>
+          <par_num>1:4</par_num>
+          <char length="1">$1+0x41</char>
+          <string>ST5</string>
+        </item>
+      </group>
+      <group id="gact" caption="Action">
+        <!-- Action Command -->
+        <!-- No response if Addr is # -->
+        <item id="tron" label="All Tracking ON(NEW)" type="action">
+          <string>#TR1</string>
+        </item>
+        <item id="troff" label="All Tracking OFF(NEW)" type="action">
+          <string>#TR0</string>
+        </item>
+        <item id="aon" label="All Output ON" type="action">
+          <string>#SW1</string>
+        </item>
+        <item id="aoff" label="All Output OFF" type="action">
+          <string>#SW0</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <echo/>
@@ -110,8 +116,8 @@
       </item>
       <item id="getstat">
         <array assign="id" label="Value" delimiter=",">
-          <index range="$1" size="3" />
-          <index size="5" />
+          <index range="$1" size="3"/>
+          <index size="5"/>
         </array>
       </item>
       <item id="getst0">
@@ -119,13 +125,13 @@
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
         <array assign="ms0" label="Value" delimiter=",">
-          <index range="$1" size="3" />
-          <index range="0:$2-1" size="4" />
-          <index size="2" />
+          <index range="$1" size="3"/>
+          <index range="0:$2-1" size="4"/>
+          <index size="2"/>
         </array>
         <array assign="cst" label="CV/CC Stat" length="1" decode="hexstr">
-          <index range="$1" size="3" />
-          <index size="4" />
+          <index range="$1" size="3"/>
+          <index size="4"/>
         </array>
       </item>
       <item id="getst1">
@@ -134,11 +140,11 @@
         <field label="Delimiter">,</field>
         <array assign="ms1" label="Value" delimiter=",">
           <!--Unit-->
-          <index range="$1" size="3" />
+          <index range="$1" size="3"/>
           <!--Preset-->
-          <index size="4" />
+          <index size="4"/>
           <!--CH-->
-          <index range="0:$2*2-1" size="11" />
+          <index range="0:$2*2-1" size="11"/>
         </array>
       </item>
       <item id="getst1o">
@@ -147,11 +153,11 @@
         <field label="Delimiter">,</field>
         <array assign="ms1" label="Value" delimiter=",">
           <!--Unit-->
-          <index range="$1" size="3" />
+          <index range="$1" size="3"/>
           <!--Preset-->
-          <index size="4" />
+          <index size="4"/>
           <!--CH-->
-          <index range="0:$2*2+2" size="11" />
+          <index range="0:$2*2+2" size="11"/>
         </array>
       </item>
       <item id="getst2">
@@ -159,42 +165,42 @@
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
         <array assign="ms2" label="LED/MAIN" delimiter="," decode="binstr">
-          <index range="$1" size="3" />
-          <index range="0:1" size="6" />
+          <index range="$1" size="3"/>
+          <index range="0:1" size="6"/>
         </array>
         <array assign="st0" label="Output Select CH" length="1" decode="hexstr">
-          <index range="$1" size="3" />
-          <index size="4" />
-          <index range="0" size="5" />
+          <index range="$1" size="3"/>
+          <index size="4"/>
+          <index range="0" size="5"/>
         </array>
         <field label="Delimiter">,</field>
         <array assign="ms2" label="Track SW" delimiter="," decode="binstr">
-          <index range="$1" size="3" />
-          <index range="2" size="6" />
+          <index range="$1" size="3"/>
+          <index range="2" size="6"/>
         </array>
         <array assign="st0" label="Track Select CH" length="1">
-          <index range="$1" size="3" />
-          <index size="4" />
-          <index range="1" size="5" />
+          <index range="$1" size="3"/>
+          <index size="4"/>
+          <index range="1" size="5"/>
         </array>
         <field label="Delimiter">,</field>
         <array assign="ms2" label="Track Mode" delimiter="," decode="binstr">
-          <index range="$1" size="3" />
-          <index range="3" size="6" />
+          <index range="$1" size="3"/>
+          <index range="3" size="6"/>
         </array>
         <array assign="st0" label="Track Values" delimiter=",">
-          <index range="$1" size="3" />
-          <index range="0:$2-1" size="4" />
-          <index range="2:3" size="5" />
+          <index range="$1" size="3"/>
+          <index range="0:$2-1" size="4"/>
+          <index range="2:3" size="5"/>
         </array>
         <array assign="ms2" label="Preset/Delay" delimiter=",">
           <index range="$1" size="3"/>
           <index range="4:5" size="6"/>
         </array>
         <array assign="st0" label="Delay Times" delimiter=",">
-          <index range="$1" size="3" />
-          <index range="0:$2-1" size="4" />
-          <index range="4" size="5" />
+          <index range="$1" size="3"/>
+          <index range="0:$2-1" size="4"/>
+          <index range="4" size="5"/>
         </array>
       </item>
       <item id="getst2o">
@@ -202,8 +208,8 @@
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
         <array assign="mso" label="Value" delimiter=",">
-          <index range="$1" size="3" />
-          <index range="0:4" size="5" />
+          <index range="$1" size="3"/>
+          <index range="0:4" size="5"/>
         </array>
       </item>
       <item id="getst3">
@@ -211,7 +217,7 @@
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
         <array assign="ms3" label="Value" delimiter=",">
-          <index range="$1" size="3" />
+          <index range="$1" size="3"/>
         </array>
       </item>
       <item id="getst4">
@@ -219,13 +225,13 @@
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
         <array assign="ms4" label="Value" delimiter=",">
-          <index range="$1" size="3" />
-          <index range="0:$2*2-1" size="8" />
+          <index range="$1" size="3"/>
+          <index range="0:$2*2-1" size="8"/>
         </array>
         <array assign="st0" label="Stat" length="1" decode="hexstr">
-          <index range="$1" size="3" />
-          <index size="4" />
-          <index range="0" size="3" />
+          <index range="$1" size="3"/>
+          <index size="4"/>
+          <index range="0" size="3"/>
         </array>
       </item>
       <item id="getst5">
@@ -233,11 +239,11 @@
         <field label="UNIT #">$1+1</field>
         <field label="Delimiter">,</field>
         <array assign="ms5" label="Value" delimiter=",">
-          <index range="$1" size="3" />
-          <index size="14" />
+          <index range="$1" size="3"/>
+          <index size="14"/>
         </array>
       </item>
-      <item id="default"  noaffix="true"/>
+      <item id="default" noaffix="true"/>
     </response>
   </frame>
 </fdb>

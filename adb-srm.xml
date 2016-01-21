@@ -3,9 +3,9 @@
   <app frm_id="srm" id="srm" label="CsEtr Controller" version="1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id='upd' label="Status">
+        <unit id="upd" label="Status">
           <item id="upd" label="Upd">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
           </item>
         </unit>
         <unit id="c3p" label="CIAX3 POWER">
@@ -82,31 +82,32 @@
         </unit>
       </group>
     </command>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="srm">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <symtbl ref="srm"/>
       <group id="g1" caption="" column="3">
         <string id="cod" label="RESPONSE CODE" symbol="cod">
-          <field ref="cod" />
+          <field ref="cod"/>
         </string>
         <string id="iid" label="CAS INST ID" symbol="iid_ac">
-          <field ref="c1d2" />
+          <field ref="c1d2"/>
         </string>
         <binary id="ipw" label="CAS IPW" symbol="off_warn">
-          <field bit="0" ref="c1d1" />
+          <field bit="0" ref="c1d1"/>
         </binary>
         <binary id="stp" label="STOW PIN" symbol="warn">
-          <field bit="1" ref="c1d1" />
+          <field bit="1" ref="c1d1"/>
         </binary>
         <binary id="ccd" label="CAS CCD PW" symbol="warn">
-          <field bit="2" ref="c1d0" />
+          <field bit="2" ref="c1d0"/>
         </binary>
         <binary id="lan" label="CAS LAN PW" symbol="hide">
-          <field bit="3" ref="c1d0" />
+          <field bit="3" ref="c1d0"/>
         </binary>
         <binary id="c3p" label="CIAX3 PW" symbol="hide">
-          <field bit="0" ref="c1d0" />
+          <field bit="0" ref="c1d0"/>
         </binary>
         <binary id="c3e" label="CIAX3 EMG" symbol="alarm">
-          <field bit="1" ref="c1d0" />
+          <field bit="1" ref="c1d0"/>
         </binary>
       </group>
     </status>

@@ -3,41 +3,47 @@
   <frame id="psp" label="Power Supply Instek PSP-603">
     <spec type="Power Supply" mfr="Instek" model="PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf"/>
     <stream wait="0.3" terminator="\r\n"/>
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
       <char length="1">0xd</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <item id="getstat" label="Get Status" response="getstat" type="stat">
-        <string>L</string>
-      </item>
-      <item id="setvl" label="Set Voltage Limit [DD]" type="config">
-        <par_num>0:20</par_num>
-        <string>SU </string>
-        <string format="%02d">$1</string>
-      </item>
-      <item id="setal" label="Set Current Limit [D.DD]" type="config">
-        <par_num>0:&lt;10</par_num>
-        <string>SI </string>
-        <string format="%04.2f">$1</string>
-      </item>
-      <item id="setpl" label="Set Power Limit [DDD]" type="config">
-        <par_num>0:&lt;200</par_num>
-        <string>SP </string>
-        <string format="%03d">$1</string>
-      </item>
-      <item id="setv" label="Set Voltage [DD.DD]" type="config">
-        <par_num>0:&lt;100</par_num>
-        <string>SV </string>
-        <string format="%05.2f">$1</string>
-      </item>
-      <item id="pon" label="OUTPUT ON" type="action">
-        <string>KOE</string>
-      </item>
-      <item id="poff" label="OUTPUT OFF" type="action">
-        <string>KOD</string>
-      </item>
+      <group id="gst" caption="Status">
+        <item id="getstat" label="Get Status" response="getstat" type="stat">
+          <string>L</string>
+        </item>
+      </group>
+      <group id="gcfg" caption="Configuration">
+        <item id="setvl" label="Set Voltage Limit [DD]" type="config">
+          <par_num>0:20</par_num>
+          <string>SU </string>
+          <string format="%02d">$1</string>
+        </item>
+        <item id="setal" label="Set Current Limit [D.DD]" type="config">
+          <par_num>0:&lt;10</par_num>
+          <string>SI </string>
+          <string format="%04.2f">$1</string>
+        </item>
+        <item id="setpl" label="Set Power Limit [DDD]" type="config">
+          <par_num>0:&lt;200</par_num>
+          <string>SP </string>
+          <string format="%03d">$1</string>
+        </item>
+      </group>
+      <group id="gact" caption="Action">
+        <item id="setv" label="Set Voltage [DD.DD]" type="config">
+          <par_num>0:&lt;100</par_num>
+          <string>SV </string>
+          <string format="%05.2f">$1</string>
+        </item>
+        <item id="pon" label="OUTPUT ON" type="action">
+          <string>KOE</string>
+        </item>
+        <item id="poff" label="OUTPUT OFF" type="action">
+          <string>KOD</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <body/>
@@ -45,24 +51,24 @@
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
         <field>V</field>
-        <field assign="v" label="Output(V)" length="5" />
+        <field assign="v" label="Output(V)" length="5"/>
         <field>A</field>
-        <field assign="a" label="Output(A)" length="5" />
+        <field assign="a" label="Output(A)" length="5"/>
         <field>W</field>
-        <field assign="w" label="Output(W)" length="5" />
+        <field assign="w" label="Output(W)" length="5"/>
         <field>U</field>
-        <field assign="u" label="Limit(V)" length="2" />
+        <field assign="u" label="Limit(V)" length="2"/>
         <field>I</field>
-        <field assign="i" label="Limit(A)" length="4" />
+        <field assign="i" label="Limit(A)" length="4"/>
         <field>P</field>
-        <field assign="p" label="Limit(W)" length="3" />
+        <field assign="p" label="Limit(W)" length="3"/>
         <field>F</field>
-        <field assign="f1" label="Output(ON/OFF)" length="1" />
-        <field assign="f2" label="OverHeat" length="1" />
-        <field assign="f3" label="ADJ Fine" length="1" />
-        <field assign="f4" label="ADJ Unlock" length="1" />
-        <field assign="f5" label="Remote" length="1" />
-        <field assign="f6" label="Local Lock" length="1" />
+        <field assign="f1" label="Output(ON/OFF)" length="1"/>
+        <field assign="f2" label="OverHeat" length="1"/>
+        <field assign="f3" label="ADJ Fine" length="1"/>
+        <field assign="f4" label="ADJ Unlock" length="1"/>
+        <field assign="f5" label="Remote" length="1"/>
+        <field assign="f6" label="Local Lock" length="1"/>
       </item>
     </response>
   </frame>

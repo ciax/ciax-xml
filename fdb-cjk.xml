@@ -18,37 +18,41 @@
       </ccrange>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <item id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
-        <par_num>0:5</par_num>
-        <char length="2" label="Read region command">0x401</char>
-        <char length="2" label="Read region subcommand">0</char>
-        <!--Jack 0=JK1,1=JK2,2=JK3,3=JK4-->
-        <char label="Jack Num" length="1">0</char>
-        <!--Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm-->
-        <char label="Tag Num" length="1">$1 + 2</char>
-        <char length="2" label="Device Code">0xB400</char>
-        <char length="2" label="Data Length">0x100</char>
-      </item>
-      <item id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
-        <par_num>0:5</par_num>
-        <par_num>0:3</par_num>
-        <char length="2" label="Write region command">0x1401</char>
-        <char length="2" label="Write region subcommand">0</char>
-        <char length="1" label="Jack Num">$2 * 4</char>
-        <char length="1" label="Tag Num">$1 + 2</char>
-        <char length="2" label="Device Code">0xB400</char>
-        <char length="2" label="Data Length">0x2c</char>
-        <char length="2">${t:$1:$2}</char>
-      </item>
-      <item id="rw_tbl" label="Read/Write Jack Table [0=Reset,1=Read,2=Write]" response="cmdrsp" type="config">
-        <par_num>0:2</par_num>
-        <char length="2" label="Write region command">0x1401</char>
-        <char length="2" label="Write region subcommand">0</char>
-        <char length="2" label="Start Address">0x7ff</char>
-        <char length="2" label="Device Code">0xB400</char>
-        <char length="2" label="Data Length">1</char>
-        <char length="2" label="Parameter">$1</char>
-      </item>
+      <group id="gst" caption="Status">
+        <item id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
+          <par_num>0:5</par_num>
+          <char length="2" label="Read region command">0x401</char>
+          <char length="2" label="Read region subcommand">0</char>
+          <!--Jack 0=JK1,1=JK2,2=JK3,3=JK4-->
+          <char label="Jack Num" length="1">0</char>
+          <!--Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm-->
+          <char label="Tag Num" length="1">$1 + 2</char>
+          <char length="2" label="Device Code">0xB400</char>
+          <char length="2" label="Data Length">0x100</char>
+        </item>
+      </group>
+      <group id="gcfg" caption="Configration">
+        <item id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
+          <par_num>0:5</par_num>
+          <par_num>0:3</par_num>
+          <char length="2" label="Write region command">0x1401</char>
+          <char length="2" label="Write region subcommand">0</char>
+          <char length="1" label="Jack Num">$2 * 4</char>
+          <char length="1" label="Tag Num">$1 + 2</char>
+          <char length="2" label="Device Code">0xB400</char>
+          <char length="2" label="Data Length">0x2c</char>
+          <char length="2">${t:$1:$2}</char>
+        </item>
+        <item id="rw_tbl" label="Read/Write Jack Table [0=Reset,1=Read,2=Write]" response="cmdrsp" type="config">
+          <par_num>0:2</par_num>
+          <char length="2" label="Write region command">0x1401</char>
+          <char length="2" label="Write region subcommand">0</char>
+          <char length="2" label="Start Address">0x7ff</char>
+          <char length="2" label="Device Code">0xB400</char>
+          <char length="2" label="Data Length">1</char>
+          <char length="2" label="Parameter">$1</char>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="integer" label="SubHeader: Prefix" length="2">212</field>
@@ -58,21 +62,21 @@
       <field decode="integer" label="Q Header: PC Number" length="1">255</field>
       <field decode="integer" label="Q Header: Request Unit I/O Number" length="2">1023</field>
       <field decode="integer" label="Q Header: Request Unit Station Number" length="1">0</field>
-      <field assign="cc" decode="integer" label="Response Data Length" length="2" />
+      <field assign="cc" decode="integer" label="Response Data Length" length="2"/>
       <ccrange>
         <field assign="ecode" decode="integer" label="Error Code" length="2">0</field>
         <body/>
       </ccrange>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <item id="cmdrsp" label="command resp" />
+      <item id="cmdrsp" label="command resp"/>
       <item id="get_tbl">
         <array assign="t" decode="integer" label="Jack Pulse Tables" length="2">
           <!--Tag-->
           <index range="$1" size="6"/>
           <!--JAK[0=1,40=2,80=3,C0=4]-->
           <!--ID[0-10],Level[0-3]-->
-          <index size="256" />
+          <index size="256"/>
         </array>
       </item>
     </response>

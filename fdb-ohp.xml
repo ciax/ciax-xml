@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="ohp" label="OMEGA Helium Pressure Sensor">
-    <serial databit="7" flowctl="NONE" parity="ODD" speed="9600" stopbit="1" />
+    <serial databit="7" flowctl="NONE" parity="ODD" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
       <char length="1">13</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <item id="getstat" label="Get Status" type="stat">
-        <string>*X01</string>
-      </item>
-      <item id="setd" label="Set default" type="config">
-        <string>*W1F14</string>
-      </item>
-      <item id="init" label="Initialize" type="config">
-        <string>*Z02</string>
-      </item>
+      <group id="gst" caption="Status">
+        <item id="getstat" label="Get Status" type="stat">
+          <string>*X01</string>
+        </item>
+      </group>
+      <group id="gcfg" caption="Configuration">
+        <item id="setd" label="Set default" type="config">
+          <string>*W1F14</string>
+        </item>
+        <item id="init" label="Initialize" type="config">
+          <string>*Z02</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <body/>
@@ -23,7 +27,7 @@
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
         <field label="Prefix">X01</field>
-        <field assign="pres" length="5" />
+        <field assign="pres" length="5"/>
       </item>
       <item id="setd">
         <field label="Command">W1F</field>

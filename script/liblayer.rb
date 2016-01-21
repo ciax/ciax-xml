@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require 'liblist'
-require 'libhexexe'
+require 'libmcrsh'
+require 'libhexlist'
 
 module CIAX
   # list object can be (Frm,App,Wat,Hex)
@@ -9,11 +9,21 @@ module CIAX
     def initialize(atrb = {})
       atrb[:column] = 4
       super(Config.new, atrb)
-      obj = (OPT[:x] ? Hex::List : Wat::List).new(@cfg)
+      if !atrb.key?(:site)
+        mod = Mcr::Man
+        @current = 'mcr'
+      elsif OPT[:x]
+        mod = Hex::List
+      else
+        mod = Wat::List
+      end
+      obj = mod.new(@cfg)
       loop do
-        @list.put(m2id(obj.class, -2), obj)
+        ns = m2id(obj.class, -2)
+        @list.put(ns, obj)
         obj = obj.sub_list || break
       end
+      self
     end
 
     def ext_shell
@@ -27,7 +37,7 @@ module CIAX
 
       def ext_shell
         super(Jump)
-        @cfg[:jump_groups] = [@jumpgrp]
+        @cfg[:jump_layer] = @jumpgrp
         @list.keys.each do|id|
           @list.get(id).ext_shell
           @jumpgrp.add_item(id, id.capitalize + ' mode')
@@ -38,8 +48,12 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('els')
-      Layer.new(site: ARGV.shift).ext_shell.shell
+      OPT.parse('elsx')
+      begin
+        Layer.new(site: ARGV.shift).ext_shell.shell
+      rescue InvalidID
+        OPT.usage('(opt) [id]')
+      end
     end
   end
 end

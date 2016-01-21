@@ -4,7 +4,11 @@
 setup-www
 id=$1
 shift
-dir=$HOME/.var/json
-file=$dir/$id.html
-libhtmltbl $id $* > $file
-echo "$file created"
+tmp=$HOME/.var/temp
+if libhtmltbl $id $* > $tmp; then
+    file=$HOME/.var/json/$id.html
+    mv $tmp $file
+    echo "$file created"
+else
+    rm $tmp
+fi

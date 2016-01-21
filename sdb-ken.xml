@@ -20,7 +20,7 @@
       <pattern class="normal" msg="PW16-2ATP">12</pattern>
       <pattern class="normal" msg="PW8-5ADPS">13</pattern>
       <pattern class="normal" msg="PW24-1.5AQ">14</pattern>
-      <default class="alarm" msg="N/A" />
+      <default class="alarm" msg="N/A"/>
     </table>
     <table id="model-old">
       <pattern class="normal" msg="PWR18-1.8Q">0</pattern>
@@ -33,7 +33,7 @@
       <pattern class="normal" msg="B">2</pattern>
       <pattern class="normal" msg="C">3</pattern>
       <pattern class="normal" msg="D">4</pattern>
-      <default class="alarm" msg="N/A" />
+      <default class="alarm" msg="N/A"/>
     </table>
     <table id="tmode">
       <pattern class="normal" msg="ABS">0</pattern>
@@ -45,7 +45,7 @@
       <pattern class="alarm" msg="Could not download file">2</pattern>
       <pattern class="alarm" msg="Not enough memory to execute user program">3</pattern>
       <pattern class="alarm" msg="Attempt to access a non-existent array element">4</pattern>
-      <default class="alarm" msg="Unknown Error" />
+      <default class="alarm" msg="Unknown Error"/>
     </table>
   </symbol>
 </sdb>

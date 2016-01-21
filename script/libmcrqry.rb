@@ -13,7 +13,7 @@ module CIAX
         # Datax#put() will access to header, but get() will access @data
         @stat = type?(stat, Record)
         @stat.put(:status, 'ready')
-        @sv_stat = type?(sv_stat, Prompt)
+        _init_prompt(sv_stat)
         @valid_keys = valid_keys
         @que_cmd = Queue.new
         @que_res = Queue.new
@@ -36,7 +36,7 @@ module CIAX
       end
 
       def query(cmds, sub_stat)
-        return true if @sv_stat.get(:nonstop)
+        return sub_stat.put(:action, 'nonstop') if @sv_stat.get(:nonstop)
         @valid_keys.replace(cmds)
         sub_stat.put(:option, cmds)
         @stat.put(:status, 'query')
@@ -49,6 +49,13 @@ module CIAX
       end
 
       private
+
+      def _init_prompt(sv_stat)
+        @sv_stat = type?(sv_stat, Prompt)
+        return if @sv_stat.key?(:nonstop)
+        @sv_stat.add_flg(nonstop: '(nonstop)')
+        @sv_stat.up(:nonstop) if OPT[:n]
+      end
 
       def _options
         optlist(@valid_keys)
@@ -89,7 +96,7 @@ module CIAX
           fail(Retry)
         when 'interrupt'
           fail(Interrupt)
-        when 'force', 'pass'
+        when 'force', 'skip'
           false
         else
           true

@@ -1,12 +1,10 @@
 #!/usr/bin/ruby
 require 'libexe'
 require 'libsh'
-require 'libfield'
 require 'libfrmdb'
 require 'libfrmrsp'
 require 'libfrmcmd'
 require 'libdevdb'
-require 'libsitelist'
 
 module CIAX
   # Frame Layer
@@ -23,7 +21,7 @@ module CIAX
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
-        @sv_stat.add_flg(comerr: 'X', strerr: 'E')
+        @sv_stat.add_flg(comerr: 'X', ioerr: 'E')
         # Post internal command procs
         @host ||= @dbi['host']
         @port ||= @dbi['port']
@@ -33,7 +31,8 @@ module CIAX
       def exe(args, src = 'local', pri = 1)
         super
       rescue CommError
-        @sv_stat.set(:comerr).msg($ERROR_INFO.to_s)
+        @sv_stat.up(:comerr)
+        @sv_stat.rep(:msg, $ERROR_INFO.to_s)
         @stat.seterr
         raise $ERROR_INFO
       end
@@ -72,11 +71,11 @@ module CIAX
         @stream = Stream.new(@id, @dbi[:version], iocmd,
                              sp[:wait], timeout, esc_code(sp[:terminator]))
         @stream.ext_log unless OPT[:s]
-        @stream.pre_open_proc = proc { @sv_stat.set(:strerr) }
-        @stream.post_open_proc = proc { @sv_stat.reset(:strerr) }
+        @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
+        @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }
         @stat.ext_rsp.ext_file.auto_save
         @cobj.rem.ext.def_proc do|ent, src|
-          @sv_stat.reset(:comerr)
+          @sv_stat.dw(:comerr)
           @stream.snd(ent[:frame], ent.id)
           @stat.conv(ent, @stream.rcv) if ent[:response]
           @stat.flush if src != 'buffer'
@@ -105,21 +104,12 @@ module CIAX
       end
     end
 
-    # Frame List module
-    class List < Site::List
-      def initialize(cfg, top_list = nil)
-        super(cfg, top_list || self)
-        store_db(Dev::Db.new)
-      end
-    end
-
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
       cfg = Config.new
-      cfg[:jump_groups] = []
-      cfg[:site] = ARGV.shift
+      cfg[:db] = Dev::Db.new
       begin
-        List.new(cfg).ext_shell.shell
+        Exe.new(ARGV.shift, cfg).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

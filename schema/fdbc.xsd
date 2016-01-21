@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdbc" xmlns:fdbc="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:fdbc="http://ciax.sum.naoj.org/ciax-xml/fdbc" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdbc">
   <!--Device database-->
-  <xsd:include schemaLocation="repeat.xsd" />
-  <xsd:include schemaLocation="command.xsd" />
+  <xsd:include schemaLocation="repeat.xsd"/>
+  <xsd:include schemaLocation="command.xsd"/>
   <!--Command Select-->
   <xsd:element name="command">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="fdbc:item" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="fdbc:group" minOccurs="1" maxOccurs="unbounded"/>
       </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="group">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="fdbc:item" minOccurs="1" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="caption" type="xsd:token" use="optional"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="item">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:group ref="fdbc:parameter" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:group ref="fdbc:parameter" minOccurs="0" maxOccurs="unbounded"/>
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
-          <xsd:element ref="fdbc:repeat" />
-          <xsd:group ref="fdbc:data" />
+          <xsd:element ref="fdbc:repeat"/>
+          <xsd:group ref="fdbc:data"/>
         </xsd:choice>
       </xsd:sequence>
-      <xsd:attribute name="id" type="xsd:NCName" use="required" />
-      <xsd:attribute name="label" type="xsd:token" />
-      <xsd:attribute name="response" type="xsd:NCName" />
-      <xsd:attribute name="nocache" type="xsd:boolean" />
-      <xsd:attribute name="noaffix" type="xsd:boolean" />
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="label" type="xsd:token"/>
+      <xsd:attribute name="response" type="xsd:NCName"/>
+      <xsd:attribute name="nocache" type="xsd:boolean"/>
+      <xsd:attribute name="noaffix" type="xsd:boolean"/>
       <xsd:attribute name="type">
         <xsd:simpleType>
           <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="stat" />
-            <xsd:enumeration value="action" />
-            <xsd:enumeration value="config" />
+            <xsd:enumeration value="stat"/>
+            <xsd:enumeration value="action"/>
+            <xsd:enumeration value="config"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>
@@ -39,19 +48,19 @@
   <xsd:element name="repeat">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:group ref="fdbc:data" />
+        <xsd:group ref="fdbc:data"/>
       </xsd:choice>
-      <xsd:attributeGroup ref="fdbc:repeat" />
-      <xsd:attribute name="delimiter" type="xsd:string" />
+      <xsd:attributeGroup ref="fdbc:repeat"/>
+      <xsd:attribute name="delimiter" type="xsd:string"/>
     </xsd:complexType>
   </xsd:element>
   <!--Command frame-->
   <xsd:element name="cmdframe">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:group ref="fdbc:data" />
-        <xsd:element ref="fdbc:body" />
-        <xsd:element ref="fdbc:ccrange" />
+        <xsd:group ref="fdbc:data"/>
+        <xsd:element ref="fdbc:body"/>
+        <xsd:element ref="fdbc:ccrange"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -62,24 +71,24 @@
   <xsd:element name="ccrange">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbc:body" />
-        <xsd:group ref="fdbc:data" />
+        <xsd:element ref="fdbc:body"/>
+        <xsd:group ref="fdbc:data"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
   <!--Command Elements-->
   <xsd:group name="data">
     <xsd:choice>
-      <xsd:element ref="fdbc:char"></xsd:element>
-      <xsd:element ref="fdbc:string"></xsd:element>
+      <xsd:element ref="fdbc:char"/>
+      <xsd:element ref="fdbc:string"/>
     </xsd:choice>
   </xsd:group>
   <xsd:element name="char">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
-          <xsd:attribute name="label" type="xsd:token" />
-          <xsd:attribute name="length" type="xsd:int" use="required"></xsd:attribute>
+          <xsd:attribute name="label" type="xsd:token"/>
+          <xsd:attribute name="length" type="xsd:int" use="required"/>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -88,8 +97,8 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
-          <xsd:attribute name="label" type="xsd:token" />
-          <xsd:attribute name="format" type="xsd:token"></xsd:attribute>
+          <xsd:attribute name="label" type="xsd:token"/>
+          <xsd:attribute name="format" type="xsd:token"/>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

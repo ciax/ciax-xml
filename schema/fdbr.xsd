@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdbr" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdbr">
   <!--Device database-->
-  <xsd:include schemaLocation="codec.xsd" />
-  <xsd:include schemaLocation="range.xsd" />
+  <xsd:include schemaLocation="codec.xsd"/>
+  <xsd:include schemaLocation="range.xsd"/>
   <!--Response Elements-->
   <xsd:attributeGroup name="rsp_attr">
-    <xsd:attribute name="label" type="xsd:token" />
-    <xsd:attribute name="assign" type="xsd:NCName" />
+    <xsd:attribute name="label" type="xsd:token"/>
+    <xsd:attribute name="assign" type="xsd:NCName"/>
     <xsd:attribute name="decode" type="fdbr:codec"/>
     <xsd:attribute name="sign" type="fdbr:sign"/>
-    <xsd:attribute name="length" type="xsd:int" />
-    <xsd:attribute name="slice" type="fdbr:rerange" />
-    <xsd:attribute name="delimiter" type="xsd:string" />
+    <xsd:attribute name="length" type="xsd:int"/>
+    <xsd:attribute name="slice" type="fdbr:rerange"/>
+    <xsd:attribute name="delimiter" type="xsd:string"/>
   </xsd:attributeGroup>
   <xsd:element name="body">
     <xsd:complexType/>
@@ -23,7 +23,7 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
-          <xsd:attributeGroup ref="fdbr:rsp_attr" />
+          <xsd:attributeGroup ref="fdbr:rsp_attr"/>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -31,16 +31,16 @@
   <xsd:element name="array">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="fdbr:index" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="fdbr:index" minOccurs="1" maxOccurs="unbounded"/>
       </xsd:sequence>
-      <xsd:attributeGroup ref="fdbr:rsp_attr" />
+      <xsd:attributeGroup ref="fdbr:rsp_attr"/>
     </xsd:complexType>
   </xsd:element>
   <!--Field Elements-->
   <xsd:element name="index">
     <xsd:complexType>
       <!--Whole size of Array-->
-      <xsd:attribute name="size" type="xsd:int" use="required" />
+      <xsd:attribute name="size" type="xsd:int" use="required"/>
       <!--Part of Array Range-->
       <xsd:attribute name="range" type="xsd:token"/>
     </xsd:complexType>
@@ -49,8 +49,8 @@
   <xsd:element name="ccrange">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbr:body" />
-        <xsd:element ref="fdbr:field" />
+        <xsd:element ref="fdbr:body"/>
+        <xsd:element ref="fdbr:field"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -58,10 +58,10 @@
   <xsd:element name="rspframe">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbr:echo" />
-        <xsd:element ref="fdbr:body" />
-        <xsd:element ref="fdbr:ccrange" />
-        <xsd:element ref="fdbr:field" />
+        <xsd:element ref="fdbr:echo"/>
+        <xsd:element ref="fdbr:body"/>
+        <xsd:element ref="fdbr:ccrange"/>
+        <xsd:element ref="fdbr:field"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -69,19 +69,19 @@
   <xsd:element name="response">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="fdbr:item" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="fdbr:item" minOccurs="1" maxOccurs="unbounded"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="item">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbr:field" />
-        <xsd:element ref="fdbr:array" />
+        <xsd:element ref="fdbr:field"/>
+        <xsd:element ref="fdbr:array"/>
       </xsd:choice>
-      <xsd:attribute name="id" type="xsd:NCName" use="required" />
-      <xsd:attribute name="label" type="xsd:token" />
-      <xsd:attribute name="noaffix" type="xsd:boolean" />
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="label" type="xsd:token"/>
+      <xsd:attribute name="noaffix" type="xsd:boolean"/>
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

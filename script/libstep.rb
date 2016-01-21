@@ -18,62 +18,44 @@ module CIAX
 
       # Conditional judgment section
       def timeout?
-        _show title
-        res = _progress(self[:retry])
-        self[:result] = res ? 'timeout' : 'pass'
-        upd
-        res
+        _set_result('timeout', 'pass', _progress(self[:retry]))
       end
 
       def sleeping(s)
-        _show title
         _progress(s)
-        self[:result] = "slept(#{s})"
-        upd
-        false
-      end
-
-      def ok?
-        _show title
-        upd
-        'ok'
+        _set_result("slept(#{s})")
       end
 
       def skip?
-        _show title
-        res = @cond.ok?('skip', 'enter')
+        @cond.ok?('skip', 'enter')
+      ensure
         upd
-        res
       end
 
       def fail?
-        _show title
-        res = !@cond.ok?('pass', 'failed')
+        !@cond.ok?('pass', 'failed')
+      ensure
         upd
-        res
       end
 
       # Interactive section
       def exec?
-        _show title
-        res = !dryrun?
-        self[:result] = res ? 'exec' : 'skip'
-        upd
-        res
+        _set_result('approval', 'dryrun', !OPT.test?)
       end
 
       # Execution section
       def async?
-        _show title
-        res = (/true|1/ =~ self[:async])
-        self[:result] = res ? 'forked' : 'entering'
-        upd
-        res
+        _set_result('forked', 'entering', /true|1/ =~ self[:async])
       end
 
       # Display section
       def to_v
         title + result
+      end
+
+      def show_title
+        print title if Msg.fg?
+        self
       end
 
       private
@@ -87,13 +69,16 @@ module CIAX
         print msg if Msg.fg?
       end
 
-      def dryrun?
-        !OPT[:m] && self[:action] = 'dryrun'
+      def _set_result(tmsg, fmsg = nil, tf = true)
+        res = tf ? tmsg : fmsg
+        self[:result] = res if res
+        tf
+      ensure
+        upd
       end
 
       def _progress(total)
-        itv = OPT.test? ? 0 : 0.1
-        itv *= 10 if OPT[:m]
+        itv = OPT.test? ? 0 : 1
         total.to_i.times do|n| # gives number or nil(if break)
           self[:count] = n + 1
           break if @cond && @cond.ok?

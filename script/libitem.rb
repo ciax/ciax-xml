@@ -27,12 +27,23 @@ module CIAX
     end
 
     def set_par(par, opt = {})
-      cid = @cfg[:id]
       par = @cfg[:argv] if @cfg[:argv].is_a? Array
       par = validate(type?(par, Array))
-      cid = [cid, *par].join(':')
+      cid = [@cfg[:id], *par].join(':')
       opt.update(par: par, cid: cid)
       verbose { "SetPAR(#{@cfg[:id]}): #{par}" }
+      _get_cache(opt, cid)
+    end
+
+    def valid_pars
+      (@cfg[:parameters] || []).map do |e|
+        e[:list] if e[:type] == 'str'
+      end.flatten
+    end
+
+    private
+
+    def _get_cache(opt, cid)
       if key?(cid)
         verbose { "SetPAR: Entity Cache found(#{cid})" }
         self[cid]
@@ -47,14 +58,6 @@ module CIAX
         ent
       end
     end
-
-    def valid_pars
-      (@cfg[:parameters] || []).map do |e|
-        e[:list] if e[:type] == 'str'
-      end.flatten
-    end
-
-    private
 
     def gen_entity(opt)
       context_constant('Entity').new(@cfg, opt)

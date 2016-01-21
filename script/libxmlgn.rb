@@ -30,7 +30,7 @@ module CIAX
 
       # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
       def to_h(key = :val)
-        h = {}
+        h = Hashx.new
         @e.attributes.to_h.each do |k, v|
           h[k.to_sym] = v
         end
@@ -63,6 +63,9 @@ module CIAX
           end
         end
       end
+
+      # Adapt to both Gnu, Hash
+      alias_method :each_value, :each
     end
   end
 end

@@ -43,9 +43,9 @@ module CIAX
       fail ConfigError, ary.join("\n  "), caller(1)
     end
 
-    def cc_err(*ary) # Raise Device error (Verification Failed)
+    def cc_err(*ary) # Raise Device error (Check Code Verification Failed)
       ary[0] = colorize(ary[0], 1)
-      fail VerifyError, ary.join("\n  "), caller(1)
+      fail CheckCodeError, ary.join("\n  "), caller(1)
     end
 
     def com_err(*ary) # Raise Device error (Communication Failed)

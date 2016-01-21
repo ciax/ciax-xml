@@ -47,13 +47,13 @@ module CIAX
       type?(args, Array)
       verbose { "Executing Command #{args} from '#{src}' as ##{pri}" }
       @pre_exe_procs.each { |p| p.call(args, src) }
-      @sv_stat.msg(@cobj.set_cmd(args).exe_cmd(src, pri))
+      @sv_stat.rep(:msg, @cobj.set_cmd(args).exe_cmd(src, pri))
       @post_exe_procs.each { |p| p.call(args, src) }
       self
     rescue LongJump
       raise $ERROR_INFO
     rescue InvalidID
-      @sv_stat.msg($ERROR_INFO.to_s)
+      @sv_stat.rep(:msg, $ERROR_INFO.to_s)
       raise $ERROR_INFO
     end
 

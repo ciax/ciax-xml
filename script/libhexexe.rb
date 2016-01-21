@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
 # Ascii Pack
-require 'libwatexe'
+require 'libwatlist'
 require 'libhexview'
 
 module CIAX
   # Ascii Hex Layer for OLD CIAX
   module Hex
-    # cfg should have [:sub_list]
+    # cfg must have [:db], [:sub_list]
     class Exe < Exe
       def initialize(id, cfg)
         super(id, cfg)
@@ -42,9 +42,10 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
       cfg = Config.new
-      cfg[:site] = ARGV.shift
+      cfg[:db] = Ins::Db.new
+      cfg[:sub_list] = Wat::List.new(cfg)
       begin
-        List.new(cfg).ext_shell.shell
+        Exe.new(ARGV.shift, cfg).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

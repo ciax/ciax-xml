@@ -13,7 +13,10 @@ module CIAX
     def ext_server
       @sub.ext_server if @sub
       return self unless @port
-      verbose { "Initialize UDP server (#{@id}) [#{@port}]" }
+      verbose do
+        "Initialize UDP server (#{@id}) port:[#{@port}] git:[" +
+          `cd #{__dir__};git reflog`.split(' ').first + ']'
+      end
       @server_input_proc = proc { |line| j2h(line) }
       @sv_stat.ext_file.auto_save.ext_log
       @server_output_proc = proc { @sv_stat.to_j }
@@ -35,9 +38,9 @@ module CIAX
         begin
           exe(@server_input_proc.call(line), "udp:#{rhost}")
         rescue InvalidCMD
-          @sv_stat.msg('INVALID')
+          @sv_stat.rep(:msg, 'INVALID')
         rescue
-          @sv_stat.msg("ERROR:#{$ERROR_INFO}")
+          @sv_stat.rep(:msg, "ERROR:#{$ERROR_INFO}")
           errmsg
         end
         send_str = @server_output_proc.call

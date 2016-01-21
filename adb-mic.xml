@@ -3,7 +3,7 @@
   <app frm_id="mic" id="mic" label="Micronix Piezo Motor">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <unit id='upd' label="Status">
+        <unit id="upd" label="Status">
           <item id="upd" label="Upd">
             <repeat from="1" to="6">
               <frmcmd name="getst">
@@ -31,16 +31,16 @@
       <group id="g1" caption="Linear" column="4">
         <repeat_var from="1" to="6">
           <string id="st$_" label="Status $_">
-            <field ref="st" index="$_-1" />
+            <field ref="st" index="$_-1"/>
           </string>
           <float id="px$_" label="X Pos $_" format="%5.2f">
-            <field ref="pos" index="$_-1:0" />
+            <field ref="pos" index="$_-1:0"/>
           </float>
           <float id="py$_" label="Y Pos $_" format="%5.2f">
-            <field ref="pos" index="$_-1:1" />
+            <field ref="pos" index="$_-1:1"/>
           </float>
           <float id="acc$_" label="Accel $_" format="%5.2f">
-            <field ref="acc" index="$_-1" />
+            <field ref="acc" index="$_-1"/>
           </float>
         </repeat_var>
       </group>

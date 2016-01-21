@@ -11,11 +11,7 @@ module CIAX
       end
 
       def get(id = nil)
-        dbi = super(id || PROJ || ARGV.shift)
-        if (inc = dbi[:include])
-          dbi = super(inc).cover(dbi)
-        end
-        dbi
+        super(id || PROJ || ARGV.shift)
       end
 
       private
@@ -23,22 +19,21 @@ module CIAX
       def doc_to_db(doc)
         dbi = Dbi[doc[:attr]]
         @sites = []
-        init_command(doc[:top], dbi)
+        init_command(doc[:group], dbi)
         dbi[:sites] = @sites.uniq
         dbi
       end
 
-      def arc_command(e0, gid)
-        id = super
-        itm = @idx[id]
+      def _add_item(e0, gid)
+        id, itm = super
         verbose { "MACRO:[#{id}]" }
         body = (itm[:body] ||= [])
-        final = {}
+        final = Hashx.new
         e0.each do|e1|
-          atrb = e1.to_h
+          atrb = { type: e1.name }
+          atrb.update(e1.to_h)
           _get_sites_(atrb)
           par2item(e1, itm) && next
-          atrb[:type] = e1.name
           case e1.name
           when 'mesg'
             body << atrb
@@ -67,12 +62,15 @@ module CIAX
           when 'select'
             atrb[:select] = get_option(e1)
             atrb.delete(:name)
-#            itm[:parameters] = [{type: 'str', list: atrb[:select].keys }]
+            #            itm[:parameters] = [{type: 'str', list: atrb[:select].keys }]
             body << atrb
           end
         end
-        body << final unless final.empty?
-        id
+        unless final.empty?
+          validate_par(final)
+          body << final
+        end
+        [id, itm]
       end
 
       def make_condition(e1, atrb)

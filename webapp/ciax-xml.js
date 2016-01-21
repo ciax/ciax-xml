@@ -49,4 +49,9 @@ function dvctl(cmd){
         }
     );
 }
+function seldv(obj){
+    var cmd = obj.options[obj.selectedIndex].value;
+    alert("ISSUED("+cmd+")");
+    dvctl(cmd);
+}
 $(document).ready(init);

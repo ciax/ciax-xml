@@ -7,8 +7,9 @@ module CIAX
   class List < Varx
     attr_reader :cfg
     # level can be Layer or Site
-    def initialize(cfg, attr = {})
-      @cfg = cfg.gen(self).update(attr)
+    def initialize(cfg, atrb = {})
+      @cfg = cfg.gen(self).update(atrb)
+      @cfg[:jump_groups] ||= []
       super(m2id(@cfg[:obj].class, -2))
       @cls_color = 6
       @list = self[:list] = Hashx.new
@@ -25,7 +26,7 @@ module CIAX
         Msg.type?(obj, List)
       end
 
-      # attr should have [:jump_class] (Used in Local::Jump::Group)
+      # atrb should have [:jump_class] (Used in Local::Jump::Group)
       def ext_shell(jump_class)
         @cfg[:jump_class] = type?(jump_class, Module) # Use for liblocal
         @jumpgrp = Local::Jump::Group.new(@cfg)

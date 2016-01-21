@@ -1,11 +1,12 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-require 'libappexe'
+require 'libwatlist'
 # CIAX-XML Device Executor
 module CIAX
   OPT.parse('elch:')
   cfg = Config.new
-  cfg[:exe_mode] = true
-  sl = App::List.new(cfg)
-  puts sl.exe(ARGV)
+  cfg[:cmd_line_mode] = true # exclude empty command
+  wex = Wat::List.new(cfg).exe(ARGV)
+  puts wex
+  puts wex.join ? 'COMPLETE' : 'TIMEOUT'
 end

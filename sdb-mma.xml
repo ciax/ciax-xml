@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="mma" label="MOIRCS Arm">
-    <table id="err">
-      <pattern class="hide" msg="No Error">0</pattern>
-      <pattern class="alarm" msg="Could not burn flash successfully">1</pattern>
-      <pattern class="alarm" msg="Could not download file">2</pattern>
-      <pattern class="alarm" msg="Not enough memory to execute user program">3</pattern>
-      <pattern class="alarm" msg="Attempt to access a non-existent array element">4</pattern>
-      <default class="alarm" msg="Unknown Error" />
-    </table>
     <table id="pos">
       <pattern class="normal" msg="INIT">0001</pattern>
       <pattern class="normal" msg="STORE">0010</pattern>
       <pattern class="normal" msg="FOCUS">0100</pattern>
       <pattern class="normal" msg="ROT">1000</pattern>
-      <default class="alarm" msg="N/A" />
+      <default class="alarm" msg="N/A"/>
     </table>
     <table id="abs">
       <range class="normal" msg="INIT">-0.1:0.5</range>

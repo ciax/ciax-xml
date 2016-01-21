@@ -10,10 +10,12 @@
  # general
   - method name : verb, verbal noun (~ing) or snake case (verb_noun) to privent to mix up with local var.
   - private method name (mixin module)
-    = shared among inherited classes : under bar prefix to distinct with system method or local var. (_name)
-    = used only its own class : under bar prefix and suffix to distinct with private shared method.  (_name_)
-  - local var name : abbrev word (as short as possible < 4 letter).
-    (i.e. i,j,k,idx,grp,key(k),hsh(h),ary(a),val(v)...).
+    = used only its own class : under bar prefix to distinct with system method or local var. (_name)
+    = one time used : under bar prefix and suffix to distinct with private shared method.  (_name_)
+  - local var (method args) : abbrev word (with 3~4 letters).
+    (i.e. idx,grp,key(k),hsh(h),ary(a),val(v)...).
+  - local var (loop counter) : abbrev word (with 1~2 letters).
+    (i.e. i,j,k...).
   - DB key which contains Hash or Array : Symbol. Other keys are String.
   - Status key which could be written out to a file : String.
  #local var

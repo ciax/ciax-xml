@@ -31,6 +31,12 @@ module CIAX
       post_upd
     end
 
+    def rep(key, val)
+      super
+    ensure
+      post_upd
+    end
+
     def time_id
       self[:time].to_s[-6, 6]
     end

@@ -126,84 +126,6 @@
           <upd site="mmc"/>
         </item>
       </unit>
-      <item id="mmc_cw-0.1" label="Move 0.1 unit CW">
-        <check>
-          <match site="mmc" var="spd" form="msg">LOW</match>
-          <match site="mmc" var="lcw" form="msg">OFF</match>
-          <match site="mmc" var="lccw" form="msg">OFF</match>
-        </check>
-        <cfg site="mmc" name="cw-0.1"/>
-        <wait retry="10" label="end of motion">
-          <equal site="mmc" var="bs" form="data">0</equal>
-        </wait>
-        <upd site="mmc"/>
-      </item>
-      <item id="mmc_ccw-0.1" label="Move 0.1 unit CCW">
-        <check>
-          <match site="mmc" var="spd" form="msg">LOW</match>
-          <match site="mmc" var="lcw" form="msg">OFF</match>
-          <match site="mmc" var="lccw" form="msg">OFF</match>
-        </check>
-        <cfg site="mmc" name="ccw-0.1"/>
-        <wait retry="10" label="end of motion">
-          <equal site="mmc" var="bs" form="data">0</equal>
-        </wait>
-        <upd site="mmc"/>
-      </item>
-      <item id="mmc_cw" label="Initialize(CW)">
-        <goal>
-          <equal site="mmc" var="lcw" form="msg">ON</equal>
-        </goal>
-        <check>
-          <match site="mmc" var="spd" form="msg">LOW</match>
-        </check>
-        <exec site="mmc" name="cw"/>
-        <wait retry="300" label="end of motion">
-          <equal site="mmc" var="bs" form="data">0</equal>
-        </wait>
-        <upd site="mmc"/>
-      </item>
-      <item id="mmc_ccw" label="Initialize(CCW)">
-        <goal>
-          <equal site="mmc" var="lccw" form="msg">ON</equal>
-        </goal>
-        <check>
-          <match site="mmc" var="spd" form="msg">LOW</match>
-        </check>
-        <exec site="mmc" name="ccw"/>
-        <wait retry="300" label="end of motion">
-          <equal site="mmc" var="bs" form="data">0</equal>
-        </wait>
-        <upd site="mmc"/>
-      </item>
-      <item id="mmc_gh-cw" label="Go to Home from CW end">
-        <goal>
-          <not site="mmc" var="lcw" form="msg">ON</not>
-        </goal>
-        <check>
-          <match site="mmc" var="spd" form="msg">LOW</match>
-          <equal site="mmc" var="lcw" form="msg">ON</equal>
-        </check>
-        <exec site="mmc" name="gh-cw"/>
-        <wait retry="30" label="end of motion">
-          <equal site="mmc" var="bs" form="data">0</equal>
-        </wait>
-        <upd site="mmc"/>
-      </item>
-      <item id="mmc_gh-ccw" label="Go to Home from CCW end">
-        <goal>
-          <not site="mmc" var="lccw" form="msg">ON</not>
-        </goal>
-        <check>
-          <match site="mmc" var="spd" form="msg">LOW</match>
-          <equal site="mmc" var="lccw" form="msg">ON</equal>
-        </check>
-        <exec site="mmc" name="gh-ccw"/>
-        <wait retry="240" label="end of motion">
-          <equal site="mmc" var="bs" form="data">0</equal>
-        </wait>
-        <upd site="mmc"/>
-      </item>
       <unit id="unit_mmc_2_slot023" title="slot[0-23]" label="Move to Slot [0-23]">
         <item id="mmc_slot0" label="Move to Slot 0">
           <goal>
@@ -512,21 +434,6 @@
           <upd site="mmc"/>
         </item>
       </unit>
-      <item id="mmc_slot0_FIN" label="Move to Slot 0">
-        <goal>
-          <match site="mmc" var="abs" form="msg">S0</match>
-        </goal>
-        <check>
-          <match site="mmc" var="spd" form="msg">LOW</match>
-          <match site="mmc" var="lcw" form="msg">OFF</match>
-          <match site="mmc" var="lccw" form="msg">OFF</match>
-        </check>
-        <cfg site="mmc" name="slot0_FIN"/>
-        <wait retry="150" label="end of motion">
-          <equal site="mmc" var="bs" form="data">0</equal>
-        </wait>
-        <upd site="mmc"/>
-      </item>
       <unit id="unit_mmc_2_access023" title="access[0-23]" label="Access to Slot[0-23]">
         <item id="mmc_access0" label="Access to Slot0">
           <goal>
@@ -811,15 +718,110 @@
           <upd site="mmc"/>
         </item>
       </unit>
-      <item id="stop" label="Emergency STOP">
-        <exec site="mma" name="astop"/>
-        <exec site="mmc" name="astop"/>
-      </item>
-      <item id="upd" label="Update">
-        <upd site="mma"/>
+      <unit id="unit_mmc_2_sha" title="sha" label="Shared Command">
+        <item id="stop" label="Emergency STOP">
+          <exec site="mma" name="astop"/>
+          <exec site="mmc" name="astop"/>
+        </item>
+        <item id="upd" label="Update">
+          <upd site="mma"/>
+          <upd site="mmc"/>
+          <upd site="mfp"/>
+          <upd site="map"/>
+        </item>
+      </unit>
+      <item id="mmc_cw-0.1" label="Move 0.1 unit CW">
+        <check>
+          <match site="mmc" var="spd" form="msg">LOW</match>
+          <match site="mmc" var="lcw" form="msg">OFF</match>
+          <match site="mmc" var="lccw" form="msg">OFF</match>
+        </check>
+        <cfg site="mmc" name="cw-0.1"/>
+        <wait retry="10" label="end of motion">
+          <equal site="mmc" var="bs" form="data">0</equal>
+        </wait>
         <upd site="mmc"/>
-        <upd site="mfp"/>
-        <upd site="map"/>
+      </item>
+      <item id="mmc_ccw-0.1" label="Move 0.1 unit CCW">
+        <check>
+          <match site="mmc" var="spd" form="msg">LOW</match>
+          <match site="mmc" var="lcw" form="msg">OFF</match>
+          <match site="mmc" var="lccw" form="msg">OFF</match>
+        </check>
+        <cfg site="mmc" name="ccw-0.1"/>
+        <wait retry="10" label="end of motion">
+          <equal site="mmc" var="bs" form="data">0</equal>
+        </wait>
+        <upd site="mmc"/>
+      </item>
+      <item id="mmc_cw" label="Initialize(CW)">
+        <goal>
+          <equal site="mmc" var="lcw" form="msg">ON</equal>
+        </goal>
+        <check>
+          <match site="mmc" var="spd" form="msg">LOW</match>
+        </check>
+        <exec site="mmc" name="cw"/>
+        <wait retry="300" label="end of motion">
+          <equal site="mmc" var="bs" form="data">0</equal>
+        </wait>
+        <upd site="mmc"/>
+      </item>
+      <item id="mmc_ccw" label="Initialize(CCW)">
+        <goal>
+          <equal site="mmc" var="lccw" form="msg">ON</equal>
+        </goal>
+        <check>
+          <match site="mmc" var="spd" form="msg">LOW</match>
+        </check>
+        <exec site="mmc" name="ccw"/>
+        <wait retry="300" label="end of motion">
+          <equal site="mmc" var="bs" form="data">0</equal>
+        </wait>
+        <upd site="mmc"/>
+      </item>
+      <item id="mmc_gh-cw" label="Go to Home from CW end">
+        <goal>
+          <not site="mmc" var="lcw" form="msg">ON</not>
+        </goal>
+        <check>
+          <match site="mmc" var="spd" form="msg">LOW</match>
+          <equal site="mmc" var="lcw" form="msg">ON</equal>
+        </check>
+        <exec site="mmc" name="gh-cw"/>
+        <wait retry="30" label="end of motion">
+          <equal site="mmc" var="bs" form="data">0</equal>
+        </wait>
+        <upd site="mmc"/>
+      </item>
+      <item id="mmc_gh-ccw" label="Go to Home from CCW end">
+        <goal>
+          <not site="mmc" var="lccw" form="msg">ON</not>
+        </goal>
+        <check>
+          <match site="mmc" var="spd" form="msg">LOW</match>
+          <equal site="mmc" var="lccw" form="msg">ON</equal>
+        </check>
+        <exec site="mmc" name="gh-ccw"/>
+        <wait retry="240" label="end of motion">
+          <equal site="mmc" var="bs" form="data">0</equal>
+        </wait>
+        <upd site="mmc"/>
+      </item>
+      <item id="mmc_slot0_FIN" label="Move to Slot 0">
+        <goal>
+          <match site="mmc" var="abs" form="msg">S0</match>
+        </goal>
+        <check>
+          <match site="mmc" var="spd" form="msg">LOW</match>
+          <match site="mmc" var="lcw" form="msg">OFF</match>
+          <match site="mmc" var="lccw" form="msg">OFF</match>
+        </check>
+        <cfg site="mmc" name="slot0_FIN"/>
+        <wait retry="150" label="end of motion">
+          <equal site="mmc" var="bs" form="data">0</equal>
+        </wait>
+        <upd site="mmc"/>
       </item>
     </group>
     <group id="grp_car_1" caption="Initialize" rank="0">
@@ -829,37 +831,11 @@
           <not site="mfp" var="ao" form="msg">OPEN</not>
         </check>
         <cfg site="mmc" name="lowspd"/>
-        <upd site="map"/>
-        <mcr name="mmc_cw"/>
-        <upd site="map"/>
-        <mcr name="mmc_gh-cw"/>
-        <upd site="map"/>
-        <mcr name="mmc_cw"/>
-        <upd site="map"/>
-        <mcr name="mmc_gh-cw"/>
-        <upd site="map"/>
-        <cfg site="mmc" name="set0"/>
-      </item>
-      <item id="cinit_a" label="carousel initialize">
-        <upd site="mfp"/>
-        <mcr name="cinit_a_exec"/>
-      </item>
-      <item id="cinit_a_exec" label="carousel initialize">
-        <check>
-          <equal site="mfp" var="gv" form="msg">CLOSE</equal>
-        </check>
         <upd site="mmc"/>
-        <upd site="map"/>
-        <cfg site="mmc" name="lowspd"/>
-        <upd site="map"/>
         <mcr name="mmc_cw"/>
-        <upd site="map"/>
         <mcr name="mmc_gh-cw"/>
-        <upd site="map"/>
         <mcr name="mmc_cw"/>
-        <upd site="map"/>
         <mcr name="mmc_gh-cw"/>
-        <upd site="map"/>
         <cfg site="mmc" name="set0"/>
       </item>
     </group>

@@ -4,7 +4,7 @@ ENV['VER'] ||= 'Initialize'
 require 'libmcrman'
 # CIAX-XML Macro Server
 module CIAX
-  OPT.parse('csenmr')
+  OPT.parse('csenr')
   cfg = Config.new
   begin
     cfg[:dev_list] = Wat::List.new(cfg)

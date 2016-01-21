@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require 'libappexe'
+require 'libapplist'
 require 'libwatview'
 
 module CIAX
   # Watch Layer
   module Wat
-    # cfg should have [:sub_list]
+    # cfg must have [:db], [:sub_list]
     class Exe < Exe
       attr_reader :sub, :stat
       def initialize(id, cfg)
@@ -23,7 +23,7 @@ module CIAX
         100.times do
           sleep 0.1
           @server_upd_proc.call(src) if @server_upd_proc
-          return true unless @sv_stat.get(:isu)
+          return true unless @sv_stat.get(:busy)
         end
         false
       end
@@ -96,21 +96,13 @@ module CIAX
       end
     end
 
-    # Watch List
-    class List < Site::List
-      def initialize(cfg, top_list = nil)
-        super(cfg, top_list || self, App::List)
-        store_db(@sub_list.db)
-      end
-    end
-
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
       cfg = Config.new
-      cfg[:jump_groups] = []
-      cfg[:site] = ARGV.shift
+      cfg[:db] = Ins::Db.new
+      cfg[:sub_list] = App::List.new(cfg)
       begin
-        List.new(cfg).ext_shell.shell
+        Exe.new(ARGV.shift, cfg).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

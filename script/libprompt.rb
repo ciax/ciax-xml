@@ -30,7 +30,7 @@ module CIAX
       self
     end
 
-    def set(key)
+    def up(key)
       pre_upd
       self[key] = true
       verbose { "Set [#{key}]" }
@@ -39,7 +39,7 @@ module CIAX
       post_upd
     end
 
-    def reset(key)
+    def dw(key)
       pre_upd
       self[key] = false
       verbose { "Reset [#{key}]" }
@@ -70,13 +70,9 @@ module CIAX
       post_upd
     end
 
-    # Manipulate Message
-    def msg(msg = nil)
-      pre_upd
-      self[:msg] = msg if msg
+    # Show Message
+    def msg
       self[:msg]
-    ensure
-      post_upd
     end
 
     def to_v

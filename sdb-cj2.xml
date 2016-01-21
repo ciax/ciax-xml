@@ -4,12 +4,12 @@
     <table id="rst">
       <pattern class="normal" msg="OK">7</pattern>
       <pattern class="normal" msg="OFF">0</pattern>
-      <default class="alarm" msg="BAD" />
+      <default class="alarm" msg="BAD"/>
     </table>
     <table id="ist">
       <pattern class="normal" msg="ON ">15</pattern>
       <pattern class="warn" msg="OFF">0</pattern>
-      <default class="alarm" msg="N/A" />
+      <default class="alarm" msg="N/A"/>
     </table>
     <table id="hook">
       <pattern class="normal" msg="HOOK">2</pattern>
@@ -76,7 +76,7 @@
       <pattern class="alarm" msg="MOV Power Balance T-R">91</pattern>
       <pattern class="alarm" msg="Shutter up operation">97</pattern>
       <pattern class="alarm" msg="Shutter down operation">98</pattern>
-      <default class="alarm" msg="Failure" />
+      <default class="alarm" msg="Failure"/>
     </table>
   </symbol>
 </sdb>

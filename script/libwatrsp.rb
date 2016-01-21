@@ -101,12 +101,12 @@ module CIAX
 
       def upd_event
         if @sv_stat.get(:event)
-          if !active? && !@sv_stat.get(:isu)
-            @sv_stat.reset(:event)
+          if !active? && !@sv_stat.get(:busy)
+            @sv_stat.dw(:event)
             @on_deact_procs.each { |p| p.call(self) }
           end
         elsif active?
-          @sv_stat.set(:event)
+          @sv_stat.up(:event)
           self[:act_time][1] = @last_updated
           @on_act_procs.each { |p| p.call(self) }
         end

@@ -1,8 +1,5 @@
 #!/usr/bin/ruby
-require 'libmcrcmd'
-require 'libmcrrsp'
-require 'libwatexe'
-require 'libmcrqry'
+require 'libmcrfunc'
 
 module CIAX
   # Macro Layer
@@ -10,6 +7,7 @@ module CIAX
     # Sequencer
     class Seq
       include Msg
+      include Func
       attr_reader :cfg, :record, :qry, :id, :title
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
@@ -43,15 +41,16 @@ module CIAX
       def macro
         Thread.current[:obj] = self
         _show(@record.start)
-        init_sites
-        sub_macro(@cfg, @record)
+        sub_macro(upd_sites + @cfg[:sequence], @record)
       rescue Interrupt
         msg("\nInterrupt Issued to running devices #{@sv_stat.get(:run)}", 3)
         @sv_stat.get(:run).each do|site|
           @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
         end
+      rescue Verification
+        false
       ensure
-        _show(@record.finish)
+        _show(@record.finish + "\n")
       end
 
       def fork
@@ -60,13 +59,13 @@ module CIAX
 
       private
 
-      # macro returns result (true/false)
-      def sub_macro(ment, mstat)
+      # macro returns result (true=complete /false=error)
+      def sub_macro(seqary, mstat)
         @depth += 1
         @record[:status] = 'run'
-        @record[:total_steps] += ment[:sequence].size
+        @record[:total_steps] += type?(seqary, Array).size
         mstat[:result] = 'busy'
-        ment[:sequence].each { |e| break(true) if do_step(e, mstat) }
+        seqary.each { |e| break(true) unless do_step(e, mstat) }
       rescue Interlock
         false
       rescue Interrupt
@@ -77,94 +76,21 @@ module CIAX
         @depth -= 1
       end
 
+      # Return false if sequence is broken
       def do_step(e, mstat)
         step = @record.add_step(e, @depth)
         begin
+          step.show_title
           return true if method('_' + e[:type]).call(e, step, mstat)
         rescue Retry
           retry
         end
       end
 
-      def init_sites
-        @cfg[:dbi][:sites].each do |site|
-          @cfg[:dev_list].get(site).exe(['upd'], 'macro').join('macro')
+      def upd_sites
+        @cfg[:dbi][:sites].map do |site|
+          { site: site, type: 'upd' }
         end
-      end
-
-      def _mesg(_e, step, _mstat)
-        step.ok?
-        @qry.query(['ok'], step)
-        false
-      end
-
-      def _goal(_e, step, mstat)
-        return unless step.skip?
-        return if OPT.test? && !@qry.query(%w(skip force), step)
-        mstat[:result] = 'skipped'
-      end
-
-      def _check(_e, step, mstat)
-        return unless step.fail? && _giveup?(step)
-        mstat[:result] = 'error'
-        fail Interlock
-      end
-
-      alias_method :_verify, :_check
-
-      def _wait(e, step, mstat)
-        if (s = e[:sleep])
-          step.sleeping(s)
-          return
-        end
-        return unless step.timeout? && _giveup?(step)
-        mstat[:result] = 'timeout'
-        fail Interlock
-      end
-
-      def _exec(e, step, _mstat)
-        _exe_site(e) if step.exec? && @qry.query(%w(exec pass), step)
-        @sv_stat.push(:run, e[:site])
-        false
-      end
-
-      def _cfg(e, step, _mstat)
-        step.ok?
-        _exe_site(e)
-        false
-      end
-
-      def _upd(e, step, _mstat)
-        step.ok?
-        e[:args] = ['upd']
-        _exe_site(e)
-        false
-      end
-
-      def _mcr(e, step, _mstat)
-        seq = @cfg.ancestor(2).set_cmd(e[:args])
-        if step.async? && @submcr_proc.is_a?(Proc)
-          step[:id] = @submcr_proc.call(seq, @id).id
-        else
-          res = _mcr_fg(e, seq, step)
-          fail Interlock unless res
-        end
-        false
-      end
-
-      def _select(e, step, _mstat)
-        var = _get_stat(e)
-        e[:args] = e[:select][var]
-        _mcr(e, step, nil)
-      end
-
-      def _mcr_fg(e, seq, step)
-        (e[:retry] || 1).to_i.times do
-          res = sub_macro(seq, step)
-          return res if res
-          step[:action] = 'retry'
-        end
-        nil
       end
 
       # Print section
@@ -176,26 +102,10 @@ module CIAX
           print str
         end
       end
-
-      def _get_site(e)
-        @cfg[:dev_list].get(e[:site])
-      end
-
-      def _exe_site(e)
-        _get_site(e).exe(e[:args], 'macro').join('macro')
-      end
-
-      def _get_stat(e)
-        _get_site(e).sub.stat[e[:form].to_sym][e[:var]]
-      end
-
-      def _giveup?(step)
-        @qry.query(%w(drop force retry), step)
-      end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ecmn')
+      OPT.parse('ecn')
       cfg = Config.new
       wl = Wat::List.new(cfg) # Take App List
       cfg[:dev_list] = wl

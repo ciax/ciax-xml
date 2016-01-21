@@ -2,7 +2,7 @@
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="srm" version="1" label="OMRON SRM1">
     <stream ccmethod="bcc" wait="0.3" terminator="\r"/>
-    <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
+    <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <ccrange>
         <string label="Prefix">@</string>
@@ -14,45 +14,49 @@
       <char length="1" label="Delimiter">0xd</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <item id="getmodel" label="Get Model Code" response="getmodel" type="stat">
-        <string label="Header Code">MM</string>
-      </item>
-      <item id="getstat" label="Get Status" response="getstat" type="stat">
-        <string label="Header Code">RR</string>
-        <string label="Start Channel">0000</string>
-        <string label="length">0001</string>
-      </item>
-      <item id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
-        <par_num>0:500000</par_num>
-        <string label="Header Code">FK</string>
-        <string label="Operand">CIO </string>
-        <string label="Channel">0000</string>
-        <!--[000..04(5)]-->
-        <string format="%016d">$1</string>
-      </item>
+      <group id="gst" caption="Status">
+        <item id="getmodel" label="Get Model Code" response="getmodel" type="stat">
+          <string label="Header Code">MM</string>
+        </item>
+        <item id="getstat" label="Get Status" response="getstat" type="stat">
+          <string label="Header Code">RR</string>
+          <string label="Start Channel">0000</string>
+          <string label="length">0001</string>
+        </item>
+      </group>
+      <group id="gact" caption="Action">
+        <item id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
+          <par_num>0:500000</par_num>
+          <string label="Header Code">FK</string>
+          <string label="Operand">CIO </string>
+          <string label="Channel">0000</string>
+          <!--[000..04(5)]-->
+          <string format="%016d">$1</string>
+        </item>
+      </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <ccrange>
         <field label="Prefix">@</field>
         <body/>
       </ccrange>
-      <field assign="cc" decode="hexstr" label="BCC" length="2" />
+      <field assign="cc" decode="hexstr" label="BCC" length="2"/>
       <field label="Terminater">*</field>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getmodel">
         <field label="Command Code">00MM</field>
         <field label="Response Code" length="2" assign="cod"/>
-        <field assign="model" label="Model Number" length="2" />
+        <field assign="model" label="Model Number" length="2"/>
       </item>
       <item id="getstat">
         <field label="Command Code">00RR</field>
         <field label="Response Code" length="2" assign="cod"/>
         <!--Big endian-->
-        <field assign="c1d3" label="CH1 bit12-15" length="1" />
-        <field assign="c1d2" label="CH1 bit8-11" length="1" />
-        <field assign="c1d1" label="CH1 bit4-7" length="1" />
-        <field assign="c1d0" label="CH1 bit0-3" length="1" />
+        <field assign="c1d3" label="CH1 bit12-15" length="1"/>
+        <field assign="c1d2" label="CH1 bit8-11" length="1"/>
+        <field assign="c1d1" label="CH1 bit4-7" length="1"/>
+        <field assign="c1d0" label="CH1 bit0-3" length="1"/>
       </item>
       <item id="fset">
         <field label="Command Code">00FK</field>

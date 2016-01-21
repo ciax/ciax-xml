@@ -50,14 +50,20 @@ def _uid
   'unit_' + @ucore
 end
 
-def _gadd(gid,uid)
-  ary = @group[gid][:member]||=[]
+def _add_i2g(gid, iid)
+  ary = @group[gid][:member] ||= []
+  ary << iid unless ary.include?(iid)
+  ary
+end
+
+def _add_u2g(gid, uid)
+  ary = @group[gid][:units] ||= []
   ary << uid unless ary.include?(uid)
   ary
 end
 
-def _uadd(uid,iid)
-  ary = @unit[uid][:member]||=[]
+def _add_i2u(uid, iid)
+  ary = @unit[uid][:member] ||= []
   ary << iid unless ary.include?(iid)
   ary
 end
@@ -66,21 +72,22 @@ end
 def grouping(id, label, inv, name)
   if /^!/ =~ id
     @gcore = "#{name}_#{$'}"
-    @group[_gid]={caption: label.gsub(/ *-{2,} */, ''), rank: inv.to_i}
+    @group[_gid] = { caption: label.gsub(/ *-{2,} */, ''), rank: inv.to_i }
     return
   elsif !@gcore # default group
     @gcore = name
-    @group[_gid]={caption: "#{name.upcase} Group", rank: inv.to_i}
+    @group[_gid] = { caption: "#{name.upcase} Group", rank: inv.to_i }
   end
   id
 end
 
 # Unit is enclosed by ???, Title,,cap
+#  and member should be invisible
 def unitting(id, label, inv, type)
   if type == 'cap'
     @ucore = @gcore + '_' + id.tr('^_a-zA-Z0-9', '')
-    @unit[_uid]={title: id, caption: label}
-    _gadd(_gid,_uid)
+    @unit[_uid] = { title: id, label: label }
+    _add_u2g(_gid, _uid)
     return
   elsif !inv || inv.empty?
     @ucore = nil
@@ -90,9 +97,9 @@ end
 
 def iteming(id, label, index)
   if @ucore
-    _uadd(_uid, id)
+    _add_i2u(_uid, id)
   else
-    _gadd(_gid, id)
+    _add_i2g(_gid, id)
   end
   item = (index[id] ||= {})
   item['label'] = label
@@ -182,12 +189,13 @@ def read_dev_cdb(index, site)
   cfga = @cfgitems[site] = []
   get_csv("cdb_#{site}") do|id, label, inv, type, cond|
     label.gsub!(/&/, 'and')
-    grouping(id, label, 2, site) || next
-    unitting(id, label, inv, type) || next
+    unitting(id, label, inv, type) || next # line with cap field
+    grouping(id, label, 2, site) || next   # line with ! header
     item = iteming("#{site}_#{id}", label, index)
     seq = item['seq'] = []
     seq << exe_type(type, site, id, cfga)
-    seq << wait_loop(cond, site)
+    wdb = wait_loop(cond, site)
+    seq << wdb if wdb
   end
 end
 
@@ -195,7 +203,31 @@ def mdb_reduction(index)
   index.select! do|_k, v|
     v.key?('seq') && v['seq'].any? { |f| f.is_a? Hash }
   end
-  @unit.values.each{ |a| a[:member].replace(a[:member] & index.keys) }
+end
+
+def clean_unit
+  @unit.values.each { |a| chk_member(a) }
+  @unit.select! { |_k, v| v[:member] }
+end
+
+def clean_grp
+  @group.values.each do |a|
+    chk_member(a)
+    chk_units(a)
+  end
+  @group.select! { |_k, v| v[:member] || v[:units] }
+end
+
+def chk_member(a)
+  return unless a[:member]
+  a[:member].replace(a[:member] & @index.keys)
+  a.delete(:member) if a[:member].empty?
+end
+
+def chk_units(a)
+  return unless a[:units]
+  a[:units].replace(a[:units] & @unit.keys)
+  a.delete(:units) if a[:units].empty?
 end
 
 ######### Macro DB ##########
@@ -213,8 +245,8 @@ end
 def conv_dev_mcr(ary)
   cmd, *args = ary
   if /exec/ =~ cmd
-    id=args.join('_')
-    ary.replace(['mcr',id]) if @mdb[:index].key?(id)
+    id = args.join('_')
+    ary.replace(['mcr', id]) if @mdb[:index].key?(id)
   end
   ary
 end
@@ -256,11 +288,11 @@ end
 def mk_sel(str, index, gid, db)
   id = str.sub(/%(.)/, 'X')
   dbi = db[$+].dup
-  _gadd(gid, id)
+  _add_i2g(gid, id)
   item = index[id] = {}
   var = dbi['var'].split(':')
   item['label'] = 'Select Macro'
-  sel = item['select'] = {'site' => var[0],'var' => var[1]}
+  sel = item['select'] = { 'site' => var[0], 'var' => var[1] }
   op = sel['option'] = {}
   dbi['list'].each do|k, v|
     val = str.sub(/%./, v)
@@ -273,7 +305,7 @@ def select_mcr(select, index, proj)
   return if select.empty?
   db = read_sel_table(proj)
   gid = "grp_sel_#{proj}"
-  @group[gid]={caption: "#{proj.upcase} Select Group", rank: 2}
+  @group[gid] = { caption: "#{proj.upcase} Select Group", rank: 2 }
   select.each do|str|
     mk_sel(str, index, gid, db)
   end
@@ -287,12 +319,12 @@ abort "Usage: csv2mdb -m(proj) [sites]\n"\
 opt = ARGV.getopts('m:')
 @gcore = nil
 @ucore = nil
-@cfgitems = {}
+@cfgitems = {} # config command list (not action)
 @devmcrs = []
 @mdb = { caption_macro: 'macro' }
 @group = @mdb[:group] = {}
 @unit = @mdb[:unit] = {}
-@mdb[:index] = {}
+@index = @mdb[:index] = {}
 
 # Convert device macro
 ARGV.each do|site|
@@ -301,7 +333,7 @@ ARGV.each do|site|
   read_dev_idb(index, site)
   read_dev_cdb(index, site)
   mdb_reduction(index)
-  @mdb[:index].update(index)
+  @index.update(index)
   @devmcrs.concat index.keys
 end
 
@@ -313,6 +345,8 @@ if proj
   read_mcr_idb(index, proj)
   select = read_mcr_cdb(index, proj)
   select_mcr(select, index, proj)
-  @mdb[:index].update(index)
+  @index.update(index)
 end
-puts JSON.dump @mdb
+clean_unit
+clean_grp
+jj @mdb

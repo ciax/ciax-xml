@@ -1,18 +1,18 @@
 # Splitted off 12/3/15
 
 sha,Shared Command,1,cap
-stop,Emergency STOP,,mcr,mma:astop mmc:astop
-upd,Update,,cmd,mma:upd mmc:upd mfp:upd map:upd
-chk,Check Status(No actual motion),1,cmd,
+stop,Emergency STOP,1,mcr,mma:astop mmc:astop
+upd,Update,1,cmd,mma:upd mmc:upd mfp:upd map:upd
+#chk,Check Status(No actual motion),1,cmd,
 
 !1,Initialize
 # cinit
-crinit,Carousel Initialize,,cap,
-cinit,carousel initialize,,mcr,mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
+#crinit,Carousel Initialize,,cap,
+cinit,carousel initialize,,mcr,mmc:lowspd mmc:upd mmc:cw mmc:gh-cw mmc:cw mmc:gh-cw mmc:set0
 # cinit_a (cinit for web-operation)
 #cinit_a,carousel initialize,1,mcr,mmc:upd map:upd mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
-cinit_a,carousel initialize,1,mcr,mfp:upd mcr:cinit_a_exec
-cinit_a_exec,carousel initialize,1,mcr,mmc:upd map:upd mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
+#cinit_a,carousel initialize,1,mcr,mfp:upd mcr:cinit_a_exec
+#cinit_a_exec,carousel initialize,1,mcr,mmc:upd map:upd mmc:lowspd map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:cw map:upd mmc:gh-cw map:upd mmc:set0
 
 # ____________________________________________________________________________
 # mmc command
@@ -642,7 +642,7 @@ slot21_21,carousel,1,mcr,mmc:slot21
 #slot22_21,carousel,1,mcr,mmc:slot21
 #slot23_21,carousel,1,mcr,mmc:slot21
 
-slot[00-23]_22,Slot to 22,1,cap,
+#slot[00-23]_22,Slot to 22,1,cap,
 #slot00_22,carousel,1,mcr,mmc:slot2 map:upd mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot18 map:upd mmc:slot20 map:upd mmc:slot22
 #slot01_22,carousel,1,mcr,mmc:slot3 map:upd mmc:slot5 map:upd mmc:slot7 map:upd mmc:slot9 map:upd mmc:slot11 map:upd mmc:slot13 map:upd mmc:slot15 map:upd mmc:slot17 map:upd mmc:slot19 map:upd mmc:slot21 map:upd mmc:slot22
 #slot02_22,carousel,1,mcr,mmc:slot4 map:upd mmc:slot6 map:upd mmc:slot8 map:upd mmc:slot10 map:upd mmc:slot12 map:upd mmc:slot14 map:upd mmc:slot16 map:upd mmc:slot18 map:upd mmc:slot20 map:upd mmc:slot22
@@ -668,7 +668,7 @@ slot[00-23]_22,Slot to 22,1,cap,
 #slot22_22,carousel,1,mcr,mmc:slot22
 #slot23_22,carousel,1,mcr,mmc:slot22
 
-slot[00-23]_23,Slot to 23,1,cap,
+#slot[00-23]_23,Slot to 23,1,cap,
 #slot00_23,carousel,1,mcr,mmc:slot23
 #slot01_23,carousel,1,mcr,mmc:slot23
 #slot02_23,carousel,1,mcr,mmc:slot0 map:upd mmc:slot23

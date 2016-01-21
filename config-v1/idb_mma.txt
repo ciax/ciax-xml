@@ -11,6 +11,6 @@ gf,pos=FOCUS,
 gr,pos=ROT,
 gw,abs~WAIT,
 gs,pos=STORE,
-setstk,,pos=STORE&abs~STORE
+sets,,pos=STORE&abs~STORE
 rini,pos=ROT,
-setrot,,pos=ROT&abs~ROT
+setsot,,pos=ROT&abs~ROT

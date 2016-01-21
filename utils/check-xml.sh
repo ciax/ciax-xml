@@ -6,10 +6,12 @@ for i ; do
     case $i in
         *.xsd)
             schema=$sdir/XMLSchema.xsd;;
-        ?db-*.xml)
-            schema=$sdir/${i%%-*}.xsd;;
+        *.xml)
+            eval $(egrep -o 'xmlns[^>]+' $i|head -1)
+            schema=$sdir/${xmlns##*/}.xsd
+            ;;
         *)
-            echo "$1 isn't Target (name should be ?db-*.xml)"
+            echo "$1 isn't Target"
             continue;;
     esac
     xmllint --noout --schema $schema $i

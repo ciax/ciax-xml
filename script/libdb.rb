@@ -8,18 +8,7 @@ module CIAX
   # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
   # set() generates HashDb
   # Cache is available
-  class Dbi < Hashx # DB Item
-    # cover() will deeply merge self and given db
-    # (If end of the element confricts, self content will be taken)
-    def cover(db, key = nil)
-      type?(db, Dbi)
-      if key
-        self[key] = db.deep_copy.deep_update(self[key] || {})
-      else
-        db.deep_copy.deep_update(self)
-      end
-    end
-  end
+  class Dbi < Hashx; end # DB Item
 
   # DB class
   class Db < Hashx
@@ -31,12 +20,14 @@ module CIAX
       # @displist is Display
       lid = 'list'
       lid += "_#{PROJ}" if PROJ
+      # Show site list
       @displist = cache(lid, &:displist)
+      @argc = 0
     end
 
     def get(id)
       if @displist.valid?(id)
-        cache(id) { |doc| doc_to_db(doc.get(id))}
+        cache(id) { |docs| doc_to_db(docs.get(id)) }
       else
         fail(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s)
       end
@@ -45,33 +36,51 @@ module CIAX
     private
 
     # Returns Hash
-    def doc_to_db(_)
-      Dbi.new
+    def doc_to_db(doc)
+      Dbi.new(doc[:attr])
     end
 
+    # Returns Dbi(command list) or Disp(site list)
     def cache(id)
       @base = "#{@type}-#{id}"
       @marfile = vardir('cache') + "#{@base}.mar"
-      if newest?
-        verbose { "Cache Loading (#{id})" }
-        return self[id] if key?(id)
-        begin
-          res = Marshal.load(IO.read(@marfile))
-        rescue ArgumentError # if empty
-          res = {}
-        end
+      if _newest?
+        res = _load_cache(id)
       else
-        warning("Cache Refresh (#{id})")
-        res = yield(@doc ||= Xml::Doc.new(@type, PROJ))
-        open(@marfile, 'w') do|f|
-          f << Marshal.dump(res)
-          verbose { "Cache Saved(#{id})" }
-        end
+        @docs = Xml::Doc.new(@type) unless @docs
+        res = _validate_rep(yield(@docs))
+        _save_cache(id, res)
+      end
+      res
+    end
+
+    def _load_cache(id)
+      verbose { "Cache Loading (#{id})" }
+      return self[id] if key?(id)
+      begin
+        Marshal.load(IO.read(@marfile))
+      rescue ArgumentError # if empty
+        Hashx.new
+      end
+    end
+
+    def _save_cache(id, res)
+      verbose { "Cache Refresh (#{id})" }
+      open(@marfile, 'w') do|f|
+        f << Marshal.dump(res)
+        verbose { "Cache Saved(#{id})" }
       end
       self[id] = res
     end
 
-    def newest?
+    # counter must not remain
+    def _validate_rep(db)
+      res = db.deep_search('\$[_a-z]')
+      return db if res.empty?
+      cfg_err("Counter remained at [#{res.join('/')}]")
+    end
+
+    def _newest?
       if NOCACHE
         verbose { "#{@type}/Cache NOCACHE is set" }
         return false
@@ -79,7 +88,7 @@ module CIAX
         verbose { "#{@type}/Cache MAR file(#{@base}) not exist" }
         return false
       else
-        newer = cmp($LOADED_FEATURES.grep(/#{__dir__}/) + Msg.xmlfiles(@type))
+        newer = _cmp_($LOADED_FEATURES.grep(/#{__dir__}/) + Msg.xmlfiles(@type))
         if newer
           verbose { "#{@type}/Cache File(#{newer}) is newer than cache" }
           verbose { "#{@type}/Cache cache=#{::File::Stat.new(@marfile).mtime}" }
@@ -90,62 +99,72 @@ module CIAX
       true
     end
 
-    def cmp(ary)
+    def _cmp_(ary)
       ary.each do|f|
         return f if ::File.file?(f) && test('>', f, @marfile)
       end
       false
     end
 
-    def par2item(e, item)
-      case e.name
-      when 'par_num'
-        attr = { type: 'num', list: e.text.split(',') }
-        attr[:label] = e[:label] if e[:label]
-        (item[:parameters] ||= []) << attr
-      when 'par_str'
-        attr = { type: 'str', list: e.text.split(',') }
-        attr[:label] = e[:label] if e[:label]
-        (item[:parameters] ||= []) << attr
-      end
+    ####### For Command DB #######
+
+    # Take parameter and next line
+    def par2item(doc, item)
+      return unless /par_(num|str)/ =~ doc.name
+      @argc +=1
+      attr = { type: $1, list: doc.text.split(',') }
+      attr[:label] = doc[:label] if doc[:label]
+      (item[:parameters] ||= []) << attr
     end
 
-    # For Command DB
+    # Check parameter var for subst in db
+    def validate_par(db)
+      res = db.deep_search(format('\$[%d-9]', @argc+1))
+      return db if res.empty?
+      cfg_err("Parameter var out of range [#{res.join('/')}] for #{@argc}")
+    ensure
+      @argc = 0
+    end
+
     def init_command(dbc, dbi)
-      @idx = {}
-      @grps = {}
-      @units = {}
-      dbc.each do|e| # e.name should be group
+      @idx = Hashx.new
+      @grps = Hashx.new
+      @units = Hashx.new
+      # Adapt to both XML::Gnu, Hash
+      dbc.each_value do|e|
+        # e.name should be group
         Msg.give_up('No group in dbc') unless e.name == 'group'
         gid = e.attr2item(@grps)
-        arc_unit(e, gid)
+        _add_unit(e, gid)
       end
-      dbi[:command] = { group: @grps, index: @idx }
-      dbi[:command][:unit] = @units unless @units.empty?
+      cdb = dbi[:command] = Hashx.new( group: @grps, index: @idx )
+      cdb[:unit] = @units unless @units.empty?
+      cdb
     end
 
-    def arc_unit(e, gid)
-      return unless e
-      e.each do|e0|
+    def _add_unit(doc, gid)
+      return unless doc
+      doc.each do|e0|
         case e0.name
         when 'unit'
           uid = e0.attr2item(@units)
           (@grps[gid][:units] ||= []) << uid
           e0.each do|e1|
-            id = arc_command(e1, gid)
-            @idx[id][:unit] = uid
+            id, itm = _add_item(e1, gid)
+            itm[:unit] = uid
             (@units[uid][:members] ||= []) << id
           end
         when 'item'
-          arc_command(e0, gid)
+          _add_item(e0, gid)
         end
       end
+      self
     end
 
-    def arc_command(e0,gid)
-      id = e0.attr2item(@idx)
+    def _add_item(doc, gid)
+      id = doc.attr2item(@idx)
       (@grps[gid][:members] ||= []) << id
-      id
+      [id, @idx[id]]
     end
   end
 end

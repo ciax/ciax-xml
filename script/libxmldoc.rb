@@ -64,7 +64,7 @@ module CIAX
           _mk_project(top)
         when 'group' # ddb
           _mk_group(top)
-        else # sdb, adb, fdb, mdb
+        else # sdb, adb, fdb, mdb, cdb
           _mk_sub_db(top)
         end
       end

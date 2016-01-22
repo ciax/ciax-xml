@@ -30,10 +30,7 @@ module CIAX
       # Command Domain
       def init_command(doc, dbi)
         return self unless doc.key?(:alias)
-        cdb = dbi[:command]
-        @idx = cdb[:index]
-        @grps = cdb[:group]
-        @units = cdb[:unit]
+        cdb = super(dbi)
         cdb[:group]['gal'] = Hashx.new(caption: 'Alias')
         _add_unit(doc[:alias], 'gal')
         cdb

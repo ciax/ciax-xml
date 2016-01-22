@@ -126,20 +126,19 @@ module CIAX
       @argc = 0
     end
 
-    def init_command(dbc, dbi)
+    def init_command(dbi)
       @cdb = (dbi[:command] ||= Hashx.new)
       @idx = (@cdb[:index] ||= Hashx.new)
       @grps = (@cdb[:group] ||= Hashx.new)
       @units = (@cdb[:unit] ||= Hashx.new)
-      # Adapt to both XML::Gnu, Hash
-      _add_group(dbc)
       @cdb
     end
 
+    # Adapt to both XML::Gnu, Hash
     def _add_group(doc)
       doc.each_value do|e|
         # e.name should be group
-        Msg.give_up('No group in dbc') unless e.name == 'group'
+        Msg.give_up('No group in cdb') unless e.name == 'group'
         gid = e.attr2item(@grps)
         _add_unit(e, gid)
       end

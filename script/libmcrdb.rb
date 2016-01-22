@@ -17,9 +17,10 @@ module CIAX
       private
 
       def doc_to_db(doc)
-        dbi = Dbi[doc[:attr]]
         @sites = []
-        init_command(doc[:group], dbi)
+        dbi = super
+        init_command(dbi)
+        _add_group(doc[:group])
         dbi[:sites] = @sites.uniq
         dbi
       end
@@ -99,8 +100,6 @@ module CIAX
         end
         options
       end
-
-      private
 
       def _get_sites_(atrb)
         @sites << atrb[:site] if atrb[:site] && /\$/ !~ atrb[:site]

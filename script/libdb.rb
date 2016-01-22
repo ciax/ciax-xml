@@ -127,11 +127,11 @@ module CIAX
     end
 
     def init_command(dbi)
-      @cdb = (dbi[:command] ||= Hashx.new)
-      @idx = (@cdb[:index] ||= Hashx.new)
-      @grps = (@cdb[:group] ||= Hashx.new)
-      @units = (@cdb[:unit] ||= Hashx.new)
-      @cdb
+      cdb = (dbi[:command] ||= Hashx.new)
+      @idx = (cdb[:index] ||= Hashx.new)
+      @grps = (cdb[:group] ||= Hashx.new)
+      @units = (cdb[:unit] ||= Hashx.new)
+      cdb
     end
 
     # Adapt to both XML::Gnu, Hash

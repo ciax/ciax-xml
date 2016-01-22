@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libappdb'
+require 'libcmddb'
 
 module CIAX
   # Instance Layer
@@ -10,6 +11,7 @@ module CIAX
       def initialize
         super('idb')
         @adb = App::Db.new
+        @cdb = Cmd::Db.new
       end
 
       private
@@ -29,21 +31,22 @@ module CIAX
 
       # Command Domain
       def init_command(doc, dbi)
-        return self unless doc.key?(:alias)
+        return self unless doc.key?(:command)
         cdb = super(dbi)
-        cdb[:group]['gal'] = Hashx.new(caption: 'Alias')
-        _add_unit(doc[:alias], 'gal')
+        ali = @cdb.get(doc[:command][:ref])[:command]
+        %i( group unit).each { |k| cdb[k].update(ali[k]) }
+        _conv_index(cdb,ali)
         cdb
       end
 
-      def _add_item(e0, gid)
-        id, itm = super
-        ref = itm.delete(:ref)
-        itm.update(@idx[ref].pick([:parameters, :body]))
-        e0.each do|e1|
-          (itm[:argv] ||= []) << e1.text
+      def _conv_index(cdb, ali)
+        idx=cdb[:index]
+        aidx=ali[:index]
+        aidx.each do |id, itm|
+          ref = itm.delete(:ref)
+          itm.update(idx[ref].pick([:parameters, :body]))
         end
-        [id, itm]
+        idx.update(aidx)
       end
 
       # Status Domain

@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require 'libappdb'
+require 'libdb'
 
 module CIAX
   # Instance Layer
-  module CmdAlias
+  module Cmd
     # Instance DB
     class Db < Db
       def initialize
@@ -17,8 +17,8 @@ module CIAX
       def doc_to_db(doc)
         dbi = super
         init_command(dbi)
-        id = doc[:top].attr2item(@grps)
-        _add_unit(doc[:top], id)
+        @grps['gal']=Hashx.new(caption: 'Alias')
+        _add_unit(doc[:top], 'gal')
         dbi
       end
 

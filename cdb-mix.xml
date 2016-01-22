@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <alias id="mix" label="MOIRCS Turret">
-    <group id="gal" label="Alias">
     <unit id="ut1" title="[*]_1" label="Turret 1 [co,none,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
       <item id="co_1" label="CO Filter for Turret 1" ref="opt">
         <argv>1</argv>
@@ -302,6 +301,5 @@
         <argv>11</argv>
       </item>
     </unit>
-  </group>
   </alias>
 </cdb>

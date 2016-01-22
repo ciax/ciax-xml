@@ -17,14 +17,15 @@ module CIAX
       def doc_to_db(doc)
         dbi = super
         init_command(dbi)
-        _add_group(doc[:group])
+        id = doc[:top].attr2item(@grps)
+        _add_unit(doc[:top], id)
         dbi
       end
 
       def _add_item(e0, gid)
         id, itm = super
-#        ref = itm.delete(:ref)
-#        itm.update(@idx[ref].pick([:parameters, :body]))
+        #        ref = itm.delete(:ref)
+        #        itm.update(@idx[ref].pick([:parameters, :body]))
         e0.each do|e1|
           (itm[:argv] ||= []) << e1.text
         end

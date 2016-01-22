@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cdb="http://ciax.sum.naoj.org/ciax-xml/cdb" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/cdb">
+  <xsd:include schemaLocation="command.xsd"/>
+  <!--command list-->
+  <xsd:element name="cdb">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cdb:alias"/>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="alias">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cdb:item"/>
+        <xsd:element ref="cdb:unit"/>
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="label" type="xsd:token"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="unit">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cdb:item"/>
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="title" type="xsd:token"/>
+      <xsd:attribute name="label" type="xsd:token"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="item">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="cdb:argv"/>
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="label" type="xsd:token" use="optional"/>
+      <xsd:attribute name="ref" type="xsd:NCName" use="required"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

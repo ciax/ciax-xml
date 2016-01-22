@@ -137,7 +137,7 @@ module CIAX
     begin
       doc = Xml::Doc.new(type)
     rescue ConfigError
-      Msg.usage('[type] (adb,fdb,idb,ddb,mdb,sdb)')
+      Msg.usage('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb)')
     end
     begin
       puts doc.get(ARGV.shift).path(ARGV)

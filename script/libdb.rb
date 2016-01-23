@@ -166,7 +166,7 @@ module CIAX
     def _add_item(doc, gid)
       id = doc.attr2item(@idx)
       (@grps[gid][:members] ||= []) << id
-      [id, @idx[id]]
+      [id, @idx[id]] # item is used by child
     end
   end
 end

@@ -10,6 +10,14 @@ module CIAX
         super('cdb')
       end
 
+      # Cover Ins DB
+      def cover(id, cdb)
+        ali = get(id)[:command]
+        %i( group unit).each { |k| cdb[k].update(ali[k]) }
+        _conv_index(cdb, ali)
+        self
+      end
+
       private
 
       # doc is <project>
@@ -17,19 +25,27 @@ module CIAX
       def doc_to_db(doc)
         dbi = super
         init_command(dbi)
-        @grps['gal']=Hashx.new(caption: 'Alias')
+        @grps['gal'] = Hashx.new(caption: 'Alias')
         _add_unit(doc[:top], 'gal')
         dbi
       end
 
       def _add_item(e0, gid)
         id, itm = super
-        #        ref = itm.delete(:ref)
-        #        itm.update(@idx[ref].pick([:parameters, :body]))
         e0.each do|e1|
           (itm[:argv] ||= []) << e1.text
         end
         [id, itm]
+      end
+
+      def _conv_index(cdb, ali)
+        idx = cdb[:index]
+        aidx = ali[:index]
+        aidx.each do |_id, itm|
+          ref = itm.delete(:ref)
+          itm.update(idx[ref].pick([:parameters, :body]))
+        end
+        idx.update(aidx)
       end
     end
 

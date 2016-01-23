@@ -44,7 +44,7 @@ module CIAX
       def init_command(dom, dbi)
         cdb = super(dbi)
         _add_group(dom[:command])
-        cdb[:frame] = init_frame(dom[:cmdframe]) { |e, r| _add_cmdfrm(e, r) } 
+        cdb[:frame] = init_frame(dom[:cmdframe]) { |e, r| _add_cmdfrm(e, r) }
         cdb
       end
 
@@ -55,7 +55,7 @@ module CIAX
             par2item(e1, itm) && next
             e = _add_cmdfrm(e1, r1) || next
             (itm[:body] ||= []) << e
-            verbose{"Body Frame [#{e.inspect}]"}
+            verbose { "Body Frame [#{e.inspect}]" }
           end
           validate_par(itm)
         end
@@ -80,7 +80,7 @@ module CIAX
         frm = init_frame(dom[:rspframe]) { |e| _add_rspfrm(e, fld) }
         idx = _add_response(dom[:response], fld)
         dbi[:frm_id] = dbi[:id]
-        dbi[:response] = Hashx.new(index: idx, frame: frm )
+        dbi[:response] = Hashx.new(index: idx, frame: frm)
         dbi
       end
 
@@ -90,7 +90,7 @@ module CIAX
           id = e0.attr2item(db)
           itm = db[id]
           enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
-            Repeat.new.each(e0) do|e1, r1|
+            Repeat.new.each(e0) do|e1, _r1|
               e = _add_rspfrm(e1, fld) || next
               (itm[:body] ||= []) << e
             end

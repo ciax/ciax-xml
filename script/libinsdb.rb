@@ -33,20 +33,8 @@ module CIAX
       def init_command(doc, dbi)
         return self unless doc.key?(:command)
         cdb = super(dbi)
-        ali = @cdb.get(doc[:command][:ref])[:command]
-        %i( group unit).each { |k| cdb[k].update(ali[k]) }
-        _conv_index(cdb,ali)
+        @cdb.cover(doc[:command][:ref], cdb)
         cdb
-      end
-
-      def _conv_index(cdb, ali)
-        idx=cdb[:index]
-        aidx=ali[:index]
-        aidx.each do |id, itm|
-          ref = itm.delete(:ref)
-          itm.update(idx[ref].pick([:parameters, :body]))
-        end
-        idx.update(aidx)
       end
 
       # Status Domain

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libprompt'
 require 'libthreadx'
-require 'libgroup'
+require 'libcmdgroup'
 
 # SubModule for App::Sv
 # *Command stream(Send)

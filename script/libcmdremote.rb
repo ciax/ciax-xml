@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libvarx'
-require 'liblocal'
+require 'libcmdlocal'
 require 'libparam'
 module CIAX
   # Remote Command Domain

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libvarx'
-require 'liblocal'
+require 'libcmdlocal'
 
 module CIAX
   # This is parent of Layer List, Site List.
@@ -28,7 +28,7 @@ module CIAX
 
       # atrb should have [:jump_class] (Used in Local::Jump::Group)
       def ext_shell(jump_class)
-        @cfg[:jump_class] = type?(jump_class, Module) # Use for liblocal
+        @cfg[:jump_class] = type?(jump_class, Module) # Use for libcmdlocal
         @jumpgrp = Local::Jump::Group.new(@cfg)
         self
       end

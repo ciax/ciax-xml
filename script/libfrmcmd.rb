@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libextcmd'
+require 'libcmdext'
 require 'libframe'
 require 'libfield'
 

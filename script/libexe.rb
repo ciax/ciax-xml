@@ -2,7 +2,7 @@
 require 'libserver'
 require 'libclient'
 require 'libprompt'
-require 'libremote'
+require 'libcmdremote'
 
 # Provide Server,Client
 # Integrate Command,Status

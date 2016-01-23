@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libextcmd'
+require 'libcmdext'
 require 'libappdb'
 # CIAX-XML Command module
 module CIAX

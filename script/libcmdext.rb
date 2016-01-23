@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libremote'
+require 'libcmdremote'
 module CIAX
   # Remote Command Domain
   module Remote

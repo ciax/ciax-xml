@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libitem'
+require 'libcmditem'
 require 'libdispgrp'
 # CIAX-XML
 module CIAX

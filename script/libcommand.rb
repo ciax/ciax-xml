@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libgroup'
+require 'libcmdgroup'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param,
 #   returns String as message.

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wdb xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+  <watch id="tbb" interval="0.2">
+    <event label="ON Executed 1" id="on1">
+      <onchange var="xsw0"/>
+      <pattern var="xsw0">1</pattern>
+      <pattern var="xsw1">0</pattern>
+      <exec name="x1on"/>
+    </event>
+    <event label="ON Executed 2" id="on2">
+      <onchange var="xsw1"/>
+      <pattern var="xsw1">1</pattern>
+      <pattern var="xsw2">0</pattern>
+      <exec name="x2on"/>
+    </event>
+    <event label="ON Executed 3" id="on3">
+      <onchange var="xsw2"/>
+      <pattern var="xsw2">1</pattern>
+      <pattern var="xsw3">0</pattern>
+      <exec name="x3on"/>
+    </event>
+    <event label="OFF Executed 1" id="off1">
+      <onchange var="xsw0"/>
+      <pattern var="xsw0">0</pattern>
+      <pattern var="xsw1">1</pattern>
+      <exec name="x1off"/>
+    </event>
+    <event label="OFF Executed 2" id="off2">
+      <onchange var="xsw1"/>
+      <pattern var="xsw1">0</pattern>
+      <pattern var="xsw2">1</pattern>
+      <exec name="x2off"/>
+    </event>
+    <event label="OFF Executed 3" id="off3">
+      <onchange var="xsw2"/>
+      <pattern var="xsw2">0</pattern>
+      <pattern var="xsw3">1</pattern>
+      <exec name="x3off"/>
+    </event>
+  </watch>
+</wdb>

@@ -29,7 +29,7 @@ module CIAX
       # atrb should have [:jump_class] (Used in Local::Jump::Group)
       def ext_shell(jump_class)
         @cfg[:jump_class] = type?(jump_class, Module) # Use for libcmdlocal
-        @jumpgrp = Local::Jump::Group.new(@cfg)
+        @jumpgrp = Cmd::Local::Jump::Group.new(@cfg)
         self
       end
 

@@ -6,11 +6,12 @@ require 'libfield'
 module CIAX
   # Frame Layer
   module Frm
-    include Remote
+    include Cmd::Remote
     # cfg should have [:field]
     module Int
+      include Cmd::Remote::Int
       # Internal Command Group
-      class Group < Remote::Int::Group
+      class Group < Int::Group
         def initialize(cfg, attr = {})
           super
           add_item('save', '[key,key...] [tag]', def_pars(2))
@@ -22,7 +23,7 @@ module CIAX
     end
     # External Command Group
     module Ext
-      include Remote::Ext
+      include Cmd::Remote::Ext
       class Group < Ext::Group; end
       # Generate [:frame]
       class Item < Ext::Item

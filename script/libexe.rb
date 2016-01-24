@@ -37,7 +37,7 @@ module CIAX
       @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }]
       Thread.abort_on_exception = true
       verbose { "initialize [#{@id}]" }
-      @cobj = Remote::Index.new(@cfg)
+      @cobj = Cmd::Remote::Index.new(@cfg)
       @host = OPT.host
     end
 

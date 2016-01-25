@@ -2,7 +2,6 @@
 # Common Module
 require 'libmsgfunc'
 require 'libmsgmod'
-require 'libmsgtime'
 
 module CIAX
   ######################### Message Module #############################
@@ -90,7 +89,7 @@ module CIAX
 
     def make_head
       Msg.indent(Msg.ver_indent) + head_ary.map do|str, color|
-        Msg.colorize("#{str}", color)
+        Msg.colorize(str.to_s, color)
       end.join(':')
     end
 

@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 # Common Module
 require 'libmsgdbg'
+require 'libmsgtime'
 require 'fileutils'
 require 'json'
 module CIAX
@@ -51,6 +52,11 @@ module CIAX
       dir = "#{ENV['HOME']}/.var/#{subdir}/"
       FileUtils.mkdir_p(dir)
       dir
+    end
+
+    # Switch error output to file
+    def err2file(tag)
+      $stderr.reopen(vardir('log') + 'error_' + tag + today + '.out', 'a')
     end
   end
 end

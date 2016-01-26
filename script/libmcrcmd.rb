@@ -9,6 +9,7 @@ module CIAX
     INTCMD = {
       'exec' => 'Command',
       'pass' => 'Macro',
+      'enter' => 'Sub Macro',
       'drop' => ' Macro',
       'suppress' => 'and Memorize',
       'force' => 'Proceed',

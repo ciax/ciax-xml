@@ -43,7 +43,7 @@ module CIAX
     # Send app entity
     def send(ent, n = 1)
       clear if n == 0 # interrupt
-      cid = type?(ent, Entity).id
+      cid = type?(ent, Cmd::Entity).id
       # batch is frm batch (ary of ary)
       batch = ent[:batch]
       return self if batch.empty?

@@ -10,7 +10,7 @@ module CIAX
       # ment should have [:sequence]'[:dev_list],[:submcr_proc]
       def initialize(ment, pid = '0')
         cfg = Config.new
-        super(type?(ment, Entity).id, cfg)
+        super(type?(ment, Cmd::Entity).id, cfg)
         _init_cmd_(ment, pid)
         _init_thread_
         self

@@ -25,8 +25,7 @@ module CIAX
       def doc_to_db(doc)
         dbi = super
         init_command(dbi)
-        @grps['gal'] = Hashx.new(caption: 'Alias')
-        _add_unit(doc[:top], 'gal')
+        _add_group(doc[:top])
         dbi
       end
 

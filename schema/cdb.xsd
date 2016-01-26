@@ -12,11 +12,22 @@
   <xsd:element name="alias">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cdb:group"/>
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="label" type="xsd:token"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="group">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="cdb:item"/>
         <xsd:element ref="cdb:unit"/>
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
-      <xsd:attribute name="label" type="xsd:token"/>
+      <xsd:attribute name="caption" type="xsd:token" use="optional"/>
+      <xsd:attribute name="column" type="xsd:int"/>
+      <xsd:attribute name="hidden" type="xsd:boolean"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="unit">

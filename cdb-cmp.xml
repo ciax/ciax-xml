@@ -1,38 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <alias id="cci" label="IR Helium Compressor">
-    <item id="c2on" label="CAS2(S1) ON" ref="x0on"/>
-    <item id="c2off" label="CAS2(S1) OFF" ref="x0off"/>
-    <item id="c1on" label="CAS1(S2) ON" ref="x1on"/>
-    <item id="c1off" label="CAS1(S2) OFF" ref="x1off"/>
-    <item id="m2on" label="MOIRCS CR(S8) ON" ref="x2on"/>
-    <item id="m2off" label="MOIRCS CR(S8) OFF" ref="x2off"/>
-    <item id="m1on" label="MOIRCS MAIN(S9) ON" ref="x3on"/>
-    <item id="m1off" label="MOIRCS MAIN(S9) OFF" ref="x3off"/>
-    <item id="cmon" label="CAS MOIRCS/MAIN ON" ref="x0on"/>
-    <item id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="x0off"/>
-    <item id="ccon" label="CAS MOIRCS/CR ON" ref="x1on"/>
-    <item id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off"/>
-    <item id="caon" label="CAS BOTH HC ON" ref="x01on"/>
-    <item id="caoff" label="CAS BOTH HC OFF" ref="x01off"/>
-    <item id="maon" label="MOIRCS BOTH ON" ref="x23on"/>
-    <item id="maoff" label="MOIRCS BOTH OFF" ref="x23off"/>
+    <unit id="uc2" title="c2[on|off]" label="CAS2(S1) [%s]">
+      <item id="c2on" label="ON" ref="x0on"/>
+      <item id="c2off" label="OFF" ref="x0off"/>
+    </unit>
+    <unit id="uc1" title="c1[on|off]" label="CAS1(S2) [%s]">
+      <item id="c1on" label="ON" ref="x1on"/>
+      <item id="c1off" label="OFF" ref="x1off"/>
+    </unit>
+    <unit id="um2" title="m2[on|off]" label="MOIRCS CR(S8)) [%s]">
+      <item id="m2on" label="ON" ref="x2on"/>
+      <item id="m2off" label="OFF" ref="x2off"/>
+    </unit>
+    <unit id="um1" title="m1[on|off]" label="MOIRCS MAIN(S9) [%s]">
+      <item id="m1on" label="ON" ref="x3on"/>
+      <item id="m1off" label="OFF" ref="x3off"/>
+    </unit>
+    <unit id="ucm" title="cm[on|off]" label="CAS MOIRCS/MAIN [%s]">
+      <item id="cmon" label="ON" ref="x0on"/>
+      <item id="cmoff" label="OFF" ref="x0off"/>
+    </unit>
+    <unit id="ucc" title="cc[on|off]" label="CAS MOIRCS/CR [%s]">
+      <item id="ccon" label="ON" ref="x1on"/>
+      <item id="ccoff" label="OFF" ref="x1off"/>
+    </unit>
+    <unit id="uca" title="ca[on|off]" label="CAS BOTH [%s]">
+      <item id="caon" label="ON" ref="x01on"/>
+      <item id="caoff" label="OFF" ref="x01off"/>
+    </unit>
+    <unit id="uma" title="ma[on|off]" label="MOIRCS BOTH [%s]">
+      <item id="maon" label="ON" ref="x23on"/>
+      <item id="maoff" label="OFF" ref="x23off"/>
+    </unit>
   </alias>
   <alias id="cco" label="OPT Helium Compressor">
-    <item id="f2on" label="CIAO(S6) ON" ref="x0on"/>
-    <item id="f2off" label="CIAO(S6) OFF" ref="x0off"/>
-    <item id="m1on" label="COMICS IMG(S4) ON" ref="x2on"/>
-    <item id="m1off" label="COMICS IMG(S4) OFF" ref="x2off"/>
-    <item id="m2on" label="COMICS SPEC(S5) ON" ref="x3on"/>
-    <item id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off"/>
-    <item id="maon" label="COMICS BOTH ON" ref="x23on"/>
-    <item id="maoff" label="COMICS BOTH OFF" ref="x23off"/>
+    <unit id="uf2" title="f2[on|off]" label="CIAO(S6) [%s]">
+      <item id="f2on" label="ON" ref="x0on"/>
+      <item id="f2off" label="OFF" ref="x0off"/>
+    </unit>
+    <unit id="um1" title="m1[on|off]" label="COMICS IMG(S4) [%s]">
+      <item id="m1on" label="ON" ref="x2on"/>
+      <item id="m1off" label="OFF" ref="x2off"/>
+    </unit>
+    <unit id="um2" title="m2[on|off]" label="COMICS SPEC(S5) [%s]">
+      <item id="m2on" label="ON" ref="x3on"/>
+      <item id="m2off" label="OFF" ref="x3off"/>
+    </unit>
+    <unit id="uma" title="ma[on|off]" label="COMICS BOTH [%s]">
+      <item id="maon" label="ON" ref="x23on"/>
+      <item id="maoff" label="OFF" ref="x23off"/>
+    </unit>
   </alias>
   <alias id="cri" label="IR Helium Compressor">
-    <item id="f1on" label="FMOS/IRS1(S10)ON" ref="x0on"/>
-    <item id="f1off" label="FMOS/IRS1(S10)OFF" ref="x0off"/>
-    <item id="f2on" label="FMOS/IRS2(S11)ON" ref="x2on"/>
-    <item id="f2off" label="FMOS/IRS2(S11)OFF" ref="x2off"/>
+    <unit id="uf1" title="f1[on|off]" label="FMOS/IRS1(S10) [%s]">
+      <item id="f1on" label="ON" ref="x0on"/>
+      <item id="f1off" label="OFF" ref="x0off"/>
+    </unit>
+    <unit id="uf2" title="f2[on|off]" label="FMOS/IRS2(S11) [%s]">
+      <item id="f2on" label="ON" ref="x2on"/>
+      <item id="f2off" label="OFF" ref="x2off"/>
+    </unit>
   </alias>
   <alias id="tbb" label="TEST BBE">
     <unit id="u1" title="[on|off]" label="Alias for X0">

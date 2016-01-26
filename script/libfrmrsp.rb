@@ -35,7 +35,7 @@ module CIAX
       def conv(ent, stream)
         @sel = Hash[@skel]
         self[:time] = type?(stream, Hash)[:time]
-        rid = type?(ent, Entity)[:response]
+        rid = type?(ent, Cmd::Entity)[:response]
         @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
         @sel.update(@fds[rid])
         @sel[:body] = ent.deep_subst(@sel[:body])

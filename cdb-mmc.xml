@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+  <alias id="mmc" label="Carrousel">
+    <group id="grel" caption="REL Motion">
+      <unit id="ucw" title="cw-[1-5]" label="CW motion">
+        <item id="cw-1" label="Move 1 unit CW" ref="cwi">
+          <argv>1</argv>
+        </item>
+        <item id="cw-2" label="Move 2 unit CW" ref="cwi">
+          <argv>2</argv>
+        </item>
+        <item id="cw-3" label="Move 3 unit CW" ref="cwi">
+          <argv>3</argv>
+        </item>
+        <item id="cw-4" label="Move 4 unit CW" ref="cwi">
+          <argv>4</argv>
+        </item>
+        <item id="cw-5" label="Move 5 unit CW" ref="cwi">
+          <argv>5</argv>
+        </item>
+      </unit>
+      <unit id="uccw" title="ccw-[1-5]" label="CCW motion">
+        <item id="ccw-1" label="Move 1 unit CCW" ref="ccwi">
+          <argv>1</argv>
+        </item>
+        <item id="ccw-2" label="Move 2 unit CCW" ref="ccwi">
+          <argv>2</argv>
+        </item>
+        <item id="ccw-3" label="Move 3 unit CCW" ref="ccwi">
+          <argv>3</argv>
+        </item>
+        <item id="ccw-4" label="Move 4 unit CCW" ref="ccwi">
+          <argv>4</argv>
+        </item>
+        <item id="ccw-5" label="Move 5 unit CCW" ref="ccwi">
+          <argv>5</argv>
+        </item>
+      </unit>
+    </group>
+    <group id="gabs" caption="ABS Motion">
+      <unit id="uaccess" title="access[0-23]" label="Access motion">
+        <item id="access0" label="Move to access 0" ref="access">
+          <argv>0</argv>
+        </item>
+        <item id="access1" label="Move to access 1" ref="access">
+          <argv>1</argv>
+        </item>
+        <item id="access2" label="Move to access 2" ref="access">
+          <argv>2</argv>
+        </item>
+        <item id="access3" label="Move to access 3" ref="access">
+          <argv>3</argv>
+        </item>
+        <item id="access4" label="Move to access 4" ref="access">
+          <argv>4</argv>
+        </item>
+        <item id="access5" label="Move to access 5" ref="access">
+          <argv>5</argv>
+        </item>
+        <item id="access6" label="Move to access 6" ref="access">
+          <argv>6</argv>
+        </item>
+        <item id="access7" label="Move to access 7" ref="access">
+          <argv>7</argv>
+        </item>
+        <item id="access8" label="Move to access 8" ref="access">
+          <argv>8</argv>
+        </item>
+        <item id="access9" label="Move to access 9" ref="access">
+          <argv>9</argv>
+        </item>
+        <item id="access10" label="Move to access 10" ref="access">
+          <argv>10</argv>
+        </item>
+        <item id="access11" label="Move to access 11" ref="access">
+          <argv>11</argv>
+        </item>
+        <item id="access12" label="Move to access 12" ref="access">
+          <argv>12</argv>
+        </item>
+        <item id="access13" label="Move to access 13" ref="access">
+          <argv>13</argv>
+        </item>
+        <item id="access14" label="Move to access 14" ref="access">
+          <argv>14</argv>
+        </item>
+        <item id="access15" label="Move to access 15" ref="access">
+          <argv>15</argv>
+        </item>
+        <item id="access16" label="Move to access 16" ref="access">
+          <argv>16</argv>
+        </item>
+        <item id="access17" label="Move to access 17" ref="access">
+          <argv>17</argv>
+        </item>
+        <item id="access18" label="Move to access 18" ref="access">
+          <argv>18</argv>
+        </item>
+        <item id="access19" label="Move to access 19" ref="access">
+          <argv>19</argv>
+        </item>
+        <item id="access20" label="Move to access 20" ref="access">
+          <argv>20</argv>
+        </item>
+        <item id="access21" label="Move to access 21" ref="access">
+          <argv>21</argv>
+        </item>
+        <item id="access22" label="Move to access 22" ref="access">
+          <argv>22</argv>
+        </item>
+        <item id="access23" label="Move to access 23" ref="access">
+          <argv>23</argv>
+        </item>
+      </unit>
+      <unit id="uslot" title="slot[0-23]" label="Slot motion">
+        <item id="slot0" label="Move to slot 0" ref="slot">
+          <argv>0</argv>
+        </item>
+        <item id="slot1" label="Move to slot 1" ref="slot">
+          <argv>1</argv>
+        </item>
+        <item id="slot2" label="Move to slot 2" ref="slot">
+          <argv>2</argv>
+        </item>
+        <item id="slot3" label="Move to slot 3" ref="slot">
+          <argv>3</argv>
+        </item>
+        <item id="slot4" label="Move to slot 4" ref="slot">
+          <argv>4</argv>
+        </item>
+        <item id="slot5" label="Move to slot 5" ref="slot">
+          <argv>5</argv>
+        </item>
+        <item id="slot6" label="Move to slot 6" ref="slot">
+          <argv>6</argv>
+        </item>
+        <item id="slot7" label="Move to slot 7" ref="slot">
+          <argv>7</argv>
+        </item>
+        <item id="slot8" label="Move to slot 8" ref="slot">
+          <argv>8</argv>
+        </item>
+        <item id="slot9" label="Move to slot 9" ref="slot">
+          <argv>9</argv>
+        </item>
+        <item id="slot10" label="Move to slot 10" ref="slot">
+          <argv>10</argv>
+        </item>
+        <item id="slot11" label="Move to slot 11" ref="slot">
+          <argv>11</argv>
+        </item>
+        <item id="slot12" label="Move to slot 12" ref="slot">
+          <argv>12</argv>
+        </item>
+        <item id="slot13" label="Move to slot 13" ref="slot">
+          <argv>13</argv>
+        </item>
+        <item id="slot14" label="Move to slot 14" ref="slot">
+          <argv>14</argv>
+        </item>
+        <item id="slot15" label="Move to slot 15" ref="slot">
+          <argv>15</argv>
+        </item>
+        <item id="slot16" label="Move to slot 16" ref="slot">
+          <argv>16</argv>
+        </item>
+        <item id="slot17" label="Move to slot 17" ref="slot">
+          <argv>17</argv>
+        </item>
+        <item id="slot18" label="Move to slot 18" ref="slot">
+          <argv>18</argv>
+        </item>
+        <item id="slot19" label="Move to slot 19" ref="slot">
+          <argv>19</argv>
+        </item>
+        <item id="slot20" label="Move to slot 20" ref="slot">
+          <argv>20</argv>
+        </item>
+        <item id="slot21" label="Move to slot 21" ref="slot">
+          <argv>21</argv>
+        </item>
+        <item id="slot22" label="Move to slot 22" ref="slot">
+          <argv>22</argv>
+        </item>
+        <item id="slot23" label="Move to slot 23" ref="slot">
+          <argv>23</argv>
+        </item>
+      </unit>
+    </group>
+  </alias>
+</cdb>

@@ -2,7 +2,7 @@
 require 'libserver'
 require 'libclient'
 require 'libprompt'
-require 'libremote'
+require 'libcmdremote'
 
 # Provide Server,Client
 # Integrate Command,Status
@@ -37,7 +37,7 @@ module CIAX
       @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }]
       Thread.abort_on_exception = true
       verbose { "initialize [#{@id}]" }
-      @cobj = Remote::Index.new(@cfg)
+      @cobj = Cmd::Remote::Index.new(@cfg)
       @host = OPT.host
     end
 

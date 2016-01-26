@@ -30,7 +30,7 @@ module CIAX
       path = []
       rec_proc4str(self, path) do |obj|
         next unless obj.is_a?(String)
-        if  /#{reg}/ =~ obj
+        if /#{reg}/ =~ obj
           path << obj
           break
         end
@@ -69,7 +69,7 @@ module CIAX
           path.pop
         end
       else
-        block.call(enum,path)
+        block.call(enum, path)
       end
     end
 

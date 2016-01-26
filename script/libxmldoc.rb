@@ -4,10 +4,11 @@ require 'libdispgrp'
 require 'libenumx'
 require 'libxmlgn'
 
-# Structure for Command: (top: listed in disp), <doclist: separated>
+# Structure for Command: (top: listed in disp), <doclist: separated top-doc>
 #   ADB:/adb/(app)/<command>/group/unit/item
 #   FDB:/fdb/(frame)/<command>/group/item
 #   SDB:/sdb/(symbol)/<table>/pattern
+#   CDB:/cdb/(alias)/<top>/unit|item
 #   DDB:/ddb/group/(site)/field
 #   IDB:/idb/project/include|group/(instance)/include|<alias>/unit/item
 #   MDB:/mdb/(macro)/include|<group>/unit/item
@@ -64,6 +65,8 @@ module CIAX
           _mk_project(top)
         when 'group' # ddb
           _mk_group(top)
+        when 'alias' # cdb
+          _set_item(top)
         else # sdb, adb, fdb, mdb
           _mk_sub_db(top)
         end
@@ -119,15 +122,19 @@ module CIAX
 
       # Include will be done for //group
       def _set_includes
-        if @valid_proj
-          vk = @valid_proj.map { |proj| @grps[proj] }.flatten.map { |gid| @displist.sub[gid] }.flatten
-          @displist.valid_keys.replace(vk)
-        end
+        _upd_valid
         each_value do |item|
           if (ary = item.delete(:include))
             ary.each { |ref| (item[:group] ||= {}).update(self[ref][:group]) }
           end
         end
+      end
+
+      def _upd_valid
+        return unless @valid_proj
+        vp = @valid_proj.map { |proj| @grps[proj] }.flatten
+        vk = vp.map { |gid| @displist.sub[gid] }.flatten
+        @displist.valid_keys.replace(vk)
       end
     end
   end
@@ -137,7 +144,7 @@ module CIAX
     begin
       doc = Xml::Doc.new(type)
     rescue ConfigError
-      Msg.usage('[type] (adb,fdb,idb,ddb,mdb,sdb)')
+      Msg.usage('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb)')
     end
     begin
       puts doc.get(ARGV.shift).path(ARGV)

@@ -4,6 +4,13 @@
   <xsd:include schemaLocation="range.xsd"/>
   <xsd:include schemaLocation="command.xsd"/>
   <!--watch events-->
+  <xsd:element name="wdb">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="wdb:watch"/>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
   <xsd:element name="watch">
     <xsd:complexType>
       <xsd:sequence>
@@ -12,6 +19,7 @@
       </xsd:sequence>
       <!--interval of event driven cycle (time to next exec by event) default 0.1 sec-->
       <xsd:attribute name="interval" type="xsd:float" use="required"/>
+      <xsd:attribute name="id" type="xsd:token"/>
     </xsd:complexType>
     <xsd:unique name="onchange-ref">
       <xsd:selector xpath="*/wdb:onchange"/>

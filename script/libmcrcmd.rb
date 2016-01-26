@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require 'libextcmd'
+require 'libcmdext'
 require 'libmcrdb'
 # CIAX_XML
 module CIAX
   # Macro Layer
   module Mcr
-    include Remote
+    include Cmd::Remote
     INTCMD = {
       'exec' => 'Command',
       'pass' => 'Macro',
@@ -19,7 +19,7 @@ module CIAX
     }
     # Internal Commands
     module Int
-      include Remote::Int
+      include Cmd::Remote::Int
       # Internal Group
       class Group < Int::Group
         attr_reader :par
@@ -41,7 +41,7 @@ module CIAX
     end
     # External Command
     module Ext
-      include Remote::Ext
+      include Cmd::Remote::Ext
       # Caption change
       class Group < Ext::Group
         def initialize(cfg, crnt = {})

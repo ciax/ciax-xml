@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+  <alias id="cci" label="IR Helium Compressor">
+    <group id="gcs" caption="CAS">
+      <unit id="uc2" title="c2[on|off]" label="CAS2(S1) [%s]">
+        <item id="c2on" label="ON" ref="x0on"/>
+        <item id="c2off" label="OFF" ref="x0off"/>
+      </unit>
+      <unit id="uc1" title="c1[on|off]" label="CAS1(S2) [%s]">
+        <item id="c1on" label="ON" ref="x1on"/>
+        <item id="c1off" label="OFF" ref="x1off"/>
+      </unit>
+      <unit id="uca" title="ca[on|off]" label="CAS BOTH [%s]">
+        <item id="caon" label="ON" ref="x01on"/>
+        <item id="caoff" label="OFF" ref="x01off"/>
+      </unit>
+    </group>
+    <group id="gmo" caption="MOIRCS">
+      <unit id="um2" title="m2[on|off]" label="STB MOIRCS CR(S8)) [%s]">
+        <item id="m2on" label="ON" ref="x2on"/>
+        <item id="m2off" label="OFF" ref="x2off"/>
+      </unit>
+      <unit id="um1" title="m1[on|off]" label="STB MOIRCS MAIN(S9) [%s]">
+        <item id="m1on" label="ON" ref="x3on"/>
+        <item id="m1off" label="OFF" ref="x3off"/>
+      </unit>
+      <unit id="ucm" title="cm[on|off]" label="CAS MOIRCS/MAIN [%s]">
+        <item id="cmon" label="ON" ref="x0on"/>
+        <item id="cmoff" label="OFF" ref="x0off"/>
+      </unit>
+      <unit id="ucc" title="cc[on|off]" label="CAS MOIRCS/CR [%s]">
+        <item id="ccon" label="ON" ref="x1on"/>
+        <item id="ccoff" label="OFF" ref="x1off"/>
+      </unit>
+      <unit id="uma" title="ma[on|off]" label="STB MOIRCS BOTH [%s]">
+        <item id="maon" label="ON" ref="x23on"/>
+        <item id="maoff" label="OFF" ref="x23off"/>
+      </unit>
+    </group>
+  </alias>
+  <alias id="cco" label="OPT Helium Compressor">
+    <group id="gfm" caption="CIAO">
+      <unit id="uf2" title="f2[on|off]" label="CIAO(S6) [%s]">
+        <item id="f2on" label="ON" ref="x0on"/>
+        <item id="f2off" label="OFF" ref="x0off"/>
+      </unit>
+    </group>
+    <group id="gfm" caption="COMICS">
+      <unit id="um1" title="m1[on|off]" label="COMICS IMG(S4) [%s]">
+        <item id="m1on" label="ON" ref="x2on"/>
+        <item id="m1off" label="OFF" ref="x2off"/>
+      </unit>
+      <unit id="um2" title="m2[on|off]" label="COMICS SPEC(S5) [%s]">
+        <item id="m2on" label="ON" ref="x3on"/>
+        <item id="m2off" label="OFF" ref="x3off"/>
+      </unit>
+      <unit id="uma" title="ma[on|off]" label="COMICS BOTH [%s]">
+        <item id="maon" label="ON" ref="x23on"/>
+        <item id="maoff" label="OFF" ref="x23off"/>
+      </unit>
+    </group>
+  </alias>
+  <alias id="cri" label="IR Helium Compressor">
+    <group id="gfm" caption="FMOS">
+      <unit id="uf1" title="f1[on|off]" label="FMOS/IRS1(S10) [%s]">
+        <item id="f1on" label="ON" ref="x0on"/>
+        <item id="f1off" label="OFF" ref="x0off"/>
+      </unit>
+      <unit id="uf2" title="f2[on|off]" label="FMOS/IRS2(S11) [%s]">
+        <item id="f2on" label="ON" ref="x2on"/>
+        <item id="f2off" label="OFF" ref="x2off"/>
+      </unit>
+    </group>
+  </alias>
+  <alias id="tbb" label="TEST BBE">
+    <group id="gts" caption="Dummy BBE">
+      <unit id="u1" title="[on|off]" label="Alias for X0">
+        <item id="on" label="ON" ref="x0on"/>
+        <item id="off" label="OFF" ref="x0off"/>
+      </unit>
+    </group>
+  </alias>
+</cdb>

@@ -1,14 +1,14 @@
 #!/usr/bin/ruby
-require 'libextcmd'
+require 'libcmdext'
 require 'libappdb'
 # CIAX-XML Command module
 module CIAX
   # Application Mode
   module App
-    include Remote
+    include Cmd::Remote
     # cfg should have [:dbi] and [:stat]
     module Int
-      include Remote::Int
+      include Cmd::Remote::Int
       # Internal Command
       class Group < Int::Group
         def initialize(cfg, attr = {})
@@ -20,7 +20,7 @@ module CIAX
     end
     # External Command
     module Ext
-      include Remote::Ext
+      include Cmd::Remote::Ext
       class Group < Ext::Group; end
       # Generate [:batch]
       class Item < Ext::Item

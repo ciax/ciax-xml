@@ -2,28 +2,28 @@
 <hdb xmlns="http://ciax.sum.naoj.org/ciax-xml/hdb">
   <hexpack id="bbe" label="Helium Compressor">
     <pack code="b" length="4">
-      <field id="o00" ref="xsw0" label="Out 5"/>
-      <field id="i01" ref="xdr0" label="In 5-1"/>
-      <field id="i02" ref="xtm0" label="In 5-2"/>
-      <field id="i03" ref="xpr0" label="In 5-3"/>
+      <field ref="xsw0" label="Out 5"/>
+      <field ref="xdr0" label="In 5-1"/>
+      <field ref="xtm0" label="In 5-2"/>
+      <field ref="xpr0" label="In 5-3"/>
     </pack>
     <pack code="b" length="4">
-      <field id="o04" ref="xsw1" label="Out 6"/>
-      <field id="i05" ref="xdr1" label="In 6-1"/>
-      <field id="i06" ref="xtm1" label="In 6-2"/>
-      <field id="i07" ref="xpr1" label="In 6-3"/>
+      <field ref="xsw1" label="Out 6"/>
+      <field ref="xdr1" label="In 6-1"/>
+      <field ref="xtm1" label="In 6-2"/>
+      <field ref="xpr1" label="In 6-3"/>
     </pack>
     <pack code="b" length="4">
-      <field id="o08" ref="xsw2" label="Out 7"/>
-      <field id="i09" ref="xdr2" label="In 7-1"/>
-      <field id="i10" ref="xtm2" label="In 7-2"/>
-      <field id="i11" ref="xpr2" label="In 7-3"/>
+      <field ref="xsw2" label="Out 7"/>
+      <field ref="xdr2" label="In 7-1"/>
+      <field ref="xtm2" label="In 7-2"/>
+      <field ref="xpr2" label="In 7-3"/>
     </pack>
     <pack code="b" length="4">
-      <field id="o12" ref="xsw3" label="Out 8"/>
-      <field id="i13" ref="xdr3" label="In 8-1"/>
-      <field id="i14" ref="xtm3" label="In 8-2"/>
-      <field id="i15" ref="xpr3" label="In 8-3"/>
+      <field ref="xsw3" label="Out 8"/>
+      <field ref="xdr3" label="In 8-1"/>
+      <field ref="xtm3" label="In 8-2"/>
+      <field ref="xpr3" label="In 8-3"/>
     </pack>
   </hexpack>
   <hexpack id="mel" label="CIAX CART 3">

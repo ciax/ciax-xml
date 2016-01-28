@@ -14,7 +14,7 @@ module CIAX
       private
 
       def doc_to_db(doc)
-        dbi = Dbi.new(doc[:attr])
+        dbi = super
         init_command(dbi)
         _add_group(doc[:command])
         init_status(doc[:status], dbi)

@@ -17,8 +17,8 @@ module CIAX
       private
 
       def doc_to_db(doc)
-        @sites = []
         dbi = super
+        @sites = []
         init_command(dbi)
         _add_group(doc[:group])
         dbi[:sites] = @sites.uniq

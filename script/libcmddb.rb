@@ -20,8 +20,6 @@ module CIAX
 
       private
 
-      # doc is <project>
-      # return //project/group/instance
       def doc_to_db(doc)
         dbi = super
         init_command(dbi)

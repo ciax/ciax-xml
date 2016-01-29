@@ -12,6 +12,7 @@ require 'libxmlgn'
 #   DDB:/ddb/group/(site)/field
 #   IDB:/idb/project/include|group/(instance)/include|<alias>/unit/item
 #   MDB:/mdb/(macro)/include|<group>/unit/item
+#   HDB:/hdb/(hexpack)/pack/field
 # Domain is the top node of each name spaces (different from top ns),
 #   otherwise element is stored in Property
 module CIAX
@@ -65,7 +66,7 @@ module CIAX
           _mk_project(top)
         when 'group' # ddb
           _mk_group(top)
-        when 'alias' # cdb
+        when 'alias', 'hexpack' # cdb,hdb
           _set_item(top)
         else # sdb, adb, fdb, mdb
           _mk_sub_db(top)
@@ -144,7 +145,7 @@ module CIAX
     begin
       doc = Xml::Doc.new(type)
     rescue ConfigError
-      Msg.usage('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb)')
+      Msg.usage('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)')
     end
     begin
       puts doc.get(ARGV.shift).path(ARGV)

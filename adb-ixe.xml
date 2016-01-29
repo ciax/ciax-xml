@@ -429,7 +429,7 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.1">
-      <regular period="3600" label="Finish Run">
+      <regular period="3600" label="Update System Status">
         <exec name="sysupd"/>
       </regular>
       <repeat from="1" to="6">
@@ -452,11 +452,12 @@
           </exec>
         </event>
       </repeat>
-      <event id="fin" label="Finish Run">
+      <event id="fin" label="Finish All Motion">
         <onchange var="stp"/>
         <pattern var="stp">EEEEEE</pattern>
         <exec name="resetr"/>
         <exec name="sysupd"/>
+        <exec name="drvoff"/>
       </event>
     </watch>
   </app>

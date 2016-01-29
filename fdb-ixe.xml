@@ -114,12 +114,12 @@
         </item>
       </group>
       <group id="gact" caption="Action">
-        <item id="act" label="Activate (Servo) All" response="default" type="action">
+        <item id="act" label="Activate (Servo) [1-6]" response="default" type="action">
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>MA</string>
         </item>
-        <item id="deact" label="Deactivate (Free) All" response="default" type="action">
+        <item id="deact" label="Deactivate (Free) [1-6]" response="default" type="action">
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>MD</string>

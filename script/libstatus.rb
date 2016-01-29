@@ -38,6 +38,13 @@ module CIAX
         @updated = self[:time]
         self
       end
+
+      def str_update(str)
+        str.split(',').each do |tkn|
+          self[:data].rep(*tkn.split('='))
+        end
+        self
+      end
     end
 
     if __FILE__ == $PROGRAM_NAME

@@ -86,6 +86,7 @@ module CIAX
               frame = a[:val].gsub(/\$\{cc\}/) { @frame.cc }
               subfrm = @field.subst(frame)
               @chg_flg = true if subfrm != frame
+              # Allow csv parameter
               subfrm.split(',').each do|s|
                 @frame.add(s, a)
               end

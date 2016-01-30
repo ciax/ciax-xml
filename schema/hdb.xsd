@@ -2,8 +2,9 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:hdb="http://ciax.sum.naoj.org/ciax-xml/hdb" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/hdb">
   <xsd:attributeGroup name="id_attr">
     <xsd:attribute name="ref" type="xsd:token" use="required"/>
-    <xsd:attribute name="label" type="xsd:token" use="optional"/>
-    <xsd:attribute name="length" type="xsd:int" use="optional"/>
+    <xsd:attribute name="type" type="xsd:token"/>
+    <xsd:attribute name="length" type="xsd:int"/>
+    <xsd:attribute name="label" type="xsd:token"/>
   </xsd:attributeGroup>
   <!--root-->
   <xsd:element name="hdb">

@@ -31,6 +31,18 @@ module CIAX
 
       private
 
+      def _init_upd_
+        @sv_stat.post_upd_procs << proc do
+          verbose { 'Propagate Prompt#upd -> Hex::Rsp#upd' }
+          upd
+        end
+        @stat.post_upd_procs << proc do
+          verbose { 'Propagate Status#upd -> Hex::Rsp#upd' }
+          upd
+        end
+        upd
+      end
+
       def upd_core
         self[:hex] = _get_header_ + _get_body_
         self
@@ -72,23 +84,18 @@ module CIAX
         str
       end
 
-      def _padding(hash, dat)
+      def _padding(hash, val)
         len = hash[:length].to_i
-        return dat unless len > 0
-        dat = format('%.2f', dat.to_f) if /[0-9]+\.[0-9]+/ =~ dat
-        dat.rjust(len, '0')
-      end
-
-      def _init_upd_
-        @sv_stat.post_upd_procs << proc do
-          verbose { 'Propagate Prompt#upd -> Hex::Rsp#upd' }
-          upd
+        case hash[:type]
+        when /float/
+          format("%0#{len}.2f", val.to_f)
+        when /int/
+          format("%0#{len}d", val.to_i)
+        when /binary/
+          format("%0#{len}b", val.to_i)
+        else
+          format("%#{len}s", val)
         end
-        @stat.post_upd_procs << proc do
-          verbose { 'Propagate Status#upd -> Hex::Rsp#upd' }
-          upd
-        end
-        upd
       end
 
       def b2i(b) # Boolean to Integer (1,0)

@@ -9,7 +9,7 @@ module CIAX
     # All elements of @data are String
     class Status < Varx
       # @ last*
-      attr_reader :last
+      attr_reader :last, :dbi
       def initialize(dbi = nil)
         super('status')
         @last = {}

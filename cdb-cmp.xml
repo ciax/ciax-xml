@@ -39,13 +39,13 @@
     </group>
   </alias>
   <alias id="cco" label="OPT Helium Compressor">
-    <group id="gfm" caption="CIAO">
+    <group id="gci" caption="CIAO">
       <unit id="uf2" title="f2[on|off]" label="CIAO(S6) [%s]">
         <item id="f2on" label="ON" ref="x0on"/>
         <item id="f2off" label="OFF" ref="x0off"/>
       </unit>
     </group>
-    <group id="gfm" caption="COMICS">
+    <group id="gco" caption="COMICS">
       <unit id="um1" title="m1[on|off]" label="COMICS IMG(S4) [%s]">
         <item id="m1on" label="ON" ref="x2on"/>
         <item id="m1off" label="OFF" ref="x2off"/>

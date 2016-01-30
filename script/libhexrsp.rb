@@ -47,12 +47,12 @@ module CIAX
       end
 
       def _get_body_
-        str=''
+        str = ''
         if @dbi[:packs]
           @dbi[:packs].each do |hash|
             binstr = _mk_frame(hash)
-            pkstr = hash[:code]+hash[:length]
-            str << [binstr].pack(pkstr).unpack("h")[0]
+            pkstr = hash[:code] + hash[:length]
+            str << [binstr].pack(pkstr).unpack('h')[0]
           end
         elsif @dbi[:fields]
           str << _mk_frame(@dbi)
@@ -65,9 +65,18 @@ module CIAX
         db[:fields].each do |hash|
           key = hash[:ref]
           cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
-          str << @stat[:data][key]
+          dat = _padding(hash, @stat[:data][key])
+          verbose { "Get from Status #{key} = #{dat}" }
+          str << dat
         end
         str
+      end
+
+      def _padding(hash, dat)
+        len = hash[:length].to_i
+        return dat unless len > 0
+        dat = format('%.2f', dat.to_f) if /[0-9]+\.[0-9]+/ =~ dat
+        dat.rjust(len, '0')
       end
 
       def _init_upd_
@@ -97,7 +106,7 @@ module CIAX
       begin
         stat = App::Status.new.ext_file
         db = Db.new
-        puts Rsp.new(db,stat)
+        puts Rsp.new(db, stat)
       rescue InvalidID
         Msg.usage(' < status_file')
       end

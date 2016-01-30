@@ -140,8 +140,8 @@ module CIAX
       require 'libinsdb'
       require 'libstatus'
       begin
-        stat = App::Status.new
-        puts View.new(stat).upd
+        stat = App::Status.new.ext_file
+        puts View.new(stat)
       rescue InvalidID
         Msg.usage(' < status_file')
       end

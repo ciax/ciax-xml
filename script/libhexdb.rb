@@ -15,22 +15,21 @@ module CIAX
 
       def doc_to_db(doc)
         db = super
-        doc[:top].each do|e1| #top is 'hexpack'
+        _rec_db(doc[:top], db) #top is 'hexpack'
+        db
+      end
+
+      def _rec_db(doc, db)
+        doc.each do |e1| #top is 'hexpack'
           item = Hashx.new(e1.to_h)
-          id = item[:id]
-          label = item[:label]
           case e1.name
           when 'pack'
             (db[:pack] ||= []) << item
-            e1.each do |e2|
-              (item[:fields] ||= []) << Hashx.new(e2.to_h)
-            end
+            _rec_db(e1, item)
           when 'field'
             (db[:fields] ||= [])<< item
           end
-          verbose { "Hex Table:#{id} : #{label}" }
         end
-        db
       end
     end
 

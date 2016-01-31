@@ -8,7 +8,7 @@
       <instance id="mmc" app_id="mmc" host="moircsobcp" port="25604" label="Carrousel">
         <command ref="mmc"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <command id="acs" ref="abs" label="Access Hole Position" symbol="acs"/>
+          <alias id="acs" ref="abs" label="Access Hole Position" symbol="acs"/>
         </status>
       </instance>
     </group>

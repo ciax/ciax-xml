@@ -126,7 +126,7 @@
           <frmcmd name="act">
             <argv>$1</argv>
           </frmcmd>
-	  <frmcmd name="abs">
+          <frmcmd name="abs">
             <argv>$1</argv>
             <argv format="%d">$2 * 8000</argv>
           </frmcmd>
@@ -151,9 +151,9 @@
         <item id="fw_all" label="Move Forward All Turret [1-(hole)]">
           <par_num>1:</par_num>
           <repeat from="1" to="6">
-          <frmcmd name="act">
-            <argv>$_</argv>
-          </frmcmd>
+            <frmcmd name="act">
+              <argv>$_</argv>
+            </frmcmd>
             <frmcmd name="fw">
               <argv>$_</argv>
               <argv format="%d">$1 * 8000</argv>

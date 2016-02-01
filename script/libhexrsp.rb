@@ -7,18 +7,18 @@ module CIAX
     # View class
     class Rsp < Varx
       # hint should have server status (isu,watch,exe..) like App::Exe
-      def initialize(db, stat, sv_stat = nil)
+      def initialize(dbi, stat, sv_stat = nil)
+        @dbi = type?(dbi, Dbi)
         @stat = type?(stat, App::Status)
         super('hex', @stat[:id], @stat[:ver])
         id = self[:id] || id_err("NO ID(#{id}) in Stat")
-        @dbi = type?(db, Db).get(stat.dbi[:app_id])
         @sv_stat = type?(sv_stat || Prompt.new('site', id), Prompt)
         @vmode = :x
         _init_upd_
       end
 
       def to_x
-        self[:hex]
+        self[:hexpack]
       end
 
       def to_s
@@ -44,7 +44,7 @@ module CIAX
       end
 
       def upd_core
-        self[:hex] = _get_header_ + _get_body_
+        self[:hexpack] = _get_header_ + _get_body_
         self
       end
 
@@ -59,15 +59,16 @@ module CIAX
       end
 
       def _get_body_
+        return '' unless (hdb = @dbi[:hexpack])
         str = ''
-        if @dbi[:packs]
-          @dbi[:packs].each do |hash|
+        if hdb[:packs]
+          hdb[:packs].each do |hash|
             binstr = _mk_frame(hash)
             pkstr = hash[:code] + hash[:length]
             str << [binstr].pack(pkstr).unpack('h')[0]
           end
-        elsif @dbi[:fields]
-          str << _mk_frame(@dbi)
+        elsif hdb[:fields]
+          str << _mk_frame(hdb)
         end
         str
       end
@@ -112,8 +113,8 @@ module CIAX
       require 'libstatus'
       begin
         stat = App::Status.new.ext_file
-        db = Db.new
-        puts Rsp.new(db, stat)
+        dbi = Db.new.get(stat.dbi[:app_id])
+        puts Rsp.new(dbi, stat)
       rescue InvalidID
         Msg.usage(' < status_file')
       end

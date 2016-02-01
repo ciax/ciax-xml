@@ -1,22 +1,22 @@
 #!/usr/bin/ruby
 # Ascii Pack
 require 'libwatlist'
-require 'libhexview'
+require 'libhexrsp'
 
 module CIAX
   # Ascii Hex Layer for OLD CIAX
   module Hex
     # cfg must have [:db], [:sub_list]
     class Exe < Exe
-      def initialize(id, cfg)
-        super(id, cfg)
-        @sub = @cfg[:sub_list].get(id).sub
+      def initialize(id, cfg, atrb = {})
+        @sub = cfg[:sub_list].get(id).sub
+        @sv_stat = @sub.sv_stat
+        view = Rsp.new(cfg[:db], @sub.stat, @sv_stat)
+        super
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
-        @sv_stat = @sub.sv_stat
         @post_exe_procs.concat(@sub.post_exe_procs)
         @port = @sub.port.to_i + 1000
-        view = View.new(@sub.stat, @sv_stat)
         view.ext_log if OPT[:e]
         @shell_output_proc = proc { view.to_x }
       end
@@ -41,11 +41,12 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
+      id =ARGV.shift
       cfg = Config.new
-      cfg[:db] = Ins::Db.new
       cfg[:sub_list] = Wat::List.new(cfg)
+      cfg[:db] = Db.new
       begin
-        Exe.new(ARGV.shift, cfg).ext_shell.shell
+        Exe.new(id, cfg).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

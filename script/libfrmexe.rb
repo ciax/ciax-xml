@@ -11,10 +11,11 @@ module CIAX
   module Frm
     # Frame Exe module
     class Exe < Exe
-      # cfg must have [:db]
-      def initialize(id, cfg)
-        super(id, cfg)
+      # cfg must have [:dbi]
+      def initialize(id, cfg, atrb = {})
+        super
         # DB is generated in List level
+        @dbi = type?(@cfg[:dbi], Dbi)
         @cfg[:site_id] = id
         @cfg[:ver] = @dbi['version']
         @stat = @cfg[:field] = Field.new(@dbi)
@@ -106,10 +107,9 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
-      cfg = Config.new
-      cfg[:db] = Dev::Db.new
+      id = ARGV.shift
       begin
-        Exe.new(ARGV.shift, cfg).ext_shell.shell
+        Exe.new(id, Config.new, dbi: Dev::Db.new.get(id)).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

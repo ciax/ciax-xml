@@ -18,14 +18,14 @@ module CIAX
     attr_accessor :sv_stat, :shell_input_procs, :shell_output_proc,
                   :server_input_proc, :server_output_proc
     # attr contains the parameter for each layer individually (might have [:db])
-    # cfg should have [:db] shared in the site (among layers)
+    # cfg should have [:dbi] shared in the site (among layers)
+    # It is not necessarily the case that id and Config[:dbi][:id] is identical
     def initialize(id, cfg, attr = {})
       super()
       @cls_color = 13
+      @id = id # Allows nil for Mcr::Man
       @cfg = type?(cfg, Config).gen(self).update(attr)
       # layer is Frm,App,Wat,Hex,Mcr,Man
-      @dbi = @cfg[:dbi] = type?(@cfg[:db].get(id), Dbi) if @cfg.key?(:db)
-      @id = id || @dbi[:id]
       @layer = class_path.first.downcase
       # Site Status shared among layers
       @sv_stat = Prompt.new(@cfg[:layer_type], @id)

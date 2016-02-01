@@ -10,6 +10,7 @@ module CIAX
         super('mdb')
       end
 
+      # Allows nil
       def get(id = nil)
         super(id || PROJ || ARGV.shift)
       end

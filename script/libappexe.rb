@@ -11,10 +11,11 @@ module CIAX
   module App
     # Exec class
     class Exe < Exe
-      # cfg must have [:db],[:sub_list]
+      # cfg must have [:dbi],[:sub_list]
       attr_accessor :batch_interrupt
-      def initialize(id, cfg)
-        super(id, cfg)
+      def initialize(id, cfg, atrb = {})
+        super
+        @dbi = type?(@cfg[:dbi], Dbi)
         @cfg[:site_id] = id
         # LayerDB might generated in List level
         @cfg[:ver] = @dbi[:version]
@@ -157,11 +158,11 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
+      id = ARGV.shift
       cfg = Config.new
       cfg[:sub_list] = Frm::List.new(cfg)
-      cfg[:db] = Ins::Db.new
       begin
-        Exe.new(ARGV.shift, cfg).ext_shell.shell
+        Exe.new(id, cfg, dbi: Ins::Db.new.get(id)).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

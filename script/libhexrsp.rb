@@ -10,7 +10,7 @@ module CIAX
       def initialize(db, stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
         super('hex', @stat[:id], @stat[:ver])
-        @dbi = Db.new.get(@stat.dbi[:app_id])
+        @dbi = db.get(@stat.dbi[:app_id])
         id = self[:id] || id_err("NO ID(#{id}) in Stat")
         @sv_stat = type?(sv_stat || Prompt.new('site', id), Prompt)
         @vmode = :x

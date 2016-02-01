@@ -59,7 +59,7 @@ module CIAX
 
       def add(site)
         # layer_module can be Frm,App,Wat,Hex
-        obj = layer_module::Exe.new(site, @cfg)
+        obj = layer_module::Exe.new(site, @cfg, dbi: @db.get(site))
         @list.put(site, obj)
       end
 

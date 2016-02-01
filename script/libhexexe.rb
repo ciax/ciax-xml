@@ -41,7 +41,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
-      id =ARGV.shift
+      id = ARGV.shift
       cfg = Config.new
       cfg[:sub_list] = Wat::List.new(cfg)
       cfg[:db] = Db.new

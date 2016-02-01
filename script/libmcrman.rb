@@ -11,14 +11,12 @@ module CIAX
       # cfg should have [:dev_list]
       def initialize(cfg, atrb = {})
         atrb[:dev_list] ||= Wat::List.new(cfg)
-        atrb[:db] = Db.new
         atrb[:layer_type] = 'mcr'
         super(nil, cfg, atrb)
-        @dbi = @cfg[:dbi] = @cfg[:db].get
+        _init_net_(@cfg[:dbi] = Db.new.get)
         @sub_list = @cfg[:dev_list]
         _init_domain_
         _init_stat_
-        _init_net_
         @mode = 'MCR'
         OPT[:l] ? ext_client : ext_driver
       end
@@ -65,9 +63,9 @@ module CIAX
         @cfg[:sv_stat] = @sv_stat
       end
 
-      def _init_net_
-        @host ||= @dbi[:host]
-        @port ||= (@dbi[:port] || 55_555)
+      def _init_net_(dbi)
+        @host ||= dbi[:host]
+        @port ||= (dbi[:port] || 55_555)
       end
 
       # Initialize for driver

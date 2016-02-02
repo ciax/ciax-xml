@@ -15,17 +15,16 @@ module CIAX
       def initialize(id, cfg, atrb = {})
         super
         # DB is generated in List level
-        @dbi = @cfg[:dbi] = type?(@cfg[:db], CIAX::Db).get(id)
         @cfg[:site_id] = id
-        @cfg[:ver] = @dbi['version']
-        @stat = @cfg[:field] = Field.new(@dbi)
+        dbi = _init_dbi(id,%i(stream iocmd))
+        @stat = @cfg[:field] = Field.new(dbi)
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
         _init_sub.add_flg(comerr: 'X', ioerr: 'E')
         # Post internal command procs
-        @host ||= @dbi['host']
-        @port ||= @dbi['port']
+        @host ||= dbi['host']
+        @port ||= dbi['port']
         _opt_mode
       end
 
@@ -59,17 +58,17 @@ module CIAX
       end
 
       def ext_driver
-        sp = @dbi[:stream]
+        sp = @cfg[:stream]
         if OPT[:s]
           @mode = 'SIM'
-          iocmd = [SIMCMD, @id, @dbi['version']]
+          iocmd = [SIMCMD, @id, @cfg[:version]]
           timeout = 60
         else
           @mode = 'DRV'
-          iocmd = @dbi[:iocmd].split(' ')
+          iocmd = @cfg[:iocmd].split(' ')
           timeout = (sp[:timeout] || 10).to_i
         end
-        @stream = Stream.new(@id, @dbi[:version], iocmd,
+        @stream = Stream.new(@id, @cfg[:version], iocmd,
                              sp[:wait], timeout, esc_code(sp[:terminator]))
         @stream.ext_log unless OPT[:s]
         @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }

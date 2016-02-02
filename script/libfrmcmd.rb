@@ -61,12 +61,12 @@ module CIAX
           if /true|1/ =~ @cfg[:noaffix]
             { main: [:body] }
           else
-            Hashx.new(@cfg[:dbi][:command][:frame])
+            Hashx.new(@cfg[:command][:frame])
           end
         end
 
         def _init_frame
-          sp = @cfg[:dbi][:stream]
+          sp = @cfg[:stream]
           Frame.new(sp[:endian], sp[:ccmethod])
         end
 
@@ -109,7 +109,7 @@ module CIAX
         dbi = Db.new.get(id)
         cfg = Config.new
         fld = cfg[:field] = Field.new(dbi)
-        cobj = Index.new(cfg, dbi: dbi)
+        cobj = Index.new(cfg, dbi.pick([:stream]))
         cobj.add_rem.def_proc { |ent| ent[:frame] }
         cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?

@@ -28,7 +28,6 @@ module CIAX
         end
 
         def add_ext(ns = Ext)
-          type?(@cfg[:dbi], Dbi)
           @ext = add(ns::Group)
         end
 

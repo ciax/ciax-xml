@@ -62,9 +62,9 @@ module CIAX
       OPT.parse('i', i: 'Instance Mode')
       id = ARGV.shift
       cfg = Config.new
-      dbm = OPT[:i] ? Ins::Db : Db
       begin
-        cobj = Index.new(cfg, dbi: dbm.new.get(id))
+        dbi = (OPT[:i] ? Ins::Db : Db).new.get(id)
+        cobj = Index.new(cfg, dbi.pick)
         cobj.add_rem.def_proc(&:path)
         cobj.rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)

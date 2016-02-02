@@ -88,7 +88,7 @@ module CIAX
       end
 
       def upd_sites
-        @cfg[:dbi][:sites].map do |site|
+        @cfg[:sites].map do |site|
           { site: site, type: 'upd' }
         end
       end
@@ -110,7 +110,8 @@ module CIAX
       wl = Wat::List.new(cfg) # Take App List
       cfg[:dev_list] = wl
       begin
-        mobj = Cmd::Remote::Index.new(cfg, dbi: Db.new.get)
+        dbi = Db.new.get
+        mobj = Cmd::Remote::Index.new(cfg, dbi.pick([:sites]))
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(ARGV)
         seq = Seq.new(ent)

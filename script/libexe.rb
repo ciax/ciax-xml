@@ -82,6 +82,12 @@ module CIAX
       @cfg[:sv_stat] = @sv_stat
     end
 
+    def _init_dbi(id, ary = [])
+      dbi = type?(@cfg[:db], CIAX::Db).get(id)
+      @cfg.update(dbi.pick(ary))
+      dbi
+    end
+
     def _opt_mode
       # Option handling
       if OPT.sv?

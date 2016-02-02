@@ -13,10 +13,8 @@ module CIAX
           def initialize(cfg, atrb = {})
             atrb[:caption] ||= 'External Commands'
             super
-            dbi = type?(@cfg[:dbi], Dbi)
-            @cfg[:ver] ||= dbi[:version]
             @displist = @displist.ext_grp
-            _init_items(dbi[:command])
+            _init_items(@cfg[:command])
             @displist.reset!
           end
 

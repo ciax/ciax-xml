@@ -50,7 +50,8 @@ module CIAX
       cfg = Config.new
       cfg[:dev_list] = Wat::List.new(cfg)
       begin
-        mobj = Cmd::Remote::Index.new(cfg, dbi: Db.new.get)
+        dbi = Db.new.get
+        mobj = Cmd::Remote::Index.new(cfg, dbi.pick([:sites]))
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(ARGV)
         seq = Exe.new(ent)

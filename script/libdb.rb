@@ -8,7 +8,11 @@ module CIAX
   # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
   # set() generates HashDb
   # Cache is available
-  class Dbi < Hashx; end # DB Item
+  class Dbi < Hashx # DB Item
+    def pick(ary = [])
+      super(%i(version command) + ary)
+    end
+  end
 
   # DB class
   class Db < Hashx

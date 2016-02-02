@@ -15,12 +15,11 @@ module CIAX
       attr_accessor :batch_interrupt
       def initialize(id, cfg, atrb = {})
         super
-        @dbi = type?(@cfg[:dbi], Dbi)
+        @dbi = @cfg[:dbi] = type?(@cfg[:db], CIAX::Db).get(id)
         @cfg[:site_id] = id
         # LayerDB might generated in List level
         @cfg[:ver] = @dbi[:version]
-        @cfg[:frm_site] = @dbi[:frm_site]
-        @sub = @cfg[:sub_list].get(@cfg[:frm_site])
+        init_sub(@cfg[:frm_site] = @dbi[:frm_site])
         @stat = Status.new(@dbi)
         @batch_interrupt = []
         init_server
@@ -39,7 +38,7 @@ module CIAX
       private
 
       def init_server
-        @sv_stat = @sub.sv_stat.add_flg(busy: '*')
+        @sv_stat.add_flg(busy: '*')
         @host ||= @dbi[:host]
         @port ||= @dbi[:port]
         self
@@ -160,9 +159,9 @@ module CIAX
       OPT.parse('ceh:lts')
       id = ARGV.shift
       cfg = Config.new
-      cfg[:sub_list] = Frm::List.new(cfg)
       begin
-        Exe.new(id, cfg, dbi: Ins::Db.new.get(id)).ext_shell.shell
+        atrb = {db: Ins::Db.new, sub_list: Frm::List.new(cfg)}
+        Exe.new(id, cfg, atrb).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

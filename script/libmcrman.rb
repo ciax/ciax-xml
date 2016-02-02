@@ -14,6 +14,7 @@ module CIAX
         atrb[:layer_type] = 'mcr'
         super(nil, cfg, atrb)
         _init_net_(@cfg[:dbi] = Db.new.get)
+        init_sub
         @sub_list = @cfg[:dev_list]
         _init_domain_
         _init_stat_
@@ -60,7 +61,6 @@ module CIAX
         @sv_stat.add_array(:list)
         @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid)
-        @cfg[:sv_stat] = @sv_stat
       end
 
       def _init_net_(dbi)

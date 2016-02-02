@@ -10,10 +10,9 @@ module CIAX
       attr_reader :sub, :stat
       def initialize(id, cfg, atrb = {})
         super(id, cfg, atrb)
-        @sub = @cfg[:sub_list].get(@id)
+        init_sub.add_flg(auto: '&', event: '@')
         @cobj.add_rem(@sub.cobj.rem)
         @stat = Event.new(@sub.id)
-        @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')
         @mode = @sub.mode
         @host = @sub.host
         opt_mode
@@ -100,9 +99,9 @@ module CIAX
       OPT.parse('ceh:lts')
       id = ARGV.shift
       cfg = Config.new
-      cfg[:sub_list] = App::List.new(cfg)
       begin
-        Exe.new(id, cfg, dbi: Ins::Db.new.get(id)).ext_shell.shell
+        atrb = { sub_list: App::List.new(cfg), db: Ins::Db.new} 
+        Exe.new(id, cfg, atrb).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

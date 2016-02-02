@@ -19,6 +19,7 @@ module CIAX
                   :server_input_proc, :server_output_proc
     # attr contains the parameter for each layer individually (might have [:db])
     # cfg should have [:dbi] shared in the site (among layers)
+    # @dbi will be set for Varx, @cfg[:dbi] will be set for Index
     # It is not necessarily the case that id and Config[:dbi][:id] is identical
     def initialize(id, cfg, attr = {})
       super()
@@ -27,8 +28,6 @@ module CIAX
       @cfg = type?(cfg, Config).gen(self).update(attr)
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @layer = class_path.first.downcase
-      # Site Status shared among layers
-      @sv_stat = Prompt.new(@cfg[:layer_type], @id)
       # Proc for Server Command (by User query}
       @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }]
       # Proc for Server Status Update (by User query}
@@ -39,6 +38,17 @@ module CIAX
       verbose { "initialize [#{@id}]" }
       @cobj = Cmd::Remote::Index.new(@cfg)
       @host = OPT.host
+    end
+
+    def init_sub(sub_id = @id)
+      # Site Status shared among layers
+      if @cfg[:sub_list]
+        @sub = @cfg[:sub_list].get(sub_id)
+        @sv_stat = @sub.sv_stat
+      else
+        @sv_stat = Prompt.new(@cfg[:layer_type], @id)
+      end
+      @cfg[:sv_stat] = @sv_stat
     end
 
     # Sync only (Wait for other thread), never inherit

@@ -11,18 +11,18 @@ module CIAX
   module Frm
     # Frame Exe module
     class Exe < Exe
-      # cfg must have [:dbi]
+      # cfg must have [:db]
       def initialize(id, cfg, atrb = {})
         super
         # DB is generated in List level
-        @dbi = type?(@cfg[:dbi], Dbi)
+        @dbi = @cfg[:dbi] = type?(@cfg[:db], CIAX::Db).get(id)
         @cfg[:site_id] = id
         @cfg[:ver] = @dbi['version']
         @stat = @cfg[:field] = Field.new(@dbi)
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
-        @sv_stat.add_flg(comerr: 'X', ioerr: 'E')
+        init_sub.add_flg(comerr: 'X', ioerr: 'E')
         # Post internal command procs
         @host ||= @dbi['host']
         @port ||= @dbi['port']
@@ -109,7 +109,7 @@ module CIAX
       OPT.parse('ceh:lts')
       id = ARGV.shift
       begin
-        Exe.new(id, Config.new, dbi: Dev::Db.new.get(id)).ext_shell.shell
+        Exe.new(id, Config.new, db: Dev::Db.new).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

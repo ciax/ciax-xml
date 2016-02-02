@@ -10,7 +10,7 @@ module CIAX
       def initialize(stat, cfg)
         @stat = type?(stat, App::Status)
         super('hex', @stat[:id], @stat[:ver])
-        @dbi = cfg[:db].get(@stat.dbi[:app_id])
+        @dbi = cfg[:hdb].get(@stat.dbi[:app_id])
         id = self[:id] || id_err("NO ID(#{id}) in Stat")
         @sv_stat = type?(cfg[:sv_stat] || Prompt.new('site', id), Prompt)
         @vmode = :x
@@ -113,7 +113,7 @@ module CIAX
       require 'libstatus'
       begin
         stat = App::Status.new.ext_file
-        puts Rsp.new(stat, db: Db.new)
+        puts Rsp.new(stat, hdb: Db.new)
       rescue InvalidID
         Msg.usage(' < status_file')
       end

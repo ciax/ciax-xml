@@ -9,10 +9,9 @@ module CIAX
     # cfg must have [:db], [:sub_list]
     class Exe < Exe
       def initialize(id, cfg, atrb = {})
-        @sub = cfg[:sub_list].get(id).sub
-        @sv_stat = @sub.sv_stat
-        view = Rsp.new(cfg[:db], @sub.stat, @sv_stat)
         super
+        init_sub
+        view = Rsp.new(@sub.sub.stat, @cfg)
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
         @post_exe_procs.concat(@sub.post_exe_procs)
@@ -31,22 +30,13 @@ module CIAX
       end
     end
 
-    # Hex Exe List
-    class List < Site::List
-      def initialize(cfg, top_list = nil)
-        super(cfg, top_list || self, Wat::List)
-        store_db(@sub_list.db)
-      end
-    end
-
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
       id = ARGV.shift
       cfg = Config.new
-      cfg[:sub_list] = Wat::List.new(cfg)
-      cfg[:db] = Db.new
       begin
-        Exe.new(id, cfg).ext_shell.shell
+        atrb = { hdb: Db.new, sub_list: Wat::List.new(cfg) }
+        Exe.new(id, cfg, atrb).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

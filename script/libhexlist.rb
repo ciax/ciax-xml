@@ -10,6 +10,7 @@ module CIAX
       def initialize(cfg, top_list = nil)
         super(cfg, top_list || self, Wat::List)
         store_db(@cfg[:db] ||= Ins::Db.new)
+        @cfg[:hdb] = Db.new
       end
     end
 

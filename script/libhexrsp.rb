@@ -6,13 +6,13 @@ module CIAX
   module Hex
     # View class
     class Rsp < Varx
-      # hint should have server status (isu,watch,exe..) like App::Exe
-      def initialize(db, stat, sv_stat = nil)
+      # sv_stat should have server status (isu,watch,exe..) like App::Exe
+      def initialize(stat, cfg)
         @stat = type?(stat, App::Status)
         super('hex', @stat[:id], @stat[:ver])
-        @dbi = db.get(@stat.dbi[:app_id])
+        @dbi = cfg[:db].get(@stat.dbi[:app_id])
         id = self[:id] || id_err("NO ID(#{id}) in Stat")
-        @sv_stat = type?(sv_stat || Prompt.new('site', id), Prompt)
+        @sv_stat = type?(cfg[:sv_stat] || Prompt.new('site', id), Prompt)
         @vmode = :x
         _init_upd_
       end
@@ -113,7 +113,7 @@ module CIAX
       require 'libstatus'
       begin
         stat = App::Status.new.ext_file
-        puts Rsp.new(Db.new, stat)
+        puts Rsp.new(stat, db: Db.new)
       rescue InvalidID
         Msg.usage(' < status_file')
       end

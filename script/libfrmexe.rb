@@ -22,11 +22,11 @@ module CIAX
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
-        init_sub.add_flg(comerr: 'X', ioerr: 'E')
+        _init_sub.add_flg(comerr: 'X', ioerr: 'E')
         # Post internal command procs
         @host ||= @dbi['host']
         @port ||= @dbi['port']
-        opt_mode
+        _opt_mode
       end
 
       def exe(args, src = 'local', pri = 1)

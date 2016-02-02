@@ -10,12 +10,12 @@ module CIAX
       attr_reader :sub, :stat
       def initialize(id, cfg, atrb = {})
         super(id, cfg, atrb)
-        init_sub.add_flg(auto: '&', event: '@')
+        _init_sub.add_flg(auto: '&', event: '@')
         @cobj.add_rem(@sub.cobj.rem)
         @stat = Event.new(@sub.id)
         @mode = @sub.mode
         @host = @sub.host
-        opt_mode
+        _opt_mode
       end
 
       def join(src = 'local')

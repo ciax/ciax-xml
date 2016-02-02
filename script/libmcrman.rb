@@ -14,7 +14,7 @@ module CIAX
         atrb[:layer_type] = 'mcr'
         super(nil, cfg, atrb)
         _init_net_(@cfg[:dbi] = Db.new.get)
-        init_sub
+        _init_sub
         @sub_list = @cfg[:dev_list]
         _init_domain_
         _init_stat_

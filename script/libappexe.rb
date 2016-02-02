@@ -19,12 +19,12 @@ module CIAX
         @cfg[:site_id] = id
         # LayerDB might generated in List level
         @cfg[:ver] = @dbi[:version]
-        init_sub(@cfg[:frm_site] = @dbi[:frm_site])
+        _init_sub(@cfg[:frm_site] = @dbi[:frm_site])
         @stat = Status.new(@dbi)
         @batch_interrupt = []
         init_server
         init_command
-        opt_mode
+        _opt_mode
       end
 
       def ext_shell

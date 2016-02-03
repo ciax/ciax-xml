@@ -16,7 +16,7 @@ module CIAX
         super
         # DB is generated in List level
         @cfg[:site_id] = id
-        dbi = _init_dbi(id,%i(stream iocmd))
+        dbi = _init_dbi(id, %i(stream iocmd))
         @stat = @cfg[:field] = Field.new(dbi)
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)

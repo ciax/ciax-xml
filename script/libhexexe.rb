@@ -15,7 +15,7 @@ module CIAX
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
         @post_exe_procs.concat(@sub.post_exe_procs)
-        @port = @sub.port.to_i + 1000
+        @port = @sub.sub.port.to_i + 1000
         view.ext_log if OPT[:e]
         @shell_output_proc = proc { view.to_x }
       end
@@ -34,8 +34,8 @@ module CIAX
       OPT.parse('ceh:lts')
       id = ARGV.shift
       cfg = Config.new
+      atrb = { hdb: Db.new, sub_list: Wat::List.new(cfg) }
       begin
-        atrb = { hdb: Db.new, sub_list: Wat::List.new(cfg) }
         Exe.new(id, cfg, atrb).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')

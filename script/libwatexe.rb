@@ -99,8 +99,8 @@ module CIAX
       OPT.parse('ceh:lts')
       id = ARGV.shift
       cfg = Config.new
+      atrb = { db: Ins::Db.new, sub_list: App::List.new(cfg) }
       begin
-        atrb = { sub_list: App::List.new(cfg), db: Ins::Db.new} 
         Exe.new(id, cfg, atrb).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')

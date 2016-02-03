@@ -58,9 +58,9 @@ module CIAX
           # "INTERRUPT(#{@batch_interrupt})"
           'INTERRUPT'
         end
-        @cobj.rem.ext.def_proc do
+        @cobj.rem.ext.def_proc do |ent|
           @stat[:time] = now_msec
-          'TEST'
+          ent[:batch].inspect
         end
         ext_non_client
       end

@@ -32,7 +32,7 @@
       <xsd:field xpath="@id"/>
     </xsd:key>
     <xsd:keyref name="event_grp" refer="adb:group_id">
-      <xsd:selector xpath=".//wdb:event/*"/>
+      <xsd:selector xpath=".//wdb:event/block_grp"/>
       <xsd:field xpath="@ref"/>
     </xsd:keyref>
     <xsd:key name="command_id">

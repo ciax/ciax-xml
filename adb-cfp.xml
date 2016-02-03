@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="cfp" id="cfp" label="MOIRCS Field Point" version="1">
+  <app frm_id="cfp" id="cfp" label="MOIRCS Field Point" version="2">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gs" caption="Status">
         <item id="upd" label="Upd">
@@ -151,5 +151,14 @@
         </binary>
       </group>
     </status>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <event label="GW Motion" id="gmot">
+        <compare inv="true">
+          <status var="go"/>
+          <status var="gv"/>
+        </compare>
+        <exec name="upd"/>
+      </event>
+    </watch>
   </app>
 </adb>

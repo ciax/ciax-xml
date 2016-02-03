@@ -54,6 +54,7 @@
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
           <xsd:element ref="wdb:range"/>
           <xsd:element ref="wdb:pattern"/>
+          <xsd:element ref="wdb:compare"/>
         </xsd:choice>
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
           <xsd:element ref="wdb:block"/>
@@ -91,6 +92,20 @@
           <xsd:attribute name="inv" type="xsd:boolean"/>
         </xsd:extension>
       </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="compare">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="wdb:status" minOccurs="2" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute name="inv" type="xsd:boolean"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="status">
+    <xsd:complexType>
+      <xsd:attribute name="var" type="xsd:token" use="required"/>
+      <xsd:attribute name="inv" type="xsd:boolean"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="block" type="wdb:command"/>

@@ -45,7 +45,13 @@ module CIAX
       def init_cond(cond, m)
         cond.each do |cnd|
           h = Hash[cnd]
-          h[:cri] = cnd[:val] if cnd[:type] != 'onchange'
+          case cnd[:type]
+          when 'compare'
+            h[:vals] = []
+          when 'onchange'
+          else
+            h[:cri] = cnd[:val]
+          end
           m << h
         end
         self
@@ -70,10 +76,16 @@ module CIAX
 
       def upd_cond(id, cond)
         cond.each_with_index do |h, i|
-          v = h[:var]
           h[:res] = (@event.get(:res)[id] || [])[i]
-          h[:val] = @event.get(:crnt)[v]
-          h[:cri] = @event.get(:last)[v] if h[:type] == 'onchange'
+          idx = @event.get(:crnt)
+          case h[:type]
+          when 'onchange'
+            v = h[:var]
+            h[:val] = idx[v]
+            h[:cri] = @event.get(:last)[v]
+          when 'compare'
+            h[:vals] = h[:vars].map { |k| "#{k}:#{idx[k]}" }
+          end
         end
         self
       end
@@ -86,7 +98,7 @@ module CIAX
 
       def view_cond(vw)
         vw << itemize('Conditions')
-        self[:stat].values.each do |i|
+        self[:stat].values.each do |i| # each event
           vw << cformat("    %:6s\t: %s\n", i[:label], rslt(i[:active]))
           view_event(vw, i[:cond])
         end
@@ -94,8 +106,14 @@ module CIAX
 
       def view_event(vw, cond)
         cond.each do |j|
-          vw << cformat("      %s %:3s  (%s: %s)\n",
-                        rslt(j[:res]), j[:var], j[:type], frml(j))
+          case j[:type]
+          when 'compare'
+            vw << cformat("      %s compare %s [%s]\n",
+                          rslt(j[:res]), j[:inv] ? 'not' : '', j[:vals].join(', '))
+          else
+            vw << cformat("      %s %:3s  (%s: %s)\n",
+                          rslt(j[:res]), j[:var], j[:type], frml(j))
+          end
         end
       end
 

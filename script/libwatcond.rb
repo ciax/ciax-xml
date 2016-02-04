@@ -15,7 +15,7 @@ module CIAX
         # Pick usable val
         @list = []
         @windex.values.each do|v|
-          @list |= v[:cnd].map { |i| i[:var] }
+          @list |= v[:cnd].map { |i| i[:var] || i[:vars] }.flatten
         end
       end
 
@@ -58,45 +58,66 @@ module CIAX
           val = @stat[:data][vn]
           case ckitm[:type]
           when 'onchange'
-            cri = @event[:last][vn]
-            if cri
-              if (tol = ckitm[:tolerance])
-                res = ((cri.to_f - val.to_f).abs > tol.to_f)
-                verbose do
-                  format('  onChange(%s): |[%s]-<%s>| > %s =>%s',
-                         vn, cri, val, tol, res.inspect)
-                end
-              else
-                res = (cri != val)
-                verbose do
-                  format('  onChange(%s): [%s] vs <%s> =>%s',
-                         vn, cri.inspect, val, res.inspect)
-                end
-              end
-            else
-              res = false
-            end
+            res = _onchange(ckitm[:var], ckitm[:tolerance])
           when 'pattern'
-            cri = ckitm[:val]
-            res = Regexp.new(cri).match(val)
-            verbose do
-              format('  Pattern(%s): [%s] vs <%s> =>%s',
-                     vn, cri, val, res.inspect)
-            end
+            res = _pattern(ckitm[:var], ckitm[:val])
           when 'range'
-            cri = ckitm[:val]
-            f = format('%.3f', val.to_f)
-            res = (ReRange.new(cri) == f)
-            verbose do
-              format('  Range(%s): [%s] vs <%s>(%s) =>%s',
-                     vn, cri, f, val.class, res.inspect)
-            end
+            res = _range(ckitm[:var], ckitm[:val])
+          when 'compare'
+            res = _compare(ckitm[:vars])
           end
           res = !res if /true|1/ =~ ckitm[:inv]
           rary << res
         end
         @event[:res][id] = rary
         rary.all?
+      end
+
+      private
+
+      def _onchange(vn, tol)
+        val = @stat[:data][vn]
+        cri = @event[:last][vn]
+        return false unless cri
+        if tol
+          res = ((cri.to_f - val.to_f).abs > tol.to_f)
+          verbose do
+            format('  onChange(%s): |[%s]-<%s>| > %s =>%s',
+                   vn, cri, val, tol, res.inspect)
+          end
+        else
+          res = (cri != val)
+          verbose do
+            format('  onChange(%s): [%s] vs <%s> =>%s',
+                   vn, cri.inspect, val, res.inspect)
+          end
+        end
+        res
+      end
+
+      def _pattern(vn, cri)
+        val = @stat[:data][vn]
+        res = Regexp.new(cri).match(val)
+        verbose do
+          format('  Pattern(%s): [%s] vs <%s> =>%s',
+                 vn, cri, val, res.inspect)
+        end
+        res
+      end
+
+      def _range(vn, cri)
+        val = @stat[:data][vn]
+        f = format('%.3f', val.to_f)
+        res = (ReRange.new(cri) == f)
+        verbose do
+          format('  Range(%s): [%s] vs <%s>(%s) =>%s',
+                 vn, cri, f, val.class, res.inspect)
+        end
+        res
+      end
+
+      def _compare(vars)
+        vars.map { |vn| @stat[:data][vn] }.uniq.size == 1
       end
     end
   end

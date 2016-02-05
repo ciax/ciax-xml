@@ -1,6 +1,4 @@
 #!/usr/bin/ruby
-require 'socket'
-
 # Provide Server
 module CIAX
   # Server extension module
@@ -26,9 +24,7 @@ module CIAX
     def server
       @sub.server if @sub
       return self unless @port
-      udp = UDPSocket.open
-      udp.bind('0.0.0.0', @port.to_i)
-      ThreadLoop.new("Server(#{@layer}:#{@id})", 9) do
+      ThreadUdp.new("Server(#{@layer}:#{@id})", 9) do |udp|
         IO.select([udp])
         line, addr = udp.recvfrom(4096)
         line.chomp!

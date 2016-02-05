@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'socket'
 require 'libmsg'
 require 'thread'
 
@@ -20,6 +21,16 @@ module CIAX
     def self.list
       Thread.list.map { |t| t[:name] }
     end
+
+    # Reloadable by HUP signal
+    def self.reload(tag)
+      file = "#{ENV['HOME']}/.var/#{tag}.opt"
+      load file if File.exist?(file)
+      yield
+    rescue SignalException
+      Thread.list {|t| t[:udp].close if t[:udp]}
+      retry if $ERROR_INFO.message == 'SIGHUP'
+    end
   end
 
   # Thread with Loop
@@ -30,6 +41,17 @@ module CIAX
           yield
           verbose { "Next for #{Thread.current[:name]}" }
         end
+      end
+    end
+  end
+
+  class ThreadUdp < Threadx
+    def initialize(name, color = 4)
+      super do
+        udp = UDPSocket.open
+        udp.bind('0.0.0.0', @port.to_i)
+        Thread.current[:udp] = udp
+        loop {  yield(udp) }
       end
     end
   end

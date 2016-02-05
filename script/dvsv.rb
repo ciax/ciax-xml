@@ -6,6 +6,8 @@ require 'libwatlist'
 module CIAX
   OPT.parse('es')
   cfg = Config.new
-#  Msg.err2file('dvsv')
-  Wat::List.new(cfg).server(ARGV)
+  Threadx.reload('dvsv') do
+    #  Msg.err2file('dvsv')
+    Wat::List.new(cfg).server(ARGV)
+  end
 end

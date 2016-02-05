@@ -29,7 +29,11 @@ module CIAX
       pidfile = "#{ENV['HOME']}/.var/#{tag}.pid"
       IO.foreach(pidfile) do |line|
         pid = line.to_i
-        Process.kill(:TERM,pid) if pid > 0
+        next unless pid > 0
+        begin
+          Process.kill(:TERM,pid)
+        rescue
+        end
       end if test(?r, pidfile)
       IO.write(pidfile, $$)
       begin

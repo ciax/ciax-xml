@@ -5,6 +5,7 @@ require 'librerange'
 #   returns String as message.
 module CIAX
   module Cmd
+    NS_COLOR = 2
     # Default Proc Setting method
     module CmdProc
       include Msg

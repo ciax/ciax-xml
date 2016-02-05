@@ -27,6 +27,7 @@ module CIAX
       # Set ARGS in opt file
       optfile = "#{ENV['HOME']}/.var/#{tag}.opt"
       pidfile = "#{ENV['HOME']}/.var/#{tag}.pid"
+      Msg.err2file(tag)
       IO.foreach(pidfile) do |line|
         pid = line.to_i
         next unless pid > 0
@@ -39,7 +40,6 @@ module CIAX
       begin
         load optfile if test(?r, optfile)
         yield
-        Msg.err2file(tag)
         sleep
       rescue SignalException
         retry if $ERROR_INFO.message == 'SIGHUP'

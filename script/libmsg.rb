@@ -26,7 +26,7 @@ module CIAX
     end
 
     def info(title)
-      warn make_msg(title, 2) unless STDERR.tty?
+      warn make_msg(title, 2) unless $stderr.tty?
       self
     end
 
@@ -72,7 +72,7 @@ module CIAX
       @head ||= make_head
       ts = "#{@head}:"
       ts << (c ? Msg.colorize(title.to_s, c) : title.to_s)
-      return ts if STDERR.tty?
+      return ts if $stderr.tty?
       pass = format('%5.4f', Time.now - START_TIME)
       "[#{Time.now}/#{pass}]" + ts
     end

@@ -56,7 +56,21 @@ module CIAX
 
     # Switch error output to file
     def err2file(tag)
-      $stderr.reopen(vardir('log') + 'error_' + tag + today + '.out', 'a')
+      fname = vardir('log') + 'error_' + tag + today + '.out'
+      $stderr = Tee.new(fname)
+    end
+
+    class Tee < File
+      def initialize(fname)
+        super(fname, 'a')
+        tty? && p('Tee is TTY')
+        @io = IO.open(2)
+      end
+
+      def write(str)
+        @io.write(str)
+        super
+      end
     end
   end
 end

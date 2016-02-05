@@ -14,7 +14,7 @@ module CIAX
       else
         res = colorize(var, 5) + clr
       end
-      warn res
+      show res
     end
 
     def _prt_enum(var)

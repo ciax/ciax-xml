@@ -26,22 +26,22 @@ module CIAX
     end
 
     def info(title)
-      warn make_msg(title, 2) unless $stderr.tty?
+      show make_msg(title, 2) unless $stderr.tty?
       self
     end
 
     def warning(title)
-      warn make_msg(title, 3)
+      show make_msg(title, 3)
       self
     end
 
     def alert(title)
-      warn make_msg(title, 5)
+      show make_msg(title, 5)
       self
     end
 
     def errmsg
-      warn make_msg("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
+      show make_msg("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
     end
 
     # @hide_inside is flag for hiding inside of enclose
@@ -61,7 +61,7 @@ module CIAX
       ind = 0
       base = Msg.ver_indent
       data.each_line do|line|
-        warn Msg.indent(base + ind) + line
+        show Msg.indent(base + ind) + line
         ind = 2
       end
       true

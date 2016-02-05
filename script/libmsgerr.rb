@@ -7,14 +7,18 @@ module CIAX
   module Msg
     module_function
 
+    def show(str, nl = "\n")
+      $stderr.print(str + nl.to_s)
+    end
+
     # Messaging methods
     def progress(f = true)
       p = colorize(f ? '.' : 'x', 1)
-      $stderr.print p
+      show(p,nil)
     end
 
     def msg(str = 'message', color = 2, ind = 0) # Display only
-      warn colorize(str, color) + indent(ind)
+      show colorize(str, color) + indent(ind)
     end
 
     # Exception methods

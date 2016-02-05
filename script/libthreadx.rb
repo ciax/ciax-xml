@@ -24,9 +24,10 @@ module CIAX
 
     # Reloadable by HUP signal
     def self.reload(tag)
+      # Set ARGS in opt file
       file = "#{ENV['HOME']}/.var/#{tag}.opt"
-      load file if File.exist?(file)
-      yield
+      load file if File.exist?(file) 
+      yield(ARGS)
     rescue SignalException
       Thread.list {|t| t[:udp].close if t[:udp]}
       retry if $ERROR_INFO.message == 'SIGHUP'

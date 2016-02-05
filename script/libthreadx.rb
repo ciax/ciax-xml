@@ -39,8 +39,9 @@ module CIAX
       begin
         load optfile if test(?r, optfile)
         yield
+        Msg.err2file(tag)
+        sleep
       rescue SignalException
-        Thread.list {|t| t[:udp].close if t[:udp]}
         retry if $ERROR_INFO.message == 'SIGHUP'
       end
     end
@@ -61,11 +62,15 @@ module CIAX
   class ThreadUdp < Threadx
     def initialize(name, color = 4)
       super do
-        udp = UDPSocket.open
-        udp.bind('0.0.0.0', @port.to_i)
-        Thread.current[:udp] = udp
-        loop {  yield(udp) }
+        begin
+          udp = UDPSocket.open
+          udp.bind('0.0.0.0', @port.to_i)
+          loop {  yield(udp) }
+        ensure
+          udp.close
+        end
       end
+      sleep 0.3
     end
   end
 end

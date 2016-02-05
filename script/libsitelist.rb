@@ -42,11 +42,9 @@ module CIAX
       end
 
       def server(ary)
-        ary.each do|site|
-          sleep 0.3
-          get(site).ext_server.server
-        end.empty? && get(nil)
-        sleep
+        sites = ary.map { |s| get(s).ext_server }
+        sites.empty? && get(nil)
+        sites.each { |s| s.server }
       rescue InvalidID
         OPT.usage('(opt) [id] ....')
       end

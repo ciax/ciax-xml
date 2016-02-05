@@ -7,7 +7,6 @@ module CIAX
   OPT.parse('es')
   cfg = Config.new
   Threadx.reload('dvsv') do |args|
-    #  Msg.err2file('dvsv')
     Wat::List.new(cfg).server(ARGV)
   end
 end

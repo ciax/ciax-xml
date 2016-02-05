@@ -8,6 +8,6 @@ module CIAX
   cfg = Config.new
   Threadx.reload('dvsv') do |args|
     #  Msg.err2file('dvsv')
-    Wat::List.new(cfg).server(ARGV+args)
+    Wat::List.new(cfg).server(ARGV)
   end
 end

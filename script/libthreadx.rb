@@ -27,7 +27,7 @@ module CIAX
       # Set ARGS in opt file
       file = "#{ENV['HOME']}/.var/#{tag}.opt"
       load file if File.exist?(file) 
-      yield(ARGS)
+      yield
     rescue SignalException
       Thread.list {|t| t[:udp].close if t[:udp]}
       retry if $ERROR_INFO.message == 'SIGHUP'

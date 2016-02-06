@@ -41,8 +41,8 @@ module CIAX
         cobj
       end
 
-      def server(ary)
-        sites = ary.map { |s| get(s).ext_server }
+      def server
+        sites = ARGV.map { |s| get(s).ext_server }
         sites.empty? && get(nil)
         sites.each { |s| s.server }
       rescue InvalidID

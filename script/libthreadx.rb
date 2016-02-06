@@ -39,7 +39,9 @@ module CIAX
       IO.write(pidfile, $$)
       begin
         load optfile if test(?r, optfile)
-        yield
+        exe = yield
+        Msg.err2file(tag)
+        exe.server
         sleep
       rescue SignalException
         retry if $ERROR_INFO.message == 'SIGHUP'

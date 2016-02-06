@@ -60,15 +60,15 @@ module CIAX
       $stderr = Tee.new(fname)
     end
 
-    class Tee < File
+    class Tee < IO
       def initialize(fname)
-        super(fname, 'a')
-        tty? && p('Tee is TTY')
-        @io = IO.open(2)
+        super(2)
+        @io = File.open(fname, 'a')
       end
 
       def write(str)
-        @io.write(str)
+        pass = format('%5.4f', Time.now - START_TIME)
+        @io.write("[#{Time.now}/#{pass}]" + str)
         super
       end
     end

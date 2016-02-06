@@ -72,9 +72,6 @@ module CIAX
       @head ||= make_head
       ts = "#{@head}:"
       ts << (c ? Msg.colorize(title.to_s, c) : title.to_s)
-      return ts if $stderr.tty?
-      pass = format('%5.4f', Time.now - START_TIME)
-      "[#{Time.now}/#{pass}]" + ts
     end
 
     def head_ary

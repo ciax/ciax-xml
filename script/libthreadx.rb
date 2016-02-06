@@ -27,7 +27,6 @@ module CIAX
       # Set ARGS in opt file
       optfile = "#{ENV['HOME']}/.var/#{tag}.opt"
       pidfile = "#{ENV['HOME']}/.var/#{tag}.pid"
-      Msg.err2file(tag)
       IO.foreach(pidfile) do |line|
         pid = line.to_i
         next unless pid > 0

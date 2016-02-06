@@ -23,7 +23,7 @@ module CIAX
     end
 
     # Reloadable by HUP signal
-    def self.reload(tag)
+    def self.daemon(tag)
       # Set ARGS in opt file
       optfile = "#{ENV['HOME']}/.var/#{tag}.opt"
       pidfile = "#{ENV['HOME']}/.var/#{tag}.pid"
@@ -36,6 +36,7 @@ module CIAX
         rescue
         end
       end if test(?r, pidfile)
+      Process.daemon(true,true)
       IO.write(pidfile, $$)
       begin
         load optfile if test(?r, optfile)

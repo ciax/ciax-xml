@@ -92,6 +92,8 @@ module CIAX
         sleep
       rescue SignalException
         retry if $ERROR_INFO.message == 'SIGHUP'
+      rescue InvalidID
+        OPT.usage('(opt) [id] ....')
       end
     end
 

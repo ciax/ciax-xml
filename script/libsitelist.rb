@@ -50,8 +50,6 @@ module CIAX
         sites << nil if sites.empty?
         sites.each { |s| get(s).ext_server }
         self
-      rescue InvalidID
-        OPT.usage('(opt) [id] ....')
       end
 
       def server

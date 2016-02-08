@@ -14,6 +14,7 @@ module CIAX
         atrb[:db] = Db.new
         atrb[:layer_type] = 'mcr'
         super(nil, cfg, atrb)
+        # id = nil -> taken by ARGV
         _init_net_(_init_dbi(nil, [:sites]))
         _init_sub
         @sub_list = @cfg[:dev_list]

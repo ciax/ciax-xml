@@ -6,5 +6,7 @@ require 'libhexlist'
 module CIAX
   OPT.parse('e')
   cfg = Config.new
-  Hex::List.new(cfg).server(ARGV)
+  Msg.daemon('hexsv') do
+    Hex::List.new(cfg).ext_server(ARGV)
+  end
 end

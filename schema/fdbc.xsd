@@ -34,12 +34,13 @@
       <xsd:attribute name="response" type="xsd:NCName"/>
       <xsd:attribute name="nocache" type="xsd:boolean"/>
       <xsd:attribute name="noaffix" type="xsd:boolean"/>
-      <xsd:attribute name="type">
+      <xsd:attribute name="type" use="required">
         <xsd:simpleType>
           <xsd:restriction base="xsd:token">
             <xsd:enumeration value="stat"/>
             <xsd:enumeration value="action"/>
             <xsd:enumeration value="config"/>
+            <xsd:enumeration value="protocol"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>

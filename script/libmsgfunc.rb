@@ -56,8 +56,36 @@ module CIAX
 
     # Switch error output to file
     def err2file(tag)
+      return if $stderr.is_a? Tee
       fname = vardir('log') + 'error_' + tag + today + '.out'
       $stderr = Tee.new(fname)
+      Process.daemon(true, true)
+    end
+
+    # Reloadable by HUP signal
+    def daemon(tag)
+      # Set ARGS in opt file
+      dir = vardir('run')
+      optfile = "#{dir}#{tag}.opt"
+      pidfile = "#{dir}#{tag}.pid"
+      IO.foreach(pidfile) do |line|
+        pid = line.to_i
+        next unless pid > 0
+        begin
+          Process.kill(:TERM, pid)
+        rescue
+        end
+      end if test('r', pidfile)
+      IO.write(pidfile, $PROCESS_ID)
+      begin
+        load optfile if test('r', optfile)
+        exe = yield
+        err2file(tag)
+        exe.server
+        sleep
+      rescue SignalException
+        retry if $ERROR_INFO.message == 'SIGHUP'
+      end
     end
 
     class Tee < IO

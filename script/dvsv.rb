@@ -6,7 +6,7 @@ require 'libwatlist'
 module CIAX
   OPT.parse('es')
   cfg = Config.new
-  Threadx.daemon('dvsv') do
+  Msg.daemon('dvsv') do
     Wat::List.new(cfg)
   end
 end

@@ -21,32 +21,6 @@ module CIAX
     def self.list
       Thread.list.map { |t| t[:name] }
     end
-
-    # Reloadable by HUP signal
-    def self.daemon(tag)
-      # Set ARGS in opt file
-      optfile = "#{ENV['HOME']}/.var/#{tag}.opt"
-      pidfile = "#{ENV['HOME']}/.var/#{tag}.pid"
-      IO.foreach(pidfile) do |line|
-        pid = line.to_i
-        next unless pid > 0
-        begin
-          Process.kill(:TERM,pid)
-        rescue
-        end
-      end if test(?r, pidfile)
-      Process.daemon(true,true)
-      IO.write(pidfile, $$)
-      begin
-        load optfile if test(?r, optfile)
-        exe = yield
-        Msg.err2file(tag)
-        exe.server
-        sleep
-      rescue SignalException
-        retry if $ERROR_INFO.message == 'SIGHUP'
-      end
-    end
   end
 
   # Thread with Loop
@@ -67,7 +41,7 @@ module CIAX
         begin
           udp = UDPSocket.open
           udp.bind('0.0.0.0', @port.to_i)
-          loop {  yield(udp) }
+          loop { yield(udp) }
         ensure
           udp.close
         end

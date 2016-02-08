@@ -41,16 +41,22 @@ module CIAX
         cobj
       end
 
-      def server
-        sites = ARGV.map { |s| get(s).ext_server }
-        sites.empty? && get(nil)
-        sites.each { |s| s.server }
+      def ext_shell
+        extend(Shell).ext_shell
+      end
+
+      # Server Setting
+      def ext_server(sites = [])
+        sites << nil if sites.empty?
+        sites.each { |s| get(s).ext_server }
+        self
       rescue InvalidID
         OPT.usage('(opt) [id] ....')
       end
 
-      def ext_shell
-        extend(Shell).ext_shell
+      def server
+        @list.each_value(&:server)
+        self
       end
 
       private

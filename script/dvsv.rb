@@ -7,6 +7,6 @@ module CIAX
   OPT.parse('es')
   cfg = Config.new
   Msg.daemon('dvsv') do
-    Wat::List.new(cfg)
+    Wat::List.new(cfg).ext_server(ARGV)
   end
 end

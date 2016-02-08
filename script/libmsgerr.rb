@@ -14,7 +14,7 @@ module CIAX
     # Messaging methods
     def progress(f = true)
       p = colorize(f ? '.' : 'x', 1)
-      show(p,nil)
+      show(p, nil)
     end
 
     def msg(str = 'message', color = 2, ind = 0) # Display only

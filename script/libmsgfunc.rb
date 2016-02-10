@@ -85,7 +85,8 @@ module CIAX
       base = vardir('run') + tag
       kill_pid(base)
       begin
-        load optfile if test('r', base + '.opt')
+        optfile = base + '.opt'
+        load optfile if test('r', optfile)
         exe = yield
         err2file(tag) && new_pid(base)
         exe.server

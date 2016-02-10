@@ -2,11 +2,12 @@
 $LOAD_PATH << __dir__
 ENV['VER'] ||= 'Initialize'
 require 'libwatlist'
+require 'libdaemon'
 # CIAX-XML Device Server
 module CIAX
-  OPT.parse('es')
+  OPT.parse('esb')
   cfg = Config.new
-  Msg.daemon('dvsv') do
+  Daemon.daemon('dvsv') do
     Wat::List.new(cfg).ext_server(ARGV)
   end
 end

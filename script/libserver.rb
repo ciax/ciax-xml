@@ -24,7 +24,7 @@ module CIAX
     def server
       @sub.server if @sub
       return self unless @port
-      ThreadUdp.new("Server(#{@layer}:#{@id})", 9) do |udp|
+      ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |udp|
         IO.select([udp])
         line, addr = udp.recvfrom(4096)
         line.chomp!

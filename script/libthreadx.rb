@@ -36,11 +36,11 @@ module CIAX
   end
 
   class ThreadUdp < Threadx
-    def initialize(name, color = 4)
-      super do
+    def initialize(name, port)
+      super(name, 9) do
         begin
           udp = UDPSocket.open
-          udp.bind('0.0.0.0', @port.to_i)
+          udp.bind('0.0.0.0', port.to_i)
           loop { yield(udp) }
         ensure
           udp.close

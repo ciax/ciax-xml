@@ -91,7 +91,6 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libgetopts'
       if ARGV.empty?
         OPT.usage('[id] ..')
       else

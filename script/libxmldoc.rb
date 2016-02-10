@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libgetopts'
 require 'libdispgrp'
 require 'libenumx'
 require 'libxmlgn'

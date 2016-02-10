@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libgetopts'
 require 'libenumx'
 require 'libxmldoc'
 

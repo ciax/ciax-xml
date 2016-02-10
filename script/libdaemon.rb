@@ -33,11 +33,12 @@ module CIAX
     end
 
     # Reloadable by HUP signal
-    def daemon(tag)
+    def daemon(tag, opt = '')
       # Set ARGS in opt file
       base = Msg.vardir('run') + tag
       kill_pid(base)
       begin
+        OPT.parse(opt)
         optfile = base + '.opt'
         load optfile if test('r', optfile)
         exe = yield
@@ -46,7 +47,7 @@ module CIAX
         sleep
       rescue SignalException
         retry if $ERROR_INFO.message == 'SIGHUP'
-      rescue InvalidID
+      rescue UserError
         OPT.usage('(opt) [id] ....')
       end
     end

@@ -16,10 +16,12 @@ module CIAX
     def parse(str, db = {})
       Msg.type?(str, String)
       @optdb.update(db)
-      update(_sym_key_(str))
       optary = current_options(str, db.keys)
       make_usage(optary)
+      update(_sym_key_(str))
       make_layer
+    rescue OptionParser::ParseError
+      raise(UserError,'')
     end
 
     def sv?

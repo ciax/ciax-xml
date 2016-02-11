@@ -60,7 +60,6 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:group ref="mdb:parameter" minOccurs="0" maxOccurs="unbounded"/>
-        <xsd:element ref="mdb:exec" minOccurs="0" maxOccurs="unbounded"/>
         <xsd:element ref="mdb:goal" minOccurs="0" maxOccurs="1"/>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="mdb:select"/>

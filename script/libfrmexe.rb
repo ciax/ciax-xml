@@ -58,7 +58,7 @@ module CIAX
       end
 
       def ext_driver
-        sp = @cfg[:stream]
+        sp = type?(@cfg[:stream], Hash)
         if OPT[:s]
           @mode = 'SIM'
           iocmd = [ENV['SIMCMD'] || 'frmsim', @id, @cfg[:version]]

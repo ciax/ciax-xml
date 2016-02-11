@@ -66,7 +66,7 @@ module CIAX
         end
 
         def _init_frame
-          sp = @cfg[:stream]
+          sp = type?(@cfg[:stream], Hash)
           Frame.new(sp[:endian], sp[:ccmethod])
         end
 

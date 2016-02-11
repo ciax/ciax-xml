@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-ENV['VER'] ||= 'Initialize'
 require 'libhexlist'
 require 'libdaemon'
 # CIAX-XML Device Server for V1

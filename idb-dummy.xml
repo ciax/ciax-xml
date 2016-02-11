@@ -4,7 +4,14 @@
     <group id="dmy" label="Dummy simulator">
       <instance id="tsl" app_id="mma" frm_site="tsl" host="localhost" port="25699" label="TEST Slosyn"/>
       <instance id="tfp" app_id="cfp" frm_site="tfp" host="localhost" port="25698" label="TEST Field Point"/>
-      <instance id="tb1" app_id="bbe" frm_site="tbb" host="localhost" port="25697" label="TEST BBE simple"/>
+      <instance id="tb1" app_id="bbe" frm_site="tbb" host="localhost" port="25697" label="TEST BBE simple">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="g0" caption="X0-3"/>
+          <group ref="g1" caption="X4-7"/>
+          <group ref="g2" caption="X8-11"/>
+          <group ref="g3" caption="X12-15"/>
+        </status>
+      </instance>
       <instance id="tb2" app_id="bbe" frm_site="tbb" host="localhost" port="25696" label="TEST BBE with Watch">
         <command ref="tbb"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">

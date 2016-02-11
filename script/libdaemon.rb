@@ -44,7 +44,7 @@ module CIAX
       pidfile = base + '.pid'
       return unless test('r', pidfile) 
       pids = IO.readlines(pidfile).keep_if{ |l| l.to_i > 0 }
-      File.unlink(pidfile)
+      IO.write(pidfile,'')
       pids.each do |pid|
         begin
           Process.kill(:TERM, pid.to_i)

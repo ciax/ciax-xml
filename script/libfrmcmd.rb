@@ -66,7 +66,7 @@ module CIAX
         end
 
         def _init_frame
-          sp = @cfg[:stream] || {}
+          sp = @cfg[:stream]
           Frame.new(sp[:endian], sp[:ccmethod])
         end
 

@@ -86,7 +86,8 @@ module CIAX
       @optdb.update(
         t: 'test mode (default)',
         s: 'simulation mode',
-        e: 'execution mode'
+        e: 'execution mode',
+        b: 'background mode'
       )
       self
     end

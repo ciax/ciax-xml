@@ -2,40 +2,13 @@
 require 'libgetopts'
 module CIAX
   ### Daemon Methods ###
-  module Daemon
+  class Daemon
+    NS_COLOR = 1
     include Msg
-
-    module_function
-
-    # Switch error output to file
-    def err2file(tag)
-      return if $stderr.is_a? Tee || !OPT[:b]
-      outfile = Msg.vardir('log') + 'error_' + tag + Msg.today + '.out'
-      $stderr = Tee.new(outfile)
-    end
-
-    def new_pid(base)
-      Process.daemon(true, true)
-      IO.write(base + '.pid', $PROCESS_ID)
-    end
-
-    def kill_pid(base)
-      return unless test('r', base + '.pid')
-      IO.foreach(base + '.pid') do |line|
-        pid = line.to_i
-        next unless pid > 0
-        begin
-          Process.kill(:TERM, pid)
-        rescue
-          nil
-        end
-      end
-    end
-
     # Reloadable by HUP signal
-    def daemon(tag, opt = '')
+    def initialize(tag, opt = '')
       # Set ARGS in opt file
-      base = Msg.vardir('run') + tag
+      base = vardir('run') + tag
       kill_pid(base)
       begin
         OPT.parse(opt)
@@ -49,6 +22,36 @@ module CIAX
         retry if $ERROR_INFO.message == 'SIGHUP'
       rescue UserError
         OPT.usage('(opt) [id] ....')
+      end
+    end
+
+    private
+
+    # Switch error output to file
+    def err2file(tag)
+      return unless OPT[:b]
+      return if $stderr.is_a? Tee
+      outfile = vardir('log') + 'error_' + tag + today + '.out'
+      $stderr = Tee.new(outfile)
+    end
+
+    def new_pid(base)
+      Process.daemon(true, true)
+      IO.write(base + '.pid', $PROCESS_ID)
+    end
+
+    def kill_pid(base)
+      pidfile = base + '.pid'
+      return unless test('r', pidfile) 
+      pids = IO.readlines(pidfile).keep_if{ |l| l.to_i > 0 }
+      File.unlink(pidfile)
+      pids.each do |pid|
+        begin
+          Process.kill(:TERM, pid.to_i)
+          verbose { "Initialize Process Killed (#{pid})" }
+        rescue
+          nil
+        end
       end
     end
 

@@ -58,7 +58,7 @@ module CIAX
       end
 
       def init_general(dbi)
-        dbi[:proj] = PROJ
+        dbi[:proj] = ENV['PROJ']
         dbi[:site_id] = dbi[:ins_id] = dbi[:id]
         dbi[:frm_site] ||= dbi[:id]
       end

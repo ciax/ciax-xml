@@ -16,7 +16,7 @@ module CIAX
     #   <val> -> taken from status (incoming)
     #   (val) -> calcurated from status
     def verbose(cond = true)
-      return unless VERBOSE && cond && !@hide_inside
+      return unless ENV['VER'] && cond && !@hide_inside
       data = yield
       (data.is_a?(Array) ? data : [data]).map do|line|
         msg = make_msg(line)
@@ -102,10 +102,10 @@ module CIAX
 
     # VER= makes setenv "" to VER otherwise nil
     def condition(msg)
-      return if !VERBOSE || !msg
+      return if !ENV['VER'] || !msg
       return true if match_all
       title = msg.split("\n").first.upcase
-      VERBOSE.split(',').any? do|s|
+      ENV['VER'].split(',').any? do|s|
         s.split(':').all? do|e|
           title.include?(e.upcase)
         end
@@ -113,7 +113,7 @@ module CIAX
     end
 
     def match_all
-      Regexp.new('\*').match(VERBOSE)
+      Regexp.new('\*').match(ENV['VER'])
     end
 
     def self.ver_indent(add = 0)

@@ -22,7 +22,7 @@ module CIAX
       @type = type
       # @displist is Display
       lid = 'list'
-      lid += "_#{PROJ}" if PROJ
+      lid += "_#{ENV['PROJ']}" if ENV['PROJ']
       # Show site list
       @displist = cache(lid, &:displist)
       @argc = 0
@@ -84,8 +84,8 @@ module CIAX
     end
 
     def _newest?
-      if NOCACHE
-        verbose { "#{@type}/Cache NOCACHE is set" }
+      if ENV['NOCACHE']
+        verbose { "#{@type}/Cache ENV['NOCACHE'] is set" }
         return false
       elsif !test('e', @marfile)
         verbose { "#{@type}/Cache MAR file(#{@base}) not exist" }

@@ -75,7 +75,7 @@ module CIAX
       # Includable (instance)
       def _mk_project(top)
         pid = top['id']
-        vpary = (@valid_proj ||= []).push(pid) if PROJ == pid
+        vpary = (@valid_proj ||= []).push(pid) if ENV['PROJ'] == pid
         grp = (@grps ||= {})[pid] = []
         top.each do |gdoc| # g.name is include or group
           tag = gdoc.name.to_sym

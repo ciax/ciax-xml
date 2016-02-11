@@ -12,7 +12,7 @@ module CIAX
 
       # Allows nil
       def get(id = nil)
-        super(id || PROJ || ARGV.shift)
+        super(id || ENV['PROJ'] || ARGV.shift)
       end
 
       private

@@ -58,10 +58,10 @@ module CIAX
       end
 
       def ext_driver
-        sp = @cfg[:stream]||{}
+        sp = @cfg[:stream] || {}
         if OPT[:s]
           @mode = 'SIM'
-          iocmd = [SIMCMD, @id, @cfg[:version]]
+          iocmd = [ENV['SIMCMD'] || 'frmsim', @id, @cfg[:version]]
           timeout = 60
         else
           @mode = 'DRV'

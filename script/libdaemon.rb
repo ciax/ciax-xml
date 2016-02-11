@@ -7,6 +7,7 @@ module CIAX
     include Msg
     # Reloadable by HUP signal
     def initialize(tag, opt = '')
+      ENV['VER'] ||= 'Initialize'
       # Set ARGS in opt file
       base = vardir('run') + tag
       kill_pid(base)
@@ -42,9 +43,9 @@ module CIAX
 
     def kill_pid(base)
       pidfile = base + '.pid'
-      return unless test('r', pidfile) 
-      pids = IO.readlines(pidfile).keep_if{ |l| l.to_i > 0 }
-      IO.write(pidfile,'')
+      return unless test('r', pidfile)
+      pids = IO.readlines(pidfile).keep_if { |l| l.to_i > 0 }
+      IO.write(pidfile, '')
       pids.each do |pid|
         begin
           Process.kill(:TERM, pid.to_i)

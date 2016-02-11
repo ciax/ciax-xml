@@ -21,7 +21,7 @@ module CIAX
       update(_sym_key_(str))
       make_layer
     rescue OptionParser::ParseError
-      raise(UserError,'')
+      raise(UserError, '')
     end
 
     def sv?

@@ -17,8 +17,8 @@ sqlite3: light weight sql server for logging, not for access from multiple proce
 
 ## ENV Var ##
  RUBYLIB
- PROJ
- NOCACHE
+ ENV['PROJ']
+ ENV['NOCACHE']
  DEBUG
  VER
 
@@ -71,4 +71,4 @@ frmsh (intfrm -t)/ used when running site is different from intapp
   2     exec    remote   o       o  
 
 ## Project mode
-  set PROJ to limit Device ID (is in idb-{PROJ}.xml)
+  set ENV['PROJ'] to limit Device ID (is in idb-{ENV['PROJ']}.xml)

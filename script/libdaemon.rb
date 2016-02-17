@@ -9,40 +9,52 @@ module CIAX
     def initialize(tag, opt = '')
       ENV['VER'] ||= 'Initialize'
       # Set ARGS in opt file
-      base = vardir('run') + tag
-      kill_pid(base)
-      begin
-        OPT.parse(opt)
-        optfile = base + '.opt'
-        load optfile if test('r', optfile)
-        exe = yield
-        err2file(tag) && new_pid(base)
-        exe.server
-        sleep
-      rescue SignalException
-        retry if $ERROR_INFO.message == 'SIGHUP'
-      rescue UserError
-        OPT.usage('(opt) [id] ....')
+      @base = vardir('run') + tag
+      OPT.parse(opt)
+      if OPT[:d]
+        kill_pid
+      else
+        init_daemon
+        begin
+          init_server { yield }.server
+          err_redirect(tag)
+          sleep
+        rescue SignalException
+          retry if $ERROR_INFO.message == 'SIGHUP'
+        end
       end
+    rescue UserError
+      OPT.usage('(opt) [id] ....')
     end
 
     private
 
-    # Switch error output to file
-    def err2file(tag)
+    def init_daemon
+      kill_pid
       return unless OPT[:b]
-      return if $stderr.is_a? Tee
-      outfile = vardir('log') + 'error_' + tag + today + '.out'
-      $stderr = Tee.new(outfile)
+      # Background (Switch error output to file)
+      new_pid
     end
 
-    def new_pid(base)
+    def err_redirect(tag)
+      return if $stderr.is_a?(Tee) || !OPT[:b]
+      errout = vardir('log') + 'error_' + tag + today + '.out'
+      $stderr = Tee.new(errout)
+    end
+
+    def init_server(&init_proc)
+      optfile = @base + '.opt'
+      load optfile if test('r', optfile)
+      init_proc.call
+    end
+
+    def new_pid
       Process.daemon(true, true)
-      IO.write(base + '.pid', $PROCESS_ID)
+      IO.write(@base + '.pid', $PROCESS_ID)
     end
 
-    def kill_pid(base)
-      pidfile = base + '.pid'
+    def kill_pid
+      pidfile = @base + '.pid'
       return unless test('r', pidfile)
       pids = IO.readlines(pidfile).keep_if { |l| l.to_i > 0 }
       IO.write(pidfile, '')

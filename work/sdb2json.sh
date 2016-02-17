@@ -1,5 +1,5 @@
 #!/bin/bash
-# Generate dictionary by sdb
+# Generate dictionary by sdb(xml)
 [ -t 0 ] && { echo "Usage: sdb2json < sdb_file"; exit 1; }
 while read name line; do
     [[ $line =~ \" ]] || continue
@@ -18,6 +18,7 @@ while read name line; do
 done
 if [ "$json" ]; then
     echo "{${json%,}}" > "$file"
+    echo "$file is generated"
     json=
 fi
 

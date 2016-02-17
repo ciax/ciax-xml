@@ -37,7 +37,7 @@ module CIAX
       _elem_button(td, 'upd')
       adbs[:group].values.each do|g|
         cap = g[:caption] || next
-        _mk_stat_column(g[:members], cap, g['column'])
+        _mk_stat_column(g[:members], cap, g[:column])
       end
       self
     end

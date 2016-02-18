@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="fpa" id="fpa" label="MOIRCS Field Point Analog Input" version="1">
+  <app frm_id="fpa" id="fpa" label="MOIRCS Field Point Analog Input" version="2">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <unit id="upd" label="Status">
           <item id="upd" label="Upd">
             <frmcmd name="getstat"/>
+            <frmcmd name="getcfg"/>
           </item>
         </unit>
       </group>
@@ -32,7 +33,14 @@
           </float>
         </repeat_var>
       </group>
-      <group id="g2" caption="Modes">
+      <group id="g2" column="3" caption="Config">
+        <repeat_var from="1" to="6">
+          <integer id="r$_" label="Range$_" symbol="range">
+            <field ref="cfg" index="$_-1"/>
+          </integer>
+        </repeat_var>
+      </group>
+      <group id="g3" caption="Modes">
         <string id="auto" label="Auto update" symbol="warn" default="0"/>
       </group>
     </status>

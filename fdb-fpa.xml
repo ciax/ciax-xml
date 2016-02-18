@@ -18,6 +18,9 @@
         </item>
         <item id="getcfg" label="Get config" response="getcfg" type="stat">
           <string>!E00FF</string>
+          <repeat from="1" to="8">
+            <string>00001</string>
+          </repeat>
         </item>
       </group>
       <group id="gcfg" caption="Configuration">
@@ -55,7 +58,7 @@
         </array>
       </item>
       <item id="getcfg">
-        <array assign="cfg" decode="hexstr" label="Config" length="4">
+        <array assign="cfg" decode="hexstr" label="Config" length="2">
           <index size="8"/>
         </array>
       </item>

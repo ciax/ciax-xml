@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="fpa" label="Field Point Analog Input(FP-AI-100)">
+  <frame id="fpa" label="Field Point Analog Input(FP-AI-100)" version="1">
     <spec brand="Field Point" type="Analog Input" model="FP-AI-100" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf"/>
     <stream ccmethod="sum" wait="0.01" terminator="\r"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="38400" stopbit="1"/>
@@ -15,6 +15,9 @@
         <!--String Length must be <32-->
         <item id="getstat" label="Get status" response="getstat" type="stat">
           <string>!F00FF</string>
+        </item>
+        <item id="getcfg" label="Get config" response="getcfg" type="stat">
+          <string>!E00FF</string>
         </item>
       </group>
       <group id="gcfg" caption="Configuration">
@@ -48,6 +51,11 @@
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
         <array assign="stat" decode="hexstr" label="Status" length="4">
+          <index size="8"/>
+        </array>
+      </item>
+      <item id="getcfg">
+        <array assign="cfg" decode="hexstr" label="Config" length="4">
           <index size="8"/>
         </array>
       </item>

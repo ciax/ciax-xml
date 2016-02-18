@@ -121,7 +121,7 @@ module CIAX
     def _mk_select(parent, umem, uid)
       span = parent.enclose('span', class: 'center')
       sel = span.enclose('select', name: uid, onchange: 'seldv(this)')
-      umem.each do|id|
+      (['--select--'] + umem).each do|id|
         sel.element('option', id)
       end
       self

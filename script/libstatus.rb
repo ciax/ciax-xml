@@ -16,7 +16,8 @@ module CIAX
         @updated = now_msec
         @lastsave = now_msec
         _setdbi(dbi, Ins::Db)
-        @adbs = @dbi[:status][:index]
+        # exclude alias from index
+        @adbs = @dbi[:status][:index].select{ |k,v| v[:ref] }
         self[:data] = Hashx[@adbs].skeleton unless self[:data]
       end
 

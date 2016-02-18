@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="slo" id="mmc" label="MOIRCS Carrousel" version="3">
+  <app frm_id="slo" id="mmc" label="MOIRCS Carrousel" version="4">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gu" caption="Status">
         <unit id="upd" label="Status">
@@ -151,12 +151,14 @@
         <string id="lccw" label="CCW Limit" symbol="normal">
           <field ref="in" index="3"/>
         </string>
-        <float id="abs" label="ABS position" symbol="abs" format="%.2f">
-          <field ref="p"/>
-        </float>
         <string id="con" label="Contact Sensor" symbol="action">
           <field ref="in" index="0"/>
         </string>
+      </group>
+      <group id="gpos" caption="Mask Position" column="4">
+        <float id="abs" label="Loading Slot Position" symbol="abs" format="%.2f">
+          <field ref="p"/>
+        </float>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">

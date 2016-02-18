@@ -8,6 +8,8 @@
             <frmcmd name="getstat"/>
           </item>
         </unit>
+      </group>
+      <group id="gc" caption="Config">
         <unit id="setr" label="Set Range">
           <item id="set1v" label="+-1.2V">
             <frmcmd name="setr1"/>

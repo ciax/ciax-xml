@@ -17,7 +17,7 @@ module CIAX
         @lastsave = now_msec
         _setdbi(dbi, Ins::Db)
         # exclude alias from index
-        @adbs = @dbi[:status][:index].select{ |k,v| v[:ref] }
+        @adbs = @dbi[:status][:index].reject{ |k,v| v[:ref] }
         self[:data] = Hashx[@adbs].skeleton unless self[:data]
       end
 

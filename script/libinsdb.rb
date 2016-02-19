@@ -53,12 +53,12 @@ module CIAX
               e1.attr2item(idx)
               ag = grp[e0[:ref]]
               (ag[:members] ||= []) << e1['id']
-            end    
+            end
           end
         end
         sdb
       end
-      
+
       def init_general(dbi)
         dbi[:proj] = ENV['PROJ']
         dbi[:site_id] = dbi[:ins_id] = dbi[:id]

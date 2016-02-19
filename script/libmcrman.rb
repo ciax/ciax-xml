@@ -10,9 +10,7 @@ module CIAX
       attr_reader :sub_list
       # cfg should have [:dev_list]
       def initialize(cfg, atrb = {})
-        atrb[:dev_list] ||= Wat::List.new(cfg)
-        atrb[:db] = Db.new
-        atrb[:layer_type] = 'mcr'
+        _init_atrb_(cfg, atrb)
         super(nil, cfg, atrb)
         # id = nil -> taken by ARGV
         _init_net_(_init_dbi(nil, [:sites]))
@@ -31,23 +29,19 @@ module CIAX
 
       private
 
+      def _init_atrb_(cfg, atrb)
+        atrb[:dev_list] ||= Wat::List.new(cfg)
+        atrb[:db] = Db.new
+        atrb[:layer_type] = 'mcr'
+      end
+
       # Initialize for all mode
       def _init_domain_
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
-        _add_swmode_
-      end
-
-      def _add_swmode_
-        @cobj.rem.sys.add_item('nonstop', 'Mode').def_proc do
-          @sv_stat.up(:nonstop)
-          ''
-        end
-        @cobj.rem.sys.add_item('interactive', 'Mode').def_proc do
-          @sv_stat.dw(:nonstop)
-          ''
-        end
+        @cobj.rem.sys.add_item('nonstop', 'Mode')
+        @cobj.rem.sys.add_item('interactive', 'Mode')
       end
 
       def _init_stat_
@@ -63,6 +57,7 @@ module CIAX
         @sv_stat.add_array(:list)
         @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid)
+        @sv_stat.add_flg(nonstop: '(nonstop)')
       end
 
       def _init_net_(dbi)
@@ -77,6 +72,7 @@ module CIAX
         _init_extcmd_
         _init_intcmd_
         _init_intrpt_
+        _init_swmode_
         @terminate_procs << proc { @stat.clean }
         super
       end
@@ -108,6 +104,17 @@ module CIAX
         @cobj.get('interrupt').def_proc do
           @stat.interrupt
           'INTERRUPT'
+        end
+      end
+
+      def _init_swmode_
+        @cobj.get('nonstop').def_proc do
+          @sv_stat.up(:nonstop)
+          ''
+        end
+        @cobj.get('interactive').def_proc do
+          @sv_stat.dw(:nonstop)
+          ''
         end
       end
     end

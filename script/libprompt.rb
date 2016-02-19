@@ -14,7 +14,7 @@ module CIAX
 
     # For String Data
     def add_str(key, val = '')
-      self[key] = type?(val.dup, String)
+      self[key] = type?(val.dup, String) unless self[key].is_a? String
       self
     end
 
@@ -27,6 +27,7 @@ module CIAX
     # For Binary Data with display db
     def add_flg(db = {})
       @db.update(type?(db, Hash))
+      db.keys.each { |k| self[k] = nil }
       self
     end
 
@@ -76,7 +77,7 @@ module CIAX
     end
 
     def to_v
-      verbose { "Shell\n" + inspect }
+      verbose { 'Shell' + inspect }
       @db.map { |k, v| v if self[k] }.join('')
     end
 

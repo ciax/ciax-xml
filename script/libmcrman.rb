@@ -19,7 +19,7 @@ module CIAX
         _init_domain_
         _init_stat_
         @mode = 'MCR'
-        OPT[:l] ? ext_client : ext_driver
+        @cfg[:option][:l] ? ext_client : ext_driver
       end
 
       def ext_shell
@@ -120,14 +120,14 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('cenlrt')
+      opt = GetOpts.new.parse('cenlrt')
       begin
-        cfg = Config.new
+        cfg = Config.new(option: opt)
         Man.new(cfg).ext_shell.shell
       rescue InvalidCMD
-        OPT.usage('[cmd] (par)')
+        opt.usage('[cmd] (par)')
       rescue InvalidID
-        OPT.usage('[proj] [cmd] (par)')
+        opt.usage('[proj] [cmd] (par)')
       end
     end
   end

@@ -59,7 +59,7 @@ module CIAX
 
       def ext_driver
         sp = type?(@cfg[:stream], Hash)
-        if OPT[:s]
+        if @cfg[:option][:s]
           @mode = 'SIM'
           iocmd = [ENV['SIMCMD'] || 'frmsim', @id, @cfg[:version]]
           timeout = 60
@@ -70,7 +70,7 @@ module CIAX
         end
         @stream = Stream.new(@id, @cfg[:version], iocmd,
                              sp[:wait], timeout, esc_code(sp[:terminator]))
-        @stream.ext_log unless OPT[:s]
+        @stream.ext_log if @cfg[:option].log?
         @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
         @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }
         @stat.ext_rsp.ext_file.auto_save
@@ -105,12 +105,13 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ceh:lts')
+      opt = GetOpts.new.parse('ceh:lts')
       id = ARGV.shift
+      cfg = Config.new(option: opt)
       begin
-        Exe.new(id, Config.new, db: Dev::Db.new).ext_shell.shell
+        Exe.new(id, cfg, db: Dev::Db.new).ext_shell.shell
       rescue InvalidID
-        OPT.usage('(opt) [id]')
+        opt.usage('(opt) [id]')
       end
     end
   end

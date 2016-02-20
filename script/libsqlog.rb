@@ -95,7 +95,7 @@ module CIAX
       # Check table existence (ver=0 is invalid)
       def add_table(stat)
         sqlog = Table.new(stat)
-        if OPT[:e] && stat['ver'].to_i > 0
+        if stat['ver'].to_i > 0
           create_tbl(sqlog)
           real_mode(stat, sqlog)
         else

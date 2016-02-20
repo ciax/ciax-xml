@@ -4,7 +4,7 @@ require 'libmcrseq'
 # CIAX-XML Macro Sequencer
 module CIAX
   module Mcr
-    OPT.parse('cen')
+    opt = GetOpts.new.parse('cen')
     cfg = Config.new
     wl = Wat::List.new(cfg) # Take App List
     cfg[:dev_list] = wl
@@ -15,9 +15,9 @@ module CIAX
       seq = Seq.new(ent)
       seq.macro
     rescue InvalidCMD
-      OPT.usage('[cmd] (par)')
+      opt.usage('[cmd] (par)')
     rescue InvalidID
-      OPT.usage('[proj] [cmd] (par)')
+      opt.usage('[proj] [cmd] (par)')
     end
   end
 end

@@ -53,7 +53,7 @@ module CIAX
         @stat.ext_file.auto_save
         # @stat[:int] is overwritten by initial loading
         @sub.batch_interrupt = @stat.get(:int)
-        @stat.ext_log if OPT[:e]
+        @stat.ext_log if @cfg[:option].log?
         _init_upd_drv_
         @tid_auto = _init_auto_thread_
         @sub.post_exe_procs << proc do
@@ -96,14 +96,14 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ceh:lts')
+      opt = GetOpts.new.parse('ceh:lts')
       id = ARGV.shift
       cfg = Config.new
       atrb = { db: Ins::Db.new, sub_list: App::List.new(cfg) }
       begin
         Exe.new(id, cfg, atrb).ext_shell.shell
       rescue InvalidID
-        OPT.usage('(opt) [id]')
+        opt.usage('(opt) [id]')
       end
     end
   end

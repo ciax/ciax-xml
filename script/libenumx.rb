@@ -92,9 +92,6 @@ module CIAX
     def initialize(hash = {})
       update(hash) if hash
       vmode(:v) # v|r|j
-      %i(v r j).each do|k|
-        vmode(k) if OPT[k]
-      end if defined? OPT
       @cls_color = 6
     end
 

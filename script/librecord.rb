@@ -45,8 +45,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('r')
-      OPT.usage '(-r) [cid] (< file)' if STDIN.tty? && ARGV.size < 1
+      opt = GetOpts.new.parse('r')
+      opt.usage '(-r) [cid] (< file)' if STDIN.tty? && ARGV.size < 1
       if STDIN.tty?
         cid = '"cid":"' + ARGV.shift + '"'
         ary = Dir.glob(Msg.vardir('json') + 'record_1*').sort.reverse

@@ -59,20 +59,20 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      OPT.parse('i', i: 'Instance Mode')
+      opt = GetOpts.new.parse('i', i: 'Instance Mode')
       id = ARGV.shift
-      cfg = Config.new
+      cfg = Config.new(option: opt)
       begin
-        dbi = (OPT[:i] ? Ins::Db : Db).new.get(id)
+        dbi = (opt[:i] ? Ins::Db : Db).new.get(id)
         cobj = Index.new(cfg, dbi.pick)
         cobj.add_rem.def_proc(&:path)
         cobj.rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)
         puts ent[:batch].to_s
       rescue InvalidCMD
-        OPT.usage("#{id} (-i) [cmd] (par)")
+        opt.usage("#{id} (-i) [cmd] (par)")
       rescue InvalidID
-        OPT.usage('(-i) [id] [cmd] (par)')
+        opt.usage('(-i) [id] [cmd] (par)')
       end
     end
   end

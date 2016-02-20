@@ -27,6 +27,7 @@ module CIAX
         @depth = 0
         # For Thread mode
         @qry = Query.new(@record, @sv_stat, valid_keys)
+        @sv_stat.up(:nonstop) if @cfg[:option][:n]
       end
 
       # For prompt '(stat) [option]'
@@ -105,7 +106,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ecn')
+      opt = GetOpts.new.parse('ecn')
       cfg = Config.new
       wl = Wat::List.new(cfg) # Take App List
       cfg[:dev_list] = wl
@@ -117,9 +118,9 @@ module CIAX
         seq = Seq.new(ent)
         seq.macro
       rescue InvalidCMD
-        OPT.usage('[cmd] (par)')
+        opt.usage('[cmd] (par)')
       rescue InvalidID
-        OPT.usage('[proj] [cmd] (par)')
+        opt.usage('[proj] [cmd] (par)')
       end
     end
   end

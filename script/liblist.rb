@@ -39,7 +39,7 @@ module CIAX
         @current = $ERROR_INFO.to_s
         retry
       rescue InvalidID
-        OPT.usage('(opt) [id]')
+        @cfg[:option].usage('(opt) [id]')
       end
 
       private

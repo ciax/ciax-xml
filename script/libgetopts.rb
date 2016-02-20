@@ -36,6 +36,10 @@ module CIAX
       !sv? && !cl?
     end
 
+    def log?
+      self[:e]
+    end
+
     def host
       (self[:h] || 'localhost') unless self[:c]
     end
@@ -141,5 +145,4 @@ module CIAX
       self
     end
   end
-  OPT = GetOpts.new
 end

@@ -127,7 +127,7 @@ module CIAX
       begin
         puts Field.new.ext_file
       rescue InvalidID
-        OPT.usage '(opt) [id]'
+        opt.usage '(opt) [id]'
       end
     end
   end

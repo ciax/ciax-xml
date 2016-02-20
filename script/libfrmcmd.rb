@@ -102,23 +102,23 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmrsp'
       require 'libfrmdb'
-      OPT.parse('r')
+      opt = GetOpts.new.parse('r')
       id, *args = ARGV
       ARGV.clear
       begin
         dbi = Db.new.get(id)
-        cfg = Config.new
+        cfg = Config.new(option: opt)
         fld = cfg[:field] = Field.new(dbi)
         cobj = Index.new(cfg, dbi.pick([:stream]))
         cobj.add_rem.def_proc { |ent| ent[:frame] }
         cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?
         res = cobj.set_cmd(args).exe_cmd('test')
-        puts(OPT[:r] ? res : res.inspect)
+        puts(opt[:r] ? res : res.inspect)
       rescue InvalidCMD
-        OPT.usage("#{id} [cmd] (par) < field_file")
+        opt.usage("#{id} [cmd] (par) < field_file")
       rescue InvalidID
-        OPT.usage('[dev] [cmd] (par) < field_file')
+        opt.usage('[dev] [cmd] (par) < field_file')
       end
     end
   end

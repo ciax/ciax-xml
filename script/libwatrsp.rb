@@ -124,17 +124,17 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
 
-      OPT.parse('t:', t: 'test conditions[key=val,..]')
+      opt = GetOpts.new.parse('t:', t: 'test conditions[key=val,..]')
       begin
         stat = App::Status.new
         stat.ext_file if STDIN.tty?
         event = Event.new(stat[:id]).ext_rsp(stat)
-        if (t = OPT[:t])
+        if (t = opt[:t])
           stat.str_update(t)
         end
         puts event
       rescue InvalidID
-        OPT.usage('(opt) [site] | < status_file')
+        opt.usage('(opt) [site] | < status_file')
       end
     end
   end

@@ -86,16 +86,16 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      OPT.parse('rc', c: 'CSV output')
+      opt = GetOpts.new.parse('rc', c: 'CSV output')
       begin
         stat = Status.new
         view = View.new(stat)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
-        view.vmode(:c) if OPT[:c]
+        view.vmode(:c) if opt[:c]
         puts view
       rescue InvalidID
-        OPT.usage '(opt) [site] | < status_file'
+        opt.usage '(opt) [site] | < status_file'
       end
     end
   end

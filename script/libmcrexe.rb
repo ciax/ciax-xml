@@ -46,7 +46,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('icentr')
+      opt = GetOpts.new.parse('icentr')
       cfg = Config.new
       cfg[:dev_list] = Wat::List.new(cfg)
       begin
@@ -57,9 +57,9 @@ module CIAX
         seq = Exe.new(ent)
         seq.ext_shell.shell
       rescue InvalidCMD
-        OPT.usage('[cmd] (par)')
+        opt.usage('[cmd] (par)')
       rescue InvalidID
-        OPT.usage('[proj] [cmd] (par)')
+        opt.usage('[proj] [cmd] (par)')
       end
     end
   end

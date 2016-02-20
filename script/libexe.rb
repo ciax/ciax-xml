@@ -17,8 +17,9 @@ module CIAX
                 :pre_exe_procs, :post_exe_procs, :prompt_proc, :host, :port
     attr_accessor :sv_stat, :shell_input_procs, :shell_output_proc,
                   :server_input_proc, :server_output_proc
+    # cfg must have [:option]
     # attr contains the parameter for each layer individually (might have [:db])
-    # cfg should have [:dbi] shared in the site (among layers)
+    # cfg must have [:dbi] shared in the site (among layers)
     # @dbi will be set for Varx, @cfg[:dbi] will be set for Index
     # It is not necessarily the case that id and Config[:dbi][:id] is identical
     def initialize(id, cfg, attr = {})
@@ -37,7 +38,7 @@ module CIAX
       Thread.abort_on_exception = true
       verbose { "initialize [#{@id}]" }
       @cobj = Cmd::Remote::Index.new(@cfg)
-      @host = OPT.host
+      @host = @cfg[:option].host
     end
 
     # Sync only (Wait for other thread), never inherit
@@ -91,9 +92,9 @@ module CIAX
 
     def _opt_mode
       # Option handling
-      if OPT.sv?
+      if @cfg[:option].sv?
         ext_driver
-      elsif OPT.cl?
+      elsif @cfg[:option].cl?
         ext_client
       else
         ext_test

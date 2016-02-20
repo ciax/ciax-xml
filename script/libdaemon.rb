@@ -10,34 +10,34 @@ module CIAX
       ENV['VER'] ||= 'Initialize'
       # Set ARGS in opt file
       @base = vardir('run') + tag
-      OPT.parse(opt)
-      if OPT[:d]
+      opt = GetOpts.new.parse(opt)
+      if opt[:d]
         kill_pid
       else
-        init_daemon
+        init_daemon(opt)
         begin
           init_server { yield }.server
-          err_redirect(tag)
+          err_redirect(opt,tag)
           sleep
         rescue SignalException
           retry if $ERROR_INFO.message == 'SIGHUP'
         end
       end
     rescue UserError
-      OPT.usage('(opt) [id] ....')
+      opt.usage('(opt) [id] ....')
     end
 
     private
 
-    def init_daemon
+    def init_daemon(opt)
       kill_pid
-      return unless OPT[:b]
+      return unless opt[:b]
       # Background (Switch error output to file)
       new_pid
     end
 
-    def err_redirect(tag)
-      return if $stderr.is_a?(Tee) || !OPT[:b]
+    def err_redirect(opt, tag)
+      return if $stderr.is_a?(Tee) || !opt[:b]
       errout = vardir('log') + 'error_' + tag + today + '.out'
       $stderr = Tee.new(errout)
     end

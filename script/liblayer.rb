@@ -12,7 +12,7 @@ module CIAX
       if !atrb.key?(:site)
         mod = Mcr::Man
         @current = 'mcr'
-      elsif OPT[:x]
+      elsif @cfg[:option][:x]
         mod = Hex::List
       else
         mod = Wat::List
@@ -42,17 +42,17 @@ module CIAX
           @list.get(id).ext_shell
           @jumpgrp.add_item(id, id.capitalize + ' mode')
         end
-        @current ||= OPT.layer || @list.keys.first
+        @current ||= @cfg[:option].layer || @list.keys.first
         self
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('elsx')
+      opt = GetOpts.new.parse('elsx')
       begin
-        Layer.new(site: ARGV.shift).ext_shell.shell
+        Layer.new(site: ARGV.shift, option: opt).ext_shell.shell
       rescue InvalidID
-        OPT.usage('(opt) [id]')
+        opt.usage('(opt) [id]')
       end
     end
   end

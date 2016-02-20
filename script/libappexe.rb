@@ -94,7 +94,7 @@ module CIAX
       end
 
       def ext_exec_mode
-        return unless OPT[:e]
+        return unless @cfg[:option].log?
         @stat.ext_log.ext_sqlog
         @cobj.rem.ext_log('app')
       end
@@ -155,14 +155,14 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ceh:lts')
+      opt = GetOpts.new.parse('ceh:lts')
       id = ARGV.shift
-      cfg = Config.new
+      cfg = Config.new(option: opt)
       atrb = { db: Ins::Db.new, sub_list: Frm::List.new(cfg) }
       begin
         Exe.new(id, cfg, atrb).ext_shell.shell
       rescue InvalidID
-        OPT.usage('(opt) [id]')
+        opt.usage('(opt) [id]')
       end
     end
   end

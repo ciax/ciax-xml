@@ -16,7 +16,7 @@ module CIAX
         @mode = @sub.mode
         @post_exe_procs.concat(@sub.post_exe_procs)
         @port = @sub.sub.port.to_i + 1000
-        view.ext_log if OPT[:e]
+        view.ext_log if @cfg[:option].log?
         @shell_output_proc = proc { view.to_x }
       end
 
@@ -31,14 +31,14 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ceh:lts')
+      opt = GetOpts.new.parse('ceh:lts')
       id = ARGV.shift
       cfg = Config.new
       atrb = { hdb: Db.new, sub_list: Wat::List.new(cfg) }
       begin
         Exe.new(id, cfg, atrb).ext_shell.shell
       rescue InvalidID
-        OPT.usage('(opt) [id]')
+        opt.usage('(opt) [id]')
       end
     end
   end

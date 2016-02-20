@@ -8,9 +8,10 @@ module CIAX
     # Element of Record
     class Step < Upd
       include PrtShare
-      def initialize(db, dev_list)
+      def initialize(db, dev_list, dummy = nil)
         super()
         update db
+        @dummy = dummy
         # [:stat_proc,:exec_proc,:query]
         @cond = Condition.new(delete(:cond), dev_list, self) if db.key?(:cond)
         @break = nil
@@ -40,7 +41,7 @@ module CIAX
 
       # Interactive section
       def exec?
-        _set_result('approval', 'dryrun', !OPT.test?)
+        _set_result('approval', 'dryrun', !@dummy)
       end
 
       # Execution section
@@ -78,7 +79,7 @@ module CIAX
       end
 
       def _progress(total)
-        itv = OPT.test? ? 0 : 1
+        itv = @dummy ? 0 : 1
         total.to_i.times do|n| # gives number or nil(if break)
           self[:count] = n + 1
           break if @cond && @cond.ok?

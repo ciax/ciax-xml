@@ -75,9 +75,9 @@ module CIAX
     # Client option
     def cli_db
       @optdb.update(
-        c: 'client',
-        l: 'local client',
-        h: 'client for [host]'
+        c: 'client to default server',
+        l: 'client to local',
+        h: 'client to [host]'
       )
       self
     end

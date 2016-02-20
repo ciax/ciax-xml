@@ -30,6 +30,8 @@
   idb: Instance DB (App site information)
   sdb: Symbol DB
       used by adb or idb
+  cdb: Command Alias DB
+      used by idb
   wdb: Watch DB
       included in adb      
   mdb: Macro DB

@@ -92,7 +92,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       if ARGV.empty?
-        opt.usage('[id] ..')
+        Msg.usage('[id] ..')
       else
         par = Parameter.new.flush(ARGV)
         puts View.new('test', par).upd

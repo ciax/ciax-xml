@@ -47,7 +47,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       opt = GetOpts.new('icentr')
-      cfg = Config.new
+      cfg = Config.new(option: opt)
       cfg[:dev_list] = Wat::List.new(cfg)
       begin
         dbi = Db.new.get

@@ -8,7 +8,7 @@ module CIAX
   class Layer < CIAX::List
     def initialize(optstr)
       opt = GetOpts.new(optstr)
-      atrb = {column: 4, option: opt}
+      atrb = { column: 4, option: opt }
       super(Config.new, atrb)
       if opt[:m]
         mod = Mcr::Man
@@ -49,8 +49,6 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
-      Layer.new('elsx').ext_shell.shell
-    end
+    Layer.new('elsx').ext_shell.shell if __FILE__ == $PROGRAM_NAME
   end
 end

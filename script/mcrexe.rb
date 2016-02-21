@@ -9,7 +9,7 @@ module CIAX
     wl = Wat::List.new(cfg) # Take App List
     cfg[:dev_list] = wl
     begin
-      mobj = Remote::Index.new(cfg, dbi: Db.new.get)
+      mobj = Index.new(cfg, dbi: Db.new.get)
       mobj.add_rem.add_ext(Ext)
       ent = mobj.set_cmd(ARGV)
       seq = Seq.new(ent)

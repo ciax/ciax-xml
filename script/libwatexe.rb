@@ -98,7 +98,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       opt = GetOpts.new('ceh:lts')
       id = ARGV.shift
-      cfg = Config.new
+      cfg = Config.new(option: opt)
       atrb = { db: Ins::Db.new, sub_list: App::List.new(cfg) }
       begin
         Exe.new(id, cfg, atrb).ext_shell.shell

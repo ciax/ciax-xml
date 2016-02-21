@@ -47,7 +47,7 @@ module CIAX
       if __FILE__ == $PROGRAM_NAME
         opt = GetOpts.new('cnlrt')
         begin
-          cfg = CIAX::Config.new
+          cfg = Config.new(option: opt)
           cfg[:dev_list] = Wat::List.new(cfg)
           Man.new(cfg).ext_shell.shell
         rescue InvalidCMD

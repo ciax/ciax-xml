@@ -76,7 +76,7 @@ module CIAX
       Kernel.abort([colorize(str, 1), $ERROR_INFO.to_s].join("\n"))
     end
 
-    def usage(str, code = 1)
+    def usage(str, code = 2)
       warn("Usage: #{$PROGRAM_NAME.split('/').last} #{str}")
       warn($ERROR_INFO) if $ERROR_INFO
       exit code

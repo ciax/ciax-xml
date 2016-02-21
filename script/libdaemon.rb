@@ -18,7 +18,7 @@ module CIAX
         init_daemon(opt)
         begin
           init_server { yield(cfg) }.server
-          err_redirect(opt,tag)
+          err_redirect(opt, tag)
           sleep
         rescue SignalException
           retry if $ERROR_INFO.message == 'SIGHUP'

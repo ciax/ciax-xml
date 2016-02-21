@@ -125,9 +125,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       begin
-        puts Field.new.ext_file
+        dbi = Dev::Db.new.get(ARGV.shift)
+        puts Field.new(dbi).ext_file
       rescue InvalidID
-        opt.usage '(opt) [id]'
+        Msg.usage '(opt) [id]'
       end
     end
   end

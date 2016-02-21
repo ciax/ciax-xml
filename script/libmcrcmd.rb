@@ -73,7 +73,7 @@ module CIAX
         puts ent.path
         puts ent[:sequence]
       rescue InvalidID
-        opt.usage('[cmd] (par)')
+        Msg.usage('[cmd] (par)')
       end
     end
   end

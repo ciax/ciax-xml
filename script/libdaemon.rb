@@ -6,17 +6,18 @@ module CIAX
     NS_COLOR = 1
     include Msg
     # Reloadable by HUP signal
-    def initialize(tag, opt = '')
+    def initialize(tag, optstr = '')
       ENV['VER'] ||= 'Initialize'
       # Set ARGS in opt file
       @base = vardir('run') + tag
-      opt = GetOpts.new.parse(opt)
+      opt = GetOpts.new.parse(optstr)
+      cfg = Config.new(option: opt)
       if opt[:d]
         kill_pid
       else
         init_daemon(opt)
         begin
-          init_server { yield }.server
+          init_server { yield(cfg) }.server
           err_redirect(opt,tag)
           sleep
         rescue SignalException

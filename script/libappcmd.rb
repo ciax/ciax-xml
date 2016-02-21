@@ -59,7 +59,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      opt = GetOpts.new.parse('i', i: 'Instance Mode')
+      opt = GetOpts.new('i', i: 'Instance Mode')
       id = ARGV.shift
       cfg = Config.new(option: opt)
       begin

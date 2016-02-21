@@ -45,7 +45,7 @@ module CIAX
       end
 
       if __FILE__ == $PROGRAM_NAME
-        opt = GetOpts.new.parse('cnlrt')
+        opt = GetOpts.new('cnlrt')
         begin
           cfg = CIAX::Config.new
           cfg[:dev_list] = Wat::List.new(cfg)

@@ -15,7 +15,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new.parse('ceh:lts')
+      opt = GetOpts.new('ceh:lts')
       cfg = Config.new
       cfg[:site] = ARGV.shift
       begin

@@ -105,7 +105,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new.parse('ceh:lts')
+      opt = GetOpts.new('ceh:lts')
       id = ARGV.shift
       cfg = Config.new(option: opt)
       begin

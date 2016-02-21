@@ -120,7 +120,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new.parse('cenlrt')
+      opt = GetOpts.new('cenlrt')
       begin
         cfg = Config.new(option: opt)
         Man.new(cfg).ext_shell.shell

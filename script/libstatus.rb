@@ -49,7 +49,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new.parse('h:')
+      opt = GetOpts.new('h:')
       begin
         stat = Status.new
         if opt[:h]

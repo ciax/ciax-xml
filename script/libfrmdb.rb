@@ -124,7 +124,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new.parse('r')
+      opt = GetOpts.new('r')
       begin
         dbi = Db.new.get(ARGV.shift)
       rescue InvalidID

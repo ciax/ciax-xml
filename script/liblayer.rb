@@ -7,7 +7,7 @@ module CIAX
   # atrb can have [:top_layer]
   class Layer < CIAX::List
     def initialize(optstr)
-      opt = GetOpts.new.parse(optstr)
+      opt = GetOpts.new(optstr)
       atrb = {column: 4, option: opt}
       super(Config.new, atrb)
       if opt[:m]

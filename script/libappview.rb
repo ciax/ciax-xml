@@ -86,7 +86,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      opt = GetOpts.new.parse('rc', c: 'CSV output')
+      opt = GetOpts.new('rc', c: 'CSV output')
       begin
         stat = Status.new
         view = View.new(stat)

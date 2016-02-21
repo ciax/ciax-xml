@@ -8,13 +8,9 @@ module CIAX
     # str = valid option list (afch:)
     # db = addigional option db
     attr_reader :layer
-    def initialize
-      @optdb = {}
-      make_db
-    end
-
-    def parse(str, db = {})
+    def initialize(str, db = {})
       Msg.type?(str, String)
+      make_db
       @optdb.update(db)
       optary = current_options(str, db.keys)
       make_usage(optary)
@@ -57,6 +53,7 @@ module CIAX
     end
 
     def make_db
+      @optdb = {}
       layer_db
       cli_db
       mode_db

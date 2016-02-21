@@ -124,7 +124,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
 
-      opt = GetOpts.new.parse('t:', t: 'test conditions[key=val,..]')
+      opt = GetOpts.new('t:', t: 'test conditions[key=val,..]')
       begin
         stat = App::Status.new
         stat.ext_file if STDIN.tty?

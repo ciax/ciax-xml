@@ -4,7 +4,7 @@ require 'libmcrseq'
 # CIAX-XML Macro Sequencer
 module CIAX
   module Mcr
-    opt = GetOpts.new.parse('cen')
+    opt = GetOpts.new('cen')
     cfg = Config.new(option: opt)
     wl = Wat::List.new(cfg) # Take App List
     cfg[:dev_list] = wl

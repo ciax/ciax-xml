@@ -10,7 +10,7 @@ module CIAX
       ENV['VER'] ||= 'Initialize'
       # Set ARGS in opt file
       @base = vardir('run') + tag
-      opt = GetOpts.new.parse(optstr)
+      opt = GetOpts.new(optstr)
       cfg = Config.new(option: opt)
       if opt[:d]
         kill_pid

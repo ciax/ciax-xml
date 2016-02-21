@@ -102,7 +102,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmrsp'
       require 'libfrmdb'
-      opt = GetOpts.new.parse('r')
+      opt = GetOpts.new('r')
       id, *args = ARGV
       ARGV.clear
       begin

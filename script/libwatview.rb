@@ -139,7 +139,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      opt = GetOpts.new.parse('r')
+      opt = GetOpts.new('r')
       begin
         event = Event.new
         wview = View.new(event)

@@ -126,7 +126,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
-      opt = GetOpts.new.parse('m', m: 'merge file')
+      opt = GetOpts.new('m', m: 'merge file')
       opt.usage('(opt) < logline') if STDIN.tty?
       str = gets(nil) || exit
       res = JsLog.read(str)

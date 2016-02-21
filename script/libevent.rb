@@ -59,7 +59,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      opt = GetOpts.new.parse('h:')
+      opt = GetOpts.new('h:')
       begin
         event = Event.new
         if opt.host

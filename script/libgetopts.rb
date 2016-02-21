@@ -68,6 +68,7 @@ module CIAX
     # Layer option
     def layer_db
       @optdb.update(
+        m: 'mcr layer',
         w: 'wat layer',
         a: 'app layer(default)',
         f: 'frm layer',
@@ -140,7 +141,7 @@ module CIAX
 
     # Set @layer (default 'Wat')
     def make_layer
-      lopt = %i(x a f w).find { |c| self[c] } || :a
+      lopt = %i(m x a f w).find { |c| self[c] } || :a
       @layer = @optdb[lopt].split(' ').first
       self
     end

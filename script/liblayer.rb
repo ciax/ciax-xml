@@ -6,16 +6,17 @@ module CIAX
   # list object can be (Frm,App,Wat,Hex)
   # atrb can have [:top_layer]
   class Layer < CIAX::List
-    def initialize(atrb = {})
-      atrb[:column] = 4
+    def initialize(optstr)
+      opt = GetOpts.new.parse(optstr)
+      atrb = {column: 4, option: opt}
       super(Config.new, atrb)
-      if !atrb.key?(:site)
+      if opt[:m]
         mod = Mcr::Man
-        @current = 'mcr'
-      elsif @cfg[:option][:x]
-        mod = Hex::List
+        usage = '[proj] [cmd] (par)'
       else
-        mod = Wat::List
+        @cfg[:site] = ARGV.shift
+        mod = opt[:x] ? Hex::List : Wat::List
+        usage = '(opt) [id]'
       end
       obj = mod.new(@cfg)
       loop do
@@ -23,7 +24,8 @@ module CIAX
         @list.put(ns, obj)
         obj = obj.sub_list || break
       end
-      self
+    rescue InvalidID
+      opt.usage(usage)
     end
 
     def ext_shell
@@ -42,18 +44,13 @@ module CIAX
           @list.get(id).ext_shell
           @jumpgrp.add_item(id, id.capitalize + ' mode')
         end
-        @current ||= @cfg[:option].layer || @list.keys.first
+        @current = @cfg[:option].layer || @list.keys.first
         self
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new.parse('elsx')
-      begin
-        Layer.new(site: ARGV.shift, option: opt).ext_shell.shell
-      rescue InvalidID
-        opt.usage('(opt) [id]')
-      end
+      Layer.new('elsx').ext_shell.shell
     end
   end
 end

@@ -4,6 +4,5 @@ require 'liblayer'
 require 'libhexexe'
 # CIAX-XML Device Shell
 module CIAX
-  opt = GetOpts.new.parse('fawxelrsch:')
-  Layer.new(site: ARGV.shift, option: opt).ext_shell.shell
+  Layer.new('fawxelrsch:').ext_shell.shell
 end

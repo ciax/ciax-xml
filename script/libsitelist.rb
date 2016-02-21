@@ -27,7 +27,7 @@ module CIAX
       def exe(args) # As a individual cui command
         get(args.shift).exe(args, 'local')
       rescue InvalidID
-        opt.usage('(opt) [id]')
+        @cfg[:option].usage('(opt) [id]')
       end
 
       def get(site)

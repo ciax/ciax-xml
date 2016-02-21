@@ -4,7 +4,7 @@ require 'libwatlist'
 # CIAX-XML Device Executor
 module CIAX
   opt = GetOpts.new.parse('elch:')
-  cfg = Config.new
+  cfg = Config.new(option: opt)
   cfg[:cmd_line_mode] = true # exclude empty command
   wex = Wat::List.new(cfg).exe(ARGV)
   puts wex

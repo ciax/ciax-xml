@@ -7,8 +7,8 @@ module CIAX
   module Frm
     # Frame List module
     class List < Site::List
-      def initialize(cfg, top_list = nil)
-        super(cfg, top_list || self)
+      def initialize(cfg)
+        super(cfg)
         store_db(Dev::Db.new)
       end
     end

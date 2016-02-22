@@ -7,7 +7,7 @@ module CIAX
   module Mcr
     # Macro Manager
     class Man < Exe
-      attr_reader :sub_list
+      attr_reader :sub_list # Used for Layer module
       # cfg should have [:dev_list]
       def initialize(cfg, atrb = {})
         _init_atrb_(cfg, atrb)

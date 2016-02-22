@@ -7,8 +7,8 @@ module CIAX
     # Hex Exe List
     class List < Site::List
       # cfg must have [:db]
-      def initialize(cfg, top_list = nil)
-        super(cfg, top_list || self, Wat::List)
+      def initialize(cfg)
+        super(cfg, Wat::List)
         store_db(@cfg[:db] ||= Ins::Db.new)
         @cfg[:hdb] = Db.new
       end

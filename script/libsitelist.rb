@@ -6,8 +6,8 @@ module CIAX
     # This should be set [:db]
     class List < CIAX::List
       attr_reader :db, :sub_list
-      def initialize(cfg, top_list, sub_mod = nil)
-        cfg[:top_list] ||= type?(top_list, Hashx)
+      def initialize(cfg, sub_mod = nil)
+        cfg[:top_list] ||= self
         cfg[:layer_type] = 'site'
         super(cfg, column: 2)
         @sub_list = @cfg[:sub_list] = sub_mod.new(cfg) if sub_mod

@@ -10,7 +10,7 @@ module CIAX
         cfg[:top_list] ||= self
         cfg[:layer_type] = 'site'
         super(cfg, column: 2)
-        @sub_list = @cfg[:sub_list] = sub_mod.new(cfg) if sub_mod
+        @sub_list = sub_mod.new(cfg) if sub_mod
       end
 
       def store_db(db)
@@ -61,7 +61,7 @@ module CIAX
 
       def add(site)
         # layer_module can be Frm,App,Wat,Hex
-        obj = layer_module::Exe.new(site, @cfg, db: @db)
+        obj = layer_module::Exe.new(site, @cfg, db: @db, sub_list: @sub_list)
         @list.put(site, obj)
       end
 

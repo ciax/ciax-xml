@@ -7,8 +7,9 @@ module CIAX
     # Watch List
     class List < Site::List
       # cfg must have [:db]
-      def initialize(cfg)
-        super(cfg, App::List)
+      def initialize(cfg, atrb = {})
+        super
+        init_sub(App::List)
         store_db(@cfg[:db] ||= Ins::Db.new)
       end
     end

@@ -6,11 +6,15 @@ module CIAX
     # This should be set [:db]
     class List < CIAX::List
       attr_reader :db, :sub_list
-      def initialize(cfg, sub_mod = nil)
+      def initialize(cfg, atrb = {})
         cfg[:top_list] ||= self
         cfg[:layer_type] = 'site'
-        super(cfg, column: 2)
-        @sub_list = sub_mod.new(cfg) if sub_mod
+        atrb[:column] = 2
+        super
+      end
+
+      def init_sub(sub_mod)
+        @sub_list = sub_mod.new(@cfg)
       end
 
       def store_db(db)

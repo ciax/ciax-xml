@@ -14,7 +14,7 @@ module CIAX
       @optdb.update(db)
       optary = current_options(str, db.keys)
       make_usage(optary)
-      update(_sym_key_(str))
+      set_sym_key_(str)
       make_layer
     rescue OptionParser::ParseError
       raise(UserError, '')
@@ -46,7 +46,7 @@ module CIAX
 
     private
 
-    def _sym_key_(str)
+    def set_sym_key_(str)
       ARGV.getopts(str).each do |k, v|
         self[k.to_sym] = v
       end

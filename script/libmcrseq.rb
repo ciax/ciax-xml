@@ -107,7 +107,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       opt = GetOpts.new('ecn')
-      cfg = Config.new
+      cfg = Config.new(option: opt)
       wl = Wat::List.new(cfg) # Take App List
       cfg[:dev_list] = wl
       begin

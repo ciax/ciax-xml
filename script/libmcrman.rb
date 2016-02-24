@@ -77,6 +77,8 @@ module CIAX
         super
       end
 
+      alias_method :ext_test, :ext_driver
+
       def _init_pre_exe_
         @pre_exe_procs << proc do
           @sv_stat.rep(:sid, '')

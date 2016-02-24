@@ -5,6 +5,6 @@ require 'libdaemon'
 # CIAX-XML Device Server
 module CIAX
   Daemon.new('dvsv', 'deb') do |cfg|
-    Wat::List.new(cfg).ext_server(ARGV)
+    Wat::List.new(cfg).run(ARGV)
   end
 end

@@ -12,6 +12,7 @@ module CIAX
       @base = vardir('run') + tag
       opt = GetOpts.new(optstr)
       cfg = Config.new(option: opt)
+      opt[:s] = true
       if opt[:d]
         kill_pid
       else

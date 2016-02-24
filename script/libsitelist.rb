@@ -50,9 +50,8 @@ module CIAX
       end
 
       # Server Setting
-      def ext_server(sites = [])
+      def run(sites = [])
         sites << nil if sites.empty?
-        @cfg[:option][:s] = true
         sites.each { |s| get(s) }
         self
       end

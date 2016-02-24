@@ -23,8 +23,8 @@ module CIAX
         @cobj.rem.add_ext(Ext)
         _init_sub.add_flg(comerr: 'X', ioerr: 'E')
         # Post internal command procs
-        @host ||= dbi['host']
-        @port ||= dbi['port']
+        @host ||= dbi[:host]
+        @port ||= dbi[:port]
         _opt_mode
       end
 

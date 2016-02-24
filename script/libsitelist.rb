@@ -19,7 +19,6 @@ module CIAX
 
       def store_db(db)
         @db = @cfg[:db] = type?(db, Db)
-        verbose { 'Initialize' }
         if @cfg.key?(:site)
           @current = @cfg[:site]
         else

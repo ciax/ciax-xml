@@ -12,6 +12,7 @@ module CIAX
       def initialize(cfg, atrb = {})
         _init_atrb_(cfg, atrb)
         super(nil, cfg, atrb)
+        verbose { 'Initialize Layer' }
         # id = nil -> taken by ARGV
         _init_net_(_init_dbi(nil, [:sites]))
         _init_sub

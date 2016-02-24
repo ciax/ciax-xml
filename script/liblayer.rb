@@ -8,8 +8,8 @@ module CIAX
   class Layer < CIAX::List
     def initialize(optstr)
       opt = GetOpts.new(optstr)
-      atrb = { column: 4, option: opt }
-      super(Config.new, atrb)
+      cfg = Config.new(column: 4, option: opt)
+      super(cfg)
       if opt[:m]
         mod = Mcr::Man
         usage = '[proj] [cmd] (par)'

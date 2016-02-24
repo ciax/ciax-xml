@@ -36,7 +36,6 @@ module CIAX
       # Proc for program terminated
       @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }]
       Thread.abort_on_exception = true
-      verbose { "initialize [#{@id}]" }
       @cobj = Cmd::Remote::Index.new(@cfg)
     end
 

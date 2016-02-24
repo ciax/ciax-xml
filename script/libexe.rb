@@ -90,6 +90,7 @@ module CIAX
         if opt[:s]
           opt[:e] ? ext_driver : ext_test
           ext_server
+          opt.delete(:s)
         else
           ext_client
         end

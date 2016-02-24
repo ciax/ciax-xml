@@ -16,7 +16,7 @@ module CIAX
         # id = nil -> taken by ARGV
         _init_net_(_init_dbi(nil, [:sites]))
         _init_prompt
-        @sub_list = @cfg[:dev_list]
+        @sub_list = @cfg[:dev_list] = Wat::List.new(cfg)
         _init_domain_
         _init_stat_
         _opt_mode
@@ -31,7 +31,6 @@ module CIAX
       private
 
       def _init_atrb_(cfg, atrb)
-        atrb[:dev_list] ||= Wat::List.new(cfg)
         atrb[:db] = Db.new
         atrb[:layer_type] = 'mcr'
       end

@@ -19,6 +19,12 @@ module CIAX
       extend(Shell).ext_shell(jump_class)
     end
 
+    private
+
+    def switch(id)
+      @list.get(id)
+    end
+
     # Shell module
     module Shell
       attr_reader :jumpgrp
@@ -40,12 +46,6 @@ module CIAX
         retry
       rescue InvalidID
         @cfg[:option].usage('(opt) [id]')
-      end
-
-      private
-
-      def switch(id)
-        @list.get(id)
       end
     end
   end

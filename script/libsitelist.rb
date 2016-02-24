@@ -64,6 +64,11 @@ module CIAX
         @list.put(site, obj)
       end
 
+      def switch(site)
+        @cfg[:top_list].get(site)
+        super
+      end
+
       # Shell extension for Site::List
       module Shell
         include CIAX::List::Shell
@@ -82,11 +87,6 @@ module CIAX
           obj = super.ext_shell
           obj.cobj.loc.add_jump
           obj
-        end
-
-        def switch(site)
-          @cfg[:top_list].get(site)
-          super
         end
       end
     end

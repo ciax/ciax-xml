@@ -88,7 +88,6 @@ module CIAX
     def mode_db
       @optdb.update(
         t: 'test mode (default)',
-        s: 'simulation mode',
         e: 'execution mode'
       )
       self
@@ -97,6 +96,7 @@ module CIAX
     # System process
     def sys_db
       @optdb.update(
+        s: 'server mode',
         d: 'delete process',
         b: 'background mode'
       )

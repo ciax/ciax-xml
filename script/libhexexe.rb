@@ -31,7 +31,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('ceh:lts')
+      opt = GetOpts.new('ceh:lt')
       id = ARGV.shift
       cfg = Config.new(option: opt)
       atrb = { hdb: Db.new, sub_list: Wat::List.new(cfg) }

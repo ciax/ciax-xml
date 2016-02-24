@@ -4,5 +4,5 @@ require 'liblayer'
 require 'libhexexe'
 # CIAX-XML Device Shell
 module CIAX
-  Layer.new('fawxelrsch:').ext_shell.shell
+  Layer.new('fawxelrch:').ext_shell.shell
 end

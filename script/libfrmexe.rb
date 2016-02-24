@@ -59,15 +59,9 @@ module CIAX
 
       def ext_driver
         sp = type?(@cfg[:stream], Hash)
-        if @cfg[:option][:s]
-          @mode = 'SIM'
-          iocmd = [ENV['SIMCMD'] || 'frmsim', @id, @cfg[:version]]
-          timeout = 60
-        else
-          @mode = 'DRV'
-          iocmd = @cfg[:iocmd].split(' ')
-          timeout = (sp[:timeout] || 10).to_i
-        end
+        @mode = 'DRV'
+        iocmd = @cfg[:iocmd].split(' ')
+        timeout = (sp[:timeout] || 10).to_i
         @stream = Stream.new(@id, @cfg[:version], iocmd,
                              sp[:wait], timeout, esc_code(sp[:terminator]))
         @stream.ext_log if @cfg[:option].log?
@@ -105,7 +99,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('ceh:lts')
+      opt = GetOpts.new('ceh:lt')
       id = ARGV.shift
       cfg = Config.new(option: opt)
       begin

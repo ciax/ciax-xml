@@ -38,7 +38,7 @@ module CIAX
 
       def init_server(dbi)
         @sv_stat.add_flg(busy: '*')
-        @host ||= dbi[:host]
+        @host = @cfg[:option].host || dbi[:host]
         @port ||= dbi[:port]
         self
       end
@@ -51,7 +51,6 @@ module CIAX
       end
 
       def ext_test
-        @mode = 'TEST'
         @stat.ext_sym.ext_file
         @cobj.get('interrupt').def_proc do
           # "INTERRUPT(#{@batch_interrupt})"
@@ -62,12 +61,12 @@ module CIAX
           ent[:batch].inspect
         end
         ext_non_client
+        super
       end
 
       # type of usage: shell/command line
       # type of semantics: execution/test
       def ext_driver
-        @mode = 'DRV'
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
         @buf = init_buf
         if @cfg[:cmd_line_mode] # command line mode
@@ -77,6 +76,7 @@ module CIAX
         end
         ext_exec_mode
         ext_non_client
+        super
       end
 
       def ext_non_client
@@ -155,7 +155,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('ceh:lt')
+      opt = GetOpts.new('ceh:lts')
       id = ARGV.shift
       cfg = Config.new(option: opt)
       atrb = { db: Ins::Db.new, sub_list: Frm::List.new(cfg) }

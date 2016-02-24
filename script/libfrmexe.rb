@@ -23,7 +23,7 @@ module CIAX
         @cobj.rem.add_ext(Ext)
         _init_sub.add_flg(comerr: 'X', ioerr: 'E')
         # Post internal command procs
-        @host ||= dbi[:host]
+        @host = @cfg[:option].host || dbi[:host]
         @port ||= dbi[:port]
         _opt_mode
       end
@@ -47,19 +47,17 @@ module CIAX
       private
 
       def ext_test
-        @mode = 'TEST'
         @stat.ext_file
         @cobj.rem.ext.def_proc { 'TEST' }
         @cobj.get('set').def_proc do|ent|
           @stat.rep(ent.par[0], ent.par[1])
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         end
-        self
+        super
       end
 
       def ext_driver
         sp = type?(@cfg[:stream], Hash)
-        @mode = 'DRV'
         iocmd = @cfg[:iocmd].split(' ')
         timeout = (sp[:timeout] || 10).to_i
         @stream = Stream.new(@id, @cfg[:version], iocmd,
@@ -94,12 +92,12 @@ module CIAX
           @stat.flush
           'Flush Stream'
         end
-        self
+        super
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('ceh:lt')
+      opt = GetOpts.new('ceh:lts')
       id = ARGV.shift
       cfg = Config.new(option: opt)
       begin

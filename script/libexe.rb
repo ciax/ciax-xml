@@ -38,7 +38,6 @@ module CIAX
       Thread.abort_on_exception = true
       verbose { "initialize [#{@id}]" }
       @cobj = Cmd::Remote::Index.new(@cfg)
-      @host = @cfg[:option].host
     end
 
     # Sync only (Wait for other thread), never inherit
@@ -59,11 +58,6 @@ module CIAX
 
     def to_s
       @sv_stat.msg
-    end
-
-    def ext_server
-      @mode += ':SV'
-      extend(Server).ext_server
     end
 
     def ext_shell
@@ -92,12 +86,11 @@ module CIAX
 
     def _opt_mode
       # Option handling
-      if @cfg[:option].sv?
-        ext_driver
-      elsif @cfg[:option].cl?
+      if @cfg[:option].cl?
         ext_client
       else
-        ext_test
+        @cfg[:option][:e] ? ext_driver : ext_test
+        ext_server if @cfg[:option][:s]
       end
     end
 
@@ -116,6 +109,12 @@ module CIAX
       @stat.ext_http(@host)
       @pre_exe_procs << proc { @stat.upd }
       extend(Client).ext_client
+    end
+
+    def ext_server
+      return self if @mode == 'CL'
+      @mode += ':SV'
+      extend(Server).ext_server
     end
   end
 end

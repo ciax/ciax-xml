@@ -20,16 +20,12 @@ module CIAX
       raise(UserError, '')
     end
 
-    def sv?
-      %i(s e).any? { |k| self[k] }
-    end
-
     def cl?
       %i(h c l).any? { |k| self[k] }
     end
 
     def test?
-      !sv? && !cl?
+      !(self[:e] || cl?)
     end
 
     def log?

@@ -17,7 +17,7 @@ module CIAX
       else
         init_daemon(opt)
         begin
-          init_server { yield(cfg) }.server
+          init_server { yield(cfg) }
           err_redirect(opt, tag)
           sleep
         rescue SignalException

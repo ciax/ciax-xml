@@ -18,8 +18,8 @@ module CIAX
         @sub_list = @cfg[:dev_list]
         _init_domain_
         _init_stat_
-        @mode = 'MCR'
-        @cfg[:option][:l] ? ext_client : ext_driver
+        _opt_mode
+        @mode = 'MCR:' + @mode
       end
 
       def ext_shell
@@ -61,7 +61,7 @@ module CIAX
       end
 
       def _init_net_(dbi)
-        @host ||= dbi[:host]
+        @host = @cfg[:option].host || dbi[:host]
         @port ||= (dbi[:port] || 55_555)
       end
 
@@ -120,7 +120,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('cenlrt')
+      opt = GetOpts.new('cenlrts')
       begin
         cfg = Config.new(option: opt)
         Man.new(cfg).ext_shell.shell

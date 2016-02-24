@@ -4,7 +4,7 @@ require 'libmcrman'
 require 'libdaemon'
 # CIAX-XML Macro Server
 module CIAX
-  Daemon.new('mcrsv', 'bcsenr') do |cfg|
-    Mcr::Man.new(cfg).ext_server
+  Daemon.new('mcrsv', 'bcenr') do |cfg|
+    Mcr::Man.new(cfg)
   end
 end

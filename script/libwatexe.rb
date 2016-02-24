@@ -13,7 +13,6 @@ module CIAX
         _init_sub.add_flg(auto: '&', event: '@')
         @cobj.add_rem(@sub.cobj.rem)
         @stat = Event.new(@sub.id)
-        @mode = @sub.mode
         @host = @sub.host
         _opt_mode
       end
@@ -45,7 +44,7 @@ module CIAX
       def ext_test
         ext_non_client
         @post_exe_procs << proc { @stat.next_upd }
-        self
+        super
       end
 
       def ext_driver
@@ -59,7 +58,7 @@ module CIAX
         @sub.post_exe_procs << proc do
           @sv_stat.put(:auto, @tid_auto && @tid_auto.alive?)
         end
-        self
+        super
       end
 
       def ext_non_client
@@ -96,7 +95,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('ceh:lt')
+      opt = GetOpts.new('ceh:lts')
       id = ARGV.shift
       cfg = Config.new(option: opt)
       atrb = { db: Ins::Db.new, sub_list: App::List.new(cfg) }

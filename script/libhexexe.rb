@@ -20,18 +20,19 @@ module CIAX
         @shell_output_proc = proc { view.to_x }
       end
 
+      private
+
       def ext_server
-        super
         @server_input_proc = proc do|line|
           /^(strobe|stat)/ =~ line ? [] : line.split(' ')
         end
         @server_output_proc = @shell_output_proc
-        self
+        super
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('ceh:lt')
+      opt = GetOpts.new('ceh:lts')
       id = ARGV.shift
       cfg = Config.new(option: opt)
       atrb = { hdb: Db.new, sub_list: Wat::List.new(cfg) }

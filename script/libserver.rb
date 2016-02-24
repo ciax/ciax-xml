@@ -9,7 +9,6 @@ module CIAX
 
     # JSON expression of server stat will be sent.
     def ext_server
-      @sub.ext_server if @sub
       return self unless @port
       verbose do
         "Initialize UDP server (#{@id}) port:[#{@port}] git:[" +
@@ -18,12 +17,12 @@ module CIAX
       @server_input_proc = proc { |line| j2h(line) }
       @sv_stat.ext_file.auto_save.ext_log
       @server_output_proc = proc { @sv_stat.to_j }
-      self
+      server_thread
     end
 
-    def server
-      @sub.server if @sub
-      return self unless @port
+    private
+
+    def server_thread
       ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |udp|
         IO.select([udp])
         line, addr = udp.recvfrom(4096)

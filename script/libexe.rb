@@ -65,7 +65,7 @@ module CIAX
 
     private
 
-    def _init_sub(sub_id = @id)
+    def _init_prompt(sub_id = @id)
       # Site Status shared among layers
       if @cfg[:sub_list]
         @sub = @cfg[:sub_list].get(sub_id)

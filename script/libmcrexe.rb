@@ -11,7 +11,7 @@ module CIAX
       def initialize(ment, pid = '0')
         cfg = Config.new
         super(type?(ment, Cmd::Entity).id, cfg)
-        _init_sub
+        _init_prompt
         _init_cmd_(ment, pid)
         _init_thread_
         self

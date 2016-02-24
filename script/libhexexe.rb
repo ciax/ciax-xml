@@ -10,7 +10,7 @@ module CIAX
     class Exe < Exe
       def initialize(id, cfg, atrb = {})
         super
-        _init_sub
+        _init_prompt
         view = Rsp.new(@sub.sub.stat, @cfg)
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode

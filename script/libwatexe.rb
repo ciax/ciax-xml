@@ -10,7 +10,7 @@ module CIAX
       attr_reader :sub, :stat
       def initialize(id, cfg, atrb = {})
         super(id, cfg, atrb)
-        _init_sub.add_flg(auto: '&', event: '@')
+        _init_prompt.add_flg(auto: '&', event: '@')
         @cobj.add_rem(@sub.cobj.rem)
         @stat = Event.new(@sub.id)
         @host = @sub.host

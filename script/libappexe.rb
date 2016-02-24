@@ -18,7 +18,7 @@ module CIAX
         dbi = _init_dbi(id, %i(frm_site))
         @cfg[:site_id] = id
         # LayerDB might generated in List level
-        _init_sub(@cfg[:frm_site])
+        _init_prompt(@cfg[:frm_site])
         @stat = Status.new(dbi)
         @batch_interrupt = []
         init_server(dbi)

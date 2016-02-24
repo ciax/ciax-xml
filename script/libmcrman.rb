@@ -15,7 +15,7 @@ module CIAX
         verbose { 'Initialize Layer' }
         # id = nil -> taken by ARGV
         _init_net_(_init_dbi(nil, [:sites]))
-        _init_sub
+        _init_prompt
         @sub_list = @cfg[:dev_list]
         _init_domain_
         _init_stat_

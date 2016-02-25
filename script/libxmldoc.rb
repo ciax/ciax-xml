@@ -148,7 +148,7 @@ module CIAX
     end
     begin
       puts doc.get(ARGV.shift).path(ARGV)
-    rescue InvalidID
+    rescue InvalidARGS
       Msg.usage('[type] [id]')
     end
   end

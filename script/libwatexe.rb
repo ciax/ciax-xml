@@ -95,14 +95,13 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('ceh:lts')
-      id = ARGV.shift
-      cfg = Config.new(option: opt)
-      atrb = { db: Ins::Db.new, sub_list: App::List.new(cfg) }
+      opt = GetOpts.new
       begin
-        Exe.new(id, cfg, atrb).ext_shell.shell
-      rescue InvalidID
-        Msg.usage('(opt) [id]')
+        cfg = Config.new(option: opt.parse('ceh:lts'))
+        atrb = { db: Ins::Db.new, sub_list: App::List.new(cfg) }
+        Exe.new(ARGV.shift, cfg, atrb).ext_shell.shell
+      rescue InvalidARGS
+        opt.usage('(opt) [id]')
       end
     end
   end

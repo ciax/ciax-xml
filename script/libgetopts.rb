@@ -5,16 +5,18 @@ require 'optparse'
 module CIAX
   # Global options
   class GetOpts < Hash
+    include Msg
     # str = valid option list (afch:)
     # db = addigional option db
     attr_reader :layer
-    def initialize(str, db = {})
-      @optstr = Msg.type?(str, String)
-      _make_db
-      @optdb.update(db)
-      optary = current_options(db.keys)
-      make_usage(optary)
-      parse
+    def initialize(db = {})
+      @optdb = type?(db, Hash)
+      _db_layer
+      _db_cli
+      _db_mode
+      _db_vis
+      _db_mcr
+      _db_sys
     end
 
     def cl?
@@ -33,28 +35,23 @@ module CIAX
       (self[:h] || 'localhost') unless self[:c]
     end
 
-    def usage
-      Msg.columns(@index)
+    def usage(str)
+      super("#{str}\n" + columns(@index))
     end
 
-    def parse
-      ARGV.getopts(@optstr).each { |k, v| self[k.to_sym] = v }
-      make_layer
+    # ARGV must be taken after parse
+    def parse(optstr)
+      type?(optstr, String)
+      optary = current_options(optstr)
+      _make_usage(optary)
+      given = ARGV.select { |s| s =~ /-/ }
+      ARGV.getopts(optstr).each { |k, v| self[k.to_sym] = v }
+      _make_layer
     rescue OptionParser::ParseError
-      raise(InvalidOpt, usage)
+      raise(InvalidARGS, "Invalid Option #{given}")
     end
 
     private
-
-    def _make_db
-      @optdb = {}
-      _db_layer
-      _db_cli
-      _db_mode
-      _db_vis
-      _db_mcr
-      _db_sys
-    end
 
     # Layer option
     def _db_layer
@@ -117,12 +114,12 @@ module CIAX
     end
 
     # Current Options
-    def current_options(ext_keys)
-      (@optstr.split('').map(&:to_sym) & (@optdb.keys + ext_keys))
+    def current_options(optstr)
+      (optstr.split('').map(&:to_sym) & @optdb.keys)
     end
 
     # Make usage text
-    def make_usage(optary)
+    def _make_usage(optary)
       @index = {}
       optary.each do|c|
         @index["-#{c}"] = @optdb[c]
@@ -131,7 +128,7 @@ module CIAX
     end
 
     # Set @layer (default 'Wat')
-    def make_layer
+    def _make_layer
       lopt = %i(m x a f w).find { |c| self[c] } || :a
       @layer = @optdb[lopt].split(' ').first
       self

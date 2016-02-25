@@ -97,13 +97,12 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('ceh:lts')
-      id = ARGV.shift
-      cfg = Config.new(option: opt)
+      opt = GetOpts.new
       begin
-        Exe.new(id, cfg, db: Dev::Db.new).ext_shell.shell
-      rescue InvalidID
-        Msg.usage('(opt) [id]')
+        cfg = Config.new(option: opt.parse('ceh:lts'))
+        Exe.new(ARGV.shift, cfg, db: Dev::Db.new).ext_shell.shell
+      rescue InvalidARGS
+        opt.usage('(opt) [id]')
       end
     end
   end

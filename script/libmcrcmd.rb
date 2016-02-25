@@ -72,7 +72,7 @@ module CIAX
         ent = cobj.set_cmd(ARGV)
         puts ent.path
         puts ent[:sequence]
-      rescue InvalidID
+      rescue InvalidARGS
         Msg.usage('[cmd] (par)')
       end
     end

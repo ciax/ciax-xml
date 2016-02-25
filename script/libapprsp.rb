@@ -118,7 +118,7 @@ module CIAX
         stat = Status.new(field[:id])
         field.ext_file if STDIN.tty?
         puts stat.ext_rsp(field)
-      rescue InvalidID
+      rescue InvalidARGS
         Msg.usage '[site] | < field_file'
       end
     end

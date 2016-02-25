@@ -114,7 +114,7 @@ module CIAX
       begin
         stat = App::Status.new.ext_file
         puts Rsp.new(stat, hdb: Db.new)
-      rescue InvalidID
+      rescue InvalidARGS
         Msg.usage(' < status_file')
       end
     end

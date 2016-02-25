@@ -80,7 +80,7 @@ module CIAX
         stat.ext_sym
         stat.ext_file if STDIN.tty?
         puts stat.upd
-      rescue InvalidID
+      rescue InvalidARGS
         Msg.usage '[site] | < status_file'
       end
     end

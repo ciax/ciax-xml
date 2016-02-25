@@ -126,23 +126,28 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
-      opt = GetOpts.new('m', m: 'merge file')
-      Msg.usage('(opt) < logline') if STDIN.tty?
-      str = gets(nil) || exit
-      res = JsLog.read(str)
-      id = res[:id]
-      cid = res[:cmd]
-      dbi = Dev::Db.new.get(id)
-      field = Field.new(dbi).ext_rsp
-      field.ext_file.auto_save if opt[:m]
-      if cid
-        cfg = Config.new.update(field: field)
-        cobj = Index.new(cfg, dbi.pick[:stream])
-        cobj.add_rem.add_ext(Ext)
-        ent = cobj.set_cmd(cid.split(':'))
-        field.conv(ent, res)
+      opt = GetOpts.new(m: 'merge file')
+      begin
+        raise(UserError,'  Need Input File') if STDIN.tty?
+        opt.parse('m')
+        str = gets(nil) || exit
+        res = JsLog.read(str)
+        id = res[:id]
+        cid = res[:cmd]
+        dbi = Dev::Db.new.get(id)
+        field = Field.new(dbi).ext_rsp
+        field.ext_file.auto_save if opt[:m]
+        if cid
+          cfg = Config.new.update(field: field)
+          cobj = Index.new(cfg, dbi.pick[:stream])
+          cobj.add_rem.add_ext(Ext)
+          ent = cobj.set_cmd(cid.split(':'))
+          field.conv(ent, res)
+        end
+        puts field
+      rescue UserError
+        opt.usage('(opt) < logline')
       end
-      puts field
     end
   end
 end

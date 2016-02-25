@@ -45,8 +45,13 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('r')
-      Msg.usage '(-r) [cid] (< file)' if STDIN.tty? && ARGV.size < 1
+      opt = GetOpts.new
+      begin
+        opt.parse('r')
+        raise(InvalidARGS, 'No input') if STDIN.tty? && ARGV.size < 1
+      rescue InvalidARGS
+        opt.usage '(-r) [cid] (< file)'
+      end
       if STDIN.tty?
         cid = '"cid":"' + ARGV.shift + '"'
         ary = Dir.glob(Msg.vardir('json') + 'record_1*').sort.reverse

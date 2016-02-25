@@ -7,8 +7,8 @@ module CIAX
   # atrb can have [:top_layer]
   class Layer < CIAX::List
     def initialize(optstr)
-      opt = GetOpts.new(optstr)
-      cfg = Config.new(column: 4, option: opt)
+      opt = GetOpts.new
+      cfg = Config.new(column: 4, option: opt.parse(optstr))
       super(cfg)
       if opt[:m]
         mod = Mcr::Man
@@ -24,8 +24,8 @@ module CIAX
         @list.put(ns, obj)
         obj = obj.sub_list || break
       end
-    rescue InvalidID
-      Msg.usage(usage)
+    rescue InvalidARGS
+      opt.usage(usage)
     end
 
     def ext_shell

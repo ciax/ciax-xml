@@ -45,7 +45,7 @@ module CIAX
       rescue @cfg[:jump_class]
         @current = $ERROR_INFO.to_s
         retry
-      rescue InvalidID
+      rescue InvalidARGS
         @cfg[:option].usage('(opt) [id]')
       end
     end

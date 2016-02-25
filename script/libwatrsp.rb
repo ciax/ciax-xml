@@ -46,7 +46,7 @@ module CIAX
         verbose { format('Auto Update(%s, %s)', self[:time], @regexe) }
         begin
           queue('auto', 3, @regexe)
-        rescue InvalidID
+        rescue InvalidARGS
           errmsg
         rescue
           warning $ERROR_INFO
@@ -123,9 +123,9 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-
-      opt = GetOpts.new('t:', t: 'test conditions[key=val,..]')
+      opt = GetOpts.new(t: 'test conditions[key=val,..]')
       begin
+        opt.parse('t:')
         stat = App::Status.new
         stat.ext_file if STDIN.tty?
         event = Event.new(stat[:id]).ext_rsp(stat)
@@ -133,8 +133,8 @@ module CIAX
           stat.str_update(t)
         end
         puts event
-      rescue InvalidID
-        Msg.usage('(opt) [site] | < status_file')
+      rescue InvalidARGS
+        opt.usage('(opt) [site] | < status_file')
       end
     end
   end

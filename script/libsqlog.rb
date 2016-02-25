@@ -162,7 +162,7 @@ module CIAX
         puts stat
         puts sqlog.create
         puts sqlog.upd
-      rescue InvalidID
+      rescue InvalidARGS
         Msg.usage '[id]'
       end
     end

@@ -50,7 +50,7 @@ module CIAX
       self
     rescue LongJump
       raise $ERROR_INFO
-    rescue InvalidID
+    rescue InvalidARGS
       @sv_stat.rep(:msg, $ERROR_INFO.to_s)
       raise $ERROR_INFO
     end

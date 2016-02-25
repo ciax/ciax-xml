@@ -10,9 +10,9 @@ module CIAX
       ENV['VER'] ||= 'Initialize'
       # Set ARGS in opt file
       @base = vardir('run') + tag
+      opt = GetOpts.new
       begin
-        opt = GetOpts.new(optstr)
-        cfg = Config.new(option: opt)
+        cfg = Config.new(option: opt.parse(optstr))
         opt[:s] = true
         if opt[:d]
           kill_pid
@@ -20,8 +20,8 @@ module CIAX
           init_daemon(opt)
           main_loop(opt, tag) { yield(cfg) }
         end
-      rescue UserError
-        Msg.usage('(opt) [id] ....')
+      rescue InvalidARGS
+        opt.usage('(opt) [id] ....')
       end
     end
 
@@ -33,8 +33,6 @@ module CIAX
       sleep
     rescue SignalException
       retry if $ERROR_INFO.message == 'SIGHUP'
-    rescue InvalidID
-      Msg.relay(opt.usage)
     end
 
     def init_daemon(opt)

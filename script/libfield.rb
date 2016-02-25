@@ -127,7 +127,7 @@ module CIAX
       begin
         dbi = Dev::Db.new.get(ARGV.shift)
         puts Field.new(dbi).ext_file
-      rescue InvalidID
+      rescue InvalidARGS
         Msg.usage '(opt) [id]'
       end
     end

@@ -15,13 +15,13 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('ceh:lt')
-      cfg = Config.new(option: opt)
-      cfg[:site] = ARGV.shift
+      opt = GetOpts.new
       begin
+        cfg = Config.new(option: opt.parse('ceh:lt'))
+        cfg[:site] = ARGV.shift
         List.new(cfg).ext_shell.shell
-      rescue InvalidID
-        Msg.usage('(opt) [id]')
+      rescue InvalidARGS
+        opt.usage('(opt) [id]')
       end
     end
   end

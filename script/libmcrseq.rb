@@ -106,11 +106,11 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('ecn')
-      cfg = Config.new(option: opt)
-      wl = Wat::List.new(cfg) # Take App List
-      cfg[:dev_list] = wl
+      opt = GetOpts.new
       begin
+        cfg = Config.new(option: opt.parse('ecn'))
+        wl = Wat::List.new(cfg) # Take App List
+        cfg[:dev_list] = wl
         dbi = Db.new.get
         mobj = Cmd::Remote::Index.new(cfg, dbi.pick([:sites]))
         mobj.add_rem.add_ext(Ext)
@@ -118,9 +118,9 @@ module CIAX
         seq = Seq.new(ent)
         seq.macro
       rescue InvalidCMD
-        Msg.usage('[cmd] (par)')
-      rescue InvalidID
-        Msg.usage('[proj] [cmd] (par)')
+        opt.usage('[cmd] (par)')
+      rescue InvalidARGS
+        opt.usage('[proj] [cmd] (par)')
       end
     end
   end

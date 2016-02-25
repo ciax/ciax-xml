@@ -122,14 +122,14 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('cenlrts')
+      opt = GetOpts.new
       begin
-        cfg = Config.new(option: opt)
+        cfg = Config.new(option: opt.parse('cenlrts'))
         Man.new(cfg).ext_shell.shell
       rescue InvalidCMD
-        Msg.usage('[cmd] (par)')
-      rescue InvalidID
-        Msg.usage('[proj] [cmd] (par)')
+        opt.usage('[cmd] (par)')
+      rescue InvalidARGS
+        opt.usage('[proj] [cmd] (par)')
       end
     end
   end

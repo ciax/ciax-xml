@@ -29,7 +29,7 @@ module CIAX
 
       def exe(args) # As a individual cui command
         get(args.shift).exe(args, 'local')
-      rescue InvalidID
+      rescue InvalidARGS
         @cfg[:option].usage('(opt) [id]')
       end
 

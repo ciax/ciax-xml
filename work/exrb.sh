@@ -1,5 +1,6 @@
 #!/bin/bash
-for file in ~/ciax-xml/*/*.rb; do
-    $file
+files=${*:-*.rb}
+for file in $files; do
+    ./$file
     [ $? = 1 ] && break
 done

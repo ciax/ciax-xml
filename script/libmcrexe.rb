@@ -46,10 +46,10 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('icentr')
-      cfg = Config.new(option: opt)
-      cfg[:dev_list] = Wat::List.new(cfg)
+      opt = GetOpts.new
       begin
+        cfg = Config.new(option: opt.parse('icentr'))
+        cfg[:dev_list] = Wat::List.new(cfg)
         dbi = Db.new.get
         mobj = Cmd::Remote::Index.new(cfg, dbi.pick([:sites]))
         mobj.add_rem.add_ext(Ext)
@@ -57,9 +57,9 @@ module CIAX
         seq = Exe.new(ent)
         seq.ext_shell.shell
       rescue InvalidCMD
-        Msg.usage('[cmd] (par)')
-      rescue InvalidID
-        Msg.usage('[proj] [cmd] (par)')
+        opt.usage('[cmd] (par)')
+      rescue InvalidARGS
+        opt.usage('[proj] [cmd] (par)')
       end
     end
   end

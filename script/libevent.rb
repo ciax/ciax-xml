@@ -59,8 +59,9 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      opt = GetOpts.new('h:')
+      opt = GetOpts.new
       begin
+        opt.parse('h:')
         event = Event.new
         if opt.host
           event.ext_http(opt.host)
@@ -68,8 +69,8 @@ module CIAX
           event.ext_file
         end
         puts event
-      rescue InvalidID
-        Msg.usage('(opt) [site]')
+      rescue InvalidARGS
+        opt.usage('(opt) [site]')
       end
     end
   end

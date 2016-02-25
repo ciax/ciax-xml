@@ -145,10 +145,9 @@ module CIAX
   end
 
   if __FILE__ == $PROGRAM_NAME
-    id = ARGV.shift
     begin
-      dbi = Ins::Db.new.get(id)
-    rescue InvalidID
+      dbi = Ins::Db.new.get(ARGV.shift)
+    rescue InvalidARGS
       Msg.usage '[id] (ctl)'
     end
     tbl = HtmlTbl.new(dbi)
@@ -156,7 +155,7 @@ module CIAX
     begin
       tbl.mk_ctl_grp(ARGV)
       puts tbl
-    rescue InvalidID
+    rescue InvalidARGS
       Msg.usage '[id] (ctl)'
     end
   end

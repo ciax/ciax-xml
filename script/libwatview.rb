@@ -139,14 +139,15 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      opt = GetOpts.new('r')
+      opt = GetOpts.new
       begin
+        opt.parse('r')
         event = Event.new
         wview = View.new(event)
         event.ext_file if STDIN.tty?
         puts wview
-      rescue InvalidID
-        Msg.usage('(opt) [site] | < event_file')
+      rescue InvalidARGS
+        opt.usage('(opt) [site] | < event_file')
       end
     end
   end

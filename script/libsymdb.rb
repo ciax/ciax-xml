@@ -36,13 +36,14 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new('r')
+      opt = GetOpts.new
       begin
+        opt.parse('r')
         dbi = Db.new.get(ARGV.shift)
-      rescue InvalidID
-        Msg.usage('[id] (key) ..')
+        puts opt[:r] ? dbi.to_v : dbi.path(ARGV)
+      rescue InvalidARGS
+        opt.usage('(opt) [id] (key) ..')
       end
-      puts opt[:r] ? dbi.to_v : dbi.path(ARGV)
     end
   end
 end

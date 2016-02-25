@@ -162,7 +162,7 @@ module CIAX
       begin
         Exe.new(id, cfg, atrb).ext_shell.shell
       rescue InvalidID
-        opt.usage('(opt) [id]')
+        Msg.usage('(opt) [id]')
       end
     end
   end

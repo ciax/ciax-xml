@@ -63,7 +63,7 @@ module CIAX
     end
 
     def relay(str)
-      str = str ? colorize(str, 3) + ':' + $ERROR_INFO.to_s : ''
+      str = "#{str}\n#{$ERROR_INFO}"
       fail $ERROR_INFO.class, str, caller(1)
     end
 

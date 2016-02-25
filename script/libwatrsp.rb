@@ -134,7 +134,7 @@ module CIAX
         end
         puts event
       rescue InvalidID
-        opt.usage('(opt) [site] | < status_file')
+        Msg.usage('(opt) [site] | < status_file')
       end
     end
   end

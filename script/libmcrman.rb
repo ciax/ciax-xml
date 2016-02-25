@@ -127,9 +127,9 @@ module CIAX
         cfg = Config.new(option: opt)
         Man.new(cfg).ext_shell.shell
       rescue InvalidCMD
-        opt.usage('[cmd] (par)')
+        Msg.usage('[cmd] (par)')
       rescue InvalidID
-        opt.usage('[proj] [cmd] (par)')
+        Msg.usage('[proj] [cmd] (par)')
       end
     end
   end

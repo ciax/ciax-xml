@@ -146,7 +146,7 @@ module CIAX
         event.ext_file if STDIN.tty?
         puts wview
       rescue InvalidID
-        opt.usage('(opt) [site] | < event_file')
+        Msg.usage('(opt) [site] | < event_file')
       end
     end
   end

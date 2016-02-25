@@ -59,7 +59,7 @@ module CIAX
         end
         puts stat
       rescue InvalidID
-        opt.usage '(opt) [id]'
+        Msg.usage '(opt) [id]'
       end
     end
   end

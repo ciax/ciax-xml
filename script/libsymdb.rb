@@ -40,7 +40,7 @@ module CIAX
       begin
         dbi = Db.new.get(ARGV.shift)
       rescue InvalidID
-        opt.usage('[id] (key) ..')
+        Msg.usage('[id] (key) ..')
       end
       puts opt[:r] ? dbi.to_v : dbi.path(ARGV)
     end

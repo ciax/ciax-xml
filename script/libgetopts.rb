@@ -17,7 +17,7 @@ module CIAX
       set_sym_key_(str)
       make_layer
     rescue OptionParser::ParseError
-      raise(UserError, '')
+      raise(UserError, Msg.columns(@index))
     end
 
     def cl?
@@ -36,8 +36,8 @@ module CIAX
       (self[:h] || 'localhost') unless self[:c]
     end
 
-    def usage(str)
-      Msg.usage(str + "\n" + Msg.columns(@index))
+    def usage
+      Msg.columns(@index)
     end
 
     private

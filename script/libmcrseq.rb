@@ -118,9 +118,9 @@ module CIAX
         seq = Seq.new(ent)
         seq.macro
       rescue InvalidCMD
-        opt.usage('[cmd] (par)')
+        Msg.usage('[cmd] (par)')
       rescue InvalidID
-        opt.usage('[proj] [cmd] (par)')
+        Msg.usage('[proj] [cmd] (par)')
       end
     end
   end

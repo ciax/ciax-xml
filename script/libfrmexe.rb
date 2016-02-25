@@ -103,7 +103,7 @@ module CIAX
       begin
         Exe.new(id, cfg, db: Dev::Db.new).ext_shell.shell
       rescue InvalidID
-        opt.usage('(opt) [id]')
+        Msg.usage('(opt) [id]')
       end
     end
   end

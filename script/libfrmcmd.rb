@@ -116,9 +116,9 @@ module CIAX
         res = cobj.set_cmd(args).exe_cmd('test')
         puts(opt[:r] ? res : res.inspect)
       rescue InvalidCMD
-        opt.usage("#{id} [cmd] (par) < field_file")
+        Msg.usage("#{id} [cmd] (par) < field_file")
       rescue InvalidID
-        opt.usage('[dev] [cmd] (par) < field_file')
+        Msg.usage('[dev] [cmd] (par) < field_file')
       end
     end
   end

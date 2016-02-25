@@ -22,7 +22,7 @@ module CIAX
       begin
         List.new(cfg).ext_shell.shell
       rescue InvalidID
-        opt.usage('(opt) [id]')
+        Msg.usage('(opt) [id]')
       end
     end
   end

@@ -25,7 +25,7 @@ module CIAX
         obj = obj.sub_list || break
       end
     rescue InvalidID
-      opt.usage(usage)
+      Msg.usage(usage)
     end
 
     def ext_shell

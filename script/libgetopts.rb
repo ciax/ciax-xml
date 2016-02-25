@@ -9,15 +9,12 @@ module CIAX
     # db = addigional option db
     attr_reader :layer
     def initialize(str, db = {})
-      Msg.type?(str, String)
-      make_db
+      @optstr = Msg.type?(str, String)
+      _make_db
       @optdb.update(db)
-      optary = current_options(str, db.keys)
+      optary = current_options(db.keys)
       make_usage(optary)
-      set_sym_key_(str)
-      make_layer
-    rescue OptionParser::ParseError
-      raise(UserError, Msg.columns(@index))
+      parse
     end
 
     def cl?
@@ -40,26 +37,27 @@ module CIAX
       Msg.columns(@index)
     end
 
-    private
-
-    def set_sym_key_(str)
-      ARGV.getopts(str).each do |k, v|
-        self[k.to_sym] = v
-      end
+    def parse
+      ARGV.getopts(@optstr).each { |k, v| self[k.to_sym] = v }
+      make_layer
+    rescue OptionParser::ParseError
+      raise(InvalidOpt, usage)
     end
 
-    def make_db
+    private
+
+    def _make_db
       @optdb = {}
-      layer_db
-      cli_db
-      mode_db
-      vis_db
-      mcr_db
-      sys_db
+      _db_layer
+      _db_cli
+      _db_mode
+      _db_vis
+      _db_mcr
+      _db_sys
     end
 
     # Layer option
-    def layer_db
+    def _db_layer
       @optdb.update(
         m: 'mcr layer',
         w: 'wat layer',
@@ -71,7 +69,7 @@ module CIAX
     end
 
     # Client option
-    def cli_db
+    def _db_cli
       @optdb.update(
         c: 'client to default server',
         l: 'client to local',
@@ -81,7 +79,7 @@ module CIAX
     end
 
     # Comm to devices
-    def mode_db
+    def _db_mode
       @optdb.update(
         t: 'test mode (default)',
         e: 'execution mode'
@@ -90,7 +88,7 @@ module CIAX
     end
 
     # System process
-    def sys_db
+    def _db_sys
       @optdb.update(
         s: 'server mode',
         d: 'delete process',
@@ -100,7 +98,7 @@ module CIAX
     end
 
     # For visual
-    def vis_db
+    def _db_vis
       @optdb.update(
         v: 'visual output (default)',
         r: 'raw data output',
@@ -110,7 +108,7 @@ module CIAX
     end
 
     # For macro
-    def mcr_db
+    def _db_mcr
       @optdb.update(
         i: 'interactive mode',
         n: 'non-stop mode'
@@ -119,8 +117,8 @@ module CIAX
     end
 
     # Current Options
-    def current_options(str, ext_keys)
-      (str.split('').map(&:to_sym) & (@optdb.keys + ext_keys))
+    def current_options(ext_keys)
+      (@optstr.split('').map(&:to_sym) & (@optdb.keys + ext_keys))
     end
 
     # Make usage text

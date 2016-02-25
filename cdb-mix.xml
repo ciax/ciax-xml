@@ -267,7 +267,7 @@
         </item>
         <item id="vph_k_6" label="VPH K Grism for Turret 6" ref="opt">
           <argv>6</argv>
-          <argv>6</argv>
+          <argv>3</argv>
         </item>
         <item id="none_6" label="No Filter for Turret 6" ref="opt">
           <argv>6</argv>

@@ -18,7 +18,7 @@ t-w,startmask (ROT~WAIT),1,mcr,mcr:t-r mcr:gw_t-w mcr:check_start
 ah_t-i,Arm Hor,1,mcr,mfp:ah
 ao_t-i,Arm Open,1,mcr,mfp:ao
 rc_t-i,Rh Close,1,mcr,mfp:rc
-gf_t-f,Go to FCS,1,mcr,mma:gf
+gf_t-f,Go to FCS,1,mcr,mma:drvon mma:gf
 ac_t-f,Arm Close,1,mcr,mfp:ac
 ro_t-f,Rh Open,1,mcr,mfp:ro
 gr_t-r,Go to ROT,1,mcr,mma:gr
@@ -37,7 +37,7 @@ s-w,storemask 5(STORE~WAIT),1,mcr,mcr:s-s mma:upd mmc:upd map:upd mcr:gw_s-w mcr
 ah_s-i,Arm Hor,1,mcr,mfp:ah
 ao_s-i,Arm Open,1,mcr,mfp:ao
 rc_s-i,Rh Close,1,mcr,mfp:rc
-gf_s-f,Go to FOCUS,1,mcr,mma:gf
+gf_s-f,Go to FOCUS,1,mcr,mma:drvon mma:gf
 ac_s-f,Arm Close,1,mcr,mfp:ac
 ro_s-f,Rh Open,1,mcr,mfp:ro
 gr_s-r,Go to ROT,1,mcr,mma:gr
@@ -70,7 +70,7 @@ rc_l-f,Rh All Close,1,mcr,mfp:rc
 ro_l-f,Rh All Open,1,mcr,mfp:ro
 ao_l-f,Arm Open,1,mcr,mfp:ao
 ini_l-i,Go to INIT,1,mcr,mma:ini
-set0_a,Motor Reset,1,mcr,mma:set0
+set0_a,Motor Reset,1,mcr,mma:set0 mma:drvoff
 sets_a,Motor Reset at STK,1,mcr,mma:sets
 check_load,Check Status(No actual motion),1,cmd,
 

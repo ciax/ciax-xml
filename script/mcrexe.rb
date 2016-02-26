@@ -4,12 +4,12 @@ require 'libmcrseq'
 # CIAX-XML Macro Sequencer
 module CIAX
   module Mcr
-    ConfOpts.new('[proj] [cmd] (par)', 'cen') do |cfg|
+    ConfOpts.new('[proj] [cmd] (par)', 'cen') do |cfg, args|
       wl = Wat::List.new(cfg) # Take App List
       cfg[:dev_list] = wl
       mobj = Index.new(cfg, dbi: Db.new.get)
       mobj.add_rem.add_ext(Ext)
-      ent = mobj.set_cmd(ARGV)
+      ent = mobj.set_cmd(args)
       seq = Seq.new(ent)
       seq.macro
     end

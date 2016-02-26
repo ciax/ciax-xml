@@ -59,12 +59,12 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      ConfOpts.new('[id] [cmd] (par)', 'i', i: 'Instance Mode') do |cfg, opt|
-        dbi = (opt[:i] ? Ins::Db : Db).new.get(ARGV.shift)
+      ConfOpts.new('[id] [cmd] (par)', 'i', i: 'Instance Mode') do |cfg, args, opt|
+        dbi = (opt[:i] ? Ins::Db : Db).new.get(args.shift)
         cobj = Index.new(cfg, dbi.pick)
         cobj.add_rem.def_proc(&:path)
         cobj.rem.add_ext(Ext)
-        ent = cobj.set_cmd(ARGV)
+        ent = cobj.set_cmd(args)
         puts ent[:batch].to_s
       end
     end

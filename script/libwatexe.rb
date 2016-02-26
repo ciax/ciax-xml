@@ -95,9 +95,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', 'ceh:lts') do |cfg|
+      ConfOpts.new('[id]', 'ceh:lts') do |cfg, args|
         atrb = { db: Ins::Db.new, sub_list: App::List.new(cfg) }
-        Exe.new(ARGV.shift, cfg, atrb).ext_shell.shell
+        Exe.new(args.shift, cfg, atrb).ext_shell.shell
       end
     end
   end

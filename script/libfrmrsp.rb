@@ -126,7 +126,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
-      ConfOpts.new('< logline', 'm', m: 'merge file') do |cfg, opt|
+      ConfOpts.new('< logline', 'm', m: 'merge file') do |cfg, _args, opt|
         fail(InvalidARGS, '  Need Input File') if STDIN.tty?
         str = gets(nil) || exit
         res = JsLog.read(str)

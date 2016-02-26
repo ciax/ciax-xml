@@ -6,9 +6,9 @@ module CIAX
   # atrb can have [:top_layer]
   class Layer < CIAX::List
     def initialize(usagestr, optstr)
-      ConfOpts.new(usagestr, optstr) do |cfg, opt|
+      ConfOpts.new(usagestr, optstr) do |cfg, args, opt|
         super(cfg)
-        obj = yield(@cfg, opt)
+        obj = yield(@cfg, args, opt)
         loop do
           ns = m2id(obj.class, -2)
           @list.put(ns, obj)

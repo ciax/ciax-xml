@@ -10,13 +10,13 @@ module CIAX
       ENV['VER'] ||= 'Initialize'
       # Set ARGS in opt file
       @base = vardir('run') + tag
-      ConfOpts.new('[id] ....', optstr) do |cfg, opt|
+      ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         opt[:s] = true
         if opt[:d]
           kill_pid
         else
           init_daemon(opt)
-          main_loop(opt, tag) { yield(cfg) }
+          main_loop(opt, tag) { yield(cfg, args) }
         end
       end
     end

@@ -106,13 +106,13 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', 'ecn') do |cfg|
+      ConfOpts.new('[proj] [cmd] (par)', 'ecn') do |cfg, args|
         wl = Wat::List.new(cfg) # Take App List
         cfg[:dev_list] = wl
         dbi = Db.new.get
         mobj = Cmd::Remote::Index.new(cfg, dbi.pick([:sites]))
         mobj.add_rem.add_ext(Ext)
-        ent = mobj.set_cmd(ARGV)
+        ent = mobj.set_cmd(args)
         seq = Seq.new(ent)
         seq.macro
       end

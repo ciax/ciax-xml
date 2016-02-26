@@ -4,7 +4,7 @@ require 'libhexlist'
 require 'libdaemon'
 # CIAX-XML Device Server for V1
 module CIAX
-  Daemon.new('hexsv', 'be') do |cfg|
-    Hex::List.new(cfg).run(ARGV)
+  Daemon.new('hexsv', 'be') do |cfg, args|
+    Hex::List.new(cfg).run(args)
   end
 end

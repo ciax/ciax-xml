@@ -4,9 +4,8 @@ require 'libmcrseq'
 # CIAX-XML Macro Sequencer
 module CIAX
   module Mcr
-    opt = GetOpts.new
-    begin
-      cfg = Config.new(option: opt.parse('cen'))
+    GetOpts.new('[proj] [cmd] (par)', 'cen') do |opt|
+      cfg = Config.new(option: opt)
       wl = Wat::List.new(cfg) # Take App List
       cfg[:dev_list] = wl
       mobj = Index.new(cfg, dbi: Db.new.get)
@@ -14,10 +13,6 @@ module CIAX
       ent = mobj.set_cmd(ARGV)
       seq = Seq.new(ent)
       seq.macro
-    rescue InvalidCMD
-      opt.usage('[cmd] (par)')
-    rescue InvalidARGS
-      opt.usage('[proj] [cmd] (par)')
     end
   end
 end

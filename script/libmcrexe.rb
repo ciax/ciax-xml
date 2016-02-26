@@ -46,9 +46,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new
-      begin
-        cfg = Config.new(option: opt.parse('icentr'))
+      GetOpts.new('[proj] [cmd] (par)', 'icentr') do |opt|
+        cfg = Config.new(option: opt)
         cfg[:dev_list] = Wat::List.new(cfg)
         dbi = Db.new.get
         mobj = Cmd::Remote::Index.new(cfg, dbi.pick([:sites]))
@@ -56,10 +55,6 @@ module CIAX
         ent = mobj.set_cmd(ARGV)
         seq = Exe.new(ent)
         seq.ext_shell.shell
-      rescue InvalidCMD
-        opt.usage('[cmd] (par)')
-      rescue InvalidARGS
-        opt.usage('[proj] [cmd] (par)')
       end
     end
   end

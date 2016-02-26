@@ -20,12 +20,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new
-      begin
-        cfg = Config.new(option: opt.parse('ceh:lts') , site: ARGV.shift)
+      GetOpts.new('[id]', 'ceh:lts') do |opt|
+        cfg = Config.new(option: opt, site: ARGV.shift)
         List.new(cfg).ext_shell.shell
-      rescue InvalidARGS
-        opt.usage('(opt) [id]')
       end
     end
   end

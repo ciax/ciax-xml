@@ -106,9 +106,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new
-      begin
-        cfg = Config.new(option: opt.parse('ecn'))
+      GetOpts.new('[proj] [cmd] (par)', 'ecn') do |opt|
+        cfg = Config.new(option: opt)
         wl = Wat::List.new(cfg) # Take App List
         cfg[:dev_list] = wl
         dbi = Db.new.get
@@ -117,10 +116,6 @@ module CIAX
         ent = mobj.set_cmd(ARGV)
         seq = Seq.new(ent)
         seq.macro
-      rescue InvalidCMD
-        opt.usage('[cmd] (par)')
-      rescue InvalidARGS
-        opt.usage('[proj] [cmd] (par)')
       end
     end
   end

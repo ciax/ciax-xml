@@ -9,14 +9,15 @@ module CIAX
     # str = valid option list (afch:)
     # db = addigional option db
     attr_reader :layer
-    def initialize(db = {})
-      @optdb = type?(db, Hash)
-      _db_layer
-      _db_cli
-      _db_mode
-      _db_vis
-      _db_mcr
-      _db_sys
+    def initialize(usagestr, optstr, db = {})
+      _init_db(db)
+      type?(optstr, String)
+      _make_usage(optstr)
+      parse(optstr)
+      _make_layer
+      yield(self)
+    rescue InvalidARGS
+      usage("(opt) #{usagestr}")
     end
 
     def cl?
@@ -41,17 +42,23 @@ module CIAX
 
     # ARGV must be taken after parse
     def parse(optstr)
-      type?(optstr, String)
-      optary = current_options(optstr)
-      _make_usage(optary)
       given = ARGV.select { |s| s =~ /-/ }
       ARGV.getopts(optstr).each { |k, v| self[k.to_sym] = v }
-      _make_layer
     rescue OptionParser::ParseError
       raise(InvalidARGS, "Invalid Option #{given}")
     end
 
     private
+
+    def _init_db(db)
+      @optdb = type?(db, Hash)
+      _db_layer
+      _db_cli
+      _db_mode
+      _db_vis
+      _db_mcr
+      _db_sys
+    end
 
     # Layer option
     def _db_layer
@@ -113,15 +120,11 @@ module CIAX
       self
     end
 
-    # Current Options
-    def current_options(optstr)
-      (optstr.split('').map(&:to_sym) & @optdb.keys)
-    end
-
     # Make usage text
-    def _make_usage(optary)
+    def _make_usage(optstr)
       @index = {}
-      optary.each do|c|
+      # Current Options
+      (optstr.chars.map(&:to_sym) & @optdb.keys).each do|c|
         @index["-#{c}"] = @optdb[c]
       end
       self

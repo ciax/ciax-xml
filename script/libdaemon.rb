@@ -10,9 +10,8 @@ module CIAX
       ENV['VER'] ||= 'Initialize'
       # Set ARGS in opt file
       @base = vardir('run') + tag
-      opt = GetOpts.new
-      begin
-        cfg = Config.new(option: opt.parse(optstr))
+      GetOpts.new('[id] ....', optstr) do |opt|
+        cfg = Config.new(option: opt)
         opt[:s] = true
         if opt[:d]
           kill_pid
@@ -20,8 +19,6 @@ module CIAX
           init_daemon(opt)
           main_loop(opt, tag) { yield(cfg) }
         end
-      rescue InvalidARGS
-        opt.usage('(opt) [id] ....')
       end
     end
 

@@ -126,10 +126,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
-      opt = GetOpts.new(m: 'merge file')
-      begin
-        raise(UserError,'  Need Input File') if STDIN.tty?
-        opt.parse('m')
+      GetOpts.new('< logline', 'm', m: 'merge file') do |opt|
+        fail(InvalidARGS, '  Need Input File') if STDIN.tty?
         str = gets(nil) || exit
         res = JsLog.read(str)
         id = res[:id]
@@ -145,8 +143,6 @@ module CIAX
           field.conv(ent, res)
         end
         puts field
-      rescue UserError
-        opt.usage('(opt) < logline')
       end
     end
   end

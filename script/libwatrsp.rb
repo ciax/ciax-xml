@@ -123,9 +123,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      opt = GetOpts.new(t: 'test conditions[key=val,..]')
-      begin
-        opt.parse('t:')
+      GetOpts.new('[site] | < status_file', 't:',t: 'test conditions[key=val,..]') do |opt|
         stat = App::Status.new
         stat.ext_file if STDIN.tty?
         event = Event.new(stat[:id]).ext_rsp(stat)
@@ -133,8 +131,6 @@ module CIAX
           stat.str_update(t)
         end
         puts event
-      rescue InvalidARGS
-        opt.usage('(opt) [site] | < status_file')
       end
     end
   end

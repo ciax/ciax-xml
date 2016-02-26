@@ -49,9 +49,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new
-      begin
-        opt.parse('h:')
+      GetOpts.new('[id]','h:') do |opt|
         stat = Status.new
         if opt[:h]
           stat.ext_http(opt.host)
@@ -59,8 +57,6 @@ module CIAX
           stat.ext_file
         end
         puts stat
-      rescue InvalidARGS
-        opt.usage '(opt) [id]'
       end
     end
   end

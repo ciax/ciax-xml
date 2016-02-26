@@ -86,17 +86,13 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      opt = GetOpts.new(c: 'CSV output')
-      begin
-        opt.parse('rc')
+      GetOpts.new('(opt) [site] | < status_file', 'rc', c: 'CSV output') do |opt|
         stat = Status.new
         view = View.new(stat)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
         view.vmode(:c) if opt[:c]
         puts view
-      rescue InvalidARGS
-        opt.usage '(opt) [site] | < status_file'
       end
     end
   end

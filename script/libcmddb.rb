@@ -47,13 +47,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new
-      begin
-        opt.parse('r')
+      GetOpts.new('[id] (key) ..', 'r') do |opt|
         dbi = Db.new.get(ARGV.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(ARGV)
-      rescue InvalidARGS
-        opt.usage('[id] (key) ..')
       end
     end
   end

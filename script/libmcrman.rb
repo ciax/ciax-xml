@@ -30,7 +30,7 @@ module CIAX
 
       private
 
-      def _init_atrb_(cfg, atrb)
+      def _init_atrb_(_cfg, atrb)
         atrb[:db] = Db.new
         atrb[:layer_type] = 'mcr'
       end
@@ -122,14 +122,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new
-      begin
-        cfg = Config.new(option: opt.parse('cenlrts'))
+      GetOpts.new('[proj] [cmd] (par)', 'cenlrts') do |opt|
+        cfg = Config.new(option: opt)
         Man.new(cfg).ext_shell.shell
-      rescue InvalidCMD
-        opt.usage('[cmd] (par)')
-      rescue InvalidARGS
-        opt.usage('[proj] [cmd] (par)')
       end
     end
   end

@@ -45,23 +45,19 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      opt = GetOpts.new
-      begin
-        opt.parse('r')
-        raise(InvalidARGS, 'No input') if STDIN.tty? && ARGV.size < 1
-      rescue InvalidARGS
-        opt.usage '(-r) [cid] (< file)'
-      end
-      if STDIN.tty?
-        cid = '"cid":"' + ARGV.shift + '"'
-        ary = Dir.glob(Msg.vardir('json') + 'record_1*').sort.reverse
-        fname = ary.find do |fn|
-          fn if File.readlines(fn).grep(/#{cid}/)
+      GetOpts.new('[cid(latest)] (< file)', 'r') do |opt|
+        if STDIN.tty?
+          fail(InvalidARGS, 'No input') if ARGV.size < 1
+          cid = '"cid":"' + ARGV.shift + '"'
+          ary = Dir.glob(Msg.vardir('json') + 'record_1*').sort.reverse
+          fname = ary.find do |fn|
+            fn if File.readlines(fn).grep(/#{cid}/)
+          end
+          /[0-9]{13}/ =~ fname
+          puts Record.new($&).ext_file if $&
+        else
+          puts Record.new.read
         end
-        /[0-9]{13}/ =~ fname
-        puts Record.new($&).ext_file if $&
-      else
-        puts Record.new.read
       end
     end
   end

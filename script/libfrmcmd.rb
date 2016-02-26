@@ -102,9 +102,8 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmrsp'
       require 'libfrmdb'
-      opt = GetOpts.new
-      begin
-        cfg = Config.new(option: opt.parse('r'))
+      GetOpts.new('(opt) [dev] [cmd] (par) < field_file', 'r') do |opt|
+        cfg = Config.new(option: opt)
         dbi = Db.new.get(ARGV.shift)
         fld = cfg[:field] = Field.new(dbi)
         cobj = Index.new(cfg, dbi.pick([:stream]))
@@ -113,8 +112,6 @@ module CIAX
         fld.read unless STDIN.tty?
         res = cobj.set_cmd(ARGV).exe_cmd('test')
         puts(opt[:r] ? res : res.inspect)
-      rescue InvalidARGS
-        opt.usage('(opt) [dev] [cmd] (par) < field_file')
       end
     end
   end

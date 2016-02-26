@@ -138,7 +138,7 @@ module CIAX
       # returns result of def_proc block (String)
       def exe_cmd(src, pri = 1)
         verbose { "Execute [#{@id}] from #{src}" }
-        @msg=''
+        @msg = ''
         self[:def_proc].call(self, src, pri)
         self
       end

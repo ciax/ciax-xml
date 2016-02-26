@@ -51,7 +51,6 @@ module CIAX
       raise(InvalidARGS, "Invalid Option #{given}")
     end
 
-
     def _init_db(db)
       @optdb = type?(db, Hash)
       _db_layer
@@ -135,7 +134,8 @@ module CIAX
 
     # Set @layer (default 'Wat')
     def _make_layer
-      @layer = _make_exopt(%i(m x a f w), :a)
+      opt = _make_exopt(%i(m x a f w), :a)
+      @layer = @optdb[opt].split(' ').first
       self
     end
 
@@ -145,8 +145,7 @@ module CIAX
     end
 
     def _make_exopt(ary, default)
-      opt = ary.find { |c| self[c] } || default
-      @optdb[opt].split(' ').first
+      ary.find { |c| self[c] } || default
     end
   end
 end

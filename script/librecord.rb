@@ -58,9 +58,7 @@ module CIAX
         else
           rec = Record.new.read
         end
-p opt.vmode
-        rec.vmode(opt.vmode)
-        puts rec
+        puts rec.vmode(opt.vmode)
       end
     end
   end

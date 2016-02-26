@@ -95,5 +95,5 @@ module CIAX
         self[id] = context_constant('Item').new(@cfg, crnt)
       end
     end
-end
+  end
 end

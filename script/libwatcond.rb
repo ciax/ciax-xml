@@ -55,14 +55,13 @@ module CIAX
         rary = []
         cklst.each do|ckitm|
           vn = ckitm[:var]
-          val = @stat[:data][vn]
           case ckitm[:type]
           when 'onchange'
-            res = _onchange(ckitm[:var], ckitm[:tolerance])
+            res = _onchange(vn, ckitm[:tolerance])
           when 'pattern'
-            res = _pattern(ckitm[:var], ckitm[:val])
+            res = _pattern(vn, ckitm[:val])
           when 'range'
-            res = _range(ckitm[:var], ckitm[:val])
+            res = _range(vn, ckitm[:val])
           when 'compare'
             res = _compare(ckitm[:vars])
           end

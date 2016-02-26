@@ -123,8 +123,9 @@ module CIAX
     # Make usage text
     def _make_usage(optstr)
       @index = {}
+      @available = (optstr.chars.map(&:to_sym) & @optdb.keys)
       # Current Options
-      (optstr.chars.map(&:to_sym) & @optdb.keys).each do|c|
+      @available.each do|c|
         @index["-#{c}"] = @optdb[c]
       end
       self

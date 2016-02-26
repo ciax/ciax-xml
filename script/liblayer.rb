@@ -9,7 +9,7 @@ module CIAX
       GetOpts.new(usagestr, optstr) do |opt|
         cfg = Config.new(column: 4, option: opt)
         super(cfg)
-        obj = yield(opt).new(@cfg)
+        obj = yield(@cfg)
         loop do
           ns = m2id(obj.class, -2)
           @list.put(ns, obj)

@@ -15,7 +15,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id]','ceh:lt') do |opt|
+      GetOpts.new('[id]', 'ceh:lt') do |opt|
         cfg = Config.new(option: opt)
         cfg[:site] = ARGV.shift
         List.new(cfg).ext_shell.shell

@@ -1,7 +1,10 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-require 'libmcrlayer'
+require 'liblayer'
+require 'libmcrsh'
 # CIAX-XML Macro Shell
 module CIAX
-  Mcr::Layer.new('eclh:nr').ext_shell.shell
+  Layer.new('[proj] [cmd] (par)', 'eclh:nr') do |cfg|
+    Mcr::Man.new(cfg)
+  end.ext_shell.shell
 end

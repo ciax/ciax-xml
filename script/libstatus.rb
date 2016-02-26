@@ -49,7 +49,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id]','h:') do |opt|
+      GetOpts.new('[id]', 'h:') do |opt|
         stat = Status.new
         if opt[:h]
           stat.ext_http(opt.host)

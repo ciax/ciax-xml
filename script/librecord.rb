@@ -45,7 +45,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[cid(latest)] (< file)', 'r') do |opt|
+      GetOpts.new('[cid(latest)] (< file)', 'r') do |_opt|
         if STDIN.tty?
           fail(InvalidARGS, 'No input') if ARGV.size < 1
           cid = '"cid":"' + ARGV.shift + '"'

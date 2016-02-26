@@ -106,8 +106,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[proj] [cmd] (par)', 'ecn') do |opt|
-        cfg = Config.new(option: opt)
+      ConfOpts.new('[proj] [cmd] (par)', 'ecn') do |cfg|
         wl = Wat::List.new(cfg) # Take App List
         cfg[:dev_list] = wl
         dbi = Db.new.get

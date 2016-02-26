@@ -126,7 +126,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
-      GetOpts.new('< logline', 'm', m: 'merge file') do |opt|
+      ConfOpts.new('< logline', 'm', m: 'merge file') do |cfg, opt|
         fail(InvalidARGS, '  Need Input File') if STDIN.tty?
         str = gets(nil) || exit
         res = JsLog.read(str)
@@ -136,7 +136,7 @@ module CIAX
         field = Field.new(dbi).ext_rsp
         field.ext_file.auto_save if opt[:m]
         if cid
-          cfg = Config.new.update(field: field)
+          cfg[:field] = field
           cobj = Index.new(cfg, dbi.pick[:stream])
           cobj.add_rem.add_ext(Ext)
           ent = cobj.set_cmd(cid.split(':'))

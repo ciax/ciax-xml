@@ -46,8 +46,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[proj] [cmd] (par)', 'icentr') do |opt|
-        cfg = Config.new(option: opt)
+      ConfOpts.new('[proj] [cmd] (par)', 'icentr') do |cfg|
         cfg[:dev_list] = Wat::List.new(cfg)
         dbi = Db.new.get
         mobj = Cmd::Remote::Index.new(cfg, dbi.pick([:sites]))

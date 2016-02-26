@@ -6,10 +6,9 @@ module CIAX
   # atrb can have [:top_layer]
   class Layer < CIAX::List
     def initialize(usagestr, optstr)
-      GetOpts.new(usagestr, optstr) do |opt|
-        cfg = Config.new(column: 4, option: opt)
+      ConfOpts.new(usagestr, optstr) do |cfg, opt|
         super(cfg)
-        obj = yield(@cfg)
+        obj = yield(@cfg, opt)
         loop do
           ns = m2id(obj.class, -2)
           @list.put(ns, obj)
@@ -34,7 +33,7 @@ module CIAX
           @list.get(id).ext_shell
           @jumpgrp.add_item(id, id.capitalize + ' mode')
         end
-        @current ||= @list.keys.first
+        @current = @cfg[:option].layer || @list.keys.first
         self
       end
     end

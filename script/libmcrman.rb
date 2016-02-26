@@ -122,8 +122,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[proj] [cmd] (par)', 'cenlrts') do |opt|
-        cfg = Config.new(option: opt)
+      ConfOpts.new('[proj] [cmd] (par)', 'cenlrts') do |cfg|
         Man.new(cfg).ext_shell.shell
       end
     end

@@ -97,9 +97,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id]', 'ceh:lts') do |opt|
-        cfg = Config.new(option: opt, db: Dev::Db.new)
-        Exe.new(ARGV.shift, cfg).ext_shell.shell
+      ConfOpts.new('[id]', 'ceh:lts') do |cfg|
+        Exe.new(ARGV.shift, cfg, db: Dev::Db.new).ext_shell.shell
       end
     end
   end

@@ -45,8 +45,7 @@ module CIAX
       end
 
       if __FILE__ == $PROGRAM_NAME
-        GetOpts.new('[proj] [cmd] (par)', 'cnlrt') do |opt|
-          cfg = Config.new(option: opt)
+        ConfOpts.new('[proj] [cmd] (par)', 'cnlrt') do |cfg|
           cfg[:dev_list] = Wat::List.new(cfg)
           Man.new(cfg).ext_shell.shell
         end

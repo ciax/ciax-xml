@@ -58,4 +58,12 @@ module CIAX
       end
     end
   end
+
+  class ConfOpts < GetOpts
+    def initialize(usagestr, optstr, db = {})
+      super do |opt|
+        yield(Config.new(option: opt), opt)
+      end
+    end
+  end
 end

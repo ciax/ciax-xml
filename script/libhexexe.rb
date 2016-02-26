@@ -32,8 +32,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id]', 'ceh:lts') do |opt|
-        cfg = Config.new(option: opt)
+      ConfOpts.new('[id]', 'ceh:lts') do |cfg|
         atrb = { hdb: Db.new, sub_list: Wat::List.new(cfg) }
         Exe.new(ARGV.shift, cfg, atrb).ext_shell.shell
       end

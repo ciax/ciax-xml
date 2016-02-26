@@ -52,13 +52,13 @@ module CIAX
 
       def ext_test
         @stat.ext_sym.ext_file
-        @cobj.get('interrupt').def_proc do
+        @cobj.get('interrupt').def_proc do |ent|
           # "INTERRUPT(#{@batch_interrupt})"
-          'INTERRUPT'
+          ent.msg = 'INTERRUPT'
         end
         @cobj.rem.ext.def_proc do |ent|
           @stat[:time] = now_msec
-          ent[:batch].inspect
+          ent.msg = ent[:batch].inspect
         end
         ext_non_client
         super
@@ -83,12 +83,12 @@ module CIAX
         @cobj.get('set').def_proc do|ent|
           @stat[:data].rep(ent.par[0], ent.par[1])
           # "SET:#{ent.par[0]}=#{ent.par[1]}"
-          'ISSUED'
+          ent.msg = 'ISSUED'
         end
         @cobj.get('del').def_proc do|ent|
           ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
           # "DELETE:#{ent.par[0]}"
-          'ISSUED'
+          ent.msg = 'ISSUED'
         end
         self
       end
@@ -119,19 +119,19 @@ module CIAX
       def init_buf
         buf = Buffer.new(@sv_stat)
         # App: Sendign a first priority command (interrupt)
-        @cobj.get('interrupt').def_proc do|_, src|
+        @cobj.get('interrupt').def_proc do |ent, src|
           @batch_interrupt.each do|args|
             verbose { "Issuing:#{args} for Interrupt" }
             buf.send(@cobj.set_cmd(args), 0)
           end
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
-          'INTERRUPT'
+          ent.msg = 'INTERRUPT'
         end
         # App: Sending a general App command (Frm batch)
         @cobj.rem.ext.def_proc do|ent, src, pri|
           verbose { "Issuing:[#{ent.id}] from #{src} with priority #{pri}" }
           buf.send(ent, pri)
-          'ISSUED'
+          ent.msg = 'ISSUED'
         end
         # Frm: Execute single command
         buf.recv_proc = proc do|args, src|

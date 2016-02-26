@@ -106,10 +106,10 @@ module CIAX
         dbi = Db.new.get(ARGV.shift)
         fld = cfg[:field] = Field.new(dbi)
         cobj = Index.new(cfg, dbi.pick([:stream]))
-        cobj.add_rem.def_proc { |ent| ent[:frame] }
+        cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }
         cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?
-        res = cobj.set_cmd(ARGV).exe_cmd('test')
+        res = cobj.set_cmd(ARGV).exe_cmd('test').msg
         puts(opt[:r] ? res : res.inspect)
       end
     end

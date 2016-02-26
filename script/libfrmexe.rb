@@ -48,10 +48,10 @@ module CIAX
 
       def ext_test
         @stat.ext_file
-        @cobj.rem.ext.def_proc { 'TEST' }
+        @cobj.rem.ext.def_proc { |ent| ent.msg = 'TEST' }
         @cobj.get('set').def_proc do|ent|
           @stat.rep(ent.par[0], ent.par[1])
-          "Set [#{ent.par[0]}] = #{ent.par[1]}"
+          ent.msg = "Set [#{ent.par[0]}] = #{ent.par[1]}"
         end
         super
       end
@@ -71,26 +71,26 @@ module CIAX
           @stream.snd(ent[:frame], ent.id)
           @stat.conv(ent, @stream.rcv) if ent[:response]
           @stat.flush if src != 'buffer'
-          'OK'
+          ent.msg = 'OK'
         end
         @cobj.get('set').def_proc do|ent|
           @stat.rep(ent.par[0], ent.par[1])
           @stat.flush
-          "Set [#{ent.par[0]}] = #{ent.par[1]}"
+          ent.msg = "Set [#{ent.par[0]}] = #{ent.par[1]}"
         end
         @cobj.get('save').def_proc do|ent|
           @stat.save_key(ent.par[0].split(','), ent.par[1])
-          "Save [#{ent.par[0]}]"
+          ent.msg = "Save [#{ent.par[0]}]"
         end
         @cobj.get('load').def_proc do|ent|
           @stat.load(ent.par[0] || '')
           @stat.flush
-          "Load [#{ent.par[0]}]"
+          ent.msg = "Load [#{ent.par[0]}]"
         end
         @cobj.get('flush').def_proc do
           @stream.rcv
           @stat.flush
-          'Flush Stream'
+          ent.msg = 'Flush Stream'
         end
         super
       end

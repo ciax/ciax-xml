@@ -125,6 +125,7 @@ module CIAX
     class Entity < Config
       NS_COLOR = 9
       attr_reader :id, :par
+      attr_accessor :msg
       # set should have :def_proc
       def initialize(cfg, attr = {})
         super(cfg).update(attr)
@@ -137,7 +138,9 @@ module CIAX
       # returns result of def_proc block (String)
       def exe_cmd(src, pri = 1)
         verbose { "Execute [#{@id}] from #{src}" }
+        @msg=''
         self[:def_proc].call(self, src, pri)
+        self
       end
     end
   end

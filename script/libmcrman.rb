@@ -90,7 +90,7 @@ module CIAX
       def _init_extcmd_
         @cobj.rem.ext.def_proc do |ent|
           @sv_stat.push(:list, @stat.add(ent).id)
-          'ACCEPT'
+          ent.msg = 'ACCEPT'
         end
       end
 
@@ -98,25 +98,23 @@ module CIAX
       def _init_intcmd_
         @cobj.rem.int.def_proc do|ent|
           @sv_stat.rep(:sid, ent.par[0])
-          @stat.reply(ent.id) || 'NOSID'
+          ent.msg = @stat.reply(ent.id) || 'NOSID'
         end
       end
 
       def _init_intrpt_
-        @cobj.get('interrupt').def_proc do
+        @cobj.get('interrupt').def_proc do |ent|
           @stat.interrupt
-          'INTERRUPT'
+          ent.msg = 'INTERRUPT'
         end
       end
 
       def _init_swmode_
         @cobj.get('nonstop').def_proc do
           @sv_stat.up(:nonstop)
-          ''
         end
         @cobj.get('interactive').def_proc do
           @sv_stat.dw(:nonstop)
-          ''
         end
       end
     end

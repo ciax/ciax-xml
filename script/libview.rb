@@ -39,7 +39,7 @@ module CIAX
     # For Exe @def_proc
     def vmode(mode)
       @vmode = mode.to_sym if mode
-      ''
+      self
     end
   end
 end

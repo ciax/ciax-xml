@@ -31,7 +31,7 @@ module CIAX
         @cobj.add_rem.add_sys
         int = @cobj.rem.add_int(Int)
         @seq = Seq.new(ment, pid, int.valid_keys.clear)
-        int.def_proc { |ent| @seq.reply(ent.id) }
+        int.def_proc { |ent| ent.msg = @seq.reply(ent.id) }
       end
 
       # For Thread mode
@@ -40,7 +40,7 @@ module CIAX
         # interrupt is in rem.hid group
         @cobj.get('interrupt').def_proc do
           @th_mcr.raise(Interrupt)
-          'INTERRUPT'
+          ent.msg = 'INTERRUPT'
         end
       end
     end

@@ -20,7 +20,7 @@ module CIAX
         attr_reader :sys, :ext, :int
         def initialize(cfg, atrb = {})
           super
-          @cfg[:def_proc] = proc { '' } # proc is re-defined
+          @cfg[:def_proc] = proc { } # proc is re-defined
         end
 
         def add_sys(ns = Sys)

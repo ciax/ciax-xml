@@ -8,14 +8,15 @@ module CIAX
     include Msg
     # str = valid option list (afch:)
     # db = addigional option db
-    attr_reader :layer
+    attr_reader :layer, :vmode
     def initialize(usagestr, optstr, db = {})
       _init_db(db)
       type?(optstr, String)
       _make_usage(optstr)
-      parse(optstr)
+      _parse(optstr)
       _make_layer
-      yield(self)
+      _make_vmode
+      yield(self, ARGV)
     rescue InvalidARGS
       usage("(opt) #{usagestr}")
     end
@@ -40,15 +41,16 @@ module CIAX
       super("#{str}\n" + columns(@index))
     end
 
+    private
+
     # ARGV must be taken after parse
-    def parse(optstr)
+    def _parse(optstr)
       given = ARGV.select { |s| s =~ /-/ }
       ARGV.getopts(optstr).each { |k, v| self[k.to_sym] = v }
     rescue OptionParser::ParseError
       raise(InvalidARGS, "Invalid Option #{given}")
     end
 
-    private
 
     def _init_db(db)
       @optdb = type?(db, Hash)
@@ -133,9 +135,18 @@ module CIAX
 
     # Set @layer (default 'Wat')
     def _make_layer
-      lopt = %i(m x a f w).find { |c| self[c] } || :a
-      @layer = @optdb[lopt].split(' ').first
+      @layer = _make_exopt(%i(m x a f w), :a)
       self
+    end
+
+    def _make_vmode
+      @vmode = _make_exopt(%i(j r v), :v)
+      self
+    end
+
+    def _make_exopt(ary, default)
+      opt = ary.find { |c| self[c] } || default
+      @optdb[opt].split(' ').first
     end
   end
 end

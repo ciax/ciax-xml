@@ -45,10 +45,9 @@ module CIAX
 
     # ARGV must be taken after parse
     def _parse(optstr)
-      given = ARGV.select { |s| s =~ /-/ }
       ARGV.getopts(optstr).each { |k, v| self[k.to_sym] = v }
     rescue OptionParser::ParseError
-      raise(InvalidARGS, "Invalid Option #{given}")
+      raise(InvalidARGS, $!)
     end
 
     def _init_db(db)
@@ -63,13 +62,14 @@ module CIAX
 
     # Layer option
     def _db_layer
-      @optdb.update(
-        m: 'mcr layer',
-        w: 'wat layer',
-        a: 'app layer(default)',
-        f: 'frm layer',
-        x: 'hex layer'
-      )
+      @layers = {
+        m: 'mcr',
+        w: 'wat',
+        f: 'frm',
+        x: 'hex',
+        a: 'app'
+      }
+      @layers.each { |k, v| @optdb[k] = "#{v} layer" }
       self
     end
 
@@ -134,18 +134,18 @@ module CIAX
 
     # Set @layer (default 'Wat')
     def _make_layer
-      opt = _make_exopt(%i(m x a f w), :a)
-      @layer = @optdb[opt].split(' ').first
+      opt = _make_exopt(@layers.keys)
+      @layer = @layers[opt]
       self
     end
 
     def _make_vmode
-      @vmode = _make_exopt(%i(j r v), :v)
+      @vmode = _make_exopt(%i(j r v)) || :v
       self
     end
 
-    def _make_exopt(ary, default)
-      ary.find { |c| self[c] } || default
+    def _make_exopt(ary)
+      ary.find { |c| self[c] }
     end
   end
 end

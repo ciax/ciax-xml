@@ -10,6 +10,7 @@ module CIAX
     # db = addigional option db
     attr_reader :layer, :vmode
     def initialize(usagestr, optstr, db = {})
+      usagestr = "(opt) #{usagestr}"
       _init_db(db)
       type?(optstr, String)
       _make_usage(optstr)
@@ -17,8 +18,13 @@ module CIAX
       _make_layer
       _make_vmode
       yield(self, ARGV)
+      return
+    rescue InvalidCMD
+      usage(usagestr, 4)
+    rescue InvalidID
+      usage(usagestr, 3)
     rescue InvalidARGS
-      usage("(opt) #{usagestr}")
+      usage(usagestr, 2)
     end
 
     def cl?
@@ -37,8 +43,8 @@ module CIAX
       (self[:h] || 'localhost') unless self[:c]
     end
 
-    def usage(str)
-      super("#{str}\n" + columns(@index))
+    def usage(str, code = 2)
+      super("#{str}\n" + columns(@index), code)
     end
 
     private

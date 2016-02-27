@@ -15,8 +15,8 @@ out=`mktemp`
 trap "rm $out" EXIT
 $frmcmd $* >$out 2>&1
 case "$?$2:$1" in
-    1:) show `list-db fdb`;; # For All Devices
-    2:*) show $1;;   # For All Command of One Device
+    3:*) show `list-db fdb`;; # For All Devices
+    2:) show $1;;   # For All Command of One Device
     0*) vis $out;; # For One Command of One Device
     *) $frmcmd $*;; # For Error Output
 esac

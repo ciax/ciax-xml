@@ -10,10 +10,12 @@ _getcmd(){
     grep '<item' ~/ciax-xml/fdb-$1.xml|tr ' ' '\n'|grep 'id='|egrep -o '[a-z]{3}'
 }
 _getstat(){
+    local c
     for cmd; do
         echo -ne "${C3}process $cmd $par$C0\t"
         json_logpick $did $cmd $par > $temp || { echo; continue; }
 #        VER=$ver < $temp libfrmrsp -m || return 1
+        [ "$c" = 'ccc' ] && { c=''; echo; } || c="c$c"
     done
 }
 temp=$(mktemp)
@@ -24,7 +26,6 @@ cmds=$1;shift
 par=$*
 for did in ${ids:-$(_getdid)}; do
     _id2frm $did || continue
-echo "$did vs $frm_id"
     echo "$C2#### $frm_id($did) ####$C0"
     output="$HOME/.var/json/field_${did}.json"
     _getstat ${cmds:-$(_getcmd $frm_id)} || break

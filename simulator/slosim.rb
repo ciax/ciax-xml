@@ -3,33 +3,33 @@ require 'gserver'
 
 # Slosyn Driver Simulator
 class Slosyn < GServer
-  attr_accessor :spd,:e1,:e2
-  attr_reader :err,:bs,:hl1,:hl0,:help
-  RS="\r\n"
+  attr_accessor :spd, :e1, :e2
+  attr_reader :err, :bs, :hl1, :hl0, :help
+  RS = "\r\n"
   P_MAX = 9999
   P_MIN = 0
   POS = [1230, 128, 2005, 0, 1850]
-  def initialize(port = 10001, *args)
+  def initialize(port = 10_001, *args)
     super(port, *args)
     Thread.abort_on_exception = true
     @pulse = 0 # Integer
     @bs = 0
-    @err=0
-    @spd=0.1
-    @hl1=@hl0='>'
-    @help=self.class.methods.inspect
+    @err = 0
+    @spd = 0.1
+    @hl1 = @hl0 = '>'
+    @help = self.class.methods.inspect
   end
 
   def serve(io)
-    @io=io
+    @io = io
     while (cmd = io.gets(RS).chomp)
       sleep 0.1
       begin
         if /=/ =~ cmd
-          method($`+$&).call($')
+          method($` + $&).call($')
           res '>'
         elsif /\((.*)\)/ =~ cmd
-          res method($`).call($1)
+          res method($`).call(Regexp.last_match(1))
         else
           res method(cmd).call
         end
@@ -53,9 +53,9 @@ class Slosyn < GServer
   end
 
   def res(str)
-    @io.print str.to_s+RS
+    @io.print str.to_s + RS
   end
-  
+
   def setpulse(num)
     if num > P_MAX
       num = P_MIN
@@ -83,7 +83,7 @@ class Slosyn < GServer
   end
 
   def p
-    format("%.1f", @pulse.to_f / 10)
+    format('%.1f', @pulse.to_f / 10)
   end
 
   def ma=(num)

@@ -102,7 +102,6 @@ module CIAX
     def _db_sys
       @optdb.update(
         s: 'server mode',
-        d: 'delete process',
         b: 'background mode'
       )
       self

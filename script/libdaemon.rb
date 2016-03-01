@@ -2,9 +2,11 @@
 require 'libgetopts'
 module CIAX
   ### Daemon Methods ###
+  
   class Daemon
     NS_COLOR = 1
     include Msg
+    # Previous process will be killed at the start up.
     # Reloadable by HUP signal
     def initialize(tag, optstr = '')
       ENV['VER'] ||= 'Initialize'
@@ -12,30 +14,20 @@ module CIAX
       @base = vardir('run') + tag
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         opt[:s] = true
-        if opt[:d]
-          kill_pid
-        else
-          init_daemon(opt)
-          main_loop(opt, tag) { yield(cfg, args) }
-        end
+        kill_pid
+        new_pid if opt[:b]
+        main_loop(opt, tag) { yield(cfg, args) }
       end
     end
 
     private
 
-    def main_loop(opt, tag)
-      init_server { |cfg| yield(cfg) }
+    def main_loop(opt, tag, &init_proc)
+      init_server(&init_proc)
       err_redirect(opt, tag)
       sleep
     rescue SignalException
       retry if $ERROR_INFO.message == 'SIGHUP'
-    end
-
-    def init_daemon(opt)
-      kill_pid
-      return unless opt[:b]
-      # Background (Switch error output to file)
-      new_pid
     end
 
     def err_redirect(opt, tag)
@@ -50,6 +42,7 @@ module CIAX
       init_proc.call
     end
 
+    # Background (Switch error output to file)
     def new_pid
       Process.daemon(true, true)
       IO.write(@base + '.pid', $PROCESS_ID)

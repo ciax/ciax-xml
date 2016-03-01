@@ -10,7 +10,6 @@ module CIAX
         @p_min = p_min
         @p_max = p_max
         @spd = spd
-        @tol = tol
         @pulse = 0
         @bs = 0 # Busy status
       end

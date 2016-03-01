@@ -7,7 +7,6 @@ module CIAX
     class Slosyn < GServer
       attr_accessor :e1, :e2
       attr_reader :err, :hl1, :hl0
-      RS = "\r\n"
       POS = [1230, 128, 2005, 0, 1850]
       def initialize(port = 10_001, *args)
         super(port, *args)
@@ -19,27 +18,36 @@ module CIAX
         @help = self.class.methods.inspect
       end
 
-      def serve(io)
-        @io = io
-        while (cmd = io.gets(RS).chomp)
+      def serve(io = nil)
+        selectio(io)
+        while (cmd = gets.chomp)
           sleep 0.1
-          begin
-            if /=/ =~ cmd
-              method($` + $&).call($')
-              res '>'
-            elsif /\((.*)\)/ =~ cmd
-              res method($`).call(Regexp.last_match(1))
-            else
-              res method(cmd).call
-            end
-          rescue NameError
-            res '?'
-          end
+          res = dispatch(cmd)
+          puts res.to_s
         end
       end
 
-      def res(str)
-        @io.print str.to_s + RS
+      private
+
+      def selectio(io)
+        return unless io
+        $stdin = $stdout = io
+        $/ = "\r\n"
+      end
+
+      def dispatch(cmd)
+        begin
+          if /=/ =~ cmd
+            method($` + $&).call($')
+            '>'
+          elsif /\((.*)\)/ =~ cmd
+            method($`).call(Regexp.last_match(1))
+          else
+            method(cmd).call
+          end
+        rescue NameError
+          '?'
+        end
       end
 
       def setdec(n)
@@ -64,7 +72,7 @@ module CIAX
       end
 
       def ma=(num)
-        servo(setdec(num))
+        @axis.servo(setdec(num))
       end
 
       def mi=(num)
@@ -92,7 +100,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       sv = Slosyn.new(*ARGV)
-      sv.start
+      sv.serve
       sleep
     end
   end

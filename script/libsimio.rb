@@ -6,7 +6,8 @@ module CIAX
   module Simulator
     # 16bit data handling
     class Word
-      def initialize(n = 0)
+      # n = initial number
+      def initialize(n = 0) 
         @num = n
       end
 

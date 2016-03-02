@@ -6,7 +6,7 @@ module CIAX
     class Axis
       attr_accessor :spd
       attr_reader :pulse, :bs, :help
-      def initialize(p_min=0 ,p_max= 9999, spd = 1, tol = 1)
+      def initialize(p_min = 0, p_max = 9999, spd = 1)
         @p_min = p_min
         @p_max = p_max
         @spd = spd
@@ -21,7 +21,7 @@ module CIAX
             diff = t - @pulse
             @bs = 0 if diff == 0
             break if @bs == 0
-            pulse=(@pulse + (diff <=> 0))
+            pulse = (@pulse + (diff <=> 0))
             sleep 0.1
           end
         end

@@ -40,7 +40,7 @@ module CIAX
         aidx = ali[:index]
         aidx.each do |_id, itm|
           ref = itm.delete(:ref)
-          itm.update(idx[ref].pick([:parameters, :body]))
+          itm.update(idx[ref].pick(%i(parameters body)))
         end
         idx.update(aidx)
       end

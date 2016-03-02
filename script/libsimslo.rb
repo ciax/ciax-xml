@@ -36,18 +36,16 @@ module CIAX
       end
 
       def dispatch(cmd)
-        begin
-          if /=/ =~ cmd
-            method($` + $&).call($')
-            '>'
-          elsif /\((.*)\)/ =~ cmd
-            method($`).call(Regexp.last_match(1))
-          else
-            method(cmd).call
-          end
-        rescue NameError
-          '?'
+        if /=/ =~ cmd
+          method($` + $&).call($')
+          '>'
+        elsif /\((.*)\)/ =~ cmd
+          method($`).call(Regexp.last_match(1))
+        else
+          method(cmd).call
         end
+      rescue NameError
+        '?'
       end
 
       def setdec(n)

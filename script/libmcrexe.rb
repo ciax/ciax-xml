@@ -49,7 +49,7 @@ module CIAX
       ConfOpts.new('[proj] [cmd] (par)', 'icentr') do |cfg, args|
         cfg[:dev_list] = Wat::List.new(cfg)
         dbi = Db.new.get
-        mobj = Cmd::Remote::Index.new(cfg, dbi.pick([:sites]))
+        mobj = Cmd::Remote::Index.new(cfg, dbi.pick(%i(sites)))
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)
         seq = Exe.new(ent)

@@ -110,7 +110,7 @@ module CIAX
         wl = Wat::List.new(cfg) # Take App List
         cfg[:dev_list] = wl
         dbi = Db.new.get
-        mobj = Cmd::Remote::Index.new(cfg, dbi.pick([:sites]))
+        mobj = Cmd::Remote::Index.new(cfg, dbi.pick(%i(sites)))
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)
         seq = Seq.new(ent)

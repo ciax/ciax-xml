@@ -105,7 +105,7 @@ module CIAX
       ConfOpts.new('(opt) [dev] [cmd] (par) < field_file', 'r') do |cfg, args, opt|
         dbi = Db.new.get(args.shift)
         fld = cfg[:field] = Field.new(dbi)
-        cobj = Index.new(cfg, dbi.pick([:stream]))
+        cobj = Index.new(cfg, dbi.pick(%i(stream)))
         cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }
         cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?

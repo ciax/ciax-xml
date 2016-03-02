@@ -53,7 +53,7 @@ module CIAX
     def _parse(optstr)
       ARGV.getopts(optstr).each { |k, v| self[k.to_sym] = v }
     rescue OptionParser::ParseError
-      raise(InvalidARGS, $!)
+      raise(InvalidARGS, $ERROR_INFO)
     end
 
     def _init_db(db)

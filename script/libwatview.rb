@@ -143,7 +143,6 @@ module CIAX
         event = Event.new
         wview = View.new(event)
         event.ext_file if STDIN.tty?
-p opt.vmode
         puts wview.vmode(opt.vmode)
       end
     end

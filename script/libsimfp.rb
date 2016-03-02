@@ -5,10 +5,10 @@ require 'libsimio'
 module CIAX
   module Simulator
     # Field Point I/O
-    class FpDio < GServer
+    class FpDio < Server
       def initialize(port = 10_002, *args)
-        super(port, *args)
-        Thread.abort_on_exception = true
+        super
+        @separator = "\r"
         # @reg[2]: output, @reg[3]: input
         @reg = [0, 0, 5268, 1366].map { |n| Word.new(n) }
         # Input[index] vs Output[value] table with time delay
@@ -20,23 +20,7 @@ module CIAX
         ]
       end
 
-      def serve(io = nil)
-        selectio(io)
-        while (str = gets.chomp)
-          sleep 0.1
-          print dispatch(str).to_s + $/
-        end
-      rescue
-        warn $ERROR_INFO
-      end
-
       private
-
-      def selectio(io)
-        return unless io
-        $stdin = $stdout = io
-        $/ = "\r"
-      end
 
       def dispatch(str)
         case str

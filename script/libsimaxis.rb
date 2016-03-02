@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'gserver'
+require 'libsim'
 
 module CIAX
   module Simulator

@@ -8,11 +8,11 @@ module CIAX
     # Inherited by Index,Domain
     class GrpAry < Arrayx
       include CmdProc
-      def initialize(cfg, attr = {})
+      def initialize(cfg, atrb = {})
         @cls_color = 13
         # @cfg is isolated from cfg
-        # So it is same meaning to set value to 'attr' and @cfg
-        @cfg = cfg.gen(self).update(attr)
+        # So it is same meaning to set value to 'atrb' and @cfg
+        @cfg = cfg.gen(self).update(type?(atrb, Hash))
       end
 
       def valid_keys
@@ -35,12 +35,12 @@ module CIAX
 
       # Add sub group
       # If cls is String or Symbol, constant is taken locally.
-      def add(cls, attr = {})
+      def add(cls, atrb = {})
         case cls
         when Module
-          res = cls.new(@cfg, attr)
+          res = cls.new(@cfg, atrb)
         when String, Symbol
-          res = layer_module.const_get(cls).new(@cfg, attr)
+          res = layer_module.const_get(cls).new(@cfg, atrb)
         when CmdProc
           res = cls
         else

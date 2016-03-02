@@ -137,7 +137,7 @@ module CIAX
       field.ext_file.auto_save if OPT[:m]
       if cid
         cfg = Config.new.update(field: field)
-        cobj = Index.new(cfg, dbi.pick[:stream])
+        cobj = Index.new(cfg, dbi.pick(%i(stream)))
         cobj.add_rem.add_ext(Ext)
         ent = cobj.set_cmd(cid.split(':'))
         field.conv(ent, res)

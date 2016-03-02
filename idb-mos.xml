@@ -9,7 +9,11 @@
         <command ref="mmc"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="gpos">
-            <alias id="acs" ref="abs" label="Access Hole Position" symbol="acs"/>
+            <alias id="acs" ref="abs" label="Access Position" symbol="acs"/>
+          </group>
+          <group ref="ghide">
+            <alias id="rsl" ref="abs" label="Loading Position for Machine" symbol="rsl"/>
+            <alias id="asl" ref="abs" label="Access Position for Machine" symbol="asl"/>
           </group>
         </status>
       </instance>

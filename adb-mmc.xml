@@ -176,7 +176,7 @@
         </string>
       </group>
       <group id="gpos" caption="Mask Position" column="4">
-        <float id="abs" label="Loading Slot Position" symbol="abs" format="%.2f">
+        <float id="abs" label="Loading Position" symbol="abs" format="%.2f">
           <field ref="p"/>
         </float>
       </group>

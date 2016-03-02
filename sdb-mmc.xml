@@ -5,7 +5,7 @@
       <range class="normal" msg="LOW">0:1</range>
       <range class="alarm" msg="HIGH">1:</range>
     </table>
-    <table id="abs">
+    <table id="abs" label="Human Readable Robo Arm Slot Number">
       <range class="warn" msg="S00">0</range>
       <range class="warn" msg="S01">-1</range>
       <range class="warn" msg="S02">-2</range>
@@ -31,13 +31,13 @@
       <range class="warn" msg="X22">-22</range>
       <range class="warn" msg="Sensor">-23</range>
     </table>
-    <table id="acs">
+    <table id="acs" label="Human Readable Access Slot Number">
       <range class="warn" msg="A18">0</range>
       <range class="warn" msg="A19">-1</range>
       <range class="warn" msg="A20">-2</range>
       <range class="warn" msg="A21">-3</range>
       <range class="warn" msg="A22">-4</range>
-      <range class="warn" msg="X23">-5</range>
+      <range class="warn" msg="Sensor">-5</range>
       <range class="warn" msg="A00">-6</range>
       <range class="warn" msg="A01">-7</range>
       <range class="warn" msg="A02">-8</range>
@@ -56,6 +56,58 @@
       <range class="warn" msg="A15">-21</range>
       <range class="warn" msg="A16">-22</range>
       <range class="warn" msg="A17">-23</range>
+    </table>
+    <table id="rsl" label=" Machine Readable Robo Arm Slot Number">
+      <range class="warn" msg="00">0</range>
+      <range class="warn" msg="01">-1</range>
+      <range class="warn" msg="02">-2</range>
+      <range class="warn" msg="03">-3</range>
+      <range class="warn" msg="04">-4</range>
+      <range class="warn" msg="05">-5</range>
+      <range class="warn" msg="06">-6</range>
+      <range class="warn" msg="07">-7</range>
+      <range class="warn" msg="08">-8</range>
+      <range class="warn" msg="09">-9</range>
+      <range class="warn" msg="10">-10</range>
+      <range class="warn" msg="11">-11</range>
+      <range class="warn" msg="12">-12</range>
+      <range class="warn" msg="13">-13</range>
+      <range class="warn" msg="14">-14</range>
+      <range class="warn" msg="15">-15</range>
+      <range class="warn" msg="16">-16</range>
+      <range class="warn" msg="17">-17</range>
+      <range class="warn" msg="18">-18</range>
+      <range class="warn" msg="19">-19</range>
+      <range class="warn" msg="20">-20</range>
+      <range class="warn" msg="21">-21</range>
+      <range class="warn" msg="22">-22</range>
+      <range class="warn" msg="23">-23</range>
+    </table>
+    <table id="asl" label="Machine Readable Access Slot Number">
+      <range class="warn" msg="18">0</range>
+      <range class="warn" msg="19">-1</range>
+      <range class="warn" msg="20">-2</range>
+      <range class="warn" msg="21">-3</range>
+      <range class="warn" msg="22">-4</range>
+      <range class="warn" msg="23">-5</range>
+      <range class="warn" msg="00">-6</range>
+      <range class="warn" msg="01">-7</range>
+      <range class="warn" msg="02">-8</range>
+      <range class="warn" msg="03">-9</range>
+      <range class="warn" msg="04">-10</range>
+      <range class="warn" msg="05">-11</range>
+      <range class="warn" msg="06">-12</range>
+      <range class="warn" msg="07">-13</range>
+      <range class="warn" msg="08">-14</range>
+      <range class="warn" msg="09">-15</range>
+      <range class="warn" msg="10">-16</range>
+      <range class="warn" msg="11">-17</range>
+      <range class="warn" msg="12">-18</range>
+      <range class="warn" msg="13">-19</range>
+      <range class="warn" msg="14">-20</range>
+      <range class="warn" msg="15">-21</range>
+      <range class="warn" msg="16">-22</range>
+      <range class="warn" msg="17">-23</range>
     </table>
   </symbol>
 </sdb>

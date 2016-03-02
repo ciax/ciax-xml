@@ -7,7 +7,7 @@ module CIAX
     # 16bit data handling
     class Word
       # n = initial number
-      def initialize(n = 0) 
+      def initialize(n = 0)
         @num = n
       end
 

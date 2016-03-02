@@ -20,12 +20,11 @@ module CIAX
     end
 
     def to_j
-      case self
-      when Array
-        JSON.dump(to_a)
-      when Hash
-        JSON.dump(to_hash)
-      end
+      JSON.dump(self)
+    end
+
+    def to_jj
+      jj(self)
     end
 
     def to_r

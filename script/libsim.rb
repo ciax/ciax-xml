@@ -28,7 +28,7 @@ module CIAX
         $/ = @separator
       end
 
-      def dispatch(str);end
+      def dispatch(_str); end
     end
   end
 end

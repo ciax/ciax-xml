@@ -9,7 +9,7 @@ module CIAX
       attr_reader :fp_err, :fp_hl1, :fp_hl0
       def initialize(port = 10_001, *args)
         super
-        @separator="\r\n"
+        @separator = "\r\n"
         @axis = Axis.new(0, 9999, 0.1)
         @tol = 5
         @fp_err = 0
@@ -42,7 +42,7 @@ module CIAX
       end
 
       public
-      
+
       # Commands
       def fp_abspos=(num)
         @axis.pulse = setdec(num)
@@ -83,9 +83,8 @@ module CIAX
       end
 
       def fp_help
-        methods.map{|s| s.to_s}.grep(/^fp_/).map{|s| s.sub(/^fp_/,'')}.join($/)
+        methods.map(&:to_s).grep(/^fp_/).map { |s| s.sub(/^fp_/, '') }.join($INPUT_RECORD_SEPARATOR)
       end
-
     end
 
     if __FILE__ == $PROGRAM_NAME

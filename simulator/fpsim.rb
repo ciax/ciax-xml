@@ -3,7 +3,7 @@
 require 'libsimfp'
 module CIAX
   module Simulator
-    sv = FPIO.new(*ARGV)
+    sv = FpDio.new(*ARGV)
     sv.start
     sleep
   end

@@ -5,15 +5,19 @@ require 'libsimio'
 module CIAX
   module Simulator
     # Field Point I/O
-    class FPIO < GServer
+    class FpDio < GServer
       def initialize(port = 10_002, *args)
         super(port, *args)
         Thread.abort_on_exception = true
         # @reg[2]: output, @reg[3]: input
         @reg = [0, 0, 5268, 1366].map { |n| Word.new(n) }
-        # Input[index] vs Output[value] table
+        # Input[index] vs Output[value] table with time delay
         # GV(0-1),ArmRot(2-3),RoboH1(4-7),RoboH2(8-11)
-        @drvtbl = [6, 7, 12, 13, 2, 3, 2, 3, 4, 5, 4, 5]
+        @drvtbl = [
+          [6,4], [7,4], [12,2], [13,2],
+          [2,0.3], [3,0.3], [2,0.3], [3,0.3],
+          [4,0.3], [5,0.3], [4,0.3], [5,0.3]
+        ]
       end
 
       def serve(io = nil)
@@ -62,17 +66,18 @@ module CIAX
         input = @reg[3]
         output = @reg[2]
         @drvtbl.each_with_index do|p, i|
-          next if input[i] == output[p]
+          o, dly = p
+          next if input[i] == output[o]
           Thread.new do
-            sleep(i < 4 ? 1 : 0)
-            input[i] = output[p]
+            sleep dly
+            input[i] = output[o]
           end
         end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      sv = FPIO.new(*ARGV)
+      sv = FpDio.new(*ARGV)
       sv.serve
       sleep
     end

@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 # I/O Simulator
+require 'libenumx'
 require 'gserver'
 module CIAX
   module Simulator
@@ -14,7 +15,7 @@ module CIAX
         selectio(io)
         while (str = gets.chomp)
           sleep 0.1
-          print dispatch(str).to_s + $/
+          print dispatch(str).to_s + $INPUT_RECORD_SEPARATOR
         end
       rescue
         warn $ERROR_INFO

@@ -5,13 +5,14 @@ module CIAX
   module Simulator
     # Slosyn Driver Simulator
     class Slosyn < Server
-      attr_accessor :fp_e1, :fp_e2
+      attr_accessor :fp_e1, :fp_e2, :fp_wn
       attr_reader :fp_err, :fp_hl1, :fp_hl0
       def initialize(port = 10_001, *args)
         super
         @separator = "\r\n"
         @axis = Axis.new(0, 9999, 0.1)
         @tol = 5
+        @fp_wn = 1
         @fp_err = 0
         @fp_hl1 = @fp_hl0 = '>'
         @postbl = [1230, 128, 2005, 0, 1850]
@@ -44,6 +45,10 @@ module CIAX
       public
 
       # Commands
+      def fp_bs
+        @axis.bs
+      end
+
       def fp_abspos=(num)
         @axis.pulse = setdec(num)
       end

@@ -16,7 +16,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', 'ceh:lts') do |cfg, args|
+      ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
         List.new(cfg, site: args.shift).ext_shell.shell
       end
     end

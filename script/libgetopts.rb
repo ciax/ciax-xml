@@ -93,7 +93,6 @@ module CIAX
     # Comm to devices
     def _db_mode
       @optdb.update(
-        t: 'test mode (default)',
         e: 'execution mode'
       )
       self
@@ -121,7 +120,6 @@ module CIAX
     # For macro
     def _db_mcr
       @optdb.update(
-        i: 'interactive mode',
         n: 'non-stop mode'
       )
       self

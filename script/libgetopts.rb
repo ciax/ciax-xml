@@ -57,13 +57,14 @@ module CIAX
     end
 
     def _init_db(db)
-      @optdb = type?(db, Hash)
+      @optdb = {}
       _db_layer
       _db_cli
       _db_mode
       _db_vis
       _db_mcr
       _db_sys
+      @optdb.update(type?(db, Hash))
     end
 
     # Layer option

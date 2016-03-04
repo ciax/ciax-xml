@@ -10,6 +10,7 @@ module CIAX
     class Status < Varx
       # @ last*
       attr_reader :last
+      # dbi can be Ins::Db or ID for new Db
       def initialize(dbi = nil)
         super('status')
         @last = {}

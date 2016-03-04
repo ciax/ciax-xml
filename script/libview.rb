@@ -11,7 +11,7 @@ module CIAX
       when :v
         to_v
       when :j
-        to_j
+        to_jj
       when :r
         to_r
       else
@@ -24,7 +24,7 @@ module CIAX
     end
 
     def to_jj
-      jj(self)
+      JSON.pretty_generate(self)
     end
 
     def to_r

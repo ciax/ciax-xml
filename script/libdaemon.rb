@@ -2,7 +2,6 @@
 require 'libgetopts'
 module CIAX
   ### Daemon Methods ###
-
   class Daemon
     NS_COLOR = 1
     include Msg

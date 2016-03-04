@@ -3,6 +3,7 @@
 require 'libsimio'
 
 module CIAX
+  # Device Simulator
   module Simulator
     # Field Point I/O
     class FpDio < Server

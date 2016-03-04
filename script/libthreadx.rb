@@ -35,6 +35,7 @@ module CIAX
     end
   end
 
+  # UDP Server Thread
   class ThreadUdp < Threadx
     def initialize(name, port)
       super(name, 9) do

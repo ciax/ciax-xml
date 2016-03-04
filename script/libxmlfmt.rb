@@ -2,6 +2,7 @@
 require 'libenumx'
 
 module CIAX
+  # Xml Module
   module Xml
     HEADER = '<?xml version="1.0" encoding="utf-8"?>'
     # XML Formatting Class

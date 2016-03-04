@@ -3,6 +3,7 @@ require 'libsim'
 
 module CIAX
   module Simulator
+    # Motor Axis Simulator
     class Axis
       attr_accessor :spd
       attr_reader :pulse, :bs, :help

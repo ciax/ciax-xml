@@ -55,22 +55,21 @@ module CIAX
             return unless guni
             guni.each do|u|
               uat = cdb[:unit][u]
-              if uat.key?(:title)
-                umem = uat[:members]
-                il = umem.map { |m| cdb[:index][m][:label] }.join('/')
-                sg.put_dummy(uat[:title], uat[:label] % il)
-                sg.replace(sg - umem)
-              end
+              next unless uat.key?(:title)
+              umem = uat[:members]
+              il = umem.map { |m| cdb[:index][m][:label] }.join('/')
+              sg.put_dummy(uat[:title], uat[:label] % il)
+              sg.replace(sg - umem)
             end
           end
         end
 
         class Item < Item; end
 
+        # Substitute string($+number) with parameters, which is called by others
+        #  par={ val,range,format } or String
+        #  str could include Math functions
         class Entity < Entity
-          # Substitute string($+number) with parameters, which is called by others
-          #  par={ val,range,format } or String
-          #  str could include Math functions
           def deep_subst(data)
             case data
             when Array

@@ -51,8 +51,8 @@ module CIAX
         end
       end
 
+      # For input logging (returns String)
       class Entity < Entity
-        # For input logging (returns String)
         def exe_cmd(src, pri = 1)
           if self[:input]
             self[:input].update(cmd: self[:cid], src: src, pri: pri).upd

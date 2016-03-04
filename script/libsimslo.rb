@@ -2,6 +2,7 @@
 require 'libsimaxis'
 
 module CIAX
+  # Device Simulator
   module Simulator
     # Slosyn Driver Simulator
     class Slosyn < Server

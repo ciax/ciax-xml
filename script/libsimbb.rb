@@ -2,6 +2,7 @@
 require 'libsimio'
 
 module CIAX
+  # Device Simulator
   module Simulator
     # BB Electric I/O
     class BBIO < GServer

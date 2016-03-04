@@ -3,6 +3,7 @@ $LOAD_PATH << __dir__
 require 'libmcrseq'
 # CIAX-XML Macro Sequencer
 module CIAX
+  # Macro Exec
   module Mcr
     ConfOpts.new('[proj] [cmd] (par)', 'cen') do |cfg, args|
       wl = Wat::List.new(cfg) # Take App List

@@ -3,7 +3,9 @@
 require 'libenumx'
 require 'gserver'
 module CIAX
+  # Device Simulater
   module Simulator
+    # Simulation Server
     class Server < GServer
       def initialize(port, *args)
         super

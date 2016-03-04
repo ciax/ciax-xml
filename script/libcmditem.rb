@@ -4,6 +4,7 @@ require 'librerange'
 # @cfg[:def_proc] should be Proc which is given |Entity| as param
 #   returns String as message.
 module CIAX
+  # Command Module
   module Cmd
     NS_COLOR = 2
     # Default Proc Setting method

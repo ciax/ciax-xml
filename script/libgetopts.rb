@@ -62,8 +62,6 @@ module CIAX
       _db_cli
       _db_mode
       _db_vis
-      _db_mcr
-      _db_sys
       @optdb.update(type?(db, Hash))
     end
 
@@ -90,19 +88,13 @@ module CIAX
       self
     end
 
-    # Comm to devices
+    # System mode
     def _db_mode
       @optdb.update(
-        e: 'execution mode'
-      )
-      self
-    end
-
-    # System process
-    def _db_sys
-      @optdb.update(
+        e: 'execution mode',
         s: 'server mode',
-        b: 'background mode'
+        b: 'background mode',
+        n: 'non-stop mode' # For macro
       )
       self
     end
@@ -110,17 +102,8 @@ module CIAX
     # For visual
     def _db_vis
       @optdb.update(
-        v: 'visual output (default)',
         r: 'raw data output',
         j: 'json data output'
-      )
-      self
-    end
-
-    # For macro
-    def _db_mcr
-      @optdb.update(
-        n: 'non-stop mode'
       )
       self
     end
@@ -144,7 +127,7 @@ module CIAX
     end
 
     def _make_vmode
-      @vmode = _make_exopt(%i(j r v)) || :v
+      @vmode = _make_exopt(%i(j r)) || :v
       self
     end
 

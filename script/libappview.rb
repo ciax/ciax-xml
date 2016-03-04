@@ -52,8 +52,8 @@ module CIAX
         lines.join("\n")
       end
 
-      def to_s
-        @vmode == :c ? to_csv : super
+      def to_r
+        @stat.to_r
       end
 
       private
@@ -82,12 +82,12 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      GetOpts.new('(opt) [site] | < status_file', 'rc', c: 'CSV output') do |opt|
+      GetOpts.new('(opt) [site] | < status_file', 'rjc', c: 'CSV output') do |opt|
         stat = Status.new
         view = View.new(stat).vmode(opt.vmode)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
-        puts view
+        puts opt[:c] ? view.to_csv : view
       end
     end
   end

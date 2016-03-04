@@ -8,7 +8,6 @@ Hash
      |-Mcr::Condition 
      |-Mcr::List 
      |-Parameter 
-     |-Wat::View 
      |-Xml::Doc 
      |-Config
      |  |-Cmd::Entity 
@@ -49,6 +48,7 @@ Hash
      |
      |-Upd 
         |-App::View 
+        |-Wat::View 
         |-Mcr::Step 
         |-Varx
            |-App::Status 

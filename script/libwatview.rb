@@ -7,16 +7,17 @@ module CIAX
   # Watch Layer
   module Wat
     # Decorate the event data (Put caption,symbole,etc.) from WDB
-    class View < Hashx
+    class View < Upd
       def initialize(event)
         super()
         @event = type?(event, Event)
         wdb = type?(event.dbi, Dbi)[:watch]
         init_stat(wdb || { index: [] })
+        upd
       end
 
       def to_v
-        upd_view
+        upd
         vw = ''
         view_time(vw)
         vw << itemize('Issuing', self[:exec])
@@ -57,7 +58,7 @@ module CIAX
         self
       end
 
-      def upd_view
+      def upd_core
         self[:time] = @event[:time]
         %i(exec block int act_time upd_next).each do |id|
           self[id] = @event.get(id)

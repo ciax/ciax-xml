@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-#I/O Simulator
+# I/O Simulator
 require 'libsimfp'
 module CIAX
   module Simulator

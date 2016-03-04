@@ -3,7 +3,6 @@ Hash
   |  |-ConfOpts
   |
   |-Hashx
-     |-App::View 
      |-Disp 
      |-Disp::Section 
      |-Mcr::Condition 
@@ -49,6 +48,7 @@ Hash
      |  |-Symbol::Db 
      |
      |-Upd 
+        |-App::View 
         |-Mcr::Step 
         |-Varx
            |-App::Status 

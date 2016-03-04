@@ -8,7 +8,7 @@ module CIAX
   # Application Layer
   module App
     # Hash of App Groups
-    class View < Hashx
+    class View < Upd
       def initialize(stat)
         super()
         @stat = type?(stat, Status)
@@ -18,16 +18,11 @@ module CIAX
         @index.update(adbs[:alias]) if adbs.key?(:alias)
         # Just additional data should be provided
         %i(data class msg).each { |key| stat[key] ||= {} }
-        upd_view
-      end
-
-      # For Shell raw mode
-      def to_r
-        @stat.to_r
+        upd
       end
 
       def to_csv
-        upd_view
+        upd
         str = ''
         @group.values.each do|gdb|
           cap = gdb[:caption] || next
@@ -40,10 +35,11 @@ module CIAX
       end
 
       def to_v
-        upd_view
+        upd
         cm = Hash.new(2).update('active' => 5, 'alarm' => 1, 'warn' => 3, 'hide' => 0)
         lines = []
         values.each do|v|
+          next unless v.is_a? Hash
           cap = v[:caption]
           lines << ' ***' + colorize(cap, 10) + '***' unless cap.empty?
           lines.concat(v[:lines].map do|ele|
@@ -62,10 +58,10 @@ module CIAX
 
       private
 
-      def upd_view
+      def upd_core
         self['gtime'] = { caption: '', lines: [hash = {}] }
         hash[:time] = { label: 'TIMESTAMP', msg: Msg.date(@stat[:time]) }
-        hash['elapsed'] = { label: 'ELAPSED', msg: Msg.elps_date(@stat[:time]) }
+        hash[:elapsed] = { label: 'ELAPSED', msg: Msg.elps_date(@stat[:time]) }
         @group.each do|k, gdb|
           cap = gdb[:caption] || next
           self[k] = { caption: cap, lines: [] }
@@ -88,10 +84,9 @@ module CIAX
       require 'libinsdb'
       GetOpts.new('(opt) [site] | < status_file', 'rc', c: 'CSV output') do |opt|
         stat = Status.new
-        view = View.new(stat)
+        view = View.new(stat).vmode(opt.vmode)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
-        view.vmode(:c) if opt[:c]
         puts view
       end
     end

@@ -22,7 +22,7 @@ module CIAX
             diff = t - @pulse
             @bs = 0 if diff == 0
             break if @bs == 0
-            pulse = (@pulse + (diff <=> 0))
+            @pulse = (@pulse + (diff <=> 0))
             sleep 0.1
           end
         end

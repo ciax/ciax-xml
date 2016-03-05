@@ -18,14 +18,11 @@ module CIAX
             @displist.reset!
           end
 
-          def add_item(id, cdb, itm)
+          def add_item(id, itm)
             label = itm[:label]
-            unit = itm[:unit]
-            label = "#{cdb[:unit][unit][:label]} #{label}" if unit
             if label && itm[:parameters].is_a?(Array)
               ary = itm[:parameters].map { |e| e[:label] || 'str' }
-              fmt = label.gsub(/\$([\d]+)/, '%s')
-              label.replace(format(fmt, *ary))
+              label.replace(format(label, *ary))
             end
             new_item(id, itm)
           end
@@ -47,7 +44,7 @@ module CIAX
             mem.each do|id|
               itm = cdb[:index][id]
               sg.put_item(id, itm[:label])
-              add_item(id, cdb, itm)
+              add_item(id, itm)
             end
           end
 

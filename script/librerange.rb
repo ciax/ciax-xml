@@ -9,17 +9,8 @@ module CIAX
     def initialize(str)
       @eq = @max = @min = @min_ex = @max_ex = nil
       if /[:<]+/ =~ str
-        min = $`
-        ope = $&
-        max = $'
-        if min != ''
-          @min_ex = true if /^</ =~ ope
-          @min = s2f(min)
-        end
-        if max != ''
-          @max_ex = true if /<$/ =~ ope
-          @max = s2f(max)
-        end
+        _set_min($&, $`)
+        _set_max($&, $')
       else
         @eq = s2f(str)
       end
@@ -28,14 +19,32 @@ module CIAX
     def <=>(other)
       num = s2f(other)
       return @eq <=> num if @eq
-      return 1 if @min_ex && @min >= num
-      return 1 if @min && @min > num
-      return -1 if @max_ex && @max <= num
-      return -1 if @max && @max < num
+      return 1 if _test_min(num)
+      return -1 if _test_max(num)
       0
     end
 
     private
+
+    def _test_min(num)
+      (@min_ex && @min >= num) || (@min && @min > num)
+    end
+
+    def _test_max(num)
+      (@max_ex && @max <= num) || (@max && @max < num)
+    end
+
+    def _set_min(ope, min)
+      return if min == ''
+      @min_ex = true if /^</ =~ ope
+      @min = s2f(min)
+    end
+
+    def _set_max(ope, max)
+      return if max == ''
+      @max_ex = true if /<$/ =~ ope
+      @max = s2f(max)
+    end
 
     # Accepts int,float,hexstr
     # For float /^-?[0-9]+(\.[0-9]+)?$/

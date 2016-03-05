@@ -109,13 +109,22 @@ module CIAX
         cond.each do |j|
           case j[:type]
           when 'compare'
-            vw << cformat("      %s compare %s [%s]\n",
-                          rslt(j[:res]), j[:inv] ? 'not' : '', j[:vals].join(', '))
+            vw << _make_cmp(j)
           else
-            vw << cformat("      %s %:3s  (%s: %s)\n",
-                          rslt(j[:res]), j[:var], j[:type], frml(j))
+            vw << _make_cond(j)
           end
         end
+      end
+
+      def _make_cmp(j)
+        fmt = "      %s compare %s [%s]\n"
+        inv = j[:inv] ? 'not' : ''
+        cformat(fmt, rslt(j[:res]), inv, j[:vals].join(', '))
+      end
+
+      def _make_cond(j)
+        fmt = "      %s %:3s  (%s: %s)\n"
+        cformat(fmt, rslt(j[:res]), j[:var], j[:type], frml(j))
       end
 
       def frml(j)

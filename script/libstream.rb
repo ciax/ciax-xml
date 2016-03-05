@@ -11,11 +11,12 @@ require 'libvarx'
 # }
 module CIAX
   module Frm
-    # Stream treats an individual round trip (send/recieve) communication which will be done sequentially
+    # Stream treats an individual round trip (send/recieve)
+    #   communication which will be done sequentially
     class Stream < Varx
       attr_reader :binary
       attr_accessor :pre_open_proc, :post_open_proc
-      def initialize(id, ver, iocmd, wait = 0.01, timeout = nil, terminator = nil)
+      def initialize(id, ver, iocmd, wait = 0.01, timeout = nil, term = nil)
         Msg.give_up(' No IO command') if iocmd.to_a.empty?
         @iocmd = type?(iocmd, Array).compact
         super('stream', id, ver)
@@ -24,7 +25,7 @@ module CIAX
         verbose { "Initialize [#{iocmd.join(' ')}]" }
         @wait = wait.to_f
         @timeout = timeout || 10
-        @terminator = terminator
+        @terminator = term
         @pre_open_proc = proc {}
         @post_open_proc = proc {}
         Signal.trap(:CHLD) do

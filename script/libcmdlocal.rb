@@ -82,12 +82,14 @@ module CIAX
         # cfg should have [:output]
         class Group < Group
           def initialize(cfg, atrb = {})
-            atrb[:caption] = 'Change View Mode'
-            atrb[:column] = 2
-            atrb[:color] = 9
+            atrb.update(caption: 'Change View Mode', column: 2, color: 9)
             super
-            add_item('vis', 'Visual mode').def_proc { @cfg[:output].vmode(:v) }
-            add_item('raw', 'Raw Print mode').def_proc { @cfg[:output].vmode(:r) }
+            add_item('vis', 'Visual mode').def_proc do
+              @cfg[:output].vmode(:v)
+            end
+            add_item('raw', 'Raw Print mode').def_proc do
+              @cfg[:output].vmode(:r)
+            end
           end
         end
       end

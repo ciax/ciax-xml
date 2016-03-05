@@ -33,7 +33,8 @@ module CIAX
     def mk_stat
       adbs = @dbi[:status]
       @sdb = adbs[:index]
-      td = _mk_stat_line(_mk_tbody, %i(time elapsed)).enclose('td', class: 'center')
+      tr = _mk_stat_line(_mk_tbody, %i(time elapsed))
+      td = tr.enclose('td', class: 'center')
       _elem_button(td, 'upd')
       adbs[:group].values.each do|g|
         cap = g[:caption] || next

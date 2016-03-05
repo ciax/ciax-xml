@@ -123,7 +123,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      GetOpts.new('[site] | < status_file', 't:', t: 'test conditions[key=val,..]') do |opt|
+      odb = { t: 'test conditions[key=val,..]' }
+      GetOpts.new('[site] | < status_file', 't:', odb) do |opt|
         stat = App::Status.new
         stat.ext_file if STDIN.tty?
         event = Event.new(stat[:id]).ext_rsp(stat)

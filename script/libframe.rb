@@ -120,7 +120,7 @@ module CIAX
           @ccrange.each_byte { |c| chk ^= c }
         when 'sum'
           @ccrange.each_byte { |c| chk += c }
-          chk %= 256
+          chk = chk % 256
         else
           Msg.cfg_err("No such CC method #{@method}")
         end
@@ -134,7 +134,8 @@ module CIAX
         if cc == @cc
           verbose { "Cc Verify OK [#{cc}]" }
         else
-          cc_err("CC Mismatch:[#{cc}] (should be [#{@cc}]) in [#{@ccrange.inspect}]")
+          fmt = 'CC Mismatch:[%s] (should be [%s]) in [%s]'
+          cc_err(format(fmt, cc, @cc, @ccrange.inspect))
         end
         self
       end
@@ -154,7 +155,8 @@ module CIAX
         if ref == val
           verbose { "Verify:(#{e0[:label]}) [#{ref.inspect}] OK" }
         else
-          cc_err("Mismatch(#{e0[:label]}/#{e0[:decode]}):#{val.inspect} for #{ref.inspect}")
+          fmt = 'Mismatch(%s/%s):%s for %s'
+          cc_err(format(fmt, e0[:label], e0[:decode], val.inspect, ref.inspect))
         end
         cc_add(str)
         str

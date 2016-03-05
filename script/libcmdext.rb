@@ -22,8 +22,10 @@ module CIAX
             label = itm[:label]
             unit = itm[:unit]
             label = "#{cdb[:unit][unit][:label]} #{label}" if unit
-            if itm[:parameters].is_a? Array
-              label.gsub(/\$([\d]+)/, '%s') % itm[:parameters].map { |e| e[:label] }
+            if label && itm[:parameters].is_a?(Array)
+              ary = itm[:parameters].map { |e| e[:label] || 'str' }
+              fmt = label.gsub(/\$([\d]+)/, '%s')
+              label.replace(format(fmt, *ary))
             end
             new_item(id, itm)
           end

@@ -74,8 +74,9 @@ module CIAX
       # Returns converted parameter array
       def validate(pary)
         pary = type?(pary.dup, Array)
-        return [] unless @cfg[:parameters]
-        @cfg[:parameters].map do|par|
+        pref = @cfg[:parameters]
+        return [] unless pref
+        pref.map do|par|
           list = par[:list] || []
           disp = list.join(',')
           str = pary.shift
@@ -85,7 +86,7 @@ module CIAX
               next par[:default]
             end
             mary = []
-            mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameters].size})"
+            mary << format('Parameter shortage (%d/%d)', pary.size, pref.size)
             mary << @cfg[:disp].item(@cfg[:id])
             mary << ' ' * 10 + "key=(#{disp})"
             Msg.par_err(*mary)

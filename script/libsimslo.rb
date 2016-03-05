@@ -89,7 +89,9 @@ module CIAX
       end
 
       def fp_help
-        methods.map(&:to_s).grep(/^fp_/).map { |s| s.sub(/^fp_/, '') }.join($INPUT_RECORD_SEPARATOR)
+        methods.map(&:to_s).grep(/^fp_/).map do |s|
+          s.sub(/^fp_/, '')
+        end.join($INPUT_RECORD_SEPARATOR)
       end
     end
 

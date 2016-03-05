@@ -22,12 +22,15 @@ module CIAX
         type?(@dbi, Dbi)
         fdbr = @dbi[:response]
         @skel = fdbr[:frame]
-        # @sel structure: { terminator, :main{}, :body{} <- changes on every upd }
+        # @sel structure:
+        #   { terminator, :main{}, :body{} <- changes on every upd }
         @fds = fdbr[:index]
         sp = type?(@dbi[:stream], Hash)
-        # Frame structure: main(total){ ccrange{ body(selected str) } }
+        # Frame structure:
+        #   main(total){ ccrange{ body(selected str) } }
         @frame = Frame.new(sp[:endian], sp[:ccmethod], sp[:terminator])
-        # terminator: frame pointer will jump to terminator if no length or delimiter is specified
+        # terminator: frame pointer will jump to terminator
+        #   when no length or delimiter is specified
         self
       end
 

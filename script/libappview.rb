@@ -9,6 +9,7 @@ module CIAX
   module App
     # Hash of App Groups
     class View < Upd
+      CM = Hash.new(2).update(active: 5, alarm: 1, warn: 3, hide: 0)
       def initialize(stat)
         super()
         @stat = type?(stat, Status)
@@ -36,7 +37,6 @@ module CIAX
 
       def to_v
         upd
-        cm = Hash.new(2).update('active' => 5, 'alarm' => 1, 'warn' => 3, 'hide' => 0)
         lines = []
         values.each do|v|
           next unless v.is_a? Hash
@@ -44,8 +44,10 @@ module CIAX
           lines << ' ***' + colorize(cap, 10) + '***' unless cap.empty?
           lines.concat(v[:lines].map do|ele|
             '  ' + ele.values.map do|val|
-              c = cm[val[:class]] + 8
-              '[' + colorize(val[:label], 14) + ':' + colorize(val[:msg], c) + ']'
+              cls = (val[:class] || '').to_sym
+              lbl = colorize(val[:label], 14)
+              msg = colorize(val[:msg], CM[cls] + 8)
+              format('[%s:%s]', lbl, msg)
             end.join(' ')
           end)
         end
@@ -82,7 +84,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      GetOpts.new('(opt) [site] | < status_file', 'rjc', c: 'CSV output') do |opt|
+      odb = { c: 'CSV output' }
+      GetOpts.new('[site] | < status_file', 'rjc', odb) do |opt|
         stat = Status.new
         view = View.new(stat).vmode(opt.vmode)
         stat.ext_file if STDIN.tty?

@@ -102,7 +102,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmrsp'
       require 'libfrmdb'
-      ConfOpts.new('(opt) [dev] [cmd] (par) < field_file', 'r') do |cfg, args, opt|
+      ConfOpts.new('[dev] [cmd] (par) < field_file', 'r') do |cfg, args, opt|
         dbi = Db.new.get(args.shift)
         fld = cfg[:field] = Field.new(dbi)
         cobj = Index.new(cfg, dbi.pick(%i(stream)))

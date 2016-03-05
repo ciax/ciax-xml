@@ -40,7 +40,9 @@ module CIAX
       end
 
       def alives
-        @threads.list.map { |th| th[:obj] }.compact.map { |seq| type?(seq, Seq).id }
+        @threads.list.map { |th| th[:obj] }.compact.map do |seq|
+          type?(seq, Seq).id
+        end
       end
 
       def alive?(id)

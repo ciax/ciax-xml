@@ -11,7 +11,8 @@ module CIAX
       attr_accessor :echo
       def initialize(dbi = nil)
         super('field')
-        # Proc for Terminate process of each individual commands (Set upper layer's update);
+        # Proc for Terminate process of each individual commands
+        #  (Set upper layer's update)
         @flush_procs = []
         _setdbi(dbi, Dev::Db)
         self[:comerr] = false
@@ -25,8 +26,9 @@ module CIAX
         return str unless /\$\{/ =~ str
         enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
           str.gsub(/\$\{(.+)\}/) do
-            ary = [*get(Regexp.last_match(1))].map! { |i| expr(i) }
-            Msg.give_up("No value for subst [#{Regexp.last_match(1)}]") if ary.empty?
+            key = Regexp.last_match(1)
+            ary = [*get(key)].map! { |i| expr(i) }
+            Msg.give_up("No value for subst [#{key}]") if ary.empty?
             res = ary.join(',')
             substed << res
             res

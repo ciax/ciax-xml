@@ -22,8 +22,6 @@ module CIAX
         type?(@dbi, Dbi)
         fdbr = @dbi[:response]
         @skel = fdbr[:frame]
-        # @sel structure:
-        #   { terminator, :main{}, :body{} <- changes on every upd }
         @fds = fdbr[:index]
         sp = type?(@dbi[:stream], Hash)
         # Frame structure:
@@ -36,22 +34,12 @@ module CIAX
 
       # Convert with corresponding cmd
       def conv(ent, stream)
-        @sel = Hash[@skel]
         self[:time] = type?(stream, Hash)[:time]
         rid = type?(ent, Cmd::Entity)[:response]
         @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
-        @sel.update(@fds[rid])
-        @sel[:body] = ent.deep_subst(@sel[:body])
-        verbose { "Selected DB for #{rid}\n" + @sel.inspect }
+        _make_sel(ent, rid)
         @frame.set(stream.binary)
-        @cache = self[:data].deep_copy
-        if @fds[rid].key?(:noaffix)
-          getfield_rec(['body'])
-        else
-          getfield_rec(@sel[:main])
-          @frame.cc_check(@cache.delete('cc'))
-        end
-        self[:data] = @cache
+        _make_data(rid)
         verbose { 'Propagate Stream#rcv Field#upd' }
         self
       ensure
@@ -60,49 +48,93 @@ module CIAX
 
       private
 
+      # sel structure:
+      #   { terminator, :main{}, :body{} <- changes on every upd }
+      def _make_sel(ent, rid)
+        @sel = Hash[@skel]
+        @sel.update(@fds[rid])
+        @sel[:body] = ent.deep_subst(@sel[:body])
+        verbose { "Selected DB for #{rid}\n" + @sel.inspect }
+      end
+
+      def _make_data(rid)
+        @cache = self[:data].deep_copy
+        if @fds[rid].key?(:noaffix)
+          getfield_rec(['body'])
+        else
+          getfield_rec(@sel[:main])
+          @frame.cc_check(@cache.delete('cc'))
+        end
+        self[:data] = @cache
+      end
+
       # Process Frame to Field
       def getfield_rec(e0)
         e0.each do|e1|
-          case e1
-          when 'ccrange'
-            enclose('Entering Ceck Code Node', 'Exitting Ceck Code Node') do
-              @frame.cc_mark
-              getfield_rec(@sel[:ccrange])
-              @frame.cc_set
-            end
-          when 'body'
-            enclose('Entering Body Node', 'Exitting Body Node') do
-              getfield_rec(@sel[:body] || [])
-            end
-          when 'echo' # Send back the command string
-            verbose { "Set Command Echo [#{@echo.inspect}]" }
-            @frame.cut(label: 'Command Echo', val: @echo)
-          when Hash
+          if e1.is_a?(Hash)
             frame_to_field(e1) { @frame.cut(e1) }
+          else
+            _make_rec(e1)
           end
         end
+      end
+
+      def _make_rec(e1)
+        case e1
+        when 'ccrange'
+          _make_cc
+        when 'body'
+          _make_body
+        when 'echo' # Send back the command string
+          _make_echo
+        end
+      end
+
+      def _make_cc
+        enclose('Entering Ceck Code Node', 'Exitting Ceck Code Node') do
+          @frame.cc_mark
+          getfield_rec(@sel[:ccrange])
+          @frame.cc_set
+        end
+      end
+
+      def _make_body
+        enclose('Entering Body Node', 'Exitting Body Node') do
+          getfield_rec(@sel[:body] || [])
+        end
+      end
+
+      def _make_echo
+        verbose { "Set Command Echo [#{@echo.inspect}]" }
+        @frame.cut(label: 'Command Echo', val: @echo)
       end
 
       def frame_to_field(e0)
         enclose("#{e0[:label]}", 'Field:End') do
           if e0[:index]
-            # Array
-            akey = e0[:assign] || Msg.cfg_err('No key for Array')
-            # Insert range depends on command param
-            idxs = e0[:index].map do|e1|
-              e1[:range] || "0:#{e1[:size].to_i - 1}"
-            end
-            enclose("Array:[#{akey}]:Range#{idxs}", "Array:Assign[#{akey}]") do
-              @cache[akey] = mk_array(idxs, self[:data][akey]) { yield }
-            end
+            _ary_field(e0) { yield }
           else
-            # Field
-            data = yield
-            if (akey = e0[:assign])
-              @cache[akey] = data
-              verbose { "Assign:[#{akey}] <- <#{data}>" }
-            end
+            _str_field(e0, yield)
           end
+        end
+      end
+
+      # Field
+      def _str_field(e0, data)
+        return unless (akey = e0[:assign])
+        @cache[akey] = data
+        verbose { "Assign:[#{akey}] <- <#{data}>" }
+      end
+
+      # Array
+      def _ary_field(e0)
+        akey = e0[:assign] || Msg.cfg_err('No key for Array')
+        # Insert range depends on command param
+        idxs = e0[:index].map do|e1|
+          e1[:range] || "0:#{e1[:size].to_i - 1}"
+        end
+        enclose("Array:[#{akey}]:Range#{idxs}", "Array:Assign[#{akey}]") do
+          @cache[akey] = mk_array(idxs, self[:data][akey]) { yield }
         end
       end
 

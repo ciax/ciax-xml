@@ -91,11 +91,9 @@ module CIAX
         @recv_proc.call(args, 'buffer')
       end
     rescue CommError
-      clear
-      alert($ERROR_INFO.to_s)
+      alert
     rescue
-      clear
-      alert($ERROR_INFO.to_s + $ERROR_POSITION.to_s)
+      alert($ERROR_POSITION)
     ensure
       sv_dw
     end
@@ -143,6 +141,12 @@ module CIAX
     def flush
       @flush_proc.call(self)
       self
+    end
+
+    def alert(str = nil)
+      clear
+      str = $ERROR_INFO.to_s + str.to_s
+      super(str)
     end
   end
 end

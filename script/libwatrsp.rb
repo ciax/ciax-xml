@@ -23,14 +23,9 @@ module CIAX
         wdb = @dbi[:watch] || {}
         @interval = wdb[:interval].to_f if wdb.key?(:interval)
         @cond = Condition.new(wdb[:index] || {}, stat, self)
-        @pre_upd_procs << proc { self[:time] = @stat[:time] }
-        @stat.post_upd_procs << proc do
-          verbose { 'Propagate Status#upd -> Event#upd' }
-          upd
-        end
-        init_auto(wdb)
+        _init_proc
+        _init_auto(wdb)
         upd
-        self
       end
 
       def queue(src, pri, batch = [])
@@ -56,8 +51,16 @@ module CIAX
 
       private
 
+      def _init_proc
+        @pre_upd_procs << proc { self[:time] = @stat[:time] }
+        @stat.post_upd_procs << proc do
+          verbose { 'Propagate Status#upd -> Event#upd' }
+          upd
+        end
+      end
+
       # Initialize for Auto Update
-      def init_auto(wdb)
+      def _init_auto(wdb)
         reg = wdb[:regular] || {}
         per = reg[:period].to_i
         @period = per > 1 ? per : 300
@@ -101,16 +104,23 @@ module CIAX
 
       def upd_event
         if @sv_stat.get(:event)
-          if !active? && !@sv_stat.get(:busy)
-            @sv_stat.dw(:event)
-            @on_deact_procs.each { |p| p.call(self) }
-          end
+          _event_off unless active?
         elsif active?
-          @sv_stat.up(:event)
-          self[:act_time][1] = @last_updated
-          @on_act_procs.each { |p| p.call(self) }
+          _event_on
         end
         self
+      end
+
+      def _event_on
+        @sv_stat.up(:event)
+        self[:act_time][1] = @last_updated
+        @on_act_procs.each { |p| p.call(self) }
+      end
+
+      def _event_off
+        return if @sv_stat.get(:busy)
+        @sv_stat.dw(:event)
+        @on_deact_procs.each { |p| p.call(self) }
       end
     end
 

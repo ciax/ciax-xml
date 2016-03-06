@@ -11,16 +11,20 @@ module CIAX
       def initialize(id, cfg, atrb = {})
         super
         _init_prompt
-        view = Rsp.new(@sub.sub.stat, @cfg)
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
-        @post_exe_procs.concat(@sub.post_exe_procs)
         @port = @sub.sub.port.to_i + 1000
-        view.ext_log if @cfg[:option].log?
-        @shell_output_proc = proc { view.to_x }
+        @post_exe_procs.concat(@sub.post_exe_procs)
+        _init_view
       end
 
       private
+
+      def _init_view
+        view = Rsp.new(@sub.sub.stat, @cfg)
+        @shell_output_proc = proc { view.to_x }
+        view.ext_log if @cfg[:option].log?
+      end
 
       def ext_server
         @server_input_proc = proc do|line|

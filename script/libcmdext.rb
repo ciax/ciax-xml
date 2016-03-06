@@ -55,11 +55,15 @@ module CIAX
             guni.each do|u|
               uat = cdb[:unit][u]
               next unless uat.key?(:title)
-              umem = uat[:members]
-              il = umem.map { |m| cdb[:index][m][:label] }.join('/')
-              sg.put_dummy(uat[:title], uat[:label] % il)
-              sg.replace(sg - umem)
+              _make_unit_item(sg, uat, cdb[:index])
             end
+          end
+
+          def _make_unit_item(sg, uat, index)
+            umem = uat[:members]
+            il = umem.map { |m| index[m][:label] }.join('/')
+            sg.put_dummy(uat[:title], uat[:label] % il)
+            sg.replace(sg - umem)
           end
         end
 
@@ -72,32 +76,29 @@ module CIAX
           def deep_subst(data)
             case data
             when Array
-              res = []
-              data.each { |v| res << deep_subst(v) }
+              data.map { |v| deep_subst(v) }
             when Hash
-              res = {}
-              data.each { |k, v| res[k] = deep_subst(v) }
+              data.each_with_object({}) { |(k, v), r| r[k] = deep_subst(v) }
             else
-              res = _subst_(data)
+              _subst_str(data)
             end
-            res
           end
 
           private
 
-          def _subst_(str) # subst by parameters ($1,$2...)
+          def _subst_str(str) # subst by parameters ($1,$2...)
             return str unless /\$([\d]+)/ =~ str
-            enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
-              num = true
-              res = str.gsub(/\$([\d]+)/) do
-                i = Regexp.last_match(1).to_i
-                num = false if self[:parameters][i - 1][:type] != 'num'
-                verbose { "Parameter No.#{i} = [#{@par[i - 1]}]" }
-                @par[i - 1] || Msg.cfg_err(" No substitute data ($#{i})")
-              end
-              Msg.cfg_err('Nil string') if res == ''
-              res
+            # enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
+            # num = true
+            res = str.gsub(/\$([\d]+)/) do
+              i = Regexp.last_match(1).to_i
+              # num = false if self[:parameters][i - 1][:type] != 'num'
+              # verbose { "Parameter No.#{i} = [#{@par[i - 1]}]" }
+              @par[i - 1] || Msg.cfg_err(" No substitute data ($#{i})")
             end
+            Msg.cfg_err('Nil string') if res == ''
+            res
+            # end
           end
         end
       end

@@ -80,7 +80,7 @@ module CIAX
       end
 
       def _conv_fomula(hash, val, id)
-        return unless hash.key?(:formula)
+        return val unless hash.key?(:formula)
         f = hash[:formula].gsub(/\$#/, val.to_s)
         val = expr(f)
         verbose { "Formula:#{f}(#{val})(#{id})" }

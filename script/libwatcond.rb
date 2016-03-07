@@ -54,17 +54,7 @@ module CIAX
         verbose { "Check: <#{item[:label]}>" }
         rary = []
         cklst.each do|ckitm|
-          vn = ckitm[:var]
-          case ckitm[:type]
-          when 'onchange'
-            res = _onchange(vn, ckitm[:tolerance])
-          when 'pattern'
-            res = _pattern(vn, ckitm[:val])
-          when 'range'
-            res = _range(vn, ckitm[:val])
-          when 'compare'
-            res = _compare(ckitm[:vars])
-          end
+          res = _chk_by_type(ckitm)
           res = !res if /true|1/ =~ ckitm[:inv]
           rary << res
         end
@@ -73,6 +63,20 @@ module CIAX
       end
 
       private
+
+      def _chk_by_type(ckitm)
+        vn = ckitm[:var]
+        case ckitm[:type]
+        when 'onchange'
+          _onchange(vn, ckitm[:tolerance])
+        when 'pattern'
+          _pattern(vn, ckitm[:val])
+        when 'range'
+          _range(vn, ckitm[:val])
+        when 'compare'
+          _compare(ckitm[:vars])
+        end
+      end
 
       def _onchange(vn, tol)
         val = @stat[:data][vn]

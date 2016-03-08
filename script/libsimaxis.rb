@@ -7,7 +7,7 @@ module CIAX
     class Axis
       attr_accessor :speed, :hardlim
       attr_reader :pulse, :busy, :help
-      def initialize(hl_min = 0, hl_max = 9999, spd = 1)
+      def initialize(hl_min = -9999, hl_max = 9999, spd = 10)
         @hl_min = hl_min
         @hl_max = hl_max
         @max_range = 160_000
@@ -23,7 +23,7 @@ module CIAX
           while @busy
             @pulse += (t <=> @pulse)
             @busy = _upd_busy(t)
-            sleep 0.1 / @speed
+            sleep 1.0 / @speed
           end
         end
       end

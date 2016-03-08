@@ -12,7 +12,7 @@ module CIAX
       def initialize(port = 10_001, *args)
         super
         @separator = "\r\n"
-        @axis = Axis.new(-3, 1853, 0.1)
+        @axis = Axis.new(-3, 1853, 10)
         @tol = 5
         @slo_wn = 1 # Drive ON/OFF during stop
         @slo_err = 0
@@ -35,8 +35,12 @@ module CIAX
         '?'
       end
 
-      def setdec(n)
+      def to_int(n)
         (n.to_f * 10).to_i
+      end
+
+      def to_dec(n)
+        format('%.1f', n.to_f / 10)
       end
 
       def about(x) # torerance
@@ -73,31 +77,31 @@ module CIAX
 
       def slo_speed(num = nil)
         if num
-          @axis.speed = num
+          @axis.speed = to_int(num)
         else
-          @axis.speed
+          to_dec(@axis.speed)
         end
       end
 
       def slo_abspos(num = nil)
         if num
-          @axis.pulse = setdec(num)
+          @axis.pulse = to_int(num)
         else
-          format('%.1f', @axis.pulse.to_f / 10)
+          to_dec(@axis.pulse)
         end
       end
 
       # Motion Command
-      def slo_jog(num)
-        @axis.jog(num.to_i)
+      def slo_jog(sign) # sign= 1,-1
+        @axis.jog(sign.to_i)
       end
 
       def slo_movea(num)
-        @axis.servo(setdec(num))
+        @axis.servo(to_int(num))
       end
 
       def slo_movei(num)
-        @axis.servo(@axis.pulse + setdec(num))
+        @axis.servo(@axis.pulse + to_int(num))
       end
 
       def slo_stop

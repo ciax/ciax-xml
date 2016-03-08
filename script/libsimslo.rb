@@ -11,7 +11,7 @@ module CIAX
       def initialize(port = 10_001, *args)
         super
         @separator = "\r\n"
-        @axis = Axis.new(0, 9999, 0.1)
+        @axis = Axis.new(-3, 1853, 0.1)
         @tol = 5
         @fp_wn = 1
         @fp_err = 0
@@ -40,14 +40,14 @@ module CIAX
       end
 
       def about(x) # torerance
-        (@axis.pulse <= x + @tol && @axis.pulse >= x - @tol) ? '1' : '0'
+        (-@tol..@tol).cover?(@axis.pulse - x) ? '1' : '0'
       end
 
       public
 
       # Commands
       def fp_bs
-        @axis.bs
+        @axis.busy ? 1 : 0
       end
 
       def fp_abspos=(num)
@@ -71,16 +71,11 @@ module CIAX
       end
 
       def fp_j=(num)
-        case num.to_i
-        when 1
-          @axis.servo(2005)
-        when -1
-          @axis.servo(0)
-        end
+        @axis.jog(num.to_i)
       end
 
       def fp_stop
-        @asix.stop
+        @axis.stop
         '>'
       end
 

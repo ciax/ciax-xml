@@ -5,40 +5,56 @@ module CIAX
   module Simulator
     # Motor Axis Simulator
     class Axis
-      attr_accessor :spd
-      attr_reader :pulse, :bs, :help
-      def initialize(p_min = 0, p_max = 9999, spd = 1)
-        @p_min = p_min
-        @p_max = p_max
-        @spd = spd
+      attr_accessor :speed, :limit
+      attr_reader :pulse, :busy, :help
+      def initialize(hl_min = 0, hl_max = 9999, spd = 1)
+        @hl_min = hl_min
+        @hl_max = hl_max
+        @max_range = 160_000
+        @speed = spd # 10 pulse per second
         @pulse = 0
-        @bs = 0 # Busy status
+        @limit = true
       end
 
       def servo(target)
+        return unless _in_limit?
         Thread.new(target.to_i) do |t|
-          @bs = 1
-          loop do
-            diff = t - @pulse
-            @bs = 0 if diff == 0
-            break if @bs == 0
-            @pulse = (@pulse + (diff <=> 0))
-            sleep 0.1
+          @busy = true
+          while @busy
+            @pulse += (t <=> @pulse)
+            @busy = _upd_busy(t)
+            sleep 0.1 / @speed
           end
         end
       end
 
+      def jog(dir = 1)
+        dir = dir.to_i
+        return if dir == 0
+        servo(dir.abs * @max_range)
+      end
+
       def pulse=(num)
-        if num > @p_max
-          num = @p_min
-        elsif num < @p_min
-          num = @p_max
-        end
-        @pulse = num
+        @pulse = max(min(num, @max_range), -@max_range)
       end
 
       def stop
-        @bs = 0
+        @busy = nil
+      end
+
+      private
+
+      def _upd_busy(t)
+        t != @pulse && _in_range? && _in_limit?
+      end
+
+      def _in_range?
+        (-@max_range..@max_range).cover?(@pulse)
+      end
+
+      def _in_limit?
+        return true unless @limit
+        (@hl_min..@hl_max).cover?(@pulse)
       end
     end
   end

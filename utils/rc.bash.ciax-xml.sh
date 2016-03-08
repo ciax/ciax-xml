@@ -13,7 +13,11 @@ addenv(){
         eval "export $name=${*// /:}"
     fi
 }
-
+develop(){
+    cd "$HOME/ciax-xml/script"
+    git branch |grep '* develop'
+}
+    
 # Local functions
 umask 022
 shopt -s nullglob
@@ -24,3 +28,4 @@ addenv RUBYLIB "$HOME/ciax-xml/script"
 #Alias
 alias rub='rubocop -a -c .rubocop_todo.yml'
 alias rgen='rubocop --auto-gen-config'
+develop && export NOCACHE=1

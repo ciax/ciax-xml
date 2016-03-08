@@ -5,15 +5,15 @@ module CIAX
   module Simulator
     # Motor Axis Simulator
     class Axis
-      attr_accessor :speed, :limit
+      attr_accessor :speed, :hardlim
       attr_reader :pulse, :busy, :help
       def initialize(hl_min = 0, hl_max = 9999, spd = 1)
         @hl_min = hl_min
         @hl_max = hl_max
         @max_range = 160_000
-        @speed = spd # 10 pulse per second
         @pulse = 0
-        @limit = true
+        @speed = spd # 10 pulse per second
+        @hardlim = true # Hardware Limit
       end
 
       def servo(target)
@@ -53,7 +53,7 @@ module CIAX
       end
 
       def _in_limit?
-        return true unless @limit
+        return true unless @hardlim
         (@hl_min..@hl_max).cover?(@pulse)
       end
     end

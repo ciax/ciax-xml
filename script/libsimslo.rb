@@ -12,8 +12,8 @@ module CIAX
         super
         @separator = "\r\n"
         @axis = Axis.new
-        @slo_wn = 1 # Drive ON/OFF during stop
-        @slo_err = 0
+        @slo_wn = '1' # Drive ON/OFF during stop
+        @slo_err = '0'
       end
 
       private
@@ -21,13 +21,13 @@ module CIAX
       def dispatch(str)
         cmd = 'slo_' + str
         if /=/ =~ cmd
-          method($`).call($') ? '>' : '?'
+          '>' if method("#{$`}=").call($')
         elsif /\((.*)\)/ =~ cmd
-          method($`).call(Regexp.last_match(1)) || '?'
+          method($`).call(Regexp.last_match(1))
         else
-          method(cmd).call || '?'
-        end
-      rescue NameError,ArgumentError
+          method(cmd).call
+        end || '?'
+      rescue NameError, ArgumentError
         '?'
       end
 
@@ -47,8 +47,16 @@ module CIAX
       end
 
       def slo_in(num)
-        return unless (1 .. 4).include?(num)
+        return unless (1..4).include?(num)
         '0'
+      end
+
+      def slo_speed
+        to_dec(@axis.speed)
+      end
+
+      def slo_abspos
+        to_dec(@axis.pulse)
       end
 
       def slo_help
@@ -68,38 +76,31 @@ module CIAX
         '>'
       end
 
-      def slo_speed(num = nil)
-        if num
-          @axis.speed = to_int(num)
-        else
-          to_dec(@axis.speed)
-        end
+      def slo_speed=(num)
+        @axis.speed = to_int(num)
       end
 
-      def slo_abspos(num = nil)
-        if num
-          @axis.pulse = to_int(num)
-        else
-          to_dec(@axis.pulse)
-        end
+      def slo_abspos=(num)
+        @axis.pulse = to_int(num)
       end
 
       # Motion Command
-      def slo_jog(sign) # sign= 1,-1
+      def slo_jog=(sign) # sign= 1,-1
         return unless sign.to_i.abs == 1
         @axis.jog(sign.to_i)
       end
 
-      def slo_movea(num)
+      def slo_movea=(num)
         @axis.servo(to_int(num))
       end
 
-      def slo_movei(num)
+      def slo_movei=(num)
         @axis.servo(@axis.pulse + to_int(num))
       end
 
       def slo_stop
         @axis.stop
+        '>'
       end
 
       alias_method :slo_bs, :slo_busy
@@ -107,9 +108,11 @@ module CIAX
       alias_method :slo_hl1, :slo_hardlimon
       alias_method :slo_spd, :slo_speed
       alias_method :slo_p, :slo_abspos
-      alias_method :slo_j, :slo_jog
-      alias_method :slo_ma, :slo_movea
-      alias_method :slo_mi, :slo_movei
+      alias_method :slo_spd=, :slo_speed=
+      alias_method :slo_p=, :slo_abspos=
+      alias_method :slo_j=, :slo_jog=
+      alias_method :slo_ma=, :slo_movea=
+      alias_method :slo_mi=, :slo_movei=
     end
 
     if __FILE__ == $PROGRAM_NAME

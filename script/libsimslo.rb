@@ -9,14 +9,12 @@ module CIAX
       attr_writer :slo_wn
       attr_accessor :slo_e1, :slo_e2
       attr_reader :slo_err
-      def initialize(port = 10_001, *args)
+      def initialize(port = 10_000, *args)
         super
         @separator = "\r\n"
-        @axis = Axis.new(-3, 1853, 10)
-        @tol = 5
+        @axis = Axis.new
         @slo_wn = 1 # Drive ON/OFF during stop
         @slo_err = 0
-        @postbl = [1230, 128, 2005, 0, 1850]
       end
 
       private
@@ -24,14 +22,13 @@ module CIAX
       def dispatch(str)
         cmd = 'slo_' + str
         if /=/ =~ cmd
-          method($`).call($')
-          '>'
+          method($`).call($') ? '>' : '?'
         elsif /\((.*)\)/ =~ cmd
-          method($`).call(Regexp.last_match(1))
+          method($`).call(Regexp.last_match(1)) || '?'
         else
-          method(cmd).call
+          method(cmd).call || '?'
         end
-      rescue NameError
+      rescue NameError,ArgumentError
         '?'
       end
 
@@ -43,10 +40,6 @@ module CIAX
         format('%.1f', n.to_f / 10)
       end
 
-      def about(x) # torerance
-        (-@tol..@tol).cover?(@axis.pulse - x) ? '1' : '0'
-      end
-
       public
 
       # Status Commands
@@ -55,7 +48,8 @@ module CIAX
       end
 
       def slo_in(num)
-        about(@postbl[num.to_i - 1])
+        return unless (1 .. 4).include?(num)
+        '0'
       end
 
       def slo_help
@@ -93,6 +87,7 @@ module CIAX
 
       # Motion Command
       def slo_jog(sign) # sign= 1,-1
+        return unless sign.to_i.abs == 1
         @axis.jog(sign.to_i)
       end
 
@@ -106,7 +101,6 @@ module CIAX
 
       def slo_stop
         @axis.stop
-        '>'
       end
 
       alias_method :slo_bs, :slo_busy

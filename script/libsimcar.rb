@@ -7,14 +7,13 @@ module CIAX
     # Slosyn Driver Simulator
     class Carousel < Slosyn
       def initialize
-        super(10_004)
-        @axis = Axis.new(-235, 5, 12)
+        super(-23.5, 0.5, 12, 10_004)
       end
 
       def slo_in(num)
         super
         return '0' unless num.to_i == 1
-        (@axis.pulse % 10 == 0) ? '1' : '0'
+        (@axis.pulse % 1_000_000 == 0) ? '1' : '0'
       end
     end
 

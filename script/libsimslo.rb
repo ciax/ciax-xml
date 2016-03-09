@@ -8,10 +8,10 @@ module CIAX
     class Slosyn < Server
       attr_accessor :slo_e1, :slo_e2, :slo_wn
       attr_reader :slo_err
-      def initialize(port = 10_000, *args)
-        super
+      def initialize(dl = -100, ul = 100, spd = 1, port = 10_000, *args)
+        super(port, *args)
         @separator = "\r\n"
-        @axis = Axis.new
+        @axis = Axis.new(to_int(dl), to_int(ul), to_int(spd))
         @slo_wn = '1' # Drive ON/OFF during stop
         @slo_err = '0'
       end
@@ -31,12 +31,12 @@ module CIAX
         '?'
       end
 
-      def to_int(n)
-        (n.to_f * 10).to_i
+      def to_int(real)
+        (real.to_f * 1_000).to_i
       end
 
-      def to_dec(n)
-        format('%.1f', n.to_f / 10)
+      def to_real(int)
+        format('%.6f', int.to_f / 1_000)
       end
 
       public
@@ -46,17 +46,17 @@ module CIAX
         @axis.busy ? 1 : 0
       end
 
-      def slo_in(num)
-        return unless (1..4).include?(num)
+      def slo_in(int)
+        return unless (1..4).include?(int)
         '0'
       end
 
       def slo_speed
-        to_dec(@axis.speed)
+        to_real(@axis.speed)
       end
 
       def slo_abspos
-        to_dec(@axis.pulse)
+        to_real(@axis.pulse)
       end
 
       def slo_help
@@ -76,12 +76,12 @@ module CIAX
         '>'
       end
 
-      def slo_speed=(num)
-        @axis.speed = to_int(num)
+      def slo_speed=(real)
+        @axis.speed = to_int(real)
       end
 
-      def slo_abspos=(num)
-        @axis.pulse = to_int(num)
+      def slo_abspos=(real)
+        @axis.pulse = to_int(real)
       end
 
       # Motion Command
@@ -90,12 +90,12 @@ module CIAX
         @axis.jog(sign.to_i)
       end
 
-      def slo_movea=(num)
-        @axis.servo(to_int(num))
+      def slo_movea=(real)
+        @axis.servo(to_int(real))
       end
 
-      def slo_movei=(num)
-        @axis.servo(@axis.pulse + to_int(num))
+      def slo_movei=(real)
+        @axis.servo(@axis.pulse + to_int(real))
       end
 
       def slo_stop
@@ -116,7 +116,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      sv = Slosyn.new(*ARGV)
+      sv = Slosyn.new
       sv.serve
       sleep
     end

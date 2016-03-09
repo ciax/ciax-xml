@@ -7,12 +7,13 @@ module CIAX
     class Axis
       attr_accessor :speed, :hardlim
       attr_reader :pulse, :busy, :help
-      def initialize(hl_min = -9999, hl_max = 9999, spd = 10)
+      def initialize(hl_min = -999_999, hl_max = 999_999, spd = 1_000)
+        Msg.cfg_err("Limit Max < Min") if hl_min > hl_max
         @hl_min = hl_min
         @hl_max = hl_max
-        @max_range = 160_000
+        @max_range = 1_000_000_000
         @pulse = 0
-        @speed = spd # 10 pulse per second
+        @speed = spd # 1000 pulse per second
         @hardlim = true # Hardware Limit
       end
 
@@ -23,7 +24,7 @@ module CIAX
           while @busy
             @pulse += (t <=> @pulse)
             @busy = _upd_busy(t)
-            sleep 1.0 / @speed
+            sleep 0.5 / @speed # Consider the processor speed
           end
         end
       end

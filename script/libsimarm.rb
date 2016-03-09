@@ -7,8 +7,7 @@ module CIAX
     # Slosyn Driver Simulator
     class Arm < Slosyn
       def initialize
-        super(10_003)
-        @axis = Axis.new(-3, 1853, 10)
+        super(-0.3, 185.3, 1, 10_003)
         @tol = 5
         @postbl = [1230, 128, 2005, 0, 1850]
       end
@@ -21,7 +20,7 @@ module CIAX
       private
 
       def about(x) # torerance
-        (-@tol..@tol).cover?(@axis.pulse - x) ? '1' : '0'
+        (-@tol..@tol).cover?(@axis.pulse/100 - x) ? '1' : '0'
       end
     end
 

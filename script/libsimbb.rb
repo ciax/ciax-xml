@@ -6,7 +6,7 @@ module CIAX
   module Simulator
     # BB Electric I/O
     class BBIO < GServer
-      def initialize(port = 10_003, *args)
+      def initialize(port = 10_007, *args)
         super(port, *args)
         Thread.abort_on_exception = true
         @ioreg = Word.new(0)

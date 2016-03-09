@@ -2,8 +2,9 @@
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="dummy" label="Dummy simulator">
     <group id="dmy" label="Dummy simulator">
-      <instance id="tsl" app_id="mma" frm_site="tsl" host="localhost" port="25699" label="TEST Slosyn"/>
-      <instance id="tfp" app_id="cfp" frm_site="tfp" host="localhost" port="25698" label="TEST Field Point"/>
+      <instance id="tfp" app_id="cfp" frm_site="tfp" host="localhost" port="25691" label="TEST Field Point"/>
+      <instance id="tma" app_id="mma" frm_site="tma" host="localhost" port="25693" label="TEST Arm"/>
+      <instance id="tmc" app_id="mmc" frm_site="tmc" host="localhost" port="25694" label="TEST Carousel"/>
       <instance id="tb1" app_id="bbe" frm_site="tbb" host="localhost" port="25697" label="TEST BBE simple">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="X0-3"/>

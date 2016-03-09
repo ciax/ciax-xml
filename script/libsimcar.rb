@@ -7,7 +7,7 @@ module CIAX
     # Slosyn Driver Simulator
     class Carousel < Slosyn
       def initialize
-        super(10_002)
+        super(10_004)
         @axis = Axis.new(-235, 5, 12)
       end
 

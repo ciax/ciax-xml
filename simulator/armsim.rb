@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require 'libsimslo'
+require 'libsimarm'
 
 module CIAX
   module Simulator
-    sv = Slosyn.new(*ARGV)
+    sv = Arm.new
     sv.start
     sleep
   end

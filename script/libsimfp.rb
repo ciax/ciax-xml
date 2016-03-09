@@ -7,7 +7,7 @@ module CIAX
   module Simulator
     # Field Point I/O
     class FpDio < Server
-      def initialize(port = 10_002, *args)
+      def initialize(port = 10_001, *args)
         super
         @separator = "\r"
         # @reg[2]: output, @reg[3]: input

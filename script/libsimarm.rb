@@ -7,7 +7,7 @@ module CIAX
     # Slosyn Driver Simulator
     class Arm < Slosyn
       def initialize
-        super(10_001)
+        super(10_003)
         @axis = Axis.new(-3, 1853, 10)
         @tol = 5
         @postbl = [1230, 128, 2005, 0, 1850]

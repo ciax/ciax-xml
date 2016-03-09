@@ -6,8 +6,7 @@ module CIAX
   module Simulator
     # Slosyn Driver Simulator
     class Slosyn < Server
-      attr_writer :slo_wn
-      attr_accessor :slo_e1, :slo_e2
+      attr_accessor :slo_e1, :slo_e2, :slo_wn
       attr_reader :slo_err
       def initialize(port = 10_000, *args)
         super

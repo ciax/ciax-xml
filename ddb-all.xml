@@ -47,8 +47,9 @@
     <site id="cfa" frm_id="k3n" host="ciax" port="24210" iocmd="socat - tcp:ltt-i:4015" label="S10 HC Coolant Flow"/>
   </group>
   <group id="dmy" label="Dummy Simulator" column="2">
-    <site id="tsl" frm_id="slo" host="localhost" port="24699" iocmd="socat - tcp:localhost:10001" label="Slosyn dummy"/>
-    <site id="tfp" frm_id="cfp" host="localhost" port="24698" iocmd="socat - tcp:localhost:10002" label="Field Point dummy"/>
-    <site id="tbb" frm_id="bbe" host="localhost" port="24697" iocmd="socat - tcp:localhost:10003" label="BBE dummy"/>
+    <site id="tfp" frm_id="cfp" host="localhost" port="24691" iocmd="socat - tcp:localhost:10001" label="Field Point dummy"/>
+    <site id="tma" frm_id="slo" host="localhost" port="24693" iocmd="socat - tcp:localhost:10003" label="Arm dummy"/>
+    <site id="tmc" frm_id="slo" host="localhost" port="24694" iocmd="socat - tcp:localhost:10004" label="Carousel dummy"/>
+    <site id="tbb" frm_id="bbe" host="localhost" port="24697" iocmd="socat - tcp:localhost:10007" label="BBE dummy"/>
   </group>
 </ddb>

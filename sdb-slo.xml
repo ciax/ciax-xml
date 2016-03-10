@@ -7,6 +7,31 @@
       <pattern class="alarm" msg="Could not download file">2</pattern>
       <pattern class="alarm" msg="Not enough memory to execute user program">3</pattern>
       <pattern class="alarm" msg="Attempt to access a non-existent array element">4</pattern>
+      <pattern class="alarm" msg="Real data too large to convert to Integer data">5</pattern>
+      <pattern class="alarm" msg="Attempt to set accel data &lt;= 0">6</pattern>
+      <pattern class="alarm" msg="Attempt to set decel data &lt;= 0">7</pattern>
+      <pattern class="alarm" msg="Attempt to access non-existent output">8</pattern>
+      <pattern class="alarm" msg="Attempt to access non-existent input">9</pattern>
+      <pattern class="alarm" msg="Attempt to divide by 0">10</pattern>
+      <pattern class="alarm" msg="Received serial data will not fit in buffer">11</pattern>
+      <pattern class="alarm" msg="Motion occurring when program ended">12</pattern>
+      <pattern class="alarm" msg="Attempt to execute user program that is not present">13</pattern>
+      <pattern class="alarm" msg="Incorrect user program checksum">14</pattern>
+      <pattern class="alarm" msg="reserved for future use">15</pattern>
+      <pattern class="alarm" msg="reserved for future use">16</pattern>
+      <pattern class="alarm" msg="reserved for future use">17</pattern>
+      <pattern class="alarm" msg="reserved for future use">18</pattern>
+      <pattern class="alarm" msg="Attempt to set FOLERR &lt;0">19</pattern>
+      <pattern class="alarm" msg="reserved for future use">20</pattern>
+      <pattern class="alarm" msg="Move distance too large">21</pattern>
+      <pattern class="alarm" msg="Function not implemented">22</pattern>
+      <pattern class="alarm" msg="INPUT command error occurred">23</pattern>
+      <pattern class="alarm" msg="+limit switch activated">128</pattern>
+      <pattern class="alarm" msg="-limit switch activated">129</pattern>
+      <pattern class="alarm" msg="+Software travel limit exceeded">130</pattern>
+      <pattern class="alarm" msg="-Software travel limit exceeded">131</pattern>
+      <pattern class="alarm" msg="reserved for future use">132</pattern>
+      <pattern class="alarm" msg="Excessive position error">133</pattern>
       <default class="alarm" msg="Unknown Error"/>
     </table>
   </symbol>

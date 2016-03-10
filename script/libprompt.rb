@@ -33,6 +33,7 @@ module CIAX
 
     def up(key)
       pre_upd
+      cfg_err("No such flag [#{key}]") unless key?(key)
       self[key] = true
       verbose { "Set [#{key}]" }
       self
@@ -42,6 +43,7 @@ module CIAX
 
     def dw(key)
       pre_upd
+      cfg_err("No such flag [#{key}]") unless key?(key)
       self[key] = false
       verbose { "Reset [#{key}]" }
       self

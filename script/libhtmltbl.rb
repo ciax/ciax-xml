@@ -9,9 +9,10 @@ module CIAX
     def initialize(dbi)
       super()
       @dbi = type?(dbi, Dbi)
-      @cdb = @dbi[:command][:index]
-      @gdb = @dbi[:command][:group]
-      @udb = @dbi[:command][:unit]
+      cdb = @dbi[:command]
+      @idx = cdb[:index]
+      @gdb = cdb[:group]
+      @udb = cdb[:unit]
       html = enclose('html')
       mk_head(html.enclose('head'))
       @div = html.enclose('body').enclose('div', class: 'outline')
@@ -22,8 +23,8 @@ module CIAX
       parent.element('title', 'CIAX-XML')
       atrb = { rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css' }
       parent.element('link', nil, atrb)
-      fmt = 'var Type="status",Site="%s",Port="%s";'
-      script = format(fmt, @dbi[:id], @dbi[:port])
+      fmt = 'var Type="status",Site="%s",Host="%s",Port="%s";'
+      script = format(fmt, @dbi[:id], @dbi[:host], @dbi[:port])
       _mk_script(parent, '', JQUERY)
       _mk_script(parent, script)
       _mk_script(parent, '', 'ciax-xml.js')
@@ -131,7 +132,7 @@ module CIAX
     def _mk_button(parent, umem)
       span = parent.enclose('span', class: 'center')
       umem.each do|id|
-        label = @cdb[id][:label]
+        label = @idx[id][:label]
         _elem_button(span, id, label)
       end
       self

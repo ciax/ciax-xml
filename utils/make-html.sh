@@ -4,7 +4,7 @@
 setup-www
 id=$1
 shift
-tmp=$HOME/.var/temp
+tmp=$HOME/.var/temp.$(date +%s)
 if libhtmltbl $id $* > $tmp; then
     file=$HOME/.var/json/$id.html
     mv $tmp $file

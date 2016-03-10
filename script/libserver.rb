@@ -16,7 +16,7 @@ module CIAX
       end
       @server_input_proc = proc { |line| j2h(line) }
       @sv_stat.ext_file.auto_save.ext_log
-      @server_output_proc = proc { @sv_stat.to_j }
+      @server_output_proc = proc { @sv_stat.to_jj }
       server_thread
     end
 

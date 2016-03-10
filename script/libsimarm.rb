@@ -20,7 +20,7 @@ module CIAX
       private
 
       def about(x) # torerance
-        (-@tol..@tol).cover?(@axis.pulse/100 - x) ? '1' : '0'
+        (-@tol..@tol).cover?(@axis.pulse / 100 - x) ? '1' : '0'
       end
     end
 

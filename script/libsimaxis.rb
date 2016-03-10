@@ -8,7 +8,7 @@ module CIAX
       attr_accessor :speed, :hardlim
       attr_reader :pulse, :busy, :help
       def initialize(hl_min = -999_999, hl_max = 999_999, spd = 1_000)
-        Msg.cfg_err("Limit Max < Min") if hl_min > hl_max
+        Msg.cfg_err('Limit Max < Min') if hl_min > hl_max
         @hl_min = hl_min
         @hl_max = hl_max
         @max_range = 1_000_000_000
@@ -36,11 +36,19 @@ module CIAX
       end
 
       def pulse=(num)
-        @pulse = max(min(num, @max_range), -@max_range)
+        @pulse = [[num, @max_range].min, -@max_range].max
       end
 
       def stop
         @busy = nil
+      end
+
+      def up_limit?
+        @pulse > @hl_max
+      end
+
+      def dw_limit?
+        @pulse < @hl_min
       end
 
       private

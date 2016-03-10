@@ -7,7 +7,6 @@ module CIAX
     # Slosyn Driver Simulator
     class Slosyn < Server
       attr_accessor :slo_e1, :slo_e2, :slo_wn
-      attr_reader :slo_err
       def initialize(dl = -100, ul = 100, spd = 1, port = 10_000, *args)
         super(port, *args)
         @separator = "\r\n"
@@ -42,6 +41,16 @@ module CIAX
       public
 
       # Status Commands
+      def slo_err
+        if @axis.up_limit?
+          '128'
+        elsif @axis.dw_limit?
+          '129'
+        else
+          '0'
+        end
+      end
+
       def slo_busy
         @axis.busy ? 1 : 0
       end

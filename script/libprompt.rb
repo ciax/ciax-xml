@@ -112,6 +112,13 @@ module CIAX
       post_upd
     end
 
+    # Merge sub prompt for picked up keys
+    def sub_merge(sub, args)
+      type?(sub, Prompt)
+      @db.update(sub.db)
+      update(sub.pick(args))
+    end
+    
     private(:[], :[]=)
   end
 end

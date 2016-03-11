@@ -10,17 +10,13 @@
         <item id="c1on" label="ON" ref="x1on"/>
         <item id="c1off" label="OFF" ref="x1off"/>
       </unit>
-      <unit id="uca" title="ca[on|off]" label="CAS BOTH [%s]">
-        <item id="caon" label="ON" ref="x01on"/>
-        <item id="caoff" label="OFF" ref="x01off"/>
-      </unit>
     </group>
     <group id="gms" caption="STB MOIRCS">
-      <unit id="um2" title="m2[on|off]" label="STB MOIRCS CR(S8)) [%s]">
+      <unit id="um2" title="m2[on|off]" label="STB MOIRCS/CR(S8)) [%s]">
         <item id="m2on" label="ON" ref="x2on"/>
         <item id="m2off" label="OFF" ref="x2off"/>
       </unit>
-      <unit id="um1" title="m1[on|off]" label="STB MOIRCS MAIN(S9) [%s]">
+      <unit id="um1" title="m1[on|off]" label="STB MOIRCS/MAIN(S9) [%s]">
         <item id="m1on" label="ON" ref="x3on"/>
         <item id="m1off" label="OFF" ref="x3off"/>
       </unit>
@@ -30,13 +26,17 @@
       </unit>
     </group>
     <group id="gmc" caption="CAS MOIRCS">
-      <unit id="ucm" title="cm[on|off]" label="CAS MOIRCS/MAIN [%s]">
+      <unit id="ucm" title="cm[on|off]" label="CAS MOIRCS/CR(S1) [%s]">
         <item id="cmon" label="ON" ref="x0on"/>
         <item id="cmoff" label="OFF" ref="x0off"/>
       </unit>
-      <unit id="ucc" title="cc[on|off]" label="CAS MOIRCS/CR [%s]">
+      <unit id="ucc" title="cc[on|off]" label="CAS MOIRCS/MAIN(S2) [%s]">
         <item id="ccon" label="ON" ref="x1on"/>
         <item id="ccoff" label="OFF" ref="x1off"/>
+      </unit>
+      <unit id="uca" title="ca[on|off]" label="CAS MOIRCS BOTH [%s]">
+        <item id="caon" label="ON" ref="x01on"/>
+        <item id="caoff" label="OFF" ref="x01off"/>
       </unit>
     </group>
   </alias>

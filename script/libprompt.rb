@@ -34,7 +34,7 @@ module CIAX
     def up(key)
       pre_upd
       cfg_err("No such flag [#{key}]") unless key?(key)
-      self[key] = 'true'
+      rep(key, 'true')
       verbose { "Set [#{key}]" }
       self
     ensure
@@ -44,7 +44,7 @@ module CIAX
     def dw(key)
       pre_upd
       cfg_err("No such flag [#{key}]") unless key?(key)
-      self[key] = 'false'
+      rep(key, 'false')
       verbose { "Reset [#{key}]" }
       self
     ensure
@@ -87,7 +87,7 @@ module CIAX
     end
 
     def to_v
-      verbose { 'Shell' + inspect }
+      verbose { 'Shell' + map{ |k,v| "#{k}:'#{v}'(#{v.object_id})" }.inspect}
       @db.map { |k, v| v if self[k] == 'true' }.join
     end
 

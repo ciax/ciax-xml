@@ -120,10 +120,10 @@ module CIAX
     end
 
     # Generate Hash Pick up keys
-    def pick(keyary, src = self)
+    def pick(keyary)
       hash = Hashx.new
       keyary.each do|key|
-        hash[key] = src[key] if src.key?(key)
+        hash[key] = self[key] if key?(key)
       end
       hash
     end

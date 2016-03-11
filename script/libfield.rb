@@ -87,7 +87,7 @@ module CIAX
       end
 
       def pick(keylist)
-        Hashx.new(data: super(keylist, self[:data]))
+        Hashx.new(data: self[:data].pick(keylist))
       end
 
       # For propagate to Status update

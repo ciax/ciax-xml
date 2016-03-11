@@ -87,7 +87,8 @@ module CIAX
     end
 
     def to_v
-      verbose { 'Shell' + map{ |k,v| "#{k}:'#{v}'(#{v.object_id})" }.inspect}
+      verbose { 'Shell' + map { |k, v| "#{k}:'#{v}'(#{v.object_id})" }.inspect }
+      # Because true(String) will be converted to Boolean in JSON
       @db.map { |k, v| v if self[k].to_s == 'true' }.join
     end
 
@@ -118,7 +119,7 @@ module CIAX
       @db.update(sub.db)
       update(sub.pick(args))
     end
-    
+
     private(:[], :[]=)
   end
 end

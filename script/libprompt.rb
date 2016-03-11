@@ -27,14 +27,14 @@ module CIAX
     # For Binary Data with display db
     def add_flg(db = {})
       @db.update(type?(db, Hash))
-      db.keys.each { |k| self[k] = nil }
+      db.keys.each { |k| self[k] = 'false' }
       self
     end
 
     def up(key)
       pre_upd
       cfg_err("No such flag [#{key}]") unless key?(key)
-      self[key] = true
+      self[key] = 'true'
       verbose { "Set [#{key}]" }
       self
     ensure
@@ -44,7 +44,7 @@ module CIAX
     def dw(key)
       pre_upd
       cfg_err("No such flag [#{key}]") unless key?(key)
-      self[key] = false
+      self[key] = 'false'
       verbose { "Reset [#{key}]" }
       self
     ensure
@@ -56,7 +56,7 @@ module CIAX
     end
     
     def up?(key)
-      self[key]
+      self[key] == 'true'
     end
     
     # For Array Data
@@ -88,7 +88,7 @@ module CIAX
 
     def to_v
       verbose { 'Shell' + inspect }
-      @db.map { |k, v| v if self[k] }.join('')
+      @db.map { |k, v| v if self[k] == 'true' }.join
     end
 
     def server

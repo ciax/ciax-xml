@@ -54,11 +54,11 @@ module CIAX
     def set_flg(key, flag)
       flag ? up(key) : dw(key)
     end
-    
+
     def up?(key)
       self[key] == 'true'
     end
-    
+
     # For Array Data
     def add_array(key, ary = [])
       self[key] = type?(ary, Array) unless self[key].is_a? Array

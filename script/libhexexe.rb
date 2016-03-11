@@ -10,7 +10,8 @@ module CIAX
     class Exe < Exe
       def initialize(id, cfg, atrb = {})
         super
-        _init_prompt
+        @sub = @cfg[:sub_list].get(id)
+        @sv_stat = @cfg[:sv_stat] = @sub.sv_stat
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
         @port = @sub.sub.port.to_i + 1000

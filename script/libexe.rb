@@ -65,17 +65,6 @@ module CIAX
 
     private
 
-    def _init_prompt(sub_id = @id)
-      # Site Status shared among layers
-      if @cfg[:sub_list]
-        @sub = @cfg[:sub_list].get(sub_id)
-        @sv_stat = @sub.sv_stat
-      else
-        @sv_stat = Prompt.new(@cfg[:layer_type], @id)
-      end
-      @cfg[:sv_stat] = @sv_stat
-    end
-
     def _init_dbi(id, ary = [])
       dbi = type?(@cfg[:db], CIAX::Db).get(id)
       @cfg.update(dbi.pick(ary))

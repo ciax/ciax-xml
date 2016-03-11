@@ -8,7 +8,7 @@ module CIAX
     class Seq
       include Msg
       include Func
-      attr_reader :cfg, :record, :qry, :id, :title
+      attr_reader :cfg, :record, :qry, :id, :title, :sv_stat
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
       # ent should have [:sequence]'[:dev_list]

@@ -21,7 +21,7 @@ module CIAX
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
-        _init_prompt.add_flg(comerr: 'X', ioerr: 'E')
+        @sv_stat = Prompt.new('frm', id).add_flg(comerr: 'X', ioerr: 'E')
         # Post internal command procs
         @host = @cfg[:option].host || dbi[:host]
         @port ||= dbi[:port]

@@ -15,7 +15,7 @@ module CIAX
         verbose { 'Initialize Layer' }
         # id = nil -> taken by ARGV
         _init_net_(_init_dbi(nil, [:sites]))
-        _init_prompt
+        @sv_stat = @cfg[:sv_stat] = Prompt.new('mcr', @id)
         @sub_list = @cfg[:dev_list] = Wat::List.new(cfg)
         _init_domain_
         _init_stat_

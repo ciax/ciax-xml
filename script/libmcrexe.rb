@@ -11,7 +11,6 @@ module CIAX
       def initialize(ment, pid = '0')
         cfg = Config.new
         super(type?(ment, Cmd::Entity).id, cfg)
-        _init_prompt
         _init_cmd_(ment, pid)
         _init_thread_
         self
@@ -32,6 +31,7 @@ module CIAX
         int = @cobj.rem.add_int(Int)
         @seq = Seq.new(ment, pid, int.valid_keys.clear)
         int.def_proc { |ent| ent.msg = @seq.reply(ent.id) }
+        @sv_stat = @seq.sv_stat
       end
 
       # For Thread mode

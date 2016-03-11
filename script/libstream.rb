@@ -42,6 +42,9 @@ module CIAX
         @f.write(str)
         convert('snd', str, cid)
         self
+      rescue Errno::EPIPE
+        @f.close
+        raise(CommError)
       ensure
         post_upd
       end

@@ -51,6 +51,10 @@ module CIAX
       post_upd
     end
 
+    def up?(key)
+      self[key]
+    end
+    
     # For Array Data
     def add_array(key, ary = [])
       self[key] = type?(ary, Array) unless self[key].is_a? Array

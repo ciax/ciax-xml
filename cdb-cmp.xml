@@ -10,10 +10,6 @@
         <item id="c1on" label="ON" ref="x1on"/>
         <item id="c1off" label="OFF" ref="x1off"/>
       </unit>
-      <unit id="uca" title="ca[on|off]" label="CAS BOTH [%s]">
-        <item id="caon" label="ON" ref="x01on"/>
-        <item id="caoff" label="OFF" ref="x01off"/>
-      </unit>
     </group>
     <group id="gms" caption="STB MOIRCS">
       <unit id="um2" title="m2[on|off]" label="STB MOIRCS CR(S8)) [%s]">
@@ -37,6 +33,10 @@
       <unit id="ucc" title="cc[on|off]" label="CAS MOIRCS/CR [%s]">
         <item id="ccon" label="ON" ref="x1on"/>
         <item id="ccoff" label="OFF" ref="x1off"/>
+      </unit>
+      <unit id="uca" title="ca[on|off]" label="CAS MOIRCS BOTH [%s]">
+        <item id="caon" label="ON" ref="x01on"/>
+        <item id="caoff" label="OFF" ref="x01off"/>
       </unit>
     </group>
   </alias>

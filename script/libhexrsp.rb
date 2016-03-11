@@ -7,12 +7,12 @@ module CIAX
     # View class
     class Rsp < Varx
       # sv_stat should have server status (isu,watch,exe..) like App::Exe
-      def initialize(stat, cfg)
+      def initialize(stat, hdb = nil, sv_stat = nil)
         @stat = type?(stat, App::Status)
         super('hex', @stat[:id], @stat[:ver])
-        @dbi = cfg[:hdb].get(@stat.dbi[:app_id])
+        @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
         id = self[:id] || id_err("NO ID(#{id}) in Stat")
-        @sv_stat = type?(cfg[:sv_stat] || Prompt.new('site', id), Prompt)
+        @sv_stat = sv_stat || Prompt.new('site', id)
         @vmode = :x
         _init_upd_
       end
@@ -113,7 +113,7 @@ module CIAX
       require 'libstatus'
       begin
         stat = App::Status.new.ext_file
-        puts Rsp.new(stat, hdb: Db.new)
+        puts Rsp.new(stat)
       rescue InvalidARGS
         Msg.usage(' < status_file')
       end

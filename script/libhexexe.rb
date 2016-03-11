@@ -11,7 +11,7 @@ module CIAX
       def initialize(id, cfg, atrb = {})
         super
         @sub = @cfg[:sub_list].get(id)
-        @sv_stat = @cfg[:sv_stat] = @sub.sv_stat
+        @sv_stat = @sub.sv_stat
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
         @port = @sub.sub.port.to_i + 1000
@@ -22,7 +22,7 @@ module CIAX
       private
 
       def _init_view
-        view = Rsp.new(@sub.sub.stat, @cfg)
+        view = Rsp.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
         @shell_output_proc = proc { view.to_x }
         view.ext_log if @cfg[:option].log?
       end

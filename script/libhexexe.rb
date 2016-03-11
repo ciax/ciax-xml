@@ -17,6 +17,7 @@ module CIAX
         @port = @sub.sub.port.to_i + 1000
         @post_exe_procs.concat(@sub.post_exe_procs)
         _init_view
+        _opt_mode
       end
 
       private
@@ -28,11 +29,13 @@ module CIAX
       end
 
       def ext_server
+        super
+        # Specific setting must be done after super to override them
         @server_input_proc = proc do|line|
           /^(strobe|stat)/ =~ line ? [] : line.split(' ')
         end
         @server_output_proc = @shell_output_proc
-        super
+        self
       end
     end
 

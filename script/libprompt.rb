@@ -51,6 +51,10 @@ module CIAX
       post_upd
     end
 
+    def set_flg(key, flag)
+      flag ? up(key) : dw(key)
+    end
+    
     def up?(key)
       self[key]
     end

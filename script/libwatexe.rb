@@ -56,7 +56,7 @@ module CIAX
         _init_upd_drv_
         @tid_auto = _init_auto_thread_
         @sub.post_exe_procs << proc do
-          @sv_stat.put(:auto, @tid_auto && @tid_auto.alive?)
+          @sv_stat.set_flg(:auto, @tid_auto && @tid_auto.alive?)
         end
         super
       end

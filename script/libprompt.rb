@@ -88,7 +88,7 @@ module CIAX
 
     def to_v
       verbose { 'Shell' + map{ |k,v| "#{k}:'#{v}'(#{v.object_id})" }.inspect}
-      @db.map { |k, v| v if self[k] == 'true' }.join
+      @db.map { |k, v| v if self[k].to_s == 'true' }.join
     end
 
     def server

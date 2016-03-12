@@ -20,7 +20,7 @@ module CIAX
         # LayerDB might generated in List level
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
         @sv_stat = Prompt.new('app', id)
-        @sv_stat.sub_merge(@sub.sv_stat,%i(comerr ioerr))
+        @sv_stat.sub_merge(@sub.sv_stat, %i(comerr ioerr))
         @stat = Status.new(dbi)
         @batch_interrupt = []
         init_server(dbi)

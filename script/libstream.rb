@@ -24,10 +24,6 @@ module CIAX
         update('dir' => '', 'cmd' => '', 'base64' => '')
         verbose { "Initialize [#{iocmd}]" }
         _init_par(cfg)
-<<<<<<< HEAD
-=======
-        puts cfg.path
->>>>>>> 39341f7a1820a59f52f054b5696a8087c281848b
         reopen
       end
 

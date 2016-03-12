@@ -16,21 +16,15 @@ module CIAX
     class Stream < Varx
       attr_reader :binary
       attr_accessor :pre_open_proc, :post_open_proc
-      def initialize(id, ver, iocmd, wait = 0.01, timeout = nil, term = nil)
-        Msg.give_up(' No IO command') if iocmd.to_a.empty?
-        @iocmd = type?(iocmd, Array).compact
-        super('stream', id, ver)
+      def initialize(id, cfg)
+        iocmd = type?(cfg, Config)[:iocmd]
+        Msg.give_up(' No IO command') unless iocmd
+        super('stream', id, cfg[:version])
         @cls_color = 9
         update('dir' => '', 'cmd' => '', 'base64' => '')
-        verbose { "Initialize [#{iocmd.join(' ')}]" }
-        @wait = wait.to_f
-        @timeout = timeout || 10
-        @terminator = term
-        @pre_open_proc = proc {}
-        @post_open_proc = proc {}
-        Signal.trap(:CHLD) do
-          verbose { "#{@iocmd} is terminated" }
-        end
+        verbose { "Initialize [#{iocmd}]" }
+        _init_par(cfg)
+        puts cfg.path
         reopen
       end
 
@@ -56,18 +50,7 @@ module CIAX
         reopen
         str = ''
         20.times do
-          if IO.select([@f], nil, nil, @timeout)
-            begin
-              str << @f.sysread(4096)
-              verbose { "Binary Getting\n" + visible(str) }
-            rescue EOFError
-              # Jumped at quit
-              @f.close
-              raise(CommError)
-            end
-          else
-            Msg.com_err('Stream:No response')
-          end
+          try_rcv(str)
           break if ! @terminator || /#{@terminator}/ =~ str
           verbose { 'Recieved incomplete data, retry' }
         end
@@ -82,7 +65,7 @@ module CIAX
       def reopen
         int = 0
         begin
-          openstrm if !@f || @f.closed?
+          open_strm if !@f || @f.closed?
         rescue SystemCallError
           warning($ERROR_INFO)
           Msg.str_err('Stream Open failed') if int > 2
@@ -95,21 +78,53 @@ module CIAX
 
       private
 
-      def openstrm
+      def _init_par(cfg)
+        sp = type?(cfg, Config)[:stream]
+        @iocmd = cfg[:iocmd].split(' ')
+        @wait = (sp[:wait] || 0.01).to_f
+        @timeout = sp[:timeout] || 10
+        @terminator = esc_code(sp[:terminator])
+        @pre_open_proc = proc {}
+        @post_open_proc = proc {}
+      end
+
+      def open_strm
         # SIGINT gets around the child process
         verbose { 'Stream Opening' }
         @pre_open_proc.call
         Signal.trap(:INT, nil)
         @f = IO.popen(@iocmd, 'r+')
         Signal.trap(:INT, 'DEFAULT')
-        at_exit do
-          Process.kill('INT', @f.pid)
-        end
+        at_exit { close_strm }
         @post_open_proc.call
         verbose { 'Stream Open successfully' }
         # Shut off from Ctrl-C Signal to the child process
         # Process.setpgid(@f.pid,@f.pid)
         self
+      end
+
+      def close_strm
+        return if @f.closed?
+        verbose { 'Closing Stream' }
+        Process.kill('INT', @f.pid)
+        Process.waitpid(@f.pid)
+        @f.close
+        verbose { @f.closed? ? 'Stream Closed' : 'Stream not Closed' }
+      end
+
+      def try_rcv(str)
+        if IO.select([@f], nil, nil, @timeout)
+          begin
+            str << @f.sysread(4096)
+            verbose { "Binary Getting\n" + visible(str) }
+          rescue EOFError
+            # Jumped at quit
+            @f.close
+            raise(CommError)
+          end
+        else
+          Msg.com_err('Stream:No response')
+        end
       end
 
       def convert(dir, data, cid = nil)

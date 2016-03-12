@@ -57,11 +57,7 @@ module CIAX
       end
 
       def ext_driver
-        sp = type?(@cfg[:stream], Hash)
-        iocmd = @cfg[:iocmd].split(' ')
-        timeout = (sp[:timeout] || 10).to_i
-        @stream = Stream.new(@id, @cfg[:version], iocmd,
-                             sp[:wait], timeout, esc_code(sp[:terminator]))
+        @stream = Stream.new(@id, @cfg)
         @stream.ext_log if @cfg[:option].log?
         @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
         @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }

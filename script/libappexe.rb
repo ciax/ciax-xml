@@ -17,12 +17,10 @@ module CIAX
         super
         dbi = _init_dbi(id, %i(frm_site))
         @cfg[:site_id] = id
-        # LayerDB might generated in List level
-        @sub = @cfg[:sub_list].get(@cfg[:frm_site])
-        @sv_stat = Prompt.new('app', id)
-        @sv_stat.sub_merge(@sub.sv_stat, %i(comerr ioerr))
         @stat = Status.new(dbi)
+        @sv_stat = Prompt.new('app', id).add_flg(busy: '*')
         @batch_interrupt = []
+        init_sub
         init_server(dbi)
         init_command
         _opt_mode
@@ -38,8 +36,13 @@ module CIAX
 
       private
 
+      def init_sub
+        # LayerDB might generated in List level
+        @sub = @cfg[:sub_list].get(@cfg[:frm_site])
+        @sv_stat.sub_merge(@sub.sv_stat, %i(comerr ioerr))
+      end
+
       def init_server(dbi)
-        @sv_stat.add_flg(busy: '*')
         @host = @cfg[:option].host || dbi[:host]
         @port ||= dbi[:port]
         self

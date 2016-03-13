@@ -1,8 +1,7 @@
 #!/bin/bash --rcfile
 develop(){
-    pushd "$HOME/ciax-xml/script"
-    git branch |grep '* develop'
-    popd
+    cd "$HOME/ciax-xml/script"
+    git branch |grep '* develop' && export NOCACHE=1 || cd
 }
 
 # Local functions
@@ -15,4 +14,4 @@ export RUBYLIB="$HOME/ciax-xml/script:$RUBYLIB"
 #Alias
 alias rub='rubocop -a -c .rubocop_todo.yml'
 alias rgen='rubocop --auto-gen-config'
-develop >/dev/null && export NOCACHE=1
+develop >/dev/null

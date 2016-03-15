@@ -14,7 +14,7 @@ module CIAX
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         opt[:s] = true
         kill_pid
-        new_pid if opt[:b]
+        new_pid
         main_loop(opt, tag) { yield(cfg, args) }
       end
     end

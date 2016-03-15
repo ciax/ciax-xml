@@ -35,7 +35,7 @@ module CIAX
         cid = [@cfg[:id], *par].join(':')
         opt.update(par: par, cid: cid)
         verbose { "SetPAR(#{@cfg[:id]}): #{par}" }
-        _get_cache(opt, cid)
+        _get_entity(opt, cid)
       end
 
       def valid_pars
@@ -46,20 +46,22 @@ module CIAX
 
       private
 
-      def _get_cache(opt, cid)
-        if key?(cid)
-          verbose { "SetPAR: Entity Cache found(#{cid})" }
-          self[cid]
-        else
-          ent = gen_entity(opt)
-          if @cfg[:nocache]
-            verbose { "SetPAR: Entity No Cache Saved (#{cid})" }
-          else
-            self[cid] = ent
-            verbose { "SetPAR: Entity Cache Saved (#{cid})" }
-          end
-          ent
-        end
+      def _get_entity(opt, cid)
+        return _get_cache(cid) if key?(cid)
+        ent = gen_entity(opt)
+        return _no_cache(cid, ent) if @cfg[:nocache]
+        verbose { "SetPAR: Entity Cache Saved (#{cid})" }
+        self[cid] = ent
+      end
+
+      def _get_cache(cid)
+        verbose { "SetPAR: Entity Cache found(#{cid})" }
+        self[cid]
+      end
+
+      def _no_cache(cid, ent)
+        verbose { "SetPAR: Entity No Cache Saved (#{cid})" }
+        ent
       end
 
       def gen_entity(opt)
@@ -76,50 +78,77 @@ module CIAX
         pary = type?(pary.dup, Array)
         pref = @cfg[:parameters]
         return [] unless pref
+        _par_array(pary, pref)
+      end
+
+      def _par_array(pary, pref)
         pref.map do|par|
           list = par[:list] || []
           disp = list.join(',')
           str = pary.shift
-          unless str
-            if par.key?(:default)
-              verbose { "Validate: Using default value [#{par[:default]}]" }
-              next par[:default]
-            end
-            mary = []
-            mary << format('Parameter shortage (%d/%d)', pary.size, pref.size)
-            mary << @cfg[:disp].item(@cfg[:id])
-            mary << ' ' * 10 + "key=(#{disp})"
-            Msg.par_err(*mary)
-          end
-          if list.empty?
-            next par[:default] if par.key?(:default)
+          if str
+            _conv_par(par, str, list, disp)
           else
-            case par[:type]
-            when 'num'
-              begin
-                num = expr(str)
-              rescue NameError, SyntaxError
-                Msg.par_err('Parameter is not number')
-              end
-              verbose { "Validate: [#{num}] Match? [#{disp}]" }
-              unless list.any? { |r| ReRange.new(r) == num }
-                Msg.par_err("Out of range (#{num}) for [#{disp}]")
-              end
-              next num.to_s
-            when 'reg'
-              verbose { "Validate: [#{str}] Match? [#{disp}]" }
-              unless list.any? { |r| Regexp.new(r).match(str) }
-                Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
-              end
-            else
-              verbose { "Validate: [#{str}] Match? [#{disp}]" }
-              unless list.include?(str)
-                Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
-              end
-            end
+            _par_default(par, pary, pref, disp)
           end
-          str
         end
+      end
+
+      def _conv_par(par, str, list, disp)
+        if list.empty?
+          par.key?(:default) ? par[:default] : str
+        else
+          _conv_by_type(par, str, list, disp)
+        end
+      end
+
+      def _conv_by_type(par, str, list, disp)
+        case par[:type]
+        when 'num'
+          _par_num(str, list, disp)
+        when 'reg'
+          _par_reg(str, list, disp)
+        else
+          _par_str(str, list, disp)
+        end
+      end
+
+      def _par_default(par, pary, pref, disp)
+        if par.key?(:default)
+          verbose { "Validate: Using default value [#{par[:default]}]" }
+          return par[:default]
+        else
+          _err_shortage(pary, pref, disp)
+        end
+      end
+
+      def _err_shortage(pary, pref, disp)
+        mary = []
+        mary << format('Parameter shortage (%d/%d)', pary.size, pref.size)
+        mary << @cfg[:disp].item(@cfg[:id])
+        mary << ' ' * 10 + "key=(#{disp})"
+        Msg.par_err(*mary)
+      end
+
+      def _par_num(str, list, disp)
+        num = expr(str)
+        verbose { "Validate: [#{num}] Match? [#{disp}]" }
+        return num.to_s if list.any? { |r| ReRange.new(r) == num }
+        Msg.par_err("Out of range (#{num}) for [#{disp}]")
+      rescue NameError, SyntaxError
+        Msg.par_err('Parameter is not number')
+      end
+
+      def _par_reg(str, list, disp)
+        verbose { "Validate: [#{str}] Match? [#{disp}]" }
+        return str if list.any? { |r| Regexp.new(r).match(str) }
+        Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
+      end
+
+      def _par_str(str, list, disp)
+        verbose { "Validate: [#{str}] Match? [#{disp}]" }
+        return str if list.include?(str)
+        Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
       end
     end
 

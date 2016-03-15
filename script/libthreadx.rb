@@ -25,7 +25,7 @@ module CIAX
     end
 
     def self.killall
-      Threads.list.each { |t| t.kill }
+      Threads.list.each(&:kill)
     end
   end
 

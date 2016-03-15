@@ -17,7 +17,7 @@ xmlhead(){
     inc
 }
 mkidb(){
-    prtf '<item id="%s" label="%s for Turret %s" ref="opt">\n' "$@"
+    prtf '<item id="%s" label="%s" ref="opt">\n' "$@"
     inc
 }
 
@@ -59,7 +59,7 @@ while read tid t slot tor cls msg desc; do
         [ "$id" ] && close
         open $t
     fi
-    mkidb "${msg,,*}_$t" "${desc:-$msg Filter}" $t
+    mkidb "${msg,,*}_$t" "${desc:-$msg Filter}"
     mkpar $t $slot
 done < <(grep -v '^!' $tsvfile)
 xmltail

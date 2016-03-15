@@ -26,6 +26,7 @@ module CIAX
       err_redirect(opt, tag)
       sleep
     rescue SignalException
+      Threadx.killall
       retry if $ERROR_INFO.message == 'SIGHUP'
     end
 

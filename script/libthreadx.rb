@@ -6,6 +6,7 @@ require 'thread'
 module CIAX
   # Extended Thread class
   class Threadx < Thread
+    Threads = ThreadGroup.new
     NS_COLOR = 4
     include Msg
     def initialize(name, color = 4)
@@ -16,10 +17,15 @@ module CIAX
       end
       th[:name] = name
       th[:color] = color
+      Threads.add(th)
     end
 
     def self.list
       Thread.list.map { |t| t[:name] }
+    end
+
+    def self.killall
+      Threads.list.each { |t| t.kill }
     end
   end
 

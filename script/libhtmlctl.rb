@@ -14,10 +14,10 @@ module CIAX
       private
 
       def _mk_ctl_grp(grpary)
-        _list_groups if grpary.empty?
-        tbody = _mk_tbody('Controls')
+        _check_group if grpary.empty?
         grpary.each do |gid|
-          _list_groups(gid)
+          _check_group(gid)
+          tbody = _mk_tbody('Control ' + @gdb[gid][:caption])
           _mk_ctl_line(gid, tbody)
         end
         self
@@ -74,7 +74,7 @@ module CIAX
         self
       end
 
-      def _list_groups(gid = nil)
+      def _check_group(gid = nil)
         return if @gdb.key?(gid)
         raise InvalidCMD, @gdb.map{|k,v| Msg.itemize(k, v[:caption])}.join("\n")
       end

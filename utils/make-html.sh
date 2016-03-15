@@ -5,7 +5,7 @@ setup-www
 id=$1
 shift
 tmp=$HOME/.var/temp.$(date +%s)
-if libhtmltbl $id $* > $tmp; then
+if libhtmlctl $id $* > $tmp; then
     file=$HOME/.var/json/$id.html
     mv $tmp $file
     echo "$file created"

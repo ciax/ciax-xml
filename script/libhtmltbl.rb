@@ -104,77 +104,6 @@ module CIAX
       end
     end
 
-    # Html Control
-    class Control < Status
-      def initialize(dbi, grpary = [])
-        super(dbi)
-        _mk_ctl_grp(grpary)
-      end
-
-      private
-
-      def _mk_ctl_grp(grpary)
-        return if !@gdb || grpary.empty?
-        tbody = _mk_tbody('Controls')
-        grpary.each do |gid|
-          id_err(@gdb.keys.inspect) unless @gdb.key?(gid)
-          _mk_ctl_line(gid, tbody)
-        end
-        self
-      end
-
-      def _mk_ctl_line(gid, tbody)
-        return unless @udb
-        uary = @gdb[gid][:units] || return
-        td = tbody.enclose('tr').enclose('td', class: 'item')
-        uary.each do|uid|
-          next if _mk_ctl_unit(td, uid)
-          errary = @udb.map { |k, v| itemize(k, v[:label]) }
-          errary.unshift('Wrong CTL Unit')
-          give_up(errary.join("\n"))
-        end
-        self
-      end
-
-      def _mk_ctl_unit(parent, uid)
-        return unless @udb.key?(uid)
-        uat = @udb[uid]
-        _mk_label(parent, uat)
-        umem = uat[:members]
-        if umem.size > 2
-          _mk_select(parent, umem, uid)
-        else
-          _mk_button(parent, umem)
-        end
-      end
-
-      def _mk_label(parent, atrb)
-        return unless atrb[:label]
-        label = atrb[:label].gsub(/\[.*\]/, '')
-        parent.element('span', label, class: 'ctllabel')
-      end
-
-      def _mk_select(parent, umem, uid)
-        span = parent.enclose('span', class: 'center')
-        sel = span.enclose('select', name: uid, onchange: 'seldv(this)')
-        sel.element('option', '--select--')
-        umem.each do|id|
-          label = @idx[id][:label] || id
-          sel.element('option', label, value: id)
-        end
-        self
-      end
-
-      def _mk_button(parent, umem)
-        span = parent.enclose('span', class: 'center')
-        umem.each do|id|
-          label = @idx[id][:label]
-          _elem_button(span, id, label)
-        end
-        self
-      end
-    end
-
     if __FILE__ == $PROGRAM_NAME
       begin
         dbi = Ins::Db.new.get(ARGV.shift)
@@ -182,7 +111,7 @@ module CIAX
         Msg.usage '[id] (ctl)'
       end
       begin
-        tbl = Control.new(dbi, ARGV)
+        tbl = Status.new(dbi)
         puts tbl
       rescue InvalidARGS
         Msg.usage '[id] (ctl)'

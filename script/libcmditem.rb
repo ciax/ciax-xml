@@ -87,33 +87,33 @@ module CIAX
           disp = list.join(',')
           str = pary.shift
           if str
-            _conv_par(par, str, list, disp)
+            _validate_element(par, str, list, disp)
           else
-            _par_default(par, pary, pref, disp)
+            _use_default(par, pary, pref, disp)
           end
         end
       end
 
-      def _conv_par(par, str, list, disp)
+      def _validate_element(par, str, list, disp)
         if list.empty?
           par.key?(:default) ? par[:default] : str
         else
-          _conv_by_type(par, str, list, disp)
+          _validate_by_type(par, str, list, disp)
         end
       end
 
-      def _conv_by_type(par, str, list, disp)
+      def _validate_by_type(par, str, list, disp)
         case par[:type]
         when 'num'
-          _par_num(str, list, disp)
+          _validate_num(str, list, disp)
         when 'reg'
-          _par_reg(str, list, disp)
+          _validate_reg(str, list, disp)
         else
-          _par_str(str, list, disp)
+          _validate_str(str, list, disp)
         end
       end
 
-      def _par_default(par, pary, pref, disp)
+      def _use_default(par, pary, pref, disp)
         if par.key?(:default)
           verbose { "Validate: Using default value [#{par[:default]}]" }
           return par[:default]
@@ -130,7 +130,7 @@ module CIAX
         Msg.par_err(*mary)
       end
 
-      def _par_num(str, list, disp)
+      def _validate_num(str, list, disp)
         num = expr(str)
         verbose { "Validate: [#{num}] Match? [#{disp}]" }
         return num.to_s if list.any? { |r| ReRange.new(r) == num }
@@ -139,13 +139,13 @@ module CIAX
         Msg.par_err('Parameter is not number')
       end
 
-      def _par_reg(str, list, disp)
+      def _validate_reg(str, list, disp)
         verbose { "Validate: [#{str}] Match? [#{disp}]" }
         return str if list.any? { |r| Regexp.new(r).match(str) }
         Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
       end
 
-      def _par_str(str, list, disp)
+      def _validate_str(str, list, disp)
         verbose { "Validate: [#{str}] Match? [#{disp}]" }
         return str if list.include?(str)
         Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")

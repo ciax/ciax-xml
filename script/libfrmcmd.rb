@@ -42,18 +42,14 @@ module CIAX
         private
 
         def _init_body(ent)
-          verbose { "Body:#{@cfg[:label]}(#{@cfg[:id]})" }
+          verbose { "Body:#{@cfg[:label]}(#{@id})" }
           _add_frame(:body)
           _init_cc
           _add_frame(:main)
-          if @chg_flg && !@cfg[:nocache]
-            warning('Cache stored despite Frame includes Status')
-            @cfg[:nocache] = true
-          end
-          frame = @fstr[:main]
-          verbose { "Cmd Generated [#{@cfg[:id]}]" }
-          @field.echo = frame # For send back
-          ent[:frame] = frame
+          _chk_nocache
+          verbose { "Cmd Generated [#{@id}]" }
+          # For send back
+          @field.echo = ent[:frame] = @fstr[:main]
           ent
         end
 
@@ -77,24 +73,46 @@ module CIAX
           @frame.cc_set
         end
 
+        def _chk_nocache
+          return if @cfg[:nocache] || !@chg_flg
+          warning("Cache stored (#{@id}) despite Frame includes Status")
+          @cfg[:nocache] = true
+        end
+
         # instance var frame,sel,field,fstr
         def _add_frame(domain)
           @frame.reset
-          @sel[domain].each do|a|
-            case a
-            when Hash
-              frame = a[:val].gsub(/\$\{cc\}/) { @frame.cc }
-              subfrm = @field.subst(frame)
-              @chg_flg = true if subfrm != frame
-              # Allow csv parameter
-              subfrm.split(',').each do|s|
-                @frame.add(s, a)
-              end
-            else # ccrange,body ...
-              @frame.add(@fstr[a.to_sym])
-            end
-          end
+          @sel[domain].each { |db| _frame_by_type(db) }
           @fstr[domain] = @frame.copy
+        end
+
+        def _frame_by_type(db)
+          if db.is_a? Hash
+            subfrm = _conv_by_stat(_conv_by_cc(db[:val]))
+            _set_csv_frame(subfrm, db)
+          else # ccrange,body ...
+            @frame.add(@fstr[db.to_sym])
+          end
+        end
+
+        def _conv_by_cc(val)
+          val.gsub(/\$\{cc\}/) { @frame.cc }
+        end
+
+        def _conv_by_stat(frame)
+          subfrm = @field.subst(frame)
+          if subfrm != frame
+            @chg_flg = true
+            warning "Convert (#{@id}) #{frame.inspect} -> #{subfrm.inspect}"
+          end
+          subfrm
+        end
+
+        def _set_csv_frame(subfrm, db)
+          # Allow csv parameter
+          subfrm.split(',').each do|s|
+            @frame.add(s, db)
+          end
         end
       end
     end

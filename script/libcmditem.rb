@@ -23,18 +23,20 @@ module CIAX
       NS_COLOR = 3
       include CmdProc
       # grp_cfg should have :id,'label',:parameters,:def_proc
+      attr_reader :id
       def initialize(cfg, attr = {})
         super()
         @cls_color = 6
         @cfg = cfg.gen(self).update(attr)
+        @id = @cfg[:id]
       end
 
       def set_par(par, opt = {})
         par = @cfg[:argv] if @cfg[:argv].is_a? Array
         par = validate(type?(par, Array))
-        cid = [@cfg[:id], *par].join(':')
+        cid = [@id, *par].join(':')
         opt.update(par: par, cid: cid)
-        verbose { "SetPAR(#{@cfg[:id]}): #{par}" }
+        verbose { "SetPAR(#{@id}): #{par}" }
         _get_entity(opt, cid)
       end
 
@@ -125,7 +127,7 @@ module CIAX
       def _err_shortage(pary, pref, disp)
         mary = []
         mary << format('Parameter shortage (%d/%d)', pary.size, pref.size)
-        mary << @cfg[:disp].item(@cfg[:id])
+        mary << @cfg[:disp].item(@id)
         mary << ' ' * 10 + "key=(#{disp})"
         Msg.par_err(*mary)
       end

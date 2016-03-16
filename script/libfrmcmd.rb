@@ -32,6 +32,7 @@ module CIAX
           @field = type?(@cfg[:field], Field)
           @fstr = {}
           @sel = _init_sel
+          @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
           @chg_flg = nil
           @frame = _init_frame
           @sel[:body] = ent.deep_subst(@cfg[:body])
@@ -103,7 +104,7 @@ module CIAX
           subfrm = @field.subst(frame)
           if subfrm != frame
             @chg_flg = true
-            warning "Convert (#{@id}) #{frame.inspect} -> #{subfrm.inspect}"
+            verbose { "Convert (#{@id}) #{frame.inspect} -> #{subfrm.inspect}" }
           end
           subfrm
         end

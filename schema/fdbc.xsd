@@ -63,6 +63,7 @@
         <xsd:element ref="fdbc:body"/>
         <xsd:element ref="fdbc:ccrange"/>
       </xsd:choice>
+      <xsd:attribute name="nocache" type="xsd:boolean"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="body">

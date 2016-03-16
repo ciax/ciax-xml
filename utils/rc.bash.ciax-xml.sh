@@ -14,4 +14,5 @@ export RUBYLIB="$HOME/ciax-xml/script:$RUBYLIB"
 #Alias
 alias rub='rubocop -a -c .rubocop_todo.yml'
 alias rgen='rubocop --auto-gen-config'
+alias jj='ruby -r json -e "jj(JSON.parse(gets(nil)))"'
 develop >/dev/null

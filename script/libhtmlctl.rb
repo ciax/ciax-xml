@@ -16,6 +16,7 @@ module CIAX
       def _mk_ctl_grp(grpary)
         _check_group if grpary.empty?
         grpary.each do |gid|
+          next if gid == '-'
           _check_group(gid)
           tbody = _mk_tbody('Control ' + @gdb[gid][:caption])
           _mk_ctl_line(gid, tbody)

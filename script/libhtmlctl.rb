@@ -28,7 +28,7 @@ module CIAX
         return unless @udb
         uary = @gdb[gid][:units] || return
         td = tbody.enclose('tr').enclose('td', class: 'item')
-        uary.each do|uid|
+        uary.sort.each do|uid|
           next if _mk_ctl_unit(td, uid)
           errary = @udb.map { |k, v| itemize(k, v[:label]) }
           errary.unshift('Wrong CTL Unit')

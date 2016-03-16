@@ -13,7 +13,7 @@
       <string format="%02X">${cc}</string>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Protocol">
+      <group id="gpr" caption="Protocol">
         <!-- Ack Commands -->
         <item id="ack" label="ACK" noaffix="true" response="ack" type="protocol">
           <char length="1" label="ACK">6</char>

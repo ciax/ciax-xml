@@ -29,61 +29,56 @@ module CIAX
       def _add_item(e0, gid)
         id, itm = super
         verbose { "MACRO:[#{id}]" }
-        body = (itm[:body] ||= [])
-        final = Hashx.new
+        @body = (itm[:body] ||= [])
+        @vstep = Hashx.new
+        _add_steps(e0, itm)
+        _add_verify_step
+        [id, itm]
+      end
+
+      def _add_steps(e0, itm)
         e0.each do|e1|
           atrb = { type: e1.name }
           atrb.update(e1.to_h)
           _get_sites_(atrb)
           par2item(e1, itm) && next
-          case e1.name
-          when 'mesg'
-            body << atrb
-          when 'check', 'wait'
-            body << make_condition(e1, atrb)
-          when 'goal'
-            body << make_condition(e1, atrb)
-            final.update(atrb.extend(Enumx).deep_copy)[:type] = 'verify'
-          when 'upd'
-            body << atrb
-            verbose { "UPDATE:[#{e1[:name]}]" }
-          when 'cfg'
-            atrb[:args] = getcmd(e1)
-            atrb.delete(:name)
-            body << atrb
-            verbose { "CONFIG:[#{e1[:name]}]" }
-          when 'exec'
-            atrb[:args] = getcmd(e1)
-            atrb.delete(:name)
-            body << atrb
-            verbose { "COMMAND:[#{e1[:name]}]" }
-          when 'mcr'
-            atrb[:args] = getcmd(e1)
-            atrb.delete(:name)
-            body << atrb
-          when 'select'
-            atrb[:select] = get_option(e1)
-            atrb.delete(:name)
-            body << atrb
-          end
+          _step_by_name(e1, atrb)
+          _make_verify_step(atrb) if e1.name == 'goal'
+          @body << atrb
         end
-        unless final.empty?
-          validate_par(final)
-          body << final
-        end
-        [id, itm]
       end
 
-      def make_condition(e1, atrb)
+      def _step_by_name(e1, atrb)
+        case e1.name
+        when 'check', 'wait', 'goal'
+          _make_condition(e1, atrb)
+        when 'cfg', 'exec', 'mcr'
+          atrb[:args] = _get_cmd(e1)
+        when 'select'
+          atrb[:select] = _get_option(e1)
+        end
+        atrb.delete(:name)
+      end
+
+      def _make_verify_step(atrb)
+        @vstep.update(atrb.extend(Enumx).deep_copy)[:type] = 'verify'
+      end
+
+      def _add_verify_step
+        return if @vstep.empty?
+        validate_par(@vstep)
+        @body << @vstep
+      end
+
+      def _make_condition(e1, atrb)
         e1.each do|e2|
           hash = e2.to_h(:cri)
           hash[:cmp] = e2.name
           (atrb[:cond] ||= []) << hash
         end
-        atrb
       end
 
-      def getcmd(e1)
+      def _get_cmd(e1)
         args = [e1[:name]]
         e1.each do|e2|
           args << e2.text
@@ -91,11 +86,11 @@ module CIAX
         args
       end
 
-      def get_option(e1)
+      def _get_option(e1)
         options = {}
         e1.each do|e2|
           e2.each do|e3|
-            options[e2[:val] || '*'] = getcmd(e3)
+            options[e2[:val] || '*'] = _get_cmd(e3)
           end
         end
         options

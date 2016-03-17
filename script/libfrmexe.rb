@@ -18,7 +18,7 @@ module CIAX
         dbi = _init_dbi(id, %i(stream iocmd))
         @cfg[:site_id] = id
         @stat = @cfg[:field] = Field.new(dbi)
-        @sv_stat = Prompt.new('frm', id).add_flg(comerr: 'X', ioerr: 'E')
+        @sv_stat = Prompt.new('dev', id).add_flg(comerr: 'X', ioerr: 'E')
         init_server(dbi)
         init_command
         _opt_mode

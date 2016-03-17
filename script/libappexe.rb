@@ -18,7 +18,7 @@ module CIAX
         dbi = _init_dbi(id, %i(frm_site))
         @cfg[:site_id] = id
         @stat = Status.new(dbi)
-        @sv_stat = Prompt.new('app', id).add_flg(busy: '*')
+        @sv_stat = Prompt.new('site', id).add_flg(busy: '*')
         @batch_interrupt = []
         init_sub
         init_server(dbi)

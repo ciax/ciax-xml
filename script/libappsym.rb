@@ -61,24 +61,25 @@ module CIAX
       end
 
       def _match_numeric(sym, cri, val)
-        tol = sym[:tolerance].to_f.abs
-        verbose { "VIEW:Numeric:[#{cri}+-#{tol}] and [#{val}]" }
-        return if cri.split(',').all? do|c|
-          (val.to_f - c.to_f).abs > tol
-        end
-        format(sym[:msg], val)
+        tol = sym[:tolerance]
+        return unless cri.split(',').any? { |c| _within?(c, val, tol) }
+        msg = format(sym[:msg], val)
+        verbose { "VIEW:Numeric:[#{cri}+-#{tol}] and [#{val}] -> #{msg}" }
+        msg
       end
 
       def _match_range(sym, cri, val)
-        return unless ReRange.new(cri) == val
-        verbose { "VIEW:Range:[#{cri}] and [#{val}]" }
-        format(sym[:msg], val)
+        return unless _within?(cri, val)
+        msg = format(sym[:msg], val)
+        verbose { "VIEW:Range:[#{cri}] and [#{val}] -> #{msg}" }
+        msg
       end
 
       def _match_pattern(sym, cri, val)
         return unless /#{cri}/ =~ val || val == 'default'
-        verbose { "VIEW:Regexp:[#{cri}] and [#{val}]" }
-        sym[:msg] || "N/A(#{val})"
+        msg = sym[:msg] || "N/A(#{val})"
+        verbose { "VIEW:Regexp:[#{cri}] and [#{val}] -> #{msg}" }
+        msg
       end
 
       def _chk_tbl(sid)
@@ -86,6 +87,11 @@ module CIAX
         return tbl if tbl
         alert("Table[#{sid}] not exist")
         nil
+      end
+
+      def _within?(cri, val, tol = nil)
+        cri += ">#{tol}" if tol
+        ReRange.new(cri) == val
       end
     end
 

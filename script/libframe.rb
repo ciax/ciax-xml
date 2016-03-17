@@ -60,40 +60,10 @@ module CIAX
       def cut(e0)
         verbose { "Cut Start for [#{@frame.inspect}](#{@frame.size})" }
         return verify(e0) if e0[:val] # Verify value
-        len = e0[:length]
-        del = e0[:delimiter]
-        if len
-          verbose { "Cut by Size [#{len}]" }
-          if len.to_i > @frame.size
-            alert("Cut reached end [#{@frame.size}/#{len}] ")
-            str = @frame
-            cc_add(str)
-          else
-            str = @frame.slice!(0, len.to_i)
-            cc_add(str)
-          end
-        elsif del
-          dlm = esc_code(del).to_s
-          verbose { "Cut by Delimiter [#{dlm.inspect}]" }
-          str, dlm, @frame = @frame.partition(dlm)
-          cc_add(str + dlm)
-        else
-          verbose { 'Cut all the rest' }
-          str = @frame
-          cc_add(str)
-        end
-        if str.empty?
-          alert('Cut Empty')
-          return ''
-        end
-        len = str.size
+        str = _cut_by_type(e0)
+        return '' if str.empty?
         verbose { "Cut String: [#{str.inspect}]" }
-        # Pick Part
-        r = e0[:slice]
-        if r
-          str = str.slice(*r.split(':').map(&:to_i))
-          verbose { "Pick: [#{str.inspect}] by range=[#{r}]" }
-        end
+        str = _pick_part(str, e0[:slice])
         decode(e0, str)
       end
 
@@ -141,6 +111,46 @@ module CIAX
       end
 
       private
+
+      def _cut_by_type(e0)
+        _cut_len(e0[:length]) || _cut_delim(e0[:delimiter]) || _cut_rest
+      end
+
+      def _cut_len(len)
+        return unless len
+        verbose { "Cut by Size [#{len}]" }
+        if len.to_i > @frame.size
+          alert("Cut reached end [#{@frame.size}/#{len}] ")
+          str = @frame
+        else
+          str = @frame.slice!(0, len.to_i)
+        end
+        cc_add(str)
+        str
+      end
+
+      def _cut_delim(del)
+        return unless del
+        dlm = esc_code(del).to_s
+        verbose { "Cut by Delimiter [#{dlm.inspect}]" }
+        str, dlm, @frame = @frame.partition(dlm)
+        cc_add(str + dlm)
+        str
+      end
+
+      def _cut_rest
+        verbose { 'Cut all the rest' }
+        str = @frame
+        cc_add(str)
+        str
+      end
+
+      def _pick_part(str, range)
+        return str unless range
+        str = str.slice(*range.split(':').map(&:to_i))
+        verbose { "Pick: [#{str.inspect}] by range=[#{range}]" }
+        str
+      end
 
       def verify(e0)
         ref = e0[:val]

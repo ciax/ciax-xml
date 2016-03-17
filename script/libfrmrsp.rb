@@ -63,7 +63,7 @@ module CIAX
           getfield_rec(['body'])
         else
           getfield_rec(@sel[:main])
-          @frame.cc_check(@cache.delete('cc'))
+          @frame.cc.check(@cache.delete('cc'))
         end
         self[:data] = @cache
       end
@@ -92,9 +92,9 @@ module CIAX
 
       def _make_cc
         enclose('Entering Ceck Code Node', 'Exitting Ceck Code Node') do
-          @frame.cc_mark
+          @frame.cc.mark
           getfield_rec(@sel[:ccrange])
-          @frame.cc_set
+          @frame.cc.set
         end
       end
 

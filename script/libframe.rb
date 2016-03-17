@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libmsg'
 require 'libfrmcode'
+require 'libfrmcheck'
 
 module CIAX
   # Frame Layer
@@ -18,8 +19,7 @@ module CIAX
       def initialize(endian = nil, ccmethod = nil, terminator = nil)
         @cls_color = 11
         @endian = endian
-        @ccrange = nil
-        @method = ccmethod
+        @cc = CheckCode.new(ccmethod)
         @terminator = esc_code(terminator)
         reset
       end
@@ -36,7 +36,7 @@ module CIAX
         if frame
           code = encode(frame, e)
           @frame << code
-          @ccrange << code if @ccrange
+          @cc.add(code)
           verbose { "Add [#{frame.inspect}]" }
         end
         self
@@ -69,49 +69,6 @@ module CIAX
         decode(str, e0)
       end
 
-      # Check Code
-      def cc_add(str) # Add to check code
-        @ccrange << str if @ccrange
-        verbose { "Cc Add to Range Frame [#{str.inspect}]" }
-        self
-      end
-
-      def cc_mark # Check Code Start
-        verbose { 'Cc Mark Range Start' }
-        @ccrange = ''
-        self
-      end
-
-      def cc_set # Check Code End
-        verbose { "Cc Frame [#{@ccrange.inspect}]" }
-        chk = 0
-        case @method
-        when 'len'
-          chk = @ccrange.length
-        when 'bcc'
-          @ccrange.each_byte { |c| chk ^= c }
-        when 'sum'
-          @ccrange.each_byte { |c| chk += c }
-          chk = chk % 256
-        else
-          Msg.cfg_err("No such CC method #{@method}")
-        end
-        verbose { "Cc Calc [#{@method.upcase}] -> (#{chk})" }
-        @ccrange = nil
-        @cc = chk.to_s
-      end
-
-      def cc_check(cc)
-        return self unless cc
-        if cc == @cc
-          verbose { "Cc Verify OK [#{cc}]" }
-        else
-          fmt = 'CC Mismatch:[%s] (should be [%s]) in [%s]'
-          cc_err(format(fmt, cc, @cc, @ccrange.inspect))
-        end
-        self
-      end
-
       private
 
       def _cut_by_type(e0)
@@ -127,7 +84,7 @@ module CIAX
         else
           str = @frame.slice!(0, len.to_i)
         end
-        cc_add(str)
+        @cc.add(str)
         str
       end
 
@@ -136,14 +93,14 @@ module CIAX
         dlm = esc_code(del).to_s
         verbose { "Cut by Delimiter [#{dlm.inspect}]" }
         str, dlm, @frame = @frame.partition(dlm)
-        cc_add(str + dlm)
+        @cc.add(str + dlm)
         str
       end
 
       def _cut_rest
         verbose { 'Cut all the rest' }
         str = @frame
-        cc_add(str)
+        @cc.add(str)
         str
       end
 
@@ -170,7 +127,7 @@ module CIAX
           fmt = 'Mismatch(%s/%s):%s for %s'
           cc_err(format(fmt, e0[:label], e0[:decode], val.inspect, ref.inspect))
         end
-        cc_add(str)
+        @cc.add(str)
         str
       end
     end

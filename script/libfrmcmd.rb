@@ -69,9 +69,9 @@ module CIAX
 
         def _init_cc
           return unless @sel.key?(:ccrange)
-          @frame.cc_mark
+          @frame.cc.mark
           _add_frame(:ccrange)
-          @frame.cc_set
+          @frame.cc.set
         end
 
         def _chk_nocache

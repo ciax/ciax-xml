@@ -6,11 +6,14 @@ module CIAX
     include Comparable
     # Range format (limit) "X","X:",":X","X<","<X"
     # Range format (between) "X:Y","X<Y","X<:Y","X:<Y"
+    # Range format (tolerance) "X>Y" -> X+-Y
     def initialize(str)
       @eq = @max = @min = @min_ex = @max_ex = nil
       if /[:<]+/ =~ str
         _set_min($&, $`)
         _set_max($&, $')
+      elsif />/ =~ str
+        _set_tol(s2f($`), s2f($'))
       else
         @eq = s2f(str)
       end
@@ -44,6 +47,11 @@ module CIAX
       return if max == ''
       @max_ex = true if /<$/ =~ ope
       @max = s2f(max)
+    end
+
+    def _set_tol(num, tol)
+      @max = num + tol
+      @min = num - tol
     end
 
     # Accepts int,float,hexstr

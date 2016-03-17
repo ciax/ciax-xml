@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libmsg'
+require 'libfrmcode'
 
 module CIAX
   # Frame Layer
@@ -7,6 +8,7 @@ module CIAX
     # For Command/Response Frame
     class Frame
       include Msg
+      include Codec
       attr_reader :cc
       # terminator: used for detecting end of stream,
       #             cut off before processing in Frame#set().
@@ -32,7 +34,7 @@ module CIAX
       # For Command
       def add(frame, e = {})
         if frame
-          code = encode(e, frame)
+          code = encode(frame, e)
           @frame << code
           @ccrange << code if @ccrange
           verbose { "Add [#{frame.inspect}]" }
@@ -64,7 +66,7 @@ module CIAX
         return '' if str.empty?
         verbose { "Cut String: [#{str.inspect}]" }
         str = _pick_part(str, e0[:slice])
-        decode(e0, str)
+        decode(str, e0)
       end
 
       # Check Code
@@ -157,7 +159,7 @@ module CIAX
         len = e0[:length] || ref.size
         str = @frame.slice!(0, len.to_i)
         if e0[:decode]
-          val = decode(e0, str)
+          val = decode(str, e0)
           ref = expr(ref).to_s
         else
           val = str
@@ -169,55 +171,6 @@ module CIAX
           cc_err(format(fmt, e0[:label], e0[:decode], val.inspect, ref.inspect))
         end
         cc_add(str)
-        str
-      end
-
-      def decode(e0, code) # Chr -> Num
-        cdc = e0[:decode]
-        return code.to_s unless cdc
-        case cdc
-        when 'hexstr' # "FF" -> "255"
-          num = code.hex
-          base = 16
-        when 'decstr' # "80000123" -> "-123"
-          # sign: k3n=F, oss=8,
-          sign = (/[8Ff]/ =~ code.slice!(0)) ? '-' : ''
-          code.sub!(/^0+/, '')
-          num = code.empty? ? '0' : sign + num
-          base = 10
-        when 'binstr'
-          num = [code].pack('b*').ord
-          base = 2
-        else
-          # integer
-          ary = code.unpack('C*')
-          ary.reverse! if @endian == 'little'
-          num = ary.inject(0) { |a, e| a * 256 + e }
-          base = 256
-        end
-        case e0[:sign]
-        when 'msb'
-          range = base**code.size
-          num = num < range / 2 ? num : num - range
-        end
-        verbose { "Decode:(#{cdc}) [#{code.inspect}] -> [#{num}]" }
-        num.to_s
-      end
-
-      def encode(e0, str) # Num -> Chr
-        str = e0[:format] % expr(str) if e0[:format]
-        len = e0[:length]
-        if len
-          code = ''
-          num = expr(str)
-          len.to_i.times do
-            c = (num % 256).chr
-            num /= 256
-            code = (@endian == 'little') ? code + c : c + code
-          end
-          verbose { "Encode:[#{str}](#{len}) -> [#{code.inspect}]" }
-          str = code
-        end
         str
       end
     end

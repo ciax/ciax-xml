@@ -10,7 +10,7 @@ module CIAX
       def initialize(ccmethod)
         @method = ccmethod
         @ccrange = nil
-        @cc = ''
+        @cc=''
       end
 
       def add(str) # Add to check code
@@ -52,6 +52,10 @@ module CIAX
           cc_err(format(fmt, cc, @cc, @ccrange.inspect))
         end
         self
+      end
+
+      def to_s
+        @cc
       end
     end
   end

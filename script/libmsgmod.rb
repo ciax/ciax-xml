@@ -12,15 +12,15 @@ module CIAX
       type?(name, String)
       mod ||= self.class
       mary = mod.to_s.split('::')
-      mary.size.times do
-        cpath = (mary + [name]).join('::')
-        begin
-          return CIAX.const_get(cpath)
-        rescue NameError
-          mary.pop
-        end
-      end
-      give_up("No such constant #{name}")
+      chk_module(mary, name)
+    end
+
+    def chk_module(mary, name)
+      cpath = (mary + [name]).join('::')
+      return CIAX.const_get(cpath)
+    rescue NameError
+      mary.pop || give_up("No such constant #{name}")
+      retry
     end
 
     def layer_module

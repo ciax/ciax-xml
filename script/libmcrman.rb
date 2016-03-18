@@ -30,6 +30,23 @@ module CIAX
 
       private
 
+      # Initialize for driver
+      def ext_driver
+        @sv_stat.rep(:sid, '') # For server response
+        _init_proc_pre_exe_
+        _init_proc_extcmd_
+        _init_proc_intcmd_
+        _init_proc_intrpt_
+        _init_proc_swmode_
+        @terminate_procs << proc { @stat.clean }
+        super
+      end
+
+      def ext_test
+        ext_driver
+        super
+      end
+
       def _init_atrb_(_cfg, atrb)
         atrb[:db] = Db.new
         atrb[:layer_type] = 'mcr'
@@ -65,21 +82,7 @@ module CIAX
         @port ||= (dbi[:port] || 55_555)
       end
 
-      # Initialize for driver
-      def ext_driver
-        @sv_stat.rep(:sid, '') # For server response
-        _init_pre_exe_
-        _init_extcmd_
-        _init_intcmd_
-        _init_intrpt_
-        _init_swmode_
-        @terminate_procs << proc { @stat.clean }
-        super
-      end
-
-      alias_method :ext_test, :ext_driver
-
-      def _init_pre_exe_
+      def _init_proc_pre_exe_
         @pre_exe_procs << proc do
           @sv_stat.rep(:sid, '')
           @sv_stat.flush(:list, @stat.alives)
@@ -87,7 +90,7 @@ module CIAX
       end
 
       # External Command Group
-      def _init_extcmd_
+      def _init_proc_extcmd_
         @cobj.rem.ext.def_proc do |ent|
           @sv_stat.push(:list, @stat.add(ent).id)
           ent.msg = 'ACCEPT'
@@ -95,21 +98,21 @@ module CIAX
       end
 
       # Internal Command Group
-      def _init_intcmd_
+      def _init_proc_intcmd_
         @cobj.rem.int.def_proc do|ent|
           @sv_stat.rep(:sid, ent.par[0])
           ent.msg = @stat.reply(ent.id) || 'NOSID'
         end
       end
 
-      def _init_intrpt_
+      def _init_proc_intrpt_
         @cobj.get('interrupt').def_proc do |ent|
           @stat.interrupt
           ent.msg = 'INTERRUPT'
         end
       end
 
-      def _init_swmode_
+      def _init_proc_swmode_
         @cobj.get('nonstop').def_proc do
           @sv_stat.up(:nonstop)
         end

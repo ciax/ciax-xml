@@ -1,7 +1,12 @@
 #!/bin/bash --rcfile
 develop(){
     cd "$HOME/ciax-xml/script"
-    git branch |grep '* develop' && export NOCACHE=1 || cd
+    if git branch |grep '* develop' ; then
+        export VER=initialize
+        export NOCACHE=1
+    else
+        cd
+    fi
 }
 
 # Local functions

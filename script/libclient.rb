@@ -17,23 +17,38 @@ module CIAX
       @sv_stat.add_flg(udperr: 'x')
       @udp = UDPSocket.open
       verbose { "Initialize UDP client (#{@id}) [#{@host}:#{@port}]" }
+      _set_client_proc
+      self
+    end
+
+    private
+
+    def _set_client_proc
       @cobj.rem.def_proc do|ent|
         args = ent.id.split(':')
         # Address family not supported by protocol -> see above
         @udp.send(JSON.dump(args), 0, @host, @port.to_i)
         verbose { "UDP Send #{args}" }
-        if IO.select([@udp], nil, nil, 1)
-          res = @udp.recv(1024)
-          @sv_stat.dw(:udperr)
-          verbose { "UDP Recv #{res}" }
-          @sv_stat.load(res) unless res.empty?
-          @sv_stat.msg
-        else
-          @sv_stat.up(:udperr)
-          'TIMEOUT'
-        end
+        _udp_wait
       end
       self
+    end
+
+    def _udp_wait
+      if IO.select([@udp], nil, nil, 1)
+        _udp_recv
+      else
+        @sv_stat.up(:udperr)
+        'TIMEOUT'
+      end
+    end
+
+    def _udp_recv
+      res = @udp.recv(1024)
+      @sv_stat.dw(:udperr)
+      verbose { "UDP Recv #{res}" }
+      @sv_stat.load(res) unless res.empty?
+      @sv_stat.msg
     end
   end
 end

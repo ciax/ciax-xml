@@ -82,31 +82,12 @@ module CIAX
       def _make_rec(e1)
         case e1
         when 'ccrange'
-          _make_cc
+          @frame.cc.enclose { getfield_rec(@sel[:ccrange]) }
         when 'body'
-          _make_body
-        when 'echo' # Send back the command string
-          _make_echo
-        end
-      end
-
-      def _make_cc
-        enclose('Entering Ceck Code Node', 'Exitting Ceck Code Node') do
-          @frame.cc.mark
-          getfield_rec(@sel[:ccrange])
-          @frame.cc.set
-        end
-      end
-
-      def _make_body
-        enclose('Entering Body Node', 'Exitting Body Node') do
           getfield_rec(@sel[:body] || [])
+        when 'echo' # Send back the command string
+          @frame.cut(label: 'Command Echo', val: @echo)
         end
-      end
-
-      def _make_echo
-        verbose { "Set Command Echo [#{@echo.inspect}]" }
-        @frame.cut(label: 'Command Echo', val: @echo)
       end
 
       def frame_to_field(e0)

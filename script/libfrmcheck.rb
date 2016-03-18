@@ -10,7 +10,7 @@ module CIAX
       def initialize(ccmethod)
         @method = ccmethod
         @ccrange = nil
-        @cc=''
+        @checkcode = ''
       end
 
       def add(str) # Add to check code
@@ -19,43 +19,52 @@ module CIAX
         self
       end
 
-      def mark # Check Code Start
+      def enclose
         verbose { 'Cc Mark Range Start' }
         @ccrange = ''
-        self
-      end
-
-      def set # Check Code End
+        yield self
         verbose { "Cc Frame [#{@ccrange.inspect}]" }
-        chk = 0
-        case @method
-        when 'len'
-          chk = @ccrange.length
-        when 'bcc'
-          @ccrange.each_byte { |c| chk ^= c }
-        when 'sum'
-          chk = @ccrange.sum(8)
-        else
-          Msg.cfg_err("No such CC method #{@method}")
-        end
-        verbose { "Cc Calc [#{@method.upcase}] -> (#{chk})" }
+        @checkcode = _calcurate.to_s
+        verbose { "Cc Calc [#{@method.upcase}] -> (#{@checkcode})" }
         @ccrange = nil
-        @cc = chk.to_s
+        self
       end
 
       def check(cc)
         return self unless cc
-        if cc == @cc
+        if cc == @checkcode
           verbose { "Cc Verify OK [#{cc}]" }
         else
           fmt = 'CC Mismatch:[%s] (should be [%s]) in [%s]'
-          cc_err(format(fmt, cc, @cc, @ccrange.inspect))
+          cc_err(format(fmt, cc, @checkcode, @ccrange.inspect))
         end
         self
       end
 
       def to_s
-        @cc
+        @checkcode
+      end
+
+      private
+
+      def _calcurate # Check Code End
+        method("cc_#{@method}").call
+      rescue NameError
+        Msg.cfg_err("No such CC method #{@method}")
+      end
+
+      def cc_len
+        @ccrange.length
+      end
+
+      def cc_bcc
+        chk = 0
+        @ccrange.each_byte { |c| chk ^= c }
+        chk
+      end
+
+      def cc_sum
+        @ccrange.sum(8)
       end
     end
   end

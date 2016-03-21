@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+  <alias id="mp1" label="Power Supply 1">
+    <group id="gcfg" caption="Config">
+      <item id="getconf" label="Get Config" ref="getconf1"/>
+    </group>
+  </alias>
+  <alias id="mp2" label="Power Supply 2">
+    <group id="gcfg" caption="Config">
+      <item id="getconf" label="Get Config" ref="getconf2"/>
+    </group>
+  </alias>
+</cdb>

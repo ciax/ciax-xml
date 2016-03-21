@@ -11,15 +11,9 @@ prtf(){
 
 xmlhead(){
     puts '<?xml version="1.0" encoding="utf-8"?>'
-    puts '<idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">'
+    puts '<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">'
     inc
-    puts '<project id="moircs" label="MOIRCS" column="3">'
-    inc
-    puts '<group id="mc_turret" label="Turret control">'
-    inc
-    puts '<instance id="mix" app_id="ixe" host="moircsobcp" port="25607" label="Turret">'
-    inc
-    puts '<alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">'
+    puts '<alias id="mix" label="MOIRCS Turret">'
     inc
 }
 mkidb(){
@@ -47,13 +41,7 @@ xmltail(){
     dec
     puts "</alias>"
     dec
-    puts "</instance>"
-    dec
-    puts "</group>"
-    dec
-    puts "</project>"
-    dec
-    puts "</idb>"
+    puts "</cdb>"
 }    
 
 

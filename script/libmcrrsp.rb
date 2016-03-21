@@ -16,7 +16,7 @@ module CIAX
       # cfg doesn't change
       def ext_rsp(cfg)
         @cfg = type?(cfg, Config)
-        self[:ver] = @cfg[:ver] || '0' # Version
+        self[:ver] = @cfg[:version] || '0' # Version
         self[:cid] = @cfg[:cid] # Command ID (cmd:par)
         self[:label] = @cfg[:label] # Label for CID
         self[:total_steps] = 0

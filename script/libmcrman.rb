@@ -14,10 +14,12 @@ module CIAX
         atrb[:db] = Db.new
         atrb[:layer_type] = 'mcr'
         super(nil, cfg, atrb)
+        # id = nil -> taken by ARGV
+        _init_net_(_init_dbi(nil, [:sites]))
+        _init_sub
         @sub_list = @cfg[:dev_list]
         _init_domain_
         _init_stat_
-        _init_net_
         @mode = 'MCR'
         OPT[:l] ? ext_client : ext_driver
       end
@@ -61,12 +63,11 @@ module CIAX
         @sv_stat.add_array(:list)
         @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid)
-        @cfg[:sv_stat] = @sv_stat
       end
 
-      def _init_net_
-        @host ||= @dbi[:host]
-        @port ||= (@dbi[:port] || 55_555)
+      def _init_net_(dbi)
+        @host ||= dbi[:host]
+        @port ||= (dbi[:port] || 55_555)
       end
 
       # Initialize for driver

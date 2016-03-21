@@ -53,7 +53,7 @@
         </item>
       </group>
       <group id="gcfg" caption="Configuration">
-        <item id="login" label="TSC Login" response="exit">
+        <item id="login" label="TSC Login" response="exit" type="config">
           <string>gen2cmd</string>
           <string> 1A1901ciax%%%%%%%%%%%%%%%%</string>
           <string> CIAX%%%%%%%%%%%%</string>
@@ -61,16 +61,16 @@
           <string> dummyMenu</string>
           <string> dummyMessage</string>
         </item>
-        <item id="logout" label="TSC Login" response="exit">
+        <item id="logout" label="TSC Login" response="exit" type="config">
           <string>gen2cmd 1A1902</string>
         </item>
-        <item id="init" label="Status Delivery Request" response="exit">
+        <item id="init" label="Status Delivery Request" response="exit" type="config">
           <string>gen2cmd 1A1011</string>
         </item>
-        <item id="tsconly" label="TSC Only Mode(CIAX Mode)" response="exit">
+        <item id="tsconly" label="TSC Only Mode(CIAX Mode)" response="exit" type="config">
           <string>gen2cmd 1A1008TSCONLY</string>
         </item>
-        <item id="tscpri" label="TSC Primaly Mode(OBS Mode)" response="exit">
+        <item id="tscpri" label="TSC Primaly Mode(OBS Mode)" response="exit" type="config">
           <string>gen2cmd 1A1008TSCPRI%</string>
         </item>
         <item id="setinst" label="Set Instrument ID [0-12]" response="exit" type="config">
@@ -80,19 +80,19 @@
         </item>
       </group>
       <group id="gdrv" caption="Drive">
-        <item id="ron" label="InR Drive ON" response="exit">
+        <item id="ron" label="InR Drive ON" response="exit" type="action">
           <string>gen2cmd 904013</string>
         </item>
-        <item id="roff" label="InR Drive OFF" response="exit">
+        <item id="roff" label="InR Drive OFF" response="exit" type="action">
           <string>gen2cmd 904014</string>
         </item>
-        <item id="jon" label="Jack Drive ON" response="exit">
+        <item id="jon" label="Jack Drive ON" response="exit" type="action">
           <string>gen2cmd 132001ON%</string>
         </item>
-        <item id="joff" label="Jack Drive OFF" response="exit">
+        <item id="joff" label="Jack Drive OFF" response="exit" type="action">
           <string>gen2cmd 132001OFF</string>
         </item>
-        <item id="jres" label="Jack Drive Reset" response="exit">
+        <item id="jres" label="Jack Drive Reset" response="exit" type="action">
           <string>gen2cmd 132008</string>
         </item>
       </group>

@@ -24,4 +24,4 @@ file=~/ciax-xml/$db-$id.xml
 while read dmy cmd label; do
     eval ${cmd%>}
     echo $id
-done < <(grep '<item' $file)
+done < <(grep '<item .*type' $file)

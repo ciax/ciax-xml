@@ -1,16 +1,17 @@
 #!/usr/bin/ruby
-require 'libextcmd'
+require 'libcmdext'
 require 'libframe'
 require 'libfield'
 
 module CIAX
   # Frame Layer
   module Frm
-    include Remote
+    include Cmd::Remote
     # cfg should have [:field]
     module Int
+      include Cmd::Remote::Int
       # Internal Command Group
-      class Group < Remote::Int::Group
+      class Group < Int::Group
         def initialize(cfg, attr = {})
           super
           add_item('save', '[key,key...] [tag]', def_pars(2))
@@ -22,7 +23,7 @@ module CIAX
     end
     # External Command Group
     module Ext
-      include Remote::Ext
+      include Cmd::Remote::Ext
       class Group < Ext::Group; end
       # Generate [:frame]
       class Item < Ext::Item
@@ -60,12 +61,12 @@ module CIAX
           if /true|1/ =~ @cfg[:noaffix]
             { main: [:body] }
           else
-            Hashx.new(@cfg[:dbi][:command][:frame])
+            Hashx.new(@cfg[:command][:frame])
           end
         end
 
         def _init_frame
-          sp = @cfg[:dbi][:stream]
+          sp = type?(@cfg[:stream], Hash)
           Frame.new(sp[:endian], sp[:ccmethod])
         end
 
@@ -85,6 +86,7 @@ module CIAX
               frame = a[:val].gsub(/\$\{cc\}/) { @frame.cc }
               subfrm = @field.subst(frame)
               @chg_flg = true if subfrm != frame
+              # Allow csv parameter
               subfrm.split(',').each do|s|
                 @frame.add(s, a)
               end
@@ -107,7 +109,7 @@ module CIAX
         dbi = Db.new.get(id)
         cfg = Config.new
         fld = cfg[:field] = Field.new(dbi)
-        cobj = Index.new(cfg, dbi: dbi)
+        cobj = Index.new(cfg, dbi.pick([:stream]))
         cobj.add_rem.def_proc { |ent| ent[:frame] }
         cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?

@@ -12,20 +12,20 @@ module CIAX
     # Frame Exe module
     class Exe < Exe
       # cfg must have [:db]
-      def initialize(id, cfg)
-        super(id, cfg)
+      def initialize(id, cfg, atrb = {})
+        super
         # DB is generated in List level
         @cfg[:site_id] = id
-        @cfg[:ver] = @dbi['version']
-        @stat = @cfg[:field] = Field.new(@dbi)
+        dbi = _init_dbi(id, %i(stream iocmd))
+        @stat = @cfg[:field] = Field.new(dbi)
         @cobj.add_rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
-        @sv_stat.add_flg(comerr: 'X', ioerr: 'E')
+        _init_sub.add_flg(comerr: 'X', ioerr: 'E')
         # Post internal command procs
-        @host ||= @dbi['host']
-        @port ||= @dbi['port']
-        opt_mode
+        @host ||= dbi[:host]
+        @port ||= dbi[:port]
+        _opt_mode
       end
 
       def exe(args, src = 'local', pri = 1)
@@ -58,17 +58,17 @@ module CIAX
       end
 
       def ext_driver
-        sp = @dbi[:stream]
+        sp = type?(@cfg[:stream], Hash)
         if OPT[:s]
           @mode = 'SIM'
-          iocmd = [SIMCMD, @id, @dbi['version']]
+          iocmd = [ENV['SIMCMD'] || 'frmsim', @id, @cfg[:version]]
           timeout = 60
         else
           @mode = 'DRV'
-          iocmd = @dbi[:iocmd].split(' ')
+          iocmd = @cfg[:iocmd].split(' ')
           timeout = (sp[:timeout] || 10).to_i
         end
-        @stream = Stream.new(@id, @dbi[:version], iocmd,
+        @stream = Stream.new(@id, @cfg[:version], iocmd,
                              sp[:wait], timeout, esc_code(sp[:terminator]))
         @stream.ext_log unless OPT[:s]
         @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
@@ -106,10 +106,9 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
-      cfg = Config.new
-      cfg[:db] = Dev::Db.new
+      id = ARGV.shift
       begin
-        Exe.new(ARGV.shift, cfg).ext_shell.shell
+        Exe.new(id, Config.new, db: Dev::Db.new).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

@@ -20,9 +20,9 @@ module CIAX
 
     def mk_head(parent)
       parent.element('title', 'CIAX-XML')
-      atrb = {rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css'}
-      parent.element('link', nil,atrb)
-      fmt = 'var Type="status",Site="%s",Port="%s";' 
+      atrb = { rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css' }
+      parent.element('link', nil, atrb)
+      fmt = 'var Type="status",Site="%s",Port="%s";'
       script = format(fmt, @dbi[:id], @dbi[:port])
       _mk_script(parent, '', JQUERY)
       _mk_script(parent, script)
@@ -33,11 +33,11 @@ module CIAX
     def mk_stat
       adbs = @dbi[:status]
       @sdb = adbs[:index]
-      td = _mk_stat_line(_mk_tbody,%i(time elapsed)).enclose('td', class: 'center')
+      td = _mk_stat_line(_mk_tbody, %i(time elapsed)).enclose('td', class: 'center')
       _elem_button(td, 'upd')
       adbs[:group].values.each do|g|
         cap = g[:caption] || next
-        _mk_stat_column(g[:members], cap, g['column'])
+        _mk_stat_column(g[:members], cap, g[:column])
       end
       self
     end
@@ -56,7 +56,7 @@ module CIAX
       return unless @udb
       uary = @gdb[gid][:units] || return
       td = tbody.enclose('tr').enclose('td', class: 'item')
-      uary.sort.each do|uid|
+      uary.each do|uid|
         next if mk_ctl_unit(td, uid)
         errary = @udb.map { |k, v| itemize(k, v[:label]) }
         errary.unshift('Wrong CTL Unit')
@@ -137,7 +137,7 @@ module CIAX
     end
 
     def _elem_button(parent, id, label = nil)
-      atrb = {class: 'button', type: 'button'}
+      atrb = { class: 'button', type: 'button' }
       atrb[:value] = (label || id).upcase
       atrb[:onclick] = "dvctl('#{id}')"
       parent.element('input', nil, atrb)

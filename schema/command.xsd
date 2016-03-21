@@ -22,6 +22,7 @@
     <xsd:choice>
       <xsd:element ref="par_num"/>
       <xsd:element ref="par_str"/>
+      <xsd:element ref="par_reg"/>
       <xsd:element ref="par_enum"/>
     </xsd:choice>
   </xsd:group>
@@ -35,6 +36,15 @@
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="par_str">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="label" type="xsd:token"/>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="par_reg">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">

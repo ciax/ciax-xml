@@ -4,6 +4,13 @@
   <xsd:include schemaLocation="range.xsd"/>
   <xsd:include schemaLocation="command.xsd"/>
   <!--watch events-->
+  <xsd:element name="wdb">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="wdb:watch"/>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
   <xsd:element name="watch">
     <xsd:complexType>
       <xsd:sequence>
@@ -12,6 +19,7 @@
       </xsd:sequence>
       <!--interval of event driven cycle (time to next exec by event) default 0.1 sec-->
       <xsd:attribute name="interval" type="xsd:float" use="required"/>
+      <xsd:attribute name="id" type="xsd:token"/>
     </xsd:complexType>
     <xsd:unique name="onchange-ref">
       <xsd:selector xpath="*/wdb:onchange"/>
@@ -46,6 +54,7 @@
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
           <xsd:element ref="wdb:range"/>
           <xsd:element ref="wdb:pattern"/>
+          <xsd:element ref="wdb:compare"/>
         </xsd:choice>
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
           <xsd:element ref="wdb:block"/>
@@ -83,6 +92,20 @@
           <xsd:attribute name="inv" type="xsd:boolean"/>
         </xsd:extension>
       </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="compare">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="wdb:status" minOccurs="2" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute name="inv" type="xsd:boolean"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="status">
+    <xsd:complexType>
+      <xsd:attribute name="var" type="xsd:token" use="required"/>
+      <xsd:attribute name="inv" type="xsd:boolean"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="block" type="wdb:command"/>

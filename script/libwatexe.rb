@@ -8,15 +8,14 @@ module CIAX
     # cfg must have [:db], [:sub_list]
     class Exe < Exe
       attr_reader :sub, :stat
-      def initialize(id, cfg)
-        super(id, cfg)
-        @sub = @cfg[:sub_list].get(@id)
+      def initialize(id, cfg, atrb = {})
+        super(id, cfg, atrb)
+        _init_sub.add_flg(auto: '&', event: '@')
         @cobj.add_rem(@sub.cobj.rem)
         @stat = Event.new(@sub.id)
-        @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')
         @mode = @sub.mode
         @host = @sub.host
-        opt_mode
+        _opt_mode
       end
 
       def join(src = 'local')
@@ -98,11 +97,11 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
+      id = ARGV.shift
       cfg = Config.new
-      cfg[:db] = Ins::Db.new
-      cfg[:sub_list] = App::List.new(cfg)
+      atrb = { db: Ins::Db.new, sub_list: App::List.new(cfg) }
       begin
-        Exe.new(ARGV.shift, cfg).ext_shell.shell
+        Exe.new(id, cfg, atrb).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

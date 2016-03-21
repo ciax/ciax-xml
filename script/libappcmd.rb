@@ -1,14 +1,14 @@
 #!/usr/bin/ruby
-require 'libextcmd'
+require 'libcmdext'
 require 'libappdb'
 # CIAX-XML Command module
 module CIAX
   # Application Mode
   module App
-    include Remote
+    include Cmd::Remote
     # cfg should have [:dbi] and [:stat]
     module Int
-      include Remote::Int
+      include Cmd::Remote::Int
       # Internal Command
       class Group < Int::Group
         def initialize(cfg, attr = {})
@@ -20,7 +20,7 @@ module CIAX
     end
     # External Command
     module Ext
-      include Remote::Ext
+      include Cmd::Remote::Ext
       class Group < Ext::Group; end
       # Generate [:batch]
       class Item < Ext::Item
@@ -62,9 +62,9 @@ module CIAX
       OPT.parse('i', i: 'Instance Mode')
       id = ARGV.shift
       cfg = Config.new
-      dbm = OPT[:i] ? Ins::Db : Db
       begin
-        cobj = Index.new(cfg, dbi: dbm.new.get(id))
+        dbi = (OPT[:i] ? Ins::Db : Db).new.get(id)
+        cobj = Index.new(cfg, dbi.pick)
         cobj.add_rem.def_proc(&:path)
         cobj.rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)

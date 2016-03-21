@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'socket'
 require 'libmsg'
 require 'thread'
 
@@ -31,6 +32,21 @@ module CIAX
           verbose { "Next for #{Thread.current[:name]}" }
         end
       end
+    end
+  end
+
+  class ThreadUdp < Threadx
+    def initialize(name, port)
+      super(name, 9) do
+        begin
+          udp = UDPSocket.open
+          udp.bind('0.0.0.0', port.to_i)
+          loop { yield(udp) }
+        ensure
+          udp.close
+        end
+      end
+      sleep 0.3
     end
   end
 end

@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libappdb'
+require 'libcmddb'
 
 module CIAX
   # Instance Layer
@@ -10,6 +11,7 @@ module CIAX
       def initialize
         super('idb')
         @adb = App::Db.new
+        @cdb = Cmd::Db.new
       end
 
       private
@@ -29,48 +31,36 @@ module CIAX
 
       # Command Domain
       def init_command(doc, dbi)
-        return self unless doc.key?(:alias)
-        cdb = dbi[:command]
-        @idx = cdb[:index]
-        @grps = cdb[:group]
-        @units = cdb[:unit]
-        cdb[:group]['gal'] = Hashx.new(caption: 'Alias')
-        _add_unit(doc[:alias], 'gal')
+        return self unless doc.key?(:command)
+        cdb = super(dbi)
+        @cdb.cover(doc[:command][:ref], cdb)
         cdb
-      end
-
-      def _add_item(e0, gid)
-        id, itm = super
-        ref = itm.delete(:ref)
-        itm.update(@idx[ref].pick([:parameters, :body]))
-        e0.each do|e1|
-          (itm[:argv] ||= []) << e1.text
-        end
-        [id, itm]
       end
 
       # Status Domain
       def init_status(doc, dbi)
         sdb = (dbi[:status] ||= {})
         grp = (sdb[:group] ||= {})
+        idx = (sdb[:index] ||= {})
         (doc[:status] || []).each do|e0|
           p = (sdb[e0.name.to_sym] ||= {})
           case e0.name
-          when 'alias'
-            e0.attr2item(p)
-            ag = (grp[:alias] ||= { caption: 'Alias', members: [] })
-            ag[:members] << e0['id']
           when 'symtbl'
             sdb[:symtbl] << e0['ref']
           else # group, index
             e0.attr2item(p, :ref)
+            e0.each do |e1|
+              e1.attr2item(idx)
+              ag = grp[e0[:ref]]
+              (ag[:members] ||= []) << e1['id']
+            end    
           end
         end
         sdb
       end
-
+      
       def init_general(dbi)
-        dbi[:proj] = PROJ
+        dbi[:proj] = ENV['PROJ']
         dbi[:site_id] = dbi[:ins_id] = dbi[:id]
         dbi[:frm_site] ||= dbi[:id]
       end

@@ -41,25 +41,27 @@ module CIAX
         cobj
       end
 
-      def server(ary)
-        ary.each do|site|
-          sleep 0.3
-          get(site).ext_server.server
-        end.empty? && get(nil)
-        sleep
-      rescue InvalidID
-        OPT.usage('(opt) [id] ....')
-      end
-
       def ext_shell
         extend(Shell).ext_shell
+      end
+
+      # Server Setting
+      def ext_server(sites = [])
+        sites << nil if sites.empty?
+        sites.each { |s| get(s).ext_server }
+        self
+      end
+
+      def server
+        @list.each_value(&:server)
+        self
       end
 
       private
 
       def add(site)
         # layer_module can be Frm,App,Wat,Hex
-        obj = layer_module::Exe.new(site, @cfg)
+        obj = layer_module::Exe.new(site, @cfg, db: @db)
         @list.put(site, obj)
       end
 

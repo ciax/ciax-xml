@@ -89,13 +89,13 @@ module CIAX
         len = hash[:length].to_i
         case hash[:type]
         when /float/
-          format("%0#{len}.2f", val.to_f)
+          format("%0#{len}.2f", val.to_f)[0,len]
         when /int/
-          format("%0#{len}d", val.to_i)
+          format("%0#{len}d", val.to_i)[0,len]
         when /binary/
-          format("%0#{len}b", val.to_i)
+          format("%0#{len}b", val.to_i)[0,len]
         else
-          format("%#{len}s", val)
+          val.to_s.rjust(len,'*')[0,len]
         end
       end
 

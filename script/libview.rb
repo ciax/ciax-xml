@@ -14,6 +14,8 @@ module CIAX
         to_jj
       when :r
         to_r
+      when :o
+        to_o
       else
         super
       end
@@ -32,6 +34,10 @@ module CIAX
     end
 
     def to_v
+      to_r
+    end
+
+    def to_o # original data
       to_r
     end
 

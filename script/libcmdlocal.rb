@@ -88,7 +88,7 @@ module CIAX
               @cfg[:output].vmode(:v)
             end
             add_item('raw', 'Raw Print mode').def_proc do
-              @cfg[:output].vmode(:r)
+              @cfg[:output].vmode(:o)
             end
           end
         end

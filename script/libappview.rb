@@ -54,7 +54,7 @@ module CIAX
         lines.join("\n")
       end
 
-      def to_r
+      def to_o
         @stat.to_r
       end
 

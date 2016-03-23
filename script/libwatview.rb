@@ -27,7 +27,7 @@ module CIAX
         vw << itemize('Blocked', self[:block])
       end
 
-      def to_r
+      def to_o
         @event.to_r
       end
 

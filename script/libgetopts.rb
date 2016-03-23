@@ -34,6 +34,10 @@ module CIAX
       !(cl? || drv?)
     end
 
+    # Conbination(for macro)
+    # -ce: drive + client for device site
+    # -cs: test + server + client for device site
+    # -ces: drive + server + client for device site
     def sub_opt
       opt = dup
       %i(e s).each { |k| opt.delete(k) } if drv? && cl?

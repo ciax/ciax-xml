@@ -74,28 +74,23 @@ module CIAX
       def ext_driver
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
         @buf = init_buf
-        if @cfg[:cmd_line_mode] # command line mode
-          tc = Thread.current
-          @stat.post_upd_procs << proc { tc.run }
-          @post_exe_procs << proc { sleep }
-        end
+        ext_cl_mode
         ext_exec_mode
         ext_non_client
         super
       end
 
       def ext_non_client
-        @cobj.get('set').def_proc do|ent|
-          @stat[:data].rep(ent.par[0], ent.par[1])
-          # "SET:#{ent.par[0]}=#{ent.par[1]}"
-          ent.msg = 'ISSUED'
-        end
-        @cobj.get('del').def_proc do|ent|
-          ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
-          # "DELETE:#{ent.par[0]}"
-          ent.msg = 'ISSUED'
-        end
+        _init_proc_set
+        _init_proc_del
         self
+      end
+
+      def ext_cl_mode
+        return unless @cfg[:cmd_line_mode] # command line mode
+        tc = Thread.current
+        @stat.post_upd_procs << proc { tc.run }
+        @post_exe_procs << proc { sleep }
       end
 
       def ext_exec_mode
@@ -123,7 +118,33 @@ module CIAX
       #      Batch: Repeat until outbuffer is empty
       def init_buf
         buf = Buffer.new(@sv_stat)
-        # App: Sendign a first priority command (interrupt)
+        _init_proc_int(buf)
+        _init_proc_ext(buf)
+        _init_proc_buf(buf)
+        _init_proc_sub
+        # Start buffer server thread
+        buf.server
+      end
+
+      # Initialize procs
+      def _init_proc_set
+        @cobj.get('set').def_proc do|ent|
+          @stat[:data].rep(ent.par[0], ent.par[1])
+          # "SET:#{ent.par[0]}=#{ent.par[1]}"
+          ent.msg = 'ISSUED'
+        end
+      end
+
+      def _init_proc_del
+        @cobj.get('del').def_proc do|ent|
+          ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
+          # "DELETE:#{ent.par[0]}"
+          ent.msg = 'ISSUED'
+        end
+      end
+
+      # App: Sendign a first priority command (interrupt)
+      def _init_proc_int(buf)
         @cobj.get('interrupt').def_proc do |ent, src|
           @batch_interrupt.each do|args|
             verbose { "Issuing:#{args} for Interrupt" }
@@ -132,12 +153,18 @@ module CIAX
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
           ent.msg = 'INTERRUPT'
         end
-        # App: Sending a general App command (Frm batch)
+      end
+
+      # App: Sending a general App command (Frm batch)
+      def _init_proc_ext(buf)
         @cobj.rem.ext.def_proc do|ent, src, pri|
           verbose { "Issuing:[#{ent.id}] from #{src} with priority #{pri}" }
           buf.send(ent, pri)
           ent.msg = 'ISSUED'
         end
+      end
+
+      def _init_proc_buf(buf)
         # Frm: Execute single command
         buf.recv_proc = proc do|args, src|
           verbose { "Processing #{args}" }
@@ -149,13 +176,14 @@ module CIAX
           verbose { 'Propagate Buffer#flush -> Field#flush' }
           @sub.stat.flush
         end
-        # Field: Update after each Batch Frm command finish
+      end
+
+      # Field: Update after each Batch Frm command finish
+      def _init_proc_sub
         @sub.stat.flush_procs << proc do
           verbose { 'Propagate Field#flush -> Status#upd' }
           @stat.upd
         end
-        # Start buffer server thread
-        buf.server
       end
     end
 

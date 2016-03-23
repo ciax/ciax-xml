@@ -9,7 +9,8 @@ module CIAX
       # cfg must have [:db]
       def initialize(cfg, atrb = {})
         super
-        init_sub(Frm::List)
+        opt = @cfg[:option].sub_opt
+        @sub_list = Frm::List.new(@cfg, option: opt)
         store_db(@cfg[:db] ||= Ins::Db.new)
       end
     end

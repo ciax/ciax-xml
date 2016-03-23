@@ -116,6 +116,8 @@
         <field assign="spd" label="Speed"/>
       </item>
       <item id="in">
+        <!-- IN(3) = +Limit -->
+        <!-- IN(4) = -Limit -->
         <array assign="in" label="Input">
           <index range="$1-1" size="5"/>
         </array>

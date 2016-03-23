@@ -165,10 +165,10 @@
         <integer id="err" label="Error Code" symbol="err">
           <field ref="err"/>
         </integer>
-        <string id="lcw" label="CW Limit" symbol="normal">
+        <string id="lcw" label="CW(+) Limit" symbol="normal">
           <field ref="in" index="2"/>
         </string>
-        <string id="lccw" label="CCW Limit" symbol="normal">
+        <string id="lccw" label="CCW(-) Limit" symbol="normal">
           <field ref="in" index="3"/>
         </string>
         <string id="con" label="Contact Sensor" symbol="action">

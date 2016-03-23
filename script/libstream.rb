@@ -81,7 +81,7 @@ module CIAX
         sp = type?(cfg, Config)[:stream]
         @iocmd = cfg[:iocmd].split(' ')
         @wait = (sp[:wait] || 0.01).to_f
-        @timeout = sp[:timeout] || 10
+        @timeout = (sp[:timeout] || 10).to_i
         @terminator = esc_code(sp[:terminator])
         @pre_open_proc = proc {}
         @post_open_proc = proc {}

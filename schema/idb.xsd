@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:idb="http://ciax.sum.naoj.org/ciax-xml/idb" xmlns:idbc="http://ciax.sum.naoj.org/ciax-xml/idbc" xmlns:idbs="http://ciax.sum.naoj.org/ciax-xml/idbs" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/idb" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
-  <xsd:import schemaLocation="idbc.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/idbc"/>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:idb="http://ciax.sum.naoj.org/ciax-xml/idb" xmlns:idbs="http://ciax.sum.naoj.org/ciax-xml/idbs" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/idb" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:import schemaLocation="idbs.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/idbs"/>
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/wdb" schemaLocation="wdb.xsd"/>
   <xsd:element name="idb">
@@ -31,7 +30,6 @@
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="idb:instance"/>
-        <xsd:element ref="idb:reference"/>
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
       <xsd:attribute name="label" type="xsd:token"/>
@@ -40,7 +38,7 @@
   <xsd:element name="instance">
     <xsd:complexType>
       <xsd:sequence minOccurs="0">
-        <xsd:element ref="idbc:alias" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="idb:command" minOccurs="0" maxOccurs="1"/>
         <xsd:element ref="idbs:status" minOccurs="0" maxOccurs="1"/>
         <xsd:element ref="wdb:watch" minOccurs="0" maxOccurs="1"/>
       </xsd:sequence>
@@ -52,7 +50,7 @@
       <xsd:attribute name="label" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="reference">
+  <xsd:element name="command">
     <xsd:complexType>
       <xsd:attribute name="ref" type="xsd:NCName" use="required"/>
     </xsd:complexType>

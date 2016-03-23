@@ -10,16 +10,18 @@ module CIAX
         super('mdb')
       end
 
+      # Allows nil
       def get(id = nil)
-        super(id || PROJ || ARGV.shift)
+        super(id || ENV['PROJ'] || ARGV.shift)
       end
 
       private
 
       def doc_to_db(doc)
-        dbi = Dbi[doc[:attr]]
+        dbi = super
         @sites = []
-        init_command(doc[:group], dbi)
+        init_command(dbi)
+        _add_group(doc[:group])
         dbi[:sites] = @sites.uniq
         dbi
       end
@@ -99,8 +101,6 @@ module CIAX
         end
         options
       end
-
-      private
 
       def _get_sites_(atrb)
         @sites << atrb[:site] if atrb[:site] && /\$/ !~ atrb[:site]

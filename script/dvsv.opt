@@ -1,0 +1,2 @@
+warn "LOADING OPT [#{Time.now}]"
+ARGV.concat(%w()).uniq!

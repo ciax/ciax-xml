@@ -15,15 +15,15 @@
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <group id="gst" caption="Protocol">
         <!-- Ack Commands -->
-        <item id="ack" label="ACK" noaffix="true" response="ack">
+        <item id="ack" label="ACK" noaffix="true" response="ack" type="protocol">
           <char length="1" label="ACK">6</char>
           <string>@</string>
         </item>
-        <item id="clr" label="ACK" noaffix="true" response="default">
+        <item id="clr" label="CLEAR ACK" noaffix="true" response="default" type="protocol">
           <char length="1" label="ACK">6</char>
           <string>@</string>
         </item>
-        <item id="rcv" label="Rcv Status" response="getstat"/>
+        <item id="rcv" label="Rcv Status" response="getstat" type="stat"/>
       </group>
       <group id="gst" caption="Status">
         <!-- Status Commands -->

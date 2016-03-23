@@ -3,13 +3,6 @@
 module CIAX
   require 'English' # To use $! -> $ERROR_INFO
   require 'debug' if ENV['DEBUG']
-  PROJ = ENV['PROJ']
-  SIMCMD = ENV['SIMCMD'] || 'frmsim'
-  VERBOSE = ENV['VER']
-  NOCACHE = ENV['NOCACHE']
-  NOLOG = ENV['NOLOG']
-  NOCOLOR = ENV['NOCOLOR']
-  RANK = ENV['RANK']
   NS_COLOR = 15
 
   # Site Domain

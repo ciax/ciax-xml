@@ -57,9 +57,7 @@
     </group>
     <group id="mc_mtn" label="Maintenance">
       <instance id="mp1" app_id="ken" host="moircsobcp" port="25613" label="Power Supply 1">
-        <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <item id="getconf" label="Get Config" ref="getconf1"/>
-        </alias>
+        <command ref="mp1"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="go0" caption="Output [UNIT A]"/>
           <group ref="go1" caption="Output [UNIT B]"/>
@@ -77,9 +75,7 @@
         </status>
       </instance>
       <instance id="mp2" app_id="ken" host="moircsobcp" port="25614" label="Power Supply 2">
-        <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-          <item id="getconf" label="Get Config" ref="getconf2"/>
-        </alias>
+        <command ref="mp2"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="go0" caption="Output [UNIT A]"/>
           <group ref="go1" caption="Output [UNIT B]"/>

@@ -16,10 +16,12 @@ module CIAX
     def parse(str, db = {})
       Msg.type?(str, String)
       @optdb.update(db)
-      update(_sym_key_(str))
       optary = current_options(str, db.keys)
       make_usage(optary)
+      update(_sym_key_(str))
       make_layer
+    rescue OptionParser::ParseError
+      raise(UserError, '')
     end
 
     def sv?
@@ -56,6 +58,7 @@ module CIAX
       mode_db
       vis_db
       mcr_db
+      sys_db
     end
 
     # Layer option
@@ -85,6 +88,15 @@ module CIAX
         t: 'test mode (default)',
         s: 'simulation mode',
         e: 'execution mode'
+      )
+      self
+    end
+
+    # System process
+    def sys_db
+      @optdb.update(
+        d: 'delete process',
+        b: 'background mode'
       )
       self
     end

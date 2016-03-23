@@ -6,11 +6,11 @@ stop,,
 astop,,
 set0,abs~INIT,pos=INIT&abs~INIT
 mres,,pos=INIT
-ini,pos=INIT,
-gf,pos=FOCUS,
-gr,pos=ROT,
-gw,abs~WAIT,
-gs,pos=STORE,
+ini,pos=INIT,drv=ON
+gf,pos=FOCUS,drv=ON
+gr,pos=ROT,drv=ON
+gw,abs~WAIT,drv=ON
+gs,pos=STORE,drv=ON
 sets,,pos=STORE&abs~STORE
-rini,pos=ROT,
+rini,pos=ROT,drv=ON
 setsot,,pos=ROT&abs~ROT

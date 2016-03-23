@@ -27,7 +27,7 @@ module CIAX
     # Color 1=red,2=green,4=blue,8=bright
     def colorize(text, c = nil)
       return '' if text == ''
-      return text unless !NOCOLOR && STDERR.tty? && c
+      return text unless !ENV['NOCOLOR'] && $stderr.tty? && c
       (c ||= 7).to_i
       "\033[#{c >> 3};3#{c & 7}m#{text}\33[0m"
     end

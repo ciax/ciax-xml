@@ -46,6 +46,7 @@ module CIAX
                 h.each_value { |v| v.replace(r0.formatting(v)) }
                 h[:type] = e1.name
                 cnd << h
+                h[:vars] = e1.map { |e2| e2[:var] } if name == :compare
               end
             end
           end

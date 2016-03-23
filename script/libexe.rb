@@ -2,7 +2,7 @@
 require 'libserver'
 require 'libclient'
 require 'libprompt'
-require 'libremote'
+require 'libcmdremote'
 
 # Provide Server,Client
 # Integrate Command,Status
@@ -18,17 +18,16 @@ module CIAX
     attr_accessor :sv_stat, :shell_input_procs, :shell_output_proc,
                   :server_input_proc, :server_output_proc
     # attr contains the parameter for each layer individually (might have [:db])
-    # cfg should have [:db] shared in the site (among layers)
+    # cfg should have [:dbi] shared in the site (among layers)
+    # @dbi will be set for Varx, @cfg[:dbi] will be set for Index
+    # It is not necessarily the case that id and Config[:dbi][:id] is identical
     def initialize(id, cfg, attr = {})
       super()
       @cls_color = 13
+      @id = id # Allows nil for Mcr::Man
       @cfg = type?(cfg, Config).gen(self).update(attr)
       # layer is Frm,App,Wat,Hex,Mcr,Man
-      @dbi = @cfg[:dbi] = type?(@cfg[:db].get(id), Dbi) if @cfg.key?(:db)
-      @id = id || @dbi[:id]
       @layer = class_path.first.downcase
-      # Site Status shared among layers
-      @sv_stat = Prompt.new(@cfg[:layer_type], @id)
       # Proc for Server Command (by User query}
       @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }]
       # Proc for Server Status Update (by User query}
@@ -37,7 +36,7 @@ module CIAX
       @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }]
       Thread.abort_on_exception = true
       verbose { "initialize [#{@id}]" }
-      @cobj = Remote::Index.new(@cfg)
+      @cobj = Cmd::Remote::Index.new(@cfg)
       @host = OPT.host
     end
 
@@ -72,7 +71,25 @@ module CIAX
 
     private
 
-    def opt_mode
+    def _init_sub(sub_id = @id)
+      # Site Status shared among layers
+      if @cfg[:sub_list]
+        @sub = @cfg[:sub_list].get(sub_id)
+        @sv_stat = @sub.sv_stat
+      else
+        @sv_stat = Prompt.new(@cfg[:layer_type], @id)
+      end
+      @cfg[:sv_stat] = @sv_stat
+    end
+
+    def _init_dbi(id, ary = [])
+      dbi = type?(@cfg[:db], CIAX::Db).get(id)
+      @cfg.update(dbi.pick(ary))
+      @id ||= dbi[:id]
+      dbi
+    end
+
+    def _opt_mode
       # Option handling
       if OPT.sv?
         ext_driver

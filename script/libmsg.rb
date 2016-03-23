@@ -2,7 +2,6 @@
 # Common Module
 require 'libmsgfunc'
 require 'libmsgmod'
-require 'libmsgtime'
 
 module CIAX
   ######################### Message Module #############################
@@ -17,7 +16,7 @@ module CIAX
     #   <val> -> taken from status (incoming)
     #   (val) -> calcurated from status
     def verbose(cond = true)
-      return unless VERBOSE && cond && !@hide_inside
+      return unless ENV['VER'] && cond && !@hide_inside
       data = yield
       (data.is_a?(Array) ? data : [data]).map do|line|
         msg = make_msg(line)
@@ -27,22 +26,22 @@ module CIAX
     end
 
     def info(title)
-      warn make_msg(title, 2) unless STDERR.tty?
+      show make_msg(title, 2) unless $stderr.tty?
       self
     end
 
     def warning(title)
-      warn make_msg(title, 3)
+      show make_msg(title, 3)
       self
     end
 
     def alert(title)
-      warn make_msg(title, 5)
+      show make_msg(title, 5)
       self
     end
 
     def errmsg
-      warn make_msg("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
+      show make_msg("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
     end
 
     # @hide_inside is flag for hiding inside of enclose
@@ -62,7 +61,7 @@ module CIAX
       ind = 0
       base = Msg.ver_indent
       data.each_line do|line|
-        warn Msg.indent(base + ind) + line
+        show Msg.indent(base + ind) + line
         ind = 2
       end
       true
@@ -73,9 +72,6 @@ module CIAX
       @head ||= make_head
       ts = "#{@head}:"
       ts << (c ? Msg.colorize(title.to_s, c) : title.to_s)
-      return ts if STDERR.tty?
-      pass = format('%5.4f', Time.now - START_TIME)
-      "[#{Time.now}/#{pass}]" + ts
     end
 
     def head_ary
@@ -90,7 +86,7 @@ module CIAX
 
     def make_head
       Msg.indent(Msg.ver_indent) + head_ary.map do|str, color|
-        Msg.colorize("#{str}", color)
+        Msg.colorize(str.to_s, color)
       end.join(':')
     end
 
@@ -106,10 +102,10 @@ module CIAX
 
     # VER= makes setenv "" to VER otherwise nil
     def condition(msg)
-      return if !VERBOSE || !msg
+      return if !ENV['VER'] || !msg
       return true if match_all
       title = msg.split("\n").first.upcase
-      VERBOSE.split(',').any? do|s|
+      ENV['VER'].split(',').any? do|s|
         s.split(':').all? do|e|
           title.include?(e.upcase)
         end
@@ -117,7 +113,7 @@ module CIAX
     end
 
     def match_all
-      Regexp.new('\*').match(VERBOSE)
+      Regexp.new('\*').match(ENV['VER'])
     end
 
     def self.ver_indent(add = 0)

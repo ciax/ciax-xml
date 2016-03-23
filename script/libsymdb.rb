@@ -22,7 +22,7 @@ module CIAX
       private
 
       def doc_to_db(doc)
-        db = Dbi.new
+        db = super
         doc[:top].each do|e1|
           id = e1[:id]
           label = e1[:label]

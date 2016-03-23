@@ -1,23 +1,20 @@
 #!/bin/bash
-# Generate dictionary by sdb
+# Generate dictionary by sdb(xml)
 [ -t 0 ] && { echo "Usage: sdb2json < sdb_file"; exit 1; }
 while read name line; do
-    [[ $line =~ \" ]] || continue
-    eval "${line%\"*}\""
-    if [ "$id" != "$prev" ]; then
-        if [ "$json" ]; then
-            echo "{${json%,}}" > "$file"
-            json=
-        fi
+    if [ $name = '<table' ]; then
+        eval "${line%\"*}\""
         file="dic-$id.json"
-        prev=$id
+    elif [ $name = '</table>' ]; then
+        echo "{${json%,}}" > ~/.var/json/$file
+        echo "$file is generated"
+        json=
+    elif [[ $line =~ msg ]] ; then
+        eval "${line%\"*}\""
+        # Element with text must be in one line
+        body="${line#*>}"
+        body="${body%<*}"
+        # Msg will be converted to upper case
+        [ "$body" ] && json="$json\"$body\":\"${msg^^}\","
     fi
-    body="${line#*>}"
-    body="${body%<*}"
-    [ "$body" ] && json="$json\"$body\":\"$msg\","
 done
-if [ "$json" ]; then
-    echo "{${json%,}}" > "$file"
-    json=
-fi
-

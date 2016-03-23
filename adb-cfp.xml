@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="cfp" id="cfp" label="MOIRCS Field Point" version="1">
+  <app frm_id="cfp" id="cfp" label="MOIRCS Field Point" version="3">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gs" caption="Status">
         <item id="upd" label="Upd">
@@ -16,6 +16,7 @@
               <argv>0x28</argv>
             </frmcmd>
             <frmcmd name="getstat"/>
+            <frmcmd name="getstat2"/>
           </item>
           <item id="rc" label="Close">
             <frmcmd name="putdata">
@@ -23,6 +24,7 @@
               <argv>0x14</argv>
             </frmcmd>
             <frmcmd name="getstat"/>
+            <frmcmd name="getstat2"/>
           </item>
         </unit>
         <unit id="u_ar" title="a[v/h]" label="Arm Rotation [%s]">
@@ -32,6 +34,7 @@
               <argv>0x2000</argv>
             </frmcmd>
             <frmcmd name="getstat"/>
+            <frmcmd name="getstat2"/>
           </item>
           <item id="ah" label="Horizontal">
             <frmcmd name="putdata">
@@ -39,6 +42,7 @@
               <argv>0x1000</argv>
             </frmcmd>
             <frmcmd name="getstat"/>
+            <frmcmd name="getstat2"/>
           </item>
         </unit>
         <unit id="u_ag" title="a[o/c]" label="Arm Gripper [%s]">
@@ -48,6 +52,7 @@
               <argv>0x800</argv>
             </frmcmd>
             <frmcmd name="getstat"/>
+            <frmcmd name="getstat2"/>
           </item>
           <item id="ac" label="Close">
             <frmcmd name="putdata">
@@ -55,6 +60,7 @@
               <argv>0x400</argv>
             </frmcmd>
             <frmcmd name="getstat"/>
+            <frmcmd name="getstat2"/>
           </item>
         </unit>
       </group>
@@ -66,6 +72,7 @@
               <argv>0x80</argv>
             </frmcmd>
             <frmcmd name="getstat"/>
+            <frmcmd name="getstat2"/>
           </item>
           <item id="gc" label="Close">
             <frmcmd name="putdata">
@@ -73,6 +80,7 @@
               <argv>0x40</argv>
             </frmcmd>
             <frmcmd name="getstat"/>
+            <frmcmd name="getstat2"/>
           </item>
         </unit>
       </group>
@@ -86,6 +94,8 @@
               <argv>latest</argv>
             </frmcmd>
             <frmcmd name="putfield"/>
+            <frmcmd name="getstat"/>
+            <frmcmd name="getstat2"/>
           </item>
         </unit>
       </group>
@@ -141,5 +151,17 @@
         </binary>
       </group>
     </status>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <event label="GV Open" id="go">
+        <range var="go">1</range>
+        <range var="gv">2</range>
+        <exec name="upd"/>
+      </event>
+      <event label="GV Close" id="gc">
+        <range var="go">2</range>
+        <range var="gv">1</range>
+        <exec name="upd"/>
+      </event>
+    </watch>
   </app>
 </adb>

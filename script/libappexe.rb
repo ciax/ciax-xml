@@ -11,20 +11,19 @@ module CIAX
   module App
     # Exec class
     class Exe < Exe
-      # cfg must have [:db],[:sub_list]
+      # cfg must have [:dbi],[:sub_list]
       attr_accessor :batch_interrupt
-      def initialize(id, cfg)
-        super(id, cfg)
+      def initialize(id, cfg, atrb = {})
+        super
+        dbi = _init_dbi(id, %i(frm_site))
         @cfg[:site_id] = id
         # LayerDB might generated in List level
-        @cfg[:ver] = @dbi[:version]
-        @cfg[:frm_site] = @dbi[:frm_site]
-        @sub = @cfg[:sub_list].get(@cfg[:frm_site])
-        @stat = Status.new(@dbi)
+        _init_sub(@cfg[:frm_site])
+        @stat = Status.new(dbi)
         @batch_interrupt = []
-        init_server
+        init_server(dbi)
         init_command
-        opt_mode
+        _opt_mode
       end
 
       def ext_shell
@@ -37,10 +36,10 @@ module CIAX
 
       private
 
-      def init_server
-        @sv_stat = @sub.sv_stat.add_flg(busy: '*')
-        @host ||= @dbi[:host]
-        @port ||= @dbi[:port]
+      def init_server(dbi)
+        @sv_stat.add_flg(busy: '*')
+        @host ||= dbi[:host]
+        @port ||= dbi[:port]
         self
       end
 
@@ -58,9 +57,9 @@ module CIAX
           # "INTERRUPT(#{@batch_interrupt})"
           'INTERRUPT'
         end
-        @cobj.rem.ext.def_proc do
+        @cobj.rem.ext.def_proc do |ent|
           @stat[:time] = now_msec
-          'TEST'
+          ent[:batch].inspect
         end
         ext_non_client
       end
@@ -157,11 +156,11 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       OPT.parse('ceh:lts')
+      id = ARGV.shift
       cfg = Config.new
-      cfg[:sub_list] = Frm::List.new(cfg)
-      cfg[:db] = Ins::Db.new
+      atrb = { db: Ins::Db.new, sub_list: Frm::List.new(cfg) }
       begin
-        Exe.new(ARGV.shift, cfg).ext_shell.shell
+        Exe.new(id, cfg, atrb).ext_shell.shell
       rescue InvalidID
         OPT.usage('(opt) [id]')
       end

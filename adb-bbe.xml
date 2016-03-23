@@ -10,7 +10,7 @@
         </unit>
       </group>
       <group id="g0" caption="Device" column="2">
-        <unit id="x0" label="X0">
+        <unit id="ux0" title="x0[on|off]" label="X0 [%s]">
           <item id="x0on" label="ON">
             <frmcmd name="getstat"/>
             <frmcmd name="set">
@@ -30,7 +30,7 @@
             <frmcmd name="getstat"/>
           </item>
         </unit>
-        <unit id="x1" label="X1">
+        <unit id="ux1" title="x1[on|off]" label="X1 [%s]">
           <item id="x1on" label="ON">
             <frmcmd name="getstat"/>
             <frmcmd name="set">
@@ -50,7 +50,7 @@
             <frmcmd name="getstat"/>
           </item>
         </unit>
-        <unit id="x2" label="X2">
+        <unit id="ux2" title="x2[on|off]" label="X2 [%s]">
           <item id="x2on" label="ON">
             <frmcmd name="getstat"/>
             <frmcmd name="set">
@@ -70,7 +70,7 @@
             <frmcmd name="getstat"/>
           </item>
         </unit>
-        <unit id="x3" label="X3">
+        <unit id="ux3" title="x3[on|off]" label="X3 [%s]">
           <item id="x3on" label="ON">
             <frmcmd name="getstat"/>
             <frmcmd name="set">
@@ -90,7 +90,7 @@
             <frmcmd name="getstat"/>
           </item>
         </unit>
-        <unit id="x01" label="X0 and X1">
+        <unit id="ux01" title="x01[on|off]" label="X0 and X1 [%s]">
           <item id="x01on" label="ON">
             <frmcmd name="getstat"/>
             <frmcmd name="set">
@@ -110,7 +110,7 @@
             <frmcmd name="getstat"/>
           </item>
         </unit>
-        <unit id="x23" label="X2 and X3">
+        <unit id="ux23" title="x23[on|off]" label="X2 and X3 [%s]">
           <item id="x23on" label="ON">
             <frmcmd name="getstat"/>
             <frmcmd name="set">

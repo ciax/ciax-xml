@@ -10,7 +10,8 @@ module CIAX
       # ment should have [:sequence]'[:dev_list],[:submcr_proc]
       def initialize(ment, pid = '0')
         cfg = Config.new
-        super(type?(ment, Entity).id, cfg)
+        super(type?(ment, Cmd::Entity).id, cfg)
+        _init_sub
         _init_cmd_(ment, pid)
         _init_thread_
         self
@@ -49,7 +50,8 @@ module CIAX
       cfg = Config.new
       cfg[:dev_list] = Wat::List.new(cfg)
       begin
-        mobj = Remote::Index.new(cfg, dbi: Db.new.get)
+        dbi = Db.new.get
+        mobj = Cmd::Remote::Index.new(cfg, dbi.pick([:sites]))
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(ARGV)
         seq = Exe.new(ent)

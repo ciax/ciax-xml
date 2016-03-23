@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 # Common Module
 require 'libmsgdbg'
+require 'libmsgtime'
 require 'fileutils'
 require 'json'
 module CIAX

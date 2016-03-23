@@ -24,7 +24,7 @@ module CIAX
         @skel = fdbr[:frame]
         # @sel structure: { terminator, :main{}, :body{} <- changes on every upd }
         @fds = fdbr[:index]
-        sp = @dbi[:stream]
+        sp = type?(@dbi[:stream], Hash)
         # Frame structure: main(total){ ccrange{ body(selected str) } }
         @frame = Frame.new(sp[:endian], sp[:ccmethod], sp[:terminator])
         # terminator: frame pointer will jump to terminator if no length or delimiter is specified
@@ -35,7 +35,7 @@ module CIAX
       def conv(ent, stream)
         @sel = Hash[@skel]
         self[:time] = type?(stream, Hash)[:time]
-        rid = type?(ent, Entity)[:response]
+        rid = type?(ent, Cmd::Entity)[:response]
         @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
         @sel.update(@fds[rid])
         @sel[:body] = ent.deep_subst(@sel[:body])
@@ -136,8 +136,8 @@ module CIAX
       field = Field.new(dbi).ext_rsp
       field.ext_file.auto_save if OPT[:m]
       if cid
-        cfg = Config.new.update(dbi: dbi, field: field)
-        cobj = Index.new(cfg)
+        cfg = Config.new.update(field: field)
+        cobj = Index.new(cfg, dbi.pick(%i(stream)))
         cobj.add_rem.add_ext(Ext)
         ent = cobj.set_cmd(cid.split(':'))
         field.conv(ent, res)

@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libgetopts'
 require 'libenumx'
 require 'libxmldoc'
 
@@ -8,7 +7,11 @@ module CIAX
   # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
   # set() generates HashDb
   # Cache is available
-  class Dbi < Hashx; end # DB Item
+  class Dbi < Hashx # DB Item
+    def pick(ary = [])
+      super(%i(version command) + ary)
+    end
+  end
 
   # DB class
   class Db < Hashx
@@ -19,7 +22,7 @@ module CIAX
       @type = type
       # @displist is Display
       lid = 'list'
-      lid += "_#{PROJ}" if PROJ
+      lid += "_#{ENV['PROJ']}" if ENV['PROJ']
       # Show site list
       @displist = cache(lid, &:displist)
       @argc = 0
@@ -81,8 +84,8 @@ module CIAX
     end
 
     def _newest?
-      if NOCACHE
-        verbose { "#{@type}/Cache NOCACHE is set" }
+      if ENV['NOCACHE']
+        verbose { "#{@type}/Cache ENV['NOCACHE'] is set" }
         return false
       elsif !test('e', @marfile)
         verbose { "#{@type}/Cache MAR file(#{@base}) not exist" }
@@ -110,36 +113,38 @@ module CIAX
 
     # Take parameter and next line
     def par2item(doc, item)
-      return unless /par_(num|str)/ =~ doc.name
-      @argc +=1
-      attr = { type: $1, list: doc.text.split(',') }
+      return unless /par_(num|str|reg)/ =~ doc.name
+      @argc += 1
+      attr = { type: Regexp.last_match(1), list: doc.text.split(',') }
       attr[:label] = doc[:label] if doc[:label]
       (item[:parameters] ||= []) << attr
     end
 
     # Check parameter var for subst in db
     def validate_par(db)
-      res = db.deep_search(format('\$[%d-9]', @argc+1))
+      res = db.deep_search(format('\$[%d-9]', @argc + 1))
       return db if res.empty?
-      cfg_err("Parameter var out of range [#{res.join('/')}] for #{@argc}")
+      cfg_err("Too much parameter variables [#{res.join('/')}] for #{@argc}")
     ensure
       @argc = 0
     end
 
-    def init_command(dbc, dbi)
-      @idx = Hashx.new
-      @grps = Hashx.new
-      @units = Hashx.new
-      # Adapt to both XML::Gnu, Hash
-      dbc.each_value do|e|
+    def init_command(dbi)
+      cdb = (dbi[:command] ||= Hashx.new)
+      @idx = (cdb[:index] ||= Hashx.new)
+      @grps = (cdb[:group] ||= Hashx.new)
+      @units = (cdb[:unit] ||= Hashx.new)
+      cdb
+    end
+
+    # Adapt to both XML::Gnu, Hash
+    def _add_group(doc)
+      doc.each_value do|e|
         # e.name should be group
-        Msg.give_up('No group in dbc') unless e.name == 'group'
+        Msg.give_up('No group in cdb') unless e.name == 'group'
         gid = e.attr2item(@grps)
         _add_unit(e, gid)
       end
-      cdb = dbi[:command] = Hashx.new( group: @grps, index: @idx )
-      cdb[:unit] = @units unless @units.empty?
-      cdb
     end
 
     def _add_unit(doc, gid)
@@ -164,7 +169,7 @@ module CIAX
     def _add_item(doc, gid)
       id = doc.attr2item(@idx)
       (@grps[gid][:members] ||= []) << id
-      [id, @idx[id]]
+      [id, @idx[id]] # item is used by child
     end
   end
 end

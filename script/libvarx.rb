@@ -35,6 +35,7 @@ module CIAX
 
     private
 
+    # Set dbi, otherwise generate by stdin info
     def _setdbi(obj = nil, mod = Db)
       case obj
       when Dbi

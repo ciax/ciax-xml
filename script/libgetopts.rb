@@ -28,11 +28,11 @@ module CIAX
     end
 
     def cl?
-      %i(h c l).any? { |k| self[k] }
+      ! %i(e s).any? { |k| self[k] } && %i(h c l).any? { |k| self[k] }
     end
 
     def test?
-      !(self[:e] || cl?)
+      ! %i(e s h c l).any? { |k| self[k] }
     end
 
     def log?

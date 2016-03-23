@@ -29,12 +29,7 @@ module CIAX
       @cfg = type?(cfg, Config).gen(self).update(attr)
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @layer = class_path.first.downcase
-      # Proc for Server Command (by User query}
-      @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }]
-      # Proc for Server Status Update (by User query}
-      @post_exe_procs = [proc { verbose { 'Processing PostExeProcs' } }]
-      # Proc for program terminated
-      @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }]
+      _init_procs
       Thread.abort_on_exception = true
       @cobj = Cmd::Remote::Index.new(@cfg)
     end
@@ -48,9 +43,7 @@ module CIAX
       @sv_stat.rep(:msg, @cobj.set_cmd(args).exe_cmd(src, pri).msg)
       @post_exe_procs.each { |p| p.call(args, src) }
       self
-    rescue LongJump
-      raise $ERROR_INFO
-    rescue InvalidARGS
+    rescue LongJump, InvalidARGS
       @sv_stat.rep(:msg, $ERROR_INFO.to_s)
       raise $ERROR_INFO
     end
@@ -65,6 +58,15 @@ module CIAX
 
     private
 
+    def _init_procs
+      # Proc for Server Command (by User query}
+      @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }]
+      # Proc for Server Status Update (by User query}
+      @post_exe_procs = [proc { verbose { 'Processing PostExeProcs' } }]
+      # Proc for program terminated
+      @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }]
+    end
+
     def _init_dbi(id, ary = [])
       dbi = type?(@cfg[:db], CIAX::Db).get(id)
       @cfg.update(dbi.pick(ary))
@@ -72,21 +74,18 @@ module CIAX
       dbi
     end
 
+    # Single Mode
+    # none: test mode
+    # -c: client mode
+    # -e: drive mode
+    # -s: test mode + server
+    # -es: drive mode + server
     def _opt_mode
       # Option handling
       opt = @cfg[:option]
-      if opt.cl?
-        if opt[:s]
-          opt[:e] ? ext_driver : ext_test
-          ext_server
-          opt.delete(:s)
-        else
-          ext_client
-        end
-      else
-        opt[:e] ? ext_driver : ext_test
-        ext_server if opt[:s]
-      end
+      return ext_client if opt.cl?
+      opt[:e] ? ext_driver : ext_test
+      ext_server if opt[:s]
       self
     end
 

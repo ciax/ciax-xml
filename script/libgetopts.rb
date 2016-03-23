@@ -12,13 +12,8 @@ module CIAX
     def initialize(usagestr, optstr, db = {})
       usagestr = "(opt) #{usagestr}"
       _init_db(db)
-      type?(optstr, String)
-      _make_usage(optstr)
-      _parse(optstr)
-      _make_layer
-      _make_vmode
+      _set_opt(optstr)
       yield(self, ARGV)
-      return
     rescue InvalidCMD
       usage(usagestr, 4)
     rescue InvalidID
@@ -28,11 +23,21 @@ module CIAX
     end
 
     def cl?
-      ! %i(e s).any? { |k| self[k] } && %i(h c l).any? { |k| self[k] }
+      %i(h c l).any? { |k| self[k] }
+    end
+
+    def drv?
+      %i(e s).any? { |k| self[k] }
     end
 
     def test?
-      ! %i(e s h c l).any? { |k| self[k] }
+      !(cl? || drv?)
+    end
+
+    def sub_opt
+      opt = dup
+      %i(e s).each { |k| opt.delete(k) } if drv? && cl?
+      opt
     end
 
     def log?
@@ -65,46 +70,38 @@ module CIAX
       @optdb.update(type?(db, Hash))
     end
 
+    def _set_opt(optstr)
+      type?(optstr, String)
+      _make_usage(optstr)
+      _parse(optstr)
+      _make_layer
+      _make_vmode
+    end
+
     # Layer option
     def _db_layer
-      @layers = {
-        m: 'mcr',
-        w: 'wat',
-        f: 'frm',
-        x: 'hex',
-        a: 'app'
-      }
+      @layers = { m: 'mcr', w: 'wat', f: 'frm', x: 'hex', a: 'app' }
       @layers.each { |k, v| @optdb[k] = "#{v} layer" }
       self
     end
 
     # Client option
     def _db_cli
-      @optdb.update(
-        c: 'client to default server',
-        l: 'client to local',
-        h: 'client to [host]'
-      )
+      @optdb.update(c: 'client to default server',
+                    l: 'client to local', h: 'client to [host]')
       self
     end
 
     # System mode
     def _db_mode
-      @optdb.update(
-        e: 'execution mode',
-        s: 'server mode',
-        b: 'background mode',
-        n: 'non-stop mode' # For macro
-      )
+      @optdb.update(e: 'execution mode', s: 'server mode',
+                    b: 'background mode', n: 'non-stop mode')
       self
     end
 
     # For visual
     def _db_vis
-      @optdb.update(
-        r: 'raw data output',
-        j: 'json data output'
-      )
+      @optdb.update(r: 'raw data output', j: 'json data output')
       self
     end
 

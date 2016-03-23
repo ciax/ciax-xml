@@ -13,8 +13,13 @@ module CIAX
         super
       end
 
+      # Conbination(for macro)
+      # -ce: drive + client for device site
+      # -cs: test + server + client for device site
+      # -ces: drive + server + client for device site
       def init_sub(sub_mod)
-        @sub_list = sub_mod.new(@cfg)
+        opt = @cfg[:option].sub_opt
+        @sub_list = sub_mod.new(@cfg, option: opt)
       end
 
       def store_db(db)

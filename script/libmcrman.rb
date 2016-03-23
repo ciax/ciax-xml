@@ -10,13 +10,13 @@ module CIAX
       attr_reader :sub_list # Used for Layer module
       # cfg should have [:dev_list]
       def initialize(cfg, atrb = {})
-        _init_atrb_(cfg, atrb)
+        _init_atrb_(atrb)
         super(nil, cfg, atrb)
         verbose { 'Initialize Layer' }
         # id = nil -> taken by ARGV
         _init_net_(_init_dbi(nil, [:sites]))
         @sv_stat = @cfg[:sv_stat] = Prompt.new('mcr', @id)
-        @sub_list = @cfg[:dev_list] = Wat::List.new(cfg)
+        _init_sub(cfg)
         _init_domain_
         _init_stat_
         _opt_mode
@@ -47,9 +47,14 @@ module CIAX
         super
       end
 
-      def _init_atrb_(_cfg, atrb)
+      def _init_atrb_(atrb)
         atrb[:db] = Db.new
         atrb[:layer_type] = 'mcr'
+      end
+
+      def _init_sub(cfg)
+        opt = @cfg[:option].sub_opt
+        @sub_list = @cfg[:dev_list] = Wat::List.new(cfg, option: opt)
       end
 
       # Initialize for all mode

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="3">
+  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="4">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Status Commands">
         <unit id="upd" label="Status">
@@ -205,6 +205,42 @@
           <frmcmd name="chkrun">
             <argv>$1</argv>
           </frmcmd>
+        </item>
+        <item id="home" label="Move All Turret to HOME">
+          <repeat from="1" to="6">
+            <frmcmd name="act">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+          <frmcmd name="opt">
+            <argv>1</argv>
+            <argv>40000</argv>
+          </frmcmd>
+          <frmcmd name="opt">
+            <argv>2</argv>
+            <argv>56000</argv>
+          </frmcmd>
+          <frmcmd name="opt">
+            <argv>3</argv>
+            <argv>40000</argv>
+          </frmcmd>
+          <frmcmd name="opt">
+            <argv>4</argv>
+            <argv>56000</argv>
+          </frmcmd>
+          <frmcmd name="opt">
+            <argv>5</argv>
+            <argv>40000</argv>
+          </frmcmd>
+          <frmcmd name="opt">
+            <argv>6</argv>
+            <argv>56000</argv>
+          </frmcmd>
+          <repeat from="1" to="6">
+            <frmcmd name="chkrun">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
         </item>
         <item id="both_a" label="Move Optimal way Both Ch Turret 1,4 [0-11(hole)]">
           <par_num>0:11</par_num>

@@ -22,13 +22,14 @@ module CIAX
         dbi
       end
 
+      # doc => /site/field/assign
       def rec_db(doc, dbi)
         doc.each do |e|
-          if e[:id]
+          if e[:id] # site or assign
             e.attr2item(dbi)
-          else
+          else # field
             id = e.name.to_sym
-            rec_db(e, dbi[id] = {})
+            rec_db(e, dbi[id])
           end
         end
       end

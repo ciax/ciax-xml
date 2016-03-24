@@ -128,7 +128,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       begin
         dbi = Dev::Db.new.get(ARGV.shift)
-        puts Field.new(dbi).ext_file
+        puts Field.new(dbi)
       rescue InvalidARGS
         Msg.usage '(opt) [id]'
       end

@@ -35,51 +35,53 @@ module CIAX
           tbl = _chk_tbl(sid) || next
           verbose { "ID=#{key},Table=#{sid}" }
           val = self[:data][hash[:ref] || key]
-          _match_items(tbl, key, val)
+          sym = _match_items(tbl, key, val)
+          _make_sym(sym, key, val)
         end
       end
 
-      def _match_items(tbl, key, val)
+      def _make_sym(sym, key, val)
+        msg = self[:msg][key] = format(sym[:msg] || 'N/A(%s)', val)
+        cls = self[:class][key] = sym[:class] || 'alarm'
+        verbose { "VIEW: msg(#{key}) is #{msg}/#{cls}" }
+      end
+
+      def _match_items(tbl, _key, val)
         tbl.each do|sym|
-          msg = _match_by_type(sym, val) || next
-          self[:msg][key] = msg || "N/A(#{val})"
-          self[:class][key] = sym[:class] || 'alarm'
-          break
+          res = _match_by_type(sym, val)
+          if res
+            verbose { format("VIEW:#{res} and [%s] -> #{sym[:msg]}", val, val) }
+            return(sym)
+          end
         end
+        {}
       end
 
       def _match_by_type(sym, val)
         cri = sym[:val]
         case sym[:type]
         when 'numeric'
-          _match_numeric(sym, cri, val)
+          _match_numeric(cri, val, sym[:tolerance])
         when 'range'
-          _match_range(sym, cri, val)
+          _match_range(cri, val)
         when 'pattern'
-          _match_pattern(sym, cri, val)
+          _match_pattern(cri, val)
         end
       end
 
-      def _match_numeric(sym, cri, val)
-        tol = sym[:tolerance]
+      def _match_numeric(cri, val, tol)
         return unless cri.split(',').any? { |c| _within?(c, val, tol) }
-        msg = format(sym[:msg], val)
-        verbose { "VIEW:Numeric:[#{cri}+-#{tol}] and [#{val}] -> #{msg}" }
-        msg
+        "Numeric:[#{cri}+-#{tol}]"
       end
 
-      def _match_range(sym, cri, val)
+      def _match_range(cri, val)
         return unless _within?(cri, val)
-        msg = format(sym[:msg], val)
-        verbose { "VIEW:Range:[#{cri}] and [#{val}] -> #{msg}" }
-        msg
+        "Range:[#{cri}]"
       end
 
-      def _match_pattern(sym, cri, val)
+      def _match_pattern(cri, val)
         return unless /#{cri}/ =~ val || val == 'default'
-        msg = sym[:msg] || "N/A(#{val})"
-        verbose { "VIEW:Regexp:[#{cri}] and [#{val}] -> #{msg}" }
-        msg
+        "Regexp:[#{cri}]"
       end
 
       def _chk_tbl(sid)

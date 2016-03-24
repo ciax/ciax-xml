@@ -140,6 +140,7 @@
         <onchange var="bs"/>
         <range var="bs">0</range>
         <exec name="defcon"/>
+        <exec name="upd"/>
       </event>
     </watch>
   </app>

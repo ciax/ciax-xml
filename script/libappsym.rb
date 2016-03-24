@@ -35,26 +35,18 @@ module CIAX
           tbl = _chk_tbl(sid) || next
           verbose { "ID=#{key},Table=#{sid}" }
           val = self[:data][hash[:ref] || key]
-          sym = _match_items(tbl, key, val)
-          _make_sym(sym, key, val)
+          _match_items(tbl, key, val)
         end
       end
 
-      def _make_sym(sym, key, val)
+      def _match_items(tbl, key, val)
+        res = nil
+        sym = tbl.find { |s| res = _match_by_type(s, val) } || {}
         msg = self[:msg][key] = format(sym[:msg] || 'N/A(%s)', val)
         cls = self[:class][key] = sym[:class] || 'alarm'
-        verbose { "VIEW: msg(#{key}) is #{msg}/#{cls}" }
-      end
-
-      def _match_items(tbl, _key, val)
-        tbl.each do|sym|
-          res = _match_by_type(sym, val)
-          if res
-            verbose { format("VIEW:#{res} and [%s] -> #{sym[:msg]}", val, val) }
-            return(sym)
-          end
+        verbose do
+          format('VIEW(%s):%s and <%s> -> %s/%s', key, res, val, msg, cls)
         end
-        {}
       end
 
       def _match_by_type(sym, val)

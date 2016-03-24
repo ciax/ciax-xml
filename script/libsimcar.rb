@@ -7,7 +7,7 @@ module CIAX
     # Slosyn Driver Simulator
     class Carousel < Slosyn
       def initialize
-        super(-23.5, 0.5, 12, 10_004)
+        super(-23.49, 0.41, 12, 10_004)
       end
 
       def slo_in(num)

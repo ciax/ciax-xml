@@ -40,11 +40,12 @@ module CIAX
       end
 
       def _match_items(tbl, key, val)
-        tbl.each do|sym|
-          msg = _match_by_type(sym, val) || next
-          self[:msg][key] = msg || "N/A(#{val})"
-          self[:class][key] = sym[:class] || 'alarm'
-          break
+        res = nil
+        sym = tbl.find { |s| res = _match_by_type(s, val) } || {}
+        msg = self[:msg][key] = format(sym[:msg] || 'N/A(%s)', val)
+        cls = self[:class][key] = sym[:class] || 'alarm'
+        verbose do
+          format('VIEW(%s):%s and <%s> -> %s/%s', key, res, val, msg, cls)
         end
       end
 
@@ -52,34 +53,27 @@ module CIAX
         cri = sym[:val]
         case sym[:type]
         when 'numeric'
-          _match_numeric(sym, cri, val)
+          _match_numeric(cri, val, sym[:tolerance])
         when 'range'
-          _match_range(sym, cri, val)
+          _match_range(cri, val)
         when 'pattern'
-          _match_pattern(sym, cri, val)
+          _match_pattern(cri, val)
         end
       end
 
-      def _match_numeric(sym, cri, val)
-        tol = sym[:tolerance]
+      def _match_numeric(cri, val, tol)
         return unless cri.split(',').any? { |c| _within?(c, val, tol) }
-        msg = format(sym[:msg], val)
-        verbose { "VIEW:Numeric:[#{cri}+-#{tol}] and [#{val}] -> #{msg}" }
-        msg
+        "Numeric:[#{cri}+-#{tol}]"
       end
 
-      def _match_range(sym, cri, val)
+      def _match_range(cri, val)
         return unless _within?(cri, val)
-        msg = format(sym[:msg], val)
-        verbose { "VIEW:Range:[#{cri}] and [#{val}] -> #{msg}" }
-        msg
+        "Range:[#{cri}]"
       end
 
-      def _match_pattern(sym, cri, val)
+      def _match_pattern(cri, val)
         return unless /#{cri}/ =~ val || val == 'default'
-        msg = sym[:msg] || "N/A(#{val})"
-        verbose { "VIEW:Regexp:[#{cri}] and [#{val}] -> #{msg}" }
-        msg
+        "Regexp:[#{cri}]"
       end
 
       def _chk_tbl(sid)

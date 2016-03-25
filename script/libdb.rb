@@ -24,6 +24,7 @@ module CIAX
       lid = 'list'
       lid += "_#{ENV['PROJ']}" if ENV['PROJ']
       # Show site list
+      @latest = _get_latest_file
       @displist = cache(lid, &:displist)
       @argc = 0
     end
@@ -47,7 +48,7 @@ module CIAX
     def cache(id)
       @base = "#{@type}-#{id}"
       @marfile = vardir('cache') + "#{@base}.mar"
-      if _newest?
+      if _get_cache?
         res = _load_cache(id)
       else
         @docs = Xml::Doc.new(@type) unless @docs
@@ -55,6 +56,11 @@ module CIAX
         _save_cache(id, res)
       end
       res
+    end
+
+    def _get_latest_file
+      ary = $LOADED_FEATURES.grep(/#{__dir__}/) + Msg.xmlfiles(@type)
+      ary.max_by { |f| File.mtime(f) }
     end
 
     def _load_cache(id)
@@ -83,28 +89,15 @@ module CIAX
       cfg_err("Counter remained at [#{res.join('/')}]")
     end
 
-    def _newest?
+    def _get_cache?
       if ENV['NOCACHE']
         verbose { "#{@type}/Cache ENV['NOCACHE'] is set" }
-        return false
       elsif !test('e', @marfile)
         verbose { "#{@type}/Cache MAR file(#{@base}) not exist" }
-        return false
+      elsif test('>', @latest, @marfile)
+        verbose { "#{@type}/Cache File(#{@latest}) is newer than #{@marfile}" }
       else
-        newer = _cmp_($LOADED_FEATURES.grep(/#{__dir__}/) + Msg.xmlfiles(@type))
-        if newer
-          verbose { "#{@type}/Cache File(#{newer}) is newer than cache" }
-          verbose { "#{@type}/Cache cache=#{::File::Stat.new(@marfile).mtime}" }
-          verbose { "#{@type}/Cache file=#{::File::Stat.new(newer).mtime}" }
-          return false
-        end
-      end
-      true
-    end
-
-    def _cmp_(ary)
-      ary.each do|f|
-        return f if ::File.file?(f) && test('>', f, @marfile)
+        true
       end
       false
     end
@@ -143,27 +136,31 @@ module CIAX
         # e.name should be group
         Msg.give_up('No group in cdb') unless e.name == 'group'
         gid = e.attr2item(@grps)
-        _add_unit(e, gid)
+        _add_member(e, gid)
       end
     end
 
-    def _add_unit(doc, gid)
+    def _add_member(doc, gid)
       return unless doc
       doc.each do|e0|
         case e0.name
         when 'unit'
-          uid = e0.attr2item(@units)
-          (@grps[gid][:units] ||= []) << uid
-          e0.each do|e1|
-            id, itm = _add_item(e1, gid)
-            itm[:unit] = uid
-            (@units[uid][:members] ||= []) << id
-          end
+          _add_unit(e0, gid)
         when 'item'
           _add_item(e0, gid)
         end
       end
       self
+    end
+
+    def _add_unit(e0, gid)
+      uid = e0.attr2item(@units)
+      (@grps[gid][:units] ||= []) << uid
+      e0.each do|e1|
+        id, itm = _add_item(e1, gid)
+        itm[:unit] = uid
+        (@units[uid][:members] ||= []) << id
+      end
     end
 
     def _add_item(doc, gid)

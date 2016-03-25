@@ -21,8 +21,8 @@ module CIAX
       end
 
       def _goal(_e, step, mstat)
-        return true unless step.skip?
-        return true if !@dummy && @qry.query(%w(pass enter), step)
+        return true unless step.skip? # Entering
+        return true if @dummy && @qry.query(%w(pass enter), step)
         mstat[:result] = 'skipped'
         false
       end
@@ -34,7 +34,7 @@ module CIAX
       end
 
       def _verify(_e, step, mstat)
-        return true unless step.fail?
+        return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'failed'
         fail Verification
       end

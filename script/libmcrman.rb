@@ -76,11 +76,11 @@ module CIAX
 
       def _init_prompt_
         @sv_stat = @cfg[:sv_stat] = Prompt.new('mcr', @id)
-        @sv_stat.up(:nonstop) if @cfg[:option][:n]
         @sv_stat.add_array(:list)
         @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid)
         @sv_stat.add_flg(nonstop: '(nonstop)')
+        @sv_stat.up(:nonstop) if @cfg[:option][:n]
       end
 
       def _init_net_

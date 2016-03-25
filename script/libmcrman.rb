@@ -14,9 +14,8 @@ module CIAX
         super(nil, cfg, atrb)
         verbose { 'Initialize Layer' }
         # id = nil -> taken by ARGV
-        _init_net_(_init_dbi(nil, [:sites]))
-        @sv_stat = @cfg[:sv_stat] = Prompt.new('mcr', @id)
-        @sub_list = @cfg[:dev_list] = Wat::List.new(cfg)
+        _init_net_
+        _init_sub_(cfg)
         _init_domain_
         _init_stat_
         _opt_mode
@@ -52,6 +51,10 @@ module CIAX
         atrb[:layer_type] = 'mcr'
       end
 
+      def _init_sub_(cfg)
+        @sub_list = @cfg[:dev_list] = Wat::List.new(cfg)
+      end
+
       # Initialize for all mode
       def _init_domain_
         @cobj.add_rem.add_sys
@@ -71,13 +74,16 @@ module CIAX
       end
 
       def _init_prompt_
+        @sv_stat = @cfg[:sv_stat] = Prompt.new('mcr', @id)
+        @sv_stat.up(:nonstop) if @cfg[:option][:n]
         @sv_stat.add_array(:list)
         @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid)
         @sv_stat.add_flg(nonstop: '(nonstop)')
       end
 
-      def _init_net_(dbi)
+      def _init_net_
+        dbi = _init_dbi(nil, [:sites])
         @host = @cfg[:option].host || dbi[:host]
         @port ||= (dbi[:port] || 55_555)
       end

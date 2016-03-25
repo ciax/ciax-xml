@@ -27,7 +27,6 @@ module CIAX
         @depth = 0
         # For Thread mode
         @qry = Query.new(@record, @sv_stat, valid_keys)
-        @sv_stat.up(:nonstop) if @cfg[:option][:n]
       end
 
       # For prompt '(stat) [option]'

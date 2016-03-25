@@ -1,13 +1,11 @@
 #!/usr/bin/ruby
 require 'libupd'
-require 'libmcrprt'
 require 'libmcrcond'
 
 module CIAX
   module Mcr
     # Element of Record
     class Step < Upd
-      include PrtShare
       def initialize(db, dev_list, dummy = nil)
         super()
         update db
@@ -49,26 +47,7 @@ module CIAX
         _set_result('forked', 'entering', /true|1/ =~ self[:async])
       end
 
-      # Display section
-      def to_v
-        title + result
-      end
-
-      def show_title
-        print title if Msg.fg?
-        self
-      end
-
       private
-
-      def upd_core
-        _show result
-        self
-      end
-
-      def _show(msg)
-        print msg if Msg.fg?
-      end
 
       def _set_result(tmsg, fmsg = nil, tf = true)
         res = tf ? tmsg : fmsg

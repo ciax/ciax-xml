@@ -1,13 +1,23 @@
 #!/usr/bin/ruby
+require 'libstep'
 # For Macro Line (Array)
-
 module CIAX
   module Mcr
     # Macro Printing Mix-in module
     module PrtShare
+      include Msg
       OPE = { equal: '==', not: '!=', match: '=~', unmatch: '!~' }
+      def self.extended(obj)
+        Msg.type?(obj, Hash)
+      end
+
+      def ext_prt(base)
+        @base = type?(base, Integer)
+        self
+      end
+
       def body(msg, col = 5)
-        _rindent_(1) + Msg.colorize(msg, col)
+        _rindent_(5) + Msg.colorize(msg, col)
       end
 
       def title
@@ -28,7 +38,22 @@ module CIAX
         mary.join("\n") + "\n"
       end
 
+      # Display section
+      def to_v
+        title + result
+      end
+
+      def show_title
+        print title if Msg.fg?
+        self
+      end
+
       private
+
+      def upd_core
+        _show result
+        self
+      end
 
       def _prt_result(res, mary)
         return unless res
@@ -55,7 +80,8 @@ module CIAX
       end
 
       def _head_(msg, col, label = 'noname')
-        _rindent_ + Msg.colorize(msg, col) + ':' + (self[:label] || label)
+        elps = format('[%6.2f]', (self[:time] - @base) * 0.001)
+        elps + _rindent_ + Msg.colorize(msg, col) + ':' + (self[:label] || label)
       end
 
       def _fail_color_
@@ -64,6 +90,10 @@ module CIAX
 
       def _rindent_(add = 0)
         Msg.indent((self[:depth].to_i + add) * 2)
+      end
+
+      def _show(msg)
+        print msg if Msg.fg?
       end
 
       # Branched functions (instead of case/when semantics)
@@ -106,6 +136,12 @@ module CIAX
 
       def prt_select(_)
         _head_('Select by', 11, "[#{self[:site]}:#{self[:var]}]")
+      end
+    end
+
+    class Step
+      def ext_prt(base)
+        extend(PrtShare).ext_prt(base)
       end
     end
   end

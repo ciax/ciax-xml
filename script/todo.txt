@@ -1,7 +1,6 @@
 ====================== Debug ======================
 *** On-site
 3/18/16 mcr t03-01/comics is appear before reach to tag03.
-3/23/16 field skelton is faild -> need test program
 3/23/16 mcr app status for interlock isn't updated.
 
 *** Test Environment

@@ -19,7 +19,6 @@ module CIAX
       def to_v
         msg = title
         self[:steps].each do |i|
-          i.extend(PrtShare) unless i.is_a? PrtShare
           msg << i.title + i.result
         end
         msg << " (#{self[:result]}) #{step_num}"
@@ -41,6 +40,24 @@ module CIAX
         date = Time.at((self[:time] / 1000).round)
         Msg.colorize('MACRO', 3) +
           format(":%s (%s) [%s]\n", self[:label], self[:cid], date)
+      end
+
+      def read(str = nil)
+        super
+        _ext_steps
+      end
+
+      def load(str = nil)
+        super
+        _ext_steps
+      end
+
+      private
+
+      def _ext_steps
+        self[:steps].each do |i|
+          i.extend(PrtShare).ext_prt(self[:start])
+        end
       end
     end
 

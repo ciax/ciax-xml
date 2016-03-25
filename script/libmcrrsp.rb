@@ -24,12 +24,12 @@ module CIAX
       end
 
       def start
-        self[:start] = now_msec.to_s
+        self[:start] = now_msec
         title
       end
 
       def add_step(e1, depth)
-        step = Step.new(e1, @cfg[:dev_list], @cfg[:option].test?)
+        step = Step.new(e1, @cfg[:dev_list], @cfg[:option].test?).ext_prt(self[:start])
         step.post_upd_procs << proc do
           verbose { 'Propagate Step#upd -> Record#upd' }
           post_upd

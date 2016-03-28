@@ -2,6 +2,8 @@
 require 'libenumx'
 module CIAX
   # Variables with update feature
+  # Used for convert or loading as client from lower layer data.
+  # All data manipulation command should include upd.
   class Upd < Hashx
     attr_reader :pre_upd_procs, :post_upd_procs
     def initialize

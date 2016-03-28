@@ -90,6 +90,7 @@ module CIAX
       while (args = _reorder_cmd_)
         @recv_proc.call(args, 'buffer')
       end
+      flush
     rescue CommError
       alert
     rescue
@@ -122,13 +123,13 @@ module CIAX
     end
 
     def sv_up(cid)
-      @sv_stat.push(:queue, cid)
       @sv_stat.up(:busy)
+      @sv_stat.push(:queue, cid)
     end
 
     def sv_dw
-      @sv_stat.dw(:busy)
       @sv_stat.flush(:queue)
+      @sv_stat.dw(:busy)
     end
 
     def clear

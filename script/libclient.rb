@@ -14,11 +14,12 @@ module CIAX
     # remove ipv6 entry from /etc/hosts
     def ext_client
       return self unless @port
+      @stat.ext_http(@host)
+      @pre_exe_procs << proc { @stat.upd }
       @sv_stat.add_flg(udperr: 'x')
       @udp = UDPSocket.open
       verbose { "Initialize UDP client (#{@id}) [#{@host}:#{@port}]" }
       _set_client_proc
-      self
     end
 
     private

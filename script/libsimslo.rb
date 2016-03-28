@@ -55,6 +55,8 @@ module CIAX
         @axis.busy ? 1 : 0
       end
 
+      # in(3) is + Limit
+      # in(4) is - Limit
       def slo_in(int)
         return unless (1..4).include?(int)
         '0'

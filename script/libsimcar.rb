@@ -12,8 +12,22 @@ module CIAX
 
       def slo_in(num)
         super
-        return '0' unless num.to_i == 1
-        (@axis.pulse % 1_000_000 == 0) ? '1' : '0'
+        _sw_by_axis(num.to_i) ? '1' : '0'
+      end
+
+      private
+
+      def _sw_by_axis(num)
+        case num
+        when 1
+          @axis.pulse % 1_000_000 == 0
+        when 3
+          @axis.up_limit?
+        when 4
+          @axis.dw_limit?
+        else
+          false
+        end
       end
     end
 

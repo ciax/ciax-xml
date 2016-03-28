@@ -90,6 +90,7 @@ module CIAX
       while (args = _reorder_cmd_)
         @recv_proc.call(args, 'buffer')
       end
+      flush
     rescue CommError
       alert
     rescue

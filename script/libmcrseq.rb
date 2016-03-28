@@ -19,7 +19,7 @@ module CIAX
         @record.ext_rsp(@cfg)
         @record[:pid] = pid
         @id = @record[:id]
-        @sv_stat = (@cfg[:sv_stat] || Prompt.new('mcr', @id))
+        @sv_stat = @cfg[:sv_stat]
         @sv_stat.add_array(:run)
         @sv_stat.add_str(:sid, @id)
         @title = @record.title
@@ -109,7 +109,8 @@ module CIAX
         wl = Wat::List.new(cfg) # Take App List
         cfg[:dev_list] = wl
         dbi = Db.new.get
-        mobj = Cmd::Remote::Index.new(cfg, dbi.pick(%i(sites)))
+        atrb = dbi.pick(%i(sites)).update(sv_stat: Prompt.new('mcr', 'test'))
+        mobj = Cmd::Remote::Index.new(cfg, atrb)
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)
         seq = Seq.new(ent)

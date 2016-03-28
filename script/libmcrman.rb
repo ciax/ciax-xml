@@ -99,7 +99,9 @@ module CIAX
       # External Command Group
       def _init_proc_extcmd_
         @cobj.rem.ext.def_proc do |ent|
-          @sv_stat.push(:list, @stat.add(ent).id)
+          sid = @stat.add(ent).id
+          @sv_stat.rep(:sid, sid)
+          @sv_stat.push(:list, sid)
           ent.msg = 'ACCEPT'
         end
       end

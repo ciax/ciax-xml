@@ -15,8 +15,10 @@ out=`mktemp`
 trap "rm $out" EXIT
 $appcmd $* >$out 2>&1
 case "$?$2:$1" in
-    1:) show `list-db adb`;;
-    2:*) show $1;;
+    # General Error
+    4:) show `list-db adb`;;
+    # Option Error
+    5:*) show $1;;
     0*) cat $out;;
     *) $appcmd $*;;
 esac

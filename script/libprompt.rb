@@ -92,15 +92,6 @@ module CIAX
       @db.map { |k, v| v if self[k].to_s == 'true' }.join
     end
 
-    def server
-      ThreadLoop.new('Prompt', 12) do
-        exec_buf if @q.empty?
-        verbose { 'Waiting' }
-        pri_sort(@q.shift)
-      end
-      self
-    end
-
     # Subtract and merge to self data, return rest of the data
     def sub(input)
       pre_upd

@@ -43,12 +43,14 @@ module CIAX
       # Status Commands
       def slo_err
         if @axis.up_limit?
-          '128'
+          code = '128'
         elsif @axis.dw_limit?
-          '129'
+          code = '129'
         else
-          '0'
+          @clr = nil
+          return '0'
         end
+        @clr = @clr ? '0' : code
       end
 
       def slo_busy

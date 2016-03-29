@@ -78,7 +78,11 @@ module CIAX
 
     def usage(str, code = 2)
       warn("Usage: #{$PROGRAM_NAME.split('/').last} #{str}")
-      warn($ERROR_INFO) if $ERROR_INFO
+      if $ERROR_INFO
+        warn($ERROR_INFO)
+        eid = $ERROR_INFO.class.to_s.sub('CIAX::Invalid', '')
+        code = %w(ARGS OPT ID CMD PAR).index(eid).to_i + 2
+      end
       exit code
     end
   end

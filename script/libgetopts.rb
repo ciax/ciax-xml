@@ -14,12 +14,8 @@ module CIAX
       _init_db(db)
       _set_opt(optstr)
       yield(self, ARGV)
-    rescue InvalidCMD
-      usage(usagestr, 4)
-    rescue InvalidID
-      usage(usagestr, 3)
     rescue InvalidARGS
-      usage(usagestr, 2)
+      usage(usagestr)
     end
 
     def cl?
@@ -62,7 +58,7 @@ module CIAX
     def _parse(optstr)
       ARGV.getopts(optstr).each { |k, v| self[k.to_sym] = v }
     rescue OptionParser::ParseError
-      raise(InvalidARGS, $ERROR_INFO)
+      raise(InvalidOPT, $ERROR_INFO)
     end
 
     def _init_db(db)

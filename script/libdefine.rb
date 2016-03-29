@@ -30,8 +30,10 @@ module CIAX
 
   # User input Error
   class UserError < RuntimeError; end
-  # When invalid Option, exit from shell/server
+  # When invalid Argument, exit from shell/server
   class InvalidARGS < UserError; end
+  # When invalid Option, exit from shell/server
+  class InvalidOPT < InvalidARGS; end
   # When invalid Device, exit from shell/server
   class InvalidID < InvalidARGS; end
   # When invalid Command, continue in shell/server

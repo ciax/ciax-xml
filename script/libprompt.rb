@@ -25,6 +25,7 @@ module CIAX
     end
 
     # For Binary Data with display db
+    # Value should be String to replace
     def add_flg(db = {})
       @db.update(type?(db, Hash))
       db.keys.each { |k| self[k] = 'false' }
@@ -55,8 +56,9 @@ module CIAX
       flag ? up(key) : dw(key)
     end
 
+    # flag will be converted to Boolean in JSON if the string is 'true' or 'false'
     def up?(key)
-      self[key] == 'true'
+      self[key].to_s == 'true'
     end
 
     # For Array Data

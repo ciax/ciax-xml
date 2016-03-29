@@ -41,6 +41,7 @@ module CIAX
         self
       end
 
+      # set vars by csv
       def str_update(str)
         str.split(',').each do |tkn|
           self[:data].rep(*tkn.split('='))

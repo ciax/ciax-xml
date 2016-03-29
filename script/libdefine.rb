@@ -23,6 +23,8 @@ module CIAX
   module Ins; NS_COLOR = 6; end
   # XML module
   module Xml; NS_COLOR = 4; end
+  # Cmd module
+  module Cmd; NS_COLOR = 2; end
   # Symbol module
   module Sym; NS_COLOR = 1; end
   # SqLog module

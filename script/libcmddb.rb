@@ -4,7 +4,6 @@ require 'libdb'
 module CIAX
   # Instance Layer
   module Cmd
-    NS_COLOR=1
     # Instance DB
     class Db < Db
       def initialize

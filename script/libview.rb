@@ -6,7 +6,7 @@ module CIAX
     include ViewPath
 
     def to_s
-      return to_j unless STDOUT.tty?
+      return to_jj unless STDOUT.tty?
       case @vmode
       when :v
         to_v

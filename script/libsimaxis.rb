@@ -24,7 +24,7 @@ module CIAX
           while @busy
             @pulse += (t <=> @pulse)
             @busy = _upd_busy(t)
-            sleep 0.5 / @speed # Consider the processor speed
+            sleep 0.4 / @speed # Consider the processor speed
           end
         end
       end

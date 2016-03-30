@@ -20,7 +20,7 @@ module CIAX
       def _sw_by_axis(num)
         case num
         when 1
-          @axis.pulse % 1_000_000 == 0
+          @axis.pulse % 1000 == 0
         when 3
           @axis.up_limit?
         when 4

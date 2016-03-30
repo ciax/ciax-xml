@@ -8,8 +8,8 @@ module CIAX
     class Arm < Slosyn
       def initialize
         super(-0.3, 185.3, 1, 10_003)
-        @tol = 5
-        @postbl = [1230, 128, 2005, 0, 1850]
+        @tol = 500
+        @postbl = [123, 12.8, 200.5, 0, 185]
       end
 
       def slo_in(num)
@@ -20,7 +20,8 @@ module CIAX
       private
 
       def about(x) # torerance
-        (-@tol..@tol).cover?(@axis.pulse / 100 - x) ? '1' : '0'
+        pos = x * 1000
+        (@axis.pulse - pos).abs < @tol ? '1' : '0'
       end
     end
 

@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require 'libsimarm'
+require 'libsimap'
 
 module CIAX
   module Simulator
-    Arm.new.start
+    Ap.new.start
   end
 end

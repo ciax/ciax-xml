@@ -48,6 +48,7 @@
   </group>
   <group id="dmy" label="Dummy Simulator" column="2">
     <site id="tfp" frm_id="cfp" host="localhost" port="24691" iocmd="socat - tcp:localhost:10001" label="Field Point dummy"/>
+    <site id="tap" frm_id="oma" host="localhost" port="24692" iocmd="socat - tcp:localhost:10002" label="Air Pres dummy"/>
     <site id="tma" frm_id="slo" host="localhost" port="24693" iocmd="socat - tcp:localhost:10003" label="Arm dummy"/>
     <site id="tmc" frm_id="slo" host="localhost" port="24694" iocmd="socat - tcp:localhost:10004" label="Carousel dummy"/>
     <site id="tbb" frm_id="bbe" host="localhost" port="24697" iocmd="socat - tcp:localhost:10007" label="BBE dummy"/>

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-fpsim &
-carsim &
-armsim &
-bbsim &
-dvsv -e tfp tmc tma tb2
+fpsim
+apsim
+carsim
+armsim
+bbsim
+dvsv -e tfp tap tmc tma tb2

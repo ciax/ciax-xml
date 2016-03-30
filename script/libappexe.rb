@@ -38,7 +38,7 @@ module CIAX
       def wait_busy
         100.times do
           exe([])
-          return unless @sv_stat.up?(:event) || @sv_stat.up?(:busy)
+          return unless @sv_stat.up?(:busy)
           verbose { "Waiting busy for #{@id}" }
           sleep 0.1
         end

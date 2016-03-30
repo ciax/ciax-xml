@@ -10,7 +10,7 @@ module CIAX
         super(-23.49, 0.41, 12, 10_004)
       end
 
-      def slo_in(num)
+      def cmd_in(num)
         super
         _sw_by_axis(num.to_i) ? '1' : '0'
       end
@@ -32,9 +32,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      sv = Carousel.new(*ARGV)
-      sv.serve
-      sleep
+      Carousel.new(*ARGV).serve
     end
   end
 end

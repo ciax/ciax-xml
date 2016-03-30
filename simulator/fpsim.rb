@@ -3,8 +3,6 @@
 require 'libsimfp'
 module CIAX
   module Simulator
-    sv = FpDio.new(*ARGV)
-    sv.start
-    sleep
+    FpDio.new(*ARGV).start
   end
 end

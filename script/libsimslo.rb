@@ -6,28 +6,25 @@ module CIAX
   module Simulator
     # Slosyn Driver Simulator
     class Slosyn < Server
-      attr_accessor :slo_e1, :slo_e2, :slo_wn
       def initialize(dl = -100, ul = 100, spd = 1, port = 10_000, *args)
         super(port, *args)
         @separator = "\r\n"
         @axis = Axis.new(to_int(dl), to_int(ul), to_int(spd))
-        @slo_wn = '1' # Drive ON/OFF during stop
-        @slo_err = '0'
+        # wn: drive ON/OFF during stop
+        @io = { wn: '1', e1: '0', e2: '0' }
       end
 
       private
 
-      def dispatch(str)
-        cmd = 'slo_' + str
+      def method_call(str)
+        cmd = 'cmd_' + str
         if /=/ =~ cmd
-          '>' if method("#{$`}=").call($')
+          method("#{$`}=").call($')
         elsif /\((.*)\)/ =~ cmd
           method($`).call(Regexp.last_match(1))
         else
           method(cmd).call
-        end || '?'
-      rescue NameError, ArgumentError
-        '?'
+        end || @prompt_ng
       end
 
       def to_int(real)
@@ -41,91 +38,96 @@ module CIAX
       public
 
       # Status Commands
-      def slo_err
+      # Re-reading err will be '0'
+      def cmd_err
         if @axis.up_limit?
-          code = '128'
+          @on = @on ? '0' : '128'
         elsif @axis.dw_limit?
-          code = '129'
+          @on = @on ? '0' : '129'
         else
-          @clr = nil
-          return '0'
+          @on = nil
+          '0'
         end
-        @clr = @clr ? '0' : code
       end
 
-      def slo_busy
+      def cmd_busy
         @axis.busy ? 1 : 0
       end
 
       # in(3) is + Limit
       # in(4) is - Limit
-      def slo_in(int)
+      def cmd_in(int)
         return unless (1..4).include?(int)
         '0'
       end
 
-      def slo_speed
+      def cmd_speed
         to_real(@axis.speed)
       end
 
-      def slo_abspos
+      def cmd_abspos
         to_real(@axis.pulse)
       end
 
-      def slo_help
-        methods.map(&:to_s).grep(/^slo_/).map do |s|
-          s.sub(/^slo_/, '')
+      def cmd_help
+        methods.map(&:to_s).grep(/^cmd_/).map do |s|
+          s.sub(/^cmd_/, '')
         end.join($INPUT_RECORD_SEPARATOR)
       end
 
       # Config Command
-      def slo_hardlimoff
+      def cmd_hardlimoff
         @axis.hardlim = false
-        '>'
+        @prompt_ok
       end
 
-      def slo_hardlimon
+      def cmd_hardlimon
         @axis.hardlim = true
-        '>'
+        @prompt_ok
       end
 
-      def slo_speed=(real)
+      def cmd_speed=(real)
         @axis.speed = to_int(real)
+        @prompt_ok
       end
 
-      def slo_abspos=(real)
+      def cmd_abspos=(real)
         @axis.pulse = to_int(real)
+        @prompt_ok
       end
 
       # Motion Command
-      def slo_jog=(sign) # sign= 1,-1
+      def cmd_jog=(sign) # sign= 1,-1
         return unless sign.to_i.abs == 1
         @axis.jog(sign.to_i)
+        @prompt_ok
       end
 
-      def slo_movea=(real)
+      def cmd_movea=(real)
         @axis.servo(to_int(real))
+        @prompt_ok
       end
 
-      def slo_movei=(real)
+      def cmd_movei=(real)
         @axis.servo(@axis.pulse + to_int(real))
+        @prompt_ok
       end
 
-      def slo_stop
+      def cmd_stop
         @axis.stop
-        '>'
+        @prompt_ok
       end
 
-      alias_method :slo_bs, :slo_busy
-      alias_method :slo_hl0, :slo_hardlimoff
-      alias_method :slo_hl1, :slo_hardlimon
-      alias_method :slo_spd, :slo_speed
-      alias_method :slo_p, :slo_abspos
-      alias_method :slo_spd=, :slo_speed=
-      alias_method :slo_p=, :slo_abspos=
-      alias_method :slo_j=, :slo_jog=
-      alias_method :slo_ma=, :slo_movea=
-      alias_method :slo_mi=, :slo_movei=
+      alias_method :cmd_bs, :cmd_busy
+      alias_method :cmd_hl0, :cmd_hardlimoff
+      alias_method :cmd_hl1, :cmd_hardlimon
+      alias_method :cmd_spd, :cmd_speed
+      alias_method :cmd_p, :cmd_abspos
+      alias_method :cmd_spd=, :cmd_speed=
+      alias_method :cmd_p=, :cmd_abspos=
+      alias_method :cmd_j=, :cmd_jog=
+      alias_method :cmd_ma=, :cmd_movea=
+      alias_method :cmd_mi=, :cmd_movei=
     end
 
     if __FILE__ == $PROGRAM_NAME

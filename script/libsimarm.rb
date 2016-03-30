@@ -12,7 +12,7 @@ module CIAX
         @postbl = [123, 12.8, 200.5, 0, 185]
       end
 
-      def slo_in(num)
+      def cmd_in(num)
         super
         about(@postbl[num.to_i - 1])
       end
@@ -26,9 +26,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      sv = Arm.new(*ARGV)
-      sv.serve
-      sleep
+      Arm.new(*ARGV).serve
     end
   end
 end

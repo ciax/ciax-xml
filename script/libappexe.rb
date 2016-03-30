@@ -34,6 +34,16 @@ module CIAX
         self
       end
 
+      # return nil if success
+      def wait_busy
+        100.times do
+          exe([])
+          return unless @sv_stat.up?(:event) || @sv_stat.up?(:busy)
+          verbose { "Waiting busy for #{@id}" }
+          sleep 0.1
+        end
+      end
+
       private
 
       def init_sub
@@ -74,7 +84,7 @@ module CIAX
       def ext_driver
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
         @buf = init_buf
-        ext_cl_mode
+        ext_cmdline_mode
         ext_exec_mode
         ext_non_client
         super
@@ -86,7 +96,7 @@ module CIAX
         self
       end
 
-      def ext_cl_mode
+      def ext_cmdline_mode
         return unless @cfg[:cmd_line_mode] # command line mode
         tc = Thread.current
         @stat.post_upd_procs << proc { tc.run }
@@ -185,6 +195,7 @@ module CIAX
           @stat.upd
         end
       end
+
     end
 
     if __FILE__ == $PROGRAM_NAME

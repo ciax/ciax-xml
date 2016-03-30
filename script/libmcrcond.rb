@@ -9,7 +9,7 @@ module CIAX
       def initialize(cond, dev_list, step)
         super()
         @dev_list = type?(dev_list, Wat::List)
-        @exes = cond.map { |h| h[:site] }.uniq.map { |s| @dev_list.get(s) }
+        @exes = cond.map { |h| h[:site] }.uniq.map { |s| @dev_list.get(s).sub }
         @condition = cond
         @step = step
       end
@@ -26,18 +26,13 @@ module CIAX
       def _scan
         @exes.each_with_object({}) do |obj, hash|
           _wait_busy(obj)
-          st = hash[obj.id] = obj.sub.stat.upd
+          st = hash[obj.id] = obj.stat
           verbose { "Scanning #{obj.id} (#{st[:time]})/(#{st.object_id})" }
         end
       end
 
       def _wait_busy(obj)
-        100.times do
-          sv = obj.exe([]).sv_stat
-          return unless sv.up?(:event) || sv.up?(:busy)
-          verbose { "Waiting busy for #{obj.id}" }
-          sleep 0.1
-        end
+        return unless obj.wait_busy
         @step[:result] = 'timeout'
         fail Interlock
       end

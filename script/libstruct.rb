@@ -5,6 +5,7 @@ module CIAX
   module ViewStruct
     include Msg
 
+    COLOR_TBL = { 'true' => Msg.colorize('true',13), 'false' => Msg.colorize('false',8) }
     def view_struct(show_iv = false, show_id = false, depth = 1)
       _recursive(self, nil, [], 0, show_iv, show_id, depth)
     end
@@ -56,8 +57,10 @@ module CIAX
       when Hash
         return str if _mixed?(str, data, data.values, data.keys, object_ary, ind, show_iv, show_id, depth)
         return _only_hash(str, data, ind, title) if data.size > 2
+      else
+        prt = COLOR_TBL[data] || data.inspect
       end
-      str.chomp + " #{data.inspect}\n"
+      str.chomp + " #{prt}\n"
     end
 
     def _mixed?(str, data, vary, idx, object_ary, ind, show_iv, show_id, depth)

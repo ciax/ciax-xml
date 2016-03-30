@@ -56,7 +56,8 @@ module CIAX
       flag ? up(key) : dw(key)
     end
 
-    # flag will be converted to Boolean in JSON if the string is 'true' or 'false'
+    # flag will be converted to Boolean in JSON
+    # when the string is 'true' or 'false'
     def up?(key)
       self[key].to_s == 'true'
     end
@@ -113,6 +114,7 @@ module CIAX
       update(sub.pick(args))
     end
 
-    private(:[], :[]=)
+    private(:[]=)
+    protected(:[])
   end
 end

@@ -32,7 +32,7 @@ module CIAX
       def jog(dir = 1)
         dir = dir.to_i
         return if dir == 0
-        servo(dir.abs * @max_range)
+        servo(dir * @max_range)
       end
 
       def pulse=(num)

@@ -138,7 +138,7 @@
         <upd site="tma"/>
         <upd site="tmc"/>
         <upd site="tfp"/>
-        <upd site="map"/>
+        <upd site="tap"/>
       </item>
     </group>
     <group id="grp_mos_2" caption="Sub Start Mask" rank="1">
@@ -148,7 +148,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="ah_t-i"/>
@@ -162,7 +162,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="t-i"/>
@@ -179,13 +179,13 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="t-f"/>
         <mcr name="gr_t-r"/>
         <mcr name="av_t-r"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="ao_t-r"/>
       </item>
       <item id="t-w" label="startmask (ROT~WAIT)">
@@ -198,7 +198,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="t-r"/>
@@ -214,7 +214,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ah"/>
       </item>
@@ -228,7 +228,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ao"/>
       </item>
@@ -244,7 +244,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_rc"/>
       </item>
@@ -261,7 +261,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <exec site="tma" name="drvon"/>
         <mcr name="tma_gf"/>
@@ -278,7 +278,7 @@
           <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ac"/>
       </item>
@@ -295,7 +295,7 @@
           <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ro"/>
       </item>
@@ -311,7 +311,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_gr"/>
       </item>
@@ -327,7 +327,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">ROT</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_av"/>
       </item>
@@ -343,7 +343,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">ROT</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ao"/>
       </item>
@@ -359,7 +359,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">ROT</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_gw"/>
       </item>
@@ -372,7 +372,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <match site="tma" var="abs" form="msg">WAIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
       </item>
     </group>
@@ -383,7 +383,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="ah_s-i"/>
@@ -397,7 +397,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="s-i"/>
@@ -414,7 +414,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="s-f"/>
@@ -430,14 +430,14 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="s-r"/>
         <mcr name="gs_s-s"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="sets_a"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <upd site="tma"/>
         <mcr name="ao_s-s"/>
       </item>
@@ -451,13 +451,13 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="s-s"/>
         <upd site="tma"/>
         <upd site="tmc"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="gw_s-w"/>
         <mcr name="check_store"/>
       </item>
@@ -470,7 +470,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ah"/>
       </item>
@@ -484,7 +484,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ao"/>
       </item>
@@ -500,7 +500,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_rc"/>
       </item>
@@ -517,7 +517,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <exec site="tma" name="drvon"/>
         <mcr name="tma_gf"/>
@@ -534,7 +534,7 @@
           <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ac"/>
       </item>
@@ -552,7 +552,7 @@
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <equal site="tma" var="con" form="msg">ON</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ro"/>
       </item>
@@ -568,7 +568,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_gr"/>
       </item>
@@ -584,7 +584,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">ROT</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_av"/>
       </item>
@@ -600,7 +600,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">ROT</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_gs"/>
       </item>
@@ -616,7 +616,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">STORE</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ao"/>
       </item>
@@ -633,7 +633,7 @@
           <equal site="tma" var="con" form="msg">OFF</equal>
           <equal site="tma" var="pos" form="msg">STORE</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_gw"/>
       </item>
@@ -646,7 +646,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <match site="tma" var="abs" form="msg">WAIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
       </item>
     </group>
@@ -657,7 +657,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="av_l-w"/>
@@ -671,12 +671,12 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="l-w"/>
         <mcr name="gs_l-s"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="sets_a"/>
         <mcr name="ac_l-s"/>
       </item>
@@ -689,12 +689,12 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="l-s"/>
         <upd site="tma"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="gr_l-r"/>
         <upd site="tmc"/>
         <mcr name="ah_l-r"/>
@@ -709,7 +709,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="l-r"/>
@@ -724,7 +724,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
       </item>
@@ -734,11 +734,11 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="ro_l-f"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="rc_l-f"/>
         <upd site="tma"/>
       </item>
@@ -754,12 +754,12 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="l-f"/>
         <mcr name="ini_l-i"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="set0_a"/>
         <mcr name="check_load"/>
       </item>
@@ -771,7 +771,7 @@
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
           <match site="tma" var="abs" form="msg">WAIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_av"/>
       </item>
@@ -784,7 +784,7 @@
           <equal site="tfp" var="hv" form="msg">Vertical</equal>
           <match site="tma" var="abs" form="msg">WAIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ao"/>
       </item>
@@ -798,7 +798,7 @@
           <equal site="tfp" var="ao" form="msg">OPEN</equal>
           <match site="tma" var="abs" form="msg">WAIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_gs"/>
       </item>
@@ -812,7 +812,7 @@
           <equal site="tfp" var="ao" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">STORE</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ac"/>
       </item>
@@ -827,7 +827,7 @@
           <equal site="tma" var="pos" form="msg">STORE</equal>
           <equal site="tma" var="con" form="msg">ON</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_gr"/>
       </item>
@@ -841,7 +841,7 @@
           <equal site="tfp" var="ao" form="msg">CLOSE</equal>
           <equal site="tma" var="pos" form="msg">ROT</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <equal site="tmc" var="con" form="msg">OFF</equal>
         </check>
         <mcr name="tfp_ah"/>
@@ -858,7 +858,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">ROT</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_gf"/>
       </item>
@@ -881,7 +881,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_rc"/>
       </item>
@@ -898,7 +898,7 @@
           <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ro"/>
       </item>
@@ -915,7 +915,7 @@
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <equal site="tma" var="con" form="msg">ON</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ao"/>
       </item>
@@ -931,7 +931,7 @@
           <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_ini"/>
       </item>
@@ -956,7 +956,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
       </item>
     </group>
@@ -968,7 +968,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="ah_fc-i1"/>
@@ -983,7 +983,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="fc-i1"/>
@@ -1001,7 +1001,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="fc-f1"/>
@@ -1018,7 +1018,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ah"/>
       </item>
@@ -1034,7 +1034,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ao"/>
       </item>
@@ -1052,7 +1052,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_rc"/>
       </item>
@@ -1069,7 +1069,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_gf"/>
       </item>
@@ -1085,7 +1085,7 @@
           <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ac"/>
       </item>
@@ -1103,7 +1103,7 @@
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <equal site="tma" var="con" form="msg">ON</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ro"/>
       </item>
@@ -1119,7 +1119,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_gr"/>
       </item>
@@ -1135,7 +1135,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_rc"/>
       </item>
@@ -1149,7 +1149,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ro"/>
       </item>
@@ -1161,7 +1161,7 @@
           <equal site="tfp" var="hv" form="msg">Horizontal</equal>
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_rc"/>
       </item>
@@ -1173,7 +1173,7 @@
           <equal site="tfp" var="hv" form="msg">Horizontal</equal>
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ro"/>
       </item>
@@ -1187,13 +1187,13 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
           <not site="tma" var="pos" form="msg">FOCUS</not>
         </check>
         <mcr name="gr_f-r"/>
         <mcr name="ac_f-r"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="ah_f-r"/>
       </item>
       <item id="f-i" label="fin 2(ROT~INIT)">
@@ -1205,14 +1205,14 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
           <not site="tma" var="pos" form="msg">FOCUS</not>
           <equal site="tmc" var="con" form="msg">ON</equal>
         </check>
         <mcr name="f-r"/>
         <mcr name="ini_f-i"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="set0_a"/>
         <mcr name="rc_f-i"/>
         <mcr name="check_fin"/>
@@ -1229,7 +1229,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <match site="tma" var="abs" form="msg">WAIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_gr"/>
       </item>
@@ -1245,7 +1245,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">ROT</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ac"/>
       </item>
@@ -1261,7 +1261,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">ROT</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ah"/>
       </item>
@@ -1277,7 +1277,7 @@
           <equal site="tfp" var="rbo" form="msg">OPEN</equal>
           <equal site="tma" var="pos" form="msg">ROT</equal>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tma_ini"/>
       </item>
@@ -1295,7 +1295,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_rc"/>
       </item>
@@ -1309,7 +1309,7 @@
           <equal site="tma" var="pos" form="msg">INIT</equal>
           <match site="tma" var="abs" form="msg">INIT</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
       </item>
     </group>
@@ -1317,7 +1317,7 @@
       <item id="start" label="startmask">
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="upd"/>
@@ -1326,7 +1326,7 @@
       <item id="store" label="storemask">
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="upd"/>
@@ -1335,7 +1335,7 @@
       <item id="load" label="loadmask">
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="upd"/>
@@ -1344,53 +1344,53 @@
       <item id="kapa" label="align mask">
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
           <equal site="tma" var="pos" form="msg">INIT</equal>
         </check>
         <mcr name="rc_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="ro_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="rc_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="ro_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="rc_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="ro_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="rc_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="ro_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="rc_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="ro_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="rc_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="ro_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="rc_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="ro_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="rc_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="ro_k"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="rc_k"/>
       </item>
       <item id="kapa1" label="rail-up">
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
           <equal site="tma" var="pos" form="msg">INIT</equal>
         </check>
         <mcr name="ro_k1"/>
-        <upd site="map"/>
+        <upd site="tap"/>
         <mcr name="rc_k1"/>
       </item>
       <item id="fin" label="finish mos">
@@ -1402,7 +1402,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
-          <match site="map" var="pres" form="msg">H|M|L</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="upd"/>

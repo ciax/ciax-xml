@@ -5,7 +5,7 @@ module CIAX
   # list object can be (Frm,App,Wat,Hex)
   # atrb can have [:top_layer]
   class Layer < CIAX::List
-    NS_COLOR=4
+    NS_COLOR = 4
     def initialize(usagestr, optstr)
       ConfOpts.new(usagestr, optstr) do |cfg, args, opt|
         super(cfg)

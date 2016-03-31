@@ -25,8 +25,6 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
-      Arm.new(*ARGV).serve
-    end
+    Arm.new(*ARGV).serve if __FILE__ == $PROGRAM_NAME
   end
 end

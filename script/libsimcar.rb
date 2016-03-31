@@ -31,8 +31,6 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
-      Carousel.new(*ARGV).serve
-    end
+    Carousel.new(*ARGV).serve if __FILE__ == $PROGRAM_NAME
   end
 end

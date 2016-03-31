@@ -3,8 +3,6 @@ require 'libsimbb'
 
 module CIAX
   module Simulator
-    sv = BBIO.new(*ARGV)
-    sv.start
-    sleep
+    BBIO.new(*ARGV).start
   end
 end

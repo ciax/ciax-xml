@@ -195,7 +195,6 @@ module CIAX
           @stat.upd
         end
       end
-
     end
 
     if __FILE__ == $PROGRAM_NAME

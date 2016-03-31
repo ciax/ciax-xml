@@ -5,7 +5,7 @@ module CIAX
   module ViewStruct
     include Msg
 
-    COLOR_TBL = { 'true' => Msg.colorize('true',13), 'false' => Msg.colorize('false',8) }
+    COLOR_TBL = { 'true' => Msg.colorize('true', 13), 'false' => Msg.colorize('false', 8) }
     def view_struct(show_iv = false, show_id = false, depth = 1)
       _recursive(self, nil, [], 0, show_iv, show_id, depth)
     end

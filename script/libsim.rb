@@ -12,26 +12,26 @@ module CIAX
         super
         Thread.abort_on_exception = true
         @io = {}
-        @separator = "\n"
         @prompt_ok = '>'
         @prompt_ng = '?'
       end
 
       def serve(io = nil)
         selectio(io)
-        while (str = gets.chomp)
+        while (str = input(io))
+          res = dispatch(str)
+          print io ? res + @separator.to_s : res.inspect if res
           sleep 0.1
-          print dispatch(str).to_s + $INPUT_RECORD_SEPARATOR
         end
       rescue
         warn $ERROR_INFO
       end
 
       def start
-        bname = File.basename($0, '.rb')
+        bname = File.basename($PROGRAM_NAME, '.rb')
         self.stdlog = Msg.vardir('log') + bname + '.log'
-        Process.daemon(true,true)
-        verbose { "Starting daemon #{bname}"}
+        Process.daemon(true, true)
+        verbose { "Starting daemon #{bname}" }
         super()
         sleep
       end
@@ -40,23 +40,38 @@ module CIAX
 
       # For Background
       def selectio(io)
-        return unless io
-        $stdin = $stdout = io
-        $/ = @separator
+        if io
+          $stdin = $stdout = io
+          $/ = @separator
+        else
+          @length = nil
+        end
+      end
+
+      def input(io)
+        if @length
+          io.readpartial(@length)
+        else
+          str = gets
+          str ? str.chomp : ''
+        end
       end
 
       def dispatch(str)
         cmd = (/=/ =~ str ? $` : str).to_sym
-        return method_call(str) unless @io.key?(cmd)
-        par = $'
-        if par
-          @io[cmd]=par
-          @prompt_ok
-        else
-          @io[cmd]
-        end
+        res = @io.key?(cmd) ? handle_var(cmd, $') : method_call(str)
+        res.to_s + $INPUT_RECORD_SEPARATOR
       rescue NameError, ArgumentError
         @prompt_ng
+      end
+
+      def handle_var(key, val)
+        if val
+          @io[key] = val
+          @prompt_ok
+        else
+          @io[key]
+        end
       end
 
       def method_call(str)

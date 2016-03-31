@@ -5,21 +5,11 @@ module CIAX
   # Device Simulator
   module Simulator
     # BB Electric I/O
-    class BBIO < GServer
+    class BBIO < Server
       def initialize(port = 10_007, *args)
         super(port, *args)
-        Thread.abort_on_exception = true
         @ioreg = Word.new(0)
-      end
-
-      def serve(io)
-        while (str = io.readpartial(6))
-          sleep 0.1
-          res = dispatch(str)
-          io.print res if res
-        end
-      rescue
-        warn $ERROR_INFO
+        @length = 6
       end
 
       private
@@ -37,10 +27,6 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
-      sv = BBIO.new(*ARGV)
-      sv.start
-      sleep
-    end
+    BBIO.new(*ARGV).serve if __FILE__ == $PROGRAM_NAME
   end
 end

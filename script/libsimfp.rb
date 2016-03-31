@@ -61,8 +61,6 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
-      FpDio.new(*ARGV).serve
-    end
+    FpDio.new(*ARGV).serve if __FILE__ == $PROGRAM_NAME
   end
 end

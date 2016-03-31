@@ -57,10 +57,9 @@ module CIAX
       when Hash
         return str if _mixed?(str, data, data.values, data.keys, object_ary, ind, show_iv, show_id, depth)
         return _only_hash(str, data, ind, title) if data.size > 2
-      else
-        prt = COLOR_TBL[data] || data.inspect
       end
-      str.chomp + " #{prt}\n"
+      data = COLOR_TBL[data] || data.inspect
+      str.chomp + " #{data}\n"
     end
 
     def _mixed?(str, data, vary, idx, object_ary, ind, show_iv, show_id, depth)

@@ -16,13 +16,14 @@ module CIAX
     #   <val> -> taken from status (incoming)
     #   (val) -> calcurated from status
     def verbose(cond = true)
-      return unless ENV['VER'] && cond && !@hide_inside
+      return self unless ENV['VER'] && cond && !@hide_inside
       data = yield
       (data.is_a?(Array) ? data : [data]).map do|line|
         msg = make_msg(line)
         next unless condition(msg)
         prt_lines(msg)
-      end.compact.empty?
+      end
+      self
     end
 
     def info(title)
@@ -42,6 +43,7 @@ module CIAX
 
     def errmsg
       show make_msg("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
+      self
     end
 
     # @hide_inside is flag for hiding inside of enclose
@@ -49,6 +51,7 @@ module CIAX
       @hide_inside = verbose { title1 }
       Msg.ver_indent(1)
       res = yield
+      self
     ensure
       Msg.ver_indent(-1)
       verbose { format(title2, res) }
@@ -64,7 +67,6 @@ module CIAX
         show Msg.indent(base + ind) + line
         ind = 2
       end
-      true
     end
 
     def make_msg(title, c = nil)

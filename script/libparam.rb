@@ -7,6 +7,7 @@ module CIAX
     attr_reader :list
     def initialize(type = nil, default = nil)
       super(type: type, list: [])
+      # list includes a regexp or range
       @list = self[:list]
       return if type
       self[:type] = 'reg'
@@ -21,6 +22,7 @@ module CIAX
       self[:default] = (num && num > 0) ? @list[num - 1] : nil
     end
 
+    # For macro variable param (sid list)
     # replace (default is decresed)
     def flush(other)
       @list.replace other

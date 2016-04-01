@@ -33,9 +33,9 @@ module CIAX
         begin
           exe(@server_input_proc.call(line), "udp:#{rhost}")
         rescue InvalidCMD
-          @sv_stat.rep(:msg, 'INVALID')
+          @sv_stat.repl(:msg, 'INVALID')
         rescue
-          @sv_stat.rep(:msg, "ERROR:#{$ERROR_INFO}")
+          @sv_stat.repl(:msg, "ERROR:#{$ERROR_INFO}")
           errmsg
         end
         send_str = @server_output_proc.call

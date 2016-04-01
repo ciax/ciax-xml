@@ -18,10 +18,8 @@ module CIAX
       self
     end
 
-    def rep(key, val)
-      cfg_err('Value should be String') unless val.is_a?(String)
-      verbose { "Change [#{key}] -> #{val}" }
-      super
+    def repl(key, val)
+      super && verbose { "Changes [#{key}] -> #{val}" } && self
     end
 
     # For Binary Data with display db
@@ -34,22 +32,12 @@ module CIAX
 
     def up(key)
       cfg_err("No such flag [#{key}]") unless key?(key)
-      rep(key, 'true')
-      verbose { "Set [#{key}]" }
-      self
-    ensure
-      time_upd
-      post_upd
+      repl(key, 'true')
     end
 
     def dw(key)
       cfg_err("No such flag [#{key}]") unless key?(key)
-      rep(key, 'false')
-      verbose { "Reset [#{key}]" }
-      self
-    ensure
-      time_upd
-      post_upd
+      repl(key, 'false')
     end
 
     def set_flg(key, flag)

@@ -28,7 +28,7 @@ module CIAX
         super
       rescue CommError
         @sv_stat.up(:comerr)
-        @sv_stat.rep(:msg, $ERROR_INFO.to_s)
+        @sv_stat.repl(:msg, $ERROR_INFO.to_s)
         @stat.seterr
         raise $ERROR_INFO
       end
@@ -64,7 +64,7 @@ module CIAX
 
       def _init_test_set
         @cobj.get('set').def_proc do|ent|
-          @stat.rep(ent.par[0], ent.par[1])
+          @stat.repl(ent.par[0], ent.par[1])
           ent.msg = "Set [#{ent.par[0]}] = #{ent.par[1]}"
         end
       end
@@ -114,7 +114,7 @@ module CIAX
 
       def _init_drv_set
         @cobj.get('set').def_proc do|ent|
-          @stat.rep(ent.par[0], ent.par[1])
+          @stat.repl(ent.par[0], ent.par[1])
           @stat.flush
           ent.msg = "Set [#{ent.par[0]}] = #{ent.par[1]}"
         end

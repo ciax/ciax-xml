@@ -52,7 +52,7 @@ module CIAX
         res = _load_cache(id)
       else
         @docs = Xml::Doc.new(@type) unless @docs
-        res = _validate_rep(yield(@docs))
+        res = _validate_repl(yield(@docs))
         _save_cache(id, res)
       end
       res
@@ -83,7 +83,7 @@ module CIAX
     end
 
     # counter must not remain
-    def _validate_rep(db)
+    def _validate_repl(db)
       res = db.deep_search('\$[_a-z]')
       return db if res.empty?
       cfg_err("Counter remained at [#{res.join('/')}]")

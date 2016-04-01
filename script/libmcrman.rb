@@ -31,7 +31,7 @@ module CIAX
 
       # Initialize for driver
       def ext_driver
-        @sv_stat.rep(:sid, '') # For server response
+        @sv_stat.repl(:sid, '') # For server response
         _init_proc_pre_exe_
         _init_proc_extcmd_
         _init_proc_intcmd_
@@ -91,7 +91,7 @@ module CIAX
 
       def _init_proc_pre_exe_
         @pre_exe_procs << proc do
-          @sv_stat.rep(:sid, '')
+          @sv_stat.repl(:sid, '')
           @sv_stat.flush(:list, @stat.alives)
         end
       end
@@ -100,7 +100,7 @@ module CIAX
       def _init_proc_extcmd_
         @cobj.rem.ext.def_proc do |ent|
           sid = @stat.add(ent).id
-          @sv_stat.rep(:sid, sid)
+          @sv_stat.repl(:sid, sid)
           @sv_stat.push(:list, sid)
           ent.msg = 'ACCEPT'
         end
@@ -109,7 +109,7 @@ module CIAX
       # Internal Command Group
       def _init_proc_intcmd_
         @cobj.rem.int.def_proc do|ent|
-          @sv_stat.rep(:sid, ent.par[0])
+          @sv_stat.repl(:sid, ent.par[0])
           ent.msg = @stat.reply(ent.id) || 'NOSID'
         end
       end

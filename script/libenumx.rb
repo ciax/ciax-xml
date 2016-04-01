@@ -99,15 +99,18 @@ module CIAX
       self[key]
     end
 
+    # Put value. return nil if no changes
     def put(key, val)
+      return if self[key] == val
       store(key, val)
     end
 
-    # Replace value
-    def rep(key, val)
+    # Replace value. return nil if no changes
+    def repl(key, val)
       Msg.par_err("No such Key [#{key}]") unless key?(key)
+      Msg.cfg_err('Value should be String') unless val.is_a?(String)
+      return if fetch(key) == val
       fetch(key).replace(val)
-      val
     end
 
     # Make empty copy

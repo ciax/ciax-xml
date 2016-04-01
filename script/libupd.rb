@@ -25,18 +25,21 @@ module CIAX
       post_upd
     end
 
-    # Manipulate data
+    ## Manipulate data
     def put(key, val)
-      pre_upd
-      super
-    ensure
+      super || return
       time_upd
       post_upd
     end
 
-    def rep(key, val)
-      super
-    ensure
+    def repl(key, val)
+      super || return
+      time_upd
+      post_upd
+    end
+
+    # Generate new data by input
+    def make
       time_upd
       post_upd
     end

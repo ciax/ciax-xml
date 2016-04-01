@@ -139,7 +139,7 @@ module CIAX
       # Initialize procs
       def _init_proc_set
         @cobj.get('set').def_proc do|ent|
-          @stat[:data].rep(ent.par[0], ent.par[1])
+          @stat[:data].repl(ent.par[0], ent.par[1])
           # "SET:#{ent.par[0]}=#{ent.par[1]}"
           ent.msg = 'ISSUED'
         end

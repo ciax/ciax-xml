@@ -40,11 +40,11 @@ module CIAX
       type?(args, Array)
       verbose { "Executing Command #{args} from '#{src}' as ##{pri}" }
       @pre_exe_procs.each { |p| p.call(args, src) }
-      @sv_stat.rep(:msg, @cobj.set_cmd(args).exe_cmd(src, pri).msg)
+      @sv_stat.repl(:msg, @cobj.set_cmd(args).exe_cmd(src, pri).msg)
       @post_exe_procs.each { |p| p.call(args, src) }
       self
     rescue LongJump, InvalidARGS
-      @sv_stat.rep(:msg, $ERROR_INFO.to_s)
+      @sv_stat.repl(:msg, $ERROR_INFO.to_s)
       raise $ERROR_INFO
     end
 

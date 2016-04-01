@@ -66,7 +66,8 @@ module CIAX
       end
 
       # Replace value with pointer id
-      def rep(id, val)
+      #  value can be csv 'a,b,c,..'
+      def repl(id, val)
         conv = subst(val).to_s
         verbose { "Put[#{id}]=[#{conv}]" }
         case p = get(id)

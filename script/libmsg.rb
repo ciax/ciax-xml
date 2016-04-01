@@ -47,11 +47,11 @@ module CIAX
     end
 
     # @hide_inside is flag for hiding inside of enclose
+    # returns enclosed contents to have no influence by this
     def enclose(title1, title2)
       @hide_inside = verbose { title1 }
       Msg.ver_indent(1)
       res = yield
-      self
     ensure
       Msg.ver_indent(-1)
       verbose { format(title2, res) }

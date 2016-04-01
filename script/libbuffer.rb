@@ -73,13 +73,13 @@ module CIAX
     # [2] Array of event driven Batch
     # [3] Array of redular update Batch
     #  Batch: [ Property, ..]
-    #  Property: [ Args, cid ]
-    #  Args: ['cmd','par','par'..]
+    #  Property: { args:, cid: }
+    #  args: ['cmd','par','par'..]
 
     def pri_sort(rcv)
       verbose { "Recieved #{rcv}" }
       buf = (@outbuf[rcv[:pri]] ||= [])
-      buf.concat rcv[:batch].map { |args| [args, rcv[:cid]] }
+      buf.concat rcv[:batch].map { |args| { args: args, cid: rcv[:cid] } }
       verbose do
         @outbuf.map.with_index { |o, i| "SUB:Outbuf(#{i}) is [#{o}]\n" }
       end
@@ -87,7 +87,7 @@ module CIAX
 
     # Execute recieved command
     def exec_buf
-      while (args = _reorder_cmd_)
+      until (args = _reorder_cmd_).empty?
         @recv_proc.call(args, 'buffer')
       end
       flush
@@ -101,25 +101,19 @@ module CIAX
 
     # Remove duplicated args and unshift one
     def _reorder_cmd_
-      args = nil
-      cids = []
-      @outbuf.each { |ary| args = _get_args_(args, ary, cids) }
-      cids.uniq!
-      flush if cids.size < @sv_stat.get(:queue).size
-      @sv_stat.flush(:queue, cids)
+      args = []
+      @outbuf.each { |batch| _get_args_(args, batch) }
       args
     end
 
-    def _get_args_(args, ary, cids)
-      if args
-        ary.delete_if do |p|
-          warning("remove duplicated cmd #{args.inspect}") if p[0] == args
-        end
-      else
-        args, cid = ary.shift
-        cids << cid if cid
+    def _get_args_(args, batch)
+      if args.empty?
+        h = batch.shift || return
+        args.replace h[:args]
       end
-      args
+      batch.delete_if do |e|
+        warning("duplicated cmd #{args.inspect}(#{e[:cid]})") if e[:args] == args
+      end
     end
 
     def sv_up(cid)
@@ -140,6 +134,7 @@ module CIAX
     end
 
     def flush
+      @sv_stat.flush(:queue, @outbuf.flatten.map { |h| h[:cid] }.uniq)
       @flush_proc.call(self)
       self
     end

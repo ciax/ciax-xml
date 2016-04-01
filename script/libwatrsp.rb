@@ -52,7 +52,6 @@ module CIAX
       private
 
       def _init_proc
-        @pre_upd_procs << proc { self[:time] = @stat[:time] }
         @stat.post_upd_procs << proc do
           verbose { 'Propagate Status#upd -> Event#upd' }
           upd
@@ -77,6 +76,7 @@ module CIAX
       # self[:block] : Array of commands (units) which are blocked during busy
       # self[:int] : List of interrupt commands which is effectie during busy
       def upd_core
+        time_upd(@stat[:time])
         return self unless @stat[:time] > @last_updated
         @last_updated = self[:time]
         @cond.upd

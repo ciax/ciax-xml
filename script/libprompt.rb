@@ -33,22 +33,22 @@ module CIAX
     end
 
     def up(key)
-      pre_upd
       cfg_err("No such flag [#{key}]") unless key?(key)
       rep(key, 'true')
       verbose { "Set [#{key}]" }
       self
     ensure
+      time_upd
       post_upd
     end
 
     def dw(key)
-      pre_upd
       cfg_err("No such flag [#{key}]") unless key?(key)
       rep(key, 'false')
       verbose { "Reset [#{key}]" }
       self
     ensure
+      time_upd
       post_upd
     end
 
@@ -69,18 +69,18 @@ module CIAX
     end
 
     def flush(key, ary = [])
-      pre_upd
       type?(self[key], Array).replace(ary)
       self
     ensure
+      time_upd
       post_upd
     end
 
     def push(key, elem)
-      pre_upd
       self[key].push(elem) unless type?(self[key], Array).include?(elem)
       self
     ensure
+      time_upd
       post_upd
     end
 
@@ -97,13 +97,13 @@ module CIAX
 
     # Subtract and merge to self data, return rest of the data
     def sub(input)
-      pre_upd
       hash = input.dup
       @db.keys.each do|k|
         self[k] = hash[k] ? hash.delete(k) : false
       end
       hash
     ensure
+      time_upd
       post_upd
     end
 

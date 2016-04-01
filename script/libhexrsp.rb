@@ -44,6 +44,7 @@ module CIAX
       end
 
       def upd_core
+        time_upd(@stat[:time])
         self[:hexpack] = _get_header_ + _get_body_
         self
       end

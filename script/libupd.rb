@@ -8,10 +8,9 @@ module CIAX
     attr_reader :pre_upd_procs, :post_upd_procs
     def initialize
       super()
-      # Updater
-      self[:time] = now_msec
+      time_upd
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @pre_upd_procs = [proc { self[:time] = now_msec }]
+      @pre_upd_procs = []
       # Proc Array for Post-Process of Update Propagation to the upper Layers
       @post_upd_procs = []
     end
@@ -26,17 +25,26 @@ module CIAX
       post_upd
     end
 
+    # Manipulate data
     def put(key, val)
       pre_upd
       super
     ensure
+      time_upd
       post_upd
     end
 
     def rep(key, val)
       super
     ensure
+      time_upd
       post_upd
+    end
+
+    # Time Updater
+    def time_upd(tm = nil)
+      self[:time] = tm || now_msec
+      self
     end
 
     def time_id

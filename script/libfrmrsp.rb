@@ -34,7 +34,7 @@ module CIAX
 
       # Convert with corresponding cmd
       def conv(ent, stream)
-        self[:time] = type?(stream, Hash)[:time]
+        time_upd(type?(stream, Hash)[:time])
         rid = type?(ent, Cmd::Entity)[:response]
         @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
         _make_sel(ent, rid)

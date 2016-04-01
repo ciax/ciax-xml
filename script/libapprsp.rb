@@ -13,7 +13,6 @@ module CIAX
       def ext_rsp(field)
         @field = type?(field, Frm::Field)
         type?(@dbi, Dbi)
-        @pre_upd_procs << proc { self[:time] = @field[:time] }
         upd
         self
       end
@@ -21,6 +20,7 @@ module CIAX
       private
 
       def upd_core
+        time_upd(@field[:time])
         @adbs.each do|id, hash|
           enclose("GetStatus:[#{id}](#{object_id})", "GetStatus:#{id}=[%s]") do
             if hash[:fields].empty?

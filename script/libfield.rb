@@ -65,9 +65,8 @@ module CIAX
         dat
       end
 
-      # Replace value with mixed id
+      # Replace value with pointer id
       def rep(id, val)
-        pre_upd
         conv = subst(val).to_s
         verbose { "Put[#{id}]=[#{conv}]" }
         case p = get(id)
@@ -83,6 +82,7 @@ module CIAX
         verbose { "Evaluated[#{id}]=[#{get(id)}]" }
         val
       ensure
+        time_upd
         post_upd
       end
 

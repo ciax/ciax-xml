@@ -46,7 +46,7 @@ module CIAX
       end
 
       def _make_event(e0, r0, idx, cgrp)
-        id = e0.attr2item(idx) { |_, v| r0.formatting(v) }
+        id = e0.attr2item(idx) { |v| r0.formatting(v) }
         item = idx[id]
         cnd = item[:cnd] = []
         act = item[:act] = {}

@@ -64,7 +64,7 @@ module CIAX
       def _grp_stat(e, r, sdb)
         case e.name
         when 'group'
-          gid = e.attr2item(sdb[:group]) { |_, v| r.formatting(v) }
+          gid = e.attr2item(sdb[:group]) { |v| r.formatting(v) }
           _rec_stat(e, r, sdb[:index], sdb[:group][gid])
         when 'symtbl'
           sdb[:symtbl] << e['ref']
@@ -74,7 +74,7 @@ module CIAX
       # recursive method
       def _rec_stat(e, r, idx, grp)
         r.each(e) do|e0, r0| # e0 can be 'binary', 'integer', 'float'..
-          id = e0.attr2item(idx) { |_, v| r0.formatting(v) }
+          id = e0.attr2item(idx) { |v| r0.formatting(v) }
           itm = idx[id]
           (grp[:members] ||= []) << id
           itm[:type] = e0.name

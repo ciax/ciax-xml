@@ -53,7 +53,7 @@ module CIAX
         atrb = Hashx.new
         to_h.each do|k, v|
           if at_proc
-            atrb[k] = at_proc.call(k, v)
+            atrb[k] = at_proc.call(v)
           else
             atrb[k] = v
           end

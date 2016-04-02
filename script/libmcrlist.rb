@@ -68,8 +68,7 @@ module CIAX
       end
 
       def get(id)
-        return self[id] if self[id]
-        self[id] = Record.new(id).ext_http(@host)
+        super { |key| Record.new(key).ext_http(@host) }
       end
     end
   end

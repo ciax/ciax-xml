@@ -94,7 +94,9 @@ module CIAX
       vmode(:v) # v|r|j
     end
 
-    def get(key)
+    # Generate value if init_proc and no key
+    def get(key, &init_proc)
+      self[key] = init_proc.call(key) if !key?(key) && init_proc
       self[key]
     end
 

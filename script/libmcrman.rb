@@ -52,8 +52,8 @@ module CIAX
       end
 
       def _init_sub_(cfg)
-        opt = @cfg[:option].sub_opt
-        @sub_list = @cfg[:dev_list] = Wat::List.new(cfg, option: opt)
+        wl = Wat::List.new(cfg, option: @cfg[:option].sub_opt)
+        @sub_list = @cfg[:dev_list] = wl
       end
 
       # Initialize for all mode

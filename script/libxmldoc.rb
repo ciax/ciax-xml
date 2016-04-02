@@ -39,8 +39,7 @@ module CIAX
       # get generates document branch of db items(Hash),
       # which includes attribute and domains
       def get(id)
-        return self[id] if key?(id)
-        fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + to_s)
+        super { fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + to_s) }
       end
 
       def to_s

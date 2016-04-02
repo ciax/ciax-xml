@@ -22,9 +22,9 @@ module CIAX
       include CmdProc
       # grp_cfg should have :id,'label',:parameters,:def_proc
       attr_reader :id
-      def initialize(cfg, attr = {})
+      def initialize(cfg, atrb = Hashx.new)
         super()
-        @cfg = cfg.gen(self).update(attr)
+        @cfg = cfg.gen(self).update(atrb)
         @id = @cfg[:id]
       end
 
@@ -156,8 +156,8 @@ module CIAX
       attr_reader :id, :par
       attr_accessor :msg
       # set should have :def_proc
-      def initialize(cfg, attr = {})
-        super(cfg).update(attr)
+      def initialize(cfg, atrb = Hashx.new)
+        super(cfg).update(atrb)
         @par = self[:par]
         @id = self[:cid]
         verbose { "Config\n" + path }

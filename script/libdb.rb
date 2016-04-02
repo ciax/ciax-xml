@@ -107,9 +107,9 @@ module CIAX
     def par2item(doc, item)
       return unless /par_(num|str|reg)/ =~ doc.name
       @argc += 1
-      attr = { type: Regexp.last_match(1), list: doc.text.split(',') }
-      attr[:label] = doc[:label] if doc[:label]
-      item.get(:parameters) { [] } << attr
+      atrb = { type: Regexp.last_match(1), list: doc.text.split(',') }
+      atrb[:label] = doc[:label] if doc[:label]
+      item.get(:parameters) { [] } << atrb
     end
 
     # Check parameter var for subst in db

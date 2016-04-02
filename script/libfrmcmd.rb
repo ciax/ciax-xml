@@ -12,7 +12,7 @@ module CIAX
       include Cmd::Remote::Int
       # Internal Command Group
       class Group < Int::Group
-        def initialize(cfg, attr = {})
+        def initialize(cfg, atrb = Hashx.new)
           super
           add_item('save', '[key,key...] [tag]', def_pars(2))
           add_item('load', '[tag]', def_pars(1))

@@ -18,14 +18,14 @@ module CIAX
     attr_accessor :sv_stat, :shell_input_procs, :shell_output_proc,
                   :server_input_proc, :server_output_proc
     # cfg must have [:option]
-    # attr contains the parameter for each layer individually (might have [:db])
+    # atrb contains the parameter for each layer individually (might have [:db])
     # cfg must have [:dbi] shared in the site (among layers)
     # @dbi will be set for Varx, @cfg[:dbi] will be set for Index
     # It is not necessarily the case that id and Config[:dbi][:id] is identical
-    def initialize(id, cfg, attr = {})
+    def initialize(id, cfg, atrb = Hashx.new)
       super()
       @id = id # Allows nil for Mcr::Man
-      @cfg = type?(cfg, Config).gen(self).update(attr)
+      @cfg = type?(cfg, Config).gen(self).update(atrb)
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @layer = class_path.first.downcase
       _init_procs

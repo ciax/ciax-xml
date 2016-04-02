@@ -3,7 +3,6 @@ require 'libgetopts'
 module CIAX
   ### Daemon Methods ###
   class Daemon
-    NS_COLOR = 1
     include Msg
     # Previous process will be killed at the start up.
     # Reloadable by HUP signal

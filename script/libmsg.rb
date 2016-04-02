@@ -6,8 +6,9 @@ require 'libmsgmod'
 module CIAX
   ######################### Message Module #############################
   # Should be extended in module/class
+  NS_COLORS={}
+  CLS_COLORS={}
   module Msg
-    attr_accessor :cls_color
     START_TIME = Time.now
     @indent_base = 1
     # block takes array (shown by each line) or string
@@ -83,7 +84,7 @@ module CIAX
       ns = cpath.shift
       cary << [tc[:name] || 'Main', tc[:color] || 15]
       cary << [ns, ns_color(ns)]
-      cary << [cpath.join('::'), @cls_color || 15]
+      cary << [cpath.join('::'), cls_color || 15]
     end
 
     def make_head
@@ -93,15 +94,14 @@ module CIAX
     end
 
     def ns_color(ns)
-      begin
-        color = CIAX.const_get("#{ns}::NS_COLOR")
-      rescue NameError
-        Msg.msg("No color defined for #{ns}::NS_COLOR", 3)
-        color = 7
-      end
-      color
+      NS_COLORS[ns.to_s] ||= _gen_color(NS_COLORS)
     end
 
+    def cls_color
+      cls = self.class.to_s.split('::').pop
+      CLS_COLORS[cls] ||= _gen_color(CLS_COLORS, 8)
+    end
+    
     # VER= makes setenv "" to VER otherwise nil
     def condition(msg)
       return if !ENV['VER'] || !msg
@@ -120,6 +120,10 @@ module CIAX
 
     def self.ver_indent(add = 0)
       @indent_base += add
+    end
+
+    def _gen_color(table, ofs = 0)
+      (table.size + ofs) % 16 +1
     end
   end
 end

@@ -11,7 +11,6 @@ module CIAX
       # cfg keys: caption,color,column
       def initialize(cfg, atrb = {})
         super()
-        @cls_color = 3
         @cfg = cfg.gen(self).update(atrb)
         @displist = Disp.new(@cfg.pick(%i(caption color column line_number)))
         @cfg[:disp] = @displist

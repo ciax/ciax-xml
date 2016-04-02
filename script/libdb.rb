@@ -18,7 +18,6 @@ module CIAX
     attr_reader :displist
     def initialize(type)
       super()
-      @cls_color = 5
       @type = type
       # @displist is Display
       lid = 'list'

@@ -24,7 +24,6 @@ module CIAX
     # It is not necessarily the case that id and Config[:dbi][:id] is identical
     def initialize(id, cfg, attr = {})
       super()
-      @cls_color = 13
       @id = id # Allows nil for Mcr::Man
       @cfg = type?(cfg, Config).gen(self).update(attr)
       # layer is Frm,App,Wat,Hex,Mcr,Man

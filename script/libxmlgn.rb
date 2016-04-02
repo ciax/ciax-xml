@@ -8,7 +8,6 @@ module CIAX
     class Gnu
       include Share
       def initialize(f = nil)
-        @cls_color = 3
         case f
         when String
           test('r', f) || fail(InvalidID)

@@ -6,7 +6,6 @@ module CIAX
   module Cmd
     # Remote Command Domain
     module Remote
-      NS_COLOR = 1
       # Instance var is @rem in Index
       class Index < Local::Index
         attr_reader :rem

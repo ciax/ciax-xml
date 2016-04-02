@@ -20,7 +20,6 @@ module CIAX
         iocmd = type?(cfg, Config)[:iocmd]
         Msg.give_up(' No IO command') unless iocmd
         super('stream', id, cfg[:version])
-        @cls_color = 9
         update('dir' => '', 'cmd' => '', 'base64' => '')
         verbose { "Initialize [#{iocmd}]" }
         _init_par(cfg)

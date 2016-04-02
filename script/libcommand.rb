@@ -9,7 +9,6 @@ module CIAX
     class GrpAry < Arrayx
       include CmdProc
       def initialize(cfg, atrb = {})
-        @cls_color = 13
         # @cfg is isolated from cfg
         # So it is same meaning to set value to 'atrb' and @cfg
         @cfg = cfg.gen(self).update(type?(atrb, Hash))

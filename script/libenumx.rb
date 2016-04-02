@@ -92,7 +92,6 @@ module CIAX
     def initialize(hash = {})
       update(hash) if hash
       vmode(:v) # v|r|j
-      @cls_color = 6
     end
 
     def get(key)

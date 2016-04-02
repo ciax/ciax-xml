@@ -13,7 +13,6 @@ module CIAX
       attr_reader :tid, :stat, :tname
       include Msg
       def initialize(stat)
-        @cls_color = 14
         @stat = type?(stat, Varx)
         @tid = "#{@stat.type}_#{@stat[:ver]}"
         @tname = @stat.type.capitalize
@@ -85,7 +84,6 @@ module CIAX
       # @ sqlcmd
       include Msg
       def initialize(id, layer = nil)
-        @cls_color = 10
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
         @queue = Queue.new
         verbose { "Initialize '#{id}' on #{layer}" }

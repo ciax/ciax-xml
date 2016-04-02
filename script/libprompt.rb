@@ -3,7 +3,6 @@ require 'libvarx'
 module CIAX
   # For server status through all layers
   class Prompt < Varx
-    NS_COLOR = 9
     attr_reader :db
     # type = site,mcr
     def initialize(type, id)

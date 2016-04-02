@@ -17,7 +17,6 @@ module CIAX
       # delimiter: cut 'variable length data' by delimiter
       #             can be included in CC range
       def initialize(endian = nil, ccmethod = nil, terminator = nil)
-        @cls_color = 11
         @endian = endian
         @cc = CheckCode.new(ccmethod)
         @terminator = esc_code(terminator)

@@ -7,7 +7,6 @@ module CIAX
   # Extended Thread class
   class Threadx < Thread
     Threads = ThreadGroup.new
-    NS_COLOR = 4
     include Msg
     def initialize(name, color = 4)
       Thread.abort_on_exception = true

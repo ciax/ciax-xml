@@ -12,7 +12,6 @@ module CIAX
   # Usage:[]
   #   get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
-    NS_COLOR = 11
     attr_reader :generation
     alias_method :this_keys, :keys
     alias_method :this_key?, :key?

@@ -8,7 +8,6 @@ module CIAX
       include CIAX::Msg
       attr_reader :index, :max
       def initialize(id)
-        @cls_color = 1
         @logary = [{}]
         @index = 0
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]

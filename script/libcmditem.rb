@@ -19,13 +19,11 @@ module CIAX
 
     # Corresponds commands
     class Item < Hashx
-      NS_COLOR = 3
       include CmdProc
       # grp_cfg should have :id,'label',:parameters,:def_proc
       attr_reader :id
       def initialize(cfg, attr = {})
         super()
-        @cls_color = 6
         @cfg = cfg.gen(self).update(attr)
         @id = @cfg[:id]
       end
@@ -155,13 +153,11 @@ module CIAX
 
     # Command db with parameter derived from Item
     class Entity < Config
-      NS_COLOR = 9
       attr_reader :id, :par
       attr_accessor :msg
       # set should have :def_proc
       def initialize(cfg, attr = {})
         super(cfg).update(attr)
-        @cls_color = 14
         @par = self[:par]
         @id = self[:cid]
         verbose { "Config\n" + path }

@@ -26,7 +26,6 @@ module CIAX
   # Command Buffering
   class Buffer
     include Msg
-    NS_COLOR = 11
     attr_accessor :flush_proc, :recv_proc
     # sv_stat: Server Status
     def initialize(sv_stat)

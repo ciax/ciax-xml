@@ -6,7 +6,6 @@ require 'libenumx'
 module CIAX
   # Index of Display (Used for validation, display)
   class Disp < Hashx
-    NS_COLOR = 5
     # Grouping class (Used for setting db)
     #   Attributes (all level): column(#), line_number(t/f)
     #   Attributes (one level): color(#), level(#)

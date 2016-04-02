@@ -3,32 +3,6 @@
 module CIAX
   require 'English' # To use $! -> $ERROR_INFO
   require 'debug' if ENV['DEBUG']
-  NS_COLOR = 15
-
-  # Site Domain
-  module Site; NS_COLOR = 13; end
-  # Frame Layer
-  module Frm; NS_COLOR = 2; end
-  # Application Layer
-  module App; NS_COLOR = 3; end
-  # Watch Layer
-  module Wat; NS_COLOR = 9; end
-  # HexString Layer
-  module Hex; NS_COLOR = 5; end
-  # Macro Domain
-  module Mcr; NS_COLOR = 12; end
-  # Device Site DB
-  module Dev; NS_COLOR = 2; end
-  # Instance Site DB
-  module Ins; NS_COLOR = 6; end
-  # XML module
-  module Xml; NS_COLOR = 4; end
-  # Cmd module
-  module Cmd; NS_COLOR = 2; end
-  # Symbol module
-  module Sym; NS_COLOR = 1; end
-  # SqLog module
-  module SqLog; NS_COLOR = 1; end
 
   # User input Error
   class UserError < RuntimeError; end

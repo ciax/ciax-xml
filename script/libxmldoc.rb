@@ -74,7 +74,7 @@ module CIAX
       def _mk_project(top)
         pid = top['id']
         vpary = (@valid_proj ||= []).push(pid) if ENV['PROJ'] == pid
-        grp = (@grps ||= {})[pid] = []
+        grp = (@grps ||= Hashx.new)[pid] = []
         top.each do |gdoc| # g.name is include or group
           tag = gdoc.name.to_sym
           case tag
@@ -101,9 +101,9 @@ module CIAX
           tag = e.name.to_sym
           case tag
           when :include # include group
-            (item[tag] ||= []) << e['ref']
+            item.get(tag) { [] } << e['ref']
           when :group # group(mdb,adb)
-            (item[tag] ||= {})[e['id']] = e
+            item.get(tag) { Hashx.new }[e['id']] = e
           else # Command, Status(different ns), Property (stream, serial, etc.)
             item[tag] = (top.ns != e.ns) ? e : e.to_h
           end
@@ -123,7 +123,7 @@ module CIAX
         _upd_valid
         each_value do |item|
           if (ary = item.delete(:include))
-            ary.each { |ref| (item[:group] ||= {}).update(self[ref][:group]) }
+            ary.each { |ref| item.get(:group) { Hashx.new }.update(self[ref][:group]) }
           end
         end
       end

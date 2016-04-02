@@ -17,7 +17,7 @@ module CIAX
       # @cfg should have [:dbi]
       class Domain < GrpAry
         attr_reader :sys, :ext, :int
-        def initialize(cfg, atrb = {})
+        def initialize(cfg, atrb = Hashx.new)
           super
           @cfg[:def_proc] = proc {} # proc is re-defined
         end
@@ -64,8 +64,8 @@ module CIAX
       module Sys
         # System Command Group
         class Group < Group
-          def initialize(dom_cfg, atrb = {})
-            atrb[:caption] ||= 'System Commands'
+          def initialize(dom_cfg, atrb = Hashx.new)
+            atrb.get(:caption) { 'System Commands' }
             super
             add_item('interrupt')
             # Accept empty command
@@ -77,8 +77,8 @@ module CIAX
       module Int
         # Internal Command Group
         class Group < Group
-          def initialize(dom_cfg, atrb = {})
-            atrb[:caption] ||= 'Internal Commands'
+          def initialize(dom_cfg, atrb = Hashx.new)
+            atrb.get(:caption) { 'Internal Commands' }
             super
             @cfg[:nocache] = true
           end

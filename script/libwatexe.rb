@@ -8,7 +8,7 @@ module CIAX
     # cfg must have [:db], [:sub_list]
     class Exe < Exe
       attr_reader :sub, :stat
-      def initialize(id, cfg, atrb = {})
+      def initialize(id, cfg, atrb = Hashx.new)
         super(id, cfg, atrb)
         @sub = @cfg[:sub_list].get(id)
         @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')

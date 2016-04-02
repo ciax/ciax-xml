@@ -6,8 +6,8 @@ require 'libmsgmod'
 module CIAX
   ######################### Message Module #############################
   # Should be extended in module/class
-  NS_COLORS={}
-  CLS_COLORS={}
+  NS_COLORS = {}
+  CLS_COLORS = {}
   module Msg
     START_TIME = Time.now
     @indent_base = 1
@@ -101,7 +101,7 @@ module CIAX
       cls = self.class.to_s.split('::').pop
       CLS_COLORS[cls] ||= _gen_color(CLS_COLORS, 8)
     end
-    
+
     # VER= makes setenv "" to VER otherwise nil
     def condition(msg)
       return if !ENV['VER'] || !msg
@@ -123,7 +123,7 @@ module CIAX
     end
 
     def _gen_color(table, ofs = 0)
-      (table.size + ofs) % 16 +1
+      (table.size + ofs) % 16 + 1
     end
   end
 end

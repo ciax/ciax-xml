@@ -39,11 +39,11 @@ module CIAX
 
       # Status Domain
       def init_status(doc, dbi)
-        sdb = (dbi[:status] ||= {})
-        grp = (sdb[:group] ||= {})
-        idx = (sdb[:index] ||= {})
-        (doc[:status] || []).each do|e0|
-          p = (sdb[e0.name.to_sym] ||= {})
+        sdb = dbi.get(:status) { Hashx.new }
+        grp = sdb.get(:group) { Hashx.new }
+        idx = sdb.get(:index) { Hashx.new }
+        doc.get(:status) { [] }.each do|e0|
+          p = sdb.get(e0.name.to_sym) { Hashx.new }
           case e0.name
           when 'symtbl'
             sdb[:symtbl] << e0['ref']
@@ -52,7 +52,7 @@ module CIAX
             e0.each do |e1|
               e1.attr2item(idx)
               ag = grp[e0[:ref]]
-              (ag[:members] ||= []) << e1['id']
+              ag.get(:members) { [] } << e1['id']
             end
           end
         end
@@ -62,7 +62,7 @@ module CIAX
       def init_general(dbi)
         dbi[:proj] = ENV['PROJ']
         dbi[:site_id] = dbi[:ins_id] = dbi[:id]
-        dbi[:frm_site] ||= dbi[:id]
+        dbi.get(:frm_site) { dbi[:id] }
       end
     end
 

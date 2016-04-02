@@ -42,10 +42,10 @@ module CIAX
 
       def attr2item(db, id = :id, &at_proc) # deprecated
         # <xml id='id' a='1' b='2'> => db[id][a]='1', db[id][b]='2'
-        type?(db, Hash)
+        type?(db, Hashx)
         key, atrb = _get_attr_(id, &at_proc)
         alert("ATTRDB: Duplicated ID [#{key}]") if id != :ref && db.key?(key)
-        (db[key] ||= Hashx.new).update(atrb)
+        db.get(key) { Hashx.new }.update(atrb)
         key
       end
 

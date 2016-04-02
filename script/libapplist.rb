@@ -7,7 +7,7 @@ module CIAX
     # Application List
     class List < Site::List
       # cfg must have [:db]
-      def initialize(cfg, atrb = {})
+      def initialize(cfg, atrb = Hashx.new)
         super
         @sub_list = Frm::List.new(@cfg)
         store_db(@cfg[:db] ||= Ins::Db.new)

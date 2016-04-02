@@ -34,11 +34,11 @@ module CIAX
       private
 
       def init_stat(wdb)
-        self[:stat] = {}
+        self[:stat] = Hashx.new
         wdb[:index].each do |id, evnt|
-          hash = (self[:stat][id] ||= {})
+          hash = self[:stat].get(id) { Hashx.new }
           hash[:label] = evnt[:label]
-          init_cond(evnt[:cnd], (hash[:cond] ||= []))
+          init_cond(evnt[:cnd], hash.get(:cond) { [] })
         end
         self
       end

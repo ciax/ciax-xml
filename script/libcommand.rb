@@ -8,7 +8,7 @@ module CIAX
     # Inherited by Index,Domain
     class GrpAry < Arrayx
       include CmdProc
-      def initialize(cfg, atrb = {})
+      def initialize(cfg, atrb = Hashx.new)
         # @cfg is isolated from cfg
         # So it is same meaning to set value to 'atrb' and @cfg
         @cfg = cfg.gen(self).update(type?(atrb, Hash))
@@ -34,7 +34,7 @@ module CIAX
 
       # Add sub group
       # If cls is String or Symbol, constant is taken locally.
-      def add(cls, atrb = {})
+      def add(cls, atrb = Hashx.new)
         case cls
         when Module
           res = cls.new(@cfg, atrb)

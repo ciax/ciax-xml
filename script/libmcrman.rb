@@ -9,7 +9,7 @@ module CIAX
     class Man < Exe
       attr_reader :sub_list # Used for Layer module
       # cfg should have [:dev_list]
-      def initialize(cfg, atrb = {})
+      def initialize(cfg, atrb = Hashx.new)
         _init_atrb_(atrb)
         super(nil, cfg, atrb)
         verbose { 'Initialize Layer' }

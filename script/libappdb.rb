@@ -39,7 +39,7 @@ module CIAX
         e1.each do|e2|
           command << _make_argv(e2, rep)
         end
-        (itm[:body] ||= []) << command
+        itm.get(:body) { [] } << command
       end
 
       def _make_argv(e2, rep)
@@ -76,7 +76,7 @@ module CIAX
         r.each(e) do|e0, r0| # e0 can be 'binary', 'integer', 'float'..
           id = e0.attr2item(idx) { |v| r0.formatting(v) }
           itm = idx[id]
-          (grp[:members] ||= []) << id
+          grp.get(:members) { [] } << id
           itm[:type] = e0.name
           itm[:fields] = []
           _add_fields(r0, e0, itm[:fields])

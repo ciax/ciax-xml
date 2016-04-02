@@ -7,7 +7,7 @@ module CIAX
   class List < Varx
     attr_reader :cfg
     # level can be Layer or Site
-    def initialize(cfg, atrb = {})
+    def initialize(cfg, atrb = Hashx.new)
       @cfg = cfg.gen(self).update(atrb)
       @cfg[:jump_groups] ||= []
       super(m2id(@cfg[:obj].class, -2))

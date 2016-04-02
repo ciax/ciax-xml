@@ -9,7 +9,7 @@ module CIAX
       include CmdProc
       attr_reader :valid_keys
       # cfg keys: caption,color,column
-      def initialize(cfg, atrb = {})
+      def initialize(cfg, atrb = Hashx.new)
         super()
         @cfg = cfg.gen(self).update(atrb)
         @displist = Disp.new(@cfg.pick(%i(caption color column line_number)))
@@ -46,7 +46,7 @@ module CIAX
     # Command Group
     class Group < Dummy
       # cfg keys: caption,color,column
-      def initialize(cfg, atrb = {})
+      def initialize(cfg, atrb = Hashx.new)
         super
       end
 

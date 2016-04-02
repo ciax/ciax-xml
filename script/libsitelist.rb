@@ -6,7 +6,7 @@ module CIAX
     # This should be set [:db]
     class List < CIAX::List
       attr_reader :db, :sub_list
-      def initialize(cfg, atrb = {})
+      def initialize(cfg, atrb = Hashx.new)
         cfg[:top_list] ||= self
         cfg[:layer_type] = 'site'
         atrb[:column] = 2

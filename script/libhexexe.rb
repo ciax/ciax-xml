@@ -8,7 +8,7 @@ module CIAX
   module Hex
     # cfg must have [:db], [:sub_list]
     class Exe < Exe
-      def initialize(id, cfg, atrb = {})
+      def initialize(id, cfg, atrb = Hashx.new)
         super
         @sub = @cfg[:sub_list].get(id)
         @sv_stat = @sub.sv_stat

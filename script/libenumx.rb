@@ -169,7 +169,7 @@ module CIAX
 
     # Generate Hash with key array
     def a2h(*keys)
-      atrb = {}
+      atrb = Hashx.new
       each do |val|
         key = keys.shift
         atrb[key] = val if key

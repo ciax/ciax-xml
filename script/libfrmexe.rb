@@ -12,7 +12,7 @@ module CIAX
     # Frame Exe module
     class Exe < Exe
       # cfg must have [:db]
-      def initialize(id, cfg, atrb = {})
+      def initialize(id, cfg, atrb = Hashx.new)
         super
         # DB is generated in List level
         dbi = _init_dbi(id, %i(stream iocmd))

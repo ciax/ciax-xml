@@ -30,7 +30,7 @@ module CIAX
       def _add_item(e0, gid)
         id, itm = super
         e0.each do|e1|
-          (itm[:argv] ||= []) << e1.text
+          itm.get(:argv) { [] } << e1.text
         end
         [id, itm]
       end

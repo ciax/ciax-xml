@@ -18,7 +18,7 @@ module CIAX
         @index = adbs[:index].dup
         @index.update(adbs[:alias]) if adbs.key?(:alias)
         # Just additional data should be provided
-        %i(data class msg).each { |key| stat[key] ||= {} }
+        %i(data class msg).each { |key| stat.get(key) { Hashx.new } }
         upd
       end
 

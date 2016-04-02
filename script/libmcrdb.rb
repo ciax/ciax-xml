@@ -29,7 +29,7 @@ module CIAX
       def _add_item(e0, gid)
         id, itm = super
         verbose { "MACRO:[#{id}]" }
-        @body = (itm[:body] ||= [])
+        @body = itm.get(:body) { [] }
         @vstep = Hashx.new
         _add_steps(e0, itm)
         _add_verify_step
@@ -38,7 +38,7 @@ module CIAX
 
       def _add_steps(e0, itm)
         e0.each do|e1|
-          atrb = { type: e1.name }
+          atrb = Hashx.new( type: e1.name)
           atrb.update(e1.to_h)
           _get_sites_(atrb)
           par2item(e1, itm) && next
@@ -74,7 +74,7 @@ module CIAX
         e1.each do|e2|
           hash = e2.to_h(:cri)
           hash[:cmp] = e2.name
-          (atrb[:cond] ||= []) << hash
+          atrb.get(:cond) { [] } << hash
         end
       end
 

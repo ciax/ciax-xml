@@ -25,10 +25,10 @@ module CIAX
           item = Hashx.new(e1.to_h)
           case e1.name
           when 'pack'
-            (db[:packs] ||= []) << item
+            db.get(:packs) { [] } << item
             _rec_db(e1, item)
           when 'field'
-            (db[:fields] ||= []) << item
+            db.get(:fields) { [] } << item
           end
         end
       end

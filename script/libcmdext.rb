@@ -10,8 +10,8 @@ module CIAX
       module Ext
         # External Command Group
         class Group < Group
-          def initialize(cfg, atrb = {})
-            atrb[:caption] ||= 'External Commands'
+          def initialize(cfg, atrb = Hashx.new)
+            atrb.get(:caption) { 'External Commands' }
             super
             @displist = @displist.ext_grp
             _init_items(@cfg[:command])

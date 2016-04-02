@@ -16,7 +16,7 @@ module CIAX
         wdoc = doc[:watch]
         wdb = db[:watch] = wdoc.to_h
         reg = wdb[:regular] = { period: 300, exec: [] }
-        idx = wdb[:index] = {}
+        idx = wdb[:index] = Hashx.new
         _get_wdb(wdoc, reg, idx, db[:command][:group])
         reg[:exec] << ['upd'] if reg[:exec].empty?
       end
@@ -49,7 +49,7 @@ module CIAX
         id = e0.attr2item(idx) { |v| r0.formatting(v) }
         item = idx[id]
         cnd = item[:cnd] = []
-        act = item[:act] = {}
+        act = item[:act] = Hashx.new
         e0.each do|e1|
           _event_element(e1, r0, act, cnd, cgrp)
         end
@@ -58,9 +58,9 @@ module CIAX
       def _event_element(e1, r0, act, cnd, cgrp)
         case name = e1.name.to_sym
         when :block, :int, :exec
-          (act[name] ||= []) << _make_action(e1, r0)
+          act.get(name) { [] } << _make_action(e1, r0)
         when :block_grp
-          (act[:block] ||= []).concat(_make_block(e1, cgrp))
+          act.get(:block) { [] }.concat(_make_block(e1, cgrp))
         when :compare
           cnd << _make_cond(e1, r0).update(vars: e1.map { |e2| e2[:var] })
         else

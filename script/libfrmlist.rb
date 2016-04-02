@@ -7,7 +7,7 @@ module CIAX
   module Frm
     # Frame List module
     class List < Site::List
-      def initialize(cfg, atrb = {})
+      def initialize(cfg, atrb = Hashx.new)
         super
         store_db(Dev::Db.new)
       end

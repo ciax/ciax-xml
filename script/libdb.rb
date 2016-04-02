@@ -109,7 +109,7 @@ module CIAX
       @argc += 1
       attr = { type: Regexp.last_match(1), list: doc.text.split(',') }
       attr[:label] = doc[:label] if doc[:label]
-      (item[:parameters] ||= []) << attr
+      item.get(:parameters) { [] } << attr
     end
 
     # Check parameter var for subst in db
@@ -122,10 +122,10 @@ module CIAX
     end
 
     def init_command(dbi)
-      cdb = (dbi[:command] ||= Hashx.new)
-      @idx = (cdb[:index] ||= Hashx.new)
-      @grps = (cdb[:group] ||= Hashx.new)
-      @units = (cdb[:unit] ||= Hashx.new)
+      cdb = dbi.get(:command) { Hashx.new }
+      @idx = cdb.get(:index) { Hashx.new }
+      @grps = cdb.get(:group) { Hashx.new }
+      @units = cdb.get(:unit) { Hashx.new }
       cdb
     end
 
@@ -154,17 +154,17 @@ module CIAX
 
     def _add_unit(e0, gid)
       uid = e0.attr2item(@units)
-      (@grps[gid][:units] ||= []) << uid
+      @grps[gid].get(:units) { [] } << uid
       e0.each do|e1|
         id, itm = _add_item(e1, gid)
         itm[:unit] = uid
-        (@units[uid][:members] ||= []) << id
+        @units[uid].get(:members) { [] } << id
       end
     end
 
     def _add_item(doc, gid)
       id = doc.attr2item(@idx)
-      (@grps[gid][:members] ||= []) << id
+      @grps[gid].get(:members) { [] } << id
       [id, @idx[id]] # item is used by child
     end
   end

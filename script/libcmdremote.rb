@@ -41,7 +41,7 @@ module CIAX
         end
       end
 
-      # Command Logging
+      # Command Input Logging
       class Input < Varx
         def initialize(id)
           super('input', id)

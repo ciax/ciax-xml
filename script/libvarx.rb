@@ -8,6 +8,7 @@ require 'libdb'
 module CIAX
   # Variable Status Data with Saving, Logging feature
   # Need Header(id,ver) data
+  # Used for freqently changing data with remote
   class Varx < Upd
     attr_reader :type, :dbi
     def initialize(type, id = nil, ver = nil, host = nil)

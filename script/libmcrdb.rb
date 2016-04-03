@@ -38,7 +38,7 @@ module CIAX
 
       def _add_steps(e0, itm)
         e0.each do|e1|
-          atrb = Hashx.new( type: e1.name)
+          atrb = Hashx.new(type: e1.name)
           atrb.update(e1.to_h)
           _get_sites_(atrb)
           par2item(e1, itm) && next

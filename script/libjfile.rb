@@ -58,7 +58,7 @@ module CIAX
       save
       sname = @jsondir + "#{@type}_latest.json"
       ::File.unlink(sname) if ::File.exist?(sname)
-      ::File.symlink(_file_path_, sname)
+      ::File.symlink(@jsondir + _file_name, sname)
       verbose { "Symboliclink to [#{sname}]" }
       self
     end
@@ -69,20 +69,20 @@ module CIAX
       true
     end
 
-    def _file_path_(tag = nil)
-      @jsondir + _file_base(tag) + '.json'
+    def _file_name(tag = nil)
+      _file_base(tag) + '.json'
     end
 
     def _tag_list_
-      Dir.glob(_file_path_('*')).map do|f|
+      Dir.glob(@jsondir + _file_name('*')).map do|f|
         f.slice(/.+_(.+)\.json/, 1)
       end.sort
     end
 
     def _write_json(json_str, tag = nil)
       verbose(@thread != Thread.current) { 'Saving from Multiple Threads' }
-      fname = _file_path_(tag)
-      open(fname, 'w') do|f|
+      fname = _file_name(tag)
+      open(@jsondir + fname, 'w') do|f|
         f.flock(::File::LOCK_EX)
         f << json_str
         verbose { "[#{fname}](#{f.size}) is Saved" }
@@ -91,8 +91,8 @@ module CIAX
     end
 
     def _read_json(tag = nil)
-      fname = _file_path_(tag)
-      open(fname) do|f|
+      fname = _file_name(tag)
+      open(@jsondir + fname) do|f|
         verbose { "Reading [#{fname}](#{f.size})" }
         f.flock(::File::LOCK_SH)
         f.read

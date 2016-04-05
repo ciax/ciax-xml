@@ -37,6 +37,7 @@ module CIAX
       @flush_proc = proc {}
       @recv_proc = proc {}
       @outbuf = Outbuf.new
+      @id = @sv_stat.get(:id)
       clear
     end
 
@@ -44,7 +45,7 @@ module CIAX
     def send(ent, n = 1)
       clear if n == 0 # interrupt
       cid = type?(ent, Cmd::Entity).id
-      verbose { "Execute #{cid}(#{@sv_stat.get(:id)}):timing" }
+      verbose { "Execute #{cid}(#{@id}):timing" }
       # batch is frm batch (ary of ary)
       batch = ent[:batch]
       return self if batch.empty?
@@ -54,7 +55,7 @@ module CIAX
     end
 
     def server
-      @tid = ThreadLoop.new("Buffer(#{@sv_stat.get(:id)})", 12) do
+      @tid = ThreadLoop.new("Buffer(#{@id})", 12) do
         exec_buf if @q.empty?
         verbose { 'Waiting' }
         pri_sort(@q.shift)
@@ -78,7 +79,7 @@ module CIAX
     #  args: ['cmd','par','par'..]
 
     def pri_sort(rcv)
-      enclose("OutBuf:Recieved #{rcv[:cid]}", 'End') do
+      enclose("OutBuf:Recieved #{rcv[:cid]}(#{@id})", 'End') do
         buf = @outbuf[rcv[:pri]]
         buf.concat rcv[:batch].map { |args| { args: args, cid: rcv[:cid] } }
         verbose { @outbuf.to_s }
@@ -118,14 +119,14 @@ module CIAX
 
     def sv_up(cid)
       @sv_stat.up(:busy)
-      verbose { "Busy Up(#{@sv_stat.get(:id)}):timing" }
+      verbose { "Busy Up(#{@id}):timing" }
       @sv_stat.push(:queue, cid)
     end
 
     def sv_dw
       @sv_stat.flush(:queue)
       @sv_stat.dw(:busy)
-      verbose { "Busy Down(#{@sv_stat.get(:id)}):timing" }
+      verbose { "Busy Down(#{@id}):timing" }
     end
 
     def clear
@@ -138,7 +139,7 @@ module CIAX
     def flush
       @sv_stat.flush(:queue, @outbuf.cids)
       @flush_proc.call(self)
-      verbose { "Save Status(#{@sv_stat.pick(%i(id busy queue))}):timing" }
+      verbose { "Flush buffer(#{@id}):timing\n#{@sv_stat.pick(%i(busy queue))}" }
       self
     end
 
@@ -148,6 +149,7 @@ module CIAX
       super(str)
     end
 
+    # Multi-level command buffer
     class Outbuf < Array
       def clear
         super

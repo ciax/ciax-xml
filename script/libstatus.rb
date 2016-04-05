@@ -20,6 +20,7 @@ module CIAX
         # exclude alias from index
         @adbs = @dbi[:status][:index].reject { |_k, v| v[:ref] }
         self[:data] = Hashx[@adbs].skeleton unless self[:data]
+        @post_upd_procs << proc { verbose { "Saved #{self[:id]}:timing" } }
       end
 
       def change?(k)

@@ -9,7 +9,7 @@ module CIAX
       super(['server', type].compact.join('_'), id)
       @db = {}
       self[:msg] = ''
-      @post_upd_procs << proc { verbose { "Save #{id}:timing #{pick(%i(busy queue))}" } }
+      @post_upd_procs << proc { verbose { "Save #{id}:timing #{pick(%i(busy queue)).to_j}" } }
     end
 
     # For String Data
@@ -65,7 +65,7 @@ module CIAX
     end
 
     def push(key, elem)
-      self[key].push(elem) unless type?(self[key], Array).include?(elem)
+      self[key].push(elem) #unless type?(self[key], Array).include?(elem)
       self
     ensure
       time_upd

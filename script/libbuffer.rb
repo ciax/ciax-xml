@@ -118,15 +118,15 @@ module CIAX
     end
 
     def sv_up(cid)
-      @sv_stat.up(:busy)
       verbose { "Busy Up(#{@id}):timing" }
+      @sv_stat.up(:busy)
       @sv_stat.push(:queue, cid)
     end
 
     def sv_dw
-      @sv_stat.flush(:queue)
-      @sv_stat.dw(:busy)
       verbose { "Busy Down(#{@id}):timing" }
+      @sv_stat.dw(:busy)
+      @sv_stat.flush(:queue)
     end
 
     def clear
@@ -139,7 +139,7 @@ module CIAX
     def flush
       @sv_stat.flush(:queue, @outbuf.cids)
       @flush_proc.call(self)
-      verbose { "Flush buffer(#{@id}):timing\n#{@sv_stat.pick(%i(busy queue))}" }
+      verbose { "Flush buffer(#{@id}):timing#{@sv_stat.pick(%i(busy queue)).to_j}" }
       self
     end
 

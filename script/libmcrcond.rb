@@ -32,7 +32,7 @@ module CIAX
       end
 
       def _wait_busy(obj)
-        return unless obj.wait_busy
+        return if obj.join
         @step[:result] = 'timeout'
         fail Interlock
       end

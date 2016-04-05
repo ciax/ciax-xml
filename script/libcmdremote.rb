@@ -69,7 +69,7 @@ module CIAX
             super
             add_item('interrupt')
             # Accept empty command
-            add_item(nil) unless @cfg[:cmd_line_mode]
+            add_item(nil)
           end
         end
       end

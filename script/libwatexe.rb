@@ -18,15 +18,6 @@ module CIAX
         _opt_mode
       end
 
-      def join(src = 'local')
-        100.times do
-          sleep 0.1
-          @server_upd_proc.call(src) if @server_upd_proc
-          return true unless @sv_stat.up?(:busy)
-        end
-        false
-      end
-
       def ext_shell
         super
         @cfg[:output] = View.new(@stat)
@@ -36,11 +27,6 @@ module CIAX
       end
 
       private
-
-      def ext_client
-        @server_upd_proc = proc { |src| exe([], src, 2) }
-        super
-      end
 
       def ext_test
         ext_non_client
@@ -55,7 +41,7 @@ module CIAX
         @sub.batch_interrupt = @stat.get(:int)
         @stat.ext_log if @cfg[:option].log?
         _init_upd_drv_
-        @tid_auto = _init_auto_thread_
+        @tid_auto = _init_auto_thread_ unless @cfg[:cmd_line_mode]
         @sub.post_exe_procs << proc do
           @sv_stat.set_flg(:auto, @tid_auto && @tid_auto.alive?)
         end

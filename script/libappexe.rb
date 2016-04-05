@@ -35,13 +35,14 @@ module CIAX
       end
 
       # return nil if success
-      def wait_busy
+      def join
+        verbose { "Waiting busy for #{@id}" }
         100.times do
           exe([])
-          return unless @sv_stat.up?(:busy)
-          verbose { "Waiting busy for #{@id}" }
+          return true unless @sv_stat.up?(:busy)
           sleep 0.1
         end
+        false
       end
 
       private
@@ -84,7 +85,6 @@ module CIAX
       def ext_driver
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
         @buf = init_buf
-        ext_cmdline_mode
         ext_exec_mode
         ext_non_client
         super
@@ -94,13 +94,6 @@ module CIAX
         _init_proc_set
         _init_proc_del
         self
-      end
-
-      def ext_cmdline_mode
-        return unless @cfg[:cmd_line_mode] # command line mode
-        tc = Thread.current
-        @stat.post_upd_procs << proc { tc.run }
-        @post_exe_procs << proc { sleep }
       end
 
       def ext_exec_mode

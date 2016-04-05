@@ -99,7 +99,7 @@ module CIAX
 
     def cls_color
       cls = self.class.to_s.split('::').pop
-      CLS_COLORS[cls] ||= _gen_color(CLS_COLORS, 8)
+      CLS_COLORS[cls] ||= _gen_color(CLS_COLORS, 9)
     end
 
     # VER= makes setenv "" to VER otherwise nil
@@ -122,8 +122,8 @@ module CIAX
       @indent_base += add
     end
 
-    def _gen_color(table, ofs = 0)
-      (table.size + ofs) % 16 + 1
+    def _gen_color(table, ofs = 1)
+      (table.size % 7) + ofs
     end
   end
 end

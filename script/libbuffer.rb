@@ -43,6 +43,7 @@ module CIAX
     def send(ent, n = 1)
       clear if n == 0 # interrupt
       cid = type?(ent, Cmd::Entity).id
+      verbose { "Execute #{cid}(#{@sv_stat.get(:id)}):timing" }
       # batch is frm batch (ary of ary)
       batch = ent[:batch]
       return self if batch.empty?
@@ -117,12 +118,14 @@ module CIAX
 
     def sv_up(cid)
       @sv_stat.up(:busy)
+      verbose { "Busy Up(#{@sv_stat.get(:id)}):timing" }
       @sv_stat.push(:queue, cid)
     end
 
     def sv_dw
       @sv_stat.flush(:queue)
       @sv_stat.dw(:busy)
+      verbose { "Busy Down(#{@sv_stat.get(:id)}):timing" }
     end
 
     def clear
@@ -135,6 +138,7 @@ module CIAX
     def flush
       @sv_stat.flush(:queue, @outbuf.flatten.map { |h| h[:cid] }.uniq)
       @flush_proc.call(self)
+      verbose { "Save Status(#{@sv_stat.get(:id)}):timing" }
       self
     end
 

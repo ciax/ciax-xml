@@ -31,9 +31,10 @@ module CIAX
     def initialize(sv_stat)
       @sv_stat = type?(sv_stat, Prompt)
       @sv_stat.add_array(:queue)
-      # element of @q is bunch of frm args corresponding an appcmd
+      # element of @q is args of Frm::Cmd
       @q = Queue.new
       @tid = nil
+      # Update App Status
       @flush_proc = proc {}
       @recv_proc = proc {}
       @outbuf = Outbuf.new
@@ -48,9 +49,7 @@ module CIAX
       verbose { "Execute #{cid}(#{@id}):timing" }
       # batch is frm batch (ary of ary)
       batch = ent[:batch]
-      return self if batch.empty?
-      sv_up(cid)
-      @q.push(pri: n, batch: batch, cid: cid)
+      @q.push(pri: n, batch: batch, cid: cid) unless batch.empty?
       self
     end
 
@@ -69,21 +68,13 @@ module CIAX
 
     private
 
-    # Structure of @outbuf (4 level arrays)
-    # [0] Array of interrupt Batch
-    # [1] Array of user issued Batch
-    # [2] Array of event driven Batch
-    # [3] Array of redular update Batch
-    #  Batch: [ Property, ..]
-    #  Property: { args:, cid: }
-    #  args: ['cmd','par','par'..]
-
-    def pri_sort(rcv)
-      enclose("OutBuf:Recieved #{rcv[:cid]}(#{@id})", 'End') do
-        buf = @outbuf[rcv[:pri]]
-        buf.concat rcv[:batch].map { |args| { args: args, cid: rcv[:cid] } }
-        verbose { @outbuf.to_s }
+    def pri_sort(pri:, cid:, batch:) # Using Keyword Variable (Ruby 2.1<)
+      sv_up
+      @sv_stat.push(:queue, cid)
+      batch.each do |args|
+        @outbuf[pri] << { args: args, cid: cid }
       end
+      verbose { "OutBuf:Recieved:timing #{cid}(#{@id})\n#{@outbuf}" }
     end
 
     # Execute recieved command
@@ -117,16 +108,15 @@ module CIAX
       end
     end
 
-    def sv_up(cid)
+    def sv_up
       verbose { "Busy Up(#{@id}):timing" }
       @sv_stat.up(:busy)
-      @sv_stat.push(:queue, cid)
     end
 
     def sv_dw
       verbose { "Busy Down(#{@id}):timing" }
       @sv_stat.dw(:busy)
-      @sv_stat.flush(:queue)
+      @sv_stat.flush(:queue, @outbuf.cids)
     end
 
     def clear
@@ -137,7 +127,6 @@ module CIAX
     end
 
     def flush
-      @sv_stat.flush(:queue, @outbuf.cids)
       @flush_proc.call(self)
       verbose { "Flush buffer(#{@id}):timing#{@sv_stat.pick(%i(busy queue)).to_j}" }
       self
@@ -150,6 +139,14 @@ module CIAX
     end
 
     # Multi-level command buffer
+    # Structure of @outbuf (4 level arrays)
+    # [0] Array of interrupt Batch
+    # [1] Array of user issued Batch
+    # [2] Array of event driven Batch
+    # [3] Array of redular update Batch
+    #  Batch: [ Property, ..]
+    #  Property: { args:, cid: }
+    #  args: ['cmd','par','par'..]
     class Outbuf < Array
       def clear
         super

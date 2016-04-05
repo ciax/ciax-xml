@@ -111,6 +111,7 @@ module CIAX
       Msg.par_err("No such Key [#{key}]") unless key?(key)
       Msg.cfg_err('Value should be String') unless val.is_a?(String)
       return if fetch(key) == val
+      verbose { "Replace:timing(#{key}) #{fetch(key)} ->  #{val}" }
       fetch(key).replace(val)
     end
 

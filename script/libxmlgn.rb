@@ -12,7 +12,7 @@ module CIAX
         when String
           test('r', f) || fail(InvalidID)
           @e = XML::Document.file(f).root
-          verbose { @e.namespaces.default }
+          verbose { @e.namespaces.default.to_s }
         when XML::Node
           @e = f
         when nil

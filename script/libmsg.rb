@@ -2,12 +2,13 @@
 # Common Module
 require 'libmsgfunc'
 require 'libmsgmod'
-
+# CIAX
 module CIAX
   ######################### Message Module #############################
   # Should be extended in module/class
   NS_COLORS = {}
   CLS_COLORS = {}
+  # Message module
   module Msg
     START_TIME = Time.now
     @indent_base = 1
@@ -18,12 +19,9 @@ module CIAX
     #   (val) -> calcurated from status
     def verbose(cond = true)
       return self unless ENV['VER'] && cond && !@hide_inside
-      data = yield
-      (data.is_a?(Array) ? data : [data]).map do|line|
-        msg = make_msg(line)
-        next unless condition(msg)
-        prt_lines(msg)
-      end
+      str = type?(yield, String)
+      msg = make_msg(str)
+      prt_lines(msg) if condition(msg)
       self
     end
 
@@ -50,13 +48,13 @@ module CIAX
     # @hide_inside is flag for hiding inside of enclose
     # returns enclosed contents to have no influence by this
     def enclose(title1, title2)
-      @hide_inside = verbose { title1 }
+      verbose { title1 }
+      @enclosed = @printed
       Msg.ver_indent(1)
       res = yield
     ensure
       Msg.ver_indent(-1)
-      verbose { format(title2, res) }
-      @hide_inside = false
+      prt_lines(make_msg(format(title2, res))) if @enclosed
     end
 
     private
@@ -68,9 +66,11 @@ module CIAX
         show Msg.indent(base + ind) + line
         ind = 2
       end
+      @printed = true
     end
 
     def make_msg(title, c = nil)
+      @printed = false
       return unless title
       @head ||= make_head
       ts = "#{@head}:"

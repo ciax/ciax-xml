@@ -36,6 +36,7 @@ module CIAX
       @tid = nil
       @flush_proc = proc {}
       @recv_proc = proc {}
+      @outbuf = Outbuf.new
       clear
     end
 
@@ -77,11 +78,10 @@ module CIAX
     #  args: ['cmd','par','par'..]
 
     def pri_sort(rcv)
-      verbose { "Recieved #{rcv}" }
-      buf = (@outbuf[rcv[:pri]] ||= [])
-      buf.concat rcv[:batch].map { |args| { args: args, cid: rcv[:cid] } }
-      verbose do
-        @outbuf.map.with_index { |o, i| "SUB:Outbuf(#{i}) is [#{o}]\n" }
+      enclose("OutBuf:Recieved #{rcv[:cid]}", 'End') do
+        buf = @outbuf[rcv[:pri]]
+        buf.concat rcv[:batch].map { |args| { args: args, cid: rcv[:cid] } }
+        verbose { @outbuf.to_s }
       end
     end
 
@@ -129,16 +129,16 @@ module CIAX
     end
 
     def clear
-      @outbuf = [[], [], []]
+      @outbuf.clear
       @q.clear
       @tid && @tid.run
       flush
     end
 
     def flush
-      @sv_stat.flush(:queue, @outbuf.flatten.map { |h| h[:cid] }.uniq)
+      @sv_stat.flush(:queue, @outbuf.cids)
       @flush_proc.call(self)
-      verbose { "Save Status(#{@sv_stat.get(:id)}):timing" }
+      verbose { "Save Status(#{@sv_stat.pick(%i(id busy queue))}):timing" }
       self
     end
 
@@ -146,6 +146,21 @@ module CIAX
       clear
       str = $ERROR_INFO.to_s + str.to_s
       super(str)
+    end
+
+    class Outbuf < Array
+      def clear
+        super
+        push [], [], [], []
+      end
+
+      def to_s # String Array
+        map.with_index { |o, i| "SUB:Outbuf(#{i}) is #{o}" }.join("\n")
+      end
+
+      def cids
+        flatten.map { |h| h[:cid] }.uniq
+      end
     end
   end
 end

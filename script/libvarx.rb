@@ -17,7 +17,7 @@ module CIAX
       # Headers
       self[:id] = id
       self[:ver] = ver if ver
-      self[:host] = host || `hostname`.strip
+      self[:host] = host || ENV['HOSTNAME'].strip
       # Setting (Not shown in JSON)
     end
 

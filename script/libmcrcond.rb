@@ -9,10 +9,14 @@ module CIAX
       def initialize(cond, dev_list, step)
         super()
         @dev_list = type?(dev_list, Wat::List)
+        # App::Exe list used in this Step
         @exes = cond.map { |h| h[:site] }.uniq.map { |s| @dev_list.get(s).sub }
         @condition = cond
         @step = step
       end
+
+      # obj.join -> looking at Prompt[:busy]
+      # obj.stat -> looking at Status
 
       def ok?(t = nil, f = nil)
         res = _all_conditions?(_scan)

@@ -48,7 +48,10 @@ module CIAX
       res = @udp.recv(1024)
       @sv_stat.dw(:udperr)
       verbose { "UDP Recv #{res}" }
-      @sv_stat.load(res) unless res.empty?
+      unless res.empty?
+        @sv_stat.load(res)
+        verbose { 'Prompt Loading from UDP' }
+      end
       @sv_stat.msg
     end
   end

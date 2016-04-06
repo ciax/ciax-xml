@@ -20,6 +20,7 @@ module CIAX
         self[:cid] = @cfg[:cid] # Command ID (cmd:par)
         self[:label] = @cfg[:label] # Label for CID
         self[:total_steps] = 0
+        @dummy = @cfg[:option].test?
         self
       end
 
@@ -29,12 +30,12 @@ module CIAX
       end
 
       def add_step(e1, depth)
-        step = Step.new(e1, @cfg[:dev_list], @cfg[:option].test?).ext_prt(self[:start])
+        step = Step.new(e1, depth, @dummy).ext_prt(self[:start])
+        step.ext_cond(@cfg[:dev_list]) if e1.key?(:cond)
         step.post_upd_procs << proc do
           verbose { 'Propagate Step#upd -> Record#upd' }
           post_upd
         end
-        step[:depth] = depth
         self[:steps] << step
         step
       ensure

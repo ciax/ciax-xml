@@ -5,14 +5,34 @@ module CIAX
   # Macro Layer
   module Mcr
     # Check Coindition
-    class Condition < Hashx
-      def initialize(cond, dev_list, step)
-        super()
+    module Condition
+      def self.extended(obj)
+        Msg.type?(obj, Step)
+      end
+
+      def ext_cond(dev_list)
         @dev_list = type?(dev_list, Wat::List)
         # App::Exe list used in this Step
-        @exes = cond.map { |h| h[:site] }.uniq.map { |s| @dev_list.get(s).sub }
-        @condition = cond
-        @step = step
+        @condition = delete(:cond)
+        @exes = @condition.map { |h| h[:site] }.uniq.map { |s| @dev_list.get(s).sub }
+        self
+      end
+
+      # Conditional judgment section
+      def timeout?
+        _set_result('timeout', 'pass', _progress(self[:retry]))
+      end
+
+      def skip?
+        join.ok?('skip', 'enter')
+      ensure
+        upd
+      end
+
+      def fail?
+        join.ok?('pass', 'failed')
+      ensure
+        upd
       end
 
       # obj.join -> looking at Prompt[:busy]
@@ -20,7 +40,7 @@ module CIAX
 
       def ok?(t = nil, f = nil)
         res = _all_conditions?(_scan)
-        @step[:result] = (res ? t : f) if t || f
+        self[:result] = (res ? t : f) if t || f
         res
       end
 
@@ -28,7 +48,7 @@ module CIAX
       def join
         @exes.each do |obj|
           next if obj.join
-          @step[:result] = 'timeout'
+          self[:result] = 'timeout'
           fail Interlock
         end
         self
@@ -47,7 +67,7 @@ module CIAX
         conds = @condition.map do|h|
           _condition(stats[h[:site]], h)
         end
-        @step[:conditions] = conds
+        self[:conditions] = conds
         conds.all? { |h| h[:res] }
       end
 
@@ -67,6 +87,11 @@ module CIAX
         var = h[:var]
         warning("No [#{var}] in Status[#{form}]") unless stat[form].key?(var)
         stat[form][var]
+      end
+
+      def _progress(total)
+        super { !ok? }
+        super { ok? }
       end
 
       # Operators

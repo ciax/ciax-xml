@@ -6,35 +6,11 @@ module CIAX
   module Mcr
     # Element of Record
     class Step < Upd
-      def initialize(db, dev_list, dummy = nil)
+      def initialize(db, depth, dummy = nil)
         super()
         update db
+        self[:depth] = depth
         @dummy = dummy
-        # [:stat_proc,:exec_proc,:query]
-        @cond = Condition.new(delete(:cond), dev_list, self) if db.key?(:cond)
-        @break = nil
-      end
-
-      # Conditional judgment section
-      def timeout?
-        _set_result('timeout', 'pass', _progress(self[:retry]))
-      end
-
-      def sleeping(s)
-        _progress(s)
-        _set_result("slept(#{s})")
-      end
-
-      def skip?
-        @cond.join.ok?('skip', 'enter')
-      ensure
-        upd
-      end
-
-      def fail?
-        !@cond.join.ok?('pass', 'failed')
-      ensure
-        upd
       end
 
       # Interactive section
@@ -47,6 +23,15 @@ module CIAX
         _set_result('forked', 'entering', /true|1/ =~ self[:async])
       end
 
+      def sleeping(s)
+        _progress(s)
+        _set_result("slept(#{s})")
+      end
+
+      def ext_cond(dev_list)
+        extend(Condition).ext_cond(dev_list)
+      end
+
       private
 
       def _set_result(tmsg, fmsg = nil, tf = true)
@@ -57,12 +42,11 @@ module CIAX
         upd
       end
 
-      def _progress(total)
+      def _progress(total, &cond)
         itv = @dummy ? 0 : 1
-        @cond && @cond.join
         total.to_i.times do|n| # gives number or nil(if break)
           self[:count] = n + 1
-          break if @cond && @cond.ok?
+          break if cond && cond.call
           Kernel.sleep itv
           _show('.')
         end

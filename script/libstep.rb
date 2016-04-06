@@ -59,6 +59,7 @@ module CIAX
 
       def _progress(total)
         itv = @dummy ? 0 : 1
+        @cond && @cond.join
         total.to_i.times do|n| # gives number or nil(if break)
           self[:count] = n + 1
           break if @cond && @cond.ok?

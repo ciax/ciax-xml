@@ -14,27 +14,29 @@ module CIAX
         @step = step
       end
 
-      # Sub methods
       def ok?(t = nil, f = nil)
         res = _all_conditions?(_scan)
         @step[:result] = (res ? t : f) if t || f
         res
       end
 
+      # Blocking during busy. (for interlock check)
+      def join
+        @exes.each do |obj|
+          next if obj.join
+          @step[:result] = 'timeout'
+          fail Interlock
+        end
+        self
+      end
+
       private
 
       def _scan
         @exes.each_with_object({}) do |obj, hash|
-          _wait_busy(obj)
           st = hash[obj.id] = obj.stat
           verbose { "Scanning #{obj.id} (#{st[:time]})/(#{st.object_id})" }
         end
-      end
-
-      def _wait_busy(obj)
-        return if obj.join
-        @step[:result] = 'timeout'
-        fail Interlock
       end
 
       def _all_conditions?(stats)

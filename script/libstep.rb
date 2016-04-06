@@ -26,13 +26,13 @@ module CIAX
       end
 
       def skip?
-        @cond.ok?('skip', 'enter')
+        @cond.join.ok?('skip', 'enter')
       ensure
         upd
       end
 
       def fail?
-        !@cond.ok?('pass', 'failed')
+        !@cond.join.ok?('pass', 'failed')
       ensure
         upd
       end

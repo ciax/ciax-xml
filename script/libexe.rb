@@ -34,7 +34,7 @@ module CIAX
     end
 
     # Sync only (Wait for other thread), never inherit
-    # src can be 'local','shell','event','auto','udp:xxx'
+    # src can be 'user'(1),'shell'(1),'macro'(1),'local'(1),event'(2),'auto'(3),'udp:xxx'
     def exe(args, src = 'local', pri = 1)
       type?(args, Array)
       verbose { "Executing Command #{args} from '#{src}' as ##{pri}" }

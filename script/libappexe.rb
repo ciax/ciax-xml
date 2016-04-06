@@ -35,10 +35,10 @@ module CIAX
       end
 
       # return nil if success
-      def join
+      def join(src = 'local', pri = 1)
         verbose { "Waiting busy for #{@id}" }
         100.times do
-          exe([])
+          exe([], src, pri)
           return true unless @sv_stat.up?(:busy)
           sleep 0.1
         end

@@ -23,10 +23,6 @@ module CIAX
         self
       end
 
-      def exe(args) # As a individual cui command
-        get(args.shift).exe(args, 'local')
-      end
-
       def get(site)
         if @list.key?(site)
           cobj = @list.get(site)

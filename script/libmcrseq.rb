@@ -15,14 +15,8 @@ module CIAX
       def initialize(ment, pid = '0', valid_keys = [], &submcr_proc)
         @cfg = ment
         type?(@cfg[:dev_list], CIAX::Wat::List)
-        @record = Record.new.ext_file.auto_save.mklink # Make latest link
-        @record.ext_rsp(@cfg)
-        @record[:pid] = pid
-        @id = @record[:id]
-        @sv_stat = @cfg[:sv_stat]
-        @sv_stat.add_array(:run)
-        @sv_stat.add_str(:sid, @id)
-        @title = @record.title
+        _init_record(pid)
+        _init_prompt
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
@@ -43,10 +37,7 @@ module CIAX
         _show(@record.start)
         sub_macro(upd_sites + @cfg[:sequence], @record)
       rescue Interrupt
-        msg("\nInterrupt Issued to running devices #{@sv_stat.get(:run)}", 3)
-        @sv_stat.get(:run).each do|site|
-          @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
-        end
+        _exec_interrupt
       rescue Verification
         false
       ensure
@@ -61,10 +52,7 @@ module CIAX
 
       # macro returns result (true=complete /false=error)
       def sub_macro(seqary, mstat)
-        @depth += 1
-        @record[:status] = 'run'
-        @record[:total_steps] += type?(seqary, Array).size
-        mstat[:result] = 'busy'
+        _pre_seq(seqary, mstat)
         seqary.each { |e| break(true) unless do_step(e, mstat) }
       rescue Interlock
         false
@@ -72,8 +60,7 @@ module CIAX
         mstat[:result] = 'interrupted'
         raise Interrupt
       ensure
-        mstat[:result] = 'complete' if mstat[:result] == 'busy'
-        @depth -= 1
+        _post_seq(mstat)
       end
 
       # Return false if sequence is broken
@@ -88,9 +75,49 @@ module CIAX
       end
 
       def upd_sites
-        @cfg[:sites].map do |site|
-          { site: site, type: 'upd' }
+        @cfg[:sites].map { |site| { site: site, type: 'upd' } }
+      end
+
+      def _pre_seq(seqary, mstat)
+        @depth += 1
+        @record[:status] = 'run'
+        @record[:total_steps] += type?(seqary, Array).size
+        mstat[:result] = 'busy'
+      end
+
+      def _post_seq(mstat)
+        mstat[:result] = 'complete' if mstat[:result] == 'busy'
+        @depth -= 1
+      end
+
+      def _exec_interrupt
+        runary = @sv_stat.get(:run)
+        msg("\nInterrupt Issued to running devices #{runary}", 3)
+        runary.each do|site|
+          @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
         end
+      end
+
+      # Initialization Part
+      def _init_record(pid)
+        @record = Record.new.ext_file.auto_save.mklink # Make latest link
+        @record.ext_rsp(@cfg)
+        @record[:pid] = pid
+        @id = @record[:id]
+        @title = @record.title
+      end
+
+      def _init_prompt
+        @sv_stat = @cfg[:sv_stat]
+        @sv_stat.add_array(:run)
+        @sv_stat.add_str(:sid, @id)
+        _init_opt
+      end
+
+      def _init_opt
+        return if @sv_stat.key?(:nonstop)
+        @sv_stat.add_flg(nonstop: '(nonstop)')
+        @sv_stat.up(:nonstop) if @cfg[:option][:n]
       end
 
       # Print section

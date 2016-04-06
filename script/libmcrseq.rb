@@ -16,7 +16,7 @@ module CIAX
         @cfg = ment
         type?(@cfg[:dev_list], CIAX::Wat::List)
         _init_record(pid)
-        _init_prompt
+        @sv_stat = @cfg[:sv_stat]
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
@@ -108,16 +108,6 @@ module CIAX
       end
 
       def _init_prompt
-        @sv_stat = @cfg[:sv_stat]
-        @sv_stat.add_array(:run)
-        @sv_stat.add_str(:sid, @id)
-        _init_opt
-      end
-
-      def _init_opt
-        return if @sv_stat.key?(:nonstop)
-        @sv_stat.add_flg(nonstop: '(nonstop)')
-        @sv_stat.up(:nonstop) if @cfg[:option][:n]
       end
 
       # Print section
@@ -131,12 +121,24 @@ module CIAX
       end
     end
 
+    # Prompt for Mcr
+    class Prompt < Prompt
+      def initialize(id, opt = {})
+        super('mcr', id)
+        add_array(:list)
+        add_array(:run)
+        add_str(:sid)
+        add_flg(nonstop: '(nonstop)')
+        up(:nonstop) if opt[:n]
+      end
+    end
+
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', 'ecn') do |cfg, args|
+      ConfOpts.new('[proj] [cmd] (par)', 'ecn') do |cfg, args, opt|
         wl = Wat::List.new(cfg) # Take App List
         cfg[:dev_list] = wl
         dbi = Db.new.get
-        atrb = dbi.pick(%i(sites)).update(sv_stat: Prompt.new('mcr', 'test'))
+        atrb = dbi.pick(%i(sites)).update(sv_stat: Prompt.new('test', opt))
         mobj = Cmd::Remote::Index.new(cfg, atrb)
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)

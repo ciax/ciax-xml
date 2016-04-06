@@ -68,19 +68,8 @@ module CIAX
       def _init_stat_
         @par = @cobj.rem.int.ext_par.par
         @stat = List.new
-        _init_prompt_
-        @post_exe_procs << proc do
-          (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id) }
-        end
-      end
-
-      def _init_prompt_
-        @sv_stat = @cfg[:sv_stat] = Prompt.new('mcr', @id)
-        @sv_stat.add_array(:list)
-        @sv_stat.add_array(:run)
-        @sv_stat.add_str(:sid)
-        @sv_stat.add_flg(nonstop: '(nonstop)')
-        @sv_stat.up(:nonstop) if @cfg[:option][:n]
+        @sv_stat = @cfg[:sv_stat] = Prompt.new(@id, @cfg[:option])
+        _init_proc_post_exe_
       end
 
       def _init_net_
@@ -93,6 +82,12 @@ module CIAX
         @pre_exe_procs << proc do
           @sv_stat.repl(:sid, '')
           @sv_stat.flush(:list, @stat.alives)
+        end
+      end
+
+      def _init_proc_post_exe_
+        @post_exe_procs << proc do
+          (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id) }
         end
       end
 

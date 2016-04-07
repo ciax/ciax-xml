@@ -34,7 +34,8 @@ module CIAX
         self
       end
 
-      def busy?
+      def busy?(src = 'local', pri = 1)
+        exe([], src, pri)
         @sv_stat.up?(:busy)
       end
 
@@ -42,8 +43,7 @@ module CIAX
       def waiting(src = 'local', pri = 1)
         verbose { "Waiting busy for #{@id}" }
         100.times do
-          exe([], src, pri)
-          return true unless busy?
+          return true unless busy?(src, pri)
           sleep 0.1
         end
         false

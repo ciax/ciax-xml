@@ -63,8 +63,7 @@ module CIAX
 
       def _upd(e, step, _mstat)
         step.upd
-        e[:args] = ['upd']
-        _exe_site(e)
+        _get_site(e).exe(['upd'], 'macro').sub.waiting('macro')
         true
       end
 
@@ -121,7 +120,7 @@ module CIAX
       end
 
       def _exe_site(e)
-        _get_site(e).exe(e[:args], 'macro').sub.waiting('macro')
+        _get_site(e).exe(e[:args], 'macro')
       end
 
       def _get_stat(e)

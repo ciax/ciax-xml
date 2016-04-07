@@ -65,7 +65,7 @@ module CIAX
       cfg[:dev_list] = Wat::List.new(cfg)
       begin
         dbi = Db.new.get
-        cobj = Index.new(cfg, dbi.pick)
+        cobj = Index.new(cfg, dbi.pick) # pick alreay includes :command, :version
         cobj.add_rem
         cobj.rem.def_proc(&:path)
         cobj.rem.add_ext(Ext)

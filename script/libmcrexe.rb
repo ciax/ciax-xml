@@ -49,7 +49,7 @@ module CIAX
       ConfOpts.new('[proj] [cmd] (par)', 'cenr') do |cfg, args|
         cfg[:dev_list] = Wat::List.new(cfg)
         dbi = Db.new.get
-        mobj = Cmd::Remote::Index.new(cfg, dbi.pick(%i(sites)))
+        mobj = Cmd::Remote::Index.new(cfg, dbi.pick(%i(sites))) # pick alreay includes :command, :version
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)
         seq = Exe.new(ent)

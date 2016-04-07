@@ -107,9 +107,6 @@ module CIAX
         @title = @record.title
       end
 
-      def _init_prompt
-      end
-
       # Print section
       def _show(str = nil)
         return unless Msg.fg?
@@ -133,17 +130,29 @@ module CIAX
       end
     end
 
+    # Mcr Common Parameters
+    #   atrb includes: :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
+    class ConfOpts < ConfOpts
+      def initialize(optstr)
+        super('[proj] [cmd] (par)', optstr) do |cfg, args, opt|
+          atrb = { layer_type: 'mcr' }
+          db = atrb[:db] = Db.new
+          dbi = db.get
+          # pick already includes :command, :version
+          atrb.update(dbi.pick([:sites]))
+          atrb[:dev_list] = Wat::List.new(cfg) # Take App List
+          atrb[:sv_stat] = Prompt.new(dbi[:id], opt)
+          yield cfg, atrb, args
+        end
+      end
+    end
+
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', 'ecn') do |cfg, args, opt|
-        wl = Wat::List.new(cfg) # Take App List
-        cfg[:dev_list] = wl
-        dbi = Db.new.get
-        atrb = dbi.pick(%i(sites)).update(sv_stat: Prompt.new('test', opt))
-        mobj = Cmd::Remote::Index.new(cfg, atrb)
+      ConfOpts.new('ecn') do |cfg, atrb, args|
+        mobj = Index.new(cfg, atrb)
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)
-        seq = Seq.new(ent)
-        seq.macro
+        Seq.new(ent).macro
       end
     end
   end

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libgetopts'
+require 'libconf'
 module CIAX
   ### Daemon Methods ###
   class Daemon

@@ -13,7 +13,7 @@ module CIAX
         @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
         id = self[:id] || id_err("NO ID(#{id}) in Stat")
         @sv_stat = sv_stat || Prompt.new('site', id)
-        @vmode = :x
+        vmode('x')
         _init_upd_
       end
 
@@ -22,7 +22,7 @@ module CIAX
       end
 
       def to_s
-        if @vmode == :x
+        if @vmode == 'x'
           to_x
         else
           super

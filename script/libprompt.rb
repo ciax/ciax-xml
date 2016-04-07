@@ -65,7 +65,7 @@ module CIAX
     end
 
     def push(key, elem)
-      self[key].push(elem) #unless type?(self[key], Array).include?(elem)
+      self[key].push(elem) # unless type?(self[key], Array).include?(elem)
       self
     ensure
       time_upd

@@ -8,13 +8,13 @@ module CIAX
     def to_s
       return to_jj unless STDOUT.tty?
       case @vmode
-      when :v
+      when 'v'
         to_v
-      when :j
+      when 'j'
         to_jj
-      when :r
+      when 'r'
         to_r
-      when :o
+      when 'o'
         to_o
       else
         super
@@ -43,7 +43,7 @@ module CIAX
 
     # For Exe @def_proc
     def vmode(mode)
-      @vmode = mode.to_sym if mode
+      @vmode = mode if mode
       self
     end
   end

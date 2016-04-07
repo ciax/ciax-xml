@@ -62,7 +62,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[cid(latest)] (< file)', 'r') do |opt, args|
+      GetOpts.new('[cid(latest)] (< file)', 'r') do |_opt, args|
         if STDIN.tty?
           fail(InvalidARGS, 'No input') if args.size < 1
           cid = '"cid":"' + args.shift + '"'
@@ -75,7 +75,7 @@ module CIAX
         else
           rec = Record.new.read
         end
-        puts rec.vmode(opt.vmode)
+        puts rec
       end
     end
   end

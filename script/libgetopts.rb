@@ -8,14 +8,14 @@ module CIAX
     include Msg
     # str = valid option list (afch:)
     # db = addigional option db
-    attr_reader :layer, :vmode
-    def initialize(usagestr, optstr, db = {})
-      usagestr = "(opt) #{usagestr}"
+    attr_reader :layer
+    def initialize(usagestr, optstr, db = {}, &opt_proc)
+      @usagestr = "(opt) #{usagestr}"
       _init_db(db)
       _set_opt(optstr)
-      yield(self, ARGV)
+      opt_proc.call(self, ARGV) if opt_proc
     rescue InvalidARGS
-      usage(usagestr)
+      usage
     end
 
     def cl?
@@ -48,7 +48,7 @@ module CIAX
       (self[:h] || 'localhost') unless self[:c]
     end
 
-    def usage(str, code = 2)
+    def usage(str = @usagestr, code = 2)
       super("#{str}\n" + columns(@index), code)
     end
 
@@ -124,7 +124,8 @@ module CIAX
     end
 
     def _make_vmode
-      @vmode = _make_exopt(%i(j r)) || :v
+      v = _make_exopt(%i(j r))
+      VMODE.replace(v.to_s) if v
       self
     end
 

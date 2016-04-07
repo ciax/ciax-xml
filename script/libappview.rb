@@ -87,7 +87,7 @@ module CIAX
       odb = { c: 'CSV output' }
       GetOpts.new('[site] | < status_file', 'rjc', odb) do |opt|
         stat = Status.new
-        view = View.new(stat).vmode(opt.vmode)
+        view = View.new(stat)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
         puts opt[:c] ? view.to_csv : view

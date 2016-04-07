@@ -85,10 +85,10 @@ module CIAX
             atrb.update(caption: 'Change View Mode', column: 2, color: 9)
             super
             add_item('vis', 'Visual mode').def_proc do
-              @cfg[:output].vmode(:v)
+              @cfg[:output].vmode('v')
             end
             add_item('raw', 'Raw Print mode').def_proc do
-              @cfg[:output].vmode(:o)
+              @cfg[:output].vmode('o')
             end
           end
         end

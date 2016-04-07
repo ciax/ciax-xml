@@ -91,7 +91,7 @@ module CIAX
     include Enumx
     def initialize(hash = {})
       update(hash) if hash
-      vmode(:v) # v|r|j
+      vmode(VMODE) # v|r|j
     end
 
     # Generate value if init_proc and no key

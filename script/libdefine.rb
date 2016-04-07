@@ -4,6 +4,8 @@ module CIAX
   require 'English' # To use $! -> $ERROR_INFO
   require 'debug' if ENV['DEBUG']
 
+  # Initial View Mode
+  VMODE = 'v'
   # User input Error
   class UserError < RuntimeError; end
   # When invalid Argument, exit from shell/server

@@ -30,7 +30,7 @@ module CIAX
       end
 
       def fail?
-        join.ok?('pass', 'failed')
+        !join.ok?('pass', 'failed')
       ensure
         upd
       end

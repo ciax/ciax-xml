@@ -18,7 +18,7 @@ module CIAX
         if @cfg.key?(:site)
           @current = @cfg[:site]
         else
-          @current = db.displist.keys.first
+          @current = db.displist.valid_keys.first
         end
         self
       end

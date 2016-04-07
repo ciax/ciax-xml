@@ -26,10 +26,6 @@ module CIAX
         self
       end
 
-      def join(src = 'local', pri = 1)
-        @sub.join(src, pri)
-      end
-
       private
 
       def ext_test

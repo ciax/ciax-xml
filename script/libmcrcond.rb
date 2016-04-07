@@ -24,18 +24,18 @@ module CIAX
       end
 
       def skip?
-        join.ok?('skip', 'enter')
+        waiting.ok?('skip', 'enter')
       ensure
         upd
       end
 
       def fail?
-        !join.ok?('pass', 'failed')
+        !waiting.ok?('pass', 'failed')
       ensure
         upd
       end
 
-      # obj.join -> looking at Prompt[:busy]
+      # obj.waiting -> looking at Prompt[:busy]
       # obj.stat -> looking at Status
 
       def ok?(t = nil, f = nil)
@@ -44,10 +44,14 @@ module CIAX
         res
       end
 
+      def busy?
+        @exes.map(&:busy?).any?
+      end
+
       # Blocking during busy. (for interlock check)
-      def join
+      def waiting
         @exes.each do |obj|
-          next if obj.join
+          next if obj.waiting
           self[:result] = 'timeout'
           fail Interlock
         end
@@ -90,8 +94,7 @@ module CIAX
       end
 
       def _progress(total)
-        super { !ok? }
-        super { ok? }
+        super { !busy? && _all_conditions?(_scan) }
       end
 
       # Operators

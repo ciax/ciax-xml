@@ -121,7 +121,7 @@ module CIAX
       end
 
       def _exe_site(e)
-        _get_site(e).exe(e[:args], 'macro').join('macro')
+        _get_site(e).exe(e[:args], 'macro').sub.waiting('macro')
       end
 
       def _get_stat(e)

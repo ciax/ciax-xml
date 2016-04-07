@@ -131,25 +131,23 @@ module CIAX
     end
 
     # Mcr Common Parameters
-    #   atrb includes: :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
-    class ConfOpts < ConfOpts
-      def initialize(optstr)
-        super('[proj] [cmd] (par)', optstr) do |cfg, args, opt|
-          atrb = { layer_type: 'mcr' }
-          db = atrb[:db] = Db.new
-          dbi = db.get
-          # pick already includes :command, :version
-          atrb.update(dbi.pick([:sites]))
-          atrb[:dev_list] = Wat::List.new(cfg) # Take App List
-          atrb[:sv_stat] = Prompt.new(dbi[:id], opt)
-          yield cfg, atrb, args
-        end
+    # Atrb includes: :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
+    class Conf < Config
+      def initialize(cfg)
+        super(cfg)
+        self[:layer_type] = 'mcr'
+        dbi = (self[:db] = Db.new).get
+        # pick already includes :command, :version
+        update(dbi.pick([:sites]))
+        # Take App List
+        self[:dev_list] = Wat::List.new(cfg)
+        self[:sv_stat] = Prompt.new(dbi[:id], cfg[:option])
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('ecn') do |cfg, atrb, args|
-        mobj = Index.new(cfg, atrb)
+      ConfOpts.new('[proj] [cmd] (par)','ecnr') do |cfg, args|
+        mobj = Index.new(Conf.new(cfg))
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)
         Seq.new(ent).macro

@@ -12,7 +12,7 @@ module CIAX
       ver = self[:ver]
       verbose { "Log Initialize [#{id}/Ver.#{ver}]" }
       @queue = Queue.new
-      @post_upd_procs << proc { @queue.push(to_j) }
+      @post_upd_procs << proc { @queue.push(JSON.dump(self)) }
       logfile = vardir('log') + _file_base + "_#{Time.now.year}.log"
       ThreadLoop.new("Logging(#{@type}:#{id})", 11) do
         logary = []

@@ -6,12 +6,12 @@ module CIAX
     include ViewPath
 
     def to_s
-      return to_jj unless STDOUT.tty?
+      return to_j unless STDOUT.tty?
       case @vmode
       when 'v'
         to_v
       when 'j'
-        to_jj
+        to_j
       when 'r'
         to_r
       when 'o'
@@ -22,10 +22,6 @@ module CIAX
     end
 
     def to_j
-      JSON.dump(self)
-    end
-
-    def to_jj
       JSON.pretty_generate(self)
     end
 

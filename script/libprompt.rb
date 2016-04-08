@@ -10,7 +10,7 @@ module CIAX
       @db = {}
       self[:msg] = ''
       @post_upd_procs << proc do
-        verbose { "Save #{id}:timing #{pick(%i(busy queue)).to_j}" }
+        verbose { "Save #{id}:timing #{pick(%i(busy queue)).inspect}" }
       end
     end
 

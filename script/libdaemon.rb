@@ -44,15 +44,23 @@ module CIAX
     # Background (Switch error output to file)
     def new_pid
       Process.daemon(true, true)
-      IO.write(@base + '.pid', $PROCESS_ID)
+      _write_pid($PROCESS_ID)
     end
 
     def kill_pids
-      pidfile = @base + '.pid'
-      return unless test('r', pidfile)
-      pids = IO.readlines(pidfile).keep_if { |l| l.to_i > 0 }
-      IO.write(pidfile, '')
+      pids = _read_pids
+      _write_pid('')
       pids.any? { |pid| _kill_pid(pid) }
+    end
+
+    def _read_pids
+      pidfile = @base + '.pid'
+      return [] unless test('r', pidfile)
+      IO.readlines(pidfile).keep_if { |l| l.to_i > 0 }
+    end
+
+    def _write_pid(pid)
+      IO.write(@base + '.pid', pid)
     end
 
     def _kill_pid(pid)

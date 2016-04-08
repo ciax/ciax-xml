@@ -15,14 +15,8 @@ module CIAX
         @period = 300
         @last_updated = 0
         _setdbi(dbi, Ins::Db)
-        @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
-        @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
-        # For Array element
-        %i(active exec block int).each { |i| self[i] = [] }
-        # For Hash element
-        %i(crnt last res).each { |i| self[i] = {} }
-        # For Time element
-        self[:act_time] = [now_msec, now_msec]
+        _init_procs
+        _init_struct
         self
       end
 
@@ -54,6 +48,22 @@ module CIAX
           Kernel.sleep dif
         end
         self
+      end
+
+      private
+
+      def _init_procs
+        @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
+        @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
+      end
+
+      def _init_struct
+        # For Array element
+        %i(active exec block int).each { |i| self[i] = [] }
+        # For Hash element
+        %i(crnt last res).each { |i| self[i] = {} }
+        # For Time element
+        self[:act_time] = [now_msec, now_msec]
       end
     end
 

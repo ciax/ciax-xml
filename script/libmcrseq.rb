@@ -35,7 +35,7 @@ module CIAX
       def macro
         Thread.current[:obj] = self
         _show(@record.start)
-        sub_macro(upd_sites + @cfg[:sequence], @record)
+        sub_macro(@cfg[:sequence], @record)
       rescue Interrupt
         _exec_interrupt
       rescue Verification
@@ -72,10 +72,6 @@ module CIAX
         rescue Retry
           retry
         end
-      end
-
-      def upd_sites
-        @cfg[:sites].map { |site| { site: site, type: 'upd' } }
       end
 
       def _pre_seq(seqary, mstat)
@@ -131,17 +127,20 @@ module CIAX
     end
 
     # Mcr Common Parameters
-    # Atrb includes: :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
+    # Atrb includes:
+    # :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
     class Conf < Config
       def initialize(cfg)
         super(cfg)
-        self[:layer_type] = 'mcr'
-        dbi = (self[:db] = Db.new).get
+        db = Db.new
+        dbi = db.get
+        update(layer_type: 'mcr', db: db)
         # pick already includes :command, :version
         update(dbi.pick([:sites]))
         # Take App List
-        self[:dev_list] = Wat::List.new(cfg, src: 'macro')
-        self[:sv_stat] = Prompt.new(dbi[:id], cfg[:option])
+        wl = Wat::List.new(cfg, src: 'macro')
+        update(dev_list: wl, sv_stat: Prompt.new(dbi[:id], cfg[:option]))
+        self[:sites].each { |site| wl.get(site).exe(['upd']) }
       end
     end
 

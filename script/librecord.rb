@@ -45,6 +45,7 @@ module CIAX
       def read(str = nil)
         super
         _ext_steps
+        self
       end
 
       def load(str = nil)
@@ -71,11 +72,11 @@ module CIAX
             fn if File.readlines(fn).grep(/#{cid}/)
           end
           /[0-9]{13}/ =~ fname
-          rec = $& ? Record.new($&).ext_file : Record.new
+          rec = $& ? Record.new($&).ext_file.load : Record.new
         else
           rec = Record.new.read
         end
-        puts rec
+        puts rec.to_v
       end
     end
   end

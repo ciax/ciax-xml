@@ -38,9 +38,9 @@ module CIAX
 
     def load(tag = nil)
       json_str = _read_json(tag)
-      verbose { "Loading #{_file_path_(tag)}" }
+      verbose { "Loading #{_file_name(tag)}" }
       if json_str.empty?
-        verbose { " -- json file (#{_file_path_(tag)}) is empty at loading" }
+        verbose { " -- json file (#{_file_name(tag)}) is empty at loading" }
         return self
       end
       super(json_str) if _check_load(json_str)

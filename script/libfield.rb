@@ -109,7 +109,12 @@ module CIAX
       def _init_field_
         data = Hashx.new
         @dbi[:field].each do|id, val|
-          data.put(id, val[:val] || Arrayx.new.skeleton(val[:struct]))
+          if (ary = val[:array])
+            var = ary.split(',')
+          else
+            var = val[:val] || Arrayx.new.skeleton(val[:struct])
+          end
+          data.put(id, var)
         end
         data
       end

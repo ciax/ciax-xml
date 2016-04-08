@@ -48,6 +48,8 @@
     <xsd:complexType>
       <xsd:attribute name="id" type="xsd:NCName"/>
       <xsd:attribute name="val" type="xsd:int"/>
+      <!-- array is csv -->
+      <xsd:attribute name="array" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

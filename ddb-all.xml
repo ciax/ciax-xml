@@ -25,7 +25,11 @@
     <site id="mmc" frm_id="slo" host="moircsobcp" port="24604" iocmd="socat - tcp:133.40.161.140:2104" label="Carrousel"/>
     <site id="ml1" frm_id="lk8" host="moircsobcp" port="24605" iocmd="socat - tcp:133.40.161.140:2105" label="Temperature 1"/>
     <site id="ml2" frm_id="lk8" host="moircsobcp" port="24606" iocmd="socat - tcp:133.40.161.140:2106" label="Temperature 2"/>
-    <site id="mix" frm_id="ixe" host="moircsobcp" port="24607" iocmd="socat - tcp:133.40.161.140:2107" label="Turret"/>
+    <site id="mix" frm_id="ixe" host="moircsobcp" port="24607" iocmd="socat - tcp:133.40.161.140:2107" label="Turret">
+      <field>
+        <assign id="ofs" array="-50,1250,50,800,0,1200"/>
+      </field>
+    </site>
     <site id="mva" frm_id="var" host="moircsobcp" port="24608" iocmd="socat - tcp:133.40.161.140:2108" label="Pumping"/>
     <site id="mt1" frm_id="tpg" host="moircsobcp" port="24609" iocmd="socat - tcp:133.40.161.140:2109" label="Pressure Main"/>
     <site id="mt2" frm_id="tpg" host="moircsobcp" port="24610" iocmd="socat - tcp:133.40.161.140:2110" label="Pressure Throat"/>

@@ -104,7 +104,9 @@ module CIAX
         args.replace h[:args]
       end
       batch.delete_if do |e|
-        warning("duplicated cmd #{args.inspect}(#{e[:cid]})") if e[:args] == args
+        if e[:args] == args
+          warning("duplicated cmd #{args.inspect}(#{e[:cid]})")
+        end
       end
     end
 
@@ -128,7 +130,10 @@ module CIAX
 
     def flush
       @flush_proc.call(self)
-      verbose { "Flush buffer(#{@id}):timing#{@sv_stat.pick(%i(busy queue)).to_j}" }
+      verbose do
+        var = @sv_stat.pick(%i(busy queue)).to_j
+        "Flush buffer(#{@id}):timing#{var}"
+      end
       self
     end
 

@@ -76,7 +76,7 @@ module CIAX
         else
           rec = Record.new.read
         end
-        puts rec.to_v
+        puts rec
       end
     end
   end

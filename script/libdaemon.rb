@@ -10,44 +10,44 @@ module CIAX
       ENV['VER'] ||= 'Initialize'
       # Set ARGS in opt file
       @base = vardir('run') + tag
-      get_default
+      _get_default
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         opt[:s] = true
-        kill_pids && args.empty? && exit
-        new_pid
-        main_loop(opt, tag) { yield(cfg, args) }
+        _kill_pids && args.empty? && exit
+        _new_pid
+        _main_loop(opt, tag) { yield(cfg, args) }
       end
     end
 
     private
 
-    def main_loop(opt, tag, &init_proc)
+    def _main_loop(opt, tag, &init_proc)
       init_proc.call
-      err_redirect(opt, tag)
+      _err_redirect(opt, tag)
       sleep
     rescue SignalException
       Threadx.killall
       retry if $ERROR_INFO.message == 'SIGHUP'
     end
 
-    def err_redirect(_opt, tag)
+    def _err_redirect(_opt, tag)
       return if $stderr.is_a?(Tee)
       errout = vardir('log') + 'error_' + tag + today + '.out'
       $stderr = Tee.new(errout)
     end
 
-    def get_default
+    def _get_default
       optfile = @base + '.opt'
       load optfile if test('r', optfile)
     end
 
     # Background (Switch error output to file)
-    def new_pid
+    def _new_pid
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
     end
 
-    def kill_pids
+    def _kill_pids
       pids = _read_pids
       _write_pid('')
       pids.any? { |pid| _kill_pid(pid) }

@@ -12,6 +12,8 @@ module CIAX
     def expr(str)
       return unless str
       eval(str) || 0
+    rescue SyntaxError, NoMethodError
+      cfg_err("#{str} is not number")
     end
 
     def esc_code(str)

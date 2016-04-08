@@ -134,8 +134,6 @@ module CIAX
         verbose { "Validate: [#{num}] Match? [#{disp}]" }
         return num.to_s if list.any? { |r| ReRange.new(r) == num }
         Msg.par_err("Out of range (#{num}) for [#{disp}]")
-      rescue NameError, SyntaxError
-        Msg.par_err('Parameter is not number')
       end
 
       def _validate_reg(str, list, disp)

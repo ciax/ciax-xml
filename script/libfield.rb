@@ -45,22 +45,7 @@ module CIAX
         Msg.give_up('Nill Id') unless id
         return self[:data][id] if self[:data].key?(id)
         vname = []
-        dat = id.split(':').inject(self[:data]) do|h, i|
-          case h
-          when Array
-            begin
-              i = expr(i)
-            rescue SyntaxError, NoMethodError
-              Msg.give_up("#{i} is not number")
-            end
-          when nil
-            break
-          end
-          vname << i
-          verbose { "Type[#{h.class}] Name[#{i}]" }
-          verbose { "Content[#{h[i]}]" }
-          h[i] || alert("No such Value #{vname.inspect} in :data")
-        end
+        dat = _access_array(id, vname)
         verbose { "Get[#{id}]=[#{dat}]" }
         dat
       end
@@ -70,16 +55,7 @@ module CIAX
       def repl(id, val)
         conv = subst(val).to_s
         verbose { "Put[#{id}]=[#{conv}]" }
-        case p = get(id)
-        when Array
-          _merge_ary_(p, conv.split(','))
-        when String
-          begin
-            p.replace(expr(conv).to_s)
-          rescue SyntaxError, NameError
-            par_err('Value is not numerical')
-          end
-        end
+        _repl_by_case(get(id), conv)
         verbose { "Evaluated[#{id}]=[#{get(id)}]" }
         val
       ensure
@@ -117,6 +93,26 @@ module CIAX
           data.put(id, var)
         end
         data
+      end
+
+      def _access_array(id, vname)
+        id.split(':').inject(self[:data]) do|h, i|
+          break unless h
+          i = expr(i) if h.is_a? Array
+          vname << i
+          verbose { "Type[#{h.class}] Name[#{i}]" }
+          verbose { "Content[#{h[i]}]" }
+          h[i] || alert("No such Value #{vname.inspect} in :data")
+        end
+      end
+
+      def _repl_by_case(par, conv)
+        case par
+        when Array
+          _merge_ary_(par, conv.split(','))
+        when String
+          par.replace(expr(conv).to_s)
+        end
       end
 
       def _merge_ary_(p, r)

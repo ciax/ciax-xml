@@ -25,7 +25,6 @@ module CIAX
         @cond = Condition.new(wdb[:index] || {}, stat, self)
         _init_proc
         _init_auto(wdb)
-        upd
       end
 
       def queue(src, pri, batch = [])

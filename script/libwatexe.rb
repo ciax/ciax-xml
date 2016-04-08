@@ -76,7 +76,7 @@ module CIAX
       def _init_auto_thread_
         @stat.next_upd
         ThreadLoop.new("Watch:Regular(#{@id})", 14) do
-          @stat.auto_exec.upd.sleep
+          @stat.auto_exec.sleep.upd
         end
       end
     end

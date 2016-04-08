@@ -12,7 +12,7 @@ module CIAX
       @base = vardir('run') + tag
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         opt[:s] = true
-        kill_pid
+        kill_pids && args.empty? && exit
         new_pid
         main_loop(opt, tag) { yield(cfg, args) }
       end
@@ -29,8 +29,8 @@ module CIAX
       retry if $ERROR_INFO.message == 'SIGHUP'
     end
 
-    def err_redirect(opt, tag)
-      return if $stderr.is_a?(Tee) || !opt[:b]
+    def err_redirect(_opt, tag)
+      return if $stderr.is_a?(Tee)
       errout = vardir('log') + 'error_' + tag + today + '.out'
       $stderr = Tee.new(errout)
     end
@@ -47,19 +47,19 @@ module CIAX
       IO.write(@base + '.pid', $PROCESS_ID)
     end
 
-    def kill_pid
+    def kill_pids
       pidfile = @base + '.pid'
       return unless test('r', pidfile)
       pids = IO.readlines(pidfile).keep_if { |l| l.to_i > 0 }
       IO.write(pidfile, '')
-      pids.each do |pid|
-        begin
-          Process.kill(:TERM, pid.to_i)
-          verbose { "Initialize Process Killed (#{pid})" }
-        rescue
-          nil
-        end
-      end
+      pids.any? { |pid| _kill_pid(pid) }
+    end
+
+    def _kill_pid(pid)
+      Process.kill(:TERM, pid.to_i)
+      verbose { "Initialize Process Killed (#{pid})" }
+    rescue
+      nil
     end
 
     # append str to stderr and file like tee

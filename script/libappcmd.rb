@@ -62,7 +62,8 @@ module CIAX
       odb = { i: 'Instance Mode' }
       ConfOpts.new('[id] [cmd] (par)', 'i', odb) do |cfg, args, opt|
         dbi = (opt[:i] ? Ins::Db : Db).new.get(args.shift)
-        cobj = Index.new(cfg, dbi.pick) # pick already includes :command, :version
+        # dbi.pick already includes :command, :version
+        cobj = Index.new(cfg, dbi.pick)
         cobj.add_rem.def_proc(&:path)
         cobj.rem.add_ext(Ext)
         ent = cobj.set_cmd(args)

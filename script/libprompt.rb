@@ -9,7 +9,9 @@ module CIAX
       super(['server', type].compact.join('_'), id)
       @db = {}
       self[:msg] = ''
-      @post_upd_procs << proc { verbose { "Save #{id}:timing #{pick(%i(busy queue)).to_j}" } }
+      @post_upd_procs << proc do
+        verbose { "Save #{id}:timing #{pick(%i(busy queue)).to_j}" }
+      end
     end
 
     # For String Data

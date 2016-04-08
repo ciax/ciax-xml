@@ -10,17 +10,21 @@ module CIAX
     class Exe < Exe
       def initialize(id, cfg, atrb = Hashx.new)
         super
+        _init_takeover
+        _init_view
+        _opt_mode
+      end
+
+      private
+
+      def _init_takeover
         @sub = @cfg[:sub_list].get(id)
         @sv_stat = @sub.sv_stat
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
         @port = @sub.sub.port.to_i + 1000
         @post_exe_procs.concat(@sub.post_exe_procs)
-        _init_view
-        _opt_mode
       end
-
-      private
 
       def _init_view
         view = Rsp.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)

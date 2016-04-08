@@ -69,7 +69,8 @@ module CIAX
 
     def _init_dbi(id, ary = [])
       dbi = type?(@cfg[:db], CIAX::Db).get(id)
-      @cfg.update(dbi.pick(ary)) # pick already includes :command, :version
+      # dbi.pick already includes :command, :version
+      @cfg.update(dbi.pick(ary))
       @id ||= dbi[:id]
       dbi
     end

@@ -45,7 +45,7 @@ module CIAX
       end
 
       def busy?
-        @exes.map{ |obj| obj.busy?('macro')}.any?
+        @exes.map{ |obj| obj.busy?}.any?
       end
 
       # Blocking during busy. (for interlock check)

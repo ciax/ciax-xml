@@ -132,10 +132,10 @@ module CIAX
     end
 
     # Mcr Common Parameters
-    # Atrb includes:
+    # Conf includes:
     # :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
     # :host, :port
-    class Atrb < Hashx
+    class Conf < Config
       def initialize(cfg)
         super(cfg)
         db = Db.new
@@ -163,7 +163,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', 'ecnr') do |cfg, args|
-        mobj = Index.new(cfg, Atrb.new(cfg))
+        mobj = Index.new(Conf.new(cfg))
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)
         Seq.new(ent).upd.macro

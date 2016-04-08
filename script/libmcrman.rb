@@ -9,8 +9,8 @@ module CIAX
     class Man < Exe
       attr_reader :sub_list # Used for Layer module
       # cfg should have [:dev_list]
-      def initialize(cfg, atrb = Hashx.new)
-        super(nil, cfg, atrb)
+      def initialize(cfg)
+        super(nil, Conf.new(cfg))
         verbose { 'Initialize Layer' }
         # id = nil -> taken by ARGV
         _init_net_
@@ -114,7 +114,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', 'cenlrs') do |cfg|
-        Man.new(cfg, Atrb.new(cfg)).ext_shell.shell
+        Man.new(cfg).ext_shell.shell
       end
     end
   end

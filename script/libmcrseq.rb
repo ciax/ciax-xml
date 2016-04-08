@@ -129,26 +129,44 @@ module CIAX
     # Mcr Common Parameters
     # Atrb includes:
     # :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
-    class Conf < Config
+    # :host, :port
+    class Atrb < Hashx
       def initialize(cfg)
         super(cfg)
         db = Db.new
         dbi = db.get
         update(layer_type: 'mcr', db: db)
         # pick already includes :command, :version
-        update(dbi.pick([:sites]))
-        # Take App List
-        wl = Wat::List.new(cfg, src: 'macro')
-        update(dev_list: wl, sv_stat: Prompt.new(dbi[:id], cfg[:option]))
-        self[:sites].each { |site| wl.get(site).exe(['upd']) }
+        update(dbi.pick([:sites, :id]))
+        _init_net(dbi)
+        _init_dev_list(cfg)
+      end
+
+      def upd_dev
+        self[:sites].each { |site| self[:dev_list].get(site).exe(['upd']) }
+      end
+
+      private
+
+      def _init_net(dbi)
+        self[:host] = self[:option].host || dbi[:host]
+        self[:port] = dbi[:port] || 55_555
+      end
+
+      # Take App List
+      def _init_dev_list(cfg)
+        self[:dev_list] = Wat::List.new(cfg, src: 'macro')
+        self[:sv_stat] = Prompt.new(self[:id], self[:option])
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', 'ecnr') do |cfg, args|
-        mobj = Index.new(Conf.new(cfg))
+        atrb = Atrb.new(cfg)
+        mobj = Index.new(cfg, atrb)
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)
+        atrb.upd_dev
         Seq.new(ent).macro
       end
     end

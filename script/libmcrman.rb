@@ -10,12 +10,10 @@ module CIAX
       attr_reader :sub_list # Used for Layer module
       # cfg should have [:dev_list]
       def initialize(cfg, atrb = Hashx.new)
-        _init_atrb_(atrb)
         super(nil, cfg, atrb)
         verbose { 'Initialize Layer' }
         # id = nil -> taken by ARGV
         _init_net_
-        _init_sub_(cfg)
         _init_domain_
         _init_stat_
         _opt_mode
@@ -41,20 +39,7 @@ module CIAX
         super
       end
 
-      def ext_test
-        ext_driver
-        super
-      end
-
-      def _init_atrb_(atrb)
-        atrb[:db] = Db.new
-        atrb[:layer_type] = 'mcr'
-      end
-
-      def _init_sub_(cfg)
-        wl = Wat::List.new(cfg, option: @cfg[:option].sub_opt)
-        @sub_list = @cfg[:dev_list] = wl
-      end
+      alias_method :ext_test, :ext_driver
 
       # Initialize for all mode
       def _init_domain_
@@ -68,14 +53,15 @@ module CIAX
       def _init_stat_
         @par = @cobj.rem.int.ext_par.par
         @stat = List.new
-        @sv_stat = @cfg[:sv_stat] = Prompt.new(@id, @cfg[:option])
+        @sv_stat = @cfg[:sv_stat]
+        @sub_list = @cfg[:dev_list]
         _init_proc_post_exe_
       end
 
       def _init_net_
-        dbi = _init_dbi(nil, [:sites])
-        @host = @cfg[:option].host || dbi[:host]
-        @port ||= (dbi[:port] || 55_555)
+        @id = @cfg[:id]
+        @host = @cfg[:host]
+        @port = @cfg[:port]
       end
 
       def _init_proc_pre_exe_
@@ -128,7 +114,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', 'cenlrs') do |cfg|
-        Man.new(cfg).ext_shell.shell
+        atrb = Atrb.new(cfg)
+        man = Man.new(cfg, atrb)
+        atrb.upd_dev
+        man.ext_shell.shell
       end
     end
   end

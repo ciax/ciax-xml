@@ -14,7 +14,8 @@ module CIAX
         @dev_list = type?(dev_list, Wat::List)
         # App::Exe list used in this Step
         @condition = delete(:cond)
-        @exes = @condition.map { |h| h[:site] }.uniq.map { |s| @dev_list.get(s).sub }
+        sites = @condition.map { |h| h[:site] }.uniq
+        @exes = sites.map { |s| @dev_list.get(s).sub }
         self
       end
 

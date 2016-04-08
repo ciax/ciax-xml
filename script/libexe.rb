@@ -34,7 +34,8 @@ module CIAX
     end
 
     # Sync only (Wait for other thread), never inherit
-    # src can be 'user'(1),'shell'(1),'macro'(1),'local'(1),event'(2),'auto'(3),'udp:xxx'
+    # src can be 'user'(1),'shell'(1),'macro'(1),'local'(1),event'(2),'auto'(3)
+    #  and 'udp:xxx'
     def exe(args, src = nil, pri = 1)
       type?(args, Array)
       src ||= (@cfg[:src] || 'local')

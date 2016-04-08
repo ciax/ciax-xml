@@ -41,10 +41,7 @@ module CIAX
         @sub.batch_interrupt = @stat.get(:int)
         @stat.ext_log if @cfg[:option].log?
         _init_upd_drv_
-        @tid_auto = _init_auto_thread_ unless @cfg[:cmd_line_mode]
-        @sub.post_exe_procs << proc do
-          @sv_stat.set_flg(:auto, @tid_auto && @tid_auto.alive?)
-        end
+        _init_exe_drv_
         super
       end
 
@@ -70,6 +67,13 @@ module CIAX
             @sub.exe(args, src, pri)
             sleep ev.interval
           end.clear
+        end
+      end
+
+      def _init_exe_drv_
+        @tid_auto = _init_auto_thread_ unless @cfg[:cmd_line_mode]
+        @sub.post_exe_procs << proc do
+          @sv_stat.set_flg(:auto, @tid_auto && @tid_auto.alive?)
         end
       end
 

@@ -43,10 +43,9 @@ module CIAX
 
         def _get_args(e1, args)
           e1.each do|e2| # //argv
-            case e2
-            when String
+            if e2.is_a? String
               args << e2
-            when Hash
+            elsif e2.is_a? Hash
               str = e2[:val]
               str = e2[:format] % expr(str) if e2[:format]
               verbose { "Calculated [#{str}]" }

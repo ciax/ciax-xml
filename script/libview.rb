@@ -7,18 +7,9 @@ module CIAX
 
     def to_s
       return to_j unless STDOUT.tty?
-      case @vmode
-      when 'v'
-        to_v
-      when 'j'
-        to_j
-      when 'r'
-        to_r
-      when 'o'
-        to_o
-      else
-        super
-      end
+      method("to_#{@vmode}").call
+    rescue NameError
+      super
     end
 
     def to_j

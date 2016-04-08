@@ -21,14 +21,6 @@ module CIAX
         self[:hexpack]
       end
 
-      def to_s
-        if @vmode == 'x'
-          to_x
-        else
-          super
-        end
-      end
-
       private
 
       def _init_upd_

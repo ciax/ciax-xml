@@ -10,6 +10,7 @@ module CIAX
       ENV['VER'] ||= 'Initialize'
       # Set ARGS in opt file
       @base = vardir('run') + tag
+      get_default
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         opt[:s] = true
         kill_pids && args.empty? && exit
@@ -21,7 +22,7 @@ module CIAX
     private
 
     def main_loop(opt, tag, &init_proc)
-      init_server(&init_proc)
+      init_proc.call
       err_redirect(opt, tag)
       sleep
     rescue SignalException
@@ -35,10 +36,9 @@ module CIAX
       $stderr = Tee.new(errout)
     end
 
-    def init_server(&init_proc)
+    def get_default
       optfile = @base + '.opt'
       load optfile if test('r', optfile)
-      init_proc.call
     end
 
     # Background (Switch error output to file)

@@ -34,18 +34,15 @@ module CIAX
 
     # Show Control Charactor with Color
     def visible(text)
-      str = ''
-      text.each_byte do |c|
-        n = c.ord
-        if n > 126
-          str << colorize(format('(%x)', c), 4)
-        elsif n < 32
-          str << colorize(format('(%s)', CTLCODE[n]), 4)
+      text.each_byte.map do |c|
+        if c > 126
+          colorize(format('(%x)', c), 4)
+        elsif c < 32
+          colorize(format('(%s)', CTLCODE[c]), 4)
         else
-          str << c
+          c.chr
         end
-      end
-      str
+      end.join
     end
 
     # Display DB item in one line fromat.
@@ -73,9 +70,8 @@ module CIAX
     def upd_column_ary(h, cary)
       h.keys.each_slice(cary.size).map do |al|
         al.each_with_index do |k, i|
-          pair = cary[i]
-          pair[0] = [k.size, pair[0]].max
-          pair[1] = [h[k].size, pair[1]].max
+          r = [k.size, h[k].size]
+          cary[i].map! { |p| [r.shift, p].max }
         end
         al
       end

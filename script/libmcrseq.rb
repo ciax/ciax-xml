@@ -23,6 +23,11 @@ module CIAX
         @qry = Query.new(@record, @sv_stat, valid_keys)
       end
 
+      def upd
+        @cfg[:sites].each { |site| @cfg[:dev_list].get(site).exe(['upd']) }
+        self
+      end
+
       # For prompt '(stat) [option]'
       def to_v
         @qry.to_v
@@ -45,7 +50,7 @@ module CIAX
       end
 
       def fork
-        Threadx.new("Macro(#{@id})", 10) { macro }
+        Threadx.new("Macro(#{@id})", 10) { upd.macro }
       end
 
       private
@@ -142,10 +147,6 @@ module CIAX
         _init_dev_list(cfg)
       end
 
-      def upd_dev
-        self[:sites].each { |site| self[:dev_list].get(site).exe(['upd']) }
-      end
-
       private
 
       def _init_net(dbi)
@@ -162,12 +163,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', 'ecnr') do |cfg, args|
-        atrb = Atrb.new(cfg)
-        mobj = Index.new(cfg, atrb)
+        mobj = Index.new(cfg, Atrb.new(cfg))
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)
-        atrb.upd_dev
-        Seq.new(ent).macro
+        Seq.new(ent).upd.macro
       end
     end
   end

@@ -114,10 +114,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', 'cenlrs') do |cfg|
-        atrb = Atrb.new(cfg)
-        man = Man.new(cfg, atrb)
-        atrb.upd_dev
-        man.ext_shell.shell
+        Man.new(cfg, Atrb.new(cfg)).ext_shell.shell
       end
     end
   end

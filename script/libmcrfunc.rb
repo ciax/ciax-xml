@@ -63,7 +63,7 @@ module CIAX
 
       def _upd(e, step, _mstat)
         step.upd
-        _get_site(e).exe(['upd'], 'macro').sub.waiting('macro')
+        _get_site(e).exe(['upd']).waiting
         true
       end
 
@@ -116,15 +116,15 @@ module CIAX
 
       # Sub Method
       def _get_site(e)
-        @cfg[:dev_list].get(e[:site])
+        @cfg[:dev_list].get(e[:site]).sub
       end
 
       def _exe_site(e)
-        _get_site(e).exe(e[:args], 'macro')
+        _get_site(e).exe(e[:args])
       end
 
       def _get_stat(e)
-        _get_site(e).sub.stat[e[:form].to_sym][e[:var]]
+        _get_site(e).stat[e[:form].to_sym][e[:var]]
       end
 
       # Mcr::Entity

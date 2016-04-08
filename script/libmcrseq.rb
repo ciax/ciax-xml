@@ -140,7 +140,7 @@ module CIAX
         # pick already includes :command, :version
         update(dbi.pick([:sites]))
         # Take App List
-        self[:dev_list] = Wat::List.new(cfg)
+        self[:dev_list] = Wat::List.new(cfg, src: 'macro')
         self[:sv_stat] = Prompt.new(dbi[:id], cfg[:option])
       end
     end

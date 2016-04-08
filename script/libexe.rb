@@ -35,8 +35,9 @@ module CIAX
 
     # Sync only (Wait for other thread), never inherit
     # src can be 'user'(1),'shell'(1),'macro'(1),'local'(1),event'(2),'auto'(3),'udp:xxx'
-    def exe(args, src = 'local', pri = 1)
+    def exe(args, src = nil, pri = 1)
       type?(args, Array)
+      src ||= (@cfg[:src] || 'local')
       verbose { "Executing Command #{args} from '#{src}' as ##{pri}" }
       @pre_exe_procs.each { |p| p.call(args, src) }
       @sv_stat.repl(:msg, @cobj.set_cmd(args).exe_cmd(src, pri).msg)

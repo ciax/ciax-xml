@@ -22,16 +22,14 @@ module CIAX
       # Substitute str by Field data
       # - str format: ${key}
       # - output csv if array
-      def subst(str, substed = []) # subst by field
+      def subst(str) # subst by field
         return str unless /\$\{/ =~ str
         enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
           str.gsub(/\$\{(.+)\}/) do
             key = Regexp.last_match(1)
             ary = [*get(key)].map! { |i| expr(i) }
-            Msg.give_up("No value for subst [#{key}]") if ary.empty?
-            res = ary.join(',')
-            substed << res
-            res
+            cfg_err("No value for subst [#{key}]") if ary.empty?
+            ary.join(',')
           end
         end
       end
@@ -42,7 +40,7 @@ module CIAX
       # - ${id:idx1:idx2} => hash[id][idx1][idx2]
       def get(id)
         verbose { "Getting[#{id}]" }
-        Msg.give_up('Nill Id') unless id
+        cfg_err('Nill Id') unless id
         return self[:data][id] if self[:data].key?(id)
         vname = []
         dat = _access_array(id, vname)

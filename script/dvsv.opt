@@ -1,2 +1,2 @@
 warn "LOADING OPT [#{Time.now}]"
-ARGV.concat(%w()).uniq!
+ARGV.concat(%w(tfp tma tmc tap tbb tbw)).uniq!

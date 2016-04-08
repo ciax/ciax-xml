@@ -8,7 +8,7 @@
       <instance id="tmc" app_id="mmc" host="localhost" port="25694" label="TEST Carousel">
         <command ref="mmc"/>
       </instance>
-      <instance id="tb1" app_id="bbe" frm_site="tbb" host="localhost" port="25697" label="TEST BBE simple">
+      <instance id="tbb" app_id="bbe" host="localhost" port="25696" label="TEST BBE simple">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="X0-3"/>
           <group ref="g1" caption="X4-7"/>
@@ -16,7 +16,7 @@
           <group ref="g3" caption="X12-15"/>
         </status>
       </instance>
-      <instance id="tb2" app_id="bbe" frm_site="tbb" host="localhost" port="25696" label="TEST BBE with Watch">
+      <instance id="tbw" app_id="bbe" frm_site="tbb" host="localhost" port="25697" label="TEST BBE with Watch">
         <command ref="tbb"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="X0-3"/>

@@ -13,19 +13,25 @@ module CIAX
 
       def ext_prt(base)
         @base = type?(base, Integer)
+        _init_msg_list
         self
       end
 
       def body(msg, col = 5)
-        _rindent_(5) + Msg.colorize(msg, col)
+        _rindent(5) + Msg.colorize(msg, col)
       end
 
       def title
+        type = self[:type]
         args = self[:args].join(':') if key?(:args)
-        method('prt_' + self[:type]).call(args)
+        if @msg_list.key?(type.to_sym)
+          _head(*@msg_list[type.to_sym])
+        else
+          method('prt_' + type).call(args)
+        end
       rescue NameError
-        Msg.msg("No such type #{self[:type]}")
-        self[:type]
+        Msg.msg("No such type #{type}")
+        type
       end
 
       def result
@@ -65,7 +71,7 @@ module CIAX
 
       def _prt_conds(mary)
         (self[:conditions] || {}).each do|h|
-          res = h[:res] ? body('o', 2) : body('x', _fail_color_)
+          res = h[:res] ? body('o', 2) : body('x', _fail_color)
           mary << res + _cond_line(h)
         end
       end
@@ -79,16 +85,16 @@ module CIAX
         line << " (#{h[:real]})" if !h[:res] || ope != '='
       end
 
-      def _head_(msg, col, label = 'noname')
-        elps = format('[%6.2f]', (self[:time] - @base) * 0.001)
-        elps + _rindent_ + Msg.colorize(msg, col) + ':' + (self[:label] || label)
+      def _head(msg, col, label = 'noname')
+        elps = format('[%6.2f]', (self[:time] - @base) * 0.001) + _rindent
+        elps + Msg.colorize(msg, col) + ':' + (self[:label] || label)
       end
 
-      def _fail_color_
+      def _fail_color
         self[:type] == 'goal' ? 4 : 1
       end
 
-      def _rindent_(add = 0)
+      def _rindent(add = 0)
         Msg.indent((self[:depth].to_i + add) * 2)
       end
 
@@ -97,48 +103,30 @@ module CIAX
       end
 
       # Branched functions (instead of case/when semantics)
-      def prt_mesg(_)
-        _head_('Mesg', 5)
-      end
-
-      def prt_goal(_)
-        _head_('Done?', 6, 'skip if satisfied')
-      end
-
-      def prt_check(_)
-        _head_('Check', 6, 'interlock')
-      end
-
-      def prt_verify(_)
-        _head_('Verify', 6, 'at the end')
-      end
-
-      def prt_wait(_)
-        _head_('Waiting', 6)
+      def _init_msg_list
+        @msg_list = {
+          mesg: ['Mesg', 5], goal: ['Done?', 6, 'skip if satisfied'],
+          wait: ['Waiting', 6], upd: ['Update', 10, "[#{self[:site]}]"],
+          check: ['Check', 6, 'interlock'], verify: ['Verify', 6, 'at the end'],
+          select: ['Select by', 11, "[#{self[:site]}:#{self[:var]}]"]
+        }
       end
 
       def prt_mcr(args)
         async = self[:async] ? '(async)' : ''
-        _head_('MACRO', 3, "#{self[:label]}(#{args})#{async}")
+        _head('MACRO', 3, "[#{args}]#{async}")
       end
 
       def prt_exec(args)
-        _head_('EXEC', 13, "[#{self[:site]}:#{args}]")
+        _head('EXEC', 13, "[#{self[:site]}:#{args}]")
       end
 
       def prt_cfg(args)
-        _head_('Config', 14, "[#{self[:site]}:#{args}]")
-      end
-
-      def prt_upd(_)
-        _head_('Update', 10, "[#{self[:site]}]")
-      end
-
-      def prt_select(_)
-        _head_('Select by', 11, "[#{self[:site]}:#{self[:var]}]")
+        _head('Config', 14, "[#{self[:site]}:#{args}]")
       end
     end
 
+    # Mcr Step
     class Step
       def ext_prt(base)
         extend(PrtShare).ext_prt(base)

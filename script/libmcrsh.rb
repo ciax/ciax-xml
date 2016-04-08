@@ -46,7 +46,6 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         ConfOpts.new('[proj] [cmd] (par)', 'cnlr') do |cfg|
-          cfg[:dev_list] = Wat::List.new(cfg)
           Man.new(cfg).ext_shell.shell
         end
       end

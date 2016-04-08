@@ -1,15 +1,16 @@
 #!/usr/bin/ruby
 require 'libparam'
 require 'librecord'
+require 'libmcrlist'
 # CIAX-XML
 module CIAX
   # Macro Layer
   module Mcr
     # Macro Man View
     class View < Varx
-      def initialize(id, par, stat = {})
+      def initialize(id, par, stat = List.new)
         super('mcr')
-        @stat = stat
+        @stat = type?(stat, List)
         @par = type?(par, Parameter)
         @list = Hashx.new
         @all_keys = []

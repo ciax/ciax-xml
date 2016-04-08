@@ -62,13 +62,10 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libwatlist'
       cfg = Config.new
-      cfg[:dev_list] = Wat::List.new(cfg)
       begin
         dbi = Db.new.get
         cobj = Index.new(cfg, dbi.pick) # pick alreay includes :command, :version
-        cobj.add_rem
-        cobj.rem.def_proc(&:path)
-        cobj.rem.add_ext(Ext)
+        cobj.add_rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)
         puts ent.path
         puts ent[:sequence]

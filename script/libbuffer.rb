@@ -68,10 +68,12 @@ module CIAX
 
     private
 
-    def pri_sort(pri:, cid:, batch:) # Using Keyword Variable (Ruby 2.1<)
+    def pri_sort(rcv)
       sv_up
+      pri = rcv[:pri]
+      cid = rcv[:cid]
       @sv_stat.push(:queue, cid)
-      batch.each do |args|
+      rcv[:batch].each do |args|
         @outbuf[pri] << { args: args, cid: cid }
       end
       verbose { "OutBuf:Recieved:timing #{cid}(#{@id})\n#{@outbuf}" }

@@ -15,22 +15,22 @@ module CIAX
         opt[:s] = true
         _kill_pids && args.empty? && exit
         _new_pid
-        _main_loop(opt, tag) { yield(cfg, args) }
+        _main_loop(tag) { yield(cfg, args) }
       end
     end
 
     private
 
-    def _main_loop(opt, tag, &init_proc)
+    def _main_loop(tag, &init_proc)
+      _err_redirect(tag)
       init_proc.call
-      _err_redirect(opt, tag)
       sleep
     rescue SignalException
       Threadx.killall
       retry if $ERROR_INFO.message == 'SIGHUP'
     end
 
-    def _err_redirect(_opt, tag)
+    def _err_redirect(tag)
       return if $stderr.is_a?(Tee)
       errout = vardir('log') + 'error_' + tag + today + '.out'
       $stderr = Tee.new(errout)
@@ -72,9 +72,12 @@ module CIAX
 
     # append str to stderr and file like tee
     class Tee < IO
+      include Msg
       def initialize(fname)
-        super(2)
+        super(2, 'a')
         @io = File.open(fname, 'a')
+        @io.write("\n")
+        write(make_msg("Initialize STDERR Redirection\n"))
       end
 
       def write(str)

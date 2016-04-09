@@ -42,7 +42,7 @@ function init(){
 function dvctl(cmd){
     $.post(
         "/json/dvctl-udp.php",
-        {host: Host, port: Port, cmd : cmd},
+        {port: Port, cmd : cmd},
         function(data){
             alert($.parseJSON(data).msg);
             update();

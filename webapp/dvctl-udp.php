@@ -17,9 +17,7 @@ foreach($argv as &$e){
     $args[$ary[0]]=$ary[1];
   }
 }
-// default host is localhost
-//$host=getarg('host');
-if(!$host){ $host="127.0.0.1"; }
+$host="127.0.0.1";
 $port=(int)getarg('port');
 // cmd format "cmd:par1:par2.."
 $cmds=split(":",getarg('cmd'));

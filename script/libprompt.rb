@@ -80,7 +80,7 @@ module CIAX
     end
 
     def to_v
-      verbose { 'Shell' + map { |k, v| "#{k}:'#{v}'(#{v.object_id})" }.inspect }
+      verbose { 'Shell' + inspect }
       # Because true(String) will be converted to Boolean in JSON
       @db.map { |k, v| v if self[k].to_s == 'true' }.join
     end

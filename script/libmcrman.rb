@@ -67,6 +67,7 @@ module CIAX
         @pre_exe_procs << proc do
           @sv_stat.repl(:sid, '')
           @sv_stat.flush(:list, @stat.alives)
+          @sv_stat.flush(:run) if @sv_stat.get(:list).empty?
         end
       end
 

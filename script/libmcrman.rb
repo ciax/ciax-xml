@@ -16,7 +16,6 @@ module CIAX
         _init_net
         _init_cmd
         _init_stat
-        _init_dev
         _opt_mode
         @mode = 'MCR:' + @mode
       end
@@ -48,17 +47,13 @@ module CIAX
         @stat = List.new
         @sv_stat = @cfg[:sv_stat]
         @sub_list = @cfg[:dev_list]
-        _init_proc_post_exe
       end
 
-      def _init_proc_post_exe
+      def ext_client
         @post_exe_procs << proc do
-          (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id) }
+          @par.list.replace @sv_stat.get(:list)
         end
-      end
-
-      def _init_dev
-        @cfg[:sites].each { |site| @cfg[:dev_list].get(site) }
+        super
       end
 
       # Initialize for driver

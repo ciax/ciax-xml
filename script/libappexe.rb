@@ -79,7 +79,6 @@ module CIAX
           @stat[:time] = now_msec
           ent.msg = ent[:batch].inspect
         end
-        ext_non_client
         super
       end
 
@@ -89,24 +88,19 @@ module CIAX
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
         @buf = init_buf
         ext_exec_mode
-        ext_non_client
         super
       end
 
-      def ext_non_client
+      def _non_client
         _init_proc_set
         _init_proc_del
-        self
+        super
       end
 
       def ext_exec_mode
         return unless @cfg[:option].log?
         @stat.ext_log.ext_sqlog
         @cobj.rem.ext_log('app')
-      end
-
-      def server_output
-        Hashx.new.update(@sv_stat).update(self).to_j
       end
 
       # Process of command execution:

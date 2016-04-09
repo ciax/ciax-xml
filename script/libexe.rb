@@ -41,8 +41,8 @@ module CIAX
       src ||= (@cfg[:src] || 'local')
       verbose { "Executing Command #{args} from '#{src}' as ##{pri}" }
       @pre_exe_procs.each { |p| p.call(args, src) }
-      @sv_stat.repl(:msg, @cobj.set_cmd(args).exe_cmd(src, pri).msg)
-      @post_exe_procs.each { |p| p.call(args, src) }
+      msg = @cobj.set_cmd(args).exe_cmd(src, pri).msg
+      @post_exe_procs.each { |p| p.call(args, src, msg) }
       self
     rescue LongJump, InvalidARGS
       @sv_stat.repl(:msg, $ERROR_INFO.to_s)
@@ -93,11 +93,13 @@ module CIAX
 
     def ext_test
       @mode = 'TEST'
+      _non_client
       self
     end
 
     def ext_driver
       @mode = 'DRV'
+      _non_client
       self
     end
 
@@ -110,6 +112,11 @@ module CIAX
       return self if @mode == 'CL'
       @mode += ':SV'
       extend(Server).ext_server
+    end
+
+    def _non_client
+      @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
+      self
     end
   end
 end

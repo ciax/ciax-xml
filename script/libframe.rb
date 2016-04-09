@@ -113,21 +113,23 @@ module CIAX
       def verify(e0)
         ref = e0[:val]
         len = e0[:length] || ref.size
-        str = @frame.slice!(0, len.to_i)
+        val = str = @frame.slice!(0, len.to_i)
         if e0[:decode]
-          val = decode(str, e0)
+          val = decode(val, e0)
           ref = expr(ref).to_s
-        else
-          val = str
         end
+        _check(e0, ref, val)
+        @cc.add(str)
+        str
+      end
+
+      def _check(e0, ref, val)
         if ref == val
           verbose { "Verify:(#{e0[:label]}) [#{ref.inspect}] OK" }
         else
           fmt = 'Mismatch(%s/%s):%s for %s'
           cc_err(format(fmt, e0[:label], e0[:decode], val.inspect, ref.inspect))
         end
-        @cc.add(str)
-        str
       end
     end
   end

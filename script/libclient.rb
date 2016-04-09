@@ -40,8 +40,7 @@ module CIAX
       if IO.select([@udp], nil, nil, 1)
         _udp_recv
       else
-        @sv_stat.up(:udperr)
-        'TIMEOUT'
+        @sv_stat.up(:udperr).repl(:msg, 'TIMEOUT')
       end
     end
 
@@ -49,11 +48,9 @@ module CIAX
       res = @udp.recv(1024)
       @sv_stat.dw(:udperr)
       verbose { "UDP Recv #{res}" }
-      unless res.empty?
-        @sv_stat.load(res)
-        verbose { 'Prompt Loading from UDP' }
-      end
-      @sv_stat.msg
+      return if res.empty?
+      @sv_stat.load(res)
+      verbose { 'Prompt Loading from UDP' }
     end
   end
 end

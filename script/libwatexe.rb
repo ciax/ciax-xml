@@ -29,13 +29,11 @@ module CIAX
       private
 
       def ext_test
-        ext_non_client
         @post_exe_procs << proc { @stat.next_upd }
         super
       end
 
       def ext_driver
-        ext_non_client
         @stat.ext_file.auto_save
         # @stat[:int] is overwritten by initial loading
         @sub.batch_interrupt = @stat.get(:int)
@@ -45,11 +43,11 @@ module CIAX
         super
       end
 
-      def ext_non_client
+      def _non_client
         _init_upd_
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
         @stat.ext_rsp(@sub.stat, @sv_stat)
-        self
+        super
       end
 
       def _init_upd_

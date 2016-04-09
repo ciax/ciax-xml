@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libfrmlist'
-require 'libbuffer'
 require 'libinsdb'
+require 'libappdrv'
 require 'libappcmd'
 require 'libapprsp'
 require 'libappview'
@@ -20,9 +20,9 @@ module CIAX
         @stat = Status.new(dbi)
         @sv_stat = Prompt.new('site', id).add_flg(busy: '*')
         @batch_interrupt = []
-        init_sub
-        init_server(dbi)
-        init_command
+        _init_sub
+        _init_net(dbi)
+        _init_command
         _opt_mode
       end
 
@@ -50,19 +50,19 @@ module CIAX
 
       private
 
-      def init_sub
+      def _init_sub
         # LayerDB might generated in List level
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
         @sv_stat.sub_merge(@sub.sv_stat, %i(comerr ioerr))
       end
 
-      def init_server(dbi)
+      def _init_net(dbi)
         @host = @cfg[:option].host || dbi[:host]
         @port ||= dbi[:port]
         self
       end
 
-      def init_command
+      def _init_command
         @cobj.add_rem.add_sys
         @cobj.rem.add_ext(Ext)
         @cobj.rem.add_int(Int)
@@ -82,48 +82,15 @@ module CIAX
         super
       end
 
-      # type of usage: shell/command line
-      # type of semantics: execution/test
       def ext_driver
-        @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
-        @buf = init_buf
-        ext_exec_mode
         super
+        extend(Drv).ext_driver
       end
 
       def _non_client
         _init_proc_set
         _init_proc_del
         super
-      end
-
-      def ext_exec_mode
-        return unless @cfg[:option].log?
-        @stat.ext_log.ext_sqlog
-        @cobj.rem.ext_log('app')
-      end
-
-      # Process of command execution:
-      #  Main: Recieve App command with validation
-      #  Main: Set :busy flag in Server status
-      #  Main: Send command to queue of Buffer thread (Async)
-      #  Main: Send back App response with msg 'ISSUED' in Server Status
-      #    Buffer: Recieve the command from queue
-      #    Buffer: Break up to Frm commands (Batch)
-      #    Buffer: Reorder by priority and set command to outbuffer
-      #      Batch: Pick up the command from outbuffer by priority
-      #      Batch: Execute single Frm command
-      #      Batch: Get Frm command response
-      #      Batch: Update Field by Frm response
-      #      Batch: Repeat until outbuffer is empty
-      def init_buf
-        buf = Buffer.new(@sv_stat)
-        _init_proc_int(buf)
-        _init_proc_ext(buf)
-        _init_proc_buf(buf)
-        _init_proc_sub
-        # Start buffer server thread
-        buf.server
       end
 
       # Initialize procs
@@ -140,49 +107,6 @@ module CIAX
           ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
           # "DELETE:#{ent.par[0]}"
           ent.msg = 'ISSUED'
-        end
-      end
-
-      # App: Sendign a first priority command (interrupt)
-      def _init_proc_int(buf)
-        @cobj.get('interrupt').def_proc do |ent, src|
-          @batch_interrupt.each do|args|
-            verbose { "Issuing:#{args} for Interrupt" }
-            buf.send(@cobj.set_cmd(args), 0)
-          end
-          warning("Interrupt(#{@batch_interrupt}) from #{src}")
-          ent.msg = 'INTERRUPT'
-        end
-      end
-
-      # App: Sending a general App command (Frm batch)
-      def _init_proc_ext(buf)
-        @cobj.rem.ext.def_proc do|ent, src, pri|
-          verbose { "Issuing:[#{ent.id}] from #{src} with priority #{pri}" }
-          buf.send(ent, pri)
-          ent.msg = 'ISSUED'
-        end
-      end
-
-      def _init_proc_buf(buf)
-        # Frm: Execute single command
-        buf.recv_proc = proc do|args, src|
-          verbose { "Processing #{args}" }
-          @sub.exe(args, src)
-        end
-        # Frm: Update after each single command finish
-        # @stat file output should be done before :busy flag is reset
-        buf.flush_proc = proc do
-          verbose { 'Propagate Buffer#flush -> Field#flush' }
-          @sub.stat.flush
-        end
-      end
-
-      # Field: Update after each Batch Frm command finish
-      def _init_proc_sub
-        @sub.stat.flush_procs << proc do
-          verbose { 'Propagate Field#flush -> Status#upd' }
-          @stat.upd
         end
       end
     end

@@ -15,6 +15,7 @@ module CIAX
         _init_net_
         _init_domain_
         _init_stat_
+        _init_dev_
         _opt_mode
         @mode = 'MCR:' + @mode
       end
@@ -55,6 +56,10 @@ module CIAX
         @sv_stat = @cfg[:sv_stat]
         @sub_list = @cfg[:dev_list]
         _init_proc_post_exe_
+      end
+
+      def _init_dev_
+        @cfg[:sites].each { |site| @cfg[:dev_list].get(site) }
       end
 
       def _init_net_

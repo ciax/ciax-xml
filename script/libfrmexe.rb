@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
-require 'libexe'
 require 'libsh'
-require 'libfrmdb'
+require 'libfrmdrv'
 require 'libfrmrsp'
 require 'libfrmcmd'
 require 'libdevdb'
@@ -19,8 +18,8 @@ module CIAX
         @cfg[:site_id] = id
         @stat = @cfg[:field] = Field.new(dbi)
         @sv_stat = Prompt.new('dev', id).add_flg(comerr: 'X', ioerr: 'E')
-        init_server(dbi)
-        init_command
+        _init_net(dbi)
+        _init_command
         _opt_mode
       end
 
@@ -42,13 +41,13 @@ module CIAX
 
       private
 
-      def init_server(dbi)
+      def _init_net(dbi)
         @host = @cfg[:option].host || dbi[:host]
         @port ||= dbi[:port]
         self
       end
 
-      def init_command
+      def _init_command
         @cobj.add_rem.add_sys
         @cobj.rem.add_ext(Ext)
         @cobj.rem.add_int(Int)
@@ -70,62 +69,8 @@ module CIAX
       end
 
       def ext_driver
-        _init_stream
-        @stat.ext_rsp.ext_file.auto_save
-        _init_drv_ext
-        _init_drv_save
-        _init_drv_load
-        _init_drv_set
-        _init_drv_flush
         super
-      end
-
-      def _init_stream
-        @stream = Stream.new(@id, @cfg)
-        @stream.ext_log if @cfg[:option].log?
-        @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
-        @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }
-      end
-
-      def _init_drv_ext
-        @cobj.rem.ext.def_proc do|ent, src|
-          @sv_stat.dw(:comerr)
-          @stream.snd(ent[:frame], ent.id)
-          @stat.conv(ent, @stream.rcv) if ent[:response]
-          @stat.flush if src != 'buffer'
-          ent.msg = 'OK'
-        end
-      end
-
-      def _init_drv_save
-        @cobj.get('save').def_proc do|ent|
-          @stat.save_key(ent.par[0].split(','), ent.par[1])
-          ent.msg = "Save [#{ent.par[0]}]"
-        end
-      end
-
-      def _init_drv_load
-        @cobj.get('load').def_proc do|ent|
-          @stat.load(ent.par[0] || '')
-          @stat.flush
-          ent.msg = "Load [#{ent.par[0]}]"
-        end
-      end
-
-      def _init_drv_set
-        @cobj.get('set').def_proc do|ent|
-          @stat.repl(ent.par[0], ent.par[1])
-          @stat.flush
-          ent.msg = "Set [#{ent.par[0]}] = #{ent.par[1]}"
-        end
-      end
-
-      def _init_drv_flush
-        @cobj.get('flush').def_proc do
-          @stream.rcv
-          @stat.flush
-          ent.msg = 'Flush Stream'
-        end
+        extend(Drv).ext_driver
       end
     end
 

@@ -19,7 +19,7 @@ module CIAX
       @sv_stat.add_flg(udperr: 'x')
       @sv_stat.pre_upd_procs << proc { exe([]) }
       @udp = UDPSocket.open
-      verbose { "Initialize UDP client (#{@id}) [#{@host}:#{@port}]" }
+      verbose { "Initiate UDP client (#{@id}) [#{@host}:#{@port}]" }
       _set_client_proc
     end
 

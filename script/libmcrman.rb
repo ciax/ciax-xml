@@ -11,7 +11,7 @@ module CIAX
       # cfg should have [:dev_list]
       def initialize(cfg)
         super(nil, Conf.new(cfg))
-        verbose { 'Initialize Layer' }
+        verbose { 'Initiate Layer' }
         # id = nil -> taken by ARGV
         _init_net
         _init_cmd
@@ -27,7 +27,7 @@ module CIAX
 
       private
 
-      # Initialize for all mode
+      # Initiate for all mode
       def _init_net
         @id = @cfg[:id]
         @host = @cfg[:host]
@@ -56,7 +56,7 @@ module CIAX
         super
       end
 
-      # Initialize for driver
+      # Initiate for driver
       def ext_driver
         super
         extend(Drv).ext_driver

@@ -93,7 +93,7 @@ module CIAX
         super
       end
 
-      # Initialize procs
+      # Initiate procs
       def _init_proc_set
         @cobj.get('set').def_proc do|ent|
           @stat[:data].repl(ent.par[0], ent.par[1])

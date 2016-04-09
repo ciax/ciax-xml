@@ -11,7 +11,7 @@ module CIAX
       @cfg = cfg.gen(self).update(atrb)
       @cfg[:jump_groups] ||= []
       super(m2id(@cfg[:obj].class, -2))
-      verbose { 'Initialize Layer' }
+      verbose { 'Initiate Layer' }
       @list = self[:list] = Hashx.new
     end
 

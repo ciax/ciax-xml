@@ -16,7 +16,7 @@ module CIAX
         @stat = type?(stat, Varx)
         @tid = "#{@stat.type}_#{@stat[:ver]}"
         @tname = @stat.type.capitalize
-        verbose { "Initialize Table '#{@tid}'" }
+        verbose { "Initiate Table '#{@tid}'" }
       end
 
       def create
@@ -87,7 +87,7 @@ module CIAX
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
         @queue = Queue.new
         Threadx.new("SqLog(#{layer}:#{id})", 13) do
-          verbose { "Initialize '#{id}' on #{layer}" }
+          verbose { "Initiate '#{id}' on #{layer}" }
           loop { _log_save }
         end
       end

@@ -57,14 +57,14 @@ module CIAX
         end
       end
 
-      # Initialize for Auto Update
+      # Initiate for Auto Update
       def _init_auto(wdb)
         reg = wdb[:regular] || {}
         per = reg[:period].to_i
         @period = per > 1 ? per : 300
         @regexe = reg[:exec] || [['upd']]
         verbose do
-          format('Auto Update Initialize: Period = %s sec, Command = %s)',
+          format('Initiate Auto Update: Period = %s sec, Command = %s)',
                  @period, @regexe)
         end
         self

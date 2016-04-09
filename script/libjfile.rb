@@ -9,7 +9,7 @@ module CIAX
 
     # Set latest_link=true for making latest link at save
     def ext_file
-      verbose { "File IO Initialize [#{_file_base}]" }
+      verbose { "Initiate File Status [#{_file_base}]" }
       self[:id] || Msg.cfg_err('No ID')
       @jsondir = vardir('json')
       @thread = Thread.current # For Thread safe

@@ -21,7 +21,7 @@ module CIAX
         Msg.give_up(' No IO command') unless iocmd
         super('stream', id, cfg[:version])
         update('dir' => '', 'cmd' => '', 'base64' => '')
-        verbose { "Initialize [#{iocmd}]" }
+        verbose { "Initiate [#{iocmd}]" }
         _init_par(cfg)
         reopen
       end

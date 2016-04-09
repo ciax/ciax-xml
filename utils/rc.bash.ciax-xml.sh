@@ -3,7 +3,7 @@ develop(){
     cd "$HOME/ciax-xml/script"
     if git branch |grep '* develop' ; then
         export PROJ=dummy
-        export VER=initialize
+        export VER=Initiate
         export NOCACHE=1
     else
         cd

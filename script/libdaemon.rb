@@ -7,7 +7,7 @@ module CIAX
     # Previous process will be killed at the start up.
     # Reloadable by HUP signal
     def initialize(tag, optstr = '')
-      ENV['VER'] ||= 'Initialize'
+      ENV['VER'] ||= 'Initiate'
       # Set ARGS in opt file
       @base = vardir('run') + tag
       _get_default
@@ -65,7 +65,7 @@ module CIAX
 
     def _kill_pid(pid)
       Process.kill(:TERM, pid.to_i)
-      verbose { "Initialize Process Killed (#{pid})" }
+      verbose { "Initiate Process Killed (#{pid})" }
     rescue
       nil
     end
@@ -77,7 +77,7 @@ module CIAX
         super(2, 'a')
         @io = File.open(fname, 'a')
         @io.write("\n")
-        write(make_msg("Initialize STDERR Redirection\n"))
+        write(make_msg("Initiate STDERR Redirection\n"))
       end
 
       def write(str)

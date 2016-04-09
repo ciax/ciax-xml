@@ -11,7 +11,7 @@ module CIAX
     def ext_server
       return self unless @port
       verbose do
-        "Initialize UDP server (#{@id}) port:[#{@port}] git:[" +
+        "Initiate UDP server (#{@id}) port:[#{@port}] git:[" +
           `cd #{__dir__};git reflog`.split(' ').first + ']'
       end
       @server_input_proc = proc { |line| j2h(line) }

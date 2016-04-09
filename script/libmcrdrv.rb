@@ -8,7 +8,7 @@ module CIAX
         Msg.type?(obj, Man)
       end
 
-      # Initialize for driver
+      # Initiate for driver
       def ext_driver
         @sv_stat.repl(:sid, '') # For server response
         _init_proc_pre_exe

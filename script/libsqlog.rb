@@ -86,8 +86,10 @@ module CIAX
       def initialize(id, layer = nil)
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
         @queue = Queue.new
-        verbose { "Initialize '#{id}' on #{layer}" }
-        ThreadLoop.new("SqLog(#{layer}:#{id})", 13) { server }
+        Threadx.new("SqLog(#{layer}:#{id})", 13) do
+          verbose { "Initialize '#{id}' on #{layer}" }
+          loop { _log_save }
+        end
       end
 
       # Check table existence (ver=0 is invalid)
@@ -110,32 +112,19 @@ module CIAX
 
       private
 
-      def server
-        IO.popen(@sqlcmd, 'w') do |f|
-          get_que(['begin;']).each do |sql|
-            begin
-              f.puts sql
-              verbose { "Saved for '#{sql}'" }
-            rescue
-              Msg.give_up("Sqlite3 input error\n#{sql}")
-            end
-          end
-        end
-      end
-
-      def get_que(sqlary)
-        loop do
-          sqlary << @queue.pop
-          break if @queue.empty?
-        end
-        sqlary << 'commit;'
+      def _log_save
+        sql = @queue.pop
+        IO.popen(@sqlcmd, 'w') { |f| f.puts sql }
+        verbose { "Saved for '#{sql}'" }
+      rescue
+        Msg.give_up("Sqlite3 input error\n#{sql}")
       end
 
       # Create table if no table
       def create_tbl(sqlog)
         return if internal('tables').split(' ').include?(sqlog.tid)
         @queue.push sqlog.create
-        verbose { "Initialize '#{sqlog.tid}' is created" }
+        verbose { "'#{sqlog.tid}' is created" }
       end
 
       def real_mode(stat, sqlog)
@@ -144,7 +133,7 @@ module CIAX
       end
 
       def dummy_mode(stat, sqlog)
-        verbose { 'Initialize: invalid Version(0): No Log' }
+        verbose { 'Invalid Version(0): No Log' }
         stat.post_upd_procs << proc { verbose { "Insert\n" + sqlog.upd } }
       end
     end

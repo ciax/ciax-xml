@@ -51,7 +51,11 @@ module CIAX
 
       def ext_client
         @post_exe_procs << proc do
-          @par.list.concat(@sv_stat.get(:list)).uniq!
+          list = @par.list
+          pre = list.size
+          list.concat(@sv_stat.get(:list)).uniq!
+          post = list.size
+          @par.sel(post) if post > pre
         end
         super
       end

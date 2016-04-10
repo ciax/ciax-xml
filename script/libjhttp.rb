@@ -19,16 +19,12 @@ module CIAX
 
     def load(tag = nil)
       url = file_url(tag)
-      json_str = ''
       open(url) do|f|
         verbose { "Loading url [#{url}](#{f.size})" }
         json_str = f.read
+        return super(json_str) unless json_str.empty?
       end
-      if json_str.empty?
-        warning(" -- json url file (#{url}) is empty at loading")
-      else
-        super(json_str)
-      end
+      warning(" -- json url file (#{url}) is empty at loading")
       self
     rescue OpenURI::HTTPError
       alert("  -- no url file (#{url})")

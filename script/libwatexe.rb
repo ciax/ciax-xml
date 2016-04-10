@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libapplist'
-require 'libwatview'
+require 'libwatprt'
 
 module CIAX
   # Watch Layer
@@ -20,7 +20,7 @@ module CIAX
 
       def ext_shell
         super
-        @cfg[:output] = View.new(@stat)
+        @cfg[:output] = View.new(@stat).extend(Prt)
         @cobj.loc.add_view
         input_conv_set
         self

@@ -35,16 +35,16 @@ module CIAX
         end
 
         def ext_log(tag = nil)
-          id = [tag, @cfg[:site_id] || @cfg[:layer_type]].compact.join('_')
-          @cfg[:input] = Input.new(id)
+          id = @cfg[:site_id] || @cfg[:layer_type]
+          @cfg[:input] = Input.new(tag, id)
           self
         end
       end
 
       # Command Input Logging
       class Input < Varx
-        def initialize(id)
-          super('input', id)
+        def initialize(tag, id)
+          super("input_#{tag}", id)
           ext_file
           ext_log
         end

@@ -82,9 +82,11 @@ module CIAX
       tc = Thread.current
       cpath = class_path
       ns = cpath.shift
+      cls = cpath.join('::')
+      cls << "(#{@id})" if @id
       cary << [tc[:name] || 'Main', tc[:color] || 15]
       cary << [ns, ns_color(ns)]
-      cary << [cpath.join('::'), cls_color || 15]
+      cary << [cls, cls_color || 15]
     end
 
     def make_head
@@ -98,7 +100,7 @@ module CIAX
     end
 
     def cls_color
-      cls = self.class.to_s.split('::').pop
+      cls = class_path.last
       CLS_COLORS[cls] ||= _gen_color(CLS_COLORS, 9)
     end
 

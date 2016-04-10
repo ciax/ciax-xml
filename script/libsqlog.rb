@@ -8,6 +8,7 @@ require 'thread'
 module CIAX
   # Generate SQL command string
   module SqLog
+    LIST = {}
     # Table create using @stat.keys
     class Table
       attr_reader :tid, :stat, :tname
@@ -83,11 +84,11 @@ module CIAX
       # @< log,tid
       # @ sqlcmd
       include Msg
-      def initialize(id, layer = nil)
+      def initialize(id)
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
         @queue = Queue.new
-        Threadx.new("SqLog(#{layer}:#{id})", 13) do
-          verbose { "Initiate '#{id}' on #{layer}" }
+        Threadx.new("SqLog", 13) do
+          verbose { "Initiate '#{id}'" }
           loop { _log_save }
         end
       end

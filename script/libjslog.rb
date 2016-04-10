@@ -33,7 +33,8 @@ module CIAX
 
     def ext_sqlog
       # Logging if version number exists
-      SqLog::Save.new(self[:id], @type).add_table(self)
+      id = self[:id]
+      (SqLog::LIST[id] ||= SqLog::Save.new(id)).add_table(self)
       self
     end
 

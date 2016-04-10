@@ -51,7 +51,7 @@ module CIAX
 
       def ext_client
         @post_exe_procs << proc do
-          @par.list.replace @sv_stat.get(:list)
+          @par.list.concat(@sv_stat.get(:list)).uniq!
         end
         super
       end

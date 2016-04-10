@@ -55,41 +55,44 @@ module CIAX
         return '' unless (hdb = @dbi[:hexpack])
         str = ''
         if hdb[:packs]
-          hdb[:packs].each do |hash|
-            binstr = _mk_frame(hash)
-            pkstr = hash[:code] + hash[:length]
-            str << [binstr].pack(pkstr).unpack('h')[0]
-          end
+          str << _packed(hdb[:packs])
         elsif hdb[:fields]
           str << _mk_frame(hdb)
         end
         str
       end
 
+      def _packed(packs)
+        packs.map do |hash|
+          binstr = _mk_frame(hash)
+          pkstr = hash[:code] + hash[:length]
+          [binstr].pack(pkstr).unpack('h')[0]
+        end.join
+      end
+
       def _mk_frame(db)
-        str = ''
-        db[:fields].each do |hash|
+        db[:fields].map do |hash|
           key = hash[:ref]
           cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
           dat = _padding(hash, @stat[:data][key])
           verbose { "Get from Status #{key} = #{dat}" }
-          str << dat
-        end
-        str
+          dat
+        end.join
       end
 
       def _padding(hash, val)
         len = hash[:length].to_i
-        case hash[:type]
-        when /float/
-          format("%0#{len}.2f", val.to_f)[0, len]
-        when /int/
-          format("%0#{len}d", val.to_i)[0, len]
-        when /binary/
-          format("%0#{len}b", val.to_i)[0, len]
+        pfx = { float: '.2f', int: 'd', binary: 'b' }[hash[:type].to_sym]
+        if pfx
+          _fmt(pfx, len, val)
         else
           val.to_s.rjust(len, '*')[0, len]
         end
+      end
+
+      def _fmt(sfx, len, val)
+        num = /f/ =~ sfx ? val.to_f : val.to_i
+        format("%0#{len}#{sfx}", num)[0, len]
       end
 
       def b2i(b) # Boolean to Integer (1,0)

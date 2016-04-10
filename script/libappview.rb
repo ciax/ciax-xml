@@ -42,14 +42,7 @@ module CIAX
           next unless v.is_a? Hash
           cap = v[:caption]
           lines << ' ***' + colorize(cap, 10) + '***' unless cap.empty?
-          lines.concat(v[:lines].map do|ele|
-            '  ' + ele.values.map do|val|
-              cls = (val[:class] || '').to_sym
-              lbl = colorize(val[:label], 14)
-              msg = colorize(val[:msg], CM[cls] + 8)
-              format('[%s:%s]', lbl, msg)
-            end.join(' ')
-          end)
+          lines.concat(_view_lines(v[:lines]))
         end
         lines.join("\n")
       end
@@ -60,25 +53,44 @@ module CIAX
 
       private
 
+      def _view_lines(lines)
+        lines.map do|ele|
+          '  ' + ele.values.map do|val|
+            cls = (val[:class] || '').to_sym
+            lbl = colorize(val[:label], 14)
+            msg = colorize(val[:msg], CM[cls] + 8)
+            format('[%s:%s]', lbl, msg)
+          end.join(' ')
+        end
+      end
+
       def upd_core
         self['gtime'] = { caption: '', lines: [hash = {}] }
         hash[:time] = { label: 'TIMESTAMP', msg: Msg.date(@stat[:time]) }
         hash[:elapsed] = { label: 'ELAPSED', msg: Msg.elps_date(@stat[:time]) }
         @group.each do|k, gdb|
           cap = gdb[:caption] || next
-          self[k] = { caption: cap, lines: [] }
-          col = gdb[:column] || 1
-          gdb[:members].each_slice(col.to_i) do|hline|
-            hash = {}
-            hline.each do|id|
-              h = hash[id] = { label: @index[id][:label] || id.upcase }
-              h[:msg] = @stat[:msg][id] || @stat[:data][id]
-              h[:class] = @stat[:class][id] if @stat[:class].key?(id)
-            end
-            self[k][:lines] << hash
-          end
+          lines = []
+          self[k] = { caption: cap, lines: lines }
+          _upd_members(gdb[:members], gdb[:column] || 1, lines)
         end
         self
+      end
+
+      def _upd_members(members, col, lines)
+        members.each_slice(col.to_i) do|hline|
+          hash = {}
+          hline.each { |id| _upd_line(id, hash) }
+          lines << hash
+        end
+      end
+
+      def _upd_line(id, hash)
+        stc = @stat[:class]
+        msg = @stat[:msg][id] || @stat[:data][id]
+        cls = stc[id] if stc.key?(id)
+        lvl = @index[id][:label] || id.upcase
+        hash[id] = { label: lvl, msg: msg, class: cls }
       end
     end
 
@@ -90,7 +102,7 @@ module CIAX
         view = View.new(stat)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
-        puts opt[:c] ? view.to_csv : view
+        puts opt[:c] ? view.to_csv : view.to_v
       end
     end
   end

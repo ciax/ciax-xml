@@ -12,10 +12,7 @@ module CIAX
       @queue = Queue.new
       @post_upd_procs << proc { @queue.push(JSON.dump(self)) }
       @logfile = vardir('log') + _file_base + "_#{Time.now.year}.log"
-      Threadx.new("Logging(#{@type}:#{id})", 11) do
-        verbose { "Initiate File Log [#{id}/Ver.#{self[:ver]}]" }
-        loop { _log_save }
-      end
+      _log_thread(id)
       self
     end
 
@@ -39,6 +36,13 @@ module CIAX
     end
 
     private
+
+    def _log_thread(id)
+      Threadx.new("Logging(#{@type}:#{id})", 11) do
+        verbose { "Initiate File Log [#{id}/Ver.#{self[:ver]}]" }
+        loop { _log_save }
+      end
+    end
 
     def _log_save
       str = @queue.pop

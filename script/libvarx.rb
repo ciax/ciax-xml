@@ -38,19 +38,23 @@ module CIAX
 
     # Set dbi, otherwise generate by stdin info
     def _setdbi(obj = nil, mod = Db)
-      case obj
-      when Dbi
-        dbi = obj
-      when String
-        dbi = mod.new.get(obj)
-      else
-        id = STDIN.tty? ? ARGV.shift : read[:id]
-        dbi = mod.new.get(id)
-      end
+      dbi = _getdbi(obj, mod)
       @dbi = type?(dbi, Dbi)
       _setid(dbi[:site_id] || dbi[:id]) || Msg.cfg_err('ID')
       self[:ver] = dbi[:version].to_i
       self
+    end
+
+    def _getdbi(obj, mod)
+      case obj
+      when Dbi
+        obj
+      when String
+        mod.new.get(obj)
+      else
+        id = STDIN.tty? ? ARGV.shift : read[:id]
+        mod.new.get(id)
+      end
     end
 
     def _setid(id)

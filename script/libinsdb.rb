@@ -6,7 +6,7 @@ module CIAX
   # Instance Layer
   module Ins
     # Instance DB
-    class Db < Db
+    class Db < DbCmd
       include Wat::Db
       def initialize
         super('idb')

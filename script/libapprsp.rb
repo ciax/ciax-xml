@@ -23,11 +23,9 @@ module CIAX
         time_upd(@field[:time])
         @adbs.each do|id, hash|
           enclose("GetStatus:[#{id}](#{object_id})", "GetStatus:#{id}=[%s]") do
-            if hash[:fields].empty?
-              self[:data][id] = hash[:default] || '' unless get(id)
-            else
-              _get_val(hash, id)
-            end
+            cnd = hash[:fields].empty?
+            next if cnd && get(id)
+            self[:data][id] = cnd ? (hash[:default] || '') : _get_val(hash, id)
           end
         end
         self
@@ -38,7 +36,7 @@ module CIAX
         verbose { "GetData[#{val}](#{id})" }
         val = _conv_fomula(hash, val, id)
         val = hash[:format] % val if hash.key?(:format)
-        self[:data][id] = val.to_s
+        val.to_s
       end
 
       def _get_by_type(hash)

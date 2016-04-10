@@ -10,7 +10,7 @@ module CIAX
   # Need Header(id,ver) data
   # Used for freqently changing data with remote
   class Varx < Upd
-    attr_reader :type, :dbi, @id
+    attr_reader :type, :dbi, :id
     def initialize(type, id = nil, ver = nil, host = nil)
       super()
       @type = type

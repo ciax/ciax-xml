@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require 'libdb'
+require 'libdbcmd'
 
 module CIAX
   # Instance Layer
   module Cmd
     # Instance DB
-    class Db < Db
+    class Db < DbCmd
       def initialize
         super('cdb')
       end

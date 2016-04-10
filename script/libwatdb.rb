@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'librepeat'
-require 'libdb'
+require 'libdbcmd'
 
 module CIAX
   # Watch Layer

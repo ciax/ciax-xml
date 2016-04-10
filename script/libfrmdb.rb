@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
 require 'librepeat'
-require 'libdb'
+require 'libdbcmd'
 
 module CIAX
   # Frame Layer
   module Frm
     # Frame DB
-    class Db < Db
+    class Db < DbCmd
       def initialize
         super('fdb')
       end

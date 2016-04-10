@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require 'librepeat'
-require 'libdb'
+require 'libdbcmd'
 module CIAX
   # Macro Layer
   module Mcr
     # Macro Db
-    class Db < Db
+    class Db < DbCmd
       def initialize
         super('mdb')
       end

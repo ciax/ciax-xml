@@ -15,7 +15,7 @@ module CIAX
       super()
       @type = type
       # Headers
-      @id = self[:id] = id
+      _setid(id)
       self[:ver] = ver if ver
       self[:host] = host || `hostname`.strip
       # Setting (Not shown in JSON)
@@ -48,14 +48,13 @@ module CIAX
         dbi = mod.new.get(id)
       end
       @dbi = type?(dbi, Dbi)
-      _setid(dbi[:site_id] || dbi[:id])
+      _setid(dbi[:site_id] || dbi[:id]) || Msg.cfg_err('ID')
       self[:ver] = dbi[:version].to_i
       self
     end
 
     def _setid(id)
-      self[:id] = id || Msg.cfg_err('ID')
-      self
+      @id = self[:id] = id
     end
 
     def _file_base(tag = nil)

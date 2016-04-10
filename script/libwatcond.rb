@@ -26,19 +26,7 @@ module CIAX
       def upd
         sync
         %i(active exec block int).each { |s| @event[s].clear }
-        @windex.each do|id, item|
-          next unless check(id, item)
-          item[:act].each do|key, ary|
-            if key == :exec
-              ary.each do|args|
-                @event[:exec] << ['event', 2, args]
-              end
-            else
-              @event.fetch(key).concat(ary)
-            end
-          end
-          @event.fetch(:active) << id
-        end
+        _chk_conds
         @event
       end
 
@@ -64,43 +52,68 @@ module CIAX
 
       private
 
-      def _chk_by_type(ckitm)
-        vn = ckitm[:var]
-        case ckitm[:type]
-        when 'onchange'
-          _onchange(vn, ckitm[:tolerance])
-        when 'pattern'
-          _pattern(vn, ckitm[:val])
-        when 'range'
-          _range(vn, ckitm[:val])
-        when 'compare'
-          _compare(ckitm[:vars])
+      def _chk_conds
+        @windex.each do|id, item|
+          next unless check(id, item)
+          _actives(item[:act])
+          @event.fetch(:active) << id
         end
       end
 
-      def _onchange(vn, tol)
+      def _actives(act)
+        act.each do|key, ary|
+          if key == :exec
+            ary.each do|args|
+              @event[:exec] << ['event', 2, args]
+            end
+          else
+            @event.fetch(key).concat(ary)
+          end
+        end
+      end
+
+      def _chk_by_type(ckitm)
+        vn = ckitm[:var]
+        name = "cnd_#{ckitm[:type]}"
+        method(name).call(vn, ckitm)
+      rescue NameError
+        cfg_err("No such condition #{name}")
+      end
+
+      def cnd_onchange(vn, ckitm)
+        tol = ckitm[:tolerance]
         val = @stat[:data][vn]
         cri = @event[:last][vn]
         return false unless cri
         if tol
-          res = ((cri.to_f - val.to_f).abs > tol.to_f)
-          verbose do
-            format('  onChange(%s): |[%s]-<%s>| > %s =>%s',
-                   vn, cri, val, tol, res.inspect)
-          end
+          _cmp_tol(vn, cri, val, tol)
         else
-          res = (cri != val)
-          verbose do
-            format('  onChange(%s): [%s] vs <%s> =>%s',
-                   vn, cri.inspect, val, res.inspect)
-          end
+          _cmp_just(vn, cri, val)
+        end
+      end
+
+      def _cmp_tol(vn, cri, val, tol)
+        res = ((cri.to_f - val.to_f).abs > tol.to_f)
+        verbose do
+          format('  onChange(%s): |[%s]-<%s>| > %s =>%s',
+                 vn, cri, val, tol, res.inspect)
         end
         res
       end
 
-      def _pattern(vn, cri)
+      def _cmp_just(vn, cri, val)
+        res = (cri != val)
+        verbose do
+          format('  onChange(%s): [%s] vs <%s> =>%s',
+                 vn, cri, val, res.inspect)
+        end
+        res
+      end
+
+      def cnd_pattern(vn, ckitm)
+        cri = ckitm[:val]
         val = @stat[:data][vn]
-        res = Regexp.new(cri).match(val)
+        res = (/#{cri}/ =~ val)
         verbose do
           format('  Pattern(%s): [%s] vs <%s> =>%s',
                  vn, cri, val, res.inspect)
@@ -108,7 +121,8 @@ module CIAX
         res
       end
 
-      def _range(vn, cri)
+      def cnd_range(vn, ckitm)
+        cri = ckitm[:val]
         val = @stat[:data][vn]
         f = format('%.3f', val.to_f)
         res = (ReRange.new(cri) == f)
@@ -119,7 +133,8 @@ module CIAX
         res
       end
 
-      def _compare(vars)
+      def cnd_compare(_vn, ckitm)
+        vars = ckitm[:vars]
         vars.map { |vn| @stat[:data][vn] }.uniq.size == 1
       end
     end

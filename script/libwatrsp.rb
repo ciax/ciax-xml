@@ -135,12 +135,12 @@ module CIAX
       odb = { t: 'test conditions[key=val,..]' }
       GetOpts.new('[site] | < status_file', 't:', odb) do |opt|
         stat = App::Status.new
-        stat.ext_file if STDIN.tty?
+        stat.ext_file.load if STDIN.tty?
         event = Event.new(stat[:id]).ext_rsp(stat)
         if (t = opt[:t])
           stat.str_update(t)
         end
-        puts event
+        puts event.upd
       end
     end
   end

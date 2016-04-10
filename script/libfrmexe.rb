@@ -17,7 +17,7 @@ module CIAX
         dbi = _init_dbi(id, %i(stream iocmd))
         @cfg[:site_id] = id
         @stat = @cfg[:field] = Field.new(dbi)
-        @sv_stat = Prompt.new('dev', id).add_flg(comerr: 'X', ioerr: 'E')
+        @sv_stat = Prompt.new(id)
         _init_net(dbi)
         _init_command
         _opt_mode
@@ -74,7 +74,13 @@ module CIAX
       end
     end
 
-    class Prompt < Prompt; end
+    # For Frm
+    class Prompt < Prompt
+      def initialize(id)
+        super('dev', id)
+        add_flg(comerr: 'X', ioerr: 'E')
+      end
+    end
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|

@@ -18,7 +18,7 @@ module CIAX
         dbi = _init_dbi(id, %i(frm_site))
         @cfg[:site_id] = id
         @stat = Status.new(dbi)
-        @sv_stat = Prompt.new('site', id).add_flg(busy: '*')
+        @sv_stat = Prompt.new(id)
         @batch_interrupt = []
         _init_sub
         _init_net(dbi)
@@ -111,7 +111,13 @@ module CIAX
       end
     end
 
-    class Prompt < Prompt; end
+    # For App
+    class Prompt < Prompt
+      def initialize(id)
+        super('site', id)
+        add_flg(busy: '*')
+      end
+    end
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|

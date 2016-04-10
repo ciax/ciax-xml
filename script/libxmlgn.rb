@@ -8,19 +8,7 @@ module CIAX
     class Gnu
       include Share
       def initialize(f = nil)
-        case f
-        when String
-          test('r', f) || fail(InvalidID)
-          @e = XML::Document.file(f).root
-          verbose { @e.namespaces.default.to_s }
-        when XML::Node
-          @e = f
-        when nil
-          doc = XML::Document.new
-          @e = doc.root = XML::Node.new('blank')
-        else
-          Msg.cfg_err('Parameter shoud be String or Node')
-        end
+        @e = _get_doc(f)
       end
 
       def ns
@@ -65,6 +53,28 @@ module CIAX
 
       # Adapt to both Gnu, Hash
       alias_method :each_value, :each
+
+      private
+
+      def _get_doc(f)
+        return _get_new unless f
+        return f if f.is_a? XML::Node
+        return _get_file(f) if f.is_a? String
+        Msg.cfg_err('Parameter shoud be String or Node')
+      end
+
+      def _get_file(f)
+        test('r', f) || fail(InvalidID)
+        e = XML::Document.file(f).root
+        verbose { e.namespaces.default.to_s }
+        e
+      end
+
+      def _get_new
+        e = XML::Node.new('blank')
+        XML::Document.new.root = e
+        e
+      end
     end
   end
 end

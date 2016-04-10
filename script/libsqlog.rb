@@ -15,6 +15,7 @@ module CIAX
       include Msg
       def initialize(stat)
         @stat = type?(stat, Varx)
+        @id = stat[:id]
         @tid = "#{@stat.type}_#{@stat[:ver]}"
         @tname = @stat.type.capitalize
         verbose { "Initiate Table '#{@tid}'" }
@@ -85,6 +86,7 @@ module CIAX
       # @ sqlcmd
       include Msg
       def initialize(id)
+        @id = id
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
         @queue = Queue.new
         Threadx.new("SqLog", 13) do

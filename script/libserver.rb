@@ -24,25 +24,26 @@ module CIAX
 
     def server_thread
       ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |udp|
-        IO.select([udp])
         line, addr = udp.recvfrom(4096)
         line.chomp!
-        rhost = Addrinfo.ip(addr[2]).getnameinfo.first
-        verbose { "Exec Server\nValid Commands #{@cobj.valid_keys}" }
         verbose { "UDP Recv:#{line} is #{line.class}" }
-        begin
-          exe(@server_input_proc.call(line), "udp:#{rhost}")
-        rescue InvalidCMD
-          @sv_stat.repl(:msg, 'INVALID')
-        rescue
-          @sv_stat.repl(:msg, "ERROR:#{$ERROR_INFO}")
-          errmsg
-        end
+        _srv_exec(line, addr)
         send_str = @server_output_proc.call
         verbose { "UDP Send:#{send_str}" }
         udp.send(send_str, 0, addr[2], addr[1])
       end
       self
+    end
+
+    def _srv_exec(line, addr)
+      verbose { "Exec Server\nValid Commands #{@cobj.valid_keys}" }
+      rhost = Addrinfo.ip(addr[2]).getnameinfo.first
+      exe(@server_input_proc.call(line), "udp:#{rhost}")
+    rescue InvalidCMD
+      @sv_stat.repl(:msg, 'INVALID')
+    rescue
+      @sv_stat.repl(:msg, "ERROR:#{$ERROR_INFO}")
+      errmsg
     end
   end
 end

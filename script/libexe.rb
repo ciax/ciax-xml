@@ -23,9 +23,8 @@ module CIAX
     # @dbi will be set for Varx, @cfg[:dbi] will be set for Index
     # It is not necessarily the case that id and Config[:dbi][:id] is identical
     def initialize(id, cfg, atrb = Hashx.new)
-      super()
-      @id = id # Allows nil for Mcr::Man
       @cfg = type?(cfg, Config).gen(self).update(atrb)
+      @id = id || @cfg[:id] # Allows nil for Mcr::Man
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @layer = class_path.first.downcase
       _init_procs

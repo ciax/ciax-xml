@@ -111,6 +111,8 @@ module CIAX
       end
     end
 
+    class Prompt < Prompt; end
+
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
         atrb = { db: Ins::Db.new, sub_list: Frm::List.new(cfg) }

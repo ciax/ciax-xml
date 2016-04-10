@@ -74,6 +74,8 @@ module CIAX
       end
     end
 
+    class Prompt < Prompt; end
+
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
         Exe.new(args.shift, cfg, db: Dev::Db.new).ext_shell.shell

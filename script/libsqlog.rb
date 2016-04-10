@@ -89,7 +89,7 @@ module CIAX
         @id = id
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
         @queue = Queue.new
-        Threadx.new("SqLog", 13) do
+        Threadx.new('SqLog', 13) do
           verbose { "Initiate '#{id}'" }
           loop { _log_save }
         end

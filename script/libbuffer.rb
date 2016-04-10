@@ -54,7 +54,7 @@ module CIAX
     end
 
     def server
-      @tid = ThreadLoop.new("Buffer(#{@id})", 12) do
+      @tid = ThreadLoop.new('Buffer', 12) do
         exec_buf if @q.empty?
         verbose { 'Waiting' }
         pri_sort(@q.shift)

@@ -43,18 +43,7 @@ module CIAX
         grp = sdb.get(:group) { Hashx.new }
         idx = sdb.get(:index) { Hashx.new }
         doc.get(:status) { [] }.each do|e0|
-          p = sdb.get(e0.name.to_sym) { Hashx.new }
-          case e0.name
-          when 'symtbl'
-            sdb[:symtbl] << e0['ref']
-          else # group, index
-            e0.attr2item(p, :ref)
-            e0.each do |e1|
-              e1.attr2item(idx)
-              ag = grp[e0[:ref]]
-              ag.get(:members) { [] } << e1['id']
-            end
-          end
+          _get_skeleton(e0, sdb, grp, idx)
         end
         sdb
       end
@@ -63,6 +52,27 @@ module CIAX
         dbi[:proj] = ENV['PROJ']
         dbi[:site_id] = dbi[:ins_id] = dbi[:id]
         dbi.get(:frm_site) { dbi[:id] }
+      end
+
+      private
+
+      def _get_skeleton(e0, sdb, grp, idx)
+        key = e0.name.to_sym
+        db = sdb.get(key) { Hashx.new }
+        if key == :symtbl
+          sdb[:symtbl] << e0['ref']
+        else
+          _init_grp(e0, db, grp, idx)
+        end
+      end
+
+      def _init_grp(e0, db, grp, idx)
+        e0.attr2item(db, :ref)
+        e0.each do |e1|
+          e1.attr2item(idx)
+          ag = grp[e0[:ref]]
+          ag.get(:members) { [] } << e1['id']
+        end
       end
     end
 

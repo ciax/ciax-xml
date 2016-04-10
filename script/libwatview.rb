@@ -45,17 +45,20 @@ module CIAX
 
       def init_cond(cond, m)
         cond.each do |cnd|
-          h = Hash[cnd]
-          case cnd[:type]
-          when 'compare'
-            h[:vals] = []
-          when 'onchange'
-          else
-            h[:cri] = cnd[:val]
-          end
-          m << h
+          m << (h = Hashx.new(cnd))
+          _init_by_type(cnd, h)
         end
         self
+      end
+
+      def _init_by_type(cnd, h)
+        case cnd[:type]
+        when 'onchange'
+        when 'compare'
+          h[:vals] = []
+        else
+          h[:cri] = cnd[:val]
+        end
       end
 
       def upd_core
@@ -75,20 +78,24 @@ module CIAX
         self
       end
 
-      def upd_cond(id, cond)
-        cond.each_with_index do |h, i|
-          h[:res] = (@event.get(:res)[id] || [])[i]
+      def upd_cond(id, conds)
+        conds.each_with_index do |cnd, i|
+          cnd[:res] = (@event.get(:res)[id] || [])[i]
           idx = @event.get(:crnt)
-          case h[:type]
-          when 'onchange'
-            v = h[:var]
-            h[:val] = idx[v]
-            h[:cri] = @event.get(:last)[v]
-          when 'compare'
-            h[:vals] = h[:vars].map { |k| "#{k}:#{idx[k]}" }
-          end
+          _upd_by_type(cnd, idx)
         end
         self
+      end
+
+      def _upd_by_type(cnd, idx)
+        case cnd[:type]
+        when 'onchange'
+          v = cnd[:var]
+          cnd[:val] = idx[v]
+          cnd[:cri] = @event.get(:last)[v]
+        when 'compare'
+          cnd[:vals] = cnd[:vars].map { |k| "#{k}:#{idx[k]}" }
+        end
       end
 
       def view_time(vw)

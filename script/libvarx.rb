@@ -10,7 +10,7 @@ module CIAX
   # Need Header(id,ver) data
   # Used for freqently changing data with remote
   class Varx < Upd
-    attr_reader :type, :dbi, :id
+    attr_reader :type, :dbi, :id, :flush_procs
     def initialize(type, id = nil, ver = nil, host = nil)
       super()
       @type = type
@@ -18,7 +18,13 @@ module CIAX
       _setid(id)
       self[:ver] = ver if ver
       self[:host] = host || `hostname`.strip
-      # Setting (Not shown in JSON)
+      @flush_procs = []
+    end
+
+    # For data storing or processing propagation to upper layer
+    def flush
+      @flush_procs.each { |p| p.call(self) }
+      self
     end
 
     # Read only as a client

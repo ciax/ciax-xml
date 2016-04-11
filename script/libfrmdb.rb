@@ -29,22 +29,22 @@ module CIAX
       end
 
       def _add_main(domain, db)
-        enclose('INIT:Main Frame <-', '-> INIT:Main Frame') do
-          frame = []
-          domain.each { |e1| frame << yield(e1) }
-          verbose { "InitMainFrame:#{frame}" }
-          db[:main] = frame
-        end
+        # enclose('INIT:Main Frame <-', '-> INIT:Main Frame') do
+        frame = []
+        domain.each { |e1| frame << yield(e1) }
+        verbose { "InitMainFrame:#{frame}" }
+        db[:main] = frame
+        # end
       end
 
       def _add_cc(domain, db)
         domain.find('ccrange') do|e0|
-          enclose('INIT:Ceck Code Frame <-', '-> INIT:Ceck Code Frame') do
-            frame = []
-            Repeat.new.each(e0) { |e1, r1| frame << yield(e1, r1) }
-            verbose { "InitCCFrame:#{frame}" }
-            db[:ccrange] = frame
-          end
+          # enclose('INIT:Ceck Code Frame <-', '-> INIT:Ceck Code Frame') do
+          frame = []
+          Repeat.new.each(e0) { |e1, r1| frame << yield(e1, r1) }
+          verbose { "InitCCFrame:#{frame}" }
+          db[:ccrange] = frame
+          # end
         end
       end
 
@@ -58,10 +58,10 @@ module CIAX
 
       def _add_item(e0, gid)
         id, itm = super
-        enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
-          _rep_item(e0, itm)
-          validate_par(itm)
-        end
+        # enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
+        _rep_item(e0, itm)
+        validate_par(itm)
+        # end
         [id, itm]
       end
 
@@ -98,13 +98,13 @@ module CIAX
 
       def _add_fld(e0, fld, db)
         id = e0.attr2item(db)
-        enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
-          itm = db[id]
-          Repeat.new.each(e0) do|e1, _r1|
-            e = _add_rspfrm(e1, fld) || next
-            itm.get(:body) { [] } << e
-          end
+        # enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
+        itm = db[id]
+        Repeat.new.each(e0) do|e1, _r1|
+          e = _add_rspfrm(e1, fld) || next
+          itm.get(:body) { [] } << e
         end
+        # end
       end
 
       def _add_rspfrm(e, field)

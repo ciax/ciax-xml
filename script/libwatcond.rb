@@ -92,21 +92,21 @@ module CIAX
         end
       end
 
-      def _cmp_tol(vn, cri, val, tol)
+      def _cmp_tol(_vn, cri, val, tol)
         res = ((cri.to_f - val.to_f).abs > tol.to_f)
-        verbose do
-          format('  onChange(%s): |[%s]-<%s>| > %s =>%s',
-                 vn, cri, val, tol, res.inspect)
-        end
+        # verbose do
+        #   format('  onChange(%s): |[%s]-<%s>| > %s =>%s',
+        #          vn, cri, val, tol, res.inspect)
+        # end
         res
       end
 
-      def _cmp_just(vn, cri, val)
+      def _cmp_just(_vn, cri, val)
         res = (cri != val)
-        verbose do
-          format('  onChange(%s): [%s] vs <%s> =>%s',
-                 vn, cri, val, res.inspect)
-        end
+        # verbose do
+        #   format('  onChange(%s): [%s] vs <%s> =>%s',
+        #          vn, cri, val, res.inspect)
+        # end
         res
       end
 
@@ -114,10 +114,10 @@ module CIAX
         cri = ckitm[:val]
         val = @stat[:data][vn]
         res = (/#{cri}/ =~ val)
-        verbose do
-          format('  Pattern(%s): [%s] vs <%s> =>%s',
-                 vn, cri, val, res.inspect)
-        end
+        # verbose do
+        #   format('  Pattern(%s): [%s] vs <%s> =>%s',
+        #          vn, cri, val, res.inspect)
+        # end
         res
       end
 
@@ -126,10 +126,10 @@ module CIAX
         val = @stat[:data][vn]
         f = format('%.3f', val.to_f)
         res = (ReRange.new(cri) == f)
-        verbose do
-          format('  Range(%s): [%s] vs <%s>(%s) =>%s',
-                 vn, cri, f, val.class, res.inspect)
-        end
+        # verbose do
+        #   format('  Range(%s): [%s] vs <%s>(%s) =>%s',
+        #          vn, cri, f, val.class, res.inspect)
+        # end
         res
       end
 

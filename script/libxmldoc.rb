@@ -56,8 +56,6 @@ module CIAX
       end
 
       def _mk_db(top)
-        id = top['id'] # site_id or macro_proj
-        return unless id
         case top.name
         when 'project' # idb
           _mk_project(top)
@@ -73,17 +71,21 @@ module CIAX
       # Includable (instance)
       def _mk_project(top)
         pid = top['id']
-        vpary = (@valid_proj ||= []).push(pid) if ENV['PROJ'] == pid
+        (@valid_proj ||= []).push(pid) if ENV['PROJ'] == pid
         grp = (@grps ||= Hashx.new)[pid] = []
         top.each do |gdoc| # g.name is include or group
-          tag = gdoc.name.to_sym
-          case tag
-          when :include # include project
-            vpary << gdoc['ref'] if vpary
-          when :group # group(mdb,adb)
-            grp << gdoc['id']
-            _mk_group(gdoc)
-          end
+          _include_proj(gdoc, grp)
+        end
+      end
+
+      def _include_proj(gdoc, grp)
+        tag = gdoc.name.to_sym
+        case tag
+        when :include # include project
+          @valid_proj << gdoc['ref'] if @valid_proj
+        when :group # group(mdb,adb)
+          grp << gdoc['id']
+          _mk_group(gdoc)
         end
       end
 
@@ -98,15 +100,19 @@ module CIAX
       def _mk_sub_db(top, sub = @displist)
         item = _set_item(top, sub)
         top.each do|e| # e.name can be include or group
-          tag = e.name.to_sym
-          case tag
-          when :include # include group
-            item.get(tag) { [] } << e['ref']
-          when :group # group(mdb,adb)
-            item.get(tag) { Hashx.new }[e['id']] = e
-          else # Command, Status(different ns), Property (stream, serial, etc.)
-            item[tag] = (top.ns != e.ns) ? e : e.to_h
-          end
+          _include_grp(e, item, top.ns != e.ns)
+        end
+      end
+
+      def     _include_grp(e, item, c_or_s)
+        tag = e.name.to_sym
+        case tag
+        when :include # include group
+          item.get(tag) { [] } << e['ref']
+        when :group # group(mdb,adb)
+          item.get(tag) { Hashx.new }[e['id']] = e
+        else # Command, Status(different ns), Property (stream, serial, etc.)
+          item[tag] = c_or_s ? e : e.to_h
         end
       end
 
@@ -122,8 +128,9 @@ module CIAX
       def _set_includes
         _upd_valid
         each_value do |item|
-          if (ary = item.delete(:include))
-            ary.each { |ref| item.get(:group) { Hashx.new }.update(self[ref][:group]) }
+          next unless (ary = item.delete(:include))
+          ary.each do |ref|
+            item.get(:group) { Hashx.new }.update(self[ref][:group])
           end
         end
       end

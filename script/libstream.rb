@@ -28,50 +28,31 @@ module CIAX
 
       def snd(str, cid)
         return if str.to_s.empty?
-        verbose { "Sending #{str.size} byte on #{cid}" }
-        verbose { "Data Sending\n" + visible(str) }
+        verbose { "Data Sending(#{cid})\n" + visible(str) }
+        self['cmd'] = cid
         reopen
         @f.write(str)
-        convert('snd', str, cid)
-        self
+        convert('snd', str)
+        post_upd
       rescue Errno::EPIPE
         @f.close
         raise(CommError)
-      ensure
-        post_upd
       end
 
       def rcv
-        verbose { "Wait to Recieve #{@wait} sec" }
-        sleep @wait
-        verbose { 'Wait for Recieving' }
+        _wait_rcv
         reopen
-        str = ''
-        20.times do
-          try_rcv(str)
-          break if ! @terminator || /#{@terminator}/ =~ str
-          verbose { 'Recieved incomplete data, retry' }
-        end
-        verbose { "Recieved #{str.size} byte on #{self['cmd']}" }
+        str = _concat_rcv
         convert('rcv', str)
-        verbose { "Data Recieved(#{time_id})\n" + visible(str) }
-        self
-      ensure
+        verbose { "Data Recieved(#{self['cmd']})\n" + visible(str) }
         post_upd
       end
 
-      def reopen
-        int = 0
-        begin
-          open_strm if !@f || @f.closed?
-        rescue SystemCallError
-          warning($ERROR_INFO)
-          Msg.str_err('Stream Open failed') if int > 2
-          warning('Try to reopen')
-          sleep int
-          int = (int + 1) * 2
-          retry
-        end
+      def reopen(int = 0)
+        open_strm if !@f || @f.closed?
+      rescue SystemCallError
+        int = _open_fail(int)
+        retry
       end
 
       private
@@ -110,31 +91,53 @@ module CIAX
         verbose { @f.closed? ? 'Stream Closed' : 'Stream not Closed' }
       end
 
-      def try_rcv(str)
-        if IO.select([@f], nil, nil, @timeout)
-          begin
-            str << @f.sysread(4096)
-            verbose { "Binary Getting\n" + visible(str) }
-          rescue EOFError
-            # Jumped at quit
-            @f.close
-            raise(CommError)
-          end
-        else
-          Msg.com_err('Stream:No response')
-        end
+      def _open_fail(int)
+        warning($ERROR_INFO)
+        Msg.str_err('Stream Open failed') if int > 2
+        warning('Try to reopen')
+        sleep int
+        (int + 1) * 2
       end
 
-      def convert(dir, data, cid = nil)
+      def convert(dir, data)
         time_upd
         @binary = data
         update('dir' => dir, 'base64' => encode(data))
-        self['cmd'] = cid if cid
-        self
       end
 
       def encode(str)
         [str].pack('m').split("\n").join('')
+      end
+
+      # rcv sub methods
+      def _wait_rcv
+        verbose { "Wait to Recieve #{@wait} sec" }
+        sleep @wait
+        verbose { 'Wait for Recieving' }
+      end
+
+      def _concat_rcv(str = '')
+        20.times do
+          _select_io
+          _try_rcv(str)
+          break if ! @terminator || /#{@terminator}/ =~ str
+          verbose { 'Recieved incomplete data, retry' }
+        end
+        str
+      end
+
+      def _select_io
+        return if IO.select([@f], nil, nil, @timeout)
+        Msg.com_err('Stream:No response')
+      end
+
+      def _try_rcv(str)
+        str << @f.sysread(4096)
+        verbose { "Binary Getting\n" + visible(str) }
+      rescue EOFError
+        # Jumped at quit
+        @f.close
+        raise(CommError)
       end
     end
   end

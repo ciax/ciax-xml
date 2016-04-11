@@ -2,8 +2,11 @@
 # Record viewer
 #alias vr
 if [ "$1" ] ; then
-    file=$(grep -l "cid.:.*$1" $(find ~/.var/json/record* -size +1k)|tail -1)
+    records=$(find ~/.var/json/record* -size +1k)
+    [ "$records" ] || exit
+    file=$(grep -l "cid\": *\"$1\"" $records|tail -1) || exit
 else
     file=~/.var/json/record_latest.json
 fi
-librecord < $file
+echo
+[ -r "$file" ] && librecord < $file 

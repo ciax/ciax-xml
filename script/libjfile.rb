@@ -50,7 +50,7 @@ module CIAX
     def save_key(keylist, tag = nil)
       tag ||= (_tag_list_.map(&:to_i).max + 1)
       Msg.msg("Status Saving for [#{tag}]")
-      _write_json(pick(keylist).to_j, tag)
+      _write_json(pick(keylist, time: self[:time]).to_j, tag)
     end
 
     def mklink

@@ -61,8 +61,9 @@ module CIAX
         post_upd
       end
 
-      def pick(keylist)
-        Hashx.new(data: self[:data].pick(keylist))
+      # Structure is Hashx{ data:{ key,val ..} }
+      def pick(keylist, atrb = {})
+        Hashx.new(atrb).update(data: self[:data].pick(keylist))
       end
 
       # For propagate to Status update

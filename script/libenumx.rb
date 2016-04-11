@@ -124,9 +124,9 @@ module CIAX
       hash
     end
 
-    # Generate Hash Pick up keys
-    def pick(keyary)
-      hash = Hashx.new
+    # Generate Hashx with picked up keys
+    def pick(keyary, atrb = {})
+      hash=Hashx.new(atrb)
       keyary.each do|key|
         hash[key] = self[key] if key?(key)
       end

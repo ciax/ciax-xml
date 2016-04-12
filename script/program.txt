@@ -35,6 +35,8 @@
   - get(id)  [fetch_*] : fetch value from existent key/index, which can includes cache access or data generation.
   - add(par) [add_*] : generate and store new element with parameter, returns self.
   - gen(par) [gen_*] : generate and store new element with parameter, returns generated object.
+  - read(par) : get data from par or stream
+  - load(tag) : get data from file with specified tag
  #For Array
   - append(obj) [append_*] : stores and returns object.
  #For Hash

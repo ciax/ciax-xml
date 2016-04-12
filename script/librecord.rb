@@ -48,11 +48,6 @@ module CIAX
         self
       end
 
-      def load(str = nil)
-        super
-        _ext_steps
-      end
-
       private
 
       def _ext_steps
@@ -63,20 +58,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[cid(latest)] (< file)', 'r') do |_opt, args|
-        if STDIN.tty?
-          fail(InvalidARGS, 'No input') if args.size < 1
-          cid = '"cid":"' + args.shift + '"'
-          ary = Dir.glob(Msg.vardir('json') + 'record_1*').sort.reverse
-          fname = ary.find do |fn|
-            fn if File.readlines(fn).grep(/#{cid}/)
-          end
-          /[0-9]{13}/ =~ fname
-          rec = $& ? Record.new($&).ext_file.load : Record.new
-        else
-          rec = Record.new.read
-        end
-        puts rec
+      GetOpts.new('< file', 'r') do |_opt, _args|
+        fail(InvalidARGS, 'No Input File') if STDIN.tty?
+        puts Record.new.read
       end
     end
   end

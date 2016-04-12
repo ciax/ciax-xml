@@ -32,10 +32,6 @@ module CIAX
       _write_json(to_j, tag)
     end
 
-    def read
-      super(_read_json)
-    end
-
     def load(tag = nil)
       json_str = _read_json(tag)
       verbose { "Loading #{_file_name(tag)}" }

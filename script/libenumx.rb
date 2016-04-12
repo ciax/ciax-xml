@@ -39,7 +39,7 @@ module CIAX
       path
     end
 
-    # Merge data
+    # Merge data with setting sub structures
     def read(json_str = nil)
       inp = json_str || gets(nil) || usr_err("No data in file(#{ARGV})")
       deep_update(j2h(inp))

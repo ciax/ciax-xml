@@ -4,7 +4,7 @@ require 'liblayer'
 require 'libmcrsh'
 # CIAX-XML Macro Shell
 module CIAX
-  Layer.new('[proj] [cmd] (par)', 'eclh:nr') do |cfg|
+  Layer.new('[proj]', 'eclh:nr') do |cfg|
     Mcr::Man.new(cfg)
   end.ext_shell.shell
 end

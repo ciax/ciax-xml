@@ -98,16 +98,16 @@ module CIAX
         end
       end
 
-      def _mcr_retry(_e, step, mstat)
+      def _mcr_retry(e, step, mstat)
         if step[:retry]
           step[:action] = 'retry'
-          _count_up(step)
+          _count_up(e, step)
         else
           mstat[:result] = 'failed'
         end
       end
 
-      def _count_up(step)
+      def _count_up(e, step)
         @count += 1
         return if @count > step[:retry].to_i # continue
         step = @record.add_step(e, @depth)

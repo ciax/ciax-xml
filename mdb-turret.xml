@@ -12,7 +12,7 @@
           <match form="msg" site="mft" var="v6">HOME</match>
         </goal>
         <exec site="mix" name="posinit"/>
-        <wait retry="5" label="Start?">
+        <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>
         </wait>
         <wait retry="300" label="Run end?">

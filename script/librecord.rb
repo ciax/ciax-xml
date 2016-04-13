@@ -11,7 +11,7 @@ module CIAX
       def initialize(id = nil) # Session ID for Loading
         super('record')
         self[:id] = id || self[:time].to_s # Session ID
-        update(ver: 0, cid: nil, label: nil, pid: 0, status: 'ready')
+        update(ver: '0', cid: nil, label: nil, pid: '0', status: 'ready')
         update(result: 'busy', total_steps: 0, total_time: 0, start: 0)
         self[:steps] = Arrayx.new
       end

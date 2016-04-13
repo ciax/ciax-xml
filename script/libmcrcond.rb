@@ -108,11 +108,11 @@ module CIAX
       end
 
       def match(a, b)
-        /#{a}/ =~ b
+        /#{a}/ =~ b ? true : false
       end
 
       def unmatch(a, b)
-        /#{a}/ !~ b
+        /#{a}/ !~ b ? true : false
       end
     end
   end

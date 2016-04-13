@@ -94,25 +94,25 @@ module CIAX
           mstat[:result] = 'failed'
           fail Interlock
         rescue Verification
-          _mcr_retry(e, step, mstat) || retry
+          _mcr_retry(e, step, mstat) && retry
         end
       end
 
-      def _mcr_retry(_e, step, mstat)
+      def _mcr_retry(e, step, mstat)
         if step[:retry]
           step[:action] = 'retry'
-          _count_up(step)
+          _count_up(e, step)
         else
           mstat[:result] = 'failed'
         end
       end
 
-      def _count_up(step)
+      def _count_up(e, step)
         @count += 1
-        return if @count > step[:retry].to_i # continue
+        return if @count > step[:retry].to_i # exit
         step = @record.add_step(e, @depth)
         step[:count] = @count
-        step.show_title.upd # exit
+        step.show_title.upd # continue
       end
 
       # Sub Method

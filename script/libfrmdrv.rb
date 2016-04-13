@@ -39,7 +39,8 @@ module CIAX
       def _init_drv_save
         @cobj.get('save').def_proc do|ent|
           @stat.save_key(ent.par[0].split(','), ent.par[1])
-          ent.msg = "Save [#{ent.par[0]}]"
+          verbose { "Save [#{ent.par[0]}]" }
+          ent.msg = 'OK'
         end
       end
 
@@ -47,7 +48,8 @@ module CIAX
         @cobj.get('load').def_proc do|ent|
           @stat.load(ent.par[0] || '')
           @stat.flush
-          ent.msg = "Load [#{ent.par[0]}]"
+          verbose { "Load [#{ent.par[0]}]" }
+          ent.msg = 'OK'
         end
       end
 
@@ -55,7 +57,8 @@ module CIAX
         @cobj.get('set').def_proc do|ent|
           @stat.repl(ent.par[0], ent.par[1])
           @stat.flush
-          ent.msg = "Set [#{ent.par[0]}] = #{ent.par[1]}"
+          verbose { "Set [#{ent.par[0]}] = #{ent.par[1]}" }
+          ent.msg = 'OK'
         end
       end
 
@@ -63,7 +66,8 @@ module CIAX
         @cobj.get('flush').def_proc do
           @stream.rcv
           @stat.flush
-          ent.msg = 'Flush Stream'
+          verbose { 'Flush Stream' }
+          ent.msg = 'OK'
         end
       end
     end

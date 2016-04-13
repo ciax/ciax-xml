@@ -113,7 +113,7 @@ module CIAX
       def cnd_pattern(vn, ckitm)
         cri = ckitm[:val]
         val = @stat[:data][vn]
-        res = (/#{cri}/ =~ val)
+        res = (/#{cri}/ =~ val ? true : false)
         verbose do
           format('  Pattern(%s): [%s] vs <%s> =>%s',
                  vn, cri, val, res.inspect)

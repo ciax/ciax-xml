@@ -114,10 +114,10 @@ module CIAX
         cri = ckitm[:val]
         val = @stat[:data][vn]
         res = (/#{cri}/ =~ val ? true : false)
-        #verbose do
+        # verbose do
         #  format('  Pattern(%s): [%s] vs <%s> =>%s',
         #         vn, cri, val, res.inspect)
-        #end
+        # end
         res
       end
 

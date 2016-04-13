@@ -2,12 +2,12 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <alias id="mix" label="MOIRCS Turret">
     <group id="gtr" caption="Turret">
-      <unit id="ut1" title="[*]_1" label="Turret 1 [co,none,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
+      <unit id="ut1" title="[*]_1" label="Turret 1 [co,hole,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
         <item id="co_1" label="CO Filter" ref="opt">
           <argv>1</argv>
           <argv>0</argv>
         </item>
-        <item id="none_1" label="No Filter" ref="opt">
+        <item id="hole_1" label="No Filter" ref="opt">
           <argv>1</argv>
           <argv>1</argv>
         </item>
@@ -52,12 +52,12 @@
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut4" title="[*]_4" label="Turret 4 [co,none,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
+      <unit id="ut4" title="[*]_4" label="Turret 4 [co,hole,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
         <item id="co_4" label="CO Filter" ref="opt">
           <argv>4</argv>
           <argv>0</argv>
         </item>
-        <item id="none_4" label="No Filter" ref="opt">
+        <item id="hole_4" label="No Filter" ref="opt">
           <argv>4</argv>
           <argv>1</argv>
         </item>
@@ -102,7 +102,7 @@
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut2" title="[*]_2" label="Turret 2 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,none]">
+      <unit id="ut2" title="[*]_2" label="Turret 2 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,hole]">
         <item id="csl_2" label="Cold Stop Large" ref="opt">
           <argv>2</argv>
           <argv>0</argv>
@@ -147,12 +147,12 @@
           <argv>2</argv>
           <argv>10</argv>
         </item>
-        <item id="none_2" label="No Filter" ref="opt">
+        <item id="hole_2" label="No Filter" ref="opt">
           <argv>2</argv>
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut5" title="[*]_5" label="Turret 5 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,none]">
+      <unit id="ut5" title="[*]_5" label="Turret 5 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,hole]">
         <item id="csl_5" label="Cold Stop Large" ref="opt">
           <argv>5</argv>
           <argv>0</argv>
@@ -197,12 +197,12 @@
           <argv>5</argv>
           <argv>10</argv>
         </item>
-        <item id="none_5" label="No Filter" ref="opt">
+        <item id="hole_5" label="No Filter" ref="opt">
           <argv>5</argv>
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut3" title="[*]_3" label="Turret 3 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,none]">
+      <unit id="ut3" title="[*]_3" label="Turret 3 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,hole]">
         <item id="vph_h_3" label="VPH H Grism" ref="opt">
           <argv>3</argv>
           <argv>0</argv>
@@ -219,7 +219,7 @@
           <argv>3</argv>
           <argv>3</argv>
         </item>
-        <item id="none_3" label="No Filter" ref="opt">
+        <item id="hole_3" label="No Filter" ref="opt">
           <argv>3</argv>
           <argv>4</argv>
         </item>
@@ -252,7 +252,7 @@
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut6" title="[*]_6" label="Turret 6 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,none]">
+      <unit id="ut6" title="[*]_6" label="Turret 6 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,hole]">
         <item id="vph_h_6" label="VPH H Grism" ref="opt">
           <argv>6</argv>
           <argv>0</argv>
@@ -269,7 +269,7 @@
           <argv>6</argv>
           <argv>3</argv>
         </item>
-        <item id="none_6" label="No Filter" ref="opt">
+        <item id="hole_6" label="No Filter" ref="opt">
           <argv>6</argv>
           <argv>4</argv>
         </item>

@@ -36,8 +36,7 @@ module CIAX
 
       def result
         mary = ['']
-        total = self[:retry] || self[:sleep]
-        mary[0] << "(#{self[:count]}/#{total})" if total
+        _prt_count(mary)
         res = self[:result]
         _prt_result(res, mary)
         mary << body(self[:action].capitalize, 8) if key?(:action)
@@ -59,6 +58,11 @@ module CIAX
       def upd_core
         _show result
         self
+      end
+
+      def _prt_count(mary)
+        total = self[:retry] || self[:sleep]
+        mary[0] << "(#{self[:count].to_i}/#{total})" if total
       end
 
       def _prt_result(res, mary)

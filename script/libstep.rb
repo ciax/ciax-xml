@@ -34,6 +34,7 @@ module CIAX
 
       private
 
+      # Not Condition Step
       def _set_result(tmsg, fmsg = nil, tf = true)
         res = tf ? tmsg : fmsg
         self[:result] = res if res
@@ -48,6 +49,7 @@ module CIAX
           self[:count] = n + 1
           break if cond && cond.call
           Kernel.sleep itv
+          upd
           _show('.')
         end
       end

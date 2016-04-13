@@ -81,7 +81,6 @@ module CIAX
         %i(site var form cmp cri).each { |k| c[k] = h[k] }
         real = _get_real(stat, c)
         res = method(c[:cmp]).call(c[:cri], real)
-warn res
         c.update(real: real, res: res)
         verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
         c

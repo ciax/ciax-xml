@@ -13,128 +13,148 @@ module CIAX
       @_vs_column = 4
       @_vs_iv_list = {}
       @_vs_objects = []
-      @lines = []
+      @_vs_lines = []
       # Show only top level of the instance variable
       _recursive(self, nil)
-      @lines.join("\n")
+      @_vs_lines.join("\n")
     end
 
     private
 
+    def _indent(str = '', offset = 0)
+      indent(@_vs_indent + offset) + str
+    end
+
     def _recursive(data, item)
-      id = data.object_id
       if item
-        str = _indent(_mk_head(item))
-        str << colorize("(#{id})", 4) if @_vs_show_id && data.is_a?(Enumerable)
-        @lines << str + ' :'
+        @_vs_lines << _indent(_mk_head(item) + _show_id(data) + ' :')
       else
-        @lines << "<<#{data.class}>>"
+        @_vs_lines << "<<#{data.class}>>"
       end
-      _mk_iv_list
+      _show_iv
       _sub_structure(data, item)
     end
 
+    # Make Line Head
     def _mk_head(item)
       case item
       when Numeric
-        item = "[#{item}]"
-        colorize(format('%-6s', item), 6)
-      when /@/
-        colorize(format('%-6s', item.inspect), 1)
+        _show_head("[#{item}]", 6)
+      when String
+        _show_head(item.inspect, 5)
       else
-        c = item.is_a?(String) ? 5 : 2
-        colorize(format('%-6s', item.inspect), c)
+        _show_head(item.inspect, 2)
       end
     end
 
-    def _mk_iv_list
+    def _show_head(str, color)
+      colorize(format('%-6s', str), color)
+    end
+
+    def _show_id(data)
+      return '' unless @_vs_show_id && data.is_a?(Enumerable)
+      colorize("(#{data.object_id})", 4)
+    end
+
+    # Make Instance Variable List for sub structure
+    def _show_iv
       return unless @_vs_show_iv
-      instance_variables.each do|n|
-        @_vs_iv_list[n] = instance_variable_get(n) unless /_vs_/ =~ n.to_s
-      end
       @_vs_show_iv = nil
+      ivs = {}
+      instance_variables.each do|n|
+        ivs[n.to_s] = instance_variable_get(n) unless /^@_vs_/ =~ n.to_s
+      end
+      _iv_list(ivs)
     end
 
+    def _iv_list(ivs)
+      ivs.each do |k, v|
+        @_vs_lines << _indent(format('%-8s: %-10s', colorize(k, 1), v.inspect))
+      end
+    end
+
+    # Show Sub structure
     def _sub_structure(data, item)
       @_vs_indent += 1
-      #      _show_all(@_vs_iv_list, item)
+      return if _loop?(data)
       _show_all(data, item)
     ensure
       @_vs_indent -= 1
     end
 
-    def _show_all(data, item)
-      return if _chk_loop(data)
-      return true if _show_enum(item, data)
-      color = COLOR_TBL[data.to_sym] if data.is_a? String
-      data = color ? colorize(data, color) : data.inspect
-      @lines.last << " #{data}"
-    end
-
-    def _chk_loop(data)
+    # Check Loop
+    def _loop?(data)
       return unless data.is_a?(Enumerable)
+      # Abort tracking down if duplicated object_id
       if @_vs_objects.include?(data.object_id)
-        @lines << " #{data.class}(Loop)"
+        @_vs_lines << " #{data.class}(Loop)"
       else
         @_vs_objects << data.object_id
         nil
       end
     end
 
-    def _show_enum(item, data)
+    # Show container
+    def _show_all(data, item)
       case data
       when Array
         _show_array(data)
       when Hash
         _show_hash(data, item)
+      else
+        # Show String, Numerical ...
+        @_vs_lines.last << ' ' + _elem(data)
       end
     end
 
     def _show_array(data)
       return true if _mixed?(data, data, data.size.times)
       return unless data.size > @_vs_column
-      _only_ary(data)
+      _end_ary(data)
     end
 
     def _show_hash(data, item)
       return true if _mixed?(data, data.values, data.keys)
       return unless data.size > 2
-      _only_hash(data, item)
+      _end_hash(data, item)
     end
 
     def _mixed?(data, vary, idx)
       return unless vary.any? { |v| v.is_a?(Enumerable) }
-      idx.each do|i|
-        _recursive(data[i], i)
-      end
+      idx.each { |i| _recursive(data[i], i) }
     end
 
-    def _only_ary(data)
-      @lines << _indent('[')
+    # Array without sub structure
+    def _end_ary(data)
+      @_vs_lines << _indent('[', 1)
       line = []
       data.each_slice(@_vs_column) do|a|
-        line << _indent(' ') + a.map(&:inspect).join(',')
+        line << _indent(a.map(&:inspect).join(','), 2)
       end
-      @lines << line.join(",\n")
-      @lines << _indent(']')
+      @_vs_lines << line.join(",\n")
+      @_vs_lines << _indent(']', 1)
     end
 
-    def _only_hash(data, item)
+    # Hash without sub structure
+    def _end_hash(data, item)
       data.keys.each_slice(item ? 2 : 1) do|a|
-        @lines << _indent(_hash_line(a, data))
+        @_vs_lines << _indent(_hash_line(a, data), 1)
       end
     end
 
     def _hash_line(a, data)
       a.map do|k|
-        c = k.is_a?(String) ? 5 : 3
-        val = format(': %-10s', data[k].inspect)
-        colorize(format('%-8s', k.inspect), c) + val
+        format('%-8s: %-10s', _elem(k), data[k].inspect)
       end.join("\t")
     end
 
-    def _indent(str = '')
-      indent(@_vs_indent) + str
+    # Show String, Numerical
+    def _elem(data)
+      if data.is_a?(String) && (c = COLOR_TBL[data.to_sym])
+        colorize(data, c)
+      else
+        colorize(data.inspect, 3)
+      end
     end
   end
 end

@@ -76,6 +76,7 @@
       <xsd:attribute name="id" type="xsd:token" use="required"/>
       <xsd:attribute name="label" type="xsd:token" use="optional"/>
       <xsd:attribute name="argc" type="xsd:int" use="optional"/>
+      <xsd:attribute name="retry" type="xsd:int"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="attr_stat">
@@ -153,7 +154,6 @@
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="mdb:command">
-          <xsd:attribute name="retry" type="xsd:int"/>
           <xsd:attribute name="skip" type="xsd:boolean"/>
           <xsd:attribute name="async" type="xsd:boolean"/>
         </xsd:extension>

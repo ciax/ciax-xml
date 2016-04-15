@@ -32,7 +32,7 @@ module CIAX
         @body = itm.get(:body) { [] }
         @vstep = Hashx.new
         _add_steps(e0, itm)
-        _add_verify_step
+        _add_verify_step if itm[:retry]
         [id, itm]
       end
 

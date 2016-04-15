@@ -34,8 +34,6 @@ module CIAX
       end
 
       def _verify(_e, step, mstat)
-        # will be effective in future
-        return true
         return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'failed'
         fail Verification

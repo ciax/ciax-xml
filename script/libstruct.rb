@@ -81,30 +81,12 @@ module CIAX
     def _show_all(data, tag)
       case data
       when Array
-        _show_array(data)
+        _mixed?(data, data, data.size.times) || _end_ary(data)
       when Hash
-        _show_hash(data, tag)
+        _mixed?(data, data.values, data.keys) || _end_hash(data, tag)
       else
         # Show String, Numerical ...
         @_vs_lines.last << ' ' + _mk_elem(data)
-      end
-    end
-
-    def _show_array(data)
-      return true if _mixed?(data, data, data.size.times)
-      if data.size > @_vs_column
-        _end_ary(data)
-      else
-        @_vs_lines.last << ' ' + data.inspect
-      end
-    end
-
-    def _show_hash(data, tag)
-      return true if _mixed?(data, data.values, data.keys)
-      if data.size > @_vs_hash_col
-        _end_hash(data, tag)
-      else
-        @_vs_lines.last << ' ' + data.inspect
       end
     end
 
@@ -115,13 +97,13 @@ module CIAX
 
     # Array without sub structure
     def _end_ary(data)
-      @_vs_lines << _indent('[', 1)
-      line = []
+      lines = []
+      head = '[ '
       data.each_slice(@_vs_column) do|a|
-        line << _indent(a.map(&:inspect).join(','), 2)
+        lines << _indent(head + a.map(&:inspect).join(','), 1)
+        head = '  '
       end
-      @_vs_lines << line.join(",\n")
-      @_vs_lines << _indent(']', 1)
+      @_vs_lines << lines.join(",\n") + ' ]'
     end
 
     # Hash without sub structure

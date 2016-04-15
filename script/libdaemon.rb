@@ -13,7 +13,7 @@ module CIAX
       _get_default
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         opt[:s] = true
-        _kill_pids && args.empty? && exit
+        _kill_pids && exit
         _new_pid
         _main_loop(tag) { yield(cfg, args) }
       end

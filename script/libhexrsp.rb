@@ -23,6 +23,10 @@ module CIAX
 
       private
 
+      def time_upd
+        super(@stat[:time])
+      end
+
       def _init_upd_
         @sv_stat.cmt_procs << proc do
           verbose { 'Propagate Prompt#upd -> Hex::Rsp#upd' }
@@ -36,7 +40,7 @@ module CIAX
       end
 
       def upd_core
-        time_upd(@stat[:time])
+        time_upd
         self[:hexpack] = _get_header_ + _get_body_
         self
       end

@@ -50,6 +50,10 @@ module CIAX
 
       private
 
+      def time_upd
+        super(@stat[:time])
+      end
+
       def _init_proc
         @stat.cmt_procs << proc do
           verbose { 'Propagate Status#upd -> Event#upd' }

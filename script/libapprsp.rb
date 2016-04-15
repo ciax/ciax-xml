@@ -20,7 +20,7 @@ module CIAX
       private
 
       def upd_core
-        time_upd(@field[:time])
+        time_upd
         @adbs.each do|id, hash|
           enclose("GetStatus:[#{id}](#{object_id})", "GetStatus:#{id}=[%s]") do
             cnd = hash[:fields].empty?
@@ -29,6 +29,10 @@ module CIAX
           end
         end
         self
+      end
+
+      def time_upd
+        super(@field[:time])
       end
 
       def _get_val(hash, id)

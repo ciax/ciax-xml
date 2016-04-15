@@ -41,7 +41,7 @@ module CIAX
         self[:result] = res if res
         tf
       ensure
-        upd
+        cmt
       end
 
       def _progress(total, &cond)
@@ -50,8 +50,8 @@ module CIAX
           self[:count] = n + 1
           break if cond && cond.call
           Kernel.sleep itv
-          cmt
           _show('.')
+          cmt
         end
       end
     end

@@ -26,23 +26,17 @@ module CIAX
 
       def skip?
         waiting.ok?('skip', 'enter')
-      ensure
-        upd
       end
 
       def fail?
         !waiting.ok?('pass', 'failed')
-      ensure
-        upd
       end
 
       # obj.waiting -> looking at Prompt[:busy]
       # obj.stat -> looking at Status
 
-      def ok?(t = nil, f = nil)
-        res = _all_conditions?(_scan)
-        self[:result] = (res ? t : f) if t || f
-        res
+      def ok?(tmsg = nil, fmsg = nil)
+        _set_result(tmsg, fmsg, _all_conditions?(_scan))
       end
 
       def busy?
@@ -53,7 +47,7 @@ module CIAX
       def waiting
         @exes.each do |obj|
           next if obj.waiting
-          self[:result] = 'timeout'
+          _set_result('timeout')
           fail Interlock
         end
         self

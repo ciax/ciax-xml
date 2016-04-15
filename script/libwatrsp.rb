@@ -79,7 +79,7 @@ module CIAX
       # self[:block] : Array of commands (units) which are blocked during busy
       # self[:int] : List of interrupt commands which is effectie during busy
       def upd_core
-        time_upd(@stat[:time])
+        time_upd
         return self unless @stat[:time] > @last_updated
         @last_updated = self[:time]
         @cond.upd

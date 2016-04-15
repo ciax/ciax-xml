@@ -9,7 +9,7 @@ module CIAX
       super(['server', type].compact.join('_'), id)
       @db = {}
       self[:msg] = ''
-      @post_upd_procs << proc do
+      @cmt_procs << proc do
         verbose { "Save #{id}:timing #{pick(%i(busy queue)).inspect}" }
       end
     end
@@ -63,7 +63,7 @@ module CIAX
       self
     ensure
       time_upd
-      post_upd
+      cmt
     end
 
     def push(key, elem)
@@ -71,7 +71,7 @@ module CIAX
       self
     ensure
       time_upd
-      post_upd
+      cmt
     end
 
     # Show Message
@@ -94,7 +94,7 @@ module CIAX
       hash
     ensure
       time_upd
-      post_upd
+      cmt
     end
 
     # Merge sub prompt for picked up keys

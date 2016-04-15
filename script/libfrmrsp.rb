@@ -43,7 +43,7 @@ module CIAX
         verbose { 'Propagate Stream#rcv Field#upd' }
         self
       ensure
-        post_upd
+        cmt
       end
 
       private

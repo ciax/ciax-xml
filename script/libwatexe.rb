@@ -52,7 +52,7 @@ module CIAX
       end
 
       def _init_upd_
-        @stat.post_upd_procs << proc do|ev|
+        @stat.cmt_procs << proc do|ev|
           verbose { 'Propagate Event#upd -> Watch#upd' }
           block = ev.get(:block).map { |id, par| par ? nil : id }.compact
           @cobj.rem.ext.valid_sub(block)
@@ -60,7 +60,7 @@ module CIAX
       end
 
       def _init_upd_drv_
-        @stat.post_upd_procs << proc do|ev|
+        @stat.cmt_procs << proc do|ev|
           ev.get(:exec).each do|src, pri, args|
             verbose { "Exec:#{args} by Condition from [#{src}] by [#{pri}]" }
             @sub.exe(args, src, pri)

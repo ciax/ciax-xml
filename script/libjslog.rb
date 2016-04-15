@@ -10,7 +10,7 @@ module CIAX
     def ext_log # logging with flatten
       id = self[:id]
       @queue = Queue.new
-      @post_upd_procs << proc { @queue.push(JSON.dump(self)) }
+      @cmt_procs << proc { @queue.push(JSON.dump(self)) }
       @logfile = vardir('log') + _file_base + "_#{Time.now.year}.log"
       _log_thread(id)
       self

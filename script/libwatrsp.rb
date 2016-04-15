@@ -51,7 +51,7 @@ module CIAX
       private
 
       def _init_proc
-        @stat.post_upd_procs << proc do
+        @stat.cmt_procs << proc do
           verbose { 'Propagate Status#upd -> Event#upd' }
           upd
         end

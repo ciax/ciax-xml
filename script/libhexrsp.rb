@@ -24,11 +24,11 @@ module CIAX
       private
 
       def _init_upd_
-        @sv_stat.post_upd_procs << proc do
+        @sv_stat.cmt_procs << proc do
           verbose { 'Propagate Prompt#upd -> Hex::Rsp#upd' }
           upd
         end
-        @stat.post_upd_procs << proc do
+        @stat.cmt_procs << proc do
           verbose { 'Propagate Status#upd -> Hex::Rsp#upd' }
           upd
         end

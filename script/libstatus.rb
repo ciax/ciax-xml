@@ -18,7 +18,7 @@ module CIAX
         @lastsave = now_msec
         _setdbi(dbi, Ins::Db)
         _init_sdb
-        @post_upd_procs << proc { verbose { "Saved #{self[:id]}:timing" } }
+        @cmt_procs << proc { verbose { "Saved #{self[:id]}:timing" } }
       end
 
       def change?(k)

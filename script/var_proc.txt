@@ -6,10 +6,10 @@
     args: Hashx(self)
     called: Hashx#pre_upd
 
-  Upd@post_upd_procs
+  Upd@cmt_procs
     structure: Array[Proc,..]
     args: Hashx(self)
-    called: Hashx#pre_upd
+    called: Hashx#cmt
 
 ## Related to Command
 

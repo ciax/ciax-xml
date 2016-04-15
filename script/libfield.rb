@@ -58,7 +58,7 @@ module CIAX
         val
       ensure
         time_upd
-        post_upd
+        cmt
       end
 
       # Structure is Hashx{ data:{ key,val ..} }
@@ -76,7 +76,7 @@ module CIAX
 
       def seterr
         self[:comerr] = false
-        post_upd
+        cmt
       end
 
       private

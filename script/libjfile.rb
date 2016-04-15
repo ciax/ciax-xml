@@ -17,7 +17,7 @@ module CIAX
     end
 
     def auto_save
-      @post_upd_procs << proc { save }
+      @cmt_procs << proc { save }
       upd
       self
     end

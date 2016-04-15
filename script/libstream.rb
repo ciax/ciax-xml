@@ -33,7 +33,7 @@ module CIAX
         reopen
         @f.write(str)
         convert('snd', str)
-        post_upd
+        cmt
       rescue Errno::EPIPE
         @f.close
         raise(CommError)
@@ -45,7 +45,7 @@ module CIAX
         str = _concat_rcv
         convert('rcv', str)
         verbose { "Data Recieved(#{self['cmd']})\n" + visible(str) }
-        post_upd
+        cmt
       end
 
       def reopen(int = 0)

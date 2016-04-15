@@ -32,14 +32,14 @@ module CIAX
       def add_step(e1, depth)
         step = Step.new(e1, depth, @dummy).ext_prt(self[:start])
         step.ext_cond(@cfg[:dev_list]) if e1.key?(:cond)
-        step.post_upd_procs << proc do
+        step.cmt_procs << proc do
           verbose { 'Propagate Step#upd -> Record#upd' }
-          post_upd
+          cmt
         end
         self[:steps] << step
         step
       ensure
-        post_upd
+        cmt
       end
 
       def finish
@@ -47,7 +47,7 @@ module CIAX
         self[:status] = 'end'
         self[:result]
       ensure
-        post_upd
+        cmt
       end
     end
 

@@ -132,12 +132,12 @@ module CIAX
 
       def real_mode(stat, sqlog)
         # Add to stat.upd
-        stat.post_upd_procs << proc { @queue.push sqlog.upd }
+        stat.cmt_procs << proc { @queue.push sqlog.upd }
       end
 
       def dummy_mode(stat, sqlog)
         verbose { 'Invalid Version(0): No Log' }
-        stat.post_upd_procs << proc { verbose { "Insert\n" + sqlog.upd } }
+        stat.cmt_procs << proc { verbose { "Insert\n" + sqlog.upd } }
       end
     end
 

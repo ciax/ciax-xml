@@ -10,7 +10,7 @@ module CIAX
   # Need Header(id,ver) data
   # Used for freqently changing data with remote
   class Varx < Upd
-    attr_reader :type, :dbi, :id, :cmt_procs
+    attr_reader :type, :dbi, :id
     def initialize(type, id = nil, ver = nil, host = nil)
       super()
       @type = type
@@ -18,15 +18,8 @@ module CIAX
       _setid(id)
       self[:ver] = ver if ver
       self[:host] = host || `hostname`.strip
-      @cmt_procs = []
     end
 
-    # Data Commit Method
-    # For data storing or processing propagation to upper layer
-    def cmt
-      @cmt_procs.each { |p| p.call(self) }
-      self
-    end
 
     # Read only as a client
     def ext_http(host = nil)

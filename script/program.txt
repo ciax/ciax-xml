@@ -30,7 +30,8 @@
 ## Specialized method naming (Container objects)
   - list()   [list_*] : returns Hash or Array.
   - view()   [view_*] : returns String.
-  - upd()    [upd_*] : Update for triggering execute the implicit procs (upper layer). returns self.
+  - upd()    [upd_*] : Update data by loading file/http/etc. returns self.
+  - cmt()    [cmt_*] : Commit data for triggering execute the implicit procs (upper layer). returns self.
   - set(val) [store_*] : stores value to self, returns self.
   - get(id)  [fetch_*] : fetch value from existent key/index, which can includes cache access or data generation.
   - add(par) [add_*] : generate and store new element with parameter, returns self.

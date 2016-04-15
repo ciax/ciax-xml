@@ -19,7 +19,7 @@ module CIAX
     def upd
       pre_upd
       upd_core || verbose { 'No upd_core' }
-      verbose { "Update" }
+      verbose { 'Update' }
       self
     ensure
       cmt

@@ -20,7 +20,6 @@ module CIAX
       self[:host] = host || `hostname`.strip
     end
 
-
     # Read only as a client
     def ext_http(host = nil)
       extend(JHttp).ext_http(host)

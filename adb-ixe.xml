@@ -320,7 +320,7 @@
         </item>
       </group>
       <group id="gadj" caption="Adjust Commands">
-        <item id="fw50" label="Move Forward 1/160 Slot [1-6(Turret)]">
+        <item id="fw50" label="Move Forward 50/8000 Slot [1-6(Turret)]">
           <par_num>1:6</par_num>
           <frmcmd name="act">
             <argv>$1</argv>
@@ -333,7 +333,7 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="bk50" label="Move Backward 1/160 Slot [1-6(Turret)]">
+        <item id="bk50" label="Move Backward 50/8000 Slot [1-6(Turret)]">
           <par_num>1:6</par_num>
           <frmcmd name="act">
             <argv>$1</argv>

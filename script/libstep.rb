@@ -49,7 +49,7 @@ module CIAX
           self[:count] = n + 1
           break if cond && cond.call
           Kernel.sleep itv
-          upd
+          post_upd
           _show('.')
         end
       end

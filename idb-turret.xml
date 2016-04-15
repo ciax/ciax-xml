@@ -6,6 +6,14 @@
       <instance id="mix" app_id="ixe" host="moircsobcp" port="25607" label="Turret">
         <command ref="mix"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="gtr" column="4">
+            <alias id="n1" ref="p1" label="Pulse Number1"/>
+            <alias id="n2" ref="p2" label="Pulse Number2"/>
+            <alias id="n3" ref="p3" label="Pulse Number3"/>
+            <alias id="n4" ref="p4" label="Pulse Number4"/>
+            <alias id="n5" ref="p5" label="Pulse Number5"/>
+            <alias id="n6" ref="p6" label="Pulse Number6"/>
+          </group>
           <symtbl ref="mix"/>
           <index ref="p1" symbol="t1"/>
           <index ref="p2" symbol="t2"/>

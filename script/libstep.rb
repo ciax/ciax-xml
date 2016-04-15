@@ -13,6 +13,7 @@ module CIAX
         @dummy = dummy
       end
 
+      #### In Drive mode
       # Interactive section
       def exec?
         _set_result('approval', 'dryrun', !@dummy)

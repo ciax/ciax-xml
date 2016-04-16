@@ -51,6 +51,19 @@ module CIAX
         @stat.to_r
       end
 
+      def upd
+        self['gtime'] = { caption: '', lines: [hash = {}] }
+        hash[:time] = { label: 'TIMESTAMP', msg: Msg.date(@stat[:time]) }
+        hash[:elapsed] = { label: 'ELAPSED', msg: Msg.elps_date(@stat[:time]) }
+        @group.each do|k, gdb|
+          cap = gdb[:caption] || next
+          lines = []
+          self[k] = { caption: cap, lines: lines }
+          _upd_members(gdb[:members], gdb[:column] || 1, lines)
+        end
+        self
+      end
+
       private
 
       def _view_lines(lines)
@@ -62,19 +75,6 @@ module CIAX
             format('[%s:%s]', lbl, msg)
           end.join(' ')
         end
-      end
-
-      def upd_core
-        self['gtime'] = { caption: '', lines: [hash = {}] }
-        hash[:time] = { label: 'TIMESTAMP', msg: Msg.date(@stat[:time]) }
-        hash[:elapsed] = { label: 'ELAPSED', msg: Msg.elps_date(@stat[:time]) }
-        @group.each do|k, gdb|
-          cap = gdb[:caption] || next
-          lines = []
-          self[k] = { caption: cap, lines: lines }
-          _upd_members(gdb[:members], gdb[:column] || 1, lines)
-        end
-        self
       end
 
       def _upd_members(members, col, lines)
@@ -102,7 +102,7 @@ module CIAX
         view = View.new(stat)
         stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
-        puts opt[:c] ? view.to_csv : view.to_v
+        puts opt[:c] ? view.to_csv : view.to_s
       end
     end
   end

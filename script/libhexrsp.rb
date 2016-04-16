@@ -21,6 +21,14 @@ module CIAX
         self[:hexpack]
       end
 
+      def upd
+        self[:hexpack] = _get_header_ + _get_body_
+        self
+      ensure
+        time_upd
+        cmt
+      end
+
       private
 
       def time_upd
@@ -37,12 +45,6 @@ module CIAX
           upd
         end
         upd
-      end
-
-      def upd_core
-        time_upd
-        self[:hexpack] = _get_header_ + _get_body_
-        self
       end
 
       # Server Status

@@ -213,32 +213,32 @@
               <argv>$_</argv>
             </frmcmd>
           </repeat>
-          <frmcmd name="opt">
+          <frmcmd name="abs">
             <argv>1</argv>
             <!-- offset = -50 -->
             <argv>40050</argv>
           </frmcmd>
-          <frmcmd name="opt">
+          <frmcmd name="abs">
             <argv>2</argv>
             <!-- offset = 1250 -->
             <argv>54750</argv>
           </frmcmd>
-          <frmcmd name="opt">
+          <frmcmd name="abs">
             <argv>3</argv>
             <!-- offset = 50 -->
             <argv>39950</argv>
           </frmcmd>
-          <frmcmd name="opt">
+          <frmcmd name="abs">
             <argv>4</argv>
             <!-- offset = 800 -->
             <argv>55200</argv>
           </frmcmd>
-          <frmcmd name="opt">
+          <frmcmd name="abs">
             <argv>5</argv>
             <!-- offset = 0 -->
             <argv>40000</argv>
           </frmcmd>
-          <frmcmd name="opt">
+          <frmcmd name="abs">
             <argv>6</argv>
             <!-- offset = 1200 -->
             <argv>54800</argv>

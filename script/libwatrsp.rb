@@ -48,6 +48,17 @@ module CIAX
         self
       end
 
+      def upd
+        return self unless @stat[:time] > @last_updated
+        @last_updated = self[:time]
+        @cond.upd
+        upd_event
+        self
+      ensure
+        time_upd
+        cmt
+      end
+
       private
 
       def time_upd
@@ -78,24 +89,15 @@ module CIAX
       # self[:exec] : Command queue which contains commands issued as event
       # self[:block] : Array of commands (units) which are blocked during busy
       # self[:int] : List of interrupt commands which is effectie during busy
-      def upd_core
-        time_upd
-        return self unless @stat[:time] > @last_updated
-        @last_updated = self[:time]
-        @cond.upd
-        upd_event
-        self
-      end
-
       # @sv_stat[:event] is internal var
 
       ## Timing chart in active mode
-      # isu   :__--__--__--==__--___
-      # actv  :___--------__----____
+      # busy  :__--__--__--==__--___
+      # activ :___--------__----____
       # event :_____---------------__
 
       ## Trigger Table
-      # isu | actv|event| action
+      # busy| actv|event| action
       #  o  |  o  |  o  |  -
       #  o  |  x  |  o  |  -
       #  o  |  o  |  x  |  up

@@ -16,7 +16,22 @@ module CIAX
         upd
       end
 
+      def upd
+        %i(exec block int act_time upd_next).each do |id|
+          self[id] = @event.get(id)
+        end
+        upd_stat
+        self
+      ensure
+        time_upd
+        cmt
+      end
+
       private
+
+      def time_upd
+        super(@event[:time])
+      end
 
       def init_stat(wdb)
         self[:stat] = Hashx.new
@@ -44,15 +59,6 @@ module CIAX
         else
           h[:cri] = cnd[:val]
         end
-      end
-
-      def upd_core
-        self[:time] = @event[:time]
-        %i(exec block int act_time upd_next).each do |id|
-          self[id] = @event.get(id)
-        end
-        upd_stat
-        self
       end
 
       def upd_stat

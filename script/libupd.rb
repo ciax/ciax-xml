@@ -8,7 +8,6 @@ module CIAX
     attr_reader :pre_upd_procs, :cmt_procs
     def initialize
       super()
-      time_upd
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
       @pre_upd_procs = []
       # Proc Array for Commit Propagation to the upper Layers

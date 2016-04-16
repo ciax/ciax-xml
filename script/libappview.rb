@@ -2,12 +2,12 @@
 require 'libappsym'
 
 # View is not used for computing, just for apperance for user.
-# So the convert process (upd_view) will be included in to_v
+# So the convert process (upd) will be included in to_v
 # Updated at to_v.
 module CIAX
   # Application Layer
   module App
-    # Hash of App Groups
+    # Hash of App Status Groups
     class View < Upd
       CM = Hash.new(2).update(active: 5, alarm: 1, warn: 3, hide: 0)
       def initialize(stat)

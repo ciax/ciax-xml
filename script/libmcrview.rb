@@ -41,16 +41,19 @@ module CIAX
         self
       end
 
-      private
-
-      def upd_core
+      def upd
         pids = @list.values.map { |r| r[:pid] }
         pids.delete('0')
         @all_keys.concat(pids + @par.list).uniq!
         @all_keys.each { |id| _upd_or_gen_(id) }
         clean
         self
+      ensure
+        time_upd
+        cmt
       end
+
+      private
 
       def _upd_or_gen_(id)
         return @list.get(id).upd if @list.key?(id)

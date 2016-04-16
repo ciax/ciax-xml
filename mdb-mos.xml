@@ -1317,6 +1317,7 @@
       <item id="start" label="startmask">
         <check>
           <equal site="mfp" var="gv" form="msg">OPEN</equal>
+          <equal site="mfp" var="ao" form="msg">CLOSE</equal>
           <match site="map" var="pres" form="msg">H|M|L</match>
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
@@ -1326,6 +1327,7 @@
       <item id="store" label="storemask">
         <check>
           <equal site="mfp" var="gv" form="msg">OPEN</equal>
+          <equal site="mfp" var="ao" form="msg">OPEN</equal>
           <match site="map" var="pres" form="msg">H|M|L</match>
           <match site="mmc" var="abs" form="msg">S</match>
         </check>

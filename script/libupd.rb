@@ -21,8 +21,6 @@ module CIAX
       upd_core || verbose { 'No upd_core' }
       verbose { 'Update' }
       self
-    ensure
-      cmt
     end
 
     # Data Commit Method

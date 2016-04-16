@@ -71,7 +71,17 @@ module CIAX
         e0.each do |e1|
           e1.attr2item(idx)
           ag = grp[e0[:ref]]
-          ag.get(:members) { [] } << e1['id']
+          _pos_grp(ag.get(:members) { [] }, e1['ref'], e1['id'])
+        end
+      end
+
+      # add alias to group in position (just after the referenced item) 
+      #  this feature is required by indexed status
+      def _pos_grp(ary, ref, id)
+        if i = ary.rindex(ref)
+          ary.insert(i+1,id)
+        else
+          ary << id
         end
       end
     end

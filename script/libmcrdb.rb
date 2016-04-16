@@ -32,7 +32,7 @@ module CIAX
         @body = itm.get(:body) { [] }
         @vstep = Hashx.new
         _add_steps(e0, itm)
-        _add_verify_step if itm[:retry]
+        _add_verify_step
         [id, itm]
       end
 
@@ -43,7 +43,7 @@ module CIAX
           _get_sites_(atrb)
           par2item(e1, itm) && next
           _step_by_name(e1, atrb)
-          _make_verify_step(atrb) if e1.name == 'goal'
+          _make_verify_step(atrb) if e1.name == 'goal' && itm[:retry]
           @body << atrb
         end
       end

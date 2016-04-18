@@ -380,8 +380,8 @@
           </frmcmd>
           <frmcmd name="set">
             <argv>p:1</argv>
-            <!-- offset = 1250 -->
-            <argv>54750</argv>
+            <!-- offset = 250 -->
+            <argv>55750</argv>
           </frmcmd>
           <frmcmd name="set">
             <argv>p:2</argv>

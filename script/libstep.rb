@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require 'libupd'
-require 'libmcrcond'
 
 module CIAX
   module Mcr
@@ -16,27 +15,36 @@ module CIAX
       #### In Drive mode
       # Interactive section
       def exec?
-        _set_result('approval', 'dryrun', !@dummy)
+        set_result('approval', 'dryrun', !@dummy)
       end
 
       # Execution section
       def async?
-        _set_result('forked', 'entering', /true|1/ =~ self[:async])
+        set_result('forked', 'entering', /true|1/ =~ self[:async])
       end
 
-      def sleeping(s)
-        _progress(s)
-        _set_result("slept(#{s})")
+      def sleeping
+        s = self[:sleep] || return
+        progress(s)
+        set_result("slept(#{s})")
       end
 
-      def ext_cond(dev_list)
-        extend(Condition).ext_cond(dev_list)
+      # Condition section
+      def skip?(tf)
+        set_result('skip', 'enter', tf)
       end
 
-      private
+      def fail?(tf)
+        set_result('failed', 'pass', tf)
+      end
+
+      def timeout?(&cond)
+        res = progress(self[:retry], &cond)
+        set_result('timeout', 'pass', res)
+      end
 
       # Not Condition Step
-      def _set_result(tmsg, fmsg = nil, tf = true)
+      def set_result(tmsg, fmsg = nil, tf = true)
         res = tf ? tmsg : fmsg
         self[:result] = res if res
         tf
@@ -44,13 +52,13 @@ module CIAX
         cmt
       end
 
-      def _progress(total, &cond)
+      def progress(total, &cond)
         itv = @dummy ? 0 : 1
         total.to_i.times do|n| # gives number or nil(if break)
           self[:count] = n + 1
           break if cond && cond.call
           Kernel.sleep itv
-          _show('.')
+          print '.' if Msg.fg?
           cmt
         end
       end

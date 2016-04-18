@@ -39,11 +39,8 @@ module CIAX
         fail Verification
       end
 
-      def _wait(e, step, mstat)
-        if (s = e[:sleep])
-          step.sleeping(s)
-          return true
-        end
+      def _wait(_e, step, mstat)
+        return true if step.sleeping
         return true unless step.timeout? && _giveup?(step)
         mstat[:result] = 'timeout'
         fail Interlock

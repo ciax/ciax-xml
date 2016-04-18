@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'librecord'
 require 'libstep'
+require 'libmcrcond'
 
 module CIAX
   # Macro Layer
@@ -30,10 +31,9 @@ module CIAX
       end
 
       def add_step(e1, depth)
-        step = Step.new(e1, depth, @dummy).ext_prt(self[:start])
-        step.ext_cond(@cfg[:dev_list]) if e1.key?(:cond)
+        step = Drive.new(@cfg[:dev_list], e1, depth, @dummy).ext_prt(self[:start])
         step.cmt_procs << proc do
-          verbose { 'Propagate Step#upd -> Record#upd' }
+          verbose { 'Propagate Step#cmt -> Record#cmt' }
           cmt
         end
         self[:steps] << step

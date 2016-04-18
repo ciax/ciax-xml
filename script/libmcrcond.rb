@@ -1,43 +1,37 @@
 #!/usr/bin/ruby
-require 'libenumx'
+require 'libstep'
 
 module CIAX
   # Macro Layer
   module Mcr
     # Check Coindition
-    module Condition
-      def self.extended(obj)
-        Msg.type?(obj, Step)
-      end
-
-      def ext_cond(dev_list)
+    class Drive < Step
+      def initialize(dev_list, db, depth , dummy = nil)
+        super(db, depth, dummy)
         @dev_list = type?(dev_list, Wat::List)
         # App::Exe list used in this Step
-        @condition = delete(:cond)
+        @condition = delete(:cond) || return
         sites = @condition.map { |h| h[:site] }.uniq
         @exes = sites.map { |s| @dev_list.get(s).sub }
-        self
       end
 
       # Conditional judgment section
-      def timeout?
-        _set_result('timeout', 'pass', _progress(self[:retry]))
-      end
-
       def skip?
-        waiting.ok?('skip', 'enter')
+        waiting
+        super(_all_conds?)
       end
 
       def fail?
-        !waiting.ok?('pass', 'failed')
+        waiting
+        super(!_all_conds?)
+      end
+
+      def timeout?
+        super{ !busy? && _all_conds? }
       end
 
       # obj.waiting -> looking at Prompt[:busy]
       # obj.stat -> looking at Status
-
-      def ok?(tmsg = nil, fmsg = nil)
-        _set_result(tmsg, fmsg, _all_conditions?(_scan))
-      end
 
       def busy?
         @exes.map(&:busy?).any?
@@ -47,7 +41,7 @@ module CIAX
       def waiting
         @exes.each do |obj|
           next if obj.waiting
-          _set_result('timeout')
+          set_result('timeout')
           fail Interlock
         end
         self
@@ -55,19 +49,20 @@ module CIAX
 
       private
 
-      def _scan
-        @exes.each_with_object({}) do |obj, hash|
-          st = hash[obj.id] = obj.stat
-          verbose { "Scanning #{obj.id} (#{st[:time]})/(#{st.object_id})" }
-        end
-      end
-
-      def _all_conditions?(stats)
+      def _all_conds?
+        stats = _scan
         conds = @condition.map do|h|
           _condition(stats[h[:site]], h)
         end
         self[:conditions] = conds
         conds.all? { |h| h[:res] }
+      end
+
+      def _scan
+        @exes.each_with_object({}) do |obj, hash|
+          st = hash[obj.id] = obj.stat
+          verbose { "Scanning #{obj.id} (#{st[:time]})/(#{st.object_id})" }
+        end
       end
 
       def _condition(stat, h)
@@ -86,10 +81,6 @@ module CIAX
         var = h[:var]
         warning("No [#{var}] in Status[#{form}]") unless stat[form].key?(var)
         stat[form][var]
-      end
-
-      def _progress(total)
-        super { !busy? && _all_conditions?(_scan) }
       end
 
       # Operators

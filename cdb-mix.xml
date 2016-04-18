@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <alias id="mix" label="MOIRCS Turret">
-    <group id="gtr" caption="Turret">
+    <group id="gtr" caption="Filter Select">
       <unit id="ut1" title="[*]_1" label="Turret 1 [co,hole,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
         <item id="co_1" label="[0]CO" ref="opt">
           <argv>1</argv>
@@ -50,12 +50,6 @@
         <item id="fe2_1" label="[11] Fe2" ref="opt">
           <argv>1</argv>
           <argv>11</argv>
-        </item>
-        <item id="fw50_1" label="+ 50/8000" ref="fw50">
-          <argv>1</argv>
-        </item>
-        <item id="bk50_1" label="- 50/8000" ref="bk50">
-          <argv>1</argv>
         </item>
       </unit>
       <unit id="ut4" title="[*]_4" label="Turret 4 [co,hole,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
@@ -107,12 +101,6 @@
           <argv>4</argv>
           <argv>11</argv>
         </item>
-        <item id="fw50_4" label="+ 50/8000" ref="fw50">
-          <argv>4</argv>
-        </item>
-        <item id="bk50_4" label="- 50/8000" ref="bk50">
-          <argv>4</argv>
-        </item>
       </unit>
       <unit id="ut2" title="[*]_2" label="Turret 2 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,hole]">
         <item id="csl_2" label="[0] CSL" ref="opt">
@@ -162,12 +150,6 @@
         <item id="hole_2" label="[11] HOLE" ref="opt">
           <argv>2</argv>
           <argv>11</argv>
-        </item>
-        <item id="fw50_2" label="+ 50/8000" ref="fw50">
-          <argv>2</argv>
-        </item>
-        <item id="bk50_2" label="- 50/8000" ref="bk50">
-          <argv>2</argv>
         </item>
       </unit>
       <unit id="ut5" title="[*]_5" label="Turret 5 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,hole]">
@@ -219,12 +201,6 @@
           <argv>5</argv>
           <argv>11</argv>
         </item>
-        <item id="fw50_5" label="+ 50/8000" ref="fw50">
-          <argv>5</argv>
-        </item>
-        <item id="bk50_5" label="- 50/8000" ref="bk50">
-          <argv>5</argv>
-        </item>
       </unit>
       <unit id="ut3" title="[*]_3" label="Turret 3 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,hole]">
         <item id="vph_h_3" label="[0] VPH H" ref="opt">
@@ -274,12 +250,6 @@
         <item id="r1300_3" label="[11] R1300" ref="opt">
           <argv>3</argv>
           <argv>11</argv>
-        </item>
-        <item id="fw50_3" label="+ 50/8000" ref="fw50">
-          <argv>3</argv>
-        </item>
-        <item id="bk50_3" label="- 50/8000" ref="bk50">
-          <argv>3</argv>
         </item>
       </unit>
       <unit id="ut6" title="[*]_6" label="Turret 6 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,hole]">
@@ -331,10 +301,126 @@
           <argv>6</argv>
           <argv>11</argv>
         </item>
-        <item id="fw50_6" label="+ 50/8000" ref="fw50">
+      </unit>
+    </group>
+    <group id="gta" caption="Turret Adjust">
+      <unit id="ua1" title="[fw|bk][*]_1" label="Adjust 1 [50,100,1k]">
+        <item id="fw50_1" label="+ 50" ref="fw50">
+          <argv>1</argv>
+        </item>
+        <item id="bk50_1" label="- 50" ref="bk50">
+          <argv>1</argv>
+        </item>
+        <item id="fw100_1" label="+ 100" ref="fw100">
+          <argv>1</argv>
+        </item>
+        <item id="bk100_1" label="- 100" ref="bk100">
+          <argv>1</argv>
+        </item>
+        <item id="fw1k_1" label="+ 1000" ref="fw1k">
+          <argv>1</argv>
+        </item>
+        <item id="bk1k_1" label="- 1000" ref="bk1k">
+          <argv>1</argv>
+        </item>
+      </unit>
+      <unit id="ua4" title="[fw|bk][*]_4" label="Adjust 4 [50,100,1k]">
+        <item id="fw50_4" label="+ 50" ref="fw50">
+          <argv>4</argv>
+        </item>
+        <item id="bk50_4" label="- 50" ref="bk50">
+          <argv>4</argv>
+        </item>
+        <item id="fw100_4" label="+ 100" ref="fw100">
+          <argv>4</argv>
+        </item>
+        <item id="bk100_4" label="- 100" ref="bk100">
+          <argv>4</argv>
+        </item>
+        <item id="fw1k_4" label="+ 1000" ref="fw1k">
+          <argv>4</argv>
+        </item>
+        <item id="bk1k_4" label="- 1000" ref="bk1k">
+          <argv>4</argv>
+        </item>
+      </unit>
+      <unit id="ua2" title="[fw|bk][*]_2" label="Adjust 2 [50,100,1k]">
+        <item id="fw50_2" label="+ 50" ref="fw50">
+          <argv>2</argv>
+        </item>
+        <item id="bk50_2" label="- 50" ref="bk50">
+          <argv>2</argv>
+        </item>
+        <item id="fw100_2" label="+ 100" ref="fw100">
+          <argv>2</argv>
+        </item>
+        <item id="bk100_2" label="- 100" ref="bk100">
+          <argv>2</argv>
+        </item>
+        <item id="fw1k_2" label="+ 1000" ref="fw1k">
+          <argv>2</argv>
+        </item>
+        <item id="bk1k_2" label="- 1000" ref="bk1k">
+          <argv>2</argv>
+        </item>
+      </unit>
+      <unit id="ua5" title="[fw|bk][*]_5" label="Adjust 5 [50,100,1k]">
+        <item id="fw50_5" label="+ 50" ref="fw50">
+          <argv>5</argv>
+        </item>
+        <item id="bk50_5" label="- 50" ref="bk50">
+          <argv>5</argv>
+        </item>
+        <item id="fw100_5" label="+ 100" ref="fw100">
+          <argv>5</argv>
+        </item>
+        <item id="bk100_5" label="- 100" ref="bk100">
+          <argv>5</argv>
+        </item>
+        <item id="fw1k_5" label="+ 1000" ref="fw1k">
+          <argv>5</argv>
+        </item>
+        <item id="bk1k_5" label="- 1000" ref="bk1k">
+          <argv>5</argv>
+        </item>
+      </unit>
+      <unit id="ua3" title="[fw|bk][*]_3" label="Adjust 3 [50,100,1k]">
+        <item id="fw50_3" label="+ 50" ref="fw50">
+          <argv>3</argv>
+        </item>
+        <item id="bk50_3" label="- 50" ref="bk50">
+          <argv>3</argv>
+        </item>
+        <item id="fw100_3" label="+ 100" ref="fw100">
+          <argv>3</argv>
+        </item>
+        <item id="bk100_3" label="- 100" ref="bk100">
+          <argv>3</argv>
+        </item>
+        <item id="fw1k_3" label="+ 1000" ref="fw1k">
+          <argv>3</argv>
+        </item>
+        <item id="bk1k_3" label="- 1000" ref="bk1k">
+          <argv>3</argv>
+        </item>
+      </unit>
+      <unit id="ua6" title="[fw|bk][*]_6" label="Adjust 6 [50,100,1k]">
+        <item id="fw50_6" label="+ 50" ref="fw50">
           <argv>6</argv>
         </item>
-        <item id="bk50_6" label="- 50/8000" ref="bk50">
+        <item id="bk50_6" label="- 50" ref="bk50">
+          <argv>6</argv>
+        </item>
+        <item id="fw100_6" label="+ 100" ref="fw100">
+          <argv>6</argv>
+        </item>
+        <item id="bk100_6" label="- 100" ref="bk100">
+          <argv>6</argv>
+        </item>
+        <item id="fw1k_6" label="+ 1000" ref="fw1k">
+          <argv>6</argv>
+        </item>
+        <item id="bk1k_6" label="- 1000" ref="bk1k">
           <argv>6</argv>
         </item>
       </unit>

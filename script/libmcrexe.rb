@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
-require 'libmcrseq'
+require 'libseq'
 # CIAX-XML
 module CIAX
   # Macro Layer
   module Mcr
-    # Shell interface for Seq
+    # Shell interface for Sequencer
     class Exe < CIAX::Exe
       attr_reader :th_mcr, :seq
       # ment should have [:sequence]'[:dev_list],[:submcr_proc]
@@ -29,7 +29,7 @@ module CIAX
       def _init_cmd_(ment, pid)
         @cobj.add_rem.add_sys
         int = @cobj.rem.add_int(Int)
-        @seq = Seq.new(ment, pid, int.valid_keys.clear)
+        @seq = Sequencer.new(ment, pid, int.valid_keys.clear)
         int.def_proc { |ent| ent.msg = @seq.reply(ent.id) }
         @sv_stat = @seq.sv_stat
       end

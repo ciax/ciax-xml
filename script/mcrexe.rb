@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-require 'libmcrseq'
+require 'libseq'
 # CIAX-XML Macro Sequencer
 module CIAX
   # Macro Exec
@@ -11,7 +11,7 @@ module CIAX
       mobj = Index.new(cfg, dbi: Db.new.get)
       mobj.add_rem.add_ext(Ext)
       ent = mobj.set_cmd(args)
-      seq = Seq.new(ent)
+      seq = Sequencer.new(ent)
       seq.macro
     end
   end

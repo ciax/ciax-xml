@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libmcrseq'
+require 'libseq'
 require 'libparam'
 # CIAX-XML
 module CIAX
@@ -33,7 +33,7 @@ module CIAX
 
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent, pid = '0')
-        seq = Seq.new(ent, pid) { |e, p| add(e, p) }
+        seq = Sequencer.new(ent, pid) { |e, p| add(e, p) }
         @threads.add(type?(seq.fork, Threadx)) # start immediately
         put(seq.id, seq.record)
         seq
@@ -41,7 +41,7 @@ module CIAX
 
       def alives
         @threads.list.map { |th| th[:obj] }.compact.map do |seq|
-          type?(seq, Seq).id
+          type?(seq, Sequencer).id
         end
       end
 

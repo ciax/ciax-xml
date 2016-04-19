@@ -104,18 +104,18 @@
     called: server
     set_methods: recv_proc
 
-## Related to Mcr::Seq(Exe)
+## Related to Mcr::Sequencer(Exe)
 
   @post_stat_procs
     structure: Array[Proc,..]
     args:(on each element)
-      Seq(self)
+      Sequencer(self)
     called: set_stat
 
   @post_mcr_procs
     structure: Array[Proc,..]
     args:(on each element)
-      Seq(self)
+      Sequencer(self)
     called: finish
 
   @cfg[:submcr_proc]

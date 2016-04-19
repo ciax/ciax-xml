@@ -9,7 +9,7 @@ module CIAX
   module Mcr
     # Sub Class
     module Func
-      # Step functions included in Seq
+      # Step functions included in Sequencer
       #  Continue sequence if returns nil
 
       private

@@ -5,7 +5,7 @@ module CIAX
   # Macro Layer
   module Mcr
     # Sequencer
-    class Seq
+    class Sequencer
       include Msg
       include Func
       attr_reader :cfg, :record, :qry, :id, :title, :sv_stat
@@ -166,7 +166,7 @@ module CIAX
         mobj = Index.new(Conf.new(cfg))
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)
-        Seq.new(ent).upd.macro
+        Sequencer.new(ent).upd.macro
       end
     end
   end

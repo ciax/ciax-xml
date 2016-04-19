@@ -7,7 +7,7 @@ module CIAX
   # Macro Layer
   module Mcr
     # Macro Response Module
-    module Rsp
+    module RecRsp
       def self.extended(obj)
         Msg.type?(obj, Record)
       end
@@ -54,7 +54,7 @@ module CIAX
     # Add extend method in Record
     class Record
       def ext_rsp(cfg)
-        extend(Mcr::Rsp).ext_rsp(cfg)
+        extend(Mcr::RecRsp).ext_rsp(cfg)
       end
     end
   end

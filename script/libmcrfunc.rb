@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libmcrcmd'
-require 'libmcrrsp'
+require 'librecrsp'
 require 'libwatlist'
 require 'libmcrqry'
 

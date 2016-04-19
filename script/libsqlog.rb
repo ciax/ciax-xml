@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 # For sqlite3
-require 'libmsg'
 require 'libvarx'
 require 'thread'
 
@@ -98,7 +97,7 @@ module CIAX
       # Check table existence (ver=0 is invalid)
       def add_table(stat)
         sqlog = Table.new(stat)
-        if stat['ver'].to_i > 0
+        if stat[:ver].to_i > 0
           create_tbl(sqlog)
           real_mode(stat, sqlog)
         else
@@ -137,7 +136,7 @@ module CIAX
 
       def dummy_mode(stat, sqlog)
         verbose { 'Invalid Version(0): No Log' }
-        stat.cmt_procs << proc { verbose { "Insert\n" + sqlog.upd } }
+        stat.cmt_procs << proc { verbose { "Dummy Insert\n" + sqlog.upd } }
       end
     end
 

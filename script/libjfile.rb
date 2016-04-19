@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libjslog'
 module CIAX
   # Add File I/O feature
   module JFile
@@ -10,7 +9,7 @@ module CIAX
     # Set latest_link=true for making latest link at save
     def ext_file
       verbose { "Initiate File Status [#{_file_base}]" }
-      self[:id] || Msg.cfg_err('No ID')
+      self[:id] || cfg_err('No ID')
       @jsondir = vardir('json')
       @thread = Thread.current # For Thread safe
       load
@@ -44,7 +43,7 @@ module CIAX
 
     def save_key(keylist, tag = nil)
       tag ||= (_tag_list_.map(&:to_i).max + 1)
-      Msg.msg("File Saving for [#{tag}]")
+      msg("File Saving for [#{tag}]")
       _write_json(pick(keylist, time: self[:time]).to_j, tag)
     end
 
@@ -60,8 +59,12 @@ module CIAX
 
     private
 
-    def _check_load(_json_str)
-      true
+    # Version check, no read if different
+    # (otherwise old version number remain as long as the file exists)
+    def _check_load(json_str)
+      return true if j2h(json_str)[:ver] == self[:ver]
+      warning('File version mismatch')
+      false
     end
 
     def _file_name(tag = nil)

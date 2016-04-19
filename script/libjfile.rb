@@ -34,7 +34,7 @@ module CIAX
 
     def load(tag = nil)
       json_str = _read_json(tag)
-      verbose { "Loading #{_file_name(tag)}" }
+      verbose { "File Loading #{_file_name(tag)}" }
       if json_str.empty?
         verbose { " -- json file (#{_file_name(tag)}) is empty at loading" }
         return self
@@ -45,7 +45,7 @@ module CIAX
 
     def save_key(keylist, tag = nil)
       tag ||= (_tag_list_.map(&:to_i).max + 1)
-      Msg.msg("Status Saving for [#{tag}]")
+      Msg.msg("File Saving for [#{tag}]")
       _write_json(pick(keylist, time: self[:time]).to_j, tag)
     end
 
@@ -55,7 +55,7 @@ module CIAX
       sname = @jsondir + "#{@type}_latest.json"
       ::File.unlink(sname) if ::File.exist?(sname)
       ::File.symlink(@jsondir + _file_name, sname)
-      verbose { "Symboliclink to [#{sname}]" }
+      verbose { "File Symboliclink to [#{sname}]" }
       self
     end
 
@@ -76,12 +76,12 @@ module CIAX
     end
 
     def _write_json(json_str, tag = nil)
-      verbose(@thread != Thread.current) { 'Saving from Multiple Threads' }
+      verbose(@thread != Thread.current) { 'File Saving from Multiple Threads' }
       fname = _file_name(tag)
       open(@jsondir + fname, 'w') do|f|
         f.flock(::File::LOCK_EX)
         f << json_str
-        verbose { "[#{fname}](#{f.size}) is Saved" }
+        verbose { "File [#{fname}](#{f.size}) is Saved" }
       end
       self
     end
@@ -89,12 +89,12 @@ module CIAX
     def _read_json(tag = nil)
       fname = _file_name(tag)
       open(@jsondir + fname) do|f|
-        verbose { "Reading [#{fname}](#{f.size})" }
+        verbose { "File Reading [#{fname}](#{f.size})" }
         f.flock(::File::LOCK_SH)
         f.read
       end || ''
     rescue Errno::ENOENT
-      Msg.par_err('No such Tag', "Tag=#{_tag_list_}") if tag
+      Msg.par_err('File No such Tag', "Tag=#{_tag_list_}") if tag
       verbose { "  -- no json file (#{fname})" }
       ''
     end

@@ -13,18 +13,17 @@ module CIAX
       self[:id] || Msg.cfg_err('No ID')
       @jsondir = vardir('json')
       @thread = Thread.current # For Thread safe
+      load
       self
     end
 
     def auto_save
       @cmt_procs << proc { save }
-      upd
       self
     end
 
     def auto_load
       @upd_procs << proc { load }
-      upd
       self
     end
 
@@ -89,12 +88,12 @@ module CIAX
     def _read_json(tag = nil)
       fname = _file_name(tag)
       open(@jsondir + fname) do|f|
-        verbose { "File Reading [#{fname}](#{f.size})" }
+        verbose { "Reading [#{fname}](#{f.size})" }
         f.flock(::File::LOCK_SH)
         f.read
       end || ''
     rescue Errno::ENOENT
-      Msg.par_err('File No such Tag', "Tag=#{_tag_list_}") if tag
+      Msg.par_err('No such Tag', "Tag=#{_tag_list_}") if tag
       verbose { "  -- no json file (#{fname})" }
       ''
     end

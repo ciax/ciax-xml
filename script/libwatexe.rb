@@ -16,7 +16,6 @@ module CIAX
         @stat = Event.new(@sub.id)
         @host = @sub.host
         _opt_mode
-        @stat.upd
       end
 
       def ext_shell

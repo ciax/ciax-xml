@@ -5,7 +5,7 @@ module CIAX
   # Macro Layer
   module Mcr
     # Check Coindition
-    class Drive < Step
+    class StepRsp < Step
       def initialize(dev_list, db, depth , dummy = nil)
         super(db, depth, dummy)
         @dev_list = type?(dev_list, Wat::List)

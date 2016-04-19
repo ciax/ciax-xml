@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
 require 'liblayer'
-require 'libmcrsh'
+require 'libmansh'
 # CIAX-XML Macro Shell
 module CIAX
   Layer.new('[proj]', 'eclh:nr') do |cfg|

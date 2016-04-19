@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libmcrman'
+require 'libman'
 module CIAX
   # Macro Layer
   module Mcr

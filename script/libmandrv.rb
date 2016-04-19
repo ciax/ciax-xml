@@ -3,7 +3,7 @@ module CIAX
   # Macro Layer
   module Mcr
     # Macro Manager Driver Module
-    module Drv
+    module ManDrv
       def self.extended(obj)
         Msg.type?(obj, Man)
       end

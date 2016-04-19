@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libsh'
 require 'libseqview'
-require 'libmcrdrv'
+require 'libmandrv'
 module CIAX
   # Macro Layer
   module Mcr
@@ -63,7 +63,7 @@ module CIAX
       # Initiate for driver
       def ext_driver
         super
-        extend(Drv).ext_driver
+        extend(ManDrv).ext_driver
       end
 
       alias_method :ext_test, :ext_driver

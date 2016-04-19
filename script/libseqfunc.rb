@@ -2,13 +2,13 @@
 require 'libmcrcmd'
 require 'librecrsp'
 require 'libwatlist'
-require 'libmcrqry'
+require 'libseqqry'
 
 module CIAX
   # Macro Layer
   module Mcr
     # Sub Class
-    module Func
+    module SeqFunc
       # Step functions included in Sequencer
       #  Continue sequence if returns nil
 

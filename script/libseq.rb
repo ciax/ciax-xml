@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libmcrfunc'
+require 'libseqfunc'
 
 module CIAX
   # Macro Layer
@@ -7,7 +7,7 @@ module CIAX
     # Sequencer
     class Sequencer
       include Msg
-      include Func
+      include SeqFunc
       attr_reader :cfg, :record, :qry, :id, :title, :sv_stat
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']

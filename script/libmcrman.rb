@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libsh'
-require 'libmcrview'
+require 'libseqview'
 require 'libmcrdrv'
 module CIAX
   # Macro Layer

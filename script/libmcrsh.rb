@@ -25,7 +25,7 @@ module CIAX
         private
 
         def _init_view_
-          @view = View.new(@id, @par, @stat)
+          @view = SeqView.new(@id, @par, @stat)
           @cfg[:output] = @view
           @post_exe_procs << proc { @view.upd }
           @prompt_proc = proc { @sv_stat.to_s + @view.upd.index }

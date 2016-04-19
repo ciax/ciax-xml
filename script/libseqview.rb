@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 require 'libparam'
 require 'librecord'
-require 'libmcrlist'
+require 'libseqlist'
 # CIAX-XML
 module CIAX
   # Macro Layer
   module Mcr
     # Macro Man View
-    class View < Varx
+    class SeqView < Varx
       def initialize(id, par, stat = List.new)
         super('mcr')
         @stat = type?(stat, List)
@@ -99,7 +99,7 @@ module CIAX
         Msg.usage('[id] ..')
       else
         par = Parameter.new.flush(ARGV)
-        puts View.new('test', par).upd
+        puts SeqView.new('test', par).upd
       end
     end
   end

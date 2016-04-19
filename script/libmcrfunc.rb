@@ -15,7 +15,7 @@ module CIAX
       private
 
       def _mesg(_e, step, _mstat)
-        step.upd
+        step.show_result
         @qry.query(['ok'], step)
         true
       end
@@ -53,13 +53,13 @@ module CIAX
       end
 
       def _cfg(e, step, _mstat)
-        step.upd
+        step.show_result
         _exe_site(e)
         true
       end
 
       def _upd(e, step, _mstat)
-        step.upd
+        step.show_result
         _get_site(e).exe(['upd']).waiting
         true
       end
@@ -68,7 +68,7 @@ module CIAX
         var = _get_stat(e)
         cfg_err('No data in status') unless var
         step[:result] = var
-        step.upd
+        step.show_result
         sel = e[:select]
         me = { type: 'mcr', args: sel[var] || sel['*'] }
         sub_macro([me], mstat)
@@ -84,7 +84,7 @@ module CIAX
 
       def _mcr_fg(e, step, mstat)
         @count = step[:count] = 1 if step[:retry]
-        step.upd
+        step.show_result
         begin
           res = sub_macro(_get_ment(e)[:sequence], step)
           return res if res

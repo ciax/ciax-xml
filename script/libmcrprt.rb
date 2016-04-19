@@ -53,12 +53,12 @@ module CIAX
         self
       end
 
-      private
-
-      def upd_core
-        _show result
+      def show_result
+        puts result if Msg.fg?
         self
       end
+
+      private
 
       def _prt_count(mary)
         total = self[:retry] || self[:sleep]

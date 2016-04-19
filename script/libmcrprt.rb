@@ -17,10 +17,6 @@ module CIAX
         self
       end
 
-      def body(msg, col = 5)
-        _rindent(5) + Msg.colorize(msg, col)
-      end
-
       def title
         type = self[:type]
         args = self[:args].join(':') if key?(:args)
@@ -59,6 +55,10 @@ module CIAX
       end
 
       private
+
+      def body(msg, col = 5)
+        _rindent(5) + Msg.colorize(msg, col)
+      end
 
       def _prt_count(mary)
         total = self[:retry] || self[:sleep]
@@ -100,10 +100,6 @@ module CIAX
 
       def _rindent(add = 0)
         Msg.indent((self[:depth].to_i + add) * 2)
-      end
-
-      def _show(msg)
-        print msg if Msg.fg?
       end
 
       # Branched functions (instead of case/when semantics)

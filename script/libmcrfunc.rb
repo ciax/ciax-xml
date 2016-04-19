@@ -25,18 +25,24 @@ module CIAX
         return true if @dummy && @qry.query(%w(pass enter), step)
         mstat[:result] = 'skipped'
         false
+      ensure
+        step.show_result
       end
 
       def _check(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'error'
         fail Interlock
+      ensure
+        step.show_result
       end
 
       def _verify(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'failed'
         fail Verification
+      ensure
+        step.show_result
       end
 
       def _wait(_e, step, mstat)
@@ -44,12 +50,16 @@ module CIAX
         return true unless step.timeout? && _giveup?(step)
         mstat[:result] = 'timeout'
         fail Interlock
+      ensure
+        step.show_result
       end
 
       def _exec(e, step, _mstat)
         _exe_site(e) if step.exec? && @qry.query(%w(exec skip), step)
         @sv_stat.push(:run, e[:site])
         true
+      ensure
+        step.show_result
       end
 
       def _cfg(e, step, _mstat)

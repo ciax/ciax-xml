@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libvarx'
-require 'libmcrprt'
+require 'libstepprt'
 
 module CIAX
   # Macro Layer
@@ -52,7 +52,7 @@ module CIAX
 
       def _ext_steps
         self[:steps].each do |i|
-          i.extend(PrtShare).ext_prt(self[:start])
+          i.extend(StepPrt).ext_prt(self[:start])
         end
       end
     end

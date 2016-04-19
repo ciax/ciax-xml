@@ -4,7 +4,7 @@ require 'libstep'
 module CIAX
   module Mcr
     # Macro Printing Mix-in module
-    module PrtShare
+    module StepPrt
       include Msg
       OPE = { equal: '==', not: '!=', match: '=~', unmatch: '!~' }
       def self.extended(obj)
@@ -129,7 +129,7 @@ module CIAX
     # Mcr Step
     class Step
       def ext_prt(base)
-        extend(PrtShare).ext_prt(base)
+        extend(StepPrt).ext_prt(base)
       end
     end
   end

@@ -6,7 +6,7 @@ module CIAX
   module Mcr
     # Check Coindition
     class StepRsp < Step
-      def initialize(dev_list, db, depth , dummy = nil)
+      def initialize(dev_list, db, depth, dummy = nil)
         super(db, depth, dummy)
         @dev_list = type?(dev_list, Wat::List)
         # App::Exe list used in this Step
@@ -27,7 +27,7 @@ module CIAX
       end
 
       def timeout?
-        super{ !busy? && _all_conds? }
+        super { !busy? && _all_conds? }
       end
 
       # obj.waiting -> looking at Prompt[:busy]

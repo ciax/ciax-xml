@@ -31,12 +31,12 @@ module CIAX
       end
 
       def add_step(e1, depth)
-        step = StepRsp.new(@cfg[:dev_list], e1, depth, @dummy).ext_prt(self[:start])
+        step = StepRsp.new(@cfg[:dev_list], e1, depth, @dummy)
+        self[:steps] << step.ext_prt(self[:start])
         step.cmt_procs << proc do
           verbose { 'Propagate Step#cmt -> Record#cmt' }
           cmt
         end
-        self[:steps] << step
         step
       ensure
         cmt

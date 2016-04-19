@@ -75,12 +75,12 @@ module CIAX
         end
       end
 
-      # add alias to group in position (just after the referenced item) 
+      # add alias to group in position (just after the referenced item)
       #  this feature is required by indexed status
       #  ex. add [c1,c2] to [a1,b1, a2,b2] => [a1,b1,c1, a2,b2,c2]
       def _pos_grp(ary, ref, id)
-        if i = ary.rindex(ref)
-          ary.insert(i+1,id)
+        if (i = ary.rindex(ref))
+          ary.insert(i + 1, id)
         else
           ary << id
         end

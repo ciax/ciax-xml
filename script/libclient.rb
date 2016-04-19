@@ -17,7 +17,7 @@ module CIAX
       @stat.ext_http(@host)
       @pre_exe_procs << proc { @stat.upd }
       @sv_stat.add_flg(udperr: 'x')
-      @sv_stat.pre_upd_procs << proc { exe([]) }
+      @sv_stat.upd_procs << proc { exe([]) }
       @udp = UDPSocket.open
       verbose { "Initiate UDP client (#{@id}) [#{@host}:#{@port}]" }
       _set_client_proc

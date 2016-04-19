@@ -23,7 +23,7 @@ module CIAX
     end
 
     def auto_load
-      @pre_upd_procs << proc { load }
+      @upd_procs << proc { load }
       upd
       self
     end

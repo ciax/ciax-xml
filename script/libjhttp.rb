@@ -12,7 +12,7 @@ module CIAX
       @host = host || 'localhost'
       verbose { "Initiate Http (#{@host})" }
       self[:id] || Msg.cfg_err('ID')
-      @pre_upd_procs << proc { load }
+      @upd_procs << proc { load }
       load
       self
     end

@@ -39,7 +39,6 @@ module CIAX
       @recv_proc = proc {}
       @outbuf = Outbuf.new
       @id = @sv_stat.get(:id)
-      clear
     end
 
     # Send app entity
@@ -55,9 +54,9 @@ module CIAX
 
     def server
       @tid = ThreadLoop.new('Buffer', 12) do
-        exec_buf if @q.empty?
         verbose { 'Waiting' }
         pri_sort(@q.shift)
+        exec_buf if @q.empty?
       end
       self
     end
@@ -155,6 +154,10 @@ module CIAX
     #  Property: { args:, cid: }
     #  args: ['cmd','par','par'..]
     class Outbuf < Array
+      def initialize
+        super(4) { [] }
+      end
+
       def clear
         super
         push [], [], [], []

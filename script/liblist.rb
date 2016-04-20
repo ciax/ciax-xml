@@ -40,7 +40,9 @@ module CIAX
       end
 
       def shell
-        switch(@current).shell
+        exe = switch(@current)
+        exe.is_a?(Exe::Shell) || exe.ext_shell
+        exe.shell
       rescue @cfg[:jump_class]
         @current = $ERROR_INFO.to_s
         retry

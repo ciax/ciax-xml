@@ -15,7 +15,7 @@ module CIAX
       private
 
       def _mesg(_e, step, _mstat)
-        step.show_result
+        _show step.result
         @qry.query(['ok'], step)
         true
       end
@@ -26,7 +26,7 @@ module CIAX
         mstat[:result] = 'skipped'
         false
       ensure
-        step.show_result
+        _show step.result
       end
 
       def _check(_e, step, mstat)
@@ -34,7 +34,7 @@ module CIAX
         mstat[:result] = 'error'
         fail Interlock
       ensure
-        step.show_result
+        _show step.result
       end
 
       def _verify(_e, step, mstat)
@@ -42,7 +42,7 @@ module CIAX
         mstat[:result] = 'failed'
         fail Verification
       ensure
-        step.show_result
+        _show step.result
       end
 
       def _wait(_e, step, mstat)
@@ -51,7 +51,7 @@ module CIAX
         mstat[:result] = 'timeout'
         fail Interlock
       ensure
-        step.show_result
+        _show step.result
       end
 
       def _exec(e, step, _mstat)
@@ -59,17 +59,17 @@ module CIAX
         @sv_stat.push(:run, e[:site])
         true
       ensure
-        step.show_result
+        _show step.result
       end
 
       def _cfg(e, step, _mstat)
-        step.show_result
+        _show step.result
         _exe_site(e)
         true
       end
 
       def _upd(e, step, _mstat)
-        step.show_result
+        _show step.result
         _get_site(e).exe(['upd']).waiting
         true
       end
@@ -78,7 +78,7 @@ module CIAX
         var = _get_stat(e)
         cfg_err('No data in status') unless var
         step[:result] = var
-        step.show_result
+        _show step.result
         sel = e[:select]
         me = { type: 'mcr', args: sel[var] || sel['*'] }
         sub_macro([me], mstat)
@@ -94,7 +94,7 @@ module CIAX
 
       def _mcr_fg(e, step, mstat)
         @count = step[:count] = 1 if step[:retry]
-        step.show_result
+        _show step.result
         begin
           res = sub_macro(_get_ment(e)[:sequence], step)
           return res if res

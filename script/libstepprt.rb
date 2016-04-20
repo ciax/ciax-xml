@@ -44,16 +44,6 @@ module CIAX
         title + result
       end
 
-      def show_title
-        print title if Msg.fg?
-        self
-      end
-
-      def show_result
-        puts result if Msg.fg?
-        self
-      end
-
       private
 
       def body(msg, col = 5)

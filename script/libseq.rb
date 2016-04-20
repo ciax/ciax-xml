@@ -72,7 +72,7 @@ module CIAX
       def do_step(e, mstat)
         step = @record.add_step(e, @depth)
         begin
-          step.show_title
+          _show step.title
           return true if method('_' + e[:type]).call(e, step, mstat)
         rescue Retry
           retry

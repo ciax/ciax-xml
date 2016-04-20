@@ -24,7 +24,7 @@ module CIAX
 
       def _init_procs(adbs)
         @cmt_procs << proc do # post process
-          verbose { 'Propagate Status#upd -> Symbol#upd' }
+          verbose { 'Propagate Status#cmt -> Symbol#store_sym' }
           store_sym(adbs[:index].dup.update(adbs[:alias] || {}))
         end
       end

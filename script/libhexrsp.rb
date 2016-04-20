@@ -37,11 +37,11 @@ module CIAX
 
       def _init_upd_
         @sv_stat.cmt_procs << proc do
-          verbose { 'Propagate Prompt#upd -> Hex::Rsp#upd' }
+          verbose { 'Propagate Prompt#cmt -> Hex::Rsp#upd(cmt)' }
           upd
         end
         @stat.cmt_procs << proc do
-          verbose { 'Propagate Status#upd -> Hex::Rsp#upd' }
+          verbose { 'Propagate Status#cmt -> Hex::Rsp#upd(cmt)' }
           upd
         end
         upd

@@ -52,7 +52,7 @@ module CIAX
 
       def _init_upd_
         @stat.cmt_procs << proc do|ev|
-          verbose { 'Propagate Event#upd -> Watch#upd' }
+          verbose { 'Propagate Event#cmt -> Watch#(set block)' }
           block = ev.get(:block).map { |id, par| par ? nil : id }.compact
           @cobj.rem.ext.valid_sub(block)
         end

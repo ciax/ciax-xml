@@ -40,7 +40,7 @@ module CIAX
         _make_sel(ent, rid)
         @frame.set(stream.binary)
         _make_data(rid)
-        verbose { 'Propagate Stream#rcv Field#upd' }
+        verbose { 'Propagate Stream#rcv Field#conv(cmt)' }
         self
       ensure
         cmt

@@ -38,13 +38,6 @@ module CIAX
         extend(Shell).ext_shell
       end
 
-      # Server Setting
-      def run(sites = [])
-        sites << nil if sites.empty?
-        sites.each { |s| get(s) }
-        self
-      end
-
       private
 
       def add(site)

@@ -10,7 +10,6 @@ module CIAX
 
       def ext_driver
         _init_stream
-        @stat.ext_rsp.ext_file.auto_save
         _init_drv_ext
         _init_drv_save
         _init_drv_load
@@ -24,13 +23,17 @@ module CIAX
         @stream.ext_log if @cfg[:option].log?
         @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
         @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }
+        @stat.ext_rsp(@stream).ext_file.auto_save
       end
 
       def _init_drv_ext
         @cobj.rem.ext.def_proc do|ent, src|
           @sv_stat.dw(:comerr)
           @stream.snd(ent[:frame], ent.id)
-          @stat.conv(ent, @stream.rcv) if ent[:response]
+          if ent[:response]
+            @stream.rcv
+            @stat.conv(ent)
+          end
           @stat.flush if src != 'buffer'
           ent.msg = 'OK'
         end

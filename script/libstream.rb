@@ -29,11 +29,9 @@ module CIAX
       def snd(str, cid)
         return if str.to_s.empty?
         verbose { "Data Sending(#{cid})\n" + visible(str) }
-        self['cmd'] = cid
         reopen
         @f.write(str)
-        convert('snd', str)
-        cmt
+        convert('snd', str, cid).cmt
       rescue Errno::EPIPE
         @f.close
         raise(CommError)
@@ -43,9 +41,8 @@ module CIAX
         _wait_rcv
         reopen
         str = _concat_rcv
-        convert('rcv', str)
         verbose { "Data Recieved(#{self['cmd']})\n" + visible(str) }
-        cmt
+        convert('rcv', str).cmt
       end
 
       def reopen(int = 0)
@@ -56,6 +53,13 @@ module CIAX
       end
 
       private
+
+      def convert(dir, data, cid = nil)
+        time_upd
+        @binary = data
+        self['cmd'] = cid if cid
+        update('dir' => dir, 'base64' => encode(data))
+      end
 
       def _init_par(cfg)
         sp = type?(cfg, Config)[:stream]
@@ -97,12 +101,6 @@ module CIAX
         warning('Try to reopen')
         sleep int
         (int + 1) * 2
-      end
-
-      def convert(dir, data)
-        time_upd
-        @binary = data
-        update('dir' => dir, 'base64' => encode(data))
       end
 
       def encode(str)

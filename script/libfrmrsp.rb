@@ -18,7 +18,8 @@ module CIAX
       end
 
       # Ent is needed which includes response_id and cmd_parameters
-      def ext_rsp
+      def ext_rsp(stream)
+        @stream = type?(stream, Stream)
         type?(@dbi, Dbi)
         fdbr = @dbi[:response]
         @skel = fdbr[:frame]
@@ -33,21 +34,25 @@ module CIAX
       end
 
       # Convert with corresponding cmd
-      def conv(ent, stream)
-        time_upd(type?(stream, Hash)[:time])
+      def conv(ent)
         rid = type?(ent, Cmd::Entity)[:response]
         @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
         _make_sel(ent, rid)
-        @frame.set(stream.binary)
+        @frame.set(@stream.binary)
         _make_data(rid)
         verbose { 'Propagate Stream#rcv Field#conv(cmt)' }
         self
       ensure
+        time_upd
         cmt
       end
 
       private
 
+      def time_upd
+        super(@stream[:time])
+      end
+      
       # sel structure:
       #   { terminator, :main{}, :body{} <- changes on every upd }
       def _make_sel(ent, rid)
@@ -135,8 +140,8 @@ module CIAX
 
     # Field class
     class Field
-      def ext_rsp
-        extend(Frm::Rsp).ext_rsp
+      def ext_rsp(stream)
+        extend(Frm::Rsp).ext_rsp(stream)
       end
     end
 

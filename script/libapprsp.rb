@@ -18,11 +18,9 @@ module CIAX
 
       def upd
         @adbs.each do|id, hash|
-          # enclose("GetStatus:[#{id}](#{object_id})", "GetStatus:#{id}=[%s]") do
           cnd = hash[:fields].empty?
           next if cnd && get(id)
           self[:data][id] = cnd ? (hash[:default] || '') : _get_val(hash, id)
-          # end
         end
         self
       ensure

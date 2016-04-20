@@ -52,7 +52,7 @@ module CIAX
       def time_upd
         super(@stream[:time])
       end
-      
+
       # sel structure:
       #   { terminator, :main{}, :body{} <- changes on every upd }
       def _make_sel(ent, rid)

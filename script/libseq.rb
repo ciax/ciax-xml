@@ -24,7 +24,7 @@ module CIAX
       end
 
       def upd
-        @cfg[:sites].each { |site| @cfg[:dev_list].get(site).exe(['upd']) }
+        @cfg[:sites].each { |site| @cfg[:dev_list].get(site) }
         self
       end
 

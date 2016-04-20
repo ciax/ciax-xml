@@ -1,17 +1,16 @@
 #!/usr/bin/ruby
 # For sqlite3
-require 'libvarx'
-require 'thread'
+require 'libthreadx'
 
 # CIAX-XML
 module CIAX
   # Generate SQL command string
   module SqLog
-    LIST = {}
+    LIST ||= {}
     # Table create using @stat.keys
     class Table
-      attr_reader :tid, :stat, :tname
       include Msg
+      attr_reader :tid, :stat, :tname
       def initialize(stat)
         @stat = type?(stat, Varx)
         @id = stat[:id]
@@ -141,7 +140,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libappexe'
+      require 'libstatus'
       id = ARGV.shift
       ARGV.clear
       begin

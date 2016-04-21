@@ -5,85 +5,67 @@ class LogRing
   attr_reader :index, :max
   # Structure of @logary
   # [ { :time => time, :snd => base64, :rcv => base64, :diff => msec } ]
+  LOG = []
   def initialize(id)
-    @logary = [{}]
-    @sndary = []
     @index = 0
     @line = {}
+    @exists = []
     @dir = 'snd'
     sorted = read_file(id).sort_by { |h| h['time'] }.uniq
     pickid = sorted.select { |h| h['id'] == id }
     pickid.each { |h| mk_dict(h) }
-    @max = @logary.size - 1
+    @max = LOG.size - 1
+    @logary = LOG.dup
   end
 
-  def mk_dict(h)
-    data = h['base64']
-    case h['dir']
+  def mk_dict(crnt)
+    data = crnt['base64']
+    case crnt['dir']
     when 'snd'
-      @line = { time: h['time'], snd: data }
-      @logary << @line
+      @line = { time: crnt['time'], snd: data, cmd: crnt['cmd'] }
+      LOG << @line
     when 'rcv'
-      item_rcv(data)
+      item_rcv(data, crnt)
     else
       pr 'no match'
     end
   end
 
-  def item_snd(data)
-    @line['snd'] = data
-    if @logary.last.key?('rcv')
-      @logary << h
-    else
-      @logary.last.update h
-    end
-  end
-
-  def item_rcv(data)
-    if @logary.last.key('rcv')
+  def item_rcv(data, crnt)
+    if @line.key(:rcv)
       pr 'rcv duplicated'
-    elsif @logary.last['cmd'] == h['cmd']
-      h['rcv'] = data
-      dur = h.delete('time').to_f * 1000 - @logary.last['time'].to_f * 1000
-      h['dur'] = dur.round / 1000.0
-      @logary.last.update h
+    elsif @line[:cmd] == crnt['cmd']
+      @line[:rcv] = data
+      dur = (crnt.delete('time').to_i - @line[:time].to_i)
+      @line[:dur] = dur.to_f / 1000.0
     end
   end
 
   def read_file(id)
     ary = []
-    Dir.glob(ENV['HOME'] + "/.var/stream_#{id}*.log").each do|fname|
-      open(fname) do|fd|
-        while (line = fd.gets)
-          hash = JSON.load(line) || next
-          ary << hash
-        end
-      end
+    Dir.glob(ENV['HOME'] + "/.var/log/stream_#{id}*.log").each do|fname|
+      ary.concat(IO.readlines(fname).map { |line| JSON.load(line) if line })
     end
+    ary
   end
 
   def find_next(str)
-    if @sndary.include?(str)
-      next_index(str)
-      crnt = @logary[@index]
-      pr "#{crnt['cmd']}(#{@index}/#{@max})\n" if /sim/ =~ ENV['VER']
-      crnt
+    while (crnt = @logary.shift || rewind(str))
+      next if crnt[:snd] != str
+      @exists << str
+      pr "#{crnt[:cmd]}(#{@logary.size}/#{@max})\n" if /sim/ =~ ENV['VER']
+      return crnt
+    end
+  end
+
+  def rewind(str)
+    @logary = LOG.dup
+    if @exists.include?(str)
+      @logary.shift
     else
-      pr "Can't find logline for input of [#{str}]\n"
+      pr "can't find [#{str}]"
       nil
     end
-  end
-
-  def next_index(str)
-    loop do
-      @index += 1
-      @index = 0 if @index > @max
-      break if @logary[@index]['snd'] == str
-    end
-  end
-
-  def include?(str)
-    @sndary.include?(str)
   end
 
   def to_s
@@ -93,7 +75,7 @@ class LogRing
   private
 
   def pr(text)
-    STDERR.print "\033[1;34m#{text}\33[0m"
+    STDERR.puts "\033[1;34m#{text}\33[0m"
   end
 end
 
@@ -109,6 +91,8 @@ ARGV.clear
 logv = LogRing.new(id)
 while (inp = input)
   crnt = logv.find_next(inp) || next
-  sleep crnt['dur'].to_i
-  STDOUT.syswrite(crnt['rcv'].unpack('m').first)
+  data = crnt[:rcv] || next
+  sleep crnt[:dur].to_i
+  res = data.unpack('m').first
+  STDOUT.syswrite(res)
 end

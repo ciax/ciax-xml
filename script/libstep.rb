@@ -5,6 +5,7 @@ module CIAX
   module Mcr
     # Element of Record
     class Step < Upd
+      attr_reader :dummy
       def initialize(db, depth, dummy = nil)
         super()
         update db

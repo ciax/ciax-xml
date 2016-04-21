@@ -20,9 +20,16 @@ module CIAX
         true
       end
 
+      # skip? | dummy | return
+      #   o   |   o   |  @qry
+      #   o   |   x   |  false
+      #   x   |   o   |  true (Entering)
+      #   x   |   x   |  true (Entering)
       def _goal(_e, step, mstat)
-        return true unless step.skip? # Entering
-        return true if @dummy && @qry.query(%w(pass enter), step)
+        # Entering
+        return true unless step.skip?
+        _show step.result
+        return true if step.dummy && @qry.query(%w(pass enter), step)
         mstat[:result] = 'skipped'
         false
       ensure

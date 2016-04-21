@@ -30,7 +30,6 @@ module CIAX
         return true unless step.skip?
         return true if step.dummy && @qry.query(%w(pass enter), step)
         mstat[:result] = 'skipped'
-        _show step.action
         false
       end
 

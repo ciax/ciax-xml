@@ -14,8 +14,7 @@ module CIAX
       class Group < Int::Group
         def initialize(cfg, atrb = Hashx.new)
           super
-          add_item('save', '[key,key...] [tag]', def_pars(2))
-          add_item('load', '[tag]', def_pars(1))
+          add_file_io
           add_item('set', '[key(:idx)] [val(,val)]', def_pars(2))
           add_item('flush', 'Stream')
         end

@@ -19,7 +19,7 @@ module CIAX
       def to_v
         msg = title
         self[:steps].each do |i|
-          msg << i.title + i.result
+          msg << i.to_v
         end
         msg << " (#{self[:result]}) #{step_num}"
       end

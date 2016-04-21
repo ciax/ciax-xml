@@ -23,7 +23,7 @@ module CIAX
         if @msg_list.key?(type.to_sym)
           _head(*@msg_list[type.to_sym])
         else
-          method('prt_' + type).call(args)
+          method('title_' + type).call(args)
         end
       rescue NameError
         Msg.msg("No such type #{type}")
@@ -31,28 +31,35 @@ module CIAX
       end
 
       def result
-        mary = ['']
-        _prt_count(mary)
-        res = self[:result]
-        _prt_result(res, mary)
-        mary << body(self[:action].capitalize, 8) if key?(:action)
+        mary = [_prt_count(mary)]
+        _prt_result(self[:result], mary)
         mary.join("\n") + "\n"
+      end
+
+      def action
+        key?(:action) ? _body(self[:action].capitalize, 8) + "\n" : ''
       end
 
       # Display section
       def to_v
-        title + result
+        title + result + action
+      end
+
+      def set_result(tmsg, fmsg = nil, tf = true)
+        tf = super
+        print result if Msg.fg?
+        tf
       end
 
       private
 
-      def body(msg, col = 5)
+      def _body(msg, col = 5)
         _rindent(5) + Msg.colorize(msg, col)
       end
 
       def _prt_count(mary)
         total = self[:retry] || self[:sleep]
-        mary[0] << "(#{self[:count].to_i}/#{total})" if total
+        total ? "(#{self[:count].to_i}/#{total})" : ''
       end
 
       def _prt_result(res, mary)
@@ -65,7 +72,7 @@ module CIAX
 
       def _prt_conds(mary)
         (self[:conditions] || {}).each do|h|
-          res = h[:res] ? body('o', 2) : body('x', _fail_color)
+          res = h[:res] ? _body('o', 2) : _body('x', _fail_color)
           mary << res + _cond_line(h)
         end
       end
@@ -77,6 +84,7 @@ module CIAX
         cri = "/#{cri}/" if ope =~ /~/
         line << " #{ope} #{cri}?"
         line << " (#{h[:real]})" if !h[:res] || ope != '='
+        line
       end
 
       def _head(msg, col, label = 'noname')
@@ -102,16 +110,16 @@ module CIAX
         }
       end
 
-      def prt_mcr(args)
+      def title_mcr(args)
         async = self[:async] ? '(async)' : ''
         _head('MACRO', 3, "[#{args}]#{async}")
       end
 
-      def prt_exec(args)
+      def title_exec(args)
         _head('EXEC', 13, "[#{self[:site]}:#{args}]")
       end
 
-      def prt_cfg(args)
+      def title_cfg(args)
         _head('Config', 14, "[#{self[:site]}:#{args}]")
       end
     end

@@ -15,7 +15,7 @@ module CIAX
       private
 
       def _mesg(_e, step, _mstat)
-        _show step.result
+        _show
         @qry.query(['ok'], step)
         true
       end
@@ -59,13 +59,13 @@ module CIAX
       end
 
       def _cfg(e, step, _mstat)
-        _show step.result
+        _show
         _exe_site(e)
         true
       end
 
       def _upd(e, step, _mstat)
-        _show step.result
+        _show
         _get_site(e).exe(['upd']).waiting
         true
       end

@@ -110,7 +110,7 @@ module CIAX
       end
 
       # Print section
-      def _show(str = nil)
+      def _show(str = "\n")
         return unless Msg.fg?
         if defined? yield
           puts indent(@depth) + yield.to_s

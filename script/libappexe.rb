@@ -71,10 +71,6 @@ module CIAX
 
       def ext_test
         @stat.ext_sym.ext_file
-        @cobj.get('interrupt').def_proc do |ent|
-          # "INTERRUPT(#{@batch_interrupt})"
-          ent.msg = 'INTERRUPT'
-        end
         @cobj.rem.ext.def_proc do |ent|
           @stat[:time] = now_msec
           ent.msg = ent[:batch].inspect

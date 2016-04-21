@@ -58,7 +58,6 @@ module CIAX
             buf.send(@cobj.set_cmd(args), 0)
           end
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
-          ent.msg = 'INTERRUPT'
         end
       end
 

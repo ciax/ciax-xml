@@ -40,7 +40,6 @@ module CIAX
         # interrupt is in rem.hid group
         @cobj.get('interrupt').def_proc do
           @th_mcr.raise(Interrupt)
-          ent.msg = 'INTERRUPT'
         end
       end
     end

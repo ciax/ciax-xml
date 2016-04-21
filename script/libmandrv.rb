@@ -59,7 +59,6 @@ module CIAX
       def _init_proc_intrpt
         @cobj.get('interrupt').def_proc do |ent|
           @stat.interrupt
-          ent.msg = 'INTERRUPT'
         end
       end
 

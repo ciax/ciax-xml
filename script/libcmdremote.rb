@@ -67,7 +67,7 @@ module CIAX
           def initialize(dom_cfg, atrb = Hashx.new)
             atrb.get(:caption) { 'System Commands' }
             super
-            add_item('interrupt')
+            add_item('interrupt',nil,def_msg: 'INTERRUPT')
             # Accept empty command
             add_item(nil)
           end

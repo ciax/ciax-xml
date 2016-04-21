@@ -13,13 +13,6 @@ module CIAX
         @sub_list = App::List.new(@cfg)
         store_db(@cfg[:db] ||= Ins::Db.new)
       end
-
-      # Server Setting
-      def run(sites = [])
-        get(nil) if sites.empty? # Show usage
-        sites.each { |s| get(s).exe(['upd']) }
-        self
-      end
     end
 
     if __FILE__ == $PROGRAM_NAME

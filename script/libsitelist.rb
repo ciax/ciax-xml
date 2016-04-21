@@ -34,6 +34,13 @@ module CIAX
         cobj
       end
 
+      # Server Setting
+      def run(sites = [])
+        get(nil) if sites.empty? # Show usage
+        sites.each { |s| get(s).exe(['upd']) }
+        self
+      end
+
       def ext_shell
         extend(CIAX::List::Shell).ext_shell(Jump)
         @cfg[:jump_site] = @jumpgrp

@@ -64,8 +64,7 @@ module CIAX
         dbi = (opt[:i] ? Ins::Db : Db).new.get(args.shift)
         # dbi.pick already includes :command, :version
         cobj = Index.new(cfg, dbi.pick)
-        cobj.add_rem.def_proc(&:path)
-        cobj.rem.add_ext(Ext)
+        cobj.add_rem.add_ext(Ext)
         ent = cobj.set_cmd(args)
         puts ent[:batch].to_s
       end

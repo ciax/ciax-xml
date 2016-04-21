@@ -18,24 +18,16 @@ module CIAX
     end
 
     def ext_shell
-      extend(Shell).ext_shell
-    end
-
-    # Shell Extension
-    module Shell
-      include CIAX::List::Shell
-      class Jump < LongJump; end
-
-      def ext_shell
-        super(Jump)
-        @cfg[:jump_layer] = @jumpgrp
-        @list.keys.each do|id|
-          @list.get(id).ext_shell
-          @jumpgrp.add_item(id, id.capitalize + ' mode')
-        end
-        @current = @cfg[:option].layer || @list.keys.first
-        self
+      extend(CIAX::List::Shell).ext_shell(Jump)
+      @cfg[:jump_layer] = @jumpgrp
+      @list.keys.each do|id|
+        @list.get(id).ext_shell
+        @jumpgrp.add_item(id, id.capitalize + ' mode')
       end
+      @current = @cfg[:option].layer || @list.keys.first
+      self
     end
+
+    class Jump < LongJump; end
   end
 end

@@ -35,7 +35,11 @@ module CIAX
       end
 
       def ext_shell
-        extend(Shell).ext_shell
+        extend(CIAX::List::Shell).ext_shell(Jump)
+        @cfg[:jump_site] = @jumpgrp
+        sites = @cfg[:db].displist
+        @jumpgrp.ext_grp.merge_items(sites)
+        self
       end
 
       private
@@ -52,19 +56,7 @@ module CIAX
         super
       end
 
-      # Shell extension for Site::List
-      module Shell
-        include CIAX::List::Shell
-        class Jump < LongJump; end
-
-        def ext_shell
-          super(Jump)
-          @cfg[:jump_site] = @jumpgrp
-          sites = @cfg[:db].displist
-          @jumpgrp.ext_grp.merge_items(sites)
-          self
-        end
-      end
+      class Jump < LongJump; end
     end
   end
 end

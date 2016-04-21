@@ -16,7 +16,7 @@ module CIAX
 
       # Server Setting
       def run(sites = [])
-        sites << nil if sites.empty? # Show usage
+        get(nil) if sites.empty? # Show usage
         sites.each { |s| get(s).exe(['upd']) }
         self
       end

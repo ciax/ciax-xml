@@ -11,7 +11,7 @@ module CIAX
       @cfg = cfg.gen(self).update(atrb)
       @cfg[:jump_groups] ||= []
       super(m2id(@cfg[:obj].class, -2))
-      verbose { 'Initiate Layer' }
+      verbose { 'Initiate List' }
       @list = self[:list] = Hashx.new
     end
 
@@ -34,20 +34,27 @@ module CIAX
 
       # atrb should have [:jump_class] (Used in Local::Jump::Group)
       def ext_shell(jump_class)
+        verbose { 'Initiate List Shell' }
         @cfg[:jump_class] = type?(jump_class, Module) # Use for libcmdlocal
         @jumpgrp = Cmd::Local::Jump::Group.new(@cfg)
         self
       end
 
       def shell
-        exe = switch(@current)
-        exe.is_a?(Exe::Shell) || exe.ext_shell
-        exe.shell
+        switch(@current).shell
       rescue @cfg[:jump_class]
         @current = $ERROR_INFO.to_s
         retry
       rescue InvalidARGS
         @cfg[:option].usage('(opt) [id]')
+      end
+
+      def switch(site)
+        obj = super(site)
+        return obj if obj.is_a?(Shell) || obj.is_a?(CIAX::Exe::Shell)
+        obj.ext_shell
+        obj.cobj.loc.add_jump
+        obj
       end
     end
   end

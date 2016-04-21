@@ -104,7 +104,7 @@ module CIAX
         end
       end
 
-      def     _include_grp(e, item, c_or_s)
+      def _include_grp(e, item, c_or_s)
         tag = e.name.to_sym
         case tag
         when :include # include group

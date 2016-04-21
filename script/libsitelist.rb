@@ -47,6 +47,7 @@ module CIAX
       end
 
       def switch(site)
+        # Change top_list as well as the lower layer changed
         @cfg[:top_list].get(site)
         super
       end
@@ -61,14 +62,7 @@ module CIAX
           @cfg[:jump_site] = @jumpgrp
           sites = @cfg[:db].displist
           @jumpgrp.ext_grp.merge_items(sites)
-          @sub_list.ext_shell if @sub_list
           self
-        end
-
-        def add(site)
-          obj = super.ext_shell
-          obj.cobj.loc.add_jump
-          obj
         end
       end
     end

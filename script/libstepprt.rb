@@ -31,7 +31,7 @@ module CIAX
       end
 
       def result
-        mary = [_prt_count(mary)]
+        mary = [_prt_count]
         _prt_result(self[:result], mary)
         mary.join("\n") + "\n"
       end
@@ -57,7 +57,7 @@ module CIAX
         _rindent(5) + Msg.colorize(msg, col)
       end
 
-      def _prt_count(mary)
+      def _prt_count
         total = self[:retry] || self[:sleep]
         total ? "(#{self[:count].to_i}/#{total})" : ''
       end

@@ -58,13 +58,13 @@ module CIAX
         true
       end
 
-      def _cfg(e, step, _mstat)
+      def _cfg(e, _step, _mstat)
         _show
         _exe_site(e)
         true
       end
 
-      def _upd(e, step, _mstat)
+      def _upd(e, _step, _mstat)
         _show
         _get_site(e).exe(['upd']).waiting
         true

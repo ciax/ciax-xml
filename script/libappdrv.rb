@@ -15,11 +15,13 @@ module CIAX
       def ext_driver
         @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
         @buf = init_buf
-        ext_exec_mode
+        _init_log_mode
+        _init_drv_save
+        _init_drv_load
         self
       end
 
-      def ext_exec_mode
+      def _init_log_mode
         return unless @cfg[:option].log?
         @stat.ext_log.ext_sqlog
         @cobj.rem.ext_log('app')
@@ -57,6 +59,22 @@ module CIAX
           end
           warning("Interrupt(#{@batch_interrupt}) from #{src}")
           ent.msg = 'INTERRUPT'
+        end
+      end
+
+      def _init_drv_save
+        @cobj.get('save').def_proc do|ent|
+          @stat.save_key(ent.par[0].split(','), ent.par[1])
+          verbose { "Save [#{ent.par[0]}]" }
+          ent.msg = 'OK'
+        end
+      end
+
+      def _init_drv_load
+        @cobj.get('load').def_proc do|ent|
+          @stat.load(ent.par[0] || '')
+          verbose { "Load [#{ent.par[0]}]" }
+          ent.msg = 'OK'
         end
       end
 

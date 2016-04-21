@@ -27,9 +27,9 @@ module CIAX
       end
 
       def _init_view
-        view = Rsp.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
-        @shell_output_proc = proc { view.to_x }
-        view.ext_log if @cfg[:option].log?
+        @stat = Rsp.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
+        @shell_output_proc = proc { @stat.to_x }
+        @stat.ext_log if @cfg[:option].log?
       end
 
       def ext_server

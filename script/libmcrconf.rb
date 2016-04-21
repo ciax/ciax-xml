@@ -30,7 +30,8 @@ module CIAX
 
       # Take App List
       def _init_dev_list(cfg)
-        self[:dev_list] = Wat::List.new(cfg, src: 'macro')
+        atrb = { site: self[:sites].first, src: 'macro' }
+        self[:dev_list] = Wat::List.new(cfg, atrb)
         self[:sv_stat] = Prompt.new(self[:id], self[:option])
       end
     end

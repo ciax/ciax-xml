@@ -127,13 +127,13 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libfrmrsp'
+      require 'libfield'
       require 'libstatus'
       begin
-        field = Frm::Field.new.ext_rsp
+        field = Frm::Field.new
         stat = Status.new(field[:id])
         field.ext_file if STDIN.tty?
-        puts stat.ext_rsp(field)
+        puts stat.ext_rsp(field).upd
       rescue InvalidARGS
         Msg.usage '[site] | < field_file'
       end

@@ -19,7 +19,7 @@ module CIAX
 
       # Ent is needed which includes response_id and cmd_parameters
       def ext_rsp(stream)
-        @stream = type?(stream, Stream)
+        @stream = type?(stream, Hash)
         type?(@dbi, Dbi)
         fdbr = @dbi[:response]
         @skel = fdbr[:frame]
@@ -154,7 +154,7 @@ module CIAX
         id = res[:id]
         cid = res[:cmd]
         dbi = Dev::Db.new.get(id)
-        field = Field.new(dbi).ext_rsp
+        field = Field.new(dbi).ext_rsp(res)
         field.ext_file.auto_save if opt[:m]
         if cid
           cfg[:field] = field
@@ -162,7 +162,7 @@ module CIAX
           cobj = Index.new(cfg, dbi.pick(%i(stream)))
           cobj.add_rem.add_ext(Ext)
           ent = cobj.set_cmd(cid.split(':'))
-          field.conv(ent, res)
+          field.conv(ent)
         end
         puts field
       end

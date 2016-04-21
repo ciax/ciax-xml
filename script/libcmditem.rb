@@ -20,7 +20,7 @@ module CIAX
     # Corresponds commands
     class Item < Hashx
       include CmdProc
-      # grp_cfg should have :id,'label',:parameters,:def_proc
+      # grp_cfg should have :id,'label',:parameters,:def_proc,:def_msg
       attr_reader :id
       def initialize(cfg, atrb = Hashx.new)
         super()
@@ -164,7 +164,7 @@ module CIAX
       # returns result of def_proc block (String)
       def exe_cmd(src, pri = 1)
         verbose { "Execute [#{@id}] from #{src}" }
-        @msg = ''
+        @msg = self[:def_msg] || ''
         self[:def_proc].call(self, src, pri)
         self
       end

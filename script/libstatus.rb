@@ -48,6 +48,18 @@ module CIAX
         self
       end
 
+      # key format: category + ':' followed by key "data:key, msg:key..."
+      def pick(keylist, atrb = {})
+        h = Hashx.new(atrb)
+        keylist.each do |str|
+          cat, key = str.split(':')
+          cat = cat.to_sym
+          next unless key && key?(cat)
+          h.get(cat) { Hashx.new }[key] = get(cat)[key]
+        end
+        h
+      end
+
       private
 
       def _init_sdb

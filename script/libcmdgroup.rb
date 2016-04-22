@@ -23,10 +23,10 @@ module CIAX
         @displist.put_item(id, title)
       end
 
-      def add_item(id, title = nil)
+      def add_item(id, title = nil, atrb = Hashx.new)
         @displist.put_item(id, title)
         @valid_keys << id
-        self[id] = Item.new(@cfg, id: id)
+        self[id] = Item.new(@cfg, atrb.update(id: id))
       end
 
       # Generate Entity
@@ -50,10 +50,10 @@ module CIAX
         super
       end
 
-      # crnt could have 'label',:body,'unit','group'
-      def add_item(id, title = nil, crnt = {})
+      # atrb could have 'label',:body,'unit','group'
+      def add_item(id, title = nil, atrb = Hashx.new)
         @displist.put_item(id, title)
-        new_item(id, crnt)
+        new_item(id, atrb)
       end
 
       def del_item(id)
@@ -88,10 +88,10 @@ module CIAX
 
       private
 
-      def new_item(id, crnt = {})
-        # crnt could be dbi[:index][id]
-        crnt[:id] = id
-        self[id] = context_constant('Item').new(@cfg, crnt)
+      def new_item(id, atrb = {})
+        # atrb could be dbi[:index][id]
+        atrb[:id] = id
+        self[id] = context_constant('Item').new(@cfg, atrb)
       end
     end
   end

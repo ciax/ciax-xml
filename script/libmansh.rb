@@ -35,9 +35,8 @@ module CIAX
           sg = @cobj.loc.add(Cmd::Dummy, caption: 'Switch Pages', color: 5)
           sg.add_dummy('0', 'List page')
           sg.add_dummy('[1-n]', 'Sequencer page')
-          sg.add_item('cl', 'Clean list').def_proc do |ent|
+          sg.add_item('cl', 'Clean list', def_msg: 'CLEAN').def_proc do |ent|
             @par.flush(@sv_stat.get(:list))
-            ent.msg = 'CLEAN'
           end
           @cobj.loc.add_view
           @cobj.loc.add_jump

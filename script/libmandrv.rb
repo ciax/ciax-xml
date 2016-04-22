@@ -44,7 +44,6 @@ module CIAX
           sid = @stat.add(ent).id
           @sv_stat.repl(:sid, sid)
           @sv_stat.push(:list, sid)
-          ent.msg = 'ACCEPT'
         end
       end
 

@@ -35,7 +35,8 @@ module CIAX
       end
 
       def _init_cmd
-        @cobj.add_rem.add_sys
+        @cobj.add_rem.cfg[:def_msg] = 'ACCEPT'
+        @cobj.rem.add_sys
         @cobj.rem.add_int(Int)
         @cobj.rem.add_ext(Ext)
         @cobj.rem.sys.add_item('nonstop', 'Mode')

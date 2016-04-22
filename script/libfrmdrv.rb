@@ -13,7 +13,7 @@ module CIAX
         _init_drv_ext
         _init_drv_save
         _init_drv_load
-        _init_drv_set
+        _init_local_set
         _init_drv_flush
         self
       end
@@ -35,7 +35,6 @@ module CIAX
             @stat.conv(ent)
           end
           @stat.flush if src != 'buffer'
-          ent.msg = 'OK'
         end
       end
 
@@ -43,7 +42,6 @@ module CIAX
         @cobj.get('save').def_proc do|ent|
           @stat.save_key(ent.par[0].split(','), ent.par[1])
           verbose { "Save [#{ent.par[0]}]" }
-          ent.msg = 'OK'
         end
       end
 
@@ -52,16 +50,6 @@ module CIAX
           @stat.load(ent.par[0] || '')
           @stat.flush
           verbose { "Load [#{ent.par[0]}]" }
-          ent.msg = 'OK'
-        end
-      end
-
-      def _init_drv_set
-        @cobj.get('set').def_proc do|ent|
-          @stat.repl(ent.par[0], ent.par[1])
-          @stat.flush
-          verbose { "Set [#{ent.par[0]}] = #{ent.par[1]}" }
-          ent.msg = 'OK'
         end
       end
 
@@ -70,7 +58,6 @@ module CIAX
           @stream.rcv
           @stat.flush
           verbose { 'Flush Stream' }
-          ent.msg = 'OK'
         end
       end
     end

@@ -48,7 +48,8 @@ module CIAX
       end
 
       def _init_command
-        @cobj.add_rem.add_sys
+        @cobj.add_rem.cfg[:def_msg] = 'OK'
+        @cobj.rem.add_sys
         @cobj.rem.add_ext(Ext)
         @cobj.rem.add_int(Int)
         self
@@ -56,15 +57,16 @@ module CIAX
 
       def ext_test
         @stat.ext_file
-        @cobj.rem.ext.def_proc { |ent| ent.msg = 'TEST' }
-        _init_test_set
+        @cobj.rem.ext.cfg[:def_msg] = 'TEST'
+        _init_local_set
         super
       end
 
-      def _init_test_set
+      def _init_local_set
         @cobj.get('set').def_proc do|ent|
           @stat.repl(ent.par[0], ent.par[1])
-          ent.msg = "Set [#{ent.par[0]}] = #{ent.par[1]}"
+          @stat.flush
+          verbose {"Set [#{ent.par[0]}] = #{ent.par[1]}"}
         end
       end
 

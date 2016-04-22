@@ -50,6 +50,7 @@ module CIAX
 
       private
 
+      # Initialize subroutine
       def _init_sub
         # LayerDB might generated in List level
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
@@ -70,6 +71,7 @@ module CIAX
         self
       end
 
+      # Mode Extension
       def ext_test
         @stat.ext_sym.ext_file
         @cobj.rem.ext.def_proc do |ent|
@@ -84,7 +86,7 @@ module CIAX
         extend(Drv).ext_driver
       end
 
-      def _non_client
+      def ext_local
         _init_proc_set
         _init_proc_del
         super

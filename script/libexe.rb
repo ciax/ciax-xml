@@ -90,15 +90,21 @@ module CIAX
       self
     end
 
+    # Local operation included in ext_test, ext_driver (non_client)
+    def ext_local
+      @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
+      self
+    end
+
     def ext_test
       @mode = 'TEST'
-      _non_client
+      ext_local
       self
     end
 
     def ext_driver
       @mode = 'DRV'
-      _non_client
+      ext_local
       self
     end
 
@@ -111,11 +117,6 @@ module CIAX
       return self if @mode == 'CL'
       @mode += ':SV'
       extend(Server).ext_server
-    end
-
-    def _non_client
-      @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
-      self
     end
   end
 end

@@ -43,7 +43,7 @@ module CIAX
         super
       end
 
-      def _non_client
+      def ext_local
         _init_upd_
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
         @stat.ext_rsp(@sub.stat, @sv_stat)

@@ -13,7 +13,6 @@ module CIAX
         _init_drv_ext
         _init_drv_save
         _init_drv_load
-        _init_local_set
         _init_drv_flush
         self
       end

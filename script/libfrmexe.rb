@@ -41,6 +41,7 @@ module CIAX
 
       private
 
+      # Initialize Subroutine
       def _init_net(dbi)
         @host = @cfg[:option].host || dbi[:host]
         @port ||= dbi[:port]
@@ -55,19 +56,20 @@ module CIAX
         self
       end
 
+      # Mode Extension
       def ext_test
         @stat.ext_file
         @cobj.rem.ext.cfg[:def_msg] = 'TEST'
-        _init_local_set
         super
       end
 
-      def _init_local_set
+      def ext_local
         @cobj.get('set').def_proc do|ent|
           @stat.repl(ent.par[0], ent.par[1])
           @stat.flush
           verbose {"Set [#{ent.par[0]}] = #{ent.par[1]}"}
         end
+        super
       end
 
       def ext_driver

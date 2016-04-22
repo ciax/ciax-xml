@@ -73,14 +73,14 @@ module CIAX
 
       def open_strm
         # SIGINT gets around the child process
-        verbose { 'Stream Opening' }
+        # verbose { 'Stream Opening' }
         @pre_open_proc.call
         Signal.trap(:INT, nil)
         @f = IO.popen(@iocmd, 'r+')
         Signal.trap(:INT, 'DEFAULT')
         at_exit { close_strm }
         @post_open_proc.call
-        verbose { 'Stream Open successfully' }
+        # verbose { 'Stream Open successfully' }
         # Shut off from Ctrl-C Signal to the child process
         # Process.setpgid(@f.pid,@f.pid)
         self
@@ -109,9 +109,9 @@ module CIAX
 
       # rcv sub methods
       def _wait_rcv
-        verbose { "Wait to Recieve #{@wait} sec" }
+        # verbose { "Wait to Recieve #{@wait} sec" }
         sleep @wait
-        verbose { 'Wait for Recieving' }
+        # verbose { 'Wait for Recieving' }
       end
 
       def _concat_rcv(str = '')
@@ -131,7 +131,7 @@ module CIAX
 
       def _try_rcv(str)
         str << @f.sysread(4096)
-        verbose { "Binary Getting\n" + visible(str) }
+        # verbose { "Binary Getting\n" + visible(str) }
       rescue EOFError
         # Jumped at quit
         @f.close

@@ -44,7 +44,7 @@ function dvctl(cmd){
         "/json/dvctl-udp.php",
         {port: Port, cmd : cmd},
         function(data){
-            alert($.parseJSON(data).msg);
+            $("#msg").text($.parseJSON(data).msg);
             update();
         }
     );
@@ -52,8 +52,8 @@ function dvctl(cmd){
 function seldv(obj){
     var cmd = obj.options[obj.selectedIndex].value;
     if(cmd != '--select--'){
-        alert("ISSUED("+cmd+")");
-        dvctl(cmd);
+        var res = confirm("EXEC?("+cmd+")");
+        if(res) { dvctl(cmd); }
     }
 }
 $(document).ready(init);

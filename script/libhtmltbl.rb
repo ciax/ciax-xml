@@ -56,7 +56,7 @@ module CIAX
 
       def _mk_thead
         @sdb = @adbs[:index]
-        tr = _mk_line(_mk_tbody, %i(time elapsed))
+        tr = _mk_line(_mk_tbody, %i(time elapsed msg))
         td = tr.enclose('td', class: 'center')
         _elem_button(td, 'upd')
         self

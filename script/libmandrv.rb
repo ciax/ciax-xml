@@ -57,18 +57,12 @@ module CIAX
       end
 
       def _init_proc_intrpt
-        @cobj.get('interrupt').def_proc do |ent|
-          @stat.interrupt
-        end
+        @cobj.get('interrupt').def_proc { @stat.interrupt }
       end
 
       def _init_proc_swmode
-        @cobj.get('nonstop').def_proc do
-          @sv_stat.up(:nonstop)
-        end
-        @cobj.get('interactive').def_proc do
-          @sv_stat.dw(:nonstop)
-        end
+        @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
+        @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
       end
 
       def _init_dev

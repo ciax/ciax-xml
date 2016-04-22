@@ -9,8 +9,8 @@ module CIAX
       # Instance var is @rem in Index
       class Index < Local::Index
         attr_reader :rem
-        def add_rem(obj = Domain)
-          @rem = add(obj)
+        def add_rem(obj = Domain, atrb = Hashx.new)
+          @rem = add(obj, atrb)
         end
       end
 
@@ -67,9 +67,9 @@ module CIAX
           def initialize(dom_cfg, atrb = Hashx.new)
             atrb.get(:caption) { 'System Commands' }
             super
-            add_item('interrupt',nil,def_msg: 'INTERRUPT')
+            add_item('interrupt', nil, def_msg: 'INTERRUPT')
             # Accept empty command
-            add_item(nil)
+            add_item(nil, nil, def_msg: '')
           end
         end
       end

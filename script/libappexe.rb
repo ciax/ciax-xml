@@ -94,7 +94,6 @@ module CIAX
         @cobj.get('set').def_proc do|ent|
           @stat[:data].repl(ent.par[0], ent.par[1])
           verbose { "SET:#{ent.par[0]}=#{ent.par[1]}" }
-          ent.msg = 'ISSUED'
         end
       end
 
@@ -102,7 +101,6 @@ module CIAX
         @cobj.get('del').def_proc do|ent|
           ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
           verbose { "DELETE:#{ent.par[0]}" }
-          ent.msg = 'ISSUED'
         end
       end
     end

@@ -52,7 +52,7 @@ module CIAX
 
       # App: Sendign a first priority command (interrupt)
       def _init_proc_int(buf)
-        @cobj.get('interrupt').def_proc do |ent, src|
+        @cobj.get('interrupt').def_proc do |_ent, src|
           @batch_interrupt.each do|args|
             verbose { "Issuing:#{args} for Interrupt" }
             buf.send(@cobj.set_cmd(args), 0)
@@ -65,7 +65,6 @@ module CIAX
         @cobj.get('save').def_proc do|ent|
           @stat.save_key(ent.par[0].split(','), ent.par[1])
           verbose { "Save [#{ent.par[0]}]" }
-          ent.msg = 'OK'
         end
       end
 
@@ -73,7 +72,6 @@ module CIAX
         @cobj.get('load').def_proc do|ent|
           @stat.load(ent.par[0] || '')
           verbose { "Load [#{ent.par[0]}]" }
-          ent.msg = 'OK'
         end
       end
 
@@ -82,7 +80,6 @@ module CIAX
         @cobj.rem.ext.def_proc do|ent, src, pri|
           verbose { "Issuing:[#{ent.id}] from #{src} with priority #{pri}" }
           buf.send(ent, pri)
-          ent.msg = 'ISSUED'
         end
       end
 

@@ -13,6 +13,7 @@ module CIAX
       class Group < Int::Group
         def initialize(cfg, atrb = Hashx.new)
           super
+          cfg[:def_msg] = 'ISSUED'
           add_file_io
           add_item('set', '[key] [val]', def_pars(2))
           add_item('del', '[key,...]', def_pars(1))
@@ -23,6 +24,7 @@ module CIAX
     module Ext
       include Cmd::Remote::Ext
       class Group < Ext::Group; end
+
       # Generate [:batch]
       class Item < Ext::Item
         # Ext entity

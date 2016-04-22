@@ -3,18 +3,19 @@ require 'libcommand'
 
 module CIAX
   module Cmd
+    # Command Index
+    class Index < GrpAry
+      # cfg should have [:jump_class]
+      attr_reader :loc
+      def initialize(cfg, atrb = Hashx.new)
+        super
+        @loc = add(Local::Domain)
+      end
+    end
+
     # Local Commands
     module Local
       # Top level
-      class Index < GrpAry
-        # cfg should have [:jump_class]
-        attr_reader :loc
-        def initialize(cfg, atrb = Hashx.new)
-          super
-          @loc = add(Domain)
-        end
-      end
-
       # Local Domain
       class Domain < GrpAry
         def add_shell

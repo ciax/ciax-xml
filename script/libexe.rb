@@ -29,7 +29,7 @@ module CIAX
       @layer = class_path.first.downcase
       _init_procs
       Thread.abort_on_exception = true
-      @cobj = Cmd::Remote::Index.new(@cfg)
+      @cobj = Cmd::Index.new(@cfg)
     end
 
     # Sync only (Wait for other thread), never inherit

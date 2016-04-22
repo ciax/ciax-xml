@@ -5,7 +5,6 @@ require 'libappdb'
 module CIAX
   # Application Mode
   module App
-    include Cmd::Remote
     # cfg should have [:dbi] and [:stat]
     module Int
       include Cmd::Remote::Int
@@ -13,7 +12,6 @@ module CIAX
       class Group < Int::Group
         def initialize(cfg, atrb = Hashx.new)
           super
-          cfg[:def_msg] = 'ISSUED'
           add_file_io
           add_item('set', '[key] [val]', def_pars(2))
           add_item('del', '[key,...]', def_pars(1))

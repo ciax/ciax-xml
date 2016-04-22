@@ -4,16 +4,16 @@ require 'libcmdlocal'
 require 'libparam'
 module CIAX
   module Cmd
+    # Command Index
+    class Index
+      attr_reader :rem
+      def add_rem(obj = nil, atrb = Hashx.new)
+        @rem = add(obj || Remote::Domain, atrb)
+      end
+    end
     # Remote Command Domain
     module Remote
       # Instance var is @rem in Index
-      class Index < Local::Index
-        attr_reader :rem
-        def add_rem(obj = Domain, atrb = Hashx.new)
-          @rem = add(obj, atrb)
-        end
-      end
-
       # @cfg should have [:dbi]
       class Domain < GrpAry
         attr_reader :sys, :ext, :int

@@ -6,7 +6,7 @@ module CIAX
   # Macro Exec
   module Mcr
     ConfOpts.new('[proj] [cmd] (par)', 'cen') do |cfg, args|
-      mobj = Index.new(Conf.new(cfg))
+      mobj = Cmd::Index.new(Conf.new(cfg))
       mobj.add_rem.add_ext(Ext)
       ent = mobj.set_cmd(args)
       Sequencer.new(ent).upd.macro

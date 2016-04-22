@@ -122,7 +122,7 @@ module CIAX
         dbi = Db.new.get(args.shift)
         fld = cfg[:field] = Field.new(dbi)
         # dbi.pick alreay includes :command, :version
-        cobj = Index.new(cfg, dbi.pick(%i(stream)))
+        cobj = Cmd::Index.new(cfg, dbi.pick(%i(stream)))
         cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }
         cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?

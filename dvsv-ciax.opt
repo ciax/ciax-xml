@@ -1,0 +1,3 @@
+# Put this into ~/.var/run 
+warn "LOADING OPT [#{Time.now}]"
+ARGV.concat(%w(crt dso dsi cco cci cro cri)).uniq!

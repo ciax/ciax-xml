@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ddb xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb">
   <group id="ciax" label="CIAX" column="2">
-    <site id="crt" frm_id="mel" host="cxws2" port="24101" iocmd="socat - udp:cart3:5000" label="CIAX CART 3"/>
-    <site id="dsi" frm_id="cj2" host="cxws2" port="24102" iocmd="socat - udp:cst-i:9600" label="IR Stand-by Flange">
+    <site id="crt" frm_id="mel" host="ciax" port="24101" iocmd="socat - udp:cart3:5000" label="CIAX CART 3"/>
+    <site id="dsi" frm_id="cj2" host="ciax" port="24102" iocmd="socat - udp:cst-i:9600" label="IR Stand-by Flange">
       <field>
         <assign id="ipl" val="1"/>
         <assign id="ipr" val="33"/>
       </field>
     </site>
-    <site id="dso" frm_id="cj2" host="cxws2" port="24103" iocmd="socat - udp:cst-o:9600" label="OPT Stand-by Flange">
+    <site id="dso" frm_id="cj2" host="ciax" port="24103" iocmd="socat - udp:cst-o:9600" label="OPT Stand-by Flange">
       <field>
         <assign id="ipl" val="1"/>
         <assign id="ipr" val="32"/>
       </field>
     </site>
-    <site id="det" frm_id="srm" host="cxws2" port="24104" iocmd="socat - tcp:ltc-e:4002" label="CsEtr Control"/>
-    <site id="dts" frm_id="oss" host="cxws2" port="24105" iocmd="socat - tcp:cxws2:9999" label="Gen2 TSC Control"/>
+    <site id="det" frm_id="srm" host="ciax" port="24104" iocmd="socat - tcp:ltc-e:4002" label="CsEtr Control"/>
+    <site id="dts" frm_id="oss" host="ciax" port="24105" iocmd="socat - tcp:cxws2:9999" label="Gen2 TSC Control"/>
     <site id="cr2" frm_id="mel" host="ciax" port="24502" iocmd="socat - udp:cart2:5000" label="CIAX CART 2"/>
   </group>
   <group id="moircs" label="MOIRCS" column="3">

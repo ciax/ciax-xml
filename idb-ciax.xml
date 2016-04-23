@@ -3,11 +3,11 @@
   <project id="ciax" label="CIAX" column="2">
     <include ref="cmp"/>
     <group id="cx_sum" label="CIAX Summit">
-      <instance id="crt" app_id="mel" host="cxws2" port="25101" label="CIAX CART 3"/>
-      <instance id="dsi" app_id="cj2" host="cxws2" port="25102" label="IR Stand-by"/>
-      <instance id="dso" app_id="cj2" host="cxws2" port="25103" label="OPT Stand-by"/>
-      <instance id="det" app_id="srm" host="cxws2" port="25104" label="CsEtr Control"/>
-      <instance id="dts" app_id="oss" host="cxws2" port="25105" label="TSC Control"/>
+      <instance id="crt" app_id="mel" host="ciax" port="25101" label="CIAX CART 3"/>
+      <instance id="dsi" app_id="cj2" host="ciax" port="25102" label="IR Stand-by"/>
+      <instance id="dso" app_id="cj2" host="ciax" port="25103" label="OPT Stand-by"/>
+      <instance id="det" app_id="srm" host="ciax" port="25104" label="CsEtr Control"/>
+      <instance id="dts" app_id="oss" host="ciax" port="25105" label="TSC Control"/>
     </group>
     <group id="cx_sim" label="SimLab">
       <instance id="cr2" app_id="mel" host="ciax" port="25502" label="CIAX CART 2"/>

@@ -32,7 +32,6 @@ module CIAX
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
         @displist = Disp.new
-        @inc_proj = Hashx.new
         _read_files(Msg.xmlfiles(@type))
         _set_includes
       end

@@ -32,6 +32,7 @@ module CIAX
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
         @displist = Disp.new
+        @inc_proj = Hashx.new
         _read_files(Msg.xmlfiles(@type))
         _set_includes
       end
@@ -71,18 +72,19 @@ module CIAX
       # Includable (instance)
       def _mk_project(top)
         pid = top['id']
-        (@valid_proj ||= []).push(pid) if ENV['PROJ'] == pid
+        incprj = [pid]
+        @valid_proj = incprj if ENV['PROJ'] == pid
         grp = (@grps ||= Hashx.new)[pid] = []
         top.each do |gdoc| # g.name is include or group
-          _include_proj(gdoc, grp)
+          _include_proj(gdoc, grp, incprj)
         end
       end
 
-      def _include_proj(gdoc, grp)
+      def _include_proj(gdoc, grp, incprj)
         tag = gdoc.name.to_sym
         case tag
         when :include # include project
-          @valid_proj << gdoc['ref'] if @valid_proj
+          incprj.push(gdoc['ref'])
         when :group # group(mdb,adb)
           grp << gdoc['id']
           _mk_group(gdoc)

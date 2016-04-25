@@ -24,13 +24,13 @@ module CIAX
       lid += "_#{ENV['PROJ']}" if ENV['PROJ']
       # Show site list
       @latest = _get_latest_file
-      @displist = cache(lid, &:displist)
+      @displist = _get_cache(lid) || _get_docs(lid, &:displist)
       @argc = 0
     end
 
     def get(id)
       if @displist.valid?(id)
-        cache(id) { |docs| doc_to_db(docs.get(id)) }
+        _get_cache(id) || _get_docs(id) { |docs| doc_to_db(docs.get(id)) }
       else
         fail(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s)
       end
@@ -44,16 +44,16 @@ module CIAX
     end
 
     # Returns Dbi(command list) or Disp(site list)
-    def cache(id)
+    def _get_cache(id)
       @base = "#{@type}-#{id}"
       @marfile = vardir('cache') + "#{@base}.mar"
-      if _get_cache?
-        res = _load_cache(id)
-      else
-        @docs = Xml::Doc.new(@type) unless @docs
-        res = _validate_repl(yield(@docs))
-        _save_cache(id, res)
-      end
+      _load_cache(id) if _use_cache?
+    end
+
+    def _get_docs(id)
+      @docs = Xml::Doc.new(@type) unless @docs
+      res = _validate_repl(yield(@docs))
+      _save_cache(id, res)
       res
     end
 
@@ -88,7 +88,7 @@ module CIAX
       cfg_err("Counter remained at [#{res.join('/')}]")
     end
 
-    def _get_cache?
+    def _use_cache?
       if ENV['NOCACHE']
         verbose { "#{@type}/Cache ENV['NOCACHE'] is set" }
       elsif !test('e', @marfile)

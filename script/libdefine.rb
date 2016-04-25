@@ -4,6 +4,8 @@ module CIAX
   require 'English' # To use $! -> $ERROR_INFO
   require 'debug' if ENV['DEBUG']
 
+  # MY HOST
+  HOST= `hostname`.strip
   # Initial View Mode
   VMODE = 'v'
   # User input Error

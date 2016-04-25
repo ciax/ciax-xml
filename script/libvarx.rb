@@ -17,7 +17,7 @@ module CIAX
       # Headers
       _setid(id)
       self[:ver] = ver if ver
-      self[:host] = host || `hostname`.strip
+      self[:host] = host || HOST
     end
 
     # Read only as a client

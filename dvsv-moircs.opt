@@ -1,3 +1,0 @@
-# Put this into ~/.var/run 
-warn "LOADING OPT [#{Time.now}]"
-ARGV.concat(%w(mfp mma mmc map mix mft)).uniq!

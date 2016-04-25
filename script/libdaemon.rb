@@ -11,7 +11,6 @@ module CIAX
       # Set ARGS in opt file
       @base = vardir('run') + tag
       noarg=ARGV.empty?
-      _get_default
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         opt[:s] = true
         _kill_pids
@@ -36,11 +35,6 @@ module CIAX
       return if $stderr.is_a?(Tee)
       errout = vardir('log') + 'error_' + tag + today + '.out'
       $stderr = Tee.new(errout)
-    end
-
-    def _get_default
-      optfile = @base + '.opt'
-      load optfile if test('r', optfile)
     end
 
     # Background (Switch error output to file)

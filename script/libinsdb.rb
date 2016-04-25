@@ -6,19 +6,20 @@ module CIAX
   # Instance Layer
   module Ins
     # Instance DB
-    attr_reader :run_list
     class Db < DbCmd
       include Wat::Db
+      attr_reader :run_list
       def initialize
         super('idb')
         @adb = App::Db.new
         @cdb = Cmd::Db.new
-        @run_list=@displist.valid_keys.select do |id|
+        @run_list = @displist.valid_keys.select do |id|
           (_get_cache(id) || @docs.get(id)[:attr])[:host]
         end
       end
 
       private
+
       # doc is <project>
       # return //project/group/instance
       def doc_to_db(doc)

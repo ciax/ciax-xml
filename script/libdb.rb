@@ -24,13 +24,13 @@ module CIAX
       lid += "_#{ENV['PROJ']}" if ENV['PROJ']
       # Show site list
       @latest = _get_latest_file
-      @displist = _get_cache(lid) || _get_docs(lid, &:displist)
+      @displist = _get_cache(lid) || _get_db(lid, &:displist)
       @argc = 0
     end
 
     def get(id)
       if @displist.valid?(id)
-        _get_cache(id) || _get_docs(id) { |docs| doc_to_db(docs.get(id)) }
+        _get_cache(id) || _get_db(id) { |docs| doc_to_db(docs.get(id)) }
       else
         fail(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s)
       end
@@ -47,14 +47,14 @@ module CIAX
     def _get_cache(id)
       @base = "#{@type}-#{id}"
       @marfile = vardir('cache') + "#{@base}.mar"
-      _load_cache(id) if _use_cache?
+      return _load_cache(id) if _use_cache?
+      @docs = Xml::Doc.new(@type) unless @docs
+      nil
     end
 
-    def _get_docs(id)
-      @docs = Xml::Doc.new(@type) unless @docs
+    def _get_db(id)
       res = _validate_repl(yield(@docs))
       _save_cache(id, res)
-      res
     end
 
     def _get_latest_file

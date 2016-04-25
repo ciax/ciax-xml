@@ -10,10 +10,12 @@ module CIAX
       ENV['VER'] ||= 'Initiate'
       # Set ARGS in opt file
       @base = vardir('run') + tag
+      noarg=ARGV.empty?
       _get_default
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         opt[:s] = true
-        _kill_pids && exit
+        _kill_pids
+         noarg && exit
         _new_pid
         _main_loop(tag) { yield(cfg, args) }
       end

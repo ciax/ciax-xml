@@ -66,7 +66,7 @@
         </unit>
       </group>
       <group id="gm" caption="Motion">
-        <item id="cw" label="Goto CW Limit (Slot 0)">
+        <item id="cw" label="Goto CW Limit (+0.41)">
           <frmcmd name="hl">
             <argv>1</argv>
           </frmcmd>
@@ -75,7 +75,7 @@
           <frmcmd name="jp"/>
           <frmcmd name="bs"/>
         </item>
-        <item id="ccw" label="Goto CCW Limit (Slot 23)">
+        <item id="ccw" label="Goto CCW Limit (-23.49)">
           <frmcmd name="hl">
             <argv>1</argv>
           </frmcmd>
@@ -84,7 +84,7 @@
           <frmcmd name="jn"/>
           <frmcmd name="bs"/>
         </item>
-        <item id="gh-cw" label="Goto Home from CW Limit">
+        <item id="gh-cw" label="Goto Slot0 from CW Limit(+0.41)">
           <frmcmd name="hl">
             <argv>0</argv>
           </frmcmd>
@@ -95,7 +95,7 @@
           </frmcmd>
           <frmcmd name="bs"/>
         </item>
-        <item id="gh-ccw" label="Goto Home from CCW Limit">
+        <item id="gh-ccw" label="Goto Slot23 from CCW Limit(-23.49)">
           <frmcmd name="hl">
             <argv>0</argv>
           </frmcmd>
@@ -106,7 +106,7 @@
           </frmcmd>
           <frmcmd name="bs"/>
         </item>
-        <item id="cwi" label="Move CW(TopView) Decreasing [1-5]">
+        <item id="cwi" label="Move CW(TopView) Toward Slot0 [1-5]">
           <par_num>1:5</par_num>
           <frmcmd name="drvon"/>
           <frmcmd name="drv"/>
@@ -115,7 +115,7 @@
           </frmcmd>
           <frmcmd name="bs"/>
         </item>
-        <item id="ccwi" label="Move CCW(TopView) Increasing [1-5]">
+        <item id="ccwi" label="Move CCW(TopView) Toward Slot23 [1-5]">
           <par_num>1:5</par_num>
           <frmcmd name="drvon"/>
           <frmcmd name="drv"/>
@@ -165,10 +165,10 @@
         <integer id="err" label="Error Code" symbol="err">
           <field ref="err"/>
         </integer>
-        <string id="lcw" label="CW Limit" symbol="normal">
+        <string id="lcw" label="CW(+) Limit" symbol="normal">
           <field ref="in" index="2"/>
         </string>
-        <string id="lccw" label="CCW Limit" symbol="normal">
+        <string id="lccw" label="CCW(-) Limit" symbol="normal">
           <field ref="in" index="3"/>
         </string>
         <string id="con" label="Contact Sensor" symbol="action">

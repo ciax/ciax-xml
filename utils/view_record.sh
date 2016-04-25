@@ -5,9 +5,14 @@
 if [ "$1" ] ; then
     records=$(find ~/.var/json/record* -size +1k)
     [ "$records" ] || exit
-    file=$(grep -l "cid\": *\"$1\"" $records|tail -1) || exit
+    line=$(( $2 + 1 ))
+    file=$(grep -l "cid\": *\"$1\"" $records|tail -$line|head -1)
 else
     file=~/.var/json/record_latest.json
 fi
-echo
-[ -r "$file" ] && librecord $opt < $file 
+if [ -r "$file" ]; then
+    librecord $opt < $file
+else
+    echo "Usage: ${0##*/} (cid) (history num)"
+    egrep -ho "cid[^,]+" $records|cut -d: -f2|tr -d '" '|sort -u|column
+fi

@@ -40,6 +40,11 @@ module CIAX
         end
         gr
       end
+
+      # Compatible for Idb
+      def run_list
+        []
+      end
     end
 
     if __FILE__ == $PROGRAM_NAME

@@ -13,10 +13,6 @@ module CIAX
         @sub_list = App::List.new(@cfg)
         store_db(@cfg[:db] ||= Ins::Db.new)
       end
-
-      def run(sites = [])
-        super(sites.empty? ? @db.run_list : sites)
-      end
     end
 
     if __FILE__ == $PROGRAM_NAME

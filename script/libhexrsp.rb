@@ -88,7 +88,8 @@ module CIAX
 
       def _padding(hash, val)
         len = hash[:length].to_i
-        pfx = { float: '.2f', int: 'd', binary: 'b' }[hash[:type].to_sym]
+        type = hash[:type].to_s.to_sym
+        pfx = { float: '.2f', int: 'd', binary: 'b' }[type]
         if pfx
           _fmt(pfx, len, val)
         else

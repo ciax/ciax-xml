@@ -35,11 +35,13 @@ module CIAX
     def up(key)
       cfg_err("No such flag [#{key}]") unless key?(key)
       repl(key, 'true')
+      self
     end
 
     def dw(key)
       cfg_err("No such flag [#{key}]") unless key?(key)
       repl(key, 'false')
+      self
     end
 
     def set_flg(key, flag)

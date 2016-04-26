@@ -34,13 +34,14 @@ module CIAX
       end
 
       def ext_driver
+        super
         @stat.ext_file.auto_save
         # @stat[:int] is overwritten by initial loading
         @sub.batch_interrupt = @stat.get(:int)
         @stat.ext_log if @cfg[:option].log?
         _init_upd_drv_
         _init_exe_drv_
-        super
+        self
       end
 
       def ext_local

@@ -79,13 +79,15 @@ module CIAX
       end
 
       def _upd_by_type(cnd, idx)
+        v = cnd[:var]
         case cnd[:type]
         when 'onchange'
-          v = cnd[:var]
           cnd[:val] = idx[v]
           cnd[:cri] = @event.get(:last)[v]
         when 'compare'
           cnd[:vals] = cnd[:vars].map { |k| "#{k}:#{idx[k]}" }
+        else
+          cnd[:val] = idx[v]
         end
       end
     end

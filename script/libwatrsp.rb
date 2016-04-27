@@ -97,7 +97,7 @@ module CIAX
       # event :_____---------------__
 
       ## Trigger Table
-      # busy| actv|event| action
+      # busy| actv|event| action to event
       #  o  |  o  |  o  |  -
       #  o  |  x  |  o  |  -
       #  o  |  o  |  x  |  up

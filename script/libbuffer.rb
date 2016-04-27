@@ -88,8 +88,6 @@ module CIAX
       alert
     rescue
       alert($ERROR_POSITION)
-    ensure
-      sv_dw
     end
 
     # Remove duplicated args and unshift one
@@ -130,6 +128,7 @@ module CIAX
     end
 
     def flush
+      sv_dw
       @flush_proc.call(self)
       verbose do
         var = @sv_stat.pick(%i(busy queue)).inspect

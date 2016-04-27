@@ -101,7 +101,7 @@ module CIAX
         stat = Status.new
         view = View.new(stat)
         stat.ext_file if STDIN.tty?
-        stat.ext_sym.upd
+        stat.ext_sym.cmt
         puts opt[:c] ? view.to_csv : view.to_s
       end
     end

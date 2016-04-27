@@ -2,7 +2,7 @@
 require 'libwatrsp'
 
 # View is not used for computing, just for apperance for user.
-# So the convert process (upd_view) will be included in to_s
+# So the convert process (upd) will be included in to_s
 module CIAX
   # Watch Layer
   module Wat
@@ -96,7 +96,7 @@ module CIAX
         event = Event.new
         wview = View.new(event)
         event.ext_file if STDIN.tty?
-        puts wview
+        puts wview.upd
       end
     end
   end

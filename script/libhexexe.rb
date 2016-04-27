@@ -18,7 +18,7 @@ module CIAX
       private
 
       def _init_takeover
-        @sub = @cfg[:sub_list].get(id)
+        @sub = @cfg[:sub_list].get(@id)
         @sv_stat = @sub.sv_stat
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode

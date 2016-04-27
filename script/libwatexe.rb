@@ -10,9 +10,7 @@ module CIAX
       attr_reader :sub, :stat
       def initialize(id, cfg, atrb = Hashx.new)
         super(id, cfg, atrb)
-        @sub = @cfg[:sub_list].get(id)
-        @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')
-        @cobj.add_rem(@sub.cobj.rem)
+        _init_takeover
         @stat = Event.new(@sub.id)
         @host = @sub.host
         _opt_mode
@@ -49,6 +47,14 @@ module CIAX
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
         @stat.ext_rsp(@sub.stat, @sv_stat)
         super
+      end
+
+      def _init_takeover
+        @sub = @cfg[:sub_list].get(@id)
+        @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')
+        @cobj.add_rem(@sub.cobj.rem)
+        @mode = @sub.mode
+        @post_exe_procs.concat(@sub.post_exe_procs)
       end
 
       def _init_upd_

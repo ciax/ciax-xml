@@ -2,8 +2,6 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:hdb="http://ciax.sum.naoj.org/ciax-xml/hdb" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/hdb">
   <xsd:attributeGroup name="id_attr">
     <xsd:attribute name="ref" type="xsd:token" use="required"/>
-    <xsd:attribute name="type" type="xsd:token" use="required"/>
-    <xsd:attribute name="length" type="xsd:int"/>
     <xsd:attribute name="label" type="xsd:token"/>
   </xsd:attributeGroup>
   <!--root-->
@@ -28,15 +26,22 @@
   <xsd:element name="pack">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="hdb:field" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element ref="hdb:bit" minOccurs="0" maxOccurs="unbounded"/>
       </xsd:sequence>
       <xsd:attribute name="code" type="xsd:token" use="required"/>
       <xsd:attribute name="length" type="xsd:int" use="required"/>
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="bit">
+    <xsd:complexType>
+      <xsd:attributeGroup ref="hdb:id_attr"/>
+    </xsd:complexType>
+  </xsd:element>
   <xsd:element name="field">
     <xsd:complexType>
       <xsd:attributeGroup ref="hdb:id_attr"/>
+      <xsd:attribute name="type" type="xsd:token"/>
+      <xsd:attribute name="length" type="xsd:int"/>
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

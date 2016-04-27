@@ -70,9 +70,19 @@ module CIAX
 
       def _packed(packs)
         packs.map do |hash|
-          binstr = _mk_frame(hash)
+          binstr = _mk_bit(hash)
           pkstr = hash[:code] + hash[:length]
           [binstr].pack(pkstr).unpack('h')[0]
+        end.join
+      end
+
+      def _mk_bit(db)
+        db[:bits].map do |hash|
+          key = hash[:ref]
+          cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
+          dat = @stat[:data][key]
+          verbose { "Get from Status #{key} = #{dat}" }
+          dat
         end.join
       end
 
@@ -91,13 +101,13 @@ module CIAX
         type = hash[:type].to_s.to_sym
         pfx = { float: '.2f', int: 'd', binary: 'b' }[type]
         if pfx
-          _fmt(pfx, len, val)
+          _fmt_num(pfx, len, val)
         else
           val.to_s.rjust(len, '*')[0, len]
         end
       end
 
-      def _fmt(sfx, len, val)
+      def _fmt_num(sfx, len, val)
         num = /f/ =~ sfx ? val.to_f : val.to_i
         format("%0#{len}#{sfx}", num)[0, len]
       end

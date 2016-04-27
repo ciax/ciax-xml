@@ -25,12 +25,12 @@ module CIAX
       extend(JHttp).ext_http(host)
     end
 
-    def ext_file
-      extend(JFile).ext_file
+    def ext_local_file
+      extend(JFile).ext_local_file
     end
 
-    def ext_log
-      extend(JsLog).ext_log
+    def ext_local_log
+      extend(JsLog).ext_local_log
     end
 
     private

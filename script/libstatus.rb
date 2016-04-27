@@ -60,7 +60,7 @@ module CIAX
         h
       end
 
-      def ext_file
+      def ext_local_file
         super.load
       end
 
@@ -79,7 +79,7 @@ module CIAX
         if opt[:h]
           stat.ext_http(opt.host)
         else
-          stat.ext_file
+          stat.ext_local_file
         end
         puts stat
       end

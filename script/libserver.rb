@@ -8,14 +8,14 @@ module CIAX
     end
 
     # JSON expression of server stat will be sent.
-    def ext_server
+    def ext_local_server
       return self unless @port
       verbose do
         "Initiate UDP server (#{@id}) port:[#{@port}] git:[" +
           `cd #{__dir__};git reflog`.split(' ').first + ']'
       end
       @server_input_proc = proc { |line| j2h(line) }
-      @sv_stat.ext_file.auto_save.ext_log
+      @sv_stat.ext_local_file.auto_save.ext_local_log
       @server_output_proc = proc { @sv_stat.to_j }
       server_thread
     end

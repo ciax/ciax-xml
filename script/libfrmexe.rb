@@ -57,8 +57,8 @@ module CIAX
       end
 
       # Mode Extension
-      def ext_test
-        @stat.ext_file
+      def ext_local_test
+        @stat.ext_local_file
         @cobj.rem.ext.cfg[:def_msg] = 'TEST'
         super
       end
@@ -72,9 +72,9 @@ module CIAX
         super
       end
 
-      def ext_driver
+      def ext_local_driver
         super
-        extend(Drv).ext_driver
+        extend(Drv).ext_local_driver
       end
     end
 

@@ -9,7 +9,7 @@ module CIAX
       end
 
       # Initiate for driver
-      def ext_driver
+      def ext_local_driver
         @sv_stat.repl(:sid, '') # For server response
         _init_proc_pre_exe
         _init_proc_post_exe
@@ -22,7 +22,7 @@ module CIAX
         self
       end
 
-      alias_method :ext_test, :ext_driver
+      alias_method :ext_local_test, :ext_local_driver
 
       def _init_proc_pre_exe
         @pre_exe_procs << proc do

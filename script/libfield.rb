@@ -79,7 +79,7 @@ module CIAX
         cmt
       end
 
-      def ext_file
+      def ext_local_file
         super.load
       end
 

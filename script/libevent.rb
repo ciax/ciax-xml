@@ -50,7 +50,7 @@ module CIAX
         self
       end
 
-      def ext_file
+      def ext_local_file
         super.load
       end
 
@@ -78,7 +78,7 @@ module CIAX
         if opt.host
           event.ext_http(opt.host)
         else
-          event.ext_file
+          event.ext_local_file
         end
         puts event
       end

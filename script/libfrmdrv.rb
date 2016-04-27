@@ -8,7 +8,7 @@ module CIAX
         Msg.type?(obj, Exe)
       end
 
-      def ext_driver
+      def ext_local_driver
         _init_stream
         _init_drv_ext
         _init_drv_save
@@ -19,10 +19,10 @@ module CIAX
 
       def _init_stream
         @stream = Stream.new(@id, @cfg)
-        @stream.ext_log if @cfg[:option].log?
+        @stream.ext_local_log if @cfg[:option].log?
         @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
         @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }
-        @stat.ext_rsp(@stream).ext_file.auto_save
+        @stat.ext_local_rsp(@stream).ext_local_file.auto_save
       end
 
       def _init_drv_ext

@@ -17,7 +17,7 @@ module CIAX
       #       => self[:crnt]<-@stat.data(picked)
       #       => check(self[:crnt] <> self[:last]?)
       # Stat no changed -> clear exec, no eval
-      def ext_rsp(stat, sv_stat = nil)
+      def ext_local_rsp(stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
         @sv_stat = type?(sv_stat || Prompt.new('site', self[:id]), Prompt)
         wdb = @dbi[:watch] || {}
@@ -131,8 +131,8 @@ module CIAX
 
     # Add extend method in Event
     class Event
-      def ext_rsp(stat, sv_stat = nil)
-        extend(Wat::Rsp).ext_rsp(stat, sv_stat)
+      def ext_local_rsp(stat, sv_stat = nil)
+        extend(Wat::Rsp).ext_local_rsp(stat, sv_stat)
       end
     end
 
@@ -141,8 +141,8 @@ module CIAX
       odb = { t: 'test conditions[key=val,..]' }
       GetOpts.new('[site] | < status_file', 't:', odb) do |opt|
         stat = App::Status.new
-        stat.ext_file.load if STDIN.tty?
-        event = Event.new(stat[:id]).ext_rsp(stat)
+        stat.ext_local_file.load if STDIN.tty?
+        event = Event.new(stat[:id]).ext_local_rsp(stat)
         if (t = opt[:t])
           stat.str_update(t)
         end

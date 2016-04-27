@@ -26,17 +26,17 @@ module CIAX
 
       private
 
-      def ext_test
+      def ext_local_test
         @post_exe_procs << proc { @stat.next_upd }
         super
       end
 
-      def ext_driver
+      def ext_local_driver
         super
-        @stat.ext_file.auto_save
+        @stat.ext_local_file.auto_save
         # @stat[:int] is overwritten by initial loading
         @sub.batch_interrupt = @stat.get(:int)
-        @stat.ext_log if @cfg[:option].log?
+        @stat.ext_local_log if @cfg[:option].log?
         _init_upd_drv_
         _init_exe_drv_
         self
@@ -45,7 +45,7 @@ module CIAX
       def ext_local
         _init_upd_
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
-        @stat.ext_rsp(@sub.stat, @sv_stat)
+        @stat.ext_local_rsp(@sub.stat, @sv_stat)
         super
       end
 

@@ -29,10 +29,10 @@ module CIAX
       def _init_view
         @stat = Rsp.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
         @shell_output_proc = proc { @stat.to_x }
-        @stat.ext_log if @cfg[:option].log?
+        @stat.ext_local_log if @cfg[:option].log?
       end
 
-      def ext_server
+      def ext_local_server
         super
         # Specific setting must be done after super to override them
         @server_input_proc = proc do|line|

@@ -10,7 +10,7 @@ module CIAX
         Msg.type?(obj, Status)
       end
 
-      def ext_rsp(field)
+      def ext_local_rsp(field)
         @field = type?(field, Frm::Field)
         type?(@dbi, Dbi)
         self
@@ -121,8 +121,8 @@ module CIAX
 
     # Add extend method in Status
     class Status
-      def ext_rsp(field)
-        extend(App::Rsp).ext_rsp(field)
+      def ext_local_rsp(field)
+        extend(App::Rsp).ext_local_rsp(field)
       end
     end
 
@@ -132,8 +132,8 @@ module CIAX
       begin
         field = Frm::Field.new
         stat = Status.new(field[:id])
-        field.ext_file if STDIN.tty?
-        puts stat.ext_rsp(field).upd
+        field.ext_local_file if STDIN.tty?
+        puts stat.ext_local_rsp(field).upd
       rescue InvalidARGS
         Msg.usage '[site] | < field_file'
       end

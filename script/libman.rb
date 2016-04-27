@@ -62,12 +62,12 @@ module CIAX
       end
 
       # Initiate for driver
-      def ext_driver
+      def ext_local_driver
         super
-        extend(ManDrv).ext_driver
+        extend(ManDrv).ext_local_driver
       end
 
-      alias_method :ext_test, :ext_driver
+      alias_method :ext_local_test, :ext_local_driver
     end
 
     if __FILE__ == $PROGRAM_NAME

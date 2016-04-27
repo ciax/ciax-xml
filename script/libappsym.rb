@@ -12,7 +12,7 @@ module CIAX
         Msg.type?(obj, Status)
       end
 
-      def ext_sym
+      def ext_local_sym
         adbs = @dbi[:status]
         @symbol = adbs[:symbol] || {}
         @symdb = Sym::Db.pack(['share'] + adbs[:symtbl])
@@ -95,16 +95,16 @@ module CIAX
 
     # Status class
     class Status
-      def ext_sym
-        extend(Symbol).ext_sym
+      def ext_local_sym
+        extend(Symbol).ext_local_sym
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
       begin
         stat = Status.new
-        stat.ext_sym
-        stat.ext_file if STDIN.tty?
+        stat.ext_local_sym
+        stat.ext_local_file if STDIN.tty?
         puts stat.cmt
       rescue InvalidARGS
         Msg.usage '[site] | < status_file'

@@ -72,8 +72,8 @@ module CIAX
       end
 
       # Mode Extension
-      def ext_test
-        @stat.ext_sym.ext_file
+      def ext_local_test
+        @stat.ext_local_sym.ext_local_file
         @cobj.rem.ext.def_proc do |ent|
           @stat[:time] = now_msec
           ent.msg = ent[:batch].inspect
@@ -81,9 +81,9 @@ module CIAX
         super
       end
 
-      def ext_driver
+      def ext_local_driver
         super
-        extend(Drv).ext_driver
+        extend(Drv).ext_local_driver
       end
 
       def ext_local

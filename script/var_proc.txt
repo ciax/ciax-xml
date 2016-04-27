@@ -55,12 +55,12 @@
   @server_input_proc
     structure: Proc
     args: String(command line)
-    called: Server(Exe)#ext_server
+    called: Server(Exe)#ext_local_server
     
   @server_output_proc
     structure: Proc
     args: no
-    called: Server(Exe)#ext_server
+    called: Server(Exe)#ext_local_server
 
   @shell_input_proc
     structure: Proc
@@ -88,7 +88,7 @@
   Rsp(Field)@input_proc
     structure: Proc
     args: no
-    called: Rsp:ext_rsp
+    called: Rsp:ext_local_rsp
 
 ## Related to Buffer
 

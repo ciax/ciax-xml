@@ -18,7 +18,7 @@ module CIAX
       end
 
       # Ent is needed which includes response_id and cmd_parameters
-      def ext_rsp(stream)
+      def ext_local_rsp(stream)
         @stream = type?(stream, Hash)
         type?(@dbi, Dbi)
         fdbr = @dbi[:response]
@@ -140,8 +140,8 @@ module CIAX
 
     # Field class
     class Field
-      def ext_rsp(stream)
-        extend(Frm::Rsp).ext_rsp(stream)
+      def ext_local_rsp(stream)
+        extend(Frm::Rsp).ext_local_rsp(stream)
       end
     end
 
@@ -154,8 +154,8 @@ module CIAX
         id = res[:id]
         cid = res[:cmd]
         dbi = Dev::Db.new.get(id)
-        field = Field.new(dbi).ext_rsp(res)
-        field.ext_file.auto_save if opt[:m]
+        field = Field.new(dbi).ext_local_rsp(res)
+        field.ext_local_file.auto_save if opt[:m]
         if cid
           cfg[:field] = field
           # dbi.pick alreay includes :command, :version

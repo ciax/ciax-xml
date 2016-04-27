@@ -125,7 +125,7 @@ module CIAX
       require 'libinsdb'
       require 'libstatus'
       begin
-        stat = App::Status.new.ext_file
+        stat = App::Status.new.ext_local_file
         puts Rsp.new(stat)
       rescue InvalidARGS
         Msg.usage(' < status_file')

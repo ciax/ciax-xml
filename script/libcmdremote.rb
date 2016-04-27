@@ -34,7 +34,7 @@ module CIAX
           @int = add(ns::Group)
         end
 
-        def ext_log(tag = nil)
+        def ext_local_log(tag = nil)
           id = @cfg[:site_id] || @cfg[:layer_type]
           @cfg[:input] = Input.new(tag, id)
           self
@@ -45,8 +45,8 @@ module CIAX
       class Input < Varx
         def initialize(tag, id)
           super("input_#{tag}", id)
-          ext_file
-          ext_log
+          ext_local_file
+          ext_local_log
         end
       end
 

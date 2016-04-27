@@ -53,7 +53,7 @@ module CIAX
         # sign: k3n=F, oss=8,
         sign = (/[8Ff]/ =~ code.slice!(0)) ? '-' : ''
         code.sub!(/^0+/, '')
-        num = code.empty? ? '0' : sign + num
+        num = code.empty? ? '0' : sign + code
         [num, 10]
       end
 

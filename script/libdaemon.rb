@@ -22,9 +22,9 @@ module CIAX
 
     private
 
-    def _main_loop(tag, &init_proc)
+    def _main_loop(tag)
       _err_redirect(tag)
-      init_proc.call
+      yield
       sleep
     rescue SignalException
       Threadx.killall
@@ -33,8 +33,7 @@ module CIAX
 
     def _err_redirect(tag)
       return if $stderr.is_a?(Tee)
-      errout = vardir('log') + 'error_' + tag + today + '.out'
-      $stderr = Tee.new(errout)
+      $stderr = Tee.new(tag, today)
     end
 
     # Background (Switch error output to file)
@@ -69,17 +68,27 @@ module CIAX
     # append str to stderr and file like tee
     class Tee < IO
       include Msg
-      def initialize(fname)
-        super(2, 'a')
+      def initialize(tag, date)
+        super(2, 'w')
+        fname = _mk_name(tag, date)
         @io = File.open(fname, 'a')
         @io.write("\n")
         write(make_msg("Initiate STDERR Redirection\n"))
+        sname = _mk_name(tag, 'latest')
+        File.unlink(sname) if File.exist?(sname)
+        File.symlink(fname, sname)
       end
 
       def write(str)
         pass = format('%5.4f', Time.now - START_TIME)
         @io.write("[#{Time.now}/#{pass}]" + str)
         super
+      end
+
+      private
+
+      def _mk_name(tag, name)
+        vardir('log') + "error_#{tag}_#{name}.out"
       end
     end
   end

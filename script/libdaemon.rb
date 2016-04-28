@@ -80,7 +80,7 @@ module CIAX
         reopen('/dev/null/') if closed?
         super
       rescue
-        @io.write($ERROR_INFO)
+        @io.puts($ERROR_INFO)
       end
 
       private

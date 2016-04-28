@@ -75,15 +75,18 @@ module CIAX
       end
 
       def write(str)
-        pass = format('%5.4f', Time.now - START_TIME)
-        @io.write("[#{Time.now}/#{pass}]" + str)
-        reopen('/dev/null/') if closed?
+        _puts(str)
         super
       rescue
-        @io.puts($ERROR_INFO)
+        _puts($ERROR_INFO)
       end
 
       private
+
+      def _puts(str)
+        pass = format('%5.4f', Time.now - START_TIME)
+        @io.puts("[#{Time.now}/#{pass}] #{str}")
+      end
 
       def _mk_name(tag, name = nil)
         str = "error_#{tag}"

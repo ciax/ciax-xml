@@ -20,7 +20,7 @@ module CIAX
         @index.update(adbs[:alias]) if adbs.key?(:alias)
         # Just additional data should be provided
         %i(data class msg).each { |key| stat.get(key) { Hashx.new } }
-        upd
+        _init_upd_proc
       end
 
       def to_csv
@@ -52,20 +52,25 @@ module CIAX
         @stat.to_r
       end
 
-      def upd
-        self['gtime'] = { caption: '', lines: [hash = {}] }
-        hash[:time] = { label: 'TIMESTAMP', msg: Msg.date(@stat[:time]) }
-        hash[:elapsed] = { label: 'ELAPSED', msg: Msg.elps_date(@stat[:time]) }
+      private
+
+      def _init_upd_proc
+        @upd_procs << proc do
+          self['gtime'] = { caption: '', lines: [hash = {}] }
+          hash[:time] = { label: 'TIMESTAMP', msg: date(@stat[:time]) }
+          hash[:elapsed] = { label: 'ELAPSED', msg: elps_date(@stat[:time]) }
+          _view_groups
+        end
+      end
+
+      def _view_groups
         @group.each do|k, gdb|
           cap = gdb[:caption] || next
           lines = []
           self[k] = { caption: cap, lines: lines }
           _upd_members(gdb[:members], gdb[:column] || 1, lines)
         end
-        self
       end
-
-      private
 
       def _view_lines(lines)
         lines.map do|ele|

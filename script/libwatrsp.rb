@@ -50,10 +50,6 @@ module CIAX
 
       private
 
-      def time_upd
-        super(@stat[:time])
-      end
-
       def _init_procs
         @upd_procs << proc do
           next unless @stat[:time] > @last_updated
@@ -65,6 +61,7 @@ module CIAX
           verbose { 'Propagate Status#cmt -> Event#upd(cmt)' }
           upd
         end
+        @cmt_procs << proc { time_upd(@stat[:time]) }
       end
 
       # Initiate for Auto Update

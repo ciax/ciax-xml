@@ -10,6 +10,7 @@ module CIAX
       @db = {}
       self[:msg] = ''
       @cmt_procs << proc do
+        time_upd
         verbose { "Save #{id}:timing #{pick(%i(busy queue)).inspect}" }
       end
     end
@@ -64,7 +65,6 @@ module CIAX
       type?(self[key], Array).replace(ary)
       self
     ensure
-      time_upd
       cmt
     end
 
@@ -72,7 +72,6 @@ module CIAX
       self[key].push(elem) # unless type?(self[key], Array).include?(elem)
       self
     ensure
-      time_upd
       cmt
     end
 
@@ -95,7 +94,6 @@ module CIAX
       end
       hash
     ensure
-      time_upd
       cmt
     end
 

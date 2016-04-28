@@ -21,7 +21,6 @@ module CIAX
       verbose { "Update(#{time_id}) Pre Procs" }
       self
     ensure
-      time_upd
       cmt
     end
 
@@ -42,12 +41,6 @@ module CIAX
 
     def repl(key, val)
       super || return
-      time_upd
-      cmt
-    end
-
-    # Generate new data by input
-    def make
       time_upd
       cmt
     end

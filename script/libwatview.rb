@@ -21,16 +21,13 @@ module CIAX
       private
 
       def _init_upd_proc
+        @cmt_procs << proc { time_upd(@event[:time]) }
         @upd_procs << proc do
           %i(exec block int act_time upd_next).each do |id|
             self[id] = @event.get(id)
           end
           upd_stat
         end
-      end
-
-      def time_upd
-        super(@event[:time])
       end
 
       def _init_stat(wdb)

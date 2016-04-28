@@ -23,11 +23,8 @@ module CIAX
 
       private
 
-      def time_upd
-        super(@stat[:time])
-      end
-
       def _init_upd_procs
+        @cmt_procs << proc { time_upd(@stat[:time]) }
         @upd_procs << proc { self[:hexpack] = _get_header_ + _get_body_ }
         @sv_stat.cmt_procs << proc { _upd_propagate('Prompt') }
         @stat.cmt_procs << proc { _upd_propagate('Status') }

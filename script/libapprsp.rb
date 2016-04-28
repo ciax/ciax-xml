@@ -20,6 +20,7 @@ module CIAX
       private
 
       def _init_upd_proc
+        @cmt_procs << proc { time_upd(@field[:time]) }
         @upd_procs << proc do
           @adbs.each do|id, hash|
             cnd = hash[:fields].empty?
@@ -27,10 +28,6 @@ module CIAX
             self[:data][id] = cnd ? (hash[:default] || '') : _get_val(hash, id)
           end
         end
-      end
-
-      def time_upd
-        super(@field[:time])
       end
 
       def _get_val(hash, id)

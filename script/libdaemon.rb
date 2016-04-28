@@ -11,19 +11,17 @@ module CIAX
       # Set ARGS in opt file
       @base = vardir('run') + tag
       noarg = ARGV.empty?
+      _kill_pids
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
-        opt[:s] = true
-        _kill_pids
         noarg && exit
-        _new_pid
-        _main_loop(tag) { yield(cfg, args) }
+        _init_server(opt, tag)
+        _main_loop { yield(cfg, args) }
       end
     end
 
     private
 
-    def _main_loop(tag)
-      _err_redirect(tag)
+    def _main_loop
       yield
       sleep
     rescue SignalException
@@ -31,15 +29,12 @@ module CIAX
       retry if $ERROR_INFO.message == 'SIGHUP'
     end
 
-    def _err_redirect(tag)
-      return if $stderr.is_a?(Tee)
-      $stderr = Tee.new(tag, today)
-    end
-
     # Background (Switch error output to file)
-    def _new_pid
+    def _init_server(opt, tag)
+      opt[:s] = true
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
+      $stderr = Tee.new(tag, today)
     end
 
     def _kill_pids
@@ -74,7 +69,7 @@ module CIAX
         @io = File.open(fname, 'a')
         @io.write("\n")
         write(make_msg("Initiate STDERR Redirection\n"))
-        sname = _mk_name(tag, 'latest')
+        sname = _mk_name(tag)
         File.unlink(sname) if File.exist?(sname)
         File.symlink(fname, sname)
       end
@@ -82,13 +77,18 @@ module CIAX
       def write(str)
         pass = format('%5.4f', Time.now - START_TIME)
         @io.write("[#{Time.now}/#{pass}]" + str)
+        reopen('/dev/null/') if closed?
         super
+      rescue
+        @io.write($ERROR_INFO)
       end
 
       private
 
-      def _mk_name(tag, name)
-        vardir('log') + "error_#{tag}_#{name}.out"
+      def _mk_name(tag, name = nil)
+        str = "error_#{tag}"
+        str << "_#{name}" if name
+        vardir('log') + str + '.out'
       end
     end
   end

@@ -34,7 +34,10 @@ module CIAX
       opt[:s] = true
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
-      $stderr = Tee.new(tag, today)
+      verbose { "Initiate Daemon (#{$PROCESS_ID})" }
+      fname = _mk_name(tag, today)
+      $stderr = File.new(fname, 'a')
+      _mk_link(fname, tag)
     end
 
     def _kill_pids
@@ -60,39 +63,16 @@ module CIAX
       nil
     end
 
-    # append str to stderr and file like tee
-    class Tee < IO
-      include Msg
-      def initialize(tag, date)
-        super(2, 'w')
-        fname = _mk_name(tag, date)
-        @io = File.open(fname, 'a')
-        @io.write("\n")
-        write(make_msg("Initiate STDERR Redirection\n"))
-        sname = _mk_name(tag)
-        File.unlink(sname) if File.exist?(sname)
-        File.symlink(fname, sname)
-      end
+    def _mk_link(fname, tag)
+      sname = _mk_name(tag)
+      File.unlink(sname) if File.exist?(sname)
+      File.symlink(fname, sname)
+    end
 
-      def write(str)
-        _puts(str)
-        super
-      rescue
-        _puts($ERROR_INFO)
-      end
-
-      private
-
-      def _puts(str)
-        pass = format('%5.4f', Time.now - START_TIME)
-        @io.puts("[#{Time.now}/#{pass}] #{str}")
-      end
-
-      def _mk_name(tag, name = nil)
-        str = "error_#{tag}"
-        str << "_#{name}" if name
-        vardir('log') + str + '.out'
-      end
+    def _mk_name(tag, name = nil)
+      str = "error_#{tag}"
+      str << "_#{name}" if name
+      vardir('log') + str + '.out'
     end
   end
 end

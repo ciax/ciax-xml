@@ -9,11 +9,9 @@ module CIAX
     def initialize(tag, optstr = '')
       ENV['VER'] ||= 'Initiate'
       _kill_pids(tag)
-      noarg = ARGV.empty?
+      exit if ARGV.empty?
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
-        noarg && exit
-        opt[:s] = true
-        _init_server(tag)
+        _init_server(tag, opt)
         _main_loop { yield(cfg, args) }
       end
     end
@@ -29,7 +27,8 @@ module CIAX
     end
 
     # Background (Switch error output to file)
-    def _init_server(tag)
+    def _init_server(tag, opt)
+      opt[:s] = true
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
       verbose { "Initiate Daemon (#{$PROCESS_ID})" }
@@ -37,7 +36,7 @@ module CIAX
     end
 
     def _kill_pids(tag)
-      @base = vardir('run') + tag
+      @pidfile = vardir('run') + tag + '.pid'
       pids = _read_pids
       _write_pid('')
       pids.any? { |pid| _kill_pid(pid) }
@@ -51,13 +50,12 @@ module CIAX
     end
 
     def _read_pids
-      pidfile = @base + '.pid'
-      return [] unless test('r', pidfile)
-      IO.readlines(pidfile).keep_if { |l| l.to_i > 0 }
+      return [] unless test('r', @pidfile)
+      IO.readlines(@pidfile).keep_if { |l| l.to_i > 0 }
     end
 
     def _write_pid(pid)
-      IO.write(@base + '.pid', pid)
+      IO.write(@pidfile, pid)
     end
 
     def _redirect(tag)

@@ -12,8 +12,8 @@ module CIAX
       noarg = ARGV.empty?
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         noarg && exit
-        _set_cfg(cfg, args, opt)
-        _init_server(opt, tag)
+        opt[:s] = true
+        _init_server(tag)
         _main_loop { yield(cfg, args) }
       end
     end
@@ -28,19 +28,12 @@ module CIAX
       retry if $ERROR_INFO.message == 'SIGHUP'
     end
 
-    def _set_cfg(cfg, args, opt)
-      cfg[:args] = args
-      opt[:s] = true
-    end
-
     # Background (Switch error output to file)
-    def _init_server(_opt, tag)
+    def _init_server(tag)
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
       verbose { "Initiate Daemon (#{$PROCESS_ID})" }
-      fname = _mk_name(tag, today)
-      $stderr = File.new(fname, 'a')
-      _mk_link(fname, tag)
+      _redirect(tag)
     end
 
     def _kill_pids(tag)
@@ -48,6 +41,13 @@ module CIAX
       pids = _read_pids
       _write_pid('')
       pids.any? { |pid| _kill_pid(pid) }
+    end
+
+    def _kill_pid(pid)
+      Process.kill(:TERM, pid.to_i)
+      verbose { "Initiate Process Killed (#{pid})" }
+    rescue
+      nil
     end
 
     def _read_pids
@@ -60,11 +60,10 @@ module CIAX
       IO.write(@base + '.pid', pid)
     end
 
-    def _kill_pid(pid)
-      Process.kill(:TERM, pid.to_i)
-      verbose { "Initiate Process Killed (#{pid})" }
-    rescue
-      nil
+    def _redirect(tag)
+      fname = _mk_name(tag, today)
+      $stderr = File.new(fname, 'a')
+      _mk_link(fname, tag)
     end
 
     def _mk_link(fname, tag)

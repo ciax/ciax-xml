@@ -15,12 +15,7 @@ module CIAX
 
       def store_db(db)
         @db = @cfg[:db] = type?(db, Db)
-        sites = @db.displist.valid_keys
-        if @cfg.key?(:sites)
-          sites = cfg[:sites] & sites
-          get(nil) if sites.each { |s| get(s) }.empty?
-        end
-        @current = sites.first
+        _get_sites
         self
       end
 
@@ -52,6 +47,16 @@ module CIAX
       end
 
       private
+
+      def _get_sites
+        if (sites = @cfg[:run])
+          sites = @db.run_list if sites.empty?
+        elsif ! (sites = @cfg[:sites])
+          return
+        end
+        get(nil) if (sites & @db.displist.valid_keys).empty?
+        @current = sites.each { |s| get(s) }.first if sites
+      end
 
       def add(site)
         # layer_module can be Frm,App,Wat,Hex

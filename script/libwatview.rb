@@ -21,7 +21,7 @@ module CIAX
       private
 
       def _init_upd_proc
-        @upd_proc << proc do
+        @upd_procs << proc do
           %i(exec block int act_time upd_next).each do |id|
             self[id] = @event.get(id)
           end

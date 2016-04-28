@@ -8,12 +8,11 @@ module CIAX
     # Reloadable by HUP signal
     def initialize(tag, optstr = '')
       ENV['VER'] ||= 'Initiate'
-      # Set ARGS in opt file
-      @base = vardir('run') + tag
+      _kill_pids(tag)
       noarg = ARGV.empty?
-      _kill_pids
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         noarg && exit
+        _set_cfg(cfg, args, opt)
         _init_server(opt, tag)
         _main_loop { yield(cfg, args) }
       end
@@ -29,9 +28,13 @@ module CIAX
       retry if $ERROR_INFO.message == 'SIGHUP'
     end
 
+    def _set_cfg(cfg, args, opt)
+      cfg[:args] = args
+      opt[:s] = true
+    end
+
     # Background (Switch error output to file)
     def _init_server(opt, tag)
-      opt[:s] = true
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
       verbose { "Initiate Daemon (#{$PROCESS_ID})" }
@@ -40,7 +43,8 @@ module CIAX
       _mk_link(fname, tag)
     end
 
-    def _kill_pids
+    def _kill_pids(tag)
+      @base = vardir('run') + tag
       pids = _read_pids
       _write_pid('')
       pids.any? { |pid| _kill_pid(pid) }

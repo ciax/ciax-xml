@@ -12,6 +12,7 @@ module CIAX
         @cfg[:option] = @cfg[:option].sub_opt
         @sub_list = App::List.new(@cfg)
         store_db(@cfg[:db] ||= Ins::Db.new)
+        run(@cfg[:args]) if @cfg.key?(:args)
       end
     end
 

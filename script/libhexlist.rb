@@ -12,6 +12,7 @@ module CIAX
         @sub_list = Wat::List.new(@cfg)
         store_db(@cfg[:db] ||= Ins::Db.new)
         @cfg[:hdb] = Db.new
+        run(@cfg[:args]) if @cfg.key?(:args)
       end
     end
 

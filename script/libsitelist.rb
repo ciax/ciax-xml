@@ -7,19 +7,20 @@ module CIAX
     class List < CIAX::List
       attr_reader :db, :sub_list
       def initialize(cfg, atrb = Hashx.new)
-        cfg[:top_list] ||= self
-        cfg[:layer_type] = 'site'
+        cfg[:top_list] ||= self # Site Shared
+        cfg[:layer_type] = 'site' # Site Shared
         atrb[:column] = 2
         super
       end
 
       def store_db(db)
         @db = @cfg[:db] = type?(db, Db)
-        if @cfg.key?(:site)
-          @current = @cfg[:site]
-        else
-          @current = db.displist.valid_keys.first
+        sites = @db.displist.valid_keys
+        if @cfg.key?(:sites)
+          sites = cfg[:sites] & sites
+          get(nil) if sites.each { |s| get(s) }.empty?
         end
+        @current = sites.first
         self
       end
 

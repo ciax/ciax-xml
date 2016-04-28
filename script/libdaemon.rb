@@ -34,7 +34,7 @@ module CIAX
     end
 
     # Background (Switch error output to file)
-    def _init_server(opt, tag)
+    def _init_server(_opt, tag)
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
       verbose { "Initiate Daemon (#{$PROCESS_ID})" }

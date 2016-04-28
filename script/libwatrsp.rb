@@ -109,7 +109,7 @@ module CIAX
 
       def upd_event
         if @sv_stat.up?(:event)
-          _event_off unless active?
+          _event_off
         elsif active?
           _event_on
         end
@@ -123,7 +123,7 @@ module CIAX
       end
 
       def _event_off
-        return if @sv_stat.up?(:busy)
+        return if active?
         @sv_stat.dw(:event)
         @on_deact_procs.each { |p| p.call(self) }
       end

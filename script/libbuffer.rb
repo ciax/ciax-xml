@@ -128,8 +128,8 @@ module CIAX
     end
 
     def flush
-      sv_dw
       @flush_proc.call(self)
+      sv_dw
       verbose do
         var = @sv_stat.pick(%i(busy queue)).inspect
         "Flush buffer(#{@id}):timing#{var}"

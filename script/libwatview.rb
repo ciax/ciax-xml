@@ -2,6 +2,7 @@
 require 'libwatrsp'
 
 # View is not used for computing, just for apperance for user.
+# Some information is added from Dbi
 # So the convert process (upd) will be included in to_s
 module CIAX
   # Watch Layer
@@ -27,8 +28,6 @@ module CIAX
           upd_stat
         end
       end
-
-      private
 
       def time_upd
         super(@event[:time])

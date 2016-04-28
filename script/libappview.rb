@@ -2,6 +2,7 @@
 require 'libappsym'
 
 # View is not used for computing, just for apperance for user.
+# Some information is added from Dbi
 # So the convert process (upd) will be included in to_v
 # Updated at to_v.
 module CIAX

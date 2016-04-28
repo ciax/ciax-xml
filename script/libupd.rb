@@ -20,6 +20,9 @@ module CIAX
       @upd_procs.each { |p| p.call(self) }
       verbose { "Update(#{time_id}) Pre Procs" }
       self
+    ensure
+      time_upd
+      cmt
     end
 
     # Data Commit Method

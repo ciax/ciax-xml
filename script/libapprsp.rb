@@ -13,22 +13,21 @@ module CIAX
       def ext_local_rsp(field)
         @field = type?(field, Frm::Field)
         type?(@dbi, Dbi)
+        _init_upd_proc
         self
-      end
-
-      def upd
-        @adbs.each do|id, hash|
-          cnd = hash[:fields].empty?
-          next if cnd && get(id)
-          self[:data][id] = cnd ? (hash[:default] || '') : _get_val(hash, id)
-        end
-        self
-      ensure
-        time_upd
-        cmt
       end
 
       private
+
+      def _init_upd_proc
+        @upd_procs << proc do
+          @adbs.each do|id, hash|
+            cnd = hash[:fields].empty?
+            next if cnd && get(id)
+            self[:data][id] = cnd ? (hash[:default] || '') : _get_val(hash, id)
+          end
+        end
+      end
 
       def time_upd
         super(@field[:time])

@@ -12,19 +12,20 @@ module CIAX
         super()
         @event = type?(event, Event)
         wdb = type?(event.dbi, Dbi)[:watch]
-        init_stat(wdb || { index: [] })
+        _init_stat(wdb || { index: [] })
+        _init_upd_proc
         upd
       end
 
-      def upd
-        %i(exec block int act_time upd_next).each do |id|
-          self[id] = @event.get(id)
+      private
+
+      def _init_upd_proc
+        @upd_proc << proc do
+          %i(exec block int act_time upd_next).each do |id|
+            self[id] = @event.get(id)
+          end
+          upd_stat
         end
-        upd_stat
-        self
-      ensure
-        time_upd
-        cmt
       end
 
       private
@@ -33,17 +34,17 @@ module CIAX
         super(@event[:time])
       end
 
-      def init_stat(wdb)
+      def _init_stat(wdb)
         self[:stat] = Hashx.new
         wdb[:index].each do |id, evnt|
           hash = self[:stat].get(id) { Hashx.new }
           hash[:label] = evnt[:label]
-          init_cond(evnt[:cnd], hash.get(:cond) { [] })
+          _init_cond(evnt[:cnd], hash.get(:cond) { [] })
         end
         self
       end
 
-      def init_cond(cond, m)
+      def _init_cond(cond, m)
         cond.each do |cnd|
           m << (h = Hashx.new(cnd))
           _init_by_type(cnd, h)

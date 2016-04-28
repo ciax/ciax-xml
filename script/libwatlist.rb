@@ -9,7 +9,6 @@ module CIAX
       # cfg must have [:db]
       def initialize(cfg, atrb = Hashx.new)
         super
-        @cfg[:option] = @cfg[:option].sub_opt
         @sub_list = App::List.new(@cfg)
         store_db(@cfg[:db] ||= Ins::Db.new)
         run(@cfg[:args]) if @cfg.key?(:args)

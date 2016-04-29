@@ -7,8 +7,8 @@ module CIAX
     # Previous process will be killed at the start up.
     # Reloadable by HUP signal
     def initialize(tag, optstr = '')
-      _kill_pids(tag)
-      _chk_args
+      _kill_pids(tag) || msg = '   Nothing to do'
+      _chk_args(msg)
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         opt[:s] = true
         atrb = args.empty? ? {} : { sites: args }
@@ -50,9 +50,9 @@ module CIAX
       pids.any? { |pid| _kill_pid(pid) }
     end
 
-    def _chk_args
+    def _chk_args(msg)
       ENV['VER'] ||= 'Initiate'
-      give_up('  Nothing to do') if ARGV.empty?
+      msg ? give_up(msg) : exit(2) if ARGV.empty?
     end
 
     def _kill_pid(pid)

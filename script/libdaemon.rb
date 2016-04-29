@@ -7,15 +7,13 @@ module CIAX
     # Previous process will be killed at the start up.
     # Reloadable by HUP signal
     def initialize(tag, optstr = '')
-      ENV['VER'] ||= 'Initiate'
       _kill_pids(tag)
-      ARGV << '' if ARGV.empty?
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         opt[:s] = true
-        obj = yield(cfg, run: args)
-        _init_server
-        _redirect(tag)
-        _main_loop(obj) { yield(cfg, run: args) }
+        atrb = args.empty? ? {} : { sites: args }
+        obj = yield(cfg, atrb)
+        _init_server(tag)
+        _main_loop(obj) { yield(cfg, atrb) }
       end
     end
 
@@ -33,7 +31,12 @@ module CIAX
     end
 
     # Background (Switch error output to file)
-    def _init_server
+    def _init_server(tag)
+      _detach
+      _redirect(tag)
+    end
+
+    def _detach
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
       verbose { "Initiate Daemon (#{$PROCESS_ID})" }
@@ -44,6 +47,8 @@ module CIAX
       pids = _read_pids
       _write_pid('')
       pids.any? { |pid| _kill_pid(pid) }
+      ENV['VER'] ||= 'Initiate'
+      ARGV << '' if ARGV.empty?
     end
 
     def _kill_pid(pid)

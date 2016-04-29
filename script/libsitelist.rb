@@ -20,19 +20,16 @@ module CIAX
       end
 
       def get(site)
-        if @list.key?(site)
-          cobj = @list.get(site)
-          @sub_list.get(cobj.sub.id) if @sub_list
-        else
-          cobj = add(site)
-        end
+        cobj = @list.key?(site) ? @list.get(site) : add(site)
+        @sub_list.get(cobj.sub.id) if @sub_list
         @current = site
         cobj
       end
 
       def run
+        @db.run_list.each { |s| get(s) } if @list.empty?
         @list.each_value { |obj| obj.run }
-        @sub_list[:list].each_value { |obj| obj.run } if @sub_list
+        @sub_list.run if @sub_list
         self
       end
 
@@ -47,13 +44,10 @@ module CIAX
       private
 
       def _get_sites
-        if (sites = @cfg[:run])
-          sites = @db.run_list if sites.empty?
-        elsif ! (sites = @cfg[:sites])
-          return
-        end
+        return unless @cfg.key?(:sites)
+        sites = @cfg[:sites]
         get(nil) if (sites & @db.displist.valid_keys).empty?
-        @current = sites.each { |s| get(s) }.first if sites
+        @current = sites.each { |s| get(s) }.first
       end
 
       def add(site)

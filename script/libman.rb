@@ -20,6 +20,11 @@ module CIAX
         @mode = 'MCR:' + @mode
       end
 
+      def run
+        @sub_list.run
+        self
+      end
+
       def ext_shell
         @cfg[:output] = @stat
         extend(Shell).ext_shell
@@ -72,7 +77,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', 'cenlrs') do |cfg|
-        Man.new(cfg).ext_shell.shell
+        Man.new(cfg).run.ext_shell.shell
       end
     end
   end

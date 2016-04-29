@@ -8,6 +8,7 @@ module CIAX
     # Reloadable by HUP signal
     def initialize(tag, optstr = '')
       _kill_pids(tag)
+      _chk_args
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
         opt[:s] = true
         atrb = args.empty? ? {} : { sites: args }
@@ -47,8 +48,11 @@ module CIAX
       pids = _read_pids
       _write_pid('')
       pids.any? { |pid| _kill_pid(pid) }
+    end
+
+    def _chk_args
       ENV['VER'] ||= 'Initiate'
-      ARGV << '' if ARGV.empty?
+      give_up('  Nothing to do') if ARGV.empty?
     end
 
     def _kill_pid(pid)

@@ -95,7 +95,8 @@ module CIAX
     # System mode
     def _db_mode
       @optdb.update(
-        e: 'execution mode', s: 'server mode', n: 'non-stop mode'
+        e: 'execution mode', s: 'server mode', n: 'non-stop mode',
+        b: 'back ground mode'
       )
       self
     end

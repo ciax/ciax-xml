@@ -7,13 +7,11 @@ module CIAX
     # Previous process will be killed at the start up.
     # Reloadable by HUP signal
     def initialize(tag, optstr = '')
-      _kill_pids(tag) || msg = '   Nothing to do'
-      _chk_args(msg)
-      ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
-        opt[:s] = true
+      _chk_args(_kill_pids(tag))
+      ConfOpts.new('[id] ....', optstr + 'sb') do |cfg, args, opt|
         atrb = args.empty? ? {} : { sites: args }
         obj = yield(cfg, atrb)
-        _init_server(tag)
+        _init_server(tag, opt)
         _main_loop(obj) { yield(cfg, atrb) }
       end
     end
@@ -32,9 +30,9 @@ module CIAX
     end
 
     # Background (Switch error output to file)
-    def _init_server(tag)
+    def _init_server(tag, opt)
       _detach
-      _redirect(tag)
+      _redirect(tag) if opt[:b]
     end
 
     def _detach
@@ -47,12 +45,13 @@ module CIAX
       @pidfile = vardir('run') + tag + '.pid'
       pids = _read_pids
       _write_pid('')
-      pids.any? { |pid| _kill_pid(pid) }
+      '   Nothing to do' unless pids.any? { |pid| _kill_pid(pid) }
     end
 
     def _chk_args(msg)
       ENV['VER'] ||= 'Initiate'
-      msg ? give_up(msg) : exit(2) if ARGV.empty?
+      msg ? give_up(indent(1) + msg) : exit(2) if ARGV.empty?
+      ARGV.unshift '-s'
     end
 
     def _kill_pid(pid)
@@ -72,6 +71,7 @@ module CIAX
     end
 
     def _redirect(tag)
+      verbose { 'Initiate STDERR redirect' }
       fname = _mk_name(tag, today)
       $stderr = File.new(fname, 'a')
       _mk_link(fname, tag)

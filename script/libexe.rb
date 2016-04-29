@@ -52,6 +52,11 @@ module CIAX
       @sv_stat.msg
     end
 
+    # For server start
+    def run
+      self
+    end
+
     def ext_shell
       extend(Shell).ext_shell
     end

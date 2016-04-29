@@ -17,12 +17,10 @@ module CIAX
       @server_input_proc = proc { |line| j2h(line) }
       @sv_stat.ext_local_file.auto_save.ext_local_log
       @server_output_proc = proc { @sv_stat.to_j }
-      server_thread
+      self
     end
 
-    private
-
-    def server_thread
+    def run
       ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |udp|
         line, addr = udp.recvfrom(4096)
         line.chomp!
@@ -34,6 +32,8 @@ module CIAX
       end
       self
     end
+
+    private
 
     def _srv_exec(line, addr)
       verbose { "Exec Server\nValid Commands #{@cobj.valid_keys}" }

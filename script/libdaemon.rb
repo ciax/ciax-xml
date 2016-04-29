@@ -11,26 +11,29 @@ module CIAX
       _kill_pids(tag)
       ARGV << '' if ARGV.empty?
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
-        yield(cfg, run: args)
-        _init_server(opt)
+        opt[:s] = true
+        obj = yield(cfg, run: args)
+        _init_server
         _redirect(tag)
-        _main_loop { yield(cfg, run: args) }
+        _main_loop(obj) { yield(cfg, run: args) }
       end
     end
 
     private
 
-    def _main_loop
-      yield
+    def _main_loop(obj)
+      obj.run
       sleep
     rescue SignalException
       Threadx.killall
-      retry if $ERROR_INFO.message == 'SIGHUP'
+      if $ERROR_INFO.message == 'SIGHUP'
+        obj = yield
+        retry
+      end
     end
 
     # Background (Switch error output to file)
-    def _init_server(opt)
-      opt[:s] = true
+    def _init_server
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
       verbose { "Initiate Daemon (#{$PROCESS_ID})" }

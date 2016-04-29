@@ -43,6 +43,7 @@ module CIAX
   # UDP Server Thread
   class ThreadUdp < Threadx
     def initialize(name, port)
+      verbose { "Initiate Start Server" }
       super(name, 9) do
         _udp_loop(port) { |udp| yield(udp) }
       end

@@ -30,11 +30,9 @@ module CIAX
         cobj
       end
 
-      # Server Setting
-      def run(sites = [])
-        sites = @db.run_list if sites.empty?
-        get(nil) if sites.empty? # Show usage
-        sites.each { |s| get(s).exe(['upd']) }
+      def run
+        @list.each_value { |obj| obj.run }
+        @sub_list[:list].each_value { |obj| obj.run } if @sub_list
         self
       end
 

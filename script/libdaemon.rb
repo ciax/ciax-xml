@@ -9,10 +9,12 @@ module CIAX
     def initialize(tag, optstr = '')
       ENV['VER'] ||= 'Initiate'
       _kill_pids(tag)
-      exit if ARGV.empty?
+      ARGV << '' if ARGV.empty?
       ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
-        _init_server(tag, opt)
-        _main_loop { yield(cfg, args) }
+        yield(cfg, run: args)
+        _init_server(opt)
+        _redirect(tag)
+        _main_loop { yield(cfg, run: args) }
       end
     end
 
@@ -27,12 +29,11 @@ module CIAX
     end
 
     # Background (Switch error output to file)
-    def _init_server(tag, opt)
+    def _init_server(opt)
       opt[:s] = true
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
       verbose { "Initiate Daemon (#{$PROCESS_ID})" }
-      _redirect(tag)
     end
 
     def _kill_pids(tag)

@@ -7,10 +7,10 @@ module CIAX
     class List < CIAX::List
       attr_reader :db, :sub_list
       def initialize(cfg, atrb = Hashx.new)
+        super
         cfg[:top_list] ||= self # Site Shared
         cfg[:layer_type] = 'site' # Site Shared
-        atrb[:column] = 2
-        super
+        @cfg[:column] = 2
       end
 
       def store_db(db)

@@ -84,5 +84,19 @@ module CIAX
       str << "_#{name}" if name
       vardir('log') + str + '.out'
     end
+
+    # Error output redirection to Log File
+    class File < File
+      include Msg
+      def initialize(fname, rw)
+        super
+        @base = now_msec
+        write("\n")
+      end
+
+      def puts(str)
+        super(format("[#{Time.now}/%s]%s", elps_date(@base), str))
+      end
+    end
   end
 end

@@ -10,21 +10,21 @@ module CIAX
       _chk_args(_kill_pids(tag))
       ConfOpts.new('[id] ....', optstr + 'sb') do |cfg, args, opt|
         atrb = args.empty? ? {} : { sites: args }
-        obj = yield(cfg, atrb)
+        @obj = yield(cfg, atrb)
         _init_server(tag, opt)
-        _main_loop(obj) { yield(cfg, atrb) }
+        _main_loop { yield(cfg, atrb) }
       end
     end
 
     private
 
-    def _main_loop(obj)
-      obj.run
+    def _main_loop
+      @obj.run
       sleep
     rescue SignalException
       Threadx.killall
       if $ERROR_INFO.message == 'SIGHUP'
-        obj = yield
+        @obj = yield
         retry
       end
     end

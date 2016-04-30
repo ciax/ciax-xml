@@ -36,7 +36,7 @@ module CIAX
     # -ces: drive + server + client for device site
     def sub_opt
       opt = dup
-      %i(e s).each { |k| opt.delete(k) } if drv? && cl?
+      %i(e s).each { |k| opt.delete(k) } if cl?
       opt
     end
 

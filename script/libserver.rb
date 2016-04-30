@@ -21,6 +21,7 @@ module CIAX
     end
 
     def run
+      super
       ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |udp|
         line, addr = udp.recvfrom(4096)
         line.chomp!

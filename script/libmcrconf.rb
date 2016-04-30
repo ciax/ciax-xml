@@ -11,15 +11,15 @@ module CIAX
     # :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
     # :host, :port
     class Conf < Config
-      def initialize(cfg)
-        super(cfg)
+      def initialize(root_cfg)
+        super(root_cfg)
         db = Db.new
         dbi = db.get
         update(layer_type: 'mcr', db: db)
         # pick already includes :command, :version
         update(dbi.pick([:sites, :id]))
         _init_net(dbi)
-        _init_dev_list(cfg)
+        _init_dev_list(root_cfg.gen(self))
       end
 
       private
@@ -29,12 +29,15 @@ module CIAX
         self[:port] = dbi[:port] || 55_555
       end
 
-      # Take App List
-      def _init_dev_list(cfg)
-        atrb = { src: 'macro' }
-        atrb[:sites] = self[:sites]
-        atrb[:option] = self[:option].sub_opt
-        self[:dev_list] = Wat::List.new(cfg, atrb)
+      # self is branch from root_cfg
+      # site_cfg is handover to App,Frm
+      # atrb is Wat only
+      def _init_dev_list(site_cfg)
+        # handover to Wat only
+        atrb = { src: 'macro', sites: self[:sites] }
+        # handover to App,Frm
+        site_cfg[:option] = self[:option].sub_opt
+        self[:dev_list] = Wat::List.new(site_cfg, atrb)
         self[:sv_stat] = Prompt.new(self[:id], self[:option])
       end
     end

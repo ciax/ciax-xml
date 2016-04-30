@@ -17,7 +17,6 @@ module CIAX
         _init_proc_intcmd
         _init_proc_intrpt
         _init_proc_swmode
-        _init_dev
         @terminate_procs << proc { @stat.clean }
         self
       end
@@ -62,10 +61,6 @@ module CIAX
       def _init_proc_swmode
         @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
         @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
-      end
-
-      def _init_dev
-        @cfg[:sites].each { |site| @cfg[:dev_list].get(site) }
       end
     end
   end

@@ -20,6 +20,7 @@ module CIAX
       self
     end
 
+    # Separated form ext_* for detach process of this part
     def run
       super
       ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |udp|

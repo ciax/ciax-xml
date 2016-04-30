@@ -28,7 +28,7 @@ module CIAX
 
       def run
         @db.run_list.each { |s| get(s) } if @list.empty?
-        @list.each_value { |obj| obj.run }
+        @list.each_value(&:run)
         @sub_list.run if @sub_list
         self
       end

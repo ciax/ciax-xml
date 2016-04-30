@@ -21,9 +21,8 @@ module CIAX
       def ext_local_rsp(stream)
         @stream = type?(stream, Hash)
         type?(@dbi, Dbi)
-        fdbr = @dbi[:response]
-        @skel = fdbr[:frame]
-        @fds = fdbr[:index]
+        @fdbr = @dbi[:response]
+        @fds = @fdbr[:index]
         sp = type?(@dbi[:stream], Hash)
         # Frame structure:
         #   main(total){ ccrange{ body(selected str) } }
@@ -52,7 +51,7 @@ module CIAX
       # sel structure:
       #   { terminator, :main{}, :body{} <- changes on every upd }
       def _make_sel(ent, rid)
-        @sel = Hash[@skel]
+        @sel = Hash[@fdbr[:frame]]
         @sel.update(@fds[rid])
         @sel[:body] = ent.deep_subst(@sel[:body])
         verbose { "Selected DB for #{rid}\n" + @sel.inspect }

@@ -23,23 +23,20 @@ module CIAX
     # Separated form ext_* for detach process of this part
     def run
       super
-      ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |udp|
-        line, addr = udp.recvfrom(4096)
-        line.chomp!
+      ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |line, rhost|
         verbose { "UDP Recv:#{line} is #{line.class}" }
-        _srv_exec(line, addr)
+        _srv_exec(line, rhost)
         send_str = @server_output_proc.call
         verbose { "UDP Send:#{send_str}" }
-        udp.send(send_str, 0, addr[2], addr[1])
+        send_str
       end
       self
     end
 
     private
 
-    def _srv_exec(line, addr)
+    def _srv_exec(line, rhost)
       verbose { "Exec Server\nValid Commands #{@cobj.valid_keys}" }
-      rhost = Addrinfo.ip(addr[2]).getnameinfo.first
       exe(@server_input_proc.call(line), "udp:#{rhost}")
     rescue InvalidCMD
       @sv_stat.repl(:msg, 'INVALID')

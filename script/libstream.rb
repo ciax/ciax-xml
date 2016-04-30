@@ -78,6 +78,7 @@ module CIAX
         Signal.trap(:INT, nil)
         @f = IO.popen(@iocmd, 'r+')
         Signal.trap(:INT, 'DEFAULT')
+        verbose { 'Initiate Opened' }
         at_exit { close_strm }
         @post_open_proc.call
         # verbose { 'Stream Open successfully' }

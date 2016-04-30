@@ -20,7 +20,7 @@ module CIAX
 
     def _main_loop
       @obj.run
-      sleep
+      Process.waitall
     rescue SignalException
       Threadx.killall
       if $ERROR_INFO.message == 'SIGHUP'
@@ -36,9 +36,11 @@ module CIAX
     end
 
     def _detach
+      # Child process (Stream/Pipe) will be closed by at_exit()
+      #  as the main process exit in Process.daemon
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
-      verbose { "Initiate Daemon (#{$PROCESS_ID})" }
+      verbose { "Initiate Daemon Detached (#{$PROCESS_ID})" }
     end
 
     def _kill_pids(tag)

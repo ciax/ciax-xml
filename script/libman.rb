@@ -10,7 +10,7 @@ module CIAX
       attr_reader :sub_list # Used for Layer module
       # cfg should have [:dev_list]
       def initialize(cfg)
-        super(nil, Conf.new(cfg))
+        super(Conf.new(cfg))
         verbose { 'Initiate Layer' }
         # id = nil -> taken by ARGV
         _init_net

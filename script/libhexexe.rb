@@ -8,8 +8,9 @@ module CIAX
   module Hex
     # cfg must have [:db], [:sub_list]
     class Exe < Exe
-      def initialize(id, cfg, atrb = Hashx.new)
+      def initialize(cfg, atrb = Hashx.new)
         super
+        _init_dbi
         _init_takeover
         _init_view
         _opt_mode
@@ -45,8 +46,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
-        atrb = { hdb: Db.new, sub_list: Wat::List.new(cfg) }
-        Exe.new(args.shift, cfg, atrb).run.ext_shell.shell
+        db = cfg[:db] = Ins::Db.new
+        dbi = db.get(args.shift)
+        atrb = { dbi: dbi, hdb: Db.new, sub_list: Wat::List.new(cfg) }
+        Exe.new(cfg, atrb).run.ext_shell.shell
       end
     end
   end

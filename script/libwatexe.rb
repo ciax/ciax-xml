@@ -5,11 +5,12 @@ require 'libwatprt'
 module CIAX
   # Watch Layer
   module Wat
-    # cfg must have [:db], [:sub_list]
+    # cfg must have [:dbi], [:sub_list]
     class Exe < Exe
       attr_reader :sub, :stat
-      def initialize(id, cfg, atrb = Hashx.new)
-        super(id, cfg, atrb)
+      def initialize(cfg, atrb = Hashx.new)
+        super
+        _init_dbi
         _init_takeover
         @stat = Event.new(@sub.id)
         @host = @sub.host
@@ -92,8 +93,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', 'ceh:lts') do |cfg, args|
-        atrb = { db: Ins::Db.new, sub_list: App::List.new(cfg) }
-        Exe.new(args.shift, cfg, atrb).run.ext_shell.shell
+        db = cfg[:db] = Ins::Db.new
+        dbi = db.get(args.shift)
+        atrb = { dbi: dbi, sub_list: App::List.new(cfg) }
+        Exe.new(cfg, atrb).run.ext_shell.shell
       end
     end
   end

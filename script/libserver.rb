@@ -17,12 +17,14 @@ module CIAX
       @server_input_proc = proc { |line| j2h(line) }
       @sv_stat.ext_local_file.auto_save.ext_local_log
       @server_output_proc = proc { @sv_stat.to_j }
+      _startup
       self
     end
 
+    private
+
     # Separated form ext_* for detach process of this part
-    def run
-      super
+    def _startup
       ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |line, rhost|
         verbose { "UDP Recv:#{line} is #{line.class}" }
         _srv_exec(line, rhost)
@@ -32,8 +34,6 @@ module CIAX
       end
       self
     end
-
-    private
 
     def _srv_exec(line, rhost)
       verbose { "Exec Server\nValid Commands #{@cobj.valid_keys}" }

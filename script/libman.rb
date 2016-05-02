@@ -16,11 +16,11 @@ module CIAX
         _init_net
         _init_cmd
         _init_stat
-        _opt_mode
-        @mode = 'MCR:' + @mode
       end
 
       def run
+        _opt_mode
+        @mode = 'MCR:' + @mode
         @sub_list.run
         self
       end

@@ -2,12 +2,16 @@
 # Record list specified by cid
 #alias cids
 get_date(){
-    str=${1#*_}
-    str=${str%.*}
-    [[ $str =~ [0-9] ]] && date -d +@${str:0:10}|tr -d '\n' || echo $str
+    [[ $1 =~ [0-9] ]] && date -d +@${1:0:10} || echo "$1"
 }
 IFS=:
-while read fpath sep cid;do
-    echo "$(get_date $fpath) $cid"
-done < <(egrep -o '"cid":[^,]*' ~/.var/json/record*)
-                                   
+while read fpath tag val;do
+    utime=${fpath#*_}
+    utime=${utime%.*}
+    if [[ $tag == *cid* ]]; then
+        echo -n "$(get_date $utime) $val"
+    elif [ "$crnt" != "$utime" ]; then
+        echo " -> $val"
+        crnt=$utime
+    fi
+done < <(egrep -o -e '"cid":[^,]*' -e '"result":[^,]*' ~/.var/json/record*)

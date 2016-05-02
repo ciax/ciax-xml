@@ -11,6 +11,11 @@ module CIAX
         @fdb = Frm::Db.new
       end
 
+      # Compatible for Idb
+      def run_list
+        []
+      end
+
       private
 
       def doc_to_db(doc)
@@ -39,11 +44,6 @@ module CIAX
           gr.put_item(k, v[:label])
         end
         gr
-      end
-
-      # Compatible for Idb
-      def run_list
-        []
       end
     end
 

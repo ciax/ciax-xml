@@ -9,7 +9,7 @@ module CIAX
     def initialize(tag, optstr = '')
       _chk_args(_kill_pids(tag))
       ConfOpts.new('[id] ....', optstr + 'sb') do |cfg, args, opt|
-        atrb = args.empty? ? {} : { sites: args }
+        atrb = { sites: args }
         @obj = yield(cfg, atrb)
         _init_server(tag, opt)
         _main_loop { yield(cfg, atrb) }

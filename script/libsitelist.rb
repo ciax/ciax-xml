@@ -47,7 +47,7 @@ module CIAX
       def _get_sites
         return unless @cfg.key?(:sites) # in case of sub_list(Frm::List)
         sites = @db.displist.valid_keys & @cfg[:sites]
-        @run_list =  sites || @db.run_list
+        @run_list = sites.empty? ? @db.run_list : sites
         @current = sites.first
       end
 

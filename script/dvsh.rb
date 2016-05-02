@@ -7,6 +7,8 @@ module CIAX
   ARGV.unshift('-a')
   Layer.new('[id]', 'fawxelrch:') do |cfg, args, opt|
     lyr = opt[:x] ? Hex : Wat
-    lyr::List.new(cfg, sites: args)
-  end.ext_shell.shell
-end
+    obj = lyr::List.new(cfg)
+    obj.get(args.first)
+    obj
+  end
+end.ext_shell.shell

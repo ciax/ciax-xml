@@ -11,6 +11,7 @@ module CIAX
         cfg[:top_list] ||= self # Site Shared
         cfg[:layer_type] = 'site' # Site Shared
         @cfg[:column] = 2
+        @run_list = []
       end
 
       def store_db(db)
@@ -27,8 +28,7 @@ module CIAX
       end
 
       def run
-        @db.run_list.each { |s| get(s) } if @list.empty?
-        @list.each_value(&:run)
+        @run_list.each { |s| get(s) }
         @sub_list.run if @sub_list
         self
       end
@@ -43,11 +43,12 @@ module CIAX
 
       private
 
+      # If :site is set, get() will be done at run();
       def _get_sites
-        return unless @cfg.key?(:sites)
-        sites = @cfg[:sites]
-        get(nil) if (sites & @db.displist.valid_keys).empty?
-        @current = sites.each { |s| get(s) }.first
+        return unless @cfg.key?(:sites) # in case of sub_list(Frm::List)
+        sites = @db.displist.valid_keys & @cfg[:sites]
+        @run_list =  sites || @db.run_list
+        @current = sites.first
       end
 
       def add(site)

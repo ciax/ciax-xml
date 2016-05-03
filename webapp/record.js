@@ -1,11 +1,17 @@
 // Need var: Type,Site
+function mkcond(conds,all){
+    for(var k in conds){
+        var cond=conds[k];
+        all.push("<li><p>");
+        all.push(cond.site + ":" + cond.var);
+        all.push(" (" + cond.res + ")" );
+        all.push("</p></li>");
+    }
+}
 function mkstep(step, all){
     if(step.conditions){
         all.push("</p><ul>");
-        for(var k in step.conditions){
-            var cond=step.conditions[k];
-            all.push("<li><p>" + cond.site + ":" + cond.var + " (" + cond.res + ")" + "</p></li>");
-        }
+        mkcond(step.conditions,all);
         all.push("</ul>");
     }else{
         all.push(" (" + step.site + ")</p>");
@@ -23,7 +29,7 @@ function update(){
     $.getJSON("record_latest.json", function(data) {
         var all = [];
         var depth = 0;
-        all.push("<li><p>" + data.label +"</p></li>");
+        all.push("<h2>" + data.label +"</h2>");
         all.push("<ul>");
         for(var j in data.steps){
             var step=data.steps[j];
@@ -38,7 +44,7 @@ function update(){
             all.push("</li>");
         }
         depth=take_back(0,depth,all)
-        all.push("<li><p>(" + data.result + ")</p></li>");
+        all.push("<h3>(" + data.result + ")</h3>");
         $("#output")[0].innerHTML = all.join("");
     });
 }

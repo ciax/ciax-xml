@@ -9,7 +9,7 @@ module CIAX
       end
 
       # Initiate for driver
-      def ext_driver
+      def ext_local_driver
         @sv_stat.repl(:sid, '') # For server response
         _init_proc_pre_exe
         _init_proc_post_exe
@@ -17,12 +17,11 @@ module CIAX
         _init_proc_intcmd
         _init_proc_intrpt
         _init_proc_swmode
-        _init_dev
         @terminate_procs << proc { @stat.clean }
         self
       end
 
-      alias_method :ext_test, :ext_driver
+      alias_method :ext_local_test, :ext_local_driver
 
       def _init_proc_pre_exe
         @pre_exe_procs << proc do
@@ -62,10 +61,6 @@ module CIAX
       def _init_proc_swmode
         @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
         @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
-      end
-
-      def _init_dev
-        @cfg[:sites].each { |site| @cfg[:dev_list].get(site) }
       end
     end
   end

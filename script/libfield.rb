@@ -55,9 +55,9 @@ module CIAX
         verbose { "Put[#{id}]=[#{conv}]" }
         _repl_by_case(get(id), conv)
         verbose { "Evaluated[#{id}]=[#{get(id)}]" }
+        time_upd
         val
       ensure
-        time_upd
         cmt
       end
 
@@ -79,7 +79,7 @@ module CIAX
         cmt
       end
 
-      def ext_file
+      def ext_local_file
         super.load
       end
 

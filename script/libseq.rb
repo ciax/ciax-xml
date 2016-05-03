@@ -102,8 +102,8 @@ module CIAX
 
       # Initialization Part
       def _init_record(pid)
-        @record = Record.new.ext_file.auto_save.mklink # Make latest link
-        @record.ext_rsp(@cfg)
+        @record = Record.new.ext_local_file.auto_save.mklink # Make latest link
+        @record.ext_local_rsp(@cfg)
         @record[:pid] = pid
         @id = @record[:id]
         @title = @record.title

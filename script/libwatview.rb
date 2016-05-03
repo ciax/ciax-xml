@@ -2,7 +2,8 @@
 require 'libwatrsp'
 
 # View is not used for computing, just for apperance for user.
-# So the convert process (upd_view) will be included in to_s
+# Some information is added from Dbi
+# So the convert process (upd) will be included in to_s
 module CIAX
   # Watch Layer
   module Wat
@@ -12,38 +13,34 @@ module CIAX
         super()
         @event = type?(event, Event)
         wdb = type?(event.dbi, Dbi)[:watch]
-        init_stat(wdb || { index: [] })
+        _init_stat(wdb || { index: [] })
+        _init_upd_proc
         upd
-      end
-
-      def upd
-        %i(exec block int act_time upd_next).each do |id|
-          self[id] = @event.get(id)
-        end
-        upd_stat
-        self
-      ensure
-        time_upd
-        cmt
       end
 
       private
 
-      def time_upd
-        super(@event[:time])
+      def _init_upd_proc
+        @cmt_procs << proc { time_upd(@event[:time]) }
+        @upd_procs << proc do
+          %i(exec block int act_time upd_next).each do |id|
+            self[id] = @event.get(id)
+          end
+          upd_stat
+        end
       end
 
-      def init_stat(wdb)
+      def _init_stat(wdb)
         self[:stat] = Hashx.new
         wdb[:index].each do |id, evnt|
           hash = self[:stat].get(id) { Hashx.new }
           hash[:label] = evnt[:label]
-          init_cond(evnt[:cnd], hash.get(:cond) { [] })
+          _init_cond(evnt[:cnd], hash.get(:cond) { [] })
         end
         self
       end
 
-      def init_cond(cond, m)
+      def _init_cond(cond, m)
         cond.each do |cnd|
           m << (h = Hashx.new(cnd))
           _init_by_type(cnd, h)
@@ -79,13 +76,15 @@ module CIAX
       end
 
       def _upd_by_type(cnd, idx)
+        v = cnd[:var]
         case cnd[:type]
         when 'onchange'
-          v = cnd[:var]
           cnd[:val] = idx[v]
           cnd[:cri] = @event.get(:last)[v]
         when 'compare'
           cnd[:vals] = cnd[:vars].map { |k| "#{k}:#{idx[k]}" }
+        else
+          cnd[:val] = idx[v]
         end
       end
     end
@@ -95,8 +94,8 @@ module CIAX
       GetOpts.new('[site] | < event_file', 'r') do |_opt|
         event = Event.new
         wview = View.new(event)
-        event.ext_file if STDIN.tty?
-        puts wview
+        event.ext_local_file if STDIN.tty?
+        puts wview.upd
       end
     end
   end

@@ -43,20 +43,24 @@ module CIAX
   # UDP Server Thread
   class ThreadUdp < Threadx
     def initialize(name, port)
+      verbose { "Initiate Start #{name}" }
       super(name, 9) do
-        _udp_loop(port) { |udp| yield(udp) }
+        udp = UDPSocket.open
+        udp.bind('0.0.0.0', port.to_i)
+        _udp_loop(udp) { |line, rhost| yield(line, rhost) }
       end
       sleep 0.3
     end
 
     private
 
-    def _udp_loop(port, &th_proc)
-      udp = UDPSocket.open
-      udp.bind('0.0.0.0', port.to_i)
+    def _udp_loop(udp, &th_proc)
       loop do
         IO.select([udp])
-        th_proc.call(udp)
+        line, addr = udp.recvfrom(4096)
+        rhost = Addrinfo.ip(addr[2]).getnameinfo.first
+        send_str = th_proc.call(line, rhost)
+        udp.send(send_str, 0, addr[2], addr[1])
       end
     ensure
       udp.close

@@ -12,8 +12,8 @@ module CIAX
 
       # type of usage: shell/command line
       # type of semantics: execution/test
-      def ext_driver
-        @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
+      def ext_local_driver
+        @stat.ext_local_rsp(@sub.stat).ext_local_sym.ext_local_file.auto_save
         @buf = init_buf
         _init_log_mode
         _init_drv_save
@@ -23,8 +23,8 @@ module CIAX
 
       def _init_log_mode
         return unless @cfg[:option].log?
-        @stat.ext_log.ext_sqlog
-        @cobj.rem.ext_log('app')
+        @stat.ext_local_log.ext_local_sqlog
+        @cobj.rem.ext_local_log('app')
       end
 
       # Process of command execution:

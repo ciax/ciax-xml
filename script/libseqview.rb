@@ -16,6 +16,7 @@ module CIAX
         @all_keys = []
         @ciddb = { '0' => 'user' }
         @id = id
+        _init_upd_proc
       end
 
       def to_v
@@ -41,19 +42,17 @@ module CIAX
         self
       end
 
-      def upd
-        pids = @list.values.map { |r| r[:pid] }
-        pids.delete('0')
-        @all_keys.concat(pids + @par.list).uniq!
-        @all_keys.each { |id| _upd_or_gen_(id) }
-        clean
-        self
-      ensure
-        time_upd
-        cmt
-      end
-
       private
+
+      def _init_upd_proc
+        @upd_procs << proc do
+          pids = @list.values.map { |r| r[:pid] }
+          pids.delete('0')
+          @all_keys.concat(pids + @par.list).uniq!
+          @all_keys.each { |id| _upd_or_gen_(id) }
+          clean
+        end
+      end
 
       def _upd_or_gen_(id)
         return @list.get(id).upd if @list.key?(id)

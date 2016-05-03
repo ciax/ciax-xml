@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="oss" id="oss" label="TSC Control" version="5">
+  <app frm_id="oss" id="oss" label="TSC Control" version="6">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <unit id="upd" label="Status">
@@ -93,12 +93,29 @@
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <symtbl ref="oss"/>
-      <group id="g1" caption="Main" column="3">
+      <group id="gerr" caption="Errors" column="3">
         <integer id="exit" label="Exit Code">
           <field ref="exit"/>
         </integer>
         <binary id="nfb" label="BOLT NFB TRIP">
           <field bit="6" ref="bstat"/>
+        </binary>
+        <integer id="mba" label="MLP3-BOLT COMM ALM" symbol="alarm">
+          <field ref="mba"/>
+        </integer>
+      </group>
+      <group id="gen" caption="General" column="2">
+        <integer id="loc" label="BOLT CONTROL" symbol="loc">
+          <field ref="loc"/>
+        </integer>
+        <integer id="rts" label="ROT SEL" symbol="rts">
+          <field ref="rsel"/>
+        </integer>
+        <integer id="iid" label="CAS INST ID" symbol="iid">
+          <field ref="iid"/>
+        </integer>
+        <binary id="cis" label="CAS ATTACH" symbol="action">
+          <field bit="3" ref="bstat"/>
         </binary>
         <string id="login" label="Login Status" symbol="login">
           <field ref="login0"/>
@@ -106,14 +123,8 @@
           <field ref="login2"/>
           <field ref="login3"/>
         </string>
-        <integer id="rts" label="ROT SEL" symbol="rts">
-          <field ref="rsel"/>
-        </integer>
-        <integer id="iid" label="CAS INST ID" symbol="iid">
-          <field ref="iid"/>
-        </integer>
       </group>
-      <group id="g2" caption="Drive Stat" column="4">
+      <group id="gdrv" caption="Drive Stat" column="4">
         <binary id="azd" label="AZ" symbol="drv">
           <field label="ON" bit="0" ref="teldrive"/>
           <field label="OFF" bit="1" ref="teldrive"/>
@@ -188,7 +199,7 @@
       </group>
       <group id="g5" caption="[Z Sensor Len]" column="4">
         <repeat_var from="1" to="4">
-          <float id="z$_" label="$_" format="%5.2f" formula="$#/100000">
+          <float id="zp$_" label="$_" format="%5.2f" formula="$#/100000">
             <field ref="zp" index="$_-1"/>
           </float>
         </repeat_var>

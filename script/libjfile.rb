@@ -7,7 +7,7 @@ module CIAX
     end
 
     # Set latest_link=true for making latest link at save
-    def ext_file
+    def ext_local_file
       verbose { "Initiate File Status [#{_file_base}]" }
       self[:id] || cfg_err('No ID')
       @jsondir = vardir('json')

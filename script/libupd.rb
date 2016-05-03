@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libenumx'
 module CIAX
-  # Variables with update feature
+  # Variables with update feature (also with manipulation)
   # Used for convert or loading as client from lower layer data.
   # All data manipulation command should include upd.
   class Upd < Hashx
@@ -20,6 +20,8 @@ module CIAX
       @upd_procs.each { |p| p.call(self) }
       verbose { "Update(#{time_id}) Pre Procs" }
       self
+    ensure
+      cmt
     end
 
     # Data Commit Method
@@ -39,12 +41,6 @@ module CIAX
 
     def repl(key, val)
       super || return
-      time_upd
-      cmt
-    end
-
-    # Generate new data by input
-    def make
       time_upd
       cmt
     end

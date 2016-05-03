@@ -5,7 +5,7 @@ module CIAX
   require 'debug' if ENV['DEBUG']
 
   # MY HOST
-  HOST= `hostname`.strip
+  HOST = `hostname`.strip
   # Initial View Mode
   VMODE = 'v'
   # User input Error

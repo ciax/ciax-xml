@@ -27,6 +27,11 @@ module CIAX
       fail UserError, ary.join("\n  "), caller(1)
     end
 
+    def args_err(*ary) # Raise ARGS error
+      ary[0] = colorize(ary[0], 1)
+      fail InvalidARGS, ary.join("\n  "), caller(1)
+    end
+
     def id_err(*ary) # Raise User error (Invalid User input)
       ary[0] = colorize(ary[0], 1)
       fail InvalidID, ary.join("\n  "), caller(1)

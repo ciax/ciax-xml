@@ -13,9 +13,9 @@ module CIAX
     class Exe < Exe
       # cfg must have [:dbi],[:sub_list]
       attr_accessor :batch_interrupt
-      def initialize(id, cfg, atrb = Hashx.new)
+      def initialize(cfg, atrb = Hashx.new)
         super
-        dbi = _init_dbi(id, %i(frm_site))
+        dbi = _init_dbi(%i(frm_site))
         @cfg[:site_id] = id
         @stat = Status.new(dbi)
         @sv_stat = Prompt.new(id)
@@ -72,8 +72,8 @@ module CIAX
       end
 
       # Mode Extension
-      def ext_test
-        @stat.ext_sym.ext_file
+      def ext_local_test
+        @stat.ext_local_sym.ext_local_file
         @cobj.rem.ext.def_proc do |ent|
           @stat[:time] = now_msec
           ent.msg = ent[:batch].inspect
@@ -81,9 +81,9 @@ module CIAX
         super
       end
 
-      def ext_driver
+      def ext_local_driver
         super
-        extend(Drv).ext_driver
+        extend(Drv).ext_local_driver
       end
 
       def ext_local
@@ -118,8 +118,9 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
-        atrb = { db: Ins::Db.new, sub_list: Frm::List.new(cfg) }
-        Exe.new(args.shift, cfg, atrb).ext_shell.shell
+        dbi = Ins::Db.new.get(args.shift)
+        atrb = { dbi: dbi, sub_list: Frm::List.new(cfg) }
+        Exe.new(cfg, atrb).run.ext_shell.shell
       end
     end
   end

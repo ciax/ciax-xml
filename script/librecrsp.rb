@@ -15,7 +15,7 @@ module CIAX
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       # cfg will come from Entity, which contains [:cid],['label'],@layers[:wat]
       # cfg doesn't change
-      def ext_rsp(cfg)
+      def ext_local_rsp(cfg)
         @cfg = type?(cfg, Config)
         self[:ver] = @cfg[:version] || '0' # Version
         self[:cid] = @cfg[:cid] # Command ID (cmd:par)
@@ -53,8 +53,8 @@ module CIAX
 
     # Add extend method in Record
     class Record
-      def ext_rsp(cfg)
-        extend(Mcr::RecRsp).ext_rsp(cfg)
+      def ext_local_rsp(cfg)
+        extend(Mcr::RecRsp).ext_local_rsp(cfg)
       end
     end
   end

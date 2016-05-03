@@ -7,38 +7,29 @@ module CIAX
     class List < CIAX::List
       attr_reader :db, :sub_list
       def initialize(cfg, atrb = Hashx.new)
-        cfg[:top_list] ||= self
-        cfg[:layer_type] = 'site'
-        atrb[:column] = 2
         super
+        cfg[:top_list] ||= self # Site Shared
+        cfg[:layer_type] = 'site' # Site Shared
+        @cfg[:column] = 2
+        @run_list = []
       end
 
       def store_db(db)
         @db = @cfg[:db] = type?(db, Db)
-        if @cfg.key?(:site)
-          @current = @cfg[:site]
-        else
-          @current = db.displist.valid_keys.first
-        end
+        _get_sites
         self
       end
 
       def get(site)
-        if @list.key?(site)
-          cobj = @list.get(site)
-          @sub_list.get(cobj.sub.id) if @sub_list
-        else
-          cobj = add(site)
-        end
+        cobj = @list.key?(site) ? @list.get(site) : add(site)
+        @sub_list.get(cobj.sub.id) if @sub_list
         @current = site
         cobj
       end
 
-      # Server Setting
-      def run(sites = [])
-        sites = @db.run_list if sites.empty?
-        get(nil) if sites.empty? # Show usage
-        sites.each { |s| get(s).exe(['upd']) }
+      def run
+        @run_list.each { |s| get(s) }
+        @sub_list.run if @sub_list
         self
       end
 
@@ -52,9 +43,18 @@ module CIAX
 
       private
 
+      # If :site is set, get() will be done at run();
+      def _get_sites
+        return unless @cfg.key?(:sites) # in case of sub_list(Frm::List)
+        sites = @db.displist.valid_keys & @cfg[:sites]
+        @run_list = sites.empty? ? @db.run_list : sites
+        @current = sites.first
+      end
+
       def add(site)
         # layer_module can be Frm,App,Wat,Hex
-        obj = layer_module::Exe.new(site, @cfg, db: @db, sub_list: @sub_list)
+        atrb = { dbi: @db.get(site), sub_list: @sub_list }
+        obj = layer_module::Exe.new(@cfg, atrb)
         @list.put(site, obj)
       end
 

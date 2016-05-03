@@ -14,36 +14,29 @@ module CIAX
         id = self[:id] || id_err("NO ID(#{id}) in Stat")
         @sv_stat = sv_stat || Prompt.new('site', id)
         vmode('x')
-        _init_upd_
+        _init_upd_procs
       end
 
       def to_x
         self[:hexpack]
       end
 
-      def upd
-        self[:hexpack] = _get_header_ + _get_body_
-        self
-      ensure
-        time_upd
-        cmt
-      end
-
       private
 
-      def time_upd
-        super(@stat[:time])
+      def _init_upd_procs
+        @cmt_procs << proc { time_upd(@stat[:time]) }
+        @upd_procs << proc { self[:hexpack] = _get_header_ + _get_body_ }
+        _init_propagates
       end
 
-      def _init_upd_
-        @sv_stat.cmt_procs << proc do
-          verbose { 'Propagate Prompt#cmt -> Hex::Rsp#upd(cmt)' }
-          upd
-        end
-        @stat.cmt_procs << proc do
-          verbose { 'Propagate Status#cmt -> Hex::Rsp#upd(cmt)' }
-          upd
-        end
+      def _init_propagates
+        @sv_stat.cmt_procs << proc { _upd_propagate('Prompt') }
+        @stat.cmt_procs << proc { _upd_propagate('Status') }
+        upd
+      end
+
+      def _upd_propagate(_mod)
+        verbose { 'Propagate #{mod}#cmt -> Hex::Rsp#upd(cmt)' }
         upd
       end
 
@@ -70,9 +63,19 @@ module CIAX
 
       def _packed(packs)
         packs.map do |hash|
-          binstr = _mk_frame(hash)
+          binstr = _mk_bit(hash)
           pkstr = hash[:code] + hash[:length]
           [binstr].pack(pkstr).unpack('h')[0]
+        end.join
+      end
+
+      def _mk_bit(db)
+        db[:bits].map do |hash|
+          key = hash[:ref]
+          cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
+          dat = @stat[:data][key]
+          verbose { "Get from Status #{key} = #{dat}" }
+          dat
         end.join
       end
 
@@ -91,13 +94,13 @@ module CIAX
         type = hash[:type].to_s.to_sym
         pfx = { float: '.2f', int: 'd', binary: 'b' }[type]
         if pfx
-          _fmt(pfx, len, val)
+          _fmt_num(pfx, len, val)
         else
           val.to_s.rjust(len, '*')[0, len]
         end
       end
 
-      def _fmt(sfx, len, val)
+      def _fmt_num(sfx, len, val)
         num = /f/ =~ sfx ? val.to_f : val.to_i
         format("%0#{len}#{sfx}", num)[0, len]
       end
@@ -115,7 +118,7 @@ module CIAX
       require 'libinsdb'
       require 'libstatus'
       begin
-        stat = App::Status.new.ext_file
+        stat = App::Status.new.ext_local_file
         puts Rsp.new(stat)
       rescue InvalidARGS
         Msg.usage(' < status_file')

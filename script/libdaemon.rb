@@ -7,56 +7,53 @@ module CIAX
     # Previous process will be killed at the start up.
     # Reloadable by HUP signal
     def initialize(tag, optstr = '')
-      ENV['VER'] ||= 'Initiate'
-      # Set ARGS in opt file
-      @base = vardir('run') + tag
-      noarg=ARGV.empty?
-      ConfOpts.new('[id] ....', optstr) do |cfg, args, opt|
-        opt[:s] = true
-        _kill_pids
-         noarg && exit
-        _new_pid
-        _main_loop(tag) { yield(cfg, args) }
+      _chk_args(_kill_pids(tag))
+      ConfOpts.new('[id] ....', optstr + 'sb') do |cfg, args, opt|
+        atrb = { sites: args }
+        @obj = yield(cfg, atrb)
+        _init_server(tag, opt)
+        _main_loop { yield(cfg, atrb) }
       end
     end
 
     private
 
-    def _main_loop(tag, &init_proc)
-      _err_redirect(tag)
-      init_proc.call
-      sleep
+    def _main_loop
+      @obj.run
+      Process.waitall
     rescue SignalException
       Threadx.killall
-      retry if $ERROR_INFO.message == 'SIGHUP'
-    end
-
-    def _err_redirect(tag)
-      return if $stderr.is_a?(Tee)
-      errout = vardir('log') + 'error_' + tag + today + '.out'
-      $stderr = Tee.new(errout)
+      if $ERROR_INFO.message == 'SIGHUP'
+        @obj = yield
+        retry
+      end
     end
 
     # Background (Switch error output to file)
-    def _new_pid
+    def _init_server(tag, opt)
+      _detach
+      _redirect(tag) if opt[:b]
+    end
+
+    def _detach
+      # Child process (Stream/Pipe) will be closed by at_exit()
+      #  as the main process exit in Process.daemon
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
+      verbose { "Initiate Daemon Detached (#{$PROCESS_ID})" }
     end
 
-    def _kill_pids
+    def _kill_pids(tag)
+      @pidfile = vardir('run') + tag + '.pid'
       pids = _read_pids
       _write_pid('')
-      pids.any? { |pid| _kill_pid(pid) }
+      '   Nothing to do' unless pids.any? { |pid| _kill_pid(pid) }
     end
 
-    def _read_pids
-      pidfile = @base + '.pid'
-      return [] unless test('r', pidfile)
-      IO.readlines(pidfile).keep_if { |l| l.to_i > 0 }
-    end
-
-    def _write_pid(pid)
-      IO.write(@base + '.pid', pid)
+    def _chk_args(msg)
+      ENV['VER'] ||= 'Initiate'
+      msg ? give_up(indent(1) + msg) : exit(2) if ARGV.empty?
+      ARGV.unshift '-s'
     end
 
     def _kill_pid(pid)
@@ -66,20 +63,45 @@ module CIAX
       nil
     end
 
-    # append str to stderr and file like tee
-    class Tee < IO
+    def _read_pids
+      return [] unless test('r', @pidfile)
+      IO.readlines(@pidfile).keep_if { |l| l.to_i > 0 }
+    end
+
+    def _write_pid(pid)
+      IO.write(@pidfile, pid)
+    end
+
+    def _redirect(tag)
+      verbose { 'Initiate STDERR redirect' }
+      fname = _mk_name(tag, today)
+      $stderr = File.new(fname, 'a')
+      _mk_link(fname, tag)
+    end
+
+    def _mk_link(fname, tag)
+      sname = _mk_name(tag)
+      File.unlink(sname) if File.exist?(sname)
+      File.symlink(fname, sname)
+    end
+
+    def _mk_name(tag, name = nil)
+      str = "error_#{tag}"
+      str << "_#{name}" if name
+      vardir('log') + str + '.out'
+    end
+
+    # Error output redirection to Log File
+    class File < File
       include Msg
-      def initialize(fname)
-        super(2, 'a')
-        @io = File.open(fname, 'a')
-        @io.write("\n")
-        write(make_msg("Initiate STDERR Redirection\n"))
+      def initialize(fname, rw)
+        super
+        @base = now_msec
+        write("\n")
       end
 
-      def write(str)
-        pass = format('%5.4f', Time.now - START_TIME)
-        @io.write("[#{Time.now}/#{pass}]" + str)
-        super
+      def puts(str)
+        super(format("[#{Time.now}/%s]%s", elps_date(@base), str))
       end
     end
   end

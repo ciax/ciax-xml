@@ -10,14 +10,19 @@ module CIAX
       attr_reader :sub_list # Used for Layer module
       # cfg should have [:dev_list]
       def initialize(cfg)
-        super(nil, Conf.new(cfg))
+        super(Conf.new(cfg))
         verbose { 'Initiate Layer' }
         # id = nil -> taken by ARGV
         _init_net
         _init_cmd
         _init_stat
+      end
+
+      def run
         _opt_mode
         @mode = 'MCR:' + @mode
+        @sub_list.run
+        self
       end
 
       def ext_shell
@@ -62,17 +67,17 @@ module CIAX
       end
 
       # Initiate for driver
-      def ext_driver
+      def ext_local_driver
         super
-        extend(ManDrv).ext_driver
+        extend(ManDrv).ext_local_driver
       end
 
-      alias_method :ext_test, :ext_driver
+      alias_method :ext_local_test, :ext_local_driver
     end
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', 'cenlrs') do |cfg|
-        Man.new(cfg).ext_shell.shell
+        Man.new(cfg).run.ext_shell.shell
       end
     end
   end

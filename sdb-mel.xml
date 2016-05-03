@@ -3,7 +3,7 @@
   <symbol id="mel" label="Cart PLC">
     <table id="acp" label="Command Accepting">
       <pattern class="normal" msg="OFF">2</pattern>
-      <pattern class="warn" msg="ON">1</pattern>
+      <pattern class="active" msg="ON">1</pattern>
       <default class="normal" msg="OFF"/>
     </table>
     <table id="ecode" label="ExitCode">

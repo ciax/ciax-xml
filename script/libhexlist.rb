@@ -9,7 +9,7 @@ module CIAX
       # cfg must have [:db]
       def initialize(cfg, atrb = Hashx.new)
         super
-        @sub_list = Wat::List.new(@cfg)
+        @sub_list = Wat::List.new(cfg)
         store_db(@cfg[:db] ||= Ins::Db.new)
         @cfg[:hdb] = Db.new
       end
@@ -17,7 +17,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
-        List.new(cfg, site: args.shift).ext_shell.shell
+        List.new(cfg, sites: args).ext_shell.shell
       end
     end
   end

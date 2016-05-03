@@ -18,13 +18,12 @@ module CIAX
     attr_accessor :sv_stat, :shell_input_procs, :shell_output_proc,
                   :server_input_proc, :server_output_proc
     # cfg must have [:option]
-    # atrb contains the parameter for each layer individually (might have [:db])
+    # atrb contains the parameter for each layer individually
     # cfg must have [:dbi] shared in the site (among layers)
     # @dbi will be set for Varx, @cfg[:dbi] will be set for Index
     # It is not necessarily the case that id and Config[:dbi][:id] is identical
-    def initialize(id, cfg, atrb = Hashx.new)
+    def initialize(cfg, atrb = Hashx.new)
       @cfg = type?(cfg, Config).gen(self).update(atrb)
-      @id = id || @cfg[:id] # Allows nil for Mcr::Man
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @layer = class_path.first.downcase
       _init_procs
@@ -67,11 +66,11 @@ module CIAX
       @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }]
     end
 
-    def _init_dbi(id, ary = [])
-      dbi = type?(@cfg[:db], CIAX::Db).get(id)
+    def _init_dbi(ary = [])
+      dbi = type?(@cfg[:dbi], CIAX::Dbi)
       # dbi.pick already includes :command, :version
       @cfg.update(dbi.pick(ary))
-      @id ||= dbi[:id]
+      @id = dbi[:id]
       dbi
     end
 
@@ -85,24 +84,24 @@ module CIAX
       # Option handling
       opt = @cfg[:option]
       return ext_client if opt.cl? && !opt.drv? # Client only
-      opt[:e] ? ext_driver : ext_test
-      ext_server if opt[:s]
+      opt[:e] ? ext_local_driver : ext_local_test
+      ext_local_server if opt[:s]
       self
     end
 
-    # Local operation included in ext_test, ext_driver (non_client)
+    # Local operation included in ext_local_test, ext_local_driver (non_client)
     def ext_local
       @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
       self
     end
 
-    def ext_test
+    def ext_local_test
       @mode = 'TEST'
       ext_local
       self
     end
 
-    def ext_driver
+    def ext_local_driver
       @mode = 'DRV'
       ext_local
       self
@@ -113,10 +112,10 @@ module CIAX
       extend(Client).ext_client
     end
 
-    def ext_server
+    def ext_local_server
       return self if @mode == 'CL'
       @mode += ':SV'
-      extend(Server).ext_server
+      extend(Server).ext_local_server
     end
   end
 end

@@ -145,7 +145,7 @@ module CIAX
       ARGV.clear
       begin
         dbi = Ins::Db.new.get(id)
-        stat = App::Status.new(dbi).ext_file
+        stat = App::Status.new(dbi).ext_local_file
         sqlog = Table.new(stat)
         puts stat
         puts sqlog.create

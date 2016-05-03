@@ -10,28 +10,24 @@ module CIAX
         Msg.type?(obj, Status)
       end
 
-      def ext_rsp(field)
+      def ext_local_rsp(field)
         @field = type?(field, Frm::Field)
         type?(@dbi, Dbi)
+        _init_upd_proc
         self
-      end
-
-      def upd
-        @adbs.each do|id, hash|
-          cnd = hash[:fields].empty?
-          next if cnd && get(id)
-          self[:data][id] = cnd ? (hash[:default] || '') : _get_val(hash, id)
-        end
-        self
-      ensure
-        time_upd
-        cmt
       end
 
       private
 
-      def time_upd
-        super(@field[:time])
+      def _init_upd_proc
+        @cmt_procs << proc { time_upd(@field[:time]) }
+        @upd_procs << proc do
+          @adbs.each do|id, hash|
+            cnd = hash[:fields].empty?
+            next if cnd && get(id)
+            self[:data][id] = cnd ? (hash[:default] || '') : _get_val(hash, id)
+          end
+        end
       end
 
       def _get_val(hash, id)
@@ -121,8 +117,8 @@ module CIAX
 
     # Add extend method in Status
     class Status
-      def ext_rsp(field)
-        extend(App::Rsp).ext_rsp(field)
+      def ext_local_rsp(field)
+        extend(App::Rsp).ext_local_rsp(field)
       end
     end
 
@@ -132,8 +128,8 @@ module CIAX
       begin
         field = Frm::Field.new
         stat = Status.new(field[:id])
-        field.ext_file if STDIN.tty?
-        puts stat.ext_rsp(field).upd
+        field.ext_local_file if STDIN.tty?
+        puts stat.ext_local_rsp(field).upd
       rescue InvalidARGS
         Msg.usage '[site] | < field_file'
       end

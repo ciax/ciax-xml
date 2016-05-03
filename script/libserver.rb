@@ -8,36 +8,35 @@ module CIAX
     end
 
     # JSON expression of server stat will be sent.
-    def ext_server
+    def ext_local_server
       return self unless @port
       verbose do
         "Initiate UDP server (#{@id}) port:[#{@port}] git:[" +
           `cd #{__dir__};git reflog`.split(' ').first + ']'
       end
       @server_input_proc = proc { |line| j2h(line) }
-      @sv_stat.ext_file.auto_save.ext_log
+      @sv_stat.ext_local_file.auto_save.ext_local_log
       @server_output_proc = proc { @sv_stat.to_j }
-      server_thread
+      _startup
+      self
     end
 
     private
 
-    def server_thread
-      ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |udp|
-        line, addr = udp.recvfrom(4096)
-        line.chomp!
+    # Separated form ext_* for detach process of this part
+    def _startup
+      ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |line, rhost|
         verbose { "UDP Recv:#{line} is #{line.class}" }
-        _srv_exec(line, addr)
+        _srv_exec(line, rhost)
         send_str = @server_output_proc.call
         verbose { "UDP Send:#{send_str}" }
-        udp.send(send_str, 0, addr[2], addr[1])
+        send_str
       end
       self
     end
 
-    def _srv_exec(line, addr)
+    def _srv_exec(line, rhost)
       verbose { "Exec Server\nValid Commands #{@cobj.valid_keys}" }
-      rhost = Addrinfo.ip(addr[2]).getnameinfo.first
       exe(@server_input_proc.call(line), "udp:#{rhost}")
     rescue InvalidCMD
       @sv_stat.repl(:msg, 'INVALID')

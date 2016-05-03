@@ -17,13 +17,14 @@ module CIAX
       #       => self[:crnt]<-@stat.data(picked)
       #       => check(self[:crnt] <> self[:last]?)
       # Stat no changed -> clear exec, no eval
-      def ext_rsp(stat, sv_stat = nil)
+      def ext_local_rsp(stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
         @sv_stat = type?(sv_stat || Prompt.new('site', self[:id]), Prompt)
         wdb = @dbi[:watch] || {}
         @interval = wdb[:interval].to_f if wdb.key?(:interval)
         @cond = Condition.new(wdb[:index] || {}, stat, self)
-        _init_proc
+        _init_upd_proc
+        _init_cmt_proc
         _init_auto(wdb)
       end
 
@@ -48,28 +49,23 @@ module CIAX
         self
       end
 
-      def upd
-        return self unless @stat[:time] > @last_updated
-        @last_updated = self[:time]
-        @cond.upd
-        upd_event
-        self
-      ensure
-        time_upd
-        cmt
-      end
-
       private
 
-      def time_upd
-        super(@stat[:time])
+      def _init_upd_proc
+        @upd_procs << proc do
+          next unless @stat[:time] > @last_updated
+          @last_updated = self[:time]
+          @cond.upd
+          upd_event
+        end
       end
 
-      def _init_proc
+      def _init_cmt_proc
         @stat.cmt_procs << proc do
           verbose { 'Propagate Status#cmt -> Event#upd(cmt)' }
           upd
         end
+        @cmt_procs << proc { time_upd(@stat[:time]) }
       end
 
       # Initiate for Auto Update
@@ -97,7 +93,7 @@ module CIAX
       # event :_____---------------__
 
       ## Trigger Table
-      # busy| actv|event| action
+      # busy| actv|event| action to event
       #  o  |  o  |  o  |  -
       #  o  |  x  |  o  |  -
       #  o  |  o  |  x  |  up
@@ -109,7 +105,7 @@ module CIAX
 
       def upd_event
         if @sv_stat.up?(:event)
-          _event_off unless active?
+          _event_off
         elsif active?
           _event_on
         end
@@ -123,7 +119,7 @@ module CIAX
       end
 
       def _event_off
-        return if @sv_stat.up?(:busy)
+        return if active?
         @sv_stat.dw(:event)
         @on_deact_procs.each { |p| p.call(self) }
       end
@@ -131,8 +127,8 @@ module CIAX
 
     # Add extend method in Event
     class Event
-      def ext_rsp(stat, sv_stat = nil)
-        extend(Wat::Rsp).ext_rsp(stat, sv_stat)
+      def ext_local_rsp(stat, sv_stat = nil)
+        extend(Wat::Rsp).ext_local_rsp(stat, sv_stat)
       end
     end
 
@@ -141,8 +137,8 @@ module CIAX
       odb = { t: 'test conditions[key=val,..]' }
       GetOpts.new('[site] | < status_file', 't:', odb) do |opt|
         stat = App::Status.new
-        stat.ext_file.load if STDIN.tty?
-        event = Event.new(stat[:id]).ext_rsp(stat)
+        stat.ext_local_file.load if STDIN.tty?
+        event = Event.new(stat[:id]).ext_local_rsp(stat)
         if (t = opt[:t])
           stat.str_update(t)
         end

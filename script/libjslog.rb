@@ -7,7 +7,7 @@ module CIAX
       Msg.type?(obj, Varx)
     end
 
-    def ext_log # logging with flatten
+    def ext_local_log # logging with flatten
       id = self[:id]
       @queue = Queue.new
       @cmt_procs << proc { @queue.push(JSON.dump(self)) }
@@ -28,7 +28,7 @@ module CIAX
       h
     end
 
-    def ext_sqlog
+    def ext_local_sqlog
       # Logging if version number exists
       id = self[:id]
       (SqLog::LIST[id] ||= SqLog::Save.new(id)).add_table(self)

@@ -11,10 +11,10 @@ module CIAX
     # Frame Exe module
     class Exe < Exe
       # cfg must have [:db]
-      def initialize(id, cfg, atrb = Hashx.new)
+      def initialize(cfg, atrb = Hashx.new)
         super
         # DB is generated in List level
-        dbi = _init_dbi(id, %i(stream iocmd))
+        dbi = _init_dbi(%i(stream iocmd))
         @cfg[:site_id] = id
         @stat = @cfg[:field] = Field.new(dbi)
         @sv_stat = Prompt.new(id)
@@ -57,8 +57,8 @@ module CIAX
       end
 
       # Mode Extension
-      def ext_test
-        @stat.ext_file
+      def ext_local_test
+        @stat.ext_local_file
         @cobj.rem.ext.cfg[:def_msg] = 'TEST'
         super
       end
@@ -72,9 +72,9 @@ module CIAX
         super
       end
 
-      def ext_driver
+      def ext_local_driver
         super
-        extend(Drv).ext_driver
+        extend(Drv).ext_local_driver
       end
     end
 
@@ -88,7 +88,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
-        Exe.new(args.shift, cfg, db: Dev::Db.new).ext_shell.shell
+        dbi = Dev::Db.new.get(args.shift)
+        Exe.new(cfg, dbi: dbi).run.ext_shell.shell
       end
     end
   end

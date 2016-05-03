@@ -12,7 +12,7 @@ module CIAX
         Msg.type?(obj, Status)
       end
 
-      def ext_sym
+      def ext_local_sym
         adbs = @dbi[:status]
         @symbol = adbs[:symbol] || {}
         @symdb = Sym::Db.pack(['share'] + adbs[:symtbl])
@@ -41,7 +41,7 @@ module CIAX
 
       def _match_items(tbl, key, val)
         res = nil
-        sym = tbl.find { |s| res = _match_by_type(s, val) } || {}
+        sym = tbl.find { |s| res = _match_by_type(s, val) } || _default_sym(tbl)
         msg = self[:msg][key] = format(sym[:msg] || 'N/A(%s)', val)
         cls = self[:class][key] = sym[:class] || 'alarm'
         verbose do
@@ -72,8 +72,12 @@ module CIAX
       end
 
       def _match_pattern(cri, val)
-        return unless /#{cri}/ =~ val || val == 'default'
+        return unless /#{cri}/ =~ val
         "Regexp:[#{cri}]"
+      end
+
+      def _default_sym(tbl)
+        tbl.find { |s| s[:type] == 'default' } || {}
       end
 
       def _chk_tbl(sid)
@@ -91,17 +95,17 @@ module CIAX
 
     # Status class
     class Status
-      def ext_sym
-        extend(Symbol).ext_sym
+      def ext_local_sym
+        extend(Symbol).ext_local_sym
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
       begin
         stat = Status.new
-        stat.ext_sym
-        stat.ext_file if STDIN.tty?
-        puts stat.upd
+        stat.ext_local_sym
+        stat.ext_local_file if STDIN.tty?
+        puts stat.cmt
       rescue InvalidARGS
         Msg.usage '[site] | < status_file'
       end

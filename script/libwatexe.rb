@@ -5,14 +5,13 @@ require 'libwatprt'
 module CIAX
   # Watch Layer
   module Wat
-    # cfg must have [:db], [:sub_list]
+    # cfg must have [:dbi], [:sub_list]
     class Exe < Exe
       attr_reader :sub, :stat
-      def initialize(id, cfg, atrb = Hashx.new)
-        super(id, cfg, atrb)
-        @sub = @cfg[:sub_list].get(id)
-        @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')
-        @cobj.add_rem(@sub.cobj.rem)
+      def initialize(cfg, atrb = Hashx.new)
+        super
+        _init_dbi
+        _init_takeover
         @stat = Event.new(@sub.id)
         @host = @sub.host
         _opt_mode
@@ -28,17 +27,17 @@ module CIAX
 
       private
 
-      def ext_test
+      def ext_local_test
         @post_exe_procs << proc { @stat.next_upd }
         super
       end
 
-      def ext_driver
+      def ext_local_driver
         super
-        @stat.ext_file.auto_save
+        @stat.ext_local_file.auto_save
         # @stat[:int] is overwritten by initial loading
         @sub.batch_interrupt = @stat.get(:int)
-        @stat.ext_log if @cfg[:option].log?
+        @stat.ext_local_log if @cfg[:option].log?
         _init_upd_drv_
         _init_exe_drv_
         self
@@ -47,8 +46,16 @@ module CIAX
       def ext_local
         _init_upd_
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
-        @stat.ext_rsp(@sub.stat, @sv_stat)
+        @stat.ext_local_rsp(@sub.stat, @sv_stat)
         super
+      end
+
+      def _init_takeover
+        @sub = @cfg[:sub_list].get(@id)
+        @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')
+        @cobj.add_rem(@sub.cobj.rem)
+        @mode = @sub.mode
+        @post_exe_procs.concat(@sub.post_exe_procs)
       end
 
       def _init_upd_
@@ -86,8 +93,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', 'ceh:lts') do |cfg, args|
-        atrb = { db: Ins::Db.new, sub_list: App::List.new(cfg) }
-        Exe.new(args.shift, cfg, atrb).ext_shell.shell
+        db = cfg[:db] = Ins::Db.new
+        dbi = db.get(args.shift)
+        atrb = { dbi: dbi, sub_list: App::List.new(cfg) }
+        Exe.new(cfg, atrb).run.ext_shell.shell
       end
     end
   end

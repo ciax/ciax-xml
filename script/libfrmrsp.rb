@@ -18,18 +18,18 @@ module CIAX
       end
 
       # Ent is needed which includes response_id and cmd_parameters
-      def ext_rsp(stream)
+      def ext_local_rsp(stream)
         @stream = type?(stream, Hash)
         type?(@dbi, Dbi)
-        fdbr = @dbi[:response]
-        @skel = fdbr[:frame]
-        @fds = fdbr[:index]
+        @fdbr = @dbi[:response]
+        @fds = @fdbr[:index]
         sp = type?(@dbi[:stream], Hash)
         # Frame structure:
         #   main(total){ ccrange{ body(selected str) } }
         @frame = Frame.new(sp[:endian], sp[:ccmethod], sp[:terminator])
         # terminator: frame pointer will jump to terminator
         #   when no length or delimiter is specified
+        @cmt_procs << proc { time_upd(@stream[:time]) }
         self
       end
 
@@ -43,20 +43,15 @@ module CIAX
         verbose { 'Propagate Stream#rcv Field#conv(cmt)' }
         self
       ensure
-        time_upd
         cmt
       end
 
       private
 
-      def time_upd
-        super(@stream[:time])
-      end
-
       # sel structure:
       #   { terminator, :main{}, :body{} <- changes on every upd }
       def _make_sel(ent, rid)
-        @sel = Hash[@skel]
+        @sel = Hash[@fdbr[:frame]]
         @sel.update(@fds[rid])
         @sel[:body] = ent.deep_subst(@sel[:body])
         verbose { "Selected DB for #{rid}\n" + @sel.inspect }
@@ -140,8 +135,8 @@ module CIAX
 
     # Field class
     class Field
-      def ext_rsp(stream)
-        extend(Frm::Rsp).ext_rsp(stream)
+      def ext_local_rsp(stream)
+        extend(Frm::Rsp).ext_local_rsp(stream)
       end
     end
 
@@ -154,8 +149,8 @@ module CIAX
         id = res[:id]
         cid = res[:cmd]
         dbi = Dev::Db.new.get(id)
-        field = Field.new(dbi).ext_rsp(res)
-        field.ext_file.auto_save if opt[:m]
+        field = Field.new(dbi).ext_local_rsp(res)
+        field.ext_local_file.auto_save if opt[:m]
         if cid
           cfg[:field] = field
           # dbi.pick alreay includes :command, :version

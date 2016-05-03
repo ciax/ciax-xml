@@ -88,7 +88,7 @@ module CIAX
       GetOpts.new('[site] | < event_file', 'r') do |_opt|
         event = Event.new
         wview = View.new(event).extend(Prt)
-        event.ext_file if STDIN.tty?
+        event.ext_local_file if STDIN.tty?
         puts wview
       end
     end

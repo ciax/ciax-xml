@@ -47,10 +47,10 @@ module CIAX
       _write_json(json_str, tag)
     end
 
-    def mklink
+    def mklink(tag = 'latest')
       # Making 'latest' link
       save
-      sname = @jsondir + "#{@type}_latest.json"
+      sname = @jsondir + "#{@type}_#{tag}.json"
       ::File.unlink(sname) if ::File.exist?(sname)
       ::File.symlink(@jsondir + _file_name, sname)
       verbose { "File Symboliclink to [#{sname}]" }

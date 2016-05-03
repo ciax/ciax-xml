@@ -48,16 +48,9 @@ module CIAX
         self
       end
 
-      # key format: category + ':' followed by key "data:key, msg:key..."
+      # Structure is Hashx{ data:{ key,val ..} }
       def pick(keylist, atrb = {})
-        h = Hashx.new(atrb)
-        keylist.each do |str|
-          cat, key = str.split(':')
-          cat = cat.to_sym
-          next unless key && key?(cat)
-          h.get(cat) { Hashx.new }[key] = get(cat)[key]
-        end
-        h
+        Hashx.new(atrb).update(data: self[:data].pick(keylist))
       end
 
       def ext_local_file

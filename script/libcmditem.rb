@@ -67,7 +67,7 @@ module CIAX
         context_constant('Entity').new(@cfg, opt)
       end
 
-      # Parameter for validate(cfg[:paremeters])
+      # Parameter for validate(cfg[:parameters])
       #   structure:  [{:type,:list,:default}, ...]
       # *Empty parameter will replaced to :default
       # *Error if str doesn't match with strings listed in :list

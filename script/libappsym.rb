@@ -12,6 +12,20 @@ module CIAX
         Msg.type?(obj, Status)
       end
 
+      # key format: category + ':' followed by key "data:key, msg:key..."
+      # default category is :data if no colon
+      def pick(keylist, atrb = {})
+        h = Hashx.new(atrb)
+        keylist.each do |str|
+          cat, key = (str =~ /:/) ? str.split(':') : [:data, str]
+          cat = cat.to_sym
+          par_err("Invalid category (#{cat})") unless key?(cat)
+          par_err("Invalid key (#{cat}:#{key})") unless key && get(cat).key?(key)
+          h.get(cat) { Hashx.new }[key] = get(cat)[key]
+        end
+        h
+      end
+
       def ext_sym
         adbs = @dbi[:status]
         @symbol = adbs[:symbol] || {}

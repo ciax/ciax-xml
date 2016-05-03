@@ -42,8 +42,9 @@ module CIAX
 
     def save_key(keylist, tag = nil)
       tag ||= (_tag_list_.map(&:to_i).max + 1)
+      json_str = pick(keylist, time: self[:time]).to_j
       msg("File Saving for [#{tag}]")
-      _write_json(pick(keylist, time: self[:time]).to_j, tag)
+      _write_json(json_str, tag)
     end
 
     def mklink

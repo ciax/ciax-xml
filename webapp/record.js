@@ -12,6 +12,13 @@ function mkstep(step, all){
     }
     all.push("</li>");
 }
+function take_back(crnt, depth, all){
+    while(crnt <= depth){
+        all.push("</ul>");
+        depth -=1;
+    }
+    return depth
+}
 
 function update(){
     $.getJSON("record_latest.json", function(data) {
@@ -21,19 +28,16 @@ function update(){
         all.push("<ul>");
         for(var j in data.steps){
             var step=data.steps[j];
-            if(step.depth == depth){
-                all.push("</ul>")
-                depth-=1;
-            }
+            depth=take_back(step.depth,depth,all);
             all.push("<li>" + step.type);
             if(step.type == 'mcr'){
-                all.push("("+step.args[0]+")<ul>");
                 depth=step.depth;
+                all.push("("+step.args[0]+")"+depth+"<ul>");
             } else{
                 mkstep(step, all);
             }
         }
-        all.push("</ul>");
+        depth=take_back(0,depth,all)
         all.push("<li>(" + data.result + ")</li>");
         $("#output")[0].innerHTML = all.join("");
     });

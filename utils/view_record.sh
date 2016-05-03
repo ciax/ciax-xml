@@ -12,6 +12,7 @@ else
 fi
 if [ -r "$file" ]; then
     librecord $opt < $file
+    echo $file
 else
     echo "Usage: ${0##*/} (cid) (history num)"
     egrep -ho "cid[^,]+" $records|cut -d: -f2|tr -d '" '|sort -u|column

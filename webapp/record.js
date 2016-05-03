@@ -1,5 +1,12 @@
 // Need var: Type,Site
-function mkcond(conds,all){
+function step_mcr(step, all){
+    all.push("<p>" + step.type );
+    all.push("("+step.args[0]+")"+step.depth+"</p><ul>");
+    return step.depth
+}
+function step_cond(step, all){
+    all.push("<p>" + step.type +"</p><ul>");
+    var conds=step.conditions
     for(var k in conds){
         var cond=conds[k];
         all.push("<li><p>");
@@ -7,24 +14,27 @@ function mkcond(conds,all){
         all.push(" (" + cond.res + ")" );
         all.push("</p></li>");
     }
+    all.push("</ul>");
 }
-function mkstep(step, all){
-    if(step.conditions){
-        all.push("</p><ul>");
-        mkcond(step.conditions,all);
-        all.push("</ul>");
-    }else{
-        all.push(" (" + step.site + ")</p>");
-    }
-}
-function take_back(crnt, depth, all){
-    while(crnt <= depth){
+function take_back(step, all, depth){
+    while(step.depth <= depth){
         all.push("</ul>");
         depth -=1;
     }
     return depth
 }
-
+function make_step(step, all, depth){
+    all.push("<li>");
+    if(step.type == 'mcr'){
+        depth=step_mcr(step, all);
+    }else if(step.conditions){
+        step_cond(step,all);
+    }else{
+        all.push("<p>" + step.type + " (" + step.site + ")</p>");
+    }
+    all.push("</li>");
+    return depth
+}
 function update(){
     $.getJSON("record_latest.json", function(data) {
         var all = [];
@@ -33,15 +43,8 @@ function update(){
         all.push("<ul>");
         for(var j in data.steps){
             var step=data.steps[j];
-            depth=take_back(step.depth,depth,all);
-            all.push("<li><p>" + step.type );
-            if(step.type == 'mcr'){
-                depth=step.depth;
-                all.push("("+step.args[0]+")"+depth+"</p><ul>");
-            } else{
-                mkstep(step, all);
-            }
-            all.push("</li>");
+            depth=take_back(step,all,depth);
+            depth=make_step(step,all,depth);
         }
         depth=take_back(0,depth,all)
         all.push("<h3>(" + data.result + ")</h3>");

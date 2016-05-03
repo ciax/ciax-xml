@@ -20,7 +20,7 @@ module CIAX
 
     def _main_loop
       @obj.run
-      Process.waitall
+      sleep
     rescue SignalException
       Threadx.killall
       if $ERROR_INFO.message == 'SIGHUP'

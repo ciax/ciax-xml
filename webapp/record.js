@@ -3,7 +3,7 @@ function mkstep(step, all){
     if(step.conditions){
         all.push("<ul>");
         for(var k in step.conditions){
-            var cond=step.conditions[k];          
+            var cond=step.conditions[k];
             all.push("<li>" + cond.site + ":" + cond.var + " (" + cond.res + ")" + "</li>");
         }
         all.push("</ul>");
@@ -11,9 +11,9 @@ function mkstep(step, all){
         all.push(" (" + step.site + ")");
     }
     all.push("</li>");
-} 
+}
 
-function j2ul(){
+function update(){
     $.getJSON("record_latest.json", function(data) {
         var all = [];
         var depth = 0;
@@ -34,8 +34,12 @@ function j2ul(){
             }
         }
         all.push("</ul>");
-        all.push("<li>" + data.result + "<li>");
+        all.push("<li>(" + data.result + ")</li>");
         $("#output")[0].innerHTML = all.join("");
     });
 }
-$(document).ready(j2ul);
+function init(){
+    update();
+    setInterval(update,1000);
+}
+$(document).ready(init);

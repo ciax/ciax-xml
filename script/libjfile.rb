@@ -43,7 +43,7 @@ module CIAX
     def save_key(keylist, tag = nil)
       tag ||= (_tag_list_.map(&:to_i).max + 1)
       # id is tag, this is Mark's request
-      json_str = pick(keylist, time: self[:time], id: tag).to_j
+      json_str = pick(keylist, time: self[:time], id: self[:id]).to_j
       msg("File Saving for [#{tag}]")
       _write_json(json_str, tag)
     end

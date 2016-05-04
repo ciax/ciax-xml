@@ -22,9 +22,9 @@ module CIAX
         Thread.new(target.to_i) do |t|
           @busy = true
           while @busy
-            @pulse += (t <=> @pulse)
+            _toward_target(t)
             @busy = _upd_busy(t)
-            sleep 0.4 / @speed # Consider the processor speed
+            sleep 0.1 # Consider the processor speed
           end
         end
       end
@@ -52,6 +52,11 @@ module CIAX
       end
 
       private
+
+      def _toward_target(tgt)
+        inc = [(tgt - @pulse).abs, @speed / 10].min
+        @pulse += (tgt <=> @pulse) * inc
+      end
 
       def _upd_busy(t)
         t != @pulse && _in_range? && _in_limit?

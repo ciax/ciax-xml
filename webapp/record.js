@@ -9,6 +9,16 @@ function step_exe(step, all) {
     all.push('[' + step.site + ':' + step.args[0] + ']');
     all.push(' -> '+ step.result + '</p>');
 }
+function step_sleep(step, all) {
+    all.push('<p>' + step.type);
+    all.push('(' + step.count + ')');
+    all.push(' -> '+ step.result + '</p>');
+}
+function step_upd(step, all) {
+    all.push('<p>' + step.type);
+    all.push(' [' + step.site + ']');
+    all.push('</p>');
+}
 function operator(ope, cri) {
     switch (ope) {
     case 'equal': return ('== ' + cri); break;
@@ -19,7 +29,11 @@ function operator(ope, cri) {
 }
 
 function step_cond(step, all) {
-    all.push('<p>' + step.type + ' ->' + step.result + '</p><ul>');
+    all.push('<p>' + step.type);
+    if(step.count){
+        all.push('(' + step.count + '/' + step.retry + ')');
+    }
+    all.push(' ->' + step.result + '</p><ul>');
     var conds = step.conditions;
     for (var k in conds) {
         var cond = conds[k];
@@ -50,8 +64,10 @@ function make_step(step, all) {
         step_cond(step, all);
     }else if (step.args) {
         step_exe(step, all);
+    }else if (step.type == 'wait'){
+        step_sleep(step, all);
     }else{
-        all.push('<p>' + step.type + ' [' + step.site + ']' + step.depth + '</p>');
+        step_upd(step, all);
     }
     all.push('</li>');
 }
@@ -74,5 +90,5 @@ function init() {
     update();
     setInterval(update, 1000);
 }
-//$(document).ready(init);
-$(document).ready(update);
+$(document).ready(init);
+

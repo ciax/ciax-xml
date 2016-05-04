@@ -10,5 +10,5 @@ module CIAX
     obj = lyr::List.new(cfg)
     obj.get(args.first)
     obj
-  end
-end.ext_shell.shell
+  end.ext_shell.shell
+end

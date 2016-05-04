@@ -17,10 +17,7 @@ module CIAX
       def pick(keylist, atrb = {})
         h = Hashx.new(atrb)
         keylist.each do |str|
-          cat, key = (str =~ /:/) ? str.split(':') : [:data, str]
-          cat = cat.to_sym
-          par_err("Invalid category (#{cat})") unless key?(cat)
-          par_err("Invalid key (#{cat}:#{key})") unless key && get(cat).key?(key)
+          cat, key = _get_key(str)
           h.get(cat) { Hashx.new }[key] = get(cat)[key]
         end
         h
@@ -104,6 +101,14 @@ module CIAX
       def _within?(cri, val, tol = nil)
         cri += ">#{tol}" if tol
         ReRange.new(cri) == val
+      end
+
+      def _get_key(str)
+        cat, key = (str =~ /:/) ? str.split(':') : [:data, str]
+        cat = cat.to_sym
+        par_err("Invalid category (#{cat})") unless key?(cat)
+        par_err("Invalid key (#{cat}:#{key})") unless key && get(cat).key?(key)
+        [cat, key]
       end
     end
 

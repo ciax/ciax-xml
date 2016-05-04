@@ -48,6 +48,12 @@ th{
 .active{
     color : purple;
 }
+.true{
+    color : green;
+}
+.false{
+    color : red;
+}
 .ctllabel{
     border : 2px outset;
     text-align : center;

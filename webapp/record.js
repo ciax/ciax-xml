@@ -1,12 +1,12 @@
 // fixjsstyle record.js
 function step_mcr(step, all) {
-    all.push('<p>' + step.type);
+    all.push('<p class="warn">' + step.type);
     all.push('[' + step.args[0] + ']');
     if(step.result) { all.push(' -> '+ step.result);}
     all.push('</p>');
 }
 function step_exe(step, all) {
-    all.push('<p>' + step.type);
+    all.push('<p class="active">' + step.type);
     all.push('[' + step.site + ':' + step.args[0] + ']');
     if(step.result) { all.push(' -> '+ step.result);}
     all.push('</p>');
@@ -18,7 +18,7 @@ function step_sleep(step, all) {
     all.push('</p>');
 }
 function step_upd(step, all) {
-    all.push('<p>' + step.type);
+    all.push('<p class="normal">' + step.type);
     all.push(' [' + step.site + ']');
     all.push('</p>');
 }
@@ -30,7 +30,6 @@ function operator(ope, cri) {
     default:
     }
 }
-
 function step_cond(step, all) {
     all.push('<p>' + step.type);
     if(step.count){
@@ -96,4 +95,3 @@ function init() {
     setInterval(update, 1000);
 }
 $(document).ready(update);
-

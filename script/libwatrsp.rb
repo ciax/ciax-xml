@@ -113,12 +113,14 @@ module CIAX
       end
 
       def _event_on
+        at = self[:act_time]
+        at[0] = at[1] = now_msec
         @sv_stat.up(:event)
-        self[:act_time][1] = @last_updated
         @on_act_procs.each { |p| p.call(self) }
       end
 
       def _event_off
+        self[:act_time][1] = now_msec
         return if active?
         @sv_stat.dw(:event)
         @on_deact_procs.each { |p| p.call(self) }

@@ -36,31 +36,31 @@ function step_cond(step, all) {
     if(step.count){
         all.push('(' + step.count + '/' + step.retry + ')');
     }
-    all.push(' ->' + step.result + '</p><ul>');
+    all.push(' ->' + step.result + '</p><dl>');
     var conds = step.conditions;
     for (var k in conds) {
         var cond = conds[k];
-        all.push('<li><p class="' + cond.res + '">');
+        all.push('<dd><p class="' + cond.res + '">');
         all.push('<dfn>' + cond.site + ':' + cond.var + '(' + cond.form + ')</dfn>');
         all.push(' <span>' + operator(cond.cmp, cond.cri) + '? (' + cond.real + ')</span>');
-        all.push('</p></li>');
+        all.push('</p></dd>');
     }
-    all.push('</ul>');
+    all.push('</dl>');
 }
 function move_level(all, crnt, depth) {
     while (crnt != depth) {
         if (crnt > depth) {
-            all.push('<ul>');
+            all.push('<dd><dl>');
             depth += 1;
         }else {
-            all.push('</ul>');
+            all.push('</dl></dd>');
             depth -= 1;
         }
     }
     return depth;
 }
 function make_step(step, all) {
-    all.push('<li>');
+    all.push('<dd>');
     if (step.type == 'mcr') {
         step_mcr(step, all);
     }else if (step.conditions) {
@@ -72,19 +72,21 @@ function make_step(step, all) {
     }else{
         step_upd(step, all);
     }
-    all.push('</li>');
+    all.push('</dd>');
 }
 function update() {
     $.getJSON('record_latest.json', function(data) {
         var all = [];
-        var depth = 0;
+        var depth = 1;
         all.push('<h2>' + data.label + '</h2>');
+        all.push('<dl>');
         for (var j in data.steps) {
             var step = data.steps[j];
             depth = move_level(all, step.depth, depth);
             make_step(step, all);
         }
-        depth = move_level(all, 0, depth);
+        depth = move_level(all, 1, depth);
+        all.push('</dl>');
         all.push('<h3>(' + data.result + ')</h3>');
         $('#output')[0].innerHTML = all.join('');
     });
@@ -93,5 +95,5 @@ function init() {
     update();
     setInterval(update, 1000);
 }
-$(document).ready(init);
+$(document).ready(update);
 

@@ -1,4 +1,4 @@
-@import "/ciax-style.css";
+@import "ciax-xml.css";
 h1.MCRLOG{
   text-align : center;
 }
@@ -52,11 +52,6 @@ table.MCRLOG{
 .WAIT{
   text-indent : 1em;
   color : purple;
-}
-.TITLE{
-  color : white;
-  background-color : darkgray;
-  font-weight : bold;
 }
 .R1{
   text-indent : 1em;

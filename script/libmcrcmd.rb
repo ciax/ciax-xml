@@ -65,7 +65,7 @@ module CIAX
       begin
         dbi = Db.new.get
         # dbi.pick alreay includes :command, :version
-        cobj = Index.new(cfg, dbi.pick)
+        cobj = Cmd::Index.new(cfg, dbi.pick)
         cobj.add_rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)
         puts ent.path

@@ -154,7 +154,7 @@ module CIAX
         if cid
           cfg[:field] = field
           # dbi.pick alreay includes :command, :version
-          cobj = Index.new(cfg, dbi.pick(%i(stream)))
+          cobj = Cmd::Index.new(cfg, dbi.pick(%i(stream)))
           cobj.add_rem.add_ext(Ext)
           ent = cobj.set_cmd(cid.split(':'))
           field.conv(ent)

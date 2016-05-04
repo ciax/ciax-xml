@@ -70,6 +70,12 @@ module CIAX
         true
       end
 
+      def _system(e, step, _mstat)
+        return true unless step.exec?
+        step.set_result('ok', 'failed', system(e[:val]))
+        true
+      end
+
       def _select(e, step, mstat)
         var = _get_stat(e)
         cfg_err('No data in status') unless var

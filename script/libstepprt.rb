@@ -13,15 +13,15 @@ module CIAX
 
       def ext_prt(base)
         @base = type?(base, Integer)
-        _init_msg_list
+        _init_title_list
         self
       end
 
       def title
         type = self[:type]
         args = self[:args].join(':') if key?(:args)
-        if @msg_list.key?(type.to_sym)
-          _head(*@msg_list[type.to_sym])
+        if @title_list.key?(type.to_sym)
+          _head(*@title_list[type.to_sym])
         else
           method('title_' + type).call(args)
         end
@@ -101,12 +101,13 @@ module CIAX
       end
 
       # Branched functions (instead of case/when semantics)
-      def _init_msg_list
-        @msg_list = {
+      def _init_title_list
+        @title_list = {
           mesg: ['Mesg', 5], goal: ['Done?', 6, 'skip if satisfied'],
           wait: ['Waiting', 6], upd: ['Update', 10, "[#{self[:site]}]"],
           check: ['Check', 6, 'interlock'], verify: ['Verify', 6, 'at the end'],
-          select: ['Select by', 11, "[#{self[:site]}:#{self[:var]}]"]
+          select: ['Select by', 11, "[#{self[:site]}:#{self[:var]}]"],
+          system: ['System', 13, "[#{self[:val]}]"]
         }
       end
 

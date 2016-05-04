@@ -1,11 +1,10 @@
-// Need var: Type,Site
+// fixjsstyle record.js
 function step_mcr(step, all) {
     all.push('<p>' + step.type);
-    all.push('('+ step.args[0] + ')'+ step.depth + '</p><ul>');
-    return step.depth;
+    all.push('(' + step.args[0] + ')' + step.depth + '</p>');
 }
 function step_cond(step, all) {
-    all.push('<p>' + step.type + '</p><ul>');
+    all.push('<p>' + step.type + step.depth + '</p><ul>');
     var conds = step.conditions;
     for (var k in conds) {
         var cond = conds[k];
@@ -16,37 +15,40 @@ function step_cond(step, all) {
     }
     all.push('</ul>');
 }
-function take_back(step, all, depth) {
-    while (step.depth <= depth) {
-        all.push('</ul>');
-        depth -= 1;
+function move_level(all, crnt, depth) {
+    while (crnt != depth) {
+        if (crnt > depth) {
+            all.push('<ul>');
+            depth += 1;
+        }else {
+            all.push('</ul>');
+            depth -= 1;
+        }
     }
     return depth;
 }
-function make_step(step, all, depth) {
+function make_step(step, all) {
     all.push('<li>');
     if (step.type == 'mcr') {
-        depth = step_mcr(step, all);
+        step_mcr(step, all);
     }else if (step.conditions) {
         step_cond(step, all);
     }else {
-        all.push('<p>' + step.type + ' (' + step.site + ')</p>');
+        all.push('<p>' + step.type + ' (' + step.site + ')' + step.depth + '</p>');
     }
     all.push('</li>');
-    return depth;
 }
 function update() {
     $.getJSON('record_latest.json', function(data) {
         var all = [];
         var depth = 0;
         all.push('<h2>' + data.label + '</h2>');
-        all.push('<ul>');
         for (var j in data.steps) {
             var step = data.steps[j];
-            depth = take_back(step, all, depth);
-            depth = make_step(step, all, depth);
+            depth = move_level(all, step.depth, depth);
+            make_step(step, all);
         }
-        depth = take_back(0, depth, all);
+        depth = move_level(all, 0, depth);
         all.push('<h3>(' + data.result + ')</h3>');
         $('#output')[0].innerHTML = all.join('');
     });

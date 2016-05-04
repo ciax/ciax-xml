@@ -5,6 +5,7 @@ develop(){
         export PROJ=dummy
         export VER=Initiate
         export NOCACHE=1
+        alias sybeta='giu beta;gim develop;git push;giu develop'
     else
         cd
     fi

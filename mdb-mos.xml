@@ -537,10 +537,7 @@
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="mfp_ac"/>
-        <cfg site="mmc" name="save">
-          <argv>msg:con,msg:rel</argv>
-          <argv>cmi</argv>
-        </cfg>
+        <system>mkcmi</system>
       </item>
       <item id="ro_s-f" label="Rh Open">
         <goal>
@@ -922,10 +919,7 @@
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="mfp_ao"/>
-        <cfg site="mmc" name="save">
-          <argv>msg:con,msg:rel</argv>
-          <argv>cmi</argv>
-        </cfg>
+        <system>mkcmi</system>
       </item>
       <item id="ini_l-i" label="Go to INIT">
         <goal>

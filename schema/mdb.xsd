@@ -71,6 +71,7 @@
           <xsd:element ref="mdb:exec"/>
           <xsd:element ref="mdb:cfg"/>
           <xsd:element ref="mdb:upd"/>
+          <xsd:element ref="mdb:system"/>
         </xsd:choice>
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:token" use="required"/>
@@ -150,6 +151,7 @@
   <xsd:element name="not" type="mdb:condition"/>
   <xsd:element name="match" type="mdb:condition"/>
   <xsd:element name="unmatch" type="mdb:condition"/>
+  <xsd:element name="system"/>
   <xsd:element name="mcr">
     <xsd:complexType>
       <xsd:complexContent>

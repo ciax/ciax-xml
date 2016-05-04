@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <alias id="mmc" label="Carrousel">
-    <group id="gsave" caption="Save Stat">
-      <unit id="cmi" title="cmi" label="Current Mask Index">
-        <item id="svcmi" label="Save Current Mask Index" ref="save">
-          <argv>msg:con,msg:rsl</argv>
-          <argv>cmi</argv>
-        </item>
-      </unit>
-    </group>
     <group id="grel" caption="REL Motion">
       <unit id="ucw" title="cw-[1-5]" label="CW motion">
         <item id="cw-1" label="Move 1 unit CW" ref="cwi">

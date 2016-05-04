@@ -1,16 +1,31 @@
 // fixjsstyle record.js
 function step_mcr(step, all) {
     all.push('<p>' + step.type);
-    all.push('(' + step.args[0] + ')' + step.depth + '</p>');
+    all.push('[' + step.args[0] + ']');
+    all.push(' -> '+ step.result + '</p>');
 }
+function step_exe(step, all) {
+    all.push('<p>' + step.type);
+    all.push('[' + step.site + ':' + step.args[0] + ']');
+    all.push(' -> '+ step.result + '</p>');
+}
+function operator(ope, cri) {
+    switch (ope) {
+    case 'equal': return ('== ' + cri); break;
+    case 'not' : return ('!= ' + cri); break;
+    case 'match' : return ('=~ /' + cri + '/'); break;
+    default:
+    }
+}
+
 function step_cond(step, all) {
-    all.push('<p>' + step.type + step.depth + '</p><ul>');
+    all.push('<p>' + step.type + ' ->' + step.result + '</p><ul>');
     var conds = step.conditions;
     for (var k in conds) {
         var cond = conds[k];
-        all.push('<li><p>');
-        all.push(cond.site + ':' + cond.var);
-        all.push(' (' + cond.res + ')');
+        all.push('<li><p class="' + cond.res + '">');
+        all.push('<dfn>' + cond.site + ':' + cond.var + '(' + cond.form + ')</dfn>');
+        all.push(' <span>' + operator(cond.cmp, cond.cri) + '? (' + cond.real + ')</span>');
         all.push('</p></li>');
     }
     all.push('</ul>');
@@ -33,8 +48,10 @@ function make_step(step, all) {
         step_mcr(step, all);
     }else if (step.conditions) {
         step_cond(step, all);
-    }else {
-        all.push('<p>' + step.type + ' (' + step.site + ')' + step.depth + '</p>');
+    }else if (step.args) {
+        step_exe(step, all);
+    }else{
+        all.push('<p>' + step.type + ' [' + step.site + ']' + step.depth + '</p>');
     }
     all.push('</li>');
 }

@@ -83,7 +83,7 @@ function update() {
     all = [];
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
-        all.push('<h2>' + data.label + '</h2>');
+        all.push('<h2>' + data.label + '(' + data.cid + ')</h2>');
         all.push('<dl>');
         for (var j in data.steps) {
             var step = data.steps[j];

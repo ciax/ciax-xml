@@ -8,6 +8,7 @@ body{
 }
 table{
     width : 100%;
+    background-color: silver;
 }
 th{
     border : 2px outset;
@@ -19,6 +20,7 @@ th{
     border : 5px outset #aadd99;
     margin-left : 5%;
     margin-right : 5%;
+    font-weight: bold;
 }
 .title{
     border : 2px outset;
@@ -29,6 +31,7 @@ th{
 }
 .item{
     border : 2px inset;
+    font-weight: bold;
 }
 .label{
     border : 2px outset;
@@ -39,7 +42,7 @@ th{
     color : black;
 }
 .normal{
-    color : lightgreen;
+    color : green;
 }
 .alarm{
     color : red;
@@ -87,7 +90,6 @@ date{
 /* title */
 .head{
     font-size: middle;
-    font-weight: bold;
     text-transform: uppercase;
 }
 .res{

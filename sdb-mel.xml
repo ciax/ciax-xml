@@ -41,11 +41,11 @@
       <default class="warn" msg="N/A"/>
     </table>
     <table id="bvl">
-      <range class="alarm" msg="LOW">:20</range>
-      <range class="warn" msg="LESS">20&lt;:22</range>
-      <range class="normal" msg="OK">22&lt;:26</range>
-      <range class="warn" msg="FULL">26&lt;:28</range>
-      <range class="alarm" msg="HIGH">28&lt;:</range>
+      <range class="alarm" msg="LOW(%s)">:20</range>
+      <range class="warn" msg="LESS(%s)">20&lt;:22</range>
+      <range class="normal" msg="OK(%s)">22&lt;:26</range>
+      <range class="warn" msg="FULL(%s)">26&lt;:28</range>
+      <range class="alarm" msg="HIGH(%s)">28&lt;:</range>
     </table>
     <table id="load" label="Load Cell">
       <pattern class="alarm" msg="HH">1</pattern>

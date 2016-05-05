@@ -29,9 +29,9 @@ function add_time(step) {
 }
 function add_count(step) {
     if (step.count) {
-        all.push(' (' + step.count);
-        if (step.retry) { all.push('/' + step.retry); }
-        all.push(')');
+        var max = step.retry || step.sleep;
+        all.push('<span>(' + step.count + '/' + max + ')</span>');
+        all.push('<progress value="' + step.count + '" max="' + max + '"/>');
     }
 }
 function step_exe(step) {
@@ -125,7 +125,9 @@ function update() {
     });
 }
 function acordion() {
-    $(this).next().slideToggle();
+    $('.cond span').on('click', function(){
+        $(this).next().slideToggle();
+    });
 }
 function init() {
     update();
@@ -136,4 +138,5 @@ var all = [];
 var depth = 1;
 var start = '';
 $(document).ready(update);
-$('.cond dt').click(acordion);
+$(acordion)
+

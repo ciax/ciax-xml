@@ -64,17 +64,41 @@ th{
     text-align :center;
 }
 /* For Macro */
+.cond{
+    word-spacing: 20px;
+}
+.mcr{
+    color : maroon;
+}
+.exec{
+    color : purple;
+}
+.qry{
+    color : magenda;
+}
+.wait{
+    color : cyan;
+}
+.upd{
+    color :green;
+}
+.check,.goal{
+    color : orange;
+}
+/* title */
+.head{
+    text-transform: uppercase;
+}
+/* var name of condition */
+var{
+    width:100px;
+    float:left;
+    color : blue;
+}
+/* result */
 .true{
     color : green;
 }
 .false{
     color : red;
-}
-.stat{
-    width:100px;
-    float:left;
-    color : blue;
-}
-.cond{
-    word-spacing: 20px;
 }

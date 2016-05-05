@@ -1,13 +1,10 @@
 // Need var: Type,Site
 var last;
+var offset=0;
 function elapsed(){
     var now=new Date();
-    var ms=now.getTime()-last;
-    var sign='';
-    if(ms < 0){
-        ms=-ms;
-        sign='-';
-    }
+    var ms=now.getTime()-last+offset;
+    if(ms < 0){ offset = -ms; ms=0;}
     var t=new Date(ms);
     var str;
     if (ms > 86400000){
@@ -17,7 +14,7 @@ function elapsed(){
     }else{
         str=t.getMinutes()+"' "+t.getSeconds()+'"';
     }
-    $("#elapsed").text(sign+str);
+    $("#elapsed").text(str);
 }
 function conv(stat){
     var data= $.extend({},stat.data,stat.msg);

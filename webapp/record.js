@@ -3,16 +3,17 @@ function add_title(step) {
     all.push('<span class="head ' + step.type + '">' + step.type + '</span>');
 }
 function add_cmd(step) {
+    if (step.label) {all.push(':' + step.label);}
     var ary = [];
     if (step.site) { ary.push(step.site); }
     if (step.args) { ary.push(step.args[0]); }
-    all.push(' <code>[' + ary.join(':') + ']</code>');
+    if (ary.length > 0) {all.push(': [' + ary.join(':') + ']');}
 }
 function add_result(step) {
     if (step.result) {
         all.push(' -> ');
         var cls = (step.result == 'failed') ? 'false' : 'true';
-        all.push('<em class="' + cls + '">' + step.result + '</em>');
+        all.push('<em class="res ' + cls + '">' + step.result + '</em>');
     }
 }
 function add_count(step) {
@@ -23,12 +24,10 @@ function add_count(step) {
     }
 }
 function step_exe(step) {
-    all.push('<h4>');
     add_title(step);
     add_cmd(step);
     add_count(step);
     add_result(step);
-    all.push('</h4>');
 }
 function operator(ope, cri) {
     switch (ope) {
@@ -46,20 +45,16 @@ function cond_list(conds, type){
         all.push('<var>' + cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
         all.push('<code>' + operator(cond.cmp, cond.cri) + '?</code>  ');
         if (type == 'goal' && res == false) { res = 'warn'; }
-        all.push('<em class="cond ' + res + '"> (' + cond.real + ')</em>');
+        all.push('<em"' + res + '"> (' + cond.real + ')</em>');
         all.push('</dd>');
     }
 }
 function step_cond(step) {
-    var id = 'acdn' + all.length;
-    all.push('<h4>');
-    all.push('<a class="acdn" data-target="' + id + '">');
+    all.push('<dl class="cond"><dt>');
     add_title(step);
-    all.push('</a>');
     add_count(step);
     add_result(step);
-    all.push('</h4>');
-    all.push('<dl id="' + id + '">');
+    all.push('</dt>');
     cond_list(step.conditions, step.type);
     all.push('</dl>');
 }
@@ -101,8 +96,7 @@ function update() {
     });
 }
 function acordion() {
-    var target = $(this).data('target');
-    $('#' + target).slideToggle();
+    $(this).next().slideToggle();
 }
 function init() {
     update();
@@ -112,4 +106,4 @@ function init() {
 var all = [];
 var depth = 1;
 $(document).ready(update);
-$('.acdn').click(acordion);
+$('.cond dt').click(acordion);

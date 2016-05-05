@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>CIAX-XML(Record)</title>
+    <link rel="stylesheet" type="text/css" href="ciax-xml.css"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript">
+      var all=[];
+      function add_dl(){
+      all.push('<dl class="cond">');
+      all.push('<dd><span>A4</span>');
+        all.push('<dl style="display: none;">');
+          all.push('<dd>menu4</dd><dd>menu4.1</dd>');
+          all.push('</dl>');
+          all.push('</dd>');
+        all.push('</dl>');
+      $('#acd')[0].innerHTML = all.join('');
+      }
+      function acordion() {
+      $('span').on('click', function(){
+      $(this).next().slideToggle();
+      });
+      }
+      $(document).ready(add_dl);
+      $(acordion);
+    </script>
+  </head>
+  <body>
+    <div class="outline">
+      <div class="title">Latest Macro</div>
+      <div id="acd"></div>
+      <div>
+        <ul>
+          <li><span>A1</span>
+            <ul>
+              <li>menu1</li>
+              <li>menu1.1</li>
+              <li>menu1.2</li>
+            </ul>
+          </li>
+          <li><span>A2</span>
+            <ul>
+              <li>menu2</li>
+              <li>menu2.1</li>
+              <li>menu2.2</li>
+            </ul>
+          </li>
+          <li><span>A3</span>
+            <ul>
+              <li>menu3</li>
+              <li>menu3.1</li>
+              <li>menu3.2</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

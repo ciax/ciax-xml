@@ -31,7 +31,9 @@ function add_count(step) {
     if (step.count) {
         var max = step.retry || step.sleep;
         all.push('<span>(' + step.count + '/' + max + ')</span>');
-        all.push('<progress value="' + step.count + '" max="' + max + '"/>');
+        all.push('<meter value="' + step.count/max*100 + '" max="100"');
+        if(step.retry) { all.push('low="60" high="80"');}
+        all.push('/>');
     }
 }
 function step_exe(step) {

@@ -11,7 +11,7 @@ function add_cmd(step) {
 function add_result(step) {
     if (step.result) {
         all.push(' -> ');
-        var cls = (step.result == 'failed') ? 'fail' : 'true';
+        var cls = (step.result == 'failed') ? 'false' : 'true';
         all.push('<em class="' + cls + '">' + step.result + '</em>');
     }
 }

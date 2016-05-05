@@ -38,6 +38,18 @@ function operator(ope, cri) {
     default:
     }
 }
+function cond_list(conds, type){
+    for (var k in conds) {
+        var cond = conds[k];
+        var res = cond.res;
+        all.push('<dd>');
+        all.push('<var>' + cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
+        all.push('<code>' + operator(cond.cmp, cond.cri) + '?</code>  ');
+        if (type == 'goal' && res == false) { res = 'warn'; }
+        all.push('<em class="cond ' + res + '"> (' + cond.real + ')</em>');
+        all.push('</dd>');
+    }
+}
 function step_cond(step) {
     var id = 'acdn' + all.length;
     all.push('<h4>');
@@ -48,15 +60,7 @@ function step_cond(step) {
     add_result(step);
     all.push('</h4>');
     all.push('<dl id="' + id + '">');
-    var conds = step.conditions;
-    for (var k in conds) {
-        var cond = conds[k];
-        all.push('<dd>');
-        all.push('<var>' + cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
-        all.push('<code>' + operator(cond.cmp, cond.cri) + '?</code>  ');
-        all.push('<em class="cond ' + cond.res + '"> (' + cond.real + ')</em>');
-        all.push('</dd>');
-    }
+    cond_list(step.conditions, step.type);
     all.push('</dl>');
 }
 function move_level(crnt) {

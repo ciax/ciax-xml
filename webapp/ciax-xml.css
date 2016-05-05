@@ -64,6 +64,11 @@ th{
     text-align :center;
 }
 /* For Macro */
+date{
+    font-size: medium;
+    float:right;
+    color: blue;
+}
 .mcr{
     color : orange;
 }
@@ -88,11 +93,17 @@ th{
 .res{
     text-transform: capitalize;
 }
+.elps{
+    font-size: medium;
+    float:right;
+    color: blue;
+    width:100px;
+}
 /* var name of condition */
 var{
     width:100px;
     float:left;
-    color : blue;
+    color : silver;
 }
 /* result */
 .true{

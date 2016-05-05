@@ -1,3 +1,4 @@
+/* Global Style */
 body{
     background-image : url(/json/bg-1.jpg);
     background-repeat : repeat;
@@ -8,6 +9,11 @@ body{
 table{
     width : 100%;
 }
+th{
+    border : 2px outset;
+    text-align : center;
+}
+/* For Status Table '.' is class name */
 .outline{
     width : 90%;
     border : 5px outset #aadd99;
@@ -20,10 +26,6 @@ table{
     text-align : center;
     color : white;
     background-color:#bbeeaa;
-}
-th{
-    border : 2px outset;
-    text-align : center;
 }
 .item{
     border : 2px inset;
@@ -48,12 +50,6 @@ th{
 .active{
     color : purple;
 }
-.true{
-    color : green;
-}
-.false{
-    color : red;
-}
 .ctllabel{
     border : 2px outset;
     text-align : center;
@@ -66,4 +62,19 @@ th{
 }
 .center{
     text-align :center;
+}
+/* For Macro */
+.true{
+    color : green;
+}
+.false{
+    color : red;
+}
+.stat{
+    width:100px;
+    float:left;
+    color : blue;
+}
+.cond{
+    word-spacing: 20px;
 }

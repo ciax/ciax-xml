@@ -31,18 +31,20 @@ function operator(ope, cri) {
     }
 }
 function step_cond(step, all) {
-    all.push('<p>' + step.type);
+    all.push('<dl>');
+    all.push('<dt>' + step.type);
     if(step.count){
         all.push('(' + step.count + '/' + step.retry + ')');
     }
-    all.push(' ->' + step.result + '</p><dl>');
+    all.push(' ->' + step.result + '</dt>');
     var conds = step.conditions;
     for (var k in conds) {
         var cond = conds[k];
-        all.push('<dd><p class="' + cond.res + '">');
-        all.push('<dfn>' + cond.site + ':' + cond.var + '(' + cond.form + ')</dfn>');
-        all.push(' <span>' + operator(cond.cmp, cond.cri) + '? (' + cond.real + ')</span>');
-        all.push('</p></dd>');
+        all.push('<dd>');
+        all.push('<span class="stat">' + cond.site + ':' + cond.var + '(' + cond.form + ')</span>');
+        all.push('<span>' + operator(cond.cmp, cond.cri) + '?</span>  ');
+        all.push('<em class="cond ' + cond.res + '"> (' + cond.real + ')</em>')
+        all.push('</dd>');
     }
     all.push('</dl>');
 }

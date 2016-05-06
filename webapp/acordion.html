@@ -6,17 +6,17 @@
     <script type="text/javascript">
       var all=[];
       function add_dl(){
-      all.push('<dl class="cond">');
-      all.push('<dd><span>A4</span>');
-        all.push('<dl style="display: none;">');
-          all.push('<dd>menu4</dd><dd>menu4.1</dd>');
-          all.push('</dl>');
-          all.push('</dd>');
-        all.push('</dl>');
+      all.push('<ul>');
+      all.push('<li><h4>A4</h4>');
+        all.push('<ul style="display: none;">');
+          all.push('<li>menu4</li><li>menu4.1</li>');
+          all.push('</ul>');
+          all.push('</li>');
+        all.push('</ul>');
       $('#acd')[0].innerHTML = all.join('');
       }
       function acordion() {
-      $('span').on('click', function(){
+      $('h4').on('click', function(){
       $(this).next().slideToggle();
       });
       }
@@ -30,21 +30,21 @@
       <div id="acd"></div>
       <div>
         <ul>
-          <li><span>A1</span>
+          <li><h4>A1</h4>
             <ul>
               <li>menu1</li>
               <li>menu1.1</li>
               <li>menu1.2</li>
             </ul>
           </li>
-          <li><span>A2</span>
+          <li><h4>A2</h4>
             <ul>
               <li>menu2</li>
               <li>menu2.1</li>
               <li>menu2.2</li>
             </ul>
           </li>
-          <li><span>A3</span>
+          <li><h4>A3</h4>
             <ul>
               <li>menu3</li>
               <li>menu3.1</li>

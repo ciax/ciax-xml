@@ -72,6 +72,9 @@ date{
     float:right;
     color: blue;
 }
+ul{
+    list-style: none;
+}
 .mcr{
     color : orange;
 }

@@ -1,5 +1,5 @@
 <?php
-define("LOGDIR","./var/log/");
+define("LOGDIR","/home/omata/.var/json/");
 class McrLog{
     var $logdata=array();
     var $logfp;
@@ -97,10 +97,11 @@ class McrLog{
 }
 
 class LogDate{
-    var $dateline=array();
+    var $dateline=array('a0','a1');
     var $selected;
 
     function LogDate(){
+        array_push($this->dateline,array('a1','a2');
         foreach(glob(LOGDIR."record*.json") as $val){
             ereg('([0-9]{6})',$val,$s1);
             ereg(LOGDIR.'(.*)',$val,$s2);

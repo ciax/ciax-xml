@@ -31,8 +31,8 @@ function add_count(step) {
     if (step.count) {
         var max = step.retry || step.sleep;
         all.push('<span>(' + step.count + '/' + max + ')</span>');
-        all.push('<meter value="' + step.count/max*100 + '" max="100"');
-        if(step.retry) { all.push('low="60" high="80"');}
+        all.push('<meter value="' + step.count / max * 100 + '" max="100"');
+        if (step.retry) { all.push('low="60" high="80"');}
         all.push('/>');
     }
 }
@@ -67,7 +67,7 @@ function cond_list(conds, type) {
     }
 }
 function step_cond(step) {
-    step_exe(step)
+    step_exe(step);
     all.push('<ul>');
     cond_list(step.conditions, step.type);
     all.push('</ul>');
@@ -122,21 +122,23 @@ function update() {
         all.push('</ul>');
         make_footer(data);
         $('#output')[0].innerHTML = all.join('');
+        if (data.status == 'end') { clearInterval(itvl);}
     });
 }
 function acordion() {
-    $('h4').on('click', function(){
+    $('h4').on('click', function() {
         $(this).next().slideToggle();
     });
 }
 function init() {
     update();
     acordion();
-    setInterval(update, 1000);
+    itvl = setInterval(update, 1000);
 }
 var all = [];
 var depth = 1;
 var start = '';
-$(document).ready(update);
+var itvl;
+$(document).ready(init);
 $(acordion);
 

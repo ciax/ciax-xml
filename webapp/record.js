@@ -68,7 +68,7 @@ function cond_list(conds, type) {
 }
 function step_cond(step) {
     step_exe(step);
-    all.push('<ul>');
+    all.push('<ul style="display:none;">');
     cond_list(step.conditions, step.type);
     all.push('</ul>');
 }
@@ -106,6 +106,11 @@ function make_footer(data) {
     all.push(']<span class="elps">[' + data.total_time + ']</span>');
     all.push('</h3>');
 }
+function acordion() {
+    $('h4').on('click', function() {
+        $(this).next().slideToggle();
+    });
+}
 function update() {
     all = [];
     depth = 1;
@@ -123,16 +128,11 @@ function update() {
         make_footer(data);
         $('#output')[0].innerHTML = all.join('');
         if (data.status == 'end') { clearInterval(itvl);}
-    });
-}
-function acordion() {
-    $('h4').on('click', function() {
-        $(this).next().slideToggle();
+        acordion();
     });
 }
 function init() {
     update();
-    acordion();
     itvl = setInterval(update, 1000);
 }
 var all = [];
@@ -140,5 +140,3 @@ var depth = 1;
 var start = '';
 var itvl;
 $(document).ready(init);
-$(acordion);
-

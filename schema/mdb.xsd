@@ -8,6 +8,7 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
+  <!-- Structure -->
   <xsd:element name="macro">
     <xsd:complexType>
       <xsd:sequence minOccurs="0" maxOccurs="unbounded">
@@ -81,6 +82,7 @@
       <xsd:attribute name="retry" type="xsd:int"/>
     </xsd:complexType>
   </xsd:element>
+  <!-- Attributes -->
   <xsd:attributeGroup name="attr_stat">
     <xsd:attribute name="label" type="xsd:token" use="optional"/>
     <xsd:attribute name="join">
@@ -122,6 +124,7 @@
       <xsd:element ref="mdb:unmatch" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:choice>
   </xsd:group>
+  <!-- Condition Elements -->
   <xsd:element name="goal">
     <xsd:complexType>
       <xsd:sequence minOccurs="0" maxOccurs="unbounded">
@@ -151,8 +154,7 @@
   <xsd:element name="not" type="mdb:condition"/>
   <xsd:element name="match" type="mdb:condition"/>
   <xsd:element name="unmatch" type="mdb:condition"/>
-  <xsd:element name="sleep"/>
-  <xsd:element name="system"/>
+  <!-- Processing Elements -->
   <xsd:element name="mcr">
     <xsd:complexType>
       <xsd:complexContent>
@@ -192,6 +194,9 @@
       <xsd:attribute name="label" type="xsd:token" use="required"/>
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="sleep"/>
+  <xsd:element name="system"/>
+  <!-- Sub Macro -->
   <xsd:element name="select">
     <xsd:complexType>
       <xsd:sequence minOccurs="1" maxOccurs="1">

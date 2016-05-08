@@ -103,7 +103,7 @@ module CIAX
     def tag_wait(doc, e)
       ex = Hashx.new(e)
       if e[:sleep]
-        doc.element(:wait, nil, ex.pick([:sleep, :label]))
+        doc.element(:sleep, ex[:sleep])
       else
         sd = doc.enclose(:wait, ex.pick([:retry, :label]))
         e[:until].each do |cond|

@@ -46,10 +46,14 @@ module CIAX
       end
 
       def _wait(_e, step, mstat)
-        return true if step.sleeping
         return true unless step.timeout? && _giveup?(step)
         mstat[:result] = 'timeout'
         fail Interlock
+      end
+
+      def _sleep(_e, step, _mstat)
+        step.sleeping
+        true
       end
 
       def _exec(e, step, _mstat)

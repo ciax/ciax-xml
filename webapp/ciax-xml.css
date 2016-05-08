@@ -87,7 +87,7 @@ ul{
 .upd{
     color :green;
 }
-.check,.goal,.wait{
+.check,.goal,.wait,.sleep{
     color : cyan;
 }
 /* title */

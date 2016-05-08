@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="mos" version="1" label="MOS Macro" port="55555">
+  <macro id="mos" version="2" label="MOS Macro" port="55555">
     <group id="grp_mfp_2" caption="Action" rank="2">
       <item id="mfp_ro" label="Robohand All Open">
         <goal>
@@ -8,7 +8,7 @@
           <match site="mfp" var="rbo" form="msg">OPEN</match>
         </goal>
         <exec site="mfp" name="ro"/>
-        <wait sleep="4" label="sleep"/>
+        <sleep>4</sleep>
         <upd site="mfp"/>
       </item>
       <item id="mfp_rc" label="Robohand All Close">
@@ -17,7 +17,7 @@
           <match site="mfp" var="rbo" form="msg">CLOSE</match>
         </goal>
         <exec site="mfp" name="rc"/>
-        <wait sleep="4" label="sleep"/>
+        <sleep>4</sleep>
         <upd site="mfp"/>
       </item>
       <item id="mfp_go" label="Gate Valve Open">
@@ -25,7 +25,7 @@
           <match site="mfp" var="gv" form="msg">OPEN</match>
         </goal>
         <exec site="mfp" name="go"/>
-        <wait sleep="5" label="sleep"/>
+        <sleep>5</sleep>
         <upd site="mfp"/>
       </item>
       <item id="mfp_gc" label="Gate Valve Close">
@@ -33,7 +33,7 @@
           <match site="mfp" var="gv" form="msg">CLOSE</match>
         </goal>
         <exec site="mfp" name="gc"/>
-        <wait sleep="2" label="sleep"/>
+        <sleep>2</sleep>
         <upd site="mfp"/>
       </item>
       <item id="mfp_av" label="Arm Vertical">
@@ -41,7 +41,7 @@
           <match site="mfp" var="hv" form="msg">Ver</match>
         </goal>
         <exec site="mfp" name="av"/>
-        <wait sleep="8" label="sleep"/>
+        <sleep>8</sleep>
         <upd site="mfp"/>
       </item>
       <item id="mfp_ah" label="Arm Horizontal">
@@ -49,7 +49,7 @@
           <match site="mfp" var="hv" form="msg">Hor</match>
         </goal>
         <exec site="mfp" name="ah"/>
-        <wait sleep="8" label="sleep"/>
+        <sleep>8</sleep>
         <upd site="mfp"/>
       </item>
       <item id="mfp_ao" label="Arm Open">
@@ -57,14 +57,14 @@
           <match site="mfp" var="ao" form="msg">OPEN</match>
         </goal>
         <exec site="mfp" name="ao"/>
-        <wait sleep="3" label="sleep"/>
+        <sleep>3</sleep>
       </item>
       <item id="mfp_ac" label="Arm Close">
         <goal>
           <match site="mfp" var="ao" form="msg">CLOSE</match>
         </goal>
         <exec site="mfp" name="ac"/>
-        <wait sleep="3" label="sleep"/>
+        <sleep>3</sleep>
       </item>
     </group>
     <group id="grp_mma_2" caption="Action" rank="2">

@@ -66,6 +66,7 @@
           <xsd:element ref="mdb:select"/>
           <xsd:element ref="mdb:check"/>
           <xsd:element ref="mdb:wait"/>
+          <xsd:element ref="mdb:sleep"/>
           <xsd:element ref="mdb:mesg"/>
           <xsd:element ref="mdb:mcr"/>
           <xsd:element ref="mdb:exec"/>
@@ -144,13 +145,13 @@
       </xsd:sequence>
       <xsd:attributeGroup ref="mdb:attr_stat"/>
       <xsd:attribute name="retry" type="xsd:int" use="optional"/>
-      <xsd:attribute name="sleep" type="xsd:int" use="optional"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="equal" type="mdb:condition"/>
   <xsd:element name="not" type="mdb:condition"/>
   <xsd:element name="match" type="mdb:condition"/>
   <xsd:element name="unmatch" type="mdb:condition"/>
+  <xsd:element name="sleep"/>
   <xsd:element name="system"/>
   <xsd:element name="mcr">
     <xsd:complexType>

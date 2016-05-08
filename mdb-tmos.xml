@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="tmos" version="1" label="MOS Dummy" port="55555">
+  <macro id="tmos" version="2" label="MOS Dummy" port="55556">
     <group id="grp_tfp_2" caption="Action" rank="2">
       <item id="tfp_ro" label="Robohand All Open">
         <goal>
@@ -8,7 +8,7 @@
           <match site="tfp" var="rbo" form="msg">OPEN</match>
         </goal>
         <exec site="tfp" name="ro"/>
-        <wait sleep="4" label="sleep"/>
+        <sleep>4</sleep>
         <upd site="tfp"/>
       </item>
       <item id="tfp_rc" label="Robohand All Close">
@@ -17,7 +17,7 @@
           <match site="tfp" var="rbo" form="msg">CLOSE</match>
         </goal>
         <exec site="tfp" name="rc"/>
-        <wait sleep="4" label="sleep"/>
+        <sleep>4</sleep>
         <upd site="tfp"/>
       </item>
       <item id="tfp_go" label="Gate Valve Open">
@@ -25,7 +25,7 @@
           <match site="tfp" var="gv" form="msg">OPEN</match>
         </goal>
         <exec site="tfp" name="go"/>
-        <wait sleep="5" label="sleep"/>
+        <sleep>5</sleep>
         <upd site="tfp"/>
       </item>
       <item id="tfp_gc" label="Gate Valve Close">
@@ -33,7 +33,7 @@
           <match site="tfp" var="gv" form="msg">CLOSE</match>
         </goal>
         <exec site="tfp" name="gc"/>
-        <wait sleep="2" label="sleep"/>
+        <sleep>2</sleep>
         <upd site="tfp"/>
       </item>
       <item id="tfp_av" label="Arm Vertical">
@@ -41,7 +41,7 @@
           <match site="tfp" var="hv" form="msg">Ver</match>
         </goal>
         <exec site="tfp" name="av"/>
-        <wait sleep="8" label="sleep"/>
+        <sleep>8</sleep>
         <upd site="tfp"/>
       </item>
       <item id="tfp_ah" label="Arm Horizontal">
@@ -49,7 +49,7 @@
           <match site="tfp" var="hv" form="msg">Hor</match>
         </goal>
         <exec site="tfp" name="ah"/>
-        <wait sleep="8" label="sleep"/>
+        <sleep>8</sleep>
         <upd site="tfp"/>
       </item>
       <item id="tfp_ao" label="Arm Open">
@@ -57,14 +57,14 @@
           <match site="tfp" var="ao" form="msg">OPEN</match>
         </goal>
         <exec site="tfp" name="ao"/>
-        <wait sleep="3" label="sleep"/>
+        <sleep>3</sleep>
       </item>
       <item id="tfp_ac" label="Arm Close">
         <goal>
           <match site="tfp" var="ao" form="msg">CLOSE</match>
         </goal>
         <exec site="tfp" name="ac"/>
-        <wait sleep="3" label="sleep"/>
+        <sleep>3</sleep>
       </item>
     </group>
     <group id="grp_tma_2" caption="Action" rank="2">
@@ -129,7 +129,7 @@
         </wait>
       </item>
     </group>
-    <group id="grp_mos_1" caption="Shared Command" rank="0">
+    <group id="grp_mos_1" caption="Shared Cotmand" rank="0">
       <item id="stop" label="Emergency STOP">
         <exec site="tma" name="astop"/>
         <exec site="tmc" name="astop"/>
@@ -537,6 +537,7 @@
           <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ac"/>
+        <system>mkcmi</system>
       </item>
       <item id="ro_s-f" label="Rh Open">
         <goal>
@@ -918,6 +919,7 @@
           <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="tfp_ao"/>
+        <system>mkcmi</system>
       </item>
       <item id="ini_l-i" label="Go to INIT">
         <goal>
@@ -1313,7 +1315,7 @@
         </check>
       </item>
     </group>
-    <group id="grp_mos_8" caption="MOS Main Commands" rank="0">
+    <group id="grp_mos_8" caption="MOS Main Cotmands" rank="0">
       <item id="start" label="startmask">
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>

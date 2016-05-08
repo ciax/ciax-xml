@@ -184,7 +184,6 @@ def wait_loop(event, site)
     wdb['retry'] = count
     wdb['until'] = sep_cond(cri) { |cond| [site, cond] }
   else
-    wdb['label'] = 'sleep'
     wdb['sleep'] = count
   end
   wdb['post'] = sep_cmd(post, '&', site) if post

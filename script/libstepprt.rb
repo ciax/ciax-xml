@@ -107,6 +107,7 @@ module CIAX
           wait: ['Waiting', 6], upd: ['Update', 10, "[#{self[:site]}]"],
           check: ['Check', 6, 'interlock'], verify: ['Verify', 6, 'at the end'],
           select: ['Select by', 11, "[#{self[:site]}:#{self[:var]}]"],
+          sleep: ['Sleeping', 6, "[#{self[:val]}]"],
           system: ['System', 13, "[#{self[:val]}]"]
         }
       end

@@ -29,7 +29,7 @@ function add_time(step) {
 }
 function add_count(step) {
     if (step.count) {
-        var max = step.retry || step.sleep;
+        var max = step.retry || step.val;
         all.push('<span>(' + step.count + '/' + max + ')</span>');
         all.push('<meter value="' + step.count / max * 100 + '" max="100"');
         if (step.retry) { all.push('low="60" high="80"');}

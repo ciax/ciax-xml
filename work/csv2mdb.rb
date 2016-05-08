@@ -113,9 +113,16 @@ def ignore_flg(args)
   args << true
 end
 
-# coovert cfg or upd or exec
+# convert cfg or upd or exec
 def conv_type(args)
-  return if args[0] == 'mcr'
+  case args[0]
+  when 'mcr','system'
+  else
+    conv_exec_type(args)
+  end
+end
+
+def conv_exec_type(args)
   if args[1] == 'upd'
     args[1] = args[0]
     args[0] = 'upd'

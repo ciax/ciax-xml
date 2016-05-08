@@ -93,6 +93,8 @@ module CIAX
       cmd = args.shift
       if cmd.to_s == 'mcr'
         doc.element(cmd, nil, args.a2h(:name))
+      elsif cmd.to_s == 'system'
+        doc.element(cmd, args.shift)
       else
         doc.element(cmd, nil, args.a2h(:site, :name, :skip))
       end

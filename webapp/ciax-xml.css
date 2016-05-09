@@ -104,6 +104,9 @@ ul{
     color: blue;
     width:100px;
 }
+.cmd{
+    color : blue;
+}
 /* var name of condition */
 var{
     width:100px;

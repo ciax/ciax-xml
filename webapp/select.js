@@ -1,23 +1,36 @@
 // Recommended Package: closure-linter
-// fixjsstyle record.js
+// fixjsstyle select.js
+function time_list(time, cid, res) {
+    all.push('<li>' + time.toLocaleTimeString());
+    all.push(' [<span class="cmd">' + cid + '</span>]');
+    var co = cls[res] ? cls[res] : 'alarm';
+    all.push(' -> <span class="' + co + '">');
+    all.push(res + '</span>');
+    all.push('</li>');
+}
+
+function date_list(time, cid, res) {
+    var crd = time.toLocaleDateString();
+    if (date != crd) {
+        all.push('</ul><h4>' + crd + '</h4><ul>');
+        date = crd;
+    }
+    time_list(time, cid, res);
+}
 function update() {
     all = [];
     $.getJSON('rec_list.php', function(data) {
         all.push('<ul>');
         for (var j in data) {
-            var date = new Date(j-0) // cast to num
-            var res=data[j][1];
-            all.push('<li>' + date);
-            all.push('[<span class = "label">' + data[j][0] + '</span>');
-            var co=cls[res] ? cls[res] : 'alarm';
-            all.push(' -> <span class="' + co + '">');
-            all.push(res +'</span>]');
-            all.push('</li>');
+            // Date(j-0) -> cast to num
+            date_list(new Date(j - 0), data[j][0], data[j][1]);
         }
         all.push('</ul>');
         $('#output')[0].innerHTML = all.join('');
     });
 }
-var all = [];
-var cls={ 'complete':'normal', 'interrupted':'warn', 'busy':'active'}
-$(document).ready(update);
+    var all = [];
+    var cls = { 'complete': 'normal', 'interrupted': 'warn', 'busy': 'active'};
+    var date = new Date();
+    $(document).ready(update);
+

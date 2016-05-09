@@ -114,7 +114,6 @@ function acordion() {
 function update() {
     all = [];
     depth = 1;
-    var tag= Tag ? Tag : 'latest';
     $.getJSON('record_' + tag + '.json', function(data) {
         start = new Date(data.start);
         make_header(data);
@@ -140,4 +139,5 @@ var all = [];
 var depth = 1;
 var start = '';
 var itvl;
-$(document).ready(init);
+var tag='latest';
+//need tag setting

@@ -114,7 +114,8 @@ function acordion() {
 function update() {
     all = [];
     depth = 1;
-    $.getJSON('record_latest.json', function(data) {
+    var tag= Tag ? Tag : 'latest';
+    $.getJSON('record_' + tag + '.json', function(data) {
         start = new Date(data.start);
         make_header(data);
         all.push('<ul>');

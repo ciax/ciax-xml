@@ -19,7 +19,7 @@ function date_list(time, cid, res) {
 }
 function update() {
     all = [];
-    $.getJSON('rec_list.php', function(data) {
+    $.getJSON('select.php', function(data) {
         var keys=[];
         for (var j in data){ keys.push(j); }
         keys.reverse();

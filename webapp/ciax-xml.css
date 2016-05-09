@@ -102,14 +102,11 @@ ul{
     font-size: medium;
     float:right;
     color: blue;
-    width:100px;
-}
-.cmd{
-    color : blue;
+    width:5em;
 }
 /* var name of condition */
 var{
-    width:100px;
+    width:7em;
     float:left;
     color : silver;
 }
@@ -119,4 +116,12 @@ var{
 }
 .false{
     color : red;
+}
+/* select list */
+.time{
+    width: 4em;
+    float: left;
+}
+.cmd{
+    color : blue;
 }

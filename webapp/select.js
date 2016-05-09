@@ -1,7 +1,7 @@
 // Recommended Package: closure-linter
 // fixjsstyle select.js
 function time_list(time, cid, res) {
-    all.push('<li>' + time.toLocaleTimeString());
+    all.push('<li><span class="time">' + time.toLocaleTimeString() + '</span>');
     all.push(' [<span class="cmd">' + cid + '</span>]');
     var co = cls[res] ? cls[res] : 'alarm';
     all.push(' -> <span class="' + co + '">');
@@ -20,10 +20,14 @@ function date_list(time, cid, res) {
 function update() {
     all = [];
     $.getJSON('rec_list.php', function(data) {
+        var keys=[];
+        for (var j in data){ keys.push(j); }
+        keys.reverse();
         all.push('<ul>');
-        for (var j in data) {
+        for (var i = 0; i < keys.length; i++) {
             // Date(j-0) -> cast to num
-            date_list(new Date(j - 0), data[j][0], data[j][1]);
+            var key=keys[i];
+            date_list(new Date(key - 0), data[key][0], data[key][1]);
         }
         all.push('</ul>');
         $('#output')[0].innerHTML = all.join('');

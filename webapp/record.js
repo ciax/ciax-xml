@@ -13,7 +13,7 @@ function add_cmd(step) {
     if (ary.length > 0) {all.push(': [' + ary.join(':') + ']');}
 }
 function mk_result(step) {
-        var cls = (step.result == 'complete') ? 'true' : 'false';
+    var cls = step.result.match(/failed|error/) ? 'false' : 'true';
         all.push('<em class="res ' + cls + '">' + step.result + '</em>');
 }
 function add_result(step) {

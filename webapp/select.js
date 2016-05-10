@@ -1,14 +1,20 @@
 // Recommended Package: closure-linter
 // fixjsstyle select.js
-function time_list(key, time, cid, res) {
-    all.push('<li>');
-    all.push('<span class="time">' + time.toLocaleTimeString() + '</span>');
+function record_cmd(key, cid) {
     all.push('<a href="record.php?id=' + key + '" target=frm2>');
     all.push(' [<span class="cmd">' + cid + '</span>]');
     all.push('</a>');
+}
+function record_res(res) {
     var co = cls[res] ? cls[res] : 'alarm';
     all.push(' -> <span class="' + co + '">');
     all.push(res + '</span>');
+}
+function time_list(key, time, cid, res) {
+    all.push('<li>');
+    all.push('<span class="time">' + time.toLocaleTimeString() + '</span>');
+    record_cmd(key, cid);
+    record_res(res);
     all.push('</li>');
 }
 
@@ -17,7 +23,7 @@ function date_list(key, ary) {
     var crd = time.toLocaleDateString();
     if (date != crd) {
         if (all.length > 0) { all.push('</ul>'); }
-        all.push('<h4>' + crd + '</h4><ul>');
+        all.push('<h4>' + crd + '</h4><ul style="display:none;">');
         date = crd;
     }
     time_list(key, time, ary[0], ary[1]);

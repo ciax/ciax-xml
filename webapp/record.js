@@ -14,10 +14,10 @@ function add_cmd(step) {
 }
 function mk_result(step) {
     var cls = 'true';
-    if(step.result.match(/failed|error/)){
-        cls='false';
-    }else if(step.result == 'busy'){
-        cls='active';
+    if (step.result.match(/failed|error/)) {
+        cls = 'false';
+    }else if (step.result == 'busy') {
+        cls = 'active';
     }
     all.push('<em class="res ' + cls + '">' + step.result + '</em>');
 }
@@ -80,7 +80,7 @@ function step_cond(step) {
 function move_level(crnt) {
     while (crnt != depth) {
         if (crnt > depth) {
-            all.push('<ul>');
+            all.push('<ul' + hide + '>');
             depth += 1;
         }else {
             all.push('</ul></li>');
@@ -93,9 +93,9 @@ function make_step(step) {
     if (step.conditions) {
         step_cond(step);
         all.push('</li>');
-    }else if(step.type == 'mcr'){
+    }else if (step.type == 'mcr') {
         step_exe(step);
-    }else{
+    }else {
         step_exe(step);
         all.push('</li>');
     }
@@ -112,9 +112,9 @@ function make_footer(data) {
     all.push('<h3 id="bottom">[');
     mk_result(data);
     all.push(']<span class="elps">[' + data.total_time + ']</span>');
-    all.push(scroll +'</h3>');
+    all.push(scroll + '</h3>');
 }
-function make_record(data){
+function make_record(data) {
     start_time = new Date(data.start);
     make_header(data);
     all.push('<ul>');
@@ -133,22 +133,22 @@ function acordion() {
         $(this).next().slideToggle();
     });
 }
-function scrolling(){
-    var target=$('#bottom');
+function scrolling() {
+    var target = $('#bottom');
     $(window).scrollTop(target.offset().top);
 }
-function check_bottom(){
+function check_bottom() {
     // not correct, because of acordion
-    $(window).bind("scroll", function(){
+    $(window).bind('scroll', function() {
         var scrollHeight = $(document).height();
         var scrollPosition = $(window).height() + $(window).scrollTop();
         scroll = (scrollHeight - scrollPosition);
     });
 }
 function static() {
-    hide=' style="display:none;"';
+    hide = ' style="display:none;"';
     $.getJSON('record_' + tag + '.json', function(data) {
-        make_record(data)
+        make_record(data);
         acordion();
     });
 }
@@ -156,11 +156,11 @@ function update() {
     all = [];
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
-        make_record(data)
-        if(scroll){ scrolling();}
+        make_record(data);
+        if (scroll) { scrolling();}
         if (data.status == 'end') {
             clearInterval(itvl);
-            scroll=false;
+            scroll = false;
         }
     });
 }
@@ -173,7 +173,7 @@ var all = [];
 var depth = 1;
 var start_time = '';
 var itvl;
-var tag='latest';
-var scroll=false;
-var hide='';
+var tag = 'latest';
+var scroll = false;
+var hide = '';
 //need tag setting

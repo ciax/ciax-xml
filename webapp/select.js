@@ -16,10 +16,12 @@ function date_list(key, ary) {
     var time=new Date(key - 0);
     var crd = time.toLocaleDateString();
     if (date != crd) {
-        all.push('</ul><h4>' + crd + '</h4><ul>');
+        if(all.length > 0){ all.push('</ul>'); }
+        all.push('<h4>' + crd + '</h4><ul>');
         date = crd;
     }
     time_list(key, time, ary[0], ary[1]);
+
 }
 function update() {
     all = [];
@@ -27,7 +29,6 @@ function update() {
         var keys=[];
         for (var j in data){ keys.push(j); }
         keys.reverse();
-        all.push('<ul>');
         for (var i = 0; i < keys.length; i++) {
             // Date(j-0) -> cast to num
             var key=keys[i];

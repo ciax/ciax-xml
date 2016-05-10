@@ -75,10 +75,10 @@ function step_cond(step) {
 function move_level(crnt) {
     while (crnt != depth) {
         if (crnt > depth) {
-            all.push('<ul>');
+            all.push('<li><ul>');
             depth += 1;
         }else {
-            all.push('</ul>');
+            all.push('</ul></li>');
             depth -= 1;
         }
     }

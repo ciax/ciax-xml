@@ -27,12 +27,9 @@ function update() {
     all = [];
     $.getJSON('select.php', function(data) {
         var keys=[];
-        for (var j in data){ keys.push(j); }
-        keys.reverse();
-        for (var i = 0; i < keys.length; i++) {
+        for (var i in data) {
             // Date(j-0) -> cast to num
-            var key=keys[i];
-            date_list(key, data[key]);
+            date_list(i, data[i]);
         }
         all.push('</ul>');
         $('#output')[0].innerHTML = all.join('');

@@ -84,7 +84,7 @@ ul{
 .qry{
     color : pink;
 }
-.upd{
+.upd,.cfg{
     color :green;
 }
 .check,.goal,.wait,.sleep{

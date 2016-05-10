@@ -67,6 +67,9 @@ th{
     text-align :center;
 }
 /* For Macro */
+h4{
+    margin: 0;
+}
 date{
     font-size: medium;
     float:right;

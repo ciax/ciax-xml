@@ -36,7 +36,7 @@ function select() {
     });
 }
     var all = [];
-    var cls = { 'complete': 'normal', 'interrupted': 'warn', 'busy': 'active'};
+var cls = { 'complete': 'normal', 'skipped': 'normal', 'interrupted': 'warn', 'busy': 'active'};
     var date = new Date();
     $(document).ready(select);
 

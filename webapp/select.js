@@ -23,6 +23,11 @@ function date_list(key, ary) {
     time_list(key, time, ary[0], ary[1]);
 
 }
+function acordion() {
+    $('h4').on('click', function() {
+        $(this).next().slideToggle();
+    });
+}
 function select() {
     all = [];
     $.getJSON('select.php', function(data) {
@@ -33,6 +38,7 @@ function select() {
         }
         all.push('</ul>');
         $('#output')[0].innerHTML = all.join('');
+        acordion();
     });
 }
     var all = [];

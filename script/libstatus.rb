@@ -29,7 +29,7 @@ module CIAX
         self[:data][k] != @last[k]
       end
 
-      def update?
+      def updated?
         self[:time] > @updated
       end
 

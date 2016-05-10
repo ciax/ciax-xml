@@ -27,14 +27,14 @@ module CIAX
       end
 
       def timeout?
-        super { _all_conds? && !busy? }
+        super { _all_conds? && updated? }
       end
 
       # obj.waiting -> looking at Prompt[:busy]
       # obj.stat -> looking at Status
 
-      def busy?
-        if @exes.map(&:busy?).any?
+      def updated?
+        if @exes.map(&:updated?).any?
           self[:busy] = true
         else
           delete(:busy)
@@ -65,7 +65,7 @@ module CIAX
 
       def _scan
         @exes.each_with_object({}) do |obj, hash|
-          st = hash[obj.id] = obj.stat
+          st = hash[obj.id] = obj.stat.upd
           verbose { "Scanning #{obj.id} (#{st[:time]})/(#{st.object_id})" }
         end
       end

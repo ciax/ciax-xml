@@ -13,10 +13,10 @@ function time_list(key, time, cid, res) {
 }
 
 function date_list(key, ary) {
-    var time=new Date(key - 0);
+    var time = new Date(key - 0);
     var crd = time.toLocaleDateString();
     if (date != crd) {
-        if(all.length > 0){ all.push('</ul>'); }
+        if (all.length > 0) { all.push('</ul>'); }
         all.push('<h4>' + crd + '</h4><ul>');
         date = crd;
     }
@@ -26,7 +26,7 @@ function date_list(key, ary) {
 function update() {
     all = [];
     $.getJSON('select.php', function(data) {
-        var keys=[];
+        var keys = [];
         for (var i in data) {
             // Date(j-0) -> cast to num
             date_list(i, data[i]);

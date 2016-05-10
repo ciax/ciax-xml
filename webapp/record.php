@@ -14,7 +14,7 @@ $(document).ready(update);
 </script>
 <body>
 <div class="outline">
-    <div class="title">Latest Macro</div>
+    <div class="title">Macro Log</div>
     <div id="output"></div>
     </div>
     </body>

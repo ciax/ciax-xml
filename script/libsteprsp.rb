@@ -27,14 +27,19 @@ module CIAX
       end
 
       def timeout?
-        super { !busy? && _all_conds? }
+        super { _all_conds? && !busy? }
       end
 
       # obj.waiting -> looking at Prompt[:busy]
       # obj.stat -> looking at Status
 
       def busy?
-        @exes.map(&:busy?).any?
+        if @exes.map(&:busy?).any?
+          self[:busy] = true
+        else
+          delete(:busy)
+          false
+        end
       end
 
       # Blocking during busy. (for interlock check)

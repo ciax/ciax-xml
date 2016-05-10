@@ -1,5 +1,6 @@
 // Recommended Package: closure-linter
 // fixjsstyle record.js
+// step header
 function add_title(type) {
     all.push('<span class="head ' + type + '">' + type + '</span>');
 }
@@ -12,6 +13,7 @@ function add_cmd(step) {
     if (step.args) { ary = ary.concat(step.args); }
     if (ary.length > 0) {all.push(': [' + ary.join(':') + ']');}
 }
+// result section
 function mk_result(step) {
     var cls = 'true';
     if (step.result.match(/failed|error/)) {
@@ -27,20 +29,27 @@ function add_result(step) {
         mk_result(step);
     }
 }
+// elapsed time section
 function add_time(step) {
     var now = new Date(step.time);
     var elps = ((now - start_time) / 1000).toFixed(2);
     all.push('<span class="elps">[' + elps + ']</span>');
 }
+// waiting step
+function add_meter(step, max){
+    all.push(' <meter value="' + step.count / max * 100 + '" max="100"');
+    if (step.retry) { all.push('low="70" high="99"');}
+    all.push('/>');
+}
 function add_count(step) {
     if (step.count) {
         var max = step.retry || step.val;
         all.push('<span>(' + step.count + '/' + max + ')</span>');
-        all.push('<meter value="' + step.count / max * 100 + '" max="100"');
-        if (step.retry) { all.push('low="60" high="80"');}
-        all.push('/>');
+        if(step.busy) { all.push('<span class="active">busy</span>');}
+        //add_meter(step, max)
     }
 }
+// other steps
 function step_exe(step) {
     all.push('<h4>');
     add_title(step.type);
@@ -51,6 +60,7 @@ function step_exe(step) {
     add_time(step);
     all.push('</h4>');
 }
+// condition step
 function operator(ope, cri) {
     switch (ope) {
     case 'equal': return ('== ' + cri); break;
@@ -77,6 +87,7 @@ function step_cond(step) {
     cond_list(step.conditions, step.type);
     all.push('</ul>');
 }
+// indent
 function move_level(crnt) {
     while (crnt != depth) {
         if (crnt > depth) {
@@ -100,6 +111,7 @@ function make_step(step) {
         all.push('</li>');
     }
 }
+// make page
 function make_header(data) {
     all.push('<h2>');
     add_title('mcr');
@@ -111,8 +123,11 @@ function make_header(data) {
 function make_footer(data) {
     all.push('<h3 id="bottom">[');
     mk_result(data);
-    all.push(']<span class="elps">[' + data.total_time + ']</span>');
-    all.push(scroll + '</h3>');
+    all.push(']');
+    if(data.total_time) {
+        all.push('<span class="elps">[' + data.total_time + ']</span>');
+    }
+    all.push('</h3>');
 }
 function make_record(data) {
     start_time = new Date(data.start);
@@ -128,6 +143,7 @@ function make_record(data) {
     make_footer(data);
     $('#output')[0].innerHTML = all.join('');
 }
+// decoration
 function acordion() {
     $('h4').on('click', function() {
         $(this).next().slideToggle();
@@ -145,6 +161,7 @@ function check_bottom() {
         scroll = (scrollHeight - scrollPosition);
     });
 }
+// make html
 function static() {
     hide = ' style="display:none;"';
     $.getJSON('record_' + tag + '.json', function(data) {
@@ -158,11 +175,13 @@ function update() {
     $.getJSON('record_latest.json', function(data) {
         make_record(data);
         if (scroll) { scrolling();}
-        if (data.status == 'end') {
-            clearInterval(itvl);
-            scroll = false;
-        }
+        if (data.status == 'end') { stop; }
     });
+}
+// regular updating
+function stop(){
+    clearInterval(itvl);
+    scroll = false;
 }
 function init() {
     update();

@@ -13,8 +13,13 @@ function add_cmd(step) {
     if (ary.length > 0) {all.push(': [' + ary.join(':') + ']');}
 }
 function mk_result(step) {
-    var cls = step.result.match(/failed|error/) ? 'false' : 'true';
-        all.push('<em class="res ' + cls + '">' + step.result + '</em>');
+    var cls = 'true';
+    if(step.result.match(/failed|error/)){
+        cls='false';
+    }else if(step.result == 'busy'){
+        cls='active';
+    }
+    all.push('<em class="res ' + cls + '">' + step.result + '</em>');
 }
 function add_result(step) {
     if (step.result) {
@@ -101,10 +106,10 @@ function make_header(data) {
     all.push('</h2>');
 }
 function make_footer(data) {
-    all.push('<h3>[');
+    all.push('<h3 id="bottom">[');
     mk_result(data);
     all.push(']<span class="elps">[' + data.total_time + ']</span>');
-    all.push('</h3>');
+    all.push(scroll +'</h3>');
 }
 function acordion() {
     $('h4').on('click', function() {
@@ -112,14 +117,16 @@ function acordion() {
     });
 }
 function scrolling(){
-    $('body').delay(100).animate({
-        scrollTop: $(document).height()
-    }, 1500);
+    var target=$('#bottom');
+    $(window).scrollTop(target.offset().top);
 }
 function check_bottom(){
-    var scrollHeight = $(document).height();
-    var scrollPosition = $(window).height() + $(window).scrollTop();
-    scroll = ((scrollHeight - scrollPosition) / scrollHeight <= 0.05);
+    // not correct, because of acordion
+    $(window).bind("scroll", function(){
+        var scrollHeight = $(document).height();
+        var scrollPosition = $(window).height() + $(window).scrollTop();
+        scroll = ((scrollHeight - scrollPosition) / scrollHeight <= 0.05);
+    });
 }
 function update() {
     all = [];
@@ -138,16 +145,16 @@ function update() {
         make_footer(data);
         $('#output')[0].innerHTML = all.join('');
         acordion();
-        check_bottom();
+        if(scroll){ scrolling();}
         if (data.status == 'end') {
             clearInterval(itvl);
-        }else if(scroll){
-            scrolling();
+            scroll=false;
         }
     });
 }
 function init() {
     update();
+    check_bottom();
     itvl = setInterval(update, 1000);
 }
 var all = [];

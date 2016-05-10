@@ -38,9 +38,9 @@ module CIAX
         @sv_stat.upd.up?(:busy)
       end
 
-      # return nil if success
+      # wait 10sec for busy end
       def waiting
-        verbose { "Waiting busy for #{@id}" }
+        verbose { "Waiting busy end for #{@id}" }
         100.times do
           return true unless busy?
           sleep 0.1

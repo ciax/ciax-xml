@@ -80,7 +80,7 @@ function step_cond(step) {
 function move_level(crnt) {
     while (crnt != depth) {
         if (crnt > depth) {
-            all.push('<li><ul>');
+            all.push('<ul>');
             depth += 1;
         }else {
             all.push('</ul></li>');
@@ -92,10 +92,13 @@ function make_step(step) {
     all.push('<li>');
     if (step.conditions) {
         step_cond(step);
-    }else {
+        all.push('</li>');
+    }else if(step.type == 'mcr'){
         step_exe(step);
+    }else{
+        step_exe(step);
+        all.push('</li>');
     }
-    all.push('</li>');
 }
 function make_header(data) {
     all.push('<h2>');

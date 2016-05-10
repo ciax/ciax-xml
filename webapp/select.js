@@ -10,11 +10,11 @@ function record_res(res) {
     all.push(' -> <span class="' + co + '">');
     all.push(res + '</span>');
 }
-function time_list(key, time, cid, res) {
+function time_list(key, time, ary) {
     all.push('<li>');
     all.push('<span class="time">' + time.toLocaleTimeString() + '</span>');
-    record_cmd(key, cid);
-    record_res(res);
+    record_cmd(key, ary[0]);
+    record_res(ary[1]);
     all.push('</li>');
 }
 
@@ -26,7 +26,7 @@ function date_list(key, ary) {
         all.push('<h4>' + crd + '</h4><ul style="display:none;">');
         date = crd;
     }
-    time_list(key, time, ary[0], ary[1]);
+    time_list(key, time, ary);
 
 }
 function acordion() {

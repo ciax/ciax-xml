@@ -29,7 +29,7 @@ function add_result(step) {
 }
 function add_time(step) {
     var now = new Date(step.time);
-    var elps = ((now - start) / 1000).toFixed(2);
+    var elps = ((now - start_time) / 1000).toFixed(2);
     all.push('<span class="elps">[' + elps + ']</span>');
 }
 function add_count(step) {
@@ -73,7 +73,7 @@ function cond_list(conds, type) {
 }
 function step_cond(step) {
     step_exe(step);
-    all.push('<ul style="display:none;">');
+    all.push('<ul' + hide + '>');
     cond_list(step.conditions, step.type);
     all.push('</ul>');
 }
@@ -102,7 +102,7 @@ function make_header(data) {
     add_title('mcr');
     add_label(data);
     all.push(' [' + data.cid + ']');
-    all.push('<date>' + start + '</date>');
+    all.push('<date>' + start_time + '</date>');
     all.push('</h2>');
 }
 function make_footer(data) {
@@ -110,6 +110,20 @@ function make_footer(data) {
     mk_result(data);
     all.push(']<span class="elps">[' + data.total_time + ']</span>');
     all.push(scroll +'</h3>');
+}
+function make_record(data){
+    start_time = new Date(data.start);
+    make_header(data);
+    all.push('<ul>');
+    for (var j in data.steps) {
+        var step = data.steps[j];
+        move_level(step.depth);
+        make_step(step);
+    }
+    depth = move_level(1);
+    all.push('</ul>');
+    make_footer(data);
+    $('#output')[0].innerHTML = all.join('');
 }
 function acordion() {
     $('h4').on('click', function() {
@@ -125,26 +139,21 @@ function check_bottom(){
     $(window).bind("scroll", function(){
         var scrollHeight = $(document).height();
         var scrollPosition = $(window).height() + $(window).scrollTop();
-        scroll = ((scrollHeight - scrollPosition) / scrollHeight <= 0.05);
+        scroll = (scrollHeight - scrollPosition);
+    });
+}
+function static() {
+    hide=' style="display:none;"';
+    $.getJSON('record_' + tag + '.json', function(data) {
+        make_record(data)
+        acordion();
     });
 }
 function update() {
     all = [];
     depth = 1;
-    $.getJSON('record_' + tag + '.json', function(data) {
-        start = new Date(data.start);
-        make_header(data);
-        all.push('<ul>');
-        for (var j in data.steps) {
-            var step = data.steps[j];
-            move_level(step.depth);
-            make_step(step);
-        }
-        depth = move_level(1);
-        all.push('</ul>');
-        make_footer(data);
-        $('#output')[0].innerHTML = all.join('');
-        acordion();
+    $.getJSON('record_latest.json', function(data) {
+        make_record(data)
         if(scroll){ scrolling();}
         if (data.status == 'end') {
             clearInterval(itvl);
@@ -159,8 +168,9 @@ function init() {
 }
 var all = [];
 var depth = 1;
-var start = '';
+var start_time = '';
 var itvl;
 var tag='latest';
 var scroll=false;
+var hide='';
 //need tag setting

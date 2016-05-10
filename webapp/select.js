@@ -23,7 +23,7 @@ function date_list(key, ary) {
     time_list(key, time, ary[0], ary[1]);
 
 }
-function update() {
+function select() {
     all = [];
     $.getJSON('select.php', function(data) {
         var keys = [];
@@ -38,5 +38,5 @@ function update() {
     var all = [];
     var cls = { 'complete': 'normal', 'interrupted': 'warn', 'busy': 'active'};
     var date = new Date();
-    $(document).ready(update);
+    $(document).ready(select);
 

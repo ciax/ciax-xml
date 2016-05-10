@@ -10,7 +10,7 @@
 if(isset($_GET['id'])){ $tag=$_GET['id'];};
 echo 'tag="' . $tag . '";';
 ?>
-$(document).ready(update);
+$(document).ready(static);
 </script>
 <body>
 <div class="outline">

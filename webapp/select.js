@@ -3,7 +3,7 @@
 function time_list(key, time, cid, res) {
     all.push('<li>');
     all.push('<span class="time">' + time.toLocaleTimeString() + '</span>');
-    all.push('<a href="record.php?id=' + key + '" target=FRM2>');
+    all.push('<a href="record.php?id=' + key + '" target=frm2>');
     all.push(' [<span class="cmd">' + cid + '</span>]');
     all.push('</a>');
     var co = cls[res] ? cls[res] : 'alarm';

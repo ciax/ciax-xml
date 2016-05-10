@@ -10,7 +10,7 @@ function elapsed() {
     if (ms > 86400000) {
         str = Math.floor(ms / 8640000) / 10 + ' days';
     }else if (ms > 3600000) {
-        str = t.getHours() + 'h '+ t.getMinutes() + 'm';
+        str = t.getHours() + 'h ' + t.getMinutes() + 'm';
     }else {
         str = t.getMinutes() + "' " + t.getSeconds() + '"';
     }
@@ -20,9 +20,9 @@ function conv(stat) {
     var data = $.extend({},stat.data, stat.msg);
     for (var id in data) {
         if ('class' in stat && id in stat.class) {
-            $('#'+ id).addClass(stat.class[id]);
+            $('#' + id).addClass(stat.class[id]);
         }
-        $('#'+ id).text(data[id]);
+        $('#' + id).text(data[id]);
     }
     last = stat.time;
     var lstr = new Date(last);
@@ -49,7 +49,7 @@ function dvctl(cmd) {
 function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
     if (cmd != '--select--') {
-        var res = confirm('EXEC?('+ cmd + ')');
+        var res = confirm('EXEC?(' + cmd + ')');
         if (res) { dvctl(cmd); }
     }
 }

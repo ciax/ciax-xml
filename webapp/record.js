@@ -36,17 +36,17 @@ function add_time(step) {
     all.push('<span class="elps">[' + elps + ']</span>');
 }
 // waiting step
-function add_meter(step, max){
+function add_meter(step, max) {
     all.push(' <meter value="' + step.count / max * 100 + '" max="100"');
     if (step.retry) { all.push('low="70" high="99"');}
-    all.push('/>');
+    all.push('>(' + step.count + '/' + max + ')</meter>');
 }
 function add_count(step) {
     if (step.count) {
         var max = step.retry || step.val;
+        add_meter(step, max);
         all.push('<span>(' + step.count + '/' + max + ')</span>');
-        if(step.busy) { all.push('<span class="active">busy</span>');}
-        //add_meter(step, max)
+        if (step.busy) { all.push(' -> <em class="res active">Busy</em>');}
     }
 }
 // other steps
@@ -124,7 +124,7 @@ function make_footer(data) {
     all.push('<h3 id="bottom">[');
     mk_result(data);
     all.push(']');
-    if(data.total_time) {
+    if (data.total_time) {
         all.push('<span class="elps">[' + data.total_time + ']</span>');
     }
     all.push('</h3>');
@@ -179,7 +179,7 @@ function update() {
     });
 }
 // regular updating
-function stop(){
+function stop() {
     clearInterval(itvl);
     scroll = false;
 }

@@ -26,6 +26,15 @@
         <upd site="mix"/>
         <mcr name="gh_wheel" retry="3"/>
         <cfg site="mix" name="resetp"/>
+        <exec site="mix" name="both_a">
+          <argv>6</argv>
+        </exec>
+        <exec site="mix" name="both_b">
+          <argv>6</argv>
+        </exec>
+        <exec site="mix" name="both_c">
+          <argv>10</argv>
+        </exec>
       </item>
     </group>
   </macro>

@@ -149,28 +149,30 @@ function acordion() {
         $(this).next().slideToggle();
     });
 }
-function scrolling() {
-    var target = $('#bottom');
-    $(window).scrollTop(target.offset().top);
-}
 // scroll bottom detection
-var debounce =(function(){
-    var interval=200;
-    var timer;
-    return function(){
-        clearTimeout(timer);
-        timer = setTimeout(check_bottom,interval);
-    }
-})();
-function catch_bottom() {
+function sticky_bottom() {
     // not correct, because of acordion
     var mousewheelevent = 'onwheel' in document ? 'wheel' : 'onmousewheel' in document ? 'mousewheel' : 'DOMMouseScroll';
-    $(document).on(mousewheelevent,debounce);
-}
-function check_bottom(){
-    var scrollHeight = $(document).height();
-    var scrollPosition = $(window).height() + $(window).scrollTop();
-    scroll=(scrollHeight == scrollPosition);
+    var interval = 100;
+    var timer;
+    $(document).on(mousewheelevent, function(e) {
+        scroll = false;
+        // debounce part
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+            var delta = e.originalEvent.deltaY ? -(e.originalEvent.deltaY) : e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -(e.originalEvent.detail);
+            if (delta < 0) {
+                var scrollHeight = $(document).height();
+                var scrollPosition = $(window).height() + $(window).scrollTop();
+                scroll = (scrollHeight == scrollPosition);
+            }
+        }.bind(this, e), interval);
+    });
+    if (scroll) {
+        var target = $('#bottom');
+        $(window).scrollTop(target.offset().top);
+        target.append('<b>S</b>');
+    }
 }
 // make html
 function static() {
@@ -185,8 +187,7 @@ function update() {
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
         make_record(data);
-        catch_bottom();
-        if (scroll) { scrolling();}
+        sticky_bottom();
     });
 }
 // regular updating

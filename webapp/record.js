@@ -44,7 +44,7 @@ function add_meter(step, max) {
 function add_count(step) {
     if (step.count) {
         var max = step.retry || step.val;
-        add_meter(step, max);
+        if (step.type != 'mcr' ) { add_meter(step, max); }
         all.push('<span>(' + step.count + '/' + max + ')</span>');
         if (step.busy) { all.push(' -> <em class="res active">Busy</em>');}
     }

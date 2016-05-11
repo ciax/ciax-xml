@@ -35,13 +35,12 @@ module CIAX
       end
 
       def updated?
-        !@sv_stat.upd.up?(:busy) || @stat.updated?
+        !@sv_stat.upd.up?(:busy)
       end
 
       # wait 10sec for busy end or status changed
       def waiting
         verbose { "Waiting busy end for #{@id}" }
-        @stat.refresh
         100.times do
           return true if updated?
           sleep 0.1

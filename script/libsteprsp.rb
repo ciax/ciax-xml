@@ -27,17 +27,18 @@ module CIAX
       end
 
       def timeout?
-        super { _all_conds? && updated? }
+        super {_all_conds? && updated? }
       end
 
       # obj.waiting -> looking at Prompt[:busy]
       # obj.stat -> looking at Status
 
       def updated?
-        if @exes.map(&:updated?).any?
-          self[:busy] = true
-        else
+        if @exes.all?(&:updated?)
           delete(:busy)
+          true
+        else
+          self[:busy] = true
           false
         end
       end

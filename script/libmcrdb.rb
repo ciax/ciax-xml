@@ -104,7 +104,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] (key) ..', '') do |_opt, args|
-        puts Db.new.get(args.shift).path(args)
+        puts Db.new.get.path(args)
       end
     end
   end

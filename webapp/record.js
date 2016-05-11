@@ -155,10 +155,11 @@ function scrolling() {
 }
 function check_bottom() {
     // not correct, because of acordion
-    $(window).bind('scroll', function() {
+    var mousewheelevent = 'onwheel' in document ? 'wheel' : 'onmousewheel' in document ? 'mousewheel' : 'DOMMouseScroll';
+    $(document).on(mousewheelevent,function(){
         var scrollHeight = $(document).height();
         var scrollPosition = $(window).height() + $(window).scrollTop();
-        scroll = (scrollHeight - scrollPosition);
+        scroll=(scrollHeight == scrollPosition);
     });
 }
 // make html
@@ -174,8 +175,9 @@ function update() {
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
         make_record(data);
+        check_bottom();
         if (scroll) { scrolling();}
-        if (data.status == 'end') { stop; }
+        //if (data.status == 'end') { stop; }
     });
 }
 // regular updating
@@ -185,7 +187,6 @@ function stop() {
 }
 function init() {
     update();
-    check_bottom();
     itvl = setInterval(update, 1000);
 }
 var all = [];

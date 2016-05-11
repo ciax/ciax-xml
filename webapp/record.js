@@ -153,14 +153,24 @@ function scrolling() {
     var target = $('#bottom');
     $(window).scrollTop(target.offset().top);
 }
-function check_bottom() {
+// scroll bottom detection
+var debounce =(function(){
+    var interval=200;
+    var timer;
+    return function(){
+        clearTimeout(timer);
+        timer = setTimeout(check_bottom,interval);
+    }
+})();
+function catch_bottom() {
     // not correct, because of acordion
     var mousewheelevent = 'onwheel' in document ? 'wheel' : 'onmousewheel' in document ? 'mousewheel' : 'DOMMouseScroll';
-    $(document).on(mousewheelevent,function(){
-        var scrollHeight = $(document).height();
-        var scrollPosition = $(window).height() + $(window).scrollTop();
-        scroll=(scrollHeight == scrollPosition);
-    });
+    $(document).on(mousewheelevent,debounce);
+}
+function check_bottom(){
+    var scrollHeight = $(document).height();
+    var scrollPosition = $(window).height() + $(window).scrollTop();
+    scroll=(scrollHeight == scrollPosition);
 }
 // make html
 function static() {
@@ -175,9 +185,8 @@ function update() {
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
         make_record(data);
-        check_bottom();
+        catch_bottom();
         if (scroll) { scrolling();}
-        //if (data.status == 'end') { stop; }
     });
 }
 // regular updating

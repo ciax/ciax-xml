@@ -35,7 +35,7 @@ module CIAX
 
       def _check(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
-        mstat[:result] = 'error'
+        mstat[:result] = 'failed'
         fail Interlock
       end
 

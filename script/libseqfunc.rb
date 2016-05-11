@@ -126,7 +126,7 @@ module CIAX
         return if @count > step[:retry].to_i # exit
         step = @record.add_step(e, @depth)
         step[:count] = @count
-        step.show_title.cmt # continue
+        step.cmt # continue
       end
 
       # Sub Method

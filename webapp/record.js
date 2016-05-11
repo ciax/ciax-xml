@@ -157,8 +157,8 @@ function sticky_bottom() {
     $(document).on(mousewheelevent, function() { scroll = false; });
     var scrollHeight = $(document).height();
     var scrollPosition = $(window).height() + $(window).scrollTop();
-    diff = scrollHeight - scrollPosition;
-    if(scroll || diff < 10){
+    var diff = scrollHeight - scrollPosition;
+    if(scroll || diff == 0){
         scroll = true;
         var target = $('#bottom');
         target.append('<b>S</b>');

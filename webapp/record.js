@@ -151,27 +151,19 @@ function acordion() {
 }
 // scroll bottom detection
 function sticky_bottom() {
-    // not correct, because of acordion
     var mousewheelevent = 'onwheel' in document ? 'wheel' : 'onmousewheel' in document ? 'mousewheel' : 'DOMMouseScroll';
-    var interval = 100;
+    var interval = 10;
     var timer;
-    $(document).on(mousewheelevent, function(e) {
-        scroll = false;
-        // debounce part
-        clearTimeout(timer);
-        timer = setTimeout(function() {
-            var delta = e.originalEvent.deltaY ? -(e.originalEvent.deltaY) : e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -(e.originalEvent.detail);
-            if (delta < 0) {
-                var scrollHeight = $(document).height();
-                var scrollPosition = $(window).height() + $(window).scrollTop();
-                scroll = (scrollHeight == scrollPosition);
-            }
-        }.bind(this, e), interval);
-    });
-    if (scroll) {
+    $(document).on(mousewheelevent, function() { scroll = false; });
+    var scrollHeight = $(document).height();
+    var scrollPosition = $(window).height() + $(window).scrollTop();
+    diff = scrollHeight - scrollPosition;
+    if(scroll || diff < 10){
+        scroll = true;
         var target = $('#bottom');
-        $(window).scrollTop(target.offset().top);
         target.append('<b>S</b>');
+        //animated scroll
+        $('html,body').animate({scrollTop:target.offset().top},'slow');
     }
 }
 // make html
@@ -204,6 +196,6 @@ var depth = 1;
 var start_time = '';
 var itvl;
 var tag = 'latest';
-var scroll = false;
+var scroll = true;
 var hide = '';
 //need tag setting

@@ -2,7 +2,7 @@
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="turret" version="0" label="Turret Control" port="55555">
     <group id="tr_main" caption="Turret Commands" column="2">
-      <item id="gh_wheel" label="Go to Home Position" retry="3">
+      <item id="gh_wheel" label="Go to Home Position">
         <goal label="All Home?">
           <match form="msg" site="mft" var="v1">HOME</match>
           <match form="msg" site="mft" var="v2">HOME</match>
@@ -24,7 +24,7 @@
         <cfg site="mft" name="set6v"/>
         <upd site="mft"/>
         <upd site="mix"/>
-        <mcr name="gh_wheel"/>
+        <mcr name="gh_wheel" retry="3"/>
         <cfg site="mix" name="resetp"/>
       </item>
     </group>

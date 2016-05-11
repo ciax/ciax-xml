@@ -90,7 +90,7 @@ ul{
 .upd,.cfg{
     color :green;
 }
-.check,.goal,.wait,.sleep{
+.check,.goal,.wait,.sleep,.verify{
     color : cyan;
 }
 /* title */

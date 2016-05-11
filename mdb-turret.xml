@@ -22,6 +22,7 @@
       </item>
       <item id="tinit" label="Initialize Turret">
         <cfg site="mft" name="set6v"/>
+        <upd site="mft"/>
         <upd site="mix"/>
         <mcr name="gh_wheel"/>
         <cfg site="mix" name="resetp"/>

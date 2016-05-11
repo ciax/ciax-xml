@@ -8,7 +8,7 @@ module CIAX
     class Arm < Slosyn
       def initialize
         super(-0.3, 185.3, 2.5, 10_003)
-        @tol = 500
+        @tol = 600
         @postbl = [123, 12.8, 200.5, 0, 185]
       end
 

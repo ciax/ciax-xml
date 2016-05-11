@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="car" version="1" label="CAR Macro" port="55555">
+  <macro id="car" version="2" label="CAR Macro" port="55555">
     <group id="grp_mmc_2" caption="Action" rank="2">
       <unit id="unit_mmc_2_cw15" title="cw-[1-5]" label="Move [1-5] unit CW">
         <item id="mmc_cw-1" label="Move 1 unit CW">

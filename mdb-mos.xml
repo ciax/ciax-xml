@@ -435,7 +435,7 @@
         </check>
         <mcr name="s-r"/>
         <mcr name="gs_s-s"/>
-        <upd site="map"/>
+        <upd site="mma"/>
         <mcr name="sets_a"/>
         <upd site="map"/>
         <upd site="mma"/>
@@ -677,7 +677,7 @@
         </check>
         <mcr name="l-w"/>
         <mcr name="gs_l-s"/>
-        <upd site="map"/>
+        <upd site="mma"/>
         <mcr name="sets_a"/>
         <mcr name="ac_l-s"/>
       </item>
@@ -760,7 +760,7 @@
         </check>
         <mcr name="l-f"/>
         <mcr name="ini_l-i"/>
-        <upd site="map"/>
+        <upd site="mma"/>
         <mcr name="set0_a"/>
         <mcr name="check_load"/>
       </item>
@@ -938,13 +938,15 @@
         <mcr name="mma_ini"/>
       </item>
       <item id="set0_a" label="Motor Reset">
+        <check>
+          <equal site="mma" var="pos" form="msg">INIT</equal>
+        </check>
         <cfg site="mma" name="set0"/>
         <exec site="mma" name="drvoff"/>
       </item>
       <item id="sets_a" label="Motor Reset at STK">
         <check>
           <equal site="mma" var="pos" form="msg">STORE</equal>
-          <match site="mma" var="abs" form="msg">STORE</match>
         </check>
         <cfg site="mma" name="sets"/>
       </item>
@@ -1214,7 +1216,7 @@
         </check>
         <mcr name="f-r"/>
         <mcr name="ini_f-i"/>
-        <upd site="map"/>
+        <upd site="mma"/>
         <mcr name="set0_a"/>
         <mcr name="rc_f-i"/>
         <mcr name="check_fin"/>

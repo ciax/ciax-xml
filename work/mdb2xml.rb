@@ -5,6 +5,7 @@ require 'json'
 require 'libxmlfmt'
 # CIAX-XML
 module CIAX
+  Version='2'
   # Config File converter
   class Mdb2Xml < Xml::Format
     OPETBL = { '=~' => 'match', '!=' => 'not', '==' => 'equal', '!~' => 'unmatch' }
@@ -21,7 +22,7 @@ module CIAX
     def tag_macro(doc)
       mcap = @mdb.delete(:caption_macro) || 'ciax'
       label = "#{mcap.upcase} Macro"
-      mat = Hashx.new(id: mcap, version: '1', label: label, port: '55555')
+      mat = Hashx.new(id: mcap, version: Version, label: label, port: '55555')
       mdoc = doc.enclose(:macro, mat)
       tag_groups(@mdb.delete(:group), mdoc)
     end

@@ -5,7 +5,7 @@ stop,Emergency STOP,1,mcr,mma:astop mmc:astop
 upd,Update,1,cmd,mma:upd mmc:upd mfp:upd map:upd
 #chk,Check Status(No actual motion),1,cmd,
 
-!1,Initialize
+!1,Carousel Command
 # cinit
 #crinit,Carousel Initialize,,cap,
 cinit,carousel initialize,,mcr,mmc:lowspd mmc:upd mmc:cw mmc:gh-cw mmc:cw mmc:gh-cw mmc:set0

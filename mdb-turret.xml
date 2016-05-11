@@ -3,7 +3,7 @@
   <macro id="turret" version="0" label="Turret Control" port="55555">
     <group id="tr_main" caption="Turret Commands" column="2">
       <item id="gh_wheel" label="Go to Home Position">
-        <goal label="All Home?">
+        <goal label="All Home?" verify="true">
           <match form="msg" site="mft" var="v1">HOME</match>
           <match form="msg" site="mft" var="v2">HOME</match>
           <match form="msg" site="mft" var="v3">HOME</match>

@@ -43,7 +43,7 @@ module CIAX
           _get_sites_(atrb)
           par2item(e1, itm) && next
           _step_by_name(e1, atrb)
-          _make_verify_step(atrb) if e1.name == 'goal' && itm[:retry]
+          _make_verify_step(atrb) if e1.name == 'goal' && e1['verify'] =~ /true|1/
           @body << atrb
         end
       end

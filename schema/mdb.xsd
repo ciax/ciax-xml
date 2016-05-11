@@ -130,6 +130,7 @@
         <xsd:group ref="mdb:conditions"/>
       </xsd:sequence>
       <xsd:attributeGroup ref="mdb:attr_stat"/>
+      <xsd:attribute name="verify" type="xsd:boolean"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="check">

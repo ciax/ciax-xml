@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="tcar" version="1" label="CAR Dummy" port="55555">
+  <macro id="tcar" version="2" label="CAR Macro" port="55555">
     <group id="grp_tmc_2" caption="Action" rank="2">
       <unit id="unit_tmc_2_cw15" title="cw-[1-5]" label="Move [1-5] unit CW">
         <item id="tmc_cw-1" label="Move 1 unit CW">
@@ -824,7 +824,7 @@
         <upd site="tmc"/>
       </item>
     </group>
-    <group id="grp_car_1" caption="Initialize" rank="0">
+    <group id="grp_car_1" caption="Carousel Command" rank="0">
       <item id="cinit" label="carousel initialize">
         <check>
           <equal site="tma" var="pos" form="msg">INIT</equal>

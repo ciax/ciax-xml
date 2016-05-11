@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="dummy" version="1" label="MOIRCS Dummy" host="localhost" port="55555">
+  <macro id="dummy" version="1" label="MOIRCS Dummy" host="localhost" port="55556">
     <include ref="tmos"/>
     <include ref="tcar"/>
   </macro>

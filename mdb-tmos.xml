@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="tmos" version="2" label="MOS Dummy" port="55556">
+  <macro id="tmos" version="2" label="MOS Macro" port="55555">
     <group id="grp_tfp_2" caption="Action" rank="2">
       <item id="tfp_ro" label="Robohand All Open">
         <goal>
@@ -129,7 +129,7 @@
         </wait>
       </item>
     </group>
-    <group id="grp_mos_1" caption="Shared Cotmand" rank="0">
+    <group id="grp_mos_1" caption="Shared Command" rank="0">
       <item id="stop" label="Emergency STOP">
         <exec site="tma" name="astop"/>
         <exec site="tmc" name="astop"/>
@@ -435,7 +435,7 @@
         </check>
         <mcr name="s-r"/>
         <mcr name="gs_s-s"/>
-        <upd site="tap"/>
+        <upd site="tma"/>
         <mcr name="sets_a"/>
         <upd site="tap"/>
         <upd site="tma"/>
@@ -677,7 +677,7 @@
         </check>
         <mcr name="l-w"/>
         <mcr name="gs_l-s"/>
-        <upd site="tap"/>
+        <upd site="tma"/>
         <mcr name="sets_a"/>
         <mcr name="ac_l-s"/>
       </item>
@@ -760,7 +760,7 @@
         </check>
         <mcr name="l-f"/>
         <mcr name="ini_l-i"/>
-        <upd site="tap"/>
+        <upd site="tma"/>
         <mcr name="set0_a"/>
         <mcr name="check_load"/>
       </item>
@@ -938,13 +938,15 @@
         <mcr name="tma_ini"/>
       </item>
       <item id="set0_a" label="Motor Reset">
+        <check>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+        </check>
         <cfg site="tma" name="set0"/>
         <exec site="tma" name="drvoff"/>
       </item>
       <item id="sets_a" label="Motor Reset at STK">
         <check>
           <equal site="tma" var="pos" form="msg">STORE</equal>
-          <match site="tma" var="abs" form="msg">STORE</match>
         </check>
         <cfg site="tma" name="sets"/>
       </item>
@@ -1214,7 +1216,7 @@
         </check>
         <mcr name="f-r"/>
         <mcr name="ini_f-i"/>
-        <upd site="tap"/>
+        <upd site="tma"/>
         <mcr name="set0_a"/>
         <mcr name="rc_f-i"/>
         <mcr name="check_fin"/>
@@ -1315,7 +1317,7 @@
         </check>
       </item>
     </group>
-    <group id="grp_mos_8" caption="MOS Main Cotmands" rank="0">
+    <group id="grp_mos_8" caption="MOS Main Commands" rank="0">
       <item id="start" label="startmask">
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>

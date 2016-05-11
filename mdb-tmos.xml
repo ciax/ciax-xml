@@ -943,12 +943,14 @@
         </check>
         <cfg site="tma" name="set0"/>
         <exec site="tma" name="drvoff"/>
+        <upd site="tma"/>
       </item>
       <item id="sets_a" label="Motor Reset at STK">
         <check>
           <equal site="tma" var="pos" form="msg">STORE</equal>
         </check>
         <cfg site="tma" name="sets"/>
+        <upd site="tma"/>
       </item>
       <item id="check_load" label="Check Status(No actual motion)">
         <check>

@@ -70,8 +70,8 @@ rc_l-f,Rh All Close,1,mcr,mfp:rc
 ro_l-f,Rh All Open,1,mcr,mfp:ro
 ao_l-f,Arm Open,1,mcr,mfp:ao system:mkcmi
 ini_l-i,Go to INIT,1,mcr,mma:ini
-set0_a,Motor Reset,1,mcr,mma:set0 mma:drvoff
-sets_a,Motor Reset at STK,1,mcr,mma:sets
+set0_a,Motor Reset,1,mcr,mma:set0 mma:drvoff mma:upd
+sets_a,Motor Reset at STK,1,mcr,mma:sets mma:upd
 check_load,Check Status(No actual motion),1,cmd,
 
 # fcheck

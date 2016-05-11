@@ -27,8 +27,8 @@ module CIAX
       end
 
       def timeout?
-        res = progress(self[:retry]){ active? } ||
-          progress(self[:retry].to_i - self[:count]){ _all_conds?}
+        res = progress(self[:retry]) { active? } ||
+              progress(self[:retry].to_i - self[:count]) { _all_conds? }
         set_result('timeout', 'pass', res)
       end
 

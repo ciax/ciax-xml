@@ -39,11 +39,6 @@ module CIAX
         set_result('failed', 'pass', tf)
       end
 
-      def timeout?(&cond)
-        res = progress(self[:retry], &cond)
-        set_result('timeout', 'pass', res)
-      end
-
       # Not Condition Step
       def set_result(tmsg, fmsg = nil, tf = true)
         res = tf ? tmsg : fmsg

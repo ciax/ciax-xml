@@ -27,14 +27,16 @@ module CIAX
       end
 
       def timeout?
-        super {_all_conds? && updated? }
+        res = progress(self[:retry]){ active? } ||
+          progress(self[:retry].to_i - self[:count]){ _all_conds?}
+        set_result('timeout', 'pass', res)
       end
 
       # obj.waiting -> looking at Prompt[:busy]
       # obj.stat -> looking at Status
 
-      def updated?
-        if @exes.all?(&:updated?)
+      def active?
+        if @exes.all?(&:active?)
           delete(:busy)
           true
         else

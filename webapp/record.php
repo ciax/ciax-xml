@@ -16,7 +16,7 @@ $(document).ready(static);
 <body>
 <div class="outline">
     <div class="title">
-    Macro Log:
+    <span class="mcr">Macro Log</span>:
     <span class="cmd" id="mcrcmd"></span>
     </div>
     <div id="output"></div>

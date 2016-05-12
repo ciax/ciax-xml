@@ -29,7 +29,7 @@ th{
     border : 2px outset;
     font-size : x-large;
     text-align : center;
-    color : maroon;
+    color : white;
     background-color:#bbeeaa;
 }
 .item{
@@ -93,7 +93,7 @@ ul{
     list-style: none;
 }
 .mcr{
-    color : orange;
+    color : chocolate;
 }
 .exec{
     color : magenta;

@@ -59,19 +59,6 @@ function add_count(step) {
         if (step.busy) { all.push(' -> <em class="res active">Busy</em>');}
     }
 }
-// interactive
-function set_query(step){
-    if (step.option){
-        var str=['<span class="item">']
-        str.push('Command:<select name="query" onchage="seldv(this)">');
-        str.push('<option>--select--</option>');
-        for(var k in step.option){
-            str.push('<option>'+step.option[k]+'</option>');
-        }
-        str.push('</select></span>');
-        $('#query').replaceWith(str.join(''));
-    }
-}
 // other steps
 function step_exe(step) {
     all.push('<h4>');
@@ -206,7 +193,7 @@ function stop() {
     clearInterval(itvl);
     scroll = false;
 }
-// Shared with ciax-xml.js
+// Control Part/Shared with ciax-xml.js
 function init() {
     update();
     setInterval(update, 1000);
@@ -228,6 +215,20 @@ function seldv(obj) {
         if (res) { dvctl(cmd); }
     }
 }
+// interactive
+function set_query(step){
+    if (step.option){
+        var str=['<span class="item">']
+        str.push('Command:<select name="query" onchage="seldv(this)">');
+        str.push('<option>--select--</option>');
+        for(var k in step.option){
+            str.push('<option>'+step.option[k]+'</option>');
+        }
+        str.push('</select></span>');
+        $('#query').replaceWith(str.join(''));
+    }
+}
+// Var setting
 var all = [];
 var depth = 1;
 var start_time = '';
@@ -235,4 +236,4 @@ var tag = 'latest';
 var hide = '';
 var manual = false;
 var Port=55555;
-//need tag setting
+//$(document).ready(init);

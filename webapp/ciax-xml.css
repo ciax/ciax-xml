@@ -71,7 +71,7 @@ th{
 }
 /* For Macro */
 .footer{
-    border : 2px inset;
+    border : 2px outset;
     font-weight: bold;
     position:absolute;
     bottom:0;

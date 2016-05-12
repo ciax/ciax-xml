@@ -59,6 +59,19 @@ function add_count(step) {
         if (step.busy) { all.push(' -> <em class="res active">Busy</em>');}
     }
 }
+// interactive
+function set_query(step){
+    if (step.option){
+        var str=['<span class="item">']
+        str.push('Command:<select name="query" onchage="seldv(this)">');
+        str.push('<option>--select--</option>');
+        for(var k in step.option){
+            str.push('<option>'+step.option[k]+'</option>');
+        }
+        str.push('</select></span>');
+        $('#query').replaceWith(str.join(''));
+    }
+}
 // other steps
 function step_exe(step) {
     all.push('<h4>');
@@ -70,6 +83,7 @@ function step_exe(step) {
     add_time(step);
     all.push('</h4>');
     add_action(step);
+    set_query(step);
 }
 // condition step
 function operator(ope, cri) {
@@ -192,15 +206,33 @@ function stop() {
     clearInterval(itvl);
     scroll = false;
 }
+// Shared with ciax-xml.js
 function init() {
     update();
-    itvl = setInterval(update, 1000);
+    setInterval(update, 1000);
+}
+function dvctl(cmd) {
+    $.post(
+        '/json/dvctl-udp.php',
+        {port: Port, cmd: cmd},
+        function(data) {
+            $('#msg').text($.parseJSON(data).msg);
+            update();
+        }
+    );
+}
+function seldv(obj) {
+    var cmd = obj.options[obj.selectedIndex].value;
+    if (cmd != '--select--') {
+        var res = confirm('EXEC?(' + cmd + ')');
+        if (res) { dvctl(cmd); }
+    }
 }
 var all = [];
 var depth = 1;
 var start_time = '';
-var itvl;
 var tag = 'latest';
 var hide = '';
 var manual = false;
+var Port=55555;
 //need tag setting

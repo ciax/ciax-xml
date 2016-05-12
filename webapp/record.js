@@ -149,15 +149,18 @@ function acordion() {
         $(this).next().slideToggle();
     });
 }
-// scroll bottom detection
+// auto scroll
 function sticky_bottom() {
-    var mousewheelevent = 'onwheel' in document ? 'wheel' : 'onmousewheel' in document ? 'mousewheel' : 'DOMMouseScroll';
-    var div=$('#output');
-    var toggle=$('#go_bottom');
-    div.on(mousewheelevent, function() { toggle.prop('checked',false); });
-    if(toggle.prop('checked')){
-        //animated scroll
-        div.animate({scrollTop:div[0].scrollHeight},'slow');
+    var div = $('#output');
+    var toggle = $('#go_bottom');
+    if (toggle.prop('checked')) {
+        manual = false;
+        div.animate({ scrollTop: div[0].scrollHeight},'slow', function() {
+            manual = true;
+        });
+        div.on('scroll', function() {
+            if (manual) {toggle.prop('checked', false);}
+        });
     }
 }
 // make html
@@ -190,6 +193,6 @@ var depth = 1;
 var start_time = '';
 var itvl;
 var tag = 'latest';
-var scroll = true;
 var hide = '';
+var manual = false;
 //need tag setting

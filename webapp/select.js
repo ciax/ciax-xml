@@ -1,5 +1,6 @@
 // Recommended Package: closure-linter
 // fixjsstyle select.js
+// Listing part
 function record_cmd(key, cid) {
     all.push(' <a href="record.php?id=' + key + '" target=frm2>');
     all.push(' <span class="cmd">[' + cid + ']</span>');
@@ -34,6 +35,9 @@ function acordion() {
         $(this).next().slideToggle();
     });
 }
+function load_latest() {
+    top.frm2.location.href = 'record_latest.html';
+}
 function select() {
     all = [];
     $.getJSON('select.php', function(data) {
@@ -46,9 +50,10 @@ function select() {
         $('#output')[0].innerHTML = all.join('');
         acordion();
     });
+    $('.mcr').after(' <button name="latest" onclick="load_latest()">latest</button>');
 }
-    var all = [];
+var all = [];
 var cls = { 'complete': 'normal', 'skipped': 'normal', 'interrupted': 'warn', 'busy': 'active'};
-    var date = new Date();
-    $(document).ready(select);
+var date = new Date();
+$(document).ready(select);
 

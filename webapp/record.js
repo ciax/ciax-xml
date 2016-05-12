@@ -33,7 +33,7 @@ function add_result(step) {
 }
 function add_action(step) {
     if (step.action) {
-        all.push('<ul'+hide+'>');
+        all.push('<ul' + hide + '>');
         all.push('<li><span class="action">(');
         all.push(step.action);
         all.push(')</span></li></ul>');
@@ -216,13 +216,13 @@ function seldv(obj) {
     }
 }
 // interactive
-function set_query(step){
-    if (step.option){
-        var str=['<span class="item">']
+function set_query(step) {
+    if (step.option) {
+        var str = ['<span class="item">'];
         str.push('Command:<select name="query" onchage="seldv(this)">');
         str.push('<option>--select--</option>');
-        for(var k in step.option){
-            str.push('<option>'+step.option[k]+'</option>');
+        for (var k in step.option) {
+            str.push('<option>' + step.option[k] + '</option>');
         }
         str.push('</select></span>');
         $('#query').replaceWith(str.join(''));
@@ -235,5 +235,5 @@ var start_time = '';
 var tag = 'latest';
 var hide = '';
 var manual = false;
-var Port=55555;
+var Port = 55555;
 //$(document).ready(init);

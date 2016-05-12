@@ -29,7 +29,7 @@ th{
     border : 2px outset;
     font-size : x-large;
     text-align : center;
-    color : white;
+    color : maroon;
     background-color:#bbeeaa;
 }
 .item{
@@ -140,5 +140,5 @@ var{
     float: left;
 }
 .cmd{
-    color : blue;
+    color : navy;
 }

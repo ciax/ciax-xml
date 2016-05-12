@@ -3,15 +3,17 @@
 // step header
 function add_title(type) {
     all.push('<span class="head ' + type + '">' + type + '</span>');
+    all.push('<span class="cmd">');
 }
 function add_label(step) {
-    if (step.label) {all.push(':' + step.label);}
+    if (step.label) {all.push(': ' + step.label);}
 }
 function add_cmd(step) {
     var ary = [];
     if (step.site) { ary.push(step.site); }
     if (step.args) { ary = ary.concat(step.args); }
     if (ary.length > 0) {all.push(': [' + ary.join(':') + ']');}
+    all.push('</span>');
 }
 // result section
 function mk_result(step) {
@@ -119,6 +121,7 @@ function make_header(data) {
     all.push(' [' + data.cid + ']');
     all.push('<date>' + start_time + '</date>');
     all.push('</h2>');
+    $('#mcrcmd').text(data.label + '[' + data.cid + ']');
 }
 function make_footer(data) {
     all.push('<h3 id="bottom">[');

@@ -22,6 +22,7 @@ module CIAX
         self[:label] = @cfg[:label] # Label for CID
         self[:total_steps] = 0
         @dummy = @cfg[:option].test?
+        @cmt_procs << proc{ self[:time] = now_msec }
         self
       end
 
@@ -43,7 +44,7 @@ module CIAX
       end
 
       def finish
-        self[:total_time] = Msg.elps_sec(self[:time])
+        self[:total_time] = Msg.elps_sec(self[:start])
         self[:status] = 'end'
         self[:result]
       ensure

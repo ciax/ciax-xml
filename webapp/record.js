@@ -135,7 +135,8 @@ function record_header(data) {
 function record_footer(data) {
     all.push('<h3 id="bottom">[');
     mk_result(data);
-    all.push(']');
+    all.push('](');
+    all.push(data.time + ')');
     if (data.total_time) {
         all.push('<span class="elps">[' + data.total_time + ']</span>');
     }
@@ -207,9 +208,9 @@ function seldv(obj) {
     }
 }
 // ******* Page Footer *********
-function page_footer(){
+function page_footer() {
     $('#footer')[0].innerHTML = footer.join('');
-}    
+}
 // auto scroll
 function set_auto_scroll() {
     footer.push('<span class="item">');

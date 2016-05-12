@@ -1,5 +1,6 @@
 /* Global Style */
-body{
+html,body{
+    height: 99%;
     background-image : url(/json/bg-1.jpg);
     background-repeat : repeat;
     background-attachment : fixed;
@@ -17,10 +18,12 @@ th{
 /* For Status Table '.' is class name */
 .outline{
     width : 90%;
+    height: 95%;
     border : 5px outset #aadd99;
     margin-left : 5%;
     margin-right : 5%;
     font-weight: bold;
+    position:relative;
 }
 .title{
     border : 2px outset;
@@ -67,6 +70,17 @@ th{
     text-align :center;
 }
 /* For Macro */
+.footer{
+    border : 2px inset;
+    font-weight: bold;
+    position:absolute;
+    bottom:0;
+}
+#output{
+    overflow: auto;
+    height: 90%;
+}
+/* contents */
 h4{
     margin: 0;
 }

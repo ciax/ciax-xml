@@ -152,18 +152,12 @@ function acordion() {
 // scroll bottom detection
 function sticky_bottom() {
     var mousewheelevent = 'onwheel' in document ? 'wheel' : 'onmousewheel' in document ? 'mousewheel' : 'DOMMouseScroll';
-    var interval = 10;
-    var timer;
-    $(document).on(mousewheelevent, function() { scroll = false; });
-    var scrollHeight = $(document).height();
-    var scrollPosition = $(window).height() + $(window).scrollTop();
-    var diff = scrollHeight - scrollPosition;
-    if(scroll || diff == 0){
-        scroll = true;
-        var target = $('#bottom');
-        target.append('<b>S</b>');
+    var div=$('#output');
+    var toggle=$('#go_bottom');
+    div.on(mousewheelevent, function() { toggle.prop('checked',false); });
+    if(toggle.prop('checked')){
         //animated scroll
-        $('html,body').animate({scrollTop:target.offset().top},'slow');
+        div.animate({scrollTop:div[0].scrollHeight},'slow');
     }
 }
 // make html

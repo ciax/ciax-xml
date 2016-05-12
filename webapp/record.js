@@ -31,6 +31,14 @@ function add_result(step) {
         mk_result(step);
     }
 }
+function add_action(step) {
+    if (step.action) {
+        all.push('<ul'+hide+'>');
+        all.push('<li><span class="action">(');
+        all.push(step.action);
+        all.push(')</span></li></ul>');
+    }
+}
 // elapsed time section
 function add_time(step) {
     var now = new Date(step.time);
@@ -61,6 +69,7 @@ function step_exe(step) {
     add_result(step);
     add_time(step);
     all.push('</h4>');
+    add_action(step);
 }
 // condition step
 function operator(ope, cri) {
@@ -84,10 +93,9 @@ function cond_list(conds, type) {
     }
 }
 function step_cond(step) {
-    step_exe(step);
     all.push('<ul' + hide + '>');
     cond_list(step.conditions, step.type);
-    all.push('</ul>');
+    all.push('</ul></li>');
 }
 // indent
 function move_level(crnt) {
@@ -103,13 +111,10 @@ function move_level(crnt) {
 }
 function make_step(step) {
     all.push('<li>');
+    step_exe(step);
     if (step.conditions) {
         step_cond(step);
-        all.push('</li>');
-    }else if (step.type == 'mcr') {
-        step_exe(step);
-    }else {
-        step_exe(step);
+    }else if (step.type != 'mcr') {
         all.push('</li>');
     }
 }

@@ -91,6 +91,8 @@ date{
 }
 ul{
     list-style: none;
+    margin-left:1.5em;
+    padding:0;
 }
 .mcr{
     color : chocolate;
@@ -133,6 +135,9 @@ var{
 }
 .false{
     color : red;
+}
+.action{
+    color : gray;
 }
 /* select list */
 .time{

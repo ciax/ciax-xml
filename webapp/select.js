@@ -47,7 +47,7 @@ function select() {
             date_list(i, data[i]);
         }
         all.push('</ul>');
-        $('#output')[0].innerHTML = all.join('');
+        $('#select')[0].innerHTML = all.join('');
         acordion();
     });
     $('.mcr').after(' <button name="latest" onclick="load_latest()">latest</button>');

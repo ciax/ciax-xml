@@ -1,14 +1,15 @@
 // Recommended Package: closure-linter
 // fixjsstyle record.js
-// step header
-function add_title(type) {
+// ********* Steps **********
+// step header section
+function step_title(type) {
     all.push('<span class="head ' + type + '">' + type + '</span>');
     all.push('<span class="cmd">');
 }
-function add_label(step) {
+function step_label(step) {
     if (step.label) {all.push(': ' + step.label);}
 }
-function add_cmd(step) {
+function step_cmd(step) {
     var ary = [];
     if (step.site) { ary.push(step.site); }
     if (step.args) { ary = ary.concat(step.args); }
@@ -25,13 +26,13 @@ function mk_result(step) {
     }
     all.push('<em class="res ' + cls + '">' + step.result + '</em>');
 }
-function add_result(step) {
+function step_result(step) {
     if (step.result) {
         all.push(' -> ');
         mk_result(step);
     }
 }
-function add_action(step) {
+function step_action(step) {
     if (step.action) {
         all.push('<ul' + hide + '>');
         all.push('<li><span class="action">(');
@@ -40,21 +41,21 @@ function add_action(step) {
     }
 }
 // elapsed time section
-function add_time(step) {
+function step_time(step) {
     var now = new Date(step.time);
     var elps = ((now - start_time) / 1000).toFixed(2);
     all.push('<span class="elps">[' + elps + ']</span>');
 }
 // waiting step
-function add_meter(step, max) {
+function step_meter(step, max) {
     all.push(' <meter value="' + step.count / max * 100 + '" max="100"');
     if (step.retry) { all.push('low="70" high="99"');}
     all.push('>(' + step.count + '/' + max + ')</meter>');
 }
-function add_count(step) {
+function step_count(step) {
     if (step.count) {
         var max = step.retry || step.val;
-        if (step.type != 'mcr') { add_meter(step, max); }
+        if (step.type != 'mcr') { step_meter(step, max); }
         all.push('<span>(' + step.count + '/' + max + ')</span>');
         if (step.busy) { all.push(' -> <em class="res active">Busy</em>');}
     }
@@ -62,14 +63,14 @@ function add_count(step) {
 // other steps
 function step_exe(step) {
     all.push('<h4>');
-    add_title(step.type);
-    add_label(step);
-    add_cmd(step);
-    add_count(step);
-    add_result(step);
-    add_time(step);
+    step_title(step.type);
+    step_label(step);
+    step_cmd(step);
+    step_count(step);
+    step_result(step);
+    step_time(step);
     all.push('</h4>');
-    add_action(step);
+    step_action(step);
     set_query(step);
 }
 // condition step
@@ -98,8 +99,8 @@ function step_cond(step) {
     cond_list(step.conditions, step.type);
     all.push('</ul></li>');
 }
-// indent
-function move_level(crnt) {
+// Indent
+function step_level(crnt) {
     while (crnt != depth) {
         if (crnt > depth) {
             all.push('<ul' + hide + '>');
@@ -110,6 +111,7 @@ function move_level(crnt) {
         }
     }
 }
+// Make Step Line
 function make_step(step) {
     all.push('<li>');
     step_exe(step);
@@ -119,17 +121,18 @@ function make_step(step) {
         all.push('</li>');
     }
 }
-// make page
-function make_header(data) {
+// ********* Record **********
+// Macro Header and Footer
+function record_header(data) {
     all.push('<h2>');
-    add_title('mcr');
-    add_label(data);
+    step_title('mcr');
+    step_label(data);
     all.push(' [' + data.cid + ']');
     all.push('<date>' + start_time + '</date>');
     all.push('</h2>');
     $('#mcrcmd').text(data.label + '[' + data.cid + ']');
 }
-function make_footer(data) {
+function record_footer(data) {
     all.push('<h3 id="bottom">[');
     mk_result(data);
     all.push(']');
@@ -138,41 +141,22 @@ function make_footer(data) {
     }
     all.push('</h3>');
 }
+// Macro Body
 function make_record(data) {
     start_time = new Date(data.start);
-    make_header(data);
+    record_header(data);
     all.push('<ul>');
     for (var j in data.steps) {
         var step = data.steps[j];
-        move_level(step.depth);
+        step_level(step.depth);
         make_step(step);
     }
-    depth = move_level(1);
+    depth = step_level(1);
     all.push('</ul>');
-    make_footer(data);
-    $('#output')[0].innerHTML = all.join('');
+    record_footer(data);
+    $('#record')[0].innerHTML = all.join('');
 }
-// decoration
-function acordion() {
-    $('h4').on('click', function() {
-        $(this).next().slideToggle();
-    });
-}
-// auto scroll
-function sticky_bottom() {
-    var div = $('#output');
-    var toggle = $('#go_bottom');
-    if (toggle.prop('checked')) {
-        manual = false;
-        div.animate({ scrollTop: div[0].scrollHeight},'slow', function() {
-            manual = true;
-        });
-        div.on('scroll', function() {
-            if (manual) {toggle.prop('checked', false);}
-        });
-    }
-}
-// make html
+// ******** HTML Page ********
 function static() {
     hide = ' style="display:none;"';
     $.getJSON('record_' + tag + '.json', function(data) {
@@ -182,13 +166,17 @@ function static() {
 }
 function update() {
     all = [];
+    footer = [];
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
+        set_auto_scroll();
         make_record(data);
+        page_footer();
         sticky_bottom();
         blinking();
     });
 }
+// ********* Page Update *********
 // regular updating
 function stop() {
     clearInterval(itvl);
@@ -199,6 +187,8 @@ function init() {
     update();
     setInterval(update, 1000);
 }
+// ********* External Control **********
+// CGI
 function dvctl(cmd) {
     $.post(
         '/json/dvctl-udp.php',
@@ -216,24 +206,55 @@ function seldv(obj) {
         if (res) { dvctl(cmd); }
     }
 }
-// interactive
-function blinking() {
-    $('.qry').fadeOut(500, function() {$(this).fadeIn(500)});
+// ******* Page Footer *********
+function page_footer(){
+    $('#footer')[0].innerHTML = footer.join('');
+}    
+// auto scroll
+function set_auto_scroll() {
+    footer.push('<span class="item">');
+    footer.push('<input type="checkbox" id="go_bottom" checked="true">Auto Scroll</input>');
+    footer.push('</span>');
 }
 function set_query(step) {
     if (step.option) {
-        var str = ['<span class="item"">'];
-        str.push('<em class="qry">Command</em>:<select name="query" onchage="seldv(this)">');
-        str.push('<option>--select--</option>');
+        footer.push('<span class="item">');
+        footer.push('<em class="qry">Command</em>');
+        footer.push(':<select name="query" onchage="seldv(this)">');
+        footer.push('<option>--select--</option>');
         for (var k in step.option) {
-            str.push('<option>' + step.option[k] + '</option>');
+            footer.push('<option>' + step.option[k] + '</option>');
         }
-        str.push('</select></span>');
-        $('#query').replaceWith(str.join(''));
+        footer.push('</select></span>');
+    }
+}// ******* Animation *********
+function sticky_bottom() {
+    var div = $('#record');
+    var toggle = $('#go_bottom');
+    if (toggle.prop('checked')) {
+        manual = false;
+        div.animate({ scrollTop: div[0].scrollHeight},'slow', function() {
+            manual = true;
+        });
+        div.on('scroll', function() {
+            if (manual) {toggle.prop('checked', false);}
+        });
     }
 }
+// Folding
+function acordion() {
+    $('h4').on('click', function() {
+        $(this).next().slideToggle();
+    });
+}
+// interactive mode
+function blinking() {
+    $('.qry').fadeOut(500, function() {$(this).fadeIn(500)});
+}
+
 // Var setting
 var all = [];
+var footer = [];
 var depth = 1;
 var start_time = '';
 var tag = 'latest';

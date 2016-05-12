@@ -70,13 +70,13 @@ th{
     text-align :center;
 }
 /* For Macro */
-.footer{
+#footer{
     border : 2px outset;
     font-weight: bold;
     position:absolute;
     bottom:0;
 }
-#output{
+#record,#select{
     overflow: auto;
     height: 90%;
 }

@@ -141,9 +141,13 @@ var{
 }
 /* select list */
 .time{
-    width: 4em;
+    width: 4.5em;
     float: left;
+    color: gray;
 }
 .cmd{
     color : navy;
+}
+a{
+    text-decoration:none;
 }

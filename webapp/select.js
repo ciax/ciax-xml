@@ -1,8 +1,8 @@
 // Recommended Package: closure-linter
 // fixjsstyle select.js
 function record_cmd(key, cid) {
-    all.push('<a href="record.php?id=' + key + '" target=frm2>');
-    all.push(' [<span class="cmd">' + cid + '</span>]');
+    all.push(' <a href="record.php?id=' + key + '" target=frm2>');
+    all.push(' <span class="cmd">[' + cid + ']</span>');
     all.push('</a>');
 }
 function record_res(res) {

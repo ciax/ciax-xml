@@ -97,11 +97,8 @@ ul{
 .mcr{
     color : chocolate;
 }
-.exec{
+.exec,.qry{
     color : magenta;
-}
-.qry{
-    color : pink;
 }
 .upd,.cfg{
     color :green;

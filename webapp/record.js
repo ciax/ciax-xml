@@ -186,6 +186,7 @@ function update() {
     $.getJSON('record_latest.json', function(data) {
         make_record(data);
         sticky_bottom();
+        blinking();
     });
 }
 // regular updating
@@ -216,10 +217,13 @@ function seldv(obj) {
     }
 }
 // interactive
+function blinking() {
+    $('.qry').fadeOut(500, function() {$(this).fadeIn(500)});
+}
 function set_query(step) {
     if (step.option) {
-        var str = ['<span class="item">'];
-        str.push('Command:<select name="query" onchage="seldv(this)">');
+        var str = ['<span class="item"">'];
+        str.push('<em class="qry">Command</em>:<select name="query" onchage="seldv(this)">');
         str.push('<option>--select--</option>');
         for (var k in step.option) {
             str.push('<option>' + step.option[k] + '</option>');

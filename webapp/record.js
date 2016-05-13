@@ -169,6 +169,7 @@ function dvctl(cmd) {
             $('#msg').text($.parseJSON(data).msg);
         }
     );
+    update();
 }
 // ******* Page Footer *********
 // auto scroll
@@ -221,7 +222,7 @@ function update() {
             make_record(data);
         }
         sticky_bottom();
-//        blinking();
+        blinking();
     });
 }
 // ********* Page Update *********

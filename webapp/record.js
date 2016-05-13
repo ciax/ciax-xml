@@ -157,37 +157,6 @@ function make_record(data) {
     record_footer(data);
     $('#record')[0].innerHTML = all.join('');
 }
-// ******** HTML Page ********
-function static() {
-    hide = ' style="display:none;"';
-    $.getJSON('record_' + tag + '.json', function(data) {
-        make_record(data);
-        acordion();
-    });
-}
-function update() {
-    all = [];
-    footer = [];
-    depth = 1;
-    $.getJSON('record_latest.json', function(data) {
-        set_auto_scroll();
-        make_record(data);
-        page_footer();
-        sticky_bottom();
-        blinking();
-    });
-}
-// ********* Page Update *********
-// regular updating
-function stop() {
-    clearInterval(itvl);
-    scroll = false;
-}
-// Control Part/Shared with ciax-xml.js
-function init() {
-    update();
-    setInterval(update, 1000);
-}
 // ********* External Control **********
 // CGI
 function dvctl(cmd) {
@@ -208,25 +177,21 @@ function seldv(obj) {
     }
 }
 // ******* Page Footer *********
-function page_footer() {
-    $('#footer')[0].innerHTML = footer.join('');
-}
 // auto scroll
-function set_auto_scroll() {
-    footer.push('<span class="item">');
-    footer.push('<input type="checkbox" id="go_bottom" checked="true">Auto Scroll</input>');
-    footer.push('</span>');
-}
 function set_query(step) {
     if (step.option) {
-        footer.push('<span class="item">');
-        footer.push('<em class="qry">Command</em>');
-        footer.push(':<select name="query" onchage="seldv(this)">');
-        footer.push('<option>--select--</option>');
+        var str=[];
+        str.push('<span class="item" id="query">');
+        str.push('<em class="qry">Command</em>');
+        str.push(':<select name="query" onchage="seldv(this)">');
+        str.push('<option>--select--</option>');
         for (var k in step.option) {
-            footer.push('<option>' + step.option[k] + '</option>');
+            str.push('<option>' + step.option[k] + '</option>');
         }
-        footer.push('</select></span>');
+        str.push('</select></span>');
+        $('#query').replaceWith(str.join(''));
+    }else{
+        $('#query').empty();
     }
 }// ******* Animation *********
 function sticky_bottom() {
@@ -252,12 +217,41 @@ function acordion() {
 function blinking() {
     $('.qry').fadeOut(500, function() {$(this).fadeIn(500)});
 }
-
+// ******** HTML Page ********
+function static() {
+    hide = ' style="display:none;"';
+    $.getJSON('record_' + tag + '.json', function(data) {
+        make_record(data);
+        acordion();
+    });
+}
+function update() {
+    all = [];
+    depth = 1;
+    $.getJSON('record_latest.json', function(data) {
+        if(data.time != last_time){
+            last_time = data.time;
+            make_record(data);
+        }
+//        sticky_bottom();
+//        blinking();
+    });
+}
+// ********* Page Update *********
+// regular updating
+function stop() {
+    clearInterval(itvl);
+    scroll = false;
+}
+// Control Part/Shared with ciax-xml.js
+function init() {
+    setInterval(update, 1000);
+}
 // Var setting
 var all = [];
-var footer = [];
 var depth = 1;
 var start_time = '';
+var last_time = ''
 var tag = 'latest';
 var hide = '';
 var manual = false;

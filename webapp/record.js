@@ -71,7 +71,7 @@ function step_exe(step) {
     step_time(step);
     all.push('</h4>');
     step_action(step);
-    set_query(step);
+//    set_query(step);
 }
 // condition step
 function operator(ope, cri) {
@@ -144,6 +144,7 @@ function record_footer(data) {
 }
 // Macro Body
 function make_record(data) {
+    port = data.port;
     start_time = new Date(data.start);
     record_header(data);
     all.push('<ul>');
@@ -160,21 +161,14 @@ function make_record(data) {
 // ********* External Control **********
 // CGI
 function dvctl(cmd) {
+    if(!confirm('EXEC?(' + cmd + ')')) return;
     $.post(
         '/json/dvctl-udp.php',
-        {port: Port, cmd: cmd},
+        {port: port, cmd: cmd},
         function(data) {
             $('#msg').text($.parseJSON(data).msg);
-            update();
         }
     );
-}
-function seldv(obj) {
-    var cmd = obj.options[obj.selectedIndex].value;
-    if (cmd != '--select--') {
-        var res = confirm('EXEC?(' + cmd + ')');
-        if (res) { dvctl(cmd); }
-    }
 }
 // ******* Page Footer *********
 // auto scroll
@@ -233,7 +227,7 @@ function update() {
             last_time = data.time;
             make_record(data);
         }
-//        sticky_bottom();
+        sticky_bottom();
 //        blinking();
     });
 }
@@ -245,6 +239,7 @@ function stop() {
 }
 // Control Part/Shared with ciax-xml.js
 function init() {
+    update();
     setInterval(update, 1000);
 }
 // Var setting
@@ -255,5 +250,5 @@ var last_time = ''
 var tag = 'latest';
 var hide = '';
 var manual = false;
-var Port = 55555;
+var port = '';
 //$(document).ready(init);

@@ -16,7 +16,7 @@
       </div>
       <div id="record"></div>
       <div id="footer">
-        <span class="item">
+        <span class="item" id="scroll">
           <input type="checkbox" id="go_bottom" checked="true">Auto Scroll</input>
         </span>
         <span class="item" id="query">
@@ -27,8 +27,9 @@
           <button id="drop" onclick="dvctl('drop');"><span class="qry">Drop</span></button>
           <button id="ok" onclick="dvctl('ok');"><span class="qry">OK</span></button>
           <button id="retry" onclick="dvctl('retry');"><span class="qry">Retry</span></button>
+          <span class="item" id="msg"></span>
         </span>
-        <span class="item" id="msg"></span>
+        <span class="item" id="status"></span>
       </div>
     </div>
   </body>

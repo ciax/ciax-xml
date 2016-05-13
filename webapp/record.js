@@ -23,6 +23,8 @@ function mk_result(step) {
         cls = 'false';
     }else if (step.result == 'busy') {
         cls = 'active';
+    }else if (step.result == 'interrupted') {
+        cls = 'warn';
     }
     all.push('<em class="res ' + cls + '">' + step.result + '</em>');
 }
@@ -175,11 +177,13 @@ function dvctl(cmd) {
 // auto scroll
 function set_query(step) {
     if (step.option) {
+        $('button').hide();
+        $('#query').show();
         for (var k in step.option) {
             $('#' + step.option[k]).show();
         }
     }else {
-        $('button').hide();
+        $('#query').hide();
     }
 }// ******* Animation *********
 function sticky_bottom() {
@@ -196,7 +200,8 @@ function sticky_bottom() {
     }
 }
 // Folding
-function acordion() {
+function acordion(click) {
+    if(click){ $('h4').next().slideToggle(); }
     $('h4').on('click', function() {
         $(this).next().slideToggle();
     });
@@ -217,34 +222,35 @@ function update() {
     all = [];
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
+        $('#status').text(data.status);
         if (data.time != last_time) {
             last_time = data.time;
             make_record(data);
+        }else if(data.status == 'end'){
+            clearInterval(itvl);
+            $('#scroll,#query').hide();
+            acordion(true);
         }
         sticky_bottom();
         blinking();
     });
 }
 // ********* Page Update *********
-// regular updating
-function stop() {
-    clearInterval(itvl);
-    scroll = false;
-}
 // Control Part/Shared with ciax-xml.js
 function init() {
     $.ajaxSetup({ cache: false});
-    $('button').hide();
+    $('#query').hide();
     update();
-    setInterval(update, 1000);
+    itvl = setInterval(update, 1000);
 }
 // Var setting
 var all = [];
 var depth = 1;
 var start_time = '';
 var last_time = '';
-var tag = 'latest';
 var hide = '';
+var tag = 'latest';
 var manual = false;
-var port = '';
+var port;
+var itvl;
 //$(document).ready(init);

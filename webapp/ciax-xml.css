@@ -140,7 +140,7 @@ var{
     position:absolute;
     bottom:0;
 }
-#msg{
+#status{
     width : 5em;
     float : right;
 }

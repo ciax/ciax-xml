@@ -143,6 +143,7 @@ var{
 #status{
     width : 5em;
     float : right;
+    text-transform: capitalize;
 }
 /* select list */
 .time{

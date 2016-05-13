@@ -160,21 +160,14 @@ function make_record(data) {
     record_footer(data);
     $('#record')[0].innerHTML = all.join('');
 }
-// ********* External Control **********
-// CGI
+// ******* Page Footer *********
+// ** CGI **
 function dvctl(cmd) {
     if (!confirm('EXEC?(' + cmd + ')')) return;
-    $.post(
-        '/json/dvctl-udp.php',
-        {port: port, cmd: cmd},
-        function(data) {
-            $('#msg').text($.parseJSON(data).msg);
-        }
-    );
+    $.post('/json/dvctl-udp.php',{port: port, cmd: cmd},
+           function(data) { $('#msg').text($.parseJSON(data).msg);});
     update();
 }
-// ******* Page Footer *********
-// auto scroll
 function set_query(step) {
     if (step.option) {
         $('button').hide();
@@ -184,8 +177,23 @@ function set_query(step) {
         }
     }else {
         $('#query').hide();
+        $('#msg').text('NONE');
     }
-}// ******* Animation *********
+}
+// ** Stat **
+function mk_stat(stat){
+    var str=['<span class="'];
+    switch (stat) {
+    case 'run': str.push('active'); break;
+    case 'end' : str.push('normal'); break;
+    case 'query' : str.push('qry'); break;
+    default:
+    }
+    str.push('">'+stat+'</span>');
+    $('#status')[0].innerHTML = str.join('');
+}
+// ******* Animation *********
+// auto scroll
 function sticky_bottom() {
     var div = $('#record');
     var toggle = $('#go_bottom');
@@ -222,7 +230,7 @@ function update() {
     all = [];
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
-        $('#status').text(data.status);
+        mk_stat(data.status);
         if (data.time != last_time) {
             last_time = data.time;
             make_record(data);

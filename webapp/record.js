@@ -71,7 +71,7 @@ function step_exe(step) {
     step_time(step);
     all.push('</h4>');
     step_action(step);
-//    set_query(step);
+    set_query(step);
 }
 // condition step
 function operator(ope, cri) {
@@ -161,7 +161,7 @@ function make_record(data) {
 // ********* External Control **********
 // CGI
 function dvctl(cmd) {
-    if(!confirm('EXEC?(' + cmd + ')')) return;
+    if (!confirm('EXEC?(' + cmd + ')')) return;
     $.post(
         '/json/dvctl-udp.php',
         {port: port, cmd: cmd},
@@ -174,18 +174,11 @@ function dvctl(cmd) {
 // auto scroll
 function set_query(step) {
     if (step.option) {
-        var str=[];
-        str.push('<span class="item" id="query">');
-        str.push('<em class="qry">Command</em>');
-        str.push(':<select name="query" onchage="seldv(this)">');
-        str.push('<option>--select--</option>');
         for (var k in step.option) {
-            str.push('<option>' + step.option[k] + '</option>');
+            $('#' + step.option[k]).show();
         }
-        str.push('</select></span>');
-        $('#query').replaceWith(str.join(''));
-    }else{
-        $('#query').empty();
+    }else {
+        $('button').hide();
     }
 }// ******* Animation *********
 function sticky_bottom() {
@@ -223,7 +216,7 @@ function update() {
     all = [];
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
-        if(data.time != last_time){
+        if (data.time != last_time) {
             last_time = data.time;
             make_record(data);
         }
@@ -239,6 +232,7 @@ function stop() {
 }
 // Control Part/Shared with ciax-xml.js
 function init() {
+    $('button').hide();
     update();
     setInterval(update, 1000);
 }
@@ -246,7 +240,7 @@ function init() {
 var all = [];
 var depth = 1;
 var start_time = '';
-var last_time = ''
+var last_time = '';
 var tag = 'latest';
 var hide = '';
 var manual = false;

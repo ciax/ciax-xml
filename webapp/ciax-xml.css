@@ -1,4 +1,4 @@
-/* Global Style */
+/**************** Global Style *****************/
 html,body{
     height: 99%;
     background-image : url(/json/bg-1.jpg);
@@ -15,7 +15,8 @@ th{
     border : 2px outset;
     text-align : center;
 }
-/* For Status Table '.' is class name */
+/*************** For Status Table ****************/
+/* '.' is class name */
 .outline{
     width : 90%;
     height: 95%;
@@ -69,13 +70,7 @@ th{
 .center{
     text-align :center;
 }
-/* For Macro */
-#footer{
-    border : 2px outset;
-    font-weight: bold;
-    position:absolute;
-    bottom:0;
-}
+/****************** For Macro *******************/
 #record,#select{
     overflow: auto;
     height: 90%;
@@ -135,6 +130,18 @@ var{
 }
 .action{
     color : gray;
+}
+/* footer */
+#footer{
+    width : 100%;
+    border : 2px outset;
+    font-weight: bold;
+    position:absolute;
+    bottom:0;
+}
+#msg{
+    width : 5em;
+    float : right;
 }
 /* select list */
 .time{

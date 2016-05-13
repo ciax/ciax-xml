@@ -20,7 +20,13 @@
           <input type="checkbox" id="go_bottom" checked="true">Auto Scroll</input>
         </span>
         <span class="item" id="query">
-          <button onclick="dvctl('exec');">Exec</button>
+          <button id="exec" onclick="dvctl('exec');">Exec</button>
+          <button id="pass" onclick="dvctl('pass');">Pass</button>
+          <button id="skip" onclick="dvctl('skip');">Skip</button>
+          <button id="force" onclick="dvctl('force');">Force</button>
+          <button id="drop" onclick="dvctl('drop');">Drop</button>
+          <button id="ok" onclick="dvctl('ok');">OK</button>
+          <button id="retry" onclick="dvctl('retry');">Retry</button>
         </span>
         <span class="item" id="msg"></span>
       </div>

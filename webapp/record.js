@@ -17,27 +17,16 @@ function step_cmd(step) {
     all.push('</span>');
 }
 // result section
-function mk_result(step) {
-    var cls = 'true';
-    if (step.result.match(/failed|error/)) {
-        cls = 'false';
-    }else if (step.result == 'busy') {
-        cls = 'active';
-    }else if (step.result == 'interrupted') {
-        cls = 'warn';
-    }
-    all.push('<em class="res ' + cls + '">' + step.result + '</em>');
-}
 function step_result(step) {
     if (step.result) {
+        var res=step.result;
         all.push(' -> ');
-        mk_result(step);
+        all.push('<em class="res ' + res + '">' + res + '</em>');
     }
 }
 function step_action(step) {
     if (step.action) {
-        all.push('<ul' + hide + '>');
-        all.push('<li><span class="action">(');
+        all.push('<ul><li><span class="action">(');
         all.push(step.action);
         all.push(')</span></li></ul>');
     }
@@ -97,7 +86,7 @@ function cond_list(conds, type) {
     }
 }
 function step_cond(step) {
-    all.push('<ul' + hide + '>');
+    all.push('<ul>');
     cond_list(step.conditions, step.type);
     all.push('</ul></li>');
 }
@@ -105,7 +94,7 @@ function step_cond(step) {
 function step_level(crnt) {
     while (crnt != depth) {
         if (crnt > depth) {
-            all.push('<ul' + hide + '>');
+            all.push('<ul>');
             depth += 1;
         }else {
             all.push('</ul></li>');
@@ -135,8 +124,9 @@ function record_header(data) {
     $('#mcrcmd').text(data.label + '[' + data.cid + ']');
 }
 function record_footer(data) {
+    var res=data.result;
     all.push('<h3 id="bottom">[');
-    mk_result(data);
+    all.push('<em class="res ' + res + '">' + res + '</em>');
     all.push('](');
     all.push(data.time + ')');
     if (data.total_time) {
@@ -182,15 +172,8 @@ function set_query(step) {
 }
 // ** Stat **
 function mk_stat(stat){
-    var str=['<span class="'];
-    switch (stat) {
-    case 'run': str.push('active'); break;
-    case 'end' : str.push('normal'); break;
-    case 'query' : str.push('qry'); break;
-    default:
-    }
-    str.push('">'+stat+'</span>');
-    $('#status')[0].innerHTML = str.join('');
+    var str='<span class="res '+ stat + '">'+stat+'</span>'
+    $('#status')[0].innerHTML = str;
 }
 // ******* Animation *********
 // auto scroll
@@ -216,14 +199,13 @@ function acordion(click) {
 }
 // interactive mode
 function blinking() {
-    $('.qry').fadeOut(500, function() {$(this).fadeIn(500)});
+    $('.query').fadeOut(500, function() {$(this).fadeIn(500)});
 }
 // ******** HTML Page ********
 function static() {
-    hide = ' style="display:none;"';
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
-        acordion();
+        acordion(true);
     });
 }
 function update() {
@@ -237,7 +219,7 @@ function update() {
         }else if(data.status == 'end'){
             clearInterval(itvl);
             $('#scroll,#query').hide();
-            acordion(true);
+//            acordion(true);
         }
         sticky_bottom();
         blinking();
@@ -256,7 +238,6 @@ var all = [];
 var depth = 1;
 var start_time = '';
 var last_time = '';
-var hide = '';
 var tag = 'latest';
 var manual = false;
 var port;

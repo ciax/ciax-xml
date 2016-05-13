@@ -4,35 +4,35 @@ html,body{
     background-image : url(/json/bg-1.jpg);
     background-repeat : repeat;
     background-attachment : fixed;
-    color : #000066;
+    color : black;
     background-color : white;
 }
 table{
     width : 100%;
-    background-color: silver;
+    background-color: lightgray;
 }
 th{
     border : 2px outset;
     text-align : center;
 }
-/*************** For Status Table ****************/
-/* '.' is class name */
 .outline{
     width : 90%;
-    height: 95%;
-    border : 5px outset #aadd99;
+    max-height: 95%;
+    border : 5px outset lightgreen;
     margin-left : 5%;
     margin-right : 5%;
     font-weight: bold;
     position:relative;
+    overflow: auto;
 }
 .title{
     border : 2px outset;
     font-size : x-large;
     text-align : center;
-    color : white;
-    background-color:#bbeeaa;
+    color : lightcyan;
+    background-color: lightgreen;
 }
+/*************** For Status Table ****************/
 .item{
     border : 2px inset;
     font-weight: bold;
@@ -71,9 +71,9 @@ th{
     text-align :center;
 }
 /****************** For Macro *******************/
+/* Frame */
 #record,#select{
-    overflow: auto;
-    height: 90%;
+    margin: 5px;
 }
 /* contents */
 h4{
@@ -89,71 +89,79 @@ ul{
     margin-left:1.5em;
     padding:0;
 }
-.mcr{
-    color : chocolate;
-}
-.exec,.qry{
-    color : magenta;
-    font-weight: bold;
-}
-.upd,.cfg{
-    color :green;
-}
-.check,.goal,.wait,.sleep,.verify{
-    color : cyan;
-}
-/* title */
-.head{
+/** Step Line **/
+/* common */
+.head {
     font-size: middle;
     text-transform: uppercase;
 }
-.res{
-    text-transform: capitalize;
-}
-.elps{
+.elps {
     font-size: medium;
     float:right;
     color: blue;
     width:5em;
 }
+/* By Title */
+.mcr{
+    color : chocolate;
+}
+.exec,.query{
+    color : magenta;
+    font-weight: bold;
+}
+.upd,.cfg {
+    color :green;
+}
+.check,.goal,.wait,.sleep,.verify {
+    color : cyan;
+}
 /* var name of condition */
-var{
+var {
     width:7em;
     float:left;
     color : silver;
 }
-/* result */
-.true{
+/*** result ***/
+/* common */
+.res {
     color : lightgreen;
+    text-transform: capitalize;
 }
-.false{
+.false,.timeout,.faied,.error {
     color : red;
 }
-.action{
+.interrupted {
+    color : gold;
+}
+.busy,.run {
+    color : purple;
+}
+.action {
     color : gray;
 }
-/* footer */
-#footer{
+/*** footer ***/
+#footer {
     width : 100%;
     border : 2px outset;
     font-weight: bold;
     position:absolute;
     bottom:0;
 }
-#status{
+#status {
     width : 5em;
     float : right;
+    color : lightgreen;
     text-transform: capitalize;
 }
-/* select list */
-.time{
+/*** select list ***/
+.time {
     width: 4.5em;
     float: left;
     color: gray;
 }
-.cmd{
+.cmd {
     color : navy;
 }
-a{
+a {
     text-decoration:none;
 }

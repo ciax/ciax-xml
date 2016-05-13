@@ -233,6 +233,7 @@ function stop() {
 }
 // Control Part/Shared with ciax-xml.js
 function init() {
+    $.ajaxSetup({ cache: false});
     $('button').hide();
     update();
     setInterval(update, 1000);

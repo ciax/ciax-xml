@@ -1,6 +1,8 @@
 /**************** Global Style *****************/
 html,body{
+    width: 99%;
     height: 99%;
+    margin: 0;
     background-image : url(/json/bg-1.jpg);
     background-repeat : repeat;
     background-attachment : fixed;
@@ -19,13 +21,12 @@ th{
     width : 90%;
     max-height: 95%;
     border : 5px outset lightgreen;
-    margin-left : 5%;
-    margin-right : 5%;
+    margin: 2%;
+    margin-left: 5%;
     font-weight: bold;
-    position:relative;
-    overflow: auto;
 }
 .title{
+    height: 2%;
     border : 2px outset;
     font-size : x-large;
     text-align : center;
@@ -72,8 +73,9 @@ th{
 }
 /****************** For Macro *******************/
 /* Frame */
-#record,#select{
+.contents{
     margin: 5px;
+    overflow: auto;
 }
 /* contents */
 h4{
@@ -105,14 +107,14 @@ ul{
 .mcr{
     color : chocolate;
 }
-.exec,.query{
+.exec, .query{
     color : magenta;
     font-weight: bold;
 }
-.upd,.cfg {
+.upd, .cfg {
     color :green;
 }
-.check,.goal,.wait,.sleep,.verify {
+.check, .goal, .wait, .sleep, .verify {
     color : cyan;
 }
 /* var name of condition */
@@ -127,7 +129,7 @@ var {
     color : lightgreen;
     text-transform: capitalize;
 }
-.false,.timeout,.faied,.error {
+.false, .timeout, .faied, .error {
     color : red;
 }
 .interrupted {
@@ -140,14 +142,12 @@ var {
     color : gray;
 }
 /*** footer ***/
-#footer {
+div#footer {
     width : 100%;
     border : 2px outset;
     font-weight: bold;
-    position:absolute;
-    bottom:0;
 }
-#status {
+span#status {
     width : 5em;
     float : right;
     color : lightgreen;

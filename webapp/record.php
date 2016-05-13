@@ -12,7 +12,7 @@
           <span class="mcr">Macro Log</span>:
           <span class="cmd" id="mcrcmd"></span>
         </div>
-        <div id="record"></div>
+        <div id="record" class="contents"></div>
       </div>
     </body>
 </html>

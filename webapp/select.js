@@ -30,11 +30,18 @@ function date_list(key, ary) {
     time_list(key, time, ary);
 
 }
+//sahred with record.js
 function acordion() {
     $('h4').on('click', function() {
         $(this).next().slideToggle();
     });
+    adjust();
 }
+function adjust() {
+    var h = $(window).height();
+    $('.contents').css('height', h * 0.85);
+}
+// manipulate other frm
 function load_latest() {
     top.frm2.location.href = 'record_latest.html';
 }
@@ -56,4 +63,5 @@ var all = [];
 var cls = { 'complete': 'normal', 'skipped': 'normal', 'interrupted': 'warn', 'busy': 'active'};
 var date = new Date();
 $(document).ready(select);
-
+adjust();
+$(window).on('resize', adjust);

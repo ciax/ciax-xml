@@ -19,7 +19,7 @@ function step_cmd(step) {
 // result section
 function step_result(step) {
     if (step.result) {
-        var res=step.result;
+        var res = step.result;
         all.push(' -> ');
         all.push('<em class="res ' + res + '">' + res + '</em>');
     }
@@ -124,7 +124,7 @@ function record_header(data) {
     $('#mcrcmd').text(data.label + '[' + data.cid + ']');
 }
 function record_footer(data) {
-    var res=data.result;
+    var res = data.result;
     all.push('<h3 id="bottom">[');
     all.push('<em class="res ' + res + '">' + res + '</em>');
     all.push('](');
@@ -154,7 +154,7 @@ function make_record(data) {
 // ** CGI **
 function dvctl(cmd) {
     if (!confirm('EXEC?(' + cmd + ')')) return;
-    $.post('/json/dvctl-udp.php',{port: port, cmd: cmd},
+    $.post('/json/dvctl-udp.php', {port: port, cmd: cmd},
            function(data) { $('#msg').text($.parseJSON(data).msg);});
     update();
 }
@@ -171,8 +171,8 @@ function set_query(step) {
     }
 }
 // ** Stat **
-function mk_stat(stat){
-    var str='<span class="res '+ stat + '">'+stat+'</span>'
+function mk_stat(stat) {
+    var str = '<span class="res ' + stat + '">' + stat + '</span>';
     $('#status')[0].innerHTML = str;
 }
 // ******* Animation *********
@@ -192,14 +192,24 @@ function sticky_bottom() {
 }
 // Folding
 function acordion(click) {
-    if(click){ $('h4').next().slideToggle(); }
+    if (click) { $('h4').next().slideToggle(); }
     $('h4').on('click', function() {
         $(this).next().slideToggle();
+        adjust();
     });
 }
 // interactive mode
 function blinking() {
     $('.query').fadeOut(500, function() {$(this).fadeIn(500)});
+}
+// contents resize
+function adjust() {
+    var h = $(window).height();
+    // sum height of children in .outline except .contents
+    $('div.outline > div:not(".contents")').each(function(){
+        h=h-$(this).height();
+    });
+    $('.contents').css('max-height', h-100);
 }
 // ******** HTML Page ********
 function static() {
@@ -216,11 +226,12 @@ function update() {
         if (data.time != last_time) {
             last_time = data.time;
             make_record(data);
-        }else if(data.status == 'end'){
+        }else if (data.status == 'end') {
             clearInterval(itvl);
             $('#scroll,#query').hide();
-//            acordion(true);
+            //acordion(true);
         }
+        adjust();
         sticky_bottom();
         blinking();
     });
@@ -231,7 +242,9 @@ function init() {
     $.ajaxSetup({ cache: false});
     $('#query').hide();
     update();
+    $(window).on('resize', adjust);
     itvl = setInterval(update, 1000);
+
 }
 // Var setting
 var all = [];

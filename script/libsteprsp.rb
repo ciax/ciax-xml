@@ -68,7 +68,7 @@ module CIAX
 
       def _scan
         @exes.each_with_object({}) do |obj, hash|
-          st = hash[obj.id] = obj.stat
+          st = hash[obj.id] = obj.stat.upd
           verbose { "Scanning #{obj.id} (#{st[:time]})/(#{st.object_id})" }
         end
       end

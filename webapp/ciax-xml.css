@@ -145,11 +145,8 @@ var {
 #query {
     display: none;
 }
-span#status {
-    width : 5em;
+#scroll {
     float : right;
-    color : lightgreen;
-    text-transform: capitalize;
 }
 /*** select list ***/
 .time {

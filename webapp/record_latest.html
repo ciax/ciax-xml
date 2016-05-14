@@ -17,10 +17,7 @@
       </div>
       <div id="record" class="contents"></div>
       <div class="footer">
-        <span class="item" id="scroll">
-          <input type="checkbox" id="go_bottom" checked="true">Auto Scroll</input>
-        </span>
-        <span class="item" id="command"></span>
+        <span class="item res" id="status"></span>
         <span class="item" id="query">
           <button id="exec" onclick="dvctl('exec');"><span class="query">Exec</span></button>
           <button id="pass" onclick="dvctl('pass');"><span class="query">Pass</span></button>
@@ -29,9 +26,12 @@
           <button id="drop" onclick="dvctl('drop');"><span class="query">Drop</span></button>
           <button id="ok" onclick="dvctl('ok');"><span class="query">OK</span></button>
           <button id="retry" onclick="dvctl('retry');"><span class="query">Retry</span></button>
-          <span class="item" id="msg"></span>
         </span>
-        <span class="item" id="status"></span>
+        <span class="item" id="msg"></span>
+        <span class="item" id="command"></span>
+        <span class="item" id="scroll">
+          <input type="checkbox" id="go_bottom" checked="true">Auto Scroll</input>
+        </span>
       </div>
     </div>
   </body>

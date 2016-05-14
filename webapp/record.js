@@ -159,7 +159,7 @@ function set_query(step) {
         }
     }else {
         $('#query').hide();
-        $('#msg').text('NONE');
+        $('#msg').text('****');
     }
 }
 // ** Stat **

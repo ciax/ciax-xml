@@ -1,7 +1,7 @@
 // ******* Animation *********
 // auto scroll
 function sticky_bottom() {
-    var div = $('#record');
+    var div = $('.contents');
     var toggle = $('#go_bottom');
     if (toggle.prop('checked')) {
         manual = false;
@@ -15,7 +15,7 @@ function sticky_bottom() {
 }
 // Folding
 function acordion(click) {
-    if (click) { $('h4').next().slideToggle(); }
+    if (click) { $('h4').next().slideToggle('slow'); }
     $('h4').on('click', function() {
         $(this).next().slideToggle();
         adjust();
@@ -43,7 +43,6 @@ function dvctl(cmd) {
         function(data) {
             $('#msg').text($.parseJSON(data).msg);
             update();
-            alert($('#msg').text());
         }
     );
 }
@@ -54,11 +53,10 @@ function seldv(obj) {
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
 function init() {
-    $.ajaxSetup({ cache: false});
-    $('#query').hide();
     update();
-    $(window).on('resize', adjust);
     itvl = setInterval(update, 1000);
 
 }
 var itvl;
+$(window).on('resize', adjust);
+$.ajaxSetup({ cache: false});

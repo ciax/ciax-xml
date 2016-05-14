@@ -30,6 +30,12 @@ th{
     color : lightcyan;
     background-color: lightgreen;
 }
+.footer{
+    font-size : large;
+    test-align : center;
+    color : navy;
+    margin: 2px;
+}
 /*************** For Status Table ****************/
 .item{
     border : 2px inset;
@@ -137,10 +143,8 @@ var {
     color : dimgray;
 }
 /*** footer ***/
-div#footer {
-    width : 100%;
-    border : 2px outset;
-    font-weight: bold;
+#query,#scroll {
+    display: none;
 }
 span#status {
     width : 5em;

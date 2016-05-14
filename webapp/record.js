@@ -185,8 +185,8 @@ function update() {
             make_record(data);
         }else if (data.status == 'end') {
             clearInterval(itvl);
-            $('#scroll,#query').hide();
-            //acordion(true);
+            $('#query,#scroll').hide();
+            acordion();
         }
         adjust();
         sticky_bottom();

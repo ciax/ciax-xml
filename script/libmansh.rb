@@ -39,7 +39,6 @@ module CIAX
             @par.flush(@sv_stat.get(:list))
           end
           @cobj.loc.add_view
-          @cobj.loc.add_jump
         end
       end
 

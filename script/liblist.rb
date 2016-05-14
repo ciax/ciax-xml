@@ -53,8 +53,6 @@ module CIAX
         obj = super(site)
         return obj if obj.is_a?(Shell) || obj.is_a?(CIAX::Exe::Shell)
         obj.ext_shell
-        obj.cobj.loc.add_jump
-        obj
       end
     end
   end

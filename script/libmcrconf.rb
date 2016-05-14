@@ -15,7 +15,7 @@ module CIAX
         super(root_cfg)
         db = Db.new
         dbi = db.get
-        update(layer_type: 'mcr', db: db)
+        update(layer_type: 'mcr', db: db, rec_list: RecList.new.refresh)
         # pick already includes :command, :version
         update(dbi.pick([:sites, :id]))
         _init_net(dbi)
@@ -51,6 +51,40 @@ module CIAX
         add_str(:sid)
         add_flg(nonstop: '(nonstop)')
         up(:nonstop) if opt[:n]
+      end
+    end
+
+    # Record List (Dir)
+    class RecList < Varx
+      def initialize
+        super('rec', 'list')
+        @list = self[:list] = Hashx.new
+        ext_local_file
+      end
+
+      def refresh
+        @list.clear
+        Dir.glob(vardir('json') + 'record_*.json') do |name|
+          next if /record_[0-9]+.json/ !~ name
+          hash = jread(name)
+          @list[hash[:id]] = [hash[:cid], hash[:result]]
+        end
+        save
+        self
+      end
+
+      private
+
+      def jread(fname)
+        j2h(
+          open(fname) do|f|
+            f.flock(::File::LOCK_SH)
+            f.read
+          end
+        )
+      rescue Errno::ENOENT, UserError
+        verbose { "  -- no json file (#{fname})" }
+        Hashx.new
       end
     end
   end

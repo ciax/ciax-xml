@@ -150,14 +150,15 @@ function make_record(data) {
     $('#record')[0].innerHTML = all.join('');
 }
 // ******* Page Footer *********
-function set_query(step) {
+function make_select(ary) {
     var opt=['<option>--select--</option>'];
-    if (step.option) {
-        for (var k in step.option) {
-            opt.push('<option>'+step.option[k]+'</option>');
-        }
+    for (var i in ary) {
+        opt.push('<option>'+ary[i]+'</option>');
     }
     $('#query select')[0].innerHTML=opt.join('');
+}
+function set_query(step) {
+    if (step.option) { make_select(step.option); }
 }
 // ** Stat **
 function mk_stat(stat) {
@@ -182,6 +183,7 @@ function update() {
         }else if (data.status == 'end') {
             clearInterval(itvl);
             acordion();
+            make_select(['cinit']);
         }
         adjust();
         sticky_bottom();

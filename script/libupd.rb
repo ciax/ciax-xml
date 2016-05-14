@@ -45,6 +45,11 @@ module CIAX
       cmt
     end
 
+    # Update without any processing (Use for scan in macro)
+    def latest
+      self
+    end
+
     # Time Updater
     def time_upd(tm = nil)
       self[:time] = tm || now_msec

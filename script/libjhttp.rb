@@ -30,6 +30,10 @@ module CIAX
       alert("  -- no url file (#{url})")
     end
 
+    def latest
+      load
+    end
+
     private
 
     def file_url(tag = nil)

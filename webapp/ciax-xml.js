@@ -1,5 +1,5 @@
 // ******* Animation *********
-// auto scroll
+// Auto scroll. Check box with id:go_bottm is needed;
 function sticky_bottom() {
     var div = $('.contents');
     var toggle = $('#go_bottom');
@@ -36,7 +36,6 @@ function adjust() {
 }
 // ** CGI **
 function dvctl(cmd) {
-    if (!confirm('EXEC?(' + cmd + ')')) return;
     $.post(
         '/json/dvctl-udp.php',
         {port: port, cmd: cmd},
@@ -46,9 +45,15 @@ function dvctl(cmd) {
         }
     );
 }
+// Not UPD or INTERRUPT
+function exec(cmd) {
+    if (confirm('EXEC?(' + cmd + ')')) {
+        dvctl(cmd);
+    }
+}
 function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
-    if (cmd != '--select--') {  dvctl(cmd); }
+    if (cmd != '--select--') {  exec(cmd); }
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js

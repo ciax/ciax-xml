@@ -18,14 +18,14 @@
       <div id="record" class="contents"></div>
       <div class="footer">
         <span class="item res" id="status"></span>
-        <span class="item" id="query">
-          <button id="exec" onclick="dvctl('exec');"><span class="query">Exec</span></button>
-          <button id="pass" onclick="dvctl('pass');"><span class="query">Pass</span></button>
-          <button id="skip" onclick="dvctl('skip');"><span class="query">Skip</span></button>
-          <button id="force" onclick="dvctl('force');"><span class="query">Force</span></button>
-          <button id="drop" onclick="dvctl('drop');"><span class="query">Drop</span></button>
-          <button id="ok" onclick="dvctl('ok');"><span class="query">OK</span></button>
-          <button id="retry" onclick="dvctl('retry');"><span class="query">Retry</span></button>
+        <span id="query">
+          <button id="exec" onclick="exec('exec');"><span class="query">Exec</span></button>
+          <button id="pass" onclick="exec('pass');"><span class="query">Pass</span></button>
+          <button id="skip" onclick="exec('skip');"><span class="query">Skip</span></button>
+          <button id="force" onclick="exec('force');"><span class="query">Force</span></button>
+          <button id="drop" onclick="exec('drop');"><span class="query">Drop</span></button>
+          <button id="ok" onclick="exec('ok');"><span class="query">OK</span></button>
+          <button id="retry" onclick="exec('retry');"><span class="query">Retry</span></button>
         </span>
         <span class="item" id="msg"></span>
         <span class="item" id="command"></span>

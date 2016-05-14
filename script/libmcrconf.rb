@@ -66,10 +66,15 @@ module CIAX
         @list.clear
         Dir.glob(vardir('json') + 'record_*.json') do |name|
           next if /record_[0-9]+.json/ !~ name
-          hash = jread(name)
-          @list[hash[:id]] = [hash[:cid], hash[:result]]
+          add(jread(name))
         end
         save
+        self
+      end
+
+      def add(hash)
+        type?(hash, Hash)
+        @list[hash[:id]] = [hash[:cid], hash[:result]] if hash[:id].to_i > 0
         self
       end
 

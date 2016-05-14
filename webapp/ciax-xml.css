@@ -11,8 +11,6 @@ html,body{
 }
 table{
     width : 100%;
-    opacity : 0.8;
-    background-color: lightgray;
 }
 th{
     text-align : center;
@@ -21,9 +19,10 @@ th{
     width : 90%;
     max-height: 95%;
     border : 5px outset lightgreen;
-    margin: 2%;
+    margin-top: 10px;
     margin-left: 5%;
     font-weight: bold;
+    background-color: rgba(200,200,200,0.5);
 }
 .title{
     font-size : x-large;
@@ -117,7 +116,7 @@ ul{
 var {
     width:7em;
     float:left;
-    color : silver;
+    color : dimgray;
 }
 /*** result ***/
 /* common */
@@ -135,7 +134,7 @@ var {
     color : purple;
 }
 .action {
-    color : gray;
+    color : dimgray;
 }
 /*** footer ***/
 div#footer {
@@ -153,7 +152,7 @@ span#status {
 .time {
     width: 4.5em;
     float: left;
-    color: gray;
+    color: dimgray;
 }
 .cmd {
     color : navy;

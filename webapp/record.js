@@ -184,7 +184,7 @@ function update() {
             make_record(data);
         }else if (data.status == 'end') {
             clearInterval(itvl);
-            $('#query,#scroll').hide();
+            $('#query').hide();
             acordion();
         }
         adjust();
@@ -198,6 +198,5 @@ var depth = 1;
 var start_time = '';
 var last_time = '';
 var tag = 'latest';
-var manual = false;
 var port;
 //$(document).ready(init);

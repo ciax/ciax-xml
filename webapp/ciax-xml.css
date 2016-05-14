@@ -142,7 +142,7 @@ var {
     color : darkorange;
 }
 /*** footer ***/
-#query,#scroll {
+#query {
     display: none;
 }
 span#status {

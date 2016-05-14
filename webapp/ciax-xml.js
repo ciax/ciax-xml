@@ -58,5 +58,6 @@ function init() {
 
 }
 var itvl;
+var manual=false;
 $(window).on('resize', adjust);
 $.ajaxSetup({ cache: false});

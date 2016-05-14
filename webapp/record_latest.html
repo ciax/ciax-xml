@@ -19,16 +19,10 @@
       <div class="footer">
         <span class="item res" id="status"></span>
         <span id="query">
-          <button id="exec" onclick="exec('exec');"><span class="query">Exec</span></button>
-          <button id="pass" onclick="exec('pass');"><span class="query">Pass</span></button>
-          <button id="skip" onclick="exec('skip');"><span class="query">Skip</span></button>
-          <button id="force" onclick="exec('force');"><span class="query">Force</span></button>
-          <button id="drop" onclick="exec('drop');"><span class="query">Drop</span></button>
-          <button id="ok" onclick="exec('ok');"><span class="query">OK</span></button>
-          <button id="retry" onclick="exec('retry');"><span class="query">Retry</span></button>
+          <select name="query" onchange="seldv(this)">
+          </select>
         </span>
         <span class="item" id="msg"></span>
-        <span id="command"></span>
         <span id="scroll">
           <input type="checkbox" id="go_bottom" checked="true">Auto Scroll</input>
         </span>

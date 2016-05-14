@@ -151,13 +151,13 @@ function make_record(data) {
 }
 // ******* Page Footer *********
 function set_query(step) {
+    var opt=['<option>--select--</option>'];
     if (step.option) {
         for (var k in step.option) {
-            $('#' + step.option[k]).show();
+            opt.push('<option>'+step.option[k]+'</option>');
         }
-    }else {
-        $('button').hide();
     }
+    $('#query select')[0].innerHTML=opt.join('');
 }
 // ** Stat **
 function mk_stat(stat) {

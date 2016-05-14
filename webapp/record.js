@@ -152,14 +152,11 @@ function make_record(data) {
 // ******* Page Footer *********
 function set_query(step) {
     if (step.option) {
-        $('button').hide();
-        $('#query').show();
         for (var k in step.option) {
             $('#' + step.option[k]).show();
         }
     }else {
-        $('#query').hide();
-        $('#msg').text('****');
+        $('button').hide();
     }
 }
 // ** Stat **
@@ -184,7 +181,6 @@ function update() {
             make_record(data);
         }else if (data.status == 'end') {
             clearInterval(itvl);
-            $('#query').hide();
             acordion();
         }
         adjust();

@@ -34,10 +34,12 @@ th{
     font-size : large;
     test-align : center;
     color : navy;
-    margin: 2px;
+    background-color: lightgreen;
+    padding : 3px;
 }
 /*************** For Status Table ****************/
 .item{
+    margin : 2px;
     border : 2px inset;
 }
 .label{
@@ -142,9 +144,6 @@ var {
     color : darkorange;
 }
 /*** footer ***/
-#query {
-    display: none;
-}
 #scroll {
     float : right;
 }

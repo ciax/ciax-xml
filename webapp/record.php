@@ -4,6 +4,7 @@
     <title>CIAX-XML(Record)</title>
     <link rel="stylesheet" type="text/css" href="ciax-xml.css"/>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="ciax-xml.js"></script>
     <script type="text/javascript" src="record.js"></script>
     <script type="text/javascript">tag="<?php include('getsid.php'); ?>";$(document).ready(static);</script>
     <body>

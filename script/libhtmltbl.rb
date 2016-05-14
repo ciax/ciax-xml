@@ -27,12 +27,13 @@ module CIAX
         parent.element('title', 'CIAX-XML')
         atrb = { rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css' }
         parent.element('link', nil, atrb)
-        fmt = 'var Type="status",Site="%s",Host="%s",Port="%s";'
+        fmt = 'var type="status",site="%s",Host="%s",port="%s";'
         script = format(fmt, @dbi[:id], @dbi[:host], @dbi[:port])
         _mk_script(parent, '', JQUERY)
         _mk_script(parent, script)
         _mk_script(parent, '', 'ciax-xml.js')
-        self
+        _mk_script(parent, '', 'status.js')
+        _mk_script(parent,'$(document).ready(init);')
       end
 
       def _mk_script(parent, text, src = nil)

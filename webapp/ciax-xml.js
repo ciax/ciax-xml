@@ -1,56 +1,64 @@
-// Need var: Type,Site
-var last;
-var offset = 0;
-function elapsed() {
-    var now = new Date();
-    var ms = now.getTime() - last + offset;
-    if (ms < 0) { offset = -ms; ms = 0;}
-    var t = new Date(ms);
-    var str;
-    if (ms > 86400000) {
-        str = Math.floor(ms / 8640000) / 10 + ' days';
-    }else if (ms > 3600000) {
-        str = t.getHours() + 'h ' + t.getMinutes() + 'm';
-    }else {
-        str = t.getMinutes() + "' " + t.getSeconds() + '"';
+// ******* Animation *********
+// auto scroll
+function sticky_bottom() {
+    var div = $('#record');
+    var toggle = $('#go_bottom');
+    if (toggle.prop('checked')) {
+        manual = false;
+        div.animate({ scrollTop: div[0].scrollHeight},'slow', function() {
+            manual = true;
+        });
+        div.on('scroll', function() {
+            if (manual) {toggle.prop('checked', false);}
+        });
     }
-    $('#elapsed').text(str);
 }
-function conv(stat) {
-    var data = $.extend({},stat.data, stat.msg);
-    for (var id in data) {
-        if ('class' in stat && id in stat.class) {
-            $('#' + id).addClass(stat.class[id]);
-        }
-        $('#' + id).text(data[id]);
-    }
-    last = stat.time;
-    var lstr = new Date(last);
-    $('#time').text(lstr.toLocaleString());
+// Folding
+function acordion(click) {
+    if (click) { $('h4').next().slideToggle(); }
+    $('h4').on('click', function() {
+        $(this).next().slideToggle();
+        adjust();
+    });
 }
-function update() {
-    $.getJSON(Type + '_' + Site + '.json', conv);
-    elapsed();
+// interactive mode
+function blinking() {
+    $('.query').fadeOut(500, function() {$(this).fadeIn(500)});
 }
-function init() {
-    update();
-    setInterval(update, 1000);
+// contents resize
+function adjust() {
+    var h = $(window).height();
+    // sum height of children in .outline except .contents
+    $('div.outline > div:not(".contents")').each(function(){
+        h=h-$(this).height();
+    });
+    $('.contents').css('max-height', h-100);
 }
+// ** CGI **
 function dvctl(cmd) {
+    if (!confirm('EXEC?(' + cmd + ')')) return;
     $.post(
         '/json/dvctl-udp.php',
-        {port: Port, cmd: cmd},
+        {port: port, cmd: cmd},
         function(data) {
             $('#msg').text($.parseJSON(data).msg);
             update();
+            alert($('#msg').text());
         }
     );
 }
 function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
-    if (cmd != '--select--') {
-        var res = confirm('EXEC?(' + cmd + ')');
-        if (res) { dvctl(cmd); }
-    }
+    if (cmd != '--select--') {  dvctl(cmd); }
 }
-$(document).ready(init);
+// ********* Page Update *********
+// Control Part/Shared with ciax-xml.js
+function init() {
+    $.ajaxSetup({ cache: false});
+    $('#query').hide();
+    update();
+    $(window).on('resize', adjust);
+    itvl = setInterval(update, 1000);
+
+}
+var itvl;

@@ -151,13 +151,6 @@ function make_record(data) {
     $('#record')[0].innerHTML = all.join('');
 }
 // ******* Page Footer *********
-// ** CGI **
-function dvctl(cmd) {
-    if (!confirm('EXEC?(' + cmd + ')')) return;
-    $.post('/json/dvctl-udp.php', {port: port, cmd: cmd},
-           function(data) { $('#msg').text($.parseJSON(data).msg);});
-    update();
-}
 function set_query(step) {
     if (step.option) {
         $('button').hide();
@@ -174,42 +167,6 @@ function set_query(step) {
 function mk_stat(stat) {
     var str = '<span class="res ' + stat + '">' + stat + '</span>';
     $('#status')[0].innerHTML = str;
-}
-// ******* Animation *********
-// auto scroll
-function sticky_bottom() {
-    var div = $('#record');
-    var toggle = $('#go_bottom');
-    if (toggle.prop('checked')) {
-        manual = false;
-        div.animate({ scrollTop: div[0].scrollHeight},'slow', function() {
-            manual = true;
-        });
-        div.on('scroll', function() {
-            if (manual) {toggle.prop('checked', false);}
-        });
-    }
-}
-// Folding
-function acordion(click) {
-    if (click) { $('h4').next().slideToggle(); }
-    $('h4').on('click', function() {
-        $(this).next().slideToggle();
-        adjust();
-    });
-}
-// interactive mode
-function blinking() {
-    $('.query').fadeOut(500, function() {$(this).fadeIn(500)});
-}
-// contents resize
-function adjust() {
-    var h = $(window).height();
-    // sum height of children in .outline except .contents
-    $('div.outline > div:not(".contents")').each(function(){
-        h=h-$(this).height();
-    });
-    $('.contents').css('max-height', h-100);
 }
 // ******** HTML Page ********
 function static() {
@@ -236,16 +193,6 @@ function update() {
         blinking();
     });
 }
-// ********* Page Update *********
-// Control Part/Shared with ciax-xml.js
-function init() {
-    $.ajaxSetup({ cache: false});
-    $('#query').hide();
-    update();
-    $(window).on('resize', adjust);
-    itvl = setInterval(update, 1000);
-
-}
 // Var setting
 var all = [];
 var depth = 1;
@@ -254,5 +201,4 @@ var last_time = '';
 var tag = 'latest';
 var manual = false;
 var port;
-var itvl;
 //$(document).ready(init);

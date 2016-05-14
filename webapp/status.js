@@ -17,7 +17,7 @@ function conv(stat) {
     var data = $.extend({},stat.data, stat.msg);
     for (var id in data) {
         if ('class' in stat && id in stat.class) {
-            $('#' + id).addClass(stat.class[id]);
+            $('#' + id).attr('class',stat.class[id]);
         }
         $('#' + id).text(data[id]);
     }

@@ -89,7 +89,7 @@ module CIAX
           td = tr.enclose('td', class: 'item')
 
           td.element('span', label, class: 'label')
-          td.element('span', '*******', id: id, class: 'val')
+          td.element('strong', '*******', id: id, class: 'normal')
         end
         tr
       end

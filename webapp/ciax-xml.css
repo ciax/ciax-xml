@@ -3,10 +3,10 @@ html,body{
     width: 99%;
     height: 99%;
     margin: 0;
+    color : black;
     background-image : url(/json/bg-1.jpg);
     background-repeat : repeat;
     background-attachment : fixed;
-    color : black;
     background-color : white;
 }
 table{
@@ -18,10 +18,10 @@ th{
 .outline{
     width : 90%;
     max-height: 95%;
+    font-weight: bold;
     border : 5px outset lightgreen;
     margin-top: 10px;
     margin-left: 5%;
-    font-weight: bold;
     background-color: rgba(200,200,200,0.5);
 }
 .title{
@@ -39,7 +39,6 @@ th{
 /*************** For Status Table ****************/
 .item{
     border : 2px inset;
-    font-weight: bold;
 }
 .label{
     text-align : center;
@@ -62,9 +61,8 @@ th{
 }
 .ctllabel{
     text-align : center;
-    color : maroon;
+    color : orange;
     font-size: large;
-    font-weight: bold;
 }
 .button{
     font-weight: bold;
@@ -110,7 +108,6 @@ ul{
 }
 .exec, .system, .query{
     color : magenta;
-    font-weight: bold;
 }
 .upd, .cfg {
     color :lightgreen;

@@ -108,12 +108,12 @@ ul{
 .mcr{
     color : chocolate;
 }
-.exec, .query{
+.exec, .system, .query{
     color : magenta;
     font-weight: bold;
 }
 .upd, .cfg {
-    color :green;
+    color :lightgreen;
 }
 .check, .goal, .wait, .sleep, .verify {
     color : cyan;
@@ -127,10 +127,12 @@ var {
 /*** result ***/
 /* common */
 .res {
-    color : lightgreen;
     text-transform: capitalize;
 }
-.false, .timeout, .faied, .error {
+.true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end {
+    color : green;
+}
+.false, .timeout, .failed, .error {
     color : red;
 }
 .interrupted {
@@ -140,7 +142,7 @@ var {
     color : purple;
 }
 .action {
-    color : dimgray;
+    color : darkorange;
 }
 /*** footer ***/
 #query,#scroll {

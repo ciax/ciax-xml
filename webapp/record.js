@@ -17,18 +17,17 @@ function step_cmd(step) {
     all.push('</span>');
 }
 // result section
-function step_result(step) {
-    if (step.result) {
-        var res = step.result;
+function step_result(res) {
+    if (res) {
         all.push(' -> ');
         all.push('<em class="res ' + res + '">' + res + '</em>');
     }
 }
 function step_action(step) {
     if (step.action) {
-        all.push('<ul><li><span class="action">(');
+        all.push(' <span class="action">(');
         all.push(step.action);
-        all.push(')</span></li></ul>');
+        all.push(')</span>');
     }
 }
 // elapsed time section
@@ -58,10 +57,10 @@ function step_exe(step) {
     step_label(step);
     step_cmd(step);
     step_count(step);
-    step_result(step);
+    step_result(step.result);
+    step_action(step);
     step_time(step);
     all.push('</h4>');
-    step_action(step);
     set_query(step);
 }
 // condition step

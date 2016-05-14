@@ -7,9 +7,8 @@ function record_cmd(key, cid) {
     all.push('</a>');
 }
 function record_res(res) {
-    var co = cls[res] ? cls[res] : 'alarm';
-    all.push(' -> <span class="' + co + '">');
-    all.push(res + '</span>');
+    all.push(' -> ');
+    all.push('<em class="' + res + '">' + res + '</em>');
 }
 function time_list(key, time, ary) {
     all.push('<li>');
@@ -52,6 +51,5 @@ function static() {
 }
 // Initialize
 var all = [];
-var cls = { 'complete': 'normal', 'skipped': 'normal', 'interrupted': 'warn', 'busy': 'active'};
 var date = new Date();
 $(document).ready(static);

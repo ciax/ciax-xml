@@ -14,7 +14,6 @@ table{
     background-color: lightgray;
 }
 th{
-    border : 2px outset;
     text-align : center;
 }
 .outline{
@@ -26,7 +25,6 @@ th{
     font-weight: bold;
 }
 .title{
-    border : 2px outset;
     font-size : x-large;
     text-align : center;
     color : lightcyan;
@@ -38,7 +36,6 @@ th{
     font-weight: bold;
 }
 .label{
-    border : 2px outset;
     text-align : center;
     color : blue;
 }
@@ -58,9 +55,8 @@ th{
     color : purple;
 }
 .ctllabel{
-    border : 2px outset;
     text-align : center;
-    color : blue;
+    color : maroon;
     font-size: large;
     font-weight: bold;
 }

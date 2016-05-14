@@ -15,7 +15,8 @@ module CIAX
         @idx = cdb[:index]
         @gdb = cdb[:group]
         @udb = cdb[:unit]
-        html = enclose('html')
+        push('<!DOCTYPE html>')
+        html = enclose('html', lang: 'en-US')
         _mk_head(html.enclose('head'))
         @div = html.enclose('body').enclose('div', class: 'outline')
         @div.element('div', @dbi[:label], class: 'title')
@@ -24,6 +25,7 @@ module CIAX
       private
 
       def _mk_head(parent)
+        parent.element('meta','', charset: 'utf-8')
         parent.element('title', 'CIAX-XML')
         atrb = { rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css' }
         parent.element('link', nil, atrb)
@@ -85,8 +87,9 @@ module CIAX
         member.each do|id|
           label = (@sdb[id] || {})[:label] || id.upcase
           td = tr.enclose('td', class: 'item')
+
           td.element('span', label, class: 'label')
-          td.element('span', '*******', id: id, class: 'normal')
+          td.element('span', '*******', id: id, class: 'val')
         end
         tr
       end

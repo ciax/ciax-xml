@@ -20,13 +20,13 @@ module CIAX
       private
 
       def _init_upd_proc
-        @cmt_procs << proc { time_upd(@field[:time]) }
         @upd_procs << proc do
           @adbs.each do|id, hash|
             cnd = hash[:fields].empty?
             next if cnd && get(id)
             self[:data][id] = cnd ? (hash[:default] || '') : _get_val(hash, id)
           end
+          time_upd(@field[:time])
         end
       end
 

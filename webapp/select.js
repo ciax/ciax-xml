@@ -35,11 +35,12 @@ function load_latest() {
 }
 function static() {
     all = [];
-    $.getJSON('select.php', function(data) {
+    $.getJSON('rec_list.json', function(data) {
         var keys = [];
-        for (var i in data) {
+        var list = data['list']
+        for (var i in list) {
             // Date(j-0) -> cast to num
-            date_list(i, data[i]);
+            date_list(i, list[i]);
         }
         all.push('</ul>');
         $('#select')[0].innerHTML = all.join('');

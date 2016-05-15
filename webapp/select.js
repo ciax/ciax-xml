@@ -52,8 +52,8 @@ function static() {
         all.push('</ul>');
         $('#select')[0].innerHTML = all.join('');
         acordion();
-        adjust();
-        $(window).on('resize', adjust);
+        height_adjust();
+        $(window).on('resize', height_adjust);
     });
     $('.mcr').after(' <button name="latest" onclick="load_latest()">latest</button>');
 }

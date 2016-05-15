@@ -18,7 +18,7 @@ function acordion(click) {
     if (click) { $('h4').next().slideToggle('slow'); }
     $('h4').on('click', function() {
         $(this).next().slideToggle();
-        adjust();
+        height_adjust();
     });
 }
 // interactive mode
@@ -26,7 +26,7 @@ function blinking() {
     $('.query').fadeOut(500, function() {$(this).fadeIn(500)});
 }
 // contents resize
-function adjust() {
+function height_adjust() {
     var h = $(window).height();
     // sum height of children in .outline except .contents
     $('div.outline > div:not(".contents")').each(function(){
@@ -64,5 +64,5 @@ function init() {
 }
 var itvl;
 var manual=false;
-$(window).on('resize', adjust);
+$(window).on('resize', height_adjust);
 $.ajaxSetup({ cache: false});

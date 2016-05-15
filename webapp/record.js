@@ -199,7 +199,7 @@ function update() {
         }else{
             make_footer(data.status);
         }
-        adjust();
+        height_adjust();
         sticky_bottom();
     });
 }

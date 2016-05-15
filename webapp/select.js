@@ -2,26 +2,27 @@
 // fixjsstyle select.js
 // Listing part
 function record_cmd(cid) {
-    all.push(' <span class="cmd">[' + cid + ']</span>');
+    html_sel.push(' <span class="cmd">[' + cid + ']</span>');
 }
 function record_res(res) {
-    all.push(' -> ');
-    all.push('<em class="' + res + '">' + res + '</em>');
+    html_sel.push(' -> ');
+    html_sel.push('<em class="' + res + '">' + res + '</em>');
 }
 function time_list(time, hash) {
-    all.push('<li id="' + hash['id'] + '">');
-    all.push('<span class="time">' + time.toLocaleTimeString() + '</span>');
+    html_sel.push('<li id="' + hash['id'] + '">');
+    html_sel.push('<span class="time">' + time.toLocaleTimeString() + '</span>');
     record_cmd(hash['cid']);
     record_res(hash['result']);
-    all.push('</li>');
+    html_sel.push('</li>');
 }
 
 function date_list(hash) {
+    // Date(j-0) -> cast to num
     var time = new Date(hash['id'] - 0);
     var crd = time.toLocaleDateString();
     if (date != crd) {
-        if (all.length > 0) { all.push('</ul>'); }
-        all.push('<h4>' + crd + '</h4><ul style="display:none;">');
+        if (html_sel.length > 0) { html_sel.push('</ul>'); }
+        html_sel.push('<h4>' + crd + '</h4><ul style="display:none;">');
         date = crd;
     }
     time_list(time, hash);
@@ -34,36 +35,27 @@ function date_sort(a, b) {
     if (na > nb) return -1;
     return 0;
 }
-// manipulate other frm
-function load_latest() {
-    top.frm2.location.href = 'record_latest.html';
-}
 function set_event() {
     $('li').on('click', function() {
         var id = $(this).attr('id');
-        top.frm2.archive(id);
+        archive(id);
     });
 }
-function archive() {
-    all = [];
+function select() {
+    html_sel = [];
     $.getJSON('rec_list.json', function(data) {
         var keys = [];
         var list = data['list'].sort(date_sort);
         for (var i = 0; i < list.length; i++) {
-            // Date(j-0) -> cast to num
             date_list(list[i]);
         }
-        all.push('</ul>');
-        $('#select')[0].innerHTML = all.join('');
-        load_latest();
+        html_sel.push('</ul>');
+        $('#select')[0].innerHTML = html_sel.join('');
         set_event();
         acordion();
         height_adjust();
     });
-    $(window).on('resize', height_adjust);
-    $('.mcr').after(' <button name="latest" onclick="load_latest()">latest</button>');
 }
 // Initialize
-var all = [];
+var html_sel = [];
 var date = new Date();
-$(document).ready(archive);

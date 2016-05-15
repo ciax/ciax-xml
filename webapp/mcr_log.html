@@ -4,10 +4,41 @@
   <head>
     <meta charset="utf-8"/>
     <title>MCR LOG</title>
+    <link rel="stylesheet" type="text/css" href="ciax-xml.css"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="ciax-xml.js"></script>
+    <script type="text/javascript" src="select.js"></script>
+    <script type="text/javascript" src="record.js"></script>
+    <script type="text/javascript">$(document).ready(init_log);</script>
   </head>
-  <meta http-equiv="pragma" contents="no-cache">
-  <frameset cols="30%,*" frameborder=0>
-    <frame src="select.html" name="frm1">
-    <frame src="record.php?id=latest" name="frm2">
-  </frameset>
+  <body>
+    <div id="ol_sel">
+      <div class="outline">
+        <div class="title">
+          <span class="mcr">Select</span>
+        </div>
+        <div id="select" class="contents"></div>
+      </div>
+    </div>
+    <div id="ol_rec">
+      <div class="outline">
+        <div class="title">
+          <span class="mcr">Macro</span>:
+          <span class="cmd" id="mcrcmd"></span>
+        </div>
+        <div id="record" class="contents"></div>
+        <div class="footer">
+          <span class="item res" id="status"></span>
+          <span id="query">
+            <select name="query" onchange="seldv(this)">
+            </select>
+          </span>
+          <span class="item" id="msg"></span>
+          <span id="scroll">
+            <input type="checkbox" id="go_bottom" checked="true" onclick="sticky_bottom();">Auto Scroll</input>
+          </span>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

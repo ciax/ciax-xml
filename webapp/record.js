@@ -3,64 +3,64 @@
 // ********* Steps **********
 // step header section
 function step_title(type) {
-    all.push('<span class="head ' + type + '">' + type + '</span>');
-    all.push('<span class="cmd">');
+    html_rec.push('<span class="head ' + type + '">' + type + '</span>');
+    html_rec.push('<span class="cmd">');
 }
 function step_label(step) {
-    if (step.label) {all.push(': ' + step.label);}
+    if (step.label) {html_rec.push(': ' + step.label);}
 }
 function step_cmd(step) {
     var ary = [];
     if (step.site) { ary.push(step.site); }
     if (step.args) { ary = ary.concat(step.args); }
-    if (ary.length > 0) {all.push(': [' + ary.join(':') + ']');}
-    all.push('</span>');
+    if (ary.length > 0) {html_rec.push(': [' + ary.join(':') + ']');}
+    html_rec.push('</span>');
 }
 // result section
 function step_result(res) {
     if (res) {
-        all.push(' -> ');
-        all.push('<em class="res ' + res + '">' + res + '</em>');
+        html_rec.push(' -> ');
+        html_rec.push('<em class="res ' + res + '">' + res + '</em>');
     }
 }
 function step_query(step) {
     if (step.option) {
         option = step.option;
-        all.push(' <span class="query">[');
-        all.push(step.option.join('/'));
-        all.push(']</span> ');
+        html_rec.push(' <span class="query">[');
+        html_rec.push(step.option.join('/'));
+        html_rec.push(']</span> ');
     }
 }
 function step_action(step) {
     if (step.action) {
-        all.push(' <span class="action">(');
-        all.push(step.action);
-        all.push(')</span>');
+        html_rec.push(' <span class="action">(');
+        html_rec.push(step.action);
+        html_rec.push(')</span>');
     }
 }
 // elapsed time section
 function step_time(step) {
     var now = new Date(step.time);
     var elps = ((now - start_time) / 1000).toFixed(2);
-    all.push('<span class="elps">[' + elps + ']</span>');
+    html_rec.push('<span class="elps">[' + elps + ']</span>');
 }
 // waiting step
 function step_meter(step, max) {
-    all.push(' <meter value="' + step.count / max * 100 + '" max="100"');
-    if (step.retry) { all.push('low="70" high="99"');}
-    all.push('>(' + step.count + '/' + max + ')</meter>');
+    html_rec.push(' <meter value="' + step.count / max * 100 + '" max="100"');
+    if (step.retry) { html_rec.push('low="70" high="99"');}
+    html_rec.push('>(' + step.count + '/' + max + ')</meter>');
 }
 function step_count(step) {
     if (step.count) {
         var max = step.retry || step.val;
         if (step.type != 'mcr') { step_meter(step, max); }
-        all.push('<span>(' + step.count + '/' + max + ')</span>');
-        if (step.busy) { all.push(' -> <em class="res active">Busy</em>');}
+        html_rec.push('<span>(' + step.count + '/' + max + ')</span>');
+        if (step.busy) { html_rec.push(' -> <em class="res active">Busy</em>');}
     }
 }
 // other steps
 function step_exe(step) {
-    all.push('<h4>');
+    html_rec.push('<h4>');
     step_title(step.type);
     step_label(step);
     step_cmd(step);
@@ -69,7 +69,7 @@ function step_exe(step) {
     step_query(step);
     step_action(step);
     step_time(step);
-    all.push('</h4>');
+    html_rec.push('</h4>');
 }
 // condition step
 function operator(ope, cri) {
@@ -84,78 +84,78 @@ function cond_list(conds, type) {
     for (var k in conds) {
         var cond = conds[k];
         var res = cond.res;
-        all.push('<li>');
-        all.push('<var>' + cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
-        all.push('<code>' + operator(cond.cmp, cond.cri) + '?</code>  ');
+        html_rec.push('<li>');
+        html_rec.push('<var>' + cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
+        html_rec.push('<code>' + operator(cond.cmp, cond.cri) + '?</code>  ');
         if (type == 'goal' && res == false) { res = 'warn'; }
-        all.push('<em class="' + res + '"> (' + cond.real + ')</em>');
-        all.push('</li>');
+        html_rec.push('<em class="' + res + '"> (' + cond.real + ')</em>');
+        html_rec.push('</li>');
     }
 }
 function step_cond(step) {
-    all.push('<ul>');
+    html_rec.push('<ul>');
     cond_list(step.conditions, step.type);
-    all.push('</ul></li>');
+    html_rec.push('</ul></li>');
 }
 // Indent
 function step_level(crnt) {
     while (crnt != depth) {
         if (crnt > depth) {
-            all.push('<ul>');
+            html_rec.push('<ul>');
             depth += 1;
         }else {
-            all.push('</ul></li>');
+            html_rec.push('</ul></li>');
             depth -= 1;
         }
     }
 }
 // Make Step Line
 function make_step(step) {
-    all.push('<li>');
+    html_rec.push('<li>');
     step_exe(step);
     if (step.conditions) {
         step_cond(step);
     }else if (step.type != 'mcr') {
-        all.push('</li>');
+        html_rec.push('</li>');
     }
 }
 // ********* Record **********
 // Macro Header and Footer
 function record_header(data) {
-    all.push('<h2>');
+    html_rec.push('<h2>');
     step_title('mcr');
     step_label(data);
-    all.push(' [' + data.cid + ']');
-    all.push('<date>' + start_time + '</date>');
-    all.push('</h2>');
+    html_rec.push(' [' + data.cid + ']');
+    html_rec.push('<date>' + start_time + '</date>');
+    html_rec.push('</h2>');
     $('#mcrcmd').text(data.label + '[' + data.cid + ']');
 }
 function record_footer(data) {
     var res = data.result;
-    all.push('<h3 id="bottom">[');
-    all.push('<em class="res ' + res + '">' + res + '</em>');
-    all.push('](');
-    all.push(data.time + ')');
+    html_rec.push('<h3 id="bottom">[');
+    html_rec.push('<em class="res ' + res + '">' + res + '</em>');
+    html_rec.push('](');
+    html_rec.push(data.time + ')');
     if (data.total_time) {
-        all.push('<span class="elps">[' + data.total_time + ']</span>');
+        html_rec.push('<span class="elps">[' + data.total_time + ']</span>');
     }
-    all.push('</h3>');
+    html_rec.push('</h3>');
 }
 // Macro Body
 function make_record(data) {
     port = data.port;
     start_time = new Date(data.start);
     record_header(data);
-    all.push('<ul>');
+    html_rec.push('<ul>');
     for (var j in data.steps) {
         var step = data.steps[j];
         step_level(step.depth);
         make_step(step);
     }
     depth = step_level(1);
-    all.push('</ul>');
+    html_rec.push('</ul>');
     record_footer(data);
-    $('#record')[0].innerHTML = all.join('');
+    $('#record')[0].innerHTML = html_rec.join('');
 }
 // ******* Page Footer *********
 function make_select(ary) {
@@ -183,6 +183,8 @@ function make_footer(stat) {
 }
 // ******** HTML Page ********
 function archive(tag) {
+    html_rec = [];
+    depth = 1;
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
         acordion(true);
@@ -190,7 +192,7 @@ function archive(tag) {
     });
 }
 function update() {
-    all = [];
+    html_rec = [];
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
         mk_stat(data.status);
@@ -205,11 +207,10 @@ function update() {
     });
 }
 // Var setting
-var all = [];
+var html_rec = [];
 var depth = 1;
 var start_time = '';
 var last_time = '';
 var tag = 'latest';
 var option = [];
 var port;
-//$(document).ready(init);

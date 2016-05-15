@@ -16,12 +16,12 @@ th{
     text-align : center;
 }
 .outline{
-    width : 90%;
     max-height: 95%;
     font-weight: bold;
     border : 5px outset lightgreen;
     margin-top: 10px;
-    margin-left: 5%;
+    margin-left: 30px;
+    margin-right: 0;
     background-color: rgba(200,200,200,0.5);
 }
 .title{
@@ -74,6 +74,12 @@ th{
 }
 /****************** For Macro *******************/
 /* Frame */
+#ol_sel {
+    float: left;
+}
+#ol_rec {
+    float: right;
+}
 .contents{
     margin: 5px;
     overflow: auto;

@@ -62,6 +62,10 @@ function init() {
     itvl = setInterval(update, 1000);
 
 }
+function init_log() {
+    select();
+    archive('latest');
+}
 var itvl;
 var manual = false;
 $(window).on('resize', height_adjust);

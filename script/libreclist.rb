@@ -8,8 +8,10 @@ module CIAX
     class RecList < Varx
       def initialize
         super('rec', 'list')
-        @list = self[:list] = Hashx.new
+        @list = self[:list] = []
         ext_local_file
+        @cmt_procs << proc{time_upd}
+        auto_save
       end
 
       def refresh
@@ -18,13 +20,13 @@ module CIAX
           next if /record_[0-9]+.json/ !~ name
           add(jread(name))
         end
-        save
+        cmt
         self
       end
 
       def add(hash)
-        type?(hash, Hash)
-        @list[hash[:id]] = [hash[:cid], hash[:result]] if hash[:id].to_i > 0
+        hash=Hashx.new(type?(hash, Hash))
+        @list << hash.pick(%i(id cid result)) if hash[:id].to_i > 0
         self
       end
 

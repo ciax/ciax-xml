@@ -10,23 +10,23 @@ function record_res(res) {
     all.push(' -> ');
     all.push('<em class="' + res + '">' + res + '</em>');
 }
-function time_list(key, time, ary) {
+function time_list(time, hash) {
     all.push('<li>');
     all.push('<span class="time">' + time.toLocaleTimeString() + '</span>');
-    record_cmd(key, ary[0]);
-    record_res(ary[1]);
+    record_cmd(hash['id'], hash['cid']);
+    record_res(hash['result']);
     all.push('</li>');
 }
 
-function date_list(key, ary) {
-    var time = new Date(key - 0);
+function date_list(hash) {
+    var time = new Date(hash['id'] - 0);
     var crd = time.toLocaleDateString();
     if (date != crd) {
         if (all.length > 0) { all.push('</ul>'); }
         all.push('<h4>' + crd + '</h4><ul style="display:none;">');
         date = crd;
     }
-    time_list(key, time, ary);
+    time_list(time, hash);
 
 }
 // manipulate other frm
@@ -38,9 +38,9 @@ function static() {
     $.getJSON('rec_list.json', function(data) {
         var keys = [];
         var list = data['list']
-        for (var i in list) {
+        for (var i =0; i < list.length; i++) {
             // Date(j-0) -> cast to num
-            date_list(i, list[i]);
+            date_list(list[i]);
         }
         all.push('</ul>');
         $('#select')[0].innerHTML = all.join('');

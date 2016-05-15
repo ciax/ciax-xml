@@ -29,6 +29,13 @@ function date_list(hash) {
     time_list(time, hash);
 
 }
+function date_sort(a,b){
+    var na=a['id']-0;
+    var nb=b['id']-0;
+    if (na < nb) return 1;
+    if (na > nb) return -1;
+    return 0;
+}
 // manipulate other frm
 function load_latest() {
     top.frm2.location.href = 'record_latest.html';
@@ -37,7 +44,7 @@ function static() {
     all = [];
     $.getJSON('rec_list.json', function(data) {
         var keys = [];
-        var list = data['list']
+        var list = data['list'].sort(date_sort);
         for (var i =0; i < list.length; i++) {
             // Date(j-0) -> cast to num
             date_list(list[i]);

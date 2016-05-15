@@ -42,6 +42,7 @@ module CIAX
         @stat.put(:status, 'query')
         res = Msg.fg? ? _input_tty : _input_que
         sub_stat.put(:action, res)
+        sub_stat.delete(:option)
         @stat.put(:status, 'run')
         _judge(res)
       ensure

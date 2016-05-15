@@ -186,6 +186,7 @@ function archive(tag) {
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
         acordion(true);
+        $('.footer').hide();
     });
 }
 function update() {

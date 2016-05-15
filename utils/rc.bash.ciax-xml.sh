@@ -1,6 +1,6 @@
 #!/bin/bash --rcfile
 develop(){
-    cd "$HOME/ciax-xml/script"
+    cd "$HOME/ciax-xml/webapp"
     if git branch |grep '* develop' ; then
         export PROJ=dummy
         export VER=Initiate

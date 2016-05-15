@@ -6,7 +6,7 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script type="text/javascript" src="ciax-xml.js"></script>
     <script type="text/javascript" src="record.js"></script>
-    <script type="text/javascript">tag="<?php include('getsid.php'); ?>";$(document).ready(static);</script>
+    <script type="text/javascript">tag="<?php include('getsid.php'); ?>";$(document).ready(archive);</script>
     <body>
       <div class="outline">
         <div class="title">

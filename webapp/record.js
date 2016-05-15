@@ -159,18 +159,18 @@ function make_record(data) {
 }
 // ******* Page Footer *********
 function make_select(ary) {
-    var opt=['<option>--select--</option>'];
+    var opt = ['<option>--select--</option>'];
     for (var i in ary) {
-        opt.push('<option>'+ary[i]+'</option>');
+        opt.push('<option>' + ary[i] + '</option>');
     }
-    $('#query select')[0].innerHTML=opt.join('');
+    $('#query select')[0].innerHTML = opt.join('');
 }
 // ** Stat **
 function mk_stat(stat) {
     var str = '<span class="res ' + stat + '">' + stat + '</span>';
     $('#status')[0].innerHTML = str;
 }
-function make_footer(stat){
+function make_footer(stat) {
     mk_stat(stat);
     if (stat == 'query') {
         make_select(option);
@@ -182,7 +182,7 @@ function make_footer(stat){
     }
 }
 // ******** HTML Page ********
-function static() {
+function archive(tag) {
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
         acordion(true);
@@ -196,7 +196,7 @@ function update() {
         if (data.time != last_time) {
             last_time = data.time;
             make_record(data);
-        }else{
+        }else {
             make_footer(data.status);
         }
         height_adjust();

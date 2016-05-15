@@ -29,10 +29,10 @@ function blinking() {
 function height_adjust() {
     var h = $(window).height();
     // sum height of children in .outline except .contents
-    $('div.outline > div:not(".contents")').each(function(){
-        h=h-$(this).height();
+    $('div.outline > div:not(".contents")').each(function() {
+        h = h - $(this).height();
     });
-    $('.contents').css('max-height', h-100);
+    $('.contents').css('max-height', h - 100);
 }
 // ** CGI **
 function dvctl(cmd) {
@@ -53,7 +53,7 @@ function exec(cmd) {
 }
 function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
-    if (cmd != '--select--') {  exec(cmd); }
+    if (cmd != '--select--') { exec(cmd); }
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
@@ -63,6 +63,6 @@ function init() {
 
 }
 var itvl;
-var manual=false;
+var manual = false;
 $(window).on('resize', height_adjust);
 $.ajaxSetup({ cache: false});

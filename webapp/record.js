@@ -23,6 +23,14 @@ function step_result(res) {
         all.push('<em class="res ' + res + '">' + res + '</em>');
     }
 }
+function step_query(step) {
+    if (step.option) {
+        option = step.option;
+        all.push(' <span class="query">[');
+        all.push(step.option.join('/'));
+        all.push(']</span> ');
+    }
+}
 function step_action(step) {
     if (step.action) {
         all.push(' <span class="action">(');
@@ -58,10 +66,10 @@ function step_exe(step) {
     step_cmd(step);
     step_count(step);
     step_result(step.result);
+    step_query(step);
     step_action(step);
     step_time(step);
     all.push('</h4>');
-    set_query(step);
 }
 // condition step
 function operator(ope, cri) {
@@ -157,13 +165,21 @@ function make_select(ary) {
     }
     $('#query select')[0].innerHTML=opt.join('');
 }
-function set_query(step) {
-    if (step.option) { make_select(step.option); }
-}
 // ** Stat **
 function mk_stat(stat) {
     var str = '<span class="res ' + stat + '">' + stat + '</span>';
     $('#status')[0].innerHTML = str;
+}
+function make_footer(stat){
+    mk_stat(stat);
+    if (stat == 'query') {
+        make_select(option);
+        blinking();
+    }else if (stat == 'end') {
+        clearInterval(itvl);
+        acordion();
+        make_select(['cinit']);
+    }
 }
 // ******** HTML Page ********
 function static() {
@@ -180,14 +196,11 @@ function update() {
         if (data.time != last_time) {
             last_time = data.time;
             make_record(data);
-        }else if (data.status == 'end') {
-            clearInterval(itvl);
-            acordion();
-            make_select(['cinit']);
+        }else{
+            make_footer(data.status);
         }
         adjust();
         sticky_bottom();
-        blinking();
     });
 }
 // Var setting
@@ -196,5 +209,6 @@ var depth = 1;
 var start_time = '';
 var last_time = '';
 var tag = 'latest';
+var option = [];
 var port;
 //$(document).ready(init);

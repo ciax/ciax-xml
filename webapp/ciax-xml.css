@@ -1,8 +1,9 @@
 /**************** Global Style *****************/
 html,body{
     width: 99%;
-    height: 99%;
-    margin: 0;
+    position:relative;
+    margin-left: auto;
+    margin-right: auto;
     color : black;
     background-image : url(/json/bg-1.jpg);
     background-repeat : repeat;
@@ -19,8 +20,7 @@ th{
     max-height: 95%;
     font-weight: bold;
     border : 5px outset lightgreen;
-    margin-top: 10px;
-    margin-left: 30px;
+    margin-left: 10px;
     margin-right: 0;
     background-color: rgba(200,200,200,0.5);
 }
@@ -75,10 +75,12 @@ th{
 /****************** For Macro *******************/
 /* Frame */
 #ol_sel {
-    float: left;
+    position: absolute;
+    left: 0;
+    width: 30%;
 }
 #ol_rec {
-    float: right;
+    margin-left: 30%;
 }
 .contents{
     margin: 5px;

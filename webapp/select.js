@@ -26,7 +26,6 @@ function date_list(hash) {
         date = crd;
     }
     time_list(time, hash);
-
 }
 function date_sort(a, b) {
     var na = a['id'] - 0;
@@ -41,6 +40,8 @@ function set_event() {
         if (id == current) {
             acordion('#record');
         }else {
+            $('#'+current).removeClass('selected');
+            $(this).addClass('selected');
             archive(id);
             current = id;
         }

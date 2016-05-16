@@ -16,7 +16,6 @@ th{
     text-align : center;
 }
 .outline{
-    width: 90%;
     max-height: 95%;
     font-weight: bold;
     border : 5px outset lightgreen;
@@ -162,6 +161,9 @@ var {
 }
 .cmd {
     color : blue;
+}
+.selected {
+    color : pink;
 }
 a {
     text-decoration:none;

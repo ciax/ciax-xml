@@ -63,6 +63,10 @@ function seldv(obj) {
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
+function stop_upd() {
+    clearInterval(itvl);
+    $('#msg').text('No Update');
+}
 function init() {
     update();
     itvl = setInterval(update, 1000);

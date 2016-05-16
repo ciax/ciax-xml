@@ -174,10 +174,9 @@ function make_footer(stat) {
     mk_stat(stat);
     if (stat == 'query') {
         make_select(option);
-        blinking();
     }else if (stat == 'end') {
-        clearInterval(itvl);
-        set_acordion('#record');
+        stop_upd();
+        set_acordion('#record',true);
         make_select(['cinit','start','fin']);
     }
 }
@@ -199,11 +198,13 @@ function update() {
         if (data.time != last_time) {
             last_time = data.time;
             make_record(data);
-        }else {
+            height_adjust();
+            sticky_bottom();
+        }else if (last_time != last_upd){
             make_footer(data.status);
+            last_upd = last_time;
         }
-        height_adjust();
-        sticky_bottom();
+        blinking();
     });
 }
 // Var setting
@@ -211,6 +212,7 @@ var html_rec = [];
 var depth = 1;
 var start_time = '';
 var last_time = '';
+var last_upd = '';
 var tag = 'latest';
 var option = [];
 var port;

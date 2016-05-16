@@ -120,27 +120,10 @@ function make_step(step) {
     }
 }
 // ********* Record **********
-// Macro Header and Footer
-function record_header(data) {
-    $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
-    $('#date').text(start_time);
-}
-function record_footer(data) {
-    var res = data.result;
-    html_rec.push('<h3 id="bottom">[');
-    html_rec.push('<em class="res ' + res + '">' + res + '</em>');
-    html_rec.push('](');
-    html_rec.push(data.time + ')');
-    if (data.total_time) {
-        html_rec.push('<span class="elps">[' + data.total_time + ']</span>');
-    }
-    html_rec.push('</h3>');
-}
 // Macro Body
 function make_record(data) {
     port = data.port;
     start_time = new Date(data.start);
-    record_header(data);
     html_rec.push('<ul>');
     for (var j in data.steps) {
         var step = data.steps[j];
@@ -149,10 +132,21 @@ function make_record(data) {
     }
     depth = step_level(1);
     html_rec.push('</ul>');
-    record_footer(data);
     $('#record')[0].innerHTML = html_rec.join('');
 }
+// Macro Header and Footer
+function record_header(data) {
+    $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
+    $('#date').text(start_time);
+}
 // ******* Page Footer *********
+function record_footer(data) {
+    mk_res('#status',data.status);
+    mk_res('#result',data.result);
+    if (data.total_time) {
+        $('#total').text(data.total_time);
+    }
+}
 function make_select(ary) {
     var opt = ['<option>--select--</option>'];
     for (var i in ary) {
@@ -161,12 +155,12 @@ function make_select(ary) {
     $('#query select')[0].innerHTML = opt.join('');
 }
 // ** Stat **
-function mk_stat(stat) {
-    var str = '<span class="res ' + stat + '">' + stat + '</span>';
-    $('#status')[0].innerHTML = str;
+function mk_res(sel, stat) {
+    $(sel).text(stat);
+    $(sel).attr('class','res ' + stat);
 }
 function make_footer(stat) {
-    mk_stat(stat);
+    mk_res('#status', stat);
     if (stat == 'query') {
         make_select(option);
     }else if (stat == 'end') {
@@ -179,9 +173,10 @@ function make_footer(stat) {
 function archive(tag) {
     html_rec = [];
     depth = 1;
-    $('.footer').hide();
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
+        record_header(data);
+        record_footer(data);
         set_acordion('#record h4', true);
     });
 }
@@ -189,7 +184,8 @@ function update() {
     html_rec = [];
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
-        mk_stat(data.status);
+        record_header(data);
+        record_footer(data);
         if (data.time != last_time) {
             last_time = data.time;
             make_record(data);

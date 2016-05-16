@@ -67,10 +67,9 @@ function stop_upd() {
     clearInterval(itvl);
     $('#msg').text('No Update');
 }
-function init() {
+function start_upd() {
     update();
     itvl = setInterval(update, 1000);
-
 }
 function init_log() {
     select();

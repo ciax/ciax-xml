@@ -164,9 +164,7 @@ function make_footer(stat) {
     if (stat == 'query') {
         make_select(option);
     }else if (stat == 'end') {
-        stop_upd();
-        set_acordion('#record h4');
-        make_select(['cinit', 'start', 'fin']);
+        mcr_end();
     }
 }
 // ******** HTML Page ********
@@ -197,6 +195,24 @@ function update() {
         }
         blinking();
     });
+}
+function mcr_end(){
+    stop_upd();
+    set_acordion('#record h4');
+    make_select(['cinit', 'start', 'fin']);
+    $('#status').hide();
+    $('#scroll').hide();
+    $('#msg').hide();
+    $('#total').show();
+    $('#result').show();
+}
+function init(){
+    $('#status').show();
+    $('#scroll').show();
+    $('#msg').show();
+    $('#total').hide();
+    $('#result').hide();
+    start_upd();
 }
 // Var setting
 var html_rec = [];

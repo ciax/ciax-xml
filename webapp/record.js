@@ -143,21 +143,22 @@ function record_header(data) {
 // *** Footer ***
 function replace_item(sel, stat) {
     $(sel).text(stat);
-    $(sel).attr('class','res ' + stat);
+    $(sel).attr('class', 'res ' + stat);
 }
 function record_select(ary) {
-    make_select($('#query select')[0],ary);
+    make_select($('#query select')[0], ary);
 }
-function record_stat(stat) {
-    replace_item('#status', stat);
+function record_stat(data) {
+    var stat = data.status;
+    replace_item('#result', stat);
     if (stat == 'query') {
         record_select(option.concat('nonstop'));
     }else if (stat == 'end') {
-        mcr_end();
+        mcr_end(data);
     }
 }
-function record_result(data){
-    replace_item('#result',data.result);
+function record_result(data) {
+    replace_item('#result', data.result);
     if (data.total_time) {
         $('#total').text(data.total_time);
     }
@@ -169,7 +170,7 @@ function archive(tag) {
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
         record_header(data);
-        record_footer(data);
+        record_result(data);
         set_acordion('#record h4', true);
     });
 }
@@ -178,7 +179,7 @@ function update() {
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
         if (first_time != data.id) { // Do only the first one for new macro
-            fist_time = data.id;
+            first_time = data.id;
             record_header(data);
         }
         if (data.time != last_time) { // Do every time for updated record
@@ -188,27 +189,22 @@ function update() {
             sticky_bottom();
         }else if (last_time != last_upd) { // Do only the first one of the stagnation
             last_upd = last_time;
-            record_stat(data.status);
-            record_result(data);
+            record_stat(data);
         }
         blinking();
     });
 }
-function mcr_end(){
+function mcr_end(data) {
     stop_upd();
+    record_result(data);
     set_acordion('#record h4');
-    record_select(['tinit','cinit', 'start', 'fin']);
-    $('#status').show();
-    $('#scroll').hide();
-    $('#msg').hide();
-    $('#total').show();
-    $('#result').show();
+    record_select(['tinit', 'cinit', 'start', 'fin']);
+    $('.running').hide();
+    $('.finished').show();
 }
-function init(){
-    $('#scroll').show();
-    $('#msg').show();
-    $('#total').hide();
-    $('#result').hide();
+function init() {
+    $('.running').show();
+    $('.finished').hide();
     start_upd();
 }
 // Var setting
@@ -221,5 +217,5 @@ var first_time = ''; // For first time at a new macro;
 var tag = 'latest';
 var option = [];
 var port;
-def_sel = ['interrupt','interactive']; // default select
+def_sel = ['interrupt', 'interactive']; // default select
 

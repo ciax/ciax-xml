@@ -28,7 +28,7 @@ function set_acordion(sel, fold) {
 }
 // interactive mode
 function blinking() {
-    $('.query,#status').fadeOut(500, function() {$(this).fadeIn(500)});
+    $('.query,.run').fadeOut(500, function() {$(this).fadeIn(500)});
 }
 // contents resize
 function height_adjust() {
@@ -67,7 +67,7 @@ function make_select(obj, ary) {
 function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
     if (cmd != '--select--') exec(cmd);
-    make_select(obj,def_sel);
+    make_select(obj, def_sel);
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js

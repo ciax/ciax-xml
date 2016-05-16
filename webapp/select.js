@@ -38,7 +38,12 @@ function date_sort(a, b) {
 function set_event() {
     $('#select li').on('click', function() {
         var id = $(this).attr('id');
-        archive(id);
+        if(id == current){
+            acordion('#record');
+        }else{
+            archive(id);
+            current=id;
+        }
     });
 }
 function select() {
@@ -58,3 +63,4 @@ function select() {
 // Initialize
 var html_sel = [];
 var date = new Date();
+var current = '';

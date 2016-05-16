@@ -38,9 +38,9 @@ function set_event() {
     $('#select li').on('click', function() {
         var id = $(this).attr('id');
         if (id == current) {
-            acordion('#record');
+            acordion('#record h4');
         }else {
-            $('#'+current).removeClass('selected');
+            $('#' + current).removeClass('selected');
             $(this).addClass('selected');
             archive(id);
             current = id;
@@ -57,7 +57,7 @@ function select() {
         html_sel.push('</ul>');
         $('#select')[0].innerHTML = html_sel.join('');
         set_event();
-        set_acordion('#select',true);
+        set_acordion('#select h4', true);
         height_adjust();
     });
 }

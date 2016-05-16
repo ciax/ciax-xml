@@ -176,8 +176,8 @@ function make_footer(stat) {
         make_select(option);
     }else if (stat == 'end') {
         stop_upd();
-        set_acordion('#record',true);
-        make_select(['cinit','start','fin']);
+        set_acordion('#record h4');
+        make_select(['cinit', 'start', 'fin']);
     }
 }
 // ******** HTML Page ********
@@ -186,7 +186,7 @@ function archive(tag) {
     depth = 1;
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
-        set_acordion('#record', true);
+        set_acordion('#record h4', true);
         $('.footer').hide();
     });
 }
@@ -200,7 +200,7 @@ function update() {
             make_record(data);
             height_adjust();
             sticky_bottom();
-        }else if (last_time != last_upd){
+        }else if (last_time != last_upd) {
             make_footer(data.status);
             last_upd = last_time;
         }

@@ -4,24 +4,26 @@ function sticky_bottom() {
     var div = $('.contents');
     var toggle = $('#go_bottom');
     if (toggle.prop('checked')) {
-        manual = false;
+        auto_release = false;
         div.animate({ scrollTop: div[0].scrollHeight},'slow', function() {
-            manual = true;
+            auto_release = true;
         });
         div.on('scroll', function() {
-            if (manual) {toggle.prop('checked', false);}
+            if (auto_release) toggle.prop('checked', false);
         });
     }
 }
 // Folding
-function acordion(top) {
-    $(top + ' h4').next().slideToggle('slow');
+function acordion(sel) {
+    auto_release = false;
+    $(sel).next().slideToggle('slow', function() {
+        auto_relase = true;
+    });
 }
-function set_acordion(top, fold) {
-    if (fold) {acordion(top);}
-    $(top + ' h4').on('click', function() {
-        $(this).next().slideToggle();
-        height_adjust();
+function set_acordion(sel, fold) {
+    if (fold) {acordion(sel);}
+    $(sel).on('click', function() {
+        acordion(this);
     });
 }
 // interactive mode
@@ -52,13 +54,11 @@ function dvctl(cmd) {
 }
 // Not UPD or INTERRUPT
 function exec(cmd) {
-    if (confirm('EXEC?(' + cmd + ')')) {
-        dvctl(cmd);
-    }
+    if (confirm('EXEC?(' + cmd + ')')) dvctl(cmd);
 }
 function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
-    if (cmd != '--select--') { exec(cmd); }
+    if (cmd != '--select--') exec(cmd);
     obj.innerHTML = '<option>--select--</option>';
 }
 // ********* Page Update *********
@@ -77,6 +77,6 @@ function init_log() {
     archive('latest');
 }
 var itvl;
-var manual = false;
+var auto_release = false;
 $(window).on('resize', height_adjust);
 $.ajaxSetup({ cache: false});

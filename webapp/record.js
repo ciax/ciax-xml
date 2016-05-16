@@ -146,16 +146,12 @@ function replace_item(sel, stat) {
     $(sel).attr('class','res ' + stat);
 }
 function record_select(ary) {
-    var opt = ['<option>--select--</option>'];
-    for (var i in ary) {
-        opt.push('<option>' + ary[i] + '</option>');
-    }
-    $('#query select')[0].innerHTML = opt.join('');
+    make_select($('#query select')[0],ary);
 }
 function record_stat(stat) {
     replace_item('#status', stat);
     if (stat == 'query') {
-        record_select(option);
+        record_select(option.concat('nonstop'));
     }else if (stat == 'end') {
         mcr_end();
     }
@@ -225,3 +221,5 @@ var first_time = ''; // For first time at a new macro;
 var tag = 'latest';
 var option = [];
 var port;
+def_sel = ['interrupt','interactive']; // default select
+

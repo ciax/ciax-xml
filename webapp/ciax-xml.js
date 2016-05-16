@@ -41,7 +41,7 @@ function height_adjust() {
         $(this).children('.contents').css('max-height', h - 100);
     });
 }
-// ** CGI **
+// ******** Control by UDP ********
 function dvctl(cmd) {
     $.post(
         '/json/dvctl-udp.php',
@@ -52,14 +52,22 @@ function dvctl(cmd) {
         }
     );
 }
-// Not UPD or INTERRUPT
+// With Confirmation
 function exec(cmd) {
     if (confirm('EXEC?(' + cmd + ')')) dvctl(cmd);
+}
+// Select Command
+function make_select(obj, ary) {
+    var opt = ['<option>--select--</option>'];
+    for (var i in ary) {
+        opt.push('<option>' + ary[i] + '</option>');
+    }
+    obj.innerHTML = opt.join('');
 }
 function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
     if (cmd != '--select--') exec(cmd);
-    obj.innerHTML = '<option>--select--</option>';
+    make_select(obj,def_sel);
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
@@ -77,5 +85,6 @@ function init_log() {
 }
 var itvl;
 var auto_release = false;
+var def_sel = [];
 $(window).on('resize', height_adjust);
 $.ajaxSetup({ cache: false});

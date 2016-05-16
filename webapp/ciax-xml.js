@@ -26,7 +26,7 @@ function set_acordion(top, fold) {
 }
 // interactive mode
 function blinking() {
-    $('.query,#msg').fadeOut(500, function() {$(this).fadeIn(500)});
+    $('.query,#status').fadeOut(500, function() {$(this).fadeIn(500)});
 }
 // contents resize
 function height_adjust() {

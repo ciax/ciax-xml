@@ -38,11 +38,11 @@ function date_sort(a, b) {
 function set_event() {
     $('#select li').on('click', function() {
         var id = $(this).attr('id');
-        if(id == current){
+        if (id == current) {
             acordion('#record');
-        }else{
+        }else {
             archive(id);
-            current=id;
+            current = id;
         }
     });
 }
@@ -56,7 +56,7 @@ function select() {
         html_sel.push('</ul>');
         $('#select')[0].innerHTML = html_sel.join('');
         set_event();
-        acordion('#select');
+        set_acordion('#select');
         height_adjust();
     });
 }

@@ -14,8 +14,11 @@ function sticky_bottom() {
     }
 }
 // Folding
-function acordion(top){
+function acordion(top) {
     $(top + ' h4').next().slideToggle('slow');
+}
+function set_acordion(top) {
+    acordion(top);
     $(top + ' h4').on('click', function() {
         $(this).next().slideToggle();
         height_adjust();
@@ -29,7 +32,7 @@ function blinking() {
 function height_adjust() {
     var h = $(window).height();
     // sum height of children in .outline except .contents
-    $('div.outline').each(function(){
+    $('div.outline').each(function() {
         $(this).children('div:not(".contents")').each(function() {
             h = h - $(this).height();
         });

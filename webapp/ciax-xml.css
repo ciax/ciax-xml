@@ -108,7 +108,7 @@ ul{
 .elps {
     font-size: medium;
     float:right;
-    color: blue;
+    color: navy;
     width:5em;
 }
 /* By Title */
@@ -161,7 +161,7 @@ var {
     color: dimgray;
 }
 .cmd {
-    color : navy;
+    color : blue;
 }
 a {
     text-decoration:none;

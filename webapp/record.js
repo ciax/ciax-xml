@@ -184,10 +184,10 @@ function make_footer(stat) {
 function archive(tag) {
     html_rec = [];
     depth = 1;
+    $('.footer').hide();
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
         set_acordion('#record h4', true);
-        $('.footer').hide();
     });
 }
 function update() {

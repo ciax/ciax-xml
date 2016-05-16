@@ -122,13 +122,8 @@ function make_step(step) {
 // ********* Record **********
 // Macro Header and Footer
 function record_header(data) {
-    html_rec.push('<h2>');
-    step_title('mcr');
-    step_label(data);
-    html_rec.push(' [' + data.cid + ']');
-    html_rec.push('<date>' + start_time + '</date>');
-    html_rec.push('</h2>');
-    $('#mcrcmd').text(data.label + '[' + data.cid + ']');
+    $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
+    $('#date').text(start_time);
 }
 function record_footer(data) {
     var res = data.result;

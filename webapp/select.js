@@ -57,7 +57,7 @@ function select() {
         html_sel.push('</ul>');
         $('#select')[0].innerHTML = html_sel.join('');
         set_event();
-        set_acordion('#select');
+        set_acordion('#select',true);
         height_adjust();
     });
 }

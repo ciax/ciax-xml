@@ -17,8 +17,8 @@ function sticky_bottom() {
 function acordion(top) {
     $(top + ' h4').next().slideToggle('slow');
 }
-function set_acordion(top) {
-    acordion(top);
+function set_acordion(top, fold) {
+    if (fold) {acordion(top);}
     $(top + ' h4').on('click', function() {
         $(this).next().slideToggle();
         height_adjust();
@@ -26,7 +26,7 @@ function set_acordion(top) {
 }
 // interactive mode
 function blinking() {
-    $('.query').fadeOut(500, function() {$(this).fadeIn(500)});
+    $('.query,#msg').fadeOut(500, function() {$(this).fadeIn(500)});
 }
 // contents resize
 function height_adjust() {
@@ -59,6 +59,7 @@ function exec(cmd) {
 function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
     if (cmd != '--select--') { exec(cmd); }
+    obj.innerHTML = '<option>--select--</option>';
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js

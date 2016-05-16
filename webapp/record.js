@@ -178,7 +178,7 @@ function make_footer(stat) {
     }else if (stat == 'end') {
         clearInterval(itvl);
         set_acordion('#record');
-        make_select(['cinit']);
+        make_select(['cinit','start','fin']);
     }
 }
 // ******** HTML Page ********
@@ -187,7 +187,7 @@ function archive(tag) {
     depth = 1;
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
-        set_acordion('#record');
+        set_acordion('#record', true);
         $('.footer').hide();
     });
 }

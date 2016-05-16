@@ -134,40 +134,39 @@ function make_record(data) {
     html_rec.push('</ul>');
     $('#record')[0].innerHTML = html_rec.join('');
 }
-// Macro Header and Footer
+// ******* Outline *********
+// *** Header ***
 function record_header(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(start_time);
 }
-// ******* Page Footer *********
-function record_footer(data) {
-    mk_res('#status',data.status);
-    mk_res('#result',data.result);
-    if (data.total_time) {
-        $('#total').text(data.total_time);
-    }
+// *** Footer ***
+function replace_item(sel, stat) {
+    $(sel).text(stat);
+    $(sel).attr('class','res ' + stat);
 }
-function make_select(ary) {
+function record_select(ary) {
     var opt = ['<option>--select--</option>'];
     for (var i in ary) {
         opt.push('<option>' + ary[i] + '</option>');
     }
     $('#query select')[0].innerHTML = opt.join('');
 }
-// ** Stat **
-function mk_res(sel, stat) {
-    $(sel).text(stat);
-    $(sel).attr('class','res ' + stat);
-}
-function make_footer(stat) {
-    mk_res('#status', stat);
+function record_stat(stat) {
+    replace_item('#status', stat);
     if (stat == 'query') {
-        make_select(option);
+        record_select(option);
     }else if (stat == 'end') {
         mcr_end();
     }
 }
-// ******** HTML Page ********
+function record_result(data){
+    replace_item('#result',data.result);
+    if (data.total_time) {
+        $('#total').text(data.total_time);
+    }
+}
+// ******** HTML ********
 function archive(tag) {
     html_rec = [];
     depth = 1;
@@ -182,16 +181,19 @@ function update() {
     html_rec = [];
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
-        record_header(data);
-        record_footer(data);
-        if (data.time != last_time) {
+        if (first_time != data.id) { // Do only the first one for new macro
+            fist_time = data.id;
+            record_header(data);
+        }
+        if (data.time != last_time) { // Do every time for updated record
             last_time = data.time;
             make_record(data);
             height_adjust();
             sticky_bottom();
-        }else if (last_time != last_upd) {
-            make_footer(data.status);
+        }else if (last_time != last_upd) { // Do only the first one of the stagnation
             last_upd = last_time;
+            record_stat(data.status);
+            record_result(data);
         }
         blinking();
     });
@@ -199,15 +201,14 @@ function update() {
 function mcr_end(){
     stop_upd();
     set_acordion('#record h4');
-    make_select(['cinit', 'start', 'fin']);
-    $('#status').hide();
+    record_select(['tinit','cinit', 'start', 'fin']);
+    $('#status').show();
     $('#scroll').hide();
     $('#msg').hide();
     $('#total').show();
     $('#result').show();
 }
 function init(){
-    $('#status').show();
     $('#scroll').show();
     $('#msg').show();
     $('#total').hide();
@@ -217,9 +218,10 @@ function init(){
 // Var setting
 var html_rec = [];
 var depth = 1;
-var start_time = '';
-var last_time = '';
-var last_upd = '';
+var start_time = ''; // For elapsed time
+var last_time = '';  // For detecting update
+var last_upd = '';   // For prevent multiple update during no data changes
+var first_time = ''; // For first time at a new macro;
 var tag = 'latest';
 var option = [];
 var port;

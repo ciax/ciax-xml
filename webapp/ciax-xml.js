@@ -14,9 +14,9 @@ function sticky_bottom() {
     }
 }
 // Folding
-function acordion(click) {
-    if (click) { $('h4').next().slideToggle('slow'); }
-    $('h4').on('click', function() {
+function acordion(top){
+    $(top + ' h4').next().slideToggle('slow');
+    $(top + ' h4').on('click', function() {
         $(this).next().slideToggle();
         height_adjust();
     });
@@ -29,10 +29,12 @@ function blinking() {
 function height_adjust() {
     var h = $(window).height();
     // sum height of children in .outline except .contents
-    $('div.outline > div:not(".contents")').each(function() {
-        h = h - $(this).height();
+    $('div.outline').each(function(){
+        $(this).children('div:not(".contents")').each(function() {
+            h = h - $(this).height();
+        });
+        $(this).children('.contents').css('max-height', h - 100);
     });
-    $('.contents').css('max-height', h - 100);
 }
 // ** CGI **
 function dvctl(cmd) {

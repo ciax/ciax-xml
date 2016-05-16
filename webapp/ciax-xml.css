@@ -16,6 +16,7 @@ th{
     text-align : center;
 }
 .outline{
+    width: 90%;
     max-height: 95%;
     font-weight: bold;
     border : 5px outset lightgreen;

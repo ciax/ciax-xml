@@ -177,7 +177,7 @@ function make_footer(stat) {
         blinking();
     }else if (stat == 'end') {
         clearInterval(itvl);
-        acordion();
+        acordion('#record');
         make_select(['cinit']);
     }
 }
@@ -187,7 +187,7 @@ function archive(tag) {
     depth = 1;
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
-        acordion(true);
+        acordion('#record');
         $('.footer').hide();
     });
 }

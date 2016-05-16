@@ -22,7 +22,7 @@ function date_list(hash) {
     var crd = time.toLocaleDateString();
     if (date != crd) {
         if (html_sel.length > 0) { html_sel.push('</ul>'); }
-        html_sel.push('<h4>' + crd + '</h4><ul style="display:none;">');
+        html_sel.push('<h4>' + crd + '</h4><ul>');
         date = crd;
     }
     time_list(time, hash);
@@ -36,15 +36,14 @@ function date_sort(a, b) {
     return 0;
 }
 function set_event() {
-    $('li').on('click', function() {
+    $('#select li').on('click', function() {
         var id = $(this).attr('id');
         archive(id);
     });
 }
 function select() {
-    html_sel = [];
     $.getJSON('rec_list.json', function(data) {
-        var keys = [];
+        html_sel = [];
         var list = data['list'].sort(date_sort);
         for (var i = 0; i < list.length; i++) {
             date_list(list[i]);
@@ -52,7 +51,7 @@ function select() {
         html_sel.push('</ul>');
         $('#select')[0].innerHTML = html_sel.join('');
         set_event();
-        acordion();
+        acordion('#select');
         height_adjust();
     });
 }

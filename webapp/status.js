@@ -29,6 +29,9 @@ function update() {
     $.getJSON(type + '_' + site + '.json', conv);
     elapsed();
 }
+function init(){
+    start_upd();
+}
 // Need var: Type,Site
 var last;
 var offset = 0;

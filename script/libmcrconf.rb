@@ -16,7 +16,7 @@ module CIAX
         super(root_cfg)
         db = Db.new
         dbi = db.get
-        update(layer_type: 'mcr', db: db, rec_list: RecList.new.refresh)
+        update(layer_type: 'mcr', db: db, rec_list: RecList.new)
         # pick already includes :command, :version
         update(dbi.pick([:sites, :id]))
         _init_net(dbi)

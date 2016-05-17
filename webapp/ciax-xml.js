@@ -81,6 +81,7 @@ function stop_upd() {
 }
 function start_upd() {
     update();
+    $('#go_bottom').prop('checked', true);
     itvl = setInterval(update, 1000);
 }
 function init_log() {

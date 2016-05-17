@@ -29,7 +29,7 @@ function update() {
     $.getJSON(type + '_' + site + '.json', conv);
     elapsed();
 }
-function init(){
+function init() {
     start_upd();
 }
 // Need var: Type,Site

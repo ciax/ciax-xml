@@ -138,7 +138,7 @@ function make_record(data) {
 // *** Header ***
 function record_header(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
-    $('#date').text(new Date(data.id-0));
+    $('#date').text(new Date(data.id - 0));
 }
 // *** Footer ***
 function replace_result(stat) {
@@ -162,7 +162,7 @@ function record_stat(data) {
     }else if (stat == 'query') {
         replace_result(stat);
         record_select(option.concat('nonstop'));
-    }else{
+    }else {
         replace_result(stat);
     }
 }

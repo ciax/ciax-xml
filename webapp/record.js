@@ -210,9 +210,9 @@ function mcr_start(data) {
 }
 function mcr_end(data) {
     record_result(data);
-    stop_upd();
     set_acordion('#record h4');
     record_select(['tinit', 'cinit', 'start', 'load', 'store', 'fin']);
+    stop_upd();
 }
 function init() {
     update();

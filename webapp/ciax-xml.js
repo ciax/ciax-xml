@@ -47,8 +47,9 @@ function get_response(data) {
         var res = $.parseJSON(data);
         console.log('recv=' + data);
         $('#msg').text(res.msg);
-        if (!itvl) init();
+        start_upd()
     }else {
+        stop_upd();
         $('#msg').text('NO Response');
         $('#msg').attr('class', 'error');
     }
@@ -77,14 +78,16 @@ function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
     if (cmd == '--select--') return;
     exec(cmd);
-    make_select(obj, def_sel);
+    if(itvl) make_select(obj, def_sel);
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
 function stop_upd() {
-    clearInterval(itvl);
-    itvl = false;
-    $('#msg').text('');
+    if(itvl){
+        clearInterval(itvl);
+        itvl = false;
+        $('#msg').text('');
+    }
 }
 function start_upd() {
     if (!itvl) {

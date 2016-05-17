@@ -53,7 +53,7 @@ function dvctl(cmd) {
                 if (!itvl) init();
             }else {
                 $('#msg').text('NO Response');
-                $('#msg').addClass('error');
+                $('#msg').attr('class','error');
             }
         }
     );

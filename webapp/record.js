@@ -211,6 +211,7 @@ function mcr_end() {
     record_select(['tinit', 'cinit', 'start', 'load', 'store', 'fin']);
 }
 function init() {
+    dvctl();
     start_upd();
 }
 // Var setting

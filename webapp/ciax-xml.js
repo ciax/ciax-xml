@@ -50,7 +50,7 @@ function dvctl(cmd) {
         function(data) {
             if (data) {
                 var res = $.parseJSON(data);
-                console.log('recv=' + JSON.stringify(data));
+                console.log('recv=' + data);
                 $('#msg').text(res.msg);
                 if (!itvl) init();
             }else {

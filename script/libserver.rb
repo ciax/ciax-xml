@@ -16,7 +16,7 @@ module CIAX
       end
       @server_input_proc = proc { |line| j2h(line) }
       @sv_stat.ext_local_file.auto_save.ext_local_log
-      @server_output_proc = proc { @sv_stat.to_j }
+      @server_output_proc = proc { JSON.dump(@sv_stat) }
       _startup
       self
     end

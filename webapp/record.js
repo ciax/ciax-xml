@@ -184,6 +184,7 @@ function update() {
         if (first_time != data.id) { // Do only the first one for new macro
             first_time = data.id;
             record_header(data);
+            replace_result(data.status);
         }
         if (data.time != last_time) { // Do every time for updated record
             last_time = data.time;

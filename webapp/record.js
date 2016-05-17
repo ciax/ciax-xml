@@ -138,7 +138,7 @@ function make_record(data) {
 // *** Header ***
 function record_header(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
-    $('#date').text(start_time);
+    $('#date').text(new Date(data.id-0));
 }
 // *** Footer ***
 function replace_result(stat) {

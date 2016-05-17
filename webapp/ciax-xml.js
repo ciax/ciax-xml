@@ -47,9 +47,13 @@ function dvctl(cmd) {
         '/json/dvctl-udp.php',
         {port: port, cmd: cmd},
         function(data) {
-            var res = $.parseJSON(data);
-            $('#msg').text(res.msg);
-            init();
+            if(data){
+                var res = $.parseJSON(data);
+                $('#msg').text(res.msg);
+                init();
+            }else{
+                $('#msg').text('NO Response');
+            }
         }
     );
 }
@@ -77,7 +81,7 @@ function seldv(obj) {
 // Control Part/Shared with ciax-xml.js
 function stop_upd() {
     clearInterval(itvl);
-    $('#msg').text('No Update');
+    $('#msg').text('*****');
 }
 function start_upd() {
     update();

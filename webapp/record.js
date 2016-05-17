@@ -152,12 +152,12 @@ function record_init(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
     port = data.port;
+    make_record(data);
     if (data.status == 'end') {
         mcr_end(data);
     }else { //run
         mcr_start(data);
     }
-    make_record(data);
 }
 function record_select(ary) {
     make_select($('#query select')[0], ary);

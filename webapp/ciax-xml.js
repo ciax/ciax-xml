@@ -42,23 +42,21 @@ function height_adjust() {
     });
 }
 // ******** Control by UDP ********
+function get_response(data) {
+    if (data) {
+        var res = $.parseJSON(data);
+        console.log('recv=' + data);
+        $('#msg').text(res.msg);
+        if (!itvl) init();
+    }else {
+        $('#msg').text('NO Response');
+        $('#msg').attr('class', 'error');
+    }
+}
 function dvctl(cmd) {
     var args = {port: port, cmd: cmd};
     console.log('send=' + JSON.stringify(args));
-    $.post(
-        '/json/dvctl-udp.php', args,
-        function(data) {
-            if (data) {
-                var res = $.parseJSON(data);
-                console.log('recv=' + data);
-                $('#msg').text(res.msg);
-                if (!itvl) init();
-            }else {
-                $('#msg').text('NO Response');
-                $('#msg').attr('class', 'error');
-            }
-        }
-    );
+    $.post('/json/dvctl-udp.php', args, get_response);
 }
 function stop() {
     dvctl('interrupt');
@@ -77,7 +75,8 @@ function make_select(obj, ary) {
 }
 function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
-    if (cmd != '--select--') exec(cmd);
+    if (cmd == '--select--') return;
+    exec(cmd);
     make_select(obj, def_sel);
 }
 // ********* Page Update *********
@@ -85,7 +84,7 @@ function seldv(obj) {
 function stop_upd() {
     clearInterval(itvl);
     itvl = false;
-    $('#msg').text('*****');
+    $('#msg').text('');
 }
 function start_upd() {
     if (!itvl) {

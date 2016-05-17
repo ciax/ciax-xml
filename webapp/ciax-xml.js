@@ -47,11 +47,11 @@ function dvctl(cmd) {
         '/json/dvctl-udp.php',
         {port: port, cmd: cmd},
         function(data) {
-            if(data){
+            if (data) {
                 var res = $.parseJSON(data);
                 $('#msg').text(res.msg);
                 init();
-            }else{
+            }else {
                 $('#msg').text('NO Response');
                 $('#msg').addClass('error');
             }

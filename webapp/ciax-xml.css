@@ -155,9 +155,6 @@ var {
 #scroll {
     float : right;
 }
-#total {
-    display: none;
-}
 /*** select list ***/
 .time {
     width: 4.5em;

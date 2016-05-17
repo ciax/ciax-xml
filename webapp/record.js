@@ -133,13 +133,20 @@ function make_record(data) {
     depth = step_level(1);
     html_rec.push('</ul>');
     $('#record')[0].innerHTML = html_rec.join('');
+    height_adjust();
 }
 // ******* Outline *********
 // *** Header ***
 function record_init(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
-    replace_result(data.status);
+    if (data.status == 'run') {
+        replace_result('run');
+         $('.toggle').toggle();
+    }else { //end
+        record_result(data);
+        mcr_end();
+    }
 }
 // *** Footer ***
 function replace_result(stat) {
@@ -159,12 +166,13 @@ function record_stat(data) {
     var stat = data.status;
     if (stat == 'end') {
         record_result(data);
+        $('.toggle').toggle();
         mcr_end();
     }else if (stat == 'query') {
         replace_result(stat);
         record_select(option.concat('nonstop'));
     }else {
-        replace_result(stat);
+        replace_result(stat); //run
     }
 }
 // ******** HTML ********
@@ -174,7 +182,6 @@ function archive(tag) {
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
         record_init(data);
-        record_result(data);
         set_acordion('#record h4', true);
     });
 }
@@ -185,12 +192,11 @@ function update() {
         if (first_time != data.id) { // Do only the first one for new macro
             first_time = data.id;
             record_init(data);
-        }
-        if (data.time != last_time) { // Do every time for updated record
+            make_record(data);
+        }else if (data.time != last_time) { // Do every time for updated record
             last_time = data.time;
             make_record(data);
             sticky_bottom();
-            height_adjust();
         }else if (last_time != last_upd) { // Do only the first one of the stagnation
             last_upd = last_time;
             record_stat(data);
@@ -202,10 +208,8 @@ function mcr_end() {
     stop_upd();
     set_acordion('#record h4');
     record_select(['tinit', 'cinit', 'start', 'load', 'store', 'fin']);
-    $('.toggle').toggle();
 }
 function init() {
-    $('.toggle').toggle();
     start_upd();
 }
 // Var setting

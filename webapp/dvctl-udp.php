@@ -25,8 +25,15 @@ $soc=socket_create(AF_INET,SOCK_DGRAM,SOL_UDP);
 $buf=json_encode($cmds);
 $len=strlen($buf);
 socket_sendto($soc,$buf,$len,0,$host,$port);
-$from="";
-$port=0;
-socket_recvfrom($soc,$buf,1024,0,$from,$port);
+$read=array($soc);
+$write=array();
+$except=array();
+$res=socket_select($read,$write,$except,4);
+$buf="";
+if($res > 0){
+    $from="";
+    $port=0;
+    socket_recvfrom($soc,$buf,1024,0,$from,$port);
+}
 print($buf);
 ?>

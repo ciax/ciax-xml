@@ -43,17 +43,19 @@ function height_adjust() {
 }
 // ******** Control by UDP ********
 function dvctl(cmd) {
+    var args = {port: port, cmd: cmd};
+    console.log('send=' + JSON.stringify(args));
     $.post(
-        '/json/dvctl-udp.php',
-        {port: port, cmd: cmd},
+        '/json/dvctl-udp.php', args,
         function(data) {
             if (data) {
                 var res = $.parseJSON(data);
+                console.log('recv=' + JSON.stringify(data));
                 $('#msg').text(res.msg);
                 if (!itvl) init();
             }else {
                 $('#msg').text('NO Response');
-                $('#msg').attr('class','error');
+                $('#msg').attr('class', 'error');
             }
         }
     );

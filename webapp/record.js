@@ -122,7 +122,6 @@ function make_step(step) {
 // ********* Record **********
 // Macro Body
 function make_record(data) {
-    port = data.port;
     start_time = new Date(data.start);
     html_rec.push('<ul>');
     for (var j in data.steps) {
@@ -138,6 +137,8 @@ function make_record(data) {
 // ******* Outline *********
 // *** Header ***
 function record_init(data) {
+    port = data.port;
+    dvctl();
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
     if (data.status == 'end') {
@@ -211,7 +212,6 @@ function mcr_end() {
     record_select(['tinit', 'cinit', 'start', 'load', 'store', 'fin']);
 }
 function init() {
-    dvctl();
     start_upd();
 }
 // Var setting

@@ -537,6 +537,7 @@
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="mfp_ac"/>
+        <upd site="mmc"/>
         <system>mkcmi</system>
       </item>
       <item id="ro_s-f" label="Rh Open">
@@ -919,6 +920,7 @@
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="mfp_ao"/>
+        <upd site="mmc"/>
         <system>mkcmi</system>
       </item>
       <item id="ini_l-i" label="Go to INIT">

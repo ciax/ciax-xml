@@ -13,6 +13,7 @@ function step_cmd(step) {
     var ary = [];
     if (step.site) { ary.push(step.site); }
     if (step.args) { ary = ary.concat(step.args); }
+    if (step.val) { ary.push(step.val); }
     if (ary.length > 0) {html_rec.push(': [' + ary.join(':') + ']');}
     html_rec.push('</span>');
 }

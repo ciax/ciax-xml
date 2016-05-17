@@ -141,26 +141,29 @@ function record_header(data) {
     $('#date').text(start_time);
 }
 // *** Footer ***
-function replace_item(sel, stat) {
-    $(sel).text(stat);
-    $(sel).attr('class', 'res ' + stat);
+function replace_result(stat) {
+    $('#result').text(stat);
+    $('#result').attr('class', 'res ' + stat);
+}
+function record_result(data) {
+    replace_result(data.result);
+    if (data.total_time) {
+        $('#total').text(data.total_time);
+    }
 }
 function record_select(ary) {
     make_select($('#query select')[0], ary);
 }
 function record_stat(data) {
     var stat = data.status;
-    replace_item('#result', stat);
-    if (stat == 'query') {
+    if (stat == 'end') {
+        record_result(data);
+        mcr_end();
+    }else if (stat == 'query') {
+        replace_result(stat);
         record_select(option.concat('nonstop'));
-    }else if (stat == 'end') {
-        mcr_end(data);
-    }
-}
-function record_result(data) {
-    replace_item('#result', data.result);
-    if (data.total_time) {
-        $('#total').text(data.total_time);
+    }else{
+        replace_result(stat);
     }
 }
 // ******** HTML ********
@@ -194,9 +197,8 @@ function update() {
         blinking();
     });
 }
-function mcr_end(data) {
+function mcr_end() {
     stop_upd();
-    record_result(data);
     set_acordion('#record h4');
     record_select(['tinit', 'cinit', 'start', 'fin']);
     $('.running').hide();

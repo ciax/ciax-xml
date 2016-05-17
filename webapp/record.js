@@ -136,9 +136,10 @@ function make_record(data) {
 }
 // ******* Outline *********
 // *** Header ***
-function record_header(data) {
+function record_init(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
+    replace_result(data.status);
 }
 // *** Footer ***
 function replace_result(stat) {
@@ -172,7 +173,7 @@ function archive(tag) {
     depth = 1;
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
-        record_header(data);
+        record_init(data);
         record_result(data);
         set_acordion('#record h4', true);
     });
@@ -183,8 +184,7 @@ function update() {
     $.getJSON('record_latest.json', function(data) {
         if (first_time != data.id) { // Do only the first one for new macro
             first_time = data.id;
-            record_header(data);
-            replace_result(data.status);
+            record_init(data);
         }
         if (data.time != last_time) { // Do every time for updated record
             last_time = data.time;
@@ -202,12 +202,10 @@ function mcr_end() {
     stop_upd();
     set_acordion('#record h4');
     record_select(['tinit', 'cinit', 'start', 'load', 'store', 'fin']);
-    $('.running').hide();
-    $('.finished').show();
+    $('.toggle').toggle();
 }
 function init() {
-    $('.running').show();
-    $('.finished').hide();
+    $('.toggle').toggle();
     start_upd();
 }
 // Var setting

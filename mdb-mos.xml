@@ -537,8 +537,6 @@
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="mfp_ac"/>
-        <upd site="mmc"/>
-        <system>mkcmi</system>
       </item>
       <item id="ro_s-f" label="Rh Open">
         <goal>
@@ -650,6 +648,7 @@
           <match site="mmc" var="abs" form="msg">S</match>
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
+        <system>mkcmi</system>
       </item>
     </group>
     <group id="grp_mos_4" caption="Sub Load Mask" rank="1">
@@ -920,8 +919,6 @@
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
         <mcr name="mfp_ao"/>
-        <upd site="mmc"/>
-        <system>mkcmi</system>
       </item>
       <item id="ini_l-i" label="Go to INIT">
         <goal>
@@ -966,6 +963,7 @@
           <match site="mmc" var="abs" form="msg">S</match>
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
+        <system>mkcmi</system>
       </item>
     </group>
     <group id="grp_mos_5" caption="Sub Field Check" rank="1">

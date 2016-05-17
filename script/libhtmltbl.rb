@@ -25,7 +25,7 @@ module CIAX
       private
 
       def _mk_head(parent)
-        parent.element('meta','', charset: 'utf-8')
+        parent.element('meta', '', charset: 'utf-8')
         parent.element('title', 'CIAX-XML')
         atrb = { rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css' }
         parent.element('link', nil, atrb)
@@ -35,7 +35,7 @@ module CIAX
         _mk_script(parent, script)
         _mk_script(parent, '', 'ciax-xml.js')
         _mk_script(parent, '', 'status.js')
-        _mk_script(parent,'$(document).ready(init);')
+        _mk_script(parent, '$(document).ready(init);')
       end
 
       def _mk_script(parent, text, src = nil)

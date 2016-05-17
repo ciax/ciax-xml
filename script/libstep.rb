@@ -27,7 +27,7 @@ module CIAX
       def sleeping
         s = self[:val] || return
         progress(s)
-        set_result("slept")
+        set_result('slept')
       end
 
       # Condition section

@@ -17,12 +17,12 @@ module CIAX
       # cfg doesn't change
       def ext_local_rsp(cfg)
         @cfg = type?(cfg, Config)
-        %i(port cid label).each{ |k| self[k] = @cfg[k] }
+        %i(port cid label).each { |k| self[k] = @cfg[k] }
         self[:ver] = @cfg[:version] || '0' # Version
         self[:total_steps] = 0
         @dummy = @cfg[:option].test?
         self[:mode] = @dummy ? 'test' : 'drive'
-        @cmt_procs << proc{ self[:time] = now_msec }
+        @cmt_procs << proc { self[:time] = now_msec }
         self
       end
 

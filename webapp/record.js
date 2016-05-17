@@ -219,5 +219,5 @@ var first_time = ''; // For first time at a new macro;
 var tag = 'latest';
 var option = [];
 var port;
-def_sel = ['interrupt', 'interactive']; // default select
+def_sel = ['interactive']; // default select
 

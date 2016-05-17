@@ -47,10 +47,14 @@ function dvctl(cmd) {
         '/json/dvctl-udp.php',
         {port: port, cmd: cmd},
         function(data) {
-            $('#msg').text($.parseJSON(data).msg);
+            var res = $.parseJSON(data);
+            $('#msg').text(res.msg);
             init();
         }
     );
+}
+function stop() {
+    dvctl('interrupt');
 }
 // With Confirmation
 function exec(cmd) {

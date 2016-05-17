@@ -188,8 +188,8 @@ function update() {
         if (data.time != last_time) { // Do every time for updated record
             last_time = data.time;
             make_record(data);
-            height_adjust();
             sticky_bottom();
+            height_adjust();
         }else if (last_time != last_upd) { // Do only the first one of the stagnation
             last_upd = last_time;
             record_stat(data);
@@ -200,7 +200,7 @@ function update() {
 function mcr_end() {
     stop_upd();
     set_acordion('#record h4');
-    record_select(['tinit', 'cinit', 'start', 'fin']);
+    record_select(['tinit', 'cinit', 'start', 'load', 'store', 'fin']);
     $('.running').hide();
     $('.finished').show();
 }

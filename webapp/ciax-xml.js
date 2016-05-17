@@ -1,7 +1,7 @@
 // ******* Animation *********
 // Auto scroll. Check box with id:go_bottm is needed;
 function sticky_bottom() {
-    var div = $('.contents');
+    var div = $('#record');
     var toggle = $('#go_bottom');
     if (toggle.prop('checked')) {
         auto_release = false;
@@ -34,7 +34,7 @@ function blinking() {
 function height_adjust() {
     var h = $(window).height();
     // sum height of children in .outline except .contents
-    $('div.outline').each(function() {
+    $('.outline').each(function() {
         $(this).children('div:not(".contents")').each(function() {
             h = h - $(this).height();
         });

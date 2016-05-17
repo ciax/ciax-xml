@@ -50,7 +50,7 @@ function dvctl(cmd) {
             if (data) {
                 var res = $.parseJSON(data);
                 $('#msg').text(res.msg);
-                init();
+                if (!itvl) init();
             }else {
                 $('#msg').text('NO Response');
                 $('#msg').addClass('error');
@@ -82,6 +82,7 @@ function seldv(obj) {
 // Control Part/Shared with ciax-xml.js
 function stop_upd() {
     clearInterval(itvl);
+    itvl = false;
     $('#msg').text('*****');
 }
 function start_upd() {

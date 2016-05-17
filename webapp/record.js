@@ -135,21 +135,7 @@ function make_record(data) {
     height_adjust();
 }
 // ******* Outline *********
-// *** Header ***
-function record_init(data) {
-    port = data.port;
-    dvctl();
-    $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
-    $('#date').text(new Date(data.id - 0));
-    if (data.status == 'end') {
-        record_result(data);
-        mcr_end();
-    }else { //run
-        replace_result('run');
-         $('.toggle').toggle();
-    }
-}
-// *** Footer ***
+// *** Result/Footer ***
 function replace_result(stat) {
     $('#result').text(stat);
     $('#result').attr('class', 'res ' + stat);
@@ -160,15 +146,26 @@ function record_result(data) {
         $('#total').text(data.total_time);
     }
 }
+// *** Initialize Page ***
+function record_init(data) {
+    $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
+    $('#date').text(new Date(data.id - 0));
+    port = data.port;
+    if (data.status == 'end') {
+        mcr_end(data);
+    }else { //run
+        mcr_start(data);
+    }
+    make_record(data);
+}
 function record_select(ary) {
     make_select($('#query select')[0], ary);
 }
 function record_stat(data) {
     var stat = data.status;
     if (stat == 'end') {
-        record_result(data);
         $('.toggle').toggle();
-        mcr_end();
+        mcr_end(data);
     }else if (stat == 'query') {
         replace_result(stat);
         record_select(option.concat('nonstop'));
@@ -193,7 +190,6 @@ function update() {
         if (first_time != data.id) { // Do only the first one for new macro
             first_time = data.id;
             record_init(data);
-            make_record(data);
         }else if (data.time != last_time) { // Do every time for updated record
             if (last_time == last_upd) record_stat(data);
             last_time = data.time;
@@ -206,13 +202,19 @@ function update() {
         blinking();
     });
 }
-function mcr_end() {
+function mcr_start(data) {
+    start_upd();
+    replace_result('run');
+    $('.toggle').toggle();
+}
+function mcr_end(data) {
+    record_result(data);
     stop_upd();
     set_acordion('#record h4');
     record_select(['tinit', 'cinit', 'start', 'load', 'store', 'fin']);
 }
 function init() {
-    start_upd();
+    update();
 }
 // Var setting
 var html_rec = [];

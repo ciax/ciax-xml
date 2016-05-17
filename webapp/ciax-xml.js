@@ -88,9 +88,10 @@ function stop_upd() {
     $('#msg').text('*****');
 }
 function start_upd() {
-    update();
-    $('#go_bottom').prop('checked', true);
-    itvl = setInterval(update, 1000);
+    if (!itvl) {
+        itvl = setInterval(update, 1000);
+        $('#go_bottom').prop('checked', true);
+    }
 }
 function init_log() {
     select();

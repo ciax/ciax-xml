@@ -140,12 +140,12 @@ function make_record(data) {
 function record_init(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
-    if (data.status == 'run') {
-        replace_result('run');
-         $('.toggle').toggle();
-    }else { //end
+    if (data.status == 'end') {
         record_result(data);
         mcr_end();
+    }else { //run
+        replace_result('run');
+         $('.toggle').toggle();
     }
 }
 // *** Footer ***
@@ -194,6 +194,7 @@ function update() {
             record_init(data);
             make_record(data);
         }else if (data.time != last_time) { // Do every time for updated record
+            if (last_time == last_upd) record_stat(data);
             last_time = data.time;
             make_record(data);
             sticky_bottom();

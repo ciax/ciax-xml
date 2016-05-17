@@ -20,9 +20,9 @@ foreach($argv as &$e){
 $host="127.0.0.1";
 $port=(int)getarg('port');
 // cmd format "cmd:par1:par2.."
-$cmds=split(":",getarg('cmd'));
+$cmd=getarg('cmd');
+$buf= $cmd ? json_encode(split(":",$cmd)) : '[]';
 $soc=socket_create(AF_INET,SOCK_DGRAM,SOL_UDP);
-$buf=json_encode($cmds);
 $len=strlen($buf);
 socket_sendto($soc,$buf,$len,0,$host,$port);
 $read=array($soc);

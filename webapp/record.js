@@ -43,7 +43,7 @@ function step_action(step) {
 function step_time(step) {
     var now = new Date(step.time);
     var elps = ((now - start_time) / 1000).toFixed(2);
-    html_rec.push('<span class="elps">[' + elps + ']</span>');
+    html_rec.push('<span class="elps tail">[' + elps + ']</span>');
 }
 // waiting step
 function step_meter(step, max) {

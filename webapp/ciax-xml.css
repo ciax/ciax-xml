@@ -104,19 +104,13 @@ ul{
     margin-left:1.5em;
     padding:0;
 }
-/** Step Line **/
+/***** Step Line *****/
 /* common */
 .head {
     font-size: middle;
     text-transform: uppercase;
 }
-.elps {
-    font-size: medium;
-    float:right;
-    color: navy;
-    width:5em;
-}
-/* By Title */
+/*** Title coloring ***/
 .mcr{
     color : chocolate;
 }
@@ -135,7 +129,7 @@ var {
     float:left;
     color : gray;
 }
-/*** result ***/
+/*** Result coloring ***/
 /* common */
 .res {
     text-transform: capitalize;
@@ -155,11 +149,18 @@ var {
 .action {
     color : darkorange;
 }
-/*** footer ***/
-#scroll {
+/*** Header/Footer ***/
+.tail {
+    float:right;
+}
+#scroll, #nonstop {
     font-size: medium;
-    color: green;
-    float : right;
+    color: maroon;
+}
+.elps {
+    font-size: medium;
+    color: navy;
+    width:5em;
 }
 /*** select list ***/
 .time {

@@ -16,27 +16,28 @@
         <div class="title">
           <span class="mcr">Macro</span>:
           <span class="cmd" id="mcrcmd"></span>
-          <span class="toggle" id="scroll">
+          <span class="tail" id="scroll">
             <input type="checkbox" checked="true" onclick="sticky_bottom();">Auto Scroll</input>
           </span>
         </div>
-        <div class="bar"><date id="date"></date></div>
+        <div class="bar"><date class="tail" id="date"></date></div>
       </div>
       <div id="record" class="contents"></div>
       <!-- FOOTER -->
       <div class="footer">
         <span class="res" id="result"></span>
-        <span id="nonstop">
-            <!-- Enclosed for Hiding text -->
-            <input type="checkbox" checked="true" onclick="dvctl_nonstop();">Non Stop</input>
-        </span>
         <span id="query">
           <select name="query" onchange="seldv(this)">
           </select>
         </span>
         <button class="toggle" id="stop" onclick="stop();" style="display:none">STOP</button>
         <span class="" id="msg"></span>
-        <span class="toggle item elps" id="total" ></span>
+        <span class="tail">
+          <span id="nonstop">
+            <input type="checkbox" checked="true" onclick="dvctl_nonstop();">Non Stop</input>
+          </span>
+          <span class="toggle item elps" id="total" ></span>
+        </span>
       </div>
     </div>
   </body>

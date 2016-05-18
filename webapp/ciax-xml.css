@@ -82,6 +82,10 @@ th{
 #ol_rec {
     margin-left: 30%;
 }
+.bar{
+    margin: 5px;
+    overflow: auto;
+}
 .contents{
     margin: 5px;
     overflow: auto;
@@ -166,7 +170,4 @@ var {
 }
 .selected {
     color : pink;
-}
-a {
-    text-decoration:none;
 }

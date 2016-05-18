@@ -77,7 +77,7 @@ module CIAX
 
       def _system(e, step, _mstat)
         return true unless step.exec?
-        step.set_result('ok', 'failed', system(e[:val]))
+        step.set_result(`#{e[:val]}`)
         true
       end
 

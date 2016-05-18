@@ -23,9 +23,9 @@
       <!-- FOOTER -->
       <div class="footer">
         <span class="res" id="result"></span>
-        <span id="interact">
+        <span id="nonstop">
             <!-- Enclosed for Hiding text -->
-            <input type="checkbox" id="nonstop" checked="true" onclick="dvctl_nonstop();">Non Stop</input>
+            <input type="checkbox" checked="true" onclick="dvctl_nonstop();">Non Stop</input>
         </span>
         <span id="query">
           <select name="query" onchange="seldv(this)">
@@ -34,7 +34,7 @@
         <button class="toggle" id="stop" onclick="stop();" style="display:none">STOP</button>
         <span class="" id="msg"></span>
         <span class="toggle" id="scroll" style="display:none">
-          <input type="checkbox" id="go_bottom" checked="true" onclick="sticky_bottom();">Auto Scroll</input>
+          <input type="checkbox" checked="true" onclick="sticky_bottom();">Auto Scroll</input>
         </span>
         <span class="toggle item elps" id="total" ></span>
       </div>

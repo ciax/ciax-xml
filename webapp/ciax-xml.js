@@ -2,7 +2,7 @@
 // Auto scroll. Check box with id:go_bottm is needed;
 function sticky_bottom() {
     var div = $('#record');
-    var toggle = $('#go_bottom');
+    var toggle = $('#scroll :checkbox');
     if (toggle.prop('checked')) {
         auto_release = false;
         div.animate({ scrollTop: div[0].scrollHeight},'slow', function() {
@@ -90,10 +90,7 @@ function stop_upd() {
     }
 }
 function start_upd() {
-    if (!itvl) {
-        itvl = setInterval(update, 1000);
-        $('#go_bottom').prop('checked', true);
-    }
+    if (!itvl) itvl = setInterval(update, 1000);
 }
 var itvl;
 var auto_release = false;

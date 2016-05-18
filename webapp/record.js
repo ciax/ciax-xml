@@ -48,15 +48,15 @@ function step_time(step) {
 // waiting step
 function step_meter(step, max) {
     html_rec.push(' <meter value="' + step.count / max * 100 + '" max="100"');
-    if (step.retry) { html_rec.push('low="70" high="99"');}
+    if (step.retry) html_rec.push('low="70" high="99"');
     html_rec.push('>(' + step.count + '/' + max + ')</meter>');
 }
 function step_count(step) {
     if (step.count) {
         var max = step.retry || step.val;
-        if (step.type != 'mcr') { step_meter(step, max); }
+        if (step.type != 'mcr') step_meter(step, max);
         html_rec.push('<span>(' + step.count + '/' + max + ')</span>');
-        if (step.busy) { html_rec.push(' -> <em class="res active">Busy</em>');}
+        if (step.busy) html_rec.push(' -> <em class="res active">Busy</em>');
     }
 }
 // other steps
@@ -88,7 +88,7 @@ function cond_list(conds, type) {
         html_rec.push('<li>');
         html_rec.push('<var>' + cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
         html_rec.push('<code>' + operator(cond.cmp, cond.cri) + '?</code>  ');
-        if (type == 'goal' && res == false) { res = 'warn'; }
+        if (type == 'goal' && res == false) res = 'warn';
         html_rec.push('<em class="' + res + '"> (' + cond.real + ')</em>');
         html_rec.push('</li>');
     }
@@ -143,9 +143,7 @@ function replace_result(stat) {
 }
 function record_result(data) {
     replace_result(data.result);
-    if (data.total_time) {
-        $('#total').text(data.total_time);
-    }
+    if (data.total_time) $('#total').text(data.total_time);
 }
 // *** Initialize Page ***
 function record_header(data) {
@@ -210,7 +208,7 @@ function mcr_start(data) {
     start_upd();
     replace_result('run');
     $('.toggle').toggle();
-    $('#scroll').prop('checked', true);
+    $('#scroll :checkbox').prop('checked', true);
     dvctl_nonstop();
 }
 function mcr_end(data) {
@@ -220,7 +218,7 @@ function mcr_end(data) {
     stop_upd();
 }
 function dvctl_nonstop() {
-    var cmd = $('#nonstop').prop('checked') ? 'nonstop' : 'interactive';
+    var cmd = $('#nonstop :checkbox').prop('checked') ? 'nonstop' : 'interactive';
     if (itvl) dvctl(cmd);
 }
 

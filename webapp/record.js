@@ -152,7 +152,6 @@ function record_init(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
     port = data.port;
-    make_record(data);
     if (data.status == 'end') {
         mcr_end(data);
     }else { //run
@@ -169,7 +168,7 @@ function record_stat(data) {
         mcr_end(data);
     }else if (stat == 'query') {
         replace_result(stat);
-        record_select(option.concat('nonstop'));
+        record_select(option);
     }else {
         replace_result(stat); //run
     }
@@ -188,13 +187,13 @@ function update() {
     html_rec = [];
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
+        make_record(data);
         if (first_time != data.id) { // Do only the first one for new macro
             first_time = data.id;
             record_init(data);
         }else if (data.time != last_time) { // Do every time for updated record
             if (last_time == last_upd) record_stat(data);
             last_time = data.time;
-            make_record(data);
             sticky_bottom();
         }else if (last_time != last_upd) { // Do only the first one of the stagnation
             last_upd = last_time;

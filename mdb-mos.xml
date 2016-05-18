@@ -648,6 +648,7 @@
           <match site="mmc" var="abs" form="msg">S</match>
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
+        <upd site="mmc"/>
         <system>mkcmi</system>
       </item>
     </group>
@@ -963,6 +964,7 @@
           <match site="mmc" var="abs" form="msg">S</match>
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
+        <upd site="mmc"/>
         <system>mkcmi</system>
       </item>
     </group>

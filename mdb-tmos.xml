@@ -648,6 +648,7 @@
           <match site="tmc" var="abs" form="msg">S</match>
           <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
+        <upd site="tmc"/>
         <system>mkcmi</system>
       </item>
     </group>
@@ -963,6 +964,7 @@
           <match site="tmc" var="abs" form="msg">S</match>
           <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
+        <upd site="tmc"/>
         <system>mkcmi</system>
       </item>
     </group>

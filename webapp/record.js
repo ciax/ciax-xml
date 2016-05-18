@@ -148,9 +148,12 @@ function record_result(data) {
     }
 }
 // *** Initialize Page ***
-function record_init(data) {
+function record_header(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
+}
+function record_init(data) {
+    record_header(data);
     port = data.port;
     if (data.status == 'end') {
         mcr_end(data);
@@ -179,7 +182,8 @@ function archive(tag) {
     depth = 1;
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
-        record_init(data);
+        record_header(data);
+        record_result(data);
         set_acordion('#record h4', true);
     });
 }

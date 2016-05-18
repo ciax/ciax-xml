@@ -103,7 +103,8 @@ module CIAX
       def _elem_button(parent, id, label = nil)
         atrb = { class: 'button', type: 'button' }
         atrb[:value] = (label || id).upcase
-        atrb[:onclick] = "dvctl('#{id}')"
+        cmd = label ? 'exec' : 'dvctl'
+        atrb[:onclick] = "#{cmd}('#{id}')"
         parent.element('input', nil, atrb)
       end
     end

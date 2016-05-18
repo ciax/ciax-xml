@@ -149,7 +149,7 @@ function replace_result(stat) {
 }
 function record_result(data) {
     replace_result(data.result);
-    if (data.total_time) $('#total').text(data.total_time);
+    if (data.total_time) $('#total').text('[' + data.total_time + ' sec]');
 }
 // *** Initialize Page ***
 function record_init(data) {
@@ -167,8 +167,6 @@ function record_select(ary) {
 function record_status(data) {
     var stat = data.status;
     if (stat == 'end') {
-        // hide controls
-        $('.toggle').toggle();
         mcr_end(data);
     }else if (stat == 'query') {
         replace_result(stat);
@@ -181,7 +179,6 @@ function record_status(data) {
 function mcr_start(data) {
     start_upd();
     replace_result('run');
-    $('.toggle').toggle();
     $('#scroll :checkbox').prop('checked', true);
     dvctl_nonstop();
 }

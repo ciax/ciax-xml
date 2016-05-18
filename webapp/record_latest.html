@@ -26,17 +26,17 @@
       <!-- FOOTER -->
       <div class="footer">
         <span class="res" id="result"></span>
-        <span id="query">
+        <span class="control" id="query">
           <select name="query" onchange="seldv(this)">
           </select>
         </span>
-        <button class="toggle" id="stop" onclick="stop();" style="display:none">STOP</button>
-        <span class="" id="msg"></span>
+        <button class="control alarm" id="stop" onclick="stop();">STOP</button>
+        <span class="control" id="msg"></span>
         <span class="tail">
-          <span id="nonstop">
+          <span class="control" id="nonstop">
             <input type="checkbox" checked="true" onclick="dvctl_nonstop();">Non Stop</input>
           </span>
-          <span class="toggle item elps" id="total" ></span>
+          <span class="elps" id="total"></span>
         </span>
       </div>
     </div>

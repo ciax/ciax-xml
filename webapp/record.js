@@ -184,7 +184,7 @@ function archive(tag) {
         make_record(data);
         record_header(data);
         record_result(data);
-        set_acordion('#record h4', true);
+        set_acordion('#record h4');
     });
 }
 function update() {

@@ -34,31 +34,38 @@ function date_sort(a, b) {
     if (na > nb) return -1;
     return 0;
 }
-function set_event() {
+function make_list(data) {
+    html_sel = [];
+    var list = data['list'].sort(date_sort);
+    for (var i = 0; i < list.length; i++) {
+        date_list(list[i]);
+    }
+    html_sel.push('</ul>');
+    $('#select')[0].innerHTML = html_sel.join('');
+}
+function select_record(target) {
+    $('#' + current).removeClass('selected');
+    $(target).addClass('selected');
+    var id = $(target).attr('id');
+    archive(id);
+    current = id;
+}
+function set_select_event() {
     $('#select li').on('click', function() {
-        var id = $(this).attr('id');
-        if (id == current) {
+        if ($(this).attr('id') == current) {
             acordion('#record h4');
         }else {
-            $('#' + current).removeClass('selected');
-            $(this).addClass('selected');
-            archive(id);
-            current = id;
+            select_record(this);
         }
     });
 }
-function select() {
+function init_log() {
     $.getJSON('rec_list.json', function(data) {
-        html_sel = [];
-        var list = data['list'].sort(date_sort);
-        for (var i = 0; i < list.length; i++) {
-            date_list(list[i]);
-        }
-        html_sel.push('</ul>');
-        $('#select')[0].innerHTML = html_sel.join('');
-        set_event();
-        set_acordion('#select h4', true);
+        make_list(data);
+        set_select_event();
+        set_acordion('#select h4', ':not(:first)');
         height_adjust();
+        select_record('#select li:first');
     });
 }
 // Initialize

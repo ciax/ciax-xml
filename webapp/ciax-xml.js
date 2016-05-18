@@ -20,8 +20,8 @@ function acordion(sel) {
         auto_relase = true;
     });
 }
-function set_acordion(sel, fold) {
-    if (fold) {acordion(sel);}
+function set_acordion(sel, filter) {
+    if (filter) {acordion(sel + filter);}
     $(sel).on('click', function() {
         acordion(this);
     });
@@ -94,10 +94,6 @@ function start_upd() {
         itvl = setInterval(update, 1000);
         $('#go_bottom').prop('checked', true);
     }
-}
-function init_log() {
-    select();
-    archive('latest');
 }
 var itvl;
 var auto_release = false;

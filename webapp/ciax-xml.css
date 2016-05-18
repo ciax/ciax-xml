@@ -157,6 +157,8 @@ var {
 }
 /*** footer ***/
 #scroll {
+    font-size: medium;
+    color: green;
     float : right;
 }
 /*** select list ***/

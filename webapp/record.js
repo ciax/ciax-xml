@@ -134,6 +134,7 @@ function make_record(data) {
     html_rec.push('</ul>');
     $('#record')[0].innerHTML = html_rec.join('');
     height_adjust();
+    sticky_bottom();
 }
 // ******* Outline *********
 // *** Result/Footer ***
@@ -196,7 +197,6 @@ function update() {
         }else if (data.time != last_time) { // Do every time for updated record
             if (last_time == last_upd) record_stat(data);
             last_time = data.time;
-            sticky_bottom();
         }else if (last_time != last_upd) { // Do only the first one of the stagnation
             last_upd = last_time;
             record_stat(data);

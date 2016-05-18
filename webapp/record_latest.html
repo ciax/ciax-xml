@@ -16,6 +16,9 @@
         <div class="title">
           <span class="mcr">Macro</span>:
           <span class="cmd" id="mcrcmd"></span>
+          <span class="toggle" id="scroll">
+            <input type="checkbox" checked="true" onclick="sticky_bottom();">Auto Scroll</input>
+          </span>
         </div>
         <div class="bar"><date id="date"></date></div>
       </div>
@@ -33,9 +36,6 @@
         </span>
         <button class="toggle" id="stop" onclick="stop();" style="display:none">STOP</button>
         <span class="" id="msg"></span>
-        <span class="toggle" id="scroll" style="display:none">
-          <input type="checkbox" checked="true" onclick="sticky_bottom();">Auto Scroll</input>
-        </span>
         <span class="toggle item elps" id="total" ></span>
       </div>
     </div>

@@ -45,7 +45,7 @@ av_s-r,Arm Ver,1,mcr,mfp:av
 gs_s-s,Go to STK,1,mcr,mma:gs
 ao_s-s,Arm Open,1,mcr,mfp:ao
 gw_s-w,Go to WAIT,1,mcr,mma:gw
-check_store,Check Status(No actual motion),1,cmd,system:mkcmi
+check_store,Check Status(No actual motion),1,cmd,mmc:upd system:mkcmi
 
 # loadmask
 !4,Sub Load Mask,1
@@ -72,7 +72,7 @@ ao_l-f,Arm Open,1,mcr,mfp:ao
 ini_l-i,Go to INIT,1,mcr,mma:ini
 set0_a,Motor Reset,1,mcr,mma:set0 mma:drvoff mma:upd
 sets_a,Motor Reset at STK,1,mcr,mma:sets mma:upd
-check_load,Check Status(No actual motion),1,cmd,system:mkcmi
+check_load,Check Status(No actual motion),1,cmd,mmc:upd system:mkcmi
 
 # fcheck
 !5,Sub Field Check,1

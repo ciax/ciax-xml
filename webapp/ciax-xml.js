@@ -42,12 +42,14 @@ function height_adjust() {
     });
 }
 // ******** Control by UDP ********
+function proc_res(data){}
 function get_response(data) {
     if (data) {
         var res = $.parseJSON(data);
         console.log('recv=' + data);
         $('#msg').text(res.msg);
-        start_upd()
+        start_upd();
+        proc_res(res);
     }else {
         stop_upd();
         $('#msg').text('NO Response');

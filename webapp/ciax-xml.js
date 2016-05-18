@@ -42,14 +42,12 @@ function height_adjust() {
     });
 }
 // ******** Control by UDP ********
-function proc_res(data){}
 function get_response(data) {
     if (data) {
         var res = $.parseJSON(data);
         console.log('recv=' + data);
         $('#msg').text(res.msg);
         start_upd();
-        proc_res(res);
     }else {
         stop_upd();
         $('#msg').text('NO Response');
@@ -80,12 +78,12 @@ function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
     if (cmd == '--select--') return;
     exec(cmd);
-    if(itvl) make_select(obj, def_sel);
+    if (itvl) make_select(obj, def_sel);
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
 function stop_upd() {
-    if(itvl){
+    if (itvl) {
         clearInterval(itvl);
         itvl = false;
         $('#msg').text('');

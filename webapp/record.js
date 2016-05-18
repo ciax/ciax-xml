@@ -207,6 +207,8 @@ function mcr_start(data) {
     start_upd();
     replace_result('run');
     $('.toggle').toggle();
+    $('#scroll').prop('checked', true);
+    dvctl_nonstop();
 }
 function mcr_end(data) {
     record_result(data);
@@ -214,6 +216,11 @@ function mcr_end(data) {
     record_select(['tinit', 'cinit', 'start', 'load', 'store', 'fin']);
     stop_upd();
 }
+function dvctl_nonstop() {
+    var cmd = $('#nonstop').prop('checked') ? 'nonstop' : 'interactive';
+    if (itvl) dvctl(cmd);
+}
+
 function init() {
     update();
 }
@@ -227,5 +234,4 @@ var first_time = ''; // For first time at a new macro;
 var tag = 'latest';
 var option = [];
 var port;
-def_sel = ['interactive']; // default select
 

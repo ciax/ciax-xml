@@ -136,7 +136,12 @@ function make_record(data) {
     height_adjust();
     sticky_bottom();
 }
-// ******* Outline *********
+// ********* Outline **********
+// *** Static Display
+function record_header(data) {
+    $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
+    $('#date').text(new Date(data.id - 0));
+}
 // *** Result/Footer ***
 function replace_result(stat) {
     $('#result').text(stat);
@@ -147,10 +152,6 @@ function record_result(data) {
     if (data.total_time) $('#total').text(data.total_time);
 }
 // *** Initialize Page ***
-function record_header(data) {
-    $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
-    $('#date').text(new Date(data.id - 0));
-}
 function record_init(data) {
     record_header(data);
     port = data.port;
@@ -163,9 +164,10 @@ function record_init(data) {
 function record_select(ary) {
     make_select($('#query select')[0], ary);
 }
-function record_stat(data) {
+function record_status(data) {
     var stat = data.status;
     if (stat == 'end') {
+        // hide controls
         $('.toggle').toggle();
         mcr_end(data);
     }else if (stat == 'query') {
@@ -174,6 +176,25 @@ function record_stat(data) {
     }else {
         replace_result(stat); //run
     }
+}
+// **** Update Page ****
+function mcr_start(data) {
+    start_upd();
+    replace_result('run');
+    $('.toggle').toggle();
+    $('#scroll :checkbox').prop('checked', true);
+    dvctl_nonstop();
+}
+function mcr_end(data) {
+    record_result(data);
+    set_acordion('#record h4');
+    record_select(['tinit', 'cinit', 'start', 'load', 'store', 'fin']);
+    stop_upd();
+}
+// **** Remote Control ****
+function dvctl_nonstop() {
+    var cmd = $('#nonstop :checkbox').prop('checked') ? 'nonstop' : 'interactive';
+    if (itvl) dvctl(cmd);
 }
 // ******** HTML ********
 function archive(tag) {
@@ -195,33 +216,15 @@ function update() {
             first_time = data.id;
             record_init(data);
         }else if (data.time != last_time) { // Do every time for updated record
-            if (last_time == last_upd) record_stat(data);
+            if (last_time == last_upd) record_status(data);
             last_time = data.time;
         }else if (last_time != last_upd) { // Do only the first one of the stagnation
             last_upd = last_time;
-            record_stat(data);
+            record_status(data);
         }
         blinking();
     });
 }
-function mcr_start(data) {
-    start_upd();
-    replace_result('run');
-    $('.toggle').toggle();
-    $('#scroll :checkbox').prop('checked', true);
-    dvctl_nonstop();
-}
-function mcr_end(data) {
-    record_result(data);
-    set_acordion('#record h4');
-    record_select(['tinit', 'cinit', 'start', 'load', 'store', 'fin']);
-    stop_upd();
-}
-function dvctl_nonstop() {
-    var cmd = $('#nonstop :checkbox').prop('checked') ? 'nonstop' : 'interactive';
-    if (itvl) dvctl(cmd);
-}
-
 function init() {
     update();
 }

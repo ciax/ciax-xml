@@ -9,7 +9,7 @@ module CIAX
     class FpDio < Server
       def initialize(cfg = nil)
         super(10_001, cfg)
-        @list = cfg[:list]
+        @list = @cfg[:list]
         @list[:fp] = self
         @separator = "\r"
         # @reg[2]: output, @reg[3]: input

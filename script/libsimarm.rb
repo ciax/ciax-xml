@@ -8,7 +8,7 @@ module CIAX
     class Arm < Slosyn
       def initialize(cfg = nil)
         super(-0.3, 185.3, 2.5, 10_003, cfg)
-        @list = cfg[:list]
+        @list = @cfg[:list]
         @list[:arm] = self
         @tol = 600
         @postbl = [123, 12.8, 200.5, 0, 12.8]

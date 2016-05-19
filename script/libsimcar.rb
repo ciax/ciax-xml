@@ -8,7 +8,7 @@ module CIAX
     class Carousel < Slosyn
       def initialize(cfg = nil)
         super(-23.49, 0.41, 12, 10_004, cfg)
-        @list = cfg[:list]
+        @list = @cfg[:list]
       end
 
       def cmd_in(num)

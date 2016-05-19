@@ -21,7 +21,9 @@ module CIAX
       def serve(io = nil)
         selectio(io)
         while (str = input(io))
+          verbose{ "Recieve #{str.inspect}" }
           res = dispatch(str)
+          verbose{ "Send #{res.inspect}" }
           print io ? res + @separator.to_s : res.inspect if res
           sleep 0.1
         end

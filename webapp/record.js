@@ -149,7 +149,7 @@ function replace_result(stat) {
 }
 function record_result(data) {
     replace_result(data.result);
-    if (data.total_time) $('#total').text('[' + data.total_time + ' sec]');
+    if (data.total_time) $('#total').text('[' + data.total_time + ']');
 }
 // *** Initialize Page ***
 function record_init(data) {

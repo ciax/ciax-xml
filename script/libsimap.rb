@@ -8,7 +8,7 @@ module CIAX
     class Ap < Server
       def initialize(cfg = nil)
         super(10_002, cfg)
-        @separator = "\r"
+        @ifs = @ofs = "\r"
       end
 
       private

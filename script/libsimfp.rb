@@ -11,7 +11,8 @@ module CIAX
         super(10_001, cfg)
         @list = @cfg[:list]
         @list[:fp] = self
-        @separator = "\r"
+        @ifs = "\n"
+        @ofs = "\r"
         # @reg[2]: output, @reg[3]: input
         @reg = [0, 0, 5268, 1366].map { |n| Word.new(n) }
         # Input[index] vs Output[value] table with time delay

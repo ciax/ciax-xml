@@ -16,16 +16,18 @@ module CIAX
         @prompt_ng = '?'
         self.stdlog = @cfg[:stdlog]
         self.audit = true
+        @ifs = @ofs = $OUTPUT_RECORD_SEPARATOR
       end
 
       def serve(io = nil)
         selectio(io)
-        while (str = input(io))
+        loop do
+          str = input(io)
           verbose { "Recieve #{str.inspect}" }
           res = dispatch(str) || next
+          res += @ofs
           verbose { "Send #{res.inspect}" }
-          print io ? res : res.inspect
-          sleep 0.1
+          io ? io.print(res) : puts(res.inspect)
         end
       rescue
         warn $ERROR_INFO
@@ -35,26 +37,25 @@ module CIAX
 
       # For Background
       def selectio(io)
-        if io
-          $stdin = $stdout = io
-        else
-          @length = nil
-        end
+        return if io
+        @length = nil
       end
 
       def input(io)
         if @length
           io.readpartial(@length)
-        else
-          str = gets
+        elsif io
+          str = io.gets(@ifs)
           str ? str.chomp : ''
+        else
+          str = gets.chomp
         end
       end
 
       def dispatch(str)
         cmd = (/=/ =~ str ? $` : str).to_sym
         res = @io.key?(cmd) ? handle_var(cmd, $') : method_call(str)
-        res.to_s + @separator.to_s
+        res.to_s
       rescue NameError, ArgumentError
         @prompt_ng
       end

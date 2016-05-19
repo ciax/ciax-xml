@@ -153,7 +153,12 @@ var {
 .tail {
     float:right;
 }
-#scroll, #nonstop {
+#scroll {
+    display: hide;
+    font-size: medium;
+    color: maroon;
+}
+#nonstop {
     font-size: medium;
     color: maroon;
 }

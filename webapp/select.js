@@ -47,7 +47,7 @@ function select_record(target) {
     $('#' + current).removeClass('selected');
     $(target).addClass('selected');
     var id = $(target).attr('id');
-    archive(id);
+    update(id);
     current = id;
 }
 function set_select_event() {

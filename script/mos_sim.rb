@@ -7,11 +7,9 @@ require 'libsimfp'
 
 module CIAX::Simulator
   cfg = Conf.new
+  mods = [Arm, Ap, BBIO, Carousel, FpDio]
+  list = mods.map { |mod| mod.new(cfg) }
   Process.daemon(true, true)
-  Arm.new(cfg).start
-  Ap.new(cfg).start
-  BBIO.new(cfg).start
-  Carousel.new(cfg).start
-  FpDio.new(cfg).start
+  list.each(&:start)
   sleep
 end

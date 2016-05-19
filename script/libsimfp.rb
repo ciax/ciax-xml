@@ -28,7 +28,7 @@ module CIAX
       def ra_close?
         # bit10 Arm Close
         # bit2,4 RH Close
-        bin = @reb[2]
+        bin = @reg[2]
         [10, 2, 4].all? { |d| bin[d] == 1 }
       end
 

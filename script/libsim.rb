@@ -30,6 +30,7 @@ module CIAX
           res += @ofs
           verbose { "Send #{res.inspect}" }
           io ? io.syswrite(res) : puts(res.inspect)
+          sleep 0.1
         end
       rescue
         warn $ERROR_INFO
@@ -44,7 +45,7 @@ module CIAX
         else
           str = gets
         end
-        str.chomp
+        str ? str.chomp : ''
       end
 
       def dispatch(str)

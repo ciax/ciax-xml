@@ -12,6 +12,11 @@ module CIAX
         @postbl = [123, 12.8, 200.5, 0, 185]
       end
 
+      # IN 1: ROT
+      # IN 2: FOCUS
+      # IN 3: STORE
+      # IN 4: INI
+      # IN 5: CON
       def cmd_in(num)
         super
         about(@postbl[num.to_i - 1])

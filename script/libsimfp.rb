@@ -26,8 +26,10 @@ module CIAX
       def dispatch(str)
         case str
         when /^>0([0-3])!J..$/
+          # Input
           make_base(Regexp.last_match(1).to_i)
         when /^>0([0-3])!L([0-9A-F]{10})$/
+          # Output
           manipulate(Regexp.last_match(1).to_i, Regexp.last_match(2))
         else
           'E_INVALID_CMD'

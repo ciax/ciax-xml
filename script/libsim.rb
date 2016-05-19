@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # I/O Simulator
-require 'libenumx'
+require 'libstatus'
 require 'gserver'
 module CIAX
   # Device Simulater
@@ -14,6 +14,7 @@ module CIAX
         @io = {}
         @prompt_ok = '>'
         @prompt_ng = '?'
+        init_status
       end
 
       def serve(io = nil)
@@ -37,6 +38,14 @@ module CIAX
       end
 
       private
+
+      def init_status
+        @statlist = {}
+        db = Ins::Db.new
+        %w(tfp tma).each do |id|
+          @statlist[id] = App::Status.new(db.get(id)).ext_local_file
+        end
+      end
 
       # For Background
       def selectio(io)

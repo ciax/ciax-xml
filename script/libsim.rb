@@ -14,8 +14,8 @@ module CIAX
         @cfg = cfg || Conf.new
         @prompt_ok = '>'
         @prompt_ng = '?'
-        stdlog=@cfg[:stdlog]
-        audit=true
+        stdlog = @cfg[:stdlog]
+        audit = true
       end
 
       def serve(io = nil)

@@ -62,6 +62,7 @@ module CIAX
         expr('0b' + binstr)
       end
 
+      # Even(all 1 or 0) -> false, otherwise true
       def _get_uneven(bary)
         ba = bary.inject { |a, e| a.to_i & e.to_i }
         bo = bary.inject { |a, e| a.to_i | e.to_i }

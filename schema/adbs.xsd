@@ -94,6 +94,7 @@
   <xsd:element name="binary">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <!-- MSB to LSB -->
         <xsd:element ref="adbs:field"/>
         <xsd:element ref="adbs:repeat_field" maxOccurs="unbounded"/>
       </xsd:choice>

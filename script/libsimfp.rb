@@ -9,6 +9,8 @@ module CIAX
     class FpDio < Server
       def initialize(cfg = nil)
         super(10_001, cfg)
+        @list = cfg[:list]
+        @list[:fp] = self
         @separator = "\r"
         # @reg[2]: output, @reg[3]: input
         @reg = [0, 0, 5268, 1366].map { |n| Word.new(n) }
@@ -19,6 +21,29 @@ module CIAX
           [2, 0.3], [3, 0.3], [2, 0.3], [3, 0.3],
           [4, 0.3], [5, 0.3], [4, 0.3], [5, 0.3]
         ]
+      end
+
+      # For Contact Sensor
+      # Both Arm Catcher and RoboHand are close?
+      def ra_close?
+        # bit10 Arm Close
+        # bit2,4 RH Close
+        bin = @reb[2]
+        [10, 2, 4].all? { |d| bin[d] == 1 }
+      end
+
+      # Switch Load/Store mode with Catcher O/C at ArmPos = STORE
+      def arm_oc(idx, hex)
+        # OUTPUT?
+        return unless idx == 2 && @list.key?(:arm)
+        # ARM:STORE position?
+        return unless @list[:arm].cmd_in(3) == 1
+        case hex
+        when '0C000400' # AC
+          @list[:load] = true
+        when '0C000800' # AO
+          @list[:load] = false
+        end
       end
 
       private
@@ -44,6 +69,7 @@ module CIAX
       def manipulate(idx, par)
         cmask = par[0, 4].hex
         data = par[4, 4].hex
+        arm_oc(idx, par[0, 8])
         @reg[idx].mask(cmask, data)
         servo
         'A'

@@ -8,18 +8,26 @@ module CIAX
     class Arm < Slosyn
       def initialize(cfg = nil)
         super(-0.3, 185.3, 2.5, 10_003, cfg)
+        @list = cfg[:list]
+        @list[:arm] = self
         @tol = 600
-        @postbl = [123, 12.8, 200.5, 0, 185]
+        @postbl = [123, 12.8, 200.5, 0, 12.8]
       end
 
-      # IN 1: ROT
-      # IN 2: FOCUS
-      # IN 3: STORE
-      # IN 4: INI
+      # IN 1: ROT  (123)
+      # IN 2: FOCUS(12.8)
+      # IN 3: STORE(200.5)
+      # IN 4: INI  (0)
+      #     : WAIT (185)
       # IN 5: CON
       def cmd_in(num)
         super
-        about(@postbl[num.to_i - 1])
+        res = about(@postbl[num.to_i - 1])
+        # Contact Sensor (Both Arm & RH close during Loading at Focus)
+        if @list.key?(:fp) && num == 5
+          res = (@list[:fp].ra_close? && @list[:load]) ? res : '0'
+        end
+        res
       end
 
       private

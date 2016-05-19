@@ -6,8 +6,8 @@ require 'libsimcar'
 require 'libsimfp'
 
 module CIAX::Simulator
-  cfg=Conf.new
-  Process.daemon(true,true)
+  cfg = Conf.new
+  Process.daemon(true, true)
   Arm.new(cfg).start
   Ap.new(cfg).start
   BBIO.new(cfg).start

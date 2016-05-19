@@ -16,18 +16,20 @@ module CIAX
         @prompt_ng = '?'
         self.stdlog = @cfg[:stdlog]
         self.audit = true
+        @length = 1024
         @ifs = @ofs = $OUTPUT_RECORD_SEPARATOR
       end
 
       def serve(io = nil)
-        selectio(io)
+        # @length = nil => tty I/O
+        @length = nil unless io
         loop do
           str = input(io)
           verbose { "Recieve #{str.inspect}" }
           res = dispatch(str) || next
           res += @ofs
           verbose { "Send #{res.inspect}" }
-          io ? io.print(res) : puts(res.inspect)
+          io ? io.syswrite(res) : puts(res.inspect)
         end
       rescue
         warn $ERROR_INFO
@@ -35,21 +37,14 @@ module CIAX
 
       private
 
-      # For Background
-      def selectio(io)
-        return if io
-        @length = nil
-      end
-
       def input(io)
         if @length
-          io.readpartial(@length)
-        elsif io
-          str = io.gets(@ifs)
-          str ? str.chomp : ''
+          str = ' ' * @length
+          io.sysread(@length, str)
         else
-          str = gets.chomp
+          str = gets
         end
+        str.chomp
       end
 
       def dispatch(str)

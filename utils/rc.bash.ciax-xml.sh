@@ -22,4 +22,6 @@ export RUBYLIB="$HOME/ciax-xml/script:$RUBYLIB"
 alias rub='rubocop -a -c .rubocop_todo.yml'
 alias rgen='rubocop --auto-gen-config'
 alias jj='ruby -r json -e "jj(JSON.parse(gets(nil)))"'
+alias js='fixjsstyle *.js'
+alias sim='killall -q mos-sim && echo Terminated || mos-sim; psg mos-sim'
 develop >/dev/null

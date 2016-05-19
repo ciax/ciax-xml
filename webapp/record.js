@@ -193,6 +193,9 @@ function dvctl_nonstop() {
     var cmd = $('#nonstop :checkbox').prop('checked') ? 'nonstop' : 'interactive';
     if (itvl) dvctl(cmd);
 }
+function dvctl_stop() {
+    if (itvl) stop();
+}
 // ******** HTML ********
 function archive(tag) {
     html_rec = [];

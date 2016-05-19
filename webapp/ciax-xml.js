@@ -8,7 +8,7 @@ function sticky_bottom() {
         div.animate({ scrollTop: div[0].scrollHeight},'slow', function() {
             auto_release = true;
         });
-        div.hover(null,function(){ auto_release = false; });
+        div.hover(null, function() { auto_release = false; });
         div.on('scroll', function() {
             if (auto_release) toggle.prop('checked', false);
         });

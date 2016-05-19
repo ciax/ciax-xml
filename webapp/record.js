@@ -162,7 +162,8 @@ function record_init(data) {
     }
 }
 function record_select(ary) {
-    make_select($('#query select')[0], ary);
+    var sel = $('#query select')[0];
+    if (sel) make_select(sel, ary);
 }
 function record_status(data) {
     var stat = data.status;
@@ -180,7 +181,6 @@ function mcr_start(data) {
     start_upd();
     replace_result('run');
     $('#scroll :checkbox').prop('checked', true);
-    dvctl_nonstop();
 }
 function mcr_end(data) {
     record_result(data);
@@ -190,8 +190,12 @@ function mcr_end(data) {
 }
 // **** Remote Control ****
 function dvctl_nonstop() {
+    if (itvl && !$('#nonstop :checkbox').prop('checked')) dvctl('interactive');
+}
+function dvctl_sel(obj) {
     var cmd = $('#nonstop :checkbox').prop('checked') ? 'nonstop' : 'interactive';
-    if (itvl) dvctl(cmd);
+    dvctl(cmd);
+    seldv(obj);
 }
 function dvctl_stop() {
     if (itvl) stop();

@@ -1,20 +1,19 @@
 #!/usr/bin/ruby
 # I/O Simulator
-require 'libstatus'
+require 'libmsg'
 require 'gserver'
 module CIAX
-  # Device Simulater
+  # Device Simulator
   module Simulator
     # Simulation Server
     class Server < GServer
       include Msg
       def initialize(port, *args)
         super
-        Thread.abort_on_exception = true
         @io = {}
         @prompt_ok = '>'
         @prompt_ng = '?'
-        init_status
+        audit=true
       end
 
       def serve(io = nil)
@@ -28,24 +27,7 @@ module CIAX
         warn $ERROR_INFO
       end
 
-      def start
-        bname = File.basename($PROGRAM_NAME, '.rb')
-        self.stdlog = Msg.vardir('log') + bname + '.log'
-        Process.daemon(true, true)
-        verbose { "Starting daemon #{bname}" }
-        super()
-        sleep
-      end
-
       private
-
-      def init_status
-        @statlist = {}
-        db = Ins::Db.new
-        %w(tfp tma).each do |id|
-          @statlist[id] = App::Status.new(db.get(id)).ext_local_file
-        end
-      end
 
       # For Background
       def selectio(io)

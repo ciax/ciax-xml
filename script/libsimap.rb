@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-# A/D Simulator
+# Omega Air Pressure Sensor Simulator
 require 'libsim'
 module CIAX
   # Device Simulater

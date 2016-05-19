@@ -6,8 +6,8 @@ module CIAX
   module Simulator
     # Slosyn Driver Simulator
     class Slosyn < Server
-      def initialize(dl = -100, ul = 100, spd = 1, port = 10_000, *args)
-        super(port, *args)
+      def initialize(dl = -100, ul = 100, spd = 1, port = 10_000, cfg = nil)
+        super(port, cfg)
         @separator = "\r\n"
         @axis = Axis.new(to_int(dl), to_int(ul), to_int(spd))
         # wn: drive ON/OFF during stop

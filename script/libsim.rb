@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # I/O Simulator
-require 'libmsg'
+require 'libsimconf'
 require 'gserver'
 module CIAX
   # Device Simulator
@@ -8,11 +8,13 @@ module CIAX
     # Simulation Server
     class Server < GServer
       include Msg
-      def initialize(port, *args)
-        super
+      def initialize(port, cfg = nil)
+        super(port)
         @io = {}
+        @cfg = cfg || Conf.new
         @prompt_ok = '>'
         @prompt_ng = '?'
+        stdlog=@cfg[:stdlog]
         audit=true
       end
 

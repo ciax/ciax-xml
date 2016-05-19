@@ -6,8 +6,8 @@ module CIAX
   module Simulator
     # Simulation Server
     class Ap < Server
-      def initialize(port = 10_002, *args)
-        super
+      def initialize(cfg = nil)
+        super(10_002, cfg)
         @separator = "\r"
       end
 
@@ -24,6 +24,6 @@ module CIAX
       end
     end
 
-    Ap.new(*ARGV).serve if __FILE__ == $PROGRAM_NAME
+    Ap.new.serve if __FILE__ == $PROGRAM_NAME
   end
 end

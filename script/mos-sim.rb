@@ -8,10 +8,10 @@ require 'libsimfp'
 module CIAX::Simulator
   cfg=Conf.new
   Process.daemon(true,true)
-  Ap.new.start
-  Arm.new.start
-  BBIO.new.start
-  Carousel.new.start
-  FpDio.new.start
+  Ap.new(cfg).start
+  Arm.new(cfg).start
+  BBIO.new(cfg).start
+  Carousel.new(cfg).start
+  FpDio.new(cfg).start
   sleep
 end

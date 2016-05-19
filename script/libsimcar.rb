@@ -6,8 +6,8 @@ module CIAX
   module Simulator
     # Slosyn Driver Simulator
     class Carousel < Slosyn
-      def initialize
-        super(-23.49, 0.41, 12, 10_004)
+      def initialize(cfg = nil)
+        super(-23.49, 0.41, 12, 10_004, cfg)
       end
 
       def cmd_in(num)
@@ -31,6 +31,6 @@ module CIAX
       end
     end
 
-    Carousel.new(*ARGV).serve if __FILE__ == $PROGRAM_NAME
+    Carousel.new.serve if __FILE__ == $PROGRAM_NAME
   end
 end

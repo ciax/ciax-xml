@@ -7,8 +7,8 @@ module CIAX
   module Simulator
     # Field Point I/O
     class FpDio < Server
-      def initialize(port = 10_001, *args)
-        super
+      def initialize(cfg = nil)
+        super(10_001, cfg)
         @separator = "\r"
         # @reg[2]: output, @reg[3]: input
         @reg = [0, 0, 5268, 1366].map { |n| Word.new(n) }
@@ -63,6 +63,6 @@ module CIAX
       end
     end
 
-    FpDio.new(*ARGV).serve if __FILE__ == $PROGRAM_NAME
+    FpDio.new.serve if __FILE__ == $PROGRAM_NAME
   end
 end

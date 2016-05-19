@@ -6,8 +6,8 @@ module CIAX
   module Simulator
     # Slosyn Driver Simulator
     class Arm < Slosyn
-      def initialize
-        super(-0.3, 185.3, 2.5, 10_003)
+      def initialize(cfg = nil)
+        super(-0.3, 185.3, 2.5, 10_003, cfg)
         @tol = 600
         @postbl = [123, 12.8, 200.5, 0, 185]
       end
@@ -30,6 +30,6 @@ module CIAX
       end
     end
 
-    Arm.new(*ARGV).serve if __FILE__ == $PROGRAM_NAME
+    Arm.new.serve if __FILE__ == $PROGRAM_NAME
   end
 end

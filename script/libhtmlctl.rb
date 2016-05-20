@@ -59,7 +59,7 @@ module CIAX
 
       def _mk_select(parent, umem, uid)
         span = parent.enclose('span', class: 'center')
-        sel = span.enclose('select', name: uid, onchange: 'exec(this)')
+        sel = span.enclose('select', name: uid, onchange: 'seldv(this)')
         sel.element('option', '--select--')
         umem.each do|id|
           label = @idx[id][:label] || id

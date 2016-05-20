@@ -32,8 +32,6 @@ module CIAX
           io ? io.syswrite(res) : puts(res.inspect)
           sleep 0.1
         end
-      rescue
-        warn $ERROR_INFO
       end
 
       private

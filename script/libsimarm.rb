@@ -22,13 +22,11 @@ module CIAX
       # IN 5: CON
       def cmd_in(num)
         super
-        res = about(@postbl[num.to_i - 1])
-        # Contact Sensor (Both Arm & RH close during Loading at Focus)
-        if @list.key?(:fp) && num == 5
-          fp = @list[:fp]
-          res = (fp.arm_close? && fp.rh_close? && @list[:load]) ? res : '0'
+        if num == 5
+          _contact?
+        else
+          about(@postbl[num.to_i - 1])
         end
-        res
       end
 
       private
@@ -36,6 +34,17 @@ module CIAX
       def about(x) # torerance
         pos = x * 1000
         (@axis.pulse - pos).abs < @tol ? '1' : '0'
+      end
+
+      # Contact Sensor (Both Arm & RH close during Loading at Focus)
+      def _contact?
+        return unless @list.key?(:fp) && @list[:load]
+        fp = @list[:fp]
+        return unless fp.arm_close?
+        # At Wait~Store && ARM Close
+        return true if cmd_p > 185
+        # At FOCUS && RH,ARM Close
+        about(12.8) && fp.rh_close?
       end
     end
 

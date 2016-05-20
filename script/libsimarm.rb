@@ -20,12 +20,12 @@ module CIAX
       # IN 4: INI  (0)
       #     : WAIT (185)
       # IN 5: CON
-      def cmd_in(num)
+      def cmd_in(numstr)
         super
-        if num == 5
-          _contact?
+        if numstr == '5'
+          _contact? ? '1' : '0'
         else
-          about(@postbl[num.to_i - 1])
+          about(@postbl[numstr.to_i - 1])
         end
       end
 
@@ -42,7 +42,7 @@ module CIAX
         fp = @list[:fp]
         return unless fp.arm_close?
         # At Wait~Store && ARM Close
-        return true if cmd_p > 185
+        return true if pos > 185
         # At FOCUS && RH,ARM Close
         about(12.8) && fp.rh_close?
       end

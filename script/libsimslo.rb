@@ -15,6 +15,10 @@ module CIAX
         @io = { wn: '1', e1: '0', e2: '0' }
       end
 
+      def pos
+        @axis.pulse.to_f / 1_000
+      end
+
       private
 
       def method_call(str)

@@ -176,8 +176,14 @@ var {
     float: left;
     color: dimgray;
 }
+.time:hover {
+    color: silver;
+}
 .cmd {
     color : blue;
+}
+.cmd:hover {
+    color : cyan;
 }
 .selected {
     color : pink;

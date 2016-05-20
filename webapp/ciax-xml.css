@@ -134,7 +134,7 @@ var {
 .res {
     text-transform: capitalize;
 }
-.true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end {
+.true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end, .issued {
     color : green;
 }
 .false, .timeout, .failed, .error {

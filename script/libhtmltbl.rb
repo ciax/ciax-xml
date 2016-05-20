@@ -60,8 +60,9 @@ module CIAX
       def _mk_thead
         @sdb = @adbs[:index]
         tr = _mk_line(_mk_tbody, %i(time elapsed msg))
-        td = tr.enclose('td', class: 'center')
-        _elem_button(td, 'upd')
+        @ctltd = tr.enclose('td', class: 'center')
+        # add buttons here
+        _elem_button(@ctltd, 'upd')
         self
       end
 
@@ -101,10 +102,9 @@ module CIAX
       end
 
       def _elem_button(parent, id, label = nil)
-        atrb = { class: 'button', type: 'button' }
+        atrb = { class: label || id, type: 'button' }
         atrb[:value] = (label || id).upcase
-        cmd = label ? 'exec' : 'dvctl'
-        atrb[:onclick] = "#{cmd}('#{id}')"
+        atrb[:onclick] = "dvctl('#{id}')"
         parent.element('input', nil, atrb)
       end
     end

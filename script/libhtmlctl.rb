@@ -9,6 +9,8 @@ module CIAX
       def initialize(dbi, grpary = [])
         super(dbi)
         _mk_ctl_grp(grpary)
+        return unless @dbi[:watch] && !grpary.include?('-')
+        _elem_button(@ctltd, 'interrupt', 'stop')
       end
 
       private
@@ -57,7 +59,7 @@ module CIAX
 
       def _mk_select(parent, umem, uid)
         span = parent.enclose('span', class: 'center')
-        sel = span.enclose('select', name: uid, onchange: 'seldv(this)')
+        sel = span.enclose('select', name: uid, onchange: 'exec(this)')
         sel.element('option', '--select--')
         umem.each do|id|
           label = @idx[id][:label] || id
@@ -70,7 +72,7 @@ module CIAX
         span = parent.enclose('span', class: 'center')
         umem.each do|id|
           label = @idx[id][:label]
-          _elem_button(span, id, label)
+          _elem_button(span, id, label, true)
         end
         self
       end

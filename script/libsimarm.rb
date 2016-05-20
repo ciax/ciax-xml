@@ -25,7 +25,8 @@ module CIAX
         res = about(@postbl[num.to_i - 1])
         # Contact Sensor (Both Arm & RH close during Loading at Focus)
         if @list.key?(:fp) && num == 5
-          res = (@list[:fp].ra_close? && @list[:load]) ? res : '0'
+          fp = @list[:fp]
+          res = (fp.arm_close? && fp.rh_close? && @list[:load]) ? res : '0'
         end
         res
       end

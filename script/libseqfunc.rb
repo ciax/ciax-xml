@@ -57,9 +57,9 @@ module CIAX
       end
 
       def _exec(e, step, _mstat)
-         if step.exec? && @qry.query(%w(exec skip), step)
-           step.set_result(_exe_site(e))
-         end
+        if step.exec? && @qry.query(%w(exec skip), step)
+          step.set_result(_exe_site(e))
+        end
         @sv_stat.push(:run, e[:site]) unless
           @sv_stat.get(:run).include?(e[:site])
         true

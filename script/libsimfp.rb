@@ -25,12 +25,15 @@ module CIAX
       end
 
       # For Contact Sensor
-      # Both Arm Catcher and RoboHand are close?
-      def ra_close?
-        # bit10 Arm Close
-        # bit2,4 RH Close
+      # Arm Catcher Close? (bit10)
+      def arm_close?
+        @reg[2][10] == 1
+      end
+
+      #  RoboHand Close? (bit2,4)
+      def rh_close?
         bin = @reg[2]
-        [10, 2, 4].all? { |d| bin[d] == 1 }
+        [2, 4].all? { |d| bin[d] == 1 }
       end
 
       # Switch Load/Store mode with Catcher O/C at ArmPos = STORE

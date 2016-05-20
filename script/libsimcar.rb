@@ -22,7 +22,7 @@ module CIAX
         case num
         when 1
           # Contact sensor (off if load mode)
-          !@list[:load] && @axis.pulse % 1000 == 0
+          _contact
         when 3
           @axis.up_limit?
         when 4
@@ -30,6 +30,13 @@ module CIAX
         else
           false
         end
+      end
+
+      def _contact
+        return unless @axis.pulse % 1000 == 0
+        return true unless @list[:load]
+        return true if @list[:fp].arm_close? && @list[:arm].cmd_p > 150
+        false
       end
     end
 

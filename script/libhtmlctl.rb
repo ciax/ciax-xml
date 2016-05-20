@@ -72,7 +72,7 @@ module CIAX
         span = parent.enclose('span', class: 'center')
         umem.each do|id|
           label = @idx[id][:label]
-          _elem_button(span, id, label, true)
+          _elem_button(span, id, label)
         end
         self
       end

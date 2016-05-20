@@ -1,7 +1,8 @@
 #!/bin/bash
-make-html mix gtr
-make-html mft gc
-make-html mfp gmos ggv
-make-html mma gm
-make-html mmc gabs
-make-html map -
+[ "$PROJ" = moircs ] && h=m || h=t
+make-html ${h}ix gtr
+make-html ${h}ft gc
+make-html ${h}fp gmos ggv
+make-html ${h}ma gm
+make-html ${h}mc gabs
+make-html ${h}ap -

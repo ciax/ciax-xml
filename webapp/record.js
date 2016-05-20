@@ -78,6 +78,7 @@ function operator(ope, cri) {
     case 'equal': return ('== ' + cri); break;
     case 'not' : return ('!= ' + cri); break;
     case 'match' : return ('=~ /' + cri + '/'); break;
+    case 'unmatch' : return ('!~ /' + cri + '/'); break;
     default:
     }
 }

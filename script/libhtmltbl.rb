@@ -26,7 +26,7 @@ module CIAX
 
       def _mk_head(parent)
         parent.element('meta', '', charset: 'utf-8')
-        parent.element('title', 'CIAX-XML')
+        parent.element('title', "CIAX-XML(#{@dbi[:id]})")
         atrb = { rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css' }
         parent.element('link', nil, atrb)
         fmt = 'var type="status",site="%s",Host="%s",port="%s";'

@@ -182,9 +182,6 @@ var {
 .cmd {
     color : blue;
 }
-.cmd:hover {
-    color : cyan;
-}
 .selected {
     color : pink;
 }

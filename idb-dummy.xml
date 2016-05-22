@@ -7,6 +7,15 @@
       <instance id="tma" app_id="mma" host="localhost" port="25693" label="TEST Arm"/>
       <instance id="tmc" app_id="mmc" host="localhost" port="25694" label="TEST Carousel">
         <command ref="mmc"/>
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="gpos">
+            <alias id="acs" ref="abs" label="Access Position" symbol="acs"/>
+          </group>
+          <group ref="ghide">
+            <alias id="rsl" ref="abs" label="Loading Position for Machine" symbol="rsl"/>
+            <alias id="asl" ref="abs" label="Access Position for Machine" symbol="asl"/>
+          </group>
+        </status>
       </instance>
       <instance id="tbb" app_id="bbe" host="localhost" port="25696" label="TEST BBE simple">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">

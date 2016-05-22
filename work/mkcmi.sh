@@ -1,3 +1,4 @@
 #!/bin/bash
 cd ~/.var/json
-mmc2cmi < status_mmc.json |tee status_cmi.json|tr -d '"'|grep cmi:
+[ "$PROJ" = 'dummy' ] && site=tmc || site=mmc
+mmc2cmi < status_$site.json |tee status_cmi.json|tr -d '"'|grep cmi:

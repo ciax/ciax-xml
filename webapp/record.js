@@ -231,6 +231,7 @@ function update() {
         }
         blinking();
     });
+    remain_msg();
 }
 function init() {
     update();

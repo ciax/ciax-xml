@@ -48,12 +48,19 @@ function get_response(data) {
         var res = $.parseJSON(data);
         console.log('recv=' + data);
         $('#msg').text(res.msg);
+        count = 10;
         start_upd();
     }else {
         stop_upd();
         $('#msg').text('NO Response');
         $('#msg').attr('class', 'error');
     }
+}
+function remain_msg() {
+    if (count > 0)
+        count -= 1;
+    else if (count == 0)
+        $('#msg').text('');
 }
 function dvctl(cmd) {
     var args = {port: port, cmd: cmd};
@@ -96,5 +103,6 @@ function start_upd() {
 var itvl;
 var auto_release = false;
 var def_sel = [];
+var count = 0;
 $(window).on('resize', height_adjust);
 $.ajaxSetup({ cache: false});

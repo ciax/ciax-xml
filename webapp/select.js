@@ -14,7 +14,7 @@ function record_time(id, time) {
     html_sel.push('</span>');
 }
 function time_list(time, hash) {
-   var id = hash['id']
+   var id = hash['id'];
     html_sel.push('<li id="' + id + '">');
     record_time(hash['id'], time);
     record_cmd(hash['cid']);

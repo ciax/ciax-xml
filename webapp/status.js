@@ -28,6 +28,7 @@ function conv(stat) {
 function update() {
     $.getJSON(type + '_' + site + '.json', conv);
     elapsed();
+    remain_msg();
 }
 function init() {
     start_upd();

@@ -150,11 +150,12 @@ function replace_result(stat) {
 }
 function record_result(data) {
     replace_result(data.result);
-    if (data.total_time) $('#total').text('[' + data.total_time + ']');
+    $('#total').text('[' + data.total_time + ']');
 }
 // *** Initialize Page ***
 function record_init(data) {
     record_header(data);
+    $('#total').text('');
     port = data.port;
     if (data.status == 'end') {
         mcr_end(data);

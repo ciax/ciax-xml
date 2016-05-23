@@ -188,10 +188,10 @@ function mcr_start(data) {
     $('#scroll :checkbox').prop('checked', true);
 }
 function mcr_end(data) {
-    replace_status('end')
+    replace_status('end');
     record_result(data);
     set_acordion('#record h4');
-    record_select(['upd', 'tinit', 'cinit', 'start', 'load', 'store', 'fin']);
+    init_select();
     stop_upd();
     $('#scroll').hide();
 }
@@ -239,6 +239,16 @@ function update() {
 }
 function init() {
     update();
+}
+// Initial Commands
+function init_select() {
+    var slots = [];
+    for (var i = 0; i <= 23; i++) { slots.push('slot' + i); }
+    var ary = ['upd'];
+    ary.push(['init', ['tinit', 'cinit']]);
+    ary.push(['mos', ['start', 'load', 'store', 'fin']]);
+    ary.push(['slot', slots]);
+    record_select(ary);
 }
 // Var setting
 var html_rec = [];

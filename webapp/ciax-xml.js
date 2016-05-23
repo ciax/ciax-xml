@@ -75,11 +75,20 @@ function exec(cmd) {
     if (confirm('EXEC?(' + cmd + ')')) dvctl(cmd);
 }
 // Select Command
+function make_opt(opt, ary) {
+    for (var i in ary) {
+        if (Array.isArray(ary[i])) {
+            opt.push('<optgroup label="' + ary[i][0] + '">');
+            make_opt(opt, ary[i][1]);
+            opt.push('</optgroup>');
+        }else {
+            opt.push('<option>' + ary[i] + '</option>');
+        }
+    }
+}
 function make_select(obj, ary) {
     var opt = ['<option>--select--</option>'];
-    for (var i in ary) {
-        opt.push('<option>' + ary[i] + '</option>');
-    }
+    make_opt(opt, ary);
     obj.innerHTML = opt.join('');
 }
 function seldv(obj) {

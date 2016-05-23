@@ -20,7 +20,12 @@
             <input type="checkbox" onclick="sticky_bottom();">Auto Scroll</input>
           </span>
         </div>
-        <div class="bar"><date class="tail" id="date"></date></div>
+        <div class="bar">
+          <span class="tail">
+            <date id="date"></date>
+            <span class="elps" id="total"></span>
+          </span>
+        </div>
       </div>
       <div id="record" class="contents"></div>
       <!-- FOOTER -->
@@ -36,7 +41,6 @@
           <span class="control" id="nonstop">
             <input type="checkbox" checked="true" onclick="dvctl_nonstop();">Non Stop</input>
           </span>
-          <span class="elps" id="total"></span>
         </span>
       </div>
     </div>

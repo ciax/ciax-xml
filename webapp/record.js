@@ -191,7 +191,7 @@ function mcr_end(data) {
     replace_status('end')
     record_result(data);
     set_acordion('#record h4');
-    record_select(['tinit', 'cinit', 'start', 'load', 'store', 'fin']);
+    record_select(['upd', 'tinit', 'cinit', 'start', 'load', 'store', 'fin']);
     stop_upd();
     $('#scroll').hide();
 }

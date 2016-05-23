@@ -44,7 +44,10 @@ module CIAX
         # <xml id='id' a='1' b='2'> => db[id][a]='1', db[id][b]='2'
         type?(db, Hashx)
         key, atrb = _get_attr_(id, &at_proc)
-        alert("ATTRDB: Duplicated ID [#{key}]") if id != :ref && db.key?(key)
+        if id != :ref && db.key?(key)
+          alert("ATTRDB: Duplicated ID [#{key}]")
+          db.delete(key)
+        end
         db.get(key) { Hashx.new }.update(atrb)
         key
       end

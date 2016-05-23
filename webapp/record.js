@@ -144,18 +144,20 @@ function record_header(data) {
     $('#date').text(new Date(data.id - 0));
 }
 // *** Result/Footer ***
-function replace_result(stat) {
-    $('#result').text(stat);
-    $('#result').attr('class', 'res ' + stat);
+function replace_status(stat) {
+    $('#status').text(stat);
+    $('#status').attr('class', 'res ' + stat);
 }
 function record_result(data) {
-    replace_result(data.result);
+    $('#result').text(data.result);
+    $('#result').attr('class', 'res ' + data.result);
     $('#total').text('[' + data.total_time + ']');
 }
 // *** Initialize Page ***
 function record_init(data) {
     record_header(data);
     $('#total').text('');
+    $('#result').text('');
     port = data.port;
     if (data.status == 'end') {
         mcr_end(data);
@@ -172,20 +174,21 @@ function record_status(data) {
     if (stat == 'end') {
         mcr_end(data);
     }else if (stat == 'query') {
-        replace_result(stat);
+        replace_status(stat);
         record_select(option);
     }else {
-        replace_result(stat); //run
+        replace_status(stat); //run
     }
 }
 // **** Update Page ****
 function mcr_start(data) {
     start_upd();
-    replace_result('run');
+    replace_status('run');
     $('#scroll').show();
     $('#scroll :checkbox').prop('checked', true);
 }
 function mcr_end(data) {
+    replace_status('end')
     record_result(data);
     set_acordion('#record h4');
     record_select(['tinit', 'cinit', 'start', 'load', 'store', 'fin']);

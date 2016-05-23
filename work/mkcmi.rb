@@ -7,7 +7,7 @@ require 'json'
 #   OFF   | OPEN   | OPEN   | FOCUS   | nomask
 #   OFF   | CLOSE  | CLOSE  | FOCUS   | #
 #   OFF   | OPEN   | CLOSE  | FOCUS   | #
-#   OFF   | -      | -      | INI     | #
+#   OFF   | -      | -      | INIT    | #
 #   OFF   | -      | -      | >FOCUS  | #
 #   ON    | -      | -      | -       | nomask
 
@@ -19,11 +19,9 @@ end
 # Mask is Focal plane?
 def on_mask?(stat)
   return if stat[:con] == 'ON'
-  return true if stat[:abs] == 'INI'
-  if stat[:abs] == 'FOCAS'
+  return true if stat[:abs] == 'INIT'
+  if stat[:abs] == 'FOCUS'
     stat[:rao] == 'CLOSE' && stat[:rbo] == 'CLOSE'
-  else
-    true
   end
 end
 pfx="#{ENV['PROJ']}" == 'dummy' ? 't' : 'm'

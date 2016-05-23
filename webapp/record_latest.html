@@ -16,11 +16,9 @@
         <div class="title">
           <span class="mcr">Macro</span>:
           <span class="cmd" id="mcrcmd"></span>
-          <span class="tail" id="scroll">
-            <input type="checkbox" onclick="sticky_bottom();">Auto Scroll</input>
-          </span>
         </div>
         <div class="bar">
+          <span class="res" id="result"></span>
           <span class="tail">
             <date id="date"></date>
             <span class="elps" id="total"></span>
@@ -30,7 +28,7 @@
       <div id="record" class="contents"></div>
       <!-- FOOTER -->
       <div class="footer">
-        <span class="res" id="result"></span>
+        <span class="res" id="status"></span>
         <span class="control" id="query">
           <select name="query" onchange="dvctl_sel(this)">
           </select>
@@ -40,6 +38,10 @@
         <span class="tail">
           <span class="control" id="nonstop">
             <input type="checkbox" checked="true" onclick="dvctl_nonstop();">Non Stop</input>
+
+          </span>
+          <span id="scroll">
+            <input type="checkbox" onclick="sticky_bottom();">Auto Scroll</input>
           </span>
         </span>
       </div>

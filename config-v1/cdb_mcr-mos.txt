@@ -31,9 +31,9 @@ check_start,Check Status(No actual motion),1,cmd,
 !3,Sub Store Mask,1
 s-i,storemask 1(INIT),1,mcr,mcr:ah_s-i mcr:ao_s-i mcr:rc_s-i
 s-f,storemask 2(INIT~FOCUS),1,mcr,mcr:s-i mcr:gf_s-f mcr:ac_s-f mma:upd mcr:ro_s-f
-s-r,storemask 3(FOCUS~ROT),1,mcr,mcr:s-f mcr:gr_s-r mcr:av_s-r
-s-s,storemask 4(ROT~STORE),1,mcr,mcr:s-r mcr:gs_s-s mma:upd mcr:sets_a map:upd mma:upd mcr:ao_s-s
-s-w,storemask 5(STORE~WAIT),1,mcr,mcr:s-s mma:upd mmc:upd map:upd mcr:gw_s-w mcr:check_store
+s-r,storemask 3(FOCUS~ROT),1,mcr,mcr:s-f system:mkcmi mcr:gr_s-r mcr:av_s-r
+s-s,storemask 4(ROT~STORE),1,mcr,mcr:s-r  system:mkcmi mcr:gs_s-s mma:upd mcr:sets_a map:upd mma:upd mcr:ao_s-s
+s-w,storemask 5(STORE~WAIT),1,mcr,mcr:s-s  system:mkcmi mma:upd mmc:upd map:upd mcr:gw_s-w mcr:check_store
 ah_s-i,Arm Hor,1,mcr,mfp:ah
 ao_s-i,Arm Open,1,mcr,mfp:ao
 rc_s-i,Rh Close,1,mcr,mfp:rc
@@ -45,7 +45,7 @@ av_s-r,Arm Ver,1,mcr,mfp:av
 gs_s-s,Go to STK,1,mcr,mma:gs
 ao_s-s,Arm Open,1,mcr,mfp:ao
 gw_s-w,Go to WAIT,1,mcr,mma:gw
-check_store,Check Status(No actual motion),1,cmd,mmc:upd system:mkcmi
+check_store,Check Status(No actual motion),1,cmd,mmc:upd
 
 # loadmask
 !4,Sub Load Mask,1
@@ -56,7 +56,7 @@ l-f,loadmask 4(ROT~FOCUS),1,mcr,mcr:l-r mcr:gf_l-f mcr:rc_l-f mma:upd mcr:ao_l-f
 #l-f,loadmask 4(ROT~FOCUS),1,mcr,mcr:l-r mcr:gf_l-f mcr:rc_l-f mma:upd mcr:l-msk%M mcr:ao_l-f
 l-mskon,loadmask (Mask Sensor Check),1,mcr,
 l-mskoff,loadmask (Mask Sensor Check),1,mcr,mcr:ro_l-f map:upd mcr:rc_l-f mma:upd
-l-i,loadmask 5(FOCUS~INIT),1,mcr,mcr:l-f mcr:ini_l-i mma:upd mcr:set0_a mcr:check_load
+l-i,loadmask 5(FOCUS~INIT),1,mcr,mcr:l-f  system:mkcmi mcr:ini_l-i mma:upd mcr:set0_a mcr:check_load system:mkcmi
 av_l-w,Arm Ver,1,mcr,mfp:av
 ao_l-w,Arm Open,1,mcr,mfp:ao
 gs_l-s,Go to STK,1,mcr,mma:gs
@@ -72,7 +72,7 @@ ao_l-f,Arm Open,1,mcr,mfp:ao
 ini_l-i,Go to INIT,1,mcr,mma:ini
 set0_a,Motor Reset,1,mcr,mma:set0 mma:drvoff mma:upd
 sets_a,Motor Reset at STK,1,mcr,mma:sets mma:upd
-check_load,Check Status(No actual motion),1,cmd,mmc:upd system:mkcmi
+check_load,Check Status(No actual motion),1,cmd,mmc:upd
 
 # fcheck
 !5,Sub Field Check,1
@@ -112,9 +112,9 @@ check_fin,Check Status(No actual motion),1,cmd,
 # startmask
 start,startmask,,mcr,mcr:upd mcr:t-w
 # storemask
-store,storemask,,mcr,mcr:upd mcr:s-w
+store,storemask,,mcr,mcr:upd mcr:s-w system:mkcmi
 # loadmask
-load,loadmask,,mcr,mcr:upd mcr:l-i
+load,loadmask,,mcr,mcr:upd mcr:l-i system:mkcmi
 # fcheck
 #fcheck,fieldcheck,,mcr,mcr:upd mcr:fc-r1
 # kapamask

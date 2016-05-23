@@ -418,6 +418,7 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="s-f"/>
+        <system>mkcmi</system>
         <mcr name="gr_s-r"/>
         <mcr name="av_s-r"/>
       </item>
@@ -434,6 +435,7 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="s-r"/>
+        <system>mkcmi</system>
         <mcr name="gs_s-s"/>
         <upd site="mma"/>
         <mcr name="sets_a"/>
@@ -455,6 +457,7 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="s-s"/>
+        <system>mkcmi</system>
         <upd site="mma"/>
         <upd site="mmc"/>
         <upd site="map"/>
@@ -649,7 +652,6 @@
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
         <upd site="mmc"/>
-        <system>mkcmi</system>
       </item>
     </group>
     <group id="grp_mos_4" caption="Sub Load Mask" rank="1">
@@ -760,10 +762,12 @@
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
         <mcr name="l-f"/>
+        <system>mkcmi</system>
         <mcr name="ini_l-i"/>
         <upd site="mma"/>
         <mcr name="set0_a"/>
         <mcr name="check_load"/>
+        <system>mkcmi</system>
       </item>
       <item id="av_l-w" label="Arm Ver">
         <goal>
@@ -965,7 +969,6 @@
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
         <upd site="mmc"/>
-        <system>mkcmi</system>
       </item>
     </group>
     <group id="grp_mos_5" caption="Sub Field Check" rank="1">
@@ -1339,6 +1342,7 @@
         </check>
         <mcr name="upd"/>
         <mcr name="s-w"/>
+        <system>mkcmi</system>
       </item>
       <item id="load" label="loadmask">
         <check>
@@ -1348,6 +1352,7 @@
         </check>
         <mcr name="upd"/>
         <mcr name="l-i"/>
+        <system>mkcmi</system>
       </item>
       <item id="kapa" label="align mask">
         <check>

@@ -135,9 +135,9 @@ var {
 /* common */
 .res {
     text-transform: capitalize;
-    color : pink;
+    color : magenda;
 }
-.true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end, .issued, .nomask {
+.true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end, .issued, .accept, .nomask {
     color : green;
 }
 .false, .timeout, .failed, .error {
@@ -165,7 +165,7 @@ var {
     width : 76px;
 }
 #nonstop.switch {
-    width : 53px;
+    width : 100px;
 }
 /* Slide Switch */
 /*** select list ***/

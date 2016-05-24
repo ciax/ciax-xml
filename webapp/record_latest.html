@@ -35,14 +35,13 @@
           </select>
         </span>
         <button class="control stop" id="stop" onclick="dvctl_stop();">STOP</button>
+        <label class="switch control" id="nonstop">
+          <input type="checkbox" class="switch-input" checked onclick="dvctl_nonstop();"></input>
+          <span class="switch-label" data-on="NonStop" data-off="Interactive"></span>
+          <span class="switch-handle"></span>
+        </label>
         <span class="control" id="msg"></span>
         <span class="tail">
-          <span class="control">Nonstop</span>
-          <label class="switch control" id="nonstop">
-            <input type="checkbox" class="switch-input" checked onclick="dvctl_nonstop();"></input>
-            <span class="switch-label" data-on="ON" data-off="OFF"></span>
-            <span class="switch-handle"></span>
-          </label>
           <span class="control">Scroll</span>
           <label class="switch" id="scroll">
             <input type="checkbox" class="switch-input" onclick="sticky_bottom();"></input>

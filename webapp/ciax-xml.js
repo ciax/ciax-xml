@@ -48,6 +48,7 @@ function get_response(data) {
         var res = $.parseJSON(data);
         console.log('recv=' + data);
         $('#msg').text(res.msg);
+        $('#msg').attr('class', res.msg.toLowerCase());
         count = 10;
         start_upd();
     }else {

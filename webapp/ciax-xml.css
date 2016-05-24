@@ -1,5 +1,6 @@
 /**************** Global Style *****************/
 html,body{
+    font-size : medium;
     width: 99%;
     position:relative;
     margin-left: auto;
@@ -16,7 +17,15 @@ table{
 th{
     text-align : center;
 }
-.outline{
+button, select{
+    font-weight: bold;
+    font-size : large;
+    border-radius : 2px;
+    border : 2px outset;
+    background-color : silver;
+    color : black;
+}
+div.outline{
     max-height: 95%;
     font-weight: bold;
     border : 5px outset lightgreen;
@@ -24,15 +33,18 @@ th{
     margin-right: 0;
     background-color: rgba(200,200,200,0.5);
 }
-.title{
+div.title{
     font-size : x-large;
     text-align : center;
+    vertical-align : middle;
     color : lightcyan;
     background-color: lightgreen;
+    padding : 5px;
 }
-.footer{
+div.footer{
     font-size : large;
     test-align : center;
+    vertical-align : middle;
     color : navy;
     background-color: lightgreen;
     padding : 3px;
@@ -61,13 +73,10 @@ th{
 .active{
     color : purple;
 }
-.ctllabel{
+.control-label{
     text-align : center;
     color : orange;
     font-size: large;
-}
-button{
-    font-weight: bold;
 }
 .center{
     text-align :center;
@@ -95,7 +104,6 @@ h4{
     margin: 0;
 }
 date{
-    font-size: medium;
     color: navy;
 }
 ul{
@@ -106,7 +114,6 @@ ul{
 /***** Step Line *****/
 /* common */
 .head {
-    font-size: middle;
     text-transform: uppercase;
 }
 /*** Title coloring ***/
@@ -157,7 +164,6 @@ var {
     float:right;
 }
 .elps {
-    font-size: medium;
     color: navy;
     width:5em;
 }

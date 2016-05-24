@@ -30,19 +30,19 @@
       <!-- FOOTER -->
       <div class="footer">
         <span class="res" id="status"></span>
-        <span class="control" id="query">
+        <span id="query">
           <select name="query" onchange="dvctl_sel(this)">
           </select>
         </span>
-        <button class="control stop" id="stop" onclick="dvctl_stop();">STOP</button>
-        <label class="switch control" id="nonstop">
+        <button class="stop" id="stop" onclick="dvctl_stop();">STOP</button>
+        <label class="switch" id="nonstop">
           <input type="checkbox" class="switch-input" checked onclick="dvctl_nonstop();"></input>
           <span class="switch-label" data-on="NonStop" data-off="Interactive"></span>
           <span class="switch-handle"></span>
         </label>
-        <span class="control" id="msg"></span>
+        <span id="msg"></span>
         <span class="tail">
-          <span class="control">Scroll</span>
+          <span >Scroll</span>
           <label class="switch" id="scroll">
             <input type="checkbox" class="switch-input" onclick="sticky_bottom();"></input>
             <span class="switch-label" data-on="Auto" data-off="Manual"></span>

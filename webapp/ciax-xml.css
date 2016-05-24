@@ -135,8 +135,9 @@ var {
 /* common */
 .res {
     text-transform: capitalize;
+    color : pink;
 }
-.true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end, .issued {
+.true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end, .issued, .nomask {
     color : green;
 }
 .false, .timeout, .failed, .error {

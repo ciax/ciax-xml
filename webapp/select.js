@@ -48,6 +48,7 @@ function make_list(data) {
     }
     html_sel.push('</ul>');
     $('#select')[0].innerHTML = html_sel.join('');
+    html_sel = null;
 }
 function select_record(target) {
     $('#' + current).removeClass('selected');
@@ -75,6 +76,6 @@ function init_log() {
     });
 }
 // Initialize
-var html_sel = [];
+var html_sel;
 var date = new Date();
 var current = '';

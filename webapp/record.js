@@ -125,7 +125,7 @@ function make_step(step) {
 // Macro Body
 function make_record(data) {
     start_time = new Date(data.start);
-    html_rec.push('<ul>');
+    html_rec = ['<ul>'];
     for (var j in data.steps) {
         var step = data.steps[j];
         step_level(step.depth);
@@ -134,6 +134,7 @@ function make_record(data) {
     depth = step_level(1);
     html_rec.push('</ul>');
     $('#record')[0].innerHTML = html_rec.join('');
+    html_rec = null;
     height_adjust();
     sticky_bottom();
 }
@@ -207,7 +208,6 @@ function dvctl_stop() {
 }
 // ******** HTML ********
 function archive(tag) {
-    html_rec = [];
     depth = 1;
     $.getJSON('record_' + tag + '.json', function(data) {
         make_record(data);
@@ -217,7 +217,6 @@ function archive(tag) {
     });
 }
 function update() {
-    html_rec = [];
     depth = 1;
     $.getJSON('record_latest.json', function(data) {
         make_record(data);
@@ -249,7 +248,7 @@ function init_select() {
     record_select(ary);
 }
 // Var setting
-var html_rec = [];
+var html_rec;
 var depth = 1;
 var start_time = ''; // For elapsed time
 var last_time = '';  // For detecting update

@@ -96,14 +96,14 @@ function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
     if (cmd == '--select--') return;
     exec(cmd);
-    if (itvl) make_select(obj, def_sel);
+    if (itvl) make_select(obj, []);
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
 function stop_upd() {
     if (itvl) {
         clearInterval(itvl);
-        itvl = false;
+        itvl = null;
         $('#msg').text('');
     }
 }
@@ -112,7 +112,6 @@ function start_upd() {
 }
 var itvl;
 var auto_release = false;
-var def_sel = [];
 var count = 0;
 $(window).on('resize', height_adjust);
 $.ajaxSetup({ cache: false});

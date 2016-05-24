@@ -22,7 +22,7 @@ button, select{
     font-size : large;
     border-radius : 2px;
     border : 2px outset;
-    background-color : silver;
+    background-color : gainsboro;
     color : black;
 }
 div.outline{

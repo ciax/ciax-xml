@@ -233,7 +233,7 @@ body {
   background-image: linear-gradient(to bottom, #eeeeee, white);
 }
 .switch-input:checked ~ .switch-handle {
-  left: 40px;
+  left : calc(100% - 21px);
   box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 

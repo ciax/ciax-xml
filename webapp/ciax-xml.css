@@ -161,6 +161,12 @@ var {
     color: navy;
     width:5em;
 }
+#scroll.switch {
+    width : 76px;
+}
+#nonstop.switch {
+    width : 53px;
+}
 /* Slide Switch */
 /*** select list ***/
 .time {

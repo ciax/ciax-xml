@@ -156,20 +156,12 @@ var {
 .tail {
     float:right;
 }
-#scroll {
-    display: hide;
-    font-size: medium;
-    color: maroon;
-}
-#nonstop {
-    font-size: medium;
-    color: maroon;
-}
 .elps {
     font-size: medium;
     color: navy;
     width:5em;
 }
+/* Slide Switch */
 /*** select list ***/
 .time {
     width: 4.5em;

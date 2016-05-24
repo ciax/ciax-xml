@@ -184,7 +184,6 @@ function record_status(data) {
 function mcr_start(data) {
     start_upd();
     replace_status('run');
-    $('#scroll').show();
     $('#scroll :checkbox').prop('checked', true);
 }
 function mcr_end(data) {
@@ -193,7 +192,6 @@ function mcr_end(data) {
     set_acordion('#record h4');
     init_select();
     stop_upd();
-    $('#scroll').hide();
 }
 // **** Remote Control ****
 function dvctl_nonstop() {

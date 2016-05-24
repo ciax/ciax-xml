@@ -3,8 +3,9 @@
   <head>
     <meta charset="utf-8"/>
     <title>CIAX-XML(Record)</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
     <link rel="stylesheet" type="text/css" href="ciax-xml.css"/>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script type="text/javascript" src="ciax-xml.js"></script>
     <script type="text/javascript" src="record.js"></script>
     <script type="text/javascript">$(document).ready(init);</script>
@@ -36,13 +37,18 @@
         <button class="control stop" id="stop" onclick="dvctl_stop();">STOP</button>
         <span class="control" id="msg"></span>
         <span class="tail">
-          <span class="control" id="nonstop">
-            <input type="checkbox" checked="true" onclick="dvctl_nonstop();">Non Stop</input>
-
-          </span>
-          <span id="scroll">
-            <input type="checkbox" onclick="sticky_bottom();">Auto Scroll</input>
-          </span>
+          <span class="control">Nonstop</span>
+          <label class="switch control" id="nonstop">
+            <input type="checkbox" class="switch-input" checked onclick="dvctl_nonstop();"></input>
+            <span class="switch-label" data-on="ON" data-off="OFF"></span>
+            <span class="switch-handle"></span>
+          </label>
+          <span class="control">Scroll</span>
+          <label class="switch" id="scroll">
+            <input type="checkbox" class="switch-input" onclick="sticky_bottom();"></input>
+            <span class="switch-label" data-on="Auto" data-off="Manual"></span>
+            <span class="switch-handle"></span>
+          </label>
         </span>
       </div>
     </div>

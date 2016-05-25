@@ -8,9 +8,9 @@ module CIAX
     class RecList < Varx
       def initialize
         super('rec', 'list')
-        @list = self[:list] = []
+        ext_local_file.load
+        @list = (self[:list] ||= [])
         @current = {}
-        ext_local_file
         @cmt_procs << proc { time_upd }
         auto_save
       end

@@ -96,7 +96,7 @@ function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
     if (cmd == '--select--') return;
     exec(cmd);
-    if (itvl) make_select(obj, []);
+    make_select(obj, []);
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js

@@ -29,7 +29,7 @@ function set_acordion(sel, filter) {
 }
 // interactive mode
 function blinking() {
-    $('.query,.run').fadeOut(500, function() {$(this).fadeIn(500)});
+    $('.query,.run,.busy').fadeOut(500, function() {$(this).fadeIn(500)});
 }
 // contents resize
 function height_adjust() {

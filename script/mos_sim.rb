@@ -23,6 +23,7 @@ require 'libsimfp'
 # STORE   | OPEN   || STORE
 # STORE   | CLOSE  || LOAD
 module CIAX
+  # Simulator
   module Simulator
     cfg = Conf.new
     mods = [Arm, Ap, BBIO, Carousel, FpDio]

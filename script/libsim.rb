@@ -33,7 +33,7 @@ module CIAX
           sleep 0.1
         end
       rescue
-        log($! + $@)
+        log($ERROR_INFO + $ERROR_POSITION)
       end
 
       private

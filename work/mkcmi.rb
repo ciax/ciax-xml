@@ -32,7 +32,7 @@ src = {}
 end
 stat = {}
 idx =  { con: :mc, ao: :fp, rao: :fp, rbo: :fp, abs: :ma, rsl: :mc }
-idx.each { |k, v| stat[k] = src[v][:msg][k] } 
+idx.each { |k, v| stat[k] = src[v][:msg][k] }
 cmi = on_mask?(stat) ? stat[:rsl] : 'nomask'
 hash = { time: src[:mc][:time], id: 'cmi', msg: { cmi: cmi } }
 json = JSON.pretty_generate(hash)

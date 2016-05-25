@@ -5,7 +5,7 @@ require 'json'
 require 'libxmlfmt'
 # CIAX-XML
 module CIAX
-  VERSION='2'
+  VERSION = '2'
   # Config File converter
   class Mdb2Xml < Xml::Format
     OPETBL = { '=~' => 'match', '!=' => 'not' }

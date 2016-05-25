@@ -33,7 +33,7 @@ module CIAX
           sleep 0.1
         end
       rescue
-        log($!+$@)
+        log($! + $@)
       end
 
       private

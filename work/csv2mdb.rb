@@ -116,7 +116,7 @@ end
 # convert cfg or upd or exec
 def conv_type(args)
   case args[0]
-  when 'mcr','system'
+  when 'mcr', 'system'
   else
     conv_exec_type(args)
   end

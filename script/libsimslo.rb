@@ -15,7 +15,7 @@ module CIAX
         @io = { wn: '1', e1: '0', e2: '0' }
       end
 
-      def pos
+      def fpos # returns float
         @axis.pulse.to_f / 1_000
       end
 

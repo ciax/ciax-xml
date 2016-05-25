@@ -39,7 +39,7 @@ module CIAX
         # OUTPUT?
         return unless idx == 2 && @list.key?(:arm)
         # ARM:STORE position?
-        return unless @list[:arm].pos > 200
+        return unless @list[:arm].fpos > 200
         case hexstr
         when '0C000400' # AC
           @list[:load] = true

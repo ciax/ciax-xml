@@ -35,7 +35,7 @@ module CIAX
       def _contact
         return unless @axis.pulse % 1000 == 0
         return true unless @list[:load]
-        return true if @list[:fp].arm_close? && @list[:arm].pos > 150
+        return true if @list[:fp].arm_close? && @list[:arm].fpos > 150
         false
       end
     end

@@ -42,7 +42,7 @@ module CIAX
         fp = @list[:fp]
         return unless fp.arm_close?
         # At Wait~Store && ARM Close
-        return true if pos > 185
+        return true if fpos > 185
         # At FOCUS && RH,ARM Close
         about(12.8) && fp.rh_close?
       end

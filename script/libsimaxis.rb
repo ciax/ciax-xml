@@ -46,11 +46,11 @@ module CIAX
       end
 
       def up_limit?
-        @absp > @hl_max
+        @absp >= @hl_max
       end
 
       def dw_limit?
-        @absp < @hl_min
+        @absp <= @hl_min
       end
 
       private

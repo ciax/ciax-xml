@@ -11,29 +11,22 @@ module CIAX
         @list = @cfg[:list]
         @list[:arm] = self
         @tol = 600
-        @postbl = [123, 12.8, 200.5, 0, 12.8]
-      end
-
-      # IN 1: ROT  (123)
-      # IN 2: FOCUS(12.8)
-      # IN 3: STORE(200.5)
-      # IN 4: INI  (0)
-      #     : WAIT (185)
-      # IN 5: CON
-      def cmd_in(numstr)
-        super
-        if numstr == '5'
-          _contact? ? '1' : '0'
-        else
-          about(@postbl[numstr.to_i - 1])
-        end
+        # IN 1: ROT  (123)
+        # IN 2: FOCUS(12.8)
+        # IN 3: STORE(200.5) = +Limit
+        # IN 4: INIT (0)     = -Limit
+        #     : WAIT (185)
+        # IN 5: CON
+        @in_procs['1'] = proc { _about(123) }
+        @in_procs['2'] = proc { _about(12.8) }
+        @in_procs['5'] = proc { _contact? }
       end
 
       private
 
-      def about(x) # torerance
+      def _about(x) # torerance
         pos = x * 1000
-        (@axis.absp - pos).abs < @tol ? '1' : '0'
+        (@axis.absp - pos).abs < @tol
       end
 
       # Contact Sensor (Both Arm & RH close during Loading at Focus)
@@ -44,7 +37,7 @@ module CIAX
         # At Wait~Store && ARM Close
         return true if fpos > 185
         # At FOCUS && RH,ARM Close
-        about(12.8) && fp.rh_close?
+        _about(12.8) && fp.rh_close?
       end
     end
 

@@ -13,6 +13,9 @@ module CIAX
         @axis = Axis.new(to_int(dl), to_int(ul), to_int(spd))
         # wn: drive ON/OFF during stop
         @io = { wn: '1', e1: '0', e2: '0' }
+        @in_procs = Hash.new(proc {})
+        @in_procs['3'] = proc { @axis.up_limit? }
+        @in_procs['4'] = proc { @axis.dw_limit? }
       end
 
       def fpos # returns float
@@ -62,8 +65,7 @@ module CIAX
       # in(3) is + Limit
       # in(4) is - Limit
       def cmd_in(int)
-        return unless (1..4).include?(int)
-        '0'
+        @in_procs[int].call ? '1' : '0'
       end
 
       def cmd_speed

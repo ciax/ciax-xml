@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # IDB,CDB CSV(CIAX-v1) to MDB
-#alias c2m
+# alias c2m
 require 'optparse'
 require 'json'
 
@@ -24,8 +24,7 @@ end
 def mk_cond(site, cond)
   case cond
   when /[~!=^]+/
-    ope = OPETBL[$&[0]] # for '=='
-    ary = [site, $`, ope, $']
+    ary = [site, $`, OPETBL[$&[0]], $']
     ary << @skip if @skip
     ary
   when '*', '', nil
@@ -50,18 +49,21 @@ def _uid
   'unit_' + @ucore
 end
 
+# Add index to group
 def _add_i2g(gid, iid)
   ary = @group[gid][:member] ||= []
   ary << iid unless ary.include?(iid)
   ary
 end
 
+# Add unit to group
 def _add_u2g(gid, uid)
   ary = @group[gid][:units] ||= []
   ary << uid unless ary.include?(uid)
   ary
 end
 
+# Add index to unit
 def _add_i2u(uid, iid)
   ary = @unit[uid][:member] ||= []
   ary << iid unless ary.include?(iid)
@@ -163,20 +165,17 @@ def read_dev_idb(index, site)
   end
 end
 
-def exe_type(type, site, id, cfga)
+def exe_type(type, site, id)
   case type
   when 'act'
     ['exec', site, id]
   else
-    cfga << id
+    @cfgitems[site] << id
     ['cfg', site, id]
   end
 end
 
-def wait_loop(event, site)
-  return unless event
-  _frmcmd, lop, post = event.split('/')
-  return unless lop
+def wait_step(lop, site)
   count, cri = lop.split(':')
   wdb = {}
   if cri
@@ -186,23 +185,35 @@ def wait_loop(event, site)
   else
     wdb['sleep'] = count
   end
+  wdb
+end
+
+def wait_loop(event, site)
+  return unless event
+  _frmcmd, lop, post = event.split('/')
+  return unless lop
+  wdb = wait_step(lop, site)
   wdb['post'] = sep_cmd(post, '&', site) if post
   wdb
 end
 
 # Grouping by cdb
 def read_dev_cdb(index, site)
-  cfga = @cfgitems[site] = []
+  @cfgitems[site] = []
   get_csv("cdb_#{site}") do|id, label, inv, type, cond|
     label.gsub!(/&/, 'and')
     unitting(id, label, inv, type) || next # line with cap field
     grouping(id, label, 2, site) || next   # line with ! header
     item = iteming("#{site}_#{id}", label, index)
-    seq = item['seq'] = []
-    seq << exe_type(type, site, id, cfga)
-    wdb = wait_loop(cond, site)
-    seq << wdb if wdb
+    mk_devseq(item, id, type, cond, site)
   end
+end
+
+def mk_devseq(item, id, type, cond, site)
+  seq = item['seq'] = []
+  seq << exe_type(type, site, id)
+  wdb = wait_loop(cond, site)
+  seq << wdb if wdb
 end
 
 def mdb_reduction(index)
@@ -273,13 +284,17 @@ def read_mcr_cdb(index, proj)
     unitting(id, label, inv, type) || next
     item = iteming(id, label, index)
     next unless cmds && !cmds.empty?
-    seq = item['seq'] = sep_cmd(cmds)
-    seq.map do |ary|
-      conv_dev_mcr(ary)
-      conv_sel(ary, select)
-    end
+    mk_mcrseq(item, cmds, select)
   end
   select
+end
+
+def mk_mcrseq(item, cmds, select)
+  seq = item['seq'] = sep_cmd(cmds)
+  seq.each do |ary|
+    conv_dev_mcr(ary)
+    conv_sel(ary, select)
+  end
 end
 
 def read_sel_table(proj)
@@ -291,6 +306,14 @@ def read_sel_table(proj)
   db
 end
 
+def mk_options(sel, dbi, str, index)
+  op = sel['option'] = {}
+  dbi['list'].each do|k, v|
+    val = str.sub(/%./, v)
+    op[k] = val if index.include?(val)
+  end
+end
+
 def mk_sel(str, index, gid, db)
   id = str.sub(/%(.)/, 'X')
   dbi = db[$+].dup
@@ -299,11 +322,7 @@ def mk_sel(str, index, gid, db)
   var = dbi['var'].split(':')
   item['label'] = 'Select Macro'
   sel = item['select'] = { 'site' => var[0], 'var' => var[1] }
-  op = sel['option'] = {}
-  dbi['list'].each do|k, v|
-    val = str.sub(/%./, v)
-    op[k] = val if index.include?(val)
-  end
+  mk_options(sel, dbi, str, index)
 end
 
 # Generate Select (Branch) Macros

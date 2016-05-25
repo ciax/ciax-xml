@@ -67,32 +67,20 @@
       </group>
       <group id="gm" caption="Motion">
         <item id="cw" label="Goto CW Limit (+0.41)">
-          <frmcmd name="hl">
-            <argv>1</argv>
-          </frmcmd>
           <frmcmd name="jp"/>
           <frmcmd name="bs"/>
         </item>
         <item id="ccw" label="Goto CCW Limit (-23.49)">
-          <frmcmd name="hl">
-            <argv>1</argv>
-          </frmcmd>
           <frmcmd name="jn"/>
           <frmcmd name="bs"/>
         </item>
         <item id="gh-cw" label="Goto Slot0 from CW Limit(+0.41)">
-          <frmcmd name="hl">
-            <argv>0</argv>
-          </frmcmd>
           <frmcmd name="mi">
             <argv>-0.41</argv>
           </frmcmd>
           <frmcmd name="bs"/>
         </item>
         <item id="gh-ccw" label="Goto Slot23 from CCW Limit(-23.49)">
-          <frmcmd name="hl">
-            <argv>0</argv>
-          </frmcmd>
           <frmcmd name="mi">
             <argv>+0.49</argv>
           </frmcmd>

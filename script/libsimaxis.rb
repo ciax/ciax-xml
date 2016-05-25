@@ -19,7 +19,8 @@ module CIAX
       end
 
       def servo(target)
-        return unless _in_limit?
+        return unless _in_range?
+        target = _regulate(target) if @hardlim
         Thread.new(target.to_i) do |t|
           @busy = true
           while @busy
@@ -62,16 +63,21 @@ module CIAX
       end
 
       def _upd_busy(t)
-        t != @pulse && _in_range? && _in_limit?
+        t != @pulse && _in_range?
       end
 
       def _in_range?
         (-@max_range..@max_range).cover?(@absp)
       end
 
-      def _in_limit?
-        return true unless @hardlim
-        (@hl_min..@hl_max).cover?(@absp)
+      def _regulate(target)
+        if target > @hl_max
+          [@hl_max, @absp].max
+        elsif target < @hl_min
+          [@hl_min, @absp].min
+        else
+          target
+        end
       end
     end
   end

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libvarx'
+require 'librecord'
 
 module CIAX
   # Macro Layer
@@ -57,5 +57,7 @@ module CIAX
         Hashx.new
       end
     end
+
+    puts RecList.new.refresh if __FILE__ == $PROGRAM_NAME
   end
 end

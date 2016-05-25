@@ -15,6 +15,12 @@ module CIAX
         @idx = cdb[:index]
         @gdb = cdb[:group]
         @udb = cdb[:unit]
+        _mk_top
+      end
+
+      private
+
+      def _mk_top
         push('<!DOCTYPE html>')
         html = enclose('html', lang: 'en-US')
         _mk_head(html.enclose('head'))
@@ -22,13 +28,15 @@ module CIAX
         @div.element('div', @dbi[:label], class: 'title')
       end
 
-      private
-
       def _mk_head(parent)
         parent.element('meta', '', charset: 'utf-8')
         parent.element('title', "CIAX-XML(#{@dbi[:id]})")
         atrb = { rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css' }
         parent.element('link', nil, atrb)
+        _mk_script_tags(parent)
+      end
+
+      def _mk_script_tags(parent)
         fmt = 'var type="status",site="%s",Host="%s",port="%s";'
         script = format(fmt, @dbi[:id], @dbi[:host], @dbi[:port])
         _mk_script(parent, '', JQUERY)

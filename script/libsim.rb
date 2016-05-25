@@ -23,6 +23,14 @@ module CIAX
       def serve(io = nil)
         # @length = nil => tty I/O
         @length = nil unless io
+        sv_loop(io)
+      rescue
+        log($ERROR_INFO + $ERROR_POSITION)
+      end
+
+      private
+
+      def sv_loop(io)
         loop do
           str = input(io)
           verbose { "Recieve #{str.inspect}" }
@@ -32,11 +40,7 @@ module CIAX
           io ? io.syswrite(res) : puts(res.inspect)
           sleep 0.1
         end
-      rescue
-        log($ERROR_INFO + $ERROR_POSITION)
       end
-
-      private
 
       def input(io)
         if @length

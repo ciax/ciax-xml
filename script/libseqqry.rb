@@ -37,6 +37,15 @@ module CIAX
 
       def query(cmds, sub_stat)
         return sub_stat.put(:action, 'nonstop') if @sv_stat.up?(:nonstop)
+        res = _get_ans(sub_stat, cmds)
+        _judge(res)
+      ensure
+        @valid_keys.clear
+      end
+
+      private
+
+      def _get_ans(sub_stat, cmds)
         @valid_keys.replace(cmds)
         sub_stat.put(:option, cmds)
         @stat.put(:status, 'query')
@@ -44,12 +53,8 @@ module CIAX
         sub_stat.put(:action, res)
         sub_stat.delete(:option)
         @stat.put(:status, 'run')
-        _judge(res)
-      ensure
-        @valid_keys.clear
+        res
       end
-
-      private
 
       def _options
         optlist(@valid_keys)

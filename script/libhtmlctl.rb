@@ -54,7 +54,7 @@ module CIAX
       def _mk_label(parent, atrb)
         return unless atrb[:label]
         label = atrb[:label].gsub(/\[.*\]/, '')
-        parent.element('span', label, class: 'ctllabel')
+        parent.element('span', label, class: 'control-label')
       end
 
       def _mk_select(parent, umem, uid)

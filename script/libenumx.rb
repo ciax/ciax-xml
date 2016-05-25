@@ -47,6 +47,7 @@ module CIAX
 
     private
 
+    # recursive procs for enumx
     def rec_proc4enum(enum, &block)
       return unless enum.is_a? Enumerable
       enum.each do |k, v| # v=nil if enum is Array

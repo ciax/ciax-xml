@@ -18,6 +18,7 @@ module CIAX
         _init_stat
       end
 
+      # separated for background run
       def run
         _opt_mode
         @mode = 'MCR:' + @mode

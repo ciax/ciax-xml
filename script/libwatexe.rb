@@ -69,7 +69,7 @@ module CIAX
       def _init_upd_drv_
         @stat.cmt_procs << proc do|ev|
           ev.get(:exec).each do|src, pri, args|
-            verbose { "Propagate Exec:#{args} by Condition from [#{src}] by [#{pri}]" }
+            verbose { "Propagate Exec:#{args} from [#{src}] by [#{pri}]" }
             @sub.exe(args, src, pri)
             sleep ev.interval
           end.clear

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-# Extract information of Current Mask Index from status_???.json to status_cmi.json
+# Generate Current Mask Index to status_cmi.json
 require 'json'
 # Condition Matrix
 # mmc:con | mfp:ao | mfp:rh | mma:abs | cmi
@@ -28,7 +28,7 @@ pfx="#{ENV['PROJ']}" == 'dummy' ? 't' : 'm'
 src = {}
 %w(fp ma mc).each do |s|
   file=mkfile(pfx+s)
-  m = src[s.to_sym] = JSON.parse(IO.read(file), symbolize_names: true)
+  src[s.to_sym] = JSON.parse(IO.read(file), symbolize_names: true)
 end
 stat = {}
 idx =  {con: :mc, ao: :fp, rao: :fp, rbo: :fp, abs: :ma, rsl: :mc}

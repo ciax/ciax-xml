@@ -42,8 +42,6 @@ module CIAX
   w[:c] = { i: 'i', n: { y: 'y' } }
   w[:d] = [2, 3]
   w[:f] = 'f'
-  w1 = w.deep_copy
-  w2 = w.deep_copy
   print 'w='
   p w
   w.deep_update r

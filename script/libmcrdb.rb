@@ -43,7 +43,7 @@ module CIAX
           _get_sites_(atrb)
           par2item(e1, itm) && next
           _step_by_name(e1, atrb)
-          _make_verify_step(atrb) if e1.name == 'goal' && e1['verify'] =~ /true|1/
+          _make_verify_step(e1, atrb)
           @body << atrb
         end
       end
@@ -60,7 +60,8 @@ module CIAX
         atrb.delete(:name)
       end
 
-      def _make_verify_step(atrb)
+      def _make_verify_step(e1, atrb)
+        return unless e1.name == 'goal' && e1['verify'] =~ /true|1/
         @vstep.update(atrb.extend(Enumx).deep_copy)[:type] = 'verify'
       end
 

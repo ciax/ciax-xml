@@ -15,6 +15,7 @@ module CIAX
         end
       end
     rescue EOFError
+      Msg.warning('EOF')
     end
   end
 end

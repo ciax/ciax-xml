@@ -16,7 +16,7 @@ module CIAX
       end
 
       def fpos # returns float
-        @axis.pulse.to_f / 1_000
+        @axis.absp.to_f / 1_000
       end
 
       private

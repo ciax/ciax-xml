@@ -33,7 +33,7 @@ module CIAX
 
       def about(x) # torerance
         pos = x * 1000
-        (@axis.pulse - pos).abs < @tol ? '1' : '0'
+        (@axis.absp - pos).abs < @tol ? '1' : '0'
       end
 
       # Contact Sensor (Both Arm & RH close during Loading at Focus)

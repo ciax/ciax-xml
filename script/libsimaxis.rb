@@ -6,13 +6,14 @@ module CIAX
     # Motor Axis Simulator
     class Axis
       attr_accessor :speed, :hardlim
-      attr_reader :pulse, :busy, :help
+      attr_reader :absp, :pulse, :busy, :help
       def initialize(hl_min = -999_999, hl_max = 999_999, spd = 1_000)
         Msg.cfg_err('Limit Max < Min') if hl_min > hl_max
         @hl_min = hl_min
         @hl_max = hl_max
         @max_range = 1_000_000_000
         @pulse = 0
+        @absp = 0
         @speed = spd # 1000 pulse per second
         @hardlim = true # Hardware Limit
       end
@@ -44,18 +45,20 @@ module CIAX
       end
 
       def up_limit?
-        @pulse > @hl_max
+        @absp > @hl_max
       end
 
       def dw_limit?
-        @pulse < @hl_min
+        @absp < @hl_min
       end
 
       private
 
       def _toward_target(tgt)
         inc = [(tgt - @pulse).abs, @speed / 10].min
-        @pulse += (tgt <=> @pulse) * inc
+        dif = (tgt <=> @pulse) * inc
+        @pulse += dif
+        @absp += dif
       end
 
       def _upd_busy(t)
@@ -63,12 +66,12 @@ module CIAX
       end
 
       def _in_range?
-        (-@max_range..@max_range).cover?(@pulse)
+        (-@max_range..@max_range).cover?(@absp)
       end
 
       def _in_limit?
         return true unless @hardlim
-        (@hl_min..@hl_max).cover?(@pulse)
+        (@hl_min..@hl_max).cover?(@absp)
       end
     end
   end

@@ -243,7 +243,7 @@ function init_select() {
     for (var i = 0; i <= 23; i++) { slots.push('slot' + i); }
     var ary = ['upd'];
     ary.push(['init', ['tinit', 'cinit']]);
-    ary.push(['mos', ['start', 'load', 'store', 'fin']]);
+    ary.push(['mos', ['start', 'load', 'store', 'fin', 'kapa', 'kapa1']]);
     ary.push(['slot', slots]);
     record_select(ary);
 }

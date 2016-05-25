@@ -73,7 +73,11 @@ function stop() {
 }
 // With Confirmation
 function exec(cmd) {
-    if (confirm('EXEC?(' + cmd + ')')) dvctl(cmd);
+    if (confirm('EXEC?(' + cmd + ')')) {
+        dvctl(cmd);
+        return true;
+    }else
+        return false;
 }
 // Select Command
 function make_opt(opt, ary) {
@@ -95,8 +99,7 @@ function make_select(obj, ary) {
 function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
     if (cmd == '--select--') return;
-    exec(cmd);
-    make_select(obj, []);
+    exec(cmd) && make_select(obj, []);
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js

@@ -21,7 +21,6 @@ function time_list(time, hash) {
     record_res(hash['result']);
     html_sel.push('</li>');
 }
-
 function date_list(hash) {
     // Date(j-0) -> cast to num
     var time = new Date(hash['id'] - 0);

@@ -153,7 +153,7 @@ function record_result(data) {
     $('#result').attr('class', 'res ' + data.result);
     $('#total').text('[' + data.total_time + ']');
 }
-function record_select(ary) {
+function record_commands(ary) {
     var sel = $('#query select')[0];
     if (sel) make_select(sel, ary);
 }
@@ -176,7 +176,7 @@ function record_update(data) {
     if (stat == 'end') {
         mcr_end(data);
     }else if (stat == 'query') {
-        record_select(option);
+        record_commands(option);
     }
 }
 // **** Update Page ****
@@ -240,7 +240,7 @@ function init_select() {
     ary.push(['init', ['tinit', 'cinit']]);
     ary.push(['mos', ['start', 'load', 'store', 'fin', 'kapa', 'kapa1']]);
     ary.push(['slot', slots]);
-    record_select(ary);
+    record_commands(ary);
 }
 // Var setting
 var html_rec;

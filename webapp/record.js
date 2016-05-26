@@ -206,32 +206,35 @@ function dvctl_sel(obj) {
 function dvctl_stop() {
     if (itvl) stop();
 }
+// ******** Make Pages ********
+function dynamic_page(data) {
+    make_record(data);
+    if (first_time != data.id) { // Do only the first one for new macro
+        first_time = data.id;
+        record_init(data);
+    }else if (data.time != last_time) { // Do every time for updated record
+        if (last_time == last_upd) record_status(data);
+        last_time = data.time;
+    }else if (last_time != last_upd) { // Do only the first one of the stagnation
+        last_upd = last_time;
+        record_status(data);
+    }
+    blinking();
+}
+function static_page(data) {
+    make_record(data);
+    record_header(data);
+    record_result(data);
+    set_acordion('#record h4');
+}
 // ******** HTML ********
 function archive(tag) {
     depth = 1;
-    $.getJSON('record_' + tag + '.json', function(data) {
-        make_record(data);
-        record_header(data);
-        record_result(data);
-        set_acordion('#record h4');
-    });
+    $.getJSON('record_' + tag + '.json', static_page);
 }
 function update() {
     depth = 1;
-    $.getJSON('record_latest.json', function(data) {
-        make_record(data);
-        if (first_time != data.id) { // Do only the first one for new macro
-            first_time = data.id;
-            record_init(data);
-        }else if (data.time != last_time) { // Do every time for updated record
-            if (last_time == last_upd) record_status(data);
-            last_time = data.time;
-        }else if (last_time != last_upd) { // Do only the first one of the stagnation
-            last_upd = last_time;
-            record_status(data);
-        }
-        blinking();
-    });
+    $.getJSON('record_latest.json', dynamic_page);
     remain_msg();
 }
 function init() {

@@ -72,7 +72,7 @@ function init_log() {
         set_acordion('#select h4', ':not(:first)');
         height_adjust();
         select_record('#select li:first');
-        update(current);
+        update();
     });
 }
 // Initialize

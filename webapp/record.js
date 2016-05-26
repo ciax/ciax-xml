@@ -144,8 +144,7 @@ function record_header(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
 }
-// *** Result/Footer ***
-function replace_status(stat) {
+function record_status(stat) {
     $('#status').text(stat);
     $('#status').attr('class', 'res ' + stat);
 }
@@ -154,9 +153,14 @@ function record_result(data) {
     $('#result').attr('class', 'res ' + data.result);
     $('#total').text('[' + data.total_time + ']');
 }
+function record_select(ary) {
+    var sel = $('#query select')[0];
+    if (sel) make_select(sel, ary);
+}
 // *** Initialize Page ***
 function record_init(data) {
     record_header(data);
+    record_status(data.status);
     $('#total').text('');
     $('#result').text('');
     port = data.port;
@@ -166,32 +170,21 @@ function record_init(data) {
         mcr_start(data);
     }
 }
-function record_select(ary) {
-    var sel = $('#query select')[0];
-    if (sel) make_select(sel, ary);
-}
-function record_status(data) {
+function record_update(data) {
     var stat = data.status;
+    record_status(stat);
     if (stat == 'end') {
         mcr_end(data);
     }else if (stat == 'query') {
-        mcr_query(data);
-    }else {
-        replace_status(stat); //run
+        record_select(option);
     }
 }
 // **** Update Page ****
-function mcr_start(data) {
-    replace_status(data.status);
+function mcr_start(){
     start_upd();
     $('#scroll :checkbox').prop('checked', true);
 }
-function mcr_query(data) {
-    replace_status(data.status);
-    record_select(option);
-}
 function mcr_end(data) {
-    replace_status(data.status);
     record_result(data);
     set_acordion('#record h4');
     init_select();
@@ -216,11 +209,11 @@ function dynamic_page(data) {
         first_time = data.id;
         record_init(data);
     }else if (data.time != last_time) { // Do every time for updated record
-        if (last_time == last_upd) record_status(data);
+        if (last_time == last_upd) record_update(data);
         last_time = data.time;
     }else if (last_time != last_upd) { // Do only the first one of the stagnation
         last_upd = last_time;
-        record_status(data);
+        record_update(data);
     }
     blinking();
 }

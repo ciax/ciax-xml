@@ -175,20 +175,23 @@ function record_status(data) {
     if (stat == 'end') {
         mcr_end(data);
     }else if (stat == 'query') {
-        replace_status(stat);
-        record_select(option);
+        mcr_query(data);
     }else {
         replace_status(stat); //run
     }
 }
 // **** Update Page ****
 function mcr_start(data) {
+    replace_status(data.status);
     start_upd();
-    replace_status('run');
     $('#scroll :checkbox').prop('checked', true);
 }
+function mcr_query(data) {
+    replace_status(data.status);
+    record_select(option);
+}
 function mcr_end(data) {
-    replace_status('end');
+    replace_status(data.status);
     record_result(data);
     set_acordion('#record h4');
     init_select();

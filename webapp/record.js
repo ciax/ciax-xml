@@ -136,7 +136,7 @@ function make_record(data) {
     $('#record')[0].innerHTML = html_rec.join('');
     html_rec = null;
     height_adjust();
-    sticky_bottom();
+    set_sticky_bottom();
 }
 // ********* Outline **********
 // *** Static Display

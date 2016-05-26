@@ -1,18 +1,21 @@
 // ******* Animation *********
 // Auto scroll. Check box with id:go_bottm is needed;
-function sticky_bottom() {
+function set_sticky_bottom() {
+    if (!$('#scroll :checkbox').prop('checked')) return;
     var div = $('#record');
-    var toggle = $('#scroll :checkbox');
-    if (toggle.prop('checked')) {
-        auto_release = false;
-        div.animate({ scrollTop: div[0].scrollHeight},'slow', function() {
-            auto_release = true;
-        });
-        div.hover(null, function() { auto_release = false; });
-        div.on('scroll', function() {
-            if (auto_release) toggle.prop('checked', false);
-        });
-    }
+    div.hover(null, function() { auto_release = false; });
+    div.on('scroll', function() {
+        if (auto_release) $('#scroll :checkbox').prop('checked', false);
+    });
+    sticky_bottom();
+}
+function sticky_bottom() {
+    if (!$('#scroll :checkbox').prop('checked')) return;
+    auto_release = false;
+    var div = $('#record');
+    div.animate({ scrollTop: div[0].scrollHeight},'slow', function() {
+        auto_release = true;
+    });
 }
 // Folding
 function acordion(sel) {
@@ -33,6 +36,7 @@ function blinking() {
 }
 // contents resize
 function height_adjust() {
+    auto_release = false;
     var h = $(window).height();
     // sum height of children in .outline except .contents
     $('.outline').each(function() {
@@ -40,6 +44,7 @@ function height_adjust() {
             h = h - $(this).height();
         });
         $(this).children('.contents').css('max-height', h - 100);
+        sticky_bottom();
     });
 }
 // ******** Control by UDP ********
@@ -111,6 +116,7 @@ function stop_upd() {
 }
 function start_upd() {
     $('#scroll :checkbox').prop('checked', true);
+    set_sticky_bottom();
     if (!itvl) itvl = setInterval(update, 1000);
 }
 var itvl;

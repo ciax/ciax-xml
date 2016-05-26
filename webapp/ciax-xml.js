@@ -104,13 +104,13 @@ function seldv(obj) {
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
 function stop_upd() {
-    if (itvl) {
-        clearInterval(itvl);
-        itvl = null;
-        $('#msg').text('');
-    }
+    if (!itvl) return;
+    clearInterval(itvl);
+    itvl = null;
+    $('#msg').text('');
 }
 function start_upd() {
+    $('#scroll :checkbox').prop('checked', true);
     if (!itvl) itvl = setInterval(update, 1000);
 }
 var itvl;

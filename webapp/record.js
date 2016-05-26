@@ -167,7 +167,7 @@ function record_init(data) {
     if (data.status == 'end') {
         mcr_end(data);
     }else { //run
-        mcr_start(data);
+        start_upd();
     }
 }
 function record_update(data) {
@@ -180,10 +180,6 @@ function record_update(data) {
     }
 }
 // **** Update Page ****
-function mcr_start(){
-    start_upd();
-    $('#scroll :checkbox').prop('checked', true);
-}
 function mcr_end(data) {
     record_result(data);
     set_acordion('#record h4');

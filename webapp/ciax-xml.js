@@ -1,27 +1,27 @@
 // ******* Animation *********
 // Auto scroll. Check box with id:go_bottm is needed;
-function set_sticky_bottom() {
-    if (!$('#scroll :checkbox').prop('checked')) return;
-    var div = $('#record');
-    div.hover(null, function() { auto_release = false; });
-    div.on('scroll', function() {
-        if (auto_release) $('#scroll :checkbox').prop('checked', false);
-    });
-    sticky_bottom();
+function auto_release() {
+    var cr = $(this).scrollTop();
+    if (cr < start_pos) $('#scroll :checkbox').prop('checked', false);
+    start_pos = cr;
 }
-function sticky_bottom() {
-    if (!$('#scroll :checkbox').prop('checked')) return;
-    auto_release = false;
-    var div = $('#record');
-    div.animate({ scrollTop: div[0].scrollHeight},'slow', function() {
-        auto_release = true;
+function set_sticky_bottom() {
+    start_pos = $(this).scrollTop();
+    $('#record').hover(function() {
+        $(this).bind('scroll', auto_release);
+    },function() {
+        $(this).unbind('scroll', auto_release);
     });
+}
+function sticky_bottom(speed) {
+    if (!$('#scroll :checkbox').prop('checked')) return;
+    var div = $('#record');
+    div.animate({ scrollTop: div[0].scrollHeight},speed);
 }
 // Folding
 function acordion(sel) {
-    auto_release = false;
     $(sel).next().slideToggle('slow', function() {
-        sticky_bottom();
+        sticky_bottom(0);
     });
 }
 function set_acordion(sel, filter) {
@@ -36,7 +36,6 @@ function blinking() {
 }
 // contents resize
 function height_adjust() {
-    auto_release = false;
     var h = $(window).height();
     // sum height of children in .outline except .contents
     $('.outline').each(function() {
@@ -44,7 +43,7 @@ function height_adjust() {
             h = h - $(this).height();
         });
         $(this).children('.contents').css('max-height', h - 100);
-        sticky_bottom();
+        sticky_bottom(0);
     });
 }
 // ******** Control by UDP ********
@@ -116,11 +115,10 @@ function stop_upd() {
 }
 function start_upd() {
     $('#scroll :checkbox').prop('checked', true);
-    set_sticky_bottom();
     if (!itvl) itvl = setInterval(update, 1000);
 }
 var itvl;
-var auto_release = false;
+var start_pos = 0;
 var count = 0;
 $(window).on('resize', height_adjust);
 $.ajaxSetup({ cache: false});

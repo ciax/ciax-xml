@@ -11,8 +11,8 @@ module CIAX
       # Record should have [:option] key
       def initialize(stat, sv_stat, valid_keys)
         # Datax#put() will access to header, but get() will access @data
-        @stat = type?(stat, Record)
-        @stat.put(:status, 'ready')
+        @record = type?(stat, Record)
+        @record.put(:status, 'ready')
         @sv_stat = type?(sv_stat, Prompt)
         @valid_keys = valid_keys
         @que_cmd = Queue.new
@@ -21,13 +21,13 @@ module CIAX
 
       # For prompt
       def to_v
-        st = @stat[:status]
+        st = @record[:status]
         "(#{st})" + _options
       end
 
       # Communicate with forked macro
       def reply(ans)
-        if @stat[:status] == 'query'
+        if @record[:status] == 'query'
           @que_cmd << ans
           @que_res.pop
         else
@@ -35,9 +35,9 @@ module CIAX
         end
       end
 
-      def query(cmds, sub_stat)
-        return sub_stat.put(:action, 'nonstop') if @sv_stat.up?(:nonstop)
-        res = _get_ans(sub_stat, cmds)
+      def query(cmds, step)
+        return step.put(:action, 'nonstop') if @sv_stat.up?(:nonstop)
+        res = _get_ans(step, cmds)
         _judge(res)
       ensure
         @valid_keys.clear
@@ -45,14 +45,15 @@ module CIAX
 
       private
 
-      def _get_ans(sub_stat, cmds)
+      def _get_ans(step, cmds)
         @valid_keys.replace(cmds)
-        sub_stat.put(:option, cmds)
-        @stat.put(:status, 'query')
+        step.put(:option, cmds)
+        step.put(:result, 'query')
+        @record.put(:status, 'query')
         res = Msg.fg? ? _input_tty : _input_que
-        sub_stat.put(:action, res)
-        sub_stat.delete(:option)
-        @stat.put(:status, 'run')
+        step.put(:action, res)
+        step.delete(:option)
+        @record.put(:status, 'run')
         res
       end
 

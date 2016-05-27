@@ -65,7 +65,7 @@ module CIAX
       def _prt_result(res, mary)
         if res
           cap = res.capitalize
-          color = (/failed|timeout/ =~ res) ? 1 : 2
+          color = (/failed|timeout/ =~ res) ? 1 : (/query/ =~ res) ? 5 : 2
           mary[0] << ' -> ' + Msg.colorize(cap, color)
         end
         _prt_conds(mary)

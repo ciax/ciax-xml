@@ -217,6 +217,7 @@ function static_page(data) {
     make_record(data);
     record_header(data);
     record_result(data);
+    record_status(data.status);
     set_acordion('#record h4');
 }
 // ******** HTML ********

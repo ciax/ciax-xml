@@ -53,6 +53,7 @@ function select_record(target) {
     $('#' + current).removeClass('selected');
     $(target).addClass('selected');
     current = $(target).attr('id');
+    return ($(target).attr('result') == 'busy');
 }
 function set_select_event() {
     $('#select li').on('click', function() {
@@ -64,14 +65,19 @@ function set_select_event() {
         }
     });
 }
+function make_select_page(data) {
+    make_list(data);
+    set_select_event();
+    set_acordion('#select h4', ':not(:first)');
+    height_adjust();
+}
 function init_log() {
     $.getJSON('rec_list.json', function(data) {
-        make_list(data);
-        set_select_event();
-        set_acordion('#select h4', ':not(:first)');
-        height_adjust();
-        select_record('#select li:first');
-        update();
+        make_select_page(data);
+        if (select_record('#select li:first'))
+            update();
+        else
+            archive(current);
     });
 }
 // Initialize

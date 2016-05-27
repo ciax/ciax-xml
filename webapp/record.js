@@ -140,17 +140,19 @@ function make_record(data) {
 }
 // ********* Outline **********
 // *** Static Display
+function replace(sel, str) {
+    $(sel).text(str).attr('class', 'res ' + str);
+}
 function record_header(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
 }
-function record_status(stat) {
-    $('#status').text(stat);
-    $('#status').attr('class', 'res ' + stat);
+function record_status(data) {
+    replace('#status', data.status);
 }
 function record_result(data) {
-    $('#result').text(data.result);
-    $('#result').attr('class', 'res ' + data.result);
+    replace('#result', data.result);
+    replace('#' + data.id + ' em', data.result);
     $('#total').text('[' + data.total_time + ']');
 }
 function record_commands(ary) {
@@ -160,9 +162,9 @@ function record_commands(ary) {
 // *** Initialize Page ***
 function record_init(data) {
     record_header(data);
-    record_status(data.status);
+    record_status(data);
     $('#total').text('');
-    $('#result').text('');
+    replace('#result', '');
     port = data.port;
     if (data.status == 'end') {
         mcr_end(data);
@@ -171,8 +173,8 @@ function record_init(data) {
     }
 }
 function record_update(data) {
+    record_status(data);
     var stat = data.status;
-    record_status(stat);
     if (stat == 'end') {
         mcr_end(data);
     }else if (stat == 'query') {
@@ -217,7 +219,7 @@ function static_page(data) {
     make_record(data);
     record_header(data);
     record_result(data);
-    record_status(data.status);
+    record_status(data);
     set_acordion('#record h4');
 }
 // ******** HTML ********

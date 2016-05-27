@@ -6,7 +6,7 @@ function record_cmd(cid) {
 }
 function record_res(res) {
     html_sel.push(' -> ');
-    html_sel.push('<em class="' + res + '">' + res + '</em>');
+    html_sel.push('<em class="res ' + res + '">' + res + '</em>');
 }
 function record_time(id, time) {
     html_sel.push('<span class="time" title="' + id + '">');
@@ -53,7 +53,7 @@ function select_record(target) {
     $('#' + current).removeClass('selected');
     $(target).addClass('selected');
     current = $(target).attr('id');
-    return ($(target).attr('result') == 'busy');
+    return ($(target).children('em').text() == 'busy');
 }
 function set_select_event() {
     $('#select li').on('click', function() {

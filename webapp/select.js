@@ -53,7 +53,11 @@ function select_record(target) {
     $('#' + current).removeClass('selected');
     $(target).addClass('selected');
     current = $(target).attr('id');
-    return ($(target).children('em').text() == 'busy');
+    if($(target).children('em').text() == 'busy')
+        start_upd();
+    else
+        stop_upd();
+        archive(current);
 }
 function set_select_event() {
     $('#select li').on('click', function() {
@@ -61,7 +65,6 @@ function set_select_event() {
             acordion('#record h4');
         }else {
             select_record(this);
-            archive(current);
         }
     });
 }
@@ -74,10 +77,7 @@ function make_select_page(data) {
 function init_log() {
     $.getJSON('rec_list.json', function(data) {
         make_select_page(data);
-        if (select_record('#select li:first'))
-            update();
-        else
-            archive(current);
+        select_record('#select li:first')
     });
 }
 // Initialize

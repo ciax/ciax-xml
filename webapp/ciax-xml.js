@@ -128,3 +128,6 @@ var start_pos = 0;
 var count = 0;
 $(window).on('resize', height_adjust);
 $.ajaxSetup({ cache: false});
+function init() {
+    height_adjust();
+}

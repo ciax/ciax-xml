@@ -126,7 +126,6 @@ function make_record(data) {
     html_rec.push('</ul>');
     $('#record')[0].innerHTML = html_rec.join('');
     html_rec = null;
-    height_adjust();
     set_sticky_bottom();
 }
 // ********* Outline **********
@@ -216,12 +215,10 @@ function archive(tag) {
     $.getJSON('record_' + tag + '.json', static_page);
 }
 function update() {
+    init();
     depth = 1;
     $.getJSON('record_latest.json', dynamic_page);
     remain_msg();
-}
-function init() {
-    update();
 }
 // Initial Commands
 function init_select() {
@@ -243,4 +240,3 @@ var first_time = ''; // For first time at a new macro;
 var tag = 'latest';
 var option = [];
 var port;
-

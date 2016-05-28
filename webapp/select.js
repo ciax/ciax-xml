@@ -72,9 +72,9 @@ function make_select_page(data) {
     make_list(data);
     set_select_event();
     set_acordion('#select h4', ':not(:first)');
-    height_adjust();
 }
 function init_log() {
+    init();
     $.getJSON('rec_list.json', function(data) {
         make_select_page(data);
         select_record('#select li:first');

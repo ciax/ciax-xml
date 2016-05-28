@@ -59,25 +59,23 @@ function select_record(target) {
         stop_upd();
         archive(current);
 }
-function set_select_event() {
-    $('#select li').on('click', function() {
+function init_select_event() {
+    $('#select').on('click', 'li', function() {
         if ($(this).attr('id') == current) {
             acordion('#record h4');
         }else {
             select_record(this);
         }
     });
-}
-function make_select_page(data) {
-    make_list(data);
-    set_select_event();
-    set_acordion('#select h4', ':not(:first)');
+    height_adjust();
+    set_acordion('#select,#record');
 }
 function init_log() {
-    init();
+    init_select_event();
     $.getJSON('rec_list.json', function(data) {
-        make_select_page(data);
+        make_list(data);
         select_record('#select li:first');
+        acordion('#select h4:not(:first)');
     });
 }
 // Initialize

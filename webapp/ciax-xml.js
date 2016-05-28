@@ -33,7 +33,7 @@ function acordion(sel) {
 }
 function set_acordion(sel, filter) {
     if (filter) {acordion(sel + filter);}
-    $(sel).on('click', function() {
+    $(sel).on('click', 'h4', function() {
         acordion(this);
     });
 }
@@ -128,6 +128,4 @@ var start_pos = 0;
 var count = 0;
 $(window).on('resize', height_adjust);
 $.ajaxSetup({ cache: false});
-function init() {
-    height_adjust();
-}
+

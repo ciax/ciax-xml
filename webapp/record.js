@@ -171,7 +171,6 @@ function record_update(data) {
 // **** Update Page ****
 function mcr_end(data) {
     record_result(data);
-    set_acordion('#record h4');
     init_select();
     stop_upd();
 }
@@ -207,7 +206,6 @@ function static_page(data) {
     record_header(data);
     record_result(data);
     record_status(data);
-    set_acordion('#record h4');
 }
 // ******** HTML ********
 function archive(tag) {
@@ -215,7 +213,6 @@ function archive(tag) {
     $.getJSON('record_' + tag + '.json', static_page);
 }
 function update() {
-    init();
     depth = 1;
     $.getJSON('record_latest.json', dynamic_page);
     remain_msg();
@@ -229,6 +226,14 @@ function init_select() {
     ary.push(['mos', ['start', 'load', 'store', 'fin', 'kapa', 'kapa1']]);
     ary.push(['slot', slots]);
     record_commands(ary);
+}
+function init_record_event() {
+    height_adjust();
+    set_acordion('#record');
+}
+function init_record() {
+    init_record_event();
+    update();
 }
 // Var setting
 var html_rec;

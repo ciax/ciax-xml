@@ -4,24 +4,26 @@ function replace(sel, str, cls) {
 }
 // ******* Animation *********
 // Auto scroll. Check box with id:go_bottm is needed;
+function sticky_bottom(speed) {
+    if (!$('#scroll :checkbox').prop('checked')) return;
+    var div = $('#record');
+    div.animate({ scrollTop: div[0].scrollHeight},speed);
+}
 function auto_release() {
     var cr = $(this).scrollTop();
     if (cr < start_pos && !acdon)
         $('#scroll :checkbox').prop('checked', false);
     start_pos = cr;
 }
-function set_sticky_bottom() {
-    start_pos = $('#record').scrollTop();
-    $('#record').hover(function() {
-        $(this).bind('scroll', auto_release);
-    },function() {
-        $(this).unbind('scroll', auto_release);
+function set_auto_release(sel) {
+    var div = $(sel);
+    start_pos = div.scrollTop();
+    div.on('mouseenter', function() {
+        $(this).on('scroll', auto_release);
     });
-}
-function sticky_bottom(speed) {
-    if (!$('#scroll :checkbox').prop('checked')) return;
-    var div = $('#record');
-    div.animate({ scrollTop: div[0].scrollHeight},speed);
+    div.on('mouseleave', function() {
+        $(this).off('scroll', auto_release);
+    });
 }
 // Folding
 function acordion(sel) {
@@ -31,8 +33,7 @@ function acordion(sel) {
         acdon = false;
     });
 }
-function set_acordion(sel, filter) {
-    if (filter) {acordion(sel + filter);}
+function set_acordion(sel) {
     $(sel).on('click', 'h4', function() {
         acordion(this);
     });
@@ -128,4 +129,3 @@ var start_pos = 0;
 var count = 0;
 $(window).on('resize', height_adjust);
 $.ajaxSetup({ cache: false});
-

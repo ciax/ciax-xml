@@ -49,6 +49,7 @@ function make_list(data) {
     $('#select')[0].innerHTML = html_sel.join('');
     html_sel = null;
 }
+// Register Events
 function select_record(target) {
     $('#' + current).removeClass('selected');
     $(target).addClass('selected');
@@ -69,7 +70,9 @@ function init_select_event() {
     });
     height_adjust();
     set_acordion('#select,#record');
+    set_auto_release('#record');
 }
+// Initial Setting
 function init_log() {
     init_select_event();
     $.getJSON('rec_list.json', function(data) {

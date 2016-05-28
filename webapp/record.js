@@ -125,8 +125,8 @@ function make_record(data) {
     depth = step_level(1);
     html_rec.push('</ul>');
     $('#record')[0].innerHTML = html_rec.join('');
+    sticky_bottom('slow');
     html_rec = null;
-    set_sticky_bottom();
 }
 // ********* Outline **********
 // *** Static Display
@@ -230,6 +230,7 @@ function init_select() {
 function init_record_event() {
     height_adjust();
     set_acordion('#record');
+    set_auto_release('#record');
 }
 function init_record() {
     init_record_event();

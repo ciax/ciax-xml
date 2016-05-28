@@ -53,7 +53,7 @@ function select_record(target) {
     $('#' + current).removeClass('selected');
     $(target).addClass('selected');
     current = $(target).attr('id');
-    if($(target).children('em').text() == 'busy')
+    if ($(target).children('em').text() == 'busy')
         start_upd();
     else
         stop_upd();
@@ -77,7 +77,7 @@ function make_select_page(data) {
 function init_log() {
     $.getJSON('rec_list.json', function(data) {
         make_select_page(data);
-        select_record('#select li:first')
+        select_record('#select li:first');
     });
 }
 // Initialize

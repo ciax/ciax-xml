@@ -24,14 +24,6 @@ function step_result(res) {
         html_rec.push('<em class="res ' + res + '">' + res + '</em>');
     }
 }
-function step_query(step) {
-    if (step.option) {
-        option = step.option;
-        html_rec.push(' <span class="query">[');
-        html_rec.push(step.option.join('/'));
-        html_rec.push(']</span> ');
-    }
-}
 function step_action(step) {
     if (step.action) {
         html_rec.push(' <span class="action">(');
@@ -67,7 +59,6 @@ function step_exe(step) {
     step_cmd(step);
     step_count(step);
     step_result(step.result);
-    step_query(step);
     step_action(step);
     step_time(step);
     html_rec.push('</h4>');
@@ -178,7 +169,7 @@ function record_update(data) {
     if (stat == 'end') {
         mcr_end(data);
     }else if (stat == 'query') {
-        record_commands(option);
+        record_commands(data.option);
     }
 }
 // **** Update Page ****

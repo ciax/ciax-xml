@@ -30,7 +30,7 @@ module CIAX
       def index
         n = @par.index
         if n
-          opt = optlist(_crnt_.last[:option]) if _crnt_.busy? && _crnt_.last
+          opt = optlist(_crnt_[:option]) if _crnt_.busy? && _crnt_.last
           "[#{n + 1}]#{opt}"
         else
           '[0]'
@@ -87,7 +87,7 @@ module CIAX
           "(#{rec[:result]})"
         else
           msg = "(#{rec[:status]})"
-          msg << optlist(rec.last[:option]) if rec.last
+          msg << optlist(rec[:option]) if rec.last
           msg
         end
       end

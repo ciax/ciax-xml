@@ -131,9 +131,6 @@ function make_record(data) {
 }
 // ********* Outline **********
 // *** Static Display
-function replace(sel, str) {
-    $(sel).text(str).attr('class', 'res ' + str);
-}
 function record_header(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));

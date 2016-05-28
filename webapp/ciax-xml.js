@@ -1,3 +1,7 @@
+//********* Shared **********
+function replace(sel, str, cls) {
+    $(sel).text(str).attr('class', 'res ' + (cls || str));
+}
 // ******* Animation *********
 // Auto scroll. Check box with id:go_bottm is needed;
 function auto_release() {
@@ -54,14 +58,12 @@ function get_response(data) {
     if (data) {
         var res = $.parseJSON(data);
         console.log('recv=' + data);
-        $('#msg').text(res.msg);
-        $('#msg').attr('class', res.msg.toLowerCase());
+        replace('#msg', res.msg, res.msg.toLowerCase());
         count = 10;
         start_upd();
     }else {
         stop_upd();
-        $('#msg').text('NO Response');
-        $('#msg').attr('class', 'error');
+        replace('#msg', 'NO Response', 'error');
     }
 }
 function remain_msg() {

@@ -94,36 +94,22 @@ function step_cond(step) {
 function make_step(step) {
     html_rec = ['<li>'];
     step_exe(step);
-    if (step.conditions){
-        step_cond(step)
-    }else if (step.type == 'mcr'){
-        html_rec.push('<ul class="depth' + (step.depth-0+1) +'"></ul>');
+    if (step.conditions) {
+        step_cond(step);
+    }else if (step.type == 'mcr') {
+        html_rec.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
     }
     html_rec.push('</li>');
-    return html_rec.join('');
+    $('.depth' + step.depth + ':last').append(html_rec.join(''));
 }
 // ********* Record **********
-// Indent
-function step_level(crnt) {
-    while (crnt != depth) {
-        if (crnt > depth) {
-            html_rec.push('<ul>');
-            depth += 1;
-        }else {
-            html_rec.push('</ul></li>');
-            depth -= 1;
-        }
-    }
-}
 // Macro Body
 function make_record(data) {
     start_time = new Date(data.start);
-    $('#record')[0].innerHTML = '<ul class="depth1"></ul>';
+    $('#record ul').empty();
     for (var j in data.steps) {
-        var step = data.steps[j];
-        $('.depth'+step.depth+':last').append(make_step(step));
+        make_step(data.steps[j]);
     }
-    depth = step_level(1);
     sticky_bottom('slow');
     html_rec = null;
 }

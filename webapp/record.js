@@ -88,8 +88,21 @@ function cond_list(conds, type) {
 function step_cond(step) {
     html_rec.push('<ul>');
     cond_list(step.conditions, step.type);
-    html_rec.push('</ul></li>');
+    html_rec.push('</ul>');
 }
+// Make Step Line
+function make_step(step) {
+    html_rec = ['<li>'];
+    step_exe(step);
+    if (step.conditions){
+        step_cond(step)
+    }else if (step.type == 'mcr'){
+        html_rec.push('<ul class="depth' + (step.depth-0+1) +'"></ul>');
+    }
+    html_rec.push('</li>');
+    return html_rec.join('');
+}
+// ********* Record **********
 // Indent
 function step_level(crnt) {
     while (crnt != depth) {
@@ -102,29 +115,15 @@ function step_level(crnt) {
         }
     }
 }
-// Make Step Line
-function make_step(step) {
-    html_rec.push('<li>');
-    step_exe(step);
-    if (step.conditions) {
-        step_cond(step);
-    }else if (step.type != 'mcr') {
-        html_rec.push('</li>');
-    }
-}
-// ********* Record **********
 // Macro Body
 function make_record(data) {
     start_time = new Date(data.start);
-    html_rec = ['<ul>'];
+    $('#record')[0].innerHTML = '<ul class="depth1"></ul>';
     for (var j in data.steps) {
         var step = data.steps[j];
-        step_level(step.depth);
-        make_step(step);
+        $('.depth'+step.depth+':last').append(make_step(step));
     }
     depth = step_level(1);
-    html_rec.push('</ul>');
-    $('#record')[0].innerHTML = html_rec.join('');
     sticky_bottom('slow');
     html_rec = null;
 }

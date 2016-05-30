@@ -96,6 +96,7 @@ function make_step(step) {
     }
 
 }
+
 // ********* Record **********
 // Macro Body
 function record_steps(data) {
@@ -106,9 +107,11 @@ function record_steps(data) {
     }
     sticky_bottom('slow');
 }
+
 // ********* Outline **********
 // *** Static Display
 function record_header(data) {
+    port = data.port;
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
     record_status(data);
@@ -121,22 +124,53 @@ function record_result(data) {
     replace('#' + data.id + ' em', data.result);
     $('#total').text('[' + data.total_time + ']');
 }
+
+// ******** Static Page *********
+function static_page(data) {
+    record_header(data);
+    record_steps(data);
+    record_result(data);
+}
+function archive(tag) {
+    $.getJSON('record_' + tag + '.json', static_page);
+}
+
+// ******** Dynamic Page ********
+// *** Footer/Controls ***
+function dvctl_sel(obj) {
+    var cmd = $('#nonstop :checkbox').prop('checked') ? 'nonstop' : 'interactive';
+    dvctl(cmd);
+    seldv(obj);
+}
 function record_commands(ary) {
     var sel = $('#query select')[0];
     if (sel) make_select(sel, ary);
 }
+function init_commands() {
+    var slots = [];
+    for (var i = 0; i <= 23; i++) { slots.push('slot' + i); }
+    var ary = ['upd'];
+    ary.push(['init', ['tinit', 'cinit']]);
+    ary.push(['mos', ['start', 'load', 'store', 'fin', 'kapa', 'kapa1']]);
+    ary.push(['slot', slots]);
+    record_commands(ary);
+}
 // *** Initialize Page ***
-function record_init(data) {
-    record_header(data);
+function record_clear() {
     $('#total').text('');
     replace('#result', '');
-    port = data.port;
+    replace('#status', '');
+}
+function record_first(data) {
+    record_header(data);
+    record_clear();
     if (data.status == 'end') {
         mcr_end(data);
     }else { //run
         start_upd();
     }
 }
+// **** Update Page ****
 function record_update(data) {
     record_status(data);
     var stat = data.status;
@@ -146,24 +180,16 @@ function record_update(data) {
         record_commands(data.option);
     }
 }
-// **** Update Page ****
 function mcr_end(data) {
     record_result(data);
-    init_select();
+    init_commands();
     stop_upd();
 }
-// **** Remote Control ****
-function dvctl_sel(obj) {
-    var cmd = $('#nonstop :checkbox').prop('checked') ? 'nonstop' : 'interactive';
-    dvctl(cmd);
-    seldv(obj);
-}
-// ******** Make Pages ********
 function dynamic_page(data) {
     record_steps(data);
     if (first_time != data.id) { // Do only the first one for new macro
         first_time = data.id;
-        record_init(data);
+        record_first(data);
     }else if (data.time != last_time) { // Do every time for updated record
         if (last_time == last_upd) record_update(data);
         last_time = data.time;
@@ -173,29 +199,11 @@ function dynamic_page(data) {
     }
     blinking();
 }
-function static_page(data) {
-    record_header(data);
-    record_steps(data);
-    record_result(data);
-}
-// ******** HTML ********
-function archive(tag) {
-    $.getJSON('record_' + tag + '.json', static_page);
-}
 function update() {
     $.getJSON('record_latest.json', dynamic_page);
     remain_msg();
 }
-// Initial Commands
-function init_select() {
-    var slots = [];
-    for (var i = 0; i <= 23; i++) { slots.push('slot' + i); }
-    var ary = ['upd'];
-    ary.push(['init', ['tinit', 'cinit']]);
-    ary.push(['mos', ['start', 'load', 'store', 'fin', 'kapa', 'kapa1']]);
-    ary.push(['slot', slots]);
-    record_commands(ary);
-}
+// ******** Init Page ********
 function init_record_event() {
     height_adjust();
     set_acordion('#record');

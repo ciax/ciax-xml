@@ -106,6 +106,7 @@ function record_steps(data) {
         make_step(data.steps[j]);
     }
     sticky_bottom('slow');
+    record_status(data);
 }
 
 // ********* Outline **********
@@ -116,7 +117,6 @@ function record_outline(data) {
     $('#date').text(new Date(data.id - 0));
     $('#total').text('');
     replace('#result', '');
-    record_status(data);
 }
 function record_status(data) {
     replace('#status', data.status);
@@ -165,6 +165,7 @@ function mcr_end(data) {
 }
 function record_first(data) {
     record_outline(data);
+    record_steps(data);
     if (data.status == 'end') {
         mcr_end(data);
     }else { //run
@@ -172,7 +173,7 @@ function record_first(data) {
     }
 }
 function record_update(data) {
-    record_status(data);
+    record_steps(data);
     var stat = data.status;
     if (stat == 'end') {
         mcr_end(data);
@@ -182,7 +183,6 @@ function record_update(data) {
 }
 // **** Updating Page ****
 function dynamic_page(data) {
-    record_steps(data);
     if (first_time != data.id) { // Do only the first one for new macro
         record_first(data);
         first_time = data.id;

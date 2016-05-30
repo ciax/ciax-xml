@@ -98,7 +98,7 @@ function make_step(step) {
 }
 // ********* Record **********
 // Macro Body
-function make_record(data) {
+function record_steps(data) {
     start_time = new Date(data.start);
     $('#record ul').empty();
     for (var j in data.steps) {
@@ -111,6 +111,7 @@ function make_record(data) {
 function record_header(data) {
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
+    record_status(data);
 }
 function record_status(data) {
     replace('#status', data.status);
@@ -127,7 +128,6 @@ function record_commands(ary) {
 // *** Initialize Page ***
 function record_init(data) {
     record_header(data);
-    record_status(data);
     $('#total').text('');
     replace('#result', '');
     port = data.port;
@@ -160,7 +160,7 @@ function dvctl_sel(obj) {
 }
 // ******** Make Pages ********
 function dynamic_page(data) {
-    make_record(data);
+    record_steps(data);
     if (first_time != data.id) { // Do only the first one for new macro
         first_time = data.id;
         record_init(data);
@@ -174,10 +174,9 @@ function dynamic_page(data) {
     blinking();
 }
 function static_page(data) {
-    make_record(data);
     record_header(data);
+    record_steps(data);
     record_result(data);
-    record_status(data);
 }
 // ******** HTML ********
 function archive(tag) {

@@ -3,76 +3,65 @@
 // ********* Steps **********
 // step header section
 function make_step(step) {
-    var html_rec = ['<li>'];
-    step_exe(step);
-    if (step.conditions) {
-        step_cond(step);
-    }else if (step.type == 'mcr') {
-        step_mcr(step);
-    }
-    html_rec.push('</li>');
-    $('.depth' + step.depth + ':last').append(html_rec.join(''));
+    var html = ['<li>'];
+    header();
+    conditions() || sub_mcr();
+    html.push('</li>');
+    $('.depth' + step.depth + ':last').append(html.join(''));
 
-    function step_title(type) {
-        html_rec.push('<span class="head ' + type + '">' + type + '</span>');
-        html_rec.push('<span class="cmd">');
-    }
-    function step_label(step) {
-        if (step.label) {html_rec.push(': ' + step.label);}
-    }
-    function step_cmd(step) {
+    function title() {
+        var type = step.type;
+        html.push('<span class="head ' + type + '">' + type + '</span>');
+        html.push('<span class="cmd">');
+        if (step.label) html.push(': ' + step.label);
         var ary = [];
         if (step.site) { ary.push(step.site); }
         if (step.args) { ary = ary.concat(step.args); }
         if (step.val) { ary.push(step.val); }
-        if (ary.length > 0) {html_rec.push(': [' + ary.join(':') + ']');}
-        html_rec.push('</span>');
+        if (ary.length > 0) {html.push(': [' + ary.join(':') + ']');}
+        html.push('</span>');
     }
     // result section
-    function step_result(res) {
-        if (res) {
-            html_rec.push(' -> ');
-            html_rec.push('<em class="res ' + res + '">' + res + '</em>');
-        }
+    function result() {
+        var res = step.result;
+        if (!res) return;
+        html.push(' -> ');
+        html.push('<em class="res ' + res + '">' + res + '</em>');
     }
-    function step_action(step) {
-        if (step.action) {
-            html_rec.push(' <span class="action">(');
-            html_rec.push(step.action);
-            html_rec.push(')</span>');
-        }
+    function action() {
+        if (!step.action) return;
+        html.push(' <span class="action">(');
+        html.push(step.action);
+        html.push(')</span>');
     }
     // elapsed time section
-    function step_time(step) {
+    function time() {
         var now = new Date(step.time);
         var elps = ((now - start_time) / 1000).toFixed(2);
-        html_rec.push('<span class="elps tail">[' + elps + ']</span>');
+        html.push('<span class="elps tail">[' + elps + ']</span>');
     }
     // waiting step
-    function step_meter(step, max) {
-        html_rec.push(' <meter value="' + step.count / max * 100 + '" max="100"');
-        if (step.retry) html_rec.push('low="70" high="99"');
-        html_rec.push('>(' + step.count + '/' + max + ')</meter>');
+    function meter(max) {
+        html.push(' <meter value="' + step.count / max * 100 + '" max="100"');
+        if (step.retry) html.push('low="70" high="99"');
+        html.push('>(' + step.count + '/' + max + ')</meter>');
     }
-    function step_count(step) {
-        if (step.count) {
-            var max = step.retry || step.val;
-            if (step.type != 'mcr') step_meter(step, max);
-            html_rec.push('<span>(' + step.count + '/' + max + ')</span>');
-            if (step.busy) html_rec.push(' -> <em class="res active">Busy</em>');
-        }
+    function count() {
+        if (!step.count) return;
+        var max = step.retry || step.val;
+        if (step.type != 'mcr') meter(max);
+        html.push('<span>(' + step.count + '/' + max + ')</span>');
+        if (step.busy) html.push(' -> <em class="res active">Busy</em>');
     }
     // other steps
-    function step_exe(step) {
-        html_rec.push('<h4>');
-        step_title(step.type);
-        step_label(step);
-        step_cmd(step);
-        step_count(step);
-        step_result(step.result);
-        step_action(step);
-        step_time(step);
-        html_rec.push('</h4>');
+    function header() {
+        html.push('<h4>');
+        title();
+        count();
+        result();
+        action();
+        time();
+        html.push('</h4>');
     }
     // condition step
     function operator(ope, cri) {
@@ -84,23 +73,26 @@ function make_step(step) {
         default:
         }
     }
-    function step_cond(step) {
+    function conditions() {
         var conds = step.conditions;
-        html_rec.push('<ul>');
+        if (!conds) return;
+        html.push('<ul>');
         for (var k in conds) {
             var cond = conds[k];
             var res = cond.res;
-            html_rec.push('<li>');
-            html_rec.push('<var>' + cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
-            html_rec.push('<code>' + operator(cond.cmp, cond.cri) + '?</code>  ');
+            html.push('<li>');
+            html.push('<var>' + cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
+            html.push('<code>' + operator(cond.cmp, cond.cri) + '?</code>  ');
             if (step.type == 'goal' && res == false) res = 'warn';
-            html_rec.push('<em class="' + res + '"> (' + cond.real + ')</em>');
-            html_rec.push('</li>');
+            html.push('<em class="' + res + '"> (' + cond.real + ')</em>');
+            html.push('</li>');
         }
-        html_rec.push('</ul>');
+        html.push('</ul>');
+        return true;
     }
-    function step_mcr(step) {
-        html_rec.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
+    function sub_mcr() {
+        if (step.type != 'mcr') return;
+        html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
     }
 
 }
@@ -113,7 +105,6 @@ function make_record(data) {
         make_step(data.steps[j]);
     }
     sticky_bottom('slow');
-    html_rec = null;
 }
 // ********* Outline **********
 // *** Static Display

@@ -78,9 +78,6 @@ function dvctl(cmd) {
     console.log('send=' + JSON.stringify(args));
     $.post('/json/dvctl-udp.php', args, get_response);
 }
-function stop() {
-    dvctl('interrupt');
-}
 // With Confirmation
 function exec(cmd) {
     if (confirm('EXEC?(' + cmd + ')')) {
@@ -88,6 +85,13 @@ function exec(cmd) {
         return true;
     }else
         return false;
+}
+// Button/Check
+function stop() {
+    if (itvl) dvctl('interrupt');
+}
+function interactive(sel) {
+    if (itvl && !$(sel).prop('checked')) dvctl('interactive');
 }
 // Select Command
 function make_opt(opt, ary) {

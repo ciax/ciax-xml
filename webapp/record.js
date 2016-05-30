@@ -153,16 +153,10 @@ function mcr_end(data) {
     stop_upd();
 }
 // **** Remote Control ****
-function dvctl_nonstop() {
-    if (itvl && !$('#nonstop :checkbox').prop('checked')) dvctl('interactive');
-}
 function dvctl_sel(obj) {
     var cmd = $('#nonstop :checkbox').prop('checked') ? 'nonstop' : 'interactive';
     dvctl(cmd);
     seldv(obj);
-}
-function dvctl_stop() {
-    if (itvl) stop();
 }
 // ******** Make Pages ********
 function dynamic_page(data) {

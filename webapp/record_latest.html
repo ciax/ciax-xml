@@ -37,9 +37,9 @@
             <option>--select--</option>
           </select>
         </span>
-        <button class="stop" id="stop" onclick="dvctl_stop();">STOP</button>
+        <button class="stop" id="stop" onclick="stop();">STOP</button>
         <label class="switch" id="nonstop">
-          <input type="checkbox" class="switch-input" checked onclick="dvctl_nonstop();"></input>
+          <input type="checkbox" class="switch-input" checked onclick="interactive(this);"></input>
           <span class="switch-label" data-on="NonStop" data-off="Interactive"></span>
           <span class="switch-handle"></span>
         </label>

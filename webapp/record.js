@@ -3,7 +3,7 @@
 // ********* Steps **********
 // step header section
 function make_step(step) {
-    var html = ['<li>'];
+    var html = ['<li id="' + step.time + '">'];
     header();
     conditions() || sub_mcr();
     html.push('</li>');
@@ -100,7 +100,6 @@ function make_step(step) {
 // ********* Record **********
 // Macro Body
 function record_steps(data) {
-    start_time = new Date(data.start);
     $('#record ul').empty();
     for (var j in data.steps) {
         make_step(data.steps[j]);
@@ -113,6 +112,7 @@ function record_steps(data) {
 // *** Static Display
 function record_outline(data) {
     port = data.port;
+    start_time = new Date(data.start);
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
     $('#total').text('');

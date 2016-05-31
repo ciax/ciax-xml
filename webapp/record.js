@@ -99,20 +99,18 @@ function make_step(step) {
 
 // ********* Record **********
 // Macro Body
-function update_step(data) {
-    var i = data.steps.length;
-    if (steps_length == i) {
-        var step = data.steps[i - 1];
-        $('#' + step.time).html(make_step(step));
-    }else steps_length = i;
-}
-
 function record_steps(data) {
-    for (var i = steps_length; i < data.steps.length; i++) {
-        var step = data.steps[i];
-        $('.depth' + step.depth + ':last').append(make_step(step));
+    var crnt = data.steps.length;
+    if (steps_length == crnt) {
+        var step = data.steps[crnt - 1];
+        $('#' + step.time).html(make_step(step));
+    }else {
+        for (var i = steps_length; i < crnt; i++) {
+            var step = data.steps[i];
+            $('.depth' + step.depth + ':last').append(make_step(step));
+        }
+        steps_length = i;
     }
-    update_step(data);
     sticky_bottom('slow');
     record_status(data);
 }
@@ -176,21 +174,23 @@ function mcr_end(data) {
 }
 function record_first(data) {
     record_outline(data);
-    record_steps(data);
     if (data.status == 'end') {
         mcr_end(data);
     }else { //run
         start_upd();
     }
+    record_steps(data);
 }
 function record_update(data) {
-    record_steps(data);
     var stat = data.status;
     if (stat == 'end') {
         mcr_end(data);
+        $('#record ul').empty();
+        steps_length = 0;
     }else if (stat == 'query') {
         record_commands(data.option);
     }
+    record_steps(data);
 }
 // **** Updating Page ****
 function dynamic_page(data) {

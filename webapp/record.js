@@ -7,7 +7,7 @@ function make_step(step) {
     header();
     conditions() || sub_mcr();
     html.push('</li>');
-    $('.depth' + step.depth + ':last').append(html.join(''));
+    return html.join('');
 
     function title() {
         var type = step.type;
@@ -101,8 +101,9 @@ function make_step(step) {
 // Macro Body
 function record_steps(data) {
     $('#record ul').empty();
-    for (var j in data.steps) {
-        make_step(data.steps[j]);
+    for (var i in data.steps) {
+        var step = data.steps[i];
+        $('.depth' + step.depth + ':last').append(make_step(step));
     }
     sticky_bottom('slow');
     record_status(data);

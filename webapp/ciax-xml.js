@@ -128,6 +128,7 @@ function start_upd() {
     if (!itvl) itvl = setInterval(update, 1000);
 }
 var itvl;
+var port;
 var acdon;
 var start_pos = 0;
 var count = 0;

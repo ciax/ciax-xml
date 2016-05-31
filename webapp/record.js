@@ -24,7 +24,7 @@ function make_step(step) {
     // result section
     function result() {
         var res = step.result;
-        if (!res) return;
+        if (!res || res == 'busy') return;
         html.push(' -> ');
         html.push('<em class="res ' + res + '">' + res + '</em>');
     }
@@ -100,37 +100,28 @@ function make_step(step) {
 // ********* Record **********
 // Macro Body
 function record_steps(data) {
-    var crnt = data.steps.length;
-    if (steps_length == crnt) {
-        var step = data.steps[crnt - 1];
-        $('#' + step.time).html(make_step(step));
-    }else {
-        for (var i = steps_length; i < crnt; i++) {
-            var step = data.steps[i];
-            $('.depth' + step.depth + ':last').append(make_step(step));
-        }
-        steps_length = i;
+    for (var i in data.steps) {
+        var step = data.steps[i];
+        $('.depth' + step.depth + ':last').append(make_step(step));
     }
     sticky_bottom('slow');
     record_status(data);
 }
 
 // ********* Outline **********
-// *** Static Display
-function record_outline(data) {
-    port = data.port;
+// *** Display on the Bars ***
+function record_outline(data) { // Do at the first
     start_time = new Date(data.start);
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0));
     $('#total').text('');
     replace('#result', '');
     $('#record ul').empty();
-    steps_length = 0;
 }
 function record_status(data) {
     replace('#status', data.status);
 }
-function record_result(data) {
+function record_result(data) { // Do at the end
     replace('#result', data.result);
     replace('#' + data.id + ' em', data.result);
     $('#total').text('[' + data.total_time + ']');
@@ -147,65 +138,95 @@ function archive(tag) {
 }
 
 // ******** Dynamic Page ********
-// *** Footer/Controls ***
+
+function dynamic_page() {
+    // **** Updating Page ****
+    var last_time = '';  // For detecting update
+    var first_time = ''; // For first time at a new macro;
+    var steps_length = 0;
+    return function(data) {
+        if (first_time != data.id) { // Do only the first one for new macro
+            record_first(data);
+            first_time = data.id;
+        }else if (data.time != last_time) { // Do every time for updated record
+            record_update(data);
+            last_time = data.time;
+        }
+        blinking();
+    }
+    // Update Command Selector
+    function record_commands(ary) {
+        var sel = $('#query select')[0];
+        if (sel) make_select(sel, ary);
+    }
+    function init_commands() {
+        var slots = [];
+        for (var i = 0; i <= 23; i++) { slots.push('slot' + i); }
+        var ary = ['upd'];
+        ary.push(['init', ['tinit', 'cinit']]);
+        ary.push(['mos', ['start', 'load', 'store', 'fin', 'kapa', 'kapa1']]);
+        ary.push(['slot', slots]);
+        record_commands(ary);
+    }
+    // Update Content of Steps (When JSON is updated)
+    function update_steps(data) {
+        var crnt = data.steps.length;
+        if (steps_length == crnt) {
+            // When Step doesn't increase.
+            var step = data.steps[crnt - 1];
+            $('#' + step.time).html(make_step(step));
+        }else {
+            // When Step increases.
+            for (var i = steps_length; i < crnt; i++) {
+                var step = data.steps[i];
+                $('.depth' + step.depth + ':last').append(make_step(step));
+            }
+            steps_length = i;
+        }
+        sticky_bottom('slow');
+        record_status(data);
+    }
+
+    // **** Make Pages ****
+    function mcr_end(data) {
+        record_result(data);
+        init_commands();
+        stop_upd();
+    }
+    function record_first(data) {
+        port = data.port;
+        record_outline(data);
+        if (data.status == 'end') {
+            mcr_end(data);
+        }else { //run
+            start_upd();
+        }
+        record_steps(data);
+        steps_length = data.steps.length;
+    }
+    function record_update(data) {
+        var stat = data.status;
+        if (stat == 'end') {
+            mcr_end(data);
+            $('#record ul').empty();
+            steps_length = 0;
+        }else if (stat == 'query') {
+            record_commands(data.option);
+        }
+        update_steps(data);
+    }
+}
+
+function update() {
+    $.getJSON('record_latest.json', upd_record);
+    remain_msg();
+}
+// ******** Direct Command ********
+// *** Controls on Footer Bars ***
 function dvctl_sel(obj) {
     var cmd = $('#nonstop :checkbox').prop('checked') ? 'nonstop' : 'interactive';
     dvctl(cmd);
     seldv(obj);
-}
-function record_commands(ary) {
-    var sel = $('#query select')[0];
-    if (sel) make_select(sel, ary);
-}
-function init_commands() {
-    var slots = [];
-    for (var i = 0; i <= 23; i++) { slots.push('slot' + i); }
-    var ary = ['upd'];
-    ary.push(['init', ['tinit', 'cinit']]);
-    ary.push(['mos', ['start', 'load', 'store', 'fin', 'kapa', 'kapa1']]);
-    ary.push(['slot', slots]);
-    record_commands(ary);
-}
-// **** Make Pages ****
-function mcr_end(data) {
-    record_result(data);
-    init_commands();
-    stop_upd();
-}
-function record_first(data) {
-    record_outline(data);
-    if (data.status == 'end') {
-        mcr_end(data);
-    }else { //run
-        start_upd();
-    }
-    record_steps(data);
-}
-function record_update(data) {
-    var stat = data.status;
-    if (stat == 'end') {
-        mcr_end(data);
-        $('#record ul').empty();
-        steps_length = 0;
-    }else if (stat == 'query') {
-        record_commands(data.option);
-    }
-    record_steps(data);
-}
-// **** Updating Page ****
-function dynamic_page(data) {
-    if (first_time != data.id) { // Do only the first one for new macro
-        record_first(data);
-        first_time = data.id;
-    }else if (data.time != last_time) { // Do every time for updated record
-        record_update(data);
-        last_time = data.time;
-    }
-    blinking();
-}
-function update() {
-    $.getJSON('record_latest.json', dynamic_page);
-    remain_msg();
 }
 
 // ******** Init Page ********
@@ -219,9 +240,6 @@ function init_record() {
     update();
 }
 // Var setting
+var upd_record = dynamic_page();
 var start_time = ''; // For elapsed time
-var last_time = '';  // For detecting update
-var first_time = ''; // For first time at a new macro;
-var steps_length = 0;
 var tag = 'latest';
-var port;

@@ -99,12 +99,20 @@ function make_step(step) {
 
 // ********* Record **********
 // Macro Body
+function update_step(data) {
+    var i = data.steps.length;
+    if (steps_length == i) {
+        var step = data.steps[i - 1];
+        $('#' + step.time).html(make_step(step));
+    }else steps_length = i;
+}
+
 function record_steps(data) {
-    $('#record ul').empty();
-    for (var i in data.steps) {
+    for (var i = steps_length; i < data.steps.length; i++) {
         var step = data.steps[i];
         $('.depth' + step.depth + ':last').append(make_step(step));
     }
+    update_step(data);
     sticky_bottom('slow');
     record_status(data);
 }
@@ -118,6 +126,8 @@ function record_outline(data) {
     $('#date').text(new Date(data.id - 0));
     $('#total').text('');
     replace('#result', '');
+    $('#record ul').empty();
+    steps_length = 0;
 }
 function record_status(data) {
     replace('#status', data.status);
@@ -212,5 +222,6 @@ function init_record() {
 var start_time = ''; // For elapsed time
 var last_time = '';  // For detecting update
 var first_time = ''; // For first time at a new macro;
+var steps_length = 0;
 var tag = 'latest';
 var port;

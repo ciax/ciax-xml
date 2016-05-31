@@ -1,12 +1,45 @@
-<HTML>
-    <HEAD>
-    <TITLE>MCR LOG</TITLE>
-    </HEAD>
-    <CENTER>
-    <META HTTP-EQUIV="Pragma" content="no-cache">
-    <FRAMESET COLS="20%,*" FRAMEBORDER=0>
-    <FRAME SRC="mcr_sel.php" NAME="FRM1">
-    <FRAME SRC="mcr_log.php" NAME="FRM2">
-    </FRAMESET>
-    </CENTER>
-</HTML>
+<!DOCTYPE html>
+<html lang="en-US">
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>MCR LOG</title>
+    <link rel="stylesheet" type="text/css" href="ciax-xml.css"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="ciax-xml.js"></script>
+    <script type="text/javascript" src="select.js"></script>
+    <script type="text/javascript" src="record.js"></script>
+    <script type="text/javascript">$(document).ready(init_log);</script>
+  </head>
+  <body>
+    <div id="ol_sel">
+      <div class="outline">
+        <div class="title">
+          <span class="mcr">Select</span>
+        </div>
+        <div id="select" class="contents"></div>
+      </div>
+    </div>
+    <div id="ol_rec">
+      <div class="outline">
+        <!-- HEADER -->
+        <div>
+          <div class="title">
+            <span class="mcr">Macro</span>:
+            <span class="cmd" id="mcrcmd"></span>
+            <span class="tail" id="scroll">
+              <input type="checkbox" onclick="sticky_bottom();">Auto Scroll</input>
+            </span>
+          </div>
+          <div class="contents"><date id="date"></date></div>
+        </div>
+        <div id="record" class="contents"></div>
+        <!-- FOOTER -->
+        <div class="footer">
+          <span class="res" id="result"></span>
+          <span class="elps tail" id="total"></span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

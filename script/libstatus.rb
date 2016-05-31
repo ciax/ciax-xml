@@ -10,15 +10,15 @@ module CIAX
     class Status < Varx
       # @ last*
       attr_reader :last
+      # dbi can be Ins::Db or ID for new Db
       def initialize(dbi = nil)
         super('status')
         @last = {}
         @updated = now_msec
         @lastsave = now_msec
         _setdbi(dbi, Ins::Db)
-        # exclude alias from index
-        @adbs = @dbi[:status][:index].reject{ |k,v| v[:ref] }
-        self[:data] = Hashx[@adbs].skeleton unless self[:data]
+        _init_sdb
+        @cmt_procs << proc { verbose { "Saved #{self[:id]}:timing" } }
       end
 
       def change?(k)
@@ -29,7 +29,7 @@ module CIAX
         self[:data][k] != @last[k]
       end
 
-      def update?
+      def updated?
         self[:time] > @updated
       end
 
@@ -40,26 +40,41 @@ module CIAX
         self
       end
 
+      # set vars by csv
       def str_update(str)
         str.split(',').each do |tkn|
-          self[:data].rep(*tkn.split('='))
+          self[:data].repl(*tkn.split('='))
         end
         self
+      end
+
+      # Structure is Hashx{ data:{ key,val ..} }
+      def pick(keylist, atrb = {})
+        Hashx.new(atrb).update(data: self[:data].pick(keylist))
+      end
+
+      def ext_local_file
+        super.load
+      end
+
+      private
+
+      def _init_sdb
+        # exclude alias from index
+        @adbs = @dbi[:status][:index].reject { |_k, v| v[:ref] }
+        self[:data] = Hashx.new(@adbs).skeleton unless self[:data]
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('h:')
-      begin
+      GetOpts.new('[id]', 'h:') do |opt|
         stat = Status.new
-        if OPT[:h]
-          stat.ext_http(OPT.host)
+        if opt[:h]
+          stat.ext_http(opt.host)
         else
-          stat.ext_file
+          stat.ext_local_file
         end
         puts stat
-      rescue InvalidID
-        OPT.usage '(opt) [id]'
       end
     end
   end

@@ -8,11 +8,11 @@ module CIAX
       include CIAX::Msg
       attr_reader :index, :max
       def initialize(id)
-        @cls_color = 1
         @logary = [{}]
         @index = 0
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
-        @tbl = query('.tables').split(/ /).grep(/^stream/).sort.last || fail('No Stream table')
+        @tbl = query('.tables').split(/ /).grep(/^stream/).sort.last
+        fail('No Stream table') unless @tbl
         @total = query("select count(*) from #{@tbl} where dir='rcv';").to_i
         fail('No Line') if @total < 1
       end
@@ -28,28 +28,15 @@ module CIAX
       end
 
       def find_next(str)
-        begin
-          verbose { 'Search corresponding CMD' }
-          sql = "select min(time),cmd from #{@tbl} where time > #{@index} and base64='#{str}';"
-          ans = query(sql)
-          tim, cmd = ans.split('|')
-          verbose { "Matched time is #{tim}" }
-          fail if tim.empty?
-          @index = tim.to_i
-        rescue
-          raise("NO record for #{str}") if @index == 0
-          @index = 0
-          verbose { colorize('LINE:REWINDED', 3) }
-          retry
-        end
+        verbose { 'Search corresponding CMD' }
+        cmd = _scan_cmd(str)
         verbose { 'Search corresponding RES' }
-        sql = "select min(time),count(*),cmd,base64 from #{@tbl} "
-        sql << "where dir='rcv' and cmd='#{cmd}' and time > #{tim};"
-        ans = query(sql)
-        tim, count, = ans.split('|')
-        verbose { colorize("LINE:[#{cmd}](#{@total - count.to_i}/#{@total})<#{wait(tim)}>", 2) }
-        sql = "select base64 from #{@tbl} where time = #{tim};"
-        query(sql)
+        tim, count, = _next_res(cmd)
+        verbose do
+          str = "(#{@total - count.to_i}/#{@total})<#{wait(tim)}>"
+          colorize("LINE:[#{cmd}]" + str, 2)
+        end
+        query("select base64 from #{@tbl} where time = #{tim};")
       end
 
       def wait(tim)
@@ -62,6 +49,35 @@ module CIAX
       def input
         select([STDIN])
         [STDIN.sysread(1024)].pack('m').split("\n").join('')
+      end
+
+      private
+
+      def _scan_cmd(str)
+        tim, cmd = _next_cmd(str)
+        verbose { "Matched time is #{tim}" }
+        fail if tim.empty?
+        @index = tim.to_i
+        cmd
+      rescue
+        raise("NO record for #{str}") if @index == 0
+        @index = 0
+        verbose { colorize('LINE:REWINDED', 3) }
+        retry
+      end
+
+      def _next_cmd(str)
+        sql = "select min(time),cmd from #{@tbl} where time"
+        sql << " > #{@index} and base64='#{str}';"
+        ans = query(sql)
+        ans.split('|')
+      end
+
+      def _next_res(cmd)
+        sql = "select min(time),count(*),cmd,base64 from #{@tbl} "
+        sql << "where dir='rcv' and cmd='#{cmd}' and time > #{@index};"
+        ans = query(sql)
+        ans.split('|')
       end
     end
   end

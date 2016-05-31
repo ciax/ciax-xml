@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="moircs" version="1" label="MOIRCS Macro" port="55555">
+  <macro id="moircs" version="1" label="MOIRCS Macro" host="moircsobcp" port="55555">
     <include ref="mos"/>
     <include ref="car"/>
     <include ref="turret"/>

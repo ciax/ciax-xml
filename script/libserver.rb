@@ -8,42 +8,41 @@ module CIAX
     end
 
     # JSON expression of server stat will be sent.
-    def ext_server
-      @sub.ext_server if @sub
+    def ext_local_server
       return self unless @port
       verbose do
-        "Initialize UDP server (#{@id}) port:[#{@port}] git:[" +
+        "Initiate UDP server (#{@id}) port:[#{@port}] git:[" +
           `cd #{__dir__};git reflog`.split(' ').first + ']'
       end
       @server_input_proc = proc { |line| j2h(line) }
-      @sv_stat.ext_file.auto_save.ext_log
-      @server_output_proc = proc { @sv_stat.to_j }
+      @sv_stat.ext_local_file.auto_save.ext_local_log
+      @server_output_proc = proc { JSON.dump(@sv_stat) }
+      _startup
       self
     end
 
-    def server
-      @sub.server if @sub
-      return self unless @port
-      ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |udp|
-        IO.select([udp])
-        line, addr = udp.recvfrom(4096)
-        line.chomp!
-        rhost = Addrinfo.ip(addr[2]).getnameinfo.first
-        verbose { "Exec Server\nValid Commands #{@cobj.valid_keys}" }
+    private
+
+    # Separated form ext_* for detach process of this part
+    def _startup
+      ThreadUdp.new("Server(#{@layer}:#{@id})", @port) do |line, rhost|
         verbose { "UDP Recv:#{line} is #{line.class}" }
-        begin
-          exe(@server_input_proc.call(line), "udp:#{rhost}")
-        rescue InvalidCMD
-          @sv_stat.rep(:msg, 'INVALID')
-        rescue
-          @sv_stat.rep(:msg, "ERROR:#{$ERROR_INFO}")
-          errmsg
-        end
+        _srv_exec(line, rhost)
         send_str = @server_output_proc.call
         verbose { "UDP Send:#{send_str}" }
-        udp.send(send_str, 0, addr[2], addr[1])
+        send_str
       end
       self
+    end
+
+    def _srv_exec(line, rhost)
+      verbose { "Exec Server\nValid Commands #{@cobj.valid_keys}" }
+      exe(@server_input_proc.call(line), "udp:#{rhost}")
+    rescue InvalidCMD
+      @sv_stat.repl(:msg, 'INVALID')
+    rescue
+      @sv_stat.repl(:msg, "ERROR:#{$ERROR_INFO}")
+      errmsg
     end
   end
 end

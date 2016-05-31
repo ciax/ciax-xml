@@ -30,6 +30,8 @@
   idb: Instance DB (App site information)
   sdb: Symbol DB
       used by adb or idb
+  cdb: Command Alias DB
+      used by idb
   wdb: Watch DB
       included in adb      
   mdb: Macro DB
@@ -89,13 +91,13 @@
 
 ### Explicit conversion by Attributes ###
 
- format
+ format (using %? string)
     available: fdb//string
             --
             adb//command/argv
             adb//status/value
 
- formula
+ formula (using $#)
     available: adb//status/value/float
 
  decode
@@ -123,8 +125,10 @@
   concat strings
     adb//status/value/string
 
-  format strings (using %)
+  format strings (using %s)
     sdb//table/*@msg
+    cdb//alias//[unit,item]@label
+    adb//command//[unit,item]@label
 
 ### Reference Key ###
 

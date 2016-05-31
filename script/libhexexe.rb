@@ -8,20 +8,34 @@ module CIAX
   module Hex
     # cfg must have [:db], [:sub_list]
     class Exe < Exe
-      def initialize(id, cfg, atrb = {})
+      def initialize(cfg, atrb = Hashx.new)
         super
-        _init_sub
-        view = Rsp.new(@sub.sub.stat, @cfg)
-        @cobj.add_rem(@sub.cobj.rem)
-        @mode = @sub.mode
-        @post_exe_procs.concat(@sub.post_exe_procs)
-        @port = @sub.sub.port.to_i + 1000
-        view.ext_log if OPT[:e]
-        @shell_output_proc = proc { view.to_x }
+        _init_dbi
+        _init_takeover
+        _init_view
+        _opt_mode
       end
 
-      def ext_server
+      private
+
+      def _init_takeover
+        @sub = @cfg[:sub_list].get(@id)
+        @sv_stat = @sub.sv_stat
+        @cobj.add_rem(@sub.cobj.rem)
+        @mode = @sub.mode
+        @port = @sub.sub.port.to_i + 1000
+        @post_exe_procs.concat(@sub.post_exe_procs)
+      end
+
+      def _init_view
+        @stat = Rsp.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
+        @shell_output_proc = proc { @stat.to_x }
+        @stat.ext_local_log if @cfg[:option].log?
+      end
+
+      def ext_local_server
         super
+        # Specific setting must be done after super to override them
         @server_input_proc = proc do|line|
           /^(strobe|stat)/ =~ line ? [] : line.split(' ')
         end
@@ -31,14 +45,11 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ceh:lts')
-      id = ARGV.shift
-      cfg = Config.new
-      atrb = { hdb: Db.new, sub_list: Wat::List.new(cfg) }
-      begin
-        Exe.new(id, cfg, atrb).ext_shell.shell
-      rescue InvalidID
-        OPT.usage('(opt) [id]')
+      ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
+        db = cfg[:db] = Ins::Db.new
+        dbi = db.get(args.shift)
+        atrb = { dbi: dbi, hdb: Db.new, sub_list: Wat::List.new(cfg) }
+        Exe.new(cfg, atrb).run.ext_shell.shell
       end
     end
   end

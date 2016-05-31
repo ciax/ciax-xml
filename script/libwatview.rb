@@ -2,68 +2,60 @@
 require 'libwatrsp'
 
 # View is not used for computing, just for apperance for user.
-# So the convert process (upd_view) will be included in to_s
+# Some information is added from Dbi
+# So the convert process (upd) will be included in to_s
 module CIAX
   # Watch Layer
   module Wat
     # Decorate the event data (Put caption,symbole,etc.) from WDB
-    class View < Hashx
+    class View < Upd
       def initialize(event)
         super()
         @event = type?(event, Event)
         wdb = type?(event.dbi, Dbi)[:watch]
-        init_stat(wdb || { index: [] })
-      end
-
-      def to_v
-        upd_view
-        vw = ''
-        view_time(vw)
-        vw << itemize('Issuing', self[:exec])
-        return vw if self[:stat].empty?
-        view_cond(vw)
-        vw << itemize('Interrupt', self[:int])
-        vw << itemize('Blocked', self[:block])
-      end
-
-      def to_r
-        @event.to_r
+        _init_stat(wdb || { index: [] })
+        _init_upd_proc
+        upd
       end
 
       private
 
-      def init_stat(wdb)
-        self[:stat] = {}
-        wdb[:index].each do |id, evnt|
-          hash = (self[:stat][id] ||= {})
-          hash[:label] = evnt[:label]
-          init_cond(evnt[:cnd], (hash[:cond] ||= []))
-        end
-        self
-      end
-
-      def init_cond(cond, m)
-        cond.each do |cnd|
-          h = Hash[cnd]
-          case cnd[:type]
-          when 'compare'
-            h[:vals] = []
-          when 'onchange'
-          else
-            h[:cri] = cnd[:val]
+      def _init_upd_proc
+        @upd_procs << proc do
+          %i(exec block int act_time upd_next).each do |id|
+            self[id] = @event.get(id)
           end
-          m << h
+          upd_stat
+          time_upd(@event[:time])
+        end
+      end
+
+      def _init_stat(wdb)
+        self[:stat] = Hashx.new
+        wdb[:index].each do |id, evnt|
+          hash = self[:stat].get(id) { Hashx.new }
+          hash[:label] = evnt[:label]
+          _init_cond(evnt[:cnd], hash.get(:cond) { [] })
         end
         self
       end
 
-      def upd_view
-        self[:time] = @event[:time]
-        %i(exec block int act_time upd_next).each do |id|
-          self[id] = @event.get(id)
+      def _init_cond(cond, m)
+        cond.each do |cnd|
+          m << (h = Hashx.new(cnd))
+          _init_by_type(cnd, h)
         end
-        upd_stat
         self
+      end
+
+      def _init_by_type(cnd, h)
+        case cnd[:type]
+        when 'onchange'
+        when 'compare'
+          h[:vals] = []
+        else
+          h[:cri] = cnd[:val]
+        end
       end
 
       def upd_stat
@@ -74,79 +66,36 @@ module CIAX
         self
       end
 
-      def upd_cond(id, cond)
-        cond.each_with_index do |h, i|
-          h[:res] = (@event.get(:res)[id] || [])[i]
+      def upd_cond(id, conds)
+        conds.each_with_index do |cnd, i|
+          cnd[:res] = (@event.get(:res)[id] || [])[i]
           idx = @event.get(:crnt)
-          case h[:type]
-          when 'onchange'
-            v = h[:var]
-            h[:val] = idx[v]
-            h[:cri] = @event.get(:last)[v]
-          when 'compare'
-            h[:vals] = h[:vars].map { |k| "#{k}:#{idx[k]}" }
-          end
+          _upd_by_type(cnd, idx)
         end
         self
       end
 
-      def view_time(vw)
-        vw << itemize('Elapsed', elps_date(self[:time], now_msec))
-        vw << itemize('ActiveTime', elps_sec(*self[:act_time]))
-        vw << itemize('ToNextUpdate', elps_sec(now_msec, self[:upd_next]))
-      end
-
-      def view_cond(vw)
-        vw << itemize('Conditions')
-        self[:stat].values.each do |i| # each event
-          vw << cformat("    %:6s\t: %s\n", i[:label], rslt(i[:active]))
-          view_event(vw, i[:cond])
-        end
-      end
-
-      def view_event(vw, cond)
-        cond.each do |j|
-          case j[:type]
-          when 'compare'
-            vw << cformat("      %s compare %s [%s]\n",
-                          rslt(j[:res]), j[:inv] ? 'not' : '', j[:vals].join(', '))
-          else
-            vw << cformat("      %s %:3s  (%s: %s)\n",
-                          rslt(j[:res]), j[:var], j[:type], frml(j))
-          end
-        end
-      end
-
-      def frml(j)
-        cri = j[:cri]
-        val = j[:val]
-        if j[:type] == 'onchange'
-          format('%s => %s', cri, val)
+      def _upd_by_type(cnd, idx)
+        v = cnd[:var]
+        case cnd[:type]
+        when 'onchange'
+          cnd[:val] = idx[v]
+          cnd[:cri] = @event.get(:last)[v]
+        when 'compare'
+          cnd[:vals] = cnd[:vars].map { |k| "#{k}:#{idx[k]}" }
         else
-          ope = j[:inv] ? '!' : '='
-          format('/%s/ %s~ %s', cri, ope, val)
+          cnd[:val] = idx[v]
         end
-      end
-
-      def rslt(res)
-        colorize(res ? 'o' : 'x', res ? 2 : 1)
-      end
-
-      def itemize(str, res = nil)
-        cformat("  %:2s\t: %s\n", str, res)
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      OPT.parse('r')
-      begin
+      GetOpts.new('[site] | < event_file', 'r') do |_opt|
         event = Event.new
         wview = View.new(event)
-        event.ext_file if STDIN.tty?
-        puts wview
-      rescue InvalidID
-        OPT.usage('(opt) [site] | < event_file')
+        event.ext_local_file if STDIN.tty?
+        puts wview.upd
       end
     end
   end

@@ -7,26 +7,12 @@ module CIAX
       Msg.type?(obj, Varx)
     end
 
-    def ext_log # logging with flatten
+    def ext_local_log # logging with flatten
       id = self[:id]
-      ver = self[:ver]
-      verbose { "Log Initialize [#{id}/Ver.#{ver}]" }
       @queue = Queue.new
-      @post_upd_procs << proc { @queue.push(to_j) }
-      logfile = vardir('log') + _file_base + "_#{Time.now.year}.log"
-      ThreadLoop.new("Logging(#{@type}:#{id})", 11) do
-        logary = []
-        loop do
-          logary << @queue.pop
-          break if @queue.empty?
-        end
-        open(logfile, 'a') do|f|
-          logary.each do|str|
-            f.puts str
-            verbose { "Appended #{str.size} byte" }
-          end
-        end
-      end
+      @cmt_procs << proc { @queue.push(JSON.dump(self)) }
+      @logfile = vardir('log') + _file_base + "_#{Time.now.year}.log"
+      _log_thread(id)
       self
     end
 
@@ -42,10 +28,26 @@ module CIAX
       h
     end
 
-    def ext_sqlog
+    def ext_local_sqlog
       # Logging if version number exists
-      SqLog::Save.new(self[:id], @type).add_table(self)
+      id = self[:id]
+      (SqLog::LIST[id] ||= SqLog::Save.new(id)).add_table(self)
       self
+    end
+
+    private
+
+    def _log_thread(id)
+      Threadx.new("Logging(#{@type}:#{id})", 11) do
+        verbose { "Initiate File Log [#{id}/Ver.#{self[:ver]}]" }
+        loop { _log_save }
+      end
+    end
+
+    def _log_save
+      str = @queue.pop
+      open(@logfile, 'a') { |f| f.puts str }
+      verbose { "Appended #{str.size} byte" }
     end
   end
 end

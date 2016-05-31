@@ -2,12 +2,14 @@
 # Common Module
 require 'libmsgfunc'
 require 'libmsgmod'
-
+# CIAX
 module CIAX
   ######################### Message Module #############################
   # Should be extended in module/class
+  NS_COLORS = {}
+  CLS_COLORS = {}
+  # Message module
   module Msg
-    attr_accessor :cls_color
     START_TIME = Time.now
     @indent_base = 1
     # block takes array (shown by each line) or string
@@ -16,13 +18,11 @@ module CIAX
     #   <val> -> taken from status (incoming)
     #   (val) -> calcurated from status
     def verbose(cond = true)
-      return unless ENV['VER'] && cond && !@hide_inside
-      data = yield
-      (data.is_a?(Array) ? data : [data]).map do|line|
-        msg = make_msg(line)
-        next unless condition(msg)
-        prt_lines(msg)
-      end.compact.empty?
+      return self unless ENV['VER'] && cond && !@hide_inside
+      str = type?(yield, String)
+      msg = make_msg(str)
+      prt_lines(msg) if condition(msg)
+      self
     end
 
     def info(title)
@@ -42,17 +42,19 @@ module CIAX
 
     def errmsg
       show make_msg("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
+      self
     end
 
     # @hide_inside is flag for hiding inside of enclose
+    # returns enclosed contents to have no influence by this
     def enclose(title1, title2)
-      @hide_inside = verbose { title1 }
+      verbose { title1 }
+      @enclosed = @printed
       Msg.ver_indent(1)
       res = yield
     ensure
       Msg.ver_indent(-1)
-      verbose { format(title2, res) }
-      @hide_inside = false
+      prt_lines(make_msg(format(title2, res))) if @enclosed
     end
 
     private
@@ -64,10 +66,11 @@ module CIAX
         show Msg.indent(base + ind) + line
         ind = 2
       end
-      true
+      @printed = true
     end
 
     def make_msg(title, c = nil)
+      @printed = false
       return unless title
       @head ||= make_head
       ts = "#{@head}:"
@@ -79,9 +82,11 @@ module CIAX
       tc = Thread.current
       cpath = class_path
       ns = cpath.shift
+      cls = cpath.join('::')
+      cls << "(#{@id})" if @id
       cary << [tc[:name] || 'Main', tc[:color] || 15]
       cary << [ns, ns_color(ns)]
-      cary << [cpath.join('::'), @cls_color || 15]
+      cary << [cls, cls_color || 15]
     end
 
     def make_head
@@ -91,13 +96,12 @@ module CIAX
     end
 
     def ns_color(ns)
-      begin
-        color = CIAX.const_get("#{ns}::NS_COLOR")
-      rescue NameError
-        Msg.msg("No color defined for #{ns}::NS_COLOR", 3)
-        color = 7
-      end
-      color
+      NS_COLORS[ns.to_s] ||= _gen_color(NS_COLORS)
+    end
+
+    def cls_color
+      cls = class_path.last
+      CLS_COLORS[cls] ||= _gen_color(CLS_COLORS, 9)
     end
 
     # VER= makes setenv "" to VER otherwise nil
@@ -118,6 +122,10 @@ module CIAX
 
     def self.ver_indent(add = 0)
       @indent_base += add
+    end
+
+    def _gen_color(table, ofs = 1)
+      (table.size % 7) + ofs
     end
   end
 end

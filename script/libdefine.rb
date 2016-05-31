@@ -3,37 +3,19 @@
 module CIAX
   require 'English' # To use $! -> $ERROR_INFO
   require 'debug' if ENV['DEBUG']
-  NS_COLOR = 15
 
-  # Site Domain
-  module Site; NS_COLOR = 13; end
-  # Frame Layer
-  module Frm; NS_COLOR = 2; end
-  # Application Layer
-  module App; NS_COLOR = 3; end
-  # Watch Layer
-  module Wat; NS_COLOR = 9; end
-  # HexString Layer
-  module Hex; NS_COLOR = 5; end
-  # Macro Domain
-  module Mcr; NS_COLOR = 12; end
-  # Device Site DB
-  module Dev; NS_COLOR = 2; end
-  # Instance Site DB
-  module Ins; NS_COLOR = 6; end
-  # XML module
-  module Xml; NS_COLOR = 4; end
-  # Symbol module
-  module Sym; NS_COLOR = 1; end
-  # SqLog module
-  module SqLog; NS_COLOR = 1; end
-
+  # MY HOST
+  HOST = `hostname`.strip
+  # Initial View Mode
+  VMODE = 'v'
   # User input Error
   class UserError < RuntimeError; end
-  # When invalid Project, exit from shell/server
-  class InvalidProj < UserError; end
+  # When invalid Argument, exit from shell/server
+  class InvalidARGS < UserError; end
+  # When invalid Option, exit from shell/server
+  class InvalidOPT < InvalidARGS; end
   # When invalid Device, exit from shell/server
-  class InvalidID < InvalidProj; end
+  class InvalidID < InvalidARGS; end
   # When invalid Command, continue in shell/server
   class InvalidCMD < InvalidID; end
   # When invalid Parameter, continue in shell/server

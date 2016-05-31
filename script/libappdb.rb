@@ -5,7 +5,7 @@ module CIAX
   # Application Layer
   module App
     # Application DB
-    class Db < Db
+    class Db < DbCmd
       include Wat::Db
       def initialize
         super('adb')
@@ -27,81 +27,86 @@ module CIAX
         id, itm = super
         Repeat.new.each(e0) do|e1, rep|
           par2item(e1, itm) && next
-          case e1.name
-          when 'frmcmd'
-            command = [e1[:name]]
-            e1.each do|e2|
-              argv = e2.to_h
-              argv[:val] = rep.subst(e2.text)
-              if /\$/ !~ argv[:val]
-                fmt = argv.delete(:format)
-                argv[:val] = fmt % expr(argv[:val]) if fmt
-              end
-              command << argv
-            end
-            (itm[:body] ||= []) << command
-          end
+          _add_frmcmd(e1, rep, itm)
         end
         validate_par(itm)
         [id, itm]
       end
 
+      def _add_frmcmd(e1, rep, itm)
+        return if e1.name != 'frmcmd'
+        command = [e1[:name]]
+        e1.each do|e2|
+          command << _make_argv(e2, rep)
+        end
+        itm.get(:body) { [] } << command
+      end
+
+      def _make_argv(e2, rep)
+        argv = e2.to_h
+        argv[:val] = rep.subst(e2.text)
+        if /\$/ !~ argv[:val]
+          fmt = argv.delete(:format)
+          argv[:val] = fmt % expr(argv[:val]) if fmt
+        end
+        argv
+      end
+
       # Status Db
       def init_status(adbs, dbi)
-        grp = Hashx.new
-        idx = Hashx.new
-        symtbl = []
+        sdb = { group: Hashx.new, index: Hashx.new, symtbl: [] }
         Repeat.new.each(adbs) do|e, r|
-          case e.name
-          when 'group'
-            gid = e.attr2item(grp) { |_, v| r.formatting(v) }
-            rec_stat(e, idx, grp[gid], r)
-          when 'symtbl'
-            symtbl << e['ref']
-          end
+          _grp_stat(e, r, sdb)
         end
-        dbi[:status] = adbs.to_h.update(group: grp, index: idx, symtbl: symtbl)
+        dbi[:status] = adbs.to_h.update(sdb)
+      end
+
+      def _grp_stat(e, r, sdb)
+        case e.name
+        when 'group'
+          gid = e.attr2item(sdb[:group]) { |v| r.formatting(v) }
+          _rec_stat(e, r, sdb[:index], sdb[:group][gid])
+        when 'symtbl'
+          sdb[:symtbl] << e['ref']
+        end
       end
 
       # recursive method
-      def rec_stat(e, idx, grp, rep)
-        rep.each(e) do|e0, r0|
-          id = e0.attr2item(idx) { |_, v| r0.formatting(v) }
+      def _rec_stat(e, r, idx, grp)
+        r.each(e) do|e0, r0| # e0 can be 'binary', 'integer', 'float'..
+          id = e0.attr2item(idx) { |v| r0.formatting(v) }
           itm = idx[id]
-          (grp[:members] ||= []) << id
+          grp.get(:members) { [] } << id
           itm[:type] = e0.name
           itm[:fields] = []
-          r0.each(e0) do|e1, r1|
-            st = {}
-            st[:sign] = 'true' if e1.name == 'sign'
-            e1.to_h.each do|k, v|
-              case k
-              when :bit, :index
-                st[k] = r1.subst(v)
-              else
-                st[k] = v
-              end
-            end
-            i = st.delete(:index)
-            st[:ref] << ":#{i}" if i
-            e1.each do|e2|
-              (st[:conv] ||= {})[e2.text] = e2[:msg]
-            end
-            itm[:fields] << st
-          end
+          _add_fields(r0, e0, itm[:fields])
         end
-        idx
+      end
+
+      def _add_fields(r0, e0, fields)
+        r0.each(e0) do|e1, r1|
+          st = {}
+          st[:sign] = 'true' if e1.name == 'sign'
+          _add_atrb(r1, e1, st)
+          i = st.delete(:index)
+          st[:ref] << ":#{i}" if i
+          fields << st
+        end
+      end
+
+      def _add_atrb(r1, e1, st)
+        e1.to_h.each do|k, v|
+          v = r1.subst(v) if k.to_s =~ /bit|index/
+          st[k] = v
+        end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('r')
-      begin
-        dbi = Db.new.get(ARGV.shift)
-      rescue InvalidID
-        OPT.usage('[id] (key) ..')
+      GetOpts.new('[id] (key) ..', 'r') do |opt, args|
+        dbi = Db.new.get(args.shift)
+        puts opt[:r] ? dbi.to_v : dbi.path(args)
       end
-      puts OPT[:r] ? dbi.to_v : dbi.path(ARGV)
     end
   end
 end

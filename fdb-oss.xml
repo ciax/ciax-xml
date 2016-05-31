@@ -165,7 +165,7 @@
         </array>
         <field assign="mba" label="MLP3-BOLT COMM ALM(18:B0)" length="2" decode="hexstr"/>
         <field assign="loc" label="CS BOLT LOCAL(19:B0)" length="2" decode="hexstr"/>
-        <array assign="clm" label="CS BOLT Cullent Limit(20-21)" length="2" decode="hexstr">
+        <array assign="clm" label="CS BOLT Current Limit(20-21)" length="2" decode="hexstr">
           <index size="2"/>
         </array>
       </item>

@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="dummy" label="Dummy simulator">
-    <group id="dmy" label="Dummy simulator">
-      <instance id="tsl" app_id="mma" frm_site="tsl" host="localhost" port="25699" label="TEST Slosyn"/>
-      <instance id="tfp" app_id="cfp" frm_site="tfp" host="localhost" port="25698" label="TEST Field Point"/>
-      <instance id="tb1" app_id="bbe" frm_site="tbb" host="localhost" port="25697" label="TEST BBE simple">
+    <group id="sim" label="Dummy simulator">
+      <instance id="tfp" app_id="cfp" host="localhost" port="25691" label="TEST Field Point"/>
+      <instance id="tap" app_id="oma" host="localhost" port="25692" label="TEST Air Pres"/>
+      <instance id="tma" app_id="mma" host="localhost" port="25693" label="TEST Arm"/>
+      <instance id="tmc" app_id="mmc" host="localhost" port="25694" label="TEST Carousel">
+        <command ref="mmc"/>
+      </instance>
+      <instance id="tbb" app_id="bbe" host="localhost" port="25696" label="TEST BBE simple">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="X0-3"/>
           <group ref="g1" caption="X4-7"/>
@@ -12,7 +16,7 @@
           <group ref="g3" caption="X12-15"/>
         </status>
       </instance>
-      <instance id="tb2" app_id="bbe" frm_site="tbb" host="localhost" port="25696" label="TEST BBE with Watch">
+      <instance id="tbw" app_id="bbe" frm_site="tbb" host="localhost" port="25697" label="TEST BBE with Watch">
         <command ref="tbb"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="X0-3"/>

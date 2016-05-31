@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require 'libdb'
+require 'libdbcmd'
 
 module CIAX
   # Instance Layer
   module Cmd
     # Instance DB
-    class Db < Db
+    class Db < DbCmd
       def initialize
         super('cdb')
       end
@@ -30,7 +30,7 @@ module CIAX
       def _add_item(e0, gid)
         id, itm = super
         e0.each do|e1|
-          (itm[:argv] ||= []) << e1.text
+          itm.get(:argv) { [] } << e1.text
         end
         [id, itm]
       end
@@ -40,20 +40,17 @@ module CIAX
         aidx = ali[:index]
         aidx.each do |_id, itm|
           ref = itm.delete(:ref)
-          itm.update(idx[ref].pick([:parameters, :body]))
+          itm.update(idx[ref].pick(%i(parameters body)))
         end
         idx.update(aidx)
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('r')
-      begin
-        dbi = Db.new.get(ARGV.shift)
-      rescue InvalidID
-        OPT.usage('[id] (key) ..')
+      GetOpts.new('[id] (key) ..', 'r') do |opt, args|
+        dbi = Db.new.get(args.shift)
+        puts opt[:r] ? dbi.to_v : dbi.path(args)
       end
-      puts OPT[:r] ? dbi.to_v : dbi.path(ARGV)
     end
   end
 end

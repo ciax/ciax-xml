@@ -1,31 +1,27 @@
 #!/bin/bash --rcfile
-addenv(){
-    name=$1;shift
-    list=$(IFS=: eval echo \$$name)
-    if [ "$list" ] ; then
-        for j; do
-            for i in $list;do
-                [ "$j" = "$i" ] && break 2
-            done
-            eval "export $name=$j:\$$name"
-        done
+develop(){
+    cd "$HOME/ciax-xml/webapp"
+    if git branch |grep '* develop' ; then
+        export PROJ=dummy
+        export VER=Initiate
+        export NOCACHE=1
+        alias sybeta='giu beta;gim develop;git push;giu develop'
     else
-        eval "export $name=${*// /:}"
+        cd
     fi
 }
-develop(){
-    cd "$HOME/ciax-xml/script"
-    git branch |grep '* develop'
-}
-    
+
 # Local functions
 umask 022
 shopt -s nullglob
 export LANG="C"
-addenv PATH "$HOME/bin" "$HOME/lib"
-addenv RUBYLIB "$HOME/ciax-xml/script"
+export PATH="$HOME/bin:$PATH"
+export RUBYLIB="$HOME/ciax-xml/script:$RUBYLIB"
 
 #Alias
 alias rub='rubocop -a -c .rubocop_todo.yml'
 alias rgen='rubocop --auto-gen-config'
-develop && export NOCACHE=1
+alias jj='ruby -r json -e "jj(JSON.parse(gets(nil)))"'
+alias js='fixjsstyle *.js'
+alias sim='killall -q mos_sim && echo Terminated || mos_sim; psg mos_sim'
+develop >/dev/null

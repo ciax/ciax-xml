@@ -6,7 +6,7 @@ require 'thread'
 module CIAX
   # Extended Thread class
   class Threadx < Thread
-    NS_COLOR = 4
+    Threads = ThreadGroup.new
     include Msg
     def initialize(name, color = 4)
       Thread.abort_on_exception = true
@@ -16,10 +16,15 @@ module CIAX
       end
       th[:name] = name
       th[:color] = color
+      Threads.add(th)
     end
 
     def self.list
       Thread.list.map { |t| t[:name] }
+    end
+
+    def self.killall
+      Threads.list.each(&:kill)
     end
   end
 
@@ -35,18 +40,30 @@ module CIAX
     end
   end
 
+  # UDP Server Thread
   class ThreadUdp < Threadx
     def initialize(name, port)
+      verbose { "Initiate Start #{name}" }
       super(name, 9) do
-        begin
-          udp = UDPSocket.open
-          udp.bind('0.0.0.0', port.to_i)
-          loop { yield(udp) }
-        ensure
-          udp.close
-        end
+        udp = UDPSocket.open
+        udp.bind('0.0.0.0', port.to_i)
+        _udp_loop(udp) { |line, rhost| yield(line, rhost) }
       end
       sleep 0.3
+    end
+
+    private
+
+    def _udp_loop(udp, &th_proc)
+      loop do
+        IO.select([udp])
+        line, addr = udp.recvfrom(4096)
+        rhost = Addrinfo.ip(addr[2]).getnameinfo.first
+        send_str = th_proc.call(line, rhost)
+        udp.send(send_str, 0, addr[2], addr[1])
+      end
+    ensure
+      udp.close
     end
   end
 end

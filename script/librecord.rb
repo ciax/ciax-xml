@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libvarx'
-require 'libmcrprt'
+require 'libstepprt'
 
 module CIAX
   # Macro Layer
@@ -11,16 +11,16 @@ module CIAX
       def initialize(id = nil) # Session ID for Loading
         super('record')
         self[:id] = id || self[:time].to_s # Session ID
-        update(ver: 0, cid: nil, label: nil, pid: 0, status: 'ready')
-        update(result: 'busy', total_steps: 0, total_time: 0, start: 0)
+        update(port: 55_555, ver: '0', cid: nil, label: nil, pid: '0')
+        update(mode: 'test', status: 'ready', result: 'busy')
+        update(total_steps: 0, total_time: 0, start: 0)
         self[:steps] = Arrayx.new
       end
 
       def to_v
         msg = title
         self[:steps].each do |i|
-          i.extend(PrtShare) unless i.is_a? PrtShare
-          msg << i.title + i.result
+          msg << i.to_v
         end
         msg << " (#{self[:result]}) #{step_num}"
       end
@@ -42,20 +42,25 @@ module CIAX
         Msg.colorize('MACRO', 3) +
           format(":%s (%s) [%s]\n", self[:label], self[:cid], date)
       end
+
+      def read(str = nil)
+        super
+        _ext_steps
+        self
+      end
+
+      private
+
+      def _ext_steps
+        self[:steps].each do |i|
+          i.extend(StepPrt).ext_prt(self[:start])
+        end
+      end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('r')
-      OPT.usage '(-r) [cid] (< file)' if STDIN.tty? && ARGV.size < 1
-      if STDIN.tty?
-        cid = '"cid":"' + ARGV.shift + '"'
-        ary = Dir.glob(Msg.vardir('json') + 'record_1*').sort.reverse
-        fname = ary.find do |fn|
-          fn if File.readlines(fn).grep(/#{cid}/)
-        end
-        /[0-9]{13}/ =~ fname
-        puts Record.new($&).ext_file if $&
-      else
+      GetOpts.new('< file', 'r') do |_opt, _args|
+        fail(InvalidARGS, 'No Input File') if STDIN.tty?
         puts Record.new.read
       end
     end

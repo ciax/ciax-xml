@@ -7,54 +7,46 @@ module CIAX
     # View class
     class Rsp < Varx
       # sv_stat should have server status (isu,watch,exe..) like App::Exe
-      def initialize(stat, cfg)
+      def initialize(stat, hdb = nil, sv_stat = nil)
         @stat = type?(stat, App::Status)
         super('hex', @stat[:id], @stat[:ver])
-        @dbi = cfg[:hdb].get(@stat.dbi[:app_id])
+        @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
         id = self[:id] || id_err("NO ID(#{id}) in Stat")
-        @sv_stat = type?(cfg[:sv_stat] || Prompt.new('site', id), Prompt)
-        @vmode = :x
-        _init_upd_
+        @sv_stat = sv_stat || Prompt.new('site', id)
+        vmode('x')
+        _init_upd_procs
       end
 
       def to_x
         self[:hexpack]
       end
 
-      def to_s
-        if @vmode == :x
-          to_x
-        else
-          super
-        end
-      end
-
       private
 
-      def _init_upd_
-        @sv_stat.post_upd_procs << proc do
-          verbose { 'Propagate Prompt#upd -> Hex::Rsp#upd' }
-          upd
-        end
-        @stat.post_upd_procs << proc do
-          verbose { 'Propagate Status#upd -> Hex::Rsp#upd' }
-          upd
-        end
+      def _init_upd_procs
+        @cmt_procs << proc { time_upd(@stat[:time]) }
+        @upd_procs << proc { self[:hexpack] = _get_header_ + _get_body_ }
+        _init_propagates
+      end
+
+      def _init_propagates
+        @sv_stat.cmt_procs << proc { _upd_propagate('Prompt') }
+        @stat.cmt_procs << proc { _upd_propagate('Status') }
         upd
       end
 
-      def upd_core
-        self[:hexpack] = _get_header_ + _get_body_
-        self
+      def _upd_propagate(_mod)
+        verbose { 'Propagate #{mod}#cmt -> Hex::Rsp#upd(cmt)' }
+        upd
       end
 
       # Server Status
       def _get_header_
         ary = ['%', self[:id]]
-        ary << b2e(@sv_stat.get(:udperr))
-        ary << b2i(@sv_stat.get(:event))
-        ary << b2i(@sv_stat.get(:busy))
-        ary << b2e(@sv_stat.get(:comerr))
+        ary << b2e(@sv_stat.up?(:udperr))
+        ary << b2i(@sv_stat.up?(:event))
+        ary << b2i(@sv_stat.up?(:busy))
+        ary << b2e(@sv_stat.up?(:comerr))
         ary.join('')
       end
 
@@ -62,41 +54,55 @@ module CIAX
         return '' unless (hdb = @dbi[:hexpack])
         str = ''
         if hdb[:packs]
-          hdb[:packs].each do |hash|
-            binstr = _mk_frame(hash)
-            pkstr = hash[:code] + hash[:length]
-            str << [binstr].pack(pkstr).unpack('h')[0]
-          end
+          str << _packed(hdb[:packs])
         elsif hdb[:fields]
           str << _mk_frame(hdb)
         end
         str
       end
 
+      def _packed(packs)
+        packs.map do |hash|
+          binstr = _mk_bit(hash)
+          pkstr = hash[:code] + hash[:length]
+          [binstr].pack(pkstr).unpack('h')[0]
+        end.join
+      end
+
+      def _mk_bit(db)
+        db[:bits].map do |hash|
+          key = hash[:ref]
+          cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
+          dat = @stat[:data][key]
+          verbose { "Get from Status #{key} = #{dat}" }
+          dat
+        end.join
+      end
+
       def _mk_frame(db)
-        str = ''
-        db[:fields].each do |hash|
+        db[:fields].map do |hash|
           key = hash[:ref]
           cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
           dat = _padding(hash, @stat[:data][key])
           verbose { "Get from Status #{key} = #{dat}" }
-          str << dat
-        end
-        str
+          dat
+        end.join
       end
 
       def _padding(hash, val)
         len = hash[:length].to_i
-        case hash[:type]
-        when /float/
-          format("%0#{len}.2f", val.to_f)[0,len]
-        when /int/
-          format("%0#{len}d", val.to_i)[0,len]
-        when /binary/
-          format("%0#{len}b", val.to_i)[0,len]
+        type = hash[:type].to_s.to_sym
+        pfx = { float: '.2f', int: 'd', binary: 'b' }[type]
+        if pfx
+          _fmt_num(pfx, len, val)
         else
-          val.to_s.rjust(len,'*')[0,len]
+          val.to_s.rjust(len, '*')[0, len]
         end
+      end
+
+      def _fmt_num(sfx, len, val)
+        num = /f/ =~ sfx ? val.to_f : val.to_i
+        format("%0#{len}#{sfx}", num)[0, len]
       end
 
       def b2i(b) # Boolean to Integer (1,0)
@@ -112,9 +118,9 @@ module CIAX
       require 'libinsdb'
       require 'libstatus'
       begin
-        stat = App::Status.new.ext_file
-        puts Rsp.new(stat, hdb: Db.new)
-      rescue InvalidID
+        stat = App::Status.new.ext_local_file
+        puts Rsp.new(stat)
+      rescue InvalidARGS
         Msg.usage(' < status_file')
       end
     end

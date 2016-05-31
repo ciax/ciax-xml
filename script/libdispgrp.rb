@@ -95,7 +95,8 @@ module CIAX
       def _put_sub_(mod, id, cap, color = nil, rank = nil)
         return self[id] if self[id]
         level = @level + 1
-        self[id] = mod.new(@index, caption: cap, color: color, level: level, rank: rank)
+        atrb = { caption: cap, color: color, level: level, rank: rank }
+        self[id] = mod.new(@index, atrb)
       end
     end
 

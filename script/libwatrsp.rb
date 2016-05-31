@@ -17,20 +17,15 @@ module CIAX
       #       => self[:crnt]<-@stat.data(picked)
       #       => check(self[:crnt] <> self[:last]?)
       # Stat no changed -> clear exec, no eval
-      def ext_rsp(stat, sv_stat = nil)
+      def ext_local_rsp(stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
         @sv_stat = type?(sv_stat || Prompt.new('site', self[:id]), Prompt)
         wdb = @dbi[:watch] || {}
         @interval = wdb[:interval].to_f if wdb.key?(:interval)
         @cond = Condition.new(wdb[:index] || {}, stat, self)
-        @pre_upd_procs << proc { self[:time] = @stat[:time] }
-        @stat.post_upd_procs << proc do
-          verbose { 'Propagate Status#upd -> Event#upd' }
-          upd
-        end
-        init_auto(wdb)
-        upd
-        self
+        _init_upd_proc
+        _init_cmt_proc
+        _init_auto(wdb)
       end
 
       def queue(src, pri, batch = [])
@@ -46,7 +41,7 @@ module CIAX
         verbose { format('Auto Update(%s, %s)', self[:time], @regexe) }
         begin
           queue('auto', 3, @regexe)
-        rescue InvalidID
+        rescue InvalidARGS
           errmsg
         rescue
           warning $ERROR_INFO
@@ -56,14 +51,31 @@ module CIAX
 
       private
 
-      # Initialize for Auto Update
-      def init_auto(wdb)
+      def _init_upd_proc
+        @upd_procs << proc do
+          next unless @stat[:time] > @last_updated
+          @last_updated = self[:time]
+          @cond.upd
+          upd_event
+        end
+      end
+
+      def _init_cmt_proc
+        @stat.cmt_procs << proc do
+          verbose { 'Propagate Status#cmt -> Event#upd(cmt)' }
+          upd
+        end
+        @cmt_procs << proc { time_upd(@stat[:time]) }
+      end
+
+      # Initiate for Auto Update
+      def _init_auto(wdb)
         reg = wdb[:regular] || {}
         per = reg[:period].to_i
         @period = per > 1 ? per : 300
         @regexe = reg[:exec] || [['upd']]
         verbose do
-          format('Auto Update Initialize: Period = %s sec, Command = %s)',
+          format('Initiate Auto Update: Period = %s sec, Command = %s)',
                  @period, @regexe)
         end
         self
@@ -73,23 +85,15 @@ module CIAX
       # self[:exec] : Command queue which contains commands issued as event
       # self[:block] : Array of commands (units) which are blocked during busy
       # self[:int] : List of interrupt commands which is effectie during busy
-      def upd_core
-        return self unless @stat[:time] > @last_updated
-        @last_updated = self[:time]
-        @cond.upd
-        upd_event
-        self
-      end
-
       # @sv_stat[:event] is internal var
 
       ## Timing chart in active mode
-      # isu   :__--__--__--==__--___
-      # actv  :___--------__----____
+      # busy  :__--__--__--==__--___
+      # activ :___--------__----____
       # event :_____---------------__
 
       ## Trigger Table
-      # isu | actv|event| action
+      # busy| actv|event| action to event
       #  o  |  o  |  o  |  -
       #  o  |  x  |  o  |  -
       #  o  |  o  |  x  |  up
@@ -100,41 +104,47 @@ module CIAX
       #  x  |  x  |  x  |  -
 
       def upd_event
-        if @sv_stat.get(:event)
-          if !active? && !@sv_stat.get(:busy)
-            @sv_stat.dw(:event)
-            @on_deact_procs.each { |p| p.call(self) }
-          end
+        if @sv_stat.up?(:event)
+          _event_off
         elsif active?
-          @sv_stat.up(:event)
-          self[:act_time][1] = @last_updated
-          @on_act_procs.each { |p| p.call(self) }
+          _event_on
         end
         self
+      end
+
+      def _event_on
+        at = self[:act_time]
+        at[0] = at[1] = now_msec
+        @sv_stat.up(:event)
+        @on_act_procs.each { |p| p.call(self) }
+      end
+
+      def _event_off
+        self[:act_time][1] = now_msec
+        return if active?
+        @sv_stat.dw(:event)
+        @on_deact_procs.each { |p| p.call(self) }
       end
     end
 
     # Add extend method in Event
     class Event
-      def ext_rsp(stat, sv_stat = nil)
-        extend(Wat::Rsp).ext_rsp(stat, sv_stat)
+      def ext_local_rsp(stat, sv_stat = nil)
+        extend(Wat::Rsp).ext_local_rsp(stat, sv_stat)
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-
-      OPT.parse('t:', t: 'test conditions[key=val,..]')
-      begin
+      odb = { t: 'test conditions[key=val,..]' }
+      GetOpts.new('[site] | < status_file', 't:', odb) do |opt|
         stat = App::Status.new
-        stat.ext_file if STDIN.tty?
-        event = Event.new(stat[:id]).ext_rsp(stat)
-        if (t = OPT[:t])
+        stat.ext_local_file.load if STDIN.tty?
+        event = Event.new(stat[:id]).ext_local_rsp(stat)
+        if (t = opt[:t])
           stat.str_update(t)
         end
-        puts event
-      rescue InvalidID
-        OPT.usage('(opt) [site] | < status_file')
+        puts event.upd
       end
     end
   end

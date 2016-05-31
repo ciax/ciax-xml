@@ -8,8 +8,7 @@ module CIAX
     # Inherited by Index,Domain
     class GrpAry < Arrayx
       include CmdProc
-      def initialize(cfg, atrb = {})
-        @cls_color = 13
+      def initialize(cfg, atrb = Hashx.new)
         # @cfg is isolated from cfg
         # So it is same meaning to set value to 'atrb' and @cfg
         @cfg = cfg.gen(self).update(type?(atrb, Hash))
@@ -21,7 +20,7 @@ module CIAX
 
       def set_cmd(args = [], opt = {})
         id, *par = type?(args, Array)
-        valid_keys.include?(id) || fail(InvalidCMD, view_list)
+        valid_keys.include?(id) || cmd_err
         get(id).set_par(par, opt)
       end
 
@@ -33,19 +32,14 @@ module CIAX
         map(&:view_list).compact.grep(/./).join("\n")
       end
 
+      def cmd_err
+        fail(InvalidCMD, view_list)
+      end
+
       # Add sub group
       # If cls is String or Symbol, constant is taken locally.
-      def add(cls, atrb = {})
-        case cls
-        when Module
-          res = cls.new(@cfg, atrb)
-        when String, Symbol
-          res = layer_module.const_get(cls).new(@cfg, atrb)
-        when CmdProc
-          res = cls
-        else
-          sv_err('Not class')
-        end
+      def add(cls, atrb = Hashx.new)
+        res = _get_cls(cls, atrb)
         push res
         res
       end
@@ -55,6 +49,21 @@ module CIAX
         obj.cfg.join_in(@cfg)
         unshift obj
         obj
+      end
+
+      private
+
+      def _get_cls(cls, atrb)
+        case cls
+        when Module
+          cls.new(@cfg, atrb)
+        when String, Symbol
+          layer_module.const_get(cls).new(@cfg, atrb)
+        when CmdProc
+          cls
+        else
+          sv_err('Not class')
+        end
       end
     end
   end

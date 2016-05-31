@@ -7,20 +7,21 @@ module CIAX
   module Frm
     # Frame List module
     class List < Site::List
-      def initialize(cfg, top_list = nil)
-        super(cfg, top_list || self)
+      def initialize(cfg, atrb = Hashx.new)
+        super
         store_db(Dev::Db.new)
+      end
+
+      private
+
+      def switch(site)
+        get(site)
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ceh:lts')
-      cfg = Config.new
-      cfg[:site] = ARGV.shift
-      begin
-        List.new(cfg).ext_shell.shell
-      rescue InvalidID
-        OPT.usage('(opt) [id]')
+      ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
+        List.new(cfg, sites: args).ext_shell.shell
       end
     end
   end

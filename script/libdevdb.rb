@@ -11,6 +11,11 @@ module CIAX
         @fdb = Frm::Db.new
       end
 
+      # Compatible for Idb
+      def run_list
+        []
+      end
+
       private
 
       def doc_to_db(doc)
@@ -22,13 +27,14 @@ module CIAX
         dbi
       end
 
+      # doc => /site/field/assign
       def rec_db(doc, dbi)
         doc.each do |e|
-          if e[:id]
+          if e[:id] # site or assign
             e.attr2item(dbi)
-          else
+          else # field
             id = e.name.to_sym
-            rec_db(e, dbi[id] = {})
+            rec_db(e, dbi[id])
           end
         end
       end
@@ -42,13 +48,10 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('r')
-      begin
-        dbi = Db.new.get(ARGV.shift)
-      rescue InvalidID
-        OPT.usage('[id] (key) ..')
+      GetOpts.new('[id] (key) ..', 'r') do |opt, args|
+        dbi = Db.new.get(args.shift)
+        puts opt[:r] ? dbi.to_v : dbi.path(args)
       end
-      puts OPT[:r] ? dbi.to_v : dbi.path(ARGV)
     end
   end
 end

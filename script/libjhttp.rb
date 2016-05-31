@@ -10,28 +10,28 @@ module CIAX
 
     def ext_http(host)
       @host = host || 'localhost'
-      verbose { "Initialize(#{@host})" }
+      verbose { "Initiate Http (#{@host})" }
       self[:id] || Msg.cfg_err('ID')
-      @pre_upd_procs << proc { load }
+      @upd_procs << proc { load }
       load
       self
     end
 
     def load(tag = nil)
       url = file_url(tag)
-      json_str = ''
       open(url) do|f|
         verbose { "Loading url [#{url}](#{f.size})" }
         json_str = f.read
+        return read(json_str) unless json_str.empty?
       end
-      if json_str.empty?
-        warning(" -- json url file (#{url}) is empty at loading")
-      else
-        super(json_str)
-      end
+      warning(" -- json url file (#{url}) is empty at loading")
       self
     rescue OpenURI::HTTPError
       alert("  -- no url file (#{url})")
+    end
+
+    def latest
+      load
     end
 
     private

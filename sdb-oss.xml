@@ -54,5 +54,9 @@
       <pattern class="normal" msg="EVEN">0</pattern>
       <default class="alarm" msg="UNEVEN"/>
     </table>
+    <table id="loc">
+      <pattern class="normal" msg="REMOTE">0</pattern>
+      <default class="warn" msg="LOCAL"/>
+    </table>
   </symbol>
 </sdb>

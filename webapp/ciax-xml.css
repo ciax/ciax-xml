@@ -1,35 +1,48 @@
-body{
+/**************** Global Style *****************/
+html,body{
+    width: 99%;
+    position:relative;
+    margin-left: auto;
+    margin-right: auto;
+    color : black;
     background-image : url(/json/bg-1.jpg);
     background-repeat : repeat;
     background-attachment : fixed;
-    color : #000066;
     background-color : white;
 }
 table{
     width : 100%;
 }
+th{
+    text-align : center;
+}
 .outline{
-    width : 90%;
-    border : 5px outset #aadd99;
-    margin-left : 5%;
-    margin-right : 5%;
+    max-height: 95%;
+    font-weight: bold;
+    border : 5px outset lightgreen;
+    margin-left: 10px;
+    margin-right: 0;
+    background-color: rgba(200,200,200,0.5);
 }
 .title{
-    border : 2px outset;
     font-size : x-large;
     text-align : center;
-    color : white;
-    background-color:#bbeeaa;
+    color : lightcyan;
+    background-color: lightgreen;
 }
-th{
-    border : 2px outset;
-    text-align : center;
+.footer{
+    font-size : large;
+    test-align : center;
+    color : navy;
+    background-color: lightgreen;
+    padding : 3px;
 }
+/*************** For Status Table ****************/
 .item{
+    margin : 2px;
     border : 2px inset;
 }
 .label{
-    border : 2px outset;
     text-align : center;
     color : blue;
 }
@@ -43,21 +56,129 @@ th{
     color : red;
 }
 .warn{
-    color : darkgoldenrod;
+    color : gold;
 }
 .active{
     color : purple;
 }
 .ctllabel{
-    border : 2px outset;
     text-align : center;
-    color : blue;
+    color : orange;
     font-size: large;
-    font-weight: bold;
 }
-.button{
+button{
     font-weight: bold;
 }
 .center{
     text-align :center;
+}
+/****************** For Macro *******************/
+/* Frame */
+#ol_sel {
+    position: absolute;
+    left: 0;
+    width: 30%;
+}
+#ol_rec {
+    margin-left: 30%;
+}
+.bar{
+    margin: 5px;
+    overflow: auto;
+}
+.contents{
+    margin: 5px;
+    overflow: auto;
+}
+/* contents */
+h4{
+    margin: 0;
+}
+date{
+    font-size: medium;
+    float:right;
+    color: navy;
+}
+ul{
+    list-style: none;
+    margin-left:1.5em;
+    padding:0;
+}
+/***** Step Line *****/
+/* common */
+.head {
+    font-size: middle;
+    text-transform: uppercase;
+}
+/*** Title coloring ***/
+.mcr{
+    color : chocolate;
+}
+.exec, .system, .query{
+    color : magenta;
+}
+.upd, .cfg {
+    color :lightgreen;
+}
+.check, .goal, .wait, .sleep, .verify {
+    color : cyan;
+}
+.stop {
+    color : red;
+}
+/* var name of condition */
+var {
+    width:7em;
+    float:left;
+    color : gray;
+}
+/*** Result coloring ***/
+/* common */
+.res {
+    text-transform: capitalize;
+}
+.true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end, .issued {
+    color : green;
+}
+.false, .timeout, .failed, .error {
+    color : red;
+}
+.interrupted {
+    color : gold;
+}
+.busy,.run {
+    color : purple;
+}
+.action {
+    color : darkorange;
+}
+/*** Header/Footer ***/
+.tail {
+    float:right;
+}
+#scroll {
+    display: hide;
+    font-size: medium;
+    color: maroon;
+}
+#nonstop {
+    font-size: medium;
+    color: maroon;
+}
+.elps {
+    font-size: medium;
+    color: navy;
+    width:5em;
+}
+/*** select list ***/
+.time {
+    width: 4.5em;
+    float: left;
+    color: dimgray;
+}
+.cmd {
+    color : blue;
+}
+.selected {
+    color : pink;
 }

@@ -11,7 +11,8 @@ module CIAX
       attr_accessor :echo
       def initialize(dbi = nil)
         super('field')
-        # Proc for Terminate process of each individual commands (Set upper layer's update);
+        # Proc for Terminate process of each individual commands
+        #  (Set upper layer's update)
         @flush_procs = []
         _setdbi(dbi, Dev::Db)
         self[:comerr] = false
@@ -21,15 +22,14 @@ module CIAX
       # Substitute str by Field data
       # - str format: ${key}
       # - output csv if array
-      def subst(str, substed = []) # subst by field
+      def subst(str) # subst by field
         return str unless /\$\{/ =~ str
         enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
           str.gsub(/\$\{(.+)\}/) do
-            ary = [*get(Regexp.last_match(1))].map! { |i| expr(i) }
-            Msg.give_up("No value for subst [#{Regexp.last_match(1)}]") if ary.empty?
-            res = ary.join(',')
-            substed << res
-            res
+            key = Regexp.last_match(1)
+            ary = [*get(key)].map! { |i| expr(i) }
+            cfg_err("No value for subst [#{key}]") if ary.empty?
+            ary.join(',')
           end
         end
       end
@@ -40,52 +40,30 @@ module CIAX
       # - ${id:idx1:idx2} => hash[id][idx1][idx2]
       def get(id)
         verbose { "Getting[#{id}]" }
-        Msg.give_up('Nill Id') unless id
+        cfg_err('Nill Id') unless id
         return self[:data][id] if self[:data].key?(id)
         vname = []
-        dat = id.split(':').inject(self[:data]) do|h, i|
-          case h
-          when Array
-            begin
-              i = expr(i)
-            rescue SyntaxError, NoMethodError
-              Msg.give_up("#{i} is not number")
-            end
-          when nil
-            break
-          end
-          vname << i
-          verbose { "Type[#{h.class}] Name[#{i}]" }
-          verbose { "Content[#{h[i]}]" }
-          h[i] || alert("No such Value #{vname.inspect} in :data")
-        end
+        dat = _access_array(id, vname)
         verbose { "Get[#{id}]=[#{dat}]" }
         dat
       end
 
-      # Replace value with mixed id
-      def rep(id, val)
-        pre_upd
+      # Replace value with pointer id
+      #  value can be csv 'a,b,c,..'
+      def repl(id, val)
         conv = subst(val).to_s
         verbose { "Put[#{id}]=[#{conv}]" }
-        case p = get(id)
-        when Array
-          _merge_ary_(p, conv.split(','))
-        when String
-          begin
-            p.replace(expr(conv).to_s)
-          rescue SyntaxError, NameError
-            par_err('Value is not numerical')
-          end
-        end
+        _repl_by_case(get(id), conv)
         verbose { "Evaluated[#{id}]=[#{get(id)}]" }
+        time_upd
         val
       ensure
-        post_upd
+        cmt
       end
 
-      def pick(keylist)
-        Hashx.new(data: super(keylist, self[:data]))
+      # Structure is Hashx{ data:{ key,val ..} }
+      def pick(keylist, atrb = {})
+        Hashx.new(atrb).update(data: self[:data].pick(keylist))
       end
 
       # For propagate to Status update
@@ -98,7 +76,11 @@ module CIAX
 
       def seterr
         self[:comerr] = false
-        post_upd
+        cmt
+      end
+
+      def ext_local_file
+        super.load
       end
 
       private
@@ -106,9 +88,34 @@ module CIAX
       def _init_field_
         data = Hashx.new
         @dbi[:field].each do|id, val|
-          data.put(id, val[:val] || Arrayx.new.skeleton(val[:struct]))
+          if (ary = val[:array])
+            var = ary.split(',')
+          else
+            var = val[:val] || Arrayx.new.skeleton(val[:struct])
+          end
+          data.put(id, var)
         end
         data
+      end
+
+      def _access_array(id, vname)
+        id.split(':').inject(self[:data]) do|h, i|
+          break unless h
+          i = expr(i) if h.is_a? Array
+          vname << i
+          verbose { "Type[#{h.class}] Name[#{i}]" }
+          verbose { "Content[#{h[i]}]" }
+          h[i] || alert("No such Value #{vname.inspect} in :data")
+        end
+      end
+
+      def _repl_by_case(par, conv)
+        case par
+        when Array
+          _merge_ary_(par, conv.split(','))
+        when String
+          par.replace(expr(conv).to_s)
+        end
       end
 
       def _merge_ary_(p, r)
@@ -125,9 +132,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       begin
-        puts Field.new.ext_file
-      rescue InvalidID
-        OPT.usage '(opt) [id]'
+        dbi = Dev::Db.new.get(ARGV.shift)
+        puts Field.new(dbi).to_r
+      rescue InvalidARGS
+        Msg.usage '(opt) [id]'
       end
     end
   end

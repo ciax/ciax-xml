@@ -9,9 +9,8 @@ module CIAX
       include CmdProc
       attr_reader :valid_keys
       # cfg keys: caption,color,column
-      def initialize(cfg, atrb = {})
+      def initialize(cfg, atrb = Hashx.new)
         super()
-        @cls_color = 3
         @cfg = cfg.gen(self).update(atrb)
         @displist = Disp.new(@cfg.pick(%i(caption color column line_number)))
         @cfg[:disp] = @displist
@@ -24,10 +23,10 @@ module CIAX
         @displist.put_item(id, title)
       end
 
-      def add_item(id, title = nil)
+      def add_item(id, title = nil, atrb = Hashx.new)
         @displist.put_item(id, title)
         @valid_keys << id
-        self[id] = Item.new(@cfg, id: id)
+        self[id] = Item.new(@cfg, atrb.update(id: id))
       end
 
       # Generate Entity
@@ -47,14 +46,14 @@ module CIAX
     # Command Group
     class Group < Dummy
       # cfg keys: caption,color,column
-      def initialize(cfg, atrb = {})
+      def initialize(cfg, atrb = Hashx.new)
         super
       end
 
-      # crnt could have 'label',:body,'unit','group'
-      def add_item(id, title = nil, crnt = {})
+      # atrb could have 'label',:body,'unit','group'
+      def add_item(id, title = nil, atrb = Hashx.new)
         @displist.put_item(id, title)
-        new_item(id, crnt)
+        new_item(id, atrb)
       end
 
       def del_item(id)
@@ -89,11 +88,11 @@ module CIAX
 
       private
 
-      def new_item(id, crnt = {})
-        # crnt could be dbi[:index][id]
-        crnt[:id] = id
-        self[id] = context_constant('Item').new(@cfg, crnt)
+      def new_item(id, atrb = {})
+        # atrb could be dbi[:index][id]
+        atrb[:id] = id
+        self[id] = context_constant('Item').new(@cfg, atrb)
       end
     end
-end
+  end
 end

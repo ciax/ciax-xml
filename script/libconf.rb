@@ -143,4 +143,13 @@ module CIAX
       v.to_s.sub('CIAX::', '')
     end
   end
+
+  # Option parser with Config
+  class ConfOpts < GetOpts
+    def initialize(usagestr, optstr, db = {})
+      super do |opt, args|
+        yield(Config.new(option: opt, jump_groups: []), args, opt)
+      end
+    end
+  end
 end

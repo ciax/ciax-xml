@@ -1,57 +1,100 @@
-// Need var: Type,Site
-var last;
-function elapsed(){
-    var now=new Date();
-    var ms=now.getTime()-last;
-    var sign='';
-    if(ms < 0){
-        ms=-ms;
-        sign='-';
+// ******* Animation *********
+// Auto scroll. Check box with id:go_bottm is needed;
+function sticky_bottom() {
+    var div = $('#record');
+    var toggle = $('#scroll :checkbox');
+    if (toggle.prop('checked')) {
+        auto_release = false;
+        div.animate({ scrollTop: div[0].scrollHeight},'slow', function() {
+            auto_release = true;
+        });
+        div.hover(null, function() { auto_release = false; });
+        div.on('scroll', function() {
+            if (auto_release) toggle.prop('checked', false);
+        });
     }
-    var t=new Date(ms);
-    var str;
-    if (ms > 86400000){
-        str=Math.floor(ms/8640000)/10+" days";
-    }else if(ms > 3600000){
-        str=t.getHours()+"h "+t.getMinutes()+'m';
-    }else{
-        str=t.getMinutes()+"' "+t.getSeconds()+'"';
+}
+// Folding
+function acordion(sel) {
+    auto_release = false;
+    $(sel).next().slideToggle('slow', function() {
+        sticky_bottom();
+    });
+}
+function set_acordion(sel, filter) {
+    if (filter) {acordion(sel + filter);}
+    $(sel).on('click', function() {
+        acordion(this);
+    });
+}
+// interactive mode
+function blinking() {
+    $('.query,.run').fadeOut(500, function() {$(this).fadeIn(500)});
+}
+// contents resize
+function height_adjust() {
+    var h = $(window).height();
+    // sum height of children in .outline except .contents
+    $('.outline').each(function() {
+        $(this).children('div:not(".contents")').each(function() {
+            h = h - $(this).height();
+        });
+        $(this).children('.contents').css('max-height', h - 100);
+    });
+}
+// ******** Control by UDP ********
+function get_response(data) {
+    if (data) {
+        var res = $.parseJSON(data);
+        console.log('recv=' + data);
+        $('#msg').text(res.msg);
+        start_upd();
+    }else {
+        stop_upd();
+        $('#msg').text('NO Response');
+        $('#msg').attr('class', 'error');
     }
-    $("#elapsed").text(sign+str);
 }
-function conv(stat){
-    var data= $.extend({},stat.data,stat.msg);
-    for (var id in data){
-        if("class" in stat && id in stat.class){
-            $("#"+id).addClass(stat.class[id]);
-        }
-        $("#"+id).text(data[id]);
+function dvctl(cmd) {
+    var args = {port: port, cmd: cmd};
+    console.log('send=' + JSON.stringify(args));
+    $.post('/json/dvctl-udp.php', args, get_response);
+}
+function stop() {
+    dvctl('interrupt');
+}
+// With Confirmation
+function exec(cmd) {
+    if (confirm('EXEC?(' + cmd + ')')) dvctl(cmd);
+}
+// Select Command
+function make_select(obj, ary) {
+    var opt = ['<option>--select--</option>'];
+    for (var i in ary) {
+        opt.push('<option>' + ary[i] + '</option>');
     }
-    last=stat.time;
-    var lstr=new Date(last);
-    $("#time").text(lstr.toLocaleString());
+    obj.innerHTML = opt.join('');
 }
-function update(){
-    $.getJSON(Type+'_'+Site+'.json',conv);
-    elapsed();
-}
-function init(){
-    update();
-    setInterval(update,1000);
-}
-function dvctl(cmd){
-    $.post(
-        "/json/dvctl-udp.php",
-        {port: Port, cmd : cmd},
-        function(data){
-            alert($.parseJSON(data).msg);
-            update();
-        }
-    );
-}
-function seldv(obj){
+function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
-    alert("ISSUED("+cmd+")");
-    dvctl(cmd);
+    if (cmd == '--select--') return;
+    exec(cmd);
+    if (itvl) make_select(obj, def_sel);
 }
-$(document).ready(init);
+// ********* Page Update *********
+// Control Part/Shared with ciax-xml.js
+function stop_upd() {
+    if (itvl) {
+        clearInterval(itvl);
+        itvl = false;
+        $('#msg').text('');
+    }
+}
+function start_upd() {
+    if (!itvl) itvl = setInterval(update, 1000);
+}
+var itvl;
+var auto_release = false;
+var def_sel = [];
+$(window).on('resize', height_adjust);
+$.ajaxSetup({ cache: false});

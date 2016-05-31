@@ -4,6 +4,8 @@
     <include ref="mos"/>
     <include ref="turret"/>
     <include ref="cmp"/>
+  </project>
+  <project id="moircs_arc" label="MOIRCS Archive" column="3">
     <group id="mc_tele" label="Telemetory">
       <instance id="ml1" app_id="lk8" host="moircsobcp" port="25605" label="Temperature 1">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">

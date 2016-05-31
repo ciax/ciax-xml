@@ -3,49 +3,56 @@ require 'libvarx'
 module CIAX
   # For server status through all layers
   class Prompt < Varx
-    NS_COLOR = 9
     attr_reader :db
     # type = site,mcr
     def initialize(type, id)
       super(['server', type].compact.join('_'), id)
       @db = {}
       self[:msg] = ''
+      @cmt_procs << proc do
+        time_upd
+        verbose { "Save #{id}:timing #{pick(%i(busy queue)).inspect}" }
+      end
     end
 
     # For String Data
     def add_str(key, val = '')
-      self[key] = type?(val.dup, String)
+      self[key] = type?(val.dup, String) unless self[key].is_a? String
       self
     end
 
-    def rep(key, val)
-      cfg_err('Value should be String') unless val.is_a?(String)
-      verbose { "Change [#{key}] -> #{val}" }
-      super
+    def repl(key, val)
+      super && verbose { "Changes [#{key}] -> #{val}" } && self
     end
 
     # For Binary Data with display db
+    # Value should be String to replace
     def add_flg(db = {})
       @db.update(type?(db, Hash))
+      db.keys.each { |k| self[k] = 'false' }
       self
     end
 
     def up(key)
-      pre_upd
-      self[key] = true
-      verbose { "Set [#{key}]" }
+      cfg_err("No such flag [#{key}]") unless key?(key)
+      repl(key, 'true')
       self
-    ensure
-      post_upd
     end
 
     def dw(key)
-      pre_upd
-      self[key] = false
-      verbose { "Reset [#{key}]" }
+      cfg_err("No such flag [#{key}]") unless key?(key)
+      repl(key, 'false')
       self
-    ensure
-      post_upd
+    end
+
+    def set_flg(key, flag)
+      flag ? up(key) : dw(key)
+    end
+
+    # flag will be converted to Boolean in JSON
+    # when the string is 'true' or 'false'
+    def up?(key)
+      self[key].to_s == 'true'
     end
 
     # For Array Data
@@ -55,19 +62,17 @@ module CIAX
     end
 
     def flush(key, ary = [])
-      pre_upd
       type?(self[key], Array).replace(ary)
       self
     ensure
-      post_upd
+      cmt
     end
 
     def push(key, elem)
-      pre_upd
-      self[key].push(elem) unless type?(self[key], Array).include?(elem)
+      self[key].push(elem) # unless type?(self[key], Array).include?(elem)
       self
     ensure
-      post_upd
+      cmt
     end
 
     # Show Message
@@ -76,31 +81,30 @@ module CIAX
     end
 
     def to_v
-      verbose { "Shell\n" + inspect }
-      @db.map { |k, v| v if self[k] }.join('')
-    end
-
-    def server
-      ThreadLoop.new('Prompt', 12) do
-        exec_buf if @q.empty?
-        verbose { 'Waiting' }
-        pri_sort(@q.shift)
-      end
-      self
+      verbose { 'Shell' + inspect }
+      # Because true(String) will be converted to Boolean in JSON
+      @db.map { |k, v| v if self[k].to_s == 'true' }.join
     end
 
     # Subtract and merge to self data, return rest of the data
     def sub(input)
-      pre_upd
       hash = input.dup
       @db.keys.each do|k|
         self[k] = hash[k] ? hash.delete(k) : false
       end
       hash
     ensure
-      post_upd
+      cmt
     end
 
-    private(:[], :[]=)
+    # Merge sub prompt for picked up keys
+    def sub_merge(sub, args)
+      type?(sub, Prompt)
+      @db.update(sub.db)
+      update(sub.pick(args))
+    end
+
+    private(:[]=)
+    protected(:[])
   end
 end

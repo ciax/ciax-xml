@@ -70,8 +70,6 @@
           <frmcmd name="hl">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="drvon"/>
-          <frmcmd name="drv"/>
           <frmcmd name="jp"/>
           <frmcmd name="bs"/>
         </item>
@@ -79,8 +77,6 @@
           <frmcmd name="hl">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="drvon"/>
-          <frmcmd name="drv"/>
           <frmcmd name="jn"/>
           <frmcmd name="bs"/>
         </item>
@@ -88,8 +84,6 @@
           <frmcmd name="hl">
             <argv>0</argv>
           </frmcmd>
-          <frmcmd name="drvon"/>
-          <frmcmd name="drv"/>
           <frmcmd name="mi">
             <argv>-0.41</argv>
           </frmcmd>
@@ -99,8 +93,6 @@
           <frmcmd name="hl">
             <argv>0</argv>
           </frmcmd>
-          <frmcmd name="drvon"/>
-          <frmcmd name="drv"/>
           <frmcmd name="mi">
             <argv>+0.49</argv>
           </frmcmd>
@@ -108,8 +100,6 @@
         </item>
         <item id="cwi" label="Move CW(TopView) Toward Slot0 [1-5]">
           <par_num>1:5</par_num>
-          <frmcmd name="drvon"/>
-          <frmcmd name="drv"/>
           <frmcmd name="mi">
             <argv>$1</argv>
           </frmcmd>
@@ -117,8 +107,6 @@
         </item>
         <item id="ccwi" label="Move CCW(TopView) Toward Slot23 [1-5]">
           <par_num>1:5</par_num>
-          <frmcmd name="drvon"/>
-          <frmcmd name="drv"/>
           <frmcmd name="mi">
             <argv>-$1</argv>
           </frmcmd>
@@ -126,8 +114,6 @@
         </item>
         <item id="slot" label="Move to Slot [0-23]">
           <par_num>0:23</par_num>
-          <frmcmd name="drvon"/>
-          <frmcmd name="drv"/>
           <frmcmd name="ma">
             <argv>-$1</argv>
           </frmcmd>
@@ -135,8 +121,6 @@
         </item>
         <item id="access" label="Move to Access Door [0-23]">
           <par_num>0:23</par_num>
-          <frmcmd name="drvon"/>
-          <frmcmd name="drv"/>
           <frmcmd name="ma">
             <argv format="%d">$1&gt;17?-$1+18:-$1-6</argv>
           </frmcmd>
@@ -165,10 +149,10 @@
         <integer id="err" label="Error Code" symbol="err">
           <field ref="err"/>
         </integer>
-        <string id="lcw" label="CW(+) Limit" symbol="normal">
+        <string id="lcw" label="CW(+) Limit" symbol="alarm">
           <field ref="in" index="2"/>
         </string>
-        <string id="lccw" label="CCW(-) Limit" symbol="normal">
+        <string id="lccw" label="CCW(-) Limit" symbol="alarm">
           <field ref="in" index="3"/>
         </string>
         <string id="con" label="Contact Sensor" symbol="action">
@@ -191,7 +175,7 @@
       <event id="res" label="Reset Config">
         <onchange var="bs"/>
         <range var="bs">0</range>
-        <exec name="drvoff"/>
+        <exec name="upd"/>
       </event>
     </watch>
   </app>

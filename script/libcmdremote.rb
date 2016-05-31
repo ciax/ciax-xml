@@ -4,23 +4,22 @@ require 'libcmdlocal'
 require 'libparam'
 module CIAX
   module Cmd
+    # Command Index
+    class Index
+      attr_reader :rem
+      def add_rem(obj = nil, atrb = Hashx.new)
+        @rem = add(obj || Remote::Domain, atrb)
+      end
+    end
     # Remote Command Domain
     module Remote
-      NS_COLOR = 1
       # Instance var is @rem in Index
-      class Index < Local::Index
-        attr_reader :rem
-        def add_rem(obj = Domain)
-          @rem = add(obj)
-        end
-      end
-
       # @cfg should have [:dbi]
       class Domain < GrpAry
         attr_reader :sys, :ext, :int
-        def initialize(cfg, atrb = {})
+        def initialize(cfg, atrb = Hashx.new)
           super
-          @cfg[:def_proc] = proc { '' } # proc is re-defined
+          @cfg[:def_proc] = proc {} # proc is re-defined
         end
 
         def add_sys(ns = Sys)
@@ -35,24 +34,24 @@ module CIAX
           @int = add(ns::Group)
         end
 
-        def ext_log(tag = nil)
-          id = [tag, @cfg[:site_id] || @cfg[:layer_type]].compact.join('_')
-          @cfg[:input] = Input.new(id)
+        def ext_local_log(tag = nil)
+          id = @cfg[:site_id] || @cfg[:layer_type]
+          @cfg[:input] = Input.new(tag, id)
           self
         end
       end
 
-      # Command Logging
+      # Command Input Logging
       class Input < Varx
-        def initialize(id)
-          super('input', id)
-          ext_file
-          ext_log
+        def initialize(tag, id)
+          super("input_#{tag}", id)
+          ext_local_file
+          ext_local_log
         end
       end
 
+      # For input logging (returns String)
       class Entity < Entity
-        # For input logging (returns String)
         def exe_cmd(src, pri = 1)
           if self[:input]
             self[:input].update(cmd: self[:cid], src: src, pri: pri).upd
@@ -65,12 +64,12 @@ module CIAX
       module Sys
         # System Command Group
         class Group < Group
-          def initialize(dom_cfg, atrb = {})
-            atrb[:caption] ||= 'System Commands'
+          def initialize(dom_cfg, atrb = Hashx.new)
+            atrb.get(:caption) { 'System Commands' }
             super
-            add_item('interrupt')
+            add_item('interrupt', nil, def_msg: 'INTERRUPT')
             # Accept empty command
-            add_item(nil) unless @cfg[:cmd_line_mode]
+            add_item(nil, nil, def_msg: '')
           end
         end
       end
@@ -78,10 +77,15 @@ module CIAX
       module Int
         # Internal Command Group
         class Group < Group
-          def initialize(dom_cfg, atrb = {})
-            atrb[:caption] ||= 'Internal Commands'
+          def initialize(dom_cfg, atrb = Hashx.new)
+            atrb.get(:caption) { 'Internal Commands' }
             super
             @cfg[:nocache] = true
+          end
+
+          def add_file_io
+            add_item('save', '[key,key...] [tag]', def_pars(2))
+            add_item('load', '[tag]', def_pars(1))
           end
 
           def def_pars(n = 1)

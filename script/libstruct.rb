@@ -5,85 +5,139 @@ module CIAX
   module ViewStruct
     include Msg
 
-    def view_struct(show_iv = false, show_id = false, depth = 1)
-      _recursive(self, nil, [], 0, show_iv, show_id, depth)
+    COLOR_TBL = { 'true' => 13, 'false' => 8 }
+    def view_struct(show_iv = false, show_id = false)
+      @_vs_show_iv = show_iv
+      @_vs_show_id = show_id
+      @_vs_indent = 0
+      @_vs_column = 4
+      @_vs_hash_col = 2
+      @_vs_objects = []
+      @_vs_lines = []
+      # Show only top level of the instance variable
+      _recursive(self)
+      @_vs_lines.join("\n")
     end
 
     private
 
-    def _recursive(data, title, object_ary, ind, show_iv, show_id, depth)
-      str = ''
-      column = 4
-      id = data.object_id
-      if title
-        case title
-        when Numeric
-          title = "[#{title}]"
-          str << indent(ind) + colorize(format('%-6s', title), 6)
-        when /@/
-          str << indent(ind) + colorize(format('%-6s', title.inspect), 1)
-        else
-          c = title.is_a?(String) ? 5 : 2
-          str << indent(ind) + colorize(format('%-6s', title.inspect), c)
-        end
-        str << colorize("(#{id})", 4) if show_id && data.is_a?(Enumerable)
-        str << " :\n"
-        ind += 1
-      else
-        str << "<<#{data.class}>>\n"
-      end
-      iv = {}
-      data.instance_variables.each do|n|
-        iv[n] = data.instance_variable_get(n) unless n == :object_ids
-        depth -= 1 # Show only top level of the instance variable
-      end if show_iv && depth > 0
-      _show(str, iv, object_ary, ind, column, title, show_iv, show_id, depth)
-      _show(str, data, object_ary, ind, column, title, show_iv, show_id, depth)
+    def _indent(str = '', offset = 0)
+      indent(@_vs_indent + offset) + str
     end
 
-    def _show(str, data, object_ary, ind, column, title, show_iv, show_id, depth)
-      if data.is_a?(Enumerable)
-        if object_ary.include?(data.object_id)
-          return str.chomp + " #{data.class}(Loop)\n"
-        else
-          object_ary << data.object_id
-        end
+    def _recursive(data, tag = nil)
+      if tag
+        @_vs_lines << _indent(_show_tag(data, tag))
+      else
+        @_vs_lines << "<<#{data.class}>>"
       end
+      _show_iv(data)
+      _sub_structure(data, tag)
+    end
+
+    # Make Line Head
+    def _show_tag(data, tag)
+      str = format('%-6s', _mk_tag(tag))
+      # Add Id
+      if @_vs_show_id && data.is_a?(Enumerable)
+        str << colorize("(#{data.object_id})", 4)
+      end
+      str << ' :'
+    end
+
+    # Make Instance Variable List for sub structure
+    def _show_iv(data)
+      return unless @_vs_show_iv
+      @_vs_show_iv = nil
+      data.instance_variables.each do|n|
+        next if /^@_vs_/ =~ n.to_s
+        val = data.instance_variable_get(n).inspect
+        @_vs_lines << _indent(format('%-8s: %-10s', colorize(n.to_s, 1), val))
+      end
+    end
+
+    # Show Sub structure
+    def _sub_structure(data, tag)
+      @_vs_indent += 1
+      return if _loop?(data)
+      _show_all(data, tag)
+    ensure
+      @_vs_indent -= 1
+    end
+
+    # Check Loop
+    def _loop?(data)
+      return unless data.is_a?(Enumerable)
+      # Abort tracking down if duplicated object_id
+      if @_vs_objects.include?(data.object_id)
+        @_vs_lines << " #{data.class}(Loop)"
+      else
+        @_vs_objects << data.object_id
+        nil
+      end
+    end
+
+    # Show container
+    def _show_all(data, tag)
       case data
       when Array
-        return str if _mixed?(str, data, data, data.size.times, object_ary, ind, show_iv, show_id, depth)
-        return _only_ary(str, data, ind, column) if data.size > column
+        _mixed?(data, data, data.size.times) || _end_ary(data)
       when Hash
-        return str if _mixed?(str, data, data.values, data.keys, object_ary, ind, show_iv, show_id, depth)
-        return _only_hash(str, data, ind, title) if data.size > 2
+        _mixed?(data, data.values, data.keys) || _end_hash(data, tag)
+      else
+        # Show String, Numerical ...
+        @_vs_lines.last << ' ' + _mk_elem(data)
       end
-      str.chomp + " #{data.inspect}\n"
     end
 
-    def _mixed?(str, data, vary, idx, object_ary, ind, show_iv, show_id, depth)
+    def _mixed?(data, vary, idx)
       return unless vary.any? { |v| v.is_a?(Enumerable) }
-      idx.each do|i|
-        str << _recursive(data[i], i, object_ary, ind, show_iv, show_id, depth)
+      idx.each { |i| _recursive(data[i], i) }
+    end
+
+    # Array without sub structure
+    def _end_ary(data)
+      lines = []
+      head = '[ '
+      data.each_slice(@_vs_column) do|a|
+        lines << _indent(head + a.map(&:inspect).join(','), 1)
+        head = '  '
+      end
+      @_vs_lines << lines.join(",\n") + ' ]'
+    end
+
+    # Hash without sub structure
+    def _end_hash(data, tag)
+      data.keys.each_slice(tag ? @_vs_hash_col : 1) do|a|
+        @_vs_lines << _indent(_hash_line(a, data), 1)
       end
     end
 
-    def _only_ary(str, data, ind, column)
-      str << indent(ind) + '['
-      line = []
-      data.each_slice(column) do|a|
-        line << a.map(&:inspect).join(',')
-      end
-      str << line.join(",\n " + indent(ind)) + "]\n"
+    def _hash_line(a, data)
+      a.map do|k|
+        format('%-8s: %-10s', _mk_tag(k), _mk_elem(data[k]))
+      end.join("\t")
     end
 
-    def _only_hash(str, data, ind, title)
-      data.keys.each_slice(title ? 2 : 1) do|a|
-        str << indent(ind) + a.map do|k|
-          c = k.is_a?(String) ? 5 : 3
-          colorize(format('%-8s', k.inspect), c) + format(': %-10s', data[k].inspect)
-        end.join("\t") + "\n"
+    # Show Tag
+    def _mk_tag(tag)
+      case tag
+      when Numeric
+        colorize("[#{tag}]", 6)
+      when String
+        colorize(tag.inspect, 5)
+      else # Symbol
+        colorize(tag.inspect, 3)
       end
-      str
+    end
+
+    # Show Element
+    def _mk_elem(data)
+      if (c = COLOR_TBL[data.to_s])
+        colorize(data, c)
+      else
+        data.inspect
+      end
     end
   end
 end

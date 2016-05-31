@@ -2,13 +2,15 @@
 require 'libappsym'
 
 # View is not used for computing, just for apperance for user.
-# So the convert process (upd_view) will be included in to_v
+# Some information is added from Dbi
+# So the convert process (upd) will be included in to_v
 # Updated at to_v.
 module CIAX
   # Application Layer
   module App
-    # Hash of App Groups
-    class View < Hashx
+    # Hash of App Status Groups
+    class View < Upd
+      CM = Hash.new(2).update(active: 5, alarm: 1, warn: 3, hide: 0)
       def initialize(stat)
         super()
         @stat = type?(stat, Status)
@@ -17,17 +19,12 @@ module CIAX
         @index = adbs[:index].dup
         @index.update(adbs[:alias]) if adbs.key?(:alias)
         # Just additional data should be provided
-        %i(data class msg).each { |key| stat[key] ||= {} }
-        upd_view
-      end
-
-      # For Shell raw mode
-      def to_r
-        @stat.to_r
+        %i(data class msg).each { |key| stat.get(key) { Hashx.new } }
+        _init_upd_proc
       end
 
       def to_csv
-        upd_view
+        upd
         str = ''
         @group.values.each do|gdb|
           cap = gdb[:caption] || next
@@ -40,62 +37,78 @@ module CIAX
       end
 
       def to_v
-        upd_view
-        cm = Hash.new(2).update('active' => 5, 'alarm' => 1, 'warn' => 3, 'hide' => 0)
+        upd
         lines = []
         values.each do|v|
+          next unless v.is_a? Hash
           cap = v[:caption]
           lines << ' ***' + colorize(cap, 10) + '***' unless cap.empty?
-          lines.concat(v[:lines].map do|ele|
-            '  ' + ele.values.map do|val|
-              c = cm[val[:class]] + 8
-              '[' + colorize(val[:label], 14) + ':' + colorize(val[:msg], c) + ']'
-            end.join(' ')
-          end)
+          lines.concat(_view_lines(v[:lines]))
         end
         lines.join("\n")
       end
 
-      def to_s
-        @vmode == :c ? to_csv : super
+      def to_o
+        @stat.to_r
       end
 
       private
 
-      def upd_view
-        self['gtime'] = { caption: '', lines: [hash = {}] }
-        hash[:time] = { label: 'TIMESTAMP', msg: Msg.date(@stat[:time]) }
-        hash['elapsed'] = { label: 'ELAPSED', msg: Msg.elps_date(@stat[:time]) }
+      def _init_upd_proc
+        @upd_procs << proc do
+          self['gtime'] = { caption: '', lines: [hash = {}] }
+          hash[:time] = { label: 'TIMESTAMP', msg: date(@stat[:time]) }
+          hash[:elapsed] = { label: 'ELAPSED', msg: elps_date(@stat[:time]) }
+          _view_groups
+        end
+      end
+
+      def _view_groups
         @group.each do|k, gdb|
           cap = gdb[:caption] || next
-          self[k] = { caption: cap, lines: [] }
-          col = gdb[:column] || 1
-          gdb[:members].each_slice(col.to_i) do|hline|
-            hash = {}
-            hline.each do|id|
-              h = hash[id] = { label: @index[id][:label] || id.upcase }
-              h[:msg] = @stat[:msg][id] || @stat[:data][id]
-              h[:class] = @stat[:class][id] if @stat[:class].key?(id)
-            end
-            self[k][:lines] << hash
-          end
+          lines = []
+          self[k] = { caption: cap, lines: lines }
+          _upd_members(gdb[:members], gdb[:column] || 1, lines)
         end
-        self
+      end
+
+      def _view_lines(lines)
+        lines.map do|ele|
+          '  ' + ele.values.map do|val|
+            cls = (val[:class] || '').to_sym
+            lbl = colorize(val[:label], 14)
+            msg = colorize(val[:msg], CM[cls] + 8)
+            format('[%s:%s]', lbl, msg)
+          end.join(' ')
+        end
+      end
+
+      def _upd_members(members, col, lines)
+        members.each_slice(col.to_i) do|hline|
+          hash = {}
+          hline.each { |id| _upd_line(id, hash) }
+          lines << hash
+        end
+      end
+
+      def _upd_line(id, hash)
+        stc = @stat[:class]
+        msg = @stat[:msg][id] || @stat[:data][id]
+        cls = stc[id] if stc.key?(id)
+        lvl = @index[id][:label] || id.upcase
+        hash[id] = { label: lvl, msg: msg, class: cls }
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      OPT.parse('rc', c: 'CSV output')
-      begin
+      odb = { c: 'CSV output' }
+      GetOpts.new('[site] | < status_file', 'rjc', odb) do |opt|
         stat = Status.new
         view = View.new(stat)
-        stat.ext_file if STDIN.tty?
-        stat.ext_sym.upd
-        view.vmode(:c) if OPT[:c]
-        puts view
-      rescue InvalidID
-        OPT.usage '(opt) [site] | < status_file'
+        stat.ext_local_file if STDIN.tty?
+        stat.ext_local_sym.cmt
+        puts opt[:c] ? view.to_csv : view.to_s
       end
     end
   end

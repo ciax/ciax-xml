@@ -26,37 +26,37 @@ module CIAX
   # Command Buffering
   class Buffer
     include Msg
-    NS_COLOR = 11
     attr_accessor :flush_proc, :recv_proc
     # sv_stat: Server Status
     def initialize(sv_stat)
       @sv_stat = type?(sv_stat, Prompt)
       @sv_stat.add_array(:queue)
-      # element of @q is bunch of frm args corresponding an appcmd
+      # element of @q is args of Frm::Cmd
       @q = Queue.new
       @tid = nil
+      # Update App Status
       @flush_proc = proc {}
       @recv_proc = proc {}
-      clear
+      @outbuf = Outbuf.new
+      @id = @sv_stat.get(:id)
     end
 
     # Send app entity
     def send(ent, n = 1)
       clear if n == 0 # interrupt
       cid = type?(ent, Cmd::Entity).id
+      verbose { "Execute #{cid}(#{@id}):timing" }
       # batch is frm batch (ary of ary)
       batch = ent[:batch]
-      return self if batch.empty?
-      sv_up(cid)
-      @q.push(pri: n, batch: batch, cid: cid)
+      @q.push(pri: n, batch: batch, cid: cid) unless batch.empty?
       self
     end
 
     def server
       @tid = ThreadLoop.new('Buffer', 12) do
-        exec_buf if @q.empty?
         verbose { 'Waiting' }
         pri_sort(@q.shift)
+        exec_buf if @q.empty?
       end
       self
     end
@@ -67,74 +67,61 @@ module CIAX
 
     private
 
-    # Structure of @outbuf (4 level arrays)
-    # [0] Array of interrupt Batch
-    # [1] Array of user issued Batch
-    # [2] Array of event driven Batch
-    # [3] Array of redular update Batch
-    #  Batch: [ Property, ..]
-    #  Property: [ Args, cid ]
-    #  Args: ['cmd','par','par'..]
-
     def pri_sort(rcv)
-      verbose { "Recieved #{rcv}" }
-      buf = (@outbuf[rcv[:pri]] ||= [])
-      buf.concat rcv[:batch].map { |args| [args, rcv[:cid]] }
-      verbose do
-        @outbuf.map.with_index { |o, i| "SUB:Outbuf(#{i}) is [#{o}]\n" }
+      sv_up
+      pri = rcv[:pri]
+      cid = rcv[:cid]
+      @sv_stat.push(:queue, cid)
+      rcv[:batch].each do |args|
+        @outbuf[pri] << { args: args, cid: cid }
       end
+      verbose { "OutBuf:Recieved:timing #{cid}(#{@id})\n#{@outbuf}" }
     end
 
     # Execute recieved command
     def exec_buf
-      while (args = _reorder_cmd_)
+      until (args = _reorder_cmd_).empty?
         @recv_proc.call(args, 'buffer')
       end
+      flush
     rescue CommError
-      clear
-      alert($ERROR_INFO.to_s)
+      alert
     rescue
-      clear
-      alert($ERROR_INFO.to_s + $ERROR_POSITION.to_s)
-    ensure
-      sv_dw
+      alert($ERROR_POSITION)
     end
 
     # Remove duplicated args and unshift one
     def _reorder_cmd_
-      args = nil
-      cids = []
-      @outbuf.each { |ary| args = _get_args_(args, ary, cids) }
-      cids.uniq!
-      flush if cids.size < @sv_stat.get(:queue).size
-      @sv_stat.flush(:queue, cids)
+      args = []
+      @outbuf.each { |batch| _get_args_(args, batch) }
       args
     end
 
-    def _get_args_(args, ary, cids)
-      if args
-        ary.delete_if do |p|
-          warning("remove duplicated cmd #{args.inspect}") if p[0] == args
-        end
-      else
-        args, cid = ary.shift
-        cids << cid if cid
+    def _get_args_(args, batch)
+      if args.empty?
+        h = batch.shift || return
+        args.replace h[:args]
       end
-      args
+      batch.delete_if do |e|
+        if e[:args] == args
+          warning("duplicated cmd #{args.inspect}(#{e[:cid]})")
+        end
+      end
     end
 
-    def sv_up(cid)
-      @sv_stat.push(:queue, cid)
+    def sv_up
+      verbose { "Busy Up(#{@id}):timing" }
       @sv_stat.up(:busy)
     end
 
     def sv_dw
+      verbose { "Busy Down(#{@id}):timing" }
       @sv_stat.dw(:busy)
-      @sv_stat.flush(:queue)
+      @sv_stat.flush(:queue, @outbuf.cids)
     end
 
     def clear
-      @outbuf = [[], [], []]
+      @outbuf.clear
       @q.clear
       @tid && @tid.run
       flush
@@ -142,7 +129,46 @@ module CIAX
 
     def flush
       @flush_proc.call(self)
+      sv_dw
+      verbose do
+        var = @sv_stat.pick(%i(busy queue)).inspect
+        "Flush buffer(#{@id}):timing#{var}"
+      end
       self
+    end
+
+    def alert(str = nil)
+      clear
+      str = $ERROR_INFO.to_s + str.to_s
+      super(str)
+    end
+
+    # Multi-level command buffer
+    # Structure of @outbuf (4 level arrays)
+    # [0] Array of interrupt Batch
+    # [1] Array of user issued Batch
+    # [2] Array of event driven Batch
+    # [3] Array of redular update Batch
+    #  Batch: [ Property, ..]
+    #  Property: { args:, cid: }
+    #  args: ['cmd','par','par'..]
+    class Outbuf < Array
+      def initialize
+        super(4) { [] }
+      end
+
+      def clear
+        super
+        push [], [], [], []
+      end
+
+      def to_s # String Array
+        map.with_index { |o, i| "SUB:Outbuf(#{i}) is #{o}" }.join("\n")
+      end
+
+      def cids
+        flatten.map { |h| h[:cid] }.uniq
+      end
     end
   end
 end

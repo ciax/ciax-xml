@@ -1,35 +1,25 @@
 #!/usr/bin/ruby
 require 'libapplist'
-require 'libwatview'
+require 'libwatprt'
 
 module CIAX
   # Watch Layer
   module Wat
-    # cfg must have [:db], [:sub_list]
+    # cfg must have [:dbi], [:sub_list]
     class Exe < Exe
       attr_reader :sub, :stat
-      def initialize(id, cfg, atrb = {})
-        super(id, cfg, atrb)
-        _init_sub.add_flg(auto: '&', event: '@')
-        @cobj.add_rem(@sub.cobj.rem)
+      def initialize(cfg, atrb = Hashx.new)
+        super
+        _init_dbi
+        _init_takeover
         @stat = Event.new(@sub.id)
-        @mode = @sub.mode
         @host = @sub.host
         _opt_mode
       end
 
-      def join(src = 'local')
-        100.times do
-          sleep 0.1
-          @server_upd_proc.call(src) if @server_upd_proc
-          return true unless @sv_stat.get(:busy)
-        end
-        false
-      end
-
       def ext_shell
         super
-        @cfg[:output] = View.new(@stat)
+        @cfg[:output] = View.new(@stat).extend(Prt)
         @cobj.loc.add_view
         input_conv_set
         self
@@ -37,73 +27,76 @@ module CIAX
 
       private
 
-      def ext_client
-        @server_upd_proc = proc { |src| exe([], src, 2) }
+      def ext_local_test
+        @post_exe_procs << proc { @stat.next_upd }
         super
       end
 
-      def ext_test
-        ext_non_client
-        @post_exe_procs << proc { @stat.next_upd }
-        self
-      end
-
-      def ext_driver
-        ext_non_client
-        @stat.ext_file.auto_save
+      def ext_local_driver
+        super
+        @stat.ext_local_file.auto_save
         # @stat[:int] is overwritten by initial loading
         @sub.batch_interrupt = @stat.get(:int)
-        @stat.ext_log if OPT[:e]
+        @stat.ext_local_log if @cfg[:option].log?
         _init_upd_drv_
-        @tid_auto = _init_auto_thread_
-        @sub.post_exe_procs << proc do
-          @sv_stat.put(:auto, @tid_auto && @tid_auto.alive?)
-        end
+        _init_exe_drv_
         self
       end
 
-      def ext_non_client
+      def ext_local
         _init_upd_
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
-        @stat.ext_rsp(@sub.stat, @sv_stat)
-        self
+        @stat.ext_local_rsp(@sub.stat, @sv_stat)
+        super
+      end
+
+      def _init_takeover
+        @sub = @cfg[:sub_list].get(@id)
+        @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')
+        @cobj.add_rem(@sub.cobj.rem)
+        @mode = @sub.mode
+        @post_exe_procs.concat(@sub.post_exe_procs)
       end
 
       def _init_upd_
-        @stat.post_upd_procs << proc do|ev|
-          verbose { 'Propagate Event#upd -> Watch#upd' }
+        @stat.cmt_procs << proc do|ev|
+          verbose { 'Propagate Event#cmt -> Watch#(set block)' }
           block = ev.get(:block).map { |id, par| par ? nil : id }.compact
           @cobj.rem.ext.valid_sub(block)
         end
       end
 
       def _init_upd_drv_
-        @stat.post_upd_procs << proc do|ev|
+        @stat.cmt_procs << proc do|ev|
           ev.get(:exec).each do|src, pri, args|
-            verbose { "Exec:#{args} by Condition from [#{src}] by [#{pri}]" }
+            verbose { "Propagate Exec:#{args} by Condition from [#{src}] by [#{pri}]" }
             @sub.exe(args, src, pri)
             sleep ev.interval
           end.clear
         end
       end
 
+      def _init_exe_drv_
+        @tid_auto = _init_auto_thread_ unless @cfg[:cmd_line_mode]
+        @sub.post_exe_procs << proc do
+          @sv_stat.set_flg(:auto, @tid_auto && @tid_auto.alive?)
+        end
+      end
+
       def _init_auto_thread_
         @stat.next_upd
         ThreadLoop.new("Watch:Regular(#{@id})", 14) do
-          @stat.auto_exec.upd.sleep
+          @stat.auto_exec.sleep.upd
         end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ceh:lts')
-      id = ARGV.shift
-      cfg = Config.new
-      atrb = { db: Ins::Db.new, sub_list: App::List.new(cfg) }
-      begin
-        Exe.new(id, cfg, atrb).ext_shell.shell
-      rescue InvalidID
-        OPT.usage('(opt) [id]')
+      ConfOpts.new('[id]', 'ceh:lts') do |cfg, args|
+        db = cfg[:db] = Ins::Db.new
+        dbi = db.get(args.shift)
+        atrb = { dbi: dbi, sub_list: App::List.new(cfg) }
+        Exe.new(cfg, atrb).run.ext_shell.shell
       end
     end
   end

@@ -8,6 +8,7 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
+  <!-- Structure -->
   <xsd:element name="macro">
     <xsd:complexType>
       <xsd:sequence minOccurs="0" maxOccurs="unbounded">
@@ -17,6 +18,7 @@
       <xsd:attribute name="id" type="xsd:token" use="required"/>
       <xsd:attribute name="version" type="xsd:int"/>
       <xsd:attribute name="label" type="xsd:token" use="optional"/>
+      <xsd:attribute name="host" type="xsd:token"/>
       <xsd:attribute name="port" type="xsd:int"/>
     </xsd:complexType>
     <xsd:key name="macro_id">
@@ -65,11 +67,13 @@
           <xsd:element ref="mdb:select"/>
           <xsd:element ref="mdb:check"/>
           <xsd:element ref="mdb:wait"/>
+          <xsd:element ref="mdb:sleep"/>
           <xsd:element ref="mdb:mesg"/>
           <xsd:element ref="mdb:mcr"/>
           <xsd:element ref="mdb:exec"/>
           <xsd:element ref="mdb:cfg"/>
           <xsd:element ref="mdb:upd"/>
+          <xsd:element ref="mdb:system"/>
         </xsd:choice>
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:token" use="required"/>
@@ -77,6 +81,7 @@
       <xsd:attribute name="argc" type="xsd:int" use="optional"/>
     </xsd:complexType>
   </xsd:element>
+  <!-- Attributes -->
   <xsd:attributeGroup name="attr_stat">
     <xsd:attribute name="label" type="xsd:token" use="optional"/>
     <xsd:attribute name="join">
@@ -118,12 +123,14 @@
       <xsd:element ref="mdb:unmatch" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:choice>
   </xsd:group>
+  <!-- Condition Elements -->
   <xsd:element name="goal">
     <xsd:complexType>
       <xsd:sequence minOccurs="0" maxOccurs="unbounded">
         <xsd:group ref="mdb:conditions"/>
       </xsd:sequence>
       <xsd:attributeGroup ref="mdb:attr_stat"/>
+      <xsd:attribute name="verify" type="xsd:boolean"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="check">
@@ -141,20 +148,20 @@
       </xsd:sequence>
       <xsd:attributeGroup ref="mdb:attr_stat"/>
       <xsd:attribute name="retry" type="xsd:int" use="optional"/>
-      <xsd:attribute name="sleep" type="xsd:int" use="optional"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="equal" type="mdb:condition"/>
   <xsd:element name="not" type="mdb:condition"/>
   <xsd:element name="match" type="mdb:condition"/>
   <xsd:element name="unmatch" type="mdb:condition"/>
+  <!-- Processing Elements -->
   <xsd:element name="mcr">
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="mdb:command">
-          <xsd:attribute name="retry" type="xsd:int"/>
           <xsd:attribute name="skip" type="xsd:boolean"/>
           <xsd:attribute name="async" type="xsd:boolean"/>
+          <xsd:attribute name="retry" type="xsd:int"/>
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
@@ -188,6 +195,9 @@
       <xsd:attribute name="label" type="xsd:token" use="required"/>
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="sleep"/>
+  <xsd:element name="system"/>
+  <!-- Sub Macro -->
   <xsd:element name="select">
     <xsd:complexType>
       <xsd:sequence minOccurs="1" maxOccurs="1">

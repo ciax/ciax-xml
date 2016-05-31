@@ -11,113 +11,132 @@ require 'libvarx'
 # }
 module CIAX
   module Frm
-    # Stream treats an individual round trip (send/recieve) communication which will be done sequentially
+    # Stream treats an individual round trip (send/recieve)
+    #   communication which will be done sequentially
     class Stream < Varx
       attr_reader :binary
       attr_accessor :pre_open_proc, :post_open_proc
-      def initialize(id, ver, iocmd, wait = 0.01, timeout = nil, terminator = nil)
-        Msg.give_up(' No IO command') if iocmd.to_a.empty?
-        @iocmd = type?(iocmd, Array).compact
-        super('stream', id, ver)
-        @cls_color = 9
+      def initialize(id, cfg)
+        iocmd = type?(cfg, Config)[:iocmd]
+        Msg.give_up(' No IO command') unless iocmd
+        super('stream', id, cfg[:version])
         update('dir' => '', 'cmd' => '', 'base64' => '')
-        verbose { "Initialize [#{iocmd.join(' ')}]" }
-        @wait = wait.to_f
-        @timeout = timeout || 10
-        @terminator = terminator
-        @pre_open_proc = proc {}
-        @post_open_proc = proc {}
-        Signal.trap(:CHLD) do
-          verbose { "#{@iocmd} is terminated" }
-        end
+        verbose { "Initiate [#{iocmd}]" }
+        _init_par(cfg)
         reopen
       end
 
       def snd(str, cid)
         return if str.to_s.empty?
-        verbose { "Sending #{str.size} byte on #{cid}" }
-        verbose { "Data Sending\n" + visible(str) }
+        verbose { "Data Sending(#{cid})\n" + visible(str) }
         reopen
         @f.write(str)
-        convert('snd', str, cid)
-        self
-      ensure
-        post_upd
+        convert('snd', str, cid).cmt
+      rescue Errno::EPIPE
+        @f.close
+        raise(CommError)
       end
 
       def rcv
-        verbose { "Wait to Recieve #{@wait} sec" }
-        sleep @wait
-        verbose { 'Wait for Recieving' }
+        _wait_rcv
         reopen
-        str = ''
-        20.times do
-          if IO.select([@f], nil, nil, @timeout)
-            begin
-              str << @f.sysread(4096)
-              verbose { "Binary Getting\n" + visible(str) }
-            rescue EOFError
-              # Jumped at quit
-              @f.close
-              raise(CommError)
-            end
-          else
-            Msg.com_err('Stream:No response')
-          end
-          break if ! @terminator || /#{@terminator}/ =~ str
-          verbose { 'Recieved incomplete data, retry' }
-        end
-        verbose { "Recieved #{str.size} byte on #{self['cmd']}" }
-        convert('rcv', str)
-        verbose { "Data Recieved(#{time_id})\n" + visible(str) }
-        self
-      ensure
-        post_upd
+        str = _concat_rcv
+        verbose { "Data Recieved(#{self['cmd']})\n" + visible(str) }
+        convert('rcv', str).cmt
       end
 
-      def reopen
-        int = 0
-        begin
-          openstrm if !@f || @f.closed?
-        rescue SystemCallError
-          warning($ERROR_INFO)
-          Msg.str_err('Stream Open failed') if int > 2
-          warning('Try to reopen')
-          sleep int
-          int = (int + 1) * 2
-          retry
-        end
+      def reopen(int = 0)
+        open_strm if !@f || @f.closed?
+      rescue SystemCallError
+        int = _open_fail(int)
+        retry
       end
 
       private
 
-      def openstrm
+      def convert(dir, data, cid = nil)
+        time_upd
+        @binary = data
+        self['cmd'] = cid if cid
+        update('dir' => dir, 'base64' => encode(data))
+      end
+
+      def _init_par(cfg)
+        sp = type?(cfg, Config)[:stream]
+        @iocmd = cfg[:iocmd].split(' ')
+        @wait = (sp[:wait] || 0.01).to_f
+        @timeout = (sp[:timeout] || 10).to_i
+        @terminator = esc_code(sp[:terminator])
+        @pre_open_proc = proc {}
+        @post_open_proc = proc {}
+      end
+
+      def open_strm
         # SIGINT gets around the child process
-        verbose { 'Stream Opening' }
+        # verbose { 'Stream Opening' }
         @pre_open_proc.call
         Signal.trap(:INT, nil)
         @f = IO.popen(@iocmd, 'r+')
         Signal.trap(:INT, 'DEFAULT')
-        at_exit do
-          Process.kill('INT', @f.pid)
-        end
+        verbose { 'Initiate Opened' }
+        at_exit { close_strm }
         @post_open_proc.call
-        verbose { 'Stream Open successfully' }
+        # verbose { 'Stream Open successfully' }
         # Shut off from Ctrl-C Signal to the child process
         # Process.setpgid(@f.pid,@f.pid)
         self
       end
 
-      def convert(dir, data, cid = nil)
-        pre_upd
-        @binary = data
-        update('dir' => dir, 'base64' => encode(data))
-        self['cmd'] = cid if cid
-        self
+      def close_strm
+        return if @f.closed?
+        verbose { 'Closing Stream' }
+        Process.kill('INT', @f.pid)
+        Process.waitpid(@f.pid)
+        @f.close
+        verbose { @f.closed? ? 'Stream Closed' : 'Stream not Closed' }
+      end
+
+      def _open_fail(int)
+        warning($ERROR_INFO)
+        Msg.str_err('Stream Open failed') if int > 2
+        warning('Try to reopen')
+        sleep int
+        (int + 1) * 2
       end
 
       def encode(str)
         [str].pack('m').split("\n").join('')
+      end
+
+      # rcv sub methods
+      def _wait_rcv
+        # verbose { "Wait to Recieve #{@wait} sec" }
+        sleep @wait
+        # verbose { 'Wait for Recieving' }
+      end
+
+      def _concat_rcv(str = '')
+        20.times do
+          _select_io
+          _try_rcv(str)
+          break if ! @terminator || /#{@terminator}/ =~ str
+          verbose { 'Recieved incomplete data, retry' }
+        end
+        str
+      end
+
+      def _select_io
+        return if IO.select([@f], nil, nil, @timeout)
+        Msg.com_err('Stream:No response')
+      end
+
+      def _try_rcv(str)
+        str << @f.sysread(4096)
+        # verbose { "Binary Getting\n" + visible(str) }
+      rescue EOFError
+        # Jumped at quit
+        @f.close
+        raise(CommError)
       end
     end
   end

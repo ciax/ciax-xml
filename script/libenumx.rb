@@ -39,14 +39,8 @@ module CIAX
       path
     end
 
-    # Override data
+    # Merge data with setting sub structures
     def read(json_str = nil)
-      inp = json_str || gets(nil) || usr_err("No data in file(#{ARGV})")
-      replace(j2h(inp))
-    end
-
-    # Merge data
-    def load(json_str = nil)
       inp = json_str || gets(nil) || usr_err("No data in file(#{ARGV})")
       deep_update(j2h(inp))
     end
@@ -91,26 +85,28 @@ module CIAX
     include Enumx
     def initialize(hash = {})
       update(hash) if hash
-      vmode(:v) # v|r|j
-      %i(v r j).each do|k|
-        vmode(k) if OPT[k]
-      end if defined? OPT
-      @cls_color = 6
+      vmode(VMODE) # v|r|j
     end
 
-    def get(key)
+    # Generate value if init_proc and no key
+    def get(key, &init_proc)
+      self[key] = init_proc.call(key) if !key?(key) && init_proc
       self[key]
     end
 
+    # Put value. return nil if no changes
     def put(key, val)
+      return if self[key] == val
       store(key, val)
     end
 
-    # Replace value
-    def rep(key, val)
+    # Replace value. return nil if no changes
+    def repl(key, val)
       Msg.par_err("No such Key [#{key}]") unless key?(key)
+      Msg.cfg_err('Value should be String') unless val.is_a?(String)
+      return if fetch(key) == val
+      verbose { "Replace:timing(#{key}) #{fetch(key)} ->  #{val}" }
       fetch(key).replace(val)
-      val
     end
 
     # Make empty copy
@@ -122,11 +118,11 @@ module CIAX
       hash
     end
 
-    # Generate Hash Pick up keys
-    def pick(keyary, src = self)
-      hash = Hashx.new
+    # Generate Hashx with picked up keys
+    def pick(keyary, atrb = {})
+      hash = Hashx.new(atrb)
       keyary.each do|key|
-        hash[key] = src[key] if src.key?(key)
+        hash[key] = self[key] if key?(key)
       end
       hash
     end
@@ -168,7 +164,7 @@ module CIAX
 
     # Generate Hash with key array
     def a2h(*keys)
-      atrb = {}
+      atrb = Hashx.new
       each do |val|
         key = keys.shift
         atrb[key] = val if key

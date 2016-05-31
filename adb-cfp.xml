@@ -8,7 +8,7 @@
           <frmcmd name="getstat2"/>
         </item>
       </group>
-      <group id="gmm" caption="MOS Motion">
+      <group id="gmos" caption="MOS Motion">
         <unit id="u_rh" title="r[o/c]" label="Robohand All [%s]">
           <item id="ro" label="Open">
             <frmcmd name="putdata">
@@ -64,7 +64,7 @@
           </item>
         </unit>
       </group>
-      <group id="gom" caption="Other Motion">
+      <group id="ggv" caption="Gate Valve">
         <unit id="u_gv" title="g[o/c]" label="Gate Valve [%s]">
           <item id="go" label="Open">
             <frmcmd name="putdata">

@@ -25,23 +25,26 @@ module CIAX
           item = Hashx.new(e1.to_h)
           case e1.name
           when 'pack'
-            (db[:packs] ||= []) << item
-            _rec_db(e1, item)
+            db.get(:packs) { [] } << item
+            _rec_bit(e1, item)
           when 'field'
-            (db[:fields] ||= []) << item
+            db.get(:fields) { [] } << item
           end
+        end
+      end
+
+      def _rec_bit(doc, db)
+        doc.each do |e1|
+          db.get(:bits) { [] } << Hashx.new(e1.to_h)
         end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('r')
-      begin
-        dbi = Db.new.get(ARGV.shift)
-      rescue InvalidID
-        OPT.usage('[id] (key) ..')
+      GetOpts.new('[id] (key) ..', 'r') do |opt, args|
+        dbi = Db.new.get(args.shift)
+        puts opt[:r] ? dbi.to_v : dbi.path(args)
       end
-      puts OPT[:r] ? dbi.to_v : dbi.path(ARGV)
     end
   end
 end

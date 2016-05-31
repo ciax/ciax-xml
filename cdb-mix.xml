@@ -1,305 +1,427 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <alias id="mix" label="MOIRCS Turret">
-    <group id="gtr" caption="Turret">
-      <unit id="ut1" title="[*]_1" label="Turret 1 [co,none,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
-        <item id="co_1" label="CO Filter for Turret 1" ref="opt">
+    <group id="gtr" caption="Filter Select">
+      <unit id="ut1" title="[*]_1" label="Turret 1 [co,hole,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
+        <item id="co_1" label="[0]CO" ref="opt">
           <argv>1</argv>
           <argv>0</argv>
         </item>
-        <item id="none_1" label="No Filter for Turret 1" ref="opt">
+        <item id="hole_1" label="[1] HOLE" ref="opt">
           <argv>1</argv>
           <argv>1</argv>
         </item>
-        <item id="brg_1" label="BrG Filter for Turret 1" ref="opt">
+        <item id="brg_1" label="[2] BrG" ref="opt">
           <argv>1</argv>
           <argv>2</argv>
         </item>
-        <item id="nb119_1" label="NB119 Filter for Turret 1" ref="opt">
+        <item id="nb119_1" label="[3] NB119" ref="opt">
           <argv>1</argv>
           <argv>3</argv>
         </item>
-        <item id="std_k_1" label="STD K Filter for Turret 1" ref="opt">
+        <item id="std_k_1" label="[4] STD K" ref="opt">
           <argv>1</argv>
           <argv>4</argv>
         </item>
-        <item id="y_1" label="Y Filter for Turret 1" ref="opt">
+        <item id="y_1" label="[5] Y" ref="opt">
           <argv>1</argv>
           <argv>5</argv>
         </item>
-        <item id="oc1_3_1" label="OC1 3 Filter for Turret 1" ref="opt">
+        <item id="oc1_3_1" label="[6] OC1 3" ref="opt">
           <argv>1</argv>
           <argv>6</argv>
         </item>
-        <item id="j_1" label="J Filter for Turret 1" ref="opt">
+        <item id="j_1" label="[7] J" ref="opt">
           <argv>1</argv>
           <argv>7</argv>
         </item>
-        <item id="h_1" label="H Filter for Turret 1" ref="opt">
+        <item id="h_1" label="[8] H" ref="opt">
           <argv>1</argv>
           <argv>8</argv>
         </item>
-        <item id="ks_1" label="Ks Filter for Turret 1" ref="opt">
+        <item id="ks_1" label="[9] Ks" ref="opt">
           <argv>1</argv>
           <argv>9</argv>
         </item>
-        <item id="h2_1" label="H2 Filter for Turret 1" ref="opt">
+        <item id="h2_1" label="[10] H2" ref="opt">
           <argv>1</argv>
           <argv>10</argv>
         </item>
-        <item id="fe2_1" label="Fe2 Filter for Turret 1" ref="opt">
+        <item id="fe2_1" label="[11] Fe2" ref="opt">
           <argv>1</argv>
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut4" title="[*]_4" label="Turret 4 [co,none,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
-        <item id="co_4" label="CO Filter for Turret 4" ref="opt">
+      <unit id="ut4" title="[*]_4" label="Turret 4 [co,hole,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
+        <item id="co_4" label="[0] CO" ref="opt">
           <argv>4</argv>
           <argv>0</argv>
         </item>
-        <item id="none_4" label="No Filter for Turret 4" ref="opt">
+        <item id="hole_4" label="[1] HOLE" ref="opt">
           <argv>4</argv>
           <argv>1</argv>
         </item>
-        <item id="brg_4" label="BrG Filter for Turret 4" ref="opt">
+        <item id="brg_4" label="[2] BrG" ref="opt">
           <argv>4</argv>
           <argv>2</argv>
         </item>
-        <item id="nb119_4" label="NB119 Filter for Turret 4" ref="opt">
+        <item id="nb119_4" label="[3] NB119" ref="opt">
           <argv>4</argv>
           <argv>3</argv>
         </item>
-        <item id="std_k_4" label="STD K Filter for Turret 4" ref="opt">
+        <item id="std_k_4" label="[4] STD K" ref="opt">
           <argv>4</argv>
           <argv>4</argv>
         </item>
-        <item id="y_4" label="Y Filter for Turret 4" ref="opt">
+        <item id="y_4" label="[5] Y" ref="opt">
           <argv>4</argv>
           <argv>5</argv>
         </item>
-        <item id="oc1_3_4" label="OC1 3 Filter for Turret 4" ref="opt">
+        <item id="oc1_3_4" label="[6] OC1 3" ref="opt">
           <argv>4</argv>
           <argv>6</argv>
         </item>
-        <item id="j_4" label="J Filter for Turret 4" ref="opt">
+        <item id="j_4" label="[7] J" ref="opt">
           <argv>4</argv>
           <argv>7</argv>
         </item>
-        <item id="h_4" label="H Filter for Turret 4" ref="opt">
+        <item id="h_4" label="[8] H" ref="opt">
           <argv>4</argv>
           <argv>8</argv>
         </item>
-        <item id="ks_4" label="Ks Filter for Turret 4" ref="opt">
+        <item id="ks_4" label="[9] Ks" ref="opt">
           <argv>4</argv>
           <argv>9</argv>
         </item>
-        <item id="h2_4" label="H2 Filter for Turret 4" ref="opt">
+        <item id="h2_4" label="[10] H2" ref="opt">
           <argv>4</argv>
           <argv>10</argv>
         </item>
-        <item id="fe2_4" label="Fe2 Filter for Turret 4" ref="opt">
+        <item id="fe2_4" label="[11] Fe2" ref="opt">
           <argv>4</argv>
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut2" title="[*]_2" label="Turret 2 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,none]">
-        <item id="csl_2" label="Cold Stop Large for Turret 2" ref="opt">
+      <unit id="ut2" title="[*]_2" label="Turret 2 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,hole]">
+        <item id="csl_2" label="[0] CSL" ref="opt">
           <argv>2</argv>
           <argv>0</argv>
         </item>
-        <item id="oc_hk_2" label="OC HK Filter for Turret 2" ref="opt">
+        <item id="oc_hk_2" label="[1] OC HK" ref="opt">
           <argv>2</argv>
           <argv>1</argv>
         </item>
-        <item id="oc_zj_2" label="OC ZJ Filter for Turret 2" ref="opt">
+        <item id="oc_zj_2" label="[2] OC ZJ" ref="opt">
           <argv>2</argv>
           <argv>2</argv>
         </item>
-        <item id="nb1657_2" label="NB1657 Filter for Turret 2" ref="opt">
+        <item id="nb1657_2" label="[3] NB1657" ref="opt">
           <argv>2</argv>
           <argv>3</argv>
         </item>
-        <item id="nb2071_2" label="NB2071 Filter for Turret 2" ref="opt">
+        <item id="nb2071_2" label="[4] NB2071" ref="opt">
           <argv>2</argv>
           <argv>4</argv>
         </item>
-        <item id="b05_2" label="B05 Filter for Turret 2" ref="opt">
+        <item id="b05_2" label="[5] B05" ref="opt">
           <argv>2</argv>
           <argv>5</argv>
         </item>
-        <item id="css_2" label="Cold Stop Small for Turret 2" ref="opt">
+        <item id="css_2" label="[6] CSS" ref="opt">
           <argv>2</argv>
           <argv>6</argv>
         </item>
-        <item id="csl2_2" label="Cold Stop Large 2 for Turret 2" ref="opt">
+        <item id="csl2_2" label="[7] CSL2" ref="opt">
           <argv>2</argv>
           <argv>7</argv>
         </item>
-        <item id="nb2315_2" label="NB2315 Filter for Turret 2" ref="opt">
+        <item id="nb2315_2" label="[8] NB2315" ref="opt">
           <argv>2</argv>
           <argv>8</argv>
         </item>
-        <item id="nb2095_2" label="NB2095 Filter for Turret 2" ref="opt">
+        <item id="nb2095_2" label="[9] NB2095" ref="opt">
           <argv>2</argv>
           <argv>9</argv>
         </item>
-        <item id="nb1550_2" label="NB1550 Filter for Turret 2" ref="opt">
+        <item id="nb1550_2" label="[10] NB1550" ref="opt">
           <argv>2</argv>
           <argv>10</argv>
         </item>
-        <item id="none_2" label="No Filter for Turret 2" ref="opt">
+        <item id="hole_2" label="[11] HOLE" ref="opt">
           <argv>2</argv>
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut5" title="[*]_5" label="Turret 5 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,none]">
-        <item id="csl_5" label="Cold Stop Large for Turret 5" ref="opt">
+      <unit id="ut5" title="[*]_5" label="Turret 5 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,hole]">
+        <item id="csl_5" label="[0] CSL" ref="opt">
           <argv>5</argv>
           <argv>0</argv>
         </item>
-        <item id="oc_hk_5" label="OC HK Filter for Turret 5" ref="opt">
+        <item id="oc_hk_5" label="[1] OC HK" ref="opt">
           <argv>5</argv>
           <argv>1</argv>
         </item>
-        <item id="oc_zj_5" label="OC ZJ Filter for Turret 5" ref="opt">
+        <item id="oc_zj_5" label="[2] OC ZJ" ref="opt">
           <argv>5</argv>
           <argv>2</argv>
         </item>
-        <item id="nb1657_5" label="NB1657 Filter for Turret 5" ref="opt">
+        <item id="nb1657_5" label="[3] NB1657" ref="opt">
           <argv>5</argv>
           <argv>3</argv>
         </item>
-        <item id="nb2071_5" label="NB2071 Filter for Turret 5" ref="opt">
+        <item id="nb2071_5" label="[4] NB2071" ref="opt">
           <argv>5</argv>
           <argv>4</argv>
         </item>
-        <item id="b05_5" label="B05 Filter for Turret 5" ref="opt">
+        <item id="b05_5" label="[5] B05" ref="opt">
           <argv>5</argv>
           <argv>5</argv>
         </item>
-        <item id="css_5" label="Cold Stop Small for Turret 5" ref="opt">
+        <item id="css_5" label="[6] CSS" ref="opt">
           <argv>5</argv>
           <argv>6</argv>
         </item>
-        <item id="csl2_5" label="Cold Stop Large 2 for Turret 5" ref="opt">
+        <item id="csl2_5" label="[7] CSL2" ref="opt">
           <argv>5</argv>
           <argv>7</argv>
         </item>
-        <item id="nb2315_5" label="NB2315 Filter for Turret 5" ref="opt">
+        <item id="nb2315_5" label="[8] NB2315" ref="opt">
           <argv>5</argv>
           <argv>8</argv>
         </item>
-        <item id="nb2095_5" label="NB2095 Filter for Turret 5" ref="opt">
+        <item id="nb2095_5" label="[9] NB2095" ref="opt">
           <argv>5</argv>
           <argv>9</argv>
         </item>
-        <item id="nb1550_5" label="NB1550 Filter for Turret 5" ref="opt">
+        <item id="nb1550_5" label="[10] NB1550" ref="opt">
           <argv>5</argv>
           <argv>10</argv>
         </item>
-        <item id="none_5" label="No Filter for Turret 5" ref="opt">
+        <item id="hole_5" label="[11] HOLE" ref="opt">
           <argv>5</argv>
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut3" title="[*]_3" label="Turret 3 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,none]">
-        <item id="vph_h_3" label="VPH H Grism for Turret 3" ref="opt">
+      <unit id="ut3" title="[*]_3" label="Turret 3 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,hole]">
+        <item id="vph_h_3" label="[0] VPH H" ref="opt">
           <argv>3</argv>
           <argv>0</argv>
         </item>
-        <item id="nd_3" label="ND Filter for Turret 3" ref="opt">
+        <item id="nd_3" label="[1] ND" ref="opt">
           <argv>3</argv>
           <argv>1</argv>
         </item>
-        <item id="pv_3" label="Pupile Viewr for Turret 3" ref="opt">
+        <item id="pv_3" label="[2] PV" ref="opt">
           <argv>3</argv>
           <argv>2</argv>
         </item>
-        <item id="vph_k_3" label="VPH K Grism for Turret 3" ref="opt">
+        <item id="vph_k_3" label="[3] VPH K" ref="opt">
           <argv>3</argv>
           <argv>3</argv>
         </item>
-        <item id="none_3" label="No Filter for Turret 3" ref="opt">
+        <item id="hole_3" label="[4] HOLE" ref="opt">
           <argv>3</argv>
           <argv>4</argv>
         </item>
-        <item id="hk500_3" label="HK500 Grism for Turret 3" ref="opt">
+        <item id="hk500_3" label="[5] HK500" ref="opt">
           <argv>3</argv>
           <argv>5</argv>
         </item>
-        <item id="vph_j_3" label="VPH J Grism for Turret 3" ref="opt">
+        <item id="vph_j_3" label="[6] VPH J" ref="opt">
           <argv>3</argv>
           <argv>6</argv>
         </item>
-        <item id="k_cont_3" label="K CONT Filter for Turret 3" ref="opt">
+        <item id="k_cont_3" label="[7] K CONT" ref="opt">
           <argv>3</argv>
           <argv>7</argv>
         </item>
-        <item id="zj500_3" label="ZJ500 Grism for Turret 3" ref="opt">
+        <item id="zj500_3" label="[8] ZJ500" ref="opt">
           <argv>3</argv>
           <argv>8</argv>
         </item>
-        <item id="vph_y_3" label="VPH Y Grism for Turret 3" ref="opt">
+        <item id="vph_y_3" label="[9] VPH Y" ref="opt">
           <argv>3</argv>
           <argv>9</argv>
         </item>
-        <item id="bp_3" label="Blind Plate for Turret 3" ref="opt">
+        <item id="bp_3" label="[10] BP" ref="opt">
           <argv>3</argv>
           <argv>10</argv>
         </item>
-        <item id="r1300_3" label="R1300 Grism for Turret 3" ref="opt">
+        <item id="r1300_3" label="[11] R1300" ref="opt">
           <argv>3</argv>
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut6" title="[*]_6" label="Turret 6 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,none]">
-        <item id="vph_h_6" label="VPH H Grism for Turret 6" ref="opt">
+      <unit id="ut6" title="[*]_6" label="Turret 6 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,hole]">
+        <item id="vph_h_6" label="[0] VPH H" ref="opt">
           <argv>6</argv>
           <argv>0</argv>
         </item>
-        <item id="nd_6" label="ND Filter for Turret 6" ref="opt">
+        <item id="nd_6" label="[1] ND" ref="opt">
           <argv>6</argv>
           <argv>1</argv>
         </item>
-        <item id="pv_6" label="Pupile Viewr for Turret 6" ref="opt">
+        <item id="pv_6" label="[2] PV" ref="opt">
           <argv>6</argv>
           <argv>2</argv>
         </item>
-        <item id="vph_k_6" label="VPH K Grism for Turret 6" ref="opt">
+        <item id="vph_k_6" label="[3] VPH K" ref="opt">
           <argv>6</argv>
           <argv>3</argv>
         </item>
-        <item id="none_6" label="No Filter for Turret 6" ref="opt">
+        <item id="hole_6" label="[4] HOLE" ref="opt">
           <argv>6</argv>
           <argv>4</argv>
         </item>
-        <item id="hk500_6" label="HK500 Grism for Turret 6" ref="opt">
+        <item id="hk500_6" label="[5] HK500" ref="opt">
           <argv>6</argv>
           <argv>5</argv>
         </item>
-        <item id="vph_j_6" label="VPH J Grism for Turret 6" ref="opt">
+        <item id="vph_j_6" label="[6] VPH J" ref="opt">
           <argv>6</argv>
           <argv>6</argv>
         </item>
-        <item id="k_cont_6" label="K CONT Filter for Turret 6" ref="opt">
+        <item id="k_cont_6" label="[7] K CONT" ref="opt">
           <argv>6</argv>
           <argv>7</argv>
         </item>
-        <item id="zj500_6" label="ZJ500 Grism for Turret 6" ref="opt">
+        <item id="zj500_6" label="[8] ZJ500" ref="opt">
           <argv>6</argv>
           <argv>8</argv>
         </item>
-        <item id="vph_y_6" label="VPH Y Grism for Turret 6" ref="opt">
+        <item id="vph_y_6" label="[9] VPH Y" ref="opt">
           <argv>6</argv>
           <argv>9</argv>
         </item>
-        <item id="bp_6" label="Blind Plate for Turret 6" ref="opt">
+        <item id="bp_6" label="[10] BP" ref="opt">
           <argv>6</argv>
           <argv>10</argv>
         </item>
-        <item id="r1300_6" label="R1300 Grism for Turret 6" ref="opt">
+        <item id="r1300_6" label="[11] R1300" ref="opt">
           <argv>6</argv>
           <argv>11</argv>
+        </item>
+      </unit>
+    </group>
+    <group id="gta" caption="Turret Adjust">
+      <unit id="ua1" title="[fw|bk][*]_1" label="Adjust 1 [50,100,1k]">
+        <item id="fw50_1" label="+ 50" ref="fw50">
+          <argv>1</argv>
+        </item>
+        <item id="bk50_1" label="- 50" ref="bk50">
+          <argv>1</argv>
+        </item>
+        <item id="fw100_1" label="+ 100" ref="fw100">
+          <argv>1</argv>
+        </item>
+        <item id="bk100_1" label="- 100" ref="bk100">
+          <argv>1</argv>
+        </item>
+        <item id="fw1k_1" label="+ 1000" ref="fw1k">
+          <argv>1</argv>
+        </item>
+        <item id="bk1k_1" label="- 1000" ref="bk1k">
+          <argv>1</argv>
+        </item>
+      </unit>
+      <unit id="ua4" title="[fw|bk][*]_4" label="Adjust 4 [50,100,1k]">
+        <item id="fw50_4" label="+ 50" ref="fw50">
+          <argv>4</argv>
+        </item>
+        <item id="bk50_4" label="- 50" ref="bk50">
+          <argv>4</argv>
+        </item>
+        <item id="fw100_4" label="+ 100" ref="fw100">
+          <argv>4</argv>
+        </item>
+        <item id="bk100_4" label="- 100" ref="bk100">
+          <argv>4</argv>
+        </item>
+        <item id="fw1k_4" label="+ 1000" ref="fw1k">
+          <argv>4</argv>
+        </item>
+        <item id="bk1k_4" label="- 1000" ref="bk1k">
+          <argv>4</argv>
+        </item>
+      </unit>
+      <unit id="ua2" title="[fw|bk][*]_2" label="Adjust 2 [50,100,1k]">
+        <item id="fw50_2" label="+ 50" ref="fw50">
+          <argv>2</argv>
+        </item>
+        <item id="bk50_2" label="- 50" ref="bk50">
+          <argv>2</argv>
+        </item>
+        <item id="fw100_2" label="+ 100" ref="fw100">
+          <argv>2</argv>
+        </item>
+        <item id="bk100_2" label="- 100" ref="bk100">
+          <argv>2</argv>
+        </item>
+        <item id="fw1k_2" label="+ 1000" ref="fw1k">
+          <argv>2</argv>
+        </item>
+        <item id="bk1k_2" label="- 1000" ref="bk1k">
+          <argv>2</argv>
+        </item>
+      </unit>
+      <unit id="ua5" title="[fw|bk][*]_5" label="Adjust 5 [50,100,1k]">
+        <item id="fw50_5" label="+ 50" ref="fw50">
+          <argv>5</argv>
+        </item>
+        <item id="bk50_5" label="- 50" ref="bk50">
+          <argv>5</argv>
+        </item>
+        <item id="fw100_5" label="+ 100" ref="fw100">
+          <argv>5</argv>
+        </item>
+        <item id="bk100_5" label="- 100" ref="bk100">
+          <argv>5</argv>
+        </item>
+        <item id="fw1k_5" label="+ 1000" ref="fw1k">
+          <argv>5</argv>
+        </item>
+        <item id="bk1k_5" label="- 1000" ref="bk1k">
+          <argv>5</argv>
+        </item>
+      </unit>
+      <unit id="ua3" title="[fw|bk][*]_3" label="Adjust 3 [50,100,1k]">
+        <item id="fw50_3" label="+ 50" ref="fw50">
+          <argv>3</argv>
+        </item>
+        <item id="bk50_3" label="- 50" ref="bk50">
+          <argv>3</argv>
+        </item>
+        <item id="fw100_3" label="+ 100" ref="fw100">
+          <argv>3</argv>
+        </item>
+        <item id="bk100_3" label="- 100" ref="bk100">
+          <argv>3</argv>
+        </item>
+        <item id="fw1k_3" label="+ 1000" ref="fw1k">
+          <argv>3</argv>
+        </item>
+        <item id="bk1k_3" label="- 1000" ref="bk1k">
+          <argv>3</argv>
+        </item>
+      </unit>
+      <unit id="ua6" title="[fw|bk][*]_6" label="Adjust 6 [50,100,1k]">
+        <item id="fw50_6" label="+ 50" ref="fw50">
+          <argv>6</argv>
+        </item>
+        <item id="bk50_6" label="- 50" ref="bk50">
+          <argv>6</argv>
+        </item>
+        <item id="fw100_6" label="+ 100" ref="fw100">
+          <argv>6</argv>
+        </item>
+        <item id="bk100_6" label="- 100" ref="bk100">
+          <argv>6</argv>
+        </item>
+        <item id="fw1k_6" label="+ 1000" ref="fw1k">
+          <argv>6</argv>
+        </item>
+        <item id="bk1k_6" label="- 1000" ref="bk1k">
+          <argv>6</argv>
         </item>
       </unit>
     </group>

@@ -10,20 +10,19 @@ module CIAX
       module Ext
         # External Command Group
         class Group < Group
-          def initialize(cfg, atrb = {})
-            atrb[:caption] ||= 'External Commands'
+          def initialize(cfg, atrb = Hashx.new)
+            atrb.get(:caption) { 'External Commands' }
             super
             @displist = @displist.ext_grp
             _init_items(@cfg[:command])
             @displist.reset!
           end
 
-          def add_item(id, cdb, itm)
+          def add_item(id, itm)
             label = itm[:label]
-            unit = itm[:unit]
-            label = "#{cdb[:unit][unit][:label]} #{label}" if unit
-            if itm[:parameters].is_a? Array
-              label.gsub(/\$([\d]+)/, '%s') % itm[:parameters].map { |e| e[:label] }
+            if label && itm[:parameters].is_a?(Array)
+              ary = itm[:parameters].map { |e| e[:label] || 'str' }
+              label.replace(format(label, *ary))
             end
             new_item(id, itm)
           end
@@ -45,7 +44,7 @@ module CIAX
             mem.each do|id|
               itm = cdb[:index][id]
               sg.put_item(id, itm[:label])
-              add_item(id, cdb, itm)
+              add_item(id, itm)
             end
           end
 
@@ -55,54 +54,54 @@ module CIAX
             return unless guni
             guni.each do|u|
               uat = cdb[:unit][u]
-              if uat.key?(:title)
-                umem = uat[:members]
-                il = umem.map { |m| cdb[:index][m][:label] }.join('/')
-                sg.put_dummy(uat[:title], uat[:label] % il)
-                sg.replace(sg - umem)
-              end
+              next unless uat.key?(:title)
+              _make_unit_item(sg, uat, cdb[:index])
             end
+          end
+
+          def _make_unit_item(sg, uat, index)
+            umem = uat[:members]
+            il = umem.map { |m| index[m][:label] }.join('/')
+            sg.put_dummy(uat[:title], uat[:label] % il)
+            sg.replace(sg - umem)
           end
         end
 
         class Item < Item; end
 
+        # Substitute string($+number) with parameters, which is called by others
+        #  par={ val,range,format } or String
+        #  str could include Math functions
         class Entity < Entity
-          # Substitute string($+number) with parameters, which is called by others
-          #  par={ val,range,format } or String
-          #  str could include Math functions
           def deep_subst(data)
             case data
             when Array
-              res = []
-              data.each { |v| res << deep_subst(v) }
+              data.map { |v| deep_subst(v) }
             when Hash
-              res = {}
-              data.each { |k, v| res[k] = deep_subst(v) }
+              data.each_with_object({}) { |(k, v), r| r[k] = deep_subst(v) }
             else
-              res = _subst_(data)
+              _subst_str(data)
             end
-            res
           end
 
           private
 
-          def _subst_(str) # subst by parameters ($1,$2...)
+          def _subst_str(str) # subst by parameters ($1,$2...)
             return str unless /\$([\d]+)/ =~ str
-            enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
-              num = true
-              res = str.gsub(/\$([\d]+)/) do
-                i = Regexp.last_match(1).to_i
-                num = false if self[:parameters][i - 1][:type] != 'num'
-                verbose { "Parameter No.#{i} = [#{@par[i - 1]}]" }
-                @par[i - 1] || Msg.cfg_err(" No substitute data ($#{i})")
-              end
-              Msg.cfg_err('Nil string') if res == ''
-              res
+            # enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
+            # num = true
+            res = str.gsub(/\$([\d]+)/) do
+              i = Regexp.last_match(1).to_i
+              # num = false if self[:parameters][i - 1][:type] != 'num'
+              # verbose { "Parameter No.#{i} = [#{@par[i - 1]}]" }
+              @par[i - 1] || Msg.cfg_err(" No substitute data ($#{i})")
             end
+            Msg.cfg_err('Nil string') if res == ''
+            res
+            # end
           end
         end
       end
     end
-end
+  end
 end

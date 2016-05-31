@@ -15,14 +15,8 @@ module CIAX
         @period = 300
         @last_updated = 0
         _setdbi(dbi, Ins::Db)
-        @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
-        @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
-        # For Array element
-        %i(active exec block int).each { |i| self[i] = [] }
-        # For Hash element
-        %i(crnt last res).each { |i| self[i] = {} }
-        # For Time element
-        self[:act_time] = [now_msec, now_msec]
+        _init_procs
+        _init_struct
         self
       end
 
@@ -55,21 +49,38 @@ module CIAX
         end
         self
       end
+
+      def ext_local_file
+        super.load
+      end
+
+      private
+
+      def _init_procs
+        @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
+        @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
+      end
+
+      def _init_struct
+        # For Array element
+        %i(active exec block int).each { |i| self[i] = [] }
+        # For Hash element
+        %i(crnt last res).each { |i| self[i] = {} }
+        # For Time element
+        self[:act_time] = [now_msec, now_msec]
+      end
     end
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      OPT.parse('h:')
-      begin
+      GetOpts.new('[site]', 'h:') do |opt|
         event = Event.new
-        if OPT.host
-          event.ext_http(OPT.host)
+        if opt.host
+          event.ext_http(opt.host)
         else
-          event.ext_file
+          event.ext_local_file
         end
         puts event
-      rescue InvalidID
-        OPT.usage('(opt) [site]')
       end
     end
   end

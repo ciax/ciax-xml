@@ -6,15 +6,22 @@
         <command ref="cco"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="CIAO(S6) SWITCH"/>
-          <group ref="g2" caption="COMICS IMG(S4)"/>
-          <group ref="g3" caption="COMICS SPEC(S5)"/>
+          <group ref="g2" caption="COMICS/IMG(S4)"/>
+          <group ref="g3" caption="COMICS/SPEC(S5)"/>
         </status>
       </instance>
-      <instance id="cro" app_id="bbe" host="ciax" port="53205" label="IR Helium Compressor"/>
+      <instance id="cro" app_id="bbe" host="ciax" port="53205" label="IR Helium Compressor">
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="g0" caption="X0-3"/>
+          <group ref="g1" caption="X4-7"/>
+          <group ref="g2" caption="X8-11"/>
+          <group ref="g3" caption="X12-15"/>
+        </status>
+      </instance>
       <instance id="cci" app_id="bbe" host="ciax" port="53206" label="IR Helium Compressor">
         <command ref="cci"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <group ref="g0" caption="CAS2(S1)(CIAO)"/>
+          <group ref="g0" caption="CAS2(S1)(MOIRCS/CR,CIAO)"/>
           <group ref="g1" caption="CAS1(S2)(MOIRCS/MAIN)"/>
           <group ref="g2" caption="MOIRCS/CR(S8)"/>
           <group ref="g3" caption="MOIRCS/MAIN(S9)"/>
@@ -27,12 +34,12 @@
           <group ref="g2" caption="FMOS/IRS2(S11)"/>
         </status>
       </instance>
-      <instance id="cfa" app_id="k3n" host="ciax" port="25210" label="S10 HC Coolant Flow">
+      <instance id="cfa" app_id="k3n" port="25210" label="S10 HC Coolant Flow">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <index ref="flow" label="FMOS-K(S10) Coolant Flow"/>
         </status>
       </instance>
-      <instance id="cf1" app_id="k3n" host="ciax" port="25201" label="S1 HC Coolant Flow">
+      <instance id="cf1" app_id="k3n" port="25201" label="S1 HC Coolant Flow">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <index ref="flow" label="CS-2(S1) Coolant Flow(l/min)"/>
         </status>

@@ -12,10 +12,9 @@ module CIAX
       include Cmd::Remote::Int
       # Internal Command Group
       class Group < Int::Group
-        def initialize(cfg, attr = {})
+        def initialize(cfg, atrb = Hashx.new)
           super
-          add_item('save', '[key,key...] [tag]', def_pars(2))
-          add_item('load', '[tag]', def_pars(1))
+          add_file_io
           add_item('set', '[key(:idx)] [val(,val)]', def_pars(2))
           add_item('flush', 'Stream')
         end
@@ -32,6 +31,7 @@ module CIAX
           @field = type?(@cfg[:field], Field)
           @fstr = {}
           @sel = _init_sel
+          @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
           @chg_flg = nil
           @frame = _init_frame
           @sel[:body] = ent.deep_subst(@cfg[:body])
@@ -42,18 +42,14 @@ module CIAX
         private
 
         def _init_body(ent)
-          verbose { "Body:#{@cfg[:label]}(#{@cfg[:id]})" }
+          verbose { "Body:#{@cfg[:label]}(#{@id})" }
           _add_frame(:body)
           _init_cc
           _add_frame(:main)
-          if @chg_flg && !@cfg[:nocache]
-            warning('Cache stored despite Frame includes Status')
-            @cfg[:nocache] = true
-          end
-          frame = @fstr[:main]
-          verbose { "Cmd Generated [#{@cfg[:id]}]" }
-          @field.echo = frame # For send back
-          ent[:frame] = frame
+          _chk_nocache
+          verbose { "Cmd Generated [#{@id}]" }
+          # For send back
+          @field.echo = ent[:frame] = @fstr[:main]
           ent
         end
 
@@ -72,29 +68,49 @@ module CIAX
 
         def _init_cc
           return unless @sel.key?(:ccrange)
-          @frame.cc_mark
-          _add_frame(:ccrange)
-          @frame.cc_set
+          @frame.cc.enclose { _add_frame(:ccrange) }
+        end
+
+        def _chk_nocache
+          return if @cfg[:nocache] || !@chg_flg
+          warning("Cache stored (#{@id}) despite Frame includes Status")
+          @cfg[:nocache] = true
         end
 
         # instance var frame,sel,field,fstr
         def _add_frame(domain)
           @frame.reset
-          @sel[domain].each do|a|
-            case a
-            when Hash
-              frame = a[:val].gsub(/\$\{cc\}/) { @frame.cc }
-              subfrm = @field.subst(frame)
-              @chg_flg = true if subfrm != frame
-              # Allow csv parameter
-              subfrm.split(',').each do|s|
-                @frame.add(s, a)
-              end
-            else # ccrange,body ...
-              @frame.add(@fstr[a.to_sym])
-            end
-          end
+          @sel[domain].each { |db| _frame_by_type(db) }
           @fstr[domain] = @frame.copy
+        end
+
+        def _frame_by_type(db)
+          if db.is_a? Hash
+            subfrm = _conv_by_stat(_conv_by_cc(db[:val]))
+            _set_csv_frame(subfrm, db)
+          else # ccrange,body ...
+            @frame.add(@fstr[db.to_sym])
+          end
+        end
+
+        def _conv_by_cc(val)
+          val.gsub(/\$\{cc\}/) { @frame.cc }
+        end
+
+        def _conv_by_stat(frame)
+          subfrm = @field.subst(frame)
+          if subfrm != frame
+            @chg_flg = true
+            verbose { "Convert (#{@id}) #{frame.inspect} -> #{subfrm.inspect}" }
+          end
+          subfrm
+        end
+
+        def _set_csv_frame(subfrm, db)
+          # Allow csv parameter
+          subfrm.split(',').each do|s|
+            @frame.add(s, db)
+          end
         end
       end
     end
@@ -102,23 +118,16 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmrsp'
       require 'libfrmdb'
-      OPT.parse('r')
-      id, *args = ARGV
-      ARGV.clear
-      begin
-        dbi = Db.new.get(id)
-        cfg = Config.new
+      ConfOpts.new('[dev] [cmd] (par) < field_file', 'r') do |cfg, args, opt|
+        dbi = Db.new.get(args.shift)
         fld = cfg[:field] = Field.new(dbi)
-        cobj = Index.new(cfg, dbi.pick([:stream]))
-        cobj.add_rem.def_proc { |ent| ent[:frame] }
+        # dbi.pick alreay includes :command, :version
+        cobj = Cmd::Index.new(cfg, dbi.pick(%i(stream)))
+        cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }
         cobj.rem.add_ext(Ext)
         fld.read unless STDIN.tty?
-        res = cobj.set_cmd(args).exe_cmd('test')
-        puts(OPT[:r] ? res : res.inspect)
-      rescue InvalidCMD
-        OPT.usage("#{id} [cmd] (par) < field_file")
-      rescue InvalidID
-        OPT.usage('[dev] [cmd] (par) < field_file')
+        res = cobj.set_cmd(args).exe_cmd('test').msg
+        puts(opt[:r] ? res : res.inspect)
       end
     end
   end

@@ -2,8 +2,36 @@
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="turret" version="0" label="Turret Control" port="55555">
     <group id="tr_main" caption="Turret Commands" column="2">
+      <item id="tinit" label="Initialize Turret">
+        <cfg site="mft" name="set6v"/>
+        <mcr name="pre_pos"/>
+        <upd site="mft"/>
+        <mcr name="gh_wheel" retry="3"/>
+        <cfg site="mix" name="resetp"/>
+        <mcr name="lineup"/>
+      </item>
+    </group>
+    <group id="tr_sub" caption="Turret Commands" rank="1">
+      <item id="pre_pos" label="Pre-Positioning">
+        <exec site="mix" name="home"/>
+        <wait retry="20" label="Start?">
+          <not form="msg" var="stp" site="mix">STOP</not>
+        </wait>
+        <wait retry="300" label="Run end?">
+          <equal form="msg" var="stp" site="mix">STOP</equal>
+        </wait>
+        <exec site="mix" name="bk_all">
+          <argv>1</argv>
+        </exec>
+        <wait retry="20" label="Start?">
+          <not form="msg" var="stp" site="mix">STOP</not>
+        </wait>
+        <wait retry="300" label="Run end?">
+          <equal form="msg" var="stp" site="mix">STOP</equal>
+        </wait>
+      </item>
       <item id="gh_wheel" label="Go to Home Position">
-        <goal label="All Home?">
+        <goal label="All Home?" verify="true">
           <match form="msg" site="mft" var="v1">HOME</match>
           <match form="msg" site="mft" var="v2">HOME</match>
           <match form="msg" site="mft" var="v3">HOME</match>
@@ -12,7 +40,7 @@
           <match form="msg" site="mft" var="v6">HOME</match>
         </goal>
         <exec site="mix" name="posinit"/>
-        <wait retry="5" label="Start?">
+        <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>
         </wait>
         <wait retry="300" label="Run end?">
@@ -20,11 +48,22 @@
         </wait>
         <upd site="mft"/>
       </item>
-      <item id="tinit" label="Initialize Turret">
-        <cfg site="mft" name="set6v"/>
-        <upd site="mix"/>
-        <mcr name="gh_wheel" retry="3"/>
-        <cfg site="mix" name="resetp"/>
+      <item id="lineup" label="Initialize Turret">
+        <exec site="mix" name="both_a">
+          <argv>6</argv>
+        </exec>
+        <exec site="mix" name="both_b">
+          <argv>6</argv>
+        </exec>
+        <exec site="mix" name="both_c">
+          <argv>10</argv>
+        </exec>
+        <wait retry="20" label="Start?">
+          <not form="msg" var="stp" site="mix">STOP</not>
+        </wait>
+        <wait retry="300" label="Run end?">
+          <equal form="msg" var="stp" site="mix">STOP</equal>
+        </wait>
       </item>
     </group>
   </macro>

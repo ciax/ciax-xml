@@ -32,7 +32,7 @@ check_start,Check Status(No actual motion),1,cmd,
 s-i,storemask 1(INIT),1,mcr,mcr:ah_s-i mcr:ao_s-i mcr:rc_s-i
 s-f,storemask 2(INIT~FOCUS),1,mcr,mcr:s-i mcr:gf_s-f mcr:ac_s-f mma:upd mcr:ro_s-f
 s-r,storemask 3(FOCUS~ROT),1,mcr,mcr:s-f mcr:gr_s-r mcr:av_s-r
-s-s,storemask 4(ROT~STORE),1,mcr,mcr:s-r mcr:gs_s-s map:upd mcr:sets_a map:upd mma:upd mcr:ao_s-s
+s-s,storemask 4(ROT~STORE),1,mcr,mcr:s-r mcr:gs_s-s mma:upd mcr:sets_a map:upd mma:upd mcr:ao_s-s
 s-w,storemask 5(STORE~WAIT),1,mcr,mcr:s-s mma:upd mmc:upd map:upd mcr:gw_s-w mcr:check_store
 ah_s-i,Arm Hor,1,mcr,mfp:ah
 ao_s-i,Arm Open,1,mcr,mfp:ao
@@ -45,18 +45,18 @@ av_s-r,Arm Ver,1,mcr,mfp:av
 gs_s-s,Go to STK,1,mcr,mma:gs
 ao_s-s,Arm Open,1,mcr,mfp:ao
 gw_s-w,Go to WAIT,1,mcr,mma:gw
-check_store,Check Status(No actual motion),1,cmd,
+check_store,Check Status(No actual motion),1,cmd,mmc:upd system:mkcmi
 
 # loadmask
 !4,Sub Load Mask,1
 l-w,loadmask 1(WAIT),1,mcr,mcr:av_l-w mcr:ao_l-w
-l-s,loadmask 2(WAIT~STORE),1,mcr,mcr:l-w mcr:gs_l-s map:upd mcr:sets_a mcr:ac_l-s
+l-s,loadmask 2(WAIT~STORE),1,mcr,mcr:l-w mcr:gs_l-s mma:upd mcr:sets_a mcr:ac_l-s
 l-r,loadmask 3(STORE~ROT),1,mcr,mcr:l-s mma:upd map:upd mcr:gr_l-r mmc:upd mcr:ah_l-r
 l-f,loadmask 4(ROT~FOCUS),1,mcr,mcr:l-r mcr:gf_l-f mcr:rc_l-f mma:upd mcr:ao_l-f
 #l-f,loadmask 4(ROT~FOCUS),1,mcr,mcr:l-r mcr:gf_l-f mcr:rc_l-f mma:upd mcr:l-msk%M mcr:ao_l-f
 l-mskon,loadmask (Mask Sensor Check),1,mcr,
 l-mskoff,loadmask (Mask Sensor Check),1,mcr,mcr:ro_l-f map:upd mcr:rc_l-f mma:upd
-l-i,loadmask 5(FOCUS~INIT),1,mcr,mcr:l-f mcr:ini_l-i map:upd mcr:set0_a mcr:check_load
+l-i,loadmask 5(FOCUS~INIT),1,mcr,mcr:l-f mcr:ini_l-i mma:upd mcr:set0_a mcr:check_load
 av_l-w,Arm Ver,1,mcr,mfp:av
 ao_l-w,Arm Open,1,mcr,mfp:ao
 gs_l-s,Go to STK,1,mcr,mma:gs
@@ -70,9 +70,9 @@ rc_l-f,Rh All Close,1,mcr,mfp:rc
 ro_l-f,Rh All Open,1,mcr,mfp:ro
 ao_l-f,Arm Open,1,mcr,mfp:ao
 ini_l-i,Go to INIT,1,mcr,mma:ini
-set0_a,Motor Reset,1,mcr,mma:set0 mma:drvoff
-sets_a,Motor Reset at STK,1,mcr,mma:sets
-check_load,Check Status(No actual motion),1,cmd,
+set0_a,Motor Reset,1,mcr,mma:set0 mma:drvoff mma:upd
+sets_a,Motor Reset at STK,1,mcr,mma:sets mma:upd
+check_load,Check Status(No actual motion),1,cmd,mmc:upd system:mkcmi
 
 # fcheck
 !5,Sub Field Check,1
@@ -97,7 +97,7 @@ ro_k1,Rh All Open,1,mcr,mfp:ro
 # fin
 !7,Sub Fin Mask,1
 f-r,fin 1(WAIT~ROT),1,mcr,mcr:gr_f-r mcr:ac_f-r map:upd mcr:ah_f-r
-f-i,fin 2(ROT~INIT),1,mcr,mcr:f-r mcr:ini_f-i map:upd mcr:set0_a mcr:rc_f-i mcr:check_fin
+f-i,fin 2(ROT~INIT),1,mcr,mcr:f-r mcr:ini_f-i mma:upd mcr:set0_a mcr:rc_f-i mcr:check_fin
 gr_f-r,Go to ROT,1,mcr,mma:gr
 ac_f-r,Arm Close,1,mcr,mfp:ac
 ah_f-r,Arm Hor,1,mcr,mfp:ah

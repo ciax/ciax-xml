@@ -1,23 +1,15 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-require 'libmcrseq'
+require 'libseq'
 # CIAX-XML Macro Sequencer
 module CIAX
+  # Macro Exec
   module Mcr
-    OPT.parse('cen')
-    cfg = Config.new
-    wl = Wat::List.new(cfg) # Take App List
-    cfg[:dev_list] = wl
-    begin
-      mobj = Remote::Index.new(cfg, dbi: Db.new.get)
+    ConfOpts.new('[proj] [cmd] (par)', 'cen') do |cfg, args|
+      mobj = Cmd::Index.new(Conf.new(cfg))
       mobj.add_rem.add_ext(Ext)
-      ent = mobj.set_cmd(ARGV)
-      seq = Seq.new(ent)
-      seq.macro
-    rescue InvalidCMD
-      OPT.usage('[cmd] (par)')
-    rescue InvalidID
-      OPT.usage('[proj] [cmd] (par)')
+      ent = mobj.set_cmd(args)
+      Sequencer.new(ent).upd.macro
     end
   end
 end

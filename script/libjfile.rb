@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libjslog'
 module CIAX
   # Add File I/O feature
   module JFile
@@ -8,24 +7,21 @@ module CIAX
     end
 
     # Set latest_link=true for making latest link at save
-    def ext_file
-      verbose { "File IO Initialize [#{_file_base}]" }
-      self[:id] || Msg.cfg_err('No ID')
+    def ext_local_file
+      verbose { "Initiate File Status [#{_file_base}]" }
+      self[:id] || cfg_err('No ID')
       @jsondir = vardir('json')
       @thread = Thread.current # For Thread safe
-      load
       self
     end
 
     def auto_save
-      @post_upd_procs << proc { save }
-      upd
+      @cmt_procs << proc { save }
       self
     end
 
     def auto_load
-      @pre_upd_procs << proc { load }
-      upd
+      @upd_procs << proc { load }
       self
     end
 
@@ -33,67 +29,69 @@ module CIAX
       _write_json(to_j, tag)
     end
 
-    def read
-      super(_read_json)
-    end
-
     def load(tag = nil)
       json_str = _read_json(tag)
-      verbose { "Loading #{_file_path_(tag)}" }
+      verbose { "File Loading #{_file_name(tag)}" }
       if json_str.empty?
-        verbose { " -- json file (#{_file_path_(tag)}) is empty at loading" }
+        verbose { " -- json file (#{_file_name(tag)}) is empty at loading" }
         return self
       end
-      super(json_str) if _check_load(json_str)
+      read(json_str) if _check_load(json_str)
       self
     end
 
     def save_key(keylist, tag = nil)
       tag ||= (_tag_list_.map(&:to_i).max + 1)
-      Msg.msg("Status Saving for [#{tag}]")
-      _write_json(pick(keylist).to_j, tag)
+      # id is tag, this is Mark's request
+      json_str = pick(keylist, time: self[:time], id: self[:id]).to_j
+      msg("File Saving for [#{tag}]")
+      _write_json(json_str, tag)
     end
 
-    def mklink
+    def mklink(tag = 'latest')
       # Making 'latest' link
       save
-      sname = @jsondir + "#{@type}_latest.json"
+      sname = @jsondir + "#{@type}_#{tag}.json"
       ::File.unlink(sname) if ::File.exist?(sname)
-      ::File.symlink(_file_path_, sname)
-      verbose { "Symboliclink to [#{sname}]" }
+      ::File.symlink(@jsondir + _file_name, sname)
+      verbose { "File Symboliclink to [#{sname}]" }
       self
     end
 
     private
 
-    def _check_load(_json_str)
-      true
+    # Version check, no read if different
+    # (otherwise old version number remain as long as the file exists)
+    def _check_load(json_str)
+      return true if j2h(json_str)[:ver] == self[:ver]
+      warning('File version mismatch')
+      false
     end
 
-    def _file_path_(tag = nil)
-      @jsondir + _file_base(tag) + '.json'
+    def _file_name(tag = nil)
+      _file_base(tag) + '.json'
     end
 
     def _tag_list_
-      Dir.glob(_file_path_('*')).map do|f|
+      Dir.glob(@jsondir + _file_name('*')).map do|f|
         f.slice(/.+_(.+)\.json/, 1)
       end.sort
     end
 
     def _write_json(json_str, tag = nil)
-      verbose(@thread != Thread.current) { 'Saving from Multiple Threads' }
-      fname = _file_path_(tag)
-      open(fname, 'w') do|f|
+      verbose(@thread != Thread.current) { 'File Saving from Multiple Threads' }
+      fname = _file_name(tag)
+      open(@jsondir + fname, 'w') do|f|
         f.flock(::File::LOCK_EX)
         f << json_str
-        verbose { "[#{fname}](#{f.size}) is Saved" }
+        verbose { "File [#{fname}](#{f.size}) is Saved" }
       end
       self
     end
 
     def _read_json(tag = nil)
-      fname = _file_path_(tag)
-      open(fname) do|f|
+      fname = _file_name(tag)
+      open(@jsondir + fname) do|f|
         verbose { "Reading [#{fname}](#{f.size})" }
         f.flock(::File::LOCK_SH)
         f.read

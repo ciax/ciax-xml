@@ -4,8 +4,7 @@ require 'libwatlist'
 require 'libdaemon'
 # CIAX-XML Device Server
 module CIAX
-  cfg = Config.new
-  Daemon.new('dvsv', 'desb') do
-    Wat::List.new(cfg).ext_server(ARGV)
+  Daemon.new('dvsv', 'e') do |cfg, atrb|
+    Wat::List.new(cfg, atrb)
   end
 end

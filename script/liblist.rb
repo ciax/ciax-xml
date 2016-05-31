@@ -7,16 +7,22 @@ module CIAX
   class List < Varx
     attr_reader :cfg
     # level can be Layer or Site
-    def initialize(cfg, atrb = {})
+    def initialize(cfg, atrb = Hashx.new)
       @cfg = cfg.gen(self).update(atrb)
       @cfg[:jump_groups] ||= []
       super(m2id(@cfg[:obj].class, -2))
-      @cls_color = 6
+      verbose { 'Initiate List' }
       @list = self[:list] = Hashx.new
     end
 
     def ext_shell(jump_class)
       extend(Shell).ext_shell(jump_class)
+    end
+
+    private
+
+    def switch(id)
+      @list.get(id)
     end
 
     # Shell module
@@ -28,6 +34,7 @@ module CIAX
 
       # atrb should have [:jump_class] (Used in Local::Jump::Group)
       def ext_shell(jump_class)
+        verbose { 'Initiate List Shell' }
         @cfg[:jump_class] = type?(jump_class, Module) # Use for libcmdlocal
         @jumpgrp = Cmd::Local::Jump::Group.new(@cfg)
         self
@@ -38,14 +45,14 @@ module CIAX
       rescue @cfg[:jump_class]
         @current = $ERROR_INFO.to_s
         retry
-      rescue InvalidID
-        OPT.usage('(opt) [id]')
+      rescue InvalidARGS
+        @cfg[:option].usage('(opt) [id]')
       end
 
-      private
-
-      def switch(id)
-        @list.get(id)
+      def switch(site)
+        obj = super(site)
+        return obj if obj.is_a?(Shell) || obj.is_a?(CIAX::Exe::Shell)
+        obj.ext_shell
       end
     end
   end

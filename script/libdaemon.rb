@@ -1,84 +1,110 @@
 #!/usr/bin/ruby
-require 'libgetopts'
+require 'libconf'
 module CIAX
   ### Daemon Methods ###
   class Daemon
-    NS_COLOR = 1
     include Msg
+    # Previous process will be killed at the start up.
     # Reloadable by HUP signal
-    def initialize(tag, opt = '')
-      ENV['VER'] ||= 'Initialize'
-      # Set ARGS in opt file
-      @base = vardir('run') + tag
-      OPT.parse(opt)
-      if OPT[:d]
-        kill_pid
-      else
-        init_daemon
-        begin
-          init_server { yield }.server
-          err_redirect(tag)
-          sleep
-        rescue SignalException
-          retry if $ERROR_INFO.message == 'SIGHUP'
-        end
+    def initialize(tag, optstr = '')
+      ENV['VER'] ||= 'Initiate'
+      _chk_args(_kill_pids(tag))
+      ConfOpts.new('[id] ....', optstr + 'sb') do |cfg, args, opt|
+        atrb = { sites: args }
+        @obj = yield(cfg, atrb)
+        _init_server(tag, opt)
+        _main_loop { yield(cfg, atrb) }
       end
-    rescue UserError
-      OPT.usage('(opt) [id] ....')
     end
 
     private
 
-    def init_daemon
-      kill_pid
-      return unless OPT[:b]
-      # Background (Switch error output to file)
-      new_pid
+    def _main_loop
+      @obj.run
+      sleep
+    rescue SignalException
+      Threadx.killall
+      if $ERROR_INFO.message == 'SIGHUP'
+        @obj = yield
+        retry
+      end
     end
 
-    def err_redirect(tag)
-      return if $stderr.is_a?(Tee) || !OPT[:b]
-      errout = vardir('log') + 'error_' + tag + today + '.out'
-      $stderr = Tee.new(errout)
+    # Background (Switch error output to file)
+    def _init_server(tag, opt)
+      _detach
+      _redirect(tag) if opt[:b]
     end
 
-    def init_server(&init_proc)
-      optfile = @base + '.opt'
-      load optfile if test('r', optfile)
-      init_proc.call
-    end
-
-    def new_pid
+    def _detach
+      # Child process (Stream/Pipe) will be closed by at_exit()
+      #  as the main process exit in Process.daemon
       Process.daemon(true, true)
-      IO.write(@base + '.pid', $PROCESS_ID)
+      _write_pid($PROCESS_ID)
+      verbose { "Initiate Daemon Detached (#{$PROCESS_ID})" }
     end
 
-    def kill_pid
-      pidfile = @base + '.pid'
-      return unless test('r', pidfile)
-      pids = IO.readlines(pidfile).keep_if { |l| l.to_i > 0 }
-      IO.write(pidfile, '')
-      pids.each do |pid|
-        begin
-          Process.kill(:TERM, pid.to_i)
-          verbose { "Initialize Process Killed (#{pid})" }
-        rescue
-          nil
-        end
-      end
+    def _kill_pids(tag)
+      @pidfile = vardir('run') + tag + '.pid'
+      pids = _read_pids
+      _write_pid('')
+      'Nothing to do' unless pids.any? { |pid| _kill_pid(pid) }
     end
 
-    # append str to stderr and file like tee
-    class Tee < IO
-      def initialize(fname)
-        super(2)
-        @io = File.open(fname, 'a')
+    def _chk_args(str)
+      if ARGV.empty?
+        msg(indent(1) + str, 3) if str
+        exit(2)
       end
+      ARGV.unshift '-s'
+    end
 
-      def write(str)
-        pass = format('%5.4f', Time.now - START_TIME)
-        @io.write("[#{Time.now}/#{pass}]" + str)
+    def _kill_pid(pid)
+      Process.kill(:TERM, pid.to_i)
+      verbose { "Initiate Process Killed (#{pid})" }
+    rescue
+      nil
+    end
+
+    def _read_pids
+      return [] unless test('r', @pidfile)
+      IO.readlines(@pidfile).keep_if { |l| l.to_i > 0 }
+    end
+
+    def _write_pid(pid)
+      IO.write(@pidfile, pid)
+    end
+
+    def _redirect(tag)
+      verbose { 'Initiate STDERR redirect' }
+      fname = _mk_name(tag, today)
+      $stderr = File.new(fname, 'a')
+      _mk_link(fname, tag)
+    end
+
+    def _mk_link(fname, tag)
+      sname = _mk_name(tag)
+      File.unlink(sname) if File.exist?(sname)
+      File.symlink(fname, sname)
+    end
+
+    def _mk_name(tag, name = nil)
+      str = "error_#{tag}"
+      str << "_#{name}" if name
+      vardir('log') + str + '.out'
+    end
+
+    # Error output redirection to Log File
+    class File < File
+      include Msg
+      def initialize(fname, rw)
         super
+        @base = now_msec
+        write("\n")
+      end
+
+      def puts(str)
+        super(format("[#{Time.now}/%s]%s", elps_date(@base), str))
       end
     end
   end

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="ciax" version="1" label="Cart Macro" port="55555">
+  <macro id="ciax" version="1" label="Cart Macro" port="55554">
     <group id="cx_main" caption="Macro Commands" column="2">
       <unit id="run" label="Cart Run">
         <item id="runf" label="Run Forward to Tag">
@@ -59,7 +59,7 @@
     </group>
     <group id="cx_sub" caption="Sub Macro Commands" column="2">
       <!--FIX Flange Jack Command-->
-      <item id="fju0" label="InR0 Jkup at FIX [$1]">
+      <item id="fju0" label="InR0 Jkup at FIX [%s]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Jack DW?">
           <equal form="msg" site="$1" var="fjb">DW</equal>
@@ -76,7 +76,7 @@
           <equal form="msg" site="$1" var="exe">OFF</equal>
         </wait>
       </item>
-      <item id="fjd0" label="InR0 Jkdw at FIX [$1]">
+      <item id="fjd0" label="InR0 Jkdw at FIX [%s]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Instrument ON?">
           <equal form="msg" site="$1" var="fis">ON</equal>
@@ -92,7 +92,7 @@
           <equal form="msg" site="$1" var="exe">OFF</equal>
         </wait>
       </item>
-      <item id="fju4" label="InR4 Jkup at FIX.IR [$1]">
+      <item id="fju4" label="InR4 Jkup at FIX.IR [%s]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Jack Up?">
           <equal form="msg" site="$1" var="fjb">UP</equal>
@@ -108,7 +108,7 @@
           <equal form="msg" site="$1" var="exe">OFF</equal>
         </wait>
       </item>
-      <item id="fjd4" label="InR4 Jkdw at FIX.IR [$1]">
+      <item id="fjd4" label="InR4 Jkdw at FIX.IR [%s]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Jack Dw?">
           <equal form="msg" site="$1" var="fjb">DW</equal>
@@ -125,7 +125,7 @@
         </wait>
       </item>
       <!--MOV Flange Jack Command-->
-      <item id="mju0" label="InR0 Jkup at MOV [$1]">
+      <item id="mju0" label="InR0 Jkup at MOV [%s]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Jack DW?">
           <equal form="msg" site="$1" var="mjb">DW</equal>
@@ -142,7 +142,7 @@
           <equal form="msg" site="$1" var="exe">OFF</equal>
         </wait>
       </item>
-      <item id="mjd0" label="InR0 Jkdw at MOV [$1]">
+      <item id="mjd0" label="InR0 Jkdw at MOV [%s]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Instrument ON?">
           <equal form="msg" site="$1" var="mis">ON</equal>
@@ -158,7 +158,7 @@
           <equal form="msg" site="$1" var="exe">OFF</equal>
         </wait>
       </item>
-      <item id="mju4" label="InR4 Jkup at MOV.IR [$1]">
+      <item id="mju4" label="InR4 Jkup at MOV.IR [%s]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Jack Up?">
           <equal form="msg" site="$1" var="mjb">UP</equal>
@@ -174,7 +174,7 @@
           <equal form="msg" site="$1" var="exe">OFF</equal>
         </wait>
       </item>
-      <item id="mjd4" label="InR4 Jkdw at MOV.IR [$1]">
+      <item id="mjd4" label="InR4 Jkdw at MOV.IR [%s]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Jack Dw?">
           <equal form="msg" site="$1" var="mjb">DW</equal>
@@ -191,7 +191,7 @@
         </wait>
       </item>
       <!--FIX Jack & Rotate-->
-      <item id="jupd" label="HookUp at FIX.IR [$1]">
+      <item id="jupd" label="HookUp at FIX.IR [%s]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Instrument ON?">
           <equal form="msg" site="$1" var="fis">ON</equal>
@@ -212,7 +212,7 @@
         </mcr>
       </item>
       <!--Transer-->
-      <item id="trsi" label="MOV.IR Trans Backward w/SITET [$1]">
+      <item id="trsi" label="MOV.IR Trans Backward w/SITET [%s]">
         <par_str label="site">dso,dsi</par_str>
         <goal label="Transer Stored?">
           <equal form="msg" site="$1" var="mtr">BK</equal>

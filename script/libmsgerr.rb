@@ -7,14 +7,14 @@ module CIAX
   module Msg
     module_function
 
-    def show(str, nl = "\n")
-      $stderr.print(str + nl.to_s)
+    def show(str)
+      $stderr.puts str
     end
 
     # Messaging methods
     def progress(f = true)
       p = colorize(f ? '.' : 'x', 1)
-      show(p, nil)
+      $stderr.print(p)
     end
 
     def msg(str = 'message', color = 2, ind = 0) # Display only
@@ -25,6 +25,11 @@ module CIAX
     def usr_err(*ary) # Raise User error
       ary[0] = colorize(ary[0], 1)
       fail UserError, ary.join("\n  "), caller(1)
+    end
+
+    def args_err(*ary) # Raise ARGS error
+      ary[0] = colorize(ary[0], 1)
+      fail InvalidARGS, ary.join("\n  "), caller(1)
     end
 
     def id_err(*ary) # Raise User error (Invalid User input)
@@ -63,7 +68,7 @@ module CIAX
     end
 
     def relay(str)
-      str = str ? colorize(str, 3) + ':' + $ERROR_INFO.to_s : ''
+      str = "#{str}\n#{$ERROR_INFO}"
       fail $ERROR_INFO.class, str, caller(1)
     end
 
@@ -76,9 +81,13 @@ module CIAX
       Kernel.abort([colorize(str, 1), $ERROR_INFO.to_s].join("\n"))
     end
 
-    def usage(str, code = 1)
+    def usage(str, code = 2)
       warn("Usage: #{$PROGRAM_NAME.split('/').last} #{str}")
-      warn($ERROR_INFO) if $ERROR_INFO
+      if $ERROR_INFO
+        warn($ERROR_INFO)
+        eid = $ERROR_INFO.class.to_s.sub('CIAX::Invalid', '')
+        code = %w(ARGS OPT ID CMD PAR).index(eid).to_i + 2
+      end
       exit code
     end
   end

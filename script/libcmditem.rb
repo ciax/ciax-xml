@@ -4,8 +4,8 @@ require 'librerange'
 # @cfg[:def_proc] should be Proc which is given |Entity| as param
 #   returns String as message.
 module CIAX
+  # Command Module
   module Cmd
-    NS_COLOR = 2
     # Default Proc Setting method
     module CmdProc
       include Msg
@@ -19,22 +19,22 @@ module CIAX
 
     # Corresponds commands
     class Item < Hashx
-      NS_COLOR = 3
       include CmdProc
-      # grp_cfg should have :id,'label',:parameters,:def_proc
-      def initialize(cfg, attr = {})
+      # grp_cfg should have :id,'label',:parameters,:def_proc,:def_msg
+      attr_reader :id
+      def initialize(cfg, atrb = Hashx.new)
         super()
-        @cls_color = 6
-        @cfg = cfg.gen(self).update(attr)
+        @cfg = cfg.gen(self).update(atrb)
+        @id = @cfg[:id]
       end
 
       def set_par(par, opt = {})
         par = @cfg[:argv] if @cfg[:argv].is_a? Array
         par = validate(type?(par, Array))
-        cid = [@cfg[:id], *par].join(':')
+        cid = [@id, *par].join(':')
         opt.update(par: par, cid: cid)
-        verbose { "SetPAR(#{@cfg[:id]}): #{par}" }
-        _get_cache(opt, cid)
+        verbose { "SetPAR(#{@id}): #{par}" }
+        _get_entity(opt, cid)
       end
 
       def valid_pars
@@ -45,27 +45,29 @@ module CIAX
 
       private
 
-      def _get_cache(opt, cid)
-        if key?(cid)
-          verbose { "SetPAR: Entity Cache found(#{cid})" }
-          self[cid]
-        else
-          ent = gen_entity(opt)
-          if @cfg[:nocache]
-            verbose { "SetPAR: Entity No Cache Saved (#{cid})" }
-          else
-            self[cid] = ent
-            verbose { "SetPAR: Entity Cache Saved (#{cid})" }
-          end
-          ent
-        end
+      def _get_entity(opt, cid)
+        return _get_cache(cid) if key?(cid)
+        ent = gen_entity(opt)
+        return _no_cache(cid, ent) if @cfg[:nocache]
+        verbose { "SetPAR: Entity Cache Saved (#{cid})" }
+        self[cid] = ent
+      end
+
+      def _get_cache(cid)
+        verbose { "SetPAR: Entity Cache found(#{cid})" }
+        self[cid]
+      end
+
+      def _no_cache(cid, ent)
+        verbose { "SetPAR: Entity No Cache Saved (#{cid})" }
+        ent
       end
 
       def gen_entity(opt)
         context_constant('Entity').new(@cfg, opt)
       end
 
-      # Parameter for validate(cfg[:paremeters])
+      # Parameter for validate(cfg[:parameters])
       #   structure:  [{:type,:list,:default}, ...]
       # *Empty parameter will replaced to :default
       # *Error if str doesn't match with strings listed in :list
@@ -73,62 +75,87 @@ module CIAX
       # Returns converted parameter array
       def validate(pary)
         pary = type?(pary.dup, Array)
-        return [] unless @cfg[:parameters]
-        @cfg[:parameters].map do|par|
+        pref = @cfg[:parameters]
+        return [] unless pref
+        _par_array(pary, pref)
+      end
+
+      def _par_array(pary, pref)
+        pref.map do|par|
           list = par[:list] || []
           disp = list.join(',')
           str = pary.shift
-          unless str
-            if par.key?(:default)
-              verbose { "Validate: Using default value [#{par[:default]}]" }
-              next par[:default]
-            end
-            mary = []
-            mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameters].size})"
-            mary << @cfg[:disp].item(@cfg[:id])
-            mary << ' ' * 10 + "key=(#{disp})"
-            Msg.par_err(*mary)
-          end
-          if list.empty?
-            next par[:default] if par.key?(:default)
+          if str
+            _validate_element(par, str, list, disp)
           else
-            case par[:type]
-            when 'num'
-              begin
-                num = expr(str)
-              rescue NameError, SyntaxError
-                Msg.par_err('Parameter is not number')
-              end
-              verbose { "Validate: [#{num}] Match? [#{disp}]" }
-              unless list.any? { |r| ReRange.new(r) == num }
-                Msg.par_err("Out of range (#{num}) for [#{disp}]")
-              end
-              next num.to_s
-            when 'reg'
-              verbose { "Validate: [#{str}] Match? [#{disp}]" }
-              unless list.any? { |r| Regexp.new(r).match(str) }
-                Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
-              end
-            else
-              verbose { "Validate: [#{str}] Match? [#{disp}]" }
-              unless list.include?(str)
-                Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
-              end
-            end
+            _use_default(par, pary, pref, disp)
           end
-          str
         end
+      end
+
+      def _validate_element(par, str, list, disp)
+        if list.empty?
+          par.key?(:default) ? par[:default] : str
+        else
+          _validate_by_type(par, str, list, disp)
+        end
+      end
+
+      def _validate_by_type(par, str, list, disp)
+        case par[:type]
+        when 'num'
+          _validate_num(str, list, disp)
+        when 'reg'
+          _validate_reg(str, list, disp)
+        else
+          _validate_str(str, list, disp)
+        end
+      end
+
+      def _use_default(par, pary, pref, disp)
+        if par.key?(:default)
+          verbose { "Validate: Using default value [#{par[:default]}]" }
+          return par[:default]
+        else
+          _err_shortage(pary, pref, disp)
+        end
+      end
+
+      def _err_shortage(pary, pref, disp)
+        mary = []
+        mary << format('Parameter shortage (%d/%d)', pary.size, pref.size)
+        mary << @cfg[:disp].item(@id)
+        mary << ' ' * 10 + "key=(#{disp})"
+        Msg.par_err(*mary)
+      end
+
+      def _validate_num(str, list, disp)
+        num = expr(str)
+        verbose { "Validate: [#{num}] Match? [#{disp}]" }
+        return num.to_s if list.any? { |r| ReRange.new(r) == num }
+        Msg.par_err("Out of range (#{num}) for [#{disp}]")
+      end
+
+      def _validate_reg(str, list, disp)
+        verbose { "Validate: [#{str}] Match? [#{disp}]" }
+        return str if list.any? { |r| Regexp.new(r).match(str) }
+        Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
+      end
+
+      def _validate_str(str, list, disp)
+        verbose { "Validate: [#{str}] Match? [#{disp}]" }
+        return str if list.include?(str)
+        Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
       end
     end
 
     # Command db with parameter derived from Item
     class Entity < Config
-      NS_COLOR = 9
       attr_reader :id, :par
+      attr_accessor :msg
       # set should have :def_proc
-      def initialize(cfg, attr = {})
-        super(cfg).update(attr)
-        @cls_color = 14
+      def initialize(cfg, atrb = Hashx.new)
+        super(cfg).update(atrb)
         @par = self[:par]
         @id = self[:cid]
         verbose { "Config\n" + path }
@@ -137,7 +164,9 @@ module CIAX
       # returns result of def_proc block (String)
       def exe_cmd(src, pri = 1)
         verbose { "Execute [#{@id}] from #{src}" }
+        @msg = self[:def_msg] || ''
         self[:def_proc].call(self, src, pri)
+        self
       end
     end
   end

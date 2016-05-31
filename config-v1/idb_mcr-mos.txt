@@ -62,9 +62,8 @@ rc_l-f,mfp:rao=CLOSE&mfp:rbo=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mf
 ro_l-f,mfp:rao=OPEN&mfp:rbo=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 ao_l-f,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mma:con=ON&mmc:abs~S&map:pres~H|M|L
 ini_l-i,mma:pos=INIT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
-set0_a,,mma:pos=INIT&mma:abs~INIT
-sets_a,,mma:pos=STORE&mma:abs~STORE
 check_load,,mfp:gv=OPEN&mfp:hv=Horizontal&!mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
+sets_a,,mma:pos=STORE
 
 # fcheck
 ah_fc-i1,mfp:hv=Horizontal,mfp:gv=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
@@ -74,7 +73,7 @@ gf_fc-f1,mma:pos=FOCUS,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mfp:rao=CLOSE&m
 ac_fc-f1,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 ro_fc-f1,mfp:rao=OPEN&mfp:rbo=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mma:con=ON&mmc:abs~S&map:pres~H|M|L
 gr_fc-r1,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
-set0_a,,
+set0_a,,mma:pos=INIT
 
 # kapamask
 rc_k,mfp:ro=CLOSE,mfp:hv=Horizontal&mfp:ao=OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L

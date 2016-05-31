@@ -1,23 +1,22 @@
 #!/usr/bin/ruby
 # For sqlite3
-require 'libmsg'
-require 'libvarx'
-require 'thread'
+require 'libthreadx'
 
 # CIAX-XML
 module CIAX
   # Generate SQL command string
   module SqLog
+    LIST ||= {}
     # Table create using @stat.keys
     class Table
-      attr_reader :tid, :stat, :tname
       include Msg
+      attr_reader :tid, :stat, :tname
       def initialize(stat)
-        @cls_color = 14
         @stat = type?(stat, Varx)
+        @id = stat[:id]
         @tid = "#{@stat.type}_#{@stat[:ver]}"
         @tname = @stat.type.capitalize
-        verbose { "Initialize Table '#{@tid}'" }
+        verbose { "Initiate Table '#{@tid}'" }
       end
 
       def create
@@ -84,18 +83,20 @@ module CIAX
       # @< log,tid
       # @ sqlcmd
       include Msg
-      def initialize(id, layer = nil)
-        @cls_color = 10
+      def initialize(id)
+        @id = id
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
         @queue = Queue.new
-        verbose { "Initialize '#{id}' on #{layer}" }
-        ThreadLoop.new("SqLog(#{layer}:#{id})", 13) { server }
+        Threadx.new('SqLog', 13) do
+          verbose { "Initiate '#{id}'" }
+          loop { _log_save }
+        end
       end
 
       # Check table existence (ver=0 is invalid)
       def add_table(stat)
         sqlog = Table.new(stat)
-        if OPT[:e] && stat['ver'].to_i > 0
+        if stat[:ver].to_i > 0
           create_tbl(sqlog)
           real_mode(stat, sqlog)
         else
@@ -112,57 +113,44 @@ module CIAX
 
       private
 
-      def server
-        IO.popen(@sqlcmd, 'w') do |f|
-          get_que(['begin;']).each do |sql|
-            begin
-              f.puts sql
-              verbose { "Saved for '#{sql}'" }
-            rescue
-              Msg.give_up("Sqlite3 input error\n#{sql}")
-            end
-          end
-        end
-      end
-
-      def get_que(sqlary)
-        loop do
-          sqlary << @queue.pop
-          break if @queue.empty?
-        end
-        sqlary << 'commit;'
+      def _log_save
+        sql = @queue.pop
+        IO.popen(@sqlcmd, 'w') { |f| f.puts sql }
+        verbose { "Saved for '#{sql}'" }
+      rescue
+        Msg.give_up("Sqlite3 input error\n#{sql}")
       end
 
       # Create table if no table
       def create_tbl(sqlog)
         return if internal('tables').split(' ').include?(sqlog.tid)
         @queue.push sqlog.create
-        verbose { "Initialize '#{sqlog.tid}' is created" }
+        verbose { "'#{sqlog.tid}' is created" }
       end
 
       def real_mode(stat, sqlog)
         # Add to stat.upd
-        stat.post_upd_procs << proc { @queue.push sqlog.upd }
+        stat.cmt_procs << proc { @queue.push sqlog.upd }
       end
 
       def dummy_mode(stat, sqlog)
-        verbose { 'Initialize: invalid Version(0): No Log' }
-        stat.post_upd_procs << proc { verbose { "Insert\n" + sqlog.upd } }
+        verbose { 'Invalid Version(0): No Log' }
+        stat.cmt_procs << proc { verbose { "Dummy Insert\n" + sqlog.upd } }
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libappexe'
+      require 'libstatus'
       id = ARGV.shift
       ARGV.clear
       begin
         dbi = Ins::Db.new.get(id)
-        stat = App::Status.new(dbi).ext_file
+        stat = App::Status.new(dbi).ext_local_file
         sqlog = Table.new(stat)
         puts stat
         puts sqlog.create
         puts sqlog.upd
-      rescue InvalidID
+      rescue InvalidARGS
         Msg.usage '[id]'
       end
     end

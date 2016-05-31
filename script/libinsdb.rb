@@ -6,12 +6,17 @@ module CIAX
   # Instance Layer
   module Ins
     # Instance DB
-    class Db < Db
+    class Db < DbCmd
       include Wat::Db
+      attr_reader :run_list
       def initialize
         super('idb')
         @adb = App::Db.new
         @cdb = Cmd::Db.new
+        @run_list = @displist.valid_keys.select do |id|
+          host = (_get_cache(id) || @docs.get(id)[:attr])[:host]
+          host == 'localhost' || host == HOST
+        end
       end
 
       private
@@ -39,41 +44,61 @@ module CIAX
 
       # Status Domain
       def init_status(doc, dbi)
-        sdb = (dbi[:status] ||= {})
-        grp = (sdb[:group] ||= {})
-        idx = (sdb[:index] ||= {})
-        (doc[:status] || []).each do|e0|
-          p = (sdb[e0.name.to_sym] ||= {})
-          case e0.name
-          when 'symtbl'
-            sdb[:symtbl] << e0['ref']
-          else # group, index
-            e0.attr2item(p, :ref)
-            e0.each do |e1|
-              e1.attr2item(idx)
-              ag = grp[e0[:ref]]
-              (ag[:members] ||= []) << e1['id']
-            end    
-          end
+        sdb = dbi.get(:status) { Hashx.new }
+        grp = sdb.get(:group) { Hashx.new }
+        idx = sdb.get(:index) { Hashx.new }
+        doc.get(:status) { [] }.each do|e0|
+          _get_skeleton(e0, sdb, grp, idx)
         end
         sdb
       end
-      
+
       def init_general(dbi)
         dbi[:proj] = ENV['PROJ']
         dbi[:site_id] = dbi[:ins_id] = dbi[:id]
-        dbi[:frm_site] ||= dbi[:id]
+        dbi.get(:frm_site) { dbi[:id] }
+      end
+
+      private
+
+      def _get_skeleton(e0, sdb, grp, idx)
+        key = e0.name.to_sym
+        db = sdb.get(key) { Hashx.new }
+        if key == :symtbl
+          sdb[:symtbl] << e0['ref']
+        else
+          _init_grp(e0, db, grp, idx)
+        end
+      end
+
+      def _init_grp(e0, db, grp, idx)
+        e0.attr2item(db, :ref)
+        e0.each do |e1|
+          e1.attr2item(idx)
+          ag = grp[e0[:ref]]
+          _pos_grp(ag.get(:members) { [] }, e1['ref'], e1['id'])
+        end
+      end
+
+      # add alias to group in position (just after the referenced item)
+      #  this feature is required by indexed status
+      #  ex. add [c1,c2] to [a1,b1, a2,b2] => [a1,b1,c1, a2,b2,c2]
+      def _pos_grp(ary, ref, id)
+        if (i = ary.rindex(ref))
+          ary.insert(i + 1, id)
+        else
+          ary << id
+        end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('r')
-      begin
-        dbi = Db.new.get(ARGV.shift)
-      rescue InvalidID
-        OPT.usage('[id] (key) ..')
+      GetOpts.new('[id] (key) ..', 'r') do |opt, args|
+        db = Db.new
+        puts "Run list = #{db.run_list.inspect}"
+        dbi = db.get(args.shift)
+        puts opt[:r] ? dbi.to_v : dbi.path(args)
       end
-      puts OPT[:r] ? dbi.to_v : dbi.path(ARGV)
     end
   end
 end

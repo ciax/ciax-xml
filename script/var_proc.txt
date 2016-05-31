@@ -1,15 +1,15 @@
 #### PROC VARS
 ## Related to Update
 
-  Upd@pre_upd_procs
+  Upd@upd_procs
     structure: Array[Proc,..]
     args: Hashx(self)
-    called: Hashx#pre_upd
+    called: Upd#upd
 
-  Upd@post_upd_procs
+  Upd@cmt_procs
     structure: Array[Proc,..]
     args: Hashx(self)
-    called: Hashx#pre_upd
+    called: Upd#cmt
 
 ## Related to Command
 
@@ -55,12 +55,12 @@
   @server_input_proc
     structure: Proc
     args: String(command line)
-    called: Server(Exe)#ext_server
+    called: Server(Exe)#ext_local_server
     
   @server_output_proc
     structure: Proc
     args: no
-    called: Server(Exe)#ext_server
+    called: Server(Exe)#ext_local_server
 
   @shell_input_proc
     structure: Proc
@@ -88,7 +88,7 @@
   Rsp(Field)@input_proc
     structure: Proc
     args: no
-    called: Rsp:ext_rsp
+    called: Rsp:ext_local_rsp
 
 ## Related to Buffer
 
@@ -104,18 +104,18 @@
     called: server
     set_methods: recv_proc
 
-## Related to Mcr::Seq(Exe)
+## Related to Mcr::Sequencer(Exe)
 
   @post_stat_procs
     structure: Array[Proc,..]
     args:(on each element)
-      Seq(self)
+      Sequencer(self)
     called: set_stat
 
   @post_mcr_procs
     structure: Array[Proc,..]
     args:(on each element)
-      Seq(self)
+      Sequencer(self)
     called: finish
 
   @cfg[:submcr_proc]

@@ -49,12 +49,4 @@ module CIAX
   w.deep_update r
   puts 'w <- r(over write)'
   p w
-  puts
-  w2.deep_update(r, 2)
-  puts 'w <- r(over write) Level 2'
-  p w2
-  puts
-  w1.deep_update(r, 1)
-  puts 'w <- r(over write) Level 1'
-  p w1
 end

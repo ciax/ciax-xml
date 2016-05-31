@@ -1,0 +1,1421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
+  <macro id="tmos" version="2" label="MOS Macro" port="55555">
+    <group id="grp_tfp_2" caption="Action" rank="2">
+      <item id="tfp_ro" label="Robohand All Open">
+        <goal>
+          <match site="tfp" var="rao" form="msg">OPEN</match>
+          <match site="tfp" var="rbo" form="msg">OPEN</match>
+        </goal>
+        <exec site="tfp" name="ro"/>
+        <sleep>4</sleep>
+        <upd site="tfp"/>
+      </item>
+      <item id="tfp_rc" label="Robohand All Close">
+        <goal>
+          <match site="tfp" var="rao" form="msg">CLOSE</match>
+          <match site="tfp" var="rbo" form="msg">CLOSE</match>
+        </goal>
+        <exec site="tfp" name="rc"/>
+        <sleep>4</sleep>
+        <upd site="tfp"/>
+      </item>
+      <item id="tfp_go" label="Gate Valve Open">
+        <goal>
+          <match site="tfp" var="gv" form="msg">OPEN</match>
+        </goal>
+        <exec site="tfp" name="go"/>
+        <sleep>5</sleep>
+        <upd site="tfp"/>
+      </item>
+      <item id="tfp_gc" label="Gate Valve Close">
+        <goal>
+          <match site="tfp" var="gv" form="msg">CLOSE</match>
+        </goal>
+        <exec site="tfp" name="gc"/>
+        <sleep>2</sleep>
+        <upd site="tfp"/>
+      </item>
+      <item id="tfp_av" label="Arm Vertical">
+        <goal>
+          <match site="tfp" var="hv" form="msg">Ver</match>
+        </goal>
+        <exec site="tfp" name="av"/>
+        <sleep>8</sleep>
+        <upd site="tfp"/>
+      </item>
+      <item id="tfp_ah" label="Arm Horizontal">
+        <goal>
+          <match site="tfp" var="hv" form="msg">Hor</match>
+        </goal>
+        <exec site="tfp" name="ah"/>
+        <sleep>8</sleep>
+        <upd site="tfp"/>
+      </item>
+      <item id="tfp_ao" label="Arm Open">
+        <goal>
+          <match site="tfp" var="ao" form="msg">OPEN</match>
+        </goal>
+        <exec site="tfp" name="ao"/>
+        <sleep>3</sleep>
+      </item>
+      <item id="tfp_ac" label="Arm Close">
+        <goal>
+          <match site="tfp" var="ao" form="msg">CLOSE</match>
+        </goal>
+        <exec site="tfp" name="ac"/>
+        <sleep>3</sleep>
+      </item>
+    </group>
+    <group id="grp_tma_2" caption="Action" rank="2">
+      <item id="tma_ini" label="Initialize Position">
+        <goal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+        </goal>
+        <check>
+          <equal site="tma" var="drv" form="msg">ON</equal>
+        </check>
+        <exec site="tma" name="ini"/>
+        <wait retry="95" label="end of motion">
+          <equal site="tma" var="bs" form="data">0</equal>
+        </wait>
+      </item>
+      <item id="tma_gf" label="Go to Focal Position">
+        <goal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+        </goal>
+        <check>
+          <equal site="tma" var="drv" form="msg">ON</equal>
+        </check>
+        <exec site="tma" name="gf"/>
+        <wait retry="80" label="end of motion">
+          <equal site="tma" var="bs" form="data">0</equal>
+        </wait>
+      </item>
+      <item id="tma_gr" label="Go to Rotate Position">
+        <goal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+        </goal>
+        <check>
+          <equal site="tma" var="drv" form="msg">ON</equal>
+        </check>
+        <exec site="tma" name="gr"/>
+        <wait retry="60" label="end of motion">
+          <equal site="tma" var="bs" form="data">0</equal>
+        </wait>
+      </item>
+      <item id="tma_gw" label="Go to Waiting Position">
+        <goal>
+          <match site="tma" var="abs" form="msg">WAIT</match>
+        </goal>
+        <check>
+          <equal site="tma" var="drv" form="msg">ON</equal>
+        </check>
+        <exec site="tma" name="gw"/>
+        <wait retry="60" label="end of motion">
+          <equal site="tma" var="bs" form="data">0</equal>
+        </wait>
+      </item>
+      <item id="tma_gs" label="Go to Stock Position">
+        <goal>
+          <equal site="tma" var="pos" form="msg">STORE</equal>
+        </goal>
+        <check>
+          <equal site="tma" var="drv" form="msg">ON</equal>
+        </check>
+        <exec site="tma" name="gs"/>
+        <wait retry="95" label="end of motion">
+          <equal site="tma" var="bs" form="data">0</equal>
+        </wait>
+      </item>
+    </group>
+    <group id="grp_mos_1" caption="Shared Command" rank="0">
+      <item id="stop" label="Emergency STOP">
+        <exec site="tma" name="astop"/>
+        <exec site="tmc" name="astop"/>
+      </item>
+      <item id="upd" label="Update">
+        <upd site="tma"/>
+        <upd site="tmc"/>
+        <upd site="tfp"/>
+        <upd site="tap"/>
+      </item>
+    </group>
+    <group id="grp_mos_2" caption="Sub Start Mask" rank="1">
+      <item id="t-i" label="startmask (INIT)">
+        <goal>
+          <not site="tma" var="pos" form="msg">INIT</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="ah_t-i"/>
+        <mcr name="ao_t-i"/>
+        <mcr name="rc_t-i"/>
+      </item>
+      <item id="t-f" label="startmask (INIT~FOCUS)">
+        <goal>
+          <not site="tma" var="pos" form="msg">INIT</not>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="t-i"/>
+        <mcr name="gf_t-f"/>
+        <mcr name="ac_t-f"/>
+        <upd site="tma"/>
+        <mcr name="ro_t-f"/>
+      </item>
+      <item id="t-r" label="startmask (FOCUS~ROT)">
+        <goal>
+          <not site="tma" var="pos" form="msg">INIT</not>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+          <not site="tma" var="pos" form="msg">ROT</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="t-f"/>
+        <mcr name="gr_t-r"/>
+        <mcr name="av_t-r"/>
+        <upd site="tap"/>
+        <mcr name="ao_t-r"/>
+      </item>
+      <item id="t-w" label="startmask (ROT~WAIT)">
+        <goal>
+          <not site="tma" var="pos" form="msg">INIT</not>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+          <not site="tma" var="pos" form="msg">ROT</not>
+          <equal site="tma" var="abs" form="msg">WAIT</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="t-r"/>
+        <mcr name="gw_t-w"/>
+        <mcr name="check_start"/>
+      </item>
+      <item id="ah_t-i" label="Arm Hor">
+        <goal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ah"/>
+      </item>
+      <item id="ao_t-i" label="Arm Open">
+        <goal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ao"/>
+      </item>
+      <item id="rc_t-i" label="Rh Close">
+        <goal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_rc"/>
+      </item>
+      <item id="gf_t-f" label="Go to FCS">
+        <goal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <exec site="tma" name="drvon"/>
+        <mcr name="tma_gf"/>
+      </item>
+      <item id="ac_t-f" label="Arm Close">
+        <goal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ac"/>
+      </item>
+      <item id="ro_t-f" label="Rh Open">
+        <goal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ro"/>
+      </item>
+      <item id="gr_t-r" label="Go to ROT">
+        <goal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_gr"/>
+      </item>
+      <item id="av_t-r" label="Arm Ver">
+        <goal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_av"/>
+      </item>
+      <item id="ao_t-r" label="Arm Open">
+        <goal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ao"/>
+      </item>
+      <item id="gw_t-w" label="Go to WAIT">
+        <goal>
+          <match site="tma" var="abs" form="msg">WAIT</match>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_gw"/>
+      </item>
+      <item id="check_start" label="Check Status(No actual motion)">
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <match site="tma" var="abs" form="msg">WAIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+      </item>
+    </group>
+    <group id="grp_mos_3" caption="Sub Store Mask" rank="1">
+      <item id="s-i" label="storemask 1(INIT)">
+        <goal>
+          <not site="tma" var="pos" form="msg">INIT</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="ah_s-i"/>
+        <mcr name="ao_s-i"/>
+        <mcr name="rc_s-i"/>
+      </item>
+      <item id="s-f" label="storemask 2(INIT~FOCUS)">
+        <goal>
+          <not site="tma" var="pos" form="msg">INIT</not>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="s-i"/>
+        <mcr name="gf_s-f"/>
+        <mcr name="ac_s-f"/>
+        <upd site="tma"/>
+        <mcr name="ro_s-f"/>
+      </item>
+      <item id="s-r" label="storemask 3(FOCUS~ROT)">
+        <goal>
+          <not site="tma" var="pos" form="msg">INIT</not>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+          <not site="tma" var="pos" form="msg">ROT</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="s-f"/>
+        <mcr name="gr_s-r"/>
+        <mcr name="av_s-r"/>
+      </item>
+      <item id="s-s" label="storemask 4(ROT~STORE)">
+        <goal>
+          <not site="tma" var="pos" form="msg">INIT</not>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+          <not site="tma" var="pos" form="msg">ROT</not>
+          <not site="tma" var="pos" form="msg">STORE</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="s-r"/>
+        <mcr name="gs_s-s"/>
+        <upd site="tma"/>
+        <mcr name="sets_a"/>
+        <upd site="tap"/>
+        <upd site="tma"/>
+        <mcr name="ao_s-s"/>
+      </item>
+      <item id="s-w" label="storemask 5(STORE~WAIT)">
+        <goal>
+          <equal site="tma" var="abs" form="msg">WAIT</equal>
+          <not site="tma" var="pos" form="msg">INIT</not>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+          <not site="tma" var="pos" form="msg">ROT</not>
+          <not site="tma" var="pos" form="msg">STORE</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="s-s"/>
+        <upd site="tma"/>
+        <upd site="tmc"/>
+        <upd site="tap"/>
+        <mcr name="gw_s-w"/>
+        <mcr name="check_store"/>
+      </item>
+      <item id="ah_s-i" label="Arm Hor">
+        <goal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ah"/>
+      </item>
+      <item id="ao_s-i" label="Arm Open">
+        <goal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ao"/>
+      </item>
+      <item id="rc_s-i" label="Rh Close">
+        <goal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_rc"/>
+      </item>
+      <item id="gf_s-f" label="Go to FOCUS">
+        <goal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <exec site="tma" name="drvon"/>
+        <mcr name="tma_gf"/>
+      </item>
+      <item id="ac_s-f" label="Arm Close">
+        <goal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ac"/>
+      </item>
+      <item id="ro_s-f" label="Rh Open">
+        <goal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <equal site="tma" var="con" form="msg">ON</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ro"/>
+      </item>
+      <item id="gr_s-r" label="Go to ROT">
+        <goal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_gr"/>
+      </item>
+      <item id="av_s-r" label="Arm Ver">
+        <goal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_av"/>
+      </item>
+      <item id="gs_s-s" label="Go to STK">
+        <goal>
+          <equal site="tma" var="pos" form="msg">STORE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_gs"/>
+      </item>
+      <item id="ao_s-s" label="Arm Open">
+        <goal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">STORE</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ao"/>
+      </item>
+      <item id="gw_s-w" label="Go to WAIT">
+        <goal>
+          <match site="tma" var="abs" form="msg">WAIT</match>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="con" form="msg">OFF</equal>
+          <equal site="tma" var="pos" form="msg">STORE</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_gw"/>
+      </item>
+      <item id="check_store" label="Check Status(No actual motion)">
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <match site="tma" var="abs" form="msg">WAIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <upd site="tmc"/>
+        <system>mkcmi</system>
+      </item>
+    </group>
+    <group id="grp_mos_4" caption="Sub Load Mask" rank="1">
+      <item id="l-w" label="loadmask 1(WAIT)">
+        <goal>
+          <unmatch site="tma" var="abs" form="msg">WAIT</unmatch>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="av_l-w"/>
+        <mcr name="ao_l-w"/>
+      </item>
+      <item id="l-s" label="loadmask 2(WAIT~STORE)">
+        <goal>
+          <not site="tma" var="pos" form="msg">N/A</not>
+          <unmatch site="tma" var="abs" form="msg">WAIT</unmatch>
+          <not site="tma" var="pos" form="msg">STORE</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="l-w"/>
+        <mcr name="gs_l-s"/>
+        <upd site="tma"/>
+        <mcr name="sets_a"/>
+        <mcr name="ac_l-s"/>
+      </item>
+      <item id="l-r" label="loadmask 3(STORE~ROT)">
+        <goal>
+          <not site="tma" var="pos" form="msg">N/A</not>
+          <unmatch site="tma" var="abs" form="msg">WAIT</unmatch>
+          <not site="tma" var="pos" form="msg">STORE</not>
+          <not site="tma" var="pos" form="msg">ROT</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="l-s"/>
+        <upd site="tma"/>
+        <upd site="tap"/>
+        <mcr name="gr_l-r"/>
+        <upd site="tmc"/>
+        <mcr name="ah_l-r"/>
+      </item>
+      <item id="l-f" label="loadmask 4(ROT~FOCUS)">
+        <goal>
+          <not site="tma" var="pos" form="msg">N/A</not>
+          <unmatch site="tma" var="abs" form="msg">WAIT</unmatch>
+          <not site="tma" var="pos" form="msg">STORE</not>
+          <not site="tma" var="pos" form="msg">ROT</not>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="l-r"/>
+        <mcr name="gf_l-f"/>
+        <mcr name="rc_l-f"/>
+        <upd site="tma"/>
+        <mcr name="ao_l-f"/>
+      </item>
+      <item id="l-mskon" label="loadmask (Mask Sensor Check)">
+        <goal>
+          <equal site="tma" var="con" form="msg">ON</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+      </item>
+      <item id="l-mskoff" label="loadmask (Mask Sensor Check)">
+        <goal>
+          <not site="tma" var="con" form="msg">ON</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="ro_l-f"/>
+        <upd site="tap"/>
+        <mcr name="rc_l-f"/>
+        <upd site="tma"/>
+      </item>
+      <item id="l-i" label="loadmask 5(FOCUS~INIT)">
+        <goal>
+          <not site="tma" var="pos" form="msg">N/A</not>
+          <unmatch site="tma" var="abs" form="msg">WAIT</unmatch>
+          <not site="tma" var="pos" form="msg">STORE</not>
+          <not site="tma" var="pos" form="msg">ROT</not>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+          <not site="tma" var="pos" form="msg">INIT</not>
+          <unmatch site="tma" var="abs" form="msg">INIT</unmatch>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="l-f"/>
+        <mcr name="ini_l-i"/>
+        <upd site="tma"/>
+        <mcr name="set0_a"/>
+        <mcr name="check_load"/>
+      </item>
+      <item id="av_l-w" label="Arm Ver">
+        <goal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tma" var="abs" form="msg">WAIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_av"/>
+      </item>
+      <item id="ao_l-w" label="Arm Open">
+        <goal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <match site="tma" var="abs" form="msg">WAIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ao"/>
+      </item>
+      <item id="gs_l-s" label="Go to STK">
+        <goal>
+          <equal site="tma" var="pos" form="msg">STORE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <match site="tma" var="abs" form="msg">WAIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_gs"/>
+      </item>
+      <item id="ac_l-s" label="Arm Close">
+        <goal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">STORE</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ac"/>
+      </item>
+      <item id="gr_l-r" label="Go to ROT">
+        <goal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">STORE</equal>
+          <equal site="tma" var="con" form="msg">ON</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_gr"/>
+      </item>
+      <item id="ah_l-r" label="Arm Hor">
+        <goal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <equal site="tmc" var="con" form="msg">OFF</equal>
+        </check>
+        <mcr name="tfp_ah"/>
+      </item>
+      <item id="gf_l-f" label="Go to FOCUS">
+        <goal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_gf"/>
+      </item>
+      <item id="rac_l-f" label="Rh1 2 Close">
+        <exec site="tfp" name="rac"/>
+      </item>
+      <item id="rbc_l-f" label="Rh3 4 Close">
+        <exec site="tfp" name="rbc"/>
+      </item>
+      <item id="rc_l-f" label="Rh All Close">
+        <goal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_rc"/>
+      </item>
+      <item id="ro_l-f" label="Rh All Open">
+        <goal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ro"/>
+      </item>
+      <item id="ao_l-f" label="Arm Open">
+        <goal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <equal site="tma" var="con" form="msg">ON</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ao"/>
+      </item>
+      <item id="ini_l-i" label="Go to INIT">
+        <goal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_ini"/>
+      </item>
+      <item id="set0_a" label="Motor Reset">
+        <check>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+        </check>
+        <cfg site="tma" name="set0"/>
+        <exec site="tma" name="drvoff"/>
+        <upd site="tma"/>
+      </item>
+      <item id="sets_a" label="Motor Reset at STK">
+        <check>
+          <equal site="tma" var="pos" form="msg">STORE</equal>
+        </check>
+        <cfg site="tma" name="sets"/>
+        <upd site="tma"/>
+      </item>
+      <item id="check_load" label="Check Status(No actual motion)">
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" skip="true" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <upd site="tmc"/>
+        <system>mkcmi</system>
+      </item>
+    </group>
+    <group id="grp_mos_5" caption="Sub Field Check" rank="1">
+      <item id="fc-i1" label="fieldcheck (INIT)">
+        <goal>
+          <not site="tma" var="pos" form="msg">N/A</not>
+          <not site="tma" var="pos" form="msg">INIT</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="ah_fc-i1"/>
+        <mcr name="ao_fc-i1"/>
+        <mcr name="rc_fc-i1"/>
+      </item>
+      <item id="fc-f1" label="fieldcheck (INIT~FOCUS)">
+        <goal>
+          <not site="tma" var="pos" form="msg">N/A</not>
+          <not site="tma" var="pos" form="msg">INIT</not>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="fc-i1"/>
+        <mcr name="gf_fc-f1"/>
+        <mcr name="ac_fc-f1"/>
+        <upd site="tma"/>
+        <mcr name="ro_fc-f1"/>
+      </item>
+      <item id="fc-r1" label="fieldcheck (FOCUS~ROT)">
+        <goal>
+          <not site="tma" var="pos" form="msg">N/A</not>
+          <not site="tma" var="pos" form="msg">INIT</not>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+          <not site="tma" var="pos" form="msg">ROT</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="fc-f1"/>
+        <mcr name="gr_fc-r1"/>
+      </item>
+      <item id="ah_fc-i1" label="Arm Hor">
+        <goal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ah"/>
+      </item>
+      <item id="ao_fc-i1" label="Arm Open">
+        <goal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ao"/>
+      </item>
+      <item id="rc_fc-i1" label="Rh All Close">
+        <goal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_rc"/>
+      </item>
+      <item id="gf_fc-f1" label="Go to FOCUS">
+        <goal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_gf"/>
+      </item>
+      <item id="ac_fc-f1" label="Arm Close">
+        <goal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ac"/>
+      </item>
+      <item id="ro_fc-f1" label="Rh All Open">
+        <goal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <equal site="tma" var="con" form="msg">ON</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ro"/>
+      </item>
+      <item id="gr_fc-r1" label="Go to ROT">
+        <goal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">FOCUS</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_gr"/>
+      </item>
+    </group>
+    <group id="grp_mos_6" caption="Sub Kapa Mask" rank="1">
+      <item id="rc_k" label="Rh All Close">
+        <goal>
+          <equal site="tfp" var="ro" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_rc"/>
+      </item>
+      <item id="ro_k" label="Rh All Open">
+        <goal>
+          <equal site="tfp" var="ro" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ro"/>
+      </item>
+      <item id="rc_k1" label="Rh All Close">
+        <goal>
+          <equal site="tfp" var="ro" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_rc"/>
+      </item>
+      <item id="ro_k1" label="Rh All Open">
+        <goal>
+          <equal site="tfp" var="ro" form="msg">OPEN</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ro"/>
+      </item>
+    </group>
+    <group id="grp_mos_7" caption="Sub Fin Mask" rank="1">
+      <item id="f-r" label="fin 1(WAIT~ROT)">
+        <goal>
+          <unmatch site="tma" var="abs" form="msg">WAIT</unmatch>
+          <not site="tma" var="pos" form="msg">ROT</not>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+        </check>
+        <mcr name="gr_f-r"/>
+        <mcr name="ac_f-r"/>
+        <upd site="tap"/>
+        <mcr name="ah_f-r"/>
+      </item>
+      <item id="f-i" label="fin 2(ROT~INIT)">
+        <goal>
+          <unmatch site="tma" var="abs" form="msg">WAIT</unmatch>
+          <not site="tma" var="pos" form="msg">ROT</not>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+          <equal site="tmc" var="con" form="msg">ON</equal>
+        </check>
+        <mcr name="f-r"/>
+        <mcr name="ini_f-i"/>
+        <upd site="tma"/>
+        <mcr name="set0_a"/>
+        <mcr name="rc_f-i"/>
+        <mcr name="check_fin"/>
+      </item>
+      <item id="gr_f-r" label="Go to ROT">
+        <goal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <match site="tma" var="abs" form="msg">WAIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_gr"/>
+      </item>
+      <item id="ac_f-r" label="Arm Close">
+        <goal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ac"/>
+      </item>
+      <item id="ah_f-r" label="Arm Hor">
+        <goal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Vertical</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_ah"/>
+      </item>
+      <item id="ini_f-i" label="Go to INIT">
+        <goal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">ROT</equal>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tma_ini"/>
+      </item>
+      <item id="rc_f-i" label="Rh All Close">
+        <goal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">OPEN</equal>
+          <equal site="tfp" var="rbo" form="msg">OPEN</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+        <mcr name="tfp_rc"/>
+      </item>
+      <item id="check_fin" label="Check Status(No actual motion)">
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="hv" form="msg">Horizontal</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rao" form="msg">CLOSE</equal>
+          <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <match site="tma" var="abs" form="msg">INIT</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+        </check>
+      </item>
+    </group>
+    <group id="grp_mos_8" caption="MOS Main Commands" rank="0">
+      <item id="start" label="startmask">
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="upd"/>
+        <mcr name="t-w"/>
+      </item>
+      <item id="store" label="storemask">
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="upd"/>
+        <mcr name="s-w"/>
+      </item>
+      <item id="load" label="loadmask">
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="upd"/>
+        <mcr name="l-i"/>
+      </item>
+      <item id="kapa" label="align mask">
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+        </check>
+        <mcr name="rc_k"/>
+        <upd site="tap"/>
+        <mcr name="ro_k"/>
+        <upd site="tap"/>
+        <mcr name="rc_k"/>
+        <upd site="tap"/>
+        <mcr name="ro_k"/>
+        <upd site="tap"/>
+        <mcr name="rc_k"/>
+        <upd site="tap"/>
+        <mcr name="ro_k"/>
+        <upd site="tap"/>
+        <mcr name="rc_k"/>
+        <upd site="tap"/>
+        <mcr name="ro_k"/>
+        <upd site="tap"/>
+        <mcr name="rc_k"/>
+        <upd site="tap"/>
+        <mcr name="ro_k"/>
+        <upd site="tap"/>
+        <mcr name="rc_k"/>
+        <upd site="tap"/>
+        <mcr name="ro_k"/>
+        <upd site="tap"/>
+        <mcr name="rc_k"/>
+        <upd site="tap"/>
+        <mcr name="ro_k"/>
+        <upd site="tap"/>
+        <mcr name="rc_k"/>
+        <upd site="tap"/>
+        <mcr name="ro_k"/>
+        <upd site="tap"/>
+        <mcr name="rc_k"/>
+      </item>
+      <item id="kapa1" label="rail-up">
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+        </check>
+        <mcr name="ro_k1"/>
+        <upd site="tap"/>
+        <mcr name="rc_k1"/>
+      </item>
+      <item id="fin" label="finish mos">
+        <goal>
+          <unmatch site="tma" var="abs" form="msg">WAIT</unmatch>
+          <not site="tma" var="pos" form="msg">ROT</not>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <not site="tma" var="pos" form="msg">FOCUS</not>
+        </goal>
+        <check>
+          <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <match site="tap" var="pres" form="msg">H|M|L</match>
+          <match site="tmc" var="abs" form="msg">S</match>
+        </check>
+        <mcr name="upd"/>
+        <mcr name="f-i"/>
+      </item>
+    </group>
+  </macro>
+</mdb>

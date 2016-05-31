@@ -3,18 +3,19 @@ require 'libcommand'
 
 module CIAX
   module Cmd
+    # Command Index
+    class Index < GrpAry
+      # cfg should have [:jump_class]
+      attr_reader :loc
+      def initialize(cfg, atrb = Hashx.new)
+        super
+        @loc = add(Local::Domain)
+      end
+    end
+
     # Local Commands
     module Local
       # Top level
-      class Index < GrpAry
-        # cfg should have [:jump_class]
-        attr_reader :loc
-        def initialize(cfg, atrb = {})
-          super
-          @loc = add(Domain)
-        end
-      end
-
       # Local Domain
       class Domain < GrpAry
         def add_shell
@@ -28,7 +29,7 @@ module CIAX
           end
         end
 
-        def add_view(atrb = {})
+        def add_view(atrb = Hashx.new)
           add(View::Group, atrb)
         end
       end
@@ -36,7 +37,7 @@ module CIAX
       module Sh
         # Shell Group
         class Group < Dummy
-          def initialize(cfg, atrb = {})
+          def initialize(cfg, atrb = Hashx.new)
             atrb[:caption] = 'Shell Command'
             atrb[:color] = 1
             super
@@ -49,7 +50,7 @@ module CIAX
       module Jump
         # Jump Group
         class Group < Group
-          def initialize(cfg, atrb = {})
+          def initialize(cfg, atrb = Hashx.new)
             name = m2id(cfg[:jump_class], 1).capitalize
             atrb[:caption] = "Switch #{name}s"
             atrb[:color] = 5
@@ -81,13 +82,15 @@ module CIAX
         # Switch View Group
         # cfg should have [:output]
         class Group < Group
-          def initialize(cfg, atrb = {})
-            atrb[:caption] = 'Change View Mode'
-            atrb[:column] = 2
-            atrb[:color] = 9
+          def initialize(cfg, atrb = Hashx.new)
+            atrb.update(caption: 'Change View Mode', column: 2, color: 9)
             super
-            add_item('vis', 'Visual mode').def_proc { @cfg[:output].vmode(:v) }
-            add_item('raw', 'Raw Print mode').def_proc { @cfg[:output].vmode(:r) }
+            add_item('vis', 'Visual mode').def_proc do
+              @cfg[:output].vmode('v')
+            end
+            add_item('raw', 'Raw Print mode').def_proc do
+              @cfg[:output].vmode('o')
+            end
           end
         end
       end

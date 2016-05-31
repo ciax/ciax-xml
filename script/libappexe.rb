@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libfrmlist'
-require 'libbuffer'
 require 'libinsdb'
+require 'libappdrv'
 require 'libappcmd'
 require 'libapprsp'
 require 'libappview'
@@ -13,16 +13,16 @@ module CIAX
     class Exe < Exe
       # cfg must have [:dbi],[:sub_list]
       attr_accessor :batch_interrupt
-      def initialize(id, cfg, atrb = {})
+      def initialize(cfg, atrb = Hashx.new)
         super
-        dbi = _init_dbi(id, %i(frm_site))
+        dbi = _init_dbi(%i(frm_site))
         @cfg[:site_id] = id
-        # LayerDB might generated in List level
-        _init_sub(@cfg[:frm_site])
         @stat = Status.new(dbi)
+        @sv_stat = Prompt.new(id)
         @batch_interrupt = []
-        init_server(dbi)
-        init_command
+        _init_sub
+        _init_net(dbi)
+        _init_command
         _opt_mode
       end
 
@@ -34,135 +34,93 @@ module CIAX
         self
       end
 
+      def active?
+        @sv_stat.upd.up?(:event)
+      end
+
+      # wait 10sec for busy end or status changed
+      def waiting
+        verbose { "Waiting busy end for #{@id}" }
+        100.times do
+          return true unless @sv_stat.upd.up?(:busy)
+          sleep 0.1
+        end
+        false
+      end
+
       private
 
-      def init_server(dbi)
-        @sv_stat.add_flg(busy: '*')
-        @host ||= dbi[:host]
+      # Initialize subroutine
+      def _init_sub
+        # LayerDB might generated in List level
+        @sub = @cfg[:sub_list].get(@cfg[:frm_site])
+        @sv_stat.sub_merge(@sub.sv_stat, %i(comerr ioerr))
+      end
+
+      def _init_net(dbi)
+        @host = @cfg[:option].host || dbi[:host]
         @port ||= dbi[:port]
         self
       end
 
-      def init_command
-        @cobj.add_rem.add_sys
-        @cobj.rem.add_ext(Ext)
+      def _init_command
+        @cobj.add_rem.cfg[:def_msg] = 'ISSUED'
+        @cobj.rem.add_sys
         @cobj.rem.add_int(Int)
+        @cobj.rem.add_ext(Ext)
         self
       end
 
-      def ext_test
-        @mode = 'TEST'
-        @stat.ext_sym.ext_file
-        @cobj.get('interrupt').def_proc do
-          # "INTERRUPT(#{@batch_interrupt})"
-          'INTERRUPT'
-        end
+      # Mode Extension
+      def ext_local_test
+        @stat.ext_local_sym.ext_local_file
         @cobj.rem.ext.def_proc do |ent|
           @stat[:time] = now_msec
-          ent[:batch].inspect
+          ent.msg = ent[:batch].inspect
         end
-        ext_non_client
+        super
       end
 
-      # type of usage: shell/command line
-      # type of semantics: execution/test
-      def ext_driver
-        @mode = 'DRV'
-        @stat.ext_rsp(@sub.stat).ext_sym.ext_file.auto_save
-        @buf = init_buf
-        if @cfg[:cmd_line_mode] # command line mode
-          tc = Thread.current
-          @stat.post_upd_procs << proc { tc.run }
-          @post_exe_procs << proc { sleep }
-        end
-        ext_exec_mode
-        ext_non_client
+      def ext_local_driver
+        super
+        extend(Drv).ext_local_driver
       end
 
-      def ext_non_client
+      def ext_local
+        _init_proc_set
+        _init_proc_del
+        super
+      end
+
+      # Initiate procs
+      def _init_proc_set
         @cobj.get('set').def_proc do|ent|
-          @stat[:data].rep(ent.par[0], ent.par[1])
-          # "SET:#{ent.par[0]}=#{ent.par[1]}"
-          'ISSUED'
+          @stat[:data].repl(ent.par[0], ent.par[1])
+          verbose { "SET:#{ent.par[0]}=#{ent.par[1]}" }
         end
+      end
+
+      def _init_proc_del
         @cobj.get('del').def_proc do|ent|
           ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
-          # "DELETE:#{ent.par[0]}"
-          'ISSUED'
+          verbose { "DELETE:#{ent.par[0]}" }
         end
-        self
       end
+    end
 
-      def ext_exec_mode
-        return unless OPT[:e]
-        @stat.ext_log.ext_sqlog
-        @cobj.rem.ext_log('app')
-      end
-
-      def server_output
-        Hashx.new.update(@sv_stat).update(self).to_j
-      end
-
-      # Process of command execution:
-      #  Main: Recieve App command with validation
-      #  Main: Set :busy flag in Server status
-      #  Main: Send command to queue of Buffer thread (Async)
-      #  Main: Send back App response with msg 'ISSUED' in Server Status
-      #    Buffer: Recieve the command from queue
-      #    Buffer: Break up to Frm commands (Batch)
-      #    Buffer: Reorder by priority and set command to outbuffer
-      #      Batch: Pick up the command from outbuffer by priority
-      #      Batch: Execute single Frm command
-      #      Batch: Get Frm command response
-      #      Batch: Update Field by Frm response
-      #      Batch: Repeat until outbuffer is empty
-      def init_buf
-        buf = Buffer.new(@sv_stat)
-        # App: Sendign a first priority command (interrupt)
-        @cobj.get('interrupt').def_proc do|_, src|
-          @batch_interrupt.each do|args|
-            verbose { "Issuing:#{args} for Interrupt" }
-            buf.send(@cobj.set_cmd(args), 0)
-          end
-          warning("Interrupt(#{@batch_interrupt}) from #{src}")
-          'INTERRUPT'
-        end
-        # App: Sending a general App command (Frm batch)
-        @cobj.rem.ext.def_proc do|ent, src, pri|
-          verbose { "Issuing:[#{ent.id}] from #{src} with priority #{pri}" }
-          buf.send(ent, pri)
-          'ISSUED'
-        end
-        # Frm: Execute single command
-        buf.recv_proc = proc do|args, src|
-          verbose { "Processing #{args}" }
-          @sub.exe(args, src)
-        end
-        # Frm: Update after each single command finish
-        # @stat file output should be done before :busy flag is reset
-        buf.flush_proc = proc do
-          verbose { 'Propagate Buffer#flush -> Field#flush' }
-          @sub.stat.flush
-        end
-        # Field: Update after each Batch Frm command finish
-        @sub.stat.flush_procs << proc do
-          verbose { 'Propagate Field#flush -> Status#upd' }
-          @stat.upd
-        end
-        # Start buffer server thread
-        buf.server
+    # For App
+    class Prompt < Prompt
+      def initialize(id)
+        super('site', id)
+        add_flg(busy: '*')
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ceh:lts')
-      id = ARGV.shift
-      cfg = Config.new
-      atrb = { db: Ins::Db.new, sub_list: Frm::List.new(cfg) }
-      begin
-        Exe.new(id, cfg, atrb).ext_shell.shell
-      rescue InvalidID
-        OPT.usage('(opt) [id]')
+      ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
+        dbi = Ins::Db.new.get(args.shift)
+        atrb = { dbi: dbi, sub_list: Frm::List.new(cfg) }
+        Exe.new(cfg, atrb).run.ext_shell.shell
       end
     end
   end

@@ -1,11 +1,10 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-require 'libmcrman'
+require 'libman'
 require 'libdaemon'
 # CIAX-XML Macro Server
 module CIAX
-  cfg = Config.new
-  Daemon.new('mcrsv', 'bcsenr') do
-    Mcr::Man.new(cfg).ext_server
+  Daemon.new('mcrsv', 'cen') do |cfg|
+    Mcr::Man.new(cfg)
   end
 end

@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
-require 'libexe'
 require 'libsh'
-require 'libfrmdb'
+require 'libfrmdrv'
 require 'libfrmrsp'
 require 'libfrmcmd'
 require 'libdevdb'
@@ -12,19 +11,15 @@ module CIAX
     # Frame Exe module
     class Exe < Exe
       # cfg must have [:db]
-      def initialize(id, cfg, atrb = {})
+      def initialize(cfg, atrb = Hashx.new)
         super
         # DB is generated in List level
+        dbi = _init_dbi(%i(stream iocmd))
         @cfg[:site_id] = id
-        dbi = _init_dbi(id, %i(stream iocmd))
         @stat = @cfg[:field] = Field.new(dbi)
-        @cobj.add_rem.add_sys
-        @cobj.rem.add_int(Int)
-        @cobj.rem.add_ext(Ext)
-        _init_sub.add_flg(comerr: 'X', ioerr: 'E')
-        # Post internal command procs
-        @host ||= dbi[:host]
-        @port ||= dbi[:port]
+        @sv_stat = Prompt.new(id)
+        _init_net(dbi)
+        _init_command
         _opt_mode
       end
 
@@ -32,7 +27,7 @@ module CIAX
         super
       rescue CommError
         @sv_stat.up(:comerr)
-        @sv_stat.rep(:msg, $ERROR_INFO.to_s)
+        @sv_stat.repl(:msg, $ERROR_INFO.to_s)
         @stat.seterr
         raise $ERROR_INFO
       end
@@ -46,71 +41,55 @@ module CIAX
 
       private
 
-      def ext_test
-        @mode = 'TEST'
-        @stat.ext_file
-        @cobj.rem.ext.def_proc { 'TEST' }
-        @cobj.get('set').def_proc do|ent|
-          @stat.rep(ent.par[0], ent.par[1])
-          "Set [#{ent.par[0]}] = #{ent.par[1]}"
-        end
+      # Initialize Subroutine
+      def _init_net(dbi)
+        @host = @cfg[:option].host || dbi[:host]
+        @port ||= dbi[:port]
         self
       end
 
-      def ext_driver
-        sp = type?(@cfg[:stream], Hash)
-        if OPT[:s]
-          @mode = 'SIM'
-          iocmd = [ENV['SIMCMD'] || 'frmsim', @id, @cfg[:version]]
-          timeout = 60
-        else
-          @mode = 'DRV'
-          iocmd = @cfg[:iocmd].split(' ')
-          timeout = (sp[:timeout] || 10).to_i
-        end
-        @stream = Stream.new(@id, @cfg[:version], iocmd,
-                             sp[:wait], timeout, esc_code(sp[:terminator]))
-        @stream.ext_log unless OPT[:s]
-        @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
-        @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }
-        @stat.ext_rsp.ext_file.auto_save
-        @cobj.rem.ext.def_proc do|ent, src|
-          @sv_stat.dw(:comerr)
-          @stream.snd(ent[:frame], ent.id)
-          @stat.conv(ent, @stream.rcv) if ent[:response]
-          @stat.flush if src != 'buffer'
-          'OK'
-        end
-        @cobj.get('set').def_proc do|ent|
-          @stat.rep(ent.par[0], ent.par[1])
-          @stat.flush
-          "Set [#{ent.par[0]}] = #{ent.par[1]}"
-        end
-        @cobj.get('save').def_proc do|ent|
-          @stat.save_key(ent.par[0].split(','), ent.par[1])
-          "Save [#{ent.par[0]}]"
-        end
-        @cobj.get('load').def_proc do|ent|
-          @stat.load(ent.par[0] || '')
-          @stat.flush
-          "Load [#{ent.par[0]}]"
-        end
-        @cobj.get('flush').def_proc do
-          @stream.rcv
-          @stat.flush
-          'Flush Stream'
-        end
+      def _init_command
+        @cobj.add_rem.cfg[:def_msg] = 'OK'
+        @cobj.rem.add_sys
+        @cobj.rem.add_ext(Ext)
+        @cobj.rem.add_int(Int)
         self
+      end
+
+      # Mode Extension
+      def ext_local_test
+        @stat.ext_local_file
+        @cobj.rem.ext.cfg[:def_msg] = 'TEST'
+        super
+      end
+
+      def ext_local
+        @cobj.get('set').def_proc do|ent|
+          @stat.repl(ent.par[0], ent.par[1])
+          @stat.flush
+          verbose { "Set [#{ent.par[0]}] = #{ent.par[1]}" }
+        end
+        super
+      end
+
+      def ext_local_driver
+        super
+        extend(Drv).ext_local_driver
+      end
+    end
+
+    # For Frm
+    class Prompt < Prompt
+      def initialize(id)
+        super('dev', id)
+        add_flg(comerr: 'X', ioerr: 'E')
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ceh:lts')
-      id = ARGV.shift
-      begin
-        Exe.new(id, Config.new, db: Dev::Db.new).ext_shell.shell
-      rescue InvalidID
-        OPT.usage('(opt) [id]')
+      ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
+        dbi = Dev::Db.new.get(args.shift)
+        Exe.new(cfg, dbi: dbi).run.ext_shell.shell
       end
     end
   end

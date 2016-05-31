@@ -31,7 +31,7 @@
           <string format="%04X">$1</string>
           <string format="%04X">$2</string>
         </item>
-        <item id="putfield" label="Write from Output Field" response="default" type="config">
+        <item id="putfield" label="Write from Output Field" response="default" type="config" nocache="true">
           <string>02!L</string>
           <string>FFFF</string>
           <string format="%04X">${output}</string>

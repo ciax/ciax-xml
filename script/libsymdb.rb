@@ -27,7 +27,7 @@ module CIAX
           id = e1[:id]
           label = e1[:label]
           e1.each do|e2| # case
-            (db[id] ||= []) << e2.to_h.update(type: e2.name)
+            db.get(id) { [] } << e2.to_h.update(type: e2.name)
           end
           verbose { "Symbol Table:#{id} : #{label}" }
         end
@@ -36,13 +36,10 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('r')
-      begin
-        dbi = Db.new.get(ARGV.shift)
-      rescue InvalidID
-        OPT.usage('[id] (key) ..')
+      GetOpts.new('[id] (key) ..', 'r') do |opt, args|
+        dbi = Db.new.get(args.shift)
+        puts opt[:r] ? dbi.to_v : dbi.path(args)
       end
-      puts OPT[:r] ? dbi.to_v : dbi.path(ARGV)
     end
   end
 end

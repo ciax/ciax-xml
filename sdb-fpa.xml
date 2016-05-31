@@ -6,5 +6,11 @@
       <range class="normal" msg="ON SLOT(%.2f)">:-1.2</range>
       <default class="warn" msg="MID"/>
     </table>
+    <table id="range">
+      <range class="normal" msg="+-6V">5</range>
+      <range class="normal" msg="+-1.2V">7</range>
+      <range class="normal" msg="+-15V">18</range>
+      <default class="warn" msg="Other"/>
+    </table>
   </symbol>
 </sdb>

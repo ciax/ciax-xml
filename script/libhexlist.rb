@@ -7,21 +7,17 @@ module CIAX
     # Hex Exe List
     class List < Site::List
       # cfg must have [:db]
-      def initialize(cfg, top_list = nil)
-        super(cfg, top_list || self, Wat::List)
+      def initialize(cfg, atrb = Hashx.new)
+        super
+        @sub_list = Wat::List.new(cfg)
         store_db(@cfg[:db] ||= Ins::Db.new)
         @cfg[:hdb] = Db.new
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      OPT.parse('ceh:lts')
-      cfg = Config.new
-      cfg[:site] = ARGV.shift
-      begin
-        List.new(cfg).ext_shell.shell
-      rescue InvalidID
-        OPT.usage('(opt) [id]')
+      ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
+        List.new(cfg, sites: args).ext_shell.shell
       end
     end
   end

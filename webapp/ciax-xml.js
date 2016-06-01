@@ -133,4 +133,6 @@ var acdon;
 var start_pos = 0;
 var count = 0;
 $(window).on('resize', height_adjust);
-$.ajaxSetup({ cache: false});
+// ifModified option makes error in FireFox (not Chrome).
+// JSON will be loaded as html if no update at getJSON().
+$.ajaxSetup({ cache: false, ifModified: true });

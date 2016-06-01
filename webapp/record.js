@@ -144,7 +144,8 @@ function dynamic_page() {
     var last_time = '';  // For detecting update
     var first_time = ''; // For first time at a new macro;
     var steps_length = 0;
-    return function(data) {
+    return function(data, status) {
+        if (status != 'success') return;
         if (first_time != data.id) { // Do only the first one for new macro
             record_first(data);
             first_time = data.id;
@@ -152,7 +153,6 @@ function dynamic_page() {
             record_update(data);
             last_time = data.time;
         }
-        blinking();
     }
     // Update Command Selector
     function record_commands(ary) {
@@ -219,6 +219,7 @@ function dynamic_page() {
 
 function update() {
     $.getJSON('record_latest.json', upd_record);
+    blinking();
     remain_msg();
 }
 // ******** Direct Command ********

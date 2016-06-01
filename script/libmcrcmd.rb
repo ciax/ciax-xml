@@ -69,7 +69,7 @@ module CIAX
         cobj.add_rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)
         puts ent.path
-        puts ent[:sequence]
+        jj ent[:sequence]
       rescue InvalidARGS
         Msg.usage('[cmd] (par)')
       end

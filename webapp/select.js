@@ -52,10 +52,11 @@ function make_list(data) {
 }
 
 // Register Events
-function select_list() {
+function select_list(data) {
     var current = '';
     init_record_event();
     set_acordion('#select');
+    // Set click event
     $('#select').on('click', 'li', function() {
         if ($(this).attr('id') == current) {
             acordion('#record h4');
@@ -63,11 +64,10 @@ function select_list() {
             select_record(this);
         }
     });
-    return function(data) {
-        make_list(data);
-        select_record('#select li:first');
-        acordion('#select h4:not(:first)');
-    }
+    // Set initial selection
+    make_list(data);
+    select_record('#select li:first');
+    acordion('#select h4:not(:first)');
 
     function select_record(target) {
         $('#' + current).removeClass('selected');
@@ -82,6 +82,5 @@ function select_list() {
 }
 // Initial Setting
 function init_log() {
-    var list = select_list();
-    $.getJSON('rec_list.json', list);
+    $.getJSON('rec_list.json', select_list);
 }

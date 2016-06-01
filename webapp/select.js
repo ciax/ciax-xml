@@ -52,8 +52,10 @@ function make_list(data) {
 }
 
 // Register Events
-function select_list(data) {
-    var current = '';
+function select_list() {
+    var par = {dataType: 'json', ifModified: true, success: make_list};
+    var current = 'latest';
+//    var int;
     init_record_event();
     set_acordion('#select');
     // Set click event
@@ -61,27 +63,39 @@ function select_list(data) {
         if ($(this).attr('id') == current) {
             acordion('#record h4');
         }else {
-            select_record(this);
+            $('#select li').removeClass('selected');
+            current = $(this).attr('id');
+            activate();
         }
     });
     // Set initial selection
-    make_list(data);
-    select_record('#select li:first');
-    acordion('#select h4:not(:first)');
+    $.getJSON('rec_list.json', function(data) {
+        make_list(data);
+        current = $('#select li:first').attr('id');
+        acordion('#select h4:not(:first)');
+        activate();
+    });
+    return update_list;
 
-    function select_record(target) {
-        $('#' + current).removeClass('selected');
-        $(target).addClass('selected');
-        current = $(target).attr('id');
-        if ($(target).children('em').text() == 'busy') {
+    function update_list() {
+        $.ajax('rec_list.json', par);
+        activate();
+    }
+
+    function activate() {
+        var target = $('#' + current).addClass('selected');
+        if (target.children('em').text() == 'busy') {
+//            if (int) clearInterval(int);
             start_upd(current);
+
         }else {
             stop_upd();
+//            if (!int) setInterval(update_list, 1000);
         }
         archive(current);
     }
 }
 // Initial Setting
 function init_log() {
-    $.getJSON('rec_list.json', select_list);
+    select_list();
 }

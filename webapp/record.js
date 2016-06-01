@@ -128,7 +128,8 @@ function record_result(data) { // Do at the end
 }
 
 // ******** Static Page *********
-function static_page(data) {
+function static_page(data, status) {
+    if (status != 'success') return;
     record_outline(data);
     record_steps(data);
     record_result(data);
@@ -218,7 +219,7 @@ function dynamic_page() {
 }
 
 function update() {
-    $.getJSON('record_latest.json', upd_record);
+    $.ajax('record_latest.json', {dataType: 'json', ifModified: true, success: upd_record});
     blinking();
     remain_msg();
 }

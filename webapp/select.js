@@ -73,10 +73,11 @@ function select_list(data) {
         $('#' + current).removeClass('selected');
         $(target).addClass('selected');
         current = $(target).attr('id');
-        if ($(target).children('em').text() == 'busy')
-            start_upd();
-        else
+        if ($(target).children('em').text() == 'busy') {
+            start_upd(current);
+        }else {
             stop_upd();
+        }
         archive(current);
     }
 }

@@ -123,9 +123,9 @@ function stop_upd() {
     itvl = null;
     $('#msg').text('');
 }
-function start_upd() {
+function start_upd(id) {
     $('#scroll :checkbox').prop('checked', true);
-    if (!itvl) itvl = setInterval(update, 1000);
+    if (!itvl) itvl = setInterval(function() { update(id) }, 1000);
 }
 var itvl;
 var port;

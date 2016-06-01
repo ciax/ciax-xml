@@ -134,9 +134,6 @@ function static_page(data, status) {
     record_steps(data);
     record_result(data);
 }
-function archive(tag) {
-    $.getJSON('record_' + tag + '.json', static_page);
-}
 
 // ******** Dynamic Page ********
 
@@ -200,7 +197,7 @@ function dynamic_page() {
         if (data.status == 'end') {
             mcr_end(data);
         }else { //run
-            start_upd();
+            start_upd('latest');
         }
         record_steps(data);
         steps_length = data.steps.length;
@@ -217,9 +214,14 @@ function dynamic_page() {
         update_steps(data);
     }
 }
-
-function update() {
-    $.ajax('record_latest.json', {dataType: 'json', ifModified: true, success: upd_record});
+// *** Ajax ***
+function archive(tag) {
+    $.getJSON('record_' + tag + '.json', static_page);
+}
+function update(tag) {
+    var par = {dataType: 'json', ifModified: true, success: upd_record};
+    tag = tag ? tag : 'latest';
+    $.ajax('record_' + tag + '.json', par);
     blinking();
     remain_msg();
 }
@@ -239,9 +241,8 @@ function init_record_event() {
 }
 function init_record() {
     init_record_event();
-    update();
+    update('latest');
 }
 // Var setting
 var upd_record = dynamic_page();
 var start_time = ''; // For elapsed time
-var tag = 'latest';

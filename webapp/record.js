@@ -38,7 +38,8 @@ function make_step(step) {
     function time() {
         var now = new Date(step.time);
         var elps = ((now - start_time) / 1000).toFixed(2);
-        html.push('<span class="elps tail">[' + elps + ']</span>');
+        html.push('<span class="elps tail" title="' + now.toTimeString() + '">[');
+        html.push(elps + ']</span>');
     }
     // waiting step
     function meter(max) {
@@ -124,7 +125,8 @@ function record_status(data) {
 function record_result(data) { // Do at the end
     replace('#result', data.result);
     replace('#' + data.id + ' em', data.result);
-    $('#total').text('[' + data.total_time + ']');
+    var last = new Date(data.time);
+    $('#total').text('[' + data.total_time + ']').attr('title', last.toTimeString());
 }
 
 // ******** Static Page *********

@@ -73,7 +73,10 @@ module CIAX
       end
 
       def cmd_abspos
-        to_real(@axis.pulse)
+        str = to_real(@axis.pulse)
+        # Simulate Invalid String (Probability 0.3%)
+        str = str[0..2] + '?' if rand < 0.003
+        str
       end
 
       def cmd_help

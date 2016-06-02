@@ -163,7 +163,7 @@ module CIAX
           begin
             field.conv(ent)
           rescue CommError
-            Msg.msg($!)
+            Msg.msg($ERROR_INFO)
           end
         end
         puts field

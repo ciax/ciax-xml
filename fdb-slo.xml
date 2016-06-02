@@ -110,7 +110,7 @@
         <field assign="bs" label="Moving"/>
       </item>
       <item id="p">
-        <field assign="p" valid="^[.0-9]+$" label="Pulse"/>
+        <field assign="p" valid="^[-.0-9]+$" label="Pulse"/>
       </item>
       <item id="spd">
         <field assign="spd" label="Speed"/>

@@ -27,13 +27,14 @@ function make_item(hash) {
     }
     function make_date() {
         var crd = time.toLocaleDateString();
-        if (!$('#' + crd)[0]) {
+        var did = crd.replace(/\//g, '_');
+        if (!$('#' + did)[0]) {
             var html = [];
             html.push('<h4>' + crd + '</h4>');
-            html.push('<ul id="' + crd + '"></ul>');
+            html.push('<ul id="' + did + '"></ul>');
             $('#select').append(html.join(''));
         }
-        return $('#' + crd);
+        return $('#' + did);
     }
 }
 

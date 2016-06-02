@@ -66,8 +66,7 @@ function activate() {
 }
 
 function update_list() {
-    var par = {mimeType: 'json', ifModified: true, success: make_list};
-    $.ajax('rec_list.json', par);
+    $.getJSON('rec_list.json', make_list);
     activate();
 }
 

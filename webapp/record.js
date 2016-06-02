@@ -221,9 +221,8 @@ function archive(tag) {
     $.getJSON('record_' + tag + '.json', static_page);
 }
 function update(tag) {
-    var par = {mimeType: 'json', ifModified: true, success: upd_record};
     tag = tag ? tag : 'latest';
-    $.ajax('record_' + tag + '.json', par);
+    $.getJSON('record_' + tag + '.json', upd_record);
     blinking();
     remain_msg();
 }

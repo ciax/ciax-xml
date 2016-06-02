@@ -57,9 +57,8 @@ function height_adjust() {
 // ******** Control by UDP ********
 function get_response(data) {
     if (data) {
-        var res = $.parseJSON(data);
-        console.log('recv=' + data);
-        replace('#msg', res.msg, res.msg.toLowerCase());
+        console.log('recv=' + JSON.stringify(data));
+        replace('#msg', data.msg, data.msg.toLowerCase());
         count = 10;
         start_upd();
     }else {
@@ -76,7 +75,7 @@ function remain_msg() {
 function dvctl(cmd) {
     var args = {port: port, cmd: cmd};
     console.log('send=' + JSON.stringify(args));
-    $.post('/json/dvctl-udp.php', args, get_response);
+    $.getJSON('/json/dvctl-udp.php', args, get_response);
 }
 // With Confirmation
 function exec(cmd) {
@@ -135,4 +134,4 @@ var count = 0;
 $(window).on('resize', height_adjust);
 // ifModified option makes error in FireFox (not Chrome).
 // JSON will be loaded as html if no update at getJSON().
-$.ajaxSetup({ cache: false });
+$.ajaxSetup({ mimeType: 'json', ifModified: true, cache: false });

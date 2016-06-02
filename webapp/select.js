@@ -11,7 +11,7 @@ function make_item(hash) {
     record_cmd();
     record_res(hash.result);
     html_sel.push('</li>');
-    make_date().append(html_sel.join(''));
+    make_date().prepend(html_sel.join(''));
 
     function record_time() {
         html_sel.push('<span class="time" title="' + id + '">');
@@ -32,7 +32,7 @@ function make_item(hash) {
             var html = [];
             html.push('<h4>' + crd + '</h4>');
             html.push('<ul id="' + did + '"></ul>');
-            $('#select').append(html.join(''));
+            $('#select').prepend(html.join(''));
         }
         return $('#' + did);
     }
@@ -42,15 +42,16 @@ function make_list(data) {
     var html_sel = [];
     var date;
     var list = data.list.sort(date_sort);
-    for (var i = 0; i < list.length; i++) {
+    var size = $('#select li').size();
+    for (var i = size; i < list.length; i++) {
         make_item(list[i]);
     }
     // Latest Top
     function date_sort(a, b) {
         var na = a.id - 0;
         var nb = b.id - 0;
-        if (na < nb) return 1;
-        if (na > nb) return -1;
+        if (na < nb) return -1;
+        if (na > nb) return 1;
         return 0;
     }
 }

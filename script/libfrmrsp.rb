@@ -160,7 +160,11 @@ module CIAX
           cobj = Cmd::Index.new(cfg, dbi.pick(%i(stream)))
           cobj.add_rem.add_ext(Ext)
           ent = cobj.set_cmd(cid.split(':'))
-          field.conv(ent)
+          begin
+            field.conv(ent)
+          rescue CommError
+            Msg.msg($!)
+          end
         end
         puts field
       end

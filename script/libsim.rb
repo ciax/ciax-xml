@@ -16,6 +16,7 @@ module CIAX
         @prompt_ng = '?'
         self.stdlog = @cfg[:stdlog]
         self.audit = true
+        self.debug = true
         @length = 1024
         @ifs = @ofs = $OUTPUT_RECORD_SEPARATOR
       end
@@ -33,10 +34,10 @@ module CIAX
       def sv_loop(io)
         loop do
           str = input(io)
-          verbose { "Recieve #{str.inspect}" }
+          log("#{self.class}:Recieve #{str.inspect}")
           res = dispatch(str) || next
           res += @ofs
-          verbose { "Send #{res.inspect}" }
+          log("#{self.class}:Send #{res.inspect}")
           io ? io.syswrite(res) : puts(res.inspect)
           sleep 0.1
         end

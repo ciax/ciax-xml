@@ -36,6 +36,7 @@ module CIAX
 
       # Switch Load/Store mode with Catcher O/C at ArmPos = STORE
       def arm_oc(idx, hexstr)
+        log(@list.keys.inspect)
         # OUTPUT?
         return unless idx == 2 && @list.key?(:arm)
         # ARM:STORE position?
@@ -43,10 +44,10 @@ module CIAX
         case hexstr
         when '0C000400' # AC
           @list[:load] = true
-          warn 'Loading Mode'
+          log('Loading Mode')
         when '0C000800' # AO
           @list[:load] = false
-          warn 'Stored Mode'
+          log('Stored Mode')
         end
       end
 

@@ -2,30 +2,30 @@
 // fixjsstyle select.js
 // Listing part
 function make_item(hash) {
-    var html_sel = [];
+    var html = [];
     var id = hash.id;
     // Date(j-0) -> cast to num
     var time = new Date(id - 0);
-    html_sel.push('<li id="' + id + '">');
-    record_time();
-    record_cmd();
-    record_res(hash.result);
-    html_sel.push('</li>');
-    make_date().prepend(html_sel.join(''));
+    html.push('<li id="' + id + '">');
+    _time();
+    _cmd();
+    _res(hash.result);
+    html.push('</li>');
+    _date().prepend(html.join(''));
 
-    function record_time() {
-        html_sel.push('<span class="time" title="' + id + '">');
-        html_sel.push(time.toLocaleTimeString());
-        html_sel.push('</span>');
+    function _time() {
+        html.push('<span class="time" title="' + id + '">');
+        html.push(time.toLocaleTimeString());
+        html.push('</span>');
     }
-    function record_cmd() {
-        html_sel.push(' <span class="cmd">[' + hash.cid + ']</span>');
+    function _cmd() {
+        html.push(' <span class="cmd">[' + hash.cid + ']</span>');
     }
-    function record_res(res) {
-        html_sel.push(' -> ');
-        html_sel.push('<em class="res ' + res + '">' + res + '</em>');
+    function _res(res) {
+        html.push(' -> ');
+        html.push('<em class="res ' + res + '">' + res + '</em>');
     }
-    function make_date() {
+    function _date() {
         var crd = time.toLocaleDateString();
         var did = crd.replace(/\//g, '_');
         if (!$('#' + did)[0]) {
@@ -39,8 +39,7 @@ function make_item(hash) {
 }
 
 function make_list(data) {
-    var html_sel = [];
-    var date;
+    if (!data) return;
     var list = data.list.sort(date_sort);
     var size = $('#select li').size();
     for (var i = size; i < list.length; i++) {
@@ -56,11 +55,25 @@ function make_list(data) {
     }
 }
 
-// Register Events
-function select_list() {
+function activate() {
+    var target = $('#' + current).addClass('selected');
+    if (target.children('em').text() == 'busy') {
+        start_upd(current);
+    }else {
+        stop_upd();
+    }
+    archive(current);
+}
+
+function update_list() {
     var par = {mimeType: 'json', ifModified: true, success: make_list};
-    var current = 'latest';
-//    var int;
+    $.ajax('rec_list.json', par);
+    activate();
+}
+
+// Initial Setting
+function init_log() {
+    // Register Events
     init_record_event();
     set_acordion('#select');
     // Set click event
@@ -73,35 +86,12 @@ function select_list() {
             activate();
         }
     });
-    // Set initial selection
+    // Set first selected
     $.getJSON('rec_list.json', function(data) {
         make_list(data);
         current = $('#select li:first').attr('id');
         acordion('#select h4:not(:first)');
         activate();
     });
-    return update_list;
-
-    function update_list() {
-        $.ajax('rec_list.json', par);
-        activate();
-    }
-
-    function activate() {
-        var target = $('#' + current).addClass('selected');
-        if (target.children('em').text() == 'busy') {
-//            if (int) clearInterval(int);
-            start_upd(current);
-
-        }else {
-            stop_upd();
-//            if (!int) setInterval(update_list, 1000);
-        }
-        archive(current);
-    }
 }
-// Initial Setting
-function init_log() {
-    sel_upd = select_list();
-}
-var sel_upd;
+var current = 'latest';

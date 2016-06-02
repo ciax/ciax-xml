@@ -7,5 +7,5 @@ cmd=$1;shift
 num=$1;shift
 input="$HOME/.var/log/stream_${id}_*.log"
 for i in $input;do
-    egrep -h "${dir:-rcv}" $i|egrep "${cmd:-.}"
+    egrep -h "${dir:-rcv}" $i|egrep "\"${cmd:-.}\""
 done | tail -${num:-1} | head -1

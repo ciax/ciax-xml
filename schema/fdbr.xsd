@@ -6,6 +6,8 @@
   <!--Response Elements-->
   <xsd:attributeGroup name="rsp_attr">
     <xsd:attribute name="label" type="xsd:token"/>
+    <!--Valid content is regexp-->
+    <xsd:attribute name="valid" type="xsd:token"/>
     <xsd:attribute name="assign" type="xsd:NCName"/>
     <xsd:attribute name="decode" type="fdbr:codec"/>
     <xsd:attribute name="sign" type="fdbr:sign"/>

@@ -97,5 +97,6 @@ function select_list() {
 }
 // Initial Setting
 function init_log() {
-    select_list();
+    sel_upd = select_list();
 }
+var sel_upd;

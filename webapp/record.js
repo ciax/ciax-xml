@@ -36,9 +36,9 @@ function make_step(step) {
     }
     // elapsed time section
     function time() {
-        var now = new Date(step.time);
-        var elps = ((now - start_time) / 1000).toFixed(2);
-        html.push('<span class="elps tail" title="' + now.toTimeString() + '">[');
+        var crnt = new Date(step.time);
+        var elps = ((crnt - start_time) / 1000).toFixed(2);
+        html.push('<span class="elps tail" title="' + crnt.toTimeString() + '">[');
         html.push(elps + ']</span>');
     }
     // waiting step
@@ -221,7 +221,7 @@ function archive(tag) {
     $.getJSON('record_' + tag + '.json', static_page);
 }
 function update(tag) {
-    var par = {dataType: 'json', ifModified: true, success: upd_record};
+    var par = {mimeType: 'json', ifModified: true, success: upd_record};
     tag = tag ? tag : 'latest';
     $.ajax('record_' + tag + '.json', par);
     blinking();
@@ -247,4 +247,4 @@ function init_record() {
 }
 // Var setting
 var upd_record = dynamic_page();
-var start_time = ''; // For elapsed time
+var start_time; // For elapsed time

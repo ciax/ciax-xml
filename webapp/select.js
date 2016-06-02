@@ -58,7 +58,7 @@ function make_list(data) {
 
 // Register Events
 function select_list() {
-    var par = {dataType: 'json', ifModified: true, success: make_list};
+    var par = {mimeType: 'json', ifModified: true, success: make_list};
     var current = 'latest';
 //    var int;
     init_record_event();

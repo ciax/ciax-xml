@@ -48,4 +48,6 @@ module CIAX
   class CheckCodeError < CommError; end
   # No Data in Field for Status
   class NoData < CommError; end
+  # Invalid Data in Field for Status
+  class BadData < CommError; end
 end

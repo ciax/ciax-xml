@@ -103,6 +103,9 @@ module CIAX
       # Field
       def _str_field(e0, data)
         return unless (akey = e0[:assign])
+        if e0[:valid] && /#{e0[:valid]}/ !~ data
+          fail(BadData, "Invalid Data (#{data}) for /#{e0[:valid]}/")
+        end
         @cache[akey] = data
         verbose { "Assign:[#{akey}] <- <#{data}>" }
       end

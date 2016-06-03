@@ -37,6 +37,10 @@ function set_acordion(sel) {
     $(sel).on('click', 'h4', function() {
         acordion(this);
     });
+    // All list will be folded when titie is clicked
+    $(sel).parent().on('click', '.title', function() {
+        acordion(sel + ' h4');
+    });
 }
 // interactive mode
 function blinking() {

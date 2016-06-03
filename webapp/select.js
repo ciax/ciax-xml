@@ -94,7 +94,7 @@ function init_log() {
         acordion('#select h4:not(:first)');
     });
 
-    function switch_select(){
+    function switch_select() {
         if ($(this).hasClass('selected')) return;
         $('#select li').removeClass('selected');
         $(this).addClass('selected');

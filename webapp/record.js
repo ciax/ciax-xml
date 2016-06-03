@@ -218,7 +218,10 @@ function dynamic_page() {
 }
 // *** Ajax ***
 function archive(tag) {
-    $.getJSON('record_' + tag + '.json', static_page);
+    // Read whether src is updated or not
+    $.ajax('record_' + tag + '.json', {
+        ifModified: false, success: static_page
+    });
 }
 function update(tag) {
     tag = tag ? tag : 'latest';

@@ -117,6 +117,9 @@ ul{
     text-transform: uppercase;
 }
 /*** Title coloring ***/
+.cmd {
+    color : blue;
+}
 .mcr{
     color : chocolate;
 }
@@ -175,17 +178,14 @@ var {
 }
 /* Slide Switch */
 /*** select list ***/
-.time {
+#select .time {
     width: 4.5em;
     float: left;
     color: dimgray;
 }
-.time:hover {
-    color: silver;
+#select li:hover, h4:hover {
+    background-color: silver;
 }
-.cmd {
-    color : blue;
-}
-.selected {
-    color : pink;
+#select li.selected {
+    background-color : pink;
 }

@@ -90,7 +90,11 @@ function stop() {
     if (itvl) dvctl('interrupt');
 }
 function interactive(sel) {
-    if (itvl && !$(sel).prop('checked')) dvctl('interactive');
+    if (!itvl) return;
+    if ($(sel).prop('checked'))
+        dvctl('nonstop');
+    else
+        dvctl('interactive');
 }
 // Select Command
 function make_opt(opt, ary) {

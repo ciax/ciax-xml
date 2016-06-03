@@ -1,4 +1,5 @@
 #!/bin/bash
+#alias mohtml
 [ "$PROJ" = moircs ] && h=m || h=t
 make-html ${h}ix gtr
 make-html ${h}ft gc

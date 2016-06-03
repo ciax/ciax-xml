@@ -59,32 +59,39 @@ function height_adjust() {
     });
 }
 // ******** Control by UDP ********
-function get_response(data) {
-    if (data) {
-        console.log('recv=' + JSON.stringify(data));
-        replace('#msg', data.msg, data.msg.toLowerCase());
-        count = 10;
-        start_upd();
-    }else {
-        stop_upd();
-        replace('#msg', 'NO Response', 'error');
-    }
-}
+// Show response message for a certain period
 function remain_msg() {
     if (count > 0)
         count -= 1;
     else if (count == 0)
         $('#msg').text('');
 }
-function dvctl(cmd) {
+// dvctl with func when success
+function dvctl(cmd, func) {
     var args = {port: port, cmd: cmd};
+    $('#msg').text('');
     console.log('send=' + JSON.stringify(args));
-    $.getJSON('/json/dvctl-udp.php', args, get_response);
+    $.ajax('/json/dvctl-udp.php', {
+        data: args,
+        ifModified: true,
+        cache: false,
+        success: function(data) {
+            console.log('recv=' + JSON.stringify(data));
+            replace('#msg', data.msg, data.msg.toLowerCase());
+            count = 10;
+            if (func) func();
+        },
+        error: function(data) {
+            console.log('recv=' + JSON.stringify(data));
+            stop_upd();
+            replace('#msg', 'NO Response', 'error');
+        }
+    });
 }
 // With Confirmation
-function exec(cmd) {
+function exec(cmd, func) {
     if (confirm('EXEC?(' + cmd + ')')) {
-        dvctl(cmd);
+        dvctl(cmd, func);
         return true;
     }else
         return false;
@@ -121,7 +128,10 @@ function make_select(obj, ary) {
 function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
     if (cmd == '--select--') return;
-    exec(cmd) && make_select(obj, []);
+    exec(cmd, function() {
+        make_select(obj, []);
+        start_upd();
+    });
 }
 // ********* Ajax *********
 function ajax_static(url, func) {
@@ -139,8 +149,9 @@ function stop_upd() {
     $('#msg').text('');
 }
 function start_upd(id) {
+    if (itvl) return;
     $('#scroll :checkbox').prop('checked', true);
-    if (!itvl) itvl = setInterval(function() { update(id) }, 1000);
+    itvl = setInterval(function() { update(id) }, 1000);
     interactive();
 }
 var itvl;
@@ -151,4 +162,4 @@ var count = 0;
 $(window).on('resize', height_adjust);
 // ifModified option makes error in FireFox (not Chrome).
 // JSON will be loaded as html if no update at getJSON().
-$.ajaxSetup({ mimeType: 'json'});
+$.ajaxSetup({ mimeType: 'json', cahce: false});

@@ -62,10 +62,20 @@ module CIAX
         total ? "(#{self[:count].to_i}/#{total})" : ''
       end
 
+      def _color_result(res)
+        if /failed|timeout/ =~ res
+          1
+        elsif /query/ =~ res
+          5
+        else
+          2
+        end
+      end
+
       def _prt_result(res, mary)
         if res
           cap = res.capitalize
-          color = (/failed|timeout/ =~ res) ? 1 : (/query/ =~ res) ? 5 : 2
+          color = _color_result(res)
           mary[0] << ' -> ' + Msg.colorize(cap, color)
         end
         _prt_conds(mary)

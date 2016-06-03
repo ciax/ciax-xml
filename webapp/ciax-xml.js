@@ -124,10 +124,10 @@ function seldv(obj) {
     exec(cmd) && make_select(obj, []);
 }
 // ********* Ajax *********
-function get_static(url, func) {
+function ajax_static(url, func) {
     $.ajax(url, { ifModified: false, cache: true, success: func});
 }
-function get_update(url, func) {
+function ajax_update(url, func) {
     $.ajax(url, { ifModified: true, cache: false, success: func});
 }
 // ********* Page Update *********

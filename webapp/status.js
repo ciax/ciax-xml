@@ -26,7 +26,7 @@ function conv(stat) {
     $('#time').text(lstr.toLocaleString());
 }
 function update() {
-    get_update(type + '_' + site + '.json', conv);
+    ajax_update(type + '_' + site + '.json', conv);
     elapsed();
     remain_msg();
 }

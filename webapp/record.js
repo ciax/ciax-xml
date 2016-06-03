@@ -219,11 +219,11 @@ function dynamic_page() {
 // *** Ajax ***
 function archive(tag) {
     // Read whether src is updated or not
-    get_static('record_' + tag + '.json', static_page);
+    ajax_static('record_' + tag + '.json', static_page);
 }
 function update(tag) {
     tag = tag ? tag : 'latest';
-    get_update('record_' + tag + '.json', upd_record);
+    ajax_update('record_' + tag + '.json', upd_record);
     blinking();
     remain_msg();
 }

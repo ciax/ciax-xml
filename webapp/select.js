@@ -76,7 +76,7 @@ function make_list(data) {
 }
 
 function update_list() {
-    get_update('rec_list.json', make_list);
+    ajax_update('rec_list.json', make_list);
 }
 
 
@@ -89,7 +89,7 @@ function init_log() {
     $('#select').on('click', update_list);
     $('#select').on('click', 'li', switch_select);
     // Set first selected
-    get_static('rec_list.json', function(data) {
+    ajax_static('rec_list.json', function(data) {
         make_list(data);
         acordion('#select h4:not(:first)');
     });

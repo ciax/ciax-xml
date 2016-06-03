@@ -114,6 +114,13 @@ function seldv(obj) {
     if (cmd == '--select--') return;
     exec(cmd) && make_select(obj, []);
 }
+// ********* Ajax *********
+function get_static(url, func) {
+    $.ajax(url, { ifModified: false, cache: true, success: func});
+}
+function get_update(url, func) {
+    $.ajax(url, { ifModified: true, cache: false, success: func});
+}
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
 function stop_upd() {
@@ -134,4 +141,4 @@ var count = 0;
 $(window).on('resize', height_adjust);
 // ifModified option makes error in FireFox (not Chrome).
 // JSON will be loaded as html if no update at getJSON().
-$.ajaxSetup({ mimeType: 'json', ifModified: true, cache: false });
+$.ajaxSetup({ mimeType: 'json'});

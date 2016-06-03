@@ -219,13 +219,11 @@ function dynamic_page() {
 // *** Ajax ***
 function archive(tag) {
     // Read whether src is updated or not
-    $.ajax('record_' + tag + '.json', {
-        ifModified: false, success: static_page
-    });
+    get_static('record_' + tag + '.json', static_page);
 }
 function update(tag) {
     tag = tag ? tag : 'latest';
-    $.getJSON('record_' + tag + '.json', upd_record);
+    get_update('record_' + tag + '.json', upd_record);
     blinking();
     remain_msg();
 }

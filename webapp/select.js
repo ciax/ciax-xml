@@ -76,7 +76,7 @@ function make_list(data) {
 }
 
 function update_list() {
-    $.getJSON('rec_list.json', make_list);
+    get_update('rec_list.json', make_list);
 }
 
 // Initial Setting
@@ -95,7 +95,7 @@ function init_log() {
         }
     });
     // Set first selected
-    $.getJSON('rec_list.json', function(data) {
+    get_static('rec_list.json', function(data) {
         make_list(data);
         acordion('#select h4:not(:first)');
     });

@@ -33,13 +33,13 @@
       <div class="footer">
         <span class="res" id="status"></span>
         <span id="query">
-          <select name="query" onchange="dvctl_sel(this)">
+          <select name="query" onchange="seldv(this)">
             <option>--select--</option>
           </select>
         </span>
         <button class="stop" id="stop" onclick="stop();">STOP</button>
         <label class="switch" id="nonstop">
-          <input type="checkbox" class="switch-input" checked onclick="interactive(this);"></input>
+          <input type="checkbox" class="switch-input" checked onclick="interactive();"></input>
           <span class="switch-label" data-on="NonStop" data-off="Interactive"></span>
           <span class="switch-handle"></span>
         </label>

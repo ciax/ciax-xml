@@ -93,9 +93,10 @@ function exec(cmd) {
 function stop() {
     if (itvl) dvctl('interrupt');
 }
-function interactive(sel) {
-    if (!itvl) return;
-    if ($(sel).prop('checked'))
+function interactive() {
+    var sel = $('#nonstop :checkbox');
+    if (!(itvl && sel[0])) return;
+    if (sel.prop('checked'))
         dvctl('nonstop');
     else
         dvctl('interactive');
@@ -140,6 +141,7 @@ function stop_upd() {
 function start_upd(id) {
     $('#scroll :checkbox').prop('checked', true);
     if (!itvl) itvl = setInterval(function() { update(id) }, 1000);
+    interactive();
 }
 var itvl;
 var port;

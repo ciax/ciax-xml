@@ -227,14 +227,6 @@ function update(tag) {
     blinking();
     remain_msg();
 }
-// ******** Direct Command ********
-// *** Controls on Footer Bars ***
-function dvctl_sel(obj) {
-    var cmd = $('#nonstop :checkbox').prop('checked') ? 'nonstop' : 'interactive';
-    dvctl(cmd);
-    seldv(obj);
-}
-
 // ******** Init Page ********
 function init_record_event() {
     height_adjust();

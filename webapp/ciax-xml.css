@@ -123,6 +123,9 @@ ul{
 .mcr{
     color : chocolate;
 }
+.select{
+    color : gold;
+}
 .exec, .system, .query{
     color : magenta;
 }

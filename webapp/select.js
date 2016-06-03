@@ -79,24 +79,25 @@ function update_list() {
     get_update('rec_list.json', make_list);
 }
 
+
 // Initial Setting
 function init_log() {
     // Register Events
     init_record_event();
     set_acordion('#select');
     // Set click event
-    $('#select').on('click', 'li', function() {
-        if ($(this).hasClass('selected')) {
-            acordion('#record h4');
-        }else {
-            $('#select li').removeClass('selected');
-            $(this).addClass('selected');
-            update_list();
-        }
-    });
+    $('#select').on('click', update_list);
+    $('#select').on('click', 'li', switch_select);
     // Set first selected
     get_static('rec_list.json', function(data) {
         make_list(data);
         acordion('#select h4:not(:first)');
     });
+
+    function switch_select(){
+        if ($(this).hasClass('selected')) return;
+        $('#select li').removeClass('selected');
+        $(this).addClass('selected');
+    }
+
 }

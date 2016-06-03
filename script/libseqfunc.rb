@@ -90,7 +90,7 @@ module CIAX
         _show step.result
         sel = e[:select]
         me = { type: 'mcr', args: sel[var] || sel['*'] }
-        sub_macro([me], mstat)
+        do_step(me, mstat)
       end
 
       def _mcr(e, step, mstat)

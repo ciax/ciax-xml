@@ -26,7 +26,7 @@ function make_step(step) {
         var res = step.result;
         if (!res || res == 'busy') return;
         html.push(' -> ');
-        html.push('<em class="res ' + res + '">' + res + '</em>');
+        html.push('<em class="' + res + '">' + res + '</em>');
     }
     function action() {
         if (!step.action) return;
@@ -52,7 +52,7 @@ function make_step(step) {
         var max = step.retry || step.val;
         if (step.type != 'mcr') meter(max);
         html.push('<span>(' + step.count + '/' + max + ')</span>');
-        if (step.busy) html.push(' -> <em class="res active">Busy</em>');
+        if (step.busy) html.push(' -> <em class="active">Busy</em>');
     }
     // other steps
     function header() {
@@ -85,7 +85,7 @@ function make_step(step) {
             html.push('<var>' + cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
             html.push('<code>' + operator(cond.cmp, cond.cri) + '?</code>  ');
             if (step.type == 'goal' && res == false) res = 'warn';
-            html.push('<em class="' + res + '"> (' + cond.real + ')</em>');
+            html.push('<span class="' + res + '"> (' + cond.real + ')</span>');
             html.push('</li>');
         }
         html.push('</ul>');

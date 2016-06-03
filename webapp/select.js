@@ -24,8 +24,8 @@ function make_item(hash) {
     }
     function _res(res) {
         html.push(' -> ');
-        html.push('<em class="res ' + res + '">' + res + '</em>');
-    }
+        html.push('<em class="' + res + '">' + res + '</em>');
+    }y;
     function _date() {
         var crd = time.toLocaleDateString();
         var did = crd.replace(/\//g, '_');

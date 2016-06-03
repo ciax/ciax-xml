@@ -1,6 +1,6 @@
 //********* Shared **********
 function replace(sel, str, cls) {
-    $(sel).text(str).attr('class', 'res ' + (cls || str));
+    $(sel).text(str).attr('class', cls || str);
 }
 // ******* Animation *********
 // Auto scroll. Check box with id:go_bottm is needed;

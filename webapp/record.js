@@ -98,17 +98,6 @@ function make_step(step) {
 
 }
 
-// ********* Record **********
-// Macro Body
-function record_steps(data) {
-    for (var i in data.steps) {
-        var step = data.steps[i];
-        $('#record .depth' + step.depth + ':last').append(make_step(step));
-    }
-    sticky_bottom('slow');
-    record_status(data);
-}
-
 // ********* Outline **********
 // *** Display on the Bars ***
 function record_outline(data) { // Do at the first
@@ -118,6 +107,13 @@ function record_outline(data) { // Do at the first
     $('#total').text('');
     replace('#result', '');
     $('#record ul').empty();
+    // Macro Body
+    for (var i in data.steps) {
+        var step = data.steps[i];
+        $('#record .depth' + step.depth + ':last').append(make_step(step));
+    }
+    sticky_bottom('slow');
+    record_status(data);
 }
 function record_status(data) {
     replace('#status', data.status);
@@ -133,7 +129,6 @@ function record_result(data) { // Do at the end
 function static_page(data, status) {
     if (status != 'success') return;
     record_outline(data);
-    record_steps(data);
     record_result(data);
 }
 
@@ -143,7 +138,12 @@ function dynamic_page() {
     var last_time = '';  // For detecting update
     var first_time = ''; // For first time at a new macro;
     var steps_length = 0;
-    return function(data, status) {
+    return function(tag) { // To be update
+        tag = tag ? tag : 'latest';
+        ajax_update('record_' + tag + '.json', upd_record);
+        blinking();
+    }
+    function upd_record(data, status) {
         if (status != 'success') return;
         if (first_time != data.id) { // Do only the first one for new macro
             record_first(data);
@@ -194,7 +194,7 @@ function dynamic_page() {
     }
     function record_first(data) {
         port = data.port;
-        record_outline(data);
+        record_outline(data); // Make record one time
         var stat = data.status;
         if (stat == 'end') {
             mcr_end(data);
@@ -202,7 +202,6 @@ function dynamic_page() {
             if (stat == 'query') record_commands(data.option);
             start_upd('latest');
         }
-        record_steps(data); // Make record one time
         steps_length = data.steps.length;
     }
     function record_update(data) {
@@ -222,11 +221,6 @@ function archive(tag) {
     // Read whether src is updated or not
     ajax_static('record_' + tag + '.json', static_page);
 }
-function update(tag) {
-    tag = tag ? tag : 'latest';
-    ajax_update('record_' + tag + '.json', upd_record);
-    blinking();
-}
 // ******** Init Page ********
 function init_record_event() {
     height_adjust();
@@ -238,5 +232,5 @@ function init_record() {
     update('latest');
 }
 // Var setting
-var upd_record = dynamic_page();
+var update = dynamic_page();
 var start_time; // For elapsed time

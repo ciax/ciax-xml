@@ -1,6 +1,6 @@
 //********* Shared **********
 function replace(sel, str, cls) {
-    $(sel).text(str).attr('class', cls || str);
+    return $(sel).text(str).attr('class', cls || str);
 }
 // ******* Animation *********
 // Auto scroll. Check box with id:go_bottm is needed;
@@ -59,17 +59,9 @@ function height_adjust() {
     });
 }
 // ******** Control by UDP ********
-// Show response message for a certain period
-function remain_msg() {
-    if (count > 0)
-        count -= 1;
-    else if (count == 0)
-        $('#msg').text('');
-}
 // dvctl with func when success
 function dvctl(cmd, func) {
     var args = {port: port, cmd: cmd};
-    $('#msg').text('');
     console.log('send=' + JSON.stringify(args));
     $.ajax('/json/dvctl-udp.php', {
         data: args,
@@ -78,7 +70,6 @@ function dvctl(cmd, func) {
         success: function(data) {
             console.log('recv=' + JSON.stringify(data));
             replace('#msg', data.msg, data.msg.toLowerCase());
-            count = 10;
             if (func) func();
         },
         error: function(data) {
@@ -109,21 +100,25 @@ function interactive() {
         dvctl('interactive');
 }
 // Select Command
-function make_opt(opt, ary) {
-    for (var i in ary) {
-        if (Array.isArray(ary[i])) {
-            opt.push('<optgroup label="' + ary[i][0] + '">');
-            make_opt(opt, ary[i][1]);
-            opt.push('</optgroup>');
-        }else {
-            opt.push('<option>' + ary[i] + '</option>');
-        }
-    }
-}
 function make_select(obj, ary) {
     var opt = ['<option>--select--</option>'];
     make_opt(opt, ary);
     obj.innerHTML = opt.join('');
+    console.log(ary.length);
+    if (ary.length > 0) $('#msg').text('');
+
+    function make_opt(opt, ary) {
+        for (var i in ary) {
+            if (Array.isArray(ary[i])) {
+                // Grouping
+                opt.push('<optgroup label="' + ary[i][0] + '">');
+                make_opt(opt, ary[i][1]);
+                opt.push('</optgroup>');
+            }else {
+                opt.push('<option>' + ary[i] + '</option>');
+            }
+        }
+    }
 }
 function seldv(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
@@ -158,7 +153,6 @@ var itvl;
 var port;
 var acdon;
 var start_pos = 0;
-var count = 0;
 $(window).on('resize', height_adjust);
 // ifModified option makes error in FireFox (not Chrome).
 // JSON will be loaded as html if no update at getJSON().

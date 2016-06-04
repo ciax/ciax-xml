@@ -138,7 +138,6 @@ function static_page(data, status) {
 }
 
 // ******** Dynamic Page ********
-
 function dynamic_page() {
     // **** Updating Page ****
     var last_time = '';  // For detecting update
@@ -196,12 +195,14 @@ function dynamic_page() {
     function record_first(data) {
         port = data.port;
         record_outline(data);
-        if (data.status == 'end') {
+        var stat = data.status;
+        if (stat == 'end') {
             mcr_end(data);
         }else { //run
+            if (stat == 'query') record_commands(data.option);
             start_upd('latest');
         }
-        record_steps(data);
+        record_steps(data); // Make record one time
         steps_length = data.steps.length;
     }
     function record_update(data) {
@@ -213,7 +214,7 @@ function dynamic_page() {
         }else if (stat == 'query') {
             record_commands(data.option);
         }
-        update_steps(data);
+        update_steps(data); // Make record one by one
     }
 }
 // *** Ajax ***
@@ -225,7 +226,6 @@ function update(tag) {
     tag = tag ? tag : 'latest';
     ajax_update('record_' + tag + '.json', upd_record);
     blinking();
-    remain_msg();
 }
 // ******** Init Page ********
 function init_record_event() {

@@ -11,7 +11,7 @@ function sticky_bottom(speed) {
 }
 function auto_release() {
     var cr = $(this).scrollTop();
-    if (cr < start_pos && !acdon)
+    if (cr < start_pos && !$(':animated')[0])
         $('#scroll :checkbox').prop('checked', false);
     start_pos = cr;
 }
@@ -27,10 +27,8 @@ function set_auto_release(sel) {
 }
 // Folding
 function acordion(sel) {
-    acdon = true;
     $(sel).next().slideToggle('slow', function() {
         sticky_bottom(0);
-        acdon = false;
     });
 }
 function set_acordion(sel) {
@@ -151,7 +149,6 @@ function start_upd(id) {
 }
 var itvl;
 var port;
-var acdon;
 var start_pos = 0;
 $(window).on('resize', height_adjust);
 // ifModified option makes error in FireFox (not Chrome).

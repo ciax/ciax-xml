@@ -60,18 +60,18 @@ function height_adjust() {
 // dvctl with func when success
 function dvctl(cmd, func) {
     var args = {port: port, cmd: cmd};
-    console.log('send=' + JSON.stringify(args));
+    //console.log('send=' + JSON.stringify(args));
     $.ajax('/json/dvctl-udp.php', {
         data: args,
         ifModified: true,
         cache: false,
         success: function(data) {
-            console.log('recv=' + JSON.stringify(data));
+            //console.log('recv=' + JSON.stringify(data));
             replace('#msg', data.msg, data.msg.toLowerCase());
             if (func) func();
         },
         error: function(data) {
-            console.log('recv=' + JSON.stringify(data));
+            //console.log('recv=' + JSON.stringify(data));
             stop_upd();
             replace('#msg', 'NO Response', 'error');
         }
@@ -102,7 +102,6 @@ function make_select(obj, ary) {
     var opt = ['<option>--select--</option>'];
     make_opt(opt, ary);
     obj.innerHTML = opt.join('');
-    console.log(ary.length);
     if (ary.length > 0) $('#msg').text('');
 
     function make_opt(opt, ary) {

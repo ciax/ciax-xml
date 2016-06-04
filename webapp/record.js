@@ -4,12 +4,12 @@
 // step header section
 function make_step(step) {
     var html = ['<li id="' + step.time + '">'];
-    header();
-    conditions() || sub_mcr();
+    _header();
+    _conditions() || _sub_mcr();
     html.push('</li>');
     return html.join('');
 
-    function title() {
+    function _title() {
         var type = step.type;
         html.push('<span class="head ' + type + '">' + type + '</span>');
         html.push('<span class="cmd">');
@@ -22,50 +22,50 @@ function make_step(step) {
         html.push('</span>');
     }
     // result section
-    function result() {
+    function _result() {
         var res = step.result;
         if (!res || res == 'busy') return;
         html.push(' -> ');
         html.push('<em class="' + res + '">' + res + '</em>');
     }
-    function action() {
+    function _action() {
         if (!step.action) return;
         html.push(' <span class="action">(');
         html.push(step.action);
         html.push(')</span>');
     }
     // elapsed time section
-    function time() {
+    function _time() {
         var crnt = new Date(step.time);
         var elps = ((crnt - start_time) / 1000).toFixed(2);
         html.push('<span class="elps tail" title="' + crnt.toTimeString() + '">[');
         html.push(elps + ']</span>');
     }
     // waiting step
-    function meter(max) {
+    function _meter(max) {
         html.push(' <meter value="' + step.count / max * 100 + '" max="100"');
         if (step.retry) html.push('low="70" high="99"');
         html.push('>(' + step.count + '/' + max + ')</meter>');
     }
-    function count() {
+    function _count() {
         if (!step.count) return;
         var max = step.retry || step.val;
-        if (step.type != 'mcr') meter(max);
+        if (step.type != 'mcr') _meter(max);
         html.push('<span>(' + step.count + '/' + max + ')</span>');
         if (step.busy) html.push(' -> <em class="active">Busy</em>');
     }
     // other steps
-    function header() {
+    function _header() {
         html.push('<h4>');
-        title();
-        count();
-        result();
-        action();
-        time();
+        _title();
+        _count();
+        _result();
+        _action();
+        _time();
         html.push('</h4>');
     }
     // condition step
-    function operator(ope, cri) {
+    function _operator(ope, cri) {
         switch (ope) {
         case 'equal': return ('== ' + cri); break;
         case 'not' : return ('!= ' + cri); break;
@@ -74,7 +74,7 @@ function make_step(step) {
         default:
         }
     }
-    function conditions() {
+    function _conditions() {
         var conds = step.conditions;
         if (!conds) return;
         html.push('<ul>');
@@ -83,7 +83,7 @@ function make_step(step) {
             var res = cond.res;
             html.push('<li>');
             html.push('<var>' + cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
-            html.push('<code>' + operator(cond.cmp, cond.cri) + '?</code>  ');
+            html.push('<code>' + _operator(cond.cmp, cond.cri) + '?</code>  ');
             if (step.type == 'goal' && res == false) res = 'warn';
             html.push('<span class="' + res + '"> (' + cond.real + ')</span>');
             html.push('</li>');
@@ -91,7 +91,7 @@ function make_step(step) {
         html.push('</ul>');
         return true;
     }
-    function sub_mcr() {
+    function _sub_mcr() {
         if (step.type != 'mcr') return;
         html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
     }
@@ -103,7 +103,7 @@ function make_step(step) {
 function record_steps(data) {
     for (var i in data.steps) {
         var step = data.steps[i];
-        $('.depth' + step.depth + ':last').append(make_step(step));
+        $('#record .depth' + step.depth + ':last').append(make_step(step));
     }
     sticky_bottom('slow');
     record_status(data);

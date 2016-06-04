@@ -117,13 +117,14 @@ function make_select(obj, ary) {
         }
     }
 }
-function seldv(obj) {
+function get_select(obj) {
     var cmd = obj.options[obj.selectedIndex].value;
     if (cmd == '--select--') return;
-    exec(cmd, function() {
-        make_select(obj, []);
-        start_upd();
-    });
+    return cmd;
+}
+function seldv(obj) {
+    var cmd = get_select(obj);
+    if (cmd) exec(cmd);
 }
 // ********* Ajax *********
 function ajax_static(url, func) {

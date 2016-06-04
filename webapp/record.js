@@ -104,8 +104,11 @@ function record_outline(data) { // Do at the first
     $('#date').text(new Date(data.id - 0)).attr('title', data.id);
     $('#total').text('');
     replace('#result', '');
+    record_steps(data);
+}
+// Macro Body
+function record_steps(data) {
     $('#record ul').empty();
-    // Macro Body
     $.each(data.steps, function(i, step) {
         $('#record .depth' + step.depth + ':last').append(make_step(step));
     });
@@ -134,7 +137,7 @@ function dynamic_page() {
     // **** Updating Page ****
     var last_time = '';  // For detecting update
     var first_time = ''; // For first time at a new macro;
-    var steps_length = 0;
+     var steps_length = 0;
     return function(tag) { // To be update
         tag = tag ? tag : 'latest';
         ajax_update('record_' + tag + '.json', upd_record);
@@ -185,6 +188,7 @@ function dynamic_page() {
 
     // **** Make Pages ****
     function mcr_end(data) {
+        record_steps(data);
         record_result(data);
         init_commands();
         stop_upd();
@@ -205,14 +209,22 @@ function dynamic_page() {
         var stat = data.status;
         if (stat == 'end') {
             mcr_end(data);
-            $('#record ul').empty();
-            steps_length = 0;
-        }else if (stat == 'query') {
-            record_commands(data.option);
+        }else {
+            if (stat == 'query') record_commands(data.option);
+            update_steps(data); // Make record one by one
         }
-        update_steps(data); // Make record one by one
     }
 }
+// *** Command ***
+function selmcr(obj) {
+    var cmd = get_select(obj);
+    if (!cmd) return;
+    exec(cmd, function() {
+        make_select(obj, []);
+        start_upd();
+    });
+}
+
 // *** Ajax ***
 function archive(tag) {
     // Read whether src is updated or not

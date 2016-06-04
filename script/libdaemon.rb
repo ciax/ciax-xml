@@ -34,6 +34,7 @@ module CIAX
     def _init_server(tag, opt)
       _detach
       _redirect(tag) if opt[:b]
+      verbose { "Initiate Daemon Start [#{tag}] " + gitver }
     end
 
     def _detach

@@ -55,5 +55,10 @@ module CIAX
       FileUtils.mkdir_p(dir)
       dir
     end
+
+    # Git commit ID
+    def gitver
+      '(git commit:' + `cd #{__dir__};git reflog`.split(' ').first + ')'
+    end
   end
 end

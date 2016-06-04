@@ -10,10 +10,7 @@ module CIAX
     # JSON expression of server stat will be sent.
     def ext_local_server
       return self unless @port
-      verbose do
-        "Initiate UDP server (#{@id}) port:[#{@port}] git:[" +
-          `cd #{__dir__};git reflog`.split(' ').first + ']'
-      end
+      verbose { "Initiate UDP server (#{@id}) port:[#{@port}]" }
       @server_input_proc = proc { |line| j2h(line) }
       @sv_stat.ext_local_file.auto_save.ext_local_log
       @server_output_proc = proc { JSON.dump(@sv_stat) }

@@ -75,11 +75,9 @@ function make_step(step) {
         }
     }
     function _conditions() {
-        var conds = step.conditions;
-        if (!conds) return;
+        if (!step.conditions) return;
         html.push('<ul>');
-        for (var k in conds) {
-            var cond = conds[k];
+        $.each(step.conditions, function(k, cond) {
             var res = cond.res;
             html.push('<li>');
             html.push('<var>' + cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
@@ -87,7 +85,7 @@ function make_step(step) {
             if (step.type == 'goal' && res == false) res = 'warn';
             html.push('<span class="' + res + '"> (' + cond.real + ')</span>');
             html.push('</li>');
-        }
+        });
         html.push('</ul>');
         return true;
     }
@@ -108,10 +106,9 @@ function record_outline(data) { // Do at the first
     replace('#result', '');
     $('#record ul').empty();
     // Macro Body
-    for (var i in data.steps) {
-        var step = data.steps[i];
+    $.each(data.steps, function(i, step) {
         $('#record .depth' + step.depth + ':last').append(make_step(step));
-    }
+    });
     sticky_bottom('slow');
     record_status(data);
 }

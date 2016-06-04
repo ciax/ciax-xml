@@ -103,7 +103,7 @@ function make_step(step) {
 function record_outline(data) { // Do at the first
     start_time = new Date(data.start);
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
-    $('#date').text(new Date(data.id - 0));
+    $('#date').text(new Date(data.id - 0)).attr('title', data.id);
     $('#total').text('');
     replace('#result', '');
     $('#record ul').empty();

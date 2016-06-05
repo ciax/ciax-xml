@@ -31,7 +31,7 @@ function update() {
     remain_msg();
 }
 function init() {
-    start_upd();
+    start_upd(update);
 }
 // Need var: Type,Site
 var last;

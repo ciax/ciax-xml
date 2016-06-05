@@ -66,8 +66,9 @@ function make_list(data) {
             sel.addClass('selected');
         }
         var id = sel.attr('id');
+        stop_upd();
         if (sel.children('em').text() == 'busy') {
-            start_upd(id);
+            start_upd(update);
         }else {
             stop_upd();
         }

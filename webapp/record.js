@@ -133,6 +133,7 @@ function dynamic_page() {
     var steps_length = 0;
     var suspend = false;
     return function(tag) { // To be update
+        tag = tag ? tag : 'latest';
         ajax_record(tag, upd_record, function() { suspend = true;});
         blinking();
     }
@@ -193,6 +194,7 @@ function dynamic_page() {
         record_result(data);
         init_commands();
         stop_upd();
+        $('#msg').text('');
     }
     function record_first(data) {
         port = data.port;
@@ -202,7 +204,7 @@ function dynamic_page() {
             mcr_end(data);
         }else { //run
             if (stat == 'query') record_commands(data.option);
-            start_upd('latest');
+            mcr_start(update);
         }
         steps_length = data.steps.length;
     }
@@ -236,12 +238,18 @@ function archive(tag) {
 }
 
 // ******** Command ********
+function mcr_start() {
+    if (!start_upd(update)) return;
+    $('#scroll :checkbox').prop('checked', true);
+    interactive();
+}
+
 function selmcr(obj) {
     var cmd = get_select(obj);
     if (!cmd) return;
     exec(cmd, function() {
         make_select(obj, []);
-        start_upd();
+        mcr_start();
     });
 }
 

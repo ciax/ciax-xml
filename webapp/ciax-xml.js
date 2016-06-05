@@ -140,13 +140,10 @@ function stop_upd() {
     if (!itvl) return;
     clearInterval(itvl);
     itvl = null;
-    $('#msg').text('');
 }
-function start_upd(id) {
+function start_upd(func) {
     if (itvl) return;
-    $('#scroll :checkbox').prop('checked', true);
-    itvl = setInterval(function() { update(id) }, 1000);
-    interactive();
+    itvl = setInterval(func, 1000);
 }
 var itvl;
 var port;

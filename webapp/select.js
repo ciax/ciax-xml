@@ -88,12 +88,12 @@ function make_list(data) {
             start_upd(update_list);
         }
         archive(id);
+        blinking();
     }
 }
 
 function update_list() {
     ajax_update('rec_list.json', make_list);
-    blinking();
 }
 
 

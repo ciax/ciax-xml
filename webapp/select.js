@@ -4,13 +4,12 @@
 function make_item(hash) {
     var html = [];
     var id = hash.id;
-    // Date(j-0) -> cast to num
     var time = new Date(id - 0);
+    // Date(j-0) -> cast to num
     html.push('<li id="' + id + '">');
     _line();
     html.push('</li>');
-    _date().prepend(html.join(''));
-    return id;
+    return html.join('');
 
     function _line() {
         _time();
@@ -30,7 +29,31 @@ function make_item(hash) {
         html.push(' -> ');
         html.push('<em class="' + res + '">' + res + '</em>');
     };
-    function _date() {
+}
+
+
+function make_list(data) {
+    if (data) {
+        var jary = data.list.sort(date_sort);
+        var liary = $('#select li');
+        var len = liary.length;
+        console.log(jary.length + ' vs ' + len);
+        if (len == jary.length) {
+            var item = jary[len - 1];
+            console.log('replace' + JSON.stringify(item));
+            $('#' + item.id).replaceWith(make_item(item));
+        }else {
+            for (var i = len; i < jary.length; i++) {
+                var item = jary[i];
+                console.log('add' + JSON.stringify(item));
+                make_date(item).prepend(make_item(item));
+            }
+        }
+    }
+    activate();
+
+    function make_date(hash) {
+        var time = new Date(hash.id - 0);
         var crd = time.toLocaleDateString();
         var did = crd.replace(/\//g, '_');
         if (!$('#' + did)[0]) {
@@ -41,18 +64,6 @@ function make_item(hash) {
         }
         return $('#' + did);
     }
-}
-
-
-function make_list(data) {
-    if (data) {
-        var list = data.list.sort(date_sort);
-        var size = $('#select li').size();
-        for (var i = size; i < list.length; i++) {
-            make_item(list[i]);
-        }
-    }
-    activate();
 
     // Latest Top
     function date_sort(a, b) {
@@ -82,7 +93,7 @@ function make_list(data) {
 
 function update_list() {
     ajax_update('rec_list.json', make_list);
-    brinking();
+    blinking();
 }
 
 

@@ -48,7 +48,6 @@ module CIAX
       def _get_ans(step, cmds)
         @valid_keys.replace(cmds)
         @record.put(:option, cmds)
-        step.put(:result, 'query')
         @record.put(:status, 'query')
         res = Msg.fg? ? _input_tty : _input_que
         step.put(:action, res)

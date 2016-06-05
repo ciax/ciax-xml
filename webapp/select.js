@@ -31,25 +31,24 @@ function make_item(data) {
     };
 }
 
-function upd_item(data) {
-    var jq = $('#' + data.id);
-    if (!jq[0]) return;
-    var em = jq.children('em');
-    if (em.text() == 'busy') {
-        var res = data.result;
-        console.log('replace busy');
-        em.text(res).attr('class', res);
-    }
-    return true;
-}
-
 function make_list(data) {
     if (!data) return;
     var jary = data.list.sort(_sort_date);
     $.each(jary, function(i, item) {
-        upd_item(item) || _make_date(item).prepend(make_item(item));
+        _upd_item(item) || _make_date(item).prepend(make_item(item));
     });
-    activate(_init_select());
+    _init_select();
+
+    function _upd_item(data) {
+        var jq = $('#' + data.id);
+        if (!jq[0]) return;
+        var em = jq.children('em');
+        if (em.text() == 'busy') {
+            var res = data.result;
+            em.text(res).attr('class', res);
+        }
+        return true;
+    }
 
     function _make_date(data) {
         var time = new Date(data.id - 0);
@@ -76,13 +75,10 @@ function make_list(data) {
     function _init_select() {
         var jq = $('#select li.selected');
         if (jq[0]) return jq;
-        console.log('select is gone');
-        jq = $('#select li').first();
-        jq.addClass('selected');
-        return jq;
+        $('#select li').first().trigger('click');
     }
 }
-// Activate record
+// Activate selected record
 function activate(jq) {
     var id = jq.attr('id');
     stop_upd();
@@ -117,5 +113,4 @@ function init_log() {
         $('#select li').removeClass('selected');
         activate($(this).addClass('selected'));
     }
-
 }

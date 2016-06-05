@@ -130,7 +130,8 @@ function dynamic_page() {
     // **** Updating Page ****
     var last_time = '';  // For detecting update
     var first_time = ''; // For first time at a new macro;
-     var steps_length = 0;
+    var steps_length = 0;
+    var suspend = false;
     return function(tag) { // To be update
         ajax_record(upd_record, tag);
         blinking();
@@ -143,7 +144,7 @@ function dynamic_page() {
         }else if (data.time != last_time) { // Do every time for updated record
             record_update(data);
             last_time = data.time;
-        }
+        }else suspend = true;
     }
     // Update Command Selector
     function record_commands(ary) {
@@ -160,22 +161,30 @@ function dynamic_page() {
         record_commands(ary);
     }
     // Update Content of Steps (When JSON is updated)
+    function append_step(data) {
+        // When Step increases.
+        for (var i = steps_length; i < data.steps.length; i++) {
+            var step = data.steps[i];
+            $('.depth' + step.depth + ':last').append(make_step(step));
+        }
+        steps_length = i;
+        sticky_bottom('slow');
+        record_status(data);
+    }
     function update_steps(data) {
         var crnt = data.steps.length;
         if (steps_length == crnt) {
             // When Step doesn't increase.
             var step = data.steps[crnt - 1];
             $('#' + step.time).html(make_step(step));
+            suspend = true;
+        }else if (suspend) {
+            record_steps(data);
+            steps_length = crnt;
+            suspend = false;
         }else {
-            // When Step increases.
-            for (var i = steps_length; i < crnt; i++) {
-                var step = data.steps[i];
-                $('.depth' + step.depth + ':last').append(make_step(step));
-            }
-            steps_length = i;
+            append_step(data);
         }
-        sticky_bottom('slow');
-        record_status(data);
     }
 
     // **** Make Pages ****

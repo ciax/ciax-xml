@@ -27,7 +27,6 @@ module CIAX
       # layer is Frm,App,Wat,Hex,Mcr,Man
       @layer = class_path.first.downcase
       _init_procs
-      Thread.abort_on_exception = true
       @cobj = Cmd::Index.new(@cfg)
     end
 

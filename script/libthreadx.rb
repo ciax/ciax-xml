@@ -9,11 +9,7 @@ module CIAX
     Threads = ThreadGroup.new
     include Msg
     def initialize(name, color = 4)
-      Thread.abort_on_exception = true
-      th = super do
-        Thread.pass
-        yield
-      end
+      th = super { _do_proc { yield } }
       th[:name] = name
       th[:color] = color
       Threads.add(th)
@@ -25,6 +21,14 @@ module CIAX
 
     def self.killall
       Threads.list.each(&:kill)
+    end
+
+    private
+
+    def _do_proc
+      yield
+    rescue
+      errmsg
     end
   end
 

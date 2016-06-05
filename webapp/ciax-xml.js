@@ -11,7 +11,7 @@ function sticky_bottom(speed) {
 }
 function auto_release() {
     var cr = $(this).scrollTop();
-    if (cr < start_pos && !$(':animated')[0])
+    if (cr < start_pos && !$('#record :animated')[0])
         $('#scroll :checkbox').prop('checked', false);
     start_pos = cr;
 }

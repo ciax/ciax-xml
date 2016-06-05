@@ -70,7 +70,7 @@ function make_list(data) {
         if (sel.children('em').text() == 'busy') {
             start_upd(update);
         }else {
-            stop_upd();
+            start_upd(update_list);
         }
         archive(id);
     }

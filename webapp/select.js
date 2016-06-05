@@ -68,7 +68,7 @@ function make_list(data) {
         var id = sel.attr('id');
         stop_upd();
         if (sel.children('em').text() == 'busy') {
-            start_upd(update);
+            start_upd(update_record);
         }else {
             start_upd(update_list);
         }

@@ -143,7 +143,7 @@ function dynamic_page() {
             record_first(data);
             first_time = data.id;
         }else if (data.time != last_time) { // Do every time for updated record
-            record_update(data);
+            record_next(data);
             last_time = data.time;
         }
     }
@@ -204,11 +204,11 @@ function dynamic_page() {
             mcr_end(data);
         }else { //run
             if (stat == 'query') record_commands(data.option);
-            mcr_start(update);
+            mcr_start(update_record);
         }
         steps_length = data.steps.length;
     }
-    function record_update(data) {
+    function record_next(data) {
         var stat = data.status;
         if (stat == 'end') {
             mcr_end(data);
@@ -239,7 +239,7 @@ function archive(tag) {
 
 // ******** Command ********
 function mcr_start() {
-    if (!start_upd(update)) return;
+    if (!start_upd(update_record)) return;
     $('#scroll :checkbox').prop('checked', true);
     interactive();
 }
@@ -261,8 +261,8 @@ function init_record_event() {
 }
 function init_record() {
     init_record_event();
-    update('latest');
+    update_record();
 }
 // Var setting
-var update = dynamic_page();
+var update_record = dynamic_page();
 var start_time; // For elapsed time

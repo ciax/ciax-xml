@@ -31,28 +31,27 @@ function make_item(hash) {
     };
 }
 
-
 function make_list(data) {
     if (data) {
-        var jary = data.list.sort(date_sort);
-        var liary = $('#select li');
-        var len = liary.length;
-        console.log(jary.length + ' vs ' + len);
-        if (len == jary.length) {
-            var item = jary[len - 1];
-            console.log('replace' + JSON.stringify(item));
-            $('#' + item.id).replaceWith(make_item(item));
-        }else {
-            for (var i = len; i < jary.length; i++) {
-                var item = jary[i];
+        var jary = data.list.sort(_sort_date);
+        var len = $('#select li').length;
+        $.each(jary, function(i, item) {
+            var jq = $('#' + item.id);
+            if (jq[0]) {
+                if (!jq.hasClass('selected') &&
+                    jq.children('em').text() == 'busy') {
+                    console.log('replace' + JSON.stringify(item));
+                    jq.replaceWith(make_item(item));
+                }
+            }else {
                 console.log('add' + JSON.stringify(item));
-                make_date(item).prepend(make_item(item));
+                _make_date(item).prepend(make_item(item));
             }
-        }
+        });
+        activate(_init_select());
     }
-    activate();
 
-    function make_date(hash) {
+    function _make_date(hash) {
         var time = new Date(hash.id - 0);
         var crd = time.toLocaleDateString();
         var did = crd.replace(/\//g, '_');
@@ -66,7 +65,7 @@ function make_list(data) {
     }
 
     // Latest Top
-    function date_sort(a, b) {
+    function _sort_date(a, b) {
         var na = a.id - 0;
         var nb = b.id - 0;
         if (na < nb) return -1;
@@ -74,28 +73,31 @@ function make_list(data) {
         return 0;
     }
 
-    function activate() {
-        var sel = $('#select li.selected');
-        if (!sel[0]) {
-            sel = $('#select li').first();
-            sel.addClass('selected');
-        }
-        var id = sel.attr('id');
-        if (sel.children('em').text() == 'busy') {
-            stop_upd();
-            start_upd(update_record);
-        }else {
-            start_upd(update_list);
-        }
-        archive(id);
-        blinking();
+    function _init_select() {
+        var jq = $('#select li.selected');
+        if (jq[0]) return jq;
+        console.log('select is gone');
+        jq = $('#select li').first();
+        jq.addClass('selected');
+        return jq;
     }
+}
+// Activate record
+function activate(jq) {
+    var id = jq.attr('id');
+    stop_upd();
+    if (jq.children('em').text() == 'busy') {
+        start_upd(update_record);
+    }else {
+        start_upd(update_list);
+    }
+    archive(id);
+    blinking();
 }
 
 function update_list() {
     ajax_update('rec_list.json', make_list);
 }
-
 
 // Initial Setting
 function init_log() {
@@ -103,7 +105,6 @@ function init_log() {
     init_record_event();
     set_acordion('#select');
     // Set click event
-    $('#select').on('click', update_list);
     $('#select').on('click', 'li', switch_select);
     // Set first selected
     ajax_static('rec_list.json', function(data) {
@@ -114,7 +115,7 @@ function init_log() {
     function switch_select() {
         if ($(this).hasClass('selected')) return;
         $('#select li').removeClass('selected');
-        $(this).addClass('selected');
+        activate($(this).addClass('selected'));
     }
 
 }

@@ -188,7 +188,7 @@ function dynamic_page() {
         }
     }
 
-    // **** Make Pages ****
+    // **** Regular update on/off ****
     function mcr_end(data) {
         record_steps(data);
         record_result(data);
@@ -196,6 +196,13 @@ function dynamic_page() {
         stop_upd();
         $('#msg').text('');
     }
+    function mcr_start() {
+        if (!start_upd(update_record)) return;
+        $('#scroll :checkbox').prop('checked', true);
+        interactive();
+    }
+
+    // **** Make Pages ****
     function record_first(data) {
         port = data.port;
         record_outline(data); // Make record one time
@@ -238,18 +245,12 @@ function archive(tag) {
 }
 
 // ******** Command ********
-function mcr_start() {
-    if (!start_upd(update_record)) return;
-    $('#scroll :checkbox').prop('checked', true);
-    interactive();
-}
-
 function selmcr(obj) {
     var cmd = get_select(obj);
     if (!cmd) return;
     exec(cmd, function() {
         make_select(obj, []);
-        mcr_start();
+        update_record();
     });
 }
 

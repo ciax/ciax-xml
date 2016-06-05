@@ -38,6 +38,7 @@ function make_list(data) {
         _upd_item(item) || _make_date(item).prepend(make_item(item));
     });
     _init_select();
+    blinking();
 
     function _upd_item(data) {
         var jq = $('#' + data.id);
@@ -88,7 +89,6 @@ function activate(jq) {
         start_upd(update_list);
     }
     archive(id);
-    blinking();
 }
 
 function update_list() {

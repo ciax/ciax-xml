@@ -1,9 +1,9 @@
 // Recommended Package: closure-linter
 // fixjsstyle select.js
 // Listing part
-function make_item(hash) {
+function make_item(data) {
     var html = [];
-    var id = hash.id;
+    var id = data.id;
     var time = new Date(id - 0);
     // Date(j-0) -> cast to num
     html.push('<li id="' + id + '">');
@@ -14,7 +14,7 @@ function make_item(hash) {
     function _line() {
         _time();
         _cmd();
-        _res(hash.result);
+        _res(data.result);
     }
 
     function _time() {
@@ -23,7 +23,7 @@ function make_item(hash) {
         html.push('</span>');
     }
     function _cmd() {
-        html.push(' <span class="cmd">[' + hash.cid + ']</span>');
+        html.push(' <span class="cmd">[' + data.cid + ']</span>');
     }
     function _res(res) {
         html.push(' -> ');
@@ -31,28 +31,28 @@ function make_item(hash) {
     };
 }
 
-function make_list(data) {
-    if (data) {
-        var jary = data.list.sort(_sort_date);
-        var len = $('#select li').length;
-        $.each(jary, function(i, item) {
-            var jq = $('#' + item.id);
-            if (jq[0]) {
-                if (!jq.hasClass('selected') &&
-                    jq.children('em').text() == 'busy') {
-                    console.log('replace' + JSON.stringify(item));
-                    jq.replaceWith(make_item(item));
-                }
-            }else {
-                console.log('add' + JSON.stringify(item));
-                _make_date(item).prepend(make_item(item));
-            }
-        });
-        activate(_init_select());
+function upd_item(data) {
+    var jq = $('#' + data.id);
+    if (!jq[0]) return;
+    var em = jq.children('em');
+    if (em.text() == 'busy') {
+        var res = data.result;
+        console.log('replace busy');
+        em.text(res).attr('class', res);
     }
+    return true;
+}
 
-    function _make_date(hash) {
-        var time = new Date(hash.id - 0);
+function make_list(data) {
+    if (!data) return;
+    var jary = data.list.sort(_sort_date);
+    $.each(jary, function(i, item) {
+        upd_item(item) || _make_date(item).prepend(make_item(item));
+    });
+    activate(_init_select());
+
+    function _make_date(data) {
+        var time = new Date(data.id - 0);
         var crd = time.toLocaleDateString();
         var did = crd.replace(/\//g, '_');
         if (!$('#' + did)[0]) {

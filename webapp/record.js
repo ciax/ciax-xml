@@ -125,13 +125,6 @@ function record_result(data) { // Do at the end
     $('#total').text('[' + data.total_time + ']').attr('title', last.toTimeString());
 }
 
-// ******** Static Page *********
-function static_page(data, status) {
-    if (status != 'success') return;
-    record_outline(data);
-    record_result(data);
-}
-
 // ******** Dynamic Page ********
 function dynamic_page() {
     // **** Updating Page ****
@@ -139,8 +132,7 @@ function dynamic_page() {
     var first_time = ''; // For first time at a new macro;
      var steps_length = 0;
     return function(tag) { // To be update
-        tag = tag ? tag : 'latest';
-        ajax_update('record_' + tag + '.json', upd_record);
+        ajax_record(upd_record, tag);
         blinking();
     }
     function upd_record(data, status) {
@@ -215,7 +207,24 @@ function dynamic_page() {
         }
     }
 }
-// *** Command ***
+// ******** Static Page *********
+function static_page(data, status) {
+    if (status != 'success') return;
+    record_outline(data);
+    record_result(data);
+}
+
+// ******** Ajax ********
+function ajax_record(func, tag) {
+    tag = tag ? tag : 'latest';
+    ajax_update('record_' + tag + '.json', func);
+}
+function archive(tag) {
+    // Read whether src is updated or not
+    ajax_record(static_page, tag);
+}
+
+// ******** Command ********
 function selmcr(obj) {
     var cmd = get_select(obj);
     if (!cmd) return;
@@ -225,11 +234,6 @@ function selmcr(obj) {
     });
 }
 
-// *** Ajax ***
-function archive(tag) {
-    // Read whether src is updated or not
-    ajax_static('record_' + tag + '.json', static_page);
-}
 // ******** Init Page ********
 function init_record_event() {
     height_adjust();

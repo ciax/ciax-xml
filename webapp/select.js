@@ -79,17 +79,6 @@ function make_list(data) {
         $('#select li').first().trigger('click');
     }
 }
-// Activate selected record
-function activate(jq) {
-    var id = jq.attr('id');
-    stop_upd();
-    if (jq.children('em').text() == 'busy') {
-        start_upd(update_record);
-    }else {
-        start_upd(update_list);
-    }
-    archive(id);
-}
 
 function update_list() {
     ajax_update('rec_list.json', make_list);
@@ -101,16 +90,24 @@ function init_log() {
     init_record_event();
     set_acordion('#select');
     // Set click event
-    $('#select').on('click', 'li', switch_select);
+    $('#select').on('click', 'li', _switch_select);
     // Set first selected
     ajax_static('rec_list.json', function(data) {
         make_list(data);
         acordion('#select h4:not(:first)');
     });
 
-    function switch_select() {
+    function _switch_select() {
         if ($(this).hasClass('selected')) return;
         $('#select li').removeClass('selected');
-        activate($(this).addClass('selected'));
+        var jq = $(this).addClass('selected');
+        // Activate selected record
+        archive(jq.attr('id'));
+        stop_upd();
+        if (jq.children('em').text() == 'busy') {
+            start_upd(update_record);
+        }else {
+            start_upd(update_list);
+        }
     }
 }

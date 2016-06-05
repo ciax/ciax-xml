@@ -133,7 +133,7 @@ function dynamic_page() {
     var steps_length = 0;
     var suspend = false;
     return function(tag) { // To be update
-        ajax_record(upd_record, tag);
+        ajax_record(tag, upd_record, function() { suspend = true;});
         blinking();
     }
     function upd_record(data, status) {
@@ -144,7 +144,7 @@ function dynamic_page() {
         }else if (data.time != last_time) { // Do every time for updated record
             record_update(data);
             last_time = data.time;
-        }else suspend = true;
+        }
     }
     // Update Command Selector
     function record_commands(ary) {
@@ -224,13 +224,14 @@ function static_page(data, status) {
 }
 
 // ******** Ajax ********
-function ajax_record(func, tag) {
+// func1 for updated, func2 for no changes
+function ajax_record(tag, func1, func2) {
     tag = tag ? tag : 'latest';
-    ajax_update('record_' + tag + '.json', func);
+    ajax_update('record_' + tag + '.json', func1, func2);
 }
 function archive(tag) {
     // Read whether src is updated or not
-    ajax_record(static_page, tag);
+    ajax_record(tag, static_page);
 }
 
 // ******** Command ********

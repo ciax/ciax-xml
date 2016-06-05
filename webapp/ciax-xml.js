@@ -130,8 +130,9 @@ function seldv(obj) {
 function ajax_static(url, func) {
     $.ajax(url, { ifModified: false, cache: true, success: func});
 }
-function ajax_update(url, func) {
-    $.ajax(url, { ifModified: true, cache: false, success: func});
+// func1 for updated, func2 for no changes
+function ajax_update(url, func1, func2) {
+    $.ajax(url, { ifModified: true, cache: false, success: func1, error: func2});
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js

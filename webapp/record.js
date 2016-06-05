@@ -195,6 +195,7 @@ function dynamic_page() {
         init_commands();
         stop_upd();
         $('#msg').text('');
+        start_upd(update_list); // start select if exist
     }
     function mcr_start() {
         if (!start_upd(update_record)) return;

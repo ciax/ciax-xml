@@ -142,7 +142,7 @@ function stop_upd() {
     itvl = null;
 }
 function start_upd(func) {
-    if (itvl) return;
+    if (itvl || !func) return;
     itvl = setInterval(func, 1000);
 }
 var itvl;

@@ -7,12 +7,16 @@ function make_item(hash) {
     // Date(j-0) -> cast to num
     var time = new Date(id - 0);
     html.push('<li id="' + id + '">');
-    _time();
-    _cmd();
-    _res(hash.result);
+    _line();
     html.push('</li>');
     _date().prepend(html.join(''));
     return id;
+
+    function _line() {
+        _time();
+        _cmd();
+        _res(hash.result);
+    }
 
     function _time() {
         html.push('<span class="time" title="' + id + '">');
@@ -66,8 +70,8 @@ function make_list(data) {
             sel.addClass('selected');
         }
         var id = sel.attr('id');
-        stop_upd();
         if (sel.children('em').text() == 'busy') {
+            stop_upd();
             start_upd(update_record);
         }else {
             start_upd(update_list);
@@ -78,6 +82,7 @@ function make_list(data) {
 
 function update_list() {
     ajax_update('rec_list.json', make_list);
+    brinking();
 }
 
 

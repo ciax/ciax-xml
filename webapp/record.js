@@ -231,7 +231,8 @@ function ajax_record(tag, func1, func2) {
 }
 function archive(tag) {
     // Read whether src is updated or not
-    ajax_record(tag, static_page);
+    tag = tag ? tag : 'latest';
+    ajax_static('record_' + tag + '.json', static_page);
 }
 
 // ******** Command ********

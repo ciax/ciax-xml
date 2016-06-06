@@ -104,10 +104,10 @@ function record_outline(data) { // Do at the first
     $('#date').text(new Date(data.id - 0)).attr('title', data.id);
     $('#total').text('');
     replace('#result', '');
-    record_steps(data);
+    record_page(data);
 }
 // Macro Body
-function record_steps(data) {
+function record_page(data) {
     $('#record ul').empty();
     $.each(data.steps, function(i, step) {
         $('#record .depth' + step.depth + ':last').append(make_step(step));
@@ -134,35 +134,35 @@ function dynamic_page() {
     var suspend = false;
     return function(tag) { // To be update
         tag = tag ? tag : 'latest';
-        ajax_record(tag, upd_record, function() { suspend = true;});
+        ajax_record(tag, _upd_page, function() { suspend = true;});
         blinking();
     }
-    function upd_record(data, status) {
+    function _upd_page(data, status) {
         if (status != 'success') return;
         if (first_time != data.id) { // Do only the first one for new macro
-            record_first(data);
+            _first_page(data);
             first_time = data.id;
         }else if (data.time != last_time) { // Do every time for updated record
-            record_next(data);
+            _next_page(data);
             last_time = data.time;
         }
     }
     // Update Command Selector
-    function record_commands(ary) {
+    function _set_commands(ary) {
         var sel = $('#query select')[0];
         if (sel) make_select(sel, ary);
     }
-    function init_commands() {
+    function _init_commands() {
         var slots = [];
         for (var i = 0; i <= 23; i++) { slots.push('slot' + i); }
         var ary = ['upd'];
         ary.push(['init', ['tinit', 'cinit']]);
         ary.push(['mos', ['start', 'load', 'store', 'fin', 'kapa', 'kapa1']]);
         ary.push(['slot', slots]);
-        record_commands(ary);
+        _set_commands(ary);
     }
     // Update Content of Steps (When JSON is updated)
-    function append_step(data) {
+    function _append_step(data) {
         // When Step increases.
         for (var i = steps_length; i < data.steps.length; i++) {
             var step = data.steps[i];
@@ -172,7 +172,7 @@ function dynamic_page() {
         sticky_bottom('slow');
         record_status(data);
     }
-    function update_steps(data) {
+    function _update_step(data) {
         var crnt = data.steps.length;
         if (steps_length == crnt) {
             // When Step doesn't increase.
@@ -180,49 +180,49 @@ function dynamic_page() {
             $('#' + step.time).html(make_step(step));
             suspend = true;
         }else if (suspend) {
-            record_steps(data);
+            record_page(data);
             steps_length = crnt;
             suspend = false;
         }else {
-            append_step(data);
+            _append_step(data);
         }
     }
 
     // **** Regular update on/off ****
-    function mcr_end(data) {
-        record_steps(data);
+    function _mcr_end(data) {
+        record_page(data);
         record_result(data);
-        init_commands();
+        _init_commands();
         stop_upd();
         $('#msg').text('');
         start_upd(update_list); // start select if exist
     }
-    function mcr_start() {
+    function _mcr_start() {
         if (!start_upd(update_record)) return;
         $('#scroll :checkbox').prop('checked', true);
         interactive();
     }
 
     // **** Make Pages ****
-    function record_first(data) {
+    function _first_page(data) {
         port = data.port;
         record_outline(data); // Make record one time
         var stat = data.status;
         if (stat == 'end') {
-            mcr_end(data);
+            _mcr_end(data);
         }else { //run
-            if (stat == 'query') record_commands(data.option);
-            mcr_start(update_record);
+            if (stat == 'query') _set_commands(data.option);
+            _mcr_start(update_record);
         }
         steps_length = data.steps.length;
     }
-    function record_next(data) {
+    function _next_page(data) {
         var stat = data.status;
         if (stat == 'end') {
-            mcr_end(data);
+            _mcr_end(data);
         }else {
-            if (stat == 'query') record_commands(data.option);
-            update_steps(data); // Make record one by one
+            if (stat == 'query') _set_commands(data.option);
+            _update_step(data); // Make record one by one
         }
     }
 }
@@ -250,6 +250,7 @@ function selmcr(obj) {
     var cmd = get_select(obj);
     if (!cmd) return;
     exec(cmd, function() {
+        // Do after exec if success
         make_select(obj, []);
         update_record();
     });

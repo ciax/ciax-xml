@@ -43,7 +43,7 @@
         <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>
         </wait>
-        <wait retry="300" label="Run end?">
+        <wait retry="600" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
         </wait>
         <upd site="mft"/>

@@ -144,6 +144,7 @@ function stop_upd() {
 function start_upd(func) {
     if (itvl || !func) return;
     itvl = setInterval(func, 1000);
+    return true;
 }
 var itvl;
 var port;

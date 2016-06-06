@@ -10,6 +10,7 @@ module CIAX
     # db = addigional option db
     attr_reader :layer
     def initialize(usagestr, optstr, db = {}, &opt_proc)
+      Thread.current[:name] = 'Main'
       @usagestr = "(opt) #{usagestr}"
       _init_db(db)
       _set_opt(optstr)

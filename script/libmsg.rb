@@ -80,7 +80,7 @@ module CIAX
 
     def head_ary
       cary = []
-      th = Thread.current[:name] || 'Main'
+      th = Thread.current[:name]
       cpath = class_path
       ns = cpath.shift
       cls = cpath.join('::')

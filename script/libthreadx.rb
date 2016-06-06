@@ -8,15 +8,9 @@ module CIAX
   class Threadx < Thread
     Threads = ThreadGroup.new
     include Msg
-    def initialize(tname, id, color = 4)
-      th = super do
-        _do_proc do
-          verbose { "Initiate Thread (#{id})" }
-          yield
-        end
-      end
+    def initialize(tname, id)
+      th = super { _do_proc(id) { yield } }
       th[:name] = tname
-      th[:color] = color
       Threads.add(th)
     end
 
@@ -30,7 +24,8 @@ module CIAX
 
     private
 
-    def _do_proc
+    def _do_proc(id)
+      verbose { "Initiate Thread (#{id})" }
       yield
     rescue
       errmsg
@@ -39,7 +34,7 @@ module CIAX
 
   # Thread with Loop
   class ThreadLoop < Threadx
-    def initialize(name, id, color = 4)
+    def initialize(name, id)
       super do
         loop do
           yield
@@ -52,7 +47,7 @@ module CIAX
   # UDP Server Thread
   class ThreadUdp < Threadx
     def initialize(name, id, port)
-      super(name, id, 9) do
+      super(name, id) do
         udp = UDPSocket.open
         udp.bind('0.0.0.0', port.to_i)
         _udp_loop(udp) { |line, rhost| yield(line, rhost) }

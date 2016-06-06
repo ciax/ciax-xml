@@ -51,7 +51,7 @@ module CIAX
       end
 
       def fork
-        Threadx.new('Macro', @id, 10) { upd.macro }
+        Threadx.new('Macro', @id) { upd.macro }
       end
 
       private

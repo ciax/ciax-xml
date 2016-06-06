@@ -87,7 +87,7 @@ module CIAX
         @id = id
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
         @queue = Queue.new
-        ThreadLoop.new('SqLog', @id, 13) { _log_save }
+        ThreadLoop.new('SqLog', @id) { _log_save }
       end
 
       # Check table existence (ver=0 is invalid)

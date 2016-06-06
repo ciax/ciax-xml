@@ -6,6 +6,7 @@ require 'libmsgmod'
 module CIAX
   ######################### Message Module #############################
   # Should be extended in module/class
+  TH_COLORS = {}
   NS_COLORS = {}
   CLS_COLORS = {}
   # Message module
@@ -79,12 +80,12 @@ module CIAX
 
     def head_ary
       cary = []
-      tc = Thread.current
+      th = Thread.current[:name] || 'Main'
       cpath = class_path
       ns = cpath.shift
       cls = cpath.join('::')
       cls << "(#{@id})" if @id
-      cary << [tc[:name] || 'Main', tc[:color] || 15]
+      cary << [th, th_color(th)]
       cary << [ns, ns_color(ns)]
       cary << [cls, cls_color || 15]
     end
@@ -93,6 +94,10 @@ module CIAX
       Msg.indent(Msg.ver_indent) + head_ary.map do|str, color|
         Msg.colorize(str.to_s, color)
       end.join(':')
+    end
+
+    def th_color(ns)
+      TH_COLORS[ns.to_s] ||= _gen_color(TH_COLORS, 15)
     end
 
     def ns_color(ns)

@@ -39,10 +39,8 @@ module CIAX
     private
 
     def _log_thread(id)
-      Threadx.new("Logging(#{@type})", @id) do
-        verbose { "Initiate File Log [#{id}/Ver.#{self[:ver]}]" }
-        loop { _log_save }
-      end
+      verbose { "Initiate File Log [#{id}/Ver.#{self[:ver]}]" }
+      ThreadLoop.new("Logging(#{@type})", @id) { _log_save }
     end
 
     def _log_save

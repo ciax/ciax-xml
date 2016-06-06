@@ -25,6 +25,7 @@ module CIAX
     private
 
     def _do_proc(id)
+      Thread.pass
       verbose { "Initiate Thread (#{id})" }
       yield
     rescue

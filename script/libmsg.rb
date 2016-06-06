@@ -97,16 +97,16 @@ module CIAX
     end
 
     def th_color(ns)
-      TH_COLORS[ns.to_s] ||= _gen_color(TH_COLORS, 15)
+      TH_COLORS[ns.to_s] ||= _gen_color(TH_COLORS)
     end
 
     def ns_color(ns)
-      NS_COLORS[ns.to_s] ||= _gen_color(NS_COLORS)
+      NS_COLORS[ns.to_s] ||= _gen_color(NS_COLORS, 1)
     end
 
     def cls_color
       cls = class_path.last
-      CLS_COLORS[cls] ||= _gen_color(CLS_COLORS, 9)
+      CLS_COLORS[cls] ||= _gen_color(CLS_COLORS, 2)
     end
 
     # VER= makes setenv "" to VER otherwise nil
@@ -129,8 +129,8 @@ module CIAX
       @indent_base += add
     end
 
-    def _gen_color(table, ofs = 1)
-      (table.size % 7) + ofs
+    def _gen_color(table, ofs = 0)
+      15 - (table.size + ofs) % 15
     end
   end
 end

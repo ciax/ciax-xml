@@ -81,9 +81,8 @@ module CIAX
     def head_ary
       cary = []
       th = Thread.current[:name]
-      cpath = class_path
-      ns = cpath.shift
-      cls = cpath.join('::')
+      ns = @layer
+      cls = class_path.pop
       cls << "(#{@id})" if @id
       cary << [th, th_color(th)]
       cary << [ns, ns_color(ns)]

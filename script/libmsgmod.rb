@@ -27,6 +27,10 @@ module CIAX
       CIAX.const_get self.class.name.split('::')[1]
     end
 
+    def layer_name
+      class_path.first.downcase
+    end
+
     def class_path
       self.class.to_s.split('::')[1..-1]
     end

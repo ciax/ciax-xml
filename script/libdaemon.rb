@@ -10,6 +10,7 @@ module CIAX
     def initialize(tag, optstr = '')
       ENV['VER'] ||= 'Initiate'
       _chk_args(_kill_pids(tag))
+      @layer = tag
       ConfOpts.new('[id] ....', optstr + 'sb') do |cfg, args, opt|
         atrb = { sites: args }
         @obj = yield(cfg, atrb)

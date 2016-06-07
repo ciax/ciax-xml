@@ -6,8 +6,9 @@ require 'thread'
 module CIAX
   # Extended Thread class
   module Threadx
-    extend self
     Threads = ThreadGroup.new
+
+    module_function
 
     def list
       Thread.list.map { |t| t[:name] }
@@ -19,7 +20,8 @@ module CIAX
 
     class Fork < Thread
       include Msg
-      def initialize(tname, id)
+      def initialize(tname, layer, id)
+        @layer = layer
         th = super { _do_proc(id) { yield } }
         th[:name] = tname
         Threads.add(th)
@@ -37,7 +39,7 @@ module CIAX
     end
     # Thread with Loop
     class Loop < Fork
-      def initialize(name, id)
+      def initialize(tname, layer, id)
         super do
           loop do
             yield
@@ -50,7 +52,7 @@ module CIAX
     # Queue Thread
     class Que < Fork
       attr_reader :queue
-      def initialize(name, id)
+      def initialize(tname, layer, id)
         @queue = Queue.new
         super do
           loop do
@@ -62,8 +64,8 @@ module CIAX
 
     # UDP Server Thread
     class Udp < Fork
-      def initialize(name, id, port)
-        super(name, id) do
+      def initialize(name, layer, id, port)
+        super(name, layer, id) do
           udp = UDPSocket.open
           udp.bind('0.0.0.0', port.to_i)
           _udp_loop(udp) { |line, rhost| yield(line, rhost) }

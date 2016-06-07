@@ -53,7 +53,7 @@ module CIAX
     end
 
     def server
-      @tid = Threadx::Loop.new('Buffer', @id) do
+      @tid = Threadx::Loop.new('Buffer', 'app', @id) do
         verbose { 'Waiting' }
         pri_sort(@q.shift)
         exec_buf if @q.empty?

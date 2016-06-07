@@ -25,7 +25,7 @@ module CIAX
     def initialize(cfg, atrb = Hashx.new)
       @cfg = type?(cfg, Config).gen(self).update(atrb)
       # layer is Frm,App,Wat,Hex,Mcr,Man
-      @layer = class_path.first.downcase
+      @layer = layer_name
       _init_procs
       @cobj = Cmd::Index.new(@cfg)
     end

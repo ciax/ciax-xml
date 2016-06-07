@@ -154,9 +154,11 @@ function dynamic_page() {
     }
     function _init_commands() {
         var slots = [];
-        for (var i = 0; i <= 23; i++) { slots.push('slot' + i); }
         var access = [];
-        for (var i = 0; i <= 23; i++) { access.push('access' + i); }
+        for (var i = 0; i <= 21; i++) {
+            slots.push('slot' + i);
+            access.push('access' + i)
+        }
         var ary = ['upd'];
         ary.push(['init', ['tinit', 'cinit']]);
         ary.push(['mos', ['start', 'load', 'store', 'fin', 'kapa', 'kapa1']]);

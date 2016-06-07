@@ -155,10 +155,13 @@ function dynamic_page() {
     function _init_commands() {
         var slots = [];
         for (var i = 0; i <= 23; i++) { slots.push('slot' + i); }
+        var access = [];
+        for (var i = 0; i <= 23; i++) { access.push('access' + i); }
         var ary = ['upd'];
         ary.push(['init', ['tinit', 'cinit']]);
         ary.push(['mos', ['start', 'load', 'store', 'fin', 'kapa', 'kapa1']]);
         ary.push(['slot', slots]);
+        ary.push(['access', access]);
         _set_commands(ary);
     }
     // Update Content of Steps (When JSON is updated)

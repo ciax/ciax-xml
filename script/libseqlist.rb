@@ -34,7 +34,7 @@ module CIAX
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent, pid = '0')
         seq = Sequencer.new(ent, pid) { |e, p| add(e, p) }
-        @threads.add(type?(seq.fork, Threadx)) # start immediately
+        @threads.add(type?(seq.fork, Threadx::Fork)) # start immediately
         put(seq.id, seq.record)
         seq
       end

@@ -6,21 +6,23 @@ require 'thread'
 module CIAX
   # Extended Thread class
   module Threadx
+    extend self
+    Threads = ThreadGroup.new
+
+    def list
+      Thread.list.map { |t| t[:name] }
+    end
+
+    def killall
+      Threads.list.each(&:kill)
+    end
+
     class Fork < Thread
-      Threads = ThreadGroup.new
       include Msg
       def initialize(tname, id)
         th = super { _do_proc(id) { yield } }
         th[:name] = tname
         Threads.add(th)
-      end
-
-      def self.list
-        Thread.list.map { |t| t[:name] }
-      end
-
-      def self.killall
-        Threads.list.each(&:kill)
       end
 
       private
@@ -46,8 +48,7 @@ module CIAX
     end
 
     # Queue Thread
-
-    class Queue < Fork
+    class Que < Fork
       attr_reader :queue
       def initialize(name, id)
         @queue = Queue.new

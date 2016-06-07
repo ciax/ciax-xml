@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libconf'
+require 'libthreadx'
 module CIAX
   ### Daemon Methods ###
   class Daemon

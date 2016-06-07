@@ -28,8 +28,8 @@
       <range class="normal" msg="S19">-19</range>
       <range class="normal" msg="S20">-20</range>
       <range class="normal" msg="S21">-21</range>
-      <range class="normal" msg="X22">-22</range>
-      <range class="normal" msg="Sensor">-23</range>
+      <range class="normal" msg="S22">-22</range>
+      <range class="normal" msg="S23">-23</range>
     </table>
     <table id="acs" label="Human Readable Access Slot Number">
       <range class="normal" msg="A18">0</range>
@@ -37,7 +37,7 @@
       <range class="normal" msg="A20">-2</range>
       <range class="normal" msg="A21">-3</range>
       <range class="normal" msg="A22">-4</range>
-      <range class="normal" msg="Sensor">-5</range>
+      <range class="normal" msg="A23">-5</range>
       <range class="normal" msg="A00">-6</range>
       <range class="normal" msg="A01">-7</range>
       <range class="normal" msg="A02">-8</range>

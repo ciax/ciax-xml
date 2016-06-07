@@ -130,7 +130,7 @@ RuntimeError
  SqLog::Simulator
  SqLog::Table
  Thread  Threadx 
- Threadx  ThreadLoop 
+ Threadx  Threadx::Loop 
  Threadx  ThreadUdp 
  Wat::Condition
  Wat::Event

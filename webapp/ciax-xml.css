@@ -13,9 +13,14 @@ html,body{
 }
 table{
     width : 100%;
+    overflow: auto;
+    white-space: nowrap;
 }
 th{
     text-align : center;
+}
+td{
+    white-space: nowrap;
 }
 button, select{
     font-weight: bold;

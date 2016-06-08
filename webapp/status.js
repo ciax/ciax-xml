@@ -14,7 +14,7 @@ function elapsed() {
     $('#elapsed').text(str);
 }
 function conv(stat) {
-    if(!stat) return;
+    if (!stat) return;
     var data = $.extend({},stat.data, stat.msg);
     for (var id in data) {
         if ('class' in stat && id in stat.class) {
@@ -25,6 +25,8 @@ function conv(stat) {
     last = stat.time;
     var lstr = new Date(last);
     $('#time').text(lstr.toLocaleString());
+    var out = $('div.outline');
+    resizeTo(800, out.outerHeight() + 100);
 }
 function update() {
     ajax_update(type + '_' + site + '.json', conv);

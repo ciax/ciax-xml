@@ -4,7 +4,7 @@ function replace(sel, str, cls) {
 }
 function open_link(site) {
     window.open('/json/' + site + '.html', site,
-                'menubar=no,location=no,status=no,height=400px,width=800px'
+                'menubar=no,location=no,status=no,width=800,height=200'
                );
 }
 // ******* Animation *********

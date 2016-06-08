@@ -11,13 +11,17 @@ function make_step(step) {
 
     function _title() {
         var type = step.type;
-        html.push('<span class="head ' + type + '">' + type + '</span>');
-        html.push('<span class="cmd">');
-        if (step.label) html.push(': ' + step.label);
         var ary = [];
-        if (step.site) { ary.push(step.site); }
+        html.push('<span class="head ' + type + '">' + type + '</span>');
+        html.push('<span class="cmd"');
+        if (step.site) {
+            ary.push(step.site);
+            html.push(_devlink(step.site));
+        }
+        html.push('>');
         if (step.args) { ary = ary.concat(step.args); }
         if (step.val) { ary.push(step.val); }
+        if (step.label) html.push(': ' + step.label);
         if (ary.length > 0) {html.push(': [' + ary.join(':') + ']');}
         html.push('</span>');
     }
@@ -80,7 +84,8 @@ function make_step(step) {
         $.each(step.conditions, function(k, cond) {
             var res = cond.res;
             html.push('<li>');
-            html.push('<var>' + cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
+            html.push('<var ' + _devlink(cond.site) + '>');
+            html.push(cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
             html.push('<code>' + _operator(cond.cmp, cond.cri) + '?</code>  ');
             if (step.type == 'goal' && res == false) res = 'warn';
             html.push('<span class="' + res + '"> (' + cond.real + ')</span>');
@@ -93,9 +98,10 @@ function make_step(step) {
         if (step.type != 'mcr') return;
         html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
     }
-
+    function _devlink(site) {
+        return ('onclick="open_link(\'' + site + '\');"');
+    }
 }
-
 // ********* Outline **********
 // *** Display on the Bars ***
 function record_outline(data) { // Do at the first

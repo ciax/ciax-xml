@@ -2,6 +2,11 @@
 function replace(sel, str, cls) {
     return $(sel).text(str).attr('class', cls || str);
 }
+function open_link(site) {
+    window.open('/json/' + site + '.html', site,
+                'menubar=no,location=no,status=no,height=400px,width=800px'
+               );
+}
 // ******* Animation *********
 // Auto scroll. Check box with id:go_bottm is needed;
 function sticky_bottom(speed) {

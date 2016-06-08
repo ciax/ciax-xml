@@ -21,16 +21,22 @@ module CIAX
           next if gid == '-'
           _check_group(gid)
           tbody = _mk_tbody('Control ' + @gdb[gid][:caption])
-          _mk_ctl_line(gid, tbody)
+          _mk_ctl_column(gid, tbody)
         end
         self
       end
 
-      def _mk_ctl_line(gid, tbody)
+      def _mk_ctl_column(gid, tbody)
         return unless @udb
-        uary = @gdb[gid][:units] || return
-        td = tbody.enclose('tr').enclose('td', class: 'item')
-        uary.sort.each do|uid|
+        member = @gdb[gid][:units] || return
+        member.sort.each_slice(3) do |uary|
+          td = tbody.enclose('tr').enclose('td', class: 'item')
+          _mk_ctl_line(td, uary)
+        end
+      end
+
+      def _mk_ctl_line(td, uary)
+        uary.each do|uid|
           next if _mk_ctl_unit(td, uid)
           errary = @udb.map { |k, v| itemize(k, v[:label]) }
           errary.unshift('Wrong CTL Unit')

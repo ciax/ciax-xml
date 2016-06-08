@@ -98,32 +98,32 @@ function interactive() {
         dvctl('interactive');
 }
 // Select Command
-function make_select(obj, ary) {
+function make_select(dom, ary) {
     var opt = ['<option>--select--</option>'];
-    make_opt(opt, ary);
-    obj.innerHTML = opt.join('');
+    make_opt(ary);
+    $(dom).html(opt.join(''));
     if (ary.length > 0) $('#msg').text('');
 
-    function make_opt(opt, ary) {
-        for (var i in ary) {
-            if (Array.isArray(ary[i])) {
-                // Grouping
-                opt.push('<optgroup label="' + ary[i][0] + '">');
-                make_opt(opt, ary[i][1]);
+    function make_opt(ary) {
+        $.each(ary, function(i, val) {
+            // Grouping
+            if (Array.isArray(val)) {
+                opt.push('<optgroup label="' + val[0] + '">');
+                make_opt(val[1]);
                 opt.push('</optgroup>');
             }else {
-                opt.push('<option>' + ary[i] + '</option>');
+                opt.push('<option>' + val + '</option>');
             }
-        }
+        });
     }
 }
-function get_select(obj) {
-    var cmd = obj.options[obj.selectedIndex].value;
+function get_select(dom) {
+    var cmd = $(dom).val();//options[obj.selectedIndex].value;
     if (cmd == '--select--') return;
     return cmd;
 }
-function seldv(obj) {
-    var cmd = get_select(obj);
+function seldv(dom) {
+    var cmd = get_select(dom);
     if (cmd) exec(cmd);
 }
 // ********* Ajax *********

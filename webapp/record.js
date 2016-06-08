@@ -153,18 +153,10 @@ function dynamic_page() {
         if (sel) make_select(sel, ary);
     }
     function _init_commands() {
-        var slots = [];
-        var access = [];
-        for (var i = 0; i <= 21; i++) {
-            slots.push('slot' + i);
-            access.push('access' + i)
-        }
-        var ary = ['upd'];
-        ary.push(['init', ['tinit', 'cinit']]);
-        ary.push(['mos', ['start', 'load', 'store', 'fin', 'kapa', 'kapa1']]);
-        ary.push(['slot', slots]);
-        ary.push(['access', access]);
-        _set_commands(ary);
+        ajax_static('/json/mcr_conf.json', function(data) {
+            port = data.port;
+            _set_commands(data.commands);
+        });
     }
     // Update Content of Steps (When JSON is updated)
     function _append_step(data) {
@@ -200,7 +192,8 @@ function dynamic_page() {
         _init_commands();
         stop_upd();
         $('#msg').text('');
-        start_upd(update_list); // start select if exist
+        if (typeof update_list != 'undefined')
+            start_upd(update_list); // start select if exist
     }
     function _mcr_start() {
         if (!start_upd(update_record)) return;
@@ -210,7 +203,6 @@ function dynamic_page() {
 
     // **** Make Pages ****
     function _first_page(data) {
-        port = data.port;
         record_outline(data); // Make record one time
         var stat = data.status;
         if (stat == 'end') {
@@ -251,12 +243,12 @@ function archive(tag) {
 }
 
 // ******** Command ********
-function selmcr(obj) {
-    var cmd = get_select(obj);
+function selmcr(dom) {
+    var cmd = get_select(dom);
     if (!cmd) return;
     exec(cmd, function() {
         // Do after exec if success
-        make_select(obj, []);
+        make_select(dom, []);
         update_record();
     });
 }

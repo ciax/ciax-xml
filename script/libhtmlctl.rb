@@ -44,11 +44,7 @@ module CIAX
         uat = @udb[uid]
         _mk_label(parent, uat)
         umem = uat[:members]
-        if umem.size > 2
-          _mk_select(parent, umem, uid)
-        else
-          _mk_button(parent, umem)
-        end
+        _mk_select(parent, umem, uid)
       end
 
       def _mk_label(parent, atrb)
@@ -64,15 +60,6 @@ module CIAX
         umem.each do|id|
           label = @idx[id][:label] || id
           sel.element('option', label, value: id)
-        end
-        self
-      end
-
-      def _mk_button(parent, umem)
-        span = parent.enclose('span', class: 'center')
-        umem.each do|id|
-          label = @idx[id][:label]
-          _elem_button(span, id, label)
         end
         self
       end

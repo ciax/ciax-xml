@@ -14,6 +14,7 @@ function elapsed() {
     $('#elapsed').text(str);
 }
 function conv(stat) {
+    if(!stat) return;
     var data = $.extend({},stat.data, stat.msg);
     for (var id in data) {
         if ('class' in stat && id in stat.class) {
@@ -28,7 +29,6 @@ function conv(stat) {
 function update() {
     ajax_update(type + '_' + site + '.json', conv);
     elapsed();
-    remain_msg();
 }
 function init() {
     start_upd(update);

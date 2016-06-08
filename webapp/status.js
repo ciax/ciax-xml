@@ -20,7 +20,7 @@ function conv(stat) {
         if ('class' in stat && id in stat.class) {
             $('#' + id).attr('class', stat.class[id]);
         }
-        $('#' + id).text(data[id]);
+        $('#' + id).text(data[id]).attr('title', stat.data[id]);
     }
     last = stat.time;
     var lstr = new Date(last);

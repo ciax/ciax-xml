@@ -1,14 +1,20 @@
 #!/bin/bash --rcfile
 develop(){
     cd "$HOME/ciax-xml/webapp"
-    if git branch |grep '* develop' ; then
-        export PROJ=dummy
-        export VER=Initiate
-        export NOCACHE=1
-        alias sybeta='giu beta;gim develop;git push;giu develop'
-    else
-        cd
-    fi
+    case $(git branch |grep '*') in
+        *develop)
+            export PROJ=dummy
+            export VER=Initiate
+            export NOCACHE=1
+            alias sybeta='git pull;git push;giu beta;gim develop;git push;giu develop'
+            ;;
+        *beta)
+            git pull
+            alias sydev='git pull; git push;giu develop;gim beta;git push;giu beta'
+            ;;
+        *)
+            cd;;
+    esac
 }
 
 # Local functions

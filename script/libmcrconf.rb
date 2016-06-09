@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require 'libconf'
 require 'libprompt'
-require 'libreclist'
 
 module CIAX
   # Macro Layer
@@ -16,7 +15,7 @@ module CIAX
         super(root_cfg)
         db = Db.new
         dbi = db.get
-        update(layer_type: 'mcr', db: db, rec_list: RecList.new)
+        update(layer_type: 'mcr', db: db)
         # pick already includes :command, :version
         update(dbi.pick([:sites, :id]))
         _init_net(dbi)

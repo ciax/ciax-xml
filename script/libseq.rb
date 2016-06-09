@@ -109,7 +109,6 @@ module CIAX
         @title = @record.title
         @record.mklink # Make latest link
         @record.mklink(@record[:cid]) # Make cid link
-        @cfg[:rec_list].add(@record)
       end
 
       # Print section

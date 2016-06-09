@@ -196,13 +196,12 @@ function dynamic_page() {
         record_page(data);
         record_result(data);
         _init_commands();
-        stop_upd();
         $('#msg').text('');
-        if (typeof update_list != 'undefined')
-            start_upd(update_list); // start select if exist
+        delete upd_list.record;
     }
     function _mcr_start() {
-        if (!start_upd(update_record)) return;
+        if (upd_list.record) return;
+        upd_list.record = update_record;
         $('#scroll :checkbox').prop('checked', true);
         interactive();
     }
@@ -260,15 +259,12 @@ function selmcr(dom) {
 }
 
 // ******** Init Page ********
-function init_record_event() {
+init_list.push(function() {
     height_adjust();
     set_acordion('#record');
     set_auto_release('#record');
-}
-function init_record() {
-    init_record_event();
     update_record();
-}
+});
 // Var setting
 var update_record = dynamic_page();
 var start_time; // For elapsed time

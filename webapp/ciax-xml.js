@@ -92,11 +92,11 @@ function exec(cmd, func) {
 }
 // Button/Check
 function stop() {
-    if (itvl) dvctl('interrupt');
+    dvctl('interrupt');
 }
 function interactive() {
     var sel = $('#nonstop :checkbox');
-    if (!(itvl && sel[0])) return;
+    if (!sel[0]) return;
     if (sel.prop('checked'))
         dvctl('nonstop');
     else
@@ -141,19 +141,17 @@ function ajax_update(url, func1, func2) {
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
-function stop_upd() {
-    if (!itvl) return;
-    clearInterval(itvl);
-    itvl = null;
+function update() {
+    $.each(upd_list, function(k, func) { func(); });
 }
-function start_upd(func) {
-    if (itvl || !func) return;
-    itvl = setInterval(func, 1000);
-    return true;
+function init() {
+    $.each(init_list, function(k, func) { func(); });
+    setInterval(update, 1000);
 }
-var itvl;
 var port;
 var start_pos = 0;
+var upd_list = {};
+var init_list = [];
 $(window).on('resize', height_adjust);
 // ifModified option makes error in FireFox (not Chrome).
 // JSON will be loaded as html if no update at getJSON().

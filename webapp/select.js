@@ -85,9 +85,8 @@ function update_list() {
 }
 
 // Initial Setting
-function init_log() {
+init_list.push(function() {
     // Register Events
-    init_record_event();
     set_acordion('#select');
     // Set click event
     $('#select').on('click', 'li', _switch_select);
@@ -96,18 +95,19 @@ function init_log() {
         make_list(data);
         acordion('#select h4:not(:first)');
     });
+    upd_list.select = update_list;
 
     function _switch_select() {
         if ($(this).hasClass('selected')) return;
         $('#select li').removeClass('selected');
         var jq = $(this).addClass('selected');
         // Activate selected record
+        var id = jq.attr('id');
         archive(jq.attr('id'));
-        stop_upd();
         if (jq.children('em').text() == 'busy') {
-            start_upd(update_record);
+            update_record(id);
         }else {
-            start_upd(update_list);
+            delete upd_list.record;
         }
     }
-}
+});

@@ -28,13 +28,10 @@ function conv(stat) {
     var out = $('div.outline');
     resizeTo(800, out.outerHeight() + 100);
 }
-function update() {
-    ajax_update(type + '_' + site + '.json', conv);
-    elapsed();
-}
-function init() {
-    start_upd(update);
-}
 // Need var: Type,Site
 var last;
 var offset = 0;
+upd_list['select'] = function() {
+    ajax_update(type + '_' + site + '.json', conv);
+    elapsed();
+};

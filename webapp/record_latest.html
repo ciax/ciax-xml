@@ -32,18 +32,18 @@
       <!-- FOOTER -->
       <div class="footer">
         <em id="status"></em>
-        <span id="query">
+        <span id="control">
           <select name="query" onchange="selmcr(this)">
             <option>--select--</option>
           </select>
+          <button class="stop" id="stop" onclick="stop();">STOP</button>
+          <label class="switch" id="nonstop">
+            <input type="checkbox" class="switch-input" checked onclick="interactive();"></input>
+            <span class="switch-label" data-on="NonStop" data-off="Interactive"></span>
+            <span class="switch-handle"></span>
+          </label>
+          <span id="msg"></span>
         </span>
-        <button class="stop" id="stop" onclick="stop();">STOP</button>
-        <label class="switch" id="nonstop">
-          <input type="checkbox" class="switch-input" checked onclick="interactive();"></input>
-          <span class="switch-label" data-on="NonStop" data-off="Interactive"></span>
-          <span class="switch-handle"></span>
-        </label>
-        <span id="msg"></span>
         <span class="tail">
           <span class="control-label">Scroll</span>
           <label class="switch" id="scroll">

@@ -155,7 +155,7 @@ function dynamic_page() {
     }
     // Update Command Selector
     function _set_commands(ary) {
-        var sel = $('#query select')[0];
+        var sel = $('#control select')[0];
         if (sel) make_select(sel, ary);
     }
     function _init_commands() {

@@ -18,6 +18,7 @@ module CIAX
       Threads.list.each(&:kill)
     end
 
+    # Simple Extention
     class Fork < Thread
       include Msg
       def initialize(tname, layer, id)

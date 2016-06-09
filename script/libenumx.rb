@@ -39,6 +39,12 @@ module CIAX
       path
     end
 
+    # Overwrite data
+    def jread(json_str = nil)
+      inp = json_str || gets(nil) || usr_err("No data in file(#{ARGV})")
+      replace(j2h(inp))
+    end
+
     # Merge data with setting sub structures
     def jmerge(json_str = nil)
       inp = json_str || gets(nil) || usr_err("No data in file(#{ARGV})")

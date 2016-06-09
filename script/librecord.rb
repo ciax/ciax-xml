@@ -43,7 +43,7 @@ module CIAX
           format(":%s (%s) [%s]\n", self[:label], self[:cid], date)
       end
 
-      def jmerge(str = nil)
+      def jread(str = nil)
         super
         _ext_steps
         self

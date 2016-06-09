@@ -10,7 +10,7 @@ module CIAX
         super('rec', 'list')
         ext_local_file.load
         @list = (self[:list] ||= [])
-        @current = {}
+        @active = {}
         @cmt_procs << proc { time_upd }
         auto_save
       end
@@ -28,9 +28,11 @@ module CIAX
       def add(record)
         hash = Hashx.new(type?(record, Hash))
         _init_record(record)
-        return unless hash[:id].to_i > 0
-        @current = hash.pick(%i(id cid result))
-        @list << @current
+        id = hash[:id]
+        return unless id.to_i > 0
+        ele = hash.pick(%i(id cid result))
+        @active[id] = ele
+        @list << ele
         cmt
       end
 
@@ -40,7 +42,7 @@ module CIAX
         return unless record.is_a? Record
         record.cmt_procs << proc do
           verbose { 'Propagate Record#cmt -> RecList#cmt' }
-          @current[:result] = record[:result]
+          @active[record[:id]][:result] = record[:result]
           cmt
         end
       end

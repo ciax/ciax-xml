@@ -20,6 +20,10 @@ function auto_release() {
         $('#scroll :checkbox').prop('checked', false);
     start_pos = cr;
 }
+function set_sticky_bottom() {
+    $('#scroll :checkbox').prop('checked', true);
+}
+// Use 'this' inside of $.on()
 function set_auto_release(sel) {
     var div = $(sel);
     start_pos = div.scrollTop();
@@ -73,7 +77,7 @@ function dvctl(cmd, func) {
         success: function(data) {
             //console.log('recv=' + JSON.stringify(data));
             replace('#msg', data.msg, data.msg.toLowerCase());
-            if (func) func();
+            if (func) func(data);
         },
         error: function(data) {
             //console.log('recv=' + JSON.stringify(data));
@@ -95,9 +99,9 @@ function stop() {
     dvctl('interrupt');
 }
 function interactive() {
-    var sel = $('#nonstop :checkbox');
-    if (!sel[0]) return;
-    if (sel.prop('checked'))
+    var jq = $('#nonstop :checkbox');
+    if (!jq[0]) return;
+    if (jq.prop('checked'))
         dvctl('nonstop');
     else
         dvctl('interactive');

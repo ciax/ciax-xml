@@ -202,7 +202,7 @@ function dynamic_page() {
     function _mcr_start() {
         if (upd_list.record) return;
         upd_list.record = update_record;
-        $('#scroll :checkbox').prop('checked', true);
+        set_sticky_bottom();
         interactive();
     }
 

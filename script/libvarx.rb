@@ -51,7 +51,7 @@ module CIAX
       when String
         mod.new.get(obj)
       else
-        id = STDIN.tty? ? ARGV.shift : read[:id]
+        id = STDIN.tty? ? ARGV.shift : jmerge[:id]
         mod.new.get(id)
       end
     end

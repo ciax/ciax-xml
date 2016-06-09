@@ -46,10 +46,7 @@ module CIAX
       def finish
         self[:total_time] = Msg.elps_sec(self[:start])
         self[:status] = 'end'
-
-        res = self[:result]
-        p res
-        res
+        self[:result]
       ensure
         cmt
       end

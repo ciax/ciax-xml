@@ -36,7 +36,7 @@ module CIAX
         verbose { " -- json file (#{_file_name(tag)}) is empty at loading" }
         return self
       end
-      read(json_str) if _check_load(json_str)
+      jmerge(json_str) if _check_load(json_str)
       self
     end
 

@@ -43,7 +43,7 @@ module CIAX
           format(":%s (%s) [%s]\n", self[:label], self[:cid], date)
       end
 
-      def read(str = nil)
+      def jmerge(str = nil)
         super
         _ext_steps
         self
@@ -61,7 +61,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('< file', 'r') do |_opt, _args|
         fail(InvalidARGS, 'No Input File') if STDIN.tty?
-        puts Record.new.read
+        puts Record.new.jmerge
       end
     end
   end

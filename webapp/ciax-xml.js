@@ -14,12 +14,6 @@ function sticky_bottom(speed) {
     var div = $('#record');
     div.animate({ scrollTop: div[0].scrollHeight},speed);
 }
-function auto_release() {
-    var cr = $(this).scrollTop();
-    if (cr < start_pos && !$('#record :animated')[0])
-        $('#scroll :checkbox').prop('checked', false);
-    start_pos = cr;
-}
 function set_sticky_bottom() {
     $('#scroll :checkbox').prop('checked', true);
 }
@@ -33,6 +27,12 @@ function set_auto_release(sel) {
     div.on('mouseleave', function() {
         $(this).off('scroll', auto_release);
     });
+    function auto_release() {
+        var cr = $(this).scrollTop();
+        if (cr < start_pos && !$('#record :animated')[0])
+            $('#scroll :checkbox').prop('checked', false);
+        start_pos = cr;
+    }
 }
 // Folding
 function set_acordion(sel) {
@@ -43,6 +43,7 @@ function set_acordion(sel) {
     $(sel).parent().on('click', '.title', function() {
         toggle(sel + ' h4');
     });
+    // Initiate after generating page
     return function(sub) {
         toggle(sel + ' h4' + sub);
     }

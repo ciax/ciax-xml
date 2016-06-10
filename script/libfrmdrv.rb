@@ -14,12 +14,12 @@ module CIAX
         _init_drv_save
         _init_drv_load
         _init_drv_flush
+        _init_log_mode
         self
       end
 
       def _init_stream
         @stream = Stream.new(@id, @cfg)
-        @stream.ext_local_log if @cfg[:option].log?
         @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
         @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }
         @stat.ext_local_rsp(@stream).ext_local_file.auto_save
@@ -58,6 +58,12 @@ module CIAX
           @stat.flush
           verbose { 'Flush Stream' }
         end
+      end
+
+      def _init_log_mode
+        return unless @cfg[:option].log?
+        @stream.ext_local_log
+        @cobj.rem.ext_local_log('frm')
       end
     end
   end

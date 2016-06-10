@@ -56,7 +56,7 @@ module CIAX
       @tid = Threadx::Loop.new('Buffer', 'app', @id) do
         verbose { 'Waiting' }
         pri_sort(@q.shift)
-        exec_buf if @q.empty?
+        exec_buf('app') if @q.empty?
       end
       self
     end
@@ -79,9 +79,9 @@ module CIAX
     end
 
     # Execute recieved command
-    def exec_buf
+    def exec_buf(src)
       until (args = _reorder_cmd_).empty?
-        @recv_proc.call(args, 'buffer')
+        @recv_proc.call(args, src)
       end
       flush
     rescue CommError

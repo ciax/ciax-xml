@@ -251,7 +251,7 @@ function archive(tag) {
 function selmcr(dom) {
     var cmd = get_select(dom);
     if (!cmd) return;
-    exec([cmd], function() {
+    exec(cmd.split(':'), function() {
         // Do after exec if success
         make_select(dom, []);
         update_record();

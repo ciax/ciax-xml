@@ -87,13 +87,13 @@ function update_list() {
 // Initial Setting
 init_list.push(function() {
     // Register Events
-    set_acordion('#select');
+    var acdn = set_acordion('#select');
     // Set click event
     $('#select').on('click', 'li', _switch_select);
     // Set first selected
     ajax_static('rec_list.json', function(data) {
         make_list(data);
-        acordion('#select h4:not(:first)');
+        acdn(':not(:first)');
     });
     upd_list.select = update_list;
 

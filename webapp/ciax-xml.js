@@ -35,19 +35,22 @@ function set_auto_release(sel) {
     });
 }
 // Folding
-function acordion(sel) {
-    $(sel).next().slideToggle('slow', function() {
-        sticky_bottom(0);
-    });
-}
 function set_acordion(sel) {
     $(sel).on('click', 'h4', function() {
-        acordion(this);
+        toggle(this);
     });
     // All list will be folded when titie is clicked
     $(sel).parent().on('click', '.title', function() {
-        acordion(sel + ' h4');
+        toggle(sel + ' h4');
     });
+    return function(sub) {
+        toggle(sel + ' h4' + sub);
+    }
+    function toggle(sub) {
+        $(sub).next().slideToggle('slow', function() {
+            sticky_bottom(0);
+        });
+    }
 }
 // interactive mode
 function blinking() {

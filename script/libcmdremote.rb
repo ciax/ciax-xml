@@ -34,8 +34,10 @@ module CIAX
           @int = add(ns::Group)
         end
 
-        def ext_local_log(tag = nil)
-          id = @cfg[:site_id] || @cfg[:layer_type]
+        def ext_input_log(tag = nil)
+          # site_id: App, Frm
+          # id : Mcr
+          id = @cfg[:site_id] || @cfg[:id]
           @cfg[:input] = Input.new(tag, id)
           self
         end

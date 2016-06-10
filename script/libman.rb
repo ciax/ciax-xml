@@ -42,11 +42,13 @@ module CIAX
 
       def _init_cmd
         @cobj.add_rem.cfg[:def_msg] = 'ACCEPT'
-        @cobj.rem.add_sys
-        @cobj.rem.add_int(Int)
-        @cobj.rem.add_ext(Ext)
-        @cobj.rem.sys.add_item('nonstop', 'Mode')
-        @cobj.rem.sys.add_item('interactive', 'Mode')
+        rem = @cobj.rem
+        rem.add_sys
+        rem.add_int(Int)
+        rem.add_ext(Ext)
+        rem.sys.add_item('nonstop', 'Mode')
+        rem.sys.add_item('interactive', 'Mode')
+        rem.ext_input_log('mcr') if @cfg[:option].log?
       end
 
       def _init_stat

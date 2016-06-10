@@ -63,7 +63,7 @@ module CIAX
       def _init_log_mode
         return unless @cfg[:option].log?
         @stream.ext_local_log
-        @cobj.rem.ext_local_log('frm')
+        @cobj.rem.ext_input_log('frm')
       end
     end
   end

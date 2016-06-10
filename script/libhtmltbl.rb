@@ -109,10 +109,9 @@ module CIAX
         tbody
       end
 
-      def _elem_button(parent, id, label = nil)
-        atrb = { class: label || id, onclick: "dvctl('#{id}')" }
-        text = (label || id).upcase
-        parent.element('button', text, atrb)
+      def _elem_button(parent, id)
+        atrb = { class: id, onclick: "#{id}();" }
+        parent.element('button', id.upcase, atrb)
       end
     end
 

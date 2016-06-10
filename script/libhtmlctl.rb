@@ -10,7 +10,7 @@ module CIAX
         super(dbi)
         _mk_ctl_grp(grpary)
         return unless @dbi[:watch] && !grpary.include?('-')
-        _elem_button(@ctltd, 'interrupt', 'stop')
+        _elem_button(@ctltd, 'stop')
       end
 
       private

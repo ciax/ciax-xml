@@ -98,6 +98,9 @@ function exec(cmd, func) {
 function stop() {
     dvctl('interrupt');
 }
+function upd() {
+    dvctl('upd');
+}
 function interactive() {
     var jq = $('#nonstop :checkbox');
     if (!jq[0]) return;

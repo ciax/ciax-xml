@@ -166,7 +166,9 @@ function dynamic_page() {
     }
     function _make_query(data) {
         if (data.status != 'query') return;
-        var cmdary = data.option;
+        var cmdary = data.option.map(function(cmd){
+            return ([cmd + ':' + data.id, cmd]);
+        });
         _set_commands(cmdary);
     }
 

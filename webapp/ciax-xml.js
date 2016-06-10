@@ -118,24 +118,31 @@ function make_select(dom, ary) {
     function make_opt(ary) {
         $.each(ary, function(key, val) {
             if (typeof key === 'number') {
-                opt.push('<option');
-                if (Array.isArray(val)) {
-                    opt.push(' value="' + val[0] + '">' + val[1]);
-                }else {
-                    opt.push('>' + val);
-                }
-                opt.push('</option>');
+                make_optpar(key, val);
             }else {
-                // Grouping
-                if (Array.isArray(val)) {
-                    opt.push('<optgroup label="' + key + '">');
-                    make_opt(val);
-                    opt.push('</optgroup>');
-                }else {
-                    opt.push('<option>' + key + '</option>');
-                }
+                make_optgrp(key, val);
             }
         });
+    }
+    // Command with Parameter
+    function make_optpar(key, val) {
+        opt.push('<option');
+        if (Array.isArray(val)) {
+            opt.push(' value="' + val[0] + '">' + val[1]);
+        }else {
+            opt.push('>' + val);
+        }
+        opt.push('</option>');
+    }
+    // Grouping
+    function make_optgrp(key, val) {
+        if (Array.isArray(val)) {
+            opt.push('<optgroup label="' + key + '">');
+            make_opt(val);
+            opt.push('</optgroup>');
+        }else {
+            opt.push('<option>' + key + '</option>');
+        }
     }
 }
 function get_select(dom) {

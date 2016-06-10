@@ -20,8 +20,7 @@ foreach($argv as &$e){
 $host="127.0.0.1";
 $port=(int)getarg('port');
 // cmd format "cmd:par1:par2.."
-$cmd=getarg('cmd');
-$buf= $cmd ? json_encode(split(":",$cmd)) : '[]';
+$buf=json_encode(getarg('cmd'));
 $soc=socket_create(AF_INET,SOCK_DGRAM,SOL_UDP);
 $len=strlen($buf);
 socket_sendto($soc,$buf,$len,0,$host,$port);

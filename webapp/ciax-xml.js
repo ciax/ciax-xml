@@ -116,14 +116,24 @@ function make_select(dom, ary) {
     if (ary.length > 0) $('#msg').text('');
 
     function make_opt(ary) {
-        $.each(ary, function(i, val) {
-            // Grouping
-            if (Array.isArray(val)) {
-                opt.push('<optgroup label="' + val[0] + '">');
-                make_opt(val[1]);
-                opt.push('</optgroup>');
+        $.each(ary, function(key, val) {
+            if (typeof key === 'number') {
+                opt.push('<option');
+                if (Array.isArray(val)) {
+                    opt.push(' value="' + val[0] + '">' + val[1]);
+                }else {
+                    opt.push('>' + val);
+                }
+                opt.push('</option>');
             }else {
-                opt.push('<option>' + val + '</option>');
+                // Grouping
+                if (Array.isArray(val)) {
+                    opt.push('<optgroup label="' + key + '">');
+                    make_opt(val);
+                    opt.push('</optgroup>');
+                }else {
+                    opt.push('<option>' + key + '</option>');
+                }
             }
         });
     }

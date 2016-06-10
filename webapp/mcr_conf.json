@@ -1,74 +1,66 @@
 {
     "port" : "55556",
-    "commands" : [
-        "upd",
-        [ "init",
-          [
-              "tinit",
-              "cinit"
-          ]
+    "commands" : {
+        "upd" : null,
+        "init" : [
+            "tinit",
+            "cinit"
         ],
-        [ "mos",
-          [
+        "mos" : [
             "start",
             "load",
             "store",
             "fin",
             "kapa",
             "kapa1"
-          ]
         ],
-        [ "slot",
-          [
-              "slot0",
-              "slot1",
-              "slot2",
-              "slot3",
-              "slot4",
-              "slot5",
-              "slot6",
-              "slot7",
-              "slot8",
-              "slot9",
-              "slot10",
-              "slot11",
-              "slot12",
-              "slot13",
-              "slot14",
-              "slot15",
-              "slot16",
-              "slot17",
-              "slot18",
-              "slot19",
-              "slot20",
-              "slot21"
-          ]
+        "slot" : [
+            "slot0",
+            "slot1",
+            "slot2",
+            "slot3",
+            "slot4",
+            "slot5",
+            "slot6",
+            "slot7",
+            "slot8",
+            "slot9",
+            "slot10",
+            "slot11",
+            "slot12",
+            "slot13",
+            "slot14",
+            "slot15",
+            "slot16",
+            "slot17",
+            "slot18",
+            "slot19",
+            "slot20",
+            "slot21"
         ],
-        [ "access",
-          [
-              "access0",
-              "access1",
-              "access2",
-              "access3",
-              "access4",
-              "access5",
-              "access6",
-              "access7",
-              "access8",
-              "access9",
-              "access10",
-              "access11",
-              "access12",
-              "access13",
-              "access14",
-              "access15",
-              "access16",
-              "access17",
-              "access18",
-              "access19",
-              "access20",
-              "access21"
-          ]
+        "access" : [
+            "access0",
+            "access1",
+            "access2",
+            "access3",
+            "access4",
+            "access5",
+            "access6",
+            "access7",
+            "access8",
+            "access9",
+            "access10",
+            "access11",
+            "access12",
+            "access13",
+            "access14",
+            "access15",
+            "access16",
+            "access17",
+            "access18",
+            "access19",
+            "access20",
+            "access21"
         ]
-    ]
+    }
 }

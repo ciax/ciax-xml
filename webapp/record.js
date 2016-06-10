@@ -164,6 +164,12 @@ function dynamic_page() {
             _set_commands(data.commands);
         });
     }
+    function _make_query(data) {
+        if (data.status != 'query') return;
+        var cmdary = data.option;
+        _set_commands(cmdary);
+    }
+
     // Update Content of Steps (When JSON is updated)
     function _append_step(data) {
         // When Step increases.
@@ -193,11 +199,13 @@ function dynamic_page() {
 
     // **** Regular update on/off ****
     function _mcr_end(data) {
+        if (data.status != 'end') return;
         record_page(data);
         record_result(data);
         _init_commands();
         $('#msg').text('');
         delete upd_list.record;
+        return true;
     }
     function _mcr_start() {
         if (upd_list.record) return;
@@ -209,23 +217,15 @@ function dynamic_page() {
     // **** Make Pages ****
     function _first_page(data) {
         record_outline(data); // Make record one time
-        var stat = data.status;
-        if (stat == 'end') {
-            _mcr_end(data);
-        }else { //run
-            if (stat == 'query') _set_commands(data.option);
-            _mcr_start(update_record);
-        }
+        if (_mcr_end(data)) return;
+        _make_query(data);
+        _mcr_start(update_record);
         steps_length = data.steps.length;
     }
     function _next_page(data) {
-        var stat = data.status;
-        if (stat == 'end') {
-            _mcr_end(data);
-        }else {
-            if (stat == 'query') _set_commands(data.option);
-            _update_step(data); // Make record one by one
-        }
+        if (_mcr_end(data)) return;
+        _make_query(data);
+        _update_step(data); // Make record one by one
     }
 }
 // ******** Static Page *********

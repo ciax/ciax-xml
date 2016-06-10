@@ -81,7 +81,6 @@ function dvctl(args, func) {
         },
         error: function(data) {
             //console.log('recv=' + JSON.stringify(data));
-            stop_upd();
             replace('#msg', 'NO Response', 'error');
         }
     });

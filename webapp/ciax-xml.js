@@ -67,11 +67,11 @@ function height_adjust() {
 }
 // ******** Control by UDP ********
 // dvctl with func when success
-function dvctl(cmd, func) {
-    var args = {port: port, cmd: [cmd]};
-    //console.log('send=' + JSON.stringify(args));
+function dvctl(args, func) {
+    var data = {port: port, cmd: args};
+    //console.log('send=' + JSON.stringify(data));
     $.ajax('/json/dvctl-udp.php', {
-        data: args,
+        data: data,
         ifModified: true,
         cache: false,
         success: function(data) {
@@ -87,27 +87,27 @@ function dvctl(cmd, func) {
     });
 }
 // With Confirmation
-function exec(cmd, func) {
-    if (confirm('EXEC?(' + cmd + ')')) {
-        dvctl(cmd, func);
+function exec(args, func) {
+    if (confirm('EXEC?' + JSON.stringify(args))) {
+        dvctl(args, func);
         return true;
     }else
         return false;
 }
 // Button/Check
 function stop() {
-    dvctl('interrupt');
+    dvctl(['interrupt']);
 }
 function upd() {
-    dvctl('upd');
+    dvctl(['upd']);
 }
 function interactive() {
     var jq = $('#nonstop :checkbox');
     if (!jq[0]) return;
     if (jq.prop('checked'))
-        dvctl('nonstop');
+        dvctl(['nonstop']);
     else
-        dvctl('interactive');
+        dvctl(['interactive']);
 }
 // Select Command
 function make_select(dom, ary) {
@@ -133,10 +133,6 @@ function get_select(dom) {
     var cmd = $(dom).val();//options[obj.selectedIndex].value;
     if (cmd == '--select--') return;
     return cmd;
-}
-function seldv(dom) {
-    var cmd = get_select(dom);
-    if (cmd) exec(cmd);
 }
 // ********* Ajax *********
 function ajax_static(url, func) {

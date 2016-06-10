@@ -28,6 +28,10 @@ function conv(stat) {
     var out = $('div.outline');
     resizeTo(800, out.outerHeight() + 100);
 }
+function seldv(dom) {
+    var cmd = get_select(dom);
+    if (cmd) exec([cmd]);
+}
 // Need var: Type,Site
 var last;
 var offset = 0;

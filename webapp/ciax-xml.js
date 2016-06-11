@@ -90,7 +90,8 @@ function dvctl(args, func) {
     });
 }
 // With Confirmation
-function exec(args, func) {
+function exec(csv, func) {
+    var args = csv.split(':');
     if (confirm('EXEC?' + JSON.stringify(args))) {
         dvctl(args, func);
         return true;
@@ -153,6 +154,21 @@ function get_select(dom) {
     var cmd = $(dom).val();//options[obj.selectedIndex].value;
     if (cmd == '--select--') return;
     return cmd;
+}
+// Radio Button
+function make_radio(dom, ary) {
+    var opt = [];
+    $.each(ary, function(i, val) {
+        opt.push('<label>');
+        opt.push('<input type="radio" name="query" value="');
+        if (Array.isArray(val)) {
+            opt.push(val[0] + ':' + val[1] + '"/>' + val[0]);
+        }else {
+            opt.push(val + '"/>' + val);
+        }
+        opt.push('</label>');
+    });
+    $(dom).html(opt.join(''));
 }
 // ********* Ajax *********
 function ajax_static(url, func) {

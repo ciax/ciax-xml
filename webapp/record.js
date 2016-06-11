@@ -145,6 +145,7 @@ function dynamic_page() {
     }
     function _upd_page(data, status) {
         if (status != 'success') return;
+        if (!port) port = data.port;
         if (first_time != data.id) { // Do only the first one for new macro
             _first_page(data);
             first_time = data.id;
@@ -155,7 +156,7 @@ function dynamic_page() {
     }
     // Update Command Selector
     function _set_commands(ary) {
-        var sel = $('#control select')[0];
+        var sel = $('#command select')[0];
         if (sel) make_select(sel, ary);
     }
     function _init_commands() {
@@ -164,14 +165,15 @@ function dynamic_page() {
             _set_commands(data.commands);
         });
     }
+    // Update Query Radio Button
     function _make_query(data) {
         if (data.status != 'query') return;
-        var cmdary = data.option.map(function(cmd){
-            return ([cmd + ':' + data.id, cmd]);
+        var cmdary = data.option.map(function(cmd) {
+            return ([cmd, data.id]);
         });
-        _set_commands(cmdary);
+        var sel = $('td#query')[0];
+        if (sel) make_radio(sel, cmdary);
     }
-
     // Update Content of Steps (When JSON is updated)
     function _append_step(data) {
         // When Step increases.
@@ -253,7 +255,7 @@ function archive(tag) {
 function selmcr(dom) {
     var cmd = get_select(dom);
     if (!cmd) return;
-    exec(cmd.split(':'), function() {
+    exec(cmd, function() {
         // Do after exec if success
         make_select(dom, []);
         update_record();
@@ -266,6 +268,9 @@ init_list.push(function() {
     set_acordion('#record');
     set_auto_release('#record');
     update_record();
+    $('td#query').on('change', 'input[name="query"]:radio', function() {
+        exec($(this).val(), function() {$('td#query').empty(); });
+    });
 });
 // Var setting
 var update_record = dynamic_page();

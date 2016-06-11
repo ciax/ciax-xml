@@ -30,7 +30,7 @@ function conv(stat) {
 }
 function seldv(dom) {
     var cmd = get_select(dom);
-    if (cmd) exec([cmd]);
+    if (cmd) exec(cmd);
 }
 // Need var: Type,Site
 var last;

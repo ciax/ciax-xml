@@ -4,6 +4,7 @@
     <group id="tr_main" caption="Turret Commands" column="2">
       <item id="tinit" label="Initialize Turret">
         <cfg site="mft" name="set6v"/>
+        <mcr name="pre_home"/>
         <mcr name="pre_pos"/>
         <upd site="mft"/>
         <mcr name="gh_wheel" retry="3"/>
@@ -12,7 +13,15 @@
       </item>
     </group>
     <group id="tr_sub" caption="Turret Commands" rank="1">
-      <item id="pre_pos" label="Pre-Positioning">
+      <item id="pre_home" label="Pre-Homing">
+        <goal label="All Home?">
+          <match form="data" site="mix" var="mp1">0.0</match>
+          <match form="data" site="mix" var="mp2">0.0</match>
+          <match form="data" site="mix" var="mp3">0.0</match>
+          <match form="data" site="mix" var="mp4">0.0</match>
+          <match form="data" site="mix" var="mp5">0.0</match>
+          <match form="data" site="mix" var="mp6">0.0</match>
+        </goal>
         <exec site="mix" name="home"/>
         <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>
@@ -20,6 +29,8 @@
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
         </wait>
+      </item>
+      <item id="pre_pos" label="Pre-Positioning">
         <exec site="mix" name="bk_all">
           <argv>1</argv>
         </exec>

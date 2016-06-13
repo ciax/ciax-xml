@@ -1219,7 +1219,7 @@
           <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
           <not site="tma" var="pos" form="msg">FOCUS</not>
-          <equal site="tmc" var="con" form="msg">ON</equal>
+          <equal site="tmc" var="con" skip="true" form="msg">ON</equal>
         </check>
         <mcr name="f-r"/>
         <mcr name="ini_f-i"/>

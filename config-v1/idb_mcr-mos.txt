@@ -144,4 +144,5 @@ kapa1,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
 # fin
 fin,mma:abs^WAIT&mma:pos!ROT&mma:pos=INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 f-r,mma:abs^WAIT&mma:pos!ROT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS
-f-i,mma:abs^WAIT&mma:pos!ROT&mma:pos=INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS&mmc:con=ON
+# temporaly remove mmc:con to cinit from wait pos
+f-i,mma:abs^WAIT&mma:pos!ROT&mma:pos=INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS&!mmc:con=ON

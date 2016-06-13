@@ -19,7 +19,7 @@ function make_item(data) {
 
     function _time() {
         html.push('<span class="time" title="' + id + '">');
-        html.push(time.toLocaleTimeString());
+        html.push(time.toLocaleTimeString('en-US', {hour12: false}));
         html.push('</span>');
     }
     function _cmd() {

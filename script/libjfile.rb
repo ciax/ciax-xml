@@ -36,7 +36,8 @@ module CIAX
         verbose { " -- json file (#{_file_name(tag)}) is empty at loading" }
         return self
       end
-      jmerge(json_str) if _check_load(json_str)
+      _check_load(json_str)
+      jmerge(json_str)
       self
     end
 
@@ -63,8 +64,9 @@ module CIAX
     # Version check, no read if different
     # (otherwise old version number remain as long as the file exists)
     def _check_load(json_str)
-      return true if j2h(json_str)[:ver] == self[:ver]
-      warning('File version mismatch')
+      inc = j2h(json_str)[:ver]
+      org = self[:ver]
+      warning("File version mismatch <#{inc}> for [#{org}]") if inc != org
       false
     end
 

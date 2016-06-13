@@ -37,6 +37,8 @@
             "slot19",
             "slot20",
             "slot21"
+            "slot22"
+            "slot23"
         ],
         "access" : [
             "access0",
@@ -61,6 +63,8 @@
             "access19",
             "access20",
             "access21"
+            "access22"
+            "access23"
         ]
     }
 }

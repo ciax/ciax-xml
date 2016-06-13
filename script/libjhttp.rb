@@ -22,7 +22,7 @@ module CIAX
       open(url) do|f|
         verbose { "Loading url [#{url}](#{f.size})" }
         json_str = f.read
-        return jread(json_str) unless json_str.empty?
+        return replace(jread(json_str)) unless json_str.empty?
       end
       warning(" -- json url file (#{url}) is empty at loading")
       self

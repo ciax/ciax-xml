@@ -60,10 +60,10 @@ slot15,abs~S15,spd~LOW&lcw~OFF&lccw~OFF
 slot16,abs~S16,spd~LOW&lcw~OFF&lccw~OFF
 slot17,abs~S17,spd~LOW&lcw~OFF&lccw~OFF
 slot18,abs~S18,spd~LOW&lcw~OFF&lccw~OFF
-#slot19,abs~S19,spd~LOW&lcw~OFF&lccw~OFF
-#slot20,abs~S20,spd~LOW&lcw~OFF&lccw~OFF
-#slot21,abs~S21,spd~LOW&lcw~OFF&lccw~OFF
-#slot22,abs~S22,spd~LOW&lcw~OFF&lccw~OFF
+slot19,abs~S19,spd~LOW&lcw~OFF&lccw~OFF
+slot20,abs~S20,spd~LOW&lcw~OFF&lccw~OFF
+slot21,abs~S21,spd~LOW&lcw~OFF&lccw~OFF
+slot22,abs~S22,spd~LOW&lcw~OFF&lccw~OFF
 slot23,abs~S23,spd~LOW&lcw~OFF&lccw~OFF
 slot0_FIN,abs~S0,spd~LOW&lcw~OFF&lccw~OFF
 
@@ -76,15 +76,15 @@ access4,abs~S10,spd~LOW&lcw~OFF&lccw~OFF
 access5,abs~S11,spd~LOW&lcw~OFF&lccw~OFF
 access6,abs~S12,spd~LOW&lcw~OFF&lccw~OFF
 access7,abs~S13,spd~LOW&lcw~OFF&lccw~OFF
-#access8,abs~S14,spd~LOW&lcw~OFF&lccw~OFF         // No Wheels
-#access9,abs~S15,spd~LOW&lcw~OFF&lccw~OFF         // No Wheels
+access8,abs~S14,spd~LOW&lcw~OFF&lccw~OFF         // No Wheels
+access9,abs~S15,spd~LOW&lcw~OFF&lccw~OFF         // No Wheels
 access10,abs~S16,spd~LOW&lcw~OFF&lccw~OFF
 access11,abs~S17,spd~LOW&lcw~OFF&lccw~OFF
 access12,abs~S18,spd~LOW&lcw~OFF&lccw~OFF
-#access13,abs~S19,spd~LOW&lcw~OFF&lccw~OFF       // Out of Range(slot19-22 = access13-16)
-#access14,abs~S20,spd~LOW&lcw~OFF&lccw~OFF       // Out of Range(slot19-22 = access13-16)
-#access15,abs~S21,spd~LOW&lcw~OFF&lccw~OFF       // Out of Range(slot19-22 = access13-16)
-#access16,abs~S22,spd~LOW&lcw~OFF&lccw~OFF       // Out of Range(slot19-22 = access13-16)
+access13,abs~S19,spd~LOW&lcw~OFF&lccw~OFF       // Out of Range(slot19-22 = access13-16)
+access14,abs~S20,spd~LOW&lcw~OFF&lccw~OFF       // Out of Range(slot19-22 = access13-16)
+access15,abs~S21,spd~LOW&lcw~OFF&lccw~OFF       // Out of Range(slot19-22 = access13-16)
+access16,abs~S22,spd~LOW&lcw~OFF&lccw~OFF       // Out of Range(slot19-22 = access13-16)
 access17,abs~S23,spd~LOW&lcw~OFF&lccw~OFF
 access18,abs~S00,spd~LOW&lcw~OFF&lccw~OFF
 access19,abs~S01,spd~LOW&lcw~OFF&lccw~OFF

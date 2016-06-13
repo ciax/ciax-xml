@@ -61,8 +61,8 @@ slot18,Move to Slot 18,1,act,ma=-18/24:bs==0:p:in(1)/upd,astop
 slot19,Move to Slot 19,1,act,ma=-19/24:bs==0:p:in(1)/upd,astop
 slot20,Move to Slot 20,1,act,ma=-20/24:bs==0:p:in(1)/upd,astop
 slot21,Move to Slot 21,1,act,ma=-21/24:bs==0:p:in(1)/upd,astop
-#slot22,Move to Slot 22,1,act,ma=-22/24:bs==0:p:in(1)/upd,astop
-#slot23,Move to Slot 23,1,act,ma=+1/24:bs==0:p:in(1)/upd,astop
+slot22,Move to Slot 22,1,act,ma=-22/24:bs==0:p:in(1)/upd,astop
+slot23,Move to Slot 23,1,act,ma=+1/24:bs==0:p:in(1)/upd,astop
 slot0_FIN,Move to Slot 0,,cmd,ma=-0/150:bs==0:p:in(1)/upd,astop
 
 access[0-23],Access to Slot[0-23],,cap
@@ -88,5 +88,5 @@ access18,Access to Slot18,1,act,ma=0/240:bs==0:p:in(1)/upd,astop
 access19,Access to Slot19,1,act,ma=-1/240:bs==0:p:in(1)/upd,astop
 access20,Access to Slot20,1,act,ma=-2/240:bs==0:p:in(1)/upd,astop
 access21,Access to Slot21,1,act,ma=-3/240:bs==0:p:in(1)/upd,astop
-#access22,Access to Slot22,1,act,ma=-4/240:bs==0:p:in(1)/upd,astop
-#access23,Access to Slot23,1,act,ma=-5/240:bs==0:p:in(1)/upd,astop
+access22,Access to Slot22,1,act,ma=-4/240:bs==0:p:in(1)/upd,astop
+access23,Access to Slot23,1,act,ma=-5/240:bs==0:p:in(1)/upd,astop

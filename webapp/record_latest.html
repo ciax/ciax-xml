@@ -36,31 +36,25 @@
             <td>
               <em id="status"></em>
             </td>
-            <td id="query">
-            </td>
             <td>
-              <label class="switch" id="nonstop">
-                <input type="checkbox" class="switch-input" checked onclick="interactive();"></input>
-                <span class="switch-label" data-on="NonStop" data-off="Interactive"></span>
-                <span class="switch-handle"></span>
-              </label>
-            </td>
-            <td id="command">
-              <select name="command" onchange="selmcr(this)">
-                <option>--select--</option>
-              </select>
-              <button class="stop" id="stop" onclick="stop();">STOP</button>
-            </td>
-            <td>
+              <span id="query"></span>
               <span id="msg"></span>
             </td>
             <td style="text-align:right;">
-              <span class="control-label">Scroll</span>
-              <label class="switch" id="scroll">
-                <input type="checkbox" class="switch-input" onclick="sticky_bottom('slow');"></input>
-                <span class="switch-label" data-on="Auto" data-off="Manual"></span>
-                <span class="switch-handle"></span>
-              </label>
+              <select id="command" onchange="selmcr(this)">
+                <option>--select--</option>
+              </select>
+              <button class="stop" id="stop" onclick="stop();">STOP</button>
+              <span class="control-label" id="interactive">Interactive
+                <input type="checkbox" onclick="interactive();"></input>
+              </span>
+              <span class="control-label">Scroll
+                <label class="switch" id="scroll">
+                  <input type="checkbox" class="switch-input" onclick="sticky_bottom('slow');"></input>
+                  <span class="switch-label" data-on="Auto" data-off="Manual"></span>
+                  <span class="switch-handle"></span>
+                </label>
+              </span>
             </td>
           </tr>
         </table>

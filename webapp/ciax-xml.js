@@ -109,12 +109,12 @@ function upd() {
     dvctl(['upd']);
 }
 function interactive() {
-    var jq = $('#nonstop :checkbox');
+    var jq = $('#interactive :checkbox'); // :checlbox
     if (!jq[0]) return;
     if (jq.prop('checked'))
-        dvctl(['nonstop']);
-    else
         dvctl(['interactive']);
+    else
+        dvctl(['nonstop']);
 }
 // Select Command
 function make_select(sel, ary) {

@@ -79,8 +79,7 @@ div.footer{
     color : purple;
 }
 .control-label{
-    text-align : center;
-    color : orange;
+    color : indigo;
     font-size: large;
 }
 .center{
@@ -181,9 +180,14 @@ em {
 #scroll.switch {
     width : 76px;
 }
-#nonstop.switch {
+#status {
     width : 100px;
 }
+#interactive{
+    border : 2px outset lightgreen;
+    border-radius : 5px;
+}
+
 /* Slide Switch */
 /*** select list ***/
 #select .time {

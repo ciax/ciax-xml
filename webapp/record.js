@@ -161,12 +161,12 @@ function dynamic_page() {
     function _init_commands() {
         ajax_static('/json/mcr_conf.json', function(data) {
             port = data.port;
-            make_select('#command select', data.commands);
+            make_select('select#command', data.commands);
         });
     }
     // Update Query Radio Button
     function _make_query(data) {
-        var sel = $('td#query')[0];
+        var sel = $('#query')[0];
         if (data.status != 'query' || !sel) return;
         var cmdary = data.option.map(function(cmd) {
             return ([cmd, data.id]);
@@ -207,7 +207,7 @@ function dynamic_page() {
         record_result(data);
         _init_commands();
         $('#msg').text('');
-        $('td#query').empty();
+        $('#query').empty();
         delete upd_list.record;
         return true;
     }
@@ -268,8 +268,8 @@ init_list.push(function() {
     set_acordion('#record');
     set_auto_release('#record');
     update_record();
-    $('td#query').on('change', 'input[name="query"]:radio', function() {
-        exec($(this).val(), function() {$('td#query').empty(); });
+    $('#query').on('change', 'input[name="query"]:radio', function() {
+        exec($(this).val(), function() {$('#query').empty(); });
     });
 });
 // Var setting

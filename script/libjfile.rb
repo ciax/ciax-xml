@@ -10,8 +10,9 @@ module CIAX
     def ext_local_file
       verbose { "Initiate File Status [#{_file_base}]" }
       self[:id] || cfg_err('No ID')
-      @jsondir = vardir('json')
       @thread = Thread.current # For Thread safe
+      @jsondir = vardir('json')
+      @cfile = _file_base # Current file name
       self
     end
 
@@ -31,9 +32,9 @@ module CIAX
 
     def load(tag = nil)
       json_str = _read_json(tag)
-      verbose { "File Loading #{_file_name(tag)}" }
+      verbose { "File Loading #{@cfile}" }
       if json_str.empty?
-        verbose { " -- json file (#{_file_name(tag)}) is empty at loading" }
+        verbose { " -- json file (#{@cfile}) is empty at loading" }
         return self
       end
       _check_load(json_str)
@@ -68,6 +69,8 @@ module CIAX
       org = self[:ver]
       warning("File version mismatch <#{inc}> for [#{org}]") if inc != org
       false
+    rescue UserError
+      relay("#{@cfile}")
     end
 
     def _file_name(tag = nil)
@@ -82,25 +85,25 @@ module CIAX
 
     def _write_json(json_str, tag = nil)
       verbose(@thread != Thread.current) { 'File Saving from Multiple Threads' }
-      fname = _file_name(tag)
-      open(@jsondir + fname, 'w') do|f|
+      @cfile = _file_name(tag)
+      open(@jsondir + @cfile, 'w') do|f|
         f.flock(::File::LOCK_EX)
         f << json_str
-        verbose { "File [#{fname}](#{f.size}) is Saved" }
+        verbose { "File [#{@cfile}](#{f.size}) is Saved" }
       end
       self
     end
 
     def _read_json(tag = nil)
-      fname = _file_name(tag)
-      open(@jsondir + fname) do|f|
-        verbose { "Reading [#{fname}](#{f.size})" }
+      @cfile = _file_name(tag)
+      open(@jsondir + @cfile) do|f|
+        verbose { "Reading [#{@cfile}](#{f.size})" }
         f.flock(::File::LOCK_SH)
         f.read
       end || ''
     rescue Errno::ENOENT
       Msg.par_err('No such Tag', "Tag=#{_tag_list_}") if tag
-      verbose { "  -- no json file (#{fname})" }
+      verbose { "  -- no json file (#{@cfile})" }
       ''
     end
   end

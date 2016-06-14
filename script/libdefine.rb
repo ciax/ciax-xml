@@ -6,6 +6,8 @@ module CIAX
 
   # MY HOST
   HOST = `hostname`.strip
+  # MY NAME
+  PROGRAM = $PROGRAM_NAME.split('/').pop
   # Initial View Mode
   VMODE = 'v'
   # User input Error

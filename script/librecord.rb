@@ -38,23 +38,17 @@ module CIAX
       end
 
       def title
-        date = Time.at((self[:time] / 1000).round)
+        date = Time.at(self[:id][0, 10].to_i)
         Msg.colorize('MACRO', 3) +
           format(":%s (%s) [%s]\n", self[:label], self[:cid], date)
       end
 
       def jread(str = nil)
-        super
-        _ext_steps
-        self
-      end
-
-      private
-
-      def _ext_steps
-        self[:steps].each do |i|
-          i.extend(StepPrt).ext_prt(self[:start])
+        res = super
+        res[:steps].each do |i|
+          i.extend(StepPrt).ext_prt(res[:start])
         end
+        res
       end
     end
 

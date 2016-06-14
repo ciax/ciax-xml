@@ -117,10 +117,12 @@ function interactive() {
         dvctl(['interactive']);
 }
 // Select Command
-function make_select(dom, ary) {
+function make_select(sel, ary) {
+    var jq = $(sel);
+    if (!jq[0]) return;
     var opt = ['<option>--select--</option>'];
     make_opt(ary);
-    $(dom).html(opt.join(''));
+    jq.html(opt.join(''));
     if (ary.length > 0) $('#msg').text('');
 
     function make_opt(ary) {

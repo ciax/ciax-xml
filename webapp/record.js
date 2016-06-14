@@ -158,14 +158,10 @@ function dynamic_page() {
         }
     }
     // Update Command Selector
-    function _set_commands(ary) {
-        var sel = $('#command select')[0];
-        if (sel) make_select(sel, ary);
-    }
     function _init_commands() {
         ajax_static('/json/mcr_conf.json', function(data) {
             port = data.port;
-            _set_commands(data.commands);
+            make_select('#command select', data.commands);
         });
     }
     // Update Query Radio Button

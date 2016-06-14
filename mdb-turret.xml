@@ -4,7 +4,6 @@
     <group id="tr_main" caption="Turret Commands" column="2">
       <item id="tinit" label="Initialize Turret">
         <cfg site="mft" name="set6v"/>
-        <mcr name="pre_home"/>
         <mcr name="pre_pos"/>
         <upd site="mft"/>
         <mcr name="gh_wheel" retry="3"/>
@@ -31,6 +30,15 @@
         </wait>
       </item>
       <item id="pre_pos" label="Pre-Positioning">
+        <goal label="All Slot11?">
+          <match form="data" site="mix" var="mp1">11.0</match>
+          <match form="data" site="mix" var="mp2">11.0</match>
+          <match form="data" site="mix" var="mp3">11.0</match>
+          <match form="data" site="mix" var="mp4">11.0</match>
+          <match form="data" site="mix" var="mp5">11.0</match>
+          <match form="data" site="mix" var="mp6">11.0</match>
+        </goal>
+        <mcr name="pre_home"/>
         <exec site="mix" name="bk_all">
           <argv>1</argv>
         </exec>

@@ -43,7 +43,7 @@ module CIAX
         _show(@record.start)
         sub_macro(@cfg[:sequence], @record)
       rescue Interrupt
-        _exec_interrupt
+        _site_interrupt
       rescue Verification
         false
       ensure
@@ -92,7 +92,7 @@ module CIAX
         @depth -= 1
       end
 
-      def _exec_interrupt
+      def _site_interrupt
         runary = @sv_stat.get(:run)
         msg("\nInterrupt Issued to running devices #{runary}", 3)
         runary.each do|site|
@@ -102,8 +102,9 @@ module CIAX
 
       # Initialization Part
       def _init_record(pid)
-        @record = Record.new.ext_local_file.auto_save
-        @record.ext_local_rsp(@cfg)
+        @record = Record.new.ext_local_rsp(@cfg)
+        # ext_file must be after ext_rsp which includes time update
+        @record.ext_local_file.auto_save
         @record[:pid] = pid
         @id = @record[:id]
         @title = @record.title

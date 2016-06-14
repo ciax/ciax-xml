@@ -5,7 +5,6 @@ require 'libinsdb'
 module CIAX
   # HTML Table generation
   module HtmlTbl
-    JQUERY = 'http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'
     # Page Header
     class Header < Xml::Format
       def initialize(dbi)
@@ -39,7 +38,7 @@ module CIAX
       def _mk_script_tags(parent)
         fmt = 'var type="status",site="%s",Host="%s",port="%s";'
         script = format(fmt, @dbi[:id], @dbi[:host], @dbi[:port])
-        _mk_script(parent, '', JQUERY)
+        _mk_script(parent, '', 'jquery-3.0.0.min.js')
         _mk_script(parent, script)
         _mk_script(parent, '', 'ciax-xml.js')
         _mk_script(parent, '', 'status.js')

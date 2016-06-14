@@ -7,6 +7,9 @@ function open_link(site) {
                 'menubar=no,location=no,status=no,width=800,height=200'
                );
 }
+function exec_funcs(funclist) {
+    $.each(funclist, function(k, func) { func(); });
+}
 // ******* Animation *********
 // Auto scroll. Check box with id:go_bottm is needed;
 function sticky_bottom(speed) {
@@ -181,10 +184,10 @@ function ajax_update(url, func1, func2) {
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
 function update() {
-    $.each(upd_list, function(k, func) { func(); });
+    exec_funcs(upd_list);
 }
 function init() {
-    $.each(init_list, function(k, func) { func(); });
+    exec_funcs(init_list);
     setInterval(update, 1000);
 }
 var port;

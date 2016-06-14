@@ -97,7 +97,7 @@ module CIAX
           label = (@sdb[id] || {})[:label] || id.upcase
           td = tr.enclose('td', class: 'item')
 
-          td.element('span', label, class: 'label')
+          td.element('span', label, class: 'label', title: id)
           td.element('strong', '*******', id: id, class: 'normal')
         end
         tr

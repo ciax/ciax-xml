@@ -192,8 +192,8 @@ function init() {
 }
 var port;
 var start_pos = 0;
-var upd_list = {};
-var init_list = [];
+var upd_list = {}; // element can be set/deleted
+var init_list = []; // element will be added only
 $(window).on('resize', height_adjust);
 // ifModified option makes error in FireFox (not Chrome).
 // JSON will be loaded as html if no update at getJSON().

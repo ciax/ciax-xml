@@ -44,6 +44,7 @@ module CIAX
       end
 
       def finish
+        delete(:option)
         self[:total_time] = Msg.elps_sec(self[:start])
         self[:status] = 'end'
         self[:result]

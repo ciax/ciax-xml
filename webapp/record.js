@@ -144,12 +144,15 @@ function dynamic_page() {
         blinking();
     }
     function _upd_page(data, status) {
+        //console.log(status);
+        //if (data) console.log(data.status+data.time);
         if (status != 'success') return;
         if (!port) port = data.port;
         if (first_time != data.id) { // Do only the first one for new macro
             _first_page(data);
             first_time = data.id;
         }else if (data.time != last_time) { // Do every time for updated record
+            //console.log('updated');
             _next_page(data);
             last_time = data.time;
         }
@@ -167,12 +170,12 @@ function dynamic_page() {
     }
     // Update Query Radio Button
     function _make_query(data) {
-        if (data.status != 'query') return;
+        var sel = $('td#query')[0];
+        if (data.status != 'query' || !sel) return;
         var cmdary = data.option.map(function(cmd) {
             return ([cmd, data.id]);
         });
-        var sel = $('td#query')[0];
-        if (sel) make_radio(sel, cmdary);
+        make_radio(sel, cmdary);
     }
     // Update Content of Steps (When JSON is updated)
     function _append_step(data) {
@@ -208,6 +211,7 @@ function dynamic_page() {
         record_result(data);
         _init_commands();
         $('#msg').text('');
+        $('td#query').empty();
         delete upd_list.record;
         return true;
     }

@@ -16,12 +16,12 @@ module CIAX
   # DB class
   class Db < Hashx
     attr_reader :displist
-    def initialize(type)
+    def initialize(type, proj = nil)
       super()
       @type = type
+      @proj = proj
       # @displist is Display
-      lid = 'list'
-      lid += "_#{ENV['PROJ']}" if ENV['PROJ']
+      lid = proj ? "list_#{proj}" : 'list'
       # Show site list
       @latest = _get_latest_file
       @displist = _get_cache(lid) || _get_db(lid, &:displist)
@@ -48,7 +48,7 @@ module CIAX
       @base = "#{@type}-#{id}"
       @marfile = vardir('cache') + "#{@base}.mar"
       return _load_cache(id) if _use_cache?
-      @docs = Xml::Doc.new(@type) unless @docs
+      @docs = Xml::Doc.new(@type, @proj) unless @docs
       nil
     end
 

@@ -6,7 +6,7 @@ module CIAX
   # Macro Layer
   module Mcr
     # Mcr Common Parameters
-    # Upper Conf expected: :option
+    # Upper Conf expected: :option, :jump_groups, :jump_layer
     # Conf includes:
     # :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
     # :host, :port
@@ -34,11 +34,11 @@ module CIAX
       # atrb is Wat only
       def _init_dev_list(site_cfg)
         # handover to Wat only
-        atrb = { sites: self[:sites], proj: self[:id] }
-        # handover to App,Frm
-        site_cfg[:option] = self[:option].sub_opt
-        self[:dev_list] = Wat::List.new(site_cfg, atrb)
-        self[:sv_stat] = Prompt.new(self[:id], self[:option])
+        id = self[:id]
+        # handover to Wat, App
+        site_cfg.update(db: Ins::Db.new(id), proj: id, option: self[:option].sub_opt)
+        self[:dev_list] = Wat::List.new(site_cfg, sites: self[:sites])
+        self[:sv_stat] = Prompt.new(id, self[:option])
       end
     end
 

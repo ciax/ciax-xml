@@ -26,7 +26,7 @@ button, select{
     font-weight: bold;
 /*    font-size : large; */
     border-radius : 10px;
-    border : 4px outset;
+    border : 4px outset silver;
     background-color : gainsboro;
     color : black;
 }
@@ -79,7 +79,7 @@ div.footer{
     color : purple;
 }
 .control-label{
-    color : indigo;
+    color : orchid;
     font-size: large;
 }
 .center{
@@ -108,12 +108,26 @@ h4{
     margin: 0;
 }
 date{
-    color: navy;
+    color: blue;
 }
 ul{
     list-style: none;
     margin-left:1.5em;
     padding:0;
+}
+em {
+    text-transform: capitalize;
+    color : magenda;
+}
+/* Criteria of condition */
+code {
+    color : navy;
+}
+/* var name of condition */
+var {
+    width:7em;
+    float:left;
+    color : gray;
 }
 /***** Step Line *****/
 /* common */
@@ -142,18 +156,8 @@ ul{
 .stop {
     color : red;
 }
-/* var name of condition */
-var {
-    width:7em;
-    float:left;
-    color : gray;
-}
 /*** Result coloring ***/
 /* common */
-em {
-    text-transform: capitalize;
-    color : magenda;
-}
 .true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end, .issued, .accept, .nomask {
     color : green;
 }
@@ -174,7 +178,7 @@ em {
     float:right;
 }
 .elps {
-    color: navy;
+    color: dodgerblue;
     width:5em;
 }
 #scroll.switch {

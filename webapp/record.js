@@ -147,8 +147,8 @@ function dynamic_page() {
         //console.log(status);
         //if (data) console.log(data.status+data.time);
         if (status != 'success') return;
-        if (!port) port = data.port;
         if (first_time != data.id) { // Do only the first one for new macro
+            port = data.port;
             _first_page(data);
             first_time = data.id;
         }else if (data.time != last_time) { // Do every time for updated record
@@ -160,7 +160,7 @@ function dynamic_page() {
     // Update Command Selector
     function _init_commands() {
         ajax_static('/json/mcr_conf.json', function(data) {
-            port = data.port;
+            if (!port) port = data.port;
             make_select('select#command', data.commands);
         });
     }

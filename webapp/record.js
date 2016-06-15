@@ -192,10 +192,12 @@ function dynamic_page() {
             $('#' + step.time).html(make_step(step));
             suspend = true;
         }else if (suspend) {
+            // Refresh All Page at resume
             record_page(data);
             steps_length = crnt;
             suspend = false;
         }else {
+            // Add Step
             _append_step(data);
         }
     }

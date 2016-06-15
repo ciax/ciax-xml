@@ -56,9 +56,15 @@ module CIAX
       dir
     end
 
-    # Git commit ID
-    def gitver
+    # Git administration
+    # Commit ID
+    def git_ver
       '(git commit:' + `cd #{__dir__};git reflog`.split(' ').first + ')'
+    end
+
+    # Set Tag
+    def tag_set(msg)
+      `cd #{__dir__};git tag -afm "#{msg}" "#{PROGRAM}@#{today}/#{HOST}"`
     end
   end
 end

@@ -1,5 +1,5 @@
 {
-    "port" : "55556",
+    "port" : "55555",
     "commands" : {
         "upd" : null,
         "init" : [

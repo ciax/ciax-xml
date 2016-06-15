@@ -9,8 +9,8 @@ module CIAX
       # cfg must have [:db]
       def initialize(cfg, atrb = Hashx.new)
         super
-        @sub_list = Wat::List.new(cfg)
         store_db(@cfg[:db] ||= Ins::Db.new)
+        @sub_list = Wat::List.new(@cfg)
         @cfg[:hdb] = Db.new
       end
     end

@@ -5,12 +5,13 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # This should be set [:db]
     class List < CIAX::List
-      attr_reader :db, :sub_list
+      attr_reader :id, :db, :sub_list
       def initialize(cfg, atrb = Hashx.new)
         super
         cfg[:top_list] ||= self # Site Shared
         cfg[:layer_type] = 'site' # Site Shared
         @cfg[:column] = 2
+        @id = @cfg[:proj]
         @run_list = []
       end
 

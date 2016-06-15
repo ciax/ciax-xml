@@ -34,7 +34,7 @@ module CIAX
       # atrb is Wat only
       def _init_dev_list(site_cfg)
         # handover to Wat only
-        atrb = { src: 'macro', sites: self[:sites] }
+        atrb = { sites: self[:sites], proj: self[:id] }
         # handover to App,Frm
         site_cfg[:option] = self[:option].sub_opt
         self[:dev_list] = Wat::List.new(site_cfg, atrb)

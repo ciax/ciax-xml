@@ -35,7 +35,7 @@ module CIAX
     #  and 'udp:xxx'
     def exe(args, src = nil, pri = 1)
       type?(args, Array)
-      src ||= (@cfg[:src] || 'local')
+      src ||= 'local'
       verbose { "Executing Command #{args} from '#{src}' as ##{pri}" }
       @pre_exe_procs.each { |p| p.call(args, src) }
       msg = @cobj.set_cmd(args).exe_cmd(src, pri).msg

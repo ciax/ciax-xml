@@ -27,10 +27,11 @@ module CIAX
     # in another file.
     class Doc < Hashx
       attr_reader :top, :displist
-      def initialize(type)
+      def initialize(type, proj = nil)
         super()
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
+        @proj = proj
         @displist = Disp.new
         _read_files(Msg.xmlfiles(@type))
         _set_includes
@@ -72,7 +73,7 @@ module CIAX
       def _mk_project(top)
         pid = top['id']
         incprj = [pid]
-        @valid_proj = incprj if ENV['PROJ'] == pid
+        @valid_proj = incprj if @proj == pid
         grp = (@grps ||= Hashx.new)[pid] = []
         top.each do |gdoc| # g.name is include or group
           _include_proj(gdoc, grp, incprj)

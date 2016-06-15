@@ -8,9 +8,10 @@ module CIAX
     # Instance DB
     class Db < DbCmd
       include Wat::Db
-      attr_reader :run_list
-      def initialize
-        super('idb')
+      attr_reader :proj, :run_list
+      def initialize(proj = nil)
+        @proj = proj || ENV['PROJ'] || 'all'
+        super('idb', @proj)
         @adb = App::Db.new
         @cdb = Cmd::Db.new
         @run_list = @displist.valid_keys.select do |id|

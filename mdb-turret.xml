@@ -13,7 +13,7 @@
     </group>
     <group id="tr_sub" caption="Turret Commands" rank="1">
       <item id="pre_home" label="Pre-Homing">
-        <goal label="All Home?">
+        <goal label="All Pre-Home?" verify="true">
           <match form="data" site="mix" var="mp1">0.0</match>
           <match form="data" site="mix" var="mp2">0.0</match>
           <match form="data" site="mix" var="mp3">0.0</match>
@@ -30,7 +30,7 @@
         </wait>
       </item>
       <item id="pre_pos" label="Pre-Positioning">
-        <goal label="All Slot11?">
+        <goal label="All Slot11?" verify="true">
           <match form="data" site="mix" var="mp1">11.0</match>
           <match form="data" site="mix" var="mp2">11.0</match>
           <match form="data" site="mix" var="mp3">11.0</match>

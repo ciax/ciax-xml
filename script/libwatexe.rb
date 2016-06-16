@@ -77,9 +77,9 @@ module CIAX
       end
 
       def _init_exe_drv_
-        @tid_auto = _init_auto_thread_ unless @cfg[:cmd_line_mode]
+        @th_auto = _init_auto_thread_ unless @cfg[:cmd_line_mode]
         @sub.post_exe_procs << proc do
-          @sv_stat.set_flg(:auto, @tid_auto && @tid_auto.alive?)
+          @sv_stat.set_flg(:auto, @th_auto && @th_auto.alive?)
         end
       end
 

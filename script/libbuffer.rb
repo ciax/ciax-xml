@@ -45,13 +45,13 @@ module CIAX
       verbose { "Execute #{cid}(#{@id}):timing" }
       # batch is frm batch (ary of ary)
       batch = ent[:batch]
-      @tid[:queue].push(pri: n, batch: batch, cid: cid) unless batch.empty?
+      @th_buf[:queue].push(pri: n, batch: batch, cid: cid) unless batch.empty?
       self
     end
 
     def server
       # element of que is args of Frm::Cmd
-      @tid = Threadx::Que.new('Buffer', 'app', @id) do |que|
+      @th_buf = Threadx::Que.new('Buffer', 'app', @id) do |que|
         verbose { 'Waiting' }
         pri_sort(que.shift)
         exec_buf('app') if que.empty?
@@ -60,7 +60,7 @@ module CIAX
     end
 
     def alive?
-      @tid && @tid.alive?
+      @th_buf && @th_buf.alive?
     end
 
     private
@@ -120,8 +120,8 @@ module CIAX
 
     def clear
       @outbuf.clear
-      @tid[:queue].clear
-      @tid && @tid.run
+      @th_buf[:queue].clear
+      @th_buf && @th_buf.run
       flush
     end
 

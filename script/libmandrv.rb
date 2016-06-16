@@ -12,9 +12,9 @@ module CIAX
       def ext_local_driver
         @sv_stat.repl(:sid, '') # For server response
         _init_proc_exe
-        _init_proc_rem
-        _init_proc_intrpt
-        _init_proc_swmode
+        _init_proc_rem(@cobj.rem)
+        _init_proc_loc
+        @cobj.rem.ext_input_log('mcr')
         @terminate_procs << proc { @stat.clean }
         self
       end
@@ -31,25 +31,21 @@ module CIAX
         end
       end
 
-      # External Command Group
-      def _init_proc_rem
-        @cobj.rem.ext.def_proc do |ent|
+      def _init_proc_rem(rem)
+        # External Command Group
+        rem.ext.def_proc do |ent|
           sid = @stat.add(ent).id
           @sv_stat.push(:list, sid).repl(:sid, sid)
         end
         # Internal Command Group
-        @cobj.rem.int.def_proc do|ent|
+        rem.int.def_proc do |ent|
           @sv_stat.repl(:sid, ent.par[0])
           ent.msg = @stat.reply(ent.id) || 'NOSID'
         end
-        @cobj.rem.ext_input_log('mcr')
       end
 
-      def _init_proc_intrpt
+      def _init_proc_loc
         @cobj.get('interrupt').def_proc { @stat.interrupt }
-      end
-
-      def _init_proc_swmode
         @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
         @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
       end

@@ -87,7 +87,7 @@ module CIAX
       def initialize(id)
         @id = id
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
-        @que_sql = Threadx::Que.new('SqLog', 'all', @id) { |que| _log_save(que) }
+        @que_sql = Threadx::QueLoop.new('SqLog', 'all', @id) { |que| _log_save(que) }
       end
 
       # Check table existence (ver=0 is invalid)

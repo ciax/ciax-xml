@@ -51,7 +51,7 @@ module CIAX
 
     def server
       # element of que is args of Frm::Cmd
-      @que_buf = Threadx::Que.new('Buffer', 'app', @id) do |que|
+      @que_buf = Threadx::QueLoop.new('Buffer', 'app', @id) do |que|
         verbose { 'Waiting' }
         pri_sort(que.shift)
         exec_buf('app') if que.empty?

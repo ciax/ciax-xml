@@ -31,9 +31,6 @@ module CIAX
     def initialize(sv_stat)
       @sv_stat = type?(sv_stat, Prompt)
       @sv_stat.add_array(:queue)
-      # element of @q is args of Frm::Cmd
-      @q = Queue.new
-      @tid = nil
       # Update App Status
       @flush_proc = proc {}
       @recv_proc = proc {}
@@ -48,15 +45,16 @@ module CIAX
       verbose { "Execute #{cid}(#{@id}):timing" }
       # batch is frm batch (ary of ary)
       batch = ent[:batch]
-      @q.push(pri: n, batch: batch, cid: cid) unless batch.empty?
+      @tid[:queue].push(pri: n, batch: batch, cid: cid) unless batch.empty?
       self
     end
 
     def server
-      @tid = Threadx::Loop.new('Buffer', 'app', @id) do
+      # element of que is args of Frm::Cmd
+      @tid = Threadx::Que.new('Buffer', 'app', @id) do |que|
         verbose { 'Waiting' }
-        pri_sort(@q.shift)
-        exec_buf('app') if @q.empty?
+        pri_sort(que.shift)
+        exec_buf('app') if que.empty?
       end
       self
     end
@@ -122,7 +120,7 @@ module CIAX
 
     def clear
       @outbuf.clear
-      @q.clear
+      @tid[:queue].clear
       @tid && @tid.run
       flush
     end

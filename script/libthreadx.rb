@@ -52,12 +52,11 @@ module CIAX
 
     # Queue Thread
     class Que < Fork
-      attr_reader :queue
       def initialize(tname, layer, id)
-        @queue = Queue.new
+        self[:queue] = Queue.new
         super do
           loop do
-            yield @queue
+            yield self[:queue]
           end
         end
       end

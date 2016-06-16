@@ -56,7 +56,7 @@ module CIAX
         _repl_by_case(get(id), conv)
         verbose { "Evaluated[#{id}]=[#{get(id)}]" }
         time_upd
-        val
+        self
       ensure
         cmt
       end

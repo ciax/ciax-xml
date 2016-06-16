@@ -101,19 +101,21 @@ module CIAX
       self[key]
     end
 
-    # Put value. return nil if no changes
+    # Put value. return self
     def put(key, val)
-      return if self[key] == val
-      store(key, val)
+      diff?(key, val) && store(key, val)
+      self
     end
 
-    # Replace value. return nil if no changes
+    # Replace value. return self
     def repl(key, val)
       Msg.par_err("No such Key [#{key}]") unless key?(key)
       Msg.cfg_err('Value should be String') unless val.is_a?(String)
-      return if fetch(key) == val
-      verbose { "Replace:timing(#{key}) #{fetch(key)} ->  #{val}" }
-      fetch(key).replace(val)
+      if diff?(key, val)
+        verbose { "Replace:timing(#{key}) #{fetch(key)} ->  #{val}" }
+        fetch(key).replace(val)
+      end
+      self
     end
 
     # Make empty copy
@@ -143,6 +145,13 @@ module CIAX
         atrb[k] = v
       end
       atrb
+    end
+
+    private
+
+    def diff?(key, val)
+      # allows no key
+      self[key] != val
     end
   end
 

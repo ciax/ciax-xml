@@ -34,15 +34,21 @@ module CIAX
 
     ## Manipulate data
     def put(key, val)
-      super || return
-      time_upd
-      cmt
+      super
+      if diff?(key, val)
+        time_upd
+        cmt
+      end
+      self
     end
 
     def repl(key, val)
-      super || return
-      time_upd
-      cmt
+      super
+      if diff?(key, val)
+        time_upd
+        cmt
+      end
+      self
     end
 
     # Update without any processing (Use for scan in macro)

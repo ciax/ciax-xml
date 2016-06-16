@@ -57,6 +57,7 @@ module CIAX
         atrb = { dbi: @db.get(site), sub_list: @sub_list }
         obj = layer_module::Exe.new(@cfg, atrb)
         @list.put(site, obj)
+        obj
       end
 
       def switch(site)

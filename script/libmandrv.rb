@@ -27,7 +27,7 @@ module CIAX
           @sv_stat.flush(:run) if @sv_stat.get(:list).empty?
         end
         @post_exe_procs << proc do
-          (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id) }
+          @sv_stat.get(:list).each { |id| @par.add(id) }
         end
       end
 

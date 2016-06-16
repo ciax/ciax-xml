@@ -34,7 +34,7 @@ module CIAX
 
     # add to list (default is incresed)
     def add(id)
-      @list << id
+      @list << id unless @list.include?(id)
       self[:default] = id
       self
     end

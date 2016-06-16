@@ -11,7 +11,7 @@ readlines.each do|line|
   JSON.parse(line.chomp, symbolize_names: true).each do|k, v|
     case k
     when :time
-      ary << Time.at(v.to_f / 1000).to_s
+      ary << Time.at(v/1000,(v % 1000) * 1000).strftime('%Y-%m-%d %T,%L')
     when :base64
       data = v.unpack('m').first
       ary << "data=#{data.inspect}(#{data.size})"

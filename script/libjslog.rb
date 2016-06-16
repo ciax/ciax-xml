@@ -9,10 +9,9 @@ module CIAX
 
     def ext_local_log # logging with flatten
       id = self[:id]
-      @queue = Queue.new
       @logfile = vardir('log') + _file_base + "_#{Time.now.year}.log"
-      @cmt_procs << proc { @queue.push(JSON.dump(self)) }
-      _log_thread(id)
+      @th_log = _log_thread(id)
+      @cmt_procs << proc { @th_log[:queue].push(JSON.dump(self)) }
       self
     end
 
@@ -40,11 +39,11 @@ module CIAX
 
     def _log_thread(id)
       verbose { "Initiate File Log Server [#{id}/Ver.#{self[:ver]}]" }
-      Threadx::Loop.new('Logging', @type, @id) { _log_save }
+      Threadx::Que.new('Logging', @type, @id) { |que| _log_save(que) }
     end
 
-    def _log_save
-      str = @queue.pop
+    def _log_save(que)
+      str = que.pop
       open(@logfile, 'a') { |f| f.puts str }
       verbose { "Appended #{str.size} byte" }
     end

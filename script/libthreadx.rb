@@ -38,6 +38,7 @@ module CIAX
         errmsg
       end
     end
+
     # Thread with Loop
     class Loop < Fork
       def initialize(tname, layer, id)
@@ -75,6 +76,7 @@ module CIAX
       end
     end
 
+    # Queue Thread with Loop
     class QueLoop < Que
       def initialize(tname, layer, id)
         super { |i, o| loop { yield i, o } }

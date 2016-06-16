@@ -87,7 +87,7 @@ module CIAX
       def initialize(id)
         @id = id
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
-        @th_sql = Threadx::Que.new('SqLog', 'all', @id) { |que| _log_save(que) }
+        @que_sql = Threadx::Que.new('SqLog', 'all', @id) { |que| _log_save(que) }
       end
 
       # Check table existence (ver=0 is invalid)
@@ -121,13 +121,13 @@ module CIAX
       # Create table if no table
       def create_tbl(sqlog)
         return if internal('tables').split(' ').include?(sqlog.tid)
-        @th_sql[:queue].push sqlog.create
+        @que_sql.push sqlog.create
         verbose { "'#{sqlog.tid}' is created" }
       end
 
       def real_mode(stat, sqlog)
         # Add to stat.upd
-        stat.cmt_procs << proc { @th_sql[:queue].push sqlog.upd }
+        stat.cmt_procs << proc { @que_sql.push sqlog.upd }
       end
 
       def dummy_mode(stat, sqlog)

@@ -53,12 +53,29 @@ module CIAX
     # Queue Thread
     class Que < Fork
       def initialize(tname, layer, id)
-        self[:queue] = Queue.new
+        @cmd = Queue.new
+        @res = Queue.new
         super do
           loop do
-            yield self[:queue]
+            yield @cmd, @res
           end
         end
+      end
+
+      def push(str)
+        warning("Thread [#{self[:name]}] is not running") unless alive?
+        @cmd.push(str)
+        self
+      end
+
+      def pop
+        @res.pop
+      end
+
+      def clear
+        @cmd.clear
+        @res.clear
+        self
       end
     end
 

@@ -38,6 +38,7 @@ module CIAX
           # site_id: App, Frm
           # id : Mcr
           id = @cfg[:site_id] || @cfg[:id]
+          verbose { "Initiate logging input #{tag}:#{id}" }
           @cfg[:input] = Input.new(tag, id)
           self
         end

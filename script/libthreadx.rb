@@ -42,6 +42,7 @@ module CIAX
         errmsg
       end
     end
+
     # Thread with Loop
     class Loop < Fork
       def initialize(tname, layer, id)
@@ -56,14 +57,33 @@ module CIAX
 
     # Queue Thread
     class Que < Fork
-      attr_reader :queue
       def initialize(tname, layer, id)
-        @queue = Queue.new
-        super do
-          loop do
-            yield @queue
-          end
-        end
+        @in = Queue.new
+        @out = Queue.new
+        super { yield @in, @out }
+      end
+
+      def push(str)
+        warning("Thread [#{self[:name]}] is not running") unless alive?
+        @in.push(str)
+        self
+      end
+
+      def pop
+        @out.pop
+      end
+
+      def clear
+        @in.clear
+        @out.clear
+        self
+      end
+    end
+
+    # Queue Thread with Loop
+    class QueLoop < Que
+      def initialize(tname, layer, id)
+        super { |i, o| loop { yield i, o } }
       end
     end
 

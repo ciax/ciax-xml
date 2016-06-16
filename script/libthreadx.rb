@@ -11,7 +11,9 @@ module CIAX
     module_function
 
     def list
-      Thread.list.map { |t| t[:name] }
+      Thread.list.map do |t|
+        %i(layer name id).map { |id| t[id] }.push(t.status).join(':')
+      end.sort
     end
 
     def killall
@@ -24,7 +26,9 @@ module CIAX
       def initialize(tname, layer, id)
         @layer = layer
         th = super { _do_proc(id) { yield } }
+        th[:layer] = layer
         th[:name] = tname
+        th[:id] = id
         Threads.add(th)
       end
 

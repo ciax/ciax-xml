@@ -11,10 +11,8 @@ module CIAX
       # Initiate for driver
       def ext_local_driver
         @sv_stat.repl(:sid, '') # For server response
-        _init_proc_pre_exe
-        _init_proc_post_exe
-        _init_proc_extcmd
-        _init_proc_intcmd
+        _init_proc_exe
+        _init_proc_rem
         _init_proc_intrpt
         _init_proc_swmode
         @terminate_procs << proc { @stat.clean }
@@ -23,35 +21,28 @@ module CIAX
 
       alias_method :ext_local_test, :ext_local_driver
 
-      def _init_proc_pre_exe
+      def _init_proc_exe
         @pre_exe_procs << proc do
-          @sv_stat.repl(:sid, '')
-          @sv_stat.flush(:list, @stat.alives)
+          @sv_stat.flush(:list, @stat.alives).repl(:sid, '')
           @sv_stat.flush(:run) if @sv_stat.get(:list).empty?
         end
-      end
-
-      def _init_proc_post_exe
         @post_exe_procs << proc do
           (@sv_stat.get(:list) - @par.list).each { |id| @par.add(id) }
         end
       end
 
       # External Command Group
-      def _init_proc_extcmd
+      def _init_proc_rem
         @cobj.rem.ext.def_proc do |ent|
           sid = @stat.add(ent).id
-          @sv_stat.repl(:sid, sid)
-          @sv_stat.push(:list, sid)
+          @sv_stat.push(:list, sid).repl(:sid, sid)
         end
-      end
-
-      # Internal Command Group
-      def _init_proc_intcmd
+        # Internal Command Group
         @cobj.rem.int.def_proc do|ent|
           @sv_stat.repl(:sid, ent.par[0])
           ent.msg = @stat.reply(ent.id) || 'NOSID'
         end
+        @cobj.rem.ext_input_log('mcr')
       end
 
       def _init_proc_intrpt

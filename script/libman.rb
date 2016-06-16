@@ -48,7 +48,6 @@ module CIAX
         rem.add_ext(Ext)
         rem.sys.add_item('nonstop', 'Mode')
         rem.sys.add_item('interactive', 'Mode')
-        rem.ext_input_log('mcr') if @cfg[:option].log?
       end
 
       def _init_stat

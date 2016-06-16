@@ -21,8 +21,9 @@ module CIAX
       self
     end
 
+    # returns t/f
     def repl(key, val)
-      super && verbose { "Changes [#{key}] -> #{val}" } && self
+      super && verbose { "Changes [#{key}] -> #{val}" } && true
     end
 
     # For Binary Data with display db

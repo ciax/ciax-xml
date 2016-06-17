@@ -30,7 +30,7 @@ module CIAX
         "alter table #{@tid} add column #{key};"
       end
 
-      def upd
+      def insert
         kary = []
         vary = []
         expand.each do |k, v|
@@ -87,17 +87,19 @@ module CIAX
       def initialize(id)
         @id = id
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
-        @que_sql = Threadx::QueLoop.new('SqLog', 'all', @id) { |que| _log_save(que) }
+        @que_sql = Threadx::QueLoop.new('SqLog', 'all', @id) do |que|
+          _log_save(que)
+        end
       end
 
       # Check table existence (ver=0 is invalid)
       def add_table(stat)
-        sqlog = Table.new(stat)
+        tbl = Table.new(stat)
         if stat[:ver].to_i > 0
-          create_tbl(sqlog)
-          real_mode(stat, sqlog)
+          create_tbl(tbl)
+          real_mode(stat, tbl)
         else
-          dummy_mode(stat, sqlog)
+          dummy_mode(stat, tbl)
         end
         self
       end
@@ -119,20 +121,20 @@ module CIAX
       end
 
       # Create table if no table
-      def create_tbl(sqlog)
-        return if internal('tables').split(' ').include?(sqlog.tid)
-        @que_sql.push sqlog.create
-        verbose { "'#{sqlog.tid}' is created" }
+      def create_tbl(tbl)
+        return if internal('tables').split(' ').include?(tbl.tid)
+        @que_sql.push tbl.create
+        verbose { "'#{tbl.tid}' is created" }
       end
 
-      def real_mode(stat, sqlog)
-        # Add to stat.upd
-        stat.cmt_procs << proc { @que_sql.push sqlog.upd }
+      def real_mode(stat, tbl)
+        # Add to stat.cmt
+        stat.cmt_procs << proc { @que_sql.push tbl.insert }
       end
 
-      def dummy_mode(stat, sqlog)
+      def dummy_mode(stat, tbl)
         verbose { 'Invalid Version(0): No Log' }
-        stat.cmt_procs << proc { verbose { "Dummy Insert\n" + sqlog.upd } }
+        stat.cmt_procs << proc { verbose { "Dummy Insert\n" + tbl.insert } }
       end
     end
 
@@ -143,10 +145,10 @@ module CIAX
       begin
         dbi = Ins::Db.new.get(id)
         stat = App::Status.new(dbi).ext_local_file
-        sqlog = Table.new(stat)
+        tbl = Table.new(stat)
         puts stat
-        puts sqlog.create
-        puts sqlog.upd
+        puts tbl.create
+        puts tbl.insert
       rescue InvalidARGS
         Msg.usage '[id]'
       end

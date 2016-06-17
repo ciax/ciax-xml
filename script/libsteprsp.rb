@@ -17,12 +17,12 @@ module CIAX
 
       # Conditional judgment section
       def skip?
-        waiting
+        waitbusy
         super(_all_conds?)
       end
 
       def fail?
-        waiting
+        waitbusy
         super(!_all_conds?)
       end
 
@@ -32,7 +32,7 @@ module CIAX
         set_result('timeout', 'pass', res)
       end
 
-      # obj.waiting -> looking at Prompt[:busy]
+      # obj.waitbusy -> looking at Prompt[:busy]
       # obj.stat -> looking at Status
 
       def active?
@@ -46,9 +46,9 @@ module CIAX
       end
 
       # Blocking during busy. (for interlock check)
-      def waiting
+      def waitbusy
         @exes.each do |obj|
-          next if obj.waiting
+          next if obj.waitbusy
           set_result('timeout')
           fail Interlock
         end

@@ -64,7 +64,7 @@ module CIAX
       @que_buf && @que_buf.alive?
     end
 
-    def waiting
+    def waitbusy
       @que_buf.pop
     end
 

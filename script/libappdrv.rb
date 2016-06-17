@@ -21,8 +21,8 @@ module CIAX
         self
       end
 
-      def waiting
-        @buf.waiting
+      def waitbusy
+        @buf.waitbusy
         super
       end
 

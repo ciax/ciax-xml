@@ -8,6 +8,10 @@ module CIAX
     # Watch Condition Class
     class Condition
       include Msg
+      # @event[:active] : Array of event ids which meet criteria
+      # @event[:exec] : Command queue which contains commands issued as event
+      # @event[:block] : Array of commands (units) which are blocked during busy
+      # @event[:int] : List of interrupt commands which is effectie during busy
       def initialize(windex, stat, event)
         @windex = type?(windex, Hash)
         @stat = type?(stat, App::Status)
@@ -19,25 +23,24 @@ module CIAX
         end
       end
 
-      # @event[:active] : Array of event ids which meet criteria
-      # @event[:exec] : Command queue which contains commands issued as event
-      # @event[:block] : Array of commands (units) which are blocked during busy
-      # @event[:int] : List of interrupt commands which is effectie during busy
+      # Done every after Status updated
       def upd_cond
-        sync
+        _sync
         %i(active exec block int).each { |s| @event[s].clear }
         _chk_conds
         @event
       end
 
-      def sync
+      private
+
+      def _sync
         @list.each do|i|
           @event[:last][i] = @event[:crnt][i]
           @event[:crnt][i] = @stat[:data][i]
         end
       end
 
-      def check(id, item)
+      def _chk_item(id, item)
         return true unless (cklst = item[:cnd])
         verbose { "Check: <#{item[:label]}>" }
         rary = []
@@ -50,11 +53,9 @@ module CIAX
         rary.all?
       end
 
-      private
-
       def _chk_conds
         @windex.each do|id, item|
-          next unless check(id, item)
+          next unless _chk_item(id, item)
           _actives(item[:act])
           @event.fetch(:active) << id
         end

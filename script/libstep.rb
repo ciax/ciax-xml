@@ -39,7 +39,7 @@ module CIAX
         set_result('failed', 'pass', tf)
       end
 
-      # Not Condition Step
+      # Not Condition Step, returns t/f
       def set_result(tmsg, fmsg = nil, tf = true)
         res = tf ? tmsg : fmsg
         self[:result] = res if res

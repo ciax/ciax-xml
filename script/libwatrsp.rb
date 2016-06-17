@@ -49,6 +49,10 @@ module CIAX
         self
       end
 
+      def time_upd
+        super(@stat[:time])
+      end
+
       private
 
       def _init_upd_proc
@@ -65,7 +69,6 @@ module CIAX
           verbose { 'Propagate Status#cmt -> Event#upd(cmt)' }
           upd
         end
-        @cmt_procs << proc { time_upd(@stat[:time]) }
       end
 
       # Initiate for Auto Update

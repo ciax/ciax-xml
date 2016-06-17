@@ -12,7 +12,7 @@ module CIAX
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
       @upd_procs = []
       # Proc Array for Commit Propagation to the upper Layers
-      @cmt_procs = []
+      @cmt_procs = [proc { time_upd }]
     end
 
     # Time setting, Loading file at client
@@ -35,19 +35,13 @@ module CIAX
     ## Manipulate data
     def put(key, val)
       super
-      if diff?(key, val)
-        time_upd
-        cmt
-      end
+      cmt if diff?(key, val)
       self
     end
 
     def repl(key, val)
       super
-      if diff?(key, val)
-        time_upd
-        cmt
-      end
+      cmt if diff?(key, val)
       self
     end
 

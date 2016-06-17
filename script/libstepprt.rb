@@ -45,6 +45,7 @@ module CIAX
         title + result + action
       end
 
+      # returns t/f
       def set_result(tmsg, fmsg = nil, tf = true)
         tf = super
         print result if Msg.fg?

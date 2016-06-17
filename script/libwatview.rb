@@ -25,7 +25,7 @@ module CIAX
           %i(exec block int act_time upd_next).each do |id|
             self[id] = @event.get(id)
           end
-          upd_stat
+          _upd_stat
           time_upd(@event[:time])
         end
       end
@@ -58,15 +58,15 @@ module CIAX
         end
       end
 
-      def upd_stat
+      def _upd_stat
         self[:stat].each do |id, v|
-          upd_cond(id, v[:cond])
+          _upd_cond(id, v[:cond])
           v[:active] = @event.get(:active).include?(id)
         end
         self
       end
 
-      def upd_cond(id, conds)
+      def _upd_cond(id, conds)
         conds.each_with_index do |cnd, i|
           cnd[:res] = (@event.get(:res)[id] || [])[i]
           idx = @event.get(:crnt)

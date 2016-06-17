@@ -1,16 +1,15 @@
 #!/bin/bash --rcfile
 develop(){
     cd "$HOME/ciax-xml/webapp"
+    git pull --all
     case $(git branch |grep '*') in
         *develop)
             export PROJ=dummy
-            export VER=Initiate
             export NOCACHE=1
-            alias sybeta='git pull;git push;giu beta;gim develop;git push;giu develop'
+            alias sybeta='git push;giu beta;gim develop;git push;giu develop'
             ;;
         *beta)
-            git pull
-            alias sydev='git pull; git push;giu develop;gim beta;git push;giu beta'
+            alias sydev='git push;giu develop;gim beta;git push;giu beta'
             ;;
         *)
             cd;;

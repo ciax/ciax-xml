@@ -86,7 +86,7 @@ module CIAX
       def _init_auto_thread_
         @stat.next_upd
         Threadx::Loop.new('Regular', 'wat', @id) do
-          @stat.auto_exec.sleep.upd
+          @stat.auto_exec.sleep
         end
       end
     end

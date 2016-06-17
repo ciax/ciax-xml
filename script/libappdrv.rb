@@ -101,7 +101,7 @@ module CIAX
       def _init_proc_sub
         @sub.stat.flush_procs << proc do
           verbose { 'Propagate Field#flush -> Status#upd(cmt)' }
-          @stat.upd
+          @stat.upd.cmt
         end
       end
     end

@@ -176,7 +176,7 @@ module CIAX
       def _input_log(src, pri)
         return unless self[:input] && !@id.empty?
         verbose { "Input [#{@id}] from #{src}" }
-        self[:input].update(cid: self[:cid], src: src, pri: pri).upd
+        self[:input].update(cid: self[:cid], src: src, pri: pri).cmt
       end
     end
   end

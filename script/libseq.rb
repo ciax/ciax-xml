@@ -24,7 +24,7 @@ module CIAX
         @qry = Query.new(@record, @sv_stat, valid_keys)
       end
 
-      def upd
+      def upd_sites
         @cfg[:sites].each { |site| @cfg[:dev_list].get(site) }
         self
       end
@@ -128,7 +128,7 @@ module CIAX
         mobj = Cmd::Index.new(Conf.new(cfg))
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)
-        Sequencer.new(ent).upd.macro
+        Sequencer.new(ent).upd_sites.macro
       end
     end
   end

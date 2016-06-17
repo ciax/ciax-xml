@@ -12,6 +12,7 @@ module CIAX
         super('mcr')
         @stat = type?(stat, List)
         @par = type?(par, Parameter)
+        # @list content is Record
         @list = Hashx.new
         @all_keys = []
         @ciddb = { '0' => 'user' }

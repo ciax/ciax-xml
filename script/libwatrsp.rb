@@ -59,7 +59,7 @@ module CIAX
         @upd_procs << proc do
           next unless @stat[:time] > @last_updated
           @last_updated = self[:time]
-          @cond.upd
+          @cond.upd_cond
           upd_event
         end
       end

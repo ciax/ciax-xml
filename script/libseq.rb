@@ -51,7 +51,7 @@ module CIAX
       end
 
       def fork
-        Threadx::Fork.new('Macro', 'seq', @id) { upd.macro }
+        Threadx::Fork.new('Macro', 'seq', @id) { upd_sites.macro }
       end
 
       private

@@ -23,7 +23,7 @@ module CIAX
       # @event[:exec] : Command queue which contains commands issued as event
       # @event[:block] : Array of commands (units) which are blocked during busy
       # @event[:int] : List of interrupt commands which is effectie during busy
-      def upd
+      def upd_cond
         sync
         %i(active exec block int).each { |s| @event[s].clear }
         _chk_conds

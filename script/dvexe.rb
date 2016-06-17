@@ -8,6 +8,6 @@ module CIAX
     aex = App::List.new(cfg).get(args.shift)
     args.empty? ? aex.cobj.cmd_err : aex.exe(args)
     puts aex
-    puts aex.waitbusy ? 'COMPLETE' : 'TIMEOUT'
+    puts aex.wait_ready ? 'COMPLETE' : 'TIMEOUT'
   end
 end

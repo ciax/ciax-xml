@@ -39,7 +39,7 @@ module CIAX
       end
 
       # wait for busy end or status changed
-      def waitbusy
+      def wait_ready
         verbose { "Waiting busy end for #{@id}" }
         100.times do
           return true unless @sv_stat.upd.up?(:busy)

@@ -73,7 +73,7 @@ module CIAX
 
       def _upd(e, _step, _mstat)
         _show
-        _get_site(e).exe(['upd'], 'macro').waitbusy
+        _get_site(e).exe(['upd'], 'macro').wait_ready
         true
       end
 

@@ -35,12 +35,12 @@ module CIAX
       def _init_propagates
         @sv_stat.cmt_procs << proc { _upd_propagate('Prompt') }
         @stat.cmt_procs << proc { _upd_propagate('Status') }
-        upd
+        upd.cmt
       end
 
       def _upd_propagate(_mod)
         verbose { 'Propagate #{mod}#cmt -> Hex::Rsp#upd(cmt)' }
-        upd
+        upd.cmt
       end
 
       # Server Status

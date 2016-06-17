@@ -21,6 +21,13 @@ module CIAX
         self
       end
 
+      def waiting
+        @buf.waiting
+        super
+      end
+
+      private
+
       def _init_log_mode
         return unless @cfg[:option].log?
         @stat.ext_local_log.ext_local_sqlog

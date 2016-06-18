@@ -51,11 +51,10 @@ module CIAX
 
     def server
       # element of que is args of Frm::Cmd
-      @que_buf = Threadx::QueLoop.new('Buffer', 'app', @id) do |iq, oq|
+      @que_buf = Threadx::QueLoop.new('Buffer', 'app', @id) do |iq|
         verbose { 'Waiting' }
         pri_sort(iq.shift)
         sv_up
-        oq.push(true)
         exec_buf('app') if iq.empty?
       end
       self
@@ -66,7 +65,10 @@ module CIAX
     end
 
     def wait_busy_up
-      @que_buf.shift
+      100.times {
+        break if @sv_stat.upd.up?(:busy)
+        sleep 0.01
+      }
     end
 
     private

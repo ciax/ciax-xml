@@ -21,6 +21,11 @@ module CIAX
         self
       end
 
+      def wait_ready
+        @buf.wait_busy_up
+        super
+      end
+
       private
 
       def _init_log_mode

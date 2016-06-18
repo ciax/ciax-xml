@@ -3,7 +3,9 @@
 // ********* Steps **********
 // step header section
 function make_step(step) {
-    var html = ['<li id="' + step.time + '">'];
+    var html = ['<li'];
+    if (step.type != 'mcr') html.push(' class="step"');
+    html.push('>');
     _header();
     _conditions() || _sub_mcr();
     html.push('</li>');
@@ -60,7 +62,7 @@ function make_step(step) {
         if (step.busy) html.push(' -> <em class="active">Busy</em>');
     }
     // other steps
-    function _header() {
+    function _header(attr) {
         html.push('<h4>');
         _title();
         _count();
@@ -190,7 +192,7 @@ function dynamic_page() {
         if (steps_length == crnt) {
             // When Step doesn't increase.
             var step = data.steps[crnt - 1];
-            $('#' + step.time).html(make_step(step));
+            $('.step:last').html(make_step(step));
             suspend = true;
         }else if (suspend) {
             // Refresh All Page at resume

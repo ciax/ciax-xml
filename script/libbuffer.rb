@@ -54,7 +54,8 @@ module CIAX
       @que_buf = Threadx::QueLoop.new('Buffer', 'app', @id) do |iq, oq|
         verbose { 'Waiting' }
         pri_sort(iq.shift)
-        sv_up(oq)
+        sv_up
+        oq.push(true)
         exec_buf('app') if iq.empty?
       end
       self
@@ -65,7 +66,7 @@ module CIAX
     end
 
     def wait_busy_up
-      @que_buf.pop
+      @que_buf.shift
     end
 
     private
@@ -111,11 +112,9 @@ module CIAX
       end
     end
 
-    def sv_up(snd)
+    def sv_up
       verbose { "Busy Up(#{@id}):timing" }
-      return if @sv_stat.up?(:busy)
       @sv_stat.up(:busy)
-      snd.push(true)
     end
 
     def sv_dw

@@ -69,8 +69,8 @@ module CIAX
         self
       end
 
-      def pop
-        @out.pop
+      def shift
+        @out.shift
       end
 
       def clear

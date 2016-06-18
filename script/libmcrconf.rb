@@ -13,6 +13,7 @@ module CIAX
     class Conf < Config
       def initialize(root_cfg)
         super(root_cfg)
+        @opt = self[:option]
         db = Db.new
         dbi = db.get
         update(layer_type: 'mcr', db: db)
@@ -25,7 +26,7 @@ module CIAX
       private
 
       def _init_net(dbi)
-        self[:host] = self[:option].host || dbi[:host]
+        self[:host] = @opt.host || dbi[:host]
         self[:port] = dbi[:port] || 55_555
       end
 
@@ -36,9 +37,9 @@ module CIAX
         # handover to Wat only
         id = self[:id]
         # handover to Wat, App
-        site_cfg.update(db: Ins::Db.new(id), proj: id, option: self[:option].sub_opt)
+        site_cfg.update(db: Ins::Db.new(id), proj: id, option: @opt.sub_opt)
         self[:dev_list] = Wat::List.new(site_cfg, sites: self[:sites])
-        self[:sv_stat] = Prompt.new(id, self[:option])
+        self[:sv_stat] = Prompt.new(id, @opt)
       end
     end
 

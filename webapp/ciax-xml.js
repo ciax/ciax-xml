@@ -83,7 +83,7 @@ function dvctl(args, func) {
         cache: false,
         success: function(data) {
             //console.log('recv=' + JSON.stringify(data));
-            replace('#msg', data.msg, data.msg.toLowerCase()).show().fadeOut(3000);
+            replace('#msg', data.msg, data.msg.toLowerCase()).show().fadeOut(1000);
             if (func) func(data);
         },
         error: function(data) {

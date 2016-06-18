@@ -42,7 +42,7 @@ module CIAX
         Thread.current[:obj] = self
         _init_record_file
         _show(@record.start)
-        sub_macro(@cfg[:sequence], @record)
+        sub_macro(@cfg[:sequence], @record.cmt)
       rescue Interrupt
         _site_interrupt
       rescue Verification
@@ -70,12 +70,18 @@ module CIAX
         _post_seq(mstat)
       end
 
+      def _call_step(e, step, mstat)
+        method('_' + e[:type]).call(e, step, mstat)
+      ensure
+        step.cmt
+      end
+
       # Return false if sequence is broken
       def do_step(e, mstat)
         step = @record.add_step(e, @depth)
         begin
           _show step.title
-          return true if method('_' + e[:type]).call(e, step, mstat)
+          return true if _call_step(e, step, mstat)
         rescue Retry
           retry
         end

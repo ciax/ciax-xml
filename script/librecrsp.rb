@@ -38,8 +38,6 @@ module CIAX
           cmt
         end
         step
-      ensure
-        cmt
       end
 
       def finish

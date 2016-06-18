@@ -40,6 +40,7 @@ module CIAX
 
       def macro
         Thread.current[:obj] = self
+        _init_record_file
         _show(@record.start)
         sub_macro(@cfg[:sequence], @record)
       rescue Interrupt
@@ -103,11 +104,15 @@ module CIAX
       # Initialization Part
       def _init_record(pid)
         @record = Record.new.ext_local_rsp(@cfg)
-        # ext_file must be after ext_rsp which includes time update
-        @record.ext_local_file.auto_save
         @record[:pid] = pid
         @id = @record[:id]
         @title = @record.title
+      end
+
+      # Do file generation after forked
+      def _init_record_file
+        # ext_file must be after ext_rsp which includes time update
+        @record.ext_local_file.auto_save
         @record.mklink # Make latest link
         @record.mklink(@record[:cid]) # Make cid link
       end

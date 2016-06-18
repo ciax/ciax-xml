@@ -65,10 +65,10 @@ module CIAX
     end
 
     def wait_busy_up
-      100.times {
+      100.times do
         break if @sv_stat.upd.up?(:busy)
         sleep 0.01
-      }
+      end
     end
 
     private

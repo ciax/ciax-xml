@@ -12,7 +12,8 @@ function make_step(step) {
     function _title() {
         var type = step.type;
         var ary = [];
-        html.push('<span class="head ' + type + '">' + type + '</span>');
+        html.push('<span title="' + JSON.stringify(step).replace(/"/g, "'"));
+        html.push('" class="head ' + type + '">' + type + '</span>');
         html.push('<span class="cmd"');
         if (step.site) {
             ary.push(step.site);

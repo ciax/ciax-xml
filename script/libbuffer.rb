@@ -29,8 +29,7 @@ module CIAX
     attr_accessor :flush_proc, :recv_proc
     # sv_stat: Server Status
     def initialize(sv_stat)
-      @sv_stat = type?(sv_stat, Prompt)
-      @sv_stat.add_array(:queue)
+      @sv_stat = type?(sv_stat, Prompt).add_array(:queue)
       # Update App Status
       @flush_proc = proc {}
       @recv_proc = proc {}
@@ -98,21 +97,20 @@ module CIAX
 
     # Remove duplicated args and unshift one
     def _reorder_cmd_
-      args = []
-      @outbuf.each { |batch| _get_args_(args, batch) }
-      args
+      @outbuf.inject([]) { |a, e| _get_args_(a, e) }
     end
 
     def _get_args_(args, batch)
       if args.empty?
-        h = batch.shift || return
-        args.replace h[:args]
+        h = batch.shift
+        args.replace h[:args] if h
       end
       batch.delete_if do |e|
         if e[:args] == args
           warning("duplicated cmd #{args.inspect}(#{e[:cid]})")
         end
       end
+      args
     end
 
     def sv_up
@@ -122,14 +120,12 @@ module CIAX
 
     def sv_dw
       verbose { "Busy Down(#{@id}):timing" }
-      @sv_stat.dw(:busy)
-      @sv_stat.flush(:queue, @outbuf.cids)
+      @sv_stat.dw(:busy).flush(:queue, @outbuf.cids)
     end
 
     def clear
       @outbuf.clear
-      @que_buf.clear
-      @que_buf && @que_buf.run
+      @que_buf.clear.run
       flush
     end
 

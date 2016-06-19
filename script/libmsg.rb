@@ -73,8 +73,7 @@ module CIAX
     def make_msg(title, c = nil)
       @printed = false
       return unless title
-      @head ||= make_head
-      ts = "#{@head}:"
+      ts = make_head + ':'
       ts << (c ? Msg.colorize(title.to_s, c) : title.to_s)
     end
 

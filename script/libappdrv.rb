@@ -93,7 +93,7 @@ module CIAX
       def _init_proc_buf(buf)
         # Frm: Execute single command
         buf.recv_proc = proc do|args, src|
-          verbose { "Processing #{args}" }
+          verbose { "Processing Sub Exe #{args}" }
           @sub.exe(args, src)
         end
         # Frm: Update after each single command finish

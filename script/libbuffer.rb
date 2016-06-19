@@ -36,6 +36,7 @@ module CIAX
       @recv_proc = proc {}
       @outbuf = Outbuf.new
       @id = @sv_stat.get(:id)
+      @layer = 'app'
     end
 
     # Send app entity

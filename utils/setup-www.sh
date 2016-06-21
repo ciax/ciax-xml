@@ -7,3 +7,4 @@ ln -sf $HOME/ciax-xml/web*/*  $dir/
 sudo ln -sf ~/ciax-xml /var/www/html
 sudo ln -sf ~/.var/json /var/www/html
 sudo ln -sf ~/.var/log /var/www/html
+sudo ln -sf $(pwd -P)/*.js $dir

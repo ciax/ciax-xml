@@ -56,7 +56,7 @@ module CIAX
       @tid = Threadx::Loop.new('Buffer', 'app', @id) do
         verbose { 'Waiting' }
         pri_sort(@q.shift)
-        exec_buf('app') if @q.empty?
+        exec_buf('buffer') if @q.empty?
       end
       self
     end

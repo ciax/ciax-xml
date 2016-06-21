@@ -1,4 +1,5 @@
 <?php
+#Required packages: php5-sqlite
 function getarg($key){
   global $args;
   $res=(isset($_POST[$key])) ? $_POST[$key] :
@@ -17,16 +18,17 @@ foreach($argv as &$e){
     $args[$ary[0]]=$ary[1];
   }
 }
+
 $site=getarg('site');
 $vid=getarg('vid');
-$fname='/var/www/html/log/status_'.$site.'_2016.log';
-$handle = fopen($fname,"r");
-if($handle){
-    $json = array();
-    while(($line = fgets($handle, 4096)) !== false){
-        $buf=json_decode($line, true);
-        $json[] = array($buf['time'], $buf['data'][$vid]);
-    }
-    print(json_encode($json));
+
+$fname='/var/www/html/log/sqlog_'.$site.'.sq3';
+echo $fname;
+$pdo=new PDO('sqlite:'.$fname);
+if($pdo){
+    $st=$pdo->prepare('SELECT * FROM status_1');
+    $st->execute();
+    $all=$st->fetchAll(PDO::FETCH_NUM);
+    echo(json_encode($all));
 }
 ?>

@@ -156,9 +156,9 @@ var {
 .stop {
     color : red;
 }
-/*** Result coloring ***/
+/*** Result/Status coloring ***/
 /* common */
-.true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end, .issued, .accept, .nomask {
+.true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end, .issued, .accept, .nomask, .ready {
     color : green;
 }
 .false, .timeout, .failed, .error {

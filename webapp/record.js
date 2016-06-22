@@ -114,7 +114,6 @@ function make_step(step) {
 // ********* Outline **********
 // *** Display on the Bars ***
 function record_outline(data) { // Do at the first
-    start_time = new Date(data.start);
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0)).attr('title', data.id);
     $('#total').text('');
@@ -123,6 +122,7 @@ function record_outline(data) { // Do at the first
 }
 // Macro Body
 function record_page(data) {
+    start_time = new Date(data.start); // empty when ready
     $('#record ul').empty();
     $.each(data.steps, function(i, step) {
         $('#record .depth' + step.depth + ':last').append(make_step(step));
@@ -198,6 +198,7 @@ function dynamic_page() {
         if (steps_length == crnt) {
             // When Step doesn't increase.
             var step = data.steps[crnt - 1];
+            // Update Step
             $('.step:last').html(make_step(step));
             suspend = true;
         }else if (suspend) {

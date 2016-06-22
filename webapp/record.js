@@ -223,7 +223,7 @@ function dynamic_page() {
         record_outline(data); // Make record one time
         if (_mcr_end(data)) return;
         _make_query(data);
-        _mcr_start(update_record);
+        _mcr_start();
         steps_length = data.steps.length;
     }
     function _next_page(data) {

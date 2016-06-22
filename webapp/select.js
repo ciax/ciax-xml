@@ -103,10 +103,10 @@ init_list.push(function() {
         var jq = $(this).addClass('selected');
         // Activate selected record
         var id = jq.attr('id');
-        archive(jq.attr('id'));
         if (jq.children('em').text() == 'busy') {
             update_record(id);
         }else {
+            archive(id);
             delete upd_list.record;
         }
     }

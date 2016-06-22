@@ -80,19 +80,19 @@ function height_adjust() {
 // ******** Control by UDP ********
 // dvctl with func when success
 function dvctl(args, func) {
-    var data = {port: port, cmd: args};
+    var send = {port: port, cmd: args};
     //console.log('send=' + JSON.stringify(data));
     $.ajax('/json/dvctl-udp.php', {
-        data: data,
+        data: send,
         ifModified: true,
         cache: false,
-        success: function(data) {
-            //console.log('recv=' + JSON.stringify(data));
-            replace('#msg', data.msg, data.msg.toLowerCase()).show().fadeOut(1000);
-            if (func) func(data);
+        success: function(recv) {
+            //console.log('recv=' + JSON.stringify(recv));
+            replace('#msg', recv.msg, recv.msg.toLowerCase()).show().fadeOut(1000);
+            if (func) func(recv);
         },
-        error: function(data) {
-            //console.log('recv=' + JSON.stringify(data));
+        error: function(recv) {
+            //console.log('recv=' + JSON.stringify(recv));
             replace('#msg', 'NO Response', 'error');
         }
     });

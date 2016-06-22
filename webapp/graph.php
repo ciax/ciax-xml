@@ -13,7 +13,17 @@
           var url = <?php echo '"sqlog.php?site='.$_GET['site'].'&vid='.$_GET['vid'].'&time="'; ?> + time;
           $.getJSON(url , function(data) {
               var options = {
-                grid: { markings: [ { color: '#ff0000', lineWidth: 3, xaxis: { from: time, to: time }} ] },
+                series: {
+                    lines: { show: true },
+                    points:{ show: true, radius: 3 }
+                },
+                grid: {
+                    markings: [ {
+                            color: '#ff0000',
+                            lineWidth: 3,
+                            xaxis: { from: time, to: time }
+                          } ]
+                },
                 xaxis: { mode: 'time', timezone: 'browser' },
                 zoom: { interactive: true },
                 pan: { interactive: true }

@@ -9,7 +9,7 @@
     <script type="text/javascript" src="graph.js"></script>
     <script type="text/javascript">
       function get_graph() {
-          var url = <?php echo '"sqlog.php?site='.$_GET['site'].'&time='.$_GET['time'].'"'; ?>;
+          var url = <?php echo '"sqlog.php?site='.$_GET['site'].'&vid='.$_GET['vid'].'&time='.$_GET['time'].'"'; ?>;
           $.getJSON(url , function(data) {
               var options = {
                 xaxis: { mode: 'time' },

@@ -48,12 +48,10 @@ module CIAX
 
       def _get_ans(step, cmds)
         @valid_keys.replace(cmds)
-        @record.put(:option, cmds)
-        @record.put(:status, 'query')
+        @record.put(:option, cmds).put(:status, 'query').cmt
         res = Msg.fg? ? _input_tty : _input_que
-        step.put(:action, res)
-        @record.delete(:option)
-        @record.put(:status, 'run')
+        @record.put(:status, 'run').delete(:option)
+        step.put(:action, res).cmt
         res
       end
 

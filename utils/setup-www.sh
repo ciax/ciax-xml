@@ -1,4 +1,5 @@
 #!/bin/bash
+# Required packages: php5-sqlite
 dir=$HOME/.var/json
 for i in $dir/*; do
     [ -L "$i" -a ! -e "$i" ] && rm "$i"

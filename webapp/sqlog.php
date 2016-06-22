@@ -1,5 +1,6 @@
 <?php
-#Required packages: php5-sqlite
+#Get Log value from Sqlog
+# Args: site,vid,time
 function getarg($key){
   global $args;
   $res=(isset($_POST[$key])) ? $_POST[$key] :

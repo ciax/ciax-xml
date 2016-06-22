@@ -1,6 +1,6 @@
-function init() { get_graph('tap', 'pres'); }
-function get_graph(site, vid) {
-    $.getJSON('sqlog.php?site=' + site + '&vid=' + vid, function(data) {
+function init() { get_graph('tap', '1466220000000'); }
+function get_graph(site, time) {
+    $.getJSON('sqlog.php?site=' + site + '&time=' + time, function(data) {
         var options = {
             xaxis: {
                 mode: 'time'

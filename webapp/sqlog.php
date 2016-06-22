@@ -20,15 +20,18 @@ foreach($argv as &$e){
 }
 
 $site=getarg('site');
+$time=getarg('time');
 $vid=getarg('vid');
+$tol=600000;
 
 $fname='/var/www/html/log/sqlog_'.$site.'.sq3';
-echo $fname;
 $pdo=new PDO('sqlite:'.$fname);
 if($pdo){
-    $st=$pdo->prepare('SELECT * FROM status_1');
-    $st->execute();
-    $all=$st->fetchAll(PDO::FETCH_NUM);
-    echo(json_encode($all));
+    $str = 'SELECT * FROM status_1 WHERE time BETWEEN '.($time-$tol).' and '.($time+$tol);
+    $st=$pdo->query($str);
+    if ($st){
+        $all=$st->fetchAll(PDO::FETCH_NUM);
+        if ($all) echo(json_encode($all));
+    }
 }
 ?>

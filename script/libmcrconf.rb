@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libconf'
 require 'libprompt'
+require 'libreclist'
 
 module CIAX
   # Macro Layer
@@ -40,6 +41,7 @@ module CIAX
         site_cfg.update(db: Ins::Db.new(id), proj: id, option: @opt.sub_opt)
         self[:dev_list] = Wat::List.new(site_cfg, sites: self[:sites])
         self[:sv_stat] = Prompt.new(id, @opt)
+        self[:rec_list] = RecList.new
       end
     end
 

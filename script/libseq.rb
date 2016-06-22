@@ -113,6 +113,7 @@ module CIAX
         @record[:pid] = pid
         @id = @record[:id]
         @title = @record.title
+        @cfg[:rec_list].add(@record)
       end
 
       # Do file generation after forked

@@ -219,6 +219,7 @@ function dynamic_page() {
         _init_commands();
         $('#msg').text('');
         $('#query').empty();
+        $('#stop').fadeOut(1000);
         delete upd_list.record;
         return true;
     }
@@ -227,6 +228,7 @@ function dynamic_page() {
         upd_list.record = update_record;
         set_sticky_bottom();
         interactive();
+        $('#stop').show();
     }
 
     // **** Make Pages ****

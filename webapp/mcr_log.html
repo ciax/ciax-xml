@@ -19,6 +19,14 @@
           <span class="mcr">Select</span>
         </div>
         <div id="select" class="contents"></div>
+        <div class="footer dvctl">
+          <select id="command" onchange="selmcr(this)">
+            <option>--select--</option>
+          </select>
+          <span class="control-label" id="interactive">Interactive
+            <input type="checkbox" onclick="interactive();"></input>
+          </span>
+        </div>
       </div>
     </div>
     <div id="ol_rec">
@@ -43,7 +51,10 @@
         <!-- FOOTER -->
         <div class="footer">
           <em id="status"></em>
+          <span id="query"></span>
+          <span id="msg"></span>
           <span class="tail">
+          <button class="stop dvctl" id="stop" onclick="stop();">STOP</button>
             <span class="control-label">Scroll</span>
             <label class="switch" id="scroll">
               <input type="checkbox" class="switch-input" onclick="sticky_bottom('slow');"></input>

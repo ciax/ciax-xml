@@ -205,3 +205,6 @@ var {
 #select li.selected {
     background-color : pink;
 }
+.dvctl {
+    display: none;
+}

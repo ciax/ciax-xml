@@ -87,8 +87,10 @@ function make_step(step) {
         $.each(step.conditions, function(k, cond) {
             var res = cond.res;
             html.push('<li>');
-            html.push('<var ' + _devlink(cond.site) + '>');
-            html.push(cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
+            html.push('<var><span ' + _devlink(cond.site) + '>');
+            html.push(cond.site + '</span>:');
+            html.push('<span '+ _graphlink(cond.site, cond.var, step.time) + '>');
+            html.push(cond.var + '(' + cond.form + ')</span></var>');
             html.push('<code>' + _operator(cond.cmp, cond.cri) + '?</code>  ');
             if (step.type == 'goal' && res == false) res = 'warn';
             html.push('<span class="' + res + '"> (' + cond.real + ')</span>');
@@ -102,7 +104,10 @@ function make_step(step) {
         html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
     }
     function _devlink(site) {
-        return ('onclick="open_link(\'' + site + '\');"');
+        return ('onclick="open_table(\'' + site + '\');"');
+    }
+    function _graphlink(site, vid, time) {
+        return ('onclick="open_graph(\'' + site + '\',\'' + vid + '\',\'' + time + '\');"');
     }
 }
 // ********* Outline **********

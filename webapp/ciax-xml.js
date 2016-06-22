@@ -2,9 +2,14 @@
 function replace(sel, str, cls) {
     return $(sel).text(str).attr('class', cls || str);
 }
-function open_link(site) {
+function open_table(site) {
     window.open('/json/' + site + '.html', site,
                 'menubar=no,location=no,status=no,width=800,height=200'
+               );
+}
+function open_graph(site, vid, time) {
+    window.open('/json/graph.php?site=' + site + '&vid=' + vid + '&time=' + time, site,
+                'menubar=no,location=no,status=no,width=600,height=320'
                );
 }
 function exec_funcs(funclist) {

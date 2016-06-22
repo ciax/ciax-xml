@@ -22,7 +22,7 @@ foreach($argv as &$e){
 $site=getarg('site');
 $time=getarg('time');
 $vid=getarg('vid');
-$tol=600000;
+$tol=3600000;
 
 $fname='/var/www/html/log/sqlog_'.$site.'.sq3';
 $pdo=new PDO('sqlite:'.$fname);

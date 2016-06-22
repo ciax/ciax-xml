@@ -9,9 +9,11 @@
     <script type="text/javascript" src="graph.js"></script>
     <script type="text/javascript">
       function get_graph() {
-          var url = <?php echo '"sqlog.php?site='.$_GET['site'].'&vid='.$_GET['vid'].'&time='.$_GET['time'].'"'; ?>;
+          var time = <?php echo '"'.$_GET['time'].'"'; ?>;
+          var url = <?php echo '"sqlog.php?site='.$_GET['site'].'&vid='.$_GET['vid'].'&time="'; ?> + time;
           $.getJSON(url , function(data) {
               var options = {
+                grid: { markings: [ { color: '#ff0000', lineWidth: 3, xaxis: { from: time, to: time }} ] },
                 xaxis: { mode: 'time', timezone: 'browser' },
                 zoom: { interactive: true },
                 pan: { interactive: true }

@@ -12,7 +12,7 @@
           var url = <?php echo '"sqlog.php?site='.$_GET['site'].'&vid='.$_GET['vid'].'&time='.$_GET['time'].'"'; ?>;
           $.getJSON(url , function(data) {
               var options = {
-                xaxis: { mode: 'time' },
+                xaxis: { mode: 'time', timezone: 'browser' },
                 zoom: { interactive: true },
                 pan: { interactive: true }
               };

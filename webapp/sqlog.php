@@ -28,16 +28,18 @@ function get_tbl($pdo){
 }
 
 $site=getarg('site');
-$time=getarg('time');
 $vid=getarg('vid');
-$tol=3600000;
+$utime=getarg('time');
+$tol=600000;
+$min=$utime - $tol;
+$max=$utime + $tol;
 
 $fname='/var/www/html/log/sqlog_'.$site.'.sq3';
 $pdo=new PDO('sqlite:'.$fname);
 if($pdo){
     $tbls = get_tbl($pdo);
     if($tbls){
-        $qry = 'SELECT time,'.$vid.' FROM '.$tbls.' WHERE time BETWEEN '.($time-$tol).' and '.($time+$tol);
+        $qry = 'SELECT time,'.$vid.' FROM '.$tbls.' WHERE time BETWEEN '.$min.' and '.$max;
         $st=$pdo->query($qry);
         if ($st){
             $all=$st->fetchAll(PDO::FETCH_NUM);

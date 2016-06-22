@@ -87,13 +87,14 @@ function make_step(step) {
         $.each(step.conditions, function(k, cond) {
             var res = cond.res;
             html.push('<li>');
-            html.push('<var><span ' + _devlink(cond.site) + '>');
-            html.push(cond.site + '</span>:');
-            html.push('<span '+ _graphlink(cond.site, cond.var, step.time) + '>');
-            html.push(cond.var + '(' + cond.form + ')</span></var>');
+            html.push('<var ' + _devlink(cond.site) + '>');
+            html.push(cond.site + ':' + cond.var);
+            html.push('(' + cond.form + ')</var>');
             html.push('<code>' + _operator(cond.cmp, cond.cri) + '?</code>  ');
             if (step.type == 'goal' && res == false) res = 'warn';
-            html.push('<span class="' + res + '"> (' + cond.real + ')</span>');
+            html.push('<span class="' + res + '" ');
+            html.push(_graphlink(cond.site, cond.var, step.time));
+            html.push('> (' + cond.real + ')</span>');
             html.push('</li>');
         });
         html.push('</ul>');

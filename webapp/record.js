@@ -3,14 +3,6 @@
 // ********* Steps **********
 // step header section
 function make_step(step) {
-    var html = ['<li'];
-    if (step.type != 'mcr') html.push(' class="step"');
-    html.push('>');
-    _header();
-    _conditions() || _sub_mcr();
-    html.push('</li>');
-    return html.join('');
-
     function _title() {
         var type = step.type;
         var ary = [];
@@ -71,6 +63,7 @@ function make_step(step) {
         _time();
         html.push('</h4>');
     }
+
     // condition step
     function _operator(ope, cri) {
         switch (ope) {
@@ -81,6 +74,15 @@ function make_step(step) {
         default:
         }
     }
+
+    // External info
+    function _devlink(site) {
+        return ('onclick="open_table(\'' + site + '\');"');
+    }
+    function _graphlink(site, vid, time) {
+        return ('onclick="open_graph(\'' + site + '\',\'' + vid + '\',\'' + time + '\');"');
+    }
+
     function _conditions() {
         if (!step.conditions) return;
         html.push('<ul>');
@@ -104,12 +106,14 @@ function make_step(step) {
         if (step.type != 'mcr') return;
         html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
     }
-    function _devlink(site) {
-        return ('onclick="open_table(\'' + site + '\');"');
-    }
-    function _graphlink(site, vid, time) {
-        return ('onclick="open_graph(\'' + site + '\',\'' + vid + '\',\'' + time + '\');"');
-    }
+
+    var html = ['<li'];
+    if (step.type != 'mcr') html.push(' class="step"');
+    html.push('>');
+    _header();
+    _conditions() || _sub_mcr();
+    html.push('</li>');
+    return html.join('');
 }
 // ********* Outline **********
 // *** Display on the Bars ***
@@ -117,6 +121,8 @@ function record_outline(data) { // Do at the first
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0)).attr('title', data.id);
     $('#total').text('');
+    $('#query').empty();
+    $('#stop').hide();
     replace('#result', '');
     record_page(data);
 }
@@ -142,30 +148,6 @@ function record_result(data) { // Do at the end
 
 // ******** Dynamic Page ********
 function dynamic_page() {
-    // **** Updating Page ****
-    var last_time = '';  // For detecting update
-    var first_time = ''; // For first time at a new macro;
-    var steps_length = 0;
-    var suspend = false;
-    return function(tag) { // To be update
-        tag = tag ? tag : 'latest';
-        ajax_record(tag, _upd_page, function() { suspend = true;});
-        blinking();
-    }
-    function _upd_page(data, status) {
-        //console.log(status);
-        //if (data) console.log(data.status+data.time);
-        if (status != 'success') return;
-        if (first_time != data.id) { // Do only the first one for new macro
-            port = data.port;
-            _first_page(data);
-            first_time = data.id;
-        }else if (data.time != last_time) { // Do every time for updated record
-            //console.log('updated');
-            _next_page(data);
-            last_time = data.time;
-        }
-    }
     // Update Command Selector
     function _init_commands() {
         ajax_static('/json/mcr_conf.json', function(data) {
@@ -176,11 +158,15 @@ function dynamic_page() {
     // Update Query Radio Button
     function _make_query(data) {
         var sel = $('#query')[0];
-        if (data.status != 'query' || !sel) return;
-        var cmdary = data.option.map(function(cmd) {
-            return ([cmd, data.id]);
-        });
-        make_radio(sel, cmdary);
+        if (!sel) return;
+        if (data.status == 'query') {
+            var cmdary = data.option.map(function(cmd) {
+                return ([cmd, data.id]);
+            });
+            make_radio(sel, cmdary);
+        }else {
+            $('#query').empty();
+        }
     }
     // Update Content of Steps (When JSON is updated)
     function _append_step(data) {
@@ -244,6 +230,30 @@ function dynamic_page() {
         if (_mcr_end(data)) return;
         _make_query(data);
         _update_step(data); // Make record one by one
+    }
+    function _upd_page(data, status) {
+        //console.log(status);
+        //if (data) console.log(data.status+data.time);
+        if (status != 'success') return;
+        if (first_time != data.id) { // Do only the first one for new macro
+            port = data.port;
+            _first_page(data);
+            first_time = data.id;
+        }else if (data.time != last_time) { // Do every time for updated record
+            //console.log('updated');
+            _next_page(data);
+            last_time = data.time;
+        }
+    }
+    // **** Updating Page ****
+    var last_time = '';  // For detecting update
+    var first_time = ''; // For first time at a new macro;
+    var steps_length = 0;
+    var suspend = false;
+    return function(tag) { // To be update
+        tag = tag ? tag : 'latest';
+        ajax_record(tag, _upd_page, function() { suspend = true;});
+        blinking();
     }
 }
 // ******** Static Page *********

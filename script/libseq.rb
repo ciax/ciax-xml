@@ -40,7 +40,6 @@ module CIAX
 
       def macro
         Thread.current[:obj] = self
-        _init_record_file
         _show(@record.start)
         sub_macro(@cfg[:sequence], @record.cmt)
       rescue Interrupt
@@ -114,6 +113,7 @@ module CIAX
         @id = @record[:id]
         @title = @record.title
         @cfg[:rec_list].add(@record)
+        _init_record_file
       end
 
       # Do file generation after forked

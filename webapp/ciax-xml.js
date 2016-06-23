@@ -195,6 +195,7 @@ function ajax_update(url) {
 // Control Part/Shared with ciax-xml.js
 function update() {
     exec_funcs(upd_list);
+    blinking();
 }
 function init() {
     exec_funcs(init_list);

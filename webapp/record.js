@@ -251,7 +251,6 @@ function dynamic_page() {
         }else {
             ajax_update(fname).done(_upd_page);
         }
-        blinking();
     }
 
     // **** Updating Page ****

@@ -1,6 +1,6 @@
 //********* Shared **********
-function attr_title(data){
-    return(' title="' + JSON.stringify(data).replace(/"/g, "'") + '"');
+function json_view(data) {
+    return (JSON.stringify(data).replace(/"/g, "'"));
 }
 function replace(sel, str, cls) {
     return $(sel).text(str).attr('class', cls || str);

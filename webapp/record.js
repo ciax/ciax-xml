@@ -233,7 +233,7 @@ function dynamic_page() {
         _update_step(data); // Make record one by one
     }
     function _upd_page(data, status) {
-        if (status != 'success') return;
+        if(status == 'notmodified') return;
         if (rec_id != data.id) { // Do only the first one for new macro
             port = data.port;
             _first_page(data);
@@ -246,7 +246,11 @@ function dynamic_page() {
     // To be update
     function _update(tag) {
         var fname = 'record_' + (tag || rec_id) + '.json';
-        ajax_update(fname).done(_upd_page).fail(function() { suspend = true;});
+        if(tag != rec_id){
+            ajax_static(fname).done(_upd_page);
+        }else{
+            ajax_update(fname).done(_upd_page);
+        }
         blinking();
     }
 
@@ -256,18 +260,6 @@ function dynamic_page() {
     var steps_length = 0;
     var suspend = false;
     return _update;
-}
-// ******** Static Page *********
-function static_page(data, status) {
-    if (status != 'success') return;
-    record_outline(data);
-    record_result(data);
-}
-// ******** Ajax ********
-function archive(tag) {
-    // Read whether src is updated or not
-    tag = tag ? tag : 'latest';
-    ajax_static('record_' + tag + '.json').done(static_page);
 }
 
 // ******** Command ********

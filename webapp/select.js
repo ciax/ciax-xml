@@ -102,12 +102,6 @@ init_list.push(function() {
         $('#select li').removeClass('selected');
         var jq = $(this).addClass('selected');
         // Activate selected record
-        var id = jq.attr('id');
-        archive(id);
-        if (jq.children('em').text() == 'busy') {
-            update_record(id);
-        }else {
-            delete upd_list.record;
-        }
+        update_record(jq.attr('id'));
     }
 });

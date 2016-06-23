@@ -233,7 +233,7 @@ function dynamic_page() {
         _update_step(data); // Make record one by one
     }
     function _upd_page(data, status) {
-        if(status == 'notmodified') return;
+        if (status == 'notmodified') return;
         if (rec_id != data.id) { // Do only the first one for new macro
             port = data.port;
             _first_page(data);
@@ -246,9 +246,9 @@ function dynamic_page() {
     // To be update
     function _update(tag) {
         var fname = 'record_' + (tag || rec_id) + '.json';
-        if(tag != rec_id){
+        if (tag != rec_id) {
             ajax_static(fname).done(_upd_page);
-        }else{
+        }else {
             ajax_update(fname).done(_upd_page);
         }
         blinking();

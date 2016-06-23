@@ -1,5 +1,5 @@
 // Recommended Package: closure-linter
-// fixjsstyle select.js
+// fixjsstyle mcr_log.js
 // Listing part
 function make_item(data) {
     var html = [];
@@ -37,7 +37,7 @@ function make_list(data) {
     $.each(jary, function(i, item) {
         _upd_item(item) || _make_date(item).prepend(make_item(item));
     });
-    _init_select();
+    _init_log();
     blinking();
 
     function _upd_item(data) {
@@ -59,7 +59,7 @@ function make_list(data) {
             var html = [];
             html.push('<h4>' + crd + '</h4>');
             html.push('<ul id="' + did + '"></ul>');
-            $('#select').prepend(html.join(''));
+            $('#log').prepend(html.join(''));
         }
         return $('#' + did);
     }
@@ -73,10 +73,10 @@ function make_list(data) {
         return 0;
     }
 
-    function _init_select() {
-        var jq = $('#select li.selected');
+    function _init_log() {
+        var jq = $('#log li.selected');
         if (jq[0]) return jq;
-        $('#select li').first().trigger('click');
+        $('#log li').first().trigger('click');
     }
 }
 
@@ -87,19 +87,19 @@ function update_list() {
 // Initial Setting
 init_list.push(function() {
     // Register Events
-    var acdn = set_acordion('#select');
+    var acdn = set_acordion('#log');
     // Set click event
-    $('#select').on('click', 'li', _switch_select);
+    $('#log').on('click', 'li', _switch_record);
     // Set first selected
     ajax_static('rec_list.json').done(function(data) {
         make_list(data);
         acdn(':not(:first)');
     });
-    upd_list.select = update_list;
+    upd_list.log = update_list;
 
-    function _switch_select() {
+    function _switch_record() {
         if ($(this).hasClass('selected')) return;
-        $('#select li').removeClass('selected');
+        $('#log li').removeClass('selected');
         var jq = $(this).addClass('selected');
         // Activate selected record
         update_record(jq.attr('id'));

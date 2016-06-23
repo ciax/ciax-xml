@@ -8,12 +8,12 @@ function replace(sel, str, cls) {
 function open_table(site) {
     window.open('/json/' + site + '.html', site,
                 'menubar=no,location=no,status=no,width=800,height=200'
-               );
+               ).focus();
 }
 function open_graph(site, vid, time) {
     window.open('/json/graph.php?site=' + site + '&vid=' + vid + '&time=' + time, site,
                 'menubar=no,location=no,status=no,width=600,height=320'
-               );
+               ).focus();
 }
 function exec_funcs(funclist) {
     $.each(funclist, function(k, func) { func(); });

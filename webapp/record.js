@@ -6,7 +6,7 @@ function make_step(step) {
     function _title() {
         var type = step.type;
         var ary = [];
-        html.push('<span title="' + JSON.stringify(step).replace(/"/g, "'"));
+        html.push('<span title="' + json_view(step));
         html.push('" class="head ' + type + '">' + type + '</span>');
         html.push('<span class="cmd"');
         if (step.site) {
@@ -235,10 +235,10 @@ function dynamic_page() {
         //console.log(status);
         //if (data) console.log(data.status+data.time);
         if (status != 'success') return;
-        if (first_time != data.id) { // Do only the first one for new macro
+        if (rec_id != data.id) { // Do only the first one for new macro
             port = data.port;
             _first_page(data);
-            first_time = data.id;
+            rec_id = data.id;
         }else if (data.time != last_time) { // Do every time for updated record
             //console.log('updated');
             _next_page(data);
@@ -246,13 +246,13 @@ function dynamic_page() {
         }
     }
     // **** Updating Page ****
+    var rec_id; // Record ID for first call at a new macro;
     var last_time = '';  // For detecting update
-    var first_time = ''; // For first time at a new macro;
     var steps_length = 0;
     var suspend = false;
     return function(tag) { // To be update
-        tag = tag ? tag : 'latest';
-        ajax_record(tag, _upd_page, function() { suspend = true;});
+        if (tag) rec_id = tag;
+        ajax_update('record_' + rec_id + '.json', _upd_page, function() { suspend = true;});
         blinking();
     }
 }
@@ -262,13 +262,7 @@ function static_page(data, status) {
     record_outline(data);
     record_result(data);
 }
-
 // ******** Ajax ********
-// func1 for updated, func2 for no changes
-function ajax_record(tag, func1, func2) {
-    tag = tag ? tag : 'latest';
-    ajax_update('record_' + tag + '.json', func1, func2);
-}
 function archive(tag) {
     // Read whether src is updated or not
     tag = tag ? tag : 'latest';
@@ -279,19 +273,19 @@ function archive(tag) {
 function selmcr(dom) {
     var cmd = get_select(dom);
     if (!cmd) return;
-    exec(cmd, function() {
+    exec(cmd, function(recv) {
         // Do after exec if success
         make_select(dom, []);
-        update_record();
+        console.log(json_view(recv));
+        update_record(recv.sid);
     });
 }
-
 // ******** Init Page ********
 init_list.push(function() {
     height_adjust();
     set_acordion('#record');
     set_auto_release('#record');
-    update_record();
+    update_record('latest');
     $('#query').on('change', 'input[name="query"]:radio', function() {
         exec($(this).val(), function() {$('#query').empty(); });
     });

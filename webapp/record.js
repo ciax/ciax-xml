@@ -181,6 +181,7 @@ function dynamic_page() {
     }
     function _update_step(data) {
         var crnt = data.steps.length;
+        if (crnt == 0) return;
         if (steps_length == crnt) {
             // When Step doesn't increase.
             var step = data.steps[crnt - 1];
@@ -232,23 +233,19 @@ function dynamic_page() {
         _update_step(data); // Make record one by one
     }
     function _upd_page(data, status) {
-        //console.log(status);
-        //if (data) console.log(data.status+data.time);
         if (status != 'success') return;
         if (rec_id != data.id) { // Do only the first one for new macro
             port = data.port;
             _first_page(data);
             rec_id = data.id;
         }else if (data.time != last_time) { // Do every time for updated record
-            //console.log('updated');
             _next_page(data);
             last_time = data.time;
         }
     }
     // To be update
     function _update(tag) {
-        if (tag) rec_id = tag;
-        var fname = 'record_' + rec_id + '.json';
+        var fname = 'record_' + (tag || rec_id) + '.json';
         ajax_update(fname).done(_upd_page).fail(function() { suspend = true;});
         blinking();
     }
@@ -280,7 +277,6 @@ function selmcr(dom) {
     exec(cmd, function(recv) {
         // Do after exec if success
         make_select(dom, []);
-        console.log(json_view(recv));
         update_record(recv.sid);
     });
 }

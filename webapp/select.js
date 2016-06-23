@@ -81,7 +81,7 @@ function make_list(data) {
 }
 
 function update_list() {
-    ajax_update('rec_list.json', make_list);
+    ajax_update('rec_list.json').done(make_list);
 }
 
 // Initial Setting
@@ -91,7 +91,7 @@ init_list.push(function() {
     // Set click event
     $('#select').on('click', 'li', _switch_select);
     // Set first selected
-    ajax_static('rec_list.json', function(data) {
+    ajax_static('rec_list.json').done(function(data) {
         make_list(data);
         acdn(':not(:first)');
     });

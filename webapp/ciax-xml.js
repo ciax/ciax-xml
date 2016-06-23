@@ -184,12 +184,12 @@ function make_radio(dom, ary) {
     $(dom).html(opt.join(''));
 }
 // ********* Ajax *********
-function ajax_static(url, func) {
-    $.ajax(url, { ifModified: false, cache: true, success: func});
+function ajax_static(url) {
+    return $.ajax(url, { ifModified: false, cache: true});
 }
 // func1 for updated, func2 for no changes
-function ajax_update(url, func1, func2) {
-    $.ajax(url, { ifModified: true, cache: false, success: func1, error: func2});
+function ajax_update(url) {
+    return $.ajax(url, { ifModified: true, cache: false});
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js

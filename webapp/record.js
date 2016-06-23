@@ -150,7 +150,7 @@ function record_result(data) { // Do at the end
 function dynamic_page() {
     // Update Command Selector
     function _init_commands() {
-        ajax_static('/json/mcr_conf.json', function(data) {
+        ajax_static('/json/mcr_conf.json').done(function(data) {
             if (!port) port = data.port;
             make_select('select#command', data.commands);
         });
@@ -212,7 +212,7 @@ function dynamic_page() {
     }
     function _mcr_start() {
         if (upd_list.record) return;
-        upd_list.record = update_record;
+        upd_list.record = _update;
         set_sticky_bottom();
         interactive();
         $('#stop').show();
@@ -245,16 +245,20 @@ function dynamic_page() {
             last_time = data.time;
         }
     }
+    // To be update
+    function _update(tag) {
+        if (tag) rec_id = tag;
+        var fname = 'record_' + rec_id + '.json';
+        ajax_update(fname).done(_upd_page).fail(function() { suspend = true;});
+        blinking();
+    }
+
     // **** Updating Page ****
     var rec_id; // Record ID for first call at a new macro;
     var last_time = '';  // For detecting update
     var steps_length = 0;
     var suspend = false;
-    return function(tag) { // To be update
-        if (tag) rec_id = tag;
-        ajax_update('record_' + rec_id + '.json', _upd_page, function() { suspend = true;});
-        blinking();
-    }
+    return _update;
 }
 // ******** Static Page *********
 function static_page(data, status) {
@@ -266,7 +270,7 @@ function static_page(data, status) {
 function archive(tag) {
     // Read whether src is updated or not
     tag = tag ? tag : 'latest';
-    ajax_static('record_' + tag + '.json', static_page);
+    ajax_static('record_' + tag + '.json').done(static_page);
 }
 
 // ******** Command ********

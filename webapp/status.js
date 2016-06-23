@@ -36,6 +36,6 @@ function seldv(dom) {
 var last;
 var offset = 0;
 upd_list['select'] = function() {
-    ajax_update(type + '_' + site + '.json', conv);
+    ajax_update(type + '_' + site + '.json').done(conv);
     elapsed();
 };

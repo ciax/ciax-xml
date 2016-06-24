@@ -30,8 +30,8 @@ function get_tbl($pdo){
 
 $site=getarg('site');
 $vid=getarg('vid');
-$utime=getarg('time');
-$tol=600000;
+$utime=getarg('time') -0;
+$tol=43200000;
 $min=$utime - $tol;
 $max=$utime + $tol;
 

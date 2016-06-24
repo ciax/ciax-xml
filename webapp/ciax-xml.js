@@ -6,12 +6,12 @@ function replace(sel, str, cls) {
     return $(sel).text(str).attr('class', cls || str);
 }
 function open_table(site) {
-    window.open('/json/' + site + '.html', site,
+    window.open('/json/' + site + '.html', 't' + site,
                 'menubar=no,location=no,status=no,width=800,height=200'
                ).focus();
 }
 function open_graph(site, vid, time) {
-    window.open('/json/graph.php?site=' + site + '&vid=' + vid + '&time=' + time, site,
+    window.open('/json/graph.php?site=' + site + '&vid=' + vid + '&time=' + time, 'g' + site,
                 'menubar=no,location=no,status=no,width=600,height=320'
                ).focus();
 }

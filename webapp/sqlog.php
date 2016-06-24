@@ -43,8 +43,12 @@ if($pdo){
         $qry = 'SELECT time,'.$vid.' FROM '.$tbls.' WHERE time BETWEEN '.$min.' and '.$max;
         $st=$pdo->query($qry);
         if ($st){
-            $all=$st->fetchAll(PDO::FETCH_NUM);
-            if ($all) echo(json_encode($all));
+            $data=$st->fetchAll(PDO::FETCH_NUM);
+            if ($data){
+                $dset = array('label' => "$site:$vid");
+                $dset['data'] = $data;
+                echo(json_encode($dset));
+            }
         }
     }
 }

@@ -28,7 +28,7 @@ module CIAX
       private
 
       def ext_local_test
-        @post_exe_procs << proc { @stat.next_upd }
+        @post_exe_procs << proc { @stat.update? }
         super
       end
 
@@ -84,9 +84,9 @@ module CIAX
       end
 
       def _init_auto_thread_
-        @stat.next_upd
         Threadx::Loop.new('Regular', 'wat', @id) do
-          @stat.auto_exec.sleep
+          @stat.auto_exec
+          sleep 10
         end
       end
     end

@@ -12,7 +12,7 @@ module CIAX
       def initialize(dbi = nil)
         super('event')
         @interval = 0.1
-        @period = 300
+        @periodm = 300_000
         @last_updated = 0
         _setdbi(dbi, Ins::Db)
         _init_procs
@@ -34,20 +34,12 @@ module CIAX
 
       # Update the next update time
       # Return rest time unless expired
-      def next_upd
-        dif = ((self[:upd_next] || 0) - now_msec) / 1000
-        return dif if dif.between?(0, @period)
-        self[:upd_next] = now_msec + @period * 1000
-        nil
-      end
-
-      def sleep
-        dif = next_upd
-        if dif
-          verbose { "Auto Update Sleep(#{dif}sec)" }
-          Kernel.sleep dif
-        end
-        self
+      def update?
+        dif = (self[:upd_next].to_i - now_msec)
+        return false if dif.between?(0, @periodm)
+        self[:upd_next] = now_msec + @periodm
+        verbose { "Next Update is #{dif / 1000}sec later" }
+        true
       end
 
       def ext_local_file

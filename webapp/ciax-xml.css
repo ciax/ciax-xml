@@ -192,16 +192,16 @@ var {
 }
 
 /* Slide Switch */
-/*** select list ***/
-#select .time {
+/*** log list ***/
+#log .time {
     width: 4.5em;
     float: left;
     color: dimgray;
 }
-#select li:hover, h4:hover {
+#log li:hover, h4:hover {
     background-color: silver;
 }
-#select li.selected {
+#log li.selected {
     background-color : pink;
 }
 .dvctl {

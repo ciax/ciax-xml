@@ -1,6 +1,6 @@
 function get_graph() {
     var time = par[2] - 0;
-    var url = 'sqlog.php?site=' + par[0] + '&vid=' + par[1] + '&time=' + time;
+    var url = 'sqlog.php?site=' + par[0] + '&vid=' + par[1] + '&range=43260000&time=' + time;
     var tol = 180000;
     var min = time - tol;
     var max = time + tol;

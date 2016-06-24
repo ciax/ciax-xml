@@ -28,28 +28,40 @@ function get_tbl($pdo){
     }
 }
 
-$site=getarg('site');
-$vid=getarg('vid');
-$utime=getarg('time');
-$tol=43200000;
-$min=$utime - $tol;
-$max=$utime + $tol;
-
-$fname='/var/www/html/log/sqlog_'.$site.'.sq3';
-$pdo=new PDO('sqlite:'.$fname);
-if($pdo){
-    $tbls = get_tbl($pdo);
-    if($tbls){
-        $qry = 'SELECT time,'.$vid.' FROM '.$tbls.' WHERE time BETWEEN '.$min.' and '.$max;
-        $st=$pdo->query($qry);
-        if ($st){
-            $data=$st->fetchAll(PDO::FETCH_NUM);
-            if ($data){
-                $dset = array('label' => "$site:$vid");
-                $dset['data'] = $data;
-                echo(json_encode($dset));
-            }
-        }
+function where($range, $utime){
+    if (!$range) return '';
+    if($utime){
+        $min=$utime - $range;
+        $max=$utime - 0 + $range;
+        return ' WHERE time BETWEEN '.$min.' and '.$max;
+    }else{
+        return ' WHERE time > '.(time().'000' - $range);
     }
 }
+function get_data($site, $vid, $opt){
+    $fname='/var/www/html/log/sqlog_'.$site.'.sq3';
+    $pdo=new PDO('sqlite:'.$fname);
+    if(!$pdo) return;
+    $tbls = get_tbl($pdo);
+    if(!$tbls) return;
+    $qry = 'SELECT time,' . $vid . ' FROM ' . $tbls . $opt;
+    $st=$pdo->query($qry);
+    if (!$st) return;
+    $data=$st->fetchAll(PDO::FETCH_NUM);
+    if (!$data) return;
+    $dset = array('label' => "$site:$vid");
+    $dset['data'] = $data;
+    return $dset;
+}
+
+
+$site=getarg('site');
+$vid=getarg('vid');
+# No range -> whole
+$range=getarg('range');
+# No time -> now
+$utime=getarg('time');
+$data=get_data($site,$vid,where($range,$utime));
+echo(json_encode($data ? $data : array()));
+
 ?>

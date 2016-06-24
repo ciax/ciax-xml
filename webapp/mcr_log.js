@@ -84,6 +84,10 @@ function update_list() {
     ajax_update('rec_list.json').done(make_list);
 }
 
+function toggle_dvctl() {
+    $('.dvctl').fadeToggle(1000, height_adjust);
+}
+
 // Initial Setting
 init_list.push(function() {
     // Register Events

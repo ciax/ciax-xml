@@ -122,7 +122,6 @@ function record_outline(data) { // Do at the first
     $('#date').text(new Date(data.id - 0)).attr('title', data.id);
     $('#total').text('');
     $('#query').empty();
-    $('#stop').hide();
     replace('#result', '');
     record_page(data);
 }
@@ -207,7 +206,6 @@ function dynamic_page() {
         _init_commands();
         $('#msg').text('');
         $('#query').empty();
-        $('#stop').fadeOut(1000);
         delete upd_list.record;
         return true;
     }
@@ -216,7 +214,6 @@ function dynamic_page() {
         upd_list.record = _update;
         set_sticky_bottom();
         interactive();
-        $('#stop').show();
     }
 
     // **** Make Pages ****

@@ -31,7 +31,6 @@ button, select{
     color : black;
 }
 div.outline{
-    max-height: 95%;
     font-weight: bold;
     border : 5px outset lightgreen;
     margin-left: 10px;
@@ -45,6 +44,10 @@ div.title{
     color : lightcyan;
     background-color: lightgreen;
     padding : 5px;
+}
+div.bar{
+    margin: 5px;
+    overflow: auto;
 }
 div.footer{
     font-size : large;
@@ -93,11 +96,7 @@ div.footer{
     width: 30%;
 }
 #ol_rec {
-    margin-left: 30%;
-}
-.bar{
-    margin: 5px;
-    overflow: auto;
+    margin-left: 33%;
 }
 .contents{
     margin: 5px;

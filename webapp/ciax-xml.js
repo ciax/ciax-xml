@@ -70,13 +70,13 @@ function blinking() {
 }
 // contents resize
 function height_adjust() {
-    var h = $(window).height();
     // sum height of children in .outline except .contents
-    $('.outline').each(function() {
-        $(this).children('div:not(".contents")').each(function() {
-            h = h - $(this).height();
-        });
-        $(this).children('.contents').css('max-height', h - 100);
+    $('.outline').each(function(i, ol) {
+        var h = $(window).height();
+        var res = $(ol).children('div:not(".contents")').map(function(j, e) {
+            return $(e).height();
+        }).get().reduce(function(p, c, i, arr) {return p + c});
+        $(ol).children('.contents').css('max-height', h - res - 100);
         sticky_bottom(0);
     });
 }

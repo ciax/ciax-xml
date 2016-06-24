@@ -39,6 +39,7 @@ module CIAX
         return false if dif.between?(0, @periodm)
         self[:upd_next] = now_msec + @periodm
         verbose { "Next Update is #{dif / 1000}sec later" }
+        cmt
         true
       end
 

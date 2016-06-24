@@ -19,6 +19,7 @@ module CIAX
       # Stat no changed -> clear exec, no eval
       def ext_local_rsp(stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
+        # No need @sv_stat.upd at reading
         @sv_stat = type?(sv_stat || Prompt.new('site', self[:id]), Prompt)
         wdb = @dbi[:watch] || {}
         @interval = wdb[:interval].to_f if wdb.key?(:interval)
@@ -37,7 +38,8 @@ module CIAX
       end
 
       def auto_exec
-        return self unless self[:exec].empty?
+        # Do it when no other command in the queue, and not in motion
+        return self unless self[:exec].empty? && !@sv_stat.up?(:event)
         verbose { format('Auto Update(%s, %s)', self[:time], @regexe) }
         begin
           queue('auto', 3, @regexe)
@@ -75,7 +77,7 @@ module CIAX
       def _init_auto(wdb)
         reg = wdb[:regular] || {}
         per = reg[:period].to_i
-        @period = per > 1 ? per : 300
+        @period = per if per > 0
         @regexe = reg[:exec] || [['upd']]
         verbose do
           format('Initiate Auto Update: Period = %s sec, Command = %s)',
@@ -88,7 +90,7 @@ module CIAX
       # self[:exec] : Command queue which contains commands issued as event
       # self[:block] : Array of commands (units) which are blocked during busy
       # self[:int] : List of interrupt commands which is effectie during busy
-      # @sv_stat[:event] is internal var
+      # @sv_stat[:event] is internal var (moving)
 
       ## Timing chart in active mode
       # busy  :__--__--__--==__--___
@@ -107,7 +109,7 @@ module CIAX
       #  x  |  x  |  x  |  -
 
       def upd_event
-        if @sv_stat.upd.up?(:event)
+        if @sv_stat.up?(:event)
           _event_off
         elsif active?
           _event_on

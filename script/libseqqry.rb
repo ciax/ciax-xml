@@ -37,7 +37,7 @@ module CIAX
 
       # return t/f
       def query(cmds, step)
-        return step.put(:action, 'nonstop') if @sv_stat.up?(:nonstop)
+        return step.put(:action, 'nonstop') if @sv_stat.upd.up?(:nonstop)
         res = _get_ans(step, cmds)
         _judge(res)
       ensure

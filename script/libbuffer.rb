@@ -120,7 +120,7 @@ module CIAX
 
     def sv_dw
       verbose { "Busy Down(#{@id}):timing" }
-      @sv_stat.dw(:busy).flush(:queue, @outbuf.cids)
+      @sv_stat.flush(:queue, @outbuf.cids).dw(:busy)
     end
 
     def clear

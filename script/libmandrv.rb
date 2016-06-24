@@ -24,7 +24,7 @@ module CIAX
       def _init_proc_exe
         @pre_exe_procs << proc do
           @sv_stat.flush(:list, @stat.alives).repl(:sid, '')
-          @sv_stat.flush(:run) if @sv_stat.get(:list).empty?
+          @sv_stat.flush(:run).cmt if @sv_stat.upd.get(:list).empty?
         end
         @post_exe_procs << proc do
           @sv_stat.get(:list).each { |id| @par.add(id) }

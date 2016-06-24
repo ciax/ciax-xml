@@ -46,7 +46,7 @@ module CIAX
       # Server Status
       def _get_header_
         ary = ['%', self[:id]]
-        ary << b2e(@sv_stat.up?(:udperr))
+        ary << b2e(@sv_stat.upd.up?(:udperr))
         ary << b2i(@sv_stat.up?(:event))
         ary << b2i(@sv_stat.up?(:busy))
         ary << b2e(@sv_stat.up?(:comerr))

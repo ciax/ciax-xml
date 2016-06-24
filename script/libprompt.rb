@@ -59,15 +59,11 @@ module CIAX
     def flush(key, ary = [])
       type?(self[key], Array).replace(ary)
       self
-    ensure
-      cmt
     end
 
     def push(key, elem)
       self[key].push(elem) # unless type?(self[key], Array).include?(elem)
       self
-    ensure
-      cmt
     end
 
     # Show Message
@@ -88,8 +84,6 @@ module CIAX
         self[k] = hash[k] ? hash.delete(k) : false
       end
       hash
-    ensure
-      cmt
     end
 
     # Merge sub prompt for picked up keys

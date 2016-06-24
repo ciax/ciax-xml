@@ -107,7 +107,7 @@ module CIAX
       #  x  |  x  |  x  |  -
 
       def upd_event
-        if @sv_stat.up?(:event)
+        if @sv_stat.upd.up?(:event)
           _event_off
         elsif active?
           _event_on

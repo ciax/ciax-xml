@@ -36,7 +36,7 @@ module CIAX
           sg.add_dummy('0', 'List page')
           sg.add_dummy('[1-n]', 'Sequencer page')
           sg.add_item('cl', 'Clean list', def_msg: 'CLEAN').def_proc do
-            @par.flush(@sv_stat.get(:list))
+            @par.flush(@sv_stat.upd.get(:list))
           end
           @cobj.loc.add_view
         end

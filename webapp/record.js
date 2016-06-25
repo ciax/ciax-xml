@@ -264,7 +264,6 @@ function selmcr(dom) {
     if (!cmd) return;
     exec(cmd, function(recv) {
         // Do after exec if success
-        make_select(dom, []);
         update_record(recv.sid);
     });
 }

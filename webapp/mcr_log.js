@@ -88,12 +88,19 @@ function toggle_dvctl() {
     $('.dvctl').fadeToggle(1000, height_adjust);
 }
 
+function switch_record(id) {
+    $('#log li').removeClass('selected');
+    $('#' + id).addClass('selected');
+    // Activate selected record
+    update_record(id);
+}
+
 // Initial Setting
 init_list.push(function() {
     // Register Events
     var acdn = set_acordion('#log');
     // Set click event
-    $('#log').on('click', 'li', _switch_record);
+    $('#log').on('click', 'li', _on_click);
     // Set first selected
     ajax_static('rec_list.json').done(function(data) {
         make_list(data);
@@ -101,11 +108,8 @@ init_list.push(function() {
     });
     upd_list.log = update_list;
 
-    function _switch_record() {
+    function _on_click() {
         if ($(this).hasClass('selected')) return;
-        $('#log li').removeClass('selected');
-        var jq = $(this).addClass('selected');
-        // Activate selected record
-        update_record(jq.attr('id'));
+        switch_record($(this).attr('id'));
     }
 });

@@ -11,7 +11,9 @@ function open_table(site) {
                ).focus();
 }
 function open_graph(site, vid, time) {
-    window.open('/json/graph.php?site=' + site + '&vid=' + vid + '&time=' + time, 'g' + site,
+    var url = '/json/graph.php?site=' + site + '&vid=' + vid;
+    if (time) { url = url + '&time=' + time}
+    window.open(url, 'g' + site,
                 'menubar=no,location=no,status=no,width=600,height=320'
                ).focus();
 }

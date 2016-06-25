@@ -8,7 +8,7 @@
     <script type="text/javascript" src="jquery.flot.navigate.min.js"></script>
     <script type="text/javascript" src="graph.js"></script>
     <script type="text/javascript">
-      var par = <?php echo '["'.$_GET['site'].'","'.$_GET['vid'].'",'.$_GET['time'].']'; ?>;
+      var par = <?php echo json_encode($_GET); ?>;
       $(document).ready(get_graph);
     </script>
    </head>

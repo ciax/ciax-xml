@@ -1,6 +1,8 @@
 <?php
 #Get Log value from Sqlog
-# Args: site,vid,time
+# Args: site,vid,range,time.
+# if no range, returns all range.
+# if no time, time is now.
 function getarg($key){
   global $args;
   $res=(isset($_POST[$key])) ? $_POST[$key] :

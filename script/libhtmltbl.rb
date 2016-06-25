@@ -95,9 +95,9 @@ module CIAX
         member.each do|id|
           label = (@sdb[id] || {})[:label] || id.upcase
           td = tr.enclose('td', class: 'item')
-
           td.element('span', label, class: 'label', title: id)
-          td.element('strong', '*******', id: id, class: 'normal')
+          onc = format("open_graph('%s','%s');", @dbi[:id], id)
+          td.element('strong', '*****', id: id, class: 'normal', onclick: onc)
         end
         tr
       end

@@ -96,7 +96,7 @@ function switch_record(id) {
 }
 
 // Initial Setting
-init_list.push(function() {
+function init_log() {
     // Register Events
     var acdn = set_acordion('#log');
     // Set click event
@@ -112,4 +112,5 @@ init_list.push(function() {
         if ($(this).hasClass('selected')) return;
         switch_record($(this).attr('id'));
     }
-});
+}
+init_list.push(init_log);

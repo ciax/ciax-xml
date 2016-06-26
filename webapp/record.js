@@ -242,11 +242,14 @@ function dynamic_page() {
     }
     // To be update
     function _update(tag) {
-        var fname = 'record_' + (tag || rec_id) + '.json';
-        if (tag != rec_id) {
-            ajax_static(fname).done(_upd_page);
+        if (tag) {
+            ajax_static('/record/record_' + tag + '.json').done(_upd_page);
         }else {
-            ajax_update(fname).done(_upd_page);
+            if (rec_id) {
+                ajax_update('/record/record_' + rec_id + '.json').done(_upd_page);
+            }else {
+                ajax_static('/json/record_latest.json').done(_upd_page);
+            }
         }
     }
 
@@ -255,28 +258,33 @@ function dynamic_page() {
     var last_time = '';  // For detecting update
     var steps_length = 0;
     var suspend = false;
-    return _update;
+            return _update;
 }
 
 // ******** Command ********
+function switch_record(id) { // overwritten by mcr_log
+    update_record(id);
+}
+
 function selmcr(dom) {
     var cmd = get_select(dom);
     if (!cmd) return;
     exec(cmd, function(recv) {
         // Do after exec if success
-        update_record(recv.sid);
+        switch_record(recv.sid);
     });
 }
 // ******** Init Page ********
-init_list.push(function() {
-    height_adjust();
+function init_page() {
     set_acordion('#record');
     set_auto_release('#record');
-    update_record('latest');
     $('#query').on('change', 'input[name="query"]:radio', function() {
         exec($(this).val(), function() {$('#query').empty(); });
     });
-});
+    height_adjust();
+}
+
+init_list.push(init_page);
 // Var setting
 var update_record = dynamic_page();
 var start_time; // For elapsed time

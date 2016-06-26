@@ -40,7 +40,8 @@ function where($range, $utime){
         return ' WHERE time > '.(time().'000' - $range);
     }
 }
-function get_data($site, $vid, $opt){
+function get_data($vid){
+    global $site, $opt;
     $fname='/var/www/html/log/sqlog_'.$site.'.sq3';
     $pdo=new PDO('sqlite:'.$fname);
     if(!$pdo) return;
@@ -56,14 +57,13 @@ function get_data($site, $vid, $opt){
     return $dset;
 }
 
-
 $site=getarg('site');
 $vid=getarg('vid');
 # No range -> whole
 $range=getarg('range');
 # No time -> now
 $utime=getarg('time');
-$data=get_data($site,$vid,where($range,$utime));
-echo(json_encode($data ? $data : array()));
+$opt = where($range,$utime);
 
+echo(json_encode(array_map('get_data', split(',',$vid))));
 ?>

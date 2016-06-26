@@ -35,6 +35,6 @@ function get_graph() {
     par.range = 43260000;
     $.getJSON('sqlog.php', par, function(data) {
         get_range();
-        $.plot($('#placeholder'), [data], options);
+        $.plot($('#placeholder'), data, options);
     });
 }

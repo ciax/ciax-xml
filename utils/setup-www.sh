@@ -6,6 +6,7 @@ for i in $dir/*; do
 done
 ln -sf $HOME/ciax-xml/web*/*  $dir/
 sudo ln -sf ~/ciax-xml /var/www/html
-sudo ln -sf ~/.var/json /var/www/html
-sudo ln -sf ~/.var/log /var/www/html
+for i in json log record; do
+    sudo ln -sf ~/.var/$i /var/www/html
+done
 sudo ln -sf $(pwd -P)/*.js $dir

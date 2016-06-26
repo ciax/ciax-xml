@@ -8,8 +8,9 @@ module CIAX
       Msg.type?(obj, Varx)
     end
 
-    def ext_http(host)
+    def ext_http(host, dir = nil)
       @host = host || 'localhost'
+      @dir = format('/%s/', dir || 'json')
       verbose { "Initiate Http (#{@host})" }
       self[:id] || Msg.cfg_err('ID')
       @upd_procs << proc { load }
@@ -37,7 +38,7 @@ module CIAX
     private
 
     def file_url(tag = nil)
-      'http://' + @host + '/json/' + _file_base(tag) + '.json'
+      'http://' + @host + @dir + _file_base(tag) + '.json'
     end
   end
 end

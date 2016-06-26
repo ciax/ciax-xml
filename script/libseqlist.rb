@@ -72,7 +72,7 @@ module CIAX
 
       def get(id)
         type?(id, String)
-        super { |key| Record.new(key).ext_http(@host) }
+        super { |key| Record.new(key).ext_http(@host, 'record') }
       end
     end
   end

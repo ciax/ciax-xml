@@ -7,11 +7,11 @@ module CIAX
     end
 
     # Set latest_link=true for making latest link at save
-    def ext_local_file
+    def ext_local_file(dir = nil)
       verbose { "Initiate File Status [#{_file_base}]" }
       self[:id] || cfg_err('No ID')
       @thread = Thread.current # For Thread safe
-      @jsondir = vardir('json')
+      @jsondir = vardir(dir || 'json')
       @cfile = _file_base # Current file name
       self
     end
@@ -53,7 +53,7 @@ module CIAX
     def mklink(tag = 'latest')
       # Making 'latest' link
       save
-      sname = @jsondir + "#{@type}_#{tag}.json"
+      sname = vardir('json') + "#{@type}_#{tag}.json"
       ::File.unlink(sname) if ::File.exist?(sname)
       ::File.symlink(@jsondir + _file_name, sname)
       verbose { "File Symboliclink to [#{sname}]" }

@@ -36,10 +36,34 @@ function get_range() {
     });
 }
 
-function get_graph() {
-    par.range = 43260000;
-    $.getJSON('sqlog.php', par, function(data) {
-        get_range();
-        $.plot($('#placeholder'), data, options);
+function push_data(e) {
+    $.each(dataset, function(i, series) {
+        var data = series.data;
+        var len = data.length - 1;
+        var last = data[len];
+        if (!e.time || last[0] == e.time) return;
+        series.data.shift();
+        series.data.push([e.time, e.data[series.vid]]);
+        plot.setData(dataset);
+        plot.draw();
     });
 }
+
+function update() {
+    $.getJSON('status_' + par.site + '.json', push_data);
+}
+
+function get_graph() {
+    par.range = 43260000;
+    $.getJSON('sqlog.php', par, function(ary) {
+        dataset = ary;
+        get_range();
+        plot = $.plot($('#placeholder'), dataset, options);
+        if (!par.time) setInterval(update, 1000);
+    });
+}
+
+
+// var par will be set in html
+var plot;
+var dataset;

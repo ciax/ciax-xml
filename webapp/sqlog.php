@@ -52,7 +52,7 @@ function get_data($vid){
     if (!$st) return;
     $data=$st->fetchAll(PDO::FETCH_NUM);
     if (!$data) return;
-    $dset = array('label' => "$site:$vid");
+    $dset = array('label' => "$site:$vid", 'vid' => $vid);
     $dset['data'] = $data;
     return $dset;
 }

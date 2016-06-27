@@ -121,7 +121,7 @@ module CIAX
         # ext_file must be after ext_rsp which includes time update
         @record.ext_local_file('record').auto_save
         @record.mklink # Make latest link
-        @record.mklink(@record[:cid]) # Make cid link
+        @record.mklink(@id) # Make link to /json
       end
 
       # Print section

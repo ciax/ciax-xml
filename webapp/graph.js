@@ -13,9 +13,14 @@ var options = {
         mode: 'time',
         timezone: 'browser'
     },
+    yaxis: {
+        zoomRange: false,
+        panRange: false
+    },
     zoom: { interactive: true },
     pan: { interactive: true }
 };
+
 function get_range() {
     if (!par.time) return;
     var time = par.time - 0;

@@ -8,7 +8,6 @@ module CIAX
     def initialize
       @counter = {}
       @format = {}
-      @rep = []
     end
 
     def each(e0)
@@ -47,7 +46,6 @@ module CIAX
     private
 
     def repeat(e0)
-      @rep.clear
       c = e0['counter'] || '_'
       Msg.give_up('Repeat:Counter Duplicate') if @counter.key?(c)
       fmt = @format[c] = e0['format'] || '%d'
@@ -60,7 +58,7 @@ module CIAX
       Range.new(subst(e0['from']), subst(e0['to'])).each do |n|
         enclose("Turn Number[#{n}] Start", "Turn Number[#{n}] End") do
           @counter[c] = n
-          @rep.push yield
+          yield
         end
       end
       @counter.delete(c)

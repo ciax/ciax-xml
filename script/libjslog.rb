@@ -31,7 +31,7 @@ module CIAX
       # Logging if version number exists
       id = self[:id]
       # add_table includes initiate/auto save
-      (SqLog::LIST[id] ||= SqLog::Save.new(id)).add_table(self)
+      (SqLog.list[id] ||= SqLog::Save.new(id)).add_table(self)
       self
     end
 

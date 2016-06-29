@@ -6,13 +6,13 @@ require 'libmsgmod'
 module CIAX
   ######################### Message Module #############################
   # Should be extended in module/class
-  TH_COLORS = {}.freeze
-  NS_COLORS = {}.freeze
-  CLS_COLORS = {}.freeze
   # Message module
   module Msg
     START_TIME = Time.now
     @indent_base = 1
+    @th_colors = {}
+    @ns_colors = {}
+    @cls_colors = {}
     # block takes array (shown by each line) or string
     # Description of values
     #   [val] -> taken from  xml (criteria)
@@ -58,10 +58,6 @@ module CIAX
       prt_lines(make_msg(format(title2, res))) if @enclosed
     end
 
-    def self.ver_indent(add = 0)
-      @indent_base += add
-    end
-
     private
 
     def prt_lines(data)
@@ -87,28 +83,15 @@ module CIAX
       ns = @layer
       cls = class_path.pop
       cls << "(#{@id})" if @id
-      cary << [th, th_color(th)]
-      cary << [ns, ns_color(ns)]
-      cary << [cls, cls_color || 15]
+      cary << [th, Msg.th_color(th)]
+      cary << [ns, Msg.ns_color(ns)]
+      cary << [cls, Msg.cls_color(cls)]
     end
 
     def make_head
       Msg.indent(Msg.ver_indent) + head_ary.map do |str, color|
         Msg.colorize(str.to_s, color)
       end.join(':')
-    end
-
-    def th_color(ns)
-      TH_COLORS[ns.to_s] ||= _gen_color(TH_COLORS)
-    end
-
-    def ns_color(ns)
-      NS_COLORS[ns.to_s] ||= _gen_color(NS_COLORS, 1)
-    end
-
-    def cls_color
-      cls = class_path.last
-      CLS_COLORS[cls] ||= _gen_color(CLS_COLORS, 2)
     end
 
     # VER= makes setenv "" to VER otherwise nil
@@ -125,6 +108,24 @@ module CIAX
 
     def match_all
       Regexp.new('\*').match(ENV['VER'])
+    end
+
+    module_function
+
+    def ver_indent(add = 0)
+      @indent_base += add
+    end
+
+    def th_color(ns)
+      @th_colors[ns.to_s] ||= _gen_color(@th_colors)
+    end
+
+    def ns_color(ns)
+      @ns_colors[ns.to_s] ||= _gen_color(@ns_colors, 1)
+    end
+
+    def cls_color(cls)
+      @cls_colors[cls] ||= _gen_color(@cls_colors, 2)
     end
 
     def _gen_color(table, ofs = 0)

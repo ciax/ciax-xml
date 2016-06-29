@@ -128,7 +128,7 @@ module CIAX
 
     def _make_vmode
       v = _make_exopt(%i(j r))
-      VMODE.replace(v.to_s) if v
+      View.default.replace(v.to_s) if v
       self
     end
 

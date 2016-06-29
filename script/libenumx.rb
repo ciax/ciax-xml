@@ -91,7 +91,6 @@ module CIAX
     include Enumx
     def initialize(hash = {})
       update(hash) if hash
-      vmode(VMODE) # v|r|j
       @layer = layer_name
     end
 

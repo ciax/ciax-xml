@@ -107,8 +107,8 @@ module CIAX
       # Field: Update after each Batch Frm command finish
       def _init_proc_sub
         @sub.stat.flush_procs << proc do
-          verbose { 'Propagate Field#flush -> Status#upd(cmt)' }
-          @stat.upd.cmt
+          verbose { 'Propagate Field#flush -> Status#cmt' }
+          @stat.cmt
         end
       end
     end

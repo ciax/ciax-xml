@@ -13,20 +13,23 @@ module CIAX
       def ext_local_rsp(field)
         @field = type?(field, Frm::Field)
         type?(@dbi, Dbi)
-        _init_upd_proc
+        _init_cmt_proc
         self
+      end
+
+      def time_upd
+        super(@field[:time])
       end
 
       private
 
-      def _init_upd_proc
-        @upd_procs << proc do
+      def _init_cmt_proc
+        @cmt_procs << proc do
           @adbs.each do|id, hash|
             cnd = hash[:fields].empty?
             next if cnd && get(id)
             self[:data][id] = cnd ? (hash[:default] || '') : _get_val(hash, id)
           end
-          time_upd(@field[:time])
         end
       end
 
@@ -53,11 +56,11 @@ module CIAX
 
       def _binstr2int(hash)
         bary = hash[:fields].map { |e| _get_binstr(e) }
-        case hash[:operation]
-        when 'uneven'
-          binstr = _get_uneven(bary)
-        else
-          binstr = bary.join
+        binstr = case hash[:operation]
+                 when 'uneven'
+                   _get_uneven(bary)
+                 else
+                   bary.join
         end
         expr('0b' + binstr)
       end

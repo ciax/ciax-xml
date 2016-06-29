@@ -43,11 +43,11 @@ module CIAX
 
       def view_event(vw, cond)
         cond.each do |j|
-          case j[:type]
-          when 'compare'
-            vw << _make_cmp(j)
-          else
-            vw << _make_cond(j)
+          vw << case j[:type]
+                when 'compare'
+                  _make_cmp(j)
+                else
+                  _make_cond(j)
           end
         end
       end

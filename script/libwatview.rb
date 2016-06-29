@@ -14,21 +14,15 @@ module CIAX
         @event = type?(event, Event)
         wdb = type?(event.dbi, Dbi)[:watch]
         _init_stat(wdb || { index: [] })
-        _init_upd_proc
-        upd
+        _init_cmt_proc
+        cmt
+      end
+
+      def time_upd
+        super(@event[:time])
       end
 
       private
-
-      def _init_upd_proc
-        @upd_procs << proc do
-          %i(exec block int act_time upd_next).each do |id|
-            self[id] = @event.get(id)
-          end
-          _upd_stat
-          time_upd(@event[:time])
-        end
-      end
 
       def _init_stat(wdb)
         self[:stat] = Hashx.new
@@ -38,6 +32,15 @@ module CIAX
           _init_cond(evnt[:cnd], hash.get(:cond) { [] })
         end
         self
+      end
+
+      def _init_cmt_proc
+        @cmt_procs << proc do
+          %i(exec block int act_time upd_next).each do |id|
+            self[id] = @event.get(id)
+          end
+          _upd_stat
+        end
       end
 
       def _init_cond(cond, m)
@@ -95,7 +98,7 @@ module CIAX
         event = Event.new
         wview = View.new(event)
         event.ext_local_file if STDIN.tty?
-        puts wview.upd
+        puts wview.cmt
       end
     end
   end

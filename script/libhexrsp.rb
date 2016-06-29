@@ -14,7 +14,7 @@ module CIAX
         id = self[:id] || id_err("NO ID(#{id}) in Stat")
         @sv_stat = sv_stat || Prompt.new('site', id)
         vmode('x')
-        _init_upd_procs
+        _init_cmt_procs
       end
 
       def to_x
@@ -27,26 +27,26 @@ module CIAX
 
       private
 
-      def _init_upd_procs
-        @upd_procs << proc { self[:hexpack] = _get_header_ + _get_body_ }
+      def _init_cmt_procs
+        @cmt_procs << proc { self[:hexpack] = _get_header_ + _get_body_ }
         _init_propagates
       end
 
       def _init_propagates
-        @sv_stat.cmt_procs << proc { _upd_propagate('Prompt') }
-        @stat.cmt_procs << proc { _upd_propagate('Status') }
-        upd.cmt
+        @sv_stat.cmt_procs << proc { _cmt_propagate('Prompt') }
+        @stat.cmt_procs << proc { _cmt_propagate('Status') }
+        cmt
       end
 
-      def _upd_propagate(_mod)
-        verbose { 'Propagate #{mod}#cmt -> Hex::Rsp#upd(cmt)' }
-        upd.cmt
+      def _cmt_propagate(mod)
+        verbose { "Propagate #{mod}#cmt -> Hex::Rsp#cmt" }
+        cmt
       end
 
       # Server Status
       def _get_header_
         ary = ['%', self[:id]]
-        ary << b2e(@sv_stat.upd.up?(:udperr))
+        ary << b2e(@sv_stat.up?(:udperr))
         ary << b2i(@sv_stat.up?(:event))
         ary << b2i(@sv_stat.up?(:busy))
         ary << b2e(@sv_stat.up?(:comerr))

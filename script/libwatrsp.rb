@@ -24,7 +24,6 @@ module CIAX
         wdb = @dbi[:watch] || {}
         @interval = wdb[:interval].to_f if wdb.key?(:interval)
         @cond = Condition.new(wdb[:index] || {}, stat, self)
-        _init_upd_proc
         _init_cmt_proc
         _init_auto(wdb)
       end
@@ -56,19 +55,14 @@ module CIAX
 
       private
 
-      def _init_upd_proc
-        @upd_procs << proc do
+      def _init_cmt_proc
+        @stat.cmt_procs << proc do
+          verbose { 'Propagate Status#cmt -> Event#cmt' }
           next unless @stat[:time] > @last_updated
           @last_updated = self[:time]
           @cond.upd_cond
           _upd_event
-        end
-      end
-
-      def _init_cmt_proc
-        @stat.cmt_procs << proc do
-          verbose { 'Propagate Status#cmt -> Event#upd(cmt)' }
-          upd.cmt
+          cmt
         end
       end
 

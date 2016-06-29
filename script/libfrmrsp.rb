@@ -94,7 +94,7 @@ module CIAX
       end
 
       def frame_to_field(e0)
-        enclose("#{e0[:label]}", 'Field:End') do
+        enclose((e0[:label]).to_s, 'Field:End') do
           if e0[:index]
             _ary_field(e0) { yield }
           else

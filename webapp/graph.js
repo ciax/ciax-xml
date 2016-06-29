@@ -51,7 +51,7 @@ function markings(axes) { //Making grid strype and bar line
     var hour = 3600000;
     var ax = axes.xaxis;
     for (var x = ax.min - (ax.min % hour); x < axes.xaxis.max; x += hour * 2)
-        mary.push({ xaxis: { from: x, to: x + hour }, color: '#999'});
+        mary.push({ xaxis: { from: x - hour, to: x }, color: '#999'});
     // bar line
     if (point) mary.push({
         color: '#ff0000',

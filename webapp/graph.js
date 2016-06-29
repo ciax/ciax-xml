@@ -7,7 +7,8 @@ var options = {
         points: { show: true, radius: 3 }
     },
     grid: {
-        markings: []
+        markings: [],
+        hoverable: true
     },
     xaxis: {
         mode: 'time',
@@ -20,6 +21,29 @@ var options = {
     zoom: { interactive: true },
     pan: { interactive: true }
 };
+
+function init_tooltip() {
+    $("<div id='tooltip'></div>").css({
+        position: 'absolute',
+        display: 'none',
+        border: '1px solid #fdd',
+        padding: '2px',
+        'background-color': '#fee',
+        opacity: 0.80
+    }).appendTo('body');
+    $('#placeholder').on('plothover', show_tooltip);
+}
+
+function show_tooltip(event, pos, item) {
+    if (item) {
+        var y = item.datapoint[1].toFixed(2);
+        $('#tooltip').html(item.series.label + ':' + y)
+            .css({ top: item.pageY + 5, left: item.pageX + 5 })
+            .fadeIn(200);
+    }else {
+        $('#tooltip').hide();
+    }
+}
 
 function get_range() {
     if (!par.time) return;
@@ -58,7 +82,8 @@ function get_graph() {
     $.getJSON('sqlog.php', par, function(ary) {
         dataset = ary;
         get_range();
-        plot = $.plot($('#placeholder'), dataset, options);
+        plot = $.plot('#placeholder', dataset, options);
+        init_tooltip();
         if (!par.time) setInterval(update, 1000);
     });
 }

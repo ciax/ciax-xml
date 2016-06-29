@@ -42,10 +42,10 @@ module CIAX
         Thread.current[:obj] = self
         _show(@record.start)
         sub_macro(@cfg[:sequence], @record.cmt)
-      rescue Interrupt
-        _site_interrupt
       rescue Verification
         false
+      rescue Interrupt
+        _site_interrupt
       ensure
         _show(@record.finish + "\n")
       end

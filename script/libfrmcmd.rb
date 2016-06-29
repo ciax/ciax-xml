@@ -108,7 +108,7 @@ module CIAX
 
         def _set_csv_frame(subfrm, db)
           # Allow csv parameter
-          subfrm.split(',').each do|s|
+          subfrm.split(',').each do |s|
             @frame.add(s, db)
           end
         end

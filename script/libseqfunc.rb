@@ -36,19 +36,19 @@ module CIAX
       def _check(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'failed'
-        fail Interlock
+        raise Interlock
       end
 
       def _verify(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'failed'
-        fail Verification
+        raise Verification
       end
 
       def _wait(_e, step, mstat)
         return true unless step.timeout? && _giveup?(step)
         mstat[:result] = 'timeout'
-        fail Interlock
+        raise Interlock
       end
 
       def _sleep(_e, step, _mstat)
@@ -108,7 +108,7 @@ module CIAX
           res = sub_macro(_get_ment(e)[:sequence], step)
           return res if res
           mstat[:result] = step[:result]
-          fail Interlock
+          raise Interlock
         rescue Verification
           (step = _mcr_retry(e, step, mstat)) && retry
         end

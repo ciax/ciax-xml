@@ -55,17 +55,17 @@ module CIAX
             atrb[:caption] = "Switch #{name}s"
             atrb[:color] = 5
             super
-            def_proc do|ent|
+            def_proc do |ent|
               # Use shell() of top level class
               #  (ie. List.new.get(id).shell -> List.new.shell(id) )
-              fail(ent[:jump_class], ent.id)
+              raise(ent[:jump_class], ent.id)
             end
           end
 
           def number_item(ary)
             clear
             i = 0
-            type?(ary, Array).each do|str|
+            type?(ary, Array).each do |str|
               add_item((i += 1).to_s, str)
             end
             self

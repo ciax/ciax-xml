@@ -20,7 +20,7 @@ module CIAX
 
     def load(tag = nil)
       url = file_url(tag)
-      open(url) do|f|
+      open(url) do |f|
         verbose { "Loading url [#{url}](#{f.size})" }
         json_str = f.read
         return replace(jread(json_str)) unless json_str.empty?

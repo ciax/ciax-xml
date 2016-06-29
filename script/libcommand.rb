@@ -33,7 +33,7 @@ module CIAX
       end
 
       def cmd_err
-        fail(InvalidCMD, view_list)
+        raise(InvalidCMD, view_list)
       end
 
       # Add sub group

@@ -100,12 +100,12 @@ module CIAX
 
       private
 
-      def _udp_loop(udp, &th_proc)
+      def _udp_loop(udp)
         loop do
           IO.select([udp])
           line, addr = udp.recvfrom(4096)
           rhost = Addrinfo.ip(addr[2]).getnameinfo.first
-          send_str = th_proc.call(line, rhost)
+          send_str = yield(line, rhost)
           udp.send(send_str, 0, addr[2], addr[1])
         end
       ensure

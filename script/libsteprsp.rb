@@ -50,7 +50,7 @@ module CIAX
         @exes.each do |obj|
           next if obj.wait_ready
           set_result('timeout')
-          fail Interlock
+          raise Interlock
         end
         self
       end
@@ -59,7 +59,7 @@ module CIAX
 
       def _all_conds?
         stats = _scan
-        conds = @condition.map do|h|
+        conds = @condition.map do |h|
           _condition(stats[h[:site]], h)
         end
         self[:conditions] = conds

@@ -3,9 +3,9 @@
 module CIAX
   ### Formatting methods ###
   module Msg
-    INDENT = ' '
+    INDENT = ' '.freeze
     CTLCODE = %i(NUL SOH STX ETX EOT ENQ ACK BEL BS HT LF VT FF CR SO SI
-                 DLE DC1 DC2 DC3 DC4 NAK SYN ETB CAN EM SUB ESC FS GS RS US)
+                 DLE DC1 DC2 DC3 DC4 NAK SYN ETB CAN EM SUB ESC FS GS RS US).freeze
 
     module_function
 
@@ -78,7 +78,7 @@ module CIAX
     end
 
     def __mk_line(h, a, cary, ind)
-      a.map.with_index do|k, i|
+      a.map.with_index do |k, i|
         kx, vx = cary[i]
         indent(ind.to_i) + itemize(k, h[k], kx).ljust(kx + vx + 15)
       end.join('').rstrip

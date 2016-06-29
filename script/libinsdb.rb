@@ -48,7 +48,7 @@ module CIAX
         sdb = dbi.get(:status) { Hashx.new }
         grp = sdb.get(:group) { Hashx.new }
         idx = sdb.get(:index) { Hashx.new }
-        doc.get(:status) { [] }.each do|e0|
+        doc.get(:status) { [] }.each do |e0|
           _get_skeleton(e0, sdb, grp, idx)
         end
         sdb

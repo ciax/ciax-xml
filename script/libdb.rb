@@ -32,7 +32,7 @@ module CIAX
       if @displist.valid?(id)
         _get_cache(id) || _get_db(id) { |docs| doc_to_db(docs.get(id)) }
       else
-        fail(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s)
+        raise(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s)
       end
     end
 
@@ -74,7 +74,7 @@ module CIAX
 
     def _save_cache(id, res)
       verbose { "Cache Refresh (#{id})" }
-      open(@marfile, 'w') do|f|
+      open(@marfile, 'w') do |f|
         f << Marshal.dump(res)
         verbose { "Cache Saved(#{id})" }
       end

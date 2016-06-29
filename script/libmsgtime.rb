@@ -24,13 +24,13 @@ module CIAX
 
     def interval(sec)
       return format('%.1f days', sec / 86_400) if sec > 86_400
-      if sec > 3600
-        fmt = '%H:%M'
-      elsif sec > 60
-        fmt = "%M'%S\""
-      else
-        fmt = '%S"%L'
-      end
+      fmt = if sec > 3600
+              '%H:%M'
+            elsif sec > 60
+              "%M'%S\""
+            else
+              '%S"%L'
+            end
       Time.at(sec).utc.strftime(fmt)
     end
 

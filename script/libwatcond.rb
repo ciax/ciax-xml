@@ -18,7 +18,7 @@ module CIAX
         @event = type?(event, Event)
         # Pick usable val
         @list = []
-        @windex.values.each do|v|
+        @windex.values.each do |v|
           @list |= v[:cnd].map { |i| i[:var] || i[:vars] }.flatten
         end
       end
@@ -34,7 +34,7 @@ module CIAX
       private
 
       def _sync
-        @list.each do|i|
+        @list.each do |i|
           @event[:last][i] = @event[:crnt][i]
           @event[:crnt][i] = @stat[:data][i]
         end
@@ -44,7 +44,7 @@ module CIAX
         return true unless (cklst = item[:cnd])
         verbose { "Check: <#{item[:label]}>" }
         rary = []
-        cklst.each do|ckitm|
+        cklst.each do |ckitm|
           res = _chk_by_type(ckitm)
           res = !res if /true|1/ =~ ckitm[:inv]
           rary << res
@@ -54,7 +54,7 @@ module CIAX
       end
 
       def _chk_conds
-        @windex.each do|id, item|
+        @windex.each do |id, item|
           next unless _chk_item(id, item)
           _actives(item[:act])
           @event.fetch(:active) << id
@@ -62,9 +62,9 @@ module CIAX
       end
 
       def _actives(act)
-        act.each do|key, ary|
+        act.each do |key, ary|
           if key == :exec
-            ary.each do|args|
+            ary.each do |args|
               @event[:exec] << ['event', 2, args]
             end
           else

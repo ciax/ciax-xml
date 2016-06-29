@@ -15,7 +15,7 @@ module CIAX
           _init_view_
           _init_lcmd_
           # Set Current ID by number
-          input_conv_num do|i|
+          input_conv_num do |i|
             @par.sel(i)
             nil
           end

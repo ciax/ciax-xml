@@ -19,7 +19,7 @@ module CIAX
         self
       end
 
-      alias_method :ext_local_test, :ext_local_driver
+      alias ext_local_test ext_local_driver
 
       def _init_proc_exe
         @pre_exe_procs << proc do

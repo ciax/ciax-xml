@@ -81,7 +81,7 @@ module CIAX
       end
 
       def _par_array(pary, pref)
-        pref.map do|par|
+        pref.map do |par|
           list = par[:list] || []
           disp = list.join(',')
           str = pary.shift

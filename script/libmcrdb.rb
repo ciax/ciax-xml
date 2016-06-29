@@ -36,7 +36,7 @@ module CIAX
       end
 
       def _add_steps(e0, itm)
-        e0.each do|e1|
+        e0.each do |e1|
           atrb = Hashx.new(type: e1.name)
           atrb.update(e1.to_h)
           _get_sites_(atrb)
@@ -71,7 +71,7 @@ module CIAX
       end
 
       def _make_condition(e1, atrb)
-        e1.each do|e2|
+        e1.each do |e2|
           hash = e2.to_h(:cri)
           hash[:cmp] = e2.name
           atrb.get(:cond) { [] } << hash
@@ -80,7 +80,7 @@ module CIAX
 
       def _get_cmd(e1)
         args = [e1[:name]]
-        e1.each do|e2|
+        e1.each do |e2|
           args << e2.text
         end
         args
@@ -88,8 +88,8 @@ module CIAX
 
       def _get_option(e1)
         options = {}
-        e1.each do|e2|
-          e2.each do|e3|
+        e1.each do |e2|
+          e2.each do |e3|
             options[e2[:val] || '*'] = _get_cmd(e3)
           end
         end

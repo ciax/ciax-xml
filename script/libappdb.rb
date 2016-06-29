@@ -25,7 +25,7 @@ module CIAX
 
       def _add_item(e0, gid)
         id, itm = super
-        @rep.each(e0) do|e1|
+        @rep.each(e0) do |e1|
           par2item(e1, itm) && next
           _add_frmcmd(e1, itm)
         end
@@ -36,7 +36,7 @@ module CIAX
       def _add_frmcmd(e1, itm)
         return if e1.name != 'frmcmd'
         command = [e1[:name]]
-        e1.each do|e2|
+        e1.each do |e2|
           command << _make_argv(e2)
         end
         itm.get(:body) { [] } << command
@@ -55,7 +55,7 @@ module CIAX
       # Status Db
       def init_status(adbs, dbi)
         sdb = { group: Hashx.new, index: Hashx.new, symtbl: [] }
-        @rep.each(adbs) do|e|
+        @rep.each(adbs) do |e|
           _grp_stat(e, sdb)
         end
         dbi[:status] = adbs.to_h.update(sdb)
@@ -73,7 +73,7 @@ module CIAX
 
       # recursive method
       def _rec_stat(e, idx, grp)
-        @rep.each(e) do|e0| # e0 can be 'binary', 'integer', 'float'..
+        @rep.each(e) do |e0| # e0 can be 'binary', 'integer', 'float'..
           id = e0.attr2item(idx) { |v| @rep.formatting(v) }
           itm = idx[id]
           grp.get(:members) { [] } << id
@@ -84,7 +84,7 @@ module CIAX
       end
 
       def _add_fields(e0, fields)
-        @rep.each(e0) do|e1|
+        @rep.each(e0) do |e1|
           st = {}
           st[:sign] = 'true' if e1.name == 'sign'
           _add_atrb(e1, st)
@@ -95,7 +95,7 @@ module CIAX
       end
 
       def _add_atrb(e1, st)
-        e1.to_h.each do|k, v|
+        e1.to_h.each do |k, v|
           v = @rep.subst(v) if k.to_s =~ /bit|index/
           st[k] = v
         end

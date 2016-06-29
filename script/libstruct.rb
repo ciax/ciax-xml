@@ -5,7 +5,7 @@ module CIAX
   module ViewStruct
     include Msg
 
-    COLOR_TBL = { 'true' => 13, 'false' => 8 }
+    COLOR_TBL = { 'true' => 13, 'false' => 8 }.freeze
     def view_struct(show_iv = false, show_id = false)
       @_vs_show_iv = show_iv
       @_vs_show_id = show_id
@@ -26,11 +26,11 @@ module CIAX
     end
 
     def _recursive(data, tag = nil)
-      if tag
-        @_vs_lines << _indent(_show_tag(data, tag))
-      else
-        @_vs_lines << "<<#{data.class}>>"
-      end
+      @_vs_lines << if tag
+                      _indent(_show_tag(data, tag))
+                    else
+                      "<<#{data.class}>>"
+                    end
       _show_iv(data)
       _sub_structure(data, tag)
     end
@@ -49,7 +49,7 @@ module CIAX
     def _show_iv(data)
       return unless @_vs_show_iv
       @_vs_show_iv = nil
-      data.instance_variables.each do|n|
+      data.instance_variables.each do |n|
         next if /^@_vs_/ =~ n.to_s
         val = data.instance_variable_get(n).inspect
         @_vs_lines << _indent(format('%-8s: %-10s', colorize(n.to_s, 1), val))
@@ -99,7 +99,7 @@ module CIAX
     def _end_ary(data)
       lines = []
       head = '[ '
-      data.each_slice(@_vs_column) do|a|
+      data.each_slice(@_vs_column) do |a|
         lines << _indent(head + a.map(&:inspect).join(','), 1)
         head = '  '
       end
@@ -108,13 +108,13 @@ module CIAX
 
     # Hash without sub structure
     def _end_hash(data, tag)
-      data.keys.each_slice(tag ? @_vs_hash_col : 1) do|a|
+      data.keys.each_slice(tag ? @_vs_hash_col : 1) do |a|
         @_vs_lines << _indent(_hash_line(a, data), 1)
       end
     end
 
     def _hash_line(a, data)
-      a.map do|k|
+      a.map do |k|
         format('%-8s: %-10s', _mk_tag(k), _mk_elem(data[k]))
       end.join("\t")
     end

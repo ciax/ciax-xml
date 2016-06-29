@@ -60,7 +60,7 @@ module CIAX
       # App: Sendign a first priority command (interrupt)
       def _init_proc_int(buf)
         @cobj.get('interrupt').def_proc do |_ent, src|
-          @batch_interrupt.each do|args|
+          @batch_interrupt.each do |args|
             verbose { "Issuing:#{args} for Interrupt" }
             buf.send(@cobj.set_cmd(args), 0)
           end
@@ -69,14 +69,14 @@ module CIAX
       end
 
       def _init_drv_save
-        @cobj.get('save').def_proc do|ent|
+        @cobj.get('save').def_proc do |ent|
           @stat.save_key(ent.par[0].split(','), ent.par[1])
           verbose { "Save [#{ent.par[0]}]" }
         end
       end
 
       def _init_drv_load
-        @cobj.get('load').def_proc do|ent|
+        @cobj.get('load').def_proc do |ent|
           @stat.load(ent.par[0] || '')
           verbose { "Load [#{ent.par[0]}]" }
         end
@@ -84,7 +84,7 @@ module CIAX
 
       # App: Sending a general App command (Frm batch)
       def _init_proc_ext(buf)
-        @cobj.rem.ext.def_proc do|ent, src, pri|
+        @cobj.rem.ext.def_proc do |ent, src, pri|
           verbose { "Issuing:[#{ent.id}] from #{src} with priority #{pri}" }
           buf.send(ent, pri)
         end
@@ -92,7 +92,7 @@ module CIAX
 
       def _init_proc_buf(buf)
         # Frm: Execute single command
-        buf.recv_proc = proc do|args, src|
+        buf.recv_proc = proc do |args, src|
           verbose { "Processing App to Buffer #{args}" }
           @sub.exe(args, src)
         end

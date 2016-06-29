@@ -74,7 +74,7 @@ module CIAX
         extend(ManDrv).ext_local_driver
       end
 
-      alias_method :ext_local_test, :ext_local_driver
+      alias ext_local_test ext_local_driver
     end
 
     if __FILE__ == $PROGRAM_NAME

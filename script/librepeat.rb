@@ -11,7 +11,7 @@ module CIAX
     end
 
     def each(e0)
-      e0.each do|e1|
+      e0.each do |e1|
         if /repeat.*/ =~ e1.name
           repeat(e1) do
             each(e1) { |e2| yield e2 }
@@ -25,7 +25,7 @@ module CIAX
     def subst(str) # Sub $key => @counter[key]
       return str unless Regexp.new('\$([_a-z])').match(str)
       res = str.gsub(/\$([_a-z])/) { @counter[Regexp.last_match(1)] }
-      res = res.split(':').map do|i|
+      res = res.split(':').map do |i|
         # i could be expression
         Regexp.new('\$').match(i) ? i : expr(i)
       end.join(':')

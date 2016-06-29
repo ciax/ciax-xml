@@ -7,7 +7,7 @@ module CIAX
   module Enumx
     include View
     def self.extended(obj)
-      fail('Not Enumerable') unless obj.is_a? Enumerable
+      raise('Not Enumerable') unless obj.is_a? Enumerable
     end
 
     def deep_copy
@@ -124,7 +124,7 @@ module CIAX
     # Make empty copy
     def skeleton
       hash = Hashx.new
-      keys.each do|i|
+      keys.each do |i|
         hash[i] = nil
       end
       hash
@@ -133,7 +133,7 @@ module CIAX
     # Generate Hashx with picked up keys
     def pick(keyary, atrb = {})
       hash = Hashx.new(atrb)
-      keyary.each do|key|
+      keyary.each do |key|
         hash[key] = self[key] if key?(key)
       end
       hash
@@ -165,7 +165,7 @@ module CIAX
     def skeleton(sary)
       return '' if sary.empty?
       dary = []
-      sary[0].to_i.times do|i|
+      sary[0].to_i.times do |i|
         dary[i] = skeleton(sary[1..-1])
       end
       dary
@@ -174,7 +174,7 @@ module CIAX
     # Get value of Hash which is element of self
     def get(key)
       # In case of find(), find{|e| e.get(key)}.get(key) to get content
-      each do|e|
+      each do |e|
         res = e.get(key)
         return res if res
       end

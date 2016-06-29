@@ -40,7 +40,7 @@ module CIAX
       # get generates document branch of db items(Hash),
       # which includes attribute and domains
       def get(id)
-        super { fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + to_s) }
+        super { raise(InvalidID, "No such ID(#{id}) in #{@type}\n" + to_s) }
       end
 
       def to_s
@@ -50,7 +50,7 @@ module CIAX
       private
 
       def _read_files(files)
-        files.each do|xml|
+        files.each do |xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
           Gnu.new(xml).each { |top| _mk_db(top) }
         end.empty? && Msg.cfg_err("No XML file for #{@type}-*.xml")
@@ -101,7 +101,7 @@ module CIAX
       # Includable (macro)
       def _mk_sub_db(top, sub = @displist)
         item = _set_item(top, sub)
-        top.each do|e| # e.name can be include or group
+        top.each do |e| # e.name can be include or group
           _include_grp(e, item, top.ns != e.ns)
         end
       end

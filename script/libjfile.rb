@@ -70,7 +70,7 @@ module CIAX
       warning("File version mismatch <#{inc}> for [#{org}]") if inc != org
       false
     rescue UserError
-      relay("#{@cfile}")
+      relay(@cfile.to_s)
     end
 
     def _file_name(tag = nil)
@@ -78,7 +78,7 @@ module CIAX
     end
 
     def _tag_list_
-      Dir.glob(@jsondir + _file_name('*')).map do|f|
+      Dir.glob(@jsondir + _file_name('*')).map do |f|
         f.slice(/.+_(.+)\.json/, 1)
       end.sort
     end
@@ -86,7 +86,7 @@ module CIAX
     def _write_json(json_str, tag = nil)
       verbose(@thread != Thread.current) { 'File Saving from Multiple Threads' }
       @cfile = _file_name(tag)
-      open(@jsondir + @cfile, 'w') do|f|
+      open(@jsondir + @cfile, 'w') do |f|
         f.flock(::File::LOCK_EX)
         f << json_str
         verbose { "File [#{@cfile}](#{f.size}) is Saved" }
@@ -96,7 +96,7 @@ module CIAX
 
     def _read_json(tag = nil)
       @cfile = _file_name(tag)
-      open(@jsondir + @cfile) do|f|
+      open(@jsondir + @cfile) do |f|
         verbose { "Reading [#{@cfile}](#{f.size})" }
         f.flock(::File::LOCK_SH)
         f.read

@@ -6,9 +6,9 @@ require 'libmsgmod'
 module CIAX
   ######################### Message Module #############################
   # Should be extended in module/class
-  TH_COLORS = {}
-  NS_COLORS = {}
-  CLS_COLORS = {}
+  TH_COLORS = {}.freeze
+  NS_COLORS = {}.freeze
+  CLS_COLORS = {}.freeze
   # Message module
   module Msg
     START_TIME = Time.now
@@ -63,7 +63,7 @@ module CIAX
     def prt_lines(data)
       ind = 0
       base = Msg.ver_indent
-      data.each_line do|line|
+      data.each_line do |line|
         show Msg.indent(base + ind) + line
         ind = 2
       end
@@ -89,7 +89,7 @@ module CIAX
     end
 
     def make_head
-      Msg.indent(Msg.ver_indent) + head_ary.map do|str, color|
+      Msg.indent(Msg.ver_indent) + head_ary.map do |str, color|
         Msg.colorize(str.to_s, color)
       end.join(':')
     end
@@ -112,8 +112,8 @@ module CIAX
       return if !ENV['VER'] || !msg
       return true if match_all
       title = msg.split("\n").first.upcase
-      ENV['VER'].split(',').any? do|s|
-        s.split(':').all? do|e|
+      ENV['VER'].split(',').any? do |s|
+        s.split(':').all? do |e|
           title.include?(e.upcase)
         end
       end

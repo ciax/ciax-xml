@@ -12,14 +12,14 @@ module CIAX
         @index = 0
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
         @tbl = query('.tables').split(/ /).grep(/^stream/).sort.last
-        fail('No Stream table') unless @tbl
+        raise('No Stream table') unless @tbl
         @total = query("select count(*) from #{@tbl} where dir='rcv';").to_i
-        fail('No Line') if @total < 1
+        raise('No Line') if @total < 1
       end
 
       def query(str)
         verbose { "->[#{str}]" }
-        IO.popen(@sqlcmd, 'r+') do|f|
+        IO.popen(@sqlcmd, 'r+') do |f|
           f.puts str
           str = f.gets.chomp
         end
@@ -56,7 +56,7 @@ module CIAX
       def _scan_cmd(str)
         tim, cmd = _next_cmd(str)
         verbose { "Matched time is #{tim}" }
-        fail if tim.empty?
+        raise if tim.empty?
         @index = tim.to_i
         cmd
       rescue

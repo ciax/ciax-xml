@@ -48,7 +48,7 @@ module CIAX
 
       def _jread(fname)
         j2h(
-          open(fname) do|f|
+          open(fname) do |f|
             f.flock(::File::LOCK_SH)
             f.read
           end

@@ -21,7 +21,7 @@ module CIAX
 
       def map
         ary = []
-        each do|e|
+        each do |e|
           ary << (yield e)
         end
         ary
@@ -31,7 +31,7 @@ module CIAX
         # <xml id='id' a='1' b='2'> => db[:a][id]='1', db[:b][id]='2'
         type?(db, Hash)
         key, atrb = _get_attr_(id, &at_proc)
-        atrb.each do|str, v|
+        atrb.each do |str, v|
           sym = str.to_sym
           db[sym] = Hashx.new unless db.key?(sym)
           db[sym][key] = v
@@ -54,12 +54,12 @@ module CIAX
 
       def _get_attr_(id, &at_proc)
         atrb = Hashx.new
-        to_h.each do|k, v|
-          if at_proc
-            atrb[k] = at_proc.call(v)
-          else
-            atrb[k] = v
-          end
+        to_h.each do |k, v|
+          atrb[k] = if at_proc
+                      yield(v)
+                    else
+                      v
+                    end
         end
         key = atrb.delete(id) || Msg.give_up("No such key (#{id})")
         [key, atrb]

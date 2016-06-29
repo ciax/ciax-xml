@@ -16,7 +16,7 @@ module CIAX
       'skip' => 'Execution',
       'ok' => 'for the message',
       'retry' => 'Checking'
-    }
+    }.freeze
     # Internal Commands
     module Int
       include Cmd::Remote::Int
@@ -26,7 +26,7 @@ module CIAX
         def initialize(cfg, crnt = {})
           crnt[:caption] = 'Control Macro'
           super
-          INTCMD.each do|id, cap|
+          INTCMD.each do |id, cap|
             add_item(id, id.capitalize + ' ' + cap)
           end
         end

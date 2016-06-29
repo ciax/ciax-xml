@@ -37,7 +37,7 @@ module CIAX
       end
 
       def _add_cc(domain, db)
-        domain.find('ccrange') do|e0|
+        domain.find('ccrange') do |e0|
           # enclose('INIT:Ceck Code Frame <-', '-> INIT:Ceck Code Frame') do
           frame = []
           @rep.each(e0) { |e1| frame << yield(e1) }
@@ -65,7 +65,7 @@ module CIAX
       end
 
       def _rep_item(e0, itm)
-        @rep.each(e0) do|e1|
+        @rep.each(e0) do |e1|
           par2item(e1, itm) && next
           e = _add_cmdfrm(e1) || next
           itm.get(:body) { [] } << e
@@ -99,7 +99,7 @@ module CIAX
         id = e0.attr2item(db)
         # enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
         itm = db[id]
-        @rep.each(e0) do|e1|
+        @rep.each(e0) do |e1|
           e = _add_rspfrm(e1, fld) || next
           itm.get(:body) { [] } << e
         end

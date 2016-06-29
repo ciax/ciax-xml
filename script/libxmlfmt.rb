@@ -4,7 +4,7 @@ require 'libenumx'
 module CIAX
   # Xml Module
   module Xml
-    HEADER = '<?xml version="1.0" encoding="utf-8"?>'
+    HEADER = '<?xml version="1.0" encoding="utf-8"?>'.freeze
     # XML Formatting Class
     class Format < Arrayx
       def initialize(ind = 0)
@@ -14,11 +14,11 @@ module CIAX
       # single line element
       def element(tag, text, atrb = Hashx.new)
         str = tag_begin(tag, atrb)
-        if text
-          str << format('>%s</%s>', text, tag)
-        else
-          str << '/>'
-        end
+        str << if text
+                 format('>%s</%s>', text, tag)
+               else
+                 '/>'
+               end
         push(str)
       end
 
@@ -38,7 +38,7 @@ module CIAX
 
       def tag_begin(tag, atrb = Hashx.new)
         str = format('  ' * @indent + '<%s', tag)
-        atrb.each do|k, v|
+        atrb.each do |k, v|
           str << format(' %s="%s"', k, v)
         end
         str

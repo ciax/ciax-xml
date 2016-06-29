@@ -48,7 +48,7 @@ module CIAX
                   _make_cmp(j)
                 else
                   _make_cond(j)
-          end
+                end
         end
       end
 

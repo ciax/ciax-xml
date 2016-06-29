@@ -23,7 +23,7 @@ module CIAX
       private
 
       def _get_wdb(wdoc, reg, idx, cgrp)
-        @rep.each(wdoc) do|e0|
+        @rep.each(wdoc) do |e0|
           case e0.name
           when 'regular'
             _make_regular(e0, reg)
@@ -35,9 +35,9 @@ module CIAX
 
       def _make_regular(e0, reg)
         reg.update(e0.to_h)
-        e0.each do|e1|
+        e0.each do |e1|
           args = [e1[:name]]
-          e1.each do|e2|
+          e1.each do |e2|
             args << e2.text
           end
           reg[:exec] << args
@@ -49,7 +49,7 @@ module CIAX
         item = idx[id]
         cnd = item[:cnd] = []
         act = item[:act] = Hashx.new
-        e0.each do|e1|
+        e0.each do |e1|
           _event_element(e1, act, cnd, cgrp)
         end
       end

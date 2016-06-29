@@ -20,7 +20,7 @@ module CIAX
     def ext_shell
       extend(CIAX::List::Shell).ext_shell(Jump)
       @cfg[:jump_layer] = @jumpgrp
-      @list.keys.each do|id|
+      @list.keys.each do |id|
         @list.get(id).ext_shell
         @jumpgrp.add_item(id, id.capitalize + ' mode')
       end

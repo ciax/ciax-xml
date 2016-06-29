@@ -94,14 +94,14 @@ module CIAX
 
       # Initiate procs
       def _init_proc_set
-        @cobj.get('set').def_proc do|ent|
+        @cobj.get('set').def_proc do |ent|
           @stat[:data].repl(ent.par[0], ent.par[1])
           verbose { "SET:#{ent.par[0]}=#{ent.par[1]}" }
         end
       end
 
       def _init_proc_del
-        @cobj.get('del').def_proc do|ent|
+        @cobj.get('del').def_proc do |ent|
           ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
           verbose { "DELETE:#{ent.par[0]}" }
         end

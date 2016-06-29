@@ -30,7 +30,7 @@ module CIAX
 
       def queue(src, pri, batch = [])
         @last_updated = self[:time]
-        batch.each do|args|
+        batch.each do |args|
           self[:exec] << [src, pri, args]
         end
         self

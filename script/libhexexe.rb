@@ -36,7 +36,7 @@ module CIAX
       def ext_local_server
         super
         # Specific setting must be done after super to override them
-        @server_input_proc = proc do|line|
+        @server_input_proc = proc do |line|
           /^(strobe|stat)/ =~ line ? [] : line.split(' ')
         end
         @server_output_proc = @shell_output_proc

@@ -31,7 +31,7 @@ module CIAX
 
           # Set items by DB
           def _init_items(cdb)
-            cdb[:group].each do|gid, gat|
+            cdb[:group].each do |gid, gat|
               sg = @displist.put_grp(gid, gat[:caption], nil, gat[:rank])
               _init_member_(cdb, gat[:members], sg)
               _init_unit_(cdb, gat[:units], sg)
@@ -41,7 +41,7 @@ module CIAX
 
           # Group Member will get into Index and Disp
           def _init_member_(cdb, mem, sg)
-            mem.each do|id|
+            mem.each do |id|
               itm = cdb[:index][id]
               sg.put_item(id, itm[:label])
               add_item(id, itm)
@@ -52,7 +52,7 @@ module CIAX
           # Unit Member will be removed from Disp instead
           def _init_unit_(cdb, guni, sg)
             return unless guni
-            guni.each do|u|
+            guni.each do |u|
               uat = cdb[:unit][u]
               next unless uat.key?(:title)
               _make_unit_item(sg, uat, cdb[:index])

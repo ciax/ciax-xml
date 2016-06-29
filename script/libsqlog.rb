@@ -6,7 +6,7 @@ require 'libthreadx'
 module CIAX
   # Generate SQL command string
   module SqLog
-    LIST ||= {}
+    LIST ||= {}.freeze
     # Table create using @stat.keys
     class Table
       include Msg

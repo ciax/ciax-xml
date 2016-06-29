@@ -27,7 +27,7 @@ module CIAX
       end
 
       def text
-        @e.each do|n|
+        @e.each do |n|
           return n.content if n.text? && /[\S]/ =~ n.content
         end
         nil
@@ -36,7 +36,7 @@ module CIAX
       # pick same ns nodes even if it is in another tree
       def find(xpath)
         verbose { "FindXpath:#{xpath}" }
-        @e.doc.find("//ns:#{xpath}", "ns:#{ns}").each do|e|
+        @e.doc.find("//ns:#{xpath}", "ns:#{ns}").each do |e|
           enclose("<#{e.name} #{e.attributes.to_h}>", "</#{e.name}>") do
             yield Gnu.new(e)
           end
@@ -44,7 +44,7 @@ module CIAX
       end
 
       def each
-        @e.each_element do|e|
+        @e.each_element do |e|
           enclose("<#{e.name} #{e.attributes.to_h}>", "</#{e.name}>") do
             yield Gnu.new(e)
           end
@@ -52,7 +52,7 @@ module CIAX
       end
 
       # Adapt to both Gnu, Hash
-      alias_method :each_value, :each
+      alias each_value each
 
       private
 
@@ -64,7 +64,7 @@ module CIAX
       end
 
       def _get_file(f)
-        test('r', f) || fail(InvalidID)
+        test('r', f) || raise(InvalidID)
         e = XML::Document.file(f).root
         verbose { e.namespaces.default.to_s }
         e

@@ -7,7 +7,8 @@ var options = {
         points: { show: true, radius: 3 }
     },
     grid: {
-        markings: [],
+        markings: markings,
+        backgroundColor: { colors: ['#fff', '#999'] },
         hoverable: true
     },
     xaxis: {
@@ -45,19 +46,29 @@ function show_tooltip(event, pos, item) {
     }
 }
 
+function markings(axes) { //Making grid strype and bar line
+    var mary = [];
+    var hour = 3600000;
+    var ax = axes.xaxis;
+    for (var x = ax.min - (ax.min % hour); x < axes.xaxis.max; x += hour * 2)
+        mary.push({ xaxis: { from: x, to: x + hour }, color: '#999'});
+    // bar line
+    if (point) mary.push({
+        color: '#ff0000',
+        lineWidth: 3,
+        xaxis: { from: point, to: point }
+    });
+    return mary;
+}
+
 function get_range() {
-    if (!par.time) return;
-    var time = par.time - 0;
+    if (!point) return;
+    var time = point - 0;
     var tol = 180000;
     var min = time - tol;
     var max = time + tol;
     options.xaxis.min = min;
     options.xaxis.max = max;
-    options.grid.markings.push({
-        color: '#ff0000',
-        lineWidth: 3,
-        xaxis: { from: time, to: time }
-    });
 }
 
 function push_data(e) {
@@ -80,15 +91,16 @@ function update() {
 function get_graph() {
     par.range = 43260000;
     $.getJSON('sqlog.php', par, function(ary) {
+        point = par.time;
         dataset = ary;
         get_range();
         plot = $.plot('#placeholder', dataset, options);
         init_tooltip();
-        if (!par.time) setInterval(update, 1000);
+        if (!point) setInterval(update, 1000);
     });
 }
-
 
 // var par will be set in html
 var plot;
 var dataset;
+var point;

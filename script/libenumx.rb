@@ -58,7 +58,7 @@ module CIAX
       enum.each do |k, v| # v=nil if enum is Array
         rec_proc4enum(v || k, &block)
       end
-      block.call(enum)
+      yield enum
     end
 
     def rec_proc4str(enum, path = [], &block)
@@ -70,7 +70,7 @@ module CIAX
           path.pop
         end
       else
-        block.call(enum, path)
+        yield enum, path
       end
     end
 
@@ -97,23 +97,26 @@ module CIAX
 
     # Generate value if init_proc and no key
     def get(key, &init_proc)
-      self[key] = init_proc.call(key) if !key?(key) && init_proc
+      self[key] = yield key if !key?(key) && init_proc
       self[key]
     end
 
     # Put value. return self
-    def put(key, val)
-      diff?(key, val) && store(key, val)
+    def put(key, val, &done_proc)
+      return self unless diff?(key, val)
+      store(key, val)
+      yield if done_proc
       self
     end
 
     # Replace value. return self
-    def repl(key, val)
+    def repl(key, val, &done_proc)
       Msg.par_err("No such Key [#{key}]") unless key?(key)
       Msg.cfg_err('Value should be String') unless val.is_a?(String)
       if diff?(key, val)
         verbose { "Replace:timing(#{key}) #{fetch(key)} ->  #{val}" }
         fetch(key).replace(val)
+        yield if done_proc
       end
       self
     end

@@ -32,15 +32,11 @@ module CIAX
 
     ## Manipulate data
     def put(key, val)
-      super
-      cmt if diff?(key, val)
-      self
+      super { cmt }
     end
 
     def repl(key, val)
-      super
-      cmt if diff?(key, val)
-      self
+      super { cmt }
     end
 
     # Update without any processing (Use for scan in macro)

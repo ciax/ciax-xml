@@ -27,9 +27,8 @@ module CIAX
       def reply(cid)
         cmd, id = cid.split(':')
         @threads.list.each do |th|
-          seq = th[:obj] || next
-          next if seq.id != id
-          return seq.reply(cmd)
+          next if th[:id] != id
+          return th[:query].reply(cmd)
         end
         nil
       end
@@ -43,9 +42,7 @@ module CIAX
       end
 
       def alives
-        @threads.list.map { |th| th[:obj] }.compact.map do |seq|
-          type?(seq, Sequencer).id
-        end
+        @threads.list.map { |th| th[:id] }.compact
       end
 
       def alive?(id)

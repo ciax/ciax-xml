@@ -1,9 +1,15 @@
 #!/usr/bin/ruby
 require 'libdb'
+require 'librepeat'
 
 module CIAX
   ####### For Command DB #######
   class DbCmd < Db
+    def initialize(type, proj = nil)
+      super
+      @rep = Repeat.new
+    end
+
     # Take parameter and next line
     def par2item(doc, item)
       return unless /par_(num|str|reg)/ =~ doc.name

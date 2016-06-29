@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'librepeat'
 require 'libdbcmd'
 module CIAX
   # Macro Layer

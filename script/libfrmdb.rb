@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'librepeat'
 require 'libdbcmd'
 
 module CIAX
@@ -24,7 +23,7 @@ module CIAX
       def init_frame(domain)
         db = domain.to_h
         _add_main(domain, db) { |e1| yield(e1) }
-        _add_cc(domain, db) { |e1, r1| yield(e1, r1) }
+        _add_cc(domain, db) { |e1| yield(e1) }
         db
       end
 
@@ -41,7 +40,7 @@ module CIAX
         domain.find('ccrange') do|e0|
           # enclose('INIT:Ceck Code Frame <-', '-> INIT:Ceck Code Frame') do
           frame = []
-          Repeat.new.each(e0) { |e1, r1| frame << yield(e1, r1) }
+          @rep.each(e0) { |e1| frame << yield(e1) }
           verbose { "InitCCFrame:#{frame}" }
           db[:ccrange] = frame
           # end
@@ -52,7 +51,7 @@ module CIAX
       def init_command(dom, dbi)
         cdb = super(dbi)
         _add_group(dom[:command])
-        cdb[:frame] = init_frame(dom[:cmdframe]) { |e, r| _add_cmdfrm(e, r) }
+        cdb[:frame] = init_frame(dom[:cmdframe]) { |e| _add_cmdfrm(e) }
         cdb
       end
 
@@ -66,19 +65,19 @@ module CIAX
       end
 
       def _rep_item(e0, itm)
-        Repeat.new.each(e0) do|e1, r1|
+        @rep.each(e0) do|e1|
           par2item(e1, itm) && next
-          e = _add_cmdfrm(e1, r1) || next
+          e = _add_cmdfrm(e1) || next
           itm.get(:body) { [] } << e
           verbose { "Body Frame [#{e.inspect}]" }
         end
       end
 
-      def _add_cmdfrm(e, rep = nil)
+      def _add_cmdfrm(e)
         case e.name
         when 'char', 'string'
           atrb = e.to_h
-          atrb[:val] = rep.subst(atrb[:val]) if rep
+          atrb[:val] = @rep.subst(atrb[:val])
           verbose { "Data:[#{atrb}]" }
           atrb
         else
@@ -100,7 +99,7 @@ module CIAX
         id = e0.attr2item(db)
         # enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
         itm = db[id]
-        Repeat.new.each(e0) do|e1, _r1|
+        @rep.each(e0) do|e1|
           e = _add_rspfrm(e1, fld) || next
           itm.get(:body) { [] } << e
         end

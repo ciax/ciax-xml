@@ -60,8 +60,6 @@ module CIAX
         dbi.get(:frm_site) { dbi[:id] }
       end
 
-      private
-
       def _get_skeleton(e0, sdb, grp, idx)
         key = e0.name.to_sym
         db = sdb.get(key) { Hashx.new }

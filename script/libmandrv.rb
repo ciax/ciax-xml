@@ -11,7 +11,8 @@ module CIAX
       # Initiate for driver
       def ext_local_driver
         @sv_stat.repl(:sid, '') # For server response
-        _init_proc_exe
+        _init_pre_exe
+        _init_post_exe
         _init_proc_rem(@cobj.rem)
         _init_proc_loc
         @cobj.rem.ext_input_log('mcr')
@@ -21,11 +22,14 @@ module CIAX
 
       alias ext_local_test ext_local_driver
 
-      def _init_proc_exe
+      def _init_pre_exe
         @pre_exe_procs << proc do
           @sv_stat.flush(:list, @stat.alives).repl(:sid, '')
           @sv_stat.flush(:run).cmt if @sv_stat.upd.get(:list).empty?
         end
+      end
+
+      def _init_post_exe
         @post_exe_procs << proc do
           @sv_stat.get(:list).each { |id| @par.add(id) }
         end

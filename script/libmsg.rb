@@ -58,6 +58,10 @@ module CIAX
       prt_lines(make_msg(format(title2, res))) if @enclosed
     end
 
+    def self.ver_indent(add = 0)
+      @indent_base += add
+    end
+
     private
 
     def prt_lines(data)
@@ -121,10 +125,6 @@ module CIAX
 
     def match_all
       Regexp.new('\*').match(ENV['VER'])
-    end
-
-    def self.ver_indent(add = 0)
-      @indent_base += add
     end
 
     def _gen_color(table, ofs = 0)

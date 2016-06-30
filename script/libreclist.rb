@@ -25,12 +25,14 @@ module CIAX
         self
       end
 
-      def push(record) # returns Array(self[:list])
-        return @list unless record.is_a?(Record) && record[:id].to_i > 0
+      def push(record) # returns self
+        id = record[:id]
+        return self unless record.is_a?(Record) && id.to_i > 0
         _init_record(record)
         ele = record.pick(%i(id cid result)) # extract header
         @active[id] = ele
         @list << ele
+        self
       end
 
       private

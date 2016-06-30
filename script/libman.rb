@@ -20,9 +20,9 @@ module CIAX
 
       # separated for background run
       def run
+        @sub_list.run
         _opt_mode
         @mode = 'MCR:' + @mode
-        @sub_list.run
         self
       end
 
@@ -57,6 +57,11 @@ module CIAX
         @sub_list = @cfg[:dev_list]
       end
 
+      # Making Command List JSON file for WebApp
+      def _mk_cmdlist
+        IO.write(vardir('json') + 'mcr_conf.json', @cfg[:jlist].to_j)
+      end
+
       def ext_client
         @post_exe_procs << proc do
           list = @par.list
@@ -79,7 +84,7 @@ module CIAX
       def ext_local_server
         super
         @cfg[:rec_list].refresh
-        IO.write(vardir('json') + 'mcr_conf.json', @cfg[:jlist].to_j)
+        _mk_cmdlist
         self
       end
     end

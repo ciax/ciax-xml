@@ -130,10 +130,6 @@
       </item>
     </group>
     <group id="grp_mos_1" caption="Shared Command" rank="0">
-      <item id="stop" label="Emergency STOP">
-        <exec site="mma" name="astop"/>
-        <exec site="mmc" name="astop"/>
-      </item>
       <item id="upd" label="Update">
         <upd site="mma"/>
         <upd site="mmc"/>

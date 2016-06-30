@@ -851,10 +851,6 @@
         </item>
       </unit>
       <unit id="unit_tmc_2_sha" title="sha" label="Shared Command">
-        <item id="stop" label="Emergency STOP">
-          <exec site="tma" name="astop"/>
-          <exec site="tmc" name="astop"/>
-        </item>
         <item id="upd" label="Update">
           <upd site="tma"/>
           <upd site="tmc"/>

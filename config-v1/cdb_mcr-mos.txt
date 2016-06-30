@@ -3,7 +3,7 @@
 #shared command
 
 !1,Shared Command
-stop,Emergency STOP,,mcr,mma:astop mmc:astop
+#stop,Emergency STOP,,mcr,mma:astop mmc:astop
 upd,Update,,cmd,mma:upd mmc:upd mfp:upd map:upd
 
 # ____________________________________________________________________________

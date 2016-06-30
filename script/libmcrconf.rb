@@ -17,19 +17,19 @@ module CIAX
         super(root_cfg)
         @opt = self[:option]
         db = Db.new
-        dbi = db.get
         update(layer_type: 'mcr', db: db)
-        # pick already includes :command, :version
-        update(dbi.pick([:sites, :id]))
-        _init_net(dbi)
+        _init_dbi(db.get)
         _init_dev_list(root_cfg.gen(self))
       end
 
       private
 
-      def _init_net(dbi)
+      def _init_dbi(dbi)
+        # pick already includes :command, :version
+        update(dbi.pick([:sites, :id]))
         self[:host] = @opt.host || dbi[:host]
         self[:port] = dbi[:port] || 55_555
+        self[:jlist] = { port: dbi[:port], commands: dbi.list }
       end
 
       # self is branch from root_cfg

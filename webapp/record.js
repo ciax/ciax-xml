@@ -127,12 +127,14 @@ function record_outline(data) { // Do at the first
 }
 // Macro Body
 function record_page(data) {
-    start_time = new Date(data.start); // empty when ready
     $('#record ul').empty();
-    $.each(data.steps, function(i, step) {
-        $('#record .depth' + step.depth + ':last').append(make_step(step));
-    });
-    sticky_bottom('slow');
+    if (data.start) {
+        start_time = new Date(data.start); // empty when ready
+        $.each(data.steps, function(i, step) {
+            $('#record .depth' + step.depth + ':last').append(make_step(step));
+        });
+        sticky_bottom('slow');
+    }
     record_status(data);
 }
 function record_status(data) {
@@ -180,12 +182,13 @@ function dynamic_page() {
     }
     function _update_step(data) {
         var crnt = data.steps.length;
-        if (crnt == 0) return;
         if (steps_length == crnt) {
-            // When Step doesn't increase.
-            var step = data.steps[crnt - 1];
-            // Update Step
-            $('.step:last').html(make_step(step));
+            if (crnt != 0) {
+                // When Step doesn't increase.
+                var step = data.steps[crnt - 1];
+                // Update Step
+                $('.step:last').html(make_step(step));
+            }
             suspend = true;
         }else if (suspend) {
             // Refresh All Page at resume
@@ -234,7 +237,7 @@ function dynamic_page() {
         if (rec_id != data.id) { // Do only the first one for new macro
             port = data.port;
             _first_page(data);
-            if (data.start) rec_id = data.id;
+            rec_id = data.id;
         }else if (data.time != last_time) { // Do every time for updated record
             _next_page(data);
             last_time = data.time;
@@ -246,7 +249,7 @@ function dynamic_page() {
             ajax_static('/record/record_' + tag + '.json').done(_upd_page);
         }else if (rec_id) { // Update and show current record
             ajax_update('/record/record_' + rec_id + '.json').done(_upd_page);
-        }else{
+        }else {
             ajax_static('/json/record_latest.json').done(_upd_page);
         }
     }

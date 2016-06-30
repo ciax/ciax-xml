@@ -234,7 +234,7 @@ function dynamic_page() {
         if (rec_id != data.id) { // Do only the first one for new macro
             port = data.port;
             _first_page(data);
-            rec_id = data.id;
+            if (data.start) rec_id = data.id;
         }else if (data.time != last_time) { // Do every time for updated record
             _next_page(data);
             last_time = data.time;
@@ -242,14 +242,12 @@ function dynamic_page() {
     }
     // To be update
     function _update(tag) {
-        if (tag) {
+        if (tag) { // Show past record (not updated)
             ajax_static('/record/record_' + tag + '.json').done(_upd_page);
-        }else {
-            if (rec_id) {
-                ajax_update('/record/record_' + rec_id + '.json').done(_upd_page);
-            }else {
-                ajax_static('/json/record_latest.json').done(_upd_page);
-            }
+        }else if (rec_id) { // Update and show current record
+            ajax_update('/record/record_' + rec_id + '.json').done(_upd_page);
+        }else{
+            ajax_static('/json/record_latest.json').done(_upd_page);
         }
     }
 
@@ -258,7 +256,7 @@ function dynamic_page() {
     var last_time = '';  // For detecting update
     var steps_length = 0;
     var suspend = false;
-            return _update;
+    return _update;
 }
 
 // ******** Command ********

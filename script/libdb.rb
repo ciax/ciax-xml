@@ -28,6 +28,7 @@ module CIAX
       @argc = 0
     end
 
+    # return Dbi
     def get(id)
       if @displist.valid?(id)
         _get_cache(id) || _get_db(id) { |docs| doc_to_db(docs.get(id)) }

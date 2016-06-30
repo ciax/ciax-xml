@@ -61,8 +61,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libwatlist'
-      cfg = Config.new
-      begin
+      ConfOpts.new('[cmd] (par)', 'j') do |cfg, _args, _opt|
         dbi = Db.new.get
         # dbi.pick alreay includes :command, :version
         cobj = Cmd::Index.new(cfg, dbi.pick)
@@ -70,8 +69,6 @@ module CIAX
         ent = cobj.set_cmd(ARGV)
         puts ent.path
         jj ent[:sequence]
-      rescue InvalidARGS
-        Msg.usage('[cmd] (par)')
       end
     end
   end

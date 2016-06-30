@@ -3,15 +3,27 @@ require 'libdbcmd'
 module CIAX
   # Macro Layer
   module Mcr
+    # to_j for web select command
+    module JList
+      def to_j
+        grp = self[:command][:group]
+        hash = Hashx.new
+        grp.each do |key, val|
+          hash[key] = val[:members] if val[:rank] == '0'
+        end
+        hash.to_j
+      end
+    end
+
     # Macro Db
     class Db < DbCmd
       def initialize
         super('mdb')
       end
 
-      # Allows nil
+      # Allows nil, get Dbi
       def get(id = nil)
-        super(id || ENV['PROJ'] || ARGV.shift)
+        super(id || ENV['PROJ'] || ARGV.shift).extend(JList)
       end
 
       private
@@ -104,7 +116,9 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] (key) ..', '') do |_opt, args|
-        puts Db.new.get.path(args)
+        dbi = Db.new.get
+        puts dbi.path(args)
+        puts dbi.to_j
       end
     end
   end

@@ -129,7 +129,7 @@
         </wait>
       </item>
     </group>
-    <group id="grp_mos_1" caption="Shared Command" rank="0">
+    <group id="grp_mos_1" caption="Update All" rank="0">
       <item id="upd" label="Update">
         <upd site="tma"/>
         <upd site="tmc"/>
@@ -1319,7 +1319,7 @@
         </check>
       </item>
     </group>
-    <group id="grp_mos_8" caption="MOS Main Commands" rank="0">
+    <group id="grp_mos_8" caption="MOS" rank="0">
       <item id="start" label="startmask">
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>

@@ -3,15 +3,14 @@ require 'libdbcmd'
 module CIAX
   # Macro Layer
   module Mcr
-    # to_j for web select command
-    module JList
-      def to_j
-        grp = self[:command][:group]
-        hash = Hashx.new
-        grp.each do |key, val|
-          hash[key] = val[:members] if val[:rank] == '0'
+    # list for web select command
+    module CmdList
+      def list
+        list = Hashx.new
+        self[:command][:group].each_value do |val|
+          (list[val[:caption]] ||= []).concat val[:members] if val[:rank] == '0'
         end
-        hash.to_j
+        list
       end
     end
 
@@ -23,7 +22,7 @@ module CIAX
 
       # Allows nil, get Dbi
       def get(id = nil)
-        super(id || ENV['PROJ'] || ARGV.shift).extend(JList)
+        super(id || ENV['PROJ'] || ARGV.shift).extend(CmdList)
       end
 
       private
@@ -115,10 +114,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', '') do |_opt, args|
+      GetOpts.new('[id] (key) ..', 'j') do |opt, args|
         dbi = Db.new.get
-        puts dbi.path(args)
-        puts dbi.to_j
+        puts opt[:j] ? dbi.list.to_j : dbi.path(args)
       end
     end
   end

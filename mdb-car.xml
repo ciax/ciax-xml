@@ -952,7 +952,7 @@
         <upd site="mmc"/>
       </item>
     </group>
-    <group id="grp_car_1" caption="Carousel Command" rank="0">
+    <group id="grp_car_1" caption="Initialize" rank="0">
       <item id="cinit" label="carousel initialize">
         <check>
           <equal site="mma" var="pos" form="msg">INIT</equal>
@@ -967,7 +967,7 @@
         <cfg site="mmc" name="set0"/>
       </item>
     </group>
-    <group id="grp_car_2" caption="Slot Command" rank="0">
+    <group id="grp_car_2" caption="Slot" rank="0">
       <unit id="unit_car_2_slot023" title="slot[0-23]" label="Move to Slot[0-23]">
         <item id="slot0" label="carousel">
           <check>
@@ -9534,7 +9534,7 @@
         </item>
       </unit>
     </group>
-    <group id="grp_car_4" caption="Access Slot" rank="0">
+    <group id="grp_car_4" caption="Access" rank="0">
       <unit id="unit_car_4_access023" title="access[0-23]" label="Access to Slot[0-23]">
         <item id="access0" label="Access to Slot0">
           <check>

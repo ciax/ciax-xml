@@ -39,6 +39,10 @@ module CIAX
       super { cmt }
     end
 
+    def del(key)
+      super { cmt }
+    end
+
     # Update without any processing (Use for scan in macro)
     def latest
       self

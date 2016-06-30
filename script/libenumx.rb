@@ -120,6 +120,15 @@ module CIAX
       self
     end
 
+    # Delete key, return self
+    def del(key, &done_proc)
+      if key?(key)
+        fetch(key).delete(val)
+        yield if done_proc
+      end
+      self
+    end
+
     # Make empty copy
     def skeleton
       hash = Hashx.new

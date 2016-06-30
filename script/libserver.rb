@@ -27,7 +27,7 @@ module CIAX
         if args[0].to_i > 0
           @sv_stat.put(:sn, args.shift)
         else
-          @sv_stat.delete(:sn)
+          @sv_stat.del(:sn)
         end
         args
       end

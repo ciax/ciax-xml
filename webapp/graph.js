@@ -49,9 +49,12 @@ function show_tooltip(event, pos, item) {
 function markings(axes) { //Making grid strype and bar line
     var mary = [];
     var hour = 3600000;
+    var h2 = hour * 2;
     var ax = axes.xaxis;
-    for (var x = ax.min - (ax.min % hour); x < axes.xaxis.max; x += hour * 2)
-        mary.push({ xaxis: { from: x - hour, to: x }, color: '#999'});
+    var min = ax.min - (ax.min % h2);
+    var max = ax.max;
+    for (var x = min; x < max; x += h2)
+        mary.push({ xaxis: { from: x, to: x + hour}, color: '#999'});
     // bar line
     if (point) mary.push({
         color: '#ff0000',

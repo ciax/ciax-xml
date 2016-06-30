@@ -23,6 +23,7 @@ module CIAX
         _opt_mode
         @mode = 'MCR:' + @mode
         @sub_list.run
+        @cfg[:rec_list].refresh
         self
       end
 

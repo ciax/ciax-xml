@@ -16,6 +16,7 @@ module CIAX
 
       def refresh
         @list.clear
+        verbose { 'Initiate Record List' }
         Dir.glob(vardir('record') + 'record_*.json') do |name|
           next if /record_[0-9]+.json/ !~ name
           add(_jread(name))

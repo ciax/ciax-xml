@@ -79,6 +79,7 @@ module CIAX
       def ext_local_server
         super
         @cfg[:rec_list].refresh
+        IO.write(vardir('json') + 'mcr_conf.json', @cfg[:jlist].to_j)
         self
       end
     end

@@ -29,7 +29,7 @@ module CIAX
         update(dbi.pick([:sites, :id]))
         self[:host] = @opt.host || dbi[:host]
         self[:port] = dbi[:port] || 55_555
-        self[:jlist] = { port: dbi[:port], commands: dbi.list }
+        self[:jlist] = Hashx.new(port: dbi[:port], commands: dbi.list)
       end
 
       # self is branch from root_cfg

@@ -30,7 +30,7 @@ module CIAX
         title
       end
 
-      def add_step(e1, depth)
+      def add_step(e1, depth) # returns Step
         step = StepRsp.new(@cfg[:dev_list], e1, depth, @dummy)
         self[:steps] << step.ext_prt(self[:start])
         step.cmt_procs << proc do

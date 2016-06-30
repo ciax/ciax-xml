@@ -31,7 +31,7 @@ module CIAX
       end
 
       # For Command
-      def add(frame, e = {})
+      def add(frame, e = {}) # returns self
         if frame
           code = encode(frame, e)
           @frame << code

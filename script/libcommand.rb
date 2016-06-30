@@ -38,13 +38,13 @@ module CIAX
 
       # Add sub group
       # If cls is String or Symbol, constant is taken locally.
-      def add(cls, atrb = Hashx.new)
+      def add(cls, atrb = Hashx.new) # returns instance of cls
         res = _get_cls(cls, atrb)
         push res
         res
       end
 
-      def append(obj)
+      def append(obj) # return obj
         type?(obj, CmdProc)
         obj.cfg.join_in(@cfg)
         unshift obj

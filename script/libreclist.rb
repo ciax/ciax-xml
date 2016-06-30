@@ -25,7 +25,7 @@ module CIAX
         self
       end
 
-      def add(record)
+      def add(record) # returns self
         hash = Hashx.new(type?(record, Hash))
         _init_record(record)
         id = hash[:id]

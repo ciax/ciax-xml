@@ -18,7 +18,7 @@ module CIAX
             @displist.reset!
           end
 
-          def add_item(id, itm)
+          def add_item(id, itm) # returns Item
             label = itm[:label]
             if label && itm[:parameters].is_a?(Array)
               ary = itm[:parameters].map { |e| e[:label] || 'str' }

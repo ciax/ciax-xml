@@ -52,7 +52,7 @@ module CIAX
         @current = sites.first
       end
 
-      def add(site)
+      def add(site) # returns Exe
         # layer_module can be Frm,App,Wat,Hex
         atrb = { dbi: @db.get(site), sub_list: @sub_list }
         obj = layer_module::Exe.new(@cfg, atrb)

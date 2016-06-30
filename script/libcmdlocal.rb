@@ -18,18 +18,18 @@ module CIAX
       # Top level
       # Local Domain
       class Domain < GrpAry
-        def add_shell
+        def add_shell # returns Group
           add(Sh::Group)
         end
 
-        def add_jump
+        def add_jump # returns Array(Symbols)
           @cfg[:jump_groups].each { |grp| append(grp) }
-          [:jump_site, :jump_layer].each do |jk|
+          %i(jump_site jump_layer).each do |jk|
             append(@cfg[jk]) if @cfg[jk]
           end
         end
 
-        def add_view(atrb = Hashx.new)
+        def add_view(atrb = Hashx.new) # retuns Group
           add(View::Group, atrb)
         end
       end

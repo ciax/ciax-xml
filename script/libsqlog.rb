@@ -32,7 +32,7 @@ module CIAX
         "create table #{@tid} ('#{key}',primary key(time));"
       end
 
-      def add_field(key)
+      def add_field(key) # returns String
         "alter table #{@tid} add column #{key};"
       end
 
@@ -99,7 +99,7 @@ module CIAX
       end
 
       # Check table existence (ver=0 is invalid)
-      def add_table(stat)
+      def add_table(stat) # returns self
         tbl = Table.new(stat)
         if stat[:ver].to_i > 0
           create_tbl(tbl)

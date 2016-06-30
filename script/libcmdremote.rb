@@ -7,7 +7,7 @@ module CIAX
     # Command Index
     class Index
       attr_reader :rem
-      def add_rem(obj = nil, atrb = Hashx.new)
+      def add_rem(obj = nil, atrb = Hashx.new) # returns Domain
         @rem = add(obj || Remote::Domain, atrb)
       end
     end
@@ -22,15 +22,15 @@ module CIAX
           @cfg[:def_proc] = proc {} # proc is re-defined
         end
 
-        def add_sys(ns = Sys)
+        def add_sys(ns = Sys) # returns Group
           @sys = add(ns::Group)
         end
 
-        def add_ext(ns = Ext)
+        def add_ext(ns = Ext) # returns Group
           @ext = add(ns::Group)
         end
 
-        def add_int(ns = Int)
+        def add_int(ns = Int) # returns Group
           @int = add(ns::Group)
         end
 
@@ -76,7 +76,7 @@ module CIAX
             @cfg[:nocache] = true
           end
 
-          def add_file_io
+          def init_item_file_io
             add_item('save', '[key,key...] [tag]', def_pars(2))
             add_item('load', '[tag]', def_pars(1))
           end

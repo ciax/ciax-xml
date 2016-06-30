@@ -23,7 +23,6 @@ module CIAX
         _opt_mode
         @mode = 'MCR:' + @mode
         @sub_list.run
-        @cfg[:rec_list].refresh
         self
       end
 
@@ -76,6 +75,12 @@ module CIAX
       end
 
       alias ext_local_test ext_local_driver
+
+      def ext_local_server
+        super
+        @cfg[:rec_list].refresh
+        self
+      end
     end
 
     if __FILE__ == $PROGRAM_NAME

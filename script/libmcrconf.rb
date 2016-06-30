@@ -2,6 +2,7 @@
 require 'libconf'
 require 'libprompt'
 require 'libreclist'
+require 'libmcrdb'
 
 module CIAX
   # Macro Layer

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libcmdext'
-require 'libmcrdb'
+require 'libmcrconf'
 # CIAX_XML
 module CIAX
   # Macro Layer
@@ -62,9 +62,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libwatlist'
       ConfOpts.new('[cmd] (par)', 'j') do |cfg, _args, _opt|
-        dbi = Db.new.get
-        # dbi.pick alreay includes :command, :version
-        cobj = Cmd::Index.new(cfg, dbi.pick)
+        cobj = Cmd::Index.new(Conf.new(cfg))
         cobj.add_rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)
         puts ent.path

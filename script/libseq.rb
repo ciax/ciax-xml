@@ -112,7 +112,7 @@ module CIAX
         @record[:pid] = pid
         @id = @record[:id]
         @title = @record.title
-        @cfg[:rec_list].add(@record)
+        @cfg[:rec_list].push(@record)
         _init_record_file
       end
 

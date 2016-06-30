@@ -13,8 +13,8 @@ module CIAX
         @checkcode = ''
       end
 
-      # Add to check code
-      def add(str) # returns self
+      # Push to check code
+      def push(str) # returns self
         @ccrange << str if @ccrange
         verbose { "Cc Add to Range Frame [#{str.inspect}]" }
         self

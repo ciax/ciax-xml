@@ -52,7 +52,7 @@ module CIAX
 
       def _init_takeover
         @sub = @cfg[:sub_list].get(@id)
-        @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')
+        @sv_stat = @sub.sv_stat.init_flg(auto: '&', event: '@')
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
         @post_exe_procs.concat(@sub.post_exe_procs)

@@ -14,32 +14,28 @@ module CIAX
         auto_save
       end
 
-      def refresh
+      def refresh # returns self
         @list.clear
         verbose { 'Initiate Record List' }
         Dir.glob(vardir('record') + 'record_*.json') do |name|
           next if /record_[0-9]+.json/ !~ name
-          add(_jread(name))
+          push(_jread(name))
         end
         cmt
         self
       end
 
-      def add(record) # returns self
-        hash = Hashx.new(type?(record, Hash))
+      def push(record) # returns Array(self[:list])
+        return @list unless record.is_a?(Record) && record[:id].to_i > 0
         _init_record(record)
-        id = hash[:id]
-        return unless id.to_i > 0
-        ele = hash.pick(%i(id cid result))
+        ele = record.pick(%i(id cid result)) # extract header
         @active[id] = ele
         @list << ele
-        cmt
       end
 
       private
 
       def _init_record(record)
-        return unless record.is_a? Record
         record.cmt_procs << proc do
           verbose { 'Propagate Record#cmt -> RecList#cmt' }
           @active[record[:id]][:result] = record[:result]

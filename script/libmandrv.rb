@@ -31,7 +31,7 @@ module CIAX
 
       def _init_post_exe
         @post_exe_procs << proc do
-          @sv_stat.get(:list).each { |id| @par.add(id) }
+          @sv_stat.get(:list).each { |id| @par.push(id) }
         end
       end
 

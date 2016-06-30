@@ -112,7 +112,7 @@ module CIAX
     class Prompt < Prompt
       def initialize(id)
         super('site', id)
-        add_flg(busy: '*')
+        init_flg(busy: '*')
       end
     end
 

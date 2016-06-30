@@ -99,7 +99,7 @@ module CIAX
       end
 
       # Check table existence (ver=0 is invalid)
-      def add_table(stat) # returns self
+      def init_table(stat) # returns self
         tbl = Table.new(stat)
         if stat[:ver].to_i > 0
           create_tbl(tbl)

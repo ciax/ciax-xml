@@ -29,7 +29,7 @@ module CIAX
     attr_accessor :flush_proc, :recv_proc
     # sv_stat: Server Status
     def initialize(sv_stat)
-      @sv_stat = type?(sv_stat, Prompt).add_array(:queue)
+      @sv_stat = type?(sv_stat, Prompt).init_array(:queue)
       # Update App Status
       @flush_proc = proc {}
       @recv_proc = proc {}

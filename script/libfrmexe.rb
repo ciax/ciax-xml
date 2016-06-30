@@ -82,7 +82,7 @@ module CIAX
     class Prompt < Prompt
       def initialize(id)
         super('dev', id)
-        add_flg(comerr: 'X', ioerr: 'E')
+        init_flg(comerr: 'X', ioerr: 'E')
       end
     end
 

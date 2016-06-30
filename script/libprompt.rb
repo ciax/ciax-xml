@@ -15,14 +15,14 @@ module CIAX
     end
 
     # For String Data
-    def add_str(key, val = '') # returns self
+    def init_str(key, val = '') # returns self
       self[key] = type?(val.dup, String) unless self[key].is_a? String
       self
     end
 
     # For Binary Data with display db
     # Value should be String to replace
-    def add_flg(db = {}) # returns self
+    def init_flg(db = {}) # returns self
       @db.update(type?(db, Hash))
       db.keys.each { |k| self[k] = 'false' }
       self
@@ -53,7 +53,7 @@ module CIAX
     end
 
     # For Array Data
-    def add_array(key, ary = []) # returns self
+    def init_array(key, ary = []) # returns self
       self[key] = type?(ary, Array) unless self[key].is_a? Array
       self
     end
@@ -63,7 +63,7 @@ module CIAX
       self
     end
 
-    def push(key, elem)
+    def push(key, elem) # returns self
       self[key].push(elem) # unless type?(self[key], Array).include?(elem)
       self
     end

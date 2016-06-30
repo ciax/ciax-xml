@@ -63,7 +63,7 @@ module CIAX
         super { yield @in, @out }
       end
 
-      def push(str)
+      def push(str) # returns self
         warning("Thread [#{self[:name]}] is not running") unless alive?
         @in.push(str)
         self

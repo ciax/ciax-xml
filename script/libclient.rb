@@ -22,7 +22,7 @@ module CIAX
     private
 
     def _init_upd
-      @sv_stat.add_flg(udperr: 'x')
+      @sv_stat.init_flg(udperr: 'x')
       @sv_stat.upd_procs << proc { exe([]) }
       @udp = UDPSocket.open
       verbose { "Initiate UDP client (#{@id}) [#{@host}:#{@port}]" }

@@ -50,10 +50,10 @@ module CIAX
     class Prompt < Prompt
       def initialize(id, opt = {})
         super('mcr', id)
-        add_array(:list)
-        add_array(:run)
-        add_str(:sid)
-        add_flg(nonstop: '(nonstop)')
+        init_array(:list)
+        init_array(:run)
+        init_str(:sid)
+        init_flg(nonstop: '(nonstop)')
         up(:nonstop) if opt[:n]
       end
     end

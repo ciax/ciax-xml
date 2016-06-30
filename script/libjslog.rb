@@ -30,8 +30,8 @@ module CIAX
     def ext_local_sqlog
       # Logging if version number exists
       id = self[:id]
-      # add_table includes initiate/auto save
-      (SqLog.list[id] ||= SqLog::Save.new(id)).add_table(self)
+      # init_table includes initiate/auto save
+      (SqLog.list[id] ||= SqLog::Save.new(id)).init_table(self)
       self
     end
 

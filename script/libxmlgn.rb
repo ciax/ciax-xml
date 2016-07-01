@@ -5,10 +5,13 @@ require 'xml'
 module CIAX
   module Xml
     # Gnu XML LIB
-    class Elem
-      include Share
+    class Elem < Core
       def initialize(f)
-        @e = _get_doc(f)
+        if f.is_a? XML::Node
+          @e = f
+        else
+          super
+        end
       end
 
       def ns
@@ -26,37 +29,21 @@ module CIAX
       def find(xpath)
         verbose { "FindXpath:#{xpath}" }
         @e.doc.find("//ns:#{xpath}", "ns:#{ns}").each do |e|
-          enclose("<#{e.name} #{e.attributes.to_h}>", "</#{e.name}>") do
-            yield Elem.new(e)
-          end
+          _mkelem(e) { |ne| yield ne }
         end
       end
-
-      def each
-        @e.each_element do |e|
-          enclose("<#{e.name} #{e.attributes.to_h}>", "</#{e.name}>") do
-            yield Elem.new(e)
-          end
-        end
-      end
-
-      # Adapt to both Gnu, Hash
-      alias each_value each
 
       private
 
       def _attr_elem
-        @e.attributes.to_h
+        super.to_h
       end
 
-      def _get_doc(f)
-        return f if f.is_a? XML::Node
-        return _get_file(f) if f.is_a? String
-        Msg.cfg_err('Parameter shoud be String or Node')
+      def _attr_view
+        super.to_h
       end
 
       def _get_file(f)
-        test('r', f) || raise(InvalidID)
         XML::Document.file(f).root
       end
     end

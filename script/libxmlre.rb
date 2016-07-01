@@ -5,10 +5,13 @@ require 'rexml/document'
 module CIAX
   module Xml
     # REXML
-    class Elem
-      include Share
+    class Elem < Core
       def initialize(f)
-        @e = _get_doc(f)
+        if f.is_a? REXML::Element
+          @e = f
+        else
+          super
+        end
       end
 
       def ns
@@ -23,32 +26,17 @@ module CIAX
       def find(xpath)
         verbose { "FindXpath:#{xpath}" }
         REXML::XPath.each(@e.root, "//ns:#{xpath}", 'ns' => ns) do |e|
-          enclose("<#{e.name} #{e.attributes.to_a}>", "</#{e.name}>") do
-            yield Elem.new(e)
-          end
+          _mkelem(e) { |ne| yield ne }
         end
       end
-
-      def each
-        @e.each_element do |e|
-          enclose("<#{e.name} #{e.attributes.to_a}>", "</#{e.name}>") do
-            yield Elem.new(e)
-          end
-        end
-      end
-
-      alias each_value each
 
       private
 
-      def _get_doc(f)
-        return f if f.is_a? REXML::Element
-        return _get_file(f) if f.is_a? String
-        Msg.cfg_err('Parameter shoud be String or Element')
+      def _attr_view
+        super.to_a
       end
 
       def _get_file(f)
-        test('r', f) || raise(InvalidID)
         REXML::Document.new(open(f)).root
       end
     end

@@ -4,9 +4,13 @@ require 'libenumx'
 module CIAX
   module Xml
     # Shared module for XML LIB
-    module Share
+    # Common with LIBXML,REXML
+    class Core
       include Msg
-      # Common with LIBXML,REXML
+      def initialize(f)
+        @e = _get_doc(f)
+      end
+
       def to_s
         @e.to_s
       end
@@ -25,6 +29,12 @@ module CIAX
           ary << (yield e)
         end
         ary
+      end
+
+      def each
+        @e.each_element do |e|
+          _mkelem(e) { |ne| yield ne }
+        end
       end
 
       # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
@@ -52,7 +62,7 @@ module CIAX
       def attr2item(db, id = :id, &at_proc) # deprecated
         # <xml id='id' a='1' b='2'> => db[id][a]='1', db[id][b]='2'
         type?(db, Hashx)
-        key, atrb = _get_attr_(id, &at_proc)
+        key, atrb = _attr_to_a(id, &at_proc)
         if id != :ref && db.key?(key)
           alert("ATTRDB: Duplicated ID [#{key}]")
           db.delete(key)
@@ -61,13 +71,26 @@ module CIAX
         key
       end
 
+      # Adapt to both Gnu, Hash
+      alias each_value each
+
       private
+
+      def _mkelem(e)
+        enclose("<#{e.name} #{_attr_view}>", "</#{e.name}>") do
+          yield Elem.new(e)
+        end
+      end
 
       def _attr_elem
         @e.attributes
       end
 
-      def _get_attr_(id, &at_proc)
+      def _attr_view
+        @e.attributes
+      end
+
+      def _attr_to_a(id, &at_proc)
         atrb = Hashx.new
         to_h.each do |k, v|
           atrb[k] = if at_proc
@@ -79,6 +102,16 @@ module CIAX
         key = atrb.delete(id) || Msg.give_up("No such key (#{id})")
         [key, atrb]
       end
+
+      def _get_doc(f)
+        if f.is_a? String
+          test('r', f) || raise(InvalidID)
+          return _get_file(f)
+        end
+        Msg.cfg_err('Parameter shoud be String or Node')
+      end
+
+      def _get_file(f); end
     end
   end
 end

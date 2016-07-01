@@ -11,10 +11,6 @@ module CIAX
         @e.to_s
       end
 
-      def [](key)
-        @e.attributes[key]
-      end
-
       def name
         @e.name
       end
@@ -30,7 +26,7 @@ module CIAX
       # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
       def to_h(key = :val)
         h = Hashx.new
-        _attr_elem.each{|k,v| h[k.to_sym]=v }
+        _attr_elem.each { |k, v| h[k.to_sym] = v }
         t = text
         h[key] = t if t
         h

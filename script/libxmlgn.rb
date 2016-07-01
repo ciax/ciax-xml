@@ -11,6 +11,10 @@ module CIAX
         @e = _get_doc(f)
       end
 
+      def [](key)
+        @e.attributes[key]
+      end
+
       def ns
         @e.namespaces.default
       end

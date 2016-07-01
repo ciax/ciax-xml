@@ -27,6 +27,15 @@ module CIAX
         ary
       end
 
+      # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
+      def to_h(key = :val)
+        h = Hashx.new
+        _attr_elem.each{|k,v| h[k.to_sym]=v }
+        t = text
+        h[key] = t if t
+        h
+      end
+
       def attr2db(db, id = 'id', &at_proc) # deprecated
         # <xml id='id' a='1' b='2'> => db[:a][id]='1', db[:b][id]='2'
         type?(db, Hash)
@@ -50,6 +59,12 @@ module CIAX
         end
         db.get(key) { Hashx.new }.update(atrb)
         key
+      end
+
+      private
+
+      def _attr_elem
+        @e.attributes
       end
 
       def _get_attr_(id, &at_proc)

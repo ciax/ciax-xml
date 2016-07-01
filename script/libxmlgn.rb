@@ -5,7 +5,7 @@ require 'xml'
 module CIAX
   module Xml
     # Gnu XML LIB
-    class Gnu
+    class Elem
       include Share
       def initialize(f = nil)
         @e = _get_doc(f)
@@ -13,17 +13,6 @@ module CIAX
 
       def ns
         @e.namespaces.default
-      end
-
-      # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
-      def to_h(key = :val)
-        h = Hashx.new
-        @e.attributes.to_h.each do |k, v|
-          h[k.to_sym] = v
-        end
-        t = text
-        h[key] = t if t
-        h
       end
 
       def text
@@ -38,7 +27,7 @@ module CIAX
         verbose { "FindXpath:#{xpath}" }
         @e.doc.find("//ns:#{xpath}", "ns:#{ns}").each do |e|
           enclose("<#{e.name} #{e.attributes.to_h}>", "</#{e.name}>") do
-            yield Gnu.new(e)
+            yield Elem.new(e)
           end
         end
       end
@@ -46,7 +35,7 @@ module CIAX
       def each
         @e.each_element do |e|
           enclose("<#{e.name} #{e.attributes.to_h}>", "</#{e.name}>") do
-            yield Gnu.new(e)
+            yield Elem.new(e)
           end
         end
       end
@@ -55,6 +44,10 @@ module CIAX
       alias each_value each
 
       private
+
+      def _attr_elem
+        @e.attributes.to_h
+      end
 
       def _get_doc(f)
         return _get_new unless f

@@ -52,7 +52,7 @@ module CIAX
       def _read_files(files)
         files.each do |xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
-          Gnu.new(xml).each { |top| _mk_db(top) }
+          Elem.new(xml).each { |top| _mk_db(top) }
         end.empty? && Msg.cfg_err("No XML file for #{@type}-*.xml")
       end
 

@@ -7,7 +7,7 @@ module CIAX
     # Gnu XML LIB
     class Elem
       include Share
-      def initialize(f = nil)
+      def initialize(f)
         @e = _get_doc(f)
       end
 
@@ -50,7 +50,6 @@ module CIAX
       end
 
       def _get_doc(f)
-        return _get_new unless f
         return f if f.is_a? XML::Node
         return _get_file(f) if f.is_a? String
         Msg.cfg_err('Parameter shoud be String or Node')
@@ -58,15 +57,7 @@ module CIAX
 
       def _get_file(f)
         test('r', f) || raise(InvalidID)
-        e = XML::Document.file(f).root
-        verbose { e.namespaces.default.to_s }
-        e
-      end
-
-      def _get_new
-        e = XML::Node.new('blank')
-        XML::Document.new.root = e
-        e
+        XML::Document.file(f).root
       end
     end
   end

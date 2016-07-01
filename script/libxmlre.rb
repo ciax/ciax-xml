@@ -7,7 +7,7 @@ module CIAX
     # REXML
     class Elem
       include Share
-      def initialize(f = nil)
+      def initialize(f)
         @e = _get_doc(f)
       end
 
@@ -23,7 +23,9 @@ module CIAX
       def find(xpath)
         verbose { "FindXpath:#{xpath}" }
         REXML::XPath.each(@e.root, "//ns:#{xpath}", 'ns' => ns) do |e|
-          yield Elem.new(e)
+          enclose("<#{e.name} #{e.attributes.to_a}>", "</#{e.name}>") do
+            yield Elem.new(e)
+          end
         end
       end
 
@@ -40,7 +42,6 @@ module CIAX
       private
 
       def _get_doc(f)
-        return REXML::Element.new unless f
         return f if f.is_a? REXML::Element
         return _get_file(f) if f.is_a? String
         Msg.cfg_err('Parameter shoud be String or Element')
@@ -48,9 +49,7 @@ module CIAX
 
       def _get_file(f)
         test('r', f) || raise(InvalidID)
-        e = REXML::Document.new(open(f)).root
-        verbose { e.namespaces.default.to_s }
-        e
+        REXML::Document.new(open(f)).root
       end
     end
   end

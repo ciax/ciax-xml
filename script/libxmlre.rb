@@ -25,7 +25,7 @@ module CIAX
       end
 
       def find(xpath)
-        REXML::XPath.each(@e.root, xpath, ns) do |e|
+        REXML::XPath.each(@e.root, "//ns:#{xpath}", 'ns' => ns) do |e|
           yield Elem.new(e)
         end
       end

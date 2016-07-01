@@ -11,10 +11,6 @@ module CIAX
         @e = _get_doc(f)
       end
 
-      def [](key)
-        @e.attribute(key).to_s
-      end
-
       def ns
         @e.namespace
       end
@@ -25,6 +21,7 @@ module CIAX
       end
 
       def find(xpath)
+        verbose { "FindXpath:#{xpath}" }
         REXML::XPath.each(@e.root, "//ns:#{xpath}", 'ns' => ns) do |e|
           yield Elem.new(e)
         end
@@ -32,7 +29,9 @@ module CIAX
 
       def each
         @e.each_element do |e|
-          yield Elem.new(e)
+          enclose("<#{e.name} #{e.attributes.to_a}>", "</#{e.name}>") do
+            yield Elem.new(e)
+          end
         end
       end
 
@@ -49,7 +48,9 @@ module CIAX
 
       def _get_file(f)
         test('r', f) || raise(InvalidID)
-        REXML::Document.new(open(f)).root
+        e = REXML::Document.new(open(f)).root
+        verbose { e.namespaces.default.to_s }
+        e
       end
     end
   end

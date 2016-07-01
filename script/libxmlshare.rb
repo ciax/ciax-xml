@@ -11,6 +11,10 @@ module CIAX
         @e.to_s
       end
 
+      def [](key)
+        @e.attributes[key]
+      end
+
       def name
         @e.name
       end

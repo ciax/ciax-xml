@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libdispgrp'
 require 'libenumx'
-require 'libxmlre'
+require 'libxmlgn'
 
 # Structure for Command: (top: listed in disp), <doclist: separated top-doc>
 #   ADB:/adb/(app)/<command>/group/unit/item

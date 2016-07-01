@@ -16,7 +16,7 @@ module CIAX
       end
 
       def [](key)
-        @e.attributes[key]
+        @e.attributes[key.to_s]
       end
 
       def name
@@ -93,11 +93,7 @@ module CIAX
       def _attr_to_a(id, &at_proc)
         atrb = Hashx.new
         to_h.each do |k, v|
-          atrb[k] = if at_proc
-                      yield(v)
-                    else
-                      v
-                    end
+          atrb[k] = at_proc ? yield(v) : v
         end
         key = atrb.delete(id) || Msg.give_up("No such key (#{id})")
         [key, atrb]

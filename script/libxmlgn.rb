@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libxmlshare'
+require 'libxmlcore'
 require 'xml'
 
 module CIAX

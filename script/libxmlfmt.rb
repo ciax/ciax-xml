@@ -5,7 +5,7 @@ module CIAX
   # Xml Module
   module Xml
     HEADER = '<?xml version="1.0" encoding="utf-8"?>'.freeze
-    # XML Formatting Class
+    # XML Formatting Class, used for generating Html (i.e. Html::Table)
     class Format < Arrayx
       def initialize(ind = 0)
         @indent = ind

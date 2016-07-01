@@ -22,7 +22,6 @@ module CIAX
         @id = stat[:id]
         @tid = "#{@stat.type}_#{@stat[:ver]}"
         @tname = @stat.type.capitalize
-        @layer = layer_name
         verbose { "Initiate Table '#{@tid}'" }
       end
 

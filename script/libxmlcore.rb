@@ -40,7 +40,7 @@ module CIAX
       # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
       def to_h(key = :val)
         h = Hashx.new
-        _attr_elem.each { |k, v| h[k.to_sym] = v }
+        _attr_elem.each { |k, v| h[k.to_sym] = v.dup }
         t = text
         h[key] = t if t
         h

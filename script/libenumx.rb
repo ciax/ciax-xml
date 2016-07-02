@@ -91,6 +91,7 @@ module CIAX
     include Enumx
     def initialize(hash = {})
       update(hash) if hash
+      @layer = layer_name
     end
 
     # Generate value if init_proc and no key

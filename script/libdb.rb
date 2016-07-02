@@ -24,7 +24,7 @@ module CIAX
       lid = proj ? "list_#{proj}" : 'list'
       # Show site list
       @latest = _get_latest_file
-      @displist = _get_cache(lid) || _get_db(lid, &:displist)
+      @displist = _get_cache(lid) || _get_db(lid, &:displist) # site list
       @argc = 0
     end
 
@@ -49,7 +49,7 @@ module CIAX
       @base = "#{@type}-#{id}"
       @marfile = vardir('cache') + "#{@base}.mar"
       return _load_cache(id) if _use_cache?
-      @docs = Xml::Doc.new(@type, @proj) unless @docs
+      @docs = Xml::Doc.new(@type, @proj) unless @docs # read xml file
       nil
     end
 

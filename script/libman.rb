@@ -79,7 +79,10 @@ module CIAX
         extend(ManDrv).ext_local_driver
       end
 
-      alias ext_local_test ext_local_driver
+      def ext_local_test
+        super
+        extend(ManDrv).ext_local_driver
+      end
 
       def ext_local_server
         super

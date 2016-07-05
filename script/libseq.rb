@@ -22,7 +22,6 @@ module CIAX
         @depth = 0
         # For Thread mode
         @qry = Query.new(@record, @sv_stat, valid_keys)
-        Thread.current[:query] = @qry
       end
 
       def upd_sites
@@ -40,6 +39,7 @@ module CIAX
       end
 
       def macro
+        Thread.current[:query] = @qry
         _show(@record.start)
         sub_macro(@cfg[:sequence], @record.cmt)
       rescue Verification

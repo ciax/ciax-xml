@@ -123,7 +123,7 @@ module CIAX
     # Delete key, return self
     def del(key, &done_proc)
       if key?(key)
-        fetch(key).delete(val)
+        delete(key)
         yield if done_proc
       end
       self

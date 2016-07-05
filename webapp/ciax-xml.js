@@ -1,11 +1,21 @@
 //********* Shared **********
+function json_view(data) {
+    return (JSON.stringify(data).replace(/"/g, "'"));
+}
 function replace(sel, str, cls) {
     return $(sel).text(str).attr('class', cls || str);
 }
-function open_link(site) {
-    window.open('/json/' + site + '.html', site,
+function open_table(site) {
+    window.open('/json/' + site + '.html', 't' + site,
                 'menubar=no,location=no,status=no,width=800,height=200'
-               );
+               ).focus();
+}
+function open_graph(site, vid, time) {
+    var url = '/json/graph.php?site=' + site + '&vid=' + vid;
+    if (time) { url = url + '&time=' + time}
+    window.open(url, 'g' + site,
+                'menubar=no,location=no,status=no,width=600,height=320'
+               ).focus();
 }
 function exec_funcs(funclist) {
     $.each(funclist, function(k, func) { func(); });
@@ -62,32 +72,32 @@ function blinking() {
 }
 // contents resize
 function height_adjust() {
-    var h = $(window).height();
     // sum height of children in .outline except .contents
-    $('.outline').each(function() {
-        $(this).children('div:not(".contents")').each(function() {
-            h = h - $(this).height();
-        });
-        $(this).children('.contents').css('max-height', h - 100);
+    $('.outline').each(function(i, ol) {
+        var h = $(window).height();
+        var res = $(ol).children('div:not(".contents")').map(function(j, e) {
+            return $(e).height();
+        }).get().reduce(function(p, c, i, arr) {return p + c});
+        $(ol).children('.contents').css('max-height', h - res - 100);
         sticky_bottom(0);
     });
 }
 // ******** Control by UDP ********
 // dvctl with func when success
 function dvctl(args, func) {
-    var data = {port: port, cmd: args};
+    var send = {port: port, cmd: args};
     //console.log('send=' + JSON.stringify(data));
     $.ajax('/json/dvctl-udp.php', {
-        data: data,
+        data: send,
         ifModified: true,
         cache: false,
-        success: function(data) {
-            //console.log('recv=' + JSON.stringify(data));
-            replace('#msg', data.msg, data.msg.toLowerCase()).show().fadeOut(3000);
-            if (func) func(data);
+        success: function(recv) {
+            //console.log('recv=' + JSON.stringify(recv));
+            replace('#msg', recv.msg, recv.msg.toLowerCase()).show().fadeOut(1000);
+            if (func) func(recv);
         },
-        error: function(data) {
-            //console.log('recv=' + JSON.stringify(data));
+        error: function(recv) {
+            //console.log('recv=' + JSON.stringify(recv));
             replace('#msg', 'NO Response', 'error');
         }
     });
@@ -176,17 +186,18 @@ function make_radio(dom, ary) {
     $(dom).html(opt.join(''));
 }
 // ********* Ajax *********
-function ajax_static(url, func) {
-    $.ajax(url, { ifModified: false, cache: true, success: func});
+function ajax_static(url) {
+    return $.ajax(url, { ifModified: false, cache: true});
 }
 // func1 for updated, func2 for no changes
-function ajax_update(url, func1, func2) {
-    $.ajax(url, { ifModified: true, cache: false, success: func1, error: func2});
+function ajax_update(url) {
+    return $.ajax(url, { ifModified: true, cache: false});
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
 function update() {
     exec_funcs(upd_list);
+    blinking();
 }
 function init() {
     exec_funcs(init_list);
@@ -194,8 +205,8 @@ function init() {
 }
 var port;
 var start_pos = 0;
-var upd_list = {}; // element can be set/deleted
-var init_list = []; // element will be added only
+var upd_list = {}; // Regular Update functions, element can be set/deleted
+var init_list = []; // Global Init functions, element will be added only
 $(window).on('resize', height_adjust);
 // ifModified option makes error in FireFox (not Chrome).
 // JSON will be loaded as html if no update at getJSON().

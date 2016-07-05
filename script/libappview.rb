@@ -26,9 +26,9 @@ module CIAX
       def to_csv
         upd
         str = ''
-        @group.values.each do|gdb|
+        @group.values.each do |gdb|
           cap = gdb[:caption] || next
-          gdb[:members].each do|id|
+          gdb[:members].each do |id|
             label = @index[id][:label]
             str << "#{cap},#{label},#{@stat.get(id)}\n"
           end
@@ -39,7 +39,7 @@ module CIAX
       def to_v
         upd
         lines = []
-        values.each do|v|
+        values.each do |v|
           next unless v.is_a? Hash
           cap = v[:caption]
           lines << ' ***' + colorize(cap, 10) + '***' unless cap.empty?
@@ -64,7 +64,7 @@ module CIAX
       end
 
       def _view_groups
-        @group.each do|k, gdb|
+        @group.each do |k, gdb|
           cap = gdb[:caption] || next
           lines = []
           self[k] = { caption: cap, lines: lines }
@@ -73,8 +73,8 @@ module CIAX
       end
 
       def _view_lines(lines)
-        lines.map do|ele|
-          '  ' + ele.values.map do|val|
+        lines.map do |ele|
+          '  ' + ele.values.map do |val|
             cls = (val[:class] || '').to_sym
             lbl = colorize(val[:label], 14)
             msg = colorize(val[:msg], CM[cls] + 8)
@@ -84,7 +84,7 @@ module CIAX
       end
 
       def _upd_members(members, col, lines)
-        members.each_slice(col.to_i) do|hline|
+        members.each_slice(col.to_i) do |hline|
           hash = {}
           hline.each { |id| _upd_line(id, hash) }
           lines << hash

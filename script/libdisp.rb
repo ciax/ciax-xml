@@ -10,7 +10,7 @@ module CIAX
     #   Attributes (all level): column(#), line_number(t/f)
     #   Attributes (one level): color(#), level(#)
     #   Attributes (one group): caption(text)
-    SEPTBL = [['****', 2], ['===', 6], ['--', 12], ['_', 14]]
+    SEPTBL = [['****', 2], ['===', 6], ['--', 12], ['_', 14]].freeze
     attr_reader :valid_keys, :line_number, :dummy_keys
     attr_accessor :num, :rank
     def initialize(caption: nil, color: nil, column: 2, line_number: false)
@@ -82,7 +82,7 @@ module CIAX
     def view(select, cap, color, level)
       list = {}
       displist = (@valid_keys + @dummy_keys) & select
-      displist.compact.each do|id|
+      displist.compact.each do |id|
         name = @line_number ? "[#{@num += 1}](#{id})" : id
         list[name] = self[id] if self[id]
       end

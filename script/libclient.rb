@@ -22,7 +22,7 @@ module CIAX
     private
 
     def _init_upd
-      @sv_stat.add_flg(udperr: 'x')
+      @sv_stat.init_flg(udperr: 'x')
       @sv_stat.upd_procs << proc { exe([]) }
       @udp = UDPSocket.open
       verbose { "Initiate UDP client (#{@id}) [#{@host}:#{@port}]" }
@@ -30,7 +30,7 @@ module CIAX
     end
 
     def _set_client_proc
-      @cobj.rem.def_proc do|ent|
+      @cobj.rem.def_proc do |ent|
         args = ent.id.split(':')
         # Address family not supported by protocol -> see above
         @udp.send(JSON.dump(args), 0, @host, @port.to_i)

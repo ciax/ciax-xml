@@ -8,9 +8,10 @@ module CIAX
     # Instance DB
     class Db < DbCmd
       include Wat::Db
-      attr_reader :run_list
-      def initialize
-        super('idb')
+      attr_reader :proj, :run_list
+      def initialize(proj = nil)
+        @proj = proj || ENV['PROJ'] || 'all'
+        super('idb', @proj)
         @adb = App::Db.new
         @cdb = Cmd::Db.new
         @run_list = @displist.valid_keys.select do |id|
@@ -47,7 +48,7 @@ module CIAX
         sdb = dbi.get(:status) { Hashx.new }
         grp = sdb.get(:group) { Hashx.new }
         idx = sdb.get(:index) { Hashx.new }
-        doc.get(:status) { [] }.each do|e0|
+        doc.get(:status) { [] }.each do |e0|
           _get_skeleton(e0, sdb, grp, idx)
         end
         sdb
@@ -58,8 +59,6 @@ module CIAX
         dbi[:site_id] = dbi[:ins_id] = dbi[:id]
         dbi.get(:frm_site) { dbi[:id] }
       end
-
-      private
 
       def _get_skeleton(e0, sdb, grp, idx)
         key = e0.name.to_sym

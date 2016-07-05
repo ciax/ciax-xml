@@ -14,7 +14,7 @@ module CIAX
       class Group < Int::Group
         def initialize(cfg, atrb = Hashx.new)
           super
-          add_file_io
+          init_item_file_io
           add_item('set', '[key(:idx)] [val(,val)]', def_pars(2))
           add_item('flush', 'Stream')
         end
@@ -89,7 +89,7 @@ module CIAX
             subfrm = _conv_by_stat(_conv_by_cc(db[:val]))
             _set_csv_frame(subfrm, db)
           else # ccrange,body ...
-            @frame.add(@fstr[db.to_sym])
+            @frame.push(@fstr[db.to_sym])
           end
         end
 
@@ -108,8 +108,8 @@ module CIAX
 
         def _set_csv_frame(subfrm, db)
           # Allow csv parameter
-          subfrm.split(',').each do|s|
-            @frame.add(s, db)
+          subfrm.split(',').each do |s|
+            @frame.push(s, db)
           end
         end
       end

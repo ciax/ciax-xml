@@ -13,7 +13,7 @@ module CIAX
       # Cover Ins DB
       def cover(id, cdb)
         ali = get(id)[:command]
-        %i( group unit).each { |k| cdb[k].update(ali[k]) }
+        %i(group unit).each { |k| cdb[k].update(ali[k]) }
         _conv_index(cdb, ali)
         self
       end
@@ -29,7 +29,7 @@ module CIAX
 
       def _add_item(e0, gid)
         id, itm = super
-        e0.each do|e1|
+        e0.each do |e1|
           itm.get(:argv) { [] } << e1.text
         end
         [id, itm]

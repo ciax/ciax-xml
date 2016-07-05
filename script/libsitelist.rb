@@ -5,12 +5,13 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # This should be set [:db]
     class List < CIAX::List
-      attr_reader :db, :sub_list
+      attr_reader :id, :db, :sub_list
       def initialize(cfg, atrb = Hashx.new)
         super
         cfg[:top_list] ||= self # Site Shared
         cfg[:layer_type] = 'site' # Site Shared
         @cfg[:column] = 2
+        @id = @cfg[:proj]
         @run_list = []
       end
 
@@ -51,11 +52,12 @@ module CIAX
         @current = sites.first
       end
 
-      def add(site)
+      def add(site) # returns Exe
         # layer_module can be Frm,App,Wat,Hex
         atrb = { dbi: @db.get(site), sub_list: @sub_list }
         obj = layer_module::Exe.new(@cfg, atrb)
         @list.put(site, obj)
+        obj
       end
 
       def switch(site)

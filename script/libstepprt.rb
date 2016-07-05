@@ -6,7 +6,7 @@ module CIAX
     # Macro Printing Mix-in module
     module StepPrt
       include Msg
-      OPE = { equal: '==', not: '!=', match: '=~', unmatch: '!~' }
+      OPE = { equal: '==', not: '!=', match: '=~', unmatch: '!~' }.freeze
       def self.extended(obj)
         Msg.type?(obj, Hash)
       end
@@ -45,6 +45,7 @@ module CIAX
         title + result + action
       end
 
+      # returns t/f
       def set_result(tmsg, fmsg = nil, tf = true)
         tf = super
         print result if Msg.fg?
@@ -82,7 +83,7 @@ module CIAX
       end
 
       def _prt_conds(mary)
-        (self[:conditions] || {}).each do|h|
+        (self[:conditions] || {}).each do |h|
           res = h[:res] ? _body('o', 2) : _body('x', _fail_color)
           mary << res + _cond_line(h)
         end

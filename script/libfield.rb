@@ -56,7 +56,7 @@ module CIAX
         _repl_by_case(get(id), conv)
         verbose { "Evaluated[#{id}]=[#{get(id)}]" }
         time_upd
-        val
+        self
       ensure
         cmt
       end
@@ -87,19 +87,19 @@ module CIAX
 
       def _init_field_
         data = Hashx.new
-        @dbi[:field].each do|id, val|
-          if (ary = val[:array])
-            var = ary.split(',')
-          else
-            var = val[:val] || Arrayx.new.skeleton(val[:struct])
-          end
+        @dbi[:field].each do |id, val|
+          var = if (ary = val[:array])
+                  ary.split(',')
+                else
+                  val[:val] || Arrayx.new.skeleton(val[:struct])
+                end
           data.put(id, var)
         end
         data
       end
 
       def _access_array(id, vname)
-        id.split(':').inject(self[:data]) do|h, i|
+        id.split(':').inject(self[:data]) do |h, i|
           break unless h
           i = expr(i) if h.is_a? Array
           vname << i
@@ -120,7 +120,7 @@ module CIAX
 
       def _merge_ary_(p, r)
         r = [r] unless r.is_a? Array
-        p.map! do|i|
+        p.map! do |i|
           if i.is_a? Array
             _merge_ary_(i, r.shift)
           else

@@ -36,19 +36,19 @@ module CIAX
       def _check(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'failed'
-        fail Interlock
+        raise Interlock
       end
 
       def _verify(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'failed'
-        fail Verification
+        raise Verification
       end
 
       def _wait(_e, step, mstat)
         return true unless step.timeout? && _giveup?(step)
         mstat[:result] = 'timeout'
-        fail Interlock
+        raise Interlock
       end
 
       def _sleep(_e, step, _mstat)
@@ -60,8 +60,8 @@ module CIAX
         if step.exec? && @qry.query(%w(exec skip), step)
           step.set_result(_exe_site(e))
         end
-        @sv_stat.push(:run, e[:site]) unless
-          @sv_stat.get(:run).include?(e[:site])
+        @sv_stat.push(:run, e[:site]).cmt unless
+          @sv_stat.upd.get(:run).include?(e[:site])
         true
       end
 
@@ -73,7 +73,7 @@ module CIAX
 
       def _upd(e, _step, _mstat)
         _show
-        _get_site(e).exe(['upd']).waiting
+        _get_site(e).exe(['upd'], 'macro').wait_ready
         true
       end
 
@@ -108,7 +108,7 @@ module CIAX
           res = sub_macro(_get_ment(e)[:sequence], step)
           return res if res
           mstat[:result] = step[:result]
-          fail Interlock
+          raise Interlock
         rescue Verification
           (step = _mcr_retry(e, step, mstat)) && retry
         end
@@ -138,7 +138,7 @@ module CIAX
       end
 
       def _exe_site(e)
-        _get_site(e).exe(e[:args]).to_s.downcase
+        _get_site(e).exe(e[:args], 'macro').to_s.downcase
       end
 
       def _get_stat(e)

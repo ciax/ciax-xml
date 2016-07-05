@@ -19,7 +19,8 @@ module CIAX
         # GV(0-1),ArmRot(2-3),RoboH1(4-7),RoboH2(8-11)
         @drvtbl = [
           [6, 4], [7, 4], [12, 2], [13, 2], [2, 0.3], [3, 0.3],
-          [2, 0.3], [3, 0.3], [4, 0.3], [5, 0.3], [4, 0.3], [5, 0.3]]
+          [2, 0.3], [3, 0.3], [4, 0.3], [5, 0.3], [4, 0.3], [5, 0.3]
+        ]
       end
 
       # For Contact Sensor
@@ -87,7 +88,7 @@ module CIAX
       def servo
         input = @reg[3]
         output = @reg[2]
-        @drvtbl.each_with_index do|p, i|
+        @drvtbl.each_with_index do |p, i|
           o, dly = p
           next if input[i] == output[o]
           Thread.new do

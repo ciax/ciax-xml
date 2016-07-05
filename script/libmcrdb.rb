@@ -1,18 +1,28 @@
 #!/usr/bin/ruby
-require 'librepeat'
 require 'libdbcmd'
 module CIAX
   # Macro Layer
   module Mcr
+    # list for web select command
+    module CmdList
+      def list
+        list = Hashx.new
+        self[:command][:group].each_value do |val|
+          (list[val[:caption]] ||= []).concat val[:members] if val[:rank] == '0'
+        end
+        list
+      end
+    end
+
     # Macro Db
     class Db < DbCmd
       def initialize
         super('mdb')
       end
 
-      # Allows nil
+      # Allows nil, get Dbi
       def get(id = nil)
-        super(id || ENV['PROJ'] || ARGV.shift)
+        super(id || ENV['PROJ'] || ARGV.shift).extend(CmdList)
       end
 
       private
@@ -37,7 +47,7 @@ module CIAX
       end
 
       def _add_steps(e0, itm)
-        e0.each do|e1|
+        e0.each do |e1|
           atrb = Hashx.new(type: e1.name)
           atrb.update(e1.to_h)
           _get_sites_(atrb)
@@ -72,7 +82,7 @@ module CIAX
       end
 
       def _make_condition(e1, atrb)
-        e1.each do|e2|
+        e1.each do |e2|
           hash = e2.to_h(:cri)
           hash[:cmp] = e2.name
           atrb.get(:cond) { [] } << hash
@@ -81,7 +91,7 @@ module CIAX
 
       def _get_cmd(e1)
         args = [e1[:name]]
-        e1.each do|e2|
+        e1.each do |e2|
           args << e2.text
         end
         args
@@ -89,8 +99,8 @@ module CIAX
 
       def _get_option(e1)
         options = {}
-        e1.each do|e2|
-          e2.each do|e3|
+        e1.each do |e2|
+          e2.each do |e3|
             options[e2[:val] || '*'] = _get_cmd(e3)
           end
         end
@@ -104,8 +114,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', '') do |_opt, args|
-        puts Db.new.get.path(args)
+      GetOpts.new('[id] (key) ..', 'j') do |opt, args|
+        dbi = Db.new.get
+        puts opt[:j] ? dbi.list.to_j : dbi.path(args)
       end
     end
   end

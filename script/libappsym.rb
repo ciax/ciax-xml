@@ -41,7 +41,7 @@ module CIAX
       end
 
       def store_sym(index)
-        index.each do|key, hash|
+        index.each do |key, hash|
           sid = hash[:symbol] || next
           tbl = _chk_tbl(sid) || next
           verbose { "ID=#{key},Table=#{sid}" }

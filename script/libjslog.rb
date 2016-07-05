@@ -9,10 +9,9 @@ module CIAX
 
     def ext_local_log # logging with flatten
       id = self[:id]
-      @queue = Queue.new
-      @cmt_procs << proc { @queue.push(JSON.dump(self)) }
       @logfile = vardir('log') + _file_base + "_#{Time.now.year}.log"
-      _log_thread(id)
+      @que_log = _log_thread(id)
+      @cmt_procs << proc { @que_log.push(JSON.dump(self)) }
       self
     end
 
@@ -31,20 +30,20 @@ module CIAX
     def ext_local_sqlog
       # Logging if version number exists
       id = self[:id]
-      # add_table includes initiate/auto save
-      (SqLog::LIST[id] ||= SqLog::Save.new(id)).add_table(self)
+      # init_table includes initiate/auto save
+      (SqLog.list[id] ||= SqLog::Save.new(id)).init_table(self)
       self
     end
 
     private
 
     def _log_thread(id)
-      verbose { "Initiate File Log [#{id}/Ver.#{self[:ver]}]" }
-      Threadx::Loop.new('Logging', @type, @id) { _log_save }
+      verbose { "Initiate File Log Server [#{id}/Ver.#{self[:ver]}]" }
+      Threadx::QueLoop.new('Logging', @type, @id) { |que| _log_save(que) }
     end
 
-    def _log_save
-      str = @queue.pop
+    def _log_save(que)
+      str = que.pop
       open(@logfile, 'a') { |f| f.puts str }
       verbose { "Appended #{str.size} byte" }
     end

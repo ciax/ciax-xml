@@ -19,11 +19,11 @@ module CIAX
       end
 
       # crnt could have 'label',:body,'unit','group'
-      def add_dummy(id, title = nil)
+      def add_dummy(id, title = nil) # returns Display
         @displist.put_item(id, title)
       end
 
-      def add_item(id, title = nil, atrb = Hashx.new)
+      def add_item(id, title = nil, atrb = Hashx.new) # returns Item
         @displist.put_item(id, title)
         @valid_keys << id
         self[id] = Item.new(@cfg, atrb.update(id: id))
@@ -32,7 +32,7 @@ module CIAX
       # Generate Entity
       def set_cmd(args, opt = {})
         id, *par = type?(args, Array)
-        @valid_keys.include?(id) || fail(InvalidCMD, view_list)
+        @valid_keys.include?(id) || raise(InvalidCMD, view_list)
         get(id).set_par(par, opt)
       end
 
@@ -51,7 +51,7 @@ module CIAX
       end
 
       # atrb could have 'label',:body,'unit','group'
-      def add_item(id, title = nil, atrb = Hashx.new)
+      def add_item(id, title = nil, atrb = Hashx.new) # returns Item
         @displist.put_item(id, title)
         new_item(id, atrb)
       end

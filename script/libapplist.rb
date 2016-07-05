@@ -9,8 +9,8 @@ module CIAX
       # cfg must have [:db]
       def initialize(cfg, atrb = Hashx.new)
         super
-        @sub_list = Frm::List.new(cfg)
-        store_db(@cfg[:db] ||= Ins::Db.new)
+        store_db(@cfg[:db] ||= Ins::Db.new(@id))
+        @sub_list = Frm::List.new(@cfg)
       end
     end
 

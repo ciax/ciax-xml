@@ -21,12 +21,12 @@ module CIAX
     end
 
     # Read only as a client
-    def ext_http(host = nil)
-      extend(JHttp).ext_http(host)
+    def ext_http(host = nil, dir = nil)
+      extend(JHttp).ext_http(host, dir)
     end
 
-    def ext_local_file
-      extend(JFile).ext_local_file
+    def ext_local_file(dir = nil)
+      extend(JFile).ext_local_file(dir)
     end
 
     def ext_local_log

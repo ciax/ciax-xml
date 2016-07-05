@@ -14,7 +14,7 @@ module CIAX
       @usagestr = "(opt) #{usagestr}"
       _init_db(db)
       _set_opt(optstr)
-      opt_proc.call(self, ARGV) if opt_proc
+      yield(self, ARGV) if opt_proc
     rescue InvalidARGS
       usage
     end
@@ -113,7 +113,7 @@ module CIAX
       @index = {}
       @available = (optstr.chars.map(&:to_sym) & @optdb.keys)
       # Current Options
-      @available.each do|c|
+      @available.each do |c|
         @index["-#{c}"] = @optdb[c]
       end
       self
@@ -128,7 +128,7 @@ module CIAX
 
     def _make_vmode
       v = _make_exopt(%i(j r))
-      VMODE.replace(v.to_s) if v
+      View.default.replace(v.to_s) if v
       self
     end
 

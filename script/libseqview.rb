@@ -12,6 +12,7 @@ module CIAX
         super('mcr')
         @stat = type?(stat, List)
         @par = type?(par, Parameter)
+        # @list content is Record
         @list = Hashx.new
         @all_keys = []
         @ciddb = { '0' => 'user' }
@@ -55,9 +56,13 @@ module CIAX
       end
 
       def _upd_or_gen_(id)
-        return @list.get(id).upd if @list.key?(id)
-        r = @list.put(id, get_rec(id))
-        @ciddb[id] = r[:cid] unless @ciddb.key?(id)
+        if @list.key?(id)
+          @list.get(id).upd
+        else
+          rec = get_rec(id)
+          @list.put(id, rec)
+          @ciddb[id] = rec[:cid] unless @ciddb.key?(id)
+        end
       end
 
       def _crnt_

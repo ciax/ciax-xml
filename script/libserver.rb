@@ -11,7 +11,7 @@ module CIAX
     def ext_local_server
       return self unless @port
       verbose { "Initiate UDP server (#{@id}) port:[#{@port}]" }
-      @server_input_proc = proc { |line| j2h(line) }
+      @server_input_proc = _init_input
       @sv_stat.ext_local_file.auto_save.ext_local_log
       @server_output_proc = proc { JSON.dump(@sv_stat) }
       _startup
@@ -19,6 +19,19 @@ module CIAX
     end
 
     private
+
+    # If first arg is number, it is stored in Prompt as a sequencial number
+    def _init_input
+      proc do |line|
+        args = type?(j2h(line), Array)
+        if args[0].to_i > 0
+          @sv_stat.put(:sn, args.shift)
+        else
+          @sv_stat.del(:sn)
+        end
+        args
+      end
+    end
 
     # Separated form ext_* for detach process of this part
     def _startup

@@ -11,7 +11,9 @@ module CIAX
     module_function
 
     def list
-      Thread.list.map { |t| t[:name] }
+      Thread.list.map do |t|
+        %i(layer name id).map { |id| t[id] }.push(t.status).join(':')
+      end.sort
     end
 
     def killall
@@ -24,7 +26,9 @@ module CIAX
       def initialize(tname, layer, id)
         @layer = layer
         th = super { _do_proc(id) { yield } }
+        th[:layer] = layer
         th[:name] = tname
+        th[:id] = id
         Threads.add(th)
       end
 
@@ -38,6 +42,7 @@ module CIAX
         errmsg
       end
     end
+
     # Thread with Loop
     class Loop < Fork
       def initialize(tname, layer, id)
@@ -52,14 +57,33 @@ module CIAX
 
     # Queue Thread
     class Que < Fork
-      attr_reader :queue
       def initialize(tname, layer, id)
-        @queue = Queue.new
-        super do
-          loop do
-            yield @queue
-          end
-        end
+        @in = Queue.new
+        @out = Queue.new
+        super { yield @in, @out }
+      end
+
+      def push(str) # returns self
+        warning("Thread [#{self[:name]}] is not running") unless alive?
+        @in.push(str)
+        self
+      end
+
+      def shift
+        @out.shift
+      end
+
+      def clear
+        @in.clear
+        @out.clear
+        self
+      end
+    end
+
+    # Queue Thread with Loop
+    class QueLoop < Que
+      def initialize(tname, layer, id)
+        super { |i, o| loop { yield i, o } }
       end
     end
 
@@ -76,12 +100,12 @@ module CIAX
 
       private
 
-      def _udp_loop(udp, &th_proc)
+      def _udp_loop(udp)
         loop do
           IO.select([udp])
           line, addr = udp.recvfrom(4096)
           rhost = Addrinfo.ip(addr[2]).getnameinfo.first
-          send_str = th_proc.call(line, rhost)
+          send_str = yield(line, rhost)
           udp.send(send_str, 0, addr[2], addr[1])
         end
       ensure

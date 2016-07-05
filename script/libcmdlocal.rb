@@ -18,18 +18,18 @@ module CIAX
       # Top level
       # Local Domain
       class Domain < GrpAry
-        def add_shell
+        def add_shell # returns Group
           add(Sh::Group)
         end
 
-        def add_jump
+        def add_jump # returns Array(Symbols)
           @cfg[:jump_groups].each { |grp| append(grp) }
-          [:jump_site, :jump_layer].each do |jk|
+          %i(jump_site jump_layer).each do |jk|
             append(@cfg[jk]) if @cfg[jk]
           end
         end
 
-        def add_view(atrb = Hashx.new)
+        def add_view(atrb = Hashx.new) # retuns Group
           add(View::Group, atrb)
         end
       end
@@ -55,17 +55,17 @@ module CIAX
             atrb[:caption] = "Switch #{name}s"
             atrb[:color] = 5
             super
-            def_proc do|ent|
+            def_proc do |ent|
               # Use shell() of top level class
               #  (ie. List.new.get(id).shell -> List.new.shell(id) )
-              fail(ent[:jump_class], ent.id)
+              raise(ent[:jump_class], ent.id)
             end
           end
 
           def number_item(ary)
             clear
             i = 0
-            type?(ary, Array).each do|str|
+            type?(ary, Array).each do |str|
               add_item((i += 1).to_s, str)
             end
             self

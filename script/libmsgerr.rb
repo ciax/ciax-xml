@@ -24,57 +24,57 @@ module CIAX
     # Exception methods
     def usr_err(*ary) # Raise User error
       ary[0] = colorize(ary[0], 1)
-      fail UserError, ary.join("\n  "), caller(1)
+      raise UserError, ary.join("\n  "), caller(1)
     end
 
     def args_err(*ary) # Raise ARGS error
       ary[0] = colorize(ary[0], 1)
-      fail InvalidARGS, ary.join("\n  "), caller(1)
+      raise InvalidARGS, ary.join("\n  "), caller(1)
     end
 
     def id_err(*ary) # Raise User error (Invalid User input)
       ary[0] = colorize(ary[0], 1)
-      fail InvalidID, ary.join("\n  "), caller(1)
+      raise InvalidID, ary.join("\n  "), caller(1)
     end
 
     def cmd_err(*ary) # Raise User error (Invalid User input)
       ary[0] = colorize(ary[0], 1)
-      fail InvalidCMD, ary.join("\n  "), caller(1)
+      raise InvalidCMD, ary.join("\n  "), caller(1)
     end
 
     def par_err(*ary) # Raise User error (Invalid User input)
       ary[0] = colorize(ary[0], 1)
-      fail InvalidPAR, ary.join("\n  "), caller(1)
+      raise InvalidPAR, ary.join("\n  "), caller(1)
     end
 
     def cfg_err(*ary) # Raise Device error (Bad Configulation)
       ary[0] = colorize(ary[0], 1)
-      fail ConfigError, ary.join("\n  "), caller(1)
+      raise ConfigError, ary.join("\n  "), caller(1)
     end
 
     def cc_err(*ary) # Raise Device error (Check Code Verification Failed)
       ary[0] = colorize(ary[0], 1)
-      fail CheckCodeError, ary.join("\n  "), caller(1)
+      raise CheckCodeError, ary.join("\n  "), caller(1)
     end
 
     def com_err(*ary) # Raise Device error (Communication Failed)
       ary[0] = colorize(ary[0], 1)
-      fail CommError, ary.join("\n  "), caller(1)
+      raise CommError, ary.join("\n  "), caller(1)
     end
 
     def str_err(*ary) # Raise Device error (Stream open Failed)
       ary[0] = colorize(ary[0], 1)
-      fail StreamError, ary.join("\n  "), caller(1)
+      raise StreamError, ary.join("\n  "), caller(1)
     end
 
     def relay(str)
       str = "#{str}\n#{$ERROR_INFO}"
-      fail $ERROR_INFO.class, str, caller(1)
+      raise $ERROR_INFO.class, str, caller(1)
     end
 
     def sv_err(*ary) # Raise Server error (Parameter type)
       ary[0] = colorize(ary[0], 1)
-      fail ServerError, ary.join("\n  "), caller(2)
+      raise ServerError, ary.join("\n  "), caller(2)
     end
 
     def give_up(str = 'give_up')

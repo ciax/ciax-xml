@@ -74,7 +74,7 @@ module CIAX
       end
 
       def _mk_stat
-        @adbs[:group].values.each do|g|
+        @adbs[:group].values.each do |g|
           cap = g[:caption] || next
           _mk_column(g[:members], cap, g[:column])
         end
@@ -84,7 +84,7 @@ module CIAX
       def _mk_column(members, cap = '', col = nil)
         col = col.to_i > 0 ? col.to_i : 6
         tbody = _mk_tbody(cap)
-        members.each_slice(col) do|da|
+        members.each_slice(col) do |da|
           _mk_line(tbody, da)
         end
         tbody
@@ -92,12 +92,12 @@ module CIAX
 
       def _mk_line(parent, member)
         tr = parent.enclose('tr')
-        member.each do|id|
+        member.each do |id|
           label = (@sdb[id] || {})[:label] || id.upcase
           td = tr.enclose('td', class: 'item')
-
           td.element('span', label, class: 'label', title: id)
-          td.element('strong', '*******', id: id, class: 'normal')
+          onc = format("open_graph('%s','%s');", @dbi[:id], id)
+          td.element('strong', '*****', id: id, class: 'normal', onclick: onc)
         end
         tr
       end

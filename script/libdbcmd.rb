@@ -1,9 +1,15 @@
 #!/usr/bin/ruby
 require 'libdb'
+require 'librepeat'
 
 module CIAX
   ####### For Command DB #######
   class DbCmd < Db
+    def initialize(type, proj = nil)
+      super
+      @rep = Repeat.new
+    end
+
     # Take parameter and next line
     def par2item(doc, item)
       return unless /par_(num|str|reg)/ =~ doc.name
@@ -32,7 +38,7 @@ module CIAX
 
     # Adapt to both XML::Gnu, Hash
     def _add_group(doc)
-      doc.each_value do|e|
+      doc.each_value do |e|
         # e.name should be group
         Msg.give_up('No group in cdb') unless e.name == 'group'
         gid = e.attr2item(@grps)
@@ -42,7 +48,7 @@ module CIAX
 
     def _add_member(doc, gid)
       return unless doc
-      doc.each do|e0|
+      doc.each do |e0|
         case e0.name
         when 'unit'
           _add_unit(e0, gid)
@@ -56,7 +62,7 @@ module CIAX
     def _add_unit(e0, gid)
       uid = e0.attr2item(@units)
       @grps[gid].get(:units) { [] } << uid
-      e0.each do|e1|
+      e0.each do |e1|
         id, itm = _add_item(e1, gid)
         itm[:unit] = uid
         @units[uid].get(:members) { [] } << id

@@ -11,35 +11,35 @@ module CIAX
         ext_local_file.load
         @list = (self[:list] ||= [])
         @active = {}
-        @cmt_procs << proc { time_upd }
         auto_save
       end
 
-      def refresh
+      def refresh # returns self
         @list.clear
-        Dir.glob(vardir('json') + 'record_*.json') do |name|
+        verbose { 'Initiate Record List' }
+        Dir.glob(vardir('record') + 'record_*.json') do |name|
           next if /record_[0-9]+.json/ !~ name
-          add(_jread(name))
+          push(_jread(name))
         end
         cmt
         self
       end
 
-      def add(record)
-        hash = Hashx.new(type?(record, Hash))
-        _init_record(record)
-        id = hash[:id]
-        return unless id.to_i > 0
-        ele = hash.pick(%i(id cid result))
-        @active[id] = ele
+      def push(record) # returns self
+        id = record[:id]
+        return self unless id.to_i > 0
+        ele = Hashx.new(record).pick(%i(id cid result)) # extract header
+        if record.is_a?(Record)
+          _init_record(record)
+          @active[id] = ele
+        end
         @list << ele
-        cmt
+        self
       end
 
       private
 
       def _init_record(record)
-        return unless record.is_a? Record
         record.cmt_procs << proc do
           verbose { 'Propagate Record#cmt -> RecList#cmt' }
           @active[record[:id]][:result] = record[:result]
@@ -49,7 +49,7 @@ module CIAX
 
       def _jread(fname)
         j2h(
-          open(fname) do|f|
+          open(fname) do |f|
             f.flock(::File::LOCK_SH)
             f.read
           end

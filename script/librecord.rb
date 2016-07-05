@@ -54,7 +54,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('< file', 'r') do |_opt, _args|
-        fail(InvalidARGS, 'No Input File') if STDIN.tty?
+        raise(InvalidARGS, 'No Input File') if STDIN.tty?
         puts Record.new.jmerge
       end
     end

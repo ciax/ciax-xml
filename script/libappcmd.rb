@@ -12,7 +12,7 @@ module CIAX
       class Group < Int::Group
         def initialize(cfg, atrb = Hashx.new)
           super
-          add_file_io
+          init_item_file_io
           add_item('set', '[key] [val]', def_pars(2))
           add_item('del', '[key,...]', def_pars(1))
         end
@@ -30,7 +30,7 @@ module CIAX
         # batch is ary of args(ary)
         def gen_entity(opt)
           ent = super
-          ent[:batch] = ent.deep_subst(@cfg[:body]).map do|e1|
+          ent[:batch] = ent.deep_subst(@cfg[:body]).map do |e1|
             args = []
             enclose("GetCmd(FDB):#{e1.first}", 'Exec(FDB):%s') do
               _get_args(e1, args)
@@ -43,7 +43,7 @@ module CIAX
         private
 
         def _get_args(e1, args)
-          e1.each do|e2| # //argv
+          e1.each do |e2| # //argv
             if e2.is_a? String
               args << e2
             elsif e2.is_a? Hash

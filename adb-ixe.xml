@@ -533,7 +533,7 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.1">
-      <regular period="3600" label="Update System Status">
+      <regular period="300" label="Update System Status">
         <exec name="sysupd"/>
       </regular>
       <repeat from="1" to="6">

@@ -29,7 +29,6 @@ module CIAX
         @frame = Frame.new(sp[:endian], sp[:ccmethod], sp[:terminator])
         # terminator: frame pointer will jump to terminator
         #   when no length or delimiter is specified
-        @cmt_procs << proc { time_upd(@stream[:time]) }
         self
       end
 
@@ -44,6 +43,10 @@ module CIAX
         self
       ensure
         cmt
+      end
+
+      def time_upd
+        super(@stream[:time])
       end
 
       private
@@ -70,7 +73,7 @@ module CIAX
 
       # Process Frame to Field
       def getfield_rec(e0)
-        e0.each do|e1|
+        e0.each do |e1|
           if e1.is_a?(Hash)
             frame_to_field(e1) { @frame.cut(e1) }
           else
@@ -91,7 +94,7 @@ module CIAX
       end
 
       def frame_to_field(e0)
-        enclose("#{e0[:label]}", 'Field:End') do
+        enclose((e0[:label]).to_s, 'Field:End') do
           if e0[:index]
             _ary_field(e0) { yield }
           else
@@ -104,17 +107,18 @@ module CIAX
       def _str_field(e0, data)
         return unless (akey = e0[:assign])
         if e0[:valid] && /#{e0[:valid]}/ !~ data
-          fail(BadData, "Invalid Data (#{data}) for /#{e0[:valid]}/")
+          warning("Invalid Data (#{data}) for /#{e0[:valid]}/")
+        else
+          @cache[akey] = data
+          verbose { "Assign:[#{akey}] <- <#{data}>" }
         end
-        @cache[akey] = data
-        verbose { "Assign:[#{akey}] <- <#{data}>" }
       end
 
       # Array
       def _ary_field(e0)
         akey = e0[:assign] || Msg.cfg_err('No key for Array')
         # Insert range depends on command param
-        idxs = e0[:index].map do|e1|
+        idxs = e0[:index].map do |e1|
           e1[:range] || "0:#{e1[:size].to_i - 1}"
         end
         enclose("Array:[#{akey}]:Range#{idxs}", "Array:Assign[#{akey}]") do
@@ -128,7 +132,7 @@ module CIAX
         return yield if idx.empty?
         fld = field || []
         f, l = idx[0].split(':').map { |i| expr(i) }
-        Range.new(f, l || f).each do|i|
+        Range.new(f, l || f).each do |i|
           fld[i] = mk_array(idx[1..-1], fld[i]) { yield }
           verbose { "Array:Index[#{i}]=#{fld[i]}" }
         end
@@ -146,7 +150,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
       ConfOpts.new('< logline', 'm', m: 'merge file') do |cfg, _args, opt|
-        fail(InvalidARGS, '  Need Input File') if STDIN.tty?
+        raise(InvalidARGS, '  Need Input File') if STDIN.tty?
         str = gets(nil) || exit
         res = JsLog.jmerge(str)
         id = res[:id]

@@ -6,13 +6,13 @@ require 'libmsgmod'
 module CIAX
   ######################### Message Module #############################
   # Should be extended in module/class
-  TH_COLORS = {}
-  NS_COLORS = {}
-  CLS_COLORS = {}
   # Message module
   module Msg
     START_TIME = Time.now
     @indent_base = 1
+    @th_colors = {}
+    @ns_colors = {}
+    @cls_colors = {}
     # block takes array (shown by each line) or string
     # Description of values
     #   [val] -> taken from  xml (criteria)
@@ -63,7 +63,7 @@ module CIAX
     def prt_lines(data)
       ind = 0
       base = Msg.ver_indent
-      data.each_line do|line|
+      data.each_line do |line|
         show Msg.indent(base + ind) + line
         ind = 2
       end
@@ -73,39 +73,25 @@ module CIAX
     def make_msg(title, c = nil)
       @printed = false
       return unless title
-      @head ||= make_head
-      ts = "#{@head}:"
+      ts = make_head + ':'
       ts << (c ? Msg.colorize(title.to_s, c) : title.to_s)
     end
 
     def head_ary
       cary = []
       th = Thread.current[:name]
-      ns = @layer
+      @layer ||= layer_name
       cls = class_path.pop
       cls << "(#{@id})" if @id
-      cary << [th, th_color(th)]
-      cary << [ns, ns_color(ns)]
-      cary << [cls, cls_color || 15]
+      cary << [th, Msg.th_color(th)]
+      cary << [@layer, Msg.ns_color(@layer)]
+      cary << [cls, Msg.cls_color(cls)]
     end
 
     def make_head
-      Msg.indent(Msg.ver_indent) + head_ary.map do|str, color|
+      Msg.indent(Msg.ver_indent) + head_ary.map do |str, color|
         Msg.colorize(str.to_s, color)
       end.join(':')
-    end
-
-    def th_color(ns)
-      TH_COLORS[ns.to_s] ||= _gen_color(TH_COLORS)
-    end
-
-    def ns_color(ns)
-      NS_COLORS[ns.to_s] ||= _gen_color(NS_COLORS, 1)
-    end
-
-    def cls_color
-      cls = class_path.last
-      CLS_COLORS[cls] ||= _gen_color(CLS_COLORS, 2)
     end
 
     # VER= makes setenv "" to VER otherwise nil
@@ -113,8 +99,8 @@ module CIAX
       return if !ENV['VER'] || !msg
       return true if match_all
       title = msg.split("\n").first.upcase
-      ENV['VER'].split(',').any? do|s|
-        s.split(':').all? do|e|
+      ENV['VER'].split(',').any? do |s|
+        s.split(':').all? do |e|
           title.include?(e.upcase)
         end
       end
@@ -124,8 +110,22 @@ module CIAX
       Regexp.new('\*').match(ENV['VER'])
     end
 
-    def self.ver_indent(add = 0)
+    module_function
+
+    def ver_indent(add = 0)
       @indent_base += add
+    end
+
+    def th_color(ns)
+      @th_colors[ns.to_s] ||= _gen_color(@th_colors)
+    end
+
+    def ns_color(ns)
+      @ns_colors[ns.to_s] ||= _gen_color(@ns_colors, 1)
+    end
+
+    def cls_color(cls)
+      @cls_colors[cls] ||= _gen_color(@cls_colors, 2)
     end
 
     def _gen_color(table, ofs = 0)

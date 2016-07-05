@@ -29,16 +29,13 @@ module CIAX
     attr_accessor :flush_proc, :recv_proc
     # sv_stat: Server Status
     def initialize(sv_stat)
-      @sv_stat = type?(sv_stat, Prompt)
-      @sv_stat.add_array(:queue)
-      # element of @q is args of Frm::Cmd
-      @q = Queue.new
-      @tid = nil
+      @sv_stat = type?(sv_stat, Prompt).init_array(:queue)
       # Update App Status
       @flush_proc = proc {}
       @recv_proc = proc {}
       @outbuf = Outbuf.new
       @id = @sv_stat.get(:id)
+      @layer = 'app'
     end
 
     # Send app entity
@@ -48,27 +45,35 @@ module CIAX
       verbose { "Execute #{cid}(#{@id}):timing" }
       # batch is frm batch (ary of ary)
       batch = ent[:batch]
-      @q.push(pri: n, batch: batch, cid: cid) unless batch.empty?
+      @que_buf.push(pri: n, batch: batch, cid: cid) unless batch.empty?
       self
     end
 
     def server
-      @tid = Threadx::Loop.new('Buffer', 'app', @id) do
+      # element of que is args of Frm::Cmd
+      @que_buf = Threadx::QueLoop.new('Buffer', 'app', @id) do |iq|
         verbose { 'Waiting' }
-        pri_sort(@q.shift)
-        exec_buf('buffer') if @q.empty?
+        pri_sort(iq.shift)
+        sv_up
+        _exec_buf if iq.empty?
       end
       self
     end
 
     def alive?
-      @tid && @tid.alive?
+      @que_buf && @que_buf.alive?
+    end
+
+    def wait_busy_up
+      100.times do
+        break if @sv_stat.upd.up?(:busy)
+        sleep 0.01
+      end
     end
 
     private
 
     def pri_sort(rcv)
-      sv_up
       pri = rcv[:pri]
       cid = rcv[:cid]
       @sv_stat.push(:queue, cid)
@@ -79,9 +84,9 @@ module CIAX
     end
 
     # Execute recieved command
-    def exec_buf(src)
+    def _exec_buf
       until (args = _reorder_cmd_).empty?
-        @recv_proc.call(args, src)
+        @recv_proc.call(args, 'buffer')
       end
       flush
     rescue CommError
@@ -92,21 +97,20 @@ module CIAX
 
     # Remove duplicated args and unshift one
     def _reorder_cmd_
-      args = []
-      @outbuf.each { |batch| _get_args_(args, batch) }
-      args
+      @outbuf.inject([]) { |a, e| _get_args_(a, e) }
     end
 
     def _get_args_(args, batch)
       if args.empty?
-        h = batch.shift || return
-        args.replace h[:args]
+        h = batch.shift
+        args.replace h[:args] if h
       end
       batch.delete_if do |e|
         if e[:args] == args
           warning("duplicated cmd #{args.inspect}(#{e[:cid]})")
         end
       end
+      args
     end
 
     def sv_up
@@ -116,14 +120,12 @@ module CIAX
 
     def sv_dw
       verbose { "Busy Down(#{@id}):timing" }
-      @sv_stat.dw(:busy)
-      @sv_stat.flush(:queue, @outbuf.cids)
+      @sv_stat.flush(:queue, @outbuf.cids).dw(:busy)
     end
 
     def clear
       @outbuf.clear
-      @q.clear
-      @tid && @tid.run
+      @que_buf.clear.run
       flush
     end
 

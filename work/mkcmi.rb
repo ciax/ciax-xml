@@ -3,6 +3,7 @@
 require 'json'
 # Condition Matrix
 # mmc:con | mfp:ao | mfp:rh | mma:abs | cmi
+#---------+--------+--------+---------+-------
 #   OFF   | CLOSE  | OPEN   | FOCUS   | nomask
 #   OFF   | OPEN   | OPEN   | FOCUS   | nomask
 #   OFF   | CLOSE  | CLOSE  | FOCUS   | #
@@ -12,9 +13,13 @@ require 'json'
 #   ON    | -      | -      | -       | nomask
 
 # Status file name
+VARDIR = "#{ENV['HOME']}/.var"
 def mkfile(site)
-  jdir = "#{ENV['HOME']}/.var/json"
-  "#{jdir}/status_#{site}.json"
+  "#{VARDIR}/json/status_#{site}.json"
+end
+
+def mklog(site)
+  "#{VARDIR}/log/status_#{site}_#{Time.now.year}.log"
 end
 
 # Mask is Focal plane?
@@ -35,6 +40,7 @@ idx =  { con: :mc, ao: :fp, rao: :fp, rbo: :fp, abs: :ma, rsl: :mc }
 idx.each { |k, v| stat[k] = src[v][:msg][k] }
 cmi = on_mask?(stat) ? stat[:rsl] : 'nomask'
 hash = { time: src[:mc][:time], id: 'cmi', msg: { cmi: cmi } }
-json = JSON.pretty_generate(hash)
+json = JSON.dump(hash)
 IO.write(mkfile('cmi'), json)
+open(mklog('cmi'), 'a') { |f| f.puts(json) }
 puts cmi

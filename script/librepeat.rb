@@ -8,17 +8,16 @@ module CIAX
     def initialize
       @counter = {}
       @format = {}
-      @rep = []
     end
 
     def each(e0)
-      e0.each do|e1|
+      e0.each do |e1|
         if /repeat.*/ =~ e1.name
           repeat(e1) do
-            each(e1) { |e2| yield e2, self }
+            each(e1) { |e2| yield e2 }
           end
         else
-          yield e1, self
+          yield e1
         end
       end if e0
     end
@@ -26,7 +25,7 @@ module CIAX
     def subst(str) # Sub $key => @counter[key]
       return str unless Regexp.new('\$([_a-z])').match(str)
       res = str.gsub(/\$([_a-z])/) { @counter[Regexp.last_match(1)] }
-      res = res.split(':').map do|i|
+      res = res.split(':').map do |i|
         # i could be expression
         Regexp.new('\$').match(i) ? i : expr(i)
       end.join(':')
@@ -47,7 +46,6 @@ module CIAX
     private
 
     def repeat(e0)
-      @rep.clear
       c = e0['counter'] || '_'
       Msg.give_up('Repeat:Counter Duplicate') if @counter.key?(c)
       fmt = @format[c] = e0['format'] || '%d'
@@ -60,7 +58,7 @@ module CIAX
       Range.new(subst(e0['from']), subst(e0['to'])).each do |n|
         enclose("Turn Number[#{n}] Start", "Turn Number[#{n}] End") do
           @counter[c] = n
-          @rep.push yield
+          yield
         end
       end
       @counter.delete(c)

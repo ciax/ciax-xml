@@ -36,7 +36,7 @@ module CIAX
       end
 
       def _mk_ctl_line(td, uary)
-        uary.each do|uid|
+        uary.each do |uid|
           next if _mk_ctl_unit(td, uid)
           errary = @udb.map { |k, v| itemize(k, v[:label]) }
           errary.unshift('Wrong CTL Unit')
@@ -63,7 +63,7 @@ module CIAX
         span = parent.enclose('span', class: 'center')
         sel = span.enclose('select', name: uid, onchange: 'seldv(this)')
         sel.element('option', '--select--')
-        umem.each do|id|
+        umem.each do |id|
           label = @idx[id][:label] || id
           sel.element('option', label, value: id)
         end
@@ -73,7 +73,7 @@ module CIAX
       def _check_group(gid = nil)
         return if @gdb.key?(gid)
         msg = @gdb.map { |k, v| Msg.itemize(k, v[:caption]) }.join("\n")
-        fail InvalidCMD, msg
+        raise InvalidCMD, msg
       end
     end
 

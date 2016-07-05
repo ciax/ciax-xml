@@ -16,23 +16,24 @@ module CIAX
   # DB class
   class Db < Hashx
     attr_reader :displist
-    def initialize(type)
+    def initialize(type, proj = nil)
       super()
       @type = type
+      @proj = proj
       # @displist is Display
-      lid = 'list'
-      lid += "_#{ENV['PROJ']}" if ENV['PROJ']
+      lid = proj ? "list_#{proj}" : 'list'
       # Show site list
       @latest = _get_latest_file
-      @displist = _get_cache(lid) || _get_db(lid, &:displist)
+      @displist = _get_cache(lid) || _get_db(lid, &:displist) # site list
       @argc = 0
     end
 
+    # return Dbi
     def get(id)
       if @displist.valid?(id)
         _get_cache(id) || _get_db(id) { |docs| doc_to_db(docs.get(id)) }
       else
-        fail(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s)
+        raise(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s)
       end
     end
 
@@ -48,7 +49,7 @@ module CIAX
       @base = "#{@type}-#{id}"
       @marfile = vardir('cache') + "#{@base}.mar"
       return _load_cache(id) if _use_cache?
-      @docs = Xml::Doc.new(@type) unless @docs
+      @docs = Xml::Doc.new(@type, @proj) unless @docs # read xml file
       nil
     end
 
@@ -74,7 +75,7 @@ module CIAX
 
     def _save_cache(id, res)
       verbose { "Cache Refresh (#{id})" }
-      open(@marfile, 'w') do|f|
+      open(@marfile, 'w') do |f|
         f << Marshal.dump(res)
         verbose { "Cache Saved(#{id})" }
       end

@@ -1,11 +1,11 @@
 # Splitted off 12/3/15
 
 sha,Shared Command,1,cap
-stop,Emergency STOP,1,mcr,mma:astop mmc:astop
+#stop,Emergency STOP,1,mcr,mma:astop mmc:astop
 upd,Update,1,cmd,mma:upd mmc:upd mfp:upd map:upd
 #chk,Check Status(No actual motion),1,cmd,
 
-!1,Carousel Command
+!1,Initialize
 # cinit
 #crinit,Carousel Initialize,,cap,
 cinit,carousel initialize,,mcr,mmc:lowspd mmc:upd mmc:cw mmc:gh-cw mmc:cw mmc:gh-cw mmc:set0
@@ -16,7 +16,7 @@ cinit,carousel initialize,,mcr,mmc:lowspd mmc:upd mmc:cw mmc:gh-cw mmc:cw mmc:gh
 
 # ____________________________________________________________________________
 # mmc command
-!2,Slot Command
+!2,Slot
 slot[0-23],Move to Slot[0-23],,cap,
 slot0,carousel,1,mcr,mcr:upd mmc:lowspd mcr:slot%S_00 mcr:check_slot00
 slot1,carousel,1,mcr,mcr:upd mmc:lowspd mcr:slot%S_01 mcr:check_slot01
@@ -694,7 +694,7 @@ slot21_23,carousel,1,mcr,mmc:slot23
 slot22_23,carousel,1,mcr,mmc:slot23
 slot23_23,carousel,1,mcr,mmc:slot23
 
-!4,Access Slot
+!4,Access
 access[0-23],Access to Slot[0-23],,cap,
 access0,Access to Slot0,1,mcr,mmc:access0 mcr:check_access00
 access1,Access to Slot1,1,mcr,mmc:access1 mcr:check_access01

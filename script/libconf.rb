@@ -13,8 +13,8 @@ module CIAX
   #   get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
     attr_reader :generation
-    alias_method :this_keys, :keys
-    alias_method :this_key?, :key?
+    alias this_keys keys
+    alias this_key? key?
     def initialize(cfg = nil, obj = self)
       super()
       @generation = [self]
@@ -52,7 +52,7 @@ module CIAX
 
     # If content is Array, merge generations
     def [](id)
-      @generation.each do|gen|
+      @generation.each do |gen|
         return gen.fetch(id) if gen.this_key?(id)
       end
       nil
@@ -73,7 +73,7 @@ module CIAX
     # Show all contents of all generation
     def path(key = nil)
       i = 0
-      ary = @generation.map do|h|
+      ary = @generation.map do |h|
         "  [#{i += 1}]{" + _show_generation_(key, h) + "} (#{h.object_id})"
       end
       _decorate_(ary.reverse)
@@ -82,7 +82,7 @@ module CIAX
     # Show list of all key,val which will be taken with [] access
     def list
       db = {}
-      @generation.each_with_index do|h, i|
+      @generation.each_with_index do |h, i|
         h.each { |k, v| db[k] = [i, v] unless db.key?(k) }
       end
       ary = db.map do |k, a|
@@ -110,7 +110,7 @@ module CIAX
     end
 
     def _show_generation_(key, h)
-      h.map do|k, v|
+      h.map do |k, v|
         next if key && k != key
         val = (k == :obj) ? _show_(v.class) : _show_contents_(v)
         "#{k.inspect.sub(/^:/, '')}: #{val}"
@@ -129,7 +129,7 @@ module CIAX
     end
 
     def _show_array_(v)
-      '[' + v.map do|e|
+      '[' + v.map do |e|
         case e
         when Enumerable
           _show_(e.class)

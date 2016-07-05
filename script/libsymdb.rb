@@ -23,10 +23,10 @@ module CIAX
 
       def doc_to_db(doc)
         db = super
-        doc[:top].each do|e1|
+        doc[:top].each do |e1|
           id = e1[:id]
           label = e1[:label]
-          e1.each do|e2| # case
+          e1.each do |e2| # case
             db.get(id) { [] } << e2.to_h.update(type: e2.name)
           end
           verbose { "Symbol Table:#{id} : #{label}" }

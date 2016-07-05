@@ -26,7 +26,7 @@ module CIAX
       end
 
       def _init_drv_ext
-        @cobj.rem.ext.def_proc do|ent, src|
+        @cobj.rem.ext.def_proc do |ent, src|
           @sv_stat.dw(:comerr)
           @stream.snd(ent[:frame], ent.id)
           if ent[:response]
@@ -38,14 +38,14 @@ module CIAX
       end
 
       def _init_drv_save
-        @cobj.get('save').def_proc do|ent|
+        @cobj.get('save').def_proc do |ent|
           @stat.save_key(ent.par[0].split(','), ent.par[1])
           verbose { "Save [#{ent.par[0]}]" }
         end
       end
 
       def _init_drv_load
-        @cobj.get('load').def_proc do|ent|
+        @cobj.get('load').def_proc do |ent|
           @stat.load(ent.par[0] || '')
           @stat.flush
           verbose { "Load [#{ent.par[0]}]" }

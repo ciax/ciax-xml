@@ -3,16 +3,11 @@
 // ********* Steps **********
 // step header section
 function make_step(step) {
-    var html = ['<li id="' + step.time + '">'];
-    _header();
-    _conditions() || _sub_mcr();
-    html.push('</li>');
-    return html.join('');
-
     function _title() {
         var type = step.type;
         var ary = [];
-        html.push('<span class="head ' + type + '">' + type + '</span>');
+        html.push('<span title="' + json_view(step));
+        html.push('" class="head ' + type + '">' + type + '</span>');
         html.push('<span class="cmd"');
         if (step.site) {
             ary.push(step.site);
@@ -59,7 +54,7 @@ function make_step(step) {
         if (step.busy) html.push(' -> <em class="active">Busy</em>');
     }
     // other steps
-    function _header() {
+    function _header(attr) {
         html.push('<h4>');
         _title();
         _count();
@@ -68,6 +63,7 @@ function make_step(step) {
         _time();
         html.push('</h4>');
     }
+
     // condition step
     function _operator(ope, cri) {
         switch (ope) {
@@ -78,6 +74,15 @@ function make_step(step) {
         default:
         }
     }
+
+    // External info
+    function _devlink(site) {
+        return ('onclick="open_table(\'' + site + '\');"');
+    }
+    function _graphlink(site, vid, time) {
+        return ('onclick="open_graph(\'' + site + '\',\'' + vid + '\',\'' + time + '\');"');
+    }
+
     function _conditions() {
         if (!step.conditions) return;
         html.push('<ul>');
@@ -85,10 +90,13 @@ function make_step(step) {
             var res = cond.res;
             html.push('<li>');
             html.push('<var ' + _devlink(cond.site) + '>');
-            html.push(cond.site + ':' + cond.var + '(' + cond.form + ')</var>');
+            html.push(cond.site + ':' + cond.var);
+            html.push('(' + cond.form + ')</var>');
             html.push('<code>' + _operator(cond.cmp, cond.cri) + '?</code>  ');
             if (step.type == 'goal' && res == false) res = 'warn';
-            html.push('<span class="' + res + '"> (' + cond.real + ')</span>');
+            html.push('<span class="' + res + '" ');
+            html.push(_graphlink(cond.site, cond.var, step.time));
+            html.push('> (' + cond.real + ')</span>');
             html.push('</li>');
         });
         html.push('</ul>');
@@ -98,27 +106,35 @@ function make_step(step) {
         if (step.type != 'mcr') return;
         html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
     }
-    function _devlink(site) {
-        return ('onclick="open_link(\'' + site + '\');"');
-    }
+
+    var html = ['<li'];
+    if (step.type != 'mcr') html.push(' class="step"');
+    html.push('>');
+    _header();
+    _conditions() || _sub_mcr();
+    html.push('</li>');
+    return html.join('');
 }
 // ********* Outline **********
 // *** Display on the Bars ***
 function record_outline(data) { // Do at the first
-    start_time = new Date(data.start);
     $('#mcrcmd').text(data.label + ' [' + data.cid + ']');
     $('#date').text(new Date(data.id - 0)).attr('title', data.id);
     $('#total').text('');
+    $('#query').empty();
     replace('#result', '');
     record_page(data);
 }
 // Macro Body
 function record_page(data) {
     $('#record ul').empty();
-    $.each(data.steps, function(i, step) {
-        $('#record .depth' + step.depth + ':last').append(make_step(step));
-    });
-    sticky_bottom('slow');
+    if (data.start) {
+        start_time = new Date(data.start); // empty when ready
+        $.each(data.steps, function(i, step) {
+            $('#record .depth' + step.depth + ':last').append(make_step(step));
+        });
+        sticky_bottom('slow');
+    }
     record_status(data);
 }
 function record_status(data) {
@@ -133,45 +149,25 @@ function record_result(data) { // Do at the end
 
 // ******** Dynamic Page ********
 function dynamic_page() {
-    // **** Updating Page ****
-    var last_time = '';  // For detecting update
-    var first_time = ''; // For first time at a new macro;
-    var steps_length = 0;
-    var suspend = false;
-    return function(tag) { // To be update
-        tag = tag ? tag : 'latest';
-        ajax_record(tag, _upd_page, function() { suspend = true;});
-        blinking();
-    }
-    function _upd_page(data, status) {
-        //console.log(status);
-        //if (data) console.log(data.status+data.time);
-        if (status != 'success') return;
-        if (!port) port = data.port;
-        if (first_time != data.id) { // Do only the first one for new macro
-            _first_page(data);
-            first_time = data.id;
-        }else if (data.time != last_time) { // Do every time for updated record
-            //console.log('updated');
-            _next_page(data);
-            last_time = data.time;
-        }
-    }
     // Update Command Selector
     function _init_commands() {
-        ajax_static('/json/mcr_conf.json', function(data) {
-            port = data.port;
+        ajax_static('/json/mcr_conf.json').done(function(data) {
+            if (!port) port = data.port;
             make_select('select#command', data.commands);
         });
     }
     // Update Query Radio Button
     function _make_query(data) {
         var sel = $('#query')[0];
-        if (data.status != 'query' || !sel) return;
-        var cmdary = data.option.map(function(cmd) {
-            return ([cmd, data.id]);
-        });
-        make_radio(sel, cmdary);
+        if (!sel) return;
+        if (data.status == 'query') {
+            var cmdary = data.option.map(function(cmd) {
+                return ([cmd, data.id]);
+            });
+            make_radio(sel, cmdary);
+        }else {
+            $('#query').empty();
+        }
     }
     // Update Content of Steps (When JSON is updated)
     function _append_step(data) {
@@ -187,9 +183,12 @@ function dynamic_page() {
     function _update_step(data) {
         var crnt = data.steps.length;
         if (steps_length == crnt) {
-            // When Step doesn't increase.
-            var step = data.steps[crnt - 1];
-            $('#' + step.time).html(make_step(step));
+            if (crnt != 0) {
+                // When Step doesn't increase.
+                var step = data.steps[crnt - 1];
+                // Update Step
+                $('.step:last').html(make_step(step));
+            }
             suspend = true;
         }else if (suspend) {
             // Refresh All Page at resume
@@ -215,7 +214,7 @@ function dynamic_page() {
     }
     function _mcr_start() {
         if (upd_list.record) return;
-        upd_list.record = update_record;
+        upd_list.record = _update;
         set_sticky_bottom();
         interactive();
     }
@@ -225,7 +224,7 @@ function dynamic_page() {
         record_outline(data); // Make record one time
         if (_mcr_end(data)) return;
         _make_query(data);
-        _mcr_start(update_record);
+        _mcr_start();
         steps_length = data.steps.length;
     }
     function _next_page(data) {
@@ -233,47 +232,65 @@ function dynamic_page() {
         _make_query(data);
         _update_step(data); // Make record one by one
     }
-}
-// ******** Static Page *********
-function static_page(data, status) {
-    if (status != 'success') return;
-    record_outline(data);
-    record_result(data);
-}
+    function _upd_page(data, status) {
+        if (status == 'notmodified') return;
+        if (rec_id != data.id) { // Do only the first one for new macro
+            port = data.port;
+            _first_page(data);
+            rec_id = data.id;
+        }else if (data.time != last_time) { // Do every time for updated record
+            _next_page(data);
+            last_time = data.time;
+        }
+    }
+    // To be update
+    function _update(tag) {
+        if (tag) { // Show past record (not updated)
+            ajax_static('/record/record_' + tag + '.json').done(_upd_page);
+        }else if (rec_id) { // Update and show current record
+            ajax_update('/record/record_' + rec_id + '.json').done(_upd_page);
+        }else {
+            ajax_static('/json/record_latest.json').done(_upd_page);
+        }
+    }
 
-// ******** Ajax ********
-// func1 for updated, func2 for no changes
-function ajax_record(tag, func1, func2) {
-    tag = tag ? tag : 'latest';
-    ajax_update('record_' + tag + '.json', func1, func2);
-}
-function archive(tag) {
-    // Read whether src is updated or not
-    tag = tag ? tag : 'latest';
-    ajax_static('record_' + tag + '.json', static_page);
+    // **** Updating Page ****
+    var rec_id; // Record ID for first call at a new macro;
+    var last_time = '';  // For detecting update
+    var steps_length = 0;
+    var suspend = false;
+    return _update;
 }
 
 // ******** Command ********
+function switch_record(id) { // overwritten by mcr_log
+    update_record(id);
+}
+
 function selmcr(dom) {
     var cmd = get_select(dom);
     if (!cmd) return;
-    exec(cmd, function() {
+    exec(cmd, function(recv) {
         // Do after exec if success
-        make_select(dom, []);
-        update_record();
+        switch_record(recv.sid);
     });
 }
-
 // ******** Init Page ********
-init_list.push(function() {
-    height_adjust();
+function init_page() {
     set_acordion('#record');
     set_auto_release('#record');
-    update_record();
     $('#query').on('change', 'input[name="query"]:radio', function() {
         exec($(this).val(), function() {$('#query').empty(); });
     });
-});
+    height_adjust();
+}
+// Init func specific for record_latest.html
+function init_record() {
+    init_list.push(update_record);
+    init();
+}
+
+init_list.push(init_page);
 // Var setting
 var update_record = dynamic_page();
 var start_time; // For elapsed time

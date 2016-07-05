@@ -39,7 +39,7 @@ module CIAX
         set_result('failed', 'pass', tf)
       end
 
-      # Not Condition Step
+      # Not Condition Step, returns t/f
       def set_result(tmsg, fmsg = nil, tf = true)
         res = tf ? tmsg : fmsg
         self[:result] = res if res
@@ -50,9 +50,9 @@ module CIAX
 
       def progress(total, &cond)
         itv = @dummy ? 0 : 1
-        total.to_i.times do|n| # gives number or nil(if break)
+        total.to_i.times do |n| # gives number or nil(if break)
           self[:count] = n + 1
-          break if cond && cond.call
+          break if cond && yield
           Kernel.sleep itv
           print '.' if Msg.fg?
           cmt

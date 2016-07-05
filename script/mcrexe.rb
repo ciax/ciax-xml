@@ -9,7 +9,7 @@ module CIAX
       mobj = Cmd::Index.new(Conf.new(cfg))
       mobj.add_rem.add_ext(Ext)
       ent = mobj.set_cmd(args)
-      Sequencer.new(ent).upd.macro
+      Sequencer.new(ent).upd_sites.macro
     end
   end
 end

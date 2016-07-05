@@ -22,9 +22,10 @@ module CIAX
         @depth = 0
         # For Thread mode
         @qry = Query.new(@record, @sv_stat, valid_keys)
+        Thread.current[:query] = @qry
       end
 
-      def upd
+      def upd_sites
         @cfg[:sites].each { |site| @cfg[:dev_list].get(site) }
         self
       end
@@ -39,20 +40,18 @@ module CIAX
       end
 
       def macro
-        Thread.current[:obj] = self
-        _init_record_file
         _show(@record.start)
-        sub_macro(@cfg[:sequence], @record)
-      rescue Interrupt
-        _site_interrupt
+        sub_macro(@cfg[:sequence], @record.cmt)
       rescue Verification
         false
+      rescue Interrupt
+        _site_interrupt
       ensure
         _show(@record.finish + "\n")
       end
 
       def fork
-        Threadx::Fork.new('Macro', 'seq', @id) { upd.macro }
+        Threadx::Fork.new('Macro', 'seq', @id) { upd_sites.macro }
       end
 
       private
@@ -70,12 +69,18 @@ module CIAX
         _post_seq(mstat)
       end
 
+      def _call_step(e, step, mstat)
+        method('_' + e[:type]).call(e, step, mstat)
+      ensure
+        step.cmt
+      end
+
       # Return false if sequence is broken
       def do_step(e, mstat)
         step = @record.add_step(e, @depth)
         begin
           _show step.title
-          return true if method('_' + e[:type]).call(e, step, mstat)
+          return true if _call_step(e, step, mstat)
         rescue Retry
           retry
         end
@@ -96,7 +101,7 @@ module CIAX
       def _site_interrupt
         runary = @sv_stat.get(:run)
         msg("\nInterrupt Issued to running devices #{runary}", 3)
-        runary.each do|site|
+        runary.each do |site|
           @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
         end
       end
@@ -107,14 +112,16 @@ module CIAX
         @record[:pid] = pid
         @id = @record[:id]
         @title = @record.title
+        @cfg[:rec_list].push(@record)
+        _init_record_file
       end
 
       # Do file generation after forked
       def _init_record_file
         # ext_file must be after ext_rsp which includes time update
-        @record.ext_local_file.auto_save
+        @record.ext_local_file('record').auto_save
         @record.mklink # Make latest link
-        @record.mklink(@record[:cid]) # Make cid link
+        @record.mklink(@id) # Make link to /json
       end
 
       # Print section
@@ -133,7 +140,7 @@ module CIAX
         mobj = Cmd::Index.new(Conf.new(cfg))
         mobj.add_rem.add_ext(Ext)
         ent = mobj.set_cmd(args)
-        Sequencer.new(ent).upd.macro
+        Sequencer.new(ent).upd_sites.macro
       end
     end
   end

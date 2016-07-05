@@ -7,7 +7,7 @@ module CIAX
   module Enumx
     include View
     def self.extended(obj)
-      fail('Not Enumerable') unless obj.is_a? Enumerable
+      raise('Not Enumerable') unless obj.is_a? Enumerable
     end
 
     def deep_copy
@@ -58,7 +58,7 @@ module CIAX
       enum.each do |k, v| # v=nil if enum is Array
         rec_proc4enum(v || k, &block)
       end
-      block.call(enum)
+      yield enum
     end
 
     def rec_proc4str(enum, path = [], &block)
@@ -70,7 +70,7 @@ module CIAX
           path.pop
         end
       else
-        block.call(enum, path)
+        yield enum, path
       end
     end
 
@@ -91,35 +91,48 @@ module CIAX
     include Enumx
     def initialize(hash = {})
       update(hash) if hash
-      vmode(VMODE) # v|r|j
       @layer = layer_name
     end
 
     # Generate value if init_proc and no key
     def get(key, &init_proc)
-      self[key] = init_proc.call(key) if !key?(key) && init_proc
+      self[key] = yield key if !key?(key) && init_proc
       self[key]
     end
 
-    # Put value. return nil if no changes
-    def put(key, val)
-      return if self[key] == val
+    # Put value. return self
+    def put(key, val, &done_proc)
+      return self unless diff?(key, val)
       store(key, val)
+      yield if done_proc
+      self
     end
 
-    # Replace value. return nil if no changes
-    def repl(key, val)
+    # Replace value. return self
+    def repl(key, val, &done_proc)
       Msg.par_err("No such Key [#{key}]") unless key?(key)
       Msg.cfg_err('Value should be String') unless val.is_a?(String)
-      return if fetch(key) == val
-      verbose { "Replace:timing(#{key}) #{fetch(key)} ->  #{val}" }
-      fetch(key).replace(val)
+      if diff?(key, val)
+        verbose { "Replace:timing(#{key}) #{fetch(key)} ->  #{val}" }
+        fetch(key).replace(val)
+        yield if done_proc
+      end
+      self
+    end
+
+    # Delete key, return self
+    def del(key, &done_proc)
+      if key?(key)
+        fetch(key).delete(val)
+        yield if done_proc
+      end
+      self
     end
 
     # Make empty copy
     def skeleton
       hash = Hashx.new
-      keys.each do|i|
+      keys.each do |i|
         hash[i] = nil
       end
       hash
@@ -128,7 +141,7 @@ module CIAX
     # Generate Hashx with picked up keys
     def pick(keyary, atrb = {})
       hash = Hashx.new(atrb)
-      keyary.each do|key|
+      keyary.each do |key|
         hash[key] = self[key] if key?(key)
       end
       hash
@@ -144,6 +157,13 @@ module CIAX
       end
       atrb
     end
+
+    private
+
+    def diff?(key, val)
+      # allows no key
+      self[key] != val
+    end
   end
 
   # Extended Array
@@ -153,7 +173,7 @@ module CIAX
     def skeleton(sary)
       return '' if sary.empty?
       dary = []
-      sary[0].to_i.times do|i|
+      sary[0].to_i.times do |i|
         dary[i] = skeleton(sary[1..-1])
       end
       dary
@@ -162,7 +182,7 @@ module CIAX
     # Get value of Hash which is element of self
     def get(key)
       # In case of find(), find{|e| e.get(key)}.get(key) to get content
-      each do|e|
+      each do |e|
         res = e.get(key)
         return res if res
       end

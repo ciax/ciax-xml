@@ -2,8 +2,8 @@
 # ____________________________________________________________________________
 #shared command
 
-!1,Shared Command
-stop,Emergency STOP,,mcr,mma:astop mmc:astop
+!1,Update All
+#stop,Emergency STOP,,mcr,mma:astop mmc:astop
 upd,Update,,cmd,mma:upd mmc:upd mfp:upd map:upd
 
 # ____________________________________________________________________________
@@ -108,7 +108,7 @@ check_fin,Check Status(No actual motion),1,cmd,
 # ____________________________________________________________________________
 # macro command
 
-!8,MOS Main Commands
+!8,MOS
 # startmask
 start,startmask,,mcr,mcr:upd mcr:t-w
 # storemask

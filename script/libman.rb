@@ -20,9 +20,9 @@ module CIAX
 
       # separated for background run
       def run
+        @sub_list.run
         _opt_mode
         @mode = 'MCR:' + @mode
-        @sub_list.run
         self
       end
 
@@ -48,7 +48,6 @@ module CIAX
         rem.add_ext(Ext)
         rem.sys.add_item('nonstop', 'Mode')
         rem.sys.add_item('interactive', 'Mode')
-        rem.ext_input_log('mcr') if @cfg[:option].log?
       end
 
       def _init_stat
@@ -56,6 +55,11 @@ module CIAX
         @stat = List.new
         @sv_stat = @cfg[:sv_stat]
         @sub_list = @cfg[:dev_list]
+      end
+
+      # Making Command List JSON file for WebApp
+      def _mk_cmdlist
+        IO.write(vardir('json') + 'mcr_conf.json', @cfg[:jlist].to_j)
       end
 
       def ext_client
@@ -75,7 +79,14 @@ module CIAX
         extend(ManDrv).ext_local_driver
       end
 
-      alias_method :ext_local_test, :ext_local_driver
+      alias ext_local_test ext_local_driver
+
+      def ext_local_server
+        super
+        @cfg[:rec_list].refresh
+        _mk_cmdlist
+        self
+      end
     end
 
     if __FILE__ == $PROGRAM_NAME

@@ -31,11 +31,11 @@ module CIAX
       end
 
       # For Command
-      def add(frame, e = {})
+      def push(frame, e = {}) # returns self
         if frame
           code = encode(frame, e)
           @frame << code
-          @cc.add(code)
+          @cc.push(code)
           verbose { "Add [#{frame.inspect}]" }
         end
         self
@@ -83,7 +83,7 @@ module CIAX
         else
           str = @frame.slice!(0, len.to_i)
         end
-        @cc.add(str)
+        @cc.push(str)
         str
       end
 
@@ -92,14 +92,14 @@ module CIAX
         dlm = esc_code(del).to_s
         verbose { "Cut by Delimiter [#{dlm.inspect}]" }
         str, dlm, @frame = @frame.partition(dlm)
-        @cc.add(str + dlm)
+        @cc.push(str + dlm)
         str
       end
 
       def _cut_rest
         verbose { 'Cut all the rest' }
         str = @frame
-        @cc.add(str)
+        @cc.push(str)
         str
       end
 
@@ -119,7 +119,7 @@ module CIAX
           ref = expr(ref).to_s
         end
         _check(e0, ref, val)
-        @cc.add(str)
+        @cc.push(str)
         str
       end
 

@@ -128,16 +128,16 @@ module CIAX
         @prompt_ok
       end
 
-      alias_method :cmd_bs, :cmd_busy
-      alias_method :cmd_hl0, :cmd_hardlimoff
-      alias_method :cmd_hl1, :cmd_hardlimon
-      alias_method :cmd_spd, :cmd_speed
-      alias_method :cmd_p, :cmd_abspos
-      alias_method :cmd_spd=, :cmd_speed=
-      alias_method :cmd_p=, :cmd_abspos=
-      alias_method :cmd_j=, :cmd_jog=
-      alias_method :cmd_ma=, :cmd_movea=
-      alias_method :cmd_mi=, :cmd_movei=
+      alias cmd_bs cmd_busy
+      alias cmd_hl0 cmd_hardlimoff
+      alias cmd_hl1 cmd_hardlimon
+      alias cmd_spd cmd_speed
+      alias cmd_p cmd_abspos
+      alias cmd_spd= cmd_speed=
+      alias cmd_p= cmd_abspos=
+      alias cmd_j= cmd_jog=
+      alias cmd_ma= cmd_movea=
+      alias cmd_mi= cmd_movei=
     end
 
     if __FILE__ == $PROGRAM_NAME

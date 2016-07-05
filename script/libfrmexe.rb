@@ -64,7 +64,7 @@ module CIAX
       end
 
       def ext_local
-        @cobj.get('set').def_proc do|ent|
+        @cobj.get('set').def_proc do |ent|
           @stat.repl(ent.par[0], ent.par[1])
           @stat.flush
           verbose { "Set [#{ent.par[0]}] = #{ent.par[1]}" }
@@ -82,7 +82,7 @@ module CIAX
     class Prompt < Prompt
       def initialize(id)
         super('dev', id)
-        add_flg(comerr: 'X', ioerr: 'E')
+        init_flg(comerr: 'X', ioerr: 'E')
       end
     end
 

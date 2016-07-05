@@ -13,20 +13,23 @@ module CIAX
       def ext_local_rsp(field)
         @field = type?(field, Frm::Field)
         type?(@dbi, Dbi)
-        _init_upd_proc
+        _init_cmt_proc
         self
+      end
+
+      def time_upd
+        super(@field[:time])
       end
 
       private
 
-      def _init_upd_proc
-        @upd_procs << proc do
-          @adbs.each do|id, hash|
+      def _init_cmt_proc
+        @cmt_procs << proc do
+          @adbs.each do |id, hash|
             cnd = hash[:fields].empty?
             next if cnd && get(id)
             self[:data][id] = cnd ? (hash[:default] || '') : _get_val(hash, id)
           end
-          time_upd(@field[:time])
         end
       end
 
@@ -53,12 +56,12 @@ module CIAX
 
       def _binstr2int(hash)
         bary = hash[:fields].map { |e| _get_binstr(e) }
-        case hash[:operation]
-        when 'uneven'
-          binstr = _get_uneven(bary)
-        else
-          binstr = bary.join
-        end
+        binstr = case hash[:operation]
+                 when 'uneven'
+                   _get_uneven(bary)
+                 else
+                   bary.join
+                 end
         expr('0b' + binstr)
       end
 
@@ -98,7 +101,7 @@ module CIAX
       def _get_binstr(e)
         val = get_field(e).to_i
         inv = (/true|1/ =~ e[:inv])
-        str = index_range(e[:bit]).map do|sft|
+        str = index_range(e[:bit]).map do |sft|
           bit = (val >> sft & 1)
           bit = -(bit - 1) if inv
           bit.to_s
@@ -109,7 +112,7 @@ module CIAX
 
       # range format n:m,l,..
       def index_range(str)
-        str.split(',').map do|e|
+        str.split(',').map do |e|
           r, l = e.split(':').map { |n| expr(n) }
           Range.new(r, l || r).to_a
         end.flatten

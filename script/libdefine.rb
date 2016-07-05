@@ -6,8 +6,10 @@ module CIAX
 
   # MY HOST
   HOST = `hostname`.strip
+  # MY NAME
+  PROGRAM = $PROGRAM_NAME.split('/').pop
   # Initial View Mode
-  VMODE = 'v'
+  VMODE = 'v'.freeze
   # User input Error
   class UserError < RuntimeError; end
   # When invalid Argument, exit from shell/server

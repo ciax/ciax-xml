@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libcmdext'
-require 'libmcrdb'
+require 'libmcrconf'
 # CIAX_XML
 module CIAX
   # Macro Layer
@@ -16,7 +16,7 @@ module CIAX
       'skip' => 'Execution',
       'ok' => 'for the message',
       'retry' => 'Checking'
-    }
+    }.freeze
     # Internal Commands
     module Int
       include Cmd::Remote::Int
@@ -26,7 +26,7 @@ module CIAX
         def initialize(cfg, crnt = {})
           crnt[:caption] = 'Control Macro'
           super
-          INTCMD.each do|id, cap|
+          INTCMD.each do |id, cap|
             add_item(id, id.capitalize + ' ' + cap)
           end
         end
@@ -61,17 +61,12 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libwatlist'
-      cfg = Config.new
-      begin
-        dbi = Db.new.get
-        # dbi.pick alreay includes :command, :version
-        cobj = Cmd::Index.new(cfg, dbi.pick)
+      ConfOpts.new('[cmd] (par)', 'j') do |cfg, _args, _opt|
+        cobj = Cmd::Index.new(Conf.new(cfg))
         cobj.add_rem.add_ext(Ext)
         ent = cobj.set_cmd(ARGV)
         puts ent.path
         jj ent[:sequence]
-      rescue InvalidARGS
-        Msg.usage('[cmd] (par)')
       end
     end
   end

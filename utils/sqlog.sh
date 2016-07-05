@@ -4,4 +4,4 @@
     var-sites sqlog
     exit
 }
-sqlite3 ~/.var/sqlog_$1.sq3
+sqlite3 ~/.var/log/sqlog_$1.sq3

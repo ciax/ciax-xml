@@ -10,27 +10,27 @@ module CIAX
       (Time.now.to_f * 1000).to_i
     end
 
-    def elps_sec(msec, base = nil)
+    def elps_sec(msec, target = nil)
       return 0 unless msec
-      base ||= now_msec
-      format('%.3f', (base - msec).to_f / 1000)
+      target ||= now_msec
+      format('%.3f', (target - msec).to_f / 1000)
     end
 
-    def elps_date(msec, base = now_msec)
+    def elps_date(msec, target = now_msec)
       return 0 unless msec
-      sec = (base - msec).to_f / 1000
+      sec = (target - msec).to_f / 1000
       interval(sec)
     end
 
     def interval(sec)
       return format('%.1f days', sec / 86_400) if sec > 86_400
-      if sec > 3600
-        fmt = '%H:%M'
-      elsif sec > 60
-        fmt = "%M'%S\""
-      else
-        fmt = '%S"%L'
-      end
+      fmt = if sec > 3600
+              '%H:%M'
+            elsif sec > 60
+              "%M'%S\""
+            else
+              '%S"%L'
+            end
       Time.at(sec).utc.strftime(fmt)
     end
 

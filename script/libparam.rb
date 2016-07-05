@@ -26,15 +26,15 @@ module CIAX
     # replace (default is decresed)
     def flush(other)
       @list.replace other
-      if self[:default] && ! @list.include?(self[:default])
+      if self[:default] && !@list.include?(self[:default])
         self[:default] = @list.last
       end
       self
     end
 
-    # add to list (default is incresed)
-    def add(id)
-      @list << id
+    # push to list (default is incresed)
+    def push(id) # returns self
+      @list << id unless @list.include?(id)
       self[:default] = id
       self
     end

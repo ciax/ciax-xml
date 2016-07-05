@@ -22,7 +22,6 @@ module CIAX
         self[:total_steps] = 0
         @dummy = @cfg[:option].test?
         self[:mode] = @dummy ? 'test' : 'drive'
-        @cmt_procs << proc { self[:time] = now_msec }
         self
       end
 
@@ -31,7 +30,7 @@ module CIAX
         title
       end
 
-      def add_step(e1, depth)
+      def add_step(e1, depth) # returns Step
         step = StepRsp.new(@cfg[:dev_list], e1, depth, @dummy)
         self[:steps] << step.ext_prt(self[:start])
         step.cmt_procs << proc do
@@ -39,8 +38,6 @@ module CIAX
           cmt
         end
         step
-      ensure
-        cmt
       end
 
       def finish

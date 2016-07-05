@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libdispgrp'
 require 'libenumx'
-require 'libxmlgn'
+require 'libxmlre'
 
 # Structure for Command: (top: listed in disp), <doclist: separated top-doc>
 #   ADB:/adb/(app)/<command>/group/unit/item
@@ -27,10 +27,11 @@ module CIAX
     # in another file.
     class Doc < Hashx
       attr_reader :top, :displist
-      def initialize(type)
+      def initialize(type, proj = nil)
         super()
         /.+/ =~ type || Msg.cfg_err('No Db Type')
         @type = type
+        @proj = proj
         @displist = Disp.new
         _read_files(Msg.xmlfiles(@type))
         _set_includes
@@ -39,7 +40,7 @@ module CIAX
       # get generates document branch of db items(Hash),
       # which includes attribute and domains
       def get(id)
-        super { fail(InvalidID, "No such ID(#{id}) in #{@type}\n" + to_s) }
+        super { raise(InvalidID, "No such ID(#{id}) in #{@type}\n" + to_s) }
       end
 
       def to_s
@@ -49,9 +50,9 @@ module CIAX
       private
 
       def _read_files(files)
-        files.each do|xml|
+        files.each do |xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
-          Gnu.new(xml).each { |top| _mk_db(top) }
+          Elem.new(xml).each { |top| _mk_db(top) }
         end.empty? && Msg.cfg_err("No XML file for #{@type}-*.xml")
       end
 
@@ -72,7 +73,7 @@ module CIAX
       def _mk_project(top)
         pid = top['id']
         incprj = [pid]
-        @valid_proj = incprj if ENV['PROJ'] == pid
+        @valid_proj = incprj if @proj == pid
         grp = (@grps ||= Hashx.new)[pid] = []
         top.each do |gdoc| # g.name is include or group
           _include_proj(gdoc, grp, incprj)
@@ -100,7 +101,7 @@ module CIAX
       # Includable (macro)
       def _mk_sub_db(top, sub = @displist)
         item = _set_item(top, sub)
-        top.each do|e| # e.name can be include or group
+        top.each do |e| # e.name can be include or group
           _include_grp(e, item, top.ns != e.ns)
         end
       end

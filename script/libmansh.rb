@@ -15,7 +15,7 @@ module CIAX
           _init_view_
           _init_lcmd_
           # Set Current ID by number
-          input_conv_num do|i|
+          input_conv_num do |i|
             @par.sel(i)
             nil
           end
@@ -36,7 +36,7 @@ module CIAX
           sg.add_dummy('0', 'List page')
           sg.add_dummy('[1-n]', 'Sequencer page')
           sg.add_item('cl', 'Clean list', def_msg: 'CLEAN').def_proc do
-            @par.flush(@sv_stat.get(:list))
+            @par.flush(@sv_stat.upd.get(:list))
           end
           @cobj.loc.add_view
         end

@@ -14,30 +14,33 @@ module CIAX
         id = self[:id] || id_err("NO ID(#{id}) in Stat")
         @sv_stat = sv_stat || Prompt.new('site', id)
         vmode('x')
-        _init_upd_procs
+        _init_cmt_procs
       end
 
       def to_x
         self[:hexpack]
       end
 
+      def time_upd
+        super(@stat[:time])
+      end
+
       private
 
-      def _init_upd_procs
-        @cmt_procs << proc { time_upd(@stat[:time]) }
-        @upd_procs << proc { self[:hexpack] = _get_header_ + _get_body_ }
+      def _init_cmt_procs
+        @cmt_procs << proc { self[:hexpack] = _get_header_ + _get_body_ }
         _init_propagates
       end
 
       def _init_propagates
-        @sv_stat.cmt_procs << proc { _upd_propagate('Prompt') }
-        @stat.cmt_procs << proc { _upd_propagate('Status') }
-        upd
+        @sv_stat.cmt_procs << proc { _cmt_propagate('Prompt') }
+        @stat.cmt_procs << proc { _cmt_propagate('Status') }
+        cmt
       end
 
-      def _upd_propagate(_mod)
-        verbose { 'Propagate #{mod}#cmt -> Hex::Rsp#upd(cmt)' }
-        upd
+      def _cmt_propagate(mod)
+        verbose { "Propagate #{mod}#cmt -> Hex::Rsp#cmt" }
+        cmt
       end
 
       # Server Status

@@ -1,125 +1,132 @@
 #### PROC VARS
+* Legend
+  structure: proc storage structure
+  args     : given args to each proc
+  return   : expected return value from each proc
+  called   : location where it is executed
+  methods   : provided methods for set it
+
 ## Related to Update
 
   Upd@upd_procs
     structure: Array[Proc,..]
     args: Hashx(self)
+    return: Any
     called: Upd#upd
 
   Upd@cmt_procs
     structure: Array[Proc,..]
     args: Hashx(self)
+    return: Any
     called: Upd#cmt
 
 ## Related to Command
 
   @cfg[:def_proc]
     structure: Proc
-    args:
-      Entity, String(source), Integer(priority)
-    called:
-      Entity#execmd
-    set_methods:
-      (Command,Domain,Group)#proc(&) 
+    args: Entity, String(source), Integer(priority)
+    return: Any
+    called: Entity#execmd
+    methods:
+      (Command,Domain,Group)#def_proc(&) 
       (Command,Domain,Group)#rem.int.proc(id,&) 
       (App/Frm/Mcr)::Command#rem.ext.proc(&) 
 
-## Related to Event(DataH)
+## Related to Wat::Rsp(Event)
 
-  @def_proc
-    structure: Proc
-    args:
-      Entity, String(source), Integer(priority)
-    called:
-      Wat::Rsp(Event)#exec
+  Rsp@on_act_procs
+    structure: Array[Proc...]
+    args: Rsp(self)
+    return: Any
+    called: Rsp#upd (depends on Prompt)
 
-  @post_exe_procs
-    structure: Array[Proc,..]
-    args:(on each element)
-      Entity, String(source), Integer(priority)
-    called:
-      Wat::Rsp(Event)#exec
+  Rsp@on_deact_procs
+    structure: Array[Proc...]
+    args: Rsp(self)
+    return: Any
+    called: Rsp#upd (depends on Prompt)
 
 ## Related to Exe
 
-  @pre_exe_procs
+   Exe@pre_exe_procs
     structure: Array[Proc,..]
     args: Array(command)
+    return: Any
     called: Exe#exe
 
-  @post_exe_procs
+  Exe@post_exe_procs
     structure: Array[Proc,..]
     args: Exe(self)
+    return: Any
     called: Exe#exe
 
-  @server_input_proc
+  # Server
+  Server@server_input_proc
     structure: Proc
     args: String(command line)
+    return: Array[String...] (command args)
     called: Server(Exe)#ext_local_server
     
-  @server_output_proc
+  Server@server_output_proc
     structure: Proc
     args: no
+    return: String (response str)
     called: Server(Exe)#ext_local_server
 
-  @shell_input_proc
-    structure: Proc
-    args: Array(command)
+  # Shell
+  Shell@shell_input_procs
+    structure: Array[Proc...]
+    args: Array[String...] (command args)
+    return: Array[String ...] (converted strings)
     calld: Shell#shell
+    methods: Sh#input_conv_set(),input_conv_num()
 
-  @shell_output_proc
-    args: no
+  Shell@shell_output_proc
     structure: Proc
+    args: no
+    return: String (console message)
     called: Shell#shell
 
   Shell@prompt_proc
     structure: Proc
     args: no
+    return: String (prompt message)
     called: Shell#prompt
+
+  Shell@terminate_procs
+    structure: Array[Proc...]
+    args: Shell(self)
+    return: Shell(self)
+    called: Shell#shell (called at the end of shell)
+
 
 ## Related to Frm
 
   Field@flush_procs
     structure: Array[Proc,..]
-    args:(on each element)
-      Frm::Exe(self)
-    called: Frm::Sv#initialize
-
-  Rsp(Field)@input_proc
-    structure: Proc
-    args: no
-    called: Rsp:ext_local_rsp
+    args: Frm::Field(self)
+    called: Frm::Field#flush()
 
 ## Related to Buffer
 
-  @send_proc  
+  Buffer@flush_proc  
     structure: Proc
-    args: Entity
-    called: send
-    set_methods: send_proc
+    args: Buffer(self)
+    return: Any
+    called: Buffer#server
 
-  @recv_proc  
+  Buffer@recv_proc  
     structure: Proc
     args: Array(args),String(src)
-    called: server
-    set_methods: recv_proc
+    return: Any
+    called: Buffer#server
 
-## Related to Mcr::Sequencer(Exe)
 
-  @post_stat_procs
-    structure: Array[Proc,..]
-    args:(on each element)
-      Sequencer(self)
-    called: set_stat
+## Related to Mcr::Sequencer
 
-  @post_mcr_procs
-    structure: Array[Proc,..]
-    args:(on each element)
-      Sequencer(self)
-    called: finish
-
-  @cfg[:submcr_proc]
+  @submcr_proc
     structure: Proc
-    args: Array(args),String(id)
-    called: macro
-    set_at: Mcr::Man::Sv#initialize()
+    args: Mcr::Entity, String (self@id as parent id)
+    return: Seqencer(other)
+    called: SeqFunc#_mcr
+    method: Sequencer#initialize()

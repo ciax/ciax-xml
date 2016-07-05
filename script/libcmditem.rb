@@ -81,7 +81,7 @@ module CIAX
       end
 
       def _par_array(pary, pref)
-        pref.map do|par|
+        pref.map do |par|
           list = par[:list] || []
           disp = list.join(',')
           str = pary.shift
@@ -175,7 +175,8 @@ module CIAX
       # For input logging (returns String)
       def _input_log(src, pri)
         return unless self[:input] && !@id.empty?
-        self[:input].update(cmd: self[:cid], src: src, pri: pri).upd
+        verbose { "Input [#{@id}] from #{src}" }
+        self[:input].update(cid: self[:cid], src: src, pri: pri).cmt
       end
     end
   end

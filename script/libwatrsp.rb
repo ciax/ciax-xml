@@ -19,64 +19,62 @@ module CIAX
       # Stat no changed -> clear exec, no eval
       def ext_local_rsp(stat, sv_stat = nil)
         @stat = type?(stat, App::Status)
+        # No need @sv_stat.upd at reading
         @sv_stat = type?(sv_stat || Prompt.new('site', self[:id]), Prompt)
         wdb = @dbi[:watch] || {}
         @interval = wdb[:interval].to_f if wdb.key?(:interval)
         @cond = Condition.new(wdb[:index] || {}, stat, self)
-        _init_upd_proc
         _init_cmt_proc
         _init_auto(wdb)
       end
 
       def queue(src, pri, batch = [])
         @last_updated = self[:time]
-        batch.each do|args|
+        batch.each do |args|
           self[:exec] << [src, pri, args]
         end
         self
       end
 
       def auto_exec
-        return self unless self[:exec].empty?
+        return self unless update?
+        # Do it when no other command in the queue, and not in motion
+        return self unless self[:exec].empty? && !@sv_stat.up?(:event)
         verbose { format('Auto Update(%s, %s)', self[:time], @regexe) }
         begin
           queue('auto', 3, @regexe)
-        rescue InvalidARGS
-          errmsg
         rescue
-          warning $ERROR_INFO
+          errmsg
         end
         self
       end
 
-      private
-
-      def _init_upd_proc
-        @upd_procs << proc do
-          next unless @stat[:time] > @last_updated
-          @last_updated = self[:time]
-          @cond.upd
-          upd_event
-        end
+      def time_upd
+        super(@stat[:time])
       end
+
+      private
 
       def _init_cmt_proc
         @stat.cmt_procs << proc do
-          verbose { 'Propagate Status#cmt -> Event#upd(cmt)' }
-          upd
+          verbose { 'Propagate Status#cmt -> Event#cmt' }
+          next unless @stat[:time] > @last_updated
+          @last_updated = self[:time]
+          @cond.upd_cond
+          _upd_event
+          cmt
         end
-        @cmt_procs << proc { time_upd(@stat[:time]) }
       end
 
       # Initiate for Auto Update
       def _init_auto(wdb)
         reg = wdb[:regular] || {}
         per = reg[:period].to_i
-        @period = per > 1 ? per : 300
+        @periodm = per * 1000 if per > 0
         @regexe = reg[:exec] || [['upd']]
         verbose do
-          format('Initiate Auto Update: Period = %s sec, Command = %s)',
-                 @period, @regexe)
+          format('Initiate Auto Update: Period = %d sec, Command = %s)',
+                 @periodm / 1000, @regexe)
         end
         self
       end
@@ -85,7 +83,7 @@ module CIAX
       # self[:exec] : Command queue which contains commands issued as event
       # self[:block] : Array of commands (units) which are blocked during busy
       # self[:int] : List of interrupt commands which is effectie during busy
-      # @sv_stat[:event] is internal var
+      # @sv_stat[:event] is internal var (moving)
 
       ## Timing chart in active mode
       # busy  :__--__--__--==__--___
@@ -103,7 +101,7 @@ module CIAX
       #  x  |  o  |  x  |  up
       #  x  |  x  |  x  |  -
 
-      def upd_event
+      def _upd_event
         if @sv_stat.up?(:event)
           _event_off
         elsif active?

@@ -119,7 +119,7 @@ module CIAX
         20.times do
           _select_io
           _try_rcv(str)
-          break if ! @terminator || /#{@terminator}/ =~ str
+          break if !@terminator || /#{@terminator}/ =~ str
           verbose { 'Recieved incomplete data, retry' }
         end
         str

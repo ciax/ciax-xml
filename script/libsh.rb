@@ -23,7 +23,7 @@ module CIAX
 
       # Convert Shell input from "x=n" to "set x n"
       def input_conv_set
-        @shell_input_procs << proc do|args|
+        @shell_input_procs << proc do |args|
           if args[0] && args[0].include?('=')
             ['set'] + args.shift.split('=') + args
           else
@@ -35,7 +35,7 @@ module CIAX
 
       # Substitute command from number to value
       def input_conv_num
-        @shell_input_procs << proc do|args|
+        @shell_input_procs << proc do |args|
           args[0] = yield(args[0].to_i) if /^[0-9]+$/ =~ args[0]
           args
         end
@@ -110,7 +110,7 @@ module CIAX
       end
 
       def _input_conv_(token)
-        @shell_input_procs.inject(token.split(' ')) do|args, proc|
+        @shell_input_procs.inject(token.split(' ')) do |args, proc|
           proc.call(args)
         end
       end

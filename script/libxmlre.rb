@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 require 'libxmlcore'
-require 'xml'
+require 'rexml/document'
 
 module CIAX
   module Xml
-    # Gnu XML LIB
+    # REXML
     class Elem < Core
       def initialize(f)
-        if f.is_a? XML::Node
+        if f.is_a? REXML::Element
           @e = f
         else
           super
@@ -15,36 +15,29 @@ module CIAX
       end
 
       def ns
-        @e.namespaces.default
+        @e.namespace
       end
 
       def text
-        @e.each do |n|
-          return n.content if n.text? && /[\S]/ =~ n.content
-        end
-        nil
+        t = @e.text.to_s.strip
+        t unless t.empty?
       end
 
-      # pick same ns nodes even if it is in another tree
       def find(xpath)
         verbose { "FindXpath:#{xpath}" }
-        @e.doc.find("//ns:#{xpath}", "ns:#{ns}").each do |e|
+        REXML::XPath.each(@e.root, "//ns:#{xpath}", 'ns' => ns) do |e|
           _mkelem(e) { |ne| yield ne }
         end
       end
 
       private
 
-      def _attr_elem
-        super.to_h
-      end
-
       def _attr_view
-        super.to_h
+        super.to_a
       end
 
       def _get_file(f)
-        XML::Document.file(f).root
+        REXML::Document.new(open(f)).root
       end
     end
   end

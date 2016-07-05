@@ -12,7 +12,7 @@ module CIAX
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
       @upd_procs = []
       # Proc Array for Commit Propagation to the upper Layers
-      @cmt_procs = []
+      @cmt_procs = [proc { time_upd }]
     end
 
     # Time setting, Loading file at client
@@ -20,8 +20,6 @@ module CIAX
       @upd_procs.each { |p| p.call(self) }
       verbose { "Update(#{time_id}) Pre Procs" }
       self
-    ensure
-      cmt
     end
 
     # Data Commit Method
@@ -34,15 +32,15 @@ module CIAX
 
     ## Manipulate data
     def put(key, val)
-      super || return
-      time_upd
-      cmt
+      super { cmt }
     end
 
     def repl(key, val)
-      super || return
-      time_upd
-      cmt
+      super { cmt }
+    end
+
+    def del(key)
+      super { cmt }
     end
 
     # Update without any processing (Use for scan in macro)

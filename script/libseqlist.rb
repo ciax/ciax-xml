@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require 'libseq'
 require 'libparam'
-require 'libreclist'
 # CIAX-XML
 module CIAX
   # Macro Layer
@@ -17,7 +16,6 @@ module CIAX
         # self     : List of Record (Current running)
         # @rec_list: List of Record Header (Log)
         @threads = ThreadGroup.new
-        @rec_list = RecList.new
       end
 
       #### Driver Methods ####
@@ -29,26 +27,22 @@ module CIAX
       def reply(cid)
         cmd, id = cid.split(':')
         @threads.list.each do |th|
-          seq = th[:obj] || next
-          next if seq.id != id
-          return seq.reply(cmd)
+          next if th[:id] != id
+          return th[:query].reply(cmd)
         end
         nil
       end
 
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
-      def add(ent, pid = '0')
+      def add(ent, pid = '0') # returns Sequencer
         seq = Sequencer.new(ent, pid) { |e, p| add(e, p) }
         @threads.add(type?(seq.fork, Threadx::Fork)) # start immediately
         put(seq.id, seq.record)
-        @rec_list.add(seq.record)
         seq
       end
 
       def alives
-        @threads.list.map { |th| th[:obj] }.compact.map do |seq|
-          type?(seq, Sequencer).id
-        end
+        @threads.list.map { |th| th[:id] }.compact
       end
 
       def alive?(id)
@@ -75,7 +69,7 @@ module CIAX
 
       def get(id)
         type?(id, String)
-        super { |key| Record.new(key).ext_http(@host) }
+        super { |key| Record.new(key).ext_http(@host, 'record') }
       end
     end
   end

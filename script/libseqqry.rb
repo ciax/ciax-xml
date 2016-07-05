@@ -35,8 +35,9 @@ module CIAX
         end
       end
 
+      # return t/f
       def query(cmds, step)
-        return step.put(:action, 'nonstop') if @sv_stat.up?(:nonstop)
+        return step.put(:action, 'nonstop') if @sv_stat.upd.up?(:nonstop)
         res = _get_ans(step, cmds)
         _judge(res)
       ensure
@@ -47,12 +48,10 @@ module CIAX
 
       def _get_ans(step, cmds)
         @valid_keys.replace(cmds)
-        @record.put(:option, cmds)
-        @record.put(:status, 'query')
+        @record.put(:option, cmds).put(:status, 'query').cmt
         res = Msg.fg? ? _input_tty : _input_que
-        step.put(:action, res)
-        @record.delete(:option)
-        @record.put(:status, 'run')
+        @record.put(:status, 'run').delete(:option)
+        step.put(:action, res).cmt
         res
       end
 
@@ -92,9 +91,9 @@ module CIAX
       def _judge(res)
         case res
         when 'retry'
-          fail(Retry)
+          raise(Retry)
         when 'interrupt'
-          fail(Interrupt)
+          raise(Interrupt)
         when 'force', 'skip', 'pass'
           false
         else

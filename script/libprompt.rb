@@ -10,24 +10,19 @@ module CIAX
       @db = {}
       self[:msg] = ''
       @cmt_procs << proc do
-        time_upd
         verbose { "Save #{id}:timing #{pick(%i(busy queue)).inspect}" }
       end
     end
 
     # For String Data
-    def add_str(key, val = '')
+    def init_str(key, val = '') # returns self
       self[key] = type?(val.dup, String) unless self[key].is_a? String
       self
     end
 
-    def repl(key, val)
-      super && verbose { "Changes [#{key}] -> #{val}" } && self
-    end
-
     # For Binary Data with display db
     # Value should be String to replace
-    def add_flg(db = {})
+    def init_flg(db = {}) # returns self
       @db.update(type?(db, Hash))
       db.keys.each { |k| self[k] = 'false' }
       self
@@ -35,12 +30,14 @@ module CIAX
 
     def up(key)
       cfg_err("No such flag [#{key}]") unless key?(key)
+      verbose { "Flag up #{key} (#{self[key]})" }
       repl(key, 'true')
       self
     end
 
     def dw(key)
       cfg_err("No such flag [#{key}]") unless key?(key)
+      verbose { "Flag down #{key} (#{self[key]})" }
       repl(key, 'false')
       self
     end
@@ -56,7 +53,7 @@ module CIAX
     end
 
     # For Array Data
-    def add_array(key, ary = [])
+    def init_array(key, ary = []) # returns self
       self[key] = type?(ary, Array) unless self[key].is_a? Array
       self
     end
@@ -64,15 +61,11 @@ module CIAX
     def flush(key, ary = [])
       type?(self[key], Array).replace(ary)
       self
-    ensure
-      cmt
     end
 
-    def push(key, elem)
+    def push(key, elem) # returns self
       self[key].push(elem) # unless type?(self[key], Array).include?(elem)
       self
-    ensure
-      cmt
     end
 
     # Show Message
@@ -89,12 +82,10 @@ module CIAX
     # Subtract and merge to self data, return rest of the data
     def sub(input)
       hash = input.dup
-      @db.keys.each do|k|
+      @db.keys.each do |k|
         self[k] = hash[k] ? hash.delete(k) : false
       end
       hash
-    ensure
-      cmt
     end
 
     # Merge sub prompt for picked up keys

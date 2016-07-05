@@ -38,8 +38,8 @@ module CIAX
         @sv_stat.upd.up?(:event)
       end
 
-      # wait 10sec for busy end or status changed
-      def waiting
+      # wait for busy end or status changed
+      def wait_ready
         verbose { "Waiting busy end for #{@id}" }
         100.times do
           return true unless @sv_stat.upd.up?(:busy)
@@ -94,14 +94,14 @@ module CIAX
 
       # Initiate procs
       def _init_proc_set
-        @cobj.get('set').def_proc do|ent|
+        @cobj.get('set').def_proc do |ent|
           @stat[:data].repl(ent.par[0], ent.par[1])
           verbose { "SET:#{ent.par[0]}=#{ent.par[1]}" }
         end
       end
 
       def _init_proc_del
-        @cobj.get('del').def_proc do|ent|
+        @cobj.get('del').def_proc do |ent|
           ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
           verbose { "DELETE:#{ent.par[0]}" }
         end
@@ -112,7 +112,7 @@ module CIAX
     class Prompt < Prompt
       def initialize(id)
         super('site', id)
-        add_flg(busy: '*')
+        init_flg(busy: '*')
       end
     end
 

@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'librepeat'
 require 'libdbcmd'
 
 module CIAX
@@ -24,52 +23,52 @@ module CIAX
       private
 
       def _get_wdb(wdoc, reg, idx, cgrp)
-        Repeat.new.each(wdoc) do|e0, r0|
+        @rep.each(wdoc) do |e0|
           case e0.name
           when 'regular'
             _make_regular(e0, reg)
           when 'event'
-            _make_event(e0, r0, idx, cgrp)
+            _make_event(e0, idx, cgrp)
           end
         end
       end
 
       def _make_regular(e0, reg)
         reg.update(e0.to_h)
-        e0.each do|e1|
+        e0.each do |e1|
           args = [e1[:name]]
-          e1.each do|e2|
+          e1.each do |e2|
             args << e2.text
           end
           reg[:exec] << args
         end
       end
 
-      def _make_event(e0, r0, idx, cgrp)
-        id = e0.attr2item(idx) { |v| r0.formatting(v) }
+      def _make_event(e0, idx, cgrp)
+        id = e0.attr2item(idx) { |v| @rep.formatting(v) }
         item = idx[id]
         cnd = item[:cnd] = []
         act = item[:act] = Hashx.new
-        e0.each do|e1|
-          _event_element(e1, r0, act, cnd, cgrp)
+        e0.each do |e1|
+          _event_element(e1, act, cnd, cgrp)
         end
       end
 
-      def _event_element(e1, r0, act, cnd, cgrp)
+      def _event_element(e1, act, cnd, cgrp)
         case name = e1.name.to_sym
         when :block, :int, :exec
-          act.get(name) { [] } << _make_action(e1, r0)
+          act.get(name) { [] } << _make_action(e1)
         when :block_grp
           act.get(:block) { [] }.concat(_make_block(e1, cgrp))
         else
-          cnd << _make_cond(e1, r0, name == :compare)
+          cnd << _make_cond(e1, name == :compare)
         end
       end
 
-      def _make_action(e1, r0)
+      def _make_action(e1)
         # e1[:name] is different from e1.name (attribute vs. tag)
         args = [e1[:name]]
-        e1.each { |e2| args << r0.subst(e2.text) }
+        e1.each { |e2| args << @rep.subst(e2.text) }
         args
       end
 
@@ -77,9 +76,9 @@ module CIAX
         cgrp[e1[:ref]][:members].map { |k| [k] }
       end
 
-      def _make_cond(e1, r0, cmp = nil)
+      def _make_cond(e1, cmp = nil)
         h = e1.to_h
-        h.each_value { |v| v.replace(r0.formatting(v)) }
+        h.each_value { |v| v.replace(@rep.formatting(v)) }
         h.update(vars: e1.map { |e2| e2[:var] }) if cmp
         h.update(type: e1.name)
       end

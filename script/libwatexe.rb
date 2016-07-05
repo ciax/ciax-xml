@@ -28,7 +28,7 @@ module CIAX
       private
 
       def ext_local_test
-        @post_exe_procs << proc { @stat.next_upd }
+        @post_exe_procs << proc { @stat.update? }
         super
       end
 
@@ -52,23 +52,23 @@ module CIAX
 
       def _init_takeover
         @sub = @cfg[:sub_list].get(@id)
-        @sv_stat = @sub.sv_stat.add_flg(auto: '&', event: '@')
+        @sv_stat = @sub.sv_stat.init_flg(auto: '&', event: '@')
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
         @post_exe_procs.concat(@sub.post_exe_procs)
       end
 
       def _init_upd_
-        @stat.cmt_procs << proc do|ev|
-          verbose { 'Propagate Event#cmt -> Watch#(set block)' }
+        @stat.cmt_procs << proc do |ev|
+          verbose { 'Propagate Event#cmt -> Watch#(set blocking command)' }
           block = ev.get(:block).map { |id, par| par ? nil : id }.compact
           @cobj.rem.ext.valid_sub(block)
         end
       end
 
       def _init_upd_drv_
-        @stat.cmt_procs << proc do|ev|
-          ev.get(:exec).each do|src, pri, args|
+        @stat.cmt_procs << proc do |ev|
+          ev.get(:exec).each do |src, pri, args|
             verbose { "Propagate Exec:#{args} from [#{src}] by [#{pri}]" }
             @sub.exe(args, src, pri)
             sleep ev.interval
@@ -77,16 +77,16 @@ module CIAX
       end
 
       def _init_exe_drv_
-        @tid_auto = _init_auto_thread_ unless @cfg[:cmd_line_mode]
+        @th_auto = _init_auto_thread_ unless @cfg[:cmd_line_mode]
         @sub.post_exe_procs << proc do
-          @sv_stat.set_flg(:auto, @tid_auto && @tid_auto.alive?)
+          @sv_stat.set_flg(:auto, @th_auto && @th_auto.alive?)
         end
       end
 
       def _init_auto_thread_
-        @stat.next_upd
         Threadx::Loop.new('Regular', 'wat', @id) do
-          @stat.auto_exec.sleep.upd
+          @stat.auto_exec
+          sleep 10
         end
       end
     end

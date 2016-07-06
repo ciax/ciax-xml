@@ -74,18 +74,16 @@ function init_mode() {
         var max = time + tol;
         options.xaxis.min = min;
         options.xaxis.max = max;
+        options.zoom = { interactive: true };
+        options.pan = { interactive: true };
     }else {
         // For dynamic mode
         setInterval(update, 1000);
     }
-    options.zoom = { interactive: true };
-    options.pan = { interactive: true };
 }
 
-function push_data(e) {
-    var rep = series[0].data;
-    var last = rep[rep.length - 1];
-    if (!e.time || last[0] == e.time) return;
+function push_data(e, stat) {
+    if(stat == 'notmodified') return;
     $.each(series, function(i, line) {
         var data = line.data;
         line.data.shift();

@@ -85,11 +85,11 @@ function init_mode() {
 function push_data(e, stat) {
     if(stat == 'notmodified') return;
     $.each(series, function(i, line) {
-        var data = line.data;
         line.data.shift();
         line.data.push([e.time, e.data[line.vid]]);
     });
     plot.setData(series);
+    plot.setupGrid(); // scroll to left
     plot.draw();
 }
 

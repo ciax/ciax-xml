@@ -18,4 +18,4 @@ if [ ! -d flot ] ; then
     cd flot
     make
     sudo ln -sf $(pwd -P)/*.js $dir
-fi    
+fi

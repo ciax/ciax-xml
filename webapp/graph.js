@@ -96,7 +96,7 @@ function push_data(e) {
 }
 
 function update() {
-    $.getJSON('status_' + par.site + '.json', push_data);
+    $.ajax('status_' + par.site + '.json').done(push_data);
 }
 
 function get_graph() {
@@ -113,3 +113,4 @@ function get_graph() {
 var plot;
 var series;
 var past_time;
+$.ajaxSetup({ mimeType: 'json', ifModified: true, cahce: false});

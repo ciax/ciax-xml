@@ -85,19 +85,20 @@ module CIAX
         col = col.to_i > 0 ? col.to_i : 6
         tbody = _mk_tbody(cap)
         members.each_slice(col) do |da|
-          _mk_line(tbody, da)
+          _mk_line(tbody, da, true)
         end
         tbody
       end
 
-      def _mk_line(parent, member)
+      def _mk_line(parent, member, add_graph = nil)
         tr = parent.enclose('tr')
         member.each do |id|
           label = (@sdb[id] || {})[:label] || id.upcase
           td = tr.enclose('td', class: 'item')
           td.element('span', label, class: 'label', title: id)
-          onc = format("open_graph('%s','%s');", @dbi[:id], id)
-          td.element('strong', '*****', id: id, class: 'normal', onclick: onc)
+          atrb = { id: id, class: 'normal' }
+          _add_graph(id, atrb) if add_graph
+          td.element('strong', '*****', atrb)
         end
         tr
       end
@@ -111,6 +112,11 @@ module CIAX
       def _elem_button(parent, id)
         atrb = { class: id, onclick: "#{id}();" }
         parent.element('button', id.upcase, atrb)
+      end
+
+      def _add_graph(id, atrb)
+        atrb[:onclick] = format("open_graph('%s','%s');", @dbi[:id], id)
+        atrb
       end
     end
 

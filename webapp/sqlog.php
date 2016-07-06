@@ -30,14 +30,11 @@ function get_tbl($pdo){
     }
 }
 
-function where($range, $utime){
-    if (!$range) return '';
+function where($utime){
     if($utime){
-        $min=$utime - $range;
-        $max=$utime - 0 + $range;
-        return ' WHERE time BETWEEN '.$min.' and '.$max;
+        return ' WHERE time <= '.$utime.' ORDER BY time DESC LIMIT 100';
     }else{
-        return ' WHERE time > '.(time().'000' - $range);
+        return ' ORDER BY time DESC LIMIT 10';
     }
 }
 function get_data($vid){
@@ -53,17 +50,15 @@ function get_data($vid){
     $data=$st->fetchAll(PDO::FETCH_NUM);
     if (!$data) return;
     $dset = array('label' => "$site:$vid", 'vid' => $vid);
-    $dset['data'] = $data;
+    $dset['data'] = array_reverse($data);
     return $dset;
 }
 
 $site=getarg('site');
 $vid=getarg('vid');
-# No range -> whole
-$range=getarg('range');
 # No time -> now
 $utime=getarg('time');
-$opt = where($range,$utime);
+$opt = where($utime);
 
 echo(json_encode(array_map('get_data', split(',',$vid))));
 ?>

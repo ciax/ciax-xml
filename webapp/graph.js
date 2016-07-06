@@ -1,8 +1,9 @@
-// Default data range is 12 hour.
-// Default display range is 3 min.
+// Data range is 100 points
+// Display range is 10 points
 // Time param set the absolute unix time for data
 var options = {
     series: {
+        shadowSize: 0,
         lines: { show: true },
         points: { show: true, radius: 3 }
     },
@@ -73,18 +74,17 @@ function init_mode() {
         var max = time + tol;
         options.xaxis.min = min;
         options.xaxis.max = max;
-        options.zoom = { interactive: true };
-        options.pan = { interactive: true };
     }else {
         // For dynamic mode
         setInterval(update, 1000);
     }
+    options.zoom = { interactive: true };
+    options.pan = { interactive: true };
 }
 
 function push_data(e) {
     var rep = series[0].data;
-    var len = rep.length - 1;
-    var last = rep[len];
+    var last = rep[rep.length - 1];
     if (!e.time || last[0] == e.time) return;
     $.each(series, function(i, line) {
         var data = line.data;
@@ -101,11 +101,8 @@ function update() {
 
 function get_graph() {
     past_time = par.time;
-    par.range = past_time ? 43260000 : 360000;
-    console.log(JSON.stringify(par));
     $.getJSON('sqlog.php', par, function(ary) {
         series = ary;
-        console.log(JSON.stringify(ary));
         init_mode();
         plot = $.plot('#placeholder', series, options);
         init_tooltip();

@@ -17,8 +17,8 @@ function conv(stat) {
     if (!stat) return;
     var data = $.extend({},stat.data, stat.msg);
     for (var id in data) {
-        if ('class' in stat && id in stat.class) {
-            $('#' + id).attr('class', stat.class[id]);
+        if ('class' in stat && id in stat['class']) { // stat.class expression gives error at yui-compressor
+            $('#' + id).attr('class', stat['class'][id]);
         }
         $('#' + id).text(data[id]).attr('title', stat.data[id]);
     }

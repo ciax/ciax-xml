@@ -83,7 +83,7 @@ function init_mode() {
 }
 
 function push_data(e, stat) {
-    if(stat == 'notmodified') return;
+    if (stat == 'notmodified') return;
     $.each(series, function(i, line) {
         line.data.shift();
         line.data.push([e.time, e.data[line.vid]]);

@@ -1,8 +1,9 @@
-// Default data range is 12 hour.
-// Default display range is 3 min.
+// Data range is 100 points
+// Display range is 10 points
 // Time param set the absolute unix time for data
 var options = {
     series: {
+        shadowSize: 0,
         lines: { show: true },
         points: { show: true, radius: 3 }
     },
@@ -18,9 +19,7 @@ var options = {
     yaxis: {
         zoomRange: false,
         panRange: false
-    },
-    zoom: { interactive: true },
-    pan: { interactive: true }
+    }
 };
 
 function init_tooltip() {
@@ -46,45 +45,54 @@ function show_tooltip(event, pos, item) {
     }
 }
 
-function markings(axes) { //Making grid strype and bar line
+function markings(axes) { //Making grid stripe and bar line
     var mary = [];
     var hour = 3600000;
     var h2 = hour * 2;
     var ax = axes.xaxis;
     var min = ax.min - (ax.min % h2);
     var max = ax.max;
+    // trid stripe
     for (var x = min; x < max; x += h2)
         mary.push({ xaxis: { from: x, to: x + hour}, color: '#999'});
     // bar line
-    if (point) mary.push({
+    if (past_time) mary.push({
         color: '#ff0000',
         lineWidth: 3,
-        xaxis: { from: point, to: point }
+        xaxis: { from: past_time, to: past_time }
     });
     return mary;
 }
 
-function get_range() {
-    if (!point) return;
-    var time = point - 0;
-    var tol = 180000;
-    var min = time - tol;
-    var max = time + tol;
-    options.xaxis.min = min;
-    options.xaxis.max = max;
+function init_mode() {
+    if (past_time) {
+        // For static mode
+        // set range
+        var time = past_time - 0;
+        var tol = 180000;
+        var min = time - tol;
+        var max = time + tol;
+        options.xaxis.min = min;
+        options.xaxis.max = max;
+    }else {
+        // For dynamic mode
+        setInterval(update, 1000);
+    }
+    options.zoom = { interactive: true };
+    options.pan = { interactive: true };
 }
 
 function push_data(e) {
-    $.each(dataset, function(i, series) {
-        var data = series.data;
-        var len = data.length - 1;
-        var last = data[len];
-        if (!e.time || last[0] == e.time) return;
-        series.data.shift();
-        series.data.push([e.time, e.data[series.vid]]);
-        plot.setData(dataset);
-        plot.draw();
+    var rep = series[0].data;
+    var last = rep[rep.length - 1];
+    if (!e.time || last[0] == e.time) return;
+    $.each(series, function(i, line) {
+        var data = line.data;
+        line.data.shift();
+        line.data.push([e.time, e.data[line.vid]]);
     });
+    plot.setData(series);
+    plot.draw();
 }
 
 function update() {
@@ -92,18 +100,16 @@ function update() {
 }
 
 function get_graph() {
-    par.range = 43260000;
+    past_time = par.time;
     $.getJSON('sqlog.php', par, function(ary) {
-        point = par.time;
-        dataset = ary;
-        get_range();
-        plot = $.plot('#placeholder', dataset, options);
+        series = ary;
+        init_mode();
+        plot = $.plot('#placeholder', series, options);
         init_tooltip();
-        if (!point) setInterval(update, 1000);
     });
 }
 
-// var par will be set in html
+// var par shold be set in html [site, vid, (time)]
 var plot;
-var dataset;
-var point;
+var series;
+var past_time;

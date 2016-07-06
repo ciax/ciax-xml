@@ -12,8 +12,12 @@ function open_table(site) {
 }
 function open_graph(site, vid, time) {
     var url = '/json/graph.php?site=' + site + '&vid=' + vid;
-    if (time) { url = url + '&time=' + time}
-    window.open(url, 'g' + site,
+    var pre = 'g' + vid.replace(/,/g,'_');
+    if (time) {
+        url = url + '&time=' + time;
+        pre += 'h';
+    }
+    window.open(url, pre + '_' + site,
                 'menubar=no,location=no,status=no,width=600,height=320'
                ).focus();
 }

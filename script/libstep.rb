@@ -11,6 +11,8 @@ module CIAX
         update db
         self[:depth] = depth
         @dummy = dummy
+        # Prevent time update on step
+        @cmt_procs.clear 
       end
 
       #### In Drive mode

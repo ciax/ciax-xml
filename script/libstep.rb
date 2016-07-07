@@ -45,7 +45,7 @@ module CIAX
         self[:result] = res if res
         tf
       ensure
-        cmt
+        upd
       end
 
       def progress(total, &cond)
@@ -55,7 +55,7 @@ module CIAX
           break if cond && yield
           Kernel.sleep itv
           print '.' if Msg.fg?
-          cmt
+          upd
         end
       end
     end

@@ -33,8 +33,7 @@ module CIAX
       def add_step(e1, depth) # returns Step
         step = StepRsp.new(@cfg[:dev_list], e1, depth, @dummy)
         self[:steps] << step.ext_prt(self[:start])
-        # use upd on step which doesn't want to change time after processing
-        step.upd_procs << proc do
+        step.cmt_procs << proc do
           verbose { 'Propagate Step#cmt -> Record#cmt' }
           cmt
         end

@@ -32,9 +32,9 @@ function get_tbl($pdo){
 
 function where($utime){
     if($utime){
-        return ' WHERE time <= '.$utime.' ORDER BY time DESC LIMIT 100';
+        return ' WHERE time <= '.($utime + 3600000).' ORDER BY time DESC LIMIT 144';
     }else{
-        return ' ORDER BY time DESC LIMIT 10';
+        return ' ORDER BY time DESC LIMIT 24';
     }
 }
 function get_data($vid){

@@ -55,7 +55,6 @@ module CIAX
       private
 
       def convert(dir, data, cid = nil)
-        time_upd
         @binary = data
         self['cmd'] = cid if cid
         update('dir' => dir, 'base64' => encode(data))

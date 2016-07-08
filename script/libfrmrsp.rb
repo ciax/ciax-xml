@@ -29,6 +29,7 @@ module CIAX
         @frame = Frame.new(sp[:endian], sp[:ccmethod], sp[:terminator])
         # terminator: frame pointer will jump to terminator
         #   when no length or delimiter is specified
+        @cmt_procs << proc { time_upd(@stream[:time]) }
         self
       end
 
@@ -43,10 +44,6 @@ module CIAX
         self
       ensure
         cmt
-      end
-
-      def time_upd
-        super(@stream[:time])
       end
 
       private

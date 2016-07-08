@@ -17,10 +17,6 @@ module CIAX
         self
       end
 
-      def time_upd
-        super(@field[:time])
-      end
-
       private
 
       def _init_cmt_proc
@@ -30,6 +26,7 @@ module CIAX
             next if cnd && get(id)
             self[:data][id] = cnd ? (hash[:default] || '') : _get_val(hash, id)
           end
+          time_upd(@field[:time])
         end
       end
 

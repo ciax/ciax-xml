@@ -49,10 +49,6 @@ module CIAX
         self
       end
 
-      def time_upd
-        super(@stat[:time])
-      end
-
       private
 
       def _init_cmt_proc
@@ -62,6 +58,7 @@ module CIAX
           @last_updated = self[:time]
           @cond.upd_cond
           _upd_event
+          time_upd(@stat[:time])
           cmt
         end
       end

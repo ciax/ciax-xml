@@ -11,6 +11,7 @@ module CIAX
         ext_local_file.load
         @list = (self[:list] ||= [])
         @active = {}
+        @cmt_procs << proc { time_upd }
         auto_save
       end
 

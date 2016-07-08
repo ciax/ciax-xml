@@ -26,7 +26,7 @@ module CIAX
       end
 
       def start
-        self[:start] = now_msec
+        time_upd
         title
       end
 

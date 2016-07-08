@@ -18,10 +18,6 @@ module CIAX
         cmt
       end
 
-      def time_upd
-        super(@event[:time])
-      end
-
       private
 
       def _init_stat(wdb)
@@ -36,10 +32,12 @@ module CIAX
 
       def _init_cmt_proc
         @cmt_procs << proc do
+          @event.upd
           %i(exec block int act_time upd_next).each do |id|
             self[id] = @event.get(id)
           end
           _upd_stat
+          time_upd(@event[:time])
         end
       end
 

@@ -48,6 +48,7 @@ module CIAX
       class Input < Varx
         def initialize(tag, id)
           super("input_#{tag}", id)
+          @cmt_procs << proc { time_upd }
           ext_local_file
           ext_local_log
         end

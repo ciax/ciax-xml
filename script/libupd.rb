@@ -8,11 +8,11 @@ module CIAX
     attr_reader :upd_procs, :cmt_procs
     def initialize
       super()
-      self[:time] = now_msec
+      time_upd
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
       @upd_procs = []
       # Proc Array for Commit Propagation to the upper Layers
-      @cmt_procs = [proc { time_upd }]
+      @cmt_procs = []
     end
 
     # Time setting, Loading file at client

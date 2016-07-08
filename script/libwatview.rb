@@ -31,13 +31,13 @@ module CIAX
       end
 
       def _init_cmt_proc
+        init_time2cmt(@event)
         @cmt_procs << proc do
           @event.upd
           %i(exec block int act_time upd_next).each do |id|
             self[id] = @event.get(id)
           end
           _upd_stat
-          time_upd(@event[:time])
         end
       end
 

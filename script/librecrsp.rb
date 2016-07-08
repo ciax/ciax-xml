@@ -22,11 +22,11 @@ module CIAX
         self[:total_steps] = 0
         @dummy = @cfg[:option].test?
         self[:mode] = @dummy ? 'test' : 'drive'
+        init_time2cmt
         self
       end
 
       def start
-        time_upd
         title
       end
 

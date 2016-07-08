@@ -24,8 +24,8 @@ module CIAX
       private
 
       def _init_cmt_procs
+        init_time2cmt(@stat)
         @cmt_procs << proc do
-          time_upd(@stat[:time])
           self[:hexpack] = _get_header_ + _get_body_
         end
         _init_propagates

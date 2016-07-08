@@ -57,5 +57,10 @@ module CIAX
     def time_id
       self[:time].to_s[-6, 6]
     end
+
+    # Set time_upd to @cmt_procs with lower layer time
+    def init_time2cmt(stat = nil)
+      @cmt_procs << stat ? proc { time_upd } : proc { time_upd(stat[:time]) }
+    end
   end
 end

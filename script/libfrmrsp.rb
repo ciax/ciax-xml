@@ -29,7 +29,7 @@ module CIAX
         @frame = Frame.new(sp[:endian], sp[:ccmethod], sp[:terminator])
         # terminator: frame pointer will jump to terminator
         #   when no length or delimiter is specified
-        @cmt_procs << proc { time_upd(@stream[:time]) }
+        init_time2cmt(@stream)
         self
       end
 

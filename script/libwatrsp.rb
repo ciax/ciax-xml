@@ -52,13 +52,13 @@ module CIAX
       private
 
       def _init_cmt_proc
+        init_time2cmt(@stat)
         @stat.cmt_procs << proc do
           verbose { 'Propagate Status#cmt -> Event#cmt' }
           next unless @stat[:time] > @last_updated
           @last_updated = self[:time]
           @cond.upd_cond
           _upd_event
-          time_upd(@stat[:time])
           cmt
         end
       end

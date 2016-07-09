@@ -54,7 +54,10 @@ module CIAX
       def _init_sub
         # LayerDB might generated in List level
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
-        @sv_stat.sub_merge(@sub.sv_stat, %i(comerr ioerr))
+        @sv_stat.db.update(@sub.sv_stat.db)
+        @sub.sv_stat.cmt_procs << proc do |ss|
+          @sv_stat.update(ss.pick(%i(comerr ioerr))).cmt
+        end
       end
 
       def _init_net(dbi)

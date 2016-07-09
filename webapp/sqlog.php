@@ -31,8 +31,9 @@ function get_tbl($pdo){
 }
 
 function where($utime){
+    $tol =43200000;
     if($utime){
-        return ' WHERE time <= '.($utime + 3600000).' ORDER BY time DESC LIMIT 144';
+        return ' WHERE time BETWEEN '.($utime - $tol).' AND '.($utime + $tol);
     }else{
         return ' ORDER BY time DESC LIMIT 24';
     }

@@ -36,8 +36,10 @@ function init_tooltip() {
 
 function show_tooltip(event, pos, item) {
     if (item) {
+        var date = new Date(item.datapoint[0]);
+        var x = date.toLocaleTimeString('en-US',{hour12: false});
         var y = item.datapoint[1].toFixed(2);
-        $('#tooltip').html(item.series.label + ':' + y)
+        $('#tooltip').html(x + ',' + y)
             .css({ top: item.pageY + 5, left: item.pageX + 5 })
             .fadeIn(200);
     }else {

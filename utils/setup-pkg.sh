@@ -20,3 +20,5 @@ case "$dist" in
         return
         ;;
 esac
+# Install gem apps
+sudo gem install rubocop

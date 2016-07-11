@@ -84,6 +84,7 @@ module CIAX
     end
 
     def _write_json(json_str, tag = nil)
+      verbose { " -- json data (#{json_str}) is empty at saving" } if json_str.empty?
       verbose(@thread != Thread.current) { 'File Saving from Multiple Threads' }
       @cfile = _file_name(tag)
       open(@jsondir + @cfile, 'w') do |f|

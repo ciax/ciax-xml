@@ -64,13 +64,6 @@ module CIAX
       @que_buf && @que_buf.alive?
     end
 
-    def wait_busy_up
-      100.times do
-        break if @sv_stat.upd.up?(:busy)
-        sleep 0.01
-      end
-    end
-
     private
 
     def pri_sort(rcv)

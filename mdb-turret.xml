@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="turret" version="1" label="Turret Control" port="55555">
+  <macro id="turret" version="2" label="Turret Control" port="55555">
     <group id="grp_init" caption="Initialize" rank="0">
       <item id="tinit" label="Initialize Turret">
         <cfg site="mft" name="set6v"/>
@@ -14,22 +14,14 @@
     <group id="tr_sub" caption="Turret Commands" rank="1">
       <item id="pre_pos" label="Pre-Positioning">
         <goal label="All Slot11?" verify="true">
-          <match form="data" site="mix" var="p1">11.0</match>
-          <match form="data" site="mix" var="p2">11.0</match>
-          <match form="data" site="mix" var="p3">11.0</match>
-          <match form="data" site="mix" var="p4">11.0</match>
-          <match form="data" site="mix" var="p5">11.0</match>
-          <match form="data" site="mix" var="p6">11.0</match>
+          <match form="data" site="mix" var="p1">4.0</match>
+          <match form="data" site="mix" var="p2">6.0</match>
+          <match form="data" site="mix" var="p3">4.0</match>
+          <match form="data" site="mix" var="p4">6.0</match>
+          <match form="data" site="mix" var="p5">4.0</match>
+          <match form="data" site="mix" var="p6">6.0</match>
         </goal>
-        <exec site="mix" name="both_a">
-          <argv>11</argv>
-        </exec>
-        <exec site="mix" name="both_b">
-          <argv>11</argv>
-        </exec>
-        <exec site="mix" name="both_c">
-          <argv>11</argv>
-        </exec>
+        <exec site="mix" name="prehome"/>
         <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>
         </wait>

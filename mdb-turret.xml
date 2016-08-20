@@ -13,7 +13,7 @@
     </group>
     <group id="tr_sub" caption="Turret Commands" rank="1">
       <item id="pre_pos" label="Pre-Positioning">
-        <goal label="All Slot11?" verify="true">
+        <goal label="All Slot11?">
           <match form="data" site="mix" var="p1">4.0</match>
           <match form="data" site="mix" var="p2">6.0</match>
           <match form="data" site="mix" var="p3">4.0</match>

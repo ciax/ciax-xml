@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ixe" label="Phytron IXEa-A">
+  <frame id="ixe" label="Phytron IXEa-A" version="1">
     <spec mfr="Phytron" model="IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf"/>
     <stream maxlength="31" wait="0.001" timeout="30" terminator="\r\n"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
@@ -160,6 +160,12 @@
           <par_num>0:96000</par_num>
           <string>$1</string>
           <string format="%+d">(($2-${p:$1-1}+48000) % 96000)-48000</string>
+        </item>
+        <item id="mopt" label="Move mechanical abs by optimal [0-96000] (8000/hole)" nocache="true" response="default" type="action">
+          <par_num>1:6</par_num>
+          <par_num>0:96000</par_num>
+          <string>$1</string>
+          <string format="%+d">(($2-${mp:$1-1}+48000) % 96000)-48000</string>
         </item>
       </group>
     </command>

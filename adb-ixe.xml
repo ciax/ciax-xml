@@ -214,7 +214,7 @@
             </frmcmd>
             <frmcmd name="mopt">
               <argv>$_</argv>
-              <argv>-8000</argv>
+              <argv>88000</argv>
             </frmcmd>
             <frmcmd name="chkrun">
               <argv>$_</argv>

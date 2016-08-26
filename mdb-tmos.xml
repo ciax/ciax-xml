@@ -144,6 +144,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="ao" form="msg">CLOSE</equal>
           <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
@@ -379,6 +380,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <equal site="tfp" var="ao" form="msg">OPEN</equal>
           <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
@@ -1214,7 +1216,6 @@
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
           <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <not site="tma" var="pos" form="msg">FOCUS</not>
         </check>
         <mcr name="f-r"/>
         <mcr name="ini_f-i"/>

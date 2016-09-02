@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="turret" version="3" label="Turret Control" port="55555">
+  <macro id="turret" version="4" label="Turret Control" port="55555">
     <group id="grp_init" caption="Initialize" rank="0">
       <item id="tinit" label="Initialize Turret">
         <cfg site="mft" name="set6v"/>
+        <upd site="mft"/>
+        <mcr name="pre_home"/>
         <mcr name="pre_pos"/>
         <upd site="mft"/>
         <mcr name="gh_wheel" retry="3"/>
@@ -12,6 +14,23 @@
       </item>
     </group>
     <group id="tr_sub" caption="Turret Commands" rank="1">
+      <item id="pre_home" label="Pre-Homing">
+        <goal label="All Home?">
+          <match form="msg" site="mft" var="v1">HOME</match>
+          <match form="msg" site="mft" var="v2">HOME</match>
+          <match form="msg" site="mft" var="v3">HOME</match>
+          <match form="msg" site="mft" var="v4">HOME</match>
+          <match form="msg" site="mft" var="v5">HOME</match>
+          <match form="msg" site="mft" var="v6">HOME</match>
+        </goal>
+        <exec site="mix" name="prehome"/>
+        <wait retry="20" label="Start?">
+          <not form="msg" var="stp" site="mix">STOP</not>
+        </wait>
+        <wait retry="300" label="Run end?">
+          <equal form="msg" var="stp" site="mix">STOP</equal>
+        </wait>
+      </item>
       <item id="pre_pos" label="Pre-Positioning">
         <goal label="All Slot11?">
           <match form="data" site="mix" var="mp1">11.0</match>
@@ -21,7 +40,9 @@
           <match form="data" site="mix" var="mp5">11.0</match>
           <match form="data" site="mix" var="mp6">11.0</match>
         </goal>
-        <exec site="mix" name="prehome"/>
+        <exec site="mix" name="bk_all">
+          <argv>1</argv>
+        </exec>
         <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>
         </wait>

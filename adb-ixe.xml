@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="7">
+  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="8">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Status Commands">
         <unit id="upd" label="Status">
@@ -207,14 +207,14 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="prehome" label="Move All Turret to adjacent HOME">
+        <item id="prehome" label="Move All Turret to HOME">
           <repeat from="1" to="6">
             <frmcmd name="act">
               <argv>$_</argv>
             </frmcmd>
             <frmcmd name="mopt">
               <argv>$_</argv>
-              <argv>88000</argv>
+              <argv>0</argv>
             </frmcmd>
             <frmcmd name="chkrun">
               <argv>$_</argv>

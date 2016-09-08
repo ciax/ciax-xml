@@ -5,12 +5,14 @@
       <item id="tinit" label="Initialize Turret">
         <cfg site="mft" name="set6v"/>
         <upd site="mft"/>
-        <mcr name="pre_home"/>
         <mcr name="pre_pos"/>
         <upd site="mft"/>
         <mcr name="gh_wheel" retry="3"/>
         <cfg site="mix" name="resetp"/>
         <mcr name="lineup"/>
+      </item>
+      <item id="thome" label="Turret Shutdown">
+        <mcr name="pre_home"/>
       </item>
     </group>
     <group id="tr_sub" caption="Turret Commands" rank="1">
@@ -40,6 +42,7 @@
           <match form="data" site="mix" var="mp5">11.0</match>
           <match form="data" site="mix" var="mp6">11.0</match>
         </goal>
+        <mcr name="pre_home"/>
         <exec site="mix" name="bk_all">
           <argv>1</argv>
         </exec>

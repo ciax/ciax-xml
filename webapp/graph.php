@@ -14,5 +14,6 @@
    </head>
   <body>
     <div id="placeholder" style="width:600px;height:300px;"></div>
+    <div><input id="date" type="datetime-local" onchange="mv_date(this)"/></div>
   </body>
 </html>

@@ -78,6 +78,7 @@ function init_mode() {
         options.xaxis.max = max;
         options.zoom = { interactive: true };
         options.pan = { interactive: true };
+        set_date(past_time);
     }else {
         // For dynamic mode
         setInterval(update, 1000);
@@ -109,8 +110,21 @@ function get_graph() {
     });
 }
 
+function set_date(past_time) {
+    var dte = new Date(past_time - offset);
+    $('#date').val(dte.toJSON().substr(0,19));
+}
+
+function mv_date(dom){
+    var date = new Date($(dom).val());
+    par.time = date.getTime() + offset;
+    get_graph();
+}
+
+
 // var par shold be set in html [site, vid, (time)]
 var plot;
 var series;
 var past_time;
+var offset = (new Date()).getTimezoneOffset() * 60000;
 $.ajaxSetup({ mimeType: 'json', ifModified: true, cahce: false});

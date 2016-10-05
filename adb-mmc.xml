@@ -26,31 +26,33 @@
         </unit>
       </group>
       <group id="gc" caption="Config">
-        <item id="mres" label="Motor Reset">
-          <frmcmd name="reset"/>
-        </item>
-        <item id="lowspd" label="Default Config(LowSpd)">
-          <frmcmd name="hl">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="e1">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="e2">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="setspd">
-            <argv>0.2</argv>
-          </frmcmd>
-          <frmcmd name="spd"/>
-        </item>
-        <item id="set0" label="Set 0 at S00">
-          <frmcmd name="hl">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="set0"/>
-          <frmcmd name="p"/>
-        </item>
+        <unit id="ucfg" label="Config">
+          <item id="mres" label="Motor Reset">
+            <frmcmd name="reset"/>
+          </item>
+          <item id="lowspd" label="Low Speed">
+            <frmcmd name="hl">
+              <argv>1</argv>
+            </frmcmd>
+            <frmcmd name="e1">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="e2">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="setspd">
+              <argv>0.2</argv>
+            </frmcmd>
+            <frmcmd name="spd"/>
+          </item>
+          <item id="set0" label="Set 0 at S00">
+            <frmcmd name="hl">
+              <argv>1</argv>
+            </frmcmd>
+            <frmcmd name="set0"/>
+            <frmcmd name="p"/>
+          </item>
+        </unit>
         <unit id="udrv" title="drv[on|off]" label="Drive [%s]">
           <item id="drvon" label="ON">
             <frmcmd name="drvon"/>

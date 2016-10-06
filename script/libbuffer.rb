@@ -39,13 +39,13 @@ module CIAX
     end
 
     # Send app entity
-    def send(ent, n = 1)
+    def send(ent, n)
       clear if n == 0 # interrupt
       cid = type?(ent, Cmd::Entity).id
       verbose { "Execute #{cid}(#{@id}):timing" }
       # batch is frm batch (ary of ary)
       batch = ent[:batch]
-      @que_buf.push(pri: n, batch: batch, cid: cid) unless batch.empty?
+      @que_buf.push(pri: n || 1, batch: batch, cid: cid) unless batch.empty?
       self
     end
 

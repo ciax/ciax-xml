@@ -23,7 +23,7 @@ module CIAX
         _opt_mode
       end
 
-      def exe(args, src = 'local', pri = 1)
+      def exe(args, src = 'local')
         super
       rescue CommError
         @sv_stat.up(:comerr)

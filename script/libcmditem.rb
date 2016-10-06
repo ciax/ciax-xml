@@ -162,7 +162,7 @@ module CIAX
       end
 
       # returns result of def_proc block (String)
-      def exe_cmd(src, pri = 1)
+      def exe_cmd(src, pri = nil)
         verbose { "Execute [#{@id}] from #{src}" }
         _input_log(src, pri)
         @msg = self[:def_msg] || ''
@@ -174,9 +174,12 @@ module CIAX
 
       # For input logging (returns String)
       def _input_log(src, pri)
-        return unless self[:input] && !@id.empty?
+        input = self[:input]
+        return unless input && !@id.empty?
         verbose { "Input [#{@id}] from #{src}" }
-        self[:input].update(cid: self[:cid], src: src, pri: pri).cmt
+        input.update(cid: self[:cid], src: src)
+        input[:pri] = pri if pri
+        input.cmt
       end
     end
   end

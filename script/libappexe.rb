@@ -26,6 +26,10 @@ module CIAX
         _opt_mode
       end
 
+      def exe(args, src = nil, pri = 1)
+        super
+      end
+
       def ext_shell
         super
         @cfg[:output] = View.new(@stat)

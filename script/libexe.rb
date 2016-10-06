@@ -33,7 +33,7 @@ module CIAX
     # Sync only (Wait for other thread), never inherit
     # src can be 'user'(1),'shell'(1),'macro'(1),'local'(1),event'(2),'auto'(3)
     #  and 'udp:xxx'
-    def exe(args, src = nil, pri = 1)
+    def exe(args, src = nil, pri = nil)
       type?(args, Array)
       src ||= 'local'
       verbose { "Executing Command #{args} from '#{src}' as ##{pri}" }

@@ -112,7 +112,7 @@ module CIAX
     def _show_generation_(key, h)
       h.map do |k, v|
         next if key && k != key
-        val = (k == :obj) ? _show_(v.class) : _show_contents_(v)
+        val = k == :obj ? _show_(v.class) : _show_contents_(v)
         "#{k.inspect.sub(/^:/, '')}: #{val}"
       end.compact.join(', ')
     end

@@ -71,7 +71,7 @@ module CIAX
 
       def _get_num(hash)
         ary = hash[:fields].map { |e| get_field(e) }
-        sign = (/^[+-]$/ =~ ary[0]) ? (ary.shift + '1').to_i : 1
+        sign = /^[+-]$/ =~ ary[0] ? (ary.shift + '1').to_i : 1
         val = ary.map(&:to_f).inject(0) { |a, e| a + e }
         val /= ary.size if hash[:opration] == 'average'
         sign * val
@@ -90,7 +90,7 @@ module CIAX
         val = @field.get(fld)
         # verbose(val.empty?) { "NoFieldContent in [#{fld}]" }
         val = e[:conv][val] if e.key?(:conv)
-        val = (val == e[:negative]) ? '-' : '+' if /true|1/ =~ e[:sign]
+        val = val == e[:negative] ? '-' : '+' if /true|1/ =~ e[:sign]
         verbose { "GetField[#{fld}]=[#{val.inspect}]" }
         val
       end

@@ -104,7 +104,7 @@ module CIAX
       end
 
       def _get_key(str)
-        cat, key = (str =~ /:/) ? str.split(':') : [:data, str]
+        cat, key = str =~ /:/ ? str.split(':') : [:data, str]
         cat = cat.to_sym
         par_err("Invalid category (#{cat})") unless key?(cat)
         par_err("Invalid key (#{cat}:#{key})") unless key && get(cat).key?(key)

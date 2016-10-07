@@ -33,7 +33,7 @@ module CIAX
       end
 
       def _contact
-        return false unless @axis.pulse % 1000 == 0
+        return false unless (@axis.pulse % 1000).zero?
         return true unless @list[:load]
         @list.key?(:fp) && @list.key?(:arm) &&
           @list[:fp].arm_close? && @list[:arm].fpos > 150

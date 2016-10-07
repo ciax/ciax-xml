@@ -19,7 +19,7 @@ module CIAX
     #  return id otherwise nil
     def sel(num = nil)
       num = _reg_crnt_(num)
-      self[:default] = (num && num > 0) ? @list[num - 1] : nil
+      self[:default] = num && num > 0 ? @list[num - 1] : nil
     end
 
     # For macro variable param (sid list)

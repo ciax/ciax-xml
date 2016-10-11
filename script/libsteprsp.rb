@@ -85,6 +85,7 @@ module CIAX
 
       def _get_real(stat, h)
         warning('No form specified') unless h[:form]
+        # form = 'data', 'class' or 'msg' in Status 
         form = (h[:form] || :data).to_sym
         var = h[:var]
         warning("No [#{var}] in Status[#{form}]") unless stat[form].key?(var)

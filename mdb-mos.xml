@@ -144,7 +144,7 @@
         </goal>
         <check>
           <equal site="mfp" var="gv" form="msg">OPEN</equal>
-          <equal site="mfp" var="ao" form="msg">CLOSE</equal>
+          <not site="mfp" var="ao" form="msg">OPEN</not>
           <match site="map" var="pres" form="msg">H|M|L</match>
           <match site="mmc" var="abs" form="msg">S</match>
         </check>
@@ -380,7 +380,7 @@
         </goal>
         <check>
           <equal site="mfp" var="gv" form="msg">OPEN</equal>
-          <equal site="mfp" var="ao" form="msg">OPEN</equal>
+          <not site="mfp" var="ao" form="msg">CLOSE</not>
           <match site="map" var="pres" form="msg">H|M|L</match>
           <match site="mmc" var="abs" form="msg">S</match>
         </check>

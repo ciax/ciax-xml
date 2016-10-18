@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
+  <app id="cmi" label="Current Mask Index for MOIRCS" version="1">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc"/>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <symtbl ref="mmc"/>
+      <group id="g1" caption="">
+        <float id="cmi" label="Current Mask Index" symbol="rsl" format="%.2f" />
+      </group>
+    </status>
+  </app>
+</adb>

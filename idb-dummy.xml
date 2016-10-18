@@ -17,6 +17,7 @@
           </group>
         </status>
       </instance>
+      <instance id="tmi" app_id="cmi" host="moircsobcp" port="25690" label="Current Mask Index"/>
       <instance id="tbb" app_id="bbe" host="localhost" port="25696" label="TEST BBE simple">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="X0-3"/>

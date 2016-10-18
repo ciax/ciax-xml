@@ -95,7 +95,7 @@ check_fin,,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOS
 
 # startmask
 start,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-t-i,mma:pos!INIT,mfp:gv=OPEN&mfp:ao=CLOSE&map:pres~H|M|L&mmc:abs~S
+t-i,mma:pos!INIT,mfp:gv=OPEN&mfp:ao!OPEN&map:pres~H|M|L&mmc:abs~S
 t-f,mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 t-r,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 t-w,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:abs=WAIT&mfp:ao=OPEN,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
@@ -111,7 +111,7 @@ t-w,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:abs=WAIT&mfp:ao=OPEN,mfp:gv=OPEN&
 
 # storemask
 store,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-s-i,mma:pos!INIT,mfp:gv=OPEN&mfp:ao=OPEN&map:pres~H|M|L&mmc:abs~S
+s-i,mma:pos!INIT,mfp:gv=OPEN&mfp:ao!CLOSE&map:pres~H|M|L&mmc:abs~S
 s-f,mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-r,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-s,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STORE,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S

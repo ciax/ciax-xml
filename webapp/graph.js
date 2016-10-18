@@ -110,6 +110,11 @@ function get_graph() {
     });
 }
 
+function get_log() {
+    var url = 'sqlog.php?site=' + par.site + '&vid=' + par.vid + '&time=' + par.time;
+    window.open(url,'LOG','width=640,height=500,scrollbars=yes');
+}
+
 function set_date(past_time) {
     var dte = new Date(past_time - offset);
     $('#date').val(dte.toJSON().substr(0,19));

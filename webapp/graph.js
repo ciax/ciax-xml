@@ -102,8 +102,9 @@ function update() {
 
 function get_graph() {
     past_time = par.time;
-    $.getJSON('sqlog.php', par, function(ary) {
-        series = ary;
+    $.getJSON('sqlog.php', par, function(obj) {
+        obj[0].data.forEach(conv_ascii);
+        series = obj;
         init_mode();
         plot = $.plot('#placeholder', series, options);
         init_tooltip();
@@ -115,9 +116,13 @@ function get_log() {
     window.open(url,'LOG','width=640,height=500,scrollbars=yes');
 }
 
+function conv_ascii(pair) {
+    if(isNaN(pair[1])) { pair[1] = pair[1].charCodeAt(0); }
+}
+
 function set_date(past_time) {
     var dte = new Date(past_time - offset);
-    $('#date').val(dte.toJSON().substr(0,19));
+    $('#date').val(dte.toJSON().substr(0,10));
 }
 
 function mv_date(dom){

@@ -117,10 +117,7 @@ function get_log() {
 }
 
 function conv_ascii(pair) {
-    console.log(pair);
-    var str = pair[1];
-    if(str.isNaN) { pair[1] = str.charCodeAt(0); }
-    return pair;
+    if(isNaN(pair[1])) { pair[1] = pair[1].charCodeAt(0); }
 }
 
 function set_date(past_time) {

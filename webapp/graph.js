@@ -102,8 +102,9 @@ function update() {
 
 function get_graph() {
     past_time = par.time;
-    $.getJSON('sqlog.php', par, function(ary) {
-        series = ary;
+    $.getJSON('sqlog.php', par, function(obj) {
+        obj[0].data.forEach(conv_ascii);
+        series = obj;
         init_mode();
         plot = $.plot('#placeholder', series, options);
         init_tooltip();
@@ -113,6 +114,13 @@ function get_graph() {
 function get_log() {
     var url = 'sqlog.php?site=' + par.site + '&vid=' + par.vid + '&time=' + par.time;
     window.open(url,'LOG','width=640,height=500,scrollbars=yes');
+}
+
+function conv_ascii(pair) {
+    console.log(pair);
+    var str = pair[1];
+    if(str.isNaN) { pair[1] = str.charCodeAt(0); }
+    return pair;
 }
 
 function set_date(past_time) {

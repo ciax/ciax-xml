@@ -122,7 +122,7 @@ function conv_ascii(pair) {
 
 function set_date(past_time) {
     var dte = new Date(past_time - offset);
-    $('#date').val(dte.toJSON().substr(0,19));
+    $('#date').val(dte.toJSON().substr(0,10));
 }
 
 function mv_date(dom){

@@ -42,6 +42,10 @@ module CIAX
         @sv_stat.upd.up?(:event)
       end
 
+      def comerr?
+        raise(CommError) if @sv_stat.upd.up?(:comerr)
+      end
+
       # wait for busy end or status changed
       def wait_ready
         verbose { "Waiting busy end for #{@id}" }

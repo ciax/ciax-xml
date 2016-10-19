@@ -65,6 +65,9 @@ module CIAX
       rescue Interrupt
         mstat[:result] = 'interrupted'
         raise Interrupt
+      rescue CommError
+        mstat[:result] = 'comerr'
+        false
       ensure
         _post_seq(mstat)
       end

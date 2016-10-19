@@ -68,6 +68,7 @@ module CIAX
 
       def _scan
         @exes.each_with_object({}) do |obj, hash|
+          obj.comerr?
           st = hash[obj.id] = obj.stat.latest
           verbose { "Scanning #{obj.id} (#{st[:time]})/(#{st.object_id})" }
         end

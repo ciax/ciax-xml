@@ -35,7 +35,7 @@ module CIAX
         convert('snd', str, cid).cmt
       rescue Errno::EPIPE
         @f.close
-        raise(CommError)
+        com_err('send failed')
       end
 
       def rcv
@@ -136,7 +136,7 @@ module CIAX
       rescue EOFError
         # Jumped at quit
         @f.close
-        raise(CommError)
+        com_err('recv failed')
       end
     end
   end

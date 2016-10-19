@@ -160,7 +160,7 @@ var {
 .true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end, .issued, .accept, .nomask, .ready {
     color : green;
 }
-.false, .timeout, .failed, .error {
+.false, .timeout, .failed, .error, .comerr {
     color : red;
 }
 .interrupted, .interrupt {

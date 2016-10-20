@@ -46,8 +46,10 @@ module CIAX
       def wait_ready
         verbose { "Waiting busy end for #{@id}" }
         100.times do
-          return true unless @sv_stat.upd.up?(:busy)
           sleep 0.1
+          next if @sv_stat.upd.up?(:busy)
+          return true unless @sv_stat.up?(:comerr)
+          com_err('Device not responding')
         end
         false
       end

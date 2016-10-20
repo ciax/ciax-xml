@@ -17,12 +17,12 @@ module CIAX
 
       # Conditional judgment section
       def skip?
-        wait_dev_ready
+        wait_ready_all
         super(_all_conds?)
       end
 
       def fail?
-        wait_dev_ready
+        wait_ready_all
         super(!_all_conds?)
       end
 
@@ -46,7 +46,7 @@ module CIAX
       end
 
       # Blocking during busy. (for interlock check)
-      def wait_dev_ready
+      def wait_ready_all
         @exes.each do |obj|
           next if obj.wait_ready
           set_result('timeout')
@@ -67,10 +67,9 @@ module CIAX
       end
 
       def _scan
-        @exes.each_with_object({}) do |obj, hash|
-          obj.comerr?
-          st = hash[obj.id] = obj.stat.latest
-          verbose { "Scanning #{obj.id} (#{st[:time]})/(#{st.object_id})" }
+        @exes.each_with_object({}) do |exe, hash|
+          st = hash[exe.id] = exe.stat.latest
+          verbose { "Scanning #{exe.id} (#{st[:time]})/(#{st.object_id})" }
         end
       end
 

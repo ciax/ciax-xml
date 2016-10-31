@@ -551,7 +551,6 @@
           <equal site="mfp" var="rao" form="msg">CLOSE</equal>
           <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
           <equal site="mma" var="pos" form="msg">FOCUS</equal>
-          <equal site="mma" var="con" form="msg">ON</equal>
           <match site="mmc" var="abs" form="msg">S</match>
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>
@@ -917,7 +916,6 @@
           <equal site="mfp" var="rao" form="msg">CLOSE</equal>
           <equal site="mfp" var="rbo" form="msg">CLOSE</equal>
           <equal site="mma" var="pos" form="msg">FOCUS</equal>
-          <equal site="mma" var="con" form="msg">ON</equal>
           <match site="mmc" var="abs" form="msg">S</match>
           <match site="map" var="pres" form="msg">H|M|L</match>
         </check>

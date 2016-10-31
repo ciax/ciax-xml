@@ -551,7 +551,6 @@
           <equal site="tfp" var="rao" form="msg">CLOSE</equal>
           <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
-          <equal site="tma" var="con" form="msg">ON</equal>
           <match site="tmc" var="abs" form="msg">S</match>
           <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
@@ -917,7 +916,6 @@
           <equal site="tfp" var="rao" form="msg">CLOSE</equal>
           <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
-          <equal site="tma" var="con" form="msg">ON</equal>
           <match site="tmc" var="abs" form="msg">S</match>
           <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>

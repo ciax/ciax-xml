@@ -40,7 +40,7 @@ ao_s-i,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mma:pos=INIT&mma:abs~INIT&mmc:a
 rc_s-i,mfp:rao=CLOSE&mfp:rbo=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
 gf_s-f,mma:pos=FOCUS,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
 ac_s-f,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
-ro_s-f,mfp:rao=OPEN&mfp:rbo=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mma:con=ON&mmc:abs~S&map:pres~H|M|L
+ro_s-f,mfp:rao=OPEN&mfp:rbo=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 gr_s-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 av_s-r,mfp:hv=Vertical,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
 gs_s-s,mma:pos=STORE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
@@ -60,7 +60,7 @@ ah_l-r,mfp:hv=Horizontal,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=ROT&mm
 gf_l-f,mma:pos=FOCUS,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
 rc_l-f,mfp:rao=CLOSE&mfp:rbo=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 ro_l-f,mfp:rao=OPEN&mfp:rbo=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
-ao_l-f,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mma:con=ON&mmc:abs~S&map:pres~H|M|L
+ao_l-f,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 ini_l-i,mma:pos=INIT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 check_load,,mfp:gv=OPEN&mfp:hv=Horizontal&!mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
 sets_a,,mma:pos=STORE

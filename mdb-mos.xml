@@ -1350,7 +1350,6 @@
       </item>
       <item id="kapa" label="align mask">
         <check>
-          <equal site="mfp" var="gv" form="msg">OPEN</equal>
           <match site="map" var="pres" form="msg">H|M|L</match>
           <match site="mmc" var="abs" form="msg">S</match>
           <equal site="mma" var="pos" form="msg">INIT</equal>
@@ -1391,7 +1390,6 @@
       </item>
       <item id="kapa1" label="rail-up">
         <check>
-          <equal site="mfp" var="gv" form="msg">OPEN</equal>
           <match site="map" var="pres" form="msg">H|M|L</match>
           <match site="mmc" var="abs" form="msg">S</match>
           <equal site="mma" var="pos" form="msg">INIT</equal>

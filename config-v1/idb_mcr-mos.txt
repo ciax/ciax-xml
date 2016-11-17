@@ -138,8 +138,8 @@ fc-r1,mma:pos!N/A&mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|
 #fc-i2,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 
 # kapamask
-kapa,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
-kapa1,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
+kapa,,map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
+kapa1,,map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
 
 # fin
 fin,mma:abs^WAIT&mma:pos!ROT&mma:pos=INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S

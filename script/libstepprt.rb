@@ -84,7 +84,11 @@ module CIAX
 
       def _prt_conds(mary)
         (self[:conditions] || {}).each do |h|
-          res = h[:res] ? _body('o', 2) : _body('x', _fail_color)
+          if h[:skip]
+            res = _body('!', 6)
+          else
+            res = h[:res] ? _body('o', 2) : _body('x', _fail_color)
+          end
           mary << res + _cond_line(h)
         end
       end

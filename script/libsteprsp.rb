@@ -63,7 +63,7 @@ module CIAX
           _condition(stats[h[:site]], h)
         end
         self[:conditions] = conds
-        conds.all? { |h| h[:res] }
+        conds.all? { |h| h[:skip] || h[:res] }
       end
 
       def _scan
@@ -75,11 +75,13 @@ module CIAX
 
       def _condition(stat, h)
         c = {}
-        %i(site var form cmp cri).each { |k| c[k] = h[k] }
-        real = _get_real(stat, c)
-        res = method(c[:cmp]).call(c[:cri], real)
-        c.update(real: real, res: res)
-        verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
+        %i(site var form cmp cri skip).each { |k| c[k] = h[k] }
+        if ! c[:skip]
+          real = _get_real(stat, c)
+          res = method(c[:cmp]).call(c[:cri], real)
+          c.update(real: real, res: res)
+          verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
+        end
         c
       end
 

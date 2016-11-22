@@ -93,10 +93,14 @@ function make_step(step) {
             html.push(cond.site + ':' + cond['var']); // cond.var expression gives error at yui-compressor
             html.push('(' + cond.form + ')</var>');
             html.push('<code>' + _operator(cond.cmp, cond.cri) + '?</code>  ');
-            if (step.type == 'goal' && res == false) res = 'warn';
-            html.push('<span class="' + res + '" ');
-            html.push(_graphlink(cond.site, cond['var'], step.time));
-            html.push('> (' + cond.real + ')</span>');
+            if (cond['skip']){
+                html.push('<span class="skip">(Ignored)</skip>');
+            } else {
+                if (step.type == 'goal' && res == false) res = 'warn';
+                html.push('<span class="' + res + '" ');
+                html.push(_graphlink(cond.site, cond['var'], step.time));
+                html.push('> (' + cond.real + ')</span>');
+            }
             html.push('</li>');
         });
         html.push('</ul>');

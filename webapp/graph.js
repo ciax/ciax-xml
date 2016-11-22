@@ -130,7 +130,7 @@ function conv_ascii(pair) {
         });
         // regulate to minimum code value
         for (var i = 0; i < ary.length; i++){
-            asc += ( ary[i]- min ) * 2**i;
+            asc += ( ary[i]- min ) * Math.pow(2,i);
         }
         pair[1] = asc;
     }

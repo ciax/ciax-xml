@@ -112,8 +112,11 @@ function get_graph() {
 }
 
 function get_log() {
-    var url = 'sqlog.php?site=' + par.site + '&vid=' + par.vid + '&time=' + par.time;
-    window.open(url,'LOG','width=640,height=500,scrollbars=yes');
+    var url = 'dvlog.php?site=' + par.site + '&vid=' + par.vid
+    if(par.time) {
+        url +=  '&time=' + par.time;
+    }
+    window.open(url,'LOG','width=320,height=640,scrollbars=yes');
 }
 
 function conv_ascii(pair) {

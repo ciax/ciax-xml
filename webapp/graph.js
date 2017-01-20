@@ -99,7 +99,7 @@ function push_data(e, stat) {
 function update() {
     $.ajax('status_' + par.site + '.json').done(push_data);
 }
-
+// Main
 function get_graph() {
     past_time = par.time;
     $.getJSON('sqlog.php', par, function(obj) {

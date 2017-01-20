@@ -76,6 +76,8 @@ function make_list(data) {
     function _init_log() {
         var jq = $('#log li.selected');
         if (jq[0]) return jq;
+        // Set first selected
+        set_acordion('#log')(':not(:first)');
         $('#log li').first().trigger('click');
     }
 }
@@ -97,15 +99,8 @@ function switch_record(id) {
 
 // Initial Setting
 function init_log() {
-    // Register Events
-    var acdn = set_acordion('#log');
     // Set click event
     $('#log').on('click', 'li', _on_click);
-    // Set first selected
-    ajax_static('rec_list.json').done(function(data) {
-        make_list(data);
-        acdn(':not(:first)');
-    });
     upd_list.log = update_list;
 
     function _on_click() {

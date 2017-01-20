@@ -18,7 +18,7 @@ function open_graph(site, vid, time) {
         pre += 'h';
     }
     window.open(url, pre + '_' + site,
-                'menubar=no,location=no,status=no,width=640,height=340'
+                'menubar=no,location=no,status=no,width=700,height=380'
                ).focus();
 }
 function exec_funcs(funclist) {

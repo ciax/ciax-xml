@@ -51,7 +51,7 @@ function get_data($vid){
     $data=$st->fetchAll(PDO::FETCH_NUM);
     if (!$data) return;
     $dset = array('label' => "$site:$vid", 'vid' => $vid);
-    $dset['data'] = array_reverse($data);
+    $dset['data'] = $data;
     return $dset;
 }
 

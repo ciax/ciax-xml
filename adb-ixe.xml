@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="8">
+  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="9">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Status Commands">
         <unit id="upd" label="Status">
@@ -339,6 +339,32 @@
           <frmcmd name="bk">
             <argv>$1</argv>
             <argv format="%d">100</argv>
+          </frmcmd>
+          <frmcmd name="chkrun">
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
+        <item id="fw500" label="Move Forward 500/8000 Slot [1-6(Turret)]">
+          <par_num>1:6</par_num>
+          <frmcmd name="act">
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="fw">
+            <argv>$1</argv>
+            <argv format="%d">500</argv>
+          </frmcmd>
+          <frmcmd name="chkrun">
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
+        <item id="bk500" label="Move Backward 500/8000 Slot [1-6(Turret)]">
+          <par_num>1:6</par_num>
+          <frmcmd name="act">
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="bk">
+            <argv>$1</argv>
+            <argv format="%d">500</argv>
           </frmcmd>
           <frmcmd name="chkrun">
             <argv>$1</argv>

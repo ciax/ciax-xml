@@ -104,6 +104,7 @@
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
         </wait>
+        <upd site="mft"/>
       </item>
       <item id="find_slot" label="Find nearest slots">
         <upd site="mft"/>
@@ -133,6 +134,7 @@
         </goal>
         <exec site="mix" name="fw">
           <argv>$1</argv>
+          <argv>1</argv>
         </exec>
         <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>
@@ -140,6 +142,7 @@
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
         </wait>
+        <upd site="mft"/>
       </item>
       <item id="find_home" label="Find Home Position">
         <upd site="mft"/>

@@ -3,8 +3,6 @@
   <macro id="turret" version="5" label="Turret Control" port="55555">
     <group id="grp_init" caption="Initialize" rank="0">
       <item id="tinit" label="Initialize Turret">
-        <cfg site="mft" name="set6v"/>
-        <upd site="mft"/>
         <mcr name="pre_pos"/>
         <upd site="mft"/>
         <mcr name="gh_wheel" retry="3"/>
@@ -12,7 +10,11 @@
         <mcr name="lineup"/>
       </item>
       <item id="thome" label="Turret Shutdown">
-         <mcr name="pre_home"/>
+        <cfg site="mft" name="set6v"/>
+        <upd site="mft"/>
+        <mcr name="pre_home"/>
+        <mcr name="scan_slot"/>
+        <mcr name="scan_home"/>
       </item>
     </group>
     <group id="tr_sub" caption="Turret Commands" rank="1">
@@ -42,7 +44,7 @@
           <match form="data" site="mix" var="mp5">11.0</match>
           <match form="data" site="mix" var="mp6">11.0</match>
         </goal>
-        <mcr name="pre_home"/>
+        <mcr name="thome"/>
         <exec site="mix" name="bk_all">
           <argv>1</argv>
         </exec>
@@ -89,11 +91,11 @@
         </wait>
       </item>
     </group>
-    <group id="grp_find" caption="Find Position" rank="2">
+    <group id="grp_find_slot" caption="Find Slot Position" rank="2">
       <item id="move_s" label="Move to find slot [1-6]">
         <par_num>1:6</par_num>
-        <goal label="On Slot?" verify="true">
-          <match form="msg" site="mft" var="v$1">HOME|ON SLOT</match>
+        <goal label="On Slot?">
+          <not form="msg" site="mft" var="v$1">MID</not>
         </goal>
         <exec site="mix" name="fw1k">
           <argv>$1</argv>
@@ -101,35 +103,56 @@
         <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>
         </wait>
+      </item>
+      <item id="find_slot" label="Find nearest slots">
+        <goal label="On Slot?" verify="true">
+          <not form="msg" site="mft" var="v1">MID</not>
+          <not form="msg" site="mft" var="v2">MID</not>
+          <not form="msg" site="mft" var="v3">MID</not>
+          <not form="msg" site="mft" var="v4">MID</not>
+          <not form="msg" site="mft" var="v5">MID</not>
+          <not form="msg" site="mft" var="v6">MID</not>
+        </goal>
+        <mcr name="move_s">
+          <argv>1</argv>
+        </mcr>
+        <mcr name="move_s">
+          <argv>2</argv>
+        </mcr>
+        <mcr name="move_s">
+          <argv>3</argv>
+        </mcr>
+        <mcr name="move_s">
+          <argv>4</argv>
+        </mcr>
+        <mcr name="move_s">
+          <argv>5</argv>
+        </mcr>
+        <mcr name="move_s">
+          <argv>6</argv>
+        </mcr>
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
         </wait>
         <upd site="mft"/>
       </item>
-      <item id="find_slot" label="Find nearest slots">
+      <item id="scan_slot" label="Scan Slot Position">
+        <goal label="On Slot?">
+          <not form="msg" site="mft" var="v1">MID</not>
+          <not form="msg" site="mft" var="v2">MID</not>
+          <not form="msg" site="mft" var="v3">MID</not>
+          <not form="msg" site="mft" var="v4">MID</not>
+          <not form="msg" site="mft" var="v5">MID</not>
+          <not form="msg" site="mft" var="v6">MID</not>
+        </goal>
         <upd site="mft"/>
-        <mcr name="move_s" retry="7">
-          <argv>1</argv>
-        </mcr>
-        <mcr name="move_s" retry="7">
-          <argv>2</argv>
-        </mcr>
-        <mcr name="move_s" retry="7">
-          <argv>3</argv>
-        </mcr>
-        <mcr name="move_s" retry="7">
-          <argv>4</argv>
-        </mcr>
-        <mcr name="move_s" retry="7">
-          <argv>5</argv>
-        </mcr>
-        <mcr name="move_s" retry="7">
-          <argv>6</argv>
-        </mcr>
+        <mcr name="find_slot" retry="7"/>
       </item>
+    </group>
+    <group id="grp_find_home" caption="Find Home Position" rank="2">
       <item id="move_h" label="Move to find home [1-6]">
         <par_num>1:6</par_num>
-        <goal label="Home?" verify="true">
+        <goal label="Home?">
           <match form="msg" site="mft" var="v$1">HOME</match>
         </goal>
         <exec site="mix" name="fw">
@@ -139,31 +162,58 @@
         <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>
         </wait>
+      </item>
+      <item id="find_home" label="Find Home Position">
+        <goal label="All Home?" verify="true">
+          <match form="msg" site="mft" var="v1">HOME</match>
+          <match form="msg" site="mft" var="v2">HOME</match>
+          <match form="msg" site="mft" var="v3">HOME</match>
+          <match form="msg" site="mft" var="v4">HOME</match>
+          <match form="msg" site="mft" var="v5">HOME</match>
+          <match form="msg" site="mft" var="v6">HOME</match>
+        </goal>
+        <mcr name="move_h">
+          <argv>1</argv>
+        </mcr>
+        <mcr name="move_h">
+          <argv>2</argv>
+        </mcr>
+        <mcr name="move_h">
+          <argv>3</argv>
+        </mcr>
+        <mcr name="move_h">
+          <argv>4</argv>
+        </mcr>
+        <mcr name="move_h">
+          <argv>5</argv>
+        </mcr>
+        <mcr name="move_h">
+          <argv>6</argv>
+        </mcr>
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
         </wait>
         <upd site="mft"/>
       </item>
-      <item id="find_home" label="Find Home Position">
+      <item id="scan_home" label="Verify Home Position">
+        <goal label="All Home?">
+          <match form="msg" site="mft" var="v1">HOME</match>
+          <match form="msg" site="mft" var="v2">HOME</match>
+          <match form="msg" site="mft" var="v3">HOME</match>
+          <match form="msg" site="mft" var="v4">HOME</match>
+          <match form="msg" site="mft" var="v5">HOME</match>
+          <match form="msg" site="mft" var="v6">HOME</match>
+        </goal>
+        <check label="On Slot?">
+          <not form="msg" site="mft" var="v1">MID</not>
+          <not form="msg" site="mft" var="v2">MID</not>
+          <not form="msg" site="mft" var="v3">MID</not>
+          <not form="msg" site="mft" var="v4">MID</not>
+          <not form="msg" site="mft" var="v5">MID</not>
+          <not form="msg" site="mft" var="v6">MID</not>
+        </check>
         <upd site="mft"/>
-        <mcr name="move_h" retry="11">
-          <argv>1</argv>
-        </mcr>
-        <mcr name="move_h" retry="11">
-          <argv>2</argv>
-        </mcr>
-        <mcr name="move_h" retry="11">
-          <argv>3</argv>
-        </mcr>
-        <mcr name="move_h" retry="11">
-          <argv>4</argv>
-        </mcr>
-        <mcr name="move_h" retry="11">
-          <argv>5</argv>
-        </mcr>
-        <mcr name="move_h" retry="11">
-          <argv>6</argv>
-        </mcr>
+        <mcr name="find_home" retry="11"/>
       </item>
     </group>
   </macro>

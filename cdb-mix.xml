@@ -304,7 +304,7 @@
       </unit>
     </group>
     <group id="gta" caption="Turret Adjust">
-      <unit id="ua1" title="[fw|bk][*]_1" label="Adjust 1 [50,100,1k]">
+      <unit id="ua1" title="[fw|bk][*]_1" label="Adjust 1 [50,100,500,1k]">
         <item id="fw50_1" label="+ 50" ref="fw50">
           <argv>1</argv>
         </item>
@@ -317,6 +317,12 @@
         <item id="bk100_1" label="- 100" ref="bk100">
           <argv>1</argv>
         </item>
+        <item id="fw500_1" label="+ 500" ref="fw500">
+          <argv>1</argv>
+        </item>
+        <item id="bk500_1" label="- 500" ref="bk500">
+          <argv>1</argv>
+        </item>
         <item id="fw1k_1" label="+ 1000" ref="fw1k">
           <argv>1</argv>
         </item>
@@ -324,7 +330,7 @@
           <argv>1</argv>
         </item>
       </unit>
-      <unit id="ua4" title="[fw|bk][*]_4" label="Adjust 4 [50,100,1k]">
+      <unit id="ua4" title="[fw|bk][*]_4" label="Adjust 4 [50,100,500,1k]">
         <item id="fw50_4" label="+ 50" ref="fw50">
           <argv>4</argv>
         </item>
@@ -337,6 +343,12 @@
         <item id="bk100_4" label="- 100" ref="bk100">
           <argv>4</argv>
         </item>
+        <item id="fw500_4" label="+ 500" ref="fw500">
+          <argv>4</argv>
+        </item>
+        <item id="bk500_4" label="- 500" ref="bk500">
+          <argv>4</argv>
+        </item>
         <item id="fw1k_4" label="+ 1000" ref="fw1k">
           <argv>4</argv>
         </item>
@@ -344,7 +356,7 @@
           <argv>4</argv>
         </item>
       </unit>
-      <unit id="ua2" title="[fw|bk][*]_2" label="Adjust 2 [50,100,1k]">
+      <unit id="ua2" title="[fw|bk][*]_2" label="Adjust 2 [50,100,500,1k]">
         <item id="fw50_2" label="+ 50" ref="fw50">
           <argv>2</argv>
         </item>
@@ -357,6 +369,12 @@
         <item id="bk100_2" label="- 100" ref="bk100">
           <argv>2</argv>
         </item>
+        <item id="fw500_2" label="+ 500" ref="fw500">
+          <argv>2</argv>
+        </item>
+        <item id="bk500_2" label="- 500" ref="bk500">
+          <argv>2</argv>
+        </item>
         <item id="fw1k_2" label="+ 1000" ref="fw1k">
           <argv>2</argv>
         </item>
@@ -364,7 +382,7 @@
           <argv>2</argv>
         </item>
       </unit>
-      <unit id="ua5" title="[fw|bk][*]_5" label="Adjust 5 [50,100,1k]">
+      <unit id="ua5" title="[fw|bk][*]_5" label="Adjust 5 [50,100,500,1k]">
         <item id="fw50_5" label="+ 50" ref="fw50">
           <argv>5</argv>
         </item>
@@ -377,6 +395,12 @@
         <item id="bk100_5" label="- 100" ref="bk100">
           <argv>5</argv>
         </item>
+        <item id="fw500_5" label="+ 500" ref="fw500">
+          <argv>5</argv>
+        </item>
+        <item id="bk500_5" label="- 500" ref="bk500">
+          <argv>5</argv>
+        </item>
         <item id="fw1k_5" label="+ 1000" ref="fw1k">
           <argv>5</argv>
         </item>
@@ -384,7 +408,7 @@
           <argv>5</argv>
         </item>
       </unit>
-      <unit id="ua3" title="[fw|bk][*]_3" label="Adjust 3 [50,100,1k]">
+      <unit id="ua3" title="[fw|bk][*]_3" label="Adjust 3 [50,100,500,1k]">
         <item id="fw50_3" label="+ 50" ref="fw50">
           <argv>3</argv>
         </item>
@@ -397,6 +421,12 @@
         <item id="bk100_3" label="- 100" ref="bk100">
           <argv>3</argv>
         </item>
+        <item id="fw500_3" label="+ 500" ref="fw500">
+          <argv>3</argv>
+        </item>
+        <item id="bk500_3" label="- 500" ref="bk500">
+          <argv>3</argv>
+        </item>
         <item id="fw1k_3" label="+ 1000" ref="fw1k">
           <argv>3</argv>
         </item>
@@ -404,7 +434,7 @@
           <argv>3</argv>
         </item>
       </unit>
-      <unit id="ua6" title="[fw|bk][*]_6" label="Adjust 6 [50,100,1k]">
+      <unit id="ua6" title="[fw|bk][*]_6" label="Adjust 6 [50,100,500,1k]">
         <item id="fw50_6" label="+ 50" ref="fw50">
           <argv>6</argv>
         </item>
@@ -415,6 +445,12 @@
           <argv>6</argv>
         </item>
         <item id="bk100_6" label="- 100" ref="bk100">
+          <argv>6</argv>
+        </item>
+        <item id="fw100_6" label="+ 500" ref="fw500">
+          <argv>6</argv>
+        </item>
+        <item id="bk500_6" label="- 500" ref="bk500">
           <argv>6</argv>
         </item>
         <item id="fw1k_6" label="+ 1000" ref="fw1k">

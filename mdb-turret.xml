@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="turret" version="4" label="Turret Control" port="55555">
+  <macro id="turret" version="5" label="Turret Control" port="55555">
     <group id="grp_init" caption="Initialize" rank="0">
       <item id="tinit" label="Initialize Turret">
         <cfg site="mft" name="set6v"/>
@@ -12,7 +12,7 @@
         <mcr name="lineup"/>
       </item>
       <item id="thome" label="Turret Shutdown">
-        <mcr name="pre_home"/>
+         <mcr name="pre_home"/>
       </item>
     </group>
     <group id="tr_sub" caption="Turret Commands" rank="1">
@@ -87,6 +87,80 @@
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
         </wait>
+      </item>
+    </group>
+    <group id="grp_find" caption="Find Position" rank="2">
+      <item id="move_s" label="Move to find slot [1-6]">
+        <par_num>1:6</par_num>
+        <goal label="On Slot?" verify="true">
+          <match form="msg" site="mft" var="v$1">HOME|ON SLOT</match>
+        </goal>
+        <exec site="mix" name="fw1k">
+          <argv>$1</argv>
+        </exec>
+        <wait retry="20" label="Start?">
+          <not form="msg" var="stp" site="mix">STOP</not>
+        </wait>
+        <wait retry="300" label="Run end?">
+          <equal form="msg" var="stp" site="mix">STOP</equal>
+        </wait>
+      </item>
+      <item id="find_slot" label="Find nearest slots">
+        <upd site="mft"/>
+        <mcr name="move_s" retry="7">
+          <argv>1</argv>
+        </mcr>
+        <mcr name="move_s" retry="7">
+          <argv>2</argv>
+        </mcr>
+        <mcr name="move_s" retry="7">
+          <argv>3</argv>
+        </mcr>
+        <mcr name="move_s" retry="7">
+          <argv>4</argv>
+        </mcr>
+        <mcr name="move_s" retry="7">
+          <argv>5</argv>
+        </mcr>
+        <mcr name="move_s" retry="7">
+          <argv>6</argv>
+        </mcr>
+      </item>
+      <item id="move_h" label="Move to find home [1-6]">
+        <par_num>1:6</par_num>
+        <goal label="Home?" verify="true">
+          <match form="msg" site="mft" var="v$1">HOME</match>
+        </goal>
+        <exec site="mix" name="fw">
+          <argv>$1</argv>
+        </exec>
+        <wait retry="20" label="Start?">
+          <not form="msg" var="stp" site="mix">STOP</not>
+        </wait>
+        <wait retry="300" label="Run end?">
+          <equal form="msg" var="stp" site="mix">STOP</equal>
+        </wait>
+      </item>
+      <item id="find_home" label="Find Home Position">
+        <upd site="mft"/>
+        <mcr name="move_h" retry="11">
+          <argv>1</argv>
+        </mcr>
+        <mcr name="move_h" retry="11">
+          <argv>2</argv>
+        </mcr>
+        <mcr name="move_h" retry="11">
+          <argv>3</argv>
+        </mcr>
+        <mcr name="move_h" retry="11">
+          <argv>4</argv>
+        </mcr>
+        <mcr name="move_h" retry="11">
+          <argv>5</argv>
+        </mcr>
+        <mcr name="move_h" retry="11">
+          <argv>6</argv>
+        </mcr>
       </item>
     </group>
   </macro>

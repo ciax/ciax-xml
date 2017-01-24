@@ -97,7 +97,7 @@
         <goal label="On Slot?">
           <not form="msg" site="mft" var="v$1">MID</not>
         </goal>
-        <exec site="mix" name="fw1k">
+        <exec site="mix" name="fw500">
           <argv>$1</argv>
         </exec>
         <wait retry="20" label="Start?">
@@ -146,7 +146,7 @@
           <not form="msg" site="mft" var="v6">MID</not>
         </goal>
         <upd site="mft"/>
-        <mcr name="find_slot" retry="7"/>
+        <mcr name="find_slot" retry="15"/>
       </item>
     </group>
     <group id="grp_find_home" caption="Find Home Position" rank="2">

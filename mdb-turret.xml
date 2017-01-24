@@ -34,6 +34,7 @@
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
         </wait>
+        <upd site="mft"/>
       </item>
       <item id="pre_pos" label="Pre-Positioning">
         <goal label="All Slot11?">
@@ -89,6 +90,7 @@
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
         </wait>
+        <upd site="mft"/>
       </item>
     </group>
     <group id="grp_find_slot" caption="Find Slot Position" rank="2">

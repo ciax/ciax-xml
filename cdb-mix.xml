@@ -447,7 +447,7 @@
         <item id="bk100_6" label="- 100" ref="bk100">
           <argv>6</argv>
         </item>
-        <item id="fw100_6" label="+ 500" ref="fw500">
+        <item id="fw500_6" label="+ 500" ref="fw500">
           <argv>6</argv>
         </item>
         <item id="bk500_6" label="- 500" ref="bk500">

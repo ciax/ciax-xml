@@ -40,27 +40,6 @@
           <string>$1</string>
           <string>P20R</string>
         </item>
-        <item id="getp" label="Get absolute pulse [1-6]" response="getp" type="stat">
-          <par_num>1:6</par_num>
-          <string>$1</string>
-          <string>P21R</string>
-        </item>
-        <item id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
-          <par_num>1:6</par_num>
-          <string>$1</string>
-          <string>P14R</string>
-        </item>
-        <item id="setspd" label="Set speed from buffer [1-6]" nocache="true" response="default" type="config">
-          <par_num>1:6</par_num>
-          <string>$1</string>
-          <string>P14S</string>
-          <string>${spd:$1-1}</string>
-        </item>
-        <item id="getrmp" label="Get ramp [1-6]" response="getrmp" type="stat">
-          <par_num>1:6</par_num>
-          <string>$1</string>
-          <string>P15R</string>
-        </item>
       </group>
       <group id="gcfg" caption="Configuration">
         <item id="initrot" label="Parameter set for rotation" response="default" type="config">
@@ -78,22 +57,76 @@
           <string>$1</string>
           <string>P03S1</string>
         </item>
-        <item id="setp" label="Set absolute pulse from buffer[1-6]" nocache="true" response="default" type="config">
+        <item id="getmspd" label="Get mech speed [1-6]" response="getispd" type="stat">
           <par_num>1:6</par_num>
           <string>$1</string>
-          <string>P21S</string>
-          <string format="%d">${p:$1-1} % 96000</string>
+          <string>P08R</string>
         </item>
-        <item id="getispd" label="Get init speed [1-6]" response="getispd" type="stat">
+        <item id="setmspd" label="Set mech speed from buffer [1-6]" nocache="true" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P08S</string>
+          <string>${mspd:$1-1}</string>
+        </item>
+        <item id="getmrmp" label="Get mech ramp [1-6]" response="getrmp" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P09R</string>
+        </item>
+        <item id="setmrmp" label="Set mech ramp from buffer [1-6]" nocache="true" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P09S</string>
+          <string>${mrmp:$1-1}</string>
+        </item>
+        <item id="getispd" label="Get mech return speed [1-6]" response="getispd" type="stat">
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P10R</string>
         </item>
-        <item id="setispd" label="Set init speed from buffer [1-6]" nocache="true" response="default" type="config">
+        <item id="setispd" label="Set mech return speed from buffer [1-6]" nocache="true" response="default" type="config">
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P10S</string>
           <string>${ispd:$1-1}</string>
+        </item>
+        <item id="getofs" label="Get mech offset [1-6]" response="getofs" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P12R</string>
+        </item>
+        <item id="setofs" label="Set mech offset from buffer[1-6]" nocache="true" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P12S</string>
+          <string>${ofs:$1-1}</string>
+        </item>
+        <item id="getirtm" label="Get mech recovery time(ms) [1-6]" response="getspd" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P13R</string>
+        </item>
+        <item id="setirtm" label="Set mech recovery time(ms) in buffer [1-6]" nocache="true" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P13S</string>
+          <string>${mrtm:$1-1}</string>
+        </item>
+        <item id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P14R</string>
+        </item>
+        <item id="setspd" label="Set speed from buffer [1-6]" nocache="true" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P14S</string>
+          <string>${spd:$1-1}</string>
+        </item>
+        <item id="getrmp" label="Get ramp [1-6]" response="getrmp" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P15R</string>
         </item>
         <item id="setrmp" label="Set ramp from buffer [1-6]" nocache="true" response="default" type="config">
           <par_num>1:6</par_num>
@@ -101,16 +134,27 @@
           <string>P15S</string>
           <string>${rmp:$1-1}</string>
         </item>
-        <item id="getofs" label="Get mechanical offset [1-6]" response="getofs" type="stat">
+        <item id="getrtm" label="Get recovery time(ms) [1-6]" response="getspd" type="stat">
           <par_num>1:6</par_num>
           <string>$1</string>
-          <string>P12R</string>
+          <string>P16R</string>
         </item>
-        <item id="setofs" label="Set mechanical offset from buffer[1-6]" nocache="true" response="default" type="config">
+        <item id="setrtm" label="Set recovery time(ms) in buffer [1-6]" nocache="true" response="default" type="config">
           <par_num>1:6</par_num>
           <string>$1</string>
-          <string>P12S</string>
-          <string>${ofs:$1-1}</string>
+          <string>P16S</string>
+          <string>${rtm:$1-1}</string>
+        </item>
+        <item id="getp" label="Get absolute pulse [1-6]" response="getp" type="stat">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P21R</string>
+        </item>
+        <item id="setp" label="Set absolute pulse from buffer[1-6]" nocache="true" response="default" type="config">
+          <par_num>1:6</par_num>
+          <string>$1</string>
+          <string>P21S</string>
+          <string format="%d">${p:$1-1} % 96000</string>
         </item>
       </group>
       <group id="gact" caption="Action">
@@ -214,13 +258,33 @@
           <index range="$1-1" size="6"/>
         </array>
       </item>
+      <item id="getmspd">
+        <array assign="mspd" label="Mechanical Speed" delimiter="\003">
+          <index range="$1-1" size="6"/>
+        </array>
+      </item>
+      <item id="getmrmp">
+        <array assign="mrmp" label="Mechanical Ramp Speed" delimiter="\003">
+          <index range="$1-1" size="6"/>
+        </array>
+      </item>
       <item id="getispd">
-        <array assign="ispd" label="Init Speed" delimiter="\003">
+        <array assign="ispd" label="Init Return Speed" delimiter="\003">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getofs">
-        <array assign="ofs" label="Init Offset" delimiter="\003">
+        <array assign="ofs" label="Mechanical Offset" delimiter="\003">
+          <index range="$1-1" size="6"/>
+        </array>
+      </item>
+      <item id="getrtm">
+        <array assign="rtm" label="Recovery Time(ms)" delimiter="\003">
+          <index range="$1-1" size="6"/>
+        </array>
+      </item>
+      <item id="getmrtm">
+        <array assign="mrtm" label="Mech Recovery Time(ms)" delimiter="\003">
           <index range="$1-1" size="6"/>
         </array>
       </item>

@@ -39,15 +39,15 @@ module CIAX
           # id : Mcr
           id = @cfg[:site_id] || @cfg[:id]
           verbose { "Initiate logging input #{tag}:#{id}" }
-          @cfg[:input] = Input.new(tag, id)
+          @cfg[:input] = Input.new(tag, id, @cfg[:version])
           self
         end
       end
 
       # Command Input Logging
       class Input < Varx
-        def initialize(tag, id)
-          super("input_#{tag}", id)
+        def initialize(tag, id, ver)
+          super("input_#{tag}", id, ver)
           init_time2cmt
           ext_local_file
           ext_local_log

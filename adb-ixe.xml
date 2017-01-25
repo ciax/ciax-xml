@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="9">
+  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="10">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Status Commands">
         <unit id="upd" label="Status">
@@ -32,6 +32,9 @@
             <frmcmd name="getrmp">
               <argv>$_</argv>
             </frmcmd>
+            <frmcmd name="getrtm">
+              <argv>$_</argv>
+            </frmcmd>
             <frmcmd name="getofs">
               <argv>$_</argv>
             </frmcmd>
@@ -39,6 +42,15 @@
               <argv>$_</argv>
             </frmcmd>
             <frmcmd name="getmp">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getmspd">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getmrmp">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getmrtm">
               <argv>$_</argv>
             </frmcmd>
           </repeat>
@@ -541,18 +553,24 @@
           </integer>
         </repeat_var>
       </group>
-      <group id="gtc" caption="Turret Config" column="4">
+      <group id="gtc1" caption="Turret Motion Config" column="6">
         <repeat_var from="1" to="6">
-          <float id="spd$_" label="Speed $_(/s)" format="%.1f" formula="$#/8000">
+          <float id="spd$_" label="Speed $_(/s)" format="%.2f" formula="$#/8000">
             <field ref="spd" index="$_-1"/>
           </float>
-          <float id="rmp$_" label="Ramp $_(/s2)" format="%.1f" formula="$#/8000">
+          <float id="rmp$_" label="Ramp $_(/s2)" format="%.2f" formula="$#/8000">
             <field ref="rmp" index="$_-1"/>
           </float>
-          <float id="ispd$_" label="Init Speed $_(/s)" format="%.1f" formula="$#/8000">
+          <float id="mspd$_" label="Init Speed $_(/s)" format="%.2f" formula="$#/8000">
+            <field ref="mspd" index="$_-1"/>
+          </float>
+          <float id="mrmp$_" label="Init Ramp $_(/s2)" format="%.2f" formula="$#/8000">
+            <field ref="mrmp" index="$_-1"/>
+          </float>
+          <float id="ispd$_" label="Return $_(/s)" format="%.2f" formula="$#/8000">
             <field ref="ispd" index="$_-1"/>
           </float>
-          <float id="ofs$_" label="Init Offset $_" format="%.1f" formula="$#/8000">
+          <float id="ofs$_" label="Offset $_" format="%.2f" formula="$#/8000">
             <field ref="ofs" index="$_-1"/>
           </float>
         </repeat_var>

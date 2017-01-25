@@ -101,12 +101,12 @@
           <string>P12S</string>
           <string>${ofs:$1-1}</string>
         </item>
-        <item id="getirtm" label="Get mech recovery time(ms) [1-6]" response="getspd" type="stat">
+        <item id="getmrtm" label="Get mech recovery time(ms) [1-6]" response="getspd" type="stat">
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P13R</string>
         </item>
-        <item id="setirtm" label="Set mech recovery time(ms) in buffer [1-6]" nocache="true" response="default" type="config">
+        <item id="setmrtm" label="Set mech recovery time(ms) in buffer [1-6]" nocache="true" response="default" type="config">
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P13S</string>

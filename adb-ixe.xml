@@ -483,7 +483,7 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="ramp" label="Set ramp [200-800]">
+        <item id="ramp" label="Set Ramp [200-800]">
           <par_num>200:800</par_num>
           <repeat from="1" to="6">
             <frmcmd name="set">
@@ -495,7 +495,31 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="offset" label="Set offset [1-6(Turret)] [+-2000]">
+        <item id="mspeed" label="Set Mech Speed [25-800]">
+          <par_num>25:800</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="mspd:%d">$_-1</argv>
+              <argv>$1</argv>
+            </frmcmd>
+            <frmcmd name="setmspd">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="mramp" label="Set Mech Ramp [200-800]">
+          <par_num>200:800</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="mrmp:%d">$_-1</argv>
+              <argv>$1</argv>
+            </frmcmd>
+            <frmcmd name="setmrmp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="offset" label="Set Offset [1-6(Turret)] [+-2000]">
           <par_num>1:6</par_num>
           <par_num>-2000:2000</par_num>
           <frmcmd name="set">

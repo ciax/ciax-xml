@@ -57,7 +57,7 @@
           <string>$1</string>
           <string>P03S1</string>
         </item>
-        <item id="getmspd" label="Get mech speed [1-6]" response="getispd" type="stat">
+        <item id="getmspd" label="Get mech speed [1-6]" response="getmspd" type="stat">
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P08R</string>
@@ -68,7 +68,7 @@
           <string>P08S</string>
           <string>${mspd:$1-1}</string>
         </item>
-        <item id="getmrmp" label="Get mech ramp [1-6]" response="getrmp" type="stat">
+        <item id="getmrmp" label="Get mech ramp [1-6]" response="getmrmp" type="stat">
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P09R</string>
@@ -101,7 +101,7 @@
           <string>P12S</string>
           <string>${ofs:$1-1}</string>
         </item>
-        <item id="getmrtm" label="Get mech recovery time(ms) [1-6]" response="getspd" type="stat">
+        <item id="getmrtm" label="Get mech recovery time(ms) [1-6]" response="getmrtm" type="stat">
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P13R</string>
@@ -134,7 +134,7 @@
           <string>P15S</string>
           <string>${rmp:$1-1}</string>
         </item>
-        <item id="getrtm" label="Get recovery time(ms) [1-6]" response="getspd" type="stat">
+        <item id="getrtm" label="Get recovery time(ms) [1-6]" response="getrtm" type="stat">
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P16R</string>

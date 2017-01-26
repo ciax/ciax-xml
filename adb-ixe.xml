@@ -472,6 +472,17 @@
             </frmcmd>
           </repeat>
         </item>
+        <item id="offset" label="Set Offset [1-6(Turret)] [+-2000]">
+          <par_num>1:6</par_num>
+          <par_num>-2000:2000</par_num>
+          <frmcmd name="set">
+            <argv format="ofs:%d">$1-1</argv>
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="setofs">
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
         <item id="speed" label="Set Speed [25-800]">
           <par_num>25:800</par_num>
           <repeat from="1" to="6">
@@ -520,11 +531,10 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="ispeed" label="Set Return Speed [25-800]">
-          <par_num>25:800</par_num>
+        <item id="ispdh" label="Set Return Speed High(x2)">
           <repeat from="1" to="6">
             <frmcmd name="set">
-              <argv format="ispd:%d">$_-1</argv>
+              <argv format="ispd:2000"/>
               <argv>$1</argv>
             </frmcmd>
             <frmcmd name="setispd">
@@ -532,16 +542,16 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="offset" label="Set Offset [1-6(Turret)] [+-2000]">
-          <par_num>1:6</par_num>
-          <par_num>-2000:2000</par_num>
-          <frmcmd name="set">
-            <argv format="ofs:%d">$1-1</argv>
-            <argv>$1</argv>
-          </frmcmd>
-          <frmcmd name="setofs">
-            <argv>$1</argv>
-          </frmcmd>
+        <item id="ispdl" label="Set Return Speed Low(x.25)">
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="ispd:200"/>
+              <argv>$1</argv>
+            </frmcmd>
+            <frmcmd name="setispd">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
         </item>
       </group>
     </command>

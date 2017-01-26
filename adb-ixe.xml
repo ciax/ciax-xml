@@ -26,6 +26,12 @@
             <frmcmd name="getp">
               <argv>$_</argv>
             </frmcmd>
+            <frmcmd name="chkems">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="chkpse">
+              <argv>$_</argv>
+            </frmcmd>
             <frmcmd name="getspd">
               <argv>$_</argv>
             </frmcmd>

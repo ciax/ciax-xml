@@ -561,19 +561,19 @@
       </group>
       <group id="gtc1" caption="Turret Motion Config" column="6">
         <repeat_var from="1" to="6">
-          <float id="spd$_" label="Speed $_(/s)" format="%.2f" formula="$#/8000">
+          <float id="spd$_" label="Spd $_(/s)" format="%.2f" formula="$#/8000">
             <field ref="spd" index="$_-1"/>
           </float>
-          <float id="rmp$_" label="Ramp $_(/s2)" format="%.2f" formula="$#/8000">
+          <float id="rmp$_" label="Rmp $_(/s2)" format="%.2f" formula="$#/8000">
             <field ref="rmp" index="$_-1"/>
           </float>
-          <float id="mspd$_" label="Init Speed $_(/s)" format="%.2f" formula="$#/8000">
+          <float id="mspd$_" label="IniSpd $_(/s)" format="%.2f" formula="$#/8000">
             <field ref="mspd" index="$_-1"/>
           </float>
-          <float id="mrmp$_" label="Init Ramp $_(/s2)" format="%.2f" formula="$#/8000">
+          <float id="mrmp$_" label="IniRmp $_(/s2)" format="%.2f" formula="$#/8000">
             <field ref="mrmp" index="$_-1"/>
           </float>
-          <float id="ispd$_" label="Return $_(/s)" format="%.2f" formula="$#/8000">
+          <float id="ispd$_" label="RetSpd $_(/s)" format="%.2f" formula="$#/8000">
             <field ref="ispd" index="$_-1"/>
           </float>
           <float id="ofs$_" label="Offset $_" format="%.2f" formula="$#/8000">

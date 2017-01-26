@@ -465,6 +465,7 @@
           </repeat>
         </item>
         <item id="resetr" label="Set Regulated Pulse">
+          <!-- 96000 = 0 -->
           <repeat from="1" to="6">
             <frmcmd name="setp">
               <argv>$_</argv>
@@ -515,6 +516,18 @@
               <argv>$1</argv>
             </frmcmd>
             <frmcmd name="setmrmp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="ispeed" label="Set Return Speed [25-800]">
+          <par_num>25:800</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="ispd:%d">$_-1</argv>
+              <argv>$1</argv>
+            </frmcmd>
+            <frmcmd name="setispd">
               <argv>$_</argv>
             </frmcmd>
           </repeat>

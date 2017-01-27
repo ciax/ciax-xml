@@ -9,8 +9,8 @@
       </item>
       <item id="thome" label="Turret to Home">
         <cfg site="mft" name="set6v"/>
-        <upd site="mft"/>
         <mcr name="ret_home"/>
+        <upd site="mft"/>
         <exec site="mix" name="ispdh"/>
         <mcr name="gh_wheel" retry="3"/>
         <mcr name="pre_pos"/>

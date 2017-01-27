@@ -534,8 +534,8 @@
         <item id="ispdh" label="Set Return Speed High(x2)">
           <repeat from="1" to="6">
             <frmcmd name="set">
-              <argv format="ispd:2000"/>
-              <argv>$1</argv>
+              <argv format="ispd:%d">$_-1</argv>
+              <argv>2000</argv>
             </frmcmd>
             <frmcmd name="setispd">
               <argv>$_</argv>
@@ -545,8 +545,8 @@
         <item id="ispdl" label="Set Return Speed Low(x.25)">
           <repeat from="1" to="6">
             <frmcmd name="set">
-              <argv format="ispd:200"/>
-              <argv>$1</argv>
+              <argv format="ispd:%d">$_-1</argv>
+              <argv>200</argv>
             </frmcmd>
             <frmcmd name="setispd">
               <argv>$_</argv>

@@ -162,6 +162,7 @@
           <xsd:attribute name="skip" type="xsd:boolean"/>
           <xsd:attribute name="async" type="xsd:boolean"/>
           <xsd:attribute name="retry" type="xsd:int"/>
+          <xsd:attribute name="wait" type="xsd:int"/>
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>

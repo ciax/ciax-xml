@@ -12,7 +12,7 @@
         <upd site="mft"/>
         <mcr name="ret_home"/>
         <exec site="mix" name="ispdh"/>
-        <mcr name="gh_wheel" retry="3"/>
+        <mcr name="gh_wheel" retry="3" wait="5"/>
         <mcr name="pre_pos"/>
         <exec site="mix" name="ispdl"/>
         <mcr name="gh_wheel" retry="3"/>

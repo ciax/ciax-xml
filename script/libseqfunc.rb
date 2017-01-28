@@ -110,7 +110,7 @@ module CIAX
           mstat[:result] = step[:result]
           raise Interlock
         rescue Verification
-          (step = _mcr_retry(e, step, mstat)) && retry
+          _mcr_retry(e, step, mstat) && retry
         end
       end
 

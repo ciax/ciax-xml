@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+  <alias id="mft" label="Hall Sensor">
+    <group id="gcfg2" caption="Config2">
+      <unit id="seta" label="Auto Update">
+        <item id="seth" label="5Hz" ref="set">
+          <argv>auto</argv>
+          <argv>1</argv>
+        </item>
+        <item id="setl" label="10min" ref="set">
+          <argv>auto</argv>
+          <argv>0</argv>
+        </item>
+      </unit>
+    </group>
+  </alias>
+</cdb>

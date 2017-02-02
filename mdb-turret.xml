@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="turret" version="5" label="Turret Control" port="55555">
+  <macro id="turret" version="6" label="Turret Control" port="55555">
     <group id="grp_init" caption="Initialize" rank="0">
       <item id="tinit" label="Initialize Turret">
-        <mcr name="pre_pos"/>
-        <upd site="mft"/>
-        <mcr name="gh_wheel" retry="3"/>
+        <mcr name="thome"/>
         <cfg site="mix" name="resetp"/>
         <mcr name="lineup"/>
       </item>
-      <item id="thome" label="Turret Shutdown">
+      <item id="thome" label="Turret to Home">
         <cfg site="mft" name="set6v"/>
         <upd site="mft"/>
-        <mcr name="scan_slot"/>
-        <mcr name="scan_home"/>
+        <mcr name="ret_home"/>
+        <exec site="mix" name="ispdh"/>
+        <mcr name="gh_wheel" retry="3" wait="5"/>
+        <mcr name="pre_pos"/>
+        <exec site="mix" name="ispdl"/>
+        <mcr name="gh_wheel" retry="3"/>
       </item>
     </group>
     <group id="tr_sub" caption="Turret Commands" rank="1">
-      <item id="pre_home" label="Pre-Homing">
+      <item id="ret_home" label="Return to Home">
         <goal label="All Home?">
           <equal form="msg" site="mix" var="mp1">S00</equal>
           <equal form="msg" site="mix" var="mp2">S00</equal>
@@ -44,8 +46,14 @@
           <equal form="data" site="mix" var="mp5">11.0</equal>
           <equal form="data" site="mix" var="mp6">11.0</equal>
         </goal>
-        <mcr name="pre_home"/>
-        <mcr name="thome"/>
+        <check label="All Home?">
+          <equal form="msg" site="mix" var="mp1">S00</equal>
+          <equal form="msg" site="mix" var="mp2">S00</equal>
+          <equal form="msg" site="mix" var="mp3">S00</equal>
+          <equal form="msg" site="mix" var="mp4">S00</equal>
+          <equal form="msg" site="mix" var="mp5">S00</equal>
+          <equal form="msg" site="mix" var="mp6">S00</equal>
+        </check>
         <exec site="mix" name="bk_all">
           <argv>1</argv>
         </exec>
@@ -55,6 +63,7 @@
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
         </wait>
+        <upd site="mft"/>
       </item>
       <item id="gh_wheel" label="Go to Home Position">
         <goal label="All Home?" verify="true">

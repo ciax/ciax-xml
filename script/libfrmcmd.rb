@@ -126,8 +126,8 @@ module CIAX
         cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }
         cobj.rem.add_ext(Ext)
         fld.jmerge unless STDIN.tty?
-        res = cobj.set_cmd(args).exe_cmd('test').msg
-        puts(opt[:r] ? res : res.inspect)
+        res = cobj.set_cmd(args).exe_cmd('test')
+        puts(opt[:r] ? res.msg : res.path)
       end
     end
   end

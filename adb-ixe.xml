@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="8">
+  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="10">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Status Commands">
         <unit id="upd" label="Status">
@@ -26,10 +26,19 @@
             <frmcmd name="getp">
               <argv>$_</argv>
             </frmcmd>
+            <frmcmd name="chkems">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="chkpse">
+              <argv>$_</argv>
+            </frmcmd>
             <frmcmd name="getspd">
               <argv>$_</argv>
             </frmcmd>
             <frmcmd name="getrmp">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getrtm">
               <argv>$_</argv>
             </frmcmd>
             <frmcmd name="getofs">
@@ -39,6 +48,15 @@
               <argv>$_</argv>
             </frmcmd>
             <frmcmd name="getmp">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getmspd">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getmrmp">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="getmrtm">
               <argv>$_</argv>
             </frmcmd>
           </repeat>
@@ -344,6 +362,32 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
+        <item id="fw500" label="Move Forward 500/8000 Slot [1-6(Turret)]">
+          <par_num>1:6</par_num>
+          <frmcmd name="act">
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="fw">
+            <argv>$1</argv>
+            <argv format="%d">500</argv>
+          </frmcmd>
+          <frmcmd name="chkrun">
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
+        <item id="bk500" label="Move Backward 500/8000 Slot [1-6(Turret)]">
+          <par_num>1:6</par_num>
+          <frmcmd name="act">
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="bk">
+            <argv>$1</argv>
+            <argv format="%d">500</argv>
+          </frmcmd>
+          <frmcmd name="chkrun">
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
         <item id="fw1k" label="Move Forward 1000/8000 Slot [1-6(Turret)]">
           <par_num>1:6</par_num>
           <frmcmd name="act">
@@ -421,11 +465,23 @@
           </repeat>
         </item>
         <item id="resetr" label="Set Regulated Pulse">
+          <!-- 96000 = 0 -->
           <repeat from="1" to="6">
             <frmcmd name="setp">
               <argv>$_</argv>
             </frmcmd>
           </repeat>
+        </item>
+        <item id="offset" label="Set Offset [1-6(Turret)] [+-2000]">
+          <par_num>1:6</par_num>
+          <par_num>-2000:2000</par_num>
+          <frmcmd name="set">
+            <argv format="ofs:%d">$1-1</argv>
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="setofs">
+            <argv>$1</argv>
+          </frmcmd>
         </item>
         <item id="speed" label="Set Speed [25-800]">
           <par_num>25:800</par_num>
@@ -439,7 +495,7 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="ramp" label="Set ramp [200-800]">
+        <item id="ramp" label="Set Ramp [200-800]">
           <par_num>200:800</par_num>
           <repeat from="1" to="6">
             <frmcmd name="set">
@@ -451,16 +507,51 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="offset" label="Set offset [1-6(Turret)] [+-2000]">
-          <par_num>1:6</par_num>
-          <par_num>-2000:2000</par_num>
-          <frmcmd name="set">
-            <argv format="ofs:%d">$1-1</argv>
-            <argv>$1</argv>
-          </frmcmd>
-          <frmcmd name="setofs">
-            <argv>$1</argv>
-          </frmcmd>
+        <item id="mspeed" label="Set Mech Speed [25-800]">
+          <par_num>25:800</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="mspd:%d">$_-1</argv>
+              <argv>$1</argv>
+            </frmcmd>
+            <frmcmd name="setmspd">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="mramp" label="Set Mech Ramp [200-800]">
+          <par_num>200:800</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="mrmp:%d">$_-1</argv>
+              <argv>$1</argv>
+            </frmcmd>
+            <frmcmd name="setmrmp">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="ispdh" label="Set Return Speed High(x2)">
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="ispd:%d">$_-1</argv>
+              <argv>2000</argv>
+            </frmcmd>
+            <frmcmd name="setispd">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
+        <item id="ispdl" label="Set Return Speed Low(x.25)">
+          <repeat from="1" to="6">
+            <frmcmd name="set">
+              <argv format="ispd:%d">$_-1</argv>
+              <argv>200</argv>
+            </frmcmd>
+            <frmcmd name="setispd">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
         </item>
       </group>
     </command>
@@ -515,18 +606,24 @@
           </integer>
         </repeat_var>
       </group>
-      <group id="gtc" caption="Turret Config" column="4">
+      <group id="gtc1" caption="Turret Motion Config" column="6">
         <repeat_var from="1" to="6">
-          <float id="spd$_" label="Speed $_(/s)" format="%.1f" formula="$#/8000">
+          <float id="spd$_" label="Spd $_(/s)" format="%.2f" formula="$#/8000">
             <field ref="spd" index="$_-1"/>
           </float>
-          <float id="rmp$_" label="Ramp $_(/s2)" format="%.1f" formula="$#/8000">
+          <float id="rmp$_" label="Rmp $_(/s2)" format="%.2f" formula="$#/8000">
             <field ref="rmp" index="$_-1"/>
           </float>
-          <float id="ispd$_" label="Init Speed $_(/s)" format="%.1f" formula="$#/8000">
+          <float id="mspd$_" label="IniSpd $_(/s)" format="%.2f" formula="$#/8000">
+            <field ref="mspd" index="$_-1"/>
+          </float>
+          <float id="mrmp$_" label="IniRmp $_(/s2)" format="%.2f" formula="$#/8000">
+            <field ref="mrmp" index="$_-1"/>
+          </float>
+          <float id="ispd$_" label="RetSpd $_(/s)" format="%.2f" formula="$#/8000">
             <field ref="ispd" index="$_-1"/>
           </float>
-          <float id="ofs$_" label="Init Offset $_" format="%.1f" formula="$#/8000">
+          <float id="ofs$_" label="Offset $_" format="%.2f" formula="$#/8000">
             <field ref="ofs" index="$_-1"/>
           </float>
         </repeat_var>

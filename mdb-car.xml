@@ -850,14 +850,6 @@
           <upd site="mmc"/>
         </item>
       </unit>
-      <unit id="unit_mmc_2_sha" title="sha" label="Shared Command">
-        <item id="upd" label="Update">
-          <upd site="mma"/>
-          <upd site="mmc"/>
-          <upd site="mfp"/>
-          <upd site="map"/>
-        </item>
-      </unit>
       <item id="mmc_cw-0.1" label="Move 0.1 unit CW">
         <check>
           <match site="mmc" var="spd" form="msg">LOW</match>

@@ -26,7 +26,7 @@ function get_tbl($pdo){
     $st=$pdo->query($tbl);
     if ($st){
         $all=$st->fetchAll(PDO::FETCH_COLUMN);
-        if ($all) return(join(',',$all));
+        if ($all) return($all);
     }
 }
 
@@ -38,6 +38,10 @@ function where($utime){
         return ' ORDER BY time DESC LIMIT 24';
     }
 }
+function mk_query($vid,$tbl,$opt){
+     global $site, $opt;
+
+}
 function get_data($vid){
     global $site, $opt;
     $fname='/var/www/html/log/sqlog_'.$site.'.sq3';
@@ -45,7 +49,11 @@ function get_data($vid){
     if(!$pdo) return;
     $tbls = get_tbl($pdo);
     if(!$tbls) return;
-    $qry = 'SELECT time,' . $vid . ' FROM ' . $tbls . $opt;
+    $qrys=array();
+    foreach($tbls as &$tbl){
+        array_push($qrys, 'SELECT time,' . $vid . ' FROM ' . $tbl);
+    }
+    $qry = join(' union ', $qrys) . $opt;
     $st=$pdo->query($qry);
     if (!$st) return;
     $data=$st->fetchAll(PDO::FETCH_NUM);
@@ -56,10 +64,10 @@ function get_data($vid){
 }
 
 $site=getarg('site');
-$vid=getarg('vid');
+$vids=getarg('vid');
 # No time -> now
 $utime=getarg('time');
 $opt = where($utime);
 
-echo(json_encode(array_map('get_data', split(',',$vid))));
+echo(json_encode(array_map('get_data', split(',',$vids))));
 ?>

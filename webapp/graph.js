@@ -122,15 +122,13 @@ function get_log() {
 function conv_ascii(pair) {
     if(isNaN(pair[1])) {
         var asc = 0;
-        var min = 255;
         var ary = pair[1].split('').map(function(n){
-            var i = n.charCodeAt(0);
-            if(i < min) { min = i };
+            var i = n.charCodeAt(0) - 64;
             return i;
         });
         // regulate to minimum code value
         for (var i = 0; i < ary.length; i++){
-            asc += ( ary[i]- min ) * Math.pow(2,i);
+            asc +=  ary[i] * Math.pow(2,i);
         }
         pair[1] = asc;
     }

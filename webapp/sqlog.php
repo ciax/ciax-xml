@@ -44,9 +44,11 @@ function get_data($vid){
     $tbls = get_tbl($pdo);
     if(!$tbls) return;
     $body=mk_body($tbls,$vid);
-    $qry = 'select * from (' . $body . ') order by time desc limit 100';
+    $qry = 'select * from (' . $body . ') order by time desc limit ';
     if($utime){
-        $qry .= ' offset ( select count(time) from (' . $body . ') where time >'. $utime . ') - 50';
+        $qry .= '100 offset ( select count(time) from (' . $body . ') where time >'. $utime . ') - 50';
+    }else{
+        $qry .= '24';
     }
     $st=$pdo->query($qry);
     if (!$st) return;

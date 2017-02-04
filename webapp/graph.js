@@ -84,30 +84,12 @@ function init_mode() {
         setInterval(update, 1000);
     }
 }
-
-function push_data(e, stat) {
-    if (stat == 'notmodified') return;
-    $.each(series, function(i, line) {
-        line.data.shift();
-        line.data.push([e.time, e.data[line.vid]]);
-    });
-    plot.setData(series);
-    plot.setupGrid(); // scroll to left
-    plot.draw();
-}
-
 function update() {
-    $.ajax('status_' + par.site + '.json').done(push_data);
-}
-// Main
-function get_graph() {
-    past_time = par.time;
     $.getJSON('sqlog.php', par, function(obj) {
         obj[0].data.forEach(conv_ascii);
-        series = obj;
-        init_mode();
-        plot = $.plot('#placeholder', series, options);
-        init_tooltip();
+        plot.setData(obj);
+        plot.setupGrid(); // scroll to left
+        plot.draw();
     });
 }
 
@@ -144,7 +126,17 @@ function mv_date(dom){
     par.time = date.getTime() + offset;
     get_graph();
 }
-
+// Main
+function get_graph() {
+    past_time = par.time;
+    $.getJSON('sqlog.php', par, function(obj) {
+        obj[0].data.forEach(conv_ascii);
+        series = obj;
+        init_mode();
+        plot = $.plot('#placeholder', series, options);
+        init_tooltip();
+    });
+}
 
 // var par shold be set in html [site, vid, (time)]
 var plot;

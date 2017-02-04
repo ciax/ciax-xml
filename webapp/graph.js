@@ -84,30 +84,12 @@ function init_mode() {
         setInterval(update, 1000);
     }
 }
-
-function push_data(e, stat) {
-    if (stat == 'notmodified') return;
-    $.each(series, function(i, line) {
-        line.data.shift();
-        line.data.push([e.time, e.data[line.vid]]);
-    });
-    plot.setData(series);
-    plot.setupGrid(); // scroll to left
-    plot.draw();
-}
-
 function update() {
-    $.ajax('status_' + par.site + '.json').done(push_data);
-}
-// Main
-function get_graph() {
-    past_time = par.time;
     $.getJSON('sqlog.php', par, function(obj) {
         obj[0].data.forEach(conv_ascii);
-        series = obj;
-        init_mode();
-        plot = $.plot('#placeholder', series, options);
-        init_tooltip();
+        plot.setData(obj);
+        plot.setupGrid(); // scroll to left
+        plot.draw();
     });
 }
 
@@ -122,15 +104,13 @@ function get_log() {
 function conv_ascii(pair) {
     if(isNaN(pair[1])) {
         var asc = 0;
-        var min = 255;
         var ary = pair[1].split('').map(function(n){
-            var i = n.charCodeAt(0);
-            if(i < min) { min = i };
+            var i = n.charCodeAt(0) - 64;
             return i;
         });
         // regulate to minimum code value
         for (var i = 0; i < ary.length; i++){
-            asc += ( ary[i]- min ) * Math.pow(2,i);
+            asc +=  ary[i] * Math.pow(2,i);
         }
         pair[1] = asc;
     }
@@ -146,7 +126,17 @@ function mv_date(dom){
     par.time = date.getTime() + offset;
     get_graph();
 }
-
+// Main
+function get_graph() {
+    past_time = par.time;
+    $.getJSON('sqlog.php', par, function(obj) {
+        obj[0].data.forEach(conv_ascii);
+        series = obj;
+        init_mode();
+        plot = $.plot('#placeholder', series, options);
+        init_tooltip();
+    });
+}
 
 // var par shold be set in html [site, vid, (time)]
 var plot;

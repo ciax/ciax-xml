@@ -34,8 +34,11 @@ function make_item(data) {
 function make_list(data) {
     if (!data) return;
     var jary = data.list.sort(_sort_date);
+    var year = '';
     $.each(jary, function(i, item) {
-        _upd_item(item) || _make_date(item).prepend(make_item(item));
+        var time = new Date(item.id - 0);
+        _make_year(time);
+        _upd_item(item) || _make_date(time).prepend(make_item(item));
     });
     _init_log();
     blinking();
@@ -51,20 +54,32 @@ function make_list(data) {
         return true;
     }
 
-    function _make_date(data) {
-        var time = new Date(data.id - 0);
-        var crd = time.toLocaleDateString();
-        var did = crd.replace(/\//g, '_');
+    function _make_year(time){
+        var cyr = time.getFullYear();
+        if(year != cyr){
+            year=cyr;
+            _make_tree(year, year, 'log');
+        }
+    }
+
+    function _make_date(time) {
+        var dary = time.toLocaleDateString().split('/');
+        var dti = dary[1] + '/' + dary[2];
+        var did = dary.join('_');
         if (!$('#' + did)[0]) {
-            var html = [];
-            html.push('<h4>' + crd + '</h4>');
-            html.push('<ul id="' + did + '"></ul>');
-            $('#log').prepend(html.join(''));
+            _make_tree(dti, did, year);
         }
         return $('#' + did);
     }
 
     // Latest Top
+    function _make_tree(title, id, pid){
+        var html = [];
+        html.push('<h4>' + title + '</h4>');
+        html.push('<ul id="' + id + '"></ul>');
+        $('#'+pid).prepend(html.join(''));
+    }
+
     function _sort_date(a, b) {
         var na = a.id - 0;
         var nb = b.id - 0;

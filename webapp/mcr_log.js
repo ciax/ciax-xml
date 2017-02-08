@@ -92,7 +92,7 @@ function make_list(data) {
         var jq = $('#log li.selected');
         if (jq[0]) return jq;
         // Set first selected
-        set_acordion('#log')(':not(:first)');
+        set_acordion('#log')(':gt(1)');
         $('#log li').first().trigger('click');
     }
 }

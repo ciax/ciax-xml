@@ -97,7 +97,8 @@ module CIAX
       elsif test('>', @latest, @marfile)
         verbose { "#{@type}/Cache File(#{@latest}) is newer than #{@marfile}" }
       else
-        true
+        verbose { "#{@type}/Cache Using" }
+        return true
       end
       false
     end

@@ -155,10 +155,8 @@ function record_result(data) { // Do at the end
 function dynamic_page() {
     // Update Command Selector
     function _init_commands() {
-        ajax_static('/json/mcr_conf.json').done(function(data) {
-            if (!port) port = data.port;
-            make_select('select#command', data.commands);
-        });
+        if (!port) port = config.port;
+        make_select('select#command', config.commands);
     }
     // Update Query Radio Button
     function _make_query(data) {

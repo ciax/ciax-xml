@@ -288,11 +288,6 @@ function init_page() {
     });
     height_adjust();
 }
-// Init func specific for record_latest.html
-function init_record() {
-    init_list.push(update_record);
-    init();
-}
 
 init_list.push(init_page);
 // Var setting

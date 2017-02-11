@@ -13,11 +13,16 @@ function make_step(step) {
             ary.push(step.site);
             html.push(_devlink(step.site));
         }
-        html.push('>');
         if (step.args) { ary = ary.concat(step.args); }
         if (step.val) { ary.push(step.val); }
-        if (step.label) html.push(': ' + step.label);
-        if (ary.length > 0) {html.push(': [' + ary.join(':') + ']');}
+        if (type == 'mcr') {
+            html.push(' title="' + ary.join(':') + '">');
+            html.push(': ' + config.label[ary[0]] );
+        } else {
+            html.push('>');
+            if (step.label) html.push(': ' + step.label);
+            if (ary.length > 0) {html.push(': [' + ary.join(':') + ']');}
+        }
         html.push('</span>');
     }
     // result section

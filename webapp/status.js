@@ -35,7 +35,7 @@ function seldv(dom) {
 // Need var: Type,Site
 var last;
 var offset = 0;
-upd_list['select'] = function() {
+upd_list.select = function() {
     ajax_update(type + '_' + site + '.json').done(conv);
     elapsed();
 };

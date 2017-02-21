@@ -124,6 +124,7 @@ function make_step(step) {
     html.push('</li>');
     return html.join('');
 }
+
 // ********* Outline **********
 // *** Display on the Bars ***
 function record_outline(data) { // Do at the first
@@ -157,12 +158,13 @@ function record_result(data) { // Do at the end
 }
 
 // ******** Dynamic Page ********
-function dynamic_page() {
+function func_update_record() {
     // Update Command Selector
     function _init_commands() {
         if (!port) port = config.port;
         make_select('select#command', config.commands);
     }
+
     // Update Query Radio Button
     function _make_query(data) {
         var sel = $('#query')[0];
@@ -176,6 +178,7 @@ function dynamic_page() {
             $('#query').empty();
         }
     }
+
     // Update Content of Steps (When JSON is updated)
     function _append_step(data) {
         // When Step increases.
@@ -250,7 +253,8 @@ function dynamic_page() {
             last_time = data.time;
         }
     }
-    // To be update
+
+    // To be updated
     function _update(tag) {
         if (tag) { // Show past record (not updated)
             ajax_static('/record/record_' + tag + '.json').done(_upd_page);
@@ -270,7 +274,7 @@ function dynamic_page() {
 }
 
 // ******** Command ********
-function switch_record(id) { // overwritten by mcr_log
+function new_record(id){ //overwritten by mcr_log.js
     update_record(id);
 }
 
@@ -279,9 +283,10 @@ function selmcr(dom) {
     if (!cmd) return;
     exec(cmd, function(recv) {
         // Do after exec if success
-        switch_record(recv.sid);
+        new_record(recv.sid);
     });
 }
+
 // ******** Init Page ********
 function init_page() {
     set_acordion('#record');
@@ -294,5 +299,5 @@ function init_page() {
 
 init_list.push(init_page);
 // Var setting
-var update_record = dynamic_page();
+var update_record = func_update_record();
 var start_time; // For elapsed time

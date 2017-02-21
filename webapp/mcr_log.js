@@ -84,25 +84,36 @@ function func_make_list() {
     }
 
     function _init_log() {
+        if(again) return;
         // Set first selected
         set_acordion('#log')(':gt(1)');
-        $('#log li').first().trigger('click');
         again = 1;
     }
 
-    function _init_make_list(data){
+    function _select(){
+        if ($('#log li').hasClass('selected')) return;
+        $('#log li').first().trigger('click');
+    }
+
+    function _update(data){
         if (!data) return;
         var jary = data.list.sort(_sort_date);
         $.each(jary, _upd_line);
         // blinking status
         blinking();
-        if(!again) _init_log();
+        _init_log();
+        _select();
     }
+
     var year = '';
     var again;
-    return _init_make_list;
+    return _update;
 }
 
+function new_record(id){
+    $('#log li').removeClass('selected');
+    update_record(id);
+}
 
 function update_list() {
     ajax_update('rec_list.json').done(make_list);
@@ -112,23 +123,24 @@ function toggle_dvctl() {
     $('.dvctl').fadeToggle(1000, height_adjust);
 }
 
-function switch_record(id) {
-    $('#log li').removeClass('selected');
-    $('#' + id).addClass('selected');
-    // Activate selected record
-    update_record(id);
-}
-
 // Initial Setting
 function init_log() {
+    function _switch_record(id) {
+        $('#log li').removeClass('selected');
+        $('#' + id).addClass('selected');
+        // Activate selected record
+        update_record(id);
+    }
+
     function _on_click() {
         if ($(this).hasClass('selected')) return;
-        switch_record($(this).attr('id'));
+        _switch_record($(this).attr('id'));
     }
 
     // Set click event
     $('#log').on('click', 'li', _on_click);
     upd_list.log = update_list;
 }
-var make_list = func_make_list();
+
 init_list.push(init_log);
+var make_list = func_make_list();

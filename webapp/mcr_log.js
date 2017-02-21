@@ -2,15 +2,6 @@
 // fixjsstyle mcr_log.js
 // Listing part
 function make_item(data) {
-    var html = [];
-    var id = data.id;
-    var time = new Date(id - 0);
-    // Date(j-0) -> cast to num
-    html.push('<li id="' + id + '">');
-    _line();
-    html.push('</li>');
-    return html.join('');
-
     function _line() {
         _time();
         _cmd();
@@ -29,20 +20,18 @@ function make_item(data) {
         html.push(' -> ');
         html.push('<em class="' + res + '">' + res + '</em>');
     };
+
+    var html = [];
+    var id = data.id;
+    var time = new Date(id - 0);
+    // Date(j-0) -> cast to num
+    html.push('<li id="' + id + '">');
+    _line();
+    html.push('</li>');
+    return html.join('');
 }
 
-function make_list(data) {
-    if (!data) return;
-    var jary = data.list.sort(_sort_date);
-    var year = '';
-    $.each(jary, function(i, item) {
-        var time = new Date(item.id - 0);
-        _make_year(time);
-        _upd_item(item) || _make_date(time).prepend(make_item(item));
-    });
-    _init_log();
-    blinking();
-
+function func_make_list() {
     function _upd_item(data) {
         var jq = $('#' + data.id);
         if (!jq[0]) return;
@@ -67,6 +56,7 @@ function make_list(data) {
         var dti = dary[1] + '/' + dary[2];
         var did = dary.join('_');
         if (!$('#' + did)[0]) {
+            _make_year(time);
             _make_tree(dti, did, year);
         }
         return $('#' + did);
@@ -88,14 +78,31 @@ function make_list(data) {
         return 0;
     }
 
+    function _upd_line(i, item) {
+        var time = new Date(item.id - 0);
+        _upd_item(item) || _make_date(time).prepend(make_item(item));
+    }
+
     function _init_log() {
-        var jq = $('#log li.selected');
-        if (jq[0]) return jq;
         // Set first selected
         set_acordion('#log')(':gt(1)');
         $('#log li').first().trigger('click');
+        again = 1;
     }
+
+    function _init_make_list(data){
+        if (!data) return;
+        var jary = data.list.sort(_sort_date);
+        $.each(jary, _upd_line);
+        // blinking status
+        blinking();
+        if(!again) _init_log();
+    }
+    var year = '';
+    var again;
+    return _init_make_list;
 }
+
 
 function update_list() {
     ajax_update('rec_list.json').done(make_list);
@@ -114,13 +121,14 @@ function switch_record(id) {
 
 // Initial Setting
 function init_log() {
-    // Set click event
-    $('#log').on('click', 'li', _on_click);
-    upd_list.log = update_list;
-
     function _on_click() {
         if ($(this).hasClass('selected')) return;
         switch_record($(this).attr('id'));
     }
+
+    // Set click event
+    $('#log').on('click', 'li', _on_click);
+    upd_list.log = update_list;
 }
+var make_list = func_make_list();
 init_list.push(init_log);

@@ -37,7 +37,7 @@ function init_tooltip() {
 function show_tooltip(event, pos, item) {
     if (item) {
         var date = new Date(item.datapoint[0]);
-        var x = date.toLocaleTimeString('en-US',{hour12: false});
+        var x = date.toLocaleTimeString('en-US', {hour12: false});
         var y = item.datapoint[1].toFixed(2);
         $('#tooltip').html(x + ',' + y)
             .css({ top: item.pageY + 5, left: item.pageX + 5 })
@@ -94,23 +94,23 @@ function update() {
 }
 
 function get_log() {
-    var url = 'dvlog.php?site=' + par.site + '&vid=' + par.vid
-    if(par.time) {
-        url +=  '&time=' + par.time;
+    var url = 'dvlog.php?site=' + par.site + '&vid=' + par.vid;
+    if (par.time) {
+        url += '&time=' + par.time;
     }
-    window.open(url,'LOG','width=320,height=640,scrollbars=yes');
+    window.open(url, 'LOG', 'width=320,height=640,scrollbars=yes');
 }
 
 function conv_ascii(pair) {
-    if(isNaN(pair[1])) {
+    if (isNaN(pair[1])) {
         var asc = 0;
-        var ary = pair[1].split('').map(function(n){
+        var ary = pair[1].split('').map(function(n) {
             var i = n.charCodeAt(0) - 64;
             return i;
         });
         // regulate to minimum code value
-        for (var i = 0; i < ary.length; i++){
-            asc +=  ary[i] * Math.pow(2,i);
+        for (var i = 0; i < ary.length; i++) {
+            asc += ary[i] * Math.pow(2, i);
         }
         pair[1] = asc;
     }
@@ -118,10 +118,10 @@ function conv_ascii(pair) {
 
 function set_date(past_time) {
     var dte = new Date(past_time - offset);
-    $('#date').val(dte.toJSON().substr(0,10));
+    $('#date').val(dte.toJSON().substr(0, 10));
 }
 
-function mv_date(dom){
+function mv_date(dom) {
     var date = new Date($(dom).val());
     par.time = date.getTime() + offset;
     get_graph();

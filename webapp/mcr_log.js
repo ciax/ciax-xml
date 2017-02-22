@@ -43,10 +43,10 @@ function func_make_list() {
         return true;
     }
 
-    function _make_year(time){
+    function _make_year(time) {
         var cyr = time.getFullYear();
-        if(year != cyr){
-            year=cyr;
+        if (year != cyr) {
+            year = cyr;
             _make_tree(year, year, 'log');
         }
     }
@@ -63,11 +63,11 @@ function func_make_list() {
     }
 
     // Latest Top
-    function _make_tree(title, id, pid){
+    function _make_tree(title, id, pid) {
         var html = [];
         html.push('<h4>' + title + '</h4>');
         html.push('<ul id="' + id + '"></ul>');
-        $('#'+pid).prepend(html.join(''));
+        $('#' + pid).prepend(html.join(''));
     }
 
     function _sort_date(a, b) {
@@ -84,18 +84,18 @@ function func_make_list() {
     }
 
     function _init_log() {
-        if(again) return;
+        if (again) return;
         // Set first selected
         set_acordion('#log')(':gt(1)');
         again = 1;
     }
 
-    function _select(){
+    function _select() {
         if ($('#log li').hasClass('selected')) return;
         $('#log li').first().trigger('click');
     }
 
-    function _update(data){
+    function _update(data) {
         if (!data) return;
         var jary = data.list.sort(_sort_date);
         $.each(jary, _upd_line);
@@ -110,7 +110,7 @@ function func_make_list() {
     return _update;
 }
 
-function new_record(id){
+function new_record(id) {
     $('#log li').removeClass('selected');
     update_record(id);
 }

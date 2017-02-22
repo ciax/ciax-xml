@@ -12,7 +12,7 @@ function open_table(site) {
 }
 function open_graph(site, vid, time) {
     var url = '/json/graph.php?site=' + site + '&vid=' + vid;
-    var pre = 'g' + vid.replace(/,/g,'_');
+    var pre = 'g' + vid.replace(/,/g, '_');
     if (time) {
         url = url + '&time=' + time;
         pre += 'h';

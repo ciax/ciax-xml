@@ -17,7 +17,7 @@ function make_step(step) {
         if (step.val) { ary.push(step.val); }
         if (type == 'mcr') {
             html.push(' title="' + ary.join(':') + '">');
-            html.push(': ' + config.label[ary[0]] );
+            html.push(': ' + config.label[ary[0]]);
         } else {
             html.push('>');
             if (step.label) html.push(': ' + step.label);
@@ -98,7 +98,7 @@ function make_step(step) {
             html.push(cond.site + ':' + cond['var']); // cond.var expression gives error at yui-compressor
             html.push('(' + cond.form + ')</var>');
             html.push('<code>' + _operator(cond.cmp, cond.cri) + '?</code>  ');
-            if (cond['skip']){
+            if (cond['skip']) {
                 html.push('<span class="skip">(Ignored)</skip>');
             } else {
                 if (step.type == 'goal' && res == false) res = 'warn';
@@ -274,7 +274,7 @@ function func_update_record() {
 }
 
 // ******** Command ********
-function new_record(id){ //overwritten by mcr_log.js
+function new_record(id) { //overwritten by mcr_log.js
     update_record(id);
 }
 

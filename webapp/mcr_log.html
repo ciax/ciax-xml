@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<?xml version="1.0"?><html lang="en-US">
   <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8">
     <title>MCR LOG</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
-    <link rel="stylesheet" type="text/css" href="ciax-xml.css"/>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="ciax-xml.css">
     <script type="text/javascript" src="jquery-3.0.0.min.js"></script>
     <script type="text/javascript" src="ciax-xml.js"></script>
     <script type="text/javascript" src="mcr_conf.js"></script>
@@ -26,7 +26,7 @@
                 <option>--select--</option>
               </select>
               <span class="control-label" id="interactive">Interactive
-                <input type="checkbox" onclick="interactive();"></input>
+                <input type="checkbox" onclick="interactive();">
               </span>
             </td>
           </tr>
@@ -42,7 +42,7 @@
       <div class="bar">
         <em id="result"></em>
         <span class="tail">
-          <date id="date"></date>
+          <time id="date"></time>
           <span class="elps" id="total"></span>
         </span>
       </div>
@@ -64,7 +64,7 @@
               <button class="stop dvctl" id="stop" onclick="stop();">STOP</button>
               <span class="control-label">Scroll</span>
               <label class="switch" id="scroll">
-                <input type="checkbox" class="switch-input" onclick="sticky_bottom('slow');"></input>
+                <input type="checkbox" class="switch-input" onclick="sticky_bottom('slow');">
                 <span class="switch-label" data-on="Auto" data-off="Manual"></span>
                 <span class="switch-handle"></span>
               </label>

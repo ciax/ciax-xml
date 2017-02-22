@@ -281,10 +281,7 @@ function new_record(id) { //overwritten by mcr_log.js
 function selmcr(dom) {
     var cmd = get_select(dom);
     if (!cmd) return;
-    exec(cmd, function(recv) {
-        // Do after exec if success
-        new_record(recv.sid);
-    });
+    exec(cmd, new_record); // Do after exec if success
 }
 
 // ******** Init Page ********

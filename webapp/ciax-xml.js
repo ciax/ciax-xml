@@ -98,7 +98,7 @@ function dvctl(args, func) {
         success: function(recv) {
             //console.log('recv=' + JSON.stringify(recv));
             replace('#msg', recv.msg, recv.msg.toLowerCase()).show().fadeOut(1000);
-            if (func) func(recv);
+            if (func) func(recv.sid);
         },
         error: function(recv) {
             //console.log('recv=' + JSON.stringify(recv));

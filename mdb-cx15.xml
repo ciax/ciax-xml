@@ -1,0 +1,2976 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
+  <macro id="cx15" version="2" label="CX15 Macro" port="55555">
+    <group id="grp_dso_2" caption="Action" rank="2">
+      <item id="dso_dopen" label="DOOR OPEN (1S)">
+        <goal>
+          <equal site="dso" var="dop" form="msg">OPEN</equal>
+        </goal>
+        <exec site="dso" name="dopen"/>
+        <sleep>1</sleep>
+        <exec site="dso" name="%0=0"/>
+      </item>
+      <item id="dso_dclose" label="DOOR CLOSE (11S)">
+        <goal>
+          <equal site="dso" var="dop" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <not site="dso" var="nct:cps" form="msg">09</not>
+        </check>
+        <exec site="dso" name="dclose"/>
+        <sleep>11</sleep>
+        <exec site="dso" name="%1=0"/>
+      </item>
+      <item id="dso_mccdtmr" label="MOV CCD TIMER">
+        <exec site="dso" name="mccdtmr"/>
+        <sleep>300</sleep>
+        <exec site="dso" name="%5=0"/>
+      </item>
+      <item id="dso_fccdtmr" label="FIX CCD TIMER">
+        <exec site="dso" name="fccdtmr"/>
+        <sleep>300</sleep>
+        <exec site="dso" name="%6=0"/>
+      </item>
+    </group>
+    <group id="grp_dsi_2" caption="Action" rank="2">
+      <item id="dsi_dopen" label="DOOR OPEN (1S)">
+        <goal>
+          <equal site="dsi" var="dop" form="msg">OPEN</equal>
+        </goal>
+        <exec site="dsi" name="dopen"/>
+        <sleep>1</sleep>
+        <exec site="dsi" name="%0=0"/>
+      </item>
+      <item id="dsi_dclose" label="DOOR CLOSE (11S)">
+        <goal>
+          <equal site="dsi" var="dop" form="msg">CLOSE</equal>
+        </goal>
+        <check>
+          <not site="dsi" var="nct:cps" form="msg">11</not>
+        </check>
+        <exec site="dsi" name="dclose"/>
+        <sleep>11</sleep>
+        <exec site="dsi" name="%1=0"/>
+      </item>
+    </group>
+    <group id="grp_cx15_0" caption="Basic Sequences" rank="0">
+      <item id="init" label="Initialize">
+        <check>
+        </check>
+        <cfg site="dts" name="cinit"/>
+        <mcr name="upd"/>
+        <exec site="msg" name="b/%i"/>
+        <exec site="msg" name="init0"/>
+        <exec site="msg" name="init1"/>
+        <exec site="msg" name="init2"/>
+        <exec site="msg" name="init3"/>
+        <mcr name="cson"/>
+      </item>
+      <item id="shutdown" label="Shutdown">
+        <check>
+        </check>
+        <mcr name="csoff"/>
+      </item>
+      <item id="upd" label="Update Status">
+        <check>
+        </check>
+        <upd site="dts"/>
+        <upd site="crt"/>
+        <upd site="dso"/>
+        <upd site="dsi"/>
+        <upd site="det" name="true"/>
+        <upd site="cco"/>
+        <upd site="cci"/>
+      </item>
+      <item id="cson" label="CAS Initialize">
+        <check>
+          <equal site="dts" var="rts" form="msg">CAS</equal>
+        </check>
+        <cfg site="dts" name="login"/>
+        <cfg site="dts" name="cxon"/>
+        <exec site="dts" name="cron"/>
+        <exec site="msg" name="init4"/>
+        <exec site="dts" name="%i"/>
+        <exec site="dts" name="cjon" skip="true"/>
+        <exec site="msg" name="cjon"/>
+      </item>
+      <item id="csoff" label="CAS Shutdown">
+        <check>
+        </check>
+        <exec site="msg" name="cjoff"/>
+        <exec site="dts" name="cjoff" skip="true"/>
+        <exec site="dts" name="croff"/>
+        <cfg site="dts" name="cxoff"/>
+        <cfg site="dts" name="logout"/>
+        <exec site="msg" name="hsoff"/>
+      </item>
+      <item id="ccdon" label="ALL CCD ON">
+        <exec site="det" name="ccdon" skip="1"/>
+        <exec site="dso" name="fccdon" skip="1"/>
+        <exec site="dso" name="mccdon" skip="1"/>
+        <exec site="dsi" name="fccdon" skip="1"/>
+        <exec site="dsi" name="mccdon" skip="1"/>
+      </item>
+      <item id="ccdoff" label="ALL CCD OFF">
+        <check>
+        </check>
+        <exec site="det" name="ccdoff" skip="1"/>
+        <exec site="dso" name="fccdoff" skip="1"/>
+        <exec site="dso" name="mccdoff" skip="1"/>
+        <exec site="dsi" name="fccdoff" skip="1"/>
+        <exec site="dsi" name="mccdoff" skip="1"/>
+      </item>
+      <item id="dopen" label="ALL Door Open">
+        <exec site="dso" name="dopen" skip="1"/>
+        <exec site="dsi" name="dopen" skip="1"/>
+      </item>
+      <item id="dclose" label="ALL Door Close">
+        <exec site="dso" name="dclose" skip="1"/>
+        <exec site="dsi" name="dclose" skip="1"/>
+      </item>
+    </group>
+    <group id="grp_cx15_1" caption="Auto Command" rank="0">
+      <unit id="unit_cx15_1_chgonoff" title="chg[on|off]" label="Charge ON/OFF">
+        <item id="chgon" label="Charge ON">
+          <check>
+          </check>
+          <mcr name="conX"/>
+        </item>
+        <item id="chgoff" label="Charge Off">
+          <check>
+          </check>
+          <mcr name="coffX"/>
+        </item>
+        <item id="ipwon" label="IPW and He ON">
+          <check>
+          </check>
+          <mcr name="cponX/%i"/>
+        </item>
+        <item id="ipwoff" label="IPW and He OFF">
+          <check>
+          </check>
+          <mcr name="cpoffX/%i"/>
+        </item>
+      </unit>
+      <unit id="unit_cx15_1_run13712" title="run[1-3|7-12]" label="Cart Run 1-3|7-12">
+        <item id="run1" label="Cart Run 1">
+          <goal>
+            <equal site="crt" var="cps" form="msg">01</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="X%l-01/%i"/>
+        </item>
+        <item id="run2" label="Cart Run 2">
+          <goal>
+            <equal site="crt" var="cps" form="msg">02</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="X%l-02/%i"/>
+        </item>
+        <item id="run3" label="Cart Run 3">
+          <goal>
+            <equal site="crt" var="cps" form="msg">03</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="X%l-03/%i"/>
+        </item>
+        <item id="run7" label="Cart Run 7">
+          <goal>
+            <equal site="crt" var="cps" form="msg">07</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="X%l-07/%i"/>
+        </item>
+        <item id="run8" label="Cart Run 8">
+          <goal>
+            <equal site="crt" var="cps" form="msg">08</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="X%l-08/%i"/>
+        </item>
+        <item id="run9" label="Cart Run 9">
+          <goal>
+            <equal site="crt" var="cps" form="msg">09</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="X%l-09/%i"/>
+        </item>
+        <item id="run10" label="Cart Run 10">
+          <goal>
+            <equal site="crt" var="cps" form="msg">10</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="X%l-10/%i"/>
+        </item>
+        <item id="run11" label="Cart Run 11">
+          <goal>
+            <equal site="crt" var="cps" form="msg">11</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="X%l-11/%i"/>
+        </item>
+        <item id="run12" label="Cart Run 12">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">C</equal>
+            <equal site="crt" var="cps" form="msg">12</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="X%l-12/%i"/>
+        </item>
+      </unit>
+      <unit id="unit_cx15_1_coff" title="coff" label="SKIP CHG OFF">
+        <item id="cona" label="CART CHG On (OPT)">
+          <goal>
+            <equal site="crt" var="chg" form="msg">ON</equal>
+          </goal>
+          <check>
+            <equal site="crt" var="cps" form="msg">10</equal>
+          </check>
+          <exec site="crt" name="chglft"/>
+          <exec site="dso" name="chgfw"/>
+          <exec site="dso" name="chgon"/>
+          <cfg site="crt" name="chgon"/>
+        </item>
+        <item id="coffa" label="CART CHG Off (OPT)">
+          <goal>
+            <equal site="crt" var="chg" form="msg">OFF</equal>
+          </goal>
+          <check>
+            <equal site="crt" var="cps" form="msg">10</equal>
+          </check>
+          <cfg site="crt" name="chgoff"/>
+          <exec site="dso" name="chgoff"/>
+          <exec site="dso" name="chgbw"/>
+          <exec site="crt" name="lftdw"/>
+        </item>
+        <item id="cond" label="CART CHG On (IR)">
+          <goal>
+            <equal site="crt" var="chg" form="msg">ON</equal>
+          </goal>
+          <check>
+            <equal site="crt" var="cps" form="msg">12</equal>
+          </check>
+          <exec site="crt" name="chglft"/>
+          <exec site="dsi" name="chgfw"/>
+          <exec site="dsi" name="chgon"/>
+          <cfg site="crt" name="chgon"/>
+        </item>
+        <item id="coffd" label="CART CHG Off (IR)">
+          <goal>
+            <equal site="crt" var="chg" form="msg">OFF</equal>
+          </goal>
+          <check>
+            <equal site="crt" var="cps" form="msg">12</equal>
+          </check>
+          <cfg site="crt" name="chgoff"/>
+          <exec site="dsi" name="chgoff"/>
+          <exec site="dsi" name="chgbw"/>
+          <exec site="crt" name="lftdw"/>
+        </item>
+      </unit>
+      <unit id="unit_cx15_1_dt" title="dt" label="SKIP Detach">
+        <item id="att" label="Attach on CAS">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">D</equal>
+            <equal site="dts" var="cis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <not site="crt" var="jlv" form="msg">C</not>
+            <equal site="crt" var="dps" form="msg">01</equal>
+          </check>
+          <exec site="dts" name="%i"/>
+          <exec site="dts" name="cjon"/>
+          <mcr name="luut/X"/>
+          <mcr name="fupt"/>
+          <mcr name="cpont/X"/>
+          <exec site="crt" name="lftdw"/>
+        </item>
+        <item id="ata" label="Attach on FIX.OPT">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">D</equal>
+            <equal site="dso" var="fis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <not site="crt" var="jlv" form="msg">C</not>
+            <equal site="crt" var="dps" form="msg">10</equal>
+            <equal site="dso" var="chg" form="msg">BK</equal>
+          </check>
+          <exec site="ist" name="sa"/>
+          <mcr name="luua"/>
+          <mcr name="fupa"/>
+          <mcr name="cpona/X"/>
+          <exec site="crt" name="lftdw"/>
+        </item>
+        <item id="atb" label="Attach on MOV.OPT">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">D</equal>
+            <equal site="dso" var="mis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <not site="crt" var="jlv" form="msg">C</not>
+            <equal site="crt" var="dps" form="msg">09</equal>
+          </check>
+          <exec site="ist" name="sb"/>
+          <mcr name="luub"/>
+          <mcr name="fupb"/>
+          <mcr name="cponb/X"/>
+          <exec site="crt" name="lftdw"/>
+        </item>
+        <item id="atc" label="Attach on MOV.IR">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">D</equal>
+            <equal site="dsi" var="mis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <not site="crt" var="jlv" form="msg">C</not>
+            <equal site="crt" var="dps" form="msg">11</equal>
+          </check>
+          <exec site="ist" name="sc"/>
+          <mcr name="luuc"/>
+          <mcr name="fupc"/>
+          <mcr name="cponc/X"/>
+          <exec site="crt" name="lftdw"/>
+        </item>
+        <item id="atd" label="Attach on FIX.IR">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">D</equal>
+            <equal site="dsi" var="fis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <not site="crt" var="jlv" form="msg">C</not>
+            <equal site="crt" var="dps" form="msg">12</equal>
+            <equal site="dsi" var="chg" form="msg">BK</equal>
+          </check>
+          <exec site="ist" name="sd"/>
+          <mcr name="luud"/>
+          <mcr name="fupd"/>
+          <mcr name="cpond/X"/>
+          <exec site="crt" name="lftdw"/>
+        </item>
+        <item id="dtt" label="Detach on CAS">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">D</equal>
+            <equal site="dts" var="cis" form="msg">OFF</equal>
+          </goal>
+          <check>
+            <not site="crt" var="jlv" form="msg">C</not>
+            <equal site="crt" var="dps" form="msg">01</equal>
+          </check>
+          <upd site="dts"/>
+          <exec site="dts" name="%i"/>
+          <mcr name="luht"/>
+          <mcr name="cpofft/X"/>
+          <mcr name="fdwt"/>
+          <mcr name="lftdw/X"/>
+        </item>
+        <item id="dta" label="Detach on FIX.OPT">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">D</equal>
+            <equal site="dso" var="fis" form="msg">OFF</equal>
+          </goal>
+          <check>
+            <not site="crt" var="jlv" form="msg">C</not>
+            <equal site="crt" var="dps" form="msg">10</equal>
+            <equal site="dso" var="chg" form="msg">BK</equal>
+          </check>
+          <upd site="dso"/>
+          <exec site="ist" name="sa"/>
+          <mcr name="lftup"/>
+          <mcr name="cpoffa/X"/>
+          <mcr name="fdwa"/>
+          <exec site="crt" name="lftdw"/>
+        </item>
+        <item id="dtb" label="Detach on MOV.OPT">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">D</equal>
+            <equal site="dso" var="mis" form="msg">OFF</equal>
+          </goal>
+          <check>
+            <not site="crt" var="jlv" form="msg">C</not>
+            <equal site="crt" var="dps" form="msg">09</equal>
+          </check>
+          <upd site="dso"/>
+          <exec site="ist" name="sb"/>
+          <mcr name="lftup"/>
+          <mcr name="cpoffb/X"/>
+          <mcr name="fdwb"/>
+          <exec site="crt" name="lftdw"/>
+        </item>
+        <item id="dtc" label="Detach on MOV.IR">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">D</equal>
+          </goal>
+          <check>
+            <not site="crt" var="jlv" form="msg">C</not>
+            <equal site="crt" var="dps" form="msg">11</equal>
+          </check>
+          <upd site="dsi" name="true"/>
+          <exec site="ist" name="sc"/>
+          <mcr name="lftup"/>
+          <mcr name="cpoffc/X"/>
+          <mcr name="fdwc"/>
+          <exec site="crt" name="lftdw"/>
+        </item>
+        <item id="dtd" label="Detach on FIX.IR">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">D</equal>
+            <equal site="dsi" var="fis" form="msg">OFF</equal>
+          </goal>
+          <check>
+            <not site="crt" var="jlv" form="msg">C</not>
+            <equal site="crt" var="dps" form="msg">12</equal>
+            <equal site="dsi" var="chg" form="msg">BK</equal>
+          </check>
+          <upd site="dsi" name="true"/>
+          <exec site="ist" name="sd"/>
+          <mcr name="lftup"/>
+          <mcr name="cpoffd/X"/>
+          <mcr name="fdwd"/>
+          <exec site="crt" name="lftdw"/>
+        </item>
+        <item id="lftup" label="CART Lift UP at ANY.PL">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </goal>
+          <exec site="crt" name="%i"/>
+          <exec site="msg" name="auto"/>
+          <exec site="crt" name="lftup1"/>
+          <exec site="crt" name="lftup2"/>
+          <exec site="crt" name="lftup3"/>
+        </item>
+        <item id="lftdw" label="CART Lift DW at ANY.PL">
+          <check>
+          </check>
+          <exec site="crt" name="lftdw"/>
+        </item>
+        <item id="lul" label="Liftup L w/Container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">L</equal>
+          </goal>
+          <exec site="crt" name="%i"/>
+          <exec site="msg" name="auto"/>
+          <exec site="crt" name="lftup1"/>
+        </item>
+        <item id="lum" label="Liftup L-M w/Container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">M</equal>
+          </goal>
+          <mcr name="lul"/>
+          <exec site="crt" name="lftup2"/>
+        </item>
+        <item id="luuht" label="Liftup H at CAS w/Container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </goal>
+          <check>
+            <match site="dts" var="zp1" skip="true" form="msg">D</match>
+          </check>
+          <exec site="crt" name="lftup3"/>
+          <upd site="dts"/>
+        </item>
+        <item id="luuha" label="Liftup H at FIX.OPT w/Container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </goal>
+          <exec site="crt" name="lftup3"/>
+          <upd site="dso"/>
+        </item>
+        <item id="luuhb" label="Liftup H at MOV.OPT w/Container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </goal>
+          <exec site="crt" name="lftup3"/>
+          <upd site="dso"/>
+        </item>
+        <item id="luuhc" label="Liftup H at MOV.IR w/Container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </goal>
+          <exec site="crt" name="lftup3"/>
+          <upd site="dsi" name="true"/>
+        </item>
+        <item id="luuhd" label="Liftup H at FIX.IR w/Container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </goal>
+          <exec site="crt" name="lftup3"/>
+          <upd site="dsi" name="true"/>
+        </item>
+        <item id="luut" label="Liftup at CAS w/container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </goal>
+          <check>
+            <match site="dts" var="inr" form="msg">UH</match>
+          </check>
+          <mcr name="lul"/>
+          <exec site="dts" name="cuadj"/>
+          <exec site="crt" name="lftup2"/>
+          <mcr name="luuht"/>
+        </item>
+        <item id="luua" label="Liftup at FIX.OPT w/Container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </goal>
+          <check>
+            <equal site="dso" var="fjb" form="msg">UP</equal>
+          </check>
+          <mcr name="lum"/>
+          <upd site="dso"/>
+          <mcr name="luuha"/>
+        </item>
+        <item id="luub" label="Liftup at MOV.OPT w/Container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </goal>
+          <check>
+            <equal site="dso" var="mjb" form="msg">UP</equal>
+          </check>
+          <mcr name="lum"/>
+          <upd site="dso"/>
+          <mcr name="luuhb"/>
+        </item>
+        <item id="luuc" label="Liftup at MOV.IR w/Container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </goal>
+          <check>
+            <equal site="dsi" var="mjb" form="msg">UP</equal>
+          </check>
+          <mcr name="lum"/>
+          <upd site="dsi" name="true"/>
+          <mcr name="luuhc"/>
+        </item>
+        <item id="luud" label="Liftup at FIX.IR w/Container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </goal>
+          <check>
+            <equal site="dsi" var="fjb" form="msg">UP</equal>
+          </check>
+          <mcr name="lum"/>
+          <upd site="dsi" name="true"/>
+          <mcr name="luuhd"/>
+        </item>
+        <item id="luht" label="Lift UP w/o Container">
+          <goal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </goal>
+          <check>
+            <match site="dts" var="inr" form="msg">HK</match>
+          </check>
+          <mcr name="lul"/>
+          <exec site="dts" name="chadj"/>
+          <exec site="crt" name="lftup2"/>
+          <exec site="crt" name="lftup3"/>
+        </item>
+        <item id="luut/focas" label="FOCAS Lift UP at CAS">
+          <exec site="msg" name="outpin"/>
+          <mcr name="luut"/>
+        </item>
+        <item id="lftdw/focas" label="FOCAS LIft UP at CAS">
+          <mcr name="lftdw"/>
+          <exec site="msg" name="inpin"/>
+        </item>
+      </unit>
+      <unit id="unit_cx15_1_fdw" title="fdw" label="SKIP Hookdw">
+        <item id="fupt" label="Hookup at CAS">
+          <goal>
+            <equal site="dts" var="cis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+            <match site="dts" var="zp1" skip="true" form="msg">C</match>
+          </check>
+          <mcr name="jd4t"/>
+          <exec site="msg" name="cjdw"/>
+          <exec site="msg" name="bhk"/>
+          <exec site="dts" name="chook"/>
+          <exec site="msg" name="ahk1"/>
+          <exec site="msg" name="ahk2"/>
+          <mcr name="ju0t"/>
+        </item>
+        <item id="fdwt" label="Hookdw at CAS">
+          <goal>
+            <equal site="dts" var="cis" form="msg">OFF</equal>
+          </goal>
+          <check>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </check>
+          <mcr name="jd0t"/>
+          <exec site="dts" name="cunhk"/>
+          <mcr name="ju4t"/>
+        </item>
+        <item id="fupa" label="Hookup at FIX.OPT">
+          <goal>
+            <equal site="dso" var="fis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </check>
+          <mcr name="jd4a"/>
+          <exec site="dso" name="fhook"/>
+          <mcr name="ju0a"/>
+        </item>
+        <item id="fdwa" label="Hookdw at FIX.OPT">
+          <goal>
+            <equal site="dso" var="fis" form="msg">OFF</equal>
+          </goal>
+          <check>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </check>
+          <mcr name="jd0a"/>
+          <exec site="dso" name="funhk"/>
+          <mcr name="ju4a"/>
+        </item>
+        <item id="fupb" label="Hookup at MOV.OPT">
+          <goal>
+            <equal site="dso" var="mis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </check>
+          <mcr name="jd4b"/>
+          <exec site="dso" name="mhook"/>
+          <mcr name="ju0b"/>
+        </item>
+        <item id="fdwb" label="Hookdw at MOV.OPT">
+          <goal>
+            <equal site="dso" var="mis" form="msg">OFF</equal>
+          </goal>
+          <check>
+            <equal site="dso" var="mrt" form="msg">DES</equal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </check>
+          <mcr name="jd0b"/>
+          <exec site="dso" name="munhk"/>
+          <mcr name="ju4b"/>
+        </item>
+        <item id="fupc" label="Hookup at MOV.IR">
+          <goal>
+            <equal site="dsi" var="mis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </check>
+          <mcr name="jd4c"/>
+          <exec site="dsi" name="mhook"/>
+          <mcr name="ju0c"/>
+        </item>
+        <item id="fdwc" label="Hookdw at MOV.IR">
+          <goal>
+            <equal site="dsi" var="mis" form="msg">OFF</equal>
+          </goal>
+          <check>
+            <equal site="dsi" var="mrt" form="msg">DES</equal>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </check>
+          <mcr name="jd0c"/>
+          <exec site="dsi" name="munhk"/>
+          <mcr name="ju4c"/>
+        </item>
+        <item id="fupd" label="Hookup at FIX.IR">
+          <goal>
+            <equal site="dsi" var="fis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </check>
+          <mcr name="jd4d"/>
+          <exec site="dsi" name="fhook"/>
+          <mcr name="ju0d"/>
+        </item>
+        <item id="fdwd" label="Hookdw at FIX.IR">
+          <goal>
+            <equal site="dsi" var="fis" form="msg">OFF</equal>
+          </goal>
+          <check>
+            <equal site="crt" var="jlv" form="msg">H</equal>
+          </check>
+          <mcr name="jd0d"/>
+          <exec site="dsi" name="funhk"/>
+          <mcr name="ju4d"/>
+        </item>
+        <item id="ju0t" label="InR0 Jkup at CAS">
+          <goal>
+            <equal site="dts" var="cis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <equal site="dts" var="rps" form="msg">0DEG</equal>
+          </check>
+          <exec site="msg" name="bjm"/>
+          <exec site="msg" name="bjs"/>
+          <exec site="dts" name="cjup"/>
+          <upd site="det" name="true"/>
+        </item>
+        <item id="jd0t" label="InR0 Jkdw at CAS">
+          <goal>
+            <match site="dts" var="be1" form="msg">DWLMT</match>
+          </goal>
+          <check>
+            <equal site="dts" var="cis" form="msg">ON</equal>
+          </check>
+          <exec site="msg" name="bjm"/>
+          <exec site="msg" name="bjs"/>
+          <exec site="dts" name="cjdw"/>
+          <upd site="det" name="true"/>
+        </item>
+        <item id="ju0a" label="InR0 Jkup at FIX.OPT">
+          <goal>
+            <equal site="dso" var="fis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <equal site="dso" var="fhk" form="msg">HOOK</equal>
+          </check>
+          <exec site="dso" name="fjup"/>
+          <upd site="dso"/>
+        </item>
+        <item id="jd0a" label="InR0 Jkdw at FIX.OPT">
+          <goal>
+            <equal site="dso" var="fjb" form="msg">DW</equal>
+          </goal>
+          <check>
+            <equal site="dso" var="fis" form="msg">ON</equal>
+          </check>
+          <exec site="ist" name="sa=%a"/>
+          <exec site="dso" name="fjdw"/>
+          <upd site="dso"/>
+        </item>
+        <item id="ju0b" label="InR0 Jkup at MOV.OPT">
+          <goal>
+            <equal site="dso" var="mis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <equal site="dso" var="mhk" form="msg">HOOK</equal>
+          </check>
+          <exec site="dso" name="mjup"/>
+          <upd site="dso"/>
+        </item>
+        <item id="jd0b" label="InR0 Jkdw at MOV.OPT">
+          <goal>
+            <equal site="dso" var="mjb" form="msg">DW</equal>
+          </goal>
+          <check>
+            <equal site="dso" var="mis" form="msg">ON</equal>
+          </check>
+          <exec site="ist" name="sb=%b"/>
+          <exec site="dso" name="mjdw"/>
+          <upd site="dso"/>
+        </item>
+        <item id="ju0c" label="InR0 Jkup at MOV.IR">
+          <goal>
+            <equal site="dsi" var="mis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <equal site="dsi" var="mhk" form="msg">HOOK</equal>
+          </check>
+          <exec site="dsi" name="mjup"/>
+          <upd site="dsi"/>
+        </item>
+        <item id="jd0c" label="InR0 Jkdw at MOV.IR">
+          <goal>
+            <equal site="dsi" var="mjb" form="msg">DW</equal>
+          </goal>
+          <check>
+            <equal site="dsi" var="mis" form="msg">ON</equal>
+          </check>
+          <exec site="ist" name="sc=%c"/>
+          <exec site="dsi" name="mjdw"/>
+          <upd site="dsi" name="true"/>
+        </item>
+        <item id="ju0d" label="InR0 Jkup at FIX.IR">
+          <goal>
+            <equal site="dsi" var="fis" form="msg">ON</equal>
+          </goal>
+          <check>
+            <equal site="dsi" var="fhk" form="msg">HOOK</equal>
+          </check>
+          <exec site="dsi" name="fjup"/>
+          <upd site="dsi"/>
+        </item>
+        <item id="jd0d" label="InR0 Jkdw at FIX.IR">
+          <goal>
+            <equal site="dsi" var="fjb" form="msg">DW</equal>
+          </goal>
+          <check>
+            <equal site="dsi" var="fis" form="msg">ON</equal>
+          </check>
+          <exec site="dsi" name="fjdw"/>
+          <upd site="dsi"/>
+        </item>
+        <item id="ju4t" label="InR-4 Jkup at CAS">
+          <goal>
+            <match site="dts" var="be1" form="msg">UPLMT</match>
+          </goal>
+          <check>
+            <equal site="dts" var="rps" form="msg">-4DEG</equal>
+          </check>
+          <exec site="msg" name="bjm"/>
+          <exec site="dts" name="cjup"/>
+        </item>
+        <item id="jd4t" label="InR-4 Jkdw at CAS">
+          <goal>
+            <match site="dts" var="be1" form="msg">DWLMT</match>
+          </goal>
+          <check>
+            <match site="dts" var="inr" form="msg">UH</match>
+          </check>
+          <exec site="msg" name="bjd"/>
+          <exec site="msg" name="bjm"/>
+          <exec site="dts" name="cjdw"/>
+        </item>
+        <item id="ju4a" label="InR-4 Jkup at FIX.OPT">
+          <goal>
+            <equal site="dso" var="fjb" form="msg">UP</equal>
+          </goal>
+          <check>
+            <equal site="dso" var="fhk" form="msg">UNHK</equal>
+          </check>
+          <exec site="dso" name="fjup"/>
+        </item>
+        <item id="jd4a" label="InR-4 Jkdw at FIX.OPT">
+          <goal>
+            <equal site="dso" var="fjb" form="msg">DW</equal>
+          </goal>
+          <check>
+            <equal site="dso" var="fhk" form="msg">UNHK</equal>
+          </check>
+          <exec site="dso" name="fjdw"/>
+        </item>
+        <item id="ju4b" label="InR-4 Jkup at MOV.OPT">
+          <goal>
+            <equal site="dso" var="mjb" form="msg">UP</equal>
+          </goal>
+          <check>
+            <equal site="dso" var="mhk" form="msg">UNHK</equal>
+          </check>
+          <exec site="dso" name="mjup"/>
+        </item>
+        <item id="jd4b" label="InR-4 Jkdw at MOV.OPT">
+          <goal>
+            <equal site="dso" var="mjb" form="msg">DW</equal>
+          </goal>
+          <check>
+            <equal site="dso" var="mhk" form="msg">UNHK</equal>
+          </check>
+          <exec site="dso" name="mjdw"/>
+        </item>
+        <item id="ju4c" label="InR-4 Jkup at MOV.IR">
+          <goal>
+            <equal site="dsi" var="mjb" form="msg">UP</equal>
+          </goal>
+          <check>
+            <equal site="dsi" var="mhk" form="msg">UNHK</equal>
+          </check>
+          <exec site="dsi" name="mjup"/>
+        </item>
+        <item id="jd4c" label="InR-4 Jkdw at MOV.IR">
+          <goal>
+            <equal site="dsi" var="mjb" form="msg">DW</equal>
+          </goal>
+          <check>
+            <equal site="dsi" var="mhk" form="msg">UNHK</equal>
+          </check>
+          <exec site="dsi" name="mjdw"/>
+        </item>
+        <item id="ju4d" label="InR-4 Jkup at FIX.IR">
+          <goal>
+            <equal site="dsi" var="fjb" form="msg">UP</equal>
+          </goal>
+          <check>
+            <equal site="dsi" var="fhk" form="msg">UNHK</equal>
+          </check>
+          <exec site="dsi" name="fjup"/>
+        </item>
+        <item id="jd4d" label="InR-4 Jkdw at FIX.IR">
+          <goal>
+            <equal site="dsi" var="fjb" form="msg">DW</equal>
+          </goal>
+          <check>
+            <equal site="dsi" var="fhk" form="msg">UNHK</equal>
+          </check>
+          <exec site="dsi" name="fjdw"/>
+        </item>
+      </unit>
+      <unit id="unit_cx15_1_cpoff" title="cpoff" label="SKIP IPW OFF">
+        <item id="cpont" label="Instrument Startup at CAS">
+          <check>
+          </check>
+          <exec site="det" name="ipwon" skip="true"/>
+        </item>
+        <item id="cpofft" label="Instrument Shutdown at CAS">
+          <check>
+          </check>
+          <exec site="det" name="ipwoff" skip="true"/>
+        </item>
+        <item id="cpont/comics" label="COMICS Startup at CAS">
+          <check>
+          </check>
+          <exec site="det" name="ipwon" skip="true"/>
+          <exec site="cci" name="caon" skip="true"/>
+          <exec site="msg" name="a/comics"/>
+          <exec site="msg" name="chop"/>
+          <exec site="msg" name="net/comics"/>
+        </item>
+        <item id="cpofft/comics" label="COMICS Shutdown at CAS">
+          <check>
+          </check>
+          <exec site="cci" name="caoff" skip="true"/>
+          <exec site="det" name="ipwoff" skip="true"/>
+        </item>
+        <item id="cpont/ciao" label="CIAO Startup at CAS">
+          <check>
+          </check>
+          <exec site="det" name="ipwon" skip="true"/>
+          <exec site="cci" name="c2on" skip="true"/>
+          <exec site="msg" name="clon" skip="true"/>
+          <exec site="msg" name="a/ciao"/>
+        </item>
+        <item id="cpofft/ciao" label="CIAO Shutdown at CAS">
+          <check>
+          </check>
+          <exec site="cci" name="c2off" skip="true"/>
+          <exec site="msg" name="cloff"/>
+          <exec site="det" name="ipwoff" skip="true"/>
+        </item>
+        <item id="cpont/ircs" label="IRCS Startup at CAS">
+          <exec site="det" name="ipwon" skip="true"/>
+        </item>
+        <item id="cpofft/ircs" label="IRCS Shutdown at CAS">
+          <exec site="det" name="ipwoff" skip="true"/>
+        </item>
+        <item id="cpont/moircs" label="MOIRCS Startup at CAS">
+          <check>
+          </check>
+          <exec site="msg" name="gswi"/>
+          <exec site="det" name="ipwon" skip="true"/>
+          <exec site="msg" name="pwint"/>
+          <exec site="msg" name="rech"/>
+          <exec site="cci" name="c1on"/>
+          <exec site="cci" name="c2on"/>
+          <exec site="msg" name="lanint"/>
+          <exec site="msg" name="net/moircs"/>
+          <exec site="msg" name="a/moircs"/>
+          <exec site="msg" name="pcup/moircs"/>
+        </item>
+        <item id="cpofft/moircs" label="MOIRCS Shutdown at CAS">
+          <check>
+          </check>
+          <exec site="msg" name="ntch"/>
+          <exec site="cci" name="caoff"/>
+          <exec site="msg" name="pwext"/>
+          <exec site="det" name="ipwoff" skip="true"/>
+          <exec site="msg" name="gswp"/>
+          <exec site="msg" name="lanext"/>
+        </item>
+        <item id="cponb" label="IPW On at MOV.OPT">
+          <check>
+          </check>
+          <exec site="dso" name="mpwon"/>
+        </item>
+        <item id="cpoffb" label="IPW Off at MOV.OPT">
+          <check>
+          </check>
+          <exec site="dso" name="mpwoff"/>
+        </item>
+        <item id="cponb/comics" label="COMICS Startup at MOV.OPT">
+          <check>
+          </check>
+          <exec site="dso" name="mpwon"/>
+          <exec site="cco" name="maon" skip="true"/>
+          <exec site="msg" name="a/comics"/>
+          <exec site="msg" name="net/comics"/>
+        </item>
+        <item id="cpoffb/comics" label="COMICS Shutdown at MOV.OPT">
+          <check>
+          </check>
+          <exec site="cco" name="maoff" skip="true"/>
+          <exec site="dso" name="mpwoff"/>
+        </item>
+        <item id="cpona" label="IPW On at FIX.OPT">
+          <check>
+          </check>
+          <exec site="dso" name="fpwon"/>
+        </item>
+        <item id="cpoffa" label="IPW Off at FIX.OPT">
+          <check>
+          </check>
+          <exec site="dso" name="fpwoff"/>
+        </item>
+        <item id="cpona/ciao" label="CIAO Startup at FIX.OPT">
+          <check>
+          </check>
+          <exec site="dso" name="fpwon"/>
+          <exec site="cco" name="f2on" skip="true"/>
+          <exec site="msg" name="a/ciao"/>
+          <exec site="msg" name="clon" skip="true"/>
+        </item>
+        <item id="cpoffa/ciao" label="CIAO Shutdown at FIX.OPT">
+          <check>
+          </check>
+          <exec site="cco" name="f2off" skip="true"/>
+          <exec site="msg" name="cloff" skip="true"/>
+          <exec site="dso" name="fpwoff"/>
+        </item>
+        <item id="cponc" label="IPW On at MOV.IR">
+          <check>
+          </check>
+          <exec site="dsi" name="mpwon" skip="true"/>
+        </item>
+        <item id="cpoffc" label="IPW Off at MOV.IR">
+          <check>
+          </check>
+          <exec site="dsi" name="mpwoff" skip="true"/>
+        </item>
+        <item id="cponc/moircs" label="MOIRCS Startup at MOV.IR">
+          <check>
+          </check>
+          <exec site="dsi" name="mpwon"/>
+          <exec site="msg" name="pwint"/>
+          <exec site="msg" name="rech"/>
+          <exec site="cci" name="m1on"/>
+          <exec site="cci" name="m2on"/>
+          <exec site="msg" name="a/moircs"/>
+          <exec site="msg" name="lanint"/>
+          <exec site="msg" name="net/moircs"/>
+          <exec site="msg" name="pcup/moircs"/>
+        </item>
+        <item id="cpoffc/moircs" label="MOIRCS Shutdown at MOV.IR">
+          <check>
+          </check>
+          <exec site="msg" name="ntch"/>
+          <exec site="cci" name="maoff"/>
+          <exec site="dsi" name="mpwoff" skip="true"/>
+          <exec site="msg" name="pwext"/>
+          <exec site="msg" name="lanext"/>
+        </item>
+        <item id="cpond" label="IPW On at FIX.IR">
+          <check>
+          </check>
+          <exec site="dsi" name="fpwon" skip="true"/>
+        </item>
+        <item id="cpoffd" label="IPW Off at FIX.IR">
+          <check>
+          </check>
+          <exec site="dsi" name="fpwoff" skip="true"/>
+        </item>
+        <item id="cpond/focas" label="FOCAS Startup at FIX.IR">
+          <check>
+          </check>
+          <exec site="dsi" name="fpwon" skip="true"/>
+          <exec site="msg" name="fpwon"/>
+          <exec site="msg" name="a/focas"/>
+        </item>
+        <item id="cpoffd/focas" label="FOCAS Startup at FIX.IR">
+          <check>
+          </check>
+          <exec site="dsi" name="fpwoff" skip="true"/>
+        </item>
+        <item id="trlo" label="MOV.OPT Trans Forward w/o INST">
+          <goal>
+            <equal site="dso" var="mtr" form="msg">FW</equal>
+          </goal>
+          <check>
+            <not site="crt" var="cps" form="msg">09</not>
+            <equal site="dso" var="mis" form="msg">OFF</equal>
+          </check>
+          <mcr name="dso_dopen"/>
+          <exec site="dso" name="trout"/>
+          <exec site="dso" name="rotout"/>
+          <exec site="dso" name="munhk"/>
+        </item>
+        <item id="trli" label="MOV.IR Trans Forward w/o INST">
+          <goal>
+            <equal site="dsi" var="mtr" form="msg">FW</equal>
+          </goal>
+          <check>
+            <not site="crt" var="cps" form="msg">11</not>
+            <equal site="dsi" var="mis" form="msg">OFF</equal>
+          </check>
+          <exec site="dsi" name="dopen" skip="true"/>
+          <exec site="dsi" name="trout"/>
+          <exec site="dsi" name="rotout"/>
+          <exec site="dsi" name="munhk"/>
+        </item>
+      </unit>
+      <item id="attach" label="Container Attach">
+        <check>
+        </check>
+        <mcr name="atX"/>
+      </item>
+      <item id="detach" label="Container Detach">
+        <check>
+        </check>
+        <mcr name="dtX"/>
+      </item>
+      <item id="trso" label="MOV.OPT Trans Backward w/ INST">
+        <goal>
+          <equal site="dso" var="mtr" form="msg">BK</equal>
+        </goal>
+        <check>
+          <not site="crt" var="cps" form="msg">09</not>
+        </check>
+        <exec site="dso" name="rotin"/>
+        <exec site="dso" name="trin"/>
+        <exec site="msg" name="pipeup"/>
+      </item>
+      <item id="trsi" label="MOV.IR Trans Backward w/ INST">
+        <goal>
+          <equal site="dsi" var="mtr" form="msg">BK</equal>
+        </goal>
+        <check>
+          <not site="crt" var="cps" form="msg">11</not>
+        </check>
+        <exec site="dsi" name="rotin"/>
+        <exec site="dsi" name="trin"/>
+      </item>
+      <item id="truo" label="MOV.OPT Trans Forward w/ INST">
+        <goal>
+          <equal site="dso" var="mtr" form="msg">FW</equal>
+        </goal>
+        <check>
+          <not site="crt" var="cps" form="msg">09</not>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="msg" name="pipedw"/>
+        <exec site="dso" name="trout"/>
+        <exec site="dso" name="rotout"/>
+      </item>
+      <item id="trui" label="MOV.IR Trans Forward w/ INST">
+        <goal>
+          <equal site="dsi" var="mtr" form="msg">FW</equal>
+        </goal>
+        <check>
+          <not site="crt" var="cps" form="msg">11</not>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="dsi" name="trout"/>
+        <exec site="dsi" name="rotout"/>
+      </item>
+      <item id="trpo" label="MOV.OPT Trans Backward w/o INST">
+        <goal>
+          <equal site="dso" var="mtr" form="msg">BK</equal>
+        </goal>
+        <check>
+          <not site="crt" var="cps" form="msg">09</not>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="dso" name="mhook"/>
+        <exec site="dso" name="rotin"/>
+        <exec site="dso" name="trin"/>
+      </item>
+      <item id="trpi" label="MOV.IR Trans Backword w/o INST">
+        <goal>
+          <equal site="dsi" var="mtr" form="msg">BK</equal>
+        </goal>
+        <check>
+          <not site="crt" var="cps" form="msg">11</not>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="dsi" name="mhook"/>
+        <exec site="dsi" name="rotin"/>
+        <exec site="dsi" name="trin"/>
+      </item>
+      <item id="t01-02" label="TRANSPORT CAS to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run2"/>
+      </item>
+      <item id="t01-03" label="TRANSPORT CAS to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run3"/>
+      </item>
+      <item id="t01-07" label="TRANSPORT CAS to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="t01-08" label="TRANSPORT CAS to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="t01-09" label="TRANSPORT CAS to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="trlo"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="t01-10" label="TRANSPORT CAS to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run10"/>
+      </item>
+      <item id="t01-11" label="TRANSPORT CAS to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trli"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="t01-12" label="TRANSPORT CAS to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run12"/>
+      </item>
+      <item id="t02-01" label="TRANSPORT SP.CAS to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="t02-03" label="TRANSPORT SP.CAS to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+        </check>
+        <exec site="crt" name="run3"/>
+      </item>
+      <item id="t02-07" label="TRANSPORT SP.CAS to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+        </check>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="t02-08" label="TRANSPORT SP.CAS to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+        </check>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="t02-09" label="TRANSPORT SP.CAS to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="trlo"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="t02-10" label="TRANSPORT SP.CAS to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run10"/>
+      </item>
+      <item id="t02-11" label="TRANSPORT SP.CAS to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trli"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="t02-12" label="TRANSPORT SP.CAS to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run12"/>
+      </item>
+      <item id="t03-01" label="TRANSPORT CENTER to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="t03-02" label="TRANSPORT CENTER to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+        </check>
+        <exec site="crt" name="run2"/>
+      </item>
+      <item id="t03-07" label="TRANSPORT CENTER to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+        </check>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="t03-08" label="TRANSPORT CENTER to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+        </check>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="t03-09" label="TRANSPORT CENTER to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="trlo"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="t03-10" label="TRANSPORT CENTER to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run10"/>
+      </item>
+      <item id="t03-11" label="TRANSPORT CENTER to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trli"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="t03-12" label="TRANSPORT CENTER to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run12"/>
+      </item>
+      <item id="t07-01" label="TRANSPORT SP.OPT to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+        </check>
+        <exec site="msg" name="hson"/>
+        <exec site="crt" name="run1" skip="1"/>
+      </item>
+      <item id="t07-02" label="TRANSPORT SP.OPT to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+        </check>
+        <exec site="crt" name="run2" skip="1"/>
+      </item>
+      <item id="t07-03" label="TRANSPORT SP.OPT to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+        </check>
+        <exec site="crt" name="run3" skip="1"/>
+      </item>
+      <item id="t07-08" label="TRANSPORT SP.OPT to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+        </check>
+        <exec site="crt" name="run8" skip="1"/>
+      </item>
+      <item id="t07-09" label="TRANSPORT SP.OPT to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <mcr name="trlo"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="t07-10" label="TRANSPORT SP.OPT to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run10"/>
+      </item>
+      <item id="t07-11" label="TRANSPORT SP.OPT to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trli"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="t07-12" label="TRANSPORT SP.OPT to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run12"/>
+      </item>
+      <item id="t08-01" label="TRANSPORT SP.IR to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+        </check>
+        <exec site="msg" name="hson"/>
+        <exec site="crt" name="run1" skip="1"/>
+      </item>
+      <item id="t08-02" label="TRANSPORT SP.IR to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+        </check>
+        <exec site="crt" name="run2" skip="1"/>
+      </item>
+      <item id="t08-03" label="TRANSPORT SP.IR to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+        </check>
+        <exec site="crt" name="run3" skip="1"/>
+      </item>
+      <item id="t08-07" label="TRANSPORT SP.IR to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+        </check>
+        <exec site="crt" name="run7" skip="1"/>
+      </item>
+      <item id="t08-09" label="TRANSPORT SP.IR to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="trlo"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="t08-10" label="TRANSPORT SP.IR to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run10"/>
+      </item>
+      <item id="t08-11" label="TRANSPORT SP.IR to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <mcr name="trli"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="t08-12" label="TRANSPORT SP.IR to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run12"/>
+      </item>
+      <item id="t09-01" label="TRANSPORT MOV.OPT to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">09</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+        </check>
+        <upd site="dso"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="t07-01"/>
+      </item>
+      <item id="t09-02" label="TRANSPORT MOV.OPT to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">09</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <upd site="dso"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="t07-02"/>
+      </item>
+      <item id="t09-03" label="TRANSPORT MOV.OPT to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">09</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <upd site="dso"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="t07-03"/>
+      </item>
+      <item id="t09-07" label="TRANSPORT MOV.OPT to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">09</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <upd site="dso"/>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="t09-08" label="TRANSPORT MOV.OPT to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">09</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <upd site="dso"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="t07-08"/>
+      </item>
+      <item id="t09-10" label="TRANSPORT MOV.OPT to FIX.OPT">
+        <check>
+        </check>
+        <upd site="dso"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="t07-10"/>
+      </item>
+      <item id="t09-11" label="TRANSPORT MOV.OPT to MOV.IR">
+        <check>
+        </check>
+        <upd site="dso"/>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="trli"/>
+        <exec site="crt" name="run11" skip="1"/>
+      </item>
+      <item id="t09-12" label="TRANSPORT MOV.OPT to FIX.IR">
+        <check>
+        </check>
+        <upd site="dso"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="t07-12"/>
+      </item>
+      <item id="t10-01" label="TRANSPORT FIX.OPT to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="t10-02" label="TRANSPORT FIX.OPT to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run2"/>
+      </item>
+      <item id="t10-03" label="TRANSPORT FIX.OPT to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run3"/>
+      </item>
+      <item id="t10-07" label="TRANSPORT FIX.OPT to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="t10-08" label="TRANSPORT FIX.OPT to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="t10-09" label="TRANSPORT FIX.OPT to MOV.OPT">
+        <check>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="t07-09"/>
+      </item>
+      <item id="t10-11" label="TRANSPORT FIX.OPT to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trli"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="t10-12" label="TRANSPORT FIX.OPT to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run12"/>
+      </item>
+      <item id="t11-01" label="TRANSPORT MOV.IR to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">11</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+        </check>
+        <upd site="dsi" name="true"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="t08-01"/>
+      </item>
+      <item id="t11-02" label="TRANSPORT MOV.IR to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">11</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <upd site="dsi" name="true"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="t08-02"/>
+      </item>
+      <item id="t11-03" label="TRANSPORT MOV.IR to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">11</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <upd site="dsi" name="true"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="t08-03"/>
+      </item>
+      <item id="t11-07" label="TRANSPORT MOV.IR to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">11</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <upd site="dsi" name="true"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="t08-07"/>
+      </item>
+      <item id="t11-08" label="TRANSPORT MOV.IR to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">11</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <upd site="dsi" name="true"/>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="t11-09" label="TRANSPORT MOV.IR to MOV.OPT">
+        <check>
+        </check>
+        <upd site="dsi" name="true"/>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trlo"/>
+        <exec site="crt" name="run9" skip="1"/>
+      </item>
+      <item id="t11-10" label="TRANSPORT MOV.IR to FIX.OPT">
+        <check>
+        </check>
+        <upd site="dsi" name="true"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="t08-10"/>
+      </item>
+      <item id="t11-12" label="TRANSPORT MOV.IR to FIX.IR">
+        <check>
+        </check>
+        <upd site="dsi" name="true"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="t08-12"/>
+      </item>
+      <item id="t12-01" label="TRANSPORT FIX.IR to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+          <equal site="dts" var="cis" form="msg">OFF</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="t12-02" label="TRANSPORT FIX.IR to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run2"/>
+      </item>
+      <item id="t12-03" label="TRANSPORT FIX.IR to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run3"/>
+      </item>
+      <item id="t12-07" label="TRANSPORT FIX.IR to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="t12-08" label="TRANSPORT FIX.IR to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="t12-09" label="TRANSPORT FIX.IR to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="trlo"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="t12-10" label="TRANSPORT FIX.IR to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run10"/>
+      </item>
+      <item id="t12-11" label="TRANSPORT FIX.IR to MOV.IR">
+        <check>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="t08-11"/>
+      </item>
+      <item id="t02-01/focas" label="TRANSPORT FM SP.CAS to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+        </check>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="t03-01/focas" label="TRANSPORT FM CENTER to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+        </check>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="t07-01/focas" label="TRANSPORT FM SP.OPT to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+        </check>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="t08-01/focas" label="TRANSPORT FM SP.IR to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+        </check>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="t09-01/focas" label="TRANSPORT FM MOV.OPT to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">09</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <upd site="dso"/>
+        <exec site="crt" name="run7"/>
+        <exec site="crt" name="run1" skip="1"/>
+      </item>
+      <item id="t10-01/focas" label="TRANSPORT FM FIX.OPT to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="t11-01/focas" label="TRANSPORT FM MOV.IR to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">11</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <upd site="dsi" name="true"/>
+        <exec site="crt" name="run8"/>
+        <exec site="crt" name="run1" skip="1"/>
+      </item>
+      <item id="t12-01/focas" label="TRANSPORT FM FIX.IR to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="msg" name="frm12"/>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="t01-02/focas" label="TRANSPORT FM CAS to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+        </check>
+        <exec site="crt" name="run2"/>
+      </item>
+      <item id="t01-03/focas" label="TRANSPORT FM CAS to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+        </check>
+        <exec site="crt" name="run3"/>
+      </item>
+      <item id="t01-07/focas" label="TRANSPORT FM CAS to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+        </check>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="t01-08/focas" label="TRANSPORT FM CAS to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+        </check>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="t01-09/focas" label="TRANSPORT FM CAS to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+          <equal site="dso" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="trlo"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="t01-10/focas" label="TRANSPORT FM CAS to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+          <equal site="dso" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run10"/>
+      </item>
+      <item id="t01-11/focas" label="TRANSPORT FM CAS to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+          <equal site="dsi" var="mis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trli"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="t01-12/focas" label="TRANSPORT FM CAS to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+          <equal site="dsi" var="fis" form="msg">OFF</equal>
+        </check>
+        <exec site="crt" name="run12"/>
+      </item>
+      <item id="t02-01/moircs" label="TRANSPORT MOIRCS SP.CAS to CAS">
+        <check>
+        </check>
+        <exec site="msg" name="lcvoff"/>
+        <mcr name="t02-01"/>
+      </item>
+      <item id="t03-01/moircs" label="TRANSPORT MOIRCS CENTER to CAS">
+        <check>
+        </check>
+        <exec site="msg" name="lcvoff"/>
+        <mcr name="t03-01"/>
+      </item>
+      <item id="t07-01/moircs" label="TRANSPORT MOIRCS SP.OPT to CAS">
+        <check>
+        </check>
+        <mcr name="t07-03"/>
+        <mcr name="t03-01/moircs"/>
+      </item>
+      <item id="t08-01/moircs" label="TRANSPORT MOIRCS SP.IR to CAS">
+        <check>
+        </check>
+        <mcr name="t08-03"/>
+        <mcr name="t03-01/moircs"/>
+      </item>
+      <item id="t09-01/moircs" label="TRANSPORT MOIRCS MOV.OPT to CAS">
+        <check>
+        </check>
+        <mcr name="t09-03"/>
+        <mcr name="t03-01/moircs"/>
+      </item>
+      <item id="t10-01/moircs" label="TRANSPORT MOIRCS FIX.OPT to CAS">
+        <check>
+        </check>
+        <mcr name="t10-03"/>
+        <mcr name="t03-01/moircs"/>
+      </item>
+      <item id="t11-01/moircs" label="TRANSPORT MOIRCS MOV.IR to CAS">
+        <check>
+        </check>
+        <exec site="msg" name="lanext"/>
+        <mcr name="t11-03"/>
+        <mcr name="t03-01/moircs"/>
+      </item>
+      <item id="t12-01/moircs" label="TRANSPORT MOIRCS FIX.IR to CAS">
+        <check>
+        </check>
+        <mcr name="t12-03"/>
+        <mcr name="t03-01/moircs"/>
+      </item>
+      <item id="t01-02/moircs" label="TRANSPORT MOIRCS CAS to SP.CAS">
+        <check>
+        </check>
+        <mcr name="t01-02"/>
+        <exec site="msg" name="lcvon"/>
+      </item>
+      <item id="t01-03/moircs" label="TRANSPORT MOIRCS CAS to CENTER">
+        <check>
+        </check>
+        <mcr name="t01-03"/>
+        <exec site="msg" name="lcvon"/>
+      </item>
+      <item id="t01-07/moircs" label="TRANSPORT MOIRCS CAS to SP.OPT">
+        <check>
+        </check>
+        <mcr name="t01-03/moircs"/>
+        <mcr name="t03-07"/>
+      </item>
+      <item id="t01-08/moircs" label="TRANSPORT MOIRCS CAS to SP.IR">
+        <check>
+        </check>
+        <mcr name="t01-03/moircs"/>
+        <mcr name="t03-08"/>
+      </item>
+      <item id="t01-09/moircs" label="TRANSPORT MOIRCS CAS to MOV.OPT">
+        <check>
+        </check>
+        <mcr name="t01-03/moircs"/>
+        <mcr name="t03-09"/>
+      </item>
+      <item id="t01-10/moircs" label="TRANSPORT MOIRCS CAS to FIX.OPT">
+        <check>
+        </check>
+        <mcr name="t01-03/moircs"/>
+        <mcr name="t03-10"/>
+      </item>
+      <item id="t01-11/moircs" label="TRANSPORT MOIRCS CAS to MOV.IR">
+        <check>
+        </check>
+        <mcr name="t01-03/moircs"/>
+        <mcr name="t03-11"/>
+      </item>
+      <item id="t01-12/moircs" label="TRANSPORT MOIRCS CAS to FIX.IR">
+        <check>
+        </check>
+        <mcr name="t01-03/moircs"/>
+        <mcr name="t03-12"/>
+      </item>
+      <item id="t02-01/ciao" label="TRANSPORT CIAO SP.CAS to CAS">
+        <check>
+        </check>
+        <exec site="msg" name="lcvoff"/>
+        <mcr name="t02-01"/>
+      </item>
+      <item id="t03-01/ciao" label="TRANSPORT CIAO CENTER to CAS">
+        <check>
+        </check>
+        <exec site="msg" name="wfson"/>
+        <exec site="msg" name="lcvoff"/>
+        <mcr name="t03-01"/>
+      </item>
+      <item id="t07-01/ciao" label="TRANSPORT CIAO SP.OPT to CAS">
+        <check>
+        </check>
+        <mcr name="t07-03"/>
+        <mcr name="t03-01/ciao"/>
+      </item>
+      <item id="t08-01/ciao" label="TRANSPORT CIAO SP.IR to CAS">
+        <check>
+        </check>
+        <mcr name="t08-03"/>
+        <mcr name="t03-01/ciao"/>
+      </item>
+      <item id="t09-01/ciao" label="TRANSPORT CIAO MOV.OPT to CAS">
+        <check>
+        </check>
+        <mcr name="t09-03"/>
+        <mcr name="t03-01/ciao"/>
+      </item>
+      <item id="t10-01/ciao" label="TRANSPORT CIAO FIX.OPT to CAS">
+        <check>
+        </check>
+        <mcr name="t10-03"/>
+        <mcr name="t03-01/ciao"/>
+      </item>
+      <item id="t11-01/ciao" label="TRANSPORT CIAO MOV.IR to CAS">
+        <check>
+        </check>
+        <mcr name="t11-03"/>
+        <mcr name="t03-01/ciao"/>
+      </item>
+      <item id="t12-01/ciao" label="TRANSPORT CIAO FIX.IR to CAS">
+        <check>
+        </check>
+        <mcr name="t12-03"/>
+        <mcr name="t03-01/ciao"/>
+      </item>
+      <item id="t01-02/ciao" label="TRANSPORT CIAO CAS to SP.CAS">
+        <check>
+        </check>
+        <mcr name="t01-02"/>
+      </item>
+      <item id="t01-03/ciao" label="TRANSPORT CIAO CAS to CENTER">
+        <check>
+        </check>
+        <mcr name="t01-03"/>
+        <exec site="msg" name="wfsoff"/>
+      </item>
+      <item id="t01-07/ciao" label="TRANSPORT CIAO CAS to SP.OPT">
+        <check>
+        </check>
+        <mcr name="t01-03/ciao"/>
+        <mcr name="t03-07"/>
+      </item>
+      <item id="t01-08/ciao" label="TRANSPORT CIAO CAS to SP.IR">
+        <check>
+        </check>
+        <mcr name="t01-03/ciao"/>
+        <mcr name="t03-08"/>
+      </item>
+      <item id="t01-09/ciao" label="TRANSPORT CIAO CAS to MOV.OPT">
+        <check>
+        </check>
+        <mcr name="t01-03/ciao"/>
+        <mcr name="t03-09"/>
+      </item>
+      <item id="t01-10/ciao" label="TRANSPORT CIAO CAS to FIX.OPT">
+        <check>
+        </check>
+        <mcr name="t01-03/ciao"/>
+        <mcr name="t03-10"/>
+      </item>
+      <item id="t01-11/ciao" label="TRANSPORT CIAO CAS to MOV.IR">
+        <check>
+        </check>
+        <mcr name="t01-03/ciao"/>
+        <mcr name="t03-11"/>
+      </item>
+      <item id="t01-12/ciao" label="TRANSPORT CIAO CAS to FIX.IR">
+        <check>
+        </check>
+        <mcr name="t01-03/ciao"/>
+        <mcr name="t03-12"/>
+      </item>
+      <item id="t02-01/comics" label="TRANSPORT comics SP.CAS to CAS">
+        <exec site="msg" name="lcvoff"/>
+        <mcr name="t02-01"/>
+      </item>
+      <item id="t03-01/comics" label="TRANSPORT comics CENTER to CAS">
+        <exec site="msg" name="lcvoff"/>
+        <mcr name="t03-01"/>
+      </item>
+      <item id="t07-01/comics" label="TRANSPORT comics SP.OPT to CAS">
+        <mcr name="t07-03"/>
+        <mcr name="t03-01/comics"/>
+      </item>
+      <item id="t08-01/comics" label="TRANSPORT comics SP.IR to CAS">
+        <mcr name="t08-03"/>
+        <mcr name="t03-01/comics"/>
+      </item>
+      <item id="t09-01/comics" label="TRANSPORT comics MOV.OPT to CAS">
+        <mcr name="t09-03"/>
+        <mcr name="t03-01/comics"/>
+      </item>
+      <item id="t10-01/comics" label="TRANSPORT comics FIX.OPT to CAS">
+        <mcr name="t10-03"/>
+        <mcr name="t03-01/comics"/>
+      </item>
+      <item id="t11-01/comics" label="TRANSPORT comics MOV.IR to CAS">
+        <mcr name="t11-03"/>
+        <mcr name="t03-01/comics"/>
+      </item>
+      <item id="t12-01/comics" label="TRANSPORT comics FIX.IR to CAS">
+        <mcr name="t12-03"/>
+        <mcr name="t03-01/comics"/>
+      </item>
+      <item id="t01-02/comics" label="TRANSPORT comics CAS to SP.CAS">
+        <mcr name="t01-02"/>
+        <exec site="msg" name="ccvon"/>
+      </item>
+      <item id="t01-03/comics" label="TRANSPORT comics CAS to CENTER">
+        <mcr name="t01-03"/>
+        <exec site="msg" name="ccvon"/>
+      </item>
+      <item id="t01-07/comics" label="TRANSPORT comics CAS to SP.OPT">
+        <mcr name="t01-03/comics"/>
+        <mcr name="t03-07"/>
+      </item>
+      <item id="t01-08/comics" label="TRANSPORT comics CAS to SP.IR">
+        <mcr name="t01-03/comics"/>
+        <mcr name="t03-08"/>
+      </item>
+      <item id="t01-09/comics" label="TRANSPORT comics CAS to MOV.OPT">
+        <mcr name="t01-03/comics"/>
+        <mcr name="t03-09"/>
+      </item>
+      <item id="t01-10/comics" label="TRANSPORT comics CAS to FIX.OPT">
+        <mcr name="t01-03/comics"/>
+        <mcr name="t03-10"/>
+      </item>
+      <item id="t01-11/comics" label="TRANSPORT comics CAS to MOV.IR">
+        <mcr name="t01-03/comics"/>
+        <mcr name="t03-11"/>
+      </item>
+      <item id="t01-12/comics" label="TRANSPORT comics CAS to FIX.IR">
+        <mcr name="t01-03/comics"/>
+        <mcr name="t03-12"/>
+      </item>
+      <item id="r01-02" label="RUN CAS to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+        </check>
+        <exec site="crt" name="run2"/>
+      </item>
+      <item id="r01-03" label="RUN CAS to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+        </check>
+        <exec site="crt" name="run3"/>
+      </item>
+      <item id="r01-07" label="RUN CAS to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+        </check>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="r01-08" label="RUN CAS to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+        </check>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="r01-09" label="RUN CAS to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+        </check>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="truo"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="r01-10" label="RUN CAS to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+        </check>
+        <exec site="crt" name="run10"/>
+      </item>
+      <item id="r01-11" label="RUN CAS to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+        </check>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trui"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="r01-12" label="RUN CAS to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">01</equal>
+        </check>
+        <exec site="crt" name="run12"/>
+      </item>
+      <item id="r02-01" label="RUN SP.CAS to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+        </check>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="r02-03" label="RUN SP.CAS to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+        </check>
+        <exec site="crt" name="run3"/>
+      </item>
+      <item id="r02-07" label="RUN SP.CAS to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+        </check>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="r02-08" label="RUN SP.CAS to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+        </check>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="r02-09" label="RUN SP.CAS to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+        </check>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="truo"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="r02-10" label="RUN SP.CAS to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+        </check>
+        <exec site="crt" name="run10"/>
+      </item>
+      <item id="r02-11" label="RUN SP.CAS to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+        </check>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trui"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="r02-12" label="RUN SP.CAS to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">02</equal>
+        </check>
+        <exec site="crt" name="run12"/>
+      </item>
+      <item id="r03-01" label="RUN CENTER to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+        </check>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="r03-02" label="RUN CENTER to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+        </check>
+        <exec site="crt" name="run2"/>
+      </item>
+      <item id="r03-07" label="RUN CENTER to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+        </check>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="r03-08" label="RUN CENTER to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+        </check>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="r03-09" label="RUN CENTER to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+        </check>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="truo"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="r03-10" label="RUN CENTER to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+        </check>
+        <exec site="crt" name="run10"/>
+      </item>
+      <item id="r03-11" label="RUN CENTER to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+        </check>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trui"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="r03-12" label="RUN CENTER to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">03</equal>
+        </check>
+        <exec site="crt" name="run12"/>
+      </item>
+      <item id="r07-01" label="RUN SP.OPT to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+        </check>
+        <exec site="crt" name="run1" skip="1"/>
+        <mcr name="trso"/>
+      </item>
+      <item id="r07-02" label="RUN SP.OPT to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+        </check>
+        <exec site="crt" name="run2" skip="1"/>
+        <mcr name="trso"/>
+      </item>
+      <item id="r07-03" label="RUN SP.OPT to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+        </check>
+        <exec site="crt" name="run3" skip="1"/>
+        <mcr name="trso"/>
+      </item>
+      <item id="r07-08" label="RUN SP.OPT to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+        </check>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trso"/>
+      </item>
+      <item id="r07-09" label="RUN SP.OPT to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+        </check>
+        <mcr name="truo"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="r07-10" label="RUN SP.OPT to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+        </check>
+        <mcr name="trso"/>
+        <exec site="crt" name="run10"/>
+      </item>
+      <item id="r07-11" label="RUN SP.OPT to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+        </check>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trui"/>
+        <mcr name="trso"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="r07-12" label="RUN SP.OPT to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">07</equal>
+        </check>
+        <exec site="crt" name="run12" skip="1"/>
+        <mcr name="trso"/>
+      </item>
+      <item id="r08-01" label="RUN SP.IR to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+        </check>
+        <exec site="crt" name="run1" skip="1"/>
+        <mcr name="trsi"/>
+      </item>
+      <item id="r08-02" label="RUN SP.IR to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+        </check>
+        <exec site="crt" name="run2" skip="1"/>
+        <mcr name="trsi"/>
+      </item>
+      <item id="r08-03" label="RUN SP.IR to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+        </check>
+        <exec site="crt" name="run3" skip="1"/>
+        <mcr name="trsi"/>
+      </item>
+      <item id="r08-07" label="RUN SP.IR to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+        </check>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="trsi"/>
+      </item>
+      <item id="r08-09" label="RUN SP.IR to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+        </check>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="truo"/>
+        <mcr name="trsi"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="r08-10" label="RUN SP.IR to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+        </check>
+        <exec site="crt" name="run10" skip="1"/>
+        <mcr name="trsi"/>
+      </item>
+      <item id="r08-11" label="RUN SP.IR to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+        </check>
+        <mcr name="trui"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="r08-12" label="RUN SP.IR to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">08</equal>
+        </check>
+        <mcr name="trsi"/>
+        <exec site="crt" name="run12"/>
+      </item>
+      <item id="r09-01" label="RUN MOV.OPT to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">09</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="msg" name="pwext"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="r07-01"/>
+      </item>
+      <item id="r09-02" label="RUN MOV.OPT to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">09</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="r07-02"/>
+      </item>
+      <item id="r09-03" label="RUN MOV.OPT to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">09</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="r07-03"/>
+      </item>
+      <item id="r09-07" label="RUN MOV.OPT to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">09</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="r09-08" label="RUN MOV.OPT to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">09</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="r07-08"/>
+      </item>
+      <item id="r09-10" label="RUN MOV.OPT to FIX.OPT">
+        <check>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="r07-10"/>
+      </item>
+      <item id="r09-11" label="RUN MOV.OPT to MOV.IR">
+        <check>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="trui"/>
+        <exec site="crt" name="run11" skip="1"/>
+        <mcr name="trso"/>
+      </item>
+      <item id="r09-12" label="RUN MOV.OPT to FIX.IR">
+        <check>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="r07-12"/>
+      </item>
+      <item id="r10-01" label="RUN FIX.OPT to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="mjb" form="msg">UP</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="r10-02" label="RUN FIX.OPT to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="mjb" form="msg">UP</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run2"/>
+      </item>
+      <item id="r10-03" label="RUN FIX.OPT to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="mjb" form="msg">UP</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run3"/>
+      </item>
+      <item id="r10-07" label="RUN FIX.OPT to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="mjb" form="msg">UP</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="r10-08" label="RUN FIX.OPT to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="mjb" form="msg">UP</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="r10-09" label="RUN FIX.OPT to MOV.OPT">
+        <check>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run7"/>
+        <mcr name="r07-09"/>
+      </item>
+      <item id="r10-11" label="RUN FIX.OPT to MOV.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="mtr" form="msg">BK</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="trui"/>
+        <exec site="crt" name="run11"/>
+      </item>
+      <item id="r10-12" label="RUN FIX.OPT to FIX.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">10</equal>
+          <equal site="dso" var="mtr" form="msg">BK</equal>
+        </check>
+        <mcr name="dso_dopen"/>
+        <exec site="crt" name="run12"/>
+      </item>
+      <item id="r11-01" label="RUN MOV.IR to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">11</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="msg" name="chkcbl"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="r08-01"/>
+      </item>
+      <item id="r11-02" label="RUN MOV.IR to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">11</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="msg" name="chkcbl"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="r08-02"/>
+      </item>
+      <item id="r11-03" label="RUN MOV.IR to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">11</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="msg" name="chkcbl"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="r08-03"/>
+      </item>
+      <item id="r11-07" label="RUN MOV.IR to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">11</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="msg" name="chkcbl"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="r08-07"/>
+      </item>
+      <item id="r11-08" label="RUN MOV.IR to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">11</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="msg" name="chkcbl"/>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="r11-09" label="RUN MOV.IR to MOV.OPT">
+        <check>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="msg" name="chkcbl"/>
+        <exec site="crt" name="run8" skip="1"/>
+        <mcr name="truo"/>
+        <exec site="crt" name="run9" skip="1"/>
+        <mcr name="trsi"/>
+      </item>
+      <item id="r11-10" label="RUN MOV.IR to FIX.OPT">
+        <check>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="msg" name="chkcbl"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="r08-10"/>
+      </item>
+      <item id="r11-12" label="RUN MOV.IR to FIX.IR">
+        <check>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="msg" name="chkcbl"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="r08-12"/>
+      </item>
+      <item id="r12-01" label="RUN FIX.IR to CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="mjb" form="msg">UP</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run1"/>
+      </item>
+      <item id="r12-02" label="RUN FIX.IR to SP.CAS">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="mjb" form="msg">UP</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run2"/>
+      </item>
+      <item id="r12-03" label="RUN FIX.IR to CENTER">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="mjb" form="msg">UP</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run3"/>
+      </item>
+      <item id="r12-07" label="RUN FIX.IR to SP.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="mjb" form="msg">UP</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run7"/>
+      </item>
+      <item id="r12-08" label="RUN FIX.IR to SP.IR">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="mjb" form="msg">UP</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run8"/>
+      </item>
+      <item id="r12-09" label="RUN FIX.IR to MOV.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="mjb" form="msg">UP</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run7" skip="1"/>
+        <mcr name="truo"/>
+        <exec site="crt" name="run9"/>
+      </item>
+      <item id="r12-10" label="RUN FIX.IR to FIX.OPT">
+        <check>
+          <equal site="crt" var="cps" form="msg">12</equal>
+          <equal site="dsi" var="mjb" form="msg">UP</equal>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run10"/>
+      </item>
+      <item id="r12-11" label="RUN FIX.IR to MOV.IR">
+        <check>
+        </check>
+        <exec site="dsi" name="dopen" skip="true"/>
+        <exec site="crt" name="run8"/>
+        <mcr name="r08-11"/>
+      </item>
+    </group>
+    <group id="grp_cx15_2" caption="General sequence" rank="0">
+      <unit id="unit_cx15_2_setad" title="set[a-d]" label="FETCH and SET INST to CAS">
+        <item id="seta" label="INST FETCHandSTBY_A->CAS">
+          <goal>
+            <equal site="ist" var="hom" form="msg">SA</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="fetch"/>
+          <mcr name="run10"/>
+          <mcr name="iset"/>
+        </item>
+        <item id="setb" label="INST FETCHandSTBY_B->CAS">
+          <goal>
+            <equal site="ist" var="hom" form="msg">SB</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="fetch"/>
+          <mcr name="run9"/>
+          <mcr name="iset"/>
+        </item>
+        <item id="setc" label="INST FETCHandSTBY_C->CAS">
+          <goal>
+            <equal site="ist" var="hom" form="msg">SC</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="fetch"/>
+          <mcr name="run11"/>
+          <mcr name="iset"/>
+        </item>
+        <item id="setd" label="INST FETCHandSTBY_D->CAS">
+          <goal>
+            <equal site="ist" var="hom" form="msg">SD</equal>
+          </goal>
+          <check>
+          </check>
+          <mcr name="fetch"/>
+          <mcr name="run12"/>
+          <mcr name="iset"/>
+        </item>
+        <item id="begin" label="Cart HOME->CS">
+          <goal>
+            <equal site="crt" var="cps" form="msg">01</equal>
+          </goal>
+          <mcr name="init"/>
+          <mcr name="chgoff"/>
+          <mcr name="run1"/>
+        </item>
+        <item id="gohome" label="Cart Run to home and Chg">
+          <check>
+          </check>
+          <mcr name="homeX"/>
+          <mcr name="chgon"/>
+          <exec site="msg" name="a/%i"/>
+        </item>
+        <item id="fetch" label="Inst CAS->STBY">
+          <check>
+          </check>
+          <mcr name="begin"/>
+          <mcr name="detach"/>
+          <mcr name="tcs-X"/>
+          <mcr name="attach"/>
+        </item>
+        <item id="iset" label="Inst STBY->CAS">
+          <check>
+          </check>
+          <mcr name="detach"/>
+          <mcr name="tX-01/%i"/>
+          <mcr name="attach"/>
+          <mcr name="gohome"/>
+        </item>
+        <item id="homesa" label="Run home (OPT)">
+          <check>
+          </check>
+          <mcr name="run10"/>
+        </item>
+        <item id="homesb" label="Run home (OPT)">
+          <check>
+          </check>
+          <mcr name="run10"/>
+        </item>
+        <item id="homesc" label="Run home (IR)">
+          <check>
+          </check>
+          <mcr name="run12"/>
+        </item>
+        <item id="homesd" label="Run home (IR)">
+          <check>
+          </check>
+          <mcr name="run12"/>
+        </item>
+      </unit>
+      <item id="tcs-sa" label="INST CS->SA">
+        <check>
+        </check>
+        <mcr name="t01-10/X"/>
+      </item>
+      <item id="tcs-sb" label="INST CS->SB">
+        <check>
+        </check>
+        <mcr name="t01-09/X"/>
+      </item>
+      <item id="tcs-sc" label="INST CS->SC">
+        <check>
+        </check>
+        <mcr name="t01-11/X"/>
+      </item>
+      <item id="tcs-sd" label="INST CS->SD">
+        <check>
+        </check>
+        <mcr name="t01-12/X"/>
+      </item>
+      <item id="tsa-cs" label="INST SA->CS">
+        <check>
+        </check>
+        <mcr name="t01-10/X"/>
+      </item>
+      <item id="tsb-cs" label="INST SB->CS">
+        <check>
+        </check>
+        <mcr name="t01-09/X"/>
+      </item>
+      <item id="tsc-cs" label="INST SC->CS">
+        <check>
+        </check>
+        <mcr name="t01-11/X"/>
+      </item>
+      <item id="tsd-cs" label="INST SD->CS">
+        <check>
+        </check>
+        <mcr name="t01-12/X"/>
+      </item>
+    </group>
+    <group id="grp_sel_cx15" caption="CX15 Select Group" rank="2">
+      <item id="atX" label="Select Macro">
+        <select site="crt" var="dps" form="msg">
+          <option val="01">
+            <mcr name="att"/>
+          </option>
+          <option val="09">
+            <mcr name="atb"/>
+          </option>
+          <option val="10">
+            <mcr name="ata"/>
+          </option>
+          <option val="11">
+            <mcr name="atc"/>
+          </option>
+          <option val="12">
+            <mcr name="atd"/>
+          </option>
+        </select>
+      </item>
+      <item id="dtX" label="Select Macro">
+        <select site="crt" var="dps" form="msg">
+          <option val="01">
+            <mcr name="dtt"/>
+          </option>
+          <option val="09">
+            <mcr name="dtb"/>
+          </option>
+          <option val="10">
+            <mcr name="dta"/>
+          </option>
+          <option val="11">
+            <mcr name="dtc"/>
+          </option>
+          <option val="12">
+            <mcr name="dtd"/>
+          </option>
+        </select>
+      </item>
+      <item id="conX" label="Select Macro">
+        <select site="crt" var="dps" form="msg">
+          <option val="10">
+            <mcr name="cona"/>
+          </option>
+          <option val="12">
+            <mcr name="cond"/>
+          </option>
+        </select>
+      </item>
+      <item id="coffX" label="Select Macro">
+        <select site="crt" var="dps" form="msg">
+          <option val="10">
+            <mcr name="coffa"/>
+          </option>
+          <option val="12">
+            <mcr name="coffd"/>
+          </option>
+        </select>
+      </item>
+      <item id="cponX/%i" label="Select Macro">
+        <select site="crt" var="dps" form="msg">
+        </select>
+      </item>
+      <item id="cpoffX/%i" label="Select Macro">
+        <select site="crt" var="dps" form="msg">
+        </select>
+      </item>
+      <item id="X%l-01/%i" label="Select Macro">
+        <select site="crt" var="ion" form="msg">
+        </select>
+      </item>
+      <item id="X%l-02/%i" label="Select Macro">
+        <select site="crt" var="ion" form="msg">
+        </select>
+      </item>
+      <item id="X%l-03/%i" label="Select Macro">
+        <select site="crt" var="ion" form="msg">
+        </select>
+      </item>
+      <item id="X%l-07/%i" label="Select Macro">
+        <select site="crt" var="ion" form="msg">
+        </select>
+      </item>
+      <item id="X%l-08/%i" label="Select Macro">
+        <select site="crt" var="ion" form="msg">
+        </select>
+      </item>
+      <item id="X%l-09/%i" label="Select Macro">
+        <select site="crt" var="ion" form="msg">
+        </select>
+      </item>
+      <item id="X%l-10/%i" label="Select Macro">
+        <select site="crt" var="ion" form="msg">
+        </select>
+      </item>
+      <item id="X%l-11/%i" label="Select Macro">
+        <select site="crt" var="ion" form="msg">
+        </select>
+      </item>
+      <item id="X%l-12/%i" label="Select Macro">
+        <select site="crt" var="ion" form="msg">
+        </select>
+      </item>
+      <item id="luut/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="cpont/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="cpona/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="cponb/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="cponc/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="cpond/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="cpofft/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="lftdw/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="cpoffa/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="cpoffb/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="cpoffc/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="cpoffd/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="t01-10/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="t01-09/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="t01-11/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="t01-12/X" label="Select Macro">
+        <select site="ist" var="icr" form="msg">
+        </select>
+      </item>
+      <item id="homeX" label="Select Macro">
+        <select site="ist" var="hom" form="msg">
+        </select>
+      </item>
+      <item id="tcs-X" label="Select Macro">
+        <select site="ist" var="hom" form="msg">
+        </select>
+      </item>
+      <item id="tX-01/%i" label="Select Macro">
+        <select site="crt" var="cps" form="msg">
+        </select>
+      </item>
+    </group>
+  </macro>
+</mdb>

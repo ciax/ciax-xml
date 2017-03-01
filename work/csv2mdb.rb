@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # IDB,CDB CSV(CIAX-v1) to MDB
-# alias c2m
+#alias c2m
 require 'optparse'
 require 'json'
 

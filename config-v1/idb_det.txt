@@ -1,0 +1,11 @@
+upd,,*
+c3on,c3p=ON
+c3off,c3p=OFF
+emon,c3e=ON
+emoff,c3e=OFF,*
+ccdon,ccd=ON
+ccdoff,ccd=OFF,*
+lanon,lan=ON
+lanoff,lan=OFF
+ipwon,ipw=ON
+ipwoff,ipw=OFF

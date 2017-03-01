@@ -1,0 +1,43 @@
+#---------- Command ----------
+upd,,*
+#login,lgi=LOGIN,lgi!OBS&rts=CAS&stw=ON
+login,lgi=LOGIN
+logout,lgi=LOGOUT
+cinit,,inr~HK
+#---------- Action ----------
+cxon,,*
+cxoff,,*
+cjreset,,*
+cron,rpw=ON
+croff,rpw=OFF
+cjon,bpw=ON
+cjoff,bpw=OFF
+## Don't set SKIP Condition on hook&unhook
+cunhk,,rpw=ON
+cuadj,,rpw=ON&inr~UH
+chook,,rpw=ON
+chadj,,rpw=ON&inr~HK
+##
+cjup,
+cjdw,be1~DWLMT
+jup1,
+jdw1,
+stop1,
+#cunhk,inr~UH,zp1~C&zp2~C&zp3~C&zp4~C
+#chook,inr~HK,zp1~C&zp2~C&zp3~C&zp4~C
+#cjup,zp1~U&zp2~U&zp3~U&zp4~U,zp1~C&zp2~C&zp3~C&zp4~C&inr~HK
+#cjulk,zp1~C&zp2~C&zp3~C&zp4~C
+#cjup,cjh~HOME
+#cjdw,cjb~UNLOCK
+jstop,,*
+rstop,,*
+ircs,,*
+focas,,*
+comics,,*
+ciao,,*
+ciax3,,*
+mp-cs1,,*
+mc-box,,*
+moircs,,*
+cat
+cdt

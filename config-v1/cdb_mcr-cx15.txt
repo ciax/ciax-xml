@@ -1,0 +1,408 @@
+#Last update 2005/6/9
+# Format [mode]:[cmd]:[nowait]
+# Prefix "!" at Commands -> Skip temporary(No stop at nonstop mode)
+# nowait is effective on device command (not on macro)
+# %l:Current Tag %p:Current Position(a-d,t)
+# %i:Current Inst ID
+# %t:CAS-instID
+# %a:OPT.FIX-instID %b:OPT.MOV-instID
+# %c:IR.MOV-instID %d:IR.FIX-instID
+# %r:Carring(=r)orRunning(=t)
+# %h:Home Position(sa-sd)
+# %f:SPECIAL INSTRUMENT (i.e. FOCAS:f/CIAO&IRCS:i )
+!0,---------- Basic Sequences ---------
+init,Initialize,,mcr,dts:cinit mcr:upd msg:b/%i msg:init0 msg:init1 msg:init2 msg:init3 mcr:cson
+shutdown,Shutdown,,mcr,mcr:csoff
+upd,Update Status,,mcr,dts:upd crt:upd dso:upd dsi:upd !det:upd cco:upd cci:upd
+#cs[on|off],CAS Drive ON/OFF
+cson,CAS Initialize,1,mcr,dts:login dts:cxon dts:cron msg:init4 dts:%i !dts:cjon msg:cjon
+csoff,CAS Shutdown,1,mcr,msg:cjoff !dts:cjoff dts:croff dts:cxoff dts:logout msg:hsoff
+#ccd[on|off],ALL CCD ON/OFF
+ccdon,ALL CCD ON,1,mcr,!det:ccdon:1 dso:fccdon:1 dso:mccdon:1 !dsi:fccdon:1 !dsi:mccdon:1
+ccdoff,ALL CCD OFF,1,mcr,!det:ccdoff:1 dso:fccdoff:1 dso:mccdoff:1 !dsi:fccdoff:1 !dsi:mccdoff:1
+#d[open|close],ALL Door Open/Close
+dopen,ALL Door Open,1,mcr,dso:dopen:1 !dsi:dopen:1
+dclose,ALL Door Close,1,mcr,dso:dclose:1 !dsi:dclose:1
+!1,---------- Auto Command ----------
+attach,Container Attach,,mcr,mcr:at%p
+detach,Container Detach,,mcr,mcr:dt%p
+chg[on|off],Charge ON/OFF,,cap
+chgon,Charge ON,1,mcr,mcr:con%p
+chgoff,Charge Off,1,mcr,mcr:coff%p
+#ipw[on|off],IPW and He ON/OFF
+ipwon,IPW and He ON,1,mcr,mcr:cpon%p/%i
+ipwoff,IPW and He OFF,1,mcr,mcr:cpoff%p/%i
+run[1-3|7-12],Cart Run 1-3|7-12,,cap
+run1,Cart Run 1,1,mcr,mcr:%r%l-01/%i
+run2,Cart Run 2,1,mcr,mcr:%r%l-02/%i
+run3,Cart Run 3,1,mcr,mcr:%r%l-03/%i
+run7,Cart Run 7,1,mcr,mcr:%r%l-07/%i
+run8,Cart Run 8,1,mcr,mcr:%r%l-08/%i
+run9,Cart Run 9,1,mcr,mcr:%r%l-09/%i
+run10,Cart Run 10,1,mcr,mcr:%r%l-10/%i
+run11,Cart Run 11,1,mcr,mcr:%r%l-11/%i
+run12,Cart Run 12,1,mcr,mcr:%r%l-12/%i
+#===========================================
+#=            LIFTING SEQUENCES            =
+#===========================================
+#!3,---------- Compound sequences ----------
+#c[on|off][10|12],CART CHG On/Off at OPT/IR
+con,SKIP CHG ON,1,cap
+coff,SKIP CHG OFF,1,cap
+cona,CART CHG On (OPT),1,mcr,crt:chglft dso:chgfw dso:chgon crt:chgon
+coffa,CART CHG Off (OPT),1,mcr,crt:chgoff dso:chgoff dso:chgbw crt:lftdw
+cond,CART CHG On (IR),1,mcr,crt:chglft dsi:chgfw dsi:chgon crt:chgon
+coffd,CART CHG Off (IR),1,mcr,crt:chgoff dsi:chgoff dsi:chgbw crt:lftdw
+#[at|dt][01|09-12],Attach/Detach Container on Flange
+at,SKIP Attach,1,cap
+dt,SKIP Detach,1,cap
+att,Attach on CAS,1,mcr,dts:%i dts:cjon mcr:luut/%i mcr:fupt mcr:cpont/%i crt:lftdw
+ata,Attach on FIX.OPT,1,mcr,ist:sa mcr:luua mcr:fupa mcr:cpona/%i crt:lftdw
+atb,Attach on MOV.OPT,1,mcr,ist:sb mcr:luub mcr:fupb mcr:cponb/%i crt:lftdw
+atc,Attach on MOV.IR,1,mcr,ist:sc mcr:luuc mcr:fupc mcr:cponc/%i crt:lftdw
+atd,Attach on FIX.IR,1,mcr,ist:sd mcr:luud mcr:fupd mcr:cpond/%i crt:lftdw
+dtt,Detach on CAS,1,mcr,dts:upd dts:%i mcr:luht mcr:cpofft/%i mcr:fdwt mcr:lftdw/%i
+dta,Detach on FIX.OPT,1,mcr,dso:upd ist:sa mcr:lftup mcr:cpoffa/%i mcr:fdwa crt:lftdw
+dtb,Detach on MOV.OPT,1,mcr,dso:upd ist:sb mcr:lftup mcr:cpoffb/%i mcr:fdwb crt:lftdw
+dtc,Detach on MOV.IR,1,mcr,!dsi:upd ist:sc mcr:lftup mcr:cpoffc/%i mcr:fdwc crt:lftdw
+dtd,Detach on FIX.IR,1,mcr,!dsi:upd ist:sd mcr:lftup mcr:cpoffd/%i mcr:fdwd crt:lftdw
+#!4,---------- Cart Sequences ----------
+#lft[up|dw],CART Lift UP/DW ANY.Place
+lftup,CART Lift UP at ANY.PL,1,mcr,crt:%i msg:auto crt:lftup1 crt:lftup2 crt:lftup3
+lftdw,CART Lift DW at ANY.PL,1,mcr,crt:lftdw
+#!44,---------- Lift Up sequences ----------
+#lu[lm|h[a-d,t]],Part of Liftup w/Container
+lul,Liftup L w/Container,1,mcr,crt:%i msg:auto crt:lftup1
+lum,Liftup L-M w/Container,1,mcr,mcr:lul crt:lftup2
+luuht,Liftup H at CAS w/Container,1,mcr,crt:lftup3 dts:upd
+luuha,Liftup H at FIX.OPT w/Container,1,mcr,crt:lftup3 dso:upd
+luuhb,Liftup H at MOV.OPT w/Container,1,mcr,crt:lftup3 dso:upd
+luuhc,Liftup H at MOV.IR w/Container,1,mcr,crt:lftup3 !dsi:upd
+luuhd,Liftup H at FIX.IR w/Container,1,mcr,crt:lftup3 !dsi:upd
+#luu[t|a-d],Lift UP w/Container
+luut,Liftup at CAS w/container,1,mcr,mcr:lul dts:cuadj crt:lftup2 mcr:luuht
+luua,Liftup at FIX.OPT w/Container,1,mcr,mcr:lum dso:upd mcr:luuha
+luub,Liftup at MOV.OPT w/Container,1,mcr,mcr:lum dso:upd mcr:luuhb
+luuc,Liftup at MOV.IR w/Container,1,mcr,mcr:lum !dsi:upd mcr:luuhc
+luud,Liftup at FIX.IR w/Container,1,mcr,mcr:lum !dsi:upd mcr:luuhd
+#lu[lmh][t|a-d],Part of Lift UP w/o Container
+luht,Lift UP w/o Container,1,mcr,mcr:lul dts:chadj crt:lftup2 crt:lftup3
+#!45,---------- Lift Up sequences for Special Instruments ----------
+luut/focas,FOCAS Lift UP at CAS,1,mcr,msg:outpin mcr:luut
+lftdw/focas,FOCAS LIft UP at CAS,1,mcr,mcr:lftdw msg:inpin
+#!5,---------- Flange sequences ----------
+#f[up|dw][01|09-12],Container HOOK UP/DW at Flange
+fup,SKIP Hookup,1,cap
+fdw,SKIP Hookdw,1,cap
+fupt,Hookup at CAS,1,mcr,mcr:jd4t msg:cjdw msg:bhk dts:chook msg:ahk1 msg:ahk2 mcr:ju0t
+fdwt,Hookdw at CAS,1,mcr,mcr:jd0t dts:cunhk mcr:ju4t
+fupa,Hookup at FIX.OPT,1,mcr,mcr:jd4a dso:fhook mcr:ju0a
+fdwa,Hookdw at FIX.OPT,1,mcr,mcr:jd0a dso:funhk mcr:ju4a
+fupb,Hookup at MOV.OPT,1,mcr,mcr:jd4b dso:mhook mcr:ju0b
+fdwb,Hookdw at MOV.OPT,1,mcr,mcr:jd0b dso:munhk mcr:ju4b
+fupc,Hookup at MOV.IR,1,mcr,mcr:jd4c dsi:mhook mcr:ju0c
+fdwc,Hookdw at MOV.IR,1,mcr,mcr:jd0c dsi:munhk mcr:ju4c
+fupd,Hookup at FIX.IR,1,mcr,mcr:jd4d dsi:fhook mcr:ju0d
+fdwd,Hookdw at FIX.IR,1,mcr,mcr:jd0d dsi:funhk mcr:ju4d
+#!,------------ Jack Down/Up with Instrumnet
+ju0t,InR0 Jkup at CAS,1,mcr,msg:bjm msg:bjs dts:cjup !det:upd
+jd0t,InR0 Jkdw at CAS,1,mcr,msg:bjm msg:bjs dts:cjdw !det:upd
+ju0a,InR0 Jkup at FIX.OPT,1,mcr,dso:fjup dso:upd
+jd0a,InR0 Jkdw at FIX.OPT,1,mcr,ist:sa=%a dso:fjdw dso:upd
+ju0b,InR0 Jkup at MOV.OPT,1,mcr,dso:mjup dso:upd
+jd0b,InR0 Jkdw at MOV.OPT,1,mcr,ist:sb=%b dso:mjdw dso:upd
+ju0c,InR0 Jkup at MOV.IR,1,mcr,dsi:mjup dsi:upd
+jd0c,InR0 Jkdw at MOV.IR,1,mcr,ist:sc=%c dsi:mjdw !dsi:upd
+ju0d,InR0 Jkup at FIX.IR,1,mcr,dsi:fjup dsi:upd
+jd0d,InR0 Jkdw at FIX.IR,1,mcr,dsi:fjdw dsi:upd
+#!,------------ Jack Down/Up without Instrumnet
+ju4t,InR-4 Jkup at CAS,1,mcr,msg:bjm dts:cjup
+jd4t,InR-4 Jkdw at CAS,1,mcr,msg:bjd msg:bjm dts:cjdw
+ju4a,InR-4 Jkup at FIX.OPT,1,mcr,dso:fjup
+jd4a,InR-4 Jkdw at FIX.OPT,1,mcr,dso:fjdw
+ju4b,InR-4 Jkup at MOV.OPT,1,mcr,dso:mjup
+jd4b,InR-4 Jkdw at MOV.OPT,1,mcr,dso:mjdw
+ju4c,InR-4 Jkup at MOV.IR,1,mcr,dsi:mjup
+jd4c,InR-4 Jkdw at MOV.IR,1,mcr,dsi:mjdw
+ju4d,InR-4 Jkup at FIX.IR,1,mcr,dsi:fjup
+jd4d,InR-4 Jkdw at FIX.IR,1,mcr,dsi:fjdw
+#!7,---------- IPW & Compressor ON/OFF ----------------
+cpon,SKIP IPW ON,1,cap
+cpoff,SKIP IPW OFF,1,cap
+cpont,Instrument Startup at CAS,1,mcr,!det:ipwon
+cpofft,Instrument Shutdown at CAS,1,mcr,!det:ipwoff
+cpont/comics,COMICS Startup at CAS,1,mcr,!det:ipwon !cci:caon msg:a/comics msg:chop msg:net/comics
+cpofft/comics,COMICS Shutdown at CAS,1,mcr,!cci:caoff !det:ipwoff
+cpont/ciao,CIAO Startup at CAS,1,mcr,!det:ipwon !cci:c2on !msg:clon msg:a/ciao
+cpofft/ciao,CIAO Shutdown at CAS,1,mcr,!cci:c2off msg:cloff !det:ipwoff
+cpont/ircs,IRCS Startup at CAS,1,mcr,!det:ipwon
+cpofft/ircs,IRCS Shutdown at CAS,1,mcr,!det:ipwoff
+cpont/moircs,MOIRCS Startup at CAS,1,mcr,msg:gswi !det:ipwon msg:pwint msg:rech cci:c1on cci:c2on msg:lanint msg:net/moircs msg:a/moircs msg:pcup/moircs
+cpofft/moircs,MOIRCS Shutdown at CAS,1,mcr,msg:ntch cci:caoff msg:pwext !det:ipwoff msg:gswp msg:lanext
+cponb,IPW On at MOV.OPT,1,mcr,dso:mpwon
+cpoffb,IPW Off at MOV.OPT,1,mcr,dso:mpwoff
+cponb/comics,COMICS Startup at MOV.OPT,1,mcr,dso:mpwon !cco:maon msg:a/comics msg:net/comics
+cpoffb/comics,COMICS Shutdown at MOV.OPT,1,mcr,!cco:maoff dso:mpwoff
+cpona,IPW On at FIX.OPT,1,mcr,dso:fpwon
+cpoffa,IPW Off at FIX.OPT,1,mcr,dso:fpwoff
+cpona/ciao,CIAO Startup at FIX.OPT,1,mcr,dso:fpwon !cco:f2on msg:a/ciao !msg:clon
+cpoffa/ciao,CIAO Shutdown at FIX.OPT,1,mcr,!cco:f2off !msg:cloff dso:fpwoff
+cponc,IPW On at MOV.IR,1,mcr,!dsi:mpwon
+cpoffc,IPW Off at MOV.IR,1,mcr,!dsi:mpwoff
+cponc/moircs,MOIRCS Startup at MOV.IR,1,mcr,dsi:mpwon msg:pwint msg:rech cci:m1on cci:m2on msg:a/moircs msg:lanint msg:net/moircs msg:pcup/moircs
+cpoffc/moircs,MOIRCS Shutdown at MOV.IR,1,mcr,msg:ntch cci:maoff !dsi:mpwoff msg:pwext msg:lanext
+cpond,IPW On at FIX.IR,1,mcr,!dsi:fpwon
+cpoffd,IPW Off at FIX.IR,1,mcr,!dsi:fpwoff
+cpond/focas,FOCAS Startup at FIX.IR,1,mcr,!dsi:fpwon msg:fpwon msg:a/focas
+cpoffd/focas,FOCAS Startup at FIX.IR,1,mcr,!dsi:fpwoff
+#===========================================
+#=            RUNNING SEQUENCES            =
+#===========================================
+#!8,---------- Transer sequence ----------
+#tr[l|u|s|p][o|i],Transer for Load/Unload/Store/Prepare
+trlo,MOV.OPT Trans Forward w/o INST,1,mcr,dso:dopen dso:trout dso:rotout dso:munhk
+trli,MOV.IR Trans Forward w/o INST,1,mcr,!dsi:dopen dsi:trout dsi:rotout dsi:munhk
+trso,MOV.OPT Trans Backward w/ INST,,msg:btb mcr,dso:rotin dso:trin msg:pipeup 
+trsi,MOV.IR Trans Backward w/ INST,,msg:btb mcr,dsi:rotin dsi:trin 
+truo,MOV.OPT Trans Forward w/ INST,1,mcr,dso:dopen msg:pipedw dso:trout dso:rotout
+trui,MOV.IR Trans Forward w/ INST,1,mcr,!dsi:dopen dsi:trout dsi:rotout
+trpo,MOV.OPT Trans Backward w/o INST,1,mcr,dso:mhook dso:rotin dso:trin
+trpi,MOV.IR Trans Backword w/o INST,1,mcr,dsi:mhook dsi:rotin dsi:trin
+#!9,---------- Transport Container ----------
+#[t|r][*]-[*] (01-03|07-12),Transport Container/Run(no Container)
+t01-02,TRANSPORT CAS to SP.CAS,1,mcr,crt:run2
+t01-03,TRANSPORT CAS to CENTER,1,mcr,crt:run3
+t01-07,TRANSPORT CAS to SP.OPT,1,mcr,crt:run7
+t01-08,TRANSPORT CAS to SP.IR,1,mcr,crt:run8
+t01-09,TRANSPORT CAS to MOV.OPT,1,mcr,crt:run7:1 mcr:trlo crt:run9
+t01-10,TRANSPORT CAS to FIX.OPT,1,mcr,dso:dopen crt:run10
+t01-11,TRANSPORT CAS to MOV.IR,1,mcr,crt:run8:1 mcr:trli crt:run11
+t01-12,TRANSPORT CAS to FIX.IR,1,mcr,!dsi:dopen crt:run12
+t02-01,TRANSPORT SP.CAS to CAS,1,mcr,crt:run1
+t02-03,TRANSPORT SP.CAS to CENTER,1,mcr,crt:run3
+t02-07,TRANSPORT SP.CAS to SP.OPT,1,mcr,crt:run7
+t02-08,TRANSPORT SP.CAS to SP.IR,1,mcr,crt:run8
+t02-09,TRANSPORT SP.CAS to MOV.OPT,1,mcr,crt:run7:1 mcr:trlo crt:run9
+t02-10,TRANSPORT SP.CAS to FIX.OPT,1,mcr,dso:dopen crt:run10
+t02-11,TRANSPORT SP.CAS to MOV.IR,1,mcr,crt:run8:1 mcr:trli crt:run11
+t02-12,TRANSPORT SP.CAS to FIX.IR,1,mcr,!dsi:dopen crt:run12
+t03-01,TRANSPORT CENTER to CAS,1,mcr,crt:run1
+t03-02,TRANSPORT CENTER to SP.CAS,1,mcr,crt:run2
+t03-07,TRANSPORT CENTER to SP.OPT,1,mcr,crt:run7
+t03-08,TRANSPORT CENTER to SP.IR,1,mcr,crt:run8
+t03-09,TRANSPORT CENTER to MOV.OPT,1,mcr,crt:run7:1 mcr:trlo crt:run9
+t03-10,TRANSPORT CENTER to FIX.OPT,1,mcr,dso:dopen crt:run10
+t03-11,TRANSPORT CENTER to MOV.IR,1,mcr,crt:run8:1 mcr:trli crt:run11
+t03-12,TRANSPORT CENTER to FIX.IR,1,mcr,!dsi:dopen crt:run12
+t07-01,TRANSPORT SP.OPT to CAS,1,mcr,msg:hson crt:run1:1
+t07-02,TRANSPORT SP.OPT to SP.CAS,1,mcr,crt:run2:1
+t07-03,TRANSPORT SP.OPT to CENTER,1,mcr,crt:run3:1
+t07-08,TRANSPORT SP.OPT to SP.IR,1,mcr,crt:run8:1
+t07-09,TRANSPORT SP.OPT to MOV.OPT,1,mcr,mcr:trlo crt:run9
+t07-10,TRANSPORT SP.OPT to FIX.OPT,1,mcr,crt:run10
+t07-11,TRANSPORT SP.OPT to MOV.IR,1,mcr,crt:run8:1 mcr:trli crt:run11
+t07-12,TRANSPORT SP.OPT to FIX.IR,1,mcr,crt:run12
+t08-01,TRANSPORT SP.IR to CAS,1,mcr,msg:hson crt:run1:1
+t08-02,TRANSPORT SP.IR to SP.CAS,1,mcr,crt:run2:1
+t08-03,TRANSPORT SP.IR to CENTER,1,mcr,crt:run3:1
+t08-07,TRANSPORT SP.IR to SP.OPT,1,mcr,crt:run7:1
+t08-09,TRANSPORT SP.IR to MOV.OPT,1,mcr,crt:run7:1 mcr:trlo crt:run9
+t08-10,TRANSPORT SP.IR to FIX.OPT,1,mcr,dso:dopen crt:run10
+t08-11,TRANSPORT SP.IR to MOV.IR,1,mcr,mcr:trli crt:run11
+t08-12,TRANSPORT SP.IR to FIX.IR,1,mcr,crt:run12
+t09-01,TRANSPORT MOV.OPT to CAS,1,mcr,dso:upd crt:run7 mcr:t07-01
+t09-02,TRANSPORT MOV.OPT to SP.CAS,1,mcr,dso:upd crt:run7 mcr:t07-02
+t09-03,TRANSPORT MOV.OPT to CENTER,1,mcr,dso:upd crt:run7 mcr:t07-03
+t09-07,TRANSPORT MOV.OPT to SP.OPT,1,mcr,dso:upd crt:run7
+t09-08,TRANSPORT MOV.OPT to SP.IR,1,mcr,dso:upd crt:run7 mcr:t07-08
+t09-10,TRANSPORT MOV.OPT to FIX.OPT,1,mcr,dso:upd crt:run7 mcr:t07-10
+t09-11,TRANSPORT MOV.OPT to MOV.IR,1,mcr,dso:upd crt:run7:1 mcr:trli crt:run11:1
+t09-12,TRANSPORT MOV.OPT to FIX.IR,1,mcr,dso:upd crt:run7 mcr:t07-12
+t10-01,TRANSPORT FIX.OPT to CAS,1,mcr,dso:dopen crt:run1
+t10-02,TRANSPORT FIX.OPT to SP.CAS,1,mcr,dso:dopen crt:run2
+t10-03,TRANSPORT FIX.OPT to CENTER,1,mcr,dso:dopen crt:run3
+t10-07,TRANSPORT FIX.OPT to SP.OPT,1,mcr,dso:dopen crt:run7
+t10-08,TRANSPORT FIX.OPT to SP.IR,1,mcr,dso:dopen crt:run8
+t10-09,TRANSPORT FIX.OPT to MOV.OPT,1,mcr,dso:dopen crt:run7 mcr:t07-09
+t10-11,TRANSPORT FIX.OPT to MOV.IR,1,mcr,dso:dopen crt:run8:1 mcr:trli crt:run11
+t10-12,TRANSPORT FIX.OPT to FIX.IR,1,mcr,dso:dopen crt:run12
+t11-01,TRANSPORT MOV.IR to CAS,1,mcr,!dsi:upd crt:run8 mcr:t08-01
+t11-02,TRANSPORT MOV.IR to SP.CAS,1,mcr,!dsi:upd crt:run8 mcr:t08-02
+t11-03,TRANSPORT MOV.IR to CENTER,1,mcr,!dsi:upd crt:run8 mcr:t08-03
+t11-07,TRANSPORT MOV.IR to SP.OPT,1,mcr,!dsi:upd crt:run8 mcr:t08-07
+t11-08,TRANSPORT MOV.IR to SP.IR,1,mcr,!dsi:upd crt:run8
+t11-09,TRANSPORT MOV.IR to MOV.OPT,1,mcr,!dsi:upd crt:run8:1 mcr:trlo crt:run9:1
+t11-10,TRANSPORT MOV.IR to FIX.OPT,1,mcr,!dsi:upd crt:run8 mcr:t08-10
+t11-12,TRANSPORT MOV.IR to FIX.IR,1,mcr,!dsi:upd crt:run8 mcr:t08-12
+t12-01,TRANSPORT FIX.IR to CAS,1,mcr,!dsi:dopen crt:run1
+t12-02,TRANSPORT FIX.IR to SP.CAS,1,mcr,!dsi:dopen crt:run2
+t12-03,TRANSPORT FIX.IR to CENTER,1,mcr,!dsi:dopen crt:run3
+t12-07,TRANSPORT FIX.IR to SP.OPT,1,mcr,!dsi:dopen crt:run7
+t12-08,TRANSPORT FIX.IR to SP.IR,1,mcr,!dsi:dopen crt:run8
+t12-09,TRANSPORT FIX.IR to MOV.OPT,1,mcr,!dsi:dopen crt:run7:1 mcr:trlo crt:run9
+t12-10,TRANSPORT FIX.IR to FIX.OPT,1,mcr,!dsi:dopen crt:run10
+t12-11,TRANSPORT FIX.IR to MOV.IR,1,mcr,!dsi:dopen crt:run8 mcr:t08-11
+#!A,---------- Cart Run with FOCAS Mount ----------
+t02-01/focas,TRANSPORT FM SP.CAS to CAS,1,mcr,crt:run1
+t03-01/focas,TRANSPORT FM CENTER to CAS,1,mcr,crt:run1
+t07-01/focas,TRANSPORT FM SP.OPT to CAS,1,mcr,crt:run1
+t08-01/focas,TRANSPORT FM SP.IR to CAS,1,mcr,crt:run1
+t09-01/focas,TRANSPORT FM MOV.OPT to CAS,1,mcr,dso:upd crt:run7 crt:run1:1
+t10-01/focas,TRANSPORT FM FIX.OPT to CAS,1,mcr,dso:dopen crt:run1
+t11-01/focas,TRANSPORT FM MOV.IR to CAS,1,mcr,!dsi:upd crt:run8 crt:run1:1
+t12-01/focas,TRANSPORT FM FIX.IR to CAS,1,mcr,!dsi:dopen msg:frm12 crt:run1
+t01-02/focas,TRANSPORT FM CAS to SP.CAS,1,mcr,crt:run2
+t01-03/focas,TRANSPORT FM CAS to CENTER,1,mcr,crt:run3
+t01-07/focas,TRANSPORT FM CAS to SP.OPT,1,mcr,crt:run7
+t01-08/focas,TRANSPORT FM CAS to SP.IR,1,mcr,crt:run8
+t01-09/focas,TRANSPORT FM CAS to MOV.OPT,1,mcr,crt:run7:1 mcr:trlo crt:run9 
+t01-10/focas,TRANSPORT FM CAS to FIX.OPT,1,mcr,crt:run10
+t01-11/focas,TRANSPORT FM CAS to MOV.IR,1,mcr,crt:run8:1 mcr:trli crt:run11 
+t01-12/focas,TRANSPORT FM CAS to FIX.IR,1,mcr,crt:run12
+#!B,---------- Cart Run with MOIRCS Mount ----------
+t02-01/moircs,TRANSPORT MOIRCS SP.CAS to CAS,1,mcr,msg:lcvoff mcr:t02-01
+t03-01/moircs,TRANSPORT MOIRCS CENTER to CAS,1,mcr,msg:lcvoff mcr:t03-01
+t07-01/moircs,TRANSPORT MOIRCS SP.OPT to CAS,1,mcr,mcr:t07-03 mcr:t03-01/moircs
+t08-01/moircs,TRANSPORT MOIRCS SP.IR to CAS,1,mcr,mcr:t08-03 mcr:t03-01/moircs
+t09-01/moircs,TRANSPORT MOIRCS MOV.OPT to CAS,1,mcr,mcr:t09-03 mcr:t03-01/moircs
+t10-01/moircs,TRANSPORT MOIRCS FIX.OPT to CAS,1,mcr,mcr:t10-03 mcr:t03-01/moircs
+t11-01/moircs,TRANSPORT MOIRCS MOV.IR to CAS,1,mcr,msg:lanext mcr:t11-03 mcr:t03-01/moircs
+t12-01/moircs,TRANSPORT MOIRCS FIX.IR to CAS,1,mcr,mcr:t12-03 mcr:t03-01/moircs
+t01-02/moircs,TRANSPORT MOIRCS CAS to SP.CAS,1,mcr,mcr:t01-02 msg:lcvon
+t01-03/moircs,TRANSPORT MOIRCS CAS to CENTER,1,mcr,mcr:t01-03 msg:lcvon
+t01-07/moircs,TRANSPORT MOIRCS CAS to SP.OPT,1,mcr,mcr:t01-03/moircs mcr:t03-07
+t01-08/moircs,TRANSPORT MOIRCS CAS to SP.IR,1,mcr,mcr:t01-03/moircs mcr:t03-08
+t01-09/moircs,TRANSPORT MOIRCS CAS to MOV.OPT,1,mcr,mcr:t01-03/moircs mcr:t03-09
+t01-10/moircs,TRANSPORT MOIRCS CAS to FIX.OPT,1,mcr,mcr:t01-03/moircs mcr:t03-10
+t01-11/moircs,TRANSPORT MOIRCS CAS to MOV.IR,1,mcr,mcr:t01-03/moircs mcr:t03-11
+t01-12/moircs,TRANSPORT MOIRCS CAS to FIX.IR,1,mcr,mcr:t01-03/moircs mcr:t03-12
+#!C,---------- Cart Run with CIAO Mount ----------
+t02-01/ciao,TRANSPORT CIAO SP.CAS to CAS,1,mcr,msg:lcvoff mcr:t02-01
+t03-01/ciao,TRANSPORT CIAO CENTER to CAS,1,mcr,msg:wfson msg:lcvoff mcr:t03-01
+t07-01/ciao,TRANSPORT CIAO SP.OPT to CAS,1,mcr,mcr:t07-03 mcr:t03-01/ciao
+t08-01/ciao,TRANSPORT CIAO SP.IR to CAS,1,mcr,mcr:t08-03 mcr:t03-01/ciao
+t09-01/ciao,TRANSPORT CIAO MOV.OPT to CAS,1,mcr,mcr:t09-03 mcr:t03-01/ciao
+t10-01/ciao,TRANSPORT CIAO FIX.OPT to CAS,1,mcr,mcr:t10-03 mcr:t03-01/ciao
+t11-01/ciao,TRANSPORT CIAO MOV.IR to CAS,1,mcr,mcr:t11-03 mcr:t03-01/ciao
+t12-01/ciao,TRANSPORT CIAO FIX.IR to CAS,1,mcr,mcr:t12-03 mcr:t03-01/ciao
+t01-02/ciao,TRANSPORT CIAO CAS to SP.CAS,1,mcr,mcr:t01-02
+t01-03/ciao,TRANSPORT CIAO CAS to CENTER,1,mcr,mcr:t01-03 msg:wfsoff
+t01-07/ciao,TRANSPORT CIAO CAS to SP.OPT,1,mcr,mcr:t01-03/ciao mcr:t03-07
+t01-08/ciao,TRANSPORT CIAO CAS to SP.IR,1,mcr,mcr:t01-03/ciao mcr:t03-08
+t01-09/ciao,TRANSPORT CIAO CAS to MOV.OPT,1,mcr,mcr:t01-03/ciao mcr:t03-09
+t01-10/ciao,TRANSPORT CIAO CAS to FIX.OPT,1,mcr,mcr:t01-03/ciao mcr:t03-10
+t01-11/ciao,TRANSPORT CIAO CAS to MOV.IR,1,mcr,mcr:t01-03/ciao mcr:t03-11
+t01-12/ciao,TRANSPORT CIAO CAS to FIX.IR,1,mcr,mcr:t01-03/ciao mcr:t03-12
+#!F,---------- Cart Run with comics Mount ----------
+t02-01/comics,TRANSPORT comics SP.CAS to CAS,1,mcr,msg:lcvoff mcr:t02-01
+t03-01/comics,TRANSPORT comics CENTER to CAS,1,mcr,msg:lcvoff mcr:t03-01
+t07-01/comics,TRANSPORT comics SP.OPT to CAS,1,mcr,mcr:t07-03 mcr:t03-01/comics
+t08-01/comics,TRANSPORT comics SP.IR to CAS,1,mcr,mcr:t08-03 mcr:t03-01/comics
+t09-01/comics,TRANSPORT comics MOV.OPT to CAS,1,mcr,mcr:t09-03 mcr:t03-01/comics
+t10-01/comics,TRANSPORT comics FIX.OPT to CAS,1,mcr,mcr:t10-03 mcr:t03-01/comics
+t11-01/comics,TRANSPORT comics MOV.IR to CAS,1,mcr,mcr:t11-03 mcr:t03-01/comics
+t12-01/comics,TRANSPORT comics FIX.IR to CAS,1,mcr,mcr:t12-03 mcr:t03-01/comics
+t01-02/comics,TRANSPORT comics CAS to SP.CAS,1,mcr,mcr:t01-02 msg:ccvon
+t01-03/comics,TRANSPORT comics CAS to CENTER,1,mcr,mcr:t01-03 msg:ccvon
+t01-07/comics,TRANSPORT comics CAS to SP.OPT,1,mcr,mcr:t01-03/comics mcr:t03-07
+t01-08/comics,TRANSPORT comics CAS to SP.IR,1,mcr,mcr:t01-03/comics mcr:t03-08
+t01-09/comics,TRANSPORT comics CAS to MOV.OPT,1,mcr,mcr:t01-03/comics mcr:t03-09
+t01-10/comics,TRANSPORT comics CAS to FIX.OPT,1,mcr,mcr:t01-03/comics mcr:t03-10
+t01-11/comics,TRANSPORT comics CAS to MOV.IR,1,mcr,mcr:t01-03/comics mcr:t03-11
+t01-12/comics,TRANSPORT comics CAS to FIX.IR,1,mcr,mcr:t01-03/comics mcr:t03-12
+#!D,---------- Cart Run without Container ----------
+#r[*]-[*] (01|03|07-12),Cart RUN w/o Container
+r01-02,RUN CAS to SP.CAS,1,mcr,crt:run2
+r01-03,RUN CAS to CENTER,1,mcr,crt:run3
+r01-07,RUN CAS to SP.OPT,1,mcr,crt:run7
+r01-08,RUN CAS to SP.IR,1,mcr,crt:run8
+r01-09,RUN CAS to MOV.OPT,1,mcr,crt:run7:1 mcr:truo crt:run9
+r01-10,RUN CAS to FIX.OPT,1,mcr,crt:run10
+r01-11,RUN CAS to MOV.IR,1,mcr,crt:run8:1 mcr:trui crt:run11
+r01-12,RUN CAS to FIX.IR,1,mcr,crt:run12
+r02-01,RUN SP.CAS to CAS,1,mcr,crt:run1
+r02-03,RUN SP.CAS to CENTER,1,mcr,crt:run3
+r02-07,RUN SP.CAS to SP.OPT,1,mcr,crt:run7
+r02-08,RUN SP.CAS to SP.IR,1,mcr,crt:run8
+r02-09,RUN SP.CAS to MOV.OPT,1,mcr,crt:run7:1 mcr:truo crt:run9
+r02-10,RUN SP.CAS to FIX.OPT,1,mcr,crt:run10
+r02-11,RUN SP.CAS to MOV.IR,1,mcr,crt:run8:1 mcr:trui crt:run11
+r02-12,RUN SP.CAS to FIX.IR,1,mcr,crt:run12
+r03-01,RUN CENTER to CAS,1,mcr,crt:run1
+r03-02,RUN CENTER to SP.CAS,1,mcr,crt:run2
+r03-07,RUN CENTER to SP.OPT,1,mcr,crt:run7
+r03-08,RUN CENTER to SP.IR,1,mcr,crt:run8
+r03-09,RUN CENTER to MOV.OPT,1,mcr,crt:run7:1 mcr:truo crt:run9
+r03-10,RUN CENTER to FIX.OPT,1,mcr,crt:run10
+r03-11,RUN CENTER to MOV.IR,1,mcr,crt:run8:1 mcr:trui crt:run11
+r03-12,RUN CENTER to FIX.IR,1,mcr,crt:run12
+r07-01,RUN SP.OPT to CAS,1,mcr,crt:run1:1 mcr:trso
+r07-02,RUN SP.OPT to SP.CAS,1,mcr,crt:run2:1 mcr:trso
+r07-03,RUN SP.OPT to CENTER,1,mcr,crt:run3:1 mcr:trso
+r07-08,RUN SP.OPT to SP.IR,1,mcr,crt:run8:1 mcr:trso
+r07-09,RUN SP.OPT to MOV.OPT,1,mcr,mcr:truo crt:run9
+r07-10,RUN SP.OPT to FIX.OPT,1,mcr,mcr:trso crt:run10
+r07-11,RUN SP.OPT to MOV.IR,1,mcr,crt:run8:1 mcr:trui mcr:trso crt:run11
+r07-12,RUN SP.OPT to FIX.IR,1,mcr,crt:run12:1 mcr:trso
+r08-01,RUN SP.IR to CAS,1,mcr,crt:run1:1 mcr:trsi
+r08-02,RUN SP.IR to SP.CAS,1,mcr,crt:run2:1 mcr:trsi
+r08-03,RUN SP.IR to CENTER,1,mcr,crt:run3:1 mcr:trsi
+r08-07,RUN SP.IR to SP.OPT,1,mcr,crt:run7:1 mcr:trsi
+r08-09,RUN SP.IR to MOV.OPT,1,mcr,crt:run7:1 mcr:truo mcr:trsi crt:run9
+r08-10,RUN SP.IR to FIX.OPT,1,mcr,crt:run10:1 mcr:trsi
+r08-11,RUN SP.IR to MOV.IR,1,mcr,mcr:trui crt:run11
+r08-12,RUN SP.IR to FIX.IR,1,mcr,mcr:trsi crt:run12
+r09-01,RUN MOV.OPT to CAS,1,mcr,dso:dopen msg:pwext crt:run7 mcr:r07-01
+r09-02,RUN MOV.OPT to SP.CAS,1,mcr,dso:dopen crt:run7 mcr:r07-02
+r09-03,RUN MOV.OPT to CENTER,1,mcr,dso:dopen crt:run7 mcr:r07-03
+r09-07,RUN MOV.OPT to SP.OPT,1,mcr,dso:dopen crt:run7
+r09-08,RUN MOV.OPT to SP.IR,1,mcr,dso:dopen crt:run7 mcr:r07-08
+r09-10,RUN MOV.OPT to FIX.OPT,1,mcr,dso:dopen crt:run7 mcr:r07-10
+r09-11,RUN MOV.OPT to MOV.IR,1,mcr,dso:dopen crt:run7:1 mcr:trui crt:run11:1 mcr:trso
+r09-12,RUN MOV.OPT to FIX.IR,1,mcr,dso:dopen crt:run7 mcr:r07-12
+r10-01,RUN FIX.OPT to CAS,1,mcr,dso:dopen crt:run1
+r10-02,RUN FIX.OPT to SP.CAS,1,mcr,dso:dopen crt:run2
+r10-03,RUN FIX.OPT to CENTER,1,mcr,dso:dopen crt:run3
+r10-07,RUN FIX.OPT to SP.OPT,1,mcr,dso:dopen crt:run7
+r10-08,RUN FIX.OPT to SP.IR,1,mcr,dso:dopen crt:run8
+r10-09,RUN FIX.OPT to MOV.OPT,1,mcr,dso:dopen crt:run7 mcr:r07-09
+r10-11,RUN FIX.OPT to MOV.IR,1,mcr,dso:dopen crt:run8:1 mcr:trui crt:run11
+r10-12,RUN FIX.OPT to FIX.IR,1,mcr,dso:dopen crt:run12
+r11-01,RUN MOV.IR to CAS,1,mcr,!dsi:dopen msg:chkcbl crt:run8 mcr:r08-01
+r11-02,RUN MOV.IR to SP.CAS,1,mcr,!dsi:dopen msg:chkcbl crt:run8 mcr:r08-02
+r11-03,RUN MOV.IR to CENTER,1,mcr,!dsi:dopen msg:chkcbl crt:run8 mcr:r08-03
+r11-07,RUN MOV.IR to SP.OPT,1,mcr,!dsi:dopen msg:chkcbl crt:run8 mcr:r08-07
+r11-08,RUN MOV.IR to SP.IR,1,mcr,!dsi:dopen msg:chkcbl crt:run8
+r11-09,RUN MOV.IR to MOV.OPT,1,mcr,!dsi:dopen msg:chkcbl crt:run8:1 mcr:truo crt:run9:1 mcr:trsi
+r11-10,RUN MOV.IR to FIX.OPT,1,mcr,!dsi:dopen msg:chkcbl crt:run8 mcr:r08-10
+r11-12,RUN MOV.IR to FIX.IR,1,mcr,!dsi:dopen msg:chkcbl crt:run8 mcr:r08-12
+r12-01,RUN FIX.IR to CAS,1,mcr,!dsi:dopen crt:run1
+r12-02,RUN FIX.IR to SP.CAS,1,mcr,!dsi:dopen crt:run2
+r12-03,RUN FIX.IR to CENTER,1,mcr,!dsi:dopen crt:run3
+r12-07,RUN FIX.IR to SP.OPT,1,mcr,!dsi:dopen crt:run7
+r12-08,RUN FIX.IR to SP.IR,1,mcr,!dsi:dopen crt:run8
+r12-09,RUN FIX.IR to MOV.OPT,1,mcr,!dsi:dopen crt:run7:1 mcr:truo crt:run9
+r12-10,RUN FIX.IR to FIX.OPT,1,mcr,!dsi:dopen crt:run10
+r12-11,RUN FIX.IR to MOV.IR,1,mcr,!dsi:dopen crt:run8 mcr:r08-11
+!2,---------- General sequence ------------
+tcs-sa,INST CS->SA,1,mcr,mcr:t01-10/%i
+tcs-sb,INST CS->SB,1,mcr,mcr:t01-09/%i
+tcs-sc,INST CS->SC,1,mcr,mcr:t01-11/%i
+tcs-sd,INST CS->SD,1,mcr,mcr:t01-12/%i
+tsa-cs,INST SA->CS,1,mcr,mcr:t01-10/%i
+tsb-cs,INST SB->CS,1,mcr,mcr:t01-09/%i
+tsc-cs,INST SC->CS,1,mcr,mcr:t01-11/%i
+tsd-cs,INST SD->CS,1,mcr,mcr:t01-12/%i
+set[a-d],FETCH & SET INST to CAS,,cap
+seta,INST FETCH&STBY_A->CAS,1,mcr,mcr:fetch mcr:run10 mcr:iset
+setb,INST FETCH&STBY_B->CAS,1,mcr,mcr:fetch mcr:run9 mcr:iset
+setc,INST FETCH&STBY_C->CAS,1,mcr,mcr:fetch mcr:run11 mcr:iset
+setd,INST FETCH&STBY_D->CAS,1,mcr,mcr:fetch mcr:run12 mcr:iset
+begin,Cart HOME->CS,1,mcr,mcr:init mcr:chgoff mcr:run1
+gohome,Cart Run to home and Chg,1,mcr,mcr:home%h mcr:chgon msg:a/%i
+fetch,Inst CAS->STBY,1,mcr,mcr:begin mcr:detach mcr:tcs-%h mcr:attach
+iset,Inst STBY->CAS,1,mcr,mcr:detach mcr:t%l-01/%i mcr:attach mcr:gohome
+homesa,Run home (OPT),1,mcr,mcr:run10
+homesb,Run home (OPT),1,mcr,mcr:run10
+homesc,Run home (IR),1,mcr,mcr:run12
+homesd,Run home (IR),1,mcr,mcr:run12

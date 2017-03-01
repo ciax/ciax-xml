@@ -1,58 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="cx15" version="2" label="CX15 Macro" port="55555">
-    <group id="grp_dso_2" caption="Action" rank="2">
-      <item id="dso_dopen" label="DOOR OPEN (1S)">
-        <goal>
-          <equal site="dso" var="dop" form="msg">OPEN</equal>
-        </goal>
-        <exec site="dso" name="dopen"/>
-        <sleep>1</sleep>
-        <exec site="dso" name="%0=0"/>
-      </item>
-      <item id="dso_dclose" label="DOOR CLOSE (11S)">
-        <goal>
-          <equal site="dso" var="dop" form="msg">CLOSE</equal>
-        </goal>
-        <check>
-          <not site="dso" var="nct:cps" form="msg">09</not>
-        </check>
-        <exec site="dso" name="dclose"/>
-        <sleep>11</sleep>
-        <exec site="dso" name="%1=0"/>
-      </item>
-      <item id="dso_mccdtmr" label="MOV CCD TIMER">
-        <exec site="dso" name="mccdtmr"/>
-        <sleep>300</sleep>
-        <exec site="dso" name="%5=0"/>
-      </item>
-      <item id="dso_fccdtmr" label="FIX CCD TIMER">
-        <exec site="dso" name="fccdtmr"/>
-        <sleep>300</sleep>
-        <exec site="dso" name="%6=0"/>
-      </item>
-    </group>
-    <group id="grp_dsi_2" caption="Action" rank="2">
-      <item id="dsi_dopen" label="DOOR OPEN (1S)">
-        <goal>
-          <equal site="dsi" var="dop" form="msg">OPEN</equal>
-        </goal>
-        <exec site="dsi" name="dopen"/>
-        <sleep>1</sleep>
-        <exec site="dsi" name="%0=0"/>
-      </item>
-      <item id="dsi_dclose" label="DOOR CLOSE (11S)">
-        <goal>
-          <equal site="dsi" var="dop" form="msg">CLOSE</equal>
-        </goal>
-        <check>
-          <not site="dsi" var="nct:cps" form="msg">11</not>
-        </check>
-        <exec site="dsi" name="dclose"/>
-        <sleep>11</sleep>
-        <exec site="dsi" name="%1=0"/>
-      </item>
-    </group>
     <group id="grp_cx15_0" caption="Basic Sequences" rank="0">
       <item id="init" label="Initialize">
         <check>
@@ -1083,7 +1031,7 @@
             <not site="crt" var="cps" form="msg">09</not>
             <equal site="dso" var="mis" form="msg">OFF</equal>
           </check>
-          <mcr name="dso_dopen"/>
+          <exec site="dso" name="dopen"/>
           <exec site="dso" name="trout"/>
           <exec site="dso" name="rotout"/>
           <exec site="dso" name="munhk"/>
@@ -1140,7 +1088,7 @@
         <check>
           <not site="crt" var="cps" form="msg">09</not>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="msg" name="pipedw"/>
         <exec site="dso" name="trout"/>
         <exec site="dso" name="rotout"/>
@@ -1224,7 +1172,7 @@
           <equal site="dts" var="cis" form="msg">OFF</equal>
           <equal site="dso" var="fis" form="msg">OFF</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run10"/>
       </item>
       <item id="t01-11" label="TRANSPORT CAS to MOV.IR">
@@ -1285,7 +1233,7 @@
           <equal site="crt" var="cps" form="msg">02</equal>
           <equal site="dso" var="fis" form="msg">OFF</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run10"/>
       </item>
       <item id="t02-11" label="TRANSPORT SP.CAS to MOV.IR">
@@ -1344,7 +1292,7 @@
           <equal site="crt" var="cps" form="msg">03</equal>
           <equal site="dso" var="fis" form="msg">OFF</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run10"/>
       </item>
       <item id="t03-11" label="TRANSPORT CENTER to MOV.IR">
@@ -1461,7 +1409,7 @@
           <equal site="crt" var="cps" form="msg">08</equal>
           <equal site="dso" var="fis" form="msg">OFF</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run10"/>
       </item>
       <item id="t08-11" label="TRANSPORT SP.IR to MOV.IR">
@@ -1552,7 +1500,7 @@
           <equal site="dso" var="fis" form="msg">OFF</equal>
           <equal site="dts" var="cis" form="msg">OFF</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run1"/>
       </item>
       <item id="t10-02" label="TRANSPORT FIX.OPT to SP.CAS">
@@ -1560,7 +1508,7 @@
           <equal site="crt" var="cps" form="msg">10</equal>
           <equal site="dso" var="fis" form="msg">OFF</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run2"/>
       </item>
       <item id="t10-03" label="TRANSPORT FIX.OPT to CENTER">
@@ -1568,7 +1516,7 @@
           <equal site="crt" var="cps" form="msg">10</equal>
           <equal site="dso" var="fis" form="msg">OFF</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run3"/>
       </item>
       <item id="t10-07" label="TRANSPORT FIX.OPT to SP.OPT">
@@ -1576,7 +1524,7 @@
           <equal site="crt" var="cps" form="msg">10</equal>
           <equal site="dso" var="fis" form="msg">OFF</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run7"/>
       </item>
       <item id="t10-08" label="TRANSPORT FIX.OPT to SP.IR">
@@ -1584,13 +1532,13 @@
           <equal site="crt" var="cps" form="msg">10</equal>
           <equal site="dso" var="fis" form="msg">OFF</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run8"/>
       </item>
       <item id="t10-09" label="TRANSPORT FIX.OPT to MOV.OPT">
         <check>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run7"/>
         <mcr name="t07-09"/>
       </item>
@@ -1600,7 +1548,7 @@
           <equal site="dso" var="fis" form="msg">OFF</equal>
           <equal site="dsi" var="mis" form="msg">OFF</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run8" skip="1"/>
         <mcr name="trli"/>
         <exec site="crt" name="run11"/>
@@ -1611,7 +1559,7 @@
           <equal site="dso" var="fis" form="msg">OFF</equal>
           <equal site="dsi" var="fis" form="msg">OFF</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run12"/>
       </item>
       <item id="t11-01" label="TRANSPORT MOV.IR to CAS">
@@ -1787,7 +1735,7 @@
           <equal site="crt" var="cps" form="msg">10</equal>
           <equal site="dso" var="fis" form="msg">OFF</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run1"/>
       </item>
       <item id="t11-01/focas" label="TRANSPORT FM MOV.IR to CAS">
@@ -2397,7 +2345,7 @@
         <check>
           <equal site="crt" var="cps" form="msg">09</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="msg" name="pwext"/>
         <exec site="crt" name="run7"/>
         <mcr name="r07-01"/>
@@ -2406,7 +2354,7 @@
         <check>
           <equal site="crt" var="cps" form="msg">09</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run7"/>
         <mcr name="r07-02"/>
       </item>
@@ -2414,7 +2362,7 @@
         <check>
           <equal site="crt" var="cps" form="msg">09</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run7"/>
         <mcr name="r07-03"/>
       </item>
@@ -2422,28 +2370,28 @@
         <check>
           <equal site="crt" var="cps" form="msg">09</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run7"/>
       </item>
       <item id="r09-08" label="RUN MOV.OPT to SP.IR">
         <check>
           <equal site="crt" var="cps" form="msg">09</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run7"/>
         <mcr name="r07-08"/>
       </item>
       <item id="r09-10" label="RUN MOV.OPT to FIX.OPT">
         <check>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run7"/>
         <mcr name="r07-10"/>
       </item>
       <item id="r09-11" label="RUN MOV.OPT to MOV.IR">
         <check>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run7" skip="1"/>
         <mcr name="trui"/>
         <exec site="crt" name="run11" skip="1"/>
@@ -2452,7 +2400,7 @@
       <item id="r09-12" label="RUN MOV.OPT to FIX.IR">
         <check>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run7"/>
         <mcr name="r07-12"/>
       </item>
@@ -2461,7 +2409,7 @@
           <equal site="crt" var="cps" form="msg">10</equal>
           <equal site="dso" var="mjb" form="msg">UP</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run1"/>
       </item>
       <item id="r10-02" label="RUN FIX.OPT to SP.CAS">
@@ -2469,7 +2417,7 @@
           <equal site="crt" var="cps" form="msg">10</equal>
           <equal site="dso" var="mjb" form="msg">UP</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run2"/>
       </item>
       <item id="r10-03" label="RUN FIX.OPT to CENTER">
@@ -2477,7 +2425,7 @@
           <equal site="crt" var="cps" form="msg">10</equal>
           <equal site="dso" var="mjb" form="msg">UP</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run3"/>
       </item>
       <item id="r10-07" label="RUN FIX.OPT to SP.OPT">
@@ -2485,7 +2433,7 @@
           <equal site="crt" var="cps" form="msg">10</equal>
           <equal site="dso" var="mjb" form="msg">UP</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run7"/>
       </item>
       <item id="r10-08" label="RUN FIX.OPT to SP.IR">
@@ -2493,13 +2441,13 @@
           <equal site="crt" var="cps" form="msg">10</equal>
           <equal site="dso" var="mjb" form="msg">UP</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run8"/>
       </item>
       <item id="r10-09" label="RUN FIX.OPT to MOV.OPT">
         <check>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run7"/>
         <mcr name="r07-09"/>
       </item>
@@ -2508,7 +2456,7 @@
           <equal site="crt" var="cps" form="msg">10</equal>
           <equal site="dso" var="mtr" form="msg">BK</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run8" skip="1"/>
         <mcr name="trui"/>
         <exec site="crt" name="run11"/>
@@ -2518,7 +2466,7 @@
           <equal site="crt" var="cps" form="msg">10</equal>
           <equal site="dso" var="mtr" form="msg">BK</equal>
         </check>
-        <mcr name="dso_dopen"/>
+        <exec site="dso" name="dopen"/>
         <exec site="crt" name="run12"/>
       </item>
       <item id="r11-01" label="RUN MOV.IR to CAS">

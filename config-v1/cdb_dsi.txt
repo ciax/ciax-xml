@@ -17,8 +17,10 @@ fjup,Fxied Flange EJB Up,,act,setmove:setI.unx:01F02010,pause
 fjdw,Fxied Flange EJB Down,,act,setmove:setI.unx:01F02000,pause
 chgfw,Charger Forward Ready,,act,setmove:setI.unx:01E01010
 chgbw,Charger Backward Sleep,,act,setmove:setI.unx:01E01000
-dopen,DOOR OPEN (1S),,act,%1=0:0=1/1/%0=0
-dclose,DOOR CLOSE (11S),,act,%0=0:1=1/11/%1=0,dstop
+dopen,DOOR OPEN (1S),,act,%1=0:0=1
+dclose,DOOR CLOSE (11S),,act,%0=0:1=1
+#dopen,DOOR OPEN (1S),,act,%1=0:0=1/1/%0=0
+#dclose,DOOR CLOSE (11S),,act,%0=0:1=1/11/%1=0,dstop
 dstop,DOOR STOP,,act,%1=0
 mpwon,MOV IPW ON,,act,%3=0
 mpwoff,MOV IPW OFF,,act,%3=1

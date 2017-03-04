@@ -19,7 +19,8 @@ module CIAX
       end
 
       def text
-        t = @e.text.to_s.strip
+        return if @e.has_elements?
+        t = @e.text.to_s
         t unless t.empty?
       end
 

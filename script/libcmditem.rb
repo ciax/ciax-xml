@@ -162,7 +162,7 @@ module CIAX
       end
 
       # returns result of def_proc block (String)
-      def exe_cmd(src, pri = nil)
+      def exe_cmd(src, pri = 1)
         verbose { "Execute [#{@id}] from #{src}" }
         _input_log(src, pri)
         @msg = self[:def_msg] || ''

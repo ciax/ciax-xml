@@ -56,16 +56,16 @@ coffd,CART CHG Off (IR),1,mcr,crt:chgoff dsi:chgoff dsi:chgbw crt:lftdw
 #[at|dt][01|09-12],Attach/Detach Container on Flange
 at,SKIP Attach,1,cap
 dt,SKIP Detach,1,cap
-att,Attach on CAS,1,mcr,dts:%i dts:cjon mcr:luut/%i mcr:fupt mcr:cpont/%i crt:lftdw
-ata,Attach on FIX.OPT,1,mcr,ist:sa mcr:luua mcr:fupa mcr:cpona/%i crt:lftdw
-atb,Attach on MOV.OPT,1,mcr,ist:sb mcr:luub mcr:fupb mcr:cponb/%i crt:lftdw
-atc,Attach on MOV.IR,1,mcr,ist:sc mcr:luuc mcr:fupc mcr:cponc/%i crt:lftdw
-atd,Attach on FIX.IR,1,mcr,ist:sd mcr:luud mcr:fupd mcr:cpond/%i crt:lftdw
+att,Attach on CAS,1,mcr,dts:cjon mcr:luut/%i mcr:fupt mcr:cpont/%i crt:lftdw
+ata,Attach on FIX.OPT,1,mcr,mcr:luua mcr:fupa mcr:cpona/%i crt:lftdw
+atb,Attach on MOV.OPT,1,mcr,mcr:luub mcr:fupb mcr:cponb/%i crt:lftdw
+atc,Attach on MOV.IR,1,mcr,mcr:luuc mcr:fupc mcr:cponc/%i crt:lftdw
+atd,Attach on FIX.IR,1,mcr,mcr:luud mcr:fupd mcr:cpond/%i crt:lftdw
 dtt,Detach on CAS,1,mcr,dts:upd dts:%i mcr:luht mcr:cpofft/%i mcr:fdwt mcr:lftdw/%i
-dta,Detach on FIX.OPT,1,mcr,dso:upd ist:sa mcr:lftup mcr:cpoffa/%i mcr:fdwa crt:lftdw
-dtb,Detach on MOV.OPT,1,mcr,dso:upd ist:sb mcr:lftup mcr:cpoffb/%i mcr:fdwb crt:lftdw
-dtc,Detach on MOV.IR,1,mcr,!dsi:upd ist:sc mcr:lftup mcr:cpoffc/%i mcr:fdwc crt:lftdw
-dtd,Detach on FIX.IR,1,mcr,!dsi:upd ist:sd mcr:lftup mcr:cpoffd/%i mcr:fdwd crt:lftdw
+dta,Detach on FIX.OPT,1,mcr,dso:upd dts:%a mcr:lftup mcr:cpoffa/%i mcr:fdwa crt:lftdw
+dtb,Detach on MOV.OPT,1,mcr,dso:upd dts:%b mcr:lftup mcr:cpoffb/%i mcr:fdwb crt:lftdw
+dtc,Detach on MOV.IR,1,mcr,!dsi:upd dts:%c mcr:lftup mcr:cpoffc/%i mcr:fdwc crt:lftdw
+dtd,Detach on FIX.IR,1,mcr,!dsi:upd dts:%d mcr:lftup mcr:cpoffd/%i mcr:fdwd crt:lftdw
 #!4,---------- Cart Sequences ----------
 #lft[up|dw],CART Lift UP/DW ANY.Place
 lftup,CART Lift UP at ANY.PL,1,mcr,crt:%i msg:auto crt:lftup1 crt:lftup2 crt:lftup3
@@ -108,11 +108,11 @@ fdwd,Hookdw at FIX.IR,1,mcr,mcr:jd0d dsi:funhk mcr:ju4d
 ju0t,InR0 Jkup at CAS,1,mcr,msg:bjm msg:bjs dts:cjup !det:upd
 jd0t,InR0 Jkdw at CAS,1,mcr,msg:bjm msg:bjs dts:cjdw !det:upd
 ju0a,InR0 Jkup at FIX.OPT,1,mcr,dso:fjup dso:upd
-jd0a,InR0 Jkdw at FIX.OPT,1,mcr,ist:sa=%a dso:fjdw dso:upd
+jd0a,InR0 Jkdw at FIX.OPT,1,mcr,dso:fjdw dso:upd
 ju0b,InR0 Jkup at MOV.OPT,1,mcr,dso:mjup dso:upd
-jd0b,InR0 Jkdw at MOV.OPT,1,mcr,ist:sb=%b dso:mjdw dso:upd
+jd0b,InR0 Jkdw at MOV.OPT,1,mcr,dso:mjdw dso:upd
 ju0c,InR0 Jkup at MOV.IR,1,mcr,dsi:mjup dsi:upd
-jd0c,InR0 Jkdw at MOV.IR,1,mcr,ist:sc=%c dsi:mjdw !dsi:upd
+jd0c,InR0 Jkdw at MOV.IR,1,mcr,dsi:mjdw !dsi:upd
 ju0d,InR0 Jkup at FIX.IR,1,mcr,dsi:fjup dsi:upd
 jd0d,InR0 Jkdw at FIX.IR,1,mcr,dsi:fjdw dsi:upd
 #!,------------ Jack Down/Up without Instrumnet
@@ -393,15 +393,15 @@ tsa-cs,INST SA->CS,1,mcr,mcr:t01-10/%i
 tsb-cs,INST SB->CS,1,mcr,mcr:t01-09/%i
 tsc-cs,INST SC->CS,1,mcr,mcr:t01-11/%i
 tsd-cs,INST SD->CS,1,mcr,mcr:t01-12/%i
-set[a-d],FETCH & SET INST to CAS,,cap
-seta,INST FETCH&STBY_A->CAS,1,mcr,mcr:fetch mcr:run10 mcr:iset
-setb,INST FETCH&STBY_B->CAS,1,mcr,mcr:fetch mcr:run9 mcr:iset
-setc,INST FETCH&STBY_C->CAS,1,mcr,mcr:fetch mcr:run11 mcr:iset
-setd,INST FETCH&STBY_D->CAS,1,mcr,mcr:fetch mcr:run12 mcr:iset
-begin,Cart HOME->CS,1,mcr,mcr:init mcr:chgoff mcr:run1
-gohome,Cart Run to home and Chg,1,mcr,mcr:home%h mcr:chgon msg:a/%i
-fetch,Inst CAS->STBY,1,mcr,mcr:begin mcr:detach mcr:tcs-%h mcr:attach
-iset,Inst STBY->CAS,1,mcr,mcr:detach mcr:t%l-01/%i mcr:attach mcr:gohome
+#set[a-d],FETCH & SET INST to CAS,,cap
+#seta,INST FETCH&STBY_A->CAS,1,mcr,mcr:fetch mcr:run10 mcr:iset
+#setb,INST FETCH&STBY_B->CAS,1,mcr,mcr:fetch mcr:run9 mcr:iset
+#setc,INST FETCH&STBY_C->CAS,1,mcr,mcr:fetch mcr:run11 mcr:iset
+#setd,INST FETCH&STBY_D->CAS,1,mcr,mcr:fetch mcr:run12 mcr:iset
+#begin,Cart HOME->CS,1,mcr,mcr:init mcr:chgoff mcr:run1
+#gohome,Cart Run to home and Chg,1,mcr,mcr:home%h mcr:chgon msg:a/%i
+#fetch,Inst CAS->STBY,1,mcr,mcr:begin mcr:detach mcr:tcs-%h mcr:attach
+#iset,Inst STBY->CAS,1,mcr,mcr:detach mcr:t%l-01/%i mcr:attach mcr:gohome
 homesa,Run home (OPT),1,mcr,mcr:run10
 homesb,Run home (OPT),1,mcr,mcr:run10
 homesc,Run home (IR),1,mcr,mcr:run12

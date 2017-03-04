@@ -235,7 +235,6 @@
             <not site="crt" var="jlv" form="msg">C</not>
             <equal site="crt" var="dps" form="msg">01</equal>
           </check>
-          <exec site="dts" name="%i"/>
           <exec site="dts" name="cjon"/>
           <mcr name="luut/X"/>
           <mcr name="fupt"/>
@@ -252,7 +251,6 @@
             <equal site="crt" var="dps" form="msg">10</equal>
             <equal site="dso" var="chg" form="msg">BK</equal>
           </check>
-          <exec site="ist" name="sa"/>
           <mcr name="luua"/>
           <mcr name="fupa"/>
           <mcr name="cpona/X"/>
@@ -267,7 +265,6 @@
             <not site="crt" var="jlv" form="msg">C</not>
             <equal site="crt" var="dps" form="msg">09</equal>
           </check>
-          <exec site="ist" name="sb"/>
           <mcr name="luub"/>
           <mcr name="fupb"/>
           <mcr name="cponb/X"/>
@@ -282,7 +279,6 @@
             <not site="crt" var="jlv" form="msg">C</not>
             <equal site="crt" var="dps" form="msg">11</equal>
           </check>
-          <exec site="ist" name="sc"/>
           <mcr name="luuc"/>
           <mcr name="fupc"/>
           <mcr name="cponc/X"/>
@@ -298,7 +294,6 @@
             <equal site="crt" var="dps" form="msg">12</equal>
             <equal site="dsi" var="chg" form="msg">BK</equal>
           </check>
-          <exec site="ist" name="sd"/>
           <mcr name="luud"/>
           <mcr name="fupd"/>
           <mcr name="cpond/X"/>
@@ -331,7 +326,7 @@
             <equal site="dso" var="chg" form="msg">BK</equal>
           </check>
           <upd site="dso"/>
-          <exec site="ist" name="sa"/>
+          <exec site="dts" name="%a"/>
           <mcr name="lftup"/>
           <mcr name="cpoffa/X"/>
           <mcr name="fdwa"/>
@@ -347,7 +342,7 @@
             <equal site="crt" var="dps" form="msg">09</equal>
           </check>
           <upd site="dso"/>
-          <exec site="ist" name="sb"/>
+          <exec site="dts" name="%b"/>
           <mcr name="lftup"/>
           <mcr name="cpoffb/X"/>
           <mcr name="fdwb"/>
@@ -362,7 +357,7 @@
             <equal site="crt" var="dps" form="msg">11</equal>
           </check>
           <upd site="dsi" name="true"/>
-          <exec site="ist" name="sc"/>
+          <exec site="dts" name="%c"/>
           <mcr name="lftup"/>
           <mcr name="cpoffc/X"/>
           <mcr name="fdwc"/>
@@ -379,7 +374,7 @@
             <equal site="dsi" var="chg" form="msg">BK</equal>
           </check>
           <upd site="dsi" name="true"/>
-          <exec site="ist" name="sd"/>
+          <exec site="dts" name="%d"/>
           <mcr name="lftup"/>
           <mcr name="cpoffd/X"/>
           <mcr name="fdwd"/>
@@ -689,7 +684,6 @@
           <check>
             <equal site="dso" var="fis" form="msg">ON</equal>
           </check>
-          <exec site="ist" name="sa=%a"/>
           <exec site="dso" name="fjdw"/>
           <upd site="dso"/>
         </item>
@@ -710,7 +704,6 @@
           <check>
             <equal site="dso" var="mis" form="msg">ON</equal>
           </check>
-          <exec site="ist" name="sb=%b"/>
           <exec site="dso" name="mjdw"/>
           <upd site="dso"/>
         </item>
@@ -731,7 +724,6 @@
           <check>
             <equal site="dsi" var="mis" form="msg">ON</equal>
           </check>
-          <exec site="ist" name="sc=%c"/>
           <exec site="dsi" name="mjdw"/>
           <upd site="dsi" name="true"/>
         </item>
@@ -2606,99 +2598,6 @@
       </item>
     </group>
     <group id="grp_cx15_2" caption="General sequence" rank="0">
-      <unit id="unit_cx15_2_setad" title="set[a-d]" label="FETCH and SET INST to CAS">
-        <item id="seta" label="INST FETCHandSTBY_A->CAS">
-          <goal>
-            <equal site="ist" var="hom" form="msg">SA</equal>
-          </goal>
-          <check>
-          </check>
-          <mcr name="fetch"/>
-          <mcr name="run10"/>
-          <mcr name="iset"/>
-        </item>
-        <item id="setb" label="INST FETCHandSTBY_B->CAS">
-          <goal>
-            <equal site="ist" var="hom" form="msg">SB</equal>
-          </goal>
-          <check>
-          </check>
-          <mcr name="fetch"/>
-          <mcr name="run9"/>
-          <mcr name="iset"/>
-        </item>
-        <item id="setc" label="INST FETCHandSTBY_C->CAS">
-          <goal>
-            <equal site="ist" var="hom" form="msg">SC</equal>
-          </goal>
-          <check>
-          </check>
-          <mcr name="fetch"/>
-          <mcr name="run11"/>
-          <mcr name="iset"/>
-        </item>
-        <item id="setd" label="INST FETCHandSTBY_D->CAS">
-          <goal>
-            <equal site="ist" var="hom" form="msg">SD</equal>
-          </goal>
-          <check>
-          </check>
-          <mcr name="fetch"/>
-          <mcr name="run12"/>
-          <mcr name="iset"/>
-        </item>
-        <item id="begin" label="Cart HOME->CS">
-          <goal>
-            <equal site="crt" var="cps" form="msg">01</equal>
-          </goal>
-          <mcr name="init"/>
-          <mcr name="chgoff"/>
-          <mcr name="run1"/>
-        </item>
-        <item id="gohome" label="Cart Run to home and Chg">
-          <check>
-          </check>
-          <mcr name="homeX"/>
-          <mcr name="chgon"/>
-          <exec site="msg" name="a/%i"/>
-        </item>
-        <item id="fetch" label="Inst CAS->STBY">
-          <check>
-          </check>
-          <mcr name="begin"/>
-          <mcr name="detach"/>
-          <mcr name="tcs-X"/>
-          <mcr name="attach"/>
-        </item>
-        <item id="iset" label="Inst STBY->CAS">
-          <check>
-          </check>
-          <mcr name="detach"/>
-          <mcr name="tX-01/%i"/>
-          <mcr name="attach"/>
-          <mcr name="gohome"/>
-        </item>
-        <item id="homesa" label="Run home (OPT)">
-          <check>
-          </check>
-          <mcr name="run10"/>
-        </item>
-        <item id="homesb" label="Run home (OPT)">
-          <check>
-          </check>
-          <mcr name="run10"/>
-        </item>
-        <item id="homesc" label="Run home (IR)">
-          <check>
-          </check>
-          <mcr name="run12"/>
-        </item>
-        <item id="homesd" label="Run home (IR)">
-          <check>
-          </check>
-          <mcr name="run12"/>
-        </item>
-      </unit>
       <item id="tcs-sa" label="INST CS->SA">
         <check>
         </check>
@@ -2738,6 +2637,26 @@
         <check>
         </check>
         <mcr name="t01-12/X"/>
+      </item>
+      <item id="homesa" label="Run home (OPT)">
+        <check>
+        </check>
+        <mcr name="run10"/>
+      </item>
+      <item id="homesb" label="Run home (OPT)">
+        <check>
+        </check>
+        <mcr name="run10"/>
+      </item>
+      <item id="homesc" label="Run home (IR)">
+        <check>
+        </check>
+        <mcr name="run12"/>
+      </item>
+      <item id="homesd" label="Run home (IR)">
+        <check>
+        </check>
+        <mcr name="run12"/>
       </item>
     </group>
     <group id="grp_sel_cx15" caption="CX15 Select Group" rank="2">
@@ -2844,79 +2763,67 @@
         </select>
       </item>
       <item id="luut/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="cpont/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="cpona/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="cponb/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="cponc/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="cpond/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="cpofft/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="lftdw/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="cpoffa/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="cpoffb/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="cpoffc/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="cpoffd/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="t01-10/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="t01-09/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="t01-11/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
       <item id="t01-12/X" label="Select Macro">
-        <select site="ist" var="icr" form="msg">
-        </select>
-      </item>
-      <item id="homeX" label="Select Macro">
-        <select site="ist" var="hom" form="msg">
-        </select>
-      </item>
-      <item id="tcs-X" label="Select Macro">
-        <select site="ist" var="hom" form="msg">
-        </select>
-      </item>
-      <item id="tX-01/%i" label="Select Macro">
-        <select site="crt" var="cps" form="msg">
+        <select site="dts" var="iid" form="msg">
         </select>
       </item>
     </group>

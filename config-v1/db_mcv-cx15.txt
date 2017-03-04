@@ -1,6 +1,5 @@
 !key,stat,option
-i,ist:icr
-h,ist:hom
+i,dts:iid
 t,det:iid
 a,dso:fid
 b,dso:mid

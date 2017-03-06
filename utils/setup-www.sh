@@ -1,5 +1,5 @@
 #!/bin/bash
-# Required packages: php5-sqlite yui-compressor
+# Required packages: make php5-sqlite yui-compressor
 dir=$HOME/.var/json
 for i in $dir/*; do
     [ -L "$i" -a ! -e "$i" ] && rm "$i"

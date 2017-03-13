@@ -15,12 +15,3 @@ for i in json log record; do
     sudo ln -sf ~/.var/$i /var/www/html
 done
 jslink
-# install jslib
-[ -d ~/jslib ] || mkdir ~/jslib
-cd ~/jslib
-if [ ! -d flot ] ; then
-    git clone http://github.com/flot/flot.git
-    cd flot
-    make
-    jslink
-fi

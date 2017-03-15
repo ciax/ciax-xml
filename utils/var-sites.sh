@@ -7,7 +7,7 @@
     exit
 }
 shopt -s nullglob
-for i in ~/.var/$1_*; do
+for i in ~/.var/log/$1_*; do
         r="${i#*_}"
         echo "${r%.*}"
 done | column

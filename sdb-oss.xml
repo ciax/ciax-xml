@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="oss" label="TSC Control">
-    <table id="bl">
+    <table id="bl" label="Jack Length">
       <pattern class="warn" msg="MID">0</pattern>
       <pattern class="normal" msg="UP">2</pattern>
       <pattern class="normal" msg="DW">1</pattern>
     </table>
-    <table id="ba">
+    <table id="iang" label="Rotator Angle">
+      <range class="normal" msg="UNHK">-4.3:-3.7</range>
+      <range class="normal" msg="HOOK">-0.3:0.3</range>
+      <default class="warn" msg="MID"/>
+    </table>
+    <table id="ba" label="Alarm">
       <pattern class="hide" msg="OK">0</pattern>
       <default class="alarm" msg="ON"/>
     </table>
-    <table id="rts">
+    <table id="rts" label="Rotator Select">
       <pattern class="warn" msg="PFO">1</pattern>
       <pattern class="warn" msg="PFI">2</pattern>
       <pattern class="normal" msg="CAS">4</pattern>
@@ -18,7 +23,7 @@
       <pattern class="warn" msg="NSI">10</pattern>
       <default class="alarm" msg="N/A"/>
     </table>
-    <table id="iid">
+    <table id="iid" label="Instrument ID">
       <pattern class="warn" msg="NONE">^0$</pattern>
       <pattern class="normal" msg="IRCS">^1$</pattern>
       <pattern class="normal" msg="CIAO">^3$</pattern>
@@ -34,27 +39,27 @@
       <pattern class="normal" msg="LOGIN">CXWS</pattern>
       <default class="warn" msg="LOGOUT"/>
     </table>
-    <table id="rpw">
+    <table id="rpw" label="Rotator Drive Stat">
       <pattern class="warn" msg="ON">1</pattern>
       <pattern class="normal" msg="OFF">2</pattern>
     </table>
-    <table id="rps">
+    <table id="rps" label="Rot Sensor">
       <pattern class="alarm" msg="OFF">3</pattern>
       <pattern class="normal" msg="0DEG">2</pattern>
       <pattern class="normal" msg="-4DEG">1</pattern>
       <default class="alarm" msg="N/A"/>
     </table>
-    <table id="drv">
+    <table id="drv" label="Jack Drive Stat">
       <pattern class="alarm" msg="ON">5</pattern>
       <pattern class="normal" msg="OFF">3</pattern>
       <pattern class="normal" msg="RDY">1</pattern>
       <default class="alarm" msg="N/A"/>
     </table>
-    <table id="uni">
+    <table id="uni" label="Even/Uneven">
       <pattern class="normal" msg="EVEN">0</pattern>
       <default class="alarm" msg="UNEVEN"/>
     </table>
-    <table id="loc">
+    <table id="loc" label="Local/Remote">
       <pattern class="normal" msg="REMOTE">0</pattern>
       <default class="warn" msg="LOCAL"/>
     </table>

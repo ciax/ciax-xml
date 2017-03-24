@@ -5,7 +5,7 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <symtbl ref="mmc"/>
       <group id="g1" caption="">
-        <float id="cmi" label="Current Mask Index" symbol="rsl" format="%.2f" />
+        <float id="cmi" label="Current Mask Index" symbol="rsl" format="%.2f"/>
       </group>
     </status>
   </app>

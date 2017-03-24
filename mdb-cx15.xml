@@ -2450,42 +2450,42 @@
       </item>
     </group>
     <group id="grp_cx15_2" caption="General sequence" rank="0">
-      <item id="tcs-sa" label="INST CS->SA">
+      <item id="tcs-sa" label="INST CS-&gt;SA">
         <check>
         </check>
         <mcr name="t01-10_X"/>
       </item>
-      <item id="tcs-sb" label="INST CS->SB">
+      <item id="tcs-sb" label="INST CS-&gt;SB">
         <check>
         </check>
         <mcr name="t01-09_X"/>
       </item>
-      <item id="tcs-sc" label="INST CS->SC">
+      <item id="tcs-sc" label="INST CS-&gt;SC">
         <check>
         </check>
         <mcr name="t01-11_X"/>
       </item>
-      <item id="tcs-sd" label="INST CS->SD">
+      <item id="tcs-sd" label="INST CS-&gt;SD">
         <check>
         </check>
         <mcr name="t01-12_X"/>
       </item>
-      <item id="tsa-cs" label="INST SA->CS">
+      <item id="tsa-cs" label="INST SA-&gt;CS">
         <check>
         </check>
         <mcr name="t01-10_X"/>
       </item>
-      <item id="tsb-cs" label="INST SB->CS">
+      <item id="tsb-cs" label="INST SB-&gt;CS">
         <check>
         </check>
         <mcr name="t01-09_X"/>
       </item>
-      <item id="tsc-cs" label="INST SC->CS">
+      <item id="tsc-cs" label="INST SC-&gt;CS">
         <check>
         </check>
         <mcr name="t01-11_X"/>
       </item>
-      <item id="tsd-cs" label="INST SD->CS">
+      <item id="tsd-cs" label="INST SD-&gt;CS">
         <check>
         </check>
         <mcr name="t01-12_X"/>

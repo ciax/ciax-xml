@@ -149,7 +149,7 @@
         <float id="elv" label="EL" format="%.3f">
           <field ref="el"/>
         </float>
-        <float id="iang" label="InR" format="%.3f">
+        <float id="iang" label="InR" format="%.3f" symbol="iang">
           <field ref="iang"/>
         </float>
         <binary id="rps" label="ROT SENSOR" symbol="rps">

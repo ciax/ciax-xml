@@ -389,6 +389,154 @@
         </item>
       </unit>
     </group>
+    <group id="g_mov" caption="Movable Flange Commands" rank="3">
+      <!--MOV.OPT Transer and Rotate-->
+      <unit label="MOV.OPT Rotation" id="uor">
+        <item label="MOV.OPT Rotation (Load)" id="oro">
+          <goal label="Rotation Stored?">
+            <equal form="msg" site="dso" var="mrt">DES</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dso" var="mrt">STR</equal>
+            <equal form="msg" site="dso" var="mhk">HOOK</equal>
+            <equal form="msg" site="dso" var="mtr">FW</equal>
+          </check>
+          <exec site="dso" name="rotout"/>
+          <wait label="Rotate start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Rotating" retry="20">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item label="MOV.OPT Rotation (Store)" id="ori">
+          <goal label="Rotation Stored?">
+            <equal form="msg" site="dso" var="mrt">STR</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dso" var="mrt">DES</equal>
+            <equal form="msg" site="dso" var="mhk">HOOK</equal>
+            <equal form="msg" site="dso" var="mtr">FW</equal>
+          </check>
+          <exec site="dso" name="rotin"/>
+          <wait label="Rotate start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Rotating" retry="20">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit label="MOV.OPT Transer" id="uot">
+        <item label="MOV.OPT Transer Back" id="otb">
+          <goal label="Transer Stored?">
+            <equal form="msg" site="dso" var="mtr">BK</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dso" var="mrt">STR</equal>
+            <equal form="msg" site="dso" var="mhk">HOOK</equal>
+            <equal form="msg" site="dso" var="mtr">FW</equal>
+          </check>
+          <exec site="dso" name="trin"/>
+          <wait label="Transer start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Moving" retry="60">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item label="MOV.OPT Transer Forth" id="otf">
+          <goal label="Transer Stored?">
+            <equal form="msg" site="dso" var="mtr">FW</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dso" var="mrt">STR</equal>
+            <equal form="msg" site="dso" var="mhk">HOOK</equal>
+            <equal form="msg" site="dso" var="mtr">BK</equal>
+          </check>
+          <exec site="dso" name="trout"/>
+          <wait label="Transer start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Moving" retry="60">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <!--MOV.IR Transer and Rotate-->
+      <unit label="MOV.IR Rotation" id="uir">
+        <item label="MOV.IR Rotation (Load)" id="iri">
+          <goal label="Rotation Stored?">
+            <equal form="msg" site="dsi" var="mrt">DES</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dsi" var="mrt">STR</equal>
+            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
+            <equal form="msg" site="dsi" var="mtr">FW</equal>
+          </check>
+          <exec site="dsi" name="rotout"/>
+          <wait label="Rotate start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Rotating" retry="20">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item label="MOV.IR Rotation (Store)" id="iri">
+          <goal label="Rotation Stored?">
+            <equal form="msg" site="dsi" var="mrt">STR</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dsi" var="mrt">DES</equal>
+            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
+            <equal form="msg" site="dsi" var="mtr">FW</equal>
+          </check>
+          <exec site="dsi" name="rotin"/>
+          <wait label="Rotate start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Rotating" retry="20">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit label="MOV.IR Transer" id="uit">
+        <item label="MOV.IR Transer Back" id="itb">
+          <goal label="Transer Stored?">
+            <equal form="msg" site="dsi" var="mtr">BK</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dsi" var="mrt">STR</equal>
+            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
+            <equal form="msg" site="dsi" var="mtr">FW</equal>
+          </check>
+          <exec site="dsi" name="trin"/>
+          <wait label="Transer start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Moving" retry="60">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item label="MOV.IR Transer Forth" id="itf">
+          <goal label="Transer Stored?">
+            <equal form="msg" site="dsi" var="mtr">FW</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dsi" var="mrt">STR</equal>
+            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
+            <equal form="msg" site="dsi" var="mtr">BK</equal>
+          </check>
+          <exec site="dsi" name="trout"/>
+          <wait label="Transer start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Moving" retry="60">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+    </group>
     <group id="g_tr" caption="Transer Commands">
       <!--Transer and Rotate-->
       <item id="trsi" label="MOV.IR Trans Backward w/SITET [%s]">

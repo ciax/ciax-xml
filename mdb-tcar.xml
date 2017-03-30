@@ -850,14 +850,6 @@
           <upd site="tmc"/>
         </item>
       </unit>
-      <unit id="unit_tmc_2_sha" title="sha" label="Shared Command">
-        <item id="upd" label="Update">
-          <upd site="tma"/>
-          <upd site="tmc"/>
-          <upd site="tfp"/>
-          <upd site="tap"/>
-        </item>
-      </unit>
       <item id="tmc_cw-0.1" label="Move 0.1 unit CW">
         <check>
           <match site="tmc" var="spd" form="msg">LOW</match>

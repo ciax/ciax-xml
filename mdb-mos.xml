@@ -68,6 +68,22 @@
       </item>
     </group>
     <group id="grp_mma_2" caption="Action" rank="2">
+      <item id="mma_set0" label="Set 0 Counter">
+        <goal>
+          <match site="mma" var="abs" form="msg">INIT</match>
+        </goal>
+        <check>
+          <equal site="mma" var="pos" form="msg">INIT</equal>
+          <match site="mma" var="abs" form="msg">INIT</match>
+        </check>
+        <cfg site="mma" name="set0"/>
+      </item>
+      <item id="mma_mres" label="Motor Reset">
+        <check>
+          <equal site="mma" var="pos" form="msg">INIT</equal>
+        </check>
+        <exec site="mma" name="mres"/>
+      </item>
       <item id="mma_ini" label="Initialize Position">
         <goal>
           <equal site="mma" var="pos" form="msg">INIT</equal>
@@ -127,6 +143,13 @@
         <wait retry="95" label="end of motion">
           <equal site="mma" var="bs" form="data">0</equal>
         </wait>
+      </item>
+      <item id="mma_sets" label="Initialize at Stock">
+        <check>
+          <equal site="mma" var="pos" form="msg">STORE</equal>
+          <match site="mma" var="abs" form="msg">STORE</match>
+        </check>
+        <cfg site="mma" name="sets"/>
       </item>
     </group>
     <group id="grp_mos_1" caption="Update All" rank="0">

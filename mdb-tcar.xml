@@ -850,6 +850,12 @@
           <upd site="tmc"/>
         </item>
       </unit>
+      <item id="tmc_lowspd" label="Low Speed">
+        <goal>
+          <match site="tmc" var="spd" form="msg">LOW</match>
+        </goal>
+        <cfg site="tmc" name="lowspd"/>
+      </item>
       <item id="tmc_cw-0.1" label="Move 0.1 unit CW">
         <check>
           <match site="tmc" var="spd" form="msg">LOW</match>

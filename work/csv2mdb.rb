@@ -218,7 +218,7 @@ end
 
 def mdb_reduction(index)
   index.select! do|_k, v|
-    v.key?('seq') && v['seq'].any? { |f| f.is_a? Hash }
+    (v.key?('seq') && v['seq'].any? { |f| f.is_a? Hash }) || v.key?('goal') || v.key?('check')
   end
 end
 

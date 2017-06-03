@@ -66,6 +66,7 @@ module CIAX
         conds.all? { |h| h[:skip] || h[:res] }
       end
 
+      # Get status from Devices via http
       def _scan
         @exes.each_with_object({}) do |exe, hash|
           st = hash[exe.id] = exe.stat.latest

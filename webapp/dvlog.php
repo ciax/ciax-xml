@@ -9,9 +9,14 @@
       $.getJSON('sqlog.php', par, function(obj) {
         $(".title").append('<span class="head">' + par.site + ':' + par.vid + '</span>');
         obj[0].data.forEach(function(pair) {
-          var date = new Date(pair[0] - 0);
-          var time = date.toLocaleTimeString('en-US', {hour12: false})
-          $("tbody").append('<tr><td><span class="label">' + time + '</span></td><td class="item"><var>' + pair[1] + '</var></td></tr>');
+          var datetime = new Date(pair[0] - 0);
+          var tr = '<tr><td>';
+          tr += '<span class="label" title="';
+          tr += datetime.toLocaleDateString('en-US') + '">';
+          tr += datetime.toLocaleTimeString('en-US', {hour12: false});
+          tr += '</span></td><td class="item"><var>';
+          tr += pair[1] + '</var></td></tr>';
+          $("tbody").append(tr);
         });
       });
     </script>

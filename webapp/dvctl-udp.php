@@ -4,9 +4,9 @@ function getarg($key){
   $res=(isset($_POST[$key])) ? $_POST[$key] :
     (
       (isset($_GET[$key])) ? $_GET[$key] :
-        (
-          (isset($args[$key])) ? $args[$key] : null
-        )
+      (
+        (isset($args[$key])) ? $args[$key] : null
+      )
     );
   return $res;
 }
@@ -30,9 +30,9 @@ $except=array();
 $res=socket_select($read,$write,$except,4);
 $buf="";
 if($res > 0){
-    $from="";
-    $port=0;
-    socket_recvfrom($soc,$buf,1024,0,$from,$port);
+  $from="";
+  $port=0;
+  socket_recvfrom($soc,$buf,1024,0,$from,$port);
 }
 print($buf);
 ?>

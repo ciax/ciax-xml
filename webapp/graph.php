@@ -11,7 +11,7 @@
       var par = <?php echo json_encode($_GET); ?>;
       $(get_graph);
     </script>
-   </head>
+  </head>
   <body>
     <div id="placeholder" style="width:600px;height:300px;"></div>
     <div>

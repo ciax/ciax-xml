@@ -1,4 +1,5 @@
 #!/bin/bash
+# Get Latest Stream Data SqLog
 #alias logj
 [ "$1" = '-s' ] && { dir='snd';shift; }
 id=$1;shift

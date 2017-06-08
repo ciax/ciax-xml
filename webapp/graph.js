@@ -78,6 +78,7 @@ function markings(axes) { //Making grid stripe and bar line
 
 function init_mode() {
   if (past_time) {
+    clearInterval(timer);
     // For static mode
     // set range
     var time = past_time - 0;
@@ -91,7 +92,7 @@ function init_mode() {
     set_date(past_time);
   }else {
     // For dynamic mode
-    setInterval(update, 1000);
+    timer=setInterval(update, 1000);
   }
 }
 function update() {
@@ -139,10 +140,10 @@ function mv_date(dom) {
 // Main
 function get_graph() {
   past_time = par.time;
+  init_mode();
   $.getJSON('sqlog.php', par, function(obj) {
     obj[0].data.forEach(conv_ascii);
     series = obj;
-    init_mode();
     plot = $.plot('#placeholder', series, options);
     init_tooltip();
     init_move();
@@ -153,5 +154,6 @@ function get_graph() {
 var plot;
 var series;
 var past_time;
+var timer;
 var offset = (new Date()).getTimezoneOffset() * 60000;
 $.ajaxSetup({ mimeType: 'json', ifModified: true, cahce: false});

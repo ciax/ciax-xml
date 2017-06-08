@@ -10,7 +10,8 @@ var options = {
   grid: {
     markings: markings,
     backgroundColor: { colors: ['#fff', '#999'] },
-    hoverable: true
+    hoverable: true,
+    clickable: true
   },
   xaxis: {
     mode: 'time',
@@ -21,6 +22,15 @@ var options = {
     panRange: false
   }
 };
+function init_move(){
+  $("#placeholder").on("plotclick", show_move);
+}
+function show_move(event, pos, item){
+  if(item){
+    par.time = item.datapoint[0].toFixed(2);
+    get_graph();
+  }
+}
 
 function init_tooltip() {
   $("<div id='tooltip'></div>").css({
@@ -135,6 +145,7 @@ function get_graph() {
     init_mode();
     plot = $.plot('#placeholder', series, options);
     init_tooltip();
+    init_move();
   });
 }
 

@@ -24,18 +24,6 @@ var options = {
 };
 
 // **** Optional Functions ****
-// Setting Range
-function _set_range() {
-  clearInterval(timer);
-  var time = par.time - 0;
-  var tol = 3600000;
-  var min = time - tol;
-  var max = time + tol;
-  options.xaxis.min = min;
-  options.xaxis.max = max;
-  options.zoom = { interactive: true };
-  options.pan = { interactive: true };
-}
 // Move Time Range
 function init_move() {
   $('#placeholder').on('plotclick', _move_time);
@@ -43,16 +31,14 @@ function init_move() {
 function _move_time(event, pos, item) {
   if (item) {
     par.time = item.datapoint[0].toFixed(2);
-    _set_range();
-    static_graph();
+    past_graph();
   }
 }
 
 function move_date(dom) {
   var date = new Date($(dom).val());
   par.time = date.getTime() + offset;
-  _set_range();
-  static_graph();
+  past_graph();
 }
 
 // Show Tool Tip
@@ -143,6 +129,13 @@ function static_graph() {
   });
 }
 
+function past_graph() {
+  // Setting Range
+  clearInterval(timer);
+  options.zoom = { interactive: true };
+  options.pan = { interactive: true };
+  static_graph();
+}
 // Main
 function init_graph() {
   init_tooltip();

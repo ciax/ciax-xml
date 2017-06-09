@@ -103,7 +103,7 @@ function _mk_markings(axes) { //Making grid stripe and bar line
 
 // Pop Up Log Table
 function get_log() {
-  var url = 'dvlog.php?site=' + par.site + '&vid=' + par.vid;
+  var url = 'dvlog.html?site=' + par.site + '&vid=' + par.vid;
   if (par.time) {
     url += '&time=' + par.time;
   }

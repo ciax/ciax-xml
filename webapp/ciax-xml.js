@@ -11,7 +11,7 @@ function open_table(site) {
              ).focus();
 }
 function open_graph(site, vid, time) {
-  var url = '/json/graph.php?site=' + site + '&vid=' + vid;
+  var url = '/json/graph.html?site=' + site + '&vid=' + vid;
   var pre = 'g' + vid.replace(/,/g, '_');
   if (time) {
     url = url + '&time=' + time;

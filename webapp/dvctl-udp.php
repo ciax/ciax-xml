@@ -1,21 +1,21 @@
 <?php
 function getarg($key){
-  global $args;
-  $res=(isset($_POST[$key])) ? $_POST[$key] :
-    (
-      (isset($_GET[$key])) ? $_GET[$key] :
-      (
-        (isset($args[$key])) ? $args[$key] : null
-      )
-    );
-  return $res;
+    global $args;
+    $res=(isset($_POST[$key])) ? $_POST[$key] :
+	 (
+	     (isset($_GET[$key])) ? $_GET[$key] :
+	     (
+		 (isset($args[$key])) ? $args[$key] : null
+	     )
+	 );
+    return $res;
 }
 $args=array();
 foreach($argv as &$e){
-  $ary=split("=",$e);
-  if(count($ary)>1){
-    $args[$ary[0]]=$ary[1];
-  }
+    $ary=split("=",$e);
+    if(count($ary)>1){
+	$args[$ary[0]]=$ary[1];
+    }
 }
 $host="127.0.0.1";
 $port=(int)getarg('port');
@@ -30,9 +30,9 @@ $except=array();
 $res=socket_select($read,$write,$except,4);
 $buf="";
 if($res > 0){
-  $from="";
-  $port=0;
-  socket_recvfrom($soc,$buf,1024,0,$from,$port);
+    $from="";
+    $port=0;
+    socket_recvfrom($soc,$buf,1024,0,$from,$port);
 }
 print($buf);
 ?>

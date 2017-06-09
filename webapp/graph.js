@@ -23,7 +23,7 @@ var options = {
   }
 };
 
-// **** Optional Functions **** 
+// **** Optional Functions ****
 // Setting Range
 function _set_range() {
   clearInterval(timer);
@@ -37,11 +37,11 @@ function _set_range() {
   options.pan = { interactive: true };
 }
 // Move Time Range
-function init_move(){
-  $("#placeholder").on("plotclick", _move_time);
+function init_move() {
+  $('#placeholder').on('plotclick', _move_time);
 }
-function _move_time(event, pos, item){
-  if(item){
+function _move_time(event, pos, item) {
+  if (item) {
     par.time = item.datapoint[0].toFixed(2);
     _set_range();
     static_graph();
@@ -136,7 +136,7 @@ function update_graph() {
   });
 }
 
-function static_graph(){
+function static_graph() {
   $.getJSON('sqlog.php', par, function(obj) {
     obj[0].data.forEach(_conv_ascii);
     plot = $.plot($('#placeholder'), obj, options);

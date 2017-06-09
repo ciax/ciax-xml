@@ -24,21 +24,35 @@ var options = {
 };
 
 // **** Optional Functions **** 
+// Setting Range
+function _set_range() {
+  clearInterval(timer);
+  var time = par.time - 0;
+  var tol = 3600000;
+  var min = time - tol;
+  var max = time + tol;
+  options.xaxis.min = min;
+  options.xaxis.max = max;
+  options.zoom = { interactive: true };
+  options.pan = { interactive: true };
+}
 // Move Time Range
 function init_move(){
-  $("#placeholder").on("plotclick", _show_move);
+  $("#placeholder").on("plotclick", _move_time);
 }
-function _show_move(event, pos, item){
+function _move_time(event, pos, item){
   if(item){
     par.time = item.datapoint[0].toFixed(2);
-    init_graph();
+    _set_range();
+    static_graph();
   }
 }
 
-function mv_date(dom) {
+function move_date(dom) {
   var date = new Date($(dom).val());
   par.time = date.getTime() + offset;
-  init_graph();
+  _set_range();
+  static_graph();
 }
 
 // Show Tool Tip
@@ -79,10 +93,10 @@ function _mk_markings(axes) { //Making grid stripe and bar line
   for (var x = min; x < max; x += h2)
     mary.push({ xaxis: { from: x, to: x + hour}, color: '#999'});
   // bar line
-  if (past_time) mary.push({
+  if (par.time) mary.push({
     color: '#ff0000',
     lineWidth: 3,
-    xaxis: { from: past_time, to: past_time }
+    xaxis: { from: par.time, to: par.time }
   });
   return mary;
 }
@@ -113,33 +127,7 @@ function _conv_ascii(pair) {
   }
 }
 
-function set_date(past_time) {
-  var dte = new Date(past_time - offset);
-  $('#date').val(dte.toJSON().substr(0, 10));
-}
-
-// Init
-function init_mode() {
-  if (past_time) {
-    clearInterval(timer);
-    // For static mode
-    // set range
-    var time = past_time - 0;
-    var tol = 180000;
-    var min = time - tol;
-    var max = time + tol;
-    options.xaxis.min = min;
-    options.xaxis.max = max;
-    options.zoom = { interactive: true };
-    options.pan = { interactive: true };
-    set_date(past_time);
-  }else {
-    // For dynamic mode
-    timer=setInterval(update, 1000);
-  }
-}
-
-function update() {
+function update_graph() {
   $.getJSON('sqlog.php', par, function(obj) {
     obj[0].data.forEach(_conv_ascii);
     plot.setData(obj);
@@ -148,23 +136,23 @@ function update() {
   });
 }
 
-// Main
-function init_graph() {
-  past_time = par.time;
-  init_mode();
+function static_graph(){
   $.getJSON('sqlog.php', par, function(obj) {
     obj[0].data.forEach(_conv_ascii);
-    series = obj;
-    plot = $.plot('#placeholder', series, options);
-    init_tooltip();
-    init_move();
+    plot = $.plot($('#placeholder'), obj, options);
   });
+}
+
+// Main
+function init_graph() {
+  init_tooltip();
+  init_move();
+  static_graph();
 }
 
 // var par shold be set in html [site, vid, (time)]
 var plot;
-var series;
-var past_time;
-var timer;
 var offset = (new Date()).getTimezoneOffset() * 60000;
+var timer = setInterval(update_graph, 1000);
 $.ajaxSetup({ mimeType: 'json', ifModified: true, cahce: false});
+$(init_graph);

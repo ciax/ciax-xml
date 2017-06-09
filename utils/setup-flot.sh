@@ -1,11 +1,19 @@
 #!/bin/bash
 # Required packages: make yui-compressor
+clone(){
+    git clone http://github.com/$1
+}
+
 [ -d ~/jslib ] || mkdir ~/jslib
 cd ~/jslib
-if [ ! -d flot ] ; then
-    git clone http://github.com/flot/flot.git
-fi
-cd flot
-git pull
-make
-mv *.min.js ~/ciax-xml/weblib/
+
+# Get Flot 
+[ -d flot ] || clone flot/flot.git
+
+# Register libs
+for dir in */; do
+    cd $dir
+    git pull
+    make
+    mv *.min.js ~/ciax-xml/weblib/
+done

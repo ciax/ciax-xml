@@ -97,7 +97,7 @@ function get_log() {
 }
 
 // **** Main ****
-// Shared
+// Convert String to Number for Graph
 function _conv_ascii(pair) {
   if (isNaN(pair[1])) {
     var asc = 0;
@@ -112,7 +112,7 @@ function _conv_ascii(pair) {
     pair[1] = asc;
   }
 }
-
+// Dynamic Graph
 function update_graph() {
   $.getJSON('sqlog.php', par, function(obj) {
     obj[0].data.forEach(_conv_ascii);
@@ -129,23 +129,29 @@ function static_graph() {
   });
 }
 
+function current_graph() {
+  timer = setInterval(update_graph, 1000);
+  delete par.time;
+  options.zoom = { interactive: false };
+  options.pan = { interactive: false };
+  static_graph();
+}
+
 function past_graph() {
-  // Setting Range
   clearInterval(timer);
   options.zoom = { interactive: true };
   options.pan = { interactive: true };
   static_graph();
 }
-// Main
 function init_graph() {
   init_tooltip();
   init_move();
-  static_graph();
+  current_graph();
 }
 
 // var par shold be set in html [site, vid, (time)]
 var plot;
+var timer;
 var offset = (new Date()).getTimezoneOffset() * 60000;
-var timer = setInterval(update_graph, 1000);
 $.ajaxSetup({ mimeType: 'json', ifModified: true, cahce: false});
 $(init_graph);

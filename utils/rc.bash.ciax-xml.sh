@@ -1,6 +1,6 @@
 #!/bin/bash --rcfile
 develop(){
-    cd "$HOME/ciax-xml/webapp"
+    cd "$HOME/ciax-xml" || return
     git pull --all
     setup-www
     case $(git branch |grep '*') in
@@ -12,9 +12,9 @@ develop(){
         *beta)
             alias sydev='git push;giu develop;gim beta;git push;giu beta'
             ;;
-        *)
-            cd;;
+        *);;
     esac
+    cd
 }
 
 # Local functions

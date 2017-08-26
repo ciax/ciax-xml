@@ -38,7 +38,7 @@ module CIAX
         Thread.pass
         verbose { "Initiate Thread (#{id})" }
         yield
-      rescue
+      rescue Exception
         errmsg
       end
     end

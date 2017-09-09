@@ -25,8 +25,11 @@ function conv(stat) {
   last = stat.time;
   var lstr = new Date(last);
   $('#time').text(lstr.toLocaleString());
+  $('tr').each(function(){
+    max = Math.max(max,$(this).outerWidth());
+  });
   var out = $('div.outline');
-  resizeTo(out.outerWidth() + 400, out.outerHeight() + 100);
+  resizeTo(max + 100, out.outerHeight() + 100);
 }
 function seldv(dom) {
   var cmd = get_select(dom);
@@ -35,6 +38,7 @@ function seldv(dom) {
 // Need var: Type,Site
 var last;
 var offset = 0;
+var max = 0;
 upd_list.select = function() {
   ajax_update(type + '_' + site + '.json').done(conv);
   elapsed();

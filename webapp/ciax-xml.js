@@ -7,7 +7,7 @@ function replace(sel, str, cls) {
 }
 function open_table(site) {
   window.open('/json/' + site + '.html', 't' + site,
-              'menubar=no,location=no,status=no,width=800,height=200'
+              'menubar=no,location=no,status=no,width=600,height=200'
              ).focus();
 }
 function open_graph(site, vid, time) {

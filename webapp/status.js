@@ -26,7 +26,7 @@ function conv(stat) {
   var lstr = new Date(last);
   $('#time').text(lstr.toLocaleString());
   var out = $('div.outline');
-  resizeTo(800, out.outerHeight() + 100);
+  resizeTo(out.outerWidth() + 400, out.outerHeight() + 100);
 }
 function seldv(dom) {
   var cmd = get_select(dom);

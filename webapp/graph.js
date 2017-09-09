@@ -24,6 +24,12 @@ var options = {
 };
 
 // **** Optional Functions ****
+// Update current date
+function current_date(msec){
+  current.setTime(msec - offset);
+  $('#date').val(current.toJSON().slice(0,10));
+}
+
 // Move Time Range
 function init_move() {
   $('#placeholder').on('plotclick', _move_time);
@@ -31,13 +37,13 @@ function init_move() {
 function _move_time(event, pos, item) {
   if (item) {
     par.time = item.datapoint[0].toFixed(2);
+    current_date(par.time);
     past_graph();
   }
 }
 
 function move_date(dom) {
-  var date = new Date($(dom).val());
-  par.time = date.getTime() + offset;
+  par.time = Date.parse($(dom).val()) + offset;
   past_graph();
 }
 
@@ -129,7 +135,9 @@ function static_graph() {
   });
 }
 
+
 function current_graph() {
+  current_date(Date.now());
   timer = setInterval(update_graph, 1000);
   delete par.time;
   options.zoom = { interactive: false };
@@ -152,6 +160,7 @@ function init_graph() {
 // var par shold be set in html [site, vid, (time)]
 var plot;
 var timer;
-var offset = (new Date()).getTimezoneOffset() * 60000;
+var current = new Date();
+var offset = current.getTimezoneOffset() * 60000;
 $.ajaxSetup({ mimeType: 'json', ifModified: true, cahce: false});
 $(init_graph);

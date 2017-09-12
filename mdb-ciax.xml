@@ -19,7 +19,7 @@
             <equal form="msg" var="run" site="crt">OFF</equal>
           </wait>
         </item>
-        <item id="run" label="Run to Tag [1-12]">
+        <item id="run" label="Run to Tag [1-12] w/o INST">
           <par_num label="1-12">1:12</par_num>
           <goal label="On Destination Tag?">
             <equal form="data" var="cps" site="crt">$1</equal>
@@ -57,7 +57,7 @@
         </wait>
       </item>
     </group>
-    <group id="g_jak" caption="Jack Commands" column="2" rank="3">
+    <group id="g_jak" caption="Atomic Jack Bolt Commands" column="2" rank="3">
       <!--FIX.OPT Flange Jack Command-->
       <unit id="ufoj0" label="FIX.OPT Jack at 0deg">
         <item id="foju0" label="InR0 Jkup at FIX.OPT">
@@ -389,7 +389,7 @@
         </item>
       </unit>
     </group>
-    <group id="g_mov" caption="Movable Flange Commands" rank="3">
+    <group id="g_mov" caption="Atomic Movable Flange Commands" rank="3">
       <!--MOV.OPT Transer and Rotate-->
       <unit label="MOV.OPT Rotation" id="uor">
         <item label="MOV.OPT Rotation (Load)" id="oro">
@@ -465,7 +465,7 @@
       </unit>
       <!--MOV.IR Transer and Rotate-->
       <unit label="MOV.IR Rotation" id="uir">
-        <item label="MOV.IR Rotation (Load)" id="iri">
+        <item label="MOV.IR Rotation (Load)" id="iro">
           <goal label="Rotation Stored?">
             <equal form="msg" site="dsi" var="mrt">DES</equal>
           </goal>
@@ -539,9 +539,9 @@
     </group>
     <group id="g_tr" caption="Transer Commands">
       <!--Transer and Rotate-->
-      <item id="trsi" label="MOV.IR Trans Backward w/SITET [%s]">
+      <item id="trs" label="MOV Trans Backward w/INST [%s]">
         <par_str label="site">dso,dsi</par_str>
-        <goal label="Transer Stored?">
+        <goal label="Transer Stored Position?">
           <equal form="msg" site="$1" var="mtr">BK</equal>
         </goal>
         <check label="CART CLEAR?">
@@ -563,6 +563,35 @@
           <equal form="msg" site="$1" var="exe">OFF</equal>
         </wait>
       </item>
+      <item id="trl" label="MOV Trans Forward w/INST [%s]">
+        <par_str label="site">dso,dsi</par_str>
+        <goal label="Transer Loading Position?">
+          <equal form="msg" site="$1" var="mtr">FW</equal>
+          <equal form="msg" site="$1" var="rot">LOAD</equal>
+        </goal>
+        <check label="CART CLEAR?">
+          <not form="data" site="crt" var="cps">12</not>
+          <not form="data" site="crt" var="cps">11</not>
+          <not form="data" site="crt" var="cps">10</not>
+          <not form="data" site="crt" var="cps">9</not>
+        </check>
+        <exec site="$1" name="trout"/>
+        <wait label="Transer start?" retry="5">
+          <equal form="msg" site="$1" var="exe">ON</equal>
+        </wait>
+        <wait label="Moving" retry="60">
+          <equal form="msg" site="$1" var="exe">OFF</equal>
+        </wait>
+        <exec site="$1" name="rotout"/>
+        <wait label="Rotate start?" retry="5">
+          <equal form="msg" site="$1" var="exe">ON</equal>
+        </wait>
+        <wait label="Rotating" retry="20">
+          <equal form="msg" site="$1" var="exe">OFF</equal>
+        </wait>
+      </item>
+    </group>
+    <group id="g_fr" caption="Flange Commands">
       <!--FIX Jack & Rotate-->
       <item id="jupd" label="HookUp at FIX.IR [%s]">
         <par_str label="site">dso,dsi</par_str>
@@ -585,7 +614,7 @@
         </mcr>
       </item>
     </group>
-    <group id="g_run">
+    <group id="g_run" caption="Transport Commands">
       <!--Run & Transer-->
       <item id="runi" label="Run with interlock to Tag [1-12]">
         <par_num label="1-12">1:12</par_num>

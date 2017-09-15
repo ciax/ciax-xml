@@ -2,7 +2,7 @@
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro" port="55554">
     <group id="cx_main" caption="Macro Commands" column="2">
-      <unit id="run" label="Cart Run">
+      <unit id="unit_run" label="Cart Run">
         <item id="runf" label="Run Forward to Tag">
           <goal label="On Tag?">
             <not form="data" site="crt" var="cps">0</not>
@@ -579,24 +579,7 @@
           </wait>
         </item>
       </unit>
-      <unit id="unit_ot" title="ot[f|b]" label="MOV.OPT Transer">
-        <item label="MOV.OPT Transer Forth" id="otf">
-          <goal label="Transer Stored?">
-            <equal form="msg" site="dso" var="mtr">FW</equal>
-          </goal>
-          <check>
-            <equal form="msg" site="dso" var="mrt">STR</equal>
-            <equal form="msg" site="dso" var="mhk">HOOK</equal>
-            <equal form="msg" site="dso" var="mtr">BK</equal>
-          </check>
-          <exec site="dso" name="trout"/>
-          <wait label="Transer start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Moving" retry="60">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
+      <unit id="unit_ot" title="ot[b|f]" label="MOV.OPT Transer">
         <item id="otb" label="MOV.OPT Transer Back">
           <goal label="Transer Stored?">
             <equal form="msg" site="dso" var="mtr">BK</equal>
@@ -607,6 +590,23 @@
             <equal form="msg" site="dso" var="mtr">FW</equal>
           </check>
           <exec site="dso" name="trin"/>
+          <wait label="Transer start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Moving" retry="60">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item label="MOV.OPT Transer Forth" id="otf">
+          <goal label="Transer Stored?">
+            <equal form="msg" site="dso" var="mtr">FW</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dso" var="mrt">STR</equal>
+            <equal form="msg" site="dso" var="mhk">HOOK</equal>
+            <equal form="msg" site="dso" var="mtr">BK</equal>
+          </check>
+          <exec site="dso" name="trout"/>
           <wait label="Transer start?" retry="5">
             <equal form="msg" site="dso" var="exe">ON</equal>
           </wait>
@@ -652,7 +652,7 @@
           </wait>
         </item>
       </unit>
-      <unit id="unit_it" title="it[f|b]" label="MOV.IR Transer">
+      <unit id="unit_it" title="it[b|f]" label="MOV.IR Transer">
         <item id="itb" label="MOV.IR Transer Back">
           <goal label="Transer Stored?">
             <equal form="msg" site="dsi" var="mtr">BK</equal>
@@ -689,35 +689,10 @@
         </item>
       </unit>
     </group>
-    <group id="g_tr" caption="Transer Commands">
-      <!--Transer and Rotate-->
-      <unit label="MOV.IR Rot/Transer" id="uirt">
-        <item id="trsi" label="MOV.IR Trans Backward w/INST">
-          <goal label="Transer Stored Position?">
-            <equal form="msg" site="dsi" var="mtr">BK</equal>
-          </goal>
-          <check label="CART CLEAR?">
-            <not form="data" site="crt" var="cps">12</not>
-            <not form="data" site="crt" var="cps">11</not>
-          </check>
-          <mcr name="iri"/>
-          <mcr name="itb"/>
-        </item>
-        <item id="trli" label="MOV.IR Trans Forward w/INST">
-          <goal label="Transer Loading Position?">
-            <equal form="msg" site="dsi" var="mtr">FW</equal>
-            <equal form="msg" site="dsi" var="rot">LOAD</equal>
-          </goal>
-          <check label="CART CLEAR?">
-            <not form="data" site="crt" var="cps">12</not>
-            <not form="data" site="crt" var="cps">11</not>
-          </check>
-          <mcr name="itf"/>
-          <mcr name="iro"/>
-        </item>
-      </unit>
-      <unit label="MOV.OPT Rot/Transer" id="uort">
-        <item id="trso" label="MOV.OPT Trans Backward w/INST">
+    <!--Transer and Rotate-->
+    <group id="g_tr" caption="Transer Commands" rank="2">
+      <unit id="unit_ort" title="ort[b|f]" label="MOV.OPT Rot/Transer Back/Forth">
+        <item id="ortb" label="MOV.OPT Trans Backward w/INST">
           <goal label="Transer Stored Position?">
             <equal form="msg" site="dso" var="mtr">BK</equal>
           </goal>
@@ -725,10 +700,10 @@
             <not form="data" site="crt" var="cps">10</not>
             <not form="data" site="crt" var="cps">9</not>
           </check>
-          <mcr name="ori"/>
+          <mcr name="ors"/>
           <mcr name="otb"/>
         </item>
-        <item id="trlo" label="MOV.OPT Trans Forward w/INST">
+        <item id="ortf" label="MOV.OPT Trans Forward w/INST">
           <goal label="Transer Loading Position?">
             <equal form="msg" site="dso" var="mtr">FW</equal>
             <equal form="msg" site="dso" var="rot">LOAD</equal>
@@ -738,7 +713,32 @@
             <not form="data" site="crt" var="cps">9</not>
           </check>
           <mcr name="otf"/>
-          <mcr name="oro"/>
+          <mcr name="orl"/>
+        </item>
+      </unit>
+      <unit id="unit_irt" title="irt[b|f]" label="MOV.IR Rot/Transer Back/Forth">
+        <item id="irtb" label="MOV.IR Trans Backward w/INST">
+          <goal label="Transer Stored Position?">
+            <equal form="msg" site="dsi" var="mtr">BK</equal>
+          </goal>
+          <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">12</not>
+            <not form="data" site="crt" var="cps">11</not>
+          </check>
+          <mcr name="irs"/>
+          <mcr name="itb"/>
+        </item>
+        <item id="irtf" label="MOV.IR Trans Forward w/INST">
+          <goal label="Transer Loading Position?">
+            <equal form="msg" site="dsi" var="mtr">FW</equal>
+            <equal form="msg" site="dsi" var="rot">LOAD</equal>
+          </goal>
+          <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">12</not>
+            <not form="data" site="crt" var="cps">11</not>
+          </check>
+          <mcr name="itf"/>
+          <mcr name="irl"/>
         </item>
       </unit>
     </group>
@@ -753,7 +753,6 @@
           <equal form="msg" site="crt" var="jlv">H</equal>
         </check>
         <mcr name="fijd4"/>
-
         <exec site="dsi" name="fhook"/>
         <wait label="Hook start?" retry="5">
           <equal form="msg" site="$1" var="exe">ON</equal>

@@ -119,7 +119,7 @@
             <equal form="msg" site="dsi" var="fis">ON</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="data" site="crt" var="cps">12</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="fijd4"/>
@@ -132,7 +132,7 @@
             <equal form="msg" site="crt" var="jlv">H</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="data" site="crt" var="cps">12</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="fijd0"/>
@@ -146,7 +146,7 @@
             <equal form="msg" site="dsi" var="mis">ON</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="data" site="crt" var="cps">11</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="mijd4"/>
@@ -159,7 +159,7 @@
             <equal form="msg" site="crt" var="jlv">H</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="data" site="crt" var="cps">11</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="mijd0"/>
@@ -173,7 +173,7 @@
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="data" site="crt" var="cps">1</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="csjd4"/>
@@ -186,7 +186,7 @@
             <equal form="msg" site="crt" var="jlv">H</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="data" site="crt" var="cps">1</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="csjd0"/>

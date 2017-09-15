@@ -57,8 +57,199 @@
         </wait>
       </item>
     </group>
+    <!--Compound Flange Commands Jack & Hook-->
+    <group id="g_fr" caption="Compound Flange Commands" rank="2">
+      <unit id="unit_fof" title="fof[c|r]" label="FIX.OPT Flange Clamp/Release">
+        <item id="fofc" label="Clamp at FIX.OPT">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dso" var="fis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="fojd4"/>
+          <mcr name="forh"/>
+          <mcr name="foju0"/>
+        </item>
+        <item id="fofr" label="Release at FIX.OPT">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dso" var="fis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="fojd0"/>
+          <mcr name="foru"/>
+          <mcr name="foju4"/>
+        </item>
+      </unit>
+      <unit id="unit_mof" title="mof[c|r]" label="MOV.OPT Flange Clamp/Release">
+        <item id="mofc" label="Clamp at MOV.OPT">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dso" var="mis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="mojd4"/>
+          <mcr name="morh"/>
+          <mcr name="moju0"/>
+        </item>
+        <item id="mofr" label="Release at MOV.OPT">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dso" var="mis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="mojd0"/>
+          <mcr name="moru"/>
+          <mcr name="moju4"/>
+        </item>
+      </unit>
+      <unit id="unit_fif" title="fif[c|r]" label="FIX.IR Flange Clamp/Release">
+        <item id="fifc" label="Clamp at FIX.IR">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dsi" var="fis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="fijd4"/>
+          <mcr name="firh"/>
+          <mcr name="fiju0"/>
+        </item>
+        <item id="fifr" label="Release at FIX.IR">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dsi" var="fis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="fijd0"/>
+          <mcr name="firu"/>
+          <mcr name="fiju4"/>
+        </item>
+      </unit>
+      <unit id="unit_mif" title="mif[c|r]" label="MOV.IR Flange Clamp/Release">
+        <item id="mifc" label="Clamp at MOV.IR">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dsi" var="mis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="mijd4"/>
+          <mcr name="mirh"/>
+          <mcr name="miju0"/>
+        </item>
+        <item id="mifr" label="Release at MOV.IR">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dsi" var="mis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="mijd0"/>
+          <mcr name="miru"/>
+          <mcr name="miju4"/>
+        </item>
+      </unit>
+      <unit id="unit_csf" title="csf[c|r]" label="CS.IR Flange Clamp/Release">
+        <item id="csfc" label="Clamp at CS.IR">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dts" var="cis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="csjd4"/>
+          <mcr name="csrh"/>
+          <mcr name="csju0"/>
+        </item>
+        <item id="csfr" label="Release at CS.IR">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dts" var="cis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="csjd0"/>
+          <mcr name="csru"/>
+          <mcr name="csju4"/>
+        </item>
+      </unit>
+    </group>
+    <!--Compound Movable Flange Commands-->
+    <group id="g_tr" caption="Compound Transer Commands" rank="2">
+      <unit id="unit_ort" title="ort[b|f]" label="MOV.OPT Rot/Transer Back/Forth">
+        <item id="ortb" label="MOV.OPT Trans Backward w/INST">
+          <goal label="Transer Stored Position?">
+            <equal form="msg" site="dso" var="mtr">BK</equal>
+          </goal>
+          <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">10</not>
+            <not form="data" site="crt" var="cps">9</not>
+          </check>
+          <mcr name="ors"/>
+          <mcr name="otb"/>
+        </item>
+        <item id="ortf" label="MOV.OPT Trans Forward w/INST">
+          <goal label="Transer Loading Position?">
+            <equal form="msg" site="dso" var="mtr">FW</equal>
+            <equal form="msg" site="dso" var="rot">LOAD</equal>
+          </goal>
+          <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">10</not>
+            <not form="data" site="crt" var="cps">9</not>
+          </check>
+          <mcr name="otf"/>
+          <mcr name="orl"/>
+        </item>
+      </unit>
+      <unit id="unit_irt" title="irt[b|f]" label="MOV.IR Rot/Transer Back/Forth">
+        <item id="irtb" label="MOV.IR Trans Backward w/INST">
+          <goal label="Transer Stored Position?">
+            <equal form="msg" site="dsi" var="mtr">BK</equal>
+          </goal>
+          <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">12</not>
+            <not form="data" site="crt" var="cps">11</not>
+          </check>
+          <mcr name="irs"/>
+          <mcr name="itb"/>
+        </item>
+        <item id="irtf" label="MOV.IR Trans Forward w/INST">
+          <goal label="Transer Loading Position?">
+            <equal form="msg" site="dsi" var="mtr">FW</equal>
+            <equal form="msg" site="dsi" var="rot">LOAD</equal>
+          </goal>
+          <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">12</not>
+            <not form="data" site="crt" var="cps">11</not>
+          </check>
+          <mcr name="itf"/>
+          <mcr name="irl"/>
+        </item>
+      </unit>
+    </group>
+    <!--Atomic Flange Jack Bolt Commands-->
     <group id="g_jak" caption="Atomic Jack Bolt Commands" column="2" rank="3">
-      <!--FIX.OPT Flange Jack Command-->
       <unit id="unit_foj" title="foj[u|d][0|4]" label="FIX.OPT Jack">
         <item id="foju0" label="InR0 Jkup at FIX.OPT">
           <goal label="Jack DW?">
@@ -122,7 +313,6 @@
           </wait>
         </item>
       </unit>
-      <!--MOV.OPT Flange Jack Command-->
       <unit id="unit_moj" title="moj[u|d][0|4]" label="MOV.OPT Jack">
         <item id="moju0" label="InR0 Jkup at MOV.OPT">
           <goal label="Jack DW?">
@@ -186,7 +376,6 @@
           </wait>
         </item>
       </unit>
-      <!--FIX.IR Flange Jack Command-->
       <unit id="unit_fij" title="fij[u|d][0|4]" label="FIX.IR Jack">
         <item id="fiju0" label="InR0 Jkup at FIX.IR">
           <goal label="Jack DW?">
@@ -250,7 +439,6 @@
           </wait>
         </item>
       </unit>
-      <!--MOV.IR Flange Jack Command-->
       <unit id="unit_mij" title="mij[u|d][0|4]" label="MOV.IR Jack">
         <item id="miju0" label="InR0 Jkup at MOV.IR">
           <goal label="Jack DW?">
@@ -314,7 +502,6 @@
           </wait>
         </item>
       </unit>
-      <!--CAS Flange Jack Command-->
       <unit id="unit_csj" title="csj[u|d][0|4]" label="CAS Jack">
         <item id="csju0" label="InR0 Jkup at CAS">
           <goal label="Jack DW?">
@@ -379,6 +566,7 @@
         </item>
       </unit>
     </group>
+    <!--Atomic Flange Rotation Commands-->
     <group id="g_hook" caption="Atomic Hook Commands" rank="3">
       <unit id="unit_for" title="for[h|u]" label="FIX.OPT Hook/Unhook">
         <item id="foh" label="Hook at FIX.OPT">
@@ -541,8 +729,8 @@
         </item>
       </unit>
     </group>
+    <!--Atomic Movable Flange Commands-->
     <group id="g_mov" caption="Atomic Movable Flange Commands" rank="3">
-      <!--MOV.OPT Transer and Rotate-->
       <unit id="unit_or" title="or[l|s]" label="MOV.OPT Rotation">
         <item id="orl" label="MOV.OPT Rotation (Load)">
           <goal label="Rotation Stored?">
@@ -615,7 +803,6 @@
           </wait>
         </item>
       </unit>
-      <!--MOV.IR Transer and Rotate-->
       <unit id="unit_ir" title="ir[l|s]" label="MOV.IR Rotation">
         <item id="irl" label="MOV.IR Rotation (Load)">
           <goal label="Rotation Stored?">
@@ -688,82 +875,6 @@
           </wait>
         </item>
       </unit>
-    </group>
-    <!--Transer and Rotate-->
-    <group id="g_tr" caption="Transer Commands" rank="2">
-      <unit id="unit_ort" title="ort[b|f]" label="MOV.OPT Rot/Transer Back/Forth">
-        <item id="ortb" label="MOV.OPT Trans Backward w/INST">
-          <goal label="Transer Stored Position?">
-            <equal form="msg" site="dso" var="mtr">BK</equal>
-          </goal>
-          <check label="CART CLEAR?">
-            <not form="data" site="crt" var="cps">10</not>
-            <not form="data" site="crt" var="cps">9</not>
-          </check>
-          <mcr name="ors"/>
-          <mcr name="otb"/>
-        </item>
-        <item id="ortf" label="MOV.OPT Trans Forward w/INST">
-          <goal label="Transer Loading Position?">
-            <equal form="msg" site="dso" var="mtr">FW</equal>
-            <equal form="msg" site="dso" var="rot">LOAD</equal>
-          </goal>
-          <check label="CART CLEAR?">
-            <not form="data" site="crt" var="cps">10</not>
-            <not form="data" site="crt" var="cps">9</not>
-          </check>
-          <mcr name="otf"/>
-          <mcr name="orl"/>
-        </item>
-      </unit>
-      <unit id="unit_irt" title="irt[b|f]" label="MOV.IR Rot/Transer Back/Forth">
-        <item id="irtb" label="MOV.IR Trans Backward w/INST">
-          <goal label="Transer Stored Position?">
-            <equal form="msg" site="dsi" var="mtr">BK</equal>
-          </goal>
-          <check label="CART CLEAR?">
-            <not form="data" site="crt" var="cps">12</not>
-            <not form="data" site="crt" var="cps">11</not>
-          </check>
-          <mcr name="irs"/>
-          <mcr name="itb"/>
-        </item>
-        <item id="irtf" label="MOV.IR Trans Forward w/INST">
-          <goal label="Transer Loading Position?">
-            <equal form="msg" site="dsi" var="mtr">FW</equal>
-            <equal form="msg" site="dsi" var="rot">LOAD</equal>
-          </goal>
-          <check label="CART CLEAR?">
-            <not form="data" site="crt" var="cps">12</not>
-            <not form="data" site="crt" var="cps">11</not>
-          </check>
-          <mcr name="itf"/>
-          <mcr name="irl"/>
-        </item>
-      </unit>
-    </group>
-    <group id="g_fr" caption="Flange Commands">
-      <!--FIX Jack & Rotate-->
-      <item id="jupd" label="HookUp at FIX.IR">
-        <goal label="Instrument ON?">
-          <equal form="msg" site="dsi" var="fis">ON</equal>
-        </goal>
-        <check label="CART ON TAG?">
-          <equal form="data" site="crt" var="cps">12</equal>
-          <equal form="msg" site="crt" var="jlv">H</equal>
-        </check>
-        <mcr name="fijd4"/>
-        <exec site="dsi" name="fhook"/>
-        <wait label="Hook start?" retry="5">
-          <equal form="msg" site="$1" var="exe">ON</equal>
-        </wait>
-        <wait label="Hooking" retry="40">
-          <equal form="msg" site="$1" var="exe">OFF</equal>
-        </wait>
-        <mcr name="fju0">
-          <argv>$1</argv>
-        </mcr>
-      </item>
     </group>
     <group id="g_run" caption="Transport Commands">
       <!--Run & Transer-->

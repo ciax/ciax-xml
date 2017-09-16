@@ -34,7 +34,7 @@
       <xsd:selector xpath=".//fdbr:item"/>
       <xsd:field xpath="@id"/>
     </xsd:key>
-    <xsd:keyref name="command_id" refer="fdb:response_id">
+    <xsd:keyref name="command_name" refer="fdb:response_id">
       <xsd:selector xpath=".//fdbc:item"/>
       <xsd:field xpath="@response"/>
     </xsd:keyref>

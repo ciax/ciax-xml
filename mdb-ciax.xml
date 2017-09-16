@@ -17,7 +17,7 @@
         </item>
       </unit>
       <unit id="unit_tr" title="tr[1-12]-[1-12]" label="Transport">
-        <item id="dh3-7" label="Run Tag 3 to 7 w/Inst">
+        <item id="tr3-7" label="Run Tag 3 to 7 w/Inst">
           <goal label="Cart is Destination?">
             <equal form="data" site="crt" var="cps">7</equal>
           </goal>

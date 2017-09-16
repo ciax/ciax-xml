@@ -9,6 +9,14 @@
         <xsd:element ref="adbc:group"/>
       </xsd:choice>
     </xsd:complexType>
+    <xsd:unique name="group_name">
+      <xsd:selector xpath=".//adbc:group"/>
+      <xsd:field xpath="@id"/>
+    </xsd:unique>
+    <xsd:unique name="unit_name">
+      <xsd:selector xpath=".//adbc:unit"/>
+      <xsd:field xpath="@id"/>
+    </xsd:unique>
   </xsd:element>
   <xsd:element name="group">
     <xsd:complexType>

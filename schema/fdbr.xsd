@@ -74,6 +74,10 @@
         <xsd:element ref="fdbr:item" minOccurs="1" maxOccurs="unbounded"/>
       </xsd:sequence>
     </xsd:complexType>
+    <xsd:unique name="item_name">
+      <xsd:selector xpath=".//fdbr:item"/>
+      <xsd:field xpath="@id"/>
+    </xsd:unique>
   </xsd:element>
   <xsd:element name="item">
     <xsd:complexType>

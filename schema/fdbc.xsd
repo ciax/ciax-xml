@@ -10,6 +10,14 @@
         <xsd:element ref="fdbc:group" minOccurs="1" maxOccurs="unbounded"/>
       </xsd:sequence>
     </xsd:complexType>
+    <xsd:unique name="group_name">
+      <xsd:selector xpath=".//fdbc:group"/>
+      <xsd:field xpath="@id"/>
+    </xsd:unique>
+    <xsd:unique name="command_name">
+      <xsd:selector xpath=".//fdbc:item"/>
+      <xsd:field xpath="@id"/>
+    </xsd:unique>
   </xsd:element>
   <xsd:element name="group">
     <xsd:complexType>

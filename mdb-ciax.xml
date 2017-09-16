@@ -173,7 +173,7 @@
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="fojd4"/>
-          <mcr name="forh"/>
+          <mcr name="fofc"/>
           <mcr name="foju0"/>
         </item>
         <item id="fofr" label="Release at FIX.OPT">
@@ -186,7 +186,7 @@
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="fojd0"/>
-          <mcr name="foru"/>
+          <mcr name="fofr"/>
           <mcr name="foju4"/>
         </item>
       </unit>
@@ -1153,9 +1153,7 @@
         <wait retry="5" label="Run start?">
           <equal form="msg" var="run" site="crt">ON</equal>
         </wait>
-        <mcr async="true" name="trsi">
-          <argv>dsi</argv>
-        </mcr>
+        <mcr async="true" name="irts"/>
         <wait retry="120" label="Run end?">
           <equal form="msg" label="Running" site="crt" var="run">OFF</equal>
         </wait>

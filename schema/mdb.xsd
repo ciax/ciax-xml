@@ -21,6 +21,14 @@
       <xsd:attribute name="host" type="xsd:token"/>
       <xsd:attribute name="port" type="xsd:int"/>
     </xsd:complexType>
+    <xsd:unique name="group_name">
+      <xsd:selector xpath=".//mdb:group"/>
+      <xsd:field xpath="@id"/>
+    </xsd:unique>
+    <xsd:unique name="unit_name">
+      <xsd:selector xpath=".//mdb:unit"/>
+      <xsd:field xpath="@id"/>
+    </xsd:unique>
     <xsd:key name="macro_id">
       <xsd:selector xpath=".//mdb:item"/>
       <xsd:field xpath="@id"/>

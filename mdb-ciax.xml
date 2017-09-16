@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro" port="55554">
+    <!--Compound Run Commands-->
+    <group id="g_crun" caption="Compound Run Commands" rank="2">
+      <unit id="unit_dh" title="dh[1-12]-[1-12]" label="Deadhead run">
+        <item id="dh3-7" label="Run Tag 3 to 7 w/o Inst">
+          <goal label="Cart is Destination?">
+            <equal form="data" site="crt" var="cps">7</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">3</equal>
+          </check>
+          <mcr name="run">
+            <argv>7</argv>
+          </mcr>
+        </item>
+      </unit>
+      <unit id="unit_tr" title="tr[1-12]-[1-12]" label="Transport">
+        <item id="dh3-7" label="Run Tag 3 to 7 w/Inst">
+          <goal label="Cart is Destination?">
+            <equal form="data" site="crt" var="cps">7</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">3</equal>
+          </check>
+          <mcr name="run">
+            <argv>7</argv>
+          </mcr>
+        </item>
+      </unit>
+    </group>
     <!--Compound Attach Commands-->
-    <group id="g_at" caption="Compound Attach Commands" rank="2">
+    <group id="g_cat" caption="Compound Attach Commands" rank="2">
       <unit id="unit_fo" title="fo[a|d]" label="FIX.OPT Attach/Detach">
         <item id="foa" label="Attach at FIX.OPT">
           <goal label="Instrument ON?">
@@ -162,7 +191,7 @@
       </unit>
     </group>
     <!--Compound Flange Commands Jack & Hook-->
-    <group id="g_fl" caption="Compound Flange Commands" rank="2">
+    <group id="g_cfl" caption="Compound Flange Commands" rank="2">
       <unit id="unit_fof" title="fof[c|r]" label="FIX.OPT Flange Clamp/Release">
         <item id="fofc" label="Clamp at FIX.OPT">
           <goal label="Instrument ON?">
@@ -300,7 +329,7 @@
       </unit>
     </group>
     <!--Compound Movable Flange Commands-->
-    <group id="g_tr" caption="Compound Movable Flange Commands" rank="2">
+    <group id="g_cmf" caption="Compound Movable Flange Commands" rank="2">
       <unit id="unit_ort" title="ort[l|s]" label="MOV.OPT Loading/Storing">
         <item id="ortl" label="MOV.OPT Loading INST">
           <goal label="Transer Loading Position?">

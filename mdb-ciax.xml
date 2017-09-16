@@ -1,64 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro" port="55554">
-    <group id="cx_main" caption="Macro Commands" column="2">
-      <unit id="unit_run" label="Cart Run">
-        <item id="runf" label="Run Forward to Tag">
-          <goal label="On Tag?">
-            <not form="data" site="crt" var="cps">0</not>
+    <!--Compound Attach Commands-->
+    <group id="g_at" caption="Compound Attach Commands" rank="2">
+      <unit id="unit_fo" title="fo[a|d]" label="FIX.OPT Attach/Detach">
+        <item id="foa" label="Attach at FIX.OPT">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dso" var="fis">ON</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
-          <mesg label="Clear the way?"/>
-          <wait retry="5" label="Ready?">
-            <equal form="msg" var="rdy" site="crt">ON</equal>
-          </wait>
-          <exec site="crt" name="runf"/>
-          <wait retry="5" label="Run start?">
-            <equal form="msg" var="run" site="crt">ON</equal>
-          </wait>
-          <wait retry="40" label="Run end?">
-            <equal form="msg" var="run" site="crt">OFF</equal>
-          </wait>
-        </item>
-        <item id="run" label="Run to Tag [1-12] w/o INST">
-          <par_num label="1-12">1:12</par_num>
-          <goal label="On Destination Tag?">
-            <equal form="data" var="cps" site="crt">$1</equal>
-          </goal>
-          <check label="Ready?">
-            <equal form="msg" var="rdy" site="crt">ON</equal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">10</equal>
           </check>
-          <exec site="crt" name="run">
-            <argv>$1</argv>
-          </exec>
-          <wait retry="5" label="Run start?">
-            <equal form="msg" var="run" site="crt">ON</equal>
-          </wait>
-          <wait retry="120" label="Run end?">
-            <equal form="msg" var="run" site="crt">OFF</equal>
-          </wait>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="fofc"/>
+          <mcr name="lft0"/>
+        </item>
+        <item id="fod" label="Detach at FIX.OPT">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dso" var="fis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="fofr"/>
+          <mcr name="lft0"/>
         </item>
       </unit>
-      <item id="lift" label="Jack UP Level [1-4]">
-        <par_num>1:4</par_num>
-        <goal label="On Destination Level?">
-          <equal form="data" var="jlv" site="crt">$1</equal>
-        </goal>
-        <check label="Ready?">
-          <equal form="msg" var="rdy" site="crt">ON</equal>
-        </check>
-        <exec site="crt" name="lift">
-          <argv>$1</argv>
-        </exec>
-        <wait label="Jack start?" retry="5">
-          <equal form="msg" var="jak" site="crt">ON</equal>
-        </wait>
-        <wait label="Jacking" retry="40">
-          <equal form="msg" var="jak" site="crt">OFF</equal>
-        </wait>
-      </item>
+      <unit id="unit_mo" title="mo[a|d]" label="MOV.OPT Flange Attach/Detach">
+        <item id="moa" label="Attach at MOV.OPT">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dso" var="mis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="mofc"/>
+          <mcr name="lft0"/>
+        </item>
+        <item id="mod" label="Detach at MOV.OPT">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dso" var="mis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="mofr"/>
+          <mcr name="lft0"/>
+        </item>
+      </unit>
+      <unit id="unit_fi" title="fi[a|d]" label="FIX.IR Flange Attach/Detach">
+        <item id="fia" label="Attach at FIX.IR">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dsi" var="fis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">12</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="fifc"/>
+          <mcr name="lft0"/>
+        </item>
+        <item id="fid" label="Detach at FIX.IR">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dsi" var="fis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">12</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="fifr"/>
+          <mcr name="lft0"/>
+        </item>
+      </unit>
+      <unit id="unit_mi" title="mi[a|d]" label="MOV.IR Flange Attach/Detach">
+        <item id="mia" label="Attach at MOV.IR">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dsi" var="mis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">11</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="mifc"/>
+          <mcr name="lft0"/>
+        </item>
+        <item id="mid" label="Detach at MOV.IR">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dsi" var="mis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">11</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="mifr"/>
+          <mcr name="lft0"/>
+        </item>
+      </unit>
+      <unit id="unit_cs" title="cs[a|d]" label="CAS Flange Attach/Detach">
+        <item id="csa" label="Attach at CAS">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dts" var="cis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="csau"/>
+          <mcr name="lft3"/>
+          <mcr name="csfc"/>
+          <mcr name="lft0"/>
+        </item>
+        <item id="csd" label="Detach at CAS">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dts" var="cis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="csah"/>
+          <mcr name="lft3"/>
+          <mcr name="csfr"/>
+          <mcr name="lft0"/>
+        </item>
+      </unit>
     </group>
     <!--Compound Flange Commands Jack & Hook-->
-    <group id="g_fr" caption="Compound Flange Commands" rank="2">
+    <group id="g_fl" caption="Compound Flange Commands" rank="2">
       <unit id="unit_fof" title="fof[c|r]" label="FIX.OPT Flange Clamp/Release">
         <item id="fofc" label="Clamp at FIX.OPT">
           <goal label="Instrument ON?">
@@ -167,8 +271,8 @@
           <mcr name="miju4"/>
         </item>
       </unit>
-      <unit id="unit_csf" title="csf[c|r]" label="CS.IR Flange Clamp/Release">
-        <item id="csfc" label="Clamp at CS.IR">
+      <unit id="unit_csf" title="csf[c|r]" label="CAS Flange Clamp/Release">
+        <item id="csfc" label="Clamp at CAS">
           <goal label="Instrument ON?">
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
@@ -180,7 +284,7 @@
           <mcr name="csrh"/>
           <mcr name="csju0"/>
         </item>
-        <item id="csfr" label="Release at CS.IR">
+        <item id="csfr" label="Release at CAS">
           <goal label="Instrument OFF?">
             <equal form="msg" site="dts" var="cis">OFF</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
@@ -567,7 +671,7 @@
       </unit>
     </group>
     <!--Atomic Flange Rotation Commands-->
-    <group id="g_hook" caption="Atomic Hook Commands" rank="3">
+    <group id="g_hook" caption="Atomic Flange Rotation Commands" rank="3">
       <unit id="unit_for" title="for[h|u]" label="FIX.OPT Hook/Unhook">
         <item id="foh" label="Hook at FIX.OPT">
           <goal label="Hooked?">
@@ -728,6 +832,34 @@
           </wait>
         </item>
       </unit>
+      <unit id="unit_csa" title="csa[h|u]" label="CAS Adjust at Hook/Unhook">
+        <item id="csah" label="Adjust at CAS.Hook">
+          <check label="Hooked and EJB Up?">
+            <equal form="msg" site="dts" var="iang">HOOK</equal>
+            <equal form="msg" site="dts" var="bl01">UP</equal>
+          </check>
+          <exec site="dts" name="rhook"/>
+          <wait label="Hook start?" retry="5">
+            <equal form="msg" site="dts" var="exe">ON</equal>
+          </wait>
+          <wait label="Hooking" retry="40">
+            <equal form="msg" site="dts" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="csau" label="Adjust at at CAS.Unhook">
+          <check label="Unhooked and EJB Up?">
+            <equal form="msg" site="dts" var="iang">UNHK</equal>
+            <equal form="msg" site="dts" var="bl01">UP</equal>
+          </check>
+          <exec site="dts" name="runhk"/>
+          <wait label="UnHook start?" retry="5">
+            <equal form="msg" site="dts" var="exe">ON</equal>
+          </wait>
+          <wait label="UnHooking" retry="40">
+            <equal form="msg" site="dts" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
     </group>
     <!--Atomic Movable Flange Commands-->
     <group id="g_mov" caption="Atomic Movable Flange Commands" rank="3">
@@ -872,6 +1004,119 @@
           </wait>
           <wait label="Moving" retry="60">
             <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+    </group>
+    <!--Atomic Cart Commands-->
+    <group id="g_cart" caption="Atomic Cart Commands" rank="3">
+      <unit id="unit_run" label="Cart Run Commands">
+        <item id="runf" label="Run Forward to Tag">
+          <goal label="On Tag?">
+            <not form="data" site="crt" var="cps">0</not>
+          </goal>
+          <mesg label="Clear the way?"/>
+          <wait retry="5" label="Ready?">
+            <equal form="msg" var="rdy" site="crt">ON</equal>
+          </wait>
+          <exec site="crt" name="runf"/>
+          <wait retry="5" label="Run start?">
+            <equal form="msg" var="run" site="crt">ON</equal>
+          </wait>
+          <wait retry="40" label="Run end?">
+            <equal form="msg" var="run" site="crt">OFF</equal>
+          </wait>
+        </item>
+        <item id="run" label="Run to Tag [1-12]">
+          <par_num label="1-12">1:12</par_num>
+          <goal label="On Destination Tag?">
+            <equal form="data" var="cps" site="crt">$1</equal>
+          </goal>
+          <check label="Ready?">
+            <equal form="msg" var="rdy" site="crt">ON</equal>
+          </check>
+          <exec site="crt" name="run">
+            <argv>$1</argv>
+          </exec>
+          <wait retry="5" label="Run start?">
+            <equal form="msg" var="run" site="crt">ON</equal>
+          </wait>
+          <wait retry="120" label="Run end?">
+            <equal form="msg" var="run" site="crt">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_lft" title="lft[0-3]" label="Cart Lift Commands">
+        <item id="lft0" label="Lift Down">
+          <goal label="Already Down?">
+            <equal form="msg" var="jlv" site="crt">D</equal>
+          </goal>
+          <check label="Ready?">
+            <equal form="msg" var="rdy" site="crt">ON</equal>
+          </check>
+          <exec site="crt" name="lftdw"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" var="jak" site="crt">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="40">
+            <equal form="msg" var="jak" site="crt">OFF</equal>
+          </wait>
+        </item>
+        <item id="lft1" label="Lift Up Level1">
+          <goal label="Above Level D?">
+            <not form="msg" var="jlv" site="crt">D</not>
+          </goal>
+          <check label="Ready?">
+            <equal form="msg" var="rdy" site="crt">ON</equal>
+            <equal form="msg" var="jlv" site="crt">D</equal>
+          </check>
+          <exec site="crt" name="lftup">
+            <argv>1</argv>
+          </exec>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" var="jak" site="crt">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="40">
+            <equal form="msg" var="jak" site="crt">OFF</equal>
+          </wait>
+        </item>
+        <item id="lft2" label="Lift Up Level1">
+          <goal label="Above Level L?">
+            <not form="msg" var="jlv" site="crt">D</not>
+            <not form="msg" var="jlv" site="crt">L</not>
+          </goal>
+          <check label="Ready?">
+            <equal form="msg" var="rdy" site="crt">ON</equal>
+            <equal form="msg" var="jlv" site="crt">L</equal>
+          </check>
+          <exec site="crt" name="lftup">
+            <argv>2</argv>
+          </exec>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" var="jak" site="crt">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="40">
+            <equal form="msg" var="jak" site="crt">OFF</equal>
+          </wait>
+        </item>
+        <item id="lft3" label="Lift Up Level1">
+          <goal label="Above Level M?">
+            <not form="msg" var="jlv" site="crt">D</not>
+            <not form="msg" var="jlv" site="crt">L</not>
+            <not form="msg" var="jlv" site="crt">M</not>
+          </goal>
+          <check label="Ready?">
+            <equal form="msg" var="rdy" site="crt">ON</equal>
+            <equal form="msg" var="jlv" site="crt">M</equal>
+          </check>
+          <exec site="crt" name="lftup">
+            <argv>3</argv>
+          </exec>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" var="jak" site="crt">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="40">
+            <equal form="msg" var="jak" site="crt">OFF</equal>
           </wait>
         </item>
       </unit>

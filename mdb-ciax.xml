@@ -34,7 +34,7 @@
           <mcr name="lft0"/>
         </item>
       </unit>
-      <unit id="unit_mo" title="mo[a|d]" label="MOV.OPT Flange Attach/Detach">
+      <unit id="unit_mo" title="mo[a|d]" label="MOV.OPT Attach/Detach">
         <item id="moa" label="Attach at MOV.OPT">
           <goal label="Instrument ON?">
             <equal form="msg" site="dso" var="mis">ON</equal>
@@ -65,7 +65,7 @@
           <mcr name="lft0"/>
         </item>
       </unit>
-      <unit id="unit_fi" title="fi[a|d]" label="FIX.IR Flange Attach/Detach">
+      <unit id="unit_fi" title="fi[a|d]" label="FIX.IR Attach/Detach">
         <item id="fia" label="Attach at FIX.IR">
           <goal label="Instrument ON?">
             <equal form="msg" site="dsi" var="fis">ON</equal>
@@ -96,7 +96,7 @@
           <mcr name="lft0"/>
         </item>
       </unit>
-      <unit id="unit_mi" title="mi[a|d]" label="MOV.IR Flange Attach/Detach">
+      <unit id="unit_mi" title="mi[a|d]" label="MOV.IR Attach/Detach">
         <item id="mia" label="Attach at MOV.IR">
           <goal label="Instrument ON?">
             <equal form="msg" site="dsi" var="mis">ON</equal>
@@ -127,7 +127,7 @@
           <mcr name="lft0"/>
         </item>
       </unit>
-      <unit id="unit_cs" title="cs[a|d]" label="CAS Flange Attach/Detach">
+      <unit id="unit_cs" title="cs[a|d]" label="CAS Attach/Detach">
         <item id="csa" label="Attach at CAS">
           <goal label="Instrument ON?">
             <equal form="msg" site="dts" var="cis">ON</equal>
@@ -300,20 +300,9 @@
       </unit>
     </group>
     <!--Compound Movable Flange Commands-->
-    <group id="g_tr" caption="Compound Transer Commands" rank="2">
-      <unit id="unit_ort" title="ort[b|f]" label="MOV.OPT Rot/Transer Back/Forth">
-        <item id="ortb" label="MOV.OPT Trans Backward w/INST">
-          <goal label="Transer Stored Position?">
-            <equal form="msg" site="dso" var="mtr">BK</equal>
-          </goal>
-          <check label="CART CLEAR?">
-            <not form="data" site="crt" var="cps">10</not>
-            <not form="data" site="crt" var="cps">9</not>
-          </check>
-          <mcr name="ors"/>
-          <mcr name="otb"/>
-        </item>
-        <item id="ortf" label="MOV.OPT Trans Forward w/INST">
+    <group id="g_tr" caption="Compound Movable Flange Commands" rank="2">
+      <unit id="unit_ort" title="ort[l|s]" label="MOV.OPT Loading/Storing">
+        <item id="ortl" label="MOV.OPT Loading INST">
           <goal label="Transer Loading Position?">
             <equal form="msg" site="dso" var="mtr">FW</equal>
             <equal form="msg" site="dso" var="rot">LOAD</equal>
@@ -325,20 +314,20 @@
           <mcr name="otf"/>
           <mcr name="orl"/>
         </item>
-      </unit>
-      <unit id="unit_irt" title="irt[b|f]" label="MOV.IR Rot/Transer Back/Forth">
-        <item id="irtb" label="MOV.IR Trans Backward w/INST">
+        <item id="orts" label="MOV.OPT Storing INST">
           <goal label="Transer Stored Position?">
-            <equal form="msg" site="dsi" var="mtr">BK</equal>
+            <equal form="msg" site="dso" var="mtr">BK</equal>
           </goal>
           <check label="CART CLEAR?">
-            <not form="data" site="crt" var="cps">12</not>
-            <not form="data" site="crt" var="cps">11</not>
+            <not form="data" site="crt" var="cps">10</not>
+            <not form="data" site="crt" var="cps">9</not>
           </check>
-          <mcr name="irs"/>
-          <mcr name="itb"/>
+          <mcr name="ors"/>
+          <mcr name="otb"/>
         </item>
-        <item id="irtf" label="MOV.IR Trans Forward w/INST">
+      </unit>
+      <unit id="unit_irt" title="irt[l|s]" label="MOV.IR Loading/Storing">
+        <item id="irtl" label="MOV.IR Loading INST">
           <goal label="Transer Loading Position?">
             <equal form="msg" site="dsi" var="mtr">FW</equal>
             <equal form="msg" site="dsi" var="rot">LOAD</equal>
@@ -349,6 +338,17 @@
           </check>
           <mcr name="itf"/>
           <mcr name="irl"/>
+        </item>
+        <item id="irts" label="MOV.IR Storing INST">
+          <goal label="Transer Stored Position?">
+            <equal form="msg" site="dsi" var="mtr">BK</equal>
+          </goal>
+          <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">12</not>
+            <not form="data" site="crt" var="cps">11</not>
+          </check>
+          <mcr name="irs"/>
+          <mcr name="itb"/>
         </item>
       </unit>
     </group>

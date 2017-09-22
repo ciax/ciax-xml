@@ -128,10 +128,11 @@ function update_graph() {
   });
 }
 
-function static_graph() {
+function static_graph(zoom) {
   $.getJSON('sqlog.php', par, function(obj) {
     obj[0].data.forEach(_conv_ascii);
     plot = $.plot($('#placeholder'), obj, options);
+    if(zoom) { plot.zoom({ amount: zoom }); }
   });
 }
 
@@ -149,7 +150,7 @@ function past_graph() {
   clearInterval(timer);
   options.zoom = { interactive: true };
   options.pan = { interactive: true };
-  static_graph();
+  static_graph(4);
 }
 function init_graph() {
   init_tooltip();

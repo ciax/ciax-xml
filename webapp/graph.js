@@ -37,7 +37,6 @@ function init_move() {
 function _move_time(event, pos, item) {
   if (item) {
     par.time = item.datapoint[0].toFixed(2);
-    current_date(par.time);
     past_graph();
   }
 }
@@ -129,6 +128,7 @@ function update_graph() {
 }
 
 function static_graph(zoom) {
+  current_date(par.time || Date.now());
   $.getJSON('sqlog.php', par, function(obj) {
     obj[0].data.forEach(_conv_ascii);
     plot = $.plot($('#placeholder'), obj, options);
@@ -138,7 +138,6 @@ function static_graph(zoom) {
 
 
 function current_graph() {
-  current_date(Date.now());
   timer = setInterval(update_graph, 1000);
   delete par.time;
   options.zoom = { interactive: false };
@@ -155,7 +154,11 @@ function past_graph() {
 function init_graph() {
   init_tooltip();
   init_move();
-  current_graph();
+  if(par.time){
+    past_graph();
+  }else{
+    current_graph();
+  }
 }
 
 // var par shold be set in html [site, vid, (time)]

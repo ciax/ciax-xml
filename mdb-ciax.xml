@@ -3,25 +3,51 @@
   <macro id="ciax" version="1" label="Cart Macro" port="55554">
     <!--Compound Run Commands-->
     <group id="g_crun" caption="Compound Run Commands" rank="2">
-      <unit id="unit_dh" title="dh[1-12]-[1-12]" label="Deadhead run">
-        <item id="dh3-7" label="Run Tag 3 to 7 w/o Inst">
-          <goal label="Cart is Destination?">
-            <equal form="data" site="crt" var="cps">7</equal>
+      <unit id="unit_dh" title="dh[3|7|8]-[1|10-12]" label="Ingress RP to Flange Deadhead">
+        <item id="dh7-9" label="Run Tag 7 to 9 w/o Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">9</equal>
           </goal>
-          <check label="CART ON TAG?">
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="ion">OFF</equal>
             <equal form="data" site="crt" var="cps">3</equal>
           </check>
           <mcr name="run">
             <argv>7</argv>
           </mcr>
         </item>
+        <item id="dh7-3" label="Run Tag 7 to 3 w/o Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">3</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="ion">OFF</equal>
+            <equal form="data" site="crt" var="cps">7</equal>
+          </check>
+          <mcr name="run">
+            <argv>3</argv>
+          </mcr>
+        </item>
+        <item id="dh3-8" label="Run Tag 3 to 8 w/o Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">8</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="ion">OFF</equal>
+            <equal form="data" site="crt" var="cps">3</equal>
+          </check>
+          <mcr name="run">
+            <argv>8</argv>
+          </mcr>
+        </item>
       </unit>
-      <unit id="unit_tr" title="tr[1-12]-[1-12]" label="Transport">
+      <unit id="unit_tr" title="tr[1-12]-[1-12]" label="Ingress Transport">
         <item id="tr3-7" label="Run Tag 3 to 7 w/Inst">
           <goal label="Cart is Destination?">
             <equal form="data" site="crt" var="cps">7</equal>
           </goal>
           <check label="CART ON TAG?">
+            <equal form="msg" site="crt" var="ion">ON</equal>
             <equal form="data" site="crt" var="cps">3</equal>
           </check>
           <mcr name="run">
@@ -1150,7 +1176,7 @@
         </item>
       </unit>
     </group>
-    <group id="g_run" caption="Transport Commands">
+    <group id="g_run" caption="Transport Commands" rank="0">
       <!--Run & Transer-->
       <item id="runi" label="Run with interlock to Tag [1-12]">
         <par_num label="1-12">1:12</par_num>

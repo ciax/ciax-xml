@@ -8,7 +8,7 @@ module CIAX
       def list
         list = Hashx.new
         self[:command][:group].each_value do |val|
-          (list[val[:caption]] ||= []).concat val[:members] if val[:rank] == '0'
+          (list[val[:caption]] ||= []).concat val[:members] if val[:rank].to_i <= ENV['RANK'].to_i
         end
         list
       end

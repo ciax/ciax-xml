@@ -1,8 +1,1071 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro" port="55554">
-    <group id="cx_main" caption="Macro Commands" column="2">
-      <unit id="run" label="Cart Run">
+    <!--Compound Run Commands-->
+    <group id="g_crun" caption="Compound Run Commands" rank="2">
+      <unit id="unit_dh" title="dh[3|7|8]-[1|10-12]" label="Ingress RP to Flange Deadhead">
+        <item id="dh7-9" label="Run Tag 7 to 9 w/o Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">9</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="ion">OFF</equal>
+            <equal form="data" site="crt" var="cps">3</equal>
+          </check>
+          <mcr name="run">
+            <argv>7</argv>
+          </mcr>
+        </item>
+        <item id="dh7-3" label="Run Tag 7 to 3 w/o Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">3</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="ion">OFF</equal>
+            <equal form="data" site="crt" var="cps">7</equal>
+          </check>
+          <mcr name="run">
+            <argv>3</argv>
+          </mcr>
+        </item>
+        <item id="dh3-8" label="Run Tag 3 to 8 w/o Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">8</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="ion">OFF</equal>
+            <equal form="data" site="crt" var="cps">3</equal>
+          </check>
+          <mcr name="run">
+            <argv>8</argv>
+          </mcr>
+        </item>
+      </unit>
+      <unit id="unit_tr" title="tr[1-12]-[1-12]" label="Ingress Transport">
+        <item id="tr3-7" label="Run Tag 3 to 7 w/Inst">
+          <goal label="Cart is Destination?">
+            <equal form="data" site="crt" var="cps">7</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="msg" site="crt" var="ion">ON</equal>
+            <equal form="data" site="crt" var="cps">3</equal>
+          </check>
+          <mcr name="run">
+            <argv>7</argv>
+          </mcr>
+        </item>
+      </unit>
+    </group>
+    <!--Compound Attach Commands-->
+    <group id="g_cat" caption="Compound Attach Commands" rank="2">
+      <unit id="unit_fo" title="fo[a|d]" label="FIX.OPT Attach/Detach">
+        <item id="foa" label="Attach at FIX.OPT">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dso" var="fis">ON</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">10</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="fofc"/>
+          <mcr name="lft0"/>
+        </item>
+        <item id="fod" label="Detach at FIX.OPT">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dso" var="fis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="fofr"/>
+          <mcr name="lft0"/>
+        </item>
+      </unit>
+      <unit id="unit_mo" title="mo[a|d]" label="MOV.OPT Attach/Detach">
+        <item id="moa" label="Attach at MOV.OPT">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dso" var="mis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="mofc"/>
+          <mcr name="lft0"/>
+        </item>
+        <item id="mod" label="Detach at MOV.OPT">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dso" var="mis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="mofr"/>
+          <mcr name="lft0"/>
+        </item>
+      </unit>
+      <unit id="unit_fi" title="fi[a|d]" label="FIX.IR Attach/Detach">
+        <item id="fia" label="Attach at FIX.IR">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dsi" var="fis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">12</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="fifc"/>
+          <mcr name="lft0"/>
+        </item>
+        <item id="fid" label="Detach at FIX.IR">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dsi" var="fis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">12</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="fifr"/>
+          <mcr name="lft0"/>
+        </item>
+      </unit>
+      <unit id="unit_mi" title="mi[a|d]" label="MOV.IR Attach/Detach">
+        <item id="mia" label="Attach at MOV.IR">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dsi" var="mis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">11</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="mifc"/>
+          <mcr name="lft0"/>
+        </item>
+        <item id="mid" label="Detach at MOV.IR">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dsi" var="mis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">11</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="lft3"/>
+          <mcr name="mifr"/>
+          <mcr name="lft0"/>
+        </item>
+      </unit>
+      <unit id="unit_cs" title="cs[a|d]" label="CAS Attach/Detach">
+        <item id="csa" label="Attach at CAS">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dts" var="cis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="csau"/>
+          <mcr name="lft3"/>
+          <mcr name="csfc"/>
+          <mcr name="lft0"/>
+        </item>
+        <item id="csd" label="Detach at CAS">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dts" var="cis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="lft1"/>
+          <mcr name="lft2"/>
+          <mcr name="csah"/>
+          <mcr name="lft3"/>
+          <mcr name="csfr"/>
+          <mcr name="lft0"/>
+        </item>
+      </unit>
+    </group>
+    <!--Compound Flange Commands Jack & Hook-->
+    <group id="g_cfl" caption="Compound Flange Commands" rank="2">
+      <unit id="unit_fof" title="fof[c|r]" label="FIX.OPT Flange Clamp/Release">
+        <item id="fofc" label="Clamp at FIX.OPT">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dso" var="fis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="fojd4"/>
+          <mcr name="fofc"/>
+          <mcr name="foju0"/>
+        </item>
+        <item id="fofr" label="Release at FIX.OPT">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dso" var="fis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="fojd0"/>
+          <mcr name="fofr"/>
+          <mcr name="foju4"/>
+        </item>
+      </unit>
+      <unit id="unit_mof" title="mof[c|r]" label="MOV.OPT Flange Clamp/Release">
+        <item id="mofc" label="Clamp at MOV.OPT">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dso" var="mis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="mojd4"/>
+          <mcr name="morh"/>
+          <mcr name="moju0"/>
+        </item>
+        <item id="mofr" label="Release at MOV.OPT">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dso" var="mis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="mojd0"/>
+          <mcr name="moru"/>
+          <mcr name="moju4"/>
+        </item>
+      </unit>
+      <unit id="unit_fif" title="fif[c|r]" label="FIX.IR Flange Clamp/Release">
+        <item id="fifc" label="Clamp at FIX.IR">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dsi" var="fis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">12</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="fijd4"/>
+          <mcr name="firh"/>
+          <mcr name="fiju0"/>
+        </item>
+        <item id="fifr" label="Release at FIX.IR">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dsi" var="fis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">12</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="fijd0"/>
+          <mcr name="firu"/>
+          <mcr name="fiju4"/>
+        </item>
+      </unit>
+      <unit id="unit_mif" title="mif[c|r]" label="MOV.IR Flange Clamp/Release">
+        <item id="mifc" label="Clamp at MOV.IR">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dsi" var="mis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">11</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="mijd4"/>
+          <mcr name="mirh"/>
+          <mcr name="miju0"/>
+        </item>
+        <item id="mifr" label="Release at MOV.IR">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dsi" var="mis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">11</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="mijd0"/>
+          <mcr name="miru"/>
+          <mcr name="miju4"/>
+        </item>
+      </unit>
+      <unit id="unit_csf" title="csf[c|r]" label="CAS Flange Clamp/Release">
+        <item id="csfc" label="Clamp at CAS">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dts" var="cis">ON</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="csjd4"/>
+          <mcr name="csrh"/>
+          <mcr name="csju0"/>
+        </item>
+        <item id="csfr" label="Release at CAS">
+          <goal label="Instrument OFF?">
+            <equal form="msg" site="dts" var="cis">OFF</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </goal>
+          <check label="CART ON TAG?">
+            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="msg" site="crt" var="jlv">H</equal>
+          </check>
+          <mcr name="csjd0"/>
+          <mcr name="csru"/>
+          <mcr name="csju4"/>
+        </item>
+      </unit>
+    </group>
+    <!--Compound Movable Flange Commands-->
+    <group id="g_cmf" caption="Compound Movable Flange Commands" rank="2">
+      <unit id="unit_ort" title="ort[l|s]" label="MOV.OPT Loading/Storing">
+        <item id="ortl" label="MOV.OPT Loading INST">
+          <goal label="Transer Loading Position?">
+            <equal form="msg" site="dso" var="mtr">FW</equal>
+            <equal form="msg" site="dso" var="rot">LOAD</equal>
+          </goal>
+          <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">10</not>
+            <not form="data" site="crt" var="cps">9</not>
+          </check>
+          <mcr name="otf"/>
+          <mcr name="orl"/>
+        </item>
+        <item id="orts" label="MOV.OPT Storing INST">
+          <goal label="Transer Stored Position?">
+            <equal form="msg" site="dso" var="mtr">BK</equal>
+          </goal>
+          <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">10</not>
+            <not form="data" site="crt" var="cps">9</not>
+          </check>
+          <mcr name="ors"/>
+          <mcr name="otb"/>
+        </item>
+      </unit>
+      <unit id="unit_irt" title="irt[l|s]" label="MOV.IR Loading/Storing">
+        <item id="irtl" label="MOV.IR Loading INST">
+          <goal label="Transer Loading Position?">
+            <equal form="msg" site="dsi" var="mtr">FW</equal>
+            <equal form="msg" site="dsi" var="rot">LOAD</equal>
+          </goal>
+          <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">12</not>
+            <not form="data" site="crt" var="cps">11</not>
+          </check>
+          <mcr name="itf"/>
+          <mcr name="irl"/>
+        </item>
+        <item id="irts" label="MOV.IR Storing INST">
+          <goal label="Transer Stored Position?">
+            <equal form="msg" site="dsi" var="mtr">BK</equal>
+          </goal>
+          <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">12</not>
+            <not form="data" site="crt" var="cps">11</not>
+          </check>
+          <mcr name="irs"/>
+          <mcr name="itb"/>
+        </item>
+      </unit>
+    </group>
+    <!--Atomic Flange Jack Bolt Commands-->
+    <group id="g_jak" caption="Atomic Jack Bolt Commands" column="2" rank="3">
+      <unit id="unit_foj" title="foj[u|d][0|4]" label="FIX.OPT Jack">
+        <item id="foju0" label="InR0 Jkup at FIX.OPT">
+          <goal label="Jack DW?">
+            <equal form="msg" site="dso" var="fjb">DW</equal>
+          </goal>
+          <check label="HOOK?">
+            <equal form="msg" site="dso" var="fis">ON</equal>
+            <equal form="msg" site="dso" var="fhk">HOOK</equal>
+          </check>
+          <exec site="dso" name="fjdw"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="fojd0" label="InR0 Jkdw at FIX.OPT">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dso" var="fis">ON</equal>
+          </goal>
+          <check label="HOOK?">
+            <equal form="msg" site="dso" var="fhk">HOOK</equal>
+          </check>
+          <exec site="dso" name="fjup"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="foju4" label="InR4 Jkup at FIX.OPT">
+          <goal label="Jack Up?">
+            <equal form="msg" site="dso" var="fjb">UP</equal>
+          </goal>
+          <check label="UNHOOK?">
+            <equal form="msg" site="dso" var="fhk">UNHK</equal>
+          </check>
+          <exec site="dso" name="fjup"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="fojd4" label="InR4 Jkdw at FIX.OPT">
+          <goal label="Jack Dw?">
+            <equal form="msg" site="dso" var="fjb">DW</equal>
+          </goal>
+          <check label="UNHOOK?">
+            <equal form="msg" site="dso" var="fhk">UNHK</equal>
+          </check>
+          <exec site="dso" name="fjdw"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_moj" title="moj[u|d][0|4]" label="MOV.OPT Jack">
+        <item id="moju0" label="InR0 Jkup at MOV.OPT">
+          <goal label="Jack DW?">
+            <equal form="msg" site="dso" var="mjb">DW</equal>
+          </goal>
+          <check label="HOOK?">
+            <equal form="msg" site="dso" var="mis">ON</equal>
+            <equal form="msg" site="dso" var="mhk">HOOK</equal>
+          </check>
+          <exec site="dso" name="mjdw"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="mojd0" label="InR0 Jkdw at MOV.OPT">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dso" var="mis">ON</equal>
+          </goal>
+          <check label="HOOK?">
+            <equal form="msg" site="dso" var="mhk">HOOK</equal>
+          </check>
+          <exec site="dso" name="mjup"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="moju4" label="InR4 Jkup at MOV.OPT">
+          <goal label="Jack Up?">
+            <equal form="msg" site="dso" var="mjb">UP</equal>
+          </goal>
+          <check label="UNHOOK?">
+            <equal form="msg" site="dso" var="mhk">UNHK</equal>
+          </check>
+          <exec site="dso" name="mjup"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="mojd4" label="InR4 Jkdw at MOV.OPT">
+          <goal label="Jack Dw?">
+            <equal form="msg" site="dso" var="mjb">DW</equal>
+          </goal>
+          <check label="UNHOOK?">
+            <equal form="msg" site="dso" var="mhk">UNHK</equal>
+          </check>
+          <exec site="dso" name="mjdw"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_fij" title="fij[u|d][0|4]" label="FIX.IR Jack">
+        <item id="fiju0" label="InR0 Jkup at FIX.IR">
+          <goal label="Jack DW?">
+            <equal form="msg" site="dsi" var="fjb">DW</equal>
+          </goal>
+          <check label="HOOK?">
+            <equal form="msg" site="dsi" var="fis">ON</equal>
+            <equal form="msg" site="dsi" var="fhk">HOOK</equal>
+          </check>
+          <exec site="dsi" name="fjdw"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="fijd0" label="InR0 Jkdw at FIX.IR">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dsi" var="fis">ON</equal>
+          </goal>
+          <check label="HOOK?">
+            <equal form="msg" site="dsi" var="fhk">HOOK</equal>
+          </check>
+          <exec site="dsi" name="fjup"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="fiju4" label="InR4 Jkup at FIX.IR">
+          <goal label="Jack Up?">
+            <equal form="msg" site="dsi" var="fjb">UP</equal>
+          </goal>
+          <check label="UNHOOK?">
+            <equal form="msg" site="dsi" var="fhk">UNHK</equal>
+          </check>
+          <exec site="dsi" name="fjup"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="fijd4" label="InR4 Jkdw at FIX.IR">
+          <goal label="Jack Dw?">
+            <equal form="msg" site="dsi" var="fjb">DW</equal>
+          </goal>
+          <check label="UNHOOK?">
+            <equal form="msg" site="dsi" var="fhk">UNHK</equal>
+          </check>
+          <exec site="dsi" name="fjdw"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_mij" title="mij[u|d][0|4]" label="MOV.IR Jack">
+        <item id="miju0" label="InR0 Jkup at MOV.IR">
+          <goal label="Jack DW?">
+            <equal form="msg" site="dsi" var="mjb">DW</equal>
+          </goal>
+          <check label="HOOK?">
+            <equal form="msg" site="dsi" var="mis">ON</equal>
+            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
+          </check>
+          <exec site="dsi" name="mjdw"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="mijd0" label="InR0 Jkdw at MOV.IR">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dsi" var="mis">ON</equal>
+          </goal>
+          <check label="HOOK?">
+            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
+          </check>
+          <exec site="dsi" name="mjup"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="miju4" label="InR4 Jkup at MOV.IR">
+          <goal label="Jack Up?">
+            <equal form="msg" site="dsi" var="mjb">UP</equal>
+          </goal>
+          <check label="UNHOOK?">
+            <equal form="msg" site="dsi" var="mhk">UNHK</equal>
+          </check>
+          <exec site="dsi" name="mjup"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="mijd4" label="InR4 Jkdw at MOV.IR">
+          <goal label="Jack Dw?">
+            <equal form="msg" site="dsi" var="mjb">DW</equal>
+          </goal>
+          <check label="UNHOOK?">
+            <equal form="msg" site="dsi" var="mhk">UNHK</equal>
+          </check>
+          <exec site="dsi" name="mjdw"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_csj" title="csj[u|d][0|4]" label="CAS Jack">
+        <item id="csju0" label="InR0 Jkup at CAS">
+          <goal label="Jack DW?">
+            <equal form="msg" site="dts" var="bl01">DW</equal>
+          </goal>
+          <check label="HOOK ON?">
+            <equal form="msg" site="dts" var="cis">ON</equal>
+            <equal form="msg" site="dts" var="iang">HOOK</equal>
+          </check>
+          <exec site="dts" name="fjdw"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dts" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dts" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="csjd0" label="InR0 Jkdw at CAS">
+          <goal label="Instrument ON?">
+            <equal form="msg" site="dts" var="cis">ON</equal>
+          </goal>
+          <check label="HOOK?">
+            <equal form="msg" site="dts" var="iang">HOOK</equal>
+          </check>
+          <exec site="dts" name="fjup"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dts" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dts" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="csju4" label="InR4 Jkup at CAS">
+          <goal label="Jack Up?">
+            <equal form="msg" site="dts" var="bl01">UP</equal>
+          </goal>
+          <check label="UNHOOK?">
+            <equal form="msg" site="dts" var="iang">UNHK</equal>
+          </check>
+          <exec site="dts" name="fjup"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dts" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dts" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="csjd4" label="InR4 Jkdw at CAS">
+          <goal label="Jack Dw?">
+            <equal form="msg" site="dts" var="bl01">DW</equal>
+          </goal>
+          <check label="UNHOOK?">
+            <equal form="msg" site="dts" var="iang">UNHK</equal>
+          </check>
+          <exec site="dts" name="fjdw"/>
+          <wait label="Jack start?" retry="5">
+            <equal form="msg" site="dts" var="exe">ON</equal>
+          </wait>
+          <wait label="Jacking" retry="50">
+            <equal form="msg" site="dts" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+    </group>
+    <!--Atomic Flange Rotation Commands-->
+    <group id="g_hook" caption="Atomic Flange Rotation Commands" rank="3">
+      <unit id="unit_for" title="for[h|u]" label="FIX.OPT Hook/Unhook">
+        <item id="foh" label="Hook at FIX.OPT">
+          <goal label="Hooked?">
+            <equal form="msg" site="dso" var="fhk">HOOK</equal>
+          </goal>
+          <check label="EJB Down?">
+            <equal form="msg" site="dso" var="fjb">DW</equal>
+          </check>
+          <exec site="dso" name="fhook"/>
+          <wait label="Hook start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Hooking" retry="40">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="foru" label="UnHook at FIX.OPT">
+          <goal label="UnHooked?">
+            <equal form="msg" site="dso" var="fhk">UNHK</equal>
+          </goal>
+          <check label="EJB Down?">
+            <equal form="msg" site="dso" var="fjb">DW</equal>
+          </check>
+          <exec site="dso" name="funhk"/>
+          <wait label="UnHook start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="UnHooking" retry="40">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_mor" title="mor[h|u]" label="MOV.OPT Hook/Unhook">
+        <item id="morh" label="Hook at MOV.OPT">
+          <goal label="Hooked?">
+            <equal form="msg" site="dso" var="mhk">HOOK</equal>
+          </goal>
+          <check label="EJB Down?">
+            <equal form="msg" site="dso" var="mjb">DW</equal>
+          </check>
+          <exec site="dso" name="mhook"/>
+          <wait label="Hook start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Hooking" retry="40">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="moru" label="UnHook at MOV.OPT">
+          <goal label="UnHooked?">
+            <equal form="msg" site="dso" var="mhk">UNHK</equal>
+          </goal>
+          <check label="EJB Down?">
+            <equal form="msg" site="dso" var="mjb">DW</equal>
+          </check>
+          <exec site="dso" name="munhk"/>
+          <wait label="UnHook start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="UnHooking" retry="40">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_fir" title="fir[h|u]" label="FIX.IR Hook/Unhook">
+        <item id="firh" label="Hook at FIX.IR">
+          <goal label="Hooked?">
+            <equal form="msg" site="dsi" var="fhk">HOOK</equal>
+          </goal>
+          <check label="EJB Down?">
+            <equal form="msg" site="dsi" var="fjb">DW</equal>
+          </check>
+          <exec site="dsi" name="fhook"/>
+          <wait label="Hook start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Hooking" retry="40">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="firu" label="UnHook at FIX.IR">
+          <goal label="UnHooked?">
+            <equal form="msg" site="dsi" var="fhk">UNHK</equal>
+          </goal>
+          <check label="EJB Down?">
+            <equal form="msg" site="dsi" var="fjb">DW</equal>
+          </check>
+          <exec site="dsi" name="funhk"/>
+          <wait label="UnHook start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="UnHooking" retry="40">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_mir" title="mir[h|u]" label="MOV.IR Hook/Unhook">
+        <item id="mirh" label="Hook at MOV.IR">
+          <goal label="Hooked?">
+            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
+          </goal>
+          <check label="EJB Down?">
+            <equal form="msg" site="dsi" var="mjb">DW</equal>
+          </check>
+          <exec site="dsi" name="mhook"/>
+          <wait label="Hook start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Hooking" retry="40">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="miru" label="UnHook at MOV.IR">
+          <goal label="UnHooked?">
+            <equal form="msg" site="dsi" var="mhk">UNHK</equal>
+          </goal>
+          <check label="EJB Down?">
+            <equal form="msg" site="dsi" var="mjb">DW</equal>
+          </check>
+          <exec site="dsi" name="munhk"/>
+          <wait label="UnHook start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="UnHooking" retry="40">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_csr" title="csr[h|u]" label="CAS Hook/Unhook">
+        <item id="csrh" label="Hook at CAS">
+          <goal label="Hooked?">
+            <equal form="msg" site="dts" var="iang">HOOK</equal>
+          </goal>
+          <check label="EJB Down?">
+            <equal form="msg" site="dts" var="bl01">DW</equal>
+          </check>
+          <exec site="dts" name="rhook"/>
+          <wait label="Hook start?" retry="5">
+            <equal form="msg" site="dts" var="exe">ON</equal>
+          </wait>
+          <wait label="Hooking" retry="40">
+            <equal form="msg" site="dts" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="csru" label="UnHook at CAS">
+          <goal label="UnHooked?">
+            <equal form="msg" site="dts" var="iang">UNHK</equal>
+          </goal>
+          <check label="EJB Down?">
+            <equal form="msg" site="dts" var="bl01">DW</equal>
+          </check>
+          <exec site="dts" name="runhk"/>
+          <wait label="UnHook start?" retry="5">
+            <equal form="msg" site="dts" var="exe">ON</equal>
+          </wait>
+          <wait label="UnHooking" retry="40">
+            <equal form="msg" site="dts" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_csa" title="csa[h|u]" label="CAS Adjust at Hook/Unhook">
+        <item id="csah" label="Adjust at CAS.Hook">
+          <check label="Hooked and EJB Up?">
+            <equal form="msg" site="dts" var="iang">HOOK</equal>
+            <equal form="msg" site="dts" var="bl01">UP</equal>
+          </check>
+          <exec site="dts" name="rhook"/>
+          <wait label="Hook start?" retry="5">
+            <equal form="msg" site="dts" var="exe">ON</equal>
+          </wait>
+          <wait label="Hooking" retry="40">
+            <equal form="msg" site="dts" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="csau" label="Adjust at at CAS.Unhook">
+          <check label="Unhooked and EJB Up?">
+            <equal form="msg" site="dts" var="iang">UNHK</equal>
+            <equal form="msg" site="dts" var="bl01">UP</equal>
+          </check>
+          <exec site="dts" name="runhk"/>
+          <wait label="UnHook start?" retry="5">
+            <equal form="msg" site="dts" var="exe">ON</equal>
+          </wait>
+          <wait label="UnHooking" retry="40">
+            <equal form="msg" site="dts" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+    </group>
+    <!--Atomic Movable Flange Commands-->
+    <group id="g_mov" caption="Atomic Movable Flange Commands" rank="3">
+      <unit id="unit_or" title="or[l|s]" label="MOV.OPT Rotation">
+        <item id="orl" label="MOV.OPT Rotation (Load)">
+          <goal label="Rotation Stored?">
+            <equal form="msg" site="dso" var="mrt">DES</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dso" var="mrt">STR</equal>
+            <equal form="msg" site="dso" var="mhk">HOOK</equal>
+            <equal form="msg" site="dso" var="mtr">FW</equal>
+          </check>
+          <exec site="dso" name="rotout"/>
+          <wait label="Rotate start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Rotating" retry="20">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="ors" label="MOV.OPT Rotation (Store)">
+          <goal label="Rotation Stored?">
+            <equal form="msg" site="dso" var="mrt">STR</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dso" var="mrt">DES</equal>
+            <equal form="msg" site="dso" var="mhk">HOOK</equal>
+            <equal form="msg" site="dso" var="mtr">FW</equal>
+          </check>
+          <exec site="dso" name="rotin"/>
+          <wait label="Rotate start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Rotating" retry="20">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_ot" title="ot[b|f]" label="MOV.OPT Transer">
+        <item id="otb" label="MOV.OPT Transer Back">
+          <goal label="Transer Stored?">
+            <equal form="msg" site="dso" var="mtr">BK</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dso" var="mrt">STR</equal>
+            <equal form="msg" site="dso" var="mhk">HOOK</equal>
+            <equal form="msg" site="dso" var="mtr">FW</equal>
+          </check>
+          <exec site="dso" name="trin"/>
+          <wait label="Transer start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Moving" retry="60">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item label="MOV.OPT Transer Forth" id="otf">
+          <goal label="Transer Stored?">
+            <equal form="msg" site="dso" var="mtr">FW</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dso" var="mrt">STR</equal>
+            <equal form="msg" site="dso" var="mhk">HOOK</equal>
+            <equal form="msg" site="dso" var="mtr">BK</equal>
+          </check>
+          <exec site="dso" name="trout"/>
+          <wait label="Transer start?" retry="5">
+            <equal form="msg" site="dso" var="exe">ON</equal>
+          </wait>
+          <wait label="Moving" retry="60">
+            <equal form="msg" site="dso" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_ir" title="ir[l|s]" label="MOV.IR Rotation">
+        <item id="irl" label="MOV.IR Rotation (Load)">
+          <goal label="Rotation Stored?">
+            <equal form="msg" site="dsi" var="mrt">DES</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dsi" var="mrt">STR</equal>
+            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
+            <equal form="msg" site="dsi" var="mtr">FW</equal>
+          </check>
+          <exec site="dsi" name="rotout"/>
+          <wait label="Rotate start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Rotating" retry="20">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="irs" label="MOV.IR Rotation (Store)">
+          <goal label="Rotation Stored?">
+            <equal form="msg" site="dsi" var="mrt">STR</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dsi" var="mrt">DES</equal>
+            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
+            <equal form="msg" site="dsi" var="mtr">FW</equal>
+          </check>
+          <exec site="dsi" name="rotin"/>
+          <wait label="Rotate start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Rotating" retry="20">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+      <unit id="unit_it" title="it[b|f]" label="MOV.IR Transer">
+        <item id="itb" label="MOV.IR Transer Back">
+          <goal label="Transer Stored?">
+            <equal form="msg" site="dsi" var="mtr">BK</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dsi" var="mrt">STR</equal>
+            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
+            <equal form="msg" site="dsi" var="mtr">FW</equal>
+          </check>
+          <exec site="dsi" name="trin"/>
+          <wait label="Transer start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Moving" retry="60">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+        <item id="itf" label="MOV.IR Transer Forth">
+          <goal label="Transer Stored?">
+            <equal form="msg" site="dsi" var="mtr">FW</equal>
+          </goal>
+          <check>
+            <equal form="msg" site="dsi" var="mrt">STR</equal>
+            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
+            <equal form="msg" site="dsi" var="mtr">BK</equal>
+          </check>
+          <exec site="dsi" name="trout"/>
+          <wait label="Transer start?" retry="5">
+            <equal form="msg" site="dsi" var="exe">ON</equal>
+          </wait>
+          <wait label="Moving" retry="60">
+            <equal form="msg" site="dsi" var="exe">OFF</equal>
+          </wait>
+        </item>
+      </unit>
+    </group>
+    <!--Atomic Cart Commands-->
+    <group id="g_cart" caption="Atomic Cart Commands" rank="3">
+      <unit id="unit_run" label="Cart Run Commands">
         <item id="runf" label="Run Forward to Tag">
           <goal label="On Tag?">
             <not form="data" site="crt" var="cps">0</not>
@@ -38,554 +1101,82 @@
           </wait>
         </item>
       </unit>
-      <item id="lift" label="Jack UP Level [1-4]">
-        <par_num>1:4</par_num>
-        <goal label="On Destination Level?">
-          <equal form="data" var="jlv" site="crt">$1</equal>
-        </goal>
-        <check label="Ready?">
-          <equal form="msg" var="rdy" site="crt">ON</equal>
-        </check>
-        <exec site="crt" name="lift">
-          <argv>$1</argv>
-        </exec>
-        <wait label="Jack start?" retry="5">
-          <equal form="msg" var="jak" site="crt">ON</equal>
-        </wait>
-        <wait label="Jacking" retry="40">
-          <equal form="msg" var="jak" site="crt">OFF</equal>
-        </wait>
-      </item>
-    </group>
-    <group id="g_jak" caption="Jack Commands" column="2" rank="3">
-      <!--FIX.OPT Flange Jack Command-->
-      <unit id="ufoj0" label="FIX.OPT Jack at 0deg">
-        <item id="foju0" label="InR0 Jkup at FIX.OPT">
-          <goal label="Jack DW?">
-            <equal form="msg" site="dso" var="fjb">DW</equal>
+      <unit id="unit_lft" title="lft[0-3]" label="Cart Lift Commands">
+        <item id="lft0" label="Lift Down">
+          <goal label="Already Down?">
+            <equal form="msg" var="jlv" site="crt">D</equal>
           </goal>
-          <check label="HOOK?">
-            <equal form="msg" site="dso" var="fis">ON</equal>
-            <equal form="msg" site="dso" var="fhk">HOOK</equal>
+          <check label="Ready?">
+            <equal form="msg" var="rdy" site="crt">ON</equal>
           </check>
-          <exec site="dso" name="fjdw"/>
+          <exec site="crt" name="lftdw"/>
           <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
+            <equal form="msg" var="jak" site="crt">ON</equal>
           </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
+          <wait label="Jacking" retry="40">
+            <equal form="msg" var="jak" site="crt">OFF</equal>
           </wait>
         </item>
-        <item id="fojd0" label="InR0 Jkdw at FIX.OPT">
-          <goal label="Instrument ON?">
-            <equal form="msg" site="dso" var="fis">ON</equal>
+        <item id="lft1" label="Lift Up Level1">
+          <goal label="Above Level D?">
+            <not form="msg" var="jlv" site="crt">D</not>
           </goal>
-          <check label="HOOK?">
-            <equal form="msg" site="dso" var="fhk">HOOK</equal>
+          <check label="Ready?">
+            <equal form="msg" var="rdy" site="crt">ON</equal>
+            <equal form="msg" var="jlv" site="crt">D</equal>
           </check>
-          <exec site="dso" name="fjup"/>
+          <exec site="crt" name="lftup">
+            <argv>1</argv>
+          </exec>
           <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
+            <equal form="msg" var="jak" site="crt">ON</equal>
           </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
+          <wait label="Jacking" retry="40">
+            <equal form="msg" var="jak" site="crt">OFF</equal>
           </wait>
         </item>
-      </unit>
-      <unit id="ufoj4" label="FIX.OPT Jack at 4deg">
-        <item id="foju4" label="InR4 Jkup at FIX.OPT">
-          <goal label="Jack Up?">
-            <equal form="msg" site="dso" var="fjb">UP</equal>
+        <item id="lft2" label="Lift Up Level1">
+          <goal label="Above Level L?">
+            <not form="msg" var="jlv" site="crt">D</not>
+            <not form="msg" var="jlv" site="crt">L</not>
           </goal>
-          <check label="UNHOOK?">
-            <equal form="msg" site="dso" var="fhk">UNHK</equal>
+          <check label="Ready?">
+            <equal form="msg" var="rdy" site="crt">ON</equal>
+            <equal form="msg" var="jlv" site="crt">L</equal>
           </check>
-          <exec site="dso" name="fjup"/>
+          <exec site="crt" name="lftup">
+            <argv>2</argv>
+          </exec>
           <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
+            <equal form="msg" var="jak" site="crt">ON</equal>
           </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
+          <wait label="Jacking" retry="40">
+            <equal form="msg" var="jak" site="crt">OFF</equal>
           </wait>
         </item>
-        <item id="fojd4" label="InR4 Jkdw at FIX.OPT">
-          <goal label="Jack Dw?">
-            <equal form="msg" site="dso" var="fjb">DW</equal>
+        <item id="lft3" label="Lift Up Level1">
+          <goal label="Above Level M?">
+            <not form="msg" var="jlv" site="crt">D</not>
+            <not form="msg" var="jlv" site="crt">L</not>
+            <not form="msg" var="jlv" site="crt">M</not>
           </goal>
-          <check label="UNHOOK?">
-            <equal form="msg" site="dso" var="fhk">UNHK</equal>
+          <check label="Ready?">
+            <equal form="msg" var="rdy" site="crt">ON</equal>
+            <equal form="msg" var="jlv" site="crt">M</equal>
           </check>
-          <exec site="dso" name="fjdw"/>
+          <exec site="crt" name="lftup">
+            <argv>3</argv>
+          </exec>
           <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
+            <equal form="msg" var="jak" site="crt">ON</equal>
           </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
-      </unit>
-      <!--FIX.IR Flange Jack Command-->
-      <unit id="ufij0" label="FIX.IR Jack at 0deg">
-        <item id="fiju0" label="InR0 Jkup at FIX.IR">
-          <goal label="Jack DW?">
-            <equal form="msg" site="dsi" var="fjb">DW</equal>
-          </goal>
-          <check label="HOOK?">
-            <equal form="msg" site="dsi" var="fis">ON</equal>
-            <equal form="msg" site="dsi" var="fhk">HOOK</equal>
-          </check>
-          <exec site="dsi" name="fjdw"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dsi" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dsi" var="exe">OFF</equal>
-          </wait>
-        </item>
-        <item id="fijd0" label="InR0 Jkdw at FIX.IR">
-          <goal label="Instrument ON?">
-            <equal form="msg" site="dsi" var="fis">ON</equal>
-          </goal>
-          <check label="HOOK?">
-            <equal form="msg" site="dsi" var="fhk">HOOK</equal>
-          </check>
-          <exec site="dsi" name="fjup"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dsi" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dsi" var="exe">OFF</equal>
-          </wait>
-        </item>
-      </unit>
-      <unit id="ufij4" label="FIX.IR Jack at 4deg">
-        <item id="fiju4" label="InR4 Jkup at FIX.IR">
-          <goal label="Jack Up?">
-            <equal form="msg" site="dsi" var="fjb">UP</equal>
-          </goal>
-          <check label="UNHOOK?">
-            <equal form="msg" site="dsi" var="fhk">UNHK</equal>
-          </check>
-          <exec site="dsi" name="fjup"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dsi" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dsi" var="exe">OFF</equal>
-          </wait>
-        </item>
-        <item id="fijd4" label="InR4 Jkdw at FIX.IR">
-          <goal label="Jack Dw?">
-            <equal form="msg" site="dsi" var="fjb">DW</equal>
-          </goal>
-          <check label="UNHOOK?">
-            <equal form="msg" site="dsi" var="fhk">UNHK</equal>
-          </check>
-          <exec site="dsi" name="fjdw"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dsi" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dsi" var="exe">OFF</equal>
-          </wait>
-        </item>
-      </unit>
-      <!--MOV.OPT Flange Jack Command-->
-      <unit id="umoj0" label="MOV.OPT Jack at 0deg">
-        <item id="moju0" label="InR0 Jkup at MOV.OPT">
-          <goal label="Jack DW?">
-            <equal form="msg" site="dso" var="mjb">DW</equal>
-          </goal>
-          <check label="HOOK?">
-            <equal form="msg" site="dso" var="mis">ON</equal>
-            <equal form="msg" site="dso" var="mhk">HOOK</equal>
-          </check>
-          <exec site="dso" name="mjdw"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
-        <item id="mojd0" label="InR0 Jkdw at MOV.OPT">
-          <goal label="Instrument ON?">
-            <equal form="msg" site="dso" var="mis">ON</equal>
-          </goal>
-          <check label="HOOK?">
-            <equal form="msg" site="dso" var="mhk">HOOK</equal>
-          </check>
-          <exec site="dso" name="mjup"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
-      </unit>
-      <unit id="umoj4" label="MOV.OPT Jack at 4deg">
-        <item id="moju4" label="InR4 Jkup at MOV.OPT">
-          <goal label="Jack Up?">
-            <equal form="msg" site="dso" var="mjb">UP</equal>
-          </goal>
-          <check label="UNHOOK?">
-            <equal form="msg" site="dso" var="mhk">UNHK</equal>
-          </check>
-          <exec site="dso" name="mjup"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
-        <item id="mojd4" label="InR4 Jkdw at MOV.OPT">
-          <goal label="Jack Dw?">
-            <equal form="msg" site="dso" var="mjb">DW</equal>
-          </goal>
-          <check label="UNHOOK?">
-            <equal form="msg" site="dso" var="mhk">UNHK</equal>
-          </check>
-          <exec site="dso" name="mjdw"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
-      </unit>
-      <!--MOV.IR Flange Jack Command-->
-      <unit id="umij4" label="MOV.IR Jack at 0deg">
-        <item id="miju4" label="InR4 Jkup at MOV.IR">
-          <goal label="Jack Up?">
-            <equal form="msg" site="dsi" var="mjb">UP</equal>
-          </goal>
-          <check label="UNHOOK?">
-            <equal form="msg" site="dsi" var="mhk">UNHK</equal>
-          </check>
-          <exec site="dsi" name="mjup"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dsi" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dsi" var="exe">OFF</equal>
-          </wait>
-        </item>
-        <item id="mijd4" label="InR4 Jkdw at MOV.IR">
-          <goal label="Jack Dw?">
-            <equal form="msg" site="dsi" var="mjb">DW</equal>
-          </goal>
-          <check label="UNHOOK?">
-            <equal form="msg" site="dsi" var="mhk">UNHK</equal>
-          </check>
-          <exec site="dsi" name="mjdw"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dsi" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dsi" var="exe">OFF</equal>
-          </wait>
-        </item>
-      </unit>
-      <unit id="umij0" label="MOV.IR Jack at 4deg">
-        <item id="miju0" label="InR0 Jkup at MOV.IR">
-          <goal label="Jack DW?">
-            <equal form="msg" site="dsi" var="mjb">DW</equal>
-          </goal>
-          <check label="HOOK?">
-            <equal form="msg" site="dsi" var="mis">ON</equal>
-            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
-          </check>
-          <exec site="dsi" name="mjdw"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dsi" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dsi" var="exe">OFF</equal>
-          </wait>
-        </item>
-        <item id="mijd0" label="InR0 Jkdw at MOV.IR">
-          <goal label="Instrument ON?">
-            <equal form="msg" site="dsi" var="mis">ON</equal>
-          </goal>
-          <check label="HOOK?">
-            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
-          </check>
-          <exec site="dsi" name="mjup"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dsi" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dsi" var="exe">OFF</equal>
-          </wait>
-        </item>
-      </unit>
-      <!--CAS Flange Jack Command-->
-      <unit id="ucj0" label="CAS Jack at 0deg">
-        <item id="cju0" label="InR0 Jkup at CAS">
-          <goal label="Jack DW?">
-            <equal form="msg" site="dts" var="bl01">DW</equal>
-          </goal>
-          <check label="HOOK ON?">
-            <equal form="msg" site="dts" var="cis">ON</equal>
-            <equal form="msg" site="dts" var="rpw">HOOK</equal>
-          </check>
-          <exec site="dso" name="fjdw"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
-        <item id="cjd0" label="InR0 Jkdw at CAS">
-          <goal label="Instrument ON?">
-            <equal form="msg" site="dso" var="fis">ON</equal>
-          </goal>
-          <check label="HOOK?">
-            <equal form="msg" site="dso" var="fhk">HOOK</equal>
-          </check>
-          <exec site="dso" name="fjup"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
-      </unit>
-      <unit id="ucj4" label="CAS Jack at 4deg">
-        <item id="cju4" label="InR4 Jkup at CAS">
-          <goal label="Jack Up?">
-            <equal form="msg" site="dso" var="fjb">UP</equal>
-          </goal>
-          <check label="UNHOOK?">
-            <equal form="msg" site="dso" var="fhk">UNHK</equal>
-          </check>
-          <exec site="dso" name="fjup"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
-        <item id="cjd4" label="InR4 Jkdw at CAS">
-          <goal label="Jack Dw?">
-            <equal form="msg" site="dso" var="fjb">DW</equal>
-          </goal>
-          <check label="UNHOOK?">
-            <equal form="msg" site="dso" var="fhk">UNHK</equal>
-          </check>
-          <exec site="dso" name="fjdw"/>
-          <wait label="Jack start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Jacking" retry="50">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
+          <wait label="Jacking" retry="40">
+            <equal form="msg" var="jak" site="crt">OFF</equal>
           </wait>
         </item>
       </unit>
     </group>
-    <group id="g_mov" caption="Movable Flange Commands" rank="3">
-      <!--MOV.OPT Transer and Rotate-->
-      <unit label="MOV.OPT Rotation" id="uor">
-        <item label="MOV.OPT Rotation (Load)" id="oro">
-          <goal label="Rotation Stored?">
-            <equal form="msg" site="dso" var="mrt">DES</equal>
-          </goal>
-          <check>
-            <equal form="msg" site="dso" var="mrt">STR</equal>
-            <equal form="msg" site="dso" var="mhk">HOOK</equal>
-            <equal form="msg" site="dso" var="mtr">FW</equal>
-          </check>
-          <exec site="dso" name="rotout"/>
-          <wait label="Rotate start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Rotating" retry="20">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
-        <item label="MOV.OPT Rotation (Store)" id="ori">
-          <goal label="Rotation Stored?">
-            <equal form="msg" site="dso" var="mrt">STR</equal>
-          </goal>
-          <check>
-            <equal form="msg" site="dso" var="mrt">DES</equal>
-            <equal form="msg" site="dso" var="mhk">HOOK</equal>
-            <equal form="msg" site="dso" var="mtr">FW</equal>
-          </check>
-          <exec site="dso" name="rotin"/>
-          <wait label="Rotate start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Rotating" retry="20">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
-      </unit>
-      <unit label="MOV.OPT Transer" id="uot">
-        <item label="MOV.OPT Transer Back" id="otb">
-          <goal label="Transer Stored?">
-            <equal form="msg" site="dso" var="mtr">BK</equal>
-          </goal>
-          <check>
-            <equal form="msg" site="dso" var="mrt">STR</equal>
-            <equal form="msg" site="dso" var="mhk">HOOK</equal>
-            <equal form="msg" site="dso" var="mtr">FW</equal>
-          </check>
-          <exec site="dso" name="trin"/>
-          <wait label="Transer start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Moving" retry="60">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
-        <item label="MOV.OPT Transer Forth" id="otf">
-          <goal label="Transer Stored?">
-            <equal form="msg" site="dso" var="mtr">FW</equal>
-          </goal>
-          <check>
-            <equal form="msg" site="dso" var="mrt">STR</equal>
-            <equal form="msg" site="dso" var="mhk">HOOK</equal>
-            <equal form="msg" site="dso" var="mtr">BK</equal>
-          </check>
-          <exec site="dso" name="trout"/>
-          <wait label="Transer start?" retry="5">
-            <equal form="msg" site="dso" var="exe">ON</equal>
-          </wait>
-          <wait label="Moving" retry="60">
-            <equal form="msg" site="dso" var="exe">OFF</equal>
-          </wait>
-        </item>
-      </unit>
-      <!--MOV.IR Transer and Rotate-->
-      <unit label="MOV.IR Rotation" id="uir">
-        <item label="MOV.IR Rotation (Load)" id="iri">
-          <goal label="Rotation Stored?">
-            <equal form="msg" site="dsi" var="mrt">DES</equal>
-          </goal>
-          <check>
-            <equal form="msg" site="dsi" var="mrt">STR</equal>
-            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
-            <equal form="msg" site="dsi" var="mtr">FW</equal>
-          </check>
-          <exec site="dsi" name="rotout"/>
-          <wait label="Rotate start?" retry="5">
-            <equal form="msg" site="dsi" var="exe">ON</equal>
-          </wait>
-          <wait label="Rotating" retry="20">
-            <equal form="msg" site="dsi" var="exe">OFF</equal>
-          </wait>
-        </item>
-        <item label="MOV.IR Rotation (Store)" id="iri">
-          <goal label="Rotation Stored?">
-            <equal form="msg" site="dsi" var="mrt">STR</equal>
-          </goal>
-          <check>
-            <equal form="msg" site="dsi" var="mrt">DES</equal>
-            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
-            <equal form="msg" site="dsi" var="mtr">FW</equal>
-          </check>
-          <exec site="dsi" name="rotin"/>
-          <wait label="Rotate start?" retry="5">
-            <equal form="msg" site="dsi" var="exe">ON</equal>
-          </wait>
-          <wait label="Rotating" retry="20">
-            <equal form="msg" site="dsi" var="exe">OFF</equal>
-          </wait>
-        </item>
-      </unit>
-      <unit label="MOV.IR Transer" id="uit">
-        <item label="MOV.IR Transer Back" id="itb">
-          <goal label="Transer Stored?">
-            <equal form="msg" site="dsi" var="mtr">BK</equal>
-          </goal>
-          <check>
-            <equal form="msg" site="dsi" var="mrt">STR</equal>
-            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
-            <equal form="msg" site="dsi" var="mtr">FW</equal>
-          </check>
-          <exec site="dsi" name="trin"/>
-          <wait label="Transer start?" retry="5">
-            <equal form="msg" site="dsi" var="exe">ON</equal>
-          </wait>
-          <wait label="Moving" retry="60">
-            <equal form="msg" site="dsi" var="exe">OFF</equal>
-          </wait>
-        </item>
-        <item label="MOV.IR Transer Forth" id="itf">
-          <goal label="Transer Stored?">
-            <equal form="msg" site="dsi" var="mtr">FW</equal>
-          </goal>
-          <check>
-            <equal form="msg" site="dsi" var="mrt">STR</equal>
-            <equal form="msg" site="dsi" var="mhk">HOOK</equal>
-            <equal form="msg" site="dsi" var="mtr">BK</equal>
-          </check>
-          <exec site="dsi" name="trout"/>
-          <wait label="Transer start?" retry="5">
-            <equal form="msg" site="dsi" var="exe">ON</equal>
-          </wait>
-          <wait label="Moving" retry="60">
-            <equal form="msg" site="dsi" var="exe">OFF</equal>
-          </wait>
-        </item>
-      </unit>
-    </group>
-    <group id="g_tr" caption="Transer Commands">
-      <!--Transer and Rotate-->
-      <item id="trsi" label="MOV.IR Trans Backward w/SITET [%s]">
-        <par_str label="site">dso,dsi</par_str>
-        <goal label="Transer Stored?">
-          <equal form="msg" site="$1" var="mtr">BK</equal>
-        </goal>
-        <check label="CART CLEAR?">
-          <not form="data" site="crt" var="cps">12</not>
-          <not form="data" site="crt" var="cps">11</not>
-        </check>
-        <exec site="$1" name="rotin"/>
-        <wait label="Rotate start?" retry="5">
-          <equal form="msg" site="$1" var="exe">ON</equal>
-        </wait>
-        <wait label="Rotating" retry="20">
-          <equal form="msg" site="$1" var="exe">OFF</equal>
-        </wait>
-        <exec site="$1" name="trin"/>
-        <wait label="Transer start?" retry="5">
-          <equal form="msg" site="$1" var="exe">ON</equal>
-        </wait>
-        <wait label="Moving" retry="60">
-          <equal form="msg" site="$1" var="exe">OFF</equal>
-        </wait>
-      </item>
-      <!--FIX Jack & Rotate-->
-      <item id="jupd" label="HookUp at FIX.IR [%s]">
-        <par_str label="site">dso,dsi</par_str>
-        <goal label="Instrument ON?">
-          <equal form="msg" site="$1" var="fis">ON</equal>
-        </goal>
-        <check label="CART ON TAG?">
-          <equal form="data" site="crt" var="cps">12</equal>
-          <equal form="msg" site="crt" var="jlv">H</equal>
-        </check>
-        <exec site="$1" name="fhook"/>
-        <wait label="Hook start?" retry="5">
-          <equal form="msg" site="$1" var="exe">ON</equal>
-        </wait>
-        <wait label="Hooking" retry="40">
-          <equal form="msg" site="$1" var="exe">OFF</equal>
-        </wait>
-        <mcr name="fju0">
-          <argv>$1</argv>
-        </mcr>
-      </item>
-    </group>
-    <group id="g_run">
+    <group id="g_run" caption="Transport Commands" rank="0">
       <!--Run & Transer-->
       <item id="runi" label="Run with interlock to Tag [1-12]">
         <par_num label="1-12">1:12</par_num>
@@ -617,9 +1208,7 @@
         <wait retry="5" label="Run start?">
           <equal form="msg" var="run" site="crt">ON</equal>
         </wait>
-        <mcr async="true" name="trsi">
-          <argv>dsi</argv>
-        </mcr>
+        <mcr async="true" name="irts"/>
         <wait retry="120" label="Run end?">
           <equal form="msg" label="Running" site="crt" var="run">OFF</equal>
         </wait>

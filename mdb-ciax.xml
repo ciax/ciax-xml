@@ -3,12 +3,13 @@
   <macro id="ciax" version="1" label="Cart Macro" port="55554">
     <!--Compound Run Commands-->
     <group id="g_crun" caption="Compound Run Commands" rank="2">
-      <unit id="unit_dh" title="r[3|7|8]-[1|10-12]" label="Ingress RP to Flange Deadhead">
-        <item id="r7-9" label="Run Tag 7 to 9 w/o Inst">
+      <unit id="unit_do" title="d[i|o][m|f]o" label="DeadHead between RP and Opt Flanges">
+        <item id="dimo" label="Run Tag 7 to 9 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
           </goal>
           <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
             <equal form="msg" site="crt" var="ion">OFF</equal>
             <equal form="data" site="crt" var="cps">7</equal>
             <equal form="msg" site="dso" var="mtr">FW</equal>
@@ -17,11 +18,12 @@
             <argv>9</argv>
           </mcr>
         </item>
-        <item id="r7-10" label="Run Tag 7 to 10 w/o Inst">
+        <item id="difo" label="Run Tag 7 to 10 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
           <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
             <equal form="msg" site="crt" var="ion">OFF</equal>
             <equal form="data" site="crt" var="cps">7</equal>
             <equal form="msg" site="dso" var="mtr">BK</equal>
@@ -30,11 +32,41 @@
             <argv>10</argv>
           </mcr>
         </item>
-        <item id="r8-11" label="Run Tag 8 to 11 w/o Inst">
+        <item id="domo" label="Run Tag 9 to 7 w/o Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">7</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+            <equal form="msg" site="crt" var="ion">OFF</equal>
+            <equal form="data" site="crt" var="cps">9</equal>
+          </check>
+          <mcr name="run">
+            <argv>7</argv>
+          </mcr>
+        </item>
+        <item id="dofo" label="Run Tag 10 to 7 w/o Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">7</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+            <equal form="msg" site="crt" var="ion">OFF</equal>
+            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="msg" site="dso" var="mtr">BK</equal>
+          </check>
+          <mcr name="run">
+            <argv>7</argv>
+          </mcr>
+        </item>
+      </unit>
+      <unit id="unit_di" title="d[i|o][m|f]i" label="DeadHead between RP and Ir Flanges">
+        <item id="dimi" label="Run Tag 8 to 11 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
           </goal>
           <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
             <equal form="msg" site="crt" var="ion">OFF</equal>
             <equal form="data" site="crt" var="cps">8</equal>
             <equal form="msg" site="dsi" var="mtr">FW</equal>
@@ -43,11 +75,12 @@
             <argv>11</argv>
           </mcr>
         </item>
-        <item id="r8-12" label="Run Tag 8 to 12 w/o Inst">
+        <item id="difi" label="Run Tag 8 to 12 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
           <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
             <equal form="msg" site="crt" var="ion">OFF</equal>
             <equal form="data" site="crt" var="cps">8</equal>
             <equal form="msg" site="dsi" var="mtr">BK</equal>
@@ -56,30 +89,166 @@
             <argv>12</argv>
           </mcr>
         </item>
-        <item id="r3-1" label="Run Tag 3 to 1 w/o Inst">
+        <item id="domi" label="Run Tag 11 to 8 w/o Inst">
           <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="data" site="crt" var="cps">8</equal>
           </goal>
           <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
             <equal form="msg" site="crt" var="ion">OFF</equal>
-            <equal form="data" site="crt" var="cps">3</equal>
+            <equal form="data" site="crt" var="cps">11</equal>
           </check>
           <mcr name="run">
-            <argv>1</argv>
+            <argv>8</argv>
+          </mcr>
+        </item>
+        <item id="dofi" label="Run Tag 12 to 8 w/o Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">8</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+            <equal form="msg" site="crt" var="ion">OFF</equal>
+            <equal form="data" site="crt" var="cps">12</equal>
+            <equal form="msg" site="dsi" var="mtr">BK</equal>
+          </check>
+          <mcr name="run">
+            <argv>8</argv>
           </mcr>
         </item>
       </unit>
-      <unit id="unit_rp" title="rp[3-7]-[3-7]" label="Run among RP">
-        <item id="rp3-7" label="Run Tag 3 to 7">
-          <goal label="Cart is Destination?">
+      <unit id="unit_to" title="t[i|o][m|f]o" label="Transport between RP and Opt Flanges">
+        <item id="timo" label="Run Tag 7 to 9 w/Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">9</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+            <equal form="msg" site="crt" var="ion">ON</equal>
+            <equal form="data" site="crt" var="cps">7</equal>
+            <equal form="msg" site="dso" var="mtr">FW</equal>
+            <equal form="msg" site="dso" var="mrt">LOAD</equal>
+            <equal form="msg" site="dso" var="mis">OFF</equal>
+            <equal form="msg" site="dso" var="mhk">UNHK</equal>
+            <equal form="msg" site="dso" var="mjb">UP</equal>
+          </check>
+          <mcr name="run">
+            <argv>9</argv>
+          </mcr>
+        </item>
+        <item id="tifo" label="Run Tag 7 to 10 w/Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">10</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+            <equal form="msg" site="crt" var="ion">ON</equal>
+            <equal form="data" site="crt" var="cps">7</equal>
+            <equal form="msg" site="dso" var="mtr">BK</equal>
+            <equal form="msg" site="dso" var="fis">OFF</equal>
+            <equal form="msg" site="dso" var="fhk">UNHK</equal>
+            <equal form="msg" site="dso" var="fjb">UP</equal>
+          </check>
+          <mcr name="run">
+            <argv>10</argv>
+          </mcr>
+        </item>
+        <item id="tomo" label="Run Tag 9 to 7 w/Inst">
+          <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">7</equal>
           </goal>
-          <check label="CART ON TAG?">
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
             <equal form="msg" site="crt" var="ion">ON</equal>
-            <equal form="data" site="crt" var="cps">3</equal>
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="dso" var="mtr">BK</equal>
+            <equal form="msg" site="dso" var="mrt">LOAD</equal>
+            <equal form="msg" site="dso" var="fis">OFF</equal>
+            <equal form="msg" site="dso" var="fhk">UNHK</equal>
+            <equal form="msg" site="dso" var="fjb">UP</equal>
           </check>
           <mcr name="run">
             <argv>7</argv>
+          </mcr>
+        </item>
+        <item id="tofo" label="Run Tag 10 to 7 w/Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">7</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="ion">ON</equal>
+            <equal form="data" site="crt" var="cps">7</equal>
+            <equal form="msg" site="dso" var="mtr">BK</equal>
+          </check>
+          <mcr name="run">
+            <argv>7</argv>
+          </mcr>
+        </item>
+      </unit>
+      <unit id="unit_ti" title="t[i|o][m|f]i" label="Transport between RP and Ir Flanges">
+        <item id="timi" label="Run Tag 8 to 11 w/Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">11</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+            <equal form="msg" site="crt" var="ion">ON</equal>
+            <equal form="data" site="crt" var="cps">8</equal>
+            <equal form="msg" site="dsi" var="mtr">FW</equal>
+            <equal form="msg" site="dsi" var="mis">OFF</equal>
+            <equal form="msg" site="dsi" var="mhk">UNHK</equal>
+            <equal form="msg" site="dsi" var="mjb">UP</equal>
+          </check>
+          <mcr name="run">
+            <argv>11</argv>
+          </mcr>
+        </item>
+        <item id="tifi" label="Run Tag 8 to 12 w/Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">12</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+            <equal form="msg" site="crt" var="ion">ON</equal>
+            <equal form="data" site="crt" var="cps">8</equal>
+            <equal form="msg" site="dsi" var="mtr">BK</equal>
+            <equal form="msg" site="dsi" var="fis">OFF</equal>
+            <equal form="msg" site="dsi" var="fhk">UNHK</equal>
+            <equal form="msg" site="dsi" var="fjb">UP</equal>
+          </check>
+          <mcr name="run">
+            <argv>12</argv>
+          </mcr>
+        </item>
+        <item id="tomi" label="Run Tag 11 to 8 w/Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">7</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+            <equal form="msg" site="crt" var="ion">ON</equal>
+            <equal form="data" site="crt" var="cps">11</equal>
+            <equal form="msg" site="dsi" var="mtr">BK</equal>
+            <equal form="msg" site="dsi" var="mrt">LOAD</equal>
+            <equal form="msg" site="dsi" var="fis">OFF</equal>
+            <equal form="msg" site="dsi" var="fhk">UNHK</equal>
+            <equal form="msg" site="dsi" var="fjb">UP</equal>
+          </check>
+          <mcr name="run">
+            <argv>8</argv>
+          </mcr>
+        </item>
+        <item id="tofi" label="Run Tag 12 to 8 w/o Inst">
+          <goal label="Cart on Destination?">
+            <equal form="data" site="crt" var="cps">8</equal>
+          </goal>
+          <check label="CART on TAG?">
+            <equal form="msg" site="crt" var="ion">OFF</equal>
+            <equal form="data" site="crt" var="cps">12</equal>
+            <equal form="msg" site="dso" var="mtr">BK</equal>
+          </check>
+          <mcr name="run">
+            <argv>8</argv>
           </mcr>
         </item>
       </unit>
@@ -1203,44 +1372,6 @@
           </wait>
         </item>
       </unit>
-    </group>
-    <group id="g_run" caption="Transport Commands" rank="0">
-      <!--Run & Transer-->
-      <item id="runi" label="Run with interlock to Tag [1-12]">
-        <par_num label="1-12">1:12</par_num>
-        <select form="data" site="crt" var="cps">
-          <option val="8">
-            <mcr name="r08to">
-              <argv>$1</argv>
-            </mcr>
-          </option>
-          <option>
-            <mcr name="run">
-              <argv>$1</argv>
-            </mcr>
-          </option>
-        </select>
-      </item>
-      <item id="r08to" label="Leave IR from Tag 8 to [2-7]">
-        <par_num>1:12</par_num>
-        <goal label="Leave Cart and Transer Stored?">
-          <equal form="data" site="crt" var="cps">8</equal>
-        </goal>
-        <check label="CART CLEAR?">
-          <equal form="data" site="crt" var="cps">8</equal>
-          <equal form="msg" site="crt" var="ion">OFF</equal>
-        </check>
-        <exec site="crt" name="run">
-          <argv>$1</argv>
-        </exec>
-        <wait retry="5" label="Run start?">
-          <equal form="msg" var="run" site="crt">ON</equal>
-        </wait>
-        <mcr async="true" name="irts"/>
-        <wait retry="120" label="Run end?">
-          <equal form="msg" label="Running" site="crt" var="run">OFF</equal>
-        </wait>
-      </item>
     </group>
   </macro>
 </mdb>

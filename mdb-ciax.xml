@@ -136,7 +136,7 @@
     </group>
     <!--Compound Transport Commands-->
     <group id="g_ctr" caption="Compound Transport Commands" rank="2">
-      <unit id="unit_t2fo" title="t[i|o]fo" label="Run near RP and FIX.OPT">
+      <unit id="unit_t2fo" title="t[i|o]fo" label="Transport RP and FIX.OPT">
         <item id="tifo" label="Run Tag 7 to 10 w/Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
@@ -172,7 +172,7 @@
           </mcr>
         </item>
       </unit>
-      <unit id="unit_t2mo" title="t[i|o]mo" label="Run near RP and MOV.OPT">
+      <unit id="unit_t2mo" title="t[i|o]mo" label="Transport RP and MOV.OPT">
         <item id="timo" label="Run Tag 7 to 9 w/Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
@@ -210,7 +210,7 @@
           </mcr>
         </item>
       </unit>
-      <unit id="unit_t2fi" title="t[i|o]fi" label="Run near RP and FIX.IR">
+      <unit id="unit_t2fi" title="t[i|o]fi" label="Transport RP and FIX.IR">
         <item id="tifi" label="Run Tag 8 to 12 w/Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
@@ -246,7 +246,7 @@
           </mcr>
         </item>
       </unit>
-      <unit id="unit_t2mi" title="t[i|o]mi" label="Run near RP and MOV.IR">
+      <unit id="unit_t2mi" title="t[i|o]mi" label="Transport RP and MOV.IR">
         <item id="timi" label="Run Tag 8 to 11 w/Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
@@ -284,7 +284,7 @@
           </mcr>
         </item>
       </unit>
-      <unit id="unit_t2cs" title="t[i|o]cs" label="Run near RP and CAS">
+      <unit id="unit_t2cs" title="t[i|o]cs" label="Transport RP and CAS">
         <item id="tics" label="Run Tag 3 to 1 w/Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">1</equal>
@@ -321,7 +321,7 @@
     </group>
     <!--Compound Deadhead Commands-->
     <group id="g_cdh" caption="Compound Deadhead Commands" rank="2">
-      <unit id="unit_d2fo" title="d[i|o]fo" label="Run near RP and FIX.OPT">
+      <unit id="unit_d2fo" title="d[i|o]fo" label="Run RP and FIX.OPT">
         <item id="difo" label="Run Tag 7 to 10 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
@@ -351,7 +351,7 @@
           </mcr>
         </item>
       </unit>
-      <unit id="unit_d2mo" title="d[i|o]mo" label="Run near RP and MOV.OPT">
+      <unit id="unit_d2mo" title="d[i|o]mo" label="Run RP and MOV.OPT">
         <item id="dimo" label="Run Tag 7 to 9 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
@@ -381,7 +381,7 @@
           </mcr>
         </item>
       </unit>
-      <unit id="unit_d2fi" title="d[i|o]fi" label="Run near RP and FIX.IR">
+      <unit id="unit_d2fi" title="d[i|o]fi" label="Run RP and FIX.IR">
         <item id="difi" label="Run Tag 8 to 12 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
@@ -411,7 +411,7 @@
           </mcr>
         </item>
       </unit>
-      <unit id="unit_d2mi" title="d[i|o]mi" label="Run near RP and MOV.IR">
+      <unit id="unit_d2mi" title="d[i|o]mi" label="Run RP and MOV.IR">
         <item id="dimi" label="Run Tag 8 to 11 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
@@ -502,9 +502,9 @@
         </item>
       </unit>
     </group>
-    <!--Compound Attach Commands-->
+    <!--Compound Attach/Detach Commands-->
     <group id="g_atdt" caption="Compound Attach/Detach Commands" rank="2">
-      <unit id="unit_atfo" title="[a|d]tfo" label="FIX.OPT Attach/Detach">
+      <unit id="unit_atfo" title="[a|d]tfo" label="Attach/Detach FIX.OPT">
         <item id="atfo" label="Attach at FIX.OPT">
           <goal label="Instrument ON?">
             <equal form="msg" site="dso" var="fis">ON</equal>

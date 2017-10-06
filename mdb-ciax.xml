@@ -1,6 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro" port="55554">
+    <!--Move Instrument Commands-->
+    <group id="g_mvi" caption="Move Instrument Commands" rank="1">
+      <unit id="unit_set" title="s[f|m][i|o]" label="Inst Set to CAS">
+        <item id="sfo" label="Set Inst from FIX.OPT">
+          <goal label="Inst in position?">
+            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="msg" site="dts" var="cis">ON</equal>
+          </goal>
+          <mcr name="tfo2c"/>
+          <mcr name="atcs"/>
+        </item>
+        <item id="smo" label="Set Inst from MOV.OPT">
+          <goal label="Inst in position?">
+            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="msg" site="dts" var="cis">ON</equal>
+          </goal>
+          <mcr name="tmo2c"/>
+          <mcr name="atcs"/>
+        </item>
+        <item id="sfi" label="Set Inst from FIX.IR">
+          <goal label="Inst in position?">
+            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="msg" site="dts" var="cis">ON</equal>
+          </goal>
+          <mcr name="tfi2c"/>
+          <mcr name="atcs"/>
+        </item>
+        <item id="smi" label="Set Inst from MOV.IR">
+          <goal label="Inst in position?">
+            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="msg" site="dts" var="cis">ON</equal>
+          </goal>
+          <mcr name="tmi2c"/>
+          <mcr name="atcs"/>
+        </item>
+      </unit>
+      <unit id="unit_get" title="gf[i|o]" label="Inst Get at CAS">
+        <item id="gfo" label="Get Inst for FIX.OPT">
+          <goal label="Inst in position?">
+            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="msg" site="dts" var="cis">OFF</equal>
+          </goal>
+          <mcr name="ddpo"/>
+          <mcr name="dtcs"/>
+        </item>
+        <item id="gfi" label="Get Inst for FIX.IR">
+          <goal label="Inst in position?">
+            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="msg" site="dts" var="cis">OFF</equal>
+          </goal>
+          <mcr name="ddpi"/>
+          <mcr name="dtcs"/>
+        </item>
+      </unit>
+      <unit id="unit_home" title="h[f|m][i|o]" label="Inst Return to Home">
+        <item id="hfo" label="Home Inst to FIX.OPT">
+          <goal label="Inst in position?">
+            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="msg" site="dso" var="fis">ON</equal>
+          </goal>
+          <mcr name="tc2fo"/>
+          <mcr name="atfo"/>
+        </item>
+        <item id="hmo" label="Home Inst to MOV.OPT">
+          <goal label="Inst in position?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="dso" var="mis">ON</equal>
+          </goal>
+          <mcr name="tc2mo"/>
+          <mcr name="atmo"/>
+        </item>
+        <item id="hfi" label="Home Inst to FIX.IR">
+          <goal label="Inst in position?">
+            <equal form="data" site="crt" var="cps">12</equal>
+            <equal form="msg" site="dsi" var="fis">ON</equal>
+          </goal>
+          <mcr name="tc2fi"/>
+          <mcr name="atfi"/>
+        </item>
+        <item id="hmi" label="Home Inst to MOV.IR">
+          <goal label="Inst in position?">
+            <equal form="data" site="crt" var="cps">11</equal>
+            <equal form="msg" site="dsi" var="mis">ON</equal>
+          </goal>
+          <mcr name="tc2mi"/>
+          <mcr name="atmi"/>
+        </item>
+      </unit>
+      <!--Still incomplete-->
+      <unit id="unit_prep" title="p[f|m][i|o]2[f|m][i|o]" label="Inst Prep on Home">
+        <item id="pfo2mo" label="Inst Prep FIX.OPT to MOV.OPT">
+          <goal label="Inst in position?">
+            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="msg" site="dso" var="mis">OFF</equal>
+          </goal>
+          <mcr name="df2mo"/>
+          <mcr name="dtmo"/>
+        </item>
+        <item id="pmo2fo" label="Inst Prep MOV.OPT to FIX.OPT">
+          <goal label="Inst in position?">
+            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="msg" site="dso" var="fis">OFF</equal>
+          </goal>
+          <mcr name="dm2fo"/>
+          <mcr name="dtfo"/>
+        </item>
+      </unit>
+    </group>
     <!--Sequential Exclusive Run Commands-->
     <group id="g_ser" caption="Sequential Exclusive Run Commands" rank="1">
       <unit id="unit_rcfo" title="t[c2fo|fo2c]" label="Transport CS and FIX.OPT">
@@ -70,7 +178,7 @@
     </group>
     <!--Sequential Free Run Commands-->
     <group id="g_sfr" caption="Sequential Free Run Commands" rank="1">
-      <unit id="unit_rssf" title="d[f2m|f2m][o|i]" label="Run Same Side Flanges">
+      <unit id="unit_rssf" title="d[f2m|m2f][o|i]" label="Run Same Side Flanges">
         <item id="dm2fo" label="Run Tag 9 to 10 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>

@@ -9,6 +9,7 @@
             <equal form="data" site="crt" var="cps">1</equal>
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
+          <mcr name="dtfo"/>
           <mcr name="tfo2c"/>
           <mcr name="atcs"/>
         </item>
@@ -17,6 +18,7 @@
             <equal form="data" site="crt" var="cps">1</equal>
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
+          <mcr name="dtmo"/>
           <mcr name="tmo2c"/>
           <mcr name="atcs"/>
         </item>
@@ -25,6 +27,7 @@
             <equal form="data" site="crt" var="cps">1</equal>
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
+          <mcr name="dtfi"/>
           <mcr name="tfi2c"/>
           <mcr name="atcs"/>
         </item>
@@ -33,6 +36,7 @@
             <equal form="data" site="crt" var="cps">1</equal>
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
+          <mcr name="dtmi"/>
           <mcr name="tmi2c"/>
           <mcr name="atcs"/>
         </item>
@@ -1760,106 +1764,106 @@
           </goal>
           <mesg label="Clear the way?"/>
           <wait retry="5" label="Ready?">
-            <equal form="msg" var="rdy" site="crt">ON</equal>
+            <equal form="msg" site="crt" var="rdy">ON</equal>
           </wait>
           <exec site="crt" name="runf"/>
           <wait retry="5" label="Run start?">
-            <equal form="msg" var="run" site="crt">ON</equal>
+            <equal form="msg" site="crt" var="run">ON</equal>
           </wait>
           <wait retry="40" label="Run end?">
-            <equal form="msg" var="run" site="crt">OFF</equal>
+            <equal form="msg" site="crt" var="run">OFF</equal>
           </wait>
         </item>
         <item id="run" label="Run to Tag [1-12]">
           <par_num label="1-12">1:12</par_num>
           <goal label="On Destination Tag?">
-            <equal form="data" var="cps" site="crt">$1</equal>
+            <equal form="data" site="crt" var="cps">$1</equal>
           </goal>
           <check label="Ready?">
-            <equal form="msg" var="rdy" site="crt">ON</equal>
+            <equal form="msg" site="crt" var="rdy">ON</equal>
           </check>
           <exec site="crt" name="run">
             <argv>$1</argv>
           </exec>
           <wait retry="5" label="Run start?">
-            <equal form="msg" var="run" site="crt">ON</equal>
+            <equal form="msg" site="crt" var="run">ON</equal>
           </wait>
           <wait retry="120" label="Run end?">
-            <equal form="msg" var="run" site="crt">OFF</equal>
+            <equal form="msg" site="crt" var="run">OFF</equal>
           </wait>
         </item>
       </unit>
       <unit id="unit_lft" title="lft[0-3]" label="Cart Lift Commands">
         <item id="lft0" label="Lift Down">
           <goal label="Already Down?">
-            <equal form="msg" var="jlv" site="crt">D</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
           <check label="Ready?">
-            <equal form="msg" var="rdy" site="crt">ON</equal>
+            <equal form="msg" site="crt" var="rdy">ON</equal>
           </check>
           <exec site="crt" name="lftdw"/>
           <wait label="Jack start?" retry="5">
-            <equal form="msg" var="jak" site="crt">ON</equal>
+            <equal form="msg" site="crt" var="jak">ON</equal>
           </wait>
           <wait label="Jacking" retry="40">
-            <equal form="msg" var="jak" site="crt">OFF</equal>
+            <equal form="msg" site="crt" var="jak">OFF</equal>
           </wait>
         </item>
         <item id="lft1" label="Lift Up Level1">
           <goal label="Above Level D?">
-            <not form="msg" var="jlv" site="crt">D</not>
+            <not form="msg" site="crt" var="jlv">D</not>
           </goal>
           <check label="Ready?">
-            <equal form="msg" var="rdy" site="crt">ON</equal>
-            <equal form="msg" var="jlv" site="crt">D</equal>
+            <equal form="msg" site="crt" var="rdy">ON</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
           </check>
           <exec site="crt" name="lftup">
             <argv>1</argv>
           </exec>
           <wait label="Jack start?" retry="5">
-            <equal form="msg" var="jak" site="crt">ON</equal>
+            <equal form="msg" site="crt" var="jak">ON</equal>
           </wait>
           <wait label="Jacking" retry="40">
-            <equal form="msg" var="jak" site="crt">OFF</equal>
+            <equal form="msg" site="crt" var="jak">OFF</equal>
           </wait>
         </item>
         <item id="lft2" label="Lift Up Level1">
           <goal label="Above Level L?">
-            <not form="msg" var="jlv" site="crt">D</not>
-            <not form="msg" var="jlv" site="crt">L</not>
+            <not form="msg" site="crt" var="jlv">D</not>
+            <not form="msg" site="crt" var="jlv">L</not>
           </goal>
           <check label="Ready?">
-            <equal form="msg" var="rdy" site="crt">ON</equal>
-            <equal form="msg" var="jlv" site="crt">L</equal>
+            <equal form="msg" site="crt" var="rdy">ON</equal>
+            <equal form="msg" site="crt" var="jlv">L</equal>
           </check>
           <exec site="crt" name="lftup">
             <argv>2</argv>
           </exec>
           <wait label="Jack start?" retry="5">
-            <equal form="msg" var="jak" site="crt">ON</equal>
+            <equal form="msg" site="crt" var="jak">ON</equal>
           </wait>
           <wait label="Jacking" retry="40">
-            <equal form="msg" var="jak" site="crt">OFF</equal>
+            <equal form="msg" site="crt" var="jak">OFF</equal>
           </wait>
         </item>
         <item id="lft3" label="Lift Up Level1">
           <goal label="Above Level M?">
-            <not form="msg" var="jlv" site="crt">D</not>
-            <not form="msg" var="jlv" site="crt">L</not>
-            <not form="msg" var="jlv" site="crt">M</not>
+            <not form="msg" site="crt" var="jlv">D</not>
+            <not form="msg" site="crt" var="jlv">L</not>
+            <not form="msg" site="crt" var="jlv">M</not>
           </goal>
           <check label="Ready?">
-            <equal form="msg" var="rdy" site="crt">ON</equal>
-            <equal form="msg" var="jlv" site="crt">M</equal>
+            <equal form="msg" site="crt" var="rdy">ON</equal>
+            <equal form="msg" site="crt" var="jlv">M</equal>
           </check>
           <exec site="crt" name="lftup">
             <argv>3</argv>
           </exec>
           <wait label="Jack start?" retry="5">
-            <equal form="msg" var="jak" site="crt">ON</equal>
+            <equal form="msg" site="crt" var="jak">ON</equal>
           </wait>
           <wait label="Jacking" retry="40">
-            <equal form="msg" var="jak" site="crt">OFF</equal>
+            <equal form="msg" site="crt" var="jak">OFF</equal>
           </wait>
         </item>
       </unit>

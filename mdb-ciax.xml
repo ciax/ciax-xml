@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro" port="55554">
-    <!--Move Instrument Commands (Run & Attach/Detach)-->
-    <group id="g_mvi" caption="Move Instrument Commands" rank="1">
+    <!--Sequential Instrument Moving Commands-->
+    <group id="g_mvi" caption="Sequential Instrument Moving Commands" rank="1">
       <unit id="unit_home" title="h[f|m][i|o]" label="Move Inst from CAS to Home">
         <item id="hfo" label="Move Inst from CAS to FIX.OPT">
           <goal label="Inst in position?">
@@ -10,7 +10,8 @@
             <equal form="msg" site="dso" var="fis">ON</equal>
           </goal>
           <mcr name="dtcs"/>
-          <mcr name="tc2fo"/>
+          <mcr name="tocs"/>
+          <mcr name="tifo"/>
           <mcr name="atfo"/>
         </item>
         <item id="hmo" label="Move Inst from CAS to MOV.OPT">
@@ -19,7 +20,8 @@
             <equal form="msg" site="dso" var="mis">ON</equal>
           </goal>
           <mcr name="dtcs"/>
-          <mcr name="tc2mo"/>
+          <mcr name="tocs"/>
+          <mcr name="timo"/>
           <mcr name="atmo"/>
         </item>
         <item id="hfi" label="Move Inst from CAS to FIX.IR">
@@ -28,7 +30,8 @@
             <equal form="msg" site="dsi" var="fis">ON</equal>
           </goal>
           <mcr name="dtcs"/>
-          <mcr name="tc2fi"/>
+          <mcr name="tocs"/>
+          <mcr name="tifi"/>
           <mcr name="atfi"/>
         </item>
         <item id="hmi" label="Move Inst from CAS to MOV.IR">
@@ -37,7 +40,8 @@
             <equal form="msg" site="dsi" var="mis">ON</equal>
           </goal>
           <mcr name="dtcs"/>
-          <mcr name="tc2mi"/>
+          <mcr name="tocs"/>
+          <mcr name="timi"/>
           <mcr name="atmi"/>
         </item>
       </unit>
@@ -48,7 +52,8 @@
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
           <mcr name="dtfo"/>
-          <mcr name="tfo2c"/>
+          <mcr name="tofo"/>
+          <mcr name="tics"/>
           <mcr name="atcs"/>
         </item>
         <item id="cmo" label="Move Inst from MOV.OPT to CAS">
@@ -57,7 +62,8 @@
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
           <mcr name="dtmo"/>
-          <mcr name="tmo2c"/>
+          <mcr name="tomo"/>
+          <mcr name="tics"/>
           <mcr name="atcs"/>
         </item>
         <item id="cfi" label="Move Inst from FIX.IR to CAS">
@@ -66,7 +72,8 @@
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
           <mcr name="dtfi"/>
-          <mcr name="tfi2c"/>
+          <mcr name="tofi"/>
+          <mcr name="tics"/>
           <mcr name="atcs"/>
         </item>
         <item id="cmi" label="Move Inst from MOV.IR to CAS">
@@ -75,75 +82,9 @@
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
           <mcr name="dtmi"/>
-          <mcr name="tmi2c"/>
-          <mcr name="atcs"/>
-        </item>
-      </unit>
-    </group>
-    <!--Sequential Exclusive Run Commands-->
-    <group id="g_ser" caption="Sequential Exclusive Run Commands" rank="1">
-      <unit id="unit_rcfo" title="t[c2fo|fo2c]" label="Transport CS and FIX.OPT">
-        <item id="tc2fo" label="Transport Tag 1 to 10 w/Inst">
-          <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">10</equal>
-          </goal>
-          <mcr name="tocs"/>
-          <mcr name="tifo"/>
-        </item>
-        <item id="tfo2c" label="Transport Tag 10 to 1 w/Inst">
-          <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">1</equal>
-          </goal>
-          <mcr name="tofo"/>
-          <mcr name="tics"/>
-        </item>
-      </unit>
-      <unit id="unit_rcmo" title="t[c2mo|mo2c]" label="Transport CS and MOV.OPT">
-        <item id="tc2mo" label="Transport Tag 1 to 9 w/Inst">
-          <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">9</equal>
-          </goal>
-          <mcr name="tocs"/>
-          <mcr name="timo"/>
-        </item>
-        <item id="tmo2c" label="Transport Tag 9 to 1 w/Inst">
-          <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">1</equal>
-          </goal>
-          <mcr name="tomo"/>
-          <mcr name="tics"/>
-        </item>
-      </unit>
-      <unit id="unit_rcfi" title="t[c2fi|fi2c]" label="Transport CS and FIX.IR">
-        <item id="tc2fi" label="Transport Tag 1 to 12 w/Inst">
-          <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">12</equal>
-          </goal>
-          <mcr name="tocs"/>
-          <mcr name="tifi"/>
-        </item>
-        <item id="tfi2c" label="Transport Tag 12 to 1 w/Inst">
-          <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">1</equal>
-          </goal>
-          <mcr name="tofi"/>
-          <mcr name="tics"/>
-        </item>
-      </unit>
-      <unit id="unit_rcmi" title="t[c2mi|mi2c]" label="Transport CS and MOV.IR">
-        <item id="tc2mi" label="Transport Tag 1 to 11 w/Inst">
-          <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">11</equal>
-          </goal>
-          <mcr name="tocs"/>
-          <mcr name="timi"/>
-        </item>
-        <item id="tmi2c" label="Transport Tag 11 to 1 w/Inst">
-          <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">1</equal>
-          </goal>
           <mcr name="tomi"/>
           <mcr name="tics"/>
+          <mcr name="atcs"/>
         </item>
       </unit>
     </group>

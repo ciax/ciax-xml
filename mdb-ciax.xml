@@ -167,10 +167,10 @@
         </item>
       </unit>
     </group>
-    <!--Sequential Free Run Commands (Start Flange Base)-->
+    <!--Sequential Free Run Commands (End Flange Base)-->
     <group id="g_sfr" caption="Sequential Free Run Commands" rank="1">
       <unit id="unit_rssf" title="rs[f|m][o|i]" label="Run Same Side Flanges">
-        <item id="rsmo" label="Run Tag 9 to 10 w/o Inst">
+        <item id="rsfo" label="Run Tag 9 to 10 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
@@ -178,7 +178,7 @@
           <mcr name="stmo"/>
           <mcr name="rifo"/>
         </item>
-        <item id="rsfo" label="Run Tag 10 to 9 w/o Inst">
+        <item id="rsmo" label="Run Tag 10 to 9 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
           </goal>
@@ -186,7 +186,7 @@
           <mcr name="ldmo"/>
           <mcr name="rimo"/>
         </item>
-        <item id="rsmi" label="Run Tag 11 to 12 w/o Inst">
+        <item id="rsfi" label="Run Tag 11 to 12 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
@@ -194,7 +194,7 @@
           <mcr name="stmi"/>
           <mcr name="rifi"/>
         </item>
-        <item id="rsfi" label="Run Tag 12 to 11 w/o Inst">
+        <item id="rsmi" label="Run Tag 12 to 11 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
           </goal>
@@ -204,7 +204,7 @@
         </item>
       </unit>
       <unit id="unit_rxsf" title="rx[f|m][o|i]" label="Run Cross Side/Kind Flanges">
-        <item id="rxmo" label="Run Tag 9 to 12 w/o Inst">
+        <item id="rxfi" label="Run Tag 9 to 12 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
@@ -216,7 +216,7 @@
           </mcr>
           <mcr name="rifi"/>
         </item>
-        <item id="rxfi" label="Run Tag 12 to 9 w/o Inst">
+        <item id="rxmo" label="Run Tag 12 to 9 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
           </goal>
@@ -227,7 +227,7 @@
           </mcr>
           <mcr name="rimo"/>
         </item>
-        <item id="rxmi" label="Run Tag 11 to 10 w/o Inst">
+        <item id="rxfo" label="Run Tag 11 to 10 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
@@ -239,7 +239,7 @@
           </mcr>
           <mcr name="rifo"/>
         </item>
-        <item id="rxfo" label="Run Tag 10 to 11 w/o Inst">
+        <item id="rxmi" label="Run Tag 10 to 11 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
           </goal>
@@ -252,7 +252,7 @@
         </item>
       </unit>
       <unit id="unit_rksf" title="rk[f|m][o|i]" label="Run Same Kind Flanges">
-        <item id="rkfo" label="Run Tag 10 to 12 w/o Inst">
+        <item id="rkfi" label="Run Tag 10 to 12 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
@@ -263,7 +263,7 @@
           </mcr>
           <mcr name="rifi"/>
         </item>
-        <item id="rkfi" label="Run Tag 12 to 10 w/o Inst">
+        <item id="rkfo" label="Run Tag 12 to 10 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
@@ -274,7 +274,7 @@
           </mcr>
           <mcr name="rifo"/>
         </item>
-        <item id="rkmo" label="Run Tag 9 to 11 w/o Inst">
+        <item id="rkmi" label="Run Tag 9 to 11 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
           </goal>
@@ -286,7 +286,7 @@
           </mcr>
           <mcr name="rimi"/>
         </item>
-        <item id="rkmi" label="Run Tag 11 to 9 w/o Inst">
+        <item id="rkmo" label="Run Tag 11 to 9 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
           </goal>
@@ -791,7 +791,7 @@
         </item>
         <item id="rofo" label="Run Tag 10 to 7 w/o Inst">
           <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">7</equal>
+            <not form="data" site="crt" var="cps">10</not>
           </goal>
           <check label="CART on TAG?">
             <equal form="msg" site="crt" var="jlv">D</equal>
@@ -821,7 +821,7 @@
         </item>
         <item id="romo" label="Run Tag 9 to 7 w/o Inst">
           <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">7</equal>
+            <not form="data" site="crt" var="cps">9</not>
           </goal>
           <check label="CART on TAG?">
             <equal form="msg" site="crt" var="jlv">D</equal>
@@ -851,7 +851,7 @@
         </item>
         <item id="rofi" label="Run Tag 12 to 8 w/o Inst">
           <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">8</equal>
+            <not form="data" site="crt" var="cps">12</not>
           </goal>
           <check label="CART on TAG?">
             <equal form="msg" site="crt" var="jlv">D</equal>
@@ -881,7 +881,7 @@
         </item>
         <item id="romi" label="Run Tag 11 to 8 w/o Inst">
           <goal label="Cart on Destination?">
-            <equal form="data" site="crt" var="cps">8</equal>
+            <not form="data" site="crt" var="cps">11</not>
           </goal>
           <check label="CART on TAG?">
             <equal form="msg" site="crt" var="jlv">D</equal>
@@ -1042,6 +1042,7 @@
             <equal form="msg" site="dso" var="rot">LOAD</equal>
           </goal>
           <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">0</not>
             <not form="data" site="crt" var="cps">10</not>
             <not form="data" site="crt" var="cps">9</not>
           </check>
@@ -1053,6 +1054,7 @@
             <equal form="msg" site="dso" var="mtr">BK</equal>
           </goal>
           <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">0</not>
             <not form="data" site="crt" var="cps">10</not>
             <not form="data" site="crt" var="cps">9</not>
           </check>
@@ -1067,6 +1069,7 @@
             <equal form="msg" site="dsi" var="rot">LOAD</equal>
           </goal>
           <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">0</not>
             <not form="data" site="crt" var="cps">12</not>
             <not form="data" site="crt" var="cps">11</not>
           </check>
@@ -1078,6 +1081,7 @@
             <equal form="msg" site="dsi" var="mtr">BK</equal>
           </goal>
           <check label="CART CLEAR?">
+            <not form="data" site="crt" var="cps">0</not>
             <not form="data" site="crt" var="cps">12</not>
             <not form="data" site="crt" var="cps">11</not>
           </check>

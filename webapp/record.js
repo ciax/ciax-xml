@@ -101,7 +101,7 @@ function make_step(step) {
     if (cond['skip']) {
       html.push('<span class="skip">(Ignored)</skip>');
     } else {
-      if (step.type == 'goal' && res == false) res = 'warn';
+      if ((step.type == 'goal' || step.type == 'bypass' ) && res == false) res = 'warn';
       html.push('<span class="' + res + '" ');
       html.push(_graphlink(cond.site, cond['var'], step.time));
       html.push('> (' + cond.real + ')</span>');

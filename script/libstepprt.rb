@@ -119,7 +119,7 @@ module CIAX
       # Branched functions (instead of case/when semantics)
       def _init_title_list
         @title_list = {
-          mesg: ['Mesg', 5], bypass: ['In position?', 6, 'ignore if satisfied'],
+          mesg: ['Mesg', 5], bypass: ['Bypass?', 6, 'skip if satisfied'],
           goal: ['Done?', 6, 'skip if satisfied'],
           wait: ['Waiting', 6], upd: ['Update', 10, "[#{self[:site]}]"],
           check: ['Check', 6, 'interlock'], verify: ['Verify', 6, 'at the end'],

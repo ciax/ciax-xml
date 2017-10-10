@@ -149,7 +149,7 @@ var {
 .upd, .cfg {
     color :lightgreen;
 }
-.check, .goal, .wait, .sleep, .verify {
+.check, .goal, .wait, .sleep, .verify, .bypass {
     color : cyan;
 }
 .stop {

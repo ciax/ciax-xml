@@ -70,6 +70,7 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:group ref="mdb:parameter" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element ref="mdb:bypass" minOccurs="0" maxOccurs="1"/>
         <xsd:element ref="mdb:goal" minOccurs="0" maxOccurs="1"/>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="mdb:select"/>
@@ -132,6 +133,14 @@
     </xsd:choice>
   </xsd:group>
   <!-- Condition Elements -->
+  <xsd:element name="bypass">
+    <xsd:complexType>
+      <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+        <xsd:group ref="mdb:conditions"/>
+      </xsd:sequence>
+      <xsd:attributeGroup ref="mdb:attr_stat"/>
+    </xsd:complexType>
+  </xsd:element>
   <xsd:element name="goal">
     <xsd:complexType>
       <xsd:sequence minOccurs="0" maxOccurs="unbounded">

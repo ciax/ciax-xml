@@ -25,8 +25,19 @@ module CIAX
       #   o   |   x   |  false
       #   x   |   o   |  true (Entering)
       #   x   |   x   |  true (Entering)
+
+      # Bypass if condition is satisfied (return false)
+      # Vars in conditions are not related in this sequence
+      def _bypass(_e, step, mstat)
+        return true unless step.skip?
+        mstat[:result] = 'bypass'
+        false
+      end
+
+      # Enter if condition is unsatisfied (return true)
+      # Vars in conditions are changed in this sequence
+      # It is used for multiple retry function
       def _goal(_e, step, mstat)
-        # Entering
         return true unless step.skip?
         return true if step.dummy && @qry.query(%w(pass enter), step)
         mstat[:result] = 'skipped'

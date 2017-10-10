@@ -304,13 +304,13 @@
     <group id="g_atdt" caption="Sequential Attach/Detach Commands" rank="1">
       <unit id="unit_atfo" title="[a|d]tfo" label="Attach/Detach FIX.OPT">
         <item id="atfo" label="Attach at FIX.OPT">
+          <bypass label="CART ON FIX.OPT?">
+            <not form="data" site="crt" var="cps">10</not>
+          </bypass>
           <goal label="Instrument ON?">
             <equal form="msg" site="dso" var="fis">ON</equal>
             <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
-          <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">10</equal>
-          </check>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="lft3"/>
@@ -318,14 +318,13 @@
           <mcr name="lft0"/>
         </item>
         <item id="dtfo" label="Detach at FIX.OPT">
+          <bypass label="CART ON FIX.OPT?">
+            <not form="data" site="crt" var="cps">10</not>
+          </bypass>
           <goal label="Instrument OFF?">
             <equal form="msg" site="dso" var="fis">OFF</equal>
             <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
-          <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">10</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
-          </check>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="lft3"/>
@@ -335,13 +334,13 @@
       </unit>
       <unit id="unit_atmo" title="[a|d]tmo" label="Attach/Detach MOV.OPT">
         <item id="atmo" label="Attach at MOV.OPT">
+          <bypass label="CART ON MOV.OPT?">
+            <not form="data" site="crt" var="cps">9</not>
+          </bypass>
           <goal label="Instrument ON?">
             <equal form="msg" site="dso" var="mis">ON</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
-          <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">9</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
-          </check>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="lft3"/>
@@ -349,14 +348,13 @@
           <mcr name="lft0"/>
         </item>
         <item id="dtmo" label="Detach at MOV.OPT">
+          <bypass label="CART ON MOV.OPT?">
+            <not form="data" site="crt" var="cps">9</not>
+          </bypass>
           <goal label="Instrument OFF?">
             <equal form="msg" site="dso" var="mis">OFF</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
-          <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">9</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
-          </check>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="lft3"/>
@@ -366,13 +364,13 @@
       </unit>
       <unit id="unit_atfi" title="[a|d]tfi" label="Attach/Detach FIX.IR">
         <item id="atfi" label="Attach at FIX.IR">
+          <bypass label="CART ON FIX.IR?">
+            <not form="data" site="crt" var="cps">12</not>
+          </bypass>
           <goal label="Instrument ON?">
             <equal form="msg" site="dsi" var="fis">ON</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
-          <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">12</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
-          </check>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="lft3"/>
@@ -380,14 +378,13 @@
           <mcr name="lft0"/>
         </item>
         <item id="dtfi" label="Detach at FIX.IR">
+          <bypass label="CART ON FIX.IR?">
+            <not form="data" site="crt" var="cps">12</not>
+          </bypass>
           <goal label="Instrument OFF?">
             <equal form="msg" site="dsi" var="fis">OFF</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
-          <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">12</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
-          </check>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="lft3"/>
@@ -397,13 +394,13 @@
       </unit>
       <unit id="unit_atmi" title="[a|d]tmi" label="Attach/Detach MOV.IR">
         <item id="atmi" label="Attach at MOV.IR">
+          <bypass label="CART ON MOV.IR?">
+            <not form="data" site="crt" var="cps">11</not>
+          </bypass>
           <goal label="Instrument ON?">
             <equal form="msg" site="dsi" var="mis">ON</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
-          <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">11</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
-          </check>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="lft3"/>
@@ -411,14 +408,13 @@
           <mcr name="lft0"/>
         </item>
         <item id="dtmi" label="Detach at MOV.IR">
+          <bypass label="CART ON MOV.IR?">
+            <not form="data" site="crt" var="cps">11</not>
+          </bypass>
           <goal label="Instrument OFF?">
             <equal form="msg" site="dsi" var="mis">OFF</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
-          <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">11</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
-          </check>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="lft3"/>
@@ -428,13 +424,13 @@
       </unit>
       <unit id="unit_atcs" title="[a|d]tcs" label="Attach/Detach CAS">
         <item id="atcs" label="Attach at CAS">
+          <bypass label="CART ON CAS?">
+            <not form="data" site="crt" var="cps">1</not>
+          </bypass>
           <goal label="Instrument ON?">
             <equal form="msg" site="dts" var="cis">ON</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
-          <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">1</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
-          </check>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="adj4"/>
@@ -443,14 +439,13 @@
           <mcr name="lft0"/>
         </item>
         <item id="dtcs" label="Detach at CAS">
+          <bypass label="CART ON CAS?">
+            <not form="data" site="crt" var="cps">1</not>
+          </bypass>
           <goal label="Instrument OFF?">
             <equal form="msg" site="dts" var="cis">OFF</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
+            <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
-          <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">1</equal>
-            <equal form="msg" site="crt" var="jlv">H</equal>
-          </check>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="adj0"/>

@@ -68,7 +68,7 @@ module CIAX
 
       def _step_by_name(e1, atrb)
         case e1.name
-        when 'check', 'wait', 'goal'
+        when 'check', 'wait', 'goal', 'bypass'
           _make_condition(e1, atrb)
         when 'cfg', 'exec', 'mcr'
           atrb[:args] = _get_cmd(e1)

@@ -47,7 +47,7 @@
             <equal form="data" site="crt" var="cps">1</equal>
             <equal form="msg" site="dts" var="cis">OFF</equal>
           </goal>
-          <mcr name="ddpo"/>
+          <mcr name="rdpo"/>
           <mcr name="dtcs"/>
         </item>
         <item id="gfi" label="Get Inst for FIX.IR">
@@ -55,7 +55,7 @@
             <equal form="data" site="crt" var="cps">1</equal>
             <equal form="msg" site="dts" var="cis">OFF</equal>
           </goal>
-          <mcr name="ddpi"/>
+          <mcr name="rdpi"/>
           <mcr name="dtcs"/>
         </item>
       </unit>
@@ -100,7 +100,7 @@
             <equal form="data" site="crt" var="cps">9</equal>
             <equal form="msg" site="dso" var="mis">OFF</equal>
           </goal>
-          <mcr name="df2mo"/>
+          <mcr name="rf2mo"/>
           <mcr name="dtmo"/>
         </item>
         <item id="pmo2fo" label="Inst Prep MOV.OPT to FIX.OPT">
@@ -108,7 +108,7 @@
             <equal form="data" site="crt" var="cps">10</equal>
             <equal form="msg" site="dso" var="fis">OFF</equal>
           </goal>
-          <mcr name="dm2fo"/>
+          <mcr name="rm2fo"/>
           <mcr name="dtfo"/>
         </item>
       </unit>
@@ -182,134 +182,134 @@
     </group>
     <!--Sequential Free Run Commands-->
     <group id="g_sfr" caption="Sequential Free Run Commands" rank="1">
-      <unit id="unit_rssf" title="d[f2m|m2f][o|i]" label="Run Same Side Flanges">
-        <item id="dm2fo" label="Run Tag 9 to 10 w/o Inst">
+      <unit id="unit_rssf" title="r[f2m|m2f][o|i]" label="Run Same Side Flanges">
+        <item id="rm2fo" label="Run Tag 9 to 10 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
-          <mcr name="domo"/>
+          <mcr name="romo"/>
           <mcr name="stmo"/>
-          <mcr name="difo"/>
+          <mcr name="rifo"/>
         </item>
-        <item id="df2mo" label="Run Tag 10 to 9 w/o Inst">
+        <item id="rf2mo" label="Run Tag 10 to 9 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
           </goal>
-          <mcr name="dofo"/>
+          <mcr name="rofo"/>
           <mcr name="ldmo"/>
-          <mcr name="dimo"/>
+          <mcr name="rimo"/>
         </item>
-        <item id="dm2fi" label="Run Tag 11 to 12 w/o Inst">
+        <item id="rm2fi" label="Run Tag 11 to 12 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
-          <mcr name="domi"/>
+          <mcr name="romi"/>
           <mcr name="stmi"/>
-          <mcr name="difi"/>
+          <mcr name="rifi"/>
         </item>
-        <item id="df2mi" label="Run Tag 12 to 11 w/o Inst">
+        <item id="rf2mi" label="Run Tag 12 to 11 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
           </goal>
-          <mcr name="dofi"/>
+          <mcr name="rofi"/>
           <mcr name="ldmi"/>
-          <mcr name="dimi"/>
+          <mcr name="rimi"/>
         </item>
       </unit>
-      <unit id="unit_rxsf" title="dx[f|m][o|i]" label="Run Cross Side/Kind Flanges">
-        <item id="dxmo" label="Run Tag 9 to 12 w/o Inst">
+      <unit id="unit_rxsf" title="rx[f|m][o|i]" label="Run Cross Side/Kind Flanges">
+        <item id="rxmo" label="Run Tag 9 to 12 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
           <mcr name="stmi" async="true"/>
-          <mcr name="domo"/>
+          <mcr name="romo"/>
           <mcr name="stmo" async="true"/>
           <mcr name="run">
             <argv>8</argv>
           </mcr>
-          <mcr name="difi"/>
+          <mcr name="rifi"/>
         </item>
-        <item id="dxfi" label="Run Tag 12 to 9 w/o Inst">
+        <item id="rxfi" label="Run Tag 12 to 9 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
           </goal>
           <mcr name="ldmo" async="true"/>
-          <mcr name="dofi"/>
+          <mcr name="rofi"/>
           <mcr name="run">
             <argv>7</argv>
           </mcr>
-          <mcr name="dimo"/>
+          <mcr name="rimo"/>
         </item>
-        <item id="dxmi" label="Run Tag 11 to 10 w/o Inst">
+        <item id="rxmi" label="Run Tag 11 to 10 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
           <mcr name="stmo" async="true"/>
-          <mcr name="domi"/>
+          <mcr name="romi"/>
           <mcr name="stmi" async="true"/>
           <mcr name="run">
             <argv>7</argv>
           </mcr>
-          <mcr name="difo"/>
+          <mcr name="rifo"/>
         </item>
-        <item id="dxfo" label="Run Tag 10 to 11 w/o Inst">
+        <item id="rxfo" label="Run Tag 10 to 11 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
           </goal>
           <mcr name="ldmi" async="true"/>
-          <mcr name="dofo"/>
+          <mcr name="rofo"/>
           <mcr name="run">
             <argv>8</argv>
           </mcr>
-          <mcr name="dimi"/>
+          <mcr name="rimi"/>
         </item>
       </unit>
-      <unit id="unit_rskf" title="d[f|m][o2i|i2o]" label="Run Same Kind Flanges">
-        <item id="dfo2i" label="Run Tag 10 to 12 w/o Inst">
+      <unit id="unit_rskf" title="r[f|m][o2i|i2o]" label="Run Same Kind Flanges">
+        <item id="rfo2i" label="Run Tag 10 to 12 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
           <mcr name="stmi" async="true"/>
-          <mcr name="dofo"/>
+          <mcr name="rofo"/>
           <mcr name="run">
             <argv>8</argv>
           </mcr>
-          <mcr name="difi"/>
+          <mcr name="rifi"/>
         </item>
-        <item id="dfi2o" label="Run Tag 12 to 10 w/o Inst">
+        <item id="rfi2o" label="Run Tag 12 to 10 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
           <mcr name="stmo" async="true"/>
-          <mcr name="dofi"/>
+          <mcr name="rofi"/>
           <mcr name="run">
             <argv>7</argv>
           </mcr>
-          <mcr name="difo"/>
+          <mcr name="rifo"/>
         </item>
-        <item id="dmo2i" label="Run Tag 9 to 11 w/o Inst">
+        <item id="rmo2i" label="Run Tag 9 to 11 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
           </goal>
           <mcr name="ldmi" async="true"/>
-          <mcr name="domo"/>
+          <mcr name="romo"/>
           <mcr name="stmo" async="true"/>
           <mcr name="run">
             <argv>8</argv>
           </mcr>
-          <mcr name="dimi"/>
+          <mcr name="rimi"/>
         </item>
-        <item id="dmi2o" label="Run Tag 11 to 9 w/o Inst">
+        <item id="rmi2o" label="Run Tag 11 to 9 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
           </goal>
           <mcr name="ldmo" async="true"/>
-          <mcr name="domi"/>
+          <mcr name="romi"/>
           <mcr name="stmi" async="true"/>
           <mcr name="run">
             <argv>7</argv>
           </mcr>
-          <mcr name="dimo"/>
+          <mcr name="rimo"/>
         </item>
       </unit>
     </group>
@@ -539,8 +539,8 @@
           </mcr>
         </item>
       </unit>
-      <unit id="unit_rdo" title="d[dp|rt]o" label="Depart/Return OPT w/o Load">
-        <item id="ddpo" label="Run Tag 10 to 1 w/o Load">
+      <unit id="unit_rdo" title="r[dp|rt]o" label="Depart/Return OPT w/o Load">
+        <item id="rdpo" label="Run Tag 10 to 1 w/o Load">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">1</equal>
           </goal>
@@ -554,7 +554,7 @@
             <argv>1</argv>
           </mcr>
         </item>
-        <item id="drto" label="Run Tag 1 to 10 w/o Load">
+        <item id="rrto" label="Run Tag 1 to 10 w/o Load">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
@@ -569,8 +569,8 @@
           </mcr>
         </item>
       </unit>
-      <unit id="unit_rdi" title="d[dp|rt]i" label="Depart/Return IR w/o Load">
-        <item id="ddpi" label="Run Tag 12 to 1 w/o Load">
+      <unit id="unit_rdi" title="r[dp|rt]i" label="Depart/Return IR w/o Load">
+        <item id="rdpi" label="Run Tag 12 to 1 w/o Load">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">1</equal>
           </goal>
@@ -584,7 +584,7 @@
             <argv>1</argv>
           </mcr>
         </item>
-        <item id="drti" label="Run Tag 1 to 12 w/o Load">
+        <item id="rrti" label="Run Tag 1 to 12 w/o Load">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
@@ -785,10 +785,10 @@
         </item>
       </unit>
     </group>
-    <!--Compound Deadhead Commands-->
-    <group id="g_cdh" caption="Compound Deadhead Commands" rank="2">
-      <unit id="unit_d2fo" title="d[i|o]fo" label="Run ORP and FIX.OPT">
-        <item id="difo" label="Run Tag 7 to 10 w/o Inst">
+    <!--Compound Run Commands-->
+    <group id="g_cdh" caption="Compound Run Commands" rank="2">
+      <unit id="unit_r2fo" title="r[i|o]fo" label="Run ORP and FIX.OPT">
+        <item id="rifo" label="Run Tag 7 to 10 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
@@ -802,7 +802,7 @@
             <argv>10</argv>
           </mcr>
         </item>
-        <item id="dofo" label="Run Tag 10 to 7 w/o Inst">
+        <item id="rofo" label="Run Tag 10 to 7 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">7</equal>
           </goal>
@@ -817,8 +817,8 @@
           </mcr>
         </item>
       </unit>
-      <unit id="unit_d2mo" title="d[i|o]mo" label="Run ORP and MOV.OPT">
-        <item id="dimo" label="Run Tag 7 to 9 w/o Inst">
+      <unit id="unit_r2mo" title="r[i|o]mo" label="Run ORP and MOV.OPT">
+        <item id="rimo" label="Run Tag 7 to 9 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
           </goal>
@@ -832,7 +832,7 @@
             <argv>9</argv>
           </mcr>
         </item>
-        <item id="domo" label="Run Tag 9 to 7 w/o Inst">
+        <item id="romo" label="Run Tag 9 to 7 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">7</equal>
           </goal>
@@ -847,8 +847,8 @@
           </mcr>
         </item>
       </unit>
-      <unit id="unit_d2fi" title="d[i|o]fi" label="Run IRP and FIX.IR">
-        <item id="difi" label="Run Tag 8 to 12 w/o Inst">
+      <unit id="unit_r2fi" title="r[i|o]fi" label="Run IRP and FIX.IR">
+        <item id="rifi" label="Run Tag 8 to 12 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
@@ -862,7 +862,7 @@
             <argv>12</argv>
           </mcr>
         </item>
-        <item id="dofi" label="Run Tag 12 to 8 w/o Inst">
+        <item id="rofi" label="Run Tag 12 to 8 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">8</equal>
           </goal>
@@ -877,8 +877,8 @@
           </mcr>
         </item>
       </unit>
-      <unit id="unit_d2mi" title="d[i|o]mi" label="Run IRP and MOV.IR">
-        <item id="dimi" label="Run Tag 8 to 11 w/o Inst">
+      <unit id="unit_r2mi" title="r[i|o]mi" label="Run IRP and MOV.IR">
+        <item id="rimi" label="Run Tag 8 to 11 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
           </goal>
@@ -892,7 +892,7 @@
             <argv>11</argv>
           </mcr>
         </item>
-        <item id="domi" label="Run Tag 11 to 8 w/o Inst">
+        <item id="romi" label="Run Tag 11 to 8 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">8</equal>
           </goal>

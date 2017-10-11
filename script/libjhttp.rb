@@ -22,8 +22,8 @@ module CIAX
       url = file_url(tag)
       open(url) do |f|
         verbose { "Loading url [#{url}](#{f.size})" }
-        json_str = f.read
-        return replace(jread(json_str)) unless json_str.empty?
+        jstr = f.read
+        return replace(jread(jstr)) unless jstr.empty?
       end
       warning(" -- json url file (#{url}) is empty at loading")
       self

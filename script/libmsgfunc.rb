@@ -21,19 +21,20 @@ module CIAX
       eval('"' + str + '"')
     end
 
-    # variable keys of db is String
+    # variable keys of db will be converted to String
     # other fixed keys are Symbol
-    def j2h(json_str = nil)
-      res = JSON.parse(json_str, symbolize_names: true)
-      if res.is_a? Hash
-        res.values.each do |val|
-          next unless val.is_a? Hash
-          sv = {}
-          val.each { |k, v| sv[k.to_s] = v }
-          val.replace sv
-        end
+    def key2str(hash)
+      return hash unless hash.is_a? Hash
+      hash.each_value.select { |h| h.is_a? Hash }.each do |subh|
+        sv = {}
+        subh.each { |k, v| sv[k.to_s] = v }
+        subh.replace sv
       end
-      res
+      hash
+    end
+
+    def j2h(jstr = nil)
+      key2str(JSON.parse(jstr, symbolize_names: true))
     rescue JSON::ParserError
       usr_err('NOT JSON')
     end

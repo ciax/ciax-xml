@@ -52,6 +52,7 @@ module CIAX
       def _init_by_type(cnd, h)
         case cnd[:type]
         when 'onchange'
+          nil
         when 'compare'
           h[:vals] = []
         else

@@ -30,11 +30,9 @@ module CIAX
 
     # return Dbi
     def get(id)
-      if @displist.valid?(id)
-        _get_cache(id) || _get_db(id) { |docs| doc_to_db(docs.get(id)) }
-      else
+      @displist.valid?(id) ||
         raise(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s)
-      end
+      _get_cache(id) || _get_db(id) { |docs| doc_to_db(docs.get(id)) }
     end
 
     private

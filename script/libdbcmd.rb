@@ -63,7 +63,7 @@ module CIAX
       uid = e0.attr2item(@units)
       @grps[gid].get(:units) { [] } << uid
       e0.each do |e1|
-        id, itm = _add_item(e1, gid)
+        id = _add_item(e1, gid).first
         @units[uid].get(:members) { [] } << id
       end
     end

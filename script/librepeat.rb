@@ -11,15 +11,14 @@ module CIAX
     end
 
     def each(e0)
-      if e0
-        e0.each do |e1|
-          if /repeat.*/ =~ e1.name
-            repeat(e1) do
-              each(e1) { |e2| yield e2 }
-            end
-          else
-            yield e1
+      return unless e0
+      e0.each do |e1|
+        if /repeat.*/ =~ e1.name
+          repeat(e1) do
+            each(e1) { |e2| yield e2 }
           end
+        else
+          yield e1
         end
       end
     end

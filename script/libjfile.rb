@@ -31,22 +31,24 @@ module CIAX
     end
 
     def load(tag = nil)
-      json_str = _read_json(tag)
+      jstr = _read_json(tag)
       verbose { "File Loading #{@cfile}" }
-      if json_str.empty?
+      if jstr.empty?
         verbose { " -- json file (#{@cfile}) is empty at loading" }
         return self
       end
-      _check_load(json_str) && jmerge(json_str)
+      _check_load(jstr) && jmerge(jstr)
       self
     end
 
     def save_key(keylist, tag = nil)
       tag ||= (_tag_list_.map(&:to_i).max + 1)
       # id is tag, this is Mark's request
-      json_str = pick(keylist, time: self[:time], id: self[:id], ver: self[:ver]).to_j
+      jstr = pick(
+        keylist, time: self[:time], id: self[:id], ver: self[:ver]
+      ).to_j
       msg("File Saving for [#{tag}]")
-      _write_json(json_str, tag)
+      _write_json(jstr, tag)
     end
 
     def mklink(tag = 'latest')
@@ -63,8 +65,8 @@ module CIAX
 
     # Version check, no read if different
     # (otherwise old version number remain as long as the file exists)
-    def _check_load(json_str)
-      inc = j2h(json_str)[:ver]
+    def _check_load(jstr)
+      inc = j2h(jstr)[:ver]
       org = self[:ver]
       return true if inc == org
       warning("File version mismatch <#{inc}> for [#{org}]")
@@ -83,13 +85,13 @@ module CIAX
       end.sort
     end
 
-    def _write_json(json_str, tag = nil)
-      verbose { " -- json data (#{json_str}) is empty at saving" } if json_str.empty?
+    def _write_json(jstr, tag = nil)
+      verbose(jstr.empty?) { " -- json data (#{jstr}) is empty at saving" }
       verbose(@thread != Thread.current) { 'File Saving from Multiple Threads' }
       @cfile = _file_name(tag)
       open(@jsondir + @cfile, 'w') do |f|
         f.flock(::File::LOCK_EX)
-        f << json_str
+        f << jstr
         verbose { "File [#{@cfile}](#{f.size}) is Saved" }
       end
       self

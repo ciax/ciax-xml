@@ -40,14 +40,14 @@ module CIAX
     end
 
     # Overwrite data
-    def jread(json_str = nil)
-      inp = json_str || gets(nil) || usr_err("No data in file(#{ARGV})")
+    def jread(jstr = nil)
+      inp = jstr || gets(nil) || usr_err("No data in file(#{ARGV})")
       j2h(inp)
     end
 
     # Merge data with setting sub structures
-    def jmerge(json_str = nil)
-      deep_update(jread(json_str))
+    def jmerge(jstr = nil)
+      deep_update(jread(jstr))
     end
 
     private

@@ -1939,40 +1939,40 @@
             <equal form="msg" site="crt" var="ist">FOCAS</equal>
             <equal form="msg" site="dts" var="iid">FOCAS</equal>
           </goal>
-          <exec site="crt" name="focas"/>
-          <exec site="dts" name="focas"/>
+          <cfg site="crt" name="focas"/>
+          <cfg site="dts" name="focas"/>
         </item>
         <item id="moircs" label="Assign Current Inst to MOIRCS">
           <goal label="Assigned?">
             <equal form="msg" site="crt" var="ist">MOIRCS</equal>
             <equal form="msg" site="dts" var="iid">MOIRCS</equal>
           </goal>
-          <exec site="crt" name="moircs"/>
-          <exec site="dts" name="moircs"/>
+          <cfg site="crt" name="moircs"/>
+          <cfg site="dts" name="moircs"/>
         </item>
         <item id="comics" label="Assign Current Inst to COMICS">
           <goal label="Assigned?">
             <equal form="msg" site="crt" var="ist">COMICS</equal>
             <equal form="msg" site="dts" var="iid">COMICS</equal>
           </goal>
-          <exec site="crt" name="comics"/>
-          <exec site="dts" name="comics"/>
+          <cfg site="crt" name="comics"/>
+          <cfg site="dts" name="comics"/>
         </item>
         <item id="k3d" label="Assign Current Inst to Kyoto 3D">
           <goal label="Assigned?">
             <equal form="msg" site="crt" var="ist">MC-BOX</equal>
             <equal form="msg" site="dts" var="iid">MC-BOX</equal>
           </goal>
-          <exec site="crt" name="mc-box"/>
-          <exec site="dts" name="mc-box"/>
+          <cfg site="crt" name="mc-box"/>
+          <cfg site="dts" name="mc-box"/>
         </item>
       </unit>
       <unit id="unit_upd" label="Update All Devices">
         <item id="upd" label="Update All Devices">
-          <exec site="dts" name="upd"/>
-          <exec site="crt" name="upd"/>
-          <exec site="dso" name="upd"/>
-          <exec site="dsi" name="upd"/>
+          <upd site="dts" name="upd"/>
+          <upd site="crt" name="upd"/>
+          <upd site="dso" name="upd"/>
+          <upd site="dsi" name="upd"/>
         </item>
       </unit>
     </group>

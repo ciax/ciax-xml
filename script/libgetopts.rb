@@ -32,9 +32,9 @@ module CIAX
     end
 
     # Conbination(for macro)
-    # -ce: drive + client for device site
-    # -cs: test + server + client for device site
-    # -ces: drive + server + client for device site
+    # -e:  with device server
+    # -c:  client for macro server
+    # -ce: client for device server
     def sub_opt
       opt = dup
       %i(e s).each { |k| opt.delete(k) } if cl?

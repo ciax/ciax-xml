@@ -88,16 +88,13 @@ module CIAX
     end
 
     def _use_cache?
-      if ENV['NOCACHE']
-        verbose { "#{@type}/Cache ENV['NOCACHE'] is set" }
-      elsif !test('e', @marfile)
-        verbose { "#{@type}/Cache MAR file(#{@base}) not exist" }
-      elsif test('>', @latest, @marfile)
-        verbose { "#{@type}/Cache File(#{@latest}) is newer than #{@marfile}" }
-      else
-        verbose { "#{@type}/Cache Using" }
-        return true
-      end
+      verbose(ENV['NOCACHE']) do
+        "#{@type}/Cache ENV['NOCACHE'] is set"
+      end || verbose(!test('e', @marfile)) do
+        "#{@type}/Cache MAR file(#{@base}) not exist"
+      end || verbose(test('>', @latest, @marfile)) do
+        "#{@type}/Cache File(#{@latest}) is newer than #{@marfile}"
+      end || (return verbose { "#{@type}/Cache Using" })
       false
     end
   end

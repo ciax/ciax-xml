@@ -19,11 +19,11 @@ module CIAX
     #   <val> -> taken from status (incoming)
     #   (val) -> calcurated from status
     def verbose(cond = true)
-      return self unless ENV['VER'] && cond && !@hide_inside
+      return cond unless ENV['VER'] && cond && !@hide_inside
       str = type?(yield, String)
       msg = make_msg(str)
       prt_lines(msg) if condition(msg)
-      self
+      cond
     end
 
     def info(title)

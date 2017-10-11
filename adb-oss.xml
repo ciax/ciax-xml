@@ -67,6 +67,12 @@
           </frmcmd>
           <frmcmd name="iststat"/>
         </item>
+        <item id="mc-box" label="Set IID MC-BOX">
+          <frmcmd name="setinst">
+            <argv>10</argv>
+          </frmcmd>
+          <frmcmd name="iststat"/>
+        </item>
         <item id="focas" label="Set IID FOCAS">
           <frmcmd name="setinst">
             <argv>5</argv>

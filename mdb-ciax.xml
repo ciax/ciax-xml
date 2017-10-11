@@ -398,6 +398,7 @@
             <equal form="msg" site="dso" var="fis">OFF</equal>
             <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
+          <mcr name="k3d"/>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="lft3"/>
@@ -428,6 +429,7 @@
             <equal form="msg" site="dso" var="mis">OFF</equal>
             <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
+          <mcr name="comics"/>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="lft3"/>
@@ -458,6 +460,7 @@
             <equal form="msg" site="dsi" var="fis">OFF</equal>
             <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
+          <mcr name="focas"/>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="lft3"/>
@@ -488,6 +491,7 @@
             <equal form="msg" site="dsi" var="mis">OFF</equal>
             <equal form="msg" site="crt" var="jlv">D</equal>
           </goal>
+          <mcr name="moircs"/>
           <mcr name="lft1"/>
           <mcr name="lft2"/>
           <mcr name="lft3"/>
@@ -1924,6 +1928,51 @@
           <wait label="Jacking" retry="40">
             <equal form="msg" site="crt" var="jak">OFF</equal>
           </wait>
+        </item>
+      </unit>
+    </group>
+    <!--Atomic Config Commands-->
+    <group id="g_assign" caption="Atomic Config Commands" rank="3">
+      <unit id="unit_assign" label="Assign Current Inst Commands">
+        <item id="focas" label="Assign Current Inst to FOCAS">
+          <goal label="Assigned?">
+            <equal form="msg" site="crt" var="ist">FOCAS</equal>
+            <equal form="msg" site="dts" var="iid">FOCAS</equal>
+          </goal>
+          <exec site="crt" name="focas"/>
+          <exec site="dts" name="focas"/>
+        </item>
+        <item id="moircs" label="Assign Current Inst to MOIRCS">
+          <goal label="Assigned?">
+            <equal form="msg" site="crt" var="ist">MOIRCS</equal>
+            <equal form="msg" site="dts" var="iid">MOIRCS</equal>
+          </goal>
+          <exec site="crt" name="moircs"/>
+          <exec site="dts" name="moircs"/>
+        </item>
+        <item id="comics" label="Assign Current Inst to COMICS">
+          <goal label="Assigned?">
+            <equal form="msg" site="crt" var="ist">COMICS</equal>
+            <equal form="msg" site="dts" var="iid">COMICS</equal>
+          </goal>
+          <exec site="crt" name="comics"/>
+          <exec site="dts" name="comics"/>
+        </item>
+        <item id="k3d" label="Assign Current Inst to Kyoto 3D">
+          <goal label="Assigned?">
+            <equal form="msg" site="crt" var="ist">MC-BOX</equal>
+            <equal form="msg" site="dts" var="iid">MC-BOX</equal>
+          </goal>
+          <exec site="crt" name="mc-box"/>
+          <exec site="dts" name="mc-box"/>
+        </item>
+      </unit>
+      <unit id="unit_upd" label="Update All Devices">
+        <item id="upd" label="Update All Devices">
+          <exec site="dts" name="upd"/>
+          <exec site="crt" name="upd"/>
+          <exec site="dso" name="upd"/>
+          <exec site="dsi" name="upd"/>
         </item>
       </unit>
     </group>

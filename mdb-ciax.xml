@@ -1,6 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro" port="55554">
+    <!--Exchange Commands-->
+    <group id="g_exchg" caption="Exchange Commands" rank="0">
+      <unit id="unit_exchg" label="Exhange Instrument">
+        <item id="ex_focas" label="Exchange to FOCAS">
+          <mcr name="dpt"/>
+          <mcr name="get"/>
+          <mcr name="r2fi"/>
+          <mcr name="set"/>
+          <mcr name="rtn"/>
+        </item>
+        <item id="ex_moircs" label="Exchange to MOIRCS">
+          <mcr name="dpt"/>
+          <mcr name="get"/>
+          <mcr name="r2mi"/>
+          <mcr name="set"/>
+          <mcr name="rtn"/>
+        </item>
+        <item id="ex_comics" label="Exchange to COMICS">
+          <mcr name="dpt"/>
+          <mcr name="get"/>
+          <mcr name="r2mo"/>
+          <mcr name="set"/>
+          <mcr name="rtn"/>
+        </item>
+        <item id="ex_k3d" label="Exchange to Kyoto3D">
+          <mcr name="dpt"/>
+          <mcr name="get"/>
+          <mcr name="r2fo"/>
+          <mcr name="set"/>
+          <mcr name="rtn"/>
+        </item>
+      </unit>
+    </group>
+    <!--Select by Position Commands-->
+    <group id="g_select" caption="Select Commands" rank="0">
+      <unit id="unit_dprt" label="Run to CAS">
+        <item id="dpt" label="Depart from Home">
+          <select site="crt" var="cps" form="data">
+            <option val="10">
+              <mcr name="rdpo"/>
+            </option>
+            <option val="12">
+              <mcr name="rdpi"/>
+            </option>
+          </select>
+        </item>
+        <item id="rtn" label="Return to Home">
+          <select site="crt" var="ist" form="msg">
+            <option val="COMICS">
+              <mcr name="rrto"/>
+            </option>
+            <option val="MC-BOX">
+              <mcr name="rrto"/>
+            </option>
+            <option val="FOCAS">
+              <mcr name="trti"/>
+            </option>
+            <option val="MOIRCS">
+              <mcr name="rrti"/>
+            </option>
+          </select>
+        </item>
+      </unit>
+      <unit id="unit_getset" label="Transport to/from CAS">
+        <item id="get" label="Get from CAS">
+          <select site="crt" var="ist" form="msg">
+            <option val="COMICS">
+              <mcr name="hmi"/>
+            </option>
+            <option val="MC-BOX">
+              <mcr name="hfo"/>
+            </option>
+            <option val="FOCAS">
+              <mcr name="hfi"/>
+            </option>
+            <option val="MOIRCS">
+              <mcr name="hmi"/>
+            </option>
+          </select>
+        </item>
+        <item id="set" label="Set to CAS">
+          <select site="crt" var="ist" form="msg">
+            <option val="COMICS">
+              <mcr name="cmi"/>
+            </option>
+            <option val="MC-BOX">
+              <mcr name="cfo"/>
+            </option>
+            <option val="FOCAS">
+              <mcr name="cfi"/>
+            </option>
+            <option val="MOIRCS">
+              <mcr name="cmi"/>
+            </option>
+          </select>
+        </item>
+      </unit>
+      <unit id="unit_r2f" title="r2[f|m][o|i]" label="Run to Flanges">
+        <item id="r2fo" label="Run to FIX.OPT">
+          <select site="crt" var="cps" form="data">
+            <option val="9">
+              <mcr name="rsfo"/>
+            </option>
+            <option val="11">
+              <mcr name="rxfo"/>
+            </option>
+            <option val="12">
+              <mcr name="rkfo"/>
+            </option>
+          </select>
+        </item>
+        <item id="r2mo" label="Run to MOV.OPT">
+          <select site="crt" var="cps" form="data">
+            <option val="10">
+              <mcr name="rsmo"/>
+            </option>
+            <option val="11">
+              <mcr name="rkmo"/>
+            </option>
+            <option val="12">
+              <mcr name="rxmo"/>
+            </option>
+          </select>
+        </item>
+        <item id="r2mi" label="Run to MOV.IR">
+          <select site="crt" var="cps" form="data">
+            <option val="9">
+              <mcr name="rkmi"/>
+            </option>
+            <option val="10">
+              <mcr name="rxmi"/>
+            </option>
+            <option val="12">
+              <mcr name="rsmi"/>
+            </option>
+          </select>
+        </item>
+        <item id="r2fi" label="Run to FIX.IR">
+          <select site="crt" var="cps" form="data">
+            <option val="9">
+              <mcr name="rxfi"/>
+            </option>
+            <option val="10">
+              <mcr name="rkfi"/>
+            </option>
+            <option val="11">
+              <mcr name="rsfi"/>
+            </option>
+          </select>
+        </item>
+      </unit>
+    </group>
     <!--Sequential Instrument Moving Commands-->
     <group id="g_mvi" caption="Sequential Instrument Moving Commands" rank="1">
       <unit id="unit_home" title="h[f|m][i|o]" label="Move Inst from CAS to Home">

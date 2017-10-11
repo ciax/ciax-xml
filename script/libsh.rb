@@ -81,7 +81,7 @@ module CIAX
       end
 
       def _init_readline_
-        Readline.completion_proc = proc {|word|
+        Readline.completion_proc = proc { |word|
           (@cobj.valid_keys + @cobj.valid_pars).grep(/^#{word}/)
         }
       end

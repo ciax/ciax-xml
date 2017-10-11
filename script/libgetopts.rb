@@ -19,6 +19,21 @@ module CIAX
       usage
     end
 
+    # Mode (Device) [prompt]
+    # none : test all layers        [test]
+    # -e   : drive all layers       [proc]
+    # -c   : client all layers      [cl]
+    # -ce  : client to lower layers [drv:cl]
+    # -s   : server (test)          [test:sv]
+    # -se  : server (drive)         [drv:sv]
+
+    # Mode (Macro)
+    # none : test
+    # -e   : with device driver
+    # -se  : server with device driver
+    # -c   : client to macro server
+    # -ce  : client to device server
+
     def cl?
       %i(h c l).any? { |k| self[k] }
     end
@@ -31,10 +46,6 @@ module CIAX
       !(cl? || drv?)
     end
 
-    # Conbination(for macro)
-    # -e:  with device server
-    # -c:  client for macro server
-    # -ce: client for device server
     def sub_opt
       opt = dup
       %i(e s).each { |k| opt.delete(k) } if cl?

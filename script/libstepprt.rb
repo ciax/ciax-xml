@@ -84,11 +84,11 @@ module CIAX
 
       def _prt_conds(mary)
         (self[:conditions] || {}).each do |h|
-          if h[:skip]
-            res = _body('!', 6)
-          else
-            res = h[:res] ? _body('o', 2) : _body('x', _fail_color)
-          end
+          res = if h[:skip]
+                  _body('!', 6)
+                else
+                  h[:res] ? _body('o', 2) : _body('x', _fail_color)
+                end
           mary << res + _cond_line(h)
         end
       end
@@ -109,7 +109,7 @@ module CIAX
       end
 
       def _fail_color
-        ['goal', 'bypass'].include?(self[:type]) ? 4 : 1
+        %w(goal bypass).include?(self[:type]) ? 4 : 1
       end
 
       def _rindent(add = 0)

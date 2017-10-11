@@ -39,7 +39,7 @@ module CIAX
 
       def title
         date = Time.at(self[:id][0, 10].to_i)
-        Msg.colorize('MACRO', 3) +
+        Msg.colorize(self[:mode].upcase, 3) +
           format(":%s (%s) [%s]\n", self[:label], self[:cid], date)
       end
 

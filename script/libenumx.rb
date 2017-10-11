@@ -129,7 +129,7 @@ module CIAX
       self
     end
 
-    # Make empty copy (Empty string because it can be operated with replacement) 
+    # Make empty copy (Empty string because it can be operated with replacement)
     def skeleton
       hash = Hashx.new
       keys.each do |i|

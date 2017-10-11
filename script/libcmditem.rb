@@ -115,7 +115,7 @@ module CIAX
       def _use_default(par, pary, pref, disp)
         if par.key?(:default)
           verbose { "Validate: Using default value [#{par[:default]}]" }
-          return par[:default]
+          par[:default]
         else
           _err_shortage(pary, pref, disp)
         end

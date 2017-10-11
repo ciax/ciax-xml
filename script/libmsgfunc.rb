@@ -25,12 +25,14 @@ module CIAX
     # other fixed keys are Symbol
     def j2h(json_str = nil)
       res = JSON.parse(json_str, symbolize_names: true)
-      res.values.each do |val|
-        next unless val.is_a? Hash
-        sv = {}
-        val.each { |k, v| sv[k.to_s] = v }
-        val.replace sv
-      end if res.is_a? Hash
+      if res.is_a? Hash
+        res.values.each do |val|
+          next unless val.is_a? Hash
+          sv = {}
+          val.each { |k, v| sv[k.to_s] = v }
+          val.replace sv
+        end
+      end
       res
     rescue JSON::ParserError
       usr_err('NOT JSON')

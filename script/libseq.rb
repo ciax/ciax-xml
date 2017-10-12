@@ -61,10 +61,11 @@ module CIAX
         _pre_seq(seqary, mstat)
         seqary.each { |e| break(true) unless do_step(e, mstat) }
       rescue Interlock
+        # For retry
         false
       rescue Interrupt
         mstat[:result] = 'interrupted'
-        raise Interrupt
+        raise
       rescue CommError
         mstat[:result] = 'comerr'
         false

@@ -40,7 +40,7 @@ module CIAX
       # get generates document branch of db items(Hash),
       # which includes attribute and domains
       def get(id)
-        super { raise(InvalidID, "No such ID(#{id}) in #{@type}\n" + to_s) }
+        super { id_err(id, @type, self) }
       end
 
       def to_s
@@ -52,7 +52,11 @@ module CIAX
       def _read_files(files)
         files.each do |xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
-          Elem.new(xml).each { |top| _mk_db(top) }
+          begin
+            Elem.new(xml).each { |top| _mk_db(top) }
+          rescue ConfigError
+            show($ERROR_INFO)
+          end
         end.empty? && Msg.cfg_err("No XML file for #{@type}-*.xml")
       end
 

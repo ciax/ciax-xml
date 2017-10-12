@@ -38,10 +38,10 @@ module CIAX
   # Server error (Handled in Server)
   class ServerError < RuntimeError; end
 
-  # Configuration Error
+  # Configuration Error (Exit from server)
   class ConfigError < ServerError; end
 
-  # Device Communication Error
+  # Device Communication Error (No stop on server)
   class CommError < ServerError; end
 
   # Stream Open Error

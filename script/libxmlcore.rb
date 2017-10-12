@@ -95,16 +95,16 @@ module CIAX
         to_h.each do |k, v|
           atrb[k] = at_proc ? yield(v) : v
         end
-        key = atrb.delete(id) || Msg.give_up("No such key (#{id})")
+        key = atrb.delete(id) || give_up("No such key (#{id})")
         [key, atrb]
       end
 
       def _get_doc(f)
         if f.is_a? String
-          test('r', f) || raise(InvalidID)
+          test('r', f) || cfg_err("Can't read file #{f}")
           return _get_file(f)
         end
-        Msg.cfg_err('Parameter shoud be String or Node')
+        cfg_err('Parameter shoud be String or Node')
       end
 
       def _get_file(f); end

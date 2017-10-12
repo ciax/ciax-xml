@@ -31,7 +31,7 @@ module CIAX
     # return Dbi
     def get(id)
       @displist.valid?(id) ||
-        raise(InvalidID, "No such ID (#{id}) in #{@type}\n" + @displist.to_s)
+        id_err(id, @type, @displist)
       _get_cache(id) || _get_db(id) { |docs| doc_to_db(docs.get(id)) }
     end
 

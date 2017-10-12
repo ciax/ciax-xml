@@ -36,7 +36,7 @@ module CIAX
 
     def data_type?(data, type)
       return data if data['type'] == type
-      raise "Data type error <#{name.class}> for (#{mod})"
+      data_err("Data type error <#{name.class}> for (#{mod})")
     end
   end
 end

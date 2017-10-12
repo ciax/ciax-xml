@@ -67,7 +67,7 @@ module CIAX
 
     def data_err(*ary) # Raise Device error (Data invalid)
       ary[0] = colorize(ary[0], 1)
-      raise BadData, ary.join("\n  "), caller(1)
+      raise InvalidData, ary.join("\n  "), caller(1)
     end
 
     def str_err(*ary) # Raise Device error (Stream open Failed)

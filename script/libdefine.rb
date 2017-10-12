@@ -48,8 +48,7 @@ module CIAX
   class StreamError < CommError; end
   # CC Verification Error
   class CheckCodeError < CommError; end
-  # No Data in Field for Status
-  class NoData < CommError; end
+
   # Invalid Data in Field for Status
-  class BadData < CommError; end
+  class InvalidData < RuntimeError; end
 end

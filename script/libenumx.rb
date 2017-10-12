@@ -7,7 +7,7 @@ module CIAX
   module Enumx
     include View
     def self.extended(obj)
-      raise('Not Enumerable') unless obj.is_a? Enumerable
+      data_err('Not Enumerable') unless obj.is_a? Enumerable
     end
 
     def deep_copy
@@ -41,7 +41,7 @@ module CIAX
 
     # Overwrite data
     def jread(jstr = nil)
-      inp = jstr || gets(nil) || usr_err("No data in file(#{ARGV})")
+      inp = jstr || gets(nil) || data_err("No data in file(#{ARGV})")
       j2h(inp)
     end
 

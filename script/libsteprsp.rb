@@ -50,7 +50,7 @@ module CIAX
         @exes.each do |obj|
           next if obj.wait_ready
           set_result('timeout')
-          raise CommError
+          com_err('timeout')
         end
         self
       end

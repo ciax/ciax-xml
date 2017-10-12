@@ -42,7 +42,7 @@ module CIAX
     end
 
     def errmsg
-      show make_msg("#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
+      show make_msg("ERROR:#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
       self
     end
 

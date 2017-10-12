@@ -213,6 +213,9 @@
             <equal form="data" site="crt" var="cps">1</equal>
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
+          <check label="CART on PATH?">
+            <not form="data" site="crt" var="cps">10</not>
+          </check>
           <mcr name="dtmo"/>
           <mcr name="tomo"/>
           <mcr name="tics"/>
@@ -233,6 +236,9 @@
             <equal form="data" site="crt" var="cps">1</equal>
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
+          <check label="CART on PATH?">
+            <not form="data" site="crt" var="cps">12</not>
+          </check>
           <mcr name="dtmi"/>
           <mcr name="tomi"/>
           <mcr name="tics"/>
@@ -1969,10 +1975,10 @@
       </unit>
       <unit id="unit_upd" label="Update All Devices">
         <item id="upd" label="Update All Devices">
-          <upd site="dts" name="upd"/>
-          <upd site="crt" name="upd"/>
-          <upd site="dso" name="upd"/>
-          <upd site="dsi" name="upd"/>
+          <upd site="dts"/>
+          <upd site="crt"/>
+          <upd site="dso"/>
+          <upd site="dsi"/>
         </item>
       </unit>
     </group>

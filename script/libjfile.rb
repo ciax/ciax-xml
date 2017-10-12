@@ -71,7 +71,7 @@ module CIAX
       return true if inc == org
       warning("File version mismatch <#{inc}> for [#{org}]")
       false
-    rescue UserError
+    rescue CommError
       relay(@cfile.to_s)
     end
 

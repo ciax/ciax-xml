@@ -11,6 +11,10 @@ module CIAX
       $stderr.puts str
     end
 
+    def show_err
+      show($ERROR_INFO)
+    end
+
     # Messaging methods
     def progress(f = true)
       p = colorize(f ? '.' : 'x', 1)
@@ -61,6 +65,11 @@ module CIAX
       raise CommError, ary.join("\n  "), caller(1)
     end
 
+    def data_err(*ary) # Raise Device error (Data invalid)
+      ary[0] = colorize(ary[0], 1)
+      raise BadData, ary.join("\n  "), caller(1)
+    end
+
     def str_err(*ary) # Raise Device error (Stream open Failed)
       ary[0] = colorize(ary[0], 1)
       raise StreamError, ary.join("\n  "), caller(1)
@@ -83,7 +92,7 @@ module CIAX
     def usage(str, code = 2)
       warn("Usage: #{$PROGRAM_NAME.split('/').last} #{str}")
       if $ERROR_INFO
-        warn($ERROR_INFO)
+        show_err
         eid = $ERROR_INFO.class.to_s.sub('CIAX::Invalid', '')
         code = %w(ARGS OPT ID CMD PAR).index(eid).to_i + 2
       end

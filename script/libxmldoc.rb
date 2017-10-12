@@ -55,7 +55,7 @@ module CIAX
           begin
             Elem.new(xml).each { |top| _mk_db(top) }
           rescue ConfigError
-            show($ERROR_INFO)
+            show_err
           end
         end.empty? && Msg.cfg_err("No XML file for #{@type}-*.xml")
       end

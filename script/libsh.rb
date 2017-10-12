@@ -106,7 +106,7 @@ module CIAX
       rescue UserError
         nil
       rescue ServerError
-        warning($ERROR_INFO)
+        show_err
       end
 
       def _input_conv_(token)

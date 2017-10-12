@@ -97,7 +97,7 @@ module CIAX
       end
 
       def _open_fail(int)
-        warning($ERROR_INFO)
+        show_err
         Msg.str_err('Stream Open failed') if int > 2
         warning('Try to reopen')
         sleep int

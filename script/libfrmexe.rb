@@ -29,7 +29,7 @@ module CIAX
         @sv_stat.up(:comerr)
         @sv_stat.repl(:msg, $ERROR_INFO.to_s)
         @stat.seterr
-        raise $ERROR_INFO
+        raise
       end
 
       def ext_shell

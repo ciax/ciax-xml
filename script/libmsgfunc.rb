@@ -36,7 +36,7 @@ module CIAX
     def j2h(jstr = nil)
       key2str(JSON.parse(jstr, symbolize_names: true))
     rescue JSON::ParserError
-      usr_err('NOT JSON')
+      data_err('NOT JSON')
     end
 
     # Thread is main

@@ -42,7 +42,7 @@ module CIAX
       @post_exe_procs.each { |p| p.call(args, src, msg) }
       self
     rescue LongJump, InvalidARGS
-      @sv_stat.repl(:msg, $ERROR_INFO.to_s)
+      @sv_stat.seterr
       raise
     end
 

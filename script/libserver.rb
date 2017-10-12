@@ -48,10 +48,8 @@ module CIAX
     def _srv_exec(line, rhost)
       verbose { "Exec Server\nValid Commands #{@cobj.valid_keys}" }
       exe(@server_input_proc.call(line), "udp:#{rhost}")
-    rescue InvalidCMD
-      @sv_stat.repl(:msg, 'INVALID')
     rescue
-      @sv_stat.repl(:msg, "ERROR:#{$ERROR_INFO}")
+      @sv_stat.seterr
       errmsg
     end
   end

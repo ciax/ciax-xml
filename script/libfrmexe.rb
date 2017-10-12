@@ -27,7 +27,7 @@ module CIAX
         super
       rescue CommError
         @sv_stat.up(:comerr)
-        @sv_stat.repl(:msg, $ERROR_INFO.to_s)
+        @sv_stat.seterr
         @stat.seterr
         raise
       end

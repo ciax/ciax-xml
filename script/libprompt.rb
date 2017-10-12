@@ -69,9 +69,13 @@ module CIAX
       self
     end
 
-    # Show Message
+    # For Message
     def msg
       self[:msg]
+    end
+
+    def seterr
+      repl(:msg, $ERROR_INFO.to_s)
     end
 
     def to_v

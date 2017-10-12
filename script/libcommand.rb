@@ -20,7 +20,7 @@ module CIAX
 
       def set_cmd(args = [], opt = {})
         id, *par = type?(args, Array)
-        valid_keys.include?(id) || cmd_err
+        valid_keys.include?(id) || cmd_err(view_list)
         get(id).set_par(par, opt)
       end
 
@@ -30,10 +30,6 @@ module CIAX
 
       def view_list
         map(&:view_list).compact.grep(/./).join("\n")
-      end
-
-      def cmd_err
-        raise(InvalidCMD, view_list)
       end
 
       # Add sub group

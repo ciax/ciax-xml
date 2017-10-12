@@ -10,7 +10,8 @@ module CIAX
     # Sub Class
     module SeqFunc
       # Step functions included in Sequencer
-      #  Continue sequence if returns nil
+      #  Each method returns T/F
+      #  Continue sequence if result is true
 
       private
 
@@ -94,14 +95,14 @@ module CIAX
         true
       end
 
+      # Return T/F
       def _select(e, step, mstat)
-        var = _get_stat(e)
-        cfg_err('No data in status') unless var
+        var = _get_stat(e) || cfg_err('No data in status')
         step[:result] = var
         _show step.result
         sel = e[:select]
-        me = { type: 'mcr', args: sel[var] || sel['*'] }
-        do_step(me, mstat)
+        name = sel[var] || sel['*'] || cfg_err("No option for #{var} ")
+        do_step({ type: 'mcr', args: name }, mstat)
       end
 
       def _mcr(e, step, mstat)

@@ -63,9 +63,6 @@ module CIAX
       rescue Interlock
         # For retry
         false
-      rescue Interrupt
-        mstat[:result] = 'interrupted'
-        raise
       rescue CommError
         mstat[:result] = 'comerr'
         false
@@ -88,6 +85,9 @@ module CIAX
         rescue Retry
           retry
         end
+      rescue Interrupt
+        mstat[:result] = 'interrupted'
+        raise
       end
 
       def _pre_seq(seqary, mstat)

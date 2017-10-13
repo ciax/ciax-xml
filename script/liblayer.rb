@@ -5,13 +5,15 @@ module CIAX
   # list object can be (Frm,App,Wat,Hex)
   # atrb can have [:top_layer]
   class Layer < CIAX::List
-    def initialize(cfg)
-      super
-      obj = yield(@cfg)
-      loop do
-        ns = m2id(obj.class, -2)
-        @list.put(ns, obj)
-        obj = obj.sub_list || break
+    def initialize(usagestr, optargs = {})
+      ConfOpts.new(usagestr, optargs) do |cfg, args|
+        super(cfg)
+        obj = yield(@cfg, args)
+        loop do
+          ns = m2id(obj.class, -2)
+          @list.put(ns, obj)
+          obj = obj.sub_list || break
+        end
       end
     end
 

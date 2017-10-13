@@ -11,7 +11,7 @@ module CIAX
       ENV['VER'] ||= 'Initiate'
       _chk_args(_kill_pids(tag))
       @layer = tag
-      ConfOpts.new('[id] ....', optstr + 'sb') do |cfg, args, opt|
+      ConfOpts.new('[id] ....', optstr + 'b', {}, 's') do |cfg, args, opt|
         atrb = { sites: args }
         @obj = yield(cfg, atrb)
         _init_server(tag, opt)
@@ -56,11 +56,9 @@ module CIAX
     end
 
     def _chk_args(str)
-      if ARGV.empty?
-        msg(indent(1) + str, 3) if str
-        exit(2)
-      end
-      ARGV.unshift '-s'
+      return unless ARGV.empty?
+      msg(indent(1) + str, 3) if str
+      exit(2)
     end
 
     def _kill_pid(pid)

@@ -6,12 +6,15 @@ module CIAX
   # Global options
   class GetOpts < Hash
     include Msg
-    # str = valid option list (afch:)
-    # db = addigional option db
+    # optstr: valid option list (i.e. "afch:")
+    # db: additional option db (i.e. { ? : "description" })
+    # default: default option string (i.e "abc")
     attr_reader :layer
-    def initialize(usagestr, optstr, db = {}, &opt_proc)
+    def initialize(usagestr, optstr, db = {}, default = '', &opt_proc)
       Thread.current[:name] = 'Main'
       @usagestr = "(opt) #{usagestr}"
+      optstr += db.keys.join + default
+      default.each_byte { |c| self[c.to_sym] = true }
       _init_db(db)
       _set_opt(optstr)
       yield(self, ARGV) if opt_proc

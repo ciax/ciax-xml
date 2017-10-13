@@ -65,6 +65,10 @@ module CIAX
       (self[:h] || 'localhost') unless self[:c]
     end
 
+    def layer_mod
+      CIAX.const_get(@layer.capitalize)
+    end
+
     def usage(str = @usagestr, code = 2)
       super("#{str}\n" + columns(@index), code)
     end
@@ -130,23 +134,18 @@ module CIAX
       @index = {}
       @available = (optstr.chars.map(&:to_sym) & @optdb.keys)
       # Current Options
-      @available.each do |c|
-        @index["-#{c}"] = @optdb[c]
-      end
-      self
+      @available.each { |c| @index["-#{c}"] = @optdb[c] }
     end
 
     # Set @layer (default 'Wat')
     def _make_layer
       opt = _make_exopt(@layers.keys)
       @layer = @layers[opt]
-      self
     end
 
     def _make_vmode
       v = _make_exopt(%i(j r))
       View.default.replace(v.to_s) if v
-      self
     end
 
     def _make_exopt(ary)

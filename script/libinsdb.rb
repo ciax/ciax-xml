@@ -92,7 +92,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', 'r') do |opt, args|
+      GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
         db = Db.new
         puts "Run list = #{db.run_list.inspect}"
         dbi = db.get(args.shift)

@@ -146,7 +146,7 @@ module CIAX
 
   # Option parser with Config
   class ConfOpts < GetOpts
-    def initialize(usagestr, optstr, db = {})
+    def initialize(usagestr, optargs = {})
       super do |opt, args|
         yield(Config.new(option: opt, jump_groups: []), args, opt)
       end

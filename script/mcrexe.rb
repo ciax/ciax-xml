@@ -5,7 +5,7 @@ require 'libseq'
 module CIAX
   # Macro Exec
   module Mcr
-    ConfOpts.new('[proj] [cmd] (par)', 'cen') do |cfg, args|
+    ConfOpts.new('[proj] [cmd] (par)', options: 'cen') do |cfg, args|
       mobj = Cmd::Index.new(Conf.new(cfg))
       mobj.add_rem.add_ext(Ext)
       ent = mobj.set_cmd(args)

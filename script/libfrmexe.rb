@@ -87,7 +87,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
+      ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
         dbi = Dev::Db.new.get(args.shift)
         Exe.new(cfg, dbi: dbi).run.ext_shell.shell
       end

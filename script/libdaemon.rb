@@ -11,7 +11,8 @@ module CIAX
       ENV['VER'] ||= 'Initiate'
       _chk_args(_kill_pids(tag))
       @layer = tag
-      ConfOpts.new('[id] ....', optstr + 'b', {}, 's') do |cfg, args, opt|
+      optarg = { options: optstr + 'b', default: 's' }
+      ConfOpts.new('[id] ....', optarg) do |cfg, args, opt|
         atrb = { sites: args }
         @obj = yield(cfg, atrb)
         _init_server(tag, opt)

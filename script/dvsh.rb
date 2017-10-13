@@ -4,11 +4,9 @@ require 'liblayer'
 require 'libhexlist'
 # CIAX-XML Device Shell
 module CIAX
-  ARGV.unshift('-a')
-  Layer.new('[id]', 'fawxelrch:') do |cfg, args, opt|
-    lyr = opt[:x] ? Hex : Wat
-    obj = lyr::List.new(cfg)
-    obj.get(args.first)
-    obj
-  end.ext_shell.shell
+  ConfOpts.new('[id]', options: 'fwxelrch', default: 'a') do |cfg, args, opt|
+    Layer.new(cfg) do |cf|
+      (opt[:x] ? Hex : Wat)::List.new(cf, sites: args)
+    end.ext_shell.shell
+  end
 end

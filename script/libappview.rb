@@ -103,8 +103,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      odb = { c: 'CSV output' }
-      GetOpts.new('[site] | < status_file', 'rjc', odb) do |opt|
+      odb = { options: 'rj', c: 'CSV output' }
+      GetOpts.new('[site] | < status_file', odb) do |opt|
         stat = Status.new
         view = View.new(stat)
         stat.ext_local_file if STDIN.tty?

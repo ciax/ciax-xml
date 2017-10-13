@@ -124,7 +124,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', 'j') do |opt, args|
+      GetOpts.new('[id] (key) ..', options: 'j') do |opt, args|
         dbi = Db.new.get
         puts opt[:j] ? dbi.list.to_j : dbi.path(args)
       end

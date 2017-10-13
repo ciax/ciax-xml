@@ -6,17 +6,15 @@ module CIAX
   # Global options
   class GetOpts < Hash
     include Msg
-    # optstr: valid option list (i.e. "afch:")
-    # db: additional option db (i.e. { ? : "description" })
-    # default: default option string (i.e "abc")
+    # Contents of optarg
+    # options: valid option list (i.e. "afch:")
+    # default: default(implicit) option string (i.e "abc")
+    # etc. : additional option db (i.e. { ? : "description" })
     attr_reader :layer
-    def initialize(usagestr, optstr, db = {}, default = '', &opt_proc)
+    def initialize(usagestr, optarg = {}, &opt_proc)
       Thread.current[:name] = 'Main'
       @usagestr = "(opt) #{usagestr}"
-      optstr += db.keys.join + default
-      default.each_byte { |c| self[c.to_sym] = true }
-      _init_db(db)
-      _set_opt(optstr)
+      _set_opt(_set_db(optarg) + _set_default(optarg))
       yield(self, ARGV) if opt_proc
     rescue InvalidARGS
       usage
@@ -76,50 +74,51 @@ module CIAX
       raise(InvalidOPT, $ERROR_INFO)
     end
 
-    def _init_db(db)
-      @optdb = {}
-      _db_layer
-      _db_cli
-      _db_mode
-      _db_vis
-      @optdb.update(type?(db, Hash))
+    # Returns valid options
+    def _set_db(optarg)
+      @optdb = _init_db
+      _layer_db
+      db = type?(optarg, Hash).select { |k, _v| k.to_s.length == 1 }
+      @optdb.update(db)
+      optarg[:options].to_s + db.keys.join
     end
 
-    def _set_opt(optstr)
-      type?(optstr, String)
+    # add ':' to taking parameter options whose description includes '[]'
+    def _add_colon(str)
+      str.split(//).map do |k|
+        k + (@optdb[k.to_sym].to_s.include?('[') ? ':' : '')
+      end.join
+    end
+
+    def _set_default(optarg)
+      dflt = optarg[:default].to_s
+      dflt.each_char { |c| ARGV.unshift('-' + c) }
+      dflt
+    end
+
+    def _set_opt(str)
+      optstr = _add_colon(str)
       _make_usage(optstr)
       _parse(optstr)
       _make_layer
       _make_vmode
     end
 
-    # Layer option
-    def _db_layer
+    def _init_db
+      # Client option
+      { c: 'client to default server',
+        l: 'client to local', h: 'client to [host]',
+        # System mode
+        e: 'execution mode', s: 'server mode', n: 'non-stop mode',
+        b: 'back ground mode',
+        # For visual
+        r: 'raw data output', j: 'json data output' }
+    end
+
+    def _layer_db
+      # Layer option
       @layers = { m: 'mcr', w: 'wat', f: 'frm', x: 'hex', a: 'app' }
       @layers.each { |k, v| @optdb[k] = "#{v} layer" }
-      self
-    end
-
-    # Client option
-    def _db_cli
-      @optdb.update(c: 'client to default server',
-                    l: 'client to local', h: 'client to [host]')
-      self
-    end
-
-    # System mode
-    def _db_mode
-      @optdb.update(
-        e: 'execution mode', s: 'server mode', n: 'non-stop mode',
-        b: 'back ground mode'
-      )
-      self
-    end
-
-    # For visual
-    def _db_vis
-      @optdb.update(r: 'raw data output', j: 'json data output')
-      self
     end
 
     # Make usage text

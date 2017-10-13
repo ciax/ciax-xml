@@ -45,7 +45,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
+      ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(args.shift)
         atrb = { dbi: dbi, hdb: Db.new, sub_list: Wat::List.new(cfg) }

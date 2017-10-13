@@ -20,7 +20,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', 'ceh:ls') do |cfg, args|
+      ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
         List.new(cfg, sites: args).ext_shell.shell
       end
     end

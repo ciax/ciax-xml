@@ -23,7 +23,7 @@ module CIAX
 
     def _main_loop
       @obj.run
-      sleep
+      UdpServer.new(54_321).listen { Threadx.list.to_s }
     rescue SignalException
       Threadx.killall
       if $ERROR_INFO.message == 'SIGHUP'
@@ -35,7 +35,6 @@ module CIAX
     # Background (Switch error output to file)
     def _init_server(tag, opt)
       _detach
-      _watch_threads
       _redirect(tag) if opt[:b]
       verbose { "Initiate Daemon Start [#{tag}] " + git_ver }
       tag_set(@obj.id)
@@ -47,12 +46,6 @@ module CIAX
       Process.daemon(true, true)
       _write_pid($PROCESS_ID)
       verbose { "Initiate Daemon Detached (#{$PROCESS_ID})" }
-    end
-
-    def _watch_threads
-      Threadx::UdpLoop.new('Thread', 'daemon', @layer, 54_321) do |_line, _rhost|
-        Threadx.list.to_s
-      end
     end
 
     def _kill_pids(tag)

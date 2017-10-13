@@ -1,4 +1,6 @@
 #!/usr/bin/ruby
+require 'libudp'
+
 # Provide Server
 module CIAX
   # Server extension module
@@ -35,12 +37,15 @@ module CIAX
 
     # Separated form ext_* for detach process of this part
     def _startup
-      Threadx::UdpLoop.new('Server', @layer, @id, @port) do |line, rhost|
-        verbose { "UDP Recv:#{line} is #{line.class}" }
-        _srv_exec(line, rhost)
-        send_str = @server_output_proc.call
-        verbose { "UDP Send:#{send_str}" }
-        send_str
+      Threadx::Fork.new('Server', @layer, @id) do
+        UdpServer.new(@port).listen do |line, rhost|
+          verbose { "UDP Recv:#{line} is #{line.class}" }
+          _srv_exec(line, rhost)
+          send_str = @server_output_proc.call
+          verbose { "UDP Send:#{send_str}" }
+          send_str
+        end
+        sleep 0.3
       end
       self
     end

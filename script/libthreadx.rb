@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'socket'
 require 'libmsg'
 require 'thread'
 
@@ -7,12 +6,15 @@ module CIAX
   # Extended Thread class
   module Threadx
     Threads = ThreadGroup.new
+    Thread.current[:name] = 'Main'
+    Thread.current[:layer] = 'top'
+    Thread.current[:id] = File.basename($PROGRAM_NAME)
 
     module_function
 
     def list
       Thread.list.map do |t|
-        %i(layer name id).map { |id| t[id] }.push("[#{t.status}]").join(':')
+        %i(id layer name).map { |id| t[id] }.push("[#{t.status}]").join(':')
       end.sort
     end
 
@@ -77,32 +79,6 @@ module CIAX
         @in.clear
         @out.clear
         self
-      end
-    end
-
-    # UDP Server Thread with Loop
-    class UdpLoop < Fork
-      def initialize(name, layer, id, port)
-        super(name, layer, id) do
-          udp = UDPSocket.open
-          udp.bind('0.0.0.0', port.to_i)
-          _udp_loop(udp) { |line, rhost| yield(line, rhost) }
-        end
-        sleep 0.3
-      end
-
-      private
-
-      def _udp_loop(udp)
-        loop do
-          IO.select([udp])
-          line, addr = udp.recvfrom(4096)
-          rhost = Addrinfo.ip(addr[2]).getnameinfo.first
-          send_str = yield(line, rhost)
-          udp.send(send_str, 0, addr[2], addr[1])
-        end
-      ensure
-        udp.close
       end
     end
   end

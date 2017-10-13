@@ -12,7 +12,6 @@ module CIAX
     # etc. : additional option db (i.e. { ? : "description" })
     attr_reader :layer
     def initialize(usagestr, optarg = {}, &opt_proc)
-      Thread.current[:name] = 'Main'
       @usagestr = "(opt) #{usagestr}"
       _set_opt(_set_db(optarg) + _set_default(optarg))
       yield(self, ARGV) if opt_proc

@@ -35,7 +35,7 @@ module CIAX
 
     # Separated form ext_* for detach process of this part
     def _startup
-      Threadx::Udp.new('Server', @layer, @id, @port) do |line, rhost|
+      Threadx::UdpLoop.new('Server', @layer, @id, @port) do |line, rhost|
         verbose { "UDP Recv:#{line} is #{line.class}" }
         _srv_exec(line, rhost)
         send_str = @server_output_proc.call

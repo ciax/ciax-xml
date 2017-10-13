@@ -12,7 +12,7 @@ module CIAX
 
     def list
       Thread.list.map do |t|
-        %i(layer name id).map { |id| t[id] }.push(t.status).join(':')
+        %i(layer name id).map { |id| t[id] }.push("[#{t.status}]").join(':')
       end.sort
     end
 
@@ -55,12 +55,12 @@ module CIAX
       end
     end
 
-    # Queue Thread
-    class Que < Fork
+    # Queue Thread with Loop
+    class QueLoop < Fork
       def initialize(tname, layer, id)
         @in = Queue.new
         @out = Queue.new
-        super { yield @in, @out }
+        super { loop { yield @in, @out } }
       end
 
       def push(str) # returns self
@@ -80,15 +80,8 @@ module CIAX
       end
     end
 
-    # Queue Thread with Loop
-    class QueLoop < Que
-      def initialize(tname, layer, id)
-        super { |i, o| loop { yield i, o } }
-      end
-    end
-
-    # UDP Server Thread
-    class Udp < Fork
+    # UDP Server Thread with Loop
+    class UdpLoop < Fork
       def initialize(name, layer, id, port)
         super(name, layer, id) do
           udp = UDPSocket.open

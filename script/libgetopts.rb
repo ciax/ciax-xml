@@ -76,8 +76,8 @@ module CIAX
     private
 
     # ARGV must be taken after parse
-    def _parse(optstr)
-      ARGV.getopts(optstr).each { |k, v| self[k.to_sym] = v }
+    def _parse(ops)
+      ARGV.getopts(ops).each { |k, v| self[k.to_sym] = v }
     rescue OptionParser::ParseError
       raise(InvalidOPT, $ERROR_INFO)
     end
@@ -105,9 +105,9 @@ module CIAX
     end
 
     def _set_opt(str)
-      optstr = _add_colon(str)
-      _make_usage(optstr)
-      _parse(optstr)
+      ops = _add_colon(str)
+      _make_usage(ops)
+      _parse(ops)
       _make_layer
       _make_vmode
     end
@@ -130,9 +130,9 @@ module CIAX
     end
 
     # Make usage text
-    def _make_usage(optstr)
+    def _make_usage(ops)
       @index = {}
-      @available = (optstr.chars.map(&:to_sym) & @optdb.keys)
+      @available = (ops.chars.map(&:to_sym) & @optdb.keys)
       # Current Options
       @available.each { |c| @index["-#{c}"] = @optdb[c] }
     end

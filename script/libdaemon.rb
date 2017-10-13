@@ -7,16 +7,14 @@ module CIAX
     include Msg
     # Previous process will be killed at the start up.
     # Reloadable by HUP signal
-    def initialize(tag, optstr = '')
+    def initialize(tag, ops = '')
       ENV['VER'] ||= 'Initiate'
       _chk_args(_kill_pids(tag))
       @layer = tag
-      optarg = { options: optstr + 'b', default: 's' }
-      ConfOpts.new('[id] ....', optarg) do |cfg, args|
-        atrb = { sites: args }
-        @obj = yield(cfg, atrb)
+      ConfOpts.new('[id] ...', options: ops + 'b', default: 's') do |cfg, args|
+        @obj = yield(cfg, sites: args)
         _init_server(tag, cfg[:opt])
-        _main_loop { yield(cfg, atrb) }
+        _main_loop { yield(cfg, sites: args) }
       end
     end
 

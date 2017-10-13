@@ -30,7 +30,7 @@ module CIAX
       def _init_view
         @stat = Rsp.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
         @shell_output_proc = proc { @stat.to_x }
-        @stat.ext_local_log if @cfg[:option].log?
+        @stat.ext_local_log if @cfg[:opt].log?
       end
 
       def ext_local_server

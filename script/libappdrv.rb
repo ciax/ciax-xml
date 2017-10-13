@@ -24,7 +24,7 @@ module CIAX
       private
 
       def _init_log_mode
-        return unless @cfg[:option].log?
+        return unless @cfg[:opt].log?
         @stat.ext_local_log.ext_local_sqlog
         @cobj.rem.ext_input_log('app')
       end

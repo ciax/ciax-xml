@@ -37,7 +37,7 @@ module CIAX
         @stat.ext_local_file.auto_save
         # @stat[:int] is overwritten by initial loading
         @sub.batch_interrupt = @stat.get(:int)
-        @stat.ext_local_log if @cfg[:option].log?
+        @stat.ext_local_log if @cfg[:opt].log?
         _init_upd_drv_
         _init_exe_drv_
         self

@@ -46,7 +46,7 @@ module CIAX
         @current = $ERROR_INFO.to_s
         retry
       rescue InvalidARGS
-        @cfg[:option].usage('(opt) [id]')
+        @cfg[:opt].usage('(opt) [id]')
       end
 
       def switch(site)

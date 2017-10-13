@@ -17,7 +17,7 @@ module CIAX
                 :pre_exe_procs, :post_exe_procs, :prompt_proc, :host, :port
     attr_accessor :sv_stat, :shell_input_procs, :shell_output_proc,
                   :server_input_proc, :server_output_proc
-    # cfg must have [:option]
+    # cfg must have [:opt]
     # atrb contains the parameter for each layer individually
     # cfg must have [:dbi] shared in the site (among layers)
     # @dbi will be set for Varx, @cfg[:dbi] will be set for Index
@@ -81,7 +81,7 @@ module CIAX
     # -es: drive mode + server
     def _opt_mode
       # Option handling
-      opt = @cfg[:option]
+      opt = @cfg[:opt]
       return ext_client if opt.cl? && !opt.drv? # Client only
       opt[:e] ? ext_local_driver : ext_local_test
       ext_local_server if opt[:s]

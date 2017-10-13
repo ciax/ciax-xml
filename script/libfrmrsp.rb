@@ -146,7 +146,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
-      ConfOpts.new('< logline', m: 'merge file') do |cfg, _args, opt|
+      ConfOpts.new('< logline', m: 'merge file') do |cfg|
         raise(InvalidARGS, '  Need Input File') if STDIN.tty?
         str = gets(nil) || exit
         res = JsLog.read(str)
@@ -154,7 +154,7 @@ module CIAX
         cid = res[:cmd]
         dbi = Dev::Db.new.get(id)
         field = Field.new(dbi).ext_local_rsp(res)
-        field.ext_local_file.auto_save if opt[:m]
+        field.ext_local_file.auto_save if cfg[:opt][:m]
         if cid
           cfg[:field] = field
           # dbi.pick alreay includes :command, :version

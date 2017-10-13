@@ -15,7 +15,7 @@ module CIAX
     class Conf < Config
       def initialize(root_cfg)
         super(root_cfg)
-        @opt = self[:option]
+        @opt = self[:opt]
         db = Db.new
         update(layer_type: 'mcr', db: db)
         _init_dbi(db.get)
@@ -41,7 +41,7 @@ module CIAX
         # handover to Wat only
         id = self[:id]
         # handover to Wat, App
-        site_cfg.update(db: Ins::Db.new(id), proj: id, option: @opt.sub_opt)
+        site_cfg.update(db: Ins::Db.new(id), proj: id, opt: @opt.sub_opt)
         self[:dev_list] = Wat::List.new(site_cfg, sites: self[:sites])
         self[:sv_stat] = Prompt.new(id, @opt)
         self[:rec_list] = RecList.new

@@ -118,7 +118,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmrsp'
       require 'libfrmdb'
-      ConfOpts.new('[dev] [cmd] (par) < field_file', options: 'r') do |cfg, args, opt|
+      ConfOpts.new('[dev] [cmd] (par) < field_file', options: 'r') do |cfg, args|
         dbi = Db.new.get(args.shift)
         fld = cfg[:field] = Field.new(dbi)
         # dbi.pick alreay includes :command, :version
@@ -127,7 +127,7 @@ module CIAX
         cobj.rem.add_ext(Ext)
         fld.jmerge unless STDIN.tty?
         res = cobj.set_cmd(args).exe_cmd('test')
-        puts(opt[:r] ? res.msg : res.path)
+        puts(cfg[:opt][:r] ? res.msg : res.path)
       end
     end
   end

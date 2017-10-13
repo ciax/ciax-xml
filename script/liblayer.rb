@@ -22,7 +22,7 @@ module CIAX
         @list.get(id).ext_shell
         @jumpgrp.add_item(id, id.capitalize + ' mode')
       end
-      @current = @cfg[:option].layer || @list.keys.first
+      @current = @cfg[:opt].layer || @list.keys.first
       self
     end
 

@@ -8,7 +8,7 @@ module CIAX
     # Query options
     class Query
       include Msg
-      # Record should have [:option] key
+      # Record should have [:opt] key
       def initialize(stat, sv_stat, valid_keys)
         # Datax#put() will access to header, but get() will access @data
         @record = type?(stat, Record)

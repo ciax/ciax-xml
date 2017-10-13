@@ -20,7 +20,7 @@ module CIAX
         %i(port cid label).each { |k| self[k] = @cfg[k] }
         self[:ver] = @cfg[:version] || '0' # Version
         self[:total_steps] = 0
-        @dummy = @cfg[:option].test?
+        @dummy = @cfg[:opt].test?
         self[:mode] = @dummy ? 'test' : 'drive'
         init_time2cmt
         self

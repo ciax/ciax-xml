@@ -43,7 +43,7 @@ module CIAX
 
       # Initialize Subroutine
       def _init_net(dbi)
-        @host = @cfg[:option].host || dbi[:host]
+        @host = @cfg[:opt].host || dbi[:host]
         @port ||= dbi[:port]
         self
       end

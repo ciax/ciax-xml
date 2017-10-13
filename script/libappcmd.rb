@@ -60,8 +60,8 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       odb = { i: 'Instance Mode' }
-      ConfOpts.new('[id] [cmd] (par)', odb) do |cfg, args, opt|
-        dbi = (opt[:i] ? Ins::Db : Db).new.get(args.shift)
+      ConfOpts.new('[id] [cmd] (par)', odb) do |cfg, args|
+        dbi = (cfg[:opt][:i] ? Ins::Db : Db).new.get(args.shift)
         # dbi.pick already includes :command, :version
         cobj = Cmd::Index.new(cfg, dbi.pick)
         cobj.add_rem.add_ext(Ext)

@@ -12,10 +12,10 @@ module CIAX
       _chk_args(_kill_pids(tag))
       @layer = tag
       optarg = { options: optstr + 'b', default: 's' }
-      ConfOpts.new('[id] ....', optarg) do |cfg, args, opt|
+      ConfOpts.new('[id] ....', optarg) do |cfg, args|
         atrb = { sites: args }
         @obj = yield(cfg, atrb)
-        _init_server(tag, opt)
+        _init_server(tag, cfg[:opt])
         _main_loop { yield(cfg, atrb) }
       end
     end

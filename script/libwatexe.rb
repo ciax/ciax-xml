@@ -96,7 +96,7 @@ module CIAX
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(args.shift)
         atrb = { dbi: dbi, sub_list: App::List.new(cfg) }
-        Exe.new(cfg, atrb).run.ext_shell.shell
+        Exe.new(cfg, atrb).ext_shell.shell
       end
     end
   end

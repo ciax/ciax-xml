@@ -6,7 +6,8 @@ require 'libhexlist'
 module CIAX
   ConfOpts.new('[id]', options: 'fwxelrch', default: 'a') do |cfg, args|
     Layer.new(cfg) do |cf|
-      (cf[:opt][:x] ? Hex : Wat)::List.new(cf, sites: args)
+      const = const_get(cf[:opt].layer.capitalize)
+      const::List.new(cf, sites: args)
     end.ext_shell.shell
   end
 end

@@ -40,7 +40,11 @@ module CIAX
     end
 
     def drv?
-      %i(e s).any? { |k| self[k] }
+      self[:e] && true
+    end
+
+    def sv?
+      self[:s] && true
     end
 
     def test?

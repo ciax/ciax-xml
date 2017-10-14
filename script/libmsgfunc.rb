@@ -18,7 +18,7 @@ module CIAX
 
     def esc_code(str)
       return unless str
-      eval('"' + str + '"')
+      JSON.parse('["' + str + '"]').first
     end
 
     # variable keys of db will be converted to String

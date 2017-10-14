@@ -14,7 +14,10 @@ module CIAX
 
     def list
       Thread.list.map do |t|
-        %i(id layer name).map { |id| t[id] }.unshift("[#{t.status}]").join(':') + "\n"
+        str = "[#{t.status}]"
+        str += %i(id layer name).map { |id| t[id] }.join(':')
+        str += "(#{t[:type]})" if t[:type]
+        str + "\n"
       end.sort.join
     end
 
@@ -25,13 +28,14 @@ module CIAX
     # Simple Extention
     class Fork < Thread
       include Msg
-      def initialize(tname, layer, id)
+      def initialize(tname, layer, id, type = nil)
         @layer = layer
         @id = id
         th = super { _do_proc(id) { yield } }
         th[:layer] = layer
         th[:name] = tname
         th[:id] = id
+        th[:type] = type if type
         Threads.add(th)
       end
 
@@ -48,7 +52,7 @@ module CIAX
 
     # Thread with Loop
     class Loop < Fork
-      def initialize(tname, layer, id)
+      def initialize(tname, layer, id, type = nil)
         super do
           loop do
             yield
@@ -60,7 +64,7 @@ module CIAX
 
     # Queue Thread with Loop
     class QueLoop < Fork
-      def initialize(tname, layer, id)
+      def initialize(tname, layer, id, type = nil)
         @in = Queue.new
         @out = Queue.new
         super { loop { yield @in, @out } }

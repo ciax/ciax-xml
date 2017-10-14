@@ -13,7 +13,7 @@ module CIAX
     module_function
 
     def list
-      Thread.list.map do |t|
+      Threads.list.map do |t|
         str = "[#{t.status}]"
         str += %i(id layer name).map { |id| t[id] }.join(':')
         str += "(#{t[:type]})" if t[:type]

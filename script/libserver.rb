@@ -38,16 +38,17 @@ module CIAX
     # Separated form ext_* for detach process of this part
     def _startup
       Threadx::Fork.new('Server', @layer, @id, "udp:#{@port}") do
-        UdpServer.new(@port).listen do |line, rhost|
-          verbose { "UDP Recv:#{line} is #{line.class}" }
-          _srv_exec(line, rhost)
-          send_str = @server_output_proc.call
-          verbose { "UDP Send:#{send_str}" }
-          send_str
-        end
+        _srv_udp
         sleep 0.3
       end
       self
+    end
+
+    def _srv_udp
+      UdpServer.new(@port).listen do |line, rhost|
+        _srv_exec(line, rhost)
+        @server_output_proc.call
+      end
     end
 
     def _srv_exec(line, rhost)

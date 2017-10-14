@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 # I/O Simulator
+# Need GServer: sudo gem install gserver
 require 'libsimconf'
 require 'gserver'
 module CIAX

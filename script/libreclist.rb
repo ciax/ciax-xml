@@ -55,7 +55,7 @@ module CIAX
             f.read
           end
         )
-      rescue Errno::ENOENT, UserError
+      rescue Errno::ENOENT, InvalidData
         verbose { "  -- no json file (#{fname})" }
         Hashx.new
       end

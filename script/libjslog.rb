@@ -39,7 +39,7 @@ module CIAX
 
     def _log_thread(id)
       verbose { "Initiate File Log Server [#{id}/Ver.#{self[:ver]}]" }
-      Threadx::QueLoop.new('Logging', @type, @id) { |que| _log_save(que) }
+      Threadx::QueLoop.new('Logging', @layer, @id) { |que| _log_save(que) }
     end
 
     def _log_save(que)

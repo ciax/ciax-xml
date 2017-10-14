@@ -14,8 +14,8 @@ module CIAX
 
     def list
       Thread.list.map do |t|
-        %i(id layer name).map { |id| t[id] }.push("[#{t.status}]").join(':')
-      end.sort
+        %i(id layer name).map { |id| t[id] }.unshift("[#{t.status}]").join(':') + "\n"
+      end.sort.join
     end
 
     def killall
@@ -27,6 +27,7 @@ module CIAX
       include Msg
       def initialize(tname, layer, id)
         @layer = layer
+        @id = id
         th = super { _do_proc(id) { yield } }
         th[:layer] = layer
         th[:name] = tname
@@ -36,9 +37,9 @@ module CIAX
 
       private
 
-      def _do_proc(id)
+      def _do_proc(_id)
         Thread.pass
-        verbose { "Initiate Thread (#{id})" }
+        verbose { 'Initiate Thread' }
         yield
       rescue Exception
         errmsg

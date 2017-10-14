@@ -37,9 +37,9 @@ module CIAX
         def ext_input_log(tag = nil)
           # site_id: App, Frm
           # id : Mcr
-          id = @cfg[:site_id] || @cfg[:id]
-          verbose { "Initiate logging input #{tag}:#{id}" }
-          @cfg[:input] = Input.new(tag, id, @cfg[:version])
+          @id = @cfg[:site_id] || @cfg[:id]
+          verbose { "Initiate logging input #{tag}" }
+          @cfg[:input] = Input.new(tag, @id, @cfg[:version])
           self
         end
       end

@@ -51,8 +51,6 @@ module CIAX
       # * 'shell' is separated from 'ext_shell',
       #    because it will repeat being invoked and exit multiple times.
       # * '^D' gives interrupt
-      # * 'exe' returns String or nil
-      #    if 'exe' returns nil, @cfg[:output] (@shell_output_proc) is shown.
       def shell
         verbose { "Shell(#{@id})" }
         _init_readline_

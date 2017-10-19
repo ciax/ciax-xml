@@ -119,11 +119,9 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       require 'libstatus'
-      begin
+      GetOpts.new(' < status_file') do
         stat = App::Status.new.ext_local_file
         puts Rsp.new(stat)
-      rescue InvalidARGS
-        Msg.usage(' < status_file')
       end
     end
   end

@@ -120,13 +120,11 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      begin
-        stat = Status.new
+      GetOpts.new('[site] | < status_file') do |_o, args|
+        stat = Status.new(args.shift)
         stat.ext_local_sym
         stat.ext_local_file if STDIN.tty?
         puts stat.cmt
-      rescue InvalidARGS
-        Msg.usage '[site] | < status_file'
       end
     end
   end

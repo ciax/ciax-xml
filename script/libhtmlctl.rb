@@ -77,10 +77,11 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] [grp]') do |_opt, args|
+      opt = GetOpts.new('[id] [grp]') do |_o, args|
         @dbi = Ins::Db.new.get(args.shift)
         args
-      end.getarg('[id] (ctl)') do |_opt, args|
+      end
+      opt.getarg('[id] (ctl)') do |_o, args|
         puts Control.new(@dbi, args)
       end
     end

@@ -10,9 +10,9 @@ module CIAX
     # Get Thread status by UDP:54321 connection
     def initialize(tag, ops = '')
       ENV['VER'] ||= 'Initiate'
-      _chk_args(_kill_pids(tag))
       @layer = tag
       ConfOpts.new('[id] ...', options: ops + 'b', default: 's') do |cfg, args|
+        _chk_args(_kill_pids(tag), args)
         @obj = yield(cfg, sites: args)
         _init_server(tag, cfg[:opt])
         _main_loop { yield(cfg, sites: args) }
@@ -55,8 +55,8 @@ module CIAX
       'Nothing to do' unless pids.any? { |pid| _kill_pid(pid) }
     end
 
-    def _chk_args(str)
-      return unless ARGV.empty?
+    def _chk_args(str, args)
+      return unless args.empty?
       msg(indent(1) + str, 3) if str
       exit(2)
     end

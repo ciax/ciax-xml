@@ -12,7 +12,6 @@ module CIAX
     # etc. : additional option db (i.e. { ? : "description" })
     attr_reader :layer
     def initialize(ustr, optarg = {}, &opt_proc)
-      alias_method :log?, :drv?
       ustr = "(opt) #{ustr}" unless optarg.empty?
       _set_opt(_set_db(optarg) + _set_default(optarg))
       getarg(ustr, &opt_proc)
@@ -73,6 +72,8 @@ module CIAX
     def usage(ustr = @usagestr, code = 2)
       super("#{ustr}\n" + columns(@index), code)
     end
+
+    alias log? drv?
 
     private
 

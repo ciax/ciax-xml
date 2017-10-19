@@ -140,10 +140,6 @@ module CIAX
       alias cmd_mi= cmd_movei=
     end
 
-    if __FILE__ == $PROGRAM_NAME
-      sv = Slosyn.new
-      sv.serve
-      sleep
-    end
+    Slosyn.new.serve if __FILE__ == $PROGRAM_NAME
   end
 end

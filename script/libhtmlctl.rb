@@ -77,16 +77,11 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      begin
-        dbi = Ins::Db.new.get(ARGV.shift)
-      rescue InvalidARGS
-        Msg.usage '[id] [grp]'
-      end
-      begin
-        tbl = Control.new(dbi, ARGV)
-        puts tbl
-      rescue InvalidARGS
-        Msg.usage '[id] (ctl)'
+      GetOpts.new('[id] [grp]') do |_opt, args|
+        @dbi = Ins::Db.new.get(args.shift)
+        args
+      end.getarg('[id] (ctl)') do |_opt, args|
+        puts Control.new(@dbi, args)
       end
     end
   end

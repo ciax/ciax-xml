@@ -146,17 +146,13 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libstatus'
-      id = ARGV.shift
-      ARGV.clear
-      begin
-        dbi = Ins::Db.new.get(id)
+      GetOpts.new('[id]') do |_opt, args|
+        dbi = Ins::Db.new.get(args.shift)
         stat = App::Status.new(dbi).ext_local_file
         tbl = Table.new(stat)
         puts stat
         puts tbl.create
         puts tbl.insert
-      rescue InvalidARGS
-        Msg.usage '[id]'
       end
     end
   end

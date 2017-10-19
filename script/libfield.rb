@@ -130,11 +130,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      begin
-        dbi = Dev::Db.new.get(ARGV.shift)
+      GetOpts.new('[id]') do |_opts, args|
+        dbi = Dev::Db.new.get(args.shift)
         puts Field.new(dbi).to_r
-      rescue InvalidARGS
-        Msg.usage '(opt) [id]'
       end
     end
   end

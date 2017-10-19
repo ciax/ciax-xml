@@ -61,10 +61,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libwatlist'
-      ConfOpts.new('[cmd] (par)', options: 'j') do |cfg|
+      ConfOpts.new('[cmd] (par)', options: 'j') do |cfg, args|
         cobj = Cmd::Index.new(Conf.new(cfg))
         cobj.add_rem.add_ext(Ext)
-        ent = cobj.set_cmd(ARGV)
+        ent = cobj.set_cmd(args)
         puts ent.path
         jj ent[:sequence]
       end

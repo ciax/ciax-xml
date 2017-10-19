@@ -99,10 +99,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      if ARGV.empty?
-        Msg.usage('[id] ..')
-      else
-        par = Parameter.new.flush(ARGV)
+      GetOpts.new('[id] ..') do |_opt, args|
+        par = Parameter.new.flush(args)
         puts SeqView.new('test', par).upd
       end
     end

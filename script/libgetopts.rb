@@ -11,12 +11,10 @@ module CIAX
     # default: default(implicit) option string (i.e "abc")
     # etc. : additional option db (i.e. { ? : "description" })
     attr_reader :layer
-    def initialize(usagestr, optarg = {}, &opt_proc)
-      @usagestr = "(opt) #{usagestr}"
-      _set_opt(_set_db(optarg) + _set_default(optarg))
-      yield(self, ARGV) if opt_proc
-    rescue InvalidARGS
-      usage
+    def initialize(ustr, optarg = {}, &opt_proc)
+      ustr = "(opt) #{ustr}" unless optarg.empty?
+      @args = _set_opt(_set_db(optarg) + _set_default(optarg))
+      getarg(ustr, &opt_proc)
     end
 
     # Mode (Device) [prompt]
@@ -68,8 +66,15 @@ module CIAX
       CIAX.const_get(@layer.capitalize)
     end
 
-    def usage(str = @usagestr, code = 2)
-      super("#{str}\n" + columns(@index), code)
+    def getarg(ustr)
+      @args = yield(self, @args)
+      self
+    rescue InvalidARGS
+      usage(ustr)
+    end
+
+    def usage(ustr = @usagestr, code = 2)
+      super("#{ustr}\n" + columns(@index), code)
     end
 
     private
@@ -77,8 +82,11 @@ module CIAX
     # ARGV must be taken after parse
     def _parse(ops)
       ARGV.getopts(ops).each { |k, v| self[k.to_sym] = v }
+      ARGV.dup
     rescue OptionParser::ParseError
       raise(InvalidOPT, $ERROR_INFO)
+    ensure
+      ARGV.clear
     end
 
     # Returns valid options
@@ -106,9 +114,10 @@ module CIAX
     def _set_opt(str)
       ops = _add_colon(str)
       _make_usage(ops)
-      _parse(ops)
+      argv = _parse(ops)
       _make_layer
       _make_vmode
+      argv
     end
 
     def _init_db

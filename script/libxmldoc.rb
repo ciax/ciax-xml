@@ -29,7 +29,7 @@ module CIAX
       attr_reader :top, :displist
       def initialize(type, proj = nil)
         super()
-        /.+/ =~ type || Msg.cfg_err('No Db Type')
+        /.+/ =~ type || Msg.id_err('No Db Type')
         @type = type
         @proj = proj
         @displist = Disp.new
@@ -54,7 +54,7 @@ module CIAX
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
           begin
             Elem.new(xml).each { |top| _mk_db(top) }
-          rescue ConfigError
+          rescue InvalidARGS
             show_err
           end
         end.empty? && Msg.cfg_err("No XML file for #{@type}-*.xml")
@@ -151,16 +151,12 @@ module CIAX
   end
 
   if __FILE__ == $PROGRAM_NAME
-    type = ARGV.shift
-    begin
-      doc = Xml::Doc.new(type)
-    rescue ConfigError
-      Msg.usage('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)')
+    opt = GetOpts.new('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)') do |_o, args|
+      @doc = Xml::Doc.new(args.shift)
+      args
     end
-    begin
-      puts doc.get(ARGV.shift).path(ARGV)
-    rescue InvalidARGS
-      Msg.usage('[type] [id]')
+    opt.getarg('[type] [id]') do |_o, args|
+      puts @doc.get(args.shift).path(args)
     end
   end
 end

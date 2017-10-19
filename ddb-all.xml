@@ -46,11 +46,26 @@
     <site id="cf1" frm_id="k3n" port="24201" iocmd="socat - tcp:ltt-o:4001" label="S1 HC Coolant Flow"/>
     <site id="cfa" frm_id="k3n" port="24210" iocmd="socat - tcp:ltt-i:4015" label="S10 HC Coolant Flow"/>
   </group>
-  <group id="dmy" label="Dummy Simulator" column="2">
+  <group id="dmym" label="Dummy MOIRCS Simulator" column="2">
     <site id="tfp" frm_id="cfp" host="localhost" port="24691" iocmd="socat - tcp:localhost:10001" label="Field Point dummy"/>
     <site id="tap" frm_id="oma" host="localhost" port="24692" iocmd="socat - tcp:localhost:10002" label="Air Pres dummy"/>
     <site id="tma" frm_id="slo" host="localhost" port="24693" iocmd="socat - tcp:localhost:10003" label="Arm dummy"/>
     <site id="tmc" frm_id="slo" host="localhost" port="24694" iocmd="socat - tcp:localhost:10004" label="Carousel dummy"/>
     <site id="tbb" frm_id="bbe" host="localhost" port="24697" iocmd="socat - tcp:localhost:10007" label="BBE dummy"/>
+  </group>
+  <group id="dmyc" label="Dummy CIAX Simulator" column="2">
+    <site id="trt" frm_id="mel" host="localhost" port="24191" iocmd="frmsim crt" label="CIAX CART Dummy"/>
+    <site id="tsi" frm_id="cj2" host="localhost" port="24192" iocmd="frmsim dsi" label="IR Stand-by Flange">
+      <field>
+        <assign id="ipl" val="1"/>
+        <assign id="ipr" val="33"/>
+      </field>
+    </site>
+    <site id="tso" frm_id="cj2" host="localhost" port="24193" iocmd="frmsim dso" label="OPT Stand-by Flange">
+      <field>
+        <assign id="ipl" val="1"/>
+        <assign id="ipr" val="32"/>
+      </field>
+    </site>
   </group>
 </ddb>

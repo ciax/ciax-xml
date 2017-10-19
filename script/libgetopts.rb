@@ -124,6 +124,8 @@ module CIAX
         # System mode
         e: 'execution mode', s: 'server mode', n: 'non-stop mode',
         b: 'back ground mode',
+        # Instance mode
+        i: 'instance mode',
         # For visual
         r: 'raw data output', j: 'json data output' }
     end

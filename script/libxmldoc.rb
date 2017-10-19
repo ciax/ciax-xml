@@ -29,7 +29,7 @@ module CIAX
       attr_reader :top, :displist
       def initialize(type, proj = nil)
         super()
-        /.+/ =~ type || Msg.id_err('No Db Type')
+        /.+/ =~ type || Msg.args_err('No Db Type')
         @type = type
         @proj = proj
         @displist = Disp.new
@@ -153,7 +153,6 @@ module CIAX
   if __FILE__ == $PROGRAM_NAME
     opt = GetOpts.new('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)') do |_o, args|
       @doc = Xml::Doc.new(args.shift)
-      args
     end
     opt.getarg('[type] [id]') do |_o, args|
       puts @doc.get(args.shift).path(args)

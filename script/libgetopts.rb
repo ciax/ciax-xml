@@ -12,6 +12,7 @@ module CIAX
     # etc. : additional option db (i.e. { ? : "description" })
     attr_reader :layer
     def initialize(ustr, optarg = {}, &opt_proc)
+      alias_method :log?, :drv?
       ustr = "(opt) #{ustr}" unless optarg.empty?
       _set_opt(_set_db(optarg) + _set_default(optarg))
       getarg(ustr, &opt_proc)
@@ -52,10 +53,6 @@ module CIAX
       opt = dup
       %i(e s).each { |k| opt.delete(k) } if cl?
       opt
-    end
-
-    def log?
-      self[:e]
     end
 
     def host

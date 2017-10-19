@@ -45,7 +45,7 @@ module CIAX
     # Returns Dbi(command list) or Disp(site list)
     def _get_cache(id)
       @base = "#{@type}-#{id}"
-      @marfile = vardir('cache') + "#{@base}.mar"
+      @cachefile = vardir('cache') + "#{@base}.mar"
       return _load_cache(id) if _use_cache?
       @docs = Xml::Doc.new(@type, @proj) unless @docs # read xml file
       nil
@@ -65,7 +65,7 @@ module CIAX
       verbose { "Cache Loading (#{id})" }
       return self[id] if key?(id)
       begin
-        Marshal.load(IO.read(@marfile))
+        Marshal.load(IO.read(@cachefile))
       rescue ArgumentError # if empty
         Hashx.new
       end
@@ -73,7 +73,7 @@ module CIAX
 
     def _save_cache(id, res)
       verbose { "Cache Refresh (#{id})" }
-      open(@marfile, 'w') do |f|
+      open(@cachefile, 'w') do |f|
         f << Marshal.dump(res)
         verbose { "Cache Saved(#{id})" }
       end
@@ -90,10 +90,10 @@ module CIAX
     def _use_cache?
       verbose(ENV['NOCACHE']) do
         "#{@type}/Cache ENV['NOCACHE'] is set"
-      end || verbose(!test('e', @marfile)) do
+      end || verbose(!test('e', @cachefile)) do
         "#{@type}/Cache MAR file(#{@base}) not exist"
-      end || verbose(test('>', @latest, @marfile)) do
-        "#{@type}/Cache File(#{@latest}) is newer than #{@marfile}"
+      end || verbose(test('>', @latest, @cachefile)) do
+        "#{@type}/Cache File(#{@latest}) is newer than #{@cachefile}"
       end || (return verbose { "#{@type}/Cache Using" })
       false
     end

@@ -18,7 +18,7 @@ module CIAX
         @opt = self[:opt]
         db = Db.new
         update(layer_type: 'mcr', db: db)
-        _init_dbi(db.get(self[:args].shift))
+        _init_dbi(db.get(self[:args].shift || ENV['PROJ']))
         _init_dev_list(root_cfg.gen(self))
       end
 

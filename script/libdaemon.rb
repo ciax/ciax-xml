@@ -11,10 +11,12 @@ module CIAX
     def initialize(tag, ops = '')
       ENV['VER'] ||= 'Initiate'
       @layer = tag
-      ConfOpts.new('[id] ...', options: ops + 'b', default: 's') do |cfg, args|
-        _chk_args(_kill_pids(tag), args)
+      ConfOpts.new('[id] ...', options: ops + 'b') do |cfg, args|
+        opt = cfg[:opt]
+        _chk_args(_kill_pids(tag), args + opt.values)
+        opt[:s] = true
         @obj = yield(cfg, sites: args)
-        _init_server(tag, cfg[:opt])
+        _init_server(tag, opt)
         _main_loop { yield(cfg, sites: args) }
       end
     end
@@ -56,7 +58,7 @@ module CIAX
     end
 
     def _chk_args(str, args)
-      return unless args.empty?
+      return if args.any?
       msg(indent(1) + str, 3) if str
       exit(2)
     end

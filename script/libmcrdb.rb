@@ -32,7 +32,7 @@ module CIAX
 
       # Allows nil, get Dbi
       def get(id = nil)
-        super(id || ENV['PROJ']).extend(CmdList)
+        super.extend(CmdList)
       end
 
       private
@@ -125,7 +125,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] (key) ..', options: 'j') do |opt, args|
-        dbi = Db.new.get(args.shift)
+        dbi = Db.new.get(args.shift || ENV['PROJ'])
         puts opt[:j] ? dbi.list.to_j : dbi.path(args)
       end
     end

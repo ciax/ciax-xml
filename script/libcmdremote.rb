@@ -63,8 +63,8 @@ module CIAX
             atrb.get(:caption) { 'System Commands' }
             super
             add_item('interrupt', nil, def_msg: 'INTERRUPT')
-            # Accept empty command except for command line mode
-            dom_cfg[:cmd_line_mode] || add_item(nil, nil, def_msg: '')
+            # Accept empty command for upd
+            add_item(nil, nil, def_msg: '')
           end
         end
       end

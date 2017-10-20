@@ -5,7 +5,8 @@ require 'libapplist'
 module CIAX
   ConfOpts.new('[id] [cmd] (par)', options: 'elch') do |cfg, args|
     cfg[:cmd_line_mode] = true # exclude empty command
-    aex = App::List.new(cfg).get(args.shift).exe(args)
+    aex = App::List.new(cfg).get(args.shift)
+    args.empty? ? aex.no_cmd : aex.exe(args)
     puts aex
     puts aex.wait_ready ? 'COMPLETE' : 'TIMEOUT'
   end

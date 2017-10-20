@@ -50,6 +50,10 @@ module CIAX
       @sv_stat.msg
     end
 
+    def no_cmd
+      cmd_err @cobj.view_list
+    end
+
     def ext_shell
       extend(Shell).ext_shell
     end

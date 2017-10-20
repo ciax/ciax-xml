@@ -4,8 +4,8 @@ require 'libcmdlocal'
 require 'libparam'
 module CIAX
   module Cmd
-    # Command Index
-    class Index < GrpAry
+    # Command Index (Override)
+    class Index
       attr_reader :rem
       def add_rem(obj = nil, atrb = Hashx.new) # returns Domain
         @rem = add(obj || Remote::Domain, atrb)
@@ -63,8 +63,8 @@ module CIAX
             atrb.get(:caption) { 'System Commands' }
             super
             add_item('interrupt', nil, def_msg: 'INTERRUPT')
-            # Accept empty command
-            add_item(nil, nil, def_msg: '')
+            # Accept empty command except for command line mode
+            dom_cfg[:cmd_line_mode] || add_item(nil, nil, def_msg: '')
           end
         end
       end

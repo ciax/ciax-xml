@@ -32,7 +32,7 @@ module CIAX
       # Generate Entity
       def set_cmd(args, opt = {})
         id, *par = type?(args, Array)
-        @valid_keys.include?(id) || cmd_err(view_list)
+        @displist.valid?(id) || com_err(view_list)
         get(id).set_par(par, opt)
       end
 

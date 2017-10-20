@@ -15,6 +15,7 @@ module CIAX
       end
 
       def valid_keys
+        # map{ |e| e.valid_keys }
         map(&:valid_keys).compact.flatten
       end
 

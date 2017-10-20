@@ -5,7 +5,7 @@ require 'libparam'
 module CIAX
   module Cmd
     # Command Index
-    class Index
+    class Index < GrpAry
       attr_reader :rem
       def add_rem(obj = nil, atrb = Hashx.new) # returns Domain
         @rem = add(obj || Remote::Domain, atrb)

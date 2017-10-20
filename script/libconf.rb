@@ -148,7 +148,7 @@ module CIAX
   class ConfOpts < GetOpts
     def initialize(usagestr, optargs = {})
       super do |opt, args|
-        yield(Config.new(opt: opt, jump_groups: []), args)
+        yield(Config.new(opt: opt, jump_groups: [], args: args), args)
       end
     end
   end

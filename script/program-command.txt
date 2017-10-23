@@ -1,12 +1,12 @@
 #### Command Object Structure ####
 
-## Index(Array)
+## Index(Array): Top level
   There are Two domains.
   * Remote Command Domain
-    Commands that will be sent to Server.
+    Commands that will be sent from Client to Server.
   * Local Command Domain
     Commands that is used locally in Client.
-    (ex. Switching site, layer, view, interrupt) 
+    (ex. Switching site, layer and view. Interrupt) 
 
 ## Domain(Array)
  # Remote Domain
@@ -21,17 +21,24 @@
   * Shell Command Group
     quit or interrupt
   * View Command Group
-    Change visual
+    Change visual (decorated, raw)
   * Jump Command Group
     Jump among Sites,Layers
 
 ## Group(Hash)
- There are many Items stored as dictionary. (key,val)
+ All items are stored as dictionary. (key,val)
+ There are two kind of internal command list besides itself.
+ * Valid command
+   Array of command name corresponding to Group keys, which is shrinkable in some case.
+ * Dummy command
+   Array of dummy command name (Not listed in the Group dictionary)
+   It is also variable in some case.
+ Valid commands are picked up from the sum of their lists.
 
-## Item
+## Item(Hash)
  Tagged by command name.
  This has parameter setting method which generates Entity.
 
-## Entity
+## Entity(Config)
  This has own parameter individually.
  This has execution method.

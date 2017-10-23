@@ -25,15 +25,7 @@ module CIAX
 
       def add_item(id, title = nil, atrb = Hashx.new) # returns Item
         @displist.put_item(id, title)
-        @valid_keys << id
         self[id] = Item.new(@cfg, atrb.update(id: id))
-      end
-
-      # Generate Entity
-      def set_cmd(args, opt = {})
-        id, *par = type?(args, Array)
-        @displist.valid?(id) || com_err(view_list)
-        get(id).set_par(par, opt)
       end
 
       def view_list

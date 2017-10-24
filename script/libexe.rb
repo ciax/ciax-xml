@@ -24,8 +24,6 @@ module CIAX
     # It is not necessarily the case that id and Config[:dbi][:id] is identical
     def initialize(cfg, atrb = Hashx.new)
       @cfg = type?(cfg, Config).gen(self).update(atrb)
-      # layer is Frm,App,Wat,Hex,Mcr,Man
-      @layer = layer_name
       _init_procs
       @cobj = Cmd::Index.new(@cfg)
     end
@@ -74,6 +72,8 @@ module CIAX
       # dbi.pick already includes :command, :version
       @cfg.update(dbi.pick(ary))
       @id = dbi[:id]
+      # layer is Frm,App,Wat,Hex,Mcr,Man
+      @layer = @cfg[:layer]
       dbi
     end
 

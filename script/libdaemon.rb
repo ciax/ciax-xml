@@ -25,7 +25,7 @@ module CIAX
 
     def _main_loop
       @obj.run
-      UdpServer.new(54_321).listen { Threadx.list.to_s }
+      Udp::Server.new('sv', 'top', 54_321).listen { Threadx.list.to_s }
     rescue SignalException
       Threadx.killall
       if $ERROR_INFO.message == 'SIGHUP'

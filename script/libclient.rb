@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
-require 'libmsg'
-require 'socket'
+require 'libudp'
 
 # Provide Client
 module CIAX
@@ -24,37 +23,27 @@ module CIAX
     def _init_upd
       @sv_stat.init_flg(udperr: 'x')
       @sv_stat.upd_procs << proc { exe([]) }
-      @udp = UDPSocket.open
-      verbose { "Initiate UDP client (#{@id}) [#{@host}:#{@port}]" }
+      @udp = Udp::Client.new(@layer, @id, @host, @port)
       _set_client_proc
     end
 
     def _set_client_proc
       @cobj.rem.def_proc do |ent|
-        args = ent.id.split(':')
-        # Address family not supported by protocol -> see above
-        @udp.send(JSON.dump(args), 0, @host, @port.to_i)
-        verbose { "UDP Send #{args}" }
-        _udp_wait
+        @udp.send(ent.id.split(':'))
+        _udp_recv
       end
       self
     end
 
-    def _udp_wait
-      if IO.select([@udp], nil, nil, 1)
-        _udp_recv
+    def _udp_recv
+      if res = @udp.recv
+        @sv_stat.dw(:udperr)
+        return if res.empty?
+        @sv_stat.jmerge(res)
+        verbose { 'Prompt Loading from UDP' }
       else
         @sv_stat.up(:udperr).repl(:msg, 'TIMEOUT')
       end
-    end
-
-    def _udp_recv
-      res = @udp.recv(1024)
-      @sv_stat.dw(:udperr)
-      verbose { "UDP Recv #{res}" }
-      return if res.empty?
-      @sv_stat.jmerge(res)
-      verbose { 'Prompt Loading from UDP' }
     end
   end
 end

@@ -12,6 +12,7 @@ module CIAX
         # @cfg is isolated from cfg
         # So it is same meaning to set value to 'atrb' and @cfg
         @cfg = cfg.gen(self).update(type?(atrb, Hash))
+        @layer = @cfg[:layer]
       end
 
       def valid_keys

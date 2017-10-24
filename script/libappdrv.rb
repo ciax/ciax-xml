@@ -26,7 +26,7 @@ module CIAX
       def _init_log_mode
         return unless @cfg[:opt].log?
         @stat.ext_local_log.ext_local_sqlog
-        @cobj.rem.ext_input_log('app')
+        @cobj.rem.ext_input_log
       end
 
       # Process of command execution:

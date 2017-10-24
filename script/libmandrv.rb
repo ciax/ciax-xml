@@ -15,7 +15,7 @@ module CIAX
         _init_post_exe
         _init_proc_rem(@cobj.rem)
         _init_proc_loc
-        @cobj.rem.ext_input_log('mcr')
+        @cobj.rem.ext_input_log
         @terminate_procs << proc { @stat.clean }
         self
       end

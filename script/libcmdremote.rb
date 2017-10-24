@@ -34,12 +34,12 @@ module CIAX
           @int = add(ns::Group)
         end
 
-        def ext_input_log(layer = nil)
+        def ext_input_log
           # site_id: App, Frm
           # id : Mcr
           @id = @cfg[:site_id] || @cfg[:id]
-          verbose { "Initiate logging input #{layer}" }
-          @cfg[:input] = Input.new(layer, @id, @cfg[:version])
+          verbose { 'Initiate input logging' }
+          @cfg[:input] = Input.new(@layer, @id, @cfg[:version])
           self
         end
       end

@@ -122,7 +122,7 @@ module CIAX
       ConfOpts.new(cap, options: 'r') do |cfg, args|
         dbi = Db.new.get(args.shift)
         fld = cfg[:field] = Field.new(dbi)
-        # dbi.pick alreay includes :command, :version
+        # dbi.pick alreay includes :layer, :command, :version
         cobj = Cmd::Index.new(cfg, dbi.pick(%i(stream)))
         cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }
         cobj.rem.add_ext(Ext)

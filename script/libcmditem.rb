@@ -26,6 +26,7 @@ module CIAX
         super()
         @cfg = cfg.gen(self).update(atrb)
         @id = @cfg[:id]
+        @layer = @cfg[:layer]
       end
 
       def set_par(par, opt = {})
@@ -158,6 +159,7 @@ module CIAX
         super(cfg).update(atrb)
         @par = self[:par]
         @id = self[:cid]
+        @layer = self[:layer]
         verbose { "Config\n" + path }
       end
 

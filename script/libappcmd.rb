@@ -61,7 +61,7 @@ module CIAX
       require 'libinsdb'
       ConfOpts.new('[id] [cmd] (par)', options: 'i') do |cfg, args|
         dbi = (cfg[:opt][:i] ? Ins::Db : Db).new.get(args.shift)
-        # dbi.pick already includes :command, :version
+        # dbi.pick already includes :layer, :command, :version
         cobj = Cmd::Index.new(cfg, dbi.pick)
         cobj.add_rem.add_ext(Ext)
         ent = cobj.set_cmd(args)

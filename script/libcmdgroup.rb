@@ -16,6 +16,7 @@ module CIAX
         @cfg[:disp] = @displist
         @valid_keys = @displist.valid_keys
         @displist.rank = ENV['RANK'].to_i
+        @layer = @cfg[:layer]
       end
 
       # crnt could have 'label',:body,'unit','group'

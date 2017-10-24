@@ -9,7 +9,7 @@ module CIAX
   # Cache is available
   class Dbi < Hashx # DB Item
     def pick(ary = [])
-      super(%i(version command) + ary)
+      super(%i(layer version command) + ary)
     end
   end
 
@@ -39,7 +39,7 @@ module CIAX
 
     # Returns Hash
     def doc_to_db(doc)
-      Dbi.new(doc[:attr])
+      Dbi.new(doc[:attr]).update(layer: layer_name)
     end
 
     # Returns Dbi(command list) or Disp(site list)

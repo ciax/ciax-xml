@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <project id="dummy" label="Dummy simulator">
-    <group id="sim" label="Dummy simulator">
+  <project id="dmym" label="Dummy MOIRCS simulator">
+    <group id="sim" label="Dummy MOIRCS simulator">
       <instance id="tfp" app_id="cfp" host="localhost" port="25691" label="TEST Field Point"/>
       <instance id="tap" app_id="oma" host="localhost" port="25692" label="TEST Air Pres"/>
       <instance id="tma" app_id="mma" host="localhost" port="25693" label="TEST Arm"/>

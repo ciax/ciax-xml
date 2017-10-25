@@ -125,7 +125,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] (key) ..', options: 'j') do |opt, args|
-        dbi = Db.new.get(args.shift || ENV['PROJ'])
+        dbi = Db.new.get(ENV['PROJ'] || args.shift)
         puts opt[:j] ? dbi.list.to_j : dbi.path(args)
       end
     end

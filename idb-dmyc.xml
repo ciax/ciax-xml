@@ -5,6 +5,7 @@
       <instance id="trt" app_id="mel" host="localhost" port="25191" label="CIAX CART 3"/>
       <instance id="tsi" app_id="cj2" host="localhost" port="25192" label="IR Stand-by"/>
       <instance id="tso" app_id="cj2" host="localhost" port="25193" label="OPT Stand-by"/>
+      <instance id="tts" app_id="oss" host="localhost" port="25195" label="OSS Telescope"/>
     </group>
   </project>
 </idb>

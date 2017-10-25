@@ -67,5 +67,6 @@
         <assign id="ipr" val="32"/>
       </field>
     </site>
+    <site id="tts" frm_id="oss" host="localhost" port="24195" iocmd="frmsim dts" label="Gen2 TSC Control"/>
   </group>
 </ddb>

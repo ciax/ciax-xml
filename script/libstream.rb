@@ -90,7 +90,7 @@ module CIAX
       def close_strm
         return if @f.closed?
         verbose { 'Closing Stream' }
-        Process.kill('INT', @f.pid)
+        Process.kill('TERM', @f.pid)
         Process.waitpid(@f.pid)
         @f.close
         verbose { @f.closed? ? 'Stream Closed' : 'Stream not Closed' }

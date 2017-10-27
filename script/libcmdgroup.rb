@@ -67,7 +67,7 @@ module CIAX
       private
 
       def new_item(id, atrb = Hashx.new)
-        self[id] = context_constant('Item').new(@cfg, atrb.update(id: id))
+        self[id] = context_module('Item').new(@cfg, atrb.update(id: id))
       end
     end
   end

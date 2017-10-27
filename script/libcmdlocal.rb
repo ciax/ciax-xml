@@ -2,6 +2,7 @@
 require 'libcommand'
 
 module CIAX
+  # Command Structure
   module Cmd
     include CmdBase
     # Command Index
@@ -17,7 +18,6 @@ module CIAX
     # Local Commands
     module Local
       include CmdBase
-      # Top level
       # Local Domain
       class Domain < Domain
         def add_shell # returns Group
@@ -36,6 +36,7 @@ module CIAX
         end
       end
 
+      # Shell Commands
       module Sh
         include CmdBase
         # Shell Group
@@ -50,6 +51,7 @@ module CIAX
         end
       end
 
+      # Jump Commands
       module Jump
         include CmdBase
         # Jump Group
@@ -80,13 +82,13 @@ module CIAX
             self
           end
         end
-        class Item < Item;end
-        class Entity < Entity;end
+        class Item < Item; end
+        class Entity < Entity; end
       end
 
+      # Switch View Group
       module View
         include CmdBase
-        # Switch View Group
         # cfg should have [:output]
         class Group < Group
           def initialize(cfg, atrb = Hashx.new)
@@ -100,8 +102,8 @@ module CIAX
             end
           end
         end
-        class Item < Item;end
-        class Entity < Entity;end
+        class Item < Item; end
+        class Entity < Entity; end
       end
 
       if __FILE__ == $PROGRAM_NAME

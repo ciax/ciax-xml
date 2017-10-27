@@ -41,7 +41,7 @@ module CIAX
     # Send app entity
     def send(ent, n)
       clear if n.zero? # interrupt
-      cid = type?(ent, Cmd::Entity).id
+      cid = type?(ent, CmdBase::Entity).id
       verbose { "Execute #{cid}(#{@id}):timing" }
       # batch is frm batch (ary of ary)
       batch = ent[:batch]

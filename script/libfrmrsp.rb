@@ -35,7 +35,7 @@ module CIAX
 
       # Convert with corresponding cmd
       def conv(ent)
-        rid = type?(ent, Cmd::Entity)[:response]
+        rid = type?(ent, CmdBase::Entity)[:response]
         @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
         _make_sel(ent, rid)
         @frame.set(@stream.binary)
@@ -158,7 +158,7 @@ module CIAX
         if cid
           cfg[:field] = field
           # dbi.pick alreay includes :command, :version
-          cobj = Cmd::Index.new(cfg, dbi.pick(%i(stream)))
+          cobj = Index.new(cfg, dbi.pick(%i(stream)))
           cobj.add_rem.add_ext
           ent = cobj.set_cmd(cid.split(':'))
           begin

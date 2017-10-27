@@ -52,7 +52,7 @@ module CIAX
       end
 
       def gen_entity(opt)
-        context_constant('Entity').new(@cfg, opt)
+        context_module('Entity').new(@cfg, opt)
       end
 
       # Parameter for validate(cfg[:parameters])

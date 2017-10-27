@@ -8,12 +8,12 @@ module CIAX
 
     ## class name handling
     # Full path class name in same namespace
-    def context_constant(name, mod = nil)
+    def context_module(name, mod = nil)
       type?(name, String)
       mod ||= self.class
       mary = mod.to_s.split('::')
       res = chk_module(mary, name)
-#      p res
+      #      p res
       res
     end
 

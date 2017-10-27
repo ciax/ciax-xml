@@ -40,7 +40,7 @@ module CIAX
           # id : Mcr
           @id = @cfg[:site_id] || @cfg[:id]
           verbose { 'Initiate input logging' }
-          @cfg[:input] = Input.new(@layer, @id, @cfg[:version])
+          @cfg[:input] = context_module('Input').new(@layer, @id, @cfg[:version])
           self
         end
       end
@@ -57,6 +57,7 @@ module CIAX
       end
 
       #### Groups ####
+      # System Commands
       module Sys
         include CIAX::CmdBase
         # System Command Group
@@ -73,6 +74,7 @@ module CIAX
         class Entity < Entity; end
       end
 
+      # Internal Commands
       module Int
         include CmdBase
         # Internal Command Group

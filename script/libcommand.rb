@@ -56,7 +56,7 @@ module CIAX
         when Module
           cls.new(@cfg, atrb)
         when String, Symbol
-          context_constant(cls).new(@cfg, atrb)
+          context_module(cls).new(@cfg, atrb)
         when CmdProc
           cls
         else
@@ -65,12 +65,14 @@ module CIAX
       end
     end
 
+    # Top Level Command Index
     class Index < GrpAry
       def add_dom(ns, atrb = Hashx.new)
         add("#{ns}::Domain", atrb)
       end
     end
 
+    # Commmand Domain (Remote or Local)
     class Domain < GrpAry
       def add_grp(ns, atrb = Hashx.new)
         add("#{ns}::Group", atrb)

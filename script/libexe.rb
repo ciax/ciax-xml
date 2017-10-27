@@ -25,7 +25,7 @@ module CIAX
     def initialize(cfg, atrb = Hashx.new)
       @cfg = type?(cfg, Config).gen(self).update(atrb)
       _init_procs
-      @cobj = Cmd::Index.new(@cfg)
+      @cobj = context_module('Index').new(@cfg)
     end
 
     # Sync only (Wait for other thread), never inherit

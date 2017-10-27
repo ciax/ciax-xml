@@ -7,23 +7,23 @@ module CIAX
   module App
     include Cmd
     class Index < Index; end
-    # Local
+    # Local Domain
     module Local
       include Cmd::Local
       class Domain < Domain; end
-      # Sh
+      # Sh Group
       module Sh
         include Cmd::Local::Sh
         class Group < Group; end
       end
-      # Jump
+      # Jump Group
       module Jump
         include Cmd::Local::Jump
         class Group < Group; end
         class Item < Item; end
         class Entity < Entity; end
       end
-      # View
+      # View Group
       module View
         include Cmd::Local::View
         class Group < Group; end
@@ -31,15 +31,24 @@ module CIAX
         class Entity < Entity; end
       end
     end
-    # Remote
+    # Remote Domain
     module Remote
       include Cmd::Remote
       class Domain < Domain; end
-      # cfg should have [:dbi] and [:stat]
+      class Input < Input; end
+      # System Commands
+      module Sys
+        include Cmd::Remote::Sys
+        class Group < Group; end
+        class Item < Item; end
+        class Entity < Entity; end
+      end
+      # Internal Commands
       module Int
         include Cmd::Remote::Int
-        # Internal Command
+        # Internal Command Group
         class Group < Group
+          # cfg should have [:dbi] and [:stat]
           def initialize(cfg, atrb = Hashx.new)
             super
             init_item_file_io
@@ -54,7 +63,6 @@ module CIAX
       module Ext
         include Cmd::Remote::Ext
         class Group < Group; end
-
         # Generate [:batch]
         class Item < Item
           # Ext entity

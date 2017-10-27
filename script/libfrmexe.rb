@@ -51,8 +51,8 @@ module CIAX
       def _init_command
         @cobj.add_rem.cfg[:def_msg] = 'OK'
         @cobj.rem.add_sys
-        @cobj.rem.add_ext(Ext)
-        @cobj.rem.add_int(Int)
+        @cobj.rem.add_ext
+        @cobj.rem.add_int
         self
       end
 

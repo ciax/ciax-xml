@@ -44,8 +44,8 @@ module CIAX
         @cobj.add_rem.cfg[:def_msg] = 'ACCEPT'
         rem = @cobj.rem
         rem.add_sys
-        rem.add_int(Int)
-        rem.add_ext(Ext)
+        rem.add_int
+        rem.add_ext
         rem.sys.add_item('nonstop', 'Mode')
         rem.sys.add_item('interactive', 'Mode')
       end

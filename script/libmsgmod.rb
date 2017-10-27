@@ -12,7 +12,9 @@ module CIAX
       type?(name, String)
       mod ||= self.class
       mary = mod.to_s.split('::')
-      chk_module(mary, name)
+      res = chk_module(mary, name)
+#      p res
+      res
     end
 
     def chk_module(mary, name)

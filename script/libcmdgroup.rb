@@ -3,9 +3,9 @@ require 'libcmditem'
 require 'libdispgrp'
 # CIAX-XML
 module CIAX
-  module Cmd
-    # Dummy Command Group
-    class Dummy < Hashx
+  module CmdBase
+    # Command Group
+    class Group < Hashx
       include CmdProc
       attr_reader :valid_keys
       # cfg keys: caption,color,column
@@ -19,30 +19,11 @@ module CIAX
         @layer = @cfg[:layer]
       end
 
-      # crnt could have 'label',:body,'unit','group'
       def add_dummy(id, title = nil) # returns Display
         @displist.put_item(id, title)
       end
 
-      def add_item(id, title = nil, atrb = Hashx.new) # returns Item
-        @displist.put_item(id, title)
-        self[id] = Item.new(@cfg, atrb.update(id: id))
-      end
-
-      def view_list
-        @displist.to_s
-      end
-
-      def valid_pars; end
-    end
-
-    # Command Group
-    class Group < Dummy
-      # cfg keys: caption,color,column
-      def initialize(cfg, atrb = Hashx.new)
-        super
-      end
-
+      # atrb could be dbi[:index][id]
       # atrb could have 'label',:body,'unit','group'
       def add_item(id, title = nil, atrb = Hashx.new) # returns Item
         @displist.put_item(id, title)
@@ -79,12 +60,14 @@ module CIAX
         values.map(&:valid_pars).flatten
       end
 
+      def view_list
+        @displist.to_s
+      end
+
       private
 
-      def new_item(id, atrb = {})
-        # atrb could be dbi[:index][id]
-        atrb[:id] = id
-        self[id] = context_constant('Item').new(@cfg, atrb)
+      def new_item(id, atrb = Hashx.new)
+        self[id] = context_constant('Item').new(@cfg, atrb.update(id: id))
       end
     end
   end

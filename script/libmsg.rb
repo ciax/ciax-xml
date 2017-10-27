@@ -80,11 +80,10 @@ module CIAX
     def head_ary
       cary = []
       th = Thread.current[:name]
-      @layer ||= layer_name
       cls = class_path.pop
       cls << "(#{@id})" if @id
       cary << [th, Msg.th_color(th)]
-      cary << [@layer, Msg.ns_color(@layer)]
+      cary << [layer_name, Msg.ns_color(@layer)]
       cary << [cls, Msg.cls_color(cls)]
     end
 

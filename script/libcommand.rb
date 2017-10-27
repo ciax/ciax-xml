@@ -4,7 +4,7 @@ require 'libcmdgroup'
 # @cfg[:def_proc] should be Proc which is given |Entity| as param,
 #   returns String as message.
 module CIAX
-  module Cmd
+  module CmdBase
     # Inherited by Index,Domain
     class GrpAry < Arrayx
       include CmdProc
@@ -56,12 +56,24 @@ module CIAX
         when Module
           cls.new(@cfg, atrb)
         when String, Symbol
-          layer_module.const_get(cls).new(@cfg, atrb)
+          context_constant(cls).new(@cfg, atrb)
         when CmdProc
           cls
         else
           sv_err('Not class')
         end
+      end
+    end
+
+    class Index < GrpAry
+      def add_dom(ns, atrb = Hashx.new)
+        add("#{ns}::Domain", atrb)
+      end
+    end
+
+    class Domain < GrpAry
+      def add_grp(ns, atrb = Hashx.new)
+        add("#{ns}::Group", atrb)
       end
     end
   end

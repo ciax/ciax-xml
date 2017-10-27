@@ -3,7 +3,7 @@ require 'libcmdentity'
 require 'librerange'
 module CIAX
   # Command Module
-  module Cmd
+  module CmdBase
     # Corresponds commands
     class Item < Hashx
       include CmdProc

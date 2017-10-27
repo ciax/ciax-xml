@@ -32,7 +32,7 @@ module CIAX
         end
 
         def _init_lcmd_
-          sg = @cobj.loc.add(Cmd::Dummy, caption: 'Switch Pages', color: 5)
+          sg = @cobj.loc.add(Cmd::Group, caption: 'Switch Pages', color: 5)
           sg.add_dummy('0', 'List page')
           sg.add_dummy('[1-n]', 'Sequencer page')
           sg.add_item('cl', 'Clean list', def_msg: 'CLEAN').def_proc do

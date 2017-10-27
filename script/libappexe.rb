@@ -75,8 +75,8 @@ module CIAX
       def _init_command
         @cobj.add_rem.cfg[:def_msg] = 'ISSUED'
         @cobj.rem.add_sys
-        @cobj.rem.add_int(Int)
-        @cobj.rem.add_ext(Ext)
+        @cobj.rem.add_int
+        @cobj.rem.add_ext
         self
       end
 

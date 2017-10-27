@@ -159,7 +159,7 @@ module CIAX
           cfg[:field] = field
           # dbi.pick alreay includes :command, :version
           cobj = Cmd::Index.new(cfg, dbi.pick(%i(stream)))
-          cobj.add_rem.add_ext(Ext)
+          cobj.add_rem.add_ext
           ent = cobj.set_cmd(cid.split(':'))
           begin
             field.conv(ent)

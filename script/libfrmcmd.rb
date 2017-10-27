@@ -125,7 +125,7 @@ module CIAX
         # dbi.pick alreay includes :layer, :command, :version
         cobj = Cmd::Index.new(cfg, dbi.pick(%i(stream)))
         cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }
-        cobj.rem.add_ext(Ext)
+        cobj.rem.add_ext
         fld.jmerge unless STDIN.tty?
         res = cobj.set_cmd(args).exe_cmd('test')
         puts(cfg[:opt][:r] ? res.msg : res.path)

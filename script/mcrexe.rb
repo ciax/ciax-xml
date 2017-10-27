@@ -7,7 +7,7 @@ module CIAX
   module Mcr
     ConfOpts.new('[proj] [cmd] (par)', options: 'cen') do |cfg, args|
       mobj = Cmd::Index.new(Conf.new(cfg))
-      mobj.add_rem.add_ext(Ext)
+      mobj.add_rem.add_ext
       ent = mobj.set_cmd(args)
       Sequencer.new(ent).upd_sites.macro
     end

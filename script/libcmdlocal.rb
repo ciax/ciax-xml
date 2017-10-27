@@ -3,23 +3,25 @@ require 'libcommand'
 
 module CIAX
   module Cmd
+    include CmdBase
     # Command Index
-    class Index < GrpAry
+    class Index < Index
       # cfg should have [:jump_class]
       attr_reader :loc
       def initialize(cfg, atrb = Hashx.new)
         super
-        @loc = add(Local::Domain)
+        @loc = add_dom('Local')
       end
     end
 
     # Local Commands
     module Local
+      include CmdBase
       # Top level
       # Local Domain
-      class Domain < GrpAry
+      class Domain < Domain
         def add_shell # returns Group
-          add(Sh::Group)
+          add_grp('Sh')
         end
 
         def add_jump # returns Array(Symbols)
@@ -30,13 +32,14 @@ module CIAX
         end
 
         def add_view(atrb = Hashx.new) # retuns Group
-          add(View::Group, atrb)
+          add_grp('View', atrb)
         end
       end
 
       module Sh
+        include CmdBase
         # Shell Group
-        class Group < Dummy
+        class Group < Group
           def initialize(cfg, atrb = Hashx.new)
             atrb[:caption] = 'Shell Command'
             atrb[:color] = 1
@@ -48,6 +51,7 @@ module CIAX
       end
 
       module Jump
+        include CmdBase
         # Jump Group
         class Group < Group
           def initialize(cfg, atrb = Hashx.new)
@@ -76,9 +80,12 @@ module CIAX
             self
           end
         end
+        class Item < Item;end
+        class Entity < Entity;end
       end
 
       module View
+        include CmdBase
         # Switch View Group
         # cfg should have [:output]
         class Group < Group
@@ -93,6 +100,8 @@ module CIAX
             end
           end
         end
+        class Item < Item;end
+        class Entity < Entity;end
       end
 
       if __FILE__ == $PROGRAM_NAME

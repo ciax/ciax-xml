@@ -63,7 +63,7 @@ module CIAX
       require 'libwatlist'
       ConfOpts.new('[cmd] (par)', options: 'j') do |cfg, args|
         cobj = Cmd::Index.new(Conf.new(cfg))
-        cobj.add_rem.add_ext(Ext)
+        cobj.add_rem.add_ext
         ent = cobj.set_cmd(args)
         puts ent.path
         jj ent[:sequence]

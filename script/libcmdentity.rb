@@ -4,7 +4,7 @@ require 'libconf'
 #   returns String as message.
 module CIAX
   # Command Module
-  module Cmd
+  module CmdBase
     # Default Proc Setting method
     module CmdProc
       include Msg

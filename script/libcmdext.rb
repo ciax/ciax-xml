@@ -8,6 +8,7 @@ module CIAX
       # @cfg must contain [:dbi]
       # Content of Dbi[:command][:index][id] will be merged in Item@cfg
       module Ext
+        include CmdBase
         # External Command Group
         class Group < Group
           def initialize(cfg, atrb = Hashx.new)

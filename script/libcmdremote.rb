@@ -4,34 +4,35 @@ require 'libcmdlocal'
 require 'libparam'
 module CIAX
   module Cmd
-    # Command Index (Override)
-    class Index
+    # Command Index
+    class Index < Local::Index
       attr_reader :rem
       def add_rem(obj = nil, atrb = Hashx.new) # returns Domain
-        @rem = add(obj || Remote::Domain, atrb)
+        @rem = obj ? add(obj, atrb) : add_dom('Remote', atrb)
       end
     end
     # Remote Command Domain
     module Remote
+      include CmdBase
       # Instance var is @rem in Index
       # @cfg should have [:dbi]
-      class Domain < GrpAry
+      class Domain < Domain
         attr_reader :sys, :ext, :int
         def initialize(cfg, atrb = Hashx.new)
           super
           @cfg[:def_proc] = proc {} # proc is re-defined
         end
 
-        def add_sys(ns = Sys) # returns Group
-          @sys = add(ns::Group)
+        def add_sys # returns Group
+          @sys = add_grp('Sys')
         end
 
-        def add_ext(ns = Ext) # returns Group
-          @ext = add(ns::Group)
+        def add_ext # returns Group
+          @ext = add_grp('Ext')
         end
 
-        def add_int(ns = Int) # returns Group
-          @int = add(ns::Group)
+        def add_int # returns Group
+          @int = add_grp('Int')
         end
 
         def ext_input_log
@@ -57,6 +58,7 @@ module CIAX
 
       #### Groups ####
       module Sys
+        include CIAX::CmdBase
         # System Command Group
         class Group < Group
           def initialize(dom_cfg, atrb = Hashx.new)
@@ -67,9 +69,12 @@ module CIAX
             add_item(nil, nil, def_msg: '')
           end
         end
+        class Item < Item; end
+        class Entity < Entity; end
       end
 
       module Int
+        include CmdBase
         # Internal Command Group
         class Group < Group
           def initialize(dom_cfg, atrb = Hashx.new)

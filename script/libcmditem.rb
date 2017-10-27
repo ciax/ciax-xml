@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libcmdentity'
+require 'librerange'
 module CIAX
   # Command Module
   module Cmd

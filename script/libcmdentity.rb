@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require 'libconf'
-require 'librerange'
 # @cfg[:def_proc] should be Proc which is given |Entity| as param
 #   returns String as message.
 module CIAX
@@ -10,6 +9,7 @@ module CIAX
     module CmdProc
       include Msg
       attr_reader :cfg
+
       # Proc should return String
       def def_proc(&def_proc)
         @cfg[:def_proc] = type?(def_proc, Proc)

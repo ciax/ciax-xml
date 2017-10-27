@@ -28,11 +28,11 @@ module CIAX
     end
 
     def layer_name
-      class_path.first.downcase
+      class_path[1].downcase
     end
 
     def class_path
-      self.class.to_s.split('::')[1..-1]
+      self.class.to_s.split('::')
     end
 
     def m2id(mod, pos = -1)

@@ -36,7 +36,7 @@ module CIAX
     end
 
     def _udp_recv
-      if res = @udp.recv
+      if (res = @udp.recv)
         @sv_stat.dw(:udperr)
         return if res.empty?
         @sv_stat.jmerge(res)

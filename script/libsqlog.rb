@@ -17,7 +17,8 @@ module CIAX
     class Table
       include Msg
       attr_reader :tid, :stat, :tname
-      def initialize(stat)
+      def initialize(layer, stat)
+        @layer = layer
         @stat = type?(stat, Varx)
         @id = stat[:id]
         @tid = "#{@stat.type}_#{@stat[:ver]}"
@@ -99,8 +100,8 @@ module CIAX
       end
 
       # Check table existence (ver=0 is invalid)
-      def init_table(stat) # returns self
-        tbl = Table.new(stat)
+      def init_table(layer, stat) # returns self
+        tbl = Table.new(layer, stat)
         if stat[:ver].to_i > 0
           create_tbl(tbl)
           real_mode(stat, tbl)
@@ -123,7 +124,7 @@ module CIAX
         IO.popen(@sqlcmd, 'w') { |f| f.puts sql }
         verbose { "Saved for '#{sql}'" }
       rescue
-        Msg.give_up("Sqlite3 input error\n#{sql}")
+        give_up("Sqlite3 input error\n#{sql}")
       end
 
       # Create table if no table
@@ -149,7 +150,7 @@ module CIAX
       GetOpts.new('[id]') do |_opt, args|
         dbi = Ins::Db.new.get(args.shift)
         stat = App::Status.new(dbi).ext_local_file
-        tbl = Table.new(stat)
+        tbl = Table.new('app', stat)
         puts stat
         puts tbl.create
         puts tbl.insert

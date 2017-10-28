@@ -119,7 +119,7 @@ module CIAX
     # Add extend method in Status
     class Status
       def ext_local_rsp(field)
-        extend(App::Rsp).ext_local_rsp(field)
+        extend(Rsp).ext_local_rsp(field)
       end
     end
 

@@ -83,7 +83,7 @@ module CIAX
       cls = class_path.pop
       cls << "(#{@id})" if @id
       cary << [th, Msg.th_color(th)]
-      cary << [layer_name, Msg.ns_color(@layer)]
+      cary << [@layer ||= layer_name, Msg.ns_color(@layer)]
       cary << [cls, Msg.cls_color(cls)]
     end
 

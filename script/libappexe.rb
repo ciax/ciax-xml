@@ -1,10 +1,9 @@
 #!/usr/bin/ruby
-require 'libfrmlist'
-require 'libinsdb'
 require 'libappdrv'
-require 'libappcmd'
 require 'libapprsp'
 require 'libappview'
+require 'libfrmlist'
+require 'libinsdb'
 # CIAX-XML
 module CIAX
   # Application Layer

@@ -35,7 +35,6 @@ module CIAX
     module Remote
       include Cmd::Remote
       class Domain < Domain; end
-      class Input < Input; end
       # System Commands
       module Sys
         include Cmd::Remote::Sys

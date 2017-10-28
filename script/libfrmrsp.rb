@@ -140,7 +140,7 @@ module CIAX
     # Field class
     class Field
       def ext_local_rsp(stream)
-        extend(Frm::Rsp).ext_local_rsp(stream)
+        extend(Rsp).ext_local_rsp(stream)
       end
     end
 

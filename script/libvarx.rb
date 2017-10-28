@@ -41,6 +41,7 @@ module CIAX
       @dbi = type?(dbi, Dbi)
       _setid(dbi[:site_id] || dbi[:id]) || Msg.cfg_err('ID')
       self[:ver] = dbi[:version].to_i
+      @layer = dbi[:layer]
       self
     end
 

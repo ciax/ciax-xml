@@ -5,6 +5,7 @@ require 'thread'
 module CIAX
   # Extended Thread class
   module Threadx
+    include Msg
     Threads = ThreadGroup.new
     Thread.current[:name] = 'Main'
     Thread.current[:layer] = 'top'

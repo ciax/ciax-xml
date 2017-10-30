@@ -38,5 +38,16 @@ module CIAX
       return data if data['type'] == type
       data_err("Data type error <#{name.class}> for (#{mod})")
     end
+
+    # Temporary condition test
+    def good(str = '')
+      show("Good for #{str}")
+      true
+    end
+
+    def bad(str = '')
+      show("Bad for #{str}")
+      false
+    end
   end
 end

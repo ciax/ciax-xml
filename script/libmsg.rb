@@ -96,17 +96,19 @@ module CIAX
     # VER= makes setenv "" to VER otherwise nil
     def condition(msg)
       return if !ENV['VER'] || !msg
-      return true if match_all
       title = msg.split("\n").first.upcase
-      ENV['VER'].split(',').any? do |s|
+      ENV['VER'].upcase.split(',').any? do |s|
         s.split(':').all? do |e|
-          title.include?(e.upcase)
+          chk_exclude(e, title)
         end
       end
     end
 
-    def match_all
-      Regexp.new('\*').match(ENV['VER'])
+    def chk_exclude(e, title)
+      exc = e.split('^')
+      inc = exc.shift
+      return if exc.any? { |x| title.include?(x) }
+      /\*/ =~ inc || title.include?(inc)
     end
 
     module_function

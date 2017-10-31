@@ -4,16 +4,27 @@ require 'libmsgdbg'
 class Module
   # All classes copy under the module
   def deep_include(smod, dmod = self)
-    const_defined?(dmod.to_s) || module_eval("module #{dmod};end")
+    const_defined?(dmod.to_s) || _fmt_eval('module %s;end', dmod)
     smod.constants.each do |con|
-      ssub = const_get("#{smod}::#{con}")
-      dsub = "#{dmod}::#{con}"
-      if ssub.is_a?(Class)
-        class_eval("class #{dsub} < #{ssub.name};end")
-      elsif ssub.is_a?(Module)
-        deep_include(ssub, dsub)
-      end
+      _classify_(*[smod, dmod].map { |s| format('%s::%s', s, con) })
     end
+  end
+
+  private
+
+  def _classify_(sname, dname)
+    case (ssub = const_get(sname))
+    when Class
+      _fmt_eval('class %s < %s;end', dname, sname)
+    when Module
+      deep_include(ssub, dname)
+    else
+      _fmt_eval('%s = %s', dname, sname)
+    end
+  end
+
+  def _fmt_eval(*par)
+    module_eval(format(*par))
   end
 end
 

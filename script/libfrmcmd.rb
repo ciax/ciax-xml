@@ -4,9 +4,9 @@ require 'libframe'
 require 'libfield'
 # CIAX-XML Command module
 module CIAX
-  Msg.deep_include(Frm, CmdTree)
   # Frame Layer
   module Frm
+    deep_include(CmdTree)
     # Remote Domain
     module Remote
       # Internal Commands

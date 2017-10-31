@@ -5,7 +5,7 @@ require 'libsitelist'
 module CIAX
   # Frame Layer
   module Frm
-    Msg.deep_include(Frm, Site)
+    deep_include(Site)
     # Frame List module
     class List
       def initialize(cfg, atrb = Hashx.new)

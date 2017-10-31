@@ -1,5 +1,22 @@
 #!/usr/bin/ruby
 require 'libmsgdbg'
+# Add deep_include to Module
+class Module
+  # All classes copy under the module
+  def deep_include(smod, dmod = self)
+    const_defined?(dmod.to_s) || module_eval("module #{dmod};end")
+    smod.constants.each do |con|
+      ssub = const_get("#{smod}::#{con}")
+      dsub = "#{dmod}::#{con}"
+      if ssub.is_a?(Class)
+        class_eval("class #{dsub} < #{ssub.name};end")
+      elsif ssub.is_a?(Module)
+        deep_include(ssub, dsub)
+      end
+    end
+  end
+end
+
 # Common Module
 module CIAX
   ### Checking Methods ###
@@ -7,21 +24,6 @@ module CIAX
     module_function
 
     ## class name handling
-
-    # All classes copy under the module
-    def deep_include(dmod, smod)
-      const_defined?(dmod.to_s) || module_eval("module #{dmod};end")
-      smod.constants.each do |con|
-        ssub = const_get("#{smod}::#{con}")
-        dsub = "#{dmod}::#{con}"
-        if ssub.is_a?(Class)
-          class_eval("class #{dsub} < #{ssub.name};end")
-        elsif ssub.is_a?(Module)
-          deep_include(dsub, ssub)
-        end
-      end
-    end
-
     # Full path class name in same namespace
     def context_module(name, mod = nil)
       type?(name, String)

@@ -3,9 +3,9 @@ require 'libcmdext'
 require 'libappdb'
 # CIAX-XML Command module
 module CIAX
-  Msg.deep_include(App, CmdTree)
   # Application Mode
   module App
+    deep_include(CmdTree)
     # Remote Domain
     module Remote
       # Internal Commands

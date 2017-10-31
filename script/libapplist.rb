@@ -4,7 +4,7 @@ require 'libappexe'
 module CIAX
   # Application Layer
   module App
-    Msg.deep_include(App, Site)
+    deep_include(Site)
     # Application List
     class List
       # cfg must have [:db]

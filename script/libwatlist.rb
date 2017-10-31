@@ -4,7 +4,7 @@ require 'libwatexe'
 module CIAX
   # Watch Layer
   module Wat
-    Msg.deep_include(Wat, Site)
+    deep_include(Site)
     # Watch List
     class List
       attr_reader :id

@@ -4,7 +4,7 @@ require 'libhexexe'
 module CIAX
   # Ascii Hex Layer for OLD CIAX
   module Hex
-    Msg.deep_include(Hex, Site)
+    deep_include(Site)
     # Hex Exe List
     class List
       # cfg must have [:db]

@@ -3,9 +3,9 @@ require 'libcmdext'
 require 'libmcrconf'
 # CIAX_XML
 module CIAX
-  Msg.deep_include(Mcr, CmdTree)
   # Macro Layer
   module Mcr
+    deep_include(CmdTree)
     # Remote Commands
     module Remote
       INTCMD = {

@@ -3,50 +3,15 @@ require 'libcmdext'
 require 'libappdb'
 # CIAX-XML Command module
 module CIAX
+  Msg.deep_include(App, CmdTree)
   # Application Mode
   module App
-    include Cmd
-    class Index < Index; end
-    # Local Domain
-    module Local
-      include Cmd::Local
-      class Domain < Domain; end
-      # Sh Group
-      module Sh
-        include Cmd::Local::Sh
-        class Group < Group; end
-      end
-      # Jump Group
-      module Jump
-        include Cmd::Local::Jump
-        class Group < Group; end
-        class Item < Item; end
-        class Entity < Entity; end
-      end
-      # View Group
-      module View
-        include Cmd::Local::View
-        class Group < Group; end
-        class Item < Item; end
-        class Entity < Entity; end
-      end
-    end
     # Remote Domain
     module Remote
-      include Cmd::Remote
-      class Domain < Domain; end
-      # System Commands
-      module Sys
-        include Cmd::Remote::Sys
-        class Group < Group; end
-        class Item < Item; end
-        class Entity < Entity; end
-      end
       # Internal Commands
       module Int
-        include Cmd::Remote::Int
         # Internal Command Group
-        class Group < Group
+        class Group
           # cfg should have [:dbi] and [:stat]
           def initialize(cfg, atrb = Hashx.new)
             super
@@ -55,15 +20,11 @@ module CIAX
             add_item('del', '[key,...]', def_pars(1))
           end
         end
-        class Item < Item; end
-        class Entity < Entity; end
       end
       # External Command
       module Ext
-        include Cmd::Remote::Ext
-        class Group < Group; end
         # Generate [:batch]
-        class Item < Item
+        class Item
           # Ext entity
           include Math
           # batch is ary of args(ary)
@@ -94,7 +55,6 @@ module CIAX
             end
           end
         end
-        class Entity < Entity; end
       end
     end
 

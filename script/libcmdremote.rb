@@ -3,7 +3,7 @@ require 'libvarx'
 require 'libcmdlocal'
 require 'libparam'
 module CIAX
-  module Cmd
+  module CmdTree
     # Command Index
     class Index < Local::Index
       attr_reader :rem

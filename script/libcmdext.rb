@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libcmdremote'
 module CIAX
-  module Cmd
+  module CmdTree
     # Remote Command Domain
     module Remote
       # For External Command Domain

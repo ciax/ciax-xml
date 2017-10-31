@@ -3,7 +3,7 @@ require 'libcommand'
 
 module CIAX
   # Command Structure
-  module Cmd
+  module CmdTree
     include CmdBase
     # Command Index
     class Index < Index

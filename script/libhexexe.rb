@@ -6,6 +6,7 @@ require 'libhexrsp'
 module CIAX
   # Ascii Hex Layer for OLD CIAX
   module Hex
+    Msg.deep_include(Hex, CmdTree)
     # cfg must have [:db], [:sub_list]
     class Exe < Exe
       def initialize(cfg, atrb = Hashx.new)

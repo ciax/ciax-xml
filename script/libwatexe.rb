@@ -5,7 +5,7 @@ require 'libwatprt'
 module CIAX
   # Watch Layer
   module Wat
-    include Cmd
+    Msg.deep_include(Wat, CmdTree)
     # cfg must have [:dbi], [:sub_list]
     class Exe < Exe
       attr_reader :sub, :stat

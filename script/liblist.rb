@@ -36,7 +36,7 @@ module CIAX
       def ext_shell(jump_class)
         verbose { 'Initiate List Shell' }
         @cfg[:jump_class] = type?(jump_class, Module) # Use for libcmdlocal
-        @jumpgrp = Cmd::Local::Jump::Group.new(@cfg)
+        @jumpgrp = CmdTree::Local::Jump::Group.new(@cfg)
         self
       end
 

@@ -5,8 +5,9 @@ require 'libsitelist'
 module CIAX
   # Frame Layer
   module Frm
+    Msg.deep_include(Frm, Site)
     # Frame List module
-    class List < Site::List
+    class List
       def initialize(cfg, atrb = Hashx.new)
         super
         store_db(Dev::Db.new)

@@ -4,8 +4,9 @@ require 'libappexe'
 module CIAX
   # Application Layer
   module App
+    Msg.deep_include(App, Site)
     # Application List
-    class List < Site::List
+    class List
       # cfg must have [:db]
       def initialize(cfg, atrb = Hashx.new)
         super

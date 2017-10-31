@@ -3,14 +3,11 @@ require 'libcmdext'
 require 'libmcrconf'
 # CIAX_XML
 module CIAX
+  Msg.deep_include(Mcr, CmdTree)
   # Macro Layer
   module Mcr
-    include Cmd
-    class Index < Index; end
     # Remote Commands
     module Remote
-      include Cmd::Remote
-      class Domain < Domain; end
       INTCMD = {
         'exec' => 'Command',
         'pass' => 'Macro',
@@ -24,9 +21,8 @@ module CIAX
       }.freeze
       # Internal Commands
       module Int
-        include Cmd::Remote::Int
         # Internal Group
-        class Group < Int::Group
+        class Group
           attr_reader :par
           def initialize(cfg, crnt = {})
             crnt[:caption] = 'Control Macro'
@@ -43,28 +39,24 @@ module CIAX
             self
           end
         end
-        class Item < Item; end
-        class Entity < Entity; end
       end
       # External Command
       module Ext
-        include Cmd::Remote::Ext
         # Caption change
-        class Group < Ext::Group
+        class Group
           def initialize(cfg, crnt = {})
             crnt[:caption] = 'Start Macro'
             super
           end
         end
         # generate [:sequence]
-        class Item < Ext::Item
+        class Item
           def gen_entity(opt)
             ent = super
             ent[:sequence] = ent.deep_subst(@cfg[:body])
             ent
           end
         end
-        class Entity < Entity; end
       end
     end
 

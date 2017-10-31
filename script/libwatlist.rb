@@ -4,8 +4,9 @@ require 'libwatexe'
 module CIAX
   # Watch Layer
   module Wat
+    Msg.deep_include(Wat, Site)
     # Watch List
-    class List < Site::List
+    class List
       attr_reader :id
       # cfg must have [:db]
       def initialize(cfg, atrb = Hashx.new)

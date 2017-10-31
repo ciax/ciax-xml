@@ -141,7 +141,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', options: 'ecnr') do |cfg, args|
-        mobj = Cmd::Index.new(Conf.new(cfg))
+        mobj = Index.new(Conf.new(cfg))
         mobj.add_rem.add_ext
         ent = mobj.set_cmd(args)
         Sequencer.new(ent).upd_sites.macro

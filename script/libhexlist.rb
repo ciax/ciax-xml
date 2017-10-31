@@ -4,8 +4,9 @@ require 'libhexexe'
 module CIAX
   # Ascii Hex Layer for OLD CIAX
   module Hex
+    Msg.deep_include(Hex, Site)
     # Hex Exe List
-    class List < Site::List
+    class List
       # cfg must have [:db]
       def initialize(cfg, atrb = Hashx.new)
         super

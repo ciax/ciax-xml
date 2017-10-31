@@ -19,12 +19,6 @@ module CIAX
                   :server_input_proc, :server_output_proc
     #  cfg must have [:opt]
     #  atrb contains the parameter for each layer individually
-    #
-    # For external command
-    #  cfg must have [:dbi] shared in the site (among layers)
-    #  @dbi will be set for Varx, @cfg[:dbi] will be set for Index
-    #
-    # It is not necessarily the case that id and Config[:dbi][:id] is identical
     def initialize(cfg, atrb = Hashx.new)
       @cfg = type?(cfg, Config).gen(self).update(atrb)
       @cfg.check_keys(%i(opt))
@@ -71,6 +65,10 @@ module CIAX
       @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }]
     end
 
+    # For external command
+    #  cfg must have [:dbi] shared in the site (among layers)
+    #  @dbi will be set for Varx, @cfg[:dbi] will be set for Index
+    #  It is not necessarily the case that id and Config[:dbi][:id] is identical
     def _init_with_dbi(ary = [])
       dbi = type?(@cfg[:dbi], CIAX::Dbi)
       # dbi.pick already includes :command, :version

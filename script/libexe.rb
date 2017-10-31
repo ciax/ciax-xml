@@ -24,7 +24,7 @@ module CIAX
     # It is not necessarily the case that id and Config[:dbi][:id] is identical
     def initialize(cfg, atrb = Hashx.new)
       @cfg = type?(cfg, Config).gen(self).update(atrb)
-      @cfg[:dbi] || @cfg[:opt] || cfg_err('Conf does not have :dbi or :opt')
+      @cfg.check_keys(%i(dbi opt))
       _init_procs
       @cobj = context_module('Index').new(@cfg)
     end

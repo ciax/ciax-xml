@@ -59,10 +59,15 @@ module CIAX
     end
 
     # Check key if it is correct type. Used for argument validation.
-    def check(key, type)
+    def check_type(key, type)
       sv_err("No such key in Config [#{key}]") unless self[key]
       sv_err("Confi Key Type is mismatch [#{key}]") unless self[key].is_a?(type)
       true
+    end
+
+    # Check key existence
+    def check_keys(kary)
+      kary.all? { |k| key?(k) } || cfg_err("Conf does not have #{kary}")
     end
 
     # Get the object of upper generation in which Config is generated

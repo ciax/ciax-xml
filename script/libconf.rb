@@ -67,7 +67,9 @@ module CIAX
 
     # Check key existence
     def check_keys(kary)
-      kary.all? { |k| key?(k) } || cfg_err("Conf does not have #{kary}")
+      errs = []
+      kary.each { |k| key?(k) || errs.push(k) }
+      errs.empty? || cfg_err("Conf does not have #{errs}")
     end
 
     # Get the object of upper generation in which Config is generated

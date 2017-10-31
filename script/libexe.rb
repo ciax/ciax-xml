@@ -4,8 +4,8 @@ require 'libclient'
 require 'libprompt'
 require 'libcmdremote'
 
-# Provide Server,Client
-# Integrate Command,Status
+# Integrates Command and Status
+# Provides Server and Client
 # Generate Internal Command
 # Add Server Command to Combine Lower Layer (Stream,Frm,App)
 
@@ -17,14 +17,17 @@ module CIAX
                 :pre_exe_procs, :post_exe_procs, :prompt_proc, :host, :port
     attr_accessor :sv_stat, :shell_input_procs, :shell_output_proc,
                   :server_input_proc, :server_output_proc
-    # cfg must have [:opt]
-    # atrb contains the parameter for each layer individually
-    # cfg must have [:dbi] shared in the site (among layers)
-    # @dbi will be set for Varx, @cfg[:dbi] will be set for Index
+    #  cfg must have [:opt]
+    #  atrb contains the parameter for each layer individually
+    #
+    # For external command
+    #  cfg must have [:dbi] shared in the site (among layers)
+    #  @dbi will be set for Varx, @cfg[:dbi] will be set for Index
+    #
     # It is not necessarily the case that id and Config[:dbi][:id] is identical
     def initialize(cfg, atrb = Hashx.new)
       @cfg = type?(cfg, Config).gen(self).update(atrb)
-      @cfg.check_keys(%i(dbi opt))
+      @cfg.check_keys(%i(opt))
       _init_procs
       @cobj = context_module('Index').new(@cfg)
     end
@@ -68,7 +71,7 @@ module CIAX
       @terminate_procs = [proc { verbose { 'Processing TerminateProcs' } }]
     end
 
-    def _init_dbi(ary = [])
+    def _init_with_dbi(ary = [])
       dbi = type?(@cfg[:dbi], CIAX::Dbi)
       # dbi.pick already includes :command, :version
       @cfg.update(dbi.pick(ary))

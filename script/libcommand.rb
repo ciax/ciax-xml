@@ -20,12 +20,6 @@ module CIAX
         map(&:valid_keys).compact.flatten
       end
 
-      def set_cmd(args = [], opt = {})
-        id, *par = type?(args, Array)
-        valid_keys.include?(id) || cmd_err(view_list)
-        get(id).set_par(par, opt)
-      end
-
       def valid_pars
         map(&:valid_pars).compact.flatten
       end
@@ -67,8 +61,19 @@ module CIAX
 
     # Top Level Command Index
     class Index < GrpAry
+      def initialize(cfg, atrb = Hashx.new)
+        atrb[:index] = self
+        super
+      end
+
       def add_dom(ns, atrb = Hashx.new)
         add("#{ns}::Domain", atrb)
+      end
+
+      def set_cmd(args = [], opt = {})
+        id, *par = type?(args, Array)
+        valid_keys.include?(id) || cmd_err(view_list)
+        get(id).set_par(par, opt)
       end
     end
 

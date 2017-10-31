@@ -158,7 +158,7 @@ module CIAX
 
       # Mcr::Entity
       def _get_ment(e)
-        @cfg.ancestor(2).set_cmd(e[:args])
+        @cfg[:index].set_cmd(e[:args])
       end
 
       def _giveup?(step)

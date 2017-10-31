@@ -79,9 +79,8 @@ module CIAX
         incprj = [pid]
         @valid_proj = incprj if @proj == pid
         grp = (@grps ||= Hashx.new)[pid] = []
-        top.each do |gdoc| # g.name is include or group
-          _include_proj(gdoc, grp, incprj)
-        end
+        # g.name is include or group
+        top.each { |gdoc| _include_proj(gdoc, grp, incprj) }
       end
 
       def _include_proj(gdoc, grp, incprj)

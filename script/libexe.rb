@@ -48,6 +48,39 @@ module CIAX
       cmd_err @cobj.view_list
     end
 
+    # Local operation included in ext_local_test, ext_local_driver (non_client)
+    def ext_local
+      @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
+      self
+    end
+
+    def ext_local_test
+      @mode = 'TEST'
+      ext_local
+      self
+    end
+
+    def ext_local_driver
+      @mode = 'DRV'
+      ext_local
+      self
+    end
+
+    def ext_client
+      require 'libclient'
+      extend(Client).ext_client
+    end
+
+    def ext_local_server
+      require 'libserver'
+      extend(Server).ext_local_server
+    end
+
+    def ext_shell
+      require 'libsh'
+      extend(Shell).ext_shell
+    end
+
     private
 
     def _init_procs
@@ -92,27 +125,5 @@ module CIAX
       ext_local_server if opt.sv?
       self
     end
-
-    # Local operation included in ext_local_test, ext_local_driver (non_client)
-    def ext_local
-      @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
-      self
-    end
-
-    def ext_local_test
-      @mode = 'TEST'
-      ext_local
-      self
-    end
-
-    def ext_local_driver
-      @mode = 'DRV'
-      ext_local
-      self
-    end
   end
 end
-
-require 'libserver'
-require 'libclient'
-require 'libsh'

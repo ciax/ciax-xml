@@ -5,9 +5,6 @@ require 'libthreadx'
 module CIAX
   # Device Execution Engine
   class Exe
-    def ext_shell
-      extend(Shell).ext_shell
-    end
     # Provide Shell related modules
     # Add Shell Command (by Shell extension)
     module Shell

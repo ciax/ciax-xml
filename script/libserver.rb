@@ -5,11 +5,6 @@ require 'libudp'
 module CIAX
   # Device Processing
   class Exe
-    def ext_local_server
-      return self if @mode == 'CL'
-      @mode += ':SV'
-      extend(Server).ext_local_server
-    end
     # Server extension module
     module Server
       def self.extended(obj)
@@ -18,7 +13,8 @@ module CIAX
 
       # JSON expression of server stat will be sent.
       def ext_local_server
-        return self unless @port
+        return self if @mode == 'CL' || !@port
+        @mode += ':SV'
         @server_input_proc = _init_input_
         @sv_stat.ext_local_file.auto_save.ext_local_log
         @server_output_proc = proc { JSON.dump(@sv_stat) }

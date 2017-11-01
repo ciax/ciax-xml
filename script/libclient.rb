@@ -5,11 +5,6 @@ require 'libudp'
 module CIAX
   # Device Processing
   class Exe
-    def ext_client
-      @mode = 'CL'
-      extend(Client).ext_client
-    end
-
     # Client module
     module Client
       def self.extended(obj)
@@ -19,6 +14,7 @@ module CIAX
       # If you get 'Address family not ..' error,
       # remove ipv6 entry from /etc/hosts
       def ext_client
+        @mode = 'CL'
         @stat.ext_http(@host)
         @pre_exe_procs << proc { @stat.upd }
         _init_upd if @port

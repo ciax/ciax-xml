@@ -31,7 +31,7 @@ module CIAX
         return self unless id.to_i > 0
         ele = Hashx.new(record).pick(%i(id cid result)) # extract header
         if record.is_a?(Record)
-          _init_record(record)
+          _init_record_(record)
           @active[id] = ele
         end
         @list << ele
@@ -40,7 +40,7 @@ module CIAX
 
       private
 
-      def _init_record(record)
+      def _init_record_(record)
         record.cmt_procs << proc do
           verbose { 'Propagate Record#cmt -> RecList#cmt' }
           @active[record[:id]][:result] = record[:result]

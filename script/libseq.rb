@@ -15,7 +15,7 @@ module CIAX
       def initialize(ment, pid = '0', valid_keys = [], &submcr_proc)
         @cfg = ment
         type?(@cfg[:dev_list], CIAX::Wat::List)
-        _init_record(pid)
+        _init_record_(pid)
         @sv_stat = @cfg[:sv_stat]
         @submcr_proc = submcr_proc
         @depth = 0
@@ -69,12 +69,6 @@ module CIAX
         _post_seq_(mstat)
       end
 
-      def _call_step_(e, step, mstat)
-        method('cmd_' + e[:type]).call(e, step, mstat)
-      ensure
-        step.cmt
-      end
-
       # Return false if sequence is broken
       def do_step(e, mstat)
         step = @record.add_step(e, @depth)
@@ -89,6 +83,14 @@ module CIAX
         raise
       end
 
+      # Sub for do_step()
+      def _call_step_(e, step, mstat)
+        method('cmd_' + e[:type]).call(e, step, mstat)
+      ensure
+        step.cmt
+      end
+
+      # Sub for macro()
       def _pre_seq_(seqary, mstat)
         @depth += 1
         @record[:status] = 'run'
@@ -109,8 +111,8 @@ module CIAX
         end
       end
 
-      # Initialization Part
-      def _init_record(pid)
+      # Sub for initialize()
+      def _init_record_(pid)
         @record = Record.new.ext_local_rsp(@cfg)
         @record[:pid] = pid
         @id = @record[:id]

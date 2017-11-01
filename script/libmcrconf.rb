@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require 'libconf'
 require 'libprompt'
 require 'libreclist'
 require 'libmcrdb'
+require 'libwatlist'
 
 module CIAX
   # Macro Layer
@@ -15,16 +15,17 @@ module CIAX
     class Conf < Config
       def initialize(root_cfg)
         super(root_cfg)
+        check_keys([:opt])
         @opt = self[:opt]
         db = Db.new
         update(layer_type: 'mcr', db: db)
-        _init_dbi_(db.get(ENV['PROJ'] || self[:args].shift))
+        _init_with_dbi_(db.get(ENV['PROJ'] || self[:args].shift))
         _init_dev_list_(root_cfg.gen(self))
       end
 
       private
 
-      def _init_dbi_(dbi)
+      def _init_with_dbi_(dbi)
         # pick already includes :command, :version
         update(dbi.pick([:sites, :id]))
         self[:host] = @opt.host || dbi[:host]
@@ -60,6 +61,6 @@ module CIAX
       end
     end
 
-    puts Conf.new(Config.new).list if __FILE__ == $PROGRAM_NAME
+    ConfOpts.new('') { |cfg| puts Conf.new(cfg).list } if __FILE__ == $PROGRAM_NAME
   end
 end

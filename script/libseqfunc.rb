@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require 'libmcrcmd'
 require 'librecrsp'
-require 'libwatlist'
 require 'libseqqry'
 
 module CIAX
@@ -11,7 +10,7 @@ module CIAX
     class Sequencer
       private
 
-      # Sub routine for _mcr
+      # Sub for for cmd_mcr()
       def _mcr_fg_(e, step, mstat)
         @count = step[:count] = 1 if step[:retry]
         _show step.result
@@ -25,12 +24,14 @@ module CIAX
         end
       end
 
+      # Sub for _mcr_fg()
       def _mcr_retry_(e, step, mstat)
         return true if step[:retry] && _count_up_(e, step)
         mstat[:result] = 'failed'
         false
       end
 
+      # Sub for _mcr_retry()
       def _count_up_(e, step)
         @count += 1
         step[:action] = 'retry'
@@ -42,17 +43,18 @@ module CIAX
         true
       end
 
-      # Sub Method
+      # Sub for cmd_select()
+      def _get_stat_(e)
+        _get_site(e).stat[e[:form].to_sym][e[:var]]
+      end
+
+      ## Shared Methods
       def _get_site(e)
         @cfg[:dev_list].get(e[:site]).sub
       end
 
       def _exe_site(e)
         _get_site(e).exe(e[:args], 'macro').to_s.downcase
-      end
-
-      def _get_stat_(e)
-        _get_site(e).stat[e[:form].to_sym][e[:var]]
       end
 
       # Mcr::Entity

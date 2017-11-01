@@ -1,12 +1,7 @@
 #!/usr/bin/ruby
-require 'libsqlog'
 module CIAX
   # Variable status data
   class Varx
-    def ext_local_log
-      extend(JsLog).ext_local_log
-    end
-
     # Add Data Logging feature
     module JsLog
       def self.extended(obj)
@@ -34,6 +29,7 @@ module CIAX
       end
 
       def ext_local_sqlog
+        require 'libsqlog'
         # Logging if version number exists
         id = self[:id]
         # init_table includes initiate/auto save

@@ -2,10 +2,6 @@
 module CIAX
   # Variable status data
   class Varx
-    def ext_local_file(dir = nil)
-      extend(JFile).ext_local_file(dir)
-    end
-
     # Add File I/O feature
     module JFile
       def self.extended(obj)

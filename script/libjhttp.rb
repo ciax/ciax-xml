@@ -4,11 +4,6 @@ require 'open-uri'
 module CIAX
   # Variable Status Data
   class Varx
-    # Read only as a client
-    def ext_http(host = nil, dir = nil)
-      extend(JHttp).ext_http(host, dir)
-    end
-
     # JSON Http Loading module
     module JHttp
       def self.extended(obj)

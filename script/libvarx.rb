@@ -17,6 +17,22 @@ module CIAX
       self[:host] = host || HOST
     end
 
+    def ext_local_file(dir = nil)
+      require 'libjfile'
+      extend(JFile).ext_local_file(dir)
+    end
+
+    def ext_local_log
+      require 'libjslog'
+      extend(JsLog).ext_local_log
+    end
+
+    # Read only as a client
+    def ext_http(host = nil, dir = nil)
+      require 'libjhttp'
+      extend(JHttp).ext_http(host, dir)
+    end
+
     private
 
     # Set dbi, otherwise generate by stdin info
@@ -50,7 +66,3 @@ module CIAX
     end
   end
 end
-
-require 'libjslog'
-require 'libjfile'
-require 'libjhttp'

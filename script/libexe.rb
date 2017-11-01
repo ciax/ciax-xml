@@ -2,6 +2,7 @@
 require 'libserver'
 require 'libclient'
 require 'libprompt'
+require 'libsh'
 require 'libcmdremote'
 
 # Integrates Command and Status
@@ -48,10 +49,6 @@ module CIAX
 
     def no_cmd
       cmd_err @cobj.view_list
-    end
-
-    def ext_shell
-      extend(Shell).ext_shell
     end
 
     private
@@ -115,17 +112,6 @@ module CIAX
       @mode = 'DRV'
       ext_local
       self
-    end
-
-    def ext_client
-      @mode = 'CL'
-      extend(Client).ext_client
-    end
-
-    def ext_local_server
-      return self if @mode == 'CL'
-      @mode += ':SV'
-      extend(Server).ext_local_server
     end
   end
 end

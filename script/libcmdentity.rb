@@ -26,7 +26,6 @@ module CIAX
         super(cfg).update(atrb)
         @par = self[:par]
         @id = self[:cid]
-        @layer = self[:layer]
         verbose { "Config\n" + path }
       end
 

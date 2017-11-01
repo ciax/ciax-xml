@@ -3,59 +3,67 @@ require 'libudp'
 
 # Provide Server
 module CIAX
-  # Server extension module
-  module Server
-    def self.extended(obj)
-      Msg.type?(obj, Exe)
-    end
-
-    # JSON expression of server stat will be sent.
+  # Device Processing
+  class Exe
     def ext_local_server
-      return self unless @port
-      @server_input_proc = _init_input
-      @sv_stat.ext_local_file.auto_save.ext_local_log
-      @server_output_proc = proc { JSON.dump(@sv_stat) }
-      _startup
-      self
+      return self if @mode == 'CL'
+      @mode += ':SV'
+      extend(Server).ext_local_server
     end
+    # Server extension module
+    module Server
+      def self.extended(obj)
+        Msg.type?(obj, Exe)
+      end
 
-    private
+      # JSON expression of server stat will be sent.
+      def ext_local_server
+        return self unless @port
+        @server_input_proc = _init_input
+        @sv_stat.ext_local_file.auto_save.ext_local_log
+        @server_output_proc = proc { JSON.dump(@sv_stat) }
+        _startup
+        self
+      end
 
-    # If first arg is number, it is stored in Prompt as a sequencial number
-    def _init_input
-      proc do |line|
-        args = type?(j2h(line), Array)
-        if args[0].to_i > 0
-          @sv_stat.put(:sn, args.shift)
-        else
-          @sv_stat.del(:sn)
+      private
+
+      # If first arg is number, it is stored in Prompt as a sequencial number
+      def _init_input
+        proc do |line|
+          args = type?(j2h(line), Array)
+          if args[0].to_i > 0
+            @sv_stat.put(:sn, args.shift)
+          else
+            @sv_stat.del(:sn)
+          end
+          args
         end
-        args
       end
-    end
 
-    # Separated form ext_* for detach process of this part
-    def _startup
-      Threadx::Fork.new('Server', @layer, @id, "udp:#{@port}") do
-        _srv_udp
-        sleep 0.3
+      # Separated form ext_* for detach process of this part
+      def _startup
+        Threadx::Fork.new('Server', @layer, @id, "udp:#{@port}") do
+          _srv_udp
+          sleep 0.3
+        end
+        self
       end
-      self
-    end
 
-    def _srv_udp
-      Udp::Server.new(@layer, @id, @port).listen do |line, rhost|
-        _srv_exec(line, rhost)
-        @server_output_proc.call
+      def _srv_udp
+        Udp::Server.new(@layer, @id, @port).listen do |line, rhost|
+          _srv_exec(line, rhost)
+          @server_output_proc.call
+        end
       end
-    end
 
-    def _srv_exec(line, rhost)
-      verbose { "Exec Server\nValid Commands #{@cobj.valid_keys}" }
-      exe(@server_input_proc.call(line), "udp:#{rhost}")
-    rescue
-      @sv_stat.seterr
-      errmsg
+      def _srv_exec(line, rhost)
+        verbose { "Exec Server\nValid Commands #{@cobj.valid_keys}" }
+        exe(@server_input_proc.call(line), "udp:#{rhost}")
+      rescue
+        @sv_stat.seterr
+        errmsg
+      end
     end
   end
 end

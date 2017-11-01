@@ -16,7 +16,6 @@ module CIAX
         @cfg[:disp] = @displist
         @valid_keys = @displist.valid_keys
         @displist.rank = ENV['RANK'].to_i
-        @layer = @cfg[:layer]
       end
 
       def add_dummy(id, title = nil) # returns Display

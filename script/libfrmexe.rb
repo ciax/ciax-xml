@@ -3,7 +3,7 @@ require 'libfrmdrv'
 require 'libfrmrsp'
 require 'libfrmcmd'
 require 'libdevdb'
-require 'libsh'
+require 'libexe'
 
 module CIAX
   # Frame Layer

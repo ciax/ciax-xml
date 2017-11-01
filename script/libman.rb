@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libsh'
+require 'libexe'
 require 'libseqview'
 require 'libmandrv'
 module CIAX

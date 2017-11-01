@@ -40,16 +40,15 @@ module CIAX
           # id : Mcr
           @id = @cfg[:site_id] || @cfg[:id]
           verbose { 'Initiate input logging' }
-          @cfg[:input] = Input.new(@layer, @id, @cfg[:version])
+          @cfg[:input] = Input.new(@id, @cfg[:version])
           self
         end
       end
 
       # Command Input Logging
       class Input < Varx
-        def initialize(layer, id, ver)
-          super("input_#{layer}", id, ver)
-          @layer = layer
+        def initialize(id, ver)
+          super("input_#{layer_name}", id, ver)
           init_time2cmt
           ext_local_file
           ext_local_log

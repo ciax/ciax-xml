@@ -1,10 +1,12 @@
 #!/usr/bin/ruby
-require 'libexe'
 require 'readline'
 require 'libthreadx'
 
 module CIAX
   class Exe
+    def ext_shell
+      extend(Shell).ext_shell
+    end
     # Provide Shell related modules
     # Add Shell Command (by Shell extension)
     module Shell

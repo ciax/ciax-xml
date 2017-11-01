@@ -59,5 +59,7 @@ module CIAX
         up(:nonstop) if opt[:n]
       end
     end
+
+    puts Conf.new(Config.new).list if __FILE__ == $PROGRAM_NAME
   end
 end

@@ -9,6 +9,8 @@ module CIAX
   module Mcr
     # Sub Class
     class Sequencer
+      private
+
       # Sub routine for _mcr
       def _mcr_fg(e, step, mstat)
         @count = step[:count] = 1 if step[:retry]

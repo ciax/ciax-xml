@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libmcrconf'
-require 'libseqfunc'
+require 'libseqcmds'
 
 module CIAX
   # Macro Layer
@@ -70,7 +70,7 @@ module CIAX
       end
 
       def _call_step(e, step, mstat)
-        method('_' + e[:type]).call(e, step, mstat)
+        method('cmd_' + e[:type]).call(e, step, mstat)
       ensure
         step.cmt
       end

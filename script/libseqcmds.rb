@@ -12,7 +12,7 @@ module CIAX
 
       private
 
-      def _mesg(_e, step, _mstat)
+      def cmd_mesg(_e, step, _mstat)
         _show
         @qry.query(['ok'], step)
         true
@@ -26,7 +26,7 @@ module CIAX
 
       # Bypass if condition is satisfied (return false)
       # Vars in conditions are not related in this sequence
-      def _bypass(_e, step, mstat)
+      def cmd_bypass(_e, step, mstat)
         return true unless step.skip?
         mstat[:result] = 'bypass'
         false
@@ -35,37 +35,37 @@ module CIAX
       # Enter if condition is unsatisfied (return true)
       # Vars in conditions are changed in this sequence
       # It is used for multiple retry function
-      def _goal(_e, step, mstat)
+      def cmd_goal(_e, step, mstat)
         return true unless step.skip?
         return true if step.dummy && @qry.query(%w(pass enter), step)
         mstat[:result] = 'skipped'
         false
       end
 
-      def _check(_e, step, mstat)
+      def cmd_check(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'failed'
         raise Interlock
       end
 
-      def _verify(_e, step, mstat)
+      def cmd_verify(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'failed'
         raise Verification
       end
 
-      def _wait(_e, step, mstat)
+      def cmd_wait(_e, step, mstat)
         return true unless step.timeout? && _giveup?(step)
         mstat[:result] = 'timeout'
         raise Interlock
       end
 
-      def _sleep(_e, step, _mstat)
+      def cmd_sleep(_e, step, _mstat)
         step.sleeping
         true
       end
 
-      def _exec(e, step, _mstat)
+      def cmd_exec(e, step, _mstat)
         if step.exec? && @qry.query(%w(exec skip), step)
           step.set_result(_exe_site(e))
         end
@@ -74,26 +74,26 @@ module CIAX
         true
       end
 
-      def _cfg(e, _step, _mstat)
+      def cmd_cfg(e, _step, _mstat)
         _show
         _exe_site(e)
         true
       end
 
-      def _upd(e, _step, _mstat)
+      def cmd_upd(e, _step, _mstat)
         _show
         _get_site(e).exe(['upd'], 'macro').wait_ready
         true
       end
 
-      def _system(e, step, _mstat)
+      def cmd_system(e, step, _mstat)
         return true unless step.exec?
         step.set_result(`#{e[:val]}`.chomp)
         true
       end
 
       # Return T/F
-      def _select(e, step, mstat)
+      def cmd_select(e, step, mstat)
         var = _get_stat(e) || cfg_err('No data in status')
         step[:result] = var
         _show step.result
@@ -102,7 +102,7 @@ module CIAX
         do_step({ type: 'mcr', args: name }, mstat)
       end
 
-      def _mcr(e, step, mstat)
+      def cmd_mcr(e, step, mstat)
         if e[:async] && @submcr_proc.is_a?(Proc)
           step[:id] = @submcr_proc.call(_get_ment(e), @id).id
         else

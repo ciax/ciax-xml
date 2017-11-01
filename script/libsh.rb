@@ -3,6 +3,7 @@ require 'readline'
 require 'libthreadx'
 
 module CIAX
+  # Device Execution Engine
   class Exe
     def ext_shell
       extend(Shell).ext_shell

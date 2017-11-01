@@ -28,8 +28,9 @@ sqlite3: light weight sql server for logging, not for access from multiple proce
 
 ## Verbose mode ##
  set VER environment
- VER=string1,string2... for set sum
- VER=string1:strint2..  for set intersection
+ VER=string,.. for set 'or'
+ VER=string:..  for set 'and'
+ VER=^string1.. for set 'exclude'
  VER=* for All
 
 ## json udp communicaton ##

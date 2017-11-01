@@ -1,16 +1,17 @@
 #### Command Object Structure ####
 
 ## Index(Array): Top level
-  There are Two domains.
+  It contains Two domains.
   * Remote Command Domain
     Commands that will be sent from Client to Server.
+    (Device control, System control, Interrupt and Empty command)
   * Local Command Domain
     Commands that is used locally in Client.
-    (ex. Switching site, layer and view. Interrupt) 
+    (ex. Switching site, layer and view.)
 
 ## Domain(Array)
  # Remote Domain
-  There are two Groups.
+  It contains two Groups.
   * External Command Group
     Commands that directly manipulate the devices.
   * Internal Command Group

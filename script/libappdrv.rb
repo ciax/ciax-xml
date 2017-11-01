@@ -44,16 +44,16 @@ module CIAX
       #      Batch: Repeat until outbuffer is empty
       def init_buf
         buf = Buffer.new(@sv_stat)
-        _init_proc_int(buf)
-        _init_proc_ext(buf)
-        _init_proc_buf(buf)
-        _init_proc_sub
+        _init_proc_int_(buf)
+        _init_proc_ext_(buf)
+        _init_proc_buf_(buf)
+        _init_proc_sub_
         # Start buffer server thread
         buf.server
       end
 
       # App: Sendign a first priority command (interrupt)
-      def _init_proc_int(buf)
+      def _init_proc_int_(buf)
         @cobj.get('interrupt').def_proc do |_ent, src|
           @batch_interrupt.each do |args|
             verbose { "Issuing:#{args} for Interrupt" }
@@ -78,14 +78,14 @@ module CIAX
       end
 
       # App: Sending a general App command (Frm batch)
-      def _init_proc_ext(buf)
+      def _init_proc_ext_(buf)
         @cobj.rem.ext.def_proc do |ent, src, pri|
           verbose { "Issuing:[#{ent.id}] from #{src} with priority #{pri}" }
           buf.send(ent, pri)
         end
       end
 
-      def _init_proc_buf(buf)
+      def _init_proc_buf_(buf)
         # Frm: Execute single command
         buf.recv_proc = proc do |args, src|
           verbose { "Processing App to Buffer #{args}" }
@@ -100,7 +100,7 @@ module CIAX
       end
 
       # Field: Update after each Batch Frm command finish
-      def _init_proc_sub
+      def _init_proc_sub_
         @sub.stat.flush_procs << proc do
           verbose { 'Propagate Field#flush -> Status#cmt' }
           @stat.cmt

@@ -94,7 +94,7 @@ module CIAX
 
       # Return T/F
       def cmd_select(e, step, mstat)
-        var = _get_stat(e) || cfg_err('No data in status')
+        var = _get_stat_(e) || cfg_err('No data in status')
         step[:result] = var
         _show step.result
         sel = e[:select]
@@ -106,7 +106,7 @@ module CIAX
         if e[:async] && @submcr_proc.is_a?(Proc)
           step[:id] = @submcr_proc.call(_get_ment(e), @id).id
         else
-          _mcr_fg(e, step, mstat)
+          _mcr_fg_(e, step, mstat)
         end
       end
     end

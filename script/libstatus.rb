@@ -17,7 +17,7 @@ module CIAX
         @updated = now_msec
         @lastsave = now_msec
         _setdbi(dbi, Ins::Db)
-        _init_sdb
+        _init_sdb_
         @cmt_procs << proc { verbose { "Saved #{self[:id]}:timing" } }
       end
 
@@ -59,7 +59,7 @@ module CIAX
 
       private
 
-      def _init_sdb
+      def _init_sdb_
         # exclude alias from index
         @adbs = @dbi[:status][:index].reject { |_k, v| v[:ref] }
         self[:data] = Hashx.new(@adbs).skeleton unless self[:data]

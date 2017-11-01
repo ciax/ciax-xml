@@ -14,7 +14,7 @@ module CIAX
         verbose { 'Initiate Layer' }
         # id = nil -> taken by ARGV
         _init_net
-        _init_cmd
+        _init_cmd_
         _init_stat
       end
 
@@ -40,7 +40,7 @@ module CIAX
         @port = @cfg[:port]
       end
 
-      def _init_cmd
+      def _init_cmd_
         @cobj.add_rem.cfg[:def_msg] = 'ACCEPT'
         rem = @cobj.rem
         rem.add_sys
@@ -58,7 +58,7 @@ module CIAX
       end
 
       # Making Command List JSON file for WebApp
-      def _mk_cmdlist
+      def _mk_cmdlist_
         IO.write(
           vardir('json') + 'mcr_conf.js', 'var config = ' + @cfg[:jlist].to_j
         )
@@ -89,7 +89,7 @@ module CIAX
       def ext_local_server
         super
         @cfg[:rec_list].refresh
-        _mk_cmdlist
+        _mk_cmdlist_
         self
       end
     end

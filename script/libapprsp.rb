@@ -25,23 +25,23 @@ module CIAX
           @adbs.each do |id, hash|
             cnd = hash[:fields].empty?
             next if cnd && get(id)
-            self[:data][id] = cnd ? (hash[:default] || '') : _get_val(hash, id)
+            self[:data][id] = cnd ? (hash[:default] || '') : _get_val_(hash, id)
           end
         end
       end
 
-      def _get_val(hash, id)
-        val = _get_by_type(hash)
+      def _get_val_(hash, id)
+        val = _get_by_type_(hash)
         verbose { "GetData[#{val}](#{id})" }
-        val = _conv_fomula(hash, val, id)
+        val = _conv_fomula_(hash, val, id)
         val = hash[:format] % val if hash.key?(:format)
         val.to_s
       end
 
-      def _get_by_type(hash)
+      def _get_by_type_(hash)
         case hash[:type]
         when 'binary'
-          _binstr2int(hash)
+          _binstr2int_(hash)
         when 'float'
           _get_num(hash).to_f
         when 'integer'
@@ -51,11 +51,11 @@ module CIAX
         end
       end
 
-      def _binstr2int(hash)
-        bary = hash[:fields].map { |e| _get_binstr(e) }
+      def _binstr2int_(hash)
+        bary = hash[:fields].map { |e| _get_binstr_(e) }
         binstr = case hash[:operation]
                  when 'uneven'
-                   _get_uneven(bary)
+                   _get_uneven_(bary)
                  else
                    bary.join
                  end
@@ -63,7 +63,7 @@ module CIAX
       end
 
       # Even(all 1 or 0) -> false, otherwise true
-      def _get_uneven(bary)
+      def _get_uneven_(bary)
         ba = bary.inject { |a, e| a.to_i & e.to_i }
         bo = bary.inject { |a, e| a.to_i | e.to_i }
         (ba ^ bo).to_s
@@ -77,7 +77,7 @@ module CIAX
         sign * val
       end
 
-      def _conv_fomula(hash, val, id)
+      def _conv_fomula_(hash, val, id)
         return val unless hash.key?(:formula)
         f = hash[:formula].gsub(/\$#/, val.to_s)
         val = expr(f)
@@ -95,7 +95,7 @@ module CIAX
         val
       end
 
-      def _get_binstr(e)
+      def _get_binstr_(e)
         val = get_field(e).to_i
         inv = (/true|1/ =~ e[:inv])
         str = index_range(e[:bit]).map do |sft|

@@ -15,7 +15,7 @@ module CIAX
             atrb.get(:caption) { 'External Commands' }
             super
             @displist = @displist.ext_grp
-            _init_items(@cfg[:command])
+            _init_items_(@cfg[:command])
             @displist.reset!
           end
 
@@ -31,7 +31,7 @@ module CIAX
           private
 
           # Set items by DB
-          def _init_items(cdb)
+          def _init_items_(cdb)
             cdb[:group].each do |gid, gat|
               sg = @displist.put_grp(gid, gat[:caption], nil, gat[:rank])
               _init_member_(cdb, gat[:members], sg)
@@ -56,11 +56,11 @@ module CIAX
             guni.each do |u|
               uat = cdb[:unit][u]
               next unless uat.key?(:title)
-              _make_unit_item(sg, uat, cdb[:index])
+              _make_unit_item_(sg, uat, cdb[:index])
             end
           end
 
-          def _make_unit_item(sg, uat, index)
+          def _make_unit_item_(sg, uat, index)
             umem = uat[:members]
             il = umem.map { |m| index[m][:label] }.join('/')
             sg.put_dummy(uat[:title], uat[:label] % il)
@@ -81,13 +81,13 @@ module CIAX
             when Hash
               data.each_with_object({}) { |(k, v), r| r[k] = deep_subst(v) }
             else
-              _subst_str(data)
+              _subst_str_(data)
             end
           end
 
           private
 
-          def _subst_str(str) # subst by parameters ($1,$2...)
+          def _subst_str_(str) # subst by parameters ($1,$2...)
             return str unless /\$([\d]+)/ =~ str
             # enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
             # num = true

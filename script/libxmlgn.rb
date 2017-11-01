@@ -35,15 +35,15 @@ module CIAX
 
       private
 
-      def _attr_elem
+      def _attr_elem_
         super.to_h
       end
 
-      def _attr_view
+      def _attr_view_
         super.to_h
       end
 
-      def _get_file(f)
+      def _get_file_(f)
         XML::Document.file(f).root
       end
     end

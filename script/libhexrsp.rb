@@ -14,7 +14,7 @@ module CIAX
         id = self[:id] || args_err("NO ID(#{id}) in Stat")
         @sv_stat = sv_stat || Prompt.new('site', id)
         vmode('x')
-        _init_cmt_procs
+        _init_cmt_procs_
       end
 
       def to_x
@@ -23,15 +23,15 @@ module CIAX
 
       private
 
-      def _init_cmt_procs
+      def _init_cmt_procs_
         init_time2cmt(@stat)
         @cmt_procs << proc do
           self[:hexpack] = _get_header_ + _get_body_
         end
-        _init_propagates
+        _init_propagates_
       end
 
-      def _init_propagates
+      def _init_propagates_
         @sv_stat.cmt_procs << proc { _cmt_propagate('Prompt') }
         @stat.cmt_procs << proc { _cmt_propagate('Status') }
         cmt
@@ -56,22 +56,22 @@ module CIAX
         return '' unless (hdb = @dbi[:hexpack])
         str = ''
         if hdb[:packs]
-          str << _packed(hdb[:packs])
+          str << _packed_(hdb[:packs])
         elsif hdb[:fields]
-          str << _mk_frame(hdb)
+          str << _mk_frame_(hdb)
         end
         str
       end
 
-      def _packed(packs)
+      def _packed_(packs)
         packs.map do |hash|
-          binstr = _mk_bit(hash)
+          binstr = _mk_bit_(hash)
           pkstr = hash[:code] + hash[:length]
           [binstr].pack(pkstr).unpack('h')[0]
         end.join
       end
 
-      def _mk_bit(db)
+      def _mk_bit_(db)
         db[:bits].map do |hash|
           key = hash[:ref]
           cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
@@ -81,28 +81,28 @@ module CIAX
         end.join
       end
 
-      def _mk_frame(db)
+      def _mk_frame_(db)
         db[:fields].map do |hash|
           key = hash[:ref]
           cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
-          dat = _padding(hash, @stat[:data][key])
+          dat = _padding_(hash, @stat[:data][key])
           verbose { "Get from Status #{key} = #{dat}" }
           dat
         end.join
       end
 
-      def _padding(hash, val)
+      def _padding_(hash, val)
         len = hash[:length].to_i
         type = hash[:type].to_s.to_sym
         pfx = { float: '.2f', int: 'd', binary: 'b' }[type]
         if pfx
-          _fmt_num(pfx, len, val)
+          _fmt_num_(pfx, len, val)
         else
           val.to_s.rjust(len, '*')[0, len]
         end
       end
 
-      def _fmt_num(sfx, len, val)
+      def _fmt_num_(sfx, len, val)
         num = /f/ =~ sfx ? val.to_f : val.to_i
         format("%0#{len}#{sfx}", num)[0, len]
       end

@@ -16,7 +16,7 @@ module CIAX
         @last_updated = 0
         _setdbi(dbi, Ins::Db)
         _init_procs
-        _init_struct
+        _init_struct_
         self
       end
 
@@ -54,7 +54,7 @@ module CIAX
         @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
       end
 
-      def _init_struct
+      def _init_struct_
         # For Array element
         %i(active exec block int).each { |i| self[i] = [] }
         # For Hash element

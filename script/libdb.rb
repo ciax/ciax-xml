@@ -23,7 +23,7 @@ module CIAX
       # @displist is Display
       lid = proj ? "list_#{proj}" : 'list'
       # Show site list
-      @latest = _get_latest_file
+      @latest = _get_latest_file_
       @displist = _get_cache(lid) || _get_db(lid, &:displist) # site list
       @argc = 0
     end
@@ -46,22 +46,22 @@ module CIAX
     def _get_cache(id)
       @base = "#{@type}-#{id}"
       @cachefile = vardir('cache') + "#{@base}.mar"
-      return _load_cache(id) if _use_cache?
+      return _load_cache_(id) if _use_cache_?
       @docs = Xml::Doc.new(@type, @proj) unless @docs # read xml file
       nil
     end
 
     def _get_db(id)
-      res = _validate_repl(yield(@docs))
-      _save_cache(id, res)
+      res = _validate_repl_(yield(@docs))
+      _save_cache_(id, res)
     end
 
-    def _get_latest_file
+    def _get_latest_file_
       ary = $LOADED_FEATURES.grep(/#{__dir__}/) + Msg.xmlfiles(@type)
       ary.max_by { |f| File.mtime(f) }
     end
 
-    def _load_cache(id)
+    def _load_cache_(id)
       verbose { "Cache Loading (#{id})" }
       return self[id] if key?(id)
       begin
@@ -71,7 +71,7 @@ module CIAX
       end
     end
 
-    def _save_cache(id, res)
+    def _save_cache_(id, res)
       verbose { "Cache Refresh (#{id})" }
       open(@cachefile, 'w') do |f|
         f << Marshal.dump(res)
@@ -81,13 +81,13 @@ module CIAX
     end
 
     # counter must not remain
-    def _validate_repl(db)
+    def _validate_repl_(db)
       res = db.deep_search('\$[_a-z]')
       return db if res.empty?
       cfg_err("Counter remained at [#{res.join('/')}]")
     end
 
-    def _use_cache?
+    def _use_cache_?
       verbose(ENV['NOCACHE']) do
         "#{@type}/Cache ENV['NOCACHE'] is set"
       end || verbose(!test('e', @cachefile)) do

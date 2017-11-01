@@ -33,8 +33,8 @@ module CIAX
         @type = type
         @proj = proj
         @displist = Disp.new
-        _read_files(Msg.xmlfiles(@type))
-        _set_includes
+        _read_files_(Msg.xmlfiles(@type))
+        _set_includes_
       end
 
       # get generates document branch of db items(Hash),
@@ -49,21 +49,21 @@ module CIAX
 
       private
 
-      def _read_files(files)
+      def _read_files_(files)
         files.each do |xml|
           verbose { 'readxml:' + ::File.basename(xml, '.xml') }
           begin
-            Elem.new(xml).each { |top| _mk_db(top) }
+            Elem.new(xml).each { |top| _mk_db_(top) }
           rescue InvalidARGS
             show_err
           end
         end.empty? && Msg.cfg_err("No XML file for #{@type}-*.xml")
       end
 
-      def _mk_db(top)
+      def _mk_db_(top)
         case top.name
         when 'project' # idb
-          _mk_project(top)
+          _mk_project_(top)
         when 'group' # ddb
           _mk_group(top)
         when 'alias', 'hexpack' # cdb,hdb
@@ -74,16 +74,16 @@ module CIAX
       end
 
       # Includable (instance)
-      def _mk_project(top)
+      def _mk_project_(top)
         pid = top['id']
         incprj = [pid]
         @valid_proj = incprj if @proj == pid
         grp = (@grps ||= Hashx.new)[pid] = []
         # g.name is include or group
-        top.each { |gdoc| _include_proj(gdoc, grp, incprj) }
+        top.each { |gdoc| _include_proj_(gdoc, grp, incprj) }
       end
 
-      def _include_proj(gdoc, grp, incprj)
+      def _include_proj_(gdoc, grp, incprj)
         tag = gdoc.name.to_sym
         case tag
         when :include # include project
@@ -105,11 +105,11 @@ module CIAX
       def _mk_sub_db(top, sub = @displist)
         item = _set_item(top, sub)
         top.each do |e| # e.name can be include or group
-          _include_grp(e, item, top.ns != e.ns)
+          _include_grp_(e, item, top.ns != e.ns)
         end
       end
 
-      def _include_grp(e, item, c_or_s)
+      def _include_grp_(e, item, c_or_s)
         tag = e.name.to_sym
         case tag
         when :include # include group
@@ -130,8 +130,8 @@ module CIAX
       end
 
       # Include will be done for //group
-      def _set_includes
-        _upd_valid
+      def _set_includes_
+        _upd_valid_
         each_value do |item|
           next unless (ary = item.delete(:include))
           ary.each do |ref|
@@ -140,7 +140,7 @@ module CIAX
         end
       end
 
-      def _upd_valid
+      def _upd_valid_
         return unless @valid_proj
         vp = @valid_proj.map { |proj| @grps[proj] }.flatten
         vk = vp.map { |gid| @displist.sub[gid] }.flatten

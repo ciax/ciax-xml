@@ -32,7 +32,7 @@ module CIAX
       def initialize(tname, layer, id, type = nil)
         @layer = layer
         @id = id
-        th = super { _do_proc(id) { yield } }
+        th = super { _do_proc_(id) { yield } }
         th[:layer] = layer
         th[:name] = tname
         th[:id] = id
@@ -42,7 +42,7 @@ module CIAX
 
       private
 
-      def _do_proc(_id)
+      def _do_proc_(_id)
         Thread.pass
         verbose { 'Initiate Thread' }
         yield

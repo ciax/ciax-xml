@@ -38,18 +38,18 @@ module CIAX
       # return t/f
       def query(cmds, step)
         return step.put(:action, 'nonstop') if @sv_stat.upd.up?(:nonstop)
-        res = _get_ans(step, cmds)
-        _judge(res)
+        res = _get_ans_(step, cmds)
+        _judge_(res)
       ensure
         @valid_keys.clear
       end
 
       private
 
-      def _get_ans(step, cmds)
+      def _get_ans_(step, cmds)
         @valid_keys.replace(cmds)
         @record.put(:option, cmds).put(:status, 'query').cmt
-        res = Msg.fg? ? _input_tty : _input_que
+        res = Msg.fg? ? _input_tty_ : _input_que_
         @record.put(:status, 'run').delete(:option)
         step.put(:action, res).cmt
         res
@@ -59,7 +59,7 @@ module CIAX
         optlist(@valid_keys)
       end
 
-      def _input_tty
+      def _input_tty_
         Readline.completion_proc = proc { |w| @valid_keys.grep(/^#{w}/) }
         loop do
           line = Readline.readline(_options, true)
@@ -69,7 +69,7 @@ module CIAX
         end
       end
 
-      def _input_que
+      def _input_que_
         loop do
           id = @que_cmd.pop.split(/[ :]/).first
           break id if _response(id)
@@ -88,7 +88,7 @@ module CIAX
         false
       end
 
-      def _judge(res)
+      def _judge_(res)
         case res
         when 'retry'
           raise(Retry)

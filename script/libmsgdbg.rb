@@ -10,14 +10,14 @@ module CIAX
     def _w(var, str = '') # watch var for debug
       clr = ':' + caller(1).first.split('/').last
       res = if var.is_a?(Enumerable)
-              colorize(str, 5) + clr + _prt_enum(var)
+              colorize(str, 5) + clr + _prt_enum_(var)
             else
               colorize(var, 5) + clr
             end
       show res
     end
 
-    def _prt_enum(var)
+    def _prt_enum_(var)
       res = colorize("(#{var.object_id})", 3)
       res << var.dup.extend(Enumx).path
     end

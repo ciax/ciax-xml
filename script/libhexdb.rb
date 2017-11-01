@@ -16,24 +16,24 @@ module CIAX
       def doc_to_db(doc)
         db = super
         hdb = db[:hexpack] = Hashx.new
-        _rec_db(doc[:top], hdb) # top is 'hexpack'
+        _rec_db_(doc[:top], hdb) # top is 'hexpack'
         db
       end
 
-      def _rec_db(doc, db)
+      def _rec_db_(doc, db)
         doc.each do |e1| # top is 'hexpack'
           item = Hashx.new(e1.to_h)
           case e1.name
           when 'pack'
             db.get(:packs) { [] } << item
-            _rec_bit(e1, item)
+            _rec_bit_(e1, item)
           when 'field'
             db.get(:fields) { [] } << item
           end
         end
       end
 
-      def _rec_bit(doc, db)
+      def _rec_bit_(doc, db)
         doc.each do |e1|
           db.get(:bits) { [] } << Hashx.new(e1.to_h)
         end

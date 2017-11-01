@@ -30,30 +30,30 @@ module CIAX
             ent = super
             @field = type?(@cfg[:field], Field)
             @fstr = {}
-            @sel = _init_sel
+            @sel = _init_sel_
             @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
             @chg_flg = nil
-            @frame = _init_frame
+            @frame = _init_frame_
             @sel[:body] = ent.deep_subst(@cfg[:body])
-            _init_body(ent) if @sel[:body]
+            _init_body_(ent) if @sel[:body]
             ent
           end
 
           private
 
-          def _init_body(ent)
+          def _init_body_(ent)
             verbose { "Body:#{@cfg[:label]}(#{@id})" }
             _add_frame(:body)
-            _init_cc
+            _init_cc_
             _add_frame(:main)
-            _chk_nocache
+            _chk_nocache_
             verbose { "Cmd Generated [#{@id}]" }
             # For send back
             @field.echo = ent[:frame] = @fstr[:main]
             ent
           end
 
-          def _init_sel
+          def _init_sel_
             if /true|1/ =~ @cfg[:noaffix]
               { main: [:body] }
             else
@@ -61,17 +61,17 @@ module CIAX
             end
           end
 
-          def _init_frame
+          def _init_frame_
             sp = type?(@cfg[:stream], Hash)
             Frame.new(sp[:endian], sp[:ccmethod])
           end
 
-          def _init_cc
+          def _init_cc_
             return unless @sel.key?(:ccrange)
             @frame.cc.enclose { _add_frame(:ccrange) }
           end
 
-          def _chk_nocache
+          def _chk_nocache_
             return if @cfg[:nocache] || !@chg_flg
             warning("Cache stored (#{@id}) despite Frame includes Status")
             @cfg[:nocache] = true
@@ -80,24 +80,24 @@ module CIAX
           # instance var frame,sel,field,fstr
           def _add_frame(domain)
             @frame.reset
-            @sel[domain].each { |db| _frame_by_type(db) }
+            @sel[domain].each { |db| _frame_by_type_(db) }
             @fstr[domain] = @frame.copy
           end
 
-          def _frame_by_type(db)
+          def _frame_by_type_(db)
             if db.is_a? Hash
-              subfrm = _conv_by_stat(_conv_by_cc(db[:val]))
-              _set_csv_frame(subfrm, db)
+              subfrm = _conv_by_stat_(_conv_by_cc_(db[:val]))
+              _set_csv_frame_(subfrm, db)
             else # ccrange,body ...
               @frame.push(@fstr[db.to_sym])
             end
           end
 
-          def _conv_by_cc(val)
+          def _conv_by_cc_(val)
             val.gsub(/\$\{cc\}/) { @frame.cc }
           end
 
-          def _conv_by_stat(frame)
+          def _conv_by_stat_(frame)
             subfrm = @field.subst(frame)
             if subfrm != frame
               @chg_flg = true
@@ -108,7 +108,7 @@ module CIAX
             subfrm
           end
 
-          def _set_csv_frame(subfrm, db)
+          def _set_csv_frame_(subfrm, db)
             # Allow csv parameter
             subfrm.split(',').each do |s|
               @frame.push(s, db)

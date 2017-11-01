@@ -13,7 +13,7 @@ module CIAX
     attr_reader :layer
     def initialize(ustr, optarg = {}, &opt_proc)
       ustr = "(opt) #{ustr}" unless optarg.empty?
-      _set_opt(_set_db(optarg) + _set_default(optarg))
+      _set_opt_(_set_db_(optarg) + _set_default_(optarg))
       getarg(ustr, &opt_proc)
     end
 
@@ -78,7 +78,7 @@ module CIAX
     private
 
     # ARGV must be taken after parse
-    def _parse(ops)
+    def _parse_(ops)
       ARGV.getopts(ops).each { |k, v| self[k.to_sym] = v }
       @argv = ARGV.shift(ARGV.length)
     rescue OptionParser::ParseError
@@ -86,33 +86,33 @@ module CIAX
     end
 
     # Returns valid options
-    def _set_db(optarg)
+    def _set_db_(optarg)
       @optdb = _init_db
-      _layer_db
+      _layer_db_
       db = type?(optarg, Hash).select { |k, _v| k.to_s.length == 1 }
       @optdb.update(db)
       optarg[:options].to_s + db.keys.join
     end
 
     # add ':' to taking parameter options whose description includes '[]'
-    def _add_colon(str)
+    def _add_colon_(str)
       str.split(//).map do |k|
         k + (@optdb[k.to_sym].to_s.include?('[') ? ':' : '')
       end.join
     end
 
-    def _set_default(optarg)
+    def _set_default_(optarg)
       dflt = optarg[:default].to_s
       dflt.each_char { |c| ARGV.unshift('-' + c) }
       dflt
     end
 
-    def _set_opt(str)
-      ops = _add_colon(str)
-      _make_usage(ops)
-      _parse(ops)
-      _make_layer
-      _make_vmode
+    def _set_opt_(str)
+      ops = _add_colon_(str)
+      _make_usage_(ops)
+      _parse_(ops)
+      _make_layer_
+      _make_vmode_
     end
 
     def _init_db
@@ -128,14 +128,14 @@ module CIAX
         r: 'raw data output', j: 'json data output' }
     end
 
-    def _layer_db
+    def _layer_db_
       # Layer option
       @layers = { m: 'mcr', w: 'wat', f: 'frm', x: 'hex', a: 'app' }
       @layers.each { |k, v| @optdb[k] = "#{v} layer" }
     end
 
     # Make usage text
-    def _make_usage(ops)
+    def _make_usage_(ops)
       @index = {}
       @available = (ops.chars.map(&:to_sym) & @optdb.keys)
       # Current Options
@@ -143,12 +143,12 @@ module CIAX
     end
 
     # Set @layer (default 'Wat')
-    def _make_layer
+    def _make_layer_
       opt = _make_exopt(@layers.keys)
       @layer = @layers[opt]
     end
 
-    def _make_vmode
+    def _make_vmode_
       v = _make_exopt(%i(j r))
       View.default.replace(v.to_s) if v
     end

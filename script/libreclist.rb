@@ -20,7 +20,7 @@ module CIAX
         verbose { 'Initiate Record List' }
         Dir.glob(vardir('record') + 'record_*.json') do |name|
           next if /record_[0-9]+.json/ !~ name
-          push(_jread(name))
+          push(_jread_(name))
         end
         cmt
         self
@@ -48,7 +48,7 @@ module CIAX
         end
       end
 
-      def _jread(fname)
+      def _jread_(fname)
         j2h(
           open(fname) do |f|
             f.flock(::File::LOCK_SH)

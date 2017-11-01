@@ -43,7 +43,7 @@ module CIAX
         cfg_err('Nill Id') unless id
         return self[:data][id] if self[:data].key?(id)
         vname = []
-        dat = _access_array(id, vname)
+        dat = _access_array_(id, vname)
         verbose { "Get[#{id}]=[#{dat}]" }
         dat
       end
@@ -53,7 +53,7 @@ module CIAX
       def repl(id, val)
         conv = subst(val).to_s
         verbose { "Put[#{id}]=[#{conv}]" }
-        _repl_by_case(get(id), conv)
+        _repl_by_case_(get(id), conv)
         verbose { "Evaluated[#{id}]=[#{get(id)}]" }
         self
       ensure
@@ -97,7 +97,7 @@ module CIAX
         data
       end
 
-      def _access_array(id, vname)
+      def _access_array_(id, vname)
         id.split(':').inject(self[:data]) do |h, i|
           break unless h
           i = expr(i) if h.is_a? Array
@@ -108,7 +108,7 @@ module CIAX
         end
       end
 
-      def _repl_by_case(par, conv)
+      def _repl_by_case_(par, conv)
         case par
         when Array
           _merge_ary_(par, conv.split(','))

@@ -55,7 +55,7 @@ module CIAX
           verbose { 'Waiting' }
           pri_sort(iq.shift)
           sv_up
-          _exec_buf if iq.empty?
+          _exec_buf_ if iq.empty?
         end
         self
       end
@@ -77,7 +77,7 @@ module CIAX
       end
 
       # Execute recieved command
-      def _exec_buf
+      def _exec_buf_
         until (args = _reorder_cmd_).empty?
           @recv_proc.call(args, 'buffer')
         end

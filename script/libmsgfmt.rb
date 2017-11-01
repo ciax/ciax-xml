@@ -63,7 +63,7 @@ module CIAX
     def columns(h, colm = nil, ind = nil, cap = nil)
       return '' unless h
       cary = colm.is_a?(Array) ? colm : Array.new(colm || 2) { [0, 0] }
-      lary = upd_column_ary(h, cary).map! { |a| __mk_line(h, a, cary, ind) }
+      lary = upd_column_ary(h, cary).map! { |a| __mk_line_(h, a, cary, ind) }
       (cap ? lary.unshift(cap) : lary).join("\n")
     end
 
@@ -78,7 +78,7 @@ module CIAX
       end
     end
 
-    def __mk_line(h, a, cary, ind)
+    def __mk_line_(h, a, cary, ind)
       a.map.with_index do |k, i|
         kx, vx = cary[i]
         indent(ind.to_i) + itemize(k, h[k], kx).ljust(kx + vx + 15)

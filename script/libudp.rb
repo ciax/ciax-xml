@@ -43,7 +43,7 @@ module CIAX
       def listen
         loop do
           IO.select([@udp])
-          _send(yield(_recv))
+          _send_(yield(_recv))
         end
       ensure
         @udp.close
@@ -57,7 +57,7 @@ module CIAX
         [line, Addrinfo.ip(@addr[2]).getnameinfo.first]
       end
 
-      def _send(send_str)
+      def _send_(send_str)
         @udp.send(send_str, 0, @addr[2], @addr[1])
         verbose { "UDP Send:#{send_str}" }
       end

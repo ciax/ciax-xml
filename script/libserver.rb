@@ -19,17 +19,17 @@ module CIAX
       # JSON expression of server stat will be sent.
       def ext_local_server
         return self unless @port
-        @server_input_proc = _init_input
+        @server_input_proc = _init_input_
         @sv_stat.ext_local_file.auto_save.ext_local_log
         @server_output_proc = proc { JSON.dump(@sv_stat) }
-        _startup
+        _startup_
         self
       end
 
       private
 
       # If first arg is number, it is stored in Prompt as a sequencial number
-      def _init_input
+      def _init_input_
         proc do |line|
           args = type?(j2h(line), Array)
           if args[0].to_i > 0
@@ -42,22 +42,22 @@ module CIAX
       end
 
       # Separated form ext_* for detach process of this part
-      def _startup
+      def _startup_
         Threadx::Fork.new('Server', @layer, @id, "udp:#{@port}") do
-          _srv_udp
+          _srv_udp_
           sleep 0.3
         end
         self
       end
 
-      def _srv_udp
+      def _srv_udp_
         Udp::Server.new(@layer, @id, @port).listen do |line, rhost|
-          _srv_exec(line, rhost)
+          _srv_exec_(line, rhost)
           @server_output_proc.call
         end
       end
 
-      def _srv_exec(line, rhost)
+      def _srv_exec_(line, rhost)
         verbose { "Exec Server\nValid Commands #{@cobj.valid_keys}" }
         exe(@server_input_proc.call(line), "udp:#{rhost}")
       rescue

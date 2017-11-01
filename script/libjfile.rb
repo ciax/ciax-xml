@@ -37,13 +37,13 @@ module CIAX
       end
 
       def load(tag = nil)
-        jstr = _read_json(tag)
+        jstr = _read_json_(tag)
         verbose { "File Loading #{@cfile}" }
         if jstr.empty?
           verbose { " -- json file (#{@cfile}) is empty at loading" }
           return self
         end
-        _check_load(jstr) && jmerge(jstr)
+        _check_load_(jstr) && jmerge(jstr)
         self
       end
 
@@ -71,7 +71,7 @@ module CIAX
 
       # Version check, no read if different
       # (otherwise old version number remain as long as the file exists)
-      def _check_load(jstr)
+      def _check_load_(jstr)
         inc = j2h(jstr)[:ver]
         org = self[:ver]
         return true if inc == org
@@ -91,7 +91,7 @@ module CIAX
         end.sort
       end
 
-      def _read_json(tag = nil)
+      def _read_json_(tag = nil)
         @cfile = _file_name(tag)
         open(@jsondir + @cfile) do |f|
           verbose { "Reading [#{@cfile}](#{f.size})" }

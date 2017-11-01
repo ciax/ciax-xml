@@ -17,7 +17,7 @@ module CIAX
       def pick(keylist, atrb = {})
         h = Hashx.new(atrb)
         keylist.each do |str|
-          cat, key = _get_key(str)
+          cat, key = _get_key_(str)
           h.get(cat) { Hashx.new }[key] = get(cat)[key]
         end
         h
@@ -43,16 +43,16 @@ module CIAX
       def store_sym(index)
         index.each do |key, hash|
           sid = hash[:symbol] || next
-          tbl = _chk_tbl(sid) || next
+          tbl = _chk_tbl_(sid) || next
           verbose { "ID=#{key},Table=#{sid}" }
           val = self[:data][hash[:ref] || key]
-          _match_items(tbl, key, val)
+          _match_items_(tbl, key, val)
         end
       end
 
-      def _match_items(tbl, key, val)
+      def _match_items_(tbl, key, val)
         res = nil
-        sym = tbl.find { |s| res = _match_by_type(s, val) } || _default_sym(tbl)
+        sym = tbl.find { |s| res = _match_by_type_(s, val) } || _default_sym_(tbl)
         msg = self[:msg][key] = format(sym[:msg] || 'N/A(%s)', val)
         cls = self[:class][key] = sym[:class] || 'alarm'
         verbose do
@@ -60,38 +60,38 @@ module CIAX
         end
       end
 
-      def _match_by_type(sym, val)
+      def _match_by_type_(sym, val)
         cri = sym[:val]
         case sym[:type]
         when 'numeric'
-          _match_numeric(cri, val, sym[:tolerance])
+          _match_numeric_(cri, val, sym[:tolerance])
         when 'range'
-          _match_range(cri, val)
+          _match_range_(cri, val)
         when 'pattern'
-          _match_pattern(cri, val)
+          _match_pattern_(cri, val)
         end
       end
 
-      def _match_numeric(cri, val, tol)
+      def _match_numeric_(cri, val, tol)
         return unless cri.split(',').any? { |c| _within?(c, val, tol) }
         "Numeric:[#{cri}+-#{tol}]"
       end
 
-      def _match_range(cri, val)
+      def _match_range_(cri, val)
         return unless _within?(cri, val)
         "Range:[#{cri}]"
       end
 
-      def _match_pattern(cri, val)
+      def _match_pattern_(cri, val)
         return unless /#{cri}/ =~ val
         "Regexp:[#{cri}]"
       end
 
-      def _default_sym(tbl)
+      def _default_sym_(tbl)
         tbl.find { |s| s[:type] == 'default' } || {}
       end
 
-      def _chk_tbl(sid)
+      def _chk_tbl_(sid)
         tbl = @symdb[sid]
         return tbl if tbl
         alert("Table[#{sid}] not exist")
@@ -103,7 +103,7 @@ module CIAX
         ReRange.new(cri) == val
       end
 
-      def _get_key(str)
+      def _get_key_(str)
         cat, key = str =~ /:/ ? str.split(':') : [:data, str]
         cat = cat.to_sym
         par_err("Invalid category (#{cat})") unless key?(cat)

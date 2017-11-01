@@ -42,16 +42,16 @@ module CIAX
         # e.name should be group
         Msg.give_up('No group in cdb') unless e.name == 'group'
         gid = e.attr2item(@grps)
-        _add_member(e, gid)
+        _add_member_(e, gid)
       end
     end
 
-    def _add_member(doc, gid)
+    def _add_member_(doc, gid)
       return unless doc
       doc.each do |e0|
         case e0.name
         when 'unit'
-          _add_unit(e0, gid)
+          _add_unit_(e0, gid)
         when 'item'
           _add_item(e0, gid)
         end
@@ -59,7 +59,7 @@ module CIAX
       self
     end
 
-    def _add_unit(e0, gid)
+    def _add_unit_(e0, gid)
       uid = e0.attr2item(@units)
       @grps[gid].get(:units) { [] } << uid
       e0.each do |e1|

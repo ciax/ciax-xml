@@ -37,9 +37,9 @@ module CIAX
       def conv(ent)
         rid = type?(ent, CmdBase::Entity)[:response]
         @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
-        _make_sel(ent, rid)
+        _make_sel_(ent, rid)
         @frame.set(@stream.binary)
-        _make_data(rid)
+        _make_data_(rid)
         verbose { 'Propagate Stream#rcv Field#conv(cmt)' }
         self
       ensure
@@ -50,14 +50,14 @@ module CIAX
 
       # sel structure:
       #   { terminator, :main{}, :body{} <- changes on every upd }
-      def _make_sel(ent, rid)
+      def _make_sel_(ent, rid)
         @sel = Hash[@fdbr[:frame]]
         @sel.update(@fds[rid])
         @sel[:body] = ent.deep_subst(@sel[:body])
         verbose { "Selected DB for #{rid}\n" + @sel.inspect }
       end
 
-      def _make_data(rid)
+      def _make_data_(rid)
         @cache = self[:data].deep_copy
         if @fds[rid].key?(:noaffix)
           getfield_rec(['body'])
@@ -74,12 +74,12 @@ module CIAX
           if e1.is_a?(Hash)
             frame_to_field(e1) { @frame.cut(e1) }
           else
-            _make_rec(e1)
+            _make_rec_(e1)
           end
         end
       end
 
-      def _make_rec(e1)
+      def _make_rec_(e1)
         case e1
         when 'ccrange'
           @frame.cc.enclose { getfield_rec(@sel[:ccrange]) }
@@ -93,15 +93,15 @@ module CIAX
       def frame_to_field(e0)
         enclose((e0[:label]).to_s, 'Field:End') do
           if e0[:index]
-            _ary_field(e0) { yield }
+            _ary_field_(e0) { yield }
           else
-            _str_field(e0, yield)
+            _str_field_(e0, yield)
           end
         end
       end
 
       # Field
-      def _str_field(e0, data)
+      def _str_field_(e0, data)
         return unless (akey = e0[:assign])
         if e0[:valid] && /#{e0[:valid]}/ !~ data
           warning("Invalid Data (#{data}) for /#{e0[:valid]}/")
@@ -112,7 +112,7 @@ module CIAX
       end
 
       # Array
-      def _ary_field(e0)
+      def _ary_field_(e0)
         akey = e0[:assign] || Msg.cfg_err('No key for Array')
         # Insert range depends on command param
         idxs = e0[:index].map do |e1|

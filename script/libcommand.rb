@@ -31,7 +31,7 @@ module CIAX
       # Add sub group
       # If cls is String or Symbol, constant is taken locally.
       def add(cls, atrb = Hashx.new) # returns instance of cls
-        res = _get_cls(cls, atrb)
+        res = _get_cls_(cls, atrb)
         push res
         res
       end
@@ -45,7 +45,7 @@ module CIAX
 
       private
 
-      def _get_cls(cls, atrb)
+      def _get_cls_(cls, atrb)
         case cls
         when Module
           cls.new(@cfg, atrb)

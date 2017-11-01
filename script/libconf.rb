@@ -153,7 +153,7 @@ module CIAX
 
   # Option parser with Config
   class ConfOpts < GetOpts
-    def initialize(usagestr, optargs = {})
+    def initialize(ustr = '', optargs = {})
       super do |opt, args|
         yield(Config.new(opt: opt, jump_groups: [], args: args), args)
       end

@@ -11,8 +11,8 @@ module CIAX
     # default: default(implicit) option string (i.e "abc")
     # etc. : additional option db (i.e. { ? : "description" })
     attr_reader :layer
-    def initialize(ustr, optarg = {}, &opt_proc)
-      ustr = "(opt) #{ustr}" unless optarg.empty?
+    def initialize(ustr = '', optarg = {}, &opt_proc)
+      ustr = '(opt) ' + ustr unless optarg.empty?
       _set_opt_(_set_db_(optarg) + _set_default_(optarg))
       getarg(ustr, &opt_proc)
     end

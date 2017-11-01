@@ -1,8 +1,5 @@
 #!/usr/bin/ruby
-require 'libserver'
-require 'libclient'
 require 'libprompt'
-require 'libsh'
 require 'libcmdremote'
 
 # Integrates Command and Status
@@ -115,3 +112,7 @@ module CIAX
     end
   end
 end
+
+require 'libserver'
+require 'libclient'
+require 'libsh'

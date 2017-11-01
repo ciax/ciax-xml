@@ -1,7 +1,4 @@
 #!/usr/bin/ruby
-require 'libjslog'
-require 'libjfile'
-require 'libjhttp'
 require 'libupd'
 require 'libdb'
 
@@ -18,19 +15,6 @@ module CIAX
       _setid(id)
       self[:ver] = ver if ver
       self[:host] = host || HOST
-    end
-
-    # Read only as a client
-    def ext_http(host = nil, dir = nil)
-      extend(JHttp).ext_http(host, dir)
-    end
-
-    def ext_local_file(dir = nil)
-      extend(JFile).ext_local_file(dir)
-    end
-
-    def ext_local_log
-      extend(JsLog).ext_local_log
     end
 
     private
@@ -66,3 +50,7 @@ module CIAX
     end
   end
 end
+
+require 'libjslog'
+require 'libjfile'
+require 'libjhttp'

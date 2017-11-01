@@ -149,7 +149,7 @@ module CIAX
       ConfOpts.new('< logline', m: 'merge file') do |cfg|
         raise(InvalidARGS, '  Need Input File') if STDIN.tty?
         str = gets(nil) || exit
-        res = JsLog.read(str)
+        res = Varx::JsLog.read(str)
         id = res[:id]
         cid = res[:cmd]
         dbi = Dev::Db.new.get(id)

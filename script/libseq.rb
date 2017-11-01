@@ -8,7 +8,6 @@ module CIAX
     # Sequencer
     class Sequencer
       include Msg
-      include SeqFunc
       attr_reader :cfg, :record, :qry, :id, :title, :sv_stat
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
@@ -126,16 +125,6 @@ module CIAX
         @record.ext_local_file('record').auto_save
         @record.mklink # Make latest link
         @record.mklink(@id) # Make link to /json
-      end
-
-      # Print section
-      def _show(str = "\n")
-        return unless Msg.fg?
-        if defined? yield
-          puts indent(@depth) + yield.to_s
-        else
-          print str
-        end
       end
     end
 

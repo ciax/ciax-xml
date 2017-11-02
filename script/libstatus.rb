@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libvarx'
+require 'libstatx'
 require 'libinsdb'
 
 module CIAX
@@ -7,16 +7,15 @@ module CIAX
   module App
     # Status Data
     # All elements of @data are String
-    class Status < Varx
+    class Status < Statx
       # @ last*
       attr_reader :last
       # dbi can be Ins::Db or ID for new Db
       def initialize(dbi = nil)
-        super('status')
+        super('status', dbi, Ins::Db)
         @last = {}
         @updated = now_msec
         @lastsave = now_msec
-        set_dbi(dbi, Ins::Db)
         _init_sdb_
         @cmt_procs << proc { verbose { "Saved #{self[:id]}:timing" } }
       end

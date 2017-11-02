@@ -1,20 +1,19 @@
 #!/usr/bin/ruby
-require 'libvarx'
+require 'libstatx'
 require 'libdevdb'
 
 module CIAX
   # Frame Layer
   module Frm
     # Frame Field
-    class Field < Varx
+    class Field < Statx
       attr_reader :flush_procs
       attr_accessor :echo
       def initialize(dbi = nil)
-        super('field')
+        super('field', dbi, Dev::Db)
         # Proc for Terminate process of each individual commands
         #  (Set upper layer's update)
         @flush_procs = []
-        set_dbi(dbi, Dev::Db)
         self[:comerr] = false
         self[:data] = _init_field_ unless self[:data]
       end

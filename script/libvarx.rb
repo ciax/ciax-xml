@@ -1,13 +1,12 @@
 #!/usr/bin/ruby
 require 'libupd'
-require 'libdb'
 
 module CIAX
-  # Variable Status Data with Saving, Logging feature
+  # Variable Status Data having ID with Saving, Logging feature
   # Need Header(id,ver) data
   # Used for freqently changing data with remote
   class Varx < Upd
-    attr_reader :type, :dbi, :id
+    attr_reader :type, :id
     def initialize(type, id = nil, ver = nil, host = nil)
       super()
       @type = type
@@ -35,30 +34,8 @@ module CIAX
 
     private
 
-    # Set dbi, otherwise generate by stdin info
-    def set_dbi(obj = nil, mod = Db)
-      dbi = _get_dbi_(obj, mod)
-      @dbi = type?(dbi, Dbi)
-      _set_id(dbi[:site_id] || dbi[:id]) || Msg.cfg_err('ID')
-      self[:ver] = dbi[:version].to_i
-      @layer = dbi[:layer]
-      self
-    end
-
     def base_name(tag = nil)
       [@type, self[:id], tag].compact.join('_')
-    end
-
-    def _get_dbi_(obj, mod)
-      if obj.is_a? Dbi
-        obj
-      elsif obj.is_a? String
-        mod.new.get(obj)
-      elsif STDIN.tty?
-        mod.new.get(nil)
-      else
-        mod.new.get(jmerge[:id])
-      end
     end
 
     def _set_id(id)

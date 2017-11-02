@@ -7,17 +7,15 @@ module CIAX
   # Watch Layer
   module Wat
     # Event Data
-    class Event < Varx
+    class Event < Statx
       attr_reader :on_act_procs, :on_deact_procs, :interval
       def initialize(dbi = nil)
-        super('event')
+        super('event', dbi, Ins::Db)
         @interval = 0.1
         @periodm = 300_000
         @last_updated = 0
-        set_dbi(dbi, Ins::Db)
         _init_procs
         _init_struct_
-        self
       end
 
       def active?

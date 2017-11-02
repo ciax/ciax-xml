@@ -23,7 +23,7 @@ module CIAX
       # @displist is Display
       lid = proj ? "list_#{proj}" : 'list'
       # Show site list
-      @latest = _get_latest_file_
+      @latest = _get_latest_xmlfile_
       @displist = _get_cache(lid) || _get_db(lid, &:displist) # site list
       @argc = 0
     end
@@ -44,8 +44,8 @@ module CIAX
 
     # Returns Dbi(command list) or Disp(site list)
     def _get_cache(id)
-      @base = "#{@type}-#{id}"
-      @cachefile = vardir('cache') + "#{@base}.mar"
+      @cbase = "#{@type}-#{id}"
+      @cachefile = vardir('cache') + "#{@cbase}.mar"
       return _load_cache_(id) if _use_cache_?
       @docs = Xml::Doc.new(@type, @proj) unless @docs # read xml file
       nil
@@ -56,7 +56,7 @@ module CIAX
       _save_cache_(id, res)
     end
 
-    def _get_latest_file_
+    def _get_latest_xmlfile_
       ary = $LOADED_FEATURES.grep(/#{__dir__}/) + Msg.xmlfiles(@type)
       ary.max_by { |f| File.mtime(f) }
     end
@@ -65,6 +65,7 @@ module CIAX
       verbose { "Cache Loading (#{id})" }
       return self[id] if key?(id)
       begin
+        # Used Marshal for symbol keys
         Marshal.load(IO.read(@cachefile))
       rescue ArgumentError # if empty
         Hashx.new
@@ -91,9 +92,9 @@ module CIAX
       verbose(ENV['NOCACHE']) do
         "#{@type}/Cache ENV['NOCACHE'] is set"
       end || verbose(!test('e', @cachefile)) do
-        "#{@type}/Cache MAR file(#{@base}) not exist"
+        "#{@type}/Cache MAR file(#{@cbase}) not exist"
       end || verbose(test('>', @latest, @cachefile)) do
-        "#{@type}/Cache File(#{@latest}) is newer than #{@cachefile}"
+        "#{@type}/Cache File(#{@latest}) is newer than #{@cbase}"
       end || (return verbose { "#{@type}/Cache Using" })
       false
     end

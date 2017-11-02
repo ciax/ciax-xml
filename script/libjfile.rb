@@ -10,11 +10,11 @@ module CIAX
 
       # Set latest_link=true for making latest link at save
       def ext_local_file(dir = nil)
-        verbose { "Initiate File Status [#{_file_base}]" }
+        verbose { "Initiate File Status [#{base_name}]" }
         self[:id] || cfg_err('No ID')
         @thread = Thread.current # For Thread safe
         @jsondir = vardir(dir || 'json')
-        @cfile = _file_base # Current file name
+        @cfile = base_name # Current file name
         self
       end
 
@@ -78,7 +78,7 @@ module CIAX
       end
 
       def _file_name(tag = nil)
-        _file_base(tag) + '.json'
+        base_name(tag) + '.json'
       end
 
       def _tag_list_

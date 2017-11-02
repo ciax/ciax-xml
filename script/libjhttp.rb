@@ -40,7 +40,7 @@ module CIAX
       private
 
       def file_url(tag = nil)
-        'http://' + @host + @dir + _file_base(tag) + '.json'
+        'http://' + @host + @dir + base_name(tag) + '.json'
       end
     end
   end

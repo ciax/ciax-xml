@@ -153,9 +153,10 @@ module CIAX
         field = Field.new(res[:id]).ext_local_rsp(res)
         field.ext_local_file.auto_save if cfg[:opt][:m]
         if (cid = res[:cmd])
-          cfg[:field] = field
+          atrb = field.dbi.pick(%i(stream))
+          atrb[:field] = field
           # dbi.pick alreay includes :command, :version
-          cobj = Index.new(cfg, field.dbi.pick(%i(stream)))
+          cobj = Index.new(cfg, atrb)
           cobj.add_rem.add_ext
           ent = cobj.set_cmd(cid.split(':'))
           begin

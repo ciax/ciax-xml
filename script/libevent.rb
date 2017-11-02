@@ -14,7 +14,7 @@ module CIAX
         @interval = 0.1
         @periodm = 300_000
         @last_updated = 0
-        _setdbi(dbi, Ins::Db)
+        set_dbi(dbi, Ins::Db)
         _init_procs
         _init_struct_
         self

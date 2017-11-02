@@ -12,7 +12,7 @@ module CIAX
       super()
       @type = type
       # Headers
-      _setid(id)
+      _set_id(id)
       self[:ver] = ver if ver
       self[:host] = host || HOST
     end
@@ -36,16 +36,20 @@ module CIAX
     private
 
     # Set dbi, otherwise generate by stdin info
-    def _setdbi(obj = nil, mod = Db)
-      dbi = _getdbi_(obj, mod)
+    def set_dbi(obj = nil, mod = Db)
+      dbi = _get_dbi_(obj, mod)
       @dbi = type?(dbi, Dbi)
-      _setid(dbi[:site_id] || dbi[:id]) || Msg.cfg_err('ID')
+      _set_id(dbi[:site_id] || dbi[:id]) || Msg.cfg_err('ID')
       self[:ver] = dbi[:version].to_i
       @layer = dbi[:layer]
       self
     end
 
-    def _getdbi_(obj, mod)
+    def base_name(tag = nil)
+      [@type, self[:id], tag].compact.join('_')
+    end
+
+    def _get_dbi_(obj, mod)
       if obj.is_a? Dbi
         obj
       elsif obj.is_a? String
@@ -57,12 +61,8 @@ module CIAX
       end
     end
 
-    def _setid(id)
+    def _set_id(id)
       @id = self[:id] = id
-    end
-
-    def _file_base(tag = nil)
-      [@type, self[:id], tag].compact.join('_')
     end
   end
 end

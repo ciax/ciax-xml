@@ -15,6 +15,8 @@ module CIAX
       ustr = '(opt) ' + ustr unless optarg.empty?
       _set_opt_(_set_db_(optarg) + _set_default_(optarg))
       getarg(ustr, &opt_proc)
+    rescue InvalidARGS
+      usage(ustr)
     end
 
     # Mode (Device) [prompt]
@@ -121,9 +123,7 @@ module CIAX
         l: 'client to local', h: 'client to [host]',
         # System mode
         e: 'execution mode', s: 'server mode', n: 'non-stop mode',
-        b: 'back ground mode',
-        # Instance mode
-        i: 'instance mode',
+        b: 'back ground mode', i: 'instance mode',
         # For visual
         r: 'raw data output', j: 'json data output' }
     end

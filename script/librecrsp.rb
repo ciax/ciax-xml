@@ -8,10 +8,10 @@ module CIAX
     # Add extend method in Record
     class Record
       def ext_local_rsp(cfg)
-        extend(RecRsp).ext_local_rsp(cfg)
+        extend(Rsp).ext_local_rsp(cfg)
       end
       # Macro Response Module
-      module RecRsp
+      module Rsp
         def self.extended(obj)
           Msg.type?(obj, Record)
         end

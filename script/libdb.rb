@@ -23,7 +23,6 @@ module CIAX
       # @displist is Display
       lid = proj ? "list_#{proj}" : 'list'
       # Show site list
-      @latest = _get_latest_xmlfile_
       @displist = _get_cache(lid) || _get_db(lid, &:displist) # site list
       @argc = 0
     end
@@ -57,12 +56,17 @@ module CIAX
     end
 
     def _get_latest_xmlfile_
-      ary = $LOADED_FEATURES.grep(/#{__dir__}/) + Msg.xmlfiles(@type)
+      ary = Msg.xmlfiles(@type)
+      ary.max_by { |f| File.mtime(f) }
+    end
+
+    def _get_rbfiles_
+      ary = $LOADED_FEATURES.grep(/#{__dir__}/)
       ary.max_by { |f| File.mtime(f) }
     end
 
     def _load_cache_(id)
-      verbose { "Cache Loading (#{id})" }
+      verbose { "Cache Loading (#{@cbase})" }
       return self[id] if key?(id)
       begin
         # Used Marshal for symbol keys
@@ -73,10 +77,9 @@ module CIAX
     end
 
     def _save_cache_(id, res)
-      verbose { "Cache Refresh (#{id})" }
       open(@cachefile, 'w') do |f|
         f << Marshal.dump(res)
-        verbose { "Cache Saved(#{id})" }
+        verbose { "Cache Saved (#{@cbase})" }
       end
       self[id] = res
     end
@@ -89,14 +92,33 @@ module CIAX
     end
 
     def _use_cache_?
+      !(_env_nocache? || _mar_exist? || _xml_newer?)
+    end
+
+    def _env_nocache?
       verbose(ENV['NOCACHE']) do
         "#{@type}/Cache ENV['NOCACHE'] is set"
-      end || verbose(!test('e', @cachefile)) do
+      end
+    end
+
+    def _mar_exist?
+      verbose(!test('e', @cachefile)) do
         "#{@type}/Cache MAR file(#{@cbase}) not exist"
-      end || verbose(test('>', @latest, @cachefile)) do
-        "#{@type}/Cache File(#{@latest}) is newer than #{@cbase}"
-      end || (return verbose { "#{@type}/Cache Using" })
-      false
+      end
+    end
+
+    def _xml_newer?
+      latest = _get_latest_xmlfile_
+      verbose(test('>', latest, @cachefile)) do
+        "#{@type}/Cache Xml(#{latest}) is newer than (#{@cbase})"
+      end
+    end
+
+    def _rb_newer?
+      latest = _get_latest_rbfiles_
+      verbose(test('>', latest, @cachefile)) do
+        "#{@type}/Cache Rb(#{latest}) is newer than (#{@cbase})"
+      end
     end
   end
 end

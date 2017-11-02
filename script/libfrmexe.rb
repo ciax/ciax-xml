@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libfrmdrv'
 require 'libfrmrsp'
 require 'libfrmcmd'
 require 'libdevdb'
@@ -39,23 +38,6 @@ module CIAX
         self
       end
 
-      private
-
-      # Initialize Subroutine
-      def _init_net(dbi)
-        @host = @cfg[:opt].host || dbi[:host]
-        @port ||= dbi[:port]
-        self
-      end
-
-      def _init_command
-        @cobj.add_rem.cfg[:def_msg] = 'OK'
-        @cobj.rem.add_sys
-        @cobj.rem.add_ext
-        @cobj.rem.add_int
-        self
-      end
-
       # Mode Extension
       def ext_local_test
         @stat.ext_local_file
@@ -73,8 +55,26 @@ module CIAX
       end
 
       def ext_local_driver
+        require 'libfrmdrv'
         super
         extend(Drv).ext_local_driver
+      end
+
+      private
+
+      # Initialize Subroutine
+      def _init_net(dbi)
+        @host = @cfg[:opt].host || dbi[:host]
+        @port ||= dbi[:port]
+        self
+      end
+
+      def _init_command
+        @cobj.add_rem.cfg[:def_msg] = 'OK'
+        @cobj.rem.add_sys
+        @cobj.rem.add_ext
+        @cobj.rem.add_int
+        self
       end
     end
 

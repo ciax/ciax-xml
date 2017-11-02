@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libthreadx'
 module CIAX
   # Variable status data
   class Varx

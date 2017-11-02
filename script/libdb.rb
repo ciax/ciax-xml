@@ -29,8 +29,7 @@ module CIAX
 
     # return Dbi
     def get(id)
-      @displist.valid?(id) ||
-        id_err(id, @type, @displist)
+      @displist.valid?(id) || id_err(id, @type, @displist)
       _get_cache(id) || _get_db(id) { |docs| doc_to_db(docs.get(id)) }
     end
 
@@ -53,16 +52,6 @@ module CIAX
     def _get_db(id)
       res = _validate_repl_(yield(@docs))
       _save_cache_(id, res)
-    end
-
-    def _get_latest_xmlfile_
-      ary = Msg.xmlfiles(@type)
-      ary.max_by { |f| File.mtime(f) }
-    end
-
-    def _get_rbfiles_
-      ary = $LOADED_FEATURES.grep(/#{__dir__}/)
-      ary.max_by { |f| File.mtime(f) }
     end
 
     def _load_cache_(id)
@@ -92,7 +81,7 @@ module CIAX
     end
 
     def _use_cache_?
-      !(_env_nocache? || _mar_exist? || _xml_newer?)
+      !(_env_nocache? || _mar_exist? || _xml_newer? || _rb_newer?)
     end
 
     def _env_nocache?
@@ -108,16 +97,18 @@ module CIAX
     end
 
     def _xml_newer?
-      latest = _get_latest_xmlfile_
-      verbose(test('>', latest, @cachefile)) do
-        "#{@type}/Cache Xml(#{latest}) is newer than (#{@cbase})"
-      end
+      _file_newer?('Xml', Msg.xmlfiles(@type))
     end
 
     def _rb_newer?
-      latest = _get_latest_rbfiles_
+      _file_newer?('Rb', $LOADED_FEATURES.grep(/#{__dir__}/))
+    end
+
+    def _file_newer?(cap, ary)
+      latest = ary.max_by { |f| File.mtime(f) }
       verbose(test('>', latest, @cachefile)) do
-        "#{@type}/Cache Rb(#{latest}) is newer than (#{@cbase})"
+        format('%s/Cache %s(%s) is newer than (%s)',
+               @type, cap, latest.split('/').last, @cbase)
       end
     end
   end

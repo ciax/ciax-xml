@@ -123,10 +123,9 @@ module CIAX
       require 'libfrmdb'
       cap = '[dev] [cmd] (par) < field_file'
       ConfOpts.new(cap, options: 'r') do |cfg, args|
-        dbi = Db.new.get(args.shift)
-        fld = cfg[:field] = Field.new(dbi)
+        fld = cfg[:field] = Field.new(args.shift)
         # dbi.pick alreay includes :layer, :command, :version
-        cobj = Index.new(cfg, dbi.pick(%i(stream)))
+        cobj = Index.new(cfg, fld.dbi.pick(%i(stream)))
         cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }
         cobj.rem.add_ext
         fld.jmerge unless STDIN.tty?

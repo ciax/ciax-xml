@@ -46,14 +46,14 @@ module CIAX
     end
 
     def _getdbi_(obj, mod)
-      case obj
-      when Dbi
+      if obj.is_a? Dbi
         obj
-      when String
+      elsif obj.is_a? String
         mod.new.get(obj)
+      elsif STDIN.tty?
+        mod.new.get(nil)
       else
-        id = STDIN.tty? ? ARGV.shift : jmerge[:id]
-        mod.new.get(id)
+        mod.new.get(jmerge[:id])
       end
     end
 

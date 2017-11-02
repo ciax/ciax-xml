@@ -131,8 +131,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id]') do |_opts, args|
-        dbi = Dev::Db.new.get(args.shift)
-        puts Field.new(dbi).to_r
+        puts Field.new(args.shift).to_r
       end
     end
   end

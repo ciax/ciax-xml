@@ -67,8 +67,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id]', options: 'h') do |opt|
-        stat = Status.new
+      GetOpts.new('[id]', h: 'http output') do |opt, args|
+        stat = Status.new(args.shift)
         if opt[:h]
           stat.ext_http(opt.host)
         else

@@ -15,9 +15,9 @@ module CIAX
       def ext_local_server
         return self if @mode == 'CL' || !@port
         @mode += ':SV'
-        @server_input_proc = _init_input_
+        @server_input_proc ||= _init_input_
         @sv_stat.ext_local_file.auto_save.ext_local_log
-        @server_output_proc = proc { JSON.dump(@sv_stat) }
+        @server_output_proc ||= proc { JSON.dump(@sv_stat) }
         _startup_
         self
       end

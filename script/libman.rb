@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require 'libexe'
 require 'libseqview'
-require 'libmandrv'
 module CIAX
   # Macro Layer
   module Mcr
@@ -28,10 +27,38 @@ module CIAX
 
       def ext_shell
         @cfg[:output] = @stat
-        extend(Shell).ext_shell
+        super
       end
 
       private
+
+      # Mode Extention by Option
+      def ext_client
+        @post_exe_procs << proc do
+          list = @par.list
+          pre = list.size
+          list.concat(@sv_stat.get(:list)).uniq!
+          post = list.size
+          @par.sel(post) if post > pre
+        end
+        super
+      end
+
+      def ext_local_test
+        require 'libmandrv'
+        super
+      end
+
+      def ext_local_driver
+        require 'libmandrv'
+        super
+      end
+
+      def ext_local_server
+        @cfg[:rec_list].refresh
+        _mk_cmdlist_
+        super
+      end
 
       # Initiate for all mode
       def _init_net
@@ -62,35 +89,6 @@ module CIAX
         IO.write(
           vardir('json') + 'mcr_conf.js', 'var config = ' + @cfg[:jlist].to_j
         )
-      end
-
-      def ext_client
-        @post_exe_procs << proc do
-          list = @par.list
-          pre = list.size
-          list.concat(@sv_stat.get(:list)).uniq!
-          post = list.size
-          @par.sel(post) if post > pre
-        end
-        super
-      end
-
-      # Initiate for driver
-      def ext_local_driver
-        super
-        extend(ManDrv).ext_local_driver
-      end
-
-      def ext_local_test
-        super
-        extend(ManDrv).ext_local_driver
-      end
-
-      def ext_local_server
-        super
-        @cfg[:rec_list].refresh
-        _mk_cmdlist_
-        self
       end
     end
 

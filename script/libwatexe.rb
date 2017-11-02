@@ -20,7 +20,7 @@ module CIAX
 
       def ext_shell
         super
-        @cfg[:output] = View.new(@stat).extend(Prt)
+        @cfg[:output] = View.new(@stat).ext_prt
         @cobj.loc.add_view
         input_conv_set
         self
@@ -28,22 +28,7 @@ module CIAX
 
       private
 
-      def ext_local_test
-        @post_exe_procs << proc { @stat.update? }
-        super
-      end
-
-      def ext_local_driver
-        super
-        @stat.ext_local_file.auto_save
-        # @stat[:int] is overwritten by initial loading
-        @sub.batch_interrupt = @stat.get(:int)
-        @stat.ext_local_log if @cfg[:opt].log?
-        _init_upd_drv_
-        _init_exe_drv_
-        self
-      end
-
+      # Mode Extention by Option
       def ext_local
         _init_upd_
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
@@ -51,6 +36,17 @@ module CIAX
         super
       end
 
+      def ext_local_test
+        @post_exe_procs << proc { @stat.update? }
+        super
+      end
+
+      def ext_local_driver
+        require 'libwatdrv'
+        super
+      end
+
+      # Sub methods for Initialize
       def _init_takeover
         @sub = @cfg[:sub_list].get(@id)
         @sv_stat = @sub.sv_stat.init_flg(auto: '&', event: '@')
@@ -64,23 +60,6 @@ module CIAX
           verbose { 'Propagate Event#cmt -> Watch#(set blocking command)' }
           block = ev.get(:block).map { |id, par| par ? nil : id }.compact
           @cobj.rem.ext.valid_sub(block)
-        end
-      end
-
-      def _init_upd_drv_
-        @stat.cmt_procs << proc do |ev|
-          ev.get(:exec).each do |src, pri, args|
-            verbose { "Propagate Exec:#{args} from [#{src}] by [#{pri}]" }
-            @sub.exe(args, src, pri)
-            sleep ev.interval
-          end.clear
-        end
-      end
-
-      def _init_exe_drv_
-        @th_auto = _init_auto_thread_ unless @cfg[:cmd_line_mode]
-        @sub.post_exe_procs << proc do
-          @sv_stat.set_flg(:auto, @th_auto && @th_auto.alive?)
         end
       end
 

@@ -27,6 +27,7 @@ module CIAX
 
     # Shell module
     module Shell
+      require 'libsh'
       attr_reader :jumpgrp
       def self.extended(obj)
         Msg.type?(obj, List)

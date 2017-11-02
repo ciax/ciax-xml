@@ -19,6 +19,17 @@ module CIAX
 
       private
 
+      # Mode Extension by Option
+      def ext_local_server
+        # Specific setting must be done after super to override them
+        @server_input_proc = proc do |line|
+          /^(strobe|stat)/ =~ line ? [] : line.split(' ')
+        end
+        @server_output_proc = @shell_output_proc
+        super
+      end
+
+      # Sub Methods for Initialize
       def _init_takeover
         @sub = @cfg[:sub_list].get(@id)
         @sv_stat = @sub.sv_stat
@@ -32,16 +43,6 @@ module CIAX
         @stat = Rsp.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
         @shell_output_proc = proc { @stat.to_x }
         @stat.ext_local_log if @cfg[:opt].log?
-      end
-
-      def ext_local_server
-        super
-        # Specific setting must be done after super to override them
-        @server_input_proc = proc do |line|
-          /^(strobe|stat)/ =~ line ? [] : line.split(' ')
-        end
-        @server_output_proc = @shell_output_proc
-        self
       end
     end
 

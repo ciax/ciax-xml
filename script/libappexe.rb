@@ -29,14 +29,6 @@ module CIAX
         super
       end
 
-      def ext_shell
-        super
-        @cfg[:output] = View.new(@stat)
-        @cobj.loc.add_view
-        input_conv_set
-        self
-      end
-
       def active?
         @sv_stat.upd.up?(:event)
       end
@@ -53,9 +45,38 @@ module CIAX
         false
       end
 
+      def ext_shell
+        super
+        @cfg[:output] = View.new(@stat)
+        @cobj.loc.add_view
+        input_conv_set
+        self
+      end
+
       private
 
-      # Initialize subroutine
+      # Mode Extension by Option
+      def ext_local
+        _init_proc_set_
+        _init_proc_del_
+        super
+      end
+
+      def ext_local_test
+        @stat.ext_local_sym.ext_local_file
+        @cobj.rem.ext.def_proc do |ent|
+          @stat[:time] = now_msec
+          ent.msg = ent[:batch].inspect
+        end
+        super
+      end
+
+      def ext_local_driver
+        require 'libappdrv'
+        super
+      end
+
+      # Sub methods for Initialize
       def _init_sub_
         # LayerDB might generated in List level
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
@@ -77,28 +98,6 @@ module CIAX
         @cobj.rem.add_int
         @cobj.rem.add_ext
         self
-      end
-
-      # Mode Extension
-      def ext_local_test
-        @stat.ext_local_sym.ext_local_file
-        @cobj.rem.ext.def_proc do |ent|
-          @stat[:time] = now_msec
-          ent.msg = ent[:batch].inspect
-        end
-        super
-      end
-
-      def ext_local_driver
-        require 'libappdrv'
-        super
-        extend(Drv).ext_local_driver
-      end
-
-      def ext_local
-        _init_proc_set_
-        _init_proc_del_
-        super
       end
 
       # Initiate procs

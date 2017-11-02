@@ -48,6 +48,13 @@ module CIAX
       cmd_err @cobj.view_list
     end
 
+    def ext_shell
+      require 'libsh'
+      extend(context_module('Shell')).ext_shell
+    end
+
+    private
+
     # Local operation included in ext_local_test, ext_local_driver (non_client)
     def ext_local
       @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
@@ -62,6 +69,7 @@ module CIAX
 
     def ext_local_driver
       @mode = 'DRV'
+      extend(context_module('Drv')).ext_local_driver
       ext_local
       self
     end
@@ -76,13 +84,7 @@ module CIAX
       extend(Server).ext_local_server
     end
 
-    def ext_shell
-      require 'libsh'
-      extend(Shell).ext_shell
-    end
-
-    private
-
+    # Sub methods for Initialize
     def _init_procs
       # Proc for Server Command (by User query}
       @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }]

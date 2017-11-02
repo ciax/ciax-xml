@@ -38,13 +38,9 @@ module CIAX
         self
       end
 
-      # Mode Extension
-      def ext_local_test
-        @stat.ext_local_file
-        @cobj.rem.ext.cfg[:def_msg] = 'TEST'
-        super
-      end
+      private
 
+      # Mode Extension by Option
       def ext_local
         @cobj.get('set').def_proc do |ent|
           @stat.repl(ent.par[0], ent.par[1])
@@ -54,15 +50,18 @@ module CIAX
         super
       end
 
+      def ext_local_test
+        @stat.ext_local_file
+        @cobj.rem.ext.cfg[:def_msg] = 'TEST'
+        super
+      end
+
       def ext_local_driver
         require 'libfrmdrv'
         super
-        extend(Drv).ext_local_driver
       end
 
-      private
-
-      # Initialize Subroutine
+      # Sub Methods for Initialize
       def _init_net(dbi)
         @host = @cfg[:opt].host || dbi[:host]
         @port ||= dbi[:port]

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libappdrv'
+require 'libappcmd'
 require 'libapprsp'
 require 'libappview'
 require 'libfrmlist'
@@ -90,6 +90,7 @@ module CIAX
       end
 
       def ext_local_driver
+        require 'libappdrv'
         super
         extend(Drv).ext_local_driver
       end

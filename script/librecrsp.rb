@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require 'librecord'
-require 'libstep'
 require 'libsteprsp'
 
 module CIAX
@@ -37,7 +36,7 @@ module CIAX
         end
 
         def add_step(e1, depth) # returns Step
-          step = StepRsp.new(@cfg[:dev_list], e1, depth, @dummy)
+          step = Step.new(e1, depth, @dummy).ext_local_rsp(@cfg[:dev_list])
           self[:steps] << step.ext_prt(self[:start])
           step.cmt_procs << proc do
             verbose { 'Propagate Step#cmt -> Record#cmt' }

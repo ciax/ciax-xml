@@ -3,6 +3,7 @@ module CIAX
   # Watch Layer
   module Wat
     class Exe
+      # Event Driven
       module Drv
         def self.extended(obj)
           Msg.type?(obj, Exe)

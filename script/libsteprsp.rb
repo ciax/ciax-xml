@@ -4,112 +4,124 @@ require 'libstep'
 module CIAX
   # Macro Layer
   module Mcr
-    # Check Coindition
-    class StepRsp < Step
-      def initialize(dev_list, db, depth, dummy = nil)
-        super(db, depth, dummy)
-        @dev_list = type?(dev_list, Wat::List)
-        # App::Exe list used in this Step
-        @condition = delete(:cond) || return
-        sites = @condition.map { |h| h[:site] }.uniq
-        @exes = sites.map { |s| @dev_list.get(s).sub }
+    # Element of Record
+    class Step
+      def ext_local_rsp(dev_list)
+        extend(Rsp).ext_local_rsp(dev_list)
       end
 
-      # Conditional judgment section
-      def skip?
-        wait_ready_all
-        super(_all_conds?)
-      end
-
-      def fail?
-        wait_ready_all
-        super(!_all_conds?)
-      end
-
-      def timeout?
-        res = progress(self[:retry]) { active? } ||
-              progress(self[:retry].to_i - self[:count]) { _all_conds? }
-        set_result('timeout', 'pass', res)
-      end
-
-      # obj.waitbusy -> looking at Prompt[:busy]
-      # obj.stat -> looking at Status
-
-      def active?
-        if @exes.all?(&:active?)
-          delete(:busy)
-          true
-        else
-          self[:busy] = true
-          false
+      # Check Coindition
+      module Rsp
+        def self.extended(obj)
+          Msg.type?(obj, Step)
         end
-      end
 
-      # Blocking during busy. (for interlock check)
-      def wait_ready_all
-        @exes.each do |obj|
-          next if obj.wait_ready
-          set_result('timeout')
-          com_err('timeout')
+        def ext_local_rsp(dev_list)
+          @dev_list = type?(dev_list, Wat::List)
+          # App::Exe list used in this Step
+          if (@condition = delete(:cond))
+            sites = @condition.map { |h| h[:site] }.uniq
+            @exes = sites.map { |s| @dev_list.get(s).sub }
+          end
+          self
         end
-        self
-      end
 
-      private
-
-      def _all_conds?
-        stats = _scan
-        conds = @condition.map do |h|
-          _condition(stats[h[:site]], h)
+        # Conditional judgment section
+        def skip?
+          wait_ready_all
+          super(_all_conds?)
         end
-        self[:conditions] = conds
-        conds.all? { |h| h[:skip] || h[:res] }
-      end
 
-      # Get status from Devices via http
-      def _scan
-        @exes.each_with_object({}) do |exe, hash|
-          st = hash[exe.id] = exe.stat.latest
-          verbose { "Scanning #{exe.id} (#{st[:time]})/(#{st.object_id})" }
+        def fail?
+          wait_ready_all
+          super(!_all_conds?)
         end
-      end
 
-      def _condition(stat, h)
-        c = {}
-        %i(site var form cmp cri skip).each { |k| c[k] = h[k] }
-        unless c[:skip]
-          real = _get_real_(stat, c)
-          res = method(c[:cmp]).call(c[:cri], real)
-          c.update(real: real, res: res)
-          verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
+        def timeout?
+          res = progress(self[:retry]) { active? } ||
+                progress(self[:retry].to_i - self[:count]) { _all_conds? }
+          set_result('timeout', 'pass', res)
         end
-        c
-      end
 
-      def _get_real_(stat, h)
-        warning('No form specified') unless h[:form]
-        # form = 'data', 'class' or 'msg' in Status
-        form = (h[:form] || :data).to_sym
-        var = h[:var]
-        warning("No [#{var}] in Status[#{form}]") unless stat[form].key?(var)
-        stat[form][var]
-      end
+        # obj.waitbusy -> looking at Prompt[:busy]
+        # obj.stat -> looking at Status
 
-      # Operators
-      def equal(a, b)
-        a == b
-      end
+        def active?
+          if @exes.all?(&:active?)
+            delete(:busy)
+            true
+          else
+            self[:busy] = true
+            false
+          end
+        end
 
-      def not(a, b)
-        a != b
-      end
+        # Blocking during busy. (for interlock check)
+        def wait_ready_all
+          @exes.each do |obj|
+            next if obj.wait_ready
+            set_result('timeout')
+            com_err('timeout')
+          end
+          self
+        end
 
-      def match(a, b)
-        /#{a}/ =~ b ? true : false
-      end
+        private
 
-      def unmatch(a, b)
-        /#{a}/ !~ b ? true : false
+        def _all_conds?
+          stats = _scan
+          conds = @condition.map do |h|
+            _condition(stats[h[:site]], h)
+          end
+          self[:conditions] = conds
+          conds.all? { |h| h[:skip] || h[:res] }
+        end
+
+        # Get status from Devices via http
+        def _scan
+          @exes.each_with_object({}) do |exe, hash|
+            st = hash[exe.id] = exe.stat.latest
+            verbose { "Scanning #{exe.id} (#{st[:time]})/(#{st.object_id})" }
+          end
+        end
+
+        def _condition(stat, h)
+          c = {}
+          %i(site var form cmp cri skip).each { |k| c[k] = h[k] }
+          unless c[:skip]
+            real = _get_real_(stat, c)
+            res = method(c[:cmp]).call(c[:cri], real)
+            c.update(real: real, res: res)
+            verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
+          end
+          c
+        end
+
+        def _get_real_(stat, h)
+          warning('No form specified') unless h[:form]
+          # form = 'data', 'class' or 'msg' in Status
+          form = (h[:form] || :data).to_sym
+          var = h[:var]
+          warning("No [#{var}] in Status[#{form}]") unless stat[form].key?(var)
+          stat[form][var]
+        end
+
+        # Operators
+        def equal(a, b)
+          a == b
+        end
+
+        def not(a, b)
+          a != b
+        end
+
+        def match(a, b)
+          /#{a}/ =~ b ? true : false
+        end
+
+        def unmatch(a, b)
+          /#{a}/ !~ b ? true : false
+        end
       end
     end
   end

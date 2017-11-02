@@ -46,14 +46,14 @@ module CIAX
       def jread(str = nil)
         res = super
         res[:steps].each do |i|
-          i.extend(StepPrt).ext_prt(res[:start])
+          i.extend(Step::Prt).ext_prt(res[:start])
         end
         res
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('< file', options: 'r') do |_opt, _args|
+      GetOpts.new('< record_file', options: 'r') do |_opt, _args|
         raise(InvalidARGS, 'No Input File') if STDIN.tty?
         puts Record.new.jmerge
       end

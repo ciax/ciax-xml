@@ -33,6 +33,7 @@ module CIAX
       private
 
       def sv_loop(io)
+        STDIN.tty? && msg('C^\ for exit')
         loop do
           str = input(io)
           log("#{self.class}:Recieve #{str.inspect}")

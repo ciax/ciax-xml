@@ -30,8 +30,8 @@ module CIAX
       end
 
       # Dummy
-      def ext_local_driver;end
-      
+      def ext_local_driver; end
+
       # Sub Methods for Initialize
       def _init_takeover
         @sub = @cfg[:sub_list].get(@id)

@@ -5,7 +5,7 @@ module CIAX
   # Ascii Hex Pack
   module Hex
     # View class
-    class Rsp < Varx
+    class View < Varx
       # sv_stat should have server status (isu,watch,exe..) like App::Exe
       def initialize(stat, hdb = nil, sv_stat = nil)
         @stat = type?(stat, App::Status)
@@ -38,7 +38,7 @@ module CIAX
       end
 
       def _cmt_propagate(mod)
-        verbose { "Propagate #{mod}#cmt -> Hex::Rsp#cmt" }
+        verbose { "Propagate #{mod}#cmt -> Hex::View#cmt" }
         cmt
       end
 
@@ -121,7 +121,7 @@ module CIAX
       require 'libstatus'
       GetOpts.new(' < status_file') do
         stat = App::Status.new.ext_local_file
-        puts Rsp.new(stat)
+        puts View.new(stat)
       end
     end
   end

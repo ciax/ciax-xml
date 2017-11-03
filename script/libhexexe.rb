@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # Ascii Pack
 require 'libwatlist'
-require 'libhexrsp'
+require 'libhexview'
 
 module CIAX
   # Ascii Hex Layer for OLD CIAX
@@ -29,6 +29,9 @@ module CIAX
         super
       end
 
+      # Dummy
+      def ext_local_driver;end
+      
       # Sub Methods for Initialize
       def _init_takeover
         @sub = @cfg[:sub_list].get(@id)
@@ -40,7 +43,7 @@ module CIAX
       end
 
       def _init_view
-        @stat = Rsp.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
+        @stat = View.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
         @shell_output_proc = proc { @stat.to_x }
         @stat.ext_local_log if @cfg[:opt].log?
       end

@@ -20,6 +20,7 @@ module CIAX
       super()
       @type = type
       @proj = proj
+      @dbid = [type, proj].compact.join(',')
       # @displist is Display
       lid = proj ? "list_#{proj}" : 'list'
       # Show site list
@@ -45,7 +46,12 @@ module CIAX
       @cbase = "#{@type}-#{id}"
       @cachefile = vardir('cache') + "#{@cbase}.mar"
       return _load_cache_(id) if _use_cache_?
-      @docs = Xml::Doc.new(@type, @proj) unless @docs # read xml file
+      verbose { "Cache/Checking @docs (#{@dbid})" }
+      if @docs
+        verbose { "Cache/XML files are Already red (#{@dbid})" }
+      else
+        @docs = Xml::Doc.new(@type, @proj)
+      end
       nil
     end
 

@@ -63,7 +63,7 @@ module CIAX
       end
 
       def ext_local_test
-        @stat.ext_local_sym.ext_local_file
+        @stat.ext_local_sym(@cfg[:sdb]).ext_local_file
         @cobj.rem.ext.def_proc do |ent|
           @stat[:time] = now_msec
           ent.msg = ent[:batch].inspect

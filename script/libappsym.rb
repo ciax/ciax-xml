@@ -8,8 +8,8 @@ module CIAX
   module App
     # Status class
     class Status
-      def ext_local_sym
-        extend(Symbol).ext_local_sym
+      def ext_local_sym(sdb = Sym::Db.new)
+        extend(Symbol).ext_local_sym(sdb)
       end
       # Symbol Converter
       module Symbol
@@ -28,10 +28,10 @@ module CIAX
           h
         end
 
-        def ext_local_sym
+        def ext_local_sym(sdb)
           adbs = @dbi[:status]
+          @symdb = type?(sdb, Sym::Db).get_dbi(['share'] + adbs[:symtbl])
           @symbol = adbs[:symbol] || {}
-          @symdb = Sym::Db.pack(['share'] + adbs[:symtbl])
           self[:class] = {}
           self[:msg] = {}
           _init_procs(adbs)

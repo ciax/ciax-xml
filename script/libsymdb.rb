@@ -12,10 +12,9 @@ module CIAX
         super('sdb')
       end
 
-      def self.pack(ary = [])
-        sdb = Sym::Db.new
+      def get_dbi(ary = [])
         dbi = Dbi.new
-        ary.compact.each { |k| dbi.update(sdb.get(k)) }
+        ary.compact.each { |k| dbi.update(get(k)) }
         dbi
       end
 

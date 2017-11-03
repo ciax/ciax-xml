@@ -12,6 +12,7 @@ module CIAX
         super
         store_db(@cfg[:db] ||= Ins::Db.new(@id))
         @sub_list = Frm::List.new(@cfg, opt: @cfg[:opt].sub_opt)
+        @cfg[:sdb] = Sym::Db.new
       end
     end
 

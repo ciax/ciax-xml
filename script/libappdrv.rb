@@ -14,7 +14,8 @@ module CIAX
         # type of usage: shell/command line
         # type of semantics: execution/test
         def ext_local_driver
-          @stat.ext_local_rsp(@sub.stat).ext_local_sym.ext_local_file.auto_save
+          @stat.ext_local_rsp(@sub.stat)
+          @stat.ext_local_sym(@cfg[:sdb]).ext_local_file.auto_save
           @buf = init_buf
           _init_log_mode
           _init_drv_save

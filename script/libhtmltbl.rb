@@ -10,10 +10,10 @@ module CIAX
       def initialize(dbi)
         super()
         @dbi = type?(dbi, Dbi)
-        cdb = @dbi[:command]
-        @idx = cdb[:index]
-        @gdb = cdb[:group]
-        @udb = cdb[:unit]
+        dbc = @dbi[:command]
+        @idx = dbc[:index]
+        @gdb = dbc[:group]
+        @udb = dbc[:unit]
         _mk_top_
       end
 
@@ -65,7 +65,7 @@ module CIAX
       private
 
       def _mk_thead_
-        @sdb = @adbs[:index]
+        @dbs = @adbs[:index]
         tr = _mk_line(_mk_tbody, %i(time elapsed msg))
         @ctltd = tr.enclose('td', class: 'center')
         # add buttons here
@@ -93,7 +93,7 @@ module CIAX
       def _mk_line(parent, member, add_graph = nil)
         tr = parent.enclose('tr')
         member.each do |id|
-          label = (@sdb[id] || {})[:label] || id.upcase
+          label = (@dbs[id] || {})[:label] || id.upcase
           td = tr.enclose('td', class: 'item')
           td.element('span', label, class: 'label', title: id)
           atrb = { id: id, class: 'normal' }

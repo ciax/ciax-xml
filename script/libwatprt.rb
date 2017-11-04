@@ -50,14 +50,14 @@ module CIAX
           cond.each do |j|
             vw << case j[:type]
                   when 'compare'
-                    _make_cmp_(j)
+                    ___make_cmp(j)
                   else
                     _make_cond(j)
                   end
           end
         end
 
-        def _make_cmp_(j)
+        def ___make_cmp(j)
           fmt = "      %s compare %s [%s]\n"
           inv = j[:inv] ? 'not' : ''
           cformat(fmt, rslt(j[:res]), inv, j[:vals].join(', '))

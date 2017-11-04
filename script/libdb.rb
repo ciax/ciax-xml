@@ -45,7 +45,7 @@ module CIAX
     def _get_cache(id)
       @cbase = "#{@type}-#{id}"
       @cachefile = vardir('cache') + "#{@cbase}.mar"
-      return _load_cache_(id) if _use_cache_?
+      return ___load_cache(id) if ___use_cache?
       verbose { "Cache/Checking @docs (#{@dbid})" }
       if @docs
         verbose { "Cache/XML files are Already red (#{@dbid})" }
@@ -56,11 +56,11 @@ module CIAX
     end
 
     def _get_db(id)
-      res = _validate_repl_(yield(@docs))
-      _save_cache_(id, res)
+      res = ___validate_repl(yield(@docs))
+      ___save_cache(id, res)
     end
 
-    def _load_cache_(id)
+    def ___load_cache(id)
       verbose { "Cache Loading (#{@cbase})" }
       return self[id] if key?(id)
       begin
@@ -71,7 +71,7 @@ module CIAX
       end
     end
 
-    def _save_cache_(id, res)
+    def ___save_cache(id, res)
       open(@cachefile, 'w') do |f|
         f << Marshal.dump(res)
         verbose { "Cache Saved (#{@cbase})" }
@@ -80,33 +80,33 @@ module CIAX
     end
 
     # counter must not remain
-    def _validate_repl_(db)
+    def ___validate_repl(db)
       res = db.deep_search('\$[_a-z]')
       return db if res.empty?
       cfg_err("Counter remained at [#{res.join('/')}]")
     end
 
-    def _use_cache_?
-      !(_env_nocache? || _mar_exist? || _xml_newer? || _rb_newer?)
+    def ___use_cache?
+      !(___envnocache? || ___marexist? || ___xmlnewer? || ___rbnewer?)
     end
 
-    def _env_nocache?
+    def ___envnocache?
       verbose(ENV['NOCACHE']) do
         "#{@type}/Cache ENV['NOCACHE'] is set"
       end
     end
 
-    def _mar_exist?
+    def ___marexist?
       verbose(!test('e', @cachefile)) do
         "#{@type}/Cache MAR file(#{@cbase}) not exist"
       end
     end
 
-    def _xml_newer?
+    def ___xmlnewer?
       _file_newer?('Xml', Msg.xmlfiles(@type))
     end
 
-    def _rb_newer?
+    def ___rbnewer?
       _file_newer?('Rb', $LOADED_FEATURES.grep(/#{__dir__}/))
     end
 

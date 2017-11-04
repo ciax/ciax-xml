@@ -64,7 +64,7 @@ module CIAX
             next unless @stat[:time] > @last_updated
             @last_updated = self[:time]
             @cond.upd_cond
-            _upd_event_
+            ___upd_event
             cmt
           end
         end
@@ -104,23 +104,23 @@ module CIAX
         #  x  |  o  |  x  |  up
         #  x  |  x  |  x  |  -
 
-        def _upd_event_
+        def ___upd_event
           if @sv_stat.up?(:event)
-            _event_off_
+            ___event_off
           elsif active?
-            _event_on_
+            ___event_on
           end
           self
         end
 
-        def _event_on_
+        def ___event_on
           at = self[:act_time]
           at[0] = at[1] = now_msec
           @sv_stat.up(:event)
           @on_act_procs.each { |p| p.call(self) }
         end
 
-        def _event_off_
+        def ___event_off
           self[:act_time][1] = now_msec
           return if active?
           @sv_stat.dw(:event)

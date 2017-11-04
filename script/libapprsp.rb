@@ -32,23 +32,23 @@ module CIAX
               cnd = hash[:fields].empty?
               next if cnd && get(id)
               dflt = hash[:default] || ''
-              self[:data][id] = cnd ? dflt : _get_val_(hash, id)
+              self[:data][id] = cnd ? dflt : ___get_val(hash, id)
             end
           end
         end
 
-        def _get_val_(hash, id)
-          val = _get_by_type_(hash)
+        def ___get_val(hash, id)
+          val = ___get_by_type(hash)
           verbose { "GetData[#{val}](#{id})" }
-          val = _conv_fomula_(hash, val, id)
+          val = ___conv_fomula(hash, val, id)
           val = hash[:format] % val if hash.key?(:format)
           val.to_s
         end
 
-        def _get_by_type_(hash)
+        def ___get_by_type(hash)
           case hash[:type]
           when 'binary'
-            _binstr2int_(hash)
+            ___binstr2int(hash)
           when 'float'
             _get_num(hash).to_f
           when 'integer'
@@ -58,11 +58,11 @@ module CIAX
           end
         end
 
-        def _binstr2int_(hash)
-          bary = hash[:fields].map { |e| _get_binstr_(e) }
+        def ___binstr2int(hash)
+          bary = hash[:fields].map { |e| ___get_binstr(e) }
           binstr = case hash[:operation]
                    when 'uneven'
-                     _get_uneven_(bary)
+                     ___get_uneven(bary)
                    else
                      bary.join
                    end
@@ -70,7 +70,7 @@ module CIAX
         end
 
         # Even(all 1 or 0) -> false, otherwise true
-        def _get_uneven_(bary)
+        def ___get_uneven(bary)
           ba = bary.inject { |a, e| a.to_i & e.to_i }
           bo = bary.inject { |a, e| a.to_i | e.to_i }
           (ba ^ bo).to_s
@@ -84,7 +84,7 @@ module CIAX
           sign * val
         end
 
-        def _conv_fomula_(hash, val, id)
+        def ___conv_fomula(hash, val, id)
           return val unless hash.key?(:formula)
           f = hash[:formula].gsub(/\$#/, val.to_s)
           val = expr(f)
@@ -102,7 +102,7 @@ module CIAX
           val
         end
 
-        def _get_binstr_(e)
+        def ___get_binstr(e)
           val = get_field(e).to_i
           inv = (/true|1/ =~ e[:inv])
           str = index_range(e[:bit]).map do |sft|

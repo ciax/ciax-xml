@@ -63,7 +63,7 @@ module CIAX
         end
       end
 
-      def _init_auto_thread_
+      def ___init_auto_thread
         Threadx::Loop.new('Regular', 'wat', @id) do
           @stat.auto_exec
           sleep 10

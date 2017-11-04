@@ -12,7 +12,7 @@ module CIAX
         def decode(code, e0) # Chr -> Num
           cdc = e0[:decode]
           return code.to_s unless cdc
-          num, base = _num_by_type_(code, cdc)
+          num, base = ___num_by_type(code, cdc)
           if e0[:sign] == 'msb'
             range = base**code.size
             num = num < range / 2 ? num : num - range
@@ -23,12 +23,12 @@ module CIAX
 
         def encode(str, e0) # Num -> Chr
           str = e0[:format] % expr(str) if e0[:format]
-          _conv_len_(e0[:length], str)
+          ___conv_len(e0[:length], str)
         end
 
         private
 
-        def _conv_len_(len, str)
+        def ___conv_len(len, str)
           return str unless len
           code = ''
           num = expr(str)
@@ -41,7 +41,7 @@ module CIAX
           code
         end
 
-        def _num_by_type_(code, type)
+        def ___num_by_type(code, type)
           method("dec_#{type}").call(code)
         rescue NameError
           dec_integer(code)

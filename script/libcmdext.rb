@@ -15,7 +15,7 @@ module CIAX
             atrb.get(:caption) { 'External Commands' }
             super
             @displist = @displist.ext_grp
-            _init_items_(@cfg[:command])
+            ___init_items(@cfg[:command])
             @displist.reset!
           end
 
@@ -31,17 +31,17 @@ module CIAX
           private
 
           # Set items by DB
-          def _init_items_(cdb)
+          def ___init_items(cdb)
             cdb[:group].each do |gid, gat|
               sg = @displist.put_grp(gid, gat[:caption], nil, gat[:rank])
-              _init_member_(cdb, gat[:members], sg)
-              _init_unit_(cdb, gat[:units], sg)
+              ___init_member(cdb, gat[:members], sg)
+              ___init_unit(cdb, gat[:units], sg)
             end
             self
           end
 
           # Group Member will get into Index and Disp
-          def _init_member_(cdb, mem, sg)
+          def ___init_member(cdb, mem, sg)
             mem.each do |id|
               itm = cdb[:index][id]
               sg.put_item(id, itm[:label])
@@ -51,16 +51,16 @@ module CIAX
 
           # Unit Title will be set to Disp,
           # Unit Member will be removed from Disp instead
-          def _init_unit_(cdb, guni, sg)
+          def ___init_unit(cdb, guni, sg)
             return unless guni
             guni.each do |u|
               uat = cdb[:unit][u]
               next unless uat.key?(:title)
-              _make_unit_item_(sg, uat, cdb[:index])
+              ___make_unit_item(sg, uat, cdb[:index])
             end
           end
 
-          def _make_unit_item_(sg, uat, index)
+          def ___make_unit_item(sg, uat, index)
             umem = uat[:members]
             il = umem.map { |m| index[m][:label] }.join('/')
             sg.put_dummy(uat[:title], uat[:label] % il)
@@ -81,13 +81,13 @@ module CIAX
             when Hash
               data.each_with_object({}) { |(k, v), r| r[k] = deep_subst(v) }
             else
-              _subst_str_(data)
+              ___subst_str(data)
             end
           end
 
           private
 
-          def _subst_str_(str) # subst by parameters ($1,$2...)
+          def ___subst_str(str) # subst by parameters ($1,$2...)
             return str unless /\$([\d]+)/ =~ str
             # enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
             # num = true

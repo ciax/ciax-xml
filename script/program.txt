@@ -12,7 +12,7 @@
   - private method name (mixin module)
     = used by child class : single under bar prefix to distinct with system method or local var. (_name)
     = used only in its class : double under bar prefix to distinct with system method or local var. (__name)
-    = one time used in its class: double under bar prefix and suffix to distinct with private shared method.  (__name_)
+    = one time used in its class: triple under bar prefix to distinct with private shared method.  (___name)
   - local var (method args) : abbrev word (with 3~4 letters).
     (i.e. idx,grp,key(k),hsh(h),ary(a),val(v)...).
   - local var (loop counter) : abbrev word (with 1~2 letters).

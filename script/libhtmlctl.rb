@@ -8,36 +8,36 @@ module CIAX
     class Control < Status
       def initialize(dbi, grpary = [])
         super(dbi)
-        _mk_ctl_grp_(grpary)
+        ___mk_ctl_grp(grpary)
         return unless @dbi[:watch] && !grpary.include?('-')
         _elem_button(@ctltd, 'stop')
       end
 
       private
 
-      def _mk_ctl_grp_(grpary)
+      def ___mk_ctl_grp(grpary)
         _check_group if grpary.empty?
         grpary.each do |gid|
           next if gid == '-'
           _check_group(gid)
           tbody = _mk_tbody('Control ' + @gdb[gid][:caption])
-          _mk_ctl_column_(gid, tbody)
+          ___mk_ctl_column(gid, tbody)
         end
         self
       end
 
-      def _mk_ctl_column_(gid, tbody)
+      def ___mk_ctl_column(gid, tbody)
         return unless @udb
         member = @gdb[gid][:units] || return
         member.sort.each_slice(3) do |uary|
           td = tbody.enclose('tr').enclose('td', class: 'item')
-          _mk_ctl_line_(td, uary)
+          ___mk_ctl_line(td, uary)
         end
       end
 
-      def _mk_ctl_line_(td, uary)
+      def ___mk_ctl_line(td, uary)
         uary.each do |uid|
-          next if _mk_ctl_unit_(td, uid)
+          next if ___mk_ctl_unit(td, uid)
           errary = @udb.map { |k, v| itemize(k, v[:label]) }
           errary.unshift('Wrong CTL Unit')
           give_up(errary.join("\n"))
@@ -45,21 +45,21 @@ module CIAX
         self
       end
 
-      def _mk_ctl_unit_(parent, uid)
+      def ___mk_ctl_unit(parent, uid)
         return unless @udb.key?(uid)
         uat = @udb[uid]
-        _mk_label_(parent, uat)
+        ___mk_label(parent, uat)
         umem = uat[:members]
-        _mk_select_(parent, umem, uid)
+        ___mk_select(parent, umem, uid)
       end
 
-      def _mk_label_(parent, atrb)
+      def ___mk_label(parent, atrb)
         return unless atrb[:label]
         label = atrb[:label].gsub(/\[.*\]/, '')
         parent.element('span', label, class: 'control-label')
       end
 
-      def _mk_select_(parent, umem, uid)
+      def ___mk_select(parent, umem, uid)
         span = parent.enclose('span', class: 'center')
         sel = span.enclose('select', name: uid, onchange: 'seldv(this)')
         sel.element('option', '--select--')

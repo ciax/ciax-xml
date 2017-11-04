@@ -14,7 +14,7 @@ module CIAX
         id = self[:id] || args_err("NO ID(#{id}) in Stat")
         @sv_stat = sv_stat || Prompt.new('site', id)
         vmode('x')
-        _init_cmt_procs_
+        ___init_cmt_procs
       end
 
       def to_x
@@ -23,15 +23,15 @@ module CIAX
 
       private
 
-      def _init_cmt_procs_
+      def ___init_cmt_procs
         init_time2cmt(@stat)
         @cmt_procs << proc do
-          self[:hexpack] = _get_header_ + _get_body_
+          self[:hexpack] = ___get_header + ___get_body
         end
-        _init_propagates_
+        ___init_propagates
       end
 
-      def _init_propagates_
+      def ___init_propagates
         @sv_stat.cmt_procs << proc { _cmt_propagate('Prompt') }
         @stat.cmt_procs << proc { _cmt_propagate('Status') }
         cmt
@@ -43,7 +43,7 @@ module CIAX
       end
 
       # Server Status
-      def _get_header_
+      def ___get_header
         ary = ['%', self[:id]]
         ary << b2e(@sv_stat.up?(:udperr))
         ary << b2i(@sv_stat.up?(:event))
@@ -52,26 +52,26 @@ module CIAX
         ary.join('')
       end
 
-      def _get_body_
+      def ___get_body
         return '' unless (hdb = @dbi[:hexpack])
         str = ''
         if hdb[:packs]
-          str << _packed_(hdb[:packs])
+          str << ___packed(hdb[:packs])
         elsif hdb[:fields]
-          str << _mk_frame_(hdb)
+          str << ___mk_frame(hdb)
         end
         str
       end
 
-      def _packed_(packs)
+      def ___packed(packs)
         packs.map do |hash|
-          binstr = _mk_bit_(hash)
+          binstr = ___mk_bit(hash)
           pkstr = hash[:code] + hash[:length]
           [binstr].pack(pkstr).unpack('h')[0]
         end.join
       end
 
-      def _mk_bit_(db)
+      def ___mk_bit(db)
         db[:bits].map do |hash|
           key = hash[:ref]
           cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
@@ -81,28 +81,28 @@ module CIAX
         end.join
       end
 
-      def _mk_frame_(db)
+      def ___mk_frame(db)
         db[:fields].map do |hash|
           key = hash[:ref]
           cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
-          dat = _padding_(hash, @stat[:data][key])
+          dat = ___padding(hash, @stat[:data][key])
           verbose { "Get from Status #{key} = #{dat}" }
           dat
         end.join
       end
 
-      def _padding_(hash, val)
+      def ___padding(hash, val)
         len = hash[:length].to_i
         type = hash[:type].to_s.to_sym
         pfx = { float: '.2f', int: 'd', binary: 'b' }[type]
         if pfx
-          _fmt_num_(pfx, len, val)
+          ___fmt_num(pfx, len, val)
         else
           val.to_s.rjust(len, '*')[0, len]
         end
       end
 
-      def _fmt_num_(sfx, len, val)
+      def ___fmt_num(sfx, len, val)
         num = /f/ =~ sfx ? val.to_f : val.to_i
         format("%0#{len}#{sfx}", num)[0, len]
       end

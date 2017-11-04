@@ -39,7 +39,7 @@ module CIAX
         end
       end
 
-      def _site_list(prj, gr)
+      def __site_list(prj, gr)
         prj[:site].each do |k, v|
           gr.put_item(k, v[:label])
         end

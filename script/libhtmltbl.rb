@@ -14,28 +14,28 @@ module CIAX
         @idx = dbc[:index]
         @gdb = dbc[:group]
         @udb = dbc[:unit]
-        _mk_top_
+        ___mk_top
       end
 
       private
 
-      def _mk_top_
+      def ___mk_top
         push('<!DOCTYPE html>')
         html = enclose('html', lang: 'en-US')
-        _mk_head_(html.enclose('head'))
+        ___mk_head(html.enclose('head'))
         @div = html.enclose('body').enclose('div', class: 'outline')
         @div.element('div', @dbi[:label], class: 'title')
       end
 
-      def _mk_head_(parent)
+      def ___mk_head(parent)
         parent.element('meta', '', charset: 'utf-8')
         parent.element('title', "CIAX-XML(#{@dbi[:id]})")
         atrb = { rel: 'stylesheet', type: 'text/css', href: 'ciax-xml.css' }
         parent.element('link', nil, atrb)
-        _mk_script_tags_(parent)
+        ___mk_script_tags(parent)
       end
 
-      def _mk_script_tags_(parent)
+      def ___mk_script_tags(parent)
         fmt = 'var type="status",site="%s",Host="%s",port="%s";'
         script = format(fmt, @dbi[:id], @dbi[:host], @dbi[:port])
         _mk_script(parent, '', 'jquery-3.0.0.min.js')
@@ -58,13 +58,13 @@ module CIAX
       def initialize(dbi)
         super
         @adbs = @dbi[:status]
-        _mk_thead_
-        _mk_stat_
+        ___mk_thead
+        ___mk_stat
       end
 
       private
 
-      def _mk_thead_
+      def ___mk_thead
         @dbs = @adbs[:index]
         tr = _mk_line(_mk_tbody, %i(time elapsed msg))
         @ctltd = tr.enclose('td', class: 'center')
@@ -73,15 +73,15 @@ module CIAX
         self
       end
 
-      def _mk_stat_
+      def ___mk_stat
         @adbs[:group].values.each do |g|
           cap = g[:caption] || next
-          _mk_column_(g[:members], cap, g[:column])
+          ___mk_column(g[:members], cap, g[:column])
         end
         self
       end
 
-      def _mk_column_(members, cap = '', col = nil)
+      def ___mk_column(members, cap = '', col = nil)
         col = col.to_i > 0 ? col.to_i : 6
         tbody = _mk_tbody(cap)
         members.each_slice(col) do |da|
@@ -97,7 +97,7 @@ module CIAX
           td = tr.enclose('td', class: 'item')
           td.element('span', label, class: 'label', title: id)
           atrb = { id: id, class: 'normal' }
-          _add_graph_(id, atrb) if add_graph
+          ___add_graph(id, atrb) if add_graph
           td.element('strong', '*****', atrb)
         end
         tr
@@ -114,7 +114,7 @@ module CIAX
         parent.element('button', id.upcase, atrb)
       end
 
-      def _add_graph_(id, atrb)
+      def ___add_graph(id, atrb)
         atrb[:onclick] = format("open_graph('%s','%s');", @dbi[:id], id)
         atrb
       end

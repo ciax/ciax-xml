@@ -25,27 +25,27 @@ module CIAX
 
       # Done every after Status updated
       def upd_cond
-        _sync_
+        ___sync
         %i(active exec block int).each { |s| @event[s].clear }
-        _chk_conds_
+        ___chk_conds
         @event
       end
 
       private
 
-      def _sync_
+      def ___sync
         @list.each do |i|
           @event[:last][i] = @event[:crnt][i]
           @event[:crnt][i] = @stat[:data][i]
         end
       end
 
-      def _chk_item_(id, item)
+      def ___chk_item(id, item)
         return true unless (cklst = item[:cnd])
         verbose { "Check: <#{item[:label]}>" }
         rary = []
         cklst.each do |ckitm|
-          res = _chk_by_type_(ckitm)
+          res = ___chk_by_type(ckitm)
           res = !res if /true|1/ =~ ckitm[:inv]
           rary << res
         end
@@ -53,15 +53,15 @@ module CIAX
         rary.all?
       end
 
-      def _chk_conds_
+      def ___chk_conds
         @windex.each do |id, item|
-          next unless _chk_item_(id, item)
-          _actives_(item[:act])
+          next unless ___chk_item(id, item)
+          ___actives(item[:act])
           @event.fetch(:active) << id
         end
       end
 
-      def _actives_(act)
+      def ___actives(act)
         act.each do |key, ary|
           if key == :exec
             ary.each do |args|
@@ -73,7 +73,7 @@ module CIAX
         end
       end
 
-      def _chk_by_type_(ckitm)
+      def ___chk_by_type(ckitm)
         vn = ckitm[:var]
         name = "cnd_#{ckitm[:type]}"
         method(name).call(vn, ckitm)
@@ -87,13 +87,13 @@ module CIAX
         cri = @event[:last][vn]
         return false unless cri
         if tol
-          _cmp_tol_(vn, cri, val, tol)
+          ___cmp_tol(vn, cri, val, tol)
         else
-          _cmp_just_(vn, cri, val)
+          ___cmp_just(vn, cri, val)
         end
       end
 
-      def _cmp_tol_(_vn, cri, val, tol)
+      def ___cmp_tol(_vn, cri, val, tol)
         res = ((cri.to_f - val.to_f).abs > tol.to_f)
         # verbose do
         #   format('  onChange(%s): |[%s]-<%s>| > %s =>%s',
@@ -102,7 +102,7 @@ module CIAX
         res
       end
 
-      def _cmp_just_(_vn, cri, val)
+      def ___cmp_just(_vn, cri, val)
         res = (cri != val)
         # verbose do
         #   format('  onChange(%s): [%s] vs <%s> =>%s',

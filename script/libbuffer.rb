@@ -55,7 +55,7 @@ module CIAX
           verbose { 'Waiting' }
           pri_sort(iq.shift)
           sv_up
-          _exec_buf_ if iq.empty?
+          ___exec_buf if iq.empty?
         end
         self
       end
@@ -77,8 +77,8 @@ module CIAX
       end
 
       # Execute recieved command
-      def _exec_buf_
-        until (args = _reorder_cmd_).empty?
+      def ___exec_buf
+        until (args = ___reorder_cmd).empty?
           @recv_proc.call(args, 'buffer')
         end
         flush
@@ -89,11 +89,11 @@ module CIAX
       end
 
       # Remove duplicated args and unshift one
-      def _reorder_cmd_
-        @outbuf.inject([]) { |a, e| _get_args_(a, e) }
+      def ___reorder_cmd
+        @outbuf.inject([]) { |a, e| ___get_args(a, e) }
       end
 
-      def _get_args_(args, batch)
+      def ___get_args(args, batch)
         if args.empty?
           h = batch.shift
           args.replace h[:args] if h

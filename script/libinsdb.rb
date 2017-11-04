@@ -49,7 +49,7 @@ module CIAX
         grp = sdb.get(:group) { Hashx.new }
         idx = sdb.get(:index) { Hashx.new }
         doc.get(:status) { [] }.each do |e0|
-          _get_skeleton_(e0, sdb, grp, idx)
+          ___get_skeleton(e0, sdb, grp, idx)
         end
         sdb
       end
@@ -60,29 +60,29 @@ module CIAX
         dbi.get(:frm_site) { dbi[:id] }
       end
 
-      def _get_skeleton_(e0, sdb, grp, idx)
+      def ___get_skeleton(e0, sdb, grp, idx)
         key = e0.name.to_sym
         db = sdb.get(key) { Hashx.new }
         if key == :symtbl
           sdb[:symtbl] << e0['ref']
         else
-          _init_grp_(e0, db, grp, idx)
+          ___init_grp(e0, db, grp, idx)
         end
       end
 
-      def _init_grp_(e0, db, grp, idx)
+      def ___init_grp(e0, db, grp, idx)
         e0.attr2item(db, :ref)
         e0.each do |e1|
           e1.attr2item(idx)
           ag = grp[e0[:ref]]
-          _pos_grp_(ag.get(:members) { [] }, e1['ref'], e1['id'])
+          ___pos_grp(ag.get(:members) { [] }, e1['ref'], e1['id'])
         end
       end
 
       # add alias to group in position (just after the referenced item)
       #  this feature is required by indexed status
       #  ex. add [c1,c2] to [a1,b1, a2,b2] => [a1,b1,c1, a2,b2,c2]
-      def _pos_grp_(ary, ref, id)
+      def ___pos_grp(ary, ref, id)
         if (i = ary.rindex(ref))
           ary.insert(i + 1, id)
         else

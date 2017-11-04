@@ -15,7 +15,7 @@ module CIAX
         @periodm = 300_000
         @last_updated = 0
         _init_procs
-        _init_struct_
+        ___init_struct
       end
 
       def active?
@@ -52,7 +52,7 @@ module CIAX
         @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
       end
 
-      def _init_struct_
+      def ___init_struct
         # For Array element
         %i(active exec block int).each { |i| self[i] = [] }
         # For Hash element

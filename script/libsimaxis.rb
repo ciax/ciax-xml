@@ -20,12 +20,12 @@ module CIAX
 
       def servo(target)
         return unless _in_range?
-        target = _regulate_(target)
+        target = ___regulate(target)
         Thread.new(target.to_i) do |t|
           @busy = true
           while @busy
-            _toward_target_(t)
-            @busy = _upd_busy_(t)
+            ___toward_target(t)
+            @busy = ___upd_busy(t)
             sleep 0.1 # Consider the processor speed
           end
         end
@@ -55,14 +55,14 @@ module CIAX
 
       private
 
-      def _toward_target_(tgt)
+      def ___toward_target(tgt)
         inc = [(tgt - @absp).abs, @speed / 10].min
         dif = (tgt <=> @absp) * inc
         @pulse += dif
         @absp += dif
       end
 
-      def _upd_busy_(t)
+      def ___upd_busy(t)
         t != @absp && _in_range?
       end
 
@@ -70,7 +70,7 @@ module CIAX
         (-@max_range..@max_range).cover?(@absp)
       end
 
-      def _regulate_(target)
+      def ___regulate(target)
         target += (@absp - @pulse)
         return target unless @hardlim
         if target > @hl_max

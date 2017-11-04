@@ -10,10 +10,10 @@ module CIAX
     def initialize(str)
       @eq = @max = @min = @min_ex = @max_ex = nil
       if /[:<]+/ =~ str
-        _set_min_($&, $`)
-        _set_max_($&, $')
+        ___set_min($&, $`)
+        ___set_max($&, $')
       elsif />/ =~ str
-        _set_tol_(s2f($`), s2f($'))
+        ___set_tol(s2f($`), s2f($'))
       else
         @eq = s2f(str)
       end
@@ -22,34 +22,34 @@ module CIAX
     def <=>(other)
       num = s2f(other)
       return @eq <=> num if @eq
-      return 1 if _test_min_(num)
-      return -1 if _test_max_(num)
+      return 1 if ___test_min(num)
+      return -1 if ___test_max(num)
       0
     end
 
     private
 
-    def _test_min_(num)
+    def ___test_min(num)
       (@min_ex && @min >= num) || (@min && @min > num)
     end
 
-    def _test_max_(num)
+    def ___test_max(num)
       (@max_ex && @max <= num) || (@max && @max < num)
     end
 
-    def _set_min_(ope, min)
+    def ___set_min(ope, min)
       return if min == ''
       @min_ex = true if /^</ =~ ope
       @min = s2f(min)
     end
 
-    def _set_max_(ope, max)
+    def ___set_max(ope, max)
       return if max == ''
       @max_ex = true if /<$/ =~ ope
       @max = s2f(max)
     end
 
-    def _set_tol_(num, tol)
+    def ___set_tol(num, tol)
       @max = num + tol
       @min = num - tol
     end

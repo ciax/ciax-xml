@@ -25,7 +25,7 @@ module CIAX
         wdb[:index].each do |id, evnt|
           hash = self[:stat].get(id) { Hashx.new }
           hash[:label] = evnt[:label]
-          _init_cond_(evnt[:cnd], hash.get(:cond) { [] })
+          ___init_cond(evnt[:cnd], hash.get(:cond) { [] })
         end
         self
       end
@@ -37,19 +37,19 @@ module CIAX
           %i(exec block int act_time upd_next).each do |id|
             self[id] = @event.get(id)
           end
-          _upd_stat_
+          ___upd_stat
         end
       end
 
-      def _init_cond_(cond, m)
+      def ___init_cond(cond, m)
         cond.each do |cnd|
           m << (h = Hashx.new(cnd))
-          _init_by_type_(cnd, h)
+          ___init_by_type(cnd, h)
         end
         self
       end
 
-      def _init_by_type_(cnd, h)
+      def ___init_by_type(cnd, h)
         case cnd[:type]
         when 'onchange'
           nil
@@ -60,24 +60,24 @@ module CIAX
         end
       end
 
-      def _upd_stat_
+      def ___upd_stat
         self[:stat].each do |id, v|
-          _upd_cond_(id, v[:cond])
+          ___upd_cond(id, v[:cond])
           v[:active] = @event.get(:active).include?(id)
         end
         self
       end
 
-      def _upd_cond_(id, conds)
+      def ___upd_cond(id, conds)
         conds.each_with_index do |cnd, i|
           cnd[:res] = (@event.get(:res)[id] || [])[i]
           idx = @event.get(:crnt)
-          _upd_by_type_(cnd, idx)
+          ___upd_by_type(cnd, idx)
         end
         self
       end
 
-      def _upd_by_type_(cnd, idx)
+      def ___upd_by_type(cnd, idx)
         v = cnd[:var]
         case cnd[:type]
         when 'onchange'

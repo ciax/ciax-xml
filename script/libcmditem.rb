@@ -21,7 +21,7 @@ module CIAX
         cid = [@id, *par].join(':')
         opt.update(par: par, cid: cid)
         verbose { "SetPAR(#{@id}): #{par}" }
-        _get_entity_(opt, cid)
+        ___get_entity(opt, cid)
       end
 
       def valid_pars
@@ -32,10 +32,10 @@ module CIAX
 
       private
 
-      def _get_entity_(opt, cid)
+      def ___get_entity(opt, cid)
         return _get_cache(cid) if key?(cid)
         ent = gen_entity(opt)
-        return _no_cache_(cid, ent) if @cfg[:nocache]
+        return ___no_cache(cid, ent) if @cfg[:nocache]
         verbose { "SetPAR: Entity Cache Saved (#{cid})" }
         self[cid] = ent
       end
@@ -45,7 +45,7 @@ module CIAX
         self[cid]
       end
 
-      def _no_cache_(cid, ent)
+      def ___no_cache(cid, ent)
         verbose { "SetPAR: Entity No Cache Saved (#{cid})" }
         ent
       end
@@ -64,51 +64,51 @@ module CIAX
         pary = type?(pary.dup, Array)
         pref = @cfg[:parameters]
         return [] unless pref
-        _par_array_(pary, pref)
+        ___par_array(pary, pref)
       end
 
-      def _par_array_(pary, pref)
+      def ___par_array(pary, pref)
         pref.map do |par|
           list = par[:list] || []
           disp = list.join(',')
           str = pary.shift
           if str
-            _validate_element_(par, str, list, disp)
+            ___validate_element(par, str, list, disp)
           else
-            _use_default_(par, pary, pref, disp)
+            ___use_default(par, pary, pref, disp)
           end
         end
       end
 
-      def _validate_element_(par, str, list, disp)
+      def ___validate_element(par, str, list, disp)
         if list.empty?
           par.key?(:default) ? par[:default] : str
         else
-          _validate_by_type_(par, str, list, disp)
+          ___validate_by_type(par, str, list, disp)
         end
       end
 
-      def _validate_by_type_(par, str, list, disp)
+      def ___validate_by_type(par, str, list, disp)
         case par[:type]
         when 'num'
-          _validate_num_(str, list, disp)
+          ___validate_num(str, list, disp)
         when 'reg'
-          _validate_reg_(str, list, disp)
+          ___validate_reg(str, list, disp)
         else
-          _validate_str_(str, list, disp)
+          ___validate_str(str, list, disp)
         end
       end
 
-      def _use_default_(par, pary, pref, disp)
+      def ___use_default(par, pary, pref, disp)
         if par.key?(:default)
           verbose { "Validate: Using default value [#{par[:default]}]" }
           par[:default]
         else
-          _err_shortage_(pary, pref, disp)
+          ___err_shortage(pary, pref, disp)
         end
       end
 
-      def _err_shortage_(pary, pref, disp)
+      def ___err_shortage(pary, pref, disp)
         mary = []
         mary << format('Parameter shortage (%d/%d)', pary.size, pref.size)
         mary << @cfg[:disp].item(@id)
@@ -116,20 +116,20 @@ module CIAX
         Msg.par_err(*mary)
       end
 
-      def _validate_num_(str, list, disp)
+      def ___validate_num(str, list, disp)
         num = expr(str)
         verbose { "Validate: [#{num}] Match? [#{disp}]" }
         return num.to_s if list.any? { |r| ReRange.new(r) == num }
         Msg.par_err("Out of range (#{num}) for [#{disp}]")
       end
 
-      def _validate_reg_(str, list, disp)
+      def ___validate_reg(str, list, disp)
         verbose { "Validate: [#{str}] Match? [#{disp}]" }
         return str if list.any? { |r| Regexp.new(r).match(str) }
         Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
       end
 
-      def _validate_str_(str, list, disp)
+      def ___validate_str(str, list, disp)
         verbose { "Validate: [#{str}] Match? [#{disp}]" }
         return str if list.include?(str)
         Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")

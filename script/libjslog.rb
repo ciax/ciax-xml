@@ -12,7 +12,7 @@ module CIAX
       def ext_local_log # logging with flatten
         id = self[:id]
         @logfile = vardir('log') + base_name + "_#{Time.now.year}.log"
-        @que_log = _log_thread_(id)
+        @que_log = ___log_thread(id)
         @cmt_procs << proc { @que_log.push(JSON.dump(self)) }
         self
       end
@@ -40,7 +40,7 @@ module CIAX
 
       private
 
-      def _log_thread_(id)
+      def ___log_thread(id)
         verbose { "Initiate File Log Server [#{id}/Ver.#{self[:ver]}]" }
         Threadx::QueLoop.new('Logging', @layer, @id, @type) do |que|
           str = que.pop

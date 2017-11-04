@@ -89,7 +89,7 @@ module CIAX
           c = {}
           %i(site var form cmp cri skip).each { |k| c[k] = h[k] }
           unless c[:skip]
-            real = _get_real_(stat, c)
+            real = ___get_real(stat, c)
             res = method(c[:cmp]).call(c[:cri], real)
             c.update(real: real, res: res)
             verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
@@ -97,7 +97,7 @@ module CIAX
           c
         end
 
-        def _get_real_(stat, h)
+        def ___get_real(stat, h)
           warning('No form specified') unless h[:form]
           # form = 'data', 'class' or 'msg' in Status
           form = (h[:form] || :data).to_sym

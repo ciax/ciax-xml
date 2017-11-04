@@ -23,7 +23,7 @@ module CIAX
         update('dir' => '', 'cmd' => '', 'base64' => '')
         verbose { "Initiate [#{iocmd}]" }
         init_time2cmt
-        _init_par_(cfg)
+        ___init_par(cfg)
         reopen
       end
 
@@ -39,9 +39,9 @@ module CIAX
       end
 
       def rcv
-        _wait_rcv_
+        ___wait_rcv
         reopen
-        str = _concat_rcv_
+        str = ___concat_rcv
         verbose { "Data Recieved(#{self['cmd']})\n" + visible(str) }
         convert('rcv', str).cmt
       end
@@ -49,7 +49,7 @@ module CIAX
       def reopen(int = 0)
         open_strm if !@f || @f.closed?
       rescue SystemCallError
-        int = _open_fail_(int)
+        int = ___open_fail(int)
         retry
       end
 
@@ -61,7 +61,7 @@ module CIAX
         update('dir' => dir, 'base64' => encode(data))
       end
 
-      def _init_par_(cfg)
+      def ___init_par(cfg)
         sp = type?(cfg, Config)[:stream]
         @iocmd = cfg[:iocmd].split(' ')
         @wait = (sp[:wait] || 0.01).to_f
@@ -96,7 +96,7 @@ module CIAX
         verbose { @f.closed? ? 'Stream Closed' : 'Stream not Closed' }
       end
 
-      def _open_fail_(int)
+      def ___open_fail(int)
         show_err
         Msg.str_err('Stream Open failed') if int > 2
         warning('Try to reopen')
@@ -109,28 +109,28 @@ module CIAX
       end
 
       # rcv sub methods
-      def _wait_rcv_
+      def ___wait_rcv
         # verbose { "Wait to Recieve #{@wait} sec" }
         sleep @wait
         # verbose { 'Wait for Recieving' }
       end
 
-      def _concat_rcv_(str = '')
+      def ___concat_rcv(str = '')
         20.times do
-          _select_io_
-          _try_rcv_(str)
+          ___select_io
+          ___try_rcv(str)
           break if !@terminator || /#{@terminator}/ =~ str
           verbose { 'Recieved incomplete data, retry' }
         end
         str
       end
 
-      def _select_io_
+      def ___select_io
         return if IO.select([@f], nil, nil, @timeout)
         Msg.com_err('Stream:No response')
       end
 
-      def _try_rcv_(str)
+      def ___try_rcv(str)
         str << @f.sysread(4096)
         # verbose { "Binary Getting\n" + visible(str) }
       rescue EOFError

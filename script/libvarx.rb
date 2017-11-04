@@ -11,7 +11,7 @@ module CIAX
       super()
       @type = type
       # Headers
-      _set_id(id)
+      __set_id(id)
       self[:ver] = ver if ver
       self[:host] = host || HOST
     end
@@ -38,7 +38,7 @@ module CIAX
       [@type, self[:id], tag].compact.join('_')
     end
 
-    def _set_id(id)
+    def __set_id(id)
       @id = self[:id] = id
     end
   end

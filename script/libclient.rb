@@ -27,18 +27,18 @@ module CIAX
         @sv_stat.init_flg(udperr: 'x')
         @sv_stat.upd_procs << proc { exe([]) }
         @udp = Udp::Client.new(@layer, @id, @host, @port)
-        _set_client_proc_
+        ___set_client_proc
       end
 
-      def _set_client_proc_
+      def ___set_client_proc
         @cobj.rem.def_proc do |ent|
           @udp.send(ent.id.split(':'))
-          _udp_recv_
+          ___udp_recv
         end
         self
       end
 
-      def _udp_recv_
+      def ___udp_recv
         if (res = @udp.recv)
           @sv_stat.dw(:udperr)
           return if res.empty?

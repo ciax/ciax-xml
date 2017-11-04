@@ -22,12 +22,12 @@ module CIAX
 
       def init_frame(domain)
         db = domain.to_h
-        _add_main_(domain, db) { |e1| yield(e1) }
-        _add_cc_(domain, db) { |e1| yield(e1) }
+        ___add_main(domain, db) { |e1| yield(e1) }
+        ___add_cc(domain, db) { |e1| yield(e1) }
         db
       end
 
-      def _add_main_(domain, db)
+      def ___add_main(domain, db)
         # enclose('INIT:Main Frame <-', '-> INIT:Main Frame') do
         frame = []
         domain.each { |e1| frame << yield(e1) }
@@ -36,7 +36,7 @@ module CIAX
         # end
       end
 
-      def _add_cc_(domain, db)
+      def ___add_cc(domain, db)
         domain.find('ccrange') do |e0|
           # enclose('INIT:Ceck Code Frame <-', '-> INIT:Ceck Code Frame') do
           frame = []
@@ -58,13 +58,13 @@ module CIAX
       def _add_item(e0, gid)
         id, itm = super
         # enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
-        _rep_item_(e0, itm)
+        ___rep_item(e0, itm)
         validate_par(itm)
         # end
         [id, itm]
       end
 
-      def _rep_item_(e0, itm)
+      def ___rep_item(e0, itm)
         @rep.each(e0) do |e1|
           par2item(e1, itm) && next
           e = _add_cmdfrm(e1) || next
@@ -90,12 +90,12 @@ module CIAX
         fld = dbi[:field] = Hashx.new
         frm = init_frame(dom[:rspframe]) { |e| _add_rspfrm(e, fld) }
         dbi[:response] = Hashx.new(index: idx = Hashx.new, frame: frm)
-        dom[:response].each { |e0| _add_fld_(e0, fld, idx) }
+        dom[:response].each { |e0| ___add_fld(e0, fld, idx) }
         dbi[:frm_id] = dbi[:id]
         dbi
       end
 
-      def _add_fld_(e0, fld, db)
+      def ___add_fld(e0, fld, db)
         id = e0.attr2item(db)
         # enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
         itm = db[id]
@@ -111,15 +111,15 @@ module CIAX
         if (id = e[:assign]) && !field.key?(id)
           itm = field[id] = { label: e[:label] }
         end
-        _init_elem_(e, itm)
+        ___init_elem(e, itm)
       end
 
-      def _init_elem_(e, itm)
+      def ___init_elem(e, itm)
         case e.name
         when 'field'
           _init_field(e, itm)
         when 'array'
-          _init_ary_(e, itm)
+          ___init_ary(e, itm)
         when 'ccrange', 'body', 'echo'
           e.name
         end
@@ -132,7 +132,7 @@ module CIAX
         atrb
       end
 
-      def _init_ary_(e, itm)
+      def ___init_ary(e, itm)
         atrb = e.to_h
         idx = atrb[:index] = []
         e.each { |e1| idx << e1.to_h }

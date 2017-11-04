@@ -13,10 +13,10 @@ module CIAX
         # Initiate for driver
         def ext_local_driver
           @sv_stat.repl(:sid, '') # For server response
-          _init_pre_exe_
-          _init_post_exe_
-          _init_proc_rem_(@cobj.rem)
-          _init_proc_loc_
+          ___init_pre_exe
+          ___init_post_exe
+          ___init_proc_rem(@cobj.rem)
+          ___init_proc_loc
           @cobj.rem.ext_input_log
           @terminate_procs << proc { @stat.clean }
           self
@@ -24,20 +24,20 @@ module CIAX
 
         alias ext_local_test ext_local_driver
 
-        def _init_pre_exe_
+        def ___init_pre_exe
           @pre_exe_procs << proc do
             @sv_stat.flush(:list, @stat.alives).repl(:sid, '')
             @sv_stat.flush(:run).cmt if @sv_stat.upd.get(:list).empty?
           end
         end
 
-        def _init_post_exe_
+        def ___init_post_exe
           @post_exe_procs << proc do
             @sv_stat.get(:list).each { |id| @par.push(id) }
           end
         end
 
-        def _init_proc_rem_(rem)
+        def ___init_proc_rem(rem)
           # External Command Group
           rem.ext.def_proc do |ent|
             sid = @stat.add(ent).id
@@ -50,7 +50,7 @@ module CIAX
           end
         end
 
-        def _init_proc_loc_
+        def ___init_proc_loc
           @cobj.get('interrupt').def_proc { @stat.interrupt }
           @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
           @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }

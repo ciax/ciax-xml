@@ -14,7 +14,7 @@ module CIAX
       def cover(id, cdb)
         ali = get(id)[:command]
         %i(group unit).each { |k| cdb[k].update(ali[k]) }
-        _conv_index_(cdb, ali)
+        ___conv_index(cdb, ali)
         self
       end
 
@@ -35,7 +35,7 @@ module CIAX
         [id, itm]
       end
 
-      def _conv_index_(cdb, ali)
+      def ___conv_index(cdb, ali)
         idx = cdb[:index]
         aidx = ali[:index]
         aidx.each do |_id, itm|

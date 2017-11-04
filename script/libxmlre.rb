@@ -33,11 +33,11 @@ module CIAX
 
       private
 
-      def _attr_view_
+      def _attr_view
         super.to_a
       end
 
-      def _get_file_(f)
+      def _get_file(f)
         REXML::Document.new(open(f)).root
       end
     end

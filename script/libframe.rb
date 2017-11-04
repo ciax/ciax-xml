@@ -61,20 +61,20 @@ module CIAX
       def cut(e0)
         verbose { "Cut Start for [#{@frame.inspect}](#{@frame.size})" }
         return verify(e0) if e0[:val] # Verify value
-        str = _cut_by_type_(e0)
+        str = ___cut_by_type(e0)
         return '' if str.empty?
         verbose { "Cut String: [#{str.inspect}]" }
-        str = _pick_part_(str, e0[:slice])
+        str = ___pick_part(str, e0[:slice])
         decode(str, e0)
       end
 
       private
 
-      def _cut_by_type_(e0)
-        _cut_len_(e0[:length]) || _cut_delim_(e0[:delimiter]) || _cut_rest_
+      def ___cut_by_type(e0)
+        ___cut_len(e0[:length]) || ___cut_delim(e0[:delimiter]) || ___cut_rest
       end
 
-      def _cut_len_(len)
+      def ___cut_len(len)
         return unless len
         verbose { "Cut by Size [#{len}]" }
         if len.to_i > @frame.size
@@ -87,7 +87,7 @@ module CIAX
         str
       end
 
-      def _cut_delim_(del)
+      def ___cut_delim(del)
         return unless del
         dlm = esc_code(del).to_s
         verbose { "Cut by Delimiter [#{dlm.inspect}]" }
@@ -96,14 +96,14 @@ module CIAX
         str
       end
 
-      def _cut_rest_
+      def ___cut_rest
         verbose { 'Cut all the rest' }
         str = @frame
         @cc.push(str)
         str
       end
 
-      def _pick_part_(str, range)
+      def ___pick_part(str, range)
         return str unless range
         str = str.slice(*range.split(':').map(&:to_i))
         verbose { "Pick: [#{str.inspect}] by range=[#{range}]" }

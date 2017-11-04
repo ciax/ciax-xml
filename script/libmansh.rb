@@ -12,8 +12,8 @@ module CIAX
         def ext_shell
           super
           @par.sel
-          _init_view_
-          _init_lcmd_
+          ___init_view
+          ___init_lcmd
           # Set Current ID by number
           input_conv_num do |i|
             @par.sel(i)
@@ -24,14 +24,14 @@ module CIAX
 
         private
 
-        def _init_view_
+        def ___init_view
           @view = SeqView.new(@id, @par, @stat)
           @cfg[:output] = @view
           @post_exe_procs << proc { @view.upd }
           @prompt_proc = proc { @sv_stat.to_s + @view.upd.index }
         end
 
-        def _init_lcmd_
+        def ___init_lcmd
           sg = @cobj.loc.add(Group, caption: 'Switch Pages', color: 5)
           sg.add_dummy('0', 'List page')
           sg.add_dummy('[1-n]', 'Sequencer page')

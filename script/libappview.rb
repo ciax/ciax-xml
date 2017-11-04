@@ -43,7 +43,7 @@ module CIAX
           next unless v.is_a? Hash
           cap = v[:caption]
           lines << ' ***' + colorize(cap, 10) + '***' unless cap.empty?
-          lines.concat(_view_lines_(v[:lines]))
+          lines.concat(___view_lines(v[:lines]))
         end
         lines.join("\n")
       end
@@ -60,20 +60,20 @@ module CIAX
           self['gtime'] = { caption: '', lines: [hash = {}] }
           hash[:time] = { label: 'TIMESTAMP', msg: date(@stat[:time]) }
           hash[:elapsed] = { label: 'ELAPSED', msg: elps_date(@stat[:time]) }
-          _view_groups_
+          ___view_groups
         end
       end
 
-      def _view_groups_
+      def ___view_groups
         @group.each do |k, gdb|
           cap = gdb[:caption] || next
           lines = []
           self[k] = { caption: cap, lines: lines }
-          _upd_members_(gdb[:members], gdb[:column] || 1, lines)
+          ___upd_members(gdb[:members], gdb[:column] || 1, lines)
         end
       end
 
-      def _view_lines_(lines)
+      def ___view_lines(lines)
         lines.map do |ele|
           '  ' + ele.values.map do |val|
             cls = (val[:class] || '').to_sym
@@ -84,15 +84,15 @@ module CIAX
         end
       end
 
-      def _upd_members_(members, col, lines)
+      def ___upd_members(members, col, lines)
         members.each_slice(col.to_i) do |hline|
           hash = {}
-          hline.each { |id| _upd_line_(id, hash) }
+          hline.each { |id| ___upd_line(id, hash) }
           lines << hash
         end
       end
 
-      def _upd_line_(id, hash)
+      def ___upd_line(id, hash)
         stc = @stat[:class]
         msg = @stat[:msg][id] || @stat[:data][id]
         cls = stc[id] if stc.key?(id)

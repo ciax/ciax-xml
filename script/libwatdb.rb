@@ -16,24 +16,24 @@ module CIAX
         wdb = db[:watch] = wdoc.to_h
         reg = wdb[:regular] = { period: 300, exec: [] }
         idx = wdb[:index] = Hashx.new
-        _get_wdb_(wdoc, reg, idx, db[:command][:group])
+        ___get_wdb(wdoc, reg, idx, db[:command][:group])
         reg[:exec] << ['upd'] if reg[:exec].empty?
       end
 
       private
 
-      def _get_wdb_(wdoc, reg, idx, cgrp)
+      def ___get_wdb(wdoc, reg, idx, cgrp)
         @rep.each(wdoc) do |e0|
           case e0.name
           when 'regular'
-            _make_regular_(e0, reg)
+            ___make_regular(e0, reg)
           when 'event'
-            _make_event_(e0, idx, cgrp)
+            ___make_event(e0, idx, cgrp)
           end
         end
       end
 
-      def _make_regular_(e0, reg)
+      def ___make_regular(e0, reg)
         reg.update(e0.to_h)
         e0.each do |e1|
           args = [e1[:name]]
@@ -44,35 +44,35 @@ module CIAX
         end
       end
 
-      def _make_event_(e0, idx, cgrp)
+      def ___make_event(e0, idx, cgrp)
         id = e0.attr2item(idx) { |v| @rep.formatting(v) }
         item = idx[id]
         cnd = item[:cnd] = []
         act = item[:act] = Hashx.new
         e0.each do |e1|
-          _event_element_(e1, act, cnd, cgrp)
+          ___event_element(e1, act, cnd, cgrp)
         end
       end
 
-      def _event_element_(e1, act, cnd, cgrp)
+      def ___event_element(e1, act, cnd, cgrp)
         case name = e1.name.to_sym
         when :block, :int, :exec
-          act.get(name) { [] } << _make_action_(e1)
+          act.get(name) { [] } << ___make_action(e1)
         when :block_grp
-          act.get(:block) { [] }.concat(_make_block_(e1, cgrp))
+          act.get(:block) { [] }.concat(___make_block(e1, cgrp))
         else
           cnd << _make_cond(e1, name == :compare)
         end
       end
 
-      def _make_action_(e1)
+      def ___make_action(e1)
         # e1[:name] is different from e1.name (attribute vs. tag)
         args = [e1[:name]]
         e1.each { |e2| args << @rep.subst(e2.text) }
         args
       end
 
-      def _make_block_(e1, cgrp)
+      def ___make_block(e1, cgrp)
         cgrp[e1[:ref]][:members].map { |k| [k] }
       end
 

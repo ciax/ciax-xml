@@ -6,13 +6,13 @@ class Module
   def deep_include(smod, dmod = self)
     const_defined?(dmod.to_s) || _fmt_eval('module %s;end', dmod)
     smod.constants.each do |con|
-      _classify_(*[smod, dmod].map { |s| format('%s::%s', s, con) })
+      ___classify(*[smod, dmod].map { |s| format('%s::%s', s, con) })
     end
   end
 
   private
 
-  def _classify_(sname, dname)
+  def ___classify(sname, dname)
     case (ssub = const_get(sname))
     when Class
       _fmt_eval('class %s < %s;end', dname, sname)

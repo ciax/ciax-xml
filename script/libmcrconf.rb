@@ -19,13 +19,13 @@ module CIAX
         @opt = self[:opt]
         db = Db.new
         update(layer_type: 'mcr', db: db)
-        _init_with_dbi_(db.get(ENV['PROJ'] || self[:args].shift))
-        _init_dev_list_(root_cfg.gen(self))
+        ___init_with_dbi(db.get(ENV['PROJ'] || self[:args].shift))
+        ___init_dev_list(root_cfg.gen(self))
       end
 
       private
 
-      def _init_with_dbi_(dbi)
+      def ___init_with_dbi(dbi)
         # pick already includes :command, :version
         update(dbi.pick([:sites, :id]))
         self[:host] = @opt.host || dbi[:host]
@@ -38,7 +38,7 @@ module CIAX
       # self is branch from root_cfg
       # site_cfg is handover to App,Frm
       # atrb is Wat only
-      def _init_dev_list_(site_cfg)
+      def ___init_dev_list(site_cfg)
         # handover to Wat only
         id = self[:id]
         # handover to Wat, App

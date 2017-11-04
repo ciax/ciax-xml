@@ -19,7 +19,7 @@ module CIAX
         @stat = Status.new(dbi)
         @sv_stat = Prompt.new(@id)
         @batch_interrupt = []
-        _init_sub_
+        ___init_sub
         _init_net(dbi)
         _init_command
         _opt_mode
@@ -57,8 +57,8 @@ module CIAX
 
       # Mode Extension by Option
       def ext_local
-        _init_proc_set_
-        _init_proc_del_
+        ___init_proc_set
+        ___init_proc_del
         super
       end
 
@@ -77,7 +77,7 @@ module CIAX
       end
 
       # Sub methods for Initialize
-      def _init_sub_
+      def ___init_sub
         # LayerDB might generated in List level
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
         @sv_stat.db.update(@sub.sv_stat.db)
@@ -101,14 +101,14 @@ module CIAX
       end
 
       # Initiate procs
-      def _init_proc_set_
+      def ___init_proc_set
         @cobj.get('set').def_proc do |ent|
           @stat[:data].repl(ent.par[0], ent.par[1])
           verbose { "SET:#{ent.par[0]}=#{ent.par[1]}" }
         end
       end
 
-      def _init_proc_del_
+      def ___init_proc_del
         @cobj.get('del').def_proc do |ent|
           ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
           verbose { "DELETE:#{ent.par[0]}" }

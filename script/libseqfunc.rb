@@ -11,7 +11,7 @@ module CIAX
       private
 
       # Sub for for cmd_mcr()
-      def _mcr_fg_(e, step, mstat)
+      def ___mcr_fg(e, step, mstat)
         @count = step[:count] = 1 if step[:retry]
         _show step.result
         begin
@@ -20,19 +20,19 @@ module CIAX
           mstat[:result] = step[:result]
           raise Interlock
         rescue Verification
-          _mcr_retry_(e, step, mstat) && retry
+          ___mcr_retry(e, step, mstat) && retry
         end
       end
 
       # Sub for _mcr_fg()
-      def _mcr_retry_(e, step, mstat)
-        return true if step[:retry] && _count_up_(e, step)
+      def ___mcr_retry(e, step, mstat)
+        return true if step[:retry] && ___count_up(e, step)
         mstat[:result] = 'failed'
         false
       end
 
       # Sub for _mcr_retry()
-      def _count_up_(e, step)
+      def ___count_up(e, step)
         @count += 1
         step[:action] = 'retry'
         return false if @count > step[:retry].to_i # exit
@@ -44,7 +44,7 @@ module CIAX
       end
 
       # Sub for cmd_select()
-      def _get_stat_(e)
+      def ___get_stat(e)
         _get_site(e).stat[e[:form].to_sym][e[:var]]
       end
 

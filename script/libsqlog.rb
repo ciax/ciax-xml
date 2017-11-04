@@ -95,7 +95,7 @@ module CIAX
         base = "sqlog_#{id}"
         @sqlcmd = ['sqlite3', vardir('log') + base + '.sq3']
         @que_sql = Threadx::QueLoop.new('SqLog', 'all', @id, base) do |que|
-          _log_save_(que)
+          ___log_save(que)
         end
       end
 
@@ -119,7 +119,7 @@ module CIAX
 
       private
 
-      def _log_save_(que)
+      def ___log_save(que)
         sql = que.pop
         IO.popen(@sqlcmd, 'w') { |f| f.puts sql }
         verbose { "Saved for '#{sql}'" }

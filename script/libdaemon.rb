@@ -13,17 +13,17 @@ module CIAX
       @layer = tag
       ConfOpts.new('[id] ...', options: ops + 'b') do |cfg, args|
         opt = cfg[:opt]
-        _chk_args_(_kill_pids_(tag), args + opt.values)
+        ___chk_args(___kill_pids(tag), args + opt.values)
         opt[:s] = true
         @obj = yield(cfg, sites: args)
-        _init_server_(tag, opt)
-        _main_loop_ { yield(cfg, sites: args) }
+        ___init_server(tag, opt)
+        ___main_loop { yield(cfg, sites: args) }
       end
     end
 
     private
 
-    def _main_loop_
+    def ___main_loop
       @obj.run
       Udp::Server.new('sv', 'top', 54_321).listen { Threadx.list.to_s }
     rescue SignalException
@@ -35,14 +35,14 @@ module CIAX
     end
 
     # Background (Switch error output to file)
-    def _init_server_(tag, opt)
-      _detach_
-      _redirect_(tag) if opt[:b]
+    def ___init_server(tag, opt)
+      ___detach
+      ___redirect(tag) if opt[:b]
       verbose { "Initiate Daemon Start [#{tag}] " + git_ver }
       tag_set(@obj.id)
     end
 
-    def _detach_
+    def ___detach
       # Child process (Stream/Pipe) will be closed by at_exit()
       #  as the main process exit in Process.daemon
       Process.daemon(true, true)
@@ -50,14 +50,14 @@ module CIAX
       verbose { "Initiate Daemon Detached (#{$PROCESS_ID})" }
     end
 
-    def _kill_pids_(tag)
+    def ___kill_pids(tag)
       @pidfile = vardir('run') + tag + '.pid'
-      pids = _read_pids_
+      pids = ___read_pids
       _write_pid('')
       'Nothing to do' unless pids.any? { |pid| _kill_pid(pid) }
     end
 
-    def _chk_args_(str, args)
+    def ___chk_args(str, args)
       return if args.any?
       msg(indent(1) + str, 3) if str
       exit(2)
@@ -70,7 +70,7 @@ module CIAX
       nil
     end
 
-    def _read_pids_
+    def ___read_pids
       return [] unless test('r', @pidfile)
       IO.readlines(@pidfile).keep_if { |l| l.to_i > 0 }
     end
@@ -79,14 +79,14 @@ module CIAX
       IO.write(@pidfile, pid)
     end
 
-    def _redirect_(tag)
+    def ___redirect(tag)
       verbose { 'Initiate STDERR redirect' }
       fname = _mk_name(tag, today)
       $stderr = File.new(fname, 'a')
-      _mk_link_(fname, tag)
+      ___mk_link(fname, tag)
     end
 
-    def _mk_link_(fname, tag)
+    def ___mk_link(fname, tag)
       sname = _mk_name(tag)
       File.unlink(sname) if File.exist?(sname)
       File.symlink(fname, sname)

@@ -27,16 +27,16 @@ module CIAX
 
     def _recursive(data, tag = nil)
       @_vs_lines << if tag
-                      _indent(_show_tag_(data, tag))
+                      _indent(___show_tag(data, tag))
                     else
                       "<<#{data.class}>>"
                     end
       _show_iv(data)
-      _sub_structure_(data, tag)
+      ___sub_structure(data, tag)
     end
 
     # Make Line Head
-    def _show_tag_(data, tag)
+    def ___show_tag(data, tag)
       str = format('%-6s', _mk_tag(tag))
       # Add Id
       if @_vs_show_id && data.is_a?(Enumerable)
@@ -57,10 +57,10 @@ module CIAX
     end
 
     # Show Sub structure
-    def _sub_structure_(data, tag)
+    def ___sub_structure(data, tag)
       @_vs_indent += 1
       return if _loop?(data)
-      _show_all_(data, tag)
+      ___show_all(data, tag)
     ensure
       @_vs_indent -= 1
     end
@@ -78,12 +78,12 @@ module CIAX
     end
 
     # Show container
-    def _show_all_(data, tag)
+    def ___show_all(data, tag)
       case data
       when Array
-        _mixed?(data, data, data.size.times) || _end_ary_(data)
+        _mixed?(data, data, data.size.times) || ___end_ary(data)
       when Hash
-        _mixed?(data, data.values, data.keys) || _end_hash_(data, tag)
+        _mixed?(data, data.values, data.keys) || ___end_hash(data, tag)
       else
         # Show String, Numerical ...
         @_vs_lines.last << ' ' + _mk_elem(data)
@@ -96,7 +96,7 @@ module CIAX
     end
 
     # Array without sub structure
-    def _end_ary_(data)
+    def ___end_ary(data)
       lines = []
       head = '[ '
       data.each_slice(@_vs_column) do |a|
@@ -107,13 +107,13 @@ module CIAX
     end
 
     # Hash without sub structure
-    def _end_hash_(data, tag)
+    def ___end_hash(data, tag)
       data.keys.each_slice(tag ? @_vs_hash_col : 1) do |a|
-        @_vs_lines << _indent(_hash_line_(a, data), 1)
+        @_vs_lines << _indent(___hash_line(a, data), 1)
       end
     end
 
-    def _hash_line_(a, data)
+    def ___hash_line(a, data)
       a.map do |k|
         format('%-8s: %-10s', _mk_tag(k), _mk_elem(data[k]))
       end.join("\t")

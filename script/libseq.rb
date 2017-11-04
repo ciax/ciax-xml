@@ -44,7 +44,7 @@ module CIAX
       rescue Verification
         false
       rescue Interrupt
-        _site_interrupt_
+        ___site_interrupt
       ensure
         _show(@record.finish + "\n")
       end
@@ -57,7 +57,7 @@ module CIAX
 
       # macro returns result (true=complete /false=error)
       def sub_macro(seqary, mstat)
-        _pre_seq_(seqary, mstat)
+        ___pre_seq(seqary, mstat)
         seqary.each { |e| break(true) unless do_step(e, mstat) }
       rescue Interlock
         # For retry
@@ -66,7 +66,7 @@ module CIAX
         mstat[:result] = 'comerr'
         false
       ensure
-        _post_seq_(mstat)
+        ___post_seq(mstat)
       end
 
       # Return false if sequence is broken
@@ -74,7 +74,7 @@ module CIAX
         step = @record.add_step(e, @depth)
         begin
           _show step.title
-          return true if _call_step_(e, step, mstat)
+          return true if ___call_step(e, step, mstat)
         rescue Retry
           retry
         end
@@ -84,26 +84,26 @@ module CIAX
       end
 
       # Sub for do_step()
-      def _call_step_(e, step, mstat)
+      def ___call_step(e, step, mstat)
         method('cmd_' + e[:type]).call(e, step, mstat)
       ensure
         step.cmt
       end
 
       # Sub for macro()
-      def _pre_seq_(seqary, mstat)
+      def ___pre_seq(seqary, mstat)
         @depth += 1
         @record[:status] = 'run'
         @record[:total_steps] += type?(seqary, Array).size
         mstat[:result] = 'busy'
       end
 
-      def _post_seq_(mstat)
+      def ___post_seq(mstat)
         mstat[:result] = 'complete' if mstat[:result] == 'busy'
         @depth -= 1
       end
 
-      def _site_interrupt_
+      def ___site_interrupt
         runary = @sv_stat.get(:run)
         msg("\nInterrupt Issued to running devices #{runary}", 3)
         runary.each do |site|
@@ -118,11 +118,11 @@ module CIAX
         @id = @record[:id]
         @title = @record.title
         @cfg[:rec_list].push(@record)
-        _init_record_file_
+        ___init_record_file
       end
 
       # Do file generation after forked
-      def _init_record_file_
+      def ___init_record_file
         # ext_file must be after ext_rsp which includes time update
         @record.ext_local_file('record').auto_save
         @record.mklink # Make latest link

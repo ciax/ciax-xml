@@ -19,7 +19,7 @@ module CIAX
 
         def ext_prt(base)
           @base = type?(base, Integer)
-          _init_title_list_
+          ___init_title_list
           self
         end
 
@@ -37,8 +37,8 @@ module CIAX
         end
 
         def result
-          mary = [_prt_count_]
-          _prt_result_(self[:result], mary)
+          mary = [___prt_count]
+          ___prt_result(self[:result], mary)
           mary.join("\n") + "\n"
         end
 
@@ -64,12 +64,12 @@ module CIAX
           _rindent(5) + Msg.colorize(msg, col)
         end
 
-        def _prt_count_
+        def ___prt_count
           total = self[:retry] || self[:val]
           total ? "(#{self[:count].to_i}/#{total})" : ''
         end
 
-        def _color_result_(res)
+        def ___color_result(res)
           if /failed|timeout/ =~ res
             1
           elsif /query/ =~ res
@@ -79,27 +79,27 @@ module CIAX
           end
         end
 
-        def _prt_result_(res, mary)
+        def ___prt_result(res, mary)
           if res
             cap = res.capitalize
-            color = _color_result_(res)
+            color = ___color_result(res)
             mary[0] << ' -> ' + Msg.colorize(cap, color)
           end
-          _prt_conds_(mary)
+          ___prt_conds(mary)
         end
 
-        def _prt_conds_(mary)
+        def ___prt_conds(mary)
           (self[:conditions] || {}).each do |h|
             res = if h[:skip]
                     _body('!', 6)
                   else
-                    h[:res] ? _body('o', 2) : _body('x', _fail_color_)
+                    h[:res] ? _body('o', 2) : _body('x', ___fail_color)
                   end
-            mary << res + _cond_line_(h)
+            mary << res + ___cond_line(h)
           end
         end
 
-        def _cond_line_(h)
+        def ___cond_line(h)
           line = " #{h[:site]}:#{h[:var]}(#{h[:form]})"
           cri = h[:cri]
           ope = OPE[h[:cmp].to_sym]
@@ -114,7 +114,7 @@ module CIAX
           elps + Msg.colorize(msg, col) + ':' + (self[:label] || label)
         end
 
-        def _fail_color_
+        def ___fail_color
           %w(goal bypass).include?(self[:type]) ? 4 : 1
         end
 
@@ -123,7 +123,7 @@ module CIAX
         end
 
         # Branched functions (instead of case/when semantics)
-        def _init_title_list_
+        def ___init_title_list
           @title_list = {
             mesg: ['Mesg', 5], bypass: ['Bypass?', 6, 'skip if satisfied'],
             goal: ['Done?', 6, 'skip if satisfied'],

@@ -50,12 +50,12 @@ module CIAX
           pids = @list.values.map { |r| r[:pid] }
           pids.delete('0')
           @all_keys.concat(pids + @par.list).uniq!
-          @all_keys.each { |id| _upd_or_gen_(id) }
+          @all_keys.each { |id| ___upd_or_gen(id) }
           clean
         end
       end
 
-      def _upd_or_gen_(id)
+      def ___upd_or_gen(id)
         if @list.key?(id)
           @list.get(id).upd
         else

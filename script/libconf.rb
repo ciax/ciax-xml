@@ -81,7 +81,7 @@ module CIAX
     def path(key = nil)
       i = 0
       ary = @generation.map do |h|
-        "  [#{i += 1}]{" + _show_generation_(key, h) + "} (#{h.object_id})"
+        "  [#{i += 1}]{" + ___show_generation(key, h) + "} (#{h.object_id})"
       end
       _decorate_(ary.reverse)
     end
@@ -93,7 +93,7 @@ module CIAX
         h.each { |k, v| db[k] = [i, v] unless db.key?(k) }
       end
       ary = db.map do |k, a|
-        val = _show_db_(a[1])
+        val = ___show_db(a[1])
         "  #{k} (#{a[0]}) = #{val}"
       end
       _decorate_(ary.reverse)
@@ -101,7 +101,7 @@ module CIAX
 
     private
 
-    def _show_db_(v)
+    def ___show_db(v)
       case v
       when String, Numeric, Enumerable
         _show_(v.inspect)
@@ -116,26 +116,26 @@ module CIAX
       ["******[Config]******(#{object_id})", *ary, '************'].join("\n")
     end
 
-    def _show_generation_(key, h)
+    def ___show_generation(key, h)
       h.map do |k, v|
         next if key && k != key
-        val = k == :obj ? _show_(v.class) : _show_contents_(v)
+        val = k == :obj ? _show_(v.class) : ___show_contents(v)
         "#{k.inspect.sub(/^:/, '')}: #{val}"
       end.compact.join(', ')
     end
 
-    def _show_contents_(v)
+    def ___show_contents(v)
       case v
       when Hash, Proc
         _show_(v.class)
       when Array
-        _show_array_(v)
+        ___show_array(v)
       else
         _show_(v.inspect)
       end
     end
 
-    def _show_array_(v)
+    def ___show_array(v)
       '[' + v.map do |e|
         case e
         when Enumerable

@@ -10,23 +10,23 @@ module CIAX
         end
 
         def ext_local_driver
-          _init_stream_
-          _init_drv_ext_
+          ___init_stream
+          ___init_drv_ext
           _init_drv_save
           _init_drv_load
-          _init_drv_flush_
+          ___init_drv_flush
           _init_log_mode
           self
         end
 
-        def _init_stream_
+        def ___init_stream
           @stream = Stream.new(@id, @cfg)
           @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
           @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }
           @stat.ext_local_rsp(@stream).ext_local_file.auto_save
         end
 
-        def _init_drv_ext_
+        def ___init_drv_ext
           @cobj.rem.ext.def_proc do |ent, src|
             @sv_stat.dw(:comerr)
             @stream.snd(ent[:frame], ent.id)
@@ -53,7 +53,7 @@ module CIAX
           end
         end
 
-        def _init_drv_flush_
+        def ___init_drv_flush
           @cobj.get('flush').def_proc do
             @stream.rcv
             @stat.flush

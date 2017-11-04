@@ -14,7 +14,7 @@ module CIAX
 
       # Separate initialize part because shell() could be called multiple times
       def ext_shell
-        _init_procs_
+        ___init_procs
         @cobj.loc.add_shell
         @cobj.loc.add_jump
         self
@@ -53,10 +53,10 @@ module CIAX
       # * '^D' gives interrupt
       def shell
         verbose { "Shell(#{@id})" }
-        _init_readline_
+        ___init_readline
         loop do
           line = _input_ || break
-          _exe_(_cmds_(line))
+          _exe_(___cmds(line))
           puts @shell_output_proc.call
         end
         @terminate_procs.inject(self) { |a, e| e.call(a) }
@@ -65,7 +65,7 @@ module CIAX
 
       private
 
-      def _init_procs_
+      def ___init_procs
         @shell_input_procs = [] # proc takes args(Array)
         @shell_output_proc ||= proc do
           if @sv_stat.msg.empty?
@@ -77,7 +77,7 @@ module CIAX
         @prompt_proc = proc { @sv_stat.to_s }
       end
 
-      def _init_readline_
+      def ___init_readline
         Readline.completion_proc = proc { |word|
           (@cobj.valid_keys + @cobj.valid_pars).grep(/^#{word}/)
         }
@@ -92,21 +92,21 @@ module CIAX
         'interrupt'
       end
 
-      def _cmds_(line)
+      def ___cmds(line)
         cmds = line.split(';')
         cmds = [''] if cmds.empty?
         cmds
       end
 
       def _exe_(cmds)
-        cmds.each { |s| exe(_input_conv_(s), 'shell') }
+        cmds.each { |s| exe(___input_conv(s), 'shell') }
       rescue UserError
         nil
       rescue ServerError
         show_err
       end
 
-      def _input_conv_(token)
+      def ___input_conv(token)
         @shell_input_procs.inject(token.split(' ')) do |args, proc|
           proc.call(args)
         end

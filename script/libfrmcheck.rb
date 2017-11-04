@@ -27,7 +27,7 @@ module CIAX
           @ccrange = ''
           yield self
           verbose { "Cc Frame [#{@ccrange.inspect}]" }
-          @checkcode = _calcurate_.to_s
+          @checkcode = ___calcurate.to_s
           verbose { "Cc Calc [#{@method.upcase}] -> (#{@checkcode})" }
           @ccrange = nil
           self
@@ -50,7 +50,7 @@ module CIAX
 
         private
 
-        def _calcurate_ # Check Code End
+        def ___calcurate # Check Code End
           method("cc_#{@method}").call
         rescue NameError
           Msg.cfg_err("No such CC method #{@method}")

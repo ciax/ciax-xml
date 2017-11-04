@@ -13,12 +13,12 @@ module CIAX
 
       def cmd_in(num)
         super
-        _sw_by_axis_(num.to_i) ? '1' : '0'
+        ___sw_by_axis(num.to_i) ? '1' : '0'
       end
 
       private
 
-      def _sw_by_axis_(num)
+      def ___sw_by_axis(num)
         case num
         when 1
           # Contact sensor (off if load mode)

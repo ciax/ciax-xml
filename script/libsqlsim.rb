@@ -29,9 +29,9 @@ module CIAX
 
       def find_next(str)
         verbose { 'Search corresponding CMD' }
-        cmd = _scan_cmd_(str)
+        cmd = ___scan_cmd(str)
         verbose { 'Search corresponding RES' }
-        tim, count, = _next_res_(cmd)
+        tim, count, = ___next_res(cmd)
         verbose do
           str = "(#{@total - count.to_i}/#{@total})<#{wait(tim)}>"
           colorize("LINE:[#{cmd}]" + str, 2)
@@ -53,8 +53,8 @@ module CIAX
 
       private
 
-      def _scan_cmd_(str)
-        tim, cmd = _next_cmd_(str)
+      def ___scan_cmd(str)
+        tim, cmd = ___next_cmd(str)
         verbose { "Matched time is #{tim}" }
         raise if tim.empty?
         @index = tim.to_i
@@ -66,14 +66,14 @@ module CIAX
         retry
       end
 
-      def _next_cmd_(str)
+      def ___next_cmd(str)
         sql = "select min(time),cmd from #{@tbl} where time"
         sql << " > #{@index} and base64='#{str}';"
         ans = query(sql)
         ans.split('|')
       end
 
-      def _next_res_(cmd)
+      def ___next_res(cmd)
         sql = "select min(time),count(*),cmd,base64 from #{@tbl} "
         sql << "where dir='rcv' and cmd='#{cmd}' and time > #{@index};"
         ans = query(sql)

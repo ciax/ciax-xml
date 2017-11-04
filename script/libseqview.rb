@@ -21,17 +21,17 @@ module CIAX
       end
 
       def to_v
-        _crnt_ ? _crnt_.to_v : _list_
+        __crnt ? __crnt.to_v : ___list
       end
 
       def to_r
-        _crnt_ ? _crnt_.to_r : super
+        __crnt ? __crnt.to_r : super
       end
 
       def index
         n = @par.index
         if n
-          opt = optlist(_crnt_[:opt]) if _crnt_.busy? && _crnt_.last
+          opt = optlist(__crnt[:opt]) if __crnt.busy? && __crnt.last
           "[#{n + 1}]#{opt}"
         else
           '[0]'
@@ -65,7 +65,7 @@ module CIAX
         end
       end
 
-      def _crnt_
+      def __crnt
         @list.get(@par.current)
       end
 
@@ -73,21 +73,21 @@ module CIAX
         @stat.get(id)
       end
 
-      def _list_
+      def ___list
         page = ['<<< ' + colorize("Active Macros [#{@id}]", 2) + ' >>>']
-        @par.list.each_with_index { |id, idx| page << _item_(id, idx + 1) }
+        @par.list.each_with_index { |id, idx| page << ___item(id, idx + 1) }
         page.join("\n")
       end
 
-      def _item_(id, idx)
+      def ___item(id, idx)
         rec = @list[id]
         title = "[#{idx}] (#{id})(by #{@ciddb[rec[:pid]]})"
         msg = "#{rec[:cid]} #{rec.step_num}"
-        msg << _result_(rec)
+        msg << ___result(rec)
         itemize(title, msg)
       end
 
-      def _result_(rec)
+      def ___result(rec)
         if rec[:status] == 'end'
           "(#{rec[:result]})"
         else

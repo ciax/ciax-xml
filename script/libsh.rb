@@ -55,8 +55,8 @@ module CIAX
         verbose { "Shell(#{@id})" }
         ___init_readline
         loop do
-          line = _input_ || break
-          _exe_(___cmds(line))
+          line = ___input || break
+          ___exe(___cmds(line))
           puts @shell_output_proc.call
         end
         @terminate_procs.inject(self) { |a, e| e.call(a) }
@@ -83,7 +83,7 @@ module CIAX
         }
       end
 
-      def _input_
+      def ___input
         verbose { "Threads\n#{Threadx.list}" }
         verbose { "Valid Commands #{@cobj.valid_keys}" }
         inp = Readline.readline(prompt, true) || 'interrupt'
@@ -98,7 +98,7 @@ module CIAX
         cmds
       end
 
-      def _exe_(cmds)
+      def ___exe(cmds)
         cmds.each { |s| exe(___input_conv(s), 'shell') }
       rescue UserError
         nil

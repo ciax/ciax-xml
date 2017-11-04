@@ -110,17 +110,17 @@ module CIAX
       def ___repl_by_case(par, conv)
         case par
         when Array
-          _merge_ary_(par, conv.split(','))
+          __merge_ary(par, conv.split(','))
         when String
           par.replace(expr(conv).to_s)
         end
       end
 
-      def _merge_ary_(p, r)
+      def __merge_ary(p, r)
         r = [r] unless r.is_a? Array
         p.map! do |i|
           if i.is_a? Array
-            _merge_ary_(i, r.shift)
+            __merge_ary(i, r.shift)
           else
             r.shift || i
           end

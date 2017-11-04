@@ -37,18 +37,18 @@ module CIAX
       def merge_sub(other)
         update(type?(other, Disp))
         @valid_keys.concat(other.valid_keys)
-        _rec_merge_(other.sub)
+        __rec_merge(other.sub)
         @sub.update(other.sub)
         self
       end
 
       private
 
-      def _rec_merge_(gr)
+      def __rec_merge(gr)
         type?(gr, Section).index = self
         gr.values.each do |sg|
           if sg.is_a? Section
-            _rec_merge_(sg)
+            __rec_merge(sg)
           else
             sg.index = self
           end
@@ -69,11 +69,11 @@ module CIAX
 
       # add sub caption if sub is true
       def put_sec(id, cap, color = nil)
-        _put_sub_(Section, id, cap, color)
+        __put_sub(Section, id, cap, color)
       end
 
       def put_grp(id, cap, color = nil, rank = nil)
-        _put_sub_(Group, id, cap, color, rank)
+        __put_sub(Group, id, cap, color, rank)
       end
 
       def view
@@ -92,7 +92,7 @@ module CIAX
 
       private
 
-      def _put_sub_(mod, id, cap, color = nil, rank = nil)
+      def __put_sub(mod, id, cap, color = nil, rank = nil)
         return self[id] if self[id]
         level = @level + 1
         atrb = { caption: cap, color: color, level: level, rank: rank }

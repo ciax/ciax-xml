@@ -44,7 +44,7 @@ module CIAX
       end
 
       def save_key(keylist, tag = nil)
-        tag ||= (_tag_list_.map(&:to_i).max + 1)
+        tag ||= (__tag_list.map(&:to_i).max + 1)
         # id is tag, this is Mark's request
         jstr = pick(
           keylist, time: self[:time], id: self[:id], ver: self[:ver]
@@ -81,7 +81,7 @@ module CIAX
         base_name(tag) + '.json'
       end
 
-      def _tag_list_
+      def __tag_list
         Dir.glob(@jsondir + _file_name('*')).map do |f|
           f.slice(/.+_(.+)\.json/, 1)
         end.sort
@@ -95,7 +95,7 @@ module CIAX
           f.read
         end || ''
       rescue Errno::ENOENT
-        Msg.par_err('No such Tag', "Tag=#{_tag_list_}") if tag
+        Msg.par_err('No such Tag', "Tag=#{__tag_list}") if tag
         verbose { "  -- no json file (#{@cfile})" }
         ''
       end

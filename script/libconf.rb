@@ -83,7 +83,7 @@ module CIAX
       ary = @generation.map do |h|
         "  [#{i += 1}]{" + ___show_generation(key, h) + "} (#{h.object_id})"
       end
-      _decorate_(ary.reverse)
+      __decorate(ary.reverse)
     end
 
     # Show list of all key,val which will be taken with [] access
@@ -96,7 +96,7 @@ module CIAX
         val = ___show_db(a[1])
         "  #{k} (#{a[0]}) = #{val}"
       end
-      _decorate_(ary.reverse)
+      __decorate(ary.reverse)
     end
 
     private
@@ -104,22 +104,22 @@ module CIAX
     def ___show_db(v)
       case v
       when String, Numeric, Enumerable
-        _show_(v.inspect)
+        __show(v.inspect)
       when Proc
-        _show_(v.class)
+        __show(v.class)
       else
-        _show_(v)
+        __show(v)
       end
     end
 
-    def _decorate_(ary)
+    def __decorate(ary)
       ["******[Config]******(#{object_id})", *ary, '************'].join("\n")
     end
 
     def ___show_generation(key, h)
       h.map do |k, v|
         next if key && k != key
-        val = k == :obj ? _show_(v.class) : ___show_contents(v)
+        val = k == :obj ? __show(v.class) : ___show_contents(v)
         "#{k.inspect.sub(/^:/, '')}: #{val}"
       end.compact.join(', ')
     end
@@ -127,11 +127,11 @@ module CIAX
     def ___show_contents(v)
       case v
       when Hash, Proc
-        _show_(v.class)
+        __show(v.class)
       when Array
         ___show_array(v)
       else
-        _show_(v.inspect)
+        __show(v.inspect)
       end
     end
 
@@ -139,14 +139,14 @@ module CIAX
       '[' + v.map do |e|
         case e
         when Enumerable
-          _show_(e.class)
+          __show(e.class)
         else
-          _show_(e.inspect)
+          __show(e.inspect)
         end
       end.join(',') + "](#{v.object_id})"
     end
 
-    def _show_(v)
+    def __show(v)
       v.to_s.sub('CIAX::', '')
     end
   end

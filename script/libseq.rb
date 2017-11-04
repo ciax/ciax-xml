@@ -15,7 +15,7 @@ module CIAX
       def initialize(ment, pid = '0', valid_keys = [], &submcr_proc)
         @cfg = ment
         type?(@cfg[:dev_list], CIAX::Wat::List)
-        _init_record_(pid)
+        ___init_record(pid)
         @sv_stat = @cfg[:sv_stat]
         @submcr_proc = submcr_proc
         @depth = 0
@@ -112,7 +112,7 @@ module CIAX
       end
 
       # Sub for initialize()
-      def _init_record_(pid)
+      def ___init_record(pid)
         @record = Record.new.ext_local_rsp(@cfg)
         @record[:pid] = pid
         @id = @record[:id]

@@ -22,19 +22,19 @@ module CIAX
         at = doc[:attr]
         dbi = @fdb.get(at[:frm_id]).deep_copy
         dbi.update(at)
-        rec_db(doc[:top], dbi)
+        _rec_db(doc[:top], dbi)
         dbi[:site_id] = dbi[:id]
         dbi
       end
 
       # doc => /site/field/assign
-      def rec_db(doc, dbi)
+      def _rec_db(doc, dbi)
         doc.each do |e|
           if e[:id] # site or assign
             e.attr2item(dbi)
           else # field
             id = e.name.to_sym
-            rec_db(e, dbi[id])
+            _rec_db(e, dbi[id])
           end
         end
       end

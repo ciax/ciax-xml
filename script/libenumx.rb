@@ -16,20 +16,20 @@ module CIAX
 
     # Freeze one level deepth or more
     def deep_freeze
-      rec_proc4enum(self, &:freeze)
+      _rec_proc4enum(self, &:freeze)
       self
     end
 
-    # Merge self to ope
+    # ope overwrites self
     def deep_update(ope)
-      rec_merge(self, ope)
+      _rec_merge(self, ope)
       self
     end
 
     # Search String
     def deep_search(reg)
       path = []
-      rec_proc4str(self, path) do |obj|
+      _rec_proc4str(self, path) do |obj|
         next unless obj.is_a?(String)
         if /#{reg}/ =~ obj
           path << obj
@@ -53,20 +53,20 @@ module CIAX
     private
 
     # recursive procs for enumx
-    def rec_proc4enum(enum, &block)
+    def _rec_proc4enum(enum, &block)
       return unless enum.is_a? Enumerable
       enum.each do |k, v| # v=nil if enum is Array
-        rec_proc4enum(v || k, &block)
+        _rec_proc4enum(v || k, &block)
       end
       yield enum
     end
 
-    def rec_proc4str(enum, path = [], &block)
+    def _rec_proc4str(enum, path = [], &block)
       if enum.is_a? Enumerable
         enum.each_with_index do |e, i| # e = Array if enum is Hash
           k, v = e.is_a?(Array) ? e : [i, e]
           path.push(k.to_s)
-          rec_proc4str(v, path, &block)
+          _rec_proc4str(v, path, &block)
           path.pop
         end
       else
@@ -74,11 +74,11 @@ module CIAX
       end
     end
 
-    # r(operand) will be merged to w (w is changed)
-    def rec_merge(me, other)
+    # other overwrites me (me will change)
+    def _rec_merge(me, other)
       me.update(other) do |_k, mv, ov|
         if mv.is_a? Hash
-          rec_merge(mv, ov)
+          _rec_merge(mv, ov)
         else
           ov
         end

@@ -64,7 +64,7 @@ module CIAX
         @stat[:data].keys.select { |k| /type/ !~ k.to_s }.each do |k|
           v = @stat[:data][k]
           if v.is_a? Array
-            rec_expand(k, v, val)
+            _rec_expand(k, v, val)
           else
             val[k.to_s] = v
           end
@@ -72,11 +72,11 @@ module CIAX
         val
       end
 
-      def rec_expand(k, v, val)
+      def _rec_expand(k, v, val)
         v.size.times do |i|
           case v[i]
           when Enumerable
-            rec_expand("#{k}:#{i}", v[i], val)
+            _rec_expand("#{k}:#{i}", v[i], val)
           else
             val["#{k}:#{i}"] = v[i]
           end

@@ -4,11 +4,13 @@ require 'librepeat'
 
 module CIAX
   ####### For Command DB #######
-  class DbCmd < Db
+  class DbTree < Db
     def initialize(type, proj = nil)
       super
       @rep = Repeat.new
     end
+
+    private
 
     # Take parameter and next line
     def par2item(doc, item)

@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require 'libdbcmd'
+require 'libdbtree'
 
 module CIAX
   # Instance Layer
   module Cmd
     # Instance DB
-    class Db < DbCmd
+    class Db < DbTree
       def initialize
         super('cdb')
       end

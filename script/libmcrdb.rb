@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libdbcmd'
+require 'libdbtree'
 module CIAX
   # Macro Layer
   module Mcr
@@ -25,7 +25,7 @@ module CIAX
     end
 
     # Macro Db
-    class Db < DbCmd
+    class Db < DbTree
       def initialize
         super('mdb')
       end

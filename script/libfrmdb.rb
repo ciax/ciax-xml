@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require 'libdbcmd'
+require 'libdbtree'
 
 module CIAX
   # Frame Layer
   module Frm
     # Frame DB
-    class Db < DbCmd
+    class Db < DbTree
       def initialize
         super('fdb')
       end

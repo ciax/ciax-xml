@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libdbcmd'
+require 'libdbtree'
 
 module CIAX
   # Watch Layer

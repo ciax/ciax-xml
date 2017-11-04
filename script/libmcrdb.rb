@@ -37,7 +37,7 @@ module CIAX
 
       private
 
-      def doc_to_db(doc)
+      def _doc_to_db(doc)
         dbi = super
         @sites = []
         init_command(dbi)

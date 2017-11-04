@@ -18,10 +18,10 @@ module CIAX
         def to_v
           upd
           vw = ''
-          view_time(vw)
+          ___view_time(vw)
           vw << itemize('Issuing', self[:exec])
           return vw if self[:stat].empty?
-          view_cond(vw)
+          ___view_cond(vw)
           vw << itemize('Interrupt', self[:int])
           vw << itemize('Blocked', self[:block])
         end
@@ -32,21 +32,21 @@ module CIAX
 
         private
 
-        def view_time(vw)
+        def ___view_time(vw)
           vw << itemize('Elapsed', elps_date(self[:time], now_msec))
           vw << itemize('ActiveTime', elps_sec(*self[:act_time]))
           vw << itemize('ToNextUpdate', elps_sec(now_msec, self[:upd_next]))
         end
 
-        def view_cond(vw)
+        def ___view_cond(vw)
           vw << itemize('Conditions')
           self[:stat].values.each do |i| # each event
             vw << cformat("    %:6s\t: %s\n", i[:label], rslt(i[:active]))
-            view_event(vw, i[:cond])
+            ___view_event(vw, i[:cond])
           end
         end
 
-        def view_event(vw, cond)
+        def ___view_event(vw, cond)
           cond.each do |j|
             vw << case j[:type]
                   when 'compare'

@@ -31,13 +31,13 @@ module CIAX
     # return Dbi
     def get(id)
       @displist.valid?(id) || id_err(id, @type, @displist)
-      _get_cache(id) || _get_db(id) { |docs| doc_to_db(docs.get(id)) }
+      _get_cache(id) || _get_db(id) { |docs| _doc_to_db(docs.get(id)) }
     end
 
     private
 
     # Returns Hash
-    def doc_to_db(doc)
+    def _doc_to_db(doc)
       Dbi.new(doc[:attr]).update(layer: layer_name)
     end
 

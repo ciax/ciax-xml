@@ -18,7 +18,7 @@ module CIAX
 
       private
 
-      def doc_to_db(doc)
+      def _doc_to_db(doc)
         at = doc[:attr]
         dbi = @fdb.get(at[:frm_id]).deep_copy
         dbi.update(at)

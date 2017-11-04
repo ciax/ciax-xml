@@ -20,7 +20,7 @@ module CIAX
 
       private
 
-      def doc_to_db(doc)
+      def _doc_to_db(doc)
         db = super
         doc[:top].each do |e1|
           id = e1[:id]

@@ -12,7 +12,7 @@ module CIAX
 
       private
 
-      def doc_to_db(doc)
+      def _doc_to_db(doc)
         dbi = super
         dbi[:stream] = doc[:stream] || Hashx.new
         init_command(doc, dbi)

@@ -13,7 +13,7 @@ module CIAX
 
       # single line element
       def element(tag, text, atrb = Hashx.new)
-        str = tag_begin(tag, atrb)
+        str = __tag_begin(tag, atrb)
         str << if text
                  format('>%s</%s>', text, tag)
                else
@@ -24,9 +24,9 @@ module CIAX
 
       def enclose(tag, atrb = Hashx.new)
         sub = Format.new(@indent + 1)
-        push(tag_begin(tag, atrb) + '>')
+        push(__tag_begin(tag, atrb) + '>')
         push sub
-        push(tag_end(tag))
+        push(___tag_end(tag))
         sub
       end
 
@@ -36,7 +36,7 @@ module CIAX
 
       private
 
-      def tag_begin(tag, atrb = Hashx.new)
+      def __tag_begin(tag, atrb = Hashx.new)
         str = format('  ' * @indent + '<%s', tag)
         atrb.each do |k, v|
           str << format(' %s="%s"', k, v)
@@ -44,7 +44,7 @@ module CIAX
         str
       end
 
-      def tag_end(tag)
+      def ___tag_end(tag)
         format('  ' * @indent + '</%s>', tag)
       end
     end

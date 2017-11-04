@@ -24,7 +24,7 @@ module CIAX
 
       # doc is <project>
       # return //project/group/instance
-      def doc_to_db(doc)
+      def _doc_to_db(doc)
         at = doc[:attr]
         dbi = @adb.get(at[:app_id]).deep_copy
         dbi.update(at)

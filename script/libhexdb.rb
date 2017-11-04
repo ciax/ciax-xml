@@ -13,7 +13,7 @@ module CIAX
 
       private
 
-      def doc_to_db(doc)
+      def _doc_to_db(doc)
         db = super
         hdb = db[:hexpack] = Hashx.new
         ___rec_db(doc[:top], hdb) # top is 'hexpack'

@@ -2,14 +2,25 @@
 require 'libmsg'
 require 'thread'
 
+# Add hash manipulate feature to Thread
+class Thread
+  def update(hash)
+    hash.each { |k, v| self[k.to_sym] = v if v }
+    self
+  end
+
+  def to_hash
+    keys.each_with_object({}) { |k, h| h[k] = self[k] }
+  end
+end
+
 module CIAX
   # Extended Thread class
   module Threadx
     include Msg
     Threads = ThreadGroup.new
-    Thread.current[:name] = 'Main'
-    Thread.current[:layer] = 'top'
-    Thread.current[:id] = File.basename($PROGRAM_NAME)
+    Thread.current.update(name: 'Main', layer: 'top',
+                          id: File.basename($PROGRAM_NAME))
 
     module_function
 
@@ -33,18 +44,15 @@ module CIAX
         @layer = layer
         @id = id
         th = super { ___do_proc(id) { yield } }
-        th[:layer] = layer
-        th[:name] = tname
-        th[:id] = id
-        th[:type] = type if type
+        th.update(layer: layer, name: tname, id: id, type: type)
         Threads.add(th)
       end
 
       private
 
-      def ___do_proc(_id)
+      def ___do_proc(id)
         Thread.pass
-        verbose { 'Initiate Thread' }
+        verbose { "Initiate Thread #{id}" }
         yield
       rescue Exception
         errmsg

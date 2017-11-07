@@ -54,7 +54,7 @@ module CIAX
           when 'integer'
             _get_num(hash).to_i
           else
-            hash[:fields].map { |e| get_field(e) }.join
+            hash[:fields].map { |e| __get_field(e) }.join
           end
         end
 
@@ -77,7 +77,7 @@ module CIAX
         end
 
         def _get_num(hash)
-          ary = hash[:fields].map { |e| get_field(e) }
+          ary = hash[:fields].map { |e| __get_field(e) }
           sign = /^[+-]$/ =~ ary[0] ? (ary.shift + '1').to_i : 1
           val = ary.map(&:to_f).inject(0) { |a, e| a + e }
           val /= ary.size if hash[:opration] == 'average'
@@ -92,7 +92,7 @@ module CIAX
           val
         end
 
-        def get_field(e)
+        def __get_field(e)
           fld = type?(e, Hash)[:ref] || give_up("No field Key in #{e}")
           val = @field.get(fld)
           # verbose(val.empty?) { "NoFieldContent in [#{fld}]" }
@@ -103,9 +103,9 @@ module CIAX
         end
 
         def ___get_binstr(e)
-          val = get_field(e).to_i
+          val = __get_field(e).to_i
           inv = (/true|1/ =~ e[:inv])
-          str = index_range(e[:bit]).map do |sft|
+          str = ___index_range(e[:bit]).map do |sft|
             bit = (val >> sft & 1)
             bit = -(bit - 1) if inv
             bit.to_s
@@ -115,7 +115,7 @@ module CIAX
         end
 
         # range format n:m,l,..
-        def index_range(str)
+        def ___index_range(str)
           str.split(',').map do |e|
             r, l = e.split(':').map { |n| expr(n) }
             Range.new(r, l || r).to_a

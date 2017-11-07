@@ -15,7 +15,7 @@ module CIAX
         @count = step[:count] = 1 if step[:retry]
         _show step.result
         begin
-          res = sub_macro(_get_ment(e)[:sequence], step)
+          res = _sub_macro(_get_ment(e)[:sequence], step)
           return res if res
           mstat[:result] = step[:result]
           raise Interlock

@@ -40,7 +40,7 @@ module CIAX
       def macro
         Thread.current[:query] = @qry
         _show(@record.start)
-        sub_macro(@cfg[:sequence], @record.cmt)
+        _sub_macro(@cfg[:sequence], @record.cmt)
       rescue Verification
         false
       rescue Interrupt
@@ -56,9 +56,9 @@ module CIAX
       private
 
       # macro returns result (true=complete /false=error)
-      def sub_macro(seqary, mstat)
+      def _sub_macro(seqary, mstat)
         ___pre_seq(seqary, mstat)
-        seqary.each { |e| break(true) unless do_step(e, mstat) }
+        seqary.each { |e| break(true) unless _do_step(e, mstat) }
       rescue Interlock
         # For retry
         false
@@ -70,7 +70,7 @@ module CIAX
       end
 
       # Return false if sequence is broken
-      def do_step(e, mstat)
+      def _do_step(e, mstat)
         step = @record.add_step(e, @depth)
         begin
           _show step.title
@@ -83,9 +83,9 @@ module CIAX
         raise
       end
 
-      # Sub for do_step()
+      # Sub for _do_step()
       def ___call_step(e, step, mstat)
-        method('cmd_' + e[:type]).call(e, step, mstat)
+        method('_cmd_' + e[:type]).call(e, step, mstat)
       ensure
         step.cmt
       end

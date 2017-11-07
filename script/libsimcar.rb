@@ -11,7 +11,7 @@ module CIAX
         @list = @cfg[:list]
       end
 
-      def cmd_in(num)
+      def _cmd_in(num)
         super
         ___sw_by_axis(num.to_i) ? '1' : '0'
       end

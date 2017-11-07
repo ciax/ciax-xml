@@ -10,7 +10,7 @@ module CIAX
       #   exec  = [cond1, 2, ...]
       #   cond  = [args1, 2, ..]
       #   args1 = ['cmd', 'par1', ..]
-      def init_watch(doc, db)
+      def _init_watch(doc, db)
         return {} unless doc.key?(:watch)
         wdoc = doc[:watch]
         wdb = db[:watch] = wdoc.to_h

@@ -15,7 +15,7 @@ module CIAX
       def _doc_to_db(doc)
         dbi = super
         dbi[:stream] = doc[:stream] || Hashx.new
-        init_command(doc, dbi)
+        _init_command(doc, dbi)
         init_response(doc, dbi)
         dbi
       end
@@ -48,7 +48,7 @@ module CIAX
       end
 
       # Command section
-      def init_command(dom, dbi)
+      def _init_command(dom, dbi)
         cdb = super(dbi)
         _add_group(dom[:command])
         cdb[:frame] = init_frame(dom[:cmdframe]) { |e| _add_cmdfrm(e) }

@@ -15,10 +15,10 @@ module CIAX
 
       def _doc_to_db(doc)
         dbi = super
-        init_command(dbi)
+        _init_command(dbi)
         _add_group(doc[:command])
-        init_status(doc[:status], dbi)
-        init_watch(doc, dbi)
+        ___init_status(doc[:status], dbi)
+        _init_watch(doc, dbi)
         dbi[:app_id] = dbi[:id]
         dbi
       end
@@ -53,7 +53,7 @@ module CIAX
       end
 
       # Status Db
-      def init_status(adbs, dbi)
+      def ___init_status(adbs, dbi)
         sdb = { group: Hashx.new, index: Hashx.new, symtbl: [] }
         @rep.each(adbs) do |e|
           ___grp_stat(e, sdb)

@@ -14,7 +14,7 @@ getline do |line1, base|
   getline do |line2, ind|
     break if base > ind || line2 =~ /^ *(class|module)/
     next if line2 !~ /^ *def/
-    (line2 =~ /\w+/)
-    puts format("%s\t%s", ARGF.filename, line2)
+    ($' =~ /\w+/)
+    puts format("%s\t%s", $&, ARGF.filename)
   end
 end

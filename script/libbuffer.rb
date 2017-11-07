@@ -40,7 +40,7 @@ module CIAX
 
       # Send app entity
       def send(ent, n)
-        clear if n.zero? # interrupt
+        __clear if n.zero? # interrupt
         cid = type?(ent, CmdBase::Entity).id
         verbose { "Execute #{cid}(#{@id}):timing" }
         # batch is frm batch (ary of ary)
@@ -53,8 +53,8 @@ module CIAX
         # element of que is args of Frm::Cmd
         @que_buf = Threadx::QueLoop.new('Buffer', 'app', @id) do |iq|
           verbose { 'Waiting' }
-          pri_sort(iq.shift)
-          sv_up
+          ___pri_sort(iq.shift)
+          ___sv_up
           ___exec_buf if iq.empty?
         end
         self
@@ -66,7 +66,7 @@ module CIAX
 
       private
 
-      def pri_sort(rcv)
+      def ___pri_sort(rcv)
         pri = rcv[:pri]
         cid = rcv[:cid]
         @sv_stat.push(:queue, cid)
@@ -81,11 +81,11 @@ module CIAX
         until (args = ___reorder_cmd).empty?
           @recv_proc.call(args, 'buffer')
         end
-        flush
+        __flush
       rescue CommError
-        alert
+        __alert
       rescue
-        alert($ERROR_POSITION)
+        __alert($ERROR_POSITION)
       end
 
       # Remove duplicated args and unshift one
@@ -106,25 +106,25 @@ module CIAX
         args
       end
 
-      def sv_up
+      def ___sv_up
         verbose { "Busy Up(#{@id}):timing" }
         @sv_stat.up(:busy)
       end
 
-      def sv_dw
+      def ___sv_dw
         verbose { "Busy Down(#{@id}):timing" }
         @sv_stat.flush(:queue, @outbuf.cids).dw(:busy)
       end
 
-      def clear
+      def __clear
         @outbuf.clear
         @que_buf.clear.run
-        flush
+        __flush
       end
 
-      def flush
+      def __flush
         @flush_proc.call(self)
-        sv_dw
+        ___sv_dw
         verbose do
           var = @sv_stat.pick(%i(busy queue)).inspect
           "Flush buffer(#{@id}):timing#{var}"
@@ -132,8 +132,8 @@ module CIAX
         self
       end
 
-      def alert(str = nil)
-        clear
+      def __alert(str = nil)
+        __clear
         str = $ERROR_INFO.to_s + str.to_s
         super(str)
       end

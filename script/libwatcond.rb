@@ -75,13 +75,13 @@ module CIAX
 
       def ___chk_by_type(ckitm)
         vn = ckitm[:var]
-        name = "cnd_#{ckitm[:type]}"
+        name = "_cnd_#{ckitm[:type]}"
         method(name).call(vn, ckitm)
       rescue NameError
         cfg_err("No such condition #{name}")
       end
 
-      def cnd_onchange(vn, ckitm)
+      def _cnd_onchange(vn, ckitm)
         tol = ckitm[:tolerance]
         val = @stat[:data][vn]
         cri = @event[:last][vn]
@@ -111,7 +111,7 @@ module CIAX
         res
       end
 
-      def cnd_pattern(vn, ckitm)
+      def _cnd_pattern(vn, ckitm)
         cri = ckitm[:val]
         val = @stat[:data][vn]
         res = (/#{cri}/ =~ val ? true : false)
@@ -122,7 +122,7 @@ module CIAX
         res
       end
 
-      def cnd_range(vn, ckitm)
+      def _cnd_range(vn, ckitm)
         cri = ckitm[:val]
         val = @stat[:data][vn]
         f = format('%.3f', val.to_f)
@@ -134,7 +134,7 @@ module CIAX
         res
       end
 
-      def cnd_compare(_vn, ckitm)
+      def _cnd_compare(_vn, ckitm)
         vars = ckitm[:vars]
         vars.map { |vn| @stat[:data][vn] }.uniq.size == 1
       end

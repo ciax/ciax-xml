@@ -24,15 +24,15 @@ module CIAX
         verbose { "Initiate [#{iocmd}]" }
         init_time2cmt
         ___init_par(cfg)
-        reopen
+        __reopen
       end
 
       def snd(str, cid)
         return if str.to_s.empty?
         verbose { "Data Sending(#{cid})\n" + visible(str) }
-        reopen
+        __reopen
         @f.write(str)
-        convert('snd', str, cid).cmt
+        __convert('snd', str, cid).cmt
       rescue Errno::EPIPE
         @f.close
         com_err('send failed')
@@ -40,25 +40,25 @@ module CIAX
 
       def rcv
         ___wait_rcv
-        reopen
+        __reopen
         str = ___concat_rcv
         verbose { "Data Recieved(#{self['cmd']})\n" + visible(str) }
-        convert('rcv', str).cmt
+        __convert('rcv', str).cmt
       end
 
-      def reopen(int = 0)
-        open_strm if !@f || @f.closed?
+      private
+
+      def __reopen(int = 0)
+        ___open_strm if !@f || @f.closed?
       rescue SystemCallError
         int = ___open_fail(int)
         retry
       end
 
-      private
-
-      def convert(dir, data, cid = nil)
+      def __convert(dir, data, cid = nil)
         @binary = data
         self['cmd'] = cid if cid
-        update('dir' => dir, 'base64' => encode(data))
+        update('dir' => dir, 'base64' => ___encode_base64(data))
       end
 
       def ___init_par(cfg)
@@ -71,7 +71,7 @@ module CIAX
         @post_open_proc = proc {}
       end
 
-      def open_strm
+      def ___open_strm
         # SIGINT gets around the child process
         # verbose { 'Stream Opening' }
         @pre_open_proc.call
@@ -79,7 +79,7 @@ module CIAX
         @f = IO.popen(@iocmd, 'r+')
         Signal.trap(:INT, 'DEFAULT')
         verbose { 'Initiate Opened' }
-        at_exit { close_strm }
+        at_exit { ___close_strm }
         @post_open_proc.call
         # verbose { 'Stream Open successfully' }
         # Shut off from Ctrl-C Signal to the child process
@@ -87,7 +87,7 @@ module CIAX
         self
       end
 
-      def close_strm
+      def ___close_strm
         return if @f.closed?
         verbose { 'Closing Stream' }
         Process.kill('TERM', @f.pid)
@@ -104,7 +104,7 @@ module CIAX
         (int + 1) * 2
       end
 
-      def encode(str)
+      def ___encode_base64(str)
         [str].pack('m').split("\n").join('')
       end
 

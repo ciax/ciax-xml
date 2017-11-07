@@ -32,8 +32,6 @@ module CIAX
       extend(JHttp).ext_http(host, dir)
     end
 
-    private
-
     def base_name(tag = nil)
       [@type, self[:id], tag].compact.join('_')
     end

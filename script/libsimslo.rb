@@ -26,15 +26,14 @@ module CIAX
 
       private
 
-      def method_call(str)
-        cmd = 'cmd_' + str
-        if /=/ =~ cmd
-          method("#{$`}=").call($')
-        elsif /\((.*)\)/ =~ cmd
-          method($`).call(Regexp.last_match(1))
+      def _method_call(str)
+        if /=/ =~ str
+          super("#{$`}=", $')
+        elsif /\((.*)\)/ =~ str
+          super($`, Regexp.last_match(1))
         else
-          method(cmd).call
-        end || @prompt_ng
+          super(str)
+        end
       end
 
       def to_int(real)

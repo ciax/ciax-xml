@@ -58,7 +58,7 @@ module CIAX
 
       private
 
-      def dispatch(str)
+      def _dispatch(str)
         case str
         when /^>0([0-3])!J..$/
           # Input

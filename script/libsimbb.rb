@@ -14,7 +14,7 @@ module CIAX
 
       private
 
-      def dispatch(str)
+      def _dispatch(str)
         case str
         # getstat
         when /^!0RD/

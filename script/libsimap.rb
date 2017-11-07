@@ -13,7 +13,7 @@ module CIAX
 
       private
 
-      def dispatch(str)
+      def _dispatch(str)
         if str == '*00P1'
           x = 94
           6.times { x += rand }

@@ -60,7 +60,7 @@ module CIAX
       # If cut str incldes terminetor, str will be trimmed
       def cut(e0)
         verbose { "Cut Start for [#{@frame.inspect}](#{@frame.size})" }
-        return verify(e0) if e0[:val] # Verify value
+        return ___verify(e0) if e0[:val] # Verify value
         str = ___cut_by_type(e0)
         return '' if str.empty?
         verbose { "Cut String: [#{str.inspect}]" }
@@ -110,7 +110,7 @@ module CIAX
         str
       end
 
-      def verify(e0)
+      def ___verify(e0)
         ref = e0[:val]
         len = e0[:length] || ref.size
         val = str = @frame.slice!(0, len.to_i)

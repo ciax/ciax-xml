@@ -61,7 +61,7 @@ module CIAX
         when :block_grp
           act.get(:block) { [] }.concat(___make_block(e1, cgrp))
         else
-          cnd << _make_cond(e1, name == :compare)
+          cnd << ___make_cond(e1, name == :compare)
         end
       end
 
@@ -76,7 +76,7 @@ module CIAX
         cgrp[e1[:ref]][:members].map { |k| [k] }
       end
 
-      def _make_cond(e1, cmp = nil)
+      def ___make_cond(e1, cmp = nil)
         h = e1.to_h
         h.each_value { |v| v.replace(@rep.formatting(v)) }
         h.update(vars: e1.map { |e2| e2[:var] }) if cmp

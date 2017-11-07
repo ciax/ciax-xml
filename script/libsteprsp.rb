@@ -29,17 +29,17 @@ module CIAX
         # Conditional judgment section
         def skip?
           wait_ready_all
-          super(_all_conds?)
+          super(__all_conds?)
         end
 
         def fail?
           wait_ready_all
-          super(!_all_conds?)
+          super(!__all_conds?)
         end
 
         def timeout?
           res = progress(self[:retry]) { active? } ||
-                progress(self[:retry].to_i - self[:count]) { _all_conds? }
+                progress(self[:retry].to_i - self[:count]) { __all_conds? }
           set_result('timeout', 'pass', res)
         end
 
@@ -68,29 +68,29 @@ module CIAX
 
         private
 
-        def _all_conds?
-          stats = _scan
+        def __all_conds?
+          stats = ___scan
           conds = @condition.map do |h|
-            _condition(stats[h[:site]], h)
+            ___condition(stats[h[:site]], h)
           end
           self[:conditions] = conds
           conds.all? { |h| h[:skip] || h[:res] }
         end
 
         # Get status from Devices via http
-        def _scan
+        def ___scan
           @exes.each_with_object({}) do |exe, hash|
             st = hash[exe.id] = exe.stat.latest
             verbose { "Scanning #{exe.id} (#{st[:time]})/(#{st.object_id})" }
           end
         end
 
-        def _condition(stat, h)
+        def ___condition(stat, h)
           c = {}
           %i(site var form cmp cri skip).each { |k| c[k] = h[k] }
           unless c[:skip]
             real = ___get_real(stat, c)
-            res = method(c[:cmp]).call(c[:cri], real)
+            res = method('_ope_' + c[:cmp]).call(c[:cri], real)
             c.update(real: real, res: res)
             verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
           end
@@ -107,19 +107,19 @@ module CIAX
         end
 
         # Operators
-        def equal(a, b)
+        def _ope_equal(a, b)
           a == b
         end
 
-        def not(a, b)
+        def _ope_not(a, b)
           a != b
         end
 
-        def match(a, b)
+        def _ope_match(a, b)
           /#{a}/ =~ b ? true : false
         end
 
-        def unmatch(a, b)
+        def _ope_unmatch(a, b)
           /#{a}/ !~ b ? true : false
         end
       end

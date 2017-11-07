@@ -13,9 +13,11 @@ module CIAX
       module Prt
         include Msg
         OPE = { equal: '==', not: '!=', match: '=~', unmatch: '!~' }.freeze
-        def self.extended(obj)
-          Msg.type?(obj, Hash)
-        end
+        Title_List = {
+          mesg: ['Mesg', 5], bypass: ['Bypass?', 6, 'skip if satisfied'],
+          wait: ['Waiting', 6], goal: ['Done?', 6, 'skip if satisfied'],
+          check: ['Check', 6, 'interlock'], verify: ['Verify', 6, 'at the end']
+        }.freeze
 
         def ext_prt(base)
           @base = type?(base, Integer)
@@ -25,12 +27,8 @@ module CIAX
 
         def title
           type = self[:type]
-          args = self[:args].join(':') if key?(:args)
-          if @title_list.key?(type.to_sym)
-            _head(*@title_list[type.to_sym])
-          else
-            method('title_' + type).call(args)
-          end
+          self[:async] = '(async)' if key?(:async)
+          __head(*@title_list[type.to_sym])
         rescue NameError
           Msg.msg("No such type #{type}")
           type
@@ -43,7 +41,7 @@ module CIAX
         end
 
         def action
-          key?(:action) ? _body(self[:action].capitalize, 8) + "\n" : ''
+          key?(:action) ? __body(self[:action].capitalize, 8) + "\n" : ''
         end
 
         # Display section
@@ -60,8 +58,8 @@ module CIAX
 
         private
 
-        def _body(msg, col = 5)
-          _rindent(5) + Msg.colorize(msg, col)
+        def __body(msg, col = 5)
+          __rindent(5) + Msg.colorize(msg, col)
         end
 
         def ___prt_count
@@ -70,13 +68,10 @@ module CIAX
         end
 
         def ___color_result(res)
-          if /failed|timeout/ =~ res
-            1
-          elsif /query/ =~ res
-            5
-          else
-            2
+          { faild: 1, timeout: 1, query: 5 }.each do |k, v|
+            /#{k}/ =~ res && (return v)
           end
+          2
         end
 
         def ___prt_result(res, mary)
@@ -90,13 +85,14 @@ module CIAX
 
         def ___prt_conds(mary)
           (self[:conditions] || {}).each do |h|
-            res = if h[:skip]
-                    _body('!', 6)
-                  else
-                    h[:res] ? _body('o', 2) : _body('x', ___fail_color)
-                  end
-            mary << res + ___cond_line(h)
+            mary << ___cond_result(h) + ___cond_line(h)
           end
+        end
+
+        def ___cond_result(h)
+          return __body('!', 6) if h[:skip]
+          return __body('o', 2) if h[:res]
+          __body('x', %w(goal bypass).include?(self[:type]) ? 4 : 1)
         end
 
         def ___cond_line(h)
@@ -109,44 +105,31 @@ module CIAX
           line
         end
 
-        def _head(msg, col, label = 'noname')
-          elps = format('[%6.2f]', (self[:time] - @base) * 0.001) + _rindent
-          elps + Msg.colorize(msg, col) + ':' + (self[:label] || label)
+        def __head(msg, col, label = 'noname')
+          elps = format('[%6.2f]', (self[:time] - @base) * 0.001) + __rindent
+          elps + Msg.colorize(msg, col) + ':' +
+            (self[:label] || (label.is_a?(Proc) ? "[#{label.call}]" : label))
         end
 
-        def ___fail_color
-          %w(goal bypass).include?(self[:type]) ? 4 : 1
-        end
-
-        def _rindent(add = 0)
+        def __rindent(add = 0)
           Msg.indent((self[:depth].to_i + add) * 2)
         end
 
         # Branched functions (instead of case/when semantics)
         def ___init_title_list
           @title_list = {
-            mesg: ['Mesg', 5], bypass: ['Bypass?', 6, 'skip if satisfied'],
-            goal: ['Done?', 6, 'skip if satisfied'],
-            wait: ['Waiting', 6], upd: ['Update', 10, "[#{self[:site]}]"],
-            check: ['Check', 6, 'interlock'],
-            verify: ['Verify', 6, 'at the end'],
-            select: ['Select by', 11, "[#{self[:site]}:#{self[:var]}]"],
-            sleep: ['Sleeping', 6, "[#{self[:val]}sec]"],
-            system: ['System', 13, "[#{self[:val]}]"]
-          }
+            upd: ['Update', 10, __sid(:site)],
+            system: ['System', 13, __sid(:val)],
+            mcr: ['MACRO', 3, __sid(:args, :async)],
+            exec: ['EXEC', 13, __sid(:site, :args)],
+            cfg: ['Config', 14, __sid(:site, :args)],
+            sleep: ['Sleeping(sec)', 6, __sid(:val)],
+            select: ['Select by', 11, __sid(:site, :var)]
+          }.update(Title_List)
         end
 
-        def title_mcr(args)
-          async = self[:async] ? '(async)' : ''
-          _head('MACRO', 3, "[#{args}]#{async}")
-        end
-
-        def title_exec(args)
-          _head('EXEC', 13, "[#{self[:site]}:#{args}]")
-        end
-
-        def title_cfg(args)
-          _head('Config', 14, "[#{self[:site]}:#{args}]")
+        def __sid(*names)
+          proc { names.map { |n| self[n] }.flatten.compact.join(':') }
         end
       end
     end

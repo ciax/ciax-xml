@@ -30,8 +30,6 @@ module CIAX
         super
       end
 
-      private
-
       # Mode Extention by Option
       def ext_client
         @post_exe_procs << proc do
@@ -59,6 +57,8 @@ module CIAX
         ___mk_cmdlist
         super
       end
+
+      private
 
       # Initiate for all mode
       def _init_net

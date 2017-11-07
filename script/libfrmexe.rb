@@ -38,18 +38,6 @@ module CIAX
         self
       end
 
-      private
-
-      # Mode Extension by Option
-      def ext_local
-        @cobj.get('set').def_proc do |ent|
-          @stat.repl(ent.par[0], ent.par[1])
-          @stat.flush
-          verbose { "Set [#{ent.par[0]}] = #{ent.par[1]}" }
-        end
-        super
-      end
-
       def ext_local_test
         @stat.ext_local_file
         @cobj.rem.ext.cfg[:def_msg] = 'TEST'
@@ -58,6 +46,18 @@ module CIAX
 
       def ext_local_driver
         require 'libfrmdrv'
+        super
+      end
+
+      private
+
+      # Mode Extension by Option
+      def _ext_local
+        @cobj.get('set').def_proc do |ent|
+          @stat.repl(ent.par[0], ent.par[1])
+          @stat.flush
+          verbose { "Set [#{ent.par[0]}] = #{ent.par[1]}" }
+        end
         super
       end
 

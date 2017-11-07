@@ -17,8 +17,6 @@ module CIAX
         _opt_mode
       end
 
-      private
-
       # Mode Extension by Option
       def ext_local_server
         # Specific setting must be done after super to override them
@@ -31,6 +29,8 @@ module CIAX
 
       # Dummy
       def ext_local_driver; end
+
+      private
 
       # Sub Methods for Initialize
       def _init_takeover

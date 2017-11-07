@@ -26,16 +26,6 @@ module CIAX
         self
       end
 
-      private
-
-      # Mode Extention by Option
-      def ext_local
-        ___init_upd
-        @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
-        @stat.ext_local_rsp(@sub.stat, @sv_stat)
-        super
-      end
-
       def ext_local_test
         @post_exe_procs << proc { @stat.update? }
         super
@@ -43,6 +33,16 @@ module CIAX
 
       def ext_local_driver
         require 'libwatdrv'
+        super
+      end
+
+      private
+
+      # Mode Extention by Option
+      def _ext_local
+        ___init_upd
+        @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
+        @stat.ext_local_rsp(@sub.stat, @sv_stat)
         super
       end
 

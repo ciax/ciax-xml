@@ -53,15 +53,6 @@ module CIAX
         self
       end
 
-      private
-
-      # Mode Extension by Option
-      def ext_local
-        ___init_proc_set
-        ___init_proc_del
-        super
-      end
-
       def ext_local_test
         @stat.ext_local_sym(@cfg[:sdb]).ext_local_file
         @cobj.rem.ext.def_proc do |ent|
@@ -73,6 +64,15 @@ module CIAX
 
       def ext_local_driver
         require 'libappdrv'
+        super
+      end
+
+      private
+
+      # Mode Extension by Option
+      def _ext_local
+        ___init_proc_set
+        ___init_proc_del
         super
       end
 

@@ -53,24 +53,16 @@ module CIAX
       extend(context_module('Shell')).ext_shell
     end
 
-    private
-
-    # Local operation included in ext_local_test, ext_local_driver (non_client)
-    def ext_local
-      @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
-      self
-    end
-
     def ext_local_test
       @mode = 'TEST'
-      ext_local
+      _ext_local
       self
     end
 
     def ext_local_driver
       @mode = 'DRV'
       extend(context_module('Drv')).ext_local_driver
-      ext_local
+      _ext_local
       self
     end
 
@@ -82,6 +74,14 @@ module CIAX
     def ext_local_server
       require 'libserver'
       extend(Server).ext_local_server
+    end
+
+    private
+
+    # Local operation included in ext_local_test, ext_local_driver (non_client)
+    def _ext_local
+      @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
+      self
     end
 
     # Sub methods for Initialize

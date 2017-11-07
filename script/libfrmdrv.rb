@@ -19,6 +19,8 @@ module CIAX
           self
         end
 
+        private
+
         def ___init_stream
           @stream = Stream.new(@id, @cfg)
           @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }

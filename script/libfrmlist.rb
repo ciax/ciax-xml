@@ -10,12 +10,12 @@ module CIAX
     class List
       def initialize(cfg, atrb = Hashx.new)
         super
-        store_db(Dev::Db.new)
+        _store_db(Dev::Db.new)
       end
 
       private
 
-      def switch(site)
+      def _switch(site)
         get(site)
       end
     end

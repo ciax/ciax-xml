@@ -15,14 +15,8 @@ module CIAX
         @run_list = []
       end
 
-      def store_db(db)
-        @db = @cfg[:db] = type?(db, Db)
-        _get_sites
-        self
-      end
-
       def get(site)
-        cobj = @list.key?(site) ? @list.get(site) : add(site)
+        cobj = @list.key?(site) ? @list.get(site) : ___add(site)
         @sub_list.get(cobj.sub.id) if @sub_list
         @current = site
         cobj
@@ -44,15 +38,18 @@ module CIAX
 
       private
 
-      # If :site is set, get() will be done at run();
-      def _get_sites
-        return unless @cfg.key?(:sites) # in case of sub_list(Frm::List)
-        sites = @db.displist.valid_keys & @cfg[:sites]
-        @run_list = sites.empty? ? @db.run_list : sites
-        @current = sites.first
+      def _store_db(db)
+        @db = @cfg[:db] = type?(db, Db)
+        # If @cfg[:site] is set, get() will be done at run();
+        if @cfg.key?(:sites) # in case of sub_list(Frm::List)
+          sites = @db.displist.valid_keys & @cfg[:sites]
+          @run_list = sites.empty? ? @db.run_list : sites
+          @current = sites.first
+        end
+        self
       end
 
-      def add(site) # returns Exe
+      def ___add(site) # returns Exe
         # layer_module can be Frm,App,Wat,Hex
         atrb = { dbi: @db.get(site), sub_list: @sub_list }
         obj = layer_module::Exe.new(@cfg, atrb)
@@ -60,7 +57,7 @@ module CIAX
         obj
       end
 
-      def switch(site)
+      def _switch(site)
         # Change top_list as well as the lower layer changed
         @cfg[:top_list].get(site)
         super

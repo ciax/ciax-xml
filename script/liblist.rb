@@ -21,7 +21,7 @@ module CIAX
 
     private
 
-    def switch(id)
+    def _switch(id)
       @list.get(id)
     end
 
@@ -42,7 +42,7 @@ module CIAX
       end
 
       def shell
-        switch(@current).shell
+        _switch(@current).shell
       rescue @cfg[:jump_class]
         @current = $ERROR_INFO.to_s
         retry
@@ -50,7 +50,9 @@ module CIAX
         @cfg[:opt].usage('(opt) [id]')
       end
 
-      def switch(site)
+      private
+
+      def _switch(site)
         obj = super(site)
         return obj if obj.is_a?(Shell) || obj.is_a?(CIAX::Exe::Shell)
         obj.ext_shell

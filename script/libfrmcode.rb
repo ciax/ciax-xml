@@ -42,16 +42,16 @@ module CIAX
         end
 
         def ___num_by_type(code, type)
-          method("dec_#{type}").call(code)
+          method("_dec_#{type}").call(code)
         rescue NameError
-          dec_integer(code)
+          _dec_integer(code)
         end
 
-        def dec_hexstr(code) # "FF" -> "255"
+        def _dec_hexstr(code) # "FF" -> "255"
           [code.hex, 16]
         end
 
-        def dec_decstr(code) # "80000123" -> "-123"
+        def _dec_decstr(code) # "80000123" -> "-123"
           # sign: k3n=F, oss=8,
           sign = /[8Ff]/ =~ code.slice!(0) ? '-' : ''
           code.sub!(/^0+/, '')
@@ -59,12 +59,12 @@ module CIAX
           [num, 10]
         end
 
-        def dec_binstr(code)
+        def _dec_binstr(code)
           num = [code].pack('b*').ord
           [num, 2]
         end
 
-        def dec_integer(code)
+        def _dec_integer(code)
           # integer
           ary = code.unpack('C*')
           ary.reverse! if @endian == 'little'

@@ -51,22 +51,22 @@ module CIAX
         private
 
         def ___calcurate # Check Code End
-          method("cc_#{@method}").call
+          method("_cc_#{@method}").call
         rescue NameError
           Msg.cfg_err("No such CC method #{@method}")
         end
 
-        def cc_len
+        def _cc_len
           @ccrange.length
         end
 
-        def cc_bcc
+        def _cc_bcc
           chk = 0
           @ccrange.each_byte { |c| chk ^= c }
           chk
         end
 
-        def cc_sum
+        def _cc_sum
           @ccrange.sum(8)
         end
       end

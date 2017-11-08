@@ -66,19 +66,19 @@ module CIAX
         def ___make_data(rid)
           @cache = self[:data].deep_copy
           if @fds[rid].key?(:noaffix)
-            getfield_rec(['body'])
+            __getfield_rec(['body'])
           else
-            getfield_rec(@sel[:main])
+            __getfield_rec(@sel[:main])
             @frame.cc.check(@cache.delete('cc'))
           end
           self[:data] = @cache
         end
 
         # Process Frame to Field
-        def getfield_rec(e0)
+        def __getfield_rec(e0)
           e0.each do |e1|
             if e1.is_a?(Hash)
-              frame_to_field(e1) { @frame.cut(e1) }
+              __frame_to_field(e1) { @frame.cut(e1) }
             else
               ___make_rec(e1)
             end
@@ -88,15 +88,15 @@ module CIAX
         def ___make_rec(e1)
           case e1
           when 'ccrange'
-            @frame.cc.enclose { getfield_rec(@sel[:ccrange]) }
+            @frame.cc.enclose { __getfield_rec(@sel[:ccrange]) }
           when 'body'
-            getfield_rec(@sel[:body] || [])
+            __getfield_rec(@sel[:body] || [])
           when 'echo' # Send back the command string
             @frame.cut(label: 'Command Echo', val: @echo)
           end
         end
 
-        def frame_to_field(e0)
+        def __frame_to_field(e0)
           enclose((e0[:label]).to_s, 'Field:End') do
             if e0[:index]
               ___ary_field(e0) { yield }
@@ -125,18 +125,18 @@ module CIAX
             e1[:range] || "0:#{e1[:size].to_i - 1}"
           end
           enclose("Array:[#{akey}]:Range#{idxs}", "Array:Assign[#{akey}]") do
-            @cache[akey] = mk_array(idxs, self[:data][akey]) { yield }
+            @cache[akey] = __mk_array(idxs, self[:data][akey]) { yield }
           end
         end
 
-        def mk_array(idx, field)
+        def __mk_array(idx, field)
           # make multidimensional array
           # i.e. idxary=[0,0:10,0] -> @data[0][0][0] .. @data[0][10][0]
           return yield if idx.empty?
           fld = field || []
           f, l = idx[0].split(':').map { |i| expr(i) }
           Range.new(f, l || f).each do |i|
-            fld[i] = mk_array(idx[1..-1], fld[i]) { yield }
+            fld[i] = __mk_array(idx[1..-1], fld[i]) { yield }
             verbose { "Array:Index[#{i}]=#{fld[i]}" }
           end
           fld

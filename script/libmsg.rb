@@ -21,28 +21,28 @@ module CIAX
     def verbose(cond = true)
       return cond unless ENV['VER'] && cond && !@hide_inside
       str = type?(yield, String)
-      msg = make_msg(str)
-      prt_lines(msg) if condition(msg)
+      msg = __make_msg(str)
+      __prt_lines(msg) if ___chk_ver(msg)
       cond
     end
 
     def info(title)
-      show make_msg(title, 2) unless $stderr.tty?
+      show __make_msg(title, 2) unless $stderr.tty?
       self
     end
 
     def warning(title)
-      show make_msg(title, 3)
+      show __make_msg(title, 3)
       self
     end
 
     def alert(title)
-      show make_msg(title, 5)
+      show __make_msg(title, 5)
       self
     end
 
     def errmsg
-      show make_msg("ERROR:#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
+      show __make_msg("ERROR:#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
       self
     end
 
@@ -55,12 +55,12 @@ module CIAX
       res = yield
     ensure
       Msg.ver_indent(-1)
-      prt_lines(make_msg(format(title2, res))) if @enclosed
+      __prt_lines(__make_msg(format(title2, res))) if @enclosed
     end
 
     private
 
-    def prt_lines(data)
+    def __prt_lines(data)
       ind = 0
       base = Msg.ver_indent
       data.each_line do |line|
@@ -70,14 +70,14 @@ module CIAX
       @printed = true
     end
 
-    def make_msg(title, c = nil)
+    def __make_msg(title, c = nil)
       @printed = false
       return unless title
-      ts = make_head + ':'
+      ts = ___make_head + ':'
       ts << (c ? Msg.colorize(title.to_s, c) : title.to_s)
     end
 
-    def head_ary
+    def ___head_ary
       cary = []
       th = Thread.current[:name]
       cary << [th, Msg.th_color(th)] if th
@@ -88,24 +88,24 @@ module CIAX
       cary << [cls, Msg.cls_color(cls)]
     end
 
-    def make_head
-      Msg.indent(Msg.ver_indent) + head_ary.map do |str, color|
+    def ___make_head
+      Msg.indent(Msg.ver_indent) + ___head_ary.map do |str, color|
         Msg.colorize(str.to_s, color)
       end.join(':')
     end
 
     # VER= makes setenv "" to VER otherwise nil
-    def condition(msg)
+    def ___chk_ver(msg)
       return if !ENV['VER'] || !msg
       title = msg.split("\n").first.upcase
       ENV['VER'].upcase.split(',').any? do |s|
         s.split(':').all? do |e|
-          chk_exclude(e, title)
+          ___chk_exclude(e, title)
         end
       end
     end
 
-    def chk_exclude(e, title)
+    def ___chk_exclude(e, title)
       exc = e.split('^')
       inc = exc.shift
       return if exc.any? { |x| title.include?(x) }

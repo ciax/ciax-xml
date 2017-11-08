@@ -53,9 +53,9 @@ module CIAX
 
       # Jump Commands
       module Jump
-        include CmdBase
+        deep_include CmdBase
         # Jump Group
-        class Group < Group
+        class Group < CmdBase::Group
           def initialize(cfg, atrb = Hashx.new)
             name = m2id(cfg[:jump_class], 1).capitalize
             atrb[:caption] = "Switch #{name}s"
@@ -82,15 +82,13 @@ module CIAX
             self
           end
         end
-        class Item < Item; end
-        class Entity < Entity; end
       end
 
       # Switch View Group
       module View
-        include CmdBase
+        deep_include CmdBase
         # cfg should have [:output]
-        class Group < Group
+        class Group < CmdBase::Group
           def initialize(cfg, atrb = Hashx.new)
             atrb.update(caption: 'Change View Mode', column: 2, color: 9)
             super
@@ -102,8 +100,6 @@ module CIAX
             end
           end
         end
-        class Item < Item; end
-        class Entity < Entity; end
       end
 
       if __FILE__ == $PROGRAM_NAME

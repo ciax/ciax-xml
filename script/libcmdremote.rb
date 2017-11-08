@@ -58,9 +58,9 @@ module CIAX
       #### Groups ####
       # System Commands
       module Sys
-        include CIAX::CmdBase
+        deep_include CmdBase
         # System Command Group
-        class Group < Group
+        class Group < CmdBase::Group
           def initialize(dom_cfg, atrb = Hashx.new)
             atrb.get(:caption) { 'System Commands' }
             super
@@ -69,15 +69,13 @@ module CIAX
             add_item(nil, nil, def_msg: '')
           end
         end
-        class Item < Item; end
-        class Entity < Entity; end
       end
 
       # Internal Commands
       module Int
-        include CmdBase
+        deep_include CmdBase
         # Internal Command Group
-        class Group < Group
+        class Group < CmdBase::Group
           def initialize(dom_cfg, atrb = Hashx.new)
             atrb.get(:caption) { 'Internal Commands' }
             super
@@ -95,8 +93,6 @@ module CIAX
             { parameters: ary }
           end
         end
-        class Item < Item; end
-        class Entity < Entity; end
       end
     end
   end

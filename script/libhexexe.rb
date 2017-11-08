@@ -11,7 +11,7 @@ module CIAX
     class Exe < Exe
       def initialize(cfg, atrb = Hashx.new)
         super
-        init_dbi2cfg
+        _init_dbi2cfg
         _init_takeover
         _init_view
         _opt_mode

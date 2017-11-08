@@ -98,7 +98,7 @@ module CIAX
     #  cfg must have [:dbi] shared in the site (among layers)
     #  @dbi will be set for Varx, @cfg[:dbi] will be set for Index
     #  It is not necessarily the case that id and Config[:dbi][:id] is identical
-    def init_dbi2cfg(ary = [])
+    def _init_dbi2cfg(ary = [])
       dbi = type?(@cfg[:dbi], CIAX::Dbi)
       # dbi.pick already includes :command, :version
       @cfg.update(dbi.pick(ary))

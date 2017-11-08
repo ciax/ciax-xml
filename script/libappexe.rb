@@ -14,7 +14,7 @@ module CIAX
       attr_accessor :batch_interrupt
       def initialize(cfg, atrb = Hashx.new)
         super
-        dbi = init_dbi2cfg(%i(frm_site))
+        dbi = _init_dbi2cfg(%i(frm_site))
         @cfg[:site_id] = @id
         @stat = Status.new(dbi)
         @sv_stat = Prompt.new(@id)

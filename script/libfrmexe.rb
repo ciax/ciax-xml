@@ -13,7 +13,7 @@ module CIAX
       def initialize(cfg, atrb = Hashx.new)
         super
         # DB is generated in List level
-        dbi = init_dbi2cfg(%i(stream iocmd))
+        dbi = _init_dbi2cfg(%i(stream iocmd))
         @cfg[:site_id] = @id
         @stat = @cfg[:field] = Field.new(dbi)
         @sv_stat = Prompt.new(@id)

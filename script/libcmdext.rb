@@ -25,7 +25,7 @@ module CIAX
               ary = itm[:parameters].map { |e| e[:label] || 'str' }
               label.replace(format(label, *ary))
             end
-            new_item(id, itm)
+            _new_item(id, itm)
           end
 
           private

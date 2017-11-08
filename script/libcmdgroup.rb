@@ -26,7 +26,7 @@ module CIAX
       # atrb could have 'label',:body,'unit','group'
       def add_item(id, title = nil, atrb = Hashx.new) # returns Item
         @displist.put_item(id, title)
-        new_item(id, atrb)
+        _new_item(id, atrb)
       end
 
       def del_item(id)
@@ -41,7 +41,7 @@ module CIAX
 
       def merge_items(displist)
         @displist.merge_sub(displist)
-        displist.keys.each { |id| new_item(id) }
+        displist.keys.each { |id| _new_item(id) }
         self
       end
 
@@ -65,7 +65,7 @@ module CIAX
 
       private
 
-      def new_item(id, atrb = Hashx.new)
+      def _new_item(id, atrb = Hashx.new)
         self[id] = context_module('Item').new(@cfg, atrb.update(id: id))
       end
     end

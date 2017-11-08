@@ -27,8 +27,11 @@ module CIAX
         class Item
           # Ext entity
           include Math
+
+          private
+
           # batch is ary of args(ary)
-          def gen_entity(opt)
+          def _gen_entity(opt)
             ent = super
             ent[:batch] = ent.deep_subst(@cfg[:body]).map do |e1|
               args = []
@@ -39,8 +42,6 @@ module CIAX
             end.extend(Enumx)
             ent
           end
-
-          private
 
           def _get_args(e1, args)
             e1.each do |e2| # //argv

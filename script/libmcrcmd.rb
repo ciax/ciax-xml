@@ -51,7 +51,9 @@ module CIAX
         end
         # generate [:sequence]
         class Item
-          def gen_entity(opt)
+          private
+
+          def _gen_entity(opt)
             ent = super
             ent[:sequence] = ent.deep_subst(@cfg[:body])
             ent

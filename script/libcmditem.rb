@@ -17,7 +17,7 @@ module CIAX
 
       def set_par(par, opt = {})
         par = @cfg[:argv] if @cfg[:argv].is_a? Array
-        par = validate(type?(par, Array))
+        par = ___validate(type?(par, Array))
         cid = [@id, *par].join(':')
         opt.update(par: par, cid: cid)
         verbose { "SetPAR(#{@id}): #{par}" }
@@ -34,7 +34,7 @@ module CIAX
 
       def ___get_entity(opt, cid)
         return _get_cache(cid) if key?(cid)
-        ent = gen_entity(opt)
+        ent = _gen_entity(opt)
         return ___no_cache(cid, ent) if @cfg[:nocache]
         verbose { "SetPAR: Entity Cache Saved (#{cid})" }
         self[cid] = ent
@@ -50,7 +50,7 @@ module CIAX
         ent
       end
 
-      def gen_entity(opt)
+      def _gen_entity(opt)
         context_module('Entity').new(@cfg, opt)
       end
 
@@ -60,7 +60,7 @@ module CIAX
       # *Error if str doesn't match with strings listed in :list
       # *If no :list, returns :default
       # Returns converted parameter array
-      def validate(pary)
+      def ___validate(pary)
         pary = type?(pary.dup, Array)
         pref = @cfg[:parameters]
         return [] unless pref
@@ -71,8 +71,7 @@ module CIAX
         pref.map do |par|
           list = par[:list] || []
           disp = list.join(',')
-          str = pary.shift
-          if str
+          if (str = pary.shift)
             ___validate_element(par, str, list, disp)
           else
             ___use_default(par, pary, pref, disp)
@@ -81,39 +80,12 @@ module CIAX
       end
 
       def ___validate_element(par, str, list, disp)
-        if list.empty?
-          par.key?(:default) ? par[:default] : str
-        else
-          ___validate_by_type(par, str, list, disp)
-        end
+        return ___validate_by_type(par, str, list, disp) unless list.empty?
+        par.key?(:default) ? par[:default] : str
       end
 
       def ___validate_by_type(par, str, list, disp)
-        case par[:type]
-        when 'num'
-          ___validate_num(str, list, disp)
-        when 'reg'
-          ___validate_reg(str, list, disp)
-        else
-          ___validate_str(str, list, disp)
-        end
-      end
-
-      def ___use_default(par, pary, pref, disp)
-        if par.key?(:default)
-          verbose { "Validate: Using default value [#{par[:default]}]" }
-          par[:default]
-        else
-          ___err_shortage(pary, pref, disp)
-        end
-      end
-
-      def ___err_shortage(pary, pref, disp)
-        mary = []
-        mary << format('Parameter shortage (%d/%d)', pary.size, pref.size)
-        mary << @cfg[:disp].item(@id)
-        mary << ' ' * 10 + "key=(#{disp})"
-        Msg.par_err(*mary)
+        method('___validate_' + par[:type]).call(str, list, disp)
       end
 
       def ___validate_num(str, list, disp)
@@ -133,6 +105,23 @@ module CIAX
         verbose { "Validate: [#{str}] Match? [#{disp}]" }
         return str if list.include?(str)
         Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
+      end
+
+      def ___use_default(par, pary, pref, disp)
+        if par.key?(:default)
+          verbose { "Validate: Using default value [#{par[:default]}]" }
+          par[:default]
+        else
+          ___err_shortage(pary, pref, disp)
+        end
+      end
+
+      def ___err_shortage(pary, pref, disp)
+        mary = []
+        mary << format('Parameter shortage (%d/%d)', pary.size, pref.size)
+        mary << @cfg[:disp].item(@id)
+        mary << ' ' * 10 + "key=(#{disp})"
+        Msg.par_err(*mary)
       end
     end
   end

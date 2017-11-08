@@ -26,7 +26,9 @@ module CIAX
       module Ext
         # Generate [:frame]
         class Item
-          def gen_entity(opt)
+          private
+
+          def _gen_entity(opt)
             ent = super
             @field = type?(@cfg[:field], Field)
             @fstr = {}
@@ -38,8 +40,6 @@ module CIAX
             ___init_body(ent) if @sel[:body]
             ent
           end
-
-          private
 
           def ___init_body(ent)
             verbose { "Body:#{@cfg[:label]}(#{@id})" }

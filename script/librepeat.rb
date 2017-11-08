@@ -14,7 +14,7 @@ module CIAX
       return unless e0
       e0.each do |e1|
         if /repeat.*/ =~ e1.name
-          repeat(e1) do
+          ___repeat(e1) do
             each(e1) { |e2| yield e2 }
           end
         else
@@ -46,16 +46,16 @@ module CIAX
 
     private
 
-    def repeat(e0)
+    def ___repeat(e0)
       c = e0['counter'] || '_'
       Msg.give_up('Repeat:Counter Duplicate') if @counter.key?(c)
       fmt = @format[c] = e0['format'] || '%d'
       caption = "Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]"
-      enclose(caption, 'End') { sub_repeat(e0, c) { yield } }
+      enclose(caption, 'End') { ___sub_repeat(e0, c) { yield } }
       self
     end
 
-    def sub_repeat(e0, c)
+    def ___sub_repeat(e0, c)
       Range.new(subst(e0['from']), subst(e0['to'])).each do |n|
         enclose("Turn Number[#{n}] Start", "Turn Number[#{n}] End") do
           @counter[c] = n

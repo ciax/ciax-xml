@@ -13,14 +13,14 @@ module CIAX
         ___set_min($&, $`)
         ___set_max($&, $')
       elsif />/ =~ str
-        ___set_tol(s2f($`), s2f($'))
+        ___set_tol(__s2f($`), __s2f($'))
       else
-        @eq = s2f(str)
+        @eq = __s2f(str)
       end
     end
 
     def <=>(other)
-      num = s2f(other)
+      num = __s2f(other)
       return @eq <=> num if @eq
       return 1 if ___test_min(num)
       return -1 if ___test_max(num)
@@ -40,13 +40,13 @@ module CIAX
     def ___set_min(ope, min)
       return if min == ''
       @min_ex = true if /^</ =~ ope
-      @min = s2f(min)
+      @min = __s2f(min)
     end
 
     def ___set_max(ope, max)
       return if max == ''
       @max_ex = true if /<$/ =~ ope
-      @max = s2f(max)
+      @max = __s2f(max)
     end
 
     def ___set_tol(num, tol)
@@ -56,7 +56,7 @@ module CIAX
 
     # Accepts int,float,hexstr
     # For float /^-?[0-9]+(\.[0-9]+)?$/
-    def s2f(other)
+    def __s2f(other)
       return other if other.is_a? Numeric
       if /^0[Xx][0-9a-fA-F]+$/ =~ other
         other.to_i(0).to_f

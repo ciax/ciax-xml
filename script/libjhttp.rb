@@ -21,7 +21,7 @@ module CIAX
       end
 
       def load(tag = nil)
-        url = file_url(tag)
+        url = format('http://%s%s%s.json', @host, @dir, base_name(tag))
         open(url) do |f|
           verbose { "Loading url [#{url}](#{f.size})" }
           jstr = f.read
@@ -35,12 +35,6 @@ module CIAX
 
       def latest
         load
-      end
-
-      private
-
-      def file_url(tag = nil)
-        'http://' + @host + @dir + base_name(tag) + '.json'
       end
     end
   end

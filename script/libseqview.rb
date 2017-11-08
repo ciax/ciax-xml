@@ -59,7 +59,7 @@ module CIAX
         if @list.key?(id)
           @list.get(id).upd
         else
-          rec = get_rec(id)
+          rec = @stat.get(id)
           @list.put(id, rec)
           @ciddb[id] = rec[:cid] unless @ciddb.key?(id)
         end
@@ -67,10 +67,6 @@ module CIAX
 
       def __crnt
         @list.get(@par.current)
-      end
-
-      def get_rec(id)
-        @stat.get(id)
       end
 
       def ___list

@@ -45,10 +45,10 @@ module CIAX
       # Server Status
       def ___get_header
         ary = ['%', self[:id]]
-        ary << b2e(@sv_stat.up?(:udperr))
-        ary << b2i(@sv_stat.up?(:event))
-        ary << b2i(@sv_stat.up?(:busy))
-        ary << b2e(@sv_stat.up?(:comerr))
+        ary << __b2e(@sv_stat.up?(:udperr))
+        ary << __b2i(@sv_stat.up?(:event))
+        ary << __b2i(@sv_stat.up?(:busy))
+        ary << __b2e(@sv_stat.up?(:comerr))
         ary.join('')
       end
 
@@ -107,11 +107,11 @@ module CIAX
         format("%0#{len}#{sfx}", num)[0, len]
       end
 
-      def b2i(b) # Boolean to Integer (1,0)
+      def __b2i(b) # Boolean to Integer (1,0)
         b ? '1' : '0'
       end
 
-      def b2e(b) # Boolean to Error (E,_)
+      def __b2e(b) # Boolean to Error (E,_)
         b ? 'E' : '_'
       end
     end

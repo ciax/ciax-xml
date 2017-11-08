@@ -102,7 +102,7 @@ module CIAX
 
     # Put value. return self
     def put(key, val, &done_proc)
-      return self unless diff?(key, val)
+      return self unless __diff?(key, val)
       store(key, val)
       yield if done_proc
       self
@@ -112,7 +112,7 @@ module CIAX
     def repl(key, val, &done_proc)
       Msg.par_err("No such Key [#{key}]") unless key?(key)
       Msg.cfg_err('Value should be String') unless val.is_a?(String)
-      if diff?(key, val)
+      if __diff?(key, val)
         verbose { "Replace:timing(#{key}) #{fetch(key)} ->  #{val}" }
         fetch(key).replace(val)
         yield if done_proc
@@ -160,7 +160,7 @@ module CIAX
 
     private
 
-    def diff?(key, val)
+    def __diff?(key, val)
       # allows no key
       self[key] != val
     end

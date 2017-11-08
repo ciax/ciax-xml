@@ -10,8 +10,8 @@ module CIAX
       def initialize
         super()
         _init_log
-        # :load is mask mode: true:loading, false:storing
-        self[:list] = { load: false }
+        # :mask_loaded is mask mode: true:loaded, false:stored
+        self[:devlist] = Hashx.new
       end
 
       private

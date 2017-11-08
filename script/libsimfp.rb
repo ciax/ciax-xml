@@ -9,8 +9,7 @@ module CIAX
     class FpDio < Server
       def initialize(cfg = nil)
         super(10_001, cfg)
-        @list = @cfg[:list]
-        @list[:fp] = self
+        @devlist[:fp] = self
         @ifs = "\n"
         @ofs = "\r"
         # @reg[2]: output, @reg[3]: input
@@ -39,20 +38,20 @@ module CIAX
       def change_mode(hexstr)
         case hexstr
         when '0C000400' # AC
-          @list[:load] = true
+          @mask_load = true
           log('Loading Mode')
         when '0C000800' # AO
-          @list[:load] = false
+          @mask_load = false
           log('Stored Mode')
         end
       end
 
       def arm_oc(idx, hexstr)
-        log(@list.keys.inspect)
+        log(@devlist.keys.inspect)
         # OUTPUT?
-        return unless idx == 2 && @list.key?(:arm)
+        return unless idx == 2 && @devlist.key?(:arm)
         # ARM:STORE position?
-        return unless @list[:arm].fpos > 200
+        return unless @devlist[:arm].fpos > 200
         change_mode(hexstr)
       end
 

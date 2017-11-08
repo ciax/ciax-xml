@@ -8,8 +8,7 @@ module CIAX
     class Arm < Slosyn
       def initialize(cfg = nil)
         super(0, 200.5, 2.5, 10_003, cfg)
-        @list = @cfg[:list]
-        @list[:arm] = self
+        @devlist[:arm] = self
         @tol = 600
         # IN 1: ROT  (123)
         # IN 2: FOCUS(12.8)
@@ -17,27 +16,25 @@ module CIAX
         # IN 4: INIT (0)     = -Limit
         #     : WAIT (185)
         # IN 5: CON
-        @in_procs['1'] = proc { _about(123) }
-        @in_procs['2'] = proc { _about(12.8) }
-        @in_procs['5'] = proc { _contact? }
+        _set_in(1) { __about(123) }
+        _set_in(2) { __about(12.8) }
+        _set_in(5) { _contact_sensor? }
       end
 
       private
 
-      def _about(x) # torerance
+      def __about(x) # torerance
         pos = x * 1000
         (@axis.absp - pos).abs < @tol
       end
 
       # Contact Sensor (Both Arm & RH close during Loading at Focus)
-      def _contact?
-        return unless @list.key?(:fp) && @list[:load]
-        fp = @list[:fp]
-        return unless fp.arm_close?
-        # At Wait~Store && ARM Close
-        return true if fpos > 185
-        # At FOCUS && RH,ARM Close
-        _about(12.8) && fp.rh_close?
+      def _contact_sensor?
+        @mask_load && (fp = @devlist[:fp]) &&
+          # At Wait~Store && ARM Close
+          ((fpos > 185 && fp.arm_close?) ||
+           # At FOCUS && RH,ARM Close
+           (__about(12.8) && fp.rh_close?))
       end
     end
 

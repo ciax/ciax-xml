@@ -11,27 +11,37 @@ module CIAX
       include Msg
       def initialize(port, cfg = nil)
         super(port)
-        @io = {}
         @cfg = cfg || Conf.new
-        @prompt_ok = '>'
-        @prompt_ng = '?'
+        __init_instance
         self.stdlog = @cfg[:stdlog]
         self.audit = true
         self.debug = true
-        @length = 1024
-        @ifs = @ofs = $OUTPUT_RECORD_SEPARATOR
       end
 
       def serve(io = nil)
         # @length = nil => tty I/O
-        @length = nil unless io
-        STDIN.tty? && msg('Ctrl-\ for exit')
+        unless io
+          @length = nil
+          msg('Ctrl-\ for exit')
+        end
         ___sv_loop(io)
       rescue
         log("#{$ERROR_INFO} #{$ERROR_POSITION}")
       end
 
       private
+
+      def __init_instance
+        @io = {}
+        @prompt_ok = '>'
+        @prompt_ng = '?'
+        # @length is set when STDIN is stream
+        @length = 1024
+        @ifs = @ofs = $OUTPUT_RECORD_SEPARATOR
+        @devlist = @cfg[:devlist]
+        # Mask loading info
+        @mask_load = false
+      end
 
       def ___sv_loop(io)
         loop do

@@ -16,8 +16,8 @@ module CIAX
         # wn: drive ON/OFF during stop
         @io = { wn: '1', e1: '0', e2: '0' }
         @in_procs = Hash.new(proc {})
-        @in_procs['3'] = proc { @axis.up_limit? }
-        @in_procs['4'] = proc { @axis.dw_limit? }
+        _set_in(3) { @axis.up_limit? }
+        _set_in(4) { @axis.dw_limit? }
       end
 
       def fpos # returns float
@@ -42,6 +42,14 @@ module CIAX
 
       def _to_real(int)
         format('%.6f', int.to_f / 1_000)
+      end
+
+      def _set_in(int)
+        @in_procs[int.to_s] = proc { yield }
+      end
+
+      def _get_in(k)
+        @in_procs[k].call
       end
     end
 

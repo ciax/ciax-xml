@@ -26,7 +26,7 @@ module CIAX
       # in(3) is + Limit
       # in(4) is - Limit
       def _cmd_in(int)
-        @in_procs[int].call ? '1' : '0'
+        _get_in(int) ? '1' : '0'
       end
 
       def _cmd_speed

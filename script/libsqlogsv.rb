@@ -34,10 +34,10 @@ module CIAX
       def init_table(layer, stat) # returns self
         tbl = Table.new(layer, stat)
         if stat[:ver].to_i > 0
-          create_tbl(tbl)
-          real_mode(stat, tbl)
+          ___create_tbl(tbl)
+          ___real_mode(stat, tbl)
         else
-          dummy_mode(stat, tbl)
+          ___dummy_mode(stat, tbl)
         end
         self
       end
@@ -59,18 +59,18 @@ module CIAX
       end
 
       # Create table if no table
-      def create_tbl(tbl)
+      def ___create_tbl(tbl)
         return if internal('tables').split(' ').include?(tbl.tid)
         @que_sql.push tbl.create
         verbose { "'#{tbl.tid}' is created" }
       end
 
-      def real_mode(stat, tbl)
+      def ___real_mode(stat, tbl)
         # Add to stat.cmt
         stat.cmt_procs << proc { @que_sql.push tbl.insert }
       end
 
-      def dummy_mode(stat, tbl)
+      def ___dummy_mode(stat, tbl)
         verbose { 'Invalid Version(0): No Log' }
         stat.cmt_procs << proc { verbose { "Dummy Insert\n" + tbl.insert } }
       end

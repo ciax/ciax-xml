@@ -20,7 +20,7 @@ module CIAX
       end
 
       def create
-        key = ['time', *expand.keys].uniq.join("','")
+        key = ['time', *__expand.keys].uniq.join("','")
         verbose { "Create ('#{key}')" }
         "create table #{@tid} ('#{key}',primary key(time));"
       end
@@ -32,7 +32,7 @@ module CIAX
       def insert
         kary = []
         vary = []
-        expand.each do |k, v|
+        __expand.each do |k, v|
           kary << k.inspect
           vary << (k == 'time' ? v.to_i : v.inspect)
         end
@@ -52,12 +52,12 @@ module CIAX
 
       private
 
-      def expand
+      def __expand
         val = { 'time' => @stat[:time] }
         @stat[:data].keys.select { |k| /type/ !~ k.to_s }.each do |k|
           v = @stat[:data][k]
           if v.is_a? Array
-            _rec_expand(k, v, val)
+            __rec_expand(k, v, val)
           else
             val[k.to_s] = v
           end
@@ -65,11 +65,11 @@ module CIAX
         val
       end
 
-      def _rec_expand(k, v, val)
+      def __rec_expand(k, v, val)
         v.size.times do |i|
           case v[i]
           when Enumerable
-            _rec_expand("#{k}:#{i}", v[i], val)
+            __rec_expand("#{k}:#{i}", v[i], val)
           else
             val["#{k}:#{i}"] = v[i]
           end

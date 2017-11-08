@@ -26,10 +26,10 @@ module CIAX
       def _add_item(e0, gid)
         id, itm = super
         @rep.each(e0) do |e1|
-          par2item(e1, itm) && next
+          _par2item(e1, itm) && next
           ___add_frmcmd(e1, itm)
         end
-        validate_par(itm)
+        _validate_par(itm)
         [id, itm]
       end
 

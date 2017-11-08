@@ -13,7 +13,7 @@ module CIAX
     private
 
     # Take parameter and next line
-    def par2item(doc, item)
+    def _par2item(doc, item)
       return unless /par_(num|str|reg)/ =~ doc.name
       @argc += 1
       atrb = { type: Regexp.last_match(1), list: doc.text.split(',') }
@@ -22,7 +22,7 @@ module CIAX
     end
 
     # Check parameter var for subst in db
-    def validate_par(db)
+    def _validate_par(db)
       res = db.deep_search(format('\$[%d-9]', @argc + 1))
       return db if res.empty?
       cfg_err("Too much parameter variables [#{res.join('/')}] for #{@argc}")

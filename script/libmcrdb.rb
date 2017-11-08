@@ -61,7 +61,7 @@ module CIAX
           atrb = Hashx.new(type: e1.name)
           atrb.update(e1.to_h)
           ___get_sites(atrb)
-          par2item(e1, itm) && next
+          _par2item(e1, itm) && next
           ___step_by_name(e1, atrb)
           ___make_verify_step(e1, atrb)
           @body << atrb
@@ -87,7 +87,7 @@ module CIAX
 
       def ___add_verify_step
         return if @vstep.empty?
-        validate_par(@vstep)
+        _validate_par(@vstep)
         @body << @vstep
       end
 

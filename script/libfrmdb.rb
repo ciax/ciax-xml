@@ -16,11 +16,11 @@ module CIAX
         dbi = super
         dbi[:stream] = doc[:stream] || Hashx.new
         _init_command(doc, dbi)
-        init_response(doc, dbi)
+        ___init_response(doc, dbi)
         dbi
       end
 
-      def init_frame(domain)
+      def __init_frame(domain)
         db = domain.to_h
         ___add_main(domain, db) { |e1| yield(e1) }
         ___add_cc(domain, db) { |e1| yield(e1) }
@@ -51,7 +51,7 @@ module CIAX
       def _init_command(dom, dbi)
         cdb = super(dbi)
         _add_group(dom[:command])
-        cdb[:frame] = init_frame(dom[:cmdframe]) { |e| _add_cmdfrm(e) }
+        cdb[:frame] = __init_frame(dom[:cmdframe]) { |e| __add_cmdfrm(e) }
         cdb
       end
 
@@ -59,21 +59,21 @@ module CIAX
         id, itm = super
         # enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
         ___rep_item(e0, itm)
-        validate_par(itm)
+        _validate_par(itm)
         # end
         [id, itm]
       end
 
       def ___rep_item(e0, itm)
         @rep.each(e0) do |e1|
-          par2item(e1, itm) && next
-          e = _add_cmdfrm(e1) || next
+          _par2item(e1, itm) && next
+          e = __add_cmdfrm(e1) || next
           itm.get(:body) { [] } << e
           verbose { "Body Frame [#{e.inspect}]" }
         end
       end
 
-      def _add_cmdfrm(e)
+      def __add_cmdfrm(e)
         case e.name
         when 'char', 'string'
           atrb = e.to_h
@@ -86,9 +86,9 @@ module CIAX
       end
 
       # Status section
-      def init_response(dom, dbi)
+      def ___init_response(dom, dbi)
         fld = dbi[:field] = Hashx.new
-        frm = init_frame(dom[:rspframe]) { |e| _add_rspfrm(e, fld) }
+        frm = __init_frame(dom[:rspframe]) { |e| __add_rspfrm(e, fld) }
         dbi[:response] = Hashx.new(index: idx = Hashx.new, frame: frm)
         dom[:response].each { |e0| ___add_fld(e0, fld, idx) }
         dbi[:frm_id] = dbi[:id]
@@ -100,13 +100,13 @@ module CIAX
         # enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
         itm = db[id]
         @rep.each(e0) do |e1|
-          e = _add_rspfrm(e1, fld) || next
+          e = __add_rspfrm(e1, fld) || next
           itm.get(:body) { [] } << e
         end
         # end
       end
 
-      def _add_rspfrm(e, field)
+      def __add_rspfrm(e, field)
         # Avoid override duplicated id
         if (id = e[:assign]) && !field.key?(id)
           itm = field[id] = { label: e[:label] }
@@ -117,7 +117,7 @@ module CIAX
       def ___init_elem(e, itm)
         case e.name
         when 'field'
-          _init_field(e, itm)
+          ___init_field(e, itm)
         when 'array'
           ___init_ary(e, itm)
         when 'ccrange', 'body', 'echo'
@@ -125,7 +125,7 @@ module CIAX
         end
       end
 
-      def _init_field(e, itm)
+      def ___init_field(e, itm)
         atrb = e.to_h
         itm[:struct] = [] if itm
         verbose { "InitField: #{atrb}" }

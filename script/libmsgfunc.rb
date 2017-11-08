@@ -67,7 +67,8 @@ module CIAX
 
     # Set Tag
     def tag_set(msg)
-      `cd #{__dir__};git tag -afm "#{msg}" "#{PROGRAM}@#{today}/#{HOST}"`
+      tag = format('%s(%s)@%d/%s', PROGRAM, ENV['PROJ'], today, HOST)
+      `cd #{__dir__};git tag -afm "#{msg}" "#{tag}"`
     end
   end
 end

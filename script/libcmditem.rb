@@ -15,9 +15,12 @@ module CIAX
         @id = @cfg[:id]
       end
 
-      def set_par(par, opt = {})
-        par = @cfg[:argv] if @cfg[:argv].is_a? Array
-        par = ___validate(type?(par, Array))
+      # element of par could be formula
+      def set_par(pary, opt = {})
+        # override
+        pary = @cfg[:argv] if @cfg[:argv].is_a? Array
+        # validate and convert pars
+        par = ___validate(type?(pary, Array).dup, pary.size)
         cid = [@id, *par].join(':')
         opt.update(par: par, cid: cid)
         verbose { "SetPAR(#{@id}): #{par}" }
@@ -25,7 +28,7 @@ module CIAX
       end
 
       def valid_pars
-        (@cfg[:parameters] || []).map do |e|
+        @cfg[:parameters].to_a.map do |e|
           e[:list] if e[:type] == 'str'
         end.flatten
       end
@@ -60,67 +63,48 @@ module CIAX
       # *Error if str doesn't match with strings listed in :list
       # *If no :list, returns :default
       # Returns converted parameter array
-      def ___validate(pary)
-        pary = type?(pary.dup, Array)
-        pref = @cfg[:parameters]
-        return [] unless pref
-        ___par_array(pary, pref)
-      end
-
-      def ___par_array(pary, pref)
-        pref.map do |par|
-          list = par[:list] || []
-          disp = list.join(',')
-          if (str = pary.shift)
-            ___validate_element(par, str, list, disp)
-          else
-            ___use_default(par, pary, pref, disp)
-          end
+      def ___validate(pary, psize)
+        @cfg[:parameters].to_a.map do |pref|
+          next ___use_default(pref, psize) unless (str = pary.shift)
+          line = pref[:list]
+          next method('_val_' + pref[:type]).call(str, line) if line
+          pref.key?(:default) ? pref[:default] : str
         end
       end
 
-      def ___validate_element(par, str, list, disp)
-        return ___validate_by_type(par, str, list, disp) unless list.empty?
-        par.key?(:default) ? par[:default] : str
-      end
-
-      def ___validate_by_type(par, str, list, disp)
-        method('___validate_' + par[:type]).call(str, list, disp)
-      end
-
-      def ___validate_num(str, list, disp)
+      def _val_num(str, list)
         num = expr(str)
-        verbose { "Validate: [#{num}] Match? [#{disp}]" }
+        verbose { "Validate: [#{num}] Match? [#{a2csv(list)}]" }
         return num.to_s if list.any? { |r| ReRange.new(r) == num }
-        Msg.par_err("Out of range (#{num}) for [#{disp}]")
+        Msg.par_err("Out of range (#{num}) for [#{a2csv(list)}]")
       end
 
-      def ___validate_reg(str, list, disp)
-        verbose { "Validate: [#{str}] Match? [#{disp}]" }
+      def _val_reg(str, list)
+        verbose { "Validate: [#{str}] Match? [#{a2csv(list)}]" }
         return str if list.any? { |r| Regexp.new(r).match(str) }
-        Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
+        Msg.par_err("Parameter Invalid Reg (#{str}) for [#{a2csv(list)}]")
       end
 
-      def ___validate_str(str, list, disp)
-        verbose { "Validate: [#{str}] Match? [#{disp}]" }
+      def _val_str(str, list)
+        verbose { "Validate: [#{str}] Match? [#{a2csv(list)}]" }
         return str if list.include?(str)
-        Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
+        Msg.par_err("Parameter Invalid Str (#{str}) for [#{a2csv(list)}]")
       end
 
-      def ___use_default(par, pary, pref, disp)
-        if par.key?(:default)
-          verbose { "Validate: Using default value [#{par[:default]}]" }
-          par[:default]
+      def ___use_default(pref, psize)
+        if pref.key?(:default)
+          verbose { "Validate: Using default value [#{pref[:default]}]" }
+          pref[:default]
         else
-          ___err_shortage(pary, pref, disp)
+          ___err_shortage(pref, psize)
         end
       end
 
-      def ___err_shortage(pary, pref, disp)
-        mary = []
-        mary << format('Parameter shortage (%d/%d)', pary.size, pref.size)
+      def ___err_shortage(pref, psize)
+        frac = format('(%d/%d)', psize, @cfg[:parameters].size)
+        mary = ['Parameter shortage ' + frac]
         mary << @cfg[:disp].item(@id)
-        mary << ' ' * 10 + "key=(#{disp})"
+        mary << ' ' * 10 + "key=(#{a2csv(pref[:list])})"
         Msg.par_err(*mary)
       end
     end

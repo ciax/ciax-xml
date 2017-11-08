@@ -129,7 +129,7 @@ module CIAX
         end
 
         def __sid(*names)
-          proc { names.map { |n| self[n] }.flatten.compact.join(':') }
+          proc { a2cid(names.map { |n| self[n] }) }
         end
       end
     end

@@ -67,6 +67,15 @@ module CIAX
       (cap ? lary.unshift(cap) : lary).join("\n")
     end
 
+    # Making ID string with Array
+    def a2cid(ary)
+      ary.to_a.flatten.compact.join(':')
+    end
+
+    def a2csv(ary)
+      ary.to_a.flatten.compact.join(',')
+    end
+
     # max string length of value and key in hash at each column
     def upd_column_ary(h, cary)
       h.keys.each_slice(cary.size).map do |al|

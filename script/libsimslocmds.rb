@@ -30,11 +30,11 @@ module CIAX
       end
 
       def _cmd_speed
-        to_real(@axis.speed)
+        _to_real(@axis.speed)
       end
 
       def _cmd_abspos
-        str = to_real(@axis.pulse)
+        str = _to_real(@axis.pulse)
         # Simulate Invalid String (Probability 0.3%)
         str = str[0..2] + '?' if rand < 0.003
         str
@@ -56,12 +56,12 @@ module CIAX
       end
 
       def _cmd_speed=(real)
-        @axis.speed = to_int(real)
+        @axis.speed = _to_int(real)
         @prompt_ok
       end
 
       def _cmd_abspos=(real)
-        @axis.pulse = to_int(real)
+        @axis.pulse = _to_int(real)
         @prompt_ok
       end
 
@@ -73,12 +73,12 @@ module CIAX
       end
 
       def _cmd_movea=(real)
-        @axis.servo(to_int(real))
+        @axis.servo(_to_int(real))
         @prompt_ok
       end
 
       def _cmd_movei=(real)
-        @axis.servo(@axis.pulse + to_int(real))
+        @axis.servo(@axis.pulse + _to_int(real))
         @prompt_ok
       end
 

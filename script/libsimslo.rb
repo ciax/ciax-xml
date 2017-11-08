@@ -12,7 +12,7 @@ module CIAX
         super(port, cfg)
         @ifs = "\n"
         @ofs = "\r\n"
-        @axis = Axis.new(to_int(dl), to_int(ul), to_int(spd))
+        @axis = Axis.new(_to_int(dl), _to_int(ul), _to_int(spd))
         # wn: drive ON/OFF during stop
         @io = { wn: '1', e1: '0', e2: '0' }
         @in_procs = Hash.new(proc {})
@@ -36,11 +36,11 @@ module CIAX
         end
       end
 
-      def to_int(real)
+      def _to_int(real)
         (real.to_f * 1_000).to_i
       end
 
-      def to_real(int)
+      def _to_real(int)
         format('%.6f', int.to_f / 1_000)
       end
     end

@@ -62,30 +62,30 @@ module CIAX
         case str
         when /^>0([0-3])!J..$/
           # Input
-          make_base(Regexp.last_match(1).to_i)
+          ___make_base(Regexp.last_match(1).to_i)
         when /^>0([0-3])!L([0-9A-F]{10})$/
           # Output
-          manipulate(Regexp.last_match(1).to_i, Regexp.last_match(2))
+          ___manipulate_io(Regexp.last_match(1).to_i, Regexp.last_match(2))
         else
           'E_INVALID_CMD'
         end
       end
 
       # output = 2, input = 3
-      def make_base(idx)
+      def ___make_base(idx)
         'A' + @reg[idx].to_x + @reg[idx].xbcc
       end
 
-      def manipulate(idx, par)
+      def ___manipulate_io(idx, par)
         cmask = par[0, 4].hex
         data = par[4, 4].hex
         arm_oc(idx, par[0, 8])
         @reg[idx].mask(cmask, data)
-        servo
+        ___delay_input
         'A'
       end
 
-      def servo
+      def ___delay_input
         input = @reg[3]
         output = @reg[2]
         @drvtbl.each_with_index do |p, i|

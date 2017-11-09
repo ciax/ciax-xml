@@ -130,7 +130,11 @@ module CIAX
         cobj.rem.add_ext
         fld.jmerge unless STDIN.tty?
         res = cobj.set_cmd(args).exe_cmd('test')
-        puts(cfg[:opt][:r] ? res.msg : res.path)
+        if cfg[:opt][:r]
+          print res.msg
+        else
+          puts res.path
+        end
       end
     end
   end

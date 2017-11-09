@@ -4,18 +4,16 @@ require 'json'
 class LogRing
   attr_reader :index, :max
   # Structure of @logary
+  # line includes both command and response data
   # [ { :time => time, :snd => base64, :rcv => base64, :diff => msec } ]
-  LOG = []
   def initialize(id)
     @index = 0
     @line = {}
     @exists = []
     @dir = 'snd'
-    sorted = read_file(id).sort_by { |h| h['time'] }.uniq
-    pickid = sorted.select { |h| h['id'] == id }
-    pickid.each { |h| mk_dict(h) }
-    @max = LOG.size - 1
-    @logary = LOG.dup
+    get_cache(id)
+    @max = @logary.size - 1
+    @tmplog = @logary.dup
   end
 
   def mk_dict(crnt)
@@ -23,7 +21,7 @@ class LogRing
     case crnt['dir']
     when 'snd'
       @line = { time: crnt['time'], snd: data, cmd: crnt['cmd'] }
-      LOG << @line
+      @logary << @line
     when 'rcv'
       item_rcv(data, crnt)
     else
@@ -41,27 +39,48 @@ class LogRing
     end
   end
 
+  def get_cache(id)
+    @cachefile = ENV['HOME'] + "/.var/cache/stream_#{id}.mar"
+    @logary = Marshal.load(IO.read(@cachefile))
+  rescue Errno::ENOENT # if empty
+    mk_logary(id)
+  end
+
+  def mk_logary(id)
+    @logary = []
+    sorted = read_file(id).sort_by { |h| h['time'] }.uniq
+    pickid = sorted.select { |h| h['id'] == id }
+    pickid.each { |h| mk_dict(h) }
+    save_cache
+  end
+
+  def save_cache
+    open(@cachefile, 'w') do |f|
+      f << Marshal.dump(@logary)
+    end
+  end
+
   def read_file(id)
     ary = []
-    Dir.glob(ENV['HOME'] + "/.var/log/stream_#{id}*.log").each do|fname|
+    Dir.glob(ENV['HOME'] + "/.var/log/stream_#{id}*.log").each do |fname|
       ary.concat(IO.readlines(fname).map { |line| JSON.load(line) if line })
     end
     ary
   end
 
   def find_next(str)
-    while (crnt = @logary.shift || rewind(str))
+    while (crnt = @tmplog.shift || rewind(str))
       next if crnt[:snd] != str
       @exists << str
-      pr "#{crnt[:cmd]}(#{@logary.size}/#{@max})\n" if /sim/ =~ ENV['VER']
+      pr "#{crnt[:cmd]}(#{@tmplog.size}/#{@max})\n" if /sim/ =~ ENV['VER']
       return crnt
     end
   end
 
   def rewind(str)
-    @logary = LOG.dup
+    @tmplog = @logary.dup
     if @exists.include?(str)
-      @logary.shift
+      @tmplog.shift
     else
       pr "can't find [#{str}]"
       nil
@@ -69,13 +88,14 @@ class LogRing
   end
 
   def to_s
-    @logary.map(&:to_s).join("\n")
+    @tmplog.map(&:to_s).join("\n")
   end
 
   private
 
   def pr(text)
     STDERR.puts "\033[1;34m#{text}\33[0m"
+    nil
   end
 end
 
@@ -84,7 +104,7 @@ def input
   [STDIN.sysread(1024).chomp].pack('m').split("\n").join('')
 end
 
-abort 'Usage: frmsim [id]' if ARGV.size < 1
+abort 'Usage: frmsim [id]' if ARGV.empty?
 id = ARGV.shift
 ARGV.clear
 

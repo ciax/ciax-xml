@@ -64,6 +64,12 @@ module CIAX
         @que_buf && @que_buf.alive?
       end
 
+      def alert(str = nil)
+        __clear
+        str = $ERROR_INFO.to_s + str.to_s
+        super(str)
+      end
+
       private
 
       def ___pri_sort(rcv)
@@ -83,9 +89,9 @@ module CIAX
         end
         __flush
       rescue CommError
-        __alert
+        alert
       rescue
-        __alert($ERROR_POSITION)
+        alert($ERROR_POSITION)
       end
 
       # Remove duplicated args and unshift one
@@ -130,12 +136,6 @@ module CIAX
           "Flush buffer(#{@id}):timing#{var}"
         end
         self
-      end
-
-      def __alert(str = nil)
-        __clear
-        str = $ERROR_INFO.to_s + str.to_s
-        super(str)
       end
 
       # Multi-level command buffer

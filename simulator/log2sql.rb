@@ -6,19 +6,19 @@ class LogToSql
   # line includes both command and response data
   # [ { :time => time, :snd => base64, :rcv => base64, :diff => msec } ]
   def initialize(id)
-    @id = id
+    @ver = id
     @line = {}
     @files = Dir.glob(ENV['HOME'] + "/.var/log/stream_#{id}*.log")
   end
 
   def create
-    names = %w(time dev cmd snd rcv dur).join("','")
-    puts "create table stream_#{@id} ('#{names}',primary key(time));"
+    names = %w(time id cmd snd rcv dur).join("','")
+    puts "create table stream_#{@ver} ('#{names}',primary key(time));"
     self
   end
 
   def drop
-    puts "drop table if exists stream_#{@id};"
+    puts "drop table if exists stream_#{@ver};"
     self
   end
 
@@ -36,7 +36,7 @@ class LogToSql
     return if @line.empty?
     ks = @line.keys.join("','")
     vs = @line.values.join("','")
-    puts "insert or ignore into stream_#{@id} ('#{ks}') values ('#{vs}');"
+    puts "insert or ignore into stream_#{@ver} ('#{ks}') values ('#{vs}');"
     self
   end
 
@@ -54,13 +54,27 @@ class LogToSql
     data = ch['base64']
     case ch['dir']
     when 'snd'
-      insert
-      @line = { time: ch['time'], dev: ch['id'], cmd: ch['cmd'], snd: data }
+      put_sql(ch)
+      item_snd(data, ch)
     when 'rcv'
       item_rcv(data, ch)
     else
       pr 'no match'
     end
+  end
+
+  def put_sql(ch)
+    if @ver != ch['ver']
+      @ver = ch['ver']
+      drop.create
+    else
+      insert
+    end
+  end
+
+  def item_snd(data, ch)
+    @line = { time: ch['time'], id: ch['id'], cmd: ch['cmd'], snd: data }
+    self
   end
 
   def item_rcv(data, ch)
@@ -71,6 +85,7 @@ class LogToSql
       dur = (ch.delete('time').to_i - @line[:time].to_i)
       @line[:dur] = dur.to_f / 1000.0
     end
+    self
   end
 
   def pr(text)
@@ -85,4 +100,4 @@ num = ARGV.shift
 ARGV.clear
 
 l2s = LogToSql.new(id)
-l2s.drop.create.transaction(num)
+l2s.transaction(num)

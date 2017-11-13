@@ -131,31 +131,25 @@ module CIAX
 
     # Make empty copy (Empty string because it can be operated with replacement)
     def skeleton
-      hash = Hashx.new
-      keys.each do |i|
+      keys.each_with_object(Hashx.new) do |i, hash|
         hash[i] = ''
       end
-      hash
     end
 
     # Generate Hashx with picked up keys
     def pick(keyary, atrb = {})
-      hash = Hashx.new(atrb)
-      keyary.each do |key|
+      keyary.each_with_object(Hashx.new(atrb)) do |key, hash|
         hash[key] = self[key] if key?(key)
       end
-      hash
     end
 
     # Pick Hash which isn't Array or Hash for XML attributes
     def attributes(id = nil)
-      atrb = Hashx.new
-      atrb[:id] = id if id
-      each do |k, v|
+      atrb = Hashx.new(id ? { id: id } : {})
+      each_with_object(atrb) do |k, v, hash|
         next if v.is_a? Enumerable
-        atrb[k] = v
+        hash[k] = v
       end
-      atrb
     end
 
     private
@@ -172,31 +166,24 @@ module CIAX
     # sary: array of the element numbers [a,b,c,..]
     def skeleton(sary)
       return '' if sary.empty?
-      dary = []
-      sary[0].to_i.times do |i|
+      sary[0].to_i.times.each_with_object([]) do |i, dary|
         dary[i] = skeleton(sary[1..-1])
       end
-      dary
     end
 
     # Get value of Hash which is element of self
     def get(key)
-      # In case of find(), find{|e| e.get(key)}.get(key) to get content
-      each do |e|
-        res = e.get(key)
-        return res if res
-      end
-      nil
+      # In case of find(), get(find{|e| e.get(key)}) to get content
+      res = nil
+      find { |e| res = e.get(key) } && res
     end
 
     # Generate Hash with key array
     def a2h(*keys)
-      atrb = Hashx.new
-      each do |val|
+      each_with_object(Hashx.new) do |val, atrb|
         key = keys.shift
         atrb[key] = val if key
       end
-      atrb
     end
   end
 

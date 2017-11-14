@@ -16,7 +16,7 @@ module CIAX
 
     # Freeze one level deepth or more
     def deep_freeze
-      _rec_proc4enum(self, &:freeze)
+      __rec_proc4enum(self, &:freeze)
       self
     end
 
@@ -28,7 +28,7 @@ module CIAX
 
     # Search String
     def deep_search(reg)
-      _rec_proc4str(self) do |obj, path|
+      __rec_proc4str(self) do |obj, path|
         next unless obj.is_a?(String)
         if /#{reg}/ =~ obj
           path << obj
@@ -51,16 +51,16 @@ module CIAX
     private
 
     # recursive procs for enumx
-    def _rec_proc4enum(enum, &block)
+    def __rec_proc4enum(enum, &block)
       return unless enum.is_a? Enumerable
       enum.each do |k, v| # v=nil if enum is Array
-        _rec_proc4enum(v || k, &block)
+        __rec_proc4enum(v || k, &block)
       end
       yield enum
     end
 
     # recursive procs for str
-    def _rec_proc4str(enum, path = [], &block)
+    def __rec_proc4str(enum, path = [], &block)
       if enum.is_a? Enumerable
         ___each_enum(enum, path, block)
       else
@@ -73,7 +73,7 @@ module CIAX
       enum.each_with_index do |e, i| # e = Array if enum is Hash
         k, v = e.is_a?(Array) ? e : [i, e]
         path.push(k.to_s)
-        _rec_proc4str(v, path, &block).pop
+        __rec_proc4str(v, path, &block).pop
       end
     end
 

@@ -44,7 +44,7 @@ module CIAX
         def ___num_by_type(code, type)
           method("_dec_#{type}").call(code)
         rescue NameError
-          _dec_integer(code)
+          ___dec_integer(code)
         end
 
         def _dec_hexstr(code) # "FF" -> "255"
@@ -64,7 +64,7 @@ module CIAX
           [num, 2]
         end
 
-        def _dec_integer(code)
+        def ___dec_integer(code)
           # integer
           ary = code.unpack('C*')
           ary.reverse! if @endian == 'little'

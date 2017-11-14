@@ -38,13 +38,6 @@ module CIAX
           end
         end
       end
-
-      def __site_list(prj, gr)
-        prj[:site].each do |k, v|
-          gr.put_item(k, v[:label])
-        end
-        gr
-      end
     end
 
     if __FILE__ == $PROGRAM_NAME

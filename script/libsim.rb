@@ -12,7 +12,7 @@ module CIAX
       def initialize(port, cfg = nil)
         super(port)
         @cfg = cfg || Conf.new
-        __init_instance
+        ___init_instance
         self.stdlog = @cfg[:stdlog]
         self.audit = true
         self.debug = true
@@ -31,7 +31,7 @@ module CIAX
 
       private
 
-      def __init_instance
+      def ___init_instance
         @io = {}
         @prompt_ok = '>'
         @prompt_ng = '?'

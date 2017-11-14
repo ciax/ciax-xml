@@ -65,10 +65,10 @@ module CIAX
 
         def ___make_cond(j)
           fmt = "      %s %:3s  (%s: %s)\n"
-          cformat(fmt, __result(j[:res]), j[:var], j[:type], __frml(j))
+          cformat(fmt, __result(j[:res]), j[:var], j[:type], ___make_exp(j))
         end
 
-        def __frml(j)
+        def ___make_exp(j)
           cri = j[:cri]
           val = j[:val]
           if j[:type] == 'onchange'

@@ -78,7 +78,7 @@ module CIAX
         def __getfield_rec(e0)
           e0.each do |e1|
             if e1.is_a?(Hash)
-              __frame_to_field(e1) { @frame.cut(e1) }
+              ___frame_to_field(e1) { @frame.cut(e1) }
             else
               ___make_rec(e1)
             end
@@ -96,7 +96,7 @@ module CIAX
           end
         end
 
-        def __frame_to_field(e0)
+        def ___frame_to_field(e0)
           enclose((e0[:label]).to_s, 'Field:End') do
             if e0[:index]
               ___ary_field(e0) { yield }

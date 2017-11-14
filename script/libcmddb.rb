@@ -10,7 +10,7 @@ module CIAX
         super('cdb')
       end
 
-      # Cover Ins DB
+      # Cover Ins DB (dst is overridden by self)
       def cover(id, cdb)
         ali = get(id)[:command]
         %i(group unit).each { |k| cdb[k].update(ali[k]) }
@@ -22,8 +22,7 @@ module CIAX
 
       def _doc_to_db(doc)
         dbi = super
-        _init_command(dbi)
-        _add_group(doc[:top])
+        _init_command(dbi, doc[:top])
         dbi
       end
 

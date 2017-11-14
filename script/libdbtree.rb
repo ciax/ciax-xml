@@ -30,16 +30,17 @@ module CIAX
       @argc = 0
     end
 
-    def _init_command(dbi)
+    def _init_command(dbi, doc = {})
       cdb = dbi.get(:command) { Hashx.new }
       @idx = cdb.get(:index) { Hashx.new }
       @grps = cdb.get(:group) { Hashx.new }
       @units = cdb.get(:unit) { Hashx.new }
+      ___add_group(doc)
       cdb
     end
 
     # Adapt to both XML::Gnu, Hash
-    def _add_group(doc)
+    def ___add_group(doc)
       doc.each_value do |e|
         # e.name should be group
         Msg.give_up('No group in cdb') unless e.name == 'group'
@@ -74,6 +75,11 @@ module CIAX
       id = doc.attr2item(@idx)
       @grps[gid].get(:members) { [] } << id
       [id, @idx[id]] # item is used by child
+    end
+
+    def _get_h(e)
+      yield(h = e.to_h)
+      h
     end
   end
 end

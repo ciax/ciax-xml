@@ -15,43 +15,15 @@ module CIAX
       def _doc_to_db(doc)
         dbi = super
         dbi[:stream] = doc[:stream] || Hashx.new
-        _init_command(doc, dbi)
+        _init_command(dbi, doc)
         ___init_response(doc, dbi)
         dbi
       end
 
-      def __init_frame(domain)
-        db = domain.to_h
-        ___add_main(domain, db) { |e1| yield(e1) }
-        ___add_cc(domain, db) { |e1| yield(e1) }
-        db
-      end
-
-      def ___add_main(domain, db)
-        # enclose('INIT:Main Frame <-', '-> INIT:Main Frame') do
-        frame = []
-        domain.each { |e1| frame << yield(e1) }
-        verbose { "InitMainFrame:#{frame}" }
-        db[:main] = frame
-        # end
-      end
-
-      def ___add_cc(domain, db)
-        domain.find('ccrange') do |e0|
-          # enclose('INIT:Ceck Code Frame <-', '-> INIT:Ceck Code Frame') do
-          frame = []
-          @rep.each(e0) { |e1| frame << yield(e1) }
-          verbose { "InitCCFrame:#{frame}" }
-          db[:ccrange] = frame
-          # end
-        end
-      end
-
       # Command section
-      def _init_command(dom, dbi)
-        cdb = super(dbi)
-        _add_group(dom[:command])
-        cdb[:frame] = __init_frame(dom[:cmdframe]) { |e| __add_cmdfrm(e) }
+      def _init_command(dbi, doc)
+        cdb = super(dbi, doc[:command])
+        cdb[:frame] = __init_frame(doc[:cmdframe]) { |e| __add_cmdfrm(e) }
         cdb
       end
 
@@ -74,14 +46,10 @@ module CIAX
       end
 
       def __add_cmdfrm(e)
-        case e.name
-        when 'char', 'string'
-          atrb = e.to_h
+        return e.name unless %w(char string).include?(e.name)
+        _get_h(e) do |atrb|
           atrb[:val] = @rep.subst(atrb[:val])
           verbose { "Data:[#{atrb}]" }
-          atrb
-        else
-          e.name
         end
       end
 
@@ -96,14 +64,11 @@ module CIAX
       end
 
       def ___add_fld(e0, fld, db)
-        id = e0.attr2item(db)
-        # enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
-        itm = db[id]
+        itm = db[e0.attr2item(db)]
         @rep.each(e0) do |e1|
           e = __add_rspfrm(e1, fld) || next
           itm.get(:body) { [] } << e
         end
-        # end
       end
 
       def __add_rspfrm(e, field)
@@ -126,19 +91,45 @@ module CIAX
       end
 
       def ___init_field(e, itm)
-        atrb = e.to_h
-        itm[:struct] = [] if itm
-        verbose { "InitField: #{atrb}" }
-        atrb
+        _get_h(e) do |atrb|
+          itm[:struct] = [] if itm
+          verbose { "InitField: #{atrb}" }
+        end
       end
 
       def ___init_ary(e, itm)
-        atrb = e.to_h
-        idx = atrb[:index] = []
-        e.each { |e1| idx << e1.to_h }
-        itm[:struct] = idx.map { |h| h[:size] } if itm
-        verbose { "InitArray: #{atrb}" }
-        atrb
+        _get_h(e) do |atrb|
+          idx = atrb[:index] = []
+          e.each { |e1| idx << e1.to_h }
+          itm[:struct] = idx.map { |h| h[:size] } if itm
+          verbose { "InitArray: #{atrb}" }
+        end
+      end
+
+      # Common Frame section
+      def __init_frame(domain)
+        _get_h(domain) do |db|
+          ___add_main(domain, db) { |e1| yield(e1) }
+          ___add_cc(domain, db) { |e1| yield(e1) }
+        end
+      end
+
+      def ___add_main(domain, db)
+        # enclose('INIT:Main Frame <-', '-> INIT:Main Frame') do
+        frm = db[:main] = []
+        domain.each { |e1| frm << yield(e1) }
+        verbose { "InitMainFrame:#{frm}" }
+        # end
+      end
+
+      def ___add_cc(domain, db)
+        domain.find('ccrange') do |e0|
+          # enclose('INIT:Ceck Code Frame <-', '-> INIT:Ceck Code Frame') do
+          frm = db[:ccrange] = []
+          @rep.each(e0) { |e1| frm << yield(e1) }
+          verbose { "InitCCFrame:#{frm}" }
+          # end
+        end
       end
     end
 

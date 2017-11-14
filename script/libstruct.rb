@@ -15,29 +15,29 @@ module CIAX
       @_vs_objects = []
       @_vs_lines = []
       # Show only top level of the instance variable
-      _recursive(self)
+      __recursive(self)
       @_vs_lines.join("\n")
     end
 
     private
 
-    def _indent(str = '', offset = 0)
+    def __indent(str = '', offset = 0)
       indent(@_vs_indent + offset) + str
     end
 
-    def _recursive(data, tag = nil)
-      @_vs_lines << if tag
-                      _indent(___show_tag(data, tag))
-                    else
-                      "<<#{data.class}>>"
-                    end
-      _show_iv(data)
+    def __recursive(data, tag = nil)
+      @_vs_lines << ___get_title(data, tag)
+      ___show_iv(data)
       ___sub_structure(data, tag)
     end
 
+    def ___get_title(data, tag)
+      tag ? __indent(___get_tag(data, tag)) : "<<#{data.class}>>"
+    end
+
     # Make Line Head
-    def ___show_tag(data, tag)
-      str = format('%-6s', _mk_tag(tag))
+    def ___get_tag(data, tag)
+      str = format('%-6s', __mk_tag(tag))
       # Add Id
       if @_vs_show_id && data.is_a?(Enumerable)
         str << colorize("(#{data.object_id})", 4)
@@ -46,27 +46,25 @@ module CIAX
     end
 
     # Make Instance Variable List for sub structure
-    def _show_iv(data)
+    def ___show_iv(data)
       return unless @_vs_show_iv
       @_vs_show_iv = nil
-      data.instance_variables.each do |n|
-        next if /^@_vs_/ =~ n.to_s
+      data.instance_variables.reject { |n| /^@_vs_/ =~ n.to_s }.each do |n|
         val = data.instance_variable_get(n).inspect
-        @_vs_lines << _indent(format('%-8s: %-10s', colorize(n.to_s, 1), val))
+        @_vs_lines << __indent(format('%-8s: %-10s', colorize(n.to_s, 1), val))
       end
     end
 
     # Show Sub structure
     def ___sub_structure(data, tag)
       @_vs_indent += 1
-      return if _loop?(data)
-      ___show_all(data, tag)
+      ___loop?(data) || ___show_all(data, tag)
     ensure
       @_vs_indent -= 1
     end
 
     # Check Loop
-    def _loop?(data)
+    def ___loop?(data)
       return unless data.is_a?(Enumerable)
       # Abort tracking down if duplicated object_id
       if @_vs_objects.include?(data.object_id)
@@ -81,46 +79,44 @@ module CIAX
     def ___show_all(data, tag)
       case data
       when Array
-        _mixed?(data, data, data.size.times) || ___end_ary(data)
+        __mixed?(data, data, data.size.times) || ___end_ary(data)
       when Hash
-        _mixed?(data, data.values, data.keys) || ___end_hash(data, tag)
+        __mixed?(data, data.values, data.keys) || ___end_hash(data, tag)
       else
         # Show String, Numerical ...
-        @_vs_lines.last << ' ' + _mk_elem(data)
+        @_vs_lines.last << ' ' + __mk_elem(data)
       end
     end
 
-    def _mixed?(data, vary, idx)
+    def __mixed?(data, vary, idx)
       return unless vary.any? { |v| v.is_a?(Enumerable) }
-      idx.each { |i| _recursive(data[i], i) }
+      idx.each { |i| __recursive(data[i], i) }
     end
 
     # Array without sub structure
     def ___end_ary(data)
-      lines = []
-      head = '[ '
-      data.each_slice(@_vs_column) do |a|
-        lines << _indent(head + a.map(&:inspect).join(','), 1)
-        head = '  '
-      end
-      @_vs_lines << lines.join(",\n") + ' ]'
+      head = nil
+      @_vs_lines << data.each_slice(@_vs_column).map do |a|
+        head = head ? '  ' : '[ '
+        __indent(head + a.map(&:inspect).join(','), 1)
+      end.join(",\n") + ' ]'
     end
 
     # Hash without sub structure
     def ___end_hash(data, tag)
       data.keys.each_slice(tag ? @_vs_hash_col : 1) do |a|
-        @_vs_lines << _indent(___hash_line(a, data), 1)
+        @_vs_lines << __indent(___hash_line(a, data), 1)
       end
     end
 
     def ___hash_line(a, data)
       a.map do |k|
-        format('%-8s: %-10s', _mk_tag(k), _mk_elem(data[k]))
+        format('%-8s: %-10s', __mk_tag(k), __mk_elem(data[k]))
       end.join("\t")
     end
 
     # Show Tag
-    def _mk_tag(tag)
+    def __mk_tag(tag)
       case tag
       when Numeric
         colorize("[#{tag}]", 6)
@@ -132,12 +128,8 @@ module CIAX
     end
 
     # Show Element
-    def _mk_elem(data)
-      if (c = COLOR_TBL[data.to_s])
-        colorize(data, c)
-      else
-        data.inspect
-      end
+    def __mk_elem(data)
+      (c = COLOR_TBL[data.to_s]) && colorize(data, c) || data.inspect
     end
   end
 end

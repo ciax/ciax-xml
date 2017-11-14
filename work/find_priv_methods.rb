@@ -1,8 +1,7 @@
 #!/usr/bin/ruby
 #alias fpm
 require 'optparse'
-def getline
-  base = nil
+def getline(base)
   ary = []
   while (input = ARGF.gets)
     /^ */ =~ input
@@ -11,7 +10,6 @@ def getline
     break if (base && (splen < base)) || /^ *(class|module)/ =~ input
     ary << [ARGF.filename, input]
     break true if base && splen <= base
-    base = splen unless base
   end
 ensure
   puts show(ary)
@@ -31,8 +29,12 @@ end
 # -d       : pick up method name
 # -i [exp] : show method which include [exp]
 @opt = {}
-ARGV.getopts('di:').each { |k, v| @opt[k] = v }
+begin
+  ARGV.getopts('di:').each { |k, v| @opt[k] = v }
+rescue
+  abort "Usage: find_priv_methods (-i,d) <filename>"
+end
 while (input = ARGF.gets)
-  next if /^ *private/ !~ input
-  true while getline
+  next if /^( *)private/ !~ input
+  true while getline($1.length)
 end

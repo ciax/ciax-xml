@@ -25,27 +25,22 @@ module CIAX
 
       def to_csv
         upd
-        str = ''
-        @group.values.each do |gdb|
+        @group.values.each_with_object('') do |gdb, str|
           cap = gdb[:caption] || next
           gdb[:members].each do |id|
             label = @index[id][:label]
             str << "#{cap},#{label},#{@stat.get(id)}\n"
           end
         end
-        str
       end
 
       def to_v
         upd
-        lines = []
-        values.each do |v|
+        values.flat_map do |v|
           next unless v.is_a? Hash
-          cap = v[:caption]
-          lines << ' ***' + colorize(cap, 10) + '***' unless cap.empty?
-          lines.concat(___view_lines(v[:lines]))
-        end
-        lines.join("\n")
+          lns = ___view_lines(v[:lines])
+          (cap = v[:caption]).empty? ? lns : lns.unshift(___mk_cap(cap))
+        end.compact.join("\n")
       end
 
       def to_o
@@ -67,9 +62,8 @@ module CIAX
       def ___view_groups
         @group.each do |k, gdb|
           cap = gdb[:caption] || next
-          lines = []
-          self[k] = { caption: cap, lines: lines }
-          ___upd_members(gdb[:members], gdb[:column] || 1, lines)
+          g = self[k] = { caption: cap, lines: [] }
+          ___upd_members(gdb[:members], gdb[:column] || 1, g[:lines])
         end
       end
 
@@ -86,9 +80,9 @@ module CIAX
 
       def ___upd_members(members, col, lines)
         members.each_slice(col.to_i) do |hline|
-          hash = {}
-          hline.each { |id| ___upd_line(id, hash) }
-          lines << hash
+          lines << hline.each_with_object({}) do |id, hash|
+            ___upd_line(id, hash)
+          end
         end
       end
 
@@ -98,6 +92,10 @@ module CIAX
         cls = stc[id] if stc.key?(id)
         lvl = @index[id][:label] || id.upcase
         hash[id] = { label: lvl, msg: msg, class: cls }
+      end
+
+      def ___mk_cap(cap)
+        ' ***' + colorize(cap, 10) + '***'
       end
     end
 

@@ -67,9 +67,8 @@ module CIAX
 
     # Check key existence
     def check_keys(kary)
-      errs = []
-      kary.each { |k| key?(k) || errs.push(k) }
-      errs.empty? || cfg_err("Conf does not have #{errs}")
+      absents = kary.find_all { |k| !key?(k) }
+      absents.empty? || cfg_err("Conf does not have #{absents}")
     end
 
     # Get the object of upper generation in which Config is generated
@@ -102,14 +101,9 @@ module CIAX
     private
 
     def ___show_db(v)
-      case v
-      when String, Numeric, Enumerable
-        __show(v.inspect)
-      when Proc
-        __show(v.class)
-      else
-        __show(v)
-      end
+      return __show(v.inspect) if __any_mod?(v, String, Numeric, Enumerable)
+      return __show(v.class) if v.is_a? Proc
+      __show(v)
     end
 
     def __decorate(ary)
@@ -125,29 +119,23 @@ module CIAX
     end
 
     def ___show_contents(v)
-      case v
-      when Hash, Proc
-        __show(v.class)
-      when Array
-        ___show_array(v)
-      else
-        __show(v.inspect)
-      end
+      return __show(v.class) if __any_mod?(v, Hash, Proc)
+      return ___show_array(v) if v.is_a? Array
+      __show(v.inspect)
     end
 
     def ___show_array(v)
       '[' + v.map do |e|
-        case e
-        when Enumerable
-          __show(e.class)
-        else
-          __show(e.inspect)
-        end
+        __show(e.is_a?(Enumerable ? e.class : e.inspect))
       end.join(',') + "](#{v.object_id})"
     end
 
     def __show(v)
       v.to_s.sub('CIAX::', '')
+    end
+
+    def __any_mod?(v, *modary)
+      modary.any? { |mod| v.is_a? mod }
     end
   end
 

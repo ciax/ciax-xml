@@ -88,9 +88,7 @@ module CIAX
           end
 
           def def_pars(n = 1)
-            ary = []
-            n.times { ary << Parameter.new }
-            { parameters: ary }
+            { parameters: Array.new(n) { Parameter.new } }
           end
         end
       end

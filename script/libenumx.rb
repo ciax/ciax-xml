@@ -28,15 +28,13 @@ module CIAX
 
     # Search String
     def deep_search(reg)
-      path = []
-      _rec_proc4str(self, path) do |obj|
+      _rec_proc4str(self) do |obj, path|
         next unless obj.is_a?(String)
         if /#{reg}/ =~ obj
           path << obj
-          break
+          break path
         end
       end
-      path
     end
 
     # Overwrite data
@@ -61,16 +59,21 @@ module CIAX
       yield enum
     end
 
+    # recursive procs for str
     def _rec_proc4str(enum, path = [], &block)
       if enum.is_a? Enumerable
-        enum.each_with_index do |e, i| # e = Array if enum is Hash
-          k, v = e.is_a?(Array) ? e : [i, e]
-          path.push(k.to_s)
-          _rec_proc4str(v, path, &block)
-          path.pop
-        end
+        ___each_enum(enum, path, block)
       else
-        yield enum, path
+        yield(enum, path)
+      end
+      path
+    end
+
+    def ___each_enum(enum, path, block)
+      enum.each_with_index do |e, i| # e = Array if enum is Hash
+        k, v = e.is_a?(Array) ? e : [i, e]
+        path.push(k.to_s)
+        _rec_proc4str(v, path, &block).pop
       end
     end
 

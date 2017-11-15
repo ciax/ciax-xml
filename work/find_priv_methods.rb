@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-#alias fpm
 require 'optparse'
 def getline(base)
   ary = []

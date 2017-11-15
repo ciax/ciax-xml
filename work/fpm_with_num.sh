@@ -1,4 +1,7 @@
 #!/bin/bash
+#alias fpm
+# Output: Method File numbers
+# Numbers: used in self/others
 ARGV="$*"
 shopt -s extglob
 while read method file; do
@@ -13,3 +16,4 @@ while read method file; do
     done < <(egrep -v '^ *def' $ARGV|egrep $method\\b)
     echo -e "$method\t$file\t$a/$b"
 done < <(find_priv_methods -d $ARGV)|expand -t 20|sort
+echo -e "Method\tFile\tself/others"|expand -t 20

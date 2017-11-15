@@ -1,7 +1,15 @@
 #!/bin/bash
+ARGV="$*"
 shopt -s extglob
-while read m f; do
-    echo -en "$m\t$f\t"
-    base=${f#lib}
-    echo "$(egrep -v '^ *def' $f|egrep $m|wc -l)/$(egrep $m lib!($base) | wc -l)"
-done < <(find_priv_methods -d lib*|sort)
+while read method file; do
+    a=0
+    b=0
+    while read line; do
+        if [[ $line =~ $file ]]; then
+            a=$(( a + 1 ))
+        else
+            b=$(( b + 1 ))
+        fi        
+    done < <(egrep -v '^ *def' $ARGV|egrep $method\\b)
+    echo -e "$method\t$file\t$a/$b"
+done < <(find_priv_methods -d $ARGV)|expand -t 20|sort

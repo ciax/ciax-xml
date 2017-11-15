@@ -29,7 +29,7 @@ module CIAX
       end
 
       def save(tag = nil)
-        _write_json(to_j, tag)
+        __write_json(to_j, tag)
       end
 
       def load(tag = nil)
@@ -50,7 +50,7 @@ module CIAX
           keylist, time: self[:time], id: self[:id], ver: self[:ver]
         ).to_j
         msg("File Saving for [#{tag}]")
-        _write_json(jstr, tag)
+        __write_json(jstr, tag)
       end
 
       def mklink(tag = 'latest')
@@ -100,7 +100,7 @@ module CIAX
         ''
       end
 
-      def _write_json(jstr, tag = nil)
+      def __write_json(jstr, tag = nil)
         ___write_notice(jstr)
         @cfile = _file_name(tag)
         open(@jsondir + @cfile, 'w') do |f|

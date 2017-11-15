@@ -37,6 +37,13 @@ module CIAX
             @sv_stat.set_flg(:auto, @th_auto && @th_auto.alive?)
           end
         end
+
+        def ___init_auto_thread
+          Threadx::Loop.new('Regular', 'wat', @id) do
+            @stat.auto_exec
+            sleep 10
+          end
+        end
       end
     end
   end

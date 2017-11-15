@@ -43,9 +43,9 @@ module CIAX
 
           def ___init_body(ent)
             verbose { "Body:#{@cfg[:label]}(#{@id})" }
-            _add_frame(:body)
+            __add_frame(:body)
             ___init_cc
-            _add_frame(:main)
+            __add_frame(:main)
             ___chk_nocache
             verbose { "Cmd Generated [#{@id}]" }
             # For send back
@@ -68,7 +68,7 @@ module CIAX
 
           def ___init_cc
             return unless @sel.key?(:ccrange)
-            @frame.cc.enclose { _add_frame(:ccrange) }
+            @frame.cc.enclose { __add_frame(:ccrange) }
           end
 
           def ___chk_nocache
@@ -78,7 +78,7 @@ module CIAX
           end
 
           # instance var frame,sel,field,fstr
-          def _add_frame(domain)
+          def __add_frame(domain)
             @frame.reset
             @sel[domain].each { |db| ___frame_by_type(db) }
             @fstr[domain] = @frame.copy

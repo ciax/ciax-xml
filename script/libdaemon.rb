@@ -46,15 +46,15 @@ module CIAX
       # Child process (Stream/Pipe) will be closed by at_exit()
       #  as the main process exit in Process.daemon
       Process.daemon(true, true)
-      _write_pid($PROCESS_ID)
+      __write_pid($PROCESS_ID)
       verbose { "Initiate Daemon Detached (#{$PROCESS_ID})" }
     end
 
     def ___kill_pids(tag)
       @pidfile = vardir('run') + tag + '.pid'
       pids = ___read_pids
-      _write_pid('')
-      'Nothing to do' unless pids.any? { |pid| _kill_pid(pid) }
+      __write_pid('')
+      'Nothing to do' unless pids.any? { |pid| ___kill_pid(pid) }
     end
 
     def ___chk_args(str, args)
@@ -63,7 +63,7 @@ module CIAX
       exit(2)
     end
 
-    def _kill_pid(pid)
+    def ___kill_pid(pid)
       Process.kill(:TERM, pid.to_i)
       show cformat('%:1s Process Killed (%s)', 'Daemon', pid)
     rescue
@@ -75,7 +75,7 @@ module CIAX
       IO.readlines(@pidfile).keep_if { |l| l.to_i > 0 }
     end
 
-    def _write_pid(pid)
+    def __write_pid(pid)
       IO.write(@pidfile, pid)
     end
 

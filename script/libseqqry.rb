@@ -65,18 +65,18 @@ module CIAX
           line = Readline.readline(_options, true)
           break 'interrupt' unless line
           id = line.rstrip
-          break id if _response(id)
+          break id if __response(id)
         end
       end
 
       def ___input_que
         loop do
           id = @que_cmd.pop.split(/[ :]/).first
-          break id if _response(id)
+          break id if __response(id)
         end
       end
 
-      def _response(id)
+      def __response(id)
         if @valid_keys.include?(id)
           @que_res << 'ACCEPT'
           return id

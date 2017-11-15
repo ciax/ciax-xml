@@ -62,13 +62,6 @@ module CIAX
           @cobj.rem.ext.valid_sub(block)
         end
       end
-
-      def ___init_auto_thread
-        Threadx::Loop.new('Regular', 'wat', @id) do
-          @stat.auto_exec
-          sleep 10
-        end
-      end
     end
 
     if __FILE__ == $PROGRAM_NAME

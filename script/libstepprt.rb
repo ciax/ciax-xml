@@ -28,7 +28,7 @@ module CIAX
         def title
           type = self[:type]
           self[:async] = '(async)' if key?(:async)
-          __head(*@title_list[type.to_sym])
+          ___head(*@title_list[type.to_sym])
         rescue NameError
           Msg.msg("No such type #{type}")
           type
@@ -105,7 +105,7 @@ module CIAX
           line
         end
 
-        def __head(msg, col, label = 'noname')
+        def ___head(msg, col, label = 'noname')
           elps = format('[%6.2f]', (self[:time] - @base) * 0.001) + __rindent
           elps + Msg.colorize(msg, col) + ':' +
             (self[:label] || (label.is_a?(Proc) ? "[#{label.call}]" : label))

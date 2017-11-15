@@ -12,8 +12,8 @@ class LogToSql
   end
 
   def create
-    names = %w(time id ver cmd snd rcv dur).join("','")
-    puts "create table stream ('#{names}',primary key(time));"
+    names = %w(time id ver cmd snd rcv dur).join(',')
+    puts "create table stream (#{names},primary key(time));"
     self
   end
 
@@ -36,9 +36,10 @@ class LogToSql
 
   def insert
     return if @line.empty?
-    ks = @line.keys.join("','")
-    vs = @line.values.join("','")
-    puts "insert or ignore into stream ('#{ks}') values ('#{vs}');"
+    enclose(%i(id cmd snd rcv))
+    ks = @line.keys.join(',')
+    vs = @line.values.join(',')
+    puts "insert or ignore into stream (#{ks}) values (#{vs});"
     self
   end
 
@@ -51,32 +52,31 @@ class LogToSql
     end
   end
 
+  # ch => current hash
   def mk_dict(ch)
-    data = ch['base64']
     case ch['dir']
     when 'snd'
       insert
-      item_snd(data, ch)
+      item_snd(ch)
     when 'rcv'
-      item_rcv(data, ch)
+      item_rcv(ch)
     else
       pr 'no match'
     end
   end
 
-  def item_snd(data, ch)
+  def item_snd(ch)
     @line = pick(%i(time id ver cmd), ch)
-    @line[:snd] = data
+    @line[:snd] = ch['base64']
     self
   end
 
-  def item_rcv(data, ch)
+  def item_rcv(ch)
     if @line.key(:rcv)
       pr 'rcv duplicated'
     elsif corresponding?(%i(id ver cmd), ch)
-      @line[:rcv] = data
-      dur = (ch.delete('time').to_i - @line[:time].to_i)
-      @line[:dur] = dur.to_f / 1000.0
+      @line[:rcv] = ch['base64']
+      @line[:dur] = mk_dur(ch)
     end
     self
   end
@@ -87,6 +87,18 @@ class LogToSql
 
   def corresponding?(ks, ch)
     ks.all? { |k| @line[k] == ch[k.to_s] }
+  end
+
+  def mk_dur(ch)
+    (ch.delete('time').to_i - @line[:time].to_i).to_f / 1000.0
+  end
+
+  def enclose(kary)
+    kary.each do |key|
+      next unless @line.key?(key)
+      str = @line[key]
+      @line[key] = "'#{str}'"
+    end
   end
 
   def pr(text)

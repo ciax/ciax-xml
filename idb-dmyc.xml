@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="dmyc" label="CIAX Dummy" column="2">
-    <group id="cx_dmy" label="CIAX Dymmy">
+    <include ref="dcmp"/>
+    <group id="cmp_dmy" label="CIAX Dymmy">
       <instance id="trt" app_id="mel" host="localhost" port="25191" label="CIAX CART 3"/>
       <instance id="tsi" app_id="cj2" host="localhost" port="25192" label="IR Stand-by"/>
       <instance id="tso" app_id="cj2" host="localhost" port="25193" label="OPT Stand-by"/>
       <instance id="tts" app_id="oss" host="localhost" port="25195" label="OSS Telescope"/>
-      <instance id="tci" app_id="bbe" host="localhost" port="25198" label="COMP IR"/>
     </group>
   </project>
 </idb>

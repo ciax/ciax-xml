@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
+  <project id="dcmp" label="Dummy Helium Compressor">
+    <group id="cpd_sum" label="Dummy Summit Helium Compressor">
+      <instance id="tco" app_id="bbe" host="ciax" port="53294" label="OPT Helium Compressor">
+        <command ref="cco"/>
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="g0" caption="CIAO(S6) SWITCH"/>
+          <group ref="g2" caption="COMICS/IMG(S4)"/>
+          <group ref="g3" caption="COMICS/SPEC(S5)"/>
+        </status>
+      </instance>
+      <instance id="tci" app_id="bbe" host="ciax" port="53296" label="IR Helium Compressor">
+        <command ref="cci"/>
+        <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+          <group ref="g0" caption="CAS2(S1)(MOIRCS/CR,CIAO)"/>
+          <group ref="g1" caption="CAS1(S2)(MOIRCS/MAIN)"/>
+          <group ref="g2" caption="MOIRCS/CR(S8)"/>
+          <group ref="g3" caption="MOIRCS/MAIN(S9)"/>
+        </status>
+      </instance>
+    </group>
+  </project>
+</idb>

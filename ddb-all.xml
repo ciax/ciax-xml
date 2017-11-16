@@ -70,5 +70,6 @@
     </site>
     <site id="tts" frm_id="oss" host="localhost" port="24195" iocmd="devsim-sql dts" label="Gen2 TSC Control"/>
     <site id="tci" frm_id="bbe" host="localhost" port="24198" iocmd="devsim-sql cci" label="CCI dummy"/>
+    <site id="tco" frm_id="bbe" host="localhost" port="24199" iocmd="devsim-sql cco" label="CCO dummy"/>
   </group>
 </ddb>

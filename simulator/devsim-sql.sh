@@ -31,8 +31,12 @@ warn(){
 }
 
 server(){
+    pidfile="$HOME/.var/run/devsim.pid"
+    pid=$(grep -s . $pidfile) && kill $pid
     # To keep alive an exec command, it should be first item
-    socat exec:"$0 -" udp-recvfrom:8888,reuseaddr,fork & exit
+    socat exec:"$0 -" udp-recvfrom:8888,reuseaddr,fork &
+    echo $! > $pidfile
+    exit
 }
 
 [ "$1" ] ||{  echo "Usage:${0##*/} (-d) [site]";exit 1; }

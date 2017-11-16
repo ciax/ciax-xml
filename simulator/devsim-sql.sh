@@ -11,7 +11,7 @@ EOF
 }
 next(){
     time=$(nexttime) && return
-    warn "Rewinded"
+    warn "== Rewinded =="
     time=$(nexttime) || return 1
 }
 fields(){
@@ -30,27 +30,33 @@ warn(){
     echo "DEVSIM:$*" > /dev/stderr
 }
 
-server(){
-    pidfile="$HOME/.var/run/devsim.pid"
+kilpid(){
     pid=$(grep -s . $pidfile) && kill $pid
+}
+server(){
+    kilpid
     # To keep alive an exec command, it should be first item
     socat exec:"$0 -" udp-recvfrom:8888,reuseaddr,fork &
     echo $! > $pidfile
     exit
 }
 
-[ "$1" ] ||{  echo "Usage:${0##*/} (-d) [site]";exit 1; }
+pidfile="$HOME/.var/run/devsim.pid"
+[ "$1" ] ||{  echo "Usage:${0##*/} (-d) [site]";kilpid;exit 1; }
 [ "$1" = -d ] && server
 [ "$1" = - ] || site=$1
 time=0
 sqlfile="$HOME/.var/log/stream.sq3"
-warn "Init"
+warn "== Init =="
 while : ; do
+    warn "  Ready"
     input=$(input64)
-    next || break
+    warn "  Search for $input"
+    next || { warn "== No find =="; continue; }
     setvar
-    warn $time
+    warn "  Find $time"
     sleep $dur
+    warn "  Slept $dur"
     echo -n $rcv|base64 -d
 done
-warn "No find $cmd"
+

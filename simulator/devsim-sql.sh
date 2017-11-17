@@ -31,7 +31,7 @@ warn(){
 }
 
 kilpid(){
-    pid=$(grep -s . $pidfile) && kill $pid
+    pid=$(grep -s . $pidfile) && { kill $pid; :> $pidfile; }
 }
 server(){
     kilpid

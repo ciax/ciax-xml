@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <project id="dmyc" label="CIAX Dummy" column="2">
+  <project id="dciax" label="CIAX Dummy" column="2">
     <include ref="dcmp"/>
     <group id="cmp_dmy" label="CIAX Dymmy">
       <instance id="trt" app_id="mel" host="localhost" port="25191" label="CIAX CART 3"/>

@@ -29,7 +29,7 @@ def on_mask?(stat)
   return unless stat[:abs] == 'FOCUS'
   stat[:rao] == 'CLOSE' && stat[:rbo] == 'CLOSE'
 end
-pfx = "#{ENV['PROJ']}" == 'dmym' ? 't' : 'm'
+pfx = "#{ENV['PROJ']}" == 'dmcs' ? 't' : 'm'
 src = {}
 %w(fp ma mc).each do |s|
   file = mkfile(pfx + s)

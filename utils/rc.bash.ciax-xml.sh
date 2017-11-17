@@ -5,12 +5,12 @@ develop(){
     setup-www
     case $(git branch |grep '*') in
         *develop)
-            export PROJ=dmym
+            export PROJ=dmcs
             export NOCACHE=1
             alias sybeta='git push;giu beta;gim develop;git push;giu develop'
             ;;
         *config)
-            export PROJ=dmyc
+            export PROJ=dciax
             ;;
         *beta)
             alias sydev='git push;giu develop;gim beta;git push;giu beta'

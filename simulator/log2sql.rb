@@ -6,13 +6,13 @@ class LogToSql
   # line includes both command and response data
   # [ { :time => time, :snd => base64, :rcv => base64, :diff => msec } ]
   def initialize(id)
-    @line = {}
     id = "{#{id}}" if id.include?(',')
     @files = Dir.glob(ENV['HOME'] + "/.var/log/stream_#{id}*.log")
+    @field = { time: :i, id: :s, ver: :i, cmd: :s, snd: :s, rcv: :s, dur: :f }
   end
 
   def create
-    names = %w(time id ver cmd snd rcv dur).join(',')
+    names = @field.keys.join(',')
     puts "create table stream (#{names},primary key(time));"
     self
   end
@@ -26,19 +26,22 @@ class LogToSql
   def transaction(n = 0)
     puts 'begin;'
     drop.create
-    read_file(n.to_i).each do |line|
-      mk_dict(JSON.parse(line))
-    end
-    insert
+    records(n)
     puts 'commit;'
     self
   end
 
-  def insert
-    return if @line.empty?
-    enclose(%i(id cmd snd rcv))
-    ks = @line.keys.join(',')
-    vs = @line.values.join(',')
+  def records(n = 0)
+    rec = {}
+    read_file(n.to_i).each do |line|
+      mk_dict(rec, JSON.parse(line))
+    end
+    insert(rec)
+  end
+
+  def insert(rec)
+    return if rec.empty?
+    ks, vs = enclose(rec)
     puts "insert or ignore into stream (#{ks}) values (#{vs});"
     self
   end
@@ -53,51 +56,65 @@ class LogToSql
   end
 
   # ch => current hash
-  def mk_dict(ch)
+  def mk_dict(ch, rec)
     case ch['dir']
     when 'snd'
-      insert
-      item_snd(ch)
+      insert(rec)
+      item_snd(ch, rec)
     when 'rcv'
-      item_rcv(ch)
+      item_rcv(ch, rec)
     else
       pr 'no match'
     end
   end
 
-  def item_snd(ch)
-    @line = pick(%i(time id ver cmd), ch)
-    @line[:snd] = ch['base64']
+  def item_snd(ch, rec)
+    pick(%i(time id ver cmd), ch, rec)
+    rec[:snd] = ch['base64']
     self
   end
 
-  def item_rcv(ch)
-    if @line.key(:rcv)
+  def item_rcv(ch, rec)
+    if rec.key(:rcv)
       pr 'rcv duplicated'
-    elsif corresponding?(%i(id ver cmd), ch)
-      @line[:rcv] = ch['base64']
-      @line[:dur] = mk_dur(ch)
+    elsif corresponding?(%i(id ver cmd), ch, rec)
+      rec[:rcv] = ch['base64']
+      rec[:dur] = mk_dur(ch, rec)
     end
     self
   end
 
-  def pick(ks, ch)
-    ks.each_with_object({}) { |k, h| h[k] = ch[k.to_s] }
+  def pick(ks, ch, rec = {})
+    ks.each_with_object(rec) { |k, h| h[k] = ch[k.to_s] }
   end
 
-  def corresponding?(ks, ch)
-    ks.all? { |k| @line[k] == ch[k.to_s] }
+  def corresponding?(ks, ch, rec)
+    ks.all? { |k| rec[k] == ch[k.to_s] }
   end
 
-  def mk_dur(ch)
-    (ch.delete('time').to_i - @line[:time].to_i).to_f / 1000.0
+  def mk_dur(ch, rec)
+    (ch.delete('time').to_i - rec[:time].to_i).to_f / 1000.0
   end
 
-  def enclose(kary)
-    kary.each do |key|
-      next unless @line.key?(key)
-      str = @line[key]
-      @line[key] = "'#{str}'"
+  def enclose(rec)
+    ks = []
+    vs = []
+    @field.each do |key, type|
+      next unless rec.key?(key)
+      ks << key
+      vs << conv(rec[key], type)
+    end
+    [ks.join(','), vs.join(',')]
+  end
+
+  def conv(str, type)
+    case type
+    when :s
+      "'#{str}'"
+    when :i
+      str.to_i
+    when :f
+      str.to_f
     end
   end
 

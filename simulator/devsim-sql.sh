@@ -52,11 +52,13 @@ while : ; do
     warn "  Ready"
     input=$(input64)
     warn "  Search for $input"
+    ns=$(date +%s.%N)
     next || { warn "== No find =="; continue; }
     setvar
+    rest=$(echo "$dur+$ns-$n$(date +%s.%N)"|bc)
     warn "  Find $time"
-    sleep $dur
-    warn "  Slept $dur"
+    sleep $rest
+    warn "  Slept $rest"
     echo -n $rcv|base64 -d
 done
 

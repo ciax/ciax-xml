@@ -34,7 +34,7 @@ class LogToSql
   def records(n = 0)
     rec = {}
     read_file(n.to_i).each do |line|
-      mk_dict(rec, JSON.parse(line))
+      mk_dict(JSON.parse(line), rec)
     end
     insert(rec)
   end

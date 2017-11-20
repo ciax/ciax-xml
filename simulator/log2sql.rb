@@ -6,6 +6,7 @@ class LogToSql
   # line includes both command and response data
   # [ { :time => time, :snd => base64, :rcv => base64, :diff => msec } ]
   def initialize(id)
+    id = '' if id == '-a'
     id = "{#{id}}" if id.include?(',')
     @files = Dir.glob(ENV['HOME'] + "/.var/log/stream_#{id}*.log")
     @field = { time: :i, id: :s, ver: :i, cmd: :s, snd: :s, rcv: :s, dur: :f }
@@ -25,18 +26,17 @@ class LogToSql
   # pick up n lines each
   def transaction(n = 0)
     puts 'begin;'
-    drop.create
-    records(n)
+    drop.create.records(n)
     puts 'commit;'
     self
   end
 
   def records(n = 0)
-    rec = {}
-    read_file(n.to_i).each do |line|
-      mk_dict(JSON.parse(line), rec)
-    end
-    insert(rec)
+    insert(
+      read_file(n.to_i).each_with_object({}) do |line, rec|
+        mk_dict(JSON.parse(line), rec)
+      end
+    )
   end
 
   def insert(rec)
@@ -124,7 +124,7 @@ class LogToSql
   end
 end
 
-abort 'Usage: log2sql [id,..] (lines)' if ARGV.empty?
+abort 'Usage: log2sql (-a) [id,..] (lines)' if ARGV.empty?
 id = ARGV.shift
 num = ARGV.shift
 ARGV.clear

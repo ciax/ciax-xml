@@ -1,14 +1,15 @@
 #!/usr/bin/ruby
 require 'json'
-# Device simulator by Log file
+# Device simulator SQL generator from Stream Log file
 class LogToSql
-  # Structure of @logary
-  # line includes both command and response data
-  # [ { :time => time, :snd => base64, :rcv => base64, :diff => msec } ]
+  # record includes both command and response data
+  # [ { :time => time, :id => id, :ver => ver,
+  #     :snd => base64, :rcv => base64, :dur => msec } ]
   def initialize(id)
     id = '' if id == '-a'
     id = "{#{id}}" if id.include?(',')
     @files = Dir.glob(ENV['HOME'] + "/.var/log/stream_#{id}*.log")
+    # field name vs data type table (:i=Integer, :s=String, :f=Float)
     @field = { time: :i, id: :s, ver: :i, cmd: :s, snd: :s, rcv: :s, dur: :f }
   end
 

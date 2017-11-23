@@ -5,21 +5,45 @@ require 'json'
 class LogToSql
   private
 
-  def read_file(n = 0)
+  def read_files
     @files.each do |fname|
-      pn fname
-      ln = IO.readlines(fname)
-      pr "(#{ln.size})"
-      yield n > 0 ? ln[0, n] : ln
+      pr fname
+      open(fname) do |fs|
+        yield fs, 1, {}
+      end
     end
   end
 
-  # ch => current hash
-  def mk_dict(line, rec)
+  def progress(c)
+    return unless (c % 10_000).zero?
+    return pr '.' unless (c % 100_000).zero?
+    pr '*'
+    true
+  end
+
+  def divide(c, rec)
+    return unless (c % 500_000).zero?
+    commit(rec, c)
+    puts 'begin;'
+  end
+
+  def commit(rec, c)
+    insert(rec)
+    puts 'commit;'
+    pr "<commit(#{format('%.1f', c.to_f / 1_000_000)}M)>"
+  end
+
+  def count(c, n, rec)
+    return if n > 0 && c > n && rec.empty?
+    progress(c) && divide(c, rec)
+    c + 1
+  end
+
+  # Making record Hash (ch => current hash)
+  def mk_record(line, rec)
     ch = inspection(line)
     case ch['dir']
     when 'snd'
-      insert(rec)
       item_snd(ch, rec)
     when 'rcv'
       item_rcv(ch, rec)
@@ -27,6 +51,74 @@ class LogToSql
       pr 'no match'
     end
   end
+
+  def item_snd(ch, rec)
+    insert(rec)
+    pick(%i(time id ver cmd), ch, rec)
+    rec[:snd] = ch['base64']
+    self
+  end
+
+  def item_rcv(ch, rec)
+    if rec.key(:rcv)
+      pr 'rcv duplicated'
+    elsif corresponding?(%i(id ver cmd), ch, rec)
+      rec[:rcv] = ch['base64']
+      rec[:dur] = mk_dur(ch, rec)
+      insert(rec)
+    end
+    self
+  end
+
+  def pick(ks, ch, rec = {})
+    ks.each_with_object(rec) { |k, h| h[k] = ch[k.to_s] }
+  end
+
+  def corresponding?(ks, ch, rec)
+    ks.all? { |k| rec[k] == ch[k.to_s] }
+  end
+
+  def mk_dur(ch, rec)
+    (ch.delete('time').to_i - rec[:time].to_i).to_f / 1000.0
+  end
+
+  # Making insert statement
+  def keys_vals(rec)
+    @field.each_with_object([[], []]) do |src, dst|
+      next unless rec.key?(key = src[0])
+      dst[0] << key
+      dst[1] << conv(rec[key], src[1])
+    end
+  end
+
+  def conv(str, type)
+    case type
+    when :s
+      "'#{str}'"
+    when :i
+      str.to_i
+    when :f
+      str.to_f
+    end
+  end
+
+  # Print STDERR
+  def pr(text = nil)
+    len = text.to_s.length
+    if len > 1
+      STDERR.puts "\033[1;34m#{text}\33[0m"
+    elsif len == 1
+      STDERR.print text
+    else
+      STDERR.puts
+    end
+    false
+  end
+end
+
+# Data conversion for old format
+class LogToSql
+  private
 
   # Convert from old format to latest
   def inspection(line)
@@ -46,68 +138,8 @@ class LogToSql
     ch
   end
 
-  def item_snd(ch, rec)
-    pick(%i(time id ver cmd), ch, rec)
-    rec[:snd] = ch['base64']
-    self
-  end
-
-  def item_rcv(ch, rec)
-    if rec.key(:rcv)
-      pr 'rcv duplicated'
-    elsif corresponding?(%i(id ver cmd), ch, rec)
-      rec[:rcv] = ch['base64']
-      rec[:dur] = mk_dur(ch, rec)
-    end
-    self
-  end
-
   def chg_key(ch, key1, key2)
     ch[key2] = ch.delete(key1) if ch.key?(key1)
-  end
-
-  def pick(ks, ch, rec = {})
-    ks.each_with_object(rec) { |k, h| h[k] = ch[k.to_s] }
-  end
-
-  def corresponding?(ks, ch, rec)
-    ks.all? { |k| rec[k] == ch[k.to_s] }
-  end
-
-  def mk_dur(ch, rec)
-    (ch.delete('time').to_i - rec[:time].to_i).to_f / 1000.0
-  end
-
-  def enclose(rec)
-    ks = []
-    vs = []
-    @field.each do |key, type|
-      next unless rec.key?(key)
-      ks << key
-      vs << conv(rec[key], type)
-    end
-    [ks.join(','), vs.join(',')]
-  end
-
-  def conv(str, type)
-    case type
-    when :s
-      "'#{str}'"
-    when :i
-      str.to_i
-    when :f
-      str.to_f
-    end
-  end
-
-  def pn(text)
-    STDERR.print "\033[1;34m#{text}\33[0m"
-    nil
-  end
-
-  def pr(text)
-    STDERR.puts "\033[1;34m#{text}\33[0m"
-    nil
   end
 end
 
@@ -137,20 +169,22 @@ class LogToSql
 
   # pick up n lines each
   def transaction(n = 0)
-    read_file(n.to_i) do |ln|
+    read_files do |fs, c, rec|
       puts 'begin;'
-      insert(ln.each_with_object({}) do |line, rec|
-        mk_dict(line, rec)
-      end)
-      puts 'commit;'
+      while (line = fs.gets)
+        mk_record(line, rec)
+        c = count(c, n, rec) || break
+      end
+      commit(rec, c)
     end
     self
   end
 
   def insert(rec)
     return if rec.empty?
-    ks, vs = enclose(rec)
+    ks, vs = keys_vals(rec).map { |ary| ary.join(',') }
     puts "insert or ignore into stream (#{ks}) values (#{vs});"
+    rec.clear
     self
   end
 end
@@ -158,10 +192,10 @@ end
 abort 'Usage: log2sql (-a,c) [id,..] (lines)' if ARGV.empty?
 id = ARGV.shift
 if id == '-c'
-  clr=true
+  clr = true
   id = ARGV.shift
 end
-num = ARGV.shift
+num = ARGV.shift.to_i
 ARGV.clear
 
 l2s = LogToSql.new(id)

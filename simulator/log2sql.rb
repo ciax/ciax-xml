@@ -149,9 +149,9 @@ class LogToSql
   # [ { :time => time, :id => id, :ver => ver,
   #     :snd => base64, :rcv => base64, :dur => msec } ]
   def initialize(id)
-    id = '' if id == '-a'
+    id = (id == '-a') ? '' : id.to_s
     id = "{#{id}}" if id.include?(',')
-    @files = Dir.glob(ENV['HOME'] + "/.var/log/stream_#{id}*.log").sort
+    @files = Dir.glob(ENV['HOME'] + "/.var/log/**/stream_#{id}*.log").sort
     # field name vs data type table (:i=Integer, :s=String, :f=Float)
     @field = { time: :i, id: :s, ver: :i, cmd: :s, snd: :s, rcv: :s, dur: :f }
   end

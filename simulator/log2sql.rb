@@ -66,7 +66,7 @@ class LogToSql
       pr 'rcv duplicated'
     elsif corresponding?(%i(id ver cmd), ch, rec)
       rec[:rcv] = ch['base64']
-      rec[:dur] = mk_dur(ch, rec)
+      rec[:dur] = ch.delete('time').to_i - rec[:time].to_i
       insert(rec)
     end
     self
@@ -78,10 +78,6 @@ class LogToSql
 
   def corresponding?(ks, ch, rec)
     ks.all? { |k| rec[k] == ch[k.to_s] }
-  end
-
-  def mk_dur(ch, rec)
-    (ch.delete('time').to_i - rec[:time].to_i).to_f / 1000.0
   end
 
   # Making insert statement
@@ -99,8 +95,6 @@ class LogToSql
       "'#{str}'"
     when :i
       str.to_i
-    when :f
-      str.to_f
     end
   end
 
@@ -160,8 +154,8 @@ class LogToSql
     id = id == '-a' ? '' : id.to_s
     id = "{#{id}}" if id.include?(',')
     @files = Dir.glob(ENV['HOME'] + "/.var/log/**/stream_#{id}*.log").sort
-    # field name vs data type table (:i=Integer, :s=String, :f=Float)
-    @field = { time: :i, id: :s, ver: :i, cmd: :s, snd: :s, rcv: :s, dur: :f }
+    # field name vs data type table (:i=Integer, :s=String)
+    @field = { time: :i, id: :s, ver: :i, cmd: :s, snd: :s, rcv: :s, dur: :i }
   end
 
   def create

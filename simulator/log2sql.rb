@@ -6,11 +6,13 @@ class LogToSql
   private
 
   def read_files
-    @files.each do |fname|
-      pr fname
-      open(fname) do |fs|
-        yield fs, 1, {}
+    if STDIN.tty?
+      @files.each do |fname|
+        pr fname
+        open(fname) { |fs| yield fs, 1, {} }
       end
+    else
+      yield STDIN, 1, {}
     end
   end
 
@@ -123,6 +125,7 @@ class LogToSql
   # Convert from old format to latest
   def inspection(line)
     ch = {}
+    # timestamp + JSON -> current hash
     if line =~ /(^[0-9\.]+).*(\{.*\})/
       ch['time'] = Regexp.last_match(1).delete('.')
       line = Regexp.last_match(2)
@@ -132,7 +135,12 @@ class LogToSql
 
   def modify(ch)
     time = ch['time']
-    ch['time'] = time.delete('.').to_i if time.is_a? String
+    # float sec -> int msec
+    if time.is_a? String
+      ch['time'] = time.delete('.').ljust(13, '0')[0, 13].to_i
+    elsif time.is_a? Float
+      ch['time'] = (time * 100).to_i
+    end
     chg_key(ch, 'data', 'base64')
     chg_key(ch, 'cid', 'cmd')
     ch
@@ -149,7 +157,7 @@ class LogToSql
   # [ { :time => time, :id => id, :ver => ver,
   #     :snd => base64, :rcv => base64, :dur => msec } ]
   def initialize(id)
-    id = (id == '-a') ? '' : id.to_s
+    id = id == '-a' ? '' : id.to_s
     id = "{#{id}}" if id.include?(',')
     @files = Dir.glob(ENV['HOME'] + "/.var/log/**/stream_#{id}*.log").sort
     # field name vs data type table (:i=Integer, :s=String, :f=Float)
@@ -189,7 +197,9 @@ class LogToSql
   end
 end
 
-abort 'Usage: log2sql (-a,c) [id,..] (lines)' if ARGV.empty?
+if ARGV.empty? && STDIN.tty?
+  abort 'Usage: log2sql (-c) (id,..) (lines) (<STDIN)'
+end
 id = ARGV.shift
 if id == '-c'
   clr = true

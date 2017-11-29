@@ -189,6 +189,11 @@ class LogToSql
     rec.clear
     self
   end
+
+  # For checking existence of send data
+  def snd_table
+    puts "create table send_data as select distinct snd from stream;"
+  end
 end
 
 if ARGV.empty? && STDIN.tty?
@@ -205,3 +210,4 @@ ARGV.clear
 l2s = LogToSql.new(id)
 l2s.drop.create if clr
 l2s.transaction(num)
+l2s.snd_table

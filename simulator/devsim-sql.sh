@@ -3,7 +3,7 @@
 #alias devsim
 kilpid(){
     while read pid ;do
-        kill $pid
+        kill $pid >/dev/null 2>&1 && warn "Process $pid is killed"
     done < $pidfile
     :> $pidfile
 }
@@ -41,17 +41,17 @@ select * from stream
 EOF
 }
 # main
+check_existance(){
+    sqlite3 $sqlfile <<EOF | grep -s . || alert "== Not found =="
+select * from send_data where snd == '$input';
+EOF
+}
 next(){
     ms=$(now)
-    time=$(nexttime) && {
-        leadtime=$(( $(now)-$ms ))
-        return
-    }
-    warn "== Rewinded =="
-    time=$(nexttime) || {
-        warn "== Not found =="
-        return 1
-    }
+    until time=$(nexttime); do
+        warn "== Rewinded =="
+    done
+    leadtime=$(( $(now)-$ms ))
 }
 setvar(){
     while read line; do
@@ -76,6 +76,7 @@ now(){
     echo ${a:0:13}
 }
 warn(){ echo "DEVSIM:$*" > /dev/stderr; }
+alert(){ echo "DEVSIM:$*" > /dev/stderr; return 1; }
 #########################
 pidfile="$HOME/.var/run/devsim.pid"
 mkdir -p $HOME/.var/run
@@ -92,7 +93,8 @@ while : ; do
     warn "  Ready"
     input=$(input64)
     warn "  Send [${input:0:8}...]"
-    next || continue
+    check_existance || continue
+    next
     setvar
     progress
     [ "$dur" ] || { warn "No responding data"; continue; }

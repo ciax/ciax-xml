@@ -16,7 +16,7 @@ mklink(){
 }
 dig_dir(){
     for i ; do
-        [ -d "$i" ] || mkdir "$i"
+        mkdir -p "$i"
         cd "$i"
     done
 }
@@ -27,7 +27,7 @@ init_bashrc(){
 }
 echo $C3"Prepare work dirs"$C0
 dig_dir ~/.var
-mkdir cache json log record
+mkdir -p cache json log record
 /bin/rm cache/*.mar >/dev/null 2>&1
 /bin/rm *.json >/dev/null 2>&1
 dig_dir ~/bin

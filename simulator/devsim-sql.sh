@@ -12,9 +12,14 @@ server(){
     exit
 }
 # sql commands
-timerange(){
-    sqlite3 -separator ' ' $sqlfile <<EOF
-select min(time),max(time) from stream;
+maxtime(){
+    sqlite3 $sqlfile <<EOF
+select max(time) from stream;
+EOF
+}
+mintime(){
+    sqlite3 $sqlfile <<EOF
+select min(time) from stream;
 EOF
 }
 nexttime(){
@@ -65,12 +70,14 @@ now(){ date +%s.%N; }
 warn(){ echo "DEVSIM:$*" > /dev/stderr; }
 #########################
 pidfile="$HOME/.var/run/devsim.pid"
+mkdir -p $HOME/.var/run
 [ "$1" ] ||{  echo "Usage:${0##*/} (-d) [site]";kilpid;exit 1; }
 [ "$1" = -d ] && server
 [ "$1" = - ] || site=$1
 time=0
 sqlfile="$HOME/.var/log/stream.sq3"
-read min max < <(timerange)
+min=$(mintime)
+max=$(maxtime)
 len=$(( $max - $min ))
 warn "== Init =="
 while : ; do

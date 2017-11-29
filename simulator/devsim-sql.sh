@@ -95,9 +95,9 @@ while : ; do
     next || continue
     setvar
     progress
-    [ "$dur" ] || { warn "No respond"; continue; }
+    [ "$dur" ] || { warn "No responding data"; continue; }
     waitdur
-    warn "  Recieve [${rcv:0:8}...]"
     echo -n $rcv|base64 -d
+    warn "  Recieve [${rcv:0:8}...]"
 done
 

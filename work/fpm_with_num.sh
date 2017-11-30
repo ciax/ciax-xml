@@ -16,6 +16,6 @@ while read method file; do
             [[ $line =~ def ]] && odef=$(( odef + 1 )) || ouse=$(( ouse + 1 ))
         fi        
     done < <(grep -w $method $ARGV)
-    echo -e "$method\t$file\t$mdef/$muse $muse/$ouse"
+    echo -e "$method\t$file\t$mdef/$muse $odef/$ouse"
 done < <(find_priv_methods -d $ARGV)|expand -t 20|sort
 echo -e "Method\tFile\tdef/use(self) def/use(others)"|expand -t 20

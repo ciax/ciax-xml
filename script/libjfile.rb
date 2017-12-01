@@ -58,7 +58,7 @@ module CIAX
         save
         sname = vardir('json') + "#{@type}_#{tag}.json"
         ::File.unlink(sname) if ::File.exist?(sname)
-        ::File.symlink(@jsondir + _file_name, sname)
+        ::File.symlink(@jsondir + __file_name, sname)
         verbose { "File Symboliclink to [#{sname}]" }
         self
       end
@@ -77,18 +77,18 @@ module CIAX
         relay(@cfile.to_s)
       end
 
-      def _file_name(tag = nil)
+      def __file_name(tag = nil)
         base_name(tag) + '.json'
       end
 
       def __tag_list
-        Dir.glob(@jsondir + _file_name('*')).map do |f|
+        Dir.glob(@jsondir + __file_name('*')).map do |f|
           f.slice(/.+_(.+)\.json/, 1)
         end.sort
       end
 
       def ___read_json(tag = nil)
-        @cfile = _file_name(tag)
+        @cfile = __file_name(tag)
         open(@jsondir + @cfile) do |f|
           verbose { "Reading [#{@cfile}](#{f.size})" }
           f.flock(::File::LOCK_SH)
@@ -102,7 +102,7 @@ module CIAX
 
       def __write_json(jstr, tag = nil)
         ___write_notice(jstr)
-        @cfile = _file_name(tag)
+        @cfile = __file_name(tag)
         open(@jsondir + @cfile, 'w') do |f|
           f.flock(::File::LOCK_EX)
           f << jstr

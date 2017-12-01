@@ -32,12 +32,12 @@ module CIAX
       end
 
       def ___init_propagates
-        @sv_stat.cmt_procs << proc { _cmt_propagate('Prompt') }
-        @stat.cmt_procs << proc { _cmt_propagate('Status') }
+        @sv_stat.cmt_procs << proc { __cmt_propagate('Prompt') }
+        @stat.cmt_procs << proc { __cmt_propagate('Status') }
         cmt
       end
 
-      def _cmt_propagate(mod)
+      def __cmt_propagate(mod)
         verbose { "Propagate #{mod}#cmt -> Hex::View#cmt" }
         cmt
       end

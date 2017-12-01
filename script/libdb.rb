@@ -24,14 +24,14 @@ module CIAX
       # @displist is Display
       lid = proj ? "list_#{proj}" : 'list'
       # Show site list
-      @displist = _get_cache(lid) || _get_db(lid, &:displist) # site list
+      @displist = _get_cache(lid) || __get_db(lid, &:displist) # site list
       @argc = 0
     end
 
     # return Dbi
     def get(id)
       @displist.valid?(id) || id_err(id, @type, @displist)
-      _get_cache(id) || _get_db(id) { |docs| _doc_to_db(docs.get(id)) }
+      _get_cache(id) || __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
     end
 
     private
@@ -55,7 +55,7 @@ module CIAX
       nil
     end
 
-    def _get_db(id)
+    def __get_db(id)
       res = ___validate_repl(yield(@docs))
       ___save_cache(id, res)
     end
@@ -103,14 +103,14 @@ module CIAX
     end
 
     def ___xmlnewer?
-      _file_newer?('Xml', Msg.xmlfiles(@type))
+      __file_newer?('Xml', Msg.xmlfiles(@type))
     end
 
     def ___rbnewer?
-      _file_newer?('Rb', $LOADED_FEATURES.grep(/#{__dir__}/))
+      __file_newer?('Rb', $LOADED_FEATURES.grep(/#{__dir__}/))
     end
 
-    def _file_newer?(cap, ary)
+    def __file_newer?(cap, ary)
       latest = ary.max_by { |f| File.mtime(f) }
       verbose(test('>', latest, @cachefile)) do
         format('%s/Cache %s(%s) is newer than (%s)',

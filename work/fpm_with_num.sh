@@ -1,4 +1,5 @@
 #!/bin/bash
+# Required script: find_priv_methods
 #alias fpm
 # Output: Method File #self #others
 # Numbers: in def/use
@@ -11,9 +12,9 @@ while read method file; do
     ouse=0
     while read line; do
         if [[ $line =~ $file ]]; then
-            [[ $line =~ def ]] && mdef=$(( mdef + 1 )) || muse=$(( muse + 1 ))
+            [[ $line =~ 'def ' ]] && mdef=$(( mdef + 1 )) || muse=$(( muse + 1 ))
         else
-            [[ $line =~ def ]] && odef=$(( odef + 1 )) || ouse=$(( ouse + 1 ))
+            [[ $line =~ 'def ' ]] && odef=$(( odef + 1 )) || ouse=$(( ouse + 1 ))
         fi        
     done < <(grep -w $method $ARGV)
     echo -e "$method\t$file\t$mdef/$muse $odef/$ouse"

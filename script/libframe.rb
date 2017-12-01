@@ -118,12 +118,12 @@ module CIAX
           val = decode(val, e0)
           ref = expr(ref).to_s
         end
-        _check(e0, ref, val)
+        ___check(e0, ref, val)
         @cc.push(str)
         str
       end
 
-      def _check(e0, ref, val)
+      def ___check(e0, ref, val)
         if ref == val
           verbose { "Verify:(#{e0[:label]}) [#{ref.inspect}] OK" }
         else

@@ -4,7 +4,7 @@ require 'libmsgdbg'
 class Module
   # All classes copy under the module
   def deep_include(smod, dmod = self)
-    const_defined?(dmod.to_s) || _fmt_eval('module %s;end', dmod)
+    const_defined?(dmod.to_s) || __fmt_eval('module %s;end', dmod)
     smod.constants.each do |con|
       ___classify(*[smod, dmod].map { |s| format('%s::%s', s, con) })
     end
@@ -15,15 +15,15 @@ class Module
   def ___classify(sname, dname)
     case (ssub = const_get(sname))
     when Class
-      _fmt_eval('class %s < %s;end', dname, sname)
+      __fmt_eval('class %s < %s;end', dname, sname)
     when Module
       deep_include(ssub, dname)
     else
-      _fmt_eval('%s = %s', dname, sname)
+      __fmt_eval('%s = %s', dname, sname)
     end
   end
 
-  def _fmt_eval(*par)
+  def __fmt_eval(*par)
     module_eval(format(*par))
   end
 end

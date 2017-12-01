@@ -16,10 +16,10 @@ module CIAX
       private
 
       def ___mk_ctl_grp(grpary)
-        _check_group if grpary.empty?
+        __check_group if grpary.empty?
         grpary.each do |gid|
           next if gid == '-'
-          _check_group(gid)
+          __check_group(gid)
           tbody = _mk_tbody('Control ' + @gdb[gid][:caption])
           ___mk_ctl_column(gid, tbody)
         end
@@ -70,7 +70,7 @@ module CIAX
         self
       end
 
-      def _check_group(gid = nil)
+      def __check_group(gid = nil)
         return if @gdb.key?(gid)
         cmd_err(@gdb.map { |k, v| Msg.itemize(k, v[:caption]) }.join("\n"))
       end

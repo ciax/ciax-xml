@@ -19,7 +19,7 @@ module CIAX
       end
 
       def servo(target)
-        return unless _in_range?
+        return unless __in_range?
         target = ___regulate(target)
         Thread.new(target.to_i) do |t|
           @busy = true
@@ -63,10 +63,10 @@ module CIAX
       end
 
       def ___upd_busy(t)
-        t != @absp && _in_range?
+        t != @absp && __in_range?
       end
 
-      def _in_range?
+      def __in_range?
         (-@max_range..@max_range).cover?(@absp)
       end
 

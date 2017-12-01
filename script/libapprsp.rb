@@ -50,9 +50,9 @@ module CIAX
           when 'binary'
             ___binstr2int(hash)
           when 'float'
-            _get_num(hash).to_f
+            __get_num(hash).to_f
           when 'integer'
-            _get_num(hash).to_i
+            __get_num(hash).to_i
           else
             hash[:fields].map { |e| __get_field(e) }.join
           end
@@ -76,7 +76,7 @@ module CIAX
           (ba ^ bo).to_s
         end
 
-        def _get_num(hash)
+        def __get_num(hash)
           ary = hash[:fields].map { |e| __get_field(e) }
           sign = /^[+-]$/ =~ ary[0] ? (ary.shift + '1').to_i : 1
           val = ary.map(&:to_f).inject(0) { |a, e| a + e }

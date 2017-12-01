@@ -89,11 +89,11 @@ module CIAX
 
     # Returns valid options
     def ___set_db(optarg)
-      @optdb = _init_db
+      @optdb = ___init_optdb
       ___layer_db
-      db = type?(optarg, Hash).select { |k, _v| k.to_s.length == 1 }
-      @optdb.update(db)
-      optarg[:options].to_s + db.keys.join
+      odb = type?(optarg, Hash).select { |k, _v| k.to_s.length == 1 }
+      @optdb.update(odb)
+      optarg[:options].to_s + odb.keys.join
     end
 
     # add ':' to taking parameter options whose description includes '[]'
@@ -117,7 +117,7 @@ module CIAX
       ___make_vmode
     end
 
-    def _init_db
+    def ___init_optdb
       # Client option
       { c: 'client to default server',
         l: 'client to local', h: 'client to [host]',
@@ -144,16 +144,16 @@ module CIAX
 
     # Set @layer (default 'Wat')
     def ___make_layer
-      opt = _make_exopt(@layers.keys)
+      opt = __make_exopt(@layers.keys)
       @layer = @layers[opt]
     end
 
     def ___make_vmode
-      v = _make_exopt(%i(j r))
+      v = __make_exopt(%i(j r))
       View.default.replace(v.to_s) if v
     end
 
-    def _make_exopt(ary)
+    def __make_exopt(ary)
       ary.find { |c| self[c] }
     end
   end

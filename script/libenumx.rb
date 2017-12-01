@@ -22,7 +22,7 @@ module CIAX
 
     # ope overwrites self
     def deep_update(ope)
-      _rec_merge(self, ope)
+      __rec_merge(self, ope)
       self
     end
 
@@ -78,10 +78,10 @@ module CIAX
     end
 
     # other overwrites me (me will change)
-    def _rec_merge(me, other)
+    def __rec_merge(me, other)
       me.update(other) do |_k, mv, ov|
         if mv.is_a? Hash
-          _rec_merge(mv, ov)
+          __rec_merge(mv, ov)
         else
           ov
         end

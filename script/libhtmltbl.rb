@@ -38,14 +38,14 @@ module CIAX
       def ___mk_script_tags(parent)
         fmt = 'var type="status",site="%s",Host="%s",port="%s";'
         script = format(fmt, @dbi[:id], @dbi[:host], @dbi[:port])
-        _mk_script(parent, '', 'jquery-3.0.0.min.js')
-        _mk_script(parent, script)
-        _mk_script(parent, '', 'ciax-xml.js')
-        _mk_script(parent, '', 'status.js')
-        _mk_script(parent, '$(document).ready(init);')
+        __mk_script(parent, '', 'jquery-3.0.0.min.js')
+        __mk_script(parent, script)
+        __mk_script(parent, '', 'ciax-xml.js')
+        __mk_script(parent, '', 'status.js')
+        __mk_script(parent, '$(document).ready(init);')
       end
 
-      def _mk_script(parent, text, src = nil)
+      def __mk_script(parent, text, src = nil)
         atrb = { type: 'text/javascript' }
         atrb[:src] = src if src
         parent.element('script', text, atrb)
@@ -66,7 +66,7 @@ module CIAX
 
       def ___mk_thead
         @dbs = @adbs[:index]
-        tr = _mk_line(_mk_tbody, %i(time elapsed msg))
+        tr = __mk_line(_mk_tbody, %i(time elapsed msg))
         @ctltd = tr.enclose('td', class: 'center')
         # add buttons here
         _elem_button(@ctltd, 'upd')
@@ -85,12 +85,12 @@ module CIAX
         col = col.to_i > 0 ? col.to_i : 6
         tbody = _mk_tbody(cap)
         members.each_slice(col) do |da|
-          _mk_line(tbody, da, true)
+          __mk_line(tbody, da, true)
         end
         tbody
       end
 
-      def _mk_line(parent, member, add_graph = nil)
+      def __mk_line(parent, member, add_graph = nil)
         tr = parent.enclose('tr')
         member.each do |id|
           label = (@dbs[id] || {})[:label] || id.upcase

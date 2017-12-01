@@ -32,7 +32,7 @@ module CIAX
       # returns result of def_proc block (String)
       def exe_cmd(src, pri = 1)
         verbose { "Execute [#{@id}] from #{src}" }
-        _input_log(src, pri)
+        ___input_log(src, pri)
         @msg = self[:def_msg] || ''
         self[:def_proc].call(self, src, pri)
         self
@@ -41,7 +41,7 @@ module CIAX
       private
 
       # For input logging (returns String)
-      def _input_log(src, pri)
+      def ___input_log(src, pri)
         input = self[:input]
         return unless input && !@id.empty?
         verbose { "Input [#{@id}] from #{src}" }

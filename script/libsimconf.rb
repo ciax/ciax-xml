@@ -9,14 +9,14 @@ module CIAX
     class Conf < Config
       def initialize
         super()
-        _init_log
+        ___init_log
         # :mask_loaded is mask mode: true:loaded, false:stored
         self[:devlist] = Hashx.new
       end
 
       private
 
-      def _init_log
+      def ___init_log
         bname = File.basename($PROGRAM_NAME, '.rb')
         self[:stdlog] = open(Msg.vardir('log') + bname + '.log', 'a')
       end

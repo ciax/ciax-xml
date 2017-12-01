@@ -17,13 +17,13 @@ module CIAX
         @mode = 'CL'
         @stat.ext_http(@host)
         @pre_exe_procs << proc { @stat.upd }
-        _init_upd if @port
+        ___init_upd if @port
         self
       end
 
       private
 
-      def _init_upd
+      def ___init_upd
         @sv_stat.init_flg(udperr: 'x')
         @sv_stat.upd_procs << proc { exe([]) }
         @udp = Udp::Client.new(@layer, @id, @host, @port)

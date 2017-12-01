@@ -30,7 +30,7 @@ module CIAX
           @interval = wdb[:interval].to_f if wdb.key?(:interval)
           @cond = Condition.new(wdb[:index] || {}, stat, self)
           _init_cmt_proc
-          _init_auto(wdb)
+          ___init_auto(wdb)
         end
 
         def queue(src, pri, batch = [])
@@ -70,7 +70,7 @@ module CIAX
         end
 
         # Initiate for Auto Update
-        def _init_auto(wdb)
+        def ___init_auto(wdb)
           reg = wdb[:regular] || {}
           per = reg[:period].to_i
           @periodm = per * 1000 if per > 0

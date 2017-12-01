@@ -13,7 +13,7 @@ module CIAX
         super
         _init_dbi2cfg
         _init_takeover
-        _init_view
+        ___init_view
         _opt_mode
       end
 
@@ -42,7 +42,7 @@ module CIAX
         @post_exe_procs.concat(@sub.post_exe_procs)
       end
 
-      def _init_view
+      def ___init_view
         @stat = View.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
         @shell_output_proc = proc { @stat.to_x }
         @stat.ext_local_log if @cfg[:opt].log?

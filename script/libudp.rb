@@ -43,7 +43,7 @@ module CIAX
       def listen
         loop do
           IO.select([@udp])
-          ___send(yield(_recv))
+          ___send(yield(___recv))
         end
       ensure
         @udp.close
@@ -51,7 +51,7 @@ module CIAX
 
       private
 
-      def _recv
+      def ___recv
         line, @addr = @udp.recvfrom(4096)
         verbose { "UDP Recv:#{line} is #{line.class}" }
         [line, Addrinfo.ip(@addr[2]).getnameinfo.first]

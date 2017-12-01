@@ -65,11 +65,11 @@ module CIAX
         when 'project' # idb
           ___mk_project(top)
         when 'group' # ddb
-          _mk_group(top)
+          __mk_group(top)
         when 'alias', 'hexpack' # cdb,hdb
-          _set_item(top)
+          __set_item(top)
         else # sdb, adb, fdb, mdb
-          _mk_sub_db(top)
+          __mk_sub_db(top)
         end
       end
 
@@ -90,20 +90,20 @@ module CIAX
           incprj.push(gdoc['ref'])
         when :group # group(mdb,adb)
           grp << gdoc['id']
-          _mk_group(gdoc)
+          __mk_group(gdoc)
         end
       end
 
       # Takes second level (use group for display only)
-      def _mk_group(gdoc)
+      def __mk_group(gdoc)
         @displist.ext_grp unless @displist.is_a? Disp::Grouping
         sub = @displist.put_grp(gdoc['id'], gdoc['label'])
-        gdoc.each { |e| _mk_sub_db(e, sub) }
+        gdoc.each { |e| __mk_sub_db(e, sub) }
       end
 
       # Includable (macro)
-      def _mk_sub_db(top, sub = @displist)
-        item = _set_item(top, sub)
+      def __mk_sub_db(top, sub = @displist)
+        item = __set_item(top, sub)
         top.each do |e| # e.name can be include or group
           ___include_grp(e, item, top.ns != e.ns)
         end
@@ -122,7 +122,7 @@ module CIAX
       end
 
       # set single item to self
-      def _set_item(top, disp = @displist)
+      def __set_item(top, disp = @displist)
         id = top['id'] # site_id or macro_proj
         item = Hashx[top: top, attr: top.to_h]
         disp.put_item(id, top['label'])

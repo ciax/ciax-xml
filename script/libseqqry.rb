@@ -22,7 +22,7 @@ module CIAX
       # For prompt
       def to_v
         st = @record[:status]
-        "(#{st})" + _options
+        "(#{st})" + __options
       end
 
       # Communicate with forked macro
@@ -55,14 +55,14 @@ module CIAX
         res
       end
 
-      def _options
+      def __options
         optlist(@valid_keys)
       end
 
       def ___input_tty
         Readline.completion_proc = proc { |w| @valid_keys.grep(/^#{w}/) }
         loop do
-          line = Readline.readline(_options, true)
+          line = Readline.readline(__options, true)
           break 'interrupt' unless line
           id = line.rstrip
           break id if __response(id)

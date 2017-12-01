@@ -81,18 +81,18 @@ module CIAX
 
     def ___redirect(tag)
       verbose { 'Initiate STDERR redirect' }
-      fname = _mk_name(tag, today)
+      fname = __mk_name(tag, today)
       $stderr = File.new(fname, 'a')
       ___mk_link(fname, tag)
     end
 
     def ___mk_link(fname, tag)
-      sname = _mk_name(tag)
+      sname = __mk_name(tag)
       File.unlink(sname) if File.exist?(sname)
       File.symlink(fname, sname)
     end
 
-    def _mk_name(tag, name = nil)
+    def __mk_name(tag, name = nil)
       str = "error_#{tag}"
       str << "_#{name}" if name
       vardir('log') + str + '.out'

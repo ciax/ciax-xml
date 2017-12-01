@@ -17,7 +17,7 @@ module CIAX
         @all_keys = []
         @ciddb = { '0' => 'user' }
         @id = id
-        _init_upd_proc
+        ___init_upd_proc
       end
 
       def to_v
@@ -45,7 +45,7 @@ module CIAX
 
       private
 
-      def _init_upd_proc
+      def ___init_upd_proc
         @upd_procs << proc do
           pids = @list.values.map { |r| r[:pid] }
           pids.delete('0')

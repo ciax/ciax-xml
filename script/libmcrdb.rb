@@ -40,7 +40,7 @@ module CIAX
       def _doc_to_db(doc)
         dbi = super
         @sites = []
-        _init_command(dbi, doc[:group])
+        _init_command_db(dbi, doc[:group])
         dbi[:sites] = @sites.uniq
         dbi
       end

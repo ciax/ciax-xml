@@ -29,7 +29,7 @@ module CIAX
           wdb = @dbi[:watch] || {}
           @interval = wdb[:interval].to_f if wdb.key?(:interval)
           @cond = Condition.new(wdb[:index] || {}, stat, self)
-          _init_cmt_proc
+          ___init_cmt_procs
           ___init_auto(wdb)
         end
 
@@ -57,7 +57,7 @@ module CIAX
 
         private
 
-        def _init_cmt_proc
+        def ___init_cmt_procs
           init_time2cmt(@stat)
           @stat.cmt_procs << proc do
             verbose { 'Propagate Status#cmt -> Event#cmt' }

@@ -17,8 +17,8 @@ module CIAX
         @cfg[:site_id] = @id
         @stat = @cfg[:field] = Field.new(dbi)
         @sv_stat = Prompt.new(@id)
-        _init_net(dbi)
-        _init_command
+        ___init_net(dbi)
+        ___init_command
         _opt_mode
       end
 
@@ -62,13 +62,13 @@ module CIAX
       end
 
       # Sub Methods for Initialize
-      def _init_net(dbi)
+      def ___init_net(dbi)
         @host = @cfg[:opt].host || dbi[:host]
         @port ||= dbi[:port]
         self
       end
 
-      def _init_command
+      def ___init_command
         @cobj.add_rem.cfg[:def_msg] = 'OK'
         @cobj.rem.add_sys
         @cobj.rem.add_ext

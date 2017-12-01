@@ -19,13 +19,13 @@ module CIAX
         def ext_local_rsp(field)
           @field = type?(field, Frm::Field)
           type?(@dbi, Dbi)
-          _init_cmt_proc
+          ___init_cmt_procs
           self
         end
 
         private
 
-        def _init_cmt_proc
+        def ___init_cmt_procs
           init_time2cmt(@field)
           @cmt_procs << proc do
             @adbs.each do |id, hash|

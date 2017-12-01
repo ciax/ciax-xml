@@ -20,7 +20,7 @@ module CIAX
     def initialize(cfg, atrb = Hashx.new)
       @cfg = type?(cfg, Config).gen(self).update(atrb)
       @cfg.check_keys(%i(opt))
-      _init_procs
+      ___init_procs
       @cobj = context_module('Index').new(@cfg)
     end
 
@@ -85,7 +85,7 @@ module CIAX
     end
 
     # Sub methods for Initialize
-    def _init_procs
+    def ___init_procs
       # Proc for Server Command (by User query}
       @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }]
       # Proc for Server Status Update (by User query}

@@ -20,8 +20,8 @@ module CIAX
         @sv_stat = Prompt.new(@id)
         @batch_interrupt = []
         ___init_sub
-        _init_net(dbi)
-        _init_command
+        ___init_net(dbi)
+        ___init_command
         _opt_mode
       end
 
@@ -86,13 +86,13 @@ module CIAX
         end
       end
 
-      def _init_net(dbi)
+      def ___init_net(dbi)
         @host = @cfg[:opt].host || dbi[:host]
         @port ||= dbi[:port]
         self
       end
 
-      def _init_command
+      def ___init_command
         @cobj.add_rem.cfg[:def_msg] = 'ISSUED'
         @cobj.rem.add_sys
         @cobj.rem.add_int

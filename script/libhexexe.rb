@@ -12,7 +12,7 @@ module CIAX
       def initialize(cfg, atrb = Hashx.new)
         super
         _init_dbi2cfg
-        _init_takeover
+        ___init_sub
         ___init_view
         _opt_mode
       end
@@ -33,7 +33,7 @@ module CIAX
       private
 
       # Sub Methods for Initialize
-      def _init_takeover
+      def ___init_sub
         @sub = @cfg[:sub_list].get(@id)
         @sv_stat = @sub.sv_stat
         @cobj.add_rem(@sub.cobj.rem)

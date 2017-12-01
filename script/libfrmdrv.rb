@@ -12,10 +12,10 @@ module CIAX
         def ext_local_driver
           ___init_stream
           ___init_drv_ext
-          _init_drv_save
-          _init_drv_load
+          ___init_drv_save
+          ___init_drv_load
           ___init_drv_flush
-          _init_log_mode
+          ___init_log_mode
           self
         end
 
@@ -40,14 +40,14 @@ module CIAX
           end
         end
 
-        def _init_drv_save
+        def ___init_drv_save
           @cobj.get('save').def_proc do |ent|
             @stat.save_key(ent.par[0].split(','), ent.par[1])
             verbose { "Save [#{ent.par[0]}]" }
           end
         end
 
-        def _init_drv_load
+        def ___init_drv_load
           @cobj.get('load').def_proc do |ent|
             @stat.load(ent.par[0] || '')
             @stat.flush
@@ -63,7 +63,7 @@ module CIAX
           end
         end
 
-        def _init_log_mode
+        def ___init_log_mode
           return unless @cfg[:opt].log?
           @stream.ext_local_log
           @cobj.rem.ext_input_log

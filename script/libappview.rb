@@ -20,7 +20,7 @@ module CIAX
         @index.update(adbs[:alias]) if adbs.key?(:alias)
         # Just additional data should be provided
         %i(data class msg).each { |key| stat.get(key) { Hashx.new } }
-        _init_upd_proc
+        ___init_upd_proc
       end
 
       def to_csv
@@ -49,7 +49,7 @@ module CIAX
 
       private
 
-      def _init_upd_proc
+      def ___init_upd_proc
         @upd_procs << proc do
           @stat.upd
           self['gtime'] = { caption: '', lines: [hash = {}] }

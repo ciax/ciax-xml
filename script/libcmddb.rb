@@ -22,7 +22,7 @@ module CIAX
 
       def _doc_to_db(doc)
         dbi = super
-        _init_command(dbi, doc[:top])
+        _init_command_db(dbi, doc[:top])
         dbi
       end
 

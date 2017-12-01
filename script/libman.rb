@@ -12,9 +12,9 @@ module CIAX
         super(Conf.new(cfg))
         verbose { 'Initiate Layer' }
         # id = nil -> taken by ARGV
-        _init_net
+        ___init_net
         ___init_cmd
-        _init_stat
+        ___init_stat
       end
 
       # separated for background run
@@ -61,7 +61,7 @@ module CIAX
       private
 
       # Initiate for all mode
-      def _init_net
+      def ___init_net
         @id = @cfg[:id]
         @host = @cfg[:host]
         @port = @cfg[:port]
@@ -77,7 +77,7 @@ module CIAX
         rem.sys.add_item('interactive', 'Mode')
       end
 
-      def _init_stat
+      def ___init_stat
         @par = @cobj.rem.int.ext_par.par
         @stat = List.new
         @sv_stat = @cfg[:sv_stat]

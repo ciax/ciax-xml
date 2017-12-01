@@ -14,7 +14,7 @@ module CIAX
         @interval = 0.1
         @periodm = 300_000
         @last_updated = 0
-        _init_procs
+        ___init_on_procs
         ___init_struct
       end
 
@@ -47,7 +47,7 @@ module CIAX
 
       private
 
-      def _init_procs
+      def ___init_on_procs
         @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
         @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
       end

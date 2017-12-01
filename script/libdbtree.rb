@@ -30,7 +30,7 @@ module CIAX
       @argc = 0
     end
 
-    def _init_command(dbi, doc = {})
+    def _init_command_db(dbi, doc = {})
       cdb = dbi.get(:command) { Hashx.new }
       @idx = cdb.get(:index) { Hashx.new }
       @grps = cdb.get(:group) { Hashx.new }

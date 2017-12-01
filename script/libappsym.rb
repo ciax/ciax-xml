@@ -32,11 +32,11 @@ module CIAX
           @symbol = adbs[:symbol] || {}
           self[:class] = {}
           self[:msg] = {}
-          _init_procs(adbs)
+          ___init_procs(adbs)
           self
         end
 
-        def _init_procs(adbs)
+        def ___init_procs(adbs)
           @cmt_procs << proc do # post process
             verbose { 'Propagate Status#cmt -> Symbol#store_sym' }
             store_sym(adbs[:index].dup.update(adbs[:alias] || {}))

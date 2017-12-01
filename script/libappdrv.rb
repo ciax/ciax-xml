@@ -17,28 +17,28 @@ module CIAX
           @stat.ext_local_rsp(@sub.stat)
           @stat.ext_local_sym(@cfg[:sdb]).ext_local_file.auto_save
           @buf = ___init_buf
-          _init_log_mode
-          _init_drv_save
-          _init_drv_load
+          ___init_log_mode
+          ___init_drv_save
+          ___init_drv_load
           self
         end
 
         private
 
-        def _init_log_mode
+        def ___init_log_mode
           return unless @cfg[:opt].log?
           @stat.ext_local_log.ext_local_sqlog
           @cobj.rem.ext_input_log
         end
 
-        def _init_drv_save
+        def ___init_drv_save
           @cobj.get('save').def_proc do |ent|
             @stat.save_key(ent.par[0].split(','), ent.par[1])
             verbose { "Save [#{ent.par[0]}]" }
           end
         end
 
-        def _init_drv_load
+        def ___init_drv_load
           @cobj.get('load').def_proc do |ent|
             @stat.load(ent.par[0] || '')
             verbose { "Load [#{ent.par[0]}]" }

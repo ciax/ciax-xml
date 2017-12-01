@@ -15,13 +15,13 @@ module CIAX
       def _doc_to_db(doc)
         dbi = super
         dbi[:stream] = doc[:stream] || Hashx.new
-        _init_command(dbi, doc)
+        _init_command_db(dbi, doc)
         ___init_response(doc, dbi)
         dbi
       end
 
       # Command section
-      def _init_command(dbi, doc)
+      def _init_command_db(dbi, doc)
         cdb = super(dbi, doc[:command])
         cdb[:frame] = __init_frame(doc[:cmdframe]) { |e| __add_cmdfrm(e) }
         cdb

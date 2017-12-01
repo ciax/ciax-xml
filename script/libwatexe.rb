@@ -12,7 +12,7 @@ module CIAX
       def initialize(cfg, atrb = Hashx.new)
         super
         _init_dbi2cfg
-        _init_takeover
+        ___init_sub
         @stat = Event.new(@sub.id)
         @host = @sub.host
         _opt_mode
@@ -47,7 +47,7 @@ module CIAX
       end
 
       # Sub methods for Initialize
-      def _init_takeover
+      def ___init_sub
         @sub = @cfg[:sub_list].get(@id)
         @sv_stat = @sub.sv_stat.init_flg(auto: '&', event: '@')
         @cobj.add_rem(@sub.cobj.rem)

@@ -29,14 +29,14 @@ module CIAX
         dbi = @adb.get(at[:app_id]).deep_copy
         dbi.update(at)
         ___init_general(dbi)
-        _init_command(dbi, doc)
-        ___init_status(doc, dbi)
+        _init_command_db(dbi, doc)
+        ___init_status_db(doc, dbi)
         _init_watch(doc, dbi)
         dbi
       end
 
       # Command Domain
-      def _init_command(dbi, doc)
+      def _init_command_db(dbi, doc)
         return unless doc.key?(:command)
         cdb = super(dbi)
         @cdb.cover(doc[:command][:ref], cdb)
@@ -44,7 +44,7 @@ module CIAX
       end
 
       # Status Domain
-      def ___init_status(doc, dbi)
+      def ___init_status_db(doc, dbi)
         sdb = dbi.get(:status) { Hashx.new }
         grp = sdb.get(:group) { Hashx.new }
         idx = sdb.get(:index) { Hashx.new }

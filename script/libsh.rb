@@ -14,7 +14,7 @@ module CIAX
 
       # Separate initialize part because shell() could be called multiple times
       def ext_shell
-        ___init_procs
+        ___init_sh_procs
         @cobj.loc.add_shell
         @cobj.loc.add_jump
         self
@@ -65,7 +65,7 @@ module CIAX
 
       private
 
-      def ___init_procs
+      def ___init_sh_procs
         @shell_input_procs = [] # proc takes args(Array)
         @shell_output_proc ||= proc do
           if @sv_stat.msg.empty?

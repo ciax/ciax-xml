@@ -27,15 +27,17 @@ if STDIN.tty? || !file = ARGV.shift
 end
 output = {}
 begin
-  open(file) do|f|
-    output = JSON.load(f.gets(nil))
-  end if test('r', file)
-  str = STDIN.gets(nil) || fail
-  input = JSON.load(str)
+  if test('r', file)
+    open(file) do |f|
+      output = JSON.parse(f.gets(nil))
+    end
+  end
+  str = STDIN.gets(nil) || raise
+  input = JSON.parse(str)
 rescue
   abort
 end
 output = merge(input, output)
-open(file, 'w') do|f|
+open(file, 'w') do |f|
   f.puts(JSON.dump(output))
 end

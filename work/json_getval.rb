@@ -33,5 +33,5 @@ end
 abort 'Usage: json_getval [key:idx] json_file' if STDIN.tty? && ARGV.size < 2
 key = ARGV.shift
 str = gets(nil) || exit
-h = JSON.load(str)
+h = JSON.parse(str)
 p get(h, key.split(':'))

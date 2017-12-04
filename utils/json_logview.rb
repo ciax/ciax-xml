@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # Log viewer
 # For stream log version 6 or later
-#alias jlv
+# alias jlv
 require 'json'
 
 abort 'Usage: json_logview json_log' if STDIN.tty? && ARGV.empty?

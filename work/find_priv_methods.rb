@@ -31,9 +31,9 @@ end
 begin
   ARGV.getopts('di:').each { |k, v| @opt[k] = v }
 rescue
-  abort "Usage: find_priv_methods (-i,d) <filename>"
+  abort 'Usage: find_priv_methods (-i,d) <filename>'
 end
 while (input = ARGF.gets)
   next if /^( *)private/ !~ input
-  true while getline($1.length)
+  true while getline(Regexp.last_match(1).length)
 end

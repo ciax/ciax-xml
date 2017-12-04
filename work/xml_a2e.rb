@@ -16,9 +16,9 @@ if /-r/ =~ xpath
   xpath = ARGV.shift
   attr = ARGV.shift || abort('No attr')
   doc = Document.new(gets(nil))
-  doc.each_element(xpath) do|e|
+  doc.each_element(xpath) do |e|
     del = nil
-    e.each_element do|e1|
+    e.each_element do |e1|
       del = e1 if e1.name == attr
     end
     next unless del
@@ -29,7 +29,7 @@ if /-r/ =~ xpath
 else
   attr = ARGV.shift
   doc = Document.new(gets(nil))
-  doc.each_element(xpath) do|e|
+  doc.each_element(xpath) do |e|
     str = e.attributes[attr] || next
     e.delete_attribute(attr)
     e.add_element(attr).text = str

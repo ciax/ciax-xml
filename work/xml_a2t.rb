@@ -23,7 +23,7 @@ else
   nodes = doc.find("//#{xpath}")
 end
 
-nodes.each do|e|
+nodes.each do |e|
   if opt['r']
     e[attr] = e.content
     e.content = ''

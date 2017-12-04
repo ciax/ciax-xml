@@ -1,16 +1,16 @@
 #!/usr/bin/ruby
 # IDB,CDB CSV(CIAX-v1) to MDB
-#alias c2m
+# alias c2m
 require 'optparse'
 require 'json'
 
-OPETBL = { '~' => '=~', '!' => '!=', '=' => '==', '^' => '!~' }
+OPETBL = { '~' => '=~', '!' => '!=', '=' => '==', '^' => '!~' }.freeze
 
 ######### Shared Methods ##########
 
 def get_site(elem)
   @skip = nil
-  elem.split(':').map do|e|
+  elem.split(':').map do |e|
     if /^!/ =~ e
       @skip = 'true'
       var = $'
@@ -35,7 +35,7 @@ def mk_cond(site, cond)
 end
 
 def sep_cond(line)
-  line.split('&').map do|s|
+  line.split('&').map do |s|
     site, cond = yield s
     mk_cond(site, cond)
   end.compact
@@ -117,11 +117,8 @@ end
 
 # convert cfg or upd or exec
 def conv_type(args)
-  case args[0]
-  when 'mcr', 'system'
-  else
-    conv_exec_type(args)
-  end
+  return if %w(mcr system).include?(args[0])
+  conv_exec_type(args)
 end
 
 def conv_exec_type(args)
@@ -137,7 +134,7 @@ end
 
 # convert commad array
 def sep_cmd(line, del = ' ', name = nil)
-  line.split(del).map do|s|
+  line.split(del).map do |s|
     args = s.split(':')
     args.unshift(name) if name
     ignore_flg(args)
@@ -147,8 +144,8 @@ def sep_cmd(line, del = ' ', name = nil)
 end
 
 def get_csv(base)
-  open(ENV['HOME'] + "/ciax-xml/config-v1/#{base}.txt") do|f|
-    f.readlines.grep(/^[!a-zA-Z0-9]/).each do|line|
+  open(ENV['HOME'] + "/ciax-xml/config-v1/#{base}.txt") do |f|
+    f.readlines.grep(/^[!a-zA-Z0-9]/).each do |line|
       yield line.chomp.split(',')
     end
   end
@@ -158,7 +155,7 @@ end
 
 # Item name = site_id
 def read_dev_idb(index, site)
-  get_csv("idb_#{site}") do|id, gl, ck|
+  get_csv("idb_#{site}") do |id, gl, ck|
     item = index["#{site}_#{id}"] = {}
     item['goal'] = sep_cond(gl) { |cond| [site, cond] } if gl && !gl.empty?
     item['check'] = sep_cond(ck) { |cond| [site, cond] } if ck && !ck.empty?
@@ -200,7 +197,7 @@ end
 # Grouping by cdb
 def read_dev_cdb(index, site)
   @cfgitems[site] = []
-  get_csv("cdb_#{site}") do|id, label, inv, type, cond|
+  get_csv("cdb_#{site}") do |id, label, inv, type, cond|
     label.gsub!(/&/, 'and')
     unitting(id, label, inv, type) || next # line with cap field
     grouping(id, label, 2, site) || next   # line with ! header
@@ -217,8 +214,9 @@ def mk_devseq(item, id, type, cond, site)
 end
 
 def mdb_reduction(index)
-  index.select! do|_k, v|
-    (v.key?('seq') && v['seq'].any? { |f| f.is_a? Hash }) || v.key?('goal') || v.key?('check')
+  index.select! do |_k, v|
+    (v.key?('seq') && v['seq'].any? { |f| f.is_a? Hash }) ||
+      v.key?('goal') || v.key?('check')
   end
 end
 
@@ -251,7 +249,7 @@ end
 
 # Interlock DB reading
 def read_mcr_idb(index, proj)
-  get_csv("idb_mcr-#{proj}") do|id, gl, ck|
+  get_csv("idb_mcr-#{proj}") do |id, gl, ck|
     con = index[id] = {}
     con['goal'] = sep_cond(gl) { |e| get_site(e) } if gl && !gl.empty?
     con['check'] = sep_cond(ck) { |e| get_site(e) } if ck && !ck.empty?
@@ -278,7 +276,7 @@ end
 # Command DB reading
 def read_mcr_cdb(index, proj)
   select = []
-  get_csv("cdb_mcr-#{proj}") do|id, label, inv, type, cmds|
+  get_csv("cdb_mcr-#{proj}") do |id, label, inv, type, cmds|
     label.gsub!(/&/, 'and')
     grouping(id, label, inv, proj) || next
     unitting(id, label, inv, type) || next
@@ -299,7 +297,7 @@ end
 
 def read_sel_table(proj)
   db = {}
-  get_csv("db_mcv-#{proj}") do|id, var, list|
+  get_csv("db_mcv-#{proj}") do |id, var, list|
     ary = list.to_s.split(' ').map { |str| str.split('=') }
     db[id] = { 'var' => var, 'list' => ary }
   end
@@ -308,7 +306,7 @@ end
 
 def mk_options(sel, dbi, str, index)
   op = sel['option'] = {}
-  dbi['list'].each do|k, v|
+  dbi['list'].each do |k, v|
     val = str.sub(/%./, v)
     op[k] = val if index.include?(val)
   end
@@ -331,16 +329,18 @@ def select_mcr(select, index, proj)
   db = read_sel_table(proj)
   gid = "grp_sel_#{proj}"
   @group[gid] = { caption: "#{proj.upcase} Select Group", rank: 2 }
-  select.each do|str|
+  select.each do |str|
     mk_sel(str, index, gid, db)
   end
 end
 
 ######### Main ##########
 
-abort "Usage: csv2mdb -m(proj) [sites]\n"\
-      "  mcr is taken by -m\n"\
-      '  sites for specific macro for devices' if ARGV.size < 1
+if ARGV.empty?
+  abort "Usage: csv2mdb -m(proj) [sites]\n"\
+        "  mcr is taken by -m\n"\
+        '  sites for specific macro for devices'
+end
 opt = ARGV.getopts('m:')
 @gcore = nil
 @ucore = nil
@@ -352,7 +352,7 @@ opt = ARGV.getopts('m:')
 @index = @mdb[:index] = {}
 
 # Convert device macro
-ARGV.each do|site|
+ARGV.each do |site|
   @mdb[:caption_macro] = site
   index = {}
   read_dev_idb(index, site)

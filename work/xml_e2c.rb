@@ -14,7 +14,7 @@ end
 xpath = ARGV.shift
 child = ARGV.shift
 doc = Document.new(gets(nil))
-doc.each_element(xpath) do|e|
+doc.each_element(xpath) do |e|
   a = e.attributes
   e.add_element(child, a)
   a.each_attribute(&:remove)

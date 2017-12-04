@@ -13,7 +13,7 @@ require 'json'
 #   ON    | -      | -      | -       | nomask
 
 # Status file name
-VARDIR = "#{ENV['HOME']}/.var"
+VARDIR = "#{ENV['HOME']}/.var".freeze
 def mkfile(site)
   "#{VARDIR}/json/status_#{site}.json"
 end
@@ -29,7 +29,7 @@ def on_mask?(stat)
   return unless stat[:abs] == 'FOCUS'
   stat[:rao] == 'CLOSE' && stat[:rbo] == 'CLOSE'
 end
-pfx = "#{ENV['PROJ']}" == 'dmcs' ? 't' : 'm'
+pfx = (ENV['PROJ']).to_s == 'dmcs' ? 't' : 'm'
 src = {}
 %w(fp ma mc).each do |s|
   file = mkfile(pfx + s)

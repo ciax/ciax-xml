@@ -1,14 +1,14 @@
 #!/usr/bin/ruby
 # IDB CSV(CIAX-v1) to XML
-#alias m2x
+# alias m2x
 require 'json'
 require 'libxmlfmt'
 # CIAX-XML
 module CIAX
-  VERSION = '2'
+  VERSION = '2'.freeze
   # Config File converter
   class Mdb2Xml < Xml::Format
-    OPETBL = { '=~' => 'match', '!=' => 'not' }
+    OPETBL = { '=~' => 'match', '!=' => 'not' }.freeze
     OPETBL.update('==' => 'equal', '!~' => 'unmatch')
     def initialize(mdb)
       super()
@@ -58,7 +58,7 @@ module CIAX
     end
 
     def tag_elements(db, doc)
-      db.each do|key, ary|
+      db.each do |key, ary|
         case key
         when :goal, :check
           tag_check(key, doc, ary)
@@ -78,7 +78,7 @@ module CIAX
     end
 
     def tag_seq(doc, ary)
-      ary.each do|e|
+      ary.each do |e|
         case e
         when Array
           tag_action(e, doc)
@@ -126,13 +126,13 @@ module CIAX
       sat = Hashx.new(elem).attributes
       sat[:form] = 'msg'
       sd = doc.enclose(:select, sat)
-      elem[:option].each do|val, name|
+      elem[:option].each do |val, name|
         sd.enclose(:option, val: val).element(:mcr, nil, name: name)
       end
     end
   end
 
-  abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.size < 1
+  abort 'Usage: mdb2xml [mdb(json) file]' if STDIN.tty? && ARGV.empty?
 
   mdb = JSON.parse(gets(nil), symbolize_names: true)
   doc = Mdb2Xml.new(mdb)

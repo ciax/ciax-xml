@@ -4,7 +4,7 @@ require 'libsqlsim'
 module CIAX
   # Logging by Sql
   module SqLog
-    Msg.usage('[id] (ver)') if ARGV.size < 1
+    Msg.usage('[id] (ver)') if ARGV.empty?
     id = ARGV.shift
     ARGV.clear
     logv = Simulator.new(id)

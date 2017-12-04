@@ -6,13 +6,13 @@ class LogToSql
   private
 
   def read_files
-    if STDIN.tty?
+    if @files.empty?
+      yield STDIN, 1, {}
+    else
       @files.each do |fname|
         pr fname
         open(fname) { |fs| yield fs, 1, {} }
       end
-    else
-      yield STDIN, 1, {}
     end
   end
 
@@ -151,9 +151,10 @@ class LogToSql
   # [ { :time => time, :id => id, :ver => ver,
   #     :snd => base64, :rcv => base64, :dur => msec } ]
   def initialize(id)
-    id = id == '-a' ? '' : id.to_s
-    id = "{#{id}}" if id.include?(',')
-    @files = Dir.glob(ENV['HOME'] + "/.var/log/**/stream_#{id}*.log").sort
+    id = id == '-a' ? '*' : "#{id}*"
+    id = "{#{id}}*" if id.include?(',')
+    file = ENV['HOME'] + "/.var/log/**/stream_#{id}.log"
+    @files = id.empty? ? [] : Dir.glob(file).sort
     # field name vs data type table (:i=Integer, :s=String)
     @field = { time: :i, id: :s, ver: :i, cmd: :s, snd: :s, rcv: :s, dur: :i }
   end
@@ -166,6 +167,7 @@ class LogToSql
 
   def drop
     puts 'drop table if exists stream;'
+    puts 'drop table if exists send_data;'
     self
   end
 

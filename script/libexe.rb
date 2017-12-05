@@ -103,8 +103,6 @@ module CIAX
       # dbi.pick already includes :command, :version
       @cfg.update(dbi.pick(ary))
       @id = dbi[:id]
-      # layer is Frm,App,Wat,Hex,Mcr,Man
-      @layer = @cfg[:layer]
       dbi
     end
 

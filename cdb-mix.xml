@@ -123,7 +123,7 @@
           <argv>2</argv>
           <argv>4</argv>
         </item>
-        <item id="b05_2" label="[5] B05" ref="opt">
+        <item id="cslm_2" label="[5] CSLM" ref="opt">
           <argv>2</argv>
           <argv>5</argv>
         </item>
@@ -173,7 +173,7 @@
           <argv>5</argv>
           <argv>4</argv>
         </item>
-        <item id="b05_5" label="[5] B05" ref="opt">
+        <item id="cslm_5" label="[5] CSLM" ref="opt">
           <argv>5</argv>
           <argv>5</argv>
         </item>

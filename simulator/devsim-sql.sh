@@ -102,4 +102,3 @@ while : ; do
     echo -n $rcv|base64 -d
     warn "  Recieve [${rcv:0:8}...]"
 done
-

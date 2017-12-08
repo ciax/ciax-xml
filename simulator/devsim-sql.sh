@@ -42,7 +42,7 @@ EOF
 }
 # main
 check_existance(){
-    sqlite3 $sqlfile <<EOF | grep -s . || alert "== Not found =="
+    sqlite3 $sqlfile <<EOF | grep -q . || alert "== Not found =="
 select * from send_data where snd == '$input';
 EOF
 }

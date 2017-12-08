@@ -8,11 +8,8 @@ kilpid(){
     :> $pidfile
 }
 server(){
-    kilpid
     # To keep alive an exec command, it should be first item
-    socat exec:"$0 -" udp-recvfrom:8888,reuseaddr,fork &
-    echo $! >> $pidfile
-    exit
+    exec socat exec:"$0 -" udp-recvfrom:8888,reuseaddr,fork & exit
 }
 # sql commands
 maxtime(){
@@ -80,9 +77,10 @@ alert(){ echo "DEVSIM:$*" > /dev/stderr; return 1; }
 #########################
 pidfile="$HOME/.var/run/devsim.pid"
 mkdir -p $HOME/.var/run
-[ "$1" ] ||{  echo "Usage:${0##*/} (-d) [site]";kilpid;exit 1; }
+kilpid
+[ "$1" ] ||{  echo "Usage:${0##*/} (-d) [site]";exit 1; }
 [ "$1" = -d ] && server
-[ "$1" = - ] || site=$1
+[ "$1" = - ] && echo $PPID >> $pidfile || site=$1
 time=0
 sqlfile="$HOME/.var/log/stream.sq3"
 min=$(mintime)

@@ -194,7 +194,7 @@ class LogToSql
 
   # For checking existence of send data
   def snd_table
-    puts 'create table send_data as select distinct snd from stream;'
+    puts 'create table send_data as select snd, count(snd) from stream group by snd;'
   end
 end
 

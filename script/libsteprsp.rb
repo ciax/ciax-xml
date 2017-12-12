@@ -17,12 +17,12 @@ module CIAX
 
       # Conditional judgment section
       def skip?
-        wait_dev_ready
+        wait_ready_all
         super(_all_conds?)
       end
 
       def fail?
-        wait_dev_ready
+        wait_ready_all
         super(!_all_conds?)
       end
 
@@ -46,7 +46,7 @@ module CIAX
       end
 
       # Blocking during busy. (for interlock check)
-      def wait_dev_ready
+      def wait_ready_all
         @exes.each do |obj|
           next if obj.wait_ready
           set_result('timeout')
@@ -63,28 +63,31 @@ module CIAX
           _condition(stats[h[:site]], h)
         end
         self[:conditions] = conds
-        conds.all? { |h| h[:res] }
+        conds.all? { |h| h[:skip] || h[:res] }
       end
 
       def _scan
-        @exes.each_with_object({}) do |obj, hash|
-          st = hash[obj.id] = obj.stat.latest
-          verbose { "Scanning #{obj.id} (#{st[:time]})/(#{st.object_id})" }
+        @exes.each_with_object({}) do |exe, hash|
+          st = hash[exe.id] = exe.stat.latest
+          verbose { "Scanning #{exe.id} (#{st[:time]})/(#{st.object_id})" }
         end
       end
 
       def _condition(stat, h)
         c = {}
-        %i(site var form cmp cri).each { |k| c[k] = h[k] }
-        real = _get_real(stat, c)
-        res = method(c[:cmp]).call(c[:cri], real)
-        c.update(real: real, res: res)
-        verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
+        %i(site var form cmp cri skip).each { |k| c[k] = h[k] }
+        if ! c[:skip]
+          real = _get_real(stat, c)
+          res = method(c[:cmp]).call(c[:cri], real)
+          c.update(real: real, res: res)
+          verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
+        end
         c
       end
 
       def _get_real(stat, h)
         warning('No form specified') unless h[:form]
+        # form = 'data', 'class' or 'msg' in Status 
         form = (h[:form] || :data).to_sym
         var = h[:var]
         warning("No [#{var}] in Status[#{form}]") unless stat[form].key?(var)

@@ -39,13 +39,13 @@ module CIAX
     end
 
     # Send app entity
-    def send(ent, n = 1)
-      clear if n == 0 # interrupt
+    def send(ent, n)
+      clear if n.zero? # interrupt
       cid = type?(ent, Cmd::Entity).id
       verbose { "Execute #{cid}(#{@id}):timing" }
       # batch is frm batch (ary of ary)
       batch = ent[:batch]
-      @que_buf.push(pri: n, batch: batch, cid: cid) unless batch.empty?
+      @que_buf.push(pri: n || 1, batch: batch, cid: cid) unless batch.empty?
       self
     end
 
@@ -62,13 +62,6 @@ module CIAX
 
     def alive?
       @que_buf && @que_buf.alive?
-    end
-
-    def wait_busy_up
-      100.times do
-        break if @sv_stat.upd.up?(:busy)
-        sleep 0.01
-      end
     end
 
     private

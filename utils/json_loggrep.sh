@@ -1,9 +1,9 @@
 #!/bin/bash
 # Get Log from Stream
 #alias jlg
-[ "$2" ] || { echo "Usage: ${0##*/} [date] [site]"; exit 1; }
+[ "$2" ] || { echo "Usage: ${0##*/} [date] [file prefix]"; exit 1; }
 day=$1;shift
-site=$1;shift
-input="$HOME/.var/log/stream_${site}_*.log"
+pfx="$1";shift
 utime=$(date -d $day +%s)
-grep -h ${utime:0:5} $input|json_logview
+base=${utime:0:5}
+egrep -h "$base|$(( $base + 1 ))" $HOME/.var/log/$pfx*|json_logview

@@ -13,11 +13,16 @@ function make_step(step) {
             ary.push(step.site);
             html.push(_devlink(step.site));
         }
-        html.push('>');
         if (step.args) { ary = ary.concat(step.args); }
         if (step.val) { ary.push(step.val); }
-        if (step.label) html.push(': ' + step.label);
-        if (ary.length > 0) {html.push(': [' + ary.join(':') + ']');}
+        if (type == 'mcr') {
+            html.push(' title="' + ary.join(':') + '">');
+            html.push(': ' + config.label[ary[0]]);
+        } else {
+            html.push('>');
+            if (step.label) html.push(': ' + step.label);
+            if (ary.length > 0) {html.push(': [' + ary.join(':') + ']');}
+        }
         html.push('</span>');
     }
     // result section
@@ -93,10 +98,14 @@ function make_step(step) {
             html.push(cond.site + ':' + cond['var']); // cond.var expression gives error at yui-compressor
             html.push('(' + cond.form + ')</var>');
             html.push('<code>' + _operator(cond.cmp, cond.cri) + '?</code>  ');
-            if (step.type == 'goal' && res == false) res = 'warn';
-            html.push('<span class="' + res + '" ');
-            html.push(_graphlink(cond.site, cond['var'], step.time));
-            html.push('> (' + cond.real + ')</span>');
+            if (cond['skip']) {
+                html.push('<span class="skip">(Ignored)</skip>');
+            } else {
+                if (step.type == 'goal' && res == false) res = 'warn';
+                html.push('<span class="' + res + '" ');
+                html.push(_graphlink(cond.site, cond['var'], step.time));
+                html.push('> (' + cond.real + ')</span>');
+            }
             html.push('</li>');
         });
         html.push('</ul>');
@@ -115,6 +124,7 @@ function make_step(step) {
     html.push('</li>');
     return html.join('');
 }
+
 // ********* Outline **********
 // *** Display on the Bars ***
 function record_outline(data) { // Do at the first
@@ -148,14 +158,13 @@ function record_result(data) { // Do at the end
 }
 
 // ******** Dynamic Page ********
-function dynamic_page() {
+function func_update_record() {
     // Update Command Selector
     function _init_commands() {
-        ajax_static('/json/mcr_conf.json').done(function(data) {
-            if (!port) port = data.port;
-            make_select('select#command', data.commands);
-        });
+        if (!port) port = config.port;
+        make_select('select#command', config.commands);
     }
+
     // Update Query Radio Button
     function _make_query(data) {
         var sel = $('#query')[0];
@@ -169,6 +178,7 @@ function dynamic_page() {
             $('#query').empty();
         }
     }
+
     // Update Content of Steps (When JSON is updated)
     function _append_step(data) {
         // When Step increases.
@@ -243,7 +253,8 @@ function dynamic_page() {
             last_time = data.time;
         }
     }
-    // To be update
+
+    // To be updated
     function _update(tag) {
         if (tag) { // Show past record (not updated)
             ajax_static('/record/record_' + tag + '.json').done(_upd_page);
@@ -263,18 +274,16 @@ function dynamic_page() {
 }
 
 // ******** Command ********
-function switch_record(id) { // overwritten by mcr_log
+function new_record(id) { //overwritten by mcr_log.js
     update_record(id);
 }
 
 function selmcr(dom) {
     var cmd = get_select(dom);
     if (!cmd) return;
-    exec(cmd, function(recv) {
-        // Do after exec if success
-        switch_record(recv.sid);
-    });
+    exec(cmd, new_record); // Do after exec if success
 }
+
 // ******** Init Page ********
 function init_page() {
     set_acordion('#record');
@@ -284,13 +293,8 @@ function init_page() {
     });
     height_adjust();
 }
-// Init func specific for record_latest.html
-function init_record() {
-    init_list.push(update_record);
-    init();
-}
 
 init_list.push(init_page);
 // Var setting
-var update_record = dynamic_page();
+var update_record = func_update_record();
 var start_time; // For elapsed time

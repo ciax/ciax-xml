@@ -2,15 +2,6 @@
 // fixjsstyle mcr_log.js
 // Listing part
 function make_item(data) {
-    var html = [];
-    var id = data.id;
-    var time = new Date(id - 0);
-    // Date(j-0) -> cast to num
-    html.push('<li id="' + id + '">');
-    _line();
-    html.push('</li>');
-    return html.join('');
-
     function _line() {
         _time();
         _cmd();
@@ -29,17 +20,18 @@ function make_item(data) {
         html.push(' -> ');
         html.push('<em class="' + res + '">' + res + '</em>');
     };
+
+    var html = [];
+    var id = data.id;
+    var time = new Date(id - 0);
+    // Date(j-0) -> cast to num
+    html.push('<li id="' + id + '">');
+    _line();
+    html.push('</li>');
+    return html.join('');
 }
 
-function make_list(data) {
-    if (!data) return;
-    var jary = data.list.sort(_sort_date);
-    $.each(jary, function(i, item) {
-        _upd_item(item) || _make_date(item).prepend(make_item(item));
-    });
-    _init_log();
-    blinking();
-
+function func_make_list() {
     function _upd_item(data) {
         var jq = $('#' + data.id);
         if (!jq[0]) return;
@@ -51,20 +43,33 @@ function make_list(data) {
         return true;
     }
 
-    function _make_date(data) {
-        var time = new Date(data.id - 0);
-        var crd = time.toLocaleDateString();
-        var did = crd.replace(/\//g, '_');
+    function _make_year(time) {
+        var cyr = time.getFullYear();
+        if (year != cyr) {
+            year = cyr;
+            _make_tree(year, year, 'log');
+        }
+    }
+
+    function _make_date(time) {
+        var dary = time.toLocaleDateString().split('/');
+        var dti = dary[1] + '/' + dary[2];
+        var did = dary.join('_');
         if (!$('#' + did)[0]) {
-            var html = [];
-            html.push('<h4>' + crd + '</h4>');
-            html.push('<ul id="' + did + '"></ul>');
-            $('#log').prepend(html.join(''));
+            _make_year(time);
+            _make_tree(dti, did, year);
         }
         return $('#' + did);
     }
 
     // Latest Top
+    function _make_tree(title, id, pid) {
+        var html = [];
+        html.push('<h4>' + title + '</h4>');
+        html.push('<ul id="' + id + '"></ul>');
+        $('#' + pid).prepend(html.join(''));
+    }
+
     function _sort_date(a, b) {
         var na = a.id - 0;
         var nb = b.id - 0;
@@ -73,11 +78,41 @@ function make_list(data) {
         return 0;
     }
 
+    function _upd_line(i, item) {
+        var time = new Date(item.id - 0);
+        _upd_item(item) || _make_date(time).prepend(make_item(item));
+    }
+
     function _init_log() {
-        var jq = $('#log li.selected');
-        if (jq[0]) return jq;
+        if (again) return;
+        // Set first selected
+        set_acordion('#log')(':gt(1)');
+        again = 1;
+    }
+
+    function _select() {
+        if ($('#log li').hasClass('selected')) return;
         $('#log li').first().trigger('click');
     }
+
+    function _update(data) {
+        if (!data) return;
+        var jary = data.list.sort(_sort_date);
+        $.each(jary, _upd_line);
+        // blinking status
+        blinking();
+        _init_log();
+        _select();
+    }
+
+    var year = '';
+    var again;
+    return _update;
+}
+
+function new_record(id) {
+    $('#log li').removeClass('selected');
+    update_record(id);
 }
 
 function update_list() {
@@ -88,29 +123,24 @@ function toggle_dvctl() {
     $('.dvctl').fadeToggle(1000, height_adjust);
 }
 
-function switch_record(id) {
-    $('#log li').removeClass('selected');
-    $('#' + id).addClass('selected');
-    // Activate selected record
-    update_record(id);
-}
-
 // Initial Setting
 function init_log() {
-    // Register Events
-    var acdn = set_acordion('#log');
-    // Set click event
-    $('#log').on('click', 'li', _on_click);
-    // Set first selected
-    ajax_static('rec_list.json').done(function(data) {
-        make_list(data);
-        acdn(':not(:first)');
-    });
-    upd_list.log = update_list;
+    function _switch_record(id) {
+        $('#log li').removeClass('selected');
+        $('#' + id).addClass('selected');
+        // Activate selected record
+        update_record(id);
+    }
 
     function _on_click() {
         if ($(this).hasClass('selected')) return;
-        switch_record($(this).attr('id'));
+        _switch_record($(this).attr('id'));
     }
+
+    // Set click event
+    $('#log').on('click', 'li', _on_click);
+    upd_list.log = update_list;
 }
+
 init_list.push(init_log);
+var make_list = func_make_list();

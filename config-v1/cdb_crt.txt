@@ -1,0 +1,28 @@
+!1,---------- Command ----------
+upd,Update Status and Print,,cmd,dvcl dct upd
+!5,---------- Action ----------
+stop,Stop,,act,dvcl dct stop
+lftchg,Charge Lift,,act,tact lftchg,stop
+lftup1,Lift Up 1,,act,tact lftup1,stop
+lftup2,Lift Up 2,,act,tact lftup2,stop
+lftup3,Lift Up 3,,act,tact lftup3,stop
+lftdw,Lift Down,,act,tact lftdw,stop
+run[1-12],Run High to Tag 1-12,,cap
+runf,Run Forward to Next,,act,tact runf,stop
+runb,Run Back to Next,,act,tact runb,stop
+run1,Run High to Tag 1,1,act,tact run1,stop
+run2,Run High to Tag 2,1,act,tact run2,stop
+run3,Run High to Tag 3,1,act,tact run3,stop
+run7,Run High to Tag 7,1,act,tact run7,stop
+run8,Run High to Tag 8,1,act,tact run8,stop
+run9,Run High to Tag 9,1,act,tact run9,stop
+run10,Run High to Tag 10,1,act,tact run10,stop
+run11,Run High to Tag 11,1,act,tact run11,stop
+run12,Run High to Tag 12,1,act,tact run12,stop
+chgon,Charge ON
+chgoff,Charge OFF
+comics,INST COMICS,,cmd,\01\00\01\14\00\00\04\01\00\B4\01\00\01\00
+ciao,INST CIAO,,cmd,\01\00\01\14\00\00\04\01\00\B4\01\00\02\00
+focas,INST FOCAS,,cmd,\01\00\01\14\00\00\04\01\00\B4\01\00\03\00
+moircs,INST MOIRCS,,cmd,\01\00\01\14\00\00\04\01\00\B4\01\00\04\00
+mc-box,INST MC-BOX,,cmd,\01\00\01\14\00\00\04\01\00\B4\01\00\05\00

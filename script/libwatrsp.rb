@@ -39,7 +39,7 @@ module CIAX
       def auto_exec
         return self unless update?
         # Do it when no other command in the queue, and not in motion
-        return self unless self[:exec].empty? && !@sv_stat.up?(:event)
+        return self unless self[:exec].empty? && !@sv_stat.up?(:event) && !@sv_stat.up?(:comerr)
         verbose { format('Auto Update(%s, %s)', self[:time], @regexe) }
         begin
           queue('auto', 3, @regexe)
@@ -49,13 +49,10 @@ module CIAX
         self
       end
 
-      def time_upd
-        super(@stat[:time])
-      end
-
       private
 
       def _init_cmt_proc
+        init_time2cmt(@stat)
         @stat.cmt_procs << proc do
           verbose { 'Propagate Status#cmt -> Event#cmt' }
           next unless @stat[:time] > @last_updated

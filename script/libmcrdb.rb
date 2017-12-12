@@ -12,6 +12,14 @@ module CIAX
         end
         list
       end
+
+      def label
+        list = Hashx.new
+        self[:command][:index].each do |id, val|
+          list[id] = val[:label]
+        end
+        list
+      end
     end
 
     # Macro Db

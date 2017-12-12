@@ -144,6 +144,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <not site="tfp" var="ao" form="msg">OPEN</not>
           <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
@@ -379,6 +380,7 @@
         </goal>
         <check>
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
+          <not site="tfp" var="ao" form="msg">CLOSE</not>
           <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
         </check>
@@ -549,7 +551,6 @@
           <equal site="tfp" var="rao" form="msg">CLOSE</equal>
           <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
-          <equal site="tma" var="con" form="msg">ON</equal>
           <match site="tmc" var="abs" form="msg">S</match>
           <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
@@ -915,7 +916,6 @@
           <equal site="tfp" var="rao" form="msg">CLOSE</equal>
           <equal site="tfp" var="rbo" form="msg">CLOSE</equal>
           <equal site="tma" var="pos" form="msg">FOCUS</equal>
-          <equal site="tma" var="con" form="msg">ON</equal>
           <match site="tmc" var="abs" form="msg">S</match>
           <match site="tap" var="pres" form="msg">H|M|L</match>
         </check>
@@ -1214,7 +1214,6 @@
           <equal site="tfp" var="gv" form="msg">OPEN</equal>
           <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
-          <not site="tma" var="pos" form="msg">FOCUS</not>
         </check>
         <mcr name="f-r"/>
         <mcr name="ini_f-i"/>
@@ -1351,7 +1350,6 @@
       </item>
       <item id="kapa" label="align mask">
         <check>
-          <equal site="tfp" var="gv" form="msg">OPEN</equal>
           <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
           <equal site="tma" var="pos" form="msg">INIT</equal>
@@ -1392,7 +1390,6 @@
       </item>
       <item id="kapa1" label="rail-up">
         <check>
-          <equal site="tfp" var="gv" form="msg">OPEN</equal>
           <match site="tap" var="pres" form="msg">H|M|L</match>
           <match site="tmc" var="abs" form="msg">S</match>
           <equal site="tma" var="pos" form="msg">INIT</equal>

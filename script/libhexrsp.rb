@@ -21,14 +21,13 @@ module CIAX
         self[:hexpack]
       end
 
-      def time_upd
-        super(@stat[:time])
-      end
-
       private
 
       def _init_cmt_procs
-        @cmt_procs << proc { self[:hexpack] = _get_header_ + _get_body_ }
+        init_time2cmt(@stat)
+        @cmt_procs << proc do
+          self[:hexpack] = _get_header_ + _get_body_
+        end
         _init_propagates
       end
 

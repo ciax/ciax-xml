@@ -26,9 +26,9 @@ init_bashrc(){
     echo 'shopt -s nullglob;for i in ~/bin/rc.login*;do . $i;done #initrc' >> ~/.profile
 }
 echo $C3"Prepare work dirs"$C0
-dig_dir ~/.var cache
+dig_dir ~/.var
+mkdir cache json log record
 /bin/rm cache/*.mar >/dev/null 2>&1
-dig_dir ~/.var/json
 /bin/rm *.json >/dev/null 2>&1
 dig_dir ~/bin
 echo $C3"Make script symlinks"$C0

@@ -174,9 +174,12 @@ module CIAX
 
       # For input logging (returns String)
       def _input_log(src, pri)
-        return unless self[:input] && !@id.empty?
+        input = self[:input]
+        return unless input && !@id.empty?
         verbose { "Input [#{@id}] from #{src}" }
-        self[:input].update(cid: self[:cid], src: src, pri: pri).cmt
+        input.update(cid: self[:cid], src: src)
+        input[:pri] = pri if pri
+        input.cmt
       end
     end
   end

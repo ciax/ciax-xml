@@ -26,6 +26,10 @@ module CIAX
         _opt_mode
       end
 
+      def exe(args, src = nil, pri = 1)
+        super
+      end
+
       def ext_shell
         super
         @cfg[:output] = View.new(@stat)
@@ -42,8 +46,10 @@ module CIAX
       def wait_ready
         verbose { "Waiting busy end for #{@id}" }
         100.times do
-          return true unless @sv_stat.upd.up?(:busy)
           sleep 0.1
+          next if @sv_stat.upd.up?(:busy)
+          return true unless @sv_stat.up?(:comerr)
+          com_err('Device not responding')
         end
         false
       end
@@ -54,7 +60,10 @@ module CIAX
       def _init_sub
         # LayerDB might generated in List level
         @sub = @cfg[:sub_list].get(@cfg[:frm_site])
-        @sv_stat.sub_merge(@sub.sv_stat, %i(comerr ioerr))
+        @sv_stat.db.update(@sub.sv_stat.db)
+        @sub.sv_stat.cmt_procs << proc do |ss|
+          @sv_stat.update(ss.pick(%i(comerr ioerr))).cmt
+        end
       end
 
       def _init_net(dbi)

@@ -9,6 +9,7 @@ module CIAX
       super(['server', type].compact.join('_'), id)
       @db = {}
       self[:msg] = ''
+      init_time2cmt
       @cmt_procs << proc do
         verbose { "Save #{id}:timing #{pick(%i(busy queue)).inspect}" }
       end

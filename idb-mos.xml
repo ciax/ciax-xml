@@ -17,6 +17,7 @@
           </group>
         </status>
       </instance>
+      <instance id="cmi" app_id="cmi" host="moircsobcp" port="25600" label="Current Mask Index"/>
     </group>
   </project>
 </idb>

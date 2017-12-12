@@ -1,0 +1,33 @@
+!1,---------- Command ----------
+upd,Update Status and Print,,cmd,status
+pause,Stop NT Command,,cmd,runctrl:runI.unx:stop  111111111
+emstop,Emergency Stop,1,act,runctrl:runI.unx:emstop111111111
+!2,---------- Action ----------
+mhook,Movable Flange Hook,,act,setmove:setI.unx:01M01010
+munhk,Movable Flange UnHook,,act,setmove:setI.unx:01M01000
+mjup,Movable Flange EJB Up,,act,setmove:setI.unx:01M02010,pause
+mjdw,Movable Flange EJB Down,,act,setmove:setI.unx:01M02000,pause
+trout,Transer Out Ready,,act,setmove:setI.unx:01M03010,pause
+trin,Transer In Sleep,,act,setmove:setI.unx:01M03000,pause
+rotout,Flange Load OUT Ready,,act,setmove:setI.unx:01M04010
+rotin,Flange Home IN Sleep,,act,setmove:setI.unx:01M04000
+fhook,Fxied Flange Hook,,act,setmove:setI.unx:01F01010
+funhk,Fxied Flange UnHook,,act,setmove:setI.unx:01F01000
+fjup,Fxied Flange EJB Up,,act,setmove:setI.unx:01F02010,pause
+fjdw,Fxied Flange EJB Down,,act,setmove:setI.unx:01F02000,pause
+chgfw,Charger Forward Ready,,act,setmove:setI.unx:01E01010
+chgbw,Charger Backward Sleep,,act,setmove:setI.unx:01E01000
+dopen,DOOR OPEN (1S),,act,%1=0:0=1
+dclose,DOOR CLOSE (11S),,act,%0=0:1=1
+#dopen,DOOR OPEN (1S),,act,%1=0:0=1/1/%0=0
+#dclose,DOOR CLOSE (11S),,act,%0=0:1=1/11/%1=0,dstop
+dstop,DOOR STOP,,act,%1=0
+mpwon,MOV IPW ON,,act,%3=0
+mpwoff,MOV IPW OFF,,act,%3=1
+fpwon,FIX IPW ON,,act,%4=0
+fpwoff,FIX IPW OFF,,act,%4=1
+mccdon,MOV CCD ON,,act,%5=1
+mccdoff,MOV CCD OFF,,act,%5=0
+fccdon,FIX CCD ON,,act,%6=1
+fccdoff,FIX CCD OFF,,act,%6=0
+ccdoff,ALL CCD OFF,,act,%5=0:6=0

@@ -40,7 +40,7 @@ ao_s-i,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mma:pos=INIT&mma:abs~INIT&mmc:a
 rc_s-i,mfp:rao=CLOSE&mfp:rbo=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
 gf_s-f,mma:pos=FOCUS,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
 ac_s-f,mfp:ao=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
-ro_s-f,mfp:rao=OPEN&mfp:rbo=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mma:con=ON&mmc:abs~S&map:pres~H|M|L
+ro_s-f,mfp:rao=OPEN&mfp:rbo=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 gr_s-r,mma:pos=ROT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 av_s-r,mfp:hv=Vertical,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
 gs_s-s,mma:pos=STORE,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
@@ -60,7 +60,7 @@ ah_l-r,mfp:hv=Horizontal,mfp:gv=OPEN&mfp:hv=Vertical&mfp:ao=CLOSE&mma:pos=ROT&mm
 gf_l-f,mma:pos=FOCUS,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=ROT&mmc:abs~S&map:pres~H|M|L
 rc_l-f,mfp:rao=CLOSE&mfp:rbo=CLOSE,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=OPEN&mfp:rbo=OPEN&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 ro_l-f,mfp:rao=OPEN&mfp:rbo=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
-ao_l-f,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mma:con=ON&mmc:abs~S&map:pres~H|M|L
+ao_l-f,mfp:ao=OPEN,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 ini_l-i,mma:pos=INIT,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=FOCUS&mmc:abs~S&map:pres~H|M|L
 check_load,,mfp:gv=OPEN&mfp:hv=Horizontal&!mfp:ao=OPEN&mfp:rao=CLOSE&mfp:rbo=CLOSE&mma:pos=INIT&mma:abs~INIT&mmc:abs~S&map:pres~H|M|L
 sets_a,,mma:pos=STORE
@@ -95,7 +95,7 @@ check_fin,,mfp:gv=OPEN&mfp:hv=Horizontal&mfp:ao=CLOSE&mfp:rao=CLOSE&mfp:rbo=CLOS
 
 # startmask
 start,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-t-i,mma:pos!INIT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+t-i,mma:pos!INIT,mfp:gv=OPEN&mfp:ao!OPEN&map:pres~H|M|L&mmc:abs~S
 t-f,mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 t-r,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 t-w,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:abs=WAIT&mfp:ao=OPEN,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
@@ -111,7 +111,7 @@ t-w,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:abs=WAIT&mfp:ao=OPEN,mfp:gv=OPEN&
 
 # storemask
 store,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
-s-i,mma:pos!INIT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
+s-i,mma:pos!INIT,mfp:gv=OPEN&mfp:ao!CLOSE&map:pres~H|M|L&mmc:abs~S
 s-f,mma:pos!INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-r,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 s-s,mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT&mma:pos!STORE,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
@@ -138,11 +138,11 @@ fc-r1,mma:pos!N/A&mma:pos!INIT&mma:pos!FOCUS&mma:pos!ROT,mfp:gv=OPEN&map:pres~H|
 #fc-i2,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 
 # kapamask
-kapa,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
-kapa1,,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
+kapa,,map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
+kapa1,,map:pres~H|M|L&mmc:abs~S&mma:pos=INIT
 
 # fin
 fin,mma:abs^WAIT&mma:pos!ROT&mma:pos=INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S
 f-r,mma:abs^WAIT&mma:pos!ROT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS
 # temporaly remove mmc:con to cinit from wait pos
-f-i,mma:abs^WAIT&mma:pos!ROT&mma:pos=INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S&mma:pos!FOCUS
+f-i,mma:abs^WAIT&mma:pos!ROT&mma:pos=INIT&mma:pos!FOCUS,mfp:gv=OPEN&map:pres~H|M|L&mmc:abs~S

@@ -22,6 +22,7 @@ module CIAX
         super('stream', id, cfg[:version])
         update('dir' => '', 'cmd' => '', 'base64' => '')
         verbose { "Initiate [#{iocmd}]" }
+        init_time2cmt
         _init_par(cfg)
         reopen
       end
@@ -34,7 +35,7 @@ module CIAX
         convert('snd', str, cid).cmt
       rescue Errno::EPIPE
         @f.close
-        raise(CommError)
+        com_err('send failed')
       end
 
       def rcv
@@ -55,7 +56,6 @@ module CIAX
       private
 
       def convert(dir, data, cid = nil)
-        time_upd
         @binary = data
         self['cmd'] = cid if cid
         update('dir' => dir, 'base64' => encode(data))
@@ -136,7 +136,7 @@ module CIAX
       rescue EOFError
         # Jumped at quit
         @f.close
-        raise(CommError)
+        com_err('recv failed')
       end
     end
   end

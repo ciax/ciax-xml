@@ -36,8 +36,10 @@ function init_tooltip() {
 
 function show_tooltip(event, pos, item) {
     if (item) {
+        var date = new Date(item.datapoint[0]);
+        var x = date.toLocaleTimeString('en-US', {hour12: false});
         var y = item.datapoint[1].toFixed(2);
-        $('#tooltip').html(item.series.label + ':' + y)
+        $('#tooltip').html(x + ',' + y)
             .css({ top: item.pageY + 5, left: item.pageX + 5 })
             .fadeIn(200);
     }else {
@@ -76,31 +78,60 @@ function init_mode() {
         options.xaxis.max = max;
         options.zoom = { interactive: true };
         options.pan = { interactive: true };
+        set_date(past_time);
     }else {
         // For dynamic mode
         setInterval(update, 1000);
     }
 }
-
-function push_data(e, stat) {
-    if (stat == 'notmodified') return;
-    $.each(series, function(i, line) {
-        line.data.shift();
-        line.data.push([e.time, e.data[line.vid]]);
-    });
-    plot.setData(series);
-    plot.setupGrid(); // scroll to left
-    plot.draw();
-}
-
 function update() {
-    $.ajax('status_' + par.site + '.json').done(push_data);
+    $.getJSON('sqlog.php', par, function(obj) {
+        obj[0].data.forEach(conv_ascii);
+        plot.setData(obj);
+        plot.setupGrid(); // scroll to left
+        plot.draw();
+    });
 }
 
+function get_log() {
+    var url = 'dvlog.php?site=' + par.site + '&vid=' + par.vid;
+    if (par.time) {
+        url += '&time=' + par.time;
+    }
+    window.open(url, 'LOG', 'width=320,height=640,scrollbars=yes');
+}
+
+function conv_ascii(pair) {
+    if (isNaN(pair[1])) {
+        var asc = 0;
+        var ary = pair[1].split('').map(function(n) {
+            var i = n.charCodeAt(0) - 64;
+            return i;
+        });
+        // regulate to minimum code value
+        for (var i = 0; i < ary.length; i++) {
+            asc += ary[i] * Math.pow(2, i);
+        }
+        pair[1] = asc;
+    }
+}
+
+function set_date(past_time) {
+    var dte = new Date(past_time - offset);
+    $('#date').val(dte.toJSON().substr(0, 10));
+}
+
+function mv_date(dom) {
+    var date = new Date($(dom).val());
+    par.time = date.getTime() + offset;
+    get_graph();
+}
+// Main
 function get_graph() {
     past_time = par.time;
-    $.getJSON('sqlog.php', par, function(ary) {
-        series = ary;
+    $.getJSON('sqlog.php', par, function(obj) {
+        obj[0].data.forEach(conv_ascii);
+        series = obj;
         init_mode();
         plot = $.plot('#placeholder', series, options);
         init_tooltip();
@@ -111,4 +142,5 @@ function get_graph() {
 var plot;
 var series;
 var past_time;
+var offset = (new Date()).getTimezoneOffset() * 60000;
 $.ajaxSetup({ mimeType: 'json', ifModified: true, cahce: false});

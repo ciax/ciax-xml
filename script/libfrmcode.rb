@@ -33,7 +33,7 @@ module CIAX
         len.to_i.times do
           c = (num % 256).chr
           num /= 256
-          code = (@endian == 'little') ? code + c : c + code
+          code = @endian == 'little' ? code + c : c + code
         end
         verbose { "Encode:[#{str}](#{len}) -> [#{code.inspect}]" }
         code
@@ -51,7 +51,7 @@ module CIAX
 
       def dec_decstr(code) # "80000123" -> "-123"
         # sign: k3n=F, oss=8,
-        sign = (/[8Ff]/ =~ code.slice!(0)) ? '-' : ''
+        sign = /[8Ff]/ =~ code.slice!(0) ? '-' : ''
         code.sub!(/^0+/, '')
         num = code.empty? ? '0' : sign + code
         [num, 10]

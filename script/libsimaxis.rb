@@ -33,7 +33,7 @@ module CIAX
 
       def jog(dir = 1)
         dir = dir.to_i
-        return if dir == 0
+        return if dir.zero?
         servo(dir * @max_range)
       end
 

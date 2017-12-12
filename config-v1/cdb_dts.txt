@@ -1,0 +1,100 @@
+!1,---------- Command ----------
+upd,Update Status and Print,,cmd,UPD|326
+stop,Stop Action,,cmd
+login,TSC Login,,cmd,CMD:10:1A1901ciax%%%%%%%%%%%%%%%% CIAX%%%%%%%%%%%% dummyunit dummyMenu dummyMessage
+logout,TSC Logout,,cmd,CMD:10:1A1902
+cinit,TSC init,,cmd,CMD:30:1A1011
+cxon,CIAX mode ON,,cmd,CMD:30:1A1008TSCONLY
+cxoff,CIAX mode OFF,,cmd,CMD:30:1A1008TSCPRI%
+noinst,INST SEL NONE,,cmd,CMD:60:1320070000
+ircs,INST SEL IRCS,,cmd,CMD:60:1320070001
+focas,INST SEL FOCAS,,cmd,CMD:60:1320070005
+ciao,INST SEL CIAO,,cmd,CMD:60:1320070003
+comics,INST SEL COMICS,,cmd,CMD:60:1320070007
+ciax3,INST SEL CIAX3,,cmd,CMD:60:1320070013
+mp-cs1,INST SEL MP-CS1,,cmd,CMD:60:1320070010
+mc-box,INST SEL MC-BOX,,cmd,CMD:60:1320070011
+moircs,INST SEL MOIRCS,,cmd,CMD:60:1320070012
+!2,---------- Action ----------
+cron,InR Drv On,,act,CMD:30:904013
+croff,InR Drv Off,,act,CMD:30:904014
+cjon,Jack Drv On,,act,CMD:30:132001ON%
+cjoff,Jack Drv Off,,act,CMD:30:132001OFF
+cjres,Jack Reset,,act,CMD:30:132008
+chook,CAS InR Hook,,act,CMD:180:132004,rstop
+chadj,CAS InR Adjust at Hook,,act,CMD:180:132004,rstop
+cunhk,CAS InR UnHook,,act,CMD:180:132005,rstop
+cuadj,CAS InR Adjust at UnHook,,act,CMD:180:132005,rstop
+rstop,CAS InR Stop,1,act,CMD:30:104011
+cjup,CAS Flange EJB Up,,act,CMD:180:932001,cjstop
+cjdw,CAS Flange EJB Down,,act,CMD:180:932002,cjstop
+cjstop,CAS Flange EJB Stop,1,act,CMD:30:932003
+
+jup[1-16],CAS Flange EJB Up,,cap
+jdw[1-16],CAS Flange EJB Down,,cap
+jst[1-16],CAS Flange EJB Stop,,cap
+
+jup1,CAS Flange EJB1 Up,1,act,CMD:40:932004,jst1
+jdw1,CAS Flange EJB1 Down,1,act,CMD:40:932005,jst1
+jst1,CAS Flange EJB1 Stop,1,act,CMD:30:932006
+
+jup2,CAS Flange EJB2 Up,1,act,CMD:40:932007,jst2
+jdw2,CAS Flange EJB2 Down,1,act,CMD:40:932008,jst2
+jst2,CAS Flange EJB2 Stop,1,act,CMD:30:932009
+
+jup3,CAS Flange EJB3 Up,1,act,CMD:40:932010,jst3
+jdw3,CAS Flange EJB3 Down,1,act,CMD:40:932011,jst3
+jst3,CAS Flange EJB3 Stop,1,act,CMD:30:932012
+
+jup4,CAS Flange EJB4 Up,1,act,CMD:40:932013,jst4
+jdw4,CAS Flange EJB4 Down,1,act,CMD:40:932014,jst4
+jst4,CAS Flange EJB4 Stop,1,act,CMD:30:932015
+
+jup5,CAS Flange EJB5 Up,1,act,CMD:40:932016,jst5
+jdw5,CAS Flange EJB5 Down,1,act,CMD:40:932017,jst5
+jst5,CAS Flange EJB5 Stop,1,act,CMD:30:932018
+
+jup6,CAS Flange EJB6 Up,1,act,CMD:40:932019,jst6
+jdw6,CAS Flange EJB6 Down,1,act,CMD:40:932020,jst6
+jst6,CAS Flange EJB6 Stop,1,act,CMD:30:932021
+
+jup7,CAS Flange EJB7 Up,1,act,CMD:40:932022,jst7
+jdw7,CAS Flange EJB7 Down,1,act,CMD:40:932023,jst7
+jst7,CAS Flange EJB7 Stop,1,act,CMD:30:932024
+
+jup8,CAS Flange EJB8 Up,1,act,CMD:40:932025,jst8
+jdw8,CAS Flange EJB8 Down,1,act,CMD:40:932026,jst8
+jst8,CAS Flange EJB8 Stop,1,act,CMD:30:932027
+
+jup9,CAS Flange EJB9 Up,1,act,CMD:40:932028,jst9
+jdw9,CAS Flange EJB9 Down,1,act,CMD:40:932029,jst9
+jst9,CAS Flange EJB9 Stop,1,act,CMD:30:932030
+
+jup10,CAS Flange EJB10 Up,1,act,CMD:40:932031,jst10
+jdw10,CAS Flange EJB10 Down,1,act,CMD:40:932032,jst10
+jst10,CAS Flange EJB10 Stop,1,act,CMD:30:932033
+
+jup11,CAS Flange EJB11 Up,1,act,CMD:40:932034,jst11
+jdw11,CAS Flange EJB11 Down,1,act,CMD:40:932035,jst11
+jst11,CAS Flange EJB11 Stop,1,act,CMD:30:932036
+
+jup12,CAS Flange EJB12 Up,1,act,CMD:40:932037,jst12
+jdw12,CAS Flange EJB12 Down,1,act,CMD:40:932038,jst12
+jst12,CAS Flange EJB12 Stop,1,act,CMD:30:932039
+
+jup13,CAS Flange EJB13 Up,1,act,CMD:40:932040,jst13
+jdw13,CAS Flange EJB13 Down,1,act,CMD:40:932041,jst13
+jst13,CAS Flange EJB13 Stop,1,act,CMD:30:932042
+
+jup14,CAS Flange EJB14 Up,1,act,CMD:40:932043,jst14
+jdw14,CAS Flange EJB14 Down,1,act,CMD:40:932044,jst14
+jst14,CAS Flange EJB14 Stop,1,act,CMD:30:932045
+
+jup15,CAS Flange EJB15 Up,1,act,CMD:40:932046,jst15
+jdw15,CAS Flange EJB15 Down,1,act,CMD:40:932047,jst15
+jst15,CAS Flange EJB15 Stop,1,act,CMD:30:932048
+
+jup16,CAS Flange EJB16 Up,1,act,CMD:40:932049,jst16
+jdw16,CAS Flange EJB16 Down,1,act,CMD:40:932050,jst16
+jst16,CAS Flange EJB16 Stop,1,act,CMD:30:932051
+

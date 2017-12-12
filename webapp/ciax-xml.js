@@ -12,13 +12,13 @@ function open_table(site) {
 }
 function open_graph(site, vid, time) {
     var url = '/json/graph.php?site=' + site + '&vid=' + vid;
-    var pre = 'g' + vid.replace(/,/g,'_');
+    var pre = 'g' + vid.replace(/,/g, '_');
     if (time) {
         url = url + '&time=' + time;
         pre += 'h';
     }
     window.open(url, pre + '_' + site,
-                'menubar=no,location=no,status=no,width=600,height=320'
+                'menubar=no,location=no,status=no,width=700,height=380'
                ).focus();
 }
 function exec_funcs(funclist) {
@@ -98,7 +98,10 @@ function dvctl(args, func) {
         success: function(recv) {
             //console.log('recv=' + JSON.stringify(recv));
             replace('#msg', recv.msg, recv.msg.toLowerCase()).show().fadeOut(1000);
-            if (func) func(recv);
+            if (func) {
+                console.log(JSON.stringify(recv));
+                func(recv.sid);
+            };
         },
         error: function(recv) {
             //console.log('recv=' + JSON.stringify(recv));

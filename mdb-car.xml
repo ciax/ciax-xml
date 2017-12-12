@@ -616,7 +616,7 @@
           <check>
             <match site="mmc" var="spd" form="msg">LOW</match>
             <match site="mmc" var="lcw" form="msg">OFF</match>
-            <match site="mmc" var="lccw" form="msg">OFF         // No Wheels</match>
+            <match site="mmc" var="lccw" form="msg">OFF</match>
           </check>
           <exec site="mmc" name="access8"/>
           <wait retry="240" label="end of motion">
@@ -631,7 +631,7 @@
           <check>
             <match site="mmc" var="spd" form="msg">LOW</match>
             <match site="mmc" var="lcw" form="msg">OFF</match>
-            <match site="mmc" var="lccw" form="msg">OFF         // No Wheels</match>
+            <match site="mmc" var="lccw" form="msg">OFF</match>
           </check>
           <exec site="mmc" name="access9"/>
           <wait retry="240" label="end of motion">
@@ -691,7 +691,7 @@
           <check>
             <match site="mmc" var="spd" form="msg">LOW</match>
             <match site="mmc" var="lcw" form="msg">OFF</match>
-            <match site="mmc" var="lccw" form="msg">OFF       // Out of Range(slot19-22 = access13-16)</match>
+            <match site="mmc" var="lccw" form="msg">OFF</match>
           </check>
           <exec site="mmc" name="access13"/>
           <wait retry="240" label="end of motion">
@@ -706,7 +706,7 @@
           <check>
             <match site="mmc" var="spd" form="msg">LOW</match>
             <match site="mmc" var="lcw" form="msg">OFF</match>
-            <match site="mmc" var="lccw" form="msg">OFF       // Out of Range(slot19-22 = access13-16)</match>
+            <match site="mmc" var="lccw" form="msg">OFF</match>
           </check>
           <exec site="mmc" name="access14"/>
           <wait retry="240" label="end of motion">
@@ -721,7 +721,7 @@
           <check>
             <match site="mmc" var="spd" form="msg">LOW</match>
             <match site="mmc" var="lcw" form="msg">OFF</match>
-            <match site="mmc" var="lccw" form="msg">OFF       // Out of Range(slot19-22 = access13-16)</match>
+            <match site="mmc" var="lccw" form="msg">OFF</match>
           </check>
           <exec site="mmc" name="access15"/>
           <wait retry="240" label="end of motion">
@@ -736,7 +736,7 @@
           <check>
             <match site="mmc" var="spd" form="msg">LOW</match>
             <match site="mmc" var="lcw" form="msg">OFF</match>
-            <match site="mmc" var="lccw" form="msg">OFF       // Out of Range(slot19-22 = access13-16)</match>
+            <match site="mmc" var="lccw" form="msg">OFF</match>
           </check>
           <exec site="mmc" name="access16"/>
           <wait retry="240" label="end of motion">
@@ -848,14 +848,6 @@
             <equal site="mmc" var="bs" form="data">0</equal>
           </wait>
           <upd site="mmc"/>
-        </item>
-      </unit>
-      <unit id="unit_mmc_2_sha" title="sha" label="Shared Command">
-        <item id="upd" label="Update">
-          <upd site="mma"/>
-          <upd site="mmc"/>
-          <upd site="mfp"/>
-          <upd site="map"/>
         </item>
       </unit>
       <item id="mmc_cw-0.1" label="Move 0.1 unit CW">

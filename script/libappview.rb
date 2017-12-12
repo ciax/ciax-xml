@@ -56,6 +56,7 @@ module CIAX
 
       def _init_upd_proc
         @upd_procs << proc do
+          @stat.upd
           self['gtime'] = { caption: '', lines: [hash = {}] }
           hash[:time] = { label: 'TIMESTAMP', msg: date(@stat[:time]) }
           hash[:elapsed] = { label: 'ELAPSED', msg: elps_date(@stat[:time]) }

@@ -59,7 +59,7 @@ module CIAX
 
       # Making Command List JSON file for WebApp
       def _mk_cmdlist
-        IO.write(vardir('json') + 'mcr_conf.json', @cfg[:jlist].to_j)
+        IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + @cfg[:jlist].to_j)
       end
 
       def ext_client

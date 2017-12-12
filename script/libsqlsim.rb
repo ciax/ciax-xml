@@ -40,7 +40,7 @@ module CIAX
       end
 
       def wait(tim)
-        dif = (tim.to_i > @index) ? [tim.to_i - @index, 1000].min : 0
+        dif = tim.to_i > @index ? [tim.to_i - @index, 1000].min : 0
         wt = dif.to_f / 1000
         sleep wt
         format('%.3f', wt)
@@ -60,7 +60,7 @@ module CIAX
         @index = tim.to_i
         cmd
       rescue
-        raise("NO record for #{str}") if @index == 0
+        raise("NO record for #{str}") if @index.zero?
         @index = 0
         verbose { colorize('LINE:REWINDED', 3) }
         retry

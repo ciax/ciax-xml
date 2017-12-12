@@ -29,6 +29,7 @@ module CIAX
         @frame = Frame.new(sp[:endian], sp[:ccmethod], sp[:terminator])
         # terminator: frame pointer will jump to terminator
         #   when no length or delimiter is specified
+        init_time2cmt(@stream)
         self
       end
 
@@ -43,10 +44,6 @@ module CIAX
         self
       ensure
         cmt
-      end
-
-      def time_upd
-        super(@stream[:time])
       end
 
       private
@@ -152,7 +149,7 @@ module CIAX
       ConfOpts.new('< logline', 'm', m: 'merge file') do |cfg, _args, opt|
         raise(InvalidARGS, '  Need Input File') if STDIN.tty?
         str = gets(nil) || exit
-        res = JsLog.jmerge(str)
+        res = JsLog.read(str)
         id = res[:id]
         cid = res[:cmd]
         dbi = Dev::Db.new.get(id)

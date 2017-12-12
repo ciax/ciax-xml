@@ -14,5 +14,9 @@
    </head>
   <body>
     <div id="placeholder" style="width:600px;height:300px;"></div>
+    <div>
+      <input id="date" type="date" onchange="mv_date(this)"/>
+      <button class="log" id="log" onclick="get_log();">LOG</button>
+    </div>
   </body>
 </html>

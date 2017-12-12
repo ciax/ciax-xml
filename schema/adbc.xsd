@@ -5,7 +5,7 @@
   <!--command select-->
   <xsd:element name="command">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="adbc:group"/>
       </xsd:choice>
     </xsd:complexType>

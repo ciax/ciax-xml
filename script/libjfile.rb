@@ -37,8 +37,7 @@ module CIAX
         verbose { " -- json file (#{@cfile}) is empty at loading" }
         return self
       end
-      _check_load(json_str)
-      jmerge(json_str)
+      _check_load(json_str) && jmerge(json_str)
       self
     end
 
@@ -67,7 +66,8 @@ module CIAX
     def _check_load(json_str)
       inc = j2h(json_str)[:ver]
       org = self[:ver]
-      warning("File version mismatch <#{inc}> for [#{org}]") if inc != org
+      return true if inc == org
+      warning("File version mismatch <#{inc}> for [#{org}]")
       false
     rescue UserError
       relay(@cfile.to_s)
@@ -84,6 +84,7 @@ module CIAX
     end
 
     def _write_json(json_str, tag = nil)
+      verbose { " -- json data (#{json_str}) is empty at saving" } if json_str.empty?
       verbose(@thread != Thread.current) { 'File Saving from Multiple Threads' }
       @cfile = _file_name(tag)
       open(@jsondir + @cfile, 'w') do |f|

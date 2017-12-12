@@ -1,0 +1,10 @@
+!key,stat,option
+i,dts:iid
+t,det:iid
+a,dso:fid
+b,dso:mid
+c,dsi:mid
+d,dsi:fid
+l,crt:cps
+r,crt:ion,ON=t OFF=r
+p,crt:dps,01=t 09=b 10=a 11=c 12=d

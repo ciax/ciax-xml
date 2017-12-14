@@ -56,20 +56,20 @@
   </group>
   <group id="dciax" label="Dummy CIAX Simulator" column="2">
     <site id="trt" frm_id="mel" host="localhost" port="24191" iocmd="socat - udp:localhost:8888" label="CIAX CART Dummy"/>
-    <site id="tsi" frm_id="cj2" host="localhost" port="24192" iocmd="socat - udp:localhost:8888" label="IR Stand-by Flange">
+    <site id="tsi" frm_id="cj2" host="localhost" port="24192" iocmd="socat - udp:localhost:8889" label="IR Stand-by Flange">
       <field>
         <assign id="ipl" val="1"/>
         <assign id="ipr" val="33"/>
       </field>
     </site>
-    <site id="tso" frm_id="cj2" host="localhost" port="24193" iocmd="socat - udp:localhost:8888" label="OPT Stand-by Flange">
+    <site id="tso" frm_id="cj2" host="localhost" port="24193" iocmd="socat - udp:localhost:8890" label="OPT Stand-by Flange">
       <field>
         <assign id="ipl" val="1"/>
         <assign id="ipr" val="32"/>
       </field>
     </site>
-    <site id="tts" frm_id="oss" host="localhost" port="24195" iocmd="socat - udp:localhost:8888" label="Gen2 TSC Control"/>
-    <site id="tci" frm_id="bbe" host="localhost" port="24198" iocmd="socat - udp:localhost:8888" label="CCI dummy"/>
-    <site id="tco" frm_id="bbe" host="localhost" port="24199" iocmd="socat - udp:localhost:8888" label="CCO dummy"/>
+    <site id="tts" frm_id="oss" host="localhost" port="24195" iocmd="socat - udp:localhost:8891" label="Gen2 TSC Control"/>
+    <site id="tci" frm_id="bbe" host="localhost" port="24198" iocmd="socat - udp:localhost:8892" label="CCI dummy"/>
+    <site id="tco" frm_id="bbe" host="localhost" port="24199" iocmd="socat - udp:localhost:8893" label="CCO dummy"/>
   </group>
 </ddb>

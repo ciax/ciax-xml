@@ -9,7 +9,14 @@ kilpid(){
 }
 server(){
     # To keep alive an exec command, it should be first item
-    exec socat exec:"$0 -" udp-recvfrom:8888,reuseaddr,fork & exit
+    kilpid
+    port=8888
+    for i in ${*:--}; do
+        socat exec:"$0 $i" udp-recvfrom:$port,reuseaddr,fork &
+        (( port ++ ))
+        echo $! >> $pidfile
+    done
+    exit
 }
 # sql commands
 maxtime(){
@@ -26,7 +33,6 @@ nexttime(){
     sqlite3 $sqlfile <<EOF | grep .
 select min(time) from stream
  where time > ${time:=0}
- ${site:+ and id == '$site'}
  ${input:+and snd == '$input'}
 ;
 EOF
@@ -77,12 +83,11 @@ alert(){ echo "DEVSIM:$*" > /dev/stderr; return 1; }
 #########################
 pidfile="$HOME/.var/run/devsim.pid"
 mkdir -p $HOME/.var/run
-kilpid
-[ "$1" ] ||{  echo "Usage:${0##*/} (-d) [site]";exit 1; }
-[ "$1" = -d ] && server
-[ "$1" = - ] && echo $PPID >> $pidfile || site=$1
+[ "$1" ] ||{  echo "Usage:${0##*/} (-d) [site]"; kilpid; exit 1; }
+[ "$1" = -d ] && { shift; server $*; }
+[ "$1" = - ] || site="_$1"
 time=0
-sqlfile="$HOME/.var/log/stream.sq3"
+sqlfile="$HOME/.var/log/stream$site.sq3"
 min=$(mintime)
 max=$(maxtime)
 total=$(( $max - $min ))

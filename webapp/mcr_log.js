@@ -53,7 +53,7 @@ function func_make_list() {
 
     function _make_date(time) {
         var dary = time.toLocaleDateString().split('/');
-        var dti = dary[1] + '/' + dary[2];
+        var dti = dary[0] + '/' + dary[1];
         var did = dary.join('_');
         if (!$('#' + did)[0]) {
             _make_year(time);

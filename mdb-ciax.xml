@@ -641,7 +641,6 @@
           </goal>
           <check label="CART on TAG?">
             <equal form="msg" site="crt" var="jlv">D</equal>
-            <equal form="msg" site="dsi" var="mtr">BK</equal>
             <equal form="msg" site="crt" var="ion">OFF</equal>
             <equal form="data" site="crt" var="cps">12</equal>
           </check>

@@ -34,6 +34,7 @@ module CIAX
   class Interlock < LongJump; end
   class Verification < LongJump; end
   class Retry < LongJump; end
+  class NoMcrCmd < LongJump; end
 
   # Server error (Handled in Server)
   class ServerError < RuntimeError; end

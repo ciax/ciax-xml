@@ -75,6 +75,11 @@ module CIAX
       raise StreamError, ary.join("\n  "), caller(1)
     end
 
+    def mcr_err(*ary) # Raise No Macro commandd error (Not an option)
+      ary[0] = colorize(ary[0], 1)
+      raise NoMcrCmd, ary.join("\n  "), caller(1)
+    end
+
     def relay(str)
       str = "#{str}\n#{$ERROR_INFO}"
       raise $ERROR_INFO.class, str, caller(1)

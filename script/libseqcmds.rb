@@ -98,7 +98,7 @@ module CIAX
         step[:result] = var
         _show step.result
         sel = e[:select]
-        name = sel[var] || sel['*'] || cfg_err("No option for #{var} ")
+        name = sel[var] || sel['*'] || mcr_err("No option for #{var} ")
         _do_step({ type: 'mcr', args: name }, mstat)
       end
 

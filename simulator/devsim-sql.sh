@@ -8,7 +8,7 @@ kilpid(){
     :> $pidfile
 }
 server(){
-    # To keep alive an exec command, it should be first item
+    # To keep alive an exec command, it should be first item in socat args
     kilpid
     port=8888
     for i in ${*:--}; do

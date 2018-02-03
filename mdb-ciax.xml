@@ -550,7 +550,6 @@
             <equal form="msg" site="dso" var="mtr">BK</equal>
             <equal form="msg" site="dso" var="fis">OFF</equal>
             <equal form="msg" site="crt" var="ion">ON</equal>
-            <equal form="data" site="crt" var="cps">10</equal>
           </check>
           <mcr name="run">
             <argv>1</argv>
@@ -565,7 +564,6 @@
             <equal form="msg" site="dso" var="mtr">BK</equal>
             <equal form="msg" site="dso" var="fis">OFF</equal>
             <equal form="msg" site="crt" var="ion">ON</equal>
-            <equal form="data" site="crt" var="cps">1</equal>
           </check>
           <mcr name="run">
             <argv>10</argv>
@@ -582,7 +580,6 @@
             <equal form="msg" site="dsi" var="mtr">BK</equal>
             <equal form="msg" site="dsi" var="fis">OFF</equal>
             <equal form="msg" site="crt" var="ion">ON</equal>
-            <equal form="data" site="crt" var="cps">12</equal>
           </check>
           <mcr name="run">
             <argv>1</argv>

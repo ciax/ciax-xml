@@ -1975,6 +1975,16 @@
           <upd site="crt"/>
           <upd site="dso"/>
           <upd site="dsi"/>
+          <upd site="cci"/>
+          <upd site="cco"/>
+        </item>
+      </unit>
+      <unit id="unit_tsc" label="TSC commands">
+        <item id="init" label="Initialize TSC">
+          <cfg site="dts" name="startup"/>
+        </item>
+        <item id="shutdown" label="Shutdown TSC">
+          <cfg site="dts" name="shutdown"/>
         </item>
       </unit>
     </group>

@@ -8,7 +8,7 @@ module CIAX
     # Previous process will be killed at the start up.
     # Reloadable by HUP signal
     # Get Thread status by UDP:54321 connection
-    def initialize(tag, ops = '')
+    def initialize(tag, ops = '', port = 54_321)
       ENV['VER'] ||= 'Initiate'
       @layer = tag
       ConfOpts.new('[id] ...', options: ops + 'b') do |cfg, args|
@@ -17,15 +17,15 @@ module CIAX
         opt[:s] = true
         @obj = yield(cfg, sites: args)
         ___init_server(tag, opt)
-        ___main_loop { yield(cfg, sites: args) }
+        ___main_loop(port) { yield(cfg, sites: args) }
       end
     end
 
     private
 
-    def ___main_loop
+    def ___main_loop(port)
       @obj.run
-      Udp::Server.new('sv', 'top', 54_321).listen { Threadx.list.to_s }
+      Udp::Server.new('sv', 'top', port).listen { Threadx.list.to_s }
     rescue SignalException
       Threadx.killall
       if $ERROR_INFO.message == 'SIGHUP'

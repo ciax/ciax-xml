@@ -43,7 +43,7 @@ module CIAX
         id = self[:id]
         # handover to Wat, App
         site_cfg.update(db: Ins::Db.new(id), proj: id, opt: @opt.sub_opt)
-        dev_layer= @opt[:x] ? Hex : Wat
+        dev_layer = @opt[:x] ? Hex : Wat
         self[:dev_list] = dev_layer::List.new(site_cfg, sites: self[:sites])
         self[:sv_stat] = Prompt.new(id, @opt)
         self[:rec_list] = RecList.new

@@ -9,28 +9,28 @@
           <mcr name="get"/>
           <mcr name="r2fi"/>
           <mcr name="set"/>
-          <mcr name="rtn"/>
+          <mcr name="ret"/>
         </item>
         <item id="ex_moircs" label="Exchange to MOIRCS">
           <mcr name="dpt"/>
           <mcr name="get"/>
           <mcr name="r2mi"/>
           <mcr name="set"/>
-          <mcr name="rtn"/>
+          <mcr name="ret"/>
         </item>
         <item id="ex_comics" label="Exchange to COMICS">
           <mcr name="dpt"/>
           <mcr name="get"/>
           <mcr name="r2mo"/>
           <mcr name="set"/>
-          <mcr name="rtn"/>
+          <mcr name="ret"/>
         </item>
         <item id="ex_k3d" label="Exchange to Kyoto3D">
           <mcr name="dpt"/>
           <mcr name="get"/>
           <mcr name="r2fo"/>
           <mcr name="set"/>
-          <mcr name="rtn"/>
+          <mcr name="ret"/>
         </item>
       </unit>
     </group>
@@ -47,7 +47,7 @@
             </option>
           </select>
         </item>
-        <item id="rtn" label="Return to Home">
+        <item id="ret" label="Return to Home">
           <select site="crt" var="ist" form="msg">
             <option val="COMICS">
               <mcr name="rrto"/>
@@ -108,7 +108,7 @@
               <mcr name="rxfo"/>
             </option>
             <option val="12">
-              <mcr name="rkfo"/>
+              <mcr name="rtfo"/>
             </option>
           </select>
         </item>
@@ -118,7 +118,7 @@
               <mcr name="rsmo"/>
             </option>
             <option val="11">
-              <mcr name="rkmo"/>
+              <mcr name="rtmo"/>
             </option>
             <option val="12">
               <mcr name="rxmo"/>
@@ -128,7 +128,7 @@
         <item id="r2mi" label="Run to MOV.IR">
           <select site="crt" var="cps" form="data">
             <option val="9">
-              <mcr name="rkmi"/>
+              <mcr name="rtmi"/>
             </option>
             <option val="10">
               <mcr name="rxmi"/>
@@ -144,7 +144,7 @@
               <mcr name="rxfi"/>
             </option>
             <option val="10">
-              <mcr name="rkfi"/>
+              <mcr name="rtfi"/>
             </option>
             <option val="11">
               <mcr name="rsfi"/>
@@ -248,7 +248,7 @@
     </group>
     <!--Sequential Free Run Commands (End Flange Base)-->
     <group id="g_sfr" caption="Sequential Free Run Commands" rank="1">
-      <unit id="unit_rssf" title="rs[f|m][o|i]" label="Run Same Side Flanges">
+      <unit id="unit_rssf" title="rs[f|m][o|i]" label="Run between Same Side Flanges">
         <item id="rsfo" label="Run Tag 9 to 10 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
@@ -282,7 +282,7 @@
           <mcr name="rimi"/>
         </item>
       </unit>
-      <unit id="unit_rxsf" title="rx[f|m][o|i]" label="Run Cross Side/Kind Flanges">
+      <unit id="unit_rxsf" title="rx[f|m][o|i]" label="Run between Cross Side/Type Flanges">
         <item id="rxfi" label="Run Tag 9 to 12 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
@@ -330,8 +330,8 @@
           <mcr name="rimi"/>
         </item>
       </unit>
-      <unit id="unit_rksf" title="rk[f|m][o|i]" label="Run Same Kind Flanges">
-        <item id="rkfi" label="Run Tag 10 to 12 w/o Inst">
+      <unit id="unit_rtsf" title="rt[f|m][o|i]" label="Run between Same Type Flanges">
+        <item id="rtfi" label="Run Tag 10 to 12 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
@@ -342,7 +342,7 @@
           </mcr>
           <mcr name="rifi"/>
         </item>
-        <item id="rkfo" label="Run Tag 12 to 10 w/o Inst">
+        <item id="rtfo" label="Run Tag 12 to 10 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
@@ -353,7 +353,7 @@
           </mcr>
           <mcr name="rifo"/>
         </item>
-        <item id="rkmi" label="Run Tag 9 to 11 w/o Inst">
+        <item id="rtmi" label="Run Tag 9 to 11 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
           </goal>
@@ -365,7 +365,7 @@
           </mcr>
           <mcr name="rimi"/>
         </item>
-        <item id="rkmo" label="Run Tag 11 to 9 w/o Inst">
+        <item id="rtmo" label="Run Tag 11 to 9 w/o Inst">
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
           </goal>

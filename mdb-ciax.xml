@@ -1427,7 +1427,7 @@
             <equal form="msg" site="dts" var="cis">ON</equal>
             <equal form="msg" site="dts" var="iang">HOOK</equal>
           </check>
-          <exec site="dts" name="fjdw"/>
+          <exec site="dts" name="jdw"/>
           <wait label="Jack start?" retry="5">
             <equal form="msg" site="dts" var="exe">ON</equal>
           </wait>
@@ -1442,7 +1442,7 @@
           <check label="HOOK?">
             <equal form="msg" site="dts" var="iang">HOOK</equal>
           </check>
-          <exec site="dts" name="fjup"/>
+          <exec site="dts" name="jup"/>
           <wait label="Jack start?" retry="5">
             <equal form="msg" site="dts" var="exe">ON</equal>
           </wait>
@@ -1457,7 +1457,7 @@
           <check label="UNHOOK?">
             <equal form="msg" site="dts" var="iang">UNHK</equal>
           </check>
-          <exec site="dts" name="fjup"/>
+          <exec site="dts" name="jup"/>
           <wait label="Jack start?" retry="5">
             <equal form="msg" site="dts" var="exe">ON</equal>
           </wait>
@@ -1472,7 +1472,7 @@
           <check label="UNHOOK?">
             <equal form="msg" site="dts" var="iang">UNHK</equal>
           </check>
-          <exec site="dts" name="fjdw"/>
+          <exec site="dts" name="jdw"/>
           <wait label="Jack start?" retry="5">
             <equal form="msg" site="dts" var="exe">ON</equal>
           </wait>

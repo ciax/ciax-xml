@@ -4,13 +4,20 @@ require 'libmsgdbg'
 class Module
   # All classes copy under the module
   def deep_include(smod, dmod = self)
-    const_defined?(dmod.to_s) || __fmt_eval('module %s;end', dmod)
+    ___alt_const_defined?(dmod.to_s) || __fmt_eval('module %s;end', dmod)
     smod.constants.each do |con|
       ___classify(*[smod, dmod].map { |s| format('%s::%s', s, con) })
     end
   end
 
   private
+
+  # For Ruby 2.0 or older (use const_defined? for 2.1 or later)
+  def ___alt_const_defined?(modstr)
+    const_get(modstr)
+  rescue NameError
+    false
+  end
 
   def ___classify(sname, dname)
     case (ssub = const_get(sname))

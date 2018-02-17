@@ -217,74 +217,74 @@
       <!--Acknowlege message: STX ACK ETX CR LF (Manual Section 12.5)-->
       <field decode="integer" label="Prefix" length="1">2</field>
       <field decode="integer" label="ResponseCode" length="1">6</field>
-      <body/>
+      <body suffix="\x03"/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field assign="stat" label="StatusCode" delimiter="\003"/>
+        <field assign="stat" label="StatusCode"/>
       </item>
       <item id="chkrun">
-        <array assign="run" label="Moving" delimiter="\003">
+        <array assign="run" label="Moving">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="chkems">
-        <array assign="ems" label="Emergency" delimiter="\003">
+        <array assign="ems" label="Emergency">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="chkpse">
-        <array assign="pse" label="Power Stage Err" delimiter="\003">
+        <array assign="pse" label="Power Stage Err">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getp">
-        <array assign="p" label="Pulse" delimiter="\003">
+        <array assign="p" label="Pulse">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getmp">
-        <array assign="mp" label="Mechanical Pulse" delimiter="\003">
+        <array assign="mp" label="Mechanical Pulse">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getspd">
-        <array assign="spd" label="Speed" delimiter="\003">
+        <array assign="spd" label="Speed">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getrmp">
-        <array assign="rmp" label="Ramp Speed" delimiter="\003">
+        <array assign="rmp" label="Ramp Speed">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getmspd">
-        <array assign="mspd" label="Mechanical Speed" delimiter="\003">
+        <array assign="mspd" label="Mechanical Speed">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getmrmp">
-        <array assign="mrmp" label="Mechanical Ramp Speed" delimiter="\003">
+        <array assign="mrmp" label="Mechanical Ramp Speed">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getispd">
-        <array assign="ispd" label="Init Return Speed" delimiter="\003">
+        <array assign="ispd" label="Init Return Speed">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getofs">
-        <array assign="ofs" label="Mechanical Offset" delimiter="\003">
+        <array assign="ofs" label="Mechanical Offset">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getrtm">
-        <array assign="rtm" label="Recovery Time(ms)" delimiter="\003">
+        <array assign="rtm" label="Recovery Time(ms)">
           <index range="$1-1" size="6"/>
         </array>
       </item>
       <item id="getmrtm">
-        <array assign="mrtm" label="Mech Recovery Time(ms)" delimiter="\003">
+        <array assign="mrtm" label="Mech Recovery Time(ms)">
           <index range="$1-1" size="6"/>
         </array>
       </item>

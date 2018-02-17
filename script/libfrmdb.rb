@@ -55,53 +55,52 @@ module CIAX
 
       # Status section
       def ___init_response(dom, dbi)
-        fld = dbi[:field] = Hashx.new
-        frm = __init_frame(dom[:rspframe]) { |e| __add_rspfrm(e, fld) }
+        tpl = dbi[:field] = Hashx.new # template
+        frm = __init_frame(dom[:rspframe]) { |e| __add_rspfrm(e, tpl) }
         dbi[:response] = Hashx.new(index: idx = Hashx.new, frame: frm)
-        dom[:response].each { |e0| ___add_fld(e0, fld, idx) }
+        dom[:response].each { |e0| ___add_fld(e0, tpl, idx) }
         dbi[:frm_id] = dbi[:id]
         dbi
       end
 
-      def ___add_fld(e0, fld, db)
+      def ___add_fld(e0, tpl, db)
         itm = db[e0.attr2item(db)]
         @rep.each(e0) do |e1|
-          e = __add_rspfrm(e1, fld) || next
+          e = __add_rspfrm(e1, tpl) || next
           itm.get(:body) { [] } << e
         end
       end
 
-      def __add_rspfrm(e, field)
+      def __add_rspfrm(e, tpl)
         # Avoid override duplicated id
-        if (id = e[:assign]) && !field.key?(id)
-          itm = field[id] = { label: e[:label] }
+        elem = { type: e.name }
+        if (id = e[:assign]) && !tpl.key?(id)
+          asn = tpl[id] = { label: e[:label] }
         end
-        ___init_elem(e, itm)
+        elem.update(___init_elem(e, asn) || {})
       end
 
-      def ___init_elem(e, itm)
+      def ___init_elem(e, asn)
         case e.name
-        when 'field'
-          ___init_field(e, itm)
+        when 'field', 'body'
+          ___init_field(e, asn)
         when 'array'
-          ___init_ary(e, itm)
-        when 'ccrange', 'body', 'echo'
-          e.name
+          ___init_ary(e, asn)
         end
       end
 
-      def ___init_field(e, itm)
+      def ___init_field(e, asn)
         _get_h(e) do |atrb|
-          itm[:struct] = [] if itm
+          asn[:struct] = [] if asn
           verbose { "InitField: #{atrb}" }
         end
       end
 
-      def ___init_ary(e, itm)
+      def ___init_ary(e, asn)
         _get_h(e) do |atrb|
           idx = atrb[:index] = []
           e.each { |e1| idx << e1.to_h }
-          itm[:struct] = idx.map { |h| h[:size] } if itm
+          asn[:struct] = idx.map { |h| h[:size] } if asn
           verbose { "InitArray: #{atrb}" }
         end
       end

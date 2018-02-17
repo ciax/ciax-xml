@@ -71,10 +71,11 @@ module CIAX
       private
 
       def ___cut_by_type(e0)
-        ___cut_len(e0[:length]) || ___cut_delim(e0[:delimiter]) || ___cut_rest
+        ___cut_by_size(e0[:length]) || \
+          ___cut_by_code(e0[:delimiter] || e0[:suffix]) || ___cut_rest
       end
 
-      def ___cut_len(len)
+      def ___cut_by_size(len)
         return unless len
         verbose { "Cut by Size [#{len}]" }
         if len.to_i > @frame.size
@@ -87,10 +88,10 @@ module CIAX
         str
       end
 
-      def ___cut_delim(del)
-        return unless del
-        dlm = esc_code(del).to_s
-        verbose { "Cut by Delimiter [#{dlm.inspect}]" }
+      def ___cut_by_code(code)
+        return unless code
+        dlm = esc_code(code).to_s
+        verbose { "Cut by Code [#{dlm.inspect}]" }
         str, dlm, @frame = @frame.partition(dlm)
         @cc.push(str + dlm)
         str

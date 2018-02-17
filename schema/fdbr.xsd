@@ -16,7 +16,9 @@
     <xsd:attribute name="delimiter" type="xsd:string"/>
   </xsd:attributeGroup>
   <xsd:element name="body">
-    <xsd:complexType/>
+    <xsd:complexType>
+      <xsd:attribute name="suffix" type="xsd:token"/>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="echo">
     <xsd:complexType/>

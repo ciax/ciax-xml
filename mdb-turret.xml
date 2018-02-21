@@ -10,10 +10,8 @@
       <item id="thome" label="Turret to Home">
         <cfg site="mft" name="set6v"/>
         <upd site="mft"/>
-        <mcr name="pre_pos"/>
-        <cfg site="mix" name="ispdh"/>
-        <mcr name="mech_home" retry="3" wait="5"/>
-        <cfg site="mix" name="resetmp"/>
+        <mcr name="ret_home"/>
+        <mcr name="search_home" retry="3" wait="5"/>
         <mcr name="pre_pos"/>
         <cfg site="mix" name="ispdl"/>
         <mcr name="mech_home"/>
@@ -38,7 +36,7 @@
         </wait>
         <upd site="mft"/>
       </item>
-      <item id="pre_pos" label="Pre-Positioning">
+      <item id="pre_pos" label="Pre-Positioning(Slot11)">
         <goal label="All Slot11?">
           <equal form="data" site="mix" var="mp1">11.0</equal>
           <equal form="data" site="mix" var="mp2">11.0</equal>
@@ -47,8 +45,16 @@
           <equal form="data" site="mix" var="mp5">11.0</equal>
           <equal form="data" site="mix" var="mp6">11.0</equal>
         </goal>
-        <exec site="mix" name="opt_all">
-          <argv>11</argv>
+        <check label="All Slot11?">
+          <equal form="data" site="mix" var="mp1">0</equal>
+          <equal form="data" site="mix" var="mp2">0</equal>
+          <equal form="data" site="mix" var="mp3">0</equal>
+          <equal form="data" site="mix" var="mp4">0</equal>
+          <equal form="data" site="mix" var="mp5">0</equal>
+          <equal form="data" site="mix" var="mp6">0</equal>
+        </check>
+        <exec site="mix" name="bk_all">
+          <argv>1</argv>
         </exec>
         <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>
@@ -57,6 +63,19 @@
           <equal form="msg" var="stp" site="mix">STOP</equal>
         </wait>
         <upd site="mft"/>
+      </item>
+      <item id="search_home" label="Search Home">
+        <goal label="All Home?" verify="true">
+          <match form="msg" site="mft" var="v1">HOME</match>
+          <match form="msg" site="mft" var="v2">HOME</match>
+          <match form="msg" site="mft" var="v3">HOME</match>
+          <match form="msg" site="mft" var="v4">HOME</match>
+          <match form="msg" site="mft" var="v5">HOME</match>
+          <match form="msg" site="mft" var="v6">HOME</match>
+        </goal>
+        <cfg site="mix" name="ispdh"/>
+        <mcr name="mech_home" retry="3" wait="5"/>
+        <cfg site="mix" name="resetmp"/>
       </item>
       <item id="mech_home" label="Mechanical Homing">
         <goal label="All Home?" verify="true">

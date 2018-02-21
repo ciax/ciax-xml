@@ -77,16 +77,20 @@ module CIAX
         # Process Frame to Field
         def __getfield_rec(e0, common = {})
           e0.each do |e1|
-            case e1[:type]
-            when 'field', 'array'
-              ___frame_to_field(e1) { @frame.cut(e1.update(common)) }
-            when 'ccrange'
-              @frame.cc.enclose { __getfield_rec(@sel[:ccrange]) }
-            when 'body'
-              __getfield_rec(@sel[:body] || [], e1)
-            when 'echo' # Send back the command string
-              @frame.cut(label: 'Command Echo', val: @echo)
-            end
+            ___getfield(e1, common)
+          end
+        end
+
+        def ___getfield(e1, common = {})
+          case e1[:type]
+          when 'field', 'array'
+            ___frame_to_field(e1) { @frame.cut(e1.update(common)) }
+          when 'ccrange'
+            @frame.cc.enclose { __getfield_rec(@sel[:ccrange]) }
+          when 'body'
+            __getfield_rec(@sel[:body] || [], e1)
+          when 'echo' # Send back the command string
+            @frame.cut(label: 'Command Echo', val: @echo)
           end
         end
 

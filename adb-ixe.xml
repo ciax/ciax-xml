@@ -446,7 +446,7 @@
         </item>
       </group>
       <group id="gcfg" caption="Configuration Commands">
-        <item id="resetp" label="Set Pulse Zero for OBS mode">
+        <item id="offsetp" label="Set Offset Pulse for OBS mode">
           <frmcmd name="set">
             <argv>p:0</argv>
             <!-- offset = -50 -->
@@ -483,7 +483,7 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="resetm" label="Set Pulse Zero for MTN mode">
+        <item id="resetmp" label="Set Pulse Zero for MTN mode">
           <repeat from="1" to="6">
             <frmcmd name="set">
               <argv format="p:%d">$_</argv>

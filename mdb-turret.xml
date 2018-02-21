@@ -38,20 +38,20 @@
       </item>
       <item id="pre_pos" label="Pre-Positioning(Slot11)">
         <goal label="All Slot11?">
-          <equal form="data" site="mix" var="mp1">11.0</equal>
-          <equal form="data" site="mix" var="mp2">11.0</equal>
-          <equal form="data" site="mix" var="mp3">11.0</equal>
-          <equal form="data" site="mix" var="mp4">11.0</equal>
-          <equal form="data" site="mix" var="mp5">11.0</equal>
-          <equal form="data" site="mix" var="mp6">11.0</equal>
+          <equal form="msg" site="mix" var="mp1">S11</equal>
+          <equal form="msg" site="mix" var="mp2">S11</equal>
+          <equal form="msg" site="mix" var="mp3">S11</equal>
+          <equal form="msg" site="mix" var="mp4">S11</equal>
+          <equal form="msg" site="mix" var="mp5">S11</equal>
+          <equal form="msg" site="mix" var="mp6">S11</equal>
         </goal>
         <check label="All Slot11?">
-          <equal form="data" site="mix" var="mp1">0.0</equal>
-          <equal form="data" site="mix" var="mp2">0.0</equal>
-          <equal form="data" site="mix" var="mp3">0.0</equal>
-          <equal form="data" site="mix" var="mp4">0.0</equal>
-          <equal form="data" site="mix" var="mp5">0.0</equal>
-          <equal form="data" site="mix" var="mp6">0.0</equal>
+          <equal form="msg" site="mix" var="mp1">S00</equal>
+          <equal form="msg" site="mix" var="mp2">S00</equal>
+          <equal form="msg" site="mix" var="mp3">S00</equal>
+          <equal form="msg" site="mix" var="mp4">S00</equal>
+          <equal form="msg" site="mix" var="mp5">S00</equal>
+          <equal form="msg" site="mix" var="mp6">S00</equal>
         </check>
         <exec site="mix" name="bk_all">
           <argv>1</argv>

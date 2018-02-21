@@ -46,12 +46,12 @@
           <equal form="data" site="mix" var="mp6">11.0</equal>
         </goal>
         <check label="All Slot11?">
-          <equal form="data" site="mix" var="mp1">0</equal>
-          <equal form="data" site="mix" var="mp2">0</equal>
-          <equal form="data" site="mix" var="mp3">0</equal>
-          <equal form="data" site="mix" var="mp4">0</equal>
-          <equal form="data" site="mix" var="mp5">0</equal>
-          <equal form="data" site="mix" var="mp6">0</equal>
+          <equal form="data" site="mix" var="mp1">0.0</equal>
+          <equal form="data" site="mix" var="mp2">0.0</equal>
+          <equal form="data" site="mix" var="mp3">0.0</equal>
+          <equal form="data" site="mix" var="mp4">0.0</equal>
+          <equal form="data" site="mix" var="mp5">0.0</equal>
+          <equal form="data" site="mix" var="mp6">0.0</equal>
         </check>
         <exec site="mix" name="bk_all">
           <argv>1</argv>

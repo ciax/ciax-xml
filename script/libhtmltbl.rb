@@ -47,7 +47,7 @@ module CIAX
 
       def __mk_script(parent, text, src = nil)
         atrb = { type: 'text/javascript' }
-        atrb[:src] = src if src
+        atrb[:src] = src + '?t=' + now_msec.to_s if src
         parent.element('script', text, atrb)
         self
       end

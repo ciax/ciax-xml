@@ -25,8 +25,11 @@ function conv(stat) {
   last = stat.time;
   var lstr = new Date(last);
   $('#time').text(lstr.toLocaleString());
+  if( max == 0 ) resize();
+}
+function resize(){
   $('tr').each(function(){
-    max = Math.max(max,$(this).outerWidth());
+    max = Math.max(max,$(this).innerWidth());
   });
   var out = $('div.outline');
   resizeTo(max + 100, out.outerHeight() + 100);

@@ -1167,7 +1167,7 @@
     <!--Atomic Flange Jack Bolt Commands-->
     <group id="g_jak" caption="Atomic Jack Bolt Commands" column="2" rank="3">
       <unit id="unit_jfo" title="j[u|d][0|4]fo" label="Jack Up/Dw FIX.OPT">
-        <item id="ju0fo" label="InR0 Jkup at FIX.OPT">
+        <item id="jd0fo" label="InR0 Jkdw at FIX.OPT">
           <goal label="Jack DW?">
             <equal form="msg" site="dso" var="fjb">DW</equal>
           </goal>
@@ -1183,7 +1183,7 @@
             <equal form="msg" site="dso" var="exe">OFF</equal>
           </wait>
         </item>
-        <item id="jd0fo" label="InR0 Jkdw at FIX.OPT">
+        <item id="ju0fo" label="InR0 Jkup at FIX.OPT">
           <goal label="Instrument ON?">
             <equal form="msg" site="dso" var="fis">ON</equal>
           </goal>
@@ -1230,7 +1230,7 @@
         </item>
       </unit>
       <unit id="unit_jmo" title="j[u|d][0|4]mo" label="Jack Up/Dw MOV.OPT">
-        <item id="ju0mo" label="InR0 Jkup at MOV.OPT">
+        <item id="jd0mo" label="InR0 Jkdw at MOV.OPT">
           <goal label="Jack DW?">
             <equal form="msg" site="dso" var="mjb">DW</equal>
           </goal>
@@ -1246,7 +1246,7 @@
             <equal form="msg" site="dso" var="exe">OFF</equal>
           </wait>
         </item>
-        <item id="jd0mo" label="InR0 Jkdw at MOV.OPT">
+        <item id="ju0mo" label="InR0 Jkup at MOV.OPT">
           <goal label="Instrument ON?">
             <equal form="msg" site="dso" var="mis">ON</equal>
           </goal>
@@ -1293,7 +1293,7 @@
         </item>
       </unit>
       <unit id="unit_jfi" title="j[u|d][0|4]fi" label="Jack Up/Dw FIX.IR">
-        <item id="ju0fi" label="InR0 Jkup at FIX.IR">
+        <item id="jd0fi" label="InR0 Jkdw at FIX.IR">
           <goal label="Jack DW?">
             <equal form="msg" site="dsi" var="fjb">DW</equal>
           </goal>
@@ -1309,7 +1309,7 @@
             <equal form="msg" site="dsi" var="exe">OFF</equal>
           </wait>
         </item>
-        <item id="jd0fi" label="InR0 Jkdw at FIX.IR">
+        <item id="ju0fi" label="InR0 Jkup at FIX.IR">
           <goal label="Instrument ON?">
             <equal form="msg" site="dsi" var="fis">ON</equal>
           </goal>
@@ -1356,7 +1356,7 @@
         </item>
       </unit>
       <unit id="unit_jmi" title="j[u|d][0|4]mi" label="Jack Up/Dw MOV.IR">
-        <item id="ju0mi" label="InR0 Jkup at MOV.IR">
+        <item id="jd0mi" label="InR0 Jkdw at MOV.IR">
           <goal label="Jack DW?">
             <equal form="msg" site="dsi" var="mjb">DW</equal>
           </goal>
@@ -1372,7 +1372,7 @@
             <equal form="msg" site="dsi" var="exe">OFF</equal>
           </wait>
         </item>
-        <item id="jd0mi" label="InR0 Jkdw at MOV.IR">
+        <item id="ju0mi" label="InR0 Jkup at MOV.IR">
           <goal label="Instrument ON?">
             <equal form="msg" site="dsi" var="mis">ON</equal>
           </goal>
@@ -1419,7 +1419,7 @@
         </item>
       </unit>
       <unit id="unit_jcs" title="j[u|d][0|4]cs" label="Jack Up/Dw CAS">
-        <item id="ju0cs" label="InR0 Jkup at CAS">
+        <item id="jd0cs" label="InR0 Jkdw at CAS">
           <goal label="Jack DW?">
             <equal form="msg" site="dts" var="bl01">DW</equal>
           </goal>
@@ -1435,7 +1435,7 @@
             <equal form="msg" site="dts" var="exe">OFF</equal>
           </wait>
         </item>
-        <item id="jd0cs" label="InR0 Jkdw at CAS">
+        <item id="ju0cs" label="InR0 Jkup at CAS">
           <goal label="Instrument ON?">
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>

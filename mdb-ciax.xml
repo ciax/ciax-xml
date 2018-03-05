@@ -253,6 +253,9 @@
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
+          <check label="CART Lift Down?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </check>
           <mcr name="romo"/>
           <mcr name="stmo"/>
           <mcr name="rifo"/>
@@ -261,6 +264,9 @@
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
           </goal>
+          <check label="CART Lift Down?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </check>
           <mcr name="rofo"/>
           <mcr name="ldmo"/>
           <mcr name="rimo"/>
@@ -269,6 +275,9 @@
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
+          <check label="CART Lift Down?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </check>
           <mcr name="romi"/>
           <mcr name="stmi"/>
           <mcr name="rifi"/>
@@ -277,6 +286,9 @@
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
           </goal>
+          <check label="CART Lift Down?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </check>
           <mcr name="rofi"/>
           <mcr name="ldmi"/>
           <mcr name="rimi"/>
@@ -287,6 +299,9 @@
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
+          <check label="CART Lift Down?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </check>
           <mcr name="stmi" async="true"/>
           <mcr name="romo"/>
           <mcr name="stmo" async="true"/>
@@ -299,6 +314,9 @@
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
           </goal>
+          <check label="CART Lift Down?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </check>
           <mcr name="ldmo" async="true"/>
           <mcr name="rofi"/>
           <mcr name="run">
@@ -310,6 +328,9 @@
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
+          <check label="CART Lift Down?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </check>
           <mcr name="stmo" async="true"/>
           <mcr name="romi"/>
           <mcr name="stmi" async="true"/>
@@ -322,6 +343,9 @@
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
           </goal>
+          <check label="CART Lift Down?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </check>
           <mcr name="ldmi" async="true"/>
           <mcr name="rofo"/>
           <mcr name="run">
@@ -335,6 +359,9 @@
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">12</equal>
           </goal>
+          <check label="CART Lift Down?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </check>
           <mcr name="stmi" async="true"/>
           <mcr name="rofo"/>
           <mcr name="run">
@@ -346,6 +373,9 @@
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">10</equal>
           </goal>
+          <check label="CART Lift Down?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </check>
           <mcr name="stmo" async="true"/>
           <mcr name="rofi"/>
           <mcr name="run">
@@ -357,6 +387,9 @@
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">11</equal>
           </goal>
+          <check label="CART Lift Down?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </check>
           <mcr name="ldmi" async="true"/>
           <mcr name="romo"/>
           <mcr name="stmo" async="true"/>
@@ -369,6 +402,9 @@
           <goal label="Cart on Destination?">
             <equal form="data" site="crt" var="cps">9</equal>
           </goal>
+          <check label="CART Lift Down?">
+            <equal form="msg" site="crt" var="jlv">D</equal>
+          </check>
           <mcr name="ldmo" async="true"/>
           <mcr name="romi"/>
           <mcr name="stmi" async="true"/>
@@ -384,7 +420,7 @@
       <unit id="unit_atfo" title="[a|d]tfo" label="Attach/Detach FIX.OPT">
         <item id="atfo" label="Attach at FIX.OPT">
           <bypass label="CART ON FIX.OPT?">
-            <not form="data" site="crt" var="cps">10</not>
+            <not form="data" site="crt" var="dps">10</not>
           </bypass>
           <goal label="Instrument ON?">
             <equal form="msg" site="dso" var="fis">ON</equal>
@@ -398,7 +434,7 @@
         </item>
         <item id="dtfo" label="Detach at FIX.OPT">
           <bypass label="CART ON FIX.OPT?">
-            <not form="data" site="crt" var="cps">10</not>
+            <not form="data" site="crt" var="dps">10</not>
           </bypass>
           <goal label="Instrument OFF?">
             <equal form="msg" site="dso" var="fis">OFF</equal>
@@ -415,7 +451,7 @@
       <unit id="unit_atmo" title="[a|d]tmo" label="Attach/Detach MOV.OPT">
         <item id="atmo" label="Attach at MOV.OPT">
           <bypass label="CART ON MOV.OPT?">
-            <not form="data" site="crt" var="cps">9</not>
+            <not form="data" site="crt" var="dps">9</not>
           </bypass>
           <goal label="Instrument ON?">
             <equal form="msg" site="dso" var="mis">ON</equal>
@@ -429,7 +465,7 @@
         </item>
         <item id="dtmo" label="Detach at MOV.OPT">
           <bypass label="CART ON MOV.OPT?">
-            <not form="data" site="crt" var="cps">9</not>
+            <not form="data" site="crt" var="dps">9</not>
           </bypass>
           <goal label="Instrument OFF?">
             <equal form="msg" site="dso" var="mis">OFF</equal>
@@ -446,7 +482,7 @@
       <unit id="unit_atfi" title="[a|d]tfi" label="Attach/Detach FIX.IR">
         <item id="atfi" label="Attach at FIX.IR">
           <bypass label="CART ON FIX.IR?">
-            <not form="data" site="crt" var="cps">12</not>
+            <not form="data" site="crt" var="dps">12</not>
           </bypass>
           <goal label="Instrument ON?">
             <equal form="msg" site="dsi" var="fis">ON</equal>
@@ -460,7 +496,7 @@
         </item>
         <item id="dtfi" label="Detach at FIX.IR">
           <bypass label="CART ON FIX.IR?">
-            <not form="data" site="crt" var="cps">12</not>
+            <not form="data" site="crt" var="dps">12</not>
           </bypass>
           <goal label="Instrument OFF?">
             <equal form="msg" site="dsi" var="fis">OFF</equal>
@@ -477,7 +513,7 @@
       <unit id="unit_atmi" title="[a|d]tmi" label="Attach/Detach MOV.IR">
         <item id="atmi" label="Attach at MOV.IR">
           <bypass label="CART ON MOV.IR?">
-            <not form="data" site="crt" var="cps">11</not>
+            <not form="data" site="crt" var="dps">11</not>
           </bypass>
           <goal label="Instrument ON?">
             <equal form="msg" site="dsi" var="mis">ON</equal>
@@ -491,7 +527,7 @@
         </item>
         <item id="dtmi" label="Detach at MOV.IR">
           <bypass label="CART ON MOV.IR?">
-            <not form="data" site="crt" var="cps">11</not>
+            <not form="data" site="crt" var="dps">11</not>
           </bypass>
           <goal label="Instrument OFF?">
             <equal form="msg" site="dsi" var="mis">OFF</equal>
@@ -508,7 +544,7 @@
       <unit id="unit_atcs" title="[a|d]tcs" label="Attach/Detach CAS">
         <item id="atcs" label="Attach at CAS">
           <bypass label="CART ON CAS?">
-            <not form="data" site="crt" var="cps">1</not>
+            <not form="data" site="crt" var="dps">1</not>
           </bypass>
           <goal label="Instrument ON?">
             <equal form="msg" site="dts" var="cis">ON</equal>
@@ -523,7 +559,7 @@
         </item>
         <item id="dtcs" label="Detach at CAS">
           <bypass label="CART ON CAS?">
-            <not form="data" site="crt" var="cps">1</not>
+            <not form="data" site="crt" var="dps">1</not>
           </bypass>
           <goal label="Instrument OFF?">
             <equal form="msg" site="dts" var="cis">OFF</equal>
@@ -970,6 +1006,7 @@
       </unit>
     </group>
     <!--Compound Flange Commands Jack/Hook-->
+    <!--Use crt@dps instead of cps which will be zero during liftup-->
     <group id="g_cfljh" caption="Compound Flange Jack/Hook Commands" rank="2">
       <unit id="unit_flfo" title="f[c|r]fo" label="Flange Clamp/Release FIX.OPT">
         <item id="fcfo" label="Clamp at FIX.OPT">
@@ -977,7 +1014,7 @@
             <equal form="msg" site="dso" var="fis">ON</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="data" site="crt" var="dps">10</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="jd4fo"/>
@@ -990,7 +1027,7 @@
             <equal form="msg" site="crt" var="jlv">H</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">10</equal>
+            <equal form="data" site="crt" var="dps">10</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="jd0fo"/>
@@ -1004,7 +1041,7 @@
             <equal form="msg" site="dso" var="mis">ON</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="data" site="crt" var="dps">9</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="jd4mo"/>
@@ -1017,7 +1054,7 @@
             <equal form="msg" site="crt" var="jlv">H</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">9</equal>
+            <equal form="data" site="crt" var="dps">9</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="jd0mo"/>
@@ -1031,7 +1068,7 @@
             <equal form="msg" site="dsi" var="fis">ON</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">12</equal>
+            <equal form="data" site="crt" var="dps">12</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="jd4fi"/>
@@ -1044,7 +1081,7 @@
             <equal form="msg" site="crt" var="jlv">H</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">12</equal>
+            <equal form="data" site="crt" var="dps">12</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="jd0fi"/>
@@ -1058,7 +1095,7 @@
             <equal form="msg" site="dsi" var="mis">ON</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">11</equal>
+            <equal form="data" site="crt" var="dps">11</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="jd4mi"/>
@@ -1071,7 +1108,7 @@
             <equal form="msg" site="crt" var="jlv">H</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">11</equal>
+            <equal form="data" site="crt" var="dps">11</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="jd0mi"/>
@@ -1085,7 +1122,7 @@
             <equal form="msg" site="dts" var="cis">ON</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="data" site="crt" var="dps">1</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="jd4cs"/>
@@ -1098,7 +1135,7 @@
             <equal form="msg" site="crt" var="jlv">H</equal>
           </goal>
           <check label="CART ON TAG?">
-            <equal form="data" site="crt" var="cps">1</equal>
+            <equal form="data" site="crt" var="dps">1</equal>
             <equal form="msg" site="crt" var="jlv">H</equal>
           </check>
           <mcr name="jd0cs"/>
@@ -1108,6 +1145,7 @@
       </unit>
     </group>
     <!--Compound Movable Flange Commands-->
+    <!--Using crt@cps to check on jack point which can be zero-->
     <group id="g_cmov" caption="Compound Movable Flange Commands" rank="2">
       <unit id="unit_mvo" title="[ld|st]mo" label="Loading/Storing MOV.OPT">
         <item id="ldmo" label="Loading INST MOV.OPT">

@@ -34,8 +34,8 @@
         </item>
       </unit>
     </group>
-    <!--Select by Position Commands-->
-    <group id="g_select" caption="Select Commands" rank="0">
+    <!--Abstract Commands-->
+    <group id="g_abstract" caption="Abstract Commands" rank="0">
       <unit id="unit_dprt" label="Run to CAS">
         <item id="dpt" label="Depart from Home">
           <select site="crt" var="cps" form="data">
@@ -148,6 +148,49 @@
             </option>
             <option val="11">
               <mcr name="rsfi"/>
+            </option>
+          </select>
+        </item>
+      </unit>
+    </group>
+    <!--Select by Position Commands-->
+    <group id="g_select" caption="Select Commands" rank="0">
+      <unit id="unit_atdt" label="Attach/Detach">
+        <item id="attach" label="Attach to Frange">
+          <select site="crt" var="dps" form="data">
+            <option val="1">
+              <mcr name="atcs"/>
+            </option>
+            <option val="9">
+              <mcr name="atmo"/>
+            </option>
+            <option val="10">
+              <mcr name="atfo"/>
+            </option>
+            <option val="11">
+              <mcr name="atmi"/>
+            </option>
+            <option val="12">
+              <mcr name="atfi"/>
+            </option>
+          </select>
+        </item>
+        <item id="detach" label="Detach from Frange">
+          <select site="crt" var="dps" form="data">
+            <option val="1">
+              <mcr name="dtcs"/>
+            </option>
+            <option val="9">
+              <mcr name="dtmo"/>
+            </option>
+            <option val="10">
+              <mcr name="dtfo"/>
+            </option>
+            <option val="11">
+              <mcr name="dtmi"/>
+            </option>
+            <option val="12">
+              <mcr name="dtfi"/>
             </option>
           </select>
         </item>

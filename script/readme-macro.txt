@@ -1,16 +1,19 @@
 # Modes Legend:
 #   AS: Actual Status?
 #   FE: Force Entering
+#   IG: Ignore Error
 #   QW: Query? (Interactive?)
-#   MV: Moving
-#   RI: Retry with Interval
+#   MV: Moving Command Execution
+#   RI: Retry with Interval Second
 #   RC: Recording?
 #
-# Mode              | AS  | FE  | QW  | MV  | RI| RC
-# TEST(default):    | NO  | YES | YES | NO  | 0 | NO
-# DRYRUN(-n):       | NO  | YES | NO  | NO  | 0 | NO
-# INTERACTIVE(-e):  | YES | NO  | YES | YES | 1 | YES
-# NONSTOP(-ne):     | YES | NO  | NO  | YES | 1 | YES
+# Mode              | AS  | FE  | IG  | QW  | MV  | RI| RC
+#-------------------+-----+-----+-----+-----+-----+---+-----
+# TEST(default):    | NO  | YES | YES | YES | NO  | 0 | NO
+# BROWSE(-n):       | NO  | YES | YES | NO  | NO  | 0 | NO
+# DRYRUN(-d):       | YES | NO  | NO  | YES | NO  | 1 | NO
+# INTERACTIVE(-e):  | YES | NO  | NO  | YES | YES | 1 | YES
+# NONSTOP(-ne):     | YES | NO  | NO  | NO  | YES | 1 | YES
 
 # Client Mode
 # Macro Client(-c):   mcr level client (connect to mcrsv)

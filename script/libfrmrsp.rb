@@ -146,7 +146,7 @@ module CIAX
       require 'libfrmcmd'
       require 'libjslog'
       ConfOpts.new('< logline', m: 'merge file') do |cfg, _args|
-        raise(InvalidARGS, '  Need Input File') if STDIN.tty?
+        fail(InvalidARGS, '  Need Input File') if STDIN.tty?
         res = Varx::JsLog.read(gets(nil))
         field = Field.new(res[:id]).ext_local_rsp(res)
         field.ext_local_file.auto_save if cfg[:opt][:m]

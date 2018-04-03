@@ -28,7 +28,7 @@ module CIAX
       modules.each do |mod|
         unless name.is_a?(mod)
           res = "Parameter type error <#{name.class}> for (#{mod})"
-          raise(ServerError, res, src)
+          fail(ServerError, res, src)
         end
       end
       name

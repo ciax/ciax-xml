@@ -31,6 +31,7 @@ module CIAX
 
     # Mode (Macro)
     # none : test
+    # -d   : dryrun (no execution)
     # -e   : with device driver
     # -se  : server with device driver
     # -c   : client to macro server
@@ -140,6 +141,7 @@ module CIAX
       ___optdb_custom(optarg)
       ___optdb_client
       ___optdb_system
+      ___optdb_motion
       ___optdb_view
       ___optdb_layer
     end
@@ -158,20 +160,25 @@ module CIAX
 
     # System mode
     def ___optdb_system
-      db = { e: 'execution', s: 'server', n: 'non-stop',
-             b: 'back ground', i: 'instance' }
+      db = { s: 'server', b: 'back ground' }
       __add_optdb(db, '%s mode')
     end
 
+    # Motion mode
+    def ___optdb_motion
+      db = { e: 'execution', d: 'dryrun', n: 'non-stop' }
+      __add_optdb(db, '%s mode')
+    end
+
+    # For data appearance
     def ___optdb_view
-      # For visual
       db = { r: 'raw', j: 'json' }
       __add_optdb(db, '%s data output')
     end
 
+    # Layer option
     def ___optdb_layer
-      # Layer option
-      @layers = { m: 'mcr', w: 'wat', f: 'frm', x: 'hex', a: 'app' }
+      @layers = { m: 'mcr', w: 'wat', f: 'frm', x: 'hex', a: 'app', i: 'instance' }
       __add_optdb(@layers, '%s layer')
     end
 

@@ -24,8 +24,8 @@ module CIAX
           %i(port cid label).each { |k| self[k] = @cfg[k] }
           self[:ver] = @cfg[:version] || '0' # Version
           self[:total_steps] = 0
-          @dummy = @cfg[:opt].test?
-          self[:mode] = @dummy ? 'test' : 'drive'
+          @opt = @cfg[:opt]
+          self[:mode] = @opt.log? ? 'drive' : 'test'
           init_time2cmt
           self
         end
@@ -36,7 +36,7 @@ module CIAX
         end
 
         def add_step(e1, depth) # returns Step
-          step = Step.new(e1, depth, @dummy).ext_local_rsp(@cfg[:dev_list])
+          step = Step.new(e1, depth, @opt).ext_local_rsp(@cfg[:dev_list])
           self[:steps] << step.ext_prt(self[:start])
           step.cmt_procs << proc do
             verbose { 'Propagate Step#cmt -> Record#cmt' }

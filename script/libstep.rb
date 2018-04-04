@@ -5,12 +5,12 @@ module CIAX
   module Mcr
     # Element of Record
     class Step < Upd
-      attr_reader :dummy
-      def initialize(db, depth, dummy = nil)
+      attr_reader :opt
+      def initialize(db, depth, opt)
         super()
         update db
         self[:depth] = depth
-        @dummy = dummy
+        @opt = opt
         # Prevent time update on step
         @cmt_procs.clear
       end
@@ -18,7 +18,7 @@ module CIAX
       #### In Drive mode
       # Interactive section
       def exec?
-        set_result('approval', 'dryrun', !@dummy)
+        set_result('approval', 'dryrun', !@opt.dry?)
       end
 
       # Execution section
@@ -51,7 +51,7 @@ module CIAX
       end
 
       def progress(total, &cond)
-        itv = @dummy ? 0 : 1
+        itv = @opt.drv? ? 1 : 0
         total.to_i.times do |n| # gives number or nil(if break)
           self[:count] = n + 1
           break if cond && yield

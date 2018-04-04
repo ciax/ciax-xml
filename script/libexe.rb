@@ -115,10 +115,9 @@ module CIAX
     def _opt_mode
       # Option handling
       opt = @cfg[:opt]
+      return ext_client if opt.cl?
       if opt.drv?
         ext_local_driver
-      elsif opt.cl?
-        return ext_client
       else
         ext_local_test
       end

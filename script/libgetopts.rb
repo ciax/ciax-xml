@@ -25,7 +25,7 @@ module CIAX
     # none : test all layers        [test]
     # -e   : drive all layers       [proc]
     # -c   : client all layers      [cl]
-    # -ce  : client to lower layers [drv:cl]
+    # -l   : client to lower layers [drv:cl]
     # -s   : server (test)          [test:sv]
     # -se  : server (drive)         [drv:sv]
 
@@ -35,32 +35,47 @@ module CIAX
     # -e   : with device driver
     # -se  : server with device driver
     # -c   : client to macro server
-    # -ce  : client to device server
+    # -l   : client to device server
 
+    # Check first
     def cl?
-      %i(h c l).any? { |k| self[k] }
+      %i(h c).any? { |k| key?(k) }
     end
 
     def drv?
-      self[:e] && true
+      %i(e l).any? { |k| key?(k) }
     end
 
     def sv?
-      self[:s] && true
+      key?(:s) && true
     end
 
-    def test?
-      !(cl? || drv?)
+    # For macro
+    # dry run mode
+    def dry?
+      key?(:d) && true
     end
 
+    def nonstop?
+      key?(:n) && true
+    end
+
+    def log?
+      drv? && !dry?
+    end
+
+    # Others
     def sub_opt
       opt = dup
-      %i(e s).each { |k| opt.delete(k) } if cl?
+      if opt.key?(:l)
+        %i(s e d l).each { |k| opt.delete(k) }
+        opt[:c] = true
+      end
       opt
     end
 
     def host
-      (self[:h] || 'localhost') unless self[:c]
+      (self[:h] || 'localhost') unless key?(:c)
     end
 
     def init_layer_mod
@@ -77,8 +92,6 @@ module CIAX
     def usage(ustr = @usagestr, code = 2)
       super("#{ustr}\n" + columns(@index), code)
     end
-
-    alias log? drv?
   end
 
   # Given option handling
@@ -154,7 +167,7 @@ module CIAX
 
     # Client option
     def ___optdb_client
-      db = { c: 'default', l: 'local', h: '[host]' }
+      db = { c: 'default', l: 'lower-layer', h: '[host]' }
       __add_optdb(db, 'client to %s')
     end
 
@@ -178,7 +191,7 @@ module CIAX
 
     # Layer option
     def ___optdb_layer
-      @layers = { m: 'mcr', w: 'wat', f: 'frm', x: 'hex', a: 'app', i: 'instance' }
+      @layers = { m: 'mcr', w: 'wat', f: 'frm', x: 'hex', a: 'app', i: 'ins' }
       __add_optdb(@layers, '%s layer')
     end
 

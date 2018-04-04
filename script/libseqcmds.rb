@@ -18,7 +18,7 @@ module CIAX
         true
       end
 
-      # skip? | dummy | return
+      # skip? | test  | return
       #   o   |   o   |  @qry
       #   o   |   x   |  false
       #   x   |   o   |  true (Entering)
@@ -37,7 +37,11 @@ module CIAX
       # It is used for multiple retry function
       def _cmd_goal(_e, step, mstat)
         return true unless step.skip?
-        return true if step.dummy && @qry.query(%w(pass enter), step)
+        if step.opt.nonstop?
+          return true unless step.opt.drv?
+        else
+          return true unless @qry.query(%w(pass enter), step)
+        end
         mstat[:result] = 'skipped'
         false
       end

@@ -20,6 +20,19 @@ develop(){
     cd
 }
 
+proj(){
+    if [ "$1" ] ; then
+        export PROJ=$1
+    else
+        echo PROJ=$PROJ;
+        for i in  $HOME/ciax-xml/mdb-*.xml; do
+            j=${i##*-}
+            echo -n "${j%.*} "
+        done
+        echo
+    fi
+}
+
 # Local functions
 umask 022
 shopt -s nullglob

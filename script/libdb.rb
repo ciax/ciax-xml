@@ -50,12 +50,14 @@ module CIAX
       if @docs
         verbose { "Cache/XML files are Already red (#{@dbid})" }
       else
+        info("Reading XML (#{@type}-#{id})")
         @docs = Xml::Doc.new(@type, @proj)
       end
       nil
     end
 
     def __get_db(id)
+      info("Building DB (#{id})")
       res = ___validate_repl(yield(@docs))
       ___save_cache(id, res)
     end

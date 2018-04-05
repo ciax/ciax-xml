@@ -49,19 +49,19 @@ module CIAX
       def _cmd_check(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'failed'
-        fail Interlock
+        raise Interlock
       end
 
       def _cmd_verify(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
         mstat[:result] = 'failed'
-        fail Verification
+        raise Verification
       end
 
       def _cmd_wait(_e, step, mstat)
         return true unless step.timeout? && _giveup?(step)
         mstat[:result] = 'timeout'
-        fail Interlock
+        raise Interlock
       end
 
       def _cmd_sleep(_e, step, _mstat)

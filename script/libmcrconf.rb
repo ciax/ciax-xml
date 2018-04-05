@@ -17,6 +17,7 @@ module CIAX
         super(root_cfg)
         check_keys([:opt])
         @opt = self[:opt]
+        verbose { 'Initiate Mcr Conf (option:' + @opt.keys.join + ')' }
         db = Db.new
         update(layer_type: 'mcr', db: db)
         ___init_with_dbi(db.get(ENV['PROJ'] ||= self[:args].shift))

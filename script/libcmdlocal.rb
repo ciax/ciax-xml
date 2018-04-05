@@ -64,7 +64,7 @@ module CIAX
             def_proc do |ent|
               # Use shell() of top level class
               #  (ie. List.new.get(id).shell -> List.new.shell(id) )
-              fail(ent[:jump_class], ent.id)
+              raise(ent[:jump_class], ent.id)
             end
           end
 

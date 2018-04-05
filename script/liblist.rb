@@ -11,7 +11,7 @@ module CIAX
       @cfg = cfg.gen(self).update(atrb)
       @cfg[:jump_groups] ||= []
       super(m2id(@cfg[:obj].class, -2))
-      verbose { 'Initiate List' }
+      verbose { 'Initiate List (option:' + @cfg[:opt].keys.join + ')' }
       @list = self[:list] = Hashx.new
     end
 

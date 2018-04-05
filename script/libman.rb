@@ -10,7 +10,7 @@ module CIAX
       # cfg should have [:dev_list]
       def initialize(cfg)
         super(Conf.new(cfg))
-        verbose { 'Initiate Layer' }
+        verbose { 'Initiate Manager (option:' + @cfg[:opt].keys.join + ')' }
         # id = nil -> taken by ARGV
         ___init_net
         ___init_cmd

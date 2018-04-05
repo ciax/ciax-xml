@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libmcrconf'
 require 'libseqcmds'
 
 module CIAX

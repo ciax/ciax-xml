@@ -123,7 +123,7 @@ module CIAX
 
     # ARGV must be taken after parse def ___parse(ops)
     def ___parse(ops)
-      ARGV.getopts(ops).each { |k, v| self[k.to_sym] = v }
+      ARGV.getopts(ops).each { |k, v| self[k.to_sym] = v if v }
       # Parameters after options removeal
       @argv = ARGV.shift(ARGV.length)
     rescue OptionParser::ParseError

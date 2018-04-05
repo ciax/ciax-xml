@@ -18,7 +18,7 @@ module CIAX
           res = _sub_macro(_get_ment(e)[:sequence], step)
           return res if res
           mstat[:result] = step[:result]
-          fail Interlock
+          raise Interlock
         rescue Verification
           ___mcr_retry(e, step, mstat) && retry
         end

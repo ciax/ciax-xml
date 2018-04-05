@@ -91,9 +91,9 @@ module CIAX
       def ___judge(res)
         case res
         when 'retry'
-          fail(Retry)
+          raise(Retry)
         when 'interrupt'
-          fail(Interrupt)
+          raise(Interrupt)
         when 'force', 'skip', 'pass'
           false
         else

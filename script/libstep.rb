@@ -56,7 +56,7 @@ module CIAX
           self[:count] = n + 1
           break if cond && yield
           Kernel.sleep itv
-          print '.' if Msg.fg?
+          dot if Msg.fg?
           cmt
         end
       end

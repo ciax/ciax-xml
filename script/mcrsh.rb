@@ -4,7 +4,7 @@ require 'liblayer'
 require 'libmansh'
 # CIAX-XML Macro Shell
 module CIAX
-  Layer.new('[proj]', options: 'eclhnr') do |cfg|
+  Layer.new('[proj]', options: 'elchdnr') do |cfg|
     Mcr::Man.new(cfg).run
   end.ext_shell.shell
 end

@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-# It doesn't have client mode
 require 'libseqcmds'
 
 module CIAX
@@ -12,7 +11,7 @@ module CIAX
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
       # ent should have [:sequence]'[:dev_list]
-      def initialize(ment, pid = '0', valid_keys = [], &submcr_proc)
+      def initialize(ment, pid = '0', &submcr_proc)
         @cfg = ment
         type?(@cfg[:dev_list], CIAX::Wat::List)
         ___init_record(pid)
@@ -20,7 +19,7 @@ module CIAX
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
-        @qry = Query.new(@record, @sv_stat, valid_keys)
+        @qry = Query.new(@record, @sv_stat, @cfg[:index].rem.int.valid_keys)
       end
 
       def upd_sites

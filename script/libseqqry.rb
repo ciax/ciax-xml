@@ -14,7 +14,7 @@ module CIAX
         @record = type?(stat, Record)
         @record.put(:status, 'ready')
         @sv_stat = type?(sv_stat, Prompt)
-        @valid_keys = valid_keys
+        @valid_keys = valid_keys.clear
         @que_cmd = Queue.new
         @que_res = Queue.new
       end

@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
 require 'librecord'
-require 'libseqlist'
+require 'libmcrlist'
 # CIAX-XML
 module CIAX
   # Macro Layer
   module Mcr
     # Macro Man View
-    class SeqView < Varx
+    class View < Varx
       def initialize(id, par, stat = List.new)
         super('mcr')
         @stat = type?(stat, List)
@@ -102,7 +102,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] ..') do |_opt, args|
         par = Parameter.new.flush(args)
-        puts SeqView.new('test', par).upd
+        puts View.new('test', par).upd
       end
     end
   end

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libexe'
-require 'libseqview'
+require 'libmcrview'
 module CIAX
   # Macro Layer
   module Mcr

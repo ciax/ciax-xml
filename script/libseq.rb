@@ -4,7 +4,7 @@ require 'libseqcmds'
 module CIAX
   # Macro Layer
   module Mcr
-    # Sequencer
+    # Sequencer as a Macro Processing (mcrdrv)
     class Sequencer
       include Msg
       attr_reader :cfg, :record, :qry, :id, :title, :sv_stat

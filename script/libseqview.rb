@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libparam'
 require 'librecord'
 require 'libseqlist'
 # CIAX-XML
@@ -20,6 +19,7 @@ module CIAX
         ___init_upd_proc
       end
 
+      # Show Record(id = @par.current) or Index of them
       def to_v
         __crnt ? __crnt.to_v : ___list
       end
@@ -41,6 +41,11 @@ module CIAX
       def clean
         (keys - @all_keys).each { |id| @list.delete(id) }
         self
+      end
+
+      # Available commands in current record
+      def valid_keys
+        (__crnt && __crnt[:option] ) || []
       end
 
       private

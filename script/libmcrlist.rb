@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require 'libseq'
-require 'libparam'
 # CIAX-XML
 module CIAX
   # Macro Layer

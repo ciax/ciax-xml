@@ -45,7 +45,7 @@ module CIAX
 
       # Available commands in current record
       def valid_keys
-        (__crnt && __crnt[:option] ) || []
+        (__crnt && __crnt[:option]) || []
       end
 
       private

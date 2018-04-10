@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require 'libvarx'
 require 'libcmdlocal'
-require 'libparam'
 module CIAX
   module CmdTree
     # Command Index
@@ -88,7 +87,7 @@ module CIAX
           end
 
           def def_pars(n = 1)
-            { parameters: Array.new(n) { Parameter.new } }
+            { parameters: Array.new(n) { Hashx.new(type: 'reg', list: ['.']) } }
           end
         end
       end

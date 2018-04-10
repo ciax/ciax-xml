@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libcmdext'
+require 'libmcrpar'
 require 'libmcrconf'
 # CIAX_XML
 module CIAX

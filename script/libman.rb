@@ -78,7 +78,8 @@ module CIAX
       end
 
       def ___init_stat
-        @par = @cobj.rem.int.ext_par.par
+        @par = Parameter.new('0')
+        @cobj.rem.int.cfg[:parameters] = [@par]
         @stat = List.new
         @sv_stat = @cfg[:sv_stat]
         @sub_list = @cfg[:dev_list]

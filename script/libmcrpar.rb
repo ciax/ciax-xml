@@ -1,15 +1,16 @@
 #!/usr/bin/ruby
-require 'libcmdext'
+require 'libenumx'
 
 module CIAX
   # Macro Layer
   module Mcr
-    # Command Parameter validation
+    # Macro Number Validation
     class Parameter < Hashx
+      # @list is most recent record list
       attr_reader :list
 
-      def initialize(type = nil, default = nil)
-        super(type: type, list: [])
+      def initialize(default = nil, lines = 0)
+        super(type: 'str', list: [])
         @list = self[:list]
         self[:default] = default if default
       end

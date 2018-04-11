@@ -7,10 +7,10 @@ module CIAX
   module Mcr
     # Macro Man View
     class View < Varx
-      def initialize(id, par, stat = List.new)
+      def initialize(id, page, stat = List.new)
         super('mcr')
         @stat = type?(stat, List)
-        @par = type?(par, Parameter)
+        @page = type?(page, Parameter)
         # @list content is Record
         @list = Hashx.new
         @all_keys = []
@@ -19,7 +19,7 @@ module CIAX
         ___init_upd_proc
       end
 
-      # Show Record(id = @par.current) or Index of them
+      # Show Record(id = @page.current) or Index of them
       def to_v
         __crnt ? __crnt.to_v : ___list
       end
@@ -29,7 +29,7 @@ module CIAX
       end
 
       def index
-        n = @par.index
+        n = @page.index
         if n
           opt = optlist(__crnt[:option]) if __crnt.busy? && __crnt.last
           "[#{n + 1}]#{opt}"
@@ -54,7 +54,7 @@ module CIAX
         @upd_procs << proc do
           pids = @list.values.map { |r| r[:pid] }
           pids.delete('0')
-          @all_keys.concat(pids + @par.list).uniq!
+          @all_keys.concat(pids + @page.list).uniq!
           @all_keys.each { |id| ___upd_or_gen(id) }
           clean
         end
@@ -71,12 +71,12 @@ module CIAX
       end
 
       def __crnt
-        @list.get(@par.current)
+        @list.get(@page.current)
       end
 
       def ___list
         page = ['<<< ' + colorize("Active Macros [#{@id}]", 2) + ' >>>']
-        @par.list.each_with_index { |id, idx| page << ___item(id, idx + 1) }
+        @page.list.each_with_index { |id, idx| page << ___item(id, idx + 1) }
         page.join("\n")
       end
 
@@ -101,8 +101,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] ..') do |_opt, args|
-        par = Parameter.new.flush(args)
-        puts View.new('test', par).upd
+        page = Parameter.new.flush(args)
+        puts View.new('test', page).upd
       end
     end
   end

@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require 'libcmdext'
-require 'libmcrpar'
 require 'libmcrconf'
 # CIAX_XML
 module CIAX
@@ -24,20 +23,12 @@ module CIAX
       module Int
         # Internal Group
         class Group
-          attr_reader :par
           def initialize(cfg, crnt = {})
             crnt[:caption] = 'Control Macro'
             super
             INTCMD.each do |id, cap|
               add_item(id, id.capitalize + ' ' + cap)
             end
-          end
-
-          # Shared Parameter
-          def ext_par
-            @par = Parameter.new('str', '0')
-            @cfg[:parameters] = [@par]
-            self
           end
         end
       end

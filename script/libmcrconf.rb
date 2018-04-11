@@ -3,6 +3,7 @@ require 'libprompt'
 require 'libreclist'
 require 'libmcrdb'
 require 'libhexlist' # deprecated
+require 'libmcrpar'
 
 module CIAX
   # Macro Layer

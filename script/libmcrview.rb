@@ -11,27 +11,29 @@ module CIAX
         super('mcr')
         @stat = type?(stat, List)
         @page = type?(page, Parameter)
-        # @list content is Record
-        @list = Hashx.new
+        # @rec_list content is Record
+        @rec_list = Hashx.new
         @all_keys = []
         @ciddb = { '0' => 'user' }
         @id = id
         ___init_upd_proc
       end
 
-      # Show Record(id = @page.current) or Index of them
+      # Show Record(id = @page.current_rid) or List of them
       def to_v
-        __crnt ? __crnt.to_v : ___list
+        __crnt_rec ? __crnt_rec.to_v : ___list_view
       end
 
       def to_r
-        __crnt ? __crnt.to_r : super
+        __crnt_rec ? __crnt_rec.to_r : super
       end
 
       def index
-        n = @page.index
+        n = @page.current_idx
         if n
-          opt = optlist(__crnt[:option]) if __crnt.busy? && __crnt.last
+          if __crnt_rec.busy? && __crnt_rec.last
+            opt = optlist(__crnt_rec[:option])
+          end
           "[#{n + 1}]#{opt}"
         else
           '[0]'
@@ -39,20 +41,20 @@ module CIAX
       end
 
       def clean
-        (keys - @all_keys).each { |id| @list.delete(id) }
+        (keys - @all_keys).each { |id| @rec_list.delete(id) }
         self
       end
 
       # Available commands in current record
       def valid_keys
-        (__crnt && __crnt[:option]) || []
+        (__crnt_rec && __crnt_rec[:option]) || []
       end
 
       private
 
       def ___init_upd_proc
         @upd_procs << proc do
-          pids = @list.values.map { |r| r[:pid] }
+          pids = @rec_list.values.map { |r| r[:pid] }
           pids.delete('0')
           @all_keys.concat(pids + @page.list).uniq!
           @all_keys.each { |id| ___upd_or_gen(id) }
@@ -61,34 +63,36 @@ module CIAX
       end
 
       def ___upd_or_gen(id)
-        if @list.key?(id)
-          @list.get(id).upd
+        if @rec_list.key?(id)
+          @rec_list.get(id).upd
         else
           rec = @stat.get(id)
-          @list.put(id, rec)
+          @rec_list.put(id, rec)
           @ciddb[id] = rec[:cid] unless @ciddb.key?(id)
         end
       end
 
-      def __crnt
-        @list.get(@page.current)
+      def __crnt_rec
+        @rec_list.get(@page.current_rid)
       end
 
-      def ___list
+      def ___list_view
         page = ['<<< ' + colorize("Active Macros [#{@id}]", 2) + ' >>>']
-        @page.list.each_with_index { |id, idx| page << ___item(id, idx + 1) }
+        @page.list.each_with_index do |id, idx|
+          page << ___item_view(id, idx + 1)
+        end
         page.join("\n")
       end
 
-      def ___item(id, idx)
-        rec = @list[id]
+      def ___item_view(id, idx)
+        rec = @rec_list[id]
         title = "[#{idx}] (#{id})(by #{@ciddb[rec[:pid]]})"
         msg = "#{rec[:cid]} #{rec.step_num}"
-        msg << ___result(rec)
+        msg << ___result_view(rec)
         itemize(title, msg)
       end
 
-      def ___result(rec)
+      def ___result_view(rec)
         if rec[:status] == 'end'
           "(#{rec[:result]})"
         else

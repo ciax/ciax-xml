@@ -6,20 +6,23 @@ module CIAX
   module Mcr
     # Macro Number Validation
     class Parameter < Hashx
-      # @list is most recent record list
+      # @list is most recent record ids
       attr_reader :list
 
-      def initialize(default = nil, lines = 0)
-        super(type: 'str', list: [])
-        @list = self[:list]
+      def initialize(default = nil)
+        super(type: 'str', list: (@list = []))
         self[:default] = default if default
       end
 
-      # select id by number (1~max)
+      # select id by index number (1~max)
       #  return id otherwise nil
-      def sel(num = nil)
-        num = ___reg_crnt(num)
-        self[:default] = num && num > 0 ? @list[num - 1] : nil
+      def sel(idx = nil)
+        if !idx || idx < 1
+          self[:default] = nil
+        else
+          idx = @list.size if idx > @list.size
+          self[:default] = @list[idx - 1]
+        end
       end
 
       # For macro variable param (sid list)
@@ -39,21 +42,12 @@ module CIAX
         self
       end
 
-      def index
+      def current_idx
         @list.index(self[:default])
       end
 
-      def current
+      def current_rid
         self[:default]
-      end
-
-      private
-
-      # num is regurated within 0 to max
-      def ___reg_crnt(num)
-        return if !num || num < 0
-        num = @list.size if num > @list.size
-        num
       end
     end
   end

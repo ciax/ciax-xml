@@ -4,7 +4,7 @@ require 'librecord'
 module CIAX
   # Macro Layer
   module Mcr
-    # Record List (Dir)
+    # Record Archive List (Dir)
     class RecList < Varx
       def initialize
         super('rec', 'list')

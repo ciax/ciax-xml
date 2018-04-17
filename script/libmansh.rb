@@ -17,6 +17,7 @@ module CIAX
           # Set Current ID by number
           input_conv_num do |i|
             @par.sel(i)
+            # nil:no command -> show record
             nil
           end
           self

@@ -1,7 +1,7 @@
 // Recommended Package: closure-linter
 // fixjsstyle mcr_log.js
 // Listing part
-function make_item(data) {
+function make_item(id, data) {
   function _line() {
     _time();
     _cmd();
@@ -22,7 +22,6 @@ function make_item(data) {
   };
 
   var html = [];
-  var id = data.id;
   var time = new Date(id - 0);
   // Date(j-0) -> cast to num
   html.push('<li id="' + id + '">');
@@ -32,8 +31,8 @@ function make_item(data) {
 }
 
 function func_make_list() {
-  function _upd_item(data) {
-    var jq = $('#' + data.id);
+  function _upd_item(id, data) {
+    var jq = $('#' + id);
     if (!jq[0]) return;
     var em = jq.children('em');
     if (em.text() == 'busy') {
@@ -70,17 +69,17 @@ function func_make_list() {
     $('#' + pid).prepend(html.join(''));
   }
 
-  function _sort_date(a, b) {
-    var na = a.id - 0;
-    var nb = b.id - 0;
+  function _sort_keys(a, b) {
+    var na = a - 0;
+    var nb = b - 0;
     if (na < nb) return -1;
     if (na > nb) return 1;
     return 0;
   }
 
-  function _upd_line(i, item) {
-    var time = new Date(item.id - 0);
-    _upd_item(item) || _make_date(time).prepend(make_item(item));
+  function _upd_line(id, item) {
+    var time = new Date(id - 0);
+      _upd_item(id, item) || _make_date(time).prepend(make_item(id, item));
   }
 
   function _init_log() {
@@ -97,8 +96,10 @@ function func_make_list() {
 
   function _update(data) {
     if (!data) return;
-    var jary = data.list.sort(_sort_date);
-    $.each(jary, _upd_line);
+    var ids=Object.keys(data.list).sort(_sort_keys);
+    for(var i of ids){
+      _upd_line(i, data.list[i]);
+    }
     // blinking status
     blinking();
     _init_log();

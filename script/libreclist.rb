@@ -9,32 +9,37 @@ module CIAX
       def initialize
         super('rec', 'list')
         ext_local_file.load
-        @list = (self[:list] ||= [])
+        @list = (self[:list] ||= {})
         @active = {}
         init_time2cmt
         auto_save
       end
 
       def refresh # returns self
-        @list.clear
         verbose { 'Initiate Record List' }
         Dir.glob(vardir('record') + 'record_*.json') do |name|
-          next if /record_[0-9]+.json/ !~ name
+          next if /record_([0-9]+).json/ !~ name
+          next if @list.key?(Regexp.last_match(1))
           push(___jread(name))
         end
         cmt
         self
       end
 
+      def clear
+        @list.clear
+        self
+      end
+
       def push(record) # returns self
         id = record[:id]
         return self unless id.to_i > 0
-        ele = Hashx.new(record).pick(%i(id cid result)) # extract header
+        ele = Hashx.new(record).pick(%i(cid result)) # extract header
         if record.is_a?(Record)
           ___init_record(record)
           @active[id] = ele
         end
-        @list << ele
+        @list[id] = ele
         self
       end
 

@@ -10,8 +10,7 @@ module CIAX
       attr_reader :list
 
       def initialize(default = nil)
-        super(type: 'str', list: (@list = []))
-        self[:default] = default if default
+        super(type: 'str', list: (@list = []), default: default)
       end
 
       # select id by index number (1~max)
@@ -23,6 +22,7 @@ module CIAX
           idx = @list.size if idx > @list.size
           self[:default] = @list[idx - 1]
         end
+        self
       end
 
       # For macro variable param (sid list)
@@ -37,7 +37,8 @@ module CIAX
 
       # push to list (default is incresed)
       def push(id) # returns self
-        @list << id unless @list.include?(id)
+        return self if @list.include?(id)
+        @list << id
         self[:default] = id
         self
       end

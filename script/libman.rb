@@ -26,7 +26,7 @@ module CIAX
       end
 
       def ext_shell
-        @cfg[:output] = @cfg[:rec_list]
+        @cfg[:output] = @stat
         super
       end
 
@@ -54,7 +54,7 @@ module CIAX
 
       def ext_local_server
         verbose { 'Initiate Record List' }
-        @cfg[:rec_list].clear.refresh
+        @stat.clear.refresh
         ___mk_cmdlist
         super
       end
@@ -81,7 +81,8 @@ module CIAX
       def ___init_stat
         @par = Parameter.new('0')
         @cobj.rem.int.cfg[:parameters] = [@par]
-        @seq_list = List.new(@cfg[:rec_list])
+        @stat = @cfg[:rec_list]
+        @seq_list = List.new(@stat)
         @sv_stat = @cfg[:sv_stat]
         @sub_list = @cfg[:dev_list]
       end

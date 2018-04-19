@@ -26,7 +26,7 @@ module CIAX
       end
 
       def ext_shell
-        @cfg[:output] = @stat
+        @cfg[:output] = @cfg[:rec_list]
         super
       end
 
@@ -81,7 +81,7 @@ module CIAX
       def ___init_stat
         @par = Parameter.new('0')
         @cobj.rem.int.cfg[:parameters] = [@par]
-        @stat = List.new
+        @seq_list = List.new(@cfg[:rec_list])
         @sv_stat = @cfg[:sv_stat]
         @sub_list = @cfg[:dev_list]
       end

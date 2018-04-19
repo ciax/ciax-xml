@@ -7,9 +7,9 @@ module CIAX
   module Mcr
     # Macro Man View
     class View < Varx
-      def initialize(id, page, stat = List.new)
+      def initialize(id, page, stat = RecList.new)
         super('mcr')
-        @stat = type?(stat, List)
+        @stat = type?(stat, RecList)
         @page = type?(page, Parameter)
         # @rec_list content is Record
         @rec_list = Hashx.new

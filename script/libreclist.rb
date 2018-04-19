@@ -6,11 +6,13 @@ module CIAX
   module Mcr
     # Record Archive List (Dir)
     class RecList < Varx
+      attr_reader :active
       def initialize
         super('rec', 'list')
         ext_local_file.load
         @list = (self[:list] ||= {})
-        @active = {}
+        # @active  : List of Record (Current running)
+        @active = Hashx.new
         init_time2cmt
         auto_save
       end
@@ -37,10 +39,26 @@ module CIAX
         ele = Hashx.new(record).pick(%i(cid result)) # extract header
         if record.is_a?(Record)
           ___init_record(record)
-          @active[id] = ele
+          @active[id] = record
         end
         @list[id] = ele
         self
+      end
+
+      #### Client Methods ####
+      def ext_http(host)
+        @host = host
+        self
+      end
+
+      def upd
+        @active.values.each(&:upd)
+        self
+      end
+
+      def get(id)
+        type?(id, String)
+        @active.get(id) { |key| Record.new(key).ext_http(@host, 'record') }
       end
 
       private
@@ -48,7 +66,6 @@ module CIAX
       def ___init_record(record)
         record.cmt_procs << proc do
           verbose { 'Propagate Record#cmt -> RecList#cmt' }
-          @active[record[:id]][:result] = record[:result]
           cmt
         end
       end

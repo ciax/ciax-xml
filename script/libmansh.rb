@@ -26,7 +26,7 @@ module CIAX
         private
 
         def ___init_view
-          @view = View.new(@id, @par, @stat)
+          @view = View.new(@id, @par, @cfg[:rec_list])
           # @view will be switched among Whole List or Records
           # Setting @par will switch the Record
           @cfg[:output] = @view

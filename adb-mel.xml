@@ -258,6 +258,12 @@
           </frmcmd>
           <frmcmd name="getstat"/>
         </item>
+        <item id="swims" label="SWIMS">
+          <frmcmd name="set_ins">
+            <argv>6</argv>
+          </frmcmd>
+          <frmcmd name="getstat"/>
+        </item>
       </group>
       <group id="gchg" caption="Charging Commands" column="2">
         <unit id="unit_chg" title="chg[on|off]" label="Charge ON/OFF">

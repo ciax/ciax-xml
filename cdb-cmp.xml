@@ -26,13 +26,13 @@
       </unit>
     </group>
     <group id="gmc" caption="CAS MOIRCS">
-      <unit id="ucm" title="cm[on|off]" label="CR(S1) [%s]">
-        <item id="cmon" label="ON" ref="x0on"/>
-        <item id="cmoff" label="OFF" ref="x0off"/>
+      <unit id="ucc" title="cc[on|off]" label="CR(S1) [%s]">
+        <item id="ccon" label="ON" ref="x0on"/>
+        <item id="ccoff" label="OFF" ref="x0off"/>
       </unit>
-      <unit id="ucc" title="cc[on|off]" label="MAIN(S2) [%s]">
-        <item id="ccon" label="ON" ref="x1on"/>
-        <item id="ccoff" label="OFF" ref="x1off"/>
+      <unit id="ucm" title="cm[on|off]" label="MAIN(S2) [%s]">
+        <item id="cmon" label="ON" ref="x1on"/>
+        <item id="cmoff" label="OFF" ref="x1off"/>
       </unit>
       <unit id="uca" title="ca[on|off]" label="BOTH [%s]">
         <item id="caon" label="ON" ref="x01on"/>

@@ -81,6 +81,9 @@ div.footer{
 .active{
     color : purple;
 }
+.hide{
+    color : gray;
+}
 .control-label{
     color : orchid;
     font-size: large;

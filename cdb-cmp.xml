@@ -42,11 +42,11 @@
   </alias>
   <alias id="cco" label="OPT Helium Compressor">
     <group id="gtao" caption="TAO">
-      <unit id="ut1" title="f1[on|off]" label="TAO1 [%s]">
+      <unit id="ut1" title="t1[on|off]" label="TAO1 [%s]">
         <item id="t1on" label="ON" ref="x0on"/>
         <item id="t1off" label="OFF" ref="x0off"/>
       </unit>
-      <unit id="ut2" title="f2[on|off]" label="TAO2 [%s]">
+      <unit id="ut2" title="t2[on|off]" label="TAO2 [%s]">
         <item id="t2on" label="ON" ref="x1on"/>
         <item id="t2off" label="OFF" ref="x1off"/>
       </unit>

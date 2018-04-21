@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require 'librecord'
-require 'libmcrlist'
+require 'libmcrpar'
+require 'libreclist'
 # CIAX-XML
 module CIAX
   # Macro Layer

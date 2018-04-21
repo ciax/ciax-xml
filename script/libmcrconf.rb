@@ -3,7 +3,6 @@ require 'libprompt'
 require 'libreclist'
 require 'libmcrdb'
 require 'libhexlist' # deprecated
-require 'libmcrpar'
 
 module CIAX
   # Macro Layer
@@ -19,13 +18,17 @@ module CIAX
         check_keys([:opt])
         @opt = self[:opt]
         verbose { 'Initiate Mcr Conf (option:' + @opt.keys.join + ')' }
+        ___init_db(root_cfg)
+      end
+
+      private
+
+      def ___init_db(root_cfg)
         db = Db.new
         update(layer_type: 'mcr', db: db)
         ___init_with_dbi(db.get(ENV['PROJ'] ||= self[:args].shift))
         ___init_dev_list(root_cfg.gen(self))
       end
-
-      private
 
       def ___init_with_dbi(dbi)
         # pick already includes :command, :version

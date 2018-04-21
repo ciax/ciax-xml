@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libmcrlist'
 module CIAX
   # Macro Layer
   module Mcr
@@ -12,6 +13,7 @@ module CIAX
 
         # Initiate for driver
         def ext_local_driver
+          @seq_list = List.new(@stat)
           @sv_stat.repl(:sid, '') # For server response
           ___init_pre_exe
           ___init_post_exe

@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libexe'
+require 'libmcrcmd'
 require 'libmcrview'
 module CIAX
   # Macro Layer
@@ -82,7 +83,6 @@ module CIAX
         @par = Parameter.new('0')
         @cobj.rem.int.cfg[:parameters] = [@par]
         @stat = @cfg[:rec_list]
-        @seq_list = List.new(@stat)
         @sv_stat = @cfg[:sv_stat]
         @sub_list = @cfg[:dev_list]
       end

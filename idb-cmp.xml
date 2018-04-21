@@ -31,8 +31,10 @@
       <instance id="cri" app_id="bbe" host="ciax" port="53207" label="IR Helium Compressor">
         <command ref="cri"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <group ref="g0" caption="FMOS/IRS1(S10)"/>
-          <group ref="g2" caption="FMOS/IRS2(S11)"/>
+          <group ref="g0" caption="IRCS(S3)"/>
+          <group ref="g2" caption="CHARIS(CM1)"/>
+          <index ref="xtm2" symbol="na"/>
+          <index ref="xpr2" symbol="na"/>
         </status>
       </instance>
       <instance id="cfa" app_id="k3n" port="25210" label="S10 HC Coolant Flow">

@@ -33,8 +33,9 @@ module CIAX
       def index
         n = @page.current_idx
         if n
-          if __crnt_rec.busy? && __crnt_rec.last
-            opt = optlist(__crnt_rec[:option])
+          rec = __crnt_rec
+          if rec.busy? && rec.last
+            opt = optlist(rec[:option])
           end
           "[#{n + 1}]#{opt}"
         else
@@ -49,7 +50,8 @@ module CIAX
 
       # Available commands in current record
       def valid_keys
-        (__crnt_rec && __crnt_rec[:option]) || []
+        rec = __crnt_rec
+        (rec && rec[:option]) || []
       end
 
       private

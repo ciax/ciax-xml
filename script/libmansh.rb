@@ -31,7 +31,10 @@ module CIAX
           # Setting @par will switch the Record
           @cfg[:output] = @view
           @post_exe_procs << proc { @view.upd }
-          @prompt_proc = proc { @sv_stat.to_s + @view.upd.index }
+          @prompt_proc = proc do
+            @valid_keys.replace(@view.upd.valid_keys)
+            @sv_stat.to_s + @view.index
+          end
         end
 
         def ___init_lcmd

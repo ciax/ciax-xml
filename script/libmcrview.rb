@@ -7,9 +7,10 @@ module CIAX
   module Mcr
     # Macro Man View
     class View < Varx
-      def initialize(id, page, stat = RecList.new)
+      def initialize(id, page, stat = RecList.new, valid_keys = [])
         super('mcr')
         @stat = type?(stat, RecList)
+        @org_keys = (@valid_keys = valid_keys).dup
         @page = type?(page, Parameter)
         # @rec_list content is Record
         @rec_list = Hashx.new
@@ -21,22 +22,18 @@ module CIAX
 
       # Show Record(id = @page.current_rid) or List of them
       def to_v
-        rec = __crnt_rec
-        rec ? rec.to_v : ___list_view
+        @page.current_rid ? __crnt_rec.to_v : ___list_view
       end
 
       def to_r
-        rec =__crnt_rec
-        rec ? rec.to_r : super
+        @page.current_rid ? __crnt_rec.to_r : super
       end
 
       def index
         n = @page.current_idx
         if n
           rec = __crnt_rec
-          if rec.busy? && rec.last
-            opt = optlist(rec[:option])
-          end
+          opt = optlist(rec[:option]) if rec.busy? && rec.last
           "[#{n + 1}]#{opt}"
         else
           '[0]'
@@ -48,22 +45,28 @@ module CIAX
         self
       end
 
-      # Available commands in current record
-      def valid_keys
-        rec = __crnt_rec
-        (rec && rec[:option]) || []
-      end
-
       private
 
       def ___init_upd_proc
         @upd_procs << proc do
+          ___upd_valid_keys
           pids = @rec_list.values.map { |r| r[:pid] }
           pids.delete('0')
           @all_keys.concat(pids + @page.list).uniq!
           @all_keys.each { |id| ___upd_or_gen(id) }
           clean
         end
+      end
+
+      # Available commands in current record
+      def ___upd_valid_keys
+        rid = @page.current_rid
+        opts = if rid
+                 (__crnt_rec || {})[:option] || []
+               else
+                 @org_keys
+               end
+        @valid_keys.replace(opts)
       end
 
       def ___upd_or_gen(id)

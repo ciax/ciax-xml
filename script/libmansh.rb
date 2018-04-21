@@ -26,14 +26,13 @@ module CIAX
         private
 
         def ___init_view
-          @view = View.new(@id, @par, @stat)
+          @view = View.new(@id, @par, @stat, @cobj.rem.int.valid_keys)
           # @view will be switched among Whole List or Records
           # Setting @par will switch the Record
           @cfg[:output] = @view
           @post_exe_procs << proc { @view.upd }
           @prompt_proc = proc do
-            @valid_keys.replace(@view.upd.valid_keys)
-            @sv_stat.to_s + @view.index
+            @sv_stat.to_s + @view.upd.index
           end
         end
 

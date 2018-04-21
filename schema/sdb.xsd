@@ -29,7 +29,7 @@
   <xsd:element name="table">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:choice>
+        <xsd:choice minOccurs="0">
           <xsd:element ref="sdb:pattern" maxOccurs="unbounded"/>
           <xsd:element ref="sdb:range" maxOccurs="unbounded"/>
           <xsd:element ref="sdb:numeric" maxOccurs="unbounded"/>

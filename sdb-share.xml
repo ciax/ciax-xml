@@ -68,5 +68,8 @@
       <pattern class="alarm" msg="MANUAL">1</pattern>
       <pattern class="alarm" msg="N/A">0</pattern>
     </table>
+    <table id="na">
+      <default class="hide" msg="N/A"/>
+    </table>
   </symbol>
 </sdb>

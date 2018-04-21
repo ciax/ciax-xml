@@ -21,11 +21,13 @@ module CIAX
 
       # Show Record(id = @page.current_rid) or List of them
       def to_v
-        __crnt_rec ? __crnt_rec.to_v : ___list_view
+        rec = __crnt_rec
+        rec ? rec.to_v : ___list_view
       end
 
       def to_r
-        __crnt_rec ? __crnt_rec.to_r : super
+        rec =__crnt_rec
+        rec ? rec.to_r : super
       end
 
       def index

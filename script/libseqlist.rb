@@ -47,7 +47,7 @@ module CIAX
       end
 
       def clean
-        act = @rec_list.active
+        act = @rec_list.act_list
         (act.keys - alives).each do |id|
           act.delete(id)
         end

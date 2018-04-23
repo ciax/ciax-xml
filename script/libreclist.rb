@@ -6,13 +6,13 @@ module CIAX
   module Mcr
     # Record Archive List (Dir)
     class RecList < Varx
-      attr_reader :active
+      attr_reader :act_list
       def initialize
         super('rec', 'list')
         ext_local_file.load
-        @list = (self[:list] ||= {})
-        # @active  : List of Record (Current running)
-        @active = Hashx.new
+        @arc_list = (self[:list] ||= {})
+        # @act_list  : List of current running Record
+        @act_list = Hashx.new
         init_time2cmt
         auto_save
       end
@@ -21,7 +21,7 @@ module CIAX
         verbose { 'Initiate Record List' }
         Dir.glob(vardir('record') + 'record_*.json') do |name|
           next if /record_([0-9]+).json/ !~ name
-          next if @list.key?(Regexp.last_match(1))
+          next if @arc_list.key?(Regexp.last_match(1))
           push(___jread(name))
         end
         cmt
@@ -29,7 +29,7 @@ module CIAX
       end
 
       def clear
-        @list.clear
+        @arc_list.clear
         self
       end
 
@@ -39,9 +39,9 @@ module CIAX
         ele = Hashx.new(record).pick(%i(cid result)) # extract header
         if record.is_a?(Record)
           ___init_record(record)
-          @active[id] = record
+          @act_list[id] = record
         end
-        @list[id] = ele
+        @arc_list[id] = ele
         self
       end
 
@@ -52,13 +52,13 @@ module CIAX
       end
 
       def upd
-        @active.values.each(&:upd)
+        @act_list.values.each(&:upd)
         self
       end
 
       def get(id)
         type?(id, String)
-        @active.get(id) { |key| Record.new(key).ext_http(@host, 'record') }
+        @act_list.get(id) { |key| Record.new(key).ext_http(@host, 'record') }
       end
 
       private

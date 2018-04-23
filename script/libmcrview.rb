@@ -10,10 +10,10 @@ module CIAX
       def initialize(id, page, stat = RecList.new, valid_keys = [])
         super('mcr')
         @stat = type?(stat, RecList)
-        @org_keys = (@valid_keys = valid_keys).dup
+        @org_cmds = (@valid_keys = valid_keys).dup
         @page = type?(page, Parameter)
-        # @rec_list content is Record
-        @rec_list = Hashx.new
+        # @visible content is Record
+        @visible = Hashx.new
         @all_keys = []
         @ciddb = { '0' => 'user' }
         @id = id
@@ -41,7 +41,7 @@ module CIAX
       end
 
       def clean
-        (keys - @all_keys).each { |id| @rec_list.delete(id) }
+        (keys - @all_keys).each { |id| @visible.delete(id) }
         self
       end
 
@@ -50,7 +50,7 @@ module CIAX
       def ___init_upd_proc
         @upd_procs << proc do
           ___upd_valid_keys
-          pids = @rec_list.values.map { |r| r[:pid] }
+          pids = @visible.values.map { |r| r[:pid] }
           pids.delete('0')
           @all_keys.concat(pids + @page.list).uniq!
           @all_keys.each { |id| ___upd_or_gen(id) }
@@ -64,23 +64,23 @@ module CIAX
         opts = if rid
                  (__crnt_rec || {})[:option] || []
                else
-                 @org_keys
+                 @org_cmds
                end
         @valid_keys.replace(opts)
       end
 
       def ___upd_or_gen(id)
-        if @rec_list.key?(id)
-          @rec_list.get(id).upd
+        if @visible.key?(id)
+          @visible.get(id).upd
         else
           rec = @stat.get(id)
-          @rec_list.put(id, rec)
+          @visible.put(id, rec)
           @ciddb[id] = rec[:cid] unless @ciddb.key?(id)
         end
       end
 
       def __crnt_rec
-        @rec_list.get(@page.current_rid)
+        @visible.get(@page.current_rid)
       end
 
       def ___list_view
@@ -92,7 +92,7 @@ module CIAX
       end
 
       def ___item_view(id, idx)
-        rec = @rec_list[id]
+        rec = @visible[id]
         title = "[#{idx}] (#{id})(by #{@ciddb[rec[:pid]]})"
         msg = "#{rec[:cid]} #{rec.step_num}"
         msg << ___result_view(rec)

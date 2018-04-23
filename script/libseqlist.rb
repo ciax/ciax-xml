@@ -12,7 +12,7 @@ module CIAX
       def initialize(rec_list)
         super()
         # @rec_list: List of Record Header (Log)
-        @rec_list = rec_list
+        @rec_list = Msg.type?(rec_list, RecList)
       end
 
       #### Driver Methods ####

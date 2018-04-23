@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libmcrlist'
+require 'libseqlist'
 module CIAX
   # Macro Layer
   module Mcr

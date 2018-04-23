@@ -7,7 +7,7 @@ module CIAX
     # List which provides records
     # @threads provides sequencer list as a server
     # @cfg[:db] associated site/layer should be set
-    class List < ThreadGroup
+    class SeqList < ThreadGroup
       attr_reader :threads
       def initialize(rec_list)
         super()

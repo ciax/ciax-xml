@@ -37,10 +37,7 @@ module CIAX
         end
 
         def ___init_lcmd
-          sg = @cobj.loc.add(Group, caption: 'Switch Pages', color: 5)
-          sg.add_dummy('0', 'List page')
-          sg.add_dummy('[1-n]', 'Sequencer page')
-          sg.add_item('cl', 'Clean list', def_msg: 'CLEAN').def_proc do
+          @cobj.loc.add_page.get('cl').def_proc do
             @par.flush(@sv_stat.upd.get(:list))
           end
           @cobj.loc.add_view

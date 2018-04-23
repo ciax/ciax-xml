@@ -10,8 +10,9 @@ module CIAX
       def initialize
         super('rec', 'list')
         ext_local_file.load
+        # arc_list : List of Record summary
         @arc_list = (self[:list] ||= {})
-        # @act_list  : List of current running Record
+        # @act_list : List having Record
         @act_list = Hashx.new
         init_time2cmt
         auto_save

@@ -6,7 +6,7 @@ module CIAX
   # Macro Layer
   module Mcr
     # Macro Man View
-    class View < Varx
+    class ManView < Varx
       def initialize(id, page, stat = RecList.new, valid_keys = [])
         super('mcr')
         @stat = type?(stat, RecList)
@@ -113,7 +113,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] ..') do |_opt, args|
         page = Parameter.new.flush(args)
-        puts View.new('test', page).upd
+        puts ManView.new('test', page).upd
       end
     end
   end

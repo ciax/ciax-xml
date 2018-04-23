@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libman'
-require 'libmcrview'
+require 'libmanview'
 module CIAX
   # Macro Layer
   module Mcr
@@ -28,7 +28,7 @@ module CIAX
         private
 
         def ___init_view
-          @view = View.new(@id, @par, @stat, @cobj.rem.int.valid_keys)
+          @view = ManView.new(@id, @par, @stat, @cobj.rem.int.valid_keys)
           # @view will be switched among Whole List or Records
           # Setting @par will switch the Record
           @cfg[:output] = @view

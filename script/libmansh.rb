@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libman'
+require 'libmcrview'
 module CIAX
   # Macro Layer
   module Mcr
@@ -11,7 +12,8 @@ module CIAX
         # cfg should have [:jump_groups]
         def ext_shell
           super
-          @par.sel
+          @par = Parameter.new
+          @cobj.rem.int.cfg[:parameters] = [@par]
           ___init_view
           ___init_lcmd
           # Set Current ID by number

@@ -19,6 +19,7 @@ module CIAX
         auto_save
       end
 
+      # Re-generate record list
       def refresh # returns self
         verbose { 'Initiate Record List' }
         Dir.glob(vardir('record') + 'record_*.json') do |name|
@@ -30,6 +31,7 @@ module CIAX
         self
       end
 
+      # For format changes
       def clear
         @arc_list.clear
         self
@@ -38,7 +40,7 @@ module CIAX
       def push(record) # returns self
         id = record[:id]
         return self unless id.to_i > 0
-        ele = Hashx.new(record).pick(%i(cid result)) # extract header
+        ele = Hashx.new(record).pick(%i(cid pid result)) # extract header
         if record.is_a?(Record)
           ___init_record(record)
           @act_list[id] = record
@@ -85,6 +87,6 @@ module CIAX
       end
     end
 
-    puts RecList.new.refresh if __FILE__ == $PROGRAM_NAME
+    puts RecList.new.clear.refresh if __FILE__ == $PROGRAM_NAME
   end
 end

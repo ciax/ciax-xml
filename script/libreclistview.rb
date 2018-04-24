@@ -17,7 +17,6 @@ module CIAX
         end
 
         def ext_view(init_num)
-          @ciddb = { '0' => 'user' }
           @arc_list.keys.sort.last(init_num).each { |rid| get(rid) }
           self
         end
@@ -40,7 +39,7 @@ module CIAX
         def ___item_view(id, idx)
           rec = @act_list[id]
           tim = Time.at(id[0..9].to_i).to_s
-          title = "[#{idx}] #{id} (#{tim}) by #{@ciddb[rec[:pid]]}"
+          title = "[#{idx}] #{id} (#{tim}) by #{___get_pcid(id)}"
           msg = "#{rec[:cid]} #{rec.step_num}"
           msg << ___result_view(rec)
           itemize(title, msg)
@@ -54,6 +53,13 @@ module CIAX
             msg << optlist(rec[:option]) if rec.last
             msg
           end
+        end
+
+        def ___get_pcid(id)
+          rec = @arc_list[id]
+          pid = rec[:pid]
+          return 'user' if pid == '0'
+          @arc_list[pid][:cid]
         end
       end
 

@@ -9,13 +9,12 @@ module CIAX
     class ManView < Varx
       def initialize(id, page, stat = RecList.new, valid_keys = [])
         super('mcr')
-        @stat = type?(stat, RecList).ext_view(id)
+        @stat = type?(stat, RecList).ext_view
         @org_cmds = (@valid_keys = valid_keys).dup
         @page = type?(page, Parameter)
         # @visible content is Record
         @visible = @stat.act_list
         @all_keys = []
-        @ciddb = { '0' => 'user' }
         @id = id
         ___init_upd_proc
       end
@@ -53,7 +52,7 @@ module CIAX
           pids = @visible.values.map { |r| r[:pid] }
           pids.delete('0')
           @all_keys.concat(pids + @page.list).uniq!
-          @all_keys.each { |id| ___upd_or_gen(id) }
+          @all_keys.each { |id| @visible.get(id).upd }
           clean
         end
       end
@@ -67,16 +66,6 @@ module CIAX
                  @org_cmds
                end
         @valid_keys.replace(opts)
-      end
-
-      def ___upd_or_gen(id)
-        if @visible.key?(id)
-          @visible.get(id).upd
-        else
-          rec = @stat.get(id)
-          @visible.put(id, rec)
-          @ciddb[id] = rec[:cid] unless @ciddb.key?(id)
-        end
       end
 
       def __crnt_rec

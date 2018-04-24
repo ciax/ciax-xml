@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libmcrpar'
-require 'libreclist'
+require 'libreclistview'
 # CIAX-XML
 module CIAX
   # Macro Layer
@@ -9,11 +9,11 @@ module CIAX
     class ManView < Varx
       def initialize(id, page, stat = RecList.new, valid_keys = [])
         super('mcr')
-        @stat = type?(stat, RecList)
+        @stat = type?(stat, RecList).ext_view(id)
         @org_cmds = (@valid_keys = valid_keys).dup
         @page = type?(page, Parameter)
         # @visible content is Record
-        @visible = Hashx.new
+        @visible = @stat.act_list
         @all_keys = []
         @ciddb = { '0' => 'user' }
         @id = id
@@ -22,7 +22,7 @@ module CIAX
 
       # Show Record(id = @page.current_rid) or List of them
       def to_v
-        @page.current_rid ? __crnt_rec.to_v : ___list_view
+        @page.current_rid ? __crnt_rec.to_v : @stat.to_v
       end
 
       def to_r
@@ -81,32 +81,6 @@ module CIAX
 
       def __crnt_rec
         @visible.get(@page.current_rid)
-      end
-
-      def ___list_view
-        page = ['<<< ' + colorize("Active Macros [#{@id}]", 2) + ' >>>']
-        @page.list.each_with_index do |id, idx|
-          page << ___item_view(id, idx + 1)
-        end
-        page.join("\n")
-      end
-
-      def ___item_view(id, idx)
-        rec = @visible[id]
-        title = "[#{idx}] (#{id})(by #{@ciddb[rec[:pid]]})"
-        msg = "#{rec[:cid]} #{rec.step_num}"
-        msg << ___result_view(rec)
-        itemize(title, msg)
-      end
-
-      def ___result_view(rec)
-        if rec[:status] == 'end'
-          "(#{rec[:result]})"
-        else
-          msg = "(#{rec[:status]})"
-          msg << optlist(rec[:option]) if rec.last
-          msg
-        end
       end
     end
 

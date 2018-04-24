@@ -6,8 +6,8 @@ module CIAX
   module Mcr
     # Macro Record List
     class RecList
-      def ext_view(id, init_num = 1)
-        extend(View).ext_view(id, init_num.to_i)
+      def ext_view(init_num = 0)
+        extend(View).ext_view(init_num.to_i)
       end
 
       # Record List View
@@ -16,9 +16,8 @@ module CIAX
           Msg.type?(obj, RecList)
         end
 
-        def ext_view(id, init_num)
+        def ext_view(init_num)
           @ciddb = { '0' => 'user' }
-          @id = id
           @arc_list.keys.sort.last(init_num).each { |rid| get(rid) }
           self
         end
@@ -44,7 +43,6 @@ module CIAX
           title = "[#{idx}] #{id} (#{tim}) by #{@ciddb[rec[:pid]]}"
           msg = "#{rec[:cid]} #{rec.step_num}"
           msg << ___result_view(rec)
-
           itemize(title, msg)
         end
 
@@ -60,7 +58,7 @@ module CIAX
       end
 
       if __FILE__ == $PROGRAM_NAME
-        GetOpts.new('[proj] [num]') do |_opt, args|
+        GetOpts.new('[num]') do |_opt, args|
           puts RecList.new.ext_view(*args).to_v
         end
       end

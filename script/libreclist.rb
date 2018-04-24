@@ -7,9 +7,10 @@ module CIAX
     # Record Archive List (Dir)
     class RecList < Varx
       attr_reader :act_list
-      def initialize
+      def initialize(id = 'mcr')
         super('rec', 'list')
         ext_local_file.load
+        @id = id
         # arc_list : List of Record summary
         @arc_list = (self[:list] ||= {})
         # @act_list : List having Record

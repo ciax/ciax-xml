@@ -51,7 +51,7 @@ module CIAX
         dev_layer = @opt[:x] ? Hex : Wat
         self[:dev_list] = dev_layer::List.new(site_cfg, sites: self[:sites])
         self[:sv_stat] = Prompt.new(id, @opt)
-        self[:rec_list] = RecList.new
+        self[:rec_list] = RecList.new(id)
       end
     end
 

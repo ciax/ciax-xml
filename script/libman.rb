@@ -15,6 +15,7 @@ module CIAX
         ___init_net
         ___init_cmd
         ___init_stat
+        ___init_post_exe
       end
 
       # separated for background run
@@ -25,20 +26,9 @@ module CIAX
         self
       end
 
+      # Mode Extention by Option
       def ext_shell
         @cfg[:output] = @stat
-        super
-      end
-
-      # Mode Extention by Option
-      def ext_client
-        @post_exe_procs << proc do
-          list = @par.list
-          pre = list.size
-          list.concat(@sv_stat.get(:list)).uniq!
-          post = list.size
-          @par.sel(post) if post > pre
-        end
         super
       end
 
@@ -82,6 +72,12 @@ module CIAX
         @stat = @cfg[:rec_list]
         @sv_stat = @cfg[:sv_stat]
         @sub_list = @cfg[:dev_list]
+      end
+
+      def ___init_post_exe
+        @post_exe_procs << proc do
+          @sv_stat.get(:list).each { |id| @par.push(id) }
+        end
       end
 
       # Making Command List JSON file for WebApp

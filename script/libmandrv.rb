@@ -16,7 +16,6 @@ module CIAX
           @seq_list = SeqList.new(@stat)
           @sv_stat.repl(:sid, '') # For server response
           ___init_pre_exe
-          ___init_post_exe
           ___init_proc_rem(@cobj.rem)
           ___init_proc_loc
           @cobj.rem.ext_input_log
@@ -30,12 +29,6 @@ module CIAX
           @pre_exe_procs << proc do
             @sv_stat.flush(:list, @seq_list.alives).repl(:sid, '')
             @sv_stat.flush(:run).cmt if @sv_stat.upd.get(:list).empty?
-          end
-        end
-
-        def ___init_post_exe
-          @post_exe_procs << proc do
-            @sv_stat.get(:list).each { |id| @par.push(id) }
           end
         end
 

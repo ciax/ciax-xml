@@ -37,11 +37,12 @@ module CIAX
         self
       end
 
-      # delete from @vis_list unless in ary
-      def squeeze(ary)
+      # delete from @vis_list other than in ary
+      def flush(ary)
         (@vis_list.keys - ary).each do |id|
           @vis_list.delete(id)
         end
+        self
       end
 
       def push(record) # returns self

@@ -49,6 +49,7 @@ module CIAX
       def ___init_upd_proc
         @upd_procs << proc do
           ___upd_valid_keys
+          # Leave parent of alive process
           pids = @visible.values.map { |r| r[:pid] }
           pids.delete('0')
           @all_keys.concat(pids + @page.list).uniq!

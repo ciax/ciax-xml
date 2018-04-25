@@ -40,7 +40,9 @@ module CIAX
 
         def ___init_lcmd
           @cobj.loc.add_page.get('cl').def_proc do
-            @par.flush(@sv_stat.upd.get(:list))
+            alive = @sv_stat.upd.get(:list)
+            @par.flush(alive)
+#            @stat.squeeze(alive)
           end
           @cobj.loc.add_view
         end

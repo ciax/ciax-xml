@@ -6,15 +6,15 @@ module CIAX
   module Mcr
     # Record Archive List (Dir)
     class RecList < Varx
-      attr_reader :act_list
+      attr_reader :vis_list
       def initialize(id = 'mcr')
         super('rec', 'list')
         ext_local_file.load
         @id = id
-        # arc_list : List of Record summary
+        # @arc_list : Archive List : Index of Record (id: cid,pid,res)
         @arc_list = (self[:list] ||= {})
-        # @act_list : List having Record
-        @act_list = Hashx.new
+        # @vis_list : Visible List : Database of Record (Part of archive)
+        @vis_list = Hashx.new
         init_time2cmt
         auto_save
       end
@@ -37,13 +37,20 @@ module CIAX
         self
       end
 
+      # delete from @vis_list unless in ary
+      def squeeze(ary)
+        (@vis_list.keys - ary).each do |id|
+          @vis_list.delete(id)
+        end
+      end
+
       def push(record) # returns self
         id = record[:id]
         return self unless id.to_i > 0
         ele = Hashx.new(record).pick(%i(cid pid result)) # extract header
         if record.is_a?(Record)
           ___init_record(record)
-          @act_list[id] = record
+          @vis_list[id] = record
         end
         @arc_list[id] = ele
         self
@@ -56,13 +63,13 @@ module CIAX
       end
 
       def upd
-        @act_list.values.each(&:upd)
+        @vis_list.values.each(&:upd)
         self
       end
 
       def get(id)
         type?(id, String)
-        @act_list.get(id) { |key| Record.new(key).ext_http(@host, 'record') }
+        @vis_list.get(id) { |key| Record.new(key).ext_http(@host, 'record') }
       end
 
       private

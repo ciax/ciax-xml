@@ -13,7 +13,7 @@ module CIAX
         @org_cmds = (@valid_keys = valid_keys).dup
         @page = type?(page, Parameter)
         # @visible content is Record
-        @visible = @stat.act_list
+        @visible = @stat.vis_list
         @all_keys = []
         @id = id
         ___init_upd_proc

@@ -30,14 +30,14 @@ module CIAX
 
         def ___list_view
           page = ['<<< ' + colorize("Active Macros [#{@id}]", 2) + ' >>>']
-          @act_list.keys.each_with_index do |id, idx|
+          @vis_list.keys.each_with_index do |id, idx|
             page << ___item_view(id, idx + 1)
           end
           page.join("\n")
         end
 
         def ___item_view(id, idx)
-          rec = @act_list[id]
+          rec = @vis_list[id]
           tim = Time.at(id[0..9].to_i).to_s
           title = "[#{idx}] #{id} (#{tim}) by #{___get_pcid(id)}"
           msg = "#{rec[:cid]} #{rec.step_num}"

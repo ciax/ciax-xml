@@ -16,7 +16,6 @@ module CIAX
           @cobj.rem.int.cfg[:parameters] = [@par]
           ___init_view
           ___init_lcmd
-          ___init_post_exe
           # Set Current ID by number
           input_conv_num do |i|
             @par.sel(i)
@@ -46,12 +45,6 @@ module CIAX
             @stat.flush(alive)
           end
           @cobj.loc.add_view
-        end
-
-        def ___init_post_exe
-          @post_exe_procs << proc do
-            @sv_stat.get(:list).each { |id| @par.push(id) }
-          end
         end
       end
 

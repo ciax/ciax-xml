@@ -31,16 +31,6 @@ module CIAX
       end
 
       # Mode Extention by Option
-      def ext_client
-        @post_exe_procs << proc do
-          list = @par.list
-          pre = list.size
-          list.concat(@sv_stat.get(:list)).uniq!
-          post = list.size
-          @par.sel(post) if post > pre
-        end
-        super
-      end
 
       def ext_local_test
         require 'libmandrv'

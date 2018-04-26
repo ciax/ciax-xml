@@ -6,18 +6,19 @@ module CIAX
   module Mcr
     # Macro Record List
     class RecList
-      def ext_view(init_num = 0)
-        extend(View).ext_view(init_num.to_i)
+      def ext_view(visible = [], init_num = 0)
+        extend(View).ext_view(visible, init_num.to_i)
       end
 
-      # Record List View
+      # Record Visible View
       module View
         def self.extended(obj)
           Msg.type?(obj, RecList)
         end
 
-        def ext_view(init_num)
-          @arc_list.keys.sort.last(init_num).each { |rid| get(rid) }
+        def ext_view(visible, init_num)
+          @visible = visible.replace(@archives.keys.sort.last(init_num))
+          @visible.each { |rid| get(rid) }
           self
         end
 
@@ -30,14 +31,14 @@ module CIAX
 
         def ___list_view
           page = ['<<< ' + colorize("Active Macros [#{@id}]", 2) + ' >>>']
-          @vis_list.keys.each_with_index do |id, idx|
+          @visible.each_with_index do |id, idx|
             page << ___item_view(id, idx + 1)
           end
           page.join("\n")
         end
 
         def ___item_view(id, idx)
-          rec = @vis_list[id]
+          rec = @records[id]
           tim = Time.at(id[0..9].to_i).to_s
           title = "[#{idx}] #{id} (#{tim}) by #{___get_pcid(id)}"
           msg = "#{rec[:cid]} #{rec.step_num}"
@@ -56,16 +57,16 @@ module CIAX
         end
 
         def ___get_pcid(id)
-          rec = @arc_list[id]
+          rec = @archives[id]
           pid = rec[:pid]
           return 'user' if pid == '0'
-          @arc_list[pid][:cid]
+          @archives[pid][:cid]
         end
       end
 
       if __FILE__ == $PROGRAM_NAME
         GetOpts.new('[num]') do |_opt, args|
-          puts RecList.new.ext_view(*args).to_v
+          puts RecList.new.ext_view([], args.shift).to_v
         end
       end
     end

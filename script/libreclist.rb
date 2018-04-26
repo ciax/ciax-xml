@@ -6,15 +6,15 @@ module CIAX
   module Mcr
     # Record Archive List (Dir)
     class RecList < Varx
-      attr_reader :vis_list
+      attr_reader :records
       def initialize(id = 'mcr')
         super('rec', 'list')
         ext_local_file.load
         @id = id
-        # @arc_list : Archive List : Index of Record (id: cid,pid,res)
-        @arc_list = (self[:list] ||= {})
-        # @vis_list : Visible List : Database of Record (Part of archive)
-        @vis_list = Hashx.new
+        # @archives : Archive List : Index of Record (id: cid,pid,res)
+        @archives = (self[:list] ||= {})
+        # @records : Visible List : Database of Record (Part of archive)
+        @records = Hashx.new
         init_time2cmt
         auto_save
       end
@@ -24,7 +24,7 @@ module CIAX
         verbose { 'Initiate Record List' }
         Dir.glob(vardir('record') + 'record_*.json') do |name|
           next if /record_([0-9]+).json/ !~ name
-          next if @arc_list.key?(Regexp.last_match(1))
+          next if @archives.key?(Regexp.last_match(1))
           push(___jread(name))
         end
         cmt
@@ -33,14 +33,14 @@ module CIAX
 
       # For format changes
       def clear
-        @arc_list.clear
+        @archives.clear
         self
       end
 
-      # delete from @vis_list other than in ary
+      # delete from @records other than in ary
       def flush(ary)
-        (@vis_list.keys - ary).each do |id|
-          @vis_list.delete(id)
+        (@records.keys - ary).each do |id|
+          @records.delete(id)
         end
         self
       end
@@ -51,9 +51,9 @@ module CIAX
         ele = Hashx.new(record).pick(%i(cid pid result)) # extract header
         if record.is_a?(Record)
           ___init_record(record)
-          @vis_list[id] = record
+          @records[id] = record
         end
-        @arc_list[id] = ele
+        @archives[id] = ele
         self
       end
 
@@ -64,13 +64,13 @@ module CIAX
       end
 
       def upd
-        @vis_list.values.each(&:upd)
+        @records.values.each(&:upd)
         self
       end
 
       def get(id)
         type?(id, String)
-        @vis_list.get(id) { |key| Record.new(key).ext_http(@host, 'record') }
+        @records.get(id) { |key| Record.new(key).ext_http(@host, 'record') }
       end
 
       private

@@ -47,8 +47,8 @@ module CIAX
       end
 
       def clean
-        # vis_list: Visible List
-        vis = @rec_list.vis_list
+        # records: Visible List
+        vis = @rec_list.records
         (vis.keys - alives).each do |id|
           vis.delete(id)
         end

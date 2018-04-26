@@ -9,11 +9,11 @@ module CIAX
     class ManView < Varx
       def initialize(id, page, stat = RecList.new, valid_keys = [])
         super('mcr')
-        @stat = type?(stat, RecList).ext_view
-        @org_cmds = (@valid_keys = valid_keys).dup
         @page = type?(page, Parameter)
-        # @visible content is Record
-        @visible = @stat.vis_list
+        @stat = type?(stat, RecList).ext_view(@page.list)
+        @org_cmds = (@valid_keys = valid_keys).dup
+        # @records content is Record
+        @records = @stat.records
         @all_keys = []
         @id = id
         ___init_upd_proc
@@ -40,7 +40,7 @@ module CIAX
       end
 
       def clean
-        (keys - @all_keys).each { |id| @visible.delete(id) }
+        (keys - @all_keys).each { |id| @records.delete(id) }
         self
       end
 
@@ -50,10 +50,10 @@ module CIAX
         @upd_procs << proc do
           ___upd_valid_keys
           # Leave parent of alive process
-          pids = @visible.values.map { |r| r[:pid] }
+          pids = @records.values.map { |r| r[:pid] }
           pids.delete('0')
           @all_keys.concat(pids + @page.list).uniq!
-          @all_keys.each { |id| @visible.get(id).upd }
+          @all_keys.each { |id| @records.get(id).upd }
           clean
         end
       end
@@ -70,7 +70,7 @@ module CIAX
       end
 
       def __crnt_rec
-        @visible.get(@page.current_rid)
+        @records.get(@page.current_rid)
       end
     end
 

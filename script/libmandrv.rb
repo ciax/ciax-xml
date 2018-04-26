@@ -13,13 +13,12 @@ module CIAX
 
         # Initiate for driver
         def ext_local_driver
-          @seq_list = SeqList.new(@stat)
+          @seq_list = SeqList.new
           @sv_stat.repl(:sid, '') # For server response
           ___init_pre_exe
           ___init_proc_rem(@cobj.rem)
           ___init_proc_loc
           @cobj.rem.ext_input_log
-          @terminate_procs << proc { @seq_list.clean }
           self
         end
 

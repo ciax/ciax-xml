@@ -119,6 +119,21 @@ module CIAX
           'File Saving from Multiple Threads'
         end
       end
+
+      module_function
+
+      # Using for RecArc, RecList
+      def jload(fname)
+        j2h(
+          open(fname) do |f|
+            f.flock(::File::LOCK_SH)
+            f.read
+          end
+        )
+      rescue Errno::ENOENT, InvalidData
+        verbose { "  -- no json file (#{fname})" }
+        Hashx.new
+      end
     end
   end
 end

@@ -18,6 +18,7 @@ module CIAX
           ___init_lcmd
           # Set Current ID by number
           input_conv_num do |i|
+            # i should be number
             @par.sel(i)
             # nil:no command -> show record
             nil

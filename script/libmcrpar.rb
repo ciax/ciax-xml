@@ -15,8 +15,8 @@ module CIAX
 
       # select id by index number (1~max)
       #  return id otherwise nil
-      def sel(idx = nil)
-        if !idx || idx < 1
+      def sel(idx)
+        if idx < 1
           self[:default] = nil
         else
           idx = @list.size if idx > @list.size
@@ -26,7 +26,7 @@ module CIAX
       end
 
       # For macro variable param (sid list)
-      # replace (default is decresed)
+      # replace (default will be decresed)
       def flush(other)
         @list.replace other
         if self[:default] && !@list.include?(self[:default])
@@ -35,7 +35,7 @@ module CIAX
         self
       end
 
-      # push to list (default is incresed)
+      # push to list (default will be incresed)
       def push(id) # returns self
         return self if @list.include?(id)
         @list << id

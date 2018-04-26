@@ -7,29 +7,29 @@ module CIAX
   module Mcr
     # Macro Man View
     class ManView < Varx
-      def initialize(id, page, stat = RecList.new, valid_keys = [])
+      def initialize(id, page, rec_list = RecList.new, valid_keys = [])
         super('mcr')
-        @page = type?(page, Parameter)
-        @stat = type?(stat, RecList).ext_view(@page.list)
+        @par = type?(page, Parameter)
+        @rec_list = type?(rec_list, RecList).ext_view(@par.list)
         @org_cmds = (@valid_keys = valid_keys).dup
         # @records content is Record
-        @records = @stat.records
+        @records = @rec_list.records
         @all_keys = []
         @id = id
         ___init_upd_proc
       end
 
-      # Show Record(id = @page.current_rid) or List of them
+      # Show Record(id = @par.current_rid) or List of them
       def to_v
-        @page.current_rid ? __crnt_rec.to_v : @stat.to_v
+        @par.current_rid ? __crnt_rec.to_v : @rec_list.to_v
       end
 
       def to_r
-        @page.current_rid ? __crnt_rec.to_r : super
+        @par.current_rid ? __crnt_rec.to_r : super
       end
 
       def index
-        n = @page.current_idx
+        n = @par.current_idx
         if n
           rec = __crnt_rec
           opt = optlist(rec[:option]) if rec.busy? && rec.last
@@ -52,7 +52,7 @@ module CIAX
           # Leave parent of alive process
           pids = @records.values.map { |r| r[:pid] }
           pids.delete('0')
-          @all_keys.concat(pids + @page.list).uniq!
+          @all_keys.concat(pids + @par.list).uniq!
           @all_keys.each { |id| @records.get(id).upd }
           clean
         end
@@ -60,7 +60,7 @@ module CIAX
 
       # Available commands in current record
       def ___upd_valid_keys
-        rid = @page.current_rid
+        rid = @par.current_rid
         opts = if rid
                  (__crnt_rec || {})[:option] || []
                else
@@ -70,7 +70,7 @@ module CIAX
       end
 
       def __crnt_rec
-        @records.get(@page.current_rid)
+        @records.get(@par.current_rid)
       end
     end
 

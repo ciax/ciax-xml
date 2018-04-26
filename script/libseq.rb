@@ -116,7 +116,6 @@ module CIAX
         @record[:pid] = pid
         @id = @record[:id]
         @title = @record.title
-        @cfg[:rec_list].push(@record)
         ___init_record_file
       end
 

@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require 'libexe'
 require 'libmcrcmd'
-require 'libreclist'
 module CIAX
   # Macro Layer
   module Mcr
@@ -69,7 +68,7 @@ module CIAX
       end
 
       def ___init_stat
-        @stat = RecList.new(@cfg[:rec_arc])
+        @stat = @cfg[:rec_arc]
         @sv_stat = @cfg[:sv_stat]
         @sub_list = @cfg[:dev_list]
       end

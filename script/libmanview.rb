@@ -7,10 +7,10 @@ module CIAX
   module Mcr
     # Macro Man View
     class ManView < Varx
-      def initialize(id, page, rec_list = RecList.new, valid_keys = [])
+      def initialize(id, page, rec_arc = RecArc.new, valid_keys = [])
         super('mcr')
         @par = type?(page, Parameter)
-        @rec_list = type?(rec_list, RecList).ext_view(@par.list)
+        @rec_list = RecList.new(type?(rec_arc, RecArc)).ext_view(@par.list)
         @org_cmds = (@valid_keys = valid_keys).dup
         # @records content is Record
         @id = id
@@ -19,6 +19,7 @@ module CIAX
 
       # Show Record(id = @par.current_rid) or List of them
       def to_v
+warning("ManView to_v")
         @par.current_rid ? __crnt_rec.to_v : @rec_list.to_v
       end
 

@@ -59,8 +59,11 @@ module CIAX
     class Prompt < Prompt
       def initialize(id, opt = {})
         super('mcr', id)
+        # list: running macros
         init_array(:list)
+        # run: sites in motion
         init_array(:run)
+        # sid: serial ID
         init_str(:sid)
         init_flg(nonstop: '(nonstop)')
         up(:nonstop) if opt[:n]

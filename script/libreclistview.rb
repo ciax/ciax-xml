@@ -24,7 +24,12 @@ module CIAX
 
         # Show Record(id = @page.current_rid) or List of them
         def to_v
-          ___list_view
+warning("RecListView to_v")
+          v= ___list_view
+          warning(v)
+          v
+        rescue
+warning($?)
         end
 
         private

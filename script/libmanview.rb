@@ -13,7 +13,6 @@ module CIAX
         @rec_list = type?(rec_list, RecList).ext_view(@par.list)
         @org_cmds = (@valid_keys = valid_keys).dup
         # @records content is Record
-        @all_keys = []
         @id = id
         ___init_upd_proc
       end
@@ -35,29 +34,15 @@ module CIAX
         "[#{n + 1}]#{opt}"
       end
 
-      def clean
-        (keys - @all_keys).each { |id| @rec_list.delete(id) }
-        self
-      end
-
       private
 
       def ___init_upd_proc
         @upd_procs << proc do
-          ___upd_valid_keys
-          # Leave parent of alive process
-          pids = @rec_list.values.map { |r| r[:pid] }
-          pids.delete('0')
-          @all_keys.concat(pids + @par.list).uniq!
-          @all_keys.each { |id| @rec_list.get(id).upd }
-          clean
+          # Available commands in current record
+          opts = @par.current_rid ? __crnt_opt : @org_cmds
+          @valid_keys.replace(opts)
+          @par.list.each { |id| @rec_list.get(id).upd }
         end
-      end
-
-      # Available commands in current record
-      def ___upd_valid_keys
-        opts = @par.current_rid ? __crnt_opt : @org_cmds
-        @valid_keys.replace(opts)
       end
 
       def __crnt_rec

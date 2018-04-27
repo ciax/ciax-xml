@@ -29,13 +29,10 @@ module CIAX
 
       def index
         n = @par.current_idx
-        if n
-          rec = __crnt_rec
-          opt = optlist(rec[:option]) if rec.busy? && rec.last
-          "[#{n + 1}]#{opt}"
-        else
-          '[0]'
-        end
+        return '[0]' unless n
+        rec = __crnt_rec
+        opt = optlist(rec[:option]) if rec.busy? && rec.last
+        "[#{n + 1}]#{opt}"
       end
 
       def clean
@@ -59,17 +56,16 @@ module CIAX
 
       # Available commands in current record
       def ___upd_valid_keys
-        rid = @par.current_rid
-        opts = if rid
-                 (__crnt_rec || {})[:option] || []
-               else
-                 @org_cmds
-               end
+        opts = @par.current_rid ? __crnt_opt : @org_cmds
         @valid_keys.replace(opts)
       end
 
       def __crnt_rec
         @rec_list.get(@par.current_rid)
+      end
+
+      def __crnt_opt
+        (__crnt_rec || {})[:option] || []
       end
     end
 

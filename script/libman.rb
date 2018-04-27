@@ -44,7 +44,7 @@ module CIAX
 
       def ext_local_server
         verbose { 'Initiate Record List' }
-        @stat.clear.refresh
+        @cfg[:rec_arc].clear.refresh
         ___mk_cmdlist
         super
       end

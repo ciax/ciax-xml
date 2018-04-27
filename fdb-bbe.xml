@@ -22,6 +22,7 @@
           <char length="2">${stat}</char>
         </item>
         <item id="setio" label="SET I/O [DDDDD]" type="config">
+          <par_num>0:65535</par_num>
           <string>SD</string>
           <char length="2">$1</char>
         </item>

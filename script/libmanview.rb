@@ -13,7 +13,6 @@ module CIAX
         @rec_list = type?(rec_list, RecList).ext_view(@par.list)
         @org_cmds = (@valid_keys = valid_keys).dup
         # @records content is Record
-        @records = @rec_list.records
         @all_keys = []
         @id = id
         ___init_upd_proc
@@ -40,7 +39,7 @@ module CIAX
       end
 
       def clean
-        (keys - @all_keys).each { |id| @records.delete(id) }
+        (keys - @all_keys).each { |id| @rec_list.delete(id) }
         self
       end
 
@@ -50,10 +49,10 @@ module CIAX
         @upd_procs << proc do
           ___upd_valid_keys
           # Leave parent of alive process
-          pids = @records.values.map { |r| r[:pid] }
+          pids = @rec_list.values.map { |r| r[:pid] }
           pids.delete('0')
           @all_keys.concat(pids + @par.list).uniq!
-          @all_keys.each { |id| @records.get(id).upd }
+          @all_keys.each { |id| @rec_list.get(id).upd }
           clean
         end
       end
@@ -70,7 +69,7 @@ module CIAX
       end
 
       def __crnt_rec
-        @records.get(@par.current_rid)
+        @rec_list.get(@par.current_rid)
       end
     end
 

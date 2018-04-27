@@ -13,7 +13,7 @@ module CIAX
 
         # Initiate for driver
         def ext_local_driver
-          @seq_list = SeqList.new
+          @seq_list = SeqList.new(@cfg[:rec_arc])
           @sv_stat.repl(:sid, '') # For server response
           ___init_pre_exe
           ___init_proc_rem(@cobj.rem)

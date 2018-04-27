@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libexe'
 require 'libmcrcmd'
+require 'libreclist'
 module CIAX
   # Macro Layer
   module Mcr
@@ -15,7 +16,6 @@ module CIAX
         ___init_net
         ___init_cmd
         ___init_stat
-        ___init_post_exe
       end
 
       # separated for background run
@@ -69,15 +69,9 @@ module CIAX
       end
 
       def ___init_stat
-        @stat = @cfg[:rec_list]
+        @stat = RecList.new(@cfg[:rec_arc])
         @sv_stat = @cfg[:sv_stat]
         @sub_list = @cfg[:dev_list]
-      end
-
-      def ___init_post_exe
-        @post_exe_procs << proc do
-          @sv_stat.get(:list).each { |id| @par.push(id) }
-        end
       end
 
       # Making Command List JSON file for WebApp

@@ -16,13 +16,8 @@ module CIAX
           @cobj.rem.int.cfg[:parameters] = [@par]
           ___init_view
           ___init_lcmd
-          # Set Current ID by number
-          input_conv_num do |i|
-            # i should be number
-            @par.sel(i)
-            # nil:no command -> show record
-            nil
-          end
+          ___init_post_exe
+          ___init_conv
           self
         end
 
@@ -33,7 +28,6 @@ module CIAX
           # @view will be switched among Whole List or Records
           # Setting @par will switch the Record
           @cfg[:output] = @view
-          @post_exe_procs << proc { @view.upd }
           @prompt_proc = proc do
             @sv_stat.to_s + @view.upd.index
           end
@@ -44,6 +38,23 @@ module CIAX
             @par.flush(@sv_stat.upd.get(:list))
           end
           @cobj.loc.add_view
+        end
+
+        def ___init_post_exe
+          @post_exe_procs << proc do
+            @sv_stat.get(:list).each { |id| @par.push(id) }
+            @view.upd
+          end
+        end
+
+        # Set Current ID by number
+        def ___init_conv
+          input_conv_num do |i|
+            # i should be number
+            @par.sel(i)
+            # nil:no command -> show record
+            nil
+          end
         end
       end
 

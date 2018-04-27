@@ -124,15 +124,18 @@ module CIAX
 
       # Using for RecArc, RecList
       def jload(fname)
-        j2h(
-          open(fname) do |f|
-            f.flock(::File::LOCK_SH)
-            f.read
-          end
-        )
-      rescue Errno::ENOENT, InvalidData
-        verbose { "  -- no json file (#{fname})" }
+        j2h(loadfile(fname))
+      rescue InvalidData
         Hashx.new
+      end
+
+      def loadfile(fname)
+        open(fname) do |f|
+          f.flock(::File::LOCK_SH)
+          f.read
+        end
+      rescue Errno::ENOENT
+        verbose { "  -- no json file (#{fname})" }
       end
     end
   end

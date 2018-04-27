@@ -1,19 +1,17 @@
 #!/usr/bin/ruby
 require 'librecord'
-
 module CIAX
   # Macro Layer
   module Mcr
     # Record Archive List (Dir)
     class RecArc < Varx
-      attr_reader :records
+      attr_reader :list, :id
       def initialize(id = 'mcr')
         super('rec', 'list')
         ext_local_file.load
         @id = id
-        # @archives : Archive List : Index of Record (id: cid,pid,res)
-        @archives = (self[:list] ||= {})
-        # @records : Visible List : Database of Record (Part of archive)
+        # @list : Archive List : Index of Record (id: cid,pid,res)
+        @list = (self[:list] ||= {})
         init_time2cmt
         auto_save
       end
@@ -28,7 +26,7 @@ module CIAX
 
       # For format changes
       def clear
-        @archives.clear
+        @list.clear
         cmt
         self
       end
@@ -37,7 +35,7 @@ module CIAX
         id = record[:id]
         return self unless id.to_i > 0
         ele = Hashx.new(record).pick(%i(cid pid result)) # extract header
-        @archives[id] = ele
+        @list[id] = ele
         cmt
         self
       end
@@ -48,7 +46,7 @@ module CIAX
         ary = []
         Dir.glob(vardir('record') + 'record_*.json') do |name|
           next if /record_([0-9]+).json/ !~ name
-          next if @archives.key?(Regexp.last_match(1))
+          next if @list.key?(Regexp.last_match(1))
           ary << name
         end
         ary

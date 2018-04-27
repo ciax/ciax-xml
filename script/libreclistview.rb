@@ -17,7 +17,7 @@ module CIAX
         end
 
         def ext_view(visible, init_num)
-          @visible = visible.replace(@archives.keys.sort.last(init_num))
+          @visible = visible.replace(@arc_list.keys.sort.last(init_num))
           @visible.each { |rid| get(rid) }
           self
         end
@@ -38,7 +38,7 @@ module CIAX
         end
 
         def ___item_view(id, idx)
-          rec = @records[id]
+          rec = self[id]
           tim = Time.at(id[0..9].to_i).to_s
           title = "[#{idx}] #{id} (#{tim}) by #{___get_pcid(id)}"
           msg = "#{rec[:cid]} #{rec.step_num}"
@@ -57,10 +57,10 @@ module CIAX
         end
 
         def ___get_pcid(id)
-          rec = @archives[id]
+          rec = @arc_list[id]
           pid = rec[:pid]
           return 'user' if pid == '0'
-          @archives[pid][:cid]
+          @arc_list[pid][:cid]
         end
       end
 

@@ -5,18 +5,16 @@
       <instance id="cco" app_id="bbe" host="ciax" port="53204" label="OPT Helium Compressor">
         <command ref="cco"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <group ref="g0" caption="TAO1 SWITCH"/>
-          <group ref="g1" caption="TAO2 SWITCH"/>
+          <group ref="g1" caption="BLOKEN"/>
           <group ref="g2" caption="COMICS/IMG(S4)"/>
           <group ref="g3" caption="COMICS/SPEC(S5)"/>
         </status>
       </instance>
       <instance id="cro" app_id="bbe" host="ciax" port="53205" label="IR Helium Compressor">
+        <command ref="cro"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <group ref="g0" caption="X0-3"/>
-          <group ref="g1" caption="X4-7"/>
-          <group ref="g2" caption="X8-11"/>
-          <group ref="g3" caption="X12-15"/>
+          <group ref="g0" caption="TAO1 SWITCH"/>
+          <group ref="g1" caption="TAO2 SWITCH"/>
         </status>
       </instance>
       <instance id="cci" app_id="bbe" host="ciax" port="53206" label="IR Helium Compressor">

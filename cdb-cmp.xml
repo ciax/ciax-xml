@@ -40,17 +40,19 @@
       </unit>
     </group>
   </alias>
-  <alias id="cco" label="OPT Helium Compressor">
-    <group id="gtao" caption="TAO">
-      <unit id="ut1" title="t1[on|off]" label="TAO1 [%s]">
-        <item id="t1on" label="ON" ref="x0on"/>
-        <item id="t1off" label="OFF" ref="x0off"/>
+  <alias id="cri" label="IR Helium Compressor">
+    <group id="gcri" caption="Compressors">
+      <unit id="uir" title="irc[on|off]" label="IRCS(S3) [%s]">
+        <item id="ircon" label="ON" ref="x0on"/>
+        <item id="ircoff" label="OFF" ref="x0off"/>
       </unit>
-      <unit id="ut2" title="t2[on|off]" label="TAO2 [%s]">
-        <item id="t2on" label="ON" ref="x1on"/>
-        <item id="t2off" label="OFF" ref="x1off"/>
+      <unit id="uch" title="cha[on|off]" label="CHARIS(CM1) [%s]">
+        <item id="chaon" label="ON" ref="x2on"/>
+        <item id="chaoff" label="OFF" ref="x2off"/>
       </unit>
     </group>
+  </alias>
+  <alias id="cco" label="OPT Helium Compressor">
     <group id="gcom" caption="COMICS">
       <unit id="um1" title="m1[on|off]" label="COMICS IMG(S4) [%s]">
         <item id="m1on" label="ON" ref="x2on"/>
@@ -66,15 +68,15 @@
       </unit>
     </group>
   </alias>
-  <alias id="cri" label="IR Helium Compressor">
-    <group id="gcri" caption="Compressors">
-      <unit id="uir" title="irc[on|off]" label="IRCS(S3) [%s]">
-        <item id="ircon" label="ON" ref="x0on"/>
-        <item id="ircoff" label="OFF" ref="x0off"/>
+  <alias id="cro" label="OPT Helium Compressor">
+    <group id="gtao" caption="TAO">
+      <unit id="ut1" title="t1[on|off]" label="TAO1 [%s]">
+        <item id="t1on" label="ON" ref="x0on"/>
+        <item id="t1off" label="OFF" ref="x0off"/>
       </unit>
-      <unit id="uch" title="cha[on|off]" label="CHARIS(CM1) [%s]">
-        <item id="chaon" label="ON" ref="x2on"/>
-        <item id="chaoff" label="OFF" ref="x2off"/>
+      <unit id="ut2" title="t2[on|off]" label="TAO2 [%s]">
+        <item id="t2on" label="ON" ref="x1on"/>
+        <item id="t2off" label="OFF" ref="x1off"/>
       </unit>
     </group>
   </alias>

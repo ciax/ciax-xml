@@ -19,7 +19,6 @@ module CIAX
 
       # Show Record(id = @par.current_rid) or List of them
       def to_v
-warning("ManView to_v")
         @par.current_rid ? __crnt_rec.to_v : @rec_list.to_v
       end
 

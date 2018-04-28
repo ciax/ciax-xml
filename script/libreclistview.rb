@@ -17,19 +17,15 @@ module CIAX
         end
 
         def ext_view(visible, init_num)
-          @visible = visible.replace(@arc_list.keys.sort.last(init_num))
+          @visible = visible.replace(@rec_arc.list.keys.sort.last(init_num))
           @visible.each { |rid| get(rid) }
+          @id = @rec_arc.id
           self
         end
 
         # Show Record(id = @page.current_rid) or List of them
         def to_v
-warning("RecListView to_v")
-          v= ___list_view
-          warning(v)
-          v
-        rescue
-warning($?)
+          ___list_view
         end
 
         private
@@ -62,10 +58,9 @@ warning($?)
         end
 
         def ___get_pcid(id)
-          rec = @arc_list[id]
-          pid = rec[:pid]
+          pid = self[id][:pid]
           return 'user' if pid == '0'
-          @arc_list[pid][:cid]
+          @rec_arc.list[pid][:cid]
         end
       end
 

@@ -8,8 +8,7 @@ module CIAX
     # Visible Record Database
     class RecList < Hashx
       def initialize(rec_arc = RecArc.new)
-        @id = type?(rec_arc, RecArc).id
-        @arc_list = rec_arc.list
+        @rec_arc = type?(rec_arc, RecArc)
       end
 
       # delete from @records other than in ary

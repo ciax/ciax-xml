@@ -15,7 +15,8 @@ module CIAX
         def ext_local_driver
           @seq_list = SeqList.new(@cfg[:rec_arc])
           @sv_stat.repl(:sid, '') # For server response
-          @cobj.rem.int.cfg[:parameters] = [{type: 'str', list: @sv_stat.get(:list)}]
+          par = { type: 'str', list: @sv_stat.get(:list) }
+          @cobj.rem.int.cfg[:parameters] = [par]
           ___init_pre_exe
           ___init_proc_rem(@cobj.rem)
           ___init_proc_loc

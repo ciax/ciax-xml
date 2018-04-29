@@ -2,6 +2,27 @@
 module CIAX
   # Variable status data
   class Varx
+    # JSON file module functions
+    module JFileFunc
+      module_function
+
+      # Using for RecArc, RecList
+      def jload(fname)
+        j2h(loadjfile(fname))
+      rescue InvalidData
+        Hashx.new
+      end
+
+      def loadjfile(fname)
+        open(fname) do |f|
+          f.flock(::File::LOCK_SH)
+          f.read
+        end
+      rescue Errno::ENOENT
+        verbose { "  -- no json file (#{fname})" }
+      end
+    end
+
     # Add File I/O feature
     module JFile
       include JFileFunc
@@ -125,25 +146,5 @@ module CIAX
       end
     end
 
-    # JSON file module functions
-    module JFileFunc
-      module_function
-
-      # Using for RecArc, RecList
-      def jload(fname)
-        j2h(loadjfile(fname))
-      rescue InvalidData
-        Hashx.new
-      end
-
-      def loadjfile(fname)
-        open(fname) do |f|
-          f.flock(::File::LOCK_SH)
-          f.read
-        end
-      rescue Errno::ENOENT
-        verbose { "  -- no json file (#{fname})" }
-      end
-    end
   end
 end

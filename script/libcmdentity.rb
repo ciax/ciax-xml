@@ -15,6 +15,14 @@ module CIAX
         @cfg[:def_proc] = type?(def_proc, Proc)
         self
       end
+
+      # Param Shared in Group
+      def def_par(atrb = Hashx.new)
+        defpar = { type: 'str', list: [], default: nil }
+        atrb.update(defpar){ |k,s| s }
+        @cfg[:parameters] = [atrb]
+        self
+      end
     end
 
     # Command db with parameter derived from Item

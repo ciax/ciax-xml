@@ -13,7 +13,7 @@ module CIAX
         def ext_shell
           super
           @par = Parameter.new
-          @cobj.rem.int.cfg[:parameters] = [@par]
+          @cobj.rem.int.def_par(@par)
           ___init_view
           ___init_lcmd
           ___init_post_exe

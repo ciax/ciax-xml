@@ -3,9 +3,10 @@ require 'libdbtree'
 
 module CIAX
   # Instance Layer
-  module Cmd
-    # Instance DB
-    class Db < DbTree
+  module Ins
+    # This is part of Instance DB
+    # You need add <command ref='*'/> in InsDB to use it
+    class CmdDb < DbTree
       def initialize
         super('cdb')
       end

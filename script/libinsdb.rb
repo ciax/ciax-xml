@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libappdb'
-require 'libcmddb'
+require 'libinscmddb'
 
 module CIAX
   # Instance Layer
@@ -13,7 +13,7 @@ module CIAX
         @proj = proj || ENV['PROJ'] || 'all'
         super('idb', @proj)
         @adb = App::Db.new
-        @cdb = Cmd::Db.new
+        @cdb = CmdDb.new
         @run_list = @displist.valid_keys.select do |id|
           host = (_get_cache(id) || @docs.get(id)[:attr])[:host]
           host == 'localhost' || host == HOST

@@ -6,8 +6,8 @@ module CIAX
   module Mcr
     # Macro Record List
     class RecList
-      def ext_view(visible = [], init_num = 0)
-        extend(View).ext_view(visible, init_num.to_i)
+      def ext_view(visible = [])
+        extend(View).ext_view(visible)
       end
 
       # Record Visible View
@@ -16,13 +16,17 @@ module CIAX
           Msg.type?(obj, RecList)
         end
 
-        def ext_view(visible, init_num)
-          @visible = visible.replace(@rec_arc.list.keys.sort.last(init_num))
-          @visible.each { |rid| get(rid) }
+        def ext_view(visible)
+          @visible = visible
           @id = @rec_arc.id
           self
         end
 
+        def get_arc(num = 1)
+          @visible.replace(@rec_arc.list.keys.sort.last(num.to_i))
+          self
+        end
+        
         # Show Record(id = @page.current_rid) or List of them
         def to_v
           ___list_view
@@ -39,9 +43,9 @@ module CIAX
         end
 
         def ___item_view(id, idx)
-          rec = self[id]
+          rec = get(id)
           tim = Time.at(id[0..9].to_i).to_s
-          title = "[#{idx}] #{id} (#{tim}) by #{___get_pcid(id)}"
+          title = "[#{idx}] #{id} (#{tim}) by #{___get_pcid(rec[:pid])}"
           msg = "#{rec[:cid]} #{rec.step_num}"
           msg << ___result_view(rec)
           itemize(title, msg)
@@ -57,8 +61,7 @@ module CIAX
           end
         end
 
-        def ___get_pcid(id)
-          pid = self[id][:pid]
+        def ___get_pcid(pid)
           return 'user' if pid == '0'
           @rec_arc.list[pid][:cid]
         end
@@ -66,7 +69,7 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         GetOpts.new('[num]') do |_opt, args|
-          puts RecList.new.ext_view([], args.shift).to_v
+          puts RecList.new.ext_view.get_arc(args.shift).to_v
         end
       end
     end

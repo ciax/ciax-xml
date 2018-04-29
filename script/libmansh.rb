@@ -34,7 +34,11 @@ module CIAX
         end
 
         def ___init_lcmd
-          @cobj.loc.add_page.get('cl').def_proc do
+          page = @cobj.loc.add_page
+          page.get('last').def_proc do |ent|
+            @view.rec_list.get_arc(ent.par[0])
+          end
+          page.get('cl').def_proc do
             @par.flush(@sv_stat.upd.get(:list))
           end
           @cobj.loc.add_view

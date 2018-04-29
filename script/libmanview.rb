@@ -7,6 +7,7 @@ module CIAX
   module Mcr
     # Macro Man View
     class ManView < Varx
+      attr_reader :rec_list
       def initialize(id, page, rec_arc = RecArc.new, valid_keys = [])
         super('mcr')
         @par = type?(page, Parameter)

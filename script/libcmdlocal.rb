@@ -116,6 +116,7 @@ module CIAX
             super
             add_dummy('0', 'List page')
             add_dummy('[1-n]', 'Switch Pages')
+            add_item('last', 'Get last item [n]', def_msg: 'UPDATE').init_par
             add_item('cl', 'Clean list', def_msg: 'CLEAN')
           end
         end

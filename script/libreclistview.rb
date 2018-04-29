@@ -26,7 +26,7 @@ module CIAX
           @visible.replace(@rec_arc.list.keys.sort.last(num.to_i))
           self
         end
-        
+
         # Show Record(id = @page.current_rid) or List of them
         def to_v
           ___list_view

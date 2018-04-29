@@ -15,6 +15,7 @@ module CIAX
 
       def loadjfile(fname)
         open(fname) do |f|
+          verbose { "Reading [#{fname}](#{f.size})" }
           f.flock(::File::LOCK_SH)
           f.read
         end
@@ -121,7 +122,6 @@ module CIAX
       def ___read_json(tag = nil)
         @cfile = ___chk_tag(tag)
         return '' unless @cfile
-        verbose { "Reading [#{@cfile}](#{f.size})" }
         loadjfile(@jsondir + @cfile) || ''
       end
 
@@ -145,6 +145,5 @@ module CIAX
         end
       end
     end
-
   end
 end

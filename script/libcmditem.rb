@@ -15,6 +15,12 @@ module CIAX
         @id = @cfg[:id]
       end
 
+      def init_par(atrb = Hashx.new)
+        par = { type: 'str', list: [], default: nil }
+        @cfg[:parameters] = [par.update(atrb)]
+        self
+      end
+
       # element of par could be formula
       def set_par(pary, opt = {})
         # override

@@ -58,8 +58,8 @@ module CIAX
       end
 
       def ___init_cmd
-        @cobj.add_rem.cfg[:def_msg] = 'ACCEPT'
-        rem = @cobj.rem
+        rem = @cobj.add_rem
+        rem.cfg[:def_msg] = 'ACCEPT'
         rem.add_sys
         rem.add_int
         rem.add_ext

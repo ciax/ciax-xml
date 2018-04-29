@@ -4,6 +4,8 @@ module CIAX
   class Varx
     # Add File I/O feature
     module JFile
+      include JFileFunc
+
       def self.extended(obj)
         Msg.type?(obj, Varx)
       end
@@ -87,17 +89,19 @@ module CIAX
         end.sort
       end
 
+      def ___chk_tag(tag = nil)
+        return __file_name unless tag
+        list = __tag_list
+        return __file_name(tag) if list.include?(tag)
+        par_err('No such Tag', "Tag=#{list}")
+        nil
+      end
+
       def ___read_json(tag = nil)
-        @cfile = __file_name(tag)
-        open(@jsondir + @cfile) do |f|
-          verbose { "Reading [#{@cfile}](#{f.size})" }
-          f.flock(::File::LOCK_SH)
-          f.read
-        end || ''
-      rescue Errno::ENOENT
-        Msg.par_err('No such Tag', "Tag=#{__tag_list}") if tag
-        verbose { "  -- no json file (#{@cfile})" }
-        ''
+        @cfile = ___chk_tag(tag)
+        return '' unless @cfile
+        verbose { "Reading [#{@cfile}](#{f.size})" }
+        loadjfile(@jsondir + @cfile) || ''
       end
 
       def __write_json(jstr, tag = nil)
@@ -119,17 +123,20 @@ module CIAX
           'File Saving from Multiple Threads'
         end
       end
+    end
 
+    # JSON file module functions
+    module JFileFunc
       module_function
 
       # Using for RecArc, RecList
       def jload(fname)
-        j2h(loadfile(fname))
+        j2h(loadjfile(fname))
       rescue InvalidData
         Hashx.new
       end
 
-      def loadfile(fname)
+      def loadjfile(fname)
         open(fname) do |f|
           f.flock(::File::LOCK_SH)
           f.read

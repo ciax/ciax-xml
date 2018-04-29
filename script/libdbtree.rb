@@ -25,7 +25,8 @@ module CIAX
     def _validate_par(db)
       res = db.deep_search(format('\$[%d-9]', @argc + 1))
       return db if res.empty?
-      cfg_err("Can't replace Parameter (No <par_num>?) [#{res.join('/')}] for #{@argc}")
+      rl = res.join('/')
+      cfg_err("Can't replace Parameter (No <par_num>?) [#{rl}] for #{@argc}")
     ensure
       @argc = 0
     end

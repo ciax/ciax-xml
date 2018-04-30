@@ -7,10 +7,9 @@ module CIAX
   module Mcr
     # Macro Man View
     class ManView < Varx
-      attr_reader :rec_list
-      def initialize(id, page, rec_arc = RecArc.new, valid_keys = [])
+      def initialize(id, par, rec_arc = RecArc.new, valid_keys = [])
         super('mcr')
-        @par = type?(page, Parameter)
+        @par = type?(par, Parameter)
         @rec_list = RecList.new(type?(rec_arc, RecArc)).ext_view(@par.list)
         @org_cmds = (@valid_keys = valid_keys).dup
         # @records content is Record
@@ -35,6 +34,11 @@ module CIAX
         "[#{n + 1}]#{opt}"
       end
 
+      def get_arc(n = 1)
+        @rec_list.get_arc(n.to_i)
+        self
+      end
+
       private
 
       def ___init_upd_proc
@@ -57,8 +61,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] ..') do |_opt, args|
-        page = Parameter.new.flush(args)
-        puts ManView.new('test', page).upd
+        par = Parameter.new
+        view = ManView.new('test', par).get_arc(args.shift)
+        par.sel(args.shift.to_i)
+        puts view
       end
     end
   end

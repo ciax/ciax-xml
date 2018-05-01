@@ -18,7 +18,7 @@ module CIAX
         end.flatten
       end
 
-      def validate(pary, psize)
+      def validate(pary)
         psize = type?(pary, Array).size
         map do |pref|
           next ___use_default(pref, psize) unless (str = pary.shift)

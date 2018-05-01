@@ -65,6 +65,7 @@ module CIAX
 
       private
 
+      # atrb can be /cdb//index[id] which contains [:parameter] and so on
       def _new_item(id, atrb = Hashx.new)
         self[id] = context_module('Item').new(@cfg, atrb.update(id: id))
       end

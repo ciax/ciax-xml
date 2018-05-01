@@ -85,10 +85,6 @@ module CIAX
             add_item('save', '[key,key...] [tag]', def_pars(2))
             add_item('load', '[tag]', def_pars(1))
           end
-
-          def def_pars(n = 1)
-            { parameters: Array.new(n) { Hashx.new(type: 'reg', list: ['.']) } }
-          end
         end
       end
     end

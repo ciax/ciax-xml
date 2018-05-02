@@ -31,7 +31,7 @@ module CIAX
               ary = pars.map { |e| e[:label] || 'str' }
               label.replace(format(label, *ary))
             end
-            _new_item(id, itm).init_pars
+            _new_item(id, itm).tr_pars
           end
 
           # Set items by DB

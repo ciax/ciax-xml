@@ -26,6 +26,7 @@ module CIAX
         self
       end
 
+      # Parameters for any string
       def def_pars(n = 1, reg = '.')
         @cfg[:parameters] = Array.new(n) do
           Parameter.new(type: 'reg', list: [reg])
@@ -33,8 +34,10 @@ module CIAX
         self
       end
 
-      # Parameter setting by CDB
-      def init_pars
+      # Transform each element of @cfg[:parameter]
+      #  JSON cache file ->  CDB Hash -> Parameter
+      # Used in Ext Group
+      def tr_pars
         if @cfg.key?(:parameters)
           @cfg[:parameters].map! { |par| Parameter.new(par) }
         end

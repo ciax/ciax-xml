@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libconf'
+require 'libcmdpar'
 # @cfg[:def_proc] should be Proc which is given |Entity| as param
 #   returns String as message.
 module CIAX
@@ -17,15 +18,24 @@ module CIAX
       end
 
       # Param Shared in Group
-      def def_par(atrb = Hashx.new)
-        defpar = { type: 'str', list: [], default: nil }
-        atrb.update(defpar) { |_k, s| s }
-        @cfg[:parameters] = [atrb]
+      def add_par(par = {})
+        unless par.is_a? Parameter
+          par = Parameter.new(par).update(type: 'str', list: []) { |_k, s| s }
+        end
+        (@cfg[:parameters] ||= []) << par
         self
       end
 
       def def_pars(n = 1)
-        { parameters: Array.new(n) { Hashx.new(type: 'reg', list: ['.']) } }
+        { parameters: Array.new(n) { Parameter.new(type: 'reg', list: ['.']) } }
+      end
+
+      # Parameter setting by CDB
+      def init_pars(itm)
+        return unless itm.key?(:parameters)
+        itm[:parameters].map! do |par|
+          Parameter.new(par)
+        end
       end
     end
   end

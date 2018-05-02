@@ -15,7 +15,7 @@ module CIAX
         def ext_local_driver
           @seq_list = SeqList.new(@cfg[:rec_arc])
           @sv_stat.repl(:sid, '') # For server response
-          @cobj.rem.int.def_par(list: @sv_stat.get(:list))
+          @cobj.rem.int.add_par(list: @sv_stat.get(:list))
           ___init_pre_exe
           ___init_proc_rem(@cobj.rem)
           ___init_proc_loc

@@ -20,12 +20,12 @@ module CIAX
       #   x   |   *   |    -      |    o     | :default
       #   *   |   x   |    -      |    o     | :default
       def valid_pars
-        e[:type] == 'str' ? e[:list] : []
+        self[:type] == 'str' ? get(:list) : []
       end
 
       def validate(str)
-        return ___use_default unless str
         list = get(:list)
+        return ___use_default(list) unless str
         return method('_val_' + get(:type)).call(str, list) if list
         key?(:default) ? get(:default) : str
       end
@@ -51,8 +51,8 @@ module CIAX
         par_err("Parameter Invalid Str (#{str}) for [#{a2csv(list)}]")
       end
 
-      def ___use_default
-        raise ParShortage unless key?(:default)
+      def ___use_default(list)
+        raise ParShortage, a2csv(list) unless key?(:default)
         verbose { "Validate: Using default value [#{get(:default)}]" }
         get(:default)
       end

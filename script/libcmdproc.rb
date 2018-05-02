@@ -26,8 +26,8 @@ module CIAX
         self
       end
 
-      def def_pars(n = 1)
-        { parameters: Array.new(n) { Parameter.new(type: 'reg', list: ['.']) } }
+      def def_pars(n = 1, reg = '.')
+        { parameters: Array.new(n) { Parameter.new(type: 'reg', list: [reg]) } }
       end
 
       # Parameter setting by CDB

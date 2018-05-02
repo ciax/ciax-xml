@@ -116,8 +116,8 @@ module CIAX
             super
             add_dummy('0', 'List page')
             add_dummy('[1-n]', 'Switch Pages')
-            add_item('last', 'Get last item [n]', def_msg: 'UPDATE').add_par(type: 'reg', list: ['^[0-9]+$'])
-            add_item('cl', 'Clean list', def_msg: 'CLEAN')
+            add_item('last', 'Get last item [n]', def_pars(1, '^[0-9]+$'))
+            add_item('cl', 'Clean list')
           end
         end
       end

@@ -132,6 +132,11 @@ module CIAX
       self
     end
 
+    # Fill in unexistent keys by other Hash
+    def cover(other)
+      update(other) { |_, v| v }
+    end
+
     # Make empty copy (Empty string because it can be operated with replacement)
     def skeleton
       keys.each_with_object(Hashx.new) do |i, hash|

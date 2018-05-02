@@ -20,7 +20,7 @@ module CIAX
       # Param Shared in Group
       def add_par(par = {})
         unless par.is_a? Parameter
-          par = Parameter.new(par).update(type: 'str', list: []) { |_k, s| s }
+          par = Parameter.new(par).cover(type: 'str', list: [])
         end
         (@cfg[:parameters] ||= []) << par
         self

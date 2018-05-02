@@ -12,7 +12,7 @@ module CIAX
       end
 
       # Cover Ins DB (dst is overridden by self)
-      def cover(id, cdb)
+      def override(id, cdb)
         ali = get(id)[:command]
         %i(group unit).each { |k| cdb[k].update(ali[k]) }
         ___conv_index(cdb, ali)

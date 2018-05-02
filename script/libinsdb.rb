@@ -39,7 +39,7 @@ module CIAX
       def _init_command_db(dbi, doc)
         return unless doc.key?(:command)
         cdb = super(dbi)
-        @cdb.cover(doc[:command][:ref], cdb)
+        @cdb.override(doc[:command][:ref], cdb)
         cdb
       end
 

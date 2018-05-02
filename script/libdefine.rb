@@ -22,6 +22,8 @@ module CIAX
   class InvalidCMD < InvalidID; end
   # When invalid Parameter, continue in shell/server
   class InvalidPAR < InvalidCMD; end
+  # When Parameter Shortage, continue in shell/server
+  class ParShortage < InvalidPAR; end
 
   # Mangaged Exception(Long Jump)
   class LongJump < RuntimeError; end

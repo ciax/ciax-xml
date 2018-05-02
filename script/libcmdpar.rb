@@ -5,27 +5,29 @@ module CIAX
   # Command Module
   module CmdBase
     # Parameter commands
-    class ParArray < Arrayx
-      # Parameter for validate(cfg[:parameters])
-      #   structure:  [{:type,:list,:default}, ...]
+    class Parameter < Hashx
+      # Parameter for validate (element of cfg[:parameters]#Array)
+      #   structure:  {:type,:list,:default}
       # *Empty parameter will replaced to :default
       # *Error if str doesn't match with strings listed in :list
-      # *If no :list, returns :default
+      # *If no :list, override input with :default
       # Returns converted parameter array
+      #
+      # input | :list | in :list? | :default | output
+      #   o   |   x   |    -      |    x     | input
+      #   o   |   o   |    o      |    *     | input
+      #   o   |   o   |    x      |    *     | error
+      #   x   |   *   |    -      |    o     | :default
+      #   *   |   x   |    -      |    o     | :default
       def valid_pars
-        map do |e|
-          e[:list] if e[:type] == 'str'
-        end.flatten
+        e[:type] == 'str' ? e[:list] : []
       end
 
-      def validate(pary)
-        psize = type?(pary, Array).size
-        map do |pref|
-          next ___use_default(pref, psize) unless (str = pary.shift)
-          line = pref[:list]
-          next method('_val_' + pref[:type]).call(str, line) if line
-          pref.key?(:default) ? pref[:default] : str
-        end
+      def validate(str)
+        return ___use_default unless str
+        list = get(:list)
+        return method('_val_' + get(:type)).call(str, list) if list
+        key?(:default) ? get(:default) : str
       end
 
       private
@@ -49,21 +51,10 @@ module CIAX
         par_err("Parameter Invalid Str (#{str}) for [#{a2csv(list)}]")
       end
 
-      def ___use_default(pref, psize)
-        if pref.key?(:default)
-          verbose { "Validate: Using default value [#{pref[:default]}]" }
-          pref[:default]
-        else
-          ___err_shortage(pref, psize)
-        end
-      end
-
-      def ___err_shortage(pref, psize)
-        frac = format('(%d/%d)', psize, @cfg[:parameters].size)
-        mary = ['Parameter shortage ' + frac]
-        mary << @cfg[:disp].item(@id)
-        mary << ' ' * 10 + "key=(#{a2csv(pref[:list])})"
-        par_err(*mary)
+      def ___use_default
+        raise ParShortage unless key?(:default)
+        verbose { "Validate: Using default value [#{get(:default)}]" }
+        get(:default)
       end
     end
   end

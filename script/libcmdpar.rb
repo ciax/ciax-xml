@@ -25,34 +25,35 @@ module CIAX
 
       def validate(str)
         list = get(:list)
-        return ___use_default(list) unless str
-        return method('_val_' + get(:type)).call(str, list) if list
+        csv = a2csv(list)
+        return ___use_default(csv) unless str
+        return method('_val_' + get(:type)).call(str, list, csv) if list
         key?(:default) ? get(:default) : str
       end
 
       private
 
-      def _val_num(str, list)
+      def _val_num(str, list, csv)
         num = expr(str)
-        verbose { "Validate: [#{num}] Match? [#{a2csv(list)}]" }
+        verbose { "Validate: [#{num}] Match? [#{csv}]" }
         return num.to_s if list.any? { |r| ReRange.new(r) == num }
-        par_err("Out of range (#{num}) for [#{a2csv(list)}]")
+        par_err("Out of range (#{num}) for [#{csv}]")
       end
 
-      def _val_reg(str, list)
-        verbose { "Validate: [#{str}] Match? [#{a2csv(list)}]" }
+      def _val_reg(str, list, csv)
+        verbose { "Validate: [#{str}] Match? [#{csv}]" }
         return str if list.any? { |r| Regexp.new(r).match(str) }
-        par_err("Parameter Invalid Reg (#{str}) for [#{a2csv(list)}]")
+        par_err("Parameter Invalid Reg (#{str}) for [#{csv}]")
       end
 
-      def _val_str(str, list)
-        verbose { "Validate: [#{str}] Match? [#{a2csv(list)}]" }
+      def _val_str(str, list, csv)
+        verbose { "Validate: [#{str}] Match? [#{csv}]" }
         return str if list.include?(str)
-        par_err("Parameter Invalid Str (#{str}) for [#{a2csv(list)}]")
+        par_err("Parameter Invalid Str (#{str}) for [#{csv}]")
       end
 
-      def ___use_default(list)
-        raise ParShortage, a2csv(list) unless key?(:default)
+      def ___use_default(csv)
+        raise ParShortage, csv unless key?(:default)
         verbose { "Validate: Using default value [#{get(:default)}]" }
         get(:default)
       end

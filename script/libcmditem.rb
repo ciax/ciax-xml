@@ -6,7 +6,7 @@ module CIAX
   module CmdBase
     # Corresponds commands
     class Item < Hashx
-      include CmdProc
+      include CmdFunc
       # grp_cfg should have :id,'label',:parameters,:def_proc,:def_msg
       attr_reader :id
       def initialize(cfg, atrb = Hashx.new)

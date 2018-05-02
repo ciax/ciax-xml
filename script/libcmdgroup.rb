@@ -6,7 +6,7 @@ module CIAX
   module CmdBase
     # Command Group
     class Group < Hashx
-      include CmdProc
+      include CmdFunc
       attr_reader :valid_keys
       # cfg keys: caption,color,column
       def initialize(cfg, atrb = Hashx.new)

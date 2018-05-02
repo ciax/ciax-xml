@@ -7,7 +7,7 @@ module CIAX
   module CmdBase
     # Inherited by Index,Domain
     class GrpAry < Arrayx
-      include CmdProc
+      include CmdFunc
       def initialize(cfg, atrb = Hashx.new)
         # @cfg is isolated from cfg
         # So it is same meaning to set value to 'atrb' and @cfg
@@ -37,7 +37,7 @@ module CIAX
       end
 
       def append(obj) # return obj
-        type?(obj, CmdProc)
+        type?(obj, CmdFunc)
         obj.cfg.join_in(@cfg)
         unshift obj
         obj
@@ -51,7 +51,7 @@ module CIAX
           cls.new(@cfg, atrb)
         when String, Symbol
           context_module(cls).new(@cfg, atrb)
-        when CmdProc
+        when CmdFunc
           cls
         else
           sv_err('Not class')

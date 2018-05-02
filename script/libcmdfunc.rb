@@ -7,7 +7,7 @@ module CIAX
   # Command Module
   module CmdBase
     # Default Proc Setting method
-    module CmdProc
+    module CmdFunc
       include Msg
       attr_reader :cfg
 

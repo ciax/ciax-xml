@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libcmdproc'
+require 'libcmdfunc'
 #   returns String as message.
 module CIAX
   # Command Module

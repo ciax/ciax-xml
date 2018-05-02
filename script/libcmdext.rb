@@ -26,12 +26,12 @@ module CIAX
             label = itm[:label]
             # command label can contain printf format (i.e. %s)
             # and are replaced with each parameter's label
-            pars = init_pars(itm)
+            pars = itm[:parameters]
             if label && pars.is_a?(Array)
               ary = pars.map { |e| e[:label] || 'str' }
               label.replace(format(label, *ary))
             end
-            _new_item(id, itm)
+            _new_item(id, itm).init_pars
           end
 
           # Set items by DB

@@ -27,15 +27,18 @@ module CIAX
       end
 
       def def_pars(n = 1, reg = '.')
-        { parameters: Array.new(n) { Parameter.new(type: 'reg', list: [reg]) } }
+        @cfg[:parameters] = Array.new(n) do
+          Parameter.new(type: 'reg', list: [reg])
+        end
+        self
       end
 
       # Parameter setting by CDB
-      def init_pars(itm)
-        return unless itm.key?(:parameters)
-        itm[:parameters].map! do |par|
-          Parameter.new(par)
+      def init_pars
+        if @cfg.key?(:parameters)
+          @cfg[:parameters].map! { |par| Parameter.new(par) }
         end
+        self
       end
     end
   end

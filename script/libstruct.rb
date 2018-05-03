@@ -7,11 +7,8 @@ module CIAX
 
     COLOR_TBL = { 'true' => 13, 'false' => 8 }.freeze
     def view_struct(show_iv = false, show_id = false)
-      @_vs_show_iv = show_iv
-      @_vs_show_id = show_id
-      @_vs_indent = 0
-      @_vs_column = 4
-      @_vs_hash_col = 2
+      @_vs_opt = { show_iv: show_iv, show_id: show_id, show_cls: true }
+      @_vs_cfg = { indent: 0, column: 4, hash_col: 2 }
       @_vs_objects = []
       @_vs_lines = []
       # Show only top level of the instance variable
@@ -22,7 +19,7 @@ module CIAX
     private
 
     def __indent(str = '', offset = 0)
-      indent(@_vs_indent + offset) + str
+      indent(@_vs_cfg[:indent] + offset) + str
     end
 
     def __recursive(data, tag = nil)
@@ -37,18 +34,21 @@ module CIAX
 
     # Make Line Head
     def ___get_tag(data, tag)
-      str = format('%-6s', __mk_tag(tag))
+      str = format('%-6s :', __mk_tag(tag))
       # Add Id
-      if @_vs_show_id && data.is_a?(Enumerable)
-        str << colorize("(#{data.object_id})", 4)
+      if data.is_a?(Enumerable)
+        if @_vs_opt[:show_cls] && /::/ =~ data.class.to_s
+          str << colorize("<#{data.class}>", 2)
+        end
+        str << colorize("(#{data.object_id})", 4) if @_vs_opt[:show_id]
       end
-      str << ' :'
+      str
     end
 
     # Make Instance Variable List for sub structure
     def ___show_iv(data)
-      return unless @_vs_show_iv
-      @_vs_show_iv = nil
+      return unless @_vs_opt[:show_iv]
+      @_vs_opt[:show_iv] = nil
       data.instance_variables.reject { |n| /^@_vs_/ =~ n.to_s }.each do |n|
         val = data.instance_variable_get(n).inspect
         @_vs_lines << __indent(format('%-8s: %-10s', colorize(n.to_s, 1), val))
@@ -57,10 +57,10 @@ module CIAX
 
     # Show Sub structure
     def ___sub_structure(data, tag)
-      @_vs_indent += 1
+      @_vs_cfg[:indent] += 1
       ___loop?(data) || ___show_all(data, tag)
     ensure
-      @_vs_indent -= 1
+      @_vs_cfg[:indent] -= 1
     end
 
     # Check Loop
@@ -96,7 +96,7 @@ module CIAX
     # Array without sub structure
     def ___end_ary(data)
       head = nil
-      @_vs_lines << data.each_slice(@_vs_column).map do |a|
+      @_vs_lines << data.each_slice(@_vs_cfg[:column]).map do |a|
         head = head ? '  ' : '[ '
         __indent(head + a.map(&:inspect).join(','), 1)
       end.join(",\n") + ' ]'
@@ -104,7 +104,7 @@ module CIAX
 
     # Hash without sub structure
     def ___end_hash(data, tag)
-      data.keys.each_slice(tag ? @_vs_hash_col : 1) do |a|
+      data.keys.each_slice(tag ? @_vs_cfg[:hash_col] : 1) do |a|
         @_vs_lines << __indent(___hash_line(a, data), 1)
       end
     end

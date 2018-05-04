@@ -6,8 +6,8 @@ module CIAX
     include Msg
 
     COLOR_TBL = { 'true' => 13, 'false' => 8 }.freeze
-    def view_struct(show_iv = false, show_id = false)
-      @_vs_opt = { show_iv: show_iv, show_id: show_id, show_cls: true }
+    def view_struct(show_iv = false, show_id = false, show_cls = true)
+      @_vs_opt = { show_iv: show_iv, show_id: show_id, show_cls: show_cls }
       @_vs_cfg = { indent: 0, column: 4, hash_col: 2 }
       @_vs_objects = []
       @_vs_lines = []

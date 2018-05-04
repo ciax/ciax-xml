@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require 'libenumx'
 require 'libxmldoc'
-require 'ox'
 
 module CIAX
   # Db class is for read only databases, which holds all items of database.
@@ -45,7 +44,7 @@ module CIAX
     # Returns Dbi(command list) or Disp(site list)
     def _get_cache(id)
       @cbase = "#{@type}-#{id}"
-      @cachefile = vardir('cache') + "#{@cbase}.xml"
+      @cachefile = vardir('cache') + "#{@cbase}.mar"
       return ___load_cache(id) if ___use_cache?
       ___load_db(id)
       nil
@@ -62,7 +61,7 @@ module CIAX
       return self[id] if key?(id)
       begin
         # Used Marshal for symbol keys
-        Hashx.new(Ox.parse_obj(IO.read(@cachefile)))
+        Marshal.load(IO.read(@cachefile))
       rescue ArgumentError # if empty
         Hashx.new
       end
@@ -70,7 +69,7 @@ module CIAX
 
     def ___save_cache(id, res)
       open(@cachefile, 'w') do |f|
-        f << Ox.dump(res)
+        f << Marshal.dump(res)
         verbose { "Cache Saved (#{@cbase})" }
       end
       self[id] = res

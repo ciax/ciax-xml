@@ -50,10 +50,10 @@ module CIAX
       private
 
       def ___read_files(files)
-        files.each do |xml|
-          verbose { 'readxml:' + ::File.basename(xml, '.xml') }
+        files.each do |xmlfile|
+          verbose { 'readxml:' + ::File.basename(xmlfile, '.xml') }
           begin
-            Elem.new(xml).each { |top| ___mk_db(top) }
+            Elem.new(xmlfile).each { |top| ___mk_db(top) }
           rescue InvalidARGS
             show_err
           end

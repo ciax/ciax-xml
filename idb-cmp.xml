@@ -5,23 +5,22 @@
       <instance id="cco" app_id="bbe" host="ciax" port="53204" label="OPT Helium Compressor">
         <command ref="cco"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <group ref="g0" caption="CIAO(S6) SWITCH"/>
+          <group ref="g1" caption="BLOKEN"/>
           <group ref="g2" caption="COMICS/IMG(S4)"/>
           <group ref="g3" caption="COMICS/SPEC(S5)"/>
         </status>
       </instance>
       <instance id="cro" app_id="bbe" host="ciax" port="53205" label="IR Helium Compressor">
+        <command ref="cro"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <group ref="g0" caption="X0-3"/>
-          <group ref="g1" caption="X4-7"/>
-          <group ref="g2" caption="X8-11"/>
-          <group ref="g3" caption="X12-15"/>
+          <group ref="g0" caption="TAO1 SWITCH"/>
+          <group ref="g1" caption="TAO2 SWITCH"/>
         </status>
       </instance>
       <instance id="cci" app_id="bbe" host="ciax" port="53206" label="IR Helium Compressor">
         <command ref="cci"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <group ref="g0" caption="CAS2(S1)(MOIRCS/CR,CIAO)"/>
+          <group ref="g0" caption="CAS2(S1)(MOIRCS/CR)"/>
           <group ref="g1" caption="CAS1(S2)(MOIRCS/MAIN)"/>
           <group ref="g2" caption="MOIRCS/CR(S8)"/>
           <group ref="g3" caption="MOIRCS/MAIN(S9)"/>
@@ -30,8 +29,10 @@
       <instance id="cri" app_id="bbe" host="ciax" port="53207" label="IR Helium Compressor">
         <command ref="cri"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-          <group ref="g0" caption="FMOS/IRS1(S10)"/>
-          <group ref="g2" caption="FMOS/IRS2(S11)"/>
+          <group ref="g0" caption="IRCS(S3)"/>
+          <group ref="g2" caption="CHARIS(CM1)"/>
+          <index ref="xtm2" symbol="na"/>
+          <index ref="xpr2" symbol="na"/>
         </status>
       </instance>
       <instance id="cfa" app_id="k3n" port="25210" label="S10 HC Coolant Flow">

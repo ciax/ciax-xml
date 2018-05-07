@@ -75,7 +75,7 @@
         </item>
         <item id="swims" label="Set IID SWIMS">
           <frmcmd name="setinst">
-            <argv>11</argv>
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="iststat"/>
         </item>

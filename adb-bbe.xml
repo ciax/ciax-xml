@@ -130,6 +130,23 @@
             <frmcmd name="getstat"/>
           </item>
         </unit>
+        <unit id="uio" title="set[dsub|in|out]" label="SET I/O">
+          <item id="setdsub" label="SET DSUB">
+            <frmcmd name="setio">
+              <argv>0x1111</argv>
+            </frmcmd>
+          </item>
+          <item id="setin" label="SET INPUT">
+            <frmcmd name="setio">
+              <argv>0x0000</argv>
+            </frmcmd>
+          </item>
+          <item id="setout" label="SET OUTPUT">
+            <frmcmd name="setio">
+              <argv>0xffff</argv>
+            </frmcmd>
+          </item>
+        </unit>
       </group>
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">

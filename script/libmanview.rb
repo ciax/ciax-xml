@@ -7,7 +7,7 @@ module CIAX
   module Mcr
     # Macro Man View
     class ManView < Varx
-      def initialize(id, par, rec_arc = RecArc.new, valid_keys = [])
+      def initialize(id, par, rec_arc = RecArc.new.load, valid_keys = [])
         super('mcr')
         @par = type?(par, Parameter)
         @rec_list = RecList.new(type?(rec_arc, RecArc)).ext_view(@par.list)

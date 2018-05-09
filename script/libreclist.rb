@@ -7,7 +7,7 @@ module CIAX
   module Mcr
     # Visible Record Database
     class RecList < Hashx
-      def initialize(rec_arc = RecArc.new)
+      def initialize(rec_arc = RecArc.new.load)
         @rec_arc = type?(rec_arc, RecArc)
       end
 

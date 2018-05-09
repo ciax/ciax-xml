@@ -8,7 +8,7 @@ module CIAX
       attr_reader :list, :id
       def initialize(id = 'mcr')
         super('rec', 'list')
-        ext_local_file.load
+        ext_local_file
         @id = id
         # @list : Archive List : Index of Record (id: cid,pid,res)
         @list = (self[:list] ||= {})

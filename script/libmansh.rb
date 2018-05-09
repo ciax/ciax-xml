@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libman'
+require 'libmanview'
 module CIAX
   # Macro Layer
   module Mcr
@@ -11,37 +12,53 @@ module CIAX
         # cfg should have [:jump_groups]
         def ext_shell
           super
-          @par.sel
+          @par = Parameter.new
+          @cobj.rem.int.add_par(@par)
           ___init_view
           ___init_lcmd
-          # Set Current ID by number
-          input_conv_num do |i|
-            @par.sel(i)
-            # nil:no command -> show record
-            nil
-          end
+          ___init_post_exe
+          ___init_conv
           self
         end
 
         private
 
         def ___init_view
-          @view = View.new(@id, @par, @stat)
+          @view = ManView.new(@id, @par, @stat, @cobj.rem.int.valid_keys)
           # @view will be switched among Whole List or Records
           # Setting @par will switch the Record
           @cfg[:output] = @view
-          @post_exe_procs << proc { @view.upd }
-          @prompt_proc = proc { @sv_stat.to_s + @view.upd.index }
+          @prompt_proc = proc do
+            @sv_stat.to_s + @view.upd.index
+          end
         end
 
         def ___init_lcmd
-          sg = @cobj.loc.add(Group, caption: 'Switch Pages', color: 5)
-          sg.add_dummy('0', 'List page')
-          sg.add_dummy('[1-n]', 'Sequencer page')
-          sg.add_item('cl', 'Clean list', def_msg: 'CLEAN').def_proc do
+          page = @cobj.loc.add_page
+          page.get('last').def_proc do |ent|
+            @view.get_arc(ent.par[0])
+          end
+          page.get('cl').def_proc do
             @par.flush(@sv_stat.upd.get(:list))
           end
           @cobj.loc.add_view
+        end
+
+        def ___init_post_exe
+          @post_exe_procs << proc do
+            @sv_stat.get(:list).each { |id| @par.push(id) }
+            @view.upd
+          end
+        end
+
+        # Set Current ID by number
+        def ___init_conv
+          input_conv_num do |i|
+            # i should be number
+            @par.sel(i)
+            # nil:no command -> show record
+            nil
+          end
         end
       end
 

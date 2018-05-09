@@ -19,7 +19,7 @@ module CIAX
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
-        @qry = Query.new(@record, @sv_stat, @cfg[:index].rem.int.valid_keys)
+        @qry = Query.new(@record, @sv_stat)
       end
 
       def upd_sites
@@ -116,7 +116,6 @@ module CIAX
         @record[:pid] = pid
         @id = @record[:id]
         @title = @record.title
-        @cfg[:rec_list].push(@record)
         ___init_record_file
       end
 

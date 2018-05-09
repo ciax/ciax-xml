@@ -1,22 +1,9 @@
 #!/usr/bin/ruby
-require 'libconf'
-# @cfg[:def_proc] should be Proc which is given |Entity| as param
+require 'libcmdfunc'
 #   returns String as message.
 module CIAX
   # Command Module
   module CmdBase
-    # Default Proc Setting method
-    module CmdProc
-      include Msg
-      attr_reader :cfg
-
-      # Proc should return String
-      def def_proc(&def_proc)
-        @cfg[:def_proc] = type?(def_proc, Proc)
-        self
-      end
-    end
-
     # Command db with parameter derived from Item
     class Entity < Config
       attr_reader :id, :par

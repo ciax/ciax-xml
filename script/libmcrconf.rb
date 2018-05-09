@@ -1,9 +1,8 @@
 #!/usr/bin/ruby
 require 'libprompt'
-require 'libreclist'
+require 'librecarc'
 require 'libmcrdb'
 require 'libhexlist' # deprecated
-require 'libmcrpar'
 
 module CIAX
   # Macro Layer
@@ -19,13 +18,17 @@ module CIAX
         check_keys([:opt])
         @opt = self[:opt]
         verbose { 'Initiate Mcr Conf (option:' + @opt.keys.join + ')' }
+        ___init_db(root_cfg)
+      end
+
+      private
+
+      def ___init_db(root_cfg)
         db = Db.new
         update(layer_type: 'mcr', db: db)
         ___init_with_dbi(db.get(ENV['PROJ'] ||= self[:args].shift))
         ___init_dev_list(root_cfg.gen(self))
       end
-
-      private
 
       def ___init_with_dbi(dbi)
         # pick already includes :command, :version
@@ -48,7 +51,7 @@ module CIAX
         dev_layer = @opt[:x] ? Hex : Wat
         self[:dev_list] = dev_layer::List.new(site_cfg, sites: self[:sites])
         self[:sv_stat] = Prompt.new(id, @opt)
-        self[:rec_list] = RecList.new
+        self[:rec_arc] = RecArc.new(id)
       end
     end
 
@@ -56,8 +59,11 @@ module CIAX
     class Prompt < Prompt
       def initialize(id, opt = {})
         super('mcr', id)
+        # list: running macros
         init_array(:list)
+        # run: sites in motion
         init_array(:run)
+        # sid: serial ID
         init_str(:sid)
         init_flg(nonstop: '(nonstop)')
         up(:nonstop) if opt[:n]

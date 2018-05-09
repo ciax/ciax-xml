@@ -6,7 +6,7 @@ module CIAX
   module CmdBase
     # Command Group
     class Group < Hashx
-      include CmdProc
+      include CmdFunc
       attr_reader :valid_keys
       # cfg keys: caption,color,column
       def initialize(cfg, atrb = Hashx.new)
@@ -65,6 +65,7 @@ module CIAX
 
       private
 
+      # atrb can be /cdb//index[id] which contains [:parameter] and so on
       def _new_item(id, atrb = Hashx.new)
         self[id] = context_module('Item').new(@cfg, atrb.update(id: id))
       end

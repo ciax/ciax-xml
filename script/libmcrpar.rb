@@ -1,53 +1,54 @@
 #!/usr/bin/ruby
-require 'libenumx'
+require 'libcmdpar'
 
 module CIAX
   # Macro Layer
   module Mcr
     # Macro Number Validation
-    class Parameter < Hashx
+    class Parameter < CmdBase::Parameter
       # @list is most recent record ids
       attr_reader :list
 
-      def initialize(default = nil)
+      def initialize
         super(type: 'str', list: (@list = []))
-        self[:default] = default if default
       end
 
       # select id by index number (1~max)
       #  return id otherwise nil
-      def sel(idx = nil)
-        if !idx || idx < 1
-          self[:default] = nil
+      def sel(idx)
+        if idx < 1
+          delete(:default)
         else
           idx = @list.size if idx > @list.size
           self[:default] = @list[idx - 1]
         end
+        self
       end
 
       # For macro variable param (sid list)
-      # replace (default is decresed)
+      # replace (default will be decresed)
       def flush(other)
         @list.replace other
-        if self[:default] && !@list.include?(self[:default])
+        if key?(:default) && !@list.include?(self[:default])
           self[:default] = @list.last
         end
         self
       end
 
-      # push to list (default is incresed)
+      # push to list (default will be incresed)
       def push(id) # returns self
-        @list << id unless @list.include?(id)
+        return self if @list.include?(id)
+        @list << id
         self[:default] = id
         self
       end
 
       def current_idx
-        @list.index(self[:default])
+        @list.index(self[:default]) if key?(:default)
       end
 
       def current_rid
-        self[:default]
+        self[:default] if key?(:default)
       end
     end
   end

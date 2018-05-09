@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libexe'
-require 'libmcrview'
+require 'libmcrcmd'
 module CIAX
   # Macro Layer
   module Mcr
@@ -25,20 +25,9 @@ module CIAX
         self
       end
 
+      # Mode Extention by Option
       def ext_shell
         @cfg[:output] = @stat
-        super
-      end
-
-      # Mode Extention by Option
-      def ext_client
-        @post_exe_procs << proc do
-          list = @par.list
-          pre = list.size
-          list.concat(@sv_stat.get(:list)).uniq!
-          post = list.size
-          @par.sel(post) if post > pre
-        end
         super
       end
 
@@ -53,8 +42,8 @@ module CIAX
       end
 
       def ext_local_server
-        verbose { "Initiate Record List" }
-        @cfg[:rec_list].clear.refresh
+        verbose { 'Initiate Record List' }
+        @cfg[:rec_arc].clear.refresh
         ___mk_cmdlist
         super
       end
@@ -69,8 +58,8 @@ module CIAX
       end
 
       def ___init_cmd
-        @cobj.add_rem.cfg[:def_msg] = 'ACCEPT'
-        rem = @cobj.rem
+        rem = @cobj.add_rem
+        rem.cfg[:def_msg] = 'ACCEPT'
         rem.add_sys
         rem.add_int
         rem.add_ext
@@ -79,9 +68,7 @@ module CIAX
       end
 
       def ___init_stat
-        @par = Parameter.new('0')
-        @cobj.rem.int.cfg[:parameters] = [@par]
-        @stat = List.new
+        @stat = @cfg[:rec_arc]
         @sv_stat = @cfg[:sv_stat]
         @sub_list = @cfg[:dev_list]
       end

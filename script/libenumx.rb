@@ -113,8 +113,8 @@ module CIAX
 
     # Replace value. return self
     def repl(key, val, &done_proc)
-      Msg.par_err("No such Key [#{key}]") unless key?(key)
-      Msg.cfg_err('Value should be String') unless val.is_a?(String)
+      key?(key) || par_err("No such Key [#{key}]")
+      val.is_a?(String) || cfg_err("Value is not String [#{val}]/#{val.class}")
       if __diff?(key, val)
         verbose { "Replace:timing(#{key}) #{fetch(key)} ->  #{val}" }
         fetch(key).replace(val)
@@ -130,6 +130,11 @@ module CIAX
         yield if done_proc
       end
       self
+    end
+
+    # Fill in unexistent keys by other Hash
+    def cover(other)
+      update(other) { |_, v| v }
     end
 
     # Make empty copy (Empty string because it can be operated with replacement)

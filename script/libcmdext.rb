@@ -19,16 +19,20 @@ module CIAX
             @displist.reset!
           end
 
-          def add_item(id, itm) # returns Item
+          private
+
+          # itm is from cdb
+          def ___add_item(id, itm) # returns Item
             label = itm[:label]
-            if label && itm[:parameters].is_a?(Array)
-              ary = itm[:parameters].map { |e| e[:label] || 'str' }
+            # command label can contain printf format (i.e. %s)
+            # and are replaced with each parameter's label
+            pars = itm[:parameters]
+            if label && pars.is_a?(Array)
+              ary = pars.map { |e| e[:label] || 'str' }
               label.replace(format(label, *ary))
             end
-            _new_item(id, itm)
+            _new_item(id, itm).tr_pars
           end
-
-          private
 
           # Set items by DB
           def ___init_items(cdb)
@@ -45,7 +49,8 @@ module CIAX
             mem.each do |id|
               itm = cdb[:index][id]
               sg.put_item(id, itm[:label])
-              add_item(id, itm)
+              # [:parameters] is set here
+              ___add_item(id, itm)
             end
           end
 

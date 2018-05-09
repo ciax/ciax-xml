@@ -46,13 +46,7 @@ module CIAX
       @cbase = "#{@type}-#{id}"
       @cachefile = vardir('cache') + "#{@cbase}.mar"
       return ___load_cache(id) if ___use_cache?
-      verbose { "Cache/Checking @docs (#{@dbid})" }
-      if @docs
-        verbose { "Cache/XML files are Already red (#{@dbid})" }
-      else
-        info("Reading XML (#{@type}-#{id})")
-        @docs = Xml::Doc.new(@type, @proj)
-      end
+      ___load_db(id)
       nil
     end
 
@@ -79,6 +73,16 @@ module CIAX
         verbose { "Cache Saved (#{@cbase})" }
       end
       self[id] = res
+    end
+
+    def ___load_db(id)
+      verbose { "Cache/Checking @docs (#{@dbid})" }
+      if @docs
+        verbose { "Cache/XML files are Already red (#{@dbid})" }
+      else
+        info("Reading XML (#{@type}-#{id})")
+        @docs = Xml::Doc.new(@type, @proj)
+      end
     end
 
     # counter must not remain

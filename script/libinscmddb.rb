@@ -3,15 +3,16 @@ require 'libdbtree'
 
 module CIAX
   # Instance Layer
-  module Cmd
-    # Instance DB
-    class Db < DbTree
+  module Ins
+    # This is part of Instance DB
+    # You need add <command ref='*'/> in InsDB to use it
+    class CmdDb < DbTree
       def initialize
         super('cdb')
       end
 
       # Cover Ins DB (dst is overridden by self)
-      def cover(id, cdb)
+      def override(id, cdb)
         ali = get(id)[:command]
         %i(group unit).each { |k| cdb[k].update(ali[k]) }
         ___conv_index(cdb, ali)
@@ -47,7 +48,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
-        dbi = Db.new.get(args.shift)
+        dbi = CmdDb.new.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end
     end

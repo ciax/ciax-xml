@@ -45,7 +45,7 @@ module CIAX
     end
 
     def xmlfiles(type)
-      Dir.glob("#{__dir__}/../#{type}-*.xml")
+      Dir.glob("#{__dir__}/../#{type}-*.xml").map { |f| File.absolute_path(f) }
     end
 
     def v1cfgdir

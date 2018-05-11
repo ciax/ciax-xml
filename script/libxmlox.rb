@@ -1,28 +1,18 @@
 #!/usr/bin/ruby
-require 'libenum'
+require 'libenumx'
 require 'ox'
 
 module CIAX
+  # Xml module
   module Xml
-    # Ox
+    # Using Ox
     # gem install ox
-    attr_reader :root
     class Elem < Hashx
       include Msg
       def initialize(f)
-        if f.is_a? Elem
-          @root = super(f).root
-        else
-          if f.is_a? String
-            test('r', f) || cfg_err("Can't read file #{f}")
-            return _get_file(f)
-          end
-          cfg_err('Parameter shoud be String or Node')
-        end
-      end
-
-      def ns
-        @e.namespace
+        cfg_err('Parameter shoud be String or Node') unless f.is_a? String
+        test('r', f) || cfg_err("Can't read file #{f}")
+        @e = Ox.load_file(f).nodes.first
       end
 
       def text
@@ -32,9 +22,18 @@ module CIAX
 
       def find(xpath)
         verbose { "FindXpath:#{xpath}" }
-        REXML::XPath.each(@e.root, "//ns:#{xpath}", 'ns' => ns) do |e|
-          _mkelem(e) { |ne| yield ne }
+        @e.locate(xpath).each do |e|
+          yield dup.sete(e)
         end
+      end
+
+      def ns
+        @e.attributes[:xmlns]
+      end
+
+      def sete(e)
+        @e = e
+        self
       end
 
       def to_s
@@ -46,7 +45,7 @@ module CIAX
       end
 
       def name
-        @e.name
+        @e.value
       end
 
       def map
@@ -58,31 +57,14 @@ module CIAX
       end
 
       def each
-        @e.each_element do |e|
-          _mkelem(e) { |ne| yield ne }
+        @e.each do |e|
+          yield dup.sete(e)
         end
       end
 
       # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
-      def to_h(key = :val)
-        h = Hashx.new
-        _attr_elem.each { |k, v| h[k.to_sym] = v.dup }
-        t = text
-        h[key] = t if t
-        h
-      end
-
-      def attr2db(db, id = 'id', &at_proc) # deprecated
-        # <xml id='id' a='1' b='2'> => db[:a][id]='1', db[:b][id]='2'
-        type?(db, Hash)
-        key, atrb = _get_attr_(id, &at_proc)
-        atrb.each do |str, v|
-          sym = str.to_sym
-          db[sym] = Hashx.new unless db.key?(sym)
-          db[sym][key] = v
-          verbose { 'ATTRDB:' + str.upcase + ":[#{key}] : #{v}" }
-        end
-        key
+      def to_h(_key = :val)
+        @e.attributes
       end
 
       def attr2item(db, id = :id, &at_proc) # deprecated
@@ -102,20 +84,6 @@ module CIAX
 
       private
 
-      def _mkelem(e)
-        enclose("<#{e.name} #{_attr_view}>", "</#{e.name}>") do
-          yield Elem.new(e)
-        end
-      end
-
-      def _attr_elem
-        @e.attributes
-      end
-
-      def _attr_view
-        @e.attributes
-      end
-
       def ___attr_to_a(id, &at_proc)
         atrb = Hashx.new
         to_h.each do |k, v|
@@ -124,17 +92,14 @@ module CIAX
         key = atrb.delete(id) || give_up("No such key (#{id})")
         [key, atrb]
       end
+    end
 
-      def ___get_doc(f)
-        if f.is_a? String
-          test('r', f) || cfg_err("Can't read file #{f}")
-          return _get_file(f)
-        end
-        cfg_err('Parameter shoud be String or Node')
-      end
-
-      def _get_file(f)
-        @root = Ox.load(open(f), mode: :hash)
+    if __FILE__ == $PROGRAM_NAME
+      require 'libgetopts'
+      GetOpts.new('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)') do |_o, args|
+        file = Msg.xmlfiles(args.shift).first.to_s
+        ele = Elem.new(file)
+        ele.each { |e| puts e.name }
       end
     end
   end

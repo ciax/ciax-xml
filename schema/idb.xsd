@@ -29,13 +29,13 @@
   <xsd:element name="group">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="idb:instance"/>
+        <xsd:element ref="idb:site"/>
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
       <xsd:attribute name="label" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="instance">
+  <xsd:element name="site">
     <xsd:complexType>
       <xsd:sequence minOccurs="0">
         <xsd:element ref="idb:command" minOccurs="0" maxOccurs="1"/>

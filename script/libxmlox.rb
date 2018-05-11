@@ -48,14 +48,6 @@ module CIAX
         @e.value
       end
 
-      def map
-        ary = []
-        each do |e|
-          ary << (yield e)
-        end
-        ary
-      end
-
       def each
         @e.each do |e|
           yield dup.sete(e) if e.is_a? Ox::Element

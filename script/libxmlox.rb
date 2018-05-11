@@ -13,9 +13,9 @@ module CIAX
       def initialize(f)
         cfg_err('Parameter shoud be String or Node') unless f.is_a? String
         test('r', f) || cfg_err("Can't read file #{f}")
-        doc = Ox.load_file(f)
-        @ns = doc.attributes[:xmlns]
-        @e = doc.nodes.first
+        verbose { "Loading file #{f}" }
+        @e = Ox.load_file(f).root
+        @ns = @e[:xmlns]
       end
 
       def text
@@ -40,7 +40,7 @@ module CIAX
       end
 
       def [](key)
-        @e.attributes[key.to_sym]
+        @e[key.to_sym]
       end
 
       def name

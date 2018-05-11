@@ -38,11 +38,11 @@ module CIAX
       end
 
       # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
-      def to_h(key = :val)
+      def to_h
         h = Hashx.new
         _attr_elem.each { |k, v| h[k.to_sym] = v.dup }
         t = text
-        h[key] = t if t
+        h[:val] = t if t
         h
       end
 

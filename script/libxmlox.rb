@@ -28,7 +28,7 @@ module CIAX
       end
 
       def ns
-        @e.attributes[:xmlns]
+        self[:xmlns]
       end
 
       def sete(e)
@@ -41,7 +41,7 @@ module CIAX
       end
 
       def [](key)
-        @e.attributes[key.to_s]
+        @e.attributes[key.to_sym]
       end
 
       def name
@@ -58,13 +58,15 @@ module CIAX
 
       def each
         @e.each do |e|
-          yield dup.sete(e)
+          yield dup.sete(e) if e.is_a? Ox::Element
         end
       end
 
       # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
-      def to_h(_key = :val)
-        @e.attributes
+      def to_h
+        h = Hashx.new
+        h[:val] = text if text
+        h.update(@e.attributes)
       end
 
       def attr2item(db, id = :id, &at_proc) # deprecated
@@ -96,8 +98,9 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libgetopts'
-      GetOpts.new('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)') do |_o, args|
+      GetOpts.new('[type]') do |_o, args|
         file = Msg.xmlfiles(args.shift).first.to_s
+        Msg.args_err(%w(adb fdb idb ddb mdb cdb sdb hdb)) if file.empty?
         ele = Elem.new(file)
         ele.each { |e| puts e.name }
       end

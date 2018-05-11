@@ -92,7 +92,8 @@ module CIAX
 
       def ___make_condition(e1, atrb)
         e1.each do |e2|
-          hash = e2.to_h(:cri)
+          hash = e2.to_h
+          hash[:cri] = hash.delete(:val)
           hash[:cmp] = e2.name
           atrb.get(:cond) { [] } << hash
         end

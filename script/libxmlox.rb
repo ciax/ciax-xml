@@ -7,17 +7,19 @@ module CIAX
   module Xml
     # Using Ox
     # gem install ox
-    class Elem < Hashx
+    class Elem
       include Msg
+      attr_reader :ns
       def initialize(f)
         cfg_err('Parameter shoud be String or Node') unless f.is_a? String
         test('r', f) || cfg_err("Can't read file #{f}")
-        @e = Ox.load_file(f).nodes.first
+        doc = Ox.load_file(f)
+        @ns = doc.attributes[:xmlns]
+        @e = doc.nodes.first
       end
 
       def text
-        t = @e.text.to_s
-        t unless t.empty?
+        @e.text
       end
 
       def find(xpath)
@@ -27,12 +29,9 @@ module CIAX
         end
       end
 
-      def ns
-        self[:xmlns]
-      end
-
       def sete(e)
         @e = e
+        @ns = e[:xmlns] || @ns
         self
       end
 

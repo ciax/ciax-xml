@@ -10,7 +10,7 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     class SeqList < ThreadGroup
       attr_reader :threads
-      def initialize(rec_arc = RecArc.new.load)
+      def initialize(rec_arc = RecArc.new)
         super()
         # @rec_arc: List of Record Header (Log)
         @rec_arc = Msg.type?(rec_arc, RecArc)

@@ -150,11 +150,11 @@ module CIAX
   end
 
   if __FILE__ == $PROGRAM_NAME
-    opt = GetOpts.new('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)') do |_o, args|
-      @doc = Xml::Doc.new(args.shift)
-    end
-    opt.getarg('[type] [id]') do |_o, args|
-      puts @doc.get(args.shift).path(args)
+    GetOpts.new('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)') do |opt, args|
+      doc = Xml::Doc.new(args.shift)
+      opt.getarg('[type] [id]') do |_o, ar|
+        puts doc.get(ar.shift).path(ar)
+      end
     end
   end
 end

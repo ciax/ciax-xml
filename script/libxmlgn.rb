@@ -7,15 +7,9 @@ module CIAX
     # Gnu XML LIB
     class Elem < Core
       def initialize(f)
-        if f.is_a? XML::Node
-          @e = f
-        else
-          super
-        end
-      end
-
-      def ns
-        @e.namespaces.default
+        super
+        @ns = @e.namespaces.default
+        @attr = @e.attributes.to_h
       end
 
       def text
@@ -27,20 +21,16 @@ module CIAX
 
       # pick same ns nodes even if it is in another tree
       def find(xpath)
-        verbose { "FindXpath:#{xpath}" }
-        @e.doc.find("//ns:#{xpath}", "ns:#{ns}").each do |e|
-          _mkelem(e) { |ne| yield ne }
+        super
+        @e.doc.find("//ns:#{xpath}", "ns:#{@ns}").each do |e|
+          yield Elem.new(e)
         end
       end
 
       private
 
-      def _attr_elem
-        super.to_h
-      end
-
-      def _attr_view
-        super.to_h
+      def _element
+        XML::Node
       end
 
       def _get_file(f)

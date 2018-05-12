@@ -42,7 +42,7 @@ module CIAX
 
     # Adapt to both XML::Gnu, Hash
     def ___add_group(doc)
-      doc.each_value do |e|
+      doc.each do |e|
         # e.name should be group
         Msg.give_up('No group in cdb') unless e.name == 'group'
         gid = e.attr2item(@grps)

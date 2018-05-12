@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libenumx'
+require 'libxmlcore'
 require 'ox'
 
 module CIAX
@@ -7,36 +7,11 @@ module CIAX
   module Xml
     # Using Ox
     # gem install ox
-    class Elem
-      include Msg
-      attr_reader :ns
+    class Elem < Core
       def initialize(f)
-        cfg_err('Parameter shoud be String or Node') unless f.is_a? String
-        test('r', f) || cfg_err("Can't read file #{f}")
-        verbose { "Loading file #{f}" }
-        @e = Ox.load_file(f).root
+        super
         @ns = @e[:xmlns]
-      end
-
-      def text
-        @e.text
-      end
-
-      def find(xpath)
-        verbose { "FindXpath:#{xpath}" }
-        @e.locate(xpath).each do |e|
-          yield dup.sete(e)
-        end
-      end
-
-      def sete(e)
-        @e = e
-        @ns = e[:xmlns] || @ns
-        self
-      end
-
-      def to_s
-        @e.to_s
+        @attr = @e.attributes
       end
 
       def [](key)
@@ -49,41 +24,25 @@ module CIAX
 
       def each
         @e.each do |e|
-          yield dup.sete(e) if e.is_a? Ox::Element
+          yield Elem.new(e) if e.is_a?(_element)
         end
       end
 
-      # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
-      def to_h
-        h = Hashx.new
-        h[:val] = text if text
-        h.update(@e.attributes)
-      end
-
-      def attr2item(db, id = :id, &at_proc) # deprecated
-        # <xml id='id' a='1' b='2'> => db[id][a]='1', db[id][b]='2'
-        type?(db, Hashx)
-        key, atrb = ___attr_to_a(id, &at_proc)
-        if id != :ref && db.key?(key)
-          alert("ATTRDB: Duplicated ID [#{key}]")
-          db.delete(key)
+      def find(xpath)
+        super
+        @e.locate(xpath).each do |e|
+          yield Elem.new(e)
         end
-        db.get(key) { Hashx.new }.update(atrb)
-        key
       end
-
-      # Adapt to both Gnu, Hash
-      alias each_value each
 
       private
 
-      def ___attr_to_a(id, &at_proc)
-        atrb = Hashx.new
-        to_h.each do |k, v|
-          atrb[k] = at_proc ? yield(v) : v
-        end
-        key = atrb.delete(id) || give_up("No such key (#{id})")
-        [key, atrb]
+      def _element
+        Ox::Element
+      end
+
+      def _get_file(f)
+        Ox.load_file(f).root
       end
     end
 

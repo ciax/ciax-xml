@@ -7,15 +7,9 @@ module CIAX
     # REXML
     class Elem < Core
       def initialize(f)
-        if f.is_a? REXML::Element
-          @e = f
-        else
-          super
-        end
-      end
-
-      def ns
-        @e.namespace
+        super
+        @ns = @e.namespace
+        @attr = @e.attributes
       end
 
       def text
@@ -25,16 +19,16 @@ module CIAX
       end
 
       def find(xpath)
-        verbose { "FindXpath:#{xpath}" }
-        REXML::XPath.each(@e.root, "//ns:#{xpath}", 'ns' => ns) do |e|
-          _mkelem(e) { |ne| yield ne }
+        super
+        REXML::XPath.each(@e.root, "//ns:#{xpath}", 'ns' => @ns) do |e|
+          yield Elem.new(e)
         end
       end
 
       private
 
-      def _attr_view
-        super.to_a
+      def _element
+        REXML::Element
       end
 
       def _get_file(f)

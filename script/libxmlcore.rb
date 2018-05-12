@@ -7,42 +7,47 @@ module CIAX
     # Common with LIBXML,REXML
     class Core
       include Msg
+      attr_reader :ns
       def initialize(f)
-        @e = ___get_doc(f)
+        @e = _get_doc(f)
+        @ns = nil
+        @attr = {}
       end
 
-      def to_s
-        @e.to_s
-      end
-
+      # Getting Element
       def [](key)
         @e.attributes[key.to_s]
+      end
+
+      def text
+        @e.text
       end
 
       def name
         @e.name
       end
 
-      def map
-        ary = []
-        each do |e|
-          ary << (yield e)
-        end
-        ary
+      # Convert to String
+      def to_s
+        @e.to_s
       end
 
+      # Enumerble
       def each
         @e.each_element do |e|
-          _mkelem(e) { |ne| yield ne }
+          yield self.class.new(e)
         end
+      end
+
+      def find(xpath)
+        verbose { "FindXpath:#{xpath}" }
       end
 
       # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
       def to_h
         h = Hashx.new
-        _attr_elem.each { |k, v| h[k.to_sym] = v.dup }
-        t = text
-        h[:val] = t if t
+        h[:val] = text if text
+        @attr.each { |k, v| h[k.to_sym] = v.dup }
         h
       end
 
@@ -71,24 +76,7 @@ module CIAX
         key
       end
 
-      # Adapt to both Gnu, Hash
-      alias each_value each
-
       private
-
-      def _mkelem(e)
-        enclose("<#{e.name} #{_attr_view}>", "</#{e.name}>") do
-          yield Elem.new(e)
-        end
-      end
-
-      def _attr_elem
-        @e.attributes
-      end
-
-      def _attr_view
-        @e.attributes
-      end
 
       def ___attr_to_a(id, &at_proc)
         atrb = Hashx.new
@@ -99,14 +87,18 @@ module CIAX
         [key, atrb]
       end
 
-      def ___get_doc(f)
-        if f.is_a? String
-          test('r', f) || cfg_err("Can't read file #{f}")
-          return _get_file(f)
-        end
-        cfg_err('Parameter shoud be String or Node')
+      def _get_doc(f)
+        return f if f.is_a?(_element)
+        cfg_err('Parameter shoud be String or Node') unless f.is_a? String
+        test('r', f) || cfg_err("Can't read file #{f}")
+        verbose { "Loading file #{f}" }
+        _get_file(f)
       end
 
+      # Set Class of XML Element
+      def _element; end
+
+      # Set XML file loading
       def _get_file(f); end
     end
   end

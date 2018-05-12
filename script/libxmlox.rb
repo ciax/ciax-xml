@@ -35,6 +35,8 @@ module CIAX
         end
       end
 
+      alias each_value each
+
       private
 
       def _element

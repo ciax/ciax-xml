@@ -76,6 +76,8 @@ module CIAX
         key
       end
 
+      alias each_value each
+
       private
 
       def ___attr_to_a(id, &at_proc)

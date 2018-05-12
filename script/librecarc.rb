@@ -35,6 +35,7 @@ module CIAX
         id = record[:id]
         return self unless id.to_i > 0
         ele = Hashx.new(record).pick(%i(cid pid result)) # extract header
+        return self if ele.empty?
         @list[id] = ele
         cmt
         self

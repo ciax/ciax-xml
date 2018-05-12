@@ -15,7 +15,7 @@ module CIAX
         @adb = App::Db.new
         @cdb = CmdDb.new
         @run_list = @displist.valid_keys.select do |id|
-          host = (_get_cache(id) || @docs.get(id)[:attr])[:host]
+          host = (get(id) || @docs.get(id)[:attr])[:host]
           host == 'localhost' || host == HOST
         end
       end

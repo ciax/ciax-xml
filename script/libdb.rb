@@ -28,9 +28,13 @@ module CIAX
       @argc = 0
     end
 
-    # return Dbi
     def get(id)
-      @displist.valid?(id) || id_err(id, @type, @displist)
+      ref(id) || id_err(id, @type, @displist)
+    end
+
+    # return Dbi
+    def ref(id)
+      return unless @displist.valid?(id)
       _get_cache(id) || __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
     end
 

@@ -14,7 +14,7 @@ module CIAX
       end
 
       def loadjfile(fname)
-        return unless test(?r, fname)
+        return unless test('r', fname)
         open(fname) do |f|
           verbose { "Reading [#{fname}](#{f.size})" }
           f.flock(::File::LOCK_SH)

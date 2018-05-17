@@ -34,8 +34,12 @@ module CIAX
 
     # return Dbi
     def ref(id)
-      return unless @displist.valid?(id)
-      _get_cache(id) || __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
+      if @displist.valid?(id)
+        _get_cache(id) || __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
+      else
+        warning("No such ID [#{id}]")
+        false
+      end
     end
 
     private

@@ -12,10 +12,13 @@ module CIAX
       end
 
       # Cover Ins DB (dst is overridden by self)
+      # Add error handling for no key
       def override(id, cdb)
-        ali = get(id)[:command]
-        %i(group unit).each { |k| cdb[k].update(ali[k]) }
-        ___conv_index(cdb, ali)
+        if (cref = ref(id))
+          ali = cref[:command]
+          %i(group unit).each { |k| cdb[k].update(ali[k]) }
+          ___conv_index(cdb, ali)
+        end
         self
       end
 

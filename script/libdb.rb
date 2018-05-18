@@ -33,6 +33,7 @@ module CIAX
     end
 
     # return Dbi
+    # Order of file reading: type-id.mar -> type-id.xml
     def ref(id)
       if @displist.valid?(id)
         _get_cache(id) || __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
@@ -54,7 +55,7 @@ module CIAX
       @cbase = "#{@type}-#{id}"
       @cachefile = vardir('cache') + "#{@cbase}.mar"
       return ___load_cache(id) if ___use_cache?
-      ___load_db(id)
+      ___load_docs(id)
       nil
     end
 
@@ -83,10 +84,10 @@ module CIAX
       self[id] = res
     end
 
-    def ___load_db(id)
+    def ___load_docs(id)
       verbose { "Cache/Checking @docs (#{@dbid})" }
       if @docs
-        verbose { "Cache/XML files are Already red (#{@dbid})" }
+        verbose { "Cache/XML files are Already red (#{id}) [#{@dbid}]" }
       else
         info("Reading XML (#{@type}-#{id})")
         @docs = Xml::Doc.new(@type, @proj)

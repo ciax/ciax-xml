@@ -22,6 +22,7 @@ module CIAX
         @sub_list.run
         _opt_mode
         @mode = 'MCR:' + @mode
+        @cfg[:rec_arc].clear.refresh
         self
       end
 

@@ -13,8 +13,8 @@ module CIAX
         verbose { 'Initiate Manager (option:' + @cfg[:opt].keys.join + ')' }
         # id = nil -> taken by ARGV
         ___init_net
-        ___init_cmd
         ___init_stat
+        ___init_cmd
       end
 
       # separated for background run
@@ -58,20 +58,21 @@ module CIAX
         @port = @cfg[:port]
       end
 
-      def ___init_cmd
-        rem = @cobj.add_rem
-        rem.cfg[:def_msg] = 'ACCEPT'
-        rem.add_sys
-        rem.add_int
-        rem.add_ext
-        rem.sys.add_item('nonstop', 'Mode')
-        rem.sys.add_item('interactive', 'Mode')
-      end
-
       def ___init_stat
         @stat = @cfg[:rec_arc]
         @sv_stat = @cfg[:sv_stat]
         @sub_list = @cfg[:dev_list]
+      end
+
+      def ___init_cmd
+        @par = Parameter.new(list: @sv_stat.get(:list))
+        rem = @cobj.add_rem
+        rem.cfg[:def_msg] = 'ACCEPT'
+        rem.add_sys
+        rem.add_int.add_par(@par)
+        rem.add_ext
+        rem.sys.add_item('nonstop', 'Mode')
+        rem.sys.add_item('interactive', 'Mode')
       end
 
       # Making Command List JSON file for WebApp

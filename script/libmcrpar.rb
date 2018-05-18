@@ -9,8 +9,9 @@ module CIAX
       # @list is most recent record ids
       attr_reader :list
 
-      def initialize
-        super(type: 'str', list: (@list = []))
+      def initialize(hash = {})
+        hash = { type: 'str', list: (@list = []) }
+        super(hash)
       end
 
       # select id by index number (1~max)
@@ -21,6 +22,7 @@ module CIAX
         else
           idx = @list.size if idx > @list.size
           self[:default] = @list[idx - 1]
+          verbose { "Change default to #{self[:default].inspect}" }
         end
         self
       end

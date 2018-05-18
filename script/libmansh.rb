@@ -12,8 +12,6 @@ module CIAX
         # cfg should have [:jump_groups]
         def ext_shell
           super
-          @par = Parameter.new
-          @cobj.rem.int.add_par(@par)
           ___init_view
           ___init_lcmd
           ___init_post_exe

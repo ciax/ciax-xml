@@ -7,9 +7,9 @@ require 'libhexlist' # deprecated
 module CIAX
   # Macro Layer
   module Mcr
-    # Mcr Common Parameters
-    # Upper Conf expected: :option, :jump_groups, :jump_layer
-    # Conf includes:
+    # Mcr Common Parameters across all the layers
+    # Upper Conf should have: :option, :jump_groups, :jump_layer
+    # Mcr::Conf includes:
     # :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
     # :host, :port
     class Conf < Config

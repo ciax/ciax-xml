@@ -31,9 +31,9 @@ module CIAX
 
     # Mode (Macro)
     # none : test
-    # -d   : dryrun (no execution)
+    # -d   : dryrun (no motion)
     # -e   : with device driver
-    # -se  : server with device driver
+    # -s   : server
     # -c   : client to macro server
     # -l   : client to device server
 

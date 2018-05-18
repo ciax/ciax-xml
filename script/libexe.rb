@@ -60,7 +60,7 @@ module CIAX
     end
 
     def ext_local_driver
-      @mode = 'DRV'
+      @mode = @cfg[:opt].dry? ? 'DRY' : 'DRV'
       extend(context_module('Drv')).ext_local_driver
       _ext_local
       self

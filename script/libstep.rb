@@ -51,7 +51,7 @@ module CIAX
       end
 
       def progress(total, &cond)
-        itv = @opt.drv? ? 1 : 0
+        itv = @opt.log? ? 1 : 0
         total.to_i.times do |n| # gives number or nil(if break)
           self[:count] = n + 1
           break if cond && yield

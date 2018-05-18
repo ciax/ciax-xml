@@ -33,10 +33,11 @@ module CIAX
     end
 
     # return Dbi
-    # Order of file reading: type-id.mar -> type-id.xml
+    # Order of file reading: type-id.mar -> type-id.xml (processing)
     def ref(id)
       if @displist.valid?(id)
-        _get_cache(id) || __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
+        self[id] || _get_cache(id) ||
+          __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
       else
         warning("No such ID [#{id}]")
         false
@@ -55,14 +56,14 @@ module CIAX
       @cbase = "#{@type}-#{id}"
       @cachefile = vardir('cache') + "#{@cbase}.mar"
       return ___load_cache(id) if ___use_cache?
-      ___load_docs(id)
-      nil
     end
 
     def __get_db(id)
+      sv = ___load_docs(id)
       info("Building DB (#{id})")
       res = ___validate_repl(yield(@docs))
-      ___save_cache(id, res)
+      ___save_cache(res) if sv
+      self[id] = res
     end
 
     def ___load_cache(id)
@@ -76,18 +77,18 @@ module CIAX
       end
     end
 
-    def ___save_cache(id, res)
+    def ___save_cache(res)
       open(@cachefile, 'w') do |f|
         f << Marshal.dump(res)
         verbose { "Cache Saved (#{@cbase})" }
       end
-      self[id] = res
     end
 
     def ___load_docs(id)
       verbose { "Cache/Checking @docs (#{@dbid})" }
       if @docs
-        verbose { "Cache/XML files are Already red (#{id}) [#{@dbid}]" }
+        verbose { "Cache/XML files are Already read (#{id}) [#{@dbid}]" }
+        false
       else
         info("Reading XML (#{@type}-#{id})")
         @docs = Xml::Doc.new(@type, @proj)

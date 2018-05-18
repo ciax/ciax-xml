@@ -50,7 +50,7 @@ module CIAX
           next if @list.key?(Regexp.last_match(1))
           ary << name
         end
-        ary
+        ary.sort.reverse
       end
     end
 

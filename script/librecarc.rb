@@ -23,7 +23,6 @@ module CIAX
           ___file_list.each { |name| push(jload(name)) }
           verbose { 'Initiate Record Archive done' }
         end
-        self
       end
 
       # For format changes
@@ -56,6 +55,6 @@ module CIAX
       end
     end
 
-    puts RecArc.new.clear.refresh if __FILE__ == $PROGRAM_NAME
+    puts RecArc.new.clear.refresh.join if __FILE__ == $PROGRAM_NAME
   end
 end

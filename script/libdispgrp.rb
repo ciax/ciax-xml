@@ -126,7 +126,9 @@ module CIAX
 
       def view(select = self)
         return '' if @rank > @index.rank
-        @index.view(select, @caption, @color, @level)
+        cap = @caption
+        cap += "(#{@rank})" if @rank > 0
+        @index.view(select, cap, @color, @level)
       end
 
       def to_s

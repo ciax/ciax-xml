@@ -22,7 +22,6 @@ module CIAX
         Thread.new do
           ___file_list.each { |name| push(jload(name)) }
           verbose { 'Initiate Record Archive done' }
-          cmt
         end
         self
       end

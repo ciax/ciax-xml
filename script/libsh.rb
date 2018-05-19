@@ -42,7 +42,7 @@ module CIAX
       end
 
       def prompt
-        str = "#{@layer || layer_name}:#{@id}"
+        str = "#{@layer}:#{@id}"
         str += "(#{@mode})" if @mode
         str += @prompt_proc.call if @prompt_proc
         str + '>'

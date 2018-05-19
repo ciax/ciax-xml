@@ -22,6 +22,7 @@ module CIAX
       @cfg.check_keys(%i(opt))
       ___init_procs
       @cobj = context_module('Index').new(@cfg)
+      @layer = layer_name
     end
 
     # Sync only (Wait for other thread), never inherit

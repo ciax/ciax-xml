@@ -19,7 +19,7 @@ module CIAX
 
       # Re-generate record list
       def refresh # returns self
-        Thread.new do
+        Threadx::Fork.new('RecArc(rec_list)', 'mcr', @id) do
           ___file_list.each { |name| push(jload(name)) }
           verbose { 'Initiate Record Archive done' }
         end

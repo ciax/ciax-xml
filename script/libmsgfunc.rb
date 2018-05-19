@@ -62,13 +62,19 @@ module CIAX
     # Git administration
     # Commit ID
     def git_ver
-      '(git commit:' + `cd #{__dir__};git reflog`.split(' ').first + ')'
+      '(git commit:' + _git('reflog').split(' ').first + ')'
     end
 
     # Set Tag
     def tag_set(msg)
-      tag = format('%s(%s)@%d/%s', PROGRAM, ENV['PROJ'], today, HOST)
-      `cd #{__dir__};git tag -afm "#{msg}" "#{tag}"`
+      br = _git("branch|grep '^\*'").split(' ')[1]
+      ary = [PROGRAM, ENV['PROJ'], today, HOST, br, RUBY_VERSION]
+      tag = format('%s(%s)@%d/%s/%s/%s', *ary)
+      _git("tag -afm '#{msg}' '#{tag}'")
+    end
+
+    def _git(str)
+      `cd #{__dir__};git #{str}`
     end
   end
 end

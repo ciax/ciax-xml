@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'librecord'
+require 'libthreadx'
 module CIAX
   # Macro Layer
   module Mcr
@@ -18,9 +19,11 @@ module CIAX
 
       # Re-generate record list
       def refresh # returns self
-        verbose { 'Initiate Record Archive' }
-        ___file_list.each { |name| push(jload(name)) }
-        cmt
+        Thread.new do
+          ___file_list.each { |name| push(jload(name)) }
+          verbose { 'Initiate Record Archive done' }
+          cmt
+        end
         self
       end
 

@@ -17,12 +17,11 @@ module CIAX
         ___init_cmd
       end
 
-      # separated for background run
+      # this is separated for background run
       def run
         @sub_list.run
         _opt_mode
         @mode = 'MCR:' + @mode
-        @cfg[:rec_arc].clear.refresh
         self
       end
 

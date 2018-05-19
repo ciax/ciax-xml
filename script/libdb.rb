@@ -60,7 +60,7 @@ module CIAX
 
     def __get_db(id)
       sv = ___load_docs(id)
-      info("Building DB (#{id})")
+      verbose { "Building DB (#{id})" }
       res = ___validate_repl(yield(@docs))
       ___save_cache(res) if sv
       self[id] = res
@@ -90,7 +90,7 @@ module CIAX
         verbose { "Cache/XML files are Already read (#{id}) [#{@dbid}]" }
         false
       else
-        info("Reading XML (#{@type}-#{id})")
+        verbose { "Reading XML (#{@type}-#{id})" }
         @docs = Xml::Doc.new(@type, @proj)
       end
     end

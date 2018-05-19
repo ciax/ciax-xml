@@ -37,10 +37,11 @@ module CIAX
 
     # Background (Switch error output to file)
     def ___init_server(tag, opt)
+      gittag = tag_set(@obj.id)
+      info("Git Tagged [#{gittag}]")
       ___detach
       ___redirect(tag) if opt[:b]
       verbose { "Initiate Daemon Start [#{tag}] " + git_ver }
-      tag_set(@obj.id)
     end
 
     def ___detach

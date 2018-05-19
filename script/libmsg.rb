@@ -27,7 +27,7 @@ module CIAX
     end
 
     def info(title)
-      show __make_msg(title, 2) unless $stderr.tty?
+      show __make_msg(title, 7)
       self
     end
 

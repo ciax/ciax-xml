@@ -71,6 +71,7 @@ module CIAX
       ary = [PROGRAM, ENV['PROJ'], today, HOST, br, RUBY_VERSION]
       tag = format('%s(%s)@%d/%s/%s/%s', *ary)
       _git("tag -afm '#{msg}' '#{tag}'")
+      tag
     end
 
     def _git(str)

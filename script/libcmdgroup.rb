@@ -15,7 +15,7 @@ module CIAX
         @displist = Disp.new(@cfg.pick(%i(caption color column line_number)))
         @cfg[:disp] = @displist
         @valid_keys = @displist.valid_keys
-        @displist.rank = ENV['RANK'].to_i
+        rank(ENV['RANK'].to_i)
       end
 
       def add_dummy(id, title = nil) # returns Display
@@ -61,6 +61,11 @@ module CIAX
 
       def view_list
         @displist.to_s
+      end
+
+      def rank(n)
+        @displist.rank = n
+        self
       end
 
       private

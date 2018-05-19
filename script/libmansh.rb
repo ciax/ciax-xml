@@ -12,8 +12,9 @@ module CIAX
         # cfg should have [:jump_groups]
         def ext_shell
           super
-          ___init_view
-          ___init_lcmd
+          ___init_view_rec
+          ___init_view_list
+          ___init_view_cmd
           ___init_post_exe
           ___init_conv
           self
@@ -21,7 +22,7 @@ module CIAX
 
         private
 
-        def ___init_view
+        def ___init_view_rec
           @view = ManView.new(@id, @par, @stat, @cobj.rem.int.valid_keys)
           # @view will be switched among Whole List or Records
           # Setting @par will switch the Record
@@ -31,7 +32,7 @@ module CIAX
           end
         end
 
-        def ___init_lcmd
+        def ___init_view_list
           page = @cobj.loc.add_page
           page.get('last').def_proc do |ent|
             @view.get_arc(ent.par[0])
@@ -39,7 +40,14 @@ module CIAX
           page.get('cl').def_proc do
             @par.flush(@sv_stat.upd.get(:list))
           end
-          @cobj.loc.add_view
+        end
+
+        def ___init_view_cmd
+          view = @cobj.loc.add_view
+          rank = view.add_item('rank', 'Change').def_pars(1, '^[0-9]+$')
+          rank.def_proc do |ent|
+            @cobj.rem.ext.rank(ent.par[0].to_i)
+          end
         end
 
         def ___init_post_exe

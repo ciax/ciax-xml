@@ -44,7 +44,7 @@ module CIAX
 
         def ___init_view_cmd
           view = @cobj.loc.add_view
-          rank = view.add_item('rank', 'Change').def_pars(1, '^[0-9]+$')
+          rank = view.add_item('rank', 'Change').pars_num(1)
           rank.def_proc do |ent|
             @cobj.rem.ext.rank(ent.par[0].to_i)
           end

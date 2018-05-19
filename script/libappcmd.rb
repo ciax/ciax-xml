@@ -16,8 +16,8 @@ module CIAX
           def initialize(cfg, atrb = Hashx.new)
             super
             init_item_file_io
-            add_item('set', '[key] [val]').def_pars(2)
-            add_item('del', '[key,...]').def_pars(1)
+            add_item('set', '[key] [val]').pars_any(2)
+            add_item('del', '[key,...]').pars_any(1)
           end
         end
       end

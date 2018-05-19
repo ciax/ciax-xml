@@ -27,11 +27,15 @@ module CIAX
       end
 
       # Parameters for any string
-      def def_pars(n = 1, reg = '.')
+      def pars_any(n = 1, reg = '.')
         @cfg[:parameters] = Array.new(n) do
           Parameter.new(type: 'reg', list: [reg])
         end
         self
+      end
+
+      def pars_num(n = 1)
+        pars_any(n, '^[0-9]+$')
       end
 
       # Transform each element of @cfg[:parameter]

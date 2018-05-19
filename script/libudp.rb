@@ -32,10 +32,10 @@ module CIAX
     # UDP Server Thread with Loop
     class Server
       include Msg
-      def initialize(layer, id, port)
+      def initialize(layer, id, port, msg = '')
         @layer = layer
         @id = id
-        verbose { "Initiate UDP server (#{@id}) port:[#{port}]" }
+        verbose { "Initiate UDP server #{msg}(#{@id}) port:[#{port}]" }
         @udp = UDPSocket.open
         @udp.bind('0.0.0.0', port.to_i)
       end

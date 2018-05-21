@@ -8,7 +8,10 @@ module CIAX
       def list
         list = Hashx.new
         self[:command][:group].each_value do |val|
-          (list[val[:caption]] ||= []).concat val[:members]
+          # Show only main macro commands (submacro is skipped)
+          if val[:rank].to_i.zero?
+            (list[val[:caption]] ||= []).concat val[:members]
+          end
         end
         list
       end

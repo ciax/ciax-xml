@@ -53,7 +53,7 @@ module CIAX
         self
       end
 
-      # Show Record(id = @page.current_rid) or List of them
+      # Show Index of Visible Item
       def to_v
         ___list_view
       end

@@ -20,7 +20,8 @@ module CIAX
         class Group
           def initialize(cfg, atrb = Hashx.new)
             super
-            add_item('rank', 'Change').pars_num(1)
+            add_item('dig', 'Show Details')
+            add_item('hide', 'Hide Details')
           end
         end
       end

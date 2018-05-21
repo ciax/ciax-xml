@@ -68,6 +68,11 @@ module CIAX
         self
       end
 
+      def rankup
+        @displist.rank = @displist.rank + 1
+        self
+      end
+
       private
 
       # atrb can be /cdb//index[id] which contains [:parameter] and so on

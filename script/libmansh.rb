@@ -44,8 +44,13 @@ module CIAX
 
         def ___init_view_cmd
           view = @cobj.loc.add_view
-          view.get('rank').def_proc do |ent|
-            @cobj.rem.ext.rank(ent.par[0].to_i)
+          view.get('dig').def_proc do
+            @cobj.rem.ext.rankup
+            @cobj.error
+          end
+          view.get('hide').def_proc do |_ent|
+            @cobj.rem.ext.rank(0)
+            @cobj.error
           end
         end
 

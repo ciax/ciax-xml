@@ -20,8 +20,8 @@ module CIAX
         class Group
           def initialize(cfg, atrb = Hashx.new)
             super
-            add_item('dig', 'Show Details')
-            add_item('hide', 'Hide Details')
+            add_item('dig', 'Show more Submacros')
+            add_item('hide', 'Hide Submacros')
           end
         end
       end

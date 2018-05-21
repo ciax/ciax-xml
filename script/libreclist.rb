@@ -9,6 +9,8 @@ module CIAX
     # Need RecArc to get Parent CID
     # visible Array is Parameter[:list]
     # RecArc(Index) > RecList(Records) > Visible(IDs)
+    # RecList : Server Side
+    # Visible : Client Side
     class RecList < Hashx
       def initialize(rec_arc = RecArc.new.load, visible = [])
         @rec_arc = type?(rec_arc, RecArc)

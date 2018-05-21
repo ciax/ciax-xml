@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libmcrpar'
-require 'libreclistview'
+require 'libreclist'
 # CIAX-XML
 module CIAX
   # Macro Layer
@@ -11,7 +11,7 @@ module CIAX
       def initialize(id, par, rec_arc = RecArc.new, valid_keys = [])
         super('mcr')
         @par = type?(par, Parameter)
-        @rec_list = RecList.new(type?(rec_arc, RecArc)).ext_view(@par.list)
+        @rec_list = RecList.new(type?(rec_arc, RecArc), @par.list)
         @org_cmds = (@valid_keys = valid_keys).dup
         # @records content is Record
         @id = id

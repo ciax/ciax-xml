@@ -6,6 +6,7 @@ module CIAX
   # Macro Layer
   module Mcr
     # Macro Man View
+    # Switch Pages of "Record List" and "Content of Record"
     class ManView < Varx
       def initialize(id, par, rec_arc = RecArc.new, valid_keys = [])
         super('mcr')

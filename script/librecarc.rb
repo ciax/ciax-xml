@@ -5,6 +5,7 @@ module CIAX
   # Macro Layer
   module Mcr
     # Record Archive List (Dir)
+    #   Index of Records
     class RecArc < Varx
       attr_reader :list, :id
       def initialize(id = 'mcr')

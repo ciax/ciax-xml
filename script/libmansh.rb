@@ -35,7 +35,8 @@ module CIAX
         def ___init_view_list
           page = @cobj.loc.add_page
           page.get('last').def_proc do |ent|
-            @view.get_arc(ent.par[0])
+            n = ent.par[0]
+            n ? @view.get_arc(n.to_i) : @view.add_arc
           end
           page.get('cl').def_proc do
             @par.flush(@sv_stat.upd.get(:list))
@@ -48,7 +49,7 @@ module CIAX
             @cobj.rem.ext.rankup
             @cobj.error
           end
-          view.get('hide').def_proc do |_ent|
+          view.get('hide').def_proc do
             @cobj.rem.ext.rank(0)
             @cobj.error
           end

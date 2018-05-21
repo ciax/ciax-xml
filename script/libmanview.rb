@@ -40,6 +40,11 @@ module CIAX
         self
       end
 
+      def add_arc
+        get_arc(@par.list.size + 1)
+        self
+      end
+
       private
 
       def ___init_upd_proc

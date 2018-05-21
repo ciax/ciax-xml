@@ -17,13 +17,13 @@ module CIAX
         self
       end
 
-      # Param Shared in Group
+      ## Refernce Parameter Setting
+      # returns Reference Parameter Array
       def add_par(par = {})
         unless par.is_a? Parameter
           par = Parameter.new(par).cover(type: 'str', list: [])
         end
         (@cfg[:parameters] ||= []) << par
-        self
       end
 
       # Parameters for any string
@@ -31,9 +31,9 @@ module CIAX
         @cfg[:parameters] = Array.new(n) do
           Parameter.new(type: 'reg', list: [reg])
         end
-        self
       end
 
+      # Parameter for numbers
       def pars_num(n = 1)
         pars_any(n, '^[0-9]+$')
       end

@@ -36,7 +36,8 @@ module CIAX
             super
             add_dummy('0', 'List page')
             add_dummy('[1-n]', 'Switch Pages')
-            add_item('last', 'Get last item [n]').pars_num(1)
+            pars = add_item('last', 'Get last item [n]').pars_num(1)
+            pars.first[:default] = nil
             add_item('cl', 'Clean list')
           end
         end

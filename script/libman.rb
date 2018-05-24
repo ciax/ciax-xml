@@ -22,7 +22,9 @@ module CIAX
         @sub_list.run
         _opt_mode
         @mode = 'MCR:' + @mode
+        verbose { 'Initiate Record Archive' }
         @cfg[:rec_arc].clear.refresh
+        ___mk_cmdlist
         self
       end
 
@@ -39,13 +41,6 @@ module CIAX
 
       def ext_local_driver
         require 'libmandrv'
-        super
-      end
-
-      def ext_local_server
-        verbose { 'Initiate Record List' }
-        @cfg[:rec_arc].clear.refresh
-        ___mk_cmdlist
         super
       end
 
@@ -76,6 +71,7 @@ module CIAX
 
       # Making Command List JSON file for WebApp
       def ___mk_cmdlist
+        verbose { 'Initiate JS Command List' }
         IO.write(
           vardir('json') + 'mcr_conf.js', 'var config = ' + @cfg[:jlist].to_j
         )

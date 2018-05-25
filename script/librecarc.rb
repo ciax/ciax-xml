@@ -30,7 +30,6 @@ module CIAX
       def clear
         @list.clear
         cmt
-        self
       end
 
       def push(record) # returns self
@@ -40,7 +39,6 @@ module CIAX
         return self if ele.empty?
         @list[id] = ele
         cmt
-        self
       end
 
       private

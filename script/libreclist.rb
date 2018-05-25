@@ -11,11 +11,12 @@ module CIAX
     # RecArc(Index) > RecList(Records) > Visible(IDs)
     # RecList : Server Side
     # Visible : Client Side
-    class RecList < Hashx
+    class RecList < Upd
       def initialize(rec_arc = RecArc.new.load, visible = [])
         @rec_arc = type?(rec_arc, RecArc)
         @visible = type?(visible, Array)
         @id = @rec_arc.id
+        @upd_procs << proc { values.each(&:upd) }
       end
 
       # delete from @records other than in ary
@@ -23,24 +24,20 @@ module CIAX
         (keys - ary).each do |id|
           delete(id)
         end
-        self
+        cmt
       end
 
       def push(record) # returns self
         id = record[:id]
         return self unless id.to_i > 0
+        record.cmt_procs << proc { rec_arc.push(record) }
         self[id] = record
-        self
+        cmt
       end
 
       #### Client Methods ####
       def ext_http(host)
         @host = host
-        self
-      end
-
-      def upd
-        values.each(&:upd)
         self
       end
 

@@ -51,6 +51,7 @@ module CIAX
           self[:status] = 'end'
           self[:result]
         ensure
+          @finish_procs.each { |p| p.call(self) }
           cmt
         end
       end

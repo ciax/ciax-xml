@@ -13,6 +13,7 @@ module CIAX
     # Visible : Client Side
     class RecList < Upd
       def initialize(rec_arc = RecArc.new.load, visible = [])
+        super()
         @rec_arc = type?(rec_arc, RecArc)
         @visible = type?(visible, Array)
         @id = @rec_arc.id
@@ -30,7 +31,6 @@ module CIAX
       def push(record) # returns self
         id = record[:id]
         return self unless id.to_i > 0
-        record.cmt_procs << proc { rec_arc.push(record) }
         self[id] = record
         cmt
       end

@@ -7,6 +7,7 @@ module CIAX
   module Mcr
     # Macro Record
     class Record < Varx
+      attr_reader :finish_procs
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       def initialize(id = nil) # Session ID for Loading
         super('record')
@@ -15,6 +16,7 @@ module CIAX
         update(mode: 'test', status: 'ready', result: 'busy')
         update(total_steps: 0, total_time: 0, start: 0)
         self[:steps] = Arrayx.new
+        @finish_procs = []
       end
 
       def to_v

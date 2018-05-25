@@ -33,11 +33,17 @@ module CIAX
       end
 
       def push(record) # returns self
-        id = record[:id]
-        return self unless id.to_i > 0
-        ele = Hashx.new(record).pick(%i(cid pid result)) # extract header
-        return self if ele.empty?
-        @list[id] = ele
+        if record[:id].to_i > 0 && extract(record) && record.is_a?(Record)
+          record.finish_procs << proc { |r| extract(r) }
+        end
+        self
+      end
+
+      def extract(rec)
+        ele = Hashx.new(rec).pick(%i(cid pid result)) # extract header
+        return if ele.empty?
+        verbose { 'Record Archive Updated' }
+        @list[rec[:id]] = ele
         cmt
       end
 

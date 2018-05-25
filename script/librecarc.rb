@@ -34,20 +34,21 @@ module CIAX
       end
 
       def push(record) # returns self
-        if record[:id].to_i > 0 && extract(record) && record.is_a?(Record)
-          record.finish_procs << proc { |r| extract(r) && cmt }
+        if record[:id].to_i > 0 && __extract(record) && record.is_a?(Record)
+          record.finish_procs << proc { |r| __extract(r) && cmt }
+          cmt
         end
         self
       end
 
-      def extract(rec)
+      private
+
+      def __extract(rec)
         ele = Hashx.new(rec).pick(%i(cid pid result)) # extract header
         return if ele.empty?
         verbose { 'Record Archive Updated' }
         @list[rec[:id]] = ele
       end
-
-      private
 
       def ___file_list
         ary = []

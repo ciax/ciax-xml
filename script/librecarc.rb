@@ -23,6 +23,7 @@ module CIAX
         Threadx::Fork.new('RecArc(rec_list)', 'mcr', @id) do
           ___file_list.each { |name| push(jload(name)) }
           verbose { 'Initiate Record Archive done' }
+          cmt
         end
       end
 
@@ -34,7 +35,7 @@ module CIAX
 
       def push(record) # returns self
         if record[:id].to_i > 0 && extract(record) && record.is_a?(Record)
-          record.finish_procs << proc { |r| extract(r) }
+          record.finish_procs << proc { |r| extract(r) && cmt }
         end
         self
       end
@@ -44,7 +45,6 @@ module CIAX
         return if ele.empty?
         verbose { 'Record Archive Updated' }
         @list[rec[:id]] = ele
-        cmt
       end
 
       private

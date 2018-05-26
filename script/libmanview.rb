@@ -45,6 +45,11 @@ module CIAX
         self
       end
 
+      def ext_http(host)
+        @rec_list.ext_http(host)
+        self
+      end
+
       private
 
       def ___init_upd_proc

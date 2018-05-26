@@ -38,6 +38,7 @@ module CIAX
       #### Client Methods ####
       def ext_http(host)
         @host = host
+        @rec_arc.ext_http(host)
         self
       end
 
@@ -48,7 +49,7 @@ module CIAX
 
       # Change visible list
       def get_arc(num = 1)
-        @visible.replace(@rec_arc.list.keys.sort.last(num.to_i))
+        @visible.replace(@rec_arc.upd.list.keys.sort.last(num.to_i))
         self
       end
 

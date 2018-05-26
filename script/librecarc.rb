@@ -10,12 +10,9 @@ module CIAX
       attr_reader :list, :id
       def initialize(id = 'mcr')
         super('rec', 'list')
-        ext_local_file
         @id = id
         # @list : Archive List : Index of Record (id: cid,pid,res)
         @list = (self[:list] ||= {})
-        init_time2cmt
-        auto_save
       end
 
       # Re-generate record list
@@ -41,6 +38,13 @@ module CIAX
         self
       end
 
+      def ext_local_driver
+        ext_local_file
+        init_time2cmt
+        auto_save
+        load
+      end
+
       private
 
       def __extract(rec)
@@ -61,6 +65,8 @@ module CIAX
       end
     end
 
-    puts RecArc.new.clear.refresh.join if __FILE__ == $PROGRAM_NAME
+    if __FILE__ == $PROGRAM_NAME
+      puts RecArc.new.ext_local_driver.clear.refresh.join
+    end
   end
 end

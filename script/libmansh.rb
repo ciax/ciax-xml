@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require 'libman'
-require 'libmanview'
 module CIAX
   # Macro Layer
   module Mcr

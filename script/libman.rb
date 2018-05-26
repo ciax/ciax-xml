@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libexe'
 require 'libmcrcmd'
+require 'libmanview'
 module CIAX
   # Macro Layer
   module Mcr

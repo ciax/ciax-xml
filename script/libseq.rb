@@ -22,11 +22,6 @@ module CIAX
         @qry = Query.new(@record, @sv_stat)
       end
 
-      def upd_sites
-        @cfg[:sites].each { |site| @cfg[:dev_list].get(site) }
-        self
-      end
-
       # For prompt '(stat) [option]'
       def to_v
         @qry.to_v
@@ -36,7 +31,9 @@ module CIAX
         @qry.reply(str)
       end
 
+      # Start the macro
       def play
+        ___upd_sites
         Thread.current[:query] = @qry
         _show(@record.start)
         _sub_macro(@cfg[:sequence], @record.cmt)
@@ -49,10 +46,15 @@ module CIAX
       end
 
       def fork
-        Threadx::Fork.new('Macro', 'seq', @id) { upd_sites.play }
+        Threadx::Fork.new('Macro', 'seq', @id) { play }
       end
 
       private
+
+      def ___upd_sites
+        @cfg[:sites].each { |site| @cfg[:dev_list].get(site) }
+        self
+      end
 
       # macro returns result (true=complete /false=error)
       def _sub_macro(seqary, mstat)
@@ -133,7 +135,7 @@ module CIAX
         mobj = Index.new(Conf.new(cfg))
         mobj.add_rem.add_ext
         ent = mobj.set_cmd(args)
-        Sequencer.new(ent).upd_sites.play
+        Sequencer.new(ent).play
       end
     end
   end

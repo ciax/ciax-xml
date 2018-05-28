@@ -61,7 +61,7 @@ module CIAX
         ary = []
         Dir.glob(vardir('record') + 'record_*.json') do |name|
           next if /record_([0-9]+).json/ !~ name
-          next if @list.key?(Regexp.last_match(1))
+          next if list.key?(Regexp.last_match(1))
           ary << name
         end
         ary.sort.reverse

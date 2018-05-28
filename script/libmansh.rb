@@ -26,7 +26,7 @@ module CIAX
           # Setting @par will switch the Record
           @cfg[:output] = @stat
           @prompt_proc = proc do
-            @sv_stat.to_s + @stat.upd.index
+            @sv_stat.to_s + @stat.index
           end
         end
 
@@ -37,7 +37,7 @@ module CIAX
             n ? @stat.get_arc(n.to_i) : @stat.add_arc
           end
           page.get('cl').def_proc do
-            @par.flush(@sv_stat.upd.get(:list))
+            @par.flush(@sv_stat.get(:list))
           end
         end
 
@@ -56,7 +56,6 @@ module CIAX
         def ___init_post_exe
           @post_exe_procs << proc do
             @sv_stat.get(:list).each { |id| @par.push(id) }
-            @stat.upd
           end
         end
 

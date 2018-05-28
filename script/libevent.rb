@@ -41,10 +41,6 @@ module CIAX
         true
       end
 
-      def ext_local_file
-        super.load
-      end
-
       private
 
       def ___init_on_procs

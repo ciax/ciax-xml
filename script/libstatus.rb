@@ -52,10 +52,6 @@ module CIAX
         Hashx.new(atrb).update(data: self[:data].pick(keylist))
       end
 
-      def ext_local_file
-        super.load
-      end
-
       private
 
       def ___init_dbs

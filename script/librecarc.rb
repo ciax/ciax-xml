@@ -12,7 +12,10 @@ module CIAX
         super('rec', 'list')
         @id = id
         # @list : Archive List : Index of Record (id: cid,pid,res)
-        @list = (self[:list] ||= {})
+      end
+
+      def list
+        self[:list] ||= {}
       end
 
       # Re-generate record list
@@ -26,7 +29,7 @@ module CIAX
 
       # For format changes
       def clear
-        @list.clear
+        list.clear
         cmt
       end
 
@@ -51,7 +54,7 @@ module CIAX
         ele = Hashx.new(rec).pick(%i(cid pid result)) # extract header
         return if ele.empty?
         verbose { 'Record Archive Updated' }
-        @list[rec[:id]] = ele
+        list[rec[:id]] = ele
       end
 
       def ___file_list

@@ -11,7 +11,7 @@ module CIAX
         obj = yield(@cfg, args)
         loop do
           ns = m2id(obj.class, -2)
-          @list.put(ns, obj)
+          _list.put(ns, obj)
           obj = obj.sub_list || break
         end
       end
@@ -20,11 +20,11 @@ module CIAX
     def ext_shell
       extend(CIAX::List::Shell).ext_shell(Jump)
       @cfg[:jump_layer] = @jumpgrp
-      @list.keys.each do |id|
-        @list.get(id).ext_shell
+      _list.each do |id, obj|
+        obj.ext_shell
         @jumpgrp.add_item(id, id.capitalize + ' mode')
       end
-      @current = @cfg[:opt].init_layer || @list.keys.first
+      @current = @cfg[:opt].init_layer || _list.keys.first
       self
     end
 

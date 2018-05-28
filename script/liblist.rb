@@ -12,7 +12,7 @@ module CIAX
       @cfg[:jump_groups] ||= []
       super(m2id(@cfg[:obj].class, -2))
       verbose { 'Initiate List (option:' + @cfg[:opt].keys.join + ')' }
-      @list = self[:list] = Hashx.new
+      self[:list] = Hashx.new
     end
 
     def ext_shell(jump_class)
@@ -21,8 +21,12 @@ module CIAX
 
     private
 
+    def _list
+      self[:list]
+    end
+
     def _switch(id)
-      @list.get(id)
+      _list.get(id)
     end
 
     # Shell module

@@ -2,18 +2,24 @@
 require 'libupd'
 
 module CIAX
-  # Variable Status Data having ID with Saving, Logging feature
-  # Need Header(id,ver) data
-  # Used for freqently changing data with remote
+  # Variable Status Data having ID with Saving, Logging feature.
+  # Need Header(id,ver) data.
+  # Used for freqently changing data with remote.
+  # Don't assign an instance variables to any element
+  # whose link can be broken by load().
   class Varx < Upd
-    attr_reader :type, :id
+    attr_reader :type
     def initialize(type, id = nil, ver = nil, host = nil)
       super()
       @type = type
       # Headers
-      @id = self[:id] = id
+      self[:id] = id
       self[:ver] = ver if ver
       self[:host] = host || HOST
+    end
+
+    def id
+      self[:id]
     end
 
     def ext_local_file(dir = nil)

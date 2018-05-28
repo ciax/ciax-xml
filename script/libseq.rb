@@ -36,7 +36,7 @@ module CIAX
         @qry.reply(str)
       end
 
-      def macro
+      def play
         Thread.current[:query] = @qry
         _show(@record.start)
         _sub_macro(@cfg[:sequence], @record.cmt)
@@ -49,7 +49,7 @@ module CIAX
       end
 
       def fork
-        Threadx::Fork.new('Macro', 'seq', @id) { upd_sites.macro }
+        Threadx::Fork.new('Macro', 'seq', @id) { upd_sites.play }
       end
 
       private
@@ -133,7 +133,7 @@ module CIAX
         mobj = Index.new(Conf.new(cfg))
         mobj.add_rem.add_ext
         ent = mobj.set_cmd(args)
-        Sequencer.new(ent).upd_sites.macro
+        Sequencer.new(ent).upd_sites.play
       end
     end
   end

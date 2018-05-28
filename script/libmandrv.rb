@@ -17,7 +17,8 @@ module CIAX
           @sv_stat.repl(:sid, '') # For server response
           @stat.ext_local
           ___init_pre_exe
-          ___init_proc_rem
+          ___init_proc_rem_ext
+          ___init_proc_rem_int
           ___init_proc_loc
           @cobj.rem.ext_input_log
           self
@@ -29,15 +30,19 @@ module CIAX
           @pre_exe_procs << proc do
             @sv_stat.flush(:list, @seq_list.alives).repl(:sid, '')
             @sv_stat.flush(:run).cmt if @sv_stat.upd.get(:list).empty?
+            @stat.upd
           end
         end
 
-        def ___init_proc_rem
+        def ___init_proc_rem_ext
           # External Command Group
           @cobj.rem.ext.def_proc do |ent|
             sid = @seq_list.add(ent).id
             @sv_stat.push(:list, sid).repl(:sid, sid)
           end
+        end
+
+        def ___init_proc_rem_int
           # Internal Command Group
           @cobj.rem.int.def_proc do |ent|
             @sv_stat.repl(:sid, ent.par[0])

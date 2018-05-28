@@ -17,7 +17,7 @@ module CIAX
           @sv_stat.repl(:sid, '') # For server response
           @stat.ext_local
           ___init_pre_exe
-          ___init_proc_rem(@cobj.rem)
+          ___init_proc_rem
           ___init_proc_loc
           @cobj.rem.ext_input_log
           self
@@ -32,14 +32,14 @@ module CIAX
           end
         end
 
-        def ___init_proc_rem(rem)
+        def ___init_proc_rem
           # External Command Group
-          rem.ext.def_proc do |ent|
+          @cobj.rem.ext.def_proc do |ent|
             sid = @seq_list.add(ent).id
             @sv_stat.push(:list, sid).repl(:sid, sid)
           end
           # Internal Command Group
-          rem.int.def_proc do |ent|
+          @cobj.rem.int.def_proc do |ent|
             @sv_stat.repl(:sid, ent.par[0])
             ent.msg = @seq_list.reply(ent.id) || 'NOSID'
           end

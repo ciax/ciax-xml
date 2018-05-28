@@ -9,9 +9,10 @@ module CIAX
   # whose link can be broken by load().
   class Varx < Upd
     attr_reader :type
-    def initialize(type, id = nil, ver = nil, host = nil)
+    def initialize(type, id = nil, ver = nil, host = nil, dir = nil)
       super()
       @type = type
+      @dir = dir
       # Headers
       self[:id] = id
       self[:ver] = ver if ver
@@ -22,9 +23,9 @@ module CIAX
       self[:id]
     end
 
-    def ext_local_file(dir = nil)
+    def ext_local_file
       require 'libjfile'
-      extend(JFile).ext_local_file(dir)
+      extend(JFile).ext_local_file(@dir)
     end
 
     def ext_local_log
@@ -33,9 +34,9 @@ module CIAX
     end
 
     # Read only as a client
-    def ext_remote(host = nil, dir = nil)
+    def ext_remote(host = nil)
       require 'libjhttp'
-      extend(JHttp).ext_remote(host, dir)
+      extend(JHttp).ext_remote(host, @dir)
     end
 
     def base_name(tag = nil)

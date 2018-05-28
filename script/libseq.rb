@@ -122,7 +122,7 @@ module CIAX
       # Do file generation after forked
       def ___init_record_file
         # ext_file must be after ext_rsp which includes time update
-        @record.ext_local_file('record').auto_save
+        @record.ext_local_file.auto_save
         @record.mklink # Make latest link
         @record.mklink(@id) # Make link to /json
       end

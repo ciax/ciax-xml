@@ -51,7 +51,7 @@ module CIAX
         type?(id, String)
         super(id) do |key|
           rec = Record.new(key)
-          @host ? rec.ext_remote(@host, 'record') : rec.ext_local_file('record')
+          @host ? rec.ext_remote(@host) : rec.ext_local_file
         end
       end
 

@@ -7,9 +7,9 @@ module CIAX
   module Mcr
     # Macro Man View
     # Switch Pages of "Record List" and "Content of Record"
-    class ManView < Varx
+    class ManView < Upd
       def initialize(id, par, rec_arc = RecArc.new, valid_keys = [])
-        super('mcr')
+        super()
         @par = type?(par, Parameter)
         @rec_list = RecList.new(type?(rec_arc, RecArc), @par.list)
         @org_cmds = (@valid_keys = valid_keys).dup
@@ -42,6 +42,11 @@ module CIAX
 
       def add_arc
         get_arc(@par.list.size + 1)
+        self
+      end
+
+      def ext_local
+        @rec_list.ext_local
         self
       end
 

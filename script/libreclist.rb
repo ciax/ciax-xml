@@ -12,7 +12,7 @@ module CIAX
     # RecList : Server Side
     # Visible : Client Side
     class RecList < Upd
-      def initialize(rec_arc = RecArc.new.load, visible = [])
+      def initialize(rec_arc = RecArc.new, visible = [])
         super()
         @rec_arc = type?(rec_arc, RecArc)
         @visible = type?(visible, Array)
@@ -35,6 +35,11 @@ module CIAX
         cmt
       end
 
+      def ext_local
+        @rec_arc.ext_local_file.auto_load
+        self
+      end
+
       #### Client Methods ####
       def ext_remote(host)
         @host = host
@@ -44,7 +49,10 @@ module CIAX
 
       def get(id)
         type?(id, String)
-        super(id) { |key| Record.new(key).ext_remote(@host, 'record') }
+        super(id) do |key|
+          rec = Record.new(key)
+          @host ? rec.ext_remote(@host, 'record') : rec.ext_local_file('record')
+        end
       end
 
       # Change visible list

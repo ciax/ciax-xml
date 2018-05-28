@@ -43,7 +43,7 @@ module CIAX
         def ___init_drv_save
           @cobj.get('save').def_proc do |ent|
             @stat.save_key(ent.par[0].split(','), ent.par[1])
-            verbose { "Save [#{ent.par[0]}]" }
+            verbose { "Saving [#{ent.par[0]}]" }
           end
         end
 
@@ -51,7 +51,7 @@ module CIAX
           @cobj.get('load').def_proc do |ent|
             @stat.load(ent.par[0] || '')
             @stat.flush
-            verbose { "Load [#{ent.par[0]}]" }
+            verbose { "Loading [#{ent.par[0]}]" }
           end
         end
 

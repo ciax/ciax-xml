@@ -27,9 +27,9 @@ module CIAX
     end
 
     # Read only as a client
-    def ext_http(host = nil, dir = nil)
+    def ext_remote(host = nil, dir = nil)
       require 'libjhttp'
-      extend(JHttp).ext_http(host, dir)
+      extend(JHttp).ext_remote(host, dir)
     end
 
     def base_name(tag = nil)

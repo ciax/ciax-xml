@@ -69,7 +69,7 @@ module CIAX
       GetOpts.new('[id]', h: 'http output') do |opt, args|
         stat = Status.new(args.shift)
         if opt[:h]
-          stat.ext_http(opt.host)
+          stat.ext_remote(opt.host)
         else
           stat.ext_local_file
         end

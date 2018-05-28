@@ -45,8 +45,8 @@ module CIAX
         self
       end
 
-      def ext_http(host)
-        @rec_list.ext_http(host)
+      def ext_remote(host)
+        @rec_list.ext_remote(host)
         self
       end
 

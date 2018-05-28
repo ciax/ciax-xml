@@ -15,7 +15,7 @@ module CIAX
       # remove ipv6 entry from /etc/hosts
       def ext_client
         @mode = 'CL'
-        @stat.ext_http(@host)
+        @stat.ext_remote(@host)
         @pre_exe_procs << proc { @stat.upd }
         ___init_upd if @port
         self

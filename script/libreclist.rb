@@ -36,20 +36,21 @@ module CIAX
       end
 
       #### Client Methods ####
-      def ext_http(host)
+      def ext_remote(host)
         @host = host
-        @rec_arc.ext_http(host)
+        @rec_arc.ext_remote(host)
         self
       end
 
       def get(id)
         type?(id, String)
-        super(id) { |key| Record.new(key).ext_http(@host, 'record') }
+        super(id) { |key| Record.new(key).ext_remote(@host, 'record') }
       end
 
       # Change visible list
       def get_arc(num = 1)
-        @visible.replace(@rec_arc.upd.list.keys.sort.last(num.to_i))
+        rkeys = @rec_arc.upd.list.keys
+        @visible.replace(rkeys.sort.last(num.to_i))
         self
       end
 

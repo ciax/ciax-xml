@@ -10,7 +10,7 @@ module CIAX
         Msg.type?(obj, Varx)
       end
 
-      def ext_http(host, dir = nil)
+      def ext_remote(host, dir = nil)
         @host = host || 'localhost'
         @dir = format('/%s/', dir || 'json')
         verbose { "Initiate Http (#{@host})" }

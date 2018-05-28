@@ -67,7 +67,7 @@ module CIAX
       GetOpts.new('[site]', options: 'h') do |opt|
         event = Event.new
         if opt.host
-          event.ext_http(opt.host)
+          event.ext_remote(opt.host)
         else
           event.ext_local_file
         end

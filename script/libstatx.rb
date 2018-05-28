@@ -14,7 +14,7 @@ module CIAX
     end
 
     def ext_local_file
-      super.load
+      super.load_partial
     end
 
     private

@@ -49,7 +49,7 @@ module CIAX
       end
 
       def auto_load
-        @upd_procs << proc { load }
+        @upd_procs << proc { load_partial }
         self
       end
 
@@ -57,7 +57,7 @@ module CIAX
         __write_json(to_j, tag)
       end
 
-      def load(tag = nil)
+      def load_partial(tag = nil)
         jstr = ___read_json(tag)
         verbose { "File Loading #{@cfile}" }
         if jstr.empty?
@@ -68,7 +68,7 @@ module CIAX
         self
       end
 
-      def save_key(keylist, tag = nil)
+      def save_partial(keylist, tag = nil)
         tag ||= (__tag_list.map(&:to_i).max + 1)
         # id is tag, this is Mark's request
         jstr = pick(

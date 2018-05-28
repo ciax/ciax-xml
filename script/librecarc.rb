@@ -45,7 +45,7 @@ module CIAX
         ext_local_file
         init_time2cmt
         auto_save
-        load
+        load_partial
       end
 
       private

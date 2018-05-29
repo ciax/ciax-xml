@@ -56,7 +56,7 @@ module CIAX
       end
 
       def ___init_stat
-        @stat = ManView.new(@id, @par, @cfg[:rec_arc], @cobj.rem.int.valid_keys)
+        @stat = ManView.new(@cfg, @par, @cobj.rem.int.valid_keys)
         @sub_list = @cfg[:dev_list]
       end
 

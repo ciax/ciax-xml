@@ -84,10 +84,12 @@ module CIAX
         true
       end
 
-      def _cmd_upd(e, _step, _mstat)
+      def _cmd_upd(e, step, mstat)
         _show
         _get_site(e).exe(['upd'], 'macro').wait_ready
         true
+      rescue CommError
+        step[:result] = mstat[:result] = 'comerr'
       end
 
       def _cmd_system(e, step, _mstat)

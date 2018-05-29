@@ -14,6 +14,7 @@ module CIAX
         @par = type?(par, Parameter)
         @rec_list = RecList.new(type?(@cfg[:rec_arc], RecArc), @par.list)
         @org_cmds = (@valid_keys = valid_keys).dup
+        # To finish up update which is removed from alive list at the end
         @live_list = []
         # @records content is Record
         @id = @cfg[:id]

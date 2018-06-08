@@ -54,7 +54,7 @@ module CIAX
       end
 
       def _exe_site(e)
-        _get_site(e).exe(e[:args], 'macro').to_s.downcase
+        _get_site(e).exe(e[:args], 'macro')
       end
 
       # Mcr::Entity

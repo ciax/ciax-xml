@@ -29,7 +29,7 @@ module CIAX
       def sleeping
         s = self[:val] || return
         progress(s)
-        select_res('slept')
+        result = 'slept'
       end
 
       # Condition section
@@ -42,10 +42,13 @@ module CIAX
       end
 
       # Not Condition Step, returns t/f
-      def select_res(tmsg, fmsg = nil, tf = true)
-        res = tf ? tmsg : fmsg
-        self[:result] = res.downcase if res
+      def select_res(tmsg, fmsg, tf)
+        result = tf ? tmsg : fmsg
         tf
+      end
+
+      def result=(msg)
+        self[:result] = msg.downcase
       ensure
         cmt
       end

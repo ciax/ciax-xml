@@ -71,7 +71,7 @@ module CIAX
 
       def _cmd_exec(e, step, _mstat)
         if step.exec? && @qry.query(%w(exec skip), step)
-          step.select_res(_exe_site(e).to_s)
+          step.result = _exe_site(e).to_s
         end
         @sv_stat.push(:run, e[:site]).cmt unless
           @sv_stat.upd.get(:run).include?(e[:site])
@@ -80,7 +80,7 @@ module CIAX
 
       def _cmd_cfg(e, step, _mstat)
         _show
-        step.select_res(_exe_site(e).to_s)
+        step.result = _exe_site(e).to_s
         true
       end
 
@@ -89,13 +89,13 @@ module CIAX
         _exe_site(e).wait_ready
         true
       rescue CommError
-        step.select_res('comerr')
+        step.result = 'comerr'
         true
       end
 
       def _cmd_system(e, step, _mstat)
         return true unless step.exec?
-        step.select_res(`#{e[:val]}`.chomp)
+        step.result = `#{e[:val]}`.chomp
         true
       end
 

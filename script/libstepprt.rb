@@ -50,7 +50,7 @@ module CIAX
         end
 
         # returns t/f
-        def select_res(tmsg, fmsg = nil, tf = true)
+        def select_res(tmsg, fmsg, tf)
           tf = super
           print result if Msg.fg?
           tf

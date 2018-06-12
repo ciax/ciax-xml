@@ -64,7 +64,7 @@ module CIAX
         # For retry
         false
       rescue CommError
-        mstat[:result] = 'comerr'
+        mstat.result = 'comerr'
         false
       ensure
         ___post_seq(mstat)
@@ -80,7 +80,7 @@ module CIAX
           retry
         end
       rescue Interrupt
-        mstat[:result] = 'interrupted'
+        mstat.result = 'interrupted'
         raise
       end
 
@@ -96,11 +96,11 @@ module CIAX
         @depth += 1
         @record[:status] = 'run'
         @record[:total_steps] += type?(seqary, Array).size
-        mstat[:result] = 'busy'
+        mstat.result = 'busy'
       end
 
       def ___post_seq(mstat)
-        mstat[:result] = 'complete' if mstat[:result] == 'busy'
+        mstat.result = 'complete' if mstat.result == 'busy'
         @depth -= 1
       end
 

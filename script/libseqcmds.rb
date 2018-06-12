@@ -28,7 +28,7 @@ module CIAX
       # Vars in conditions are not related in this sequence
       def _cmd_bypass(_e, step, mstat)
         return true unless step.skip?
-        mstat[:result] = 'bypass'
+        mstat.result = 'bypass'
         false
       end
 
@@ -42,25 +42,25 @@ module CIAX
         else
           return true unless @qry.query(%w(pass enter), step)
         end
-        mstat[:result] = 'skipped'
+        mstat.result = 'skipped'
         false
       end
 
       def _cmd_check(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
-        mstat[:result] = 'failed'
+        mstat.result = 'failed'
         raise Interlock
       end
 
       def _cmd_verify(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
-        mstat[:result] = 'failed'
+        mstat.result = 'failed'
         raise Verification
       end
 
       def _cmd_wait(_e, step, mstat)
         return true unless step.timeout? && _giveup?(step)
-        mstat[:result] = 'timeout'
+        mstat.result = 'timeout'
         raise Interlock
       end
 
@@ -84,12 +84,12 @@ module CIAX
         true
       end
 
-      def _cmd_upd(e, step, _mstat)
+      def _cmd_upd(e, step, mstat)
         _show
         _exe_site(e).wait_ready
         true
       rescue CommError
-        step.result = 'comerr'
+        mstat.result = step.result = 'comerr'
         true
       end
 
@@ -102,7 +102,7 @@ module CIAX
       # Return T/F
       def _cmd_select(e, step, mstat)
         var = ___get_stat(e) || cfg_err('No data in status')
-        step[:result] = var
+        step.result = var
         _show step.result
         sel = e[:select]
         name = sel[var] || sel['*'] || mcr_err("No option for #{var} ")

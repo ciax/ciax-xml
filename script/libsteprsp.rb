@@ -39,7 +39,7 @@ module CIAX
 
         def timeout?
           tf = progress(self[:retry]) { active? } ||
-                progress(self[:retry].to_i - self[:count]) { __all_conds? }
+               progress(self[:retry].to_i - self[:count]) { __all_conds? }
           select_res('timeout', 'pass', tf)
         end
 
@@ -60,7 +60,7 @@ module CIAX
         def wait_ready_all
           @exes.each do |obj|
             next if obj.wait_ready
-            result = 'timeout'
+            self.result = 'timeout'
             com_err('timeout')
           end
           self

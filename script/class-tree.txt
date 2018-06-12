@@ -87,7 +87,7 @@ Exe
   |-Mcr::Exe 
 
 GServer
-  |-Simulator::BBIO 
+  |-Simulator::BbIo
   |-Simulator::Server 
   |  |-Simulator::FpDio 
   |  |-Simulator::Slosyn 

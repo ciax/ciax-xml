@@ -6,6 +6,7 @@ require 'gserver'
 module CIAX
   # Device Simulator
   module Simulator
+    SimList = []
     # Simulation Server
     class Server < GServer
       include Msg

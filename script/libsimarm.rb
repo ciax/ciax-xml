@@ -38,6 +38,8 @@ module CIAX
       end
     end
 
+    SimList << Arm
+
     Arm.new.serve if __FILE__ == $PROGRAM_NAME
   end
 end

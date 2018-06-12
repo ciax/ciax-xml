@@ -26,8 +26,7 @@ module CIAX
   # Simulator
   module Simulator
     cfg = Conf.new
-    mods = [Arm, Ap, BBIO, Carousel, FpDio]
-    list = mods.map { |mod| mod.new(cfg) }
+    list = SimList.map { |mod| mod.new(cfg) }
     Process.daemon(true, true)
     list.each(&:start)
     sleep

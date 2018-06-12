@@ -5,7 +5,7 @@ module CIAX
   # Device Simulator
   module Simulator
     # BB Electric I/O
-    class BBIO < Server
+    class BbIo < Server
       def initialize(cfg = nil)
         super(10_007, cfg)
         @ioreg = Word.new(0)
@@ -27,6 +27,8 @@ module CIAX
       end
     end
 
-    BBIO.new.serve if __FILE__ == $PROGRAM_NAME
+    SimList << BbIo
+
+    BbIo.new.serve if __FILE__ == $PROGRAM_NAME
   end
 end

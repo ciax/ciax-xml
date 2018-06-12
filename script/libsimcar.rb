@@ -24,6 +24,8 @@ module CIAX
       end
     end
 
+    SimList << Carousel
+
     Carousel.new.serve if __FILE__ == $PROGRAM_NAME
   end
 end

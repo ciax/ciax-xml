@@ -18,31 +18,31 @@ module CIAX
       #### In Drive mode
       # Interactive section
       def exec?
-        set_result('approval', 'dryrun', !@opt.dry?)
+        select_res('approval', 'dryrun', !@opt.dry?)
       end
 
       # Execution section
       def async?
-        set_result('forked', 'entering', /true|1/ =~ self[:async])
+        select_res('forked', 'entering', /true|1/ =~ self[:async])
       end
 
       def sleeping
         s = self[:val] || return
         progress(s)
-        set_result('slept')
+        select_res('slept')
       end
 
       # Condition section
       def skip?(tf)
-        set_result('skip', 'enter', tf)
+        select_res('skip', 'enter', tf)
       end
 
       def fail?(tf)
-        set_result('failed', 'pass', tf)
+        select_res('failed', 'pass', tf)
       end
 
       # Not Condition Step, returns t/f
-      def set_result(tmsg, fmsg = nil, tf = true)
+      def select_res(tmsg, fmsg = nil, tf = true)
         res = tf ? tmsg : fmsg
         self[:result] = res.downcase if res
         tf

@@ -40,7 +40,7 @@ module CIAX
         def timeout?
           res = progress(self[:retry]) { active? } ||
                 progress(self[:retry].to_i - self[:count]) { __all_conds? }
-          set_result('timeout', 'pass', res)
+          select_res('timeout', 'pass', res)
         end
 
         # obj.waitbusy -> looking at Prompt[:busy]
@@ -60,7 +60,7 @@ module CIAX
         def wait_ready_all
           @exes.each do |obj|
             next if obj.wait_ready
-            set_result('timeout')
+            select_res('timeout')
             com_err('timeout')
           end
           self

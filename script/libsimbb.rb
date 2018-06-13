@@ -27,7 +27,7 @@ module CIAX
       end
     end
 
-    SimList << BbIo
+    @sim_list << BbIo
 
     BbIo.new.serve if __FILE__ == $PROGRAM_NAME
   end

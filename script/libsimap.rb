@@ -24,7 +24,7 @@ module CIAX
       end
     end
 
-    SimList << Ap
+    @sim_list << Ap
 
     Ap.new.serve if __FILE__ == $PROGRAM_NAME
   end

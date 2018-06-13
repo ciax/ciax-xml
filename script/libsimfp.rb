@@ -98,7 +98,7 @@ module CIAX
       end
     end
 
-    SimList << FpDio
+    @sim_list << FpDio
 
     FpDio.new.serve if __FILE__ == $PROGRAM_NAME
   end

@@ -74,7 +74,7 @@ module CIAX
       def _do_step(e, mstat)
         step = @record.add_step(e, @depth)
         begin
-          _show step.title
+          _show step.title_s
           return true if ___call_step(e, step, mstat)
         rescue Retry
           retry
@@ -117,7 +117,7 @@ module CIAX
         @record = Record.new.ext_local_rsp(@cfg)
         @record[:pid] = pid
         @id = @record[:id]
-        @title = @record.title
+        @title = @record.title_s
         ___init_record_file
       end
 

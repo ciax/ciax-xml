@@ -24,7 +24,7 @@ module CIAX
       end
 
       def to_v
-        msg = title
+        msg = title_s
         self[:steps].each do |i|
           msg << i.to_v
         end
@@ -43,7 +43,7 @@ module CIAX
         self[:steps].last
       end
 
-      def title
+      def title_s
         date = Time.at(self[:id][0, 10].to_i)
         Msg.colorize(self[:mode].upcase, 3) +
           format(":%s (%s) [%s]\n", self[:label], self[:cid], date)

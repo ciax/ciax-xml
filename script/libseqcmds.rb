@@ -103,7 +103,7 @@ module CIAX
       def _cmd_select(e, step, mstat)
         var = ___get_stat(e) || cfg_err('No data in status')
         step.result = var
-        _show step.result
+        _show step.result_s
         sel = e[:select]
         name = sel[var] || sel['*'] || mcr_err("No option for #{var} ")
         _do_step({ type: 'mcr', args: name }, mstat)

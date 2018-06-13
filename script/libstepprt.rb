@@ -25,7 +25,7 @@ module CIAX
           self
         end
 
-        def title
+        def title_s
           type = self[:type]
           self[:async] = '(async)' if key?(:async)
           ___head(*@title_list[type.to_sym])
@@ -34,25 +34,25 @@ module CIAX
           type
         end
 
-        def result
+        def result_s
           mary = [___prt_count]
           ___prt_result(self[:result], mary)
           mary.join("\n") + "\n"
         end
 
-        def action
+        def action_s
           key?(:action) ? __body(self[:action].capitalize, 8) + "\n" : ''
         end
 
         # Display section
         def to_v
-          title + result + action
+          title_s + result_s + action_s
         end
 
         # returns t/f
         def select_res(tmsg, fmsg, tf)
           tf = super
-          print result if Msg.fg?
+          print result_s if Msg.fg?
           tf
         end
 

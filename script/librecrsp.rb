@@ -32,7 +32,7 @@ module CIAX
 
         def start
           self[:start] = now_msec
-          title
+          title_s
         end
 
         def add_step(e1, depth) # returns Step

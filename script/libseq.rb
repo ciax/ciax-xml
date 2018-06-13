@@ -100,7 +100,7 @@ module CIAX
       end
 
       def ___post_seq(mstat)
-        mstat.result = 'complete' if mstat.result == 'busy'
+        mstat.result = 'complete' if mstat[:result] == 'busy'
         @depth -= 1
       end
 

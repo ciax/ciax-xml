@@ -6,7 +6,6 @@ require 'gserver'
 module CIAX
   # Device Simulator
   module Simulator
-    @sim_list = []
     # Simulation Server
     class Server < GServer
       include Msg
@@ -94,5 +93,23 @@ module CIAX
         end
       end
     end
+
+    # Run object for Daemon
+    class SimList < Array
+      attr_reader :id
+      def initialize
+        @id = 'dmcs'
+      end
+
+      def gen
+        map! { |mod| mod.new(Conf.new) }
+      end
+
+      def run
+        each(&:start)
+      end
+    end
+
+    @sim_list = SimList.new
   end
 end

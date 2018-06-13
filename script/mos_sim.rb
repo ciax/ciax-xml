@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libdaemon'
 require 'libsimap'
 require 'libsimarm'
 require 'libsimbb'
@@ -25,10 +26,8 @@ require 'libsimfp'
 module CIAX
   # Simulator
   module Simulator
-    cfg = Conf.new
-    list = @sim_list.map { |mod| mod.new(cfg) }
-    Process.daemon(true, true)
-    list.each(&:start)
-    sleep
+    Daemon.new('mos_sim', '', 54_301) do
+      @sim_list.gen
+    end
   end
 end

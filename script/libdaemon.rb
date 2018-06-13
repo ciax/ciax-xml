@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libconf'
 require 'libthreadx'
+require 'libudp'
 module CIAX
   ### Daemon Methods ###
   class Daemon
@@ -8,6 +9,7 @@ module CIAX
     # Previous process will be killed at the start up.
     # Reloadable by HUP signal
     # Get Thread status by UDP:54321 connection
+    # Closure should return an object having ('run' and 'id')
     def initialize(tag, ops = '', port = 54_321)
       ENV['VER'] ||= 'Initiate'
       @layer = tag

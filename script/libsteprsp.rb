@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libstep'
+require 'libstepdrv'
 
 module CIAX
   # Macro Layer

@@ -18,12 +18,12 @@ module CIAX
       #### In Drive mode
       # Interactive section
       def exec?
-        select_res('approval', 'dryrun', !@opt.dry?)
+        which?('approval', 'dryrun', !@opt.dry?)
       end
 
       # Execution section
       def async?
-        select_res('forked', 'entering', /true|1/ =~ self[:async])
+        which?('forked', 'entering', /true|1/ =~ self[:async])
       end
 
       def sleeping
@@ -34,15 +34,15 @@ module CIAX
 
       # Condition section
       def skip?(tf)
-        select_res('skip', 'enter', tf)
+        which?('skip', 'enter', tf)
       end
 
       def fail?(tf)
-        select_res('failed', 'pass', tf)
+        which?('failed', 'pass', tf)
       end
 
       # Not Condition Step, returns t/f
-      def select_res(tmsg, fmsg, tf)
+      def which?(tmsg, fmsg, tf)
         self.result = tf ? tmsg : fmsg
         tf
       end

@@ -40,7 +40,7 @@ module CIAX
         def timeout?
           tf = progress(self[:retry]) { active? } ||
                progress(self[:retry].to_i - self[:count]) { __all_conds? }
-          select_res('timeout', 'pass', tf)
+          which?('timeout', 'pass', tf)
         end
 
         # obj.waitbusy -> looking at Prompt[:busy]

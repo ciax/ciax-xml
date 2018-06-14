@@ -51,8 +51,8 @@ module CIAX
 
       def jread(str = nil)
         res = super
-        res[:steps].each do |i|
-          i.extend(Step::Prt).ext_prt(res[:start])
+        res[:steps].map! do |i|
+          Step.new(res[:start]).update(i)
         end
         res
       end

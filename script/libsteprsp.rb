@@ -10,7 +10,7 @@ module CIAX
         extend(Rsp).ext_local_rsp(dev_list)
       end
 
-      # Check Coindition
+      # Check Device Status
       module Rsp
         def self.extended(obj)
           Msg.type?(obj, Step)

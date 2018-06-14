@@ -1,66 +1,79 @@
 #!/usr/bin/ruby
 require 'libupd'
+require 'libstepprt'
 
 module CIAX
   module Mcr
     # Element of Record
-    class Step < Upd
+    class Step
       attr_reader :opt
-      def initialize(db, depth, opt)
-        super()
-        update db
-        self[:depth] = depth
-        @opt = opt
-        # Prevent time update on step
-        @cmt_procs.clear
+
+      def ext_local_drv(db, depth, opt)
+        extend(Drv).ext_local_drv(db, depth, opt)
       end
 
-      #### In Drive mode
-      # Interactive section
-      def exec?
-        which?('approval', 'dryrun', !@opt.dry?)
-      end
+      # Step Driver
+      module Drv
+        def self.extended(obj)
+          Msg.type?(obj, Step)
+        end
 
-      # Execution section
-      def async?
-        which?('forked', 'entering', /true|1/ =~ self[:async])
-      end
+        def ext_local_drv(db, depth, opt)
+          update db
+          self[:depth] = depth
+          @opt = opt
+          # Prevent time update on step
+          @cmt_procs.clear
+          self
+        end
 
-      def sleeping
-        s = self[:val] || return
-        progress(s)
-        self.result = 'slept'
-      end
+        #### In Drive mode
+        # Interactive section
+        def exec?
+          which?('approval', 'dryrun', !@opt.dry?)
+        end
 
-      # Condition section
-      def skip?(tf)
-        which?('skip', 'enter', tf)
-      end
+        # Execution section
+        def async?
+          which?('forked', 'entering', /true|1/ =~ self[:async])
+        end
 
-      def fail?(tf)
-        which?('failed', 'pass', tf)
-      end
+        def sleeping
+          s = self[:val] || return
+          progress(s)
+          self.result = 'slept'
+        end
 
-      # Not Condition Step, returns t/f
-      def which?(tmsg, fmsg, tf)
-        self.result = tf ? tmsg : fmsg
-        tf
-      end
+        # Condition section
+        def skip?(tf)
+          which?('skip', 'enter', tf)
+        end
 
-      def result=(msg)
-        self[:result] = msg.downcase
-      ensure
-        cmt
-      end
+        def fail?(tf)
+          which?('failed', 'pass', tf)
+        end
 
-      def progress(total, &cond)
-        itv = @opt.log? ? 1 : 0
-        total.to_i.times do |n| # gives number or nil(if break)
-          self[:count] = n + 1
-          break if cond && yield
-          Kernel.sleep itv
-          dot if Msg.fg?
+        # Not Condition Step, returns t/f
+        def which?(tmsg, fmsg, tf)
+          self.result = tf ? tmsg : fmsg
+          tf
+        end
+
+        def result=(msg)
+          self[:result] = msg.downcase
+        ensure
           cmt
+        end
+
+        def progress(total, &cond)
+          itv = @opt.log? ? 1 : 0
+          total.to_i.times do |n| # gives number or nil(if break)
+            self[:count] = n + 1
+            break if cond && yield
+            Kernel.sleep itv
+            dot if Msg.fg?
+            cmt
+          end
         end
       end
     end

@@ -107,12 +107,12 @@ module CIAX
       include Msg
       def initialize(fname, rw)
         super
-        @base = now_msec
+        @base_time = now_msec
         write("\n")
       end
 
       def puts(str)
-        super(format("[#{Time.now}/%s]%s", elps_date(@base), str))
+        super(format("[#{Time.now}/%s]%s", elps_date(@base_time), str))
       end
     end
   end

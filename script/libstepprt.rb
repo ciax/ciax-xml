@@ -19,8 +19,8 @@ module CIAX
           check: ['Check', 6, 'interlock'], verify: ['Verify', 6, 'at the end']
         }.freeze
 
-        def ext_prt(base)
-          @base = type?(base, Integer)
+        def ext_prt(base_time)
+          @base_time = type?(base_time, Integer)
           ___init_title_list
           self
         end
@@ -106,7 +106,7 @@ module CIAX
         end
 
         def ___head(msg, col, label = 'noname')
-          elps = format('[%6.2f]', (self[:time] - @base) * 0.001) + __rindent
+          elps = format('[%6.2f]', (self[:time] - @base_time) * 0.001) + __rindent
           elps + Msg.colorize(msg, col) + ':' +
             (self[:label] || (label.is_a?(Proc) ? "[#{label.call}]" : label))
         end

@@ -23,11 +23,11 @@ module CIAX
 
     # Mode (Device) [prompt]
     # none : test all layers        [test]
-    # -e   : drive all layers       [proc]
+    # -e   : drive all layers       [prcs]
     # -c   : client all layers      [cl]
-    # -l   : client to lower layers [drv:cl]
+    # -l   : client to lower layers [prcs:cl]
     # -s   : server (test)          [test:sv]
-    # -se  : server (drive)         [drv:sv]
+    # -se  : server (drive)         [prcs:sv]
 
     # Mode (Macro)
     # none : test
@@ -42,7 +42,7 @@ module CIAX
       %i(h c).any? { |k| key?(k) }
     end
 
-    def drv?
+    def prcs?
       %i(e l).any? { |k| key?(k) }
     end
 
@@ -61,7 +61,7 @@ module CIAX
     end
 
     def log?
-      drv? && !dry?
+      prcs? && !dry?
     end
 
     # Others

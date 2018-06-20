@@ -11,10 +11,10 @@ module CIAX
 
         def ext_local_processor
           ___init_stream
-          ___init_drv_ext
-          ___init_drv_save
-          ___init_drv_load
-          ___init_drv_flush
+          ___init_processor_ext
+          ___init_processor_save
+          ___init_processor_load
+          ___init_processor_flush
           ___init_log_mode
           self
         end
@@ -28,7 +28,7 @@ module CIAX
           @stat.ext_local_conv(@stream).ext_local_file.auto_save
         end
 
-        def ___init_drv_ext
+        def ___init_processor_ext
           @cobj.rem.ext.def_proc do |ent, src|
             @sv_stat.dw(:comerr)
             @stream.snd(ent[:frame], ent.id)
@@ -40,14 +40,14 @@ module CIAX
           end
         end
 
-        def ___init_drv_save
+        def ___init_processor_save
           @cobj.get('save').def_proc do |ent|
             @stat.save_partial(ent.par[0].split(','), ent.par[1])
             verbose { "Saving [#{ent.par[0]}]" }
           end
         end
 
-        def ___init_drv_load
+        def ___init_processor_load
           @cobj.get('load').def_proc do |ent|
             @stat.load_partial(ent.par[0] || '')
             @stat.flush
@@ -55,7 +55,7 @@ module CIAX
           end
         end
 
-        def ___init_drv_flush
+        def ___init_processor_flush
           @cobj.get('flush').def_proc do
             @stream.rcv
             @stat.flush

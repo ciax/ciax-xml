@@ -18,8 +18,8 @@ module CIAX
           @stat.ext_local_sym(@cfg[:sdb]).ext_local_file.auto_save
           @buf = ___init_buf
           ___init_log_mode
-          ___init_drv_save
-          ___init_drv_load
+          ___init_processor_save
+          ___init_processor_load
           self
         end
 
@@ -31,14 +31,14 @@ module CIAX
           @cobj.rem.ext_input_log
         end
 
-        def ___init_drv_save
+        def ___init_processor_save
           @cobj.get('save').def_proc do |ent|
             @stat.save_partial(ent.par[0].split(','), ent.par[1])
             verbose { "Saving [#{ent.par[0]}]" }
           end
         end
 
-        def ___init_drv_load
+        def ___init_processor_load
           @cobj.get('load').def_proc do |ent|
             @stat.load_partial(ent.par[0] || '')
             verbose { "Loading [#{ent.par[0]}]" }

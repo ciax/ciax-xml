@@ -63,7 +63,7 @@ module CIAX
 
     # Generate and Save Data
     def ext_local_processor
-      @mode = @cfg[:opt].dry? ? 'DRY' : 'DRV'
+      @mode = @cfg[:opt].dry? ? 'DRY' : 'PRCS'
       extend(context_module('Processor')).ext_local_processor
       _ext_local
       self
@@ -122,7 +122,7 @@ module CIAX
       # Option handling
       opt = @cfg[:opt]
       return ext_client if opt.cl?
-      if opt.drv?
+      if opt.prcs?
         ext_local_processor
       else
         ext_local_test

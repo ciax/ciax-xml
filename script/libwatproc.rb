@@ -14,14 +14,14 @@ module CIAX
           # @stat[:int] is overwritten by initial loading
           @sub.batch_interrupt = @stat.get(:int)
           @stat.ext_local_log if @cfg[:opt].log?
-          ___init_upd_drv
-          ___init_exe_drv
+          ___init_upd_processor
+          ___init_exe_processor
           self
         end
 
         private
 
-        def ___init_upd_drv
+        def ___init_upd_processor
           @stat.cmt_procs << proc do |ev|
             ev.get(:exec).each do |src, pri, args|
               verbose { "Propagate Exec:#{args} from [#{src}] by [#{pri}]" }
@@ -31,7 +31,7 @@ module CIAX
           end
         end
 
-        def ___init_exe_drv
+        def ___init_exe_processor
           @th_auto = ___init_auto_thread unless @cfg[:cmd_line_mode]
           @sub.post_exe_procs << proc do
             @sv_stat.set_flg(:auto, @th_auto && @th_auto.alive?)

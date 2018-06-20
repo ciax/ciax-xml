@@ -8,11 +8,11 @@ module CIAX
   module Wat
     # Add extend method in Event
     class Event
-      def ext_local_rsp(stat, sv_stat = nil)
-        extend(Rsp).ext_local_rsp(stat, sv_stat)
+      def ext_local_conv(stat, sv_stat = nil)
+        extend(Conv).ext_local_conv(stat, sv_stat)
       end
       # Watch Response Module
-      module Rsp
+      module Conv
         def self.extended(obj)
           Msg.type?(obj, Event)
         end
@@ -22,7 +22,7 @@ module CIAX
         #       => self[:crnt]<-@stat.data(picked)
         #       => check(self[:crnt] <> self[:last]?)
         # Stat no changed -> clear exec, no eval
-        def ext_local_rsp(stat, sv_stat = nil)
+        def ext_local_conv(stat, sv_stat = nil)
           @stat = type?(stat, App::Status)
           # No need @sv_stat.upd at reading
           @sv_stat = type?(sv_stat || Prompt.new('site', self[:id]), Prompt)
@@ -134,7 +134,7 @@ module CIAX
       odb = { t: 'test conditions[key=val,..]' }
       GetOpts.new('< status_file', odb) do |opt, args|
         stat = App::Status.new(args.shift)
-        event = Event.new(stat[:id]).ext_local_rsp(stat)
+        event = Event.new(stat[:id]).ext_local_conv(stat)
         if (t = opt[:t])
           stat.str_update(t)
         end

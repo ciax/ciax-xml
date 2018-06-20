@@ -7,11 +7,11 @@ module CIAX
   module Mcr
     # Add extend method in Record
     class Record
-      def ext_local_rsp(cfg)
-        extend(Rsp).ext_local_rsp(cfg)
+      def ext_local_processor(cfg)
+        extend(Processor).ext_local_processor(cfg)
       end
       # Macro Response Module
-      module Rsp
+      module Processor
         def self.extended(obj)
           Msg.type?(obj, Record)
         end
@@ -19,7 +19,7 @@ module CIAX
         # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
         # cfg(Entity) contains [:cid],['label'],@layers[:wat]
         # cfg doesn't change
-        def ext_local_rsp(cfg)
+        def ext_local_processor(cfg)
           @cfg = type?(cfg, Config)
           %i(port cid label).each { |k| self[k] = @cfg[k] }
           self[:ver] = @cfg[:version] || '0' # Version
@@ -36,8 +36,8 @@ module CIAX
         end
 
         def add_step(e1, depth) # returns Step
-          step = Step.new(self[:start]).ext_local_drv(e1, depth, @opt)
-          self[:steps] << step.ext_local_rsp(@cfg[:dev_list])
+          step = Step.new(self[:start]).ext_local_checker(e1, depth, @opt)
+          self[:steps] << step.ext_local_dev(@cfg[:dev_list])
           step.cmt_procs << proc do
             verbose { 'Propagate Step#cmt -> Record#cmt' }
             cmt

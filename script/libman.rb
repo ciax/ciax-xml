@@ -34,7 +34,7 @@ module CIAX
         super
       end
 
-      def ext_local_driver
+      def ext_local_processor
         require 'libmanproc'
         super
       end

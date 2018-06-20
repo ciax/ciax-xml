@@ -31,7 +31,7 @@ module CIAX
         super
       end
 
-      def ext_local_driver
+      def ext_local_processor
         require 'libwatproc'
         super
       end
@@ -42,7 +42,7 @@ module CIAX
       def _ext_local
         ___init_upd
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
-        @stat.ext_local_rsp(@sub.stat, @sv_stat)
+        @stat.ext_local_conv(@sub.stat, @sv_stat)
         super
       end
 

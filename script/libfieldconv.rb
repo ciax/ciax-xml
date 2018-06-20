@@ -3,7 +3,7 @@ require 'libfield'
 require 'libframe'
 require 'libstream'
 
-# Rsp Methods
+# Conv Methods
 # Input  : upd block(frame,time)
 # Output : Field
 module CIAX
@@ -11,12 +11,12 @@ module CIAX
   module Frm
     # Field class
     class Field
-      def ext_local_rsp(stream)
-        extend(Rsp).ext_local_rsp(stream)
+      def ext_local_conv(stream)
+        extend(Conv).ext_local_conv(stream)
       end
 
       # Frame Response module
-      module Rsp
+      module Conv
         # @< (base),(prefix)
         # @ cobj,sel,fds,frame,fary,cc
         def self.extended(obj)
@@ -24,7 +24,7 @@ module CIAX
         end
 
         # Ent is needed which includes response_id and cmd_parameters
-        def ext_local_rsp(stream)
+        def ext_local_conv(stream)
           @stream = type?(stream, Hash)
           type?(@dbi, Dbi)
           @fdbr = @dbi[:response]
@@ -148,7 +148,7 @@ module CIAX
       ConfOpts.new('< logline', m: 'merge file') do |cfg, _args|
         raise(InvalidARGS, '  Need Input File') if STDIN.tty?
         res = Varx::JsLog.read(gets(nil))
-        field = Field.new(res[:id]).ext_local_rsp(res)
+        field = Field.new(res[:id]).ext_local_conv(res)
         field.ext_local_file.auto_save if cfg[:opt][:m]
         if (cid = res[:cmd])
           atrb = field.dbi.pick(%i(stream))

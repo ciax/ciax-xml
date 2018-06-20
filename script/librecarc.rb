@@ -41,7 +41,7 @@ module CIAX
         self
       end
 
-      def ext_local_driver
+      def ext_local_processor
         ext_local_file
         init_time2cmt
         auto_save
@@ -69,7 +69,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      puts RecArc.new.ext_local_driver.clear.refresh.join
+      puts RecArc.new.ext_local_processor.clear.refresh.join
     end
   end
 end

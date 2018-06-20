@@ -6,13 +6,13 @@ module CIAX
     # Macro Manager
     class Man
       # Macro Manager Driver Module
-      module Drv
+      module Processor
         def self.extended(obj)
           Msg.type?(obj, Man)
         end
 
         # Initiate for driver
-        def ext_local_driver
+        def ext_local_processor
           @seq_list = SeqList.new(@cfg[:rec_arc])
           @sv_stat.repl(:sid, '') # For server response
           @stat.ext_local
@@ -24,7 +24,7 @@ module CIAX
           self
         end
 
-        alias ext_local_test ext_local_driver
+        alias ext_local_test ext_local_processor
 
         def ___init_pre_exe
           @pre_exe_procs << proc do

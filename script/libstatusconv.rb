@@ -6,17 +6,17 @@ module CIAX
   module App
     # Convert Response
     class Status
-      def ext_local_rsp(field)
-        extend(Rsp).ext_local_rsp(field)
+      def ext_local_conv(field)
+        extend(Conv).ext_local_conv(field)
       end
 
       # Response Module
-      module Rsp
+      module Conv
         def self.extended(obj)
           Msg.type?(obj, Status)
         end
 
-        def ext_local_rsp(field)
+        def ext_local_conv(field)
           @field = type?(field, Frm::Field)
           type?(@dbi, Dbi)
           ___init_cmt_procs
@@ -129,7 +129,7 @@ module CIAX
           field = Frm::Field.new(args.shift)
           field.ext_local_file if STDIN.tty?
           stat = Status.new(field[:id])
-          stat.ext_local_rsp(field).cmt
+          stat.ext_local_conv(field).cmt
           puts opt[:r] ? stat.to_v : stat.path(args)
         end
       end

@@ -4,12 +4,12 @@ module CIAX
   module Frm
     class Exe
       # Frame Exe module
-      module Drv
+      module Processor
         def self.extended(obj)
           Msg.type?(obj, Exe)
         end
 
-        def ext_local_driver
+        def ext_local_processor
           ___init_stream
           ___init_drv_ext
           ___init_drv_save
@@ -25,7 +25,7 @@ module CIAX
           @stream = Stream.new(@id, @cfg)
           @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
           @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }
-          @stat.ext_local_rsp(@stream).ext_local_file.auto_save
+          @stat.ext_local_conv(@stream).ext_local_file.auto_save
         end
 
         def ___init_drv_ext

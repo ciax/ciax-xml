@@ -114,7 +114,7 @@ module CIAX
 
       # Sub for initialize()
       def ___init_record(pid)
-        @record = Record.new.ext_local_rsp(@cfg)
+        @record = Record.new.ext_local_processor(@cfg)
         @record[:pid] = pid
         @id = @record[:id]
         @title = @record.title_s

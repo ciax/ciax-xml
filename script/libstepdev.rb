@@ -6,17 +6,17 @@ module CIAX
   module Mcr
     # Element of Record
     class Step
-      def ext_local_rsp(dev_list)
-        extend(Rsp).ext_local_rsp(dev_list)
+      def ext_local_dev(dev_list)
+        extend(Device).ext_local_dev(dev_list)
       end
 
       # Check Device Status
-      module Rsp
+      module Device
         def self.extended(obj)
           Msg.type?(obj, Step)
         end
 
-        def ext_local_rsp(dev_list)
+        def ext_local_dev(dev_list)
           @dev_list = type?(dev_list, Wat::List)
           # App::Exe list used in this Step
           if (@condition = delete(:cond))

@@ -8,17 +8,17 @@ module CIAX
     class Step
       attr_reader :opt
 
-      def ext_local_drv(db, depth, opt)
-        extend(Drv).ext_local_drv(db, depth, opt)
+      def ext_local_checker(db, depth, opt)
+        extend(Checker).ext_local_checker(db, depth, opt)
       end
 
-      # Step Driver
-      module Drv
+      # Step Checker
+      module Checker
         def self.extended(obj)
           Msg.type?(obj, Step)
         end
 
-        def ext_local_drv(db, depth, opt)
+        def ext_local_checker(db, depth, opt)
           update db
           self[:depth] = depth
           @opt = opt

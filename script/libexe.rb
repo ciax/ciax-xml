@@ -62,9 +62,9 @@ module CIAX
     end
 
     # Generate and Save Data
-    def ext_local_driver
+    def ext_local_processor
       @mode = @cfg[:opt].dry? ? 'DRY' : 'DRV'
-      extend(context_module('Drv')).ext_local_driver
+      extend(context_module('Processor')).ext_local_processor
       _ext_local
       self
     end
@@ -83,7 +83,8 @@ module CIAX
 
     private
 
-    # Local operation included in ext_local_test, ext_local_driver (non_client)
+    # Local operation included in ext_local_test, ext_local_processor
+    # (non_client)
     def _ext_local
       @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
       self
@@ -122,7 +123,7 @@ module CIAX
       opt = @cfg[:opt]
       return ext_client if opt.cl?
       if opt.drv?
-        ext_local_driver
+        ext_local_processor
       else
         ext_local_test
       end

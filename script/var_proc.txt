@@ -32,19 +32,19 @@
       (Command,Domain,Group)#rem.int.proc(id,&) 
       (App/Frm/Mcr)::Command#rem.ext.proc(&) 
 
-## Related to Wat::Rsp(Event)
+## Related to Wat::Conv(Event)
 
-  Rsp@on_act_procs
+  Conv@on_act_procs
     structure: Array[Proc...]
-    args: Rsp(self)
+    args: Conv(self)
     return: Any
-    called: Rsp#upd (depends on Prompt)
+    called: Conv#upd (depends on Prompt)
 
-  Rsp@on_deact_procs
+  Conv@on_deact_procs
     structure: Array[Proc...]
-    args: Rsp(self)
+    args: Conv(self)
     return: Any
-    called: Rsp#upd (depends on Prompt)
+    called: Conv#upd (depends on Prompt)
 
 ## Related to Exe
 

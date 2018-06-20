@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libvarx'
-require 'libstepprt'
+require 'libstep'
 
 module CIAX
   # Macro Layer

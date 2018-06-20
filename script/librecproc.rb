@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'librecord'
-require 'libsteprsp'
+require 'libstepdev'
 
 module CIAX
   # Macro Layer

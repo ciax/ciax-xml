@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libupd'
-require 'libstepprt'
+require 'libstep'
 
 module CIAX
   module Mcr

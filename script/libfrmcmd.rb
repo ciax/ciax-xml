@@ -119,7 +119,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libfrmrsp'
+      require 'libfieldconv'
       require 'libfrmdb'
       cap = '[dev] [cmd] (par) < field_file'
       ConfOpts.new(cap, options: 'r') do |cfg, args|

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libstepdrv'
+require 'libstepchk'
 
 module CIAX
   # Macro Layer

@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libappsym'
 
+# View is separated from Status. (Propagate Status -> View (Prt)
 # View is not used for computing, just for apperance for user.
 # Some information is added from Dbi
 # So the convert process (upd) will be included in to_v

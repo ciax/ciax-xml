@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libapplist'
-require 'libwatprt'
+require 'libwatviewprt'
 
 module CIAX
   # Watch Layer
@@ -32,7 +32,7 @@ module CIAX
       end
 
       def ext_local_driver
-        require 'libwatdrv'
+        require 'libwatproc'
         super
       end
 

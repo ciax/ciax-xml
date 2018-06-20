@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libappcmd'
-require 'libapprsp'
+require 'libstatusconv'
 require 'libappview'
 require 'libfrmlist'
 require 'libinsdb'
@@ -63,7 +63,7 @@ module CIAX
       end
 
       def ext_local_driver
-        require 'libappdrv'
+        require 'libappproc'
         super
       end
 

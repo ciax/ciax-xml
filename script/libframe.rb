@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libmsg'
 require 'libfrmcode'
-require 'libfrmcheck'
+require 'libframecc'
 
 module CIAX
   # Frame Layer

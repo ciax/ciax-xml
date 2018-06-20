@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libwatrsp'
+require 'libeventconv'
 
 # View is not used for computing, just for apperance for user.
 # Some information is added from Dbi

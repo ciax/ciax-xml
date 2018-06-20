@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libmcrcmd'
-require 'librecrsp'
+require 'librecproc'
 require 'libseqqry'
 
 module CIAX

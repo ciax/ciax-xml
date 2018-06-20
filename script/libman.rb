@@ -30,12 +30,12 @@ module CIAX
 
       # Mode Extention by Option
       def ext_local_test
-        require 'libmandrv'
+        require 'libmanproc'
         super
       end
 
       def ext_local_driver
-        require 'libmandrv'
+        require 'libmanproc'
         super
       end
 

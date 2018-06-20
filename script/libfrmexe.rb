@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libfrmrsp'
+require 'libfieldconv'
 require 'libfrmcmd'
 require 'libdevdb'
 require 'libexe'
@@ -45,7 +45,7 @@ module CIAX
       end
 
       def ext_local_driver
-        require 'libfrmdrv'
+        require 'libfrmproc'
         super
       end
 

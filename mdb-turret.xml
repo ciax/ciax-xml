@@ -35,25 +35,9 @@
         </wait>
         <upd site="mft"/>
       </item>
-      <item id="pre_pos" label="Pre-Positioning(Slot11)">
-        <goal label="All Slot11?">
-          <equal form="msg" site="mix" var="mp1">S11</equal>
-          <equal form="msg" site="mix" var="mp2">S11</equal>
-          <equal form="msg" site="mix" var="mp3">S11</equal>
-          <equal form="msg" site="mix" var="mp4">S11</equal>
-          <equal form="msg" site="mix" var="mp5">S11</equal>
-          <equal form="msg" site="mix" var="mp6">S11</equal>
-        </goal>
-        <check label="All Slot11?">
-          <equal form="msg" site="mix" var="mp1">S00</equal>
-          <equal form="msg" site="mix" var="mp2">S00</equal>
-          <equal form="msg" site="mix" var="mp3">S00</equal>
-          <equal form="msg" site="mix" var="mp4">S00</equal>
-          <equal form="msg" site="mix" var="mp5">S00</equal>
-          <equal form="msg" site="mix" var="mp6">S00</equal>
-        </check>
+      <item id="pre_pos" label="Pre-Positioning(Small Back)">
         <exec site="mix" name="bk_all">
-          <argv>1</argv>
+          <argv>0.2</argv>
         </exec>
         <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>
@@ -86,6 +70,7 @@
           <match form="msg" site="mft" var="v6">HOME</match>
         </goal>
         <cfg site="mix" name="ispdl"/>
+        <mcr name="pre_pos"/>
         <mcr name="mech_home" retry="3" wait="5"/>
         <cfg site="mix" name="resetmp"/>
       </item>

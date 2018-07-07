@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="11">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -182,6 +182,35 @@
             </frmcmd>
           </repeat>
         </item>
+        <item id="opt" label="Move Optimal way [1-6(Turret)] [0-11(hole)]">
+          <par_num>1:6</par_num>
+          <par_num>0:11</par_num>
+          <frmcmd name="act">
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="opt">
+            <argv>$1</argv>
+            <argv format="%d">$2 * 8000</argv>
+          </frmcmd>
+          <frmcmd name="chkrun">
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
+        <item id="opt_all" label="Move Optimal way All Turret [0-11(hole)]">
+          <par_num>0:11</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="act">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="opt">
+              <argv>$_</argv>
+              <argv format="%d">$1 * 8000</argv>
+            </frmcmd>
+            <frmcmd name="chkrun">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
         <item id="fw" label="Move Forward [1-6(Turret)] [1-(hole)]">
           <par_num>1:6</par_num>
           <par_num>1:</par_num>
@@ -196,8 +225,8 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="fw_all" label="Move Forward All Turret [1-(hole)]">
-          <par_num>1:</par_num>
+        <item id="fw_all" label="Move Forward All Turret [0.1-(hole)]">
+          <par_num>0.1:</par_num>
           <repeat from="1" to="6">
             <frmcmd name="act">
               <argv>$_</argv>
@@ -225,42 +254,13 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="bk_all" label="Move Backward All Turret [1-(hole)]">
-          <par_num>1:</par_num>
+        <item id="bk_all" label="Move Backward All Turret [0.1-(hole)]">
+          <par_num>0.1:</par_num>
           <repeat from="1" to="6">
             <frmcmd name="act">
               <argv>$_</argv>
             </frmcmd>
             <frmcmd name="bk">
-              <argv>$_</argv>
-              <argv format="%d">$1 * 8000</argv>
-            </frmcmd>
-            <frmcmd name="chkrun">
-              <argv>$_</argv>
-            </frmcmd>
-          </repeat>
-        </item>
-        <item id="opt" label="Move Optimal way [1-6(Turret)] [0-11(hole)]">
-          <par_num>1:6</par_num>
-          <par_num>0:11</par_num>
-          <frmcmd name="act">
-            <argv>$1</argv>
-          </frmcmd>
-          <frmcmd name="opt">
-            <argv>$1</argv>
-            <argv format="%d">$2 * 8000</argv>
-          </frmcmd>
-          <frmcmd name="chkrun">
-            <argv>$1</argv>
-          </frmcmd>
-        </item>
-        <item id="opt_all" label="Move Optimal way All Turret [0-11(hole)]">
-          <par_num>0:11</par_num>
-          <repeat from="1" to="6">
-            <frmcmd name="act">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="opt">
               <argv>$_</argv>
               <argv format="%d">$1 * 8000</argv>
             </frmcmd>

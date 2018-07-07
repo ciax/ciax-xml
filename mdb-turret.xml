@@ -13,8 +13,7 @@
         <mcr name="ret_home"/>
         <mcr name="search_home" retry="3" wait="5"/>
         <mcr name="pre_pos"/>
-        <cfg site="mix" name="ispdl"/>
-        <mcr name="mech_home"/>
+        <mcr name="precise_home" retry="3" wait="5"/>
       </item>
     </group>
     <group id="tr_sub" caption="Turret Commands" rank="1">
@@ -64,7 +63,7 @@
         </wait>
         <upd site="mft"/>
       </item>
-      <item id="search_home" label="Search Home">
+      <item id="search_home" label="Fast Mechanical Homing">
         <goal label="All Home?" verify="true">
           <match form="msg" site="mft" var="v1">HOME</match>
           <match form="msg" site="mft" var="v2">HOME</match>
@@ -74,6 +73,19 @@
           <match form="msg" site="mft" var="v6">HOME</match>
         </goal>
         <cfg site="mix" name="ispdh"/>
+        <mcr name="mech_home" retry="3" wait="5"/>
+        <cfg site="mix" name="resetmp"/>
+      </item>
+      <item id="precise_home" label="Precise Mechanical Homing">
+        <goal label="All Home?" verify="true">
+          <match form="msg" site="mft" var="v1">HOME</match>
+          <match form="msg" site="mft" var="v2">HOME</match>
+          <match form="msg" site="mft" var="v3">HOME</match>
+          <match form="msg" site="mft" var="v4">HOME</match>
+          <match form="msg" site="mft" var="v5">HOME</match>
+          <match form="msg" site="mft" var="v6">HOME</match>
+        </goal>
+        <cfg site="mix" name="ispdl"/>
         <mcr name="mech_home" retry="3" wait="5"/>
         <cfg site="mix" name="resetmp"/>
       </item>

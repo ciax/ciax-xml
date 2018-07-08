@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="turret" version="7" label="Turret Control" port="55555">
+  <macro id="turret" version="8" label="Turret Control" port="55555">
     <group id="grp_init" caption="Initialize" rank="0">
       <item id="tinit" label="Initialize Turret">
         <mcr name="thome"/>

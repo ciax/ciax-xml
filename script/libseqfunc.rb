@@ -35,7 +35,7 @@ module CIAX
       def ___count_up(e, step)
         @count += 1
         step[:action] = 'retry'
-        return false if @count > step[:retry].to_i # exit
+        raise Interlock if @count > step[:retry].to_i # exit
         newstep = @record.add_step(e, @depth)
         newstep[:count] = @count
         newstep.cmt # continue

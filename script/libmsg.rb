@@ -42,7 +42,8 @@ module CIAX
     end
 
     def errmsg
-      show __make_msg("ERROR:#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
+      show __make_msg("ERROR:#{$ERROR_INFO} at\n", 1) +
+           $ERROR_POSITION.join("\n")
       self
     end
 

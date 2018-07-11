@@ -28,7 +28,7 @@ module CIAX
       end
 
       # Dummy
-      def ext_local_processor; end
+      def ext_local_driver; end
 
       private
 

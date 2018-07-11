@@ -13,7 +13,7 @@ module CIAX
       # Check Device Status
       module Device
         def self.extended(obj)
-          Msg.type?(obj, Step)
+          Msg.type?(obj, Checker)
         end
 
         def ext_local_dev(dev_list)

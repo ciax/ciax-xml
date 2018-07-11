@@ -37,7 +37,8 @@ module CIAX
 
         def add_step(e1, depth) # returns Step
           step = Step.new(self[:start]).ext_local_checker(e1, depth, @opt)
-          self[:steps] << step.ext_local_dev(@cfg[:dev_list])
+          step.ext_local_dev(@cfg[:dev_list]) unless @opt.dry?
+          self[:steps] << step
           step.cmt_procs << proc do
             verbose { 'Propagate Step#cmt -> Record#cmt' }
             cmt

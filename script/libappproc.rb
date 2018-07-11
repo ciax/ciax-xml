@@ -5,15 +5,15 @@ module CIAX
   # Application Layer
   module App
     class Exe
-      # Processor module
-      module Processor
+      # Driver module
+      module Driver
         def self.extended(obj)
           Msg.type?(obj, Exe)
         end
 
         # type of usage: shell/command line
         # type of semantics: execution/test
-        def ext_local_processor
+        def ext_local_driver
           @stat.ext_local_conv(@sub.stat)
           @stat.ext_local_sym(@cfg[:sdb]).ext_local_file.auto_save
           @buf = ___init_buf

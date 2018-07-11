@@ -23,15 +23,15 @@ module CIAX
 
     # Mode (Device) [prompt]
     # none : test all layers        [test]
-    # -e   : drive all layers       [prcs]
+    # -e   : drive all layers       [drv]
     # -c   : client all layers      [cl]
-    # -l   : client to lower layers [prcs:cl]
+    # -l   : client to lower layers [drv:cl]
     # -s   : server (test)          [test:sv]
-    # -se  : server (drive)         [prcs:sv]
+    # -se  : server (drive)         [drv:sv]
 
     # Mode (Macro)
     # none : test
-    # -d   : dryrun (no motion)
+    # -d   : dryrun (get status only)
     # -e   : with device driver
     # -s   : server
     # -c   : client to macro server
@@ -42,8 +42,12 @@ module CIAX
       %i(h c).any? { |k| key?(k) }
     end
 
-    def prcs?
+    def drv?
       %i(e l).any? { |k| key?(k) }
+    end
+
+    def prcs?
+      key?(:d) || drv?
     end
 
     def sv?
@@ -61,14 +65,14 @@ module CIAX
     end
 
     def log?
-      prcs? && !dry?
+      drv? && !dry?
     end
 
     # Others
     def sub_opt
       opt = dup
       if opt.key?(:l)
-        %i(s e d l).each { |k| opt.delete(k) }
+        %i(s e l).each { |k| opt.delete(k) }
         opt[:c] = true
       end
       opt

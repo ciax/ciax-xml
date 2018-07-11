@@ -58,15 +58,13 @@ module CIAX
     def ext_local_test
       @mode = 'TEST'
       _ext_local
-      self
     end
 
     # Generate and Save Data
-    def ext_local_processor
-      @mode = @cfg[:opt].dry? ? 'DRY' : 'PRCS'
-      extend(context_module('Processor')).ext_local_processor
+    def ext_local_driver
+      @mode = @cfg[:opt].dry? ? 'DRY' : 'DRV'
+      extend(context_module('Driver')).ext_local_driver
       _ext_local
-      self
     end
 
     # Load Data
@@ -83,7 +81,7 @@ module CIAX
 
     private
 
-    # Local operation included in ext_local_test, ext_local_processor
+    # Local operation included in ext_local_test, ext_local_driver
     # (non_client)
     def _ext_local
       @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
@@ -122,13 +120,14 @@ module CIAX
       # Option handling
       opt = @cfg[:opt]
       return ext_client if opt.cl?
-      if opt.prcs?
-        ext_local_processor
-      else
-        ext_local_test
-      end
+      _work?(opt) || ext_local_test
       ext_local_server if opt.sv?
       self
+    end
+
+    def _work?(opt)
+      return unless opt.drv?
+      ext_local_driver
     end
   end
 end

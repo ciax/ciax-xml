@@ -44,13 +44,19 @@ module CIAX
           self.result = 'slept'
         end
 
-        # Condition section
-        def skip?(tf)
+        # Condition section (fake)
+        def skip?(tf = false)
           which?('skip', 'enter', tf)
         end
 
-        def fail?(tf)
+        def fail?(tf = false)
           which?('failed', 'pass', tf)
+        end
+
+        def timeout?
+          progress(self[:retry]) { false }
+          self.result = 'pass'
+          false
         end
 
         # Not Condition Step, returns t/f

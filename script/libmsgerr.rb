@@ -91,7 +91,8 @@ module CIAX
     end
 
     def give_up(str = 'give_up')
-      Kernel.abort([colorize(str, 1), $ERROR_INFO.to_s].join("\n"))
+      Kernel.abort([colorize(str, 1), $ERROR_INFO.to_s,
+                    *$ERROR_POSITION].join("\n"))
     end
 
     def usage(str, code = 2)

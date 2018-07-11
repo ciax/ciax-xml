@@ -65,7 +65,7 @@ module CIAX
 
       def load_partial(tag = nil)
         jstr = ___read_json(tag)
-        return self unless jstr
+        return self if !jstr || jstr.empty?
         ___check_load(jstr) && jmerge(jstr)
         self
       end

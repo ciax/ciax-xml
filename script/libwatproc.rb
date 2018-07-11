@@ -4,12 +4,12 @@ module CIAX
   module Wat
     class Exe
       # Event Driven
-      module Processor
+      module Driver
         def self.extended(obj)
           Msg.type?(obj, Exe)
         end
 
-        def ext_local_processor
+        def ext_local_driver
           @stat.ext_local_file.auto_save
           # @stat[:int] is overwritten by initial loading
           @sub.batch_interrupt = @stat.get(:int)

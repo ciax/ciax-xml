@@ -4,12 +4,12 @@ module CIAX
   module Frm
     class Exe
       # Frame Exe module
-      module Processor
+      module Driver
         def self.extended(obj)
           Msg.type?(obj, Exe)
         end
 
-        def ext_local_processor
+        def ext_local_driver
           ___init_stream
           ___init_processor_ext
           ___init_processor_save

@@ -36,7 +36,9 @@ module CIAX
 
       def ext_local_processor
         require 'libmanproc'
-        super
+        @mode = @cfg[:opt].dry? ? 'DRY' : 'PRCS'
+        extend(context_module('Processor')).ext_local_processor
+        _ext_local
       end
 
       def ext_local_server
@@ -47,6 +49,11 @@ module CIAX
       end
 
       private
+
+      def _work?(opt)
+        return unless opt.prcs?
+        ext_local_processor
+      end
 
       # Initiate for all mode
       def ___init_net

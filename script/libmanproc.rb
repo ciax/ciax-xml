@@ -5,7 +5,7 @@ module CIAX
   module Mcr
     # Macro Manager
     class Man
-      # Macro Manager Driver Module
+      # Macro Manager Processing Module
       module Processor
         def self.extended(obj)
           Msg.type?(obj, Man)

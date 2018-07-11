@@ -9,7 +9,7 @@
    -l  : Client to Device Serverr (connect to dvsv)
 
  *Processing Options
-   -d  : Processing but Motion command is skipped
+   -d  : Processing without any Device Driver
    -e  : Processing with internal Device Driver
    -l  : Processing with external Device Server
 

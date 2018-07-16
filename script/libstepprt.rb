@@ -68,7 +68,7 @@ module CIAX
         end
 
         def ___color_result(res)
-          { faild: 1, timeout: 1, query: 5 }.each do |k, v|
+          { faild: 1, timeout: 1, comerr: 1, query: 5 }.each do |k, v|
             /#{k}/ =~ res && (return v)
           end
           2

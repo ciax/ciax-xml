@@ -77,10 +77,6 @@ module CIAX
         cmt
       end
 
-      def ext_local_file
-        super.load
-      end
-
       private
 
       def ___init_field

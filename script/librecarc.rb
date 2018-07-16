@@ -10,12 +10,12 @@ module CIAX
       attr_reader :list, :id
       def initialize(id = 'mcr')
         super('rec', 'list')
-        ext_local_file
         @id = id
         # @list : Archive List : Index of Record (id: cid,pid,res)
-        @list = (self[:list] ||= {})
-        init_time2cmt
-        auto_save
+      end
+
+      def list
+        self[:list] ||= {}
       end
 
       # Re-generate record list
@@ -29,7 +29,7 @@ module CIAX
 
       # For format changes
       def clear
-        @list.clear
+        list.clear
         cmt
       end
 
@@ -41,26 +41,35 @@ module CIAX
         self
       end
 
+      def ext_local_driver
+        ext_local_file
+        init_time2cmt
+        auto_save
+        load_partial
+      end
+
       private
 
       def __extract(rec)
         ele = Hashx.new(rec).pick(%i(cid pid result)) # extract header
         return if ele.empty?
         verbose { 'Record Archive Updated' }
-        @list[rec[:id]] = ele
+        list[rec[:id]] = ele
       end
 
       def ___file_list
         ary = []
         Dir.glob(vardir('record') + 'record_*.json') do |name|
           next if /record_([0-9]+).json/ !~ name
-          next if @list.key?(Regexp.last_match(1))
+          next if list.key?(Regexp.last_match(1))
           ary << name
         end
         ary.sort.reverse
       end
     end
 
-    puts RecArc.new.clear.refresh.join if __FILE__ == $PROGRAM_NAME
+    if __FILE__ == $PROGRAM_NAME
+      puts RecArc.new.ext_local_driver.clear.refresh.join
+    end
   end
 end

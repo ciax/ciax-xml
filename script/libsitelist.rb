@@ -16,7 +16,7 @@ module CIAX
       end
 
       def get(site)
-        cobj = @list.key?(site) ? @list.get(site) : ___add(site)
+        cobj = _list.key?(site) ? _list.get(site) : ___add(site)
         @sub_list.get(cobj.sub.id) if @sub_list
         @current = site
         cobj
@@ -53,7 +53,7 @@ module CIAX
         # layer_module can be Frm,App,Wat,Hex
         atrb = { dbi: @db.get(site), sub_list: @sub_list }
         obj = layer_module::Exe.new(@cfg, atrb)
-        @list.put(site, obj)
+        _list.put(site, obj)
         obj
       end
 

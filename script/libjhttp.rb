@@ -10,7 +10,7 @@ module CIAX
         Msg.type?(obj, Varx)
       end
 
-      def ext_http(host, dir = nil)
+      def ext_remote(host, dir = nil)
         @host = host || 'localhost'
         @dir = format('/%s/', dir || 'json')
         verbose { "Initiate Http (#{@host})" }
@@ -22,19 +22,29 @@ module CIAX
 
       def load(tag = nil)
         url = format('http://%s%s%s.json', @host, @dir, base_name(tag))
-        open(url) do |f|
-          verbose { "Loading url [#{url}](#{f.size})" }
-          jstr = f.read
-          return replace(jread(jstr)) unless jstr.empty?
+        jstr = ___read_url(url)
+        if jstr.empty?
+          warning(" -- json url file (#{url}) is empty at loading")
+        else
+          replace(jread(jstr))
         end
-        warning(" -- json url file (#{url}) is empty at loading")
-        self
-      rescue OpenURI::HTTPError
-        alert("  -- no url file (#{url})")
       end
 
       def latest
         load
+      end
+
+      private
+
+      def ___read_url(url)
+        jstr = ''
+        open(url) do |f|
+          verbose { "Loading url [#{url}](#{f.size})" }
+          jstr = f.read
+        end
+        jstr
+      rescue OpenURI::HTTPError
+        alert("  -- no url file (#{url})")
       end
     end
   end

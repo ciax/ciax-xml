@@ -32,7 +32,7 @@ module CIAX
       end
 
       def ext_local_driver
-        require 'libwatproc'
+        require 'libwatdrv'
         super
       end
 

@@ -63,7 +63,7 @@ module CIAX
       end
 
       def ext_local_driver
-        require 'libappproc'
+        require 'libappdrv'
         super
       end
 

@@ -45,7 +45,7 @@ module CIAX
       end
 
       def ext_local_driver
-        require 'libfrmproc'
+        require 'libfrmdrv'
         super
       end
 

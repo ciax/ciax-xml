@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="turret" version="7" label="Turret Control" port="55555">
+  <macro id="turret" version="8" label="Turret Control" port="55555">
     <group id="grp_init" caption="Initialize" rank="0">
       <item id="tinit" label="Initialize Turret">
         <mcr name="thome"/>
@@ -13,8 +13,8 @@
         <mcr name="ret_home"/>
         <mcr name="search_home" retry="3" wait="5"/>
         <mcr name="pre_pos"/>
-        <cfg site="mix" name="ispdl"/>
-        <mcr name="mech_home"/>
+        <mcr name="precise_home" retry="3" wait="5"/>
+        <cfg site="mix" name="resetmp"/>
       </item>
     </group>
     <group id="tr_sub" caption="Turret Commands" rank="1">
@@ -36,25 +36,9 @@
         </wait>
         <upd site="mft"/>
       </item>
-      <item id="pre_pos" label="Pre-Positioning(Slot11)">
-        <goal label="All Slot11?">
-          <equal form="msg" site="mix" var="mp1">S11</equal>
-          <equal form="msg" site="mix" var="mp2">S11</equal>
-          <equal form="msg" site="mix" var="mp3">S11</equal>
-          <equal form="msg" site="mix" var="mp4">S11</equal>
-          <equal form="msg" site="mix" var="mp5">S11</equal>
-          <equal form="msg" site="mix" var="mp6">S11</equal>
-        </goal>
-        <check label="All Slot11?">
-          <equal form="msg" site="mix" var="mp1">S00</equal>
-          <equal form="msg" site="mix" var="mp2">S00</equal>
-          <equal form="msg" site="mix" var="mp3">S00</equal>
-          <equal form="msg" site="mix" var="mp4">S00</equal>
-          <equal form="msg" site="mix" var="mp5">S00</equal>
-          <equal form="msg" site="mix" var="mp6">S00</equal>
-        </check>
+      <item id="pre_pos" label="Pre-Positioning(Small Back)">
         <exec site="mix" name="bk_all">
-          <argv>1</argv>
+          <argv>0.2</argv>
         </exec>
         <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>
@@ -64,7 +48,7 @@
         </wait>
         <upd site="mft"/>
       </item>
-      <item id="search_home" label="Search Home">
+      <item id="search_home" label="Fast Mechanical Homing">
         <goal label="All Home?" verify="true">
           <match form="msg" site="mft" var="v1">HOME</match>
           <match form="msg" site="mft" var="v2">HOME</match>
@@ -74,10 +58,9 @@
           <match form="msg" site="mft" var="v6">HOME</match>
         </goal>
         <cfg site="mix" name="ispdh"/>
-        <mcr name="mech_home" retry="3" wait="5"/>
-        <cfg site="mix" name="resetmp"/>
+        <mcr name="mech_home"/>
       </item>
-      <item id="mech_home" label="Mechanical Homing">
+      <item id="precise_home" label="Precise Mechanical Homing">
         <goal label="All Home?" verify="true">
           <match form="msg" site="mft" var="v1">HOME</match>
           <match form="msg" site="mft" var="v2">HOME</match>
@@ -86,6 +69,11 @@
           <match form="msg" site="mft" var="v5">HOME</match>
           <match form="msg" site="mft" var="v6">HOME</match>
         </goal>
+        <cfg site="mix" name="ispdl"/>
+        <mcr name="mech_home"/>
+      </item>
+      <item id="mech_home" label="Mechanical Homing">
+        <mcr name="pre_pos"/>
         <exec site="mix" name="posinit"/>
         <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>

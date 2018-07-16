@@ -9,7 +9,7 @@
    -l  : Client to Device Serverr (connect to dvsv)
 
  *Processing Options
-   -d  : Processing without any Device Driver
+   -d  : Processing without Device Execution
    -e  : Processing with internal Device Driver
    -l  : Processing with external Device Server
 
@@ -34,7 +34,7 @@
        | N | N | Y | Y | Y | N | 0 | N | Interactive(default)
  (-n)  | N | N | Y | Y | N | N | 0 | N | Browsing
 
- *DryRun mode (Processing w/o Device Driver Data)
+ *DryRun mode (Processing w/o Actual Device Driver Data)
  (-d)  | N | N | N | N | Y | N | 1 | N | Interactive DryRun
  (-dn) | N | N | N | N | N | N | 1 | N | Nonstop DryRun
 

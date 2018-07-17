@@ -36,8 +36,8 @@
  (-n)  | N | N | N | Y | Y | N | N | 0 | N | Browsing
 
  *DryRun mode (Processing w/o Actual Device Driver Data)
- (-d)  | Y | N | N | N | N | Y | N | 1 | N | Interactive DryRun
- (-dn) | Y | N | N | N | N | N | N | 1 | N | Nonstop DryRun
+ (-d)  | Y | N | N | N | Y | Y | N | 1 | N | Interactive DryRun
+ (-dn) | Y | N | N | N | Y | N | N | 1 | N | Nonstop DryRun
 
  *DryRun mode (Processing w/Device Driver Running)
  (-ed) | Y | Y | Y | N | N | Y | N | 1 | N | Interactive DryRun

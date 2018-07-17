@@ -38,8 +38,6 @@ module CIAX
           self
         end
 
-        alias ext_local_test ext_local_processor
-
         def ___init_pre_exe
           @pre_exe_procs << proc do
             @sv_stat.flush(:list, @seq_list.alives).repl(:sid, '')

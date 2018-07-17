@@ -29,18 +29,6 @@ module CIAX
       end
 
       # Mode Extention by Option
-      def ext_local_test
-        require 'libmanproc'
-        super
-      end
-
-      def ext_local_processor
-        require 'libmanproc'
-        @mode = @cfg[:opt].dry? ? 'DRY' : 'PRCS'
-        extend(context_module('Processor')).ext_local_processor
-        _ext_local
-      end
-
       def ext_local_server
         verbose { 'Initiate Record Archive' }
         @cfg[:rec_arc].clear.refresh
@@ -49,11 +37,6 @@ module CIAX
       end
 
       private
-
-      def _work?(opt)
-        return unless opt.prcs?
-        ext_local_processor
-      end
 
       # Initiate for all mode
       def ___init_net

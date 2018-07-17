@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
 require 'liblayer'
+require 'libmanproc'
 require 'libmansh'
 # CIAX-XML Macro Shell
 module CIAX

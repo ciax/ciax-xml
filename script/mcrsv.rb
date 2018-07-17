@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-require 'libman'
+require 'libmanproc'
 require 'libdaemon'
 # CIAX-XML Macro Server
 module CIAX

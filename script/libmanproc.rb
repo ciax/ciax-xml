@@ -1,10 +1,24 @@
 #!/usr/bin/ruby
 require 'libseqlist'
+require 'libman'
 module CIAX
   # Macro Layer
   module Mcr
     # Macro Manager
     class Man
+      def ext_local_processor
+        @mode = @cfg[:opt].dry? ? 'DRY' : 'PRCS'
+        extend(Processor).ext_local_processor
+        _ext_local
+      end
+
+      private
+
+      def _work?(opt)
+        return unless opt.prcs?
+        ext_local_processor
+      end
+
       # Macro Manager Processing Module
       module Processor
         def self.extended(obj)

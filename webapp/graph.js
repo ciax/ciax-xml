@@ -4,12 +4,19 @@
 var options = {
   series: {
     shadowSize: 0,
-    lines: { show: true },
-    points: { show: true, radius: 3 }
+    lines: {
+      show: true
+    },
+    points: {
+      show: true,
+      radius: 3
+    }
   },
   grid: {
     markings: _mk_markings,
-    backgroundColor: { colors: ['#fff', '#999'] },
+    backgroundColor: {
+      colors: ['#fff', '#999']
+    },
     hoverable: true,
     clickable: true
   },
@@ -25,15 +32,16 @@ var options = {
 
 // **** Optional Functions ****
 // Update current date
-function current_date(msec){
+function current_date(msec) {
   current.setTime(msec - offset);
-  $('#date').val(current.toJSON().slice(0,10));
+  $('#date').val(current.toJSON().slice(0, 10));
 }
 
 // Move Time Range
 function init_move() {
   $('#placeholder').on('plotclick', _move_time);
 }
+
 function _move_time(event, pos, item) {
   if (item) {
     par.time = item.datapoint[0].toFixed(2);
@@ -53,7 +61,7 @@ function init_tooltip() {
     display: 'none',
     border: '1px solid #fdd',
     padding: '2px',
-      'background-color': '#fee',
+    'background-color': '#fee',
     opacity: 0.80
   }).appendTo('body');
   $('#placeholder').on('plothover', _show_tooltip);
@@ -62,12 +70,17 @@ function init_tooltip() {
 function _show_tooltip(event, pos, item) {
   if (item) {
     var date = new Date(item.datapoint[0]);
-    var x = date.toLocaleString('en-US', {hour12: false});
+    var x = date.toLocaleString('en-US', {
+      hour12: false
+    });
     var y = item.datapoint[1].toFixed(2);
     $('#tooltip').html(x + ',' + y)
-      .css({ top: item.pageY + 5, left: item.pageX + 5 })
+      .css({
+        top: item.pageY + 5,
+        left: item.pageX + 5
+      })
       .fadeIn(200);
-  }else {
+  } else {
     $('#tooltip').hide();
   }
 }
@@ -82,12 +95,21 @@ function _mk_markings(axes) { //Making grid stripe and bar line
   var max = ax.max;
   // trid stripe
   for (var x = min; x < max; x += h2)
-    mary.push({ xaxis: { from: x, to: x + hour}, color: '#999'});
+    mary.push({
+      xaxis: {
+        from: x,
+        to: x + hour
+      },
+      color: '#999'
+    });
   // bar line
   if (par.time) mary.push({
     color: '#ff0000',
     lineWidth: 3,
-    xaxis: { from: par.time, to: par.time }
+    xaxis: {
+      from: par.time,
+      to: par.time
+    }
   });
   return mary;
 }
@@ -106,7 +128,7 @@ function get_log() {
 function _conv_ascii(pair) {
   if (isNaN(pair[1])) {
     var asc = 0;
-    var ary = pair[1].split('').map(function(n) {
+    var ary = pair[1].split('').map(function (n) {
       var i = n.charCodeAt(0) - 64;
       return i;
     });
@@ -119,7 +141,7 @@ function _conv_ascii(pair) {
 }
 // Dynamic Graph
 function update_graph() {
-  $.getJSON('sqlog.php', par, function(obj) {
+  $.getJSON('sqlog.php', par, function (obj) {
     obj[0].data.forEach(_conv_ascii);
     plot.setData(obj);
     plot.setupGrid(); // scroll to left
@@ -129,10 +151,14 @@ function update_graph() {
 
 function static_graph(zoom) {
   current_date(par.time || Date.now());
-  $.getJSON('sqlog.php', par, function(obj) {
+  $.getJSON('sqlog.php', par, function (obj) {
     obj[0].data.forEach(_conv_ascii);
     plot = $.plot($('#placeholder'), obj, options);
-    if(zoom) { plot.zoom({ amount: zoom }); }
+    if (zoom) {
+      plot.zoom({
+        amount: zoom
+      });
+    }
   });
 }
 
@@ -140,23 +166,32 @@ function static_graph(zoom) {
 function current_graph() {
   timer = setInterval(update_graph, 1000);
   delete par.time;
-  options.zoom = { interactive: false };
-  options.pan = { interactive: false };
+  options.zoom = {
+    interactive: false
+  };
+  options.pan = {
+    interactive: false
+  };
   static_graph();
 }
 
 function past_graph() {
   clearInterval(timer);
-  options.zoom = { interactive: true };
-  options.pan = { interactive: true };
+  options.zoom = {
+    interactive: true
+  };
+  options.pan = {
+    interactive: true
+  };
   static_graph(4);
 }
+
 function init_graph() {
   init_tooltip();
   init_move();
-  if(par.time){
+  if (par.time) {
     past_graph();
-  }else{
+  } else {
     current_graph();
   }
 }
@@ -166,5 +201,9 @@ var plot;
 var timer;
 var current = new Date();
 var offset = current.getTimezoneOffset() * 60000;
-$.ajaxSetup({ mimeType: 'json', ifModified: true, cahce: false});
+$.ajaxSetup({
+  mimeType: 'json',
+  ifModified: true,
+  cahce: false
+});
 $(init_graph);

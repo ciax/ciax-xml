@@ -10,12 +10,16 @@ function make_item(id, data) {
 
   function _time() {
     html.push('<span class="time" title="' + id + '">');
-    html.push(time.toLocaleTimeString('en-US', {hour12: false}));
+    html.push(time.toLocaleTimeString('en-US', {
+      hour12: false
+    }));
     html.push('</span>');
   }
+
   function _cmd() {
     html.push(' <span class="cmd">[' + data.cid + ']</span>');
   }
+
   function _res(res) {
     html.push(' -> ');
     html.push('<em class="' + res + '">' + res + '</em>');
@@ -79,7 +83,7 @@ function func_make_list() {
 
   function _upd_line(id, item) {
     var time = new Date(id - 0);
-      _upd_item(id, item) || _make_date(time).prepend(make_item(id, item));
+    _upd_item(id, item) || _make_date(time).prepend(make_item(id, item));
   }
 
   function _init_log() {
@@ -96,8 +100,8 @@ function func_make_list() {
 
   function _update(data) {
     if (!data) return;
-    var ids=Object.keys(data.list).sort(_sort_keys);
-    for(var i of ids){
+    var ids = Object.keys(data.list).sort(_sort_keys);
+    for (var i of ids) {
       _upd_line(i, data.list[i]);
     }
     // blinking status

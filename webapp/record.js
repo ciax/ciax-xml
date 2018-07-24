@@ -13,15 +13,21 @@ function make_step(step) {
       ary.push(step.site);
       html.push(_devlink(step.site));
     }
-    if (step.args) { ary = ary.concat(step.args); }
-    if (step.val) { ary.push(step.val); }
+    if (step.args) {
+      ary = ary.concat(step.args);
+    }
+    if (step.val) {
+      ary.push(step.val);
+    }
     if (type == 'mcr') {
       html.push(' title="' + ary.join(':') + '">');
       html.push(': ' + config.label[ary[0]]);
     } else {
       html.push('>');
       if (step.label) html.push(': ' + step.label);
-      if (ary.length > 0) {html.push(': [' + ary.join(':') + ']');}
+      if (ary.length > 0) {
+        html.push(': [' + ary.join(':') + ']');
+      }
     }
     html.push('</span>');
   }
@@ -32,11 +38,12 @@ function make_step(step) {
     html.push(' -> ');
     html.push('<em class="' + res + '">' + res + '</em>');
   }
+
   function _action() {
     if (!step.action) return;
     html.push(' <span class="action">(');
-        html.push(step.action);
-        html.push(')</span>');
+    html.push(step.action);
+    html.push(')</span>');
   }
   // elapsed time section
   function _time() {
@@ -51,6 +58,7 @@ function make_step(step) {
     if (step.retry) html.push('low="70" high="99"');
     html.push('>(' + step.count + '/' + max + ')</meter>');
   }
+
   function _count() {
     if (!step.count) return;
     var max = step.retry || step.val;
@@ -72,10 +80,18 @@ function make_step(step) {
   // condition step
   function _operator(ope, cri) {
     switch (ope) {
-      case 'equal': return ('== ' + cri); break;
-      case 'not' : return ('!= ' + cri); break;
-      case 'match' : return ('=~ /' + cri + '/'); break;
-      case 'unmatch' : return ('!~ /' + cri + '/'); break;
+      case 'equal':
+        return ('== ' + cri);
+        break;
+      case 'not':
+        return ('!= ' + cri);
+        break;
+      case 'match':
+        return ('=~ /' + cri + '/');
+        break;
+      case 'unmatch':
+        return ('!~ /' + cri + '/');
+        break;
       default:
     }
   }
@@ -84,6 +100,7 @@ function make_step(step) {
   function _devlink(site) {
     return ('onclick="open_table(\'' + site + '\');"');
   }
+
   function _graphlink(site, vid, time) {
     return ('onclick="open_graph(\'' + site + '\',\'' + vid + '\',\'' + time + '\');"');
   }
@@ -91,26 +108,27 @@ function make_step(step) {
   function _conditions() {
     if (!step.conditions) return;
     html.push('<ul>');
-    $.each(step.conditions, function(k, cond) {
+    $.each(step.conditions, function (k, cond) {
       var res = cond.res;
       html.push('<li>');
       html.push('<var ' + _devlink(cond.site) + '>');
       html.push(cond.site + ':' + cond['var']); // cond.var expression gives error at yui-compressor
       html.push('(' + cond.form + ')</var>');
-    html.push('<code>' + _operator(cond.cmp, cond.cri) + '?</code>  ');
-    if (cond['skip']) {
-      html.push('<span class="skip">(Ignored)</skip>');
-    } else {
-      if ((step.type == 'goal' || step.type == 'bypass' ) && res == false) res = 'warn';
-      html.push('<span class="' + res + '" ');
-      html.push(_graphlink(cond.site, cond['var'], step.time));
-      html.push('> (' + cond.real + ')</span>');
-    }
-    html.push('</li>');
+      html.push('<code>' + _operator(cond.cmp, cond.cri) + '?</code>  ');
+      if (cond['skip']) {
+        html.push('<span class="skip">(Ignored)</skip>');
+      } else {
+        if ((step.type == 'goal' || step.type == 'bypass') && res == false) res = 'warn';
+        html.push('<span class="' + res + '" ');
+        html.push(_graphlink(cond.site, cond['var'], step.time));
+        html.push('> (' + cond.real + ')</span>');
+      }
+      html.push('</li>');
     });
     html.push('</ul>');
     return true;
   }
+
   function _sub_mcr() {
     if (step.type != 'mcr') return;
     html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
@@ -140,16 +158,18 @@ function record_page(data) {
   $('#record ul').empty();
   if (data.start) {
     start_time = new Date(data.start); // empty when ready
-    $.each(data.steps, function(i, step) {
+    $.each(data.steps, function (i, step) {
       $('#record .depth' + step.depth + ':last').append(make_step(step));
     });
     sticky_bottom('slow');
   }
   record_status(data);
 }
+
 function record_status(data) {
   replace('#status', data.status);
 }
+
 function record_result(data) { // Do at the end
   replace('#result', data.result);
   replace('#' + data.id + ' em', data.result);
@@ -170,11 +190,11 @@ function func_update_record() {
     var sel = $('#query')[0];
     if (!sel) return;
     if (data.status == 'query') {
-      var cmdary = data.option.map(function(cmd) {
+      var cmdary = data.option.map(function (cmd) {
         return ([cmd, data.id]);
       });
       make_radio(sel, cmdary);
-    }else {
+    } else {
       $('#query').empty();
     }
   }
@@ -190,6 +210,7 @@ function func_update_record() {
     sticky_bottom('slow');
     record_status(data);
   }
+
   function _update_step(data) {
     var crnt = data.steps.length;
     if (steps_length == crnt) {
@@ -200,12 +221,12 @@ function func_update_record() {
         $('.step:last').html(make_step(step));
       }
       suspend = true;
-    }else if (suspend) {
+    } else if (suspend) {
       // Refresh All Page at resume
       record_page(data);
       steps_length = crnt;
       suspend = false;
-    }else {
+    } else {
       // Add Step
       _append_step(data);
     }
@@ -222,6 +243,7 @@ function func_update_record() {
     delete upd_list.record;
     return true;
   }
+
   function _mcr_start() {
     if (upd_list.record) return;
     upd_list.record = _update;
@@ -237,18 +259,20 @@ function func_update_record() {
     _mcr_start();
     steps_length = data.steps.length;
   }
+
   function _next_page(data) {
     if (_mcr_end(data)) return;
     _make_query(data);
     _update_step(data); // Make record one by one
   }
+
   function _upd_page(data, status) {
     if (status == 'notmodified') return;
     if (rec_id != data.id) { // Do only the first one for new macro
       port = data.port;
       _first_page(data);
       rec_id = data.id;
-    }else if (data.time != last_time) { // Do every time for updated record
+    } else if (data.time != last_time) { // Do every time for updated record
       _next_page(data);
       last_time = data.time;
     }
@@ -258,16 +282,16 @@ function func_update_record() {
   function _update(tag) {
     if (tag) { // Show past record (not updated)
       ajax_static('/record/record_' + tag + '.json').done(_upd_page);
-    }else if (rec_id) { // Update and show current record
+    } else if (rec_id) { // Update and show current record
       ajax_update('/record/record_' + rec_id + '.json').done(_upd_page);
-    }else {
+    } else {
       ajax_static('/json/record_latest.json').done(_upd_page);
     }
   }
 
   // **** Updating Page ****
   var rec_id; // Record ID for first call at a new macro;
-  var last_time = '';  // For detecting update
+  var last_time = ''; // For detecting update
   var steps_length = 0;
   var suspend = false;
   return _update;
@@ -288,8 +312,10 @@ function selmcr(dom) {
 function init_page() {
   set_acordion('#record');
   set_auto_release('#record');
-  $('#query').on('change', 'input[name="query"]:radio', function() {
-    exec($(this).val(), function() {$('#query').empty(); });
+  $('#query').on('change', 'input[name="query"]:radio', function () {
+    exec($(this).val(), function () {
+      $('#query').empty();
+    });
   });
   height_adjust();
 }

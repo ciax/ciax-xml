@@ -11,7 +11,7 @@ module CIAX
     # Get Thread status by UDP:54321 connection
     # Closure should return an object having ('run' and 'id')
     def initialize(tag, ops = '', port = 54_321)
-      ENV['VER'] ||= 'Initiate'
+      ___set_env
       @layer = tag
       ConfOpts.new('[id] ...', options: ops + 'b') do |cfg, args|
         opt = cfg[:opt]
@@ -24,6 +24,11 @@ module CIAX
     end
 
     private
+
+    def ___set_env
+      ENV['VER'] ||= 'Initiate'
+      ENV['NOCACHE'] ||= '1'
+    end
 
     def ___main_loop(port)
       @obj.run

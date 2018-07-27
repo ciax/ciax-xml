@@ -4,7 +4,6 @@
     <group id="grp_init" caption="Initialize" rank="0">
       <item id="tinit" label="Initialize Turret">
         <mcr name="thome"/>
-        <cfg site="mix" name="offsetp"/>
         <mcr name="lineup"/>
       </item>
       <item id="thome" label="Turret to Home">
@@ -15,6 +14,7 @@
         <mcr name="pre_pos"/>
         <mcr name="precise_home" retry="3" wait="5"/>
         <cfg site="mix" name="resetmp"/>
+        <cfg site="mix" name="offsetp"/>
       </item>
     </group>
     <group id="tr_sub" caption="Turret Commands" rank="1">
@@ -84,6 +84,14 @@
         <upd site="mft"/>
       </item>
       <item id="lineup" label="Line Up Both Channel">
+        <goal label="All Init?" verify="true">
+          <equal form="data" site="mix" var="p1">6.0</equal>
+          <equal form="data" site="mix" var="p2">6.0</equal>
+          <equal form="data" site="mix" var="p3">10.0</equal>
+          <equal form="data" site="mix" var="p4">6.0</equal>
+          <equal form="data" site="mix" var="p5">6.0</equal>
+          <equal form="data" site="mix" var="p6">10.0</equal>
+        </goal>
         <exec site="mix" name="both_a">
           <argv>6</argv>
         </exec>

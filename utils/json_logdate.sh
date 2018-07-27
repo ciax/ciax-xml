@@ -6,5 +6,5 @@ id=$1;shift
 date=$1;shift
 year=$(date -d $date +%Y)
 sec=$(date -d $date +%s)
-exp=:${sec:0:6}
+exp=:${sec:0:5}
 egrep "$exp" ~/.var/log/stream_${id}_$year.log

@@ -13,7 +13,6 @@
         <mcr name="search_home" retry="3" wait="5"/>
         <mcr name="pre_pos"/>
         <mcr name="precise_home" retry="3" wait="5"/>
-        <cfg site="mix" name="resetmp"/>
         <cfg site="mix" name="offsetp"/>
       </item>
     </group>

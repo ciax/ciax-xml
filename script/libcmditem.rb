@@ -34,11 +34,13 @@ module CIAX
       private
 
       def ___get_entity(opt, cid)
-        return _get_cache(cid) if key?(cid)
-        ent = _gen_entity(opt)
-        return ___no_cache(cid, ent) if @cfg[:nocache]
-        verbose { "SetPAR: Entity Cache Saved (#{cid})" }
-        self[cid] = ent
+        if @cfg[:nocache]
+          ___no_cache(cid, opt)
+        elsif key?(cid)
+          _get_cache(cid)
+        else
+          ___save_cache(cid, opt)
+        end
       end
 
       def _get_cache(cid)
@@ -46,9 +48,14 @@ module CIAX
         self[cid]
       end
 
-      def ___no_cache(cid, ent)
+      def ___no_cache(cid, opt)
         verbose { "SetPAR: Entity No Cache Saved (#{cid})" }
-        ent
+        _gen_entity(opt)
+      end
+
+      def ___save_cache(cid, opt)
+        verbose { "SetPAR: Entity New Cache Saved (#{cid})" }
+        self[cid] = _gen_entity(opt)
       end
 
       def _gen_entity(opt)

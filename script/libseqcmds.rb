@@ -38,7 +38,7 @@ module CIAX
       def _cmd_goal(_e, step, mstat)
         return true unless step.skip?
         if step.opt.nonstop?
-          return true unless step.opt.processor?
+          return true unless step.opt.prcs?
         else
           return true unless @qry.query(%w(pass enter), step)
         end

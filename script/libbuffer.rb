@@ -99,14 +99,15 @@ module CIAX
         @outbuf.inject([]) { |a, e| ___get_args(a, e) }
       end
 
+      # Later command is priority when duplicated
       def ___get_args(args, batch)
-        if args.empty?
-          h = batch.shift
-          args.replace h[:args] if h
-        end
-        batch.delete_if do |e|
-          if e[:args] == args
-            warning("duplicated cmd #{args.inspect}(#{e[:cid]})")
+        return args unless args.empty?
+        while (h = batch.shift)
+          if batch.any? { |e| e[:args] == h[:args] }
+            warning("duplicated cmd #{h[:args].inspect}(#{h[:cid]})")
+          else
+            args.replace(h[:args])
+            break
           end
         end
         args

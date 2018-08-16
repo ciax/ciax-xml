@@ -6,7 +6,7 @@
       <site id="crt" app_id="mel" host="ciax" port="25101" label="CIAX CART 3"/>
       <site id="dsi" app_id="cj2" host="ciax" port="25102" label="IR Stand-by"/>
       <site id="dso" app_id="cj2" host="ciax" port="25103" label="OPT Stand-by"/>
-      <site id="det" app_id="srm" port="25104" label="CsEtr Control"/>
+      <site id="det" app_id="srm" host="ciax" port="25104" label="CsEtr Control"/>
       <site id="dts" app_id="oss" host="cxws2" port="25105" label="TSC Control"/>
     </group>
     <group id="cx_sim" label="SimLab">

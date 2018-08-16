@@ -74,8 +74,8 @@
             --
             adb//command/argv (eval if @format exists, Math and condition operator (a ? b : c) included)
 
- ${*:*}
-    description : substitute status ${key:idx:idx} => var[key][idx][idx]
+ ${*@*}
+    description : substitute status ${key@idx@idx} => var[key][idx][idx]
                   content should be numerical expression or of csv array
                   idx can be equation (i.e. $_+1 )
     available: fdb//command/[char,string]

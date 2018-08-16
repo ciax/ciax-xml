@@ -17,7 +17,7 @@ module CIAX
           def initialize(cfg, atrb = Hashx.new)
             super
             init_item_file_io
-            add_item('set', '[key(:idx)] [val(,val)]').pars_any(2)
+            add_item('set', '[key(@idx)] [val(,val)]').pars_any(2)
             add_item('flush', 'Stream')
           end
         end

@@ -88,7 +88,7 @@ module CIAX
           st[:sign] = 'true' if e1.name == 'sign'
           ___add_atrb(e1, st)
           i = st.delete(:index)
-          st[:ref] << ":#{i}" if i
+          st[:ref] << "@#{i}" if i
           fields << st
         end
       end

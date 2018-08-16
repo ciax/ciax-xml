@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="13">
+  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="14">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Status Commands">
         <unit id="upd" label="Status">
@@ -487,7 +487,7 @@
         <item id="resetp" label="Set Pulse Zero for MTN mode">
           <repeat from="1" to="6">
             <frmcmd name="set">
-              <argv format="p:%d">$_</argv>
+              <argv format="p:%d">$_-1</argv>
               <argv>0</argv>
             </frmcmd>
             <frmcmd name="setp">

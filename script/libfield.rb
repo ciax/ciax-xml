@@ -33,10 +33,10 @@ module CIAX
         end
       end
 
-      # First id is taken as is (id:x:y) or ..
+      # First id is taken as is (id@x@y) or ..
       # Get value for id with multiple dimention
       # - index should be numerical or formula
-      # - ${id:idx1:idx2} => hash[id][idx1][idx2]
+      # - ${id@idx1@idx2} => hash[id][idx1][idx2]
       def get(id)
         verbose { "Getting[#{id}]" }
         cfg_err('Nill Id') unless id
@@ -93,7 +93,7 @@ module CIAX
       end
 
       def ___access_array(id, vname)
-        id.split(':').inject(self[:data]) do |h, i|
+        id.split('@').inject(self[:data]) do |h, i|
           break unless h
           i = expr(i) if h.is_a? Array
           vname << i

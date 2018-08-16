@@ -66,7 +66,7 @@
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P08S</string>
-          <string>${mspd:$1-1}</string>
+          <string>${mspd@$1-1}</string>
         </item>
         <item id="getmrmp" label="Get mech ramp [1-6]" response="getmrmp" type="stat">
           <par_num>1:6</par_num>
@@ -77,7 +77,7 @@
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P09S</string>
-          <string>${mrmp:$1-1}</string>
+          <string>${mrmp@$1-1}</string>
         </item>
         <item id="getispd" label="Get mech return speed [1-6]" response="getispd" type="stat">
           <par_num>1:6</par_num>
@@ -88,7 +88,7 @@
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P10S</string>
-          <string>${ispd:$1-1}</string>
+          <string>${ispd@$1-1}</string>
         </item>
         <item id="getofs" label="Get mech offset [1-6]" response="getofs" type="stat">
           <par_num>1:6</par_num>
@@ -99,7 +99,7 @@
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P12S</string>
-          <string>${ofs:$1-1}</string>
+          <string>${ofs@$1-1}</string>
         </item>
         <item id="getmrtm" label="Get mech recovery time(ms) [1-6]" response="getmrtm" type="stat">
           <par_num>1:6</par_num>
@@ -110,7 +110,7 @@
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P13S</string>
-          <string>${mrtm:$1-1}</string>
+          <string>${mrtm@$1-1}</string>
         </item>
         <item id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
           <par_num>1:6</par_num>
@@ -121,7 +121,7 @@
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P14S</string>
-          <string>${spd:$1-1}</string>
+          <string>${spd@$1-1}</string>
         </item>
         <item id="getrmp" label="Get ramp [1-6]" response="getrmp" type="stat">
           <par_num>1:6</par_num>
@@ -132,7 +132,7 @@
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P15S</string>
-          <string>${rmp:$1-1}</string>
+          <string>${rmp@$1-1}</string>
         </item>
         <item id="getrtm" label="Get recovery time(ms) [1-6]" response="getrtm" type="stat">
           <par_num>1:6</par_num>
@@ -143,7 +143,7 @@
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P16S</string>
-          <string>${rtm:$1-1}</string>
+          <string>${rtm@$1-1}</string>
         </item>
         <item id="getp" label="Get absolute pulse [1-6]" response="getp" type="stat">
           <par_num>1:6</par_num>
@@ -154,7 +154,7 @@
           <par_num>1:6</par_num>
           <string>$1</string>
           <string>P21S</string>
-          <string format="%d">${p:$1-1} % 96000</string>
+          <string format="%d">${p@$1-1} % 96000</string>
         </item>
       </group>
       <group id="gact" caption="Action">
@@ -203,13 +203,13 @@
           <par_num>1:6</par_num>
           <par_num>0:96000</par_num>
           <string>$1</string>
-          <string format="%+d">(($2-${p:$1-1}+48000) % 96000)-48000</string>
+          <string format="%+d">(($2-${p@$1-1}+48000) % 96000)-48000</string>
         </item>
         <item id="mopt" label="Move mechanical abs by optimal [0-96000] (8000/hole)" nocache="true" response="default" type="action">
           <par_num>1:6</par_num>
           <par_num>0:96000</par_num>
           <string>$1</string>
-          <string format="%+d">(($2-${mp:$1-1}+48000) % 96000)-48000</string>
+          <string format="%+d">(($2-${mp@$1-1}+48000) % 96000)-48000</string>
         </item>
       </group>
     </command>

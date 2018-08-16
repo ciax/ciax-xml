@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libexe'
 require 'libmcrcmd'
+require 'libmanview'
 module CIAX
   # Macro Layer
   module Mcr
@@ -12,9 +13,11 @@ module CIAX
         super(Conf.new(cfg))
         verbose { 'Initiate Manager (option:' + @cfg[:opt].keys.join + ')' }
         # id = nil -> taken by ARGV
+        @sv_stat = @cfg[:sv_stat]
+        @par = Parameter.new(list: @sv_stat.get(:list))
         ___init_net
-        ___init_stat
         ___init_cmd
+        ___init_stat
       end
 
       # this is separated for background run
@@ -22,18 +25,10 @@ module CIAX
         @sub_list.run
         _opt_mode
         @mode = 'MCR:' + @mode
-        verbose { 'Initiate Record Archive' }
-        @cfg[:rec_arc].clear.refresh
-        ___mk_cmdlist
         self
       end
 
       # Mode Extention by Option
-      def ext_shell
-        @cfg[:output] = @stat
-        super
-      end
-
       def ext_local_test
         require 'libmandrv'
         super
@@ -41,6 +36,13 @@ module CIAX
 
       def ext_local_driver
         require 'libmandrv'
+        super
+      end
+
+      def ext_local_server
+        verbose { 'Initiate Record Archive' }
+        @cfg[:rec_arc].clear.refresh
+        ___mk_cmdlist
         super
       end
 
@@ -54,13 +56,11 @@ module CIAX
       end
 
       def ___init_stat
-        @stat = @cfg[:rec_arc]
-        @sv_stat = @cfg[:sv_stat]
+        @stat = ManView.new(@cfg, @par, @cobj.rem.int.valid_keys)
         @sub_list = @cfg[:dev_list]
       end
 
       def ___init_cmd
-        @par = Parameter.new(list: @sv_stat.get(:list))
         rem = @cobj.add_rem
         rem.cfg[:def_msg] = 'ACCEPT'
         rem.add_sys

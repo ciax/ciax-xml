@@ -125,7 +125,7 @@
           <char length="1" label="Address MSB">0</char>
           <char length="1" label="Device Code">0xB4</char>
           <char length="2" label="Data Length">0x2c</char>
-          <char length="2">${t:$1:$2}</char>
+          <char length="2">${t@$1@$2}</char>
         </item>
         <item id="rw_tbl" label="Read/Write Jack Table [0=Reset,1=Read,2=Write]" response="cmdrsp" type="config">
           <par_num>0:2</par_num>

@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="11">
+  <app frm_id="ixe" id="ixe" label="MOIRCS Turret" version="14">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Status Commands">
         <unit id="upd" label="Status">
@@ -182,6 +182,35 @@
             </frmcmd>
           </repeat>
         </item>
+        <item id="opt" label="Move Optimal way [1-6(Turret)] [0-11(hole)]">
+          <par_num>1:6</par_num>
+          <par_num>0:11</par_num>
+          <frmcmd name="act">
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="opt">
+            <argv>$1</argv>
+            <argv format="%d">$2 * 8000</argv>
+          </frmcmd>
+          <frmcmd name="chkrun">
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
+        <item id="opt_all" label="Move Optimal way All Turret [0-11(hole)]">
+          <par_num>0:11</par_num>
+          <repeat from="1" to="6">
+            <frmcmd name="act">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="opt">
+              <argv>$_</argv>
+              <argv format="%d">$1 * 8000</argv>
+            </frmcmd>
+            <frmcmd name="chkrun">
+              <argv>$_</argv>
+            </frmcmd>
+          </repeat>
+        </item>
         <item id="fw" label="Move Forward [1-6(Turret)] [1-(hole)]">
           <par_num>1:6</par_num>
           <par_num>1:</par_num>
@@ -196,8 +225,8 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="fw_all" label="Move Forward All Turret [1-(hole)]">
-          <par_num>1:</par_num>
+        <item id="fw_all" label="Move Forward All Turret [0.1-(hole)]">
+          <par_num>0.1:</par_num>
           <repeat from="1" to="6">
             <frmcmd name="act">
               <argv>$_</argv>
@@ -225,42 +254,13 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-        <item id="bk_all" label="Move Backward All Turret [1-(hole)]">
-          <par_num>1:</par_num>
+        <item id="bk_all" label="Move Backward All Turret [0.1-(hole)]">
+          <par_num>0.1:</par_num>
           <repeat from="1" to="6">
             <frmcmd name="act">
               <argv>$_</argv>
             </frmcmd>
             <frmcmd name="bk">
-              <argv>$_</argv>
-              <argv format="%d">$1 * 8000</argv>
-            </frmcmd>
-            <frmcmd name="chkrun">
-              <argv>$_</argv>
-            </frmcmd>
-          </repeat>
-        </item>
-        <item id="opt" label="Move Optimal way [1-6(Turret)] [0-11(hole)]">
-          <par_num>1:6</par_num>
-          <par_num>0:11</par_num>
-          <frmcmd name="act">
-            <argv>$1</argv>
-          </frmcmd>
-          <frmcmd name="opt">
-            <argv>$1</argv>
-            <argv format="%d">$2 * 8000</argv>
-          </frmcmd>
-          <frmcmd name="chkrun">
-            <argv>$1</argv>
-          </frmcmd>
-        </item>
-        <item id="opt_all" label="Move Optimal way All Turret [0-11(hole)]">
-          <par_num>0:11</par_num>
-          <repeat from="1" to="6">
-            <frmcmd name="act">
-              <argv>$_</argv>
-            </frmcmd>
-            <frmcmd name="opt">
               <argv>$_</argv>
               <argv format="%d">$1 * 8000</argv>
             </frmcmd>
@@ -448,32 +448,32 @@
       <group id="gcfg" caption="Configuration Commands">
         <item id="offsetp" label="Set Offset Pulse for OBS mode">
           <frmcmd name="set">
-            <argv>p:0</argv>
+            <argv>p@0</argv>
             <!-- offset = -50 -->
             <argv>40050</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>p:1</argv>
+            <argv>p@1</argv>
             <!-- offset = 250 -->
             <argv>55750</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>p:2</argv>
+            <argv>p@2</argv>
             <!-- offset = 50 -->
             <argv>39950</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>p:3</argv>
+            <argv>p@3</argv>
             <!-- offset = 800 -->
             <argv>55200</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>p:4</argv>
+            <argv>p@4</argv>
             <!-- offset = 0 -->
             <argv>40000</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>p:5</argv>
+            <argv>p@5</argv>
             <!-- offset = 1200 -->
             <argv>54800</argv>
           </frmcmd>
@@ -483,10 +483,11 @@
             </frmcmd>
           </repeat>
         </item>
-        <item id="resetmp" label="Set Pulse Zero for MTN mode">
+        <!-- Never use resetp with offsetp together -->
+        <item id="resetp" label="Set Pulse Zero for MTN mode">
           <repeat from="1" to="6">
             <frmcmd name="set">
-              <argv format="p:%d">$_</argv>
+              <argv format="p@%d">$_-1</argv>
               <argv>0</argv>
             </frmcmd>
             <frmcmd name="setp">
@@ -506,7 +507,7 @@
           <par_num>1:6</par_num>
           <par_num>-2000:2000</par_num>
           <frmcmd name="set">
-            <argv format="ofs:%d">$1-1</argv>
+            <argv format="ofs@%d">$1-1</argv>
             <argv>$1</argv>
           </frmcmd>
           <frmcmd name="setofs">
@@ -517,7 +518,7 @@
           <par_num>25:800</par_num>
           <repeat from="1" to="6">
             <frmcmd name="set">
-              <argv format="spd:%d">$_-1</argv>
+              <argv format="spd@%d">$_-1</argv>
               <argv>$1</argv>
             </frmcmd>
             <frmcmd name="setspd">
@@ -529,7 +530,7 @@
           <par_num>200:800</par_num>
           <repeat from="1" to="6">
             <frmcmd name="set">
-              <argv format="rmp:%d">$_-1</argv>
+              <argv format="rmp@%d">$_-1</argv>
               <argv>$1</argv>
             </frmcmd>
             <frmcmd name="setrmp">
@@ -541,7 +542,7 @@
           <par_num>25:800</par_num>
           <repeat from="1" to="6">
             <frmcmd name="set">
-              <argv format="mspd:%d">$_-1</argv>
+              <argv format="mspd@%d">$_-1</argv>
               <argv>$1</argv>
             </frmcmd>
             <frmcmd name="setmspd">
@@ -553,7 +554,7 @@
           <par_num>200:800</par_num>
           <repeat from="1" to="6">
             <frmcmd name="set">
-              <argv format="mrmp:%d">$_-1</argv>
+              <argv format="mrmp@%d">$_-1</argv>
               <argv>$1</argv>
             </frmcmd>
             <frmcmd name="setmrmp">
@@ -564,7 +565,7 @@
         <item id="ispdh" label="Set Return Speed High(x2)">
           <repeat from="1" to="6">
             <frmcmd name="set">
-              <argv format="ispd:%d">$_-1</argv>
+              <argv format="ispd@%d">$_-1</argv>
               <argv>2000</argv>
             </frmcmd>
             <frmcmd name="setispd">
@@ -575,7 +576,7 @@
         <item id="ispdl" label="Set Return Speed Low(x.25)">
           <repeat from="1" to="6">
             <frmcmd name="set">
-              <argv format="ispd:%d">$_-1</argv>
+              <argv format="ispd@%d">$_-1</argv>
               <argv>200</argv>
             </frmcmd>
             <frmcmd name="setispd">

@@ -72,7 +72,7 @@ module CIAX
         case e1.name
         when 'check', 'wait', 'goal', 'bypass'
           ___make_condition(e1, atrb)
-        when 'cfg', 'exec', 'mcr'
+        when 'cfg', 'exec', 'mcr', 'upd'
           atrb[:args] = __get_cmd(e1)
         when 'select'
           atrb[:select] = ___get_option(e1)
@@ -101,7 +101,7 @@ module CIAX
       end
 
       def __get_cmd(e1)
-        args = [e1[:name]]
+        args = [e1[:name] || 'upd']
         e1.each do |e2|
           args << e2.text
         end

@@ -44,7 +44,7 @@ module CIAX
       # Not Condition Step, returns t/f
       def set_result(tmsg, fmsg = nil, tf = true)
         res = tf ? tmsg : fmsg
-        self[:result] = res if res
+        self[:result] = res.downcase if res
         tf
       ensure
         cmt

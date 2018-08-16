@@ -7,14 +7,17 @@ module CIAX
   module Mcr
     # Macro Man View
     # Switch Pages of "Record List" and "Content of Record"
-    class ManView < Varx
-      def initialize(id, par, rec_arc = RecArc.new, valid_keys = [])
-        super('mcr')
+    class ManView < Upd
+      def initialize(cfg, par, valid_keys = [])
+        super()
+        @cfg = type?(cfg, Config)
         @par = type?(par, Parameter)
-        @rec_list = RecList.new(type?(rec_arc, RecArc), @par.list)
+        @rec_list = RecList.new(type?(@cfg[:rec_arc], RecArc), @par.list)
         @org_cmds = (@valid_keys = valid_keys).dup
+        # To finish up update which is removed from alive list at the end
+        @live_list = []
         # @records content is Record
-        @id = id
+        @id = @cfg[:id]
         ___init_upd_proc
       end
 
@@ -45,6 +48,16 @@ module CIAX
         self
       end
 
+      def ext_local
+        @rec_list.ext_local
+        self
+      end
+
+      def ext_remote(host)
+        @rec_list.ext_remote(host)
+        self
+      end
+
       private
 
       def ___init_upd_proc
@@ -52,7 +65,8 @@ module CIAX
           # Available commands in current record
           opts = @par.current_rid ? __crnt_opt : @org_cmds
           @valid_keys.replace(opts)
-          @par.list.each { |id| @rec_list.get(id).upd }
+          @live_list.each { |id| @rec_list.get(id).upd }
+          @live_list = @cfg[:sv_stat].get(:list).dup
         end
       end
 
@@ -66,9 +80,10 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] ..') do |_opt, args|
+      require 'libmcrconf'
+      ConfOpts.new('[id] ..') do |cfg, args|
         par = Parameter.new
-        view = ManView.new('test', par).get_arc(args.shift)
+        view = ManView.new(Conf.new(cfg), par).get_arc(args.shift)
         par.sel(args.shift.to_i)
         puts view
       end

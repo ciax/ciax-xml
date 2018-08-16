@@ -16,7 +16,7 @@ module CIAX
       def loadjfile(fname)
         return unless test('r', fname)
         open(fname) do |f|
-          verbose { "Reading [#{fname}](#{f.size})" }
+          verbose { "Loading file [#{fname}](#{f.size})" }
           f.flock(::File::LOCK_SH)
           f.read
         end
@@ -49,26 +49,28 @@ module CIAX
       end
 
       def auto_load
-        @upd_procs << proc { load }
+        @upd_procs << proc { load_partial }
         self
+      end
+
+      def load(tag = nil)
+        jstr = ___read_json(tag)
+        return self unless jstr
+        replace(jread(jstr))
       end
 
       def save(tag = nil)
         __write_json(to_j, tag)
       end
 
-      def load(tag = nil)
+      def load_partial(tag = nil)
         jstr = ___read_json(tag)
-        verbose { "File Loading #{@cfile}" }
-        if jstr.empty?
-          verbose { " -- json file (#{@cfile}) is empty at loading" }
-          return self
-        end
+        return self unless jstr
         ___check_load(jstr) && jmerge(jstr)
         self
       end
 
-      def save_key(keylist, tag = nil)
+      def save_partial(keylist, tag = nil)
         tag ||= (__tag_list.map(&:to_i).max + 1)
         # id is tag, this is Mark's request
         jstr = pick(
@@ -122,8 +124,12 @@ module CIAX
 
       def ___read_json(tag = nil)
         @cfile = ___chk_tag(tag)
-        return '' unless @cfile
-        loadjfile(@jsondir + @cfile) || ''
+        if @cfile
+          jstr = loadjfile(@jsondir + @cfile)
+          return(jstr) if jstr
+        end
+        verbose { " -- json file (#{@cfile}) is empty at loading" }
+        nil
       end
 
       def __write_json(jstr, tag = nil)

@@ -54,12 +54,14 @@ module CIAX
       extend(context_module('Shell')).ext_shell
     end
 
+    # No save any data
     def ext_local_test
       @mode = 'TEST'
       _ext_local
       self
     end
 
+    # Generate and Save Data
     def ext_local_driver
       @mode = @cfg[:opt].dry? ? 'DRY' : 'DRV'
       extend(context_module('Drv')).ext_local_driver
@@ -67,11 +69,13 @@ module CIAX
       self
     end
 
+    # Load Data
     def ext_client
       require 'libclient'
       extend(Client).ext_client
     end
 
+    # UDP Listen
     def ext_local_server
       require 'libserver'
       extend(Server).ext_local_server

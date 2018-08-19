@@ -19,6 +19,10 @@ module CIAX
       extend(Shell).ext_shell(jump_class)
     end
 
+    def to_a
+      _list.keys
+    end
+
     private
 
     def _list

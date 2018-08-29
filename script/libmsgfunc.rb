@@ -66,10 +66,11 @@ module CIAX
     end
 
     # Set Tag
-    def tag_set(msg)
+    def tag_set
       br = _git("branch|grep '^\*'").split(' ')[1]
-      ary = [PROGRAM, ENV['PROJ'], today, HOST, br, RUBY_VERSION]
-      tag = format('%s(%s)@%d/%s/%s/%s', *ary)
+      tagary = [PROGRAM, ENV['PROJ'], today]
+      tag = format('%s(%s)@%d', *tagary)
+      msg = "HOST = #{HOST}, BRANCH = #{br}, RUBY Ver = #{RUBY_VERSION}"
       _git("tag -afm '#{msg}' '#{tag}'")
       tag
     end

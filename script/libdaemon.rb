@@ -44,7 +44,7 @@ module CIAX
 
     # Background (Switch error output to file)
     def ___init_server(tag, opt)
-      gittag = tag_set(@obj.id)
+      gittag = tag_set
       info("Git Tagged [#{gittag}]")
       ___detach
       ___redirect(tag) if opt[:b]

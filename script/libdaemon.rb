@@ -17,7 +17,6 @@ module CIAX
         opt = cfg[:opt]
         ___chk_args(___kill_pids(tag), args + opt.values)
         opt[:s] = true
-        @obj = yield(cfg, sites: args)
         ___init_server(tag, opt)
         ___main_loop(port) { yield(cfg, sites: args) }
       end
@@ -31,15 +30,12 @@ module CIAX
     end
 
     def ___main_loop(port)
-      @obj.run
+      yield.run
       msg = 'for Thread status'
       Udp::Server.new('daemon', 'top', port, msg).listen { Threadx.list.to_s }
     rescue SignalException
       Threadx.killall
-      if $ERROR_INFO.message == 'SIGHUP'
-        @obj = yield
-        retry
-      end
+      retry if $ERROR_INFO.message == 'SIGHUP'
     end
 
     # Background (Switch error output to file)

@@ -77,7 +77,6 @@ module CIAX
     end
 
     def _git(str)
-      warn str
       `cd #{__dir__};git #{str}`
     end
   end

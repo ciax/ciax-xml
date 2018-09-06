@@ -27,7 +27,9 @@ module CIAX
       def _doc_to_db(doc)
         at = doc[:attr]
         aid = at[:app_id]
-        dbi = @adb.ref(aid) || super
+        # Need deep copy to avoid mixing up different object
+        # which shares same adb item
+        dbi = @adb.ref(aid).deep_copy || super
         dbi.update(at)
         ___init_general(dbi)
         _init_command_db(dbi, doc)

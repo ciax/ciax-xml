@@ -11,7 +11,7 @@ module CIAX
         include CmdBase
         # External Command Group
         class Group < Group
-          def initialize(cfg, atrb = Hashx.new)
+          def initialize(super_cfg, atrb = Hashx.new)
             atrb.get(:caption) { 'External Commands' }
             super
             @displist = @displist.ext_grp

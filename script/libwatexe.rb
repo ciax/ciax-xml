@@ -6,10 +6,10 @@ module CIAX
   # Watch Layer
   module Wat
     deep_include(CmdTree)
-    # cfg must have [:dbi], [:sub_list]
+    # atrb must have [:dbi], [:sub_list]
     class Exe < Exe
       attr_reader :sub, :stat
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(super_cfg, atrb = Hashx.new)
         super
         _init_dbi2cfg
         ___init_sub

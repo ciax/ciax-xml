@@ -7,8 +7,8 @@ module CIAX
   class List < Varx
     attr_reader :cfg
     # level can be Layer or Site
-    def initialize(cfg, atrb = Hashx.new)
-      @cfg = cfg.gen(self).update(atrb)
+    def initialize(super_cfg, atrb = Hashx.new)
+      @cfg = super_cfg.gen(self).update(atrb)
       @cfg[:jump_groups] ||= []
       super(m2id(@cfg[:obj].class, -2))
       verbose { 'Initiate List (option:' + @cfg[:opt].keys.join + ')' }

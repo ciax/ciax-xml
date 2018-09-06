@@ -9,9 +9,9 @@ module CIAX
       include CmdFunc
       attr_reader :valid_keys
       # cfg keys: caption,color,column
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(super_cfg, atrb = Hashx.new)
         super()
-        @cfg = cfg.gen(self).update(atrb)
+        @cfg = super_cfg.gen(self).update(atrb)
         @displist = Disp.new(@cfg.pick(%i(caption color column line_number)))
         @cfg[:disp] = @displist
         @valid_keys = @displist.valid_keys

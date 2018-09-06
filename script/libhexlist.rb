@@ -7,8 +7,8 @@ module CIAX
     deep_include(Site)
     # Hex Exe List
     class List
-      # cfg must have [:db]
-      def initialize(cfg, atrb = Hashx.new)
+      # atrb must have [:db]
+      def initialize(super_cfg, atrb = Hashx.new)
         super
         _store_db(@cfg[:db] ||= Ins::Db.new)
         @sub_list = Wat::List.new(@cfg)

@@ -7,9 +7,9 @@ module CIAX
   # Ascii Hex Layer for OLD CIAX
   module Hex
     deep_include(CmdTree)
-    # cfg must have [:db], [:sub_list]
+    # atrb must have [:dbi], [:sub_list]
     class Exe < Exe
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(super_cfg, atrb = Hashx.new)
         super
         _init_dbi2cfg
         ___init_sub

@@ -8,8 +8,8 @@ module CIAX
     # Watch List
     class List
       attr_reader :id
-      # cfg must have [:db]
-      def initialize(cfg, atrb = Hashx.new)
+      # super_cfg must have [:db]
+      def initialize(super_cfg, atrb = Hashx.new)
         super
         _store_db(@cfg[:db] ||= Ins::Db.new(@id))
         @sub_list = App::List.new(@cfg, opt: @cfg[:opt].sub_opt)

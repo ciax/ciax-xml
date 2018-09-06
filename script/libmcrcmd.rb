@@ -18,7 +18,7 @@ module CIAX
       module View
         # View Group
         class Group
-          def initialize(cfg, atrb = Hashx.new)
+          def initialize(super_cfg, atrb = Hashx.new)
             super
             add_item('dig', 'Show more Submacros')
             add_item('hide', 'Hide Submacros')
@@ -31,7 +31,7 @@ module CIAX
         deep_include CmdBase
         # Page Group
         class Group < CmdBase::Group
-          def initialize(cfg, atrb = Hashx.new)
+          def initialize(super_cfg, atrb = Hashx.new)
             atrb.update(caption: 'Switch Pages', color: 5)
             super
             add_dummy('0', 'List page')
@@ -61,7 +61,7 @@ module CIAX
       module Int
         # Internal Group
         class Group
-          def initialize(cfg, crnt = {})
+          def initialize(super_cfg, crnt = {})
             crnt[:caption] = 'Control Macro'
             super
             INTCMD.each do |id, cap|
@@ -74,7 +74,7 @@ module CIAX
       module Ext
         # Caption change
         class Group
-          def initialize(cfg, crnt = {})
+          def initialize(super_cfg, crnt = {})
             crnt[:caption] = 'Start Macro'
             super
           end

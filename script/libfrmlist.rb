@@ -8,7 +8,7 @@ module CIAX
     deep_include(Site)
     # Frame List module
     class List
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(super_cfg, atrb = Hashx.new)
         super
         _store_db(Dev::Db.new)
       end

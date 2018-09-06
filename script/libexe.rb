@@ -17,8 +17,8 @@ module CIAX
                   :server_input_proc, :server_output_proc
     #  cfg must have [:opt]
     #  atrb contains the parameter for each layer individually
-    def initialize(cfg, atrb = Hashx.new)
-      @cfg = type?(cfg, Config).gen(self).update(atrb)
+    def initialize(super_cfg, atrb = Hashx.new)
+      @cfg = type?(super_cfg, Config).gen(self).update(atrb)
       @cfg.check_keys(%i(opt))
       ___init_procs
       @cobj = context_module('Index').new(@cfg)
@@ -99,7 +99,7 @@ module CIAX
     end
 
     # For external command
-    #  cfg must have [:dbi] shared in the site (among layers)
+    #  @cfg must have [:dbi] shared in the site (among layers)
     #  @dbi will be set for Varx, @cfg[:dbi] will be set for Index
     #  It is not necessarily the case that id and Config[:dbi][:id] is identical
     def _init_dbi2cfg(ary = [])

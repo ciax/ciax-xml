@@ -15,15 +15,15 @@ module CIAX
     attr_reader :generation
     alias this_keys keys
     alias this_key? key?
-    def initialize(cfg = nil, obj = self)
+    def initialize(super_cfg = nil, obj = self)
       super()
       @generation = [self]
       self[:obj] = obj
-      case cfg
+      case super_cfg
       when Config
-        join_in(cfg)
+        join_in(super_cfg)
       when Hash
-        update(cfg)
+        update(super_cfg)
       end
     end
 
@@ -31,8 +31,8 @@ module CIAX
       Config.new(self, obj)
     end
 
-    def join_in(cfg)
-      @generation.concat(cfg.generation)
+    def join_in(super_cfg)
+      @generation.concat(super_cfg.generation)
       self
     end
 

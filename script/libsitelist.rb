@@ -6,10 +6,10 @@ module CIAX
     # This should be set [:db]
     class List < CIAX::List
       attr_reader :id, :db, :sub_list
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(super_cfg, atrb = Hashx.new)
         super
-        cfg[:top_list] ||= self # Site Shared
-        cfg[:layer_type] = 'site' # Site Shared
+        super_cfg[:top_list] ||= self # Site Shared
+        super_cfg[:layer_type] = 'site' # Site Shared
         @cfg[:column] = 2
         @id = @cfg[:proj]
         @run_list = []

@@ -9,8 +9,8 @@ module CIAX
   module Frm
     # Frame Exe module
     class Exe < Exe
-      # cfg must have [:db]
-      def initialize(cfg, atrb = Hashx.new)
+      # atrb must have [:dbi]
+      def initialize(super_cfg, atrb = Hashx.new)
         super
         # DB is generated in List level
         dbi = _init_dbi2cfg(%i(stream iocmd))

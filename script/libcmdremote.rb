@@ -17,7 +17,7 @@ module CIAX
       # @cfg should have [:dbi]
       class Domain < Domain
         attr_reader :sys, :ext, :int
-        def initialize(cfg, atrb = Hashx.new)
+        def initialize(super_cfg, atrb = Hashx.new)
           super
           @cfg[:def_proc] = proc {} # proc is re-defined
         end

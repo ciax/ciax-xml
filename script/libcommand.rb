@@ -8,10 +8,10 @@ module CIAX
     # Inherited by Index,Domain
     class GrpAry < Arrayx
       include CmdFunc
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(super_cfg, atrb = Hashx.new)
         # @cfg is isolated from cfg
         # So it is same meaning to set value to 'atrb' and @cfg
-        @cfg = cfg.gen(self).update(type?(atrb, Hash))
+        @cfg = super_cfg.gen(self).update(type?(atrb, Hash))
         @layer = @cfg[:layer]
       end
 
@@ -61,7 +61,7 @@ module CIAX
 
     # Top Level Command Index
     class Index < GrpAry
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(super_cfg, atrb = Hashx.new)
         atrb[:index] = self
         super
       end

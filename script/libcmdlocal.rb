@@ -103,14 +103,12 @@ module CIAX
       end
 
       if __FILE__ == $PROGRAM_NAME
-        cfg = Config.new(jump_class: Local::Jump)
-        jg = Jump::Group.new(cfg)
-        jg.add_item('site', 'Jump to site')
-        cfg[:jump_groups] = [jg]
-        loc = Index.new(cfg).loc
-        loc.add_view
-        loc.add_shell
-        puts loc.view_list
+        ConfOpts.new('') do |cfg|
+          loc = Index.new(cfg).loc
+          loc.add_view
+          loc.add_shell
+          puts loc.view_list
+        end
       end
     end
   end

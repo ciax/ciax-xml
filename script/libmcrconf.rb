@@ -12,22 +12,21 @@ module CIAX
     # Mcr::Conf includes:
     # :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
     # :host, :port
-    class ConfOpts < GetOpts
+    class ConfOpts < ConfOpts
       def initialize(ustr = '', optargs = {})
-        super do |opt, args|
-          cfg = Config.new(opt: opt, jump_groups: [], args: args)
+        super do |cfg, args|
           verbose { 'Initiate Mcr Conf (option:' + keys.join + ')' }
-          ___init_db(cfg)
+          ___init_db(cfg, args)
           yield(cfg, args)
         end
       end
 
       private
 
-      def ___init_db(cfg)
+      def ___init_db(cfg, args)
         db = Db.new
         cfg.update(layer_type: 'mcr', db: db)
-        ___init_with_dbi(cfg, db.get(ENV['PROJ'] ||= @cfg[:args].shift))
+        ___init_with_dbi(cfg, db.get(ENV['PROJ'] ||= args.shift))
         ___init_dev_list(cfg)
       end
 

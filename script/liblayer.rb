@@ -8,6 +8,7 @@ module CIAX
     def initialize(cfg)
       super(cfg)
       obj = yield(@cfg).run
+      # Initialize all sub layers
       loop do
         ns = m2id(obj.class, -2)
         _list.put(ns, obj)

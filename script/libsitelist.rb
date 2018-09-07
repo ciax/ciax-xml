@@ -15,7 +15,7 @@ module CIAX
       end
 
       def get(site)
-        cobj = _list.key?(site) ? _list.get(site) : ___add(site)
+        cobj = _list.key?(site) ? super : ___add(site)
         @sub_list.get(cobj.sub.id) if @sub_list
         @current = site
         cobj
@@ -23,8 +23,13 @@ module CIAX
 
       def run
         @run_list.each { |s| get(s) }
-        @sub_list.run if @sub_list
         self
+      end
+
+      def switch(site)
+        # Change top_list as well as the lower layer changed
+        @cfg[:super_list].switch(site) if @cfg.key?(:super_list)
+        super
       end
 
       def ext_shell
@@ -61,12 +66,6 @@ module CIAX
         obj = layer_module::Exe.new(@cfg, exe_atrb(site))
         _list.put(site, obj)
         obj
-      end
-
-      def _switch(site)
-        # Change top_list as well as the lower layer changed
-        @cfg[:super_list].get(site) if @cfg.key?(:super_list)
-        super
       end
 
       class Jump < LongJump; end

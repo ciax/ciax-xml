@@ -4,6 +4,8 @@ require 'libcmdlocal'
 
 module CIAX
   # This is parent of Layer List, Site List.
+  # Having :list(Array) key
+  # Access :list with get() directly
   class List < Varx
     attr_reader :cfg
     # level can be Layer or Site
@@ -19,6 +21,14 @@ module CIAX
       extend(Shell).ext_shell(jump_class)
     end
 
+    def get(id)
+      _list.get(id)
+    end
+
+    def switch(id)
+      get(id)
+    end
+
     def to_a
       _list.keys
     end
@@ -27,10 +37,6 @@ module CIAX
 
     def _list
       self[:list]
-    end
-
-    def _switch(id)
-      _list.get(id)
     end
 
     # Shell module
@@ -50,7 +56,7 @@ module CIAX
       end
 
       def shell
-        _switch(@current).shell
+        switch(@current).shell
       rescue @cfg[:jump_class]
         @current = $ERROR_INFO.to_s
         retry
@@ -58,9 +64,7 @@ module CIAX
         @cfg[:opt].usage('(opt) [id]')
       end
 
-      private
-
-      def _switch(site)
+      def switch(site)
         obj = super(site)
         return obj if obj.is_a?(Shell) || obj.is_a?(CIAX::Exe::Shell)
         obj.ext_shell

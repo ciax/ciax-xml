@@ -29,8 +29,8 @@ module CIAX
         aid = at[:app_id]
         # Need deep copy to avoid mixing up different object
         # which shares same adb item
-        dbi = @adb.ref(aid).deep_copy || super
-        dbi.update(at)
+        adbi = @adb.ref(aid) || super
+        dbi = adbi.deep_copy.update(at)
         ___init_general(dbi)
         _init_command_db(dbi, doc)
         ___init_status_db(doc, dbi)

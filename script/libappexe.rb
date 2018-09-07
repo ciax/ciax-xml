@@ -19,8 +19,8 @@ module CIAX
         @stat = Status.new(dbi)
         @sv_stat = Prompt.new(@id)
         @batch_interrupt = []
+        _init_net
         ___init_sub
-        ___init_net(dbi)
         ___init_command
         _opt_mode
       end
@@ -84,12 +84,6 @@ module CIAX
         @sub.sv_stat.cmt_procs << proc do |ss|
           @sv_stat.update(ss.pick(%i(comerr ioerr))).cmt
         end
-      end
-
-      def ___init_net(dbi)
-        @host = @cfg[:opt].host || dbi[:host]
-        @port ||= dbi[:port]
-        self
       end
 
       def ___init_command

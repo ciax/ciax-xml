@@ -10,49 +10,42 @@ module CIAX
     # Mcr Common Parameters across all the layers
     # Upper Conf should have: :option, :jump_groups, :jump_layer
     # Mcr::Conf includes:
-    # :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
-    # :host, :port
+    # :command, :version, :sites, :dev_list, :sv_stat :host, :port
     class ConfOpts < ConfOpts
       def initialize(ustr = '', optargs = {})
         super do |cfg, args|
           verbose { 'Initiate Mcr Conf (option:' + keys.join + ')' }
-          ___init_db(cfg, args)
+          proj = (ENV['PROJ'] ||= args.shift)
+          ___init_db(cfg, proj)
+          ___init_dev_list(cfg, proj)
+          ___init_stat(cfg, proj)
           yield(cfg, args)
         end
       end
 
       private
 
-      def ___init_db(cfg, args)
-        db = Db.new
-        cfg.update(layer_type: 'mcr', db: db)
-        ___init_with_dbi(cfg, db.get(ENV['PROJ'] ||= args.shift))
-        ___init_dev_list(cfg)
-      end
-
-      def ___init_with_dbi(cfg, dbi)
+      def ___init_db(cfg, proj)
+        dbi = Db.new.get(proj)
+        cfg[:dbi] = dbi
         # pick already includes :command, :version
-        cfg.update(dbi.pick([:sites, :id]))
-        cfg[:host] = host || dbi[:host]
-        cfg[:port] = dbi[:port] || 55_555
-        cfg[:jlist] = Hashx.new(
-          port: dbi[:port], commands: dbi.list, label: dbi.label
-        )
+        cfg.update(dbi.pick([:sites]))
       end
 
       # site_cfg is branch from cfg
       # site_cfg is handover to App,Frm
       # atrb is Wat only
-      def ___init_dev_list(cfg)
-        # handover to Wat only
-        id = cfg[:id]
+      def ___init_dev_list(cfg, proj)
         # handover to Wat, App
         site_cfg = cfg.gen(self)
-        site_cfg.update(db: Ins::Db.new(id), proj: id, opt: sub_opt)
+        site_cfg.update(db: Ins::Db.new(proj), proj: proj, opt: sub_opt)
         dev_layer = self[:x] ? Hex : Wat
         cfg[:dev_list] = dev_layer::List.new(site_cfg, sites: cfg[:sites])
-        cfg[:sv_stat] = Prompt.new(id, self)
-        cfg[:rec_arc] = RecArc.new(id)
+      end
+
+      def ___init_stat(cfg, proj)
+        cfg[:sv_stat] = Prompt.new(proj, self)
+        cfg[:rec_arc] = RecArc.new(proj)
       end
     end
 

@@ -15,7 +15,9 @@ module CIAX
         # id = nil -> taken by ARGV
         @sv_stat = @cfg[:sv_stat]
         @par = Parameter.new(list: @sv_stat.get(:list))
-        ___init_net
+        _init_dbi2cfg(%i())
+        _init_net
+        @port ||= 55_555
         ___init_cmd
         ___init_stat
       end
@@ -39,12 +41,6 @@ module CIAX
       private
 
       # Initiate for all mode
-      def ___init_net
-        @id = @cfg[:id]
-        @host = @cfg[:host]
-        @port = @cfg[:port]
-      end
-
       def ___init_stat
         @stat = ManView.new(@cfg, @par, @cobj.rem.int.valid_keys)
         @sub_list = @cfg[:dev_list]
@@ -63,9 +59,9 @@ module CIAX
       # Making Command List JSON file for WebApp
       def ___mk_cmdlist
         verbose { 'Initiate JS Command List' }
-        IO.write(
-          vardir('json') + 'mcr_conf.js', 'var config = ' + @cfg[:jlist].to_j
-        )
+        dbi = @cfg[:dbi]
+        jl = Hashx.new(port: @port, commands: dbi.list, label: dbi.label)
+        IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
       end
     end
 

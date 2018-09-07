@@ -105,9 +105,15 @@ module CIAX
     def _init_dbi2cfg(ary = [])
       dbi = type?(@cfg[:dbi], CIAX::Dbi)
       # dbi.pick already includes :command, :version
-      @cfg.update(dbi.pick(ary))
+      @cfg.update(dbi.pick(ary + %i(id host port)))
       @id = dbi[:id]
       dbi
+    end
+
+    def _init_net
+      @host = @cfg[:opt].host || @cfg[:host]
+      @port = @cfg[:port]
+      self
     end
 
     # Single Mode

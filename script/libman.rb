@@ -34,7 +34,7 @@ module CIAX
       def ext_local_server
         verbose { 'Initiate Record Archive' }
         @cfg[:rec_arc].clear.refresh
-        ___mk_cmdlist
+        ___web_cmdlist
         super
       end
 
@@ -57,7 +57,7 @@ module CIAX
       end
 
       # Making Command List JSON file for WebApp
-      def ___mk_cmdlist
+      def ___web_cmdlist
         verbose { 'Initiate JS Command List' }
         dbi = @cfg[:dbi]
         jl = Hashx.new(port: @port, commands: dbi.list, label: dbi.label)

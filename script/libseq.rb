@@ -13,7 +13,7 @@ module CIAX
       # ent should have [:sequence]'[:dev_list]
       def initialize(ment, pid = '0', &submcr_proc)
         @cfg = ment
-        type?(@cfg[:dev_list], CIAX::Wat::List)
+        @dev_list = type?(@cfg[:dev_list], CIAX::Wat::List)
         ___init_record(pid)
         @sv_stat = @cfg[:sv_stat]
         @submcr_proc = submcr_proc
@@ -52,7 +52,7 @@ module CIAX
       private
 
       def ___upd_sites
-        @cfg[:sites].each { |site| @cfg[:dev_list].get(site) }
+        @cfg[:sites].each { |site| @dev_list.get(site) }
         self
       end
 
@@ -108,7 +108,7 @@ module CIAX
         runary = @sv_stat.get(:run)
         msg("\nInterrupt Issued to running devices #{runary}", 3)
         runary.each do |site|
-          @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
+          @dev_list.get(site).exe(['interrupt'], 'user')
         end
       end
 

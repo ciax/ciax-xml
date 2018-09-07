@@ -50,7 +50,7 @@ module CIAX
 
       ## Shared Methods
       def _get_site(e)
-        @cfg[:dev_list].get(e[:site]).sub
+        @dev_list.get(e[:site]).sub
       end
 
       def _exe_site(e)

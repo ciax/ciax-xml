@@ -10,7 +10,7 @@ module CIAX
       attr_reader :sub_list # Used for Layer module
       # cfg should have [:dev_list]
       def initialize(super_cfg)
-        super(Conf.new(super_cfg))
+        super(super_cfg)
         verbose { 'Initiate Manager (option:' + @cfg[:opt].keys.join + ')' }
         # id = nil -> taken by ARGV
         @sv_stat = @cfg[:sv_stat]

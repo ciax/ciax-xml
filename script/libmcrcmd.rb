@@ -95,7 +95,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libwatlist'
       ConfOpts.new('[cmd] (par)', options: 'j') do |cfg, args|
-        cobj = Index.new(Conf.new(cfg))
+        cobj = Index.new(cfg)
         cobj.add_rem.add_ext
         ent = cobj.set_cmd(args)
         puts ent.path

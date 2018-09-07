@@ -5,7 +5,12 @@ require 'libmanproc'
 require 'libmansh'
 # CIAX-XML Macro Shell
 module CIAX
-  Layer.new('[proj]', options: 'elchdnr') do |cfg|
-    Mcr::Man.new(cfg).run
-  end.ext_shell.shell
+  # Macro
+  module Mcr
+    ConfOpts.new('[proj]', options: 'elchdnr') do |root_cfg|
+      Layer.new(root_cfg) do |cfg|
+        Man.new(cfg).run
+      end.ext_shell.shell
+    end
+  end
 end

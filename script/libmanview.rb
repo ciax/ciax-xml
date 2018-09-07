@@ -83,7 +83,7 @@ module CIAX
       require 'libmcrconf'
       ConfOpts.new('[id] ..') do |cfg, args|
         par = Parameter.new
-        view = ManView.new(Conf.new(cfg), par).get_arc(args.shift)
+        view = ManView.new(cfg, par).get_arc(args.shift)
         par.sel(args.shift.to_i)
         puts view
       end

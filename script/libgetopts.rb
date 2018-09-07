@@ -98,6 +98,7 @@ module CIAX
     end
   end
 
+  # Divided due to rubocop rule
   # Given option handling
   class GetOpts
     private

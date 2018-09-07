@@ -4,7 +4,9 @@ require 'liblayer'
 require 'libhexlist'
 # CIAX-XML Device Shell
 module CIAX
-  Layer.new('[id]', options: 'fawxelrchs', default: 'w') do |cfg, args|
-    cfg[:opt].init_layer_mod::List.new(cfg, sites: args)
-  end.ext_shell.shell
+  ConfOpts.new('[id]', options: 'fawxelrchs', default: 'w') do |root_cfg, args|
+    Layer.new(root_cfg) do |cfg|
+      cfg[:opt].init_layer_mod::List.new(cfg, sites: args)
+    end.ext_shell.shell
+  end
 end

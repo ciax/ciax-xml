@@ -4,7 +4,10 @@ require 'libmanproc'
 require 'libdaemon'
 # CIAX-XML Macro Server
 module CIAX
-  Daemon.new('mcrsv', 'cenx', 54_322) do |cfg|
-    Mcr::Man.new(cfg)
+  # Macro Layer
+  module Mcr
+    ConfOpts.new('[id] ...', options: 'denxb') do |cfg|
+      Daemon.new('mcrsv', cfg, 54_322) { Man.new(cfg) }
+    end
   end
 end

@@ -24,7 +24,6 @@ module CIAX
         def ___init_view_rec
           # @stat will be switched among Whole List or Records
           # Setting @par will switch the Record
-          @cfg[:output] = @stat
           @prompt_proc = proc do
             @sv_stat.to_s + @stat.index
           end

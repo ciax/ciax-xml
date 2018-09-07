@@ -14,6 +14,7 @@ module CIAX
 
       # Separate initialize part because shell() could be called multiple times
       def ext_shell
+        @cfg[:output] = @stat
         ___init_sh_procs
         @cobj.loc.add_shell
         @cobj.loc.add_jump

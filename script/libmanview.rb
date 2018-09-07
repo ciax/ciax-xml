@@ -7,6 +7,7 @@ module CIAX
   module Mcr
     # Macro Man View
     # Switch Pages of "Record List" and "Content of Record"
+    # cfg needs :id, :rec_arc, :sv_stat
     class ManView < Upd
       def initialize(cfg, par, valid_keys = [])
         super()

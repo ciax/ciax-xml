@@ -33,7 +33,6 @@ module CIAX
 
       def ext_shell
         super
-        @cfg[:output] = @stat
         input_conv_set
         self
       end

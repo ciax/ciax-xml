@@ -144,9 +144,7 @@ module CIAX
       end
 
       def ___write_notice(jstr)
-        verbose(jstr.empty?) do
-          " -- json data (#{jstr}) is empty at saving"
-        end
+        verbose(jstr.empty?) { " -- json data (#{jstr}) is empty at saving" }
         verbose(@thread != Thread.current) do
           'File Saving from Multiple Threads'
         end

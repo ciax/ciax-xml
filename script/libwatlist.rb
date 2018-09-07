@@ -12,7 +12,7 @@ module CIAX
       def initialize(super_cfg, atrb = Hashx.new)
         super
         _store_db(@cfg[:db] ||= Ins::Db.new(@id))
-        @sub_list = App::List.new(@cfg, opt: @cfg[:opt].sub_opt)
+        @sub_list = App::List.new(@cfg, sub_atrb)
       end
     end
 

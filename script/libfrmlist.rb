@@ -12,12 +12,6 @@ module CIAX
         super
         _store_db(Dev::Db.new)
       end
-
-      private
-
-      def _switch(site)
-        get(site)
-      end
     end
 
     if __FILE__ == $PROGRAM_NAME

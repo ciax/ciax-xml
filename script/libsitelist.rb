@@ -8,7 +8,6 @@ module CIAX
       attr_reader :id, :db, :sub_list
       def initialize(super_cfg, atrb = Hashx.new)
         super
-        super_cfg[:top_list] ||= self # Site Shared
         super_cfg[:layer_type] = 'site' # Site Shared
         @cfg[:column] = 2
         @id = @cfg[:proj]
@@ -36,6 +35,14 @@ module CIAX
         self
       end
 
+      def sub_atrb
+        { opt: @cfg[:opt].sub_opt, super_list: self }
+      end
+
+      def exe_atrb(site)
+        { dbi: @db.get(site), sub_list: @sub_list }
+      end
+
       private
 
       def _store_db(db)
@@ -51,15 +58,14 @@ module CIAX
 
       def ___add(site) # returns Exe
         # layer_module can be Frm,App,Wat,Hex
-        atrb = { dbi: @db.get(site), sub_list: @sub_list }
-        obj = layer_module::Exe.new(@cfg, atrb)
+        obj = layer_module::Exe.new(@cfg, exe_atrb(site))
         _list.put(site, obj)
         obj
       end
 
       def _switch(site)
         # Change top_list as well as the lower layer changed
-        @cfg[:top_list].get(site)
+        @cfg[:super_list].get(site) if @cfg.key?(:super_list)
         super
       end
 

@@ -7,7 +7,7 @@ module CIAX
   class Layer < CIAX::List
     def initialize(cfg)
       super(cfg)
-      obj = yield(@cfg)
+      obj = yield(@cfg).run
       loop do
         ns = m2id(obj.class, -2)
         _list.put(ns, obj)

@@ -16,9 +16,9 @@ module CIAX
         super do |cfg, args|
           verbose { 'Initiate Mcr Conf (option:' + keys.join + ')' }
           proj = (ENV['PROJ'] ||= args.shift)
+          cfg[:id] = proj
+          cfg[:sv_stat] = Prompt.new(proj, self)
           ___init_db(cfg, proj)
-          ___init_dev_list(cfg, proj)
-          ___init_stat(cfg, proj)
           yield(cfg, args)
         end
       end
@@ -30,22 +30,6 @@ module CIAX
         cfg[:dbi] = dbi
         # pick already includes :command, :version
         cfg.update(dbi.pick([:sites]))
-      end
-
-      # site_cfg is branch from cfg
-      # site_cfg is handover to App,Frm
-      # atrb is Wat only
-      def ___init_dev_list(cfg, proj)
-        # handover to Wat, App
-        site_cfg = cfg.gen(self)
-        site_cfg.update(db: Ins::Db.new(proj), proj: proj, opt: sub_opt)
-        dev_layer = self[:x] ? Hex : Wat
-        cfg[:dev_list] = dev_layer::List.new(site_cfg, sites: cfg[:sites])
-      end
-
-      def ___init_stat(cfg, proj)
-        cfg[:sv_stat] = Prompt.new(proj, self)
-        cfg[:rec_arc] = RecArc.new(proj)
       end
     end
 

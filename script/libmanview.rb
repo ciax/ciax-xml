@@ -7,18 +7,15 @@ module CIAX
   module Mcr
     # Macro Man View
     # Switch Pages of "Record List" and "Content of Record"
-    # cfg needs :id, :rec_arc, :sv_stat
     class ManView < Upd
-      def initialize(cfg, par, valid_keys = [])
+      def initialize(sv_stat, par, rec_arc = RecArc.new, valid_keys = [])
         super()
-        @cfg = type?(cfg, Config)
+        @sv_stat = type?(sv_stat, Prompt)
         @par = type?(par, Parameter)
-        @rec_list = RecList.new(type?(@cfg[:rec_arc], RecArc), @par.list)
+        @rec_list = RecList.new(type?(rec_arc, RecArc), @par.list)
         @org_cmds = (@valid_keys = valid_keys).dup
         # To finish up update which is removed from alive list at the end
         @live_list = []
-        # @records content is Record
-        @id = @cfg[:id]
         ___init_upd_proc
       end
 
@@ -67,7 +64,7 @@ module CIAX
           opts = @par.current_rid ? __crnt_opt : @org_cmds
           @valid_keys.replace(opts)
           @live_list.each { |id| @rec_list.get(id).upd }
-          @live_list = @cfg[:sv_stat].get(:list).dup
+          @live_list = @sv_stat.get(:list).dup
         end
       end
 
@@ -84,7 +81,8 @@ module CIAX
       require 'libmcrconf'
       ConfOpts.new('[id] ..') do |cfg, args|
         par = Parameter.new
-        view = ManView.new(cfg, par).get_arc(args.shift)
+        num = args.shift.to_i
+        view = ManView.new(Prompt.new(cfg[:id]), par).get_arc(num)
         par.sel(args.shift.to_i)
         puts view
       end

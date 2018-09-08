@@ -78,6 +78,14 @@ module CIAX
             crnt[:caption] = 'Start Macro'
             super
           end
+
+          def dev_list
+            opt = @cfg[:opt]
+            site_cfg = @cfg.gen(self)
+            site_cfg.update(proj: @cfg[:id], opt: opt.sub_opt)
+            dev_layer = opt[:x] ? Hex : Wat
+            @cfg[:dev_list] = dev_layer::List.new(site_cfg, sites: @cfg[:sites])
+          end
         end
         # generate [:sequence]
         class Item

@@ -27,7 +27,7 @@ module CIAX
 
         # Initiate for driver
         def ext_local_processor
-          @seq_list = SeqList.new(@cfg[:rec_arc])
+          @seq_list = SeqList.new(@rec_arc)
           @sv_stat.repl(:sid, '') # For server response
           @stat.ext_local
           ___init_pre_exe
@@ -36,6 +36,11 @@ module CIAX
           ___init_proc_loc
           @cobj.rem.ext_input_log
           self
+        end
+
+        def run
+          @sub_list.run
+          super
         end
 
         def ___init_pre_exe
@@ -48,7 +53,9 @@ module CIAX
 
         def ___init_proc_rem_ext
           # External Command Group
-          @cobj.rem.ext.def_proc do |ent|
+          ext = @cobj.rem.ext
+          @sub_list = ext.dev_list
+          ext.def_proc do |ent|
             sid = @seq_list.add(ent).id
             @sv_stat.push(:list, sid).repl(:sid, sid)
           end

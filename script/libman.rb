@@ -8,23 +8,19 @@ module CIAX
     # Macro Manager
     class Man < Exe
       attr_reader :sub_list # Used for Layer module
-      # cfg should have [:dev_list]
       def initialize(super_cfg)
         super(super_cfg)
         verbose { 'Initiate Manager (option:' + @cfg[:opt].keys.join + ')' }
         # id = nil -> taken by ARGV
-        @sv_stat = @cfg[:sv_stat]
-        @par = Parameter.new(list: @sv_stat.get(:list))
-        _init_dbi2cfg(%i())
+        _init_dbi2cfg
         _init_net
-        @port ||= 55_555
+        ___init_par
         ___init_cmd
         ___init_stat
       end
 
       # this is separated for background run
       def run
-        @sub_list.run
         _opt_mode
         @mode = 'MCR:' + @mode
         self
@@ -33,17 +29,22 @@ module CIAX
       # Mode Extention by Option
       def ext_local_server
         verbose { 'Initiate Record Archive' }
-        @cfg[:rec_arc].clear.refresh
+        @rec_arc.clear.refresh
         ___web_cmdlist
         super
       end
 
       private
 
+      def ___init_par
+        @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @cfg[:opt]))
+        @par = Parameter.new(list: @sv_stat.get(:list))
+      end
+
       # Initiate for all mode
       def ___init_stat
-        @stat = ManView.new(@cfg, @par, @cobj.rem.int.valid_keys)
-        @sub_list = @cfg[:dev_list]
+        @rec_arc = RecArc.new(@id)
+        @stat = ManView.new(@sv_stat, @par, @rec_arc, @cobj.rem.int.valid_keys)
       end
 
       def ___init_cmd

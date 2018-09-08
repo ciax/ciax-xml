@@ -12,7 +12,8 @@ module CIAX
         super(super_cfg)
         verbose { 'Initiate Manager (option:' + @cfg[:opt].keys.join + ')' }
         # id = nil -> taken by ARGV
-        _init_dbi2cfg
+        # pick already includes :command, :version
+        _init_dbi2cfg(%i(sites))
         _init_net
         ___init_par
         ___init_cmd

@@ -18,18 +18,9 @@ module CIAX
           proj = (ENV['PROJ'] ||= args.shift)
           cfg[:id] = proj
           cfg[:sv_stat] = Prompt.new(proj, self)
-          ___init_db(cfg, proj)
+          cfg[:dbi] = Db.new.get(proj)
           yield(cfg, args)
         end
-      end
-
-      private
-
-      def ___init_db(cfg, proj)
-        dbi = Db.new.get(proj)
-        cfg[:dbi] = dbi
-        # pick already includes :command, :version
-        cfg.update(dbi.pick([:sites]))
       end
     end
 

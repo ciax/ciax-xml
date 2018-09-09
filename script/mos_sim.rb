@@ -26,8 +26,10 @@ require 'libsimfp'
 module CIAX
   # Simulator
   module Simulator
-    Daemon.new('mos_sim', '', 54_301) do
-      @sim_list.gen
+    ConfOpts.new('') do |cfg|
+      Daemon.new('mos_sim', cfg, 54_301) do
+        @sim_list.gen
+      end
     end
   end
 end

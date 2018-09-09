@@ -36,7 +36,7 @@ module CIAX
             n ? @stat.get_arc(n.to_i) : @stat.add_arc
           end
           page.get('cl').def_proc do
-            @par.flush(@sv_stat.get(:list))
+            @stat.par.flush(@sv_stat.get(:list))
           end
         end
 
@@ -54,7 +54,7 @@ module CIAX
 
         def ___init_post_exe
           @post_exe_procs << proc do
-            @sv_stat.get(:list).each { |id| @par.push(id) }
+            @sv_stat.get(:list).each { |id| @stat.par.push(id) }
           end
         end
 
@@ -62,7 +62,7 @@ module CIAX
         def ___init_conv
           input_conv_num do |i|
             # i should be number
-            @par.sel(i)
+            @stat.par.sel(i)
             # nil:no command -> show record
             nil
           end

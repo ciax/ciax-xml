@@ -15,7 +15,7 @@ module CIAX
         # pick already includes :command, :version
         _init_dbi2cfg(%i(sites))
         _init_net
-        ___init_par
+        ___init_prompt
         ___init_cmd
         ___init_stat
       end
@@ -37,22 +37,23 @@ module CIAX
 
       private
 
-      def ___init_par
+      def ___init_prompt
         @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @cfg[:opt]))
-        @par = Parameter.new(list: @sv_stat.get(:list))
       end
 
       # Initiate for all mode
       def ___init_stat
         @rec_arc = RecArc.new(@id)
-        @stat = ManView.new(@sv_stat, @par, @rec_arc, @cobj.rem.int.valid_keys)
+        int = @cobj.rem.int
+        @stat = ManView.new(@sv_stat, @rec_arc, int.valid_keys)
+        int.add_par(@stat.par)
       end
 
       def ___init_cmd
         rem = @cobj.add_rem
         rem.cfg[:def_msg] = 'ACCEPT'
         rem.add_sys
-        rem.add_int.add_par(@par)
+        rem.add_int
         rem.add_ext
         rem.sys.add_item('nonstop', 'Mode')
         rem.sys.add_item('interactive', 'Mode')

@@ -57,7 +57,7 @@ module CIAX
             if /true|1/ =~ @cfg[:noaffix]
               { main: [:body] }
             else
-              Hashx.new(@cfg[:command][:frame])
+              Hashx.new(@cfg[:dbi].get(:command)[:frame])
             end
           end
 

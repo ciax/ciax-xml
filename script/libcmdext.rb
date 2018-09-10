@@ -15,7 +15,7 @@ module CIAX
             atrb.get(:caption) { 'External Commands' }
             super
             @displist = @displist.ext_grp
-            ___init_items(@cfg[:command])
+            ___init_items(@cfg[:dbi].get(:command))
             @displist.reset!
           end
 

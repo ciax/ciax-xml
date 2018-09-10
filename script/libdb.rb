@@ -9,7 +9,7 @@ module CIAX
   # Cache is available
   class Dbi < Hashx # DB Item
     def pick(ary = [])
-      super(%i(layer version command) + ary)
+      super(%i(layer version) + ary)
     end
   end
 

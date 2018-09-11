@@ -81,10 +81,9 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libmcrconf'
       ConfOpts.new('[id] ..') do |cfg, args|
-        par = Parameter.new
         num = args.shift.to_i
-        view = ManView.new(Prompt.new(cfg[:id]), par).get_arc(num)
-        par.sel(args.shift.to_i)
+        view = ManView.new(Prompt.new(cfg[:id])).ext_local.get_arc(num)
+        view.par.sel(args.shift.to_i)
         puts view
       end
     end

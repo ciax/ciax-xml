@@ -69,7 +69,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      puts RecArc.new.ext_local_processor.clear.refresh.join
+      arc = RecArc.new.ext_local_processor
+      puts arc
+      arc.clear.refresh.join
     end
   end
 end

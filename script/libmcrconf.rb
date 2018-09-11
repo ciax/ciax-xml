@@ -39,6 +39,6 @@ module CIAX
       end
     end
 
-    ConfOpts.new { |cfg| puts cfg.list } if __FILE__ == $PROGRAM_NAME
+    ConfOpts.new { |cfg| puts cfg.path } if __FILE__ == $PROGRAM_NAME
   end
 end

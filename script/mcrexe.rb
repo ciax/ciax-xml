@@ -7,7 +7,7 @@ module CIAX
   module Mcr
     ConfOpts.new('[proj] [cmd] (par)', options: 'edln') do |cfg, args|
       mobj = Index.new(cfg)
-      mobj.add_rem.add_ext
+      mobj.add_rem.add_ext.dev_list
       ent = mobj.set_cmd(args)
       Sequencer.new(ent).play
     end

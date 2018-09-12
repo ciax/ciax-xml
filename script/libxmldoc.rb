@@ -3,15 +3,15 @@ require 'libdispgrp'
 require 'libenumx'
 require 'libxmlox'
 
-# Structure for Command: (top: listed in disp), <doclist: separated top-doc>
-#   ADB:/adb/(app)/<command>/group/unit/item
-#   FDB:/fdb/(frame)/<command>/group/item
-#   SDB:/sdb/(symbol)/<table>/pattern
-#   CDB:/cdb/(alias)/<top>/unit|item
-#   DDB:/ddb/group/(site)/field
-#   IDB:/idb/project/include|group/(instance)/include|<alias>/unit/item
-#   MDB:/mdb/(macro)/include|<group>/unit/item
-#   HDB:/hdb/(hexpack)/pack/field
+# Structure for Command: [top: listed in disp], <doclist: separated top-doc>
+#   ADB:/adb/[app]/<command>/group/unit/item
+#   FDB:/fdb/[frame]/<command>/group/item
+#   SDB:/sdb/[symbol]/<table>/pattern
+#   CDB:/cdb/[alias]/<top>/unit|item
+#   DDB:/ddb/group/[site]/field
+#   IDB:/idb/project/include|group/[instance]/include|<alias>/unit/item
+#   MDB:/mdb/[macro]/include|<group>/unit/item
+#   HDB:/hdb/[hexpack]/pack/field
 # Domain is the top node of each name spaces (different from top ns),
 #   otherwise element is stored in Property
 module CIAX

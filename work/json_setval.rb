@@ -55,4 +55,4 @@ exp.each do |e|
   final = key.split(':').inject(field) { |h, k| setval(h, k, v) }
   abort("Key shortage\n  #{final}") if final.is_a? Enumerable
 end
-jj (field)
+jj field

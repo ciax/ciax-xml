@@ -43,12 +43,13 @@ module CIAX
         @sites = []
         _init_command_db(dbi, doc[:group])
         dbi[:sites] = @sites.uniq
+        dbi[:proj] = dbi[:id]
         dbi
       end
 
       def _add_item(e0, gid)
         id, itm = super
-        verbose { "MACRO:[#{id}]" }
+        verbose { "Command[#{id}]" }
         @body = itm.get(:body) { [] }
         @vstep = Hashx.new
         ___add_steps(e0, itm)

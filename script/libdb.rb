@@ -59,10 +59,10 @@ module CIAX
     end
 
     def __get_db(id)
-      sv = ___load_docs(id)
+      is_new = ___load_docs(id)
       verbose { "Building DB (#{id})" }
       res = ___validate_repl(yield(@docs))
-      ___save_cache(res) if sv
+      ___save_cache(res) if is_new
       self[id] = res
     end
 

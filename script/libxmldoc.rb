@@ -9,7 +9,7 @@ require 'libxmlox'
 #   SDB:/sdb/[symbol]/<table>/pattern
 #   CDB:/cdb/[alias]/<top>/unit|item
 #   DDB:/ddb/group/[site]/field
-#   IDB:/idb/project/include|group/[instance]/include|<alias>/unit/item
+#   IDB:/idb/project/include|group/[site]/<command>/unit/item
 #   MDB:/mdb/[macro]/include|<group>/unit/item
 #   HDB:/hdb/[hexpack]/pack/field
 # Domain is the top node of each name spaces (different from top ns),

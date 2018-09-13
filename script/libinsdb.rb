@@ -11,7 +11,7 @@ module CIAX
       attr_reader :proj, :run_list
       def initialize(proj = nil)
         @proj = proj || ENV['PROJ'] || 'all'
-        super('idb', @proj)
+        super('idb')
         @adb = App::Db.new
         @cdb = CmdDb.new
         @run_list = @displist.valid_keys.select do |id|
@@ -40,6 +40,10 @@ module CIAX
 
       def _get_displist
         super(@proj)
+      end
+
+      def _new_docs
+        Xml::Doc.new(@type, @proj)
       end
 
       # Command Domain

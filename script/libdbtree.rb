@@ -5,7 +5,7 @@ require 'librepeat'
 module CIAX
   ####### For Command DB #######
   class DbTree < Db
-    def initialize(type, proj = nil)
+    def initialize(type)
       super
       @rep = Repeat.new
     end

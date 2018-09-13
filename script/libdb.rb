@@ -16,10 +16,9 @@ module CIAX
   # DB class
   class Db < Hashx
     attr_reader :displist
-    def initialize(type, proj = nil)
+    def initialize(type)
       super()
       @type = type
-      @proj = proj
       _get_displist
       @argc = 0
     end
@@ -96,8 +95,12 @@ module CIAX
         false
       else
         verbose { "Reading XML (#{@type}-#{id})" }
-        @docs = Xml::Doc.new(@type, @proj)
+        @docs = _new_docs
       end
+    end
+
+    def _new_docs
+      Xml::Doc.new(@type)
     end
 
     # counter must not remain

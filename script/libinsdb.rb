@@ -38,6 +38,10 @@ module CIAX
         dbi
       end
 
+      def _get_displist
+        super(@proj)
+      end
+
       # Command Domain
       def _init_command_db(dbi, doc)
         return unless doc.key?(:command)

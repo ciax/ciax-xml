@@ -20,11 +20,7 @@ module CIAX
       super()
       @type = type
       @proj = proj
-      @dbid = [type, proj].compact.join(',')
-      # @displist is Display
-      lid = proj ? "list_#{proj}" : 'list'
-      # Show site list
-      @displist = _get_cache(lid) || __get_db(lid, &:displist) # site list
+      _get_displist
       @argc = 0
     end
 
@@ -36,8 +32,7 @@ module CIAX
     # Order of file reading: type-id.mar -> type-id.xml (processing)
     def ref(id)
       if @displist.valid?(id)
-        self[id] || _get_cache(id) ||
-          __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
+        self[id] || __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
       else
         warning("No such ID [#{id}]")
         false
@@ -51,6 +46,14 @@ module CIAX
       Dbi.new(doc[:attr]).update(layer: layer_name)
     end
 
+    def _get_displist(sufx = nil)
+      # @displist is Display
+      lid = ['list', sufx].join('_')
+      # Show site list
+      # &:displist = { |e| e.displist }
+      @displist = __get_db(lid, &:displist)
+    end
+
     # Returns Dbi(command list) or Disp(site list)
     def _get_cache(id)
       @cbase = "#{@type}-#{id}"
@@ -59,6 +62,8 @@ module CIAX
     end
 
     def __get_db(id)
+      res = _get_cache(id)
+      return res if res
       is_new = ___load_docs(id)
       verbose { "Building DB (#{id})" }
       res = ___validate_repl(yield(@docs))
@@ -85,9 +90,9 @@ module CIAX
     end
 
     def ___load_docs(id)
-      verbose { "Cache/Checking @docs (#{@dbid})" }
+      verbose { "Cache/Checking @docs (#{@type})" }
       if @docs
-        verbose { "Cache/XML files are Already read (#{id}) [#{@dbid}]" }
+        verbose { "Cache/XML files are Already read (#{id}) [#{@type}]" }
         false
       else
         verbose { "Reading XML (#{@type}-#{id})" }

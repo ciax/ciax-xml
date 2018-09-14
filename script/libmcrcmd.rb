@@ -82,7 +82,7 @@ module CIAX
           def dev_list
             opt = @cfg[:opt]
             site_cfg = @cfg.gen(self)
-            site_cfg.update(proj: @cfg[:id], opt: opt.sub_opt)
+            site_cfg.update(opt: opt.sub_opt)
             dev_layer = opt[:x] ? Hex : Wat
             @cfg[:dev_list] = dev_layer::List.new(site_cfg)
           end

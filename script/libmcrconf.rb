@@ -16,7 +16,7 @@ module CIAX
         super do |cfg, args|
           verbose { 'Initiate Mcr Conf (option:' + keys.join + ')' }
           proj = (ENV['PROJ'] ||= args.shift)
-          cfg[:id] = proj
+          cfg[:proj] = proj
           cfg[:sv_stat] = Prompt.new(proj, self)
           cfg[:dbi] = Db.new.get(proj)
           yield(cfg, args)

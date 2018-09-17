@@ -7,7 +7,7 @@ module CIAX
   module Msg
     module_function
 
-    def show(str)
+    def show(str = '')
       $stderr.puts str
     end
 

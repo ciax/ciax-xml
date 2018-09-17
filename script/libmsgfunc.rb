@@ -52,6 +52,15 @@ module CIAX
       "#{__dir__}/../config-v1"
     end
 
+    # For information (e.g. macro)
+    def show_fg(str = '')
+      show str if fg?
+    end
+
+    def dot_fg(f = true)
+      dot f if fg?
+    end
+
     # Make Var dir if not exist
     def vardir(subdir)
       dir = "#{ENV['HOME']}/.var/#{subdir}/"

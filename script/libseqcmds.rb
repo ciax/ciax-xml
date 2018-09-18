@@ -13,7 +13,6 @@ module CIAX
       private
 
       def _cmd_mesg(_e, step, _mstat)
-        _show
         @qry.query(['ok'], step)
         true
       end
@@ -79,13 +78,11 @@ module CIAX
       end
 
       def _cmd_cfg(e, step, _mstat)
-        _show
         step.result = _exe_site(e).to_s
         true
       end
 
       def _cmd_upd(e, step, mstat)
-        _show
         _exe_site(e).wait_ready
         true
       rescue CommError
@@ -103,7 +100,7 @@ module CIAX
       def _cmd_select(e, step, mstat)
         var = ___get_stat(e) || cfg_err('No data in status')
         step.result = var
-        _show step.result_s
+        show_fg step.result_s
         sel = e[:select]
         name = sel[var] || sel['*'] || mcr_err("No option for #{var} ")
         _do_step({ type: 'mcr', args: name }, mstat)

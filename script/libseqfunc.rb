@@ -13,7 +13,6 @@ module CIAX
       # Sub for for cmd_mcr()
       def ___mcr_fg(e, step, mstat)
         @count = step[:count] = 1 if step[:retry]
-        _show step.result_s
         begin
           tf = _sub_macro(_get_ment(e)[:sequence], step)
           return tf if tf
@@ -64,16 +63,6 @@ module CIAX
 
       def _giveup?(step)
         @qry.query(%w(drop force retry), step)
-      end
-
-      # Print section
-      def _show(str = "\n")
-        return unless Msg.fg?
-        if defined? yield
-          puts indent(@depth) + yield.to_s
-        else
-          print str
-        end
       end
     end
   end

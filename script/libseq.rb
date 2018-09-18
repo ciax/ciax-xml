@@ -35,14 +35,14 @@ module CIAX
       def play
         ___upd_sites
         Thread.current[:query] = @qry
-        _show(@record.start)
+        show_fg @record.start
         _sub_macro(@cfg[:sequence], @record.cmt)
       rescue Verification
         false
       rescue Interrupt
         ___site_interrupt
       ensure
-        _show(@record.finish + "\n")
+        show_fg @record.finish
       end
 
       def fork
@@ -74,7 +74,7 @@ module CIAX
       def _do_step(e, mstat)
         step = @record.add_step(e, @depth)
         begin
-          _show step.title_s
+          show_fg step.title_s
           return true if ___call_step(e, step, mstat)
         rescue Retry
           retry

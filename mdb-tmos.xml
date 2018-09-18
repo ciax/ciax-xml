@@ -158,6 +158,7 @@
         <upd site="tmc"/>
         <upd site="tfp"/>
         <upd site="tap"/>
+        <mesg label="moircs ok?" />
       </item>
     </group>
     <group id="grp_mos_2" caption="Sub Start Mask" rank="1">

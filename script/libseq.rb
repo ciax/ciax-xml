@@ -42,7 +42,7 @@ module CIAX
       rescue Interrupt
         ___site_interrupt
       ensure
-        show_fg @record.finish
+        show_fg @record.finish + "\n"
       end
 
       def fork
@@ -88,6 +88,7 @@ module CIAX
       def ___call_step(e, step, mstat)
         method('_cmd_' + e[:type]).call(e, step, mstat)
       ensure
+        show_fg step.result_s
         step.cmt
       end
 

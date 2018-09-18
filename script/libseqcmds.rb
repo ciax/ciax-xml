@@ -107,6 +107,7 @@ module CIAX
       end
 
       def _cmd_mcr(e, step, mstat)
+        show_fg
         if e[:async] && @submcr_proc.is_a?(Proc)
           step[:id] = @submcr_proc.call(_get_ment(e), @id).id
         else

@@ -40,7 +40,6 @@ module CIAX
         def timeout?
           tf = progress(self[:retry]) { active? } ||
                progress(self[:retry].to_i - self[:count]) { __all_conds? }
-          show_fg
           which?('timeout', 'pass', tf)
         end
 

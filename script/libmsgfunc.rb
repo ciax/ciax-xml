@@ -53,8 +53,8 @@ module CIAX
     end
 
     # For information (e.g. macro)
-    def show_fg(str = '')
-      show str if fg?
+    def show_fg(str = "\n")
+      $stderr.print(str) if fg?
     end
 
     def dot_fg(f = true)

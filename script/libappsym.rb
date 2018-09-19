@@ -8,8 +8,8 @@ module CIAX
   module App
     # Status class
     class Status
-      def ext_local_sym(sdb = Sym::Db.new)
-        extend(Symbol).ext_local_sym(sdb)
+      def ext_local_sym(sdb = nil)
+        extend(Symbol).ext_local_sym(sdb || Sym::Db.new)
       end
       # Symbol Converter
       module Symbol

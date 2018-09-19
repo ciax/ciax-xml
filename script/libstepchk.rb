@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libupd'
 require 'libstep'
 
 module CIAX
@@ -63,6 +62,10 @@ module CIAX
         def which?(tmsg, fmsg, tf)
           self.result = tf ? tmsg : fmsg
           tf
+        end
+
+        def result
+          self[:result]
         end
 
         def result=(msg)

@@ -78,7 +78,7 @@ module CIAX
       end
 
       def _cmd_cfg(e, step, _mstat)
-        step.result = _exe_site(e).to_s
+        _exe_site(e).wait_ready
         true
       end
 
@@ -113,6 +113,8 @@ module CIAX
         else
           ___mcr_fg(e, step, mstat)
         end
+      ensure
+        show_fg step.title_s
       end
     end
   end

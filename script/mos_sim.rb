@@ -3,7 +3,7 @@ require 'libdaemon'
 require 'libsimap'
 require 'libsimarm'
 require 'libsimbb'
-require 'libsimcar'
+#require 'libsimcar'
 require 'libsimfp'
 
 #### Condition for Contact Sensor ####

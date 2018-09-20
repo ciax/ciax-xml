@@ -14,13 +14,12 @@ module CIAX
       def ___mcr_fg(e, step, mstat)
         @count = step[:count] = 1 if step[:retry]
         begin
-          tf = _sub_macro(_get_ment(e)[:sequence], step)
-          return tf if tf
-          mstat.result = step[:result]
-          raise Interlock
+          _sub_macro(_get_ment(e)[:sequence], step) || raise(Interlock)
         rescue Verification
           ___mcr_retry(e, step, mstat) && retry
         end
+      ensure
+        mstat.result = step.result
       end
 
       # Sub for _mcr_fg()

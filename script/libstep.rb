@@ -33,8 +33,8 @@ module CIAX
         mary.join("\n") + "\n"
       end
 
-      def indent_s
-        format('[%6.2f]', (now_msec - @base_time) * 0.001) + __rindent
+      def indent_s(add = 0)
+        Msg.indent((self[:depth].to_i + add) * 2)
       end
 
       def action_s
@@ -56,7 +56,7 @@ module CIAX
       private
 
       def __body(msg, col = 5)
-        __rindent(5) + Msg.colorize(msg, col)
+        indent_s(5) + Msg.colorize(msg, col)
       end
 
       def ___prt_count
@@ -65,7 +65,7 @@ module CIAX
       end
 
       def ___color_result(res)
-        { faild: 1, timeout: 1, comerr: 1, query: 5 }.each do |k, v|
+        { failed: 1, timeout: 1, comerr: 1, query: 5 }.each do |k, v|
           /#{k}/ =~ res && (return v)
         end
         2
@@ -103,12 +103,9 @@ module CIAX
       end
 
       def ___itemize(msg, col, label = 'noname')
-        indent_s + Msg.colorize(msg, col) + ':' +
+        format('[%6.2f]', (self[:time] - @base_time) * 0.001) + indent_s +
+          Msg.colorize(msg, col) + ':' +
           (self[:label] || (label.is_a?(Proc) ? "[#{label.call}]" : label))
-      end
-
-      def __rindent(add = 0)
-        Msg.indent((self[:depth].to_i + add) * 2)
       end
 
       # Branched functions (instead of case/when semantics)

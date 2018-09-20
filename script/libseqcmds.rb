@@ -114,7 +114,7 @@ module CIAX
           ___mcr_fg(e, step, mstat)
         end
       ensure
-        show_fg step.indent_s + Msg.colorize('}', 1)
+        show_fg step.indent_s(4) + Msg.colorize('}', 1)
       end
     end
   end

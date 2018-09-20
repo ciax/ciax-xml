@@ -27,6 +27,7 @@ module CIAX
           @prompt_proc = proc do
             @sv_stat.to_s + @stat.index
           end
+          @stat.ext_local
         end
 
         def ___init_view_list

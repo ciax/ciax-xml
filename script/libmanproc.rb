@@ -29,7 +29,6 @@ module CIAX
         def ext_local_processor
           @seq_list = SeqList.new(@rec_arc)
           @sv_stat.repl(:sid, '') # For server response
-          @stat.ext_local
           ___init_pre_exe
           ___init_proc_rem_ext
           ___init_proc_rem_int

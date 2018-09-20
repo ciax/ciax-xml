@@ -58,11 +58,7 @@ module CIAX
 
         # Blocking during busy. (for interlock check)
         def wait_ready_all
-          @exes.each do |obj|
-            next if obj.wait_ready
-            self.result = 'timeout'
-            com_err('timeout')
-          end
+          @exes.each(&:wait_ready)
           self
         end
 

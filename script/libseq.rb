@@ -59,12 +59,12 @@ module CIAX
       # macro returns result (true=complete /false=error)
       def _sub_macro(seqary, mstat)
         ___pre_seq(seqary, mstat)
-        seqary.each { |e| break(true) unless _do_step(e, mstat) }
-      rescue Interlock
+        seqary.each { |e| break(true) unless _do_step(e, mstat) } || return
+        # 'upd' passes whether commerr or not
+        # result of multiple 'upd' is judged here
+        mstat.result != 'comerr'
+      rescue Interlock, CommError
         # For retry
-        false
-      rescue CommError
-        mstat.result = 'comerr'
         false
       ensure
         ___post_seq(mstat)
@@ -87,6 +87,9 @@ module CIAX
       # Sub for _do_step()
       def ___call_step(e, step, mstat)
         method('_cmd_' + e[:type]).call(e, step, mstat)
+      rescue CommError
+        mstat.result = step.result = 'comerr'
+        raise
       ensure
         show_fg step.result_s
         step.cmt

@@ -42,7 +42,7 @@ module CIAX
           return 'done' unless @sv_stat.up?(:comerr)
           com_err('Device not responding')
         end
-        false
+        com_err('Timeout for Busy Device')
       end
 
       def ext_shell

@@ -881,7 +881,7 @@
         <upd site="tmc"/>
       </item>
       <item id="tmc_cw" label="Initialize(CW)">
-        <goal>
+        <goal verify="true">
           <equal site="tmc" var="lcw" form="msg">ON</equal>
         </goal>
         <check>
@@ -958,7 +958,7 @@
         </check>
         <cfg site="tmc" name="lowspd"/>
         <upd site="tmc"/>
-        <mcr name="tmc_cw"/>
+        <mcr name="tmc_cw" retry="3"/>
         <mcr name="tmc_gh-cw"/>
         <mcr name="tmc_cw"/>
         <mcr name="tmc_gh-cw"/>

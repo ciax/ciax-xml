@@ -24,9 +24,24 @@ module CIAX
 
       # Sub for _mcr_fg()
       def ___mcr_retry(e, step, mstat)
-        return true if step[:retry] && ___count_up(e, step)
-        mstat.result = 'failed'
-        false
+        if step[:retry] && ___count_up(e, step)
+          __show_end(step, true)
+          __show_begin(step)
+          true
+        else
+          mstat.result = 'failed'
+          false
+        end
+      end
+
+      def __show_begin(step = nil)
+        show_fg step.title_s + '(retry)' if step
+        show_fg Msg.colorize("{\n", 1)
+      end
+
+      def __show_end(step, res = nil)
+        show_fg step.indent_s(4) + Msg.colorize('}', 1)
+        show_fg step.result_s if res
       end
 
       # Sub for _mcr_retry()

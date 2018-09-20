@@ -74,7 +74,6 @@ module CIAX
       def _do_step(e, mstat)
         step = @record.add_step(e, @depth)
         begin
-          show_fg step.title_s
           return true if ___call_step(e, step, mstat)
         rescue Retry
           retry
@@ -86,6 +85,7 @@ module CIAX
 
       # Sub for _do_step()
       def ___call_step(e, step, mstat)
+        show_fg step.title_s
         method('_cmd_' + e[:type]).call(e, step, mstat)
       rescue CommError
         mstat.result = step.result = 'comerr'

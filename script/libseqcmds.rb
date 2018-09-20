@@ -107,14 +107,14 @@ module CIAX
       end
 
       def _cmd_mcr(e, step, mstat)
-        show_fg Msg.colorize("{\n", 1)
+        __show_begin
         if e[:async] && @submcr_proc.is_a?(Proc)
           step[:id] = @submcr_proc.call(_get_ment(e), @id).id
         else
           ___mcr_fg(e, step, mstat)
         end
       ensure
-        show_fg step.indent_s(4) + Msg.colorize('}', 1)
+        __show_end(step)
       end
     end
   end

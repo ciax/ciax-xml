@@ -21,7 +21,7 @@ module CIAX
       def title_s
         type = self[:type]
         self[:async] = '(async)' if key?(:async)
-        ___head(*@title_list[type.to_sym])
+        ___itemize(*@title_list[type.to_sym])
       rescue NameError
         Msg.msg("No such type #{type}")
         type
@@ -31,6 +31,10 @@ module CIAX
         mary = [___prt_count]
         ___prt_result(self[:result], mary)
         mary.join("\n") + "\n"
+      end
+
+      def indent_s
+        format('[%6.2f]', (now_msec - @base_time) * 0.001) + __rindent
       end
 
       def action_s
@@ -98,9 +102,8 @@ module CIAX
         line
       end
 
-      def ___head(msg, col, label = 'noname')
-        elps = format('[%6.2f]', (self[:time] - @base_time) * 0.001) + __rindent
-        elps + Msg.colorize(msg, col) + ':' +
+      def ___itemize(msg, col, label = 'noname')
+        indent_s + Msg.colorize(msg, col) + ':' +
           (self[:label] || (label.is_a?(Proc) ? "[#{label.call}]" : label))
       end
 

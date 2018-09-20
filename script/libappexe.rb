@@ -39,7 +39,7 @@ module CIAX
         100.times do
           sleep 0.1
           next if @sv_stat.upd.up?(:busy)
-          return true unless @sv_stat.up?(:comerr)
+          return 'done' unless @sv_stat.up?(:comerr)
           com_err('Device not responding')
         end
         false
@@ -122,7 +122,7 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
         dbi = Ins::Db.new.get(args.shift)
         atrb = { dbi: dbi, sub_list: Frm::List.new(cfg) }
-        Exe.new(cfg, atrb).ext_shell.shell
+        puts Exe.new(cfg, atrb).exe(args).wait_ready
       end
     end
   end

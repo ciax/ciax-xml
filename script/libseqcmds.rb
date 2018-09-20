@@ -78,12 +78,12 @@ module CIAX
       end
 
       def _cmd_cfg(e, step, _mstat)
-        _exe_site(e).wait_ready
+        step.result = _exe_site(e).wait_ready
         true
       end
 
       def _cmd_upd(e, step, mstat)
-        _exe_site(e).wait_ready
+        step.result = _exe_site(e).wait_ready
         true
       rescue CommError
         mstat.result = step.result = 'comerr'

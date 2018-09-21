@@ -85,13 +85,14 @@ module CIAX
 
       # Sub for _do_step()
       def ___call_step(e, step, mstat)
-        show_fg step.title_s
-        method('_cmd_' + e[:type]).call(e, step, mstat)
+        typ = e[:type]
+        show_fg step.title_s if typ != 'mcr'
+        method('_cmd_' + typ).call(e, step, mstat)
       rescue CommError
         mstat.result = step.result = 'comerr'
         raise
       ensure
-        show_fg step.result_s
+        show_fg step.result_s if typ != 'mcr'
         step.cmt
       end
 

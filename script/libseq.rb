@@ -36,7 +36,7 @@ module CIAX
         ___upd_sites
         Thread.current[:query] = @qry
         show_fg @record.start
-        _sub_macro(@cfg[:sequence], @record.cmt)
+        _sub_macro(@cfg, @record.cmt)
       rescue Verification
         false
       rescue Interrupt
@@ -57,7 +57,8 @@ module CIAX
       end
 
       # macro returns result (true=complete /false=error)
-      def _sub_macro(seqary, mstat)
+      def _sub_macro(cfg, mstat)
+        seqary = cfg[:sequence]
         ___pre_seq(seqary, mstat)
         seqary.each { |e| break(true) unless _do_step(e, mstat) } || return
         # 'upd' passes whether commerr or not

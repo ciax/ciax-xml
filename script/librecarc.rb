@@ -7,11 +7,16 @@ module CIAX
     # Record Archive List (Dir)
     #   Index of Records
     class RecArc < Varx
-      attr_reader :list, :id
+      attr_reader :list, :id, :bg
       def initialize(id = 'mcr')
         super('rec', 'list')
         @id = id
+        @bg = Thread.current
         # @list : Archive List : Index of Record (id: cid,pid,res)
+        ext_local_file
+        init_time2cmt
+        auto_save
+        load_partial
       end
 
       def list
@@ -20,11 +25,12 @@ module CIAX
 
       # Re-generate record list
       def refresh # returns self
-        Threadx::Fork.new('RecArc(rec_list)', 'mcr', @id) do
+        @bg = Threadx::Fork.new('RecArc(rec_list)', 'mcr', @id) do
           ___file_list.each { |name| push(jload(name)) }
           verbose { 'Initiate Record Archive done' }
           cmt
         end
+        self
       end
 
       # For format changes
@@ -39,13 +45,6 @@ module CIAX
           cmt
         end
         self
-      end
-
-      def ext_local_processor
-        ext_local_file
-        init_time2cmt
-        auto_save
-        load_partial
       end
 
       private
@@ -69,9 +68,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      arc = RecArc.new.ext_local_processor
+      arc = RecArc.new
       puts arc
-      arc.clear.refresh.join
+      arc.refresh.bg.join
     end
   end
 end

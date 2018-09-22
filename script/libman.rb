@@ -43,7 +43,7 @@ module CIAX
 
       # Initiate for all mode
       def ___init_stat
-        @rec_arc = RecArc.new(@id)
+        @rec_arc = RecArc.new(@id).refresh
         int = @cobj.rem.int
         @stat = ManView.new(@sv_stat, @rec_arc, int.valid_keys)
         int.add_par(@stat.par)

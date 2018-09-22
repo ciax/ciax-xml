@@ -13,7 +13,7 @@ module CIAX
       def initialize(rec_arc = RecArc.new)
         super()
         # @rec_arc: List of Record Header (Log)
-        @rec_arc = Msg.type?(rec_arc, RecArc).ext_local_processor
+        @rec_arc = Msg.type?(rec_arc, RecArc)
       end
 
       #### Driver Methods ####

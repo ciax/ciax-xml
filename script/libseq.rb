@@ -17,6 +17,7 @@ module CIAX
         ___init_record(pid)
         @sv_stat = @cfg[:sv_stat] || Prompt.new(@cfg[:id], @cfg[:opt])
         @submcr_proc = submcr_proc
+        @count = 1
         @depth = 0
         # For Thread mode
         @qry = Query.new(@record, @sv_stat)

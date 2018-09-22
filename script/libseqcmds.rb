@@ -110,10 +110,11 @@ module CIAX
         __show_begin(step)
         if e[:async] && @submcr_proc.is_a?(Proc)
           step[:id] = @submcr_proc.call(_get_ment(e), @id).id
-          __show_end(step)
         else
-          ___mcr_fg(e, step, mstat)
+          step = ___mcr_fg(e, step, mstat)
         end
+        __show_end(step)
+        true
       end
     end
   end

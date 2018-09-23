@@ -17,7 +17,6 @@ module CIAX
         ___init_record(pid)
         @sv_stat = @cfg[:sv_stat] || Prompt.new(@cfg[:id], @cfg[:opt])
         @submcr_proc = submcr_proc
-        @count = 1
         @depth = 0
         # For Thread mode
         @qry = Query.new(@record, @sv_stat)
@@ -88,7 +87,7 @@ module CIAX
       # Sub for _do_step()
       def ___call_step(e, step, mstat)
         typ = e[:type]
-        show_fg step.title_s if typ != 'mcr'
+        show_fg step.title_s
         method('_cmd_' + typ).call(e, step, mstat)
       rescue CommError
         mstat.result = step.result = 'comerr'

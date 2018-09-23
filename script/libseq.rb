@@ -58,8 +58,9 @@ module CIAX
 
       # macro returns result (true=complete /false=error)
       def _sub_macro(cfg, mstat)
-        seqary = cfg[:sequence]
-        ___pre_seq(seqary, mstat)
+        seqary = type?(cfg[:sequence], Array)
+        @depth += 1
+        @record[:total_steps] += seqary.size
         seqary.each { |e| break(true) unless _do_step(e, mstat) } || return
         # 'upd' passes whether commerr or not
         # result of multiple 'upd' is judged here
@@ -68,7 +69,7 @@ module CIAX
         # For retry
         false
       ensure
-        ___post_seq(mstat)
+        @depth -= 1
       end
 
       # Return false if sequence is broken
@@ -93,23 +94,10 @@ module CIAX
         mstat.result = step.result = 'comerr'
         raise
       ensure
-        show_fg step.result_s if typ != 'mcr'
         step.cmt
       end
 
       # Sub for macro()
-      def ___pre_seq(seqary, mstat)
-        @depth += 1
-        @record[:status] = 'run'
-        @record[:total_steps] += type?(seqary, Array).size
-        mstat.result = 'busy'
-      end
-
-      def ___post_seq(mstat)
-        mstat.result = 'complete' if mstat.result == 'busy'
-        @depth -= 1
-      end
-
       def ___site_interrupt
         runary = @sv_stat.get(:run)
         msg("\nInterrupt Issued to running devices #{runary}", 3)

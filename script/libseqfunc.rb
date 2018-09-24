@@ -12,14 +12,10 @@ module CIAX
 
       # Sub for for cmd_mcr()
       def ___mcr_fg(e, step, mstat)
-        mstat.result = 'busy'
-        show_fg Msg.colorize(" {\n", 1)
+        show_fg Msg.colorize(' {', 1)
         step[:count] = 1 if step[:retry]
         ___mcr_trial(e, step)
-        __show_end(step)
-        step.result = 'complete'
       rescue
-        __show_end(step)
         mstat.result = step.result
         raise
       end
@@ -27,8 +23,9 @@ module CIAX
       # Sub for _mcr_fg()
       def ___mcr_trial(e, step)
         _sub_macro(_get_ment(e), step) || raise(Interlock)
+        __show_end(step, 'complete')
       rescue Verification
-        step.result = 'failed'
+        __show_end(step, 'failed')
         return unless step[:retry]
         step = ___new_macro(e, step)
         __show_begin(step)
@@ -39,17 +36,17 @@ module CIAX
       def __show_begin(step)
         show_fg step.title_s
         show_fg Msg.colorize("(Retry #{step[:count] - 1})", 1)
-        show_fg Msg.colorize(" {\n", 1)
+        show_fg Msg.colorize(' {', 1)
       end
 
-      def __show_end(step)
+      def __show_end(step, str)
         show_fg step.indent_s(4) + Msg.colorize(' }', 1)
+        step.result = str
       end
 
       # Sub for _mcr_retry()
       def ___new_macro(e, step)
         step[:action] = 'retry'
-        __show_end(step)
         count = step[:count].to_i
         raise Interlock if count >= step[:retry].to_i # exit
         newstep = @record.add_step(e, @depth)

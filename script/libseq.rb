@@ -59,6 +59,7 @@ module CIAX
       # macro returns result (true=complete /false=error)
       def _sub_macro(cfg, mstat)
         seqary = type?(cfg[:sequence], Array)
+        mstat.result = 'busy'
         @depth += 1
         @record[:total_steps] += seqary.size
         seqary.each { |e| break(true) unless _do_step(e, mstat) } || return

@@ -51,6 +51,7 @@ module CIAX
 
     def ext_shell
       require 'libsh'
+      @cobj.rem.sys.add_empty
       extend(context_module('Shell')).ext_shell
     end
 
@@ -76,6 +77,7 @@ module CIAX
     # UDP Listen
     def ext_local_server
       require 'libserver'
+      @cobj.rem.sys.add_empty
       extend(Server).ext_local_server
     end
 

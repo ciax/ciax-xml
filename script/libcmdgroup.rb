@@ -25,6 +25,7 @@ module CIAX
       # atrb could be dbi[:index][id]
       # atrb could have 'label',:body,'unit','group'
       def add_item(id, title = nil, atrb = Hashx.new) # returns Item
+        return self[id] if key?(id)
         @displist.put_item(id, title)
         _new_item(id, atrb)
       end

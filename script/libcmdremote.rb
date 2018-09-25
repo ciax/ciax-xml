@@ -64,6 +64,9 @@ module CIAX
             atrb.get(:caption) { 'System Commands' }
             super
             add_item('interrupt', nil, def_msg: 'INTERRUPT')
+          end
+
+          def add_empty
             # Accept empty command for upd
             add_item(nil, nil, def_msg: '')
           end

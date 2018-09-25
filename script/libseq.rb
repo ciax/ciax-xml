@@ -76,26 +76,27 @@ module CIAX
       # Return false if sequence is broken
       def _do_step(e, mstat)
         step = @record.add_step(e, @depth)
-        begin
-          return true if ___call_step(e, step, mstat)
-        rescue Retry
-          retry
-        end
-      rescue Interrupt
-        mstat.result = 'interrupted'
+        ___call_step(e, step, mstat)
+      rescue
+        mstat.result = step.result
         raise
+      ensure
+        show_fg step.result_s
+        step.cmt
       end
 
       # Sub for _do_step()
       def ___call_step(e, step, mstat)
-        typ = e[:type]
         show_fg step.title_s
-        method('_cmd_' + typ).call(e, step, mstat)
-      rescue CommError
-        mstat.result = step.result = 'comerr'
+        method('_cmd_' + e[:type]).call(e, step, mstat)
+      rescue Retry
+        retry
+      rescue Interrupt
+        step.result = 'interrupted'
         raise
-      ensure
-        step.cmt
+      rescue CommError
+        step.result = 'comerr'
+        raise
       end
 
       # Sub for macro()

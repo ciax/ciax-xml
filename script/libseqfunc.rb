@@ -12,7 +12,7 @@ module CIAX
 
       # Sub for for cmd_mcr()
       def ___mcr_fg(e, step, mstat)
-        show_fg Msg.colorize(' {', 1)
+        show_fg Msg.colorize(" {\n", 1)
         step[:count] = 1 if step[:retry]
         ___mcr_trial(e, step)
       rescue
@@ -23,9 +23,9 @@ module CIAX
       # Sub for _mcr_fg()
       def ___mcr_trial(e, step)
         _sub_macro(_get_ment(e), step) || raise(Interlock)
-        __show_end(step, 'complete')
+        step.result = 'complete'
       rescue Verification
-        __show_end(step, 'failed')
+        __show_end(step)
         return unless step[:retry]
         step = ___new_macro(e, step)
         __show_begin(step)
@@ -36,12 +36,12 @@ module CIAX
       def __show_begin(step)
         show_fg step.title_s
         show_fg Msg.colorize("(Retry #{step[:count] - 1})", 1)
-        show_fg Msg.colorize(' {', 1)
+        show_fg Msg.colorize(" {\n", 1)
       end
 
-      def __show_end(step, str)
+      def __show_end(step)
         show_fg step.indent_s(4) + Msg.colorize(' }', 1)
-        step.result = str
+        show_fg step.result_s
       end
 
       # Sub for _mcr_retry()
@@ -64,8 +64,11 @@ module CIAX
         @dev_list.get(e[:site]).sub
       end
 
-      def _exe_site(e)
+      def _exe_site(e, step)
         _get_site(e).exe(e[:args], 'macro')
+      rescue CommError
+        step.result = 'comerr'
+        raise
       end
 
       # Mcr::Entity

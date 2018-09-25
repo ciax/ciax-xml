@@ -41,13 +41,11 @@ module CIAX
         else
           return true unless @qry.query(%w(pass enter), step)
         end
-        mstat.result = 'skipped'
         false
       end
 
       def _cmd_check(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
-        mstat.result = 'failed'
         raise Interlock
       end
 
@@ -58,7 +56,6 @@ module CIAX
 
       def _cmd_wait(_e, step, mstat)
         return true unless step.timeout? && _giveup?(step)
-        mstat.result = 'timeout'
         raise Interlock
       end
 
@@ -70,7 +67,7 @@ module CIAX
       def _cmd_exec(e, step, _mstat)
         if step.exec? && @qry.query(%w(exec skip), step)
           show_fg step.indent_s(5)
-          step.result = _exe_site(e).to_s
+          _exe_site(e, step).to_s
         end
         @sv_stat.push(:run, e[:site]).cmt unless
           @sv_stat.upd.get(:run).include?(e[:site])
@@ -79,14 +76,14 @@ module CIAX
 
       # return T/F
       def _cmd_cfg(e, step, _mstat)
-        step.result = _exe_site(e).wait_ready
+        _exe_site(e, step).wait_ready
       end
 
       # return T/F
       def _cmd_upd(e, step, mstat)
-        step.result = _exe_site(e).wait_ready
+        _exe_site(e, step).wait_ready
       rescue CommError
-        mstat.result = step.result = 'comerr'
+        mstat.result = step.result
       end
 
       # return T/F

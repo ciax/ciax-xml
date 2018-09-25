@@ -70,7 +70,6 @@ module CIAX
 
         def result=(msg)
           self[:result] = msg.downcase
-          show_fg result_s
         ensure
           cmt
         end

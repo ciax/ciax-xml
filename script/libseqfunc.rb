@@ -64,11 +64,8 @@ module CIAX
         @dev_list.get(e[:site]).sub
       end
 
-      def _exe_site(e, step)
+      def _exe_site(e)
         _get_site(e).exe(e[:args], 'macro')
-      rescue CommError
-        step.result = 'comerr'
-        raise
       end
 
       # Mcr::Entity

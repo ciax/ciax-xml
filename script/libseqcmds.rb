@@ -34,7 +34,7 @@ module CIAX
       # Enter if condition is unsatisfied (return true)
       # Vars in conditions are changed in this sequence
       # It is used for multiple retry function
-      def _cmd_goal(_e, step, mstat)
+      def _cmd_goal(_e, step, _mstat)
         return true unless step.skip?
         if step.opt.nonstop?
           return true unless step.opt.prcs?
@@ -44,7 +44,7 @@ module CIAX
         false
       end
 
-      def _cmd_check(_e, step, mstat)
+      def _cmd_check(_e, step, _mstat)
         return true unless step.fail? && _giveup?(step)
         raise Interlock
       end
@@ -54,7 +54,7 @@ module CIAX
         raise Verification
       end
 
-      def _cmd_wait(_e, step, mstat)
+      def _cmd_wait(_e, step, _mstat)
         return true unless step.timeout? && _giveup?(step)
         raise Interlock
       end
@@ -67,7 +67,7 @@ module CIAX
       def _cmd_exec(e, step, _mstat)
         if step.exec? && @qry.query(%w(exec skip), step)
           show_fg step.indent_s(5)
-          _exe_site(e, step).to_s
+          step.result = _exe_site(e).to_s
         end
         @sv_stat.push(:run, e[:site]).cmt unless
           @sv_stat.upd.get(:run).include?(e[:site])
@@ -76,14 +76,14 @@ module CIAX
 
       # return T/F
       def _cmd_cfg(e, step, _mstat)
-        _exe_site(e, step).wait_ready
+        step.result = _exe_site(e).wait_ready
       end
 
       # return T/F
       def _cmd_upd(e, step, mstat)
-        _exe_site(e, step).wait_ready
+        step.result = _exe_site(e).wait_ready
       rescue CommError
-        mstat.result = step.result
+        mstat.result = step.result = 'comerr'
       end
 
       # return T/F

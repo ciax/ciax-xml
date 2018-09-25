@@ -94,9 +94,6 @@ module CIAX
       rescue Interrupt
         step.result = 'interrupted'
         raise
-      rescue CommError
-        step.result = 'comerr'
-        raise
       end
 
       # Sub for macro()

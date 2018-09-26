@@ -39,7 +39,7 @@ module CIAX
       end
 
       def rcv
-        ___wait_rcv
+        sleep @wait
         __reopen
         str = ___concat_rcv
         verbose { "Data Recieved(#{self['cmd']})\n" + visible(str) }
@@ -48,11 +48,10 @@ module CIAX
 
       private
 
-      def __reopen(int = 0)
+      def __reopen
         ___open_strm if !@f || @f.closed?
       rescue SystemCallError
-        int = ___open_fail(int)
-        retry
+        com_err('Stream Open failed')
       end
 
       def __convert(dir, data, cid = nil)
@@ -76,7 +75,7 @@ module CIAX
         # verbose { 'Stream Opening' }
         @pre_open_proc.call
         Signal.trap(:INT, nil)
-        @f = IO.popen(@iocmd, 'r+')
+        ___try_open
         Signal.trap(:INT, 'DEFAULT')
         verbose { 'Initiate Opened' }
         at_exit { ___close_strm }
@@ -85,6 +84,15 @@ module CIAX
         # Shut off from Ctrl-C Signal to the child process
         # Process.setpgid(@f.pid,@f.pid)
         self
+      end
+
+      def ___try_open
+        @f = IO.popen(@iocmd, 'r+')
+        3.times do
+          Process.waitpid(@f.pid, Process::WNOHANG) &&
+            com_err('Connection refused')
+          sleep 0.1
+        end
       end
 
       def ___close_strm
@@ -96,25 +104,11 @@ module CIAX
         verbose { @f.closed? ? 'Stream Closed' : 'Stream not Closed' }
       end
 
-      def ___open_fail(int)
-        show_err
-        Msg.str_err('Stream Open failed') if int > 2
-        warning('Try to reopen')
-        sleep int
-        (int + 1) * 2
-      end
-
       def ___encode_base64(str)
         [str].pack('m').split("\n").join('')
       end
 
       # rcv sub methods
-      def ___wait_rcv
-        # verbose { "Wait to Recieve #{@wait} sec" }
-        sleep @wait
-        # verbose { 'Wait for Recieving' }
-      end
-
       def ___concat_rcv(str = '')
         20.times do
           ___select_io

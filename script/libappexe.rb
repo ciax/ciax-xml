@@ -122,7 +122,12 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
         dbi = Ins::Db.new.get(args.shift)
         atrb = { dbi: dbi, sub_list: Frm::List.new(cfg) }
-        puts Exe.new(cfg, atrb).exe(args).wait_ready
+        begin
+          obj = Exe.new(cfg, atrb)
+          puts obj.exe(args).stat
+        rescue CommError
+          puts obj.stat
+        end
       end
     end
   end

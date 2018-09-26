@@ -24,7 +24,6 @@ module CIAX
         verbose { "Initiate [#{iocmd}]" }
         init_time2cmt
         ___init_par(cfg)
-        __reopen
       end
 
       def snd(str, cid)

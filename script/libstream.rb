@@ -89,7 +89,7 @@ module CIAX
         @f = IO.popen(@iocmd, 'r+')
         3.times do
           Process.waitpid(@f.pid, Process::WNOHANG) &&
-            com_err('Connection refused')
+            str_err('Connection refused')
           sleep 0.1
         end
       end

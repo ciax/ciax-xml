@@ -72,6 +72,8 @@ module CIAX
 
     # For Frm
     class Prompt < Prompt
+      # commerr: device no response
+      # ioerr: port is not open (communication refused)
       def initialize(id)
         super('dev', id)
         init_flg(comerr: 'X', ioerr: 'E')

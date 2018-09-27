@@ -80,7 +80,7 @@ module CIAX
             self[:count] = n + 1
             break if cond && yield
             Kernel.sleep itv
-            dot_fg
+            show_fg('.')
             cmt
           end
         end

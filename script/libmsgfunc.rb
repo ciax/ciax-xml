@@ -54,11 +54,7 @@ module CIAX
 
     # For information (e.g. macro)
     def show_fg(str = "\n")
-      $stderr.print(str) if fg?
-    end
-
-    def dot_fg(f = true)
-      dot f if fg?
+      print(str) if fg?
     end
 
     # Make Var dir if not exist

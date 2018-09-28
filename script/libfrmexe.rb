@@ -88,6 +88,7 @@ module CIAX
           puts obj.exe(args).stat
         rescue CommError
           puts obj.stat
+          puts obj.sv_stat.to_r
         end
       end
     end

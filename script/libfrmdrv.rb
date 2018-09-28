@@ -23,21 +23,32 @@ module CIAX
 
         def ___init_stream
           @stream = Stream.new(@id, @cfg)
-          @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
-          @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }
+          @stream.pre_open_proc = proc do
+            @sv_stat.dw(:ioerr)
+            @sv_stat.dw(:comerr)
+          end
           @stat.ext_local_conv(@stream).ext_local_file.auto_save
         end
 
         def ___init_processor_ext
           @cobj.rem.ext.def_proc do |ent, src|
-            @sv_stat.dw(:comerr)
-            @stream.snd(ent[:frame], ent.id)
-            if ent[:response]
-              @stream.rcv
-              @stat.conv(ent)
-            end
+            ___stream(ent)
             @stat.flush if src != 'buffer'
           end
+        end
+
+        def ___stream(ent)
+          @stream.snd(ent[:frame], ent.id)
+          if ent[:response]
+            @stream.rcv
+            @stat.conv(ent)
+          end
+        rescue StreamError
+          @sv_stat.up(:ioerr)
+          raise
+        rescue CommError
+          @sv_stat.up(:comerr)
+          raise
         end
 
         def ___init_processor_save

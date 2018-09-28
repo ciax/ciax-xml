@@ -25,10 +25,6 @@ module CIAX
         _opt_mode
       end
 
-      def exe(args, src = nil, pri = 1)
-        super
-      end
-
       def active?
         @sv_stat.upd.up?(:event)
       end
@@ -122,12 +118,10 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
         dbi = Ins::Db.new.get(args.shift)
         atrb = { dbi: dbi, sub_list: Frm::List.new(cfg) }
-        begin
-          obj = Exe.new(cfg, atrb)
-          puts obj.exe(args).stat
-        rescue CommError
-          puts obj.stat
-        end
+        obj = Exe.new(cfg, atrb).exe(args)
+        puts obj.stat
+        sleep 0.5
+        puts obj.sv_stat.to_r
       end
     end
   end

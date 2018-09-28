@@ -49,6 +49,7 @@ module CIAX
 
   # Stream Open Error
   class StreamError < CommError; end
+
   # CC Verification Error
   class CheckCodeError < CommError; end
 

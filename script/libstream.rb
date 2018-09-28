@@ -18,7 +18,7 @@ module CIAX
       attr_accessor :pre_open_proc, :post_open_proc
       def initialize(id, cfg)
         iocmd = type?(cfg, Config)[:iocmd]
-        Msg.give_up(' No IO command') unless iocmd
+        give_up(' No IO command') unless iocmd
         super('stream', id, cfg[:version])
         update('dir' => '', 'cmd' => '', 'base64' => '')
         verbose { "Initiate [#{iocmd}]" }
@@ -34,7 +34,7 @@ module CIAX
         __convert('snd', str, cid).cmt
       rescue Errno::EPIPE
         @f.close
-        com_err('send failed')
+        str_err('Stream: Send failed')
       end
 
       def rcv
@@ -50,7 +50,7 @@ module CIAX
       def __reopen
         ___open_strm if !@f || @f.closed?
       rescue SystemCallError
-        com_err('Stream Open failed')
+        str_err('Stream: Open failed')
       end
 
       def __convert(dir, data, cid = nil)
@@ -89,7 +89,7 @@ module CIAX
         @f = IO.popen(@iocmd, 'r+')
         3.times do
           Process.waitpid(@f.pid, Process::WNOHANG) &&
-            str_err('Connection refused')
+            str_err('Stream: Connection refused')
           sleep 0.1
         end
       end
@@ -120,7 +120,7 @@ module CIAX
 
       def ___select_io
         return if IO.select([@f], nil, nil, @timeout)
-        Msg.com_err('Stream:No response')
+        str_err('Stream: No response')
       end
 
       def ___try_rcv(str)
@@ -129,7 +129,7 @@ module CIAX
       rescue EOFError
         # Jumped at quit
         @f.close
-        com_err('recv failed')
+        str_err('Stream: Recv failed')
       end
     end
   end

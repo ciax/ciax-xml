@@ -46,9 +46,6 @@ module CIAX
         rescue StreamError
           @sv_stat.up(:ioerr)
           raise
-        rescue CommError
-          @sv_stat.up(:comerr)
-          raise
         end
 
         def ___init_processor_save

@@ -23,12 +23,12 @@ module CIAX
       # Sub for _mcr_fg()
       def ___mcr_trial(e, step)
         _sub_macro(_get_ment(e), step) || raise(Interlock)
+        __show_end(step)
         step.result = 'complete'
       rescue Verification
         __show_end(step)
         return unless step[:retry]
         step = ___new_macro(e, step)
-        __show_begin(step)
         sleep step[:wait].to_i
         retry
       end
@@ -41,16 +41,17 @@ module CIAX
 
       def __show_end(step)
         show_fg step.indent_s(4) + Msg.colorize(' }', 1)
-        show_fg step.result_s
       end
 
       # Sub for _mcr_retry()
       def ___new_macro(e, step)
         step[:action] = 'retry'
+        show_fg step.result_s
         count = step[:count].to_i
         raise Interlock if count >= step[:retry].to_i # exit
         newstep = @record.add_step(e, @depth)
         newstep[:count] = count + 1
+        __show_begin(newstep)
         newstep.cmt # continue
       end
 

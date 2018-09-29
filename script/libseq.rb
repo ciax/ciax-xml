@@ -36,7 +36,7 @@ module CIAX
         ___upd_sites
         Thread.current[:query] = @qry
         show_fg @record.start
-        _sub_macro(@cfg, @record.cmt)
+        _sequencer(@cfg, @record.cmt)
       rescue Verification
         false
       rescue Interrupt
@@ -57,7 +57,7 @@ module CIAX
       end
 
       # macro returns result (true=complete /false=error)
-      def _sub_macro(cfg, mstat)
+      def _sequencer(cfg, mstat)
         seqary = type?(cfg[:sequence], Array)
         mstat.result = 'busy'
         @depth += 1

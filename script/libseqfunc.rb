@@ -22,7 +22,7 @@ module CIAX
 
       # Sub for _mcr_fg()
       def ___mcr_trial(e, step)
-        _sub_macro(_get_ment(e), step) || raise(Interlock)
+        _sequencer(_get_ment(e), step) || raise(Interlock)
         __enc_end(step)
         step.result = 'complete'
       rescue Verification

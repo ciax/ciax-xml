@@ -49,9 +49,9 @@ module CIAX
         raise Interlock
       end
 
-      def _cmd_verify(_e, step, _mstat)
+      def _cmd_verify(_e, step, mstat)
         return true unless step.fail? && _giveup?(step)
-        raise Verification
+        raise mstat[:retry].to_i > 0 ? Verification : Interlock
       end
 
       def _cmd_wait(_e, step, _mstat)

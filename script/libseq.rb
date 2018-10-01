@@ -37,8 +37,6 @@ module CIAX
         Thread.current[:query] = @qry
         show_fg @record.start
         _sequencer(@cfg, @record.cmt)
-      rescue Verification
-        false
       rescue Interrupt
         ___site_interrupt
       ensure
@@ -81,7 +79,7 @@ module CIAX
         mstat.result = step.result
         raise
       ensure
-        show_fg step.result_s
+        show_fg step.result_s if step[:type] != 'mcr'
         step.cmt
       end
 

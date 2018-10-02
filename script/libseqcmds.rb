@@ -76,11 +76,13 @@ module CIAX
       # return T/F
       def _cmd_cfg(e, step, _mstat)
         step.result = _exe_site(e).wait_ready
+        show_fg step.result_s
       end
 
       # return T/F
       def _cmd_upd(e, step, mstat)
         step.result = _exe_site(e).wait_ready
+        show_fg step.result_s
       rescue CommError
         mstat.result = __set_err(step)
       end
@@ -89,6 +91,7 @@ module CIAX
       def _cmd_system(e, step, _mstat)
         return true unless step.exec?
         step.result = `#{e[:val]}`.chomp
+        show_fg step.result_s
         true
       end
 

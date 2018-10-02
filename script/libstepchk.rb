@@ -38,9 +38,10 @@ module CIAX
         end
 
         def sleeping
-          s = self[:val] || return
-          progress(s)
+          progress(self[:val])
           self.result = 'slept'
+          show_fg result_s
+          true
         end
 
         # Condition section (fake)
@@ -55,12 +56,14 @@ module CIAX
         def timeout?
           progress(self[:retry]) { false }
           self.result = 'pass'
+          show_fg result_s
           false
         end
 
         # Not Condition Step, returns t/f
         def which?(tmsg, fmsg, tf)
           self.result = tf ? tmsg : fmsg
+          show_fg result_s
           tf
         end
 

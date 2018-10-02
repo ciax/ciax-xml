@@ -55,6 +55,7 @@ module CIAX
     # For information (e.g. macro)
     def show_fg(str = "\n")
       print(str) if fg?
+      self
     end
 
     # Make Var dir if not exist

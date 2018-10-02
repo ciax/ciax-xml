@@ -82,7 +82,7 @@ module CIAX
       def _cmd_upd(e, step, mstat)
         step.result = _exe_site(e).wait_ready
       rescue CommError
-        mstat.result = step.result = 'comerr'
+        mstat.result = __set_err(step)
       end
 
       # return T/F
@@ -99,7 +99,7 @@ module CIAX
         show_fg step.result_s
         sel = e[:select]
         name = sel[var] || sel['*'] || mcr_err("No option for #{var} ")
-        _do_step({ type: 'mcr', args: name }, mstat)
+        _new_step({ type: 'mcr', args: name }, mstat)
       end
 
       def _cmd_mcr(e, step, mstat)

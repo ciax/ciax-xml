@@ -39,6 +39,8 @@ module CIAX
         _sequencer(@cfg, @record.cmt)
       rescue Interrupt
         ___site_interrupt
+      rescue
+        false
       ensure
         show_fg @record.finish + "\n"
       end
@@ -60,38 +62,32 @@ module CIAX
         mstat.result = 'busy'
         @depth += 1
         @record[:total_steps] += seqary.size
-        seqary.each { |e| break(true) unless _do_step(e, mstat) } || return
+        # true: exit in the way, false: complete steps
+        seqary.all? { |e| _new_step(e, mstat) } && mstat.result != 'comerr'
         # 'upd' passes whether commerr or not
         # result of multiple 'upd' is judged here
-        mstat.result != 'comerr'
-      rescue Interlock, CommError
-        # For retry
-        false
       ensure
         @depth -= 1
       end
 
       # Return false if sequence is broken
-      def _do_step(e, mstat)
+      def _new_step(e, mstat)
         step = @record.add_step(e, @depth)
-        ___call_step(e, step, mstat)
+        ___step_trial(e, step, mstat)
       rescue
-        mstat.result = step.result
+        mstat.result = __set_err(step)
         raise
       ensure
         show_fg step.result_s if step[:type] != 'mcr'
         step.cmt
       end
 
-      # Sub for _do_step()
-      def ___call_step(e, step, mstat)
+      # Sub for _new_step()
+      def ___step_trial(e, step, mstat)
         show_fg step.title_s
         method('_cmd_' + e[:type]).call(e, step, mstat)
       rescue Retry
         retry
-      rescue Interrupt
-        step.result = 'interrupted'
-        raise
       end
 
       # Sub for macro()

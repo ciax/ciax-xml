@@ -8,16 +8,19 @@ module CIAX
   module Mcr
     # Sub Class
     class Sequencer
+      ERR_CODE = {
+        interlock: 'fail',
+        interrupt: 'interrupted',
+        commerror: 'comerr'
+      }.freeze
+
       private
 
       # Sub for for cmd_mcr()
-      def ___mcr_fg(e, step, mstat)
+      def ___mcr_fg(e, step, _mstat)
         __enc_begin
         step[:count] = 1 if step[:retry]
         ___mcr_trial(e, step)
-      rescue
-        mstat.result = step.result
-        raise
       end
 
       # Sub for _mcr_fg()
@@ -58,6 +61,11 @@ module CIAX
       def __enc_end(step)
         show_fg step.indent_s(4) + Msg.colorize(' }', 1)
         show_fg step.result_s
+      end
+
+      def __set_err(step)
+        ek = $ERROR_INFO.class.to_s.split(':').last.downcase
+        step.result = ERR_CODE[ek.to_sym] || ek
       end
 
       # Sub for cmd_select()

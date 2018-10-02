@@ -9,7 +9,8 @@ module CIAX
     # Sub Class
     class Sequencer
       ERR_CODE = {
-        interlock: 'fail',
+        verification: 'failed',
+        interlock: 'failed',
         interrupt: 'interrupted',
         commerror: 'comerr'
       }.freeze
@@ -65,7 +66,7 @@ module CIAX
 
       def __set_err(step)
         ek = $ERROR_INFO.class.to_s.split(':').last.downcase
-        step.result = ERR_CODE[ek.to_sym] || ek
+        step.result ||= ERR_CODE[ek.to_sym] || ek
       end
 
       # Sub for cmd_select()

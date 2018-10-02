@@ -46,13 +46,6 @@ module CIAX
         title_s + result_s + action_s
       end
 
-      # returns t/f
-      def which?(tmsg, fmsg, tf)
-        tf = super
-        print result_s if Msg.fg?
-        tf
-      end
-
       private
 
       def __body(msg, col = 5)

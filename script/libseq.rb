@@ -39,7 +39,7 @@ module CIAX
         _sequencer(@cfg, @record.cmt)
       rescue Interrupt
         ___site_interrupt
-      rescue
+      rescue CommError, Interlock
         false
       ensure
         show_fg @record.finish + "\n"
@@ -74,7 +74,7 @@ module CIAX
       def _new_step(e, mstat)
         step = @record.add_step(e, @depth)
         ___step_trial(e, step, mstat)
-      rescue
+      rescue CommError, Interlock
         mstat.result = __set_err(step)
         raise
       ensure

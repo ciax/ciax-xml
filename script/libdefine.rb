@@ -32,12 +32,6 @@ module CIAX
   # Switching Layer
   class LayerJump < LongJump; end
 
-  # Macro
-  class Interlock < LongJump; end
-  class Verification < LongJump; end
-  class Retry < LongJump; end
-  class NoMcrCmd < LongJump; end
-
   # Server error (Handled in Server)
   class ServerError < RuntimeError; end
 
@@ -54,5 +48,11 @@ module CIAX
   class CheckCodeError < CommError; end
 
   # Invalid Data in Field for Status
-  class InvalidData < RuntimeError; end
+  class InvalidData < CommError; end
+
+  # Macro
+  class Interlock < RuntimeError; end
+  class Verification < Interlock; end
+  class Retry < LongJump; end
+  class NoMcrCmd < ConfigError; end
 end

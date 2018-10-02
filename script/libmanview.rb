@@ -39,6 +39,7 @@ module CIAX
 
       def get_arc(n = 1)
         @rec_list.get_arc(n.to_i)
+        @par.sel_first
         self
       end
 

@@ -27,6 +27,11 @@ module CIAX
         self
       end
 
+      def sel_first
+        self[:default] = @list.first
+        self
+      end
+
       # For macro variable param (sid list)
       # replace (default will be decresed)
       def flush(other)

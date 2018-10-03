@@ -82,9 +82,10 @@ module CIAX
       # return T/F
       def _cmd_upd(e, step, mstat)
         step.result = _exe_site(e).wait_ready
-        show_fg step.result_s
       rescue CommError
         mstat.result = __set_err(step)
+      ensure
+        show_fg step.result_s
       end
 
       # return T/F

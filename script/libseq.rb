@@ -77,9 +77,9 @@ module CIAX
         ___step_trial(e, step, mstat)
       rescue CommError, Interlock, Interrupt
         mstat.result = __set_err(step)
-        show_fg step.result_s
         raise
       ensure
+        show_fg step.result_s if step[:type] != 'mcr'
         step.cmt
       end
 

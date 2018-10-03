@@ -88,8 +88,20 @@ module CIAX
         @cfg[:index].set_cmd(e[:args])
       end
 
-      def _giveup?(step)
+      # Query
+      def _qry_giveup?(step)
+        show_fg step.result_s
         @qry.query(%w(drop force retry), step)
+      end
+
+      def _qry_enter?(step)
+        show_fg step.result_s
+        step.result = 'enter' if @qry.query(%w(pass enter), step)
+      end
+
+      def _qry_exec?(step)
+        show_fg step.result_s
+        @qry.query(%w(exec skip), step)
       end
     end
   end

@@ -36,26 +36,24 @@ module CIAX
       # It is used for multiple retry function
       def _cmd_goal(_e, step, _mstat)
         return true unless step.skip?
-        if step.opt.nonstop?
-          return true unless step.opt.prcs?
-        else
-          return true unless @qry.query(%w(pass enter), step)
-        end
-        false
+        # When condition meets skip
+        # Enter if not dryrun or real run
+        return !step.opt.prcs? if step.opt.nonstop?
+        _qry_enter?(step)
       end
 
       def _cmd_check(_e, step, _mstat)
-        return true unless step.fail? && _giveup?(step)
+        return true unless step.fail? && _qry_giveup?(step)
         raise Interlock
       end
 
       def _cmd_verify(_e, step, mstat)
-        return true unless step.fail? && _giveup?(step)
+        return true unless step.fail? && _qry_giveup?(step)
         raise mstat[:retry].to_i > 0 ? Verification : Interlock
       end
 
       def _cmd_wait(_e, step, _mstat)
-        return true unless step.timeout? && _giveup?(step)
+        return true unless step.timeout? && _qry_giveup?(step)
         raise Interlock
       end
 
@@ -65,9 +63,7 @@ module CIAX
       end
 
       def _cmd_exec(e, step, _mstat)
-        if step.exec? && @qry.query(%w(exec skip), step)
-          step.result = _exe_site(e).to_s
-        end
+        step.result = _exe_site(e).to_s if step.exec? && _qry_exec?(step)
         @sv_stat.push(:run, e[:site]).cmt unless
           @sv_stat.upd.get(:run).include?(e[:site])
         true
@@ -87,8 +83,7 @@ module CIAX
 
       # return T/F
       def _cmd_system(e, step, _mstat)
-        return true unless step.exec?
-        step.result = `#{e[:val]}`.chomp
+        step.result = `#{e[:val]}`.chomp if step.exec? && _qry_exec?(step)
         true
       end
 

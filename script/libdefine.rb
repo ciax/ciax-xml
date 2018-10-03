@@ -51,8 +51,8 @@ module CIAX
   class InvalidData < CommError; end
 
   # Macro
-  class Interlock < RuntimeError; end
-  class Verification < Interlock; end
+  class Verification < RuntimeError; end
+  class Interlock < Verification; end
   class Retry < LongJump; end
   class NoMcrCmd < ConfigError; end
 end

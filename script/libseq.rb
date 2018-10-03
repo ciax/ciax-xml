@@ -63,9 +63,10 @@ module CIAX
         @depth += 1
         @record[:total_steps] += seqary.size
         # true: exit in the way, false: complete steps
-        seqary.all? { |e| _new_step(e, mstat) } && mstat.result != 'comerr'
+        seqary.all? { |e| _new_step(e, mstat) }
         # 'upd' passes whether commerr or not
         # result of multiple 'upd' is judged here
+        mstat.result.gsub!('busy', 'complete')
       ensure
         @depth -= 1
       end
@@ -74,7 +75,7 @@ module CIAX
       def _new_step(e, mstat)
         step = @record.add_step(e, @depth)
         ___step_trial(e, step, mstat)
-      rescue CommError, Interlock
+      rescue CommError, Interlock, Interrupt
         mstat.result = __set_err(step)
         show_fg step.result_s
         raise

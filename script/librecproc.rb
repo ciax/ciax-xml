@@ -51,7 +51,7 @@ module CIAX
           delete(:option)
           self[:total_time] = Msg.elps_sec(self[:start])
           self[:status] = 'end'
-          self[:result] = @result.gsub('busy', 'complete')
+          self[:result] = @result
         ensure
           @finish_procs.each { |p| p.call(self) }
           cmt

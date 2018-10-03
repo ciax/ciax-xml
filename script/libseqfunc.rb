@@ -9,7 +9,7 @@ module CIAX
     # Sub Class
     class Sequencer
       ERR_CODE = {
-        verification: 'failed',
+        verification: 'incomplete',
         interlock: 'failed',
         interrupt: 'interrupted',
         commerror: 'comerr'
@@ -27,8 +27,8 @@ module CIAX
       # Sub for _mcr_fg()
       def ___mcr_trial(e, step)
         _sequencer(_get_ment(e), step)
-        step.result = 'complete'
       rescue Verification
+        __set_err(step)
         count = ___count_retry(step)
         step = ___new_macro(e, count)
         sleep step[:wait].to_i
@@ -66,7 +66,7 @@ module CIAX
 
       def __set_err(step)
         ek = $ERROR_INFO.class.to_s.split(':').last.downcase
-        step.result ||= ERR_CODE[ek.to_sym] || ek
+        step.result = ERR_CODE[ek.to_sym] || ek
       end
 
       # Sub for cmd_select()

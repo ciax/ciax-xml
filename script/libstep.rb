@@ -8,7 +8,7 @@ module CIAX
       OPE = { equal: '==', not: '!=', match: '=~', unmatch: '!~' }.freeze
       Title_List = {
         mesg: ['Mesg', 5], bypass: ['Bypass?', 6, 'skip if satisfied'],
-        wait: ['Waiting', 6], goal: ['Done?', 6, 'skip if satisfied'],
+        goal: ['Done?', 6, 'skip if satisfied'],
         check: ['Check', 6, 'interlock'], verify: ['Verify', 6, 'at the end']
       }.freeze
 
@@ -97,9 +97,13 @@ module CIAX
       end
 
       def ___itemize(msg, col, label = 'noname')
-        format('[%6.2f]', (self[:time] - @base_time) * 0.001) + indent_s +
-          Msg.colorize(msg, col) + ':' +
-          (self[:label] || (label.is_a?(Proc) ? "[#{label.call}]" : label))
+        line = ___timestamp + indent_s + Msg.colorize(msg, col) + ':'
+        line << self[:label].to_s
+        line << (label.is_a?(Proc) ? "[#{label.call}]" : label)
+      end
+
+      def ___timestamp
+        format('[%6.2f]', (self[:time] - @base_time) * 0.001)
       end
 
       # Branched functions (instead of case/when semantics)
@@ -111,7 +115,8 @@ module CIAX
           exec: ['EXEC', 13, __sid(:site, :args)],
           cfg: ['Config', 14, __sid(:site, :args)],
           sleep: ['Sleeping(sec)', 6, __sid(:val)],
-          select: ['Select by', 11, __sid(:site, :var)]
+          select: ['Select by', 11, __sid(:site, :var)],
+          wait: ['Waiting', 6, __sid(:retry)]
         }.update(Title_List)
       end
 

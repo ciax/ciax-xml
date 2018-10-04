@@ -11,8 +11,6 @@
         <upd site="tmc"/>
         <mcr name="tmc_cw" retry="3"/>
         <mcr name="tmc_gh-cw"/>
-        <mcr name="tmc_cw"/>
-        <mcr name="tmc_gh-cw"/>
         <cfg site="tmc" name="set0"/>
       </item>
     </group>

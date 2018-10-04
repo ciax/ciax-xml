@@ -64,6 +64,7 @@ module CIAX
 
       def _cmd_exec(e, step, _mstat)
         step.result = _exe_site(e).to_s if step.exec? && _qry_exec?(step)
+        show_fg step.indent_s(5)
         @sv_stat.push(:run, e[:site]).cmt unless
           @sv_stat.upd.get(:run).include?(e[:site])
         true

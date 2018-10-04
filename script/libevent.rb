@@ -60,8 +60,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      GetOpts.new('[site]', options: 'h') do |opt|
-        event = Event.new
+      GetOpts.new('[site]', options: 'h') do |opt, args|
+        event = Event.new(args.shift)
         if opt.host
           event.ext_remote(opt.host)
         else

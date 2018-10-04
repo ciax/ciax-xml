@@ -3,7 +3,6 @@ require 'libdaemon'
 require 'libsimap'
 require 'libsimarm'
 require 'libsimbb'
-require 'libsimcar'
 require 'libsimfp'
 
 #### Condition for Contact Sensor ####
@@ -23,10 +22,13 @@ require 'libsimfp'
 #---------+--------++------
 # STORE   | OPEN   || STORE
 # STORE   | CLOSE  || LOAD
+
+# Option -d: carousel motor down
 module CIAX
   # Simulator
   module Simulator
-    ConfOpts.new('') do |cfg|
+    ConfOpts.new('-(d)', options: 'd') do |cfg|
+      require 'libsimcar' unless cfg[:opt].dry?
       Daemon.new('mos_sim', cfg, 54_301) do
         @sim_list.gen
       end

@@ -10,15 +10,15 @@ module CIAX
       (Time.now.to_f * 1000).to_i
     end
 
-    def elps_sec(msec, target = nil)
-      return 0 unless msec
-      target ||= now_msec
-      format('%.3f', (target - msec).to_f / 1000)
+    def elps_sec(base_msec, later_msec = nil)
+      return 0 unless base_msec
+      later_msec ||= now_msec
+      format('%.3f', (later_msec - base_msec).to_f / 1000)
     end
 
-    def elps_date(msec, target = now_msec)
-      return 0 unless msec
-      sec = (target - msec).to_f / 1000
+    def elps_date(base_msec, later_msec = now_msec)
+      return 0 unless base_msec
+      sec = (later_msec - base_msec).to_f / 1000
       interval(sec)
     end
 

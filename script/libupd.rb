@@ -16,14 +16,16 @@ module CIAX
     end
 
     # Time setting, Loading file at client
+    # Should be done when pulling data
     def upd
       @upd_procs.each { |p| p.call(self) }
       verbose { "Update(#{time_id}) Pre Procs" }
       self
     end
 
-    # Data Commit Method
+    # Data Commit Method (Push type notification)
     # For trigger of data storing or processing propagation to upper layer
+    # Should be executed when data processing will be done
     def cmt
       @cmt_procs.each { |p| p.call(self) }
       verbose { "Commiting(#{time_id})" }

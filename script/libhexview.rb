@@ -25,25 +25,14 @@ module CIAX
 
       def ___init_cmt_procs
         init_time2cmt(@stat)
-        @cmt_procs << proc do
-          self[:hexpack] = ___get_header + ___get_body
-        end
-        ___init_propagates
-      end
-
-      def ___init_propagates
-        @sv_stat.cmt_procs << proc { __cmt_propagate('Prompt') }
-        @stat.cmt_procs << proc { __cmt_propagate('Status') }
-        cmt
-      end
-
-      def __cmt_propagate(mod)
-        verbose { "Propagate #{mod}#cmt -> Hex::View#cmt" }
+        @cmt_procs << proc { self[:hexpack] = ___header + ___body }
+        init_propagate(@sv_stat)
+        init_propagate(@stat)
         cmt
       end
 
       # Server Status
-      def ___get_header
+      def ___header
         ary = ['%', self[:id]]
         ary << __b2e(@sv_stat.up?(:udperr))
         ary << __b2i(@sv_stat.up?(:event))
@@ -52,7 +41,7 @@ module CIAX
         ary.join('')
       end
 
-      def ___get_body
+      def ___body
         return '' unless (hdb = @dbi[:hexpack])
         str = ''
         if hdb[:packs]

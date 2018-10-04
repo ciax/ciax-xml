@@ -45,6 +45,7 @@ module CIAX
         jstr
       rescue OpenURI::HTTPError
         alert("  -- no url file (#{url})")
+        jstr
       end
     end
   end

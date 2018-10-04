@@ -27,21 +27,25 @@ module CIAX
       # Sub for _mcr_fg()
       def ___mcr_trial(e, step)
         _sequencer(_get_ment(e), step)
+        __enc_end(step)
+        show_fg step.result_s
       rescue Verification
         __set_err(step)
         count = ___count_retry(step)
         step = ___new_macro(e, count)
         sleep step[:wait].to_i
         retry
-      ensure
-        __enc_end(step)
       end
 
       # Sub for _mcr_trial()
       def ___count_retry(step)
         count = step[:count].to_i
-        raise Interlock if count >= step[:retry].to_i # exit
         __enc_end(step)
+        if count >= step[:retry].to_i
+          raise Interlock if _qry_giveup?(step)
+        else
+          show_fg step.result_s
+        end
         step[:action] = 'retry'
         count
       end
@@ -61,7 +65,6 @@ module CIAX
 
       def __enc_end(step)
         show_fg step.indent_s(4) + Msg.colorize(' }', 1)
-        show_fg step.result_s
       end
 
       def __set_err(step)

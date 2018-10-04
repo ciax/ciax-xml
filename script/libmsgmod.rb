@@ -39,6 +39,10 @@ end
 module CIAX
   ### Checking Methods ###
   module Msg
+    def base_class
+      class_path.last
+    end
+
     module_function
 
     ## class name handling

@@ -32,6 +32,10 @@ module CIAX
 
       def ___init_cmt_procs
         init_time2cmt(@event)
+        @event.cmt_procs << proc do |obj|
+          verbose { "Propagate #{obj.base_class}#cmt -> #{base_class}#cmt" }
+          cmt
+        end
         @cmt_procs << proc do
           @event.upd
           %i(exec block int act_time upd_next).each do |id|

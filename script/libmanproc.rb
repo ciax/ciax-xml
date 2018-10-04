@@ -12,12 +12,7 @@ module CIAX
         _ext_local
       end
 
-      private
-
-      def _work?(opt)
-        return unless opt.prcs?
-        ext_local_processor
-      end
+      alias ext_local_driver ext_local_processor
 
       # Macro Manager Processing Module
       module Processor

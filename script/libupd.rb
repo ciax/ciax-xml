@@ -65,5 +65,12 @@ module CIAX
       @cmt_procs << (stat ? proc { time_upd(stat[:time]) } : proc { time_upd })
       self
     end
+
+    def init_propagate(obj)
+      obj.cmt_procs << proc do |o|
+        verbose { "Propagate #{o.base_class}#cmt -> #{base_class}#cmt" }
+        cmt
+      end
+    end
   end
 end

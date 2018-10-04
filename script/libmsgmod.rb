@@ -40,7 +40,7 @@ module CIAX
   ### Checking Methods ###
   module Msg
     def base_class
-      class_path.last
+      class_path.last(2).join('::')
     end
 
     module_function

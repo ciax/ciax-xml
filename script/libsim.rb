@@ -27,6 +27,7 @@ module CIAX
         ___sv_loop(io)
       rescue
         log("#{$ERROR_INFO} #{$ERROR_POSITION}")
+        raise unless io
       end
 
       private
@@ -48,7 +49,7 @@ module CIAX
           str = ___input(io)
           log("#{self.class}:Recieve #{str.inspect}")
           res = _dispatch(str) || next
-          res += @ofs
+          res << @ofs if @ofs
           log("#{self.class}:Send #{res.inspect}")
           io ? io.syswrite(res) : puts(res.inspect)
           sleep 0.1

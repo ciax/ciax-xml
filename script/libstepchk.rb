@@ -74,6 +74,7 @@ module CIAX
           cmt
         end
 
+        # wait until &cond satisfied
         def progress(total, &cond)
           itv = @opt.log? ? 1 : 0
           total.to_i.times do |n| # gives number or nil(if break)

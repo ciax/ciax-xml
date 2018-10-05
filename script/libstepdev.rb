@@ -37,9 +37,9 @@ module CIAX
           super(!__all_conds?)
         end
 
+        # wait for active?==true, then wait for cond
         def timeout?
-          tf = progress(self[:retry]) { active? } ||
-               progress(self[:retry].to_i - self[:count]) { __all_conds? }
+          tf = progress { active? } || progress { __all_conds? }
           which?('timeout', 'pass', tf)
         end
 
@@ -60,6 +60,13 @@ module CIAX
         def wait_ready_all
           @exes.each(&:wait_ready)
           self
+        end
+
+        def progress
+          super(self[:retry].to_i - self[:count].to_i) do
+            @exes.all? { |e| e.stat.updating? }
+            yield
+          end
         end
 
         private

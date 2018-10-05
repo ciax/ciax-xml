@@ -79,7 +79,7 @@ module CIAX
 
       ## Shared Methods
       def _get_site(e)
-        @dev_list.get(e[:site]).sub
+        @dev_list.get(e[:site])
       end
 
       def _exe_site(e)

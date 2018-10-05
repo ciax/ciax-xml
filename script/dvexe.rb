@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-require 'libapplist'
+require 'libwatlist'
 # CIAX-XML Device Executor
 module CIAX
   ConfOpts.new('[id] [cmd] (par)', options: 'elch') do |cfg, args|
     cfg[:cmd_line_mode] = true # exclude empty command
-    aex = App::List.new(cfg).get(args.shift)
+    aex = Wat::List.new(cfg).get(args.shift)
     args.empty? ? aex.no_cmd : aex.exe(args)
     puts aex
     puts aex.wait_ready ? 'COMPLETE' : 'TIMEOUT'

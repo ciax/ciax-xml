@@ -21,7 +21,7 @@ module CIAX
           # App::Exe list used in this Step
           if (@condition = delete(:cond))
             sites = @condition.map { |h| h[:site] }.uniq
-            @exes = sites.map { |s| @dev_list.get(s).sub }
+            @exes = sites.map { |s| @dev_list.get(s) }
           end
           self
         end
@@ -47,7 +47,7 @@ module CIAX
         # obj.stat -> looking at Status
 
         def active?
-          if @exes.all?(&:active?)
+          if @exes.all? { |e| e.stat.active? }
             delete(:busy)
             true
           else
@@ -83,7 +83,7 @@ module CIAX
         # Get status from Devices via http
         def ___scan
           @exes.each_with_object({}) do |exe, hash|
-            st = hash[exe.id] = exe.stat.latest
+            st = hash[exe.id] = exe.sub.stat.latest
             verbose { "Scanning #{exe.id} (#{st[:time]})/(#{st.object_id})" }
           end
         end

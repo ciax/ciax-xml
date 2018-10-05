@@ -41,6 +41,10 @@ module CIAX
         true
       end
 
+      def updating?
+        raise CommError if now_msec > self[:time] + 10_000
+      end
+
       private
 
       def ___init_on_procs

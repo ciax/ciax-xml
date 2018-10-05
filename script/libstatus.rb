@@ -32,10 +32,6 @@ module CIAX
         self[:time] > @updated
       end
 
-      def updating?
-        raise CommError if now_msec > self[:time] + 10_000
-      end
-
       def refresh
         verbose { 'Status Refreshed' }
         @last.update(self[:data])

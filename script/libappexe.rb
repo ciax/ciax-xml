@@ -25,22 +25,6 @@ module CIAX
         _opt_mode
       end
 
-      def active?
-        @sv_stat.upd.up?(:event)
-      end
-
-      # wait for busy end or status changed
-      def wait_ready
-        verbose { "Waiting busy end for #{@id}" }
-        100.times do
-          sleep 0.1
-          next if @sv_stat.upd.up?(:busy)
-          return 'done' unless @sv_stat.up?(:comerr)
-          com_err('Device not responding')
-        end
-        com_err('Timeout for Busy Device')
-      end
-
       def ext_shell
         super
         @cfg[:output] = View.new(@stat)

@@ -40,7 +40,7 @@ module CIAX
 
         def ___init_auto_thread
           Threadx::Loop.new('Regular', 'wat', @id) do
-            @stat.auto_exec
+            @stat.auto_exec unless @sv_stat.up?(:comerr)
             sleep 10
           end
         end

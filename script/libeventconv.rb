@@ -44,8 +44,7 @@ module CIAX
         def auto_exec
           return self unless update?
           # Do it when no other command in the queue, and not in motion
-          return self unless self[:exec].empty? &&
-                             !@sv_stat.up?(:event) && !@sv_stat.up?(:comerr)
+          return self unless self[:exec].empty? && self[:active].empty?
           verbose { format('Auto Update(%s, %s)', self[:time], @regexe) }
           begin
             queue('auto', 3, @regexe)

@@ -57,6 +57,7 @@ module CIAX
         jstr = ___read_json(tag)
         return self unless jstr
         replace(jread(jstr))
+        cmt
       end
 
       def save(tag = nil)
@@ -67,7 +68,7 @@ module CIAX
         jstr = ___read_json(tag)
         return self if !jstr || jstr.empty?
         ___check_load(jstr) && jmerge(jstr)
-        self
+        cmt
       end
 
       def save_partial(keylist, tag = nil)

@@ -28,6 +28,7 @@ module CIAX
         else
           replace(jread(jstr))
         end
+        cmt
       end
 
       def latest

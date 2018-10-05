@@ -21,6 +21,7 @@
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:token" use="required"/>
       <xsd:attribute name="label" type="xsd:token" use="optional"/>
+      <xsd:attribute name="version" type="xsd:int"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="pack">

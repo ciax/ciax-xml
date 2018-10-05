@@ -47,21 +47,23 @@ module CIAX
         if hdb[:packs]
           str << ___packed(hdb[:packs])
         elsif hdb[:fields]
-          str << ___mk_frame(hdb)
+          str << ___mk_frame(hdb[:fields])
         end
         str
       end
 
       def ___packed(packs)
         packs.map do |hash|
-          binstr = ___mk_bit(hash)
-          pkstr = hash[:code] + hash[:length]
-          [binstr].pack(pkstr).unpack('h')[0]
+          bits = hash[:bits]
+          binstr = ___mk_bit(bits)
+          pkstr = format('%s%d', hash[:code], bits.size)
+          upkstr = format('h%d', hash[:length])
+          [binstr].pack(pkstr).unpack(upkstr)[0]
         end.join
       end
 
-      def ___mk_bit(db)
-        db[:bits].map do |hash|
+      def ___mk_bit(bits)
+        bits.map do |hash|
           key = hash[:ref]
           cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
           dat = @stat[:data][key]
@@ -70,8 +72,8 @@ module CIAX
         end.join
       end
 
-      def ___mk_frame(db)
-        db[:fields].map do |hash|
+      def ___mk_frame(fields)
+        fields.map do |hash|
           key = hash[:ref]
           cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
           dat = ___padding(hash, @stat[:data][key])

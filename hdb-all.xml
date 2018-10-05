@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <hdb xmlns="http://ciax.sum.naoj.org/ciax-xml/hdb">
-  <hexpack id="bbe" label="Helium Compressor">
-    <pack code="b" length="4">
+  <hexpack id="bbe" version="1" label="Helium Compressor">
+    <pack code="b" length="1">
       <bit ref="xsw0" label="Out 5"/>
       <bit ref="xdr0" label="In 5-1"/>
       <bit ref="xtm0" label="In 5-2"/>
       <bit ref="xpr0" label="In 5-3"/>
     </pack>
-    <pack code="b" length="4">
+    <pack code="b" length="1">
       <bit ref="xsw1" label="Out 6"/>
       <bit ref="xdr1" label="In 6-1"/>
       <bit ref="xtm1" label="In 6-2"/>
       <bit ref="xpr1" label="In 6-3"/>
     </pack>
-    <pack code="b" length="4">
+    <pack code="b" length="1">
       <bit ref="xsw2" label="Out 7"/>
       <bit ref="xdr2" label="In 7-1"/>
       <bit ref="xtm2" label="In 7-2"/>
       <bit ref="xpr2" label="In 7-3"/>
     </pack>
-    <pack code="b" length="4">
+    <pack code="b" length="1">
       <bit ref="xsw3" label="Out 8"/>
       <bit ref="xdr3" label="In 8-1"/>
       <bit ref="xtm3" label="In 8-2"/>
@@ -83,13 +83,13 @@
     <field ref="chg" label="CHG ARM" length="2" type="binary"/>
     <field ref="dor" label="DOOR STAT" length="2" type="binary"/>
   </hexpack>
-  <hexpack id="srm" label="CsEtr Control">
+  <hexpack id="srm" version="1" label="CsEtr Control">
     <field ref="cod" label="RESPONSE CODE" length="2" type="char"/>
     <field ref="iid" label="CAS INST ID" length="1" type="int"/>
-    <pack code="b" length="1">
+    <pack code="b" length="2">
       <bit ref="ipw" label="CAS IPW"/>
     </pack>
-    <pack code="b" length="4">
+    <pack code="b" length="2">
       <bit ref="c3p" label="CIAX3 PW"/>
       <bit ref="c3e" label="CIAX3 EMG"/>
       <bit ref="ccd" label="CAS CCD PW"/>

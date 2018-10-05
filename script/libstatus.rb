@@ -8,35 +8,11 @@ module CIAX
     # Status Data
     # All elements of @data are String
     class Status < Statx
-      # @ last*
-      attr_reader :last
       # dbi can be Ins::Db or ID for new Db
       def initialize(dbi = nil)
         super('status', dbi, Ins::Db)
-        @last = {}
-        @updated = now_msec
-        @lastsave = now_msec
         ___init_dbs
         @cmt_procs << proc { verbose { "Saved #{self[:id]}:timing" } }
-      end
-
-      def change?(k)
-        verbose do
-          "Compare(#{k}) current=[#{self[:data][k]}]"\
-          " vs last=[#{@last[k]}]"
-        end
-        self[:data][k] != @last[k]
-      end
-
-      def updated?
-        self[:time] > @updated
-      end
-
-      def refresh
-        verbose { 'Status Refreshed' }
-        @last.update(self[:data])
-        @updated = self[:time]
-        self
       end
 
       # set vars by csv

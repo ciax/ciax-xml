@@ -42,7 +42,7 @@ module CIAX
         count = step[:count].to_i
         __enc_end(step)
         if count >= step[:retry].to_i
-          raise Interlock if _qry_giveup?(step)
+          raise if _qry_giveup?(step)
         else
           show_fg step.result_s
         end

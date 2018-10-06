@@ -33,7 +33,7 @@ module CIAX
 
       # Start the macro
       def play
-        ___upd_sites
+        @cfg[:sites].each { |site| @dev_list.get(site) }
         Thread.current[:query] = @qry
         show_fg @record.start
         _sequencer(@cfg, @record.cmt)
@@ -51,11 +51,6 @@ module CIAX
 
       private
 
-      def ___upd_sites
-        @cfg[:sites].each { |site| @dev_list.get(site) }
-        self
-      end
-
       # macro returns result (true=complete /false=error)
       def _sequencer(cfg, mstat)
         seqary = type?(cfg[:sequence], Array)
@@ -67,6 +62,9 @@ module CIAX
         # 'upd' passes whether commerr or not
         # result of multiple 'upd' is judged here
         mstat.result.gsub!('busy', 'complete')
+      rescue Verification
+        mstat.result = 'failed'
+        raise
       ensure
         @depth -= 1
       end

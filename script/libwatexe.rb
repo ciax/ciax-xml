@@ -54,7 +54,7 @@ module CIAX
       def _ext_local
         ___init_upd
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
-        @stat.ext_local_conv(@sub.stat, @sv_stat)
+        @stat.ext_local_conv(@sub.stat)
         super
       end
 

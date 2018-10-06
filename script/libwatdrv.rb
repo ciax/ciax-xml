@@ -14,20 +14,13 @@ module CIAX
           # @stat[:int] is overwritten by initial loading
           @sub.batch_interrupt = @stat.get(:int)
           @stat.ext_local_log if @cfg[:opt].log?
-          ___init_event_flag
           ___init_upd_processor
           ___init_exe_processor
+          ___init_event_flag
           self
         end
 
         private
-
-        def ___init_event_flag
-          @stat.on_act_procs << proc { @sv_stat.up(:event) }
-          @stat.on_deact_procs << proc do |s|
-            @sv_stat.dw(:event) unless s.active?
-          end
-        end
 
         def ___init_upd_processor
           @stat.cmt_procs << proc do |ev|
@@ -50,6 +43,40 @@ module CIAX
           Threadx::Loop.new('Regular', 'wat', @id) do
             @stat.auto_exec unless @sv_stat.up?(:comerr)
             sleep 10
+          end
+        end
+
+        # @stat[:active] : Array of event ids which meet criteria
+        # @stat[:exec] : Cmd queue which contains cmds issued as event
+        # @stat[:block] : Array of cmds (units) which are blocked during busy
+        # @stat[:int] : List of interrupt cmds which is effectie during busy
+        # @sv_stat[:event] is internal var (moving)
+
+        ## Timing chart in active mode
+        # busy  :__--__--__--==__--___
+        # activ :___--------__----____
+        # event :_____---------------__
+
+        ## Trigger Table
+        # busy| actv|event| action to event
+        #  o  |  o  |  o  |  -
+        #  o  |  x  |  o  |  -
+        #  o  |  o  |  x  |  up
+        #  o  |  x  |  x  |  -
+        #  x  |  o  |  o  |  -
+        #  x  |  x  |  o  | down
+        #  x  |  o  |  x  |  up
+        #  x  |  x  |  x  |  -
+
+        def ___init_event_flag
+          @stat.cmt_procs << proc do |s|
+            if @sv_stat.up?(:event)
+              s.act_upd
+              @sv_stat.dw(:event) unless s.active?
+            elsif s.active?
+              s.act_start
+              @sv_stat.up(:event)
+            end
           end
         end
       end

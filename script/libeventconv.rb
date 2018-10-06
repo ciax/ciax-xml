@@ -8,8 +8,8 @@ module CIAX
   module Wat
     # Add extend method in Event
     class Event
-      def ext_local_conv(stat, sv_stat = nil)
-        extend(Conv).ext_local_conv(stat, sv_stat)
+      def ext_local_conv(stat)
+        extend(Conv).ext_local_conv(stat)
       end
       # Watch Response Module
       module Conv
@@ -22,10 +22,8 @@ module CIAX
         #       => self[:crnt]<-@stat.data(picked)
         #       => check(self[:crnt] <> self[:last]?)
         # Stat no changed -> clear exec, no eval
-        def ext_local_conv(stat, sv_stat = nil)
+        def ext_local_conv(stat)
           @stat = type?(stat, App::Status)
-          # No need @sv_stat.upd at reading
-          @sv_stat = type?(sv_stat || Prompt.new('site', self[:id]), Prompt)
           wdb = @dbi[:watch] || {}
           @interval = wdb[:interval].to_f if wdb.key?(:interval)
           @cond = Condition.new(wdb[:index] || {}, stat, self)
@@ -63,7 +61,6 @@ module CIAX
             next unless @stat[:time] > @last_updated
             @last_updated = self[:time]
             @cond.upd_cond
-            ___upd_event
             cmt
           end
         end
@@ -77,37 +74,6 @@ module CIAX
           verbose do
             format('Initiate Auto Update: Period = %d sec, Command = %s)',
                    @periodm / 1000, @regexe)
-          end
-          self
-        end
-
-        # self[:active] : Array of event ids which meet criteria
-        # self[:exec] : Command queue which contains commands issued as event
-        # self[:block] : Array of commands (units) which are blocked during busy
-        # self[:int] : List of interrupt commands which is effectie during busy
-        # @sv_stat[:event] is internal var (moving)
-
-        ## Timing chart in active mode
-        # busy  :__--__--__--==__--___
-        # activ :___--------__----____
-        # event :_____---------------__
-
-        ## Trigger Table
-        # busy| actv|event| action to event
-        #  o  |  o  |  o  |  -
-        #  o  |  x  |  o  |  -
-        #  o  |  o  |  x  |  up
-        #  o  |  x  |  x  |  -
-        #  x  |  o  |  o  |  -
-        #  x  |  x  |  o  | down
-        #  x  |  o  |  x  |  up
-        #  x  |  x  |  x  |  -
-
-        def ___upd_event
-          if @sv_stat.up?(:event)
-            @on_deact_procs.each { |p| p.call(self) }
-          elsif active?
-            @on_act_procs.each { |p| p.call(self) }
           end
           self
         end

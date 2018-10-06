@@ -14,7 +14,6 @@ module CIAX
         @interval = 0.1
         @periodm = 300_000
         @last_updated = 0
-        ___init_on_procs
         ___init_struct
       end
 
@@ -45,12 +44,15 @@ module CIAX
         raise CommError if now_msec > self[:time] + 10_000
       end
 
-      private
-
-      def ___init_on_procs
-        @on_act_procs = [proc { self[:act_time].map! { now_msec } }]
-        @on_deact_procs = [proc { self[:act_time][1] = now_msec }]
+      def act_start
+        self[:act_time][0] = act_upd
       end
+
+      def act_upd
+        self[:act_time][1] = now_msec
+      end
+
+      private
 
       def ___init_struct
         # For Array element

@@ -228,6 +228,7 @@ var {
 .approval,
 .slept,
 .end,
+.done,
 .issued,
 .accept,
 .nomask,
@@ -244,6 +245,7 @@ var {
 }
 
 .interrupted,
+.incomplete,
 .interrupt {
     color: gold;
 }

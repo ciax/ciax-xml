@@ -105,25 +105,11 @@ module CIAX
 
         def ___upd_event
           if @sv_stat.up?(:event)
-            ___event_off
+            @on_deact_procs.each { |p| p.call(self) }
           elsif active?
-            ___event_on
+            @on_act_procs.each { |p| p.call(self) }
           end
           self
-        end
-
-        def ___event_on
-          at = self[:act_time]
-          at[0] = at[1] = now_msec
-          @sv_stat.up(:event)
-          @on_act_procs.each { |p| p.call(self) }
-        end
-
-        def ___event_off
-          self[:act_time][1] = now_msec
-          return if active?
-          @sv_stat.dw(:event)
-          @on_deact_procs.each { |p| p.call(self) }
         end
       end
     end

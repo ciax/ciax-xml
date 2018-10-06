@@ -48,8 +48,8 @@ module CIAX
       private
 
       def ___init_on_procs
-        @on_act_procs = [proc { verbose { 'Processing OnActProcs' } }]
-        @on_deact_procs = [proc { verbose { 'Processing OnDeActProcs' } }]
+        @on_act_procs = [proc { self[:act_time].map! { now_msec } }]
+        @on_deact_procs = [proc { self[:act_time][1] = now_msec }]
       end
 
       def ___init_struct

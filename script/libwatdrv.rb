@@ -14,12 +14,20 @@ module CIAX
           # @stat[:int] is overwritten by initial loading
           @sub.batch_interrupt = @stat.get(:int)
           @stat.ext_local_log if @cfg[:opt].log?
+          ___init_event_flag
           ___init_upd_processor
           ___init_exe_processor
           self
         end
 
         private
+
+        def ___init_event_flag
+          @stat.on_act_procs << proc { @sv_stat.up(:event) }
+          @stat.on_deact_procs << proc do |s|
+            @sv_stat.dw(:event) unless s.active?
+          end
+        end
 
         def ___init_upd_processor
           @stat.cmt_procs << proc do |ev|

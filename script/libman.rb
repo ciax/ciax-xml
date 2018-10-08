@@ -10,7 +10,7 @@ module CIAX
       attr_reader :sub_list # Used for Layer module
       def initialize(super_cfg)
         super(super_cfg)
-        verbose { 'Initiate Manager (option:' + @cfg[:opt].keys.join + ')' }
+        verbose { 'Initiate Manager (option:' + @opt.keys.join + ')' }
         # id = nil -> taken by ARGV
         # pick already includes :command, :version
         _init_dbi2cfg(%i(sites))
@@ -38,7 +38,7 @@ module CIAX
       private
 
       def ___init_prompt
-        @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @cfg[:opt]))
+        @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
       end
 
       # Initiate for all mode

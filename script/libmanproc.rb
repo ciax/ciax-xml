@@ -7,7 +7,7 @@ module CIAX
     # Macro Manager
     class Man
       def ext_local_processor
-        @mode = @cfg[:opt].dry? ? 'DRY' : 'PRCS'
+        @mode = @opt.dry? ? 'DRY' : 'PRCS'
         extend(Processor).ext_local_processor
         _ext_local
       end

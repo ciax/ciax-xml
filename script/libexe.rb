@@ -20,6 +20,7 @@ module CIAX
     def initialize(super_cfg, atrb = Hashx.new)
       @cfg = type?(super_cfg, Config).gen(self).update(atrb)
       @cfg.check_keys(%i(opt))
+      @opt = @cfg[:opt]
       ___init_procs
       @cobj = context_module('Index').new(@cfg)
       @layer = layer_name
@@ -113,7 +114,7 @@ module CIAX
     end
 
     def _init_net
-      @host = @cfg[:opt].host || @cfg[:host]
+      @host = @opt.host || @cfg[:host]
       @port = @cfg[:port]
       self
     end
@@ -126,10 +127,9 @@ module CIAX
     # -es: drive mode + server
     def _opt_mode
       # Option handling
-      opt = @cfg[:opt]
-      return ext_client if opt.cl?
-      opt.drv? ? ext_local_driver : ext_local_test
-      ext_local_server if opt.sv?
+      return ext_client if @opt.cl?
+      @opt.drv? ? ext_local_driver : ext_local_test
+      ext_local_server if @opt.sv?
       self
     end
   end

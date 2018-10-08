@@ -33,6 +33,10 @@ proj(){
     fi
 }
 
+gm(){
+    grep -i $1 libmcr* libman* libseq* librec* libstep*
+}
+
 # Local functions
 umask 022
 shopt -s nullglob

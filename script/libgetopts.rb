@@ -43,11 +43,11 @@ module CIAX
     end
 
     def drv?
-      %i(e l).any? { |k| key?(k) }
+      %i(e l d).any? { |k| key?(k) }
     end
 
-    def prcs?
-      key?(:d) || drv?
+    def test?
+      !cl? && !drv?
     end
 
     def sv?
@@ -64,7 +64,7 @@ module CIAX
       key?(:n) && true
     end
 
-    def log?
+    def mcr_log?
       drv? && !dry?
     end
 

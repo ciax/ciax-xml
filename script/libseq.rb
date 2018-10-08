@@ -13,9 +13,10 @@ module CIAX
       # ent should have [:sequence]'[:dev_list]
       def initialize(ment, pid = '0', &submcr_proc)
         @cfg = ment
+        @opt = @cfg[:opt]
         @dev_list = type?(@cfg[:dev_list], CIAX::Wat::List)
         ___init_record(pid)
-        @sv_stat = @cfg[:sv_stat] || Prompt.new(@cfg[:id], @cfg[:opt])
+        @sv_stat = @cfg[:sv_stat] || Prompt.new(@cfg[:id], @opt)
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
@@ -109,6 +110,7 @@ module CIAX
 
       # Do file generation after forked
       def ___init_record_file
+        return unless @opt.mcr_log?
         # ext_file must be after ext_rsp which includes time update
         @record.ext_local_file.auto_save
         @record.mklink # Make latest link

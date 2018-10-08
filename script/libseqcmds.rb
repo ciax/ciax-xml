@@ -37,8 +37,8 @@ module CIAX
       def _cmd_goal(_e, step, _mstat)
         return true unless step.skip?
         # When condition meets skip
-        # Enter if not dryrun or real run
-        return !step.opt.prcs? if step.opt.nonstop?
+        # Enter if test mode
+        return @opt.test? if @opt.nonstop?
         _qry_enter?(step)
       end
 

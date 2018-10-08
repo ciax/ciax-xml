@@ -26,7 +26,7 @@ module CIAX
         private
 
         def ___init_log_mode
-          return unless @cfg[:opt].log?
+          return unless @cfg[:opt].drv?
           @stat.ext_local_log.ext_local_sqlog
           @cobj.rem.ext_input_log
         end

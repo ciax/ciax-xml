@@ -5,8 +5,6 @@ module CIAX
   module Mcr
     # Element of Record
     class Step
-      attr_reader :opt
-
       def ext_local_checker(db, depth, opt)
         extend(Checker).ext_local_checker(db, depth, opt)
       end
@@ -76,7 +74,7 @@ module CIAX
 
         # wait until &cond satisfied
         def progress(total, &cond)
-          itv = @opt.log? ? 1 : 0
+          itv = @opt.drv? ? 1 : 0.01
           total.to_i.times do |n| # gives number or nil(if break)
             self[:count] = n + 1
             break if cond && yield

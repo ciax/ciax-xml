@@ -25,7 +25,7 @@ module CIAX
           self[:ver] = @cfg[:version] || '0' # Version
           self[:total_steps] = 0
           @opt = @cfg[:opt]
-          self[:mode] = @opt.log? ? 'drive' : 'test'
+          self[:mode] = @opt.drv? ? 'drive' : 'test'
           init_time2cmt
           self
         end

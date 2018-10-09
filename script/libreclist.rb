@@ -37,7 +37,7 @@ module CIAX
       end
 
       def ext_local
-        @rec_arc.ext_local_file.auto_load.refresh
+        @rec_arc.ext_local_manipulate.auto_load.refresh
         self
       end
 

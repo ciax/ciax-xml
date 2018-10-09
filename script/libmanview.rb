@@ -8,12 +8,11 @@ module CIAX
     # Macro Man View
     # Switch Pages of "Record List" and "Content of Record"
     class ManView < Upd
-      attr_reader :par
-      def initialize(sv_stat, rec_arc = RecArc.new, valid_keys = [])
+      def initialize(sv_stat, par, rec_arc = RecArc.new, valid_keys = [])
         super()
         @sv_stat = type?(sv_stat, Prompt)
-        @par = Parameter.new(list: @sv_stat.get(:list))
-        @rec_list = RecList.new(type?(rec_arc, RecArc), @par.list)
+        @par = type?(par, Parameter)
+        @rec_list = RecList.new(type?(rec_arc, RecArc), par.list)
         @org_cmds = (@valid_keys = valid_keys).dup
         # To finish up update which is removed from alive list at the end
         @live_list = []
@@ -83,8 +82,9 @@ module CIAX
       require 'libmcrconf'
       ConfOpts.new('[id] ..') do |cfg, args|
         num = args.shift.to_i
-        view = ManView.new(Prompt.new(cfg[:id])).ext_local.get_arc(num)
-        view.par.sel(args.shift.to_i)
+        par = Parameter.new
+        view = ManView.new(Prompt.new(cfg[:id]), par).ext_local.get_arc(num)
+        par.sel(args.shift.to_i)
         puts view
       end
     end

@@ -6,15 +6,6 @@ module CIAX
   # Macro Layer
   module Mcr
     # Macro Manager
-    #  Modes
-    #   Remote client  : ext_remote
-    #      Access via udp/html
-    #   Local client   : ext_local
-    #      Access file (read only)
-    #   Local processor: ext_local_processor
-    #      Access file (R/W)
-    #   Local server   : ext_local_server
-    #      Command accepts via udp
     class Man < Exe
       attr_reader :sub_list # Used for Layer module
       def initialize(super_cfg)

@@ -15,7 +15,6 @@ module CIAX
         # @list : Archive List : Index of Record (id: cid,pid,res)
         ext_local_file
         init_time2cmt
-        auto_save
         load_partial
       end
 

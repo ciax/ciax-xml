@@ -12,7 +12,7 @@ module CIAX
         _ext_local
       end
 
-      alias ext_local_driver ext_local_processor
+      alias ext_local_test ext_local_processor
 
       # Macro Manager Processing Module
       module Processor

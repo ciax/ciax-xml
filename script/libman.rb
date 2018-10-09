@@ -20,10 +20,10 @@ module CIAX
         ___init_stat
       end
 
-      # this is separated for background run
+      # this is separated for Daemon
+      # restart background threads which will be killed by Daemon
       def run
         _opt_mode
-        @mode = 'MCR:' + @mode
         self
       end
 
@@ -34,6 +34,8 @@ module CIAX
         ___web_cmdlist
         super
       end
+
+      alias ext_local_driver ext_local_test
 
       private
 

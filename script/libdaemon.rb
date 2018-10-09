@@ -30,7 +30,9 @@ module CIAX
     def ___main_loop(port)
       yield.run
       msg = 'for Thread status'
-      Udp::Server.new('daemon', 'top', port, msg).listen { Threadx.list.to_s }
+      Udp::Server.new('daemon', 'top', port, msg).listen do
+        "===== Thread List =====\n" + Threadx.list
+      end
     rescue SignalException
       Threadx.killall
       retry if $ERROR_INFO.message == 'SIGHUP'

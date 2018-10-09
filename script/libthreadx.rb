@@ -24,8 +24,9 @@ module CIAX
 
     module_function
 
+    # List all threads besides own ThreadGroup member
     def list
-      Threads.list.map do |t|
+      Thread.list.map do |t|
         str = "[#{t.status}]"
         str += %i(id layer name).map { |id| t[id] }.join(':')
         str += "(#{t[:type]})" if t[:type]

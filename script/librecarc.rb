@@ -7,11 +7,10 @@ module CIAX
     # Record Archive List (Dir)
     #   Index of Records
     class RecArc < Varx
-      attr_reader :list, :id, :bg
+      attr_reader :list, :id
       def initialize(id = 'mcr')
         super('rec', 'list')
         @id = id
-        @bg = Thread.current
         # @list : Archive List : Index of Record (id: cid,pid,res)
         ext_local_file
         init_time2cmt
@@ -24,12 +23,15 @@ module CIAX
 
       # Re-generate record list
       def refresh # returns self
-        @bg = Threadx::Fork.new('RecArc(rec_list)', 'mcr', @id) do
-          ___file_list.each { |name| push(jload(name)) }
-          verbose { 'Initiate Record Archive done' }
-          cmt
+        (___file_keys - list.keys).each { |key| push(jload(__rec_fname(key))) }
+        verbose { 'Initiate Record Archive done' }
+        cmt
+      end
+
+      def refresh_bg # returns self
+        Threadx::Fork.new('RecArc(rec_list)', 'mcr', @id) do
+          refresh
         end
-        self
       end
 
       # For format changes
@@ -39,8 +41,10 @@ module CIAX
       end
 
       def push(record) # returns self
-        if record[:id].to_i > 0 && __extract(record) && record.is_a?(Record)
-          record.finish_procs << proc { |r| __extract(r) && cmt }
+        if record.is_a?(Record) && record[:id].to_i > 0
+          if __extract(record) == 'busy'
+            record.finish_procs << proc { |r| __extract(r) && cmt }
+          end
           cmt
         end
         self
@@ -53,23 +57,23 @@ module CIAX
         return if ele.empty?
         verbose { 'Record Archive Updated' }
         list[rec[:id]] = ele
+        ele[:result]
       end
 
-      def ___file_list
+      def ___file_keys
         ary = []
-        Dir.glob(vardir('record') + 'record_*.json') do |name|
+        Dir.glob(__rec_fname('*')) do |name|
           next if /record_([0-9]+).json/ !~ name
-          next if list.key?(Regexp.last_match(1))
-          ary << name
+          ary << Regexp.last_match(1)
         end
         ary.sort.reverse
       end
+
+      def __rec_fname(key)
+        vardir('record') + "record_#{key}.json"
+      end
     end
 
-    if __FILE__ == $PROGRAM_NAME
-      arc = RecArc.new
-      puts arc
-      arc.refresh.bg.join
-    end
+    RecArc.new.auto_save.refresh if __FILE__ == $PROGRAM_NAME
   end
 end

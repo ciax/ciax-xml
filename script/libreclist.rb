@@ -37,7 +37,7 @@ module CIAX
       end
 
       def ext_local
-        @rec_arc.ext_local_file.auto_load
+        @rec_arc.ext_local_file.auto_load.refresh
         self
       end
 
@@ -45,6 +45,11 @@ module CIAX
       def ext_remote(host)
         @host = host
         @rec_arc.ext_remote(host)
+        self
+      end
+
+      def ext_server
+        @rec_arc.clear.refresh_bg
         self
       end
 

@@ -30,7 +30,7 @@ module CIAX
       # Mode Extention by Option
       def ext_local_server
         verbose { 'Initiate Record Archive' }
-        @rec_arc.clear.refresh
+        @rec_list.ext_server
         ___web_cmdlist
         super
       end
@@ -47,7 +47,6 @@ module CIAX
       # Initiate for all mode
       def ___init_stat
         @rec_list = RecList.new(@id, @par.list)
-        @rec_arc = @rec_list.rec_arc.refresh
         int = @cobj.rem.int
         @stat = ManView.new(@sv_stat, @par, @rec_list, int.valid_keys)
         int.add_par(@par)

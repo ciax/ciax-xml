@@ -8,6 +8,10 @@ module CIAX
     # Macro Man View
     # Switch Pages of "Record List" and "Content of Record"
     class ManView < Upd
+      # RecArc: Record Archive
+      # RecList: Current Record List < RecArc
+      # @sv_stat[:list]: Alive Record List < RecList
+
       def initialize(sv_stat, par, rec_list = RecList.new, valid_keys = [])
         super()
         @sv_stat = type?(sv_stat, Prompt)

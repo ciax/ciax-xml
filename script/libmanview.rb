@@ -8,11 +8,11 @@ module CIAX
     # Macro Man View
     # Switch Pages of "Record List" and "Content of Record"
     class ManView < Upd
-      def initialize(sv_stat, par, rec_arc = RecArc.new, valid_keys = [])
+      def initialize(sv_stat, par, rec_list = RecList.new, valid_keys = [])
         super()
         @sv_stat = type?(sv_stat, Prompt)
         @par = type?(par, Parameter)
-        @rec_list = RecList.new(type?(rec_arc, RecArc), par.list)
+        @rec_list = type?(rec_list, RecList)
         @org_cmds = (@valid_keys = valid_keys).dup
         # To finish up update which is removed from alive list at the end
         @live_list = []

@@ -12,11 +12,12 @@ module CIAX
     # RecList : Server Side
     # Visible : Client Side
     class RecList < Upd
-      def initialize(rec_arc = RecArc.new, visible = [])
+      attr_reader :rec_arc
+      def initialize(id = 'mcr', visible = [])
         super()
-        @rec_arc = type?(rec_arc, RecArc)
+        @id = id
+        @rec_arc = RecArc.new(id)
         @visible = type?(visible, Array)
-        @id = @rec_arc.id
         @upd_procs << proc { values.each(&:upd) }
       end
 

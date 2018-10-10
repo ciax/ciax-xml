@@ -23,7 +23,7 @@ module CIAX
         # Initiate for driver
         def ext_local_processor
           @rec_list.rec_arc.auto_save if @opt.mcr_log?
-          @seq_list = SeqList.new(@rec_list.rec_arc)
+          @seq_list = SeqList.new(@rec_list)
           @sv_stat.repl(:sid, '') # For server response
           ___init_pre_exe
           ___init_proc_rem_ext

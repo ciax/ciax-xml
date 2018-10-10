@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libseq'
-require 'librecarc'
+require 'libreclist'
 # CIAX-XML
 module CIAX
   # Macro Layer
@@ -10,10 +10,10 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     class SeqList < ThreadGroup
       attr_reader :threads
-      def initialize(rec_arc = RecArc.new)
+      def initialize(rec_list = RecList.new)
         super()
         # @rec_arc: List of Record Header (Log)
-        @rec_arc = Msg.type?(rec_arc, RecArc)
+        @rec_list = Msg.type?(rec_list, RecList)
       end
 
       #### Driver Methods ####
@@ -35,7 +35,8 @@ module CIAX
       def add(ent, pid = '0') # returns Sequencer
         seq = Sequencer.new(ent, pid) { |e, p| super(e, p) }
         super(Msg.type?(seq.fork, Threadx::Fork)) # start immediately
-        @rec_arc.push(seq.record)
+        @rec_list.push(seq.record)
+        @rec_list.rec_arc.push(seq.record)
         seq
       end
 

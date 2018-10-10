@@ -8,13 +8,14 @@ module CIAX
 
       # Using for RecArc, RecList
       def jload(fname)
-        j2h(loadjfile(fname))
+        j2h(loadfile(fname))
       rescue InvalidData
+        show_err
         Hashx.new
       end
 
-      def loadjfile(fname)
-        return unless test('r', fname)
+      def loadfile(fname)
+        check_file(fname)
         open(fname) do |f|
           verbose { "Loading file [#{fname}](#{f.size})" }
           f.flock(::File::LOCK_SH)
@@ -22,6 +23,13 @@ module CIAX
         end
       rescue Errno::ENOENT
         verbose { "  -- no json file (#{fname})" }
+      end
+
+      def check_file(fname)
+        data_err("Cant read (#{fname})") unless test('r', fname)
+        return true if test('s', fname)
+        ::File.unlink(fname)
+        data_err("Empty file removed (#{fname})")
       end
     end
 
@@ -54,9 +62,7 @@ module CIAX
       end
 
       def load(tag = nil)
-        jstr = ___read_json(tag)
-        return self unless jstr
-        replace(jread(jstr))
+        replace(__read_json(tag))
         cmt
       end
 
@@ -65,9 +71,8 @@ module CIAX
       end
 
       def load_partial(tag = nil)
-        jstr = ___read_json(tag)
-        return self if !jstr || jstr.empty?
-        ___check_load(jstr) && jmerge(jstr)
+        hash = __read_json(tag)
+        ___check_version(hash) && deep_update(hash)
         cmt
       end
 
@@ -95,8 +100,8 @@ module CIAX
 
       # Version check, no read if different
       # (otherwise old version number remain as long as the file exists)
-      def ___check_load(jstr)
-        inc = j2h(jstr)[:ver]
+      def ___check_version(hash)
+        inc = hash[:ver]
         org = self[:ver]
         return true if inc == org
         warning("File version mismatch <#{inc}> for [#{org}]")
@@ -123,14 +128,9 @@ module CIAX
         nil
       end
 
-      def ___read_json(tag = nil)
+      def __read_json(tag = nil)
         @cfile = ___chk_tag(tag)
-        if @cfile
-          jstr = loadjfile(@jsondir + @cfile)
-          return(jstr) if jstr
-        end
-        verbose { " -- json file (#{@cfile}) is empty at loading" }
-        nil
+        jload(@jsondir + @cfile)
       end
 
       def __write_json(jstr, tag = nil)

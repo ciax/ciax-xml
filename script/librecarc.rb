@@ -28,14 +28,14 @@ module CIAX
         end
 
         def ext_local_manipulate
-          ext_local_file
           init_time2cmt
+          ext_local_file.load
+          auto_save
           self
         end
 
         # Re-generate record list
         def refresh # returns self
-          load
           (___file_keys - list.keys).each { |key| push(jload(__rec_fname(key))) }
           verbose { 'Initiate Record Archive done' }
           cmt
@@ -58,7 +58,6 @@ module CIAX
             if __extract(record) == 'busy' && record.is_a?(Record)
               record.finish_procs << proc { |r| __extract(r) && cmt }
             end
-            cmt
           end
           self
         end

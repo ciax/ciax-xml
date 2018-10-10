@@ -10,7 +10,7 @@ module CIAX
     # visible Array is Parameter[:list]
     # RecArc(Index) > RecList(Records) > Visible(IDs)
     # RecList : Server Side
-    # Visible : Client Side
+    # Visible : Client Side (Parameter#list)
     class RecList < Upd
       attr_reader :rec_arc
       def initialize(id = 'mcr', visible = [])

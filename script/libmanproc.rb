@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libseqlist'
 require 'libman'
 module CIAX
   # Macro Layer
@@ -21,51 +20,32 @@ module CIAX
         def ext_local_processor
           @rec_list.ext_local
           @rec_list.rec_arc.auto_save if @opt.mcr_log?
-          @seq_list = SeqList.new(@rec_list)
           @sv_stat.repl(:sid, '') # For server response
-          ___init_pre_exe
-          ___init_proc_rem_ext
-          ___init_proc_rem_int
+          @sub_list = @cobj.rem.ext.dev_list
           ___init_proc_loc
           @cobj.rem.ext_input_log
           self
         end
 
         def run
+          ext_local_server if @opt.sv?
           @sub_list.run
           super
         end
 
-        def ___init_pre_exe
-          @pre_exe_procs << proc do
-            @sv_stat.flush(:list, @seq_list.alives).repl(:sid, '')
-            @sv_stat.flush(:run).cmt if @sv_stat.upd.get(:list).empty?
-            @stat.upd
-          end
-        end
-
-        def ___init_proc_rem_ext
-          # External Command Group
-          ext = @cobj.rem.ext
-          @sub_list = ext.dev_list
-          ext.def_proc do |ent|
-            sid = @seq_list.add(ent).id
-            @sv_stat.push(:list, sid).repl(:sid, sid)
-          end
-        end
-
-        def ___init_proc_rem_int
-          # Internal Command Group
-          @cobj.rem.int.def_proc do |ent|
-            @sv_stat.repl(:sid, ent.par[0])
-            ent.msg = @seq_list.reply(ent.id) || 'NOSID'
-          end
-        end
-
         def ___init_proc_loc
           @cobj.get('interrupt').def_proc { @seq_list.interrupt }
-          @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
-          @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
+          sys = @cobj.rem.sys
+          sys.add_item('nonstop', 'Mode').def_proc { @sv_stat.up(:nonstop) }
+          sys.add_item('interactive', 'Mode').def_proc { @sv_stat.dw(:nonstop) }
+        end
+
+        # Making Command List JSON file for WebApp
+        def ___web_cmdlist
+          verbose { 'Initiate JS Command List' }
+          dbi = @cfg[:dbi]
+          jl = Hashx.new(port: @port, commands: dbi.list, label: dbi.label)
+          IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
         end
       end
     end

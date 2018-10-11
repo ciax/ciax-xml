@@ -2,6 +2,8 @@
 require 'libexe'
 require 'libmcrcmd'
 require 'libmanview'
+require 'libseqlist'
+
 module CIAX
   # Macro Layer
   module Mcr
@@ -18,13 +20,13 @@ module CIAX
         ___init_prompt
         ___init_cmd
         ___init_stat
+        ___init_seq
         _opt_mode
       end
 
       # this is separated for Daemon
       # restart background threads which will be killed by Daemon
       def run
-        ext_local_server if @opt.sv?
         self
       end
 
@@ -49,6 +51,14 @@ module CIAX
       end
 
       # Initiate for all mode
+      def ___init_cmd
+        rem = @cobj.add_rem
+        rem.cfg[:def_msg] = 'ACCEPT'
+        rem.add_sys
+        rem.add_int
+        rem.add_ext
+      end
+
       def ___init_stat
         @rec_list = RecList.new(@id, @par.list)
         int = @cobj.rem.int
@@ -56,28 +66,42 @@ module CIAX
         int.add_par(@par)
       end
 
-      def ___init_cmd
-        rem = @cobj.add_rem
-        rem.cfg[:def_msg] = 'ACCEPT'
-        rem.add_sys
-        rem.add_int
-        rem.add_ext
-        rem.sys.add_item('nonstop', 'Mode')
-        rem.sys.add_item('interactive', 'Mode')
+      def ___init_seq
+        @seq_list = SeqList.new(@rec_list)
+        ___init_pre_exe
+        ___init_proc_rem_ext
+        ___init_proc_rem_int
       end
 
-      # Making Command List JSON file for WebApp
-      def ___web_cmdlist
-        verbose { 'Initiate JS Command List' }
-        dbi = @cfg[:dbi]
-        jl = Hashx.new(port: @port, commands: dbi.list, label: dbi.label)
-        IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
+      def ___init_pre_exe
+        @pre_exe_procs << proc do
+          @sv_stat.flush(:list, @seq_list.alives).repl(:sid, '')
+          @sv_stat.flush(:run).cmt if @sv_stat.upd.get(:list).empty?
+          @stat.upd
+        end
+      end
+
+      def ___init_proc_rem_ext
+        # External Command Group
+        ext = @cobj.rem.ext
+        ext.def_proc do |ent|
+          sid = @seq_list.add(ent).id
+          @sv_stat.push(:list, sid).repl(:sid, sid)
+        end
+      end
+
+      def ___init_proc_rem_int
+        # Internal Command Group
+        @cobj.rem.int.def_proc do |ent|
+          @sv_stat.repl(:sid, ent.par[0])
+          ent.msg = @seq_list.reply(ent.id) || 'NOSID'
+        end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', options: 'cenlrs') do |cfg|
-        Man.new(cfg).run.ext_shell.shell
+        Man.new(cfg).ext_shell.shell
       end
     end
   end

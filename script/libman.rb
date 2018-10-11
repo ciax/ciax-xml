@@ -18,12 +18,13 @@ module CIAX
         ___init_prompt
         ___init_cmd
         ___init_stat
+        @opt.cl? ? ext_client : ext_local_processor
       end
 
       # this is separated for Daemon
       # restart background threads which will be killed by Daemon
       def run
-        _opt_mode
+        ext_local_server if @opt.sv?
         self
       end
 
@@ -34,8 +35,6 @@ module CIAX
         ___web_cmdlist
         super
       end
-
-      alias ext_local_driver ext_local_test
 
       private
 

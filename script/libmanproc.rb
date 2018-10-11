@@ -12,8 +12,6 @@ module CIAX
         _ext_local
       end
 
-      alias ext_local_test ext_local_processor
-
       # Macro Manager Processing Module
       module Processor
         def self.extended(obj)
@@ -22,6 +20,7 @@ module CIAX
 
         # Initiate for driver
         def ext_local_processor
+          @rec_list.ext_local
           @rec_list.rec_arc.auto_save if @opt.mcr_log?
           @seq_list = SeqList.new(@rec_list)
           @sv_stat.repl(:sid, '') # For server response

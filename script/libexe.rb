@@ -75,14 +75,15 @@ module CIAX
     # No save any data
     def ext_local_test
       @mode = 'TEST'
-      _ext_local
+      self
     end
 
     # Generate and Save Data
     def ext_local_driver
       @mode = 'DRV'
       extend(context_module('Driver')).ext_local_driver
-      _ext_local
+      ext_local_server if @opt.sv?
+      self
     end
 
     # Load Data
@@ -104,6 +105,7 @@ module CIAX
     # (non_client)
     def _ext_local
       @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
+      @opt.drv? ? ext_local_driver : ext_local_test
       self
     end
 
@@ -143,10 +145,7 @@ module CIAX
     # -es: drive mode + server
     def _opt_mode
       # Option handling
-      return ext_client if @opt.cl?
-      @opt.drv? ? ext_local_driver : ext_local_test
-      ext_local_server if @opt.sv?
-      self
+      @opt.cl? ? ext_client : _ext_local
     end
   end
 end

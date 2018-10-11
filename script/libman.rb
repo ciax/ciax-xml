@@ -18,7 +18,7 @@ module CIAX
         ___init_prompt
         ___init_cmd
         ___init_stat
-        @opt.cl? ? ext_client : ext_local_processor
+        _opt_mode
       end
 
       # this is separated for Daemon
@@ -29,6 +29,11 @@ module CIAX
       end
 
       # Mode Extention by Option
+      def ext_local_driver
+        require 'libmanproc'
+        ext_local_processor
+      end
+
       def ext_local_server
         verbose { 'Initiate Record Archive' }
         @rec_list.ext_server

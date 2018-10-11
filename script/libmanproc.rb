@@ -9,7 +9,6 @@ module CIAX
       def ext_local_processor
         @mode = @opt.dry? ? 'DRY' : 'PRCS'
         extend(Processor).ext_local_processor
-        _ext_local
       end
 
       # Macro Manager Processing Module

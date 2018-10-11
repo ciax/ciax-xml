@@ -51,20 +51,20 @@ module CIAX
     end
 
     #  Modes
-    #   Test           : ext_test
-    #       No stored data access
-    #   Remote client  : ext_client
+    #   Shell  : ext_shell
+    #       Add shell feature
+    #   Remote : ext_client
     #       Access via udp/html
-    #   Local client   : ext_local
-    #        Access to local file (read only)
-    #     Local processor: ext_local_proc
-    #         Processing with file (read only)
-    #       Local save     : ext_local_save
-    #           Add data saving feature to local file
+    #   Local  : ext_local
+    #       Manipulates memory
+    #     Local Test   : ext_local_test
+    #         Access to local file (read only)
+    #     Local Driver : ext_local_driver
+    #         Access to local file (R/W)
+    #       Local log     : ext_local_log
+    #           Add logging feature to local file
     #       Local server   : ext_local_server
-    #           Add network feature for command input
-    #   Shell          : ext_shell
-    #       Add shell feagure
+    #           Add network command input feature
 
     def ext_shell
       require 'libsh'

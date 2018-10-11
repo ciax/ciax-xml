@@ -25,6 +25,14 @@ module CIAX
         end
 
         #### In Drive mode
+        def exec
+          result = 'dummy'
+        end
+
+        def exec_wait
+          exec
+        end
+
         # Interactive section
         def exec?
           which?('approval', 'dryrun', !@opt.dry?)

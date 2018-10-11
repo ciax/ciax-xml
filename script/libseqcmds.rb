@@ -63,7 +63,7 @@ module CIAX
       end
 
       def _cmd_exec(e, step, _mstat)
-        step.result = _exe_site(e).to_s if step.exec? && _qry_exec?(step)
+        step.exec if step.exec? && _qry_exec?(step)
         show_fg step.indent_s(5)
         @sv_stat.push(:run, e[:site]).cmt unless
           @sv_stat.upd.get(:run).include?(e[:site])
@@ -71,13 +71,13 @@ module CIAX
       end
 
       # return T/F
-      def _cmd_cfg(e, step, _mstat)
-        step.result = _exe_site(e).wait_ready
+      def _cmd_cfg(_e, step, _mstat)
+        step.exec_wait
       end
 
       # return T/F
-      def _cmd_upd(e, step, mstat)
-        step.result = _exe_site(e).wait_ready
+      def _cmd_upd(_e, step, mstat)
+        step.exec_wait
       rescue CommError
         mstat.result = __set_err(step)
       end

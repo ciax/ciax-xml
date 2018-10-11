@@ -26,6 +26,14 @@ module CIAX
           self
         end
 
+        def exec
+          result = _exe_site.to_s
+        end
+
+        def exec_wait
+          reslut = _exe_site.wait_ready
+        end
+
         # Conditional judgment section
         def skip?
           wait_ready_all
@@ -70,6 +78,10 @@ module CIAX
         end
 
         private
+
+        def _exe_site
+          @dev_list.get(self[:site]).exe(self[:args], 'macro')
+        end
 
         def __all_conds?
           stats = ___scan

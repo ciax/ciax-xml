@@ -82,10 +82,6 @@ module CIAX
         @dev_list.get(e[:site])
       end
 
-      def _exe_site(e)
-        _get_site(e).exe(e[:args], 'macro')
-      end
-
       # Mcr::Entity
       def _get_ment(e)
         @cfg[:index].set_cmd(e[:args])

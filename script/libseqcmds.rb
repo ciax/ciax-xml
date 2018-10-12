@@ -83,8 +83,8 @@ module CIAX
       end
 
       # return T/F
-      def _cmd_system(e, step, _mstat)
-        step.result = `#{e[:val]}`.chomp if step.exec? && _qry_exec?(step)
+      def _cmd_system(_e, step, _mstat)
+        step.system if step.exec? && _qry_exec?(step)
         true
       end
 

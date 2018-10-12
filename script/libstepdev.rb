@@ -27,11 +27,15 @@ module CIAX
         end
 
         def exec
-          result = _exe_site.to_s
+          _set_res(_exe_site.to_s)
         end
 
         def exec_wait
-          reslut = _exe_site.wait_ready
+          _set_res(_exe_site.wait_ready)
+        end
+
+        def system
+          _set_res(`#{self[:val]}`.chomp)
         end
 
         # Conditional judgment section

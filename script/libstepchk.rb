@@ -26,10 +26,14 @@ module CIAX
 
         #### In Drive mode
         def exec
-          result = 'dummy'
+          _set_res('dummy')
         end
 
         def exec_wait
+          exec
+        end
+
+        def system
           exec
         end
 
@@ -45,7 +49,7 @@ module CIAX
 
         def sleeping
           progress(self[:val])
-          self.result = 'slept'
+          _set_res('slept')
           true
         end
 
@@ -60,13 +64,13 @@ module CIAX
 
         def timeout?
           progress(self[:retry]) { false }
-          self.result = 'pass'
+          _set_res('pass')
           false
         end
 
         # Not Condition Step, returns t/f
         def which?(tmsg, fmsg, tf)
-          self.result = tf ? tmsg : fmsg
+          _set_res(tf ? tmsg : fmsg)
           tf
         end
 
@@ -75,9 +79,7 @@ module CIAX
         end
 
         def result=(msg)
-          self[:result] = msg.downcase
-        ensure
-          cmt
+          _set_res(msg)
         end
 
         # wait until &cond satisfied
@@ -90,6 +92,14 @@ module CIAX
             show_fg('.')
             cmt
           end
+        end
+
+        private
+
+        def _set_res(msg)
+          self[:result] = msg.downcase
+        ensure
+          cmt
         end
       end
     end

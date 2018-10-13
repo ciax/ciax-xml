@@ -62,11 +62,12 @@ module CIAX
         true
       end
 
-      def _cmd_exec(e, step, _mstat)
+      def _cmd_exec(_e, step, _mstat)
         step.exec if step.exec? && _qry_exec?(step)
         show_fg step.indent_s(5)
-        @sv_stat.push(:run, e[:site]).cmt unless
-          @sv_stat.upd.get(:run).include?(e[:site])
+        site = step[:site]
+        @sv_stat.push(:run, site).cmt unless
+          @sv_stat.upd.get(:run).include?(site)
         true
       end
 
@@ -89,17 +90,13 @@ module CIAX
       end
 
       # Return T/F
-      def _cmd_select(e, step, mstat)
-        var = ___get_stat(e) || cfg_err('No data in status')
-        step.result = var
-        show_fg step.result_s
-        sel = e[:select]
-        name = sel[var] || sel['*'] || mcr_err("No option for #{var} ")
+      def _cmd_select(_e, step, mstat)
+        name = step.select
         _new_step({ type: 'mcr', args: name }, mstat)
       end
 
       def _cmd_mcr(e, step, mstat)
-        if e[:async] && @submcr_proc.is_a?(Proc)
+        if step[:async] && @submcr_proc.is_a?(Proc)
           step[:id] = @submcr_proc.call(_get_ment(e), @id).id
         else
           ___mcr_fg(e, step, mstat)

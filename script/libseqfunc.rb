@@ -26,7 +26,7 @@ module CIAX
 
       # Sub for _mcr_fg()
       def ___mcr_trial(e, step)
-        _sequencer(_get_ment(e), step)
+        _sequencer(_get_ment(step), step)
         __enc_end(step)
         show_fg step.result_s
       rescue Verification
@@ -72,19 +72,9 @@ module CIAX
         step.result = ERR_CODE[ek.to_sym] || ek
       end
 
-      # Sub for cmd_select()
-      def ___get_stat(e)
-        _get_site(e).stat[e[:form].to_sym][e[:var]]
-      end
-
-      ## Shared Methods
-      def _get_site(e)
-        @dev_list.get(e[:site])
-      end
-
       # Mcr::Entity
-      def _get_ment(e)
-        @cfg[:index].set_cmd(e[:args])
+      def _get_ment(step)
+        @cfg[:index].set_cmd(step[:args])
       end
 
       # Query

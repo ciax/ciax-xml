@@ -37,6 +37,13 @@ module CIAX
           exec
         end
 
+        # returns selected macro args (Array)
+        def select
+          res = self[:select].keys.first
+          _set_res(res)
+          self[:select][res]
+        end
+
         # Interactive section
         def exec?
           which?('approval', 'dryrun', !@opt.dry?)

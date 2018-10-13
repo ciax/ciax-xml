@@ -38,6 +38,14 @@ module CIAX
           _set_res(`#{self[:val]}`.chomp)
         end
 
+        def select
+          stat = @dev_list.get(self[:site]).sub.stat
+          var = stat[self[:form].to_sym][self[:var]] || cfg_err('No data in status')
+          _set_res(var)
+          sel = self[:select]
+          sel[var] || sel['*'] || mcr_err("No option for #{var} ")
+        end
+
         # Conditional judgment section
         def skip?
           wait_ready_all

@@ -17,6 +17,12 @@ module CIAX
 
       private
 
+      def ___mcr_bg(e, step)
+        if step[:async] && @submcr_proc.is_a?(Proc)
+          step[:id] = @submcr_proc.call(_get_ment(e), @id).id
+        end
+      end
+
       # Sub for for cmd_mcr()
       def ___mcr_fg(e, step, _mstat)
         __enc_begin

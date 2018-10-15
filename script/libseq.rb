@@ -40,7 +40,7 @@ module CIAX
         _sequencer(@cfg, @record.cmt)
       rescue Interrupt
         ___site_interrupt
-      rescue CommError, Interlock
+      rescue CommError, Verification
         false
       ensure
         show_fg @record.finish + "\n"

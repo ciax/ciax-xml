@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libstepchk'
+require 'libstepproc'
 
 module CIAX
   # Macro Layer

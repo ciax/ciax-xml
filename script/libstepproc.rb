@@ -5,17 +5,17 @@ module CIAX
   module Mcr
     # Element of Record
     class Step
-      def ext_local_checker(db, depth, opt)
-        extend(Checker).ext_local_checker(db, depth, opt)
+      def ext_local_processor(db, depth, opt)
+        extend(Processor).ext_local_processor(db, depth, opt)
       end
 
-      # Step Checker
-      module Checker
+      # Step Processor
+      module Processor
         def self.extended(obj)
           Msg.type?(obj, Step)
         end
 
-        def ext_local_checker(db, depth, opt)
+        def ext_local_processor(db, depth, opt)
           update db
           self[:depth] = depth
           @opt = opt

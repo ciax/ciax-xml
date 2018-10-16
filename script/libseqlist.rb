@@ -33,7 +33,7 @@ module CIAX
 
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent, pid = '0') # returns Sequencer
-        seq = Sequencer.new(ent, pid) { |e, p| super(e, p) }
+        seq = Sequencer.new(ent, pid) { |e, p| add(e, p) }
         super(Msg.type?(seq.fork, Threadx::Fork)) # start immediately
         @rec_list.push(seq.record)
         @rec_list.rec_arc.push(seq.record)

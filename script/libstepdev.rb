@@ -40,7 +40,7 @@ module CIAX
 
         def select
           stat = @dev_list.get(self[:site]).sub.stat
-          var = stat[self[:form].to_sym][self[:var]] || cfg_err('No data in status')
+          var = __get_real(stat, self)
           _set_res(var)
           sel = self[:select]
           sel[var] || sel['*'] || mcr_err("No option for #{var} ")
@@ -82,8 +82,9 @@ module CIAX
           self
         end
 
-        def progress
-          super(self[:retry].to_i - self[:count].to_i) do
+        def progress(var = nil)
+          var ||= self[:retry].to_i - self[:count].to_i
+          super(var) do
             @exes.all? { |e| e.stat.updating? }
             yield
           end
@@ -116,7 +117,7 @@ module CIAX
           c = {}
           %i(site var form cmp cri skip).each { |k| c[k] = h[k] }
           unless c[:skip]
-            real = ___get_real(stat, c)
+            real = __get_real(stat, c)
             res = method('_ope_' + c[:cmp]).call(c[:cri], real)
             c.update(real: real, res: res)
             verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
@@ -124,7 +125,7 @@ module CIAX
           c
         end
 
-        def ___get_real(stat, h)
+        def __get_real(stat, h)
           warning('No form specified') unless h[:form]
           # form = 'data', 'class' or 'msg' in Status
           form = (h[:form] || :data).to_sym

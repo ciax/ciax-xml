@@ -17,28 +17,27 @@ module CIAX
 
       private
 
-      def ___mcr_bg(e, step)
-        if step[:async] && @submcr_proc.is_a?(Proc)
-          step[:id] = @submcr_proc.call(_get_ment(e), @id).id
-        end
+      def ___mcr_bg(_e, step)
+        return unless step[:async] && @submcr_proc.is_a?(Proc)
+        step[:id] = @submcr_proc.call(_get_ment(step), @id).id
       end
 
       # Sub for for cmd_mcr()
-      def ___mcr_fg(e, step, _mstat)
+      def ___mcr_fg(_e, step, _mstat)
         __enc_begin
         step[:count] = 1 if step[:retry]
-        ___mcr_trial(e, step)
+        ___mcr_trial(step)
       end
 
       # Sub for _mcr_fg()
-      def ___mcr_trial(e, step)
+      def ___mcr_trial(step)
         _sequencer(_get_ment(step), step)
         __enc_end(step)
         show_fg step.result_s
       rescue Verification
         __set_err(step)
         count = ___count_retry(step)
-        step = ___new_macro(e, count)
+        step = ___new_macro(step, count)
         sleep step[:wait].to_i
         retry
       end
@@ -56,8 +55,8 @@ module CIAX
         count
       end
 
-      def ___new_macro(e, count)
-        newstep = @record.add_step(e, @depth)
+      def ___new_macro(step, count)
+        newstep = @record.add_step(step, @depth)
         newstep[:count] = count + 1
         show_fg newstep.title_s
         show_fg Msg.colorize("(Retry #{count})", 1)

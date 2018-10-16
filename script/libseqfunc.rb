@@ -19,6 +19,7 @@ module CIAX
 
       def ___mcr_bg(step)
         return unless step[:async] && @submcr_proc.is_a?(Proc)
+        # adding new macro to @rec_list
         step[:id] = @submcr_proc.call(_get_ment(step), @id).id
       end
 

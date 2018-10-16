@@ -36,7 +36,9 @@ module CIAX
 
         # Re-generate record list
         def refresh # returns self
-          (___file_keys - list.keys).each { |key| push(jload(__rec_fname(key))) }
+          (___file_keys - list.keys).each do |key|
+            push(jload(__rec_fname(key)))
+          end
           verbose { 'Initiate Record Archive done' }
           cmt
         end

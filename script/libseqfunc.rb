@@ -17,13 +17,13 @@ module CIAX
 
       private
 
-      def ___mcr_bg(_e, step)
+      def ___mcr_bg(step)
         return unless step[:async] && @submcr_proc.is_a?(Proc)
         step[:id] = @submcr_proc.call(_get_ment(step), @id).id
       end
 
       # Sub for for cmd_mcr()
-      def ___mcr_fg(_e, step, _mstat)
+      def ___mcr_fg(step, _mstat)
         __enc_begin
         step[:count] = 1 if step[:retry]
         ___mcr_trial(step)

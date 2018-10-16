@@ -73,7 +73,7 @@ module CIAX
       # Return false if sequence is broken
       def _new_step(e, mstat)
         step = @record.add_step(e, @depth)
-        ___step_trial(e, step, mstat)
+        ___step_trial(step, mstat)
       rescue CommError, Interlock, Interrupt
         mstat.result = __set_err(step)
         raise
@@ -83,9 +83,9 @@ module CIAX
       end
 
       # Sub for _new_step()
-      def ___step_trial(e, step, mstat)
+      def ___step_trial(step, mstat)
         show_fg step.title_s
-        method('_cmd_' + e[:type]).call(e, step, mstat)
+        method('_cmd_' + step[:type]).call(step, mstat)
       rescue Retry
         retry
       end

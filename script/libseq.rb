@@ -91,11 +91,8 @@ module CIAX
 
       # Sub for macro()
       def ___site_interrupt
-        runary = @sv_stat.get(:run)
-        msg("\nInterrupt Issued to running devices #{runary}", 3)
-        runary.each do |site|
-          @dev_list.get(site).exe(['interrupt'], 'user')
-        end
+        @dev_list.interrupt(@sv_stat.get(:run))
+        @sv_stat.flush(:run).cmt
       end
 
       # Sub for initialize()

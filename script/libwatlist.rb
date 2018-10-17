@@ -14,6 +14,13 @@ module CIAX
         _store_db(@cfg[:db] ||= Ins::Db.new(@id))
         @sub_list = App::List.new(@cfg, sub_atrb)
       end
+
+      def interrupt(sites)
+        msg("\nInterrupt Issued to running devices #{sites}", 3)
+        sites.each do |site|
+          get(site).exe(['interrupt'], 'user')
+        end
+      end
     end
 
     if __FILE__ == $PROGRAM_NAME

@@ -15,11 +15,23 @@ module CIAX
         @sub_list = App::List.new(@cfg, sub_atrb)
       end
 
+      def init_sites
+        __each_site(@cfg[:sites]) if @cfg.key?(:sites)
+      end
+
       def interrupt(sites)
         msg("\nInterrupt Issued to running devices #{sites}", 3)
-        sites.each do |site|
-          get(site).exe(['interrupt'], 'user')
+        __each_site(sites) { |obj| obj.exe(['interrupt'], 'user') }
+      end
+
+      private
+
+      def __each_site(ary)
+        ary.each do |site|
+          obj = get(site)
+          yield obj if defined? yield
         end
+        self
       end
     end
 

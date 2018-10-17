@@ -34,7 +34,7 @@ module CIAX
 
       # Start the macro
       def play
-        @cfg[:sites].each { |site| @dev_list.get(site) } if @def_list
+        @cfg[:sites].each { |site| @dev_list.get(site) } if @dev_list
         Thread.current[:query] = @qry
         show_fg @record.start
         _sequencer(@cfg, @record.cmt)
@@ -91,7 +91,7 @@ module CIAX
 
       # Sub for macro()
       def ___site_interrupt
-        @dev_list.interrupt(@sv_stat.get(:run)) if @def_list
+        @dev_list.interrupt(@sv_stat.get(:run)) if @dev_list
         @sv_stat.flush(:run).cmt
       end
 

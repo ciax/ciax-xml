@@ -14,7 +14,7 @@ module CIAX
       def initialize(ment, pid = '0', &submcr_proc)
         @cfg = ment
         @opt = @cfg[:opt]
-        @dev_list = type?(@cfg[:dev_list], CIAX::Wat::List)
+        @dev_list = type?(@cfg[:dev_list], CIAX::Wat::List) if @cfg.key?(:dev_list)
         ___init_record(pid)
         @sv_stat = @cfg[:sv_stat] || Prompt.new(@cfg[:id], @opt)
         @submcr_proc = submcr_proc
@@ -34,7 +34,7 @@ module CIAX
 
       # Start the macro
       def play
-        @cfg[:sites].each { |site| @dev_list.get(site) }
+        @cfg[:sites].each { |site| @dev_list.get(site) } if @def_list
         Thread.current[:query] = @qry
         show_fg @record.start
         _sequencer(@cfg, @record.cmt)
@@ -91,7 +91,7 @@ module CIAX
 
       # Sub for macro()
       def ___site_interrupt
-        @dev_list.interrupt(@sv_stat.get(:run))
+        @dev_list.interrupt(@sv_stat.get(:run)) if @def_list
         @sv_stat.flush(:run).cmt
       end
 

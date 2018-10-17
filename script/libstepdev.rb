@@ -6,14 +6,17 @@ module CIAX
   module Mcr
     # Element of Record
     class Step
-      def ext_local_dev(dev_list)
-        extend(Device).ext_local_dev(dev_list)
+      # Extension method
+      module Processor
+        def ext_local_dev(dev_list)
+          extend(Device).ext_local_dev(dev_list)
+        end
       end
 
       # Check Device Status
       module Device
         def self.extended(obj)
-          Msg.type?(obj, Checker)
+          Msg.type?(obj, Processor)
         end
 
         def ext_local_dev(dev_list)

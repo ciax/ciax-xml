@@ -34,17 +34,17 @@ module CIAX
         end
 
         def exec_wait
-          _set_res(_exe_site.wait_ready)
+          _show_res(_exe_site.wait_ready)
         end
 
         def system
-          _set_res(`#{self[:val]}`.chomp)
+          _show_res(`#{self[:val]}`.chomp)
         end
 
         def select
           stat = @dev_list.get(self[:site]).sub.stat
           var = __get_real(stat, self)
-          _set_res(var)
+          _show_res(var)
           sel = self[:select]
           sel[var] || sel['*'] || mcr_err("No option for #{var} ")
         end
@@ -87,6 +87,7 @@ module CIAX
 
         def progress(var = nil)
           var ||= self[:retry].to_i - self[:count].to_i
+          return super(var) unless defined? yield
           super(var) do
             @exes.all? { |e| e.stat.updating? }
             yield

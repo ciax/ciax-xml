@@ -34,7 +34,6 @@ module CIAX
       def ___mcr_trial(step)
         _sequencer(_get_ment(step), step)
         __enc_end(step)
-        show_fg step.result_s
       rescue Verification
         __set_err(step)
         count = ___count_retry(step)
@@ -47,11 +46,7 @@ module CIAX
       def ___count_retry(step)
         count = step[:count].to_i
         __enc_end(step)
-        if count >= step[:retry].to_i
-          raise if _qry_giveup?(step)
-        else
-          show_fg step.result_s
-        end
+        raise if count >= step[:retry].to_i && _qry_giveup?(step)
         step[:action] = 'retry'
         count
       end
@@ -71,6 +66,7 @@ module CIAX
 
       def __enc_end(step)
         show_fg step.indent_s(4) + Msg.colorize(' }', 1)
+        show_fg step.result_s
       end
 
       def __set_err(step)
@@ -85,17 +81,14 @@ module CIAX
 
       # Query
       def _qry_giveup?(step)
-        show_fg step.result_s
         @qry.query(%w(drop force retry), step)
       end
 
       def _qry_enter?(step)
-        show_fg step.result_s
         step.result = 'enter' if @qry.query(%w(pass enter), step)
       end
 
       def _qry_exec?(step)
-        show_fg step.result_s
         @qry.query(%w(exec skip), step)
       end
     end

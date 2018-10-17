@@ -30,17 +30,17 @@ module CIAX
         end
 
         def exec_wait
-          exec
+          _show_res('dummy')
         end
 
         def system
-          exec
+          exec_wait
         end
 
         # returns selected macro args (Array)
         def select
           res = self[:select].keys.first
-          _set_res(res)
+          _show_res(res)
           self[:select][res]
         end
 
@@ -56,7 +56,7 @@ module CIAX
 
         def sleeping
           progress(self[:val])
-          _set_res('slept')
+          _show_res('slept')
           true
         end
 
@@ -71,13 +71,13 @@ module CIAX
 
         def timeout?
           progress(self[:retry]) { false }
-          _set_res('pass')
+          _show_res('pass')
           false
         end
 
         # Not Condition Step, returns t/f
         def which?(tmsg, fmsg, tf)
-          _set_res(tf ? tmsg : fmsg)
+          _show_res(tf ? tmsg : fmsg)
           tf
         end
 
@@ -107,6 +107,12 @@ module CIAX
           self[:result] = msg.downcase
         ensure
           cmt
+        end
+
+        def _show_res(msg)
+          res = _set_res(msg)
+          show_fg result_s
+          res
         end
       end
     end

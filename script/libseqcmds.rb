@@ -49,7 +49,9 @@ module CIAX
 
       def _cmd_verify(step, mstat)
         return true unless step.fail?
-        raise mstat[:retry].to_i > 0 ? Verification : Interlock
+        raise Verification if mstat[:retry].to_i > 0
+        return true unless _qry_giveup?(step)
+        raise Interlock
       end
 
       def _cmd_wait(step, _mstat)
@@ -64,7 +66,6 @@ module CIAX
 
       def _cmd_exec(step, _mstat)
         step.exec if step.exec? && _qry_exec?(step)
-        show_fg step.indent_s(5)
         site = step[:site]
         @sv_stat.push(:run, site).cmt unless
           @sv_stat.upd.get(:run).include?(site)

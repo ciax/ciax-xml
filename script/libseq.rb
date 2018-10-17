@@ -78,7 +78,6 @@ module CIAX
         mstat.result = __set_err(step)
         raise
       ensure
-        show_fg step.result_s if step[:type] != 'mcr'
         step.cmt
       end
 

@@ -8,6 +8,7 @@
           <not site="tfp" var="ao" form="msg">OPEN</not>
         </check>
         <cfg site="tmc" name="lowspd"/>
+        <sleep>1</sleep>
         <upd site="tmc"/>
         <mcr name="tmc_cw" retry="3"/>
         <mcr name="tmc_gh-cw"/>

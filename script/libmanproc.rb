@@ -21,7 +21,7 @@ module CIAX
           @rec_list.ext_local
           @rec_list.rec_arc.auto_save if @opt.mcr_log?
           @sv_stat.repl(:sid, '') # For server response
-          @sub_list = @cobj.rem.ext.dev_list
+          @sub_list = @cobj.rem.ext.dev_list if @opt.drv?
           ___init_proc_loc
           @cobj.rem.ext_input_log
           self
@@ -29,7 +29,7 @@ module CIAX
 
         def run
           ext_local_server if @opt.sv?
-          @sub_list.run
+          @sub_list.run if @sub_list
           super
         end
 

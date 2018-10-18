@@ -18,9 +18,29 @@ module CIAX
         self[:list] ||= {}
       end
 
+      def push(record) # returns self
+        if record.is_a?(Hash) && record[:id].to_i > 0
+          if __extract(record) == 'busy' && record.is_a?(Record)
+            record.finish_procs << proc { |r| __extract(r) && cmt }
+          end
+        end
+        self
+      end
+
       def ext_local_manipulate
         extend(Manipulate).ext_local_manipulate
       end
+
+      private
+
+      def __extract(rec)
+        ele = Hashx.new(rec).pick(%i(cid pid result)) # extract header
+        return if ele.empty?
+        verbose { 'Record Archive Updated' }
+        list[rec[:id]] = ele
+        ele[:result]
+      end
+
       # Macro Response Module
       module Manipulate
         def self.extended(obj)
@@ -55,24 +75,7 @@ module CIAX
           cmt
         end
 
-        def push(record) # returns self
-          if record.is_a?(Hash) && record[:id].to_i > 0
-            if __extract(record) == 'busy' && record.is_a?(Record)
-              record.finish_procs << proc { |r| __extract(r) && cmt }
-            end
-          end
-          self
-        end
-
         private
-
-        def __extract(rec)
-          ele = Hashx.new(rec).pick(%i(cid pid result)) # extract header
-          return if ele.empty?
-          verbose { 'Record Archive Updated' }
-          list[rec[:id]] = ele
-          ele[:result]
-        end
 
         def ___file_keys
           ary = []

@@ -51,7 +51,7 @@ module CIAX
     end
 
     def cfg_err(*ary) # Raise Device error (Bad Configulation)
-      ary[0] = colorize(ary[0], 1)
+      ary[0] = colorize("#{self.class}: #{ary[0]}", 1)
       raise ConfigError, ary.join("\n  "), caller(1)
     end
 

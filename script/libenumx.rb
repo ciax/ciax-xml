@@ -97,10 +97,14 @@ module CIAX
       @layer = layer_name
     end
 
-    # Generate value if init_proc and no key
-    def get(key, &init_proc)
-      self[key] = yield key if !key?(key) && init_proc
-      self[key]
+    # Generate value if @get_proc and no key
+    def get(key)
+      return self[key] if key?(key)
+      if defined? yield
+        self[key] = yield key
+      elsif @get_proc
+        self[key] = @get_proc.call(key)
+      end
     end
 
     # Put value. return self

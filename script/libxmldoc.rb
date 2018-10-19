@@ -35,12 +35,9 @@ module CIAX
         @displist = Disp.new
         ___read_files(Msg.xmlfiles(@type))
         ___set_includes
-      end
-
-      # get generates document branch of db items(Hash),
-      # which includes attribute and domains
-      def get(id)
-        super { id_err(id, @type, self) }
+        # get generates document branch of db items(Hash),
+        # which includes attribute and domains
+        @get_proc = proc { |id| id_err(id, @type, self) }
       end
 
       def to_s

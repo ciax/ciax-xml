@@ -60,9 +60,7 @@ module CIAX
 
       def get(id)
         type?(id, String)
-        super(id) do |key|
-          @get_proc.call(key)
-        end
+        super
       end
 
       # Change visible list

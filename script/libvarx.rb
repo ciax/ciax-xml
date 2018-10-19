@@ -8,7 +8,7 @@ module CIAX
   # Don't assign an instance variables to any element
   # whose link can be broken by load().
   class Varx < Upd
-    attr_reader :type
+    attr_reader :type, :id
     def initialize(type, id = nil, ver = nil, host = nil, dir = nil)
       super()
       @type = type

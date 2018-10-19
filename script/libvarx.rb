@@ -12,8 +12,10 @@ module CIAX
     def initialize(type, id = nil, ver = nil, host = nil, dir = nil)
       super()
       @type = type
+      # @id is for file name (prevent overwritten)
+      @id = id
       @dir = dir
-      # Headers
+      # Headers (could be overwritten by file load)
       self[:id] = id
       self[:ver] = ver if ver
       self[:host] = host || HOST
@@ -40,7 +42,7 @@ module CIAX
     end
 
     def base_name(tag = nil)
-      [@type, self[:id], tag].compact.join('_')
+      [@type, @id, tag].compact.join('_')
     end
   end
 end

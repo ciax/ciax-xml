@@ -121,7 +121,7 @@ function new_record(id) {
 }
 
 function update_list() {
-  ajax_update('rec_list.json').done(make_list);
+  ajax_update('list_record.json').done(make_list);
 }
 
 function toggle_dvctl() {

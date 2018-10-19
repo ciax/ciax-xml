@@ -13,10 +13,10 @@ module CIAX
     # Visible : Client Side (Parameter#list)
     class RecList < Upd
       attr_reader :rec_arc
-      def initialize(id = 'mcr', visible = [])
+      def initialize(proj = ENV['PROJ'], visible = [])
         super()
-        @id = id
-        @rec_arc = RecArc.new(id)
+        @proj = proj
+        @rec_arc = RecArc.new
         @visible = type?(visible, Array)
         @upd_procs << proc { values.each(&:upd) }
       end
@@ -33,11 +33,13 @@ module CIAX
         id = record[:id]
         return self unless id.to_i > 0
         self[id] = record
+        yield record if defined? yield
         cmt
       end
 
+      # Manipulate memory
       def ext_local
-        @rec_arc.ext_local_manipulate.auto_load.refresh
+        extend(Local).ext_local
         self
       end
 
@@ -45,6 +47,9 @@ module CIAX
       def ext_remote(host)
         @host = host
         @rec_arc.ext_remote(host)
+        @get_proc = proc do |key|
+          Record.new(key).ext_remote(@host)
+        end
         self
       end
 
@@ -56,7 +61,7 @@ module CIAX
       def get(id)
         type?(id, String)
         super(id) do |key|
-          Record.new(key).ext_remote(@host)
+          @get_proc.call(key)
         end
       end
 
@@ -75,7 +80,7 @@ module CIAX
       private
 
       def ___list_view
-        page = ['<<< ' + colorize("Active Macros [#{@id}]", 2) + ' >>>']
+        page = ['<<< ' + colorize("Active Macros [#{@proj}]", 2) + ' >>>']
         @visible.each_with_index do |id, idx|
           page << ___item_view(id, idx + 1)
         end
@@ -104,6 +109,25 @@ module CIAX
       def ___get_pcid(pid)
         return 'user' if pid == '0'
         @rec_arc.list[pid][:cid]
+      end
+
+      # Local mode
+      module Local
+        def self.extended(obj)
+          Msg.type?(obj, RecList)
+        end
+
+        def ext_local
+          @rec_arc.ext_local.auto_load.refresh
+          @get_proc = proc do |key|
+            Record.new(key).ext_local_file.load
+          end
+          self
+        end
+
+        def push(record) # returns self
+          super { |r| @rec_arc.push(r) }
+        end
       end
     end
 

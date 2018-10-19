@@ -7,10 +7,9 @@ module CIAX
     # Record Archive List (Dir)
     #   Index of Records
     class RecArc < Varx
-      attr_reader :list, :id
-      def initialize(id = 'mcr')
-        super('rec', 'list')
-        @id = id
+      attr_reader :list
+      def initialize
+        super('list', 'record')
         # @list : Archive List : Index of Record (id: cid,pid,res)
       end
 
@@ -18,40 +17,42 @@ module CIAX
         self[:list] ||= {}
       end
 
-      def push(record) # returns self
-        if record.is_a?(Hash) && record[:id].to_i > 0
-          if __extract(record) == 'busy' && record.is_a?(Record)
-            record.finish_procs << proc { |r| __extract(r) && cmt }
-          end
-        end
-        self
-      end
-
-      def ext_local_manipulate
-        extend(Manipulate).ext_local_manipulate
-      end
-
-      private
-
-      def __extract(rec)
-        ele = Hashx.new(rec).pick(%i(cid pid result)) # extract header
-        return if ele.empty?
-        verbose { 'Record Archive Updated' }
-        list[rec[:id]] = ele
-        ele[:result]
+      # Mode
+      #   Skelton
+      #   Remote (Read only)
+      #   Local  (Read/Write Memory)
+      #   Local_File (Read/Write Memory, File read only)
+      #   Local_Save (Read/Write File)
+      def ext_local
+        extend(Local).ext_local
       end
 
       # Macro Response Module
-      module Manipulate
+      module Local
         def self.extended(obj)
           Msg.type?(obj, RecArc)
         end
 
-        def ext_local_manipulate
+        def ext_local
           init_time2cmt
           ext_local_file.load
           auto_save
           self
+        end
+
+        def push(record) # returns self
+          if record.is_a?(Hash) && record[:id].to_i > 0
+            if __extract(record) == 'busy' && record.is_a?(Record)
+              record.finish_procs << proc { |r| __extract(r) && cmt }
+            end
+          end
+          self
+        end
+
+        # For format changes
+        def clear
+          list.clear
+          cmt
         end
 
         # Re-generate record list
@@ -69,13 +70,15 @@ module CIAX
           end
         end
 
-        # For format changes
-        def clear
-          list.clear
-          cmt
-        end
-
         private
+
+        def __extract(rec)
+          ele = Hashx.new(rec).pick(%i(cid pid result)) # extract header
+          return if ele.empty?
+          verbose { 'Record Archive Updated' }
+          list[rec[:id]] = ele
+          ele[:result]
+        end
 
         def ___file_keys
           ary = []
@@ -92,6 +95,6 @@ module CIAX
       end
     end
 
-    puts RecArc.new.ext_local_manipulate.refresh if __FILE__ == $PROGRAM_NAME
+    puts RecArc.new.ext_local.clear.refresh if __FILE__ == $PROGRAM_NAME
   end
 end

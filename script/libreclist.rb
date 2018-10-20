@@ -116,10 +116,15 @@ module CIAX
         end
 
         def ext_local
-          @rec_arc.ext_local.auto_load.refresh
+          @rec_arc.ext_local.refresh
           @get_proc = proc do |key|
             Record.new(key).ext_local_file.load
           end
+          self
+        end
+
+        def ext_save
+          @rec_arc.ext_rw.auto_save
           self
         end
 

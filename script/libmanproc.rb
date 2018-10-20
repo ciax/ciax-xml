@@ -19,7 +19,7 @@ module CIAX
         # Initiate for driver
         def ext_local_processor
           @rec_list.ext_local
-          @rec_list.rec_arc.auto_save if @opt.mcr_log?
+          @rec_list.rec_arc.ext_rw.auto_save if @opt.mcr_log?
           @sv_stat.repl(:sid, '') # For server response
           @sub_list = @cobj.rem.ext.dev_list if @opt.drv?
           ___init_proc_loc

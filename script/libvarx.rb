@@ -30,6 +30,7 @@ module CIAX
       extend(JFile).ext_local_file(@dir)
     end
 
+    # independent from ext_local_file
     def ext_local_log
       require 'libjslog'
       extend(JsLog).ext_local_log

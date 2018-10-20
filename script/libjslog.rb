@@ -28,7 +28,7 @@ module CIAX
         h
       end
 
-      def ext_local_sqlog
+      def ext_sqlog
         require 'libsqlog'
         # Logging if version number exists
         # init_table includes initiate/auto save

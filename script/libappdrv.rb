@@ -15,7 +15,7 @@ module CIAX
         # type of semantics: execution/test
         def ext_local_driver
           @stat.ext_local_conv(@sub.stat)
-          @stat.ext_local_sym(@cfg[:sdb]).ext_local_file.rw.auto_save
+          @stat.ext_local_sym(@cfg[:sdb]).ext_local_file.ext_rw.auto_save
           @buf = ___init_buf
           ___init_log_mode
           ___init_processor_save
@@ -27,7 +27,7 @@ module CIAX
 
         def ___init_log_mode
           return unless @opt.drv?
-          @stat.ext_local_log.ext_local_sqlog
+          @stat.ext_local_log.ext_sqlog
           @cobj.rem.ext_input_log
         end
 

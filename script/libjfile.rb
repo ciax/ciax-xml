@@ -51,7 +51,7 @@ module CIAX
         self
       end
 
-      def rw
+      def ext_rw
         extend(JSave)
       end
 

@@ -36,7 +36,6 @@ module CIAX
         def ext_local
           init_time2cmt
           ext_local_file.load
-          auto_save
           self
         end
 

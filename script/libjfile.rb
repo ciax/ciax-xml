@@ -51,9 +51,8 @@ module CIAX
         self
       end
 
-      def auto_save
-        @cmt_procs << proc { save }
-        self
+      def rw
+        extend(JSave)
       end
 
       def auto_load
@@ -66,34 +65,10 @@ module CIAX
         cmt
       end
 
-      def save(tag = nil)
-        __write_json(to_j, tag)
-      end
-
       def load_partial(tag = nil)
         hash = __read_json(tag)
         ___check_version(hash) && deep_update(hash)
         cmt
-      end
-
-      def save_partial(keylist, tag = nil)
-        tag ||= (__tag_list.map(&:to_i).max + 1)
-        # id is tag, this is Mark's request
-        jstr = pick(
-          keylist, time: self[:time], id: self[:id], ver: self[:ver]
-        ).to_j
-        msg("File Saving for [#{tag}]")
-        __write_json(jstr, tag)
-      end
-
-      def mklink(tag = 'latest')
-        # Making 'latest' link
-        save
-        sname = vardir('json') + "#{@type}_#{tag}.json"
-        ::File.unlink(sname) if ::File.exist?(sname)
-        ::File.symlink(@jsondir + __file_name, sname)
-        verbose { "File Symboliclink to [#{sname}]" }
-        self
       end
 
       private
@@ -132,6 +107,44 @@ module CIAX
         @cfile = ___chk_tag(tag)
         jload(@jsondir + @cfile)
       end
+    end
+
+    # File saving feature
+    module JSave
+      def self.extended(obj)
+        Msg.type?(obj, JFile)
+      end
+
+      def auto_save
+        @cmt_procs << proc { save }
+        self
+      end
+
+      def save(tag = nil)
+        __write_json(to_j, tag)
+      end
+
+      def save_partial(keylist, tag = nil)
+        tag ||= (__tag_list.map(&:to_i).max + 1)
+        # id is tag, this is Mark's request
+        jstr = pick(
+          keylist, time: self[:time], id: self[:id], ver: self[:ver]
+        ).to_j
+        msg("File Saving for [#{tag}]")
+        __write_json(jstr, tag)
+      end
+
+      def mklink(tag = 'latest')
+        # Making 'latest' link
+        save
+        sname = vardir('json') + "#{@type}_#{tag}.json"
+        ::File.unlink(sname) if ::File.exist?(sname)
+        ::File.symlink(@jsondir + __file_name, sname)
+        verbose { "File Symboliclink to [#{sname}]" }
+        self
+      end
+
+      private
 
       def __write_json(jstr, tag = nil)
         ___write_notice(jstr)

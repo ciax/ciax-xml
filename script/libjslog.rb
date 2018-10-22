@@ -9,7 +9,8 @@ module CIAX
         Msg.type?(obj, Varx)
       end
 
-      def ext_local_log # logging with flatten
+      # logging with flatten
+      def ext_local_log
         @logfile = vardir('log') + base_name + "_#{Time.now.year}.log"
         @que_log = ___log_thread
         @cmt_procs << proc { @que_log.push(JSON.dump(self)) }

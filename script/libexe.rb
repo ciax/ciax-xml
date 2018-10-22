@@ -53,7 +53,7 @@ module CIAX
     #  Modes
     #   Shell  : ext_shell
     #       Add shell feature
-    #   Remote : ext_client
+    #   Remote : ext_remote_client
     #       Access via udp/html
     #   Local  : ext_local
     #       Manipulates memory
@@ -87,9 +87,9 @@ module CIAX
     end
 
     # Load Data
-    def ext_client
+    def ext_remote_client
       require 'libclient'
-      extend(Client).ext_client
+      extend(Client).ext_remote_client
     end
 
     # UDP Listen
@@ -145,7 +145,7 @@ module CIAX
     # -es: drive mode + server
     def _opt_mode
       # Option handling
-      @opt.cl? ? ext_client : _ext_local
+      @opt.cl? ? ext_remote_client : _ext_local
     end
   end
 end

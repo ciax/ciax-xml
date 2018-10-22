@@ -129,7 +129,7 @@ module CIAX
         end
 
         def ext_save
-          @rec_arc.ext_rw.auto_save
+          @rec_arc.ext_save
           self
         end
 

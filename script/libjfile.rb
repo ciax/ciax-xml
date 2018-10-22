@@ -51,8 +51,8 @@ module CIAX
         self
       end
 
-      def ext_rw
-        extend(JSave)
+      def ext_save
+        extend(JSave).ext_save
       end
 
       def auto_load
@@ -115,7 +115,7 @@ module CIAX
         Msg.type?(obj, JFile)
       end
 
-      def auto_save
+      def ext_save
         @cmt_procs << proc { save }
         self
       end

@@ -11,6 +11,11 @@ module CIAX
     # RecArc(Index) > RecList(Records) > Visible(IDs)
     # RecList : Server Side
     # Visible : Client Side (Parameter#list)
+    #
+    # Mode:
+    #  Remote: get Rec_arc and Record via Http
+    #  Local(R/O) : get Rec_arc and Record from File
+    #  Local(R/W) : write down Rec_arc
     class RecList < Upd
       attr_reader :rec_arc
       def initialize(proj = ENV['PROJ'], visible = [])

@@ -20,8 +20,7 @@ module CIAX
       # Mode
       #   Skelton
       #   Remote (Read only)
-      #   Local  (Read/Write Memory)
-      #   Local_File (Read/Write Memory, File read only)
+      #   Local (Read/Write Memory, File read only)
       #   Local_Save (Read/Write File)
       def ext_local
         extend(Local).ext_local
@@ -94,6 +93,6 @@ module CIAX
       end
     end
 
-    puts RecArc.new.ext_local.clear.refresh if __FILE__ == $PROGRAM_NAME
+    puts RecArc.new.ext_local.refresh if __FILE__ == $PROGRAM_NAME
   end
 end

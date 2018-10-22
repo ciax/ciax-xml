@@ -13,7 +13,7 @@ module CIAX
       def initialize(rec_list = RecList.new)
         super()
         # @rec_arc: List of Record Header (Log)
-        @rec_list = Msg.type?(rec_list, RecList)
+        @rec_list = Msg.type?(rec_list, RecList).ext_local
       end
 
       #### Driver Methods ####
@@ -36,7 +36,6 @@ module CIAX
         seq = Sequencer.new(ent, pid) { |e, p| add(e, p) }
         super(Msg.type?(seq.fork, Threadx::Fork)) # start immediately
         @rec_list.push(seq.record)
-        @rec_list.rec_arc.push(seq.record)
         seq
       end
 

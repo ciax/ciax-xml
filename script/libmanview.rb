@@ -56,11 +56,6 @@ module CIAX
         self
       end
 
-      def ext_local
-        @rec_list.ext_local
-        self
-      end
-
       def ext_remote(host)
         @rec_list.ext_remote(host)
         self

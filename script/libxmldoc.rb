@@ -37,7 +37,7 @@ module CIAX
         ___set_includes
         # get generates document branch of db items(Hash),
         # which includes attribute and domains
-        @get_proc = proc { |id| id_err(id, @type, self) }
+        self.default_proc = proc { |_hash, id| id_err(id, @type, self) }
       end
 
       def to_s

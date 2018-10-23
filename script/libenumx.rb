@@ -99,12 +99,8 @@ module CIAX
 
     # Generate value if @get_proc and no key
     def get(key)
-      return self[key] if key?(key)
-      if defined? yield
-        self[key] = yield key
-      elsif @get_proc
-        self[key] = @get_proc.call(key)
-      end
+      self[key] ||= yield key if defined? yield
+      self[key]
     end
 
     # Put value. return self

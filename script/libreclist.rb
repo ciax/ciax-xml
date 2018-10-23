@@ -69,8 +69,8 @@ module CIAX
       def ext_remote(host)
         @host = host
         @rec_arc.ext_remote(host)
-        @get_proc = proc do |key|
-          Record.new(key).ext_remote(@host)
+        self.default_proc = proc do |hash, key|
+          hash[key] = Record.new(key).ext_remote(@host)
         end
         self
       end
@@ -129,8 +129,8 @@ module CIAX
 
         def ext_local
           @rec_arc.ext_local.refresh
-          @get_proc = proc do |key|
-            Record.new(key).ext_local_file.load
+          self.default_proc = proc do |hash, key|
+            hash[key] = Record.new(key).ext_local_file.load
           end
           self
         end

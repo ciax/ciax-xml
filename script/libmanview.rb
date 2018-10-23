@@ -24,7 +24,7 @@ module CIAX
         @rec_list = type?(rec_list, RecList)
         @org_cmds = (@valid_keys = valid_keys).dup
         # To finish up update which is removed from alive list at the end
-        @live_list = []
+        @alives = []
         ___init_upd_proc
       end
 
@@ -47,12 +47,17 @@ module CIAX
 
       def get_arc(n = 1)
         @rec_list.get_arc(n.to_i)
-        @par.sel_first
+        @par.flush(@rec_list.keys)
         self
       end
 
       def add_arc
         get_arc(@par.list.size + 1)
+        self
+      end
+
+      def ext_local
+        @rec_list.ext_local
         self
       end
 
@@ -68,8 +73,9 @@ module CIAX
           # Available commands in current record
           opts = @par.current_rid ? __crnt_opt : @org_cmds
           @valid_keys.replace(opts)
-          @live_list.each { |id| @rec_list.get(id).upd }
-          @live_list = @sv_stat.get(:list).dup
+          @alives.each { |id| @rec_list.get(id) }
+          @alives = @sv_stat.get(:list).dup
+          @par.list
         end
       end
 
@@ -87,7 +93,8 @@ module CIAX
       ConfOpts.new('[id] ..') do |cfg, args|
         num = args.shift.to_i
         par = Parameter.new
-        view = ManView.new(Prompt.new(cfg[:id]), par).ext_local.get_arc(num)
+        sv_stat = Prompt.new(cfg[:id])
+        view = ManView.new(sv_stat, par).ext_local.get_arc(num)
         par.sel(args.shift.to_i)
         puts view
       end

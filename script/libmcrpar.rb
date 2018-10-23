@@ -17,6 +17,7 @@ module CIAX
       # select id by index number (1~max)
       #  return id otherwise nil
       def sel(idx)
+        type?(idx, Numeric)
         if idx < 1
           delete(:default)
         else

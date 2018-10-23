@@ -6,24 +6,23 @@ module CIAX
   # Macro Layer
   module Mcr
     # Visible Record Database
-    # Need RecArc to get Parent CID
-    # visible Array is Parameter[:list]
-    # RecArc(Index) > RecList(Records) > Visible(IDs)
-    # RecList : Server Side
-    # Visible : Client Side (Parameter#list)
+    # Need RecArc to get Parent CID for SeqList
+    # Alives Array is Parameter[:list] = SeqList(alive macro)
+    # RecArc(Index) > RecList(Records) > SeqList(IDs)
+    # RecList : Client Side (Picked at Client)
+    # Alives : Server Side (Parameter#list)
     #
     # Mode:
     #  Remote: get Rec_arc and Record via Http
-    #  Local(R/O) : get Rec_arc and Record from File
-    #  Local(R/W) : write down Rec_arc
-    class RecList < Upd
+    #  Local(ext_local) : get Rec_arc and Record from File
+    #  Local(ext_save) : write down Rec_arc
+    class RecList < Hashx
       attr_reader :rec_arc
-      def initialize(proj = ENV['PROJ'], visible = [])
+      def initialize(proj = ENV['PROJ'], alives = [])
         super()
         @proj = proj
         @rec_arc = RecArc.new
-        @visible = type?(visible, Array)
-        @upd_procs << proc { values.each(&:upd) }
+        @alives = type?(alives, Array)
       end
 
       # delete from @records other than in ary
@@ -42,13 +41,25 @@ module CIAX
         cmt
       end
 
-      # Manipulate memory
-      def ext_local
-        extend(Local).ext_local
+      def get(id)
+        type?(id, String)
+        super
+      end
+
+      # Change alives list
+      def get_arc(num = 1)
+        rkeys = @rec_arc.upd.list.keys + @alives
+        picked = rkeys.sort.uniq.last(num.to_i)
+        picked.each { |id| get(id) }
         self
       end
 
-      #### Client Methods ####
+      # Show Index of Alives Item
+      def to_v
+        ___list_view
+      end
+
+      #### Extensions Methods ####
       def ext_remote(host)
         @host = host
         @rec_arc.ext_remote(host)
@@ -58,33 +69,22 @@ module CIAX
         self
       end
 
+      # Manipulate memory
+      def ext_local
+        extend(Local).ext_local
+        self
+      end
+
       def ext_server
         @rec_arc.clear.refresh_bg
         self
-      end
-
-      def get(id)
-        type?(id, String)
-        super
-      end
-
-      # Change visible list
-      def get_arc(num = 1)
-        rkeys = @rec_arc.upd.list.keys
-        @visible.replace(rkeys.sort.last(num.to_i))
-        self
-      end
-
-      # Show Index of Visible Item
-      def to_v
-        ___list_view
       end
 
       private
 
       def ___list_view
         page = ['<<< ' + colorize("Active Macros [#{@proj}]", 2) + ' >>>']
-        @visible.each_with_index do |id, idx|
+        keys.each_with_index do |id, idx|
           page << ___item_view(id, idx + 1)
         end
         page.join("\n")
@@ -141,7 +141,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[num]') do |_opt, args|
-        puts RecList.new.get_arc(args.shift).to_v
+        rl = RecList.new.ext_local.get_arc(args.shift)
+        puts rl.to_v
       end
     end
   end

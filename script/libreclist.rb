@@ -146,9 +146,15 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[num]') do |_opt, args|
-        rl = RecList.new.ext_local.get_arc(args.shift)
-        puts rl.ordinal(args.shift)
+      GetOpts.new('[num]', options: 'ch') do |opts, args|
+        Msg.args_err if args.empty?
+        rl = RecList.new
+        if opts.cl?
+          rl.ext_remote(opts.host)
+        else
+          rl.ext_local
+        end
+        puts rl.get_arc(args.shift).ordinal(args.shift)
       end
     end
   end

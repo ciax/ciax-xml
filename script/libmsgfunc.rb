@@ -21,6 +21,10 @@ module CIAX
       eval("\"#{str}\"")
     end
 
+    def limit(min, max, num)
+      [type?(min, Numeric), [type?(max, Numeric), type?(num, Numeric)].min].max
+    end
+
     # variable keys of db will be converted to String
     # other fixed keys are Symbol
     def key2str(hash)

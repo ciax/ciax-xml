@@ -48,7 +48,7 @@ module CIAX
 
       def ordinal(num)
         return self if (num.to_i * size).zero?
-        num = [1, [size, num.to_i].min].max
+        num = limit(1, size, num.to_i)
         get(keys.sort[num - 1])
       end
 

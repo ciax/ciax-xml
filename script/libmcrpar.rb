@@ -12,12 +12,13 @@ module CIAX
       def initialize(hash = {})
         hash = { type: 'str', list: (@list = []) }
         super(hash)
+        @index = 0
       end
 
       # select id by index number (1~max)
       #  return id otherwise nil
       def sel(idx)
-        type?(idx, Numeric)
+        @index = [1,[@list.size,type?(idx, Numeric)].min].max
         if idx < 1
           delete(:default)
         else

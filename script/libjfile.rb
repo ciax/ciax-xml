@@ -8,7 +8,7 @@ module CIAX
 
       # Using for RecArc, RecList
       def jload(fname)
-        j2h(loadfile(fname))
+        jread(loadfile(fname))
       rescue InvalidData
         show_err
         Hashx.new

@@ -143,6 +143,7 @@ module CIAX
       GetOpts.new('[num]') do |_opt, args|
         rl = RecList.new.ext_local.get_arc(args.shift)
         puts rl.to_v
+        puts rl.first
       end
     end
   end

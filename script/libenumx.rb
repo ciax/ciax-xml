@@ -164,6 +164,10 @@ module CIAX
       end
     end
 
+    def first
+      self[keys.first]
+    end
+
     private
 
     def __diff?(key, val)

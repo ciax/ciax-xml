@@ -46,6 +46,11 @@ module CIAX
         super
       end
 
+      def ordinal(num)
+        num = [1, [size, num.to_i].min].max
+        get(keys.sort[num - 1])
+      end
+
       # Change alives list
       def get_arc(num = 1)
         rkeys = @rec_arc.upd.list.keys + @alives
@@ -143,7 +148,7 @@ module CIAX
       GetOpts.new('[num]') do |_opt, args|
         rl = RecList.new.ext_local.get_arc(args.shift)
         puts rl.to_v
-        puts rl.first
+        puts rl.ordinal(args.shift).to_v
       end
     end
   end

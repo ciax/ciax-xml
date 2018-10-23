@@ -62,12 +62,6 @@ module CIAX
           cmt
         end
 
-        def refresh_bg # returns self
-          Threadx::Fork.new('RecArc(rec_list)', 'mcr', @id) do
-            refresh
-          end
-        end
-
         private
 
         def __extract(rec)

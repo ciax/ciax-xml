@@ -81,9 +81,10 @@ module CIAX
         self
       end
 
-      def ext_server
-        @rec_arc.clear.refresh_bg
-        self
+      def refresh_arc_bg # returns Thread
+        Threadx::Fork.new('RecArc(rec_list)', 'mcr', @id) do
+          @rec_arc.clear.refresh
+        end
       end
 
       private
@@ -146,13 +147,14 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[num]', options: 'ch') do |opts, args|
+      GetOpts.new('[num]', options: 'chs') do |opts, args|
         Msg.args_err if args.empty?
         rl = RecList.new
         if opts.cl?
           rl.ext_remote(opts.host)
         else
           rl.ext_local
+          rl.ext_save.refresh_arc_bg.join if opts.sv?
         end
         puts rl.get_arc(args.shift).ordinal(args.shift)
       end

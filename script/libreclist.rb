@@ -47,6 +47,7 @@ module CIAX
       end
 
       def ordinal(num)
+        return self if (num.to_i * size).zero?
         num = [1, [size, num.to_i].min].max
         get(keys.sort[num - 1])
       end
@@ -147,8 +148,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[num]') do |_opt, args|
         rl = RecList.new.ext_local.get_arc(args.shift)
-        puts rl.to_v
-        puts rl.ordinal(args.shift).to_v
+        puts rl.ordinal(args.shift)
       end
     end
   end

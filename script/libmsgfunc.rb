@@ -21,8 +21,19 @@ module CIAX
       eval("\"#{str}\"")
     end
 
-    def limit(min, max, num)
-      [type?(min, Numeric), [type?(max, Numeric), type?(num, Numeric)].min].max
+    # Use num.clamp() on ruby 2.4 or later
+    # the order of range parameters is not concerned
+    def limit(r1, r2, num)
+      rg = [r1, r2]
+      min = rg.min
+      max = rg.max
+      if num > max
+        max
+      elsif num < min
+        min
+      else
+        num
+      end
     end
 
     # variable keys of db will be converted to String

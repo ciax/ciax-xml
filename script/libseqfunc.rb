@@ -17,79 +17,83 @@ module CIAX
 
       private
 
-      def ___mcr_bg(step)
-        return unless step[:async] && @submcr_proc.is_a?(Proc)
+      def ___mcr_bg(mstep)
+        return unless mstep[:async] && @submcr_proc.is_a?(Proc)
         # adding new macro to @rec_list
-        step[:id] = @submcr_proc.call(_get_ment(step), @id).id
+        mstep[:id] = @submcr_proc.call(_get_ment(mstep), @id).id
       end
 
       # Sub for for cmd_mcr()
-      def ___mcr_fg(step, _mstat)
+      def ___mcr_fg(mstep, _mstat)
         __enc_begin
-        step[:count] = 1 if step[:retry]
-        ___mcr_trial(step)
+        mstep[:count] = 1 if mstep[:retry]
+        ___mcr_trial(mstep)
       end
 
       # Sub for _mcr_fg()
-      def ___mcr_trial(step)
-        _sequencer(_get_ment(step), step)
-        __enc_end(step)
+      def ___mcr_trial(mstep)
+        _sequencer(_get_ment(mstep), mstep)
+        __enc_end(mstep)
       rescue Verification
-        __set_err(step)
-        count = ___count_retry(step)
-        step = ___new_macro(step, count)
-        sleep step[:wait].to_i
+        mstep = ___mcr_retry(mstep)
         retry
       end
 
       # Sub for _mcr_trial()
-      def ___count_retry(step)
-        count = step[:count].to_i
-        __enc_end(step)
-        raise if count >= step[:retry].to_i && _qry_giveup?(step)
-        step[:action] = 'retry'
+      def ___mcr_retry(mstep)
+        __set_err(mstep)
+        count = ___count_retry(mstep)
+        ___new_macro(mstep, count)
+      end
+
+      def ___count_retry(mstep)
+        count = mstep[:count].to_i
+        __enc_end(mstep)
+        raise if count >= mstep[:retry].to_i && _qry_giveup?(mstep)
+        mstep[:action] = 'retry'
+        sleep mstep[:wait].to_i
         count
       end
 
-      def ___new_macro(step, count)
-        newstep = @record.add_step(step, @depth)
-        newstep[:count] = count + 1
-        show_fg newstep.title_s
+      def ___new_macro(mstep, count)
+        newmstep = @record.add_step(mstep, @depth)
+        newmstep[:count] = count + 1
+        show_fg newmstep.title_s
         show_fg Msg.colorize("(Retry #{count})", 1)
         __enc_begin
-        newstep.cmt # continue
+        newmstep.cmt # continue
       end
 
       def __enc_begin
         show_fg Msg.colorize(" {\n", 1)
       end
 
-      def __enc_end(step)
-        show_fg step.indent_s(4) + Msg.colorize(' }', 1)
-        show_fg step.result_s
+      def __enc_end(mstep)
+        show_fg mstep.indent_s(4) + Msg.colorize(' }', 1)
+        show_fg mstep.result_s
       end
 
-      def __set_err(step)
+      def __set_err(mstep)
         ek = $ERROR_INFO.class.to_s.split(':').last.downcase
-        step.result = ERR_CODE[ek.to_sym] || ek
+        mstep.result = ERR_CODE[ek.to_sym] || ek
       end
 
       # Mcr::Entity
-      def _get_ment(step)
-        @cfg[:index].set_cmd(step[:args])
+      def _get_ment(mstep)
+        @cfg[:index].set_cmd(mstep[:args])
       end
 
       # Query
-      def _qry_giveup?(step)
-        @qry.query(%w(drop force retry), step)
+      def _qry_giveup?(cstep)
+        @qry.query(%w(drop force retry), cstep)
       end
 
-      def _qry_enter?(step)
-        step.result = 'enter' if @qry.query(%w(pass enter), step)
+      def _qry_enter?(cstep)
+        cstep.result = 'enter' if @qry.query(%w(pass enter), cstep)
       end
 
-      def _qry_exec?(step)
-        @qry.query(%w(exec skip), step)
+      def _qry_exec?(estep)
+        @qry.query(%w(exec skip), estep)
       end
     end
   end

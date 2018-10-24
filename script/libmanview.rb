@@ -25,29 +25,27 @@ module CIAX
         @org_cmds = (@valid_keys = valid_keys).dup
         # To finish up update which is removed from alive list at the end
         @alives = []
-        ___init_upd_proc
+        ___init_procs
       end
 
       # Show Record(id = @par.current_rid) or List of them
       def to_v
-        @par.current_rid ? __crnt_rec.to_v : @rec_list.to_v
+        (__crnt_rec || @rec_list).to_v
       end
 
       def to_r
-        @par.current_rid ? __crnt_rec.to_r : super
+        (__crnt_rec || @rec_list).to_r
       end
 
-      def index
-        n = @par.current_idx
-        return '[0]' unless n
-        rec = __crnt_rec
+      def prompt_index
+        return '[0]' unless (rec = __crnt_rec)
         opt = optlist(rec[:option]) if rec.busy? && rec.last
-        "[#{n + 1}]#{opt}"
+        "[#{@par.current_idx}]#{opt}"
       end
 
       def get_arc(n = 1)
         @rec_list.get_arc(n.to_i)
-        @par.flush(@rec_list.keys)
+        @par.flush(@rec_list.list.keys)
         self
       end
 
@@ -68,7 +66,8 @@ module CIAX
 
       private
 
-      def ___init_upd_proc
+      def ___init_procs
+        @rec_list.cmt_procs << proc { |rl| @par.flush(rl.list.keys) }
         @upd_procs << proc do
           # Available commands in current record
           opts = @par.current_rid ? __crnt_opt : @org_cmds
@@ -80,7 +79,7 @@ module CIAX
       end
 
       def __crnt_rec
-        @rec_list.get(@par.current_rid)
+        @rec_list.ordinal(@par.current_idx)
       end
 
       def __crnt_opt

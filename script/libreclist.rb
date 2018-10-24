@@ -48,9 +48,9 @@ module CIAX
       end
 
       def ordinal(num)
-        return if (num.to_i * size).zero?
-        num = limit(1, size, num.to_i)
-        get(@list.keys.sort[num - 1])
+        num = num.to_i
+        return if (num * @list.size).zero?
+        get(@list.keys[limit(1, @list.size, num) - 1])
       end
 
       # Change alives list

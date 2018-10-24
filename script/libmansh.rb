@@ -25,7 +25,7 @@ module CIAX
           # @stat will be switched among Whole List or Records
           # Setting @par will switch the Record
           @prompt_proc = proc do
-            @sv_stat.to_s + @stat.index
+            @sv_stat.to_s + @stat.prompt_index
           end
           @stat.ext_local
         end

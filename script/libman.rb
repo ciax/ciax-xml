@@ -47,7 +47,7 @@ module CIAX
 
       def ___init_prompt
         @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
-        @par = Parameter.new(list: @sv_stat.get(:list))
+        @par = Parameter.new
       end
 
       # Initiate for all mode
@@ -60,7 +60,7 @@ module CIAX
       end
 
       def ___init_stat
-        @rec_list = RecList.new(@id, @par.list)
+        @rec_list = RecList.new(@id, @sv_stat.get(:list))
         int = @cobj.rem.int
         @stat = ManView.new(@sv_stat, @par, @rec_list, int.valid_keys)
         int.add_par(@par)

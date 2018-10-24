@@ -24,7 +24,7 @@ module CIAX
       end
 
       # Sub for for cmd_mcr()
-      def ___mcr_fg(mstep, _mstat)
+      def ___mcr_fg(mstep)
         __enc_begin
         mstep[:count] = 1 if mstep[:retry]
         ___mcr_trial(mstep)

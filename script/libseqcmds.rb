@@ -97,7 +97,7 @@ module CIAX
       end
 
       def _cmd_mcr(step, mstat)
-        ___mcr_bg(step) || ___mcr_fg(step, mstat)
+        ___mcr_bg(step) || ___mcr_fg(step)
         true
       end
     end

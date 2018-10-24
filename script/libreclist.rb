@@ -7,7 +7,7 @@ module CIAX
   module Mcr
     # Visible Record Database
     # Need RecArc to get Parent CID for SeqList
-    # Alives Array is Parameter[:list] = SeqList(alive macro)
+    # Alives Array is Prompt[:list] = SeqList(alive macro)
     # RecArc(Index) > RecList(Records) > SeqList(IDs)
     # RecList : Client Side (Picked at Client)
     # Alives : Server Side (Parameter#list)
@@ -16,19 +16,20 @@ module CIAX
     #  Remote: get Rec_arc and Record via Http
     #  Local(ext_local) : get Rec_arc and Record from File
     #  Local(ext_save) : write down Rec_arc
-    class RecList < Hashx
-      attr_reader :rec_arc
+    class RecList < Upd
+      attr_reader :list
       def initialize(proj = ENV['PROJ'], alives = [])
         super()
         @proj = proj
         @rec_arc = RecArc.new
         @alives = type?(alives, Array)
+        @list = {}
       end
 
       # delete from @records other than in ary
       def flush(ary)
-        (keys - ary).each do |id|
-          delete(id)
+        (@list.keys - ary).each do |id|
+          @list.delete(id)
         end
         cmt
       end
@@ -36,20 +37,20 @@ module CIAX
       def push(record) # returns self
         id = record[:id]
         return self unless id.to_i > 0
-        self[id] = record
+        @list[id] = record
         yield record if defined? yield
         cmt
       end
 
       def get(id)
         type?(id, String)
-        super
+        @list[id]
       end
 
       def ordinal(num)
-        return self if (num.to_i * size).zero?
+        return if (num.to_i * size).zero?
         num = limit(1, size, num.to_i)
-        get(keys.sort[num - 1])
+        get(@list.keys.sort[num - 1])
       end
 
       # Change alives list
@@ -69,7 +70,7 @@ module CIAX
       def ext_remote(host)
         @host = host
         @rec_arc.ext_remote(host)
-        self.default_proc = proc do |hash, key|
+        @list.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_remote(@host)
         end
         self
@@ -91,7 +92,7 @@ module CIAX
 
       def ___list_view
         page = ['<<< ' + colorize("Active Macros [#{@proj}]", 2) + ' >>>']
-        keys.each_with_index do |id, idx|
+        @list.keys.each_with_index do |id, idx|
           page << ___item_view(id, idx + 1)
         end
         page.join("\n")
@@ -129,7 +130,7 @@ module CIAX
 
         def ext_local
           @rec_arc.ext_local.refresh
-          self.default_proc = proc do |hash, key|
+          @list.default_proc = proc do |hash, key|
             hash[key] = Record.new(key).ext_local_file.load
           end
           self
@@ -156,7 +157,7 @@ module CIAX
           rl.ext_local
           rl.ext_save.refresh_arc_bg.join if opts.sv?
         end
-        puts rl.get_arc(args.shift).ordinal(args.shift)
+        puts rl.get_arc(args.shift).ordinal(args.shift) || rl
       end
     end
   end

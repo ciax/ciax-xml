@@ -14,7 +14,7 @@ module CIAX
         @host = host || 'localhost'
         @dir = format('/%s/', dir || 'json')
         verbose { "Initiate Http (#{@host})" }
-        self[:id] || Msg.cfg_err('ID')
+        @id || Msg.cfg_err('ID')
         @upd_procs << proc { load }
         load
         self

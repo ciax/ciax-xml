@@ -98,6 +98,18 @@ module CIAX
           end
         end
       end
+
+      # System commands
+      module Sys
+        # System group
+        class Group
+          def initialize(dom_cfg, atrb = Hashx.new)
+            super
+            add_item('nonstop', 'Mode')
+            add_item('interactive', 'Mode')
+          end
+        end
+      end
     end
 
     if __FILE__ == $PROGRAM_NAME

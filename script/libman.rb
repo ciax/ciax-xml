@@ -20,7 +20,6 @@ module CIAX
         ___init_prompt
         ___init_cmd
         ___init_stat
-        ___init_seq
         _opt_mode
       end
 
@@ -64,38 +63,6 @@ module CIAX
         int = @cobj.rem.int
         @stat = ManView.new(@sv_stat, @par, @rec_list, int.valid_keys)
         int.add_par(@par)
-      end
-
-      def ___init_seq
-        @seq_list = SeqList.new(@rec_list)
-        ___init_pre_exe
-        ___init_proc_rem_ext
-        ___init_proc_rem_int
-      end
-
-      def ___init_pre_exe
-        @pre_exe_procs << proc do
-          @sv_stat.flush(:list, @seq_list.alives).repl(:sid, '')
-          @sv_stat.flush(:run).cmt if @sv_stat.upd.get(:list).empty?
-          @stat.upd
-        end
-      end
-
-      def ___init_proc_rem_ext
-        # External Command Group
-        ext = @cobj.rem.ext
-        ext.def_proc do |ent|
-          sid = @seq_list.add(ent).id
-          @sv_stat.push(:list, sid).repl(:sid, sid)
-        end
-      end
-
-      def ___init_proc_rem_int
-        # Internal Command Group
-        @cobj.rem.int.def_proc do |ent|
-          @sv_stat.repl(:sid, ent.par[0])
-          ent.msg = @seq_list.reply(ent.id) || 'NOSID'
-        end
       end
     end
 

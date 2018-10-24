@@ -17,22 +17,22 @@ module CIAX
 
       private
 
-      def ___mcr_bg(mstep)
+      def ___mcr_bg(ment, mstep)
         return unless mstep[:async] && @submcr_proc.is_a?(Proc)
         # adding new macro to @rec_list
-        mstep[:id] = @submcr_proc.call(_get_ment(mstep), @id).id
+        mstep[:id] = @submcr_proc.call(ment, @id).id
       end
 
       # Sub for for cmd_mcr()
-      def ___mcr_fg(mstep)
+      def ___mcr_fg(ment, mstep)
         __enc_begin
         mstep[:count] = 1 if mstep[:retry]
-        ___mcr_trial(mstep)
+        ___mcr_trial(ment, mstep)
       end
 
       # Sub for _mcr_fg()
-      def ___mcr_trial(mstep)
-        _sequencer(_get_ment(mstep), mstep)
+      def ___mcr_trial(ment, mstep)
+        _sequencer(ment, mstep)
         __enc_end(mstep)
       rescue Verification
         mstep = ___mcr_retry(mstep)
@@ -76,11 +76,6 @@ module CIAX
       def __set_err(mstep)
         ek = $ERROR_INFO.class.to_s.split(':').last.downcase
         mstep.result = ERR_CODE[ek.to_sym] || ek
-      end
-
-      # Mcr::Entity
-      def _get_ment(mstep)
-        @cfg[:index].set_cmd(mstep[:args])
       end
 
       # Query

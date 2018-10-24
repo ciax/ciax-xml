@@ -96,8 +96,9 @@ module CIAX
         _new_step({ type: 'mcr', args: name }, mstat)
       end
 
-      def _cmd_mcr(step, mstat)
-        ___mcr_bg(step) || ___mcr_fg(step)
+      def _cmd_mcr(step, _mstat)
+        ment = @cfg[:index].set_cmd(step[:args])
+        ___mcr_bg(ment, step) || ___mcr_fg(ment, step)
         true
       end
     end

@@ -9,20 +9,17 @@ function make_step(step) {
     html.push('<span title="' + json_view(step));
     html.push('" class="head ' + type + '">' + type + '</span>');
     html.push('<span class="cmd"');
-    if (step.site) {
-      ary.push(step.site);
-      html.push(_devlink(step.site));
-    }
-    if (step.args) {
-      ary = ary.concat(step.args);
-    }
-    if (step.val) {
-      ary.push(step.val);
-    }
-    if (type == 'mcr') {
-      html.push(' title="' + ary.join(':') + '">');
-      html.push(': ' + config.label[ary[0]]);
+    if (type == 'mcr' || type == 'select') {
+      html.push(' title="' + step.args.join(':') + '">');
+      html.push(': ' + config.label[step.args[0]]);
     } else {
+      if (step.site) {
+        ary.push(step.site);
+        html.push(_devlink(step.site));
+      }
+      if (step.args) {
+        ary = ary.concat(step.args);
+      }
       html.push('>');
       if (step.label) html.push(': ' + step.label);
       if (ary.length > 0) {
@@ -105,10 +102,24 @@ function make_step(step) {
     return ('onclick="open_graph(\'' + site + '\',\'' + vid + '\',\'' + time + '\');"');
   }
 
+  function _select() {
+    if (step.type != 'select') return;
+    html.push('<ul><li>')
+    html.push('<var ' + _devlink(step.site) + '>');
+    html.push(step.site + ':' + step['var']); // step.var expression gives error at yui-compressor
+    html.push('(' + step.form + ')</var>');
+    html.push('<code> == </code>  ');
+    html.push('<span class="true" ');
+    html.push(_graphlink(step.site, step['var'], step.time));
+    html.push('> (' + step.select + ')</span>');
+    html.push('</li></ul>');
+    return true;
+  }
+
   function _conditions() {
     if (!step.conditions) return;
     html.push('<ul>');
-    $.each(step.conditions, function (k, cond) {
+    $.each(step.conditions, function(k, cond) {
       var res = cond.res;
       html.push('<li>');
       html.push('<var ' + _devlink(cond.site) + '>');
@@ -134,11 +145,12 @@ function make_step(step) {
     html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
   }
 
-  var html = ['<li'];
-  if (step.type != 'mcr') html.push(' class="step"');
+    var html = ['<li'];
+  if (step.type != 'mcr' && step.type != 'select') html.push(' class="step"');
+  console.log(step.type);
   html.push('>');
   _header();
-  _conditions() || _sub_mcr();
+  _select() || _conditions() || _sub_mcr();
   html.push('</li>');
   return html.join('');
 }
@@ -158,7 +170,7 @@ function record_page(data) {
   $('#record ul').empty();
   if (data.start) {
     start_time = new Date(data.start); // empty when ready
-    $.each(data.steps, function (i, step) {
+    $.each(data.steps, function(i, step) {
       $('#record .depth' + step.depth + ':last').append(make_step(step));
     });
     sticky_bottom('slow');
@@ -190,7 +202,7 @@ function func_update_record() {
     var sel = $('#query')[0];
     if (!sel) return;
     if (data.status == 'query') {
-      var cmdary = data.option.map(function (cmd) {
+      var cmdary = data.option.map(function(cmd) {
         return ([cmd, data.id]);
       });
       make_radio(sel, cmdary);
@@ -312,8 +324,8 @@ function selmcr(dom) {
 function init_page() {
   set_acordion('#record');
   set_auto_release('#record');
-  $('#query').on('change', 'input[name="query"]:radio', function () {
-    exec($(this).val(), function () {
+  $('#query').on('change', 'input[name="query"]:radio', function() {
+    exec($(this).val(), function() {
       $('#query').empty();
     });
   });

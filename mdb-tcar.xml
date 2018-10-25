@@ -977,7 +977,80 @@
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
           <cfg site="tmc" name="lowspd"/>
-          <mcr name="slotX_00"/>
+          <select site="tmc" var="abs" form="msg">
+            <option val="S00">
+              <mcr name="slot00_00"/>
+            </option>
+            <option val="S01">
+              <mcr name="slot01_00"/>
+            </option>
+            <option val="S02">
+              <mcr name="slot02_00"/>
+            </option>
+            <option val="S03">
+              <mcr name="slot03_00"/>
+            </option>
+            <option val="S04">
+              <mcr name="slot04_00"/>
+            </option>
+            <option val="S05">
+              <mcr name="slot05_00"/>
+            </option>
+            <option val="S06">
+              <mcr name="slot06_00"/>
+            </option>
+            <option val="S07">
+              <mcr name="slot07_00"/>
+            </option>
+            <option val="S08">
+              <mcr name="slot08_00"/>
+            </option>
+            <option val="S09">
+              <mcr name="slot09_00"/>
+            </option>
+            <option val="S10">
+              <mcr name="slot10_00"/>
+            </option>
+            <option val="S11">
+              <mcr name="slot11_00"/>
+            </option>
+            <option val="S12">
+              <mcr name="slot12_00"/>
+            </option>
+            <option val="S13">
+              <mcr name="slot13_00"/>
+            </option>
+            <option val="S14">
+              <mcr name="slot14_00"/>
+            </option>
+            <option val="S15">
+              <mcr name="slot15_00"/>
+            </option>
+            <option val="S16">
+              <mcr name="slot16_00"/>
+            </option>
+            <option val="S17">
+              <mcr name="slot17_00"/>
+            </option>
+            <option val="S18">
+              <mcr name="slot18_00"/>
+            </option>
+            <option val="S19">
+              <mcr name="slot19_00"/>
+            </option>
+            <option val="S20">
+              <mcr name="slot20_00"/>
+            </option>
+            <option val="S21">
+              <mcr name="slot21_00"/>
+            </option>
+            <option val="S22">
+              <mcr name="slot22_00"/>
+            </option>
+            <option val="S23">
+              <mcr name="slot23_00"/>
+            </option>
+          </select>
           <mcr name="check_slot00"/>
         </item>
         <item id="slot1" label="carousel">
@@ -989,7 +1062,80 @@
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
           <cfg site="tmc" name="lowspd"/>
-          <mcr name="slotX_01"/>
+          <select site="tmc" var="abs" form="msg">
+            <option val="S00">
+              <mcr name="slot00_01"/>
+            </option>
+            <option val="S01">
+              <mcr name="slot01_01"/>
+            </option>
+            <option val="S02">
+              <mcr name="slot02_01"/>
+            </option>
+            <option val="S03">
+              <mcr name="slot03_01"/>
+            </option>
+            <option val="S04">
+            <mcr name="slot04_01"/>
+            </option>
+            <option val="S05">
+              <mcr name="slot05_01"/>
+            </option>
+            <option val="S06">
+              <mcr name="slot06_01"/>
+            </option>
+            <option val="S07">
+              <mcr name="slot07_01"/>
+            </option>
+            <option val="S08">
+              <mcr name="slot08_01"/>
+            </option>
+            <option val="S09">
+              <mcr name="slot09_01"/>
+            </option>
+            <option val="S10">
+              <mcr name="slot10_01"/>
+            </option>
+            <option val="S11">
+              <mcr name="slot11_01"/>
+            </option>
+            <option val="S12">
+              <mcr name="slot12_01"/>
+            </option>
+            <option val="S13">
+              <mcr name="slot13_01"/>
+            </option>
+            <option val="S14">
+              <mcr name="slot14_01"/>
+            </option>
+            <option val="S15">
+              <mcr name="slot15_01"/>
+            </option>
+            <option val="S16">
+              <mcr name="slot16_01"/>
+            </option>
+            <option val="S17">
+              <mcr name="slot17_01"/>
+            </option>
+            <option val="S18">
+              <mcr name="slot18_01"/>
+            </option>
+            <option val="S19">
+              <mcr name="slot19_01"/>
+            </option>
+            <option val="S20">
+              <mcr name="slot20_01"/>
+            </option>
+            <option val="S21">
+              <mcr name="slot21_01"/>
+            </option>
+            <option val="S22">
+              <mcr name="slot22_01"/>
+            </option>
+            <option val="S23">
+              <mcr name="slot23_01"/>
+            </option>
+          </select>
           <mcr name="check_slot01"/>
         </item>
         <item id="slot2" label="carousel">

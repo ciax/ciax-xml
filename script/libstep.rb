@@ -3,8 +3,8 @@ require 'libupd'
 # For Macro Line (Array)
 module CIAX
   module Mcr
-    # Mcr Step Print
-    class Step < Upd
+    # Step constant
+    module StepDefine
       OPE = { equal: '==', not: '!=', match: '=~', unmatch: '!~' }.freeze
       Title_List = {
         mesg: ['Mesg', 5], bypass: ['Bypass?', 6, 'skip if satisfied'],
@@ -12,10 +12,32 @@ module CIAX
         check: ['Check', 6, 'interlock'], verify: ['Verify', 6, 'at the end']
       }.freeze
 
+      # Branched functions (instead of case/when semantics)
+      def __init_title_list
+        {
+          upd: ['Update', 10, __sid(:site)],
+          system: ['System', 13, __sid(:val)],
+          mcr: ['MACRO', 3, __sid(:args, :async)],
+          exec: ['EXEC', 13, __sid(:site, :args)],
+          cfg: ['Config', 14, __sid(:site, :args)],
+          sleep: ['Sleeping(sec)', 6, __sid(:val)],
+          select: ['SELECT', 3, __sid(:site, :var)],
+          wait: ['Waiting', 6, __sid(:retry)]
+        }.update(Title_List)
+      end
+
+      def __sid(*names)
+        proc { a2cid(names.map { |n| self[n] }) }
+      end
+    end
+
+    # Mcr Step Print
+    class Step < Upd
+      include StepDefine
       def initialize(base_time)
         super()
         @base_time = type?(base_time, Integer)
-        ___init_title_list
+        @title_list = __init_title_list
       end
 
       def title_s
@@ -112,24 +134,6 @@ module CIAX
 
       def ___timestamp
         format('[%6.2f]', (self[:time] - @base_time) * 0.001)
-      end
-
-      # Branched functions (instead of case/when semantics)
-      def ___init_title_list
-        @title_list = {
-          upd: ['Update', 10, __sid(:site)],
-          system: ['System', 13, __sid(:val)],
-          mcr: ['MACRO', 3, __sid(:args, :async)],
-          exec: ['EXEC', 13, __sid(:site, :args)],
-          cfg: ['Config', 14, __sid(:site, :args)],
-          sleep: ['Sleeping(sec)', 6, __sid(:val)],
-          select: ['SELECT', 3, __sid(:site, :var)],
-          wait: ['Waiting', 6, __sid(:retry)]
-        }.update(Title_List)
-      end
-
-      def __sid(*names)
-        proc { a2cid(names.map { |n| self[n] }) }
       end
     end
   end

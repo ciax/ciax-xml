@@ -42,11 +42,7 @@ module CIAX
           return self unless (seldb = self[:select])
           val ||= seldb.keys.first
           [val, '*'].each do |k|
-            next unless (args = seldb[k])
-            self[:select] = k
-            self[:args] = args
-            show_fg select_s
-            return self
+            return self if ___set_select(k)
           end
           self[:select] = 'n/a'
           mcr_err("No option for #{val} ")
@@ -110,6 +106,15 @@ module CIAX
         end
 
         private
+
+        def ___set_select(key)
+          args = self[:select][key]
+          return unless args
+          self[:select] = key
+          self[:args] = args
+          show_fg select_s
+          self
+        end
 
         def _set_res(msg)
           self[:result] = msg.downcase

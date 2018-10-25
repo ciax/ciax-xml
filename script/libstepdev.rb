@@ -13,8 +13,43 @@ module CIAX
         end
       end
 
+      # Step condition module
+      module Condition
+        private
+
+        def ___condition(stat, h)
+          c = {}
+          %i(site var form cmp cri skip).each { |k| c[k] = h[k] }
+          unless c[:skip]
+            real = __get_real(stat, c)
+            res = method('_ope_' + c[:cmp]).call(c[:cri], real)
+            c.update(real: real, res: res)
+            verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
+          end
+          c
+        end
+
+        # Operators
+        def _ope_equal(a, b)
+          a == b
+        end
+
+        def _ope_not(a, b)
+          a != b
+        end
+
+        def _ope_match(a, b)
+          /#{a}/ =~ b ? true : false
+        end
+
+        def _ope_unmatch(a, b)
+          /#{a}/ !~ b ? true : false
+        end
+      end
+
       # Check Device Status
       module Device
+        include Condition
         def self.extended(obj)
           Msg.type?(obj, Processor)
         end
@@ -114,18 +149,6 @@ module CIAX
           end
         end
 
-        def ___condition(stat, h)
-          c = {}
-          %i(site var form cmp cri skip).each { |k| c[k] = h[k] }
-          unless c[:skip]
-            real = __get_real(stat, c)
-            res = method('_ope_' + c[:cmp]).call(c[:cri], real)
-            c.update(real: real, res: res)
-            verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
-          end
-          c
-        end
-
         def __get_real(stat, h)
           warning('No form specified') unless h[:form]
           # form = 'data', 'class' or 'msg' in Status
@@ -133,23 +156,6 @@ module CIAX
           var = h[:var]
           warning("No [#{var}] in Status[#{form}]") unless stat[form].key?(var)
           stat[form][var]
-        end
-
-        # Operators
-        def _ope_equal(a, b)
-          a == b
-        end
-
-        def _ope_not(a, b)
-          a != b
-        end
-
-        def _ope_match(a, b)
-          /#{a}/ =~ b ? true : false
-        end
-
-        def _ope_unmatch(a, b)
-          /#{a}/ !~ b ? true : false
         end
       end
     end

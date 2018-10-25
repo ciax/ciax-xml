@@ -43,7 +43,7 @@ module CIAX
           mcr_err('No select DB') unless sel
           key ||= sel.keys.first
           args = sel[key] || sel['*'] || []
-          self[:select] = [key, args]
+          self[:select] = { real: key, args: args }
           mcr_err("No option for #{key} ") if args.empty?
           show_fg select_s
           args

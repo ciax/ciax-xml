@@ -92,8 +92,7 @@ module CIAX
 
       # Return T/F
       def _cmd_select(step, mstat)
-        name = step.select
-        _new_step({ type: 'mcr', args: name }, mstat)
+        _cmd_mcr(step.select, mstat)
       end
 
       def _cmd_mcr(step, _mstat)

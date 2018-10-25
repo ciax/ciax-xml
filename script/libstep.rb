@@ -27,6 +27,11 @@ module CIAX
         type
       end
 
+      def select_s
+        return '' unless key?(:select)
+        "(#{self[:select]})=>#{self[:args]}"
+      end
+
       def result_s
         mary = [___prt_count]
         ___prt_result(self[:result], mary)
@@ -38,12 +43,13 @@ module CIAX
       end
 
       def action_s
-        key?(:action) ? __body(self[:action].capitalize, 8) + "\n" : ''
+        return '' unless key?(:action)
+        __body(self[:action].capitalize, 8) + "\n"
       end
 
       # Display section
       def to_v
-        title_s + result_s + action_s
+        title_s + select_s + result_s + action_s
       end
 
       private
@@ -96,10 +102,12 @@ module CIAX
         line
       end
 
-      def ___itemize(msg, col, label = 'noname')
+      def ___itemize(msg, col, label = '')
         line = ___timestamp + indent_s + Msg.colorize(msg, col) + ':'
         line << self[:label].to_s
-        line << (label.is_a?(Proc) ? "[#{label.call}]" : label)
+        label = label.call if label.is_a?(Proc)
+        line << "[#{label}]" unless label.empty?
+        line
       end
 
       def ___timestamp
@@ -115,7 +123,7 @@ module CIAX
           exec: ['EXEC', 13, __sid(:site, :args)],
           cfg: ['Config', 14, __sid(:site, :args)],
           sleep: ['Sleeping(sec)', 6, __sid(:val)],
-          select: ['Select by', 11, __sid(:site, :var)],
+          select: ['SELECT', 3, __sid(:site, :var)],
           wait: ['Waiting', 6, __sid(:retry)]
         }.update(Title_List)
       end

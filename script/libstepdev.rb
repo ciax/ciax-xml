@@ -43,10 +43,7 @@ module CIAX
 
         def select
           stat = @dev_list.get(self[:site]).sub.stat
-          var = __get_real(stat, self)
-          _show_res(var)
-          sel = self[:select]
-          sel[var] || sel['*'] || mcr_err("No option for #{var} ")
+          super(__get_real(stat, self))
         end
 
         # Conditional judgment section

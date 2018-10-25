@@ -38,10 +38,10 @@ module CIAX
         Thread.current[:query] = @qry
         show_fg @record.start
         _sequencer(@cfg, @record.cmt)
-      rescue Interrupt
-        ___site_interrupt
       rescue CommError, Verification
         false
+      rescue Interrupt
+        ___site_interrupt
       ensure
         show_fg @record.finish + "\n"
       end
@@ -54,12 +54,10 @@ module CIAX
 
       # macro returns result (true=complete /false=error)
       def _sequencer(cfg, mstat)
-        seqary = type?(cfg[:sequence], Array)
         mstat.result = 'busy'
         @depth += 1
-        @record[:total_steps] += seqary.size
         # true: exit in the way, false: complete steps
-        seqary.all? { |e| _new_step(e, mstat) }
+        ___get_seq(cfg).all? { |e| _new_step(e, mstat) }
         # 'upd' passes whether commerr or not
         # result of multiple 'upd' is judged here
         mstat.result.gsub!('busy', 'complete')
@@ -111,6 +109,12 @@ module CIAX
         @record.ext_local_file.ext_save
         @record.mklink # Make latest link
         @record.mklink(@id) # Make link to /json
+      end
+
+      def ___get_seq(cfg)
+        seq = type?(cfg[:sequence], Array)
+        @record[:total_steps] += seq.size
+        seq
       end
     end
 

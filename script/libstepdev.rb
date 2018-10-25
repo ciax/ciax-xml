@@ -76,7 +76,7 @@ module CIAX
           _show_res(`#{self[:val]}`.chomp)
         end
 
-        def select
+        def select_args
           stat = @dev_list.get(self[:site]).sub.stat
           super(__get_real(stat, self))
         end

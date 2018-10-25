@@ -17,6 +17,12 @@ module CIAX
 
       private
 
+      def ___mcr_exe(args, mstep)
+        ment = @cfg[:index].set_cmd(args)
+        ___mcr_bg(ment, mstep) || ___mcr_fg(ment, mstep)
+        true
+      end
+
       def ___mcr_bg(ment, mstep)
         return unless mstep[:async] && @submcr_proc.is_a?(Proc)
         # adding new macro to @rec_list

@@ -91,14 +91,12 @@ module CIAX
       end
 
       # Return T/F
-      def _cmd_select(step, mstat)
-        _cmd_mcr(step.select, mstat)
+      def _cmd_select(step, _mstat)
+        ___mcr_exe(step.select_args, step)
       end
 
       def _cmd_mcr(step, _mstat)
-        ment = @cfg[:index].set_cmd(step[:args])
-        ___mcr_bg(ment, step) || ___mcr_fg(ment, step)
-        true
+        ___mcr_exe(step[:args], step)
       end
     end
   end

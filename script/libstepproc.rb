@@ -38,14 +38,15 @@ module CIAX
         end
 
         # returns selected macro args (Array)
-        def select(val = nil)
-          return self unless (seldb = self[:select])
-          val ||= seldb.keys.first
-          [val, '*'].each do |k|
-            return self if ___set_select(k)
-          end
-          self[:select] = 'n/a'
-          mcr_err("No option for #{val} ")
+        def select_args(key = nil)
+          sel = self[:select]
+          mcr_err('No select DB') unless sel
+          key ||= sel.keys.first
+          args = sel[key] || sel['*'] || []
+          self[:select] = [key, args]
+          mcr_err("No option for #{key} ") if args.empty?
+          show_fg select_s
+          args
         end
 
         # Interactive section
@@ -106,15 +107,6 @@ module CIAX
         end
 
         private
-
-        def ___set_select(key)
-          args = self[:select][key]
-          return unless args
-          self[:select] = key
-          self[:args] = args
-          show_fg select_s
-          self
-        end
 
         def _set_res(msg)
           self[:result] = msg.downcase

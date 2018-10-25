@@ -50,9 +50,10 @@ module CIAX
       end
 
       def select_s
-        return '' unless key?(:select)
         sel = self[:select]
-        "(#{sel[:real]})=>[#{a2cid(sel[:args])}]"
+        return '' unless sel && sel.size == 1
+        key, args = sel.first
+        "(#{key})=>[#{a2cid(args)}]"
       end
 
       def result_s

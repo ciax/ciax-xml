@@ -26,6 +26,7 @@ module CIAX
       # this is separated for Daemon
       # restart background threads which will be killed by Daemon
       def run
+        @sub_list.run
         self
       end
 
@@ -56,6 +57,7 @@ module CIAX
         rem.add_sys
         rem.add_int
         rem.add_ext
+        @sub_list = @cobj.rem.ext.dev_list
       end
 
       def ___init_stat

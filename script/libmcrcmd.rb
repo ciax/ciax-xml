@@ -79,6 +79,7 @@ module CIAX
             super
           end
 
+          # Because here is common to Man, Seq
           def dev_list
             opt = @cfg[:opt]
             site_cfg = @cfg.gen(self)

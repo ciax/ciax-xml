@@ -21,14 +21,12 @@ module CIAX
           ___init_seq
           @rec_list.ext_save if @opt.mcr_log?
           @sv_stat.repl(:sid, '') # For server response
-          @sub_list = @cobj.rem.ext.dev_list if @opt.drv?
           @cobj.rem.ext_input_log
           self
         end
 
         def run
           ext_local_server if @opt.sv?
-          @sub_list.run if @sub_list
           super
         end
 

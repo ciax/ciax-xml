@@ -140,6 +140,7 @@ function make_step(step) {
     obj = __test_sel();
     html.push('> (' + (obj ? obj.id : step.result) + ')</span>');
     html.push('</li></ul>');
+    html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
     return true;
   }
 
@@ -172,9 +173,7 @@ function make_step(step) {
     html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
   }
 
-    var html = ['<li'];
-  if (step.type != 'mcr' && step.type != 'select') html.push(' class="step"');
-  //console.log(step.type);
+  var html = ['<li'];
   html.push('>');
   _header();
   _select() || _conditions() || _sub_mcr();

@@ -3,30 +3,56 @@
 // ********* Steps **********
 // step header section
 function make_step(step) {
+  // title section
   function _title() {
     var type = step.type;
-    var ary = [];
     html.push('<span title="' + json_view(step));
     html.push('" class="head ' + type + '">' + type + '</span>');
     html.push('<span class="cmd"');
-    if (type == 'mcr' || type == 'select') {
-      html.push(' title="' + step.args.join(':') + '">');
-      html.push(': ' + config.label[step.args[0]]);
+    if (type == 'mcr') {
+      __popup_title(step.args);
+    }else if (type == 'select') {
+      var obj = __test_sel();
+      if (obj) {
+        __popup_title(obj.args);
+      } else {
+        __regular_step();
+      }
     } else {
-      if (step.site) {
-        ary.push(step.site);
-        html.push(_devlink(step.site));
-      }
-      if (step.args) {
-        ary = ary.concat(step.args);
-      }
-      html.push('>');
-      if (step.label) html.push(': ' + step.label);
-      if (ary.length > 0) {
-        html.push(': [' + ary.join(':') + ']');
-      }
+      __regular_step();
     }
     html.push('</span>');
+  }
+
+  function __test_sel() {
+    var keys = Object.keys(step.select);
+    if (keys.length == 1) {
+      var key = keys[0];
+      return ({ 'id' : key, 'args' : step.select[key] });
+    }
+  }
+
+  function __popup_title(args) {
+    html.push(' title="' + args.join(':') + '">');
+    html.push(': ' + config.label[args[0]]);
+  }
+
+  function __regular_step() {
+    var ary = [];
+    if (step.site) {
+      ary.push(step.site);
+      html.push(_devlink(step.site));
+    }
+    if (step.args) {
+      ary = ary.concat(step.args);
+    } else if (step['var']) {
+      ary = ary.concat(step['var']);
+    }
+    html.push('>');
+    if (step.label) html.push(': ' + step.label);
+    if (ary.length > 0) {
+      html.push(': [' + ary.join(':') + ']');
+    }
   }
   // result section
   function _result() {
@@ -104,14 +130,15 @@ function make_step(step) {
 
   function _select() {
     if (step.type != 'select') return;
-    html.push('<ul><li>')
+    html.push('<ul><li>');
     html.push('<var ' + _devlink(step.site) + '>');
     html.push(step.site + ':' + step['var']); // step.var expression gives error at yui-compressor
     html.push('(' + step.form + ')</var>');
     html.push('<code> == </code>  ');
     html.push('<span class="true" ');
     html.push(_graphlink(step.site, step['var'], step.time));
-    html.push('> (' + step.select + ')</span>');
+    obj = __test_sel();
+    html.push('> (' + (obj ? obj.id : step.result) + ')</span>');
     html.push('</li></ul>');
     return true;
   }
@@ -147,7 +174,7 @@ function make_step(step) {
 
     var html = ['<li'];
   if (step.type != 'mcr' && step.type != 'select') html.push(' class="step"');
-  console.log(step.type);
+  //console.log(step.type);
   html.push('>');
   _header();
   _select() || _conditions() || _sub_mcr();

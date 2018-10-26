@@ -153,7 +153,7 @@ module CIAX
         open(@jsondir + @cfile, 'w') do |f|
           f.flock(::File::LOCK_EX)
           f << jstr
-          verbose { "File [#{@cfile}](#{f.size}) is Saved" }
+          verbose { "File [#{@cfile}](#{f.size}) is Saved at #{self[:time]}" }
         end
         self
       end

@@ -173,8 +173,7 @@ function make_step(step) {
     html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
   }
 
-  var html = ['<li'];
-  html.push('>');
+  var html = ['<li id="' + step.time + '">' ];
   _header();
   _select() || _conditions() || _sub_mcr();
   html.push('</li>');
@@ -256,7 +255,7 @@ function func_update_record() {
         // When Step doesn't increase.
         var step = data.steps[crnt - 1];
         // Update Step
-        $('.step:last').html(make_step(step));
+        $('#' + step.time ).html(make_step(step));
       }
       suspend = true;
     } else if (suspend) {

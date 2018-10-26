@@ -42,6 +42,7 @@ module CIAX
           if record.is_a?(Hash) && record[:id].to_i > 0
             if __extract(record) == 'busy' && record.is_a?(Record)
               record.finish_procs << proc { |r| __extract(r) && cmt }
+              cmt
             end
           end
           self
@@ -94,7 +95,7 @@ module CIAX
           ra.ext_remote(opts.host)
         else
           ra.ext_local
-          ra.ext_save.refresh if opts.sv?
+          ra.ext_save.clear.refresh if opts.sv?
         end
         puts ra
       end

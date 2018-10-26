@@ -102,13 +102,7 @@ module CIAX
         # obj.stat -> looking at Status
 
         def active?
-          if @exes.all? { |e| e.stat.active? }
-            delete(:busy)
-            true
-          else
-            self[:busy] = true
-            false
-          end
+          @exes.all? { |e| e.stat.active? }
         end
 
         # Blocking during busy. (for interlock check)

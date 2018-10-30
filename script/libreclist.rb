@@ -44,7 +44,7 @@ module CIAX
 
       def get(id)
         type?(id, String)
-        @list[id]
+        @list[id].upd
       end
 
       def ordinal(num)
@@ -57,7 +57,7 @@ module CIAX
       def get_arc(num = 1)
         rkeys = @rec_arc.upd.list.keys + @alives
         picked = rkeys.sort.uniq.last(num.to_i)
-        picked.each { |id| get(id) }
+        picked.each { |id| @list[id] }
         self
       end
 

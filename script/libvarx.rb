@@ -27,12 +27,14 @@ module CIAX
 
     def ext_local_file
       require 'libjfile'
+      raise('File ext conflicts with Http ext') if @host
       extend(JFile).ext_local_file(@dir)
     end
 
     # independent from ext_local_file
     def ext_local_log
       require 'libjslog'
+      raise('Log ext conflicts with Http ext') if @host
       extend(JsLog).ext_local_log
     end
 

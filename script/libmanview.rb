@@ -25,7 +25,6 @@ module CIAX
         @org_cmds = (@valid_keys = valid_keys).dup
         # To finish up update which is removed from alive list at the end
         @alives = []
-        @rec_list.cmt_procs << proc { |rl| @par.flush(rl.list.keys) }
         ___init_upd_procs
       end
 

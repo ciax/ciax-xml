@@ -31,6 +31,11 @@ module CIAX
       end
 
       # Mode Extention by Option
+      def ext_local_test
+        @stat.ext_local
+        super
+      end
+
       def ext_local_driver
         require 'libmanproc'
         ext_local_processor
@@ -62,6 +67,8 @@ module CIAX
 
       def ___init_stat
         @rec_list = RecList.new(@id, @sv_stat.get(:list))
+        # If rec_list member is increased, current id will be last one
+        @rec_list.cmt_procs << proc { |rl| @par.flush(rl.list.keys) }
         int = @cobj.rem.int
         @stat = ManView.new(@sv_stat, @par, @rec_list, int.valid_keys)
         int.add_par(@par)

@@ -7,7 +7,7 @@ module CIAX
   module Mcr
     # Visible Record Database
     # Need RecArc to get Parent CID for SeqList
-    # Alives Array is Prompt[:list] = SeqList(alive macro)
+    # Alives Array is Prompt[:list] = SeqList(alive macro) => R/O here
     # RecArc(Index) > RecList(Records) > SeqList(IDs)
     # RecList : Client Side (Picked at Client)
     # Alives : Server Side (Parameter#list)

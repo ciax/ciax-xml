@@ -52,7 +52,6 @@ module CIAX
 
       def ___init_prompt
         @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
-        @par = Parameter.new
       end
 
       # Initiate for all mode
@@ -68,10 +67,9 @@ module CIAX
       def ___init_stat
         @rec_list = RecList.new(@id, @sv_stat.get(:list))
         # If rec_list member is increased, current id will be last one
-        @rec_list.cmt_procs << proc { |rl| @par.flush(rl.list.keys) }
         int = @cobj.rem.int
-        @stat = ManView.new(@sv_stat, @par, @rec_list, int.valid_keys)
-        int.add_par(@par)
+        @stat = ManView.new(@sv_stat, @rec_list, int.valid_keys)
+        int.add_par(@rec_list.par)
       end
     end
 

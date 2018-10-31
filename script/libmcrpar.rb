@@ -18,7 +18,7 @@ module CIAX
       # select id by index number (1~max)
       #  return id otherwise nil
       def sel(idx)
-        @current_idx = limit(0, @list.size, idx)
+        @current_idx = limit(0, @list.size, idx.to_i)
         if @current_idx < 1
           delete(:default)
         else

@@ -17,11 +17,11 @@ module CIAX
       # @par[:default]:
       #     Current Record
 
-      def initialize(sv_stat, par, rec_list = RecList.new, valid_keys = [])
+      def initialize(sv_stat, rec_list = RecList.new, valid_keys = [])
         super()
         @sv_stat = type?(sv_stat, Prompt)
-        @par = type?(par, Parameter)
         @rec_list = type?(rec_list, RecList)
+        @par = type?(@rec_list.par, Parameter)
         @org_cmds = (@valid_keys = valid_keys).dup
         # To finish up update which is removed from alive list at the end
         @alives = []
@@ -45,7 +45,6 @@ module CIAX
 
       def get_arc(n = 1)
         @rec_list.get_arc(n.to_i)
-        @par.flush(@rec_list.list.keys)
         self
       end
 
@@ -90,10 +89,8 @@ module CIAX
       require 'libmcrconf'
       ConfOpts.new('[id] ..') do |cfg, args|
         num = args.shift.to_i
-        par = Parameter.new
         sv_stat = Prompt.new(cfg[:id])
-        view = ManView.new(sv_stat, par).ext_local.get_arc(num)
-        par.sel(args.shift.to_i)
+        view = ManView.new(sv_stat).ext_local.get_arc(num)
         puts view
       end
     end

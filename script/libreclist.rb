@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'librecord'
 require 'librecarc'
+require 'libmcrpar'
 
 module CIAX
   # Macro Layer
@@ -17,13 +18,15 @@ module CIAX
     #  Local(ext_local) : get Rec_arc and Record from File
     #  Local(ext_save) : write down Rec_arc
     class RecList < Upd
-      attr_reader :list
+      attr_reader :list, :par
       def initialize(proj = ENV['PROJ'], alives = [])
         super()
         @proj = proj
-        @rec_arc = RecArc.new
+        @par = Parameter.new
         @alives = type?(alives, Array)
+        @rec_arc = RecArc.new
         @list = {}
+        @cmt_procs << proc { |_rl| @par.flush(@list.keys) }
       end
 
       # delete from @records other than in ary
@@ -47,6 +50,15 @@ module CIAX
         @list[id].upd
       end
 
+      def sel(num)
+        @par.flush(@list.keys).sel(num)
+        self
+      end
+
+      def current_rec
+        ordinal(@par.current_idx)
+      end
+
       def ordinal(num)
         num = num.to_i
         return if (num * @list.size).zero?
@@ -58,6 +70,7 @@ module CIAX
         rkeys = @rec_arc.upd.list.keys + @alives
         picked = rkeys.sort.uniq.last(num.to_i)
         picked.each { |id| @list[id] }
+        @par.flush(@list.keys)
         self
       end
 
@@ -157,7 +170,8 @@ module CIAX
           rl.ext_local
           rl.ext_save.refresh_arc_bg.join if opts.sv?
         end
-        puts rl.get_arc(args.shift).ordinal(args.shift) || rl
+        rl.get_arc(args.shift).sel(args.shift)
+        puts rl.current_rec || rl
       end
     end
   end

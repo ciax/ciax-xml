@@ -25,7 +25,10 @@ module CIAX
           # @stat will be switched among Whole List or Records
           # Setting @par will switch the Record
           @prompt_proc = proc do
-            @sv_stat.to_s + @stat.prompt_index
+            str = @sv_stat.to_s + "[#{@par.current_idx}]"
+            rec = @rec_list.current_rec
+            str << optlist(rec[:option]) if rec && rec.key?(:option)
+            str
           end
         end
 

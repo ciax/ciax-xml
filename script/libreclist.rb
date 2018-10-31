@@ -23,54 +23,42 @@ module CIAX
         super()
         @proj = proj
         @par = Parameter.new
+        @list = @par.list
         @alives = type?(alives, Array)
         @rec_arc = RecArc.new
-        @list = {}
-        @cmt_procs << proc { |_rl| @par.flush(@list.keys) }
+        @cache = {}
       end
 
-      # delete from @records other than in ary
-      def flush(ary)
-        (@list.keys - ary).each do |id|
-          @list.delete(id)
-        end
-        cmt
-      end
-
+      # For server
       def push(record) # returns self
         id = record[:id]
         return self unless id.to_i > 0
-        @list[id] = record
+        @list << id
+        @cache[id] = record
         yield record if defined? yield
         cmt
       end
 
       def get(id)
         type?(id, String)
-        @list[id].upd
+        @cache[id].upd
       end
 
       def sel(num)
-        @par.flush(@list.keys).sel(num)
+        @par.sel(num)
         self
       end
 
       def current_rec
-        ordinal(@par.current_idx)
-      end
-
-      def ordinal(num)
-        num = num.to_i
+        num = @par.current_idx
         return if (num * @list.size).zero?
-        get(@list.keys[limit(1, @list.size, num) - 1])
+        get(@list[limit(1, @list.size, num) - 1])
       end
 
       # Change alives list
       def get_arc(num = 1)
-        rkeys = @rec_arc.upd.list.keys + @alives
-        picked = rkeys.sort.uniq.last(num.to_i)
-        picked.each { |id| @list[id] }
-        @par.flush(@list.keys)
+        rkeys = @rec_arc.list.keys + @alives
+        @list.replace(rkeys.sort.uniq.last(num.to_i))
         self
       end
 
@@ -83,7 +71,7 @@ module CIAX
       def ext_remote(host)
         @host = host
         @rec_arc.ext_remote(host)
-        @list.default_proc = proc do |hash, key|
+        @cache.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_remote(@host)
         end
         self
@@ -105,28 +93,26 @@ module CIAX
 
       def ___list_view
         page = ['<<< ' + colorize("Active Macros [#{@proj}]", 2) + ' >>>']
-        @list.keys.each_with_index do |id, idx|
+        @list.each_with_index do |id, idx|
           page << ___item_view(id, idx + 1)
         end
         page.join("\n")
       end
 
       def ___item_view(id, idx)
-        rec = get(id)
+        rec = @alives.include?(id) ? get(id) : @rec_arc.get(id)
         tim = Time.at(id[0..9].to_i).to_s
         title = "[#{idx}] #{id} (#{tim}) by #{___get_pcid(rec[:pid])}"
-        msg = "#{rec[:cid]} #{rec.step_num}"
-        msg << ___result_view(rec)
-        itemize(title, msg)
+        itemize(title, (rec[:cid]).to_s + ___result_view(rec))
       end
 
       def ___result_view(rec)
-        if rec[:status] == 'end'
-          "(#{rec[:result]})"
-        else
-          msg = "(#{rec[:status]})"
+        if rec.is_a?(Record) && rec[:status] != 'end'
+          msg = " #{rec.step_num}(#{rec[:status]})"
           msg << optlist(rec[:option]) if rec.last
           msg
+        else
+          " (#{rec[:result]})"
         end
       end
 
@@ -143,7 +129,7 @@ module CIAX
 
         def ext_local
           @rec_arc.ext_local.refresh
-          @list.default_proc = proc do |hash, key|
+          @cache.default_proc = proc do |hash, key|
             hash[key] = Record.new(key).ext_local_file.load
           end
           self

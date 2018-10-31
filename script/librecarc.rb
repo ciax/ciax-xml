@@ -17,6 +17,10 @@ module CIAX
         self[:list] ||= {}
       end
 
+      def get(id)
+        self[:list][id]
+      end
+
       # Mode
       #   Skelton
       #   Remote (Read only)

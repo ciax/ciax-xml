@@ -30,15 +30,15 @@ module CIAX
 
       # Show Record(id = @par.current_rid) or List of them
       def to_v
-        (__crnt_rec || @rec_list).to_v
+        (@rec_list.current_rec || @rec_list).to_v
       end
 
       def to_r
-        (__crnt_rec || @rec_list).to_r
+        (@rec_list.current_rec || @rec_list).to_r
       end
 
       def prompt_index
-        return '[0]' unless (rec = __crnt_rec)
+        return '[0]' unless (rec = @rec_list.current_rec)
         opt = optlist(rec[:option]) if rec.busy? && rec.last
         "[#{@par.current_idx}]#{opt}"
       end
@@ -76,12 +76,8 @@ module CIAX
         end
       end
 
-      def __crnt_rec
-        @rec_list.ordinal(@par.current_idx)
-      end
-
       def __crnt_opt
-        (__crnt_rec || {})[:option] || []
+        (@rec_list.current_rec || {})[:option] || []
       end
     end
 

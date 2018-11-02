@@ -28,6 +28,10 @@ module CIAX
         self
       end
 
+      def sel_last
+        sel(@list.size)
+      end
+
       # For macro variable param (sid list)
       # replace (default will be last sid)
       def flush(other)

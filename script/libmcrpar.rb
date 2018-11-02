@@ -36,15 +36,14 @@ module CIAX
       # replace (default will be last sid)
       def flush(other)
         @list.replace other
-        sel(@list.size)
-        self
+        sel_last
       end
 
       # push to list (default will be incresed)
       def push(id) # returns self
         return self if @list.include?(id)
         @list << id
-        sel(@list.size)
+        sel_last
       end
 
       def current_rid

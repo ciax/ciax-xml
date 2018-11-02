@@ -18,13 +18,14 @@ module CIAX
     #  Local(ext_local) : get Rec_arc and Record from File
     #  Local(ext_save) : write down Rec_arc
     class RecList < Upd
-      attr_reader :list, :par
-      def initialize(proj = ENV['PROJ'], alives = [])
+      attr_reader :par, :valid_keys
+      def initialize(proj = ENV['PROJ'], alives = [], valid_keys = [])
         super()
         @proj = proj
-        @par = Parameter.new
-        @list = @par.list
         @alives = type?(alives, Array)
+        @valid_keys = type?(valid_keys, Array)
+        self[:option] = @valid_keys.dup
+        @par = Parameter.new
         @rec_arc = RecArc.new
         @cache = {}
       end
@@ -33,7 +34,7 @@ module CIAX
       def push(record) # returns self
         id = record[:id]
         return self unless id.to_i > 0
-        @list << id
+        @par.push(id)
         @cache[id] = record
         yield record if defined? yield
         cmt
@@ -46,19 +47,26 @@ module CIAX
 
       def sel(num)
         @par.sel(num)
+        @valid_keys.replace((current_rec || self)[:option] || [])
         self
       end
 
       def current_rec
         num = @par.current_idx
-        return if (num * @list.size).zero?
-        get(@list[limit(1, @list.size, num) - 1])
+        return if num.zero?
+        get(@par.current_rid)
       end
 
       # Change alives list
       def get_arc(num = 1)
         rkeys = @rec_arc.list.keys + @alives
-        @list.replace(rkeys.sort.uniq.last(num.to_i))
+        @par.list.replace(rkeys.sort.uniq.last(num.to_i))
+        self
+      end
+
+      def add_arc
+        get_arc(@par.list.size + 1)
+        @par.sel_last
         self
       end
 
@@ -93,7 +101,7 @@ module CIAX
 
       def ___list_view
         page = ['<<< ' + colorize("Active Macros [#{@proj}]", 2) + ' >>>']
-        @list.each_with_index do |id, idx|
+        @par.list.each_with_index do |id, idx|
           page << ___item_view(id, idx + 1)
         end
         page.join("\n")

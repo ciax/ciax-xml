@@ -19,10 +19,8 @@ module CIAX
 
       ## Refernce Parameter Setting
       # returns Reference Parameter Array
-      def add_par(par = {})
-        unless par.is_a? Parameter
-          par = Parameter.new(par).cover(type: 'str', list: [])
-        end
+      def add_par(list = [])
+        par = Parameter.new(type: 'str', list: list)
         (@cfg[:parameters] ||= []) << par
       end
 

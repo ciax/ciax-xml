@@ -19,6 +19,12 @@ module CIAX
       #   o   |   o   |    x      |    *     | error
       #   x   |   *   |    -      |    o     | :default
       #   *   |   x   |    -      |    o     | :default
+      attr_reader :list
+      def initialize(hash)
+        super
+        @list = (self[:list] ||= [])
+      end
+
       def valid_pars
         self[:type] == 'str' ? get(:list) : []
       end
@@ -29,6 +35,15 @@ module CIAX
         return ___use_default(csv) unless str
         return method('_val_' + get(:type)).call(str, list, csv) if list
         key?(:default) ? get(:default) : str
+      end
+
+      def set_def(str)
+        if valid_pars.include?(str)
+          self[:default] = str
+        else
+          delete(:default)
+        end
+        self
       end
 
       private

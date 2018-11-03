@@ -65,11 +65,10 @@ module CIAX
       end
 
       def ___init_stat
-        list = @sv_stat.get(:list)
         int = @cobj.rem.int
-        @stat = RecList.new(@id, list, int.valid_keys)
+        par = int.add_par(@sv_stat.get(:list)).last
+        @stat = RecList.new(@id, par, int.valid_keys)
         # If rec_list member is increased, current id will be last one
-        int.add_par(Parameter.new(list))
       end
     end
 

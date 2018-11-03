@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require 'librecord'
 require 'librecarc'
-require 'libmcrpar'
 
 module CIAX
   # Macro Layer
@@ -20,10 +19,10 @@ module CIAX
     #  Local(ext_save) : write down Rec_arc
     class RecList < Upd
       attr_reader :current_idx
-      def initialize(proj = ENV['PROJ'], alives = [], valid_keys = [])
+      def initialize(proj = ENV['PROJ'], par = Parameter.new, valid_keys = [])
         super()
         @proj = proj
-        @alives = type?(alives, Array)
+        @par = type?(par, CmdBase::Parameter)
         @valid_keys = type?(valid_keys, Array)
         self[:option] = @valid_keys.dup
         @rec_arc = RecArc.new
@@ -41,7 +40,7 @@ module CIAX
       end
 
       def flush
-        @list.replace(@alives)
+        @list.replace(@par.list)
         @current_idx = 0
         self
       end
@@ -55,12 +54,14 @@ module CIAX
 
       def current_rec
         return if @current_idx.zero?
-        get(@list[@current_idx - 1])
+        id = @list[@current_idx - 1]
+        @par.set_def(id)
+        get(id)
       end
 
       # Change alives list
       def get_arc(num = nil)
-        num = num ? [@alives.size, num.to_i].max : @list.size + 1
+        num = num ? [@par.list.size, num.to_i].max : @list.size + 1
         rkeys = @rec_arc.upd.list.keys.sort.uniq
         @list.replace(rkeys.last(num))
         self
@@ -85,7 +86,7 @@ module CIAX
           hash[key] = Record.new(key).ext_remote(@host)
         end
         @upd_procs << proc do
-          @rec_arc.upd unless @alives.each { |id| append(id) }.empty?
+          @rec_arc.upd unless @par.list.each { |id| append(id) }.empty?
         end
         self
       end
@@ -107,7 +108,7 @@ module CIAX
       end
 
       def ___item_view(id, idx)
-        rec = @alives.include?(id) ? get(id) : @rec_arc.get(id)
+        rec = @par.list.include?(id) ? get(id) : @rec_arc.get(id)
         tim = Time.at(id[0..9].to_i).to_s
         title = "[#{idx}] #{id} (#{tim}) by #{___get_pcid(rec[:pid])}"
         itemize(title, (rec[:cid]).to_s + ___result_view(rec))
@@ -146,7 +147,7 @@ module CIAX
         def push(record) # returns self
           id = record[:id]
           return self unless id.to_i > 0
-          @alives << append(id)
+          @par.list << append(id)
           @cache[id] = record
           @rec_arc.push(record)
           self

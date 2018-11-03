@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require 'libexe'
 require 'libmcrcmd'
-require 'libmanview'
 require 'libseqlist'
 
 module CIAX

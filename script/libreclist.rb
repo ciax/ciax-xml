@@ -38,12 +38,12 @@ module CIAX
 
       def sel(num)
         @par.sel(num)
-        cmt
+        self
       end
 
       def flush
         @par.flush(@alives)
-        cmt
+        self
       end
 
       def current_rec
@@ -63,7 +63,7 @@ module CIAX
       def add_arc
         get_arc(@par.list.size + 1)
         @par.sel_last
-        cmt
+        self
       end
 
       # Show Index of Alives Item
@@ -132,11 +132,8 @@ module CIAX
       end
 
       def ___init_procs
-        @cmt_procs << proc do
-          # If current_rec is alive
-          @valid_keys.replace((current_rec || self)[:option] || [])
-        end
         @upd_procs << proc do
+          @valid_keys.replace((current_rec || self)[:option] || [])
           next if (@alives - @par.list).empty?
           @rec_arc.upd
           @par.sel_last

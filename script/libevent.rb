@@ -13,6 +13,7 @@ module CIAX
         super('event', dbi, Ins::Db)
         @interval = 0.1
         @periodm = 300_000
+        @timeout = 10_000
         @last_updated = 0
         ___init_struct
       end
@@ -41,7 +42,8 @@ module CIAX
       end
 
       def updating?
-        raise CommError if now_msec > self[:time] + 10_000
+        return true unless active? && now_msec > self[:time] + @timeout
+        com_err("stale data over #{(@timeout / 1000).to_i} sec")
       end
 
       def act_start

@@ -55,7 +55,7 @@ module CIAX
       def current_rec
         return if @current_idx.zero?
         id = @list[@current_idx - 1]
-        @par.set_def(id)
+        @par.def_par(id)
         get(id)
       end
 
@@ -65,11 +65,6 @@ module CIAX
         rkeys = @rec_arc.upd.list.keys.sort.uniq
         @list.replace(rkeys.last(num))
         self
-      end
-
-      # Show Index of Alives Item
-      def to_v
-        ___list_view
       end
 
       def to_s
@@ -99,6 +94,25 @@ module CIAX
 
       private
 
+      def ___init_vars
+        @current_idx = 0
+        @list = []
+        @cache = {}
+        @upd_procs << proc do
+          @valid_keys.replace((current_rec || self)[:option] || [])
+        end
+      end
+    end
+
+    # Divided for Rubocop
+    class RecList
+      # Show Index of Alives Item
+      def to_v
+        ___list_view
+      end
+
+      private
+
       def ___list_view
         page = ['<<< ' + colorize("Active Macros [#{@proj}]", 2) + ' >>>']
         @list.each_with_index do |id, idx|
@@ -109,9 +123,14 @@ module CIAX
 
       def ___item_view(id, idx)
         rec = @par.list.include?(id) ? get(id) : @rec_arc.get(id)
-        tim = Time.at(id[0..9].to_i).to_s
-        title = "[#{idx}] #{id} (#{tim}) by #{___get_pcid(rec[:pid])}"
+        tim =  ___get_time(id)
+        pcid = ___get_pcid(rec[:pid])
+        title = format('[%s] %s (%s) by %s', idx, id, tim, pcid)
         itemize(title, (rec[:cid]).to_s + ___result_view(rec))
+      end
+
+      def ___get_time(id)
+        Time.at(id[0..9].to_i).to_s
       end
 
       def ___result_view(rec)
@@ -127,15 +146,6 @@ module CIAX
       def ___get_pcid(pid)
         return 'user' if pid == '0'
         @rec_arc.list[pid][:cid]
-      end
-
-      def ___init_vars
-        @current_idx = 0
-        @list = []
-        @cache = {}
-        @upd_procs << proc do
-          @valid_keys.replace((current_rec || self)[:option] || [])
-        end
       end
 
       # Local mode

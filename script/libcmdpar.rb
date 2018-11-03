@@ -37,7 +37,7 @@ module CIAX
         key?(:default) ? get(:default) : str
       end
 
-      def set_def(str)
+      def def_par(str)
         if valid_pars.include?(str)
           self[:default] = str
         else

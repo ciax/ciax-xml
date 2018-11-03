@@ -28,16 +28,7 @@ module CIAX
         @par = Parameter.new
         @rec_arc = RecArc.new
         @cache = {}
-      end
-
-      # For server
-      def push(record) # returns self
-        id = record[:id]
-        return self unless id.to_i > 0
-        @par.push(id)
-        @cache[id] = record
-        yield record if defined? yield
-        cmt
+        ___init_procs
       end
 
       def get(id)
@@ -47,8 +38,12 @@ module CIAX
 
       def sel(num)
         @par.sel(num)
-        @valid_keys.replace((current_rec || self)[:option] || [])
-        self
+        cmt
+      end
+
+      def flush
+        @par.flush(@alives)
+        cmt
       end
 
       def current_rec
@@ -59,7 +54,8 @@ module CIAX
 
       # Change alives list
       def get_arc(num = 1)
-        rkeys = @rec_arc.list.keys + @alives
+        upd
+        rkeys = @rec_arc.list.keys
         @par.list.replace(rkeys.sort.uniq.last(num.to_i))
         self
       end
@@ -67,7 +63,7 @@ module CIAX
       def add_arc
         get_arc(@par.list.size + 1)
         @par.sel_last
-        self
+        cmt
       end
 
       # Show Index of Alives Item
@@ -75,6 +71,12 @@ module CIAX
         ___list_view
       end
 
+      def to_s
+        rec = current_rec
+        rec ? rec.to_s : to_v
+      end
+
+      ##### For server ####
       #### Extensions Methods ####
       def ext_remote(host)
         @host = host
@@ -129,10 +131,32 @@ module CIAX
         @rec_arc.list[pid][:cid]
       end
 
+      def ___init_procs
+        @cmt_procs << proc do
+          # If current_rec is alive
+          @valid_keys.replace((current_rec || self)[:option] || [])
+        end
+        @upd_procs << proc do
+          next if (@alives - @par.list).empty?
+          @rec_arc.upd
+          @par.sel_last
+          cmt
+        end
+      end
+
       # Local mode
       module Local
         def self.extended(obj)
           Msg.type?(obj, RecList)
+        end
+
+        def push(record) # returns self
+          id = record[:id]
+          return self unless id.to_i > 0
+          @par.push(id)
+          @cache[id] = record
+          @rec_arc.push(record)
+          cmt
         end
 
         def ext_local
@@ -147,10 +171,6 @@ module CIAX
           @rec_arc.ext_save
           self
         end
-
-        def push(record) # returns self
-          super { |r| @rec_arc.push(r) }
-        end
       end
     end
 
@@ -164,8 +184,7 @@ module CIAX
           rl.ext_local
           rl.ext_save.refresh_arc_bg.join if opts.sv?
         end
-        rl.get_arc(args.shift).sel(args.shift)
-        puts rl.current_rec || rl
+        puts rl.get_arc(args.shift).sel(args.shift)
       end
     end
   end

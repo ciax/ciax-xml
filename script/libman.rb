@@ -43,7 +43,7 @@ module CIAX
 
       def ext_local_server
         verbose { 'Initiate Record Archive' }
-        @rec_list.refresh_arc_bg
+        @stat.refresh_arc_bg
         ___web_cmdlist
         super
       end
@@ -65,12 +65,10 @@ module CIAX
       end
 
       def ___init_stat
-        @rec_list = RecList.new(@id, @sv_stat.get(:list))
-        # If rec_list member is increased, current id will be last one
-        @par = @rec_list.par
         int = @cobj.rem.int
-        @stat = ManView.new(@sv_stat, @rec_list, int.valid_keys)
-        int.add_par(@par)
+        @stat = RecList.new(@id, @sv_stat.get(:list), int.valid_keys)
+        # If rec_list member is increased, current id will be last one
+        int.add_par(@stat.par)
       end
     end
 

@@ -19,7 +19,7 @@ module CIAX
         # Initiate for driver
         def ext_local_processor
           ___init_seq
-          @rec_list.ext_save if @opt.mcr_log?
+          @stat.ext_save if @opt.mcr_log?
           @sv_stat.repl(:sid, '') # For server response
           @cobj.rem.ext_input_log
           self
@@ -33,7 +33,7 @@ module CIAX
         private
 
         def ___init_seq
-          @seq_list = SeqList.new(@rec_list)
+          @seq_list = SeqList.new(@stat)
           ___init_pre_exe
           ___init_proc_rem_ext
           ___init_proc_rem_int

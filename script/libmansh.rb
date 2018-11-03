@@ -14,7 +14,6 @@ module CIAX
           ___init_view_rec
           ___init_view_list
           ___init_view_cmd
-          ___init_post_exe
           ___init_conv
           self
         end
@@ -25,10 +24,8 @@ module CIAX
           # @stat will be switched among Whole List or Records
           # Setting @par will switch the Record
           @prompt_proc = proc do
-            str = @sv_stat.to_s + "[#{@par.current_idx}]"
-            rec = @rec_list.current_rec
-            str << optlist(rec[:option]) if rec && rec.key?(:option)
-            str
+            str = @sv_stat.to_s + "[#{@stat.par.current_idx}]"
+            str << optlist((@stat.current_rec || {})[:option])
           end
         end
 
@@ -39,7 +36,7 @@ module CIAX
             n ? @stat.get_arc(n.to_i) : @stat.add_arc
           end
           page.get('cl').def_proc do
-            @par.flush(@sv_stat.get(:list))
+            @stat.flush
           end
         end
 
@@ -55,17 +52,11 @@ module CIAX
           end
         end
 
-        def ___init_post_exe
-          @post_exe_procs << proc do
-            @sv_stat.get(:list).each { |id| @par.push(id) }
-          end
-        end
-
         # Set Current ID by number
         def ___init_conv
           input_conv_num do |i|
             # i should be number
-            @par.sel(i)
+            @stat.sel(i)
             # nil:no command -> show record
             nil
           end

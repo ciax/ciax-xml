@@ -24,7 +24,7 @@ module CIAX
           # @stat will be switched among Whole List or Records
           # Setting @par will switch the Record
           @prompt_proc = proc do
-            str = @sv_stat.to_s + "[#{@stat.par.current_idx}]"
+            str = @sv_stat.to_s + "[#{@stat.current_idx}]"
             str << optlist((@stat.current_rec || {})[:option])
           end
         end
@@ -32,8 +32,7 @@ module CIAX
         def ___init_view_list
           page = @cobj.loc.add_page
           page.get('last').def_proc do |ent|
-            n = ent.par[0]
-            n ? @stat.get_arc(n.to_i) : @stat.add_arc
+            @stat.get_arc(ent.par[0])
           end
           page.get('cl').def_proc do
             @stat.flush

@@ -8,27 +8,26 @@ module CIAX
   module Mcr
     # Visible Record Database
     # Need RecArc to get Parent CID for SeqList
-    # Alives Array is Prompt[:list] = SeqList(alive macro) => R/O here
+    # Alives Array => R/O here
+    #    Parameter[:list] = Prompt[:list] = SeqList(alive macro)
     # RecArc(Index) > RecList(Records) > SeqList(IDs)
     # RecList : Client Side (Picked at Client)
-    # Alives : Server Side (Parameter#list)
+    # Alives : Server Side
     #
     # Mode:
     #  Remote: get Rec_arc and Record via Http
     #  Local(ext_local) : get Rec_arc and Record from File
     #  Local(ext_save) : write down Rec_arc
     class RecList < Upd
-      attr_reader :par, :valid_keys
+      attr_reader :current_idx
       def initialize(proj = ENV['PROJ'], alives = [], valid_keys = [])
         super()
         @proj = proj
         @alives = type?(alives, Array)
         @valid_keys = type?(valid_keys, Array)
         self[:option] = @valid_keys.dup
-        @par = Parameter.new
         @rec_arc = RecArc.new
-        @cache = {}
-        ___init_procs
+        ___init_vars
       end
 
       def get(id)
@@ -37,31 +36,33 @@ module CIAX
       end
 
       def sel(num)
-        @par.sel(num)
+        @current_idx = limit(0, @list.size, num.to_i)
         self
       end
 
       def flush
-        @par.flush(@alives)
+        @list.replace(@alives)
+        @current_idx = 0
         self
+      end
+
+      def append(id)
+        return id if @list.include?(id)
+        @list << id
+        @current_idx = @list.size
+        id
       end
 
       def current_rec
-        num = @par.current_idx
-        return if num.zero?
-        get(@par.current_rid)
+        return if @current_idx.zero?
+        get(@list[@current_idx - 1])
       end
 
       # Change alives list
-      def get_arc(num = 1)
-        rkeys = @rec_arc.upd.list.keys
-        @par.list.replace(rkeys.sort.uniq.last(num.to_i))
-        self
-      end
-
-      def add_arc
-        get_arc(@par.list.size + 1)
-        @par.sel_last
+      def get_arc(num = nil)
+        num = num ? [@alives.size, num.to_i].max : @list.size + 1
+        rkeys = @rec_arc.upd.list.keys.sort.uniq
+        @list.replace(rkeys.last(num))
         self
       end
 
@@ -83,6 +84,9 @@ module CIAX
         @cache.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_remote(@host)
         end
+        @upd_procs << proc do
+          @rec_arc.upd unless @alives.each { |id| append(id) }.empty?
+        end
         self
       end
 
@@ -96,7 +100,7 @@ module CIAX
 
       def ___list_view
         page = ['<<< ' + colorize("Active Macros [#{@proj}]", 2) + ' >>>']
-        @par.list.each_with_index do |id, idx|
+        @list.each_with_index do |id, idx|
           page << ___item_view(id, idx + 1)
         end
         page.join("\n")
@@ -124,10 +128,12 @@ module CIAX
         @rec_arc.list[pid][:cid]
       end
 
-      def ___init_procs
+      def ___init_vars
+        @current_idx = 0
+        @list = []
+        @cache = {}
         @upd_procs << proc do
           @valid_keys.replace((current_rec || self)[:option] || [])
-          @rec_arc.upd unless @alives.each { |id| @par.push(id) }.empty?
         end
       end
 
@@ -140,7 +146,7 @@ module CIAX
         def push(record) # returns self
           id = record[:id]
           return self unless id.to_i > 0
-          @par.push(id)
+          @alives << append(id)
           @cache[id] = record
           @rec_arc.push(record)
           self

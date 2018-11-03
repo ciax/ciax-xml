@@ -9,8 +9,8 @@ module CIAX
       # @list is RecList.list.keys
       attr_reader :list, :current_idx
 
-      def initialize(hash = {})
-        hash = { type: 'str', list: (@list = []) }
+      def initialize(list = [])
+        hash = { type: 'str', list: (@list = list) }
         super(hash)
         @current_idx = 0
       end

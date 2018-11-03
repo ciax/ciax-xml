@@ -4,11 +4,11 @@ module CIAX
   # show_iv = Show Instance Variable
   module View
     include ViewPath
-    @default = 'v'
+    @default_view = 'v'
 
     def to_s
       return to_j unless STDOUT.tty?
-      @vmode ||= View.default
+      @vmode ||= View.default_view
       method("to_#{@vmode}").call
     rescue NameError
       super
@@ -32,12 +32,12 @@ module CIAX
 
     # For Exe @def_proc
     def vmode(mode)
-      @vmode = mode ? mode : View.default
+      @vmode = mode ? mode : View.default_view
       self
     end
 
-    def self.default
-      @default
+    def self.default_view
+      @default_view
     end
   end
 end

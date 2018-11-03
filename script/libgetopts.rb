@@ -143,7 +143,7 @@ module CIAX
 
     def ___set_view_mode
       v = __make_exopt(%i(j r))
-      View.default.replace(v.to_s) if v
+      View.default_view.replace(v.to_s) if v
     end
 
     def __make_exopt(ary)

@@ -54,8 +54,7 @@ module CIAX
 
       # Change alives list
       def get_arc(num = 1)
-        upd
-        rkeys = @rec_arc.list.keys
+        rkeys = @rec_arc.upd.list.keys
         @par.list.replace(rkeys.sort.uniq.last(num.to_i))
         self
       end
@@ -134,10 +133,7 @@ module CIAX
       def ___init_procs
         @upd_procs << proc do
           @valid_keys.replace((current_rec || self)[:option] || [])
-          next if (@alives - @par.list).empty?
-          @rec_arc.upd
-          @par.sel_last
-          cmt
+          @alives.each { |id| @par.push(id) }
         end
       end
 
@@ -153,7 +149,7 @@ module CIAX
           @par.push(id)
           @cache[id] = record
           @rec_arc.push(record)
-          cmt
+          self
         end
 
         def ext_local

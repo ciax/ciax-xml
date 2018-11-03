@@ -82,6 +82,8 @@ module CIAX
       me.update(other) do |_k, mv, ov|
         if mv.is_a? Hash
           __rec_merge(mv, ov)
+        elsif mv.is_a? Enumerable
+          mv.replace(ov)
         else
           ov
         end

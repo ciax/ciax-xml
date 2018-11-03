@@ -10,7 +10,7 @@ module CIAX
         extend(Processor).ext_local_processor
       end
 
-      # Macro Manager Processing Module
+      # Macro Manager Processing Module (TEST or DRIVE mode)
       module Processor
         def self.extended(obj)
           Msg.type?(obj, Man)

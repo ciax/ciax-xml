@@ -31,6 +31,7 @@ module CIAX
 
       # Mode Extention by Option
       def ext_local_test
+        @pre_exe_procs << proc { @stat.upd }
         @stat.ext_local
         super
       end

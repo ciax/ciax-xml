@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require 'librecord'
 require 'librecarc'
+require 'libcmdpar'
 
 module CIAX
   # Macro Layer
@@ -19,10 +19,12 @@ module CIAX
     #  Local(ext_save) : write down Rec_arc
     class RecList < Upd
       attr_reader :current_idx
-      def initialize(proj = ENV['PROJ'], par = Parameter.new, valid_keys = [])
+      def initialize(proj = nil, par = nil, valid_keys = [])
         super()
-        @proj = proj
-        @par = type?(par, CmdBase::Parameter)
+        self[:id] = proj || ENV['PROJ']
+        @par = par || CmdBase::Parameter.new
+        type?(@par, CmdBase::Parameter)
+        self[:alives] = @par.list
         @valid_keys = type?(valid_keys, Array)
         self[:option] = @valid_keys.dup
         @rec_arc = RecArc.new
@@ -40,7 +42,7 @@ module CIAX
       end
 
       def flush
-        @list.replace(@par.list)
+        @list.replace(self[:alives])
         @current_idx = 0
         self
       end
@@ -61,7 +63,7 @@ module CIAX
 
       # Change alives list
       def get_arc(num = nil)
-        num = num ? [@par.list.size, num.to_i].max : @list.size + 1
+        num = num ? [self[:alives].size, num.to_i].max : @list.size + 1
         rkeys = @rec_arc.upd.list.keys.sort.uniq
         @list.replace(rkeys.last(num))
         self
@@ -69,7 +71,7 @@ module CIAX
 
       def to_s
         rec = current_rec
-        rec ? rec.to_s : to_v
+        rec ? rec.to_s : super
       end
 
       ##### For server ####
@@ -81,15 +83,18 @@ module CIAX
           hash[key] = Record.new(key).ext_remote(@host)
         end
         @upd_procs << proc do
-          @rec_arc.upd unless @par.list.each { |id| append(id) }.empty?
+          @rec_arc.upd unless self[:alives].each { |id| append(id) }.empty?
         end
-        self
+        upd
       end
 
       # Manipulate memory
       def ext_local
         extend(Local).ext_local
-        self
+      end
+
+      def ext_view
+        extend(ListView)
       end
 
       private
@@ -100,52 +105,72 @@ module CIAX
         @cache = {}
         @upd_procs << proc do
           @valid_keys.replace((current_rec || self)[:option] || [])
+          self[:list] = @list.map { |id| _item(id) }
+          self[:default] = @par[:default]
         end
       end
-    end
 
-    # Divided for Rubocop
-    class RecList
-      # Show Index of Alives Item
-      def to_v
-        ___list_view
-      end
-
-      private
-
-      def ___list_view
-        page = ['<<< ' + colorize("Active Macros [#{@proj}]", 2) + ' >>>']
-        @list.each_with_index do |id, idx|
-          page << ___item_view(id, idx + 1)
-        end
-        page.join("\n")
-      end
-
-      def ___item_view(id, idx)
-        rec = @par.list.include?(id) ? get(id) : @rec_arc.get(id)
-        tim =  ___get_time(id)
-        pcid = ___get_pcid(rec[:pid])
-        title = format('[%s] %s (%s) by %s', idx, id, tim, pcid)
-        itemize(title, (rec[:cid]).to_s + ___result_view(rec))
-      end
-
-      def ___get_time(id)
-        Time.at(id[0..9].to_i).to_s
-      end
-
-      def ___result_view(rec)
-        if rec.is_a?(Record) && rec[:status] != 'end'
-          msg = " #{rec.step_num}(#{rec[:status]})"
-          msg << optlist(rec[:option]) if rec.last
-          msg
+      def _item(id)
+        if self[:alives].include?(id)
+          ids = %i(id pid cid status option result total_steps steps)
+          item = get(id).pick(ids)
+          item[:steps] = item[:steps].size
+          item[:def] = true if @par[:default] == id
+          item
         else
-          " (#{rec[:result]})"
+          Hashx[id: id].update(@rec_arc.get(id))
         end
       end
 
-      def ___get_pcid(pid)
-        return 'user' if pid == '0'
-        @rec_arc.list[pid][:cid]
+      # Divided for Rubocop
+      module ListView
+        def self.extended(obj)
+          Msg.type?(obj, RecList)
+        end
+
+        # Show Index of Alives Item
+        def to_v
+          ___list_view
+        end
+
+        private
+
+        def ___list_view
+          page = ['<<< ' + colorize("Active Macros [#{self[:id]}]", 2) + ' >>>']
+          self[:list].each_with_index do |rec, idx|
+            page << ___item_view(rec, idx + 1)
+          end
+          page.join("\n")
+        end
+
+        def ___item_view(rec, idx)
+          id = rec[:id]
+          tim = ___get_time(id)
+          pcid = ___get_pcid(rec[:pid])
+          title = rec[:def] ? '*' : ' '
+          title << format('[%s] %s (%s) by %s', idx, id, tim, pcid)
+          itemize(title, rec[:cid].to_s + ___result_view(rec))
+        end
+
+        def ___result_view(rec)
+          if rec.key?(:status) && rec[:status] != 'end'
+            args = rec.pick(%i(steps total_steps status)).values
+            msg = format(' [%s/%s](%s)', *args)
+            msg << optlist(rec[:option])
+            msg
+          else
+            " (#{rec[:result]})"
+          end
+        end
+
+        def ___get_time(id)
+          Time.at(id[0..9].to_i).to_s
+        end
+
+        def ___get_pcid(pid)
+          return 'user' if pid == '0'
+          @rec_arc.list[pid][:cid]
+        end
       end
 
       # Local mode
@@ -157,7 +182,7 @@ module CIAX
         def push(record) # returns self
           id = record[:id]
           return self unless id.to_i > 0
-          @par.list << append(id)
+          self[:alives] << append(id)
           @cache[id] = record
           @rec_arc.push(record)
           self
@@ -187,14 +212,14 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[num]', options: 'chs') do |opts, args|
         Msg.args_err if args.empty?
-        rl = RecList.new
+        rl = RecList.new.ext_view
         if opts.cl?
           rl.ext_remote(opts.host)
         else
           rl.ext_local
           rl.ext_save.refresh_arc_bg.join if opts.sv?
         end
-        puts rl.get_arc(args.shift).sel(args.shift)
+        puts rl.get_arc(args.shift).upd.sel(args.shift)
       end
     end
   end

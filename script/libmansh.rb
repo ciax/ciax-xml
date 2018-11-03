@@ -32,10 +32,10 @@ module CIAX
         def ___init_view_list
           page = @cobj.loc.add_page
           page.get('last').def_proc do |ent|
-            @stat.get_arc(ent.par[0])
+            @stat.get_arc(ent.par[0]).upd
           end
           page.get('cl').def_proc do
-            @stat.flush
+            @stat.flush.upd
           end
         end
 

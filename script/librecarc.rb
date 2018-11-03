@@ -18,7 +18,7 @@ module CIAX
       end
 
       def get(id)
-        self[:list][id]
+        self[:list][id] || id_err(id, 'Record Archive')
       end
 
       # Mode

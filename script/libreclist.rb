@@ -92,12 +92,6 @@ module CIAX
         self
       end
 
-      def refresh_arc_bg # returns Thread
-        Threadx::Fork.new('RecArc(rec_list)', 'mcr', @id) do
-          @rec_arc.clear.refresh
-        end
-      end
-
       private
 
       def ___list_view
@@ -150,6 +144,12 @@ module CIAX
           @cache[id] = record
           @rec_arc.push(record)
           self
+        end
+
+        def refresh_arc_bg # returns Thread
+          Threadx::Fork.new('RecArc(rec_list)', 'mcr', @id) do
+            @rec_arc.clear.refresh
+          end
         end
 
         def ext_local

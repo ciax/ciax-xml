@@ -36,7 +36,7 @@ module CIAX
       raise InvalidARGS, ary.join("\n  "), caller(1)
     end
 
-    def id_err(id, type, comment) # Raise User error (Invalid User input)
+    def id_err(id, type, comment = '') # Raise User error (Invalid User input)
       raise InvalidID, "No such ID (#{id}) in #{type}\n#{comment}", caller(1)
     end
 

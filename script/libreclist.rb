@@ -127,7 +127,7 @@ module CIAX
       def ___init_procs
         @upd_procs << proc do
           @valid_keys.replace((current_rec || self)[:option] || [])
-          @alives.each { |id| @par.push(id) }
+          @rec_arc.upd unless @alives.each { |id| @par.push(id) }.empty?
         end
       end
 

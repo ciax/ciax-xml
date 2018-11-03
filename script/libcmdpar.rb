@@ -20,7 +20,7 @@ module CIAX
       #   x   |   *   |    -      |    o     | :default
       #   *   |   x   |    -      |    o     | :default
       attr_reader :list
-      def initialize(hash)
+      def initialize(hash = {})
         super
         @list = (self[:list] ||= [])
       end

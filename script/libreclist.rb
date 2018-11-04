@@ -64,8 +64,7 @@ module CIAX
       # Change alives list
       def get_arc(num = nil)
         num = num ? [self[:alives].size, num.to_i].max : @list.size + 1
-        rkeys = @rec_arc.upd.list.keys.sort.uniq
-        @list.replace(rkeys.last(num))
+        @list.replace(@rec_arc.last(num))
         self
       end
 

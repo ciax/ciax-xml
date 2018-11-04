@@ -21,6 +21,11 @@ module CIAX
         self[:list][id] || id_err(id, 'Record Archive')
       end
 
+      def last(num)
+        upd
+        list.keys.sort.uniq.last(num.to_i)
+      end
+
       # Mode
       #   Skelton
       #   Remote (Read only)

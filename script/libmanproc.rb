@@ -33,7 +33,8 @@ module CIAX
         private
 
         def ___init_seq
-          @seq_list = SeqList.new(@stat)
+          @seq_list = SeqList.new(@sv_stat)
+          @stat.ext_local
           ___init_pre_exe
           ___init_proc_rem_ext
           ___init_proc_rem_int
@@ -42,7 +43,7 @@ module CIAX
 
         def ___init_pre_exe
           @pre_exe_procs << proc do
-            @sv_stat.flush(:list, @seq_list.alives).repl(:sid, '')
+            @sv_stat.upd
             @sv_stat.flush(:run).cmt if @sv_stat.upd.get(:list).empty?
             @stat.upd
           end
@@ -52,8 +53,8 @@ module CIAX
           # External Command Group
           ext = @cobj.rem.ext
           ext.def_proc do |ent|
-            sid = @seq_list.add(ent).id
-            @sv_stat.push(:list, sid).repl(:sid, sid)
+            seq = @seq_list.add(ent)
+            @stat.push(seq.record)
           end
         end
 

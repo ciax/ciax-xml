@@ -10,10 +10,13 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     class SeqList < ThreadGroup
       attr_reader :threads
-      def initialize(rec_list = RecList.new)
+      def initialize(sv_stat = Prompt)
         super()
         # @rec_arc: List of Record Header (Log)
-        @rec_list = Msg.type?(rec_list, RecList).ext_local
+        @sv_stat = Msg.type?(sv_stat, Prompt)
+        @sv_stat.upd_procs << proc do |ss|
+          ss.flush(:list, alives).repl(:sid, '')
+        end
       end
 
       #### Driver Methods ####
@@ -35,7 +38,7 @@ module CIAX
       def add(ent, pid = '0') # returns Sequencer
         seq = Sequencer.new(ent, pid) { |e, p| add(e, p) }
         super(Msg.type?(seq.fork, Threadx::Fork)) # start immediately
-        @rec_list.push(seq.record)
+        @sv_stat.push(:list, seq.id).repl(:sid, seq.id)
         seq
       end
 

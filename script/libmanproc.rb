@@ -1,5 +1,7 @@
 #!/usr/bin/ruby
 require 'libman'
+require 'libseqlist'
+
 module CIAX
   # Macro Layer
   module Mcr
@@ -33,7 +35,7 @@ module CIAX
         private
 
         def ___init_seq
-          @seq_list = SeqList.new(@sv_stat)
+          @seq_list = SeqList.new(@sv_stat, @stat.rec_arc)
           @stat.ext_local
           ___init_pre_exe
           ___init_proc_rem_ext

@@ -18,7 +18,7 @@ module CIAX
     #  Local(ext_local) : get Rec_arc and Record from File
     #  Local(ext_save) : write down Rec_arc
     class RecList < Upd
-      attr_reader :current_idx
+      attr_reader :current_idx, :rec_arc
       def initialize(proj = nil, par = nil, valid_keys = [])
         super()
         self[:id] = proj || ENV['PROJ']
@@ -182,9 +182,8 @@ module CIAX
         def push(record) # returns self
           id = record[:id]
           return self unless id.to_i > 0
-          self[:alives] << append(id)
+          append(id)
           @cache[id] = record
-          @rec_arc.push(record)
           self
         end
 

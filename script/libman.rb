@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libexe'
 require 'libmcrcmd'
-require 'libseqlist'
+require 'libreclist'
 
 module CIAX
   # Macro Layer

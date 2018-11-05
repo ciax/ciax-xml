@@ -112,7 +112,7 @@ module CIAX
 
     def ___show_generation(key, h)
       h.map do |k, v|
-        next if key && k != key
+        next if key && k != key.to_sym
         val = k == :obj ? __show(v.class) : ___show_contents(v)
         "#{k.inspect.sub(/^:/, '')}: #{val}"
       end.compact.join(', ')
@@ -126,7 +126,7 @@ module CIAX
 
     def ___show_array(v)
       '[' + v.map do |e|
-        __show(e.is_a?(Enumerable ? e.class : e.inspect))
+        __show(e.is_a?(Enumerable) ? e.class : e.inspect)
       end.join(',') + "](#{v.object_id})"
     end
 

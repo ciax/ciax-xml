@@ -9,12 +9,12 @@ module CIAX
     class Query
       include Msg
       # Record should have [:opt] key
-      def initialize(stat, sv_stat)
+      def initialize(stat, sv_stat, valid_keys)
         # Datax#put() will access to header, but get() will access @data
         @record = type?(stat, Record)
         @record.put(:status, 'ready')
         @sv_stat = type?(sv_stat, Prompt)
-        @valid_keys = []
+        @valid_keys = type?(valid_keys, Array)
         @que_cmd = Queue.new
         @que_res = Queue.new
       end

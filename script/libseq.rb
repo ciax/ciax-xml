@@ -10,12 +10,12 @@ module CIAX
       attr_reader :cfg, :record, :qry, :id, :title, :sv_stat
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
-      # ent should have [:sequence]'[:dev_list]
-      def initialize(ment, pid = '0', &submcr_proc)
+      # ent should have [:sequence],[:dev_list],[:pid]
+      def initialize(ment, &submcr_proc)
         @cfg = ment
         @opt = @cfg[:opt]
         @dev_list = type?(@cfg[:dev_list], Wat::List) if @cfg.key?(:dev_list)
-        ___init_record(pid)
+        ___init_record
         @sv_stat = @cfg[:sv_stat] || Prompt.new(@cfg[:id], @opt)
         @submcr_proc = submcr_proc
         @depth = 0
@@ -94,9 +94,8 @@ module CIAX
       end
 
       # Sub for initialize()
-      def ___init_record(pid)
+      def ___init_record
         @record = Record.new.ext_local_processor(@cfg)
-        @record[:pid] = pid
         @id = @record[:id]
         @title = @record.title_s
         ___init_record_file

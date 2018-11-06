@@ -11,8 +11,7 @@
         <sleep>1</sleep>
         <upd site="tmc"/>
         <mcr name="tmc_cw" retry="3"/>
-        <mcr name="tmc_gh-cw"/>
-        <cfg site="tmc" name="set0"/>
+        <mcr name="tmc_gh-cw" async="true"/>
       </item>
     </group>
     <group id="grp_tmc_1" caption="Initial Action" rank="2">
@@ -54,6 +53,7 @@
         <wait retry="30" label="end of motion">
           <equal site="tmc" var="bs" form="data">0</equal>
         </wait>
+        <cfg site="tmc" name="set0"/>
         <upd site="tmc"/>
       </item>
       <item id="tmc_gh-ccw" label="Go to Home from CCW end">

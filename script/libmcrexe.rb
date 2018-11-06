@@ -8,8 +8,9 @@ module CIAX
     # Macro Manager
     class Exe < Exe
       attr_reader :thread, :sub_list # Used for Layer module
-      def initialize(super_cfg)
+      def initialize(super_cfg, &submcr_proc)
         super(super_cfg)
+        @submcr_proc = submcr_proc
         verbose { 'Initiate New Macro' }
         _init_dbi2cfg
         @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
@@ -18,8 +19,8 @@ module CIAX
       end
 
       # Mode Extention by Option
-      def ext_local_driver(pid = '0')
-        @seq = Sequencer.new(@cfg, pid)
+      def ext_local_driver
+        @seq = Sequencer.new(@cfg, &@submcr_proc)
         @int.def_proc { |ent| @seq.reply(ent.id) }
         @sv_stat.push(:list, @seq.id).repl(:sid, @seq.id)
         @stat = @seq.record

@@ -22,7 +22,7 @@ module CIAX
         def ext_local_processor(cfg)
           @cfg = type?(cfg, Config)
           %i(port cid label).each { |k| self[k] = @cfg[k] }
-          self[:ver] = @cfg[:version] || '0' # Version
+          %i(version pid).each { |k| self[k] = @cfg[k] || '0' }
           self[:total_steps] = 0
           @opt = @cfg[:opt]
           self[:mode] = @opt.drv? ? 'drive' : 'test'

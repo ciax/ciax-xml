@@ -208,7 +208,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[num]', options: 'chs') do |opts, args|
+      GetOpts.new('[num]', options: 'chsr') do |opts, args|
         Msg.args_err if args.empty?
         rl = RecList.new.ext_view
         if opts.cl?

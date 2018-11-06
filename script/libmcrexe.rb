@@ -7,7 +7,7 @@ module CIAX
   module Mcr
     # Macro Manager
     class Exe < Exe
-      attr_reader :sub_list # Used for Layer module
+      attr_reader :thread, :sub_list # Used for Layer module
       def initialize(super_cfg)
         super(super_cfg)
         verbose { 'Initiate New Macro' }
@@ -19,10 +19,11 @@ module CIAX
 
       # Mode Extention by Option
       def ext_local_driver(pid = '0')
-        @seq = Sequencer.new(@cfg, pid, @int.valid_keys)
+        @seq = Sequencer.new(@cfg, pid)
         @int.def_proc { |ent| @seq.reply(ent.id) }
-        Msg.type?(@seq.fork, Threadx::Fork)
+        @sv_stat.push(:list, @seq.id).repl(:sid, @seq.id)
         @stat = @seq.record
+        @thread = Msg.type?(@seq.fork, Threadx::Fork)
         self
       end
 
@@ -39,7 +40,7 @@ module CIAX
         rem.cfg[:def_msg] = 'ACCEPT'
         rem.add_sys
         @int = rem.add_int
-        @int.valid_keys.clear
+        @cfg[:valid_keys] = @int.valid_keys.clear
         @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
         @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
       end

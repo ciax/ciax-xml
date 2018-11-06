@@ -11,7 +11,7 @@ module CIAX
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
       # ent should have [:sequence]'[:dev_list]
-      def initialize(ment, pid = '0', valid_keys = [], &submcr_proc)
+      def initialize(ment, pid = '0', &submcr_proc)
         @cfg = ment
         @opt = @cfg[:opt]
         @dev_list = type?(@cfg[:dev_list], Wat::List) if @cfg.key?(:dev_list)
@@ -20,7 +20,7 @@ module CIAX
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
-        @qry = Query.new(@record, @sv_stat, valid_keys)
+        @qry = Query.new(@record, @sv_stat, @cfg[:valid_keys] || [])
       end
 
       # For prompt '(stat) [option]'

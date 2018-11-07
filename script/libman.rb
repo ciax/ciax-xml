@@ -48,6 +48,11 @@ module CIAX
         super
       end
 
+      def ext_shell
+        require 'libmcrsh'
+        extend(Shell).ext_shell
+      end
+
       private
 
       def ___init_prompt

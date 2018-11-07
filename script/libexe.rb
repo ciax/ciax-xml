@@ -69,7 +69,6 @@ module CIAX
 
     def ext_shell
       require 'libsh'
-      @cobj.rem.sys.add_empty
       extend(context_module('Shell')).ext_shell
     end
 

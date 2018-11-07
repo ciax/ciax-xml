@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
-require 'libman'
+require 'libsh'
+
 module CIAX
   # Macro Layer
   module Mcr
@@ -9,6 +10,7 @@ module CIAX
       # cfg should have [:jump_groups]
       def ext_shell
         super
+        verbose { 'Initiate Mcr Shell' }
         ___init_view_rec
         ___init_view_list
         ___init_view_cmd
@@ -61,6 +63,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
+      require 'libman'
       ConfOpts.new('[proj] [cmd] (par)', options: 'cnlr') do |cfg|
         Man.new(cfg).ext_shell.shell
       end

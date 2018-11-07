@@ -7,26 +7,17 @@ module CIAX
   module Mcr
     # Macro Manager
     class Exe < Exe
-      attr_reader :thread, :sub_list # Used for Layer module
+      attr_reader :thread, :seq
       def initialize(super_cfg, &submcr_proc)
         super(super_cfg)
-        @submcr_proc = submcr_proc
         verbose { 'Initiate New Macro' }
         _init_dbi2cfg
         @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
         ___init_cmd
-        _opt_mode
+        ___init_seq(submcr_proc)
       end
 
       # Mode Extention by Option
-      def ext_local_driver
-        @seq = Sequencer.new(@cfg, &@submcr_proc)
-        @int.def_proc { |ent| @seq.reply(ent.id) }
-        @sv_stat.push(:list, @seq.id).repl(:sid, @seq.id)
-        @stat = @seq.record
-        @thread = Msg.type?(@seq.fork, Threadx::Fork)
-        self
-      end
 
       def ext_shell
         super
@@ -44,6 +35,14 @@ module CIAX
         @cfg[:valid_keys] = @int.valid_keys.clear
         @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
         @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
+      end
+
+      def ___init_seq(submcr_proc)
+        @seq = Sequencer.new(@cfg, &submcr_proc)
+        @int.def_proc { |ent| @seq.reply(ent.id) }
+        @sv_stat.push(:list, @seq.id).repl(:sid, @seq.id)
+        @stat = @seq.record
+        @thread = Msg.type?(@seq.fork, Threadx::Fork)
       end
     end
 

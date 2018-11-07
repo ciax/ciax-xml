@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libseq'
+require 'libmcrexe'
 
 # CIAX-XML
 module CIAX
@@ -12,11 +12,11 @@ module CIAX
       attr_reader :threads
       def initialize(sv_stat, rec_arc)
         super()
-        # @rec_arc: List of Record Header (Log)
         @sv_stat = Msg.type?(sv_stat, Prompt)
         @sv_stat.upd_procs << proc do |ss|
           ss.flush(:list, alives).repl(:sid, '')
         end
+        # @rec_arc: List of Record Header (Log)
         @rec_arc = Msg.type?(rec_arc, RecArc)
       end
 
@@ -37,8 +37,9 @@ module CIAX
 
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent) # returns Sequencer
-        seq = Sequencer.new(ent) { |e| add(e) }
-        super(Msg.type?(seq.fork, Threadx::Fork)) # start immediately
+        exe = Exe.new(ent) { |e| add(e) }
+        super(Msg.type?(exe.thread, Threadx::Fork)) # start immediately
+        seq = exe.seq
         @sv_stat.push(:list, seq.id).repl(:sid, seq.id)
         @rec_arc.push(seq.record)
         seq

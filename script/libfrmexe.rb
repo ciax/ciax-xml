@@ -84,12 +84,12 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
         dbi = Dev::Db.new.get(args.shift)
         begin
-          obj = Exe.new(cfg, dbi.pick)
-          puts obj.exe(args).stat
+          eobj = Exe.new(cfg, dbi.pick)
+          puts eobj.exe(args).stat
         rescue CommError
-          puts obj.stat
+          puts eobj.stat
         ensure
-          puts obj.sv_stat.to_r
+          puts eobj.sv_stat.to_r
         end
       end
     end

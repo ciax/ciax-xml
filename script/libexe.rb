@@ -9,6 +9,7 @@ require 'libcmdremote'
 
 module CIAX
   # Device Execution Engine
+  #  This instance will be assinged as @eobj in other classes
   class Exe
     include Msg
     attr_reader :layer, :id, :mode, :cobj, :stat, :sub, :cfg,

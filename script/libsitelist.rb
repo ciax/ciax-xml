@@ -14,10 +14,10 @@ module CIAX
       end
 
       def get(site)
-        cobj = _list.key?(site) ? super : ___add(site)
-        @sub_list.get(cobj.sub.id) if @sub_list
+        eobj = _list.key?(site) ? super : ___add(site)
+        @sub_list.get(eobj.sub.id) if @sub_list
         @current = site
-        cobj
+        eobj
       end
 
       def run
@@ -62,9 +62,9 @@ module CIAX
 
       def ___add(site) # returns Exe
         # layer_module can be Frm,App,Wat,Hex
-        obj = layer_module::Exe.new(@cfg, exe_atrb(site))
-        _list.put(site, obj)
-        obj
+        eobj = layer_module::Exe.new(@cfg, exe_atrb(site))
+        _list.put(site, eobj)
+        eobj
       end
 
       class Jump < LongJump; end

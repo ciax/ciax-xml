@@ -2,6 +2,7 @@
 require 'libvarx'
 module CIAX
   # For server status through all layers
+  #   This instance will be assigned as @sv_stat in other classes
   class Prompt < Varx
     attr_reader :db
     # type = site,mcr

@@ -102,10 +102,10 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
         dbi = Ins::Db.new.get(args.shift)
         atrb = { dbi: dbi, sub_list: Frm::List.new(cfg) }
-        obj = Exe.new(cfg, atrb).exe(args)
-        puts obj.stat
+        eobj = Exe.new(cfg, atrb).exe(args)
+        puts eobj.stat
         sleep 0.5
-        puts obj.sv_stat.to_r
+        puts eobj.sv_stat.to_r
       end
     end
   end

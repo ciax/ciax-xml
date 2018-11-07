@@ -60,6 +60,7 @@ module CIAX
     end
 
     # Top Level Command Index
+    #  This instance will be assigned as @cobj in other classes
     class Index < GrpAry
       def initialize(super_cfg, atrb = Hashx.new)
         atrb[:index] = self

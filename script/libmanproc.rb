@@ -35,7 +35,7 @@ module CIAX
         private
 
         def ___init_seq
-          @seq_list = SeqList.new(@sv_stat, @stat.rec_arc)
+          @seq_list = SeqList.new(@cfg)
           @stat.ext_local
           ___init_pre_exe
           ___init_proc_rem_ext

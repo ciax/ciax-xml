@@ -19,6 +19,7 @@ module CIAX
           cfg[:proj] = proj
           cfg[:sv_stat] = Prompt.new(proj, self)
           cfg[:dbi] = Db.new.get(proj)
+          cfg[:rec_arc] = RecArc.new
           yield(cfg, args)
         end
       end

@@ -16,7 +16,7 @@ module CIAX
         ___init_prompt
       end
 
-      def fork
+      def start
         @thread = Msg.type?(@seq.fork, Threadx::Fork)
         self
       end
@@ -59,7 +59,7 @@ module CIAX
         mobj = Index.new(cfg)
         mobj.add_rem.add_ext.dev_list
         ent = mobj.set_cmd(args)
-        Exe.new(ent).ext_shell.fork.shell
+        Exe.new(ent).ext_shell.start.shell
       end
     end
   end

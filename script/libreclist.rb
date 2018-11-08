@@ -19,7 +19,7 @@ module CIAX
     #  Local(ext_save) : write down Rec_arc
     class RecList < Upd
       attr_reader :current_idx, :rec_arc
-      def initialize(proj = nil, par = nil, valid_keys = [])
+      def initialize(rec_arc, proj = nil, par = nil, valid_keys = [])
         super()
         self[:id] = proj || ENV['PROJ']
         @par = par || CmdBase::Parameter.new
@@ -27,7 +27,7 @@ module CIAX
         self[:alives] = @par.list
         @valid_keys = type?(valid_keys, Array)
         self[:option] = @valid_keys.dup
-        @rec_arc = RecArc.new
+        @rec_arc = type?(rec_arc, RecArc)
         ___init_vars
       end
 

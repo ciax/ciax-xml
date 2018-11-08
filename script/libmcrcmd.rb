@@ -71,15 +71,6 @@ module CIAX
             crnt.update(caption: 'Start Macro', sites: super_cfg[:dbi][:sites])
             super
           end
-
-          # Because here is common to Man, Seq
-          def dev_list
-            opt = @cfg[:opt]
-            site_cfg = @cfg.gen(self)
-            site_cfg.update(opt: opt.sub_opt)
-            dev_layer = opt[:x] ? Hex : Wat
-            @cfg[:dev_list] = dev_layer::List.new(site_cfg)
-          end
         end
         # generate [:sequence]
         class Item

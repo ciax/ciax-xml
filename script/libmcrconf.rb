@@ -15,13 +15,26 @@ module CIAX
       def initialize(ustr = '', optargs = {})
         super do |cfg, args|
           verbose { 'Initiate Mcr Conf (option:' + keys.join + ')' }
-          proj = (ENV['PROJ'] ||= args.shift)
-          cfg[:proj] = proj
-          cfg[:sv_stat] = Prompt.new(proj, self)
-          cfg[:dbi] = Db.new.get(proj)
+          ___init_proj(cfg, ENV['PROJ'] ||= args.shift)
+          ___init_dev(cfg)
           cfg[:rec_arc] = RecArc.new
           yield(cfg, args)
         end
+      end
+
+      private
+
+      def ___init_proj(cfg, proj)
+        cfg[:proj] = proj
+        cfg[:dbi] = Db.new.get(proj)
+        cfg[:sv_stat] = Prompt.new(proj, self)
+      end
+
+      def ___init_dev(cfg)
+        opt = cfg[:opt]
+        return unless opt.drv?
+        layer = opt[:x] ? Hex : Wat
+        cfg[:dev_list] = layer::List.new(cfg, opt: opt.sub_opt)
       end
     end
 

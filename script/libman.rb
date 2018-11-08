@@ -19,6 +19,7 @@ module CIAX
         ___init_prompt
         ___init_cmd
         ___init_stat
+
         _opt_mode
       end
 
@@ -57,6 +58,7 @@ module CIAX
 
       def ___init_prompt
         @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
+        @sub_list = @cfg[:dev_list]
       end
 
       # Initiate for all mode
@@ -66,7 +68,6 @@ module CIAX
         rem.add_sys
         rem.add_int
         rem.add_ext
-        @sub_list = @cobj.rem.ext.dev_list
       end
 
       def ___init_stat

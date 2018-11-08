@@ -35,7 +35,7 @@ module CIAX
         private
 
         def ___init_seq
-          @seq_list = SeqList.new(@cfg)
+          @seq_list = SeqList.new(@cfg) { |rec| @stat.push(rec) }
           @stat.ext_local
           ___init_pre_exe
           ___init_proc_rem_ext
@@ -54,10 +54,7 @@ module CIAX
         def ___init_proc_rem_ext
           # External Command Group
           ext = @cobj.rem.ext
-          ext.def_proc do |ent|
-            seq = @seq_list.add(ent)
-            @stat.push(seq.record)
-          end
+          ext.def_proc { |ent| @seq_list.add(ent) }
         end
 
         def ___init_proc_rem_int

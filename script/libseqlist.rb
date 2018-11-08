@@ -8,13 +8,14 @@ module CIAX
     # List which provides Sequencer
     # @cfg[:sv_stat] and [:rec_list] should be set
     class SeqList < ThreadGroup
-      attr_reader :threads
-      def initialize(cfg)
+      attr_reader :threads, :add_proc
+      def initialize(cfg, &add_proc)
         super()
         @sv_stat = Msg.type?(cfg[:sv_stat], Prompt)
         @sv_stat.upd_procs << proc do |ss|
           ss.flush(:list, alives).repl(:sid, '')
         end
+        @add_proc = add_proc
         # @rec_arc: List of Record Header (Log)
         @rec_arc = Msg.type?(cfg[:rec_arc], RecArc)
       end
@@ -41,6 +42,7 @@ module CIAX
         seq = exe.seq
         @sv_stat.push(:list, seq.id).repl(:sid, seq.id)
         @rec_arc.push(seq.record)
+        @add_proc.call(seq.record) if @add_proc
         seq
       end
 

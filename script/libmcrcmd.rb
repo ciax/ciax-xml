@@ -19,18 +19,6 @@ module CIAX
         end
       end
 
-      # Switch View Group
-      module View
-        # View Group
-        class Group
-          def initialize(super_cfg, atrb = Hashx.new)
-            super
-            add_item('dig', 'Show more Submacros')
-            add_item('hide', 'Hide Submacros')
-          end
-        end
-      end
-
       # Switch Page Group
       module Page
         deep_include CmdBase

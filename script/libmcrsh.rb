@@ -13,7 +13,7 @@ module CIAX
         verbose { 'Initiate Mcr Shell' }
         ___init_view_rec
         ___init_view_list
-        ___init_view_cmd
+        ___init_view_cmd(@cobj.loc.add_view)
         ___init_conv
         self
       end
@@ -39,13 +39,13 @@ module CIAX
         end
       end
 
-      def ___init_view_cmd
-        view = @cobj.loc.add_view
-        view.get('dig').def_proc do
+      def ___init_view_cmd(view)
+        return unless @cobj.rem.ext
+        view.add_item('dig', 'Show more Submacros').def_proc do
           @cobj.rem.ext.rankup
           @cobj.error
         end
-        view.get('hide').def_proc do
+        view.add_item('hide', 'Hide Submacros').def_proc do
           @cobj.rem.ext.rank(0)
           @cobj.error
         end

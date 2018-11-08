@@ -37,8 +37,7 @@ module CIAX
 
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent) # returns Sequencer
-        exe = Exe.new(ent) { |e| add(e) }
-        seq = exe.seq
+        seq = Exe.new(ent) { |e| add(e) }.seq
         @sv_stat.push(:list, seq.id).repl(:sid, seq.id)
         @cfg[:rec_arc].push(seq.record)
         @jumpgrp.add_item(id, id.capitalize + ' seq')

@@ -64,9 +64,7 @@ module CIAX
       ConfOpts.new('[id] [cmd] (par)', options: 'i') do |cfg, args|
         dbi = (cfg[:opt][:i] ? Ins::Db : Db).new.get(args.shift)
         # dbi.pick already includes :layer, :command, :version
-        cobj = Index.new(cfg, dbi.pick)
-        cobj.add_rem.add_ext
-        ent = cobj.set_cmd(args)
+        ent = Index.new(cfg, dbi.pick).add_rem.add_ext.set_cmd(args)
         puts ent[:batch].to_s
       end
     end

@@ -126,10 +126,9 @@ module CIAX
         fld = cfg[:field] = Field.new(args.shift)
         # dbi.pick alreay includes :layer, :command, :version
         cobj = Index.new(cfg, fld.dbi.pick(%i(stream)))
-        cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }
-        cobj.rem.add_ext
+        rem = cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }.add_ext
         fld.jmerge unless STDIN.tty?
-        res = cobj.set_cmd(args).exe_cmd('test')
+        res = rem.set_cmd(args).exe_cmd('test')
         if cfg[:opt][:r]
           print res.msg
         else

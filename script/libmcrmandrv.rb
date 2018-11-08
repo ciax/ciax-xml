@@ -6,19 +6,15 @@ module CIAX
   module Mcr
     # Macro Manager
     class Man
-      def ext_local_processor
-        @mode = @opt.dry? ? 'DRY' : 'PRCS'
-        extend(Processor).ext_local_processor
-      end
-
       # Macro Manager Processing Module (TEST or DRIVE mode)
-      module Processor
+      module Driver
         def self.extended(obj)
           Msg.type?(obj, Man)
         end
 
         # Initiate for driver
-        def ext_local_processor
+        def ext_local_driver
+          @mode = @opt.dry? ? 'DRY' : 'PRCS'
           ___init_seq
           @stat.ext_save if @opt.mcr_log?
           @sv_stat.repl(:sid, '') # For server response

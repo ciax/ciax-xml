@@ -19,11 +19,16 @@ module CIAX
         ___init_prompt
         ___init_cmd
         ___init_stat
+
         _opt_mode
       end
 
       # this is separated for Daemon
       # restart background threads which will be killed by Daemon
+      def run
+        @sub_list.run
+        self
+      end
 
       # Mode Extention by Option
       def ext_local_test
@@ -33,8 +38,8 @@ module CIAX
       end
 
       def ext_local_driver
-        require 'libmanproc'
-        ext_local_processor
+        require 'libmcrmandrv'
+        super
       end
 
       def ext_local_server
@@ -53,6 +58,7 @@ module CIAX
 
       def ___init_prompt
         @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
+        @sub_list = @cfg[:dev_list]
       end
 
       # Initiate for all mode
@@ -62,7 +68,6 @@ module CIAX
         rem.add_sys
         rem.add_int
         rem.add_ext
-        @sub_list = @cobj.rem.ext.dev_list
       end
 
       def ___init_stat

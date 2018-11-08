@@ -70,16 +70,6 @@ module CIAX
       def add_dom(ns, atrb = Hashx.new)
         add("#{ns}::Domain", atrb)
       end
-
-      def set_cmd(args = [], opt = {})
-        id, *par = type?(args, Array)
-        valid_keys.include?(id) || error
-        get(id).set_par(par, opt)
-      end
-
-      def error
-        cmd_err(view_list)
-      end
     end
 
     # Commmand Domain (Remote or Local)

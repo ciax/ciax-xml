@@ -11,6 +11,16 @@ module CIAX
       include Msg
       attr_reader :cfg
 
+      def set_cmd(args = [], opt = {})
+        id, *par = type?(args, Array)
+        valid_keys.include?(id) || error
+        get(id).set_par(par, opt)
+      end
+
+      def error
+        cmd_err(view_list)
+      end
+
       # Proc should return String
       def def_proc(&def_proc)
         @cfg[:def_proc] = type?(def_proc, Proc)

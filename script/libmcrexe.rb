@@ -41,9 +41,9 @@ module CIAX
 
       def ___init_seq(submcr_proc)
         @seq = Sequencer.new(@cfg, &submcr_proc)
+        @id = @seq.id
         @int.def_proc { |ent| @seq.reply(ent.id) }
         @stat = @seq.record
-        @id = @stat.id
       end
 
       def ___init_prompt
@@ -56,9 +56,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg, args|
-        mobj = Index.new(cfg)
-        mobj.add_rem.add_ext.dev_list
-        ent = mobj.set_cmd(args)
+        ent = Index.new(cfg).add_rem.add_ext.set_cmd(args)
         Exe.new(ent).ext_shell.start.shell
       end
     end

@@ -2,32 +2,37 @@
 require 'libexe'
 require 'libmcrcmd'
 require 'libreclist'
-
 module CIAX
   # Macro Layer
   module Mcr
-    # Macro Manager
+    # Macro Manager/Manipulator
+    #  Features
+    #   *Test/Driver
+    #    -Generate Mcr::Exe and Push to List
+    #   *Front End
+    #    -Switch to Exe(Shell) if Driver mode
+    #    -Show List of picked Record in Archive besides Exes
+    #    -Pseudo Shell for Archive Records/Remote Exe
+    #   *Server
+    #    -Accept Mcr generate command
+    #    -Accept Manipulation command to individual Exes with ID
+    #  Commands
+    #   *Mcr Generation Command (gencmd)
+    #   *Mcr Manipulation command (mancmd)
     class Man < Exe
       attr_reader :sub_list # Used for Layer module
-      def initialize(super_cfg)
+      def initialize(super_cfg, &gen_proc)
         super(super_cfg)
+        @gen_proc = gen_proc
         verbose { 'Initiate Manager (option:' + @opt.keys.join + ')' }
         # id = nil -> taken by ARGV
         # pick already includes :command, :version
         _init_dbi2cfg(%i(sites))
         _init_net
-        ___init_prompt
+        ___init_lists
         ___init_cmd
         ___init_stat
-
         _opt_mode
-      end
-
-      # this is separated for Daemon
-      # restart background threads which will be killed by Daemon
-      def run
-        @sub_list.run
-        self
       end
 
       # Mode Extention by Option
@@ -44,7 +49,9 @@ module CIAX
 
       def ext_local_server
         verbose { 'Initiate Record Archive' }
-        @stat.refresh_arc_bg
+        Threadx::Fork.new('RecArc', 'mcr', @id) do
+          @rec_arc.clear.refresh
+        end
         ___web_cmdlist
         super
       end
@@ -56,9 +63,10 @@ module CIAX
 
       private
 
-      def ___init_prompt
+      def ___init_lists
         @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
         @sub_list = @cfg[:dev_list]
+        @rec_arc = @cfg[:rec_arc]
       end
 
       # Initiate for all mode

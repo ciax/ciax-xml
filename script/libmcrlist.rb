@@ -24,6 +24,8 @@ module CIAX
         @man = self[:list]['0'] = Man.new(@cfg)
       end
 
+      # this is separated for Daemon
+      # restart background threads which will be killed by Daemon
       def run
         @sub_list.run
         self

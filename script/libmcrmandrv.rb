@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
-require 'libseqlist'
-
+require 'libmcrexe'
 module CIAX
   # Macro Layer
   module Mcr
@@ -15,11 +14,21 @@ module CIAX
         # Initiate for driver
         def ext_local_driver
           @mode = @opt.dry? ? 'DRY' : 'PRCS'
-          ___init_seq
+          ___init_procs
           @stat.ext_save if @opt.mcr_log?
           @sv_stat.repl(:sid, '') # For server response
           @cobj.rem.ext_input_log
           self
+        end
+
+        def gen_exe(ent) # returns Sequencer
+          exe = Exe.new(ent) { |e| gen_exe(e) }
+          Msg.type?(exe.start.thread, Threadx::Fork)
+          @gen_proc.call(exe) if @gen_proc.is_a?(Process)
+          @sv_stat.push(:list, exe.id).repl(:sid, exe.id)
+          @rec_arc.push(exe.stat)
+          @stat.push(exe.stat)
+          exe
         end
 
         def run
@@ -29,8 +38,7 @@ module CIAX
 
         private
 
-        def ___init_seq
-          @seq_list = SeqList.new(@cfg) { |rec| @stat.push(rec) }
+        def ___init_procs
           @stat.ext_local
           ___init_pre_exe
           ___init_proc_rem_ext
@@ -49,7 +57,7 @@ module CIAX
         def ___init_proc_rem_ext
           # External Command Group
           ext = @cobj.rem.ext
-          ext.def_proc { |ent| @seq_list.add(ent) }
+          ext.def_proc { |ent| gen_exe(ent) }
         end
 
         def ___init_proc_rem_int

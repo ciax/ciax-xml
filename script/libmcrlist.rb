@@ -4,7 +4,7 @@ require 'libmcrman'
 
 module CIAX
   module Mcr
-    # List which provides records
+    # List for Running Macro/Manager
     class List < List
       attr_reader :cfg
       # level can be Layer or Site
@@ -18,10 +18,8 @@ module CIAX
         #      self[:list] = Hashx.new
         super
         @sv_stat = Msg.type?(@cfg[:sv_stat], Prompt)
-        @sv_stat.upd_procs << proc do |ss|
-          ss.flush(:list, alives).repl(:sid, '')
-        end
-        @man = self[:list]['0'] = Man.new(@cfg)
+        @sv_stat.upd_procs << proc { |ss| ss.repl(:sid, '') }
+        @man = self[:list]['0'] = Man.new(@cfg, mcr_list: self)
       end
 
       # this is separated for Daemon
@@ -31,19 +29,12 @@ module CIAX
         self
       end
 
-      def get(id)
-        mobj = super
-        @current = mobj.id
-        mobj
-      end
-
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
-      def add(ent) # returns Sequencer
-        seq = Exe.new(ent) { |e| add(e) }.seq
-        @sv_stat.push(:list, seq.id).repl(:sid, seq.id)
-        @cfg[:rec_arc].push(seq.record)
-        @jumpgrp.add_item(id, id.capitalize + ' seq')
-        seq
+      def add(exe) # returns Exe
+        _list[exe.id] = exe
+        @cfg[:rec_arc].push(exe.stat)
+        @jumpgrp.add_item(exe.id, exe.id)
+        exe
       end
 
       def ext_shell

@@ -21,8 +21,8 @@ module CIAX
     #   *Mcr Manipulation command (mancmd)
     class Man < Exe
       attr_reader :sub_list # Used for Layer module
-      def initialize(super_cfg, &gen_proc)
-        super(super_cfg)
+      def initialize(super_cfg, atrb = Hashx.new, &gen_proc)
+        super
         @gen_proc = gen_proc
         verbose { 'Initiate Manager (option:' + @opt.keys.join + ')' }
         # id = nil -> taken by ARGV

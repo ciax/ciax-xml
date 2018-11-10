@@ -14,6 +14,7 @@ module CIAX
         # Initiate for driver
         def ext_local_driver
           @mode = @opt.dry? ? 'DRY' : 'PRCS'
+          @mcr_list = type?(@cfg[:mcr_list], List)
           ___init_procs
           @stat.ext_save if @opt.mcr_log?
           @sv_stat.repl(:sid, '') # For server response
@@ -21,19 +22,12 @@ module CIAX
           self
         end
 
-        def gen_exe(ent) # returns Sequencer
-          exe = Exe.new(ent) { |e| gen_exe(e) }
-          Msg.type?(exe.start.thread, Threadx::Fork)
-          @gen_proc.call(exe) if @gen_proc.is_a?(Process)
-          @sv_stat.push(:list, exe.id).repl(:sid, exe.id)
-          @rec_arc.push(exe.stat)
-          @stat.push(exe.stat)
-          exe
-        end
-
-        def run
-          ext_local_server if @opt.sv?
-          super
+        def gen_mcr(ent) # returns Sequencer
+          mobj = Exe.new(ent) { |e| gen_mcr(e) }
+          Msg.type?(mobj.start.thread, Threadx::Fork)
+          @mcr_list.add(mobj)
+          @stat.push(mobj.stat)
+          mobj
         end
 
         private
@@ -56,15 +50,15 @@ module CIAX
 
         def ___init_proc_rem_ext
           # External Command Group
-          ext = @cobj.rem.ext
-          ext.def_proc { |ent| gen_exe(ent) }
+          @cobj.rem.ext.def_proc { |ent| gen_mcr(ent) }
         end
 
         def ___init_proc_rem_int
           # Internal Command Group
           @cobj.rem.int.def_proc do |ent|
             @sv_stat.repl(:sid, ent.par[0])
-            ent.msg = @seq_list.reply(ent.id) || 'NOSID'
+            mobj = @mcr_list.get(ent.par[0])
+            ent.msg = mobj.exe([ent[:id]]) || 'NOSID'
           end
         end
 

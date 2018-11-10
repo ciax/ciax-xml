@@ -63,7 +63,7 @@ module CIAX
         end
 
         def ___init_proc_rem_sys
-          @cobj.get('interrupt').def_proc { @seq_list.interrupt }
+          @cobj.get('interrupt').def_proc { @cfg[:mcr_list].interrupt }
           @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
           @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
         end

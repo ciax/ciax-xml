@@ -21,6 +21,11 @@ module CIAX
         self
       end
 
+      def interrupt
+        @thread.raise(Interrupt)
+        self
+      end
+
       # Mode Extention by Option
       def ext_shell
         require 'libmcrsh'
@@ -48,6 +53,7 @@ module CIAX
 
       def ___init_prompt
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
+        @cobj.get('interrupt').def_proc { interrupt }
         @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
         @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
         @sv_stat.push(:list, @seq.id).repl(:sid, @seq.id)

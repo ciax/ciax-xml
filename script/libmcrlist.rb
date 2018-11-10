@@ -37,6 +37,11 @@ module CIAX
         exe
       end
 
+      def interrupt
+        _list.each(&:interrupt)
+        self
+      end
+
       def ext_shell
         extend(CIAX::List::Shell).ext_shell(Jump)
         @cfg[:jump_mcr] = @jumpgrp

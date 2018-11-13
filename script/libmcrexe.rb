@@ -14,6 +14,7 @@ module CIAX
         ___init_cmd
         ___init_seq(submcr_proc)
         ___init_prompt
+        ___init_rem_sys
       end
 
       def start
@@ -53,10 +54,13 @@ module CIAX
 
       def ___init_prompt
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
+        @sv_stat.push(:list, @seq.id).repl(:sid, @seq.id)
+      end
+
+      def ___init_rem_sys
         @cobj.get('interrupt').def_proc { interrupt }
         @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
         @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
-        @sv_stat.push(:list, @seq.id).repl(:sid, @seq.id)
       end
     end
 

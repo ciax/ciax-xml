@@ -32,11 +32,7 @@ module CIAX
       end
 
       def ext_shell
-        extend(CIAX::List::Shell).ext_shell(Jump)
-        @cfg[:jump_site] = @jumpgrp
-        sites = @cfg[:db].displist
-        @jumpgrp.ext_grp.merge_items(sites)
-        self
+        extend(Shell).ext_shell
       end
 
       def sub_atrb
@@ -55,7 +51,6 @@ module CIAX
         if @cfg.key?(:sites) # in case of sub_list(Frm::List)
           sites = @db.displist.valid_keys & @cfg[:sites]
           @run_list = sites.empty? ? @db.run_list : sites
-          @current = sites.first
         end
         self
       end
@@ -65,6 +60,20 @@ module CIAX
         eobj = layer_module::Exe.new(@cfg, exe_atrb(site))
         _list.put(site, eobj)
         eobj
+      end
+
+      # Shell module which is Site::List specific
+      module Shell
+        include CIAX::List::Shell
+
+        def ext_shell
+          super(Jump)
+          @cfg[:jump_site] = @jumpgrp
+          sites = @cfg[:db].displist
+          @jumpgrp.ext_grp.merge_items(sites)
+          @current = @run_list.first
+          self
+        end
       end
 
       class Jump < LongJump; end

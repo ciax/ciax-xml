@@ -22,12 +22,20 @@ module CIAX
           self
         end
 
-        def gen_mcr(ent) # returns Sequencer
-          mobj = Exe.new(ent) { |e| gen_mcr(e) }
+        # Generating mcr, returns Sequencer
+        def gen_cmd(ent)
+          mobj = Exe.new(ent) { |e| gen_cmd(e) }
           Msg.type?(mobj.start.thread, Threadx::Fork)
           @mcr_list.add(mobj)
           @stat.push(mobj.stat)
           mobj
+        end
+
+        # Manipulating mcr
+        def man_cmd(ent)
+          @sv_stat.repl(:sid, ent.par[0])
+          mobj = @mcr_list.get(ent.par[0])
+          ent.msg = mobj.exe([ent[:id]]) || 'NOSID'
         end
 
         private
@@ -35,34 +43,25 @@ module CIAX
         def ___init_procs
           @stat.ext_local
           ___init_pre_exe
-          ___init_proc_rem_ext
-          ___init_proc_rem_int
-          ___init_proc_rem_sys
+          ___init_proc_def
+          ___init_proc_sys
         end
 
         def ___init_pre_exe
           @pre_exe_procs << proc do
-            @sv_stat.upd
-            @sv_stat.flush(:run).cmt if @sv_stat.upd.get(:list).empty?
+            @sv_stat.repl(:sid, '')
+            @sv_stat.flush(:run).cmt if @sv_stat.get(:list).empty?
             @stat.upd
           end
         end
 
-        def ___init_proc_rem_ext
-          # External Command Group
-          @cobj.rem.ext.def_proc { |ent| gen_mcr(ent) }
+        def ___init_proc_def
+          rem = @cobj.rem
+          rem.ext.def_proc { |ent| gen_cmd(ent) }
+          rem.int.def_proc { |ent| man_cmd(ent) }
         end
 
-        def ___init_proc_rem_int
-          # Internal Command Group
-          @cobj.rem.int.def_proc do |ent|
-            @sv_stat.repl(:sid, ent.par[0])
-            mobj = @mcr_list.get(ent.par[0])
-            ent.msg = mobj.exe([ent[:id]]) || 'NOSID'
-          end
-        end
-
-        def ___init_proc_rem_sys
+        def ___init_proc_sys
           @cobj.get('interrupt').def_proc { @cfg[:mcr_list].interrupt }
           @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
           @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }

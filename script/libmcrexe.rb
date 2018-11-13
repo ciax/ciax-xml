@@ -29,9 +29,9 @@ module CIAX
 
       # Mode Extention by Option
       def ext_shell
-        require 'libmcrsh'
         extend(Shell).ext_shell
         @prompt_proc = proc { @sv_stat.to_s + optlist(@int.valid_keys) }
+        @cobj.loc.add_view
         self
       end
 

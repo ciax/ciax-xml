@@ -16,7 +16,6 @@ module CIAX
       def get(site)
         eobj = _list.key?(site) ? super : ___add(site)
         @sub_list.get(eobj.sub.id) if @sub_list
-        @current = site
         eobj
       end
 
@@ -67,6 +66,11 @@ module CIAX
           @jumpgrp.ext_grp.merge_items(sites)
           @current = @run_list.first
           self
+        end
+
+        def get(site)
+          @current = site
+          super
         end
 
         def switch(site)

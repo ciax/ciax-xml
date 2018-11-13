@@ -25,10 +25,6 @@ module CIAX
       _list.get(id)
     end
 
-    def switch(id)
-      get(id)
-    end
-
     def to_a
       _list.keys
     end
@@ -65,7 +61,7 @@ module CIAX
       end
 
       def switch(site)
-        obj = super(site)
+        obj = get(site)
         return obj if obj.is_a?(Shell) || obj.is_a?(CIAX::Exe::Shell)
         obj.ext_shell
       end

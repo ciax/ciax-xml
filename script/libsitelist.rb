@@ -25,12 +25,6 @@ module CIAX
         self
       end
 
-      def switch(site)
-        # Change top_list as well as the lower layer changed
-        @cfg[:super_list].switch(site) if @cfg.key?(:super_list)
-        super
-      end
-
       def ext_shell
         extend(Shell).ext_shell
       end
@@ -73,6 +67,12 @@ module CIAX
           @jumpgrp.ext_grp.merge_items(sites)
           @current = @run_list.first
           self
+        end
+
+        def switch(site)
+          # Change top_list as well as the lower layer changed
+          @cfg[:super_list].switch(site) if @cfg.key?(:super_list)
+          super
         end
       end
 

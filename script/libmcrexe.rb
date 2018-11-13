@@ -15,6 +15,7 @@ module CIAX
         ___init_seq(submcr_proc)
         ___init_prompt
         ___init_rem_sys
+        _ext_local
       end
 
       def start

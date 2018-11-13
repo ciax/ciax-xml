@@ -105,7 +105,6 @@ module CIAX
     # (non_client)
     def _ext_local
       @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
-      @opt.drv? ? ext_local_driver : ext_local_test
       self
     end
 
@@ -145,7 +144,9 @@ module CIAX
     # -es: drive mode + server
     def _opt_mode
       # Option handling
-      @opt.cl? ? ext_remote_client : _ext_local
+      return ext_remote_client if @opt.cl?
+      _ext_local
+      @opt.drv? ? ext_local_driver : ext_local_test
     end
   end
 end

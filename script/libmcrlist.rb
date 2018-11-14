@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'liblist'
-require 'libmcrman'
+require 'libmcrexe'
 
 module CIAX
   module Mcr
@@ -18,8 +18,8 @@ module CIAX
         #      self[:list] = Hashx.new
         super
         @sv_stat = Msg.type?(@cfg[:sv_stat], Prompt)
-        @sv_stat.upd_procs << proc { |ss| ss.repl(:sid, '') }
-        @man = self[:list]['0'] = Man.new(@cfg, mcr_list: self)
+        @cfg[:rec_arc].ext_local
+        #        @man = self[:list]['0'] = Man.new(@cfg, mcr_list: self)
       end
 
       # this is separated for Daemon
@@ -30,11 +30,12 @@ module CIAX
       end
 
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
-      def add(exe) # returns Exe
-        _list[exe.id] = exe
-        @cfg[:rec_arc].push(exe.stat)
-        @jumpgrp.add_item(exe.id, exe.id)
-        exe
+      def add(ent) # returns Exe
+        mobj = Exe.new(ent) { |e| add(e) }
+        _list[mobj.id] = mobj
+        Msg.type?(mobj.start.thread, Threadx::Fork)
+        @cfg[:rec_arc].push(mobj.stat)
+        mobj
       end
 
       def interrupt
@@ -43,18 +44,36 @@ module CIAX
       end
 
       def ext_shell
-        extend(CIAX::List::Shell).ext_shell(Jump)
-        @cfg[:jump_mcr] = @jumpgrp
-        @man.ext_shell
-        @current = '0'
-        self
+        extend(Shell).ext_shell
+      end
+
+      # Mcr::List specific Shell
+      module Shell
+        include CIAX::List::Shell
+
+        def ext_shell
+          super(Jump)
+          @cfg[:jump_mcr] = @jumpgrp
+          self
+        end
+
+        def add(ent)
+          mobj = super
+          @current = mobj.id
+          warn ent.path
+          @jumpgrp.add_item(mobj.id, ent[:cid])
+          mobj
+        end
       end
 
       class Jump < LongJump; end
 
       if __FILE__ == $PROGRAM_NAME
         ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
-          List.new(cfg, sites: args).ext_shell.shell
+          list = List.new(cfg).ext_shell
+          ent = Index.new(list.cfg).add_rem.add_ext.set_cmd(args)
+          list.add(ent)
+          list.shell
         end
       end
     end

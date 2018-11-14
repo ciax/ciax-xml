@@ -12,11 +12,6 @@ module CIAX
         def add_page(atrb = Hashx.new)
           add_grp('Page', atrb)
         end
-
-        def add_jump
-          super
-          append(@cfg[:jump_mcr]) if @cfg[:jump_mcr]
-        end
       end
 
       # Switch Page Group

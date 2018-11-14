@@ -26,7 +26,7 @@ module CIAX
 
         def add_jump # returns Array(Symbols)
           @cfg[:jump_groups].each { |grp| append(grp) }
-          %i(jump_site jump_layer).each do |jk|
+          %i(jump_mcr jump_site jump_layer).each do |jk|
             append(@cfg[jk]) if @cfg[jk]
           end
         end

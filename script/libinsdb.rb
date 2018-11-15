@@ -21,11 +21,18 @@ module CIAX
 
       def ___init_lists
         sites = @displist.valid_keys
-        @dev_list = sites.map { |site| get(site)[:frm_site] }.uniq
         @run_list = sites.select do |id|
           host = (get(id) || @docs.get(id)[:attr])[:host]
           host == 'localhost' || host == HOST
         end
+        @dev_list = {
+          valid_keys: __frm_sites(sites),
+          run_list: __frm_sites(@run_list)
+        }
+      end
+
+      def __frm_sites(ary)
+        ary.map { |s| get(s)[:frm_site] }.uniq
       end
 
       # doc is <project>
@@ -111,8 +118,9 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
         db = Db.new
-        puts "Run list = #{db.run_list.inspect}"
-        puts "Dev list = #{db.dev_list.inspect}"
+        puts "Run list = #{db.run_list}"
+        puts "Dev list = #{db.dev_list[:valid_keys]}"
+        puts "Dev Run list = #{db.dev_list[:run_list]}"
         dbi = db.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end

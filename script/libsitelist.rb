@@ -20,7 +20,8 @@ module CIAX
       end
 
       def run
-        @run_list.each { |s| get(s) }
+        verbose { "Initiate Run #{@run_list}" }
+        @run_list.each { |s| get(s).run }
         self
       end
 

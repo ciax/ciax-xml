@@ -4,7 +4,7 @@ require 'libmcrexe'
 
 module CIAX
   module Mcr
-    # List for Running Macro/Manager
+    # List for Running Macro
     class List < List
       attr_reader :cfg
       # level can be Layer or Site
@@ -60,7 +60,6 @@ module CIAX
         def add(ent)
           mobj = super
           @current = mobj.id
-          warn ent.path
           @jumpgrp.add_item(mobj.id, ent[:cid])
           mobj
         end

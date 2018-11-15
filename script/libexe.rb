@@ -82,7 +82,6 @@ module CIAX
     def ext_local_driver
       @mode = 'DRV'
       extend(context_module('Driver')).ext_local_driver
-      ext_local_server if @opt.sv?
       self
     end
 
@@ -93,8 +92,10 @@ module CIAX
     end
 
     # UDP Listen
-    def ext_local_server
+    def run
+      return self if @opt.cl?
       require 'libserver'
+      return self if is_a?(Server)
       @cobj.rem.sys.add_empty
       extend(Server).ext_local_server
     end

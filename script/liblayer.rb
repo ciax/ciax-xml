@@ -8,7 +8,6 @@ module CIAX
     def initialize(cfg)
       super(cfg)
       obj = yield(@cfg)
-      @run_list = []
       # Initialize all sub layers
       loop do
         ns = m2id(obj.class, -2)
@@ -16,11 +15,6 @@ module CIAX
         @run_list << ns
         obj = obj.sub_list || break
       end
-    end
-
-    def run
-      @run_list.each { |s| get(s).run }
-      self
     end
 
     def ext_shell

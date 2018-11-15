@@ -15,6 +15,7 @@ module CIAX
       super(m2id(@cfg[:obj].class, -2))
       verbose { 'Initiate List (option:' + @cfg[:opt].keys.join + ')' }
       self[:list] = Hashx.new
+      @run_list = []
     end
 
     def ext_shell(jump_class)
@@ -23,6 +24,12 @@ module CIAX
 
     def get(id)
       _list.get(id)
+    end
+
+    def run
+      verbose { "Initiate Run #{@run_list}" }
+      @run_list.each { |s| get(s).run }
+      self
     end
 
     def to_a

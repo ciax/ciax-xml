@@ -10,19 +10,12 @@ module CIAX
         super
         super_cfg[:layer_type] = 'site' # Site Shared
         @cfg[:column] = 2
-        @run_list = []
       end
 
       def get(site)
         eobj = _list.key?(site) ? super : ___add(site)
         @sub_list.get(eobj.sub.id) if @sub_list
         eobj
-      end
-
-      def run
-        verbose { "Initiate Run #{@run_list}" }
-        @run_list.each { |s| get(s).run }
-        self
       end
 
       def ext_shell

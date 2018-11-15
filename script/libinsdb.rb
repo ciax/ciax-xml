@@ -8,7 +8,7 @@ module CIAX
     # Instance DB
     class Db < DbTree
       include Wat::Db
-      attr_reader :proj, :run_list, :dev_list
+      attr_reader :proj, :run_list, :ddb
       def initialize(proj = nil)
         @proj = proj || ENV['PROJ'] || 'all'
         super('idb')
@@ -25,8 +25,8 @@ module CIAX
           host = (get(id) || @docs.get(id)[:attr])[:host]
           host == 'localhost' || host == HOST
         end
-        @dev_list = {
-          valid_keys: __frm_sites(sites),
+        @ddb = {
+          sites: __frm_sites(sites),
           run_list: __frm_sites(@run_list)
         }
       end
@@ -119,8 +119,8 @@ module CIAX
       GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
         db = Db.new
         puts "Run list = #{db.run_list}"
-        puts "Dev list = #{db.dev_list[:valid_keys]}"
-        puts "Dev Run list = #{db.dev_list[:run_list]}"
+        puts "Dev list = #{db.ddb[:sites]}"
+        puts "Dev Run list = #{db.ddb[:run_list]}"
         dbi = db.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end

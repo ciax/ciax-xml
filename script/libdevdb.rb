@@ -1,19 +1,25 @@
 #!/usr/bin/ruby
 require 'libfrmdb'
+require 'libinsdb'
 
 module CIAX
   # Device Layer
   module Dev
     # Device DB
     class Db < Db
-      def initialize
+      attr_reader :run_list
+      # atrb could includes :sites, :run_list
+      def initialize(_atrb = {})
         super('ddb')
+        @run_list = []
         @fdb = Frm::Db.new
       end
 
-      # Compatible for Idb
-      def run_list
-        []
+      def put_idb(idb)
+        type?(idb, Ins::Db)
+        @run_list = idb.ddb[:run_list]
+        @displist.valid_keys.replace(idb.ddb[:sites])
+        self
       end
 
       private
@@ -42,7 +48,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
-        dbi = Db.new.get(args.shift)
+        dbi = Db.new.put_idb(Ins::Db.new).get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end
     end

@@ -14,7 +14,7 @@ module CIAX
     def initialize(ustr = '', optarg = {}, &opt_proc)
       ustr = '(opt) ' + ustr unless optarg.empty?
       @defopt = optarg[:default].to_s
-      ___init_optdb(optarg)
+      @optdb = OptDb.new(optarg)
       ___set_opt(optarg[:options])
       getarg(ustr, &opt_proc)
     rescue InvalidARGS
@@ -137,8 +137,8 @@ module CIAX
 
     # Set @init_layer (default 'Wat')
     def ___set_init_layer
-      opt = __make_exopt(@layers.keys)
-      @init_layer = @layers[opt]
+      opt = __make_exopt(@optdb.layers.keys)
+      @init_layer = @optdb.layers[opt]
     end
 
     def ___set_view_mode
@@ -152,22 +152,21 @@ module CIAX
   end
 
   # Option DB Setting
-  class GetOpts
-    private
+  class OptDb < Hash
+    attr_reader :layers
+    def initialize(optarg)
+      super[optarg.select { |k, _v| k.to_s.length == 1 }]
+      # Custom options
+      optarg[:options] = optarg[:options].to_s + keys.join
+      ___mk_optdb
+    end
 
-    def ___init_optdb(optarg)
-      ___optdb_custom(optarg)
+    def ___mk_optdb
       ___optdb_client
       ___optdb_system
       ___optdb_motion
       ___optdb_view
       ___optdb_layer
-    end
-
-    # Custom options
-    def ___optdb_custom(optarg)
-      @optdb = type?(optarg, Hash).select { |k, _v| k.to_s.length == 1 }
-      optarg[:options] = optarg[:options].to_s + @optdb.keys.join
     end
 
     # Client option
@@ -202,7 +201,7 @@ module CIAX
 
     def __add_optdb(db, fmt)
       db.each do |k, v|
-        @optdb[k] = format(fmt, v)
+        self[k] = format(fmt, v)
       end
     end
   end

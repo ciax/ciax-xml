@@ -36,71 +36,6 @@ module CIAX
     # -s   : server
     # -c   : client to macro server
     # -l   : client to device server
-
-    # Check first
-    def cl?
-      %i(h c).any? { |k| key?(k) }
-    end
-
-    def drv?
-      %i(e l d).any? { |k| key?(k) }
-    end
-
-    def test?
-      !cl? && !drv?
-    end
-
-    def sv?
-      key?(:s) && true
-    end
-
-    # For macro
-    # dry run mode
-    def dry?
-      key?(:d) && true
-    end
-
-    def nonstop?
-      key?(:n) && true
-    end
-
-    def mcr_log?
-      drv? && !dry?
-    end
-
-    # Others
-    def sub_opt
-      opt = dup
-      if opt.key?(:l)
-        %i(s e l).each { |k| opt.delete(k) }
-        opt[:c] = true
-      end
-      opt
-    end
-
-    def host
-      (self[:h] || 'localhost') unless key?(:c)
-    end
-
-    def init_layer_mod
-      CIAX.const_get(@init_layer.capitalize)
-    end
-
-    def getarg(ustr)
-      yield(self, @argv)
-      self
-    rescue InvalidARGS
-      usage(ustr)
-    end
-
-    def usage(ustr = @usagestr, code = 2)
-      super("#{ustr}\n" + columns(@index), code)
-    end
-  end
-
-  # Divided due to rubocop rule
-  # Given option handling
-  class GetOpts
     private
 
     def ___set_opt(str)
@@ -149,59 +84,124 @@ module CIAX
     def __make_exopt(ary)
       ary.find { |c| self[c] } || ary.find { |c| @defopt.include?(c.to_s) }
     end
-  end
+    # Option Check
+    module OptChk
+      # Check first
+      def cl?
+        %i(h c).any? { |k| key?(k) }
+      end
 
-  # Option DB Setting
-  class OptDb < Hash
-    attr_reader :layers
-    def initialize(optarg)
-      super[optarg.select { |k, _v| k.to_s.length == 1 }]
-      # Custom options
-      optarg[:options] = optarg[:options].to_s + keys.join
-      ___mk_optdb
+      def drv?
+        %i(e l d).any? { |k| key?(k) }
+      end
+
+      def test?
+        !cl? && !drv?
+      end
+
+      def sv?
+        key?(:s) && true
+      end
+
+      # For macro
+      # dry run mode
+      def dry?
+        key?(:d) && true
+      end
+
+      def nonstop?
+        key?(:n) && true
+      end
+
+      def mcr_log?
+        drv? && !dry?
+      end
+
+      # Others
+      def sub_opt
+        opt = dup
+        if opt.key?(:l)
+          %i(s e l).each { |k| opt.delete(k) }
+          opt[:c] = true
+        end
+        opt
+      end
+
+      def host
+        (self[:h] || 'localhost') unless key?(:c)
+      end
+
+      def init_layer_mod
+        cfg_err('Default Layer should be set') unless @init_layer
+        CIAX.const_get(@init_layer.capitalize)
+      end
+
+      def getarg(ustr)
+        yield(self, @argv)
+        self
+      rescue InvalidARGS
+        usage(ustr)
+      end
+
+      def usage(ustr = @usagestr, code = 2)
+        super("#{ustr}\n" + columns(@index), code)
+      end
     end
 
-    def ___mk_optdb
-      ___optdb_client
-      ___optdb_system
-      ___optdb_motion
-      ___optdb_view
-      ___optdb_layer
-    end
+    include OptChk
 
-    # Client option
-    def ___optdb_client
-      db = { c: 'default', l: 'lower-layer', h: '[host]' }
-      __add_optdb(db, 'client to %s')
-    end
+    # Option DB Setting
+    class OptDb < Hash
+      attr_reader :layers
+      def initialize(optarg)
+        super[optarg.select { |k, _v| k.to_s.length == 1 }]
+        # Custom options
+        optarg[:options] = optarg[:options].to_s + keys.join
+        ___mk_optdb
+      end
 
-    # System mode
-    def ___optdb_system
-      db = { s: 'server', b: 'back ground' }
-      __add_optdb(db, '%s mode')
-    end
+      def ___mk_optdb
+        ___optdb_client
+        ___optdb_system
+        ___optdb_motion
+        ___optdb_view
+        ___optdb_layer
+      end
 
-    # Motion mode
-    def ___optdb_motion
-      db = { e: 'execution', d: 'dryrun', n: 'non-stop' }
-      __add_optdb(db, '%s mode')
-    end
+      # Client option
+      def ___optdb_client
+        db = { c: 'default', l: 'lower-layer', h: '[host]' }
+        __add_optdb(db, 'client to %s')
+      end
 
-    # For data appearance
-    def ___optdb_view
-      db = { r: 'raw', j: 'json' }
-      __add_optdb(db, '%s data output')
-    end
+      # System mode
+      def ___optdb_system
+        db = { s: 'server', b: 'back ground' }
+        __add_optdb(db, '%s mode')
+      end
 
-    # Layer option
-    def ___optdb_layer
-      @layers = { m: 'mcr', w: 'wat', f: 'frm', x: 'hex', a: 'app', i: 'ins' }
-      __add_optdb(@layers, '%s layer')
-    end
+      # Motion mode
+      def ___optdb_motion
+        db = { e: 'execution', d: 'dryrun', n: 'non-stop' }
+        __add_optdb(db, '%s mode')
+      end
 
-    def __add_optdb(db, fmt)
-      db.each do |k, v|
-        self[k] = format(fmt, v)
+      # For data appearance
+      def ___optdb_view
+        db = { r: 'raw', j: 'json' }
+        __add_optdb(db, '%s data output')
+      end
+
+      # Layer option
+      def ___optdb_layer
+        @layers = { m: 'mcr', w: 'wat', f: 'frm', x: 'hex', a: 'app', i: 'ins' }
+        __add_optdb(@layers, '%s layer')
+      end
+
+      def __add_optdb(db, fmt)
+        db.each do |k, v|
+          self[k] = format(fmt, v)
+        end
       end
     end
   end

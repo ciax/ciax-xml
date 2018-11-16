@@ -4,9 +4,9 @@ require 'libwatlist'
 require 'libdaemon'
 # CIAX-XML Device Server
 module CIAX
-  ConfOpts.new('[id] ...', options: 'deb') do |cfg, args|
+  ConfOpts.new('[id] ...', options: 'fawdeb', default: 'w') do |cfg, args|
     Daemon.new('dvsv', cfg) do
-      Wat::List.new(cfg, sites: args)
+      cfg[:opt].init_layer_mod::List.new(cfg, sites: args)
     end
   end
 end

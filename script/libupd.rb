@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libenumx'
+require 'libhashx'
 module CIAX
   # Variables with update feature (also with manipulation)
   # Used for convert or loading as client from lower layer data.

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libenumx'
+require 'libhashx'
 require 'librerange'
 module CIAX
   # Command Module

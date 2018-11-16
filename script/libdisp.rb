@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libenumx'
+require 'libhashx'
 # Display: Sortable Caption Database (Value is String)
 #   Holds valid command list in @valid_keys
 #   Used by Command and XmlDoc

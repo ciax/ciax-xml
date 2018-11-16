@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libenumx'
+require 'libhashx'
 
 module CIAX
   module Xml

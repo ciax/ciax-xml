@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libdispgrp'
-require 'libenumx'
+require 'libhashx'
 require 'libxmlox'
 
 # Structure for Command: [top: listed in disp], <doclist: separated top-doc>

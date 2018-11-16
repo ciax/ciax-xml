@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libenumx'
+require 'libhashx'
 module CIAX
   # Recursive hash array of @generation:
   #   each Hash is associated with Domain,Group,Item;

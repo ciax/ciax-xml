@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libman'
 require 'libseqlist'
 
 module CIAX

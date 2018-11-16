@@ -120,8 +120,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg, args|
         mobj = Index.new(cfg)
-        mobj.add_rem.add_ext.dev_list
-        ent = mobj.set_cmd(args)
+        ent = mobj.add_rem.add_ext.set_cmd(args)
         Sequencer.new(ent).play
       end
     end

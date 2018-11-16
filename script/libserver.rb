@@ -13,7 +13,7 @@ module CIAX
 
       # JSON expression of server stat will be sent.
       def ext_local_server
-        return self if @mode == 'CL' || !@port
+        return self unless @port
         @mode += ':SV'
         @server_input_proc ||= ___init_input
         @sv_stat.ext_local_file.ext_save.ext_local_log

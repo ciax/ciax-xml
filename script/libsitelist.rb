@@ -6,7 +6,9 @@ module CIAX
     # This should be set [:db]
     class List < CIAX::List
       attr_reader :db, :sub_list
+      attr_accessor :super_list
       def initialize(super_cfg, atrb = Hashx.new)
+        atrb[:opt] = super_cfg[:opt].sub_opt
         super
         super_cfg[:layer_type] = 'site' # Site Shared
         @cfg[:column] = 2
@@ -20,10 +22,6 @@ module CIAX
 
       def ext_shell
         extend(Shell).ext_shell
-      end
-
-      def sub_atrb
-        { opt: @cfg[:opt].sub_opt, super_list: self }
       end
 
       def exe_atrb(site)
@@ -69,7 +67,7 @@ module CIAX
 
         def switch(site)
           # Change top_list as well as the lower layer changed
-          @cfg[:super_list].switch(site) if @cfg.key?(:super_list)
+          @super_list.switch(site) if @super_list
           super
         end
       end

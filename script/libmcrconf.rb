@@ -34,7 +34,7 @@ module CIAX
         opt = cfg[:opt]
         return unless opt.drv?
         layer = opt[:x] ? Hex : Wat
-        cfg[:dev_list] = layer::List.new(cfg, opt: opt.sub_opt)
+        cfg[:dev_list] = layer::List.new(cfg)
       end
     end
 

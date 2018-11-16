@@ -18,7 +18,7 @@ module CIAX
     end
 
     def ext_shell
-      extend(CIAX::List::Shell).ext_shell(Jump)
+      super(Jump)
       @cfg[:jump_layer] = @jumpgrp
       _list.each do |id, obj|
         obj.ext_shell

@@ -6,12 +6,15 @@ module CIAX
   module Mcr
     # List for Running Macro
     class List < List
-      attr_reader :cfg
+      attr_reader :cfg, :sub_list
+      attr_accessor :super_list
       # @cfg should have [:sv_stat]
       def initialize(super_cfg, atrb = Hashx.new)
         super
+        super_cfg[:layer_type] = 'mcr'
         @sv_stat = Msg.type?(@cfg[:sv_stat], Prompt)
         @sub_list = @cfg[:dev_list]
+        @sub_list.super_list = self if @sub_list
         @cfg[:rec_arc].ext_local
         #        @man = self[:list]['0'] = Man.new(@cfg, mcr_list: self)
       end
@@ -41,13 +44,19 @@ module CIAX
         def ext_shell
           super(Jump)
           @cfg[:jump_mcr] = @jumpgrp
+          _list.each_value { |mobj| __set_jump(mobj) }
           self
         end
 
         def add(ent)
-          mobj = super
+          __set_jump(super)
+        end
+
+        private
+
+        def __set_jump(mobj)
           @current = mobj.id
-          @jumpgrp.add_item(mobj.id, ent[:cid])
+          @jumpgrp.add_item(mobj.id, mobj.cfg[:cid])
           mobj
         end
       end
@@ -55,11 +64,14 @@ module CIAX
       class Jump < LongJump; end
 
       if __FILE__ == $PROGRAM_NAME
-        ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
-          list = List.new(cfg).ext_shell
-          ent = Index.new(list.cfg).add_rem.add_ext.set_cmd(args)
-          list.add(ent)
-          list.shell
+        require 'liblayer'
+        ConfOpts.new('[id]', options: 'cehls') do |root_cfg, args|
+          Layer.new(root_cfg) do |cfg|
+            list = List.new(cfg)
+            ent = Index.new(list.cfg).add_rem.add_ext.set_cmd(args)
+            list.add(ent)
+            list
+          end.ext_shell.shell
         end
       end
     end

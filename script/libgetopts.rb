@@ -26,16 +26,15 @@ module CIAX
     # -e   : drive all layers       [drv]
     # -c   : client all layers      [cl]
     # -l   : client to lower layers [drv:cl]
-    # -s   : server (test)          [test:sv]
-    # -se  : server (drive)         [drv:sv]
+    # -s   : shell
 
     # Mode (Macro)
     # none : test
     # -d   : dryrun (get status only)
     # -e   : with device driver
-    # -s   : server
     # -c   : client to macro server
     # -l   : client to device server
+    # -s   : shell
     private
 
     def ___set_opt(str)
@@ -99,7 +98,7 @@ module CIAX
         !cl? && !drv?
       end
 
-      def sv?
+      def sh?
         key?(:s) && true
       end
 
@@ -176,7 +175,7 @@ module CIAX
 
       # System mode
       def ___optdb_system
-        db = { s: 'server', b: 'back ground' }
+        db = { s: 'shell', b: 'back ground' }
         __add_optdb(db, '%s mode')
       end
 

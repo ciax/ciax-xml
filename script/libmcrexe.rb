@@ -18,11 +18,6 @@ module CIAX
         _ext_local
       end
 
-      def start
-        @thread = Msg.type?(@seq.fork, Threadx::Fork)
-        self
-      end
-
       def interrupt
         @thread.raise(Interrupt)
         self
@@ -33,6 +28,7 @@ module CIAX
         extend(Shell).ext_shell
         @prompt_proc = proc { @sv_stat.to_s + optlist(@int.valid_keys) }
         @cobj.loc.add_view
+        @thread = Msg.type?(@seq.fork, Threadx::Fork)
         self
       end
 
@@ -68,7 +64,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg, args|
         ent = Index.new(cfg).add_rem.add_ext.set_cmd(args)
-        Exe.new(ent).ext_shell.start.shell
+        Exe.new(ent).ext_shell.shell
       end
     end
   end

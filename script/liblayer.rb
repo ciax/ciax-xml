@@ -7,7 +7,7 @@ module CIAX
   class Layer < CIAX::List
     def initialize(cfg)
       super(cfg)
-      obj = yield(@cfg)
+      obj = yield(@cfg, cfg[:opt].init_layer_mod)
       # Initialize all sub layers
       loop do
         ns = m2id(obj.class, -2)

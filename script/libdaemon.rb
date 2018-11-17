@@ -17,7 +17,7 @@ module CIAX
       ___chk_args(___kill_pids(tag), cfg[:args] + opt.values)
       opt[:s] = true
       ___init_server(tag, opt)
-      ___main_loop(port) { yield }
+      ___main_loop(port) { yield opt.init_layer_mod }
     end
 
     private

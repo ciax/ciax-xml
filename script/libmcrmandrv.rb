@@ -22,7 +22,7 @@ module CIAX
           self
         end
 
-        # Generating mcr, returns Sequencer
+        # Macro Generator
         def gen_cmd(ent)
           mobj = Exe.new(ent) { |e| gen_cmd(e) }
           Msg.type?(mobj.start.thread, Threadx::Fork)
@@ -31,11 +31,12 @@ module CIAX
           mobj
         end
 
-        # Manipulating mcr
+        # Macro Manipulator
         def man_cmd(ent)
           @sv_stat.repl(:sid, ent.par[0])
           mobj = @mcr_list.get(ent.par[0])
           ent.msg = mobj.exe([ent[:id]]) || 'NOSID'
+          mobj
         end
 
         private

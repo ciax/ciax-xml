@@ -19,7 +19,7 @@ module CIAX
     #  Local(ext_save) : write down Rec_arc
     class RecList < Upd
       attr_reader :current_idx, :rec_arc
-      def initialize(rec_arc, proj = nil, par = nil, valid_keys = [])
+      def initialize(rec_arc = nil, proj = nil, par = nil, valid_keys = [])
         super()
         self[:id] = proj || ENV['PROJ']
         @par = par || CmdBase::Parameter.new
@@ -27,7 +27,7 @@ module CIAX
         self[:alives] = @par.list
         @valid_keys = type?(valid_keys, Array)
         self[:option] = @valid_keys.dup
-        @rec_arc = type?(rec_arc, RecArc)
+        @rec_arc = rec_arc ? type?(rec_arc, RecArc) : RecArc.new
         ___init_vars
       end
 
@@ -208,14 +208,13 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[num]', options: 'chsr') do |opts, args|
+      GetOpts.new('[num]', options: 'chr') do |opts, args|
         Msg.args_err if args.empty?
         rl = RecList.new.ext_view
         if opts.cl?
           rl.ext_remote(opts.host)
         else
           rl.ext_local
-          rl.ext_save.refresh_arc_bg.join if opts.sv?
         end
         puts rl.get_arc(args.shift).upd.sel(args.shift)
       end

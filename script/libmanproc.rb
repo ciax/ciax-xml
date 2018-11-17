@@ -28,7 +28,7 @@ module CIAX
         end
 
         def run
-          ext_local_server if @opt.sv?
+          ext_local_server
           super
         end
 

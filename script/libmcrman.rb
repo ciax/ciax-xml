@@ -20,10 +20,8 @@ module CIAX
     #   *Mcr Generation Command (gencmd)
     #   *Mcr Manipulation command (mancmd)
     class Man < Exe
-      attr_reader :sub_list # Used for Layer module
-      def initialize(super_cfg, atrb = Hashx.new, &gen_proc)
+      def initialize(super_cfg, atrb = Hashx.new)
         super
-        @gen_proc = gen_proc
         verbose { 'Initiate Manager (option:' + @opt.keys.join + ')' }
         # id = nil -> taken by ARGV
         # pick already includes :command, :version
@@ -42,20 +40,6 @@ module CIAX
         super
       end
 
-      def ext_local_driver
-        require 'libmcrmandrv'
-        super
-      end
-
-      def ext_local_server
-        verbose { 'Initiate Record Archive' }
-        Threadx::Fork.new('RecArc', 'mcr', @id) do
-          @rec_arc.clear.refresh
-        end
-        ___web_cmdlist
-        super
-      end
-
       def ext_shell
         require 'libmcrsh'
         extend(Shell).ext_shell
@@ -65,8 +49,6 @@ module CIAX
 
       def ___init_lists
         @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
-        @sub_list = @cfg[:dev_list]
-        @rec_arc = @cfg[:rec_arc]
       end
 
       # Initiate for all mode

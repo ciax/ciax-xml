@@ -39,6 +39,15 @@ module CIAX
           mobj
         end
 
+        def ext_local_server
+          verbose { 'Initiate Record Archive' }
+          Threadx::Fork.new('RecArc', 'mcr', @id) do
+            @rec_arc.clear.refresh
+          end
+          ___web_cmdlist
+          super
+        end
+
         private
 
         def ___init_procs

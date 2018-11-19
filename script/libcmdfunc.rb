@@ -28,7 +28,7 @@ module CIAX
       end
 
       def pars
-        @cfg[:parameters] ||= []
+        @cfg.get(:parameters) { [] }
       end
 
       ## Refernce Parameter Setting

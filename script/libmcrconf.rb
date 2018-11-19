@@ -33,8 +33,7 @@ module CIAX
       def ___init_dev(cfg)
         opt = cfg[:opt]
         return unless opt.drv?
-        layer = opt[:x] ? Hex : Wat
-        cfg[:dev_list] = layer::List.new(cfg)
+        cfg[:dev_list] = Wat::List.new(cfg)
       end
     end
 

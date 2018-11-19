@@ -27,11 +27,15 @@ module CIAX
         self
       end
 
+      def pars
+        @cfg[:parameters] ||= []
+      end
+
       ## Refernce Parameter Setting
       # returns Reference Parameter Array
       def add_par(list = [])
         par = Parameter.new(type: 'str', list: list)
-        (@cfg[:parameters] ||= []) << par
+        pars << par
       end
 
       # Parameters for any string

@@ -22,8 +22,7 @@ module CIAX
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent) # returns Exe
         mobj = Exe.new(ent) { |e| add(e) }
-        _list[mobj.id] = mobj
-        Msg.type?(mobj.start.thread, Threadx::Fork)
+        _list[mobj.id] = mobj.run
         @cfg[:rec_arc].push(mobj.stat)
         mobj
       end
@@ -65,8 +64,8 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         require 'liblayer'
-        ConfOpts.new('[id]', options: 'cehls') do |root_cfg, args|
-          Layer.new(root_cfg) do |cfg|
+        ConfOpts.new('[id]', options: 'cehlns', default: 'm') do |rcfg, args|
+          Layer.new(rcfg) do |cfg|
             list = List.new(cfg)
             ent = Index.new(list.cfg).add_rem.add_ext.set_cmd(args)
             list.add(ent)

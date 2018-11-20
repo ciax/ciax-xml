@@ -16,7 +16,8 @@ module CIAX
           @mode = @opt.dry? ? 'DRY' : 'PRCS'
           @mcr_list = type?(@cfg[:mcr_list], List)
           ___init_procs
-          @stat.ext_save if @opt.mcr_log?
+          @rec_arc.ext_local.refresh
+          @rec_arc.ext_save if @opt.mcr_log?
           @sv_stat.repl(:sid, '') # For server response
           @cobj.rem.ext_input_log
           self

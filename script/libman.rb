@@ -44,7 +44,6 @@ module CIAX
 
       def ext_local_server
         verbose { 'Initiate Record Archive' }
-        @stat.refresh_arc_bg
         ___web_cmdlist
         super
       end

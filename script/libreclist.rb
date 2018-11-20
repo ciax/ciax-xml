@@ -8,7 +8,7 @@ module CIAX
     # Visible Record Database
     # Need RecArc to get Parent CID for SeqList
     # Alives Array => R/O here
-    #    Parameter[:list] = Prompt[:list] = SeqList(alive macro)
+    #    Parameter[:list] = Prompt[:list]
     # RecArc(Index) > RecList(Records) > SeqList(IDs)
     # RecList : Client Side (Picked at Client)
     # Alives : Server Side
@@ -27,6 +27,7 @@ module CIAX
         self[:alives] = @par.list
         @valid_keys = type?(valid_keys, Array)
         self[:option] = @valid_keys.dup
+        # RecArc : R/O
         @rec_arc = rec_arc ? type?(rec_arc, RecArc) : RecArc.new
         ___init_vars
       end
@@ -168,7 +169,7 @@ module CIAX
 
         def ___get_pcid(pid)
           return 'user' if pid == '0'
-          @rec_arc.list[pid][:cid]
+          @rec_arc.get(pid)[:cid]
         end
       end
 
@@ -176,20 +177,6 @@ module CIAX
       module Local
         def self.extended(obj)
           Msg.type?(obj, RecList)
-        end
-
-        def push(record) # returns self
-          id = record[:id]
-          return self unless id.to_i > 0
-          append(id)
-          @cache[id] = record
-          self
-        end
-
-        def refresh_arc_bg # returns Thread
-          Threadx::Fork.new('RecArc(rec_list)', 'mcr', @id) do
-            @rec_arc.clear.refresh
-          end
         end
 
         def ext_local
@@ -200,8 +187,11 @@ module CIAX
           self
         end
 
-        def ext_save
-          @rec_arc.ext_save
+        def push(record) # returns self
+          id = record[:id]
+          return self unless id.to_i > 0
+          append(id)
+          @cache[id] = record
           self
         end
       end

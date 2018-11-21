@@ -10,7 +10,8 @@ else
 fi
 case "$dist" in
     *bian|Ubuntu)
-        sudo apt-get install socat sqlite3 ruby-libxml libxml2-utils libapache2-mod-php php-sqlite3 php-elisp
+        forgem="ruby-all-dev make gcc"
+        sudo apt-get install socat sqlite3 ruby-libxml libxml2-utils libapache2-mod-php php-sqlite3 php-elisp $forgem 
         ;;
     CentOS)
         sudo yum install socat sqlite ruby-devel httpd php php-pear libxml2-devel perl-XML-XPath

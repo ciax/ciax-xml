@@ -72,7 +72,7 @@ module CIAX
     # Set @init_layer (default 'Wat')
     def ___set_init_layer
       opt = __make_exopt(@optdb.layers.keys)
-      @init_layer = @optdb.layers[opt]
+      @init_layer = @optdb.layers[opt] || LAYERS.last
     end
 
     def ___set_view_mode

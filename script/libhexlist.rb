@@ -4,6 +4,7 @@ require 'libhexexe'
 module CIAX
   # Ascii Hex Layer for OLD CIAX
   module Hex
+    LAYERS << 'hex'
     deep_include(Site)
     # Hex Exe List
     class List

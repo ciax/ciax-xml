@@ -4,6 +4,7 @@ require 'libappexe'
 module CIAX
   # Application Layer
   module App
+    LAYERS << 'app'
     deep_include(Site)
     # Application List
     class List

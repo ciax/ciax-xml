@@ -5,6 +5,7 @@ require 'libsitelist'
 module CIAX
   # Frame Layer
   module Frm
+    LAYERS << 'frm'
     deep_include(Site)
     # Frame List module
     class List

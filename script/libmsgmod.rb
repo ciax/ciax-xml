@@ -37,6 +37,7 @@ end
 
 # Common Module
 module CIAX
+  LAYERS = []
   ### Checking Methods ###
   module Msg
     def base_class

@@ -4,6 +4,7 @@ require 'libwatexe'
 module CIAX
   # Watch Layer
   module Wat
+    LAYERS << 'wat'
     deep_include(Site)
     # Watch List
     class List

@@ -64,7 +64,7 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         require 'liblayer'
-        ConfOpts.new('[id]', options: 'cehlns', default: 'm') do |rcfg, args|
+        ConfOpts.new('[id]', options: 'cehlns') do |rcfg, args|
           Layer.new(rcfg) do |cfg|
             list = List.new(cfg)
             ent = Index.new(list.cfg).add_rem.add_ext.set_cmd(args)

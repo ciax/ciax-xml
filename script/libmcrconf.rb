@@ -32,7 +32,6 @@ module CIAX
 
       def ___init_dev(cfg)
         opt = cfg[:opt]
-        return unless opt.drv?
         cfg[:dev_list] = Wat::List.new(cfg)
       end
     end

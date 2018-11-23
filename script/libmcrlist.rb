@@ -12,7 +12,7 @@ module CIAX
         super
         super_cfg[:layer_type] = 'mcr'
         @sv_stat = Msg.type?(@cfg[:sv_stat], Prompt)
-        @sub_list = @cfg[:dev_list]
+        @sub_list = @cfg[:dev_list] = Wat::List.new(@cfg)
         @cfg[:rec_arc].ext_local
         #        @man = self[:list]['0'] = Man.new(@cfg, mcr_list: self)
       end

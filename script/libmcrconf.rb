@@ -16,7 +16,6 @@ module CIAX
         super do |cfg, args|
           verbose { 'Initiate Mcr Conf (option:' + keys.join + ')' }
           ___init_proj(cfg, ENV['PROJ'] ||= args.shift)
-          ___init_dev(cfg)
           cfg[:rec_arc] = RecArc.new
           yield(cfg, args)
         end
@@ -28,11 +27,6 @@ module CIAX
         cfg[:proj] = proj
         cfg[:dbi] = Db.new.get(proj)
         cfg[:sv_stat] = Prompt.new(proj, self)
-      end
-
-      def ___init_dev(cfg)
-        opt = cfg[:opt]
-        cfg[:dev_list] = Wat::List.new(cfg)
       end
     end
 

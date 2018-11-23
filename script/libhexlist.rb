@@ -1,10 +1,9 @@
 #!/usr/bin/ruby
 require 'libhexexe'
-
+# CIAX-XML
 module CIAX
   # Ascii Hex Layer for OLD CIAX
   module Hex
-    LAYERS << 'hex'
     deep_include(Site)
     # Hex Exe List
     class List
@@ -24,4 +23,5 @@ module CIAX
       end
     end
   end
+  @top_layer = Hex
 end

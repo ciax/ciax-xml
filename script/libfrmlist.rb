@@ -1,11 +1,10 @@
 #!/usr/bin/ruby
 require 'libfrmexe'
 require 'libsitelist'
-
+# CIAX-XML
 module CIAX
   # Frame Layer
   module Frm
-    LAYERS << 'frm'
     deep_include(Site)
     # Frame List module
     class List
@@ -23,4 +22,5 @@ module CIAX
       end
     end
   end
+  @top_layer = Frm
 end

@@ -4,7 +4,6 @@ require 'libappexe'
 module CIAX
   # Application Layer
   module App
-    LAYERS << 'app'
     deep_include(Site)
     # Application List
     class List
@@ -24,4 +23,5 @@ module CIAX
       end
     end
   end
+  @top_layer = App
 end

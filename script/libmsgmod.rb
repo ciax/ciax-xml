@@ -37,7 +37,10 @@ end
 
 # Common Module
 module CIAX
-  LAYERS = []
+  def self.top_layer
+    @top_layer
+  end
+
   ### Checking Methods ###
   module Msg
     def base_class

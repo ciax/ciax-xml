@@ -1,10 +1,9 @@
 #!/usr/bin/ruby
 require 'libwatexe'
-
+# CIAX-XML
 module CIAX
   # Watch Layer
   module Wat
-    LAYERS << 'wat'
     deep_include(Site)
     # Watch List
     class List
@@ -43,4 +42,5 @@ module CIAX
       end
     end
   end
+  @top_layer = Wat
 end

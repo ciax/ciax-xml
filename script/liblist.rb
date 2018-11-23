@@ -11,7 +11,6 @@ module CIAX
     # level can be Layer or Site
     def initialize(super_cfg, atrb = Hashx.new)
       @cfg = super_cfg.gen(self).update(atrb)
-      @cfg[:jump_groups] ||= []
       super(m2id(@cfg[:obj].class, -2))
       verbose { 'Initiate List (option:' + @cfg[:opt].keys.join + ')' }
       self[:list] = Hashx.new

@@ -7,14 +7,12 @@ module CIAX
     # List for Running Macro
     class List < List
       attr_reader :cfg, :sub_list
-      attr_accessor :super_list
       # @cfg should have [:sv_stat]
       def initialize(super_cfg, atrb = Hashx.new)
         super
         super_cfg[:layer_type] = 'mcr'
         @sv_stat = Msg.type?(@cfg[:sv_stat], Prompt)
         @sub_list = @cfg[:dev_list]
-        @sub_list.super_list = self if @sub_list
         @cfg[:rec_arc].ext_local
         #        @man = self[:list]['0'] = Man.new(@cfg, mcr_list: self)
       end

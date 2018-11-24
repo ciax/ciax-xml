@@ -19,7 +19,7 @@ module CIAX
     #  Commands
     #   *Mcr Generation Command (gencmd)
     #   *Mcr Manipulation command (mancmd)
-    class Man < Exe
+    class Man < CIAX::Exe
       def initialize(super_cfg, atrb = Hashx.new)
         super
         verbose { 'Initiate Manager (option:' + @opt.keys.join + ')' }

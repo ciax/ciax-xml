@@ -1,25 +1,26 @@
 #!/usr/bin/ruby
 require 'liblist'
 require 'libmcrexe'
+require 'libmcrmandrv'
 
 module CIAX
   module Mcr
     # List for Running Macro
     class List < List
-      attr_reader :cfg, :sub_list
+      attr_reader :cfg, :sub_list, :man
       # @cfg should have [:sv_stat]
       def initialize(super_cfg, atrb = Hashx.new)
         super
         super_cfg[:layer_type] = 'mcr'
         @sv_stat = Msg.type?(@cfg[:sv_stat], Prompt)
         @sub_list = @cfg[:dev_list] = Wat::List.new(@cfg)
-        @cfg[:rec_arc].ext_local
-        @cobj = Index.new(@cfg).add_rem.add_ext
-        #        @man = self[:list]['0'] = Man.new(@cfg, mcr_list: self)
+        @rec_arc = @cfg[:rec_arc].ext_local.refresh
+        @rec_arc.ext_save if @cfg[:opt].mcr_log?
+        @man = Man.new(@cfg, mcr_list: self)
       end
 
       def exe(args)
-        add(@cobj.set_cmd(args))
+        add(@man.cobj.set_cmd(args))
         self
       end
 
@@ -27,7 +28,7 @@ module CIAX
       def add(ent) # returns Exe
         mobj = Exe.new(ent) { |e| add(e) }
         _list[mobj.id] = mobj.run
-        @cfg[:rec_arc].push(mobj.stat)
+        @rec_arc.push(mobj.stat)
         mobj
       end
 
@@ -36,10 +37,28 @@ module CIAX
         self
       end
 
+      def run
+        verbose { 'Initiate Record Archive' }
+        Threadx::Fork.new('RecArc', 'mcr', @id) do
+          @rec_arc.clear.refresh
+        end
+        ___web_cmdlist
+        super
+      end
+
       def ext_shell
         extend(Shell).ext_shell
       end
 
+      private
+
+      # Making Command List JSON file for WebApp
+      def ___web_cmdlist
+        verbose { 'Initiate JS Command List' }
+        dbi = @cfg[:dbi]
+        jl = Hashx.new(port: @port, commands: dbi.list, label: dbi.label)
+        IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
+      end
       # Mcr::List specific Shell
       module Shell
         include CIAX::List::Shell
@@ -48,6 +67,7 @@ module CIAX
           super(Jump)
           @cfg[:jump_mcr] = @jumpgrp
           _list.each_value { |mobj| __set_jump(mobj) }
+          @man.ext_shell
           self
         end
 

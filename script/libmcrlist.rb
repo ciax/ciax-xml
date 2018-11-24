@@ -38,10 +38,7 @@ module CIAX
       end
 
       def run
-        verbose { 'Initiate Record Archive' }
-        Threadx::Fork.new('RecArc', 'mcr', @id) do
-          @rec_arc.clear.refresh
-        end
+        ___arc_refresh
         ___web_cmdlist
         super
       end
@@ -52,6 +49,13 @@ module CIAX
 
       private
 
+      def ___arc_refresh
+        verbose { 'Initiate Record Archive' }
+        Threadx::Fork.new('RecArc', 'mcr', @id) do
+          @rec_arc.clear.refresh
+        end
+      end
+
       # Making Command List JSON file for WebApp
       def ___web_cmdlist
         verbose { 'Initiate JS Command List' }
@@ -59,6 +63,7 @@ module CIAX
         jl = Hashx.new(port: @port, commands: dbi.list, label: dbi.label)
         IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
       end
+
       # Mcr::List specific Shell
       module Shell
         include CIAX::List::Shell

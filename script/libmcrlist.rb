@@ -14,7 +14,13 @@ module CIAX
         @sv_stat = Msg.type?(@cfg[:sv_stat], Prompt)
         @sub_list = @cfg[:dev_list] = Wat::List.new(@cfg)
         @cfg[:rec_arc].ext_local
+        @cobj = Index.new(@cfg).add_rem.add_ext
         #        @man = self[:list]['0'] = Man.new(@cfg, mcr_list: self)
+      end
+
+      def exe(args)
+        add(@cobj.set_cmd(args))
+        self
       end
 
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
@@ -64,10 +70,7 @@ module CIAX
         require 'liblayer'
         ConfOpts.new('[id]', options: 'cehlns') do |rcfg, args|
           Layer.new(rcfg) do |cfg|
-            list = List.new(cfg)
-            ent = Index.new(list.cfg).add_rem.add_ext.set_cmd(args)
-            list.add(ent)
-            list
+            List.new(cfg).exe(args)
           end.ext_shell.shell
         end
       end

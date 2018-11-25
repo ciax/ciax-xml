@@ -16,11 +16,11 @@ module CIAX
         @sub_list = @cfg[:dev_list] = Wat::List.new(@cfg)
         @rec_arc = @cfg[:rec_arc].ext_local.refresh
         @rec_arc.ext_save if @cfg[:opt].mcr_log?
-        @man = Man.new(@cfg, mcr_list: self)
+        @man = Man.new(@cfg, mcr_list: self).ext_local_driver
       end
 
       def exe(args)
-        add(@man.cobj.set_cmd(args))
+        @man.exe(args)
         self
       end
 
@@ -83,7 +83,7 @@ module CIAX
         private
 
         def __set_jump(mobj)
-          @current = mobj.id
+          @current = type?(mobj, Exe).id
           @jumpgrp.add_item(mobj.id, mobj.cfg[:cid])
           mobj
         end

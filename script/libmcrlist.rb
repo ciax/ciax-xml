@@ -15,12 +15,6 @@ module CIAX
         @sub_list = @cfg[:dev_list] = Wat::List.new(@cfg)
         @rec_arc = @cfg[:rec_arc].ext_local.refresh
         @rec_arc.ext_save if @cfg[:opt].mcr_log?
-        @man = Man.new(@cfg).ext_local_processor(self)
-      end
-
-      def exe(args)
-        @man.exe(args)
-        self
       end
 
       def get(id)
@@ -29,10 +23,16 @@ module CIAX
         ent
       end
 
+      # For adding Man
+      def put(mobj)
+        super(mobj.id, mobj)
+      end
+
+      # For adding Exe
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent) # returns Exe
         mobj = Exe.new(ent) { |e| add(e) }
-        _list[mobj.id] = mobj.run
+        put(mobj.run)
         @rec_arc.push(mobj.stat)
         mobj
       end
@@ -77,18 +77,18 @@ module CIAX
           super(Jump)
           @cfg[:jump_mcr] = @jumpgrp
           _list.each_value { |mobj| __set_jump(mobj) }
-          @man.ext_shell
           self
         end
 
-        def add(ent)
+        def put(mobj)
+          mobj.ext_shell
           __set_jump(super)
         end
 
         private
 
         def __set_jump(mobj)
-          @current = type?(mobj, Exe).id
+          @current = type?(mobj, Exe, Man).id
           @jumpgrp.add_item(mobj.id, mobj.cfg[:cid])
           mobj
         end
@@ -100,7 +100,9 @@ module CIAX
         require 'liblayer'
         ConfOpts.new('[id]', options: 'cehlns') do |rcfg, args|
           Layer.new(rcfg) do |cfg|
-            List.new(cfg).exe(args)
+            list = List.new(cfg)
+            man = Man.new(list.cfg).ext_local_processor(list)
+            list.put(man.exe(args))
           end.ext_shell.shell
         end
       end

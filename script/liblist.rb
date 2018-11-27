@@ -24,6 +24,11 @@ module CIAX
       _list.get(id)
     end
 
+    def put(id, obj)
+      _list.put(id, obj)
+      cmt
+    end
+
     def to_a
       _list.keys
     end

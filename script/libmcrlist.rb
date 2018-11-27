@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'liblist'
 require 'libmcrexe'
-require 'libmcrmandrv'
+require 'libmcrmanproc'
 
 module CIAX
   module Mcr

@@ -10,7 +10,6 @@ module CIAX
       def initialize(super_cfg, atrb = Hashx.new)
         atrb[:opt] = super_cfg[:opt].sub_opt
         super
-        super_cfg[:layer_type] = 'site' # Site Shared
         @cfg[:column] = 2
         @run_list = []
       end

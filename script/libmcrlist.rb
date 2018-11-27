@@ -11,7 +11,6 @@ module CIAX
       # @cfg should have [:sv_stat]
       def initialize(super_cfg, atrb = Hashx.new)
         super
-        super_cfg[:layer_type] = 'mcr'
         @sv_stat = Msg.type?(@cfg[:sv_stat], Prompt)
         @sub_list = @cfg[:dev_list] = Wat::List.new(@cfg)
         @rec_arc = @cfg[:rec_arc].ext_local.refresh

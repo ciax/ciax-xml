@@ -81,7 +81,6 @@ module CIAX
         end
 
         def put(mobj)
-          mobj.ext_shell
           __set_jump(super)
         end
 

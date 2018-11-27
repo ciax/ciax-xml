@@ -30,7 +30,6 @@ module CIAX
 
         # Macro Manipulator
         def man_cmd(ent)
-          @sv_stat.repl(:sid, ent.par[0])
           mobj = @mcr_list.get(ent.par[0])
           ent.msg = mobj.exe([ent[:id]]) || 'NOSID'
           mobj

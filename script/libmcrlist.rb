@@ -23,6 +23,12 @@ module CIAX
         self
       end
 
+      def get(id)
+        ent = super
+        @sv_stat.repl(:sid, ent.par[0]) if ent
+        ent
+      end
+
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
       def add(ent) # returns Exe
         mobj = Exe.new(ent) { |e| add(e) }

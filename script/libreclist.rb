@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'librecarc'
-require 'libcmdpar'
+require 'libcmdremote'
 
 module CIAX
   # Macro Layer
@@ -19,14 +19,11 @@ module CIAX
     #  Local(ext_save) : write down Rec_arc
     class RecList < Upd
       attr_reader :current_idx, :rec_arc
-      def initialize(rec_arc = nil, proj = nil, par = nil, valid_keys = [])
+      def initialize(rec_arc = nil, proj = nil, int = nil)
         super()
         self[:id] = proj || ENV['PROJ']
-        @par = par || CmdBase::Parameter.new
-        type?(@par, CmdBase::Parameter)
-        self[:alives] = @par.list
-        @valid_keys = type?(valid_keys, Array)
-        self[:option] = @valid_keys.dup
+        int ||= CmdTree::Remote::Int::Group.new(Config.new)
+        ___init_int(int)
         # RecArc : R/O
         @rec_arc = rec_arc ? type?(rec_arc, RecArc) : RecArc.new
         ___init_vars
@@ -98,6 +95,13 @@ module CIAX
       end
 
       private
+
+      def ___init_int(int)
+        @par = int.pars.last || CmdBase::Parameter.new
+        self[:alives] = @par.list
+        @valid_keys = type?(int.valid_keys, Array)
+        self[:option] = @valid_keys.dup
+      end
 
       def ___init_vars
         @current_idx = 0

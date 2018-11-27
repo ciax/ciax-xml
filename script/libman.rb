@@ -71,8 +71,8 @@ module CIAX
 
       def ___init_stat
         int = @cobj.rem.int
-        par = int.add_par(@sv_stat.get(:list)).last
-        @stat = RecList.new(@cfg[:rec_arc], @id, par, int.valid_keys).ext_view
+        int.add_par(@sv_stat.get(:list))
+        @stat = RecList.new(@cfg[:rec_arc], @id, int).ext_view
       end
     end
 

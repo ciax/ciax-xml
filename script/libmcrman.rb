@@ -40,6 +40,10 @@ module CIAX
         super
       end
 
+      def ext_local_driver
+        self
+      end
+
       def ext_shell
         require 'libmcrsh'
         extend(Shell).ext_shell

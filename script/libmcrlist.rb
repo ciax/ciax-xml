@@ -15,7 +15,7 @@ module CIAX
         @sub_list = @cfg[:dev_list] = Wat::List.new(@cfg)
         @rec_arc = @cfg[:rec_arc].ext_local.refresh
         @rec_arc.ext_save if @cfg[:opt].mcr_log?
-        @man = Man.new(@cfg, mcr_list: self).ext_local_driver
+        @man = Man.new(@cfg).ext_local_processor(self)
       end
 
       def exe(args)
@@ -25,7 +25,7 @@ module CIAX
 
       def get(id)
         ent = super
-        @sv_stat.repl(:sid, ent.par[0]) if ent
+        @sv_stat.repl(:sid, id)
         ent
       end
 

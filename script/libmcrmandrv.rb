@@ -5,16 +5,19 @@ module CIAX
   module Mcr
     # Macro Manager
     class Man
+      def ext_local_processor(mcr_list)
+        extend(Processor).ext_local_processor(mcr_list)
+      end
       # Macro Manager Processing Module (TEST or DRIVE mode)
-      module Driver
+      module Processor
         def self.extended(obj)
           Msg.type?(obj, Man)
         end
 
         # Initiate for driver
-        def ext_local_driver
+        def ext_local_processor(mcr_list)
           @mode = @opt.dry? ? 'DRY' : 'PRCS'
-          @mcr_list = type?(@cfg[:mcr_list], List)
+          @mcr_list = type?(mcr_list, List)
           ___init_procs
           @sv_stat.repl(:sid, '') # For server response
           @cobj.rem.ext_input_log
@@ -59,7 +62,7 @@ module CIAX
         end
 
         def ___init_proc_sys
-          @cobj.get('interrupt').def_proc { @cfg[:mcr_list].interrupt }
+          @cobj.get('interrupt').def_proc { @mcr_list.interrupt }
           @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
           @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
         end

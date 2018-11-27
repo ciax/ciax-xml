@@ -25,13 +25,9 @@ module CIAX
     # Assertion
     def type?(name, *modules)
       src = caller(1)
-      modules.each do |mod|
-        unless name.is_a?(mod)
-          res = "Parameter type error <#{name.class}> for (#{mod})"
-          raise(ServerError, res, src)
-        end
-      end
-      name
+      return name if modules.any? { |mod| name.is_a?(mod) }
+      res = "Parameter type error <#{name.class}> for #{modules}"
+      raise(ServerError, res, src)
     end
 
     def data_type?(data, type)

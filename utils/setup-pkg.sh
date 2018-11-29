@@ -1,6 +1,6 @@
 #!/bin/bash
-# Required packages(Debian,Raspbian,Ubuntu): ruby ruby-libxml libxml2-utils apache2 socat libxml-xpath-perl php5-sqlite
-# Required packages(CentOs): ruby-devel libxml2-devel httpd socat
+# Required packages(Debian,Raspbian,Ubuntu): make gcc socat sqlite3 ruby ruby-all-dev ruby-libxml libxml2-utils apache2 libapache2-mod-php php-sqlite3 php-elisp socat libxml-xpath-perl
+# Required packages(CentOs): ruby-devel libxml2-devel httpd socat sqlite httpd php php-pear perl-XML-XPath
 # Required modules(Ruby): json libxml-ruby
 echo $C3"Install required packages"$C0
 if [ -f /etc/centos-release ]; then
@@ -8,13 +8,13 @@ if [ -f /etc/centos-release ]; then
 else
     read dist dmy < /etc/issue
 fi
+pkgs=$(grep "Required packages(*.$dist" $0|cut -d: -f2)
 case "$dist" in
     *bian|Ubuntu)
-        forgem="ruby-all-dev make gcc"
-        sudo apt-get install socat sqlite3 ruby-libxml libxml2-utils libapache2-mod-php php-sqlite3 php-elisp $forgem 
+        sudo apt-get install $pkgs
         ;;
     CentOS)
-        sudo yum install socat sqlite ruby-devel httpd php php-pear libxml2-devel perl-XML-XPath
+        sudo yum install $pkgs
         sudo gem install json libxml-ruby
         ;;
     *)

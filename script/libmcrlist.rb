@@ -81,7 +81,8 @@ module CIAX
         end
 
         def put(mobj)
-          __set_jump(super)
+          __set_jump(mobj)
+          super
         end
 
         private

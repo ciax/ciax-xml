@@ -23,7 +23,7 @@ module CIAX
         sites = @displist.valid_keys
         @run_list = sites.select do |id|
           atrb = get(id) || @docs.get(id)[:attr]
-          host= atrb[:host]
+          host = atrb[:host]
           atrb[:run] != 'false' && (host == 'localhost' || host == HOST)
         end
         @ddb = {

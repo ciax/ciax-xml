@@ -101,7 +101,7 @@ module CIAX
 
       # Includable (macro)
       def __mk_sub_db(top, sub = @displist, attr = Hashx.new)
-        item = __set_item(top, sub, attr)
+        item = __set_item(top, sub, attr) || return
         top.each do |e| # e.name can be include or group
           ___include_grp(e, item, top.ns != e.ns)
         end
@@ -121,6 +121,7 @@ module CIAX
 
       # set single item to self
       def __set_item(top, disp = @displist, attr = Hashx.new)
+        return if top['enable'] == 'false'
         id = top['id'] # site_id or macro_proj
         item = Hashx[top: top, attr: attr.update(top.to_h)]
         disp.put_item(id, top['label'])

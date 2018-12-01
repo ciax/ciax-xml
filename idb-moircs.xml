@@ -6,7 +6,7 @@
     <include ref="cmp"/>
   </project>
   <project id="moircs_arc" label="MOIRCS Archive" column="3">
-    <group id="mc_tele" label="Telemetory">
+    <group id="mc_tele" enable="false" label="Telemetory">
       <site id="ml1" app_id="lk8" host="moircsobcp" port="25605" label="Temperature 1">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <index ref="ch0" label="MosCold2"/>

@@ -16,6 +16,7 @@
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
       <xsd:attribute name="label" type="xsd:token" use="optional"/>
       <xsd:attribute name="host" type="xsd:token"/>
+      <xsd:attribute name="enable" type="xsd:boolean"/>
       <xsd:attribute name="column" type="xsd:int"/>
     </xsd:complexType>
   </xsd:element>

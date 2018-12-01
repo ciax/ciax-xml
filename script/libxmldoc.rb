@@ -95,6 +95,7 @@ module CIAX
       def __mk_group(gdoc)
         @displist.ext_grp unless @displist.is_a? Disp::Grouping
         gatt=gdoc.to_h
+        return if gatt[:enable] == 'false'
         sub = @displist.put_grp(gatt.delete(:id), gatt.delete(:label))
         gdoc.each { |e| __mk_sub_db(e, sub, gatt.dup) }
       end

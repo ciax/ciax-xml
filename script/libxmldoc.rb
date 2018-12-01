@@ -94,13 +94,15 @@ module CIAX
       # Takes second level (use group for display only)
       def __mk_group(gdoc)
         @displist.ext_grp unless @displist.is_a? Disp::Grouping
-        sub = @displist.put_grp(gdoc['id'], gdoc['label'])
-        gdoc.each { |e| __mk_sub_db(e, sub) }
+        gatt=gdoc.to_h
+        return if gatt[:enable] == 'false'
+        sub = @displist.put_grp(gatt.delete(:id), gatt.delete(:label))
+        gdoc.each { |e| __mk_sub_db(e, sub, gatt.dup) }
       end
 
       # Includable (macro)
-      def __mk_sub_db(top, sub = @displist)
-        item = __set_item(top, sub)
+      def __mk_sub_db(top, sub = @displist, attr = Hashx.new)
+        item = __set_item(top, sub, attr) || return
         top.each do |e| # e.name can be include or group
           ___include_grp(e, item, top.ns != e.ns)
         end
@@ -119,9 +121,10 @@ module CIAX
       end
 
       # set single item to self
-      def __set_item(top, disp = @displist)
+      def __set_item(top, disp = @displist, attr = Hashx.new)
+        return if top['enable'] == 'false'
         id = top['id'] # site_id or macro_proj
-        item = Hashx[top: top, attr: top.to_h]
+        item = Hashx[top: top, attr: attr.update(top.to_h)]
         disp.put_item(id, top['label'])
         self[id] = item
       end

@@ -22,8 +22,9 @@ module CIAX
       def ___init_lists
         sites = @displist.valid_keys
         @run_list = sites.select do |id|
-          host = (get(id) || @docs.get(id)[:attr])[:host]
-          host == 'localhost' || host == HOST
+          atrb = get(id) || @docs.get(id)[:attr]
+          host= atrb[:host]
+          atrb[:run] != 'false' && (host == 'localhost' || host == HOST)
         end
         @ddb = {
           sites: __frm_sites(sites),

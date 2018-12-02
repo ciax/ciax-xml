@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libexe'
 require 'libmcrcmd'
-require 'libreclist'
+require 'librecarc'
 module CIAX
   # Macro Layer
   module Mcr
@@ -27,9 +27,9 @@ module CIAX
         # pick already includes :command, :version
         _init_dbi2cfg(%i(sites))
         _init_net
-        ___init_lists
+        @stat = type?(@cfg[:rec_arc], RecArc)
+        @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
         ___init_cmd
-        ___init_stat
         _opt_mode
       end
 
@@ -44,30 +44,15 @@ module CIAX
         self
       end
 
-      def ext_shell
-        require 'libmcrsh'
-        extend(Shell).ext_shell
-      end
-
       private
-
-      def ___init_lists
-        @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
-      end
 
       # Initiate for all mode
       def ___init_cmd
         rem = @cobj.add_rem
         rem.cfg[:def_msg] = 'ACCEPT'
         rem.add_sys
-        rem.add_int
+        rem.add_int.add_par(@sv_stat.get(:list))
         rem.add_ext
-      end
-
-      def ___init_stat
-        int = @cobj.rem.int
-        int.add_par(@sv_stat.get(:list))
-        @stat = RecList.new(@cfg[:rec_arc], @id, int).ext_view
       end
     end
 

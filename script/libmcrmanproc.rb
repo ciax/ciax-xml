@@ -26,9 +26,7 @@ module CIAX
 
         # Macro Generator
         def gen_cmd(ent)
-          mobj = @mcr_list.add(ent)
-          @stat.push(mobj.stat)
-          mobj
+          @mcr_list.add(ent)
         end
 
         # Macro Manipulator

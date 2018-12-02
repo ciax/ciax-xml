@@ -16,7 +16,7 @@ module CIAX
         ___init_prompt
         ___init_rem_sys
         _ext_local
-        @mode = @cfg.get(:opt).drv? ? 'DRV' : 'TEST'
+        @mode = @opt.drv? ? 'DRV' : 'TEST'
       end
 
       def interrupt

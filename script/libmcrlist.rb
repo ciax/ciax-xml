@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require 'liblist'
 require 'libmcrexe'
-require 'libmcrmanproc'
 
 module CIAX
   module Mcr
@@ -88,7 +87,7 @@ module CIAX
         private
 
         def __set_jump(mobj)
-          @current = type?(mobj, Exe, Man).id
+          @current = type?(mobj, CIAX::Exe).id
           @jumpgrp.add_item(mobj.id, mobj.cfg[:cid])
           mobj
         end
@@ -101,8 +100,9 @@ module CIAX
         ConfOpts.new('[id]', options: 'cehlns') do |rcfg, args|
           Layer.new(rcfg) do |cfg|
             list = List.new(cfg)
-            man = Man.new(list.cfg).ext_local_processor(list)
-            list.put(man.exe(args))
+            ment = Index.new(list.cfg).add_rem.add_ext.set_cmd(args)
+            list.add(ment)
+            list
           end.ext_shell.shell
         end
       end

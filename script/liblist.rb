@@ -12,7 +12,8 @@ module CIAX
     def initialize(super_cfg, atrb = Hashx.new)
       @cfg = super_cfg.gen(self).update(atrb)
       super(m2id(@cfg[:obj].class, -2))
-      verbose { 'Initiate List (option:' + @cfg[:opt].keys.join + ')' }
+      @opt = @cfg[:opt]
+      verbose { 'Initiate List (option:' + @opt.keys.join + ')' }
       self[:list] = Hashx.new
     end
 
@@ -61,7 +62,7 @@ module CIAX
         @current = $ERROR_INFO.to_s
         retry
       rescue InvalidARGS
-        @cfg[:opt].usage('(opt) [id]')
+        @opt.usage('(opt) [id]')
       end
 
       def switch(site)

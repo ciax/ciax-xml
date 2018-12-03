@@ -99,11 +99,8 @@ module CIAX
       class Jump < LongJump; end
 
       if __FILE__ == $PROGRAM_NAME
-        require 'liblayer'
-        ConfOpts.new('[id]', options: 'cehlns') do |rcfg, _args|
-          Layer.new(rcfg) do |cfg|
-            List.new(cfg)
-          end.ext_shell.shell
+        ConfOpts.new('[id]', options: 'cehlns') do |cfg|
+          List.new(cfg).ext_shell.shell
         end
       end
     end

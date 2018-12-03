@@ -40,10 +40,10 @@ module CIAX
       def _store_db(db)
         @db = @cfg[:db] = type?(db, Db)
         # If @cfg[:site] is set, get() will be done at run();
-        if @cfg.key?(:sites) # in case of sub_list(Frm::List)
-          sites = @db.displist.valid_keys & @cfg[:sites]
+        # if @cfg.key?(:sites) # in case of sub_list(Frm::List)
+          sites = @db.displist.valid_keys & ( @cfg[:sites] || [])
           @run_list = sites.empty? ? @db.run_list : sites
-        end
+          #        end
         self
       end
 

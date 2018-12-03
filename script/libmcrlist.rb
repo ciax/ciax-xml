@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'liblist'
 require 'libmcrexe'
+require 'libmcrmanproc'
 
 module CIAX
   module Mcr
@@ -10,15 +11,16 @@ module CIAX
       # @cfg should have [:sv_stat]
       def initialize(super_cfg, atrb = Hashx.new)
         super
-        @sv_stat = Msg.type?(@cfg[:sv_stat], Prompt)
         @sub_list = @cfg[:dev_list] = Wat::List.new(@cfg)
-        @rec_arc = @cfg[:rec_arc].ext_local.refresh
-        @rec_arc.ext_save if @cfg[:opt].mcr_log?
+        @man = Man.new(@cfg).ext_local_processor(self)
+        @man.stat.ext_local.refresh
+        @man.stat.ext_save if @cfg[:opt].mcr_log?
+        put(@man)
       end
 
       def get(id)
         ent = super
-        @sv_stat.repl(:sid, id)
+        @man.sv_stat.repl(:sid, id)
         ent
       end
 
@@ -32,7 +34,7 @@ module CIAX
       def add(ent) # returns Exe
         mobj = Exe.new(ent) { |e| add(e) }
         put(mobj.run)
-        @rec_arc.push(mobj.stat)
+        @man.stat.push(mobj.stat)
         mobj
       end
 
@@ -42,9 +44,10 @@ module CIAX
       end
 
       def run
+        @sub_list.run
         ___arc_refresh
         ___web_cmdlist
-        super
+        self
       end
 
       def ext_shell
@@ -56,7 +59,7 @@ module CIAX
       def ___arc_refresh
         verbose { 'Initiate Record Archive' }
         Threadx::Fork.new('RecArc', 'mcr', @id) do
-          @rec_arc.clear.refresh
+          @man.stat.clear.refresh
         end
       end
 
@@ -88,7 +91,7 @@ module CIAX
 
         def __set_jump(mobj)
           @current = type?(mobj, CIAX::Exe).id
-          @jumpgrp.add_item(mobj.id, mobj.cfg[:cid])
+          @jumpgrp.add_item(mobj.id, mobj.cfg[:cid] || 'manager')
           mobj
         end
       end
@@ -97,12 +100,9 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         require 'liblayer'
-        ConfOpts.new('[id]', options: 'cehlns') do |rcfg, args|
+        ConfOpts.new('[id]', options: 'cehlns') do |rcfg, _args|
           Layer.new(rcfg) do |cfg|
-            list = List.new(cfg)
-            ment = Index.new(list.cfg).add_rem.add_ext.set_cmd(args)
-            list.add(ment)
-            list
+            List.new(cfg)
           end.ext_shell.shell
         end
       end

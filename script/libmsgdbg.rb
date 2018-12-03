@@ -26,7 +26,8 @@ module CIAX
     def type?(name, *modules)
       src = caller(1)
       return name if modules.any? { |mod| name.is_a?(mod) }
-      res = "Parameter type error <#{name.class}> for #{modules} at #{src.first}"
+      res = 'Parameter type error '
+      res << format('<%s>> for %s at %s', name.class, modules, src.first)
       raise(ServerError, res, src)
     end
 

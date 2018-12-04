@@ -15,25 +15,20 @@ module CIAX
         @man = Man.new(@cfg).ext_local_processor(self)
         @man.stat.ext_local.refresh
         @man.stat.ext_save if @cfg[:opt].mcr_log?
-        put(@man)
       end
 
       def get(id)
+        return @man if id == 'man'
         ent = super
         @man.sv_stat.repl(:sid, id)
         ent
       end
 
-      # For adding Man
-      def put(mobj)
-        super(mobj.id, mobj)
-      end
-
       # For adding Exe
       # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
-      def add(ent) # returns Exe
-        mobj = Exe.new(ent) { |e| add(e) }
-        put(mobj.run)
+      def add(ment) # returns Exe
+        mobj = Exe.new(ment) { |e| add(e) }
+        put(mobj.id, mobj.run)
         @man.stat.push(mobj.stat)
         mobj
       end
@@ -78,20 +73,21 @@ module CIAX
         def ext_shell
           super(Jump)
           @cfg[:jump_mcr] = @jumpgrp
+          @current = 'man'
+          @jumpgrp.add_item(@current, 'manager')
           _list.each_value { |mobj| __set_jump(mobj) }
           self
         end
 
-        def put(mobj)
-          __set_jump(mobj)
-          super
+        def add(ment)
+          __set_jump(super)
         end
 
         private
 
         def __set_jump(mobj)
           @current = type?(mobj, CIAX::Exe).id
-          @jumpgrp.add_item(mobj.id, mobj.cfg[:cid] || 'manager')
+          @jumpgrp.add_item(mobj.id, mobj.cfg[:cid])
           mobj
         end
       end

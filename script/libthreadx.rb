@@ -30,8 +30,8 @@ module CIAX
         str = "[#{t.status}]"
         str += %i(id layer name).map { |id| t[id] }.join(':')
         str += "(#{t[:type]})" if t[:type]
-        str + "\n"
-      end.sort.join
+        str
+      end.sort
     end
 
     def killall

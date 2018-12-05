@@ -1,4 +1,13 @@
 #!/usr/bin/ruby
+# Array#to_s shows lines
+class Array
+  def to_s
+    ary = compact
+    return '' if ary.empty?
+    ary.join("\n") + "\n"
+  end
+end
+
 # Common Module
 module CIAX
   ### Formatting methods ###

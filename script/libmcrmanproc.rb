@@ -32,7 +32,7 @@ module CIAX
         # Macro Manipulator
         def man_cmd(ent)
           mobj = @mcr_list.get(ent.par[0])
-          ent.msg = mobj.exe([ent[:id]]) || 'NOSID'
+          ent.msg = mobj.exe([ent[:id]]).to_s || 'NOSID'
           mobj
         end
 

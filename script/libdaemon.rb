@@ -29,12 +29,23 @@ module CIAX
     def ___main_loop(port)
       yield.run
       msg = 'for Thread status'
-      Udp::Server.new('daemon', 'top', port, msg).listen do
-        "===== Thread List =====\n" + Threadx.list
+      Udp::Server.new('daemon', 'top', port, msg).listen do |reg, _src|
+        ___threads(reg)
       end
     rescue SignalException
       Threadx.killall
       retry if $ERROR_INFO.message == 'SIGHUP'
+    end
+
+    def ___threads(reg)
+      reg.chomp!
+      ary = Threadx.list
+      title = '===== Thread List ===== '
+      unless reg.empty?
+        title << reg.inspect
+        ary = ary.grep(/#{reg}/)
+      end
+      ary.unshift(title).to_s + '(reg)?>'
     end
 
     # Background (Switch error output to file)

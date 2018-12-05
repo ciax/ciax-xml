@@ -25,14 +25,15 @@ module CIAX
 
         def ___init_stat
           @view = RecList.new(@stat, @id, @cobj.rem.int).ext_view
-          @cfg[:output] = @view.upd
+          @opt.cl? ? @view.ext_remote(@host) : @view.ext_local
+          @cfg[:output] = @view
         end
 
         def ___init_view_rec
           # @view will be switched among Whole List or Records
           # Setting @par will switch the Record
           @prompt_proc = proc do
-            str = @sv_stat.to_s + "[#{@view.current_idx}]"
+            str = @sv_stat.to_s + "[#{@view.upd.current_idx}]"
             str << optlist((@view.current_rec || {})[:option])
           end
         end

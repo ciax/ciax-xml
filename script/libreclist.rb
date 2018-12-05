@@ -7,8 +7,11 @@ module CIAX
   module Mcr
     # Visible Record Database
     # Need RecArc to get Parent CID for SeqList
+    # Contents
+    #   @list: Array of macro ID
+    #   self[:list] : Array of macro Title
     # Alives Array => R/O here
-    #    Parameter[:list] = Prompt[:list]
+    #   Parameter[:list] = Prompt[:list] = self[:alives]
     # RecArc(Index) > RecList(Records) > SeqList(IDs)
     # RecList : Client Side (Picked at Client)
     # Alives : Server Side
@@ -79,10 +82,7 @@ module CIAX
         @cache.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_remote(@host)
         end
-        @upd_procs << proc do
-          @rec_arc.upd unless self[:alives].each { |id| append(id) }.empty?
-        end
-        upd
+        self
       end
 
       # Manipulate memory
@@ -108,6 +108,7 @@ module CIAX
         @list = []
         @cache = {}
         @upd_procs << proc do
+          @rec_arc.upd unless self[:alives].each { |id| append(id) }.empty?
           @valid_keys.replace((current_rec || self)[:option] || [])
           self[:list] = @list.map { |id| _item(id) }
           self[:default] = @par[:default]

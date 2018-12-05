@@ -40,6 +40,7 @@ module CIAX
 
       def run
         @sub_list.run
+        @man.run
         ___arc_refresh
         ___web_cmdlist
         self

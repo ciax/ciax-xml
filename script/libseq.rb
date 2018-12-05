@@ -34,9 +34,7 @@ module CIAX
 
       # Start the macro
       def play
-        @dev_list.init_sites if @dev_list
-        Thread.current[:query] = @qry
-        show_fg @record.start
+        ___pre_play
         _sequencer(@cfg, @record.cmt)
       rescue CommError, Verification
         false
@@ -44,6 +42,7 @@ module CIAX
         ___site_interrupt
       ensure
         show_fg @record.finish + "\n"
+        @sv_stat.erase(:list, @id)
       end
 
       def fork
@@ -51,6 +50,13 @@ module CIAX
       end
 
       private
+
+      def ___pre_play
+        @dev_list.init_sites if @dev_list
+        Thread.current[:query] = @qry
+        show_fg @record.start
+        @sv_stat.push(:list, @id).repl(:sid, @id)
+      end
 
       # macro returns result (true=complete /false=error)
       def _sequencer(cfg, mstat)

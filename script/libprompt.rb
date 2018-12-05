@@ -70,6 +70,11 @@ module CIAX
       self
     end
 
+    def erase(key, elem)
+      type?(self[key], Array).delete(elem)
+      self
+    end
+
     # For Message
     def msg
       self[:msg]

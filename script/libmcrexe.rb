@@ -13,7 +13,7 @@ module CIAX
         verbose { 'Initiate New Macro' }
         ___init_cmd
         ___init_seq(submcr_proc)
-        ___init_prompt
+        @sv_stat = type?(@cfg[:sv_stat], Prompt)
         ___init_rem_sys
         _ext_local
         @mode = @opt.drv? ? 'DRV' : 'TEST'
@@ -52,11 +52,6 @@ module CIAX
         @id = @seq.id
         @int.def_proc { |ent| @seq.reply(ent.id) }
         @stat = @seq.record
-      end
-
-      def ___init_prompt
-        @sv_stat = type?(@cfg[:sv_stat], Prompt)
-        @sv_stat.push(:list, @seq.id).repl(:sid, @seq.id)
       end
 
       def ___init_rem_sys

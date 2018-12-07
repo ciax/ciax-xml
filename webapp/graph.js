@@ -128,7 +128,7 @@ function get_log() {
 function _conv_ascii(pair) {
   if (isNaN(pair[1])) {
     var asc = 0;
-    var ary = pair[1].split('').map(function (n) {
+    var ary = pair[1].split('').map(function(n) {
       var i = n.charCodeAt(0) - 64;
       return i;
     });
@@ -141,7 +141,7 @@ function _conv_ascii(pair) {
 }
 // Dynamic Graph
 function update_graph() {
-  $.getJSON('sqlog.php', par, function (obj) {
+  $.getJSON('sqlog.php', par, function(obj) {
     obj[0].data.forEach(_conv_ascii);
     plot.setData(obj);
     plot.setupGrid(); // scroll to left
@@ -151,7 +151,7 @@ function update_graph() {
 
 function static_graph(zoom) {
   current_date(par.time || Date.now());
-  $.getJSON('sqlog.php', par, function (obj) {
+  $.getJSON('sqlog.php', par, function(obj) {
     obj[0].data.forEach(_conv_ascii);
     plot = $.plot($('#placeholder'), obj, options);
     if (zoom) {

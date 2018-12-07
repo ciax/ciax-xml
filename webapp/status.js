@@ -33,7 +33,7 @@ function conv(stat) {
 }
 
 function resize() {
-  $('tr').each(function () {
+  $('tr').each(function() {
     max = Math.max(max, $(this).innerWidth());
   });
   var out = $('div.outline');
@@ -48,7 +48,7 @@ function seldv(dom) {
 var last;
 var offset = 0;
 var max = 0;
-upd_list.select = function () {
+upd_list.select = function() {
   ajax_update(type + '_' + site + '.json').done(conv);
   elapsed();
 };

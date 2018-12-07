@@ -26,7 +26,7 @@ function open_graph(site, vid, time) {
 }
 
 function exec_funcs(funclist) {
-  $.each(funclist, function (k, func) {
+  $.each(funclist, function(k, func) {
     func();
   });
 }
@@ -47,10 +47,10 @@ function set_sticky_bottom() {
 function set_auto_release(sel) {
   var div = $(sel);
   start_pos = div.scrollTop();
-  div.on('mouseenter', function () {
+  div.on('mouseenter', function() {
     $(this).on('scroll', auto_release);
   });
-  div.on('mouseleave', function () {
+  div.on('mouseleave', function() {
     $(this).off('scroll', auto_release);
   });
 
@@ -63,39 +63,39 @@ function set_auto_release(sel) {
 }
 // Folding
 function set_acordion(sel) {
-  $(sel).on('click', 'h4', function () {
+  $(sel).on('click', 'h4', function() {
     toggle(this);
   });
   // All list will be folded when titie is clicked
-  $(sel).parent().on('click', '.title', function () {
+  $(sel).parent().on('click', '.title', function() {
     toggle(sel + ' h4');
   });
   // Initiate after generating page
-  return function (sub) {
+  return function(sub) {
     toggle(sel + ' h4' + sub);
   }
 
   function toggle(sub) {
-    $(sub).next().slideToggle('slow', function () {
+    $(sub).next().slideToggle('slow', function() {
       sticky_bottom(0);
     });
   }
 }
 // interactive mode
 function blinking() {
-  $('.query,.run,.busy').fadeOut(500, function () {
-    $(this).fadeIn(500)
+  $('.query,.run,.busy').fadeOut(500, function() {
+    $(this).fadeIn(500);
   });
 }
 // contents resize
 function height_adjust() {
   // sum height of children in .outline except .contents
-  $('.outline').each(function (i, ol) {
+  $('.outline').each(function(i, ol) {
     var h = $(window).height();
-    var res = $(ol).children('div:not(".contents")').map(function (j, e) {
+    var res = $(ol).children('div:not(".contents")').map(function(j, e) {
       return $(e).height();
-    }).get().reduce(function (p, c, i, arr) {
-      return p + c
+    }).get().reduce(function(p, c, i, arr) {
+      return p + c;
     });
     $(ol).children('.contents').css('max-height', h - res - 100);
     sticky_bottom(0);
@@ -113,15 +113,15 @@ function dvctl(args, func) {
     data: send,
     ifModified: true,
     cache: false,
-    success: function (recv) {
+    success: function(recv) {
       //console.log('recv=' + JSON.stringify(recv));
       replace('#msg', recv.msg, recv.msg.toLowerCase()).show().fadeOut(1000);
       if (func) {
         console.log(JSON.stringify(recv));
         func(recv.sid);
-      };
+      }
     },
-    error: function (recv) {
+    error: function(recv) {
       //console.log('recv=' + JSON.stringify(recv));
       replace('#msg', 'NO Response', 'error');
     }
@@ -163,7 +163,7 @@ function make_select(sel, ary) {
   if (ary.length > 0) $('#msg').text('');
 
   function make_opt(ary) {
-    $.each(ary, function (key, val) {
+    $.each(ary, function(key, val) {
       if (typeof key === 'number') {
         make_optpar(key, val);
       } else {
@@ -201,7 +201,7 @@ function get_select(dom) {
 // Radio Button
 function make_radio(dom, ary) {
   var opt = [];
-  $.each(ary, function (i, val) {
+  $.each(ary, function(i, val) {
     opt.push('<label>');
     opt.push('<input type="radio" name="query" value="');
     if (Array.isArray(val)) {

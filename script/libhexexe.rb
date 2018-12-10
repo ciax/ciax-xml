@@ -28,7 +28,10 @@ module CIAX
       end
 
       # Dummy
-      def ext_local_driver; end
+      def ext_local_driver
+        ext_local_server if @opt.sv?
+        self
+      end
 
       private
 

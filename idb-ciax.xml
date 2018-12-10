@@ -14,7 +14,7 @@
       <site id="c2j" app_id="cjk" port="25503" frm_site="cr2" label="CART 2 Jack Setting"/>
     </group>
     <group id="cx_cfg" label="Setting">
-      <site id="c3j" app_id="cjk" host="cxws2" port="25501" frm_site="crt" label="CART 3 Jack Setting">
+      <site id="c3j" app_id="cjk" host="cxws2" port="25501" frm_site="crt" label="CART 3 Jack Setting" enable="false">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="id0t0" caption="COMICS/CAS"/>
           <group ref="id0t1" caption="COMICS/OPT/MOV"/>

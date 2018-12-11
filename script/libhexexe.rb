@@ -27,9 +27,6 @@ module CIAX
         super
       end
 
-      # Dummy
-      def ext_local_driver; end
-
       private
 
       # Sub Methods for Initialize

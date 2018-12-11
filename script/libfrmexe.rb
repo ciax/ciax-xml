@@ -45,6 +45,7 @@ module CIAX
 
       def ext_local_driver
         require 'libfrmdrv'
+        extend(Driver).ext_local_driver
         super
       end
 

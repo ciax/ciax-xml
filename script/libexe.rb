@@ -81,7 +81,6 @@ module CIAX
     # Generate and Save Data
     def ext_local_driver
       @mode = 'DRV'
-      extend(context_module('Driver')).ext_local_driver
       self
     end
 

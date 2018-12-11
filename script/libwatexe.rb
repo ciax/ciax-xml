@@ -45,6 +45,7 @@ module CIAX
 
       def ext_local_driver
         require 'libwatdrv'
+        extend(Driver).ext_local_driver
         super
       end
 

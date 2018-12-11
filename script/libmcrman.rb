@@ -40,10 +40,6 @@ module CIAX
         super
       end
 
-      def ext_local_driver
-        self
-      end
-
       private
 
       # Initiate for all mode

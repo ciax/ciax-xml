@@ -44,6 +44,7 @@ module CIAX
 
       def ext_local_driver
         require 'libappdrv'
+        extend(Driver).ext_local_driver
         super
       end
 

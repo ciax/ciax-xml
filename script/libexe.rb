@@ -69,7 +69,9 @@ module CIAX
 
     def ext_shell
       require 'libsh'
-      extend(context_module('Shell')).ext_shell
+      mod = context_module('Shell')
+      return self if is_a?(mod)
+      extend(mod).ext_shell
     end
 
     # No save any data
@@ -87,6 +89,7 @@ module CIAX
     # Load Data
     def ext_remote_client
       require 'libclient'
+      return self if is_a?(Client)
       extend(Client).ext_remote_client
     end
 
@@ -95,7 +98,6 @@ module CIAX
       return self if @opt.cl?
       require 'libserver'
       return self if is_a?(Server)
-      @cobj.rem.sys.add_empty
       extend(Server).ext_local_server
     end
 

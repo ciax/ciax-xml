@@ -67,11 +67,14 @@ module CIAX
     #       Local server   : ext_local_server
     #           Add network command input feature
 
+    def shell
+      ext_shell.shell
+    end
+
     def ext_shell
       require 'libsh'
-      mod = context_module('Shell')
-      return self if is_a?(mod)
-      extend(mod).ext_shell
+      return self if is_a?(Shell)
+      extend(Shell).ext_shell
     end
 
     # No save any data

@@ -5,7 +5,12 @@ require 'libreclist'
 module CIAX
   # Macro Layer
   module Mcr
+    # Macro Manager
     class Man
+      def ext_shell
+        return self if is_a?(Shell)
+        extend(Shell).ext_shell
+      end
       # Macro Shell
       module Shell
         include Exe::Shell
@@ -74,7 +79,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', options: 'cnlr') do |cfg|
-        Man.new(cfg).ext_shell.shell
+        Man.new(cfg).shell
       end
     end
   end

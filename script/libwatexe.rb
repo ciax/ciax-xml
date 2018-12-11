@@ -31,10 +31,9 @@ module CIAX
       end
 
       def ext_shell
-        super
+        super.input_conv_set
         @cfg[:output] = View.new(@stat).ext_prt
         @cobj.loc.add_view
-        input_conv_set
         self
       end
 
@@ -82,7 +81,7 @@ module CIAX
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(args.shift)
         atrb = { dbi: dbi, sub_list: App::List.new(cfg) }
-        Exe.new(cfg, atrb).ext_shell.shell
+        Exe.new(cfg, atrb).shell
       end
     end
   end

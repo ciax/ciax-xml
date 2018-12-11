@@ -32,9 +32,7 @@ module CIAX
       end
 
       def ext_shell
-        super
-        input_conv_set
-        self
+        super.input_conv_set
       end
 
       def ext_local_test

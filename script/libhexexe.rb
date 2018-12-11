@@ -18,7 +18,7 @@ module CIAX
       end
 
       # Mode Extension by Option
-      def ext_local_server
+      def run
         # Specific setting must be done after super to override them
         @server_input_proc = proc do |line|
           /^(strobe|stat)/ =~ line ? [] : line.split(' ')

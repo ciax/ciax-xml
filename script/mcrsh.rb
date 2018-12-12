@@ -2,6 +2,7 @@
 $LOAD_PATH << __dir__
 require 'liblayer'
 require 'libmcrlist'
+require 'libmcrsh'
 # CIAX-XML Macro Shell
 module CIAX
   # Macro

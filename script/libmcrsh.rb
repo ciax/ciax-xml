@@ -71,8 +71,8 @@ module CIAX
         def ___init_conv
           # i should be number
           input_conv_num do |i|
-            if i.to_i > 10000
-              i
+            if i > 10_000
+              i.to_s
             else
               @view.sel(i)
               nil

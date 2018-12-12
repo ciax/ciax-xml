@@ -187,7 +187,7 @@ module CIAX
         def ext_local
           @rec_arc.ext_local.refresh
           @cache.default_proc = proc do |hash, key|
-            hash[key] = Record.new(key).ext_local_file.load
+            hash[key] = Record.new(key).ext_local_file.auto_load
           end
           self
         end

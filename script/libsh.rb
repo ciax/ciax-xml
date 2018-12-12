@@ -13,7 +13,7 @@ module CIAX
       end
 
       # Separate initialize part because shell() could be called multiple times
-      def ext_shell
+      def ext_local_shell
         @cobj.rem.sys.add_empty
         @cfg[:output] = @stat
         ___init_sh_procs
@@ -50,7 +50,7 @@ module CIAX
         str + '>'
       end
 
-      # * 'shell' is separated from 'ext_shell',
+      # * 'shell' is separated from 'ext_local_shell',
       #    because it will repeat being invoked and exit multiple times.
       # * '^D' gives interrupt
       def shell

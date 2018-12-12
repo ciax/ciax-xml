@@ -68,32 +68,7 @@ module CIAX
     #           Add network command input feature
 
     def shell
-      ext_shell.shell
-    end
-
-    def ext_shell
-      require 'libsh'
-      return self if is_a?(Shell)
-      extend(Shell).ext_shell
-    end
-
-    # No save any data
-    def ext_local_test
-      @mode = 'TEST'
-      self
-    end
-
-    # Generate and Save Data
-    def ext_local_driver
-      @mode = 'DRV'
-      self
-    end
-
-    # Load Data
-    def ext_remote_client
-      require 'libclient'
-      return self if is_a?(Client)
-      extend(Client).ext_remote_client
+      _ext_local_shell.shell
     end
 
     # UDP Listen
@@ -111,6 +86,31 @@ module CIAX
     def _ext_local
       @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
       self
+    end
+
+    def _ext_local_shell
+      require 'libsh'
+      return self if is_a?(Shell)
+      extend(Shell).ext_shell
+    end
+
+    # No save any data
+    def _ext_local_test
+      @mode = 'TEST'
+      self
+    end
+
+    # Generate and Save Data
+    def _ext_local_driver
+      @mode = 'DRV'
+      self
+    end
+
+    # Load Data
+    def _ext_remote_client
+      require 'libclient'
+      return self if is_a?(Client)
+      extend(Client).ext_remote_client
     end
 
     # Sub methods for Initialize
@@ -149,9 +149,9 @@ module CIAX
     # -es: drive mode + server
     def _opt_mode
       # Option handling
-      return ext_remote_client if @opt.cl?
+      return _ext_remote_client if @opt.cl?
       _ext_local
-      @opt.drv? ? ext_local_driver : ext_local_test
+      @opt.drv? ? _ext_local_driver : _ext_local_test
     end
   end
 end

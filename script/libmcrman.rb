@@ -33,14 +33,14 @@ module CIAX
         _opt_mode
       end
 
+      private
+
       # Mode Extention by Option
-      def ext_local_test
+      def _ext_local_test
         @pre_exe_procs << proc { @stat.upd }
         @stat.ext_local
         super
       end
-
-      private
 
       # Initiate for all mode
       def ___init_cmd

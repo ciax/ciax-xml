@@ -31,22 +31,6 @@ module CIAX
         raise
       end
 
-      def ext_shell
-        super.input_conv_set
-      end
-
-      def ext_local_test
-        @stat.ext_local_file
-        @cobj.rem.ext.cfg[:def_msg] = 'TEST'
-        super
-      end
-
-      def ext_local_driver
-        require 'libfrmdrv'
-        extend(Driver).ext_local_driver
-        super
-      end
-
       private
 
       # Mode Extension by Option
@@ -56,6 +40,22 @@ module CIAX
           @stat.flush
           verbose { "Set [#{ent.par[0]}] = #{ent.par[1]}" }
         end
+        super
+      end
+
+      def _ext_local_shell
+        super.input_conv_set
+      end
+
+      def _ext_local_test
+        @stat.ext_local_file
+        @cobj.rem.ext.cfg[:def_msg] = 'TEST'
+        super
+      end
+
+      def _ext_local_driver
+        require 'libfrmdrv'
+        extend(Driver).ext_local_driver
         super
       end
 

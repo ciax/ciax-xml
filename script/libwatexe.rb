@@ -30,24 +30,6 @@ module CIAX
         com_err('Timeout for Busy Device')
       end
 
-      def ext_shell
-        super.input_conv_set
-        @cfg[:output] = View.new(@stat).ext_prt
-        @cobj.loc.add_view
-        self
-      end
-
-      def ext_local_test
-        @post_exe_procs << proc { @stat.update? }
-        super
-      end
-
-      def ext_local_driver
-        require 'libwatdrv'
-        extend(Driver).ext_local_driver
-        super
-      end
-
       private
 
       # Mode Extention by Option
@@ -55,6 +37,24 @@ module CIAX
         ___init_upd
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
         @stat.ext_local_conv(@sub.stat)
+        super
+      end
+
+      def _ext_local_shell
+        super.input_conv_set
+        @cfg[:output] = View.new(@stat).ext_prt
+        @cobj.loc.add_view
+        self
+      end
+
+      def _ext_local_test
+        @post_exe_procs << proc { @stat.update? }
+        super
+      end
+
+      def _ext_local_driver
+        require 'libwatdrv'
+        extend(Driver).ext_local_driver
         super
       end
 

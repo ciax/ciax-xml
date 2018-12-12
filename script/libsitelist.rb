@@ -27,10 +27,6 @@ module CIAX
         self
       end
 
-      def ext_shell
-        extend(Shell).ext_shell
-      end
-
       def exe_atrb(site)
         { dbi: @db.get(site), sub_list: @sub_list }
       end
@@ -55,8 +51,8 @@ module CIAX
       module Shell
         include CIAX::List::Shell
 
-        def ext_shell
-          super(Jump)
+        def ext_local_shell
+          super
           @cfg[:jump_site] = @jumpgrp
           sites = @cfg[:db].displist
           @jumpgrp.ext_grp.merge_items(sites)

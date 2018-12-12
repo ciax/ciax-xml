@@ -16,11 +16,12 @@ module CIAX
       end
     end
 
-    def ext_shell
-      super(Jump)
+    private
+
+    def _ext_local_shell
+      super
       @cfg[:jump_layer] = @jumpgrp
-      _list.each do |id, obj|
-        obj.ext_shell
+      _list.each do |id, _obj|
         @jumpgrp.add_item(id, id.capitalize + ' mode')
       end
       @current = @cfg[:opt].init_layer || _list.keys.first

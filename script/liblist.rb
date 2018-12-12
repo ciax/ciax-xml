@@ -17,8 +17,8 @@ module CIAX
       self[:list] = Hashx.new
     end
 
-    def ext_shell(jump_class)
-      extend(Shell).ext_shell(jump_class)
+    def shell
+      _ext_local_shell.shell
     end
 
     def get(id)
@@ -36,6 +36,12 @@ module CIAX
 
     private
 
+    def _ext_local_shell
+      smod = context_module('Shell')
+      return self if is_a?(smod)
+      extend(smod).ext_local_shell
+    end
+
     def _list
       self[:list]
     end
@@ -49,9 +55,9 @@ module CIAX
       end
 
       # atrb should have [:jump_class] (Used in Local::Jump::Group)
-      def ext_shell(jump_class)
+      def ext_local_shell
         verbose { 'Initiate List Shell' }
-        @cfg[:jump_class] = type?(jump_class, Module) # Use for libcmdlocal
+        @cfg[:jump_class] = context_module('Jump')
         @jumpgrp = CmdTree::Local::Jump::Group.new(@cfg)
         self
       end

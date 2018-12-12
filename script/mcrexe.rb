@@ -8,7 +8,7 @@ module CIAX
     ConfOpts.new('[proj] [cmd] (par)', options: 'edlns') do |cfg, args|
       ent = Index.new(cfg).add_rem.add_ext.set_cmd(args)
       mexe = Exe.new(ent)
-      cfg[:opt].sh? ? mexe.run.ext_shell.shell : mexe.seq.play
+      cfg[:opt].sh? ? mexe.run.shell : mexe.seq.play
     end
   end
 end

@@ -18,7 +18,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
-        List.new(cfg, sites: args).ext_shell.shell
+        List.new(cfg, sites: args).shell
       end
     end
   end

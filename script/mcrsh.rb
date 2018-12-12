@@ -10,7 +10,7 @@ module CIAX
     ConfOpts.new('[proj]', options: 'elchdnr') do |root_cfg|
       Layer.new(root_cfg) do |cfg|
         List.new(cfg)
-      end.ext_shell.shell
+      end.shell
     end
   end
 end

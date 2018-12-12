@@ -64,7 +64,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg, args|
         ent = Index.new(cfg).add_rem.add_ext.set_cmd(args)
-        Exe.new(ent).run.ext_shell.shell
+        Exe.new(ent).run.shell
       end
     end
   end

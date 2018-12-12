@@ -44,10 +44,6 @@ module CIAX
         self
       end
 
-      def ext_shell
-        extend(Shell).ext_shell
-      end
-
       private
 
       def ___arc_refresh
@@ -69,8 +65,8 @@ module CIAX
       module Shell
         include CIAX::List::Shell
 
-        def ext_shell
-          super(Jump)
+        def ext_local_shell
+          super
           @cfg[:jump_mcr] = @jumpgrp
           @current = 'man'
           @jumpgrp.add_item(@current, 'manager')
@@ -95,7 +91,7 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         ConfOpts.new('[id]', options: 'cehlns') do |cfg|
-          List.new(cfg).ext_shell.shell
+          List.new(cfg).shell
         end
       end
     end

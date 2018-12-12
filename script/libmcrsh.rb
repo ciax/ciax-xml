@@ -32,6 +32,7 @@ module CIAX
         def ___init_stat
           @view = RecList.new(@stat, @id, @cobj.rem.int).ext_view
           @opt.cl? ? @view.ext_remote(@host) : @view.ext_local
+          @stat.push_proc = proc { |rec| @view.push(rec) }
           @cfg[:output] = @view
         end
 

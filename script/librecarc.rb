@@ -37,6 +37,7 @@ module CIAX
 
       # Macro Response Module
       module Local
+        attr_accessor :push_proc
         def self.extended(obj)
           Msg.type?(obj, RecArc)
         end
@@ -48,12 +49,7 @@ module CIAX
         end
 
         def push(record) # returns self
-          if record.is_a?(Hash) && record[:id].to_i > 0
-            if __extract(record) == 'busy' && record.is_a?(Record)
-              record.finish_procs << proc { |r| __extract(r) && cmt }
-              cmt
-            end
-          end
+          ___push_record(record) if record.is_a?(Hash) && record[:id].to_i > 0
           self
         end
 
@@ -73,6 +69,13 @@ module CIAX
         end
 
         private
+
+        def ___push_record(record)
+          return unless __extract(record) == 'busy' && record.is_a?(Record)
+          record.finish_procs << proc { |r| __extract(r) && cmt }
+          @push_proc.call(record) if @push_proc
+          cmt
+        end
 
         def __extract(rec)
           ele = Hashx.new(rec).pick(%i(cid pid result)) # extract header

@@ -21,10 +21,9 @@ module CIAX
           super
           verbose { 'Initiate Mcr Shell' }
           ___init_stat
-          ___init_view_rec
-          ___init_view_list
-          ___init_view_cmd(@cobj.loc.add_view)
-          ___init_conv
+          ___init_prompt
+          ___init_page_cmd
+          ___init_rank_cmd(@cobj.loc.add_view)
           self
         end
 
@@ -36,7 +35,7 @@ module CIAX
           @cfg[:output] = @view
         end
 
-        def ___init_view_rec
+        def ___init_prompt
           # @view will be switched among Whole List or Records
           # Setting @par will switch the Record
           @prompt_proc = proc do
@@ -45,7 +44,7 @@ module CIAX
           end
         end
 
-        def ___init_view_list
+        def ___init_page_cmd
           page = @cobj.loc.add_page
           page.get('last').def_proc do |ent|
             @view.get_arc(ent.par[0]).upd
@@ -53,9 +52,10 @@ module CIAX
           page.get('cl').def_proc do
             @view.flush.upd
           end
+          ___init_conv
         end
 
-        def ___init_view_cmd(view)
+        def ___init_rank_cmd(view)
           return unless @cobj.rem.ext
           view.add_item('dig', 'Show more Submacros').def_proc do
             @cobj.rem.ext.rankup
@@ -69,11 +69,15 @@ module CIAX
 
         # Set Current ID by number
         def ___init_conv
+          # i should be number
           input_conv_num do |i|
-            # i should be number
-            @view.sel(i)
-            # nil:no command -> show record
-            nil
+            if i.to_i > 10000
+              i
+            else
+              @view.sel(i)
+              nil
+              # nil:no command -> show record
+            end
           end
         end
       end

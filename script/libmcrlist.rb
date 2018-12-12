@@ -13,8 +13,6 @@ module CIAX
         super
         @sub_list = @cfg[:dev_list] = Wat::List.new(@cfg)
         @man = Man.new(@cfg).ext_local_processor(self)
-        @man.stat.ext_local.refresh
-        @man.stat.ext_save if @cfg[:opt].mcr_log?
       end
 
       def get(id)

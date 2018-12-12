@@ -18,6 +18,7 @@ module CIAX
         def ext_local_processor(mcr_list)
           @mode = @opt.dry? ? 'DRY' : 'PRCS'
           @mcr_list = type?(mcr_list, List)
+          ___init_stat
           ___init_procs
           @sv_stat.repl(:sid, '') # For server response
           @cobj.rem.ext_input_log
@@ -38,8 +39,12 @@ module CIAX
 
         private
 
+        def ___init_stat
+          @stat.ext_local.refresh
+          @stat.ext_save if @opt.mcr_log?
+        end
+
         def ___init_procs
-          @stat.ext_local
           ___init_pre_exe
           ___init_proc_def
           ___init_proc_sys

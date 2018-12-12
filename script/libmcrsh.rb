@@ -7,7 +7,9 @@ module CIAX
   module Mcr
     # Macro Manager
     class Man
-      def ext_shell
+      private
+
+      def _ext_local_shell
         return self if is_a?(Shell)
         extend(Shell).ext_shell
       end

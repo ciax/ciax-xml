@@ -25,14 +25,23 @@ module CIAX
         _opt_mode
       end
 
-      def ext_shell
+      private
+
+      # Mode Extension by Option
+      def _ext_local
+        ___init_proc_set
+        ___init_proc_del
+        super
+      end
+
+      def _ext_local_shell
         super.input_conv_set
         @cfg[:output] = View.new(@stat)
         @cobj.loc.add_view
         self
       end
 
-      def ext_local_test
+      def _ext_local_test
         @stat.ext_local_sym(@cfg[:sdb]).ext_local_file
         @cobj.rem.ext.def_proc do |ent|
           @stat[:time] = now_msec
@@ -41,18 +50,9 @@ module CIAX
         super
       end
 
-      def ext_local_driver
+      def _ext_local_driver
         require 'libappdrv'
         extend(Driver).ext_local_driver
-        super
-      end
-
-      private
-
-      # Mode Extension by Option
-      def _ext_local
-        ___init_proc_set
-        ___init_proc_del
         super
       end
 

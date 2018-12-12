@@ -66,9 +66,7 @@ module CIAX
       end
 
       def switch(site)
-        obj = get(site)
-        return obj if obj.is_a?(Shell) || obj.is_a?(CIAX::Exe::Shell)
-        obj.ext_shell
+        get(site)
       end
     end
   end

@@ -2,7 +2,6 @@
 develop(){
     cd "$HOME/ciax-xml" || return
     git pull --all
-    setup-www
     case $(git branch |grep '*') in
         *develop)
             export PROJ=dmcs

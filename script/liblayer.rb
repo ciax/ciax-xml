@@ -5,9 +5,9 @@ module CIAX
   # list object can be (Frm,App,Wat,Hex)
   # atrb can have [:top_layer]
   class Layer < CIAX::List
-    def initialize(cfg)
-      super(cfg)
-      obj = yield(@cfg, cfg[:opt].init_layer_mod)
+    def initialize(top_cfg)
+      super(top_cfg)
+      obj = yield(@cfg, top_cfg[:opt].init_layer_mod)
       # Initialize all sub layers
       loop do
         ns = m2id(obj.class, -2)

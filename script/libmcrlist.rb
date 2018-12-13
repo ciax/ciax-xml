@@ -9,9 +9,10 @@ module CIAX
     class List < List
       attr_reader :cfg, :sub_list, :man
       # @cfg should have [:sv_stat]
-      def initialize(super_cfg, atrb = Hashx.new)
+      def initialize(layer_cfg, atrb = Hashx.new)
         super
-        @sub_list = @cfg[:dev_list] = Wat::List.new(@cfg)
+        # Set [:dev_list] here for using layer_cfg
+        @sub_list = @cfg[:dev_list] = Wat::List.new(layer_cfg)
         @man = Man.new(@cfg).ext_local_processor(self)
       end
 

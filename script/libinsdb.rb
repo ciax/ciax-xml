@@ -119,9 +119,9 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
         db = Db.new
-        puts "Run list = #{db.run_list}"
-        puts "Dev list = #{db.ddb[:sites]}"
-        puts "Dev Run list = #{db.ddb[:run_list]}"
+        puts "Run list = #{db.run_list.inspect}"
+        puts "Dev list = #{db.ddb[:sites].inspect}"
+        puts "Dev Run list = #{db.ddb[:run_list].inspect}"
         dbi = db.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end

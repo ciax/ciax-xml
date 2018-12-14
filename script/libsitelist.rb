@@ -27,10 +27,6 @@ module CIAX
         self
       end
 
-      def exe_atrb(site)
-        { dbi: @db.get(site), sub_list: @sub_list }
-      end
-
       private
 
       def _store_db(db)
@@ -42,7 +38,8 @@ module CIAX
 
       def ___add(site) # returns Exe
         # layer_module can be Frm,App,Wat,Hex
-        eobj = layer_module::Exe.new(@cfg, exe_atrb(site))
+        atrb = { dbi: @db.get(site), sub_list: @sub_list }
+        eobj = layer_module::Exe.new(@cfg, atrb)
         _list.put(site, eobj)
         eobj
       end

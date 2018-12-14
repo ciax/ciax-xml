@@ -17,7 +17,13 @@ module CIAX
         ___init_lists
       end
 
-      def d_list
+      def valid_apps(applist)
+        @displist.valid_keys.select! do |id|
+          applist.include?(get(id)[:app_id])
+        end
+      end
+
+      def valid_devs
         @displist.valid_keys.each_with_object({}) do |s, hash|
           hash[get(s)[:frm_site]] = @run_list.include?(s)
         end
@@ -118,7 +124,7 @@ module CIAX
       GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
         db = Db.new
         puts "Run list = #{db.run_list.inspect}"
-        puts "Dev list = #{db.d_list.inspect}"
+        puts "Dev list = #{db.valid_devs.inspect}"
         dbi = db.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end

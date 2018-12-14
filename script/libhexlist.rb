@@ -14,6 +14,7 @@ module CIAX
         @sub_list = Wat::List.new(@cfg)
         @sub_list.super_list = self
         @cfg[:hdb] = Db.new
+        @cfg[:db].valid_apps(@cfg[:hdb].displist.valid_keys)
       end
     end
 

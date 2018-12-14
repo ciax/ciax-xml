@@ -71,6 +71,7 @@ module CIAX
           @cfg[:jump_mcr] = @jumpgrp
           @current = 'man'
           @jumpgrp.add_item(@current, 'manager')
+          @sub_list.ext_shell
           _list.each_value { |mobj| __set_jump(mobj) }
           self
         end

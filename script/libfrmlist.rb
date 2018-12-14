@@ -10,8 +10,7 @@ module CIAX
     class List
       def initialize(super_cfg, atrb = Hashx.new)
         super
-        ddb = Dev::Db.new
-        ddb.put_idb(@cfg[:db].d_list) if @cfg[:db].is_a?(Ins::Db)
+        ddb = Dev::Db.new(@cfg[:db].is_a?(Ins::Db) ? @cfg[:db].d_list : {})
         _store_db(ddb)
       end
     end

@@ -8,13 +8,19 @@ module CIAX
     # Instance DB
     class Db < DbTree
       include Wat::Db
-      attr_reader :proj, :run_list, :ddb
+      attr_reader :proj, :run_list
       def initialize(proj = nil)
         @proj = proj || ENV['PROJ'] || 'all'
         super('idb')
         @adb = App::Db.new
         @cdb = CmdDb.new
         ___init_lists
+      end
+
+      def d_list
+        @displist.valid_keys.each_with_object({}) do |s, hash|
+          hash[get(s)[:frm_site]] = @run_list.include?(s)
+        end
       end
 
       private
@@ -26,14 +32,6 @@ module CIAX
           host = atrb[:host]
           atrb[:run] != 'false' && (host == 'localhost' || host == HOST)
         end
-        @ddb = {
-          sites: __frm_sites(sites),
-          run_list: __frm_sites(@run_list)
-        }
-      end
-
-      def __frm_sites(ary)
-        ary.map { |s| get(s)[:frm_site] }.uniq
       end
 
       # doc is <project>
@@ -120,8 +118,7 @@ module CIAX
       GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
         db = Db.new
         puts "Run list = #{db.run_list.inspect}"
-        puts "Dev list = #{db.ddb[:sites].inspect}"
-        puts "Dev Run list = #{db.ddb[:run_list].inspect}"
+        puts "Dev list = #{db.d_list.inspect}"
         dbi = db.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end

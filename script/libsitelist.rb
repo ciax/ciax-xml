@@ -27,6 +27,10 @@ module CIAX
         self
       end
 
+      def ext_shell
+        _ext_local_shell
+      end
+
       private
 
       def _store_db(db)
@@ -54,6 +58,7 @@ module CIAX
           sites = @cfg[:db].displist
           @jumpgrp.ext_grp.merge_items(sites)
           @current = @run_list.first
+          @sub_list.ext_shell if @sub_list
           self
         end
 

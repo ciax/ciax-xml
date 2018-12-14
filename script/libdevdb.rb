@@ -15,10 +15,9 @@ module CIAX
         @fdb = Frm::Db.new
       end
 
-      def put_idb(idb)
-        type?(idb, Ins::Db)
-        @run_list = idb.ddb[:run_list]
-        @displist.valid_keys.replace(idb.ddb[:sites])
+      def put_idb(d_list)
+        @displist.valid_keys.replace(d_list.keys)
+        @run_list = d_list.select { |_k, v| v }.keys
         self
       end
 
@@ -48,7 +47,9 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
-        dbi = Db.new.put_idb(Ins::Db.new).get(args.shift)
+        db = Db.new.put_idb(Ins::Db.new.d_list)
+        puts "Run list = #{db.run_list.inspect}"
+        dbi = db.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end
     end

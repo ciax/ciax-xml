@@ -8,13 +8,12 @@ module CIAX
     # Instance DB
     class Db < DbTree
       include Wat::Db
-      attr_reader :proj, :run_list
+      attr_reader :proj
       def initialize(proj = nil)
         @proj = proj || ENV['PROJ'] || 'all'
         super('idb')
         @adb = App::Db.new
         @cdb = CmdDb.new
-        ___init_lists
       end
 
       def valid_apps(applist)
@@ -24,21 +23,21 @@ module CIAX
       end
 
       def valid_devs
+        rl = run_list
         @displist.valid_keys.each_with_object({}) do |s, hash|
-          hash[get(s)[:frm_site]] = @run_list.include?(s)
+          hash[get(s)[:frm_site]] = rl.include?(s)
         end
       end
 
-      private
-
-      def ___init_lists
-        sites = @displist.valid_keys
-        @run_list = sites.select do |id|
+      def run_list
+        @displist.valid_keys.select do |id|
           atrb = get(id) || @docs.get(id)[:attr]
           host = atrb[:host]
           atrb[:run] != 'false' && (host == 'localhost' || host == HOST)
         end
       end
+
+      private
 
       # doc is <project>
       # return //project/group/instance

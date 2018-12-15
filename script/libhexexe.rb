@@ -41,7 +41,6 @@ module CIAX
 
       def ___init_view
         @stat = View.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
-        @shell_output_proc = proc { @stat.to_x }
         @stat.ext_local_log if @opt.drv?
       end
     end

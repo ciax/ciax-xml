@@ -11,10 +11,10 @@ module CIAX
       def initialize(super_cfg, atrb = Hashx.new)
         super
         _store_db(@cfg[:db] ||= Ins::Db.new)
-        @sub_list = Wat::List.new(@cfg)
-        @sub_list.super_list = self
         @cfg[:hdb] = Db.new
         @cfg[:db].valid_apps(@cfg[:hdb].displist.valid_keys)
+        @sub_list = Wat::List.new(@cfg)
+        @sub_list.super_list = self
       end
     end
 

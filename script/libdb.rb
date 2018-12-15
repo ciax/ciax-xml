@@ -23,6 +23,14 @@ module CIAX
       @argc = 0
     end
 
+    # Reduce valid_keys with parameter Array
+    def list(ary = [])
+      vk = @displist.valid_keys
+      return vk if ary.empty?
+      ary &= vk
+      vk.replace(ary)
+    end
+
     def get(id)
       ref(id) || id_err(id, @type, @displist)
     end

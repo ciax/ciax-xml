@@ -14,7 +14,7 @@ module CIAX
         @run_list = []
         @fdb = Frm::Db.new
         return if sites.empty?
-        @displist.valid_keys.replace(sites.keys)
+        list(sites.keys)
         @run_list = sites.select { |_k, v| v }.keys
       end
 

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libexe'
 require 'libmcrcmd'
-require 'librecarc'
+require 'librecview'
 module CIAX
   # Macro Layer
   module Mcr
@@ -42,6 +42,12 @@ module CIAX
         super
       end
 
+      def _ext_local_shell
+        super
+        @cfg[:output] = RecView.new(@stat).max(10)
+        self
+      end
+
       # Initiate for all mode
       def ___init_cmd
         rem = @cobj.add_rem
@@ -53,7 +59,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', options: 'cenlrs') do |cfg|
+      ConfOpts.new('[proj] [cmd] (par)', options: 'cnr') do |cfg|
         Man.new(cfg).shell
       end
     end

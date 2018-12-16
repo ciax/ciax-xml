@@ -18,6 +18,7 @@ module CIAX
     attr_reader :displist
     def initialize(type)
       super()
+      verbose { 'Initiate Db' }
       @type = type
       _get_displist
       @argc = 0

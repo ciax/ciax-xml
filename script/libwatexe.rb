@@ -11,9 +11,9 @@ module CIAX
       attr_reader :sub, :stat
       def initialize(super_cfg, atrb = Hashx.new)
         super
-        _init_dbi2cfg
+        dbi = _init_dbi2cfg
         ___init_sub
-        @stat = Event.new(@sub.id)
+        @stat = Event.new(dbi)
         @host = @sub.host
         _opt_mode
       end

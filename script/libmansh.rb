@@ -7,6 +7,10 @@ module CIAX
   module Mcr
     # Macro Manager
     class Man
+      def _ext_local_shell
+        extend(Shell).ext_local_shell
+      end
+
       # Macro Shell
       module Shell
         include Exe::Shell
@@ -14,6 +18,7 @@ module CIAX
         def ext_local_shell
           super
           verbose { 'Initiate Mcr Shell' }
+          __init_recview
           ___init_stat
           ___init_prompt
           ___init_conv

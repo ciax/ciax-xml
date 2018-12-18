@@ -44,9 +44,8 @@ module CIAX
 
       def _ext_local_shell
         super
-        @rec_view = RecView.new(@stat)
+        __init_recview
         @cfg[:output] = @rec_view
-        ___init_page_cmd
         self
       end
 
@@ -59,7 +58,8 @@ module CIAX
         rem.add_ext
       end
 
-      def ___init_page_cmd
+      def __init_recview
+        @rec_view = RecView.new(@stat)
         page = @cobj.loc.add_page
         page.get('last').def_proc do |ent|
           @rec_view.max += (ent.par[0] || 1).to_i

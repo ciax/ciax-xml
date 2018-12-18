@@ -37,7 +37,6 @@ module CIAX
 
       # Macro Response Module
       module Local
-        attr_accessor :push_proc
         def self.extended(obj)
           Msg.type?(obj, RecArc)
         end
@@ -73,7 +72,6 @@ module CIAX
         def ___push_record(record)
           return unless __extract(record) == 'busy' && record.is_a?(Record)
           record.finish_procs << proc { |r| __extract(r) && cmt }
-          @push_proc.call(record) if @push_proc
           cmt
         end
 

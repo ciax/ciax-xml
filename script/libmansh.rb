@@ -1,4 +1,4 @@
-# !/usr/bin/ruby
+#!/usr/bin/ruby
 require 'libsh'
 require 'libman'
 require 'libreclist'
@@ -7,12 +7,6 @@ module CIAX
   module Mcr
     # Macro Manager
     class Man
-      private
-
-      def _ext_local_shell
-        return self if is_a?(Shell)
-        extend(Shell).ext_local_shell
-      end
       # Macro Shell
       module Shell
         include Exe::Shell
@@ -22,7 +16,7 @@ module CIAX
           verbose { 'Initiate Mcr Shell' }
           ___init_stat
           ___init_prompt
-          ___init_page_cmd
+          ___init_conv
           ___init_rank_cmd(@cobj.loc.add_view)
           self
         end
@@ -30,9 +24,8 @@ module CIAX
         private
 
         def ___init_stat
-          @view = RecList.new(@stat, @id, @cobj.rem.int).ext_view
+          @view = RecList.new(@rec_view, @id, @cobj.rem.int).ext_view
           @opt.cl? ? @view.ext_remote(@host) : @view.ext_local
-          @stat.push_proc = proc { |rec| @view.push(rec) }
           @cfg[:output] = @view
         end
 
@@ -43,17 +36,6 @@ module CIAX
             str = @sv_stat.to_s + "[#{@view.upd.current_idx}]"
             str << optlist((@view.current_rec || {})[:option])
           end
-        end
-
-        def ___init_page_cmd
-          page = @cobj.loc.add_page
-          page.get('last').def_proc do |ent|
-            @view.get_arc(ent.par[0]).upd
-          end
-          page.get('cl').def_proc do
-            @view.flush.upd
-          end
-          ___init_conv
         end
 
         def ___init_rank_cmd(view)

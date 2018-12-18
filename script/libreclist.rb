@@ -27,10 +27,13 @@ module CIAX
         self[:id] = proj || ENV['PROJ']
         int ||= CmdTree::Remote::Int::Group.new(Config.new)
         ___init_int(int)
+        @current_idx = 0
+        @list = []
+        @cache = {}
         # RecArc : R/O
-        @rec_view = rec_view || RecView.new(RecArc.new)
+        @rec_view = rec_view || RecView.new(RecArc.new, @cache)
         @rec_arc = type?(@rec_view, RecView).rec_arc
-        ___init_vars
+        ___init_upd_proc
       end
 
       def get(id)
@@ -67,6 +70,10 @@ module CIAX
         rec ? rec.to_s : super
       end
 
+      def to_v
+        @rec_view.to_v
+      end
+
       ##### For server ####
       #### Extensions Methods ####
       def ext_remote(host)
@@ -89,10 +96,6 @@ module CIAX
         end
       end
 
-      def ext_view
-        extend(ListView)
-      end
-
       private
 
       def ___init_int(int)
@@ -101,65 +104,11 @@ module CIAX
         self[:option] = @valid_keys.dup
       end
 
-      def ___init_vars
-        @current_idx = 0
-        @list = []
-        @cache = {}
+      def ___init_upd_proc
         @upd_procs << proc do
           @rec_arc.upd
           @valid_keys.replace((current_rec || self)[:option] || [])
           self[:default] = @par[:default]
-        end
-      end
-
-      # Divided for Rubocop
-      module ListView
-        def self.extended(obj)
-          Msg.type?(obj, RecList)
-        end
-
-        # Show Index of Alives Item
-        def to_v
-          ___list_view
-        end
-
-        private
-
-        def ___list_view
-          page = ['<<< ' + colorize("Active Macros [#{self[:id]}]", 2) + ' >>>']
-          @par.list.each_with_index do |id, idx|
-            page << ___item_view(@cache[id], idx + 1)
-          end
-          (page + @rec_view.lines).join("\n")
-        end
-
-        def ___item_view(rec, idx)
-          id = rec[:id]
-          tim = ___get_time(id)
-          pcid = ___get_pcid(rec[:pid])
-          title = rec[:def] ? '*' : ' '
-          title << format('[%s] %s (%s) by %s', idx, id, tim, pcid)
-          itemize(title, rec[:cid].to_s + ___result_view(rec))
-        end
-
-        def ___result_view(rec)
-          if rec.key?(:status) && rec[:status] != 'end'
-            args = rec.pick(%i(steps total_steps status)).values
-            msg = format(' [%s/%s](%s)', *args)
-            msg << optlist(rec[:option])
-            msg
-          else
-            " (#{rec[:result]})"
-          end
-        end
-
-        def ___get_time(id)
-          Time.at(id[0..9].to_i).to_s
-        end
-
-        def ___get_pcid(pid)
-          return 'user' if pid == '0'
-          @rec_arc.get(pid)[:cid]
         end
       end
     end
@@ -167,7 +116,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[num]', options: 'chr') do |opts, args|
         Msg.args_err if args.empty?
-        rl = RecList.new.ext_view
+        rl = RecList.new
         if opts.cl?
           rl.ext_remote(opts.host)
         else

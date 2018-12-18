@@ -29,7 +29,8 @@
    set return value to local var 'res' at the end of block if it is expressly provided.
 
 ## Specialized method naming (Container objects)
-  - list()   [list_*] : returns Hash or Array.
+  - list()   [list_*] : returns Array.
+  - dic()    [dic_*]  : returns Hash.
   - view()   [view_*] : returns String.
   - upd()    [upd_*] : Update data by loading file/http. Do just before processing. Used by client or view. returns self.
   - cmt()    [cmt_*] : Convert and Commit data for saveing. Popagate to upper layer. Do just after processing. returns self.

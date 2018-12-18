@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'liblist'
+require 'libdic'
 module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set

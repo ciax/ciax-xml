@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'liblist'
+require 'libdic'
 require 'libmcrexe'
 require 'libmanproc'
 

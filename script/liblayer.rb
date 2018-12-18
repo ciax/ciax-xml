@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'liblist'
+require 'libdic'
 
 module CIAX
   # list object can be (Frm,App,Wat,Hex)

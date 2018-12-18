@@ -2,7 +2,7 @@
 require 'libprompt'
 require 'librecarc'
 require 'libmcrdb'
-require 'libhexlist' # deprecated
+require 'libhexdic' # deprecated
 
 module CIAX
   # Macro Layer

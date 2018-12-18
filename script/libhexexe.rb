@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # Ascii Pack
-require 'libwatlist'
+require 'libwatdic'
 require 'libhexview'
 
 module CIAX

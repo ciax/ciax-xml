@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libfrmexe'
-require 'libsitelist'
+require 'libsitedic'
 # CIAX-XML
 module CIAX
   # Frame Layer

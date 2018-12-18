@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-require 'libhexlist'
+require 'libhexdic'
 require 'libdaemon'
 # CIAX-XML Device Server for V1
 module CIAX

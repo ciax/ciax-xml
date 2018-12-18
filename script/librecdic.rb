@@ -86,10 +86,10 @@ module CIAX
       end
 
       # Manipulate memory
-      def ext_local(mcr_list = nil)
+      def ext_local(mcr_dic = nil)
         @rec_arc.ext_local.refresh
         # Get Live Record
-        @rec_arc.cmt_procs << proc { @cache.update(mcr_list.records) } if mcr_list
+        @rec_arc.cmt_procs << proc { @cache.update(mcr_dic.records) } if mcr_dic
         # Get Archive Record
         @cache.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_local_file.auto_load.upd

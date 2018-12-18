@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libapplist'
+require 'libappdic'
 require 'libwatviewprt'
 
 module CIAX

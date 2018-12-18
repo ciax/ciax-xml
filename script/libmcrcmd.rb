@@ -93,7 +93,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libwatlist'
+      require 'libwatdic'
       ConfOpts.new('[cmd] (par)', options: 'j') do |cfg, args|
         cobj = Index.new(cfg)
         cobj.add_rem.add_ext

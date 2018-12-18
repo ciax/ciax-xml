@@ -2,7 +2,7 @@
 require 'libappcmd'
 require 'libstatusconv'
 require 'libappview'
-require 'libfrmlist'
+require 'libfrmdic'
 require 'libinsdb'
 # CIAX-XML
 module CIAX

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-require 'libwatlist'
+require 'libwatdic'
 # CIAX-XML Device Executor
 module CIAX
   ConfOpts.new('[id] [cmd] (par)', options: 'elch') do |cfg, args|

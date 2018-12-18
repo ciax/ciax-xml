@@ -5,8 +5,8 @@ module CIAX
   module Mcr
     # Macro Manager
     class Man
-      def ext_local_processor(mcr_list)
-        extend(Processor).ext_local_processor(mcr_list)
+      def ext_local_processor(mcr_dic)
+        extend(Processor).ext_local_processor(mcr_dic)
       end
       # Macro Manager Processing Module (TEST or DRIVE mode)
       module Processor
@@ -15,9 +15,9 @@ module CIAX
         end
 
         # Initiate for driver
-        def ext_local_processor(mcr_list)
+        def ext_local_processor(mcr_dic)
           @mode = @opt.dry? ? 'DRY' : 'PRCS'
-          @mcr_list = type?(mcr_list, List)
+          @mcr_dic = type?(mcr_dic, List)
           ___init_stat
           ___init_procs
           @sv_stat.repl(:sid, '') # For server response
@@ -27,12 +27,12 @@ module CIAX
 
         # Macro Generator
         def gen_cmd(ent)
-          @mcr_list.add(ent)
+          @mcr_dic.add(ent)
         end
 
         # Macro Manipulator
         def man_cmd(ent)
-          mobj = @mcr_list.get(ent.par[0])
+          mobj = @mcr_dic.get(ent.par[0])
           ent.msg = mobj.exe([ent[:id]]).to_s || 'NOSID'
           mobj
         end
@@ -65,7 +65,7 @@ module CIAX
         end
 
         def ___init_proc_sys
-          @cobj.get('interrupt').def_proc { @mcr_list.interrupt }
+          @cobj.get('interrupt').def_proc { @mcr_dic.interrupt }
           @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
           @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
         end

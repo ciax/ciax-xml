@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 $LOAD_PATH << __dir__
-require 'libwatlist'
+require 'libwatdic'
 require 'libdaemon'
 # CIAX-XML Device Server
 module CIAX

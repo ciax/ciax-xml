@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libsh'
 require 'libman'
-require 'libreclist'
+require 'librecdic'
 module CIAX
   # Macro Layer
   module Mcr

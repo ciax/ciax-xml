@@ -48,8 +48,9 @@ module CIAX
         end
 
         def push(record) # returns self
-          ___push_record(record) if record.is_a?(Hash) && record[:id].to_i > 0
-          self
+          return self unless record.is_a?(Hash) && record[:id].to_i > 0
+          __push_record(record)
+          cmt
         end
 
         # For format changes
@@ -61,7 +62,7 @@ module CIAX
         # Re-generate record list
         def refresh # returns self
           (___file_keys - list.keys).each do |key|
-            push(jload(__rec_fname(key)))
+            __push_record(jload(__rec_fname(key)))
           end
           verbose { 'Initiate Record Archive done' }
           cmt
@@ -69,10 +70,9 @@ module CIAX
 
         private
 
-        def ___push_record(record)
+        def __push_record(record)
           return unless __extract(record) == 'busy' && record.is_a?(Record)
           record.finish_procs << proc { |r| __extract(r) && cmt }
-          cmt
         end
 
         def __extract(rec)

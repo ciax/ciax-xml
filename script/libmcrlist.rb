@@ -45,6 +45,10 @@ module CIAX
         self
       end
 
+      def records
+        _list.inject({}) { |h, obj| h[obj[:id]] = obj.stat }
+      end
+
       private
 
       def ___arc_refresh

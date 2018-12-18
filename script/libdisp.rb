@@ -81,8 +81,8 @@ module CIAX
 
     def view(select, cap, color, level)
       list = {}
-      displist = (@valid_keys + @dummy_keys) & select
-      displist.compact.each do |id|
+      disp_dic = (@valid_keys + @dummy_keys) & select
+      disp_dic.compact.each do |id|
         name = @line_number ? "[#{@num += 1}](#{id})" : id
         list[name] = self[id] if self[id]
       end

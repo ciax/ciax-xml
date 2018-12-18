@@ -8,7 +8,7 @@ module CIAX
     class Arm < Slosyn
       def initialize(cfg = nil)
         super(0, 200.5, 2.5, 10_003, cfg)
-        @devlist[:arm] = self
+        @dev_dic[:arm] = self
         @tol = 600
         # IN 1: ROT  (123)
         # IN 2: FOCUS(12.8)
@@ -30,7 +30,7 @@ module CIAX
 
       # Contact Sensor (Both Arm & RH close during Loading at Focus)
       def _contact_sensor?
-        @mask_load && (fp = @devlist[:fp]) &&
+        @mask_load && (fp = @dev_dic[:fp]) &&
           # At Wait~Store && ARM Close
           ((fpos > 185 && fp.arm_close?) ||
            # At FOCUS && RH,ARM Close

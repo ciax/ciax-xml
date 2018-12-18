@@ -20,8 +20,8 @@ module CIAX
       def _contact_sensor?
         !@mask_load ||
           ((@axis.pulse % 1000).zero? &&
-           (fp = @devlist[:fp]) && fp.arm_close? &&
-           (arm = @devlist[:arm]) && arm.fpos > 150)
+           (fp = @dev_dic[:fp]) && fp.arm_close? &&
+           (arm = @dev_dic[:arm]) && arm.fpos > 150)
       end
     end
 

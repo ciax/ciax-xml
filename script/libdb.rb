@@ -15,31 +15,31 @@ module CIAX
 
   # DB class
   class Db < Hashx
-    attr_reader :displist
+    attr_reader :disp_dic
     def initialize(type)
       super()
       verbose { 'Initiate Db' }
       @type = type
-      _get_displist
+      _get_disp_dic
       @argc = 0
     end
 
     # Reduce valid_keys with parameter Array
     def list(ary = [])
-      vk = @displist.valid_keys
+      vk = @disp_dic.valid_keys
       return vk if ary.empty?
       ary &= vk
       vk.replace(ary)
     end
 
     def get(id)
-      ref(id) || id_err(id, @type, @displist)
+      ref(id) || id_err(id, @type, @disp_dic)
     end
 
     # return Dbi
     # Order of file reading: type-id.mar -> type-id.xml (processing)
     def ref(id)
-      if @displist.valid?(id)
+      if @disp_dic.valid?(id)
         self[id] || __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
       else
         warning("No such ID [#{id}]")
@@ -54,12 +54,12 @@ module CIAX
       Dbi.new(doc[:attr]).update(layer: layer_name)
     end
 
-    def _get_displist(sufx = nil)
-      # @displist is Display
+    def _get_disp_dic(sufx = nil)
+      # @disp_dic is Display
       lid = ['list', sufx].join('_')
       # Show site list
-      # &:displist = { |e| e.displist }
-      @displist = __get_db(lid, &:displist)
+      # &:disp_dic = { |e| e.disp_dic }
+      @disp_dic = __get_db(lid, &:disp_dic)
     end
 
     # Returns Dbi(command list) or Disp(site list)

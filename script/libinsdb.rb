@@ -17,20 +17,20 @@ module CIAX
       end
 
       def valid_apps(applist)
-        @displist.valid_keys.select! do |id|
+        @disp_dic.valid_keys.select! do |id|
           applist.include?(get(id)[:app_id])
         end
       end
 
       def valid_devs
         rl = run_list
-        @displist.valid_keys.each_with_object({}) do |s, hash|
+        @disp_dic.valid_keys.each_with_object({}) do |s, hash|
           hash[get(s)[:frm_site]] = rl.include?(s)
         end
       end
 
       def run_list
-        @displist.valid_keys.select do |id|
+        @disp_dic.valid_keys.select do |id|
           atrb = get(id) || @docs.get(id)[:attr]
           host = atrb[:host]
           atrb[:run] != 'false' && (host == 'localhost' || host == HOST)
@@ -55,7 +55,7 @@ module CIAX
         dbi
       end
 
-      def _get_displist
+      def _get_disp_dic
         super(@proj)
       end
 

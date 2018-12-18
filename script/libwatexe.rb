@@ -6,7 +6,7 @@ module CIAX
   # Watch Layer
   module Wat
     deep_include(CmdTree)
-    # atrb must have [:dbi], [:sub_list]
+    # atrb must have [:dbi], [:sub_dic]
     class Exe < Exe
       attr_reader :sub, :stat
       def initialize(super_cfg, atrb = Hashx.new)
@@ -60,7 +60,7 @@ module CIAX
 
       # Sub methods for Initialize
       def ___init_sub
-        @sub = @cfg[:sub_list].get(@id)
+        @sub = @cfg[:sub_dic].get(@id)
         @sv_stat = @sub.sv_stat.init_flg(auto: '&', event: '@')
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
@@ -80,7 +80,7 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehlts') do |cfg, args|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(args.shift)
-        atrb = { dbi: dbi, sub_list: App::List.new(cfg) }
+        atrb = { dbi: dbi, sub_dic: App::List.new(cfg) }
         Exe.new(cfg, atrb).shell
       end
     end

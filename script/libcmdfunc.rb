@@ -18,7 +18,7 @@ module CIAX
       end
 
       def error
-        cmd_err(view_list)
+        cmd_err(view_dic)
       end
 
       # Proc should return String

@@ -12,9 +12,9 @@ module CIAX
         super
         _store_db(@cfg[:db] ||= Ins::Db.new)
         @cfg[:hdb] = Db.new
-        @cfg[:db].valid_apps(@cfg[:hdb].displist.valid_keys)
-        @sub_list = Wat::List.new(@cfg)
-        @sub_list.super_list = self
+        @cfg[:db].valid_apps(@cfg[:hdb].disp_dic.valid_keys)
+        @sub_dic = Wat::List.new(@cfg)
+        @sub_dic.super_dic = self
       end
     end
 

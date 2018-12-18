@@ -26,13 +26,13 @@ module CIAX
     # The project named file can conatin referenced item whose entity is
     # in another file.
     class Doc < Hashx
-      attr_reader :top, :displist
+      attr_reader :top, :disp_dic
       def initialize(type, proj = nil)
         super()
         /.+/ =~ type || Msg.args_err('No Db Type')
         @type = type
         @proj = proj
-        @displist = Disp.new
+        @disp_dic = Disp.new
         ___read_files(Msg.xmlfiles(@type))
         ___set_includes
         # get generates document branch of db items(Hash),
@@ -41,7 +41,7 @@ module CIAX
       end
 
       def to_s
-        @displist.to_s
+        @disp_dic.to_s
       end
 
       private
@@ -93,15 +93,15 @@ module CIAX
 
       # Takes second level (use group for display only)
       def __mk_group(gdoc)
-        @displist.ext_grp unless @displist.is_a? Disp::Grouping
+        @disp_dic.ext_grp unless @disp_dic.is_a? Disp::Grouping
         gatt = gdoc.to_h
         return if gatt[:enable] == 'false'
-        sub = @displist.put_grp(gatt.delete(:id), gatt.delete(:label))
+        sub = @disp_dic.put_grp(gatt.delete(:id), gatt.delete(:label))
         gdoc.each { |e| __mk_sub_db(e, sub, gatt.dup) }
       end
 
       # Includable (macro)
-      def __mk_sub_db(top, sub = @displist, attr = Hashx.new)
+      def __mk_sub_db(top, sub = @disp_dic, attr = Hashx.new)
         item = __set_item(top, sub, attr) || return
         top.each do |e| # e.name can be include or group
           ___include_grp(e, item, top.ns != e.ns)
@@ -121,7 +121,7 @@ module CIAX
       end
 
       # set single item to self
-      def __set_item(top, disp = @displist, attr = Hashx.new)
+      def __set_item(top, disp = @disp_dic, attr = Hashx.new)
         return if top['enable'] == 'false'
         id = top['id'] # site_id or macro_proj
         item = Hashx[top: top, attr: attr.update(top.to_h)]
@@ -143,8 +143,8 @@ module CIAX
       def ___upd_valid
         return unless @valid_proj
         vp = @valid_proj.map { |proj| @grps[proj] }.flatten
-        vk = vp.map { |gid| @displist.sub[gid] }.flatten
-        @displist.valid_keys.replace(vk)
+        vk = vp.map { |gid| @disp_dic.sub[gid] }.flatten
+        @disp_dic.valid_keys.replace(vk)
       end
     end
   end

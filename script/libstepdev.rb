@@ -8,8 +8,8 @@ module CIAX
     class Step
       # Extension method
       module Processor
-        def ext_local_dev(dev_list)
-          extend(Device).ext_local_dev(dev_list)
+        def ext_local_dev(dev_dic)
+          extend(Device).ext_local_dev(dev_dic)
         end
       end
 
@@ -54,12 +54,12 @@ module CIAX
           Msg.type?(obj, Processor)
         end
 
-        def ext_local_dev(dev_list)
-          @dev_list = type?(dev_list, Wat::List)
+        def ext_local_dev(dev_dic)
+          @dev_dic = type?(dev_dic, Wat::List)
           # App::Exe list used in this Step
           if (@condition = delete(:cond))
             sites = @condition.map { |h| h[:site] }.uniq
-            @exes = sites.map { |s| @dev_list.get(s) }
+            @exes = sites.map { |s| @dev_dic.get(s) }
           end
           self
         end
@@ -77,7 +77,7 @@ module CIAX
         end
 
         def select_args
-          stat = @dev_list.get(self[:site]).sub.stat
+          stat = @dev_dic.get(self[:site]).sub.stat
           super(__get_real(stat, self))
         end
 
@@ -123,7 +123,7 @@ module CIAX
         private
 
         def _exe_site
-          @dev_list.get(self[:site]).exe(self[:args], 'macro')
+          @dev_dic.get(self[:site]).exe(self[:args], 'macro')
         end
 
         def __all_conds?

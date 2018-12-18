@@ -77,7 +77,7 @@ module CIAX
           end
 
           def ext_grp
-            @displist = @displist.ext_grp
+            @disp_dic = @disp_dic.ext_grp
             self
           end
         end
@@ -106,7 +106,7 @@ module CIAX
           loc = Index.new(cfg).loc
           loc.add_view
           loc.add_shell
-          puts loc.view_list
+          puts loc.view_dic
         end
       end
     end

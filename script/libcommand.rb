@@ -24,8 +24,8 @@ module CIAX
         map(&:valid_pars).compact.flatten
       end
 
-      def view_list
-        map(&:view_list).compact.grep(/./).join("\n")
+      def view_dic
+        map(&:view_dic).compact.grep(/./).join("\n")
       end
 
       # Add sub group

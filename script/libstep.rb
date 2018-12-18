@@ -13,7 +13,7 @@ module CIAX
       }.freeze
 
       # Branched functions (instead of case/when semantics)
-      def __init_title_list
+      def __init_title_dic
         {
           upd: ['Update', 10, __sid(:site)],
           system: ['System', 13, __sid(:val)],
@@ -37,13 +37,13 @@ module CIAX
       def initialize(base_time)
         super()
         @base_time = type?(base_time, Integer)
-        @title_list = __init_title_list
+        @title_dic = __init_title_dic
       end
 
       def title_s
         type = self[:type]
         self[:async] = '(async)' if key?(:async)
-        ___itemize(*@title_list[type.to_sym])
+        ___itemize(*@title_dic[type.to_sym])
       rescue NameError
         Msg.msg("No such type #{type}")
         type

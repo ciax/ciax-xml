@@ -39,7 +39,7 @@ module CIAX
         # @length is set when STDIN is stream
         @length = 1024
         @ifs = @ofs = $OUTPUT_RECORD_SEPARATOR
-        @devlist = @cfg[:devlist]
+        @dev_dic = @cfg[:dev_dic]
         # Mask loading info
         @mask_load = false
       end

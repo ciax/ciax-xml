@@ -10,11 +10,11 @@ module CIAX
       attr_reader :cfg, :record, :qry, :id, :title, :sv_stat
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
-      # ent should have [:sequence],[:dev_list],[:pid]
+      # ent should have [:sequence],[:dev_dic],[:pid]
       def initialize(ment, &submcr_proc)
         @cfg = ment
         @opt = @cfg[:opt]
-        @dev_list = (@cfg[:dev_list] ||= Wat::List.new(@cfg))
+        @dev_dic = (@cfg[:dev_dic] ||= Wat::List.new(@cfg))
         ___init_record
         @sv_stat = @cfg[:sv_stat] || Prompt.new(@cfg[:id], @opt)
         @submcr_proc = submcr_proc
@@ -52,7 +52,7 @@ module CIAX
       private
 
       def ___pre_play
-        @dev_list.init_sites if @dev_list
+        @dev_dic.init_sites if @dev_dic
         Thread.current[:query] = @qry
         show_fg @record.start
         @sv_stat.push(:list, @id).repl(:sid, @id)
@@ -95,7 +95,7 @@ module CIAX
 
       # Sub for macro()
       def ___site_interrupt
-        @dev_list.interrupt(@sv_stat.get(:run)) if @dev_list
+        @dev_dic.interrupt(@sv_stat.get(:run)) if @dev_dic
         @sv_stat.flush(:run).cmt
       end
 

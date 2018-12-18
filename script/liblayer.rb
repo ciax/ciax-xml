@@ -12,7 +12,7 @@ module CIAX
       loop do
         ns = m2id(obj.class, -2)
         _list.put(ns, obj)
-        obj = obj.sub_list || break
+        obj = obj.sub_dic || break
       end
     end
 

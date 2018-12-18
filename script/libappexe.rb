@@ -10,7 +10,7 @@ module CIAX
   module App
     # Exec class
     class Exe < Exe
-      # atrb must have [:dbi],[:sub_list]
+      # atrb must have [:dbi],[:sub_dic]
       attr_accessor :batch_interrupt
       def initialize(super_cfg, atrb = Hashx.new)
         super
@@ -59,7 +59,7 @@ module CIAX
       # Sub methods for Initialize
       def ___init_sub
         # LayerDB might generated in List level
-        @sub = @cfg[:sub_list].get(@cfg[:frm_site])
+        @sub = @cfg[:sub_dic].get(@cfg[:frm_site])
         @sv_stat.db.update(@sub.sv_stat.db)
         @sub.sv_stat.cmt_procs << proc do |ss|
           @sv_stat.update(ss.pick(%i(comerr ioerr))).cmt
@@ -101,7 +101,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
         dbi = Ins::Db.new.get(args.shift)
-        atrb = { dbi: dbi, sub_list: Frm::List.new(cfg) }
+        atrb = { dbi: dbi, sub_dic: Frm::List.new(cfg) }
         eobj = Exe.new(cfg, atrb).exe(args)
         puts eobj.stat
         sleep 0.5

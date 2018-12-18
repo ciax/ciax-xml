@@ -10,7 +10,7 @@ module CIAX
     # Mcr Common Parameters across all the layers
     # Upper Conf should have: :option, :jump_groups, :jump_layer
     # Mcr::Conf includes:
-    # :command, :version, :sites, :dev_list, :sv_stat :host, :port
+    # :command, :version, :sites, :dev_dic, :sv_stat :host, :port
     class ConfOpts < ConfOpts
       def initialize(ustr = '', optargs = {})
         super do |cfg, args|

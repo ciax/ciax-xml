@@ -7,7 +7,7 @@ module CIAX
   # Ascii Hex Layer for OLD CIAX
   module Hex
     deep_include(CmdTree)
-    # atrb must have [:dbi], [:sub_list]
+    # atrb must have [:dbi], [:sub_dic]
     class Exe < Exe
       def initialize(super_cfg, atrb = Hashx.new)
         super
@@ -31,7 +31,7 @@ module CIAX
 
       # Sub Methods for Initialize
       def ___init_sub
-        @sub = @cfg[:sub_list].get(@id)
+        @sub = @cfg[:sub_dic].get(@id)
         @sv_stat = @sub.sv_stat
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
@@ -49,7 +49,7 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(args.shift)
-        atrb = { dbi: dbi, hdb: Db.new, sub_list: Wat::List.new(cfg) }
+        atrb = { dbi: dbi, hdb: Db.new, sub_dic: Wat::List.new(cfg) }
         Exe.new(cfg, atrb).shell
       end
     end

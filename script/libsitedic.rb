@@ -5,8 +5,8 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # This should be set [:db]
     class List < CIAX::List
-      attr_reader :db, :sub_list
-      attr_accessor :super_list
+      attr_reader :db, :sub_dic
+      attr_accessor :super_dic
       def initialize(super_cfg, atrb = Hashx.new)
         atrb[:opt] = super_cfg[:opt].sub_opt
         super
@@ -16,14 +16,14 @@ module CIAX
 
       def get(site)
         eobj = _list.key?(site) ? super : ___add(site)
-        @sub_list.get(eobj.sub.id) if @sub_list
+        @sub_dic.get(eobj.sub.id) if @sub_dic
         eobj
       end
 
       def run
         verbose { "Initiate Run #{@run_list}" }
         @run_list.each { |s| get(s).run }
-        @sub_list.run if @sub_list
+        @sub_dic.run if @sub_dic
         self
       end
 
@@ -35,14 +35,14 @@ module CIAX
 
       def _store_db(db)
         @db = @cfg[:db] = type?(db, Db)
-        sites = @db.displist.valid_keys & (@cfg[:sites] || [])
+        sites = @db.disp_dic.valid_keys & (@cfg[:sites] || [])
         @run_list = sites.empty? ? @db.run_list : sites
         self
       end
 
       def ___add(site) # returns Exe
         # layer_module can be Frm,App,Wat,Hex
-        atrb = { dbi: @db.get(site), sub_list: @sub_list }
+        atrb = { dbi: @db.get(site), sub_dic: @sub_dic }
         eobj = layer_module::Exe.new(@cfg, atrb)
         _list.put(site, eobj)
         eobj
@@ -55,9 +55,9 @@ module CIAX
         def ext_local_shell
           super
           @cfg[:jump_site] = @jumpgrp
-          @jumpgrp.ext_grp.merge_items(@cfg[:db].displist)
+          @jumpgrp.ext_grp.merge_items(@cfg[:db].disp_dic)
           @current = @run_list.first
-          @sub_list.ext_shell if @sub_list
+          @sub_dic.ext_shell if @sub_dic
           self
         end
 
@@ -68,7 +68,7 @@ module CIAX
 
         def switch(site)
           # Change top_list as well as the lower layer changed
-          @super_list.switch(site) if @super_list
+          @super_dic.switch(site) if @super_dic
           super
         end
       end

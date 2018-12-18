@@ -12,42 +12,42 @@ module CIAX
       def initialize(super_cfg, atrb = Hashx.new)
         super()
         @cfg = super_cfg.gen(self).update(atrb)
-        @displist = Disp.new(@cfg.pick(%i(caption color column line_number)))
-        @cfg[:disp] = @displist
-        @valid_keys = @displist.valid_keys
+        @disp_dic = Disp.new(@cfg.pick(%i(caption color column line_number)))
+        @cfg[:disp] = @disp_dic
+        @valid_keys = @disp_dic.valid_keys
         rank(ENV['RANK'].to_i)
       end
 
       def add_dummy(id, title = nil) # returns Display
-        @displist.put_item(id, title)
+        @disp_dic.put_item(id, title)
       end
 
       # atrb could be dbi[:index][id]
       # atrb could have 'label',:body,'unit','group'
       def add_item(id, title = nil, atrb = Hashx.new) # returns Item
         return self[id] if key?(id)
-        @displist.put_item(id, title)
+        @disp_dic.put_item(id, title)
         _new_item(id, atrb)
       end
 
       def del_item(id)
-        @displist.delete(id)
+        @disp_dic.delete(id)
         delete(id)
       end
 
       def clear_item
-        @displist.clear
+        @disp_dic.clear
         clear
       end
 
-      def merge_items(displist)
-        @displist.merge_sub(displist)
-        displist.keys.each { |id| _new_item(id) }
+      def merge_items(disp_dic)
+        @disp_dic.merge_sub(disp_dic)
+        disp_dic.keys.each { |id| _new_item(id) }
         self
       end
 
       def valid_reset
-        @displist.index.reset!
+        @disp_dic.index.reset!
         self
       end
 
@@ -60,17 +60,17 @@ module CIAX
         values.map(&:valid_pars).flatten
       end
 
-      def view_list
-        @displist.to_s
+      def view_dic
+        @disp_dic.to_s
       end
 
       def rank(n)
-        @displist.rank = n
+        @disp_dic.rank = n
         self
       end
 
       def rankup
-        @displist.rank = @displist.rank + 1
+        @disp_dic.rank = @disp_dic.rank + 1
         self
       end
 

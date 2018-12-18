@@ -12,8 +12,8 @@ module CIAX
       def initialize(super_cfg, atrb = Hashx.new)
         super
         _store_db(@cfg[:db] ||= Ins::Db.new(@id))
-        @sub_list = App::List.new(@cfg)
-        @sub_list.super_list = self
+        @sub_dic = App::List.new(@cfg)
+        @sub_dic.super_dic = self
       end
 
       def init_sites

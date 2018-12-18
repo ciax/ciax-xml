@@ -38,7 +38,7 @@ module CIAX
 
         def add_step(e1, depth) # returns Step
           step = Step.new(self[:start]).ext_local_processor(e1, depth, @opt)
-          step.ext_local_dev(@cfg[:dev_list]) if @cfg.key?(:dev_list)
+          step.ext_local_dev(@cfg[:dev_dic]) if @cfg.key?(:dev_dic)
           self[:steps] << step
           step.cmt_procs << proc do
             verbose { 'Propagate Step#cmt -> Record#cmt' }

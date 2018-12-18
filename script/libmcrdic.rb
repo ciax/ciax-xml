@@ -7,12 +7,12 @@ module CIAX
   module Mcr
     # List for Running Macro
     class List < List
-      attr_reader :cfg, :sub_list, :man
+      attr_reader :cfg, :sub_dic, :man
       # @cfg should have [:sv_stat]
       def initialize(layer_cfg, atrb = Hashx.new)
         super
-        # Set [:dev_list] here for using layer_cfg
-        @sub_list = @cfg[:dev_list] = Wat::List.new(layer_cfg)
+        # Set [:dev_dic] here for using layer_cfg
+        @sub_dic = @cfg[:dev_dic] = Wat::List.new(layer_cfg)
         @man = Man.new(@cfg).ext_local_processor(self)
       end
 
@@ -38,7 +38,7 @@ module CIAX
       end
 
       def run
-        @sub_list.run
+        @sub_dic.run
         @man.run
         ___arc_refresh
         ___web_cmdlist
@@ -75,7 +75,7 @@ module CIAX
           @cfg[:jump_mcr] = @jumpgrp
           @current = 'man'
           @jumpgrp.add_item(@current, 'manager')
-          @sub_list.ext_shell
+          @sub_dic.ext_shell
           _list.each_value { |mobj| __set_jump(mobj) }
           self
         end

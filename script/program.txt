@@ -45,7 +45,7 @@
   - append(obj) [append_*] : stores and returns object.
  #For Hash
   - put(key,val)  [put_*] : stores key and value, returns value.
-  - put(key,&val) [put_*] : stores key and value if key is not exist, returns value.      
+  - put(key,&val) [put_*] : stores key and value if key is not exist, returns value.
   - get(key,&proc) [get_*]: fetch value. if key is not exist, generate value.
   - rep(key,val)  [rep_*] : replace value to existent key and returns value.
   - push(hash)     [push_*]: stores hash with hash[:id] as key, returns self.

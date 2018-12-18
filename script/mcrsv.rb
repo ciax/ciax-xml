@@ -7,7 +7,7 @@ module CIAX
   # Macro Layer
   module Mcr
     ConfOpts.new('[id] ...', options: 'denxb') do |cfg|
-      Daemon.new('mcrsv', cfg, 54_322) { List.new(cfg) }
+      Daemon.new('mcrsv', cfg, 54_322) { Dic.new(cfg) }
     end
   end
 end

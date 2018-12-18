@@ -3,17 +3,17 @@ require 'libvarx'
 require 'libcmdlocal'
 
 module CIAX
-  # This is parent of Layer List, Site List.
-  # Having :list(Array) key
-  # Access :list with get() directly
-  class List < Varx
+  # This is parent of Layer Dic, Site Dic.
+  # Having :dic(Array) key
+  # Access :dic with get() directly
+  class Dic < Varx
     attr_reader :cfg
     # level can be Layer or Site
     def initialize(super_cfg, atrb = Hashx.new)
       @cfg = super_cfg.gen(self).update(atrb)
       super(m2id(@cfg[:obj].class, -2))
       @opt = @cfg[:opt]
-      verbose { 'Initiate List (option:' + @opt.keys.join + ')' }
+      verbose { 'Initiate Dic (option:' + @opt.keys.join + ')' }
       self[:list] = Hashx.new
     end
 
@@ -51,12 +51,12 @@ module CIAX
       require 'libsh'
       attr_reader :jumpgrp
       def self.extended(obj)
-        Msg.type?(obj, List)
+        Msg.type?(obj, Dic)
       end
 
       # atrb should have [:jump_class] (Used in Local::Jump::Group)
       def ext_local_shell
-        verbose { 'Initiate List Shell' }
+        verbose { 'Initiate Dic Shell' }
         @cfg[:jump_class] = context_module('Jump')
         @jumpgrp = CmdTree::Local::Jump::Group.new(@cfg)
         self

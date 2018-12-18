@@ -16,6 +16,6 @@
 |
 |-+- Log    : ext_log
   |   Add Logging feature
-  | 
+  |
   +- SqLog  : ext_sqlog (dep. ext_log)
        Add RDB logging feature

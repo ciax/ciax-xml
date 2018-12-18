@@ -49,7 +49,7 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(args.shift)
-        atrb = { dbi: dbi, hdb: Db.new, sub_dic: Wat::List.new(cfg) }
+        atrb = { dbi: dbi, hdb: Db.new, sub_dic: Wat::Dic.new(cfg) }
         Exe.new(cfg, atrb).shell
       end
     end

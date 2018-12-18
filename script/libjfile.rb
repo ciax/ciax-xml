@@ -6,7 +6,7 @@ module CIAX
     module JFileFunc
       module_function
 
-      # Using for RecArc, RecList
+      # Using for RecArc, RecDic
       def jload(fname)
         jread(loadfile(fname))
       rescue InvalidData

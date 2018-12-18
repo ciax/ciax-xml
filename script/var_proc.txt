@@ -28,9 +28,9 @@
     return: Any
     called: Entity#execmd
     methods:
-      (Command,Domain,Group)#def_proc(&) 
-      (Command,Domain,Group)#rem.int.proc(id,&) 
-      (App/Frm/Mcr)::Command#rem.ext.proc(&) 
+      (Command,Domain,Group)#def_proc(&)
+      (Command,Domain,Group)#rem.int.proc(id,&)
+      (App/Frm/Mcr)::Command#rem.ext.proc(&)
 
 ## Related to Wat::Conv(Event)
 
@@ -66,7 +66,7 @@
     args: String(command line)
     return: Array[String...] (command args)
     called: Server(Exe)#ext_local_server
-    
+
   Server@server_output_proc
     structure: Proc
     args: no
@@ -109,13 +109,13 @@
 
 ## Related to Buffer
 
-  Buffer@flush_proc  
+  Buffer@flush_proc
     structure: Proc
     args: Buffer(self)
     return: Any
     called: Buffer#server
 
-  Buffer@recv_proc  
+  Buffer@recv_proc
     structure: Proc
     args: Array(args),String(src)
     return: Any

@@ -8,7 +8,7 @@ module CIAX
     # Macro Manager/Manipulator
     #  Features
     #   *Test/Driver
-    #    -Generate Mcr::Exe and Push to List
+    #    -Generate Mcr::Exe and Push to Dic
     #   *Front End
     #    -Switch to Exe(Shell) if Driver mode
     #    -Show List of picked Record in Archive besides Exes

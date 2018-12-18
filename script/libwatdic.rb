@@ -5,14 +5,14 @@ module CIAX
   # Watch Layer
   module Wat
     deep_include(Site)
-    # Watch List
-    class List
+    # Watch Dic
+    class Dic
       attr_reader :id
       # super_cfg must have [:db]
       def initialize(super_cfg, atrb = Hashx.new)
         super
         _store_db(@cfg[:db] ||= Ins::Db.new(@id))
-        @sub_dic = App::List.new(@cfg)
+        @sub_dic = App::Dic.new(@cfg)
         @sub_dic.super_dic = self
       end
 
@@ -38,7 +38,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
-        List.new(cfg, sites: args).shell
+        Dic.new(cfg, sites: args).shell
       end
     end
   end

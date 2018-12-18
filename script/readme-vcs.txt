@@ -12,7 +12,7 @@
 1. Develop:  Add new feature/format change anytime.
 2. Beta:     Bugfix only and Short Test on the actual operation.
 3. Testing:  Looks Stable. Use on the actual operation.
-4. Config:  Update Config file only. 
+4. Config:  Update Config file only.
 5. Master:  Most reliable version. Get back here anytime failure.
 
 ==Rules for Commit Message=
@@ -21,8 +21,8 @@
 2. Category
  a. Format changes on config/status files
    (In case of breaking backward compatibilities of data)
-   Format Change: XML Schema, JSON, SQL 
- 
+   Format Change: XML Schema, JSON, SQL
+
  b. Changes in logical structures. (by inspecting rubocop)
   Add: Adding a new class, func, vars
   Split: Splitting features of Class/methods.

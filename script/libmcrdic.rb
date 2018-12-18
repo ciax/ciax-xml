@@ -5,14 +5,14 @@ require 'libmanproc'
 
 module CIAX
   module Mcr
-    # List for Running Macro
-    class List < List
+    # Dic for Running Macro
+    class Dic < Dic
       attr_reader :cfg, :sub_dic, :man
       # @cfg should have [:sv_stat]
       def initialize(layer_cfg, atrb = Hashx.new)
         super
         # Set [:dev_dic] here for using layer_cfg
-        @sub_dic = @cfg[:dev_dic] = Wat::List.new(layer_cfg)
+        @sub_dic = @cfg[:dev_dic] = Wat::Dic.new(layer_cfg)
         @man = Man.new(@cfg).ext_local_processor(self)
       end
 
@@ -58,17 +58,17 @@ module CIAX
         end
       end
 
-      # Making Command List JSON file for WebApp
+      # Making Command Dic JSON file for WebApp
       def ___web_cmdlist
-        verbose { 'Initiate JS Command List' }
+        verbose { 'Initiate JS Command Dic' }
         dbi = @cfg[:dbi]
         jl = Hashx.new(port: @port, commands: dbi.list, label: dbi.label)
         IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
       end
 
-      # Mcr::List specific Shell
+      # Mcr::Dic specific Shell
       module Shell
-        include CIAX::List::Shell
+        include CIAX::Dic::Shell
 
         def ext_local_shell
           super
@@ -97,7 +97,7 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         ConfOpts.new('[id]', options: 'cehlns') do |cfg|
-          List.new(cfg).shell
+          Dic.new(cfg).shell
         end
       end
     end

@@ -4,7 +4,7 @@ module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set
     # This should be set [:db]
-    class List < CIAX::List
+    class Dic < CIAX::Dic
       attr_reader :db, :sub_dic
       attr_accessor :super_dic
       def initialize(super_cfg, atrb = Hashx.new)
@@ -48,9 +48,9 @@ module CIAX
         eobj
       end
 
-      # Shell module which is Site::List specific
+      # Shell module which is Site::Dic specific
       module Shell
-        include CIAX::List::Shell
+        include CIAX::Dic::Shell
 
         def ext_local_shell
           super

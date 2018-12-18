@@ -1,16 +1,16 @@
 #### Top Object Structure ####
   There are three level in layer/site listing
 
-## Layer List(Hash)
+## Layer Dic(Hash)
   There are three layers.
   * Frame Layer
-    Includes Site List
+    Includes Site Dic
   * Application Layer
-    Includes Site List
+    Includes Site Dic
   * Watch Layer
     Same as Application Layer
 
-## Site List(Hash)
+## Site Dic(Hash)
  There are many Exes stored as dictionary. (key,val)
  Shared var over sites in same layer:
   cfg[:db]

@@ -4,4 +4,4 @@
    . setting: setenforce 0 (disable SELinux temporaly)
    . edit for setting: /etc/selinux/config -> SELINUX=disabled -> reboot
 
-  
+

@@ -55,7 +55,7 @@ module CIAX
         end
 
         def ext_local_dev(dev_dic)
-          @dev_dic = type?(dev_dic, Wat::List)
+          @dev_dic = type?(dev_dic, Wat::Dic)
           # App::Exe list used in this Step
           if (@condition = delete(:cond))
             sites = @condition.map { |h| h[:site] }.uniq

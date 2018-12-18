@@ -6,7 +6,7 @@ require 'libdaemon'
 module CIAX
   ConfOpts.new('[id] ...', options: 'fawdeb') do |cfg, args|
     Daemon.new('dvsv', cfg) do |layer|
-      layer::List.new(cfg, sites: args)
+      layer::Dic.new(cfg, sites: args)
     end
   end
 end

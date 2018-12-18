@@ -4,7 +4,7 @@ require 'libdic'
 module CIAX
   # list object can be (Frm,App,Wat,Hex)
   # atrb can have [:top_layer]
-  class Layer < CIAX::List
+  class Layer < CIAX::Dic
     def initialize(top_cfg)
       super(top_cfg)
       obj = yield(@cfg, top_cfg[:opt].init_layer_mod)

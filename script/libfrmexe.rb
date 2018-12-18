@@ -12,7 +12,7 @@ module CIAX
       # atrb must have [:dbi]
       def initialize(super_cfg, atrb = Hashx.new)
         super
-        # DB is generated in List level
+        # DB is generated in Dic level
         dbi = _init_dbi2cfg(%i(stream iocmd))
         @cfg[:site_id] = @id
         @stat = @cfg[:field] = Field.new(dbi)

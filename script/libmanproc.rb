@@ -17,7 +17,7 @@ module CIAX
         # Initiate for driver
         def ext_local_processor(mcr_dic)
           @mode = @opt.dry? ? 'DRY' : 'PRCS'
-          @mcr_dic = type?(mcr_dic, List)
+          @mcr_dic = type?(mcr_dic, Dic)
           ___init_stat
           ___init_procs
           @sv_stat.repl(:sid, '') # For server response

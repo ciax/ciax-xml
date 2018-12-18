@@ -58,7 +58,7 @@ module CIAX
 
       # Sub methods for Initialize
       def ___init_sub
-        # LayerDB might generated in List level
+        # LayerDB might generated in Dic level
         @sub = @cfg[:sub_dic].get(@cfg[:frm_site])
         @sv_stat.db.update(@sub.sv_stat.db)
         @sub.sv_stat.cmt_procs << proc do |ss|
@@ -101,7 +101,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
         dbi = Ins::Db.new.get(args.shift)
-        atrb = { dbi: dbi, sub_dic: Frm::List.new(cfg) }
+        atrb = { dbi: dbi, sub_dic: Frm::Dic.new(cfg) }
         eobj = Exe.new(cfg, atrb).exe(args)
         puts eobj.stat
         sleep 0.5

@@ -29,7 +29,7 @@ module CIAX
         private
 
         def ___init_stat
-          @view = RecList.new(@rec_view, @id, @cobj.rem.int)
+          @view = RecDic.new(@rec_view, @id, @cobj.rem.int)
           @opt.cl? ? @view.ext_remote(@host) : @view.ext_local
           @cfg[:output] = @view
         end

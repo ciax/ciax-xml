@@ -6,7 +6,7 @@ module CIAX
     # Step constant
     module StepDefine
       OPE = { equal: '==', not: '!=', match: '=~', unmatch: '!~' }.freeze
-      Title_List = {
+      Title_Dic = {
         mesg: ['Mesg', 5], bypass: ['Bypass?', 6, 'skip if satisfied'],
         goal: ['Done?', 6, 'skip if satisfied'],
         check: ['Check', 6, 'interlock'], verify: ['Verify', 6, 'at the end']
@@ -23,7 +23,7 @@ module CIAX
           sleep: ['Sleeping(sec)', 6, __sid(:val)],
           select: ['SELECT', 3, __sid(:site, :var)],
           wait: ['Waiting', 6, __sid(:retry)]
-        }.update(Title_List)
+        }.update(Title_Dic)
       end
 
       def __sid(*names)

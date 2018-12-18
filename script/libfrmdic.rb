@@ -6,8 +6,8 @@ module CIAX
   # Frame Layer
   module Frm
     deep_include(Site)
-    # Frame List module
-    class List
+    # Frame Dic module
+    class Dic
       def initialize(super_cfg, atrb = Hashx.new)
         super
         ddb = Dev::Db.new(@cfg[:db].is_a?(Ins::Db) ? @cfg[:db].valid_devs : {})
@@ -17,7 +17,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
-        List.new(cfg, sites: args).shell
+        Dic.new(cfg, sites: args).shell
       end
     end
   end

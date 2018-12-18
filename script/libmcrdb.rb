@@ -4,7 +4,7 @@ module CIAX
   # Macro Layer
   module Mcr
     # list for web select command
-    module CmdList
+    module CmdDic
       def list
         list = Hashx.new
         self[:command][:group].each_value do |val|
@@ -33,7 +33,7 @@ module CIAX
 
       # Allows nil, get Dbi
       def get(id = nil)
-        super.extend(CmdList)
+        super.extend(CmdDic)
       end
 
       private

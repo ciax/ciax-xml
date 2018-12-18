@@ -4,13 +4,13 @@ require 'libthreadx'
 module CIAX
   # Macro Layer
   module Mcr
-    # Record Archive List (Dir)
+    # Record Archive Dic (Dir)
     #   Index of Records
     class RecArc < Varx
       attr_reader :list
       def initialize
         super('list', 'record')
-        # @list : Archive List : Index of Record (id: cid,pid,res)
+        # @dic : Archive Dic : Dictionary of Record (id: cid,pid,res)
       end
 
       def list

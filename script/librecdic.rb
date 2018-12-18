@@ -5,22 +5,21 @@ require 'libcmdremote'
 module CIAX
   # Macro Layer
   module Mcr
-    # Visible Record Database
-    # Need RecArc to get Parent CID for SeqList
+    # Visible Record Dictionary
+    # Need RecArc to get Parent CID
     # Contents
     #   @list: Array of macro ID
-    #   self[:list] : Array of macro Title
     # Alives Array => R/O here
-    #   Parameter[:list] = Prompt[:list]
-    # RecArc(Index) > RecList(Records) > SeqList(IDs)
-    # RecList : Client Side (Picked at Client)
+    #   Parameter[:list] = Prompt[:list](@par.list)
+    # RecArc(Index) > RecDic(Records)
+    # RecDic : Client Side (Picked at Client)
     # Alives : Server Side
     #
     # Mode:
-    #  Remote: get Rec_arc and Record via Http
-    #  Local(ext_local) : get Rec_arc and Record from File
-    #  Local(ext_save) : write down Rec_arc
-    class RecList < Upd
+    #  Remote: get RecArc and Record via Http
+    #  Local(ext_local) : get RecArc and Record from File
+    #  Local(ext_save) : write down RecArc
+    class RecDic < Upd
       attr_reader :current_idx, :rec_view
       def initialize(rec_view = nil, proj = nil, int = nil)
         super()
@@ -116,7 +115,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[num]', options: 'chr') do |opts, args|
         Msg.args_err if args.empty?
-        rl = RecList.new
+        rl = RecDic.new
         if opts.cl?
           rl.ext_remote(opts.host)
         else

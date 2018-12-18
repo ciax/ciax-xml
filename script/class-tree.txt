@@ -3,118 +3,118 @@ Hash
   |  |-ConfOpts
   |
   |-Hashx
-     |-Disp 
-     |-Disp::Section 
-     |-Mcr::Condition 
-     |-Mcr::List 
-     |-Parameter 
-     |-Xml::Doc 
+     |-Disp
+     |-Disp::Section
+     |-Mcr::Condition
+     |-Mcr::Dic
+     |-Parameter
+     |-Xml::Doc
      |-Config
-     |  |-Cmd::Entity 
-     |     |-Cmd::Remote::Entity 
-     |        |-Cmd::Remote::Ext::Entity 
+     |  |-Cmd::Entity
+     |     |-Cmd::Remote::Entity
+     |        |-Cmd::Remote::Ext::Entity
      |
-     |-Cmd::Dummy 
-     |  |-Cmd::Local::Sh::Group 
-     |  |-Cmd::Group 
-     |     |-Cmd::Local::Jump::Group 
-     |     |-Cmd::Local::View::Group 
-     |     |-Cmd::Remote::Sys::Group 
-     |     |-Cmd::Remote::Ext::Group 
-     |     |  |-App::Ext::Group 
-     |     |  |-Frm::Ext::Group 
-     |     |  |-Mcr::Ext::Group 
-     |     |-Cmd::Remote::Int::Group 
-     |        |-App::Int::Group 
-     |        |-Frm::Int::Group 
-     |        |-Mcr::Int::Group 
+     |-Cmd::Dummy
+     |  |-Cmd::Local::Sh::Group
+     |  |-Cmd::Group
+     |     |-Cmd::Local::Jump::Group
+     |     |-Cmd::Local::View::Group
+     |     |-Cmd::Remote::Sys::Group
+     |     |-Cmd::Remote::Ext::Group
+     |     |  |-App::Ext::Group
+     |     |  |-Frm::Ext::Group
+     |     |  |-Mcr::Ext::Group
+     |     |-Cmd::Remote::Int::Group
+     |        |-App::Int::Group
+     |        |-Frm::Int::Group
+     |        |-Mcr::Int::Group
      |
-     |-Cmd::Item 
-     |  |-Cmd::Remote::Item 
-     |     |-Cmd::Remote::Ext::Item 
-     |        |-Frm::Ext::Item 
-     |        |-App::Ext::Item 
-     |        |-Mcr::Ext::Item 
+     |-Cmd::Item
+     |  |-Cmd::Remote::Item
+     |     |-Cmd::Remote::Ext::Item
+     |        |-Frm::Ext::Item
+     |        |-App::Ext::Item
+     |        |-Mcr::Ext::Item
      |
      |-Db
-     |  |-App::Db 
-     |  |-Cmd::Db 
-     |  |-Dev::Db 
-     |  |-Frm::Db 
-     |  |-Hex::Db 
-     |  |-Ins::Db 
-     |  |-Mcr::Db 
-     |  |-Symbol::Db 
+     |  |-App::Db
+     |  |-Cmd::Db
+     |  |-Dev::Db
+     |  |-Frm::Db
+     |  |-Hex::Db
+     |  |-Ins::Db
+     |  |-Mcr::Db
+     |  |-Symbol::Db
      |
-     |-Upd 
-        |-App::View 
-        |-Wat::View 
-        |-Mcr::Step 
+     |-Upd
+        |-App::View
+        |-Wat::View
+        |-Mcr::Step
         |-Varx
-           |-App::Status 
-           |-Cmd::Remote::Input 
-           |-Frm::Field 
-           |-Frm::Stream 
-           |-Hex::Conv 
-           |-Mcr::Record 
-           |-Mcr::View 
+           |-App::Status
+           |-Cmd::Remote::Input
+           |-Frm::Field
+           |-Frm::Stream
+           |-Hex::Conv
+           |-Mcr::Record
+           |-Mcr::View
            |-Prompt
-           |-Wat::Event 
-           |-List 
-              |-Layer 
-              |-Site::List 
-                 |-App::List 
-                 |-Frm::List 
-                 |-Hex::List 
-                 |-Wat::List 
+           |-Wat::Event
+           |-Dic
+              |-Layer
+              |-Site::Dic
+                 |-App::Dic
+                 |-Frm::Dic
+                 |-Hex::Dic
+                 |-Wat::Dic
 
 Array
-  |-Arrayx 
-     |-Cmd::GrpAry 
-     |  |-Cmd::Local::Domain 
-     |  |-Cmd::Local::Index 
-     |  |  |-Cmd::Remote::Index 
-     |  |-Cmd::Remote::Domain 
-     |-Disp::Group 
-     |-Xml::Format 
+  |-Arrayx
+     |-Cmd::GrpAry
+     |  |-Cmd::Local::Domain
+     |  |-Cmd::Local::Index
+     |  |  |-Cmd::Remote::Index
+     |  |-Cmd::Remote::Domain
+     |-Disp::Group
+     |-Xml::Format
 
 Exe
-  |-App::Exe 
-  |-Frm::Exe 
-  |-Hex::Exe 
-  |-Mcr::Man 
-  |-Wat::Exe 
-  |-Mcr::Exe 
+  |-App::Exe
+  |-Frm::Exe
+  |-Hex::Exe
+  |-Mcr::Man
+  |-Wat::Exe
+  |-Mcr::Exe
 
 GServer
   |-Simulator::BbIo
-  |-Simulator::Server 
-  |  |-Simulator::FpDio 
-  |  |-Simulator::Slosyn 
+  |-Simulator::Server
+  |  |-Simulator::FpDio
+  |  |-Simulator::Slosyn
 
 IO
-  |-Daemon::Tee 
+  |-Daemon::Tee
 
 RuntimeError
-  |-LongJump 
-  |  |-Interlock 
-  |  |-Layer::Shell::Jump 
-  |  |-LayerJump 
-  |  |-Retry 
-  |  |-Site::List::Shell::Jump 
-  |  |-SiteJump 
-  |  |-Verification 
-  |-ServerError 
-  |  |-CommError 
-  |  |  |-CheckCodeError 
-  |  |  |-NoData 
-  |  |  |-StreamError 
-  |  |-ConfigError 
+  |-LongJump
+  |  |-Interlock
+  |  |-Layer::Shell::Jump
+  |  |-LayerJump
+  |  |-Retry
+  |  |-Site::Dic::Shell::Jump
+  |  |-SiteJump
+  |  |-Verification
+  |-ServerError
+  |  |-CommError
+  |  |  |-CheckCodeError
+  |  |  |-NoData
+  |  |  |-StreamError
+  |  |-ConfigError
   |-UserError
-    |-InvalidARGS 
-       |-InvalidID 
-          |-InvalidCMD 
-             |-InvalidPAR 
+    |-InvalidARGS
+       |-InvalidID
+          |-InvalidCMD
+             |-InvalidPAR
 
 ----------------------
  App::Symbol::Status
@@ -129,12 +129,12 @@ RuntimeError
  SqLog::Save
  SqLog::Simulator
  SqLog::Table
- Thread  Threadx 
- Threadx  Threadx::Loop 
- Threadx  ThreadUdp 
+ Thread  Threadx
+ Threadx  Threadx::Loop
+ Threadx  ThreadUdp
  Wat::Condition
  Wat::Event
- Xml::Format  HtmlTbl 
+ Xml::Format  HtmlTbl
  Xml::Gnu
  Simulator::Axis
  Simulator::Word

@@ -14,7 +14,7 @@ module CIAX
       def initialize(ment, &submcr_proc)
         @cfg = ment
         @opt = @cfg[:opt]
-        @dev_dic = (@cfg[:dev_dic] ||= Wat::List.new(@cfg))
+        @dev_dic = (@cfg[:dev_dic] ||= Wat::Dic.new(@cfg))
         ___init_record
         @sv_stat = @cfg[:sv_stat] || Prompt.new(@cfg[:id], @opt)
         @submcr_proc = submcr_proc

@@ -8,9 +8,10 @@ module CIAX
     class RecView < Upd
       attr_reader :rec_arc
       attr_accessor :max
-      def initialize(rec_arc)
+      def initialize(rec_arc, rec_alive = {})
         super()
         @rec_arc = type?(rec_arc, RecArc)
+        @rec_alive = rec_alive
         @max = 0
       end
 
@@ -20,25 +21,36 @@ module CIAX
       end
 
       def list
-        @rec_arc.list.keys.sort.last(@max)
+        @rec_arc.list.keys.sort.last(@max).reverse
       end
 
       def lines
         page = []
-        list.each do |id|
-          page << ___item_view(id)
+        list.each_with_index do |id, idx|
+          page << ___item_view(id, idx + 1)
         end
         page
       end
 
       private
 
-      def ___item_view(id)
-        rec = @rec_arc.get(id)
+      def ___item_view(id, idx)
+        rec = @rec_alive[id] || @rec_arc.get(id)
         tim = ___get_time(id)
         pcid = ___get_pcid(rec[:pid])
-        title = format('%s (%s) by %s', id, tim, pcid)
-        itemize(title, rec[:cid].to_s + " (#{rec[:result]})")
+        title = format('[%s] %s (%s) by %s', idx, id, tim, pcid)
+        itemize(title, rec[:cid].to_s + ___result_view(rec))
+      end
+
+      def ___result_view(rec)
+        if rec.key?(:status) && rec[:status] != 'end'
+          args = rec.pick(%i(steps total_steps status)).values
+          msg = format(' [%s/%s](%s)', *args)
+          msg << optlist(rec[:option])
+          msg
+        else
+          " (#{rec[:result]})"
+        end
       end
 
       def ___get_time(id)
@@ -55,7 +67,7 @@ module CIAX
       GetOpts.new('[num]') do |_opts, args|
         rv = RecView.new(RecArc.new.ext_local.refresh)
         rv.max = args.shift.to_i
-        puts rv
+        puts rv.to_v
       end
     end
   end

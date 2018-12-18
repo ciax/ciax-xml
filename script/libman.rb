@@ -44,7 +44,7 @@ module CIAX
 
       def _ext_local_shell
         super
-        @cfg[:output] = RecView.new(@stat).max(10)
+        @cfg[:output] = RecView.new(@stat)
         self
       end
 

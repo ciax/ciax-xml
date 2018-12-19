@@ -125,11 +125,11 @@ module CIAX
         __write_json(to_j, tag)
       end
 
-      def save_partial(keylist, tag = nil)
+      def save_partial(keyary, tag = nil)
         tag ||= (__tag_list.map(&:to_i).max + 1)
         # id is tag, this is Mark's request
         jstr = pick(
-          keylist, time: self[:time], id: self[:id], ver: self[:ver]
+          keyary, time: self[:time], id: self[:id], ver: self[:ver]
         ).to_j
         msg("File Saving for [#{tag}]")
         __write_json(jstr, tag)

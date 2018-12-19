@@ -46,7 +46,7 @@ module CIAX
         if rec.key?(:status) && rec[:status] != 'end'
           args = rec.pick(%i(steps total_steps status)).values
           msg = format(' [%s/%s](%s)', *args)
-          msg << optlist(rec[:option])
+          msg << opt_listing(rec[:option])
           msg
         else
           " (#{rec[:result]})"

@@ -80,15 +80,15 @@ module CIAX
     end
 
     def view(select, cap, color, level)
-      list = {}
+      hash = {}
       disp_dic = (@valid_keys + @dummy_keys) & select
       disp_dic.compact.each do |id|
         name = @line_number ? "[#{@num += 1}](#{id})" : id
-        list[name] = self[id] if self[id]
+        hash[name] = self[id] if self[id]
       end
-      return if list.empty?
+      return if hash.empty?
       cap = mk_caption(cap, color: color, level: level)
-      columns(list, @column, level, cap)
+      columns(hash, @column, level, cap)
     end
   end
 

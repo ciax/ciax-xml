@@ -1,4 +1,4 @@
-# !/usr/bin/ruby
+#!/usr/bin/ruby
 require 'libexe'
 require 'libseq'
 
@@ -32,7 +32,7 @@ module CIAX
       # Mode Extention by Option
       def ext_local_shell
         extend(Shell).ext_local_shell
-        @prompt_proc = proc { @sv_stat.to_s + optlist(@int.valid_keys) }
+        @prompt_proc = proc { @sv_stat.to_s + opt_listing(@int.valid_keys) }
         @cobj.loc.add_view
         self
       end

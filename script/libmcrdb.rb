@@ -3,25 +3,25 @@ require 'libdbtree'
 module CIAX
   # Macro Layer
   module Mcr
-    # list for web select command
+    # dic for web select command
     module CmdDic
-      def list
-        list = Hashx.new
+      def web_select
+        dic = Hashx.new
         self[:command][:group].each_value do |val|
           # Show only main macro commands (submacro is skipped)
           if val[:rank].to_i.zero?
-            (list[val[:caption]] ||= []).concat val[:members]
+            (dic[val[:caption]] ||= []).concat val[:members]
           end
         end
-        list
+        dic
       end
 
       def label
-        list = Hashx.new
+        dic = Hashx.new
         self[:command][:index].each do |id, val|
-          list[id] = val[:label]
+          dic[id] = val[:label]
         end
-        list
+        dic
       end
     end
 
@@ -128,7 +128,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id] (key) ..', options: 'j') do |opt, args|
         dbi = Db.new.get(ENV['PROJ'] ||= args.shift)
-        puts opt[:j] ? dbi.list.to_j : dbi.path(args)
+        puts opt[:j] ? dbi.web_select.to_j : dbi.path(args)
       end
     end
   end

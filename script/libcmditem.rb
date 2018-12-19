@@ -77,11 +77,11 @@ module CIAX
         ___err_shortage($ERROR_INFO.to_s, psize)
       end
 
-      def ___err_shortage(listcsv, psize)
+      def ___err_shortage(csv, psize)
         frac = format('(%d/%d)', psize, @cfg[:parameters].size)
         mary = ['Parameter shortage ' + frac]
         mary << @cfg[:disp].item(@id)
-        mary << ' ' * 10 + "key=(#{listcsv})"
+        mary << ' ' * 10 + "key=(#{csv})"
         Msg.par_err(*mary)
       end
     end

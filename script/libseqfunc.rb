@@ -25,7 +25,7 @@ module CIAX
 
       def ___mcr_bg(ment, mstep)
         return unless mstep[:async] && @submcr_proc.is_a?(Proc)
-        # adding new macro to @rec_list, :pid = parent id
+        # adding new macro to @rec_dic, :pid = parent id
         sent = ment.gen(self).update(pid: @id)
         mstep[:id] = @submcr_proc.call(sent).id
       end

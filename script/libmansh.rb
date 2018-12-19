@@ -39,7 +39,7 @@ module CIAX
           # Setting @par will switch the Record
           @prompt_proc = proc do
             str = @sv_stat.to_s + "[#{@view.upd.current_idx}]"
-            str << optlist((@view.current_rec || {})[:option])
+            str << opt_listing((@view.current_rec || {})[:option])
           end
         end
 

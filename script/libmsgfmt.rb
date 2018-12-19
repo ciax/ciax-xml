@@ -62,9 +62,9 @@ module CIAX
     end
 
     # Query options
-    def optlist(list)
-      return '' if !list || list.empty?
-      colorize("[#{list.join('/')}]?", 5)
+    def opt_listing(ary)
+      return '' if !ary || ary.empty?
+      colorize("[#{ary.join('/')}]?", 5)
     end
 
     # Display methods

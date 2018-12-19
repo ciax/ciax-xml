@@ -86,7 +86,7 @@ module CIAX
     end
 
     # Show list of all key,val which will be taken with [] access
-    def list
+    def listing
       db = {}
       @generation.each_with_index do |h, i|
         h.each { |k, v| db[k] = [i, v] unless db.key?(k) }

@@ -56,7 +56,7 @@ module CIAX
       end
 
       def __options
-        optlist(@valid_keys)
+        opt_listing(@valid_keys)
       end
 
       def ___input_tty

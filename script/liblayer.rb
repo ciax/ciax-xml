@@ -2,7 +2,7 @@
 require 'libdic'
 
 module CIAX
-  # list object can be (Frm,App,Wat,Hex)
+  # element object can be (Frm,App,Wat,Hex)
   # atrb can have [:top_layer]
   class Layer < CIAX::Dic
     def initialize(top_cfg)

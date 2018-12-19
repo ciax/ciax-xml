@@ -19,8 +19,8 @@ module CIAX
 
         # key format: category + ':' followed by key "data:key, msg:key..."
         # default category is :data if no colon
-        def pick(keylist, atrb = {})
-          keylist.each_with_object(Hashx.new(atrb)) do |str, h|
+        def pick(keyary, atrb = {})
+          keyary.each_with_object(Hashx.new(atrb)) do |str, h|
             cat, key = ___get_key(str)
             h.get(cat) { Hashx.new }[key] = get(cat)[key]
           end

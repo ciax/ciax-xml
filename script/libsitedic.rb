@@ -21,7 +21,7 @@ module CIAX
       end
 
       def run
-        verbose { "Initiate Run #{@run_list}" }
+        verbose { "Initiate Run #{@run_list.inspect}" }
         @run_list.each { |s| get(s).run }
         @sub_dic.run if @sub_dic
         self

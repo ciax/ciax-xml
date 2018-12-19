@@ -72,7 +72,7 @@ module CIAX
           @periodm = per * 1000 if per > 0
           @regexe = reg[:exec] || [['upd']]
           verbose do
-            format('Initiate Auto Update: Period = %d sec, Command = %s)',
+            format('Initiate Auto Update: Period = %d sec, Command = %s',
                    @periodm / 1000, @regexe)
           end
           self

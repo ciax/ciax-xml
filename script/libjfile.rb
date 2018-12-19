@@ -28,8 +28,7 @@ module CIAX
       def check_file(fname)
         data_err("Cant read (#{fname})") unless test('r', fname)
         return true if test('s', fname)
-        ::File.unlink(fname)
-        data_err("Empty file removed (#{fname})")
+        warning("File empty (#{fname})")
       end
     end
 

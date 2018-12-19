@@ -6,15 +6,15 @@ require 'libthreadx'
 module CIAX
   # Generate SQL command string
   module SqLog
-    @list = {}
+    @dic = {}
 
-    # @list accessor
+    # @dic accessor
     def self.list
-      @list
+      @dic
     end
 
     def self.new(id)
-      @list[id] ||= Save.new(id)
+      @dic[id] ||= Save.new(id)
     end
     # Execute Sql Command to sqlite3
     class Save

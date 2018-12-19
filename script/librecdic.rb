@@ -98,8 +98,8 @@ module CIAX
       end
 
       def ___init_upd_proc
+        @rec_arc.upd_procs << proc { upd }
         @upd_procs << proc do
-          @rec_arc.upd
           ___detect_inc
           @valid_keys.replace((current_rec || self)[:option] || [])
           self[:default] = @par[:default]

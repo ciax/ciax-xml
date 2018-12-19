@@ -7,23 +7,22 @@ module CIAX
     # Record Archive Dic (Dir)
     #   Index of Records
     class RecArc < Varx
-      attr_reader :list
       def initialize
         super('list', 'record')
-        # @dic : Archive Dic : Dictionary of Record (id: cid,pid,res)
+        # [:dic] : Archive Dic : Dictionary of Record (id: cid,pid,res)
       end
 
-      def list
-        self[:list] ||= {}
+      def dic
+        self[:dic] ||= {}
       end
 
       def get(id)
-        self[:list][id] || id_err(id, 'Record Archive')
+        self[:dic][id] || id_err(id, 'Record Archive')
       end
 
       def last(num)
         upd
-        list.keys.sort.uniq.last(num.to_i)
+        dic.keys.sort.uniq.last(num.to_i)
       end
 
       # Mode
@@ -55,13 +54,13 @@ module CIAX
 
         # For format changes
         def clear
-          list.clear
+          dic.clear
           cmt
         end
 
-        # Re-generate record list
+        # Re-generate record dic
         def refresh # returns self
-          (___file_keys - list.keys).each do |key|
+          (___file_keys - dic.keys).each do |key|
             __push_record(jload(__rec_fname(key)))
           end
           verbose { 'Initiate Record Archive done' }
@@ -79,7 +78,7 @@ module CIAX
           ele = Hashx.new(rec).pick(%i(cid pid result)) # extract header
           return if ele.empty?
           verbose { 'Record Archive Updated' }
-          list[rec[:id]] = ele
+          dic[rec[:id]] = ele
           ele[:result]
         end
 

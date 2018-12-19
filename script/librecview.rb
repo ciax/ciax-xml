@@ -21,7 +21,7 @@ module CIAX
       end
 
       def list
-        @rec_arc.list.keys.sort.last(@max)
+        @rec_arc.last(@max)
       end
 
       def lines

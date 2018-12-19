@@ -14,6 +14,7 @@ module CIAX
       @type = type
       # @id is for file name (prevent overwritten)
       @id = id
+      # @dir is subdir on web/file folder (~/.var/@dir)
       @dir = dir
       # Headers (could be overwritten by file load)
       self[:id] = id

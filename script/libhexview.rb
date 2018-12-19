@@ -26,8 +26,8 @@ module CIAX
       def ___init_cmt_procs
         init_time2cmt(@stat)
         @cmt_procs << proc { self[:hexpack] = ___header + ___body }
-        init_propagate(@sv_stat)
-        init_propagate(@stat)
+        cmt_propagate(@sv_stat)
+        cmt_propagate(@stat)
         cmt
       end
 

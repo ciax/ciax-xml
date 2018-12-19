@@ -66,7 +66,14 @@ module CIAX
       self
     end
 
-    def init_propagate(obj)
+    def upd_propagate(obj)
+      obj.upd_procs << proc do |o|
+        verbose { "Propagate #{o.base_class}#upd -> #{base_class}#upd" }
+        upd
+      end
+    end
+
+    def cmt_propagate(obj)
       obj.cmt_procs << proc do |o|
         verbose { "Propagate #{o.base_class}#cmt -> #{base_class}#cmt" }
         cmt

@@ -33,7 +33,7 @@ module CIAX
       end
 
       def interrupt
-        _list.each(&:interrupt)
+        _dic.each(&:interrupt)
         self
       end
 
@@ -46,7 +46,7 @@ module CIAX
       end
 
       def records
-        _list.inject({}) { |h, obj| h[obj[:id]] = obj.stat }
+        _dic.inject({}) { |h, obj| h[obj[:id]] = obj.stat }
       end
 
       private
@@ -76,7 +76,7 @@ module CIAX
           @current = 'man'
           @jumpgrp.add_item(@current, 'manager')
           @sub_dic.ext_shell
-          _list.each_value { |mobj| __set_jump(mobj) }
+          _dic.each_value { |mobj| __set_jump(mobj) }
           self
         end
 

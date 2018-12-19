@@ -4,7 +4,7 @@ require 'libxmldoc'
 
 module CIAX
   # Db class is for read only databases, which holds all items of database.
-  # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
+  # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list, :dic..)
   # set() generates HashDb
   # Cache is available
   class Dbi < Hashx # DB Item

@@ -14,7 +14,7 @@ module CIAX
       super(m2id(@cfg[:obj].class, -2))
       @opt = @cfg[:opt]
       verbose { 'Initiate Dic (option:' + @opt.keys.join + ')' }
-      self[:list] = Hashx.new
+      self[:dic] = Hashx.new
     end
 
     def shell
@@ -22,16 +22,16 @@ module CIAX
     end
 
     def get(id)
-      _list.get(id)
+      _dic.get(id)
     end
 
     def put(id, obj)
-      _list.put(id, obj)
+      _dic.put(id, obj)
       cmt
     end
 
     def to_a
-      _list.keys
+      _dic.keys
     end
 
     private
@@ -42,8 +42,8 @@ module CIAX
       extend(smod).ext_local_shell
     end
 
-    def _list
-      self[:list]
+    def _dic
+      self[:dic]
     end
 
     # Shell module

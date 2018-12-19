@@ -15,7 +15,7 @@ module CIAX
       end
 
       def get(site)
-        eobj = _list.key?(site) ? super : ___add(site)
+        eobj = _dic.key?(site) ? super : ___add(site)
         @sub_dic.get(eobj.sub.id) if @sub_dic
         eobj
       end
@@ -44,7 +44,7 @@ module CIAX
         # layer_module can be Frm,App,Wat,Hex
         atrb = { dbi: @db.get(site), sub_dic: @sub_dic }
         eobj = layer_module::Exe.new(@cfg, atrb)
-        _list.put(site, eobj)
+        _dic.put(site, eobj)
         eobj
       end
 
@@ -67,7 +67,7 @@ module CIAX
         end
 
         def switch(site)
-          # Change top_list as well as the lower layer changed
+          # Change super_dic as well as the lower layer changed
           @super_dic.switch(site) if @super_dic
           super
         end

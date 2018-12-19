@@ -62,10 +62,10 @@ module CIAX
         @rec_view = RecView.new(@stat)
         page = @cobj.loc.add_page
         page.get('last').def_proc do |ent|
-          @rec_view.max += (ent.par[0] || 1).to_i
+          @rec_view.inc(ent.par[0] || 1)
         end
         page.get('cl').def_proc do
-          @rec_view.max = @sv_stat.get(:list).size
+          @rec_view.clr
         end
       end
     end

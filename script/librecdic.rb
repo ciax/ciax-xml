@@ -27,11 +27,11 @@ module CIAX
         int ||= CmdTree::Remote::Int::Group.new(Config.new)
         ___init_int(int)
         @current_idx = 0
-        @list = []
         @cache = {}
         # RecArc : R/O
         @rec_view = rec_view || RecView.new(RecArc.new, @cache)
         @rec_arc = type?(@rec_view, RecView).rec_arc
+        @list = @rec_view.list
         ___init_upd_proc
       end
 
@@ -51,12 +51,6 @@ module CIAX
         self
       end
 
-      def set_max(num)
-        @rec_view.max = [num.to_i, @par.list.size].max
-        @list.replace(@rec_view.list)
-        self
-      end
-
       def current_rec
         return if @current_idx.zero?
         id = @list[@current_idx - 1]
@@ -70,7 +64,8 @@ module CIAX
       end
 
       def to_v
-        @rec_view.to_v
+        (['<<< ' + colorize("Active Macros [#{self[:id]}]", 2) + ' >>>'] +
+        @rec_view.lines).join("\n")
       end
 
       ##### For server ####
@@ -106,9 +101,17 @@ module CIAX
       def ___init_upd_proc
         @upd_procs << proc do
           @rec_arc.upd
+          ___detect_inc
           @valid_keys.replace((current_rec || self)[:option] || [])
           self[:default] = @par[:default]
         end
+      end
+
+      def ___detect_inc
+        newids = (@par.list - @list)
+        return if newids.empty?
+        @list.concat(newids)
+        sel(@list.size)
       end
     end
 
@@ -121,7 +124,8 @@ module CIAX
         else
           rl.ext_local
         end
-        puts rl.set_max(args.shift).upd.sel(args.shift)
+        rl.rec_view.last(args.shift)
+        puts rl.upd.sel(args.shift)
       end
     end
   end

@@ -34,15 +34,15 @@ module CIAX
 
       # Mode Extention by Option
       def _ext_local
-        @stat.ext_local_file
-        ___init_cmd_procs
+        @stat.ext_local_file.auto_load
+        ___init_cmt_procs
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
         super
       end
 
       def _ext_local_shell
         super.input_conv_set
-        @cfg[:output] = View.new(@stat).ext_prt
+        @cfg[:output] = View.new(@stat).ext_prt.upd
         @cobj.loc.add_view
         self
       end
@@ -67,7 +67,7 @@ module CIAX
         @post_exe_procs.concat(@sub.post_exe_procs)
       end
 
-      def ___init_cmd_procs
+      def ___init_cmt_procs
         @stat.cmt_procs << proc do |ev|
           verbose { 'Propagate Event#cmt -> Watch#(set blocking command)' }
           block = ev.get(:block).map { |id, par| par ? nil : id }.compact

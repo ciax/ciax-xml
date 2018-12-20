@@ -27,6 +27,8 @@ module CIAX
           wdb = @dbi[:watch] || {}
           @interval = wdb[:interval].to_f if wdb.key?(:interval)
           @cond = Condition.new(wdb[:index] || {}, stat, self)
+          upd_propagate(@stat)
+          cmt_propagate(@stat)
           ___init_cmt_procs
           ___init_auto(wdb)
         end
@@ -61,7 +63,6 @@ module CIAX
             @last_updated = self[:time]
             @cond.upd_cond
           end
-          cmt_propagate(@stat)
         end
 
         # Initiate for Auto Update

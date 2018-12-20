@@ -29,7 +29,7 @@ module CIAX
 
       # Mode Extension by Option
       def _ext_local
-        @stat.ext_local_sym(@cfg[:sdb]).ext_local_file
+        @stat.ext_local_sym(@cfg[:sdb]).ext_local_file.auto_load
         ___init_proc_set
         ___init_proc_del
         super
@@ -37,7 +37,7 @@ module CIAX
 
       def _ext_local_shell
         super.input_conv_set
-        @cfg[:output] = View.new(@stat)
+        @cfg[:output] = View.new(@stat).upd
         @cobj.loc.add_view
         self
       end

@@ -49,13 +49,15 @@ module CIAX
       private
 
       def ___init_cmt_proc
+        init_time2cmt(@stat)
+        upd_propagate(@stat)
+        cmt_propagate(@stat)
         @cmt_procs << proc do
           self['gtime'] = { caption: '', lines: [hash = {}] }
           hash[:time] = { label: 'TIMESTAMP', msg: date(@stat[:time]) }
           hash[:elapsed] = { label: 'ELAPSED', msg: elps_date(@stat[:time]) }
           ___view_groups
         end
-        cmt_propagate(@stat)
       end
 
       def ___view_groups

@@ -35,6 +35,7 @@ module CIAX
               self[:data][id] = cnd ? dflt : ___get_val(hash, id)
             end
           end
+          cmt_propagate(@field)
         end
 
         def ___get_val(hash, id)

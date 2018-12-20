@@ -71,6 +71,7 @@ module CIAX
         verbose { "Propagate #{o.base_class}#upd -> #{base_class}#upd" }
         upd
       end
+      self
     end
 
     def cmt_propagate(obj)
@@ -78,6 +79,7 @@ module CIAX
         verbose { "Propagate #{o.base_class}#cmt -> #{base_class}#cmt" }
         cmt
       end
+      self
     end
   end
 end

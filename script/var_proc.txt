@@ -102,7 +102,7 @@
 
 ## Related to Frm
 
-  Field@flush_procs
+  Field@cmt_procs
     structure: Array[Proc,..]
     args: Frm::Field(self)
     called: Frm::Field#flush()

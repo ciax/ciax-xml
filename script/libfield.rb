@@ -7,13 +7,11 @@ module CIAX
   module Frm
     # Frame Field
     class Field < Statx
-      attr_reader :flush_procs
       attr_accessor :echo
       def initialize(dbi = nil)
         super('field', dbi, Dev::Db)
         # Proc for Terminate process of each individual commands
         #  (Set upper layer's update)
-        @flush_procs = []
         self[:comerr] = false
         self[:data] = ___init_field unless self[:data]
       end
@@ -67,9 +65,8 @@ module CIAX
       # For propagate to Status update
       def flush
         verbose { 'Processing FlushProcs' }
-        @flush_procs.each { |p| p.call(self) }
         self[:comerr] = false
-        self
+        cmt
       end
 
       def seterr

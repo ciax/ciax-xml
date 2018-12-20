@@ -63,7 +63,6 @@ module CIAX
           ___init_proc_int(buf)
           ___init_proc_ext(buf)
           ___init_proc_buf(buf)
-          ___init_proc_sub
           # Start buffer server thread
           buf.server
         end
@@ -98,14 +97,6 @@ module CIAX
           buf.flush_proc = proc do
             verbose { 'Propagate Buffer#flush -> Field#flush' }
             @sub.stat.flush
-          end
-        end
-
-        # Field: Update after each Batch Frm command finish
-        def ___init_proc_sub
-          @sub.stat.flush_procs << proc do
-            verbose { 'Propagate Field#flush -> Status#cmt' }
-            @stat.cmt
           end
         end
       end

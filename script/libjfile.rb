@@ -54,6 +54,7 @@ module CIAX
         extend(JSave).ext_save
       end
 
+      # For local client mode, otherwise one time initial load
       def auto_load
         @upd_procs << proc { load_partial }
         self

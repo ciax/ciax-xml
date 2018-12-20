@@ -21,11 +21,10 @@ module CIAX
         @index.update(adbs[:alias]) if adbs.key?(:alias)
         # Just additional data should be provided
         %i(data class msg).each { |key| stat.get(key) { Hashx.new } }
-        ___init_upd_proc
+        ___init_cmt_proc
       end
 
       def to_csv
-        upd
         @group.values.each_with_object('') do |gdb, str|
           cap = gdb[:caption] || next
           gdb[:members].each do |id|
@@ -36,7 +35,6 @@ module CIAX
       end
 
       def to_v
-        upd
         values.flat_map do |v|
           next unless v.is_a? Hash
           lns = ___view_lines(v[:lines])
@@ -50,14 +48,14 @@ module CIAX
 
       private
 
-      def ___init_upd_proc
-        @upd_procs << proc do
-          @stat.upd
+      def ___init_cmt_proc
+        @cmt_procs << proc do
           self['gtime'] = { caption: '', lines: [hash = {}] }
           hash[:time] = { label: 'TIMESTAMP', msg: date(@stat[:time]) }
           hash[:elapsed] = { label: 'ELAPSED', msg: elps_date(@stat[:time]) }
           ___view_groups
         end
+        cmt_propagate(@stat)
       end
 
       def ___view_groups
@@ -104,10 +102,10 @@ module CIAX
       require 'libinsdb'
       odb = { options: 'rj', c: 'CSV output' }
       GetOpts.new('[site] | < status_file', odb) do |opt, args|
-        stat = Status.new(args.shift)
+        stat = Status.new(args.shift).ext_local_sym
         view = View.new(stat)
         stat.ext_local_file if STDIN.tty?
-        stat.ext_local_sym.cmt
+        stat.cmt
         puts opt[:c] ? view.to_csv : view.to_s
       end
     end

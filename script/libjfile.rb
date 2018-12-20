@@ -42,7 +42,7 @@ module CIAX
 
       # Set latest_link=true for making latest link at save
       def ext_local_file(dir = nil)
-        verbose { "Initiate File Loading Feature [#{base_name}]" }
+        verbose { "Initiate File Feature [#{base_name}]" }
         @id || cfg_err('No ID')
         @thread = Thread.current # For Thread safe
         @jsondir = vardir(dir || 'json')

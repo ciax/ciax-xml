@@ -16,7 +16,6 @@ module CIAX
         end
 
         def to_v
-          upd
           vw = ''
           ___view_time(vw)
           vw << __itemize('Issuing', self[:exec])
@@ -34,7 +33,8 @@ module CIAX
 
         def ___view_time(vw)
           vw << __itemize('Elapsed', elps_date(self[:time], now_msec))
-          vw << __itemize('ActiveTime', elps_sec(*self[:act_time]))
+          s, e = self[:act_time]
+          vw << __itemize('ActiveTime', elps_sec(s, e))
           vw << __itemize('ToNextUpdate', elps_sec(now_msec, self[:upd_next]))
         end
 

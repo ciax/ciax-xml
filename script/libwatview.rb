@@ -15,7 +15,6 @@ module CIAX
         wdb = type?(event.dbi, Dbi)[:watch]
         ___init_stat(wdb || { index: [] })
         ___init_cmt_procs
-        cmt
       end
 
       private
@@ -32,13 +31,13 @@ module CIAX
 
       def ___init_cmt_procs
         init_time2cmt(@event)
-        cmt_propagate(@event)
         @cmt_procs << proc do
           %i(exec block int act_time upd_next).each do |id|
             self[id] = @event.get(id)
           end
           ___upd_stat
         end
+        cmt_propagate(@event)
       end
 
       def ___init_cond(cond, m)

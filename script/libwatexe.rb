@@ -34,9 +34,9 @@ module CIAX
 
       # Mode Extention by Option
       def _ext_local
-        ___init_upd
+        @stat.ext_local_file
+        ___init_cmd_procs
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
-        @stat.ext_local_conv(@sub.stat)
         super
       end
 
@@ -67,7 +67,7 @@ module CIAX
         @post_exe_procs.concat(@sub.post_exe_procs)
       end
 
-      def ___init_upd
+      def ___init_cmd_procs
         @stat.cmt_procs << proc do |ev|
           verbose { 'Propagate Event#cmt -> Watch#(set blocking command)' }
           block = ev.get(:block).map { |id, par| par ? nil : id }.compact

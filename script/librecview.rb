@@ -16,7 +16,8 @@ module CIAX
 
       # Show Index of Alives Item
       def to_v
-        lines.join("\n")
+        (['<<< ' + colorize('Archive Records', 2) + ' >>>'] +
+        lines).join("\n")
       end
 
       def last(num)

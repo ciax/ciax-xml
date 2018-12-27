@@ -6,11 +6,14 @@ module CIAX
   module Mcr
     # Divided for Rubocop
     class RecView < Upd
-      attr_reader :rec_arc, :list
-      def initialize(rec_arc, rec_alive = {})
+      attr_reader :rec_arc
+      def initialize(rec_arc, rec_dic = {})
         super()
         @rec_arc = type?(rec_arc, RecArc)
-        @rec_alive = rec_alive
+        # @cache in RecDic
+        @rec_dic = rec_dic
+        @list = []
+        ___init_propagate
         clr
       end
 
@@ -30,7 +33,7 @@ module CIAX
       end
 
       def clr
-        @list = @rec_alive.keys
+        @list.replace(@rec_dic.keys)
         self
       end
 
@@ -44,8 +47,16 @@ module CIAX
 
       private
 
+      def ___init_propagate
+        upd_propagate(@rec_arc)
+        cmt_propagate(@rec_arc)
+        @cmt_procs << proc do
+          @list.concat(@rec_dic.keys).sort!.uniq!
+        end
+      end
+
       def ___item_view(id, idx)
-        rec = @rec_alive[id] || @rec_arc.get(id)
+        rec = @rec_dic[id] || @rec_arc.get(id)
         tim = ___get_time(id)
         pcid = ___get_pcid(rec[:pid])
         title = format('[%s] %s (%s) by %s', idx, id, tim, pcid)

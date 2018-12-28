@@ -6,15 +6,14 @@ module CIAX
   module Mcr
     # Divided for Rubocop
     class RecView < Upd
-      attr_reader :rec_arc
+      attr_reader :rec_arc, :list
       def initialize(rec_arc, rec_dic = {})
         super()
         @rec_arc = type?(rec_arc, RecArc)
         # @cache in RecDic
         @rec_dic = rec_dic
-        @list = []
+        @list = [@rec_arc.list.last]
         ___init_propagate
-        clr
       end
 
       # Show Index of Alives Item
@@ -23,8 +22,8 @@ module CIAX
         lines).join("\n")
       end
 
-      def last(num)
-        @list.concat(@rec_arc.last(num)).sort!.uniq!
+      def tail(num)
+        @list.concat(@rec_arc.tail(num)).sort!.uniq!
         self
       end
 
@@ -51,7 +50,9 @@ module CIAX
         upd_propagate(@rec_arc)
         cmt_propagate(@rec_arc)
         @cmt_procs << proc do
-          @list.concat(@rec_dic.keys).sort!.uniq!
+          max = @list.max.to_i
+          @rec_arc.list.each { |i| @list << i if i.to_i > max }
+          @list.sort!.uniq!
         end
       end
 
@@ -87,7 +88,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[num]') do |_opts, args|
         rv = RecView.new(RecArc.new.ext_local.refresh)
-        puts rv.last(args.shift.to_i)
+        puts rv.tail(args.shift.to_i)
       end
     end
   end

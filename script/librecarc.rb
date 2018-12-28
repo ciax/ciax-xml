@@ -20,9 +20,13 @@ module CIAX
         self[:dic][id] || id_err(id, 'Record Archive')
       end
 
-      def last(num)
+      def list
+        dic.keys.sort
+      end
+
+      def tail(num = 1)
         upd
-        dic.keys.sort.uniq.last(num.to_i)
+        list.uniq.last(num.to_i)
       end
 
       # Mode

@@ -18,7 +18,6 @@ module CIAX
         def ext_local_shell
           super
           verbose { 'Initiate Mcr Shell' }
-          __init_recview
           ___init_stat
           ___init_prompt
           ___init_conv
@@ -31,7 +30,6 @@ module CIAX
 
         def ___init_stat
           @view = RecDic.new(@stat, @id, @cobj.rem.int)
-          @rec_view = @view.rec_view
           @opt.cl? ? @view.ext_remote(@host) : @view.ext_local
           @cfg[:output] = @view
         end
@@ -48,10 +46,10 @@ module CIAX
         def ___init_recview_cmd
           page = @cobj.loc.add_page
           page.get('last').def_proc do |ent|
-            @rec_view.inc(ent.par[0] || 1)
+            @view.inc(ent.par[0] || 1)
           end
           page.get('cl').def_proc do
-            @rec_view.clr
+            @view.flush
           end
         end
 

@@ -7,7 +7,7 @@ module CIAX
     # Divided for Rubocop
     class RecView < Upd
       attr_reader :rec_arc, :list
-      def initialize(rec_arc, rec_dic = {})
+      def initialize(rec_arc, rec_dic = Hashx.new)
         super()
         @rec_arc = type?(rec_arc, RecArc)
         # @cache in RecDic
@@ -24,15 +24,6 @@ module CIAX
 
       def tail(num)
         @list.concat(@rec_arc.tail(num)).sort!.uniq!
-        self
-      end
-
-      def inc(num = 1)
-        tail(@list.size + num.to_i)
-      end
-
-      def clr
-        @list.replace(@rec_dic.keys)
         self
       end
 
@@ -63,7 +54,7 @@ module CIAX
       end
 
       def ___item_view(id, idx)
-        rec = @rec_dic[id] || @rec_arc.get(id)
+        rec = @rec_dic.get(id) || @rec_arc.get(id)
         tim = ___get_time(id)
         pcid = ___get_pcid(rec[:pid])
         title = format('[%s] %s (%s) by %s', idx, id, tim, pcid)

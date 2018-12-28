@@ -27,7 +27,7 @@ module CIAX
         int ||= CmdTree::Remote::Int::Group.new(Config.new)
         ___init_int(int)
         @current_idx = 0
-        @cache = {}
+        @cache = Hashx.new
         # RecArc : R/O
         @rec_arc = rec_arc || RecArc.new
         @rec_view = RecView.new(@rec_arc, @cache)
@@ -42,6 +42,11 @@ module CIAX
 
       def sel(num)
         @current_idx = limit(0, @list.size, num.to_i)
+        self
+      end
+
+      def inc(num = 1)
+        @rec_view.tail(@list.size + num.to_i)
         self
       end
 

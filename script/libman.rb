@@ -44,8 +44,7 @@ module CIAX
 
       def _ext_local_shell
         super
-        __init_recview
-        @cfg[:output] = @rec_view
+        @cfg[:output] = RecView.new(@stat)
         self
       end
 
@@ -56,17 +55,6 @@ module CIAX
         rem.add_sys
         rem.add_int.add_par(@sv_stat.get(:list))
         rem.add_ext
-      end
-
-      def __init_recview
-        @rec_view = RecView.new(@stat)
-        page = @cobj.loc.add_page
-        page.get('last').def_proc do |ent|
-          @rec_view.inc(ent.par[0] || 1)
-        end
-        page.get('cl').def_proc do
-          @rec_view.clr
-        end
       end
     end
 

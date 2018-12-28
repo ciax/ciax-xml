@@ -30,7 +30,7 @@ module CIAX
         @cache = Hashx.new
         # RecArc : R/O
         @rec_arc = rec_arc || RecArc.new
-        @rec_view = RecView.new(@rec_arc, self)
+        @rec_view = RecView.new(@rec_arc) { |id| get(id) }
         @list = @rec_view.list
         ___init_upd_proc
       end

@@ -7,11 +7,11 @@ module CIAX
     # Divided for Rubocop
     class RecView < Upd
       attr_reader :rec_arc, :list
-      def initialize(rec_arc, rec_dic = nil)
+      def initialize(rec_arc, &get_proc)
         super()
         @rec_arc = type?(rec_arc, RecArc)
         # @cache in RecDic
-        @rec_dic = rec_dic
+        @get_proc = get_proc || proc {}
         @list = []
         ___init_propagate
       end
@@ -54,7 +54,7 @@ module CIAX
       end
 
       def ___item_view(id, idx)
-        rec = (@rec_dic && @rec_dic.get(id)) || @rec_arc.get(id)
+        rec = @get_proc.call(id) || @rec_arc.get(id)
         tim = ___get_time(id)
         pcid = ___get_pcid(rec[:pid])
         title = format('[%s] %s (%s) by %s', idx, id, tim, pcid)

@@ -12,7 +12,7 @@ module CIAX
         @rec_arc = type?(rec_arc, RecArc)
         # @cache in RecDic
         @rec_dic = rec_dic
-        @list = [@rec_arc.list.last]
+        @list = []
         ___init_propagate
       end
 
@@ -28,7 +28,7 @@ module CIAX
       end
 
       def inc(num = 1)
-        last(@list.size + num.to_i)
+        tail(@list.size + num.to_i)
       end
 
       def clr
@@ -49,7 +49,13 @@ module CIAX
       def ___init_propagate
         upd_propagate(@rec_arc)
         cmt_propagate(@rec_arc)
-        @cmt_procs << proc do
+        @cmt_procs << proc { ___inc_list }
+      end
+
+      def ___inc_list
+        if @list.empty?
+          @list << @rec_arc.list.last
+        else
           max = @list.max.to_i
           @rec_arc.list.each { |i| @list << i if i.to_i > max }
           @list.sort!.uniq!

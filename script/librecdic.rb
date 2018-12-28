@@ -21,7 +21,7 @@ module CIAX
     #  Local(ext_save) : write down RecArc
     class RecDic < Upd
       attr_reader :current_idx, :rec_view
-      def initialize(rec_view = nil, proj = nil, int = nil)
+      def initialize(rec_arc = nil, proj = nil, int = nil)
         super()
         self[:id] = proj || ENV['PROJ']
         int ||= CmdTree::Remote::Int::Group.new(Config.new)
@@ -29,8 +29,8 @@ module CIAX
         @current_idx = 0
         @cache = {}
         # RecArc : R/O
-        @rec_view = rec_view || RecView.new(RecArc.new, @cache)
-        @rec_arc = type?(@rec_view, RecView).rec_arc
+        @rec_arc = rec_arc || RecArc.new
+        @rec_view = RecView.new(@rec_arc, @cache)
         @list = @rec_view.list
         ___init_upd_proc
       end
@@ -123,7 +123,7 @@ module CIAX
         else
           rl.ext_local
         end
-        rl.rec_view.last(args.shift)
+        rl.rec_view.tail(args.shift)
         puts rl.upd.sel(args.shift)
       end
     end

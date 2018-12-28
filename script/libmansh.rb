@@ -22,6 +22,7 @@ module CIAX
           ___init_stat
           ___init_prompt
           ___init_conv
+          ___init_recview_cmd
           ___init_rank_cmd(@cobj.loc.add_view)
           self
         end
@@ -29,7 +30,8 @@ module CIAX
         private
 
         def ___init_stat
-          @view = RecDic.new(@rec_view, @id, @cobj.rem.int)
+          @view = RecDic.new(@stat, @id, @cobj.rem.int)
+          @rec_view = @view.rec_view
           @opt.cl? ? @view.ext_remote(@host) : @view.ext_local
           @cfg[:output] = @view
         end
@@ -40,6 +42,16 @@ module CIAX
           @prompt_proc = proc do
             str = @sv_stat.to_s + "[#{@view.current_idx}]"
             str << opt_listing((@view.current_rec || {})[:option])
+          end
+        end
+
+        def ___init_recview_cmd
+          page = @cobj.loc.add_page
+          page.get('last').def_proc do |ent|
+            @rec_view.inc(ent.par[0] || 1)
+          end
+          page.get('cl').def_proc do
+            @rec_view.clr
           end
         end
 

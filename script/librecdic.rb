@@ -21,7 +21,7 @@ module CIAX
     #  Local(ext_save) : write down RecArc
     class RecDic < Upd
       attr_reader :current_idx, :rec_view
-      def initialize(rec_arc = nil, proj = nil, int = nil)
+      def initialize(rec_arc = RecArc.new, proj = nil, int = nil)
         super()
         self[:id] = proj || ENV['PROJ']
         int ||= CmdTree::Remote::Int::Group.new(Config.new)
@@ -29,8 +29,7 @@ module CIAX
         @current_idx = 0
         @cache = Hashx.new
         # RecArc : R/O
-        @rec_arc = rec_arc || RecArc.new
-        @rec_view = RecView.new(@rec_arc) { |id| get(id) }
+        @rec_view = RecView.new(rec_arc) { |id| get(id) }
         @list = @rec_view.list
         ___init_upd_proc
       end
@@ -85,13 +84,14 @@ module CIAX
 
       # Manipulate memory
       def ext_local(mcr_dic = nil)
-        @rec_arc.ext_local.refresh
         # Get Live Record
-        @rec_arc.cmt_procs << proc { @cache.update(mcr_dic.records) } if mcr_dic
+        @cmt_procs << proc { @cache.update(mcr_dic.records) } if mcr_dic
         # Get Archive Record
         @cache.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_local_file.auto_load.upd
         end
+        @rec_view.rec_arc.ext_local
+        self
       end
 
       private
@@ -103,19 +103,13 @@ module CIAX
       end
 
       def ___init_upd_proc
-        upd_propagate(@rec_arc)
-        @upd_procs << proc do
-          ___detect_inc
+        upd_propagate(@rec_view)
+        cmt_propagate(@rec_view)
+        @cmt_procs << proc do
+          sel(@list.size)
           @valid_keys.replace((current_rec || self)[:option] || [])
           self[:default] = @par[:default]
         end
-      end
-
-      def ___detect_inc
-        newids = (@par.list - @list)
-        return if newids.empty?
-        @list.concat(newids)
-        sel(@list.size)
       end
     end
 

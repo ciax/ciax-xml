@@ -6,14 +6,13 @@ module CIAX
   module Mcr
     # Divided for Rubocop
     class RecView < Upd
-      attr_reader :rec_arc, :list
+      attr_reader :rec_arc
       def initialize(rec_arc, &get_proc)
         super()
         @rec_arc = type?(rec_arc, RecArc)
+        @oldest = @rec_arc.list.last.to_i
         # @cache in RecDic
         @get_proc = get_proc || proc {}
-        @list = []
-        ___init_propagate
       end
 
       # Show Index of Alives Item
@@ -22,36 +21,23 @@ module CIAX
         lines).join("\n")
       end
 
+      def list
+        @rec_arc.list.select { |i| i.to_i > @oldest }
+      end
+
       def tail(num)
-        @list.concat(@rec_arc.tail(num)).sort!.uniq!
+        @oldest = @rec_arc.tail(num.to_i + 1).min.to_i
         self
       end
 
       def lines
-        page = []
-        @list.each_with_index do |id, idx|
-          page << ___item_view(id, idx + 1)
+        idx = 0
+        list.map do |id|
+          ___item_view(id, idx += 1)
         end
-        page
       end
 
       private
-
-      def ___init_propagate
-        upd_propagate(@rec_arc)
-        cmt_propagate(@rec_arc)
-        @cmt_procs << proc { ___inc_list }
-      end
-
-      def ___inc_list
-        if @list.empty?
-          @list << @rec_arc.list.last
-        else
-          max = @list.max.to_i
-          @rec_arc.list.each { |i| @list << i if i.to_i > max }
-          @list.sort!.uniq!
-        end
-      end
 
       def ___item_view(id, idx)
         rec = @get_proc.call(id) || @rec_arc.get(id)

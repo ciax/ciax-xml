@@ -8,10 +8,10 @@ module CIAX
     # Visible Record Dictionary
     # Need RecArc to get Parent CID
     # Contents
-    #   @list: Array of macro ID
+    #   @cache: Dic of Record
     # Alives Array => R/O here
     #   Parameter[:list] = Prompt[:list](@par.list)
-    # RecArc(Index) > RecDic(Records)
+    # RecView(Index) > RecDic(Records)
     # RecDic : Client Side (Picked at Client)
     # Alives : Server Side
     #
@@ -28,9 +28,7 @@ module CIAX
         ___init_int(int)
         @current_idx = 0
         @cache = Hashx.new
-        # RecArc : R/O
         @rec_view = RecView.new(rec_arc) { |id| get(id) }
-        @list = @rec_view.list
         ___init_upd_proc
       end
 
@@ -40,24 +38,25 @@ module CIAX
       end
 
       def sel(num)
-        @current_idx = limit(0, @list.size, num.to_i)
+        @current_idx = limit(0, @rec_view.list.size, num.to_i)
         self
       end
 
       def inc(num = 1)
-        @rec_view.tail(@list.size + num.to_i)
+        @rec_view.inc(num.to_i)
         self
       end
 
       def flush
-        @list.replace(@par.list)
+        @rec_view.clear_list
+        @rec_view.inc(@par.list.size)
         @current_idx = 0
         self
       end
 
       def current_rec
         return if @current_idx.zero?
-        id = @list[@current_idx - 1]
+        id = @rec_view.list[@current_idx - 1]
         @par.def_par(id)
         get(id)
       end
@@ -106,7 +105,7 @@ module CIAX
         upd_propagate(@rec_view)
         cmt_propagate(@rec_view)
         @cmt_procs << proc do
-          sel(@list.size)
+          sel(@rec_view.list.size)
           @valid_keys.replace((current_rec || self)[:option] || [])
           self[:default] = @par[:default]
         end
@@ -122,8 +121,7 @@ module CIAX
         else
           rl.ext_local
         end
-        rl.rec_view.tail(args.shift)
-        puts rl.upd.sel(args.shift)
+        puts rl.inc(args.shift).sel(args.shift)
       end
     end
   end

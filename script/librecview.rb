@@ -10,9 +10,9 @@ module CIAX
       def initialize(rec_arc, &get_proc)
         super()
         @rec_arc = type?(rec_arc, RecArc)
-        @oldest = @rec_arc.list.last
         # @cache in RecDic
         @get_proc = get_proc || proc {}
+        ___init_propagate
       end
 
       # Show Index of Alives Item
@@ -23,13 +23,12 @@ module CIAX
 
       def list
         rl = @rec_arc.list
-        rl[rl.index(@oldest) + 1..-1]
-        #                rl.select { |i| i > @oldest }
+        rl[rl.index(@oldest) + 1..-1].reverse
       end
 
-      def tail(num)
-        @oldest = @rec_arc.tail(num.to_i + 1).min
-        self
+      def clear_list
+        @oldest = @rec_arc.list.last
+        []
       end
 
       def inc(num = 1)
@@ -46,6 +45,14 @@ module CIAX
       end
 
       private
+
+      def ___init_propagate
+        upd_propagate(@rec_arc)
+        cmt_propagate(@rec_arc)
+        @cmt_procs << proc do
+          clear_list unless @oldest
+        end
+      end
 
       def ___item_view(id, idx)
         rec = @get_proc.call(id) || @rec_arc.get(id)

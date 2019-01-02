@@ -49,7 +49,6 @@ module CIAX
         def initialize(id, ver)
           super("input_#{layer_name}", id, ver)
           init_time2cmt
-          ext_local_file
           ext_local_log
         end
       end

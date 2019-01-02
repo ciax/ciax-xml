@@ -107,7 +107,7 @@ module CIAX
         if opts.cl?
           ra.ext_remote(opts.host)
         else
-          ra.ext_local.ext_save.clear.refresh
+          ra.ext_local.ext_save.refresh
         end
         puts ra
       end

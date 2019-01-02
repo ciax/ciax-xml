@@ -34,7 +34,7 @@ module CIAX
 
       # Mode Extention by Option
       def _ext_local
-        @stat.ext_local_file
+        @stat.ext_local_file.ext_load
         ___init_cmt_procs
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
         super

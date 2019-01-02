@@ -3,7 +3,39 @@ module CIAX
   # Variable status data
   class Varx
     # JSON file module functions
-    module JFileFunc
+    module JFile
+      def self.extended(obj)
+        Msg.type?(obj, Varx)
+      end
+
+      def ext_local_file(dir = nil)
+        verbose { "Initiate File Feature [#{base_name}]" }
+        @id || cfg_err('No ID')
+        @jsondir = vardir(dir || 'json')
+        @cfile = base_name # Current file name
+        self
+      end
+
+      def ext_load
+        extend(JLoad).ext_load
+      end
+
+      def ext_save
+        extend(JSave).ext_save
+      end
+
+      private
+
+      def __file_name(tag = nil)
+        base_name(tag) + '.json'
+      end
+
+      def __tag_list
+        Dir.glob(@jsondir + __file_name('*')).map do |f|
+          f.slice(/.+_(.+)\.json/, 1)
+        end.sort
+      end
+
       module_function
 
       # Using for RecArc, RecDic
@@ -33,26 +65,12 @@ module CIAX
     end
 
     # Add File I/O feature
-    module JFile
-      include JFileFunc
-
-      def self.extended(obj)
-        Msg.type?(obj, Varx)
-      end
-
+    module JLoad
       # Set latest_link=true for making latest link at save
-      def ext_local_file(dir = nil)
-        verbose { "Initiate File Feature [#{base_name}]" }
-        @id || cfg_err('No ID')
-        @thread = Thread.current # For Thread safe
-        @jsondir = vardir(dir || 'json')
-        @cfile = base_name # Current file name
+      def ext_load
+        verbose { "Initiate File Loading Feature [#{base_name}]" }
         load_partial # If file is empty, keep the skeleton
         self
-      end
-
-      def ext_save
-        extend(JSave).ext_save
       end
 
       # For local client mode, otherwise one time initial load
@@ -86,16 +104,6 @@ module CIAX
         relay(@cfile.to_s)
       end
 
-      def __file_name(tag = nil)
-        base_name(tag) + '.json'
-      end
-
-      def __tag_list
-        Dir.glob(@jsondir + __file_name('*')).map do |f|
-          f.slice(/.+_(.+)\.json/, 1)
-        end.sort
-      end
-
       def ___chk_tag(tag = nil)
         return __file_name unless tag
         list = __tag_list
@@ -118,6 +126,7 @@ module CIAX
 
       def ext_save
         verbose { "Initiate File Saving Feature [#{base_name}]" }
+        @thread = Thread.current # For Thread safe
         @cmt_procs << proc { save }
         self
       end

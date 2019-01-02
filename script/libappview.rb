@@ -21,7 +21,7 @@ module CIAX
         @index.update(adbs[:alias]) if adbs.key?(:alias)
         # Just additional data should be provided
         %i(data class msg).each { |key| stat.get(key) { Hashx.new } }
-        ___init_cmt_proc
+        ___init_cmt_procs
       end
 
       def to_csv
@@ -48,7 +48,7 @@ module CIAX
 
       private
 
-      def ___init_cmt_proc
+      def ___init_cmt_procs
         init_time2cmt(@stat)
         upd_propagate(@stat)
         cmt_propagate(@stat)
@@ -58,6 +58,7 @@ module CIAX
           hash[:elapsed] = { label: 'ELAPSED', msg: elps_date(@stat[:time]) }
           ___view_groups
         end
+        cmt
       end
 
       def ___view_groups

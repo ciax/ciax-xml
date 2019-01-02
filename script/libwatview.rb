@@ -39,6 +39,7 @@ module CIAX
           end
           ___upd_stat
         end
+        cmt
       end
 
       def ___init_cond(cond, m)

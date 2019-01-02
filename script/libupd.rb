@@ -16,7 +16,7 @@ module CIAX
     end
 
     # Time setting, Loading file at client
-    # Not for initial loading on JFile
+    # For loading with propagation
     # Should be done when pulling data
     def upd
       @upd_procs.each { |p| p.call(self) }

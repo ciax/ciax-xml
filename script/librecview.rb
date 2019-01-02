@@ -13,6 +13,7 @@ module CIAX
         # @cache in RecDic
         @get_proc = get_proc || proc {}
         ___init_propagate
+        cmt
       end
 
       # Show Index of Alives Item

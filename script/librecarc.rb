@@ -46,7 +46,7 @@ module CIAX
 
         def ext_local
           init_time2cmt
-          ext_local_file.load
+          ext_local_file
           self
         end
 

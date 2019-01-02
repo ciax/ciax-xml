@@ -29,15 +29,15 @@ module CIAX
         self
       end
 
+      private
+
       # Mode Extention by Option
-      def ext_local_shell
-        extend(Shell).ext_local_shell
+      def _ext_local_shell
+        super
         @prompt_proc = proc { @sv_stat.to_s + opt_listing(@int.valid_keys) }
         @cobj.loc.add_view
         self
       end
-
-      private
 
       def ___init_cmd
         rem = @cobj.add_rem

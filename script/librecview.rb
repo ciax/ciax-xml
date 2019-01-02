@@ -10,7 +10,7 @@ module CIAX
       def initialize(rec_arc, &get_proc)
         super()
         @rec_arc = type?(rec_arc, RecArc)
-        @oldest = @rec_arc.list.last.to_i
+        @oldest = @rec_arc.list.last
         # @cache in RecDic
         @get_proc = get_proc || proc {}
       end
@@ -22,11 +22,19 @@ module CIAX
       end
 
       def list
-        @rec_arc.list.select { |i| i.to_i > @oldest }
+        rl = @rec_arc.list
+        rl[rl.index(@oldest) + 1..-1]
+        #                rl.select { |i| i > @oldest }
       end
 
       def tail(num)
-        @oldest = @rec_arc.tail(num.to_i + 1).min.to_i
+        @oldest = @rec_arc.tail(num.to_i + 1).min
+        self
+      end
+
+      def inc(num = 1)
+        rl = @rec_arc.list
+        @oldest = rl[rl.index(@oldest) - num.to_i]
         self
       end
 
@@ -72,7 +80,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[num]') do |_opts, args|
         rv = RecView.new(RecArc.new.ext_local.refresh)
-        puts rv.tail(args.shift.to_i)
+        puts rv.inc(args[0])
       end
     end
   end

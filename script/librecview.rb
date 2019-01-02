@@ -22,6 +22,10 @@ module CIAX
         lines).join("\n")
       end
 
+      def to_r
+        list.extend(Enumx).to_r
+      end
+
       def list
         rl = @rec_arc.list
         rl[rl.index(@oldest) + 1..-1].reverse

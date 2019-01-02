@@ -43,6 +43,7 @@ module CIAX
 
       def _ext_local_shell
         super
+        @cobj.loc.add_view
         @cfg[:output] = RecView.new(@stat)
         self
       end

@@ -48,8 +48,7 @@ module CIAX
       end
 
       def flush
-        @rec_view.clear_list
-        @rec_view.inc(@par.list.size)
+        @rec_view.clear.inc(@par.list.size)
         @current_idx = 0
         self
       end
@@ -105,7 +104,7 @@ module CIAX
         upd_propagate(@rec_view)
         cmt_propagate(@rec_view)
         @cmt_procs << proc do
-          sel(@rec_view.list.size)
+          sel(1)
           @valid_keys.replace((current_rec || self)[:option] || [])
           self[:default] = @par[:default]
         end

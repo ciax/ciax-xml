@@ -26,9 +26,9 @@ module CIAX
         rl[rl.index(@oldest) + 1..-1].reverse
       end
 
-      def clear_list
+      def clear
         @oldest = @rec_arc.list.last
-        []
+        self
       end
 
       def inc(num = 1)
@@ -50,7 +50,7 @@ module CIAX
         upd_propagate(@rec_arc)
         cmt_propagate(@rec_arc)
         @cmt_procs << proc do
-          clear_list unless @oldest
+          clear unless @oldest
         end
       end
 

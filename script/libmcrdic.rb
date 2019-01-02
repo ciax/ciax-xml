@@ -75,7 +75,6 @@ module CIAX
           @cfg[:jump_mcr] = @jumpgrp
           @current = 'man'
           @jumpgrp.add_item(@current, 'manager')
-          @sub_dic.ext_shell
           _dic.each_value { |mobj| __set_jump(mobj) }
           self
         end

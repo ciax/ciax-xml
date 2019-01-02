@@ -13,6 +13,7 @@ module CIAX
 
     def show_err
       show($ERROR_INFO)
+      show($ERROR_INFO.backtrace) if ENV['VER']
     end
 
     # Messaging methods

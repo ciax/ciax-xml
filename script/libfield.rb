@@ -123,7 +123,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id]') do |_opts, args|
-        puts Field.new(args.shift).to_r
+        puts Field.new(args.shift).ext_local_file
       end
     end
   end

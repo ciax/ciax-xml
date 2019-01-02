@@ -86,7 +86,7 @@ module CIAX
         @cmt_procs << proc { @cache.update(mcr_dic.records) } if mcr_dic
         # Get Archive Record
         @cache.default_proc = proc do |hash, key|
-          hash[key] = Record.new(key).ext_local_file.auto_load.upd
+          hash[key] = Record.new(key).ext_local_file
         end
         @rec_view.rec_arc.ext_local
         self

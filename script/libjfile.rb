@@ -47,6 +47,7 @@ module CIAX
         @thread = Thread.current # For Thread safe
         @jsondir = vardir(dir || 'json')
         @cfile = base_name # Current file name
+        load_partial
         self
       end
 

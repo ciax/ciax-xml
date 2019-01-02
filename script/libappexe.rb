@@ -29,7 +29,7 @@ module CIAX
 
       # Mode Extension by Option
       def _ext_local
-        @stat.ext_local_sym(@cfg[:sdb]).ext_local_file.auto_load
+        @stat.ext_local_sym(@cfg[:sdb]).ext_local_file
         ___init_proc_set
         ___init_proc_del
         super

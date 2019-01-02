@@ -27,7 +27,7 @@ module CIAX
         int ||= CmdTree::Remote::Int::Group.new(Config.new)
         ___init_int(int)
         @current_idx = 0
-        @cache = Hashx.new
+        self[:dic] = @cache = Hashx.new
         @rec_view = RecView.new(rec_arc) { |id| get(id) }
         ___init_upd_proc
       end

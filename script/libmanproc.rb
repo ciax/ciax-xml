@@ -54,7 +54,6 @@ module CIAX
           @pre_exe_procs << proc do
             @sv_stat.repl(:sid, '')
             @sv_stat.flush(:run).cmt if @sv_stat.get(:list).empty?
-            @stat.upd
           end
         end
 

@@ -88,7 +88,7 @@ module CIAX
         @cache.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_local_file.ext_load
         end
-        @rec_view.rec_arc.ext_local
+        @rec_view.rec_arc.ext_local.ext_load
         self
       end
 

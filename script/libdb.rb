@@ -19,6 +19,7 @@ module CIAX
     def initialize(type)
       super()
       verbose { 'Initiate Db' }
+      @cache = Cache.new(type, self)
       @type = type
       _get_disp_dic
       @argc = 0
@@ -62,39 +63,21 @@ module CIAX
       @disp_dic = __get_db(lid, &:disp_dic)
     end
 
-    # Returns Dbi(command list) or Disp(site list)
-    def _get_cache(id)
-      @cbase = "#{@type}-#{id}"
-      @cachefile = vardir('cache') + "#{@cbase}.mar"
-      return ___load_cache(id) if ___use_cache?
-    end
-
     def __get_db(id)
-      res = _get_cache(id)
+      res = @cache.get(id)
       return res if res
       is_new = ___load_docs(id)
       verbose { "Building DB (#{id})" }
       res = ___validate_repl(yield(@docs))
-      ___save_cache(res) if is_new
+      @cache.save(res) if is_new
       self[id] = res
     end
 
-    def ___load_cache(id)
-      verbose { "Cache Loading (#{@cbase})" }
-      return self[id] if key?(id)
-      begin
-        # Used Marshal for symbol keys
-        Marshal.load(IO.read(@cachefile))
-      rescue ArgumentError # if empty
-        Hashx.new
-      end
-    end
-
-    def ___save_cache(res)
-      open(@cachefile, 'w') do |f|
-        f << Marshal.dump(res)
-        verbose { "Cache Saved (#{@cbase})" }
-      end
+    # counter must not remain
+    def ___validate_repl(db)
+      res = db.deep_search('\$[_a-z]')
+      return db if res.empty?
+      cfg_err("Counter remained at [#{res.join('/')}]")
     end
 
     def ___load_docs(id)
@@ -111,12 +94,43 @@ module CIAX
     def _new_docs
       Xml::Doc.new(@type)
     end
+  end
 
-    # counter must not remain
-    def ___validate_repl(db)
-      res = db.deep_search('\$[_a-z]')
-      return db if res.empty?
-      cfg_err("Counter remained at [#{res.join('/')}]")
+  # DB Cache
+  class Cache
+    include Msg
+    def initialize(type, db)
+      super()
+      verbose { 'Initiate Cache' }
+      @type = type
+      @db = db
+    end
+
+    # Returns Dbi(command list) or Disp(site list)
+    def get(id)
+      @cbase = "#{@type}-#{id}"
+      @cachefile = vardir('cache') + "#{@cbase}.mar"
+      return ___load_cache(id) if ___use_cache?
+    end
+
+    def save(res)
+      open(@cachefile, 'w') do |f|
+        f << Marshal.dump(res)
+        verbose { "Saved (#{@cbase})" }
+      end
+    end
+
+    private
+
+    def ___load_cache(id)
+      verbose { "Loading (#{@cbase})" }
+      return @db[id] if @db.key?(id)
+      begin
+        # Used Marshal for symbol keys
+        Marshal.load(IO.read(@cachefile))
+      rescue ArgumentError # if empty
+        Hashx.new
+      end
     end
 
     def ___use_cache?
@@ -125,13 +139,13 @@ module CIAX
 
     def ___envnocache?
       verbose(ENV['NOCACHE']) do
-        "#{@type}/Cache ENV['NOCACHE'] is set"
+        "#{@type} ENV['NOCACHE'] is set"
       end
     end
 
     def ___marexist?
       verbose(!test('e', @cachefile)) do
-        "#{@type}/Cache MAR file(#{@cbase}) not exist"
+        "#{@type} MAR file(#{@cbase}) not exist"
       end
     end
 
@@ -146,7 +160,7 @@ module CIAX
     def __file_newer?(cap, ary)
       latest = ary.max_by { |f| File.mtime(f) }
       verbose(test('>', latest, @cachefile)) do
-        format('%s/Cache %s(%s) is newer than (%s)',
+        format('%s %s(%s) is newer than (%s)',
                @type, cap, latest.split('/').last, @cbase)
       end
     end

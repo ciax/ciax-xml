@@ -34,19 +34,30 @@ module CIAX
         csv = a2csv(list)
         return ___use_default(csv) unless str
         return method('_val_' + get(:type)).call(str, list, csv) if list
-        key?(:default) ? get(:default) : str
+        __get_default || str
       end
 
-      def def_par(str)
-        if valid_pars.include?(str)
-          self[:default] = str
-        else
-          delete(:default)
-        end
+      def def_par(str = nil)
+        self[:default] = str || valid_pars.first
         self
       end
 
       private
+
+      def __get_default
+        return unless key?(:default)
+        df = get(:default)
+        return df if df && valid_pars.include?(df)
+        delete(:default)
+        nil
+      end
+
+      def ___use_default(csv)
+        df = __get_default
+        raise ParShortage, csv unless df
+        verbose { "Validate: Using default value [#{df}]" }
+        df
+      end
 
       def _val_num(str, list, csv)
         num = expr(str)
@@ -65,12 +76,6 @@ module CIAX
         verbose { "Validate: [#{str}] Match? [#{csv}]" }
         return str if list.include?(str)
         par_err("Parameter Invalid Str (#{str}) for [#{csv}]")
-      end
-
-      def ___use_default(csv)
-        raise ParShortage, csv unless key?(:default)
-        verbose { "Validate: Using default value [#{get(:default)}]" }
-        get(:default)
       end
     end
   end

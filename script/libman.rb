@@ -45,6 +45,10 @@ module CIAX
         super
         @cobj.loc.add_view
         @cfg[:output] = RecView.new(@stat)
+        @prompt_proc = proc do
+          @cobj.rem.int.pars.last.def_par
+          ''
+        end
         self
       end
 

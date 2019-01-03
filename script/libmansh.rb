@@ -38,7 +38,7 @@ module CIAX
           # @view will be switched among Whole List or Records
           # Setting @par will switch the Record
           @prompt_proc = proc do
-            str = @sv_stat.to_s + "[#{@view.current_idx}]"
+            str = "[#{@view.current_idx}]"
             str << opt_listing((@view.current_rec || {})[:option])
           end
         end

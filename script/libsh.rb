@@ -46,6 +46,7 @@ module CIAX
       def prompt
         str = "#{@layer}:#{@id}"
         str += "(#{@mode})" if @mode
+        str += @sv_stat.to_s
         str += @prompt_proc.call if @prompt_proc
         str + '>'
       end
@@ -76,7 +77,6 @@ module CIAX
             @sv_stat.msg
           end
         end
-        @prompt_proc = proc { @sv_stat.to_s }
       end
 
       def ___init_readline

@@ -69,14 +69,10 @@ module CIAX
       private
 
       def ___init_sh_procs
-        @shell_input_procs = [] # proc takes args(Array)
         @shell_output_proc ||= proc do
-          if @sv_stat.msg.empty?
-            @cfg[:output].to_s
-          else
-            @sv_stat.msg
-          end
+          @sv_stat.msg.empty? ? @cfg[:output].to_s : @sv_stat.msg
         end
+        @shell_input_procs = [] # proc takes args(Array)
       end
 
       def ___init_readline

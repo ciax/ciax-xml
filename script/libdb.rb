@@ -19,8 +19,8 @@ module CIAX
     def initialize(type)
       super()
       verbose { 'Initiate Db' }
-      @cache = Cache.new(type, self)
       @type = type
+      @cache = Cache.new(type)
       _get_disp_dic
       @argc = 0
     end
@@ -57,20 +57,18 @@ module CIAX
 
     def _get_disp_dic(sufx = nil)
       # @disp_dic is Display
-      lid = ['list', sufx].join('_')
+      lid = ['list', sufx].compact.join('_')
       # Show site list
       # &:disp_dic = { |e| e.disp_dic }
       @disp_dic = __get_db(lid, &:disp_dic)
     end
 
     def __get_db(id)
-      res = @cache.get(id)
-      return res if res
-      is_new = ___load_docs(id)
-      verbose { "Building DB (#{id})" }
-      res = ___validate_repl(yield(@docs))
-      @cache.save(res) if is_new
-      self[id] = res
+      @cache.get(id) do
+        ___load_docs(id)
+        verbose { "Building DB (#{id})" }
+        self[id] = ___validate_repl(yield(@docs))
+      end
     end
 
     # counter must not remain
@@ -99,32 +97,35 @@ module CIAX
   # DB Cache
   class Cache
     include Msg
-    def initialize(type, db)
+    def initialize(type)
       super()
       verbose { 'Initiate Cache' }
       @type = type
-      @db = db
     end
 
     # Returns Dbi(command list) or Disp(site list)
     def get(id)
       @cbase = "#{@type}-#{id}"
       @cachefile = vardir('cache') + "#{@cbase}.mar"
-      return ___load_cache(id) if ___use_cache?
-    end
-
-    def save(res)
-      open(@cachefile, 'w') do |f|
-        f << Marshal.dump(res)
-        verbose { "Saved (#{@cbase})" }
+      if ___use_cache?
+        ___load_cache
+      else
+        ___save_cache(yield)
       end
     end
 
     private
 
-    def ___load_cache(id)
+    def ___save_cache(res)
+      open(@cachefile, 'w') do |f|
+        f << Marshal.dump(res)
+        verbose { "Saved (#{@cbase})" }
+      end
+      res
+    end
+
+    def ___load_cache
       verbose { "Loading (#{@cbase})" }
-      return @db[id] if @db.key?(id)
       begin
         # Used Marshal for symbol keys
         Marshal.load(IO.read(@cachefile))

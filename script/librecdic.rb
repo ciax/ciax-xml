@@ -81,14 +81,15 @@ module CIAX
       end
 
       # Manipulate memory
-      def ext_local(mcr_dic = nil)
-        # Get Live Record
-        @cmt_procs << proc { @cache.update(mcr_dic.records) } if mcr_dic
+      def ext_local
         # Get Archive Record
         @cache.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_local_file.ext_load
         end
-        @rec_view.rec_arc.ext_local.ext_load
+        # Get Live Record
+        @rec_view.rec_arc.ext_local.ext_load.push_procs << proc do |rec|
+          @cache[rec[:id]] = rec
+        end
         self
       end
 

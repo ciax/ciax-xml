@@ -7,8 +7,10 @@ module CIAX
     # Record Archive Dic (Dir)
     #   Index of Records
     class RecArc < Varx
+      attr_reader :push_procs
       def initialize
         super('list', 'record')
+        @push_procs = [proc { verbose { 'Propagate push' } }]
         # [:dic] : Archive Dic : Dictionary of Record (id: cid,pid,res)
       end
 
@@ -53,6 +55,7 @@ module CIAX
         def push(record) # returns self
           return self unless record.is_a?(Hash) && record[:id].to_i > 0
           __push_record(record)
+          @push_procs.each { |p| p.call(record) }
           cmt
         end
 

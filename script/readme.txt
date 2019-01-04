@@ -17,8 +17,8 @@ sqlite3: light weight sql server for logging, not for access from multiple proce
 
 ## ENV Var ##
  RUBYLIB
- ENV['PROJ']
- ENV['NOCACHE']
+ PROJ
+ NOCACHE
  DEBUG
  VER
 
@@ -32,6 +32,7 @@ sqlite3: light weight sql server for logging, not for access from multiple proce
  VER=string:..  for set 'and'
  VER=^string1.. for set 'exclude'
  VER=* for All
+ VER=traceback  show traceback of error
 
 ## json udp communicaton ##
  no command:

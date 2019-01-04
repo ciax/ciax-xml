@@ -24,7 +24,6 @@ module CIAX
       def initialize(rec_arc = RecArc.new, proj = nil, int = nil)
         super()
         self[:id] = proj || ENV['PROJ']
-        int ||= CmdTree::Remote::Int::Group.new(Config.new)
         ___init_int(int)
         @current_idx = 0
         self[:dic] = @cache = Hashx.new
@@ -96,6 +95,7 @@ module CIAX
       private
 
       def ___init_int(int)
+        int ||= CmdTree::Remote::Int::Group.new(Config.new)
         @par = int.pars.last || CmdBase::Parameter.new
         @valid_keys = type?(int.valid_keys, Array)
         self[:option] = @valid_keys.dup

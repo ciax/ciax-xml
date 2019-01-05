@@ -19,7 +19,7 @@ module CIAX
           super
           verbose { 'Initiate Mcr Shell' }
           ___init_stat
-          ___init_prompt
+          ___init_procs
           ___init_conv
           ___init_recview_cmd
           ___init_rank_cmd(@cobj.loc.add_view)
@@ -34,12 +34,13 @@ module CIAX
           @cfg[:output] = @view
         end
 
-        def ___init_prompt
+        def ___init_procs
           # @view will be switched among Whole List or Records
           # Setting @par will switch the Record
           @prompt_proc = proc do
+            opt = (@view.current_rec || {})[:option]
             str = "[#{@view.current_idx}]"
-            str << opt_listing((@view.current_rec || {})[:option])
+            str << opt_listing(opt)
           end
         end
 

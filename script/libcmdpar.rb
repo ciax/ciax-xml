@@ -39,7 +39,6 @@ module CIAX
 
       def def_par(str = nil)
         self[:default] = str || valid_pars.first
-        self
       end
 
       private

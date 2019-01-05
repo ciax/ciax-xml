@@ -104,6 +104,7 @@ module CIAX
       def ___init_upd_proc
         upd_propagate(@rec_view)
         cmt_propagate(@rec_view)
+        # When new macro is generated
         @cmt_procs << proc do
           sel(1)
           @valid_keys.replace((current_rec || self)[:option] || [])

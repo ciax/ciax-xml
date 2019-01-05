@@ -42,10 +42,10 @@ module CIAX
         self
       end
 
-      def lines
+      def lines(mark = nil)
         idx = 0
         list.map do |id|
-          ___item_view(id, idx += 1)
+          ___item_view(id, idx += 1, mark == id ? '*' : ' ')
         end
       end
 
@@ -59,11 +59,11 @@ module CIAX
         end
       end
 
-      def ___item_view(id, idx)
+      def ___item_view(id, idx, pfx = nil)
         rec = @get_proc.call(id) || @rec_arc.get(id)
         tim = ___get_time(id)
         pcid = ___get_pcid(rec[:pid])
-        title = format('[%s] %s (%s) by %s', idx, id, tim, pcid)
+        title = format('%s[%s] %s (%s) by %s', pfx, idx, id, tim, pcid)
         itemize(title, rec[:cid].to_s + ___result_view(rec))
       end
 

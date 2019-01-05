@@ -37,7 +37,9 @@ module CIAX
       end
 
       def sel(num)
-        @current_idx = limit(0, @rec_view.list.size, num.to_i)
+        rvl = @rec_view.list
+        cdx = @current_idx = limit(0, rvl.size, num.to_i)
+        self[:default] = @par.def_par(rvl[cdx - 1]) if cdx > 0
         self
       end
 
@@ -54,9 +56,7 @@ module CIAX
 
       def current_rec
         return if @current_idx.zero?
-        id = @rec_view.list[@current_idx - 1]
-        @par.def_par(id)
-        get(id)
+        get(self[:default])
       end
 
       def to_s
@@ -66,7 +66,7 @@ module CIAX
 
       def to_v
         (['<<< ' + colorize("Active Macros [#{self[:id]}]", 2) + ' >>>'] +
-        @rec_view.lines).join("\n")
+        @rec_view.lines(self[:default])).join("\n")
       end
 
       ##### For server ####
@@ -97,19 +97,13 @@ module CIAX
       def ___init_int(int)
         int ||= CmdTree::Remote::Int::Group.new(Config.new)
         @par = int.pars.last || CmdBase::Parameter.new
-        @valid_keys = type?(int.valid_keys, Array)
-        self[:option] = @valid_keys.dup
       end
 
       def ___init_upd_proc
         upd_propagate(@rec_view)
         cmt_propagate(@rec_view)
         # When new macro is generated
-        @cmt_procs << proc do
-          sel(1)
-          @valid_keys.replace((current_rec || self)[:option] || [])
-          self[:default] = @par[:default]
-        end
+        @cmt_procs << proc { sel(1) }
       end
     end
 

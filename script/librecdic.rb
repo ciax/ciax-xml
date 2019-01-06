@@ -29,7 +29,6 @@ module CIAX
         @rec_view = RecView.new(type?(arc, RecArc)) { |id| get(id) }
         propagation(@rec_view)
         # When new macro is generated
-        @cmt_procs << proc { sel_new }
         @par = type?(par, CmdBase::Parameter)
       end
 
@@ -71,6 +70,13 @@ module CIAX
         get(current_id)
       end
 
+      def default_id
+        return unless key?(:default)
+        return self[:default] if @par.list.include?(self[:default])
+        delete(:default)
+        nil
+      end
+
       def to_s
         rec = current_rec
         rec ? rec.to_s : super
@@ -78,7 +84,7 @@ module CIAX
 
       def to_v
         (['<<< ' + colorize("Active Macros [#{self[:id]}]", 2) + ' >>>'] +
-        @rec_view.lines(self[:default])).join("\n")
+        @rec_view.lines(default_id)).join("\n")
       end
 
       ##### For server ####
@@ -88,6 +94,7 @@ module CIAX
         @cache.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_remote(@host)
         end
+        @cmt_procs << proc { sel_new }
         self
       end
 
@@ -100,6 +107,7 @@ module CIAX
         # Get Live Record
         @rec_view.rec_arc.ext_local.ext_load.push_procs << proc do |rec|
           @cache[rec[:id]] = rec
+          sel_new
         end
         self
       end
@@ -110,8 +118,8 @@ module CIAX
         return if id.to_i.zero?
         if @par.list.include?(id)
           self[:default] = @par.def_par(id)
-        elsif key?(:default)
-          delete(:default) unless @par.list.include?(self[:default])
+        else
+          default_id
         end
       end
     end

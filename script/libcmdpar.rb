@@ -4,6 +4,40 @@ require 'librerange'
 module CIAX
   # Command Module
   module CmdBase
+    # Parameter Array
+    class ParArray < Arrayx
+      def initialize(obj = 0, val = '.')
+        case obj
+        when Array
+          super(obj.map { |e| Parameter.new(e) })
+          obj.replace self
+        when Numeric
+          super(obj) { Parameter.new(type: 'reg', list: [val]) }
+        else
+          super
+        end
+      end
+
+      ## Refernce Parameter Setting
+      # returns Reference Parameter Array
+      def add_enum(list, default = nil)
+        push Parameter.new(type: 'str', list: type?(list, Array))
+        last[:default] = default if default && list.include?(default)
+        self
+      end
+
+      def add_reg(str, default = nil)
+        push Parameter.new(type: 'reg', list: [str])
+        last[:default] = default if default && Regexp.new(str).match(default)
+        self
+      end
+
+      # Parameter for numbers
+      def add_num(default = nil)
+        add_reg('^[0-9]+$', default)
+      end
+    end
+
     # Parameter commands
     class Parameter < Hashx
       # Parameter for validate (element of cfg[:parameters]#Array)
@@ -26,7 +60,7 @@ module CIAX
       end
 
       def valid_pars
-        self[:type] == 'str' ? get(:list) : []
+        get(:list)
       end
 
       def validate(str)
@@ -43,12 +77,29 @@ module CIAX
 
       private
 
-      def __get_default
+      def ___chk_default
         return unless key?(:default)
         df = get(:default)
-        return df if df && valid_pars.include?(df)
+        df || delete(:default)
+      end
+
+      def ___chk_def_str(df)
+        return df if self[:type] != 'str'
+        valid_pars.include?(df)
+      end
+
+      def ___chk_def_reg(df)
+        return df if self[:type] != 'reg'
+        valid_pars.any? do |r|
+          Regexp.new(r).match(df)
+        end
+      end
+
+      def __get_default
+        df = ___chk_default
+        return df if ___chk_def_str(df) && ___chk_def_reg(df)
         delete(:default)
-        nil
+        false
       end
 
       def ___use_default(csv)

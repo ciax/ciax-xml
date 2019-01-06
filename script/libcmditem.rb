@@ -27,6 +27,7 @@ module CIAX
         ___get_entity(opt, cid)
       end
 
+      # List All parameters
       def valid_pars
         @cfg[:parameters].to_a.map(&:valid_pars).flatten
       end

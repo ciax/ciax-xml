@@ -28,35 +28,19 @@ module CIAX
       end
 
       def pars
-        @cfg.get(:parameters) { [] }
-      end
-
-      ## Refernce Parameter Setting
-      # returns Reference Parameter Array
-      def add_par(list = [])
-        par = Parameter.new(type: 'str', list: list)
-        pars << par
+        @cfg.get(:parameters) { ParArray.new }
       end
 
       # Parameters for any string
       def pars_any(n = 1, reg = '.')
-        @cfg[:parameters] = Array.new(n) do
-          Parameter.new(type: 'reg', list: [reg])
-        end
-      end
-
-      # Parameter for numbers
-      def pars_num(n = 1)
-        pars_any(n, '^[0-9]+$')
+        @cfg[:parameters] = ParArray.new(n, reg)
       end
 
       # Transform each element of @cfg[:parameter]
       #  JSON cache file ->  CDB Hash -> Parameter
       # Used in Ext Group
       def tr_pars
-        if @cfg.key?(:parameters)
-          @cfg[:parameters].map! { |par| Parameter.new(par) }
-        end
+        ParArray.new(@cfg[:parameters]) if @cfg.key?(:parameters)
         self
       end
     end

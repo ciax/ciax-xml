@@ -57,7 +57,7 @@ module CIAX
         rem = @cobj.add_rem
         rem.cfg[:def_msg] = 'ACCEPT'
         rem.add_sys
-        rem.add_int.add_par(@sv_stat.get(:list))
+        rem.add_int.pars.add_enum(@sv_stat.get(:list))
         rem.add_ext
       end
     end

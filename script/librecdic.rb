@@ -21,14 +21,16 @@ module CIAX
     #  Local(ext_save) : write down RecArc
     class RecDic < Upd
       attr_reader :current_idx, :rec_view
-      def initialize(rec_arc = RecArc.new, proj = nil, int = nil)
+      def initialize(proj = nil, arc = RecArc.new, par = CmdBase::Parameter.new)
         super()
         self[:id] = proj || ENV['PROJ']
-        ___init_int(int)
         @current_idx = 0
         self[:dic] = @cache = Hashx.new
-        @rec_view = RecView.new(rec_arc) { |id| get(id) }
-        ___init_upd_proc
+        @rec_view = RecView.new(type?(arc, RecArc)) { |id| get(id) }
+        propagation(@rec_view)
+        # When new macro is generated
+        @cmt_procs << proc { sel_new }
+        @par = type?(par, CmdBase::Parameter)
       end
 
       def get(id)
@@ -37,9 +39,15 @@ module CIAX
       end
 
       def sel(num = nil)
+        @current_idx = limit(0, @rec_view.list.size, num.to_i)
+        __set_def(current_id)
+        self
+      end
+
+      def sel_new
         rvl = @rec_view.list
-        cdx = @current_idx = limit(0, rvl.size, (num || rvl.size).to_i)
-        self[:default] = @par.def_par(rvl[cdx - 1]) if cdx > 0
+        @current_idx = rvl.size
+        __set_def(rvl.last)
         self
       end
 
@@ -54,9 +62,13 @@ module CIAX
         self
       end
 
+      def current_id
+        @rec_view.list[@current_idx - 1]
+      end
+
       def current_rec
         return if @current_idx.zero?
-        get(self[:default])
+        get(current_id)
       end
 
       def to_s
@@ -94,15 +106,13 @@ module CIAX
 
       private
 
-      def ___init_int(int)
-        int ||= CmdTree::Remote::Int::Group.new(Config.new)
-        @par = int.pars.last || CmdBase::Parameter.new
-      end
-
-      def ___init_upd_proc
-        propagation(@rec_view)
-        # When new macro is generated
-        @cmt_procs << proc { sel }
+      def __set_def(id)
+        return if id.to_i.zero?
+        if @par.list.include?(id)
+          self[:default] = @par.def_par(id)
+        elsif key?(:default)
+          delete(:default) unless @par.list.include?(self[:default])
+        end
       end
     end
 

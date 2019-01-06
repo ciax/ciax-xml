@@ -30,6 +30,7 @@ module CIAX
         propagation(@rec_view)
         # When new macro is generated
         @par = type?(par, CmdBase::Parameter)
+        @last_size = 0
       end
 
       def get(id)
@@ -45,19 +46,24 @@ module CIAX
 
       def sel_new
         rvl = @rec_view.list
-        @current_idx = rvl.size
-        __set_def(rvl.last)
+        if rvl.size > @last_size
+          @current_idx = rvl.size
+          __set_def(rvl.last)
+          @last_size = rvl.size
+        end
         self
       end
 
       def inc(num = 1)
         @rec_view.inc(num.to_i)
+        @last_size = @rec_view.list.size
         self
       end
 
       def flush
         @rec_view.clear.inc(@par.list.size)
         @current_idx = 0
+        @last_size = @rec_view.list.size
         self
       end
 

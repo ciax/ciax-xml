@@ -29,14 +29,13 @@ module CIAX
         private
 
         def ___init_stat
-          @view = RecDic.new(@stat, @id, @cobj.rem.int)
+          @view = RecDic.new(@id, @stat, @int_par)
           @opt.cl? ? @view.ext_remote(@host) : @view.ext_local
           @cfg[:output] = @view
         end
 
         def ___init_procs
           # @view will be switched among Whole List or Records
-          # Setting @par will switch the Record
           @prompt_proc = proc do
             opt = (@view.current_rec || {})[:option]
             str = "[#{@view.current_idx}]"

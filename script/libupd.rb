@@ -15,6 +15,12 @@ module CIAX
       @cmt_procs = []
     end
 
+    # Add cmt for self return method
+    def deep_update(ope)
+      super
+      cmt
+    end
+
     # Time setting, Loading file at client
     # For loading with propagation
     # Should be done when pulling data

@@ -96,7 +96,7 @@ module CIAX
         @disp_dic.ext_grp unless @disp_dic.is_a? Disp::Grouping
         gatt = gdoc.to_h
         return if gatt[:enable] == 'false'
-        sub = @disp_dic.put_grp(gatt.delete(:id), gatt.delete(:label))
+        sub = @disp_dic.add_grp(gatt.delete(:id), gatt.delete(:label))
         gdoc.each { |e| __mk_sub_db(e, sub, gatt.dup) }
       end
 

@@ -19,12 +19,12 @@ module CIAX
         self
       end
 
-      def put_sec(id, cap, color = nil)
-        @sub.put_sec(id, cap, color)
+      def add_sec(id, cap, color = nil)
+        @sub.add_sec(id, cap, color)
       end
 
-      def put_grp(id, cap, color = nil, rank = nil)
-        @sub.put_grp(id, cap, color, rank)
+      def add_grp(id, cap, color = nil, rank = nil)
+        @sub.add_grp(id, cap, color, rank)
       end
 
       def to_s
@@ -68,12 +68,12 @@ module CIAX
       end
 
       # add sub caption if sub is true
-      def put_sec(id, cap, color = nil)
-        __put_sub(Section, id, cap, color)
+      def add_sec(id, cap, color = nil)
+        __add_sub(Section, id, cap, color)
       end
 
-      def put_grp(id, cap, color = nil, rank = nil)
-        __put_sub(Group, id, cap, color, rank)
+      def add_grp(id, cap, color = nil, rank = nil)
+        __add_sub(Group, id, cap, color, rank)
       end
 
       def view
@@ -92,7 +92,7 @@ module CIAX
 
       private
 
-      def __put_sub(mod, id, cap, color = nil, rank = nil)
+      def __add_sub(mod, id, cap, color = nil, rank = nil)
         return self[id] if self[id]
         level = @level + 1
         atrb = { caption: cap, color: color, level: level, rank: rank }
@@ -142,7 +142,7 @@ module CIAX
     cap2 = 'top2'
     idx1 = Disp.new(column: 3, caption: cap2, line_number: true).ext_grp
     3.times do |i|
-      grp1 = idx1.put_grp("g1#{i}", "Gp#{i}")
+      grp1 = idx1.add_grp("g1#{i}", "Gp#{i}")
       3.times do |j|
         cstr = '*' * rand(5)
         grp1.put_item("x#{i}-#{j}", "cap#{i}-#{j},#{cstr}")
@@ -153,9 +153,9 @@ module CIAX
     # Three level groups
     idx2 = Disp.new(column: 2, caption: 'top3', color: 4).ext_grp
     2.times do |i|
-      sec = idx2.put_sec("g2#{i}", "Group#{i}")
+      sec = idx2.add_sec("g2#{i}", "Group#{i}")
       2.times do |j|
-        grp2 = sec.put_grp("sg#{j}", "SubGroup#{j}")
+        grp2 = sec.add_grp("sg#{j}", "SubGroup#{j}")
         2.times do |k|
           cstr = '*' * rand(5)
           grp2.put_item("x#{i}-#{j}-#{k}", "caption#{i}-#{j}-#{k},#{cstr}")

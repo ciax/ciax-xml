@@ -42,7 +42,7 @@ module CIAX
           # Set items by DB
           def ___init_items(cdb)
             cdb[:group].each do |gid, gat|
-              sg = @disp_dic.put_grp(gid, gat[:caption], nil, gat[:rank])
+              sg = @disp_dic.add_grp(gid, gat[:caption], nil, gat[:rank])
               ___init_member(cdb, gat[:members], sg)
               ___init_unit(cdb, gat[:units], sg)
             end

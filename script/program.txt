@@ -36,7 +36,7 @@
   - cmt()    [cmt_*] : Convert and Commit data for saveing. Popagate to upper layer. Do just after processing. returns self.
   - set(val) [store_*] : stores value to self, returns self.
   - get(id)  [fetch_*] : fetch value from existent key/index, which can includes cache access or data generation.
-  - add(par) [add_*] : generate and store new element with parameter, returns generated objectl
+  - add(par) [add_*] : generate and store new element with parameter, returns generated object.
   - gen(par) [gen_*] : generate and store new element with parameter, returns generated object.
   - conv(par) : convert lower layer data. includes cmt. return self.
   - read(par) : get data from par or stream, used by load, retuns data (not self).
@@ -44,8 +44,8 @@
  #For Array
   - append(obj) [append_*] : stores and returns object.
  #For Hash
-  - put(key,val)  [put_*] : stores key and value, returns value.
-  - put(key,&val) [put_*] : stores key and value if key is not exist, returns value.
+  - put(key,val)  [put_*] : stores key and value, returns self.
+  - put(key,&val) [put_*] : stores key and value if key is not exist, returns self.
   - get(key,&proc) [get_*]: fetch value. if key is not exist, generate value.
   - rep(key,val)  [rep_*] : replace value to existent key and returns value.
   - push(hash)     [push_*]: stores hash with hash[:id] as key, returns self.

@@ -18,9 +18,7 @@ module CIAX
 
       def get(id)
         return @man if id == 'man'
-        ent = super
-        @man.sv_stat.repl(:sid, id)
-        ent
+        super
       end
 
       def insert(mobj)

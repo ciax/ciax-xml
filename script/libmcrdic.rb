@@ -32,33 +32,13 @@ module CIAX
       end
 
       def run
-        @sub_dic.run
         @man.run
-        ___arc_refresh
-        ___web_select
         self
       end
 
       # obsolete, was used for RecDic@cache
       def records
         _dic.inject({}) { |h, obj| h[obj[:id]] = obj.stat }
-      end
-
-      private
-
-      def ___arc_refresh
-        verbose { 'Initiate Record Archive' }
-        Threadx::Fork.new('RecArc', 'mcr', @id) do
-          @man.stat.clear.refresh
-        end
-      end
-
-      # Making Command Dic JSON file for WebApp
-      def ___web_select
-        verbose { 'Initiate JS Command Dic' }
-        dbi = @cfg[:dbi]
-        jl = Hashx.new(port: @port, commands: dbi.web_select, label: dbi.label)
-        IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
       end
 
       # Mcr::Dic specific Shell

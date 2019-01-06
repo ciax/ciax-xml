@@ -19,8 +19,7 @@ module CIAX
         def ext_local_conv(field)
           @field = type?(field, Frm::Field)
           type?(@dbi, Dbi)
-          upd_propagate(@field)
-          cmt_propagate(@field)
+          propagation(@field)
           ___init_cmt_procs
           self
         end

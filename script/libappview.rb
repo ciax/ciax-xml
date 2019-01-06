@@ -50,8 +50,7 @@ module CIAX
 
       def ___init_cmt_procs
         init_time2cmt(@stat)
-        upd_propagate(@stat)
-        cmt_propagate(@stat)
+        propagation(@stat)
         @cmt_procs << proc do
           self['gtime'] = { caption: '', lines: [hash = {}] }
           hash[:time] = { label: 'TIMESTAMP', msg: date(@stat[:time]) }

@@ -67,15 +67,11 @@ module CIAX
       self
     end
 
-    def upd_propagate(obj)
+    def propagation(obj)
       @upd_procs << proc do
         verbose { "Propagate #{base_class}#upd -> #{obj.base_class}#upd" }
         obj.upd
       end
-      self
-    end
-
-    def cmt_propagate(obj)
       obj.cmt_procs << proc do |o|
         verbose { "Propagate #{o.base_class}#cmt -> #{base_class}#cmt" }
         cmt

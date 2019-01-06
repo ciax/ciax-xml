@@ -52,8 +52,7 @@ module CIAX
       private
 
       def ___init_propagate
-        upd_propagate(@rec_arc)
-        cmt_propagate(@rec_arc)
+        propagation(@rec_arc)
         @cmt_procs << proc do
           clear unless @oldest
         end

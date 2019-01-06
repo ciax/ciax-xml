@@ -27,8 +27,7 @@ module CIAX
           wdb = @dbi[:watch] || {}
           @interval = wdb[:interval].to_f if wdb.key?(:interval)
           @cond = Condition.new(wdb[:index] || {}, stat, self)
-          upd_propagate(@stat)
-          cmt_propagate(@stat)
+          propagation(@stat)
           ___init_cmt_procs
           ___init_auto(wdb)
         end

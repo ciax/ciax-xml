@@ -100,8 +100,7 @@ module CIAX
       end
 
       def ___init_upd_proc
-        upd_propagate(@rec_view)
-        cmt_propagate(@rec_view)
+        propagation(@rec_view)
         # When new macro is generated
         @cmt_procs << proc { sel }
       end

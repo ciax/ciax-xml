@@ -29,7 +29,7 @@ module CIAX
 
       # List All parameters
       def valid_pars
-        @cfg[:parameters].to_a.map(&:valid_pars).flatten
+        __pars(&:valid_pars)
       end
 
       private
@@ -71,15 +71,19 @@ module CIAX
       # Returns converted parameter array
       def ___validate(pary)
         psize = pary.size
-        @cfg[:parameters].to_a.map do |pref|
-          pref.validate(pary.shift)
-        end
+        __pars { |p| p.validate(pary) }
       rescue ParShortage
         ___err_shortage($ERROR_INFO.to_s, psize)
       end
 
+      def __pars
+        pars = @cfg[:parameters]
+        return [] unless pars
+        defined?(yield) ? yield(pars) : pars
+      end
+
       def ___err_shortage(csv, psize)
-        frac = format('(%d/%d)', psize, @cfg[:parameters].size)
+        frac = format('(%d/%d)', psize, __pars.size)
         mary = ['Parameter shortage ' + frac]
         mary << @cfg[:disp].item(@id)
         mary << ' ' * 10 + "key=(#{csv})"

@@ -18,6 +18,15 @@ module CIAX
         end
       end
 
+      def valid_pars
+        map { |p| p.get(:list) }.flatten
+      end
+
+      def validate(ary)
+        type?(ary, Array)
+        map { |p| p.validate(ary.shift) }
+      end
+
       ## Refernce Parameter Setting
       # returns Reference Parameter Array
       def add_enum(list, default = nil)
@@ -59,10 +68,6 @@ module CIAX
         @list = (self[:list] ||= [])
       end
 
-      def valid_pars
-        get(:list)
-      end
-
       def validate(str)
         list = get(:list)
         csv = a2csv(list)
@@ -72,7 +77,7 @@ module CIAX
       end
 
       def def_par(str = nil)
-        self[:default] = str || valid_pars.first
+        self[:default] = str || get(:list).first
       end
 
       private
@@ -85,12 +90,12 @@ module CIAX
 
       def ___chk_def_str(df)
         return df if self[:type] != 'str'
-        valid_pars.include?(df)
+        get(:list).include?(df)
       end
 
       def ___chk_def_reg(df)
         return df if self[:type] != 'reg'
-        valid_pars.any? do |r|
+        get(:list).any? do |r|
           Regexp.new(r).match(df)
         end
       end

@@ -77,8 +77,8 @@ module CIAX
       end
 
       def __pars
-        return [] if @cfg.key?(:parameters)
-        pars = @cfg[:parameters]
+        return [] unless @cfg.key?(:parameters)
+        pars = type?(@cfg[:parameters], ParArray)
         defined?(yield) ? yield(pars) : pars
       end
 

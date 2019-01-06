@@ -23,15 +23,20 @@ module CIAX
 
           # itm is from cdb
           def ___add_item(id, itm) # returns Item
-            label = itm[:label]
-            # command label can contain printf format (i.e. %s)
-            # and are replaced with each parameter's label
-            pars = itm[:parameters]
-            if label && pars.is_a?(Array)
+            ___init_par(itm)
+            _new_item(id, itm)
+          end
+
+          # command label can contain printf format (i.e. %s)
+          # and are replaced with each parameter's label
+          def ___init_par(itm)
+            return unless itm.key?(:parameters)
+            pars = CmdBase::ParArray.new(type?(itm[:parameters], Array))
+            if (label = itm[:label])
               ary = pars.map { |e| e[:label] || 'str' }
               label.replace(format(label, *ary))
             end
-            _new_item(id, itm).tr_pars
+            itm[:parameters] = pars
           end
 
           # Set items by DB

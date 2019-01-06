@@ -23,12 +23,8 @@ module CIAX
         ent
       end
 
-      # For adding Exe
-      # pid is Parent ID (user=0,mcr_id,etc.) which is source of command issued
-      def add(ment) # returns Exe
-        mobj = Exe.new(ment) { |e| add(e) }
-        put(mobj.id, mobj.run)
-        @man.stat.push(mobj.stat)
+      def insert(mobj)
+        put(mobj.id, mobj)
         mobj
       end
 
@@ -80,7 +76,7 @@ module CIAX
           self
         end
 
-        def add(ment)
+        def insert(mobj)
           __set_jump(super)
         end
 

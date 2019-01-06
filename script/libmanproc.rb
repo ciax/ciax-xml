@@ -18,16 +18,19 @@ module CIAX
         def ext_local_processor(mcr_dic)
           @mode = @opt.dry? ? 'DRY' : 'PRCS'
           @mcr_dic = type?(mcr_dic, Dic)
-          ___init_stat
-          ___init_procs
+          @stat.ext_local.refresh
           @sv_stat.repl(:sid, '') # For server response
-          @cobj.rem.ext_input_log
+          ___init_log
+          ___init_procs
           self
         end
 
         # Macro Generator
         def gen_cmd(ent)
-          @mcr_dic.add(ent)
+          mobj = Exe.new(ent) { |e| gen_cmd(e) }
+          @mcr_dic.insert(mobj.run)
+          @stat.push(mobj.stat)
+          mobj
         end
 
         # Macro Manipulator
@@ -39,9 +42,10 @@ module CIAX
 
         private
 
-        def ___init_stat
-          @stat.ext_local.refresh
-          @stat.ext_save if @opt.mcr_log?
+        def ___init_log
+          return unless @opt.mcr_log?
+          @stat.ext_save
+          @cobj.rem.ext_input_log
         end
 
         def ___init_procs

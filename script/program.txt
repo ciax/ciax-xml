@@ -44,11 +44,12 @@
  #For Array
   - append(obj) [append_*] : stores and returns object.
  #For Hash
-  - put(key,val)  [put_*] : stores key and value, returns self.
-  - put(key,&val) [put_*] : stores key and value if key is not exist, returns self.
+  - put(key,val)   [put_*] : stores key and value. returns self.
+  - put(key,&val)  [put_*] : stores key and value. if key is not exist, generate value. returns self.
   - get(key,&proc) [get_*]: fetch value. if key is not exist, generate value.
-  - rep(key,val)  [rep_*] : replace value to existent key and returns value.
+  - rep(key,val)   [rep_*] : replace value to existent key and returns value.
   - push(hash)     [push_*]: stores hash with hash[:id] as key, returns self.
- #For Db
+  - insert(hash)   [insert_*] : stores hash with hash[:id] as key, returns hash.
+#For Db
   - get(key) [get_*]: If no key, error with showing option list.
   - ref(key) [ref_*]: Same as get() except return nil when no key.

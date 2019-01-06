@@ -36,9 +36,9 @@ module CIAX
         @cache[id].upd
       end
 
-      def sel(num)
+      def sel(num = nil)
         rvl = @rec_view.list
-        cdx = @current_idx = limit(0, rvl.size, num.to_i)
+        cdx = @current_idx = limit(0, rvl.size, (num || rvl.size).to_i)
         self[:default] = @par.def_par(rvl[cdx - 1]) if cdx > 0
         self
       end
@@ -103,7 +103,7 @@ module CIAX
         upd_propagate(@rec_view)
         cmt_propagate(@rec_view)
         # When new macro is generated
-        @cmt_procs << proc { sel(1) }
+        @cmt_procs << proc { sel }
       end
     end
 

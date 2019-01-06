@@ -28,7 +28,7 @@ module CIAX
 
       def list
         rl = @rec_arc.list
-        rl[rl.index(@oldest) + 1..-1].reverse
+        rl[rl.index(@oldest) + 1..-1]
       end
 
       def clear

@@ -40,7 +40,9 @@ module CIAX
       #  JSON cache file ->  CDB Hash -> Parameter
       # Used in Ext Group
       def tr_pars
-        ParArray.new(@cfg[:parameters]) if @cfg.key?(:parameters)
+        if @cfg.key?(:parameters)
+          @cfg[:parameters] = ParArray.new(@cfg[:parameters])
+        end
         self
       end
     end

@@ -10,7 +10,6 @@ module CIAX
         case obj
         when Array
           super(obj.map { |e| Parameter.new(e) })
-          obj.replace self
         when Numeric
           super(obj) { Parameter.new(type: 'reg', list: [val]) }
         else

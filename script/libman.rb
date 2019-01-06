@@ -30,7 +30,7 @@ module CIAX
         @stat = type?(@cfg[:rec_arc], RecArc)
         @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
         # For element of Layer
-        @sub_dic = @cfg[:dev_dic]
+        @sub_dic = @cfg[:dev_dic] ||= Wat::Dic.new(super_cfg)
         ___init_cmd
         _opt_mode
       end

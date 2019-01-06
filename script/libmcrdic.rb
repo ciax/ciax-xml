@@ -12,7 +12,7 @@ module CIAX
       def initialize(layer_cfg, atrb = Hashx.new)
         super
         # Set [:dev_dic] here for using layer_cfg
-        @sub_dic = @cfg[:dev_dic] = Wat::Dic.new(layer_cfg)
+        @sub_dic = @cfg[:dev_dic] ||= Wat::Dic.new(layer_cfg)
         @man = Man.new(@cfg).ext_local_processor(self)
       end
 

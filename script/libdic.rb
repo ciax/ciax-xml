@@ -18,7 +18,7 @@ module CIAX
     end
 
     def shell
-      _ext_local_shell.shell
+      ext_local_shell.shell
     end
 
     def get(id)
@@ -34,13 +34,13 @@ module CIAX
       _dic.keys
     end
 
-    private
-
-    def _ext_local_shell
+    def ext_local_shell
       smod = context_module('Shell')
       return self if is_a?(smod)
       extend(smod).ext_local_shell
     end
+
+    private
 
     def _dic
       self[:dic]

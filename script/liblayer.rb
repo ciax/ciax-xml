@@ -16,9 +16,7 @@ module CIAX
       end
     end
 
-    private
-
-    def _ext_local_shell
+    def ext_local_shell
       super
       @cfg[:jump_layer] = @jumpgrp
       _dic.each do |id, _obj|

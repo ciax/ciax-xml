@@ -20,6 +20,7 @@ module CIAX
     #   *Mcr Generation Command (gencmd)
     #   *Mcr Manipulation command (mancmd)
     class Man < CIAX::Exe
+      attr_reader :sub_dic
       def initialize(super_cfg, atrb = Hashx.new)
         super
         verbose { 'Initiate Manager (option:' + @opt.keys.join + ')' }

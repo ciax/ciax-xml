@@ -1,38 +1,25 @@
 #!/usr/bin/ruby
 require 'libdic'
 require 'libmcrexe'
-require 'libmanproc'
 
 module CIAX
   module Mcr
     # Dic for Running Macro
     class Dic < Dic
-      attr_reader :cfg, :sub_dic, :man
+      attr_reader :cfg, :sub_dic
       # @cfg should have [:sv_stat]
       def initialize(layer_cfg, atrb = Hashx.new)
         super
         # Set [:dev_dic] here for using layer_cfg
         @sub_dic = @cfg[:dev_dic] ||= Wat::Dic.new(layer_cfg)
-        @man = Man.new(@cfg).ext_local_processor(self)
       end
 
-      def get(id)
-        return @man if id == 'man'
-        super
-      end
-
-      def insert(mobj)
+      def push(mobj)
         put(mobj.id, mobj)
-        mobj
       end
 
       def interrupt
         _dic.each(&:interrupt)
-        self
-      end
-
-      def run
-        @man.run
         self
       end
 
@@ -48,21 +35,21 @@ module CIAX
         def ext_local_shell
           super
           @cfg[:jump_mcr] = @jumpgrp
-          @current = 'man'
-          @jumpgrp.add_item(@current, 'manager')
-          _dic.each_value { |mobj| __set_jump(mobj) }
+          _dic.each { |id, mobj| __set_jump(id, mobj) }
           self
         end
 
-        def insert(mobj)
-          __set_jump(super)
+        def put(id, mobj)
+          __set_jump(id, mobj)
+          super
         end
 
         private
 
-        def __set_jump(mobj)
-          @current = type?(mobj, CIAX::Exe).id
-          @jumpgrp.add_item(mobj.id, mobj.cfg[:cid])
+        def __set_jump(id, mobj)
+          cid = type?(mobj, CIAX::Exe).cfg[:cid]
+          @jumpgrp.add_item(id, cid)
+          @current = id
           mobj
         end
       end
@@ -70,8 +57,10 @@ module CIAX
       class Jump < LongJump; end
 
       if __FILE__ == $PROGRAM_NAME
+        require 'libmansh'
         ConfOpts.new('[id]', options: 'cehlns') do |cfg|
-          Dic.new(cfg).shell
+          dic = Dic.new(cfg)
+          dic.put('man', Man.new(dic.cfg)).shell
         end
       end
     end

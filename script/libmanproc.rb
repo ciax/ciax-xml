@@ -1,23 +1,30 @@
 #!/usr/bin/ruby
-require 'libman'
+require 'libmansh'
+require 'libmcrdic'
 module CIAX
   # Macro Layer
   module Mcr
     # Macro Manager
     class Man
-      def ext_local_processor(mcr_dic)
-        extend(Processor).ext_local_processor(mcr_dic)
+      def _ext_local
+        super
+        extend(Processor).ext_local_processor
       end
+
       # Macro Manager Processing Module (TEST or DRIVE mode)
       module Processor
+        attr_reader :mcr_dic
         def self.extended(obj)
           Msg.type?(obj, Man)
         end
 
         # Initiate for driver
-        def ext_local_processor(mcr_dic)
+        def ext_local_processor
+          # For jump_mcr
+          @id = 'man'
+          @cfg[:cid] = 'manager'
           @mode = @opt.dry? ? 'DRY' : 'PRCS'
-          @mcr_dic = type?(mcr_dic, Dic)
+          @mcr_dic = Dic.new(@cfg).push(self)
           @stat.ext_local.refresh
           @sv_stat.repl(:sid, '') # For server response
           ___init_log
@@ -28,7 +35,7 @@ module CIAX
         # Macro Generator
         def gen_cmd(ent)
           mobj = Exe.new(ent) { |e| gen_cmd(e) }
-          @mcr_dic.insert(mobj.run)
+          @mcr_dic.push(mobj.run)
           @stat.push(mobj.stat)
           mobj
         end
@@ -50,7 +57,15 @@ module CIAX
           self
         end
 
+        # As an element of Dic
+        def interrupt; end
+
         private
+
+        def _ext_local_shell
+          super
+          @mcr_dic.ext_local_shell
+        end
 
         def ___init_log
           return unless @opt.mcr_log?
@@ -98,6 +113,12 @@ module CIAX
           jl = Hashx.new(port: @port, label: dbi.label)
           jl[:commands] = dbi.web_select
           IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
+        end
+      end
+
+      if __FILE__ == $PROGRAM_NAME
+        ConfOpts.new('[id]', options: 'cehlns') do |cfg|
+          Man.new(cfg).shell
         end
       end
     end

@@ -62,11 +62,6 @@ module CIAX
 
         private
 
-        def _ext_local_shell
-          super
-          @mcr_dic.ext_local_shell
-        end
-
         def ___init_log
           return unless @opt.mcr_log?
           @stat.ext_save

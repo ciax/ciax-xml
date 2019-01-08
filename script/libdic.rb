@@ -17,10 +17,6 @@ module CIAX
       self[:dic] = Hashx.new
     end
 
-    def shell
-      ext_local_shell.shell
-    end
-
     def get(id)
       _dic.get(id)
     end
@@ -34,10 +30,11 @@ module CIAX
       _dic.keys
     end
 
-    def ext_local_shell
+    def shell
       smod = context_module('Shell')
       return self if is_a?(smod)
       extend(smod).ext_local_shell
+      shell
     end
 
     private
@@ -48,7 +45,6 @@ module CIAX
 
     # Shell module
     module Shell
-      require 'libsh'
       attr_reader :jumpgrp
       def self.extended(obj)
         Msg.type?(obj, Dic)
@@ -72,7 +68,7 @@ module CIAX
       end
 
       def switch(site)
-        get(site)
+        get(site) || cfg_err('Mcr Dic is empty')
       end
     end
   end

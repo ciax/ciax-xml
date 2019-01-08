@@ -49,7 +49,6 @@
   - get(key,&proc) [get_*]: fetch value. if key is not exist, generate value.
   - rep(key,val)   [rep_*] : replace value to existent key and returns value.
   - push(hash)     [push_*]: stores hash with hash[:id] as key, returns self.
-  - insert(hash)   [insert_*] : stores hash with hash[:id] as key, returns hash.
 #For Db
   - get(key) [get_*]: If no key, error with showing option list.
   - ref(key) [ref_*]: Same as get() except return nil when no key.

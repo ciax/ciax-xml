@@ -75,24 +75,26 @@ module CIAX
     # Queue Thread with Loop
     class QueLoop < Fork
       def initialize(tname, layer, id, type = nil)
-        @in = Queue.new
-        @out = Queue.new
-        super { loop { yield @in, @out } }
+        @que = Queue.new
+        super { loop { yield @que } }
       end
 
       def push(str) # returns self
         warning("Thread [#{self[:name]}] is not running") unless alive?
-        @in.push(str)
+        @que.push(str)
         self
       end
 
       def shift
-        @out.shift
+        @que.shift
+      end
+
+      def empty?
+        @que.empty?
       end
 
       def clear
-        @in.clear
-        @out.clear
+        @que.clear
         self
       end
     end

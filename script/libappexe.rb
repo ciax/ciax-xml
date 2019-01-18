@@ -17,7 +17,7 @@ module CIAX
         dbi = _init_dbi2cfg(%i(frm_site))
         @cfg[:site_id] = @id
         @stat = Status.new(dbi)
-        @sv_stat = Prompt.new(@id)
+        @sv_stat = Prompt.new('site', @id)
         @batch_interrupt = []
         _init_net
         ___init_sub
@@ -87,14 +87,6 @@ module CIAX
           ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
           verbose { "DELETE:#{ent.par[0]}" }
         end
-      end
-    end
-
-    # For App
-    class Prompt < Prompt
-      def initialize(id)
-        super('site', id)
-        init_flg(busy: '*')
       end
     end
 

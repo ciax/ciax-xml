@@ -23,6 +23,7 @@ require 'libappcmd'
 #  2:Event Driven
 #  3:Periodic Update
 module CIAX
+  # App layer
   module App
     # Command Buffering
     class Buffer
@@ -30,32 +31,36 @@ module CIAX
       attr_accessor :flush_proc, :recv_proc
       # sv_stat: Server Status
       def initialize(sv_stat)
-        @sv_stat = type?(sv_stat, Prompt).init_array(:queue)
+        @sv_stat = type?(sv_stat, Prompt).init_array(:queue).init_flg(busy: '*')
         # Update App Status
         @flush_proc = proc {}
         @recv_proc = proc {}
         @outbuf = Outbuf.new
         @id = @sv_stat.get(:id)
+        @que_buf = Arrayx.new # For testing
       end
 
       # Send app entity
-      def send(ent, n)
-        __clear if n.zero? # interrupt
+      def send(ent, pri = 1)
+        __clear if pri.to_i.zero? # interrupt
         cid = type?(ent, CmdBase::Entity).id
         verbose { "Execute #{cid}(#{@id}):timing" }
         # batch is frm batch (ary of ary)
-        batch = ent[:batch]
-        @que_buf.push(pri: n || 1, batch: batch, cid: cid) unless batch.empty?
+        @que_buf.push([pri, ent[:batch], cid])
+        self
+      end
+
+      def recv(que = @que_buf)
+        ___pri_sort(*que.shift)
+        ___exec_buf if que.empty?
         self
       end
 
       def server
         # element of que is args of Frm::Cmd
-        @que_buf = Threadx::QueLoop.new('Buffer', 'app', @id) do |iq|
+        @que_buf = Threadx::QueLoop.new('Buffer', 'app', @id) do |que|
           verbose { 'Waiting' }
-          ___pri_sort(iq.shift)
-          ___sv_up
-          ___exec_buf if iq.empty?
+          recv(que)
         end
         self
       end
@@ -72,11 +77,10 @@ module CIAX
 
       private
 
-      def ___pri_sort(rcv)
-        pri = rcv[:pri]
-        cid = rcv[:cid]
+      def ___pri_sort(pri, batch, cid)
+        ___sv_up
         @sv_stat.push(:queue, cid)
-        rcv[:batch].each do |args|
+        batch.each do |args|
           @outbuf[pri] << { args: args, cid: cid }
         end
         verbose { "OutBuf:Recieved:timing #{cid}(#{@id})\n#{@outbuf}" }
@@ -99,15 +103,14 @@ module CIAX
         @outbuf.inject([]) { |a, e| ___get_args(a, e) }
       end
 
-      # Later command is priority when duplicated
       def ___get_args(args, batch)
-        return args unless args.empty?
-        while (h = batch.shift)
-          if batch.any? { |e| e[:args] == h[:args] }
-            warning("duplicated cmd #{h[:args].inspect}(#{h[:cid]})")
-          else
-            args.replace(h[:args])
-            break
+        if args.empty?
+          h = batch.shift
+          args.replace h[:args] if h
+        end
+        batch.delete_if do |e|
+          if e[:args] == args
+            warning("duplicated cmd #{args.inspect}(#{e[:cid]})")
           end
         end
         args
@@ -125,7 +128,7 @@ module CIAX
 
       def __clear
         @outbuf.clear
-        @que_buf.clear.run
+        @que_buf.clear
         __flush
       end
 
@@ -159,12 +162,25 @@ module CIAX
         end
 
         def to_s # String Array
-          map.with_index { |o, i| "SUB:Outbuf(#{i}) is #{o}" }.join("\n")
+          map.with_index { |o, i| "SUB:Outbuf[#{i}]: #{o.inspect}" }.join("\n")
         end
 
         def cids
           flatten.map { |h| h[:cid] }.uniq
         end
+      end
+    end
+
+    if __FILE__ == $PROGRAM_NAME
+      ConfOpts.new('[id] [cmd] (par)') do |cfg, args|
+        id = args.shift
+        dbi = Db.new.get(id)
+        # dbi.pick already includes :layer, :command, :version
+        cobj = Index.new(cfg, dbi.pick)
+        cobj.add_rem.add_ext
+        buf = Buffer.new(Prompt.new('test', id))
+        buf.recv_proc = proc { |par| puts par.inspect }
+        buf.send(cobj.set_cmd(args)).recv
       end
     end
   end

@@ -31,10 +31,13 @@ module CIAX
     end
 
     def shell
+      ext_local_shell.shell
+    end
+
+    def ext_local_shell
       smod = context_module('Shell')
       return self if is_a?(smod)
       extend(smod).ext_local_shell
-      shell
     end
 
     private

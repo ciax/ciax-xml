@@ -16,14 +16,18 @@ module CIAX
       end
     end
 
-    def ext_local_shell
-      super
-      @cfg[:jump_layer] = @jumpgrp
-      _dic.each do |id, _obj|
-        @jumpgrp.add_item(id, id.capitalize + ' mode')
+    # Shell module which is Layer specific
+    module Shell
+      include CIAX::Dic::Shell
+      def ext_local_shell
+        super
+        @cfg[:jump_layer] = @jumpgrp
+        _dic.each do |id, _obj|
+          @jumpgrp.add_item(id, id.capitalize + ' mode')
+        end
+        @current = @cfg[:opt].init_layer || to_a.first
+        self
       end
-      @current = @cfg[:opt].init_layer || to_a.first
-      self
     end
 
     class Jump < LongJump; end

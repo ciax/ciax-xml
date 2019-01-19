@@ -79,33 +79,47 @@ module CIAX
     def ___show_all(data, tag)
       case data
       when Array
-        __mixed?(data, data, data.size.times) || ___end_ary(data)
+        @_vs_lines.last << ' ['
+        __show_ary(data, @_vs_cfg[:column])
+        @_vs_lines.last << ']'
       when Hash
-        __mixed?(data, data.values, data.keys) || ___end_hash(data, tag)
+        __show_hash(data, tag)
       else
         # Show String, Numerical ...
         @_vs_lines.last << ' ' + __mk_elem(data)
       end
     end
 
-    def __mixed?(data, vary, idx)
-      return unless vary.any? { |v| v.is_a?(Enumerable) }
-      idx.each { |i| __recursive(data[i], i) }
+    # Array handling
+    def __show_ary(data, col)
+      if data.any? { |v| v.is_a?(Enumerable) }
+        data.each_with_index { |v, i| __recursive(v, i) }
+        @_vs_lines << __indent
+      elsif data.size > col
+        ___ary_fold(data, col)
+      else
+        @_vs_lines.last << ___ary_line(data) + ' ' unless data.empty?
+      end
     end
 
-    # Array without sub structure
-    def ___end_ary(data)
-      head = nil
-      @_vs_lines << data.each_slice(@_vs_cfg[:column]).map do |a|
-        head = head ? '  ' : '[ '
-        __indent(head + a.map(&:inspect).join(','), 1)
-      end.join(",\n") + ' ]'
+    def ___ary_fold(data, col)
+      @_vs_lines << data.each_slice(col).map do |a|
+        __indent(___ary_line(a), 2)
+      end.join(",\n") << __indent
     end
 
-    # Hash without sub structure
-    def ___end_hash(data, tag)
-      data.keys.each_slice(tag ? @_vs_cfg[:hash_col] : 1) do |a|
-        @_vs_lines << __indent(___hash_line(a, data), 1)
+    def ___ary_line(a)
+      ' ' + a.map(&:inspect).join(', ')
+    end
+
+    # Hash handling
+    def __show_hash(data, tag)
+      if data.values.any? { |v| v.is_a?(Enumerable) }
+        data.each { |k, v| __recursive(v, k) }
+      else
+        data.keys.each_slice(tag ? @_vs_cfg[:hash_col] : 1) do |a|
+          @_vs_lines << __indent(___hash_line(a, data), 1)
+        end
       end
     end
 

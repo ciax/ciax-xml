@@ -43,6 +43,7 @@ module CIAX
         super
       end
 
+      # Overridden by libmansh
       def _ext_local_shell
         super
         @cobj.loc.add_view

@@ -122,11 +122,7 @@ module CIAX
 
       def __set_def(id)
         return if id.to_i.zero?
-        if @par.list.include?(id)
-          self[:default] = @par.def_par(id)
-        else
-          default_id
-        end
+        self[:default] = @par.def_par(id)
       end
     end
 

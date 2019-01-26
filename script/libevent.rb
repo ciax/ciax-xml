@@ -60,7 +60,7 @@ module CIAX
         # For Array element
         %i(active exec block int).each { |i| self[i] = [] }
         # For Hash element
-        %i(crnt last res).each { |i| self[i] = {} }
+        %i(history res).each { |i| self[i] = {} }
         # For Time element
         self[:act_time] = [now_msec, now_msec]
       end

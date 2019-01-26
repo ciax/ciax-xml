@@ -35,8 +35,16 @@ module CIAX
 
       def ___sync
         @list.each do |i|
-          @event[:last][i] = @event[:crnt][i]
-          @event[:crnt][i] = @stat[:data][i]
+          hist = (@event[:history][i] ||= []).unshift(@stat[:data][i])
+          hist.pop if hist.size > 3
+        end
+      end
+
+      def ___chk_conds
+        @windex.each do |id, item|
+          next unless ___chk_item(id, item)
+          ___actives(item[:act])
+          @event.fetch(:active) << id
         end
       end
 
@@ -51,14 +59,6 @@ module CIAX
         end
         @event[:res][id] = rary
         rary.all?
-      end
-
-      def ___chk_conds
-        @windex.each do |id, item|
-          next unless ___chk_item(id, item)
-          ___actives(item[:act])
-          @event.fetch(:active) << id
-        end
       end
 
       def ___actives(act)
@@ -83,17 +83,18 @@ module CIAX
 
       def _cnd_onchange(vn, ckitm)
         tol = ckitm[:tolerance]
-        val = @stat[:data][vn]
-        cri = @event[:last][vn]
+        hist = @event[:history][vn]
+        val = hist[0]
+        cri = hist[1]
         return false unless cri
         if tol
-          ___cmp_tol(vn, cri, val, tol)
+          ___cmp_tol(cri, val, tol)
         else
-          ___cmp_just(vn, cri, val)
+          ___cmp_just(cri, val)
         end
       end
 
-      def ___cmp_tol(_vn, cri, val, tol)
+      def ___cmp_tol(cri, val, tol)
         res = ((cri.to_f - val.to_f).abs > tol.to_f)
         # verbose do
         #   format('  onChange(%s): |[%s]-<%s>| > %s =>%s',
@@ -102,7 +103,7 @@ module CIAX
         res
       end
 
-      def ___cmp_just(_vn, cri, val)
+      def ___cmp_just(cri, val)
         res = (cri != val)
         # verbose do
         #   format('  onChange(%s): [%s] vs <%s> =>%s',

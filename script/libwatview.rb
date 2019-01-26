@@ -56,7 +56,7 @@ module CIAX
         when 'compare'
           h[:vals] = []
         else
-          h[:cri] = cnd[:val]
+          h[:ref] = cnd[:val]
         end
       end
 
@@ -71,22 +71,21 @@ module CIAX
       def ___upd_cond(id, conds)
         conds.each_with_index do |cnd, i|
           cnd[:res] = (@event.get(:res)[id] || [])[i]
-          idx = @event.get(:crnt)
-          ___upd_by_type(cnd, idx)
+          ___upd_by_type(cnd, @event.get(:history))
         end
         self
       end
 
-      def ___upd_by_type(cnd, idx)
-        v = cnd[:var]
+      def ___upd_by_type(cnd, hist)
+        ary = hist[cnd[:var]] || []
         case cnd[:type]
         when 'onchange'
-          cnd[:val] = idx[v]
-          cnd[:cri] = @event.get(:last)[v]
+          cnd[:val] = ary[0]
+          cnd[:ref] = ary[1]
         when 'compare'
-          cnd[:vals] = cnd[:vars].map { |k| "#{k}:#{idx[k]}" }
+          cnd[:vals] = cnd[:vars].map { |k| "#{k}:#{hist[k][0]}" }
         else
-          cnd[:val] = idx[v]
+          cnd[:val] = ary[0]
         end
       end
     end
@@ -96,7 +95,7 @@ module CIAX
       GetOpts.new('[site] | < event_file', options: 'r') do |_opt, args|
         event = Event.new(args.shift)
         wview = View.new(event)
-        event.ext_local_file if STDIN.tty?
+        event.ext_local_file.ext_load if STDIN.tty?
         puts wview.cmt
       end
     end

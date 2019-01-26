@@ -69,13 +69,13 @@ module CIAX
         end
 
         def ___make_exp(j)
-          cri = j[:cri]
+          ref = j[:ref]
           val = j[:val]
           if j[:type] == 'onchange'
-            format('%s => %s', cri, val)
+            format('%s => %s', ref, val)
           else
             ope = j[:inv] ? '!' : '='
-            format('/%s/ %s~ %s', cri, ope, val)
+            format('/%s/ %s~ %s', ref, ope, val)
           end
         end
 
@@ -93,7 +93,7 @@ module CIAX
         GetOpts.new('[site] | < event_file', options: 'r') do |_opt, args|
           event = Event.new(args.shift)
           wview = View.new(event).ext_prt
-          event.ext_local_file if STDIN.tty?
+          event.ext_local_file.ext_load if STDIN.tty?
           puts wview
         end
       end

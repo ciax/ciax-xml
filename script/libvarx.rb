@@ -17,6 +17,7 @@ module CIAX
       # @dir is subdir on web/file folder (~/.var/@dir)
       @dir = dir
       # Headers (could be overwritten by file load)
+      self[:format_ver] = nil
       self[:id] = id
       self[:ver] = ver if ver
       self[:host] = host || HOST

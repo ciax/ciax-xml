@@ -71,6 +71,11 @@ module CIAX
       raise InvalidData, ary.join("\n  "), caller(1)
     end
 
+    def ver_err(*ary) # Raise Device error (Format Version Mismatch)
+      ary[0] = colorize(ary[0], 1)
+      raise VerMismatch, ary.join("\n  "), caller(1)
+    end
+
     def str_err(*ary) # Raise Device error (Stream open Failed)
       ary[0] = colorize(ary[0], 1)
       raise StreamError, ary.join("\n  "), caller(1)

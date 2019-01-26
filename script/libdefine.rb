@@ -50,6 +50,9 @@ module CIAX
   # Invalid Data in Field for Status
   class InvalidData < CommError; end
 
+  # File Format Version Mismatch
+  class VerMismatch < CommError; end
+
   # Macro
   class Verification < RuntimeError; end
   class Interlock < Verification; end

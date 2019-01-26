@@ -61,7 +61,7 @@ module CIAX
     # Check key if it is correct type. Used for argument validation.
     def check_type(key, type)
       sv_err("No such key in Config [#{key}]") unless self[key]
-      sv_err("Config Key Type is mismatch [#{key}]") unless self[key].is_a?(type)
+      sv_err("Config Key Type mismatch [#{key}]") unless self[key].is_a?(type)
       true
     end
 

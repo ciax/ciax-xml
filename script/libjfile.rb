@@ -86,22 +86,36 @@ module CIAX
 
       def load_partial(tag = nil)
         hash = __read_json(tag)
-        ___check_version(hash) && deep_update(hash)
+        ___check_format_version(hash)
+        ___check_data_version(hash) && deep_update(hash)
         cmt
       end
 
       private
 
-      # Version check, no read if different
-      # (otherwise old version number remain as long as the file exists)
-      def ___check_version(hash)
-        inc = hash[:ver]
-        org = self[:ver]
-        return true if inc == org
-        warning("File version mismatch <#{inc}> for [#{org}]")
-        false
+      # Format Version check
+      def ___check_format_version(hash)
+        ary = __val_diff?(:format_ver, hash)
+        return true unless ary
+        ver_err(format('File format version mismatch <%s> for [%s]', *ary))
       rescue CommError
         relay(@cfile.to_s)
+      end
+
+      # Version check, no read if different
+      # (otherwise old version number remain as long as the file exists)
+      def ___check_data_version(hash)
+        ary = __val_diff?(:ver, hash)
+        return true unless ary
+        warning(format('File data version mismatch <%s> for [%s]', *ary))
+        false
+      end
+
+      def __val_diff?(key, hash)
+        inc = hash[key]
+        org = self[key]
+        return if inc == org
+        [inc, org]
       end
 
       def ___chk_tag(tag = nil)

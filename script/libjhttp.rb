@@ -25,9 +25,9 @@ module CIAX
         if jstr.empty?
           warning(" -- json url file (#{url}) is empty at loading")
         else
-          latest = self[:time]
+          lt = self[:time]
           replace(jread(jstr))
-          cmt if self[:time] > latest
+          cmt if self[:time] > lt
         end
         self
       end

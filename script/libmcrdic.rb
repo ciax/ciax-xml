@@ -15,6 +15,11 @@ module CIAX
         put('man', Man.new(@cfg, mcr_dic: self))
       end
 
+      def run
+        get('man').run
+        self
+      end
+
       # obsolete, was used for RecDic@cache
       def records
         _dic.inject({}) { |h, obj| h[obj[:id]] = obj.stat }

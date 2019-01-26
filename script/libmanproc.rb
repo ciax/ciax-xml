@@ -13,7 +13,6 @@ module CIAX
 
       # Macro Manager Processing Module (TEST or DRIVE mode)
       module Processor
-        attr_reader :mcr_dic
         def self.extended(obj)
           Msg.type?(obj, Man)
         end
@@ -24,7 +23,7 @@ module CIAX
           @id = 'man'
           @cfg[:cid] = 'manager'
           @mode = @opt.dry? ? 'DRY' : 'PRCS'
-          @mcr_dic = Dic.new(@cfg).push(self)
+          @mcr_dic = @cfg[:mcr_dic] || Dic.new(@cfg)
           @stat.ext_local.refresh
           @sv_stat.repl(:sid, '') # For server response
           ___init_log

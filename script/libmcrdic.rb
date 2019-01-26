@@ -5,15 +5,17 @@ require 'libmcrexe'
 module CIAX
   module Mcr
     # Dic for Running Macro
-    class Dic < Dic
+    class Dic < CIAX::Dic
       attr_reader :cfg, :sub_dic
       # @cfg should have [:sv_stat]
       def initialize(layer_cfg, atrb = Hashx.new)
         super
+        @cfg[:mcr_dic] = self
         # Set [:dev_dic] here for using layer_cfg
         @sub_dic = @cfg[:dev_dic] ||= Wat::Dic.new(layer_cfg)
       end
 
+      # For new macro
       def push(mobj)
         put(mobj.id, mobj)
       end
@@ -35,29 +37,23 @@ module CIAX
         def ext_local_shell
           super
           @cfg[:jump_mcr] = @jumpgrp
-          _dic.each { |id, mobj| __set_jump(id, mobj) }
+          _dic.each { |id, mobj| put(id, mobj) }
           self
         end
 
+        # For macro manager
         def put(id, mobj)
-          __set_jump(id, mobj)
-          super
-        end
-
-        private
-
-        def __set_jump(id, mobj)
           cid = type?(mobj, CIAX::Exe).cfg[:cid]
           @jumpgrp.add_item(id, cid)
           @current = id
-          mobj
+          self
         end
       end
 
       class Jump < LongJump; end
 
       if __FILE__ == $PROGRAM_NAME
-        require 'libmansh'
+        require 'libmanproc'
         ConfOpts.new('[id]', options: 'cehlns') do |cfg|
           dic = Dic.new(cfg)
           dic.put('man', Man.new(dic.cfg)).shell

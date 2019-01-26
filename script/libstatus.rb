@@ -38,12 +38,12 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id]', h: 'http output') do |opt, args|
+      GetOpts.new('[id]', options: 'h') do |opt, args|
         stat = Status.new(args.shift)
-        if opt[:h]
+        if opt.host
           stat.ext_remote(opt.host)
         else
-          stat.ext_local_file
+          stat.ext_local_file.ext_load
         end
         puts stat
       end

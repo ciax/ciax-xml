@@ -127,7 +127,7 @@ module CIAX
       end
 
       def host
-        (self[:h] || 'localhost') unless key?(:c)
+        self[:h]
       end
 
       def init_layer_mod

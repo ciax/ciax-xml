@@ -28,11 +28,10 @@ module CIAX
         # pick already includes :command, :version
         _init_dbi2cfg(%i(sites))
         _init_net
-        @stat = type?(@cfg[:rec_arc], RecArc)
-        @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
+        ___init_stat
+        ___init_cmd
         # For element of Layer
         @sub_dic = @cfg[:dev_dic] ||= Wat::Dic.new(super_cfg)
-        ___init_cmd
         _opt_mode
       end
 
@@ -53,6 +52,11 @@ module CIAX
           ''
         end
         self
+      end
+
+      def ___init_stat
+        @stat = type?(@cfg[:rec_arc], RecArc)
+        @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
       end
 
       # Initiate for all mode

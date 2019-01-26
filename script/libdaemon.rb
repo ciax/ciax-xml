@@ -10,10 +10,10 @@ module CIAX
     # Reloadable by HUP signal
     # Get Thread status by UDP:54321 connection
     # Closure should return an object having ('run' and 'id')
-    def initialize(tag, cfg, port = 54_321)
+    def initialize(cfg, port = 54_321)
       ___set_env
-      @layer = tag
       opt = cfg[:opt]
+      tag = $PROGRAM_NAME.split('/').last
       ___chk_args(___kill_pids(tag), cfg[:args] + opt.values)
       ___init_server(tag, opt, port)
       ___main_loop(port) { yield opt.init_layer_mod }

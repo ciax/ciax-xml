@@ -29,7 +29,7 @@ module CIAX
   module Simulator
     ConfOpts.new('-(d)', options: 'd') do |cfg|
       require 'libsimcar' unless cfg[:opt].dry?
-      Daemon.new('mos_sim', cfg, 54_301) do
+      Daemon.new(cfg, 54_301) do
         @sim_list.gen
       end
     end

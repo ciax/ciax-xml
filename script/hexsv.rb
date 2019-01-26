@@ -5,7 +5,7 @@ require 'libdaemon'
 # CIAX-XML Device Server for V1
 module CIAX
   ConfOpts.new('[id] ...', options: 'deb') do |cfg, args|
-    Daemon.new('hexsv', cfg) do |layer|
+    Daemon.new(cfg) do |layer|
       layer::Dic.new(cfg, sites: args)
     end
   end

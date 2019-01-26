@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'readline'
 require 'thread'
 require 'librecord'
 

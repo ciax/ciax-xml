@@ -47,7 +47,7 @@ module CIAX
       end
 
       def loadfile(fname)
-        check_file(fname)
+        check_file_stat(fname)
         open(fname) do |f|
           verbose { "Loading file [#{fname}](#{f.size})" }
           f.flock(::File::LOCK_SH)
@@ -57,7 +57,7 @@ module CIAX
         verbose { "  -- no json file (#{fname})" }
       end
 
-      def check_file(fname)
+      def check_file_stat(fname)
         data_err("Cant read (#{fname})") unless test('r', fname)
         return true if test('s', fname)
         warning("File empty (#{fname})")
@@ -86,36 +86,19 @@ module CIAX
 
       def load_partial(tag = nil)
         hash = __read_json(tag)
-        ___check_format_version(hash)
-        ___check_data_version(hash) && deep_update(hash)
+        ___match_version?(hash) && deep_update(hash)
         cmt
       end
 
       private
 
-      # Format Version check
-      def ___check_format_version(hash)
-        ary = __val_diff?(:format_ver, hash)
-        return true unless ary
-        ver_err(format('File format version mismatch <%s> for [%s]', *ary))
-      rescue CommError
-        relay(@cfile.to_s)
-      end
-
-      # Version check, no read if different
+      # Data Version check, no read if different
       # (otherwise old version number remain as long as the file exists)
-      def ___check_data_version(hash)
-        ary = __val_diff?(:ver, hash)
-        return true unless ary
+      def ___match_version?(hash)
+        ary = _val_diff?(:ver, hash)
+        return hash unless ary
         warning(format('File data version mismatch <%s> for [%s]', *ary))
         false
-      end
-
-      def __val_diff?(key, hash)
-        inc = hash[key]
-        org = self[key]
-        return if inc == org
-        [inc, org]
       end
 
       def ___chk_tag(tag = nil)

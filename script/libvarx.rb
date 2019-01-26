@@ -49,5 +49,24 @@ module CIAX
     def base_name(tag = nil)
       [@type, @id, tag].compact.join('_')
     end
+
+    # With Format Version check
+    def jread(jstr = nil)
+      hash = super
+      ary = _val_diff?(:format_ver, hash)
+      return hash unless ary
+      ver_err(format('File format version mismatch <%s> for [%s]', *ary))
+    rescue CommError
+      relay(@cfile.to_s)
+    end
+
+    private
+
+    def _val_diff?(key, hash)
+      inc = hash[key]
+      org = self[key]
+      return if inc == org
+      [inc, org]
+    end
   end
 end

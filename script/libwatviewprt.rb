@@ -18,7 +18,7 @@ module CIAX
         def to_v
           vw = ''
           ___view_time(vw)
-          vw << __itemize('Issuing', self[:exec])
+          ___view_exe(vw)
           return vw if self[:stat].empty?
           ___view_cond(vw)
           vw << __itemize('Interrupt', self[:int])
@@ -36,6 +36,13 @@ module CIAX
           s, e = self[:act_time]
           vw << __itemize('ActiveTime', elps_sec(s, e))
           vw << __itemize('ToNextUpdate', elps_sec(now_msec, self[:upd_next]))
+        end
+
+        def ___view_exe(vw)
+          vw << __itemize('Issuing')
+          self[:exec].each do |i| # each event
+            vw << cformat("    %s\n", i.inspect)
+          end
         end
 
         def ___view_cond(vw)

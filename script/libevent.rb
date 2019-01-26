@@ -15,6 +15,7 @@ module CIAX
         @periodm = 300_000
         @timeout = 10_000
         @last_updated = 0
+        self[:format_ver] = 1
         ___init_struct
       end
 

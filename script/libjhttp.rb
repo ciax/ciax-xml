@@ -26,7 +26,7 @@ module CIAX
           warning(" -- json url file (#{url}) is empty at loading")
         else
           lt = self[:time]
-          replace(jread(jstr))
+          replace(jverify(jstr))
           cmt if self[:time] > lt
         end
         self

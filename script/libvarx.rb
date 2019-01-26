@@ -51,8 +51,8 @@ module CIAX
     end
 
     # With Format Version check
-    def jread(jstr = nil)
-      hash = super
+    def jverify(jstr = nil)
+      hash = jread(jstr)
       ary = _val_diff?(:format_ver, hash)
       return hash unless ary
       ver_err(format('File format version mismatch <%s> for [%s]', *ary))

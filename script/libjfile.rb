@@ -40,7 +40,7 @@ module CIAX
 
       # Using for RecArc, RecDic
       def jload(fname)
-        jread(loadfile(fname))
+        jverify(loadfile(fname))
       rescue InvalidData
         show_err
         Hashx.new

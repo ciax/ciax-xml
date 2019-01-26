@@ -37,12 +37,6 @@ module CIAX
       end
     end
 
-    # Overwrite data
-    def jread(jstr = nil)
-      inp = jstr || gets(nil) || data_err("No data in file(#{ARGV})")
-      j2h(inp)
-    end
-
     # Merge data with setting sub structures
     def jmerge(jstr = nil)
       deep_update(jread(jstr))
@@ -88,6 +82,14 @@ module CIAX
           ov
         end
       end
+    end
+
+    module_function
+
+    # Overwrite data
+    def jread(jstr = nil)
+      inp = jstr || gets(nil) || data_err("No data in file(#{ARGV})")
+      Msg.j2h(inp).extend(Enumx)
     end
   end
 end

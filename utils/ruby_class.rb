@@ -5,6 +5,7 @@ all = []
 mods = []
 readlines.each do |line|
   next if /^( *)(class|module)/ !~ line
+
   rank = Regexp.last_match(1).length / 2
   mods[rank] = $'.strip
   all << mods[0, rank + 1].join('::') if /class/ =~ Regexp.last_match(2)

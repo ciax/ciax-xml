@@ -7,6 +7,7 @@ require 'json'
 abort 'Usage: json_logview json_log' if STDIN.tty? && ARGV.empty?
 readlines.each do |line|
   next if line.to_s.empty?
+
   ary = []
   JSON.parse(line.chomp, symbolize_names: true).each do |k, v|
     case k

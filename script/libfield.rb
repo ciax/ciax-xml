@@ -122,8 +122,14 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id]') do |_opts, args|
-        puts Field.new(args.shift).ext_local_file
+      GetOpts.new('[id]', options: 'h') do |opt, args|
+        fld = Field.new(args.shift)
+        if opt.host
+          fld.ext_remote(opt.host)
+        else
+          fld.ext_local_file.ext_load
+        end
+        puts fld
       end
     end
   end

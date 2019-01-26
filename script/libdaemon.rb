@@ -15,7 +15,7 @@ module CIAX
       @layer = tag
       opt = cfg[:opt]
       ___chk_args(___kill_pids(tag), cfg[:args] + opt.values)
-      ___init_server(tag, opt)
+      ___init_server(tag, opt, port)
       ___main_loop(port) { yield opt.init_layer_mod }
     end
 
@@ -49,9 +49,8 @@ module CIAX
     end
 
     # Background (Switch error output to file)
-    def ___init_server(tag, opt)
-      gittag = tag_set
-      info("Git Tagged [#{gittag}]")
+    def ___init_server(tag, opt, port)
+      info("Git Tagged [#{tag_set}], Status Port [#{port}]")
       ___detach
       ___redirect(tag) if opt[:b]
       verbose { "Initiate Daemon Start [#{tag}] " + git_ver }

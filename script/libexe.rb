@@ -75,6 +75,7 @@ module CIAX
     def run
       return self if @opt.cl?
       require 'libserver'
+      @sub.run if @sub
       return self if is_a?(Server)
       extend(Server).ext_local_server
     end

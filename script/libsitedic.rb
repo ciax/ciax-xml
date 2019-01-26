@@ -15,15 +15,12 @@ module CIAX
       end
 
       def get(site)
-        eobj = _dic.key?(site) ? super : ___add(site)
-        @sub_dic.get(eobj.sub.id) if @sub_dic
-        eobj
+        _dic.key?(site) ? super : ___add(site)
       end
 
       def run
         verbose { "Initiate Run #{@run_list.inspect}" }
         @run_list.each { |s| get(s).run }
-        @sub_dic.run if @sub_dic
         self
       end
 

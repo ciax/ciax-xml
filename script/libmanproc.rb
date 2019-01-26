@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
+require 'libmcrexe'
 require 'libmansh'
-require 'libmcrdic'
 module CIAX
   # Macro Layer
   module Mcr
@@ -23,7 +23,7 @@ module CIAX
           @id = 'man'
           @cfg[:cid] = 'manager'
           @mode = @opt.dry? ? 'DRY' : 'PRCS'
-          @mcr_dic = @cfg[:mcr_dic] || Dic.new(@cfg)
+          @mcr_dic = @cfg[:mcr_dic] || Hashx.new
           @stat.ext_local.refresh
           @sv_stat.repl(:sid, '') # For server response
           ___init_log
@@ -34,7 +34,7 @@ module CIAX
         # Macro Generator
         def gen_cmd(ent)
           mobj = Exe.new(ent) { |e| gen_cmd(e) }
-          @mcr_dic.push(mobj.run)
+          @mcr_dic.put(mobj.id, mobj.run)
           @stat.push(mobj.stat)
           mobj
         end
@@ -87,7 +87,9 @@ module CIAX
         end
 
         def ___init_proc_sys
-          @cobj.get('interrupt').def_proc { @mcr_dic.interrupt }
+          @cobj.get('interrupt').def_proc do
+            @mcr_dic.each { |k, v| k =~ /[\d]+/ && v.interrupt }
+          end
           @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
           @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
         end

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libdic'
-require 'libmcrexe'
+require 'libmanproc'
 
 module CIAX
   module Mcr
@@ -10,19 +10,9 @@ module CIAX
       # @cfg should have [:sv_stat]
       def initialize(layer_cfg, atrb = Hashx.new)
         super
-        @cfg[:mcr_dic] = self
         # Set [:dev_dic] here for using layer_cfg
         @sub_dic = @cfg[:dev_dic] ||= Wat::Dic.new(layer_cfg)
-      end
-
-      # For new macro
-      def push(mobj)
-        put(mobj.id, mobj)
-      end
-
-      def interrupt
-        _dic.each(&:interrupt)
-        self
+        put('man', Man.new(@cfg, mcr_dic: self))
       end
 
       # obsolete, was used for RecDic@cache
@@ -46,17 +36,15 @@ module CIAX
           cid = type?(mobj, CIAX::Exe).cfg[:cid]
           @jumpgrp.add_item(id, cid)
           @current = id
-          self
+          super
         end
       end
 
       class Jump < LongJump; end
 
       if __FILE__ == $PROGRAM_NAME
-        require 'libmanproc'
         ConfOpts.new('[id]', options: 'cehlns') do |cfg|
-          dic = Dic.new(cfg)
-          dic.put('man', Man.new(dic.cfg)).shell
+          Dic.new(cfg).shell
         end
       end
     end

@@ -30,6 +30,10 @@ module CIAX
       _dic.keys
     end
 
+    def each
+      _dic.each { |e| yield e }
+    end
+
     def shell
       ext_local_shell.shell
     end

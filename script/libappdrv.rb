@@ -58,7 +58,7 @@ module CIAX
         #      Batch: Update Field by Frm response
         #      Batch: Repeat until outbuffer is empty
         def ___init_buf
-          buf = Buffer.new(@sv_stat)
+          buf = Buffer.new(@sv_stat, @sub.cobj)
           ___init_proc_int(buf)
           ___init_proc_ext(buf)
           ___init_proc_buf(buf)

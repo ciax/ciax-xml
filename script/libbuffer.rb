@@ -30,8 +30,9 @@ module CIAX
       include Msg
       attr_accessor :flush_proc, :recv_proc
       # sv_stat: Server Status
-      def initialize(sv_stat)
+      def initialize(sv_stat, cobj)
         @sv_stat = type?(sv_stat, Prompt).init_array(:queue).init_flg(busy: '*')
+        @cobj = cobj
         # Update App Status
         @flush_proc = proc {}
         @recv_proc = proc {}
@@ -81,7 +82,8 @@ module CIAX
         ___sv_up
         @sv_stat.push(:queue, cid)
         batch.each do |args|
-          @outbuf[pri] << { args: args, cid: cid }
+          type = @cobj.set_cmd(args).get(:type)
+          @outbuf[pri] << { args: args, cid: cid, type: type }
         end
         verbose { "OutBuf:Recieved:timing #{cid}(#{@id})\n#{@outbuf}" }
       end
@@ -109,8 +111,8 @@ module CIAX
           args.replace h[:args] if h
         end
         batch.delete_if do |e|
-          if e[:args] == args
-            warning("duplicated cmd #{args.inspect}(#{e[:cid]})")
+          if e[:type] == 'stat' && e[:args] == args
+            warning(format('duplicated stat cmd %s(%s)', args.inspect, e[:cid]))
           end
         end
         args

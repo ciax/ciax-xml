@@ -27,7 +27,7 @@ module CIAX
             @sv_stat.dw(:ioerr)
             @sv_stat.dw(:comerr)
           end
-          @stat.ext_local_conv(@stream).ext_save
+          @stat.ext_local_conv(@stream)
         end
 
         def ___init_processor_ext

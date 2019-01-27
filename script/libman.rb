@@ -37,10 +37,10 @@ module CIAX
 
       private
 
-      # Mode Extention by Option
-      def _ext_local_test
-        @stat.ext_local.load
+      def _ext_local
         super
+        require 'libmanproc'
+        extend(Processor).ext_local_processor
       end
 
       # Overridden by libmansh
@@ -71,7 +71,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', options: 'cnr') do |cfg|
+      ConfOpts.new('[proj] [cmd] (par)', options: 'cehlnr') do |cfg|
         Man.new(cfg).shell
       end
     end

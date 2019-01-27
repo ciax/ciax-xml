@@ -13,7 +13,7 @@ module CIAX
         super
         _init_dbi2cfg
         ___init_sub
-        ___init_view
+        @stat = View.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
         _opt_mode
       end
 
@@ -39,9 +39,9 @@ module CIAX
         @post_exe_procs.concat(@sub.post_exe_procs)
       end
 
-      def ___init_view
-        @stat = View.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
-        @stat.ext_local_log if @opt.drv?
+      def _ext_local_driver
+        @stat.ext_local_log
+        self
       end
     end
 

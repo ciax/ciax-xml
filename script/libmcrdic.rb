@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libdic'
-require 'libmanproc'
+require 'libman'
 
 module CIAX
   module Mcr

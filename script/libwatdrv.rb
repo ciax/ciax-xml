@@ -10,7 +10,7 @@ module CIAX
         end
 
         def ext_local_driver
-          @stat.ext_local_conv(@sub.stat).ext_save
+          @stat.ext_local_conv(@sub.stat)
           # @stat[:int] is overwritten by initial loading
           @sub.batch_interrupt = @stat.get(:int)
           @stat.ext_local_log if @opt.drv?

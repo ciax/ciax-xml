@@ -14,7 +14,7 @@ module CIAX
         # type of usage: shell/command line
         # type of semantics: execution/test
         def ext_local_driver
-          @stat.ext_local_conv(@sub.stat).ext_save
+          @stat.ext_local_conv(@sub.stat)
           @buf = ___init_buf
           ___init_log_mode
           ___init_processor_save

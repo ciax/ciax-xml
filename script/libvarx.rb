@@ -16,6 +16,11 @@ module CIAX
       self[:format_ver] = nil
     end
 
+    # For loading file manipulation module
+    def ext_local
+      ext_local_file
+    end
+
     def ext_local_file
       require 'libjfile'
       raise('File ext conflicts with Http ext') if @host

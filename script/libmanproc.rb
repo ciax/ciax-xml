@@ -1,16 +1,10 @@
 #!/usr/bin/ruby
 require 'libmcrexe'
-require 'libmansh'
 module CIAX
   # Macro Layer
   module Mcr
     # Macro Manager
     class Man
-      def _ext_local
-        super
-        extend(Processor).ext_local_processor
-      end
-
       # Macro Manager Processing Module (TEST or DRIVE mode)
       module Processor
         def self.extended(obj)
@@ -109,12 +103,6 @@ module CIAX
           jl = Hashx.new(port: @port, label: dbi.label)
           jl[:commands] = dbi.web_select
           IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
-        end
-      end
-
-      if __FILE__ == $PROGRAM_NAME
-        ConfOpts.new('[id]', options: 'cehlns') do |cfg|
-          Man.new(cfg).shell
         end
       end
     end

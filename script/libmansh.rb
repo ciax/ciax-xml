@@ -82,7 +82,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', options: 'cnlr') do |cfg|
+      ConfOpts.new('[proj] [cmd] (par)', options: 'cenlr') do |cfg|
         Man.new(cfg).shell
       end
     end

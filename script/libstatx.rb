@@ -8,8 +8,9 @@ module CIAX
   class Statx < Varx
     attr_reader :dbi
     def initialize(type, obj, mod = Db)
+      super(type)
       @dbi = type?(___get_dbi(obj, mod), Dbi)
-      super(type, @dbi[:site_id] || @dbi[:id], @dbi[:version].to_i, @dbi[:host])
+      _attr_set(@dbi[:site_id] || @dbi[:id], @dbi[:version].to_i, @dbi[:host])
       @layer = @dbi[:layer]
     end
 
@@ -21,10 +22,8 @@ module CIAX
         obj
       elsif obj.is_a? String
         mod.new.get(obj)
-      elsif STDIN.tty?
-        mod.new.get(nil)
       else
-        mod.new.get(jmerge[:id])
+        mod.new.get(self[:id])
       end
     end
   end

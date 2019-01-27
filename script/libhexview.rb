@@ -9,7 +9,8 @@ module CIAX
       # sv_stat should have server status (isu,watch,exe..) like App::Exe
       def initialize(stat, hdb = nil, sv_stat = nil)
         @stat = type?(stat, App::Status)
-        super('hex', @stat[:id], @stat[:ver])
+        super('hex')
+        _attr_set(@stat[:id], @stat[:ver])
         @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
         id = self[:id] || args_err("NO ID(#{id}) in Stat")
         @sv_stat = sv_stat || Prompt.new('site', id)

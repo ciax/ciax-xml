@@ -19,7 +19,8 @@ module CIAX
       def initialize(id, cfg)
         iocmd = type?(cfg, Config)[:iocmd]
         give_up(' No IO command') unless iocmd
-        super('stream', id, cfg[:version])
+        super('stream')
+        _attr_set(id, cfg[:version])
         update('dir' => '', 'cmd' => '', 'base64' => '')
         verbose { "Initiate [#{iocmd}]" }
         init_time2cmt

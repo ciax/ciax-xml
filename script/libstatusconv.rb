@@ -127,8 +127,12 @@ module CIAX
       if __FILE__ == $PROGRAM_NAME
         require 'libfield'
         GetOpts.new('[site] | < field_file', options: 'r') do |opt, args|
-          field = Frm::Field.new(args.shift)
-          field.ext_local_file if STDIN.tty?
+          if STDIN.tty?
+            field = Frm::Field.new(args.shift)
+            field.ext_local_file.ext_load
+          else
+            field = Frm::Field.new
+          end
           stat = Status.new(field[:id])
           stat.ext_local_conv(field).cmt
           puts opt[:r] ? stat.to_v : stat.path(args)

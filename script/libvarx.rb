@@ -9,22 +9,11 @@ module CIAX
   # whose link can be broken by load().
   class Varx < Upd
     attr_reader :type, :id
-    def initialize(type, id = nil, ver = nil, host = nil, dir = nil)
+    def initialize(type)
       super()
       @type = type
       # @id is for file name (prevent overwritten)
-      @id = id
-      # @dir is subdir on web/file folder (~/.var/@dir)
-      @dir = dir
-      # Headers (could be overwritten by file load)
       self[:format_ver] = nil
-      self[:id] = id
-      self[:ver] = ver if ver
-      self[:host] = host || HOST
-    end
-
-    def id
-      self[:id]
     end
 
     def ext_local_file
@@ -61,6 +50,15 @@ module CIAX
     end
 
     private
+
+    def _attr_set(id = nil, ver = nil, host = nil, dir = nil)
+      # Headers (could be overwritten by file load)
+      @id = (self[:id] ||= id)
+      self[:ver] = ver if ver
+      self[:host] = host || HOST
+      # @dir is subdir on web/file folder (~/.var/@dir)
+      @dir = dir
+    end
 
     def _val_diff?(key, hash)
       inc = hash[key]

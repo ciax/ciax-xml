@@ -100,9 +100,9 @@ function func_make_list() {
 
   function _update(data) {
     if (!data) return;
-    var ids = Object.keys(data.list).sort(_sort_keys);
+    var ids = Object.keys(data.dic).sort(_sort_keys);
     for (var i of ids) {
-      _upd_line(i, data.list[i]);
+      _upd_line(i, data.dic[i]);
     }
     // blinking status
     blinking();

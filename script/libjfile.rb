@@ -69,13 +69,7 @@ module CIAX
       # Set latest_link=true for making latest link at save
       def ext_load
         verbose { "Initiate File Loading Feature [#{base_name}]" }
-        load_partial # If file is empty, keep the skeleton
-        self
-      end
-
-      # For local client mode, otherwise one time initial load
-      def auto_load
-        @upd_procs << proc { load_partial }
+        load # If file is empty, keep the skeleton
         self
       end
 
@@ -84,22 +78,7 @@ module CIAX
         cmt
       end
 
-      def load_partial(tag = nil)
-        hash = __read_json(tag)
-        ___match_version?(hash) && deep_update(hash)
-        cmt
-      end
-
       private
-
-      # Data Version check, no read if different
-      # (otherwise old version number remain as long as the file exists)
-      def ___match_version?(hash)
-        ary = _val_diff?(:ver, hash)
-        return hash unless ary
-        warning(format('File data version mismatch <%s> for [%s]', *ary))
-        false
-      end
 
       def ___chk_tag(tag = nil)
         return __file_name unless tag
@@ -142,6 +121,13 @@ module CIAX
         __write_json(jstr, tag)
       end
 
+      # Load without Header which can be remain forever on the saving feature
+      def load_partial(tag = nil)
+        hash = __read_json(tag)
+        ___match_version?(hash) && deep_update(hash)
+        cmt
+      end
+
       def mklink(tag = 'latest')
         # Making 'latest' link
         save
@@ -153,6 +139,15 @@ module CIAX
       end
 
       private
+
+      # Data Version check, no read if different
+      # (otherwise old version number remain as long as the file exists)
+      def ___match_version?(hash)
+        ary = _val_diff?(:ver, hash)
+        return hash unless ary
+        warning(format('File data version mismatch <%s> for [%s]', *ary))
+        false
+      end
 
       def __write_json(jstr, tag = nil)
         ___write_notice(jstr)

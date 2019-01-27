@@ -19,7 +19,7 @@ module CIAX
     end
 
     def to_r
-      view_struct
+      ViewStruct.new(self).to_s
     end
 
     def to_v

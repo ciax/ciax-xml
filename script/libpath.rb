@@ -3,13 +3,12 @@ require 'libstruct'
 module CIAX
   # Show branch (omit lower tree of Hash/Array with sym key)
   module ViewPath
-    include ViewStruct
-
+    include Msg
     def path(ary = [])
       enum = ary.inject(self) do |prev, a|
         ___values_by_type(prev, a)
       end || Msg.give_up('No such key')
-      ___view_branch(enum.dup.extend(ViewStruct))
+      ___view_branch(enum.dup)
     end
 
     private
@@ -30,7 +29,7 @@ module CIAX
         v = var.instance_variable_get(n)
         var.instance_variable_set(n, v.class.to_s) if v.is_a?(Enumerable)
       end
-      var.view_struct(true, true)
+      ViewStruct.new(var, true, true).to_s
     end
 
     def ___view_hash(var)

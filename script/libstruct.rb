@@ -2,17 +2,20 @@
 require 'libmsg'
 module CIAX
   # Show data structure
-  module ViewStruct
+  class ViewStruct
     include Msg
-
     COLOR_TBL = { 'true' => 13, 'false' => 8 }.freeze
-    def view_struct(show_iv = false, show_id = false, show_cls = true)
+    def initialize(obj, show_iv = false, show_id = false, show_cls = true)
+      @obj = obj
       @_vs_opt = { show_iv: show_iv, show_id: show_id, show_cls: show_cls }
       @_vs_cfg = { indent: 0, column: 4, hash_col: 2 }
+    end
+
+    # Show only top level of the instance variable
+    def to_s
       @_vs_objects = []
       @_vs_lines = []
-      # Show only top level of the instance variable
-      __recursive(self)
+      __recursive(@obj)
       @_vs_lines.join("\n")
     end
 

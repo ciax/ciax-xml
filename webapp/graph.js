@@ -53,6 +53,16 @@ function move_date(dom) {
   past_graph();
 }
 
+function move_fw() {
+  par.time = range[0];
+  past_graph();
+}
+
+function move_bk() {
+  par.time = range[1];
+  past_graph();
+}
+
 // Show Tool Tip
 function init_tooltip() {
   $("<div id='tooltip'></div>").css({
@@ -137,11 +147,24 @@ function _conv_ascii(pair) {
     }
     pair[1] = asc;
   }
+  var time = pair[0];
+  if (range[0] < time) {
+    range[0] = time;
+  }else if (range[1] > time) {
+    range[1] = time;
+  }
+}
+
+function _regurate(obj) {
+    var dat = obj[0].data;
+    var typ = dat[0][0];
+    range = [typ, typ];
+    dat.forEach(_conv_ascii);
 }
 // Dynamic Graph
 function update_graph() {
   $.getJSON('sqlog.php', par, function(obj) {
-    obj[0].data.forEach(_conv_ascii);
+    _regurate(obj);
     plot.setData(obj);
     plot.setupGrid(); // scroll to left
     plot.draw();
@@ -151,7 +174,7 @@ function update_graph() {
 function static_graph(zoom) {
   current_date(par.time || Date.now());
   $.getJSON('sqlog.php', par, function(obj) {
-    obj[0].data.forEach(_conv_ascii);
+    _regurate(obj);
     plot = $.plot($('#placeholder'), obj, options);
     if (zoom) {
       plot.zoom({
@@ -171,7 +194,7 @@ function current_graph() {
 function past_graph() {
   clearInterval(timer);
   pz(true);
-  static_graph(4);
+  static_graph();
 }
 
 function pz(tf) {
@@ -198,6 +221,7 @@ var plot;
 var timer;
 var current = new Date();
 var offset = current.getTimezoneOffset() * 60000;
+var range = [0.0];
 $.ajaxSetup({
   mimeType: 'json',
   ifModified: true,

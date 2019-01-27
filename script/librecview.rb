@@ -90,7 +90,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[num]') do |_opts, args|
-        rv = RecView.new(RecArc.new.ext_local.ext_load)
+        rv = RecView.new(RecArc.new.ext_local.load)
         puts rv.inc(args[0])
       end
     end

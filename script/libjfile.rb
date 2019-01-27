@@ -2,7 +2,7 @@
 module CIAX
   # Variable status data
   class Varx
-    # JSON file module functions
+    # File I/O feature
     module JFile
       def self.extended(obj)
         Msg.type?(obj, Varx)
@@ -16,8 +16,9 @@ module CIAX
         self
       end
 
-      def ext_load
-        extend(JLoad).ext_load
+      def load(tag = nil)
+        replace(__read_json(tag))
+        cmt
       end
 
       def ext_save
@@ -36,6 +37,20 @@ module CIAX
         end.sort
       end
 
+      def ___chk_tag(tag = nil)
+        return __file_name unless tag
+        list = __tag_list
+        return __file_name(tag) if list.include?(tag)
+        par_err('No such Tag', "Tag=#{list}")
+        nil
+      end
+
+      def __read_json(tag = nil)
+        @cfile = ___chk_tag(tag)
+        jload(@jsondir + @cfile)
+      end
+
+      # JSON file module functions
       module_function
 
       # Using for RecArc, RecDic
@@ -61,36 +76,6 @@ module CIAX
         data_err("Cant read (#{fname})") unless test('r', fname)
         return true if test('s', fname)
         warning("File empty (#{fname})")
-      end
-    end
-
-    # Add File I/O feature
-    module JLoad
-      # Set latest_link=true for making latest link at save
-      def ext_load
-        verbose { "Initiate File Loading Feature [#{base_name}]" }
-        load # If file is empty, keep the skeleton
-        self
-      end
-
-      def load(tag = nil)
-        replace(__read_json(tag))
-        cmt
-      end
-
-      private
-
-      def ___chk_tag(tag = nil)
-        return __file_name unless tag
-        list = __tag_list
-        return __file_name(tag) if list.include?(tag)
-        par_err('No such Tag', "Tag=#{list}")
-        nil
-      end
-
-      def __read_json(tag = nil)
-        @cfile = ___chk_tag(tag)
-        jload(@jsondir + @cfile)
       end
     end
 

@@ -43,7 +43,7 @@ module CIAX
         if opt.host
           stat.ext_remote(opt.host)
         else
-          stat.ext_local_file.ext_load
+          stat.ext_local_file.load
         end
         puts stat
       end

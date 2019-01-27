@@ -39,7 +39,7 @@ module CIAX
 
       # Mode Extention by Option
       def _ext_local_test
-        @stat.ext_local.ext_load
+        @stat.ext_local.load
         super
       end
 

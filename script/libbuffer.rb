@@ -30,7 +30,7 @@ module CIAX
       include Msg
       attr_accessor :flush_proc, :recv_proc
       # sv_stat: Server Status
-      def initialize(sv_stat, cobj)
+      def initialize(sv_stat, cobj = nil)
         @sv_stat = type?(sv_stat, Prompt).init_array(:queue).init_flg(busy: '*')
         @cobj = cobj
         # Update App Status
@@ -82,8 +82,9 @@ module CIAX
         ___sv_up
         @sv_stat.push(:queue, cid)
         batch.each do |args|
-          type = @cobj.set_cmd(args).get(:type)
-          @outbuf[pri] << { args: args, cid: cid, type: type }
+          fcmd = { args: args, cid: cid }
+          fcmd[:type] = @cobj.set_cmd(args).get(:type) if @cobj
+          @outbuf[pri] << fcmd
         end
         verbose { "OutBuf:Recieved:timing #{cid}(#{@id})\n#{@outbuf}" }
       end

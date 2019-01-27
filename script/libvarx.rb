@@ -16,22 +16,16 @@ module CIAX
       self[:format_ver] = nil
     end
 
-    # For loading file manipulation module
-    def ext_local
-      ext_local_file
-    end
-
-    def ext_local_file
-      require 'libjfile'
-      raise('File ext conflicts with Http ext') if @host
-      extend(JFile).ext_local_file(@dir)
-    end
-
     # independent from ext_local_file
     def ext_local_log
       require 'libjslog'
       raise('Log ext conflicts with Http ext') if @host
       extend(JsLog).ext_local_log
+    end
+
+    # For loading file manipulation module
+    def ext_local
+      _ext_local_file
     end
 
     # Read only as a client
@@ -55,6 +49,13 @@ module CIAX
     end
 
     private
+
+    def _ext_local_file
+      require 'libjfile'
+      raise('File ext conflicts with Http ext') if @host
+      extend(JFile)
+      _ext_local_file(@dir)
+    end
 
     def _attr_set(id = nil, ver = nil, host = nil, dir = nil)
       # Headers (could be overwritten by file load)

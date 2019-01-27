@@ -112,7 +112,7 @@ module CIAX
       require 'libinsdb'
       require 'libstatus'
       GetOpts.new(' < status_file') do
-        stat = App::Status.new.ext_local_file
+        stat = App::Status.new.ext_local
         puts View.new(stat)
       end
     end

@@ -49,7 +49,7 @@ module CIAX
 
         def ext_local
           init_time2cmt
-          ext_local_file
+          _ext_local_file
         end
 
         def push(record) # returns self

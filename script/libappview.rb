@@ -106,7 +106,7 @@ module CIAX
       GetOpts.new('[site] | < status_file', odb) do |opt, args|
         stat = Status.new(args.shift).ext_local_sym
         view = View.new(stat)
-        stat.ext_local_file if STDIN.tty?
+        stat.ext_local if STDIN.tty?
         stat.cmt
         puts opt[:c] ? view.to_csv : view.to_s
       end

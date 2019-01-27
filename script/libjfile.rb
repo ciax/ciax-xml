@@ -8,14 +8,6 @@ module CIAX
         Msg.type?(obj, Varx)
       end
 
-      def ext_local_file(dir = nil)
-        verbose { "Initiate File Feature [#{base_name}]" }
-        @id || cfg_err('No ID')
-        @jsondir = vardir(dir || 'json')
-        @cfile = base_name # Current file name
-        self
-      end
-
       def load(tag = nil)
         replace(__read_json(tag))
         cmt
@@ -26,6 +18,14 @@ module CIAX
       end
 
       private
+
+      def _ext_local_file(dir = nil)
+        verbose { "Initiate File Feature [#{base_name}]" }
+        @id || cfg_err('No ID')
+        @jsondir = vardir(dir || 'json')
+        @cfile = base_name # Current file name
+        self
+      end
 
       def __file_name(tag = nil)
         base_name(tag) + '.json'

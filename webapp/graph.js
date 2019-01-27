@@ -41,7 +41,6 @@ function current_date(msec) {
 function init_move() {
   $('#placeholder').on('plotclick', _move_time);
 }
-
 function _move_time(event, pos, item) {
   if (item) {
     par.time = item.datapoint[0].toFixed(2);
@@ -162,28 +161,26 @@ function static_graph(zoom) {
   });
 }
 
-
 function current_graph() {
   timer = setInterval(update_graph, 1000);
   delete par.time;
-  options.zoom = {
-    interactive: false
-  };
-  options.pan = {
-    interactive: false
-  };
+  pz(false);
   static_graph();
 }
 
 function past_graph() {
   clearInterval(timer);
+  pz(true);
+  static_graph(4);
+}
+
+function pz(tf) {
   options.zoom = {
-    interactive: true
+    interactive: tf
   };
   options.pan = {
-    interactive: true
+    interactive: tf
   };
-  static_graph(4);
 }
 
 function init_graph() {

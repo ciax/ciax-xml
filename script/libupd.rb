@@ -13,7 +13,6 @@ module CIAX
       @upd_procs = []
       # Proc Array for Commit Propagation to the upper Layers
       @cmt_procs = []
-      jmerge unless STDIN.tty?
     end
 
     # Add cmt for self return method

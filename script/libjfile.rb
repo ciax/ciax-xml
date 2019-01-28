@@ -116,11 +116,16 @@ module CIAX
       def mklink(tag = 'latest')
         # Making 'latest' link
         save
-        sname = vardir('json') + "#{@type}_#{tag}.json"
-        ::File.unlink(sname) if ::File.exist?(sname)
+        sname = rmlink(tag)
         ::File.symlink(@jsondir + __file_name, sname)
         verbose { "File Symboliclink to [#{sname}]" }
         self
+      end
+
+      def rmlink(tag)
+        sname = vardir('json') + "#{@type}_#{tag}.json"
+        ::File.unlink(sname) if ::File.exist?(sname)
+        sname
       end
 
       private

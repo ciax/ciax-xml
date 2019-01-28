@@ -41,8 +41,7 @@ module CIAX
       rescue Interrupt
         ___site_interrupt
       ensure
-        show_fg @record.finish + "\n"
-        @sv_stat.erase(:list, @id)
+        ___post_play
       end
 
       def fork
@@ -56,6 +55,12 @@ module CIAX
         Thread.current[:query] = @qry
         show_fg @record.start
         @sv_stat.push(:list, @id).repl(:sid, @id)
+      end
+
+      def ___post_play
+        show_fg @record.finish + "\n"
+        @sv_stat.erase(:list, @id)
+        @record.rmlink(@id) if @opt.mcr_log?
       end
 
       # macro returns result (true=complete /false=error)

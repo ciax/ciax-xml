@@ -14,6 +14,9 @@
             <frmcmd name="zlen"/>
           </item>
         </unit>
+        <item id="init" label="Start TCP Status Request">
+          <frmcmd name="init"/>
+        </item>
         <item id="login" label="Login">
           <frmcmd name="login"/>
           <frmcmd name="logstat"/>
@@ -21,9 +24,6 @@
         <item id="logout" label="Logout">
           <frmcmd name="logout"/>
           <frmcmd name="logstat"/>
-        </item>
-        <item id="init" label="Start TCP Status Request">
-          <frmcmd name="init"/>
         </item>
         <item id="startup" label="Start Up CIAX operation">
           <frmcmd name="login"/>
@@ -37,30 +37,234 @@
           <frmcmd name="tscpri" label="TSC Primaly Mode"/>
           <frmcmd name="logout"/>
         </item>
-        <item id="rhook" label="InR Hook">
-          <frmcmd name="rhook"/>
-          <frmcmd name="inrstat"/>
-        </item>
-        <item id="runhk" label="InR UnHook">
-          <frmcmd name="runhk"/>
-          <frmcmd name="inrstat"/>
-        </item>
-        <item id="rstop" label="InR Stop">
-          <frmcmd name="rstop"/>
-          <frmcmd name="inrstat"/>
-        </item>
-        <item id="jup" label="All EJB Up">
-          <frmcmd name="ajup"/>
-          <frmcmd name="jakstat"/>
-        </item>
-        <item id="jdw" label="All EJB Down">
-          <frmcmd name="ajdw"/>
-          <frmcmd name="jakstat"/>
-        </item>
-        <item id="jstop" label="All EJB Stop">
-          <frmcmd name="ajstop"/>
-          <frmcmd name="jakstat"/>
-        </item>
+      </group>
+      <group id="g1" caption="Action">
+        <unit id="urot">
+          <item id="rhook" label="InR Hook">
+            <frmcmd name="rhook"/>
+            <frmcmd name="inrstat"/>
+          </item>
+          <item id="runhk" label="InR UnHook">
+            <frmcmd name="runhk"/>
+            <frmcmd name="inrstat"/>
+          </item>
+          <item id="rstop" label="InR Stop">
+            <frmcmd name="rstop"/>
+            <frmcmd name="inrstat"/>
+          </item>
+        </unit>
+        <unit id="ujak">
+          <item id="jup" label="All EJB Up">
+            <frmcmd name="ajup"/>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw" label="All EJB Down">
+            <frmcmd name="ajdw"/>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jstop" label="All EJB Stop">
+            <frmcmd name="ajstop"/>
+            <frmcmd name="jakstat"/>
+          </item>
+        </unit>
+        <unit id="ujupind" title="jup[01-16]" label="EJB Up">
+          <item id="jup01" label="EJB Up 01">
+            <frmcmd name="jup">
+              <argv>1</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup02" label="EJB Up 02">
+            <frmcmd name="jup">
+              <argv>2</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup03" label="EJB Up 03">
+            <frmcmd name="jup">
+              <argv>3</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup04" label="EJB Up 04">
+            <frmcmd name="jup">
+              <argv>4</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup05" label="EJB Up 05">
+            <frmcmd name="jup">
+              <argv>5</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup06" label="EJB Up 06">
+            <frmcmd name="jup">
+              <argv>6</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup07" label="EJB Up 07">
+            <frmcmd name="jup">
+              <argv>7</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup08" label="EJB Up 08">
+            <frmcmd name="jup">
+              <argv>8</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup09" label="EJB Up 09">
+            <frmcmd name="jup">
+              <argv>9</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup10" label="EJB Up 10">
+            <frmcmd name="jup">
+              <argv>10</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup11" label="EJB Up 11">
+            <frmcmd name="jup">
+              <argv>11</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup12" label="EJB Up 12">
+            <frmcmd name="jup">
+              <argv>12</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup13" label="EJB Up 13">
+            <frmcmd name="jup">
+              <argv>13</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup14" label="EJB Up 14">
+            <frmcmd name="jup">
+              <argv>14</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup15" label="EJB Up 15">
+            <frmcmd name="jup">
+              <argv>15</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jup16" label="EJB Up 16">
+            <frmcmd name="jup">
+              <argv>16</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+        </unit>
+        <unit id="ujdwind" title="jdw[01-16]" label="EJB Down">
+          <item id="jdw01" label="EJB Dw 01">
+            <frmcmd name="jdw">
+              <argv>1</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw02" label="EJB Dw 02">
+            <frmcmd name="jdw">
+              <argv>2</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw03" label="EJB Dw 03">
+            <frmcmd name="jdw">
+              <argv>3</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw04" label="EJB Dw 04">
+            <frmcmd name="jdw">
+              <argv>4</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw05" label="EJB Dw 05">
+            <frmcmd name="jdw">
+              <argv>5</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw06" label="EJB Dw 06">
+            <frmcmd name="jdw">
+              <argv>6</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw07" label="EJB Dw 07">
+            <frmcmd name="jdw">
+              <argv>7</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw08" label="EJB Dw 08">
+            <frmcmd name="jdw">
+              <argv>8</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw09" label="EJB Dw 09">
+            <frmcmd name="jdw">
+              <argv>9</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw10" label="EJB Dw 10">
+            <frmcmd name="jdw">
+              <argv>10</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw11" label="EJB Dw 11">
+            <frmcmd name="jdw">
+              <argv>11</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw12" label="EJB Dw 12">
+            <frmcmd name="jdw">
+              <argv>12</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw13" label="EJB Dw 13">
+            <frmcmd name="jdw">
+              <argv>13</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw14" label="EJB Dw 14">
+            <frmcmd name="jdw">
+              <argv>14</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw15" label="EJB Dw 15">
+            <frmcmd name="jdw">
+              <argv>15</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+          <item id="jdw16" label="EJB Dw 16">
+            <frmcmd name="jdw">
+              <argv>16</argv>
+            </frmcmd>
+            <frmcmd name="jakstat"/>
+          </item>
+        </unit>
+      </group>
+      <group id="g2" caption="Setting">
         <item id="moircs" label="Set IID MOIRCS">
           <frmcmd name="setinst">
             <argv>12</argv>
@@ -91,6 +295,8 @@
           </frmcmd>
           <frmcmd name="iststat"/>
         </item>
+      </group>
+      <group id="g3" caption="Status">
         <item id="updjak" label="Update Jak Status" hidden="true">
           <frmcmd name="jakstat"/>
           <frmcmd name="getexit"/>

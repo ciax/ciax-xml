@@ -19,10 +19,8 @@ module CIAX
     # Set dbi, otherwise generate by stdin info
     def ___get_dbi(obj, mod)
       return obj if obj.is_a? Dbi
+      obj = jmerge[:id] unless obj || STDIN.tty?
       mod.new.get(obj)
-    rescue InvalidARGS
-      raise if STDIN.tty?
-      mod.new.get(jmerge[:id])
     end
   end
 end

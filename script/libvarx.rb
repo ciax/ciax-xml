@@ -3,7 +3,7 @@ require 'libupd'
 
 module CIAX
   # Variable Status Data having ID with Saving, Logging feature.
-  # Need Header(id,ver) data.
+  # Need Header(id, data_ver, format_ver) data.
   # Used for freqently changing data with remote.
   # Don't assign an instance variables to any element
   # whose link can be broken by load().

@@ -42,6 +42,8 @@ module CIAX
     def jverify(jstr = nil)
       hash = jread(jstr)
       __chk_ver('format', hash)
+      # For back compatibility
+      hash[:data_ver] = hash.delete(:ver) if hash.key?(:ver)
       __chk_ver('data', hash)
       hash
     end
@@ -68,9 +70,8 @@ module CIAX
     # (otherwise old version number remain as long as the file exists)
     def __chk_ver(type, hash)
       key = "#{type}_ver".to_sym
-      return unless hash.key?(key)
-      inc = hash[key]
       org = self[key]
+      inc = hash[key]
       return if inc == org
       data_err(format('File %s version mismatch <%s> for [%s]', type, inc, org))
     end

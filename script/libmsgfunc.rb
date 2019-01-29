@@ -48,10 +48,16 @@ module CIAX
       hash
     end
 
+    # Json feature
     def j2h(jstr = nil)
       key2str(JSON.parse(jstr, symbolize_names: true))
     rescue JSON::ParserError
       data_err('NOT JSON')
+    end
+
+    def jread(jstr = nil)
+      inp = jstr || gets(nil) || data_err("No data in file(#{ARGV})")
+      j2h(inp).extend(Enumx)
     end
 
     # Thread is main
@@ -78,6 +84,27 @@ module CIAX
       dir = "#{ENV['HOME']}/.var/#{subdir}/"
       FileUtils.mkdir_p(dir)
       dir
+    end
+
+    # File feature
+    def loadfile(fname)
+      data_err("Cant read (#{fname})") unless test('r', fname)
+      warning("File empty (#{fname})") unless test('s', fname)
+      open(fname) do |f|
+        verbose { "Loading file [#{fname}](#{f.size})" }
+        f.flock(::File::LOCK_SH)
+        f.read
+      end
+    rescue Errno::ENOENT
+      verbose { "  -- no json file (#{fname})" }
+    end
+
+    # OK for bad file
+    def jload(fname)
+      jread(loadfile(fname))
+    rescue InvalidData
+      show_err
+      Hashx.new
     end
 
     # Git administration

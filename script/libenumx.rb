@@ -83,13 +83,5 @@ module CIAX
         end
       end
     end
-
-    module_function
-
-    # Overwrite data
-    def jread(jstr = nil)
-      inp = jstr || gets(nil) || data_err("No data in file(#{ARGV})")
-      Msg.j2h(inp).extend(Enumx)
-    end
   end
 end

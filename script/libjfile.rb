@@ -49,34 +49,6 @@ module CIAX
         @cfile = ___chk_tag(tag)
         jload(@jsondir + @cfile)
       end
-
-      # JSON file module functions
-      module_function
-
-      # Using for RecArc, RecDic
-      def jload(fname)
-        jverify(loadfile(fname))
-      rescue InvalidData
-        show_err
-        Hashx.new
-      end
-
-      def loadfile(fname)
-        check_file_stat(fname)
-        open(fname) do |f|
-          verbose { "Loading file [#{fname}](#{f.size})" }
-          f.flock(::File::LOCK_SH)
-          f.read
-        end
-      rescue Errno::ENOENT
-        verbose { "  -- no json file (#{fname})" }
-      end
-
-      def check_file_stat(fname)
-        data_err("Cant read (#{fname})") unless test('r', fname)
-        return true if test('s', fname)
-        warning("File empty (#{fname})")
-      end
     end
 
     # File saving feature

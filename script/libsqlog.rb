@@ -14,7 +14,7 @@ module CIAX
         @layer = layer
         @stat = type?(stat, Varx)
         @id = stat[:id]
-        @tid = "#{@stat.type}_#{@stat[:ver]}"
+        @tid = "#{@stat.type}_#{@stat[:data_ver]}"
         @tname = @stat.type.capitalize
         verbose { "Initiate Table '#{@tid}'" }
       end

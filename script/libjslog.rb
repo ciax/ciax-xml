@@ -40,7 +40,7 @@ module CIAX
       private
 
       def ___log_thread
-        verbose { "Initiate File Log Server [#{@id}/Ver.#{self[:ver]}]" }
+        verbose { "Initiate File Log Server [#{@id}/Ver.#{self[:data_ver]}]" }
         Threadx::QueLoop.new('Logging', @layer, @id, @type) do |que|
           str = que.pop
           open(@logfile, 'a') { |f| f.puts str }

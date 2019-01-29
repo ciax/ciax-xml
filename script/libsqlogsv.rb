@@ -33,7 +33,7 @@ module CIAX
       # Check table existence (ver=0 is invalid)
       def init_table(layer, stat) # returns self
         tbl = Table.new(layer, stat)
-        if stat[:ver].to_i > 0
+        if stat[:data_ver].to_i > 0
           ___create_tbl(tbl)
           ___real_mode(stat, tbl)
         else

@@ -47,7 +47,7 @@ module CIAX
 
       def __read_json(tag = nil)
         @cfile = ___chk_tag(tag)
-        jload(@jsondir + @cfile)
+        jverify(loadfile(@jsondir + @cfile))
       end
     end
 

@@ -41,11 +41,10 @@ module CIAX
     # With Format Version check
     def jverify(jstr = nil)
       hash = jread(jstr)
-      ary = _val_diff?(:format_ver, hash)
-      return hash unless ary
-      ver_err(format('File format version mismatch <%s> for [%s]', *ary))
-    rescue CommError
-      relay(@cfile.to_s)
+      msg = _val_diff?(:format_ver, hash)
+      return hash unless msg
+      warning(msg)
+      Hashx.new
     end
 
     private
@@ -70,7 +69,7 @@ module CIAX
       inc = hash[key]
       org = self[key]
       return if inc == org
-      [inc, org]
+      format('File format version mismatch <%s> for [%s]', inc, org)
     end
   end
 end

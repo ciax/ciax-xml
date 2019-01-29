@@ -63,7 +63,7 @@ module CIAX
     end
 
     # Display part
-    def to_s
+    def to_v
       @num = -1
       view(keys, @caption, @color, @level).to_s
     end

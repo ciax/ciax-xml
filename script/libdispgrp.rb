@@ -27,7 +27,7 @@ module CIAX
         @sub.add_grp(id, cap, color, rank)
       end
 
-      def to_s
+      def to_v
         @num = -1
         res = @sub.view.to_s
         warning("SubGroup [#{@caption}] is empty") if res.empty?
@@ -86,7 +86,7 @@ module CIAX
         ary.join("\n")
       end
 
-      def to_s
+      def to_v
         view.to_s
       end
 
@@ -131,7 +131,7 @@ module CIAX
         @index.view(select, cap, @color, @level)
       end
 
-      def to_s
+      def to_v
         view.to_s
       end
     end

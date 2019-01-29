@@ -83,8 +83,7 @@ module CIAX
 
       # Load without Header which can be remain forever on the saving feature
       def load_partial(tag = nil)
-        hash = __read_json(tag)
-        ___match_version?(hash) && deep_update(hash)
+        deep_update(__read_json(tag))
         cmt
       end
 
@@ -104,15 +103,6 @@ module CIAX
       end
 
       private
-
-      # Data Version check, no read if different
-      # (otherwise old version number remain as long as the file exists)
-      def ___match_version?(hash)
-        ary = _val_diff?(:ver, hash)
-        return hash unless ary
-        warning(format('File data version mismatch <%s> for [%s]', *ary))
-        false
-      end
 
       def __write_json(jstr, tag = nil)
         ___write_notice(jstr)

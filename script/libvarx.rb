@@ -41,10 +41,9 @@ module CIAX
     # With Format Version check
     def jverify(jstr = nil)
       hash = jread(jstr)
-      msg = _val_diff?(:format_ver, hash)
-      return hash unless msg
-      warning(msg)
-      Hashx.new
+      __chk_ver('format', hash)
+      __chk_ver('data', hash)
+      hash
     end
 
     private
@@ -59,17 +58,21 @@ module CIAX
     def _attr_set(id = nil, ver = nil, host = nil, dir = nil)
       # Headers (could be overwritten by file load)
       @id = (self[:id] ||= id)
-      self[:ver] = ver if ver
+      self[:data_ver] = ver if ver
       self[:host] = host || HOST
       # @dir is subdir on web/file folder (~/.var/@dir)
       @dir = dir
     end
 
-    def _val_diff?(key, hash)
+    # Data/Format Version check, no read if different
+    # (otherwise old version number remain as long as the file exists)
+    def __chk_ver(type, hash)
+      key = "#{type}_ver".to_sym
+      return unless hash.key?(key)
       inc = hash[key]
       org = self[key]
       return if inc == org
-      format('File format version mismatch <%s> for [%s]', inc, org)
+      data_err(format('File %s version mismatch <%s> for [%s]', type, inc, org))
     end
   end
 end

@@ -7,7 +7,6 @@ module CIAX
   module Dev
     # Device DB
     class Db < Db
-      attr_reader :run_list
       # sites [id: run?(t/f) ] => { site1:true, site2:false ... }
       def initialize(sites = {})
         super('ddb')
@@ -15,7 +14,6 @@ module CIAX
         @fdb = Frm::Db.new
         return if sites.empty?
         list(sites.keys)
-        @run_list = sites.select { |_k, v| v }.keys
       end
 
       private

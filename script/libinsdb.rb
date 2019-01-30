@@ -29,14 +29,6 @@ module CIAX
         end
       end
 
-      def run_list
-        @disp_dic.valid_keys.select do |id|
-          atrb = get(id) || @docs.get(id)[:attr]
-          host = atrb[:host]
-          atrb[:run] != 'false' && (host == 'localhost' || host == HOST)
-        end
-      end
-
       private
 
       # doc is <project>

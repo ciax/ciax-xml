@@ -48,6 +48,15 @@ module CIAX
       end
     end
 
+    # For instance/device Db
+    def run_list
+      @disp_dic.valid_keys.select do |id|
+        atrb = get(id) || @docs.get(id)[:attr]
+        host = atrb[:host]
+        atrb[:run] != 'false' && ['localhost', HOST].include?(host)
+      end
+    end
+
     private
 
     # Returns Hash

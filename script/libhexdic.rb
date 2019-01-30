@@ -14,8 +14,18 @@ module CIAX
         hdb = @cfg[:hdb] = Db.new
         idb.valid_apps(hdb.disp_dic.valid_keys)
         _store_db(idb)
-        @sub_dic = Wat::Dic.new(@cfg)
-        @sub_dic.super_dic = self
+        ___init_subdic
+      end
+
+      private
+
+      def ___init_subdic
+        if @cfg[:dev_dic].is_a?(Wat::Dic)
+          @sub_dic = @cfg[:dev_dic]
+        else
+          @sub_dic = Wat::Dic.new(@cfg)
+          @sub_dic.super_dic = self
+        end
       end
     end
 

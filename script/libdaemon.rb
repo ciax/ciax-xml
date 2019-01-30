@@ -27,7 +27,7 @@ module CIAX
     end
 
     def ___main_loop(port)
-      yield.run
+      yield
       msg = 'for Thread status'
       Udp::Server.new('daemon', 'top', port, msg).listen do |reg, _src|
         ___threads(reg)

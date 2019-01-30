@@ -4,10 +4,11 @@ require 'libmcrdic'
 require 'libdaemon'
 # CIAX-XML Macro Server
 module CIAX
-  # Macro Layer
-  module Mcr
-    ConfOpts.new('[id] ...', options: 'denxb') do |cfg|
-      Daemon.new(cfg) { Dic.new(cfg) }
+  ConfOpts.new('[id] ...', options: 'denxb') do |cfg|
+    Daemon.new(cfg) do |layer|
+      md = Mcr::Dic.new(cfg).run
+      # For hex layer
+      layer::Dic.new(md.cfg).run if cfg[:opt][:x]
     end
   end
 end

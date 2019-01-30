@@ -30,7 +30,7 @@ module CIAX
     ConfOpts.new('-(d)', options: 'd') do |cfg, _argv, opt|
       require 'libsimcar' unless opt.dry?
       Daemon.new(cfg, 54_301) do
-        @sim_list.gen
+        @sim_list.gen.run
       end
     end
   end

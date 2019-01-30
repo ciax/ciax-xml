@@ -41,7 +41,6 @@ module CIAX
       ops = ___add_colon(str)
       ___make_usage(ops)
       ___parse(ops)
-      ___set_init_layer
       ___set_view_mode
     end
 
@@ -67,12 +66,6 @@ module CIAX
       @argv = ARGV.shift(ARGV.length)
     rescue OptionParser::ParseError
       raise(InvalidOPT, $ERROR_INFO)
-    end
-
-    # Set @init_layer (default 'Wat')
-    def ___set_init_layer
-      opt = __make_exopt(@optdb.layers.keys)
-      @init_layer = @optdb.layers[opt]
     end
 
     def ___set_view_mode
@@ -130,12 +123,14 @@ module CIAX
         self[:h]
       end
 
+      # Get init_layer (default 'Wat') with require file
       def init_layer_mod
-        if @init_layer
-          CIAX.const_get(@init_layer.capitalize)
-        else
-          CIAX.top_layer
-        end
+        key = __make_exopt(%i(x w a f)) || :w
+        name = @optdb.layers[key]
+        require "lib#{name}dic"
+        mod = name.capitalize
+        cfg_err("No #{mod} module") unless CIAX.const_defined?(mod)
+        CIAX.const_get(mod)
       end
 
       def getarg(ustr)

@@ -21,5 +21,4 @@ module CIAX
       end
     end
   end
-  @top_layer = Frm
 end

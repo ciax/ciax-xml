@@ -23,5 +23,4 @@ module CIAX
       end
     end
   end
-  @top_layer = App
 end

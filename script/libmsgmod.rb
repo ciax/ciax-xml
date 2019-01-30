@@ -37,10 +37,6 @@ end
 
 # Common Module
 module CIAX
-  def self.top_layer
-    @top_layer
-  end
-
   ### Checking Methods ###
   module Msg
     def base_class

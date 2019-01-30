@@ -3,7 +3,6 @@ require 'libdic'
 
 module CIAX
   # element object can be (Frm,App,Wat,Hex)
-  # atrb can have [:top_layer]
   class Layer < CIAX::Dic
     def initialize(top_cfg)
       super(top_cfg)

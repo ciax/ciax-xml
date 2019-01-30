@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
 require 'libcmdext'
-require 'libmcrconf'
+require 'libmcrdb'
+require 'libprompt'
+
 # CIAX_XML
 module CIAX
   # Macro Layer
@@ -11,8 +13,23 @@ module CIAX
       def initialize(cfg, atrb = Hashx.new)
         proj = cfg[:proj] ||= (ENV['PROJ'] || cfg[:args].shift)
         cfg[:dbi] = Db.new.get(proj)
-        cfg[:sv_stat] = Prompt.new(proj, cfg[:opt])
+        cfg[:sv_stat] = ___init_prompt(proj, cfg[:opt][:n])
         super
+      end
+
+      private
+
+      def ___init_prompt(proj, nonstop)
+        ss = Prompt.new('mcr', proj)
+        # list: running macros
+        ss.init_array(:list)
+        # run: sites in motion
+        ss.init_array(:run)
+        # sid: serial ID
+        ss.init_str(:sid)
+        ss.init_flg(nonstop: '(nonstop)')
+        ss.up(:nonstop) if nonstop
+        ss
       end
     end
 

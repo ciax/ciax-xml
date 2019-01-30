@@ -2,6 +2,8 @@
 require 'libexe'
 require 'libmcrcmd'
 require 'librecview'
+require 'libhexdic' # deprecated
+
 module CIAX
   # Macro Layer
   module Mcr

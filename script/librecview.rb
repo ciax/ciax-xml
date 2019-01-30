@@ -4,7 +4,7 @@ require 'librecarc'
 module CIAX
   # Macro Layer
   module Mcr
-    # Divided for Rubocop
+    # Record View (Front Page)
     class RecView < Upd
       attr_reader :rec_arc
       def initialize(rec_arc, &get_proc)
@@ -19,6 +19,7 @@ module CIAX
       # Show Index of Alives Item
       def to_v
         title = key?(:default) ? 'Active Macros' : 'Archive Records'
+        title << "(#{@rec_arc.host})" if @rec_arc.host
         ___mk_view(title)
       end
 
@@ -101,8 +102,14 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[num]', options: 'r') do |_opts, args|
-        rv = RecView.new(RecArc.new.ext_local.load)
+      GetOpts.new('[num]', options: 'chr') do |opts, args|
+        ra = RecArc.new
+        if opts.cl?
+          ra.ext_remote(opts.host)
+        else
+          ra.ext_local.load
+        end
+        rv = RecView.new(ra)
         puts rv.inc(args[0])
       end
     end

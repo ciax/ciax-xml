@@ -9,7 +9,8 @@ module CIAX
   # Don't assign an instance variables to any element
   # whose link can be broken by load().
   class Varx < Upd
-    attr_reader :type, :id
+    # For checking local/remote, @host is exposed
+    attr_reader :type, :id, :host
     def initialize(type)
       super()
       @type = type

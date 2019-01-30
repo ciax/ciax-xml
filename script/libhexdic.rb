@@ -10,9 +10,10 @@ module CIAX
       # atrb must have [:db]
       def initialize(super_cfg, atrb = Hashx.new)
         super
-        _store_db(@cfg[:db] ||= Ins::Db.new)
-        @cfg[:hdb] = Db.new
-        @cfg[:db].valid_apps(@cfg[:hdb].disp_dic.valid_keys)
+        idb = (@cfg[:db] ||= Ins::Db.new)
+        hdb = @cfg[:hdb] = Db.new
+        idb.valid_apps(hdb.disp_dic.valid_keys)
+        _store_db(idb)
         @sub_dic = Wat::Dic.new(@cfg)
         @sub_dic.super_dic = self
       end

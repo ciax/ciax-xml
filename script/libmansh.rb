@@ -29,8 +29,7 @@ module CIAX
         private
 
         def ___init_stat
-          @view = RecDic.new(@id, @stat, @int_par)
-          @opt.cl? ? @view.ext_remote(@host) : @view.ext_local
+          @view = RecDic.new(@stat, @int_par)
           @cfg[:output] = @view
         end
 

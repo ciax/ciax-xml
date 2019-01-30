@@ -21,16 +21,16 @@ module CIAX
     #  Local(ext_save) : write down RecArc
     class RecDic < Upd
       attr_reader :current_page, :rec_view
-      def initialize(proj = nil, arc = RecArc.new, par = CmdBase::Parameter.new)
+      def initialize(arc = RecArc.new, par = CmdBase::Parameter.new)
         super()
         @current_page = 0
-        self[:id] = proj || ENV['PROJ']
         self[:dic] = @cache = Hashx.new
         @rec_view = RecView.new(type?(arc, RecArc)) { |id| get(id) }
         propagation(@rec_view)
         # When new macro is generated
         @par = type?(par, CmdBase::Parameter)
         @last_size = 0
+        arc.host ? ___ext_remote : ___ext_local
       end
 
       def get(id)
@@ -85,10 +85,12 @@ module CIAX
         (current_rec || @rec_view).to_r
       end
 
+      private
+
       ##### For server ####
       #### Extensions Methods ####
-      def ext_remote(host)
-        @host = host
+      def ___ext_remote
+        @host = @rec_view.rec_arc.host
         @cache.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_remote(@host)
         end
@@ -97,7 +99,7 @@ module CIAX
       end
 
       # Manipulate memory
-      def ext_local
+      def ___ext_local
         # Get Archive Record
         @cache.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_local.load
@@ -110,8 +112,6 @@ module CIAX
         self
       end
 
-      private
-
       def __set_def(id)
         return if id.to_i.zero?
         @rec_view.put_def(@par.def_par(id))
@@ -121,12 +121,13 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[num]', options: 'chr') do |opts, args|
         Msg.args_err if args.empty?
-        rl = RecDic.new
+        ra = RecArc.new
         if opts.cl?
-          rl.ext_remote(opts.host)
+          ra.ext_remote(opts.host)
         else
-          rl.ext_local
+          ra.ext_local
         end
+        rl = RecDic.new(ra)
         puts rl.inc(args.shift).sel(args.shift)
       end
     end

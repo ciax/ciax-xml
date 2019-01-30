@@ -20,11 +20,11 @@ module CIAX
     #  Local(ext_local) : get RecArc and Record from File
     #  Local(ext_save) : write down RecArc
     class RecDic < Upd
-      attr_reader :current_idx, :rec_view
+      attr_reader :current_page, :rec_view
       def initialize(proj = nil, arc = RecArc.new, par = CmdBase::Parameter.new)
         super()
+        @current_page = 0
         self[:id] = proj || ENV['PROJ']
-        @current_idx = 0
         self[:dic] = @cache = Hashx.new
         @rec_view = RecView.new(type?(arc, RecArc)) { |id| get(id) }
         propagation(@rec_view)
@@ -39,7 +39,7 @@ module CIAX
       end
 
       def sel(num = nil)
-        @current_idx = limit(0, @rec_view.list.size, num.to_i)
+        @current_page = limit(0, @rec_view.list.size, num.to_i)
         __set_def(current_id)
         self
       end
@@ -47,7 +47,7 @@ module CIAX
       def sel_new
         rvl = @rec_view.list
         if rvl.size > @last_size
-          @current_idx = rvl.size
+          @current_page = rvl.size
           __set_def(rvl.last)
           @last_size = rvl.size
         end
@@ -62,35 +62,27 @@ module CIAX
 
       def flush
         @rec_view.clear.inc(@par.list.size)
-        @current_idx = 0
+        @current_page = 0
         @last_size = @rec_view.list.size
         self
       end
 
       def current_id
-        @rec_view.list[@current_idx - 1]
+        @rec_view.list[@current_page - 1]
       end
 
       def current_rec
-        return if @current_idx.zero?
+        @rec_view.chk_def(@par.list)
+        return if @current_page.zero?
         get(current_id)
       end
 
-      def default_id
-        return unless key?(:default)
-        return self[:default] if @par.list.include?(self[:default])
-        delete(:default)
-        nil
-      end
-
-      def to_s
-        rec = current_rec
-        rec ? rec.to_s : super
-      end
-
       def to_v
-        (['<<< ' + colorize("Active Macros [#{self[:id]}]", 2) + ' >>>'] +
-        @rec_view.lines(default_id)).join("\n")
+        (current_rec || @rec_view).to_v
+      end
+
+      def to_r
+        (current_rec || @rec_view).to_r
       end
 
       ##### For server ####
@@ -122,7 +114,7 @@ module CIAX
 
       def __set_def(id)
         return if id.to_i.zero?
-        self[:default] = @par.def_par(id)
+        @rec_view.put_def(@par.def_par(id))
       end
     end
 

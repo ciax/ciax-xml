@@ -18,8 +18,8 @@ module CIAX
 
       # Show Index of Alives Item
       def to_v
-        (['<<< ' + colorize('Archive Records', 2) + ' >>>'] +
-        lines).join("\n")
+        title = key?(:default) ? 'Active Macros' : 'Archive Records'
+        ___mk_view(title)
       end
 
       def to_r
@@ -42,14 +42,26 @@ module CIAX
         self
       end
 
-      def lines(mark = nil)
-        idx = 0
-        list.map do |id|
-          ___item_view(id, idx += 1, mark == id ? '*' : ' ')
-        end
+      def chk_def(list)
+        delete(:default) if key?(:default) && !list.include?(self[:default])
+        self
+      end
+
+      def put_def(id)
+        self[:default] = id
+        self
       end
 
       private
+
+      def ___mk_view(title)
+        idx = 0
+        line = ['<<< ' + colorize(title, 2) + ' >>>']
+        line << list.map do |id|
+          ___item_view(id, idx += 1, self[:default] == id ? '*' : ' ')
+        end
+        line.join("\n")
+      end
 
       def ___init_propagate
         propagation(@rec_arc)
@@ -89,7 +101,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[num]') do |_opts, args|
+      GetOpts.new('[num]', options: 'r') do |_opts, args|
         rv = RecView.new(RecArc.new.ext_local.load)
         puts rv.inc(args[0])
       end

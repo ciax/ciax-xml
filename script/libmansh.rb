@@ -38,7 +38,7 @@ module CIAX
           # @view will be switched among Whole List or Records
           @prompt_proc = proc do
             opt = (@view.current_rec || {})[:option]
-            str = "[#{@view.current_idx}]"
+            str = "[#{@view.current_page}]"
             str << opt_listing(opt)
           end
         end

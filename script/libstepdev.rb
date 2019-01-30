@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libstepproc'
+require 'libwatdic'
 
 module CIAX
   # Macro Layer

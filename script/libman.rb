@@ -33,7 +33,7 @@ module CIAX
         ___init_stat
         ___init_cmd
         # For element of Layer
-        @sub_dic = @cfg[:dev_dic] ||= Wat::Dic.new(super_cfg)
+        @sub_dic = type?(@cfg[:dev_dic], Wat::Dic)
         _opt_mode
       end
 
@@ -74,7 +74,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', options: 'cehlnr') do |cfg|
-        Man.new(cfg).shell
+        Man.new(cfg, Atrb.new(cfg)).shell
       end
     end
   end

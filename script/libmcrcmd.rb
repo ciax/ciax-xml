@@ -1,38 +1,13 @@
 #!/usr/bin/ruby
 require 'libcmdext'
-require 'libmcrdb'
-require 'libprompt'
+require 'libmcrconf'
 
 # CIAX_XML
 module CIAX
   # Macro Layer
   module Mcr
     deep_include(CmdTree)
-    # Mcr Command Top
-    class Index < CmdTree::Index
-      def initialize(cfg, atrb = Hashx.new)
-        proj = cfg[:proj] ||= (ENV['PROJ'] || cfg[:args].shift)
-        cfg[:dbi] = Db.new.get(proj)
-        cfg[:sv_stat] = ___init_prompt(proj, cfg[:opt][:n])
-        super
-      end
-
-      private
-
-      def ___init_prompt(proj, nonstop)
-        ss = Prompt.new('mcr', proj)
-        # list: running macros
-        ss.init_array(:list)
-        # run: sites in motion
-        ss.init_array(:run)
-        # sid: serial ID
-        ss.init_str(:sid)
-        ss.init_flg(nonstop: '(nonstop)')
-        ss.up(:nonstop) if nonstop
-        ss
-      end
-    end
-
+    # Local Commands
     module Local
       # Local Domain
       class Domain
@@ -111,8 +86,9 @@ module CIAX
         class Group
           def initialize(dom_cfg, atrb = Hashx.new)
             super
-            add_item('nonstop', 'Mode')
-            add_item('interactive', 'Mode')
+            sv_stat = @cfg[:sv_stat]
+            add_item('nonstop', 'Mode').def_proc { sv_stat.up(:nonstop) }
+            add_item('interactive', 'Mode').def_proc { sv_stat.dw(:nonstop) }
           end
         end
       end
@@ -121,7 +97,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libwatdic'
       ConfOpts.new('[cmd] (par)', options: 'j') do |cfg, args|
-        ent = Index.new(cfg).add_rem.add_ext.set_cmd(args)
+        ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(args)
         puts ent.path
         jj ent[:sequence]
       end

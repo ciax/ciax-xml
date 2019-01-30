@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libseqcmds'
+require 'libseqqry'
 
 module CIAX
   # Macro Layer
@@ -14,9 +15,9 @@ module CIAX
       def initialize(ment, &submcr_proc)
         @cfg = ment
         @opt = @cfg[:opt]
-        @dev_dic = (@cfg[:dev_dic] ||= Wat::Dic.new(@cfg))
+        @dev_dic = type?(@cfg[:dev_dic], Wat::Dic)
         ___init_record
-        @sv_stat = @cfg[:sv_stat] || Prompt.new(@cfg[:id], @opt)
+        @sv_stat = type?(@cfg[:sv_stat], Prompt)
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
@@ -42,10 +43,6 @@ module CIAX
         ___site_interrupt
       ensure
         ___post_play
-      end
-
-      def fork
-        Threadx::Fork.new('Macro', 'seq', @id) { play }
       end
 
       private
@@ -130,7 +127,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg, args|
-        ent = Index.new(cfg).add_rem.add_ext.set_cmd(args)
+        ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(args)
         Sequencer.new(ent).play
       end
     end

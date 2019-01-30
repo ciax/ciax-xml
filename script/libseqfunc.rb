@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require 'libmcrcmd'
 require 'librecproc'
-require 'libseqqry'
 
 module CIAX
   # Macro Layer

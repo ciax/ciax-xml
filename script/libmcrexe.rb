@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libexe'
 require 'libseq'
+require 'libthreadx'
 
 module CIAX
   # Macro Layer
@@ -14,7 +15,7 @@ module CIAX
         ___init_cmd
         ___init_seq(submcr_proc)
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
-        ___init_rem_sys
+        @cobj.get('interrupt').def_proc { interrupt }
         _ext_local
         @mode = @opt.drv? ? 'DRV' : 'TEST'
       end
@@ -25,7 +26,7 @@ module CIAX
       end
 
       def run
-        @thread = Msg.type?(@seq.fork, Threadx::Fork)
+        @thread = Threadx::Fork.new('Macro', 'seq', @id) { @seq.play }
         self
       end
 
@@ -53,18 +54,13 @@ module CIAX
         @int.def_proc { |ent| @seq.reply(ent.id) }
         @stat = @seq.record
       end
-
-      def ___init_rem_sys
-        @cobj.get('interrupt').def_proc { interrupt }
-        @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
-        @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
-      end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg, args|
-        ent = Index.new(cfg).add_rem.add_ext.set_cmd(args)
-        Exe.new(ent).run.shell
+      ConfOpts.new('[proj] [cmd] (par)', options: 'edlnsr') do |cfg, args, opt|
+        ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(args)
+        mexe = Exe.new(ent)
+        opt.sh? ? mexe.run.shell : mexe.seq.play
       end
     end
   end

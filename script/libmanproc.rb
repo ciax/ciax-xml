@@ -50,9 +50,6 @@ module CIAX
           self
         end
 
-        # As an element of Dic
-        def interrupt; end
-
         private
 
         def ___init_log
@@ -84,8 +81,6 @@ module CIAX
           @cobj.get('interrupt').def_proc do
             @mcr_dic.each { |k, v| k =~ /[\d]+/ && v.interrupt }
           end
-          @cobj.get('nonstop').def_proc { @sv_stat.up(:nonstop) }
-          @cobj.get('interactive').def_proc { @sv_stat.dw(:nonstop) }
         end
 
         # For server initialize

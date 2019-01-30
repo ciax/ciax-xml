@@ -9,9 +9,10 @@ module CIAX
       attr_reader :cfg, :sub_dic
       # @cfg should have [:sv_stat]
       def initialize(layer_cfg, atrb = Hashx.new)
+        atrb.update(Atrb.new(layer_cfg))
         super
         # Set [:dev_dic] here for using layer_cfg
-        @sub_dic = @cfg[:dev_dic] ||= Wat::Dic.new(layer_cfg)
+        @sub_dic = type?(@cfg[:dev_dic], Wat::Dic)
         put('man', Man.new(@cfg, mcr_dic: self))
       end
 

@@ -11,25 +11,6 @@ module CIAX
     # Upper Conf should have: :option, :jump_groups, :jump_layer
     # Mcr::Conf includes:
     # :command, :version, :sites, :dev_dic, :sv_stat :host, :port
-    class ConfOpts < ConfOpts
-      def initialize(ustr = '', optargs = {})
-        super do |cfg, args|
-          verbose { 'Initiate Mcr Conf (option:' + keys.join + ')' }
-          ___init_proj(cfg, ENV['PROJ'] ||= args.shift)
-          cfg[:rec_arc] = RecArc.new
-          yield(cfg, args)
-        end
-      end
-
-      private
-
-      def ___init_proj(cfg, proj)
-        cfg[:proj] = proj
-        cfg[:dbi] = Db.new.get(proj)
-        cfg[:sv_stat] = Prompt.new(proj, self)
-      end
-    end
-
     # Prompt for Mcr
     class Prompt < Prompt
       def initialize(id, opt = {})

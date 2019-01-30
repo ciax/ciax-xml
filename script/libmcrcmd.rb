@@ -6,6 +6,16 @@ module CIAX
   # Macro Layer
   module Mcr
     deep_include(CmdTree)
+    # Mcr Command Top
+    class Index < CmdTree::Index
+      def initialize(cfg, atrb = Hashx.new)
+        proj = cfg[:proj] ||= (ENV['PROJ'] || cfg[:args].shift)
+        cfg[:dbi] = Db.new.get(proj)
+        cfg[:sv_stat] = Prompt.new(proj, cfg[:opt])
+        super
+      end
+    end
+
     module Local
       # Local Domain
       class Domain
@@ -94,9 +104,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libwatdic'
       ConfOpts.new('[cmd] (par)', options: 'j') do |cfg, args|
-        cobj = Index.new(cfg)
-        cobj.add_rem.add_ext
-        ent = cobj.set_cmd(args)
+        ent = Index.new(cfg).add_rem.add_ext.set_cmd(args)
         puts ent.path
         jj ent[:sequence]
       end

@@ -56,7 +56,7 @@ module CIAX
       end
 
       def ___init_stat
-        @stat = type?(@cfg[:rec_arc], RecArc)
+        @stat = RecArc.new
         @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
       end
 

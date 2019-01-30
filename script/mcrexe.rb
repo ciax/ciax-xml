@@ -6,7 +6,7 @@ module CIAX
   # Macro Exec
   module Mcr
     ConfOpts.new('[proj] [cmd] (par)', options: 'edlns') do |cfg, args, opt|
-      ent = Index.new(cfg).add_rem.add_ext.set_cmd(args)
+      ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(args)
       mexe = Exe.new(ent)
       opt.sh? ? mexe.run.shell : mexe.seq.play
     end

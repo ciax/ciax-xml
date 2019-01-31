@@ -50,7 +50,7 @@ module CIAX
 
     # Background (Switch error output to file)
     def ___init_server(tag, opt, port)
-      info("Git Tagged [#{tag_set}], Status Port [#{port}]")
+      info("Git Tagged [#{tag_set}], Status Port [#{port}]") if opt.drv?
       ___detach
       ___redirect(tag) if opt[:b]
       verbose { "Initiate Daemon Start [#{tag}] " + git_ver }

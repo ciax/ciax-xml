@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libdispgrp'
 require 'libhashx'
 require 'libxmlox'

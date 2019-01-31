@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Replace bracket of method: "method_name(...)" -> "method_name{...}"
 # alias repb
 abort('Usage: rep-bracket [method_name]') if ARGV.empty?

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libmsgdbg'
 # Add deep_include to Module
 class Module

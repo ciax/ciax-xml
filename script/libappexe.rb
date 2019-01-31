@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libappcmd'
 require 'libstatusconv'
 require 'libappview'

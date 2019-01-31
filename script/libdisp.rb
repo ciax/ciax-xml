@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libhashx'
 # Display: Sortable Caption Database (Value is String)
 #   Holds valid command list in @valid_keys

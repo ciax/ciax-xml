@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Omega Air Pressure Sensor Simulator
 require 'libsim'
 module CIAX

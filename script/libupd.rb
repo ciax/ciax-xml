@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libhashx'
 module CIAX
   # Variables with update feature (also with manipulation)

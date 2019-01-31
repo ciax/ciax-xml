@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # XML Child Element with Text to Attribute Converter
 require 'optparse'
 require 'rexml/document'

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # XML Create New Child Element and move Attribute to Child
 require 'optparse'
 require 'rexml/document'

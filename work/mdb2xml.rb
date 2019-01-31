@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # IDB CSV(CIAX-v1) to XML
 # alias m2x
 require 'json'

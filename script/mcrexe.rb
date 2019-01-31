@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 $LOAD_PATH << __dir__
 require 'libmcrexe'
 # CIAX-XML Macro Sequencer

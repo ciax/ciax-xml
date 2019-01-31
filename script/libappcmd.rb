@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libcmdext'
 require 'libappdb'
 # CIAX-XML Command module

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libstatus'
 # CIAX-XML
 module CIAX

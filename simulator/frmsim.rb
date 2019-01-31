@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'json'
 # Device simulator by Log file
 class LogRing

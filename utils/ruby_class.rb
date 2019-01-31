@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Class Tree
 abort 'Usage: class_tree [files]' if STDIN.tty? && ARGV.empty?
 all = []

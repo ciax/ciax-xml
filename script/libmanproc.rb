@@ -14,7 +14,6 @@ module CIAX
         # Initiate for driver
         def ext_local_processor
           # For jump_mcr
-          @id = 'man'
           @cfg[:cid] = 'manager'
           @mode = @opt.dry? ? 'DRY' : 'PRCS'
           @mcr_dic = @cfg[:mcr_dic] || Hashx.new

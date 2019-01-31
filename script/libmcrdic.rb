@@ -12,12 +12,13 @@ module CIAX
         atrb.update(Atrb.new(layer_cfg))
         super
         # Set [:dev_dic] here for using layer_cfg
-        @sub_dic = type?(@cfg[:dev_dic], Wat::Dic)
-        put('man', Man.new(@cfg, mcr_dic: self))
+        @man = Man.new(@cfg, mcr_dic: self)
+        put('man', @man)
+        @sub_dic = @man.sub_dic
       end
 
       def run
-        get('man').run
+        @man.run
         self
       end
 

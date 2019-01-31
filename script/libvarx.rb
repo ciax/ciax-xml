@@ -41,12 +41,13 @@ module CIAX
     end
 
     # With Format Version check
-    def jverify(jstr = nil)
+    def jverify(jstr = nil, fname = nil)
+      fname = " of [#{fname}]" if fname
       hash = jread(jstr)
-      __chk_ver('format', hash)
+      __chk_ver("format#{fname}", hash)
       # For back compatibility
       hash[:data_ver] = hash.delete(:ver) if hash.key?(:ver)
-      __chk_ver('data', hash)
+      __chk_ver("data#{fname}", hash)
       hash
     end
 

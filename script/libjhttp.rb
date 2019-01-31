@@ -20,13 +20,14 @@ module CIAX
       end
 
       def load(tag = nil)
-        url = format('http://%s%s%s.json', @host, @dir, base_name(tag))
+        fname =  base_name(tag)
+        url = format('http://%s%s%s.json', @host, @dir, fname)
         jstr = ___read_url(url)
         if jstr.empty?
           warning(" -- json url file (#{url}) is empty at loading")
         else
           lt = self[:time]
-          replace(jverify(jstr))
+          replace(jverify(jstr, fname))
           cmt if self[:time] > lt
         end
         self

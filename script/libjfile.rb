@@ -47,7 +47,7 @@ module CIAX
 
       def __read_json(tag = nil)
         @cfile = ___chk_tag(tag)
-        jverify(loadfile(@jsondir + @cfile))
+        jverify(loadfile(@jsondir + @cfile), @cfile)
       rescue CommError
         show_err
         self

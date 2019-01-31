@@ -12,11 +12,10 @@ module CIAX
     # Closure should return an object having ('run' and 'id')
     def initialize(cfg, port = 54_321)
       ___set_env
-      opt = cfg[:opt]
       tag = $PROGRAM_NAME.split('/').last
-      ___chk_args(___kill_pids(tag), cfg[:args] + opt.values)
-      ___init_server(tag, opt, port)
-      ___main_loop(port) { yield opt.init_layer_mod }
+      ___chk_args(___kill_pids(tag), cfg.args + cfg.opt.values)
+      ___init_server(tag, cfg.opt, port)
+      ___main_loop(port) { yield cfg.opt.init_layer_mod }
     end
 
     private
@@ -50,7 +49,7 @@ module CIAX
 
     # Background (Switch error output to file)
     def ___init_server(tag, opt, port)
-      info("Git Tagged [#{tag_set}], Status Port [#{port}]") if opt.drv?
+      info("Git Tagged [#{tag_set}], Status Port [#{port}]") if opt.drv? && opt[:b]
       ___detach
       ___redirect(tag) if opt[:b]
       verbose { "Initiate Daemon Start [#{tag}] " + git_ver }

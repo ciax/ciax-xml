@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Common Module
 require 'libmsgfunc'
 require 'libmsgmod'

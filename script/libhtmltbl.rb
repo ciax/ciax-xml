@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libxmlfmt'
 require 'libinsdb'
 # CIAX-XML

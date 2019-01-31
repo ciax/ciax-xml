@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libsqlsim'
 # Device simulator by SqLog
 module CIAX

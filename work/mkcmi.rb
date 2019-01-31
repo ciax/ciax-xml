@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Generate Current Mask Index to status_cmi.json
 require 'json'
 # Condition Matrix

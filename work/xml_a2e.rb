@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # XML Attribute vs Child Element exchanger
 require 'optparse'
 require 'rexml/document'

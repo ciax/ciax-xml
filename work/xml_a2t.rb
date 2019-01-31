@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # XML Attribute vs Text Exchanger
 require 'optparse'
 require 'xml'

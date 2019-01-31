@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # I/O Simulator
 # Need GServer: sudo gem install gserver
 require 'libsimconf'

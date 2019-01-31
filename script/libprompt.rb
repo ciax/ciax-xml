@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libvarx'
 module CIAX
   # For server status through all layers

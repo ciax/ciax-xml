@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Get Value from JSON file
 require 'json'
 def _ga(h, k)

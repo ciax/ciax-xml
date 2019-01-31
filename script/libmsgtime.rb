@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libmsgfmt'
 # Common Module
 module CIAX

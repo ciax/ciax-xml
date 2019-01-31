@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Log viewer
 # For stream log version 6 or later
 # alias jlv

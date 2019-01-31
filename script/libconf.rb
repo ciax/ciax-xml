@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libhashx'
 module CIAX
   # Recursive hash array of @generation:

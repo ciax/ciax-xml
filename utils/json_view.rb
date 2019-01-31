@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # JSON to String(Decorated)
 # alias jv
 require 'libenumx'

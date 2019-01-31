@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libstruct'
 module CIAX
   # Show branch (omit lower tree of Hash/Array with sym key)

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libappsym'
 
 # View is separated from Status. (Propagate Status -> View (Prt)

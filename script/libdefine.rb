@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Class/Module Definition
 module CIAX
   require 'English' # To use $! -> $ERROR_INFO

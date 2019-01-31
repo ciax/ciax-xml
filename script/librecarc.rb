@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'librecord'
 require 'libthreadx'
 module CIAX

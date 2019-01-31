@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libdisp'
 # Display with Group:
 #   New feature: can make recursive groups

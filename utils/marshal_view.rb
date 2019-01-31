@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # libcommand includes both Enumx and CmdList
 # alias mar
 require 'optparse'

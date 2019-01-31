@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libeventconv'
 
 # View is not used for computing, just for apperance for user.

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libupd'
 
 module CIAX
@@ -61,6 +61,7 @@ module CIAX
 
     def _attr_set(id = nil, ver = nil, host = nil, dir = nil)
       # Headers (could be overwritten by file load)
+      self[:id] ||= id
       @id = (self[:id] ||= id)
       self[:data_ver] = ver if ver
       self[:host] = host || HOST

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libcmdfunc'
 #   returns String as message.
 module CIAX

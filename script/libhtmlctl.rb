@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libhtmltbl'
 # CIAX-XML
 module CIAX

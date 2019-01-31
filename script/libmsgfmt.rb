@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Array#to_s shows lines
 class Array
   def to_s

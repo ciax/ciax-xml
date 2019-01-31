@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libcmdgroup'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param,

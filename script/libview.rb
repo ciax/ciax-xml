@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libpath'
 module CIAX
   # show_iv = Show Instance Variable

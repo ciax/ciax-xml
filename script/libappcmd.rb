@@ -61,10 +61,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      ConfOpts.new('[id] [cmd] (par)', options: 'i') do |cfg, args, opt|
-        dbi = (opt[:i] ? Ins::Db : Db).new.get(args.shift)
+      ConfOpts.new('[id] [cmd] (par)', options: 'i') do |cfg|
+        dbi = (cfg.opt[:i] ? Ins::Db : Db).new.get(cfg.args.shift)
         # dbi.pick already includes :layer, :command, :version
-        ent = Index.new(cfg, dbi.pick).add_rem.add_ext.set_cmd(args)
+        ent = Index.new(cfg, dbi.pick).add_rem.add_ext.set_cmd(cfg.args)
         puts ent[:batch].to_s
       end
     end

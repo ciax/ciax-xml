@@ -175,15 +175,15 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id] [cmd] (par)') do |cfg, args|
-        id = args.shift
+      ConfOpts.new('[id] [cmd] (par)') do |cfg|
+        id = cfg.args.shift
         dbi = Db.new.get(id)
         # dbi.pick already includes :layer, :command, :version
         cobj = Index.new(cfg, dbi.pick)
         cobj.add_rem.add_ext
         buf = Buffer.new(Prompt.new('test', id))
         buf.recv_proc = proc { |par| puts par.inspect }
-        buf.send(cobj.set_cmd(args)).recv
+        buf.send(cobj.set_cmd(cfg.args)).recv
       end
     end
   end

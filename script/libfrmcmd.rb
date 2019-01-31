@@ -122,14 +122,14 @@ module CIAX
       require 'libfieldconv'
       require 'libfrmdb'
       cap = '[dev] [cmd] (par) < field_file'
-      ConfOpts.new(cap, options: 'r') do |cfg, args, opt|
-        fld = cfg[:field] = Field.new(args.shift)
+      ConfOpts.new(cap, options: 'r') do |cfg|
+        fld = cfg[:field] = Field.new(cfg.args.shift)
         # dbi.pick alreay includes :layer, :command, :version
         cobj = Index.new(cfg, fld.dbi.pick(%i(stream)))
         rem = cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }.add_ext
         fld.jmerge unless STDIN.tty?
         res = rem.set_cmd(args).exe_cmd('test')
-        if opt[:r]
+        if cfg.opt[:r]
           print res.msg
         else
           puts res.path

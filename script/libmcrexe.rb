@@ -57,10 +57,10 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', options: 'edlnsr') do |cfg, args, opt|
-        ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(args)
+      ConfOpts.new('[proj] [cmd] (par)', options: 'edlnsr') do |cfg|
+        ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(cfg.args)
         mexe = Exe.new(ent)
-        opt.sh? ? mexe.run.shell : mexe.seq.play
+        cfg.opt.sh? ? mexe.run.shell : mexe.seq.play
       end
     end
   end

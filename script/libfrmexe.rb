@@ -79,11 +79,11 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
-        dbi = Dev::Db.new.get(args.shift)
+      ConfOpts.new('[id]', options: 'cehls') do |cfg|
+        dbi = Dev::Db.new.get(cfg.args.shift)
         begin
           eobj = Exe.new(cfg, dbi.pick)
-          puts eobj.exe(args).stat
+          puts eobj.exe(cfg.args).stat
         rescue CommError
           puts eobj.stat
         ensure

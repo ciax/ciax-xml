@@ -5,10 +5,10 @@ require 'libmcrexe'
 module CIAX
   # Macro Exec
   module Mcr
-    ConfOpts.new('[proj] [cmd] (par)', options: 'edlns') do |cfg, args, opt|
-      ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(args)
+    ConfOpts.new('[proj] [cmd] (par)', options: 'edlns') do |cfg|
+      ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(cfg.args)
       mexe = Exe.new(ent)
-      opt.sh? ? mexe.run.shell : mexe.seq.play
+      cfg.opt.sh? ? mexe.run.shell : mexe.seq.play
     end
   end
 end

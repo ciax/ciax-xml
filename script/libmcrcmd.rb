@@ -96,8 +96,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libwatdic'
-      ConfOpts.new('[cmd] (par)', options: 'j') do |cfg, args|
-        ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(args)
+      ConfOpts.new('[cmd] (par)', options: 'j') do |cfg|
+        ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(cfg.args)
         puts ent.path
         jj ent[:sequence]
       end

@@ -145,11 +145,11 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
       require 'libjslog'
-      ConfOpts.new('< logline', m: 'merge file') do |cfg, _args, opt|
+      ConfOpts.new('< logline', m: 'merge file') do |cfg|
         raise(InvalidARGS, '  Need Input File') if STDIN.tty?
         res = Varx::JsLog.read(gets(nil))
         field = Field.new(res[:id]).ext_local_conv(res)
-        field.ext_local.ext_save if opt[:m]
+        field.ext_local.ext_save if cfg.opt[:m]
         if (cid = res[:cmd])
           atrb = field.dbi.pick(%i(stream))
           atrb[:field] = field

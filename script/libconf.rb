@@ -24,6 +24,7 @@ module CIAX
         join_in(super_cfg)
       when Hash
         update(super_cfg)
+        ___access_method
       end
     end
 
@@ -100,6 +101,12 @@ module CIAX
 
     private
 
+    def ___access_method
+      this_keys.each do |k|
+        define_singleton_method(k) { self[k] }
+      end
+    end
+
     def ___show_db(v)
       return __show(v.inspect) if __any_mod?(v, String, Numeric, Enumerable)
       return __show(v.class) if v.is_a? Proc
@@ -140,10 +147,11 @@ module CIAX
   end
 
   # Option parser with Config
-  class ConfOpts < GetOpts
+  class ConfOpts < Config
     def initialize(ustr = '', optargs = {})
-      super do |opt, args|
-        yield(Config.new(args: args, opt: opt), args, opt)
+      GetOpts.new(ustr, optargs) do |opt, args|
+        super(args: args, opt: opt)
+        yield(self)
       end
     end
   end

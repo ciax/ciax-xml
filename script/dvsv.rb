@@ -3,9 +3,9 @@ $LOAD_PATH << __dir__
 require 'libdaemon'
 # CIAX-XML Device Server
 module CIAX
-  ConfOpts.new('[id] ...', options: 'fawxmdeb') do |cfg, args|
+  ConfOpts.new('[id] ...', options: 'fawxmdeb') do |cfg|
     Daemon.new(cfg) do |layer|
-      layer::Dic.new(cfg, sites: args).run
+      layer::Dic.new(cfg, sites: cfg.args).run
     end
   end
 end

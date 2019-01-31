@@ -91,8 +91,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
-        dbi = Ins::Db.new.get(args.shift)
+      ConfOpts.new('[id]', options: 'cehls') do |cfg|
+        dbi = Ins::Db.new.get(cfg.args.shift)
         atrb = { dbi: dbi, sub_dic: Frm::Dic.new(cfg) }
         eobj = Exe.new(cfg, atrb).exe(args)
         puts eobj.stat

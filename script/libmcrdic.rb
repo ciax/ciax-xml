@@ -14,17 +14,39 @@ module CIAX
         # Set [:dev_dic] here for using layer_cfg
         @man = Man.new(@cfg, mcr_dic: self)
         put('man', @man)
-        @sub_dic = @man.sub_dic
+        # For element of Layer
+        @sub_dic = type?(@cfg[:dev_dic], Wat::Dic)
       end
 
       def run
-        @man.run
+        ___arc_refresh
+        ___web_select(@man.run.port)
+        @sub_dic.run
         self
       end
 
       # obsolete, was used for RecDic@cache
       def records
         _dic.inject({}) { |h, obj| h[obj[:id]] = obj.stat }
+      end
+
+      private
+
+      # For server initialize
+      def ___arc_refresh
+        verbose { 'Initiate Record Archive' }
+        Threadx::Fork.new('RecArc', 'mcr', @cfg[:dbi][:id]) do
+          @cfg[:rec_arc].clear.refresh
+        end
+      end
+
+      # Making Command Dic JSON file for WebApp
+      def ___web_select(port)
+        verbose { 'Initiate JS Command Dic' }
+        dbi = @cfg[:dbi]
+        jl = Hashx.new(port: port, label: dbi.label)
+        jl[:commands] = dbi.web_select
+        IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
       end
 
       # Mcr::Dic specific Shell

@@ -2,6 +2,7 @@
 require 'libmcrdb'
 require 'libprompt'
 require 'libwatdic'
+require 'librecarc'
 
 # CIAX_XML
 module CIAX
@@ -15,6 +16,7 @@ module CIAX
         self[:dbi] = Db.new.get(proj)
         self[:sv_stat] = ___init_prompt(proj, cfg[:opt][:n])
         self[:dev_dic] = Wat::Dic.new(cfg)
+        self[:rec_arc] = RecArc.new
       end
 
       private

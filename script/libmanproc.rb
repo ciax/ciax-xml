@@ -41,14 +41,6 @@ module CIAX
           mobj
         end
 
-        def run
-          super
-          @sub_dic.run
-          ___arc_refresh
-          ___web_select
-          self
-        end
-
         private
 
         def ___init_log
@@ -80,23 +72,6 @@ module CIAX
           @cobj.get('interrupt').def_proc do
             @mcr_dic.each { |k, v| k =~ /[\d]+/ && v.interrupt }
           end
-        end
-
-        # For server initialize
-        def ___arc_refresh
-          verbose { 'Initiate Record Archive' }
-          Threadx::Fork.new('RecArc', 'mcr', @id) do
-            @stat.clear.refresh
-          end
-        end
-
-        # Making Command Dic JSON file for WebApp
-        def ___web_select
-          verbose { 'Initiate JS Command Dic' }
-          dbi = @cfg[:dbi]
-          jl = Hashx.new(port: @port, label: dbi.label)
-          jl[:commands] = dbi.web_select
-          IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
         end
       end
     end

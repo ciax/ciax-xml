@@ -2,7 +2,7 @@
 require 'libexe'
 require 'libmcrcmd'
 require 'librecview'
-require 'libhexdic' # deprecated
+require 'libwatdic' # deprecated
 
 module CIAX
   # Macro Layer
@@ -22,7 +22,6 @@ module CIAX
     #   *Mcr Generation Command (gencmd)
     #   *Mcr Manipulation command (mancmd)
     class Man < CIAX::Exe
-      attr_reader :sub_dic
       def initialize(super_cfg, atrb = Hashx.new)
         super
         verbose { 'Initiate Manager (option:' + @opt.keys.join + ')' }
@@ -32,8 +31,6 @@ module CIAX
         _init_net
         ___init_stat
         ___init_cmd
-        # For element of Layer
-        @sub_dic = type?(@cfg[:dev_dic], Wat::Dic)
         _opt_mode
       end
 
@@ -58,7 +55,7 @@ module CIAX
       end
 
       def ___init_stat
-        @stat = RecArc.new
+        @stat = (@cfg[:rec_arc] ||= RecArc.new)
         @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
       end
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'libdic'
+require 'libmcrexe'
 require 'libmansh'
 
 module CIAX
@@ -12,10 +13,14 @@ module CIAX
         atrb.update(Atrb.new(layer_cfg))
         super
         # Set [:dev_dic] here for using layer_cfg
-        @man = Man.new(@cfg, mcr_dic: self)
+        @man = Man.new(@cfg)
         put('man', @man)
         # For element of Layer
         @sub_dic = type?(@cfg[:dev_dic], Wat::Dic)
+        @rec_arc = type?(@cfg[:rec_arc], RecArc)
+        # For server response
+        @sv_stat = type?(@cfg[:sv_stat], Prompt).repl(:sid, '')
+        ___init_local
       end
 
       def run
@@ -32,11 +37,64 @@ module CIAX
 
       private
 
+      def ___init_local
+        @rec_arc.ext_local.refresh
+        ___init_log
+        ___init_procs
+        self
+      end
+
+      def ___init_log
+        return unless @cfg[:opt].mcr_log?
+        @rec_arc.ext_save
+        @man.cobj.rem.ext_input_log
+      end
+
+      def ___init_procs
+        ___init_pre_exe
+        ___init_proc_def
+        ___init_proc_sys
+      end
+
+      def ___init_pre_exe
+        @man.pre_exe_procs << proc do
+          @sv_stat.repl(:sid, '')
+          @sv_stat.flush(:run).cmt if @sv_stat.get(:list).empty?
+        end
+      end
+
+      def ___init_proc_def
+        rem = @man.cobj.rem
+        rem.ext.def_proc { |ent| ___gen_cmd(ent) }
+        rem.int.def_proc { |ent| ___man_cmd(ent) }
+      end
+
+      # Macro Generator
+      def ___gen_cmd(ent)
+        mobj = Exe.new(ent) { |e| ___gen_cmd(e) }
+        put(mobj.id, mobj.run)
+        @rec_arc.push(mobj.stat)
+      end
+
+      # Macro Manipulator
+      def ___man_cmd(ent)
+        id = ent.par[0]
+        mobj = get(id)
+        @sv_stat.repl(:sid, id)
+        ent.msg = mobj.exe([ent[:id]]).to_s || 'NOSID'
+      end
+
+      def ___init_proc_sys
+        @man.cobj.get('interrupt').def_proc do
+          each { |k, v| k =~ /[\d]+/ && v.interrupt }
+        end
+      end
+
       # For server initialize
       def ___arc_refresh
         verbose { 'Initiate Record Archive' }
         Threadx::Fork.new('RecArc', 'mcr', @cfg[:dbi][:id]) do
-          @cfg[:rec_arc].clear.refresh
+          @rec_arc.clear.refresh
         end
       end
 

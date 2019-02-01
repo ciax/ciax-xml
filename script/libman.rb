@@ -38,8 +38,9 @@ module CIAX
 
       def _ext_local
         super
-        require 'libmanproc'
-        extend(Processor).ext_local_processor
+        @cfg[:cid] = 'manager'
+        @mode = @opt.dry? ? 'DRY' : 'PRCS'
+        self
       end
 
       # Overridden by libmansh

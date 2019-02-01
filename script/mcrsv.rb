@@ -8,7 +8,7 @@ module CIAX
     Daemon.new(cfg) do |layer|
       md = Mcr::Dic.new(cfg).run
       # For hex layer
-      layer::Dic.new(md.cfg).run if cfg[:opt][:x]
+      layer::Dic.new(md.cfg).run if cfg.opt[:x]
     end
   end
 end

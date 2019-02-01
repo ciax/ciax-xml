@@ -4,12 +4,8 @@ develop(){
     git pull --all
     case $(git branch |grep '*') in
         *develop)
-            export PROJ=dmcs
             # export NOCACHE=1
             alias sybeta='git push;giu beta;gim develop;git push;giu develop'
-            ;;
-        *config)
-            export PROJ=dciax
             ;;
         *beta)
             alias sydev='git push;giu develop;gim beta;git push;giu beta'
@@ -17,6 +13,19 @@ develop(){
         *);;
     esac
     cd
+}
+init_proj(){
+    case $HOSTNAME in
+        ciax|cxws2)
+            proj ciax
+            ;;
+        moircsobcp)
+            proj moircs
+            ;;
+        *)
+            proj dmcs
+            ;;
+    esac
 }
 
 proj(){
@@ -49,4 +58,6 @@ alias rgen='rubocop --auto-gen-config'
 alias jj='ruby -r json -e "jj(JSON.parse(gets(nil)))"'
 alias js='fixjsstyle *.js'
 alias sim='killall -q mos_sim && echo Terminated || mos_sim; psg mos_sim'
+init_proj
 develop >/dev/null
+

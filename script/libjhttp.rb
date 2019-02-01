@@ -20,7 +20,7 @@ module CIAX
       end
 
       def load(tag = nil)
-        fname =  base_name(tag)
+        fname = base_name(tag)
         url = format('http://%s%s%s.json', @host, @dir, fname)
         jstr = ___read_url(url)
         if jstr.empty?

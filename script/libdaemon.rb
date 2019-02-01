@@ -28,7 +28,7 @@ module CIAX
     def ___main_loop(port)
       yield
       msg = 'for Thread status'
-      Udp::Server.new('daemon', 'top', port, msg).listen do |reg, _src|
+      Udp::Server.new('daemon', 'top', port, msg).listen do |reg|
         ___threads(reg)
       end
     rescue SignalException
@@ -49,9 +49,9 @@ module CIAX
 
     # Background (Switch error output to file)
     def ___init_server(tag, opt, port)
-      info("Git Tagged [#{tag_set}], Status Port [#{port}]") if opt.drv? && opt[:b]
+      info("Git Tagged [#{tag_set}], Status Port [#{port}]") if opt.git_tag?
       ___detach
-      ___redirect(tag) if opt[:b]
+      ___redirect(tag) if opt.bg?
       verbose { "Initiate Daemon Start [#{tag}] " + git_ver }
     end
 

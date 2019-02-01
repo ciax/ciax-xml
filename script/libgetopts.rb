@@ -95,6 +95,10 @@ module CIAX
         key?(:s) && true
       end
 
+      def bg?
+        key?(:b) && true
+      end
+
       # For macro
       # dry run mode
       def dry?
@@ -107,6 +111,11 @@ module CIAX
 
       def mcr_log?
         drv? && !dry?
+      end
+
+      # Server run for git-tag
+      def git_tag?
+        mcr_log? && bg?
       end
 
       # Others

@@ -25,7 +25,7 @@ module CIAX
 
       def run
         ___arc_refresh
-        ___web_select(@man.run.port)
+        ___web_select
         @sub_dic.run
         self
       end
@@ -40,7 +40,8 @@ module CIAX
       def ___init_local
         @rec_arc.ext_local.refresh
         ___init_log
-        ___init_procs
+        ___init_pre_exe
+        ___init_proc_def
         self
       end
 
@@ -48,12 +49,6 @@ module CIAX
         return unless @cfg[:opt].mcr_log?
         @rec_arc.ext_save
         @man.cobj.rem.ext_input_log
-      end
-
-      def ___init_procs
-        ___init_pre_exe
-        ___init_proc_def
-        ___init_proc_sys
       end
 
       def ___init_pre_exe
@@ -67,6 +62,9 @@ module CIAX
         rem = @man.cobj.rem
         rem.ext.def_proc { |ent| ___gen_cmd(ent) }
         rem.int.def_proc { |ent| ___man_cmd(ent) }
+        @man.cobj.get('interrupt').def_proc do
+          each { |k, v| k =~ /[\d]+/ && v.interrupt }
+        end
       end
 
       # Macro Generator
@@ -84,12 +82,6 @@ module CIAX
         ent.msg = mobj.exe([ent[:id]]).to_s || 'NOSID'
       end
 
-      def ___init_proc_sys
-        @man.cobj.get('interrupt').def_proc do
-          each { |k, v| k =~ /[\d]+/ && v.interrupt }
-        end
-      end
-
       # For server initialize
       def ___arc_refresh
         verbose { 'Initiate Record Archive' }
@@ -99,10 +91,10 @@ module CIAX
       end
 
       # Making Command Dic JSON file for WebApp
-      def ___web_select(port)
+      def ___web_select
         verbose { 'Initiate JS Command Dic' }
         dbi = @cfg[:dbi]
-        jl = Hashx.new(port: port, label: dbi.label)
+        jl = Hashx.new(port: @cfg[:port], label: dbi.label)
         jl[:commands] = dbi.web_select
         IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
       end

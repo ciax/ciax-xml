@@ -26,9 +26,7 @@ module CIAX
         if jstr.empty?
           warning(" -- json url file (#{url}) is empty at loading")
         else
-          lt = self[:time]
-          replace(jverify(jstr, fname))
-          cmt if self[:time] > lt
+          ___chkupd(jstr, fname)
         end
         self
       end
@@ -38,6 +36,12 @@ module CIAX
       end
 
       private
+
+      def ___chkupd(jstr, fname)
+        lt = self[:time]
+        replace(jverify(jstr, fname))
+        cmt if self[:time] > lt
+      end
 
       def ___read_url(url)
         jstr = ''

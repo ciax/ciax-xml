@@ -32,7 +32,7 @@ module CIAX
 
       def ___set_client_proc
         @cobj.rem.def_proc do |ent|
-          @udp.send(ent.id.split(':'))
+          @udp.send(JSON.dump(ent.id.split(':')))
           ___udp_recv
         end
         self

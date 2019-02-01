@@ -16,9 +16,9 @@ module CIAX
         verbose { "Initiate UDP client (#{@id}) [#{@host}:#{@port}]" }
       end
 
-      def send(args)
+      def send(str)
         # Address family not supported by protocol -> see above
-        @udp.send(JSON.dump(args), 0, @host, @port.to_i)
+        @udp.send(str, 0, @host, @port.to_i)
         verbose { "UDP Send #{args}" }
       end
 

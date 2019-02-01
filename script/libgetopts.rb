@@ -13,9 +13,9 @@ module CIAX
     attr_reader :init_layer
     def initialize(ustr = '', optarg = {}, &opt_proc)
       ustr = '(opt) ' + ustr unless optarg.empty?
-      @defopt = optarg[:default].to_s
+      @defopt = optarg.delete(:default).to_s
       @optdb = OptDb.new(optarg)
-      ___set_opt(optarg[:options])
+      ___set_opt(optarg.delete(:options))
       getarg(ustr, &opt_proc)
     rescue InvalidARGS
       usage(ustr)
@@ -151,7 +151,7 @@ module CIAX
     class OptDb < Hash
       attr_reader :layers
       def initialize(optarg)
-        super[optarg.select { |k, _v| k.to_s.length == 1 }]
+        update(optarg.select { |k, _v| k.to_s.length == 1 })
         # Custom options
         optarg[:options] = optarg[:options].to_s + keys.join
         ___mk_optdb
@@ -197,7 +197,7 @@ module CIAX
 
       def __add_optdb(db, fmt)
         db.each do |k, v|
-          self[k] = format(fmt, v)
+          self[k] = format(fmt, v) unless key?(k)
         end
       end
     end

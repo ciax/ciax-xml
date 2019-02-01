@@ -42,4 +42,15 @@ module CIAX
       Time.now.strftime('%Y%m%d')
     end
   end
+  # Show Elapsed time
+  class Elapsed
+    include Msg
+    def initialize(stat)
+      @base = stat
+    end
+
+    def to_s
+      elps_date(@base[:time])
+    end
+  end
 end

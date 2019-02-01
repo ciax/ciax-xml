@@ -13,20 +13,20 @@ module CIAX
         atrb.update(Atrb.new(layer_cfg))
         super
         # Set [:dev_dic] here for using layer_cfg
-        @man = Man.new(@cfg)
-        put('man', @man)
         # For element of Layer
         @sub_dic = type?(@cfg[:dev_dic], Wat::Dic)
-        @rec_arc = type?(@cfg[:rec_arc], RecArc)
         # For server response
         @sv_stat = type?(@cfg[:sv_stat], Prompt).repl(:sid, '')
-        ___init_local
+        ___init_arc(@cfg[:rec_arc])
+        ___init_man(Man.new(@cfg))
       end
 
       def run
-        ___arc_refresh
-        ___web_select
+        dbi = @cfg[:dbi]
+        ___arc_refresh(dbi)
+        ___web_select(dbi)
         @sub_dic.run
+        get('man').run
         self
       end
 
@@ -37,32 +37,22 @@ module CIAX
 
       private
 
-      def ___init_local
-        @rec_arc.ext_local.refresh
-        ___init_log
-        ___init_pre_exe
-        ___init_proc_def
-        self
+      def ___init_arc(arc)
+        @rec_arc = type?(arc, RecArc).ext_local.refresh
+        arc.ext_save if @opt.mcr_log?
       end
 
-      def ___init_log
-        return unless @cfg[:opt].mcr_log?
-        @rec_arc.ext_save
-        @man.cobj.rem.ext_input_log
+      def ___init_man(man)
+        put('man', man)
+        return if @opt.cl?
+        ___init_cmd(man.cobj.rem)
       end
 
-      def ___init_pre_exe
-        @man.pre_exe_procs << proc do
-          @sv_stat.repl(:sid, '')
-          @sv_stat.flush(:run).cmt if @sv_stat.get(:list).empty?
-        end
-      end
-
-      def ___init_proc_def
-        rem = @man.cobj.rem
+      def ___init_cmd(rem)
+        rem.ext_input_log if @opt.mcr_log?
         rem.ext.def_proc { |ent| ___gen_cmd(ent) }
         rem.int.def_proc { |ent| ___man_cmd(ent) }
-        @man.cobj.get('interrupt').def_proc do
+        rem.get('interrupt').def_proc do
           each { |k, v| k =~ /[\d]+/ && v.interrupt }
         end
       end
@@ -83,17 +73,16 @@ module CIAX
       end
 
       # For server initialize
-      def ___arc_refresh
+      def ___arc_refresh(dbi)
         verbose { 'Initiate Record Archive' }
-        Threadx::Fork.new('RecArc', 'mcr', @cfg[:dbi][:id]) do
+        Threadx::Fork.new('RecArc', 'mcr', dbi[:id]) do
           @rec_arc.clear.refresh
         end
       end
 
       # Making Command Dic JSON file for WebApp
-      def ___web_select
+      def ___web_select(dbi)
         verbose { 'Initiate JS Command Dic' }
-        dbi = @cfg[:dbi]
         jl = Hashx.new(port: @cfg[:port], label: dbi.label)
         jl[:commands] = dbi.web_select
         IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)

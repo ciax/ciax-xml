@@ -36,10 +36,14 @@ module CIAX
 
       private
 
-      def _ext_local
+      def _ext_local_driver
         super
         @cfg[:cid] = 'manager'
-        @mode = @opt.dry? ? 'DRY' : 'PRCS'
+        @mode = 'DRY' if @opt.dry?
+        @pre_exe_procs << proc do
+          @sv_stat.repl(:sid, '')
+          @sv_stat.flush(:run).cmt if @sv_stat.get(:list).empty?
+        end
         self
       end
 
@@ -71,7 +75,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', options: 'cehlnr') do |cfg|
+      ConfOpts.new('[proj] [cmd] (par)', options: 'cedhlnr') do |cfg|
         Man.new(cfg, Atrb.new(cfg)).shell
       end
     end

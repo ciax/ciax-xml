@@ -28,8 +28,8 @@ module CIAX
     def ___main_loop(port)
       yield
       msg = 'for Thread status'
-      Udp::Server.new('daemon', 'top', port, msg).listen do |reg, host|
-        ___threads(reg)
+      Udp::Server.new('daemon', 'top', port, msg).listen do |reg, _host|
+        ___threads(reg).join("\n")
       end
     rescue SignalException
       Threadx.killall
@@ -38,13 +38,10 @@ module CIAX
 
     def ___threads(reg)
       reg.chomp!
-      ary = Threadx.list
-      title = '===== Thread List ===== '
-      unless reg.empty?
-        title << reg.inspect
-        ary = ary.grep(/#{reg}/)
-      end
-      ary.unshift(title).to_s + '(reg)?>'
+      ary = ['===== Thread List ===== ']
+      ary.concat(Threadx.list)
+      ary << '(reg)?>'
+      reg.empty? ? ary : ary.grep(/#{reg}/)
     end
 
     # Background (Switch error output to file)

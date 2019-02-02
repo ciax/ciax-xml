@@ -10,7 +10,7 @@ module CIAX
       include Wat::Db
       attr_reader :proj
       def initialize(proj = nil)
-        @proj = proj || ENV['PROJ'] || 'all'
+        @proj = proj || 'all'
         super('idb')
         @adb = App::Db.new
         @cdb = CmdDb.new
@@ -112,12 +112,13 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
-        db = Db.new
+      require 'libconf'
+      ConfOpts.new('[id] (key) ..', options: 'r') do |cfg|
+        db = Db.new(cfg.proj)
         puts "Run list = #{db.run_list.inspect}"
         puts "Dev list = #{db.valid_devs.inspect}"
-        dbi = db.get(args.shift)
-        puts opt[:r] ? dbi.to_v : dbi.path(args)
+        dbi = db.get(cfg.args.shift)
+        puts cfg.opt[:r] ? dbi.to_v : dbi.path(cfg.args)
       end
     end
   end

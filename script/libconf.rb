@@ -29,7 +29,7 @@ module CIAX
     end
 
     def gen(obj)
-      Config.new(self, obj)
+      self.class.new(self, obj)
     end
 
     def join_in(super_cfg)
@@ -153,6 +153,10 @@ module CIAX
         super(args: args, opt: opt)
         yield(self)
       end
+    end
+
+    def proj
+      self[:proj] ||= (ENV['PROJ'] || self[:args].shift)
     end
   end
 end

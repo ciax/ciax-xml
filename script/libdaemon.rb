@@ -28,7 +28,7 @@ module CIAX
     def ___main_loop(port)
       yield
       msg = 'for Thread status'
-      Udp::Server.new('daemon', 'top', port, msg).listen do |reg|
+      Udp::Server.new('daemon', 'top', port, msg).listen do |reg, host|
         ___threads(reg)
       end
     rescue SignalException

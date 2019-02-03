@@ -12,7 +12,7 @@ module CIAX
     class Atrb < Hashx
       def initialize(cfg)
         super()
-        proj = cfg.proj
+        proj = cfg.proj || (self[:proj] = cfg.args.shift)
         self[:dbi] = Db.new.get(proj)
         self[:sv_stat] = ___init_prompt(proj, cfg.opt[:n])
         self[:dev_dic] = Wat::Dic.new(cfg)

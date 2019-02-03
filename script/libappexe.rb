@@ -12,7 +12,7 @@ module CIAX
     class Exe < Exe
       # atrb must have [:dbi],[:sub_dic]
       attr_accessor :batch_interrupt
-      def initialize(super_cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         super
         dbi = _init_dbi2cfg(%i(frm_site))
         @cfg[:site_id] = @id

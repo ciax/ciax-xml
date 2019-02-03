@@ -8,8 +8,8 @@ module CIAX
     # Watch Dic
     class Dic
       attr_reader :id
-      # super_cfg must have [:db]
-      def initialize(super_cfg, atrb = Hashx.new)
+      # spcfg must have [:db]
+      def initialize(spcfg, atrb = Hashx.new)
         super
         _store_db(@cfg[:db] ||= Ins::Db.new(@id))
         @sub_dic = App::Dic.new(@cfg)

@@ -15,20 +15,20 @@ module CIAX
     attr_reader :generation, :access_method_keys
     alias this_keys keys
     alias this_key? key?
-    def initialize(super_cfg = nil, obj = self)
+    def initialize(spcfg = nil, obj = self)
       super()
       @generation = [self]
       @access_method_keys = []
       self[:obj] = obj
-      ___init_param(super_cfg)
+      ___init_param(spcfg)
     end
 
     def gen(obj)
       Config.new(self, obj)
     end
 
-    def join_in(cfg)
-      @generation.concat(cfg.generation)
+    def join_in(spcfg)
+      @generation.concat(spcfg.generation)
       @access_method_keys.concat(cfg.access_method_keys)
       self
     end
@@ -97,13 +97,13 @@ module CIAX
 
     private
 
-    def ___init_param(super_cfg)
-      case super_cfg
+    def ___init_param(spcfg)
+      case spcfg
       when Config
-        join_in(super_cfg)
+        join_in(spcfg)
       when Hash
-        update(super_cfg)
-        @access_method_keys.concat(super_cfg.keys)
+        update(spcfg)
+        @access_method_keys.concat(spcfg.keys)
       end
       @access_method_keys.each do |k|
         define_singleton_method(k) { self[k] }

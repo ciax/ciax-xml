@@ -9,8 +9,8 @@ module CIAX
       attr_reader :id, :par
       attr_accessor :msg
       # set should have :def_proc
-      def initialize(super_cfg, atrb = Hashx.new)
-        super(super_cfg)
+      def initialize(spcfg, atrb = Hashx.new)
+        super(spcfg)
         update(atrb)
         @par = self[:par]
         @id = self[:cid]

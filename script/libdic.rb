@@ -9,8 +9,8 @@ module CIAX
   class Dic < Varx
     attr_reader :cfg
     # level can be Layer or Site
-    def initialize(super_cfg, atrb = Hashx.new)
-      @cfg = super_cfg.gen(self).update(atrb)
+    def initialize(spcfg, atrb = Hashx.new)
+      @cfg = spcfg.gen(self).update(atrb)
       super(m2id(@cfg[:obj].class, -2))
       _attr_set
       @opt = @cfg[:opt]

@@ -8,7 +8,7 @@ module CIAX
     # Hex Exe Dic
     class Dic
       # atrb must have [:db]
-      def initialize(super_cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         super
         idb = (@cfg[:db] ||= Ins::Db.new)
         hdb = @cfg[:hdb] = Db.new

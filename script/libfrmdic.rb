@@ -8,7 +8,7 @@ module CIAX
     deep_include(Site)
     # Frame Dic module
     class Dic
-      def initialize(super_cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         super
         idb = (@cfg[:db] ||= Ins::Db.new)
         ddb = Dev::Db.new(idb.valid_devs)

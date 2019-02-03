@@ -14,7 +14,7 @@ module CIAX
         # Internal Command Group
         class Group
           # cfg should have [:field]
-          def initialize(super_cfg, atrb = Hashx.new)
+          def initialize(spcfg, atrb = Hashx.new)
             super
             init_item_file_io
             add_item('set', '[key(@idx)] [val(,val)]').pars_any(2)

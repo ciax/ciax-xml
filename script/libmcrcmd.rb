@@ -21,7 +21,7 @@ module CIAX
         deep_include CmdBase
         # Page Group
         class Group < CmdBase::Group
-          def initialize(super_cfg, atrb = Hashx.new)
+          def initialize(spcfg, atrb = Hashx.new)
             atrb.update(caption: 'Switch Pages', color: 5)
             super
             add_dummy('0', 'List page')
@@ -50,7 +50,7 @@ module CIAX
       module Int
         # Internal Group
         class Group
-          def initialize(super_cfg, crnt = {})
+          def initialize(spcfg, crnt = {})
             crnt[:caption] = 'Control Macro'
             super
             INTCMD.each do |id, cap|
@@ -63,8 +63,8 @@ module CIAX
       module Ext
         # Caption change
         class Group
-          def initialize(super_cfg, crnt = {})
-            crnt.update(caption: 'Start Macro', sites: super_cfg[:dbi][:sites])
+          def initialize(spcfg, crnt = {})
+            crnt.update(caption: 'Start Macro', sites: spcfg[:dbi][:sites])
             super
           end
         end

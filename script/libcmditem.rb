@@ -9,9 +9,9 @@ module CIAX
       include CmdFunc
       # grp_cfg should have :id,'label',:parameters,:def_proc,:def_msg
       attr_reader :id
-      def initialize(super_cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         super()
-        @cfg = super_cfg.gen(self).update(atrb)
+        @cfg = spcfg.gen(self).update(atrb)
         @id = @cfg[:id]
       end
 

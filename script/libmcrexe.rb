@@ -9,7 +9,7 @@ module CIAX
     # Macro Manager
     class Exe < Exe
       attr_reader :thread, :seq
-      def initialize(super_cfg, atrb = Hashx.new, &submcr_proc)
+      def initialize(spcfg, atrb = Hashx.new, &submcr_proc)
         super
         verbose { 'Initiate New Macro' }
         ___init_cmd

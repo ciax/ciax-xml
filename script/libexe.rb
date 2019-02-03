@@ -18,8 +18,8 @@ module CIAX
                   :server_input_proc, :server_output_proc
     #  cfg must have [:opt]
     #  atrb contains the parameter for each layer individually
-    def initialize(super_cfg, atrb = Hashx.new)
-      @cfg = type?(super_cfg, Config).gen(self).update(atrb)
+    def initialize(spcfg, atrb = Hashx.new)
+      @cfg = type?(spcfg, Config).gen(self).update(atrb)
       @cfg.check_keys(%i(opt))
       @opt = @cfg[:opt]
       ___init_procs

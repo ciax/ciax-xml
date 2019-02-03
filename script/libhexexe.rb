@@ -9,7 +9,7 @@ module CIAX
     deep_include(CmdTree)
     # atrb must have [:dbi], [:sub_dic]
     class Exe < Exe
-      def initialize(super_cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         super
         _init_dbi2cfg
         ___init_sub

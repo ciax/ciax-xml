@@ -9,7 +9,7 @@ module CIAX
     # atrb must have [:dbi], [:sub_dic]
     class Exe < Exe
       attr_reader :sub, :stat
-      def initialize(super_cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         super
         dbi = _init_dbi2cfg
         ___init_sub

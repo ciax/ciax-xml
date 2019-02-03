@@ -7,8 +7,8 @@ module CIAX
     deep_include(Site)
     # Application Dic
     class Dic
-      # super_cfg must have [:db]
-      def initialize(super_cfg, atrb = Hashx.new)
+      # spcfg must have [:db]
+      def initialize(spcfg, atrb = Hashx.new)
         super
         _store_db(@cfg[:db] ||= Ins::Db.new(@id))
         @sub_dic = Frm::Dic.new(@cfg)

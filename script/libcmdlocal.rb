@@ -9,7 +9,7 @@ module CIAX
     class Index < Index
       # cfg should have [:jump_class]
       attr_reader :loc
-      def initialize(super_cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         super
         @loc = add_dom('Local')
       end
@@ -40,7 +40,7 @@ module CIAX
         include CmdBase
         # Shell Group
         class Group < Group
-          def initialize(super_cfg, atrb = Hashx.new)
+          def initialize(spcfg, atrb = Hashx.new)
             atrb[:caption] = 'Shell Command'
             atrb[:color] = 1
             super
@@ -55,8 +55,8 @@ module CIAX
         deep_include CmdBase
         # Jump Group
         class Group < CmdBase::Group
-          def initialize(super_cfg, atrb = Hashx.new)
-            name = m2id(super_cfg[:jump_class], 1).capitalize
+          def initialize(spcfg, atrb = Hashx.new)
+            name = m2id(spcfg[:jump_class], 1).capitalize
             atrb[:caption] = "Switch #{name}s"
             atrb[:color] = 5
             super
@@ -88,7 +88,7 @@ module CIAX
         deep_include CmdBase
         # atrb should have [:output]
         class Group < CmdBase::Group
-          def initialize(super_cfg, atrb = Hashx.new)
+          def initialize(spcfg, atrb = Hashx.new)
             atrb.update(caption: 'Change View Mode', column: 2, color: 9)
             super
             add_item('vis', 'Visual mode').def_proc do

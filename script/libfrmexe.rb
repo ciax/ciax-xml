@@ -10,7 +10,7 @@ module CIAX
     # Frame Exe module
     class Exe < Exe
       # atrb must have [:dbi]
-      def initialize(super_cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         super
         # DB is generated in Dic level
         dbi = _init_dbi2cfg(%i(stream iocmd))

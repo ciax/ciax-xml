@@ -12,28 +12,24 @@ module CIAX
   # Usage:[]
   #   get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
-    attr_reader :generation
+    attr_reader :generation, :access_method_keys
     alias this_keys keys
     alias this_key? key?
     def initialize(super_cfg = nil, obj = self)
       super()
       @generation = [self]
+      @access_method_keys = []
       self[:obj] = obj
-      case super_cfg
-      when Config
-        join_in(super_cfg)
-      when Hash
-        update(super_cfg)
-        ___access_method
-      end
+      ___init_param(super_cfg)
     end
 
     def gen(obj)
-      self.class.new(self, obj)
+      Config.new(self, obj)
     end
 
-    def join_in(super_cfg)
-      @generation.concat(super_cfg.generation)
+    def join_in(cfg)
+      @generation.concat(cfg.generation)
+      @access_method_keys.concat(cfg.access_method_keys)
       self
     end
 
@@ -101,8 +97,15 @@ module CIAX
 
     private
 
-    def ___access_method
-      this_keys.each do |k|
+    def ___init_param(super_cfg)
+      case super_cfg
+      when Config
+        join_in(super_cfg)
+      when Hash
+        update(super_cfg)
+        @access_method_keys.concat(super_cfg.keys)
+      end
+      @access_method_keys.each do |k|
         define_singleton_method(k) { self[k] }
       end
     end
@@ -150,13 +153,10 @@ module CIAX
   class ConfOpts < Config
     def initialize(ustr = '', optargs = {})
       GetOpts.new(ustr, optargs) do |opt, args|
-        super(args: args, opt: opt)
+        proj = (ENV['PROJ'] || self[:args].shift)
+        super(args: args, opt: opt, proj: proj)
         yield(self)
       end
-    end
-
-    def proj
-      self[:proj] ||= (ENV['PROJ'] || self[:args].shift)
     end
   end
 end

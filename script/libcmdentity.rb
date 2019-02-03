@@ -10,7 +10,8 @@ module CIAX
       attr_accessor :msg
       # set should have :def_proc
       def initialize(super_cfg, atrb = Hashx.new)
-        super(super_cfg).update(atrb)
+        super(super_cfg)
+        update(atrb)
         @par = self[:par]
         @id = self[:cid]
         verbose { "Config\n" + path }

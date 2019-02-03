@@ -12,6 +12,7 @@ module CIAX
   # Usage:[]
   #   get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
+    include View
     attr_reader :generation, :access_method_keys
     alias this_keys keys
     alias this_key? key?
@@ -105,56 +106,62 @@ module CIAX
         update(spcfg)
         @access_method_keys.concat(spcfg.keys)
       end
+      ___access_method
+    end
+
+    def ___access_method
       @access_method_keys.each do |k|
+        next if respond_to?(k)
         define_singleton_method(k) { self[k] }
       end
     end
 
-    def ___show_db(v)
-      return __show(v.inspect) if __any_mod?(v, String, Numeric, Enumerable)
-      return __show(v.class) if v.is_a? Proc
-      __show(v)
-    end
+    # Config View module
+    module View
+      def ___show_db(v)
+        return __show(v.inspect) if __any_mod?(v, String, Numeric, Enumerable)
+        return __show(v.class) if v.is_a? Proc
+        __show(v)
+      end
 
-    def __decorate(ary)
-      ["******[Config]******(#{object_id})", *ary, '************'].join("\n")
-    end
+      def __decorate(ary)
+        ["******[Config]******(#{object_id})", *ary, '************'].join("\n")
+      end
 
-    def ___show_generation(key, h)
-      h.map do |k, v|
-        next if key && k != key.to_sym
-        val = k == :obj ? __show(v.class) : ___show_contents(v)
-        "#{k.inspect.sub(/^:/, '')}: #{val}"
-      end.compact.join(', ')
-    end
+      def ___show_generation(key, h)
+        h.map do |k, v|
+          next if key && k != key.to_sym
+          val = k == :obj ? __show(v.class) : ___show_contents(v)
+          "#{k.inspect.sub(/^:/, '')}: #{val}"
+        end.compact.join(', ')
+      end
 
-    def ___show_contents(v)
-      return __show(v.class) if __any_mod?(v, Hash, Proc)
-      return ___show_array(v) if v.is_a? Array
-      __show(v.inspect)
-    end
+      def ___show_contents(v)
+        return __show(v.class) if __any_mod?(v, Hash, Proc)
+        return ___show_array(v) if v.is_a? Array
+        __show(v.inspect)
+      end
 
-    def ___show_array(v)
-      '[' + v.map do |e|
-        __show(e.is_a?(Enumerable) ? e.class : e.inspect)
-      end.join(',') + "](#{v.object_id})"
-    end
+      def ___show_array(v)
+        '[' + v.map do |e|
+          __show(e.is_a?(Enumerable) ? e.class : e.inspect)
+        end.join(',') + "](#{v.object_id})"
+      end
 
-    def __show(v)
-      v.to_s.sub('CIAX::', '')
-    end
+      def __show(v)
+        v.to_s.sub('CIAX::', '')
+      end
 
-    def __any_mod?(v, *modary)
-      modary.any? { |mod| v.is_a? mod }
+      def __any_mod?(v, *modary)
+        modary.any? { |mod| v.is_a? mod }
+      end
     end
   end
-
   # Option parser with Config
   class ConfOpts < Config
     def initialize(ustr = '', optargs = {})
       GetOpts.new(ustr, optargs) do |opt, args|
         super(args: args, opt: opt, proj: ENV['PROJ'])
-        self[:proj] ||= self[:args].shift
         yield(self)
       end
     end

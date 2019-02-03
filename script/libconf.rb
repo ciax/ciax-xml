@@ -29,7 +29,7 @@ module CIAX
 
     def join_in(spcfg)
       @generation.concat(spcfg.generation)
-      @access_method_keys.concat(cfg.access_method_keys)
+      @access_method_keys.concat(spcfg.access_method_keys)
       self
     end
 
@@ -153,8 +153,8 @@ module CIAX
   class ConfOpts < Config
     def initialize(ustr = '', optargs = {})
       GetOpts.new(ustr, optargs) do |opt, args|
-        proj = (ENV['PROJ'] || self[:args].shift)
-        super(args: args, opt: opt, proj: proj)
+        super(args: args, opt: opt, proj: ENV['PROJ'])
+        self[:proj] ||= self[:args].shift
         yield(self)
       end
     end

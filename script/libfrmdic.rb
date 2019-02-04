@@ -10,7 +10,7 @@ module CIAX
     class Dic
       def initialize(spcfg, atrb = Hashx.new)
         super
-        idb = (@cfg[:db] ||= Ins::Db.new)
+        idb = type?(@cfg[:db], Ins::Db)
         ddb = Dev::Db.new(idb.valid_devs)
         _store_db(ddb)
       end
@@ -18,7 +18,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg|
-        Dic.new(cfg, sites: cfg.args).shell
+        Dic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).shell
       end
     end
   end

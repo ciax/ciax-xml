@@ -13,6 +13,7 @@ module CIAX
       def initialize(cfg)
         super()
         proj = cfg.proj || (self[:proj] = cfg.args.shift)
+        cfg[:db] = Ins::Db.new(proj)
         self[:dbi] = Db.new.get(proj)
         self[:sv_stat] = ___init_prompt(proj, cfg.opt[:n])
         self[:dev_dic] = Wat::Dic.new(cfg)
@@ -32,6 +33,12 @@ module CIAX
         ss.init_flg(nonstop: '(nonstop)')
         ss.up(:nonstop) if nonstop
         ss
+      end
+    end
+
+    if __FILE__ == $PROGRAM_NAME
+      ConfOpts.new('[id]') do |cfg|
+        puts Atrb.new(cfg).path(cfg.args)
       end
     end
   end

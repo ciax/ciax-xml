@@ -10,7 +10,7 @@ module CIAX
       # spcfg must have [:db]
       def initialize(spcfg, atrb = Hashx.new)
         super
-        _store_db(@cfg[:db] ||= Ins::Db.new(@id))
+        _store_db(type?(@cfg[:db], Ins::Db))
         @sub_dic = Frm::Dic.new(@cfg)
         @sub_dic.super_dic = self
         @cfg[:sdb] = Sym::Db.new
@@ -19,7 +19,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg|
-        Dic.new(cfg, sites: cfg.args).shell
+        Dic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).shell
       end
     end
   end

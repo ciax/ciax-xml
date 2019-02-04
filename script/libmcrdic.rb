@@ -10,7 +10,6 @@ module CIAX
       attr_reader :cfg, :sub_dic
       # @cfg should have [:sv_stat]
       def initialize(layer_cfg, atrb = Hashx.new)
-        atrb.update(Atrb.new(layer_cfg))
         super
         # Set [:dev_dic] here for using layer_cfg
         # For element of Layer
@@ -113,7 +112,7 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         ConfOpts.new('[id]', options: 'cehlns') do |cfg|
-          Dic.new(cfg).shell
+          Dic.new(cfg, Atrb.new(cfg)).shell
         end
       end
     end

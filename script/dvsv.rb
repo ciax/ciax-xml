@@ -5,7 +5,7 @@ require 'libdaemon'
 module CIAX
   ConfOpts.new('[id] ...', options: 'fawxmdeb') do |cfg|
     Daemon.new(cfg) do |layer|
-      layer::Dic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args)
+      layer::Dic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).run
     end
   end
 end

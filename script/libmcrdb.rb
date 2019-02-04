@@ -128,7 +128,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libconf'
       ConfOpts.new('[id] (key) ..', options: 'j') do |cfg|
-        dbi = Db.new.get(cfg.proj)
+        dbi = Db.new.get(cfg.proj || cfg.args.shift)
         puts cfg.opt[:j] ? dbi.web_select.to_j : dbi.path(cfg.args)
       end
     end

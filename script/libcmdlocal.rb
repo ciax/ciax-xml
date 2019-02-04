@@ -44,8 +44,8 @@ module CIAX
             atrb[:caption] = 'Shell Command'
             atrb[:color] = 1
             super
-            add_dummy('q,^\\', 'Quit')
-            add_dummy('^D,^C', 'Interrupt')
+            add_dummy('q,^D', 'Quit')
+            add_dummy('^C', 'Interrupt')
           end
         end
       end

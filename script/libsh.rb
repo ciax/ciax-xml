@@ -84,7 +84,7 @@ module CIAX
       def ___input
         verbose { "Threads\n#{Threadx.list}" }
         verbose { "Valid Commands #{@cobj.valid_keys}" }
-        inp = Readline.readline(prompt, true) || 'interrupt'
+        inp = Readline.readline(prompt, true)
         /^q/ =~ inp ? nil : inp
       rescue Interrupt
         'interrupt'

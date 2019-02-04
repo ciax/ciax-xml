@@ -10,7 +10,7 @@ module CIAX
       # atrb must have [:db]
       def initialize(spcfg, atrb = Hashx.new)
         super
-        idb = (@cfg[:db] ||= Ins::Db.new)
+        idb = type?(@cfg[:db], Ins::Db)
         hdb = @cfg[:hdb] = Db.new
         idb.valid_apps(hdb.disp_dic.valid_keys)
         _store_db(idb)
@@ -31,7 +31,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg|
-        Dic.new(cfg, sites: cfg.args).shell
+        Dic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).shell
       end
     end
   end

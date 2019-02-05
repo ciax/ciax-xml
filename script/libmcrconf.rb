@@ -3,6 +3,7 @@ require 'libmcrdb'
 require 'libprompt'
 require 'libwatdic'
 require 'librecarc'
+require 'libudp'
 
 # CIAX_XML
 module CIAX
@@ -12,7 +13,7 @@ module CIAX
     class Atrb < Hashx
       def initialize(cfg)
         super()
-        proj = cfg.proj || (self[:proj] = cfg.args.shift)
+        proj = ___remote_proj(cfg) || (self[:proj] = cfg.args.shift)
         cfg[:db] = Ins::Db.new(proj)
         self[:dbi] = Db.new.get(proj)
         self[:sv_stat] = ___init_prompt(proj, cfg.opt[:n])
@@ -21,6 +22,15 @@ module CIAX
       end
 
       private
+
+      def ___remote_proj(cfg)
+        host = cfg.opt[:h]
+        return cfg.proj unless host
+        udp = Udp::Client.new('mcr', 'client', host, 54_321)
+        udp.send('mcr:Server')
+        ary = udp.recv.split(/\W/)
+        ary[2]
+      end
 
       def ___init_prompt(proj, nonstop)
         ss = Prompt.new('mcr', proj)

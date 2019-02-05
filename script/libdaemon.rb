@@ -15,7 +15,7 @@ module CIAX
       tag = $PROGRAM_NAME.split('/').last
       ___chk_args(___kill_pids(tag), cfg.args + cfg.opt.values)
       ___init_server(tag, cfg.opt, port)
-      ___main_loop(port) { yield cfg.opt.init_layer_mod }
+      ___server(port) { yield cfg.opt.init_layer_mod }
     end
 
     private
@@ -25,7 +25,7 @@ module CIAX
       ENV['NOCACHE'] ||= '1'
     end
 
-    def ___main_loop(port)
+    def ___server(port)
       yield
       msg = 'for Thread status'
       Udp::Server.new('daemon', 'top', port, msg).listen do |reg, _host|
@@ -39,7 +39,7 @@ module CIAX
     def ___threads(reg)
       reg.chomp!
       ary = ['===== Thread List ===== ']
-      ary.concat(Threadx.list)
+      ary << Threadx.list.view
       ary << '(reg)?>'
       reg.empty? ? ary : ary.grep(/#{reg}/)
     end

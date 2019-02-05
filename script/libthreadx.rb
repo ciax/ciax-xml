@@ -10,7 +10,7 @@ class Thread
   end
 
   def to_hash
-    keys.each_with_object({}) { |k, h| h[k] = self[k] }
+    keys.each_with_object(status: status) { |k, h| h[k] = self[k] }
   end
 end
 
@@ -26,16 +26,29 @@ module CIAX
 
     # List all threads besides own ThreadGroup member
     def list
-      Thread.list.map do |t|
-        str = "[#{t.status}]"
-        str += %i(id layer name).map { |id| t[id] }.join(':')
-        str += "(#{t[:type]})" if t[:type]
-        str
-      end.sort
+      Thread.list.map(&:to_hash).extend(View)
     end
 
     def killall
       Threads.list.each(&:kill)
+    end
+
+    # Thread List View module
+    module View
+      include Enumx
+
+      def view
+        map do |h|
+          str = "[#{h[:status]}]"
+          str += %i(id layer name).map { |id| h[id] }.join(':')
+          str += "(#{h[:type]})" if h[:type]
+          str
+        end.sort
+      end
+
+      def to_v
+        view.join("\n")
+      end
     end
 
     # Simple Extention

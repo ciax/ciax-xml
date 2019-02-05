@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="ciax" version="1" label="Cart Macro" port="55554">
+  <macro id="ciax" version="1" label="Cart Macro" host="ciax" port="55554">
     <!--Exchange Commands-->
     <group id="g_exchg" caption="Exchange Commands" rank="0">
       <unit id="unit_exchg" label="Exhange Instrument">

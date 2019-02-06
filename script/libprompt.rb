@@ -12,6 +12,7 @@ module CIAX
       @db = {}
       self[:msg] = ''
       init_time2cmt
+      @layer = 'all'
       @cmt_procs << proc do
         verbose { "Save #{id}:timing #{pick(%i(busy queue)).inspect}" }
       end

@@ -40,7 +40,7 @@ module CIAX
       def view
         map do |h|
           str = "[#{h[:status]}]"
-          str += %i(id layer name).map { |id| h[id] }.join(':')
+          str += %i(id layer name port).map { |id| h[id] }.compact.join(':')
           str += "(#{h[:type]})" if h[:type]
           str
         end.sort
@@ -54,11 +54,11 @@ module CIAX
     # Simple Extention
     class Fork < Thread
       include Msg
-      def initialize(tname, layer, id, type = nil)
+      def initialize(tname, layer, id, atrb = {})
         @layer = layer
         @id = id
         th = super { ___do_proc(id) { yield } }
-        th.update(layer: layer, name: tname, id: id, type: type)
+        th.update(layer: layer, name: tname, id: id).update(atrb)
         Threads.add(th)
       end
 
@@ -75,7 +75,7 @@ module CIAX
 
     # Thread with Loop
     class Loop < Fork
-      def initialize(tname, layer, id, type = nil)
+      def initialize(tname, layer, id, atrb = {})
         super do
           loop do
             yield
@@ -87,7 +87,7 @@ module CIAX
 
     # Queue Thread with Loop
     class QueLoop < Fork
-      def initialize(tname, layer, id, type = nil)
+      def initialize(tname, layer, id, atrb = {})
         @que = Queue.new
         super { loop { yield @que } }
       end

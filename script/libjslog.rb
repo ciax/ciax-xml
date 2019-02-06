@@ -41,7 +41,7 @@ module CIAX
 
       def ___log_thread
         verbose { "Initiate File Log Server [#{@id}/Ver.#{self[:data_ver]}]" }
-        Threadx::QueLoop.new('Logging', @layer, @id, @type) do |que|
+        Threadx::QueLoop.new('Logging', @layer, @id, type: @type) do |que|
           str = que.pop
           open(@logfile, 'a') { |f| f.puts str }
           verbose { "Appended #{str.size} byte" }

@@ -23,9 +23,8 @@ module CIAX
       include Msg
       def initialize(id)
         @id = id
-        base = "sqlog_#{id}"
-        @sqlcmd = ['sqlite3', vardir('log') + base + '.sq3']
-        @que_sql = Threadx::QueLoop.new('SqLog', 'all', @id, base) do |que|
+        @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
+        @que_sql = Threadx::QueLoop.new('SqLog', 'all', @id) do |que|
           ___log_save(que)
         end
       end

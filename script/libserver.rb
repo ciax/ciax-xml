@@ -40,7 +40,7 @@ module CIAX
 
       # Separated form ext_* for detach process of this part
       def ___startup
-        Threadx::Fork.new('Server', @layer, @id, "udp:#{@port}") do
+        Threadx::Fork.new('Server', @layer, @id, port: "udp:#{@port}") do
           ___srv_udp
           sleep 0.3
         end

@@ -39,7 +39,7 @@ module CIAX
     def ___threads(reg)
       reg.chomp!
       ary = ['===== Thread List ===== ']
-      ary << Threadx.list.view
+      ary.concat(Threadx.list.view)
       ary << '(reg)?>'
       reg.empty? ? ary : ary.grep(/#{reg}/)
     end

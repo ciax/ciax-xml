@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libmsg'
-require 'libfrmcode'
+require 'libframecode'
 require 'libframecc'
 
 module CIAX

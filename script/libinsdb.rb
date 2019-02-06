@@ -25,7 +25,7 @@ module CIAX
       def valid_devs
         rl = run_list
         @disp_dic.valid_keys.each_with_object({}) do |s, hash|
-          did =get(s)[:dev_id] 
+          did = get(s)[:dev_id]
           hash[did] = rl.include?(s) if did
         end
       end

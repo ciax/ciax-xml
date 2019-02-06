@@ -2,10 +2,10 @@
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="dmcs" label="Dummy MOIRCS simulator">
     <group id="sim" label="Dummy MOIRCS simulator">
-      <site id="tfp" app_id="cfp" host="localhost" port="25691" label="TEST Field Point"/>
-      <site id="tap" app_id="oma" host="localhost" port="25692" label="TEST Air Pres"/>
-      <site id="tma" app_id="mma" host="localhost" port="25693" label="TEST Arm"/>
-      <site id="tmc" app_id="mmc" host="localhost" port="25694" label="TEST Carousel">
+      <site id="tfp" dev_id="tfp" app_id="cfp" host="localhost" port="25691" label="TEST Field Point"/>
+      <site id="tap" dev_id="tap" app_id="oma" host="localhost" port="25692" label="TEST Air Pres"/>
+      <site id="tma" dev_id="tma" app_id="mma" host="localhost" port="25693" label="TEST Arm"/>
+      <site id="tmc" dev_id="tmc" app_id="mmc" host="localhost" port="25694" label="TEST Carousel">
         <command ref="mmc"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="gpos">
@@ -17,8 +17,8 @@
           </group>
         </status>
       </site>
-      <site id="tmi" app_id="cmi" host="moircsobcp" port="25690" label="Current Mask Index"/>
-      <site id="tbb" app_id="bbe" host="localhost" port="25696" label="TEST BBE simple">
+      <site id="tmi" dev_id="tmi" app_id="cmi" host="moircsobcp" port="25690" label="Current Mask Index"/>
+      <site id="tbb" dev_id="tbb" app_id="bbe" host="localhost" port="25696" label="TEST BBE simple">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="X0-3"/>
           <group ref="g1" caption="X4-7"/>
@@ -26,7 +26,7 @@
           <group ref="g3" caption="X12-15"/>
         </status>
       </site>
-      <site id="tbw" app_id="bbe" frm_site="tbb" host="localhost" port="25697" label="TEST BBE with Watch">
+      <site id="tbw" dev_id="tbb" app_id="bbe" host="localhost" port="25697" label="TEST BBE with Watch">
         <command ref="tbb"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="X0-3"/>

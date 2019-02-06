@@ -3,10 +3,10 @@
   <project id="dciax" label="CIAX Dummy" column="2">
     <include ref="dcmp"/>
     <group id="cmp_dmy" label="CIAX Dymmy">
-      <site id="trt" app_id="mel" host="localhost" port="25191" label="CIAX CART 3"/>
-      <site id="tsi" app_id="cj2" host="localhost" port="25192" label="IR Stand-by"/>
-      <site id="tso" app_id="cj2" host="localhost" port="25193" label="OPT Stand-by"/>
-      <site id="tts" app_id="oss" host="localhost" port="25195" label="OSS Telescope"/>
+      <site id="trt" dev_id="trt" app_id="mel" host="localhost" port="25191" label="CIAX CART 3"/>
+      <site id="tsi" dev_id="tsi" app_id="cj2" host="localhost" port="25192" label="IR Stand-by"/>
+      <site id="tso" dev_id="tso" app_id="cj2" host="localhost" port="25193" label="OPT Stand-by"/>
+      <site id="tts" dev_id="tts" app_id="oss" host="localhost" port="25195" label="OSS Telescope"/>
     </group>
   </project>
 </idb>

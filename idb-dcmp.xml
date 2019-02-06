@@ -2,7 +2,7 @@
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="dcmp" label="Dummy Helium Compressor">
     <group id="cpd_sum" label="Dummy Summit Helium Compressor">
-      <site id="tco" app_id="bbe" host="localhost" port="53294" label="OPT Helium Compressor">
+      <site id="tco" dev_id="tco" app_id="bbe" host="localhost" port="53294" label="OPT Helium Compressor">
         <command ref="cco"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="CIAO(S6) SWITCH"/>
@@ -10,7 +10,7 @@
           <group ref="g3" caption="COMICS/SPEC(S5)"/>
         </status>
       </site>
-      <site id="tci" app_id="bbe" host="localhost" port="53296" label="IR Helium Compressor">
+      <site id="tci" dev_id="tci" app_id="bbe" host="localhost" port="53296" label="IR Helium Compressor">
         <command ref="cci"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="CAS2(S1)(MOIRCS/CR,CIAO)"/>

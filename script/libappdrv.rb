@@ -14,11 +14,12 @@ module CIAX
         # type of usage: shell/command line
         # type of semantics: execution/test
         def ext_local_driver
-          @stat.ext_local_conv(@sub.stat)
-          @buf = ___init_buf
           ___init_log_mode
           ___init_processor_save
           ___init_processor_load
+          return self unless @sub
+          @stat.ext_local_conv(@sub.stat)
+          ___init_buffer
           self
         end
 
@@ -57,7 +58,7 @@ module CIAX
         #      Batch: Get Frm command response
         #      Batch: Update Field by Frm response
         #      Batch: Repeat until outbuffer is empty
-        def ___init_buf
+        def ___init_buffer
           buf = Buffer.new(@sv_stat, @sub.cobj)
           ___init_proc_int(buf)
           ___init_proc_ext(buf)

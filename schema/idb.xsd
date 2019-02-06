@@ -47,7 +47,7 @@
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
       <xsd:attribute name="app_id" use="required" type="xsd:NCName"/>
-      <xsd:attribute name="frm_site" type="xsd:NCName"/>
+      <xsd:attribute name="dev_id" type="xsd:NCName"/>
       <xsd:attribute name="host" type="xsd:token"/>
       <xsd:attribute name="port" type="xsd:int"/>
       <xsd:attribute name="enable" type="xsd:boolean"/>

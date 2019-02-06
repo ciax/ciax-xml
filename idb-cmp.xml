@@ -2,7 +2,7 @@
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="cmp" label="Helium Compressor">
     <group id="cp_sum" host="cxws2" label="Summit Helium Compressor">
-      <site id="cco" app_id="bbe" port="53204" label="OPT Helium Compressor">
+      <site id="cco" dev_id="cco" app_id="bbe" port="53204" label="OPT Helium Compressor">
         <command ref="cco"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g1" caption="BLOKEN"/>
@@ -10,14 +10,14 @@
           <group ref="g3" caption="COMICS/SPEC(S5)"/>
         </status>
       </site>
-      <site id="cro" app_id="bbe" port="53205" label="IR Helium Compressor">
+      <site id="cro" dev_id="cro" app_id="bbe" port="53205" label="IR Helium Compressor">
         <command ref="cro"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="TAO1 SWITCH"/>
           <group ref="g1" caption="TAO2 SWITCH"/>
         </status>
       </site>
-      <site id="cci" app_id="bbe" port="53206" label="IR Helium Compressor">
+      <site id="cci" dev_id="cci" app_id="bbe" port="53206" label="IR Helium Compressor">
         <command ref="cci"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="CAS2(S1)(MOIRCS/CR)"/>
@@ -26,7 +26,7 @@
           <group ref="g3" caption="MOIRCS/MAIN(S9)"/>
         </status>
       </site>
-      <site id="cri" app_id="bbe" port="53207" label="IR Helium Compressor">
+      <site id="cri" dev_id="cri" app_id="bbe" port="53207" label="IR Helium Compressor">
         <command ref="cri"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="IRCS(S3)"/>
@@ -35,12 +35,12 @@
           <index ref="xpr2" symbol="na"/>
         </status>
       </site>
-      <site id="cfa" app_id="k3n" port="25210" enable="false" label="S10 HC Coolant Flow">
+      <site id="cfa" dev_id="cfa" app_id="k3n" port="25210" enable="false" label="S10 HC Coolant Flow">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <index ref="flow" label="FMOS-K(S10) Coolant Flow"/>
         </status>
       </site>
-      <site id="cf1" app_id="k3n" port="25201" enable="false" label="S1 HC Coolant Flow">
+      <site id="cf1" dev_id="cf1" app_id="k3n" port="25201" enable="false" label="S1 HC Coolant Flow">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <index ref="flow" label="CS-2(S1) Coolant Flow(l/min)"/>
         </status>

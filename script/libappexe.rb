@@ -14,7 +14,7 @@ module CIAX
       attr_accessor :batch_interrupt
       def initialize(spcfg, atrb = Hashx.new)
         super
-        dbi = _init_dbi2cfg(%i(frm_site))
+        dbi = _init_dbi2cfg(%i(dev_id))
         @cfg[:site_id] = @id
         @stat = Status.new(dbi)
         @sv_stat = Prompt.new('site', @id)
@@ -59,7 +59,7 @@ module CIAX
       # Sub methods for Initialize
       def ___init_sub
         # LayerDB might generated in Dic level
-        @sub = @cfg[:sub_dic].get(@cfg[:frm_site])
+        @sub = @cfg[:sub_dic].get(@cfg[:dev_id])
         @sv_stat.db.update(@sub.sv_stat.db)
         @sub.sv_stat.cmt_procs << proc do |ss|
           @sv_stat.update(ss.pick(%i(comerr ioerr))).cmt

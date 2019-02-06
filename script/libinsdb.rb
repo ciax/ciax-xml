@@ -25,7 +25,8 @@ module CIAX
       def valid_devs
         rl = run_list
         @disp_dic.valid_keys.each_with_object({}) do |s, hash|
-          hash[get(s)[:frm_site]] = rl.include?(s)
+          did =get(s)[:dev_id] 
+          hash[did] = rl.include?(s) if did
         end
       end
 
@@ -77,7 +78,7 @@ module CIAX
       def ___init_general(dbi)
         dbi[:proj] = @proj
         dbi[:site_id] = dbi[:ins_id] = dbi[:id]
-        dbi.get(:frm_site) { dbi[:id] }
+        dbi.get(:dev_id)
       end
 
       def ___get_skeleton(e0, sdb, grp, idx)

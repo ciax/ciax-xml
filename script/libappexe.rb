@@ -20,8 +20,8 @@ module CIAX
         @sv_stat = Prompt.new('site', @id)
         @batch_interrupt = []
         _init_net
-        ___init_sub
         ___init_command
+        ___init_sub if @cfg[:dev_id]
         _opt_mode
       end
 

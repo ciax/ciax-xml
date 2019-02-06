@@ -28,6 +28,12 @@ module CIAX
         Hashx.new(atrb).update(data: self[:data].pick(keyary))
       end
 
+      def jread(str = nil)
+        res = super
+        res[:data]=Hashx.new(res[:data])
+        res
+      end
+
       private
 
       def ___init_dbs

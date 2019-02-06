@@ -55,6 +55,7 @@ module CIAX
       data_err('NOT JSON')
     end
 
+    # Json read with contents conversion
     def jread(jstr = nil)
       inp = jstr || gets(nil) || data_err("No data in file(#{ARGV})")
       j2h(inp).extend(Enumx)

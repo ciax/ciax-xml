@@ -92,12 +92,15 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg|
-        dbi = Ins::Db.new.get(cfg.args.shift)
+        db = cfg[:db] = Ins::Db.new
+        dbi = db.get(cfg.args.shift)
         atrb = { dbi: dbi, sub_dic: Frm::Dic.new(cfg) }
-        eobj = Exe.new(cfg, atrb).exe(args)
-        puts eobj.stat
-        sleep 0.5
-        puts eobj.sv_stat.to_r
+        eobj = Exe.new(cfg, atrb)
+        if cfg.opt.sh?
+          eobj.shell
+        else
+          puts eobj.exe(cfg.args).stat
+        end
       end
     end
   end

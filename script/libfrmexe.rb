@@ -80,14 +80,13 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg|
-        dbi = Dev::Db.new.get(cfg.args.shift)
-        begin
-          eobj = Exe.new(cfg, dbi.pick)
+        db = cfg[:db] = Dev::Db.new
+        dbi = db.get(cfg.args.shift)
+        eobj = Exe.new(cfg, dbi: dbi)
+        if cfg.opt.sh?
+          eobj.shell
+        else
           puts eobj.exe(cfg.args).stat
-        rescue CommError
-          puts eobj.stat
-        ensure
-          puts eobj.sv_stat.to_r
         end
       end
     end

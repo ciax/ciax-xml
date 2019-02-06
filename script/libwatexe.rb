@@ -80,7 +80,12 @@ module CIAX
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(cfg.args.shift)
         atrb = { dbi: dbi, sub_dic: App::Dic.new(cfg) }
-        Exe.new(cfg, atrb).shell
+        eobj = Exe.new(cfg, atrb)
+        if cfg.opt.sh?
+          eobj.shell
+        else
+          puts eobj.exe(cfg.args).stat
+        end
       end
     end
   end

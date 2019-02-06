@@ -30,7 +30,7 @@ module CIAX
 
       def jread(str = nil)
         res = super
-        res[:data]=Hashx.new(res[:data])
+        res[:data] = Hashx.new(res[:data])
         res
       end
 

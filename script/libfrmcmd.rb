@@ -128,7 +128,7 @@ module CIAX
         cobj = Index.new(cfg, fld.dbi.pick(%i(stream)))
         rem = cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }.add_ext
         fld.jmerge unless STDIN.tty?
-        res = rem.set_cmd(args).exe_cmd('test')
+        res = rem.set_cmd(cfg.args).exe_cmd('test')
         if cfg.opt[:r]
           print res.msg
         else

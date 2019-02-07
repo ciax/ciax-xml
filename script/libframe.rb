@@ -9,7 +9,6 @@ module CIAX
     # For Command/Response Frame
     class Frame
       include Msg
-      include Codec
       attr_reader :cc
       # terminator: used for detecting end of stream,
       #             cut off before processing in Frame#set().
@@ -17,7 +16,7 @@ module CIAX
       # delimiter: cut 'variable length data' by delimiter
       #             can be included in CC range
       def initialize(endian = nil, ccmethod = nil, terminator = nil)
-        @endian = endian
+        @codec = Codec.new(endian)
         @cc = CheckCode.new(ccmethod)
         @terminator = esc_code(terminator)
         reset
@@ -33,7 +32,7 @@ module CIAX
       # For Command
       def push(frame, e = {}) # returns self
         if frame
-          code = encode(frame, e)
+          code = @codec.encode(frame, e)
           @frame << code
           @cc.push(code)
           verbose { "Add [#{frame.inspect}]" }
@@ -65,7 +64,7 @@ module CIAX
         return '' if str.empty?
         verbose { "Cut String: [#{str.inspect}]" }
         str = ___pick_part(str, e0[:slice])
-        decode(str, e0)
+        @codec.decode(str, e0)
       end
 
       private
@@ -116,7 +115,7 @@ module CIAX
         len = e0[:length] || ref.size
         val = str = @frame.slice!(0, len.to_i)
         if e0[:decode]
-          val = decode(val, e0)
+          val = @codec.decode(val, e0)
           ref = expr(ref).to_s
         end
         ___check(e0, ref, val)

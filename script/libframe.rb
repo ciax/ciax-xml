@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'libmsg'
-require 'libframecode'
-require 'libframecc'
+require 'libfrmcodec'
+require 'libfrmccode'
 
 module CIAX
   # Frame Layer

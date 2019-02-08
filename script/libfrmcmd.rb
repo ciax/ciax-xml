@@ -32,17 +32,17 @@ module CIAX
             ent = super
             @field = type?(@cfg[:field], Field)
             @fstr = { changed: nil }
-            @frame = ''
-            ___init_sel(ent)
-            ___init_body
+            @sel = ___init_sel
+            @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
+            ___init_body(ent)
             # For send back
             @field.echo = ent[:frame] = @fstr[:main]
             verbose { "Frame Status  #{@fstr.inspect}" }
             ent
           end
 
-          def ___init_body
-            return unless @sel[:body]
+          def ___init_body(ent)
+            @sel[:body] = ent.deep_subst(@cfg[:body]) || return
             verbose { "Body:#{@cfg[:label]}(#{@id})" }
             sp = type?(@cfg[:stream], Hash)
             @codec = Codec.new(sp[:endian])
@@ -53,14 +53,12 @@ module CIAX
             verbose { "Cmd Generated [#{@id}]" }
           end
 
-          def ___init_sel(ent)
-            @sel = if /true|1/ =~ @cfg[:noaffix]
-                     { main: [:body] }
-                   else
-                     Hashx.new(@cfg[:dbi].get(:command)[:frame])
-                   end
-            @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
-            @sel[:body] = ent.deep_subst(@cfg[:body])
+          def ___init_sel
+            if /true|1/ =~ @cfg[:noaffix]
+              { main: [:body] }
+            else
+              Hashx.new(@cfg[:dbi].get(:command)[:frame])
+            end
           end
 
           def ___mk_cc(method)
@@ -78,9 +76,9 @@ module CIAX
 
           # instance var frame,sel,field,fstr
           def __mk_frame(domain, ccr = nil)
-            @frame = ''
-            @sel[domain].each { |db| ___frame_by_type(db, ccr) }
-            @fstr[domain] = @frame
+            @fstr[domain] = @sel[domain].map do |db|
+              ___frame_by_type(db, ccr)
+            end.join
           end
 
           def ___frame_by_type(db, ccr = nil)
@@ -89,16 +87,16 @@ module CIAX
               word = ___conv_by_stat(word)
               ___set_csv_frame(word, db, ccr)
             else # cunk data: ccrange,body ...
-              __frame_push(@fstr[db.to_sym], {}, ccr)
+              __mk_code(@fstr[db.to_sym], {}, ccr)
             end
           end
 
-          def __frame_push(str, db = {}, ccr = nil)
-            return unless str
-            code = @codec.encode(str, db)
-            @frame << code
-            ccr << code if ccr
+          def __mk_code(str, db = {}, ccr = nil)
+            return '' unless str
             verbose { "Add [#{str.inspect}]" }
+            code = @codec.encode(str, db)
+            ccr << code if ccr
+            code
           end
 
           def ___conv_by_cc(word)
@@ -119,9 +117,9 @@ module CIAX
 
           def ___set_csv_frame(str, db, ccr = nil)
             # Allow csv parameter
-            str.split(',').each do |s|
-              __frame_push(s, db, ccr)
-            end
+            str.split(',').map do |s|
+              __mk_code(s, db, ccr)
+            end.join
           end
         end
       end

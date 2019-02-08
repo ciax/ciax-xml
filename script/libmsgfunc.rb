@@ -58,7 +58,7 @@ module CIAX
     # Json read with contents conversion
     def jread(jstr = nil)
       inp = jstr || gets(nil) || data_err("No data in file(#{ARGV})")
-      j2h(inp).extend(Enumx)
+      j2h(inp)
     end
 
     # Thread is main

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libfield'
-require 'libframe'
+require 'libfrmrsp'
 require 'libstream'
 
 # Conv Methods
@@ -42,7 +42,7 @@ module CIAX
           #   main(total){ ccrange{ body(selected str) } }
           # terminator: frame pointer will jump to terminator
           #   when no length or delimiter is specified
-          @frame = Frame.new(@stream.binary, @dbi[:stream])
+          @rspfrm = RspFrame.new(@stream.binary, @dbi[:stream])
           ___make_data(rid)
           verbose { 'Propagate Stream#rcv Field#conv(cmt)' }
           self
@@ -67,7 +67,7 @@ module CIAX
             __getfield_rec(['body'])
           else
             __getfield_rec(@sel[:main])
-            @frame.cc_check(@cache.delete('cc'))
+            @rspfrm.cc_check(@cache.delete('cc'))
           end
           self[:data] = @cache
         end
@@ -80,21 +80,21 @@ module CIAX
         end
 
         def ___getfield_cc(cc)
-          @frame.cc_start
+          @rspfrm.cc_start
           __getfield_rec(cc)
-          @frame.cc_reset
+          @rspfrm.cc_reset
         end
 
         def ___getfield(e1, common = {})
           case e1[:type]
           when 'field', 'array'
-            ___frame_to_field(e1) { @frame.cut(e1.update(common)) }
+            ___frame_to_field(e1) { @rspfrm.cut(e1.update(common)) }
           when 'ccrange'
             ___getfield_cc(@sel[:ccrange])
           when 'body'
             __getfield_rec(@sel[:body] || [], e1)
           when 'echo' # Send back the command string
-            @frame.cut(label: 'Command Echo', val: @echo)
+            @rspfrm.cut(label: 'Command Echo', val: @echo)
           end
         end
 

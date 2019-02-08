@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libcmdext'
-require 'libframe'
+require 'libfrmrsp'
 require 'libfield'
 # CIAX-XML Command module
 module CIAX

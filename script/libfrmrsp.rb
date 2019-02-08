@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 require 'libmsg'
 require 'libfrmcodec'
-require 'libfrmccode'
+require 'libfrmcc'
 
 module CIAX
   # Frame Layer
   module Frm
-    # For Command/Response Frame
-    class Frame
+    # For Response Frame
+    class RspFrame
       include Msg
       # terminator: used for detecting end of stream,
       #             cut off before processing in Frame#set().

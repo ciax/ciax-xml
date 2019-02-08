@@ -6,7 +6,7 @@ module CIAX
     # For Codec module
     class Codec
       include Msg
-      def initialize(endian)
+      def initialize(endian = 'big')
         # endian is 'big' or 'little'
         @endian = endian
       end
@@ -20,11 +20,11 @@ module CIAX
           num = num < range / 2 ? num : num - range
         end
         verbose { "Decode:(#{cdc}) [#{code.inspect}] -> [#{num}]" }
-        num.to_s
+        num
       end
 
-      def encode(str, e0) # Num -> Chr
-        str = e0[:format] % expr(str) if e0[:format]
+      def encode(num, e0) # Num -> Chr
+        str = e0.key?(:format) ? e0[:format] % expr(num) : num.to_s
         ___conv_len(e0[:length], str)
       end
 

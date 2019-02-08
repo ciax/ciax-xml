@@ -32,7 +32,8 @@ module CIAX
           sp = type?(@dbi[:stream], Hash)
           # Frame structure:
           #   main(total){ ccrange{ body(selected str) } }
-          @frame = Frame.new(sp[:endian], sp[:ccmethod], sp[:terminator])
+          @frame = Frame.new(sp[:endian], sp[:terminator])
+          @cc = CheckCode.new(sp[:ccmethod]) if sp.key?(:ccmethod)
           # terminator: frame pointer will jump to terminator
           #   when no length or delimiter is specified
           init_time2cmt(@stream)
@@ -69,7 +70,7 @@ module CIAX
             __getfield_rec(['body'])
           else
             __getfield_rec(@sel[:main])
-            @frame.cc.check(@cache.delete('cc'))
+            @cc.check(@cache.delete('cc')) if @cc
           end
           self[:data] = @cache
         end
@@ -86,7 +87,9 @@ module CIAX
           when 'field', 'array'
             ___frame_to_field(e1) { @frame.cut(e1.update(common)) }
           when 'ccrange'
-            @frame.cc.enclose { __getfield_rec(@sel[:ccrange]) }
+            @frame.cc_proc = proc { |str| @cc << str }
+            __getfield_rec(@sel[:ccrange])
+            @frame.cc_reset
           when 'body'
             __getfield_rec(@sel[:body] || [], e1)
           when 'echo' # Send back the command string

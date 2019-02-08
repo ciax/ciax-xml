@@ -9,40 +9,20 @@ module CIAX
     # For Command/Response Frame
     class Frame
       include Msg
-      attr_reader :cc
+      attr_accessor :cc_proc
       # terminator: used for detecting end of stream,
       #             cut off before processing in Frame#set().
       #             never being included in CC range
       # delimiter: cut 'variable length data' by delimiter
       #             can be included in CC range
-      def initialize(endian = nil, ccmethod = nil, terminator = nil)
+      def initialize(endian = nil, terminator = nil)
         @codec = Codec.new(endian)
-        @cc = CheckCode.new(ccmethod)
         @terminator = esc_code(terminator)
-        reset
+        cc_reset
       end
 
-      # For Command
-      def reset
-        @frame = ''
-        verbose { 'Reset' }
-        self
-      end
-
-      # For Command
-      def push(frame, e = {}) # returns self
-        if frame
-          code = @codec.encode(frame, e)
-          @frame << code
-          @cc.push(code)
-          verbose { "Add [#{frame.inspect}]" }
-        end
-        self
-      end
-
-      def copy
-        verbose { "Copy [#{@frame.inspect}]" }
-        @frame
+      def cc_reset
+        @cc_proc = proc {}
       end
 
       # For Response
@@ -83,7 +63,7 @@ module CIAX
         else
           str = @frame.slice!(0, len.to_i)
         end
-        @cc.push(str)
+        @cc_proc.call(str)
         str
       end
 
@@ -92,14 +72,14 @@ module CIAX
         dlm = esc_code(code).to_s
         verbose { "Cut by Code [#{dlm.inspect}]" }
         str, dlm, @frame = @frame.partition(dlm)
-        @cc.push(str + dlm)
+        @cc_proc.call(str + dlm)
         str
       end
 
       def ___cut_rest
         verbose { 'Cut all the rest' }
         str = @frame
-        @cc.push(str)
+        @cc_proc.call(str)
         str
       end
 
@@ -119,7 +99,7 @@ module CIAX
           ref = expr(ref).to_s
         end
         ___check(e0, ref, val)
-        @cc.push(str)
+        @cc_proc.call(str)
         str
       end
 

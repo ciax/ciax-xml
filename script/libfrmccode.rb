@@ -1,71 +1,67 @@
 #!/usr/bin/env ruby
 require 'libmsg'
+require 'libfrmcodec'
 
 module CIAX
   # Frame Layer
   module Frm
     # Check Code
-    class CheckCode
+    class CheckCode < String
       include Msg
-      def initialize(ccmethod)
-        @method = ccmethod
-        @ccrange = nil
-        @checkcode = ''
+      def initialize(method)
+        super()
+        # method [len, bcc, sum]
+        unless %w(len bcc sum).include?(method)
+          Msg.cfg_err("Bad CC method #{method}")
+        end
+        @method = method
+        yield self if defined? yield
       end
 
-      # Push to check code
-      def push(str) # returns self
-        @ccrange << str if @ccrange
-        verbose { "Cc Add to Range Frame [#{str.inspect}]" }
-        self
-      end
-
-      def enclose
-        verbose { 'Cc Mark Range Start' }
-        @ccrange = ''
-        yield self
-        verbose { "Cc Frame [#{@ccrange.inspect}]" }
-        @checkcode = ___calcurate.to_s
-        verbose { "Cc Calc [#{@method.upcase}] -> (#{@checkcode})" }
-        @ccrange = nil
-        self
-      end
-
-      def check(cc)
-        return self unless cc
-        if cc == @checkcode
-          verbose { "Cc Verify OK [#{cc}]" }
+      def check(str)
+        return self unless str
+        if str == ccc
+          verbose { "Cc Verify OK [#{str}]" }
         else
           fmt = 'CC Mismatch:[%s] (should be [%s]) in [%s]'
-          cc_err(format(fmt, cc, @checkcode, @ccrange.inspect))
+          cc_err(format(fmt, str, ccc, inspect))
         end
+        clear
         self
       end
 
-      def to_s
-        @checkcode
-      end
-
-      private
-
-      def ___calcurate # Check Code End
-        method("_cc_#{@method}").call
+      # Calculate Check Code
+      def ccc
+        res = method("_cc_#{@method}").call
+        verbose { "Cc Calc [#{@method.upcase}] -> (#{res})" }
+        res
       rescue NameError
         Msg.cfg_err("No such CC method #{@method}")
       end
 
+      private
+
       def _cc_len
-        @ccrange.length
+        length
       end
 
       def _cc_bcc
         chk = 0
-        @ccrange.each_byte { |c| chk ^= c }
+        each_byte { |c| chk ^= c }
         chk
       end
 
       def _cc_sum
-        @ccrange.sum(8)
+        sum(8)
+      end
+    end
+
+    if __FILE__ == $PROGRAM_NAME
+      require 'libgetopts'
+      GetOpts.new('[str]') do |_opt, args|
+        cc = CheckCode.new('bcc')
+        cc << args.shift.to_s
+        puts cc.ccc
       end
     end
   end

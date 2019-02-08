@@ -9,29 +9,36 @@ module CIAX
     # For Command/Response Frame
     class Frame
       include Msg
-      attr_accessor :cc_proc
       # terminator: used for detecting end of stream,
       #             cut off before processing in Frame#set().
       #             never being included in CC range
       # delimiter: cut 'variable length data' by delimiter
       #             can be included in CC range
-      def initialize(endian = nil, terminator = nil)
-        @codec = Codec.new(endian)
-        @terminator = esc_code(terminator)
+      #
+      # db could have [endian, ccmethod, termineter]
+      def initialize(frame, db = {})
+        return unless frame && !frame.empty?
+        @db = type?(db, Hash)
+        @codec = Codec.new(db[:endian])
+        term = esc_code(db[:terminator])
+        @frame = term ? frame.split(term).shift : frame
         cc_reset
+      end
+
+      def cc_start
+        return self unless @db.key?(:ccmethod)
+        @cc = CheckCode.new(@db[:ccmethod])
+        @cc_proc = proc { |str| @cc << str }
+        self
       end
 
       def cc_reset
         @cc_proc = proc {}
+        self
       end
 
-      # For Response
-      def set(frame = '')
-        if frame && !frame.empty?
-          verbose { "Set [#{frame.inspect}]" }
-          @frame = @terminator ? frame.split(@terminator).shift : frame
-        end
-        self
+      def cc_check(str)
+        @cc.check(str) if @cc
       end
 
       # Cut frame and decode
@@ -96,7 +103,7 @@ module CIAX
         val = str = @frame.slice!(0, len.to_i)
         if e0[:decode]
           val = @codec.decode(val, e0)
-          ref = expr(ref).to_s
+          ref = expr(ref)
         end
         ___check(e0, ref, val)
         @cc_proc.call(str)

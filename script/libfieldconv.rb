@@ -29,13 +29,6 @@ module CIAX
           type?(@dbi, Dbi)
           @fdbr = @dbi[:response]
           @fds = @fdbr[:index]
-          sp = type?(@dbi[:stream], Hash)
-          # Frame structure:
-          #   main(total){ ccrange{ body(selected str) } }
-          @frame = Frame.new(sp[:endian], sp[:terminator])
-          @cc = CheckCode.new(sp[:ccmethod]) if sp.key?(:ccmethod)
-          # terminator: frame pointer will jump to terminator
-          #   when no length or delimiter is specified
           init_time2cmt(@stream)
           self
         end
@@ -45,7 +38,11 @@ module CIAX
           rid = type?(ent, CmdBase::Entity)[:response]
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
           ___make_sel(ent, rid)
-          @frame.set(@stream.binary)
+          # Frame structure:
+          #   main(total){ ccrange{ body(selected str) } }
+          # terminator: frame pointer will jump to terminator
+          #   when no length or delimiter is specified
+          @frame = Frame.new(@stream.binary, @dbi[:stream])
           ___make_data(rid)
           verbose { 'Propagate Stream#rcv Field#conv(cmt)' }
           self
@@ -70,7 +67,7 @@ module CIAX
             __getfield_rec(['body'])
           else
             __getfield_rec(@sel[:main])
-            @cc.check(@cache.delete('cc')) if @cc
+            @frame.cc_check(@cache.delete('cc'))
           end
           self[:data] = @cache
         end
@@ -82,14 +79,18 @@ module CIAX
           end
         end
 
+        def ___getfield_cc(cc)
+          @frame.cc_start
+          __getfield_rec(cc)
+          @frame.cc_reset
+        end
+
         def ___getfield(e1, common = {})
           case e1[:type]
           when 'field', 'array'
             ___frame_to_field(e1) { @frame.cut(e1.update(common)) }
           when 'ccrange'
-            @frame.cc_proc = proc { |str| @cc << str }
-            __getfield_rec(@sel[:ccrange])
-            @frame.cc_reset
+            __getfield_cc(@sel[:ccrange])
           when 'body'
             __getfield_rec(@sel[:body] || [], e1)
           when 'echo' # Send back the command string

@@ -90,7 +90,7 @@ module CIAX
           when 'field', 'array'
             ___frame_to_field(e1) { @frame.cut(e1.update(common)) }
           when 'ccrange'
-            __getfield_cc(@sel[:ccrange])
+            ___getfield_cc(@sel[:ccrange])
           when 'body'
             __getfield_rec(@sel[:body] || [], e1)
           when 'echo' # Send back the command string

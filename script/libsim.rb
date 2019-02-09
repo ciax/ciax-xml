@@ -46,14 +46,16 @@ module CIAX
 
       def ___sv_loop(io)
         loop do
-          str = ___input(io)
-          log("#{self.class}:Recieve #{str.inspect}")
-          res = _dispatch(str)
-          res << @ofs if @ofs
-          log("#{self.class}:Send #{res.inspect}")
+          str = __data_log('Recieve', ___input(io))
+          res = __data_log('Send', _dispatch(str) + @ofs.to_s)
           io ? io.syswrite(res) : puts(res.inspect)
           sleep 0.1
         end
+      end
+
+      def __data_log(caption, data)
+        log(format('%s:%s %s', self.class, caption, data.inspect))
+        data
       end
 
       def ___input(io)
@@ -71,7 +73,7 @@ module CIAX
         res = @io.key?(cmd) ? ___handle_var(cmd, $') : _method_call(str)
         res.to_s
       rescue NameError, ArgumentError
-        @prompt_ng.dup
+        @prompt_ng
       end
 
       def ___handle_var(key, val)
@@ -90,9 +92,9 @@ module CIAX
 
       def _cmd_help
         (@io.keys.map { |k| [k.to_s, "#{k}="] }.flatten +
-          methods.map(&:to_s).grep(/^_cmd_/).map do |s|
-            s.sub(/^_cmd_/, '')
-          end).sort.join(@ofs)
+         methods.map(&:to_s).grep(/^_cmd_/).map do |s|
+           s.sub(/^_cmd_/, '')
+         end).sort.join(@ofs)
       end
     end
 

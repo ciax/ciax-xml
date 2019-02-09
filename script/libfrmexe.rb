@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'libfieldconv'
 require 'libfrmcmd'
+require 'libframe'
 require 'libdevdb'
 require 'libexe'
 
@@ -16,7 +17,8 @@ module CIAX
         dbi = _init_dbi2cfg(%i(stream iocmd))
         @cfg[:site_id] = @id
         @stat = @cfg[:field] = Field.new(dbi)
-        @sv_stat = Prompt.new(@id)
+        @frame = @cfg[:frame] = Frame.new(@id)
+        @sv_stat = @cfg[:sv_stat] = Prompt.new(@id)
         _init_net
         ___init_command
         _opt_mode
@@ -35,6 +37,7 @@ module CIAX
 
       # Mode Extension by Option
       def _ext_local
+        @frame.ext_local
         @cobj.get('set').def_proc do |ent|
           @stat.repl(ent.par[0], ent.par[1])
           @stat.flush
@@ -49,12 +52,14 @@ module CIAX
 
       def _ext_local_test
         @cobj.rem.ext.cfg[:def_msg] = 'TEST'
+        @frame.load
         super
       end
 
       def _ext_local_driver
         super
         require 'libfrmdrv'
+        @frame.ext_save
         extend(Driver).ext_local_driver
       end
 

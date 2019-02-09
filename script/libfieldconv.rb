@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'libfield'
 require 'libfrmrsp'
-require 'libstream'
+require 'libframe'
 
 # Conv Methods
 # Input  : upd block(frame,time)
@@ -11,8 +11,8 @@ module CIAX
   module Frm
     # Field class
     class Field
-      def ext_local_conv(stream)
-        extend(Conv).ext_local_conv(stream)
+      def ext_local_conv(frame)
+        extend(Conv).ext_local_conv(frame)
       end
 
       # Frame Response module
@@ -24,27 +24,26 @@ module CIAX
         end
 
         # Ent is needed which includes response_id and cmd_parameters
-        def ext_local_conv(stream)
-          @stream = type?(stream, Hash)
+        def ext_local_conv(frame)
+          @frame = type?(frame, Hash)
           type?(@dbi, Dbi)
           @fdbr = @dbi[:response]
           @fds = @fdbr[:index]
-          init_time2cmt(@stream)
+          init_time2cmt(@frame)
+          propagation(@frame)
           self
         end
 
         # Convert with corresponding cmd
         def conv(ent)
-          rid = type?(ent, CmdBase::Entity)[:response]
-          @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
-          ___make_sel(ent, rid)
-          # Frame structure:
+          ___make_sel(type?(ent, CmdBase::Entity))
+          # RspFrame structure:
           #   main(total){ ccrange{ body(selected str) } }
           # terminator: frame pointer will jump to terminator
           #   when no length or delimiter is specified
-          @rspfrm = RspFrame.new(@stream.binary, @dbi[:stream])
-          ___make_data(rid)
-          verbose { 'Propagate Stream#rcv Field#conv(cmt)' }
+          @rspfrm = RspFrame.new(@frame.get(ent.id), @dbi[:stream])
+          ___make_data
+          verbose { 'Propagate Frame#conv Field#conv(cmt)' }
           self
         ensure
           cmt
@@ -52,18 +51,22 @@ module CIAX
 
         private
 
-        # sel structure:
+        # @sel structure:
         #   { terminator, :main{}, :body{} <- changes on every upd }
-        def ___make_sel(ent, rid)
+        def ___make_sel(ent)
+          rid = ent[:response]
+          idx = @fds[rid] || Msg.cfg_err("No such response id [#{rid}]")
+          # SelDB of template
           @sel = Hash[@fdbr[:frame]]
-          @sel.update(@fds[rid])
+          # SelDB specific for rid
+          @sel.update(idx)
+          # SelDB applied with Entity (set par)
           @sel[:body] = ent.deep_subst(@sel[:body])
-          verbose { "Selected DB for #{rid}\n" + @sel.inspect }
         end
 
-        def ___make_data(rid)
+        def ___make_data
           @cache = self[:data].deep_copy
-          if @fds[rid].key?(:noaffix)
+          if @sel.key?(:noaffix)
             __getfield_rec(['body'])
           else
             __getfield_rec(@sel[:main])
@@ -151,7 +154,7 @@ module CIAX
       require 'libjslog'
       ConfOpts.new('< logline', m: 'merge file') do |cfg|
         raise(InvalidARGS, '  Need Input File') if STDIN.tty?
-        res = Varx::JsLog.read(gets(nil))
+        res = Frame.new.jmerge
         field = Field.new(res[:id]).ext_local_conv(res)
         field.ext_local.ext_save if cfg.opt[:m]
         if (cid = res[:cmd])

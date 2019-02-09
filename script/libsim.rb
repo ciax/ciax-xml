@@ -9,7 +9,7 @@ module CIAX
     # Simulation Server
     class Server < GServer
       include Msg
-      def initialize(port, cfg = nil)
+      def initialize(port = nil, cfg = nil)
         super(port)
         @cfg = cfg || Conf.new
         ___init_instance
@@ -48,7 +48,7 @@ module CIAX
         loop do
           str = ___input(io)
           log("#{self.class}:Recieve #{str.inspect}")
-          res = _dispatch(str) || next
+          res = _dispatch(str)
           res << @ofs if @ofs
           log("#{self.class}:Send #{res.inspect}")
           io ? io.syswrite(res) : puts(res.inspect)
@@ -71,7 +71,7 @@ module CIAX
         res = @io.key?(cmd) ? ___handle_var(cmd, $') : _method_call(str)
         res.to_s
       rescue NameError, ArgumentError
-        @prompt_ng
+        @prompt_ng.dup
       end
 
       def ___handle_var(key, val)
@@ -88,10 +88,11 @@ module CIAX
         par ? me.call(par) : me.call || @prompt_ng
       end
 
-      def _get_cmd_list
-        methods.map(&:to_s).grep(/^_cmd_/).map do |s|
-          s.sub(/^_cmd_/, '')
-        end
+      def _cmd_help
+        (@io.keys.map { |k| [k.to_s, "#{k}="] }.flatten +
+          methods.map(&:to_s).grep(/^_cmd_/).map do |s|
+            s.sub(/^_cmd_/, '')
+          end).sort.join(@ofs)
       end
     end
 
@@ -112,5 +113,7 @@ module CIAX
     end
 
     @sim_list = SimList.new
+
+    Server.new.serve if __FILE__ == $PROGRAM_NAME
   end
 end

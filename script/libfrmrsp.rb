@@ -9,6 +9,7 @@ module CIAX
     # For Response Frame
     class RspFrame
       include Msg
+      # Parameter frame could be changed
       # terminator: used for detecting end of stream,
       #             cut off before processing in Frame#set().
       #             never being included in CC range
@@ -17,11 +18,9 @@ module CIAX
       #
       # db could have [endian, ccmethod, termineter]
       def initialize(frame, db = {})
-        return unless frame && !frame.empty?
         @db = type?(db, Hash)
-        @codec = Codec.new(db[:endian])
-        term = esc_code(db[:terminator])
-        @frame = term ? frame.split(term).shift : frame
+        @frame = ___cut_by_term(frame)
+        @codec = Codec.new(@db[:endian])
         cc_reset
       end
 
@@ -55,6 +54,12 @@ module CIAX
       end
 
       private
+
+      def ___cut_by_term(frame)
+        return '' unless frame
+        return frame unless @db.key?(:terminator)
+        frame.split(esc_code(@db[:terminator])).shift
+      end
 
       def ___cut_by_type(e0)
         ___cut_by_size(e0[:length]) || \

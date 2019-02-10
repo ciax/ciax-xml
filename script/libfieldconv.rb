@@ -43,7 +43,7 @@ module CIAX
           #   when no length or delimiter is specified
           @rspfrm = RspFrame.new(@frame.get(ent.id), @dbi[:stream])
           ___make_data
-          verbose { 'CONV Propagate Frame -> Field' }
+          verbose { 'Conversion Frame -> Field' + to_v }
           self
         ensure
           cmt

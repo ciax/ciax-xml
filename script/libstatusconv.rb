@@ -32,7 +32,7 @@ module CIAX
             dflt = hash[:default] || ''
             self[:data][id] = cnd ? dflt : ___get_val(hash, id)
           end
-          verbose { 'CONV Propagate Field -> Status' }
+          verbose { 'Conversion Field -> Status' + to_v }
           self
         end
 

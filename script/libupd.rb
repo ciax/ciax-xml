@@ -75,14 +75,24 @@ module CIAX
 
     def propagation(obj)
       @upd_procs << proc do
-        verbose { "Propagate #{base_class}#upd -> #{obj.base_class}#upd" }
+        __propagate_ver(self, obj, 'upd')
         obj.upd
       end
       obj.cmt_procs << proc do |o|
-        verbose { "Propagate #{o.base_class}#cmt -> #{base_class}#cmt" }
+        __propagate_ver(o, self, 'cmt')
         cmt
       end
       self
+    end
+
+    private
+
+    def __propagate_ver(src, dst, way)
+      verbose do
+        fmt = "Propagate %s##{way} -> %s##{way} from %s"
+        ca = caller.grep_v(/lib(upd|msg)/).first.split('/').last.tr("'`", '')
+        format(fmt, src.base_class, dst.base_class, ca)
+      end
     end
   end
 end

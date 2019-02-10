@@ -96,6 +96,7 @@ module CIAX
     end
 
     # VER= makes setenv "" to VER otherwise nil
+    # VER example "str1:str2,str3:!str4"
     def ___chk_ver(msg)
       return if !ENV['VER'] || !msg
       title = msg.split("\n").first.upcase

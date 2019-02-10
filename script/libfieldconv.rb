@@ -30,7 +30,6 @@ module CIAX
           @fdbr = @dbi[:response]
           @fds = @fdbr[:index]
           init_time2cmt(@frame)
-          propagation(@frame)
           self
         end
 
@@ -45,8 +44,6 @@ module CIAX
           ___make_data
           verbose { 'Conversion Frame -> Field' + to_v }
           self
-        ensure
-          cmt
         end
 
         private

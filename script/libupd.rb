@@ -33,6 +33,11 @@ module CIAX
     # Data Commit Method (Push type notification)
     # For trigger of data storing or processing propagation to upper layer
     # Should be executed when data processing will be done
+    # Execution order:
+    #  - Time setting (sync to lower data time)
+    #  - Save File
+    #  - Logging
+    #  - Exec Upper data cmt
     def cmt
       @cmt_procs.each { |p| p.call(self) }
       verbose { "Commiting(#{time_id})" }
@@ -69,7 +74,7 @@ module CIAX
 
     # Set time_upd to @cmt_procs with lower layer time
     def init_time2cmt(stat = nil)
-      @cmt_procs << (stat ? proc { time_upd(stat[:time]) } : proc { time_upd })
+      @cmt_procs.unshift(stat ? proc { time_upd(stat[:time]) } : proc { time_upd })
       self
     end
 

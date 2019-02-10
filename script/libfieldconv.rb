@@ -129,7 +129,7 @@ module CIAX
           idxs = e0[:index].map do |e1|
             e1[:range] || "0:#{e1[:size].to_i - 1}"
           end
-          enclose("Array:[#{akey}]:Range#{idxs}", "Array:Assign[#{akey}]") do
+          enclose("Assign:[#{akey}][", ']') do
             @cache[akey] = __mk_array(idxs, self[:data][akey]) { yield }
           end
         end

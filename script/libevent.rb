@@ -26,7 +26,7 @@ module CIAX
       def block?(args)
         cid = args.join(':')
         blkcmd = self[:block].map { |ary| ary.join(':') }
-        verbose(!blkcmd.empty?) { "BLOCKING:#{blkcmd}" }
+        verbose { "BLOCKING:#{blkcmd}" } unless blkcmd.empty?
         return unless blkcmd.any? { |blk| Regexp.new(blk).match(cid) }
         Msg.cmd_err("Blocking(#{args})")
       end

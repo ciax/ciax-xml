@@ -75,11 +75,11 @@ module CIAX
 
     def propagation(obj)
       @upd_procs << proc do
-        __propagate_ver(self, obj, 'upd')
+        __propagate_ver(self, obj, 'UPD')
         obj.upd
       end
       obj.cmt_procs << proc do |o|
-        __propagate_ver(o, self, 'cmt')
+        __propagate_ver(o, self, 'CMT')
         cmt
       end
       self
@@ -89,7 +89,7 @@ module CIAX
 
     def __propagate_ver(src, dst, way)
       verbose do
-        fmt = "Propagate %s##{way} -> %s##{way} from %s"
+        fmt = "#{way} Propagate %s -> %s from %s"
         ca = caller.grep_v(/lib(upd|msg)/).first.split('/').last.tr("'`", '')
         format(fmt, src.base_class, dst.base_class, ca)
       end

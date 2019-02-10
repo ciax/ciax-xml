@@ -40,7 +40,6 @@ module CIAX
             @sv_stat.dw(:comerr)
           end
           init_time2cmt(@stream)
-          propagation(@stream)
           self
         end
 

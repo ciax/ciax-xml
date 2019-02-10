@@ -22,7 +22,7 @@ module CIAX
         private
 
         def ___init_frame
-          @frame.ext_local_conv(@cfg)
+          @frame.ext_local_conv(@cfg).ext_save
           @stat.ext_local_conv(@frame)
         end
 

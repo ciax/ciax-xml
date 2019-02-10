@@ -59,7 +59,6 @@ module CIAX
       def _ext_local_driver
         super
         require 'libfrmdrv'
-        @frame.ext_save
         extend(Driver).ext_local_driver
       end
 

@@ -43,7 +43,7 @@ module CIAX
           #   when no length or delimiter is specified
           @rspfrm = RspFrame.new(@frame.get(ent.id), @dbi[:stream])
           ___make_data
-          verbose { 'Propagate Frame#conv -> Field#conv' }
+          verbose { 'CONV Propagate Frame -> Field' }
           self
         ensure
           cmt
@@ -118,7 +118,7 @@ module CIAX
             warning("Invalid Data (#{data}) for /#{e0[:valid]}/")
           else
             @cache[akey] = data
-            verbose { "Assign:[#{akey}] <- <#{data}>" }
+            verbose { "Assign:[#{akey}] <- #{data.inspect}" }
           end
         end
 
@@ -142,7 +142,7 @@ module CIAX
           f, l = idx[0].split(':').map { |i| expr(i) }
           Range.new(f, l || f).each do |i|
             fld[i] = __mk_array(idx[1..-1], fld[i]) { yield }
-            verbose { "Array:Index[#{i}]=#{fld[i]}" }
+            verbose { "Array:Index[#{i}] <- #{fld[i].inspect}" }
           end
           fld
         end

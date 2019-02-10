@@ -19,24 +19,24 @@ module CIAX
         def ext_local_conv(field)
           @field = type?(field, Frm::Field)
           type?(@dbi, Dbi)
+          init_time2cmt(@field)
           propagation(@field)
-          ___init_cmt_procs
+          @cmt_procs << proc { conv }
+          self
+        end
+
+        def conv
+          @adbs.each do |id, hash|
+            cnd = hash[:fields].empty?
+            next if cnd && get(id)
+            dflt = hash[:default] || ''
+            self[:data][id] = cnd ? dflt : ___get_val(hash, id)
+          end
+          verbose { 'CONV Propagate Field -> Status' }
           self
         end
 
         private
-
-        def ___init_cmt_procs
-          init_time2cmt(@field)
-          @cmt_procs << proc do
-            @adbs.each do |id, hash|
-              cnd = hash[:fields].empty?
-              next if cnd && get(id)
-              dflt = hash[:default] || ''
-              self[:data][id] = cnd ? dflt : ___get_val(hash, id)
-            end
-          end
-        end
 
         def ___get_val(hash, id)
           val = ___get_by_type(hash)

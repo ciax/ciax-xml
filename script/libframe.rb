@@ -51,7 +51,7 @@ module CIAX
         def conv(ent)
           @stream.snd(ent[:frame], ent.id)
           put(ent.id, @stream.rcv.binary) if ent.key?(:response)
-          verbose { "Propagate Stream#rcv -> Frame#conv #{to_v}" }
+          verbose { "CONV Propagate Stream -> Frame #{to_v}" }
           self
         rescue StreamError
           @sv_stat.up(:ioerr)

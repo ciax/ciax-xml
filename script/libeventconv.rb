@@ -27,9 +27,17 @@ module CIAX
           wdb = @dbi[:watch] || {}
           @interval = wdb[:interval].to_f if wdb.key?(:interval)
           @cond = Condition.new(wdb[:index] || {}, stat, self)
+          init_time2cmt(@stat)
           propagation(@stat)
-          ___init_cmt_procs
+          @cmt_procs << proc { conv }
           ___init_auto(wdb)
+        end
+
+        def conv
+          return unless @stat[:time] > @last_updated
+          @last_updated = self[:time]
+          @cond.upd_cond
+          verbose { 'CONV Propagate Status -> Event' }
         end
 
         def queue(src, pri, batch = [])
@@ -54,15 +62,6 @@ module CIAX
         end
 
         private
-
-        def ___init_cmt_procs
-          init_time2cmt(@stat)
-          @cmt_procs << proc do
-            next unless @stat[:time] > @last_updated
-            @last_updated = self[:time]
-            @cond.upd_cond
-          end
-        end
 
         # Initiate for Auto Update
         def ___init_auto(wdb)

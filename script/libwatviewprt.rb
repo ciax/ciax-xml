@@ -21,8 +21,8 @@ module CIAX
           ___view_exe(vw)
           return vw if self[:stat].empty?
           ___view_cond(vw)
-          vw << __itemize('Interrupt', self[:int])
-          vw << __itemize('Blocked', self[:block])
+          vw << __itemize('Interrupt', self[:int].inspect)
+          vw << __itemize('Blocked', self[:block].inspect)
         end
 
         def to_o

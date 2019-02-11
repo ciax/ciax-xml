@@ -9,7 +9,8 @@ module CIAX
       end
 
       def load(tag = nil)
-        replace(__read_json(tag))
+        verbose { 'File Loading' }
+        deep_update(__read_json(tag))
         cmt
       end
 

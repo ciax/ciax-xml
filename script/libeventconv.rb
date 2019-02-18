@@ -37,7 +37,7 @@ module CIAX
           return unless @stat[:time] > @last_updated
           @last_updated = self[:time]
           @cond.upd_cond
-          verbose { 'Conversion Status -> Event' + to_v }
+          verbose { 'Conversion Symbol -> Event' + to_v }
         end
 
         def queue(src, pri, batch = [])

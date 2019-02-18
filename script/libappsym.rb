@@ -27,19 +27,16 @@ module CIAX
         end
 
         def ext_local_sym(sdb)
-          adbs = @dbi[:status]
-          @symdb = type?(sdb, Sym::Db).get_dbi(['share'] + adbs[:symtbl])
-          @symbol = adbs[:symbol] || {}
-          self[:class] = {}
-          self[:msg] = {}
-          ___init_procs(adbs)
+          @symdb = type?(sdb, Sym::Db).get_dbi(['share'] + @adbs[:symtbl])
+          @symbol = @adbs[:symbol] || {}
+          update(class: {}, msg: {})
+          ___init_procs
           self
         end
 
-        def ___init_procs(adbs)
+        def ___init_procs
           @cmt_procs << proc do # post process
-            verbose { 'Propagate Status#cmt -> Symbol#store_sym' }
-            store_sym(adbs[:index].dup.update(adbs[:alias] || {}))
+            store_sym(@adbs[:index].dup.update(@adbs[:alias] || {}))
           end
         end
 
@@ -51,6 +48,8 @@ module CIAX
             val = self[:data][hash[:ref] || key]
             ___match_items(tbl, key, val)
           end
+          verbose { 'Conversion Status -> Symbol' + to_v }
+          self
         end
 
         def ___match_items(tbl, key, val)
@@ -121,7 +120,7 @@ module CIAX
       GetOpts.new('[site] | < status_file') do |_o, args|
         stat = Status.new(args.shift)
         stat.ext_local_sym
-        stat.ext_local if STDIN.tty?
+        stat.ext_local.load if STDIN.tty?
         puts stat.cmt
       end
     end

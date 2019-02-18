@@ -13,6 +13,7 @@ module CIAX
       # Response Module
       module Conv
         def self.extended(obj)
+          Msg.sv_err('Bad ext order Symbol -> Conv') if obj.is_a?(Symbol)
           Msg.type?(obj, Status)
         end
 
@@ -26,7 +27,7 @@ module CIAX
         end
 
         def conv
-          @adbs.each do |id, hash|
+          @adbsi.each do |id, hash|
             cnd = hash[:fields].empty?
             next if cnd && get(id)
             dflt = hash[:default] || ''

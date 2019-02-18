@@ -38,8 +38,9 @@ module CIAX
 
       def ___init_dbs
         # exclude alias from index
-        @adbs = @dbi[:status][:index].reject { |_k, v| v[:ref] }
-        self[:data] = Hashx.new(@adbs).skeleton unless self[:data]
+        @adbs = @dbi[:status]
+        @adbsi = @adbs[:index].reject { |_k, v| v[:ref] }
+        self[:data] = Hashx.new(@adbsi).skeleton unless self[:data]
       end
     end
 

@@ -95,7 +95,7 @@ module CIAX
           i = expr(i) if h.is_a? Array
           vname << i
           verbose { "Type[#{h.class}] Name[#{i}]" }
-          verbose { "Content[#{h[i]}]" }
+          verbose { "Content #{h[i].inspect}" }
           h[i] || alert("No such Value #{vname.inspect} in :data")
         end
       end

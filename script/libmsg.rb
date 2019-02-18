@@ -96,22 +96,20 @@ module CIAX
     end
 
     # VER= makes setenv "" to VER otherwise nil
-    # VER example "str1:str2,str3:!str4"
+    # VER example "str1:str2,str3!str4"
     def ___chk_ver(msg)
-      return if !ENV['VER'] || !msg
+      ev = ENV['VER']
+      return unless ev && msg
+      return true if /\*/ =~ ev
       title = msg.split("\n").first.upcase
-      ENV['VER'].upcase.split(',').any? do |s|
-        s.split(':').all? do |e|
-          ___chk_exclude(e, title)
-        end
+      ev.upcase.split(',').any? do |s|
+        ___chk_exp(title, *s.split('!'))
       end
     end
 
-    def ___chk_exclude(e, title)
-      exc = e.split('^')
-      inc = exc.shift
-      return if exc.any? { |x| title.include?(x) }
-      /\*/ =~ inc || title.include?(inc)
+    def ___chk_exp(title, exp, *inv)
+      return false if inv.any? { |x| title.include?(x) }
+      /#{exp.gsub(/:/, '.*')}/ =~ title
     end
 
     module_function

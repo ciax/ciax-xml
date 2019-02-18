@@ -28,10 +28,10 @@ sqlite3: light weight sql server for logging, not for access from multiple proce
 
 ## Verbose mode ##
  set VER environment
+ VER=* for All
  VER=string,.. for set 'or'
  VER=string:..  for set 'and'
- VER=^string1.. for set 'exclude'
- VER=* for All
+ VER=!string1.. for set 'exclude'
  VER=traceback  show traceback of error
 
 ## json udp communicaton ##

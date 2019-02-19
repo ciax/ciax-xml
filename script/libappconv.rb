@@ -126,7 +126,7 @@ module CIAX
       end
 
       if __FILE__ == $PROGRAM_NAME
-        require 'libfield'
+        require 'libfrmstat'
         GetOpts.new('[site] | < field_file', options: 'r') do |opt, args|
           field = Frm::Field.new(args.shift).ext_local.load
           stat = Status.new(field[:id])

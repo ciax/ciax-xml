@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'libcmdext'
 require 'libfrmrsp'
-require 'libfield'
+require 'libfrmstat'
 # CIAX-XML Command module
 module CIAX
   # Frame Layer
@@ -126,7 +126,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libfieldconv'
+      require 'libfrmconv'
       require 'libfrmdb'
       cap = '[dev] [cmd] (par) < field_file'
       ConfOpts.new(cap, options: 'r') do |cfg|

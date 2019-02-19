@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libfield'
+require 'libfrmstat'
 require 'libfrmrsp'
 require 'libframe'
 

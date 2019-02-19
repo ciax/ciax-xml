@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libappdic'
-require 'libwatviewprt'
+require 'libwatprt'
 
 module CIAX
   # Watch Layer

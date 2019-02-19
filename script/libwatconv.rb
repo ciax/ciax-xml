@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libevent'
+require 'libwatstat'
 require 'librerange'
 require 'libwatcond'
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libfieldconv'
+require 'libfrmconv'
 require 'libfrmcmd'
 require 'libframe'
 require 'libdevdb'

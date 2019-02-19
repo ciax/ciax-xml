@@ -18,7 +18,7 @@ module CIAX
           ___init_processor_save
           ___init_processor_load
           return self unless @sub
-          @stat.ext_local_conv(@sub.stat).ext_local_sym(@cfg[:sdb])
+          @stat.ext_local_conv(@sub.stat)
           ___init_buffer
           self
         end

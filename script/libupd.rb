@@ -52,6 +52,12 @@ module CIAX
       end
     end
 
+    # Append proc after name proc
+    def cmt_append(name, prc)
+      idx = cmt_view.index { |s| /#{name}/ =~ s }
+      @cmt_procs.insert(idx + 1, prc)
+    end
+
     ## Manipulate data
     def put(key, val)
       super { cmt }

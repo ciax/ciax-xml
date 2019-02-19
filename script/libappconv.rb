@@ -22,7 +22,7 @@ module CIAX
           type?(@dbi, Dbi)
           init_time2cmt(@field)
           propagation(@field)
-          @cmt_procs << proc { conv }
+          cmt_append('appstat', proc { conv })
           self
         end
 

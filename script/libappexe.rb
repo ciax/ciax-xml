@@ -29,6 +29,7 @@ module CIAX
 
       # Mode Extension by Option
       def _ext_local
+        @stat.ext_local_sym(@cfg[:sdb])
         ___init_proc_set
         ___init_proc_del
         super
@@ -46,7 +47,6 @@ module CIAX
           @stat[:time] = now_msec
           ent.msg = ent[:batch].inspect
         end
-        @stat.ext_local_sym(@cfg[:sdb])
         super
       end
 

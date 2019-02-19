@@ -13,7 +13,7 @@ module CIAX
       # Response Module
       module Conv
         def self.extended(obj)
-          Msg.sv_err('Bad ext order Symbol -> Conv') if obj.is_a?(Symbol)
+          Msg.bad_order(Symbol, Varx::JSave)
           Msg.type?(obj, Status)
         end
 

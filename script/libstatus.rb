@@ -12,6 +12,11 @@ module CIAX
       def initialize(dbi = nil)
         super('status', dbi, Ins::Db)
         ___init_dbs
+        # cmt_procs
+        # 1. time setting
+        # 2. convert
+        # 3. sym
+        # 4. save
         @cmt_procs << proc { verbose { "Saved #{self[:id]}:timing" } }
       end
 

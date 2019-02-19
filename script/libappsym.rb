@@ -29,7 +29,7 @@ module CIAX
         def ext_local_sym(sdb)
           @symdb = type?(sdb, Sym::Db).get_dbi(['share'] + @adbs[:symtbl])
           @symbol = @adbs[:symbol] || {}
-          update(class: {}, msg: {})
+          %i(class msg).each { |k| self[k] ||= {} }
           ___init_procs
           self
         end

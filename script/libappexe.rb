@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libappcmd'
-require 'libappstatconv'
+require 'libappconv'
 require 'libappview'
 require 'libfrmdic'
 require 'libinsdb'

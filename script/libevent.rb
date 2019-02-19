@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libprompt'
-require 'libstatus'
+require 'libappstat'
 require 'librerange'
 # CIAX-XML
 module CIAX

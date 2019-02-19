@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libstatus'
+require 'libappstat'
 require 'libsymdb'
 
 # Status to App::Sym (String with attributes)

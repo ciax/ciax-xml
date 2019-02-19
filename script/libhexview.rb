@@ -110,7 +110,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      require 'libstatus'
+      require 'libappstat'
       GetOpts.new(' < status_file') do
         stat = App::Status.new.ext_local
         puts View.new(stat)

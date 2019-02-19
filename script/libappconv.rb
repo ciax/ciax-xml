@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libstatus'
+require 'libappstat'
 # CIAX-XML
 module CIAX
   # Application Layer

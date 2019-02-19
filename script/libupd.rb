@@ -25,7 +25,7 @@ module CIAX
     # For loading with propagation
     # Should be done when pulling data
     def upd
-      @upd_procs.each { |p| p.call(self) }
+      @upd_procs.compact.each { |p| p.call(self) }
       verbose { "Update(#{time_id}) Pre Procs" }
       self
     end
@@ -39,7 +39,7 @@ module CIAX
     #  - Logging
     #  - Exec Upper data cmt
     def cmt
-      @cmt_procs.each { |p| p.call(self) }
+      @cmt_procs.compact.each { |p| p.call(self) }
       verbose { "Commiting(#{time_id})" }
       self
     end

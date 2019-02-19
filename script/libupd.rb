@@ -40,8 +40,16 @@ module CIAX
     #  - Exec Upper data cmt
     def cmt
       @cmt_procs.compact.each { |p| p.call(self) }
-      verbose { "Commiting(#{time_id})" }
+      verbose { "Commiting(#{time_id})" + cmt_view.inspect }
       self
+    end
+
+    def cmt_view
+      @cmt_procs.compact.map do |p|
+        path, line = p.source_location
+        /lib(.+).rb/ =~ path
+        "#{Regexp.last_match(1)}:#{line}"
+      end
     end
 
     ## Manipulate data

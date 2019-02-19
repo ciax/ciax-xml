@@ -140,7 +140,7 @@ module CIAX
         def ___scan
           @exes.each_with_object({}) do |exe, hash|
             st = hash[exe.id] = exe.sub.stat.latest
-            verbose { "Scanning #{exe.id} (#{st[:time]})/(#{st.object_id})" }
+            verbose { "Scanning #{exe.id} (#{elps_sec(st[:time])})" }
           end
         end
 

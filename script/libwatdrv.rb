@@ -13,19 +13,19 @@ module CIAX
           @stat.ext_local_conv(@sub.stat)
           # @stat[:int] is overwritten by initial loading
           @sub.batch_interrupt = @stat.get(:int)
-          @stat.ext_local_log if @opt.drv?
           ___init_cmt_procs
           ___init_exe_processor
+          @stat.ext_local_log if @opt.drv?
           self
         end
 
         private
 
         def ___init_cmt_procs
-          @stat.cmt_procs << proc do |s|
+          @stat.cmt_append('watconv', proc do |s|
             ___auto_exec(s)
             ___event_flag(s)
-          end
+          end)
         end
 
         def ___init_exe_processor

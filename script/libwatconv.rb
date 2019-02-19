@@ -29,7 +29,7 @@ module CIAX
           @cond = Condition.new(wdb[:index] || {}, stat, self)
           init_time2cmt(@stat)
           propagation(@stat)
-          @cmt_procs << proc { conv }
+          cmt_append('watexe', proc { conv })
           ___init_auto(wdb)
         end
 

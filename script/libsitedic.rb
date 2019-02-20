@@ -15,7 +15,7 @@ module CIAX
       end
 
       def get(site)
-        _dic.key?(site) ? super : ___add(site)
+        key?(site) ? super : ___add(site)
       end
 
       def run
@@ -37,7 +37,7 @@ module CIAX
         # layer_module can be Frm,App,Wat,Hex
         atrb = { dbi: @db.get(site), sub_dic: @sub_dic }
         eobj = layer_module::Exe.new(@cfg, atrb)
-        _dic.put(site, eobj)
+        put(site, eobj)
         eobj
       end
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libvarx'
+require 'libdic'
 require 'libcmdlocal'
 
 module CIAX
@@ -7,6 +7,7 @@ module CIAX
   # Having :dic(Array) key
   # Access :dic with get() directly
   class ExeDic < Varx
+    include Dic
     attr_reader :cfg
     # level can be Layer or Site
     def initialize(spcfg, atrb = Hashx.new)
@@ -15,24 +16,7 @@ module CIAX
       _attr_set
       @opt = @cfg[:opt]
       verbose { 'Initiate ExeDic (option:' + @opt.keys.join + ')' }
-      self[:dic] = Hashx.new
-    end
-
-    def get(id)
-      _dic.get(id)
-    end
-
-    def put(id, obj)
-      _dic.put(id, obj)
-      cmt
-    end
-
-    def to_a
-      _dic.keys
-    end
-
-    def each
-      _dic.each { |e| yield e }
+      ext_dic(:dic)
     end
 
     def shell
@@ -46,10 +30,6 @@ module CIAX
     end
 
     private
-
-    def _dic
-      self[:dic]
-    end
 
     # Shell module
     module Shell

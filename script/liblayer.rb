@@ -10,7 +10,7 @@ module CIAX
       # Initialize all sub layers
       loop do
         ns = m2id(obj.class, -2)
-        _dic.put(ns, obj)
+        put(ns, obj)
         obj = obj.sub_dic || break
       end
     end
@@ -21,7 +21,7 @@ module CIAX
       def ext_local_shell
         super
         @cfg[:jump_layer] = @jumpgrp
-        _dic.each do |id, _obj|
+        each do |id, _obj|
           @jumpgrp.add_item(id, id.capitalize + ' mode')
         end
         @current = @cfg[:opt].init_layer || to_a.first

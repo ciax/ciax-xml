@@ -14,7 +14,7 @@ _getstat(){
     for cmd; do
         echo -ne "${C3}process $cmd $par$C0\t"
         json_logpick $did $cmd $par > $temp || { echo; continue; }
-#        VER=$ver < $temp libfrmrsp -m || return 1
+#        VER=$ver < $temp libfrmconv -m || return 1
         [ "$c" = 'ccc' ] && { c=''; echo; } || c="c$c"
     done
 }

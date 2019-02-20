@@ -7,7 +7,7 @@ par="$*"
 for id in $ids; do
     echo "$C2#### $id ####$C0"
     file=$HOME/.var/json/field_$id.json
-    libstatusconv < $file || exit
+    libappconv < $file || exit
     libappsym $id > /dev/null || exit
     read -t 0 && break
 done

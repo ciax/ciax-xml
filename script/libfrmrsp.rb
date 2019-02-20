@@ -50,7 +50,7 @@ module CIAX
         return '' if str.empty?
         verbose { "Cut String: [#{str.inspect}]" }
         str = ___pick_part(str, e0[:slice])
-        @codec.decode(str, e0)
+        @codec.decode(str, e0).to_s
       end
 
       private

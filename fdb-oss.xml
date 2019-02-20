@@ -7,7 +7,7 @@
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <group id="gst" caption="Status">
-        <item id="getstat" label="Get InR status" response="getstat" type="stat">
+        <item id="getstat" label="InR status" response="getstat" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="InR Select(NsOpt/NsIR/Cas)"> TSCV.RotatorType</string>
           <string label="InR Drive ON/OFF"> TSCV.InsRotRotation</string>
@@ -17,15 +17,15 @@
           <string label="Status Command">gen2prt</string>
           <string label="Bolt Each Status"> CXWS.TSCV.POWER_V1</string>
         </item>
-        <item id="jaklen" label="Jack Bolt Status" response="jaklen" type="stat">
+        <item id="jaklen" label="Jack Bolt Length" response="jaklen" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="Bolt Each Position"> CXWS.TSCV.POWER_V2</string>
         </item>
-        <item id="zlen" label="Jack Bolt Status" response="zlen" type="stat">
+        <item id="zlen" label="Z Sensor Length" response="zlen" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="Zsensor Each Position"> CXWS.TSCL.Z_SENSOR</string>
         </item>
-        <item id="telstat" label="Get Telescope status" response="telstat" type="stat">
+        <item id="telstat" label="Telescope Status" response="telstat" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="Stow pin Status"> CXWS.TSCV.STOW_1</string>
           <string label="Shutter Status"> CXWS.TSCV.SHUTTER</string>
@@ -36,11 +36,11 @@
           <string label="Status Command">gen2prt</string>
           <string label="InR Angle(deg)"> CXWS.TSCS.INSROT</string>
         </item>
-        <item id="comerr" label="Get Comm Error" response="comerr" type="stat">
+        <item id="comerr" label="Comm Error" response="comerr" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</string>
         </item>
-        <item id="iststat" label="Get Instrument ID" response="iststat" type="stat">
+        <item id="iststat" label="Instrument ID" response="iststat" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="CAS Instrument"> CXWS.TSCV.OBE_INR</string>
         </item>

@@ -40,7 +40,7 @@ module CIAX
           #   main(total){ ccrange{ body(selected str) } }
           # terminator: frame pointer will jump to terminator
           #   when no length or delimiter is specified
-          @rspfrm = RspFrame.new(@frame.get(ent.id), @dbi[:stream])
+          @rspfrm = RspFrame.new(@frame.get(ent.id).dup, @dbi[:stream])
           ___make_data
           verbose { 'Conversion Frame -> Field' + to_v }
           self

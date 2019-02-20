@@ -94,7 +94,7 @@ module CIAX
         def ext_local_shell
           super
           @cfg[:jump_mcr] = @jumpgrp
-          _dic.each { |id, mobj| put(id, mobj) }
+          each { |id, mobj| put(id, mobj) }
           @sub_dic.ext_local_shell
           self
         end

@@ -32,7 +32,7 @@ module CIAX
 
       # Calculate Check Code
       def ccc
-        res = method("_cc_#{@method}").call
+        res = method("_cc_#{@method}").call.to_s
         verbose { "Cc Calc [#{@method.upcase}] -> (#{res})" }
         res
       rescue NameError

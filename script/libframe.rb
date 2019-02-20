@@ -69,13 +69,18 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id]', options: 'h') do |opt, args|
-        fld = Frame.new(args.shift)
+        if STDIN.tty?
+          fld = Frame.new(args.shift)
+          raise(InvalidARGS, 'No ID') unless fld.id
+        else
+          fld.jmerge
+        end
         if opt.host
           fld.ext_remote(opt.host)
         else
           fld.ext_local.load
         end
-        puts fld
+        puts fld.path(args)
       end
     end
   end

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libdic'
+require 'libexedic'
 require 'libmcrexe'
 require 'libmansh'
 

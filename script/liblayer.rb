@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libdic'
+require 'libexedic'
 
 module CIAX
   # element object can be (Frm,App,Wat,Hex)

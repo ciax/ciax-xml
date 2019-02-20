@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libdic'
+require 'libexedic'
 module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set

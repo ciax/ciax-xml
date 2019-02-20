@@ -55,7 +55,7 @@
       <Cmd extend_for="Command" extend="Msg.Ver"/>
       <Conv extend_for="Status.Var" extend="Msg.Ver"/>
       <Prt extend_for="Sh"/>
-      <Dic parent="Hash"/>
+      <ExeDic parent="Hash"/>
     </App>
     <Frm>
       <Db parent="Db" extend="Msg.Ver"/>
@@ -64,7 +64,7 @@
       <Sv parent="Sh" include="Sh.Server"/>
       <Cmd extend_for="Command" extend="Msg.Ver"/>
       <Conv extend_for="Field.Var" extend="Msg.Ver"/>
-      <Dic parent="Hash"/>
+      <ExeDic parent="Hash"/>
     </Frm>
     <Ins>
       <Db parent="Db"/>

@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="oss" label="OSS Command line" version="1">
+  <frame id="oss" label="OSS Command line" version="2">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
       <char length="1" label="Suffix">0xa</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <group id="gst" caption="Status">
-        <item id="getstat" label="Get all status" response="getstat" type="stat">
+        <item id="getstat" label="Get InR status" response="getstat" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="InR Select(NsOpt/NsIR/Cas)"> TSCV.RotatorType</string>
-          <string label="Stow pin Status"> CXWS.TSCV.STOW_1</string>
-          <string label="Shutter Status"> CXWS.TSCV.SHUTTER</string>
-          <string label="AZ/EL Drive Status"> CXWS.TSCV.TELDRIVE</string>
-          <string label="EL Angle(deg)"> CXWS.TSCS.EL</string>
-          <string label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</string>
           <string label="InR Drive ON/OFF"> TSCV.InsRotRotation</string>
-          <string label="BOLT Status"> CXWS.TSCV.0_SENSOR</string>
-        </item>
-        <item id="iststat" label="Get Instrument ID" response="iststat" type="stat">
-          <string label="Status Command">gen2prt</string>
-          <string label="CAS Instrument"> CXWS.TSCV.OBE_INR</string>
+          <string label="InR Pin Sensor"> CXWS.TSCV.0_SENSOR</string>
         </item>
         <item id="jakstat" label="Jack Bolt Status" response="jakstat" type="stat">
           <string label="Status Command">gen2prt</string>
@@ -34,9 +25,24 @@
           <string label="Status Command">gen2prt</string>
           <string label="Zsensor Each Position"> CXWS.TSCL.Z_SENSOR</string>
         </item>
-        <item id="inrstat" label="Cas InR Status" response="inrstat" type="stat">
+        <item id="telstat" label="Get Telescope status" response="telstat" type="stat">
+          <string label="Status Command">gen2prt</string>
+          <string label="Stow pin Status"> CXWS.TSCV.STOW_1</string>
+          <string label="Shutter Status"> CXWS.TSCV.SHUTTER</string>
+          <string label="AZ/EL Drive Status"> CXWS.TSCV.TELDRIVE</string>
+          <string label="EL Angle(deg)"> CXWS.TSCS.EL</string>
+        </item>
+        <item id="inrang" label="Cas InR Angle" response="inrang" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="InR Angle(deg)"> CXWS.TSCS.INSROT</string>
+        </item>
+        <item id="comerr" label="Get Comm Error" response="comerr" type="stat">
+          <string label="Status Command">gen2prt</string>
+          <string label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</string>
+        </item>
+        <item id="iststat" label="Get Instrument ID" response="iststat" type="stat">
+          <string label="Status Command">gen2prt</string>
+          <string label="CAS Instrument"> CXWS.TSCV.OBE_INR</string>
         </item>
         <item id="logstat" label="Login Status" response="logstat" type="stat">
           <string label="Status Command">gen2prt</string>
@@ -140,13 +146,17 @@
         <!--TSCMON-->
         <field assign="rsel" label="InR Select(NsOpt/NsIR/Cas)" delimiter="\n"/>
         <!--MCUMON-->
+        <field assign="rpw" label="InR Drive ON/OFF" delimiter="\n"/>
+        <field assign="bstat" decode="hexstr" label="BOLT System Status" delimiter="\n"/>
+      </item>
+      <item id="telstat">
         <field assign="stow_1" decode="hexstr" label="Stow pin Status" delimiter="\n"/>
         <field assign="shutter" decode="hexstr" label="Shutter Status" delimiter="\n"/>
         <field assign="teldrive" decode="hexstr" label="AZ/EL Drive Status" delimiter="\n"/>
         <field assign="el" label="EL Angle(deg)" delimiter="\n"/>
+      </item>
+      <item id="comerr">
         <field assign="mlp3" label="CIAX-MLP3 Comm Error" delimiter="\n"/>
-        <field assign="rpw" label="InR Drive ON/OFF" delimiter="\n"/>
-        <field assign="bstat" decode="hexstr" label="BOLT System Status" delimiter="\n"/>
       </item>
       <item id="iststat">
         <field assign="iid" label="CAS Instrument" delimiter="\n"/>
@@ -181,7 +191,7 @@
           <index size="4"/>
         </array>
       </item>
-      <item id="inrstat">
+      <item id="inrang">
         <field assign="iang" label="InR Angle(deg)" delimiter="\n"/>
       </item>
       <item id="logstat">

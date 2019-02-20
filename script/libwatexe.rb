@@ -79,7 +79,7 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehlts') do |cfg|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(cfg.args.shift)
-        atrb = { dbi: dbi, sub_dic: App::Dic.new(cfg) }
+        atrb = { dbi: dbi, sub_dic: App::ExeDic.new(cfg) }
         eobj = Exe.new(cfg, atrb)
         if cfg.opt.sh?
           eobj.shell

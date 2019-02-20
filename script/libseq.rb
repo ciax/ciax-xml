@@ -15,7 +15,7 @@ module CIAX
       def initialize(ment, &submcr_proc)
         @cfg = ment
         @opt = @cfg[:opt]
-        @dev_dic = type?(@cfg[:dev_dic], Wat::Dic)
+        @dev_dic = type?(@cfg[:dev_dic], Wat::ExeDic)
         ___init_record
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
         @submcr_proc = submcr_proc

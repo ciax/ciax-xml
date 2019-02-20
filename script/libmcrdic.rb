@@ -5,15 +5,15 @@ require 'libmansh'
 
 module CIAX
   module Mcr
-    # Dic for Running Macro
-    class Dic < CIAX::Dic
+    # ExeDic for Running Macro
+    class ExeDic < CIAX::ExeDic
       attr_reader :cfg, :sub_dic
       # @cfg should have [:sv_stat]
       def initialize(layer_cfg, atrb = Hashx.new)
         super
         # Set [:dev_dic] here for using layer_cfg
         # For element of Layer
-        @sub_dic = type?(@cfg[:dev_dic], Wat::Dic)
+        @sub_dic = type?(@cfg[:dev_dic], Wat::ExeDic)
         # For server response
         @sv_stat = type?(@cfg[:sv_stat], Prompt).repl(:sid, '')
         ___init_arc(@cfg[:rec_arc])
@@ -87,9 +87,9 @@ module CIAX
         IO.write(vardir('json') + 'mcr_conf.js', 'var config = ' + jl.to_j)
       end
 
-      # Mcr::Dic specific Shell
+      # Mcr::ExeDic specific Shell
       module Shell
-        include CIAX::Dic::Shell
+        include CIAX::ExeDic::Shell
 
         def ext_local_shell
           super
@@ -112,7 +112,7 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         ConfOpts.new('[id]', options: 'cehlns') do |cfg|
-          Dic.new(cfg, Atrb.new(cfg)).shell
+          ExeDic.new(cfg, Atrb.new(cfg)).shell
         end
       end
     end

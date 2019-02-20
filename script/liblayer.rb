@@ -3,7 +3,7 @@ require 'libdic'
 
 module CIAX
   # element object can be (Frm,App,Wat,Hex)
-  class Layer < CIAX::Dic
+  class Layer < CIAX::ExeDic
     def initialize(top_cfg)
       super(top_cfg)
       obj = yield(@cfg, top_cfg[:opt].init_layer_mod)
@@ -17,7 +17,7 @@ module CIAX
 
     # Shell module which is Layer specific
     module Shell
-      include CIAX::Dic::Shell
+      include CIAX::ExeDic::Shell
       def ext_local_shell
         super
         @cfg[:jump_layer] = @jumpgrp

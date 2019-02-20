@@ -6,8 +6,8 @@ module CIAX
   # Frame Layer
   module Frm
     deep_include(Site)
-    # Frame Dic module
-    class Dic
+    # Frame ExeDic module
+    class ExeDic
       def initialize(spcfg, atrb = Hashx.new)
         super
         idb = type?(@cfg[:db], Ins::Db)
@@ -18,7 +18,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg|
-        Dic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).shell
+        ExeDic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).shell
       end
     end
   end

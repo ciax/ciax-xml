@@ -62,7 +62,7 @@ module CIAX
             super
             def_proc do |ent|
               # Use shell() of top level class
-              #  (ie. Dic.new.get(id).shell -> Dic.new.shell(id) )
+              #  (ie. ExeDic.new.get(id).shell -> ExeDic.new.shell(id) )
               raise(ent[:jump_class], ent.id)
             end
           end

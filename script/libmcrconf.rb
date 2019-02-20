@@ -17,7 +17,7 @@ module CIAX
         cfg[:db] = Ins::Db.new(proj)
         self[:dbi] = Db.new.get(proj)
         self[:sv_stat] = ___init_prompt(proj, cfg.opt[:n])
-        self[:dev_dic] = Wat::Dic.new(cfg)
+        self[:dev_dic] = Wat::ExeDic.new(cfg)
         self[:rec_arc] = RecArc.new
       end
 

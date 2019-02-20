@@ -8,7 +8,7 @@ module CIAX
   module Mcr
     ConfOpts.new('[proj]', options: 'elchdnr') do |root_cfg|
       Layer.new(root_cfg) do |cfg|
-        Dic.new(cfg, Atrb.new(cfg))
+        ExeDic.new(cfg, Atrb.new(cfg))
       end.shell
     end
   end

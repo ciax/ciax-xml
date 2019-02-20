@@ -13,7 +13,8 @@ module CIAX
         super
         _init_dbi2cfg
         ___init_sub
-        @stat = View.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
+        @aexe = @sub.sub
+        @stat = View.new(@aexe.stat, @cfg[:hdb], @sv_stat)
         _opt_mode
       end
 
@@ -29,6 +30,11 @@ module CIAX
 
       private
 
+#      def ___mk_refdb
+#        @refdb = @aexe.stat.pick(%i(data class msg))
+#        %i(field frame).each { |k| src[k] = @aexe.sub.cfg[k][:data]}
+#      end
+      
       # Sub Methods for Initialize
       def ___init_sub
         @sub = @cfg[:sub_dic].get(@id)
@@ -49,7 +55,7 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehls') do |cfg|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(cfg.args.shift)
-        atrb = { dbi: dbi, hdb: Db.new, sub_dic: Wat::Dic.new(cfg) }
+        atrb = { dbi: dbi, hdb: Db.new, sub_dic: Wat::ExeDic.new(cfg) }
         Exe.new(cfg, atrb).shell
       end
     end

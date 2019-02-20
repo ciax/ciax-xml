@@ -13,7 +13,7 @@ module CIAX
       # atrb must have [:dbi]
       def initialize(spcfg, atrb = Hashx.new)
         super
-        # DB is generated in Dic level
+        # DB is generated in ExeDic level
         dbi = _init_dbi2cfg(%i(stream iocmd))
         @cfg[:site_id] = @id
         @stat = @cfg[:field] = Field.new(dbi)

@@ -3,10 +3,10 @@ require 'libvarx'
 require 'libcmdlocal'
 
 module CIAX
-  # This is parent of Layer Dic, Site Dic.
+  # This is parent of Layer ExeDic, Site ExeDic.
   # Having :dic(Array) key
   # Access :dic with get() directly
-  class Dic < Varx
+  class ExeDic < Varx
     attr_reader :cfg
     # level can be Layer or Site
     def initialize(spcfg, atrb = Hashx.new)
@@ -14,7 +14,7 @@ module CIAX
       super(m2id(@cfg[:obj].class, -2))
       _attr_set
       @opt = @cfg[:opt]
-      verbose { 'Initiate Dic (option:' + @opt.keys.join + ')' }
+      verbose { 'Initiate ExeDic (option:' + @opt.keys.join + ')' }
       self[:dic] = Hashx.new
     end
 
@@ -55,12 +55,12 @@ module CIAX
     module Shell
       attr_reader :jumpgrp
       def self.extended(obj)
-        Msg.type?(obj, Dic)
+        Msg.type?(obj, ExeDic)
       end
 
       # atrb should have [:jump_class] (Used in Local::Jump::Group)
       def ext_local_shell
-        verbose { 'Initiate Dic Shell' }
+        verbose { 'Initiate ExeDic Shell' }
         @cfg[:jump_class] = context_module('Jump')
         @jumpgrp = CmdTree::Local::Jump::Group.new(@cfg)
         self
@@ -76,7 +76,7 @@ module CIAX
       end
 
       def switch(site)
-        get(site) || cfg_err('Mcr Dic is empty')
+        get(site) || cfg_err('Mcr ExeDic is empty')
       end
     end
   end

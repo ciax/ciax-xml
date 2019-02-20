@@ -4,7 +4,7 @@ module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set
     # This should be set [:db]
-    class Dic < CIAX::Dic
+    class ExeDic < CIAX::ExeDic
       attr_reader :db, :sub_dic
       attr_accessor :super_dic
       def initialize(spcfg, atrb = Hashx.new)
@@ -41,9 +41,9 @@ module CIAX
         eobj
       end
 
-      # Shell module which is Site::Dic specific
+      # Shell module which is Site::ExeDic specific
       module Shell
-        include CIAX::Dic::Shell
+        include CIAX::ExeDic::Shell
 
         def ext_local_shell
           super

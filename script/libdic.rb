@@ -12,7 +12,12 @@ module CIAX
       @dic = type?(self[dicname] ||= Hashx.new, Hashx)
       self
     end
-    
+
+    def replace(h)
+      @dic.replace(h)
+      cmt
+    end
+
     def key?(id)
       @dic.key?(id)
     end
@@ -35,7 +40,7 @@ module CIAX
     end
 
     def each
-      @dic.each { |k,v| yield k,v }
+      @dic.each { |k, v| yield k, v }
     end
   end
 end

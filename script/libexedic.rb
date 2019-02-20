@@ -29,8 +29,6 @@ module CIAX
       extend(smod).ext_local_shell
     end
 
-    private
-
     # Shell module
     module Shell
       attr_reader :jumpgrp

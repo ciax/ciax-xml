@@ -11,15 +11,15 @@ module CIAX
       def initialize(id = nil)
         super('frame')
         _attr_set(id) if id
-        self[:frames] = Hashx.new
+        self[:data] = Hashx.new
       end
 
       def get(key)
-        self[:frames][key]
+        self[:data][key]
       end
 
       def put(key, val)
-        self[:frames][key] = val
+        self[:data][key] = val
         self
       end
 

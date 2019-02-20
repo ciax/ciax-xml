@@ -127,14 +127,18 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmconv'
-      require 'libfrmdb'
+      require 'libdevdb'
       cap = '[dev] [cmd] (par) < field_file'
       ConfOpts.new(cap, options: 'r') do |cfg|
-        fld = cfg[:field] = Field.new(cfg.args.shift)
+        if STDIN.tty?
+          dbi = Dev::Db.new.get(cfg.args.shift)
+          cfg[:field] = Field.new(dbi[:id])
+        else
+          dbi = (cfg[:field] = Field.new).dbi
+        end
         # dbi.pick alreay includes :layer, :command, :version
-        cobj = Index.new(cfg, fld.dbi.pick(%i(stream)))
+        cobj = Index.new(cfg, dbi.pick(%i(stream)))
         rem = cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }.add_ext
-        fld.jmerge unless STDIN.tty?
         res = rem.set_cmd(cfg.args).exe_cmd('test')
         if cfg.opt[:r]
           print res.msg

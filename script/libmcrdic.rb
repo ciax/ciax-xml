@@ -31,7 +31,7 @@ module CIAX
 
       # obsolete, was used for RecDic@cache
       def records
-        _dic.inject({}) { |h, obj| h[obj[:id]] = obj.stat }
+        @dic.inject({}) { |h, obj| h[obj[:id]] = obj.stat }
       end
 
       private
@@ -52,7 +52,7 @@ module CIAX
         rem.ext.def_proc { |ent| ___gen_cmd(ent) }
         rem.int.def_proc { |ent| ___man_cmd(ent) }
         rem.get('interrupt').def_proc do
-          each { |k, v| k =~ /[\d]+/ && v.interrupt }
+          @dic.each { |k, v| k =~ /[\d]+/ && v.interrupt }
         end
       end
 
@@ -94,7 +94,7 @@ module CIAX
         def ext_local_shell
           super
           @cfg[:jump_mcr] = @jumpgrp
-          each { |id, mobj| put(id, mobj) }
+          @dic.each { |id, mobj| put(id, mobj) }
           @sub_dic.ext_local_shell
           self
         end

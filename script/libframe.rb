@@ -1,26 +1,19 @@
 #!/usr/bin/env ruby
-require 'libvarx'
+require 'libstatx'
+require 'libdevdb'
 require 'libstream'
 
 module CIAX
   # Frame Layer
   module Frm
     # Response Frame DB
-    class Frame < Varx
-      attr_reader :rid
-      def initialize(id = nil)
-        super('frame')
-        _attr_set(id) if id
-        self[:data] = Hashx.new
-      end
-
-      def get(key)
-        self[:data][key]
-      end
-
-      def put(key, val)
-        self[:data][key] = val
-        self
+    class Frame < Statx
+      include Dic
+      attr_reader :rid, :dic
+      def initialize(dbi = nil)
+        super('frame', dbi, Dev::Db)
+        ext_dic(:data)
+        @dbi[:response][:index].keys.each { |n| @dic[n] = '' }
       end
 
       def ext_local_conv(cfg)
@@ -50,7 +43,7 @@ module CIAX
 
         def conv(ent)
           @stream.snd(ent[:frame], ent.id)
-          put(ent.id, @stream.rcv.binary) if ent.key?(:response)
+          @dic.put(ent.id, @stream.rcv.binary) if ent.key?(:response)
           verbose { 'Conversion Stream -> Frame' + to_v }
           self
         rescue StreamError
@@ -69,18 +62,13 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id]', options: 'h') do |opt, args|
-        if STDIN.tty?
-          fld = Frame.new(args.shift)
-          raise(InvalidARGS, 'No ID') unless fld.id
-        else
-          fld.jmerge
-        end
+        frm = Frame.new(args.shift)
         if opt.host
-          fld.ext_remote(opt.host)
+          frm.ext_remote(opt.host)
         else
-          fld.ext_local.load
+          frm.ext_local.load
         end
-        puts fld.path(args)
+        puts frm.path(args)
       end
     end
   end

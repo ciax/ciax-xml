@@ -21,10 +21,10 @@ module CIAX
       def ext_local_shell
         super
         @cfg[:jump_layer] = @jumpgrp
-        each do |id, _obj|
+        @dic.each do |id, _obj|
           @jumpgrp.add_item(id, id.capitalize + ' mode')
         end
-        @current = @cfg[:opt].init_layer || to_a.first
+        @current = @cfg[:opt].init_layer || @dic.keys.first
         self
       end
     end

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libvarx'
+require 'libdic'
 require 'libdb'
 
 module CIAX

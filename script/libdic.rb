@@ -4,6 +4,7 @@ require 'libvarx'
 module CIAX
   # Access :dic with get() directly
   module Dic
+    attr_reader :dic
     def self.extended(obj)
       Msg.type?(obj, Varx)
     end
@@ -13,19 +14,7 @@ module CIAX
       self
     end
 
-    def replace(h)
-      @dic.replace(h)
-      cmt
-    end
-
-    def key?(id)
-      @dic.key?(id)
-    end
-
-    def keys
-      @dic.keys
-    end
-
+    # Never override the standard methods
     def get(id)
       @dic.get(id)
     end
@@ -33,14 +22,6 @@ module CIAX
     def put(id, obj)
       @dic.put(id, obj)
       cmt
-    end
-
-    def to_a
-      @dic.keys
-    end
-
-    def each
-      @dic.each { |k, v| yield k, v }
     end
   end
 end

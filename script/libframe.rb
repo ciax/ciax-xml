@@ -12,8 +12,7 @@ module CIAX
       attr_reader :rid, :dic
       def initialize(dbi = nil)
         super('frame', dbi, Dev::Db)
-        ext_dic(:data)
-        @dbi[:response][:index].keys.each { |n| @dic[n] = '' }
+        ext_dic(:data, @dbi[:response][:index])
       end
 
       def ext_local_conv(cfg)

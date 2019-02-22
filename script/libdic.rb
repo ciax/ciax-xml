@@ -9,8 +9,9 @@ module CIAX
       Msg.type?(obj, Varx)
     end
 
-    def ext_dic(dicname)
-      @dic = type?(self[dicname] ||= Hashx.new, Hashx)
+    # db is source of skelton
+    def ext_dic(dicname, db = {})
+      @dic = self[dicname] = Hashx.new(db).skeleton
       self
     end
 

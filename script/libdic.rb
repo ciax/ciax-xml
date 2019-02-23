@@ -9,15 +9,17 @@ module CIAX
       Msg.type?(obj, Varx)
     end
 
-    # db is source of skelton
-    def ext_dic(dicname, db = {})
-      @dic = self[dicname] = Hashx.new(db).skeleton
+    # set dic
+    def ext_dic(dicname)
+      return self if key?(dicname)
+      db = defined?(yield) ? yield : Hashx.new
+      @dic = self[dicname] = db
       self
     end
 
     # Never override the standard methods
-    def get(id)
-      @dic.get(id)
+    def get(id, &defproc)
+      @dic.get(id, &defproc)
     end
 
     def put(id, obj)

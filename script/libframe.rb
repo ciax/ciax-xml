@@ -12,7 +12,7 @@ module CIAX
       attr_reader :rid, :dic
       def initialize(dbi = nil)
         super('frame', dbi, Dev::Db)
-        ext_dic(:data, @dbi[:response][:index])
+        ext_dic(:data) { Hashx.new(@dbi[:response][:index]).skeleton }
       end
 
       def ext_local_conv(cfg)

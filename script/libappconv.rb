@@ -31,7 +31,7 @@ module CIAX
             cnd = hash[:fields].empty?
             next if cnd && get(id)
             dflt = hash[:default] || ''
-            self[:data][id] = cnd ? dflt : ___get_val(hash, id)
+            @dic[id] = cnd ? dflt : ___get_val(hash, id)
           end
           verbose { 'Conversion Field -> Status' + to_v }
           self

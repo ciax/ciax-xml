@@ -38,7 +38,7 @@ module CIAX
       def get(id)
         verbose { "Getting[#{id}]" }
         cfg_err('Nill Id') unless id
-        return self[:data][id] if self[:data].key?(id)
+        return self[:data][id] if self[:data].key?(id) && /@/ !~ id
         vname = []
         dat = ___access_array(id, vname)
         verbose { "Get[#{id}]=[#{dat}]" }

@@ -8,3 +8,4 @@ while
     mcrexe -en cinit
     [ $? -gt 8 ]
 do :;done
+git status | grep nothing && git tag -f 'Success!mos-sim'

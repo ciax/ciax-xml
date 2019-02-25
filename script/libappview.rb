@@ -20,7 +20,6 @@ module CIAX
         @index = adbs[:index].dup
         @index.update(adbs[:alias]) if adbs.key?(:alias)
         # Just additional data should be provided
-        %i(data class msg).each { |key| stat.get(key) { Hashx.new } }
         ___init_cmt_procs
       end
 
@@ -89,9 +88,10 @@ module CIAX
       end
 
       def ___upd_line(id, hash)
-        stc = @stat[:class]
-        msg = @stat[:msg][id] || @stat[:data][id]
+        stc = @stat[:class] || {}
+        stm = @stat[:msg] || {}
         cls = stc[id] if stc.key?(id)
+        msg = stm[id] || @stat.get(id)
         lvl = @index[id][:label] || id.upcase
         hash[id] = { label: lvl, msg: msg, class: cls }
       end

@@ -95,6 +95,7 @@ module CIAX
         end
 
         def __get_field(e)
+          # fld can contain '@', i.e. key@idx1@idx2...
           fld = type?(e, Hash)[:ref] || give_up("No field Key in #{e}")
           val = @field.get(fld)
           # verbose(val.empty?) { "NoFieldContent in [#{fld}]" }

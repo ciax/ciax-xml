@@ -6,8 +6,8 @@ module CIAX
   module App
     # Convert Response
     class Status
-      def ext_local_conv(field)
-        extend(Conv).ext_local_conv(field)
+      def ext_local_conv
+        extend(Conv).ext_local_conv
       end
 
       # Response Module
@@ -17,11 +17,7 @@ module CIAX
           Msg.type?(obj, Status)
         end
 
-        def ext_local_conv(field)
-          @field = type?(field, Frm::Field)
-          type?(@dbi, Dbi)
-          init_time2cmt(@field)
-          propagation(@field)
+        def ext_local_conv
           cmt_append('appstat', proc { conv })
           self
         end
@@ -131,7 +127,8 @@ module CIAX
         GetOpts.new('[site] | < field_file', options: 'r') do |opt, args|
           field = Frm::Field.new(args.shift).ext_local.load
           stat = Status.new(field[:id])
-          stat.ext_local_conv(field).cmt
+          stat.init_field(field)
+          stat.ext_local_conv.cmt
           puts opt[:r] ? stat.to_v : stat.path(args)
         end
       end

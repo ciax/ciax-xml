@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 require 'libfrmstat'
 require 'libfrmrsp'
-require 'libframe'
 
 # Conv Methods
 # Input  : upd block(frame,time)

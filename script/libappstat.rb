@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'libstatx'
 require 'libinsdb'
+require 'libfrmstat'
 
 module CIAX
   # Application Layer
@@ -10,9 +11,10 @@ module CIAX
     class Status < Statx
       include Dic
       # dbi can be Ins::Db or ID for new Db
-      def initialize(dbi = nil)
+      def initialize(dbi = nil, field = nil)
         super('status', dbi, Ins::Db)
         ___init_dbs
+        ___init_field(field)
         # cmt_procs
         # 1. time setting
         # 2. convert
@@ -47,6 +49,13 @@ module CIAX
         @adbs = @dbi[:status]
         @adbsi = @adbs[:index].reject { |_k, v| v[:ref] }
         ext_dic(:data) { Hashx.new(@adbsi).skeleton }
+      end
+
+      def ___init_field(field)
+        field ||= Frm::Field.new(@dbi)
+        @field = type?(field, Frm::Field)
+        init_time2cmt(@field)
+        propagation(@field)
       end
     end
 

@@ -16,12 +16,11 @@ module CIAX
         super
         dbi = _init_dbi2cfg(%i(dev_id))
         @cfg[:site_id] = @id
-        @stat = Status.new(dbi)
         @sv_stat = Prompt.new('site', @id)
+        @stat = Status.new(dbi, ___init_field)
         @batch_interrupt = []
         _init_net
         ___init_command
-        ___init_sub if @cfg[:dev_id]
         _opt_mode
       end
 
@@ -57,13 +56,15 @@ module CIAX
       end
 
       # Sub methods for Initialize
-      def ___init_sub
+      def ___init_field
+        return unless @cfg[:dev_id]
         # LayerDB might generated in ExeDic level
         @sub = @cfg[:sub_dic].get(@cfg[:dev_id])
         @sv_stat.db.update(@sub.sv_stat.db)
         @sub.sv_stat.cmt_procs << proc do |ss|
           @sv_stat.update(ss.pick(%i(comerr ioerr))).cmt
         end
+        @sub.stat
       end
 
       def ___init_command

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libstatx'
+require 'libframe'
 require 'libdevdb'
 
 module CIAX

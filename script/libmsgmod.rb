@@ -86,5 +86,10 @@ module CIAX
         name
       end
     end
+
+    def type_gen(obj, mod)
+      obj = yield mod if !obj && defined? yield
+      type?(obj, mod)
+    end
   end
 end

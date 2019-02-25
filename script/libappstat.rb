@@ -52,8 +52,7 @@ module CIAX
       end
 
       def ___init_field(field)
-        field ||= Frm::Field.new(@dbi)
-        @field = type?(field, Frm::Field)
+        @field = type_gen(field, Frm::Field) { |mod| mod.new(@dbi[:dev_id]) }
         init_time2cmt(@field)
         propagation(@field)
       end

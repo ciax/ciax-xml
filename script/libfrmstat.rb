@@ -16,7 +16,7 @@ module CIAX
         #  (Set upper layer's update)
         self[:comerr] = false
         ext_dic(:data) { ___init_field }
-        @frame = Frame.new(dbi)
+        @frame = Frame.new(@dbi)
         init_time2cmt(@frame)
       end
 

@@ -62,14 +62,14 @@ module CIAX
         end
 
         def ___make_data
-          @cache = self[:data].deep_copy
+          @cache = @dic.deep_copy
           if @sel.key?(:noaffix)
             __getfield_rec(['body'])
           else
             __getfield_rec(@sel[:main])
             @rspfrm.cc_check(@cache.delete('cc'))
           end
-          self[:data] = @cache
+          @dic.replace(@cache)
         end
 
         # Process Frame to Field
@@ -127,7 +127,7 @@ module CIAX
             e1[:range] || "0:#{e1[:size].to_i - 1}"
           end
           enclose("Assign:[#{akey}][", ']') do
-            @cache[akey] = __mk_array(idxs, self[:data][akey]) { yield }
+            @cache[akey] = __mk_array(idxs, @dic[akey]) { yield }
           end
         end
 

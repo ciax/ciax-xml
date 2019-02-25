@@ -7,13 +7,14 @@ module CIAX
   module Frm
     # Frame Field
     class Field < Statx
+      include Dic
       attr_accessor :echo
       def initialize(dbi = nil)
         super('field', dbi, Dev::Db)
         # Proc for Terminate process of each individual commands
         #  (Set upper layer's update)
         self[:comerr] = false
-        self[:data] = ___init_field unless self[:data]
+        ext_dic(:data) { ___init_field }
       end
 
       # Substitute str by Field data
@@ -38,7 +39,7 @@ module CIAX
       def get(id)
         verbose { "Getting[#{id}]" }
         cfg_err('Nill Id') unless id
-        return self[:data][id] if self[:data].key?(id) && /@/ !~ id
+        return super if @dic.key?(id) && /@/ !~ id
         vname = []
         dat = ___access_array(id, vname)
         verbose { "Get[#{id}]=[#{dat}]" }
@@ -59,7 +60,7 @@ module CIAX
 
       # Structure is Hashx{ data:{ key,val ..} }
       def pick(keyary, atrb = {})
-        Hashx.new(atrb).update(data: self[:data].pick(keyary))
+        Hashx.new(atrb).update(data: @dic.pick(keyary))
       end
 
       # For propagate to Status update

@@ -11,8 +11,8 @@ module CIAX
   module Frm
     # Field class
     class Field
-      def ext_local_conv(frame)
-        extend(Conv).ext_local_conv(frame)
+      def ext_local_conv(cfg)
+        extend(Conv).ext_local_conv(cfg)
       end
 
       # Frame Response module
@@ -24,17 +24,17 @@ module CIAX
         end
 
         # Ent is needed which includes response_id and cmd_parameters
-        def ext_local_conv(frame)
-          @frame = type?(frame, Hash)
+        def ext_local_conv(cfg)
+          @frame.ext_local_conv(cfg).ext_save
           type?(@dbi, Dbi)
           @fdbr = @dbi[:response]
           @fds = @fdbr[:index]
-          init_time2cmt(@frame)
           self
         end
 
         # Convert with corresponding cmd
         def conv(ent)
+          @frame.conv(ent)
           ___make_sel(type?(ent, CmdBase::Entity))
           # RspFrame structure:
           #   main(total){ ccrange{ body(selected str) } }

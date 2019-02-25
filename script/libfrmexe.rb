@@ -17,7 +17,7 @@ module CIAX
         dbi = _init_dbi2cfg(%i(stream iocmd))
         @cfg[:site_id] = @id
         @stat = @cfg[:field] = Field.new(dbi)
-        @frame = @cfg[:frame] = Frame.new(@id)
+        @cfg[:frame] = @stat.frame
         @sv_stat = @cfg[:sv_stat] = Prompt.new(@id)
         _init_net
         ___init_command
@@ -37,7 +37,7 @@ module CIAX
 
       # Mode Extension by Option
       def _ext_local
-        @frame.ext_local.load
+        @stat.frame.ext_local.load
         @cobj.get('set').def_proc do |ent|
           @stat.repl(ent.par[0], ent.par[1])
           @stat.flush
@@ -52,7 +52,6 @@ module CIAX
 
       def _ext_local_test
         @cobj.rem.ext.cfg[:def_msg] = 'TEST'
-        @frame.load
         super
       end
 

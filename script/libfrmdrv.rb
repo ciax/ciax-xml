@@ -22,13 +22,11 @@ module CIAX
         private
 
         def ___init_frame
-          @frame.ext_local_conv(@cfg).ext_save
-          @stat.ext_local_conv(@frame)
+          @stat.ext_local_conv(@cfg)
         end
 
         def ___init_processor_ext
           @cobj.rem.ext.def_proc do |ent, src|
-            @frame.conv(ent)
             @stat.conv(ent)
             @stat.flush if src != 'buffer'
           end
@@ -51,7 +49,7 @@ module CIAX
 
         def ___init_processor_flush
           @cobj.get('flush').def_proc do
-            @frame.reset
+            @stat.frame.reset
             @stat.flush
             verbose { 'Flush Stream' }
           end
@@ -59,7 +57,7 @@ module CIAX
 
         def ___init_log_mode
           return unless @opt.drv?
-          @frame.ext_local_log
+          @stat.frame.ext_local_log
           @cobj.rem.ext_input_log
         end
       end

@@ -9,12 +9,15 @@ module CIAX
     class Field < Statx
       include Dic
       attr_accessor :echo
+      attr_reader :frame
       def initialize(dbi = nil)
         super('field', dbi, Dev::Db)
         # Proc for Terminate process of each individual commands
         #  (Set upper layer's update)
         self[:comerr] = false
         ext_dic(:data) { ___init_field }
+        @frame = Frame.new(dbi)
+        init_time2cmt(@frame)
       end
 
       # Substitute str by Field data

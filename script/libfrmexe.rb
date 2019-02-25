@@ -39,9 +39,10 @@ module CIAX
       def _ext_local
         @stat.frame.ext_local.load
         @cobj.get('set').def_proc do |ent|
-          @stat.repl(ent.par[0], ent.par[1])
+          key, val = ent.par
+          @stat.repl(key, val)
           @stat.flush
-          verbose { "Set [#{ent.par[0]}] = #{ent.par[1]}" }
+          verbose { "Set [#{key}] = #{val}" }
         end
         super
       end

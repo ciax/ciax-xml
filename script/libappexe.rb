@@ -57,14 +57,18 @@ module CIAX
 
       # Sub methods for Initialize
       def ___init_sub
-        return unless @cfg[:dev_id]
+        id = @cfg[:dev_id] || return
         # LayerDB might generated in ExeDic level
-        @sub = @cfg[:sub_dic].get(@cfg[:dev_id])
-        @sv_stat.db.update(@sub.sv_stat.db)
-        @sub.sv_stat.cmt_procs << proc do |ss|
+        @sub = @cfg[:sub_dic].get(id)
+        ___init_svstat(@sub.sv_stat)
+        @sub.stat
+      end
+
+      def ___init_svstat(subsvs)
+        @sv_stat.db.update(subsvs.db)
+        subsvs.cmt_procs << proc do |ss|
           @sv_stat.update(ss.pick(%i(comerr ioerr))).cmt
         end
-        @sub.stat
       end
 
       def ___init_command

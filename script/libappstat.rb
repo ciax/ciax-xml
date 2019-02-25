@@ -10,6 +10,7 @@ module CIAX
     # All elements of @data are String
     class Status < Statx
       include Dic
+      attr_reader :field
       # dbi can be Ins::Db or ID for new Db
       def initialize(dbi = nil, field = nil)
         super('status', dbi, Ins::Db)

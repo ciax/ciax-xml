@@ -12,8 +12,7 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super
         dbi = _init_dbi2cfg
-        ___init_sub
-        @stat = Event.new(dbi)
+        @stat = Event.new(dbi, ___init_sub)
         @host = @sub.host
         _opt_mode
       end
@@ -64,6 +63,7 @@ module CIAX
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
         @post_exe_procs.concat(@sub.post_exe_procs)
+        @sub.stat
       end
 
       def ___init_cmt_procs

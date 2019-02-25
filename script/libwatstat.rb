@@ -8,8 +8,8 @@ module CIAX
   module Wat
     # Event Data
     class Event < Statx
-      attr_reader :on_act_procs, :on_deact_procs, :interval
-      def initialize(dbi = nil)
+      attr_reader :status, :on_act_procs, :on_deact_procs, :interval
+      def initialize(dbi = nil, status = nil)
         super('event', dbi, Ins::Db)
         @interval = 0.1
         @periodm = 300_000
@@ -17,6 +17,7 @@ module CIAX
         @last_updated = 0
         self[:format_ver] = 1
         ___init_struct
+        ___init_status(status)
       end
 
       def active?
@@ -64,6 +65,12 @@ module CIAX
         %i(history res).each { |i| self[i] = {} }
         # For Time element
         self[:act_time] = [now_msec, now_msec]
+      end
+
+      def ___init_status(status)
+        @status = type_gen(status, App::Status) { |mod| mod.new(@dbi) }
+        init_time2cmt(@status)
+        propagation(@status)
       end
     end
 

@@ -16,6 +16,17 @@
             <frmcmd name="zlen"/>
           </item>
         </unit>
+        <unit id="uv1" label="Compatible for V1">
+          <item id="cinit" label="Start TCP Status Request">
+            <frmcmd name="init"/>
+          </item>
+          <item id="cxon" label="TSC Only Mode(CIAX Mode)">
+            <frmcmd name="tsconly"/>
+          </item>
+          <item id="cxoff" label="TSC Primaly Mode">
+            <frmcmd name="tscpri"/>
+          </item>
+        </unit>
         <item id="init" label="Start TCP Status Request">
           <frmcmd name="init"/>
         </item>

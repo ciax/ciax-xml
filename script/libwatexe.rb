@@ -67,7 +67,7 @@ module CIAX
       end
 
       def ___init_cmt_procs
-        @stat.cmt_procs << proc do |ev|
+        @stat.cmt_procs.append do |ev|
           verbose { 'Propagate Event#cmt -> Watch#(set blocking command)' }
           block = ev.get(:block).map { |id, par| par ? nil : id }.compact
           @cobj.rem.ext.valid_sub(block)

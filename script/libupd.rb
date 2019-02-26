@@ -82,11 +82,11 @@ module CIAX
     end
 
     def propagation(obj)
-      @upd_procs << proc do
+      @upd_procs.append do
         __propagate_ver(self, obj, 'UPD')
         obj.upd
       end
-      obj.cmt_procs << proc do |o|
+      obj.cmt_procs.append do |o|
         __propagate_ver(o, self, 'CMT')
         cmt
       end

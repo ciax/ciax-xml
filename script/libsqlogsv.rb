@@ -66,12 +66,12 @@ module CIAX
 
       def ___real_mode(stat, tbl)
         # Add to stat.cmt
-        stat.cmt_procs << proc { @que_sql.push tbl.insert }
+        stat.cmt_procs.append { @que_sql.push tbl.insert }
       end
 
       def ___dummy_mode(stat, tbl)
         verbose { 'Invalid Version(0): No Log' }
-        stat.cmt_procs << proc { verbose { "Dummy Insert\n" + tbl.insert } }
+        stat.cmt_procs.append { verbose { "Dummy Insert\n" + tbl.insert } }
       end
     end
   end

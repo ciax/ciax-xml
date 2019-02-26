@@ -37,6 +37,11 @@ module CIAX
       extend(JHttp).ext_remote(host, @dir)
     end
 
+    # Local or Remote mode by host
+    def mode(host)
+      host ? ext_remote(host) : ext_local
+    end
+
     def base_name(tag = nil)
       [@type, @id, tag].compact.join('_')
     end

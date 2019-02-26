@@ -121,14 +121,8 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[num]', options: 'chr') do |opts, args|
         Msg.args_err if args.empty?
-        ra = RecArc.new
-        if opts.cl?
-          ra.ext_remote(opts.host)
-        else
-          ra.ext_local
-        end
-        rl = RecDic.new(ra)
-        puts rl.inc(args.shift).sel(args.shift)
+        ra = RecArc.new.mode(opts.host)
+        puts RecDic.new(ra).inc(args.shift).sel(args.shift)
       end
     end
   end

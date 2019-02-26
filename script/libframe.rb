@@ -63,13 +63,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id]', options: 'h') do |opt, args|
-        frm = Frame.new(args.shift)
-        if opt.host
-          frm.ext_remote(opt.host)
-        else
-          frm.ext_local
-        end
-        puts frm.path(args)
+        puts Frame.new(args.shift).mode(opt.host).path(args)
       end
     end
   end

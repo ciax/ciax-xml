@@ -107,13 +107,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('', options: 'ch') do |opts|
-        ra = RecArc.new
-        if opts.cl?
-          ra.ext_remote(opts.host)
-        else
-          ra.ext_local.ext_save.refresh
-        end
-        puts ra
+        puts RecArc.new.mode(opts.host)
       end
     end
   end

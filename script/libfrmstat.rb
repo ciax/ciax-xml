@@ -127,13 +127,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id]', options: 'h') do |opt, args|
-        fld = Field.new(args.shift)
-        if opt.host
-          fld.ext_remote(opt.host)
-        else
-          fld.ext_local
-        end
-        puts fld
+        puts Field.new(args.shift).mode(opt.host)
       end
     end
   end

@@ -54,13 +54,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id]', options: 'h') do |opt, args|
-        stat = Status.new(args.shift)
-        if opt.host
-          stat.ext_remote(opt.host)
-        else
-          stat.ext_local
-        end
-        puts stat
+        puts Status.new(args.shift).mode(opt.host)
       end
     end
   end

@@ -32,6 +32,10 @@ module CIAX
         end
         self
       end
+
+      def mode(host)
+        host ? ext_remote(host) : ext_local
+      end
     end
     # View class
     class View < Varx
@@ -133,12 +137,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id]', options: 'h') do |opt, args|
-        stat = SubStat.new(App::Status.new(args.shift))
-        if opt.host
-          stat.ext_remote(opt.host)
-        else
-          stat.ext_local
-        end
+        stat = SubStat.new(App::Status.new(args.shift)).mode(opt.host)
         puts View.new(stat).to_x
       end
     end

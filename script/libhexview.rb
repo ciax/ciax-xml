@@ -1,17 +1,34 @@
 #!/usr/bin/env ruby
 require 'libprompt'
+require 'libappstat'
 require 'libhexdb'
 module CIAX
   # Ascii Hex Pack
   module Hex
+    # Sub Status DB (Frame, Field, Status)
+    class SubStat < Hashx
+      include DicToken
+      def initialize(status)
+        type?(status, App::Status)
+        super(status.pick(%i(id time data_ver data class msg)))
+        field = type?(status.field, Frm::Field)
+        self[:field] = field[:data]
+        frame = type?(field.frame, Frm::Frame)
+        self[:frame] = frame[:data]
+        warn to_v
+      end
+    end
     # View class
     class View < Varx
       # sv_stat should have server status (isu,watch,exe..) like App::Exe
-      def initialize(stat, hdb = nil, sv_stat = nil)
-        @stat = type?(stat, App::Status)
+      # stat contains Status (data:name ,class:name ,msg:name)
+      #   + Field (field:name) + Frame (frame:name)
+      def initialize(status, hdb = nil, sv_stat = nil)
+        @status = type?(status, App::Status)
+        @stat = SubStat.new(status)
         super('hex')
         _attr_set(@stat[:id], @stat[:data_ver])
-        @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
+        @dbi = (hdb || Db.new).get(status.dbi[:app_id])
         id = self[:id] || args_err("NO ID(#{id}) in Stat")
         @sv_stat = sv_stat || Prompt.new('site', id)
         vmode('x')
@@ -25,9 +42,9 @@ module CIAX
       private
 
       def ___init_cmt_procs
-        init_time2cmt(@stat)
+        init_time2cmt(@status)
         propagation(@sv_stat)
-        propagation(@stat)
+        propagation(@status)
         @cmt_procs << proc { self[:hexpack] = ___header + ___body }
         cmt
       end
@@ -65,21 +82,13 @@ module CIAX
 
       def ___mk_bit(bits)
         bits.map do |hash|
-          key = hash[:ref]
-          cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
-          dat = @stat[:data][key]
-          verbose { "Get from Status #{key} = #{dat}" }
-          dat
+          @stat.get(hash[:ref])
         end.join
       end
 
       def ___mk_frame(fields)
         fields.map do |hash|
-          key = hash[:ref]
-          cfg_err("No such key [#{key}]") unless @stat[:data].key?(key)
-          dat = ___padding(hash, @stat[:data][key])
-          verbose { "Get from Status #{key} = #{dat}" }
-          dat
+          ___padding(hash, @stat.get(hash[:ref]))
         end.join
       end
 
@@ -109,10 +118,13 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libinsdb'
-      require 'libappstat'
-      GetOpts.new(' < status_file') do
-        stat = App::Status.new.ext_local
+      GetOpts.new('[id]', options: 'h') do |opt, args|
+        stat = App::Status.new(args.shift)
+        if opt.host
+          stat.ext_remote(opt.host)
+        else
+          stat.ext_local.load
+        end
         puts View.new(stat)
       end
     end

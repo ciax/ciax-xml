@@ -10,11 +10,16 @@ module CIAX
     # All elements of @data are String
     class Status < Statx
       include Dic
+      include DicToken
       attr_reader :field
       # dbi can be Ins::Db or ID for new Db
       def initialize(dbi = nil, field = nil)
         super('status', dbi, Ins::Db)
-        ___init_dbs
+        # exclude alias from index
+        @adbs = @dbi[:status]
+        @adbsi = @adbs[:index].reject { |_k, v| v[:ref] }
+        ext_dic(:data) { Hashx.new(@adbsi).skeleton }
+        %i(class msg).each { |k| self[k] ||= {} }
         ___init_field(field)
         # cmt_procs
         # 1. time setting
@@ -32,11 +37,6 @@ module CIAX
         self
       end
 
-      # Structure is Hashx{ data:{ key,val ..} }
-      def pick(keyary, atrb = {})
-        Hashx.new(atrb).update(data: @dic.pick(keyary))
-      end
-
       def jread(str = nil)
         res = super
         res[:data] = Hashx.new(res[:data])
@@ -44,13 +44,6 @@ module CIAX
       end
 
       private
-
-      def ___init_dbs
-        # exclude alias from index
-        @adbs = @dbi[:status]
-        @adbsi = @adbs[:index].reject { |_k, v| v[:ref] }
-        ext_dic(:data) { Hashx.new(@adbsi).skeleton }
-      end
 
       def ___init_field(field)
         @field = type_gen(field, Frm::Field) { |mod| mod.new(@dbi[:dev_id]) }

@@ -104,10 +104,6 @@ module CIAX
         verbose { @f.closed? ? 'Stream Closed' : 'Stream not Closed' }
       end
 
-      def ___encode_base64(str)
-        [str].pack('m').split("\n").join('')
-      end
-
       # rcv sub methods
       def ___concat_rcv(str = '')
         20.times do

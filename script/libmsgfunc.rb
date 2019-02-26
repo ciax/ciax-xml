@@ -100,6 +100,15 @@ module CIAX
       verbose { "  -- no json file (#{fname})" }
     end
 
+    # Encode/Decode base64
+    def enc64(binstr)
+      [binstr].pack('m').split("\n").join('')
+    end
+
+    def dec64(ascii)
+      ascii.unpack('m').first
+    end
+
     # OK for bad file
     def jload(fname)
       jread(loadfile(fname))

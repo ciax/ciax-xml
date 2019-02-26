@@ -27,7 +27,7 @@ module CIAX
         give_up('Logline:Line is not rcv') unless /rcv/ =~ h[:dir]
         if h[:base64]
           def h.binary
-            self[:base64].unpack('m').first
+            dec64(self[:base64])
           end
         end
         h

@@ -9,10 +9,14 @@ module CIAX
     # Response Frame DB
     class Frame < Statx
       include Dic
-      attr_reader :rid, :dic
+      attr_reader :rid
       def initialize(dbi = nil)
         super('frame', dbi, Dev::Db)
         ext_dic(:data) { Hashx.new(@dbi[:response][:index]).skeleton }
+      end
+
+      def get(id)
+        dec64(super)
       end
 
       def ext_local_conv(cfg)
@@ -42,7 +46,7 @@ module CIAX
 
         def conv(ent)
           @stream.snd(ent[:frame], ent.id)
-          put(ent.id, @stream.rcv.binary) if ent.key?(:response)
+          put(ent.id, @stream.rcv.base64) if ent.key?(:response)
           verbose { 'Conversion Stream -> Frame' + to_v }
           self
         rescue StreamError

@@ -8,8 +8,8 @@ module CIAX
     # Sub Status DB (Frame, Field, Status)
     class SubStat < Hashx
       include DicToken
-      attr_reader :status, :dbi, :field, :frame
-      def initialize(status)
+      attr_reader :status, :dbi, :field, :frame, :sv_stat
+      def initialize(status, sv_stat = nil)
         @status = type?(status, App::Status)
         super(status.pick(%i(id time data_ver data class msg)))
         @field = type?(status.field, Frm::Field)
@@ -17,12 +17,20 @@ module CIAX
         @frame = type?(@field.frame, Frm::Frame)
         self[:frame] = @frame[:data]
         @dbi = @status.dbi
+        @sv_stat = sv_stat || Prompt.new('site', self[:id])
+      end
+
+      def ext_remote(host)
+        [@frame, @field, @status].each do |st|
+          st.ext_remote(host)
+        end
+        self
       end
 
       def ext_local
-        @frame.ext_local.load
-        @field.ext_local.load
-        @status.ext_local.load
+        [@frame, @field, @status].each do |st|
+          st.ext_local.load
+        end
         self
       end
     end
@@ -31,13 +39,12 @@ module CIAX
       # sv_stat should have server status (isu,watch,exe..) like App::Exe
       # stat contains Status (data:name ,class:name ,msg:name)
       #   + Field (field:name) + Frame (frame:name)
-      def initialize(stat, hdb = nil, sv_stat = nil)
+      def initialize(stat, hdb = nil)
         @stat = type?(stat, SubStat)
         super('hex')
         _attr_set(@stat[:id], @stat[:data_ver])
         @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
-        id = self[:id] || args_err("NO ID(#{id}) in Stat")
-        @sv_stat = sv_stat || Prompt.new('site', id)
+        @sv_stat = @stat.sv_stat
         vmode('x')
         ___init_cmt_procs
       end
@@ -89,13 +96,13 @@ module CIAX
 
       def ___mk_bit(bits)
         bits.map do |hash|
-          @stat.get(hash[:ref]).tr("\n", '')
+          @stat.get(hash[:ref])
         end.join
       end
 
       def ___mk_frame(fields)
         fields.map do |hash|
-          ___padding(hash, @stat.get(hash[:ref]).tr("\n", ''))
+          ___padding(hash, @stat.get(hash[:ref]))
         end.join
       end
 
@@ -106,7 +113,7 @@ module CIAX
         if pfx
           ___fmt_num(pfx, len, val)
         else
-          val.to_s.rjust(len, '*')[0, len]
+          val.to_s.tr("\n", '').rjust(len, '*')[0, len]
         end
       end
 

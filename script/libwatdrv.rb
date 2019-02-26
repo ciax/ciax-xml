@@ -22,10 +22,10 @@ module CIAX
         private
 
         def ___init_cmt_procs
-          @stat.cmt_append('watconv', proc do |s|
+          @stat.cmt_procs.append('watconv') do |s|
             ___auto_exec(s)
             ___event_flag(s)
-          end)
+          end
         end
 
         def ___init_exe_processor

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libhashx'
+require 'libprocary'
 module CIAX
   # Variables with update feature (also with manipulation)
   # Used for convert or loading as client from lower layer data.
@@ -10,9 +10,9 @@ module CIAX
       super()
       time_upd
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @upd_procs = []
+      @upd_procs = ProcArray.new(self)
       # Proc Array for Commit Propagation to the upper Layers
-      @cmt_procs = []
+      @cmt_procs = ProcArray.new(self)
     end
 
     # Add cmt for self return method
@@ -25,7 +25,7 @@ module CIAX
     # For loading with propagation
     # Should be done when pulling data
     def upd
-      @upd_procs.compact.each { |p| p.call(self) }
+      @upd_procs.call
       verbose { "Update(#{time_id}) Pre Procs" }
       self
     end
@@ -39,23 +39,9 @@ module CIAX
     #  - Logging
     #  - Exec Upper data cmt
     def cmt
-      @cmt_procs.compact.each { |p| p.call(self) }
-      verbose { "Commiting(#{time_id})" + cmt_view.inspect }
+      @cmt_procs.call
+      verbose { "Commiting(#{time_id})" + @cmt_procs.view.inspect }
       self
-    end
-
-    def cmt_view
-      @cmt_procs.compact.map do |p|
-        path, line = p.source_location
-        /lib(.+).rb/ =~ path
-        "#{Regexp.last_match(1)}:#{line}"
-      end
-    end
-
-    # Append proc after name proc
-    def cmt_append(name, prc)
-      idx = cmt_view.index { |s| /#{name}/ =~ s }
-      @cmt_procs.insert(idx + 1, prc)
     end
 
     ## Manipulate data
@@ -84,14 +70,6 @@ module CIAX
 
     def time_id
       self[:time].to_s[-6, 6]
-    end
-
-    # Set time_upd to @cmt_procs with lower layer time
-    def init_time2cmt(stat = nil)
-      @cmt_procs.unshift(
-        stat ? proc { time_upd(stat[:time]) } : proc { time_upd }
-      )
-      self
     end
 
     def propagation(obj)

@@ -33,6 +33,7 @@ module CIAX
     # Read only as a client
     def ext_remote(host = nil)
       require 'libjhttp'
+      return self if is_a? JHttp
       extend(JHttp).ext_remote(host, @dir)
     end
 
@@ -56,6 +57,7 @@ module CIAX
     def _ext_local_file
       require 'libjfile'
       raise('File ext conflicts with Http ext') if @host
+      return self if is_a? JFile
       extend(JFile)
       _ext_local_file(@dir)
     end

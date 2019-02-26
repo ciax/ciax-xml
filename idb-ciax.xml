@@ -7,7 +7,7 @@
       <site id="dsi" dev_id="dsi" app_id="cj2" port="25102" label="IR Stand-by"/>
       <site id="dso" dev_id="dso" app_id="cj2" port="25103" label="OPT Stand-by"/>
       <site id="det" dev_id="det" app_id="srm" port="25104" label="CsEtr Control"/>
-      <site id="dts" dev_id="dts" app_id="oss" port="25105" label="TSC Control" run="false"/>
+      <site id="dts" dev_id="dts" app_id="oss" port="25105" label="TSC Control"/>
     </group>
     <group id="cx_sim" label="SimLab">
       <site id="cr2" dev_id="cr2" app_id="mel" port="25502" label="CIAX CART 2"/>

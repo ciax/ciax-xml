@@ -13,8 +13,8 @@ module CIAX
         super
         _init_dbi2cfg
         ___init_sub
-        @aexe = @sub.sub
-        @stat = View.new(@aexe.stat, @cfg[:hdb], @sv_stat)
+        substat = SubStat.new(@sub.sub.stat, @sv_stat)
+        @stat = View.new(substat, @cfg[:hdb])
         _opt_mode
       end
 

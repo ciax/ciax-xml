@@ -28,9 +28,7 @@ module CIAX
       end
 
       def ext_local
-        [@frame, @field, @status].each do |st|
-          st.ext_local.load
-        end
+        [@frame, @field, @status].each(&:ext_local)
         self
       end
     end

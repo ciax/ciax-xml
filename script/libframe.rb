@@ -65,7 +65,7 @@ module CIAX
         if opt.host
           frm.ext_remote(opt.host)
         else
-          frm.ext_local.load
+          frm.ext_local
         end
         puts frm.path(args)
       end

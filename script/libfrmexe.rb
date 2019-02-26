@@ -37,7 +37,7 @@ module CIAX
 
       # Mode Extension by Option
       def _ext_local
-        @stat.frame.ext_local.load
+        @stat.frame.ext_local
         @cobj.get('set').def_proc do |ent|
           key, val = ent.par
           @stat.repl(key, val)

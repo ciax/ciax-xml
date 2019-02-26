@@ -104,7 +104,7 @@ module CIAX
       GetOpts.new('[site] | < status_file') do |_o, args|
         stat = Status.new(args.shift)
         stat.ext_local_sym
-        stat.ext_local.load if STDIN.tty?
+        stat.ext_local if STDIN.tty?
         puts stat.cmt
       end
     end

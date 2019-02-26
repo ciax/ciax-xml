@@ -131,7 +131,7 @@ module CIAX
         if opt.host
           fld.ext_remote(opt.host)
         else
-          fld.ext_local.load
+          fld.ext_local
         end
         puts fld
       end

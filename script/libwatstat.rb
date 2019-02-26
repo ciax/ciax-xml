@@ -81,7 +81,7 @@ module CIAX
         if opt.host
           event.ext_remote(opt.host)
         else
-          event.ext_local.load
+          event.ext_local
         end
         puts event
       end

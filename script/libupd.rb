@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'libhashx'
 require 'libprocary'
 module CIAX
   # Variables with update feature (also with manipulation)
@@ -70,6 +71,14 @@ module CIAX
 
     def time_id
       self[:time].to_s[-6, 6]
+    end
+
+    # Set time_upd to @cmt_procs with lower layer time
+    def init_time2cmt(stat = nil)
+      @cmt_procs.unshift(
+        stat ? proc { time_upd(stat[:time]) } : proc { time_upd }
+      )
+      self
     end
 
     def propagation(obj)

@@ -26,7 +26,7 @@ module CIAX
         # 2. convert
         # 3. sym
         # 4. save
-        @cmt_procs << proc { verbose { "Saved #{self[:id]}:timing" } }
+        @cmt_procs.append { verbose { "Saved #{self[:id]}:timing" } }
       end
 
       # set vars by csv

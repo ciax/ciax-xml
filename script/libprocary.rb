@@ -1,15 +1,14 @@
 #!/usr/bin/env ruby
-require 'libhashx'
 module CIAX
   # Proc Array
-  class ProcArray < Arrayx
+  class ProcArray < Array
     def initialize(obj)
       @obj = obj
       super()
     end
 
     def call
-      compact.each { |p| p.call(self) }
+      compact.each { |p| p.call(@obj) }
       self
     end
 

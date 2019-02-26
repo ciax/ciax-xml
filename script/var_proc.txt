@@ -9,13 +9,13 @@
 ## Related to Update
 
   Upd@upd_procs
-    structure: Array[Proc,..]
+    structure: ProcArray[Proc,..]
     args: Hashx(self)
     return: Any
     called: Upd#upd
 
   Upd@cmt_procs
-    structure: Array[Proc,..]
+    structure: ProcArray[Proc,..]
     args: Hashx(self)
     return: Any
     called: Upd#cmt

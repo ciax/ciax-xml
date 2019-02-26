@@ -32,7 +32,7 @@ module CIAX
       def ___init_cmt_procs
         init_time2cmt(@event)
         propagation(@event)
-        @cmt_procs << proc do
+        @cmt_procs.append do
           %i(exec block int act_time upd_next).each do |id|
             self[id] = @event.get(id)
           end

@@ -57,7 +57,7 @@ module CIAX
         init_time2cmt(@stat.status)
         propagation(@sv_stat)
         propagation(@stat.status)
-        @cmt_procs << proc { self[:hexpack] = ___header + ___body }
+        @cmt_procs.append { self[:hexpack] = ___header + ___body }
         cmt
       end
 

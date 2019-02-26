@@ -64,7 +64,7 @@ module CIAX
       def ext_save
         verbose { "Initiate File Saving Feature [#{base_name}]" }
         @thread = Thread.current # For Thread safe
-        @cmt_procs << proc { save }
+        @cmt_procs.append { save }
         self
       end
 

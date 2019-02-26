@@ -55,7 +55,7 @@ module CIAX
       key = "#{@dicname}:" + key if key !~ /:/
       cat, id = key.split(':')
       cat = cat.to_sym
-      par_err("Invalid category (#{cat})") unless key?(cat)
+      par_err("Invalid category (#{cat}/#{key})") unless key?(cat)
       par_err("Invalid id (#{cat}:#{id})") unless id && self[cat].key?(id)
       [cat, id]
     end

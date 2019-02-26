@@ -11,6 +11,7 @@ module CIAX
       attr_reader :status, :dbi, :field, :frame, :sv_stat
       def initialize(status, sv_stat = nil)
         @status = type?(status, App::Status)
+        ext_dic(:data)
         super(status.pick(%i(id time data_ver data class msg)))
         @field = type?(status.field, Frm::Field)
         self[:field] = @field[:data]

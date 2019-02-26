@@ -139,7 +139,7 @@ module CIAX
         else
           stat.ext_local
         end
-        puts View.new(stat)
+        puts View.new(stat).to_x
       end
     end
   end

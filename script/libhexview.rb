@@ -14,9 +14,9 @@ module CIAX
         ext_dic(:data)
         super(status.pick(%i(id time data_ver data class msg)))
         @field = type?(status.field, Frm::Field)
-        self[:field] = @field[:data]
+        self[:field] = @field
         @frame = type?(@field.frame, Frm::Frame)
-        self[:frame] = @frame[:data]
+        self[:frame] = @frame
         @dbi = @status.dbi
         @sv_stat = sv_stat || Prompt.new('site', self[:id])
       end

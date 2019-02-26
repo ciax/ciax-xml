@@ -8,28 +8,28 @@ module CIAX
     # Sub Status DB (Frame, Field, Status)
     class SubStat < Hashx
       include DicToken
-      attr_reader :status, :dbi, :field, :frame, :sv_stat
+      attr_reader :dbi, :sv_stat
       def initialize(status, sv_stat = nil)
-        @status = type?(status, App::Status)
         ext_dic(:data)
+        self[:status] = type?(status, App::Status)
         super(status.pick(%i(id time data_ver data class msg)))
-        @field = type?(status.field, Frm::Field)
-        self[:field] = @field
-        @frame = type?(@field.frame, Frm::Frame)
-        self[:frame] = @frame
-        @dbi = @status.dbi
+        self[:field] = type?(status.field, Frm::Field)
+        self[:frame] = type?(self[:field].frame, Frm::Frame)
+        @dbi = self[:status].dbi
         @sv_stat = sv_stat || Prompt.new('site', self[:id])
       end
 
       def ext_remote(host)
-        [@frame, @field, @status].each do |st|
-          st.ext_remote(host)
+        %i(frame field status).each do |ky|
+          self[ky].ext_remote(host)
         end
         self
       end
 
       def ext_local
-        [@frame, @field, @status].each(&:ext_local)
+        %i(frame field status).each do |ky|
+          self[ky].ext_local
+        end
         self
       end
     end
@@ -55,9 +55,9 @@ module CIAX
       private
 
       def ___init_cmt_procs
-        init_time2cmt(@stat.status)
+        init_time2cmt(@stat[:status])
         propagation(@sv_stat)
-        propagation(@stat.status)
+        propagation(@stat[:status])
         @cmt_procs.append { self[:hexpack] = ___header + ___body }
         cmt
       end

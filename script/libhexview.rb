@@ -113,7 +113,8 @@ module CIAX
         if pfx
           ___fmt_num(pfx, len, val)
         else
-          val.to_s.tr("\n", '').rjust(len, '*')[0, len]
+          str = val.to_s.tr("\n", '')
+          len > 0 ? str.rjust(len, '*')[0, len] : str
         end
       end
 

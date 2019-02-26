@@ -111,7 +111,7 @@
     <field ref="field:iang" label="InR Angle" length="5" type="float"/>
     <field ref="field:mlp3" label="Comm Error" length="2" type="int"/>
     <field ref="field:iid" label="Instrument ID" length="4" type="binary"/>
-    <field ref="frame:logstat" label="LOGIN Statu" length="8" type="str"/>
+    <field ref="frame:logstat" label="LOGIN Statu" type="str"/>
   </hexpack>
   <hexpack id="oss2" label="TSC Control">
     <field ref="exit" label="LAST ERR CODE" length="2" type="int"/>

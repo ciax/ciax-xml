@@ -21,17 +21,14 @@ module CIAX
       end
     end
 
-    # Append proc after name proc
-    def append(name, &prc)
-      idx = view.index { |s| /#{name}/ =~ s }
-      insert(idx + 1, prc)
-    end
-
-    # Set time_upd with lower layer time
-    def time2cmt(stat = nil)
-      unshift(
-        stat ? proc { time_upd(stat[:time]) } : proc { time_upd }
-      )
+    # Append proc after name (base name of file) proc
+    def append(name = nil, &prc)
+      if name
+        idx = view.index { |s| /#{name}/ =~ s }
+        insert(idx + 1, prc)
+      else
+        push(prc)
+      end
       self
     end
   end

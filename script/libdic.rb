@@ -4,32 +4,39 @@ require 'libvarx'
 module CIAX
   # Access :dic with get() directly
   module Dic
-    attr_reader :dic
     def self.extended(obj)
       Msg.type?(obj, Varx)
     end
 
     # set dic
     def ext_dic(dicname)
-      return self if key?(dicname)
+      @dicname = dicname.to_sym
+      return self if key?(@dicname)
       db = defined?(yield) ? yield : Hashx.new
-      @dic = self[dicname] = db
+      self[@dicname] = db
       self
     end
 
     # Never override the standard methods
     def get(id, &defproc)
-      @dic.get(id, &defproc)
+      _dic.get(id, &defproc)
     end
 
     def put(id, obj)
-      @dic.put(id, obj)
+      _dic.put(id, obj)
       cmt
+    end
+
+    private
+
+    def _dic
+      self[@dicname]
     end
   end
 
   # Key is Token
   module DicToken
+    include Dic
     def self.extended(obj)
       Msg.type?(obj, Hashx)
     end
@@ -45,7 +52,7 @@ module CIAX
 
     def __get_key(key)
       type?(key, String)
-      key = 'data:' + key if key !~ /:/
+      key = "#{@dicname}:" + key if key !~ /:/
       cat, id = key.split(':')
       cat = cat.to_sym
       par_err("Invalid category (#{cat})") unless key?(cat)

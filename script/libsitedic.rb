@@ -15,7 +15,7 @@ module CIAX
       end
 
       def get(site)
-        @dic.key?(site) ? super : ___add(site)
+        _dic.key?(site) ? super : ___add(site)
       end
 
       def run

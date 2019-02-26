@@ -32,7 +32,7 @@ module CIAX
       # set vars by csv
       def str_update(str)
         str.split(',').each do |tkn|
-          @dic.repl(*tkn.split('='))
+          _dic.repl(*tkn.split('='))
         end
         self
       end

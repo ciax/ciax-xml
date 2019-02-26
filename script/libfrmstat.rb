@@ -42,7 +42,7 @@ module CIAX
       def get(id)
         verbose { "Getting[#{id}]" }
         cfg_err('Nill Id') unless id
-        return super if @dic.key?(id) && /@/ !~ id
+        return super if _dic.key?(id) && /@/ !~ id
         vname = []
         dat = ___access_array(id, vname)
         verbose { "Get[#{id}]=[#{dat}]" }
@@ -63,7 +63,7 @@ module CIAX
 
       # Structure is Hashx{ data:{ key,val ..} }
       def pick(keyary, atrb = {})
-        Hashx.new(atrb).update(data: @dic.pick(keyary))
+        Hashx.new(atrb).update(data: _dic.pick(keyary))
       end
 
       # For propagate to Status update

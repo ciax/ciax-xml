@@ -27,7 +27,8 @@ module CIAX
             cnd = hash[:fields].empty?
             next if cnd && get(id)
             dflt = hash[:default] || ''
-            @dic[id] = cnd ? dflt : ___get_val(hash, id)
+            # Don't use put() which makes infinity loop in cmt
+            _dic[id] = cnd ? dflt : ___get_val(hash, id)
           end
           verbose { 'Conversion Field -> Status' + to_v }
           self

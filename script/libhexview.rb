@@ -8,14 +8,22 @@ module CIAX
     # Sub Status DB (Frame, Field, Status)
     class SubStat < Hashx
       include DicToken
+      attr_reader :status, :dbi, :field, :frame
       def initialize(status)
-        type?(status, App::Status)
+        @status = type?(status, App::Status)
         super(status.pick(%i(id time data_ver data class msg)))
-        field = type?(status.field, Frm::Field)
-        self[:field] = field[:data]
-        frame = type?(field.frame, Frm::Frame)
-        self[:frame] = frame[:data]
-        warn to_v
+        @field = type?(status.field, Frm::Field)
+        self[:field] = @field[:data]
+        @frame = type?(@field.frame, Frm::Frame)
+        self[:frame] = @frame[:data]
+        @dbi = @status.dbi
+      end
+
+      def ext_local
+        @frame.ext_local.load
+        @field.ext_local.load
+        @status.ext_local.load
+        self
       end
     end
     # View class
@@ -23,12 +31,11 @@ module CIAX
       # sv_stat should have server status (isu,watch,exe..) like App::Exe
       # stat contains Status (data:name ,class:name ,msg:name)
       #   + Field (field:name) + Frame (frame:name)
-      def initialize(status, hdb = nil, sv_stat = nil)
-        @status = type?(status, App::Status)
-        @stat = SubStat.new(status)
+      def initialize(stat, hdb = nil, sv_stat = nil)
+        @stat = type?(stat, SubStat)
         super('hex')
         _attr_set(@stat[:id], @stat[:data_ver])
-        @dbi = (hdb || Db.new).get(status.dbi[:app_id])
+        @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
         id = self[:id] || args_err("NO ID(#{id}) in Stat")
         @sv_stat = sv_stat || Prompt.new('site', id)
         vmode('x')
@@ -42,9 +49,9 @@ module CIAX
       private
 
       def ___init_cmt_procs
-        init_time2cmt(@status)
+        init_time2cmt(@stat.status)
         propagation(@sv_stat)
-        propagation(@status)
+        propagation(@stat.status)
         @cmt_procs << proc { self[:hexpack] = ___header + ___body }
         cmt
       end
@@ -82,20 +89,20 @@ module CIAX
 
       def ___mk_bit(bits)
         bits.map do |hash|
-          @stat.get(hash[:ref])
+          @stat.get(hash[:ref]).tr("\n", '')
         end.join
       end
 
       def ___mk_frame(fields)
         fields.map do |hash|
-          ___padding(hash, @stat.get(hash[:ref]))
+          ___padding(hash, @stat.get(hash[:ref]).tr("\n", ''))
         end.join
       end
 
       def ___padding(hash, val)
         len = hash[:length].to_i
         type = hash[:type].to_s.to_sym
-        pfx = { float: '.2f', int: 'd', binary: 'b' }[type]
+        pfx = { float: '.2f', int: 'd', binary: 'b', hex: 'x' }[type]
         if pfx
           ___fmt_num(pfx, len, val)
         else
@@ -119,11 +126,11 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id]', options: 'h') do |opt, args|
-        stat = App::Status.new(args.shift)
+        stat = SubStat.new(App::Status.new(args.shift))
         if opt.host
           stat.ext_remote(opt.host)
         else
-          stat.ext_local.load
+          stat.ext_local
         end
         puts View.new(stat)
       end

@@ -97,15 +97,21 @@
     </pack>
   </hexpack>
   <hexpack id="oss" label="TSC">
-    <field ref="frame:getstat" label="InR Status" length="6" type="str"/>
+    <field ref="field:exit" label="Error Code" length="2" type="hex"/>
+    <field ref="field:rsel" label="Rot Sel" length="2" type="hex"/>
+    <field ref="field:rpw" label="Rot Drv" length="2" type="hex"/>
+    <field ref="field:bstat" label="Rot Pos" length="2" type="hex"/>
     <field ref="frame:jakstat" label="Jack Bolt Status" length="44" type="str"/>
-    <field ref="frame:jaklen" label="Jack Bolt Length" length="48" type="str"/>
-    <field ref="frame:zlen" label="Z Sensor Length" length="192" type="str"/>
-    <field ref="frame:telstat" label="Telescope Status" length="14" type="str"/>
-    <field ref="frame:inrang" label="InR Angle" length="9" type="str"/>
-    <field ref="frame:comerr" label="Comm Error" length="2" type="str"/>
-    <field ref="frame:iststat" label="Instrument ID" length="4" type="str"/>
-    <field ref="frame:logstat" label="Login Status" length="16" type="str"/>
+    <field ref="frame:jaklen" label="Jack Bolt Length" length="192" type="str"/>
+    <field ref="frame:zlen" label="Z Sensor Length" length="48" type="str"/>
+    <field ref="field:stow_1" label="Stow pin Status" length="2" type="hex"/>
+    <field ref="field:shutter" label="Shutter Status" length="2" type="hex"/>
+    <field ref="field:teldrive" label="AZ/EL Drive Status" length="2" type="hex"/>
+    <field ref="field:el" label="EL Angle(deg)" length="5" type="float"/>
+    <field ref="field:iang" label="InR Angle" length="5" type="float"/>
+    <field ref="field:mlp3" label="Comm Error" length="2" type="int"/>
+    <field ref="field:iid" label="Instrument ID" length="4" type="binary"/>
+    <field ref="frame:logstat" label="LOGIN Statu" length="8" type="str"/>
   </hexpack>
   <hexpack id="oss2" label="TSC Control">
     <field ref="exit" label="LAST ERR CODE" length="2" type="int"/>

@@ -7,6 +7,7 @@ module CIAX
     # Convert Response
     class Status
       def ext_local_conv
+        return self unless @field
         extend(Conv).ext_local_conv
       end
 

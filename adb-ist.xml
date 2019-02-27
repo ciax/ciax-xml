@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
+  <app id="ist" label="Cas Inst DB" version="1">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc"/>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+      <group id="g1" caption="">
+        <string id="cis" label="Current Instrument"/>
+        <string id="sa" label="Instrument Assigned SA"/>
+        <string id="sb" label="Instrument Assigned SB"/>
+        <string id="sc" label="Instrument Assigned SC"/>
+        <string id="sd" label="Instrument Assigned SD"/>
+        <string id="cf" label="Current Flange"/>
+      </group>
+    </status>
+  </app>
+</adb>

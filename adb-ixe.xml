@@ -6,7 +6,7 @@
         <unit id="upd" label="Status">
           <!-- Upd gets only bs and pulse for all axis-->
           <item id="upd" label="Upd">
-            <frmcmd name="getstat" />
+            <frmcmd name="getstat"/>
             <repeat from="1" to="6">
               <frmcmd name="chkrun">
                 <argv>$_</argv>
@@ -18,7 +18,7 @@
           </item>
         </unit>
         <item id="sysupd" label="Update Device Status">
-          <frmcmd name="getstat" />
+          <frmcmd name="getstat"/>
           <repeat from="1" to="6">
             <frmcmd name="chkrun">
               <argv>$_</argv>
@@ -96,7 +96,7 @@
             </frmcmd>
           </item>
           <item id="restore" label="Restore">
-            <frmcmd name="dummy" />
+            <frmcmd name="dummy"/>
             <frmcmd name="load">
               <argv>temp</argv>
             </frmcmd>
@@ -114,9 +114,9 @@
           </item>
         </unit>
         <item id="sysinit" label="Device Initialize">
-          <frmcmd name="initrot" />
-          <frmcmd name="initunit" />
-          <frmcmd name="initfactor" />
+          <frmcmd name="initrot"/>
+          <frmcmd name="initunit"/>
+          <frmcmd name="initfactor"/>
         </item>
         <item id="stop" label="Stop Run [1-6(Turret)]">
           <par_num>1:6</par_num>
@@ -587,82 +587,82 @@
       </group>
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
-      <symtbl ref="ixe" />
+      <symtbl ref="ixe"/>
       <group id="gst" caption="Stat" column="3">
         <binary id="trm" label="Terminal Mode" symbol="off_warn">
-          <field bit="2" ref="stat" />
+          <field bit="2" ref="stat"/>
         </binary>
         <binary id="cmd" label="Computer Mode" symbol="off_warn">
-          <field bit="7" ref="stat" />
+          <field bit="7" ref="stat"/>
         </binary>
         <binary id="rdy" label="Comm Ready" symbol="off_warn">
-          <field bit="0" ref="stat" />
+          <field bit="0" ref="stat"/>
         </binary>
         <binary id="srq" label="SRQ" symbol="off_warn">
-          <field bit="1" ref="stat" />
+          <field bit="1" ref="stat"/>
         </binary>
         <string id="stp" label="Stop All" symbol="stp">
           <repeat_field from="1" to="6">
-            <field ref="run" index="$_-1" />
+            <field ref="run" index="$_-1"/>
           </repeat_field>
         </string>
       </group>
       <group caption="Error" id="ger" column="2">
         <binary id="pme" label="Program Error" symbol="alarm">
-          <field bit="3" ref="stat" />
+          <field bit="3" ref="stat"/>
         </binary>
         <binary id="pse" label="Power Stage Error" symbol="alarm">
-          <field bit="4" ref="stat" />
+          <field bit="4" ref="stat"/>
         </binary>
         <binary id="oes" label="ONE EM Stop" symbol="alarm">
-          <field bit="5" ref="stat" />
+          <field bit="5" ref="stat"/>
         </binary>
         <binary id="ees" label="EXT EM Stop" symbol="alarm">
-          <field bit="6" ref="stat" />
+          <field bit="6" ref="stat"/>
         </binary>
       </group>
       <group id="gtr" caption="Turret Status" column="4">
         <repeat_var from="1" to="6">
           <string id="r$_" label="Running $_">
-            <field ref="run" index="$_-1" />
+            <field ref="run" index="$_-1"/>
           </string>
           <float id="p$_" label="Select Slot $_" symbol="pos" format="%.1f" formula="($# % 96000)/8000">
-            <field ref="p" index="$_-1" />
+            <field ref="p" index="$_-1"/>
           </float>
           <float id="mp$_" label="Access Slot $_" symbol="pos" format="%.1f" formula="($# % 96000)/8000">
-            <field ref="mp" index="$_-1" />
+            <field ref="mp" index="$_-1"/>
           </float>
           <integer id="mof$_" label="Mech Offset $_" format="%4d" formula="(($# + 4000) % 8000)-4000">
-            <field ref="mp" index="$_-1" />
+            <field ref="mp" index="$_-1"/>
           </integer>
         </repeat_var>
       </group>
       <group id="gtc1" caption="Turret Motion Config" column="6">
         <repeat_var from="1" to="6">
           <float id="spd$_" label="Spd $_(/s)" format="%.2f" formula="$#/8000">
-            <field ref="spd" index="$_-1" />
+            <field ref="spd" index="$_-1"/>
           </float>
           <float id="rmp$_" label="Rmp $_(/s2)" format="%.2f" formula="$#/8000">
-            <field ref="rmp" index="$_-1" />
+            <field ref="rmp" index="$_-1"/>
           </float>
           <float id="mspd$_" label="IniSpd $_(/s)" format="%.2f" formula="$#/8000">
-            <field ref="mspd" index="$_-1" />
+            <field ref="mspd" index="$_-1"/>
           </float>
           <float id="mrmp$_" label="IniRmp $_(/s2)" format="%.2f" formula="$#/8000">
-            <field ref="mrmp" index="$_-1" />
+            <field ref="mrmp" index="$_-1"/>
           </float>
           <float id="ispd$_" label="RetSpd $_(/s)" format="%.2f" formula="$#/8000">
-            <field ref="ispd" index="$_-1" />
+            <field ref="ispd" index="$_-1"/>
           </float>
           <float id="ofs$_" label="Offset $_" format="%.2f" formula="$#/8000">
-            <field ref="ofs" index="$_-1" />
+            <field ref="ofs" index="$_-1"/>
           </float>
         </repeat_var>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.1">
       <regular period="300" label="Update System Status">
-        <exec name="sysupd" />
+        <exec name="sysupd"/>
       </regular>
       <repeat from="1" to="6">
         <event id="m$_" label="Moving $_">
@@ -685,11 +685,11 @@
         </event>
       </repeat>
       <event id="fin" label="Finish All Motion">
-        <onchange var="stp" />
+        <onchange var="stp"/>
         <pattern var="stp">EEEEEE</pattern>
-        <exec name="resetr" />
-        <exec name="sysupd" />
-        <exec name="drvoff" />
+        <exec name="resetr"/>
+        <exec name="sysupd"/>
+        <exec name="drvoff"/>
       </event>
     </watch>
   </app>

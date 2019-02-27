@@ -32,7 +32,7 @@
     <field ref="pse" label="PAUSE" length="1" type="binary"/>
     <field ref="emg" label="EMG" length="1" type="binary"/>
     <field ref="flt" label="Fault" length="1" type="binary"/>
-    <field ref="exc" label="Fault Message" length="4" type="char"/>
+    <field ref="exc" label="Fault Message" length="4" type="str"/>
     <field ref="acp" label="Command Enable" length="1" type="binary"/>
     <field ref="run" label="RUNNING" length="1" type="binary"/>
     <field ref="cps" label="CRNT POS" length="2" type="int"/>
@@ -84,7 +84,7 @@
     <field ref="dor" label="DOOR STAT" length="2" type="binary"/>
   </hexpack>
   <hexpack id="srm" version="1" label="CsEtr Control">
-    <field ref="cod" label="RESPONSE CODE" length="2" type="char"/>
+    <field ref="cod" label="RESPONSE CODE" length="2" type="str"/>
     <field ref="iid" label="CAS INST ID" length="1" type="int"/>
     <pack code="b" length="2">
       <bit ref="ipw" label="CAS IPW"/>
@@ -196,8 +196,8 @@
     <field ref="azd" label="AZ DRIVE" length="2"/>
     <field ref="elv" label="ELEV" length="5"/>
     <field ref="inr" label="InR POS" length="5"/>
-    <field ref="mba" label="MLP3 COMERR" length="1" type="char"/>
-    <field ref="iid" label="InR Instrumnet" length="4" type="char"/>
-    <field ref="lgi" label="CXWS Login" type="char"/>
+    <field ref="mba" label="MLP3 COMERR" length="1" type="str"/>
+    <field ref="iid" label="InR Instrumnet" length="4" type="str"/>
+    <field ref="lgi" label="CXWS Login" type="str"/>
   </hexpack>
 </hdb>

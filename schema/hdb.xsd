@@ -41,7 +41,17 @@
   <xsd:element name="field">
     <xsd:complexType>
       <xsd:attributeGroup ref="hdb:id_attr"/>
-      <xsd:attribute name="type" type="xsd:token"/>
+      <xsd:attribute name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="str"/>
+            <xsd:enumeration value="binary"/>
+            <xsd:enumeration value="float"/>
+            <xsd:enumeration value="int"/>
+            <xsd:enumeration value="hex"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
       <xsd:attribute name="length" type="xsd:int"/>
     </xsd:complexType>
   </xsd:element>

@@ -11,7 +11,7 @@
       <item id="upd_all" label="Update All">
         <mcr name="upd"/>
         <cfg site="tmc" name="lowspd"/>
-        <mesg label="moircs ok?" />
+        <mesg label="moircs ok?"/>
       </item>
     </group>
     <group id="grp_tfp_2" caption="Action" rank="2">

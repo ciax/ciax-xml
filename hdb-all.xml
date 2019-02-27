@@ -110,7 +110,7 @@
     <field ref="field:el" label="EL Angle(deg)" length="5" type="float"/>
     <field ref="field:iang" label="InR Angle" length="5" type="float"/>
     <field ref="field:mlp3" label="Comm Error" length="2" type="int"/>
-    <field ref="field:iid" label="Instrument ID" length="4" type="binary"/>
+    <field ref="field:iid" label="Instrument ID" length="4" type="int"/>
     <field ref="frame:logstat" label="LOGIN Statu" type="str"/>
   </hexpack>
 </hdb>

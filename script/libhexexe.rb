@@ -30,11 +30,6 @@ module CIAX
 
       private
 
-      #      def ___mk_refdb
-      #        @refdb = @aexe.stat.pick(%i(data class msg))
-      #        %i(field frame).each { |k| src[k] = @aexe.sub.cfg[k][:data]}
-      #      end
-
       # Sub Methods for Initialize
       def ___init_sub
         @sub = @cfg[:sub_dic].get(@id)

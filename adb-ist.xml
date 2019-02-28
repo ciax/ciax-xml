@@ -1,7 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app id="ist" label="Cas Inst DB" version="1">
-    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc"/>
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+    <group id="gci" caption="Current Instrument">
+      <item id="mcs" label="MCS">
+        <frmcmd name="set">
+          <argv>cis</argv>
+          <argv>mcs</argv>
+        </frmcmd>
+      </item>
+      <item id="comics" label="COMICS">
+        <frmcmd name="set">
+        <argv>cis</argv>
+        <argv>comics</argv>
+        </frmcmd>
+      </item>
+      <item id="moircs" label="MOIRCS">
+        <frmcmd name="set">
+        <argv>cis</argv>
+        <argv>moircs</argv>
+        </frmcmd>
+      </item>
+      <item id="focas" label="FOCAS">
+        <frmcmd name="set">
+        <argv>cis</argv>
+        <argv>focas</argv>
+        </frmcmd>
+      </item>
+    </group>
+    <group id="gcf" caption="Current Flange">
+      <item id="sa" label="SA">
+        <frmcmd name="set">
+        <argv>cis</argv>
+        <argv>mcs</argv>
+        </frmcmd>
+        <frmcmd name="set">
+        <argv>cf</argv>
+        <argv>sa</argv>
+        </frmcmd>
+      </item>
+      <item id="sb" label="SB">
+        <frmcmd name="set">
+        <argv>cis</argv>
+        <argv>comics</argv>
+        </frmcmd>
+        <frmcmd name="set">
+        <argv>cf</argv>
+        <argv>sb</argv>
+        </frmcmd>
+      </item>
+      <item id="sc" label="SC">
+        <frmcmd name="set">
+        <argv>cis</argv>
+        <argv>moircs</argv>
+        </frmcmd>
+        <frmcmd name="set">
+        <argv>cf</argv>
+        <argv>sc</argv>
+        </frmcmd>
+      </item>
+      <item id="sd" label="SD">
+        <frmcmd name="set">
+        <argv>cis</argv>
+        <argv>focas</argv>
+        </frmcmd>
+        <frmcmd name="set">
+        <argv>cf</argv>
+        <argv>sd</argv>
+        </frmcmd>
+      </item>
+    </group>
+  </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" caption="">
         <string id="cis" label="Current Instrument"/>

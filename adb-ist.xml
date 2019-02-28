@@ -2,83 +2,83 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app id="ist" label="Cas Inst DB" version="1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-    <group id="gci" caption="Current Instrument">
-      <item id="mcs" label="MCS">
-        <frmcmd name="set">
-          <argv>cis</argv>
-          <argv>mcs</argv>
-        </frmcmd>
-      </item>
-      <item id="comics" label="COMICS">
-        <frmcmd name="set">
-        <argv>cis</argv>
-        <argv>comics</argv>
-        </frmcmd>
-      </item>
-      <item id="moircs" label="MOIRCS">
-        <frmcmd name="set">
-        <argv>cis</argv>
-        <argv>moircs</argv>
-        </frmcmd>
-      </item>
-      <item id="focas" label="FOCAS">
-        <frmcmd name="set">
-        <argv>cis</argv>
-        <argv>focas</argv>
-        </frmcmd>
-      </item>
-    </group>
-    <group id="gcf" caption="Current Flange">
-      <item id="sa" label="SA">
-        <frmcmd name="set">
-        <argv>cis</argv>
-        <argv>mcs</argv>
-        </frmcmd>
-        <frmcmd name="set">
-        <argv>cf</argv>
-        <argv>sa</argv>
-        </frmcmd>
-      </item>
-      <item id="sb" label="SB">
-        <frmcmd name="set">
-        <argv>cis</argv>
-        <argv>comics</argv>
-        </frmcmd>
-        <frmcmd name="set">
-        <argv>cf</argv>
-        <argv>sb</argv>
-        </frmcmd>
-      </item>
-      <item id="sc" label="SC">
-        <frmcmd name="set">
-        <argv>cis</argv>
-        <argv>moircs</argv>
-        </frmcmd>
-        <frmcmd name="set">
-        <argv>cf</argv>
-        <argv>sc</argv>
-        </frmcmd>
-      </item>
-      <item id="sd" label="SD">
-        <frmcmd name="set">
-        <argv>cis</argv>
-        <argv>focas</argv>
-        </frmcmd>
-        <frmcmd name="set">
-        <argv>cf</argv>
-        <argv>sd</argv>
-        </frmcmd>
-      </item>
-    </group>
-  </command>
+      <group id="gci" caption="Current Instrument">
+        <item id="mcs" label="MCS">
+          <frmcmd name="set">
+            <argv>cis</argv>
+            <argv>8</argv>
+          </frmcmd>
+        </item>
+        <item id="comics" label="COMICS">
+          <frmcmd name="set">
+            <argv>cis</argv>
+            <argv>2</argv>
+          </frmcmd>
+        </item>
+        <item id="moircs" label="MOIRCS">
+          <frmcmd name="set">
+            <argv>cis</argv>
+            <argv>7</argv>
+          </frmcmd>
+        </item>
+        <item id="focas" label="FOCAS">
+          <frmcmd name="set">
+            <argv>cis</argv>
+            <argv>4</argv>
+          </frmcmd>
+        </item>
+      </group>
+      <group id="gcf" caption="Current Flange">
+        <item id="sa" label="SA">
+          <frmcmd name="set">
+            <argv>cis</argv>
+            <argv>${cf@0}</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>cf</argv>
+            <argv>0</argv>
+          </frmcmd>
+        </item>
+        <item id="sb" label="SB">
+          <frmcmd name="set">
+            <argv>cis</argv>
+            <argv>${cf@1}</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>cf</argv>
+            <argv>1</argv>
+          </frmcmd>
+        </item>
+        <item id="sc" label="SC">
+          <frmcmd name="set">
+            <argv>cis</argv>
+            <argv>${cf@2}</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>cf</argv>
+            <argv>2</argv>
+          </frmcmd>
+        </item>
+        <item id="sd" label="SD">
+          <frmcmd name="set">
+            <argv>cis</argv>
+            <argv>${cf@3}</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>cf</argv>
+            <argv>3</argv>
+          </frmcmd>
+        </item>
+      </group>
+    </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" caption="">
-        <string id="cis" label="Current Instrument"/>
-        <string id="sa" label="Instrument Assigned SA"/>
-        <string id="sb" label="Instrument Assigned SB"/>
-        <string id="sc" label="Instrument Assigned SC"/>
-        <string id="sd" label="Instrument Assigned SD"/>
-        <string id="cf" label="Current Flange"/>
+        <integer id="cis" label="Current Instrument" symbol="iid_ac"/>
+        <integer id="sa" label="Instrument Assigned SA" symbol="iid_ac"/>
+        <integer id="sb" label="Instrument Assigned SB" symbol="iid_ac"/>
+        <integer id="sc" label="Instrument Assigned SC" symbol="iid_ac"/>
+        <integer id="sd" label="Instrument Assigned SD" symbol="iid_ac"/>
+        <integer id="cf" label="Current Flange" symbol="flange"/>
       </group>
     </status>
   </app>

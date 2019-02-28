@@ -24,7 +24,7 @@ module CIAX
         @server_input_proc = proc do |line|
           /^(strobe|stat)/ =~ line ? [] : line.split(' ')
         end
-        @server_output_proc = proc { @stat.to_s }
+        @server_output_proc = proc { @stat.to_x }
         super
       end
 

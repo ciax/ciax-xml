@@ -11,6 +11,7 @@ module CIAX
     # Field class
     class Field
       def ext_local_conv(cfg)
+        return ext_save unless cfg[:iocmd]
         extend(Conv).ext_local_conv(cfg)
       end
 

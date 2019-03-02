@@ -16,6 +16,7 @@ module CIAX
         dbi = super
         dbi[:stream] = doc[:stream] || Hashx.new
         _init_command_db(dbi, doc)
+#        ___init_field(dbi, doc)
         ___init_response(dbi, doc)
         dbi
       end
@@ -54,45 +55,27 @@ module CIAX
       end
 
       ######## Status section #######
-      def ___add_fld(e0, fld, db)
-        itm = db[e0.attr2item(db)]
-        @rep.each(e0) do |e1|
-          e = __add_rspfrm(e1, fld) || next
-          itm.get(:body) { [] } << e
-        end
+      # Field section
+      def ___init_field(dbi, dom)
+        @fld = dbi[:field] = Hashx.new # template
+        dom[:field].each { |e| ___add_fld(e) }
       end
 
-      # Response section
-      def ___init_response(dbi, dom)
-        fld = dbi[:field] = Hashx.new # template
-        # Whole frame
-        frm = __init_frame(dom[:rspframe]) { |e| __add_rspfrm(e, fld) }
-        # Frame Dic
-        dbi[:response] = Hashx.new(index: idx = Hashx.new, frame: frm)
-        dom[:response].each { |e0| ___add_fld(e0, fld, idx) }
-        dbi[:frm_id] = dbi[:id]
-        dbi
-      end
-
-      def __add_rspfrm(e, fld)
-        # Avoid override duplicated id
-        elem = { type: e.name }
-        if (id = e[:assign]) && !fld.key?(id)
-          fval = fld[id] = { label: e[:label] }
-        end
-        elem.update(___init_elem(e, fval) || {})
+      def ___add_fld(e0)
+        id = e0.attr2item(@fld)
+        ___init_elem(e0, @fld[id])
       end
 
       def ___init_elem(e, fval)
         case e.name
-        when 'field', 'body'
-          ___init_field(e, fval)
+        when 'assign'
+          ___init_subfld(e, fval)
         when 'array'
           ___init_ary(e, fval)
         end
       end
 
-      def ___init_field(e, fval)
+      def ___init_subfld(e, fval)
         _get_h(e) do |atrb|
           fval[:struct] = [] if fval
           verbose { "InitField: #{atrb}" }
@@ -105,6 +88,26 @@ module CIAX
           e.each { |e1| idx << e1.to_h }
           fval[:struct] = idx.map { |h| h[:size] } if fval
           verbose { "InitArray: #{atrb}" }
+        end
+      end
+
+      # Response section
+      def ___init_response(dbi, dom)
+        # Whole frame
+        rsp = dbi[:rspframe] = Hashx.new
+        frm = __init_frame(dom[:rspframe]) { |e| __add_ritem(e, rsp) }
+        # Response DB (index)
+        dbi[:response] = Hashx.new(index: idx = Hashx.new, frame: frm)
+        dom[:response].each { |e0| __add_ritem(e0, idx) }
+        dbi[:frm_id] = dbi[:id]
+        dbi
+      end
+
+      def __add_ritem(e0, db)
+        itm = db[e0.attr2item(db)]
+        @rep.each(e0) do |_e1|
+          e = { type: e.name }
+          itm.get(:body) { [] } << e
         end
       end
 

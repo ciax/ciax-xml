@@ -47,12 +47,16 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field assign="output" decode="hexstr" label="Status" length="4"/>
+        <field assign="output" decode="hexstr" length="4"/>
       </item>
       <item id="getstat2">
-        <field assign="input" decode="hexstr" label="Status" length="4"/>
+        <field assign="input" decode="hexstr" length="4"/>
       </item>
       <item id="default"/>
     </response>
+    <field>
+      <assign id="output" label="Output Status"/>
+      <assign id="input" label="Input Status"/>
+    </field>
   </frame>
 </fdb>

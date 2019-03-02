@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="cj2" version="1" label="OMRON CJ2M-CPU33">
-    <stream endian="big"/>
+    <stream endian="big" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc" nocache="true">
       <char length="1" label="FINS Header:ICF">0x80</char>
       <char length="1" label="FINS Header:RSV">0x00</char>
@@ -13,7 +13,7 @@
       <char length="1" label="FINS Header:SA1">${ipl}</char>
       <char length="1" label="FINS Header:SA2">0x00</char>
       <char length="1" label="FINS Header:SID">0xFF</char>
-      <body/>
+      <body />
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <group id="gst" caption="Status">
@@ -100,64 +100,73 @@
       </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field decode="integer" label="FINS Header:ICF" length="1">0xc0</field>
-      <field decode="integer" label="FINS Header:RSV" length="1">0x00</field>
-      <field decode="integer" label="FINS Header:GCT" length="1">0x02</field>
-      <field decode="integer" label="FINS Header:DNA" length="1">0x00</field>
-      <field decode="integer" label="FINS Header:DA1" length="1" assign="ipl"/>
-      <field decode="integer" label="FINS Header:DA2" length="1">0x00</field>
-      <field decode="integer" label="FINS Header:SNA" length="1">0x00</field>
-      <field decode="integer" label="FINS Header:SA1" length="1" assign="ipr"/>
-      <field decode="integer" label="FINS Header:SA2" length="1">0x00</field>
-      <field decode="integer" label="FINS Header:SID" length="1">0xFF</field>
-      <body/>
+      <char decode="integer" label="FINS Header:ICF" length="1">0xc0</char>
+      <char decode="integer" label="FINS Header:RSV" length="1">0x00</char>
+      <char decode="integer" label="FINS Header:GCT" length="1">0x02</char>
+      <char decode="integer" label="FINS Header:DNA" length="1">0x00</char>
+      <char decode="integer" label="FINS Header:DA1" length="1" assign="ipl" />
+      <char decode="integer" label="FINS Header:DA2" length="1">0x00</char>
+      <char decode="integer" label="FINS Header:SNA" length="1">0x00</char>
+      <char decode="integer" label="FINS Header:SA1" length="1" assign="ipr" />
+      <char decode="integer" label="FINS Header:SA2" length="1">0x00</char>
+      <char decode="integer" label="FINS Header:SID" length="1">0xFF</char>
+      <body />
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field decode="integer" label="FINS Command:MRC" length="1">0x01</field>
-        <field decode="integer" label="FINS Command:SRC" length="1">0x01</field>
-        <field decode="integer" label="FINS Command:MRES" length="1">0x00</field>
-        <field decode="integer" label="FINS Command:SRES" length="1">0x00</field>
-        <array assign="w" decode="integer" label="Status" length="2">
-          <index size="13"/>
-        </array>
+        <char decode="integer" label="FINS Command:MRC" length="1">0x01</char>
+        <char decode="integer" label="FINS Command:SRC" length="1">0x01</char>
+        <char decode="integer" label="FINS Command:MRES" length="1">0x00</char>
+        <char decode="integer" label="FINS Command:SRES" length="1">0x00</char>
+        <char assign="w" decode="integer" length="2" />
       </item>
       <item id="getexe">
-        <field decode="integer" label="FINS Command:MRC" length="1">0x01</field>
-        <field decode="integer" label="FINS Command:SRC" length="1">0x01</field>
-        <field decode="integer" label="FINS Command:MRES" length="1">0x00</field>
-        <field decode="integer" label="FINS Command:SRES" length="1">0x00</field>
-        <array assign="c" decode="integer" label="Status" length="2">
-          <index size="4"/>
-        </array>
+        <char decode="integer" label="FINS Command:MRC" length="1">0x01</char>
+        <char decode="integer" label="FINS Command:SRC" length="1">0x01</char>
+        <char decode="integer" label="FINS Command:MRES" length="1">0x00</char>
+        <char decode="integer" label="FINS Command:SRES" length="1">0x00</char>
+        <char assign="c" decode="integer" length="2" />
       </item>
       <item id="geterr">
-        <field decode="integer" label="FINS Command:MRC" length="1">0x01</field>
-        <field decode="integer" label="FINS Command:SRC" length="1">0x01</field>
-        <field decode="integer" label="FINS Command:MRES" length="1">0x00</field>
-        <field decode="integer" label="FINS Command:SRES" length="1">0x00</field>
-        <field assign="err" decode="integer" label="FINS Command:Error Code" length="2"/>
+        <char decode="integer" label="FINS Command:MRC" length="1">0x01</char>
+        <char decode="integer" label="FINS Command:SRC" length="1">0x01</char>
+        <char decode="integer" label="FINS Command:MRES" length="1">0x00</char>
+        <char decode="integer" label="FINS Command:SRES" length="1">0x00</char>
+        <char assign="err" decode="integer" length="2" />
       </item>
       <item id="getzlen">
-        <field decode="integer" label="FINS Command:MRC" length="1">0x01</field>
-        <field decode="integer" label="FINS Command:SRC" length="1">0x01</field>
-        <field decode="integer" label="FINS Command:MRES" length="1">0x00</field>
-        <field decode="integer" label="FINS Command:SRES" length="1">0x00</field>
-        <array assign="d" decode="integer" sign="msb" label="Status" length="2">
-          <index size="10"/>
-        </array>
+        <char decode="integer" label="FINS Command:MRC" length="1">0x01</char>
+        <char decode="integer" label="FINS Command:SRC" length="1">0x01</char>
+        <char decode="integer" label="FINS Command:MRES" length="1">0x00</char>
+        <char decode="integer" label="FINS Command:SRES" length="1">0x00</char>
+        <char assign="d" decode="integer" sign="msb" length="2" />
       </item>
       <item id="cmdrsp" label="command resp">
-        <field decode="integer" label="FINS Command:MRC" length="1">0x01</field>
-        <field decode="integer" label="FINS Command:SRC" length="1">0x02</field>
-        <field decode="integer" label="FINS Command:MRES" length="1">0x00</field>
-        <field decode="integer" label="FINS Command:SRES" length="1">0x00</field>
+        <char decode="integer" label="FINS Command:MRC" length="1">0x01</char>
+        <char decode="integer" label="FINS Command:SRC" length="1">0x02</char>
+        <char decode="integer" label="FINS Command:MRES" length="1">0x00</char>
+        <char decode="integer" label="FINS Command:SRES" length="1">0x00</char>
       </item>
       <item id="dmy" label="for csv daemon">
-        <field decode="integer" label="Local IP (CIAX)" length="1" assign="ipl">1</field>
-        <field decode="integer" label="Remote IP (DSO)" length="1" assign="ipr">32</field>
-        <field decode="integer" label="Exe Flag" length="1" assign="exe">0</field>
+        <char decode="integer" length="1" assign="ipl" />
+        <char decode="integer" length="1" assign="ipr" />
+        <char decode="integer" length="1" assign="exe" />
       </item>
     </response>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbf">
+      <array id="w" label="Status">
+        <index size="13" />
+      </array>
+      <array id="c" label="Status">
+        <index size="4" />
+      </array>
+      <array id="d" label="Status">
+        <index size="10" />
+      </array>
+      <assign id="ipl" label="Local IP (CIAX)">1</assign>
+      <assign id="ipr" label="Remote IP (DSO)">32</assign>
+      <assign id="exe" label="Exe Flag">0</assign>
+      <assign id="err" label="FINS Command:Error Code" />
+    </field>
   </frame>
 </fdb>

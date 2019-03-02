@@ -10,25 +10,21 @@ module CIAX
         end
 
         def ext_local_driver
-          @stat.ext_local_conv(@sub.stat)
+          @stat.ext_local_conv
           # @stat[:int] is overwritten by initial loading
           @sub.batch_interrupt = @stat.get(:int)
-          @stat.ext_local_log if @opt.drv?
-          ___init_upd_processor
+          ___init_cmt_procs
           ___init_exe_processor
-          ___init_event_flag
+          @stat.ext_local_log if @opt.drv?
           self
         end
 
         private
 
-        def ___init_upd_processor
-          @stat.cmt_procs << proc do |ev|
-            ev.get(:exec).each do |src, pri, args|
-              verbose { "Propagate Exec:#{args} from [#{src}] by [#{pri}]" }
-              @sub.exe(args, src, pri)
-              sleep ev.interval
-            end.clear
+        def ___init_cmt_procs
+          @stat.cmt_procs.append('watconv') do |s|
+            ___auto_exec(s)
+            ___event_flag(s)
           end
         end
 
@@ -44,6 +40,14 @@ module CIAX
             @stat.auto_exec unless @sv_stat.up?(:comerr)
             sleep 10
           end
+        end
+
+        def ___auto_exec(ev)
+          ev.get(:exec).each do |src, pri, args|
+            verbose { "Propagate Exec:#{args} from [#{src}] by [#{pri}]" }
+            @sub.exe(args, src, pri)
+            sleep ev.interval
+          end.clear
         end
 
         # @stat[:active] : Array of event ids which meet criteria
@@ -68,15 +72,13 @@ module CIAX
         #  x  |  o  |  x  |  up
         #  x  |  x  |  x  |  -
 
-        def ___init_event_flag
-          @stat.cmt_procs << proc do |s|
-            if @sv_stat.up?(:event)
-              s.act_upd
-              @sv_stat.dw(:event) unless s.active?
-            elsif s.active?
-              s.act_start
-              @sv_stat.up(:event)
-            end
+        def ___event_flag(s)
+          if @sv_stat.up?(:event)
+            s.act_upd
+            @sv_stat.dw(:event) unless s.active?
+          elsif s.active?
+            s.act_start
+            @sv_stat.up(:event)
           end
         end
       end

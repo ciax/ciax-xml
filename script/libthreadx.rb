@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libmsg'
+require 'libenumx'
 require 'thread'
 
 # Add hash manipulate feature to Thread

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libappcmd'
-require 'libstatusconv'
+require 'libappconv'
 require 'libappview'
 require 'libfrmdic'
 require 'libinsdb'
@@ -16,12 +16,11 @@ module CIAX
         super
         dbi = _init_dbi2cfg(%i(dev_id))
         @cfg[:site_id] = @id
-        @stat = Status.new(dbi)
         @sv_stat = Prompt.new('site', @id)
+        @stat = Status.new(dbi, ___init_sub)
         @batch_interrupt = []
         _init_net
         ___init_command
-        ___init_sub if @cfg[:dev_id]
         _opt_mode
       end
 
@@ -58,10 +57,16 @@ module CIAX
 
       # Sub methods for Initialize
       def ___init_sub
-        # LayerDB might generated in Dic level
-        @sub = @cfg[:sub_dic].get(@cfg[:dev_id])
-        @sv_stat.db.update(@sub.sv_stat.db)
-        @sub.sv_stat.cmt_procs << proc do |ss|
+        id = @cfg[:dev_id] || return
+        # LayerDB might generated in ExeDic level
+        @sub = @cfg[:sub_dic].get(id)
+        ___init_svstat(@sub.sv_stat)
+        @sub.stat
+      end
+
+      def ___init_svstat(subsvs)
+        @sv_stat.db.update(subsvs.db)
+        subsvs.cmt_procs.append do |ss|
           @sv_stat.update(ss.pick(%i(comerr ioerr))).cmt
         end
       end
@@ -94,7 +99,7 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehls') do |cfg|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(cfg.args.shift)
-        atrb = { dbi: dbi, sub_dic: Frm::Dic.new(cfg) }
+        atrb = { dbi: dbi, sub_dic: Frm::ExeDic.new(cfg) }
         eobj = Exe.new(cfg, atrb)
         if cfg.opt.sh?
           eobj.shell

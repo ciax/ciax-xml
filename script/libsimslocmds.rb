@@ -40,10 +40,6 @@ module CIAX
         str
       end
 
-      def _cmd_help
-        _get_cmd_list.join($INPUT_RECORD_SEPARATOR)
-      end
-
       # Config Command
       def _cmd_hardlimoff
         @axis.hardlim = false

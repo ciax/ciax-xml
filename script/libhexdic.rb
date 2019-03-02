@@ -5,8 +5,8 @@ module CIAX
   # Ascii Hex Layer for OLD CIAX
   module Hex
     deep_include(Site)
-    # Hex Exe Dic
-    class Dic
+    # Hex Exe ExeDic
+    class ExeDic
       # atrb must have [:db]
       def initialize(spcfg, atrb = Hashx.new)
         super
@@ -20,10 +20,10 @@ module CIAX
       private
 
       def ___init_subdic
-        if @cfg[:dev_dic].is_a?(Wat::Dic)
+        if @cfg[:dev_dic].is_a?(Wat::ExeDic)
           @sub_dic = @cfg[:dev_dic]
         else
-          @sub_dic = Wat::Dic.new(@cfg)
+          @sub_dic = Wat::ExeDic.new(@cfg)
           @sub_dic.super_dic = self
         end
       end
@@ -31,7 +31,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg|
-        Dic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).shell
+        ExeDic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).shell
       end
     end
   end

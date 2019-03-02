@@ -13,7 +13,8 @@ module CIAX
         super
         _init_dbi2cfg
         ___init_sub
-        @stat = View.new(@sub.sub.stat, @cfg[:hdb], @sv_stat)
+        substat = SubStat.new(@sub.sub.stat, @sv_stat)
+        @stat = View.new(substat, @cfg[:hdb])
         _opt_mode
       end
 
@@ -23,7 +24,7 @@ module CIAX
         @server_input_proc = proc do |line|
           /^(strobe|stat)/ =~ line ? [] : line.split(' ')
         end
-        @server_output_proc = proc { @stat.to_s }
+        @server_output_proc = proc { @stat.to_x }
         super
       end
 
@@ -49,7 +50,7 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehls') do |cfg|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(cfg.args.shift)
-        atrb = { dbi: dbi, hdb: Db.new, sub_dic: Wat::Dic.new(cfg) }
+        atrb = { dbi: dbi, hdb: Db.new, sub_dic: Wat::ExeDic.new(cfg) }
         Exe.new(cfg, atrb).shell
       end
     end

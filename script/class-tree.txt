@@ -6,7 +6,7 @@ Hash
      |-Disp
      |-Disp::Section
      |-Mcr::Condition
-     |-Mcr::Dic
+     |-Mcr::ExeDic
      |-Parameter
      |-Xml::Doc
      |-Config
@@ -60,13 +60,13 @@ Hash
            |-Mcr::View
            |-Prompt
            |-Wat::Event
-           |-Dic
+           |-ExeDic
               |-Layer
-              |-Site::Dic
-                 |-App::Dic
-                 |-Frm::Dic
-                 |-Hex::Dic
-                 |-Wat::Dic
+              |-Site::ExeDic
+                 |-App::ExeDic
+                 |-Frm::ExeDic
+                 |-Hex::ExeDic
+                 |-Wat::ExeDic
 
 Array
   |-Arrayx
@@ -101,7 +101,7 @@ RuntimeError
   |  |-Layer::Shell::Jump
   |  |-LayerJump
   |  |-Retry
-  |  |-Site::Dic::Shell::Jump
+  |  |-Site::ExeDic::Shell::Jump
   |  |-SiteJump
   |  |-Verification
   |-ServerError

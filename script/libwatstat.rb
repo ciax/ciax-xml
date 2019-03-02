@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libprompt'
-require 'libstatus'
+require 'libappstat'
 require 'librerange'
 # CIAX-XML
 module CIAX
@@ -8,8 +8,8 @@ module CIAX
   module Wat
     # Event Data
     class Event < Statx
-      attr_reader :on_act_procs, :on_deact_procs, :interval
-      def initialize(dbi = nil)
+      attr_reader :status, :on_act_procs, :on_deact_procs, :interval
+      def initialize(dbi = nil, status = nil)
         super('event', dbi, Ins::Db)
         @interval = 0.1
         @periodm = 300_000
@@ -17,6 +17,7 @@ module CIAX
         @last_updated = 0
         self[:format_ver] = 1
         ___init_struct
+        ___init_status(status)
       end
 
       def active?
@@ -26,7 +27,7 @@ module CIAX
       def block?(args)
         cid = args.join(':')
         blkcmd = self[:block].map { |ary| ary.join(':') }
-        verbose(!blkcmd.empty?) { "BLOCKING:#{blkcmd}" }
+        verbose { "BLOCKING:#{blkcmd}" } unless blkcmd.empty?
         return unless blkcmd.any? { |blk| Regexp.new(blk).match(cid) }
         Msg.cmd_err("Blocking(#{args})")
       end
@@ -65,18 +66,18 @@ module CIAX
         # For Time element
         self[:act_time] = [now_msec, now_msec]
       end
+
+      def ___init_status(status)
+        @status = type_gen(status, App::Status) { |mod| mod.new(@dbi) }
+        init_time2cmt(@status)
+        propagation(@status)
+      end
     end
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       GetOpts.new('[site]', options: 'h') do |opt, args|
-        event = Event.new(args.shift)
-        if opt.host
-          event.ext_remote(opt.host)
-        else
-          event.ext_local.load
-        end
-        puts event
+        puts Event.new(args.shift).mode(opt.host)
       end
     end
   end

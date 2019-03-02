@@ -14,7 +14,7 @@ module CIAX
     # Stream treats an individual round trip (send/recieve)
     #   communication which will be done sequentially
     class Stream < Varx
-      attr_reader :binary
+      attr_reader :base64
       attr_accessor :pre_open_proc, :post_open_proc
       def initialize(id, cfg)
         iocmd = type?(cfg, Config)[:iocmd]
@@ -55,9 +55,9 @@ module CIAX
       end
 
       def __convert(dir, data, cid = nil)
-        @binary = data
+        @base64 = enc64(data)
         self['cmd'] = cid if cid
-        update('dir' => dir, 'base64' => ___encode_base64(data))
+        update('dir' => dir, 'base64' => @base64)
       end
 
       def ___init_par(cfg)
@@ -102,10 +102,6 @@ module CIAX
         Process.waitpid(@f.pid)
         @f.close
         verbose { @f.closed? ? 'Stream Closed' : 'Stream not Closed' }
-      end
-
-      def ___encode_base64(str)
-        [str].pack('m').split("\n").join('')
       end
 
       # rcv sub methods

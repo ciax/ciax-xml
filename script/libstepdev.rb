@@ -56,7 +56,7 @@ module CIAX
         end
 
         def ext_local_dev(dev_dic)
-          @dev_dic = type?(dev_dic, Wat::Dic)
+          @dev_dic = type?(dev_dic, Wat::ExeDic)
           # App::Exe dic used in this Step
           if (@condition = delete(:cond))
             sites = @condition.map { |h| h[:site] }.uniq
@@ -140,7 +140,7 @@ module CIAX
         def ___scan
           @exes.each_with_object({}) do |exe, hash|
             st = hash[exe.id] = exe.sub.stat.latest
-            verbose { "Scanning #{exe.id} (#{st[:time]})/(#{st.object_id})" }
+            verbose { "Scanning #{exe.id} (#{elps_sec(st[:time])})" }
           end
         end
 

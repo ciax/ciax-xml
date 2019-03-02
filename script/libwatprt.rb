@@ -21,8 +21,8 @@ module CIAX
           ___view_exe(vw)
           return vw if self[:stat].empty?
           ___view_cond(vw)
-          vw << __itemize('Interrupt', self[:int])
-          vw << __itemize('Blocked', self[:block])
+          vw << __itemize('Interrupt', self[:int].inspect)
+          vw << __itemize('Blocked', self[:block].inspect)
         end
 
         def to_o
@@ -100,7 +100,7 @@ module CIAX
         GetOpts.new('[site] | < event_file', options: 'r') do |_opt, args|
           event = Event.new(args.shift)
           wview = View.new(event).ext_prt
-          event.ext_local.load if STDIN.tty?
+          event.ext_local if STDIN.tty?
           puts wview
         end
       end

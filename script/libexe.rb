@@ -33,7 +33,7 @@ module CIAX
     def exe(args, src = nil, pri = 1)
       type?(args, Array)
       src ||= 'local'
-      verbose { "Executing Command #{args} from '#{src}' as ##{pri}" }
+      verbose { "Executing Command #{args.inspect} from '#{src}' as ##{pri}" }
       @pre_exe_procs.each { |p| p.call(args, src) }
       msg = @cobj.set_cmd(args).exe_cmd(src, pri).msg
       @post_exe_procs.each { |p| p.call(args, src, msg) }
@@ -99,7 +99,6 @@ module CIAX
     # No save any data
     def _ext_local_test
       @mode = 'TEST'
-      @stat.load
       self
     end
 

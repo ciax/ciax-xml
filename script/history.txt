@@ -75,7 +75,7 @@ update:add ext_???() method including add new method instead of extend(Module)
 intapp,intfrm/ set command should work at test (-t) mode
 more intelligent chache system with detecting file update like as Makefile
 Command: should includes procs
-libfieldconv takes raw data -> Stream w/o IO (data+date) (2/15/13)
+libfrmconv takes raw data -> Stream w/o IO (data+date) (2/15/13)
 Var::Val -> Var+module Upd(2/27/13)
 hexpack: too short return on exec (12/9/27)
 crt/hexint:return after command issued  without exe flag(12/1/6)

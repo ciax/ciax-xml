@@ -18,12 +18,15 @@ module CIAX
     #   [val] -> taken from  xml (criteria)
     #   <val> -> taken from status (incoming)
     #   (val) -> calcurated from status
-    def verbose(cond = true)
-      return cond unless ENV['VER'] && cond && !@hide_inside
+
+    # Returns T/F (Displayed or not)
+    def verbose
+      return unless ENV['VER'] && !@hide_inside
       str = type?(yield, String)
       msg = __make_msg(str)
-      __prt_lines(msg) if ___chk_ver(msg)
-      cond
+      return unless ___chk_ver(msg) || (@enclosed ||= []).any?
+      __prt_lines(msg)
+      true
     end
 
     def info(title)
@@ -50,13 +53,12 @@ module CIAX
     # @hide_inside is flag for hiding inside of enclose
     # returns enclosed contents to have no influence by this
     def enclose(title1, title2)
-      verbose { title1 }
-      @enclosed = @printed
+      (@enclosed ||= []) << verbose { title1 }
       Msg.ver_indent(1)
       res = yield
     ensure
       Msg.ver_indent(-1)
-      __prt_lines(__make_msg(format(title2, res))) if @enclosed
+      __prt_lines(__make_msg(format(title2, res))) if @enclosed.pop
     end
 
     private
@@ -68,11 +70,9 @@ module CIAX
         show Msg.indent(base + ind) + line
         ind = 2
       end
-      @printed = true
     end
 
     def __make_msg(title, c = nil)
-      @printed = false
       return unless title
       ts = ___make_head + ':'
       ts << (c ? Msg.colorize(title.to_s, c) : title.to_s)
@@ -96,21 +96,20 @@ module CIAX
     end
 
     # VER= makes setenv "" to VER otherwise nil
+    # VER example "str1:str2,str3!str4"
     def ___chk_ver(msg)
-      return if !ENV['VER'] || !msg
+      ev = ENV['VER']
+      return unless ev && msg
+      return true if /\*/ =~ ev
       title = msg.split("\n").first.upcase
-      ENV['VER'].upcase.split(',').any? do |s|
-        s.split(':').all? do |e|
-          ___chk_exclude(e, title)
-        end
+      ev.upcase.split(',').any? do |s|
+        ___chk_exp(title, *s.split('!'))
       end
     end
 
-    def ___chk_exclude(e, title)
-      exc = e.split('^')
-      inc = exc.shift
-      return if exc.any? { |x| title.include?(x) }
-      /\*/ =~ inc || title.include?(inc)
+    def ___chk_exp(title, exp, *inv)
+      return false if inv.any? { |x| title.include?(x) }
+      /#{exp.gsub(/:/, '.*')}/ =~ title
     end
 
     module_function

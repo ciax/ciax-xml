@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libeventconv'
+require 'libwatconv'
 
 # View is not used for computing, just for apperance for user.
 # Some information is added from Dbi
@@ -32,7 +32,7 @@ module CIAX
       def ___init_cmt_procs
         init_time2cmt(@event)
         propagation(@event)
-        @cmt_procs << proc do
+        @cmt_procs.append do
           %i(exec block int act_time upd_next).each do |id|
             self[id] = @event.get(id)
           end
@@ -95,7 +95,7 @@ module CIAX
       GetOpts.new('[site] | < event_file', options: 'r') do |_opt, args|
         event = Event.new(args.shift)
         wview = View.new(event)
-        event.ext_local.load if STDIN.tty?
+        event.ext_local if STDIN.tty?
         puts wview.cmt
       end
     end

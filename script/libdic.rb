@@ -1,25 +1,25 @@
 #!/usr/bin/env ruby
 require 'libvarx'
-require 'libcmdlocal'
 
 module CIAX
-  # This is parent of Layer Dic, Site Dic.
-  # Having :dic(Array) key
   # Access :dic with get() directly
-  class Dic < Varx
-    attr_reader :cfg
-    # level can be Layer or Site
-    def initialize(spcfg, atrb = Hashx.new)
-      @cfg = spcfg.gen(self).update(atrb)
-      super(m2id(@cfg[:obj].class, -2))
-      _attr_set
-      @opt = @cfg[:opt]
-      verbose { 'Initiate Dic (option:' + @opt.keys.join + ')' }
-      self[:dic] = Hashx.new
+  module Dic
+    def self.extended(obj)
+      Msg.type?(obj, Varx)
     end
 
-    def get(id)
-      _dic.get(id)
+    # set dic
+    def ext_dic(dicname)
+      @dicname = dicname.to_sym
+      return self if key?(@dicname)
+      db = defined?(yield) ? yield : Hashx.new
+      self[@dicname] = db
+      self
+    end
+
+    # Never override the standard methods
+    def get(id, &defproc)
+      _dic.get(id, &defproc)
     end
 
     def put(id, obj)
@@ -27,57 +27,29 @@ module CIAX
       cmt
     end
 
-    def to_a
-      _dic.keys
-    end
-
-    def each
-      _dic.each { |e| yield e }
-    end
-
-    def shell
-      ext_local_shell.shell
-    end
-
-    def ext_local_shell
-      smod = context_module('Shell')
-      return self if is_a?(smod)
-      extend(smod).ext_local_shell
-    end
-
     private
 
     def _dic
-      self[:dic]
+      self[@dicname]
+    end
+  end
+
+  # Key is Token
+  module DicToken
+    include Dic
+    def self.extended(obj)
+      Msg.type?(obj, Hashx)
     end
 
-    # Shell module
-    module Shell
-      attr_reader :jumpgrp
-      def self.extended(obj)
-        Msg.type?(obj, Dic)
-      end
-
-      # atrb should have [:jump_class] (Used in Local::Jump::Group)
-      def ext_local_shell
-        verbose { 'Initiate Dic Shell' }
-        @cfg[:jump_class] = context_module('Jump')
-        @jumpgrp = CmdTree::Local::Jump::Group.new(@cfg)
-        self
-      end
-
-      def shell
-        switch(@current).shell
-      rescue @cfg[:jump_class]
-        @current = $ERROR_INFO.to_s
-        retry
-      rescue InvalidARGS
-        @opt.usage('(opt) [id]')
-      end
-
-      def switch(site)
-        get(site) || cfg_err('Mcr Dic is empty')
-      end
+    # key format: category + ':' followed by key "data:key, msg:key..."
+    # default category is :data if no colon
+    def get(key, &gen_proc)
+      type?(key, String)
+      return super if key !~ /:/
+      cat, id = key.split(':')
+      cat = cat.to_sym
+      par_err("Invalid category (#{cat}/#{key})") unless key?(cat)
+      self[cat].get(id, &gen_proc) || par_err("Invalid id (#{cat}:#{id})")
     end
   end
 end

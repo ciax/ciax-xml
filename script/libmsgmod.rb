@@ -77,5 +77,19 @@ module CIAX
     def m2id(mod, pos = -1)
       mod.name.split('::')[pos].downcase
     end
+
+    # Module extend order check
+    def bad_order(name, *mods)
+      if mods.any? { |mod| name.is_a?(mod) }
+        sv_err("Bad ext order #{name} -> #{class_path.last}")
+      else
+        name
+      end
+    end
+
+    def type_gen(obj, mod)
+      obj = yield mod if !obj && defined? yield
+      type?(obj, mod)
+    end
   end
 end

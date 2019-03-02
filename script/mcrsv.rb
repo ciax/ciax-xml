@@ -8,9 +8,9 @@ module CIAX
   module Mcr
     ConfOpts.new('[id] ...', options: 'denxb') do |cfg|
       Daemon.new(cfg) do |layer|
-        md = Dic.new(cfg, Atrb.new(cfg)).run
+        md = ExeDic.new(cfg, Atrb.new(cfg)).run
         # For hex layer
-        layer::Dic.new(md.cfg).run if cfg.opt[:x]
+        layer::ExeDic.new(md.cfg).run if cfg.opt[:x]
       end
     end
   end

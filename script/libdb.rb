@@ -143,20 +143,21 @@ module CIAX
       end
     end
 
+    # To scan all
     def ___use_cache?
-      !(___envnocache? || ___marexist? || ___xmlnewer? || ___rbnewer?)
+      !(___envnocache? || ___nomar? || ___xmlnewer? || ___rbnewer?)
     end
 
     def ___envnocache?
-      verbose(ENV['NOCACHE']) do
-        "#{@type} ENV['NOCACHE'] is set"
-      end
+      return unless ENV['NOCACHE']
+      verbose { "#{@type} ENV['NOCACHE'] is set" }
+      true
     end
 
-    def ___marexist?
-      verbose(!test('e', @cachefile)) do
-        "#{@type} MAR file(#{@cbase}) not exist"
-      end
+    def ___nomar?
+      return if test('e', @cachefile)
+      verbose { "#{@type} MAR file(#{@cbase}) not exist" }
+      true
     end
 
     def ___xmlnewer?
@@ -169,10 +170,12 @@ module CIAX
 
     def __file_newer?(cap, ary)
       latest = ary.max_by { |f| File.mtime(f) }
-      verbose(test('>', latest, @cachefile)) do
+      return unless test('>', latest, @cachefile)
+      verbose do
         format('%s %s(%s) is newer than (%s)',
                @type, cap, latest.split('/').last, @cbase)
       end
+      true
     end
   end
 end

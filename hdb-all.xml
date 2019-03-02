@@ -32,7 +32,7 @@
     <field ref="pse" label="PAUSE" length="1" type="binary"/>
     <field ref="emg" label="EMG" length="1" type="binary"/>
     <field ref="flt" label="Fault" length="1" type="binary"/>
-    <field ref="exc" label="Fault Message" length="4" type="char"/>
+    <field ref="exc" label="Fault Message" length="4" type="str"/>
     <field ref="acp" label="Command Enable" length="1" type="binary"/>
     <field ref="run" label="RUNNING" length="1" type="binary"/>
     <field ref="cps" label="CRNT POS" length="2" type="int"/>
@@ -84,7 +84,7 @@
     <field ref="dor" label="DOOR STAT" length="2" type="binary"/>
   </hexpack>
   <hexpack id="srm" version="1" label="CsEtr Control">
-    <field ref="cod" label="RESPONSE CODE" length="2" type="char"/>
+    <field ref="cod" label="RESPONSE CODE" length="2" type="str"/>
     <field ref="iid" label="CAS INST ID" length="1" type="int"/>
     <pack code="b" length="2">
       <bit ref="ipw" label="CAS IPW"/>
@@ -96,91 +96,21 @@
       <bit ref="lan" label="CAS LAN PW"/>
     </pack>
   </hexpack>
-  <hexpack id="oss" label="TSC Control">
-    <field ref="exit" label="LAST ERR CODE" length="2" type="int"/>
-    <field ref="rts" label="ROT SEL" length="2" type="int"/>
-    <field ref="rpw" label="ROT DRV" length="2" type="int"/>
-    <field ref="rps" label="ROT POS" length="2" type="binary"/>
-    <field ref="nfb" label="BOLT NFB TRIP" length="1" type="binary"/>
-    <field ref="jpw" label="BOLT PW" length="1" type="binary"/>
-    <field ref="cis" label="CAS INST" length="1" type="binary"/>
-    <field ref="bsa" label="BOLT SUM ALM" length="2" type="int"/>
-    <field ref="abs" label="BOLT ALL" length="2" type="binary"/>
-    <field ref="bl01" label="BOLT 01" length="1" type="binary"/>
-    <field ref="bl02" label="BOLT 02" length="1" type="binary"/>
-    <field ref="bl03" label="BOLT 03" length="1" type="binary"/>
-    <field ref="bl04" label="BOLT 04" length="1" type="binary"/>
-    <field ref="bl05" label="BOLT 05" length="1" type="binary"/>
-    <field ref="bl06" label="BOLT 06" length="1" type="binary"/>
-    <field ref="bl07" label="BOLT 07" length="1" type="binary"/>
-    <field ref="bl08" label="BOLT 08" length="1" type="binary"/>
-    <field ref="bl09" label="BOLT 09" length="1" type="binary"/>
-    <field ref="bl10" label="BOLT 10" length="1" type="binary"/>
-    <field ref="bl11" label="BOLT 11" length="1" type="binary"/>
-    <field ref="bl12" label="BOLT 12" length="1" type="binary"/>
-    <field ref="bl13" label="BOLT 13" length="1" type="binary"/>
-    <field ref="bl14" label="BOLT 14" length="1" type="binary"/>
-    <field ref="bl15" label="BOLT 15" length="1" type="binary"/>
-    <field ref="bl16" label="BOLT 16" length="1" type="binary"/>
-    <field ref="ba01" label="JALM 01" length="1" type="binary"/>
-    <field ref="ba02" label="JALM 02" length="1" type="binary"/>
-    <field ref="ba03" label="JALM 03" length="1" type="binary"/>
-    <field ref="ba04" label="JALM 04" length="1" type="binary"/>
-    <field ref="ba05" label="JALM 05" length="1" type="binary"/>
-    <field ref="ba06" label="JALM 06" length="1" type="binary"/>
-    <field ref="ba07" label="JALM 07" length="1" type="binary"/>
-    <field ref="ba08" label="JALM 08" length="1" type="binary"/>
-    <field ref="ba09" label="JALM 09" length="1" type="binary"/>
-    <field ref="ba10" label="JALM 10" length="1" type="binary"/>
-    <field ref="ba11" label="JALM 11" length="1" type="binary"/>
-    <field ref="ba12" label="JALM 12" length="1" type="binary"/>
-    <field ref="ba13" label="JALM 13" length="1" type="binary"/>
-    <field ref="ba14" label="JALM 14" length="1" type="binary"/>
-    <field ref="ba15" label="JALM 15" length="1" type="binary"/>
-    <field ref="ba16" label="JALM 16" length="1" type="binary"/>
-    <field ref="mba" label="MLP3-BOLT COMM" length="2"/>
-    <field ref="loc" label="BOLT CONT" length="2"/>
-    <!--field ref="cjh" label="JK HOME" length="4"-->
-    <field ref="cl01" label="Current 1" length="1" type="binary"/>
-    <field ref="cl02" label="Current 2" length="1" type="binary"/>
-    <field ref="cl03" label="Current 3" length="1" type="binary"/>
-    <field ref="cl04" label="Current 4" length="1" type="binary"/>
-    <field ref="jk01" label="JK01" length="6" type="float"/>
-    <field ref="jk02" label="JK02" length="6" type="float"/>
-    <field ref="jk03" label="JK03" length="6" type="float"/>
-    <field ref="jk04" label="JK04" length="6" type="float"/>
-    <field ref="jk05" label="JK05" length="6" type="float"/>
-    <field ref="jk06" label="JK06" length="6" type="float"/>
-    <field ref="jk07" label="JK07" length="6" type="float"/>
-    <field ref="jk08" label="JK08" length="6" type="float"/>
-    <field ref="jk09" label="JK09" length="6" type="float"/>
-    <field ref="jk10" label="JK10" length="6" type="float"/>
-    <field ref="jk11" label="JK11" length="6" type="float"/>
-    <field ref="jk12" label="JK12" length="6" type="float"/>
-    <field ref="jk13" label="JK13" length="6" type="float"/>
-    <field ref="jk14" label="JK14" length="6" type="float"/>
-    <field ref="jk15" label="JK15" length="6" type="float"/>
-    <field ref="jk16" label="JK16" length="6" type="float"/>
-    <field ref="zp1" label="ZP1" length="4" type="float"/>
-    <field ref="zp2" label="ZP2" length="4" type="float"/>
-    <field ref="zp3" label="ZP3" length="4" type="float"/>
-    <field ref="zp4" label="ZP4" length="4" type="float"/>
-    <field ref="str" label="EL STOW RDY" length="2"/>
-    <field ref="sta" label="EL STOW ALM" length="1"/>
-    <field ref="stp" label="EL STOW POS" length="2"/>
-    <field ref="stw" label="EL STOW" length="2"/>
-    <field ref="sfi" label="SHUTTER IR" length="2"/>
-    <field ref="sfo" label="SHUTTER OPT" length="2"/>
-    <field ref="sli" label="SHUTTER LMT/O" length="2"/>
-    <field ref="slo" label="SHUTTER LMT/I" length="2"/>
-    <field ref="elr" label="EL DRV RDY" length="1"/>
-    <field ref="eld" label="EL DRIVE" length="6"/>
-    <field ref="azr" label="AZ DRV RDY" length="1"/>
-    <field ref="azd" label="AZ DRIVE" length="2"/>
-    <field ref="elv" label="ELEV" length="5"/>
-    <field ref="inr" label="InR POS" length="5"/>
-    <field ref="mba" label="MLP3 COMERR" length="1" type="char"/>
-    <field ref="iid" label="InR Instrumnet" length="4" type="char"/>
-    <field ref="lgi" label="CXWS Login" type="char"/>
+  <hexpack id="oss" label="TSC">
+    <field ref="field:exit" label="Error Code" length="2" type="hex"/>
+    <field ref="field:rsel" label="Rot Sel" length="2" type="binary"/>
+    <field ref="field:rpw" label="Rot Drv" length="2" type="hex"/>
+    <field ref="field:bstat" label="Rot Pos" length="2" type="hex"/>
+    <field ref="frame:jakstat" label="Jack Bolt Status" length="44" type="str"/>
+    <field ref="frame:jaklen" label="Jack Bolt Length" length="192" type="str"/>
+    <field ref="frame:zlen" label="Z Sensor Length" length="48" type="str"/>
+    <field ref="field:stow_1" label="Stow pin Status" length="2" type="hex"/>
+    <field ref="field:shutter" label="Shutter Status" length="2" type="hex"/>
+    <field ref="field:teldrive" label="AZ/EL Drive Status" length="2" type="hex"/>
+    <field ref="field:el" label="EL Angle(deg)" length="5" type="float"/>
+    <field ref="field:iang" label="InR Angle" length="5" type="float"/>
+    <field ref="field:mlp3" label="Comm Error" length="1" type="int"/>
+    <field ref="field:iid" label="Instrument ID" length="4" type="int"/>
+    <field ref="frame:logstat" label="LOGIN Statu" type="str"/>
   </hexpack>
 </hdb>

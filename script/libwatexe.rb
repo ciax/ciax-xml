@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libappdic'
-require 'libwatviewprt'
+require 'libwatprt'
 
 module CIAX
   # Watch Layer
@@ -12,8 +12,7 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super
         dbi = _init_dbi2cfg
-        ___init_sub
-        @stat = Event.new(dbi)
+        @stat = Event.new(dbi, ___init_sub)
         @host = @sub.host
         _opt_mode
       end
@@ -64,10 +63,11 @@ module CIAX
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
         @post_exe_procs.concat(@sub.post_exe_procs)
+        @sub.stat
       end
 
       def ___init_cmt_procs
-        @stat.cmt_procs << proc do |ev|
+        @stat.cmt_procs.append do |ev|
           verbose { 'Propagate Event#cmt -> Watch#(set blocking command)' }
           block = ev.get(:block).map { |id, par| par ? nil : id }.compact
           @cobj.rem.ext.valid_sub(block)
@@ -79,7 +79,7 @@ module CIAX
       ConfOpts.new('[id]', options: 'cehlts') do |cfg|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(cfg.args.shift)
-        atrb = { dbi: dbi, sub_dic: App::Dic.new(cfg) }
+        atrb = { dbi: dbi, sub_dic: App::ExeDic.new(cfg) }
         eobj = Exe.new(cfg, atrb)
         if cfg.opt.sh?
           eobj.shell

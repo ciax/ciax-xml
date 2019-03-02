@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
-require 'libfieldconv'
+require 'libfrmconv'
 require 'libfrmcmd'
+require 'libframe'
 require 'libdevdb'
 require 'libexe'
 
@@ -12,11 +13,12 @@ module CIAX
       # atrb must have [:dbi]
       def initialize(spcfg, atrb = Hashx.new)
         super
-        # DB is generated in Dic level
+        # DB is generated in ExeDic level
         dbi = _init_dbi2cfg(%i(stream iocmd))
         @cfg[:site_id] = @id
         @stat = @cfg[:field] = Field.new(dbi)
-        @sv_stat = Prompt.new(@id)
+        @cfg[:frame] = @stat.frame
+        @sv_stat = @cfg[:sv_stat] = Prompt.new(@id)
         _init_net
         ___init_command
         _opt_mode
@@ -35,10 +37,12 @@ module CIAX
 
       # Mode Extension by Option
       def _ext_local
+        @stat.frame.ext_local
         @cobj.get('set').def_proc do |ent|
-          @stat.repl(ent.par[0], ent.par[1])
+          key, val = ent.par
+          @stat.repl(key, val)
           @stat.flush
-          verbose { "Set [#{ent.par[0]}] = #{ent.par[1]}" }
+          verbose { "Set [#{key}] = #{val}" }
         end
         super
       end

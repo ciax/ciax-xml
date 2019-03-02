@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'libhashx'
+require 'libprocary'
 module CIAX
   # Variables with update feature (also with manipulation)
   # Used for convert or loading as client from lower layer data.
@@ -10,9 +11,9 @@ module CIAX
       super()
       time_upd
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @upd_procs = []
+      @upd_procs = ProcArray.new(self)
       # Proc Array for Commit Propagation to the upper Layers
-      @cmt_procs = []
+      @cmt_procs = ProcArray.new(self)
     end
 
     # Add cmt for self return method
@@ -25,7 +26,7 @@ module CIAX
     # For loading with propagation
     # Should be done when pulling data
     def upd
-      @upd_procs.each { |p| p.call(self) }
+      @upd_procs.call
       verbose { "Update(#{time_id}) Pre Procs" }
       self
     end
@@ -33,9 +34,14 @@ module CIAX
     # Data Commit Method (Push type notification)
     # For trigger of data storing or processing propagation to upper layer
     # Should be executed when data processing will be done
+    # Execution order:
+    #  - Time setting (sync to lower data time)
+    #  - Save File
+    #  - Logging
+    #  - Exec Upper data cmt
     def cmt
-      @cmt_procs.each { |p| p.call(self) }
-      verbose { "Commiting(#{time_id})" }
+      @cmt_procs.call
+      verbose { "Commiting(#{time_id})" + @cmt_procs.view.inspect }
       self
     end
 
@@ -69,20 +75,32 @@ module CIAX
 
     # Set time_upd to @cmt_procs with lower layer time
     def init_time2cmt(stat = nil)
-      @cmt_procs << (stat ? proc { time_upd(stat[:time]) } : proc { time_upd })
+      @cmt_procs.unshift(
+        stat ? proc { time_upd(stat[:time]) } : proc { time_upd }
+      )
       self
     end
 
     def propagation(obj)
-      @upd_procs << proc do
-        verbose { "Propagate #{base_class}#upd -> #{obj.base_class}#upd" }
+      @upd_procs.append do
+        __propagate_ver(self, obj, 'UPD')
         obj.upd
       end
-      obj.cmt_procs << proc do |o|
-        verbose { "Propagate #{o.base_class}#cmt -> #{base_class}#cmt" }
+      obj.cmt_procs.append do |o|
+        __propagate_ver(o, self, 'CMT')
         cmt
       end
       self
+    end
+
+    private
+
+    def __propagate_ver(src, dst, way)
+      verbose do
+        fmt = "#{way} Propagate %s -> %s from %s"
+        ca = caller.grep_v(/lib(upd|msg)/).first.split('/').last.tr("'`", '')
+        format(fmt, src.base_class, dst.base_class, ca)
+      end
     end
   end
 end

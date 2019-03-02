@@ -66,7 +66,7 @@ module CIAX
 
       def ___init_propagate
         propagation(@rec_arc)
-        @cmt_procs << proc do
+        @cmt_procs.append do
           clear unless @oldest
         end
       end
@@ -103,14 +103,9 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[num]', options: 'chr') do |opts, args|
-        ra = RecArc.new
-        if opts.cl?
-          ra.ext_remote(opts.host)
-        else
-          ra.ext_local.load
-        end
-        rv = RecView.new(ra)
-        puts rv.inc(args[0])
+        Msg.args_err if args.empty?
+        ra = RecArc.new.mode(opts.host)
+        puts RecView.new(ra).inc(args[0])
       end
     end
   end

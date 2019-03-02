@@ -52,7 +52,7 @@ module CIAX
       require 'libgetopts'
       GetOpts.new('[type]') do |_o, args|
         file = Msg.xmlfiles(args.shift).first.to_s
-        Msg.args_err(%w(adb fdb idb ddb mdb cdb sdb hdb)) if file.empty?
+        Msg.args_err(%w(adb fdb idb ddb mdb cdb sdb hdb).inspect) if file.empty?
         ele = Elem.new(file)
         ele.each { |e| puts e.name }
       end

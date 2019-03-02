@@ -13,8 +13,12 @@ module CIAX
       def ext_local_log
         @logfile = vardir('log') + base_name + "_#{Time.now.year}.log"
         @que_log = ___log_thread
-        @cmt_procs << proc { @que_log.push(JSON.dump(self)) }
+        @cmt_procs.append { save_log }
         self
+      end
+
+      def save_log
+        @que_log.push(JSON.dump(self))
       end
 
       # Read JSON Logfile
@@ -23,7 +27,7 @@ module CIAX
         give_up('Logline:Line is not rcv') unless /rcv/ =~ h[:dir]
         if h[:base64]
           def h.binary
-            self[:base64].unpack('m').first
+            dec64(self[:base64])
           end
         end
         h

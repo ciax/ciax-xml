@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libvarx'
+require 'libdic'
 require 'libdb'
 
 module CIAX
@@ -12,6 +12,10 @@ module CIAX
       @dbi = type?(___get_dbi(obj, mod), Dbi)
       _attr_set(@dbi[:site_id] || @dbi[:id], @dbi[:version].to_i, @dbi[:host])
       @layer = @dbi[:layer]
+    end
+
+    def ext_local
+      super.load
     end
 
     private

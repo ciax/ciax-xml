@@ -138,7 +138,7 @@ Style/RescueStandardError:
   Exclude:
     - 'libbuffer.rb'
     - 'libdaemon.rb'
-    - 'libeventconv.rb'
+    - 'libwatconv.rb'
     - 'libserver.rb'
     - 'libsim.rb'
     - 'libsqlogsv.rb'

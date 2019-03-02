@@ -5,13 +5,13 @@ module CIAX
   # Application Layer
   module App
     deep_include(Site)
-    # Application Dic
-    class Dic
+    # Application ExeDic
+    class ExeDic
       # spcfg must have [:db]
       def initialize(spcfg, atrb = Hashx.new)
         super
         _store_db(type?(@cfg[:db], Ins::Db))
-        @sub_dic = Frm::Dic.new(@cfg)
+        @sub_dic = Frm::ExeDic.new(@cfg)
         @sub_dic.super_dic = self
         @cfg[:sdb] = Sym::Db.new
       end
@@ -19,7 +19,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg|
-        Dic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).shell
+        ExeDic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).shell
       end
     end
   end

@@ -26,8 +26,8 @@
       <Status.View/>
       <Wat.View/>
     </Hashx>
-    <App.Dic/>
-    <Frm.Dic/>
+    <App.ExeDic/>
+    <Frm.ExeDic/>
     <Msg.Disp::Group/>
     <Xml.Doc/>
   </Hash>

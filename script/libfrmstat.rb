@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libstatx'
+require 'libframe'
 require 'libdevdb'
 
 module CIAX
@@ -7,13 +7,17 @@ module CIAX
   module Frm
     # Frame Field
     class Field < Statx
+      include Dic
       attr_accessor :echo
+      attr_reader :frame
       def initialize(dbi = nil)
         super('field', dbi, Dev::Db)
         # Proc for Terminate process of each individual commands
         #  (Set upper layer's update)
         self[:comerr] = false
-        self[:data] = ___init_field unless self[:data]
+        ext_dic(:data) { ___init_field }
+        @frame = Frame.new(@dbi)
+        init_time2cmt(@frame)
       end
 
       # Substitute str by Field data
@@ -38,7 +42,7 @@ module CIAX
       def get(id)
         verbose { "Getting[#{id}]" }
         cfg_err('Nill Id') unless id
-        return self[:data][id] if self[:data].key?(id)
+        return super if _dic.key?(id) && /@/ !~ id
         vname = []
         dat = ___access_array(id, vname)
         verbose { "Get[#{id}]=[#{dat}]" }
@@ -59,7 +63,7 @@ module CIAX
 
       # Structure is Hashx{ data:{ key,val ..} }
       def pick(keyary, atrb = {})
-        Hashx.new(atrb).update(data: self[:data].pick(keyary))
+        Hashx.new(atrb).update(data: _dic.pick(keyary))
       end
 
       # For propagate to Status update
@@ -95,7 +99,7 @@ module CIAX
           i = expr(i) if h.is_a? Array
           vname << i
           verbose { "Type[#{h.class}] Name[#{i}]" }
-          verbose { "Content[#{h[i]}]" }
+          verbose { "Content #{h[i].inspect}" }
           h[i] || alert("No such Value #{vname.inspect} in :data")
         end
       end
@@ -123,13 +127,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       GetOpts.new('[id]', options: 'h') do |opt, args|
-        fld = Field.new(args.shift)
-        if opt.host
-          fld.ext_remote(opt.host)
-        else
-          fld.ext_local.load
-        end
-        puts fld
+        puts Field.new(args.shift).mode(opt.host)
       end
     end
   end

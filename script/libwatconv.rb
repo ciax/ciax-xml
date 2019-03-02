@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libevent'
+require 'libwatstat'
 require 'librerange'
 require 'libwatcond'
 
@@ -8,8 +8,8 @@ module CIAX
   module Wat
     # Add extend method in Event
     class Event
-      def ext_local_conv(stat)
-        extend(Conv).ext_local_conv(stat)
+      def ext_local_conv
+        extend(Conv).ext_local_conv
       end
       # Watch Response Module
       module Conv
@@ -17,19 +17,24 @@ module CIAX
           Msg.type?(obj, Event)
         end
 
-        # @stat[:data](picked) = self[:crnt](picked) > self[:last]
+        # @status[:data](picked) = self[:crnt](picked) > self[:last]
         # upd() => self[:last]<-self[:crnt]
-        #       => self[:crnt]<-@stat.data(picked)
+        #       => self[:crnt]<-@status.data(picked)
         #       => check(self[:crnt] <> self[:last]?)
         # Stat no changed -> clear exec, no eval
-        def ext_local_conv(stat)
-          @stat = type?(stat, App::Status)
+        def ext_local_conv
           wdb = @dbi[:watch] || {}
           @interval = wdb[:interval].to_f if wdb.key?(:interval)
-          @cond = Condition.new(wdb[:index] || {}, stat, self)
-          propagation(@stat)
-          ___init_cmt_procs
+          @cond = Condition.new(wdb[:index] || {}, @status, self)
+          @cmt_procs.append('watexe') { conv }
           ___init_auto(wdb)
+        end
+
+        def conv
+          return unless @status[:time] > @last_updated
+          @last_updated = self[:time]
+          @cond.upd_cond
+          verbose { 'Conversion Symbol -> Event' + to_v }
         end
 
         def queue(src, pri, batch = [])
@@ -54,15 +59,6 @@ module CIAX
         end
 
         private
-
-        def ___init_cmt_procs
-          init_time2cmt(@stat)
-          @cmt_procs << proc do
-            next unless @stat[:time] > @last_updated
-            @last_updated = self[:time]
-            @cond.upd_cond
-          end
-        end
 
         # Initiate for Auto Update
         def ___init_auto(wdb)

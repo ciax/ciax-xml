@@ -6,7 +6,7 @@ require 'libdaemon'
 module CIAX
   ConfOpts.new('[id] ...', options: 'deb') do |cfg|
     Daemon.new(cfg) do
-      Hex::Dic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).run
+      Hex::ExeDic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).run
     end
   end
 end

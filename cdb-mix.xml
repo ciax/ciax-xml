@@ -1,7 +1,309 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <alias id="mix" label="MOIRCS Turret">
-    <group id="gtr" caption="Filter Select">
+    <group id="gas" caption="Access Slot">
+      <unit id="uac1" title="as1_*" label="T1 Access [0-11]">
+        <item id="as1_00" label="Access00" ref="opt">
+          <argv>1</argv>
+          <argv>0</argv>
+        </item>
+        <item id="as1_01" label="Access01" ref="opt">
+          <argv>1</argv>
+          <argv>1</argv>
+        </item>
+        <item id="as1_02" label="Access02" ref="opt">
+          <argv>1</argv>
+          <argv>2</argv>
+        </item>
+        <item id="as1_03" label="Access03" ref="opt">
+          <argv>1</argv>
+          <argv>3</argv>
+        </item>
+        <item id="as1_04" label="Access04" ref="opt">
+          <argv>1</argv>
+          <argv>4</argv>
+        </item>
+        <item id="as1_05" label="Access05" ref="opt">
+          <argv>1</argv>
+          <argv>5</argv>
+        </item>
+        <item id="as1_06" label="Access06" ref="opt">
+          <argv>1</argv>
+          <argv>6</argv>
+        </item>
+        <item id="as1_07" label="Access07" ref="opt">
+          <argv>1</argv>
+          <argv>7</argv>
+        </item>
+        <item id="as1_08" label="Access08" ref="opt">
+          <argv>1</argv>
+          <argv>8</argv>
+        </item>
+        <item id="as1_09" label="Access09" ref="opt">
+          <argv>1</argv>
+          <argv>9</argv>
+        </item>
+        <item id="as1_10" label="Access10" ref="opt">
+          <argv>1</argv>
+          <argv>10</argv>
+        </item>
+        <item id="as1_11" label="Access11" ref="opt">
+          <argv>1</argv>
+          <argv>11</argv>
+        </item>
+      </unit>
+      <unit id="uac4" title="as4_*" label="T4 Access [0-11]">
+        <item id="as4_00" label="Access00" ref="opt">
+          <argv>4</argv>
+          <argv>0</argv>
+        </item>
+        <item id="as4_01" label="Access01" ref="opt">
+          <argv>4</argv>
+          <argv>1</argv>
+        </item>
+        <item id="as4_02" label="Access02" ref="opt">
+          <argv>4</argv>
+          <argv>2</argv>
+        </item>
+        <item id="as4_03" label="Access03" ref="opt">
+          <argv>4</argv>
+          <argv>3</argv>
+        </item>
+        <item id="as4_04" label="Access04" ref="opt">
+          <argv>4</argv>
+          <argv>4</argv>
+        </item>
+        <item id="as4_05" label="Access05" ref="opt">
+          <argv>4</argv>
+          <argv>5</argv>
+        </item>
+        <item id="as4_06" label="Access06" ref="opt">
+          <argv>4</argv>
+          <argv>6</argv>
+        </item>
+        <item id="as4_07" label="Access07" ref="opt">
+          <argv>4</argv>
+          <argv>7</argv>
+        </item>
+        <item id="as4_08" label="Access08" ref="opt">
+          <argv>4</argv>
+          <argv>8</argv>
+        </item>
+        <item id="as4_09" label="Access09" ref="opt">
+          <argv>4</argv>
+          <argv>9</argv>
+        </item>
+        <item id="as4_10" label="Access10" ref="opt">
+          <argv>4</argv>
+          <argv>10</argv>
+        </item>
+        <item id="as4_11" label="Access11" ref="opt">
+          <argv>4</argv>
+          <argv>11</argv>
+        </item>
+      </unit>
+      <unit id="uac2" title="as2_*" label="T2 Access [0-11]">
+        <item id="as2_00" label="Access00" ref="opt">
+          <argv>2</argv>
+          <argv>0</argv>
+        </item>
+        <item id="as2_01" label="Access01" ref="opt">
+          <argv>2</argv>
+          <argv>1</argv>
+        </item>
+        <item id="as2_02" label="Access02" ref="opt">
+          <argv>2</argv>
+          <argv>2</argv>
+        </item>
+        <item id="as2_03" label="Access03" ref="opt">
+          <argv>2</argv>
+          <argv>3</argv>
+        </item>
+        <item id="as2_04" label="Access04" ref="opt">
+          <argv>2</argv>
+          <argv>4</argv>
+        </item>
+        <item id="as2_05" label="Access05" ref="opt">
+          <argv>2</argv>
+          <argv>5</argv>
+        </item>
+        <item id="as2_06" label="Access06" ref="opt">
+          <argv>2</argv>
+          <argv>6</argv>
+        </item>
+        <item id="as2_07" label="Access07" ref="opt">
+          <argv>2</argv>
+          <argv>7</argv>
+        </item>
+        <item id="as2_08" label="Access08" ref="opt">
+          <argv>2</argv>
+          <argv>8</argv>
+        </item>
+        <item id="as2_09" label="Access09" ref="opt">
+          <argv>2</argv>
+          <argv>9</argv>
+        </item>
+        <item id="as2_10" label="Access10" ref="opt">
+          <argv>2</argv>
+          <argv>10</argv>
+        </item>
+        <item id="as2_11" label="Access11" ref="opt">
+          <argv>2</argv>
+          <argv>11</argv>
+        </item>
+      </unit>
+      <unit id="uac5" title="as5_*" label="T5 Access [0-11]">
+        <item id="as5_00" label="Access00" ref="opt">
+          <argv>5</argv>
+          <argv>0</argv>
+        </item>
+        <item id="as5_01" label="Access01" ref="opt">
+          <argv>5</argv>
+          <argv>1</argv>
+        </item>
+        <item id="as5_02" label="Access02" ref="opt">
+          <argv>5</argv>
+          <argv>2</argv>
+        </item>
+        <item id="as5_03" label="Access03" ref="opt">
+          <argv>5</argv>
+          <argv>3</argv>
+        </item>
+        <item id="as5_04" label="Access04" ref="opt">
+          <argv>5</argv>
+          <argv>4</argv>
+        </item>
+        <item id="as5_05" label="Access05" ref="opt">
+          <argv>5</argv>
+          <argv>5</argv>
+        </item>
+        <item id="as5_06" label="Access06" ref="opt">
+          <argv>5</argv>
+          <argv>6</argv>
+        </item>
+        <item id="as5_07" label="Access07" ref="opt">
+          <argv>5</argv>
+          <argv>7</argv>
+        </item>
+        <item id="as5_08" label="Access08" ref="opt">
+          <argv>5</argv>
+          <argv>8</argv>
+        </item>
+        <item id="as5_09" label="Access09" ref="opt">
+          <argv>5</argv>
+          <argv>9</argv>
+        </item>
+        <item id="as5_10" label="Access10" ref="opt">
+          <argv>5</argv>
+          <argv>10</argv>
+        </item>
+        <item id="as5_11" label="Access11" ref="opt">
+          <argv>5</argv>
+          <argv>11</argv>
+        </item>
+      </unit>
+      <unit id="uac3" title="as3_*" label="T3 Access [0-11]">
+        <item id="as3_00" label="Access00" ref="opt">
+          <argv>3</argv>
+          <argv>0</argv>
+        </item>
+        <item id="as3_01" label="Access01" ref="opt">
+          <argv>3</argv>
+          <argv>1</argv>
+        </item>
+        <item id="as3_02" label="Access02" ref="opt">
+          <argv>3</argv>
+          <argv>2</argv>
+        </item>
+        <item id="as3_03" label="Access03" ref="opt">
+          <argv>3</argv>
+          <argv>3</argv>
+        </item>
+        <item id="as3_04" label="Access04" ref="opt">
+          <argv>3</argv>
+          <argv>4</argv>
+        </item>
+        <item id="as3_05" label="Access05" ref="opt">
+          <argv>3</argv>
+          <argv>5</argv>
+        </item>
+        <item id="as3_06" label="Access06" ref="opt">
+          <argv>3</argv>
+          <argv>6</argv>
+        </item>
+        <item id="as3_07" label="Access07" ref="opt">
+          <argv>3</argv>
+          <argv>7</argv>
+        </item>
+        <item id="as3_08" label="Access08" ref="opt">
+          <argv>3</argv>
+          <argv>8</argv>
+        </item>
+        <item id="as3_09" label="Access09" ref="opt">
+          <argv>3</argv>
+          <argv>9</argv>
+        </item>
+        <item id="as3_10" label="Access10" ref="opt">
+          <argv>3</argv>
+          <argv>10</argv>
+        </item>
+        <item id="as3_11" label="Access11" ref="opt">
+          <argv>3</argv>
+          <argv>11</argv>
+        </item>
+      </unit>
+      <unit id="uac6" title="as6_*" label="T6 Access [0-11]">
+        <item id="as6_00" label="Access00" ref="opt">
+          <argv>6</argv>
+          <argv>0</argv>
+        </item>
+        <item id="as6_01" label="Access01" ref="opt">
+          <argv>6</argv>
+          <argv>1</argv>
+        </item>
+        <item id="as6_02" label="Access02" ref="opt">
+          <argv>6</argv>
+          <argv>2</argv>
+        </item>
+        <item id="as6_03" label="Access03" ref="opt">
+          <argv>6</argv>
+          <argv>3</argv>
+        </item>
+        <item id="as6_04" label="Access04" ref="opt">
+          <argv>6</argv>
+          <argv>4</argv>
+        </item>
+        <item id="as6_05" label="Access05" ref="opt">
+          <argv>6</argv>
+          <argv>5</argv>
+        </item>
+        <item id="as6_06" label="Access06" ref="opt">
+          <argv>6</argv>
+          <argv>6</argv>
+        </item>
+        <item id="as6_07" label="Access07" ref="opt">
+          <argv>6</argv>
+          <argv>7</argv>
+        </item>
+        <item id="as6_08" label="Access08" ref="opt">
+          <argv>6</argv>
+          <argv>8</argv>
+        </item>
+        <item id="as6_09" label="Access09" ref="opt">
+          <argv>6</argv>
+          <argv>9</argv>
+        </item>
+        <item id="as6_10" label="Access10" ref="opt">
+          <argv>6</argv>
+          <argv>10</argv>
+        </item>
+        <item id="as6_11" label="Access11" ref="opt">
+          <argv>6</argv>
+          <argv>11</argv>
+        </item>
+      </unit>
+    </group>
+    <group id="gfs" caption="Filter Select">
       <unit id="ut1" title="[*]_1" label="Turret 1 [co,hole,brg,nb119,std_k,y,oc1_3,j,h,ks,h2,fe2]">
         <item id="co_1" label="[0]CO" ref="opt">
           <argv>1</argv>
@@ -304,7 +606,7 @@
       </unit>
     </group>
     <group id="gta" caption="Turret Adjust">
-      <unit id="ua1" title="[fw|bk][*]_1" label="Adjust 1 [50,100,500,1k]">
+      <unit id="uaj1" title="[fw|bk][*]_1" label="Adjust 1 [50,100,500,1k]">
         <item id="fw50_1" label="+ 50" ref="fw50">
           <argv>1</argv>
         </item>
@@ -330,7 +632,7 @@
           <argv>1</argv>
         </item>
       </unit>
-      <unit id="ua4" title="[fw|bk][*]_4" label="Adjust 4 [50,100,500,1k]">
+      <unit id="uaj4" title="[fw|bk][*]_4" label="Adjust 4 [50,100,500,1k]">
         <item id="fw50_4" label="+ 50" ref="fw50">
           <argv>4</argv>
         </item>
@@ -356,7 +658,7 @@
           <argv>4</argv>
         </item>
       </unit>
-      <unit id="ua2" title="[fw|bk][*]_2" label="Adjust 2 [50,100,500,1k]">
+      <unit id="uaj2" title="[fw|bk][*]_2" label="Adjust 2 [50,100,500,1k]">
         <item id="fw50_2" label="+ 50" ref="fw50">
           <argv>2</argv>
         </item>
@@ -382,7 +684,7 @@
           <argv>2</argv>
         </item>
       </unit>
-      <unit id="ua5" title="[fw|bk][*]_5" label="Adjust 5 [50,100,500,1k]">
+      <unit id="uaj5" title="[fw|bk][*]_5" label="Adjust 5 [50,100,500,1k]">
         <item id="fw50_5" label="+ 50" ref="fw50">
           <argv>5</argv>
         </item>
@@ -408,7 +710,7 @@
           <argv>5</argv>
         </item>
       </unit>
-      <unit id="ua3" title="[fw|bk][*]_3" label="Adjust 3 [50,100,500,1k]">
+      <unit id="uaj3" title="[fw|bk][*]_3" label="Adjust 3 [50,100,500,1k]">
         <item id="fw50_3" label="+ 50" ref="fw50">
           <argv>3</argv>
         </item>
@@ -434,7 +736,7 @@
           <argv>3</argv>
         </item>
       </unit>
-      <unit id="ua6" title="[fw|bk][*]_6" label="Adjust 6 [50,100,500,1k]">
+      <unit id="uaj6" title="[fw|bk][*]_6" label="Adjust 6 [50,100,500,1k]">
         <item id="fw50_6" label="+ 50" ref="fw50">
           <argv>6</argv>
         </item>

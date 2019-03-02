@@ -58,7 +58,7 @@ module CIAX
     # Json read with contents conversion
     def jread(jstr = nil)
       inp = jstr || gets(nil) || data_err("No data in file(#{ARGV})")
-      j2h(inp).extend(Enumx)
+      j2h(inp)
     end
 
     # Thread is main
@@ -98,6 +98,15 @@ module CIAX
       end
     rescue Errno::ENOENT
       verbose { "  -- no json file (#{fname})" }
+    end
+
+    # Encode/Decode base64
+    def enc64(binstr)
+      [binstr].pack('m').split("\n").join('')
+    end
+
+    def dec64(ascii)
+      ascii.unpack('m').first
     end
 
     # OK for bad file

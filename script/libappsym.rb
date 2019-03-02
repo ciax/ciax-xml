@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libstatus'
+require 'libappstat'
 require 'libsymdb'
 
 # Status to App::Sym (String with attributes)
@@ -17,30 +17,11 @@ module CIAX
           Msg.type?(obj, Status)
         end
 
-        # key format: category + ':' followed by key "data:key, msg:key..."
-        # default category is :data if no colon
-        def pick(keyary, atrb = {})
-          keyary.each_with_object(Hashx.new(atrb)) do |str, h|
-            cat, key = ___get_key(str)
-            h.get(cat) { Hashx.new }[key] = get(cat)[key]
-          end
-        end
-
         def ext_local_sym(sdb)
-          adbs = @dbi[:status]
-          @symdb = type?(sdb, Sym::Db).get_dbi(['share'] + adbs[:symtbl])
-          @symbol = adbs[:symbol] || {}
-          self[:class] = {}
-          self[:msg] = {}
-          ___init_procs(adbs)
+          @symdb = type?(sdb, Sym::Db).get_dbi(['share'] + @adbs[:symtbl])
+          @symbol = @adbs[:symbol] || {}
+          ___init_procs
           self
-        end
-
-        def ___init_procs(adbs)
-          @cmt_procs << proc do # post process
-            verbose { 'Propagate Status#cmt -> Symbol#store_sym' }
-            store_sym(adbs[:index].dup.update(adbs[:alias] || {}))
-          end
         end
 
         def store_sym(index)
@@ -50,6 +31,16 @@ module CIAX
             verbose { "ID=#{key},Table=#{sid}" }
             val = self[:data][hash[:ref] || key]
             ___match_items(tbl, key, val)
+          end
+          verbose { 'Conversion Status -> Symbol' + to_v }
+          self
+        end
+
+        private
+
+        def ___init_procs
+          @cmt_procs.append do # post process
+            store_sym(@adbs[:index].dup.update(@adbs[:alias] || {}))
           end
         end
 
@@ -105,14 +96,6 @@ module CIAX
         def _within?(cri, val, tol = nil)
           cri += ">#{tol}" if tol
           ReRange.new(cri) == val
-        end
-
-        def ___get_key(str)
-          cat, key = str =~ /:/ ? str.split(':') : [:data, str]
-          cat = cat.to_sym
-          par_err("Invalid category (#{cat})") unless key?(cat)
-          par_err("Invalid key (#{cat}:#{key})") if !key || !get(cat).key?(key)
-          [cat, key]
         end
       end
     end

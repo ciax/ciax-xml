@@ -1076,7 +1076,7 @@
               <mcr name="slot03_01"/>
             </option>
             <option val="S04">
-            <mcr name="slot04_01"/>
+              <mcr name="slot04_01"/>
             </option>
             <option val="S05">
               <mcr name="slot05_01"/>

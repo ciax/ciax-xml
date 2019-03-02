@@ -110,6 +110,7 @@ module CIAX
 
       ####### Common Frame section #######
       def __init_frame(domain)
+        return unless domain
         _get_h(domain) do |db|
           ___add_main(domain, db) { |e1| yield(e1) }
           ___add_cc(domain, db) { |e1| yield(e1) }

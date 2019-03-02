@@ -1,135 +1,69 @@
 #!/usr/bin/env ruby
-require 'libmsg'
-require 'libfrmcodec'
-require 'libfrmccode'
+require 'libstatx'
+require 'libdevdb'
+require 'libstream'
 
 module CIAX
   # Frame Layer
   module Frm
-    # For Command/Response Frame
-    class Frame
-      include Msg
-      attr_reader :cc
-      # terminator: used for detecting end of stream,
-      #             cut off before processing in Frame#set().
-      #             never being included in CC range
-      # delimiter: cut 'variable length data' by delimiter
-      #             can be included in CC range
-      def initialize(endian = nil, ccmethod = nil, terminator = nil)
-        @codec = Codec.new(endian)
-        @cc = CheckCode.new(ccmethod)
-        @terminator = esc_code(terminator)
-        reset
+    # Response Frame DB
+    class Frame < Statx
+      include Dic
+      attr_reader :rid
+      def initialize(dbi = nil)
+        super('frame', dbi, Dev::Db)
+        ext_dic(:data) { Hashx.new(@dbi[:response][:index]).skeleton }
       end
 
-      # For Command
-      def reset
-        @frame = ''
-        verbose { 'Reset' }
-        self
+      def get(id)
+        dec64(super)
       end
 
-      # For Command
-      def push(frame, e = {}) # returns self
-        if frame
-          code = @codec.encode(frame, e)
-          @frame << code
-          @cc.push(code)
-          verbose { "Add [#{frame.inspect}]" }
+      def ext_local_conv(cfg)
+        extend(Conv).ext_local_conv(cfg)
+      end
+      # Convert module
+      module Conv
+        def self.extended(obj)
+          Msg.type?(obj, Frame)
         end
-        self
-      end
 
-      def copy
-        verbose { "Copy [#{@frame.inspect}]" }
-        @frame
-      end
-
-      # For Response
-      def set(frame = '')
-        if frame && !frame.empty?
-          verbose { "Set [#{frame.inspect}]" }
-          @frame = @terminator ? frame.split(@terminator).shift : frame
+        def ext_local_conv(cfg)
+          @stream = Stream.new(@id, cfg)
+          @sv_stat = type?(cfg[:sv_stat], Prompt)
+          @stream.pre_open_proc = proc do
+            @sv_stat.dw(:ioerr)
+            @sv_stat.dw(:comerr)
+          end
+          init_time2cmt(@stream)
+          self
         end
-        self
-      end
 
-      # Cut frame and decode
-      # If param includes 'val' key, it checks value  only
-      # If cut str incldes terminetor, str will be trimmed
-      def cut(e0)
-        verbose { "Cut Start for [#{@frame.inspect}](#{@frame.size})" }
-        return ___verify(e0) if e0[:val] # Verify value
-        str = ___cut_by_type(e0)
-        return '' if str.empty?
-        verbose { "Cut String: [#{str.inspect}]" }
-        str = ___pick_part(str, e0[:slice])
-        @codec.decode(str, e0)
-      end
-
-      private
-
-      def ___cut_by_type(e0)
-        ___cut_by_size(e0[:length]) || \
-          ___cut_by_code(e0[:delimiter] || e0[:suffix]) || ___cut_rest
-      end
-
-      def ___cut_by_size(len)
-        return unless len
-        verbose { "Cut by Size [#{len}]" }
-        if len.to_i > @frame.size
-          alert("Cut reached end [#{@frame.size}/#{len}] ")
-          str = @frame
-        else
-          str = @frame.slice!(0, len.to_i)
+        def ext_local_log
+          @stream.ext_local_log
+          self
         end
-        @cc.push(str)
-        str
-      end
 
-      def ___cut_by_code(code)
-        return unless code
-        dlm = esc_code(code).to_s
-        verbose { "Cut by Code [#{dlm.inspect}]" }
-        str, dlm, @frame = @frame.partition(dlm)
-        @cc.push(str + dlm)
-        str
-      end
-
-      def ___cut_rest
-        verbose { 'Cut all the rest' }
-        str = @frame
-        @cc.push(str)
-        str
-      end
-
-      def ___pick_part(str, range)
-        return str unless range
-        str = str.slice(*range.split(':').map(&:to_i))
-        verbose { "Pick: [#{str.inspect}] by range=[#{range}]" }
-        str
-      end
-
-      def ___verify(e0)
-        ref = e0[:val]
-        len = e0[:length] || ref.size
-        val = str = @frame.slice!(0, len.to_i)
-        if e0[:decode]
-          val = @codec.decode(val, e0)
-          ref = expr(ref).to_s
+        def conv(ent)
+          @stream.snd(ent[:frame], ent.id)
+          put(ent.id, @stream.rcv.base64) if ent.key?(:response)
+          verbose { 'Conversion Stream -> Frame' + to_v }
+          self
+        rescue StreamError
+          @sv_stat.up(:ioerr)
+          raise
         end
-        ___check(e0, ref, val)
-        @cc.push(str)
-        str
-      end
 
-      def ___check(e0, ref, val)
-        if ref == val
-          verbose { "Verify:(#{e0[:label]}) [#{ref.inspect}] OK" }
-        else
-          fmt = 'Mismatch(%s/%s):%s for %s'
-          cc_err(format(fmt, e0[:label], e0[:decode], val.inspect, ref.inspect))
+        def reset
+          @stream.rcv
+          self
         end
+      end
+    end
+
+    if __FILE__ == $PROGRAM_NAME
+      GetOpts.new('[id]', options: 'h') do |opt, args|
+        puts Frame.new(args.shift).mode(opt.host).path(args)
       end
     end
   end

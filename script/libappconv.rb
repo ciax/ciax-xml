@@ -1,42 +1,41 @@
 #!/usr/bin/env ruby
-require 'libstatus'
+require 'libappstat'
 # CIAX-XML
 module CIAX
   # Application Layer
   module App
     # Convert Response
     class Status
-      def ext_local_conv(field)
-        extend(Conv).ext_local_conv(field)
+      def ext_local_conv
+        return self unless @field
+        extend(Conv).ext_local_conv
       end
 
       # Response Module
       module Conv
         def self.extended(obj)
+          Msg.bad_order(Symbol, Varx::JSave)
           Msg.type?(obj, Status)
         end
 
-        def ext_local_conv(field)
-          @field = type?(field, Frm::Field)
-          type?(@dbi, Dbi)
-          propagation(@field)
-          ___init_cmt_procs
+        def ext_local_conv
+          @cmt_procs.append('appstat') { conv }
+          self
+        end
+
+        def conv
+          @adbsi.each do |id, hash|
+            cnd = hash[:fields].empty?
+            next if cnd && get(id)
+            dflt = hash[:default] || ''
+            # Don't use put() which makes infinity loop in cmt
+            _dic[id] = cnd ? dflt : ___get_val(hash, id)
+          end
+          verbose { 'Conversion Field -> Status' + to_v }
           self
         end
 
         private
-
-        def ___init_cmt_procs
-          init_time2cmt(@field)
-          @cmt_procs << proc do
-            @adbs.each do |id, hash|
-              cnd = hash[:fields].empty?
-              next if cnd && get(id)
-              dflt = hash[:default] || ''
-              self[:data][id] = cnd ? dflt : ___get_val(hash, id)
-            end
-          end
-        end
 
         def ___get_val(hash, id)
           val = ___get_by_type(hash)
@@ -94,6 +93,7 @@ module CIAX
         end
 
         def __get_field(e)
+          # fld can contain '@', i.e. key@idx1@idx2...
           fld = type?(e, Hash)[:ref] || give_up("No field Key in #{e}")
           val = @field.get(fld)
           # verbose(val.empty?) { "NoFieldContent in [#{fld}]" }
@@ -125,11 +125,11 @@ module CIAX
       end
 
       if __FILE__ == $PROGRAM_NAME
-        require 'libfield'
+        require 'libfrmstat'
         GetOpts.new('[site] | < field_file', options: 'r') do |opt, args|
-          field = Frm::Field.new(args.shift).ext_local.load
-          stat = Status.new(field[:id])
-          stat.ext_local_conv(field).cmt
+          field = Frm::Field.new(args.shift).ext_local
+          stat = Status.new(field[:id], field)
+          stat.ext_local_conv.cmt
           puts opt[:r] ? stat.to_v : stat.path(args)
         end
       end

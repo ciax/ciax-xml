@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="oss" id="oss" label="TSC Control" version="6">
+  <app frm_id="oss" id="oss" label="TSC Control" version="7">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <unit id="upd" label="Status">
           <item id="upd" label="Upd">
             <frmcmd name="logstat"/>
             <frmcmd name="getstat"/>
+            <frmcmd name="telstat"/>
+            <frmcmd name="comerr"/>
             <frmcmd name="iststat"/>
             <frmcmd name="jakstat"/>
-            <frmcmd name="inrstat"/>
+            <frmcmd name="inrang"/>
             <frmcmd name="jaklen"/>
             <frmcmd name="zlen"/>
+          </item>
+        </unit>
+        <unit id="uv1" label="Compatible for V1">
+          <item id="cinit" label="Start TCP Status Request">
+            <frmcmd name="init"/>
+          </item>
+          <item id="cxon" label="TSC Only Mode(CIAX Mode)">
+            <frmcmd name="tsconly"/>
+          </item>
+          <item id="cxoff" label="TSC Primaly Mode">
+            <frmcmd name="tscpri"/>
           </item>
         </unit>
         <item id="init" label="Start TCP Status Request">
@@ -42,15 +55,15 @@
         <unit id="urot">
           <item id="rhook" label="InR Hook">
             <frmcmd name="rhook"/>
-            <frmcmd name="inrstat"/>
+            <frmcmd name="inrang"/>
           </item>
           <item id="runhk" label="InR UnHook">
             <frmcmd name="runhk"/>
-            <frmcmd name="inrstat"/>
+            <frmcmd name="inrang"/>
           </item>
           <item id="rstop" label="InR Stop">
             <frmcmd name="rstop"/>
-            <frmcmd name="inrstat"/>
+            <frmcmd name="inrang"/>
           </item>
         </unit>
         <unit id="ujak">
@@ -303,7 +316,7 @@
           <frmcmd name="getpid"/>
         </item>
         <item id="updinr" label="Update Inr Status" hidden="true">
-          <frmcmd name="inrstat"/>
+          <frmcmd name="inrang"/>
           <frmcmd name="getexit"/>
           <frmcmd name="getpid"/>
         </item>

@@ -5,14 +5,14 @@ module CIAX
   # Watch Layer
   module Wat
     deep_include(Site)
-    # Watch Dic
-    class Dic
+    # Watch ExeDic
+    class ExeDic
       attr_reader :id
       # spcfg must have [:db]
       def initialize(spcfg, atrb = Hashx.new)
         super
         _store_db(type?(@cfg[:db], Ins::Db))
-        @sub_dic = App::Dic.new(@cfg)
+        @sub_dic = App::ExeDic.new(@cfg)
         @sub_dic.super_dic = self
       end
 
@@ -38,7 +38,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[id]', options: 'cehls') do |cfg|
-        Dic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).shell
+        ExeDic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).shell
       end
     end
   end

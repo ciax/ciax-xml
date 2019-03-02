@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
-require 'libdic'
+require 'libexedic'
 module CIAX
   module Site
     # @cfg[:db] associated site/layer should be set
     # This should be set [:db]
-    class Dic < CIAX::Dic
+    class ExeDic < CIAX::ExeDic
       attr_reader :db, :sub_dic
       attr_accessor :super_dic
       def initialize(spcfg, atrb = Hashx.new)
@@ -37,13 +37,13 @@ module CIAX
         # layer_module can be Frm,App,Wat,Hex
         atrb = { dbi: @db.get(site), sub_dic: @sub_dic }
         eobj = layer_module::Exe.new(@cfg, atrb)
-        _dic.put(site, eobj)
+        put(site, eobj)
         eobj
       end
 
-      # Shell module which is Site::Dic specific
+      # Shell module which is Site::ExeDic specific
       module Shell
-        include CIAX::Dic::Shell
+        include CIAX::ExeDic::Shell
 
         def ext_local_shell
           super

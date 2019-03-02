@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
-require 'libfield'
-require 'libframe'
-require 'libstream'
+require 'libfrmstat'
+require 'libfrmrsp'
 
 # Conv Methods
 # Input  : upd block(frame,time)
@@ -11,8 +10,8 @@ module CIAX
   module Frm
     # Field class
     class Field
-      def ext_local_conv(stream)
-        extend(Conv).ext_local_conv(stream)
+      def ext_local_conv(cfg)
+        extend(Conv).ext_local_conv(cfg)
       end
 
       # Frame Response module
@@ -24,54 +23,52 @@ module CIAX
         end
 
         # Ent is needed which includes response_id and cmd_parameters
-        def ext_local_conv(stream)
-          @stream = type?(stream, Hash)
+        def ext_local_conv(cfg)
+          @frame.ext_local_conv(cfg).ext_save
           type?(@dbi, Dbi)
           @fdbr = @dbi[:response]
           @fds = @fdbr[:index]
-          sp = type?(@dbi[:stream], Hash)
-          # Frame structure:
-          #   main(total){ ccrange{ body(selected str) } }
-          @frame = Frame.new(sp[:endian], sp[:ccmethod], sp[:terminator])
-          # terminator: frame pointer will jump to terminator
-          #   when no length or delimiter is specified
-          init_time2cmt(@stream)
           self
         end
 
         # Convert with corresponding cmd
         def conv(ent)
-          rid = type?(ent, CmdBase::Entity)[:response]
-          @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
-          ___make_sel(ent, rid)
-          @frame.set(@stream.binary)
-          ___make_data(rid)
-          verbose { 'Propagate Stream#rcv Field#conv(cmt)' }
+          @frame.conv(ent)
+          ___make_sel(type?(ent, CmdBase::Entity))
+          # RspFrame structure:
+          #   main(total){ ccrange{ body(selected str) } }
+          # terminator: frame pointer will jump to terminator
+          #   when no length or delimiter is specified
+          @rspfrm = RspFrame.new(@frame.get(ent.id).dup, @dbi[:stream])
+          ___make_data
+          verbose { 'Conversion Frame -> Field' + to_v }
           self
-        ensure
-          cmt
         end
 
         private
 
-        # sel structure:
+        # @sel structure:
         #   { terminator, :main{}, :body{} <- changes on every upd }
-        def ___make_sel(ent, rid)
+        def ___make_sel(ent)
+          rid = ent[:response]
+          idx = @fds[rid] || Msg.cfg_err("No such response id [#{rid}]")
+          # SelDB of template
           @sel = Hash[@fdbr[:frame]]
-          @sel.update(@fds[rid])
+          # SelDB specific for rid
+          @sel.update(idx)
+          # SelDB applied with Entity (set par)
           @sel[:body] = ent.deep_subst(@sel[:body])
-          verbose { "Selected DB for #{rid}\n" + @sel.inspect }
         end
 
-        def ___make_data(rid)
-          @cache = self[:data].deep_copy
-          if @fds[rid].key?(:noaffix)
+        def ___make_data
+          @cache = _dic.deep_copy
+          if @sel.key?(:noaffix)
             __getfield_rec(['body'])
           else
             __getfield_rec(@sel[:main])
-            @frame.cc.check(@cache.delete('cc'))
+            @rspfrm.cc_check(@cache.delete('cc'))
           end
-          self[:data] = @cache
+          _dic.replace(@cache)
         end
 
         # Process Frame to Field
@@ -81,16 +78,22 @@ module CIAX
           end
         end
 
+        def ___getfield_cc(cc)
+          @rspfrm.cc_start
+          __getfield_rec(cc)
+          @rspfrm.cc_reset
+        end
+
         def ___getfield(e1, common = {})
           case e1[:type]
           when 'field', 'array'
-            ___frame_to_field(e1) { @frame.cut(e1.update(common)) }
+            ___frame_to_field(e1) { @rspfrm.cut(e1.update(common)) }
           when 'ccrange'
-            @frame.cc.enclose { __getfield_rec(@sel[:ccrange]) }
+            ___getfield_cc(@sel[:ccrange])
           when 'body'
             __getfield_rec(@sel[:body] || [], e1)
           when 'echo' # Send back the command string
-            @frame.cut(label: 'Command Echo', val: @echo)
+            @rspfrm.cut(label: 'Command Echo', val: @echo)
           end
         end
 
@@ -111,7 +114,7 @@ module CIAX
             warning("Invalid Data (#{data}) for /#{e0[:valid]}/")
           else
             @cache[akey] = data
-            verbose { "Assign:[#{akey}] <- <#{data}>" }
+            verbose { "Assign:[#{akey}] <- #{data.inspect}" }
           end
         end
 
@@ -122,8 +125,8 @@ module CIAX
           idxs = e0[:index].map do |e1|
             e1[:range] || "0:#{e1[:size].to_i - 1}"
           end
-          enclose("Array:[#{akey}]:Range#{idxs}", "Array:Assign[#{akey}]") do
-            @cache[akey] = __mk_array(idxs, self[:data][akey]) { yield }
+          enclose("Assign:[#{akey}][", ']') do
+            @cache[akey] = __mk_array(idxs, get(akey)) { yield }
           end
         end
 
@@ -135,7 +138,7 @@ module CIAX
           f, l = idx[0].split(':').map { |i| expr(i) }
           Range.new(f, l || f).each do |i|
             fld[i] = __mk_array(idx[1..-1], fld[i]) { yield }
-            verbose { "Array:Index[#{i}]=#{fld[i]}" }
+            verbose { "Array:Index[#{i}] <- #{fld[i].inspect}" }
           end
           fld
         end
@@ -147,7 +150,7 @@ module CIAX
       require 'libjslog'
       ConfOpts.new('< logline', m: 'merge file') do |cfg|
         raise(InvalidARGS, '  Need Input File') if STDIN.tty?
-        res = Varx::JsLog.read(gets(nil))
+        res = Frame.new.jmerge
         field = Field.new(res[:id]).ext_local_conv(res)
         field.ext_local.ext_save if cfg.opt[:m]
         if (cid = res[:cmd])

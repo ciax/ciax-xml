@@ -9,7 +9,8 @@ module CIAX
       end
 
       def load(tag = nil)
-        replace(__read_json(tag))
+        verbose { 'File Loading' }
+        deep_update(__read_json(tag))
         cmt
       end
 
@@ -63,7 +64,7 @@ module CIAX
       def ext_save
         verbose { "Initiate File Saving Feature [#{base_name}]" }
         @thread = Thread.current # For Thread safe
-        @cmt_procs << proc { save }
+        @cmt_procs.append { save }
         self
       end
 
@@ -116,10 +117,9 @@ module CIAX
       end
 
       def ___write_notice(jstr)
-        verbose(jstr.empty?) { " -- json data (#{jstr}) is empty at saving" }
-        verbose(@thread != Thread.current) do
-          'File Saving from Multiple Threads'
-        end
+        verbose { " -- json data (#{jstr}) is empty at saving" } if jstr.empty?
+        return if @thread == Thread.current
+        verbose { 'File Saving from Multiple Threads' }
       end
     end
   end

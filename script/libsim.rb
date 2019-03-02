@@ -9,7 +9,7 @@ module CIAX
     # Simulation Server
     class Server < GServer
       include Msg
-      def initialize(port, cfg = nil)
+      def initialize(port = nil, cfg = nil)
         super(port)
         @cfg = cfg || Conf.new
         ___init_instance
@@ -46,14 +46,16 @@ module CIAX
 
       def ___sv_loop(io)
         loop do
-          str = ___input(io)
-          log("#{self.class}:Recieve #{str.inspect}")
-          res = _dispatch(str) || next
-          res << @ofs if @ofs
-          log("#{self.class}:Send #{res.inspect}")
+          str = __data_log('Recieve', ___input(io))
+          res = __data_log('Send', _dispatch(str) + @ofs.to_s)
           io ? io.syswrite(res) : puts(res.inspect)
           sleep 0.1
         end
+      end
+
+      def __data_log(caption, data)
+        log(format('%s:%s %s', self.class, caption, data.inspect))
+        data
       end
 
       def ___input(io)
@@ -88,10 +90,11 @@ module CIAX
         par ? me.call(par) : me.call || @prompt_ng
       end
 
-      def _get_cmd_list
-        methods.map(&:to_s).grep(/^_cmd_/).map do |s|
-          s.sub(/^_cmd_/, '')
-        end
+      def _cmd_help
+        (@io.keys.map { |k| [k.to_s, "#{k}="] }.flatten +
+         methods.map(&:to_s).grep(/^_cmd_/).map do |s|
+           s.sub(/^_cmd_/, '')
+         end).sort.join(@ofs)
       end
     end
 
@@ -112,5 +115,7 @@ module CIAX
     end
 
     @sim_list = SimList.new
+
+    Server.new.serve if __FILE__ == $PROGRAM_NAME
   end
 end

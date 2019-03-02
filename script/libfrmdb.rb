@@ -17,7 +17,7 @@ module CIAX
         dbi[:stream] = doc[:stream] || Hashx.new
         _init_command_db(dbi, doc)
         ___init_field(dbi, doc)
-        #        ___init_response(dbi, doc)
+        ___init_response(dbi, doc)
         dbi
       end
 
@@ -76,21 +76,23 @@ module CIAX
       # Response section
       def ___init_response(dbi, dom)
         # Whole frame
-        rsp = dbi[:rspframe] = Hashx.new
-        frm = __init_frame(dom[:rspframe]) { |e| __add_ritem(e, rsp) }
+        frm = __init_frame(dom[:rspframe]) { |e| __mk_rspfrm(e) }
         # Response DB (index)
         dbi[:response] = Hashx.new(index: idx = Hashx.new, frame: frm)
-        dom[:response].each { |e0| __add_ritem(e0, idx) }
+        dom[:response].each { |e0| ___add_fld(e0, idx) }
         dbi[:frm_id] = dbi[:id]
         dbi
       end
 
-      def __add_ritem(e0, db)
+      def ___add_fld(e0, db)
         itm = db[e0.attr2item(db)]
-        @rep.each(e0) do |_e1|
-          e = { type: e.name }
-          itm.get(:body) { [] } << e
+        @rep.each(e0) do |e1|
+          itm.get(:body) { [] } << __mk_rspfrm(e1)
         end
+      end
+
+      def __mk_rspfrm(e)
+        { type: e.name }.update(e.to_h)
       end
 
       ####### Common Frame section #######

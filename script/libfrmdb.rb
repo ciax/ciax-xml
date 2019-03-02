@@ -16,8 +16,8 @@ module CIAX
         dbi = super
         dbi[:stream] = doc[:stream] || Hashx.new
         _init_command_db(dbi, doc)
-#        ___init_field(dbi, doc)
-        ___init_response(dbi, doc)
+        ___init_field(dbi, doc)
+        #        ___init_response(dbi, doc)
         dbi
       end
 
@@ -58,27 +58,9 @@ module CIAX
       # Field section
       def ___init_field(dbi, dom)
         @fld = dbi[:field] = Hashx.new # template
-        dom[:field].each { |e| ___add_fld(e) }
-      end
-
-      def ___add_fld(e0)
-        id = e0.attr2item(@fld)
-        ___init_elem(e0, @fld[id])
-      end
-
-      def ___init_elem(e, fval)
-        case e.name
-        when 'assign'
-          ___init_subfld(e, fval)
-        when 'array'
-          ___init_ary(e, fval)
-        end
-      end
-
-      def ___init_subfld(e, fval)
-        _get_h(e) do |atrb|
-          fval[:struct] = [] if fval
-          verbose { "InitField: #{atrb}" }
+        dom[:field].each do |e|
+          id = e.attr2item(@fld)
+          ___init_ary(e, @fld[id]) if e.name == 'array'
         end
       end
 

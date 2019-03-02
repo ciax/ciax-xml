@@ -16,11 +16,11 @@ module CIAX
         dbi = super
         dbi[:stream] = doc[:stream] || Hashx.new
         _init_command_db(dbi, doc)
-        ___init_response(doc, dbi)
+        ___init_response(dbi, doc)
         dbi
       end
 
-      # Command section
+      ######## Command section #######
       def _init_command_db(dbi, doc)
         cdb = super(dbi, doc[:command])
         cdb[:frame] = __init_frame(doc[:cmdframe]) { |e| __add_cmdfrm(e) }
@@ -53,59 +53,62 @@ module CIAX
         end
       end
 
-      # Status section
-      def ___init_response(dom, dbi)
-        tpl = dbi[:field] = Hashx.new # template
-        frm = __init_frame(dom[:rspframe]) { |e| __add_rspfrm(e, tpl) }
-        dbi[:response] = Hashx.new(index: idx = Hashx.new, frame: frm)
-        dom[:response].each { |e0| ___add_fld(e0, tpl, idx) }
-        dbi[:frm_id] = dbi[:id]
-        dbi
-      end
-
-      def ___add_fld(e0, tpl, db)
+      ######## Status section #######
+      def ___add_fld(e0, fld, db)
         itm = db[e0.attr2item(db)]
         @rep.each(e0) do |e1|
-          e = __add_rspfrm(e1, tpl) || next
+          e = __add_rspfrm(e1, fld) || next
           itm.get(:body) { [] } << e
         end
       end
 
-      def __add_rspfrm(e, tpl)
+      # Response section
+      def ___init_response(dbi, dom)
+        fld = dbi[:field] = Hashx.new # template
+        # Whole frame
+        frm = __init_frame(dom[:rspframe]) { |e| __add_rspfrm(e, fld) }
+        # Frame Dic
+        dbi[:response] = Hashx.new(index: idx = Hashx.new, frame: frm)
+        dom[:response].each { |e0| ___add_fld(e0, fld, idx) }
+        dbi[:frm_id] = dbi[:id]
+        dbi
+      end
+
+      def __add_rspfrm(e, fld)
         # Avoid override duplicated id
         elem = { type: e.name }
-        if (id = e[:assign]) && !tpl.key?(id)
-          asn = tpl[id] = { label: e[:label] }
+        if (id = e[:assign]) && !fld.key?(id)
+          fval = fld[id] = { label: e[:label] }
         end
-        elem.update(___init_elem(e, asn) || {})
+        elem.update(___init_elem(e, fval) || {})
       end
 
-      def ___init_elem(e, asn)
+      def ___init_elem(e, fval)
         case e.name
         when 'field', 'body'
-          ___init_field(e, asn)
+          ___init_field(e, fval)
         when 'array'
-          ___init_ary(e, asn)
+          ___init_ary(e, fval)
         end
       end
 
-      def ___init_field(e, asn)
+      def ___init_field(e, fval)
         _get_h(e) do |atrb|
-          asn[:struct] = [] if asn
+          fval[:struct] = [] if fval
           verbose { "InitField: #{atrb}" }
         end
       end
 
-      def ___init_ary(e, asn)
+      def ___init_ary(e, fval)
         _get_h(e) do |atrb|
           idx = atrb[:index] = []
           e.each { |e1| idx << e1.to_h }
-          asn[:struct] = idx.map { |h| h[:size] } if asn
+          fval[:struct] = idx.map { |h| h[:size] } if fval
           verbose { "InitArray: #{atrb}" }
         end
       end
 
-      # Common Frame section
+      ####### Common Frame section #######
       def __init_frame(domain)
         return unless domain
         _get_h(domain) do |db|

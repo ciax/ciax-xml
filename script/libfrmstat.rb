@@ -82,15 +82,17 @@ module CIAX
 
       def ___init_field
         data = Hashx.new
-        @dbi[:field].each do |id, val|
-          var = if (ary = val[:array])
-                  ary.split(',')
-                else
-                  val[:val] || Arrayx.new.skeleton(val[:struct])
-                end
-          data.put(id, var)
+        @dbi[:field].each do |id, db|
+          data.put(id, ___field_var(db))
         end
         data
+      end
+
+      def ___field_var(db)
+        return db[:array].split(',') if db.key?(:array)
+        return Arrayx.new.skeleton(db[:struct]) if db.key?(:struct)
+        return db[:val] if db.key?(:val)
+        ''
       end
 
       def ___access_array(id, vname)

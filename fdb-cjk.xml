@@ -55,30 +55,36 @@
       </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field decode="integer" label="SubHeader: Prefix" length="2">212</field>
-      <field label="SubHeader: Serial Number">XX</field>
-      <field decode="integer" label="SubHeader: Fixed Number" length="2">0</field>
-      <field decode="integer" label="Q Header: Network Number" length="1">0</field>
-      <field decode="integer" label="Q Header: PC Number" length="1">255</field>
-      <field decode="integer" label="Q Header: Request Unit I/O Number" length="2">1023</field>
-      <field decode="integer" label="Q Header: Request Unit Station Number" length="1">0</field>
-      <field assign="cc" decode="integer" label="Response Data Length" length="2"/>
+      <integer label="SubHeader: Prefix" length="2">212</integer>
+      <string label="SubHeader: Serial Number">XX</string>
+      <integer label="SubHeader: Fixed Number" length="2">0</integer>
+      <integer label="Q Header: Network Number" length="1">0</integer>
+      <integer label="Q Header: PC Number" length="1">255</integer>
+      <integer label="Q Header: Request Unit I/O Number" length="2">1023</integer>
+      <integer label="Q Header: Request Unit Station Number" length="1">0</integer>
+      <integer assign="cc" label="Response Data Length" length="2"/>
       <ccrange>
-        <field assign="ecode" decode="integer" label="Error Code" length="2">0</field>
+        <integer assign="ecode" label="Error Code" length="2"/>
         <body/>
       </ccrange>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="cmdrsp" label="command resp"/>
       <item id="get_tbl">
-        <array assign="t" decode="integer" label="Jack Pulse Tables" length="2">
-          <!--Tag-->
-          <index range="$1" size="6"/>
-          <!--JAK[0=1,40=2,80=3,C0=4]-->
-          <!--ID[0-10],Level[0-3]-->
-          <index size="256"/>
-        </array>
+        <integer assign="t" label="Jack Pulse Tables" length="2"/>
       </item>
     </response>
+    <fields xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="ecode" label="Error Code">0</var>
+      <var id="cc" label="Response Data Length"/>
+      <var id="cmdrsp" label="command resp"/>
+      <array id="t" label="Jack Pulse Tables">
+        <!--Tag-->
+        <index range="$1" size="6"/>
+        <!--JAK[0=1,40=2,80=3,C0=4]-->
+        <!--ID[0-10],Level[0-3]-->
+        <index size="256"/>
+      </array>
+    </fields>
   </frame>
 </fdb>

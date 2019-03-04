@@ -33,11 +33,11 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field assign="stat" decode="integer" length="2"/>
+        <integer assign="stat" length="2"/>
       </item>
     </response>
-    <field>
-      <assign id="stat" label="Status"/>
-    </field>
+    <fields xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="stat" label="Status"/>
+    </fields>
   </frame>
 </fdb>

@@ -39,24 +39,24 @@
       </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field label="Prefix">A</field>
+      <string label="Prefix">A</string>
       <ccrange>
         <body/>
       </ccrange>
-      <field assign="cc" decode="hexstr" label="BCC" length="2"/>
+      <hexstr assign="cc" label="BCC" length="2"/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field assign="output" decode="hexstr" length="4"/>
+        <hexstr assign="output" length="4"/>
       </item>
       <item id="getstat2">
-        <field assign="input" decode="hexstr" length="4"/>
+        <hexstr assign="input" length="4"/>
       </item>
       <item id="default"/>
     </response>
-    <field>
-      <assign id="output" label="Output Status"/>
-      <assign id="input" label="Input Status"/>
-    </field>
+    <fields xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="output" label="Output Status"/>
+      <var id="input" label="Input Status"/>
+    </fields>
   </frame>
 </fdb>

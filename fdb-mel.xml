@@ -154,14 +154,14 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat" label="get status">
-        <integer assign="x" sign="msb" label="Status Flags" length="2"/>
+        <integer assign="x" index="0:51" sign="msb" label="Status Flags" length="2"/>
       </item>
       <item id="getcmd" label="get cmd status">
-        <integer assign="c" sign="msb" label="Command Flags" length="2"/>
+        <integer assign="c" index="0:4" sign="msb" label="Command Flags" length="2"/>
       </item>
       <item id="cmdrsp" label="command resp"/>
       <item id="get_tbl">
-        <integer assign="t" index="$1,$2,*" label="Jack Pulse Tables" length="2"/>
+        <integer assign="t" index="$1,$2,0:43" label="Jack Pulse Tables" length="2"/>
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">

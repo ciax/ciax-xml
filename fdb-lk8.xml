@@ -32,7 +32,7 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <string assign="ch" label="Value" delimiter=";"/>
+        <string assign="ch" index="0:7" label="Value" delimiter=";"/>
       </item>
       <item id="htrstat">
         <string assign="htr" label="Heater Power"/>

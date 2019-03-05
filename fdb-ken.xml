@@ -115,36 +115,36 @@
         <string label="Master CH">@</string>
       </item>
       <item id="getstat">
-        <string assign="ids" index="$1,*" label="Value" delimiter=","/>
+        <string assign="ids" index="$1,0:4" label="Value" delimiter=","/>
       </item>
       <item id="getst0">
         <string label="StatusCode">MS0,0</string>
         <string label="UNIT #">$1+1</string>
         <string label="Delimiter">,</string>
         <string assign="ms0" index="$1,0:$2-1,2" label="Value" delimiter=","/>
-        <hexstr assign="cst" index="$1,*" label="CV/CC Stat" length="1"/>
+        <hexstr assign="cst" index="$1,0:3" label="CV/CC Stat" length="1"/>
       </item>
       <item id="getst1">
         <string label="StatusCode">MS1,0</string>
         <string label="UNIT #">$1+1</string>
         <string label="Delimiter">,</string>
-        <string assign="ms1" index="$1,*,0:$2*2-2" label="Value" delimiter=","/>
+        <string assign="ms1" index="$1,0:3,0:$2*2-2" label="Value" delimiter=","/>
       </item>
       <item id="getst1o">
         <string label="StatusCode">MS1,0</string>
         <string label="UNIT #">$1+1</string>
         <string label="Delimiter">,</string>
-        <string assign="ms1" index="$1,*,0:$2*2+2" label="Value" delimiter=","/>
+        <string assign="ms1" index="$1,0:3,0:$2*2+2" label="Value" delimiter=","/>
       </item>
       <item id="getst2">
         <string label="StatusCode">MS2,0</string>
         <string label="UNIT #">$1+1</string>
         <string label="Delimiter">,</string>
         <binstr assign="ms2" index="$1,0:1" label="LED/MAIN" delimiter=","/>
-        <hexstr assign="st0" index="$1,*,0" label="Output Select CH" length="1"/>
+        <hexstr assign="st0" index="$1,0:3,0" label="Output Select CH" length="1"/>
         <string label="Delimiter">,</string>
         <binstr assign="ms2" index="$1,2" label="Track SW" delimiter=","/>
-        <string assign="st0" index="$1,*,1" label="Track Select CH" length="1"/>
+        <string assign="st0" index="$1,0:3,1" label="Track Select CH" length="1"/>
         <string label="Delimiter">,</string>
         <binstr assign="ms2" index="$1,3" label="Track Mode" delimiter=","/>
         <string assign="st0" index="$1,0:$2-1,2:3" label="Track Values" delimiter=","/>
@@ -168,13 +168,13 @@
         <string label="UNIT #">$1+1</string>
         <string label="Delimiter">,</string>
         <string assign="ms4" index="$1,0:$2*2-1" label="Value" delimiter=","/>
-        <hexstr assign="st0" index="$1,*,0" label="Stat" length="1"/>
+        <hexstr assign="st0" index="$1,0:3,0" label="Stat" length="1"/>
       </item>
       <item id="getst5">
         <string label="StatusCode">MS5,0</string>
         <string label="UNIT #">$1+1</string>
         <string label="Delimiter">,</string>
-        <string assign="ms5" index="$1,*" label="Value" delimiter=","/>
+        <string assign="ms5" index="$1,0:13" label="Value" delimiter=","/>
       </item>
       <item id="default" noaffix="true"/>
     </response>

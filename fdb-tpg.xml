@@ -25,7 +25,7 @@
         <integer>6</integer>
       </item>
       <item id="getstat">
-        <string assign="stat" delimiter=","/>
+        <string assign="stat" index="0:1,0:1" delimiter=","/>
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">

@@ -118,14 +118,14 @@
         <integer label="FINS Command:SRC" length="1">0x01</integer>
         <integer label="FINS Command:MRES" length="1">0x00</integer>
         <integer label="FINS Command:SRES" length="1">0x00</integer>
-        <integer assign="w" length="2"/>
+        <integer assign="w" index="0:12" length="2"/>
       </item>
       <item id="getexe">
         <integer label="FINS Command:MRC" length="1">0x01</integer>
         <integer label="FINS Command:SRC" length="1">0x01</integer>
         <integer label="FINS Command:MRES" length="1">0x00</integer>
         <integer label="FINS Command:SRES" length="1">0x00</integer>
-        <integer assign="c" length="2"/>
+        <integer assign="c" index="0:3" length="2"/>
       </item>
       <item id="geterr">
         <integer label="FINS Command:MRC" length="1">0x01</integer>
@@ -139,7 +139,7 @@
         <integer label="FINS Command:SRC" length="1">0x01</integer>
         <integer label="FINS Command:MRES" length="1">0x00</integer>
         <integer label="FINS Command:SRES" length="1">0x00</integer>
-        <integer assign="d" sign="msb" length="2"/>
+        <integer assign="d" index="0:9" sign="msb" length="2"/>
       </item>
       <item id="cmdrsp" label="command resp">
         <integer label="FINS Command:MRC" length="1">0x01</integer>

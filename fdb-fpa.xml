@@ -53,10 +53,10 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <hexstr assign="stat" label="Status" length="4"/>
+        <hexstr assign="stat" index="0:7" label="Status" length="4"/>
       </item>
       <item id="getcfg">
-        <hexstr assign="cfg" label="Config" length="2"/>
+        <hexstr assign="cfg" index="0:7" label="Config" length="2"/>
       </item>
       <item id="default" noaffix="true"/>
     </response>

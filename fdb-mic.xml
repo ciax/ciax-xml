@@ -46,7 +46,7 @@
         <string assign="st" index="$1-1" label="Status"/>
       </item>
       <item id="getp">
-        <string assign="pos" index="$1-1,*" label="Position" delimiter=","/>
+        <string assign="pos" index="$1-1,0:1" label="Position" delimiter=","/>
       </item>
       <item id="geta">
         <string assign="acc" index="$1-1" label="Acceleration"/>

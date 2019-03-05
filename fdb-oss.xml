@@ -166,19 +166,19 @@
         <hexstr assign="bsa" label="BOLT SUM ALM(B0)" length="2"/>
         <hexstr assign="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2"/>
         <!--Order:2,1,4,3..-->
-        <hexstr assign="bs" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)" length="1"/>
-        <hexstr assign="bl" label="Each Bolt Limit(DrvAlm,UP,DW,UnitAlm)" length="1"/>
+        <hexstr assign="bs" index="0:15" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)" length="1"/>
+        <hexstr assign="bl" index="0:15" label="Each Bolt Limit(DrvAlm,UP,DW,UnitAlm)" length="1"/>
         <hexstr assign="mba" label="MLP3-BOLT COMM ALM(18:B0)" length="2"/>
         <hexstr assign="loc" label="CS BOLT LOCAL(19:B0)" length="2"/>
-        <hexstr assign="clm" label="CS BOLT Current Limit(20-21)" length="2"/>
+        <hexstr assign="clm" index="0:1" label="CS BOLT Current Limit(20-21)" length="2"/>
       </item>
       <item id="jaklen">
         <!--POWER_V2-->
-        <decstr assign="jk" label="Bolt Position" length="12" slice="0:6"/>
+        <decstr assign="jk" index="0:15" label="Bolt Position" length="12" slice="0:6"/>
       </item>
       <item id="zlen">
         <!--Z_SENSOR-->
-        <string assign="zp" label="Zsensor Position" length="12" slice="0:6"/>
+        <string assign="zp" index="0:3" label="Zsensor Position" length="12" slice="0:6"/>
       </item>
       <item id="inrang">
         <string assign="iang" label="InR Angle(deg)" delimiter="\n"/>

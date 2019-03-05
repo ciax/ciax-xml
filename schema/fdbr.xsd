@@ -119,8 +119,6 @@
     <xsd:complexType>
       <!--Whole size of Array-->
       <xsd:attribute name="size" type="xsd:int" use="required"/>
-      <!--Part of Array Range-->
-      <xsd:attribute name="range" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

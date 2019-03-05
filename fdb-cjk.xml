@@ -71,7 +71,7 @@
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="cmdrsp" label="command resp"/>
       <item id="get_tbl">
-        <integer assign="t" label="Jack Pulse Tables" length="2"/>
+        <integer assign="t" index="$1,0:255" label="Jack Pulse Tables" length="2"/>
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
@@ -80,7 +80,7 @@
       <var id="cmdrsp" label="command resp"/>
       <array id="t" label="Jack Pulse Tables">
         <!--Tag-->
-        <index range="$1" size="6"/>
+        <index size="6"/>
         <!--JAK[0=1,40=2,80=3,C0=4]-->
         <!--ID[0-10],Level[0-3]-->
         <index size="256"/>

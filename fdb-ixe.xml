@@ -215,81 +215,97 @@
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <!--Acknowlege message: STX ACK ETX CR LF (Manual Section 12.5)-->
-      <field decode="integer" label="Prefix" length="1">2</field>
-      <field decode="integer" label="ResponseCode" length="1">6</field>
+      <integer label="Prefix" length="1">2</integer>
+      <integer label="ResponseCode" length="1">6</integer>
       <body suffix="\x03"/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field assign="stat" label="StatusCode"/>
+        <string assign="stat" label="StatusCode"/>
       </item>
       <item id="chkrun">
-        <array assign="run" label="Moving">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="run" index="$1-1" label="Moving"/>
       </item>
       <item id="chkems">
-        <array assign="ems" label="Emergency">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="ems" index="$1-1" label="Emergency"/>
       </item>
       <item id="chkpse">
-        <array assign="pse" label="Power Stage Err">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="pse" index="$1-1" label="Power Stage Err"/>
       </item>
       <item id="getp">
-        <array assign="p" label="Pulse">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="p" index="$1-1" label="Pulse"/>
       </item>
       <item id="getmp">
-        <array assign="mp" label="Mechanical Pulse">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="mp" index="$1-1" label="Mechanical Pulse"/>
       </item>
       <item id="getspd">
-        <array assign="spd" label="Speed">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="spd" index="$1-1" label="Speed"/>
       </item>
       <item id="getrmp">
-        <array assign="rmp" label="Ramp Speed">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="rmp" index="$1-1" label="Ramp Speed"/>
       </item>
       <item id="getmspd">
-        <array assign="mspd" label="Mechanical Speed">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="mspd" index="$1-1" label="Mechanical Speed"/>
       </item>
       <item id="getmrmp">
-        <array assign="mrmp" label="Mechanical Ramp Speed">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="mrmp" index="$1-1" label="Mechanical Ramp Speed"/>
       </item>
       <item id="getispd">
-        <array assign="ispd" label="Init Return Speed">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="ispd" index="$1-1" label="Init Return Speed"/>
       </item>
       <item id="getofs">
-        <array assign="ofs" label="Mechanical Offset">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="ofs" index="$1-1" label="Mechanical Offset"/>
       </item>
       <item id="getrtm">
-        <array assign="rtm" label="Recovery Time(ms)">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="rtm" index="$1-1" label="Recovery Time(ms)"/>
       </item>
       <item id="getmrtm">
-        <array assign="mrtm" label="Mech Recovery Time(ms)">
-          <index range="$1-1" size="6"/>
-        </array>
+        <string assign="mrtm" index="$1-1" label="Mech Recovery Time(ms)"/>
       </item>
       <item id="default"/>
       <item id="dummy" noaffix="true"/>
     </response>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="stat" label="StatusCode"/>
+      <array id="run" label="Moving">
+        <index size="6"/>
+      </array>
+      <array id="ems" label="Emergency">
+        <index size="6"/>
+      </array>
+      <array id="pse" label="Power Stage Err">
+        <index size="6"/>
+      </array>
+      <array id="p" label="Pulse">
+        <index size="6"/>
+      </array>
+      <array id="mp" label="Mechanical Pulse">
+        <index size="6"/>
+      </array>
+      <array id="spd" label="Speed">
+        <index size="6"/>
+      </array>
+      <array id="rmp" label="Ramp Speed">
+        <index size="6"/>
+      </array>
+      <array id="mspd" label="Mechanical Speed">
+        <index size="6"/>
+      </array>
+      <array id="mrmp" label="Mechanical Ramp Speed">
+        <index size="6"/>
+      </array>
+      <array id="ispd" label="Init Return Speed">
+        <index size="6"/>
+      </array>
+      <array id="ofs" label="Mechanical Offset">
+        <index size="6"/>
+      </array>
+      <array id="rtm" label="Recovery Time(ms)">
+        <index size="6"/>
+      </array>
+      <array id="mrtm" label="Mech Recovery Time(ms)">
+        <index size="6"/>
+      </array>
+    </field>
   </frame>
 </fdb>

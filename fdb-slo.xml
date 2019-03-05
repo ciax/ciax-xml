@@ -101,30 +101,37 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field assign="err" label="ErrorCode"/>
+        <string assign="err" label="ErrorCode"/>
       </item>
       <item id="drv">
-        <field assign="drv" label="Drive"/>
+        <string assign="drv" label="Drive"/>
       </item>
       <item id="bs">
-        <field assign="bs" label="Moving"/>
+        <string assign="bs" label="Moving"/>
       </item>
       <item id="p">
-        <field assign="p" valid="^[-.0-9]+$" label="Pulse"/>
+        <string assign="p" valid="^[-.0-9]+$" label="Pulse"/>
       </item>
       <item id="spd">
-        <field assign="spd" label="Speed"/>
+        <string assign="spd" label="Speed"/>
       </item>
       <item id="in">
-        <!-- IN(3) = +Limit -->
-        <!-- IN(4) = -Limit -->
-        <array assign="in" label="Input">
-          <index range="$1-1" size="5"/>
-        </array>
+        <string assign="in" index="$1-1" label="Input"/>
       </item>
       <item id="default">
-        <field>&gt;</field>
+        <string>&gt;</string>
       </item>
     </response>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="err" label="ErrorCode"/>
+      <var id="drv" label="Drive"/>
+      <var id="bs" label="Moving"/>
+      <var id="p" label="Pulse"/>
+      <var id="spd" label="Speed"/>
+      <array id="in" label="Input">
+        <!-- IN(3) = +Limit, IN(4) = -Limit -->
+        <index size="5"/>
+      </array>
+    </field>
   </frame>
 </fdb>

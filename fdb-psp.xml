@@ -50,26 +50,40 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field>V</field>
-        <field assign="v" label="Output(V)" length="5"/>
-        <field>A</field>
-        <field assign="a" label="Output(A)" length="5"/>
-        <field>W</field>
-        <field assign="w" label="Output(W)" length="5"/>
-        <field>U</field>
-        <field assign="u" label="Limit(V)" length="2"/>
-        <field>I</field>
-        <field assign="i" label="Limit(A)" length="4"/>
-        <field>P</field>
-        <field assign="p" label="Limit(W)" length="3"/>
-        <field>F</field>
-        <field assign="f1" label="Output(ON/OFF)" length="1"/>
-        <field assign="f2" label="OverHeat" length="1"/>
-        <field assign="f3" label="ADJ Fine" length="1"/>
-        <field assign="f4" label="ADJ Unlock" length="1"/>
-        <field assign="f5" label="Remote" length="1"/>
-        <field assign="f6" label="Local Lock" length="1"/>
+        <string>V</string>
+        <string assign="v" label="Output(V)" length="5"/>
+        <string>A</string>
+        <string assign="a" label="Output(A)" length="5"/>
+        <string>W</string>
+        <string assign="w" label="Output(W)" length="5"/>
+        <string>U</string>
+        <string assign="u" label="Limit(V)" length="2"/>
+        <string>I</string>
+        <string assign="i" label="Limit(A)" length="4"/>
+        <string>P</string>
+        <string assign="p" label="Limit(W)" length="3"/>
+        <string>F</string>
+        <string assign="f1" label="Output(ON/OFF)" length="1"/>
+        <string assign="f2" label="OverHeat" length="1"/>
+        <string assign="f3" label="ADJ Fine" length="1"/>
+        <string assign="f4" label="ADJ Unlock" length="1"/>
+        <string assign="f5" label="Remote" length="1"/>
+        <string assign="f6" label="Local Lock" length="1"/>
       </item>
     </response>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="v" label="Output(V)"/>
+      <var id="a" label="Output(A)"/>
+      <var id="w" label="Output(W)"/>
+      <var id="u" label="Limit(V)"/>
+      <var id="i" label="Limit(A)"/>
+      <var id="p" label="Limit(W)"/>
+      <var id="f1" label="Output(ON/OFF)"/>
+      <var id="f2" label="OverHeat"/>
+      <var id="f3" label="ADJ Fine"/>
+      <var id="f4" label="ADJ Unlock"/>
+      <var id="f5" label="Remote"/>
+      <var id="f6" label="Local Lock"/>
+    </field>
   </frame>
 </fdb>

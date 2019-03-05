@@ -24,13 +24,16 @@
       </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field label="Prefix">*</field>
+      <string label="Prefix">*</string>
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field assign="crnt" length="9"/>
+        <string assign="crnt" length="9"/>
       </item>
     </response>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="crnt"/>
+    </field>
   </frame>
 </fdb>

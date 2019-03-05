@@ -45,24 +45,29 @@
       </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field label="Prefix">A</field>
+      <string label="Prefix">A</string>
       <ccrange>
         <body/>
       </ccrange>
-      <field assign="cc" decode="hexstr" label="BCC" length="2"/>
+      <hexstr assign="cc" label="BCC" length="2"/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <array assign="stat" decode="hexstr" label="Status" length="4">
-          <index size="8"/>
-        </array>
+        <hexstr assign="stat" label="Status" length="4"/>
       </item>
       <item id="getcfg">
-        <array assign="cfg" decode="hexstr" label="Config" length="2">
-          <index size="8"/>
-        </array>
+        <hexstr assign="cfg" label="Config" length="2"/>
       </item>
       <item id="default" noaffix="true"/>
     </response>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="cc" label="BCC"/>
+      <array id="stat" label="Status">
+        <index size="8"/>
+      </array>
+      <array id="cfg" label="Config">
+        <index size="8"/>
+      </array>
+    </field>
   </frame>
 </fdb>

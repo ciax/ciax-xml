@@ -12,8 +12,8 @@ module CIAX
       end
 
       def decode(code, e0) # Chr -> Num
-        cdc = e0[:decode]
-        return code.to_s unless cdc
+        cdc = e0[:type]
+        return code.to_s if cdc == 'string'
         num, base = ___num_by_type(code, cdc)
         if e0[:sign] == 'msb'
           range = base**code.size

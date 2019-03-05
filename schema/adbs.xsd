@@ -39,10 +39,10 @@
   </xsd:element>
   <xsd:element name="repeat_group">
     <xsd:complexType>
-        <xsd:choice minOccurs="1" maxOccurs="unbounded">
-          <xsd:element ref="adbs:group"/>
-          <xsd:element ref="adbs:repeat_group"/>
-        </xsd:choice>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="adbs:group"/>
+        <xsd:element ref="adbs:repeat_group"/>
+      </xsd:choice>
       <xsd:attributeGroup ref="adbs:repeat"/>
     </xsd:complexType>
   </xsd:element>

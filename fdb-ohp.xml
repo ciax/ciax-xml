@@ -26,15 +26,18 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field label="Prefix">X01</field>
-        <field assign="pres" length="5"/>
+        <string label="Prefix">X01</string>
+        <string assign="pres" length="5"/>
       </item>
       <item id="setd">
-        <field label="Command">W1F</field>
+        <string label="Command">W1F</string>
       </item>
       <item id="init">
-        <field label="Command">Z02</field>
+        <string label="Command">Z02</string>
       </item>
     </response>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="pres"/>
+    </field>
   </frame>
 </fdb>

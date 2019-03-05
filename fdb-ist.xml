@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="ist" label="Instrument Assignment" version="0">
-    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <item id="default">
-        <field assign="cis" label="Current Instrument" length="2"/>
-        <field assign="cfl" label="Current Flange" length="1"/>
-        <array assign="fra" label="Frange Array">
-          <index size="4"/>
-        </array>
-      </item>
-    </response>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="cis" label="Current Instrument"/>
+      <var id="cfl" label="Current Flange"/>
+      <array id="fra" label="Frange Array">
+        <index size="4"/>
+      </array>
+    </field>
   </frame>
 </fdb>

@@ -36,8 +36,8 @@
         <integer assign="stat" length="2"/>
       </item>
     </response>
-    <fields xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <var id="stat" label="Status"/>
-    </fields>
+    </field>
   </frame>
 </fdb>

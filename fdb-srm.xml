@@ -37,31 +37,41 @@
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <ccrange>
-        <field label="Prefix">@</field>
+        <string label="Prefix">@</string>
         <body/>
       </ccrange>
-      <field assign="cc" decode="hexstr" label="BCC" length="2"/>
-      <field label="Terminater">*</field>
+      <hexstr assign="cc" label="BCC" length="2"/>
+      <string label="Terminater">*</string>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getmodel">
-        <field label="Command Code">00MM</field>
-        <field label="Response Code" length="2" assign="cod"/>
-        <field assign="model" label="Model Number" length="2"/>
+        <string label="Command Code">00MM</string>
+        <string label="Response Code" length="2" assign="cod"/>
+        <string assign="model" label="Model Number" length="2"/>
       </item>
       <item id="getstat">
-        <field label="Command Code">00RR</field>
-        <field label="Response Code" length="2" assign="cod"/>
+        <string label="Command Code">00RR</string>
+        <string label="Response Code" length="2" assign="cod"/>
         <!--Big endian-->
-        <field assign="c1d3" label="CH1 bit12-15" length="1"/>
-        <field assign="c1d2" label="CH1 bit8-11" length="1"/>
-        <field assign="c1d1" label="CH1 bit4-7" length="1"/>
-        <field assign="c1d0" label="CH1 bit0-3" length="1"/>
+        <string assign="c1d3" label="CH1 bit12-15" length="1"/>
+        <string assign="c1d2" label="CH1 bit8-11" length="1"/>
+        <string assign="c1d1" label="CH1 bit4-7" length="1"/>
+        <string assign="c1d0" label="CH1 bit0-3" length="1"/>
       </item>
       <item id="fset">
-        <field label="Command Code">00FK</field>
-        <field label="Exit Code" length="2" assign="cod"/>
+        <string label="Command Code">00FK</string>
+        <string label="Exit Code" length="2" assign="cod"/>
       </item>
     </response>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="cc" label="BCC"/>
+      <var id="cod" label="Response Code"/>
+      <var id="model" label="Model Number"/>
+      <!--Big endian-->
+      <var id="c1d3" label="CH1 bit12-15"/>
+      <var id="c1d2" label="CH1 bit8-11"/>
+      <var id="c1d1" label="CH1 bit4-7"/>
+      <var id="c1d0" label="CH1 bit0-3"/>
+    </field>
   </frame>
 </fdb>

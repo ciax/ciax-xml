@@ -74,7 +74,7 @@
         <integer assign="t" label="Jack Pulse Tables" length="2"/>
       </item>
     </response>
-    <fields xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <var id="ecode" label="Error Code">0</var>
       <var id="cc" label="Response Data Length"/>
       <var id="cmdrsp" label="command resp"/>
@@ -85,6 +85,6 @@
         <!--ID[0-10],Level[0-3]-->
         <index size="256"/>
       </array>
-    </fields>
+    </field>
   </frame>
 </fdb>

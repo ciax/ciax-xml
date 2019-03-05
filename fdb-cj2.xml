@@ -153,7 +153,7 @@
         <integer length="1" assign="exe"/>
       </item>
     </response>
-    <fields xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <array id="w" label="Status">
         <index size="13"/>
       </array>
@@ -167,6 +167,6 @@
       <var id="ipr" label="Remote IP (DSO)">32</var>
       <var id="exe" label="Exe Flag">0</var>
       <var id="err" label="FINS Command:Error Code"/>
-    </fields>
+    </field>
   </frame>
 </fdb>

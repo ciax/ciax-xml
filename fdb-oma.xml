@@ -16,14 +16,17 @@
       </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field label="Prefix">?</field>
+      <string label="Prefix">?</string>
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <field label="Command Rseponse">01CP=</field>
-        <field assign="stat" label="Status" length="6"/>
+        <string label="Command Rseponse">01CP=</string>
+        <string assign="stat" label="Status" length="6"/>
       </item>
     </response>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="stat" label="Status"/>
+    </field>
   </frame>
 </fdb>

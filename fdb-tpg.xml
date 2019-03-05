@@ -22,14 +22,17 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="reqstat">
-        <field decode="integer">6</field>
+        <integer>6</integer>
       </item>
       <item id="getstat">
-        <array assign="stat" delimiter=",">
-          <index size="2"/>
-          <index size="2"/>
-        </array>
+        <string assign="stat" delimiter=","/>
       </item>
     </response>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <array id="stat">
+        <index size="2"/>
+        <index size="2"/>
+      </array>
+    </field>
   </frame>
 </fdb>

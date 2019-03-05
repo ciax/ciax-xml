@@ -54,9 +54,9 @@
       </item>
       <item id="default"/>
     </response>
-    <fields xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <var id="output" label="Output Status"/>
       <var id="input" label="Input Status"/>
-    </fields>
+    </field>
   </frame>
 </fdb>

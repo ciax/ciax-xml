@@ -1,84 +1,84 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fdb="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr" xmlns:fdbc="http://ciax.sum.naoj.org/ciax-xml/fdbc" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <!--Device database-->
-  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/fdbr" schemaLocation="fdbr.xsd" />
-  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/fdbc" schemaLocation="fdbc.xsd" />
-  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/sdb" schemaLocation="sdb.xsd" />
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/fdbr" schemaLocation="fdbr.xsd"/>
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/fdbc" schemaLocation="fdbc.xsd"/>
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/sdb" schemaLocation="sdb.xsd"/>
   <xsd:element name="fdb">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="fdb:frame" minOccurs="1" maxOccurs="unbounded" />
-        <xsd:element ref="sdb:symbol" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="fdb:frame" minOccurs="1" maxOccurs="unbounded"/>
+        <xsd:element ref="sdb:symbol" minOccurs="0" maxOccurs="1"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="frame">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="fdb:spec" minOccurs="0" maxOccurs="1" />
-        <xsd:element ref="fdb:stream" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="fdb:spec" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="fdb:stream" minOccurs="0" maxOccurs="1"/>
         <!--Protocol for RS232C-->
-        <xsd:element ref="fdb:serial" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="fdb:serial" minOccurs="0" maxOccurs="1"/>
         <!--Command frame-->
-        <xsd:element ref="fdbc:cmdframe" minOccurs="0" maxOccurs="1" />
-        <xsd:element ref="fdbc:command" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="fdbc:cmdframe" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="fdbc:command" minOccurs="0" maxOccurs="1"/>
         <!--Response frame-->
-        <xsd:element ref="fdbr:rspframe" minOccurs="0" maxOccurs="1" />
-        <xsd:element ref="fdbr:response" minOccurs="0" maxOccurs="1" />
-        <xsd:element ref="fdbr:fields" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="fdbr:rspframe" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="fdbr:response" minOccurs="0" maxOccurs="1"/>
+        <xsd:element ref="fdbr:field" minOccurs="0" maxOccurs="1"/>
       </xsd:sequence>
-      <xsd:attribute name="id" type="xsd:NCName" use="required" />
-      <xsd:attribute name="version" type="xsd:int" />
-      <xsd:attribute name="label" type="xsd:token" />
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="version" type="xsd:int"/>
+      <xsd:attribute name="label" type="xsd:token"/>
     </xsd:complexType>
     <xsd:key name="response_id">
-      <xsd:selector xpath=".//fdbr:item" />
-      <xsd:field xpath="@id" />
+      <xsd:selector xpath=".//fdbr:item"/>
+      <xsd:field xpath="@id"/>
     </xsd:key>
     <xsd:keyref name="command_name" refer="fdb:response_id">
-      <xsd:selector xpath=".//fdbc:item" />
-      <xsd:field xpath="@response" />
+      <xsd:selector xpath=".//fdbc:item"/>
+      <xsd:field xpath="@response"/>
     </xsd:keyref>
     <xsd:key name="field_id">
-      <xsd:selector xpath=".//fdbr:fields/*" />
-      <xsd:field xpath="@id" />
+      <xsd:selector xpath=".//fdbr:field/*"/>
+      <xsd:field xpath="@id"/>
     </xsd:key>
     <xsd:keyref name="field_assign" refer="fdb:field_id">
-      <xsd:selector xpath=".//fdbc:rspframe/*|.//fdbc:response/*" />
-      <xsd:field xpath="@assign" />
+      <xsd:selector xpath=".//fdbc:rspframe/*|.//fdbc:response/*"/>
+      <xsd:field xpath="@assign"/>
     </xsd:keyref>
   </xsd:element>
   <xsd:element name="spec">
     <xsd:complexType>
-      <xsd:attribute name="mfr" type="xsd:token" />
-      <xsd:attribute name="type" type="xsd:token" />
-      <xsd:attribute name="brand" type="xsd:token" />
-      <xsd:attribute name="model" type="xsd:token" />
-      <xsd:attribute name="reference" type="xsd:anyURI" />
+      <xsd:attribute name="mfr" type="xsd:token"/>
+      <xsd:attribute name="type" type="xsd:token"/>
+      <xsd:attribute name="brand" type="xsd:token"/>
+      <xsd:attribute name="model" type="xsd:token"/>
+      <xsd:attribute name="reference" type="xsd:anyURI"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="stream">
     <xsd:complexType>
-      <xsd:attribute name="stream_ver" type="xsd:int" />
+      <xsd:attribute name="stream_ver" type="xsd:int"/>
       <!--waiting time between sending and recieving on stream (default 0.01)-->
-      <xsd:attribute name="wait" type="xsd:float" />
-      <xsd:attribute name="timeout" type="xsd:int" />
-      <xsd:attribute name="maxlength" type="xsd:int" />
-      <xsd:attribute name="terminator" type="xsd:token" />
+      <xsd:attribute name="wait" type="xsd:float"/>
+      <xsd:attribute name="timeout" type="xsd:int"/>
+      <xsd:attribute name="maxlength" type="xsd:int"/>
+      <xsd:attribute name="terminator" type="xsd:token"/>
       <xsd:attribute name="endian">
         <xsd:simpleType>
           <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="big" />
-            <xsd:enumeration value="little" />
+            <xsd:enumeration value="big"/>
+            <xsd:enumeration value="little"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>
       <xsd:attribute name="ccmethod">
         <xsd:simpleType>
           <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="bcc" />
-            <xsd:enumeration value="sum" />
-            <xsd:enumeration value="len" />
+            <xsd:enumeration value="bcc"/>
+            <xsd:enumeration value="sum"/>
+            <xsd:enumeration value="len"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>
@@ -89,52 +89,52 @@
       <xsd:attribute name="speed">
         <xsd:simpleType>
           <xsd:restriction base="xsd:double">
-            <xsd:enumeration value="300" />
-            <xsd:enumeration value="600" />
-            <xsd:enumeration value="1200" />
-            <xsd:enumeration value="2400" />
-            <xsd:enumeration value="4800" />
-            <xsd:enumeration value="9600" />
-            <xsd:enumeration value="19200" />
-            <xsd:enumeration value="38400" />
-            <xsd:enumeration value="56000" />
-            <xsd:enumeration value="57600" />
-            <xsd:enumeration value="115200" />
-            <xsd:enumeration value="230400" />
+            <xsd:enumeration value="300"/>
+            <xsd:enumeration value="600"/>
+            <xsd:enumeration value="1200"/>
+            <xsd:enumeration value="2400"/>
+            <xsd:enumeration value="4800"/>
+            <xsd:enumeration value="9600"/>
+            <xsd:enumeration value="19200"/>
+            <xsd:enumeration value="38400"/>
+            <xsd:enumeration value="56000"/>
+            <xsd:enumeration value="57600"/>
+            <xsd:enumeration value="115200"/>
+            <xsd:enumeration value="230400"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>
       <xsd:attribute name="databit">
         <xsd:simpleType>
           <xsd:restriction base="xsd:int">
-            <xsd:minInclusive value="7" />
-            <xsd:maxInclusive value="8" />
+            <xsd:minInclusive value="7"/>
+            <xsd:maxInclusive value="8"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>
       <xsd:attribute name="parity">
         <xsd:simpleType>
           <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="NONE" />
-            <xsd:enumeration value="EVEN" />
-            <xsd:enumeration value="ODD" />
+            <xsd:enumeration value="NONE"/>
+            <xsd:enumeration value="EVEN"/>
+            <xsd:enumeration value="ODD"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>
       <xsd:attribute name="stopbit">
         <xsd:simpleType>
           <xsd:restriction base="xsd:int">
-            <xsd:minInclusive value="1" />
-            <xsd:maxInclusive value="2" />
+            <xsd:minInclusive value="1"/>
+            <xsd:maxInclusive value="2"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>
       <xsd:attribute name="flowctl">
         <xsd:simpleType>
           <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="NONE" />
-            <xsd:enumeration value="XONXOFF" />
-            <xsd:enumeration value="CTSRTS" />
+            <xsd:enumeration value="NONE"/>
+            <xsd:enumeration value="XONXOFF"/>
+            <xsd:enumeration value="CTSRTS"/>
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>

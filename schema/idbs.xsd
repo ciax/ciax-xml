@@ -31,11 +31,11 @@
   </xsd:element>
   <xsd:element name="group">
     <xsd:complexType>
-    <xsd:sequence>
-      <xsd:element ref="idbs:alias" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-    <xsd:attribute name="ref" type="xsd:NCName" use="required"/>
-    <xsd:attribute name="caption" type="xsd:token"/>
+      <xsd:sequence>
+        <xsd:element ref="idbs:alias" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute name="ref" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="caption" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="index">

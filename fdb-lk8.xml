@@ -32,16 +32,21 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <array assign="ch" label="Value" delimiter=";">
-          <index size="8"/>
-        </array>
+        <string assign="ch" label="Value" delimiter=";"/>
       </item>
       <item id="htrstat">
-        <field assign="htr" label="Heater Power"/>
+        <string assign="htr" label="Heater Power"/>
       </item>
       <item id="spstat">
-        <field assign="sp" label="SetPoint"/>
+        <string assign="sp" label="SetPoint"/>
       </item>
     </response>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <array id="ch" label="Value">
+        <index size="8"/>
+      </array>
+      <var id="htr" label="Heater Power"/>
+      <var id="sp" label="SetPoint"/>
+    </field>
   </frame>
 </fdb>

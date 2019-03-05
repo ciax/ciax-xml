@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
-# XML Attribute vs Child Element exchanger
+# XML Attribute to Child Text
 require 'optparse'
 require 'rexml/document'
 include REXML
 
 if ARGV.size < 2
   abort <<EOF
-Usage: a2c (-r) [xpath] [attr] < xml
+Usage: a2ct (-r) [xpath] [attr] < xml
        //xpath@attr <-> //xpath/attr.text()
 EOF
 end

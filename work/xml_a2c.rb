@@ -6,7 +6,7 @@ include REXML
 
 if ARGV.size < 2
   abort <<EOF
-Usage: a2e (-r) [xpath] [attr] < xml
+Usage: a2c (-r) [xpath] [attr] < xml
        //xpath@attr <-> //xpath/attr.text()
 EOF
 end

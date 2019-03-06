@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 # XML Element to Attribute
+#alias e2a
 require 'optparse'
 require 'rexml/document'
 include REXML

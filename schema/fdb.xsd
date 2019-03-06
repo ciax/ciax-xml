@@ -44,8 +44,8 @@
       <xsd:field xpath="@id"/>
     </xsd:key>
     <xsd:keyref name="field_assign" refer="fdb:field_id">
-      <xsd:selector xpath=".//fdbc:rspframe/*|.//fdbc:response/*"/>
-      <xsd:field xpath="@assign"/>
+      <xsd:selector xpath=".//fdbr:rspframe/*|.//fdbr:response/*"/>
+      <xsd:field xpath="@ref"/>
     </xsd:keyref>
   </xsd:element>
   <xsd:element name="spec">

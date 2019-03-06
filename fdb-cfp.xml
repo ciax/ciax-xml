@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="cfp" label="Compact Field Point">
     <stream ccmethod="sum" wait="0"/>
@@ -13,7 +13,7 @@
       <char length="1">10</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <group caption="Status" id="gst">
         <!--String Length must be <32-->
         <item id="getstat" label="Get output status" response="getstat" type="stat">
           <string>02!J</string>
@@ -22,7 +22,7 @@
           <string>03!J</string>
         </item>
       </group>
-      <group id="gput" caption="Setting">
+      <group caption="Setting" id="gput">
         <!---->
         <item id="putdata" label="Write Discrete [Mask(4)] [Data(4)]" response="default" type="config">
           <par_num>0:65535</par_num>
@@ -31,7 +31,7 @@
           <string format="%04X">$1</string>
           <string format="%04X">$2</string>
         </item>
-        <item id="putfield" label="Write from Output Field" response="default" type="config" nocache="true">
+        <item id="putfield" label="Write from Output Field" nocache="true" response="default" type="config">
           <string>02!L</string>
           <string>FFFF</string>
           <string format="%04X">${output}</string>
@@ -39,22 +39,23 @@
       </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <string label="Prefix">A</string>
+      <verify decode="string" label="Prefix">A</verify>
       <ccrange>
         <body/>
       </ccrange>
-      <hexstr assign="cc" label="BCC" length="2"/>
+      <assign decode="hexstr" label="BCC" length="2" ref="cc"/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <hexstr assign="output" length="4"/>
+        <assign decode="hexstr" length="4" ref="output"/>
       </item>
       <item id="getstat2">
-        <hexstr assign="input" length="4"/>
+        <assign decode="hexstr" length="4" ref="input"/>
       </item>
       <item id="default"/>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="cc" label="Check Code"/>
       <var id="output" label="Output Status"/>
       <var id="input" label="Input Status"/>
     </field>

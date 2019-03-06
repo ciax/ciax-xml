@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="k3n" label="OMRON K3NR">
     <stream ccmethod="bcc" wait="1"/>
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <char length="1" label="Prefix">2</char>
+      <char label="Prefix" length="1">2</char>
       <ccrange>
         <body/>
-        <char length="1" label="Suffix">3</char>
+        <char label="Suffix" length="1">3</char>
       </ccrange>
       <char length="1">${cc}</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <group caption="Status" id="gst">
         <item id="getstat" label="Get Status" response="getstat" type="stat">
           <string label="Node No.">00</string>
           <string label="Sub Address">00</string>
@@ -27,20 +27,20 @@
       </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <integer label="Prefix" length="1">2</integer>
+      <verify decode="integer" label="Prefix" length="1">2</verify>
       <ccrange>
-        <string label="Node">0000</string>
-        <string assign="ecode" label="Exit Code" length="2"/>
+        <verify decode="string" label="Node">0000</verify>
+        <assign decode="string" label="Exit Code" length="2" ref="ecode"/>
         <body/>
-        <integer label="Suffix" length="1">3</integer>
+        <verify decode="integer" label="Suffix" length="1">3</verify>
       </ccrange>
-      <integer assign="cc" label="BCC" length="1"/>
+      <assign decode="integer" label="BCC" length="1" ref="cc"/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <string label="MRC SRC">0101</string>
-        <string assign="rcode" label="Response Code" length="4"/>
-        <decstr assign="stat" label="Status" length="8"/>
+        <verify decode="string" label="MRC SRC">0101</verify>
+        <assign decode="string" label="Response Code" length="4" ref="rcode"/>
+        <assign decode="decstr" label="Status" length="8" ref="stat"/>
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">

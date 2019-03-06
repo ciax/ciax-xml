@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="ist" label="Instrument Assignment" version="0">
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <var id="cis" label="Current Instrument"/>
       <var id="cfl" label="Current Flange"/>
       <array id="fra" label="Frange Array">
-        <index size="4"/>
+        <size>4</size>
       </array>
     </field>
   </frame>

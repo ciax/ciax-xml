@@ -8,8 +8,7 @@
     <xsd:attribute name="label" type="xsd:token"/>
     <!--Valid content is regexp-->
     <xsd:attribute name="valid" type="xsd:token"/>
-    <xsd:attribute name="assign" type="xsd:NCName"/>
-    <xsd:attribute name="index" type="xsd:token"/>
+    <xsd:attribute name="decode" type="fdbr:codec"/>
     <xsd:attribute name="sign" type="fdbr:sign"/>
     <xsd:attribute name="length" type="xsd:int"/>
     <xsd:attribute name="slice" type="fdbr:rerange"/>
@@ -23,25 +22,29 @@
   <xsd:element name="echo">
     <xsd:complexType/>
   </xsd:element>
-  <xsd:complexType name="fieldtype">
-    <xsd:simpleContent>
-      <xsd:extension base="xsd:token">
-        <xsd:attributeGroup ref="fdbr:rsp_attr"/>
-      </xsd:extension>
-    </xsd:simpleContent>
-  </xsd:complexType>
-  <xsd:element name="binstr" type="fdbr:fieldtype"/>
-  <xsd:element name="decstr" type="fdbr:fieldtype"/>
-  <xsd:element name="hexstr" type="fdbr:fieldtype"/>
-  <xsd:element name="string" type="fdbr:fieldtype"/>
-  <xsd:element name="integer" type="fdbr:fieldtype"/>
+  <xsd:element name="verify">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attributeGroup ref="fdbr:rsp_attr"/>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="assign">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="fdbr:index"/>
+      </xsd:choice>
+      <xsd:attribute name="ref" type="xsd:token"/>
+      <xsd:attributeGroup ref="fdbr:rsp_attr"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="index" type="xsd:token"/>
   <xsd:group name="fieldgroup">
     <xsd:choice>
-      <xsd:element ref="fdbr:binstr"/>
-      <xsd:element ref="fdbr:decstr"/>
-      <xsd:element ref="fdbr:hexstr"/>
-      <xsd:element ref="fdbr:string"/>
-      <xsd:element ref="fdbr:integer"/>
+      <xsd:element ref="fdbr:verify"/>
+      <xsd:element ref="fdbr:assign"/>
     </xsd:choice>
   </xsd:group>
   <!--Response CC-->
@@ -108,17 +111,12 @@
   <xsd:element name="array">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="fdbr:index" minOccurs="1" maxOccurs="unbounded"/>
+        <xsd:element ref="fdbr:size" minOccurs="1" maxOccurs="unbounded"/>
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
       <xsd:attribute name="label" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>
   <!--Field Elements-->
-  <xsd:element name="index">
-    <xsd:complexType>
-      <!--Whole size of Array-->
-      <xsd:attribute name="size" type="xsd:int" use="required"/>
-    </xsd:complexType>
-  </xsd:element>
+  <xsd:element name="size" type="xsd:int"/>
 </xsd:schema>

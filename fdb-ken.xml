@@ -1,86 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ken" version="1" label="Kenwood PW-A Series (IF-41RS)">
-    <spec mfr="Kenwood" brand="PW-A Series" model="IF-41RS" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf"/>
+  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" version="1">
+    <spec brand="PW-A Series" mfr="Kenwood" model="IF-41RS" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf"/>
     <stream ccmethod="sum" maxlength="255" stream_ver="5" wait="0.5"/>
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <char length="1" label="ENQ">5</char>
+      <char label="ENQ" length="1">5</char>
       <ccrange>
         <body/>
-        <char length="1" label="ETX">3</char>
+        <char label="ETX" length="1">3</char>
       </ccrange>
       <string format="%02X">${cc}</string>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gpr" caption="Protocol">
+      <group caption="Protocol" id="gpr">
         <!-- Ack Commands -->
         <item id="ack" label="ACK" noaffix="true" response="ack" type="protocol">
-          <char length="1" label="ACK">6</char>
+          <char label="ACK" length="1">6</char>
           <string>@</string>
         </item>
         <item id="clr" label="CLEAR ACK" noaffix="true" response="default" type="protocol">
-          <char length="1" label="ACK">6</char>
+          <char label="ACK" length="1">6</char>
           <string>@</string>
         </item>
         <item id="rcv" label="Rcv Status" response="getstat" type="stat"/>
       </group>
-      <group id="gst" caption="Status">
+      <group caption="Status" id="gst">
         <!-- Status Commands -->
-        <item id="getid" label="Get Unit ID(NEW)" type="stat" response="getstat">
+        <item id="getid" label="Get Unit ID(NEW)" response="getstat" type="stat">
           <par_num>0:2</par_num>
           <char length="1">$1+0x41</char>
           <string>PWID</string>
         </item>
-        <item id="getst0" label="Get Status in INT [UNIT] [N of CH]" type="stat" response="getst0">
+        <item id="getst0" label="Get Status in INT [UNIT] [N of CH]" response="getst0" type="stat">
           <par_num>0:2</par_num>
           <par_num>1:4</par_num>
           <char length="1">$1+0x41</char>
           <string>ST0</string>
         </item>
-        <item id="getst1" label="Get Presets(NEW) in INT [UNIT] [N of CH]" type="stat" response="getst1">
+        <item id="getst1" label="Get Presets(NEW) in INT [UNIT] [N of CH]" response="getst1" type="stat">
           <par_num>0:2</par_num>
           <par_num>1:4</par_num>
           <char length="1">$1+0x41</char>
           <string>ST1</string>
         </item>
-        <item id="getst1o" label="Get Presets(OLD) in INT [UNIT] [N of CH]" type="stat" response="getst1o">
+        <item id="getst1o" label="Get Presets(OLD) in INT [UNIT] [N of CH]" response="getst1o" type="stat">
           <par_num>0:2</par_num>
           <par_num>1:4</par_num>
           <char length="1">$1+0x41</char>
           <string>ST1</string>
         </item>
-        <item id="getst2" label="Get status(NEW) [UNIT] [N of CH]" type="stat" response="getst2">
+        <item id="getst2" label="Get status(NEW) [UNIT] [N of CH]" response="getst2" type="stat">
           <par_num>0:2</par_num>
           <par_num>1:4</par_num>
           <char length="1">$1+0x41</char>
           <string>ST2</string>
         </item>
-        <item id="getst2o" label="Get status(OLD) [UNIT] [N of CH]" type="stat" response="getst2o">
+        <item id="getst2o" label="Get status(OLD) [UNIT] [N of CH]" response="getst2o" type="stat">
           <par_num>0:2</par_num>
           <par_num>1:4</par_num>
           <char length="1">$1+0x41</char>
           <string>ST2</string>
         </item>
-        <item id="getst3" label="Get status(NEW) [UNIT]" type="stat" response="getst3">
+        <item id="getst3" label="Get status(NEW) [UNIT]" response="getst3" type="stat">
           <par_num>0:2</par_num>
           <char length="1">$1+0x41</char>
           <string>ST3</string>
         </item>
-        <item id="getst4" label="Get Status(NEW) in Float [UNIT] [N of CH]" type="stat" response="getst4">
+        <item id="getst4" label="Get Status(NEW) in Float [UNIT] [N of CH]" response="getst4" type="stat">
           <par_num>0:2</par_num>
           <par_num>1:4</par_num>
           <char length="1">$1+0x41</char>
           <string>ST4</string>
         </item>
-        <item id="getst5" label="Get Presets(NEW) in Float [UNIT] [N of CH]" type="stat" response="getst5">
+        <item id="getst5" label="Get Presets(NEW) in Float [UNIT] [N of CH]" response="getst5" type="stat">
           <par_num>0:2</par_num>
           <par_num>1:4</par_num>
           <char length="1">$1+0x41</char>
           <string>ST5</string>
         </item>
       </group>
-      <group id="gact" caption="Action">
+      <group caption="Action" id="gact">
         <!-- Action Command -->
         <!-- No response if Addr is # -->
         <item id="tron" label="All Tracking ON(NEW)" type="action">
@@ -99,131 +99,192 @@
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <echo/>
-      <integer length="1" label="ACK">6</integer>
-      <string length="1" label="DST CH"/>
-      <integer length="1" label="ENQ">5</integer>
+      <verify decode="integer" label="ACK" length="1">6</verify>
+      <verify decode="string" label="DST CH" length="1"/>
+      <verify decode="integer" label="ENQ" length="1">5</verify>
       <ccrange>
-        <string label="SRC CH">@</string>
+        <verify decode="string" label="SRC CH">@</verify>
         <body/>
-        <integer length="1" label="ETX">3</integer>
+        <verify decode="integer" label="ETX" length="1">3</verify>
       </ccrange>
-      <hexstr assign="cc" length="2" label="CC"/>
+      <assign decode="hexstr" label="CC" length="2" ref="cc"/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="ack" noaffix="true">
-        <integer label="ACK" length="1">6</integer>
-        <string label="Master CH">@</string>
+        <verify decode="integer" label="ACK" length="1">6</verify>
+        <verify decode="string" label="Master CH">@</verify>
       </item>
       <item id="getstat">
-        <string assign="ids" index="$1,0:4" label="Value" delimiter=","/>
+        <assign decode="string" delimiter="," label="Value" ref="ids">
+          <index>$1</index>
+          <index>0:4</index>
+        </assign>
       </item>
       <item id="getst0">
-        <string label="StatusCode">MS0,0</string>
-        <string label="UNIT #">$1+1</string>
-        <string label="Delimiter">,</string>
-        <string assign="ms0" index="$1,0:$2-1,2" label="Value" delimiter=","/>
-        <hexstr assign="cst" index="$1,0:3" label="CV/CC Stat" length="1"/>
+        <verify decode="string" label="StatusCode">MS0,0</verify>
+        <verify decode="string" label="UNIT #">$1+1</verify>
+        <verify decode="string" label="Delimiter">,</verify>
+        <assign decode="string" delimiter="," label="Value" ref="ms0">
+          <index>$1</index>
+          <index>0:$2-1</index>
+          <index>2</index>
+        </assign>
+        <assign decode="hexstr" label="CV/CC Stat" length="1" ref="cst">
+          <index>$1</index>
+          <index>0:3</index>
+        </assign>
       </item>
       <item id="getst1">
-        <string label="StatusCode">MS1,0</string>
-        <string label="UNIT #">$1+1</string>
-        <string label="Delimiter">,</string>
-        <string assign="ms1" index="$1,0:3,0:$2*2-2" label="Value" delimiter=","/>
+        <verify decode="string" label="StatusCode">MS1,0</verify>
+        <verify decode="string" label="UNIT #">$1+1</verify>
+        <verify decode="string" label="Delimiter">,</verify>
+        <assign decode="string" delimiter="," label="Value" ref="ms1">
+          <index>$1</index>
+          <index>0:3</index>
+          <index>0:$2*2-2</index>
+        </assign>
       </item>
       <item id="getst1o">
-        <string label="StatusCode">MS1,0</string>
-        <string label="UNIT #">$1+1</string>
-        <string label="Delimiter">,</string>
-        <string assign="ms1" index="$1,0:3,0:$2*2+2" label="Value" delimiter=","/>
+        <verify decode="string" label="StatusCode">MS1,0</verify>
+        <verify decode="string" label="UNIT #">$1+1</verify>
+        <verify decode="string" label="Delimiter">,</verify>
+        <assign decode="string" delimiter="," label="Value" ref="ms1">
+          <index>$1</index>
+          <index>0:3</index>
+          <index>0:$2*2+2</index>
+        </assign>
       </item>
       <item id="getst2">
-        <string label="StatusCode">MS2,0</string>
-        <string label="UNIT #">$1+1</string>
-        <string label="Delimiter">,</string>
-        <binstr assign="ms2" index="$1,0:1" label="LED/MAIN" delimiter=","/>
-        <hexstr assign="st0" index="$1,0:3,0" label="Output Select CH" length="1"/>
-        <string label="Delimiter">,</string>
-        <binstr assign="ms2" index="$1,2" label="Track SW" delimiter=","/>
-        <string assign="st0" index="$1,0:3,1" label="Track Select CH" length="1"/>
-        <string label="Delimiter">,</string>
-        <binstr assign="ms2" index="$1,3" label="Track Mode" delimiter=","/>
-        <string assign="st0" index="$1,0:$2-1,2:3" label="Track Values" delimiter=","/>
-        <string assign="ms2" index="$1,4:5" label="Preset/Delay" delimiter=","/>
-        <string assign="st0" index="$1,0:$2-1,4" label="Delay Times" delimiter=","/>
+        <verify decode="string" label="StatusCode">MS2,0</verify>
+        <verify decode="string" label="UNIT #">$1+1</verify>
+        <verify decode="string" label="Delimiter">,</verify>
+        <assign decode="binstr" delimiter="," label="LED/MAIN" ref="ms2">
+          <index>$1</index>
+          <index>0:1</index>
+        </assign>
+        <assign decode="hexstr" label="Output Select CH" length="1" ref="st0">
+          <index>$1</index>
+          <index>0:3</index>
+          <index>0</index>
+        </assign>
+        <verify decode="string" label="Delimiter">,</verify>
+        <assign decode="binstr" delimiter="," label="Track SW" ref="ms2">
+          <index>$1</index>
+          <index>2</index>
+        </assign>
+        <assign decode="string" label="Track Select CH" length="1" ref="st0">
+          <index>$1</index>
+          <index>0:3</index>
+          <index>1</index>
+        </assign>
+        <verify decode="string" label="Delimiter">,</verify>
+        <assign decode="binstr" delimiter="," label="Track Mode" ref="ms2">
+          <index>$1</index>
+          <index>3</index>
+        </assign>
+        <assign decode="string" delimiter="," label="Track Values" ref="st0">
+          <index>$1</index>
+          <index>0:$2-1</index>
+          <index>2:3</index>
+        </assign>
+        <assign decode="string" delimiter="," label="Preset/Delay" ref="ms2">
+          <index>$1</index>
+          <index>4:5</index>
+        </assign>
+        <assign decode="string" delimiter="," label="Delay Times" ref="st0">
+          <index>$1</index>
+          <index>0:$2-1</index>
+          <index>4</index>
+        </assign>
       </item>
       <item id="getst2o">
-        <string label="StatusCode">MS2,0</string>
-        <string label="UNIT #">$1+1</string>
-        <string label="Delimiter">,</string>
-        <string assign="mso" index="$1,0:4" label="Value" delimiter=","/>
+        <verify decode="string" label="StatusCode">MS2,0</verify>
+        <verify decode="string" label="UNIT #">$1+1</verify>
+        <verify decode="string" label="Delimiter">,</verify>
+        <assign decode="string" delimiter="," label="Value" ref="mso">
+          <index>$1</index>
+          <index>0:4</index>
+        </assign>
       </item>
       <item id="getst3">
-        <string label="StatusCode">MS3,0</string>
-        <string label="UNIT #">$1+1</string>
-        <string label="Delimiter">,</string>
-        <string assign="ms3" index="$1" label="Value" delimiter=","/>
+        <verify decode="string" label="StatusCode">MS3,0</verify>
+        <verify decode="string" label="UNIT #">$1+1</verify>
+        <verify decode="string" label="Delimiter">,</verify>
+        <assign decode="string" delimiter="," label="Value" ref="ms3">
+          <index>$1</index>
+        </assign>
       </item>
       <item id="getst4">
-        <string label="StatusCode">MS4,0</string>
-        <string label="UNIT #">$1+1</string>
-        <string label="Delimiter">,</string>
-        <string assign="ms4" index="$1,0:$2*2-1" label="Value" delimiter=","/>
-        <hexstr assign="st0" index="$1,0:3,0" label="Stat" length="1"/>
+        <verify decode="string" label="StatusCode">MS4,0</verify>
+        <verify decode="string" label="UNIT #">$1+1</verify>
+        <verify decode="string" label="Delimiter">,</verify>
+        <assign decode="string" delimiter="," label="Value" ref="ms4">
+          <index>$1</index>
+          <index>0:$2*2-1</index>
+        </assign>
+        <assign decode="hexstr" label="Stat" length="1" ref="st0">
+          <index>$1</index>
+          <index>0:3</index>
+          <index>0</index>
+        </assign>
       </item>
       <item id="getst5">
-        <string label="StatusCode">MS5,0</string>
-        <string label="UNIT #">$1+1</string>
-        <string label="Delimiter">,</string>
-        <string assign="ms5" index="$1,0:13" label="Value" delimiter=","/>
+        <verify decode="string" label="StatusCode">MS5,0</verify>
+        <verify decode="string" label="UNIT #">$1+1</verify>
+        <verify decode="string" label="Delimiter">,</verify>
+        <assign decode="string" delimiter="," label="Value" ref="ms5">
+          <index>$1</index>
+          <index>0:13</index>
+        </assign>
       </item>
       <item id="default" noaffix="true"/>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <var id="cc" label="CC"/>
       <array id="ids" label="Value">
-        <index size="3"/>
-        <index size="5"/>
+        <size>3</size>
+        <size>5</size>
       </array>
       <array id="cst" label="CV/CC Stat">
-        <index size="3"/>
-        <index size="4"/>
+        <size>3</size>
+        <size>4</size>
       </array>
       <array id="ms0" label="Value">
-        <index size="3"/>
-        <index size="4"/>
-        <index size="2"/>
+        <size>3</size>
+        <size>4</size>
+        <size>2</size>
       </array>
       <array id="ms1" label="Value">
         <!--Unit-->
-        <index size="3"/>
+        <size>3</size>
         <!--Preset-->
-        <index size="4"/>
+        <size>4</size>
         <!--CH-->
-        <index size="11"/>
+        <size>11</size>
       </array>
       <array id="ms2" label="Preset/Delay">
-        <index size="3"/>
-        <index size="6"/>
+        <size>3</size>
+        <size>6</size>
       </array>
       <array id="ms3" label="Value">
-        <index size="3"/>
+        <size>3</size>
       </array>
       <array id="ms4" label="Value">
-        <index size="3"/>
-        <index size="8"/>
+        <size>3</size>
+        <size>8</size>
       </array>
       <array id="ms5" label="Value">
-        <index size="3"/>
-        <index size="14"/>
+        <size>3</size>
+        <size>14</size>
       </array>
       <array id="st0" label="Status">
-        <index size="3"/>
-        <index size="4"/>
-        <index size="5"/>
+        <size>3</size>
+        <size>4</size>
+        <size>5</size>
       </array>
       <array id="mso" label="Value">
-        <index size="3"/>
-        <index size="5"/>
+        <size>3</size>
+        <size>5</size>
       </array>
     </field>
   </frame>

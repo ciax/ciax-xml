@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="oss" label="OSS Command line" version="2">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
-      <char length="1" label="Suffix">0xa</char>
+      <char label="Suffix" length="1">0xa</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <group caption="Status" id="gst">
         <item id="getstat" label="InR status" response="getstat" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="InR Select(NsOpt/NsIR/Cas)"> TSCV.RotatorType</string>
@@ -58,7 +58,7 @@
           <string>exe -b</string>
         </item>
       </group>
-      <group id="gcfg" caption="Configuration">
+      <group caption="Configuration" id="gcfg">
         <item id="login" label="TSC Login" response="exit" type="config">
           <string>gen2cmd</string>
           <string> 1A1901ciax%%%%%%%%%%%%%%%%</string>
@@ -85,7 +85,7 @@
           <string format="%02d">$1</string>
         </item>
       </group>
-      <group id="gdrv" caption="Drive">
+      <group caption="Drive" id="gdrv">
         <item id="ron" label="InR Drive ON" response="exit" type="action">
           <string>gen2cmd 904013</string>
         </item>
@@ -102,7 +102,7 @@
           <string>gen2cmd 132008</string>
         </item>
       </group>
-      <group id="gact" caption="Action">
+      <group caption="Action" id="gact">
         <item id="rhook" label="InR Hook(0deg)" response="exit" type="action">
           <string>gen2cmd -b 132004</string>
         </item>
@@ -144,56 +144,66 @@
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
         <!--TSCMON-->
-        <string assign="rsel" label="InR Select(NsOpt/NsIR/Cas)" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="InR Select(NsOpt/NsIR/Cas)" ref="rsel"/>
         <!--MCUMON-->
-        <string assign="rpw" label="InR Drive ON/OFF" delimiter="\n"/>
-        <hexstr assign="bstat" label="BOLT System Status" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="InR Drive ON/OFF" ref="rpw"/>
+        <assign decode="hexstr" delimiter="\n" label="BOLT System Status" ref="bstat"/>
       </item>
       <item id="telstat">
-        <hexstr assign="stow_1" label="Stow pin Status" delimiter="\n"/>
-        <hexstr assign="shutter" label="Shutter Status" delimiter="\n"/>
-        <hexstr assign="teldrive" label="AZ/EL Drive Status" delimiter="\n"/>
-        <string assign="el" label="EL Angle(deg)" delimiter="\n"/>
+        <assign decode="hexstr" delimiter="\n" label="Stow pin Status" ref="stow_1"/>
+        <assign decode="hexstr" delimiter="\n" label="Shutter Status" ref="shutter"/>
+        <assign decode="hexstr" delimiter="\n" label="AZ/EL Drive Status" ref="teldrive"/>
+        <assign decode="string" delimiter="\n" label="EL Angle(deg)" ref="el"/>
       </item>
       <item id="comerr">
-        <string assign="mlp3" label="CIAX-MLP3 Comm Error" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="CIAX-MLP3 Comm Error" ref="mlp3"/>
       </item>
       <item id="iststat">
-        <string assign="iid" label="CAS Instrument" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="CAS Instrument" ref="iid"/>
       </item>
       <item id="jakstat">
         <!--POWER_V1-->
-        <hexstr assign="bsa" label="BOLT SUM ALM(B0)" length="2"/>
-        <hexstr assign="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2"/>
+        <assign decode="hexstr" label="BOLT SUM ALM(B0)" length="2" ref="bsa"/>
+        <assign decode="hexstr" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2" ref="abs"/>
         <!--Order:2,1,4,3..-->
-        <hexstr assign="bs" index="0:15" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)" length="1"/>
-        <hexstr assign="bl" index="0:15" label="Each Bolt Limit(DrvAlm,UP,DW,UnitAlm)" length="1"/>
-        <hexstr assign="mba" label="MLP3-BOLT COMM ALM(18:B0)" length="2"/>
-        <hexstr assign="loc" label="CS BOLT LOCAL(19:B0)" length="2"/>
-        <hexstr assign="clm" index="0:1" label="CS BOLT Current Limit(20-21)" length="2"/>
+        <assign decode="hexstr" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)" length="1" ref="bs">
+          <index>0:15</index>
+        </assign>
+        <assign decode="hexstr" label="Each Bolt Limit(DrvAlm,UP,DW,UnitAlm)" length="1" ref="bl">
+          <index>0:15</index>
+        </assign>
+        <assign decode="hexstr" label="MLP3-BOLT COMM ALM(18:B0)" length="2" ref="mba"/>
+        <assign decode="hexstr" label="CS BOLT LOCAL(19:B0)" length="2" ref="loc"/>
+        <assign decode="hexstr" label="CS BOLT Current Limit(20-21)" length="2" ref="clm">
+          <index>0:1</index>
+        </assign>
       </item>
       <item id="jaklen">
         <!--POWER_V2-->
-        <decstr assign="jk" index="0:15" label="Bolt Position" length="12" slice="0:6"/>
+        <assign decode="decstr" label="Bolt Position" length="12" ref="jk" slice="0:6">
+          <index>0:15</index>
+        </assign>
       </item>
       <item id="zlen">
         <!--Z_SENSOR-->
-        <string assign="zp" index="0:3" label="Zsensor Position" length="12" slice="0:6"/>
+        <assign decode="string" label="Zsensor Position" length="12" ref="zp" slice="0:6">
+          <index>0:3</index>
+        </assign>
       </item>
       <item id="inrang">
-        <string assign="iang" label="InR Angle(deg)" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="InR Angle(deg)" ref="iang"/>
       </item>
       <item id="logstat">
-        <string assign="login0" label="LOGIN 0" delimiter="\n"/>
-        <string assign="login1" label="LOGIN 1" delimiter="\n"/>
-        <string assign="login2" label="LOGIN 2" delimiter="\n"/>
-        <string assign="login3" label="LOGIN 3" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="LOGIN 0" ref="login0"/>
+        <assign decode="string" delimiter="\n" label="LOGIN 1" ref="login1"/>
+        <assign decode="string" delimiter="\n" label="LOGIN 2" ref="login2"/>
+        <assign decode="string" delimiter="\n" label="LOGIN 3" ref="login3"/>
       </item>
       <item id="exit">
-        <string assign="exit" label="Exit Code" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="Exit Code" ref="exit"/>
       </item>
       <item id="pid">
-        <string assign="pid" label="Background Process ID" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="Background Process ID" ref="pid"/>
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
@@ -213,24 +223,24 @@
       <var id="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)"/>
       <!--Order:2,1,4,3..-->
       <array id="bs" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)">
-        <index size="16"/>
+        <size>16</size>
       </array>
       <array id="bl" label="Each Bolt Limit(DrvAlm,UP,DW,UnitAlm)">
         <!--Order:2,1,4,3..-->
-        <index size="16"/>
+        <size>16</size>
       </array>
       <var id="mba" label="MLP3-BOLT COMM ALM(18:B0)"/>
       <var id="loc" label="CS BOLT LOCAL(19:B0)"/>
       <array id="clm" label="CS BOLT Current Limit(20-21)">
-        <index size="2"/>
+        <size>2</size>
       </array>
       <!--POWER_V2-->
       <array id="jk" label="Bolt Position">
-        <index size="16"/>
+        <size>16</size>
       </array>
       <!--Z_SENSOR-->
       <array id="zp" label="Zsensor Position">
-        <index size="4"/>
+        <size>4</size>
       </array>
       <var id="iang" label="InR Angle(deg)"/>
       <var id="login0" label="LOGIN 0"/>

@@ -1,167 +1,173 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="cj2" version="1" label="OMRON CJ2M-CPU33">
+  <frame id="cj2" label="OMRON CJ2M-CPU33" version="1">
     <stream endian="big"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc" nocache="true">
-      <char length="1" label="FINS Header:ICF">0x80</char>
-      <char length="1" label="FINS Header:RSV">0x00</char>
-      <char length="1" label="FINS Header:GCT">0x02</char>
-      <char length="1" label="FINS Header:DNA">0x00</char>
-      <char length="1" label="FINS Header:DA1">${ipr}</char>
-      <char length="1" label="FINS Header:DA2">0x00</char>
-      <char length="1" label="FINS Header:SNA">0x00</char>
-      <char length="1" label="FINS Header:SA1">${ipl}</char>
-      <char length="1" label="FINS Header:SA2">0x00</char>
-      <char length="1" label="FINS Header:SID">0xFF</char>
+      <char label="FINS Header:ICF" length="1">0x80</char>
+      <char label="FINS Header:RSV" length="1">0x00</char>
+      <char label="FINS Header:GCT" length="1">0x02</char>
+      <char label="FINS Header:DNA" length="1">0x00</char>
+      <char label="FINS Header:DA1" length="1">${ipr}</char>
+      <char label="FINS Header:DA2" length="1">0x00</char>
+      <char label="FINS Header:SNA" length="1">0x00</char>
+      <char label="FINS Header:SA1" length="1">${ipl}</char>
+      <char label="FINS Header:SA2" length="1">0x00</char>
+      <char label="FINS Header:SID" length="1">0xFF</char>
       <body/>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <group caption="Status" id="gst">
         <item id="getstat" label="Get all status" response="getstat" type="stat">
-          <char length="1" label="FINS Command:MRC">0x01</char>
-          <char length="1" label="FINS Command:SRC">0x01</char>
-          <char length="1" label="FINS Param:Memory type(W)">0xB1</char>
-          <char length="1" label="FINS Param:Start Address(H)">0x00</char>
-          <char length="1" label="FINS Param:Start Address(L)">0x0A</char>
-          <char length="1" label="FINS Param:Bit Number">0x00</char>
-          <char length="1" label="FINS Param:Data Length (H)">0x00</char>
-          <char length="1" label="FINS Param:Data Length (L)">0x13</char>
+          <char label="FINS Command:MRC" length="1">0x01</char>
+          <char label="FINS Command:SRC" length="1">0x01</char>
+          <char label="FINS Param:Memory type(W)" length="1">0xB1</char>
+          <char label="FINS Param:Start Address(H)" length="1">0x00</char>
+          <char label="FINS Param:Start Address(L)" length="1">0x0A</char>
+          <char label="FINS Param:Bit Number" length="1">0x00</char>
+          <char label="FINS Param:Data Length (H)" length="1">0x00</char>
+          <char label="FINS Param:Data Length (L)" length="1">0x13</char>
         </item>
         <item id="getexe" label="Get item bit" response="getexe" type="stat">
-          <char length="1" label="FINS Command:MRC">0x01</char>
-          <char length="1" label="FINS Command:SRC">0x01</char>
-          <char length="1" label="FINS Param:Memory type(W)">0xB1</char>
-          <char length="1" label="FINS Param:Start Address(H)">0x00</char>
-          <char length="1" label="FINS Param:Start Address(L)">0x00</char>
-          <char length="1" label="FINS Param:Bit Number">0x00</char>
-          <char length="1" label="FINS Param:Data Length (H)">0x00</char>
-          <char length="1" label="FINS Param:Data Length (L)">0x04</char>
+          <char label="FINS Command:MRC" length="1">0x01</char>
+          <char label="FINS Command:SRC" length="1">0x01</char>
+          <char label="FINS Param:Memory type(W)" length="1">0xB1</char>
+          <char label="FINS Param:Start Address(H)" length="1">0x00</char>
+          <char label="FINS Param:Start Address(L)" length="1">0x00</char>
+          <char label="FINS Param:Bit Number" length="1">0x00</char>
+          <char label="FINS Param:Data Length (H)" length="1">0x00</char>
+          <char label="FINS Param:Data Length (L)" length="1">0x04</char>
         </item>
         <item id="geterr" label="Get Error Code" response="geterr" type="stat">
-          <char length="1" label="FINS Command:MRC">0x01</char>
-          <char length="1" label="FINS Command:SRC">0x01</char>
-          <char length="1" label="FINS Param:Memory type(D)">0x82</char>
-          <char length="1" label="FINS Param:Start Address(H)">0x00</char>
-          <char length="1" label="FINS Param:Start Address(L)">0x00</char>
-          <char length="1" label="FINS Param:Bit Number">0x00</char>
-          <char length="1" label="FINS Param:Data Length (H)">0x00</char>
-          <char length="1" label="FINS Param:Data Length (L)">0x01</char>
+          <char label="FINS Command:MRC" length="1">0x01</char>
+          <char label="FINS Command:SRC" length="1">0x01</char>
+          <char label="FINS Param:Memory type(D)" length="1">0x82</char>
+          <char label="FINS Param:Start Address(H)" length="1">0x00</char>
+          <char label="FINS Param:Start Address(L)" length="1">0x00</char>
+          <char label="FINS Param:Bit Number" length="1">0x00</char>
+          <char label="FINS Param:Data Length (H)" length="1">0x00</char>
+          <char label="FINS Param:Data Length (L)" length="1">0x01</char>
         </item>
         <item id="getzlen" label="Get Z Sensor Length" response="getzlen" type="stat">
-          <char length="1" label="FINS Command:MRC">0x01</char>
-          <char length="1" label="FINS Command:SRC">0x01</char>
-          <char length="1" label="FINS Param:Memory type(D)">0x82</char>
-          <char length="1" label="FINS Param:Start Address(H)">0x00</char>
-          <char length="1" label="FINS Param:Start Address(L)">0x0A</char>
-          <char length="1" label="FINS Param:Bit Number">0x00</char>
-          <char length="1" label="FINS Param:Data Length (H)">0x00</char>
-          <char length="1" label="FINS Param:Data Length (L)">0x0A</char>
+          <char label="FINS Command:MRC" length="1">0x01</char>
+          <char label="FINS Command:SRC" length="1">0x01</char>
+          <char label="FINS Param:Memory type(D)" length="1">0x82</char>
+          <char label="FINS Param:Start Address(H)" length="1">0x00</char>
+          <char label="FINS Param:Start Address(L)" length="1">0x0A</char>
+          <char label="FINS Param:Bit Number" length="1">0x00</char>
+          <char label="FINS Param:Data Length (H)" length="1">0x00</char>
+          <char label="FINS Param:Data Length (L)" length="1">0x0A</char>
         </item>
       </group>
-      <group id="gact" caption="Action">
+      <group caption="Action" id="gact">
         <item id="setbit" label="Set Int/Cmd Bit" response="cmdrsp" type="stat">
           <par_num>0:3</par_num>
           <par_num>0:15</par_num>
-          <char length="1" label="FINS Command:MRC">0x01</char>
-          <char length="1" label="FINS Command:SRC">0x02</char>
-          <char length="1" label="FINS Param:Memory type(W)">0x31</char>
-          <char length="1" label="FINS Param:Start Address(H)">0x00</char>
-          <char length="1" label="FINS Param:Start Address(L)">$1</char>
-          <char length="1" label="FINS Param:Bit Number">$2</char>
-          <char length="1" label="FINS Param:Bit Data Length (H)">0x00</char>
-          <char length="1" label="FINS Param:Bit Data Length (L)">0x01</char>
-          <char length="1" label="FINS Param:Bit Data">0x01</char>
+          <char label="FINS Command:MRC" length="1">0x01</char>
+          <char label="FINS Command:SRC" length="1">0x02</char>
+          <char label="FINS Param:Memory type(W)" length="1">0x31</char>
+          <char label="FINS Param:Start Address(H)" length="1">0x00</char>
+          <char label="FINS Param:Start Address(L)" length="1">$1</char>
+          <char label="FINS Param:Bit Number" length="1">$2</char>
+          <char label="FINS Param:Bit Data Length (H)" length="1">0x00</char>
+          <char label="FINS Param:Bit Data Length (L)" length="1">0x01</char>
+          <char label="FINS Param:Bit Data" length="1">0x01</char>
         </item>
         <item id="clrbit" label="Clear Int/Cmd Bit" response="cmdrsp" type="stat">
-          <char length="1" label="FINS Command:MRC">0x01</char>
-          <char length="1" label="FINS Command:SRC">0x02</char>
-          <char length="1" label="FINS Param:Memory type(W)">0xB1</char>
-          <char length="1" label="FINS Param:Start Address(H)">0x00</char>
-          <char length="1" label="FINS Param:Start Address(L)">0x00</char>
-          <char length="1" label="FINS Param:Bit Number">0x00</char>
-          <char length="1" label="FINS Param:Data Length (H)">0x00</char>
-          <char length="1" label="FINS Param:Data Length (L)">0x04</char>
-          <char length="2" label="FINS Param:Bit Data">0x00</char>
-          <char length="2" label="FINS Param:Bit Data">0x00</char>
-          <char length="2" label="FINS Param:Bit Data">0x00</char>
-          <char length="2" label="FINS Param:Bit Data">0x00</char>
+          <char label="FINS Command:MRC" length="1">0x01</char>
+          <char label="FINS Command:SRC" length="1">0x02</char>
+          <char label="FINS Param:Memory type(W)" length="1">0xB1</char>
+          <char label="FINS Param:Start Address(H)" length="1">0x00</char>
+          <char label="FINS Param:Start Address(L)" length="1">0x00</char>
+          <char label="FINS Param:Bit Number" length="1">0x00</char>
+          <char label="FINS Param:Data Length (H)" length="1">0x00</char>
+          <char label="FINS Param:Data Length (L)" length="1">0x04</char>
+          <char label="FINS Param:Bit Data" length="2">0x00</char>
+          <char label="FINS Param:Bit Data" length="2">0x00</char>
+          <char label="FINS Param:Bit Data" length="2">0x00</char>
+          <char label="FINS Param:Bit Data" length="2">0x00</char>
         </item>
         <item id="clrint" label="Clear Interrupt Bit" response="cmdrsp" type="stat">
-          <char length="1" label="FINS Command:MRC">0x01</char>
-          <char length="1" label="FINS Command:SRC">0x02</char>
-          <char length="1" label="FINS Param:Memory type(W)">0xB1</char>
-          <char length="1" label="FINS Param:Start Address(H)">0x00</char>
-          <char length="1" label="FINS Param:Start Address(L)">0x00</char>
-          <char length="1" label="FINS Param:Bit Number">0x00</char>
-          <char length="1" label="FINS Param:Data Length (H)">0x00</char>
-          <char length="1" label="FINS Param:Data Length (L)">0x01</char>
-          <char length="2" label="FINS Param:Bit Data">0x00</char>
+          <char label="FINS Command:MRC" length="1">0x01</char>
+          <char label="FINS Command:SRC" length="1">0x02</char>
+          <char label="FINS Param:Memory type(W)" length="1">0xB1</char>
+          <char label="FINS Param:Start Address(H)" length="1">0x00</char>
+          <char label="FINS Param:Start Address(L)" length="1">0x00</char>
+          <char label="FINS Param:Bit Number" length="1">0x00</char>
+          <char label="FINS Param:Data Length (H)" length="1">0x00</char>
+          <char label="FINS Param:Data Length (L)" length="1">0x01</char>
+          <char label="FINS Param:Bit Data" length="2">0x00</char>
         </item>
       </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <integer label="FINS Header:ICF" length="1">0xc0</integer>
-      <integer label="FINS Header:RSV" length="1">0x00</integer>
-      <integer label="FINS Header:GCT" length="1">0x02</integer>
-      <integer label="FINS Header:DNA" length="1">0x00</integer>
-      <integer label="FINS Header:DA1" length="1" assign="ipl"/>
-      <integer label="FINS Header:DA2" length="1">0x00</integer>
-      <integer label="FINS Header:SNA" length="1">0x00</integer>
-      <integer label="FINS Header:SA1" length="1" assign="ipr"/>
-      <integer label="FINS Header:SA2" length="1">0x00</integer>
-      <integer label="FINS Header:SID" length="1">0xFF</integer>
+      <verify decode="integer" label="FINS Header:ICF" length="1">0xc0</verify>
+      <verify decode="integer" label="FINS Header:RSV" length="1">0x00</verify>
+      <verify decode="integer" label="FINS Header:GCT" length="1">0x02</verify>
+      <verify decode="integer" label="FINS Header:DNA" length="1">0x00</verify>
+      <assign decode="integer" label="FINS Header:DA1" length="1" ref="ipl"/>
+      <verify decode="integer" label="FINS Header:DA2" length="1">0x00</verify>
+      <verify decode="integer" label="FINS Header:SNA" length="1">0x00</verify>
+      <assign decode="integer" label="FINS Header:SA1" length="1" ref="ipr"/>
+      <verify decode="integer" label="FINS Header:SA2" length="1">0x00</verify>
+      <verify decode="integer" label="FINS Header:SID" length="1">0xFF</verify>
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat">
-        <integer label="FINS Command:MRC" length="1">0x01</integer>
-        <integer label="FINS Command:SRC" length="1">0x01</integer>
-        <integer label="FINS Command:MRES" length="1">0x00</integer>
-        <integer label="FINS Command:SRES" length="1">0x00</integer>
-        <integer assign="w" index="0:12" length="2"/>
+        <verify decode="integer" label="FINS Command:MRC" length="1">0x01</verify>
+        <verify decode="integer" label="FINS Command:SRC" length="1">0x01</verify>
+        <verify decode="integer" label="FINS Command:MRES" length="1">0x00</verify>
+        <verify decode="integer" label="FINS Command:SRES" length="1">0x00</verify>
+        <assign decode="integer" length="2" ref="w">
+          <index>0:12</index>
+        </assign>
       </item>
       <item id="getexe">
-        <integer label="FINS Command:MRC" length="1">0x01</integer>
-        <integer label="FINS Command:SRC" length="1">0x01</integer>
-        <integer label="FINS Command:MRES" length="1">0x00</integer>
-        <integer label="FINS Command:SRES" length="1">0x00</integer>
-        <integer assign="c" index="0:3" length="2"/>
+        <verify decode="integer" label="FINS Command:MRC" length="1">0x01</verify>
+        <verify decode="integer" label="FINS Command:SRC" length="1">0x01</verify>
+        <verify decode="integer" label="FINS Command:MRES" length="1">0x00</verify>
+        <verify decode="integer" label="FINS Command:SRES" length="1">0x00</verify>
+        <assign decode="integer" length="2" ref="c">
+          <index>0:3</index>
+        </assign>
       </item>
       <item id="geterr">
-        <integer label="FINS Command:MRC" length="1">0x01</integer>
-        <integer label="FINS Command:SRC" length="1">0x01</integer>
-        <integer label="FINS Command:MRES" length="1">0x00</integer>
-        <integer label="FINS Command:SRES" length="1">0x00</integer>
-        <integer assign="err" length="2"/>
+        <verify decode="integer" label="FINS Command:MRC" length="1">0x01</verify>
+        <verify decode="integer" label="FINS Command:SRC" length="1">0x01</verify>
+        <verify decode="integer" label="FINS Command:MRES" length="1">0x00</verify>
+        <verify decode="integer" label="FINS Command:SRES" length="1">0x00</verify>
+        <assign decode="integer" length="2" ref="err"/>
       </item>
       <item id="getzlen">
-        <integer label="FINS Command:MRC" length="1">0x01</integer>
-        <integer label="FINS Command:SRC" length="1">0x01</integer>
-        <integer label="FINS Command:MRES" length="1">0x00</integer>
-        <integer label="FINS Command:SRES" length="1">0x00</integer>
-        <integer assign="d" index="0:9" sign="msb" length="2"/>
+        <verify decode="integer" label="FINS Command:MRC" length="1">0x01</verify>
+        <verify decode="integer" label="FINS Command:SRC" length="1">0x01</verify>
+        <verify decode="integer" label="FINS Command:MRES" length="1">0x00</verify>
+        <verify decode="integer" label="FINS Command:SRES" length="1">0x00</verify>
+        <assign decode="integer" length="2" ref="d" sign="msb">
+          <index>0:9</index>
+        </assign>
       </item>
       <item id="cmdrsp" label="command resp">
-        <integer label="FINS Command:MRC" length="1">0x01</integer>
-        <integer label="FINS Command:SRC" length="1">0x02</integer>
-        <integer label="FINS Command:MRES" length="1">0x00</integer>
-        <integer label="FINS Command:SRES" length="1">0x00</integer>
+        <verify decode="integer" label="FINS Command:MRC" length="1">0x01</verify>
+        <verify decode="integer" label="FINS Command:SRC" length="1">0x02</verify>
+        <verify decode="integer" label="FINS Command:MRES" length="1">0x00</verify>
+        <verify decode="integer" label="FINS Command:SRES" length="1">0x00</verify>
       </item>
       <item id="dmy" label="for csv daemon">
-        <integer length="1" assign="ipl"/>
-        <integer length="1" assign="ipr"/>
-        <integer length="1" assign="exe"/>
+        <assign decode="integer" length="1" ref="ipl"/>
+        <assign decode="integer" length="1" ref="ipr"/>
+        <assign decode="integer" length="1" ref="exe"/>
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <array id="w" label="Status">
-        <index size="13"/>
+        <size>13</size>
       </array>
       <array id="c" label="Status">
-        <index size="4"/>
+        <size>4</size>
       </array>
       <array id="d" label="Status">
-        <index size="10"/>
+        <size>10</size>
       </array>
       <var id="ipl" label="Local IP (CIAX)">1</var>
       <var id="ipr" label="Remote IP (DSO)">32</var>

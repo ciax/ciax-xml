@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="tpg" label="Pfeiffer Vacuum Gauge TPG262">
-    <spec mfr="Pfeiffer" type="Vacuum Gauge" model="TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf"/>
-    <stream wait="0.3" terminator="\r\n"/>
+    <spec mfr="Pfeiffer" model="TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" type="Vacuum Gauge"/>
+    <stream terminator="\r\n" wait="0.3"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <group caption="Status" id="gst">
         <item id="reqstat" label="Request status" response="reqstat" type="stat">
           <string label="Measurment string gauges 1&amp;2">PRX</string>
-          <char length="1" label="Suffix">13</char>
+          <char label="Suffix" length="1">13</char>
         </item>
         <item id="getstat" label="Get status" response="getstat" type="stat">
-          <char length="1" label="ENQ">5</char>
+          <char label="ENQ" length="1">5</char>
         </item>
       </group>
     </command>
@@ -22,16 +22,19 @@
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="reqstat">
-        <integer>6</integer>
+        <verify decode="integer">6</verify>
       </item>
       <item id="getstat">
-        <string assign="stat" index="0:1,0:1" delimiter=","/>
+        <assign decode="string" delimiter="," ref="stat">
+          <index>0:1</index>
+          <index>0:1</index>
+        </assign>
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <array id="stat">
-        <index size="2"/>
-        <index size="2"/>
+        <size>2</size>
+        <size>2</size>
       </array>
     </field>
   </frame>

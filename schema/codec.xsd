@@ -6,6 +6,7 @@
       <xsd:enumeration value="decstr"/>
       <xsd:enumeration value="hexstr"/>
       <xsd:enumeration value="integer"/>
+      <xsd:enumeration value="string"/>
     </xsd:restriction>
   </xsd:simpleType>
   <xsd:simpleType name="sign">

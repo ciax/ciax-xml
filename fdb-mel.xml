@@ -1,185 +1,193 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="mel" version="4" label="MELSEC Q Series">
-    <stream endian="little" ccmethod="len"/>
+  <frame id="mel" label="MELSEC Q Series" version="4">
+    <stream ccmethod="len" endian="little"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <char length="2" label="SubHeader: Prefix">0x54</char>
+      <char label="SubHeader: Prefix" length="2">0x54</char>
       <string label="SubHeader: Serial Number">XX</string>
-      <char length="2" label="SubHeader: Fixed Number">0</char>
-      <char length="1" label="Q Header: Network Number">0</char>
-      <char length="1" label="Q Header: PC Number">0xFF</char>
-      <char length="2" label="Q Header: Request Unit I/O Number">0x3FF</char>
-      <char length="1" label="Q Header: Request Unit Station Number">0</char>
-      <char length="1" label="Q Header: Send Data Length MSB">${cc}</char>
-      <char length="1" label="Q Header: Send Data Length LSB">0</char>
+      <char label="SubHeader: Fixed Number" length="2">0</char>
+      <char label="Q Header: Network Number" length="1">0</char>
+      <char label="Q Header: PC Number" length="1">0xFF</char>
+      <char label="Q Header: Request Unit I/O Number" length="2">0x3FF</char>
+      <char label="Q Header: Request Unit Station Number" length="1">0</char>
+      <char label="Q Header: Send Data Length MSB" length="1">${cc}</char>
+      <char label="Q Header: Send Data Length LSB" length="1">0</char>
       <ccrange>
-        <char length="2" label="Q Header: CPU Watch Timer">1</char>
+        <char label="Q Header: CPU Watch Timer" length="2">1</char>
         <body/>
       </ccrange>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <group caption="Status" id="gst">
         <item id="getstat" label="Get all status" response="getstat" type="stat">
-          <char length="2" label="Read region command">0x401</char>
-          <char length="2" label="Read region subcommand">0</char>
-          <char length="3" label="Start Address">0</char>
-          <char length="1" label="Device Code">0xB4</char>
-          <char length="2" label="Data Length">52</char>
+          <char label="Read region command" length="2">0x401</char>
+          <char label="Read region subcommand" length="2">0</char>
+          <char label="Start Address" length="3">0</char>
+          <char label="Device Code" length="1">0xB4</char>
+          <char label="Data Length" length="2">52</char>
         </item>
         <item id="getcmd" label="Get cmd status" response="getcmd" type="stat">
-          <char length="2" label="Read region command">0x401</char>
-          <char length="2" label="Read region subcommand">0</char>
-          <char length="3" label="Start Address">0x100</char>
-          <char length="1" label="Device Code">0xB4</char>
-          <char length="2" label="Data Length">5</char>
+          <char label="Read region command" length="2">0x401</char>
+          <char label="Read region subcommand" length="2">0</char>
+          <char label="Start Address" length="3">0x100</char>
+          <char label="Device Code" length="1">0xB4</char>
+          <char label="Data Length" length="2">5</char>
         </item>
       </group>
-      <group id="gcfg" caption="Configuration">
+      <group caption="Configuration" id="gcfg">
         <item id="set_ins" label="Set Instrument ID" response="cmdrsp" type="config">
           <par_num>0:10</par_num>
-          <char length="2" label="Write region command">0x1401</char>
-          <char length="2" label="Write region subcommand">0</char>
-          <char length="3" label="Start Address">0x104</char>
-          <char length="1" label="Device Code">0xB4</char>
-          <char length="2" label="Data Length">1</char>
+          <char label="Write region command" length="2">0x1401</char>
+          <char label="Write region subcommand" length="2">0</char>
+          <char label="Start Address" length="3">0x104</char>
+          <char label="Device Code" length="1">0xB4</char>
+          <char label="Data Length" length="2">1</char>
           <char length="2">$1</char>
         </item>
       </group>
-      <group id="gact" caption="Action">
+      <group caption="Action" id="gact">
         <item id="set_tag" label="Set Tag to Run [1-12,98,99]" response="cmdrsp" type="config">
           <par_num>1:12,98,99</par_num>
-          <char length="2" label="Write region command">0x1401</char>
-          <char length="2" label="Write region subcommand">0</char>
-          <char length="3" label="Start Address">0x101</char>
-          <char length="1" label="Device Code">0xB4</char>
-          <char length="2" label="Data Length">1</char>
+          <char label="Write region command" length="2">0x1401</char>
+          <char label="Write region subcommand" length="2">0</char>
+          <char label="Start Address" length="3">0x101</char>
+          <char label="Device Code" length="1">0xB4</char>
+          <char label="Data Length" length="2">1</char>
           <char length="2">$1</char>
         </item>
         <item id="set_pos" label="Set Pos to Jack [0-4]" response="cmdrsp" type="config">
           <par_num>0:4</par_num>
-          <char length="2" label="Write region command">0x1401</char>
-          <char length="2" label="Write region subcommand">0</char>
-          <char length="3" label="Start Address">0x103</char>
-          <char length="1" label="Device Code">0xB4</char>
-          <char length="2" label="Data Length">1</char>
+          <char label="Write region command" length="2">0x1401</char>
+          <char label="Write region subcommand" length="2">0</char>
+          <char label="Start Address" length="3">0x103</char>
+          <char label="Device Code" length="1">0xB4</char>
+          <char label="Data Length" length="2">1</char>
           <char length="2">1 &lt;&lt; $1</char>
         </item>
         <item id="act" label="Action Trigger [b0=run,b8=jak,b15=chg]" response="cmdrsp" type="action">
           <par_num>0,8,15</par_num>
-          <char length="2" label="Write region command">0x1401</char>
-          <char length="2" label="Write region subcommand">0</char>
-          <char length="3" label="Start Address">0x102</char>
-          <char length="1" label="Device Code">0xB4</char>
-          <char length="2" label="Data Length">1</char>
+          <char label="Write region command" length="2">0x1401</char>
+          <char label="Write region subcommand" length="2">0</char>
+          <char label="Start Address" length="3">0x102</char>
+          <char label="Device Code" length="1">0xB4</char>
+          <char label="Data Length" length="2">1</char>
           <char length="2">1 &lt;&lt; $1</char>
         </item>
         <item id="clr_act" label="Clear Action Flags" response="cmdrsp" type="config">
-          <char length="2" label="Write region command">0x1401</char>
-          <char length="2" label="Write region subcommand">0</char>
-          <char length="3" label="Start Address">0x102</char>
-          <char length="1" label="Device Code">0xB4</char>
-          <char length="2" label="Data Length">1</char>
-          <char length="2" label="Data">0</char>
+          <char label="Write region command" length="2">0x1401</char>
+          <char label="Write region subcommand" length="2">0</char>
+          <char label="Start Address" length="3">0x102</char>
+          <char label="Device Code" length="1">0xB4</char>
+          <char label="Data Length" length="2">1</char>
+          <char label="Data" length="2">0</char>
         </item>
       </group>
-      <group id="gint" caption="Interrupt">
+      <group caption="Interrupt" id="gint">
         <item id="int" label="Interrupt Trigger [b0=pause,emg,,chg,cancel,reset,mater,cycle]" response="cmdrsp" type="action">
           <par_num>0:7</par_num>
-          <char length="2" label="Write region command">0x1401</char>
-          <char length="2" label="Write region subcommand">0</char>
-          <char length="3" label="Start Address">0x100</char>
-          <char length="1" label="Device Code">0xB4</char>
-          <char length="2" label="Data Length">1</char>
+          <char label="Write region command" length="2">0x1401</char>
+          <char label="Write region subcommand" length="2">0</char>
+          <char label="Start Address" length="3">0x100</char>
+          <char label="Device Code" length="1">0xB4</char>
+          <char label="Data Length" length="2">1</char>
           <char length="2">1 &lt;&lt; $1</char>
         </item>
         <item id="clr_int" label="Clear Interrupt Flags" response="cmdrsp" type="config">
-          <char length="2" label="Write region command">0x1401</char>
-          <char length="2" label="Write region subcommand">0</char>
-          <char length="3" label="Start Address">0x100</char>
-          <char length="1" label="Device Code">0xB4</char>
-          <char length="2" label="Data Length">1</char>
-          <char length="2" label="Data">0</char>
+          <char label="Write region command" length="2">0x1401</char>
+          <char label="Write region subcommand" length="2">0</char>
+          <char label="Start Address" length="3">0x100</char>
+          <char label="Device Code" length="1">0xB4</char>
+          <char label="Data Length" length="2">1</char>
+          <char label="Data" length="2">0</char>
         </item>
       </group>
-      <group id="gtbl" caption="Jack Table">
+      <group caption="Jack Table" id="gtbl">
         <item id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
           <par_num>0:5</par_num>
           <par_num>0:3</par_num>
-          <char length="2" label="Read region command">0x401</char>
-          <char length="2" label="Read region subcommand">0</char>
+          <char label="Read region command" length="2">0x401</char>
+          <char label="Read region subcommand" length="2">0</char>
           <!--Jack 0=JK1,1=JK2,2=JK3,3=JK4-->
           <char label="Jack Num" length="1">$2 * 64</char>
           <!--Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm-->
           <char label="Tag Num" length="1">$1 + 2</char>
-          <char length="1" label="Address MSB">0</char>
-          <char length="1" label="Device Code">0xB4</char>
-          <char length="2" label="Data Length">0x2c</char>
+          <char label="Address MSB" length="1">0</char>
+          <char label="Device Code" length="1">0xB4</char>
+          <char label="Data Length" length="2">0x2c</char>
         </item>
         <item id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
           <par_num>0:5</par_num>
           <par_num>0:3</par_num>
-          <char length="2" label="Write region command">0x1401</char>
-          <char length="2" label="Write region subcommand">0</char>
-          <char length="1" label="Jack Num">$2 * 4</char>
-          <char length="1" label="Tag Num">$1 + 2</char>
-          <char length="1" label="Address MSB">0</char>
-          <char length="1" label="Device Code">0xB4</char>
-          <char length="2" label="Data Length">0x2c</char>
+          <char label="Write region command" length="2">0x1401</char>
+          <char label="Write region subcommand" length="2">0</char>
+          <char label="Jack Num" length="1">$2 * 4</char>
+          <char label="Tag Num" length="1">$1 + 2</char>
+          <char label="Address MSB" length="1">0</char>
+          <char label="Device Code" length="1">0xB4</char>
+          <char label="Data Length" length="2">0x2c</char>
           <char length="2">${t@$1@$2}</char>
         </item>
         <item id="rw_tbl" label="Read/Write Jack Table [0=Reset,1=Read,2=Write]" response="cmdrsp" type="config">
           <par_num>0:2</par_num>
-          <char length="2" label="Write region command">0x1401</char>
-          <char length="2" label="Write region subcommand">0</char>
-          <char length="3" label="Start Address">0x7ff</char>
-          <char length="1" label="Device Code">0xB4</char>
-          <char length="2" label="Data Length">1</char>
-          <char length="2" label="Parameter">$1</char>
+          <char label="Write region command" length="2">0x1401</char>
+          <char label="Write region subcommand" length="2">0</char>
+          <char label="Start Address" length="3">0x7ff</char>
+          <char label="Device Code" length="1">0xB4</char>
+          <char label="Data Length" length="2">1</char>
+          <char label="Parameter" length="2">$1</char>
         </item>
       </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <integer label="SubHeader: Prefix" length="2">212</integer>
-      <string label="SubHeader: Serial Number">XX</string>
-      <integer label="SubHeader: Fixed Number" length="2">0</integer>
-      <integer label="Q Header: Network Number" length="1">0</integer>
-      <integer label="Q Header: PC Number" length="1">255</integer>
-      <integer label="Q Header: Request Unit I/O Number" length="2">1023</integer>
-      <integer label="Q Header: Request Unit Station Number" length="1">0</integer>
-      <integer assign="cc" label="Response Data Length" length="2"/>
+      <verify decode="integer" label="SubHeader: Prefix" length="2">212</verify>
+      <verify decode="string" label="SubHeader: Serial Number">XX</verify>
+      <verify decode="integer" label="SubHeader: Fixed Number" length="2">0</verify>
+      <verify decode="integer" label="Q Header: Network Number" length="1">0</verify>
+      <verify decode="integer" label="Q Header: PC Number" length="1">255</verify>
+      <verify decode="integer" label="Q Header: Request Unit I/O Number" length="2">1023</verify>
+      <verify decode="integer" label="Q Header: Request Unit Station Number" length="1">0</verify>
+      <assign decode="integer" label="Response Data Length" length="2" ref="cc"/>
       <ccrange>
-        <integer assign="ecode" label="Error Code" length="2"/>
+        <assign decode="integer" label="Error Code" length="2" ref="ecode"/>
         <body/>
       </ccrange>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getstat" label="get status">
-        <integer assign="x" index="0:51" sign="msb" label="Status Flags" length="2"/>
+        <assign decode="integer" label="Status Flags" length="2" ref="x" sign="msb">
+          <index>0:51</index>
+        </assign>
       </item>
       <item id="getcmd" label="get cmd status">
-        <integer assign="c" index="0:4" sign="msb" label="Command Flags" length="2"/>
+        <assign decode="integer" label="Command Flags" length="2" ref="c" sign="msb">
+          <index>0:4</index>
+        </assign>
       </item>
       <item id="cmdrsp" label="command resp"/>
       <item id="get_tbl">
-        <integer assign="t" index="$1,$2,0:43" label="Jack Pulse Tables" length="2"/>
+        <assign decode="integer" label="Jack Pulse Tables" length="2" ref="t">
+          <index>$1</index>
+          <index>$2</index>
+          <index>0:43</index>
+        </assign>
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <var id="cc" label="Response Data Length"/>
       <var id="ecode" label="Error Code">0</var>
       <array id="x" label="Status Flags">
-        <index size="52"/>
+        <size>52</size>
       </array>
       <array id="c" label="Command Flags">
-        <index size="5"/>
+        <size>5</size>
       </array>
       <array id="t" label="Jack Pulse Tables">
         <!--Tag-->
-        <index size="6"/>
+        <size>6</size>
         <!--Jak-->
-        <index size="4"/>
+        <size>4</size>
         <!--ID[0-10],Level[0-3]-->
-        <index size="44"/>
+        <size>44</size>
       </array>
     </field>
   </frame>

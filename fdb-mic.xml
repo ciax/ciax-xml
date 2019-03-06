@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="mic" label="Piezo Motor(Micronix MMC-100)">
-    <spec type="Piezo Motor" mfr="Micronix" model="MMC-100" reference="http://www.micronixusa.com/motion/assets/docs/manuals/MMC-100%20Manual%20Rev2.00.pdf"/>
-    <stream wait="0.1" terminator="\n\r"/>
+    <spec mfr="Micronix" model="MMC-100" reference="http://www.micronixusa.com/motion/assets/docs/manuals/MMC-100%20Manual%20Rev2.00.pdf" type="Piezo Motor"/>
+    <stream terminator="\n\r" wait="0.1"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="38400" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
@@ -10,7 +10,7 @@
       <char length="1">0xd</char>
     </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <group caption="Status" id="gst">
         <!-- Status Commands -->
         <item id="getst" label="Get Status" response="getst" type="stat">
           <par_num>1:6</par_num>
@@ -28,7 +28,7 @@
           <string>ACC?</string>
         </item>
       </group>
-      <group id="gact" caption="Action">
+      <group caption="Action" id="gact">
         <!-- Motion Commands -->
         <item id="home" label="Move to Home position [1-6]" type="action">
           <par_num>1:6</par_num>
@@ -38,30 +38,37 @@
       </group>
     </command>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <string label="Prefix" length="1">#</string>
+      <verify decode="string" label="Prefix" length="1">#</verify>
       <body/>
     </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <item id="getst">
-        <string assign="st" index="$1-1" label="Status"/>
+        <assign decode="string" label="Status" ref="st">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="getp">
-        <string assign="pos" index="$1-1,0:1" label="Position" delimiter=","/>
+        <assign decode="string" delimiter="," label="Position" ref="pos">
+          <index>$1-1</index>
+          <index>0:1</index>
+        </assign>
       </item>
       <item id="geta">
-        <string assign="acc" index="$1-1" label="Acceleration"/>
+        <assign decode="string" label="Acceleration" ref="acc">
+          <index>$1-1</index>
+        </assign>
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <array id="st" label="Status">
-        <index size="6"/>
+        <size>6</size>
       </array>
       <array id="pos" label="Position">
-        <index size="6"/>
-        <index size="2"/>
+        <size>6</size>
+        <size>2</size>
       </array>
       <array id="acc" label="Acceleration">
-        <index size="6"/>
+        <size>6</size>
       </array>
     </field>
   </frame>

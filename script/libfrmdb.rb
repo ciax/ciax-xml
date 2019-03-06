@@ -64,13 +64,12 @@ module CIAX
         end
       end
 
+      # pick child elements
       def ___init_ary(e, fval)
-        _get_h(e) do |atrb|
-          idx = atrb[:index] = []
-          e.each { |e1| idx << e1.to_h }
-          fval[:struct] = idx.map { |h| h[:size] } if fval
-          verbose { "InitArray: #{atrb}" }
-        end
+        return unless fval
+        fval[:struct] = idx = []
+        e.each { |e1| idx << e1.text }
+        verbose { "InitArray: #{fval}" }
       end
 
       # Response section

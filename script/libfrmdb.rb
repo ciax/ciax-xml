@@ -91,7 +91,9 @@ module CIAX
       end
 
       def __mk_rspfrm(e)
-        { type: e.name }.update(e.to_h)
+        db = { type: e.name }.update(e.to_h)
+        e.each { |e1| (db[e1.name.to_sym] ||= []) << e1.text }
+        db
       end
 
       ####### Common Frame section #######

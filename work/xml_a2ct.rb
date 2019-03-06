@@ -18,6 +18,7 @@ doc = Document.new(gets(nil))
 doc.each_element(xpath) do |e|
   str = e.attributes[attr] || next
   e.delete_attribute(attr)
-  e.add_element(attr).text = str
+  # If str includes ',', child will be added as the number of csv elements
+  str.split(',').each{ |s| e.add_element(attr).text = s }
 end
 doc.write

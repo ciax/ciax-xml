@@ -278,18 +278,6 @@
         </unit>
       </group>
       <group id="g2" caption="Setting">
-        <item id="moircs" label="Set IID MOIRCS">
-          <frmcmd name="setinst">
-            <argv>12</argv>
-          </frmcmd>
-          <frmcmd name="iststat"/>
-        </item>
-        <item id="mc-box" label="Set IID MC-BOX">
-          <frmcmd name="setinst">
-            <argv>10</argv>
-          </frmcmd>
-          <frmcmd name="iststat"/>
-        </item>
         <item id="swims" label="Set IID SWIMS">
           <frmcmd name="setinst">
             <argv>1</argv>
@@ -305,6 +293,18 @@
         <item id="comics" label="Set IID COMICS">
           <frmcmd name="setinst">
             <argv>7</argv>
+          </frmcmd>
+          <frmcmd name="iststat"/>
+        </item>
+        <item id="moircs" label="Set IID MOIRCS">
+          <frmcmd name="setinst">
+            <argv>12</argv>
+          </frmcmd>
+          <frmcmd name="iststat"/>
+        </item>
+        <item id="mcs" label="Set IID MCS">
+          <frmcmd name="setinst">
+            <argv>11</argv>
           </frmcmd>
           <frmcmd name="iststat"/>
         </item>

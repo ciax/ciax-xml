@@ -2077,8 +2077,8 @@
             <equal form="msg" site="crt" var="ist">MC-BOX</equal>
             <equal form="msg" site="dts" var="iid">MC-BOX</equal>
           </goal>
-          <cfg site="crt" name="mc-box"/>
-          <cfg site="dts" name="mc-box"/>
+          <cfg site="crt" name="mcs"/>
+          <cfg site="dts" name="mcs"/>
         </item>
       </unit>
       <unit id="unit_upd" label="Update All Devices">

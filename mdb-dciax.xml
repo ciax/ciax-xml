@@ -1969,8 +1969,8 @@
             <equal form="msg" site="trt" var="ist">MC-BOX</equal>
             <equal form="msg" site="tts" var="iid">MC-BOX</equal>
           </goal>
-          <cfg site="trt" name="mc-box"/>
-          <cfg site="tts" name="mc-box"/>
+          <cfg site="trt" name="mcs"/>
+          <cfg site="tts" name="mcs"/>
         </item>
       </unit>
       <unit id="unit_upd" label="Update All Devices">

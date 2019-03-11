@@ -225,7 +225,7 @@
         </check>
         <cfg site="crt" name="moircs"/>
       </item>
-      <item id="crt_mcs" label="INST MC-BOX">
+      <item id="crt_mcs" label="INST MCS">
         <check>
         </check>
         <cfg site="crt" name="mcs"/>
@@ -687,7 +687,7 @@
         </check>
         <cfg site="dts" name="mp-cs1"/>
       </item>
-      <item id="dts_mcs" label="INST SEL MC-BOX">
+      <item id="dts_mcs" label="INST SEL MCS">
         <check>
         </check>
         <cfg site="dts" name="mcs"/>

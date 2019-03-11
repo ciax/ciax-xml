@@ -43,6 +43,7 @@ module CIAX
 
       def ___init_cmt_procs
         init_time2cmt(self[:status])
+        propagation(@sv_stat)
         propagation(self[:status])
         cmt
       end
@@ -70,7 +71,6 @@ module CIAX
 
       def ___init_cmt_procs
         init_time2cmt(@stat)
-        propagation(@sv_stat)
         propagation(@stat)
         @cmt_procs.append do
           verbose { 'Conversion Field -> Hexstr' }

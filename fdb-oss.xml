@@ -87,7 +87,7 @@
         <item id="setinst" label="Set Instrument ID [0-12]" response="exit" type="config">
           <par_num>1:12</par_num>
           <string>gen2mkcmd</string>
-          <string> setinst</string>
+          <string> setinst </string>
           <string format="%02d">$1</string>
           <string>|gen2cmd</string>
         </item>
@@ -153,21 +153,21 @@
         <item id="jup" label="EJB Up [#]" response="exit" type="action">
           <par_num>1:16</par_num>
           <string>gen2mkcmd</string>
-          <string> jup</string>
+          <string> jup </string>
           <string format="%02d">$1*3+1</string>
           <string>|gen2cmd</string>
         </item>
         <item id="jdw" label="EJB Down [#]" response="exit" type="action">
           <par_num>1:16</par_num>
           <string>gen2mkcmd</string>
-          <string> jdw</string>
+          <string> jdw </string>
           <string format="%02d">$1*3+2</string>
           <string>|gen2cmd</string>
         </item>
         <item id="jstop" label="EJB Stop [num]" response="exit" type="action">
           <par_num>1:16</par_num>
           <string>gen2mkcmd</string>
-          <string> jdw</string>
+          <string> jdw </string>
           <string format="%02d">$1*3+3</string>
           <string>|gen2cmd</string>
         </item>

@@ -17,7 +17,7 @@
     </site>
     <site id="det" frm_id="srm" port="24104" iocmd="socat - tcp:ltc-e:4002" label="CsEtr Control"/>
     <site id="dts" frm_id="oss" port="24105" iocmd="socat - tcp:ciax:9999" label="Gen2 TSC Control"/>
-    <site id="ist" frm_id="ist" port="24106" label="Instument Status"/>
+    <site id="ist" frm_id="ist" port="24106" label="Instument Status" run="false"/>
     <!--site id="dts" frm_id="oss" port="24105" iocmd="/bin/sh" label="Gen2 TSC Control" run="false"/-->
     <site id="cr2" frm_id="mel" port="24502" iocmd="socat - udp:cart2:5000" label="CIAX CART 2" enable="false"/>
   </group>

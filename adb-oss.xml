@@ -50,6 +50,18 @@
           <frmcmd name="tscpri" label="TSC Primaly Mode"/>
           <frmcmd name="logout"/>
         </item>
+        <item id="cron" label="Rotator Drive On">
+          <frmcmd name="ron"/>
+        </item>
+        <item id="cjon" label="EJB Drive On">
+          <frmcmd name="jon"/>
+        </item>
+        <item id="croff" label="Rotator Drive Off">
+          <frmcmd name="roff"/>
+        </item>
+        <item id="cjoff" label="EJB Drive Off">
+          <frmcmd name="joff"/>
+        </item>
       </group>
       <group id="g1" caption="Action">
         <unit id="urot">

@@ -1,32 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="oma" label="OMEGA Air Pressure Sensor(PX971)">
-    <stream terminator="\r" wait="0.2"/>
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <string label="Prefix">*</string>
-      <body/>
-      <char label="Suffix" length="1">0xd</char>
-    </cmdframe>
+  <frm id="oma" label="OMEGA Air Pressure Sensor(PX971)">
+    <stream terminator="\r" wait="0.2" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <frame>
+        <string label="Prefix">*</string>
+        <body />
+        <char label="Suffix" length="1">0xd</char>
+      </frame>
       <group caption="Status" id="gst">
         <item id="getstat" label="Get Status" response="getstat" type="stat">
           <string>00P1</string>
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <verify decode="string" label="Prefix">?</verify>
-      <body/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <verify decode="string" label="Prefix">?</verify>
+        <body />
+      </frame>
       <item id="getstat">
         <verify decode="string" label="Command Rseponse">01CP=</verify>
-        <assign decode="string" label="Status" length="6" ref="stat"/>
+        <assign decode="string" label="Status" length="6" ref="stat" />
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <var id="stat" label="Status"/>
+      <var id="stat" label="Status" />
     </field>
-  </frame>
+  </frm>
 </fdb>

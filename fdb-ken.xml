@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" version="1">
+  <frm id="ken" label="Kenwood PW-A Series (IF-41RS)" version="1">
     <spec brand="PW-A Series" mfr="Kenwood" model="IF-41RS" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf"/>
     <stream ccmethod="sum" maxlength="255" stream_ver="5" wait="0.5"/>
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <char label="ENQ" length="1">5</char>
-      <ccrange>
-        <body/>
-        <char label="ETX" length="1">3</char>
-      </ccrange>
-      <string format="%02X">${cc}</string>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <frame>
+        <char label="ENQ" length="1">5</char>
+        <ccrange>
+          <body/>
+          <char label="ETX" length="1">3</char>
+        </ccrange>
+        <string format="%02X">${cc}</string>
+      </frame>
       <group caption="Protocol" id="gpr">
         <!-- Ack Commands -->
         <item id="ack" label="ACK" noaffix="true" response="ack" type="protocol">
@@ -97,19 +97,19 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <echo/>
-      <verify decode="integer" label="ACK" length="1">6</verify>
-      <verify decode="string" label="DST CH" length="1"/>
-      <verify decode="integer" label="ENQ" length="1">5</verify>
-      <ccrange>
-        <verify decode="string" label="SRC CH">@</verify>
-        <body/>
-        <verify decode="integer" label="ETX" length="1">3</verify>
-      </ccrange>
-      <assign decode="hexstr" label="CC" length="2" ref="cc"/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <echo/>
+        <verify decode="integer" label="ACK" length="1">6</verify>
+        <verify decode="string" label="DST CH" length="1"/>
+        <verify decode="integer" label="ENQ" length="1">5</verify>
+        <ccrange>
+          <verify decode="string" label="SRC CH">@</verify>
+          <body/>
+          <verify decode="integer" label="ETX" length="1">3</verify>
+        </ccrange>
+        <assign decode="hexstr" label="CC" length="2" ref="cc"/>
+      </frame>
       <item id="ack" noaffix="true">
         <verify decode="integer" label="ACK" length="1">6</verify>
         <verify decode="string" label="Master CH">@</verify>
@@ -287,5 +287,5 @@
         <size>5</size>
       </array>
     </field>
-  </frame>
+  </frm>
 </fdb>

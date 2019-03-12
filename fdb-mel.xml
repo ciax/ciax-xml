@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="mel" label="MELSEC Q Series" version="4">
+  <frm id="mel" label="MELSEC Q Series" version="4">
     <stream ccmethod="len" endian="little"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <frame>
       <char label="SubHeader: Prefix" length="2">0x54</char>
       <string label="SubHeader: Serial Number">XX</string>
       <char label="SubHeader: Fixed Number" length="2">0</char>
@@ -16,8 +17,7 @@
         <char label="Q Header: CPU Watch Timer" length="2">1</char>
         <body/>
       </ccrange>
-    </cmdframe>
-    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    </frame>
       <group caption="Status" id="gst">
         <item id="getstat" label="Get all status" response="getstat" type="stat">
           <char label="Read region command" length="2">0x401</char>
@@ -138,7 +138,8 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <frame>
       <verify decode="integer" label="SubHeader: Prefix" length="2">212</verify>
       <verify decode="string" label="SubHeader: Serial Number">XX</verify>
       <verify decode="integer" label="SubHeader: Fixed Number" length="2">0</verify>
@@ -151,8 +152,7 @@
         <assign decode="integer" label="Error Code" length="2" ref="ecode"/>
         <body/>
       </ccrange>
-    </rspframe>
-    <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    </frame>
       <item id="getstat" label="get status">
         <assign decode="integer" label="Status Flags" length="2" ref="x" sign="msb">
           <index>0:51</index>
@@ -190,5 +190,5 @@
         <size>44</size>
       </array>
     </field>
-  </frame>
+  </frm>
 </fdb>

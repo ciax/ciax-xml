@@ -7,6 +7,7 @@
   <xsd:element name="command">
     <xsd:complexType>
       <xsd:sequence>
+        <xsd:element ref="fdbc:frame" minOccurs="1" maxOccurs="1"/>
         <xsd:element ref="fdbc:group" minOccurs="1" maxOccurs="unbounded"/>
       </xsd:sequence>
     </xsd:complexType>
@@ -64,7 +65,7 @@
     </xsd:complexType>
   </xsd:element>
   <!--Command frame-->
-  <xsd:element name="cmdframe">
+  <xsd:element name="frame">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:group ref="fdbc:data"/>

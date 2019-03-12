@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="lk8" label="Lakeshore MODEL 340 8CH">
+  <frm id="lk8" label="Lakeshore MODEL 340 8CH">
     <stream terminator="\r\n" wait="0.3"/>
     <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    <frame>
       <body/>
       <char label="Suffix" length="2">0x0d0a</char>
-    </cmdframe>
-    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+    </frame>
       <group caption="Status" id="gst">
         <item id="getstat" label="Get Status" response="getstat" type="stat">
           <string>krdg? c1;</string>
@@ -27,10 +27,10 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <body/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <frame>
+      <body/>
+    </frame>
       <item id="getstat">
         <assign decode="string" delimiter=";" label="Value" ref="ch">
           <index>0:7</index>
@@ -50,5 +50,5 @@
       <var id="htr" label="Heater Power"/>
       <var id="sp" label="SetPoint"/>
     </field>
-  </frame>
+  </frm>
 </fdb>

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="cjk" label="MELSEC Q Series" version="4">
+  <frm id="cjk" label="MELSEC Q Series" version="4">
     <stream ccmethod="len" endian="little"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <char label="SubHeader: Prefix" length="2">0x54</char>
-      <string label="SubHeader: Serial Number">XX</string>
-      <char label="SubHeader: Fixed Number" length="2">0</char>
-      <char label="Q Header: Network Number" length="1">0</char>
-      <char label="Q Header: PC Number" length="1">0xFF</char>
-      <char label="Q Header: Request Unit I/O Number" length="2">0x3FF</char>
-      <char label="Q Header: Request Unit Station Number" length="1">0</char>
-      <char label="Q Header: Send Data Length MSB" length="1">${cc}</char>
-      <char label="Q Header: Send Data Length LSB" length="1">0</char>
-      <ccrange>
-        <char label="Q Header: CPU Watch Timer" length="2">1</char>
-        <body/>
-      </ccrange>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <frame>
+        <char label="SubHeader: Prefix" length="2">0x54</char>
+        <string label="SubHeader: Serial Number">XX</string>
+        <char label="SubHeader: Fixed Number" length="2">0</char>
+        <char label="Q Header: Network Number" length="1">0</char>
+        <char label="Q Header: PC Number" length="1">0xFF</char>
+        <char label="Q Header: Request Unit I/O Number" length="2">0x3FF</char>
+        <char label="Q Header: Request Unit Station Number" length="1">0</char>
+        <char label="Q Header: Send Data Length MSB" length="1">${cc}</char>
+        <char label="Q Header: Send Data Length LSB" length="1">0</char>
+        <ccrange>
+          <char label="Q Header: CPU Watch Timer" length="2">1</char>
+          <body/>
+        </ccrange>
+      </frame>
       <group caption="Status" id="gst">
         <item id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
           <par_num>0:5</par_num>
@@ -54,21 +54,21 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <verify decode="integer" label="SubHeader: Prefix" length="2">212</verify>
-      <verify decode="string" label="SubHeader: Serial Number">XX</verify>
-      <verify decode="integer" label="SubHeader: Fixed Number" length="2">0</verify>
-      <verify decode="integer" label="Q Header: Network Number" length="1">0</verify>
-      <verify decode="integer" label="Q Header: PC Number" length="1">255</verify>
-      <verify decode="integer" label="Q Header: Request Unit I/O Number" length="2">1023</verify>
-      <verify decode="integer" label="Q Header: Request Unit Station Number" length="1">0</verify>
-      <assign decode="integer" label="Response Data Length" length="2" ref="cc"/>
-      <ccrange>
-        <assign decode="integer" label="Error Code" length="2" ref="ecode"/>
-        <body/>
-      </ccrange>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <verify decode="integer" label="SubHeader: Prefix" length="2">212</verify>
+        <verify decode="string" label="SubHeader: Serial Number">XX</verify>
+        <verify decode="integer" label="SubHeader: Fixed Number" length="2">0</verify>
+        <verify decode="integer" label="Q Header: Network Number" length="1">0</verify>
+        <verify decode="integer" label="Q Header: PC Number" length="1">255</verify>
+        <verify decode="integer" label="Q Header: Request Unit I/O Number" length="2">1023</verify>
+        <verify decode="integer" label="Q Header: Request Unit Station Number" length="1">0</verify>
+        <assign decode="integer" label="Response Data Length" length="2" ref="cc"/>
+        <ccrange>
+          <assign decode="integer" label="Error Code" length="2" ref="ecode"/>
+          <body/>
+        </ccrange>
+      </frame>
       <item id="cmdrsp" label="command resp"/>
       <item id="get_tbl">
         <assign decode="integer" label="Jack Pulse Tables" length="2" ref="t">
@@ -89,5 +89,5 @@
         <size>256</size>
       </array>
     </field>
-  </frame>
+  </frm>
 </fdb>

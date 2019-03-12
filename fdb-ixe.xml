@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ixe" label="Phytron IXEa-A" version="2">
+  <frm id="ixe" label="Phytron IXEa-A" version="2">
     <spec mfr="Phytron" model="IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf"/>
     <stream maxlength="31" terminator="\r\n" timeout="30" wait="0.001"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <char label="Prefix" length="1">2</char>
-      <body/>
-      <char label="Suffix" length="1">3</char>
-      <char length="1">13</char>
-      <char length="1">10</char>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <frame>
+        <char label="Prefix" length="1">2</char>
+        <body/>
+        <char label="Suffix" length="1">3</char>
+        <char length="1">13</char>
+        <char length="1">10</char>
+      </frame>
       <group caption="Status" id="gst">
         <!--String Length must be <32-->
         <item id="dummy" label="Dummy Command" response="dummy" type="stat">
@@ -213,13 +213,13 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <!--Acknowlege message: STX ACK ETX CR LF (Manual Section 12.5)-->
-      <verify decode="integer" label="Prefix" length="1">2</verify>
-      <verify decode="integer" label="ResponseCode" length="1">6</verify>
-      <body suffix="\x03"/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <!--Acknowlege message: STX ACK ETX CR LF (Manual Section 12.5)-->
+        <verify decode="integer" label="Prefix" length="1">2</verify>
+        <verify decode="integer" label="ResponseCode" length="1">6</verify>
+        <body suffix="\x03"/>
+      </frame>
       <item id="getstat">
         <assign decode="string" label="StatusCode" ref="stat"/>
       </item>
@@ -333,5 +333,5 @@
         <size>6</size>
       </array>
     </field>
-  </frame>
+  </frm>
 </fdb>

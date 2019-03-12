@@ -57,7 +57,7 @@
     </xsd:complexType>
   </xsd:element>
   <!--Response frame-->
-  <xsd:element name="rspframe">
+  <xsd:element name="frame">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="fdbr:echo"/>
@@ -71,6 +71,7 @@
   <xsd:element name="response">
     <xsd:complexType>
       <xsd:sequence>
+        <xsd:element ref="fdbr:frame" minOccurs="1" maxOccurs="1"/>
         <xsd:element ref="fdbr:item" minOccurs="1" maxOccurs="unbounded"/>
       </xsd:sequence>
     </xsd:complexType>

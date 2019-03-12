@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="fpa" label="Field Point Analog Input(FP-AI-100)" version="1">
+  <frm id="fpa" label="Field Point Analog Input(FP-AI-100)" version="1">
     <spec brand="Field Point" model="FP-AI-100" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf" type="Analog Input"/>
     <stream ccmethod="sum" terminator="\r" wait="0.01"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="38400" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <string label="Prefix">&gt;01</string>
-      <body/>
-      <string>??</string>
-      <char length="1">13</char>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <frame>
+        <string label="Prefix">&gt;01</string>
+        <body/>
+        <string>??</string>
+        <char length="1">13</char>
+      </frame>
       <group caption="Status" id="gst">
         <!--String Length must be <32-->
         <item id="getstat" label="Get status" response="getstat" type="stat">
@@ -44,14 +44,14 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <verify decode="string" label="Prefix">A</verify>
-      <ccrange>
-        <body/>
-      </ccrange>
-      <assign decode="hexstr" label="BCC" length="2" ref="cc"/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <verify decode="string" label="Prefix">A</verify>
+        <ccrange>
+          <body/>
+        </ccrange>
+        <assign decode="hexstr" label="BCC" length="2" ref="cc"/>
+      </frame>
       <item id="getstat">
         <assign decode="hexstr" label="Status" length="4" ref="stat">
           <index>0:7</index>
@@ -73,5 +73,5 @@
         <size>8</size>
       </array>
     </field>
-  </frame>
+  </frm>
 </fdb>

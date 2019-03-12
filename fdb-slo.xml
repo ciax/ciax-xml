@@ -1,12 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frm id="slo" label="SLOSYN SS6000i" version="1">
-    <spec mfr="slosyn" model="SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf" type="motor driver" />
-    <stream terminator="\r\n" wait="0.1" />
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
+    <spec mfr="slosyn" model="SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf" type="motor driver"/>
+    <stream terminator="\r\n" wait="0.1"/>
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <frame>
-        <body />
+        <body/>
         <char length="1">0xd</char>
         <char length="1">0xa</char>
       </frame>
@@ -98,22 +98,22 @@
     </command>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <frame>
-        <body />
+        <body/>
       </frame>
       <item id="getstat">
-        <assign decode="string" label="ErrorCode" ref="err" />
+        <assign decode="string" label="ErrorCode" ref="err"/>
       </item>
       <item id="drv">
-        <assign decode="string" label="Drive" ref="drv" />
+        <assign decode="string" label="Drive" ref="drv"/>
       </item>
       <item id="bs">
-        <assign decode="string" label="Moving" ref="bs" />
+        <assign decode="string" label="Moving" ref="bs"/>
       </item>
       <item id="p">
-        <assign decode="string" label="Pulse" ref="p" valid="^[-.0-9]+$" />
+        <assign decode="string" label="Pulse" ref="p" valid="^[-.0-9]+$"/>
       </item>
       <item id="spd">
-        <assign decode="string" label="Speed" ref="spd" />
+        <assign decode="string" label="Speed" ref="spd"/>
       </item>
       <item id="in">
         <assign decode="string" label="Input" ref="in">
@@ -125,11 +125,11 @@
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <var id="err" label="ErrorCode" />
-      <var id="drv" label="Drive" />
-      <var id="bs" label="Moving" />
-      <var id="p" label="Pulse" />
-      <var id="spd" label="Speed" />
+      <var id="err" label="ErrorCode"/>
+      <var id="drv" label="Drive"/>
+      <var id="bs" label="Moving"/>
+      <var id="p" label="Pulse"/>
+      <var id="spd" label="Speed"/>
       <array id="in" label="Input">
         <!-- IN(3) = +Limit, IN(4) = -Limit -->
         <size>5</size>

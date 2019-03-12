@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frm id="oss" label="OSS Command line" version="2">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <frame>
-        <body />
+        <body/>
         <char label="Suffix" length="1">0xa</char>
       </frame>
       <group caption="Status" id="gst">
@@ -175,31 +175,31 @@
     </command>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <frame>
-        <body />
+        <body/>
       </frame>
       <item id="getstat">
         <!--TSCMON-->
-        <assign decode="string" delimiter="\n" label="InR Select(NsOpt/NsIR/Cas)" ref="rsel" />
+        <assign decode="string" delimiter="\n" label="InR Select(NsOpt/NsIR/Cas)" ref="rsel"/>
         <!--MCUMON-->
-        <assign decode="string" delimiter="\n" label="InR Drive ON/OFF" ref="rpw" />
-        <assign decode="hexstr" delimiter="\n" label="BOLT System Status" ref="bstat" />
+        <assign decode="string" delimiter="\n" label="InR Drive ON/OFF" ref="rpw"/>
+        <assign decode="hexstr" delimiter="\n" label="BOLT System Status" ref="bstat"/>
       </item>
       <item id="telstat">
-        <assign decode="hexstr" delimiter="\n" label="Stow pin Status" ref="stow_1" />
-        <assign decode="hexstr" delimiter="\n" label="Shutter Status" ref="shutter" />
-        <assign decode="hexstr" delimiter="\n" label="AZ/EL Drive Status" ref="teldrive" />
-        <assign decode="string" delimiter="\n" label="EL Angle(deg)" ref="el" />
+        <assign decode="hexstr" delimiter="\n" label="Stow pin Status" ref="stow_1"/>
+        <assign decode="hexstr" delimiter="\n" label="Shutter Status" ref="shutter"/>
+        <assign decode="hexstr" delimiter="\n" label="AZ/EL Drive Status" ref="teldrive"/>
+        <assign decode="string" delimiter="\n" label="EL Angle(deg)" ref="el"/>
       </item>
       <item id="comerr">
-        <assign decode="string" delimiter="\n" label="CIAX-MLP3 Comm Error" ref="mlp3" />
+        <assign decode="string" delimiter="\n" label="CIAX-MLP3 Comm Error" ref="mlp3"/>
       </item>
       <item id="iststat">
-        <assign decode="string" delimiter="\n" label="CAS Instrument" ref="iid" />
+        <assign decode="string" delimiter="\n" label="CAS Instrument" ref="iid"/>
       </item>
       <item id="jakstat">
         <!--POWER_V1-->
-        <assign decode="hexstr" label="BOLT SUM ALM(B0)" length="2" ref="bsa" />
-        <assign decode="hexstr" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2" ref="abs" />
+        <assign decode="hexstr" label="BOLT SUM ALM(B0)" length="2" ref="bsa"/>
+        <assign decode="hexstr" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2" ref="abs"/>
         <!--Order:2,1,4,3..-->
         <assign decode="hexstr" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)" length="1" ref="bs">
           <index>0:15</index>
@@ -207,8 +207,8 @@
         <assign decode="hexstr" label="Each Bolt Limit(DrvAlm,UP,DW,UnitAlm)" length="1" ref="bl">
           <index>0:15</index>
         </assign>
-        <assign decode="hexstr" label="MLP3-BOLT COMM ALM(18:B0)" length="2" ref="mba" />
-        <assign decode="hexstr" label="CS BOLT LOCAL(19:B0)" length="2" ref="loc" />
+        <assign decode="hexstr" label="MLP3-BOLT COMM ALM(18:B0)" length="2" ref="mba"/>
+        <assign decode="hexstr" label="CS BOLT LOCAL(19:B0)" length="2" ref="loc"/>
         <assign decode="hexstr" label="CS BOLT Current Limit(20-21)" length="2" ref="clm">
           <index>0:1</index>
         </assign>
@@ -226,36 +226,36 @@
         </assign>
       </item>
       <item id="inrang">
-        <assign decode="string" delimiter="\n" label="InR Angle(deg)" ref="iang" />
+        <assign decode="string" delimiter="\n" label="InR Angle(deg)" ref="iang"/>
       </item>
       <item id="logstat">
-        <assign decode="string" delimiter="\n" label="LOGIN 0" ref="login0" />
-        <assign decode="string" delimiter="\n" label="LOGIN 1" ref="login1" />
-        <assign decode="string" delimiter="\n" label="LOGIN 2" ref="login2" />
-        <assign decode="string" delimiter="\n" label="LOGIN 3" ref="login3" />
+        <assign decode="string" delimiter="\n" label="LOGIN 0" ref="login0"/>
+        <assign decode="string" delimiter="\n" label="LOGIN 1" ref="login1"/>
+        <assign decode="string" delimiter="\n" label="LOGIN 2" ref="login2"/>
+        <assign decode="string" delimiter="\n" label="LOGIN 3" ref="login3"/>
       </item>
       <item id="exit">
-        <assign decode="string" delimiter="\n" label="Exit Code" ref="exit" />
+        <assign decode="string" delimiter="\n" label="Exit Code" ref="exit"/>
       </item>
       <item id="pid">
-        <assign decode="string" delimiter="\n" label="Background Process ID" ref="pid" />
+        <assign decode="string" delimiter="\n" label="Background Process ID" ref="pid"/>
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <!--TSCMON-->
-      <var id="rsel" label="InR Select(NsOpt/NsIR/Cas)" />
+      <var id="rsel" label="InR Select(NsOpt/NsIR/Cas)"/>
       <!--MCUMON-->
-      <var id="rpw" label="InR Drive ON/OFF" />
-      <var id="bstat" label="BOLT System Status" />
-      <var id="stow_1" label="Stow pin Status" />
-      <var id="shutter" label="Shutter Status" />
-      <var id="teldrive" label="AZ/EL Drive Status" />
-      <var id="el" label="EL Angle(deg)" />
-      <var id="mlp3" label="CIAX-MLP3 Comm Error" />
-      <var id="iid" label="CAS Instrument" />
+      <var id="rpw" label="InR Drive ON/OFF"/>
+      <var id="bstat" label="BOLT System Status"/>
+      <var id="stow_1" label="Stow pin Status"/>
+      <var id="shutter" label="Shutter Status"/>
+      <var id="teldrive" label="AZ/EL Drive Status"/>
+      <var id="el" label="EL Angle(deg)"/>
+      <var id="mlp3" label="CIAX-MLP3 Comm Error"/>
+      <var id="iid" label="CAS Instrument"/>
       <!--POWER_V1-->
-      <var id="bsa" label="BOLT SUM ALM(B0)" />
-      <var id="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" />
+      <var id="bsa" label="BOLT SUM ALM(B0)"/>
+      <var id="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)"/>
       <!--Order:2,1,4,3..-->
       <array id="bs" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)">
         <size>16</size>
@@ -264,8 +264,8 @@
         <!--Order:2,1,4,3..-->
         <size>16</size>
       </array>
-      <var id="mba" label="MLP3-BOLT COMM ALM(18:B0)" />
-      <var id="loc" label="CS BOLT LOCAL(19:B0)" />
+      <var id="mba" label="MLP3-BOLT COMM ALM(18:B0)"/>
+      <var id="loc" label="CS BOLT LOCAL(19:B0)"/>
       <array id="clm" label="CS BOLT Current Limit(20-21)">
         <size>2</size>
       </array>
@@ -277,13 +277,13 @@
       <array id="zp" label="Zsensor Position">
         <size>4</size>
       </array>
-      <var id="iang" label="InR Angle(deg)" />
-      <var id="login0" label="LOGIN 0" />
-      <var id="login1" label="LOGIN 1" />
-      <var id="login2" label="LOGIN 2" />
-      <var id="login3" label="LOGIN 3" />
-      <var id="exit" label="Exit Code" />
-      <var id="pid" label="Background Process ID" />
+      <var id="iang" label="InR Angle(deg)"/>
+      <var id="login0" label="LOGIN 0"/>
+      <var id="login1" label="LOGIN 1"/>
+      <var id="login2" label="LOGIN 2"/>
+      <var id="login3" label="LOGIN 3"/>
+      <var id="exit" label="Exit Code"/>
+      <var id="pid" label="Background Process ID"/>
     </field>
   </frm>
 </fdb>

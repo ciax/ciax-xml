@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frm id="tpg" label="Pfeiffer Vacuum Gauge TPG262">
-    <spec mfr="Pfeiffer" model="TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" type="Vacuum Gauge" />
-    <stream terminator="\r\n" wait="0.3" />
+    <spec mfr="Pfeiffer" model="TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" type="Vacuum Gauge"/>
+    <stream terminator="\r\n" wait="0.3"/>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <frame>
-        <body />
+        <body/>
       </frame>
       <group caption="Status" id="gst">
         <item id="reqstat" label="Request status" response="reqstat" type="stat">
@@ -19,7 +19,7 @@
     </command>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <frame>
-        <body />
+        <body/>
       </frame>
       <item id="reqstat">
         <verify decode="integer">6</verify>

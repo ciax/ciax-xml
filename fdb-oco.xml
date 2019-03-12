@@ -1,13 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frm id="oco" label="OMEGA Current Output(D4251)">
-    <spec mfr="OMEGA" model="D4251" reference="http://www.omega.com/manuals/manualpdf/M1552.pdf" type="Current Output" />
-    <stream wait="1" />
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1" />
+    <spec mfr="OMEGA" model="D4251" reference="http://www.omega.com/manuals/manualpdf/M1552.pdf" type="Current Output"/>
+    <stream wait="1"/>
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1"/>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <frame>
         <string label="Prefix">$</string>
-        <body />
+        <body/>
         <char label="Suffix" length="1">0xd</char>
       </frame>
       <group caption="Status" id="gst">
@@ -26,14 +26,14 @@
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <frame>
         <verify decode="string" label="Prefix">*</verify>
-        <body />
+        <body/>
       </frame>
       <item id="getstat">
-        <assign decode="string" length="9" ref="crnt" />
+        <assign decode="string" length="9" ref="crnt"/>
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <var id="crnt" />
+      <var id="crnt"/>
     </field>
   </frm>
 </fdb>

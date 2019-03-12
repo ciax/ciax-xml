@@ -3,21 +3,21 @@
   <frm id="mel" label="MELSEC Q Series" version="4">
     <stream ccmethod="len" endian="little"/>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-    <frame>
-      <char label="SubHeader: Prefix" length="2">0x54</char>
-      <string label="SubHeader: Serial Number">XX</string>
-      <char label="SubHeader: Fixed Number" length="2">0</char>
-      <char label="Q Header: Network Number" length="1">0</char>
-      <char label="Q Header: PC Number" length="1">0xFF</char>
-      <char label="Q Header: Request Unit I/O Number" length="2">0x3FF</char>
-      <char label="Q Header: Request Unit Station Number" length="1">0</char>
-      <char label="Q Header: Send Data Length MSB" length="1">${cc}</char>
-      <char label="Q Header: Send Data Length LSB" length="1">0</char>
-      <ccrange>
-        <char label="Q Header: CPU Watch Timer" length="2">1</char>
-        <body/>
-      </ccrange>
-    </frame>
+      <frame>
+        <char label="SubHeader: Prefix" length="2">0x54</char>
+        <string label="SubHeader: Serial Number">XX</string>
+        <char label="SubHeader: Fixed Number" length="2">0</char>
+        <char label="Q Header: Network Number" length="1">0</char>
+        <char label="Q Header: PC Number" length="1">0xFF</char>
+        <char label="Q Header: Request Unit I/O Number" length="2">0x3FF</char>
+        <char label="Q Header: Request Unit Station Number" length="1">0</char>
+        <char label="Q Header: Send Data Length MSB" length="1">${cc}</char>
+        <char label="Q Header: Send Data Length LSB" length="1">0</char>
+        <ccrange>
+          <char label="Q Header: CPU Watch Timer" length="2">1</char>
+          <body/>
+        </ccrange>
+      </frame>
       <group caption="Status" id="gst">
         <item id="getstat" label="Get all status" response="getstat" type="stat">
           <char label="Read region command" length="2">0x401</char>
@@ -139,20 +139,20 @@
       </group>
     </command>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-    <frame>
-      <verify decode="integer" label="SubHeader: Prefix" length="2">212</verify>
-      <verify decode="string" label="SubHeader: Serial Number">XX</verify>
-      <verify decode="integer" label="SubHeader: Fixed Number" length="2">0</verify>
-      <verify decode="integer" label="Q Header: Network Number" length="1">0</verify>
-      <verify decode="integer" label="Q Header: PC Number" length="1">255</verify>
-      <verify decode="integer" label="Q Header: Request Unit I/O Number" length="2">1023</verify>
-      <verify decode="integer" label="Q Header: Request Unit Station Number" length="1">0</verify>
-      <assign decode="integer" label="Response Data Length" length="2" ref="cc"/>
-      <ccrange>
-        <assign decode="integer" label="Error Code" length="2" ref="ecode"/>
-        <body/>
-      </ccrange>
-    </frame>
+      <frame>
+        <verify decode="integer" label="SubHeader: Prefix" length="2">212</verify>
+        <verify decode="string" label="SubHeader: Serial Number">XX</verify>
+        <verify decode="integer" label="SubHeader: Fixed Number" length="2">0</verify>
+        <verify decode="integer" label="Q Header: Network Number" length="1">0</verify>
+        <verify decode="integer" label="Q Header: PC Number" length="1">255</verify>
+        <verify decode="integer" label="Q Header: Request Unit I/O Number" length="2">1023</verify>
+        <verify decode="integer" label="Q Header: Request Unit Station Number" length="1">0</verify>
+        <assign decode="integer" label="Response Data Length" length="2" ref="cc"/>
+        <ccrange>
+          <assign decode="integer" label="Error Code" length="2" ref="ecode"/>
+          <body/>
+        </ccrange>
+      </frame>
       <item id="getstat" label="get status">
         <assign decode="integer" label="Status Flags" length="2" ref="x" sign="msb">
           <index>0:51</index>

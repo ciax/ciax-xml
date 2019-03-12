@@ -1,12 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frm id="psp" label="Power Supply Instek PSP-603">
-    <spec mfr="Instek" model="PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf" type="Power Supply" />
-    <stream terminator="\r\n" wait="0.3" />
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1" />
+    <spec mfr="Instek" model="PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf" type="Power Supply"/>
+    <stream terminator="\r\n" wait="0.3"/>
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1"/>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <frame>
-        <body />
+        <body/>
         <char length="1">0xd</char>
       </frame>
       <group caption="Status" id="gst">
@@ -47,43 +47,43 @@
     </command>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <frame>
-        <body />
+        <body/>
       </frame>
       <item id="getstat">
         <verify decode="string">V</verify>
-        <assign decode="string" label="Output(V)" length="5" ref="v" />
+        <assign decode="string" label="Output(V)" length="5" ref="v"/>
         <verify decode="string">A</verify>
-        <assign decode="string" label="Output(A)" length="5" ref="a" />
+        <assign decode="string" label="Output(A)" length="5" ref="a"/>
         <verify decode="string">W</verify>
-        <assign decode="string" label="Output(W)" length="5" ref="w" />
+        <assign decode="string" label="Output(W)" length="5" ref="w"/>
         <verify decode="string">U</verify>
-        <assign decode="string" label="Limit(V)" length="2" ref="u" />
+        <assign decode="string" label="Limit(V)" length="2" ref="u"/>
         <verify decode="string">I</verify>
-        <assign decode="string" label="Limit(A)" length="4" ref="i" />
+        <assign decode="string" label="Limit(A)" length="4" ref="i"/>
         <verify decode="string">P</verify>
-        <assign decode="string" label="Limit(W)" length="3" ref="p" />
+        <assign decode="string" label="Limit(W)" length="3" ref="p"/>
         <verify decode="string">F</verify>
-        <assign decode="string" label="Output(ON/OFF)" length="1" ref="f1" />
-        <assign decode="string" label="OverHeat" length="1" ref="f2" />
-        <assign decode="string" label="ADJ Fine" length="1" ref="f3" />
-        <assign decode="string" label="ADJ Unlock" length="1" ref="f4" />
-        <assign decode="string" label="Remote" length="1" ref="f5" />
-        <assign decode="string" label="Local Lock" length="1" ref="f6" />
+        <assign decode="string" label="Output(ON/OFF)" length="1" ref="f1"/>
+        <assign decode="string" label="OverHeat" length="1" ref="f2"/>
+        <assign decode="string" label="ADJ Fine" length="1" ref="f3"/>
+        <assign decode="string" label="ADJ Unlock" length="1" ref="f4"/>
+        <assign decode="string" label="Remote" length="1" ref="f5"/>
+        <assign decode="string" label="Local Lock" length="1" ref="f6"/>
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <var id="v" label="Output(V)" />
-      <var id="a" label="Output(A)" />
-      <var id="w" label="Output(W)" />
-      <var id="u" label="Limit(V)" />
-      <var id="i" label="Limit(A)" />
-      <var id="p" label="Limit(W)" />
-      <var id="f1" label="Output(ON/OFF)" />
-      <var id="f2" label="OverHeat" />
-      <var id="f3" label="ADJ Fine" />
-      <var id="f4" label="ADJ Unlock" />
-      <var id="f5" label="Remote" />
-      <var id="f6" label="Local Lock" />
+      <var id="v" label="Output(V)"/>
+      <var id="a" label="Output(A)"/>
+      <var id="w" label="Output(W)"/>
+      <var id="u" label="Limit(V)"/>
+      <var id="i" label="Limit(A)"/>
+      <var id="p" label="Limit(W)"/>
+      <var id="f1" label="Output(ON/OFF)"/>
+      <var id="f2" label="OverHeat"/>
+      <var id="f3" label="ADJ Fine"/>
+      <var id="f4" label="ADJ Unlock"/>
+      <var id="f5" label="Remote"/>
+      <var id="f6" label="Local Lock"/>
     </field>
   </frm>
 </fdb>

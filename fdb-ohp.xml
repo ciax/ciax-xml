@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frm id="ohp" label="OMEGA Helium Pressure Sensor">
-    <serial databit="7" flowctl="NONE" parity="ODD" speed="9600" stopbit="1" />
+    <serial databit="7" flowctl="NONE" parity="ODD" speed="9600" stopbit="1"/>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <frame>
-        <body />
+        <body/>
         <char length="1">13</char>
       </frame>
       <group caption="Status" id="gst">
@@ -23,11 +23,11 @@
     </command>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <frame>
-        <body />
+        <body/>
       </frame>
       <item id="getstat">
         <verify decode="string" label="Prefix">X01</verify>
-        <assign decode="string" length="5" ref="pres" />
+        <assign decode="string" length="5" ref="pres"/>
       </item>
       <item id="setd">
         <verify decode="string" label="Command">W1F</verify>
@@ -37,7 +37,7 @@
       </item>
     </response>
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <var id="pres" />
+      <var id="pres"/>
     </field>
   </frm>
 </fdb>

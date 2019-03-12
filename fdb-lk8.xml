@@ -4,10 +4,10 @@
     <stream terminator="\r\n" wait="0.3"/>
     <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-    <frame>
-      <body/>
-      <char label="Suffix" length="2">0x0d0a</char>
-    </frame>
+      <frame>
+        <body/>
+        <char label="Suffix" length="2">0x0d0a</char>
+      </frame>
       <group caption="Status" id="gst">
         <item id="getstat" label="Get Status" response="getstat" type="stat">
           <string>krdg? c1;</string>
@@ -28,9 +28,9 @@
       </group>
     </command>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-    <frame>
-      <body/>
-    </frame>
+      <frame>
+        <body/>
+      </frame>
       <item id="getstat">
         <assign decode="string" delimiter=";" label="Value" ref="ch">
           <index>0:7</index>

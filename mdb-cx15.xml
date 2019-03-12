@@ -225,10 +225,10 @@
         </check>
         <cfg site="crt" name="moircs"/>
       </item>
-      <item id="crt_mc-box" label="INST MC-BOX">
+      <item id="crt_mcs" label="INST MCS">
         <check>
         </check>
-        <cfg site="crt" name="mc-box"/>
+        <cfg site="crt" name="mcs"/>
       </item>
     </group>
     <group id="grp_dso_1" caption="Command" rank="2">
@@ -687,10 +687,10 @@
         </check>
         <cfg site="dts" name="mp-cs1"/>
       </item>
-      <item id="dts_mc-box" label="INST SEL MC-BOX">
+      <item id="dts_mcs" label="INST SEL MCS">
         <check>
         </check>
-        <cfg site="dts" name="mc-box"/>
+        <cfg site="dts" name="mcs"/>
       </item>
       <item id="dts_moircs" label="INST SEL MOIRCS">
         <check>

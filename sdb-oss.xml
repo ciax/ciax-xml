@@ -30,7 +30,7 @@
       <pattern class="normal" msg="FOCAS">5</pattern>
       <pattern class="normal" msg="COMICS">7</pattern>
       <pattern class="normal" msg="MP-CS1">10</pattern>
-      <pattern class="normal" msg="MC-BOX">11</pattern>
+      <pattern class="normal" msg="MCS">11</pattern>
       <pattern class="normal" msg="MOIRCS">12</pattern>
       <pattern class="normal" msg="CIAX3">13</pattern>
       <default class="warn" msg="N/A"/>

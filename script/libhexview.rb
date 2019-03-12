@@ -6,17 +6,19 @@ module CIAX
   # Ascii Hex Pack
   module Hex
     # Sub Status DB (Frame, Field, Status)
-    class SubStat < Hashx
+    class SubStat < Upd
       include DicToken
       attr_reader :dbi, :sv_stat
       def initialize(status, sv_stat = nil)
         ext_dic(:data)
         self[:status] = type?(status, App::Status)
-        super(status.pick(%i(id time data_ver data class msg)))
+        super()
+        update(status.pick(%i(id time data_ver data class msg)))
         self[:field] = type?(status.field, Frm::Field)
         self[:frame] = type?(self[:field].frame, Frm::Frame)
         @dbi = self[:status].dbi
         @sv_stat = sv_stat || Prompt.new('site', self[:id])
+        ___init_cmt_procs
       end
 
       def ext_remote(host)
@@ -35,6 +37,15 @@ module CIAX
 
       def mode(host)
         host ? ext_remote(host) : ext_local
+      end
+
+      private
+
+      def ___init_cmt_procs
+        init_time2cmt(self[:status])
+        propagation(@sv_stat)
+        propagation(self[:status])
+        cmt
       end
     end
     # View class
@@ -59,10 +70,12 @@ module CIAX
       private
 
       def ___init_cmt_procs
-        init_time2cmt(@stat[:status])
-        propagation(@sv_stat)
-        propagation(@stat[:status])
-        @cmt_procs.append { self[:hexpack] = ___header + ___body }
+        init_time2cmt(@stat)
+        propagation(@stat)
+        @cmt_procs.append do
+          verbose { 'Conversion Field -> Hexstr' }
+          self[:hexpack] = ___header + ___body
+        end
         cmt
       end
 

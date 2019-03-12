@@ -98,7 +98,7 @@
   </hexpack>
   <hexpack id="oss" label="TSC">
     <field ref="field:exit" label="Error Code" length="2" type="hex"/>
-    <field ref="field:rsel" label="Rot Sel" length="2" type="binary"/>
+    <field ref="field:rsel" label="Rot Sel" length="2" type="hex"/>
     <field ref="field:rpw" label="Rot Drv" length="2" type="hex"/>
     <field ref="field:bstat" label="Rot Pos" length="2" type="hex"/>
     <field ref="frame:jakstat" label="Jack Bolt Status" length="44" type="str"/>

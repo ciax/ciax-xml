@@ -20,7 +20,7 @@
       <pattern class="normal" msg="CIAO">2</pattern>
       <pattern class="normal" msg="FOCAS">3</pattern>
       <pattern class="normal" msg="MOIRCS">4</pattern>
-      <pattern class="normal" msg="MC-BOX">5</pattern>
+      <pattern class="normal" msg="MCS">5</pattern>
       <pattern class="normal" msg="SWIMS">6</pattern>
       <default class="warn" msg="N/A"/>
     </table>

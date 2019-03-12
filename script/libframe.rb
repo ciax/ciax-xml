@@ -47,7 +47,7 @@ module CIAX
         def conv(ent)
           @stream.snd(ent[:frame], ent.id)
           put(ent.id, @stream.rcv.base64) if ent.key?(:response)
-          verbose { 'Conversion Stream -> Frame' + to_v }
+          verbose { 'Conversion Stream -> Frame' }
           self
         rescue StreamError
           @sv_stat.up(:ioerr)

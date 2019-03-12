@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+  <alias id="dts" label="Telescope">
+    <group id="gadj" caption="Inr Adjustment">
+      <unit id="uadj">
+        <item id="chadj" label="CAS InR Adjust at Hook" ref="chook"/>
+        <item id="cuadj" label="CAS InR Adjust at UnHook" ref="cunhk"/>
+      </unit>
+    </group>
+  </alias>
+</cdb>

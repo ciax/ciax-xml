@@ -252,7 +252,7 @@
           </frmcmd>
           <frmcmd name="getstat"/>
         </item>
-        <item id="mc-box" label="Meteorogy Box">
+        <item id="mcs" label="Meteorogy Box">
           <frmcmd name="set_ins">
             <argv>5</argv>
           </frmcmd>

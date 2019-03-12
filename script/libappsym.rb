@@ -32,7 +32,7 @@ module CIAX
             val = self[:data][hash[:ref] || key]
             ___match_items(tbl, key, val)
           end
-          verbose { 'Conversion Status -> Symbol' + to_v }
+          verbose { 'Conversion Status -> Symbol' }
           self
         end
 

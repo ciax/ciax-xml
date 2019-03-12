@@ -65,11 +65,11 @@
       </group>
       <group id="g1" caption="Action">
         <unit id="urot">
-          <item id="rhook" label="InR Hook">
+          <item id="chook" label="InR Hook">
             <frmcmd name="rhook"/>
             <frmcmd name="inrang"/>
           </item>
-          <item id="runhk" label="InR UnHook">
+          <item id="cunhk" label="InR UnHook">
             <frmcmd name="runhk"/>
             <frmcmd name="inrang"/>
           </item>
@@ -79,15 +79,15 @@
           </item>
         </unit>
         <unit id="ujak">
-          <item id="jup" label="All EJB Up">
+          <item id="cjup" label="All EJB Up">
             <frmcmd name="ajup"/>
             <frmcmd name="jakstat"/>
           </item>
-          <item id="jdw" label="All EJB Down">
+          <item id="cjdw" label="All EJB Down">
             <frmcmd name="ajdw"/>
             <frmcmd name="jakstat"/>
           </item>
-          <item id="jstop" label="All EJB Stop">
+          <item id="cjstop" label="All EJB Stop">
             <frmcmd name="ajstop"/>
             <frmcmd name="jakstat"/>
           </item>

@@ -18,6 +18,12 @@ module CIAX
         extend(JSave).ext_save
       end
 
+      def tag_list
+        Dir.glob(@jsondir + __file_name('*')).map do |f|
+          f.slice(/.+_(.+)\.json/, 1)
+        end.sort
+      end
+
       private
 
       def _ext_local_file(dir = nil)
@@ -32,17 +38,10 @@ module CIAX
         base_name(tag) + '.json'
       end
 
-      def __tag_list
-        Dir.glob(@jsondir + __file_name('*')).map do |f|
-          f.slice(/.+_(.+)\.json/, 1)
-        end.sort
-      end
-
       def ___chk_tag(tag = nil)
         return __file_name unless tag
-        list = __tag_list
-        return __file_name(tag) if list.include?(tag)
-        par_err('No such Tag', "Tag=#{list}")
+        return __file_name(tag) if tag_list.include?(tag)
+        par_err("No such Tag [#{tag}]")
         nil
       end
 
@@ -73,7 +72,7 @@ module CIAX
       end
 
       def save_partial(keyary, tag = nil)
-        tag ||= (__tag_list.map(&:to_i).max + 1)
+        tag ||= (tag_list.map(&:to_i).max + 1)
         # id is tag, this is Mark's request
         jstr = pick(
           keyary, time: self[:time], id: self[:id], data_ver: self[:data_ver]

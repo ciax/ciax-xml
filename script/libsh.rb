@@ -59,8 +59,7 @@ module CIAX
         ___init_readline
         loop do
           line = ___input || break
-          ___exe(___cmds(line))
-          puts @shell_output_proc.call
+          puts ___exe(___cmds(line)) || @shell_output_proc.call
         end
         @terminate_procs.inject(self) { |a, e| e.call(a) }
         Msg.msg('Quit Shell', 3)
@@ -98,10 +97,17 @@ module CIAX
 
       def ___exe(cmds)
         cmds.each { |s| exe(___input_conv(s), 'shell') }
-      rescue UserError
         nil
+      rescue InvalidPAR
+        __view_err(@cobj.view_par)
+      rescue UserError
+        __view_err(@cobj.view_dic)
       rescue ServerError
-        show_err
+        __view_err
+      end
+
+      def __view_err(str = nil)
+        [$ERROR_INFO.to_s, str].compact.join("\n")
       end
 
       def ___input_conv(token)

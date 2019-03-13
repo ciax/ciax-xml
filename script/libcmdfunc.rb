@@ -9,12 +9,14 @@ module CIAX
     # Default Proc Setting method
     module CmdFunc
       include Msg
-      attr_reader :cfg
+      attr_reader :cfg, :view_par
 
       def set_cmd(args = [], opt = {})
         id, *par = type?(args, Array)
-        valid_keys.include?(id) || error
-        get(id).set_par(par, opt)
+        valid_keys.include?(id) || cmd_err("Invalid command [#{id}]")
+        item = get(id)
+        @view_par = item.view_par
+        item.set_par(par, opt)
       end
 
       def error

@@ -39,7 +39,7 @@ module CIAX
         end
 
         def ___init_processor_load
-          @cobj.get('load').def_proc do |ent|
+          @cobj.get('load').rep_valid(@stat.tag_list).def_proc do |ent|
             @stat.load_partial(ent.par[0] || '')
             verbose { "Loading [#{ent.par[0]}]" }
           end

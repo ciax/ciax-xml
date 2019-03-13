@@ -1,38 +1,45 @@
 #!/bin/bash
+# Gen2 command generator
+source ~/gen2/conf/bashrc
 usage(){
-    cat <<-EOF > /dev/stderr
-Usage: gen2mkcmd [osscmd]
-    login,logout,init,tsconly,tscpri
-    ron,roff,jon,joff,jres
-    rhook,runhk,rstop
-    ajup,ajdw,ajstop
-    jup [n],jdw [n],jstop [n]
-    setinst [n]
-EOF
+    echo "Usage: gen2mkcmd [cmd]" > /dev/stderr
+    while : ; do
+        for (( i=0; i < 4; i++ )); do
+            read a b|| { echo; break 2; }
+            echo -en "\t${a%)}"
+            [[ $b =~ \$num ]] && echo -n '[n]'
+        done
+        echo
+    done < <(egrep '^ +[a-z]+\)' $0)
+}
+mkcmd(){
+    args="'EXEC TSC NATIVE CMD=\"$*\"'"
+    echo "$args $TIMEOUT" >&2
 }
 id="$1"
 shift
 num=$(printf %02d ${1:-1})
+TIMEOUT=10;
 case "$id" in
-    login) echo "1A1901ciax%%%%%%%%%%%%%%%% CIAX%%%%%%%%%%%% dummyunit dummyMenu dummyMessage";;
-    logout) echo "1A1902";;
-    init)  echo "1A1011";;
-    tsconly) echo "1A1008TSCONLY";;
-    tscpri) echo "1A1008TSCPRI%";;
-    ron) echo "904013";;
-    roff) echo "904014";;
-    jon) echo "132001ON%";;
-    joff) echo "132001OFF";;
-    jres) echo "132008";;
-    rhook) echo "-b 132004";;
-    runhk) echo "-b 132005";;
-    rstop) echo "104011";;
-    ajup) echo "-b 932001";;
-    ajdw) echo "-b 932002";;
-    ajstop) echo "932003";;
-    jup) echo "-b 932004$num";;
-    jdw) echo "-b 932005$num";;
-    jstop) echo "932006$num";;
-    setinst) echo "13200700$num";;
+    login) mkcmd 1A1901ciax%%%%%%%%%%%%%%%% CIAX%%%%%%%%%%%% dummyunit dummyMenu dummyMessage;;
+    logout) mkcmd 1A1902;;
+    init)  mkcmd 1A1011;;
+    tsconly) mkcmd 1A1008TSCONLY;;
+    tscpri) mkcmd 1A1008TSCPRI%;;
+    ron) mkcmd 904013;;
+    roff) mkcmd 904014;;
+    jon) mkcmd 132001ON%;;
+    joff) mkcmd 132001OFF;;
+    jres) mkcmd 132008;;
+    rhook) TIMEOUT=180 mkcmd 132004;;
+    runhk) TIMEOUT=180 mkcmd 132005;;
+    rstop) mkcmd 104011;;
+    ajup) TIMEOUT=180 mkcmd 932001;;
+    ajdw) TIMEOUT=180 mkcmd 932002;;
+    ajstop) mkcmd 932003;;
+    jup) TIMEOUT=180 mkcmd 932004$num;;
+    jdw) TIMEOUT=180 mkcmd 932005$num;;
+    jstop) mkcmd 932006$num;;
+    setinst) mkcmd 13200700$num;;
     *) usage;;
 esac

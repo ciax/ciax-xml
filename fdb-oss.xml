@@ -60,116 +60,96 @@
       </group>
       <group id="gcfg" caption="Configuration">
         <item id="login" label="TSC Login" response="exit" type="config">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> login</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="logout" label="TSC Login" response="exit" type="config">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> logout</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="init" label="Status Delivery Request" response="exit" type="config">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> init</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="tsconly" label="TSC Only Mode(CIAX Mode)" response="exit" type="config">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> tsconly</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="tscpri" label="TSC Primaly Mode(OBS Mode)" response="exit" type="config">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> tscpri</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="setinst" label="Set Instrument ID [0-12]" response="exit" type="config">
           <par_num>1:12</par_num>
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> setinst </string>
           <string format="%02d">$1</string>
-          <string>|gen2cmd</string>
         </item>
       </group>
       <group id="gdrv" caption="Drive">
         <item id="ron" label="InR Drive ON" response="exit" type="action">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> ron</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="roff" label="InR Drive OFF" response="exit" type="action">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> roff</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="jon" label="Jack Drive ON" response="exit" type="action">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> jon</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="joff" label="Jack Drive OFF" response="exit" type="action">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> joff</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="jres" label="Jack Drive Reset" response="exit" type="action">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> jres</string>
-          <string>|gen2cmd</string>
         </item>
       </group>
       <group id="gact" caption="Action">
         <item id="rhook" label="InR Hook(0deg)" response="exit" type="action">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> rhook</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="runhk" label="InR UnHook(-4deg)" response="exit" type="action">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> runhk</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="rstop" label="InR Stop" response="exit" type="action">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> rstop</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="ajup" label="All EJB Up" response="exit" type="action">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> ajup</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="ajdw" label="All EJB Down" response="exit" type="action">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> ajdw</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="ajstop" label="All EJB Stop" response="exit" type="action">
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> ajstop</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="jup" label="EJB Up [#]" response="exit" type="action">
           <par_num>1:16</par_num>
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> jup </string>
           <string format="%02d">$1*3+1</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="jdw" label="EJB Down [#]" response="exit" type="action">
           <par_num>1:16</par_num>
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> jdw </string>
           <string format="%02d">$1*3+2</string>
-          <string>|gen2cmd</string>
         </item>
         <item id="jstop" label="EJB Stop [num]" response="exit" type="action">
           <par_num>1:16</par_num>
-          <string>gen2mkcmd</string>
+          <string>gen2cmd</string>
           <string> jdw </string>
           <string format="%02d">$1*3+3</string>
-          <string>|gen2cmd</string>
         </item>
       </group>
     </command>

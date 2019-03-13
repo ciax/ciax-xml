@@ -7,14 +7,16 @@ require 'json'
 module CIAX
   ### Checking Methods ###
   module Msg
-    include Math
+    def Math.bind
+      binding
+    end
 
     module_function
 
     # You can use Math functions in str
     def expr(str)
       return unless str
-      eval(str) || 0
+      eval(str, Math.bind) || 0
     rescue SyntaxError, NameError
       cfg_err("#{str} is not number")
     end

@@ -37,8 +37,7 @@ module CIAX
           csv = a2csv(pary.valid_pars)
           mary = [@cfg[:disp].item(@id)]
           mary << ' ' * 10 + "key=(#{csv})"
-          mary.join("\n")
-        end
+        end.join("\n")
       end
 
       private

@@ -32,6 +32,14 @@ module CIAX
         __pars(&:valid_pars)
       end
 
+      def view_par
+        __pars do |pary|
+          csv = a2csv(pary.valid_pars)
+          mary = [@cfg[:disp].item(@id)]
+          mary << ' ' * 10 + "key=(#{csv})"
+        end.join("\n")
+      end
+
       private
 
       def ___get_entity(opt, cid)
@@ -70,24 +78,16 @@ module CIAX
       # *If no :list, returns :default
       # Returns converted parameter array
       def ___validate(pary)
-        psize = pary.size
         __pars { |p| p.validate(pary) }
       rescue ParShortage
-        ___err_shortage($ERROR_INFO.to_s, psize)
+        frac = format('Parameter shortage (%d/%d)', pary.size, __pars.size)
+        Msg.par_err(frac)
       end
 
       def __pars
         return [] unless @cfg.key?(:parameters)
         pars = type?(@cfg[:parameters], ParArray)
         defined?(yield) ? yield(pars) : pars
-      end
-
-      def ___err_shortage(csv, psize)
-        frac = format('(%d/%d)', psize, __pars.size)
-        mary = ['Parameter shortage ' + frac]
-        mary << @cfg[:disp].item(@id)
-        mary << ' ' * 10 + "key=(#{csv})"
-        Msg.par_err(*mary)
       end
     end
   end

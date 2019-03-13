@@ -1,20 +1,27 @@
 #!/bin/bash
 # Gen2 command generator
-source ~/gen2/conf/bashrc
-usage(){
-    echo "Usage: gen2mkcmd [cmd]" > /dev/stderr
+mkitem(){
+    echo -n "${1%)}"
+    [[ "$*" =~ \$num ]] && echo -n '[n]'
+}
+mkcol(){
     while : ; do
         for (( i=0; i < 4; i++ )); do
-            read a b|| { echo; break 2; }
-            echo -en "\t${a%)}"
-            [[ $b =~ \$num ]] && echo -n '[n]'
+            read a || { [ $i -gt 0 ] && echo; break 2; }
+            echo -n $'\t'
+            mkitem $a
         done
         echo
-    done < <(egrep '^ +[a-z]+\)' $0)
+    done > /dev/stderr
+}
+usage(){
+    echo "Usage: gen2mkcmd [cmd]" > /dev/stderr
+    egrep '^ +[a-z]+\)' $0 | mkcol
+    exit 1
 }
 mkcmd(){
     args="'EXEC TSC NATIVE CMD=\"$*\"'"
-    echo "$args $TIMEOUT" >&2
+    echo "$args $TIMEOUT"
 }
 id="$1"
 shift

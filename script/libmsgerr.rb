@@ -11,8 +11,10 @@ module CIAX
       $stderr.puts str
     end
 
-    def show_err
+    # For user prompting
+    def show_err(str = nil)
       ary = $ERROR_INFO.to_s.lines
+      ary << str if str
       ary[0] = colorize(ary[0], 1)
       show(ary.join("\n"))
       show($ERROR_INFO.backtrace) if ENV['VER'] =~ /traceback/

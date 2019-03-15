@@ -2,8 +2,23 @@
 module CIAX
   # Variable status data
   class Varx
+    # Tag list with updating
+    class TagList < Arrayx
+      def initialize(filename)
+        @filename = filename
+        super()
+      end
+
+      def upd
+        replace(Dir.glob(@filename))
+        map! { |f| f.slice(/.+_(.+)\.json/, 1) }
+        sort!
+      end
+    end
+
     # File I/O feature
     module JFile
+      attr_reader :tag_list
       def self.extended(obj)
         Msg.type?(obj, Varx)
       end
@@ -18,12 +33,6 @@ module CIAX
         extend(JSave).ext_save
       end
 
-      def tag_list
-        Dir.glob(@jsondir + __file_name('*')).map do |f|
-          f.slice(/.+_(.+)\.json/, 1)
-        end.sort
-      end
-
       private
 
       def _ext_local_file(dir = nil)
@@ -31,6 +40,7 @@ module CIAX
         @id || cfg_err('No ID')
         @jsondir = vardir(dir || 'json')
         @cfile = base_name # Current file name
+        @tag_list = TagList.new(@jsondir + __file_name('*'))
         self
       end
 

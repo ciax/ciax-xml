@@ -29,7 +29,7 @@ module CIAX
       rescue CommError
         @sv_stat.up(:comerr)
         @sv_stat.seterr
-        @stat.seterr
+        @stat.comerr
         raise
       end
 

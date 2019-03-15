@@ -73,7 +73,7 @@ module CIAX
         cmt
       end
 
-      def seterr
+      def comerr
         self[:comerr] = true
         cmt
       end

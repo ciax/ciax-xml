@@ -32,13 +32,6 @@ module CIAX
         __pars(&:valid_pars)
       end
 
-      def rep_valid(array, idx = 0)
-        __pars do |pars|
-          pars[idx].get(:list).replace(array) if pars[idx].is_a? Parameter
-        end
-        self
-      end
-
       def view_par
         __pars do |pary|
           csv = a2csv(pary.valid_pars, ' ')

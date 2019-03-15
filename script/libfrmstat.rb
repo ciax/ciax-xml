@@ -78,6 +78,11 @@ module CIAX
         cmt
       end
 
+      def ext_local_log
+        @frame.ext_local_log
+        self
+      end
+
       private
 
       def ___init_field

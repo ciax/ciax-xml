@@ -2,8 +2,23 @@
 module CIAX
   # Variable status data
   class Varx
+    # Tag list with updating
+    class TagList < Arrayx
+      def initialize(filename)
+        @filename = filename
+        super()
+      end
+
+      def upd
+        replace(Dir.glob(@filename))
+        map! { |f| f.slice(/.+_(.+)\.json/, 1) }
+        sort!
+      end
+    end
+
     # File I/O feature
     module JFile
+      attr_reader :tag_list
       def self.extended(obj)
         Msg.type?(obj, Varx)
       end
@@ -25,6 +40,7 @@ module CIAX
         @id || cfg_err('No ID')
         @jsondir = vardir(dir || 'json')
         @cfile = base_name # Current file name
+        @tag_list = TagList.new(@jsondir + __file_name('*'))
         self
       end
 
@@ -32,17 +48,10 @@ module CIAX
         base_name(tag) + '.json'
       end
 
-      def __tag_list
-        Dir.glob(@jsondir + __file_name('*')).map do |f|
-          f.slice(/.+_(.+)\.json/, 1)
-        end.sort
-      end
-
       def ___chk_tag(tag = nil)
         return __file_name unless tag
-        list = __tag_list
-        return __file_name(tag) if list.include?(tag)
-        par_err('No such Tag', "Tag=#{list}")
+        return __file_name(tag) if tag_list.include?(tag)
+        par_err("No such Tag [#{tag}]")
         nil
       end
 
@@ -73,7 +82,7 @@ module CIAX
       end
 
       def save_partial(keyary, tag = nil)
-        tag ||= (__tag_list.map(&:to_i).max + 1)
+        tag ||= (tag_list.map(&:to_i).max + 1)
         # id is tag, this is Mark's request
         jstr = pick(
           keyary, time: self[:time], id: self[:id], data_ver: self[:data_ver]

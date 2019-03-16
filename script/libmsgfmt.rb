@@ -81,8 +81,8 @@ module CIAX
       ary.to_a.flatten.compact.join(':')
     end
 
-    def a2csv(ary)
-      ary.to_a.flatten.compact.join(',')
+    def a2csv(ary, space = '')
+      ary.to_a.flatten.compact.join(',' + space)
     end
 
     # max string length of value and key in hash at each column

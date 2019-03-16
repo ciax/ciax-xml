@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'libbuffer'
+require 'libexedrv'
 # CIAX-XML
 module CIAX
   # Application Layer
@@ -7,16 +8,12 @@ module CIAX
     class Exe
       # Driver module
       module Driver
-        def self.extended(obj)
-          Msg.type?(obj, Exe)
-        end
+        include CIAX::Exe::Driver
 
         # type of usage: shell/command line
         # type of semantics: execution/test
         def ext_local_driver
-          ___init_log_mode
-          ___init_processor_save
-          ___init_processor_load
+          super
           return self unless @sub
           @stat.ext_local_conv
           ___init_buffer
@@ -26,23 +23,7 @@ module CIAX
         private
 
         def ___init_log_mode
-          return unless @opt.drv?
-          @stat.ext_local_log.ext_sqlog
-          @cobj.rem.ext_input_log
-        end
-
-        def ___init_processor_save
-          @cobj.get('save').def_proc do |ent|
-            @stat.save_partial(ent.par[0].split(','), ent.par[1])
-            verbose { "Saving [#{ent.par[0]}]" }
-          end
-        end
-
-        def ___init_processor_load
-          @cobj.get('load').def_proc do |ent|
-            @stat.load_partial(ent.par[0] || '')
-            verbose { "Loading [#{ent.par[0]}]" }
-          end
+          super && @stat.ext_sqlog
         end
 
         # Process of command execution:

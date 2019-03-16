@@ -73,9 +73,14 @@ module CIAX
         cmt
       end
 
-      def seterr
+      def comerr
         self[:comerr] = true
         cmt
+      end
+
+      def ext_local_log
+        @frame.ext_local_log
+        self
       end
 
       private

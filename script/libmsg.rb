@@ -44,6 +44,7 @@ module CIAX
       self
     end
 
+    # For debugging
     def errmsg
       show __make_msg("ERROR:#{$ERROR_INFO} at\n", 1) +
            $ERROR_POSITION.join("\n")

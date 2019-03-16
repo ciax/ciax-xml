@@ -18,7 +18,7 @@ module CIAX
       end
 
       def valid_pars
-        map { |p| p.get(:list) }.flatten
+        map(&:list).flatten
       end
 
       def validate(ary)
@@ -61,17 +61,26 @@ module CIAX
       #   o   |   o   |    x      |    *     | error
       #   x   |   *   |    -      |    o     | :default
       #   *   |   x   |    -      |    o     | :default
-      attr_reader :list
       def initialize(hash = {})
         super
-        @list = (self[:list] ||= [])
+        self[:list] ||= []
+      end
+
+      def list
+        li = get(:list)
+        li.upd if li.is_a? Arrayx
+        li
+      end
+
+      def list=(ary)
+        self[:list] = type?(ary, Array)
       end
 
       def validate(str)
-        list = get(:list)
-        csv = a2csv(list)
+        li = list
+        csv = a2csv(li)
         return ___use_default(csv) unless str
-        return method('_val_' + get(:type)).call(str, list, csv) if list
+        return method('_val_' + get(:type)).call(str, li, csv) if li
         __get_default || str
       end
 

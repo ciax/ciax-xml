@@ -1,21 +1,18 @@
 #!/usr/bin/env ruby
+require 'libexedrv'
 module CIAX
   # Frame Layer
   module Frm
     class Exe
       # Frame Exe module
       module Driver
-        def self.extended(obj)
-          Msg.type?(obj, Exe)
-        end
+        include CIAX::Exe::Driver
 
         def ext_local_driver
+          super
           ___init_frame
           ___init_processor_ext
-          ___init_processor_save
-          ___init_processor_load
           ___init_processor_flush
-          ___init_log_mode
           self
         end
 
@@ -32,33 +29,12 @@ module CIAX
           end
         end
 
-        def ___init_processor_save
-          @cobj.get('save').def_proc do |ent|
-            @stat.save_partial(ent.par[0].split(','), ent.par[1])
-            verbose { "Saving [#{ent.par[0]}]" }
-          end
-        end
-
-        def ___init_processor_load
-          @cobj.get('load').def_proc do |ent|
-            @stat.load_partial(ent.par[0] || '')
-            @stat.flush
-            verbose { "Loading [#{ent.par[0]}]" }
-          end
-        end
-
         def ___init_processor_flush
           @cobj.get('flush').def_proc do
             @stat.frame.reset
             @stat.flush
             verbose { 'Flush Stream' }
           end
-        end
-
-        def ___init_log_mode
-          return unless @opt.drv?
-          @stat.frame.ext_local_log
-          @cobj.rem.ext_input_log
         end
       end
     end

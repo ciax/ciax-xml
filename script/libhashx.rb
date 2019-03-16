@@ -103,6 +103,11 @@ module CIAX
       find { |e| res = e.get(key) } && res
     end
 
+    # Update interface for TagList
+    def upd
+      self
+    end
+
     # Generate Hash with key array
     def a2h(*keys)
       each_with_object(Hashx.new) do |val, atrb|

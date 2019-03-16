@@ -34,9 +34,9 @@ module CIAX
 
       def view_par
         __pars do |pary|
-          csv = a2csv(pary.valid_pars)
+          csv = a2csv(pary.valid_pars, ' ')
           mary = [@cfg[:disp].item(@id)]
-          mary << ' ' * 10 + "key=(#{csv})"
+          mary << "      #{csv}"
         end.join("\n")
       end
 
@@ -78,9 +78,10 @@ module CIAX
       # *If no :list, returns :default
       # Returns converted parameter array
       def ___validate(pary)
+        psize = pary.size
         __pars { |p| p.validate(pary) }
       rescue ParShortage
-        frac = format('Parameter shortage (%d/%d)', pary.size, __pars.size)
+        frac = format('Parameter shortage (%d/%d)', psize, __pars.size)
         Msg.par_err(frac)
       end
 

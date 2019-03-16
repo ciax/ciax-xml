@@ -86,7 +86,7 @@ module CIAX
 
           def init_item_file_io
             add_item('save', '[key,key...] [tag]').pars_any(2)
-            add_item('load', '[tag]').pars_any(1)
+            add_item('load', '[tag]').pars.add_enum([])
           end
         end
       end

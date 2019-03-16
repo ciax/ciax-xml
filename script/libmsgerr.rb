@@ -11,8 +11,12 @@ module CIAX
       $stderr.puts str
     end
 
-    def show_err
-      show($ERROR_INFO)
+    # For user prompting
+    def show_err(str = nil)
+      ary = $ERROR_INFO.to_s.lines
+      ary << str if str
+      ary[0] = colorize(ary[0], 1)
+      show(ary.join("\n"))
       show($ERROR_INFO.backtrace) if ENV['VER'] =~ /traceback/
     end
 
@@ -28,11 +32,11 @@ module CIAX
 
     # Exception methods
     def usr_err(*ary) # Raise User error
-      raise UserError, chead(ary), caller(1)
+      raise UserError, ary.join("\n  "), caller(1)
     end
 
     def args_err(*ary) # Raise ARGS error
-      raise InvalidARGS, chead(ary), caller(1)
+      raise InvalidARGS, ary.join("\n  "), caller(1)
     end
 
     def id_err(id, type, comment = '') # Raise User error (Invalid User input)
@@ -40,11 +44,11 @@ module CIAX
     end
 
     def cmd_err(*ary) # Raise User error (Invalid User input)
-      raise InvalidCMD, chead(ary), caller(1)
+      raise InvalidCMD, ary.join("\n  "), caller(1)
     end
 
     def par_err(*ary) # Raise User error (Invalid User input)
-      raise InvalidPAR, chead(ary), caller(1)
+      raise InvalidPAR, ary.join("\n  "), caller(1)
     end
 
     def cfg_err(*ary) # Raise Device error (Bad Configulation)
@@ -53,27 +57,27 @@ module CIAX
     end
 
     def cc_err(*ary) # Raise Device error (Check Code Verification Failed)
-      raise CheckCodeError, chead(ary), caller(1)
+      raise CheckCodeError, ary.join("\n  "), caller(1)
     end
 
     def com_err(*ary) # Raise Device error (Communication Failed)
-      raise CommError, chead(ary), caller(1)
+      raise CommError, ary.join("\n  "), caller(1)
     end
 
     def data_err(*ary) # Raise Device error (Data invalid)
-      raise InvalidData, chead(ary), caller(1)
+      raise InvalidData, ary.join("\n  "), caller(1)
     end
 
     def ver_err(*ary) # Raise Device error (Format Version Mismatch)
-      raise VerMismatch, chead(ary), caller(1)
+      raise VerMismatch, ary.join("\n  "), caller(1)
     end
 
     def str_err(*ary) # Raise Device error (Stream open Failed)
-      raise StreamError, chead(ary), caller(1)
+      raise StreamError, ary.join("\n  "), caller(1)
     end
 
     def mcr_err(*ary) # Raise No Macro commandd error (Not an option)
-      raise NoMcrCmd, chead(ary), caller(1)
+      raise NoMcrCmd, ary.join("\n  "), caller(1)
     end
 
     def relay(str)
@@ -82,7 +86,7 @@ module CIAX
     end
 
     def sv_err(*ary) # Raise Server error (Parameter type)
-      raise ServerError, chead(ary), caller(2)
+      raise ServerError, ary.join("\n  "), caller(2)
     end
 
     def give_up(str = 'give_up')
@@ -98,11 +102,6 @@ module CIAX
         code = %w(ARGS OPT ID CMD PAR).index(eid).to_i + 2
       end
       exit code
-    end
-
-    def chead(ary, col = 1)
-      ary[0] = colorize(ary[0], col)
-      ary.join("\n  ")
     end
   end
 end

@@ -13,7 +13,7 @@ module CIAX
 
     # For user prompting
     def show_err(str = nil)
-      ary = $ERROR_INFO.to_s.lines
+      ary = $ERROR_INFO.to_s.split("\n")
       ary << str if str
       ary[0] = colorize(ary[0], 1)
       show(ary.join("\n"))

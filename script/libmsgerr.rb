@@ -16,7 +16,7 @@ module CIAX
       ary = $ERROR_INFO.to_s.split("\n")
       ary << str if str
       ary[0] = colorize(ary[0], 1)
-      show(ary.join("\n"))
+      show(ary.compact.join("\n"))
       show($ERROR_INFO.backtrace) if ENV['VER'] =~ /traceback/
     end
 

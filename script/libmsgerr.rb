@@ -13,11 +13,15 @@ module CIAX
 
     # For user prompting
     def show_err(str = nil)
+      show(view_err(str))
+    end
+
+    def view_err(str = nil)
       ary = $ERROR_INFO.to_s.split("\n")
       ary << str if str
+      ary << $ERROR_INFO.backtrace if ENV['VER'] =~ /traceback/
       ary[0] = colorize(ary[0], 1)
-      show(ary.compact.join("\n"))
-      show($ERROR_INFO.backtrace) if ENV['VER'] =~ /traceback/
+      ary.compact.join("\n")
     end
 
     # Messaging methods

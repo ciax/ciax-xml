@@ -45,7 +45,7 @@ module CIAX
       def send(ent, pri = 1)
         __clear if pri.to_i.zero? # interrupt
         cid = type?(ent, CmdBase::Entity).id
-        verbose { "Execute #{cid}(#{@id}):timing" }
+        verbose { "Execute #{cid}(#{@id}):timing #{ent[:batch].inspect}" }
         # batch is frm batch (ary of ary)
         @que_buf.push([pri, ent[:batch], cid])
         self

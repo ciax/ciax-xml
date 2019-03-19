@@ -443,12 +443,22 @@
         <int name="pause"/>
         <exec name="upd"/>
       </event>
+      <event label="Run End" id="rend">
+        <onchange var="run"/>
+        <range var="run">0</range>
+        <exec name="upd"/>
+      </event>
       <event label="While Jacking" id="jak">
         <range var="jak">1</range>
         <block_grp ref="grun"/>
         <block_grp ref="gjak"/>
         <block_grp ref="gchg"/>
         <int name="pause"/>
+        <exec name="upd"/>
+      </event>
+      <event label="Jak End" id="jend">
+        <onchange var="jak"/>
+        <range var="jak">0</range>
         <exec name="upd"/>
       </event>
     </watch>

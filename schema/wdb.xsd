@@ -18,7 +18,7 @@
         <xsd:group minOccurs="0" maxOccurs="unbounded" ref="wdb:event"/>
       </xsd:sequence>
       <!--interval of event driven cycle (time to next exec by event) default 0.1 sec-->
-      <xsd:attribute name="interval" type="xsd:float" use="required"/>
+      <xsd:attribute name="interval" type="xsd:float"/>
       <xsd:attribute name="id" type="xsd:token"/>
     </xsd:complexType>
     <xsd:unique name="onchange-ref">

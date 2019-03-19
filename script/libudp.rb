@@ -20,6 +20,7 @@ module CIAX
         # Address family not supported by protocol -> see above
         @udp.send(str, 0, @host, @port.to_i)
         verbose { "UDP Send #{str} [#{@host}:#{@port}]" }
+        self
       end
 
       def recv

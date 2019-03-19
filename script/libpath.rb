@@ -35,7 +35,7 @@ module CIAX
     def ___view_hash(var)
       return unless var.is_a? Hash
       var.each do |k, v|
-        var[k] = v.class.to_s if v.is_a?(Enumerable)
+        var[k] = v.class.to_s if v.is_a?(Enumerable) || !v.is_a?(Comparable)
       end
     end
   end

@@ -82,7 +82,7 @@ module CIAX
         __pars { |p| p.validate(pary) }
       rescue ParShortage
         frac = format('Parameter shortage (%d/%d)', psize, __pars.size)
-        Msg.par_err(frac)
+        Msg.par_err(frac, view_par)
       end
 
       def __pars

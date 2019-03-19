@@ -53,6 +53,10 @@ module CIAX
 
       def valid_sub(ary)
         @valid_keys.replace(keys - type?(ary, Array))
+        verbose do
+          "(#{@cfg[:id]}) valid_keys " +
+            (ary.empty? ? 'restored' : "subtracted with #{ary.inspect}")
+        end
         self
       end
 

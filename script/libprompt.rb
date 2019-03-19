@@ -83,7 +83,7 @@ module CIAX
     end
 
     def seterr
-      repl(:msg, $ERROR_INFO.to_s.lines.first)
+      repl(:msg, $ERROR_INFO.to_s.split("\n").first)
     end
 
     def to_v

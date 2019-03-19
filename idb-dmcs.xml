@@ -16,6 +16,12 @@
             <alias id="asl" ref="abs" label="Access Position for Machine" symbol="asl"/>
           </group>
         </status>
+        <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+          <event id="mot">
+            <block_grp ref="grel"/>
+            <block_grp ref="gabs"/>
+          </event>
+        </watch>
       </site>
       <site id="tmi" dev_id="tmi" app_id="cmi" host="moircsobcp" port="25690" label="Current Mask Index"/>
       <site id="tbb" dev_id="tbb" app_id="bbe" host="localhost" port="25696" label="TEST BBE simple">

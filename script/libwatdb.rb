@@ -6,6 +6,8 @@ module CIAX
   module Wat
     # Watch DB
     module Db
+      private
+
       # structure
       #   exec  = [cond1, 2, ...]
       #   cond  = [args1, 2, ..]
@@ -13,14 +15,19 @@ module CIAX
       def _init_watch(doc, db)
         return {} unless doc.key?(:watch)
         wdoc = doc[:watch]
-        wdb = db[:watch] = wdoc.to_h
-        reg = wdb[:regular] = { period: 300, exec: [] }
-        idx = wdb[:index] = Hashx.new
-        ___get_wdb(wdoc, reg, idx, db[:command][:group])
-        reg[:exec] << ['upd'] if reg[:exec].empty?
+        wdb = ___mk_wdb(wdoc, db[:command][:group])
+        (db[:watch] ||= Hashx.new).deep_update(wdb)
+        self
       end
 
-      private
+      def ___mk_wdb(wdoc, cgrp)
+        wdb = wdoc.to_h
+        reg = wdb[:regular] = { period: 300, exec: [] }
+        idx = wdb[:index] = Hashx.new
+        ___get_wdb(wdoc, reg, idx, cgrp)
+        reg[:exec] << ['upd'] if reg[:exec].empty?
+        wdb
+      end
 
       def ___get_wdb(wdoc, reg, idx, cgrp)
         @rep.each(wdoc) do |e0|

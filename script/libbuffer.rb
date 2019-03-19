@@ -111,12 +111,16 @@ module CIAX
           h = batch.shift
           args.replace h[:args] if h
         end
+        ___rm_dup(args, batch)
+        args
+      end
+
+      def ___rm_dup(args, batch)
         batch.delete_if do |e|
           if e[:type] == 'stat' && e[:args] == args
             warning(format('duplicated stat cmd %s(%s)', args.inspect, e[:cid]))
           end
         end
-        args
       end
 
       def ___sv_up

@@ -99,11 +99,11 @@ module CIAX
         cmds.each { |s| exe(___input_conv(s), 'shell') }
         nil
       rescue InvalidPAR
-        show_err(@cobj.view_par)
+        view_err(@cobj.view_par)
       rescue UserError
-        show_err(@cobj.view_dic)
+        view_err(@cobj.view_dic)
       rescue ServerError
-        show_err
+        view_err
       end
 
       def ___input_conv(token)

@@ -71,7 +71,6 @@ module CIAX
           verbose { 'Propagate Event#cmt -> Watch#(set blocking command)' }
           block = ev.get(:block).map { |id, par| par ? nil : id }.compact
           @cobj.rem.ext.valid_sub(block)
-          verbose { "Valid_keys - BlockList #{@cobj.valid_keys.inspect}" }
         end
       end
     end

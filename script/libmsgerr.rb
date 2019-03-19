@@ -57,7 +57,7 @@ module CIAX
 
     def cfg_err(*ary) # Raise Device error (Bad Configulation)
       ary[0] = "#{self.class}: #{ary[0]}"
-      raise ConfigError, chead(ary), caller(1)
+      raise ConfigError, ary.join("\n  "), caller(1)
     end
 
     def cc_err(*ary) # Raise Device error (Check Code Verification Failed)
@@ -95,7 +95,7 @@ module CIAX
 
     def give_up(str = 'give_up')
       ary = [str, $ERROR_INFO.to_s, *$ERROR_POSITION]
-      Kernel.abort(chead(ary).join("\n"))
+      Kernel.abort(ary.join("\n  "))
     end
 
     def usage(str, code = 2)

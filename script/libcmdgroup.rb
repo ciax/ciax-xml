@@ -53,7 +53,7 @@ module CIAX
 
       def valid_sub(ary)
         @valid_keys.replace(keys - type?(ary, Array))
-        verbose { "valid_keys changed #{@valid_keys.inspect}" }
+        verbose { "(#{@cfg[:id]}) valid_keys subtracted with #{ary.inspect}" }
         self
       end
 

@@ -73,7 +73,9 @@ module CIAX
       end
 
       def ___make_block(e1, cgrp)
-        cgrp[e1[:ref]][:members].map { |k| [k] }
+        ref = e1[:ref]
+        rgrp = cgrp[ref] || cfg_err("No such ref [#{ref}]")
+        rgrp[:members].map { |k| [k] }
       end
 
       def ___make_cond(e1, cmp = nil)

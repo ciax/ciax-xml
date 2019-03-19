@@ -23,12 +23,9 @@ module CIAX
 
       ######## Command section #######
       def _add_group(ec)
-        if ec.name == 'frame'
-          @cdb.get(:frame) do
-            __init_frame(ec) { |e| __add_cmdfrm(e) }
-          end
-        else
-          super
+        return super unless ec.name == 'frame'
+        @cdb.get(:frame) do
+          __init_frame(ec) { |e| __add_cmdfrm(e) }
         end
       end
 
@@ -98,7 +95,9 @@ module CIAX
 
       def __mk_rspfrm(e)
         db = { type: e.name }.update(e.to_h)
-        e.each { |e1| (db[e1.name.to_sym] ||= []) << e1.text }
+        if /verify|assign/ =~ db[:type]
+          e.each { |e1| (db[e1.name.to_sym] ||= []) << e1.text }
+        end
         db
       end
 

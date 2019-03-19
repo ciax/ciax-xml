@@ -23,7 +23,7 @@ module CIAX
 
         def ___init_cmt_procs
           @stat.cmt_procs.append('watconv') do |s|
-            ___auto_exec(s)
+            ___exec_by_event(s)
             ___event_flag(s)
           end
         end
@@ -42,7 +42,7 @@ module CIAX
           end
         end
 
-        def ___auto_exec(ev)
+        def ___exec_by_event(ev)
           ev.get(:exec).each do |src, pri, args|
             verbose { "Propagate Exec:#{args} from [#{src}] by [#{pri}]" }
             @sub.exe(args, src, pri)

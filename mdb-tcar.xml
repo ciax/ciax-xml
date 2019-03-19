@@ -179,11 +179,14 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <exec site="tmc" name="ccw-4"/>
+          <exec site="tmc" name="ccw-2"/>
           <wait retry="48" label="end of motion">
             <equal site="tmc" var="bs" form="data">0</equal>
           </wait>
-          <upd site="tmc"/>
+          <exec site="tmc" name="ccw-2"/>
+          <wait retry="48" label="end of motion">
+            <equal site="tmc" var="bs" form="data">0</equal>
+          </wait>
         </item>
         <item id="tmc_ccw-5" label="Move 5 unit CCW">
           <check>

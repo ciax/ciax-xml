@@ -13,7 +13,6 @@ module CIAX
         @proj = proj || 'all'
         super('idb')
         @adb = App::Db.new
-        @cdb = CmdDb.new
       end
 
       def valid_apps(applist)
@@ -59,9 +58,7 @@ module CIAX
       # Command Domain
       def _init_command_db(dbi, doc)
         return unless doc.key?(:command)
-        cdb = super(dbi)
-        @cdb.override(doc[:command][:ref], cdb)
-        cdb
+        CmdDb.new.override(doc[:command][:ref], super(dbi))
       end
 
       # Status Domain

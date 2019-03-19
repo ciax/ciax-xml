@@ -98,11 +98,7 @@ module CIAX
       def ___exe(cmds)
         cmds.each { |s| exe(___input_conv(s), 'shell') }
         nil
-      rescue InvalidPAR
-        view_err(@cobj.view_par)
-      rescue UserError
-        view_err(@cobj.view_dic)
-      rescue ServerError
+      rescue StandardError
         view_err
       end
 

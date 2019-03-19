@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'libvarx'
 module CIAX
   # Variable status data
   class Varx

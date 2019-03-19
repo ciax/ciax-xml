@@ -15,17 +15,21 @@ module CIAX
       def _doc_to_db(doc)
         dbi = super
         dbi[:stream] = doc[:stream] || Hashx.new
-        _init_command_db(dbi, doc)
-        ___init_field(dbi, doc)
-        ___init_response(dbi, doc)
+        _init_command_db(dbi, doc[:command])
+        ___init_field(dbi, doc[:field])
+        ___init_response(dbi, doc[:response])
         dbi
       end
 
       ######## Command section #######
-      def _init_command_db(dbi, doc)
-        cdb = super(dbi, doc[:command])
-        cdb[:frame] = __init_frame(doc[:cmdframe]) { |e| __add_cmdfrm(e) }
-        cdb
+      def _add_group(ec)
+        if ec.name == 'frame'
+          @cdb.get(:frame) do
+            __init_frame(ec) { |e| __add_cmdfrm(e) }
+          end
+        else
+          super
+        end
       end
 
       def _add_item(e0, gid)
@@ -58,7 +62,7 @@ module CIAX
       # Field section
       def ___init_field(dbi, dom)
         @fld = dbi[:field] = Hashx.new # template
-        dom[:field].each do |e|
+        dom.each do |e|
           id = e.attr2item(@fld)
           ___init_ary(e, @fld[id]) if e.name == 'array'
         end
@@ -74,19 +78,21 @@ module CIAX
 
       # Response section
       def ___init_response(dbi, dom)
-        # Whole frame
-        frm = __init_frame(dom[:rspframe]) { |e| __mk_rspfrm(e) }
         # Response DB (index)
-        dbi[:response] = Hashx.new(index: idx = Hashx.new, frame: frm)
-        dom[:response].each { |e0| ___add_fld(e0, idx) }
+        idx = Hashx.new
+        @res = dbi[:response] = Hashx.new(index: idx)
+        dom.each { |e0| ___add_fld(e0, idx) }
         dbi[:frm_id] = dbi[:id]
-        dbi
       end
 
       def ___add_fld(e0, db)
-        itm = db[e0.attr2item(db)]
-        @rep.each(e0) do |e1|
-          itm.get(:body) { [] } << __mk_rspfrm(e1)
+        if e0.name == 'frame'
+          @res[:frame] = __init_frame(e0) { |e| __mk_rspfrm(e) }
+        else
+          itm = db[e0.attr2item(db)]
+          @rep.each(e0) do |e1|
+            itm.get(:body) { [] } << __mk_rspfrm(e1)
+          end
         end
       end
 

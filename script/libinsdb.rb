@@ -58,7 +58,8 @@ module CIAX
       # Command Domain
       def _init_command_db(dbi, doc)
         return unless doc.key?(:command)
-        CmdDb.new.override(doc[:command][:ref], super(dbi))
+        super(dbi)
+        CmdDb.new.override(doc[:command][:ref], @cdb)
       end
 
       # Status Domain

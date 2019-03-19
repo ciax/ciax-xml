@@ -32,22 +32,19 @@ module CIAX
     end
 
     def _init_command_db(dbi, doc = nil)
-      cdb = dbi.get(:command) { Hashx.new }
-      @idx = cdb.get(:index) { Hashx.new }
-      @grps = cdb.get(:group) { Hashx.new }
-      @units = cdb.get(:unit) { Hashx.new }
-      ___add_group(doc || {})
-      cdb
+      @cdb = dbi.get(:command) { Hashx.new }
+      @idx = @cdb.get(:index) { Hashx.new }
+      @grps = @cdb.get(:group) { Hashx.new }
+      @units = @cdb.get(:unit) { Hashx.new }
+      doc.each_value { |e| _add_group(e) } if doc
     end
 
     # Adapt to both XML::Gnu, Hash
-    def ___add_group(doc)
-      doc.each_value do |e|
-        # e.name should be group
-        Msg.give_up('No group in cdb') unless e.name == 'group'
-        gid = e.attr2item(@grps)
-        ___add_member(e, gid)
-      end
+    def _add_group(e)
+      # e.name should be group
+      Msg.give_up('No group in cdb') unless e.name == 'group'
+      gid = e.attr2item(@grps)
+      ___add_member(e, gid)
     end
 
     def ___add_member(doc, gid)

@@ -98,7 +98,7 @@ module CIAX
       def ___exe(cmds)
         cmds.each { |s| exe(___input_conv(s), 'shell') }
         nil
-      rescue StandardError
+      rescue UserError, ServerError
         view_err
       end
 

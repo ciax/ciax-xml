@@ -44,7 +44,7 @@ module CIAX
 
         def ___exec_by_event(ev)
           ev.get(:exec).each do |src, pri, args|
-            verbose { "Propagate Exec:#{args} from [#{src}] by [#{pri}]" }
+            verbose { "Exec by Event:#{args.inspect} from [#{src}] priority [#{pri}]" }
             @sub.exe(args, src, pri)
             sleep ev.interval
           end.clear

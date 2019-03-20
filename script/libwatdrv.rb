@@ -36,7 +36,7 @@ module CIAX
         end
 
         def ___init_auto_thread
-          Threadx::Loop.new('Regular', 'wat', @id) do
+          Threadx::Loop.new('Auto', 'wat', @id) do
             @stat.auto_exec unless @sv_stat.up?(:comerr)
             sleep 10
           end
@@ -44,7 +44,7 @@ module CIAX
 
         def ___exec_by_event(ev)
           ev.get(:exec).each do |src, pri, args|
-            verbose { "Propagate Exec:#{args} from [#{src}] by [#{pri}]" }
+            verbose { _exe_text('Executing by Event', args.inspect, src, pri) }
             @sub.exe(args, src, pri)
             sleep ev.interval
           end.clear

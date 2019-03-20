@@ -134,5 +134,11 @@ module CIAX
     def _gen_color(table, ofs = 0)
       15 - (table.size + ofs) % 15
     end
+
+    # make verbose text for exec
+    def _exe_text(*par)
+      # Action, cmdstr, source, priority
+      format("%s %s from '%s' with priority %s", *par)
+    end
   end
 end

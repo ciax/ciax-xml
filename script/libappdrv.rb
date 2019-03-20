@@ -62,7 +62,7 @@ module CIAX
         # App: Sending a general App command (Frm batch)
         def ___init_proc_ext(buf)
           @cobj.rem.ext.def_proc do |ent, src, pri|
-            verbose { "Issuing:[#{ent.id}] from #{src} with priority #{pri}" }
+            verbose { _exe_text('Issuing', ent.id, src, pri) }
             buf.send(ent, pri)
           end
         end
@@ -70,7 +70,7 @@ module CIAX
         def ___init_proc_buf(buf)
           # Frm: Execute single command
           buf.recv_proc = proc do |args, src|
-            verbose { "Processing App to Buffer #{args}" }
+            verbose { "Processing App to Buffer #{args.inspect}" }
             @sub.exe(args, src)
           end
           # Frm: Update after each single command finish

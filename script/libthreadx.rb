@@ -83,29 +83,11 @@ module CIAX
     end
 
     # Queue Thread with Loop
-    class QueLoop < Fork
+    class QueLoop < Loop
+      attr_reader :que
       def initialize(tname, layer, id, atrb = {})
         @que = Queue.new
-        super { loop { yield @que } }
-      end
-
-      def push(str) # returns self
-        warning("Thread [#{self[:name]}] is not running") unless alive?
-        @que.push(str)
-        self
-      end
-
-      def shift
-        @que.shift
-      end
-
-      def empty?
-        @que.empty?
-      end
-
-      def clear
-        @que.clear
-        self
+        super { yield @que }
       end
     end
   end

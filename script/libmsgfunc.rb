@@ -28,17 +28,8 @@ module CIAX
 
     # Use num.clamp() on ruby 2.4 or later
     # the order of range parameters is not concerned
-    def limit(r1, r2, num)
-      rg = [r1, r2]
-      min = rg.min
-      max = rg.max
-      if num > max
-        max
-      elsif num < min
-        min
-      else
-        num
-      end
+    def limit(num, *rg)
+      [[rg.min, num].max, rg.max].min
     end
 
     # variable keys of db will be converted to String
@@ -62,8 +53,12 @@ module CIAX
 
     # Json read with contents conversion
     def jread(jstr = nil)
-      inp = jstr || gets(nil) || data_err("No data in file(#{ARGV})")
-      j2h(inp)
+      unless jstr
+        (jstr = gets(nil)) &&
+          show('Get data from STDIN') ||
+          data_err("No data in file(#{ARGV})")
+      end
+      j2h(jstr)
     end
 
     # Thread is main

@@ -39,7 +39,7 @@ module CIAX
       end
 
       def sel(num = nil)
-        @current_page = limit(0, @rec_view.list.size, num.to_i)
+        @current_page = limit(num.to_i, 0, @rec_view.list.size)
         __set_def(current_id)
         self
       end

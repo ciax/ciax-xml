@@ -53,11 +53,9 @@ module CIAX
 
     # Json read with contents conversion
     def jread(jstr = nil)
-      unless jstr
-        (jstr = gets(nil)) &&
-          show('Get data from STDIN') ||
-          data_err("No data in file(#{ARGV})")
-      end
+      return j2h(jstr) if jstr
+      data_err("No data in file(#{ARGV})") unless (jstr = gets(nil))
+      show('Get data from STDIN')
       j2h(jstr)
     end
 

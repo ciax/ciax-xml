@@ -11,7 +11,7 @@ module CIAX
     # Field class
     class Field
       def ext_local_conv(cfg)
-        return ext_save unless cfg[:iocmd]
+        return ext_local.ext_save unless cfg[:iocmd]
         extend(Conv).ext_local_conv(cfg)
       end
 
@@ -151,7 +151,7 @@ module CIAX
       require 'libjslog'
       ConfOpts.new('< logline', m: 'merge file') do |cfg|
         raise(InvalidARGS, '  Need Input File') if STDIN.tty?
-        res = Frame.new.jmerge
+        res = Frame.new
         field = Field.new(res[:id]).ext_local_conv(res)
         field.ext_local.ext_save if cfg.opt[:m]
         if (cid = res[:cmd])

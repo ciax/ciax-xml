@@ -11,7 +11,8 @@ module CIAX
         verification: 'incomplete',
         interlock: 'failed',
         interrupt: 'interrupted',
-        commerror: 'comerr'
+        commerror: 'comerr',
+        invalidargs: 'invalid'
       }.freeze
 
       private

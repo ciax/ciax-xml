@@ -80,7 +80,7 @@ module CIAX
       def _new_step(e, mstat)
         step = @record.add_step(e, @depth)
         ___step_trial(step, mstat)
-      rescue CommError, Interlock, Interrupt
+      rescue CommError, Interlock, Interrupt, InvalidARGS
         mstat.result = __set_err(step)
         raise
       ensure

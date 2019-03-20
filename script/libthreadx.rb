@@ -83,10 +83,10 @@ module CIAX
     end
 
     # Queue Thread with Loop
-    class QueLoop < Fork
+    class QueLoop < Loop
       def initialize(tname, layer, id, atrb = {})
         @que = Queue.new
-        super { loop { yield @que } }
+        super { yield @que }
       end
 
       def push(str) # returns self
@@ -95,6 +95,7 @@ module CIAX
         self
       end
 
+      # Not used below
       def shift
         @que.shift
       end

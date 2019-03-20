@@ -38,7 +38,7 @@ module CIAX
         @recv_proc = proc {}
         @outbuf = Outbuf.new
         @id = @sv_stat.get(:id)
-        @que_buf = Arrayx.new # For testing
+        @th_buf = Arrayx.new # For testing
       end
 
       # Send app entity
@@ -47,11 +47,11 @@ module CIAX
         cid = type?(ent, CmdBase::Entity).id
         verbose { "Execute #{cid}(#{@id}):timing #{ent[:batch].inspect}" }
         # batch is frm batch (ary of ary)
-        @que_buf.push([pri, ent[:batch], cid])
+        @th_buf.push([pri, ent[:batch], cid])
         self
       end
 
-      def recv(que = @que_buf)
+      def recv(que = @th_buf)
         ___pri_sort(*que.shift)
         ___exec_buf if que.empty?
         self
@@ -59,7 +59,7 @@ module CIAX
 
       def server
         # element of que is args of Frm::Cmd
-        @que_buf = Threadx::QueLoop.new('Buffer', 'app', @id) do |que|
+        @th_buf = Threadx::QueLoop.new('Buffer', 'app', @id) do |que|
           verbose { 'Waiting' }
           recv(que)
         end
@@ -67,7 +67,7 @@ module CIAX
       end
 
       def alive?
-        @que_buf && @que_buf.alive?
+        @th_buf && @th_buf.alive?
       end
 
       def alert(str = nil)
@@ -135,7 +135,7 @@ module CIAX
 
       def __clear
         @outbuf.clear
-        @que_buf.clear
+        @th_buf.clear
         __flush
       end
 

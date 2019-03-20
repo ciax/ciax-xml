@@ -62,7 +62,7 @@ module CIAX
         # App: Sending a general App command (Frm batch)
         def ___init_proc_ext(buf)
           @cobj.rem.ext.def_proc do |ent, src, pri|
-            verbose { "Issuing:[#{ent.id}] from #{src} with priority #{pri}" }
+            verbose { _exe_text('Issuing', ent.id, src, pri) }
             buf.send(ent, pri)
           end
         end

@@ -33,7 +33,7 @@ module CIAX
     def exe(args, src = nil, pri = 1)
       type?(args, Array)
       src ||= 'local'
-      verbose { "Executing #{args.inspect} from '#{src}' as priority #{pri}" }
+      verbose { _exe_text('Executing', args.inspect, src, pri) }
       @pre_exe_procs.each { |p| p.call(args, src) }
       msg = @cobj.set_cmd(args).exe_cmd(src, pri).msg
       @post_exe_procs.each { |p| p.call(args, src, msg) }
@@ -155,6 +155,12 @@ module CIAX
       return _ext_remote_client if @opt.cl?
       _ext_local
       @opt.drv? ? _ext_local_driver : _ext_local_test
+    end
+
+    # make verbose text
+    def _exe_text(*par)
+      # Action, cmdstr, source, priority
+      format("%s %s from '%s' with priority %s", *par)
     end
   end
 end

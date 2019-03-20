@@ -24,7 +24,7 @@ module CIAX
       def initialize(id)
         @id = id
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
-        @que_sql = Threadx::QueLoop.new('SqLog', 'all', @id) do |que|
+        @th_sql = Threadx::QueLoop.new('SqLog', 'all', @id) do |que|
           ___log_save(que)
         end
       end
@@ -49,8 +49,9 @@ module CIAX
 
       private
 
+      # FIFO
       def ___log_save(que)
-        sql = que.pop
+        sql = que.shift
         IO.popen(@sqlcmd, 'w') { |f| f.puts sql }
         verbose { "Saved for '#{sql}'" }
       rescue
@@ -60,13 +61,13 @@ module CIAX
       # Create table if no table
       def ___create_tbl(tbl)
         return if internal('tables').split(' ').include?(tbl.tid)
-        @que_sql.push tbl.create
+        @th_sql.push tbl.create
         verbose { "'#{tbl.tid}' is created" }
       end
 
       def ___real_mode(stat, tbl)
         # Add to stat.cmt
-        stat.cmt_procs.append { @que_sql.push tbl.insert }
+        stat.cmt_procs.append { @th_sql.push tbl.insert }
       end
 
       def ___dummy_mode(stat, tbl)

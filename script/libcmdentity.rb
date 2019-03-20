@@ -19,7 +19,7 @@ module CIAX
 
       # returns result of def_proc block (String)
       def exe_cmd(src, pri = 1)
-        verbose { "Execute [#{@id}] from #{src}" }
+        verbose { _exe_text('Executing', @id, src, pri) }
         ___input_log(src, pri)
         @msg = self[:def_msg] || ''
         self[:def_proc].call(self, src, pri)

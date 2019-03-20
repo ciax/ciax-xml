@@ -156,11 +156,5 @@ module CIAX
       _ext_local
       @opt.drv? ? _ext_local_driver : _ext_local_test
     end
-
-    # make verbose text
-    def _exe_text(*par)
-      # Action, cmdstr, source, priority
-      format("%s %s from '%s' with priority %s", *par)
-    end
   end
 end

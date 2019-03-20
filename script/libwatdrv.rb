@@ -44,7 +44,7 @@ module CIAX
 
         def ___exec_by_event(ev)
           ev.get(:exec).each do |src, pri, args|
-            verbose { _exe_text('Exec by Event', args.inspect, src, pri) }
+            verbose { _exe_text('Executing by Event', args.inspect, src, pri) }
             @sub.exe(args, src, pri)
             sleep ev.interval
           end.clear

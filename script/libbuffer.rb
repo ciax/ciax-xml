@@ -45,7 +45,7 @@ module CIAX
       def send(ent, pri = 1)
         __clear if pri.to_i.zero? # interrupt
         cid = type?(ent, CmdBase::Entity).id
-        verbose { "Execute #{cid}(#{@id}):timing #{ent[:batch].inspect}" }
+        verbose { _exe_text('Executing', cid, 'send que', pri) }
         # batch is frm batch (ary of ary)
         @que.push([pri, ent[:batch], cid])
         self
@@ -53,7 +53,7 @@ module CIAX
 
       def recv(que = @que)
         par = que.shift
-        verbose { format('Recv from Queue %s', par.inspect) }
+        verbose { format('Recv from Queue %s:timing', par.inspect) }
         ___pri_sort(*par)
         ___exec_buf if que.empty?
         self

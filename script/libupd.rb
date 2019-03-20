@@ -11,9 +11,9 @@ module CIAX
       super()
       time_upd
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @upd_procs = ProcArray.new(self)
+      @upd_procs = ProcArray.new(self, 'upd')
       # Proc Array for Commit Propagation to the upper Layers
-      @cmt_procs = ProcArray.new(self)
+      @cmt_procs = ProcArray.new(self, 'cmt')
     end
 
     # Add cmt for self return method
@@ -75,9 +75,11 @@ module CIAX
 
     # Set time_upd to @cmt_procs with lower layer time
     def init_time2cmt(stat = nil)
-      @cmt_procs.unshift(
-        stat ? proc { time_upd(stat[:time]) } : proc { time_upd }
-      )
+      if stat
+        @cmt_procs.prepend { time_upd(stat[:time]) }
+      else
+        @cmt_procs.prepend { time_upd }
+      end
       self
     end
 

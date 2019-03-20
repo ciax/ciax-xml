@@ -33,7 +33,6 @@ module CIAX
 
       # Mode Extention by Option
       def _ext_local
-        ___init_cmt_procs
         @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
         super
       end
@@ -64,14 +63,6 @@ module CIAX
         @mode = @sub.mode
         @post_exe_procs.concat(@sub.post_exe_procs)
         @sub.stat
-      end
-
-      def ___init_cmt_procs
-        @stat.cmt_procs.append do |ev|
-          verbose { 'Propagate Event#cmt -> Watch#(set blocking command)' }
-          block = ev.get(:block).map { |id, par| par ? nil : id }.compact
-          @cobj.rem.ext.valid_sub(block)
-        end
       end
     end
 

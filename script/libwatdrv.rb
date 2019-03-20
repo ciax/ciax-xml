@@ -22,7 +22,8 @@ module CIAX
         private
 
         def ___init_cmt_procs
-          @stat.cmt_procs.append('watconv') do |s|
+          @stat.cmt_procs.append do |s|
+            ___flush_blocklist(s)
             ___exec_by_event(s)
             ___event_flag(s)
           end
@@ -40,6 +41,12 @@ module CIAX
             @stat.auto_exec unless @sv_stat.up?(:comerr)
             sleep 10
           end
+        end
+
+        def ___flush_blocklist(ev)
+          verbose { 'Propagate Event#cmt -> Watch#(set blocking command)' }
+          block = ev.get(:block).map { |id, par| par ? nil : id }.compact
+          @cobj.rem.ext.valid_sub(block)
         end
 
         def ___exec_by_event(ev)

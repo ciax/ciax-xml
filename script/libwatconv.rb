@@ -26,7 +26,7 @@ module CIAX
           wdb = @dbi[:watch] || {}
           @interval = wdb[:interval].to_f if wdb.key?(:interval)
           @cond = Condition.new(wdb[:index] || {}, @status, self)
-          @cmt_procs.append('watexe') { conv }
+          @cmt_procs.append { conv }
           ___init_auto(wdb)
         end
 

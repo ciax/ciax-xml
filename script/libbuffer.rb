@@ -61,16 +61,11 @@ module CIAX
 
       def server
         # element of que is args of Frm::Cmd
-        @th_buf = Threadx::QueLoop.new('Buffer', 'app', @id) do |que|
+        @que = Threadx::QueLoop.new('Buffer', 'app', @id) do |que|
           verbose { 'Waiting' }
           recv(que)
-        end
-        @que = @th_buf.que
+        end.que
         self
-      end
-
-      def alive?
-        @th_buf && @th_buf.alive?
       end
 
       def alert(str = nil)

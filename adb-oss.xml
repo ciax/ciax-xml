@@ -2,24 +2,22 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="oss" id="oss" label="TSC Control" version="7">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="g0" caption="Device">
-        <unit id="upd" label="Status">
-          <item id="upd" label="Upd">
-            <frmcmd name="logstat"/>
-            <frmcmd name="getstat"/>
-            <frmcmd name="telstat"/>
-            <frmcmd name="comerr"/>
-            <frmcmd name="iststat"/>
-            <frmcmd name="jakstat"/>
-            <frmcmd name="inrang"/>
-            <frmcmd name="jaklen"/>
-            <frmcmd name="zlen"/>
-          </item>
-        </unit>
-        <unit id="uv1" label="Compatible for V1">
-          <item id="cinit" label="Start TCP Status Request">
-            <frmcmd name="init"/>
-          </item>
+      <group id="gupd" caption="System">
+        <item id="upd" label="Upd">
+          <frmcmd name="logstat"/>
+          <frmcmd name="getstat"/>
+          <frmcmd name="telstat"/>
+          <frmcmd name="comerr"/>
+          <frmcmd name="iststat"/>
+          <frmcmd name="jakstat"/>
+          <frmcmd name="inrang"/>
+          <frmcmd name="jaklen"/>
+          <frmcmd name="zlen"/>
+        </item>
+        <item id="cinit" label="Start TCP Status Request">
+          <frmcmd name="init"/>
+        </item>
+        <unit id="ucx">
           <item id="cxon" label="TSC Only Mode(CIAX Mode)">
             <frmcmd name="tsconly"/>
           </item>
@@ -27,40 +25,59 @@
             <frmcmd name="tscpri"/>
           </item>
         </unit>
-        <item id="init" label="Start TCP Status Request">
-          <frmcmd name="init"/>
-        </item>
-        <item id="login" label="Login">
-          <frmcmd name="login"/>
-          <frmcmd name="logstat"/>
-        </item>
-        <item id="logout" label="Logout">
-          <frmcmd name="logout"/>
-          <frmcmd name="logstat"/>
-        </item>
-        <item id="startup" label="Start Up CIAX operation">
-          <frmcmd name="login"/>
-          <frmcmd name="tsconly" label="TSC Only Mode(CIAX Mode)"/>
-          <frmcmd name="ron"/>
-          <frmcmd name="jon"/>
-        </item>
-        <item id="shutdown" label="Shutdown CIAX operation">
-          <frmcmd name="joff"/>
-          <frmcmd name="roff"/>
-          <frmcmd name="tscpri" label="TSC Primaly Mode"/>
-          <frmcmd name="logout"/>
-        </item>
+        <unit id="ulog">
+          <item id="login" label="Login">
+            <frmcmd name="login"/>
+            <frmcmd name="logstat"/>
+          </item>
+          <item id="logout" label="Logout">
+            <frmcmd name="logout"/>
+            <frmcmd name="logstat"/>
+          </item>
+        </unit>
+        <unit id="useq">
+          <item id="startup" label="Start Up CIAX sequence">
+            <frmcmd name="login"/>
+            <frmcmd name="tsconly" label="TSC Only Mode(CIAX Mode)"/>
+            <frmcmd name="ron"/>
+            <frmcmd name="jon"/>
+          </item>
+          <item id="shutdown" label="Shutdown CIAX sequence">
+            <frmcmd name="joff"/>
+            <frmcmd name="roff"/>
+            <frmcmd name="tscpri" label="TSC Primaly Mode"/>
+            <frmcmd name="logout"/>
+          </item>
+        </unit>
+      </group>
+      <group id="grdrv" caption="Rot Drive">
         <item id="cron" label="Rotator Drive On">
           <frmcmd name="ron"/>
         </item>
         <item id="cjon" label="EJB Drive On">
           <frmcmd name="jon"/>
         </item>
+        <item id="updinr" label="Update Inr Status" hidden="true">
+          <frmcmd name="getstat"/>
+          <frmcmd name="inrang"/>
+          <frmcmd name="getexit"/>
+          <frmcmd name="getpid"/>
+        </item>
+      </group>
+      <group id="gjdrv" caption="Jak Drive">
         <item id="croff" label="Rotator Drive Off">
           <frmcmd name="roff"/>
         </item>
         <item id="cjoff" label="EJB Drive Off">
           <frmcmd name="joff"/>
+        </item>
+        <item id="updjak" label="Update Jak Status" hidden="true">
+          <frmcmd name="getstat"/>
+          <frmcmd name="jakstat"/>
+          <frmcmd name="jaklen"/>
+          <frmcmd name="zlen"/>
+          <frmcmd name="getexit"/>
+          <frmcmd name="getpid"/>
         </item>
       </group>
       <group id="g1" caption="Action">
@@ -319,18 +336,6 @@
             <argv>11</argv>
           </frmcmd>
           <frmcmd name="iststat"/>
-        </item>
-      </group>
-      <group id="g3" caption="Status">
-        <item id="updjak" label="Update Jak Status" hidden="true">
-          <frmcmd name="jakstat"/>
-          <frmcmd name="getexit"/>
-          <frmcmd name="getpid"/>
-        </item>
-        <item id="updinr" label="Update Inr Status" hidden="true">
-          <frmcmd name="inrang"/>
-          <frmcmd name="getexit"/>
-          <frmcmd name="getpid"/>
         </item>
       </group>
     </command>

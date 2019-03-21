@@ -22,7 +22,7 @@ module CIAX
         private
 
         def ___init_cmt_procs
-          @stat.cmt_procs.append(:driver) do |s|
+          @stat.cmt_procs.append(:driver, :conv) do |s|
             ___flush_blocklist(s)
             ___exec_by_event(s)
             ___event_flag(s)

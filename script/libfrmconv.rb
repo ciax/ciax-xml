@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libfrmstat'
-require 'libfrmrsp'
+require 'libfrmcut'
 
 # Conv Methods
 # Input  : upd block(frame,time)
@@ -36,11 +36,11 @@ module CIAX
         def conv(ent)
           @frame.conv(ent)
           ___make_sel(type?(ent, CmdBase::Entity))
-          # RspFrame structure:
+          # CutFrame structure:
           #   main(total){ ccrange{ body(selected str) } }
           # terminator: frame pointer will jump to terminator
           #   when no length or delimiter is specified
-          @rspfrm = RspFrame.new(@frame.get(ent.id).dup, @dbi[:stream])
+          @rspfrm = CutFrame.new(@frame.get(ent.id).dup, @dbi[:stream])
           ___make_data
           verbose { 'Conversion Frame -> Field' }
           self

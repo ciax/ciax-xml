@@ -7,7 +7,7 @@ module CIAX
   # Frame Layer
   module Frm
     # For Response Frame
-    class RspFrame
+    class CutFrame
       include Msg
       # Parameter frame could be changed
       # terminator: used for detecting end of stream,

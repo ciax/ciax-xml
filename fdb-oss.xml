@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frm id="oss" label="OSS Command line" version="2">
+    <stream timeout="180"/>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <frame>
         <body/>

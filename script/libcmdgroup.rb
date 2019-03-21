@@ -51,6 +51,7 @@ module CIAX
         self
       end
 
+      # Subtract ary from full keys from valid_keys
       def valid_sub(ary)
         @valid_keys.replace(keys - type?(ary, Array))
         verbose do

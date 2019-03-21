@@ -117,7 +117,7 @@ module CIAX
 
       def ___select_io
         return if IO.select([@f], nil, nil, @timeout)
-        str_err('Stream: No response')
+        str_err('Stream: Timeout: No response')
       end
 
       def ___try_rcv(str)

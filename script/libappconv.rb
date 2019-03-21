@@ -19,7 +19,7 @@ module CIAX
         end
 
         def ext_local_conv
-          @cmt_procs.append('appstat') { conv }
+          @cmt_procs.append(:conv) { conv }
           self
         end
 

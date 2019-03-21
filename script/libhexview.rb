@@ -72,7 +72,7 @@ module CIAX
       def ___init_cmt_procs
         init_time2cmt(@stat)
         propagation(@stat)
-        @cmt_procs.append do
+        @cmt_procs.append(:hex) do
           verbose { 'Conversion Field -> Hexstr' }
           self[:hexpack] = ___header + ___body
         end

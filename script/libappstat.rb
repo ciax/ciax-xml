@@ -5,6 +5,11 @@ require 'libfrmstat'
 
 module CIAX
   # Application Layer
+  #  cmt_procs
+  #  1. time setting
+  #  2. convert
+  #  3. sym
+  #  4. save
   module App
     # Status Data
     # All elements of @data are String
@@ -21,12 +26,6 @@ module CIAX
         ext_dic(:data) { Hashx.new(@adbsi).skeleton }
         %i(class msg).each { |k| self[k] ||= {} }
         ___init_field(field)
-        # cmt_procs
-        # 1. time setting
-        # 2. convert
-        # 3. sym
-        # 4. save
-        @cmt_procs.append { verbose { "Saved #{self[:id]}:timing" } }
       end
 
       # set vars by csv

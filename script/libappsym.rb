@@ -39,7 +39,7 @@ module CIAX
         private
 
         def ___init_procs
-          @cmt_procs.append do # post process
+          @cmt_procs.append(:sym) do # post process
             store_sym(@adbs[:index].dup.update(@adbs[:alias] || {}))
           end
         end

@@ -96,6 +96,11 @@ module CIAX
       end.join(':')
     end
 
+    def _err_text(ary)
+      ary[0] = __make_head + ary[0] unless $stderr.tty?
+      super
+    end
+
     # VER= makes setenv "" to VER otherwise nil
     # VER example "str1:str2,str3!str4"
     def ___chk_ver(msg)

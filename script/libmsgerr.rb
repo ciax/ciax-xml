@@ -36,11 +36,11 @@ module CIAX
 
     # Exception methods
     def usr_err(*ary) # Raise User error
-      raise UserError, ary.join("\n  "), caller(1)
+      raise UserError, _err_text(ary), caller(1)
     end
 
     def args_err(*ary) # Raise ARGS error
-      raise InvalidARGS, ary.join("\n  "), caller(1)
+      raise InvalidARGS, _err_text(ary), caller(1)
     end
 
     def id_err(id, type, comment = '') # Raise User error (Invalid User input)
@@ -48,40 +48,40 @@ module CIAX
     end
 
     def cmd_err(*ary) # Raise User error (Invalid User input)
-      raise InvalidCMD, ary.join("\n  "), caller(1)
+      raise InvalidCMD, _err_text(ary), caller(1)
     end
 
     def par_err(*ary) # Raise User error (Invalid User input)
-      raise InvalidPAR, ary.join("\n  "), caller(1)
+      raise InvalidPAR, _err_text(ary), caller(1)
     end
 
     def cfg_err(*ary) # Raise Device error (Bad Configulation)
       ary[0] = "#{self.class}: #{ary[0]}"
-      raise ConfigError, ary.join("\n  "), caller(1)
+      raise ConfigError, _err_text(ary), caller(1)
     end
 
     def cc_err(*ary) # Raise Device error (Check Code Verification Failed)
-      raise CheckCodeError, ary.join("\n  "), caller(1)
+      raise CheckCodeError, _err_text(ary), caller(1)
     end
 
     def com_err(*ary) # Raise Device error (Communication Failed)
-      raise CommError, ary.join("\n  "), caller(1)
+      raise CommError, _err_text(ary), caller(1)
     end
 
     def data_err(*ary) # Raise Device error (Data invalid)
-      raise InvalidData, ary.join("\n  "), caller(1)
+      raise InvalidData, _err_text(ary), caller(1)
     end
 
     def ver_err(*ary) # Raise Device error (Format Version Mismatch)
-      raise VerMismatch, ary.join("\n  "), caller(1)
+      raise VerMismatch, _err_text(ary), caller(1)
     end
 
     def str_err(*ary) # Raise Device error (Stream open Failed)
-      raise StreamError, ary.join("\n  "), caller(1)
+      raise StreamError, _err_text(ary), caller(1)
     end
 
     def mcr_err(*ary) # Raise No Macro commandd error (Not an option)
-      raise NoMcrCmd, ary.join("\n  "), caller(1)
+      raise NoMcrCmd, _err_text(ary), caller(1)
     end
 
     def relay(str)
@@ -90,12 +90,12 @@ module CIAX
     end
 
     def sv_err(*ary) # Raise Server error (Parameter type)
-      raise ServerError, ary.join("\n  "), caller(2)
+      raise ServerError, _err_text(ary), caller(2)
     end
 
     def give_up(str = 'give_up')
       ary = [str, $ERROR_INFO.to_s, *$ERROR_POSITION]
-      Kernel.abort(ary.join("\n  "))
+      Kernel.abort(_err_text(ary))
     end
 
     def usage(str, code = 2)
@@ -106,6 +106,10 @@ module CIAX
         code = %w(ARGS OPT ID CMD PAR).index(eid).to_i + 2
       end
       exit code
+    end
+
+    def _err_text(ary)
+      ary.join("\n  ")
     end
   end
 end

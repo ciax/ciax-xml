@@ -449,7 +449,7 @@
           <argv>2</argv>
           <argv>10</argv>
         </item>
-        <item id="hole_2" label="[11] HOLE" ref="opt">
+        <item id="hole_2" label="[11] NB2085" ref="opt">
           <argv>2</argv>
           <argv>11</argv>
         </item>
@@ -499,7 +499,7 @@
           <argv>5</argv>
           <argv>10</argv>
         </item>
-        <item id="hole_5" label="[11] HOLE" ref="opt">
+        <item id="hole_5" label="[11] NB2085" ref="opt">
           <argv>5</argv>
           <argv>11</argv>
         </item>

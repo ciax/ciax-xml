@@ -100,7 +100,7 @@ module CIAX
     # Adding header when error output is redirect to file
     def _err_text(ary)
       ary[0] = __make_head + ary[0] unless $stderr.tty?
-      super
+      ary.join("\n  ")
     end
 
     # VER= makes setenv "" to VER otherwise nil

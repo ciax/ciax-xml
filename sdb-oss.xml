@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="oss" label="TSC Control">
+    <table id="pid" label="On Motion">
+      <pattern class="active" msg="RUN">[1-9]</pattern>
+      <default class="normal" msg="NO"/>
+    </table>
     <table id="bl" label="Jack Length">
       <pattern class="warn" msg="MID">0</pattern>
       <pattern class="normal" msg="UP">2</pattern>

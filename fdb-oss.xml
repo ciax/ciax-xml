@@ -53,10 +53,10 @@
           <string label="LOGIN 3"> TSCV.TSC.LOGIN3</string>
         </item>
         <item id="getexit" label="Exit Code" response="exit" type="stat">
-          <string>exe</string>
+          <string>gen2exe</string>
         </item>
         <item id="getpid" label="Running?" response="pid" type="stat">
-          <string>exe -b</string>
+          <string>gen2exe -b</string>
         </item>
       </group>
       <group id="gcfg" caption="Configuration">

@@ -1,11 +1,12 @@
 #!/bin/bash
-# Usage: exe (-b|-p) [command]
-# -b:back ground execution
+# Usage: gen2exe (-b) [command]
+# -b:back ground execution with command
+#   :check the life of latest background process 
 # command is exclusive
 #link exe
 exit=~/.var/exit.txt
 pid=~/.var/pid.txt
-exelog=~/.var/exelog.txt
+gen2log=~/.var/gen2log.txt
 [ -f $exit ] || echo "0" > $exit
 [ -f $pid ] || touch $pid
 case "$1" in
@@ -17,27 +18,28 @@ case "$1" in
                 echo "1"
             else
                 {
-                    echo "[$(date +%D-%T)]" >> $exelog
-                    echo "% $* ($$)" >> $exelog
+                    echo "[$(date +%D-%T)]" >> $gen2log
+                    echo "% $* ($$)" >> $gen2log
                     echo "$$" > $pid
-                    eval $* >> $exelog 2>&1
+                    eval $* >> $gen2log 2>&1
                     echo "$?" > $exit
-                    echo -e "[exitcode=$(cat $exit)]\n" >> $exelog
+                    echo -e "[exitcode=$(cat $exit)]\n" >> $gen2log
                     : > $pid #clear
                 } & echo "0"
             fi
         elif [ -s $pid ] ; then
+            # Back ground task is alive when $pid is not empty
             cat $pid
         else
             echo "0"
         fi;;
     '') cat $exit;;
     *)
-        echo "[$(date +%D-%T)]" >> $exelog
-        echo "% $*" >> $exelog
-        eval $* >> $exelog 2>&1
+        echo "[$(date +%D-%T)]" >> $gen2log
+        echo "% $*" >> $gen2log
+        eval $* >> $gen2log 2>&1
         echo "$?"|tee $exit
-        echo -e "[exitcode=$(cat $exit)]\n" >> $exelog
+        echo -e "[exitcode=$(cat $exit)]\n" >> $gen2log
         ;;
 esac
 

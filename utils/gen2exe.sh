@@ -1,7 +1,9 @@
 #!/bin/bash
 # Usage: gen2exe (-b) [command]
-# -b:back ground execution with command
-#   :check the life of latest background process 
+#  exe              : Show latest process exit code
+#  exe [command]    : Foreground execution
+#  exe -b           : Show active background process id
+#  exe -b [command] : Background execution
 # command is exclusive
 #link exe
 exit=~/.var/exit.txt

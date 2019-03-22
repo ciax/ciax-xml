@@ -13,6 +13,8 @@ module CIAX
       def initialize(dbi = nil)
         super('frame', dbi, Dev::Db)
         ext_dic(:data) { Hashx.new(@dbi[:response][:index]).skeleton }
+        # For stream log reading from stdin
+        put(delete(:cmd), delete(:base64)) if key?(:cmd)
       end
 
       def get(id)

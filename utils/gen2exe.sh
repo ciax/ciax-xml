@@ -6,40 +6,40 @@
 #link exe
 exit=~/.var/exit.txt
 pid=~/.var/pid.txt
+#gen2log=/dev/stdout
 gen2log=~/.var/gen2log.txt
 [ -f $exit ] || echo "0" > $exit
 [ -f $pid ] || touch $pid
+exelog(){
+    echo "[$(date +%D-%T)]"
+    echo "% $@ ($$)"
+    echo "$$" > $pid
+    eval $* 2>&1
+    code="$?"
+    echo "$code" > $exit
+    echo -e "[exitcode=$code]\n"
+    : > $pid #clear
+}
+reject(){
+    echo "Rejected" >&2
+    code=1
+}
 case "$1" in
     -b)
         shift
         if [ "$1" ] ; then
             if [ -s $pid ]; then
-                echo "Rejected" >&2
-                echo "1"
+                reject
             else
-                {
-                    echo "[$(date +%D-%T)]" >> $gen2log
-                    echo "% $* ($$)" >> $gen2log
-                    echo "$$" > $pid
-                    eval $* >> $gen2log 2>&1
-                    echo "$?" > $exit
-                    echo -e "[exitcode=$(cat $exit)]\n" >> $gen2log
-                    : > $pid #clear
-                } & echo "0"
+                exelog "$@" >> $gen2log & code=0
             fi
         elif [ -s $pid ] ; then
             # Back ground task is alive when $pid is not empty
-            cat $pid
+            code=$(<$pid)
         else
-            echo "0"
+            code=0
         fi;;
-    '') cat $exit;;
-    *)
-        echo "[$(date +%D-%T)]" >> $gen2log
-        echo "% $*" >> $gen2log
-        eval $* >> $gen2log 2>&1
-        echo "$?"|tee $exit
-        echo -e "[exitcode=$(cat $exit)]\n" >> $gen2log
-        ;;
+    '') code=$(<$exit);;
+    *) exelog "$@" >> $gen2log;;
 esac
-
+echo $code

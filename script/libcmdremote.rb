@@ -64,6 +64,7 @@ module CIAX
             atrb.get(:caption) { 'System Commands' }
             super
             add_item('interrupt', nil, def_msg: 'INTERRUPT')
+            add_item('reset', nil, dev_msg: 'RESET')
           end
 
           def add_empty

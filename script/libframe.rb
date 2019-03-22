@@ -54,8 +54,13 @@ module CIAX
           raise
         end
 
-        def reset
+        def flush
           @stream.rcv
+          self
+        end
+
+        def reset
+          @stream.reset
           self
         end
       end

@@ -13,6 +13,7 @@ module CIAX
           ___init_frame
           ___init_processor_ext
           ___init_processor_flush
+          ___init_processor_reset
           self
         end
 
@@ -31,9 +32,16 @@ module CIAX
 
         def ___init_processor_flush
           @cobj.get('flush').def_proc do
-            @stat.frame.reset
+            @stat.frame.flush
             @stat.flush
             verbose { 'Flush Stream' }
+          end
+        end
+
+        def ___init_processor_reset
+          @cobj.get('reset').def_proc do
+            @stat.frame.reset
+            verbose { 'Reset Stream' }
           end
         end
       end

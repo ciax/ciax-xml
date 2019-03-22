@@ -46,6 +46,11 @@ module CIAX
         __convert('rcv', str).cmt
       end
 
+      def reset
+        ___close_strm
+        cmt
+      end
+
       private
 
       def __reopen

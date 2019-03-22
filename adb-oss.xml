@@ -13,6 +13,7 @@
           <frmcmd name="inrang"/>
           <frmcmd name="jaklen"/>
           <frmcmd name="zlen"/>
+          <frmcmd name="getexit"/>
         </item>
         <item id="cinit" label="Start TCP Status Request">
           <frmcmd name="init"/>
@@ -60,7 +61,6 @@
         <item id="updinr" label="Update Inr Status" hidden="true">
           <frmcmd name="getstat"/>
           <frmcmd name="inrang"/>
-          <frmcmd name="getexit"/>
           <frmcmd name="getpid"/>
         </item>
       </group>
@@ -76,7 +76,6 @@
           <frmcmd name="jakstat"/>
           <frmcmd name="jaklen"/>
           <frmcmd name="zlen"/>
-          <frmcmd name="getexit"/>
           <frmcmd name="getpid"/>
         </item>
       </group>
@@ -345,7 +344,10 @@
         <integer id="exit" label="Exit Code">
           <field ref="exit"/>
         </integer>
-        <binary id="nfb" label="BOLT NFB TRIP">
+        <integer id="pid" label="On Motion" symbol="pid">
+          <field ref="pid"/>
+        </integer>
+        <binary id="nfb" label="BOLT NFB TRIP" symbol="alarm">
           <field bit="6" ref="bstat"/>
         </binary>
         <integer id="mba" label="MLP3-BOLT COMM ALM" symbol="alarm">
@@ -362,7 +364,7 @@
         <integer id="iid" label="CAS INST ID" symbol="iid">
           <field ref="iid"/>
         </integer>
-        <binary id="cis" label="CAS ATTACH" symbol="action">
+        <binary id="cis" label="CAS ATTACH" symbol="off_warn">
           <field bit="3" ref="bstat"/>
         </binary>
         <string id="login" label="Login Status" symbol="login">
@@ -483,17 +485,24 @@
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event label="Moving Jack" id="jak">
         <onchange var="jkm"/>
-        <block name="jup"/>
-        <block name="jdw"/>
-        <int name="jstop"/>
+        <range var="pid">1:</range>
+        <block name="cjup"/>
+        <block name="cjdw"/>
+        <int name="cjstop"/>
         <exec name="updjak"/>
       </event>
       <event label="Moving InR" id="inr">
         <onchange var="iang"/>
-        <block name="rhook"/>
-        <block name="runhk"/>
+        <range var="pid">1:</range>
+        <block name="chook"/>
+        <block name="cunhk"/>
         <int name="rstop"/>
         <exec name="updinr"/>
+      </event>
+      <event label="End motion" id="endm">
+        <onchange var="pid"/>
+        <range var="pid">0</range>
+        <exec name="upd"/>
       </event>
     </watch>
   </app>

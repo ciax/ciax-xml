@@ -24,7 +24,7 @@ module CIAX
         @adbs = @dbi[:status]
         @adbsi = @adbs[:index].reject { |_k, v| v[:ref] }
         ext_dic(:data) { Hashx.new(@adbsi).skeleton }
-        %i(class msg).each { |k| self[k] ||= {} }
+        %i(class msg).each { |k| self[k] ||= Hashx.new }
         ___init_field(field)
       end
 

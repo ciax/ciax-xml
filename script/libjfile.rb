@@ -25,7 +25,13 @@ module CIAX
 
       def load(tag = nil)
         verbose { 'File Loading' }
-        deep_update(__read_json(tag))
+        # Use @preload (STDIN data) if exists
+        if @preload
+          deep_update(@preload)
+          @preload = nil
+        else
+          deep_update(__read_json(tag))
+        end
         cmt
       end
 

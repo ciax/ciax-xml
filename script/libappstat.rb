@@ -36,12 +36,6 @@ module CIAX
         self
       end
 
-      def jread(str = nil)
-        res = super
-        res[:data] = Hashx.new(res[:data])
-        res
-      end
-
       private
 
       def ___init_field(field)

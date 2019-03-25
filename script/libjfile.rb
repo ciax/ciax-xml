@@ -23,10 +23,14 @@ module CIAX
         Msg.type?(obj, Varx)
       end
 
+      # Use @preload (STDIN data) if exists
+      #  i.e. Initialy, data get from STDIN (@preload)
+      #       -> get id from @preload
+      #       -> make skeleton with dbi
+      #       -> deep_update by @preload
       def load(tag = nil)
         verbose { 'File Loading' }
-        # Use @preload (STDIN data) if exists
-        if @preload
+        if !tag && @preload
           deep_update(@preload)
           @preload = nil
         else

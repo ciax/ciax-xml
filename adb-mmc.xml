@@ -28,7 +28,7 @@
       <group id="gc" caption="Config">
         <unit id="ucfg" label="Config">
           <item id="mres" label="Motor Reset">
-            <frmcmd name="reset"/>
+            <frmcmd name="mres"/>
           </item>
           <item id="lowspd" label="Low Speed">
             <frmcmd name="hl">

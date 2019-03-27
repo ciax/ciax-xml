@@ -8,7 +8,7 @@ module CIAX
 
     # For Debug
     def _w(var, str = '') # watch var for debug
-      clr = ':' + caller(1).first.split('/').last
+      clr = ':' + caller(1).to_s
       res = if var.is_a?(Enumerable)
               colorize(str, 5) + clr + ___prt_enum(var)
             else

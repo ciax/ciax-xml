@@ -84,7 +84,7 @@ module CIAX
     end
 
     def propagation(obj)
-      @upd_procs.append(self, :upd) do
+      @upd_procs.append(obj, :upd) do
         __propagate_ver(self, obj, 'UPD')
         obj.upd
       end

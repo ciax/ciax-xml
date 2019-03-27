@@ -19,7 +19,7 @@ module CIAX
         end
 
         def ext_local_conv
-          @cmt_procs.append(:conv, :time) { conv }
+          @cmt_procs.append(self, :conv, :time) { conv }
           self
         end
 

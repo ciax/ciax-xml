@@ -13,7 +13,7 @@ module CIAX
       def ext_local_log
         @logfile = vardir('log') + base_name + "_#{Time.now.year}.log"
         @que = ___log_thread.que
-        @cmt_procs.append(:flog) { save_log }
+        @cmt_procs.append(self, :flog) { save_log }
         self
       end
 

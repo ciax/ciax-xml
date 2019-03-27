@@ -66,7 +66,7 @@ module CIAX
 
       def ___init_propagate
         propagation(@rec_arc)
-        @cmt_procs.append(:rec_view) do
+        @cmt_procs.append(self, :rec_view) do
           clear unless @oldest
         end
       end

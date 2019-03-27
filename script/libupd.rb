@@ -76,19 +76,19 @@ module CIAX
     # Set time_upd to @cmt_procs with lower layer time
     def init_time2cmt(stat = nil)
       if stat
-        @cmt_procs.prepend(:time) { time_upd(stat[:time]) }
+        @cmt_procs.prepend(self, :time) { time_upd(stat[:time]) }
       else
-        @cmt_procs.prepend(:time) { time_upd }
+        @cmt_procs.prepend(self, :time) { time_upd }
       end
       self
     end
 
     def propagation(obj)
-      @upd_procs.append(:upd) do
+      @upd_procs.append(self, :upd) do
         __propagate_ver(self, obj, 'UPD')
         obj.upd
       end
-      obj.cmt_procs.append(:cmt) do |o|
+      obj.cmt_procs.append(self, :cmt) do |o|
         __propagate_ver(o, self, 'CMT')
         cmt
       end

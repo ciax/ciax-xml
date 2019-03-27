@@ -7,8 +7,7 @@ module CIAX
     def initialize(obj, name = nil)
       super()
       @obj = obj
-      @layer = @obj.base_class
-      @name = name
+      @name = "#{@obj.layer_name}:#{name}"
       @list = []
       @dic = {}
     end
@@ -62,7 +61,7 @@ module CIAX
     private
 
     def __mk_id(obj, name)
-      id = obj.class.to_s.split('::')[1].downcase + ':' + name.to_s
+      id = obj.layer_name + ':' + name.to_s
       return id unless @list.include?(id)
       cfg_err("Duplicated id [#{id}]")
     end

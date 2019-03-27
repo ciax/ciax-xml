@@ -1,5 +1,5 @@
 #!/bin/bash
-files=${*:-*.rb}
+files=${*:-lib*.rb}
 for file in $files; do
     echo $file
     ./$file $ARGV

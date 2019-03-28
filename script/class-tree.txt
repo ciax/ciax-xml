@@ -125,7 +125,6 @@ RuntimeError
  Mcr::Record
  Mcr::Sequencer
  ReRange
- Repeat
  SqLog::Save
  SqLog::Simulator
  SqLog::Table
@@ -136,5 +135,6 @@ RuntimeError
  Wat::Event
  Xml::Format  HtmlTbl
  Xml::Gnu
- Simulator::Axis
- Simulator::Word
+ Xml:: Repeat
+Simulator::Axis
+Simulator::Word

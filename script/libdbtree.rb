@@ -7,7 +7,7 @@ module CIAX
   class DbTree < Db
     def initialize(type)
       super
-      @rep = Repeat.new
+      @rep = Xml::Repeat.new
     end
 
     private

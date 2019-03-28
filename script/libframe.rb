@@ -32,11 +32,6 @@ module CIAX
 
         def ext_local_conv(cfg)
           @stream = Stream.new(@id, cfg)
-          @sv_stat = type?(cfg[:sv_stat], Prompt)
-          @stream.pre_open_proc = proc do
-            @sv_stat.dw(:ioerr)
-            @sv_stat.dw(:comerr)
-          end
           init_time2cmt(@stream)
           self
         end
@@ -51,9 +46,6 @@ module CIAX
           put(ent.id, @stream.rcv.base64) if ent.key?(:response)
           verbose { 'Conversion Stream -> Frame' }
           self
-        rescue StreamError
-          @sv_stat.up(:ioerr)
-          raise
         end
 
         def flush

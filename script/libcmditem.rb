@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'libcmdentity'
-require 'librerange'
 module CIAX
   # Command Module
   module CmdBase

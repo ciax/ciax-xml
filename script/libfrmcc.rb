@@ -57,8 +57,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libgetopts'
-      GetOpts.new('[str]') do |_opt, args|
+      require 'libopt'
+      Opt::Get.new('[str]') do |_opt, args|
         cc = CheckCode.new('bcc')
         cc << args.shift.to_s
         puts cc.ccc

@@ -102,5 +102,11 @@ module CIAX
         indent(ind.to_i) + itemize(k, h[k], kx).ljust(kx + vx + 15)
       end.join('').rstrip
     end
+
+    # make verbose text for exec
+    def _exe_text(*par)
+      # Action, cmdstr, source, priority
+      format("%s %s from '%s' with priority %s", *par)
+    end
   end
 end

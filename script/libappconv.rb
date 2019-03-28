@@ -19,7 +19,7 @@ module CIAX
         end
 
         def ext_local_conv
-          @cmt_procs.append('appstat') { conv }
+          @cmt_procs.append(self, :conv, :time) { conv }
           self
         end
 
@@ -126,7 +126,7 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         require 'libfrmstat'
-        GetOpts.new('[site] | < field_file', options: 'r') do |opt, args|
+        Opt::Get.new('[site] | < field_file', options: 'r') do |opt, args|
           field = Frm::Field.new(args.shift).ext_local
           stat = Status.new(field[:id], field)
           stat.ext_local_conv.cmt

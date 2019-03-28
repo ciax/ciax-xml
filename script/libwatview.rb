@@ -32,7 +32,7 @@ module CIAX
       def ___init_cmt_procs
         init_time2cmt(@event)
         propagation(@event)
-        @cmt_procs.append do
+        @cmt_procs.append(self, :view) do
           %i(exec block int act_time upd_next).each do |id|
             self[id] = @event.get(id)
           end
@@ -92,7 +92,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      GetOpts.new('[site] | < event_file', options: 'r') do |_opt, args|
+      Opt::Get.new('[site] | < event_file', options: 'r') do |_opt, args|
         event = Event.new(args.shift)
         wview = View.new(event)
         event.ext_local if STDIN.tty?

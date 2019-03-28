@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-require 'libhashx'
 require 'libxmldoc'
 
 module CIAX

@@ -3,81 +3,9 @@ require 'libmsg'
 require 'optparse'
 # CIAX-XML
 module CIAX
-  # Global options
-  class GetOpts < Hash
-    include Msg
-    # Contents of optarg (Hash)
-    # :options: valid option list (i.e. "afch:")
-    # :default: default(implicit) option string (i.e "abc")
-    # etc. : additional option db (i.e. { ? : "description" })
-    attr_reader :init_layer
-    def initialize(ustr = '', optarg = {}, &opt_proc)
-      ustr = '(opt) ' + ustr unless optarg.empty?
-      @defopt = optarg.delete(:default).to_s
-      @optdb = OptDb.new(optarg)
-      ___set_opt(optarg.delete(:options))
-      getarg(ustr, &opt_proc)
-    rescue InvalidARGS
-      usage(ustr)
-    end
-
-    # Mode (Device) [prompt]
-    # none : test all layers        [test]
-    # -e   : drive all layers       [drv]
-    # -c   : client all layers      [cl]
-    # -l   : client to lower layers [drv:cl]
-    # -s   : shell
-
-    # Mode (Macro)
-    # none : test
-    # -d   : dryrun (get status only)
-    # -e   : with device driver
-    # -c   : client to macro server
-    # -l   : client to device server
-    # -s   : shell
-    private
-
-    def ___set_opt(str)
-      ops = ___add_colon(str)
-      ___make_usage(ops)
-      ___parse(ops)
-      ___set_view_mode
-    end
-
-    # add ':' to taking parameter options whose description includes '[]'
-    def ___add_colon(str)
-      str.split(//).map do |k|
-        k + (@optdb[k.to_sym].to_s.include?('[') ? ':' : '')
-      end.join
-    end
-
-    # Make usage text
-    def ___make_usage(ops)
-      @index = {}
-      @available = (ops.chars.map(&:to_sym) & @optdb.keys)
-      # Current Options
-      @available.each { |c| @index["-#{c}"] = @optdb[c] }
-    end
-
-    # ARGV must be taken after parse def ___parse(ops)
-    def ___parse(ops)
-      ARGV.getopts(ops).each { |k, v| self[k.to_sym] = v if v }
-      # Parameters after options removeal
-      @argv = ARGV.shift(ARGV.length)
-    rescue OptionParser::ParseError
-      raise(InvalidOPT, $ERROR_INFO)
-    end
-
-    def ___set_view_mode
-      v = __make_exopt(%i(j r))
-      View.default_view.replace(v.to_s) if v
-    end
-
-    def __make_exopt(ary)
-      ary.find { |c| self[c] } || ary.find { |c| @defopt.include?(c.to_s) }
-    end
+  module Opt
     # Option Check
-    module OptChk
+    module Chk
       # Check first
       def cl?
         %i(h c).any? { |k| key?(k) }
@@ -154,10 +82,83 @@ module CIAX
       end
     end
 
-    include OptChk
+    # Global options
+    class Get < Hash
+      include Msg
+      include Chk
+      # Contents of optarg (Hash)
+      # :options: valid option list (i.e. "afch:")
+      # :default: default(implicit) option string (i.e "abc")
+      # etc. : additional option db (i.e. { ? : "description" })
+      attr_reader :init_layer
+      def initialize(ustr = '', optarg = {}, &opt_proc)
+        ustr = '(opt) ' + ustr unless optarg.empty?
+        @defopt = optarg.delete(:default).to_s
+        @optdb = Db.new(optarg)
+        ___set_opt(optarg.delete(:options))
+        getarg(ustr, &opt_proc)
+      rescue InvalidARGS
+        usage(ustr)
+      end
 
+      # Mode (Device) [prompt]
+      # none : test all layers        [test]
+      # -e   : drive all layers       [drv]
+      # -c   : client all layers      [cl]
+      # -l   : client to lower layers [drv:cl]
+      # -s   : shell
+
+      # Mode (Macro)
+      # none : test
+      # -d   : dryrun (get status only)
+      # -e   : with device driver
+      # -c   : client to macro server
+      # -l   : client to device server
+      # -s   : shell
+      private
+
+      def ___set_opt(str)
+        ops = ___add_colon(str)
+        ___make_usage(ops)
+        ___parse(ops)
+        ___set_view_mode
+      end
+
+      # add ':' to taking parameter options whose description includes '[]'
+      def ___add_colon(str)
+        str.split(//).map do |k|
+          k + (@optdb[k.to_sym].to_s.include?('[') ? ':' : '')
+        end.join
+      end
+
+      # Make usage text
+      def ___make_usage(ops)
+        @index = {}
+        @available = (ops.chars.map(&:to_sym) & @optdb.keys)
+        # Current Options
+        @available.each { |c| @index["-#{c}"] = @optdb[c] }
+      end
+
+      # ARGV must be taken after parse def ___parse(ops)
+      def ___parse(ops)
+        ARGV.getopts(ops).each { |k, v| self[k.to_sym] = v if v }
+        # Parameters after options removeal
+        @argv = ARGV.shift(ARGV.length)
+      rescue OptionParser::ParseError
+        raise(InvalidOPT, $ERROR_INFO)
+      end
+
+      def ___set_view_mode
+        v = __make_exopt(%i(j r))
+        View.default_view.replace(v.to_s) if v
+      end
+
+      def __make_exopt(ary)
+        ary.find { |c| self[c] } || ary.find { |c| @defopt.include?(c.to_s) }
+      end
+    end
     # Option DB Setting
-    class OptDb < Hash
+    class Db < Hash
       attr_reader :layers
       def initialize(optarg)
         update(optarg.select { |k, _v| k.to_s.length == 1 })

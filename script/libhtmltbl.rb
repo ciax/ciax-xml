@@ -121,7 +121,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (ctl)') do |_opt, args|
+      Opt::Get.new('[id] (ctl)') do |_opt, args|
         puts Status.new(Ins::Db.new.get(args.shift))
       end
     end

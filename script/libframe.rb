@@ -13,6 +13,8 @@ module CIAX
       def initialize(dbi = nil)
         super('frame', dbi, Dev::Db)
         ext_dic(:data) { Hashx.new(@dbi[:response][:index]).skeleton }
+        # For stream log reading from stdin
+        put(delete(:cmd), delete(:base64)) if key?(:cmd)
       end
 
       def get(id)
@@ -54,15 +56,20 @@ module CIAX
           raise
         end
 
-        def reset
+        def flush
           @stream.rcv
+          self
+        end
+
+        def reset
+          @stream.reset
           self
         end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id]', options: 'h') do |opt, args|
+      Opt::Get.new('[id]', options: 'h') do |opt, args|
         puts Frame.new(args.shift).mode(opt.host).path(args)
       end
     end

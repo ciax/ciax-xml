@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 require 'libview'
-require 'libgetopts'
+require 'libopt'
 # Extened Hash
 module CIAX
   # Extended Enumerable
   module Enumx
-    include View
+    include View::Mode
     def self.extended(obj)
       data_err('Not Enumerable') unless obj.is_a? Enumerable
     end

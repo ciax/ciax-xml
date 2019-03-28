@@ -43,6 +43,10 @@ module CIAX
       class_path.last(2).join('::')
     end
 
+    def layer_name
+      class_path[1].downcase
+    end
+
     module_function
 
     ## class name handling
@@ -64,10 +68,6 @@ module CIAX
 
     def layer_module
       CIAX.const_get self.class.name.split('::')[1]
-    end
-
-    def layer_name
-      class_path[1].downcase
     end
 
     def class_path

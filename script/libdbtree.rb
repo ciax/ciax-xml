@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 require 'libdb'
-require 'librepeat'
+require 'libxmlrepeat'
 
 module CIAX
   ####### For Command DB #######
   class DbTree < Db
     def initialize(type)
       super
-      @rep = Repeat.new
+      @rep = Xml::Repeat.new
     end
 
     private

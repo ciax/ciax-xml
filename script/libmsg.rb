@@ -96,6 +96,13 @@ module CIAX
       end.join(':')
     end
 
+    # Override libmsgerr error output method
+    # Adding header when error output is redirect to file
+    def _err_text(ary)
+      ary[0] = __make_head + ary[0] unless $stderr.tty?
+      ary.join("\n  ")
+    end
+
     # VER= makes setenv "" to VER otherwise nil
     # VER example "str1:str2,str3!str4"
     def ___chk_ver(msg)
@@ -133,12 +140,6 @@ module CIAX
 
     def _gen_color(table, ofs = 0)
       15 - (table.size + ofs) % 15
-    end
-
-    # make verbose text for exec
-    def _exe_text(*par)
-      # Action, cmdstr, source, priority
-      format("%s %s from '%s' with priority %s", *par)
     end
   end
 end

@@ -51,7 +51,7 @@ module CIAX
         @elps = Elapsed.new(@stat)
         init_time2cmt(@stat)
         propagation(@stat)
-        @cmt_procs.append do
+        @cmt_procs.append(self, :view) do
           self['gtime'] = { caption: '', lines: [hash = {}] }
           hash[:time] = { label: 'TIMESTAMP', msg: date(@stat[:time]) }
           hash[:elapsed] = { label: 'ELAPSED', msg: @elps }
@@ -104,7 +104,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       odb = { options: 'rj', c: 'CSV output' }
-      GetOpts.new('[site] | < status_file', odb) do |opt, args|
+      Opt::Get.new('[site] | < status_file', odb) do |opt, args|
         stat = Status.new(args.shift).ext_local_sym
         view = View.new(stat)
         stat.ext_local if STDIN.tty?

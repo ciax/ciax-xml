@@ -5,6 +5,11 @@ require 'libfrmstat'
 
 module CIAX
   # Application Layer
+  #  cmt_procs
+  #  1. time setting
+  #  2. convert
+  #  3. sym
+  #  4. save
   module App
     # Status Data
     # All elements of @data are String
@@ -19,14 +24,8 @@ module CIAX
         @adbs = @dbi[:status]
         @adbsi = @adbs[:index].reject { |_k, v| v[:ref] }
         ext_dic(:data) { Hashx.new(@adbsi).skeleton }
-        %i(class msg).each { |k| self[k] ||= {} }
+        %i(class msg).each { |k| self[k] ||= Hashx.new }
         ___init_field(field)
-        # cmt_procs
-        # 1. time setting
-        # 2. convert
-        # 3. sym
-        # 4. save
-        @cmt_procs.append { verbose { "Saved #{self[:id]}:timing" } }
       end
 
       # set vars by csv
@@ -35,12 +34,6 @@ module CIAX
           _dic.repl(*tkn.split('='))
         end
         self
-      end
-
-      def jread(str = nil)
-        res = super
-        res[:data] = Hashx.new(res[:data])
-        res
       end
 
       private
@@ -54,7 +47,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id]', options: 'h') do |opt, args|
+      Opt::Get.new('[id]', options: 'h') do |opt, args|
         puts Status.new(args.shift).mode(opt.host)
       end
     end

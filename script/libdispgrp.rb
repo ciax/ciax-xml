@@ -5,10 +5,12 @@ require 'libdisp'
 #   Shows visiual command list categorized by sub-group
 module CIAX
   # Index of Display (Used for validation, display)
-  class Disp
+  module Disp
     # Making Sub Section/Group
-    def ext_grp
-      extend(Grouping).ext_grp
+    class Index
+      def ext_grp
+        extend(Grouping).ext_grp
+      end
     end
 
     ####### Sub Group Handling #######
@@ -35,7 +37,7 @@ module CIAX
       end
 
       def merge_sub(other)
-        update(type?(other, Disp))
+        update(type?(other, Index))
         @valid_keys.concat(other.valid_keys)
         __rec_merge(other.sub)
         @sub.update(other.sub)
@@ -60,7 +62,7 @@ module CIAX
     class Section < Hashx
       attr_accessor :index, :level
       def initialize(index, caption: nil, color: nil, level: nil, rank: nil)
-        @index = type?(index, Disp)
+        @index = type?(index, Index)
         @caption = caption
         @color = color
         @level = level.to_i
@@ -104,7 +106,7 @@ module CIAX
     class Group < Arrayx
       attr_accessor :index, :level
       def initialize(index, caption: nil, color: nil, level: nil, rank: nil)
-        @index = type?(index, Disp)
+        @index = type?(index, Index)
         @caption = caption
         @color = color
         @level = level.to_i
@@ -135,43 +137,43 @@ module CIAX
         view.to_s
       end
     end
-  end
 
-  if __FILE__ == $PROGRAM_NAME
-    # Two level groups with item number
-    cap2 = 'top2'
-    idx1 = Disp.new(column: 3, caption: cap2, line_number: true).ext_grp
-    3.times do |i|
-      grp1 = idx1.add_grp("g1#{i}", "Gp#{i}")
-      3.times do |j|
-        cstr = '*' * rand(5)
-        grp1.put_item("x#{i}-#{j}", "cap#{i}-#{j},#{cstr}")
-      end
-    end
-    puts idx1
-    puts '--'
-    # Three level groups
-    idx2 = Disp.new(column: 2, caption: 'top3', color: 4).ext_grp
-    2.times do |i|
-      sec = idx2.add_sec("g2#{i}", "Group#{i}")
-      2.times do |j|
-        grp2 = sec.add_grp("sg#{j}", "SubGroup#{j}")
-        2.times do |k|
+    if __FILE__ == $PROGRAM_NAME
+      # Two level groups with item number
+      cap2 = 'top2'
+      idx1 = Index.new(column: 3, caption: cap2, line_number: true).ext_grp
+      3.times do |i|
+        grp1 = idx1.add_grp("g1#{i}", "Gp#{i}")
+        3.times do |j|
           cstr = '*' * rand(5)
-          grp2.put_item("x#{i}-#{j}-#{k}", "caption#{i}-#{j}-#{k},#{cstr}")
+          grp1.put_item("x#{i}-#{j}", "cap#{i}-#{j},#{cstr}")
         end
       end
+      puts idx1
+      puts '--'
+      # Three level groups
+      idx2 = Index.new(column: 2, caption: 'top3', color: 4).ext_grp
+      2.times do |i|
+        sec = idx2.add_sec("g2#{i}", "Group#{i}")
+        2.times do |j|
+          grp2 = sec.add_grp("sg#{j}", "SubGroup#{j}")
+          2.times do |k|
+            cstr = '*' * rand(5)
+            grp2.put_item("x#{i}-#{j}-#{k}", "caption#{i}-#{j}-#{k},#{cstr}")
+          end
+        end
+      end
+      puts idx2
+      puts '--'
+      # Merging groups
+      cap2 << ' (merged with top3)'
+      idx1.merge_sub(idx2)
+      puts idx1
+      puts '--'
+      # Confirm merged index
+      cap2 << ' (delete x0-0)'
+      idx1.valid_keys.delete('x0-0')
+      puts idx1
     end
-    puts idx2
-    puts '--'
-    # Merging groups
-    cap2 << ' (merged with top3)'
-    idx1.merge_sub(idx2)
-    puts idx1
-    puts '--'
-    # Confirm merged index
-    cap2 << ' (delete x0-0)'
-    idx1.valid_keys.delete('x0-0')
-    puts idx1
   end
 end

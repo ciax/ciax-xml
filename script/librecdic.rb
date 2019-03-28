@@ -94,7 +94,7 @@ module CIAX
         @cache.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_remote(@host)
         end
-        @cmt_procs.append { sel_new }
+        @cmt_procs.append(self, :rec_dic) { sel_new }
         self
       end
 
@@ -105,7 +105,8 @@ module CIAX
           hash[key] = Record.new(key).ext_local.load
         end
         # Get Live Record
-        @rec_view.rec_arc.ext_local.load.push_procs << proc do |rec|
+        # @rec_view was localized at Man as @stat
+        @rec_view.rec_arc.push_procs << proc do |rec|
           @cache[rec[:id]] = rec
           sel_new
         end
@@ -119,7 +120,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[num]', options: 'chr') do |opts, args|
+      Opt::Get.new('[num]', options: 'chr') do |opts, args|
         Msg.args_err if args.empty?
         ra = RecArc.new.mode(opts.host)
         puts RecDic.new(ra).inc(args.shift).sel(args.shift)

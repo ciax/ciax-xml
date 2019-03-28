@@ -24,9 +24,19 @@ module CIAX
         Msg.type?(obj, Varx)
       end
 
+      # Use @preload (STDIN data) if exists
+      #  i.e. Initialy, data get from STDIN (@preload)
+      #       -> get id from @preload
+      #       -> make skeleton with dbi
+      #       -> deep_update by @preload
       def load(tag = nil)
         verbose { 'File Loading' }
-        deep_update(__read_json(tag))
+        if !tag && @preload
+          deep_update(@preload)
+          @preload = nil
+        else
+          deep_update(__read_json(tag))
+        end
         cmt
       end
 
@@ -74,7 +84,7 @@ module CIAX
       def ext_save
         verbose { "Initiate File Saving Feature [#{base_name}]" }
         @thread = Thread.current # For Thread safe
-        @cmt_procs.append { save }
+        @cmt_procs.append(self, :save) { save }
         self
       end
 

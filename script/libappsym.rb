@@ -39,7 +39,7 @@ module CIAX
         private
 
         def ___init_procs
-          @cmt_procs.append do # post process
+          @cmt_procs.append(self, :sym) do # post process
             store_sym(@adbs[:index].dup.update(@adbs[:alias] || {}))
           end
         end
@@ -101,7 +101,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[site] | < status_file') do |_o, args|
+      Opt::Get.new('[site] | < status_file') do |_o, args|
         stat = Status.new(args.shift)
         stat.ext_local_sym
         stat.ext_local if STDIN.tty?

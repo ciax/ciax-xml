@@ -32,7 +32,7 @@ module CIAX
         /.+/ =~ type || Msg.args_err('No Db Type')
         @type = type
         @proj = proj
-        @disp_dic = Disp.new
+        @disp_dic = Disp::Index.new
         ___read_files(Msg.xmlfiles(@type))
         ___set_includes
         # get generates document branch of db items(Hash),
@@ -150,7 +150,7 @@ module CIAX
   end
 
   if __FILE__ == $PROGRAM_NAME
-    GetOpts.new('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)') do |opt, args|
+    Opt::Get.new('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)') do |opt, args|
       doc = Xml::Doc.new(args.shift)
       opt.getarg('[type] [id]') do |_o, ar|
         puts doc.get(ar.shift).path(ar)

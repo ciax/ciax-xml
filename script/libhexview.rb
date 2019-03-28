@@ -72,7 +72,7 @@ module CIAX
       def ___init_cmt_procs
         init_time2cmt(@stat)
         propagation(@stat)
-        @cmt_procs.append do
+        @cmt_procs.append(self, :hex) do
           verbose { 'Conversion Field -> Hexstr' }
           self[:hexpack] = ___header + ___body
         end
@@ -149,7 +149,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id]', options: 'h') do |opt, args|
+      Opt::Get.new('[id]', options: 'h') do |opt, args|
         stat = SubStat.new(App::Status.new(args.shift)).mode(opt.host)
         puts View.new(stat).to_x
       end

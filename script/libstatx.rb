@@ -4,7 +4,8 @@ require 'libdb'
 
 module CIAX
   # Status Data by using Db
-  # Need Header(Dbi)
+  #  STDIN function is availabie
+  #  Need Header(Dbi)
   class Statx < Varx
     attr_reader :dbi
     def initialize(type, obj, mod = Db)
@@ -23,7 +24,10 @@ module CIAX
     # Set dbi, otherwise generate by stdin info
     def ___get_dbi(obj, mod)
       return obj if obj.is_a? Dbi
-      obj = jmerge[:id] unless obj || STDIN.tty?
+      unless obj || STDIN.tty?
+        @preload = jread
+        obj = @preload[:id]
+      end
       mod.new.get(obj)
     end
   end

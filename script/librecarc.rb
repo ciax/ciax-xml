@@ -71,7 +71,7 @@ module CIAX
           (___file_keys - dic.keys).each do |key|
             __push_record(jload(__rec_fname(key)))
           end
-          verbose { 'Initiate Record Archive done' }
+          verbose { 'Initiate Record Archive refresh done' }
           cmt
         end
 
@@ -106,7 +106,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('', options: 'ch') do |opts|
+      Opt::Get.new('', options: 'ch') do |opts|
         puts RecArc.new.mode(opts.host)
       end
     end

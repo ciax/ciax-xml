@@ -120,7 +120,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[num]', options: 'chr') do |opts, args|
+      Opt::Get.new('[num]', options: 'chr') do |opts, args|
         Msg.args_err if args.empty?
         ra = RecArc.new.mode(opts.host)
         puts RecDic.new(ra).inc(args.shift).sel(args.shift)

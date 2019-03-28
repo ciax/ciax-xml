@@ -98,7 +98,7 @@ module CIAX
   # Option parser with Config
   class ConfOpts < Config
     def initialize(ustr = '', optargs = {})
-      GetOpts.new(ustr, optargs) do |opt, args|
+      Opt::Get.new(ustr, optargs) do |opt, args|
         super(args: args, opt: opt, proj: ENV['PROJ'])
         yield(self)
       end

@@ -78,7 +78,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       odb = { t: 'test conditions[key=val,..]' }
-      GetOpts.new('< status_file', odb) do |opt, args|
+      Opt::Get.new('< status_file', odb) do |opt, args|
         stat = App::Status.new(args.shift)
         event = Event.new(stat[:id]).ext_local_conv(stat)
         if (t = opt[:t])

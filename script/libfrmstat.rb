@@ -133,7 +133,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id]', options: 'h') do |opt, args|
+      Opt::Get.new('[id]', options: 'h') do |opt, args|
         puts Field.new(args.shift).mode(opt.host)
       end
     end

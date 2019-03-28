@@ -1,5 +1,5 @@
 Hash
-  |-GetOpts
+  |-Opt::Get
   |  |-ConfOpts
   |
   |-Hashx

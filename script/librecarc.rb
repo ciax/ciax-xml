@@ -106,7 +106,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('', options: 'ch') do |opts|
+      Opt::Get.new('', options: 'ch') do |opts|
         puts RecArc.new.mode(opts.host)
       end
     end

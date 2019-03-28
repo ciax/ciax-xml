@@ -80,7 +80,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libappstat'
-      GetOpts.new('[id]') do |_opt, args|
+      Opt::Get.new('[id]') do |_opt, args|
         dbi = Ins::Db.new.get(args.shift)
         stat = App::Status.new(dbi).ext_local
         tbl = Table.new('app', stat)

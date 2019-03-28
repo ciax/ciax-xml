@@ -41,7 +41,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
+      Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
         db = Db.new(Ins::Db.new.valid_devs)
         puts "Run list = #{db.run_list.inspect}"
         dbi = db.get(args.shift)

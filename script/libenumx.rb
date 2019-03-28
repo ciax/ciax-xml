@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libview'
-require 'libgetopts'
+require 'libopt'
 # Extened Hash
 module CIAX
   # Extended Enumerable

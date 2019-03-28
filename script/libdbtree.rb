@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libdb'
-require 'librepeat'
+require 'libxmlrepeat'
 
 module CIAX
   ####### For Command DB #######

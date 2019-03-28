@@ -16,7 +16,7 @@ module CIAX
         @sub_dic = type?(@cfg[:dev_dic], Wat::ExeDic)
         # For server response
         @sv_stat = type?(@cfg[:sv_stat], Prompt).repl(:sid, '')
-        ___init_arc(@cfg[:rec_arc])
+        @rec_arc = type?(@cfg[:rec_arc], RecArc)
         ___init_man(Man.new(@cfg))
       end
 
@@ -36,15 +36,11 @@ module CIAX
 
       private
 
-      def ___init_arc(arc)
-        @rec_arc = type?(arc, RecArc).ext_local.refresh
-        arc.ext_save if @opt.mcr_log?
-      end
-
       def ___init_man(man)
         put('man', man)
         return if @opt.cl?
         ___init_cmd(man.cobj.rem)
+        @rec_arc.refresh
       end
 
       def ___init_cmd(rem)

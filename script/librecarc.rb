@@ -71,7 +71,7 @@ module CIAX
           (___file_keys - dic.keys).each do |key|
             __push_record(jload(__rec_fname(key)))
           end
-          verbose { 'Initiate Record Archive done' }
+          verbose { 'Initiate Record Archive refresh done' }
           cmt
         end
 

@@ -105,7 +105,8 @@ module CIAX
           hash[key] = Record.new(key).ext_local.load
         end
         # Get Live Record
-        @rec_view.rec_arc.ext_local.load.push_procs << proc do |rec|
+        # @rec_view was localized at Man as @stat
+        @rec_view.rec_arc.push_procs << proc do |rec|
           @cache[rec[:id]] = rec
           sel_new
         end

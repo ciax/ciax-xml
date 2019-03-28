@@ -32,7 +32,7 @@ module CIAX
         /.+/ =~ type || Msg.args_err('No Db Type')
         @type = type
         @proj = proj
-        @disp_dic = Disp.new
+        @disp_dic = Disp::Index.new
         ___read_files(Msg.xmlfiles(@type))
         ___set_includes
         # get generates document branch of db items(Hash),

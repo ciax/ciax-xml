@@ -3,7 +3,7 @@ Hash
   |  |-ConfOpts
   |
   |-Hashx
-     |-Disp
+     |-Disp::Index
      |-Disp::Section
      |-Mcr::Condition
      |-Mcr::ExeDic

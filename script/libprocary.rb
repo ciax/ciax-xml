@@ -7,7 +7,7 @@ module CIAX
     def initialize(obj, name = nil)
       super()
       @obj = obj
-      @name = "#{@obj.layer_name}:#{name}"
+      @name = __mk_id(@obj, name)
       @list = []
       @dic = {}
     end
@@ -32,7 +32,7 @@ module CIAX
 
     # Append proc after id (base id of file) proc
     def append(obj, id, ref = nil, &prc)
-      return self unless (id = __mk_id(obj, id))
+      return self unless (id = __chk_id(obj, id))
       @dic[id] = prc
       if (idx = __find_idx(ref))
         @list.insert(idx + 1, id)
@@ -46,7 +46,7 @@ module CIAX
 
     # Prepend proc before id
     def prepend(obj, id, ref = nil, &prc)
-      return self unless (id = __mk_id(obj, id))
+      return self unless (id = __chk_id(obj, id))
       @dic[id] = prc
       if (idx = __find_idx(ref))
         @list.insert(idx, id)
@@ -61,7 +61,14 @@ module CIAX
     private
 
     def __mk_id(obj, name)
-      id = obj.layer_name + ':' + name.to_s
+      ary = obj.class.to_s.downcase.split('::')
+      ary.shift
+      ary << name.to_s
+      ary.join(':')
+    end
+
+    def __chk_id(obj, name)
+      id = __mk_id(obj, name)
       return id unless @list.include?(id)
       cfg_err("Duplicated id [#{id}]")
     end

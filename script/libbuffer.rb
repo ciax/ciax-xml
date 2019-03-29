@@ -28,21 +28,23 @@ module CIAX
     # Command Buffering
     class Buffer < Upd
       include Msg
-      attr_accessor :flush_proc, :recv_proc
+      attr_accessor :conv_proc
       # sv_stat: Server Status
       def initialize(sv_stat, cobj = nil)
         super()
         @sv_stat = type?(sv_stat, Prompt).init_array(:queue).init_flg(busy: '*')
+        # Frm Command Object
         @cobj = cobj
         # Update App Status
-        @recv_proc = proc {}
+        @conv_proc = proc {}
         @outbuf = Outbuf.new
         @id = @sv_stat.get(:id)
         @que = Arrayx.new # For testing
         ___init_cmt
       end
 
-      # Send app entity
+      # Take App command entity
+      #  -> send frm command batch
       def send(ent, pri = 1)
         __clear if pri.to_i.zero? # interrupt
         cid = type?(ent, CmdBase::Entity).id
@@ -52,6 +54,7 @@ module CIAX
         self
       end
 
+      # Recv frm command batch
       def recv(que = @que)
         par = que.shift
         verbose { format('Recv from Queue %s:timing', par.inspect) }
@@ -91,7 +94,7 @@ module CIAX
       # Execute recieved command
       def ___exec_buf
         until (args = ___reorder_cmd).empty?
-          @recv_proc.call(args, 'buffer')
+          @conv_proc.call(args, 'buffer')
         end
         cmt
       rescue CommError
@@ -151,11 +154,11 @@ module CIAX
       end
 
       # Multi-level command buffer
-      # Structure of @outbuf (4 level arrays)
+      # Structure of @outbuf (4 priority level)
       # [0] Array of interrupt Batch
       # [1] Array of user issued Batch
       # [2] Array of event driven Batch
-      # [3] Array of redular update Batch
+      # [3] Array of regular update Batch
       #  Batch: [ Property, ..]
       #  Property: { args:, cid: }
       #  args: ['cmd','par','par'..]
@@ -187,7 +190,7 @@ module CIAX
         cobj = Index.new(cfg, dbi.pick)
         cobj.add_rem.add_ext
         buf = Buffer.new(Prompt.new('test', id))
-        buf.recv_proc = proc { |par| puts par.inspect }
+        buf.conv_proc = proc { |par| puts par.inspect }
         buf.send(cobj.set_cmd(cfg.args)).recv
       end
     end

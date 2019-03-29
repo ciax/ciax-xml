@@ -18,7 +18,8 @@ module CIAX
       end
 
       def get(id)
-        dec64(super)
+        val = super
+        dec64(val) if val
       end
 
       def ext_local_conv(cfg)

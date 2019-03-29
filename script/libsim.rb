@@ -47,7 +47,8 @@ module CIAX
       def ___sv_loop(io)
         loop do
           str = __data_log('Recieve', ___input(io))
-          res = __data_log('Send', _dispatch(str) + @ofs.to_s)
+          next unless (res = _dispatch(str))
+          res = __data_log('Send', res + @ofs.to_s)
           io ? io.syswrite(res) : puts(res.inspect)
           sleep 0.1
         end

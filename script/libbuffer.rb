@@ -26,19 +26,20 @@ module CIAX
   # App layer
   module App
     # Command Buffering
-    class Buffer
+    class Buffer < Upd
       include Msg
       attr_accessor :flush_proc, :recv_proc
       # sv_stat: Server Status
       def initialize(sv_stat, cobj = nil)
+        super()
         @sv_stat = type?(sv_stat, Prompt).init_array(:queue).init_flg(busy: '*')
         @cobj = cobj
         # Update App Status
-        @flush_proc = proc {}
         @recv_proc = proc {}
         @outbuf = Outbuf.new
         @id = @sv_stat.get(:id)
         @que = Arrayx.new # For testing
+        ___init_cmt
       end
 
       # Send app entity
@@ -92,7 +93,7 @@ module CIAX
         until (args = ___reorder_cmd).empty?
           @recv_proc.call(args, 'buffer')
         end
-        __flush
+        cmt
       rescue CommError
         alert
       rescue
@@ -135,15 +136,16 @@ module CIAX
         verbose { 'Clear Buffer' }
         @outbuf.clear
         @que.clear
-        __flush
+        cmt
       end
 
-      def __flush
-        @flush_proc.call(self)
-        ___sv_dw
-        verbose do
-          var = @sv_stat.pick(%i(busy queue)).inspect
-          "Flush buffer(#{@id}):timing#{var}"
+      def ___init_cmt
+        @cmt_procs.append(self, :buffer) do
+          ___sv_dw
+          verbose do
+            var = @sv_stat.pick(%i(busy queue)).inspect
+            "Flush buffer(#{@id}):timing#{var}"
+          end
         end
         self
       end

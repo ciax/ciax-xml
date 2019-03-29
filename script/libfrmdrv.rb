@@ -27,9 +27,10 @@ module CIAX
         end
 
         def ___init_processor_ext
-          @cobj.rem.ext.def_proc do |ent, _src|
+          @cobj.rem.ext.def_proc do |ent, src|
             @frame.input(@stream.response(ent))
             @stat.conv(ent)
+            @stat.flush unless src == 'buffer'
           end
         end
 

@@ -21,7 +21,7 @@ module CIAX
         private
 
         def ___init_stream
-          @stat.ext_local_conv(@cfg)
+          @stat.ext_local_conv
           @stream = Stream::Driver.new(@id, @cfg)
           @frame.init_time2cmt(@stream).ext_save
         end

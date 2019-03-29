@@ -10,7 +10,7 @@ module CIAX
   module Frm
     # Field class
     class Field
-      def ext_local_conv(cfg)
+      def ext_local_conv
         extend(Conv).ext_local_conv
       end
 
@@ -148,10 +148,9 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
       ConfOpts.new('[id] [cmd]', options: 'h') do |cfg|
-        res = Stream::Frame.new(cfg.args.shift).mode(cfg.opt.host)
-        field = Field.new(res[:id]).ext_local_conv(res)
-        atrb = field.dbi.pick(%i(stream))
-        atrb[:field] = field
+        field = Field.new(cfg.args.shift).ext_local_conv
+        field.frame.mode(cfg.opt.host).load
+        atrb = field.dbi.pick(%i(stream)).update(field: field)
         # dbi.pick alreay includes :command, :version
         cobj = Index.new(cfg, atrb)
         cobj.add_rem.add_ext

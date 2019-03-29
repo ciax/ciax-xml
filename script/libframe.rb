@@ -34,6 +34,7 @@ module CIAX
         def ext_local_conv(cfg)
           @stream = Stream.new(@id, cfg)
           init_time2cmt(@stream)
+          propagation(@stream)
           self
         end
 
@@ -45,17 +46,17 @@ module CIAX
         def conv(ent)
           update(@stream.response(ent))
           verbose { 'Conversion Stream -> Frame' }
-          cmt
+          self
         end
 
         def flush
           @stream.rcv
-          cmt
+          self
         end
 
         def reset
           @stream.reset
-          cmt
+          self
         end
       end
     end

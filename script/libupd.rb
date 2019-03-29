@@ -86,11 +86,11 @@ module CIAX
 
     def propagation(obj)
       @upd_procs.append(obj, :upd) do
-        __propagate_ver(self, obj, 'UPD')
+        verbose { __ppg_verstr(self, obj, 'UPD') }
         obj.upd
       end
       obj.cmt_procs.append(self, :cmt) do |o|
-        __propagate_ver(o, self, 'CMT')
+        verbose { __ppg_verstr(o, self, 'CMT') }
         cmt
       end
       self
@@ -98,12 +98,10 @@ module CIAX
 
     private
 
-    def __propagate_ver(src, dst, way)
-      verbose do
-        fmt = "#{way} Propagate %s -> %s from %s"
-        ca = caller.grep_v(/lib(upd|msg)/).first.split('/').last.tr("'`", '')
-        format(fmt, src.base_class, dst.base_class, ca)
-      end
+    def __ppg_verstr(src, dst, way)
+      fmt = "#{way} Propagate %s -> %s from %s"
+      ca = caller.grep_v(/lib(upd|msg)/).first.split('/').last.tr("'`", '')
+      format(fmt, src.base_class, dst.base_class, ca)
     end
   end
 end

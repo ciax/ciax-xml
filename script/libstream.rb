@@ -10,10 +10,10 @@ require 'libconf'
 #   base64: encoded data
 # }
 module CIAX
-  module Frm
+  module Stream
     # Stream treats an individual round trip (send/recieve)
     #   communication which will be done sequentially
-    class Stream < Varx
+    class Driver < Varx
       attr_reader :base64
       def initialize(id, cfg)
         iocmd = type?(cfg, Config)[:iocmd] || give_up(' No IO command')

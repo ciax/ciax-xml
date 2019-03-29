@@ -54,7 +54,7 @@ Hash
            |-App::Status
            |-Cmd::Remote::Input
            |-Frm::Field
-           |-Frm::Stream
+           |-Stream::Driver
            |-Hex::Conv
            |-Mcr::Record
            |-Mcr::View
@@ -128,13 +128,13 @@ RuntimeError
  SqLog::Save
  SqLog::Simulator
  SqLog::Table
- Thread  Threadx
- Threadx  Threadx::Loop
- Threadx  ThreadUdp
+ Threadx::Fork
+ Threadx::Loop
+ Threadx::QueLoop
  Wat::Condition
  Wat::Event
  Xml::Format  HtmlTbl
  Xml::Gnu
- Xml:: Repeat
+ Xml::Repeat
 Simulator::Axis
 Simulator::Word

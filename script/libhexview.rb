@@ -15,7 +15,7 @@ module CIAX
         super()
         update(status.pick(%i(id time data_ver data class msg)))
         self[:field] = type?(status.field, Frm::Field)
-        self[:frame] = type?(self[:field].frame, Frm::Frame)
+        self[:frame] = type?(self[:field].frame, Stream::Frame)
         @dbi = self[:status].dbi
         @sv_stat = sv_stat || Prompt.new('site', self[:id])
         ___init_cmt_procs

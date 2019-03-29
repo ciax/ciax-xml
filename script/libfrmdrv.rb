@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'libexedrv'
+require 'libstream'
 module CIAX
   # Frame Layer
   module Frm
@@ -10,7 +11,7 @@ module CIAX
 
         def ext_local_driver
           super
-          ___init_frame
+          ___init_stream
           ___init_processor_ext
           ___init_processor_flush
           ___init_processor_reset
@@ -19,28 +20,29 @@ module CIAX
 
         private
 
-        def ___init_frame
+        def ___init_stream
           @stat.ext_local_conv(@cfg)
+          @stream = Stream::Driver.new(@id, @cfg)
+          @frame.init_time2cmt(@stream)
         end
 
         def ___init_processor_ext
-          @cobj.rem.ext.def_proc do |ent, src|
+          @cobj.rem.ext.def_proc do |ent, _src|
+            @frame.input(@stream.response(ent))
             @stat.conv(ent)
-            @stat.flush if src != 'buffer'
           end
         end
 
         def ___init_processor_flush
           @cobj.get('flush').def_proc do
-            @stat.frame.flush
-            @stat.flush
+            @stream.rcv
             verbose { 'Flush Stream' }
           end
         end
 
         def ___init_processor_reset
           @cobj.get('reset').def_proc do
-            @stat.frame.reset
+            @stream.reset
             verbose { 'Reset Stream' }
           end
         end

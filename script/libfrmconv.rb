@@ -12,7 +12,7 @@ module CIAX
     class Field
       def ext_local_conv(cfg)
         return ext_local.ext_save unless cfg[:iocmd]
-        extend(Conv).ext_local_conv(cfg)
+        extend(Conv).ext_local_conv
       end
 
       # Frame Response module
@@ -24,8 +24,7 @@ module CIAX
         end
 
         # Ent is needed which includes response_id and cmd_parameters
-        def ext_local_conv(cfg)
-          @frame.ext_local_conv(cfg).ext_save
+        def ext_local_conv
           type?(@dbi, Dbi)
           @fdbr = @dbi[:response]
           @fds = @fdbr[:index]
@@ -34,9 +33,9 @@ module CIAX
 
         # Convert with corresponding cmd
         def conv(ent)
-          frm = @frame.conv(ent).get(ent.id)
+          frm = @frame.get(ent.id)
           return self unless frm
-          ___make_sel(type?(ent, CmdBase::Entity))
+          ___make_sel(ent)
           # CutFrame structure:
           #   main(total){ ccrange{ body(selected str) } }
           # terminator: frame pointer will jump to terminator

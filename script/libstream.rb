@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libvarx'
-
+require 'libconf'
 # Structure
 # {
 #   @binary
@@ -16,8 +16,7 @@ module CIAX
     class Stream < Varx
       attr_reader :base64
       def initialize(id, cfg)
-        iocmd = type?(cfg, Config)[:iocmd]
-        give_up(' No IO command') unless iocmd
+        iocmd = type?(cfg, Config)[:iocmd] || give_up(' No IO command')
         super('stream')
         @sv_stat = cfg[:sv_stat]
         _attr_set(id, cfg[:version])
@@ -50,6 +49,12 @@ module CIAX
         cmt
       end
 
+      def response(ent)
+        type?(ent, Config)
+        return {} unless snd(ent[:frame], ent.id) && ent.key?(:response) && rcv
+        { ent.id => @base64 }
+      end
+
       private
 
       def __reopen
@@ -75,9 +80,9 @@ module CIAX
       def ___open_strm
         # SIGINT gets around the child process
         # verbose { 'Stream Opening' }
-        Signal.trap(:INT, nil)
+        # Signal.trap(:INT, nil)
         ___try_open
-        Signal.trap(:INT, 'DEFAULT')
+        # Signal.trap(:INT, 'DEFAULT')
         verbose { 'Initiate Opened' }
         at_exit { ___close_strm }
         # verbose { 'Stream Open successfully' }

@@ -42,20 +42,19 @@ module CIAX
         end
 
         def conv(ent)
-          @stream.snd(ent[:frame], ent.id)
-          put(ent.id, @stream.rcv.base64) if ent.key?(:response)
+          update(@stream.response(ent))
           verbose { 'Conversion Stream -> Frame' }
-          self
+          cmt
         end
 
         def flush
           @stream.rcv
-          self
+          cmt
         end
 
         def reset
           @stream.reset
-          self
+          cmt
         end
       end
     end

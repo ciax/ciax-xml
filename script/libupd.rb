@@ -66,6 +66,7 @@ module CIAX
     # Time Updater
     def time_upd(tm = nil)
       self[:time] = tm || now_msec
+      verbose { "Time Updated #{self[:time]}" }
       self
     end
 

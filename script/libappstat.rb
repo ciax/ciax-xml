@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'libstatx'
+require 'libdic'
 require 'libinsdb'
 require 'libfrmstat'
 

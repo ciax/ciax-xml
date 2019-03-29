@@ -34,13 +34,14 @@ module CIAX
 
         # Convert with corresponding cmd
         def conv(ent)
-          @frame.conv(ent)
+          frm = @frame.conv(ent).get(ent.id)
+          return self unless frm
           ___make_sel(type?(ent, CmdBase::Entity))
           # CutFrame structure:
           #   main(total){ ccrange{ body(selected str) } }
           # terminator: frame pointer will jump to terminator
           #   when no length or delimiter is specified
-          @rspfrm = CutFrame.new(@frame.get(ent.id).dup, @dbi[:stream])
+          @rspfrm = CutFrame.new(frm.dup, @dbi[:stream])
           ___make_data
           verbose { 'Conversion Frame -> Field' }
           self

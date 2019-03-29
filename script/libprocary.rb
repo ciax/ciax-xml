@@ -13,7 +13,10 @@ module CIAX
     end
 
     def call
-      view.each { |k| @dic[k].call(@obj) }
+      view.each do |k|
+        @dic[k].call(@obj)
+        verbose { "Calling #{k} in (#{@name})" }
+      end
       self
     end
 
@@ -36,7 +39,7 @@ module CIAX
       @dic[id] = prc
       if (idx = __find_idx(ref))
         @list.insert(idx + 1, id)
-        verbose { "Insert after '#{ref}' in #{@name}#{view.inspect}" }
+        verbose { "Insert '#{id}' after '#{ref}' in #{@name}#{view.inspect}" }
       else
         @list.push(id)
         verbose { "Appended in #{@name}#{view.inspect}" }
@@ -50,7 +53,7 @@ module CIAX
       @dic[id] = prc
       if (idx = __find_idx(ref))
         @list.insert(idx, id)
-        verbose { "Insert before '#{ref}' in #{@name}#{view.inspect}" }
+        verbose { "Insert '#{id}' before '#{ref}' in #{@name}#{view.inspect}" }
       else
         @list.unshift(id)
         verbose { "Unshifted in #{@name}#{view.inspect}" }

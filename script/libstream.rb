@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libvarx'
-
+require 'libconf'
 # Structure
 # {
 #   @binary
@@ -10,16 +10,15 @@ require 'libvarx'
 #   base64: encoded data
 # }
 module CIAX
-  module Frm
+  module Stream
     # Stream treats an individual round trip (send/recieve)
     #   communication which will be done sequentially
-    class Stream < Varx
+    class Driver < Varx
       attr_reader :base64
-      attr_accessor :pre_open_proc, :post_open_proc
       def initialize(id, cfg)
-        iocmd = type?(cfg, Config)[:iocmd]
-        give_up(' No IO command') unless iocmd
+        iocmd = type?(cfg, Config)[:iocmd] || give_up(' No IO command')
         super('stream')
+        @sv_stat = cfg[:sv_stat]
         _attr_set(id, cfg[:version])
         update('dir' => '', 'cmd' => '', 'base64' => '')
         verbose { "Initiate [#{iocmd}]" }
@@ -34,8 +33,7 @@ module CIAX
         @f.write(str)
         __convert('snd', str, cid).cmt
       rescue Errno::EPIPE
-        @f.close
-        str_err('Stream: Send failed')
+        __error('Stream: Send failed')
       end
 
       def rcv
@@ -51,12 +49,18 @@ module CIAX
         cmt
       end
 
+      def response(ent)
+        type?(ent, Config)
+        return {} unless snd(ent[:frame], ent.id) && ent.key?(:response) && rcv
+        { ent.id => @base64 }
+      end
+
       private
 
       def __reopen
         ___open_strm if !@f || @f.closed?
       rescue SystemCallError
-        str_err('Stream: Open failed')
+        __error('Stream: Open failed')
       end
 
       def __convert(dir, data, cid = nil)
@@ -71,20 +75,16 @@ module CIAX
         @wait = (sp[:wait] || 0.01).to_f
         @timeout = (sp[:timeout] || 10).to_i
         @terminator = esc_code(sp[:terminator])
-        @pre_open_proc = proc {}
-        @post_open_proc = proc {}
       end
 
       def ___open_strm
         # SIGINT gets around the child process
         # verbose { 'Stream Opening' }
-        @pre_open_proc.call
-        Signal.trap(:INT, nil)
+        # Signal.trap(:INT, nil)
         ___try_open
-        Signal.trap(:INT, 'DEFAULT')
+        # Signal.trap(:INT, 'DEFAULT')
         verbose { 'Initiate Opened' }
         at_exit { ___close_strm }
-        @post_open_proc.call
         # verbose { 'Stream Open successfully' }
         # Shut off from Ctrl-C Signal to the child process
         # Process.setpgid(@f.pid,@f.pid)
@@ -92,10 +92,11 @@ module CIAX
       end
 
       def ___try_open
+        @sv_stat.dw(:ioerr).dw(:comerr) if @sv_stat
         @f = IO.popen(@iocmd, 'r+')
         3.times do
           Process.waitpid(@f.pid, Process::WNOHANG) &&
-            str_err('Stream: Connection refused')
+            __error('Stream: Connection refused')
           sleep 0.1
         end
       end
@@ -122,7 +123,7 @@ module CIAX
 
       def ___select_io
         return if IO.select([@f], nil, nil, @timeout)
-        str_err('Stream: Timeout: No response')
+        __error('Stream: Timeout: No response')
       end
 
       def ___try_rcv(str)
@@ -130,8 +131,13 @@ module CIAX
         # verbose { "Binary Getting\n" + visible(str) }
       rescue EOFError
         # Jumped at quit
-        @f.close
-        str_err('Stream: Recv failed')
+        __error('Stream: Recv failed')
+      end
+
+      def __error(str)
+        @f.close if @f
+        @sv_stat.up(:ioerr) if @sv_stat
+        str_err(str)
       end
     end
   end

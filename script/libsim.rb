@@ -47,14 +47,20 @@ module CIAX
       def ___sv_loop(io)
         loop do
           str = __data_log('Recieve', ___input(io))
-          res = __data_log('Send', _dispatch(str) + @ofs.to_s)
-          io ? io.syswrite(res) : puts(res.inspect)
+          if (res = _dispatch(str))
+            res = __data_log('Send', res + @ofs.to_s)
+            io ? io.syswrite(res) : puts(res.inspect)
+          else
+            __data_log('No send')
+          end
           sleep 0.1
         end
       end
 
-      def __data_log(caption, data)
-        log(format('%s:%s %s', self.class, caption, data.inspect))
+      def __data_log(caption, data = nil)
+        ary = [self.class, caption]
+        ary << data.inspect if data
+        log(ary.join(' '))
         data
       end
 

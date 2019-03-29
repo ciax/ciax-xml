@@ -16,8 +16,9 @@ module CIAX
         #  (Set upper layer's update)
         self[:comerr] = false
         ext_dic(:data) { ___init_field }
-        @frame = Frame.new(@dbi)
+        @frame = Stream::Frame.new(@dbi)
         init_time2cmt(@frame)
+        propagation(@frame)
       end
 
       # Substitute str by Field data

@@ -69,16 +69,16 @@ module CIAX
 
         def ___init_proc_buf(buf)
           # Frm: Execute single command
-          buf.recv_proc = proc do |args, src|
+          buf.conv_proc = proc do |args, src|
             verbose { "Processing App to Buffer #{args.inspect}" }
             @sub.exe(args, src)
           end
           # Frm: Update after each single command finish
           # @stat file output should be done before :busy flag is reset
-          buf.flush_proc = proc do
-            verbose { 'Propagate Buffer#flush -> Field#flush' }
+          buf.cmt_procs.prepend(self, :flush) do
             @sub.stat.flush
           end
+          @stat.propagation(buf)
         end
       end
     end

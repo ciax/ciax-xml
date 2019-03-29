@@ -115,7 +115,7 @@
     return: Any
     called: Buffer#server
 
-  Buffer@recv_proc
+  Buffer@conv_proc
     structure: Proc
     args: Array(args),String(src)
     return: Any

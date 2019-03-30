@@ -63,6 +63,8 @@ module CIAX
       include Enum
       COLOR_TBL = { 'true' => 13, 'false' => 8 }.freeze
       # show_iv = Show Instance Variable
+      # show_id = Show object_id at each element
+      # show_cls = Show class of each emement
       def initialize(obj, show_iv = false, show_id = false, show_cls = true)
         @obj = obj
         @opt = { show_iv: show_iv, show_id: show_id, show_cls: show_cls }

@@ -22,13 +22,22 @@ module CIAX
     private
 
     # Set dbi, otherwise generate by stdin info
+    # When input from TTY
+    #  obj == Dbi    : return obj
+    #  obj == String : id <= obj
+    #  obj == Array  : id <= obj.shift
+    # When input from File
+    #  obj <= Read[:id] anyway
+    # -----------------
+    # Get Dbi with id from Db
     def ___get_dbi(obj, mod)
       return obj if obj.is_a? Dbi
-      unless obj || STDIN.tty?
-        @preload = jread
-        obj = @preload[:id]
-      end
-      mod.new.get(obj)
+      id = if STDIN.tty?
+             obj.is_a?(Array) ? obj.shift : obj
+           else
+             (@preload = jread)[:id]
+           end
+      mod.new.get(id)
     end
   end
 end

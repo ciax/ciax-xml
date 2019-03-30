@@ -19,6 +19,7 @@ module CIAX
         end
 
         def ext_local_conv
+          init_time2cmt(@field)
           @cmt_procs.append(self, :conv, :time) { conv }
           self
         end

@@ -42,7 +42,6 @@ module CIAX
       def ___init_field(field)
         return unless @dbi[:dev_id]
         @field = type_gen(field, Frm::Field) { |mod| mod.new(@dbi[:dev_id]) }
-        init_time2cmt(@field)
       end
     end
 

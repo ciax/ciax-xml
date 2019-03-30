@@ -148,7 +148,8 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
       ConfOpts.new('[id] [cmd]', options: 'h') do |cfg|
-        field = Field.new(cfg.args.shift).ext_local_conv
+        id = cfg.args.shift if STDIN.tty?
+        field = Field.new(id).ext_local_conv
         field.frame.mode(cfg.opt.host).load
         atrb = field.dbi.pick(%i(stream)).update(field: field)
         # dbi.pick alreay includes :command, :version

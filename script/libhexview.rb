@@ -35,7 +35,7 @@ module CIAX
         self
       end
 
-      def mode(host)
+      def cmode(host)
         host ? ext_remote(host) : ext_local
       end
 
@@ -150,7 +150,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id]', options: 'h') do |opt, args|
-        stat = SubStat.new(App::Status.new(args.shift)).mode(opt.host)
+        stat = SubStat.new(App::Status.new(args.shift)).cmode(opt.host)
         puts View.new(stat).to_x
       end
     end

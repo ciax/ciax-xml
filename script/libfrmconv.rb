@@ -149,7 +149,7 @@ module CIAX
       require 'libfrmcmd'
       ConfOpts.new('[id] [cmd]', options: 'h') do |cfg|
         field = Field.new(cfg.args).ext_local_conv
-        field.frame.mode(cfg.opt.host).load
+        field.frame.cmode(cfg.opt.host).load
         atrb = field.dbi.pick(%i(stream)).update(field: field)
         # dbi.pick alreay includes :command, :version
         cobj = Index.new(cfg, atrb)

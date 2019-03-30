@@ -19,7 +19,7 @@ module CIAX
       # db could have [endian, ccmethod, termineter]
       def initialize(frame, db = {})
         @db = type?(db, Hash)
-        @frame = ___cut_by_term(frame)
+        @frame = ___cut_by_term(type?(frame, String))
         @codec = Codec.new(@db[:endian])
         cc_reset
       end

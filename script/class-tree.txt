@@ -48,6 +48,7 @@ Hash
      |
      |-Upd
         |-App::View
+        |-App::Buffer
         |-Wat::View
         |-Mcr::Step
         |-Varx
@@ -118,9 +119,8 @@ RuntimeError
 
 ----------------------
  App::Symbol::Status
- Buffer
  Daemon
- Frm::Frame
+ Stream::Frame
  Mcr::Query
  Mcr::Record
  Mcr::Sequencer

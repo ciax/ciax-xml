@@ -42,13 +42,12 @@ module CIAX
       def ___init_field(field)
         return unless @dbi[:dev_id]
         @field = type_gen(field, Frm::Field) { |mod| mod.new(@dbi[:dev_id]) }
-        init_time2cmt(@field)
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id]', options: 'h') do |opt, args|
-        puts Status.new(args.shift).mode(opt.host)
+        puts Status.new(args.shift).cmode(opt.host)
       end
     end
   end

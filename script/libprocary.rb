@@ -56,7 +56,7 @@ module CIAX
         verbose { "Insert '#{id}' before '#{ref}' in #{@name}#{view.inspect}" }
       else
         @list.unshift(id)
-        verbose { "Unshifted in #{@name}#{view.inspect}" }
+        verbose { "Prepended in #{@name}#{view.inspect}" }
       end
       self
     end

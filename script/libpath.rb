@@ -30,7 +30,7 @@ module CIAX
           v = var.instance_variable_get(n)
           var.instance_variable_set(n, v.class.to_s) if v.is_a?(Enumerable)
         end
-        Struct.new(var, true, true).to_s
+        Struct.new(var).to_s
       end
 
       def ___view_hash(var)

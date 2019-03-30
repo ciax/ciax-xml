@@ -76,6 +76,7 @@ module CIAX
           # Frm: Update after each single command finish
           # @stat file output should be done before :busy flag is reset
           buf.cmt_procs.prepend(self, :flush) do
+            # clear [:comerr]
             @sub.stat.flush
           end
           @stat.propagation(buf)

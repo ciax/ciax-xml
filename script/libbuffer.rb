@@ -40,7 +40,7 @@ module CIAX
         @outbuf = Outbuf.new
         @id = @sv_stat.get(:id)
         @que = Arrayx.new # For testing
-        ___init_cmt
+        @cmt_procs.prepend(self, :flush) { ___sv_dw }
       end
 
       # Take App command entity
@@ -140,17 +140,6 @@ module CIAX
         @outbuf.clear
         @que.clear
         cmt
-      end
-
-      def ___init_cmt
-        @cmt_procs.append(self, :buffer) do
-          ___sv_dw
-          verbose do
-            var = @sv_stat.pick(%i(busy queue)).inspect
-            "Flush buffer(#{@id}):timing#{var}"
-          end
-        end
-        self
       end
 
       # Multi-level command buffer

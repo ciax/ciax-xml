@@ -10,8 +10,7 @@ module CIAX
   module Frm
     # Field class
     class Field
-      def ext_local_conv(cfg)
-        return ext_local.ext_save unless cfg[:iocmd]
+      def ext_local_conv
         extend(Conv).ext_local_conv
       end
 
@@ -148,24 +147,18 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
-      require 'libjslog'
-      ConfOpts.new('< logline', m: 'merge file') do |cfg|
-        raise(InvalidARGS, '  Need Input File') if STDIN.tty?
-        res = Frame.new
-        field = Field.new(res[:id]).ext_local_conv(res)
-        field.ext_local.ext_save if cfg.opt[:m]
-        if (cid = res[:cmd])
-          atrb = field.dbi.pick(%i(stream))
-          atrb[:field] = field
-          # dbi.pick alreay includes :command, :version
-          cobj = Index.new(cfg, atrb)
-          cobj.add_rem.add_ext
-          ent = cobj.set_cmd(cid.split(':'))
-          begin
-            field.conv(ent)
-          rescue CommError
-            Msg.msg($ERROR_INFO)
-          end
+      ConfOpts.new('[id] [cmd]', options: 'h') do |cfg|
+        field = Field.new(cfg.args).ext_local_conv
+        field.frame.cmode(cfg.opt.host).load
+        atrb = field.dbi.pick(%i(stream)).update(field: field)
+        # dbi.pick alreay includes :command, :version
+        cobj = Index.new(cfg, atrb)
+        cobj.add_rem.add_ext
+        ent = cobj.set_cmd(cfg.args)
+        begin
+          field.conv(ent)
+        rescue CommError
+          Msg.msg($ERROR_INFO)
         end
         puts field
       end

@@ -48,7 +48,7 @@ module CIAX
         private
 
         # @sel structure:
-        #   { terminator, :main{}, :body{} <- changes on every upd }
+        #   { terminator, :main{}, ccrange{}, :body{} <- changes on every upd }
         def ___make_sel(ent)
           rid = ent[:response]
           idx = @fds[rid] || Msg.cfg_err("No such response id [#{rid}]")

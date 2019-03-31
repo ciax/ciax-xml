@@ -16,18 +16,18 @@ module CIAX
       # delimiter: cut 'variable length data' by delimiter
       #             can be included in CC range
       #
-      # db could have [endian, ccmethod, termineter]
-      def initialize(frame, db = {})
-        @db = type?(db, Hash)
+      # dbe(dbi element) could have [endian, ccmethod, termineter]
+      def initialize(frame, dbe = {})
+        @dbe = type?(dbe, Hash)
         @frame = ___cut_by_term(type?(frame, String))
-        @codec = Codec.new(@db[:endian])
+        @codec = Codec.new(@dbe[:endian])
         @cc_proc = proc {}
       end
 
       def cc_start
-        return self unless @db.key?(:ccmethod)
+        return self unless @dbe.key?(:ccmethod)
         verbose { 'CC Range Start' }
-        @cc = CheckCode.new(@db[:ccmethod])
+        @cc = CheckCode.new(@dbe[:ccmethod])
         @cc_proc = proc { |str| @cc << str }
         self
       end
@@ -71,8 +71,8 @@ module CIAX
 
       def ___cut_by_term(frame)
         return '' unless frame
-        return frame unless @db.key?(:terminator)
-        frame.split(esc_code(@db[:terminator])).shift
+        return frame unless @dbe.key?(:terminator)
+        frame.split(esc_code(@dbe[:terminator])).shift
       end
 
       def ___cut_by_rule(e0)

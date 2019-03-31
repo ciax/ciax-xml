@@ -49,8 +49,7 @@ module CIAX
       # If cut str incldes terminetor, str will be trimmed
       def cut(e0)
         verbose do
-          fmt = 'Cut for %s from [%s](%d)'
-          format(fmt, e0[:type], @frame.inspect, @frame.size)
+          cformat('Cut for %s from [%S](%d)', e0[:type], @frame, @frame.size)
         end
         if e0[:type] == 'verify'
           ___verify(e0)
@@ -65,7 +64,7 @@ module CIAX
       def ___assign(e0)
         str = ___cut_by_rule(e0)
         return '' if str.empty?
-        verbose { "Assign:(#{e0[:label]}) [#{e0[:ref]} = #{str.inspect}]" }
+        verbose { cformat('Assign:(%s) [%s = %S]', e0[:label], e0[:ref], str) }
         str = ___slice_part(str, e0[:slice])
         @codec.decode(str, e0).to_s
       end
@@ -113,7 +112,7 @@ module CIAX
       def ___slice_part(str, range)
         return str unless range
         res = str.slice(*range.split(':').map(&:to_i))
-        verbose { "Slice: [#{res.inspect}] from [#{str.inspect}] by [#{range}]" }
+        verbose { cformat('Slice: [%S] from [%S] by [%s]', res, str, range) }
         res
       end
 

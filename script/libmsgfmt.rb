@@ -26,10 +26,15 @@ module CIAX
     # Colored format
     # specify color with :n (n =0..f) located between '%' and flag
     # (ex. '%:1s')
+    # Inspection format
+    #  %S converts the object with inspect
     def cformat(fmt, *ary)
+      i = 0
       fmt.gsub!(/%.*?[a-zA-Z]/) do |m|
-        m.sub!(/:(.)/, '')
-        $+ ? colorize(m, $+.hex) : m
+        colorize(m, $+.hex) if m.sub!(/:(.)/, '')
+        ary[i] = ary[i].inspect if m.sub!(/S/, 's')
+        i += 1
+        m
       end
       format(fmt, *ary)
     end

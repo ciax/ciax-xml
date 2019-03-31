@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frm id="slo" label="SLOSYN SS6000i" version="1">
-    <spec mfr="slosyn" model="SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf" type="motor driver"/>
+  <frm id="slo" label="SLOSYN SS6000i" version="2">
+    <spec mfr="slosyn" type="motor driver" model="SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf"/>
     <stream terminator="\r\n" wait="0.1"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
@@ -31,7 +31,7 @@
         <item id="spd" label="Spped Number" response="spd" type="stat">
           <string>spd</string>
         </item>
-        <item id="reset" label="Reset" response="default" type="config">
+        <item id="mres" label="Reset" response="default" type="config">
           <string>reset</string>
         </item>
       </group>

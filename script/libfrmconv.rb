@@ -89,9 +89,9 @@ module CIAX
         def ___getfield(e1, common = {})
           case e1[:type]
           when 'verify'
-            @rspfrm.cut(common.update(e1))
+            @rspfrm.cut(common.merge(e1))
           when 'assign'
-            ___frame_to_field(e1) { @rspfrm.cut(common.update(e1)) }
+            ___frame_to_field(e1) { @rspfrm.cut(common.merge(e1)) }
           when 'ccrange'
             ___getfield_cc(@sel[:ccrange])
           when 'body'

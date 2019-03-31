@@ -125,12 +125,8 @@ module CIAX
         # Array
         def ___ary_field(e1)
           ref = e1[:ref] || Msg.cfg_err('No key for Array')
-          # Insert range depends on command param
-          idxs = e1[:index].map do |e2|
-            e2[:range] || "0:#{e2[:size].to_i - 1}"
-          end
           enclose("Assign:[#{ref}][", ']') do
-            @cache[ref] = __mk_array(idxs, get(ref)) { yield }
+            @cache[ref] = __mk_array(e1[:index], get(ref)) { yield }
           end
         end
 

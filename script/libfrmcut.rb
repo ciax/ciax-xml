@@ -66,7 +66,7 @@ module CIAX
         str = ___cut_by_rule(e0)
         return '' if str.empty?
         verbose { "Assign:(#{e0[:label]}) [#{e0[:ref]} = #{str.inspect}]" }
-        str = ___pick_part(str, e0[:slice])
+        str = ___slice_part(str, e0[:slice])
         @codec.decode(str, e0).to_s
       end
 
@@ -110,11 +110,11 @@ module CIAX
         str
       end
 
-      def ___pick_part(str, range)
+      def ___slice_part(str, range)
         return str unless range
-        str = str.slice(*range.split(':').map(&:to_i))
-        verbose { "Pick: [#{str.inspect}] by range=[#{range}]" }
-        str
+        res = str.slice(*range.split(':').map(&:to_i))
+        verbose { "Slice: [#{res.inspect}] from [#{str.inspect}] by [#{range}]" }
+        res
       end
 
       def ___verify(e0)

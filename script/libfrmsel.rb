@@ -9,14 +9,13 @@ module CIAX
       include Dic
       def initialize(dbi)
         super()
-        ext_dic(:sel){ Hashx.new }
+        ext_dic(:sel) { Hashx.new }
         # Ent is needed which includes response_id and cmd_parameters
-        @dbi = type?(dbi, Dbi)
-        @fdbr = @dbi[:response]
-        @fds = @fdbr[:index]
-        @body = Hashx.new
-        @ccrange = Hashx.new
-        ___make_sel
+        dbi = type?(dbi, Dbi)
+        res = dbi[:response]
+        frm = res[:frame]
+        tmp = [dbi, res, frm].inject(Hashx.new) { |h, e| h.update(e.attributes) }
+        ___make_sel(frm, res[:index], tmp)
       end
 
       def get(ent)
@@ -25,37 +24,38 @@ module CIAX
         # SelDB applied with Entity (set par)
         ent.deep_subst(sel.deep_copy)
       end
-      
+
       private
 
       # @sel structure:
       #   { terminator, :main{}, ccrange{}, :body{} <- changes on every upd }
-      def ___make_sel
-        @fds.each do |id, val|
-          body = val[:body]
-          all = Hashx[@fdbr[:frame]]
-          if all[:ccrange]
-            ccrange = []
-            all[:ccrange].each do |e|
-              e[:type] == "body" ? ccrange.concat(body) : ccrange << e
-            end
-            @ccrange[id] = ccrange
-          else
-            main = []
-            all[:main].each do |e|
-              case e[:type]
-              when "body"
-                main.concat(body)
-              when "ccrange"
-                main.concat(ccrange)
-              else
-                main << e
-              end
-            end
-          end
-          put(id, main)
+      def ___make_sel(dbe, index, tmp)
+        index.each do |id, val|
+          body = val[:body].map {|e| tmp.merge(e) } # Array
+          put(id, ___mk_main(dbe, body, tmp))
         end
       end
+
+      def ___mk_ccr(dbe, body, tmp)
+        return unless dbe[:ccrange]
+        dbe[:ccrange].inject([]) do |a, e|
+          e[:type] == 'body' ? a.concat(body) : a << tmp.merge(e)
+        end
+      end
+          
+      def ___mk_main(dbe, body, tmp)
+        dbe[:main].inject([]) do |a, e|
+          case e[:type]
+          when 'body'
+            a.concat(body)
+          when 'ccrange'
+            a << ___mk_ccr(dbe, body, tmp)
+          else
+            a << tmp.merge(e)
+          end
+        end
+      end
+
 
       def ___make_data
         @cache = _dic.deep_copy

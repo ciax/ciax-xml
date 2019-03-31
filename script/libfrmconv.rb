@@ -63,70 +63,74 @@ module CIAX
         def ___make_data
           @cache = _dic.deep_copy
           if @sel.key?(:noaffix)
-            __getfield_rec(['body'])
+            __getfield_recur(['body'])
           else
-            __getfield_rec(@sel[:main])
+            __getfield_recur(@sel[:main])
             @rspfrm.cc_check(@cache.delete('cc'))
           end
           _dic.replace(@cache)
         end
 
         # Process Frame to Field
-        def __getfield_rec(e0, common = {})
+        def __getfield_recur(e0, common = {})
           e0.each do |e1|
             ___getfield(e1, common)
           end
         end
 
         def ___getfield_cc(cc)
-          @rspfrm.cc_start
-          __getfield_rec(cc)
-          @rspfrm.cc_reset
+          enclose('CCRange:[', ']') do
+            @rspfrm.cc_start
+            __getfield_recur(cc)
+            @rspfrm.cc_reset
+          end
         end
 
         def ___getfield(e1, common = {})
           case e1[:type]
-          when 'field', 'array'
-            ___frame_to_field(e1) { @rspfrm.cut(e1.update(common)) }
+          when 'verify'
+            @rspfrm.cut(common.update(e1))
+          when 'assign'
+            ___frame_to_field(e1) { @rspfrm.cut(common.update(e1)) }
           when 'ccrange'
             ___getfield_cc(@sel[:ccrange])
           when 'body'
-            __getfield_rec(@sel[:body] || [], e1)
+            __getfield_recur(@sel[:body] || [], e1)
           when 'echo' # Send back the command string
             @rspfrm.cut(label: 'Command Echo', val: @echo)
           end
         end
 
-        def ___frame_to_field(e0)
-          enclose((e0[:label]).to_s, 'Field:End') do
-            if e0[:index]
-              ___ary_field(e0) { yield }
+        def ___frame_to_field(e1)
+          enclose((e1[:label]).to_s, 'Field:End') do
+            if e1[:index]
+              ___ary_field(e1) { yield }
             else
-              ___str_field(e0, yield)
+              ___str_field(e1, yield)
             end
           end
         end
 
         # Field
-        def ___str_field(e0, data)
-          return unless (akey = e0[:assign])
-          if e0[:valid] && /#{e0[:valid]}/ !~ data
-            warning("Invalid Data (#{data}) for /#{e0[:valid]}/")
+        def ___str_field(e1, data)
+          if e1[:valid] && /#{e1[:valid]}/ !~ data
+            warning("Invalid Data (#{data}) for /#{e1[:valid]}/")
           else
-            @cache[akey] = data
-            verbose { "Assign:[#{akey}] <- #{data.inspect}" }
+            ref = e1[:ref]
+            @cache[ref] = data
+            verbose { "Assign:[#{ref}] <- #{data.inspect}" }
           end
         end
 
         # Array
-        def ___ary_field(e0)
-          akey = e0[:assign] || Msg.cfg_err('No key for Array')
+        def ___ary_field(e1)
+          ref = e1[:ref] || Msg.cfg_err('No key for Array')
           # Insert range depends on command param
-          idxs = e0[:index].map do |e1|
-            e1[:range] || "0:#{e1[:size].to_i - 1}"
+          idxs = e1[:index].map do |e2|
+            e2[:range] || "0:#{e2[:size].to_i - 1}"
           end
-          enclose("Assign:[#{akey}][", ']') do
-            @cache[akey] = __mk_array(idxs, get(akey)) { yield }
+          enclose("Assign:[#{ref}][", ']') do
+            @cache[ref] = __mk_array(idxs, get(ref)) { yield }
           end
         end
 

@@ -21,39 +21,54 @@ module CIAX
         @db = type?(db, Hash)
         @frame = ___cut_by_term(type?(frame, String))
         @codec = Codec.new(@db[:endian])
-        cc_reset
+        @cc_proc = proc {}
       end
 
       def cc_start
         return self unless @db.key?(:ccmethod)
+        verbose { 'CC Range Start' }
         @cc = CheckCode.new(@db[:ccmethod])
         @cc_proc = proc { |str| @cc << str }
         self
       end
 
       def cc_reset
+        verbose { 'CC Range End' }
         @cc_proc = proc {}
         self
       end
 
       def cc_check(str)
-        @cc.check(str) if @cc
+        return unless @cc
+        @cc.check(str)
+        verbose { "CC Verified [#{str}]" }
       end
 
       # Cut frame and decode
       # If param includes 'val' key, it checks value  only
       # If cut str incldes terminetor, str will be trimmed
       def cut(e0)
-        verbose { "Cut Start for [#{@frame.inspect}](#{@frame.size})" }
-        return ___verify(e0) if e0[:val] # Verify value
-        str = ___cut_by_type(e0)
-        return '' if str.empty?
-        verbose { "Cut String: [#{str.inspect}]" }
-        str = ___pick_part(str, e0[:slice])
-        @codec.decode(str, e0).to_s
+        verbose do
+          fmt = 'Cut for %s from [%s](%d)'
+          format(fmt, e0[:type], @frame.inspect, @frame.size)
+        end
+        if e0[:type] == 'verify'
+          ___verify(e0)
+        else
+          ___assign(e0)
+        end
       end
 
       private
+
+      # Assign or CCRange/Body
+      def ___assign(e0)
+        str = ___cut_by_rule(e0)
+        return '' if str.empty?
+        verbose { "Assign:(#{e0[:label]}) [#{e0[:ref]} = #{str.inspect}]" }
+        str = ___pick_part(str, e0[:slice])
+        @codec.decode(str, e0).to_s
+      end
 
       def ___cut_by_term(frame)
         return '' unless frame
@@ -61,7 +76,7 @@ module CIAX
         frame.split(esc_code(@db[:terminator])).shift
       end
 
-      def ___cut_by_type(e0)
+      def ___cut_by_rule(e0)
         ___cut_by_size(e0[:length]) || \
           ___cut_by_code(e0[:delimiter] || e0[:suffix]) || ___cut_rest
       end
@@ -106,7 +121,7 @@ module CIAX
         ref = e0[:val]
         len = e0[:length] || ref.size
         val = str = @frame.slice!(0, len.to_i)
-        if e0[:decode]
+        if e0[:decode] && e0[:decode] != 'string'
           val = @codec.decode(val, e0)
           ref = expr(ref)
         end

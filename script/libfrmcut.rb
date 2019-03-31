@@ -131,10 +131,10 @@ module CIAX
 
       def ___check(e0, ref, val)
         if ref == val
-          verbose { "Verify:(#{e0[:label]}) [#{ref.inspect}] OK" }
+          verbose { cformat('Verify:(%s) [%S] OK', e0[:label], ref) }
         else
-          fmt = 'Mismatch(%s/%s):%s for %s'
-          cc_err(format(fmt, e0[:label], e0[:decode], val.inspect, ref.inspect))
+          fmt = 'Mismatch(%s/%s):%S for %S'
+          cc_err(cformat(fmt, e0[:label], e0[:decode], val, ref))
         end
       end
     end

@@ -31,7 +31,7 @@ module CIAX
     def cformat(fmt, *ary)
       i = 0
       fmt.gsub!(/%.*?[a-zA-Z]/) do |m|
-        colorize(m, $+.hex) if m.sub!(/:(.)/, '')
+        m = colorize(m, $+.hex) if m.sub!(/:(.)/, '')
         ary[i] = ary[i].inspect if m.sub!(/S/, 's')
         i += 1
         m

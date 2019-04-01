@@ -65,12 +65,12 @@ module CIAX
     end
 
     # Pick Hash which isn't Array or Hash for XML attributes
-    def attributes(id = nil)
-      atrb = Hashx.new(id ? { id: id } : {})
-      each_with_object(atrb) do |k, v, hash|
-        next if v.is_a? Enumerable
-        hash[k] = v
+    def attrs
+      hash = Hashx.new
+      each do |k, v|
+        hash[k] = v unless v.is_a? Enumerable
       end
+      hash
     end
 
     def first

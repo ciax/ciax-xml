@@ -12,7 +12,7 @@ module CIAX
         dbi = type?(dbi, Dbi)
         res = dbi[:response]
         frm = res[:frame]
-        tmp = [dbi, res, frm].inject(Hashx.new) { |h, e| h.merge(e.attributes) }
+        tmp = [dbi, res, frm].inject(Hashx.new) { |h, e| h.merge(e.attrs) }
         ___mk_sel(frm, res[:index], tmp)
       end
 
@@ -29,15 +29,12 @@ module CIAX
       #   { terminator, :main{}, ccrange{}, :body{} <- changes on every upd }
       def ___mk_sel(dbe, index, tmp)
         index.each do |id, item|
-          p item.attributes
-          put(id, ___mk_body(dbe, item, tmp.merge(item.attributes)))
+          put(id, ___mk_body(dbe, item, tmp.merge(item.attrs)))
         end
       end
 
       def ___mk_body(dbe, item, tmp)
         body = (item[:body] || []).map { |e| tmp.merge(e) } # Array
-        p body
-        p tmp
         tmp[:noaffix] ? body : ___mk_main(dbe, body, tmp)
       end
 
@@ -47,7 +44,7 @@ module CIAX
           when 'ccrange'
             a << ___mk_ccr(dbe, body, tmp)
           when 'body'
-            a.concat(body)
+            a + body
           else
             a << tmp.merge(e)
           end
@@ -57,7 +54,7 @@ module CIAX
       def ___mk_ccr(dbe, body, tmp)
         return unless dbe[:ccrange]
         dbe[:ccrange].inject([]) do |a, e|
-          e[:type] == 'body' ? a.concat(body) : a << tmp.merge(e)
+          a + (e[:type] == 'body' ? body : [tmp.merge(e)])
         end
       end
     end

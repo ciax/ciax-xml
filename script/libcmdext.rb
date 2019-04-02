@@ -14,6 +14,7 @@ module CIAX
           def initialize(spcfg, atrb = Hashx.new)
             atrb.get(:caption) { 'External Commands' }
             super
+            cfg_err('No dbi in Ext::Group@cfg') unless @cfg.key?(:dbi)
             @disp_dic = @disp_dic.ext_grp
             ___init_items(@cfg[:dbi].get(:command))
             @disp_dic.reset!

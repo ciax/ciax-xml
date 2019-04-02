@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'libfrmdb'
-require 'libdic'
 module CIAX
   # Frame Layer
   module Frm
@@ -20,7 +19,7 @@ module CIAX
         rid = ent[:response]
         sel = super(rid) || Msg.cfg_err("No such response id [#{rid}]")
         # SelDB applied with Entity (set par)
-        ent.deep_subst(sel.deep_copy)
+        ent.deep_subst(sel.freeze)
       end
 
       private
@@ -61,10 +60,15 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
+      require 'libdevdb'
       ConfOpts.new('[id] [cmd]', options: 'h') do |cfg|
-        dbi = Db.new.get(cfg.args.shift)
+        dbi = Dev::Db.new.get(cfg.args.shift)
+        atrb = { dbi: dbi, stream: dbi[:stream], field: Field.new(dbi[:id]) }
+        cobj = Index.new(cfg, atrb)
+        cobj.add_rem.add_ext
+        ent = cobj.set_cmd(cfg.args)
         sel = Select.new(dbi)
-        puts sel.path(cfg.args)
+        puts sel.get(ent)
       end
     end
   end

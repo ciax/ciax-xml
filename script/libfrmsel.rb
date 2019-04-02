@@ -68,7 +68,7 @@ module CIAX
         cobj.add_rem.add_ext
         ent = cobj.set_cmd(cfg.args)
         sel = Select.new(dbi)
-        puts sel.get(ent)
+        puts sel.get(ent).path(cfg.args)
       end
     end
   end

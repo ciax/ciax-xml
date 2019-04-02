@@ -11,12 +11,13 @@ module CIAX
       include Msg
       attr_reader :cfg, :view_par
 
+      # args will be destroyed
       def set_cmd(args = [], opt = {})
-        id, *par = type?(args, Array)
+        id = type?(args, Array).shift
         valid_keys.include?(id) || cmd_err("Invalid command [#{id}]", view_dic)
         item = get(id)
         @view_par = item.view_par
-        item.set_par(par, opt)
+        item.set_par(args, opt)
       end
 
       def error

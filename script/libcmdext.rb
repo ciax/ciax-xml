@@ -88,9 +88,9 @@ module CIAX
           def deep_subst(data)
             case data
             when Array
-              data.map { |v| deep_subst(v) }
+              data.map { |v| deep_subst(v) }.extend(Enumx)
             when Hash
-              data.each_with_object({}) { |(k, v), r| r[k] = deep_subst(v) }
+              data.each_with_object(Hashx.new) { |(k, v), r| r[k] = deep_subst(v) }
             else
               ___subst_str(data)
             end

@@ -15,11 +15,12 @@ module CIAX
       end
 
       # element of par could be formula
+      # pary could be destroyed
       def set_par(pary, opt = {})
         # override
         pary = @cfg[:argv] if @cfg[:argv].is_a? Array
         # validate and convert pars
-        par = ___validate(type?(pary, Array).dup)
+        par = ___validate(type?(pary, Array))
         cid = [@id, *par].join(':')
         opt.update(par: par, cid: cid)
         verbose { "SetPAR(#{@id}): #{par}" }

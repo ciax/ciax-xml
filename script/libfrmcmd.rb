@@ -32,7 +32,7 @@ module CIAX
             ent = super
             @stat = type?(@cfg[:field], Field)
             @frame = { changed: nil }
-            @sel = Select.new(@cfg[:dbi], :command).get(ent.id)
+            @sel = Select.new(@cfg[:dbi], :command).get(ent[:id])
             @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
             ___init_body(ent)
             # For send back
@@ -42,11 +42,10 @@ module CIAX
           end
 
           def ___init_body(ent)
-            @sel[:body] = ent.deep_subst(@cfg[:body]) || return
             verbose { "Body:#{@cfg[:label]}(#{@id})" }
             @sp = type?(@cfg[:stream], Hash)
             @codec = Codec.new(@sp[:endian])
-            @frame[:struct] = __mk_frame(@sel[:struct])
+            @frame[:struct] = ent.deep_subst(__mk_frame(@sel[:struct]))
             ___chk_nocache
             verbose { "Cmd Generated [#{@id}]" }
           end

@@ -15,7 +15,7 @@ module CIAX
           Msg.cfg_err("Bad CC method #{method}")
         end
         @method = method
-        yield self if defined? yield
+        concat(yield) if defined? yield
       end
 
       def check(str)

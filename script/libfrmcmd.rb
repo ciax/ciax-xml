@@ -59,21 +59,20 @@ module CIAX
           # instance var frame,sel,field,fstr
           def __mk_frame(array)
             array.map do |dbc|
-              p dbc
               dbc.is_a?(Array) ? ___mk_cc(dbc) : ___single_frame(dbc)
             end.join
           end
 
           def ___mk_cc(array)
-            @frame[:cc] = CheckCode.new(@sp[:ccmethod]) do |ccr|
-              array.map { |dbc| ___single_frame(dbc, ccr) }.join
+            @frame[:cc] = CheckCode.new(@sp[:ccmethod]) do
+              array.map { |dbc| ___single_frame(dbc) }.join
             end
           end
 
-          def ___single_frame(dbc, ccr = nil)
+          def ___single_frame(dbc)
             word = ___conv_by_cc(dbc[:val].dup)
             word = ___conv_by_stat(word)
-            ___set_csv_frame(word, dbc, ccr)
+            ___set_csv_frame(word, dbc)
           end
 
           def ___conv_by_cc(word)
@@ -91,17 +90,15 @@ module CIAX
             res
           end
 
-          def ___set_csv_frame(str, db, ccr = nil)
+          def ___set_csv_frame(str, db)
             # Allow csv parameter
-            str.split(',').map { |s| __mk_code(s, db, ccr) }.join
+            str.split(',').map { |s| __mk_code(s, db) }.join
           end
 
-          def __mk_code(str, db = {}, ccr = nil)
+          def __mk_code(str, db = {})
             return '' unless str
             verbose { "Add [#{str.inspect}]" }
-            code = @codec.encode(str, db)
-            ccr << code if ccr
-            code
+            @codec.encode(str, db)
           end
         end
       end

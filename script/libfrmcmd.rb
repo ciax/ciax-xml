@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libcmdext'
-require 'libfrmcut'
+require 'libfrmsel'
 require 'libfrmstat'
 # CIAX-XML Command module
 module CIAX
@@ -30,66 +30,71 @@ module CIAX
 
           def _gen_entity(opt)
             ent = super
-            @field = type?(@cfg[:field], Field)
-            @fstr = { changed: nil }
-            @sel = ___init_sel
+            @stat = type?(@cfg[:field], Field)
+            @frame = { changed: nil }
+            @sel = Select.new(@cfg[:dbi], :command).get(ent.id)
             @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
             ___init_body(ent)
             # For send back
-            @field.echo = ent[:frame] = @fstr[:main]
-            verbose { "Frame Status  #{@fstr.inspect}" }
+            @stat.echo = ent[:frame] = @frame[:struct]
+            verbose { "Frame Status  #{@frame.inspect}" }
             ent
           end
 
           def ___init_body(ent)
             @sel[:body] = ent.deep_subst(@cfg[:body]) || return
             verbose { "Body:#{@cfg[:label]}(#{@id})" }
-            sp = type?(@cfg[:stream], Hash)
-            @codec = Codec.new(sp[:endian])
-            __mk_frame(:body)
-            ___mk_cc(sp[:ccmethod])
-            __mk_frame(:main)
+            @sp = type?(@cfg[:stream], Hash)
+            @codec = Codec.new(@sp[:endian])
+            @frame[:struct] = __mk_frame(@sel[:struct])
             ___chk_nocache
             verbose { "Cmd Generated [#{@id}]" }
           end
 
-          def ___init_sel
-            if /true|1/ =~ @cfg[:noaffix]
-              { main: [{ type: 'body' }] }
-            else
-              Hashx.new(@cfg[:dbi].get(:command)[:frame])
-            end
-          end
-
-          def ___mk_cc(method)
-            return unless @sel.key?(:ccrange)
-            @fstr[:cc] = CheckCode.new(method) do |ccr|
-              __mk_frame(:ccrange, ccr)
-            end.ccc
-          end
-
           def ___chk_nocache
-            return if @cfg[:nocache] || !@fstr[:changed]
+            return if @cfg[:nocache] || !@frame[:changed]
             warning("Cache stored (#{@id}) despite Frame includes Status")
             @cfg[:nocache] = true
           end
 
           # instance var frame,sel,field,fstr
-          def __mk_frame(domain, ccr = nil)
-            @fstr[domain] = @sel[domain].map do |db|
-              ___frame_by_type(db, ccr)
+          def __mk_frame(array)
+            array.map do |dbc|
+              p dbc
+              dbc.is_a?(Array) ? ___mk_cc(dbc) : ___single_frame(dbc)
             end.join
           end
 
-          def ___frame_by_type(db, ccr = nil)
-            # cunk data: ccrange,body ...
-            if /ccrange|body/ =~ db[:type]
-              __mk_code(@fstr[db[:type].to_sym], {}, ccr)
-            else
-              word = ___conv_by_cc(db[:val].dup)
-              word = ___conv_by_stat(word)
-              ___set_csv_frame(word, db, ccr)
+          def ___mk_cc(array)
+            @frame[:cc] = CheckCode.new(@sp[:ccmethod]) do |ccr|
+              array.map { |dbc| ___single_frame(dbc, ccr) }.join
             end
+          end
+
+          def ___single_frame(dbc, ccr = nil)
+            word = ___conv_by_cc(dbc[:val].dup)
+            word = ___conv_by_stat(word)
+            ___set_csv_frame(word, dbc, ccr)
+          end
+
+          def ___conv_by_cc(word)
+            return word unless @frame.key?(:cc)
+            @frame[:cc].subst(word)
+            word
+          end
+
+          def ___conv_by_stat(word)
+            res = @stat.subst(word)
+            if res != word
+              @frame[:changed] = true
+              verbose { cformat('Convert (%s) %S -> %S', @id, word, res) }
+            end
+            res
+          end
+
+          def ___set_csv_frame(str, db, ccr = nil)
+            # Allow csv parameter
+            str.split(',').map { |s| __mk_code(s, db, ccr) }.join
           end
 
           def __mk_code(str, db = {}, ccr = nil)
@@ -98,29 +103,6 @@ module CIAX
             code = @codec.encode(str, db)
             ccr << code if ccr
             code
-          end
-
-          def ___conv_by_cc(word)
-            return word unless @fstr.key?(:cc)
-            word.gsub(/\$\{cc\}/) { @fstr[:cc] }
-          end
-
-          def ___conv_by_stat(word)
-            res = @field.subst(word)
-            if res != word
-              @fstr[:changed] = true
-              verbose do
-                "Convert (#{@id}) #{word.inspect} -> #{res.inspect}"
-              end
-            end
-            res
-          end
-
-          def ___set_csv_frame(str, db, ccr = nil)
-            # Allow csv parameter
-            str.split(',').map do |s|
-              __mk_code(s, db, ccr)
-            end.join
           end
         end
       end

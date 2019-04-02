@@ -30,6 +30,11 @@ module CIAX
         self
       end
 
+      def subst(str)
+        str.gsub!(/\$\{cc\}/, ccc)
+        self
+      end
+
       # Calculate Check Code
       def ccc
         res = method("_cc_#{@method}").call.to_s

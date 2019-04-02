@@ -5,21 +5,12 @@ module CIAX
   module Frm
     # Frame DB Selector
     class Select < Hashx
-      # dbe = //response or //command
+      # type = //response or //command
       def initialize(dbi, type)
         super()
-        @idtype = { command: :id, response: :response }[type]
         dbe = type?(dbi, Dbi)[type]
         # Ent is needed which includes response_id and cmd_parameters
         ___mk_sel(dbe[:frame], dbe[:index])
-      end
-
-      # type could be :response or :id(command)
-      def get(ent)
-        id = ent[@idtype]
-        sel = super(id) || Msg.cfg_err("No such response id [#{id}]")
-        # SelDB applied with Entity (set par)
-        ent.deep_subst(sel.freeze)
       end
 
       private
@@ -61,12 +52,8 @@ module CIAX
       require 'libdevdb'
       ConfOpts.new('[id] [cmd]', options: 'h') do |cfg|
         dbi = Dev::Db.new.get(cfg.args.shift)
-        atrb = { dbi: dbi, stream: dbi[:stream], field: Field.new(dbi[:id]) }
-        cobj = Index.new(cfg, atrb)
-        cobj.add_rem.add_ext
-        ent = cobj.set_cmd(cfg.args)
-        sel = Select.new(dbi, :response)
-        puts sel.get(ent).path(cfg.args)
+        sel = Select.new(dbi, :command)
+        puts sel.path(cfg.args)
       end
     end
   end

@@ -40,19 +40,21 @@ module CIAX
 
       def ___rep_item(e0, itm)
         @rep.each(e0) do |e1|
+          # skip <par_..>
           _par2item(e1, itm) && next
-          e = __add_cmdfrm(e1) || next
-          itm.get(:body) { [] } << e
-          verbose { "Body Frame [#{e.inspect}]" }
+          e2 = __add_cmdfrm(e1)
+          itm.get(:body) { [] } << e2
+          verbose { "Body Frame [#{e2.inspect}]" }
         end
       end
 
       def __add_cmdfrm(e)
-        return e.name unless %w(char string).include?(e.name)
-        _get_h(e) do |atrb|
-          atrb[:val] = @rep.subst(atrb[:val])
-          verbose { "Data:[#{atrb}]" }
+        item = { type: e.name }
+        if %w(char string).include?(e.name)
+          item.update(_get_h(e) { |a| a[:val] = @rep.subst(a[:val]) })
         end
+        verbose { "Data:[#{item}]" }
+        item
       end
 
       ######## Status section #######

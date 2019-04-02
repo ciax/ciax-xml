@@ -55,7 +55,7 @@ module CIAX
 
           def ___init_sel
             if /true|1/ =~ @cfg[:noaffix]
-              { main: [:body] }
+              { main: [{ type: 'body' }] }
             else
               Hashx.new(@cfg[:dbi].get(:command)[:frame])
             end
@@ -82,12 +82,13 @@ module CIAX
           end
 
           def ___frame_by_type(db, ccr = nil)
-            if db.is_a? Hash
+            # cunk data: ccrange,body ...
+            if /ccrange|body/ =~ db[:type]
+              __mk_code(@fstr[db[:type].to_sym], {}, ccr)
+            else
               word = ___conv_by_cc(db[:val].dup)
               word = ___conv_by_stat(word)
               ___set_csv_frame(word, db, ccr)
-            else # cunk data: ccrange,body ...
-              __mk_code(@fstr[db.to_sym], {}, ccr)
             end
           end
 

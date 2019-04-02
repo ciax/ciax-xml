@@ -51,11 +51,7 @@ module CIAX
         verbose do
           cformat('Cut for %s from [%S](%d)', e0[:type], @frame, @frame.size)
         end
-        if e0[:type] == 'verify'
-          ___verify(e0)
-        else
-          ___assign(e0)
-        end
+        e0[:type] == 'verify' ? ___verify(e0) : ___assign(e0)
       end
 
       private

@@ -41,14 +41,14 @@ module CIAX
         def ___view_exe(vw)
           vw << __itemize('Issuing')
           self[:exec].each do |i| # each event
-            vw << cformat("    %S\n", i)
+            vw << cfmt("    %S\n", i)
           end
         end
 
         def ___view_cond(vw)
           vw << __itemize('Conditions')
           self[:stat].values.each do |i| # each event
-            vw << cformat("    %:6s\t: %s\n", i[:label], __result(i[:active]))
+            vw << cfmt("    %:6s\t: %s\n", i[:label], __result(i[:active]))
             ___view_event(vw, i[:cond])
           end
         end
@@ -67,12 +67,12 @@ module CIAX
         def ___make_cmp(j)
           fmt = "      %s compare %s [%s]\n"
           inv = j[:inv] ? 'not' : ''
-          cformat(fmt, __result(j[:res]), inv, j[:vals].join(', '))
+          cfmt(fmt, __result(j[:res]), inv, j[:vals].join(', '))
         end
 
         def ___make_cond(j)
           fmt = "      %s %:3s  (%s: %s)\n"
-          cformat(fmt, __result(j[:res]), j[:var], j[:type], ___make_exp(j))
+          cfmt(fmt, __result(j[:res]), j[:var], j[:type], ___make_exp(j))
         end
 
         def ___make_exp(j)
@@ -91,7 +91,7 @@ module CIAX
         end
 
         def __itemize(str, res = nil)
-          cformat("  %:2s\t: %s\n", str, res)
+          cfmt("  %:2s\t: %s\n", str, res)
         end
       end
 

@@ -65,10 +65,10 @@ module CIAX
             res = @stat.subst(word)
             # No cache if status replacement
             chg = @cfg[:nocache] = true if res != word
-            verbose { cformat('Convert (%s) %S -> %S', @id, word, res) } if chg
+            verbose { cfmt('Convert (%s) %S -> %S', @id, word, res) } if chg
             # Allow csv parameter
             code = res.split(',').map { |s| __mk_code(s, dbc) }.join
-            verbose { cformat('Cmd Frame Db [%S] -> %S', dbc, code) }
+            verbose { cfmt('Cmd Frame Db [%S] -> %S', dbc, code) }
             code
           end
 

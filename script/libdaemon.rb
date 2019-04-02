@@ -68,7 +68,7 @@ module CIAX
 
     def ___kill_pid(pid)
       Process.kill(:TERM, pid.to_i)
-      show cformat('%:1s Process Killed (%s)', 'Daemon', pid)
+      show cfmt('%:1s Process Killed (%s)', 'Daemon', pid)
     rescue
       nil
     end

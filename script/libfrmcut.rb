@@ -49,7 +49,7 @@ module CIAX
       # If cut str incldes terminetor, str will be trimmed
       def cut(e0)
         verbose do
-          cformat('Cut for %s from [%S](%d)', e0[:type], @frame, @frame.size)
+          cfmt('Cut for %s from [%S](%d)', e0[:type], @frame, @frame.size)
         end
         e0[:type] == 'verify' ? ___verify(e0) : ___assign(e0)
       end
@@ -60,7 +60,7 @@ module CIAX
       def ___assign(e0)
         str = ___cut_by_rule(e0)
         return '' if str.empty?
-        verbose { cformat('Assign:(%s) [%s = %S]', e0[:label], e0[:ref], str) }
+        verbose { cfmt('Assign:(%s) [%s = %S]', e0[:label], e0[:ref], str) }
         str = ___slice_part(str, e0[:slice])
         @codec.decode(str, e0).to_s
       end
@@ -108,7 +108,7 @@ module CIAX
       def ___slice_part(str, range)
         return str unless range
         res = str.slice(*range.split(':').map(&:to_i))
-        verbose { cformat('Slice: [%S] from [%S] by [%s]', res, str, range) }
+        verbose { cfmt('Slice: [%S] from [%S] by [%s]', res, str, range) }
         res
       end
 
@@ -127,10 +127,10 @@ module CIAX
 
       def ___check(e0, ref, val)
         if ref == val
-          verbose { cformat('Verify:(%s) [%S] OK', e0[:label], ref) }
+          verbose { cfmt('Verify:(%s) [%S] OK', e0[:label], ref) }
         else
           fmt = 'Mismatch(%s/%s):%S for %S'
-          cc_err(cformat(fmt, e0[:label], e0[:decode], val, ref))
+          cc_err(cfmt(fmt, e0[:label], e0[:decode], val, ref))
         end
       end
     end

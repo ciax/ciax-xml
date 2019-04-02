@@ -17,42 +17,41 @@ module CIAX
 
       def ___mk_sel(dbe, index)
         index.each do |id, item|
-          put(id, ___mk_body(dbe, item, dbe.attrs.merge(item.attrs)))
+          put(id, item.attrs.update(body: ___mk_body(dbe, item)))
         end
       end
 
-      def ___mk_body(dbe, item, tmp)
-        body = (item[:body] || []).map { |e| tmp.merge(e) } # Array
-        tmp[:noaffix] ? body : ___mk_main(dbe, body, tmp)
+      def ___mk_body(dbe, item)
+        body = item[:body] || []
+        item[:noaffix] ? body : ___mk_main(dbe, body)
       end
 
-      def ___mk_main(dbe, body, tmp)
+      def ___mk_main(dbe, body)
         dbe[:main].inject([]) do |a, e|
           case e[:type]
           when 'ccrange'
-            a << ___mk_ccr(dbe, body, tmp)
+            a << ___mk_ccr(dbe, body)
           when 'body'
             a + body
           else
-            a << tmp.merge(e)
+            a << e
           end
         end
       end
 
-      def ___mk_ccr(dbe, body, tmp)
+      def ___mk_ccr(dbe, body)
         return unless dbe[:ccrange]
         dbe[:ccrange].inject([]) do |a, e|
-          a + (e[:type] == 'body' ? body : [tmp.merge(e)])
+          a + (e[:type] == 'body' ? body : [e])
         end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libfrmcmd'
-      require 'libdevdb'
+      require 'libconf'
       ConfOpts.new('[id] [cmd]', options: 'h') do |cfg|
-        dbi = Dev::Db.new.get(cfg.args.shift)
-        sel = Select.new(dbi, :command)
+        dbi = Db.new.get(cfg.args.shift)
+        sel = Select.new(dbi, :response)
         puts sel.path(cfg.args)
       end
     end

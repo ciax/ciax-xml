@@ -10,18 +10,18 @@ module CIAX
         super()
         dbe = type?(dbi, Dbi)[type]
         # Ent is needed which includes response_id and cmd_parameters
-        ___mk_sel(dbe[:frame], dbe[:index])
+        ___mk_dic(dbe[:frame], dbe[:index])
       end
 
       private
 
-      def ___mk_sel(dbe, index)
+      def ___mk_dic(dbe, index)
         index.each do |id, item|
-          put(id, item.attrs.update(body: ___mk_body(dbe, item)))
+          put(id, item.attrs.update(struct: ___get_struct(dbe, item)))
         end
       end
 
-      def ___mk_body(dbe, item)
+      def ___get_struct(dbe, item)
         body = item[:body] || []
         item[:noaffix] ? body : ___mk_main(dbe, body)
       end

@@ -47,7 +47,7 @@ module CIAX
 
         def ___make_data(sel)
           @cache = _dic.deep_copy
-          __each_field(sel[:body])
+          __each_field(sel[:struct])
           @rspfrm.cc_check(@cache.delete('cc'))
           _dic.replace(@cache)
         end

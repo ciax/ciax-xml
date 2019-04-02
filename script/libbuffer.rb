@@ -85,7 +85,7 @@ module CIAX
         @sv_stat.push(:queue, cid)
         batch.each do |args|
           fcmd = { args: args, cid: cid }
-          fcmd[:type] = @cobj.set_cmd(args).get(:type) if @cobj
+          fcmd[:type] = @cobj.set_cmd(args.dup).get(:type) if @cobj
           @outbuf[pri] << fcmd
         end
         verbose { "OutBuf:Recieved:timing #{cid}(#{@id})\n#{@outbuf}" }

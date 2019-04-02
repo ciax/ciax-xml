@@ -35,7 +35,7 @@ module CIAX
       src ||= 'local'
       verbose { _exe_text('Executing', args.inspect, src, pri) }
       @pre_exe_procs.each { |p| p.call(args, src) }
-      msg = @cobj.set_cmd(args).exe_cmd(src, pri).msg
+      msg = @cobj.set_cmd(args.dup).exe_cmd(src, pri).msg
       @post_exe_procs.each { |p| p.call(args, src, msg) }
       self
     rescue LongJump, InvalidARGS

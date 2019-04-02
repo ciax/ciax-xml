@@ -53,7 +53,7 @@ module CIAX
           @cobj.get('interrupt').def_proc do |_ent, src|
             @batch_interrupt.each do |args|
               verbose { "Issuing:#{args} for Interrupt" }
-              buf.send(@cobj.set_cmd(args), 0)
+              buf.send(@cobj.set_cmd(args.dup), 0)
             end
             warning("Interrupt(#{@batch_interrupt}) from #{src}")
           end

@@ -8,7 +8,7 @@ module CIAX
     class Carousel < Slosyn
       def initialize(cfg = nil)
         super(-23.49, 0.41, 12, 10_004, cfg)
-        @axis.timeout = 65
+        @axis.timeout = 10
         _set_in(1) { _contact_sensor? }
         _set_in(3) { @axis.up_limit? }
         _set_in(4) { @axis.dw_limit? }

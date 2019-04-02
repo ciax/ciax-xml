@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'libfrmstat'
 require 'libfrmcut'
+require 'libfrmsel'
 
 # Conv Methods
 # Input  : upd block(frame,time)
@@ -24,78 +25,58 @@ module CIAX
 
         # Ent is needed which includes response_id and cmd_parameters
         def ext_local_conv
-          type?(@dbi, Dbi)
-          @fdbr = @dbi[:response]
-          @fds = @fdbr[:index]
+          @seldb = Select.new(type?(@dbi, Dbi))
           self
         end
 
         # Convert with corresponding cmd
         def conv(ent)
-          frm = @frame.get(ent.id)
-          return self unless frm
-          ___make_sel(ent)
+          frmsrc = @frame.get(ent.id)
+          return self unless frmsrc
           # CutFrame structure:
           #   main(total){ ccrange{ body(selected str) } }
           # terminator: frame pointer will jump to terminator
           #   when no length or delimiter is specified
-          @rspfrm = CutFrame.new(frm.dup, @dbi[:stream])
-          ___make_data
+          @rspfrm = CutFrame.new(frmsrc.dup, @dbi[:stream])
+          ___make_data(@seldb.get(ent))
           verbose { 'Conversion Frame -> Field' }
           self
         end
 
         private
 
-        # @sel structure:
-        #   { terminator, :main{}, ccrange{}, :body{} <- changes on every upd }
-        def ___make_sel(ent)
-          rid = ent[:response]
-          idx = @fds[rid] || Msg.cfg_err("No such response id [#{rid}]")
-          # SelDB of template
-          @sel = Hash[@fdbr[:frame]]
-          # SelDB specific for rid
-          @sel.update(idx)
-          # SelDB applied with Entity (set par)
-          @sel[:body] = ent.deep_subst(@sel[:body])
-        end
-
-        def ___make_data
+        def ___make_data(sel)
           @cache = _dic.deep_copy
-          if @sel.key?(:noaffix)
-            __getfield_recur(['body'])
-          else
-            __getfield_recur(@sel[:main])
-            @rspfrm.cc_check(@cache.delete('cc'))
-          end
+          __each_field(sel)
+          @rspfrm.cc_check(@cache.delete('cc'))
           _dic.replace(@cache)
         end
 
         # Process Frame to Field
-        def __getfield_recur(e0, common = {})
+        def __each_field(e0)
           e0.each do |e1|
-            ___getfield(e1, common)
+            if e1.is_a? Array
+              ___each_ccrange(e1)
+            else
+              ___getfield(e1)
+            end
           end
         end
 
-        def ___getfield_cc(cc)
+        def ___each_ccrange(e1)
           enclose('CCRange:[', ']') do
             @rspfrm.cc_start
-            __getfield_recur(cc)
+            __each_field(e1)
             @rspfrm.cc_reset
           end
         end
 
-        def ___getfield(e1, common = {})
+        def ___getfield(e1)
           case e1[:type]
           when 'verify'
-            @rspfrm.cut(common.merge(e1))
+            @rspfrm.cut(e1)
           when 'assign'
-            ___frame_to_field(e1) { @rspfrm.cut(common.merge(e1)) }
-          when 'ccrange'
-            ___getfield_cc(@sel[:ccrange])
-          when 'body'
-            __getfield_recur(@sel[:body] || [], e1)
+            ___frame_to_field(e1) { @rspfrm.cut(e1) }
           when 'echo' # Send back the command string
             @rspfrm.cut(label: 'Command Echo', val: @echo)
           end

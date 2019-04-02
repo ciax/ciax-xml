@@ -9,14 +9,14 @@ module CIAX
     # For Response Frame
     class CutFrame
       include Msg
-      # Parameter frame could be changed
+      # Parameter "frame" could be destroyed
       # terminator: used for detecting end of stream,
       #             cut off before processing in Frame#set().
       #             never being included in CC range
       # delimiter: cut 'variable length data' by delimiter
       #             can be included in CC range
       #
-      # dbe(dbi element) could have [endian, ccmethod, termineter]
+      # dbe(//frm/stream) could have [endian, ccmethod, termineter]
       def initialize(frame, dbe = {})
         @dbe = type?(dbe, Hash)
         @frame = ___cut_by_term(type?(frame, String))

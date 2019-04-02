@@ -84,13 +84,16 @@ module CIAX
         # Substitute string($+number) with parameters, which is called by others
         #  par={ val,range,format } or String
         #  str could include Math functions
+        # Returns new object
         class Entity < Entity
           def deep_subst(data)
             case data
             when Array
               data.map { |v| deep_subst(v) }.extend(Enumx)
             when Hash
-              data.each_with_object(Hashx.new) { |(k, v), r| r[k] = deep_subst(v) }
+              data.each_with_object(Hashx.new) do |(k, v), r|
+                r[k] = deep_subst(v)
+              end
             else
               ___subst_str(data)
             end

@@ -8,11 +8,8 @@ module CIAX
       def initialize(dbi)
         super()
         # Ent is needed which includes response_id and cmd_parameters
-        dbi = type?(dbi, Dbi)
-        res = dbi[:response]
-        frm = res[:frame]
-        tmp = [dbi, res, frm].inject(Hashx.new) { |h, e| h.merge(e.attrs) }
-        ___mk_sel(frm, res[:index], tmp)
+        res = type?(dbi, Dbi)[:response]
+        ___mk_sel(res[:frame], res[:index])
       end
 
       def get(ent)
@@ -24,11 +21,9 @@ module CIAX
 
       private
 
-      # @sel structure:
-      #   { terminator, :main{}, ccrange{}, :body{} <- changes on every upd }
-      def ___mk_sel(dbe, index, tmp)
+      def ___mk_sel(dbe, index)
         index.each do |id, item|
-          put(id, ___mk_body(dbe, item, tmp.merge(item.attrs)))
+          put(id, ___mk_body(dbe, item, dbe.attrs.merge(item.attrs)))
         end
       end
 

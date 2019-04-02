@@ -31,68 +31,45 @@ module CIAX
           def _gen_entity(opt)
             ent = super
             @stat = type?(@cfg[:field], Field)
-            @frame = { changed: nil }
             @sel = Select.new(@cfg[:dbi], :command).get(ent[:id])
             @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
-            ___init_body(ent)
-            # For send back
-            @stat.echo = ent[:frame] = @frame[:struct]
-            verbose { "Frame Status  #{@frame.inspect}" }
+            @stat.echo = ___init_frame(ent)
             ent
           end
 
-          def ___init_body(ent)
+          def ___init_frame(ent)
             verbose { "Body:#{@cfg[:label]}(#{@id})" }
             @sp = type?(@cfg[:stream], Hash)
             @codec = Codec.new(@sp[:endian])
-            @frame[:struct] = ent.deep_subst(__mk_frame(@sel[:struct]))
-            ___chk_nocache
-            verbose { "Cmd Generated [#{@id}]" }
-          end
-
-          def ___chk_nocache
-            return if @cfg[:nocache] || !@frame[:changed]
-            warning("Cache stored (#{@id}) despite Frame includes Status")
-            @cfg[:nocache] = true
+            ent[:frame] = ent.deep_subst(__mk_frame(@sel[:struct]))
           end
 
           # instance var frame,sel,field,fstr
           def __mk_frame(array)
             array.map do |dbc|
-              dbc.is_a?(Array) ? ___mk_cc(dbc) : ___single_frame(dbc)
+              dbc.is_a?(Array) ? ___cc_frame(dbc) : ___single_frame(dbc)
             end.join
           end
 
-          def ___mk_cc(array)
-            @frame[:cc] = CheckCode.new(@sp[:ccmethod]) do
-              array.map { |dbc| ___single_frame(dbc) }.join
+          def ___cc_frame(array)
+            CheckCode.new(@sp[:ccmethod]) do |cc|
+              array.map { |dbc| ___single_frame(dbc, cc) }.join
             end
           end
 
-          def ___single_frame(dbc)
-            word = ___conv_by_cc(dbc[:val].dup)
-            word = ___conv_by_stat(word)
-            ___set_csv_frame(word, dbc)
-          end
-
-          def ___conv_by_cc(word)
-            return word unless @frame.key?(:cc)
-            @frame[:cc].subst(word)
-            word
-          end
-
-          def ___conv_by_stat(word)
+          def ___single_frame(dbc, cc = nil)
+            word = dbc[:val].dup
+            # Replace check code with ${cc}
+            word = cc.subst(word) if cc
+            # Replace status with ${status_id}
             res = @stat.subst(word)
-            if res != word
-              @frame[:changed] = true
-              verbose { cformat('Convert (%s) %S -> %S', @id, word, res) }
-            end
-            res
-          end
-
-          def ___set_csv_frame(str, db)
+            # No cache if status replacement
+            chg = @cfg[:nocache] = true if res != word
+            verbose { cformat('Convert (%s) %S -> %S', @id, word, res) } if chg
             # Allow csv parameter
-            str.split(',').map { |s| __mk_code(s, db) }.join
+            code = res.split(',').map { |s| __mk_code(s, dbc) }.join
+            verbose { cformat('Cmd Frame Db [%S] -> %S', dbc, code) }
+            code
           end
 
           def __mk_code(str, db = {})

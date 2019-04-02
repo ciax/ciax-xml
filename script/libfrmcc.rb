@@ -15,7 +15,7 @@ module CIAX
           Msg.cfg_err("Bad CC method #{method}")
         end
         @method = method
-        concat(yield) if defined? yield
+        concat(yield self) if defined? yield
       end
 
       def check(str)
@@ -31,8 +31,7 @@ module CIAX
       end
 
       def subst(str)
-        str.gsub!(/\$\{cc\}/, ccc)
-        self
+        str.gsub(/\$\{cc\}/, ccc)
       end
 
       # Calculate Check Code

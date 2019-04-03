@@ -41,26 +41,29 @@ module CIAX
             verbose { "Body:#{@cfg[:label]}(#{@id})" }
             @sp = type?(@cfg[:stream], Hash)
             @codec = Codec.new(@sp[:endian])
-            ent[:frame] = ent.deep_subst(__mk_frame(@sel[:struct]))
+            @frame = ['']
+            ent[:frame] = __mk_frame(ent.deep_subst(@sel[:struct]))
           end
 
           # instance var frame,sel,field,fstr
           def __mk_frame(array)
-            array.map do |dbc|
+            array.each do |dbc|
               dbc.is_a?(Array) ? ___cc_frame(dbc) : ___single_frame(dbc)
-            end.join
+            end
+            # Replace check code with ${cc}
+            @frame[1] = __mk_code(@cc.ccc, @frame[1]) if @cc
+            @frame.join
           end
 
           def ___cc_frame(array)
-            CheckCode.new(@sp[:ccmethod]) do |cc|
-              array.map { |dbc| ___single_frame(dbc, cc) }.join
+            @cc = CheckCode.new(@sp[:ccmethod]) do
+              array.map { |dbc| ___single_frame(dbc) }.join
             end
           end
 
-          def ___single_frame(dbc, cc = nil)
-            word = dbc[:val].dup
-            # Replace check code with ${cc}
-            word = cc.subst(word) if cc
+          def ___single_frame(dbc)
+            word = ___chk_cc(dbc)
+            return('') unless word
             # Replace status with ${status_id}
             res = @stat.subst(word)
             # No cache if status replacement
@@ -69,7 +72,16 @@ module CIAX
             # Allow csv parameter
             code = res.split(',').map { |s| __mk_code(s, dbc) }.join
             verbose { cfmt('Cmd Frame Db [%S] -> %S', dbc, code) }
-            code
+            @frame.last << code
+          end
+
+          def ___chk_cc(dbc)
+            if dbc[:type] == 'cc'
+              @frame.push(dbc)
+              @frame.push('')
+              return
+            end
+            dbc[:val].dup
           end
 
           def __mk_code(str, db = {})

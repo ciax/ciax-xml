@@ -121,13 +121,13 @@ module CIAX
         ops = ___add_colon(str)
         ___make_usage(ops)
         ___parse(ops)
-        ___set_view_mode
+        ___exe_opt
       end
 
       # add ':' to taking parameter options whose description includes '[]'
       def ___add_colon(str)
         str.split(//).map do |k|
-          k + (@optdb[k.to_sym].to_s.include?('[') ? ':' : '')
+          k + (@optdb.get(k.to_sym).to_s.include?('[') ? ':' : '')
         end.join
       end
 
@@ -136,7 +136,7 @@ module CIAX
         @index = {}
         @available = (ops.chars.map(&:to_sym) & @optdb.keys)
         # Current Options
-        @available.each { |c| @index["-#{c}"] = @optdb[c] }
+        @available.each { |c| @index["-#{c}"] = @optdb.get(c) }
       end
 
       # ARGV must be taken after parse def ___parse(ops)
@@ -148,9 +148,10 @@ module CIAX
         raise(InvalidOPT, $ERROR_INFO)
       end
 
-      def ___set_view_mode
-        v = __make_exopt(%i(j r))
-        View.default_view.replace(v.to_s) if v
+      def ___exe_opt
+        keys.each do |k|
+          @optdb[k][:proc].call(self[k]) if @optdb[k].key?(:proc)
+        end
       end
 
       def __make_exopt(ary)
@@ -161,11 +162,19 @@ module CIAX
     class Db < Hash
       attr_reader :layers
       def initialize(optarg)
-        update(optarg.select { |k, _v| k.to_s.length == 1 })
+        optarg.each do |k, v|
+          self[k] = { title: v } if k.to_s.length == 1
+        end
         # Custom options
         optarg[:options] = optarg[:options].to_s + keys.join
         ___mk_optdb
       end
+
+      def get(id)
+        self[id][:title] if id
+      end
+
+      private
 
       def ___mk_optdb
         ___optdb_client
@@ -207,7 +216,7 @@ module CIAX
 
       def __add_optdb(db, fmt)
         db.each do |k, v|
-          self[k] = format(fmt, v) unless key?(k)
+          self[k] = { title: format(fmt, v) } unless key?(k)
         end
       end
     end

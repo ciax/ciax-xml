@@ -82,7 +82,7 @@ module CIAX
         if mv.is_a? Hash
           __rec_merge(mv, ov)
         elsif mv.is_a? Array
-          mv.concat(ov)
+          mv.replace(ov)
         else
           ov
         end

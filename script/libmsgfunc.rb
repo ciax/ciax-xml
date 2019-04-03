@@ -55,7 +55,7 @@ module CIAX
     def jread(jstr = nil)
       return j2h(jstr) if jstr
       data_err("No data in file(#{ARGV})") unless (jstr = gets(nil))
-      show('Get data from STDIN')
+      show('Getting Data from STDIN')
       j2h(jstr)
     end
 

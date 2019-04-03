@@ -30,8 +30,8 @@ module CIAX
       #       -> make skeleton with dbi
       #       -> deep_update by @preload
       def load(tag = nil)
-        verbose { 'File Loading' }
         if !tag && @preload
+          verbose { 'Load from Preloading' }
           deep_update(@preload)
           @preload = nil
         else

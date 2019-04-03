@@ -40,7 +40,7 @@ module CIAX
         @outbuf = Outbuf.new
         @id = @sv_stat.get(:id)
         @que = Arrayx.new # For testing
-        @cmt_procs.prepend(self, :flush) { ___sv_dw }
+        @cmt_procs.append(self, :flush, 1) { ___sv_dw }
       end
 
       # Take App command entity

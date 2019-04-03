@@ -77,9 +77,9 @@ module CIAX
     # Set time_upd to @cmt_procs with lower layer time
     def init_time2cmt(stat = nil)
       if stat
-        @cmt_procs.prepend(self, :time) { time_upd(stat[:time]) }
+        @cmt_procs.append(self, :time, 0) { time_upd(stat[:time]) }
       else
-        @cmt_procs.prepend(self, :time) { time_upd }
+        @cmt_procs.append(self, :time, 0) { time_upd }
       end
       self
     end
@@ -89,7 +89,7 @@ module CIAX
         verbose { __ppg_verstr(self, obj, 'UPD') }
         obj.upd
       end
-      obj.cmt_procs.append(self, :cmt) do |o|
+      obj.cmt_procs.append(self, :cmt, 4) do |o|
         verbose { __ppg_verstr(o, self, 'CMT') }
         cmt
       end

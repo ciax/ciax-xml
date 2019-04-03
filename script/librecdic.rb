@@ -44,6 +44,7 @@ module CIAX
         self
       end
 
+      # Move current item to new one when added
       def sel_new
         rvl = @rec_view.list
         if rvl.size > @last_size
@@ -94,7 +95,7 @@ module CIAX
         @cache.default_proc = proc do |hash, key|
           hash[key] = Record.new(key).ext_remote(@host)
         end
-        @cmt_procs.append(self, :rec_dic) { sel_new }
+        @cmt_procs.append(self, :rec_dic, 1) { sel_new }
         self
       end
 

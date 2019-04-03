@@ -2,62 +2,49 @@
 require 'libmsg'
 module CIAX
   # Proc Dic
+  # Commit Priority
+  #    (propagation from lower layer)
+  #  0: timestamp update
+  #  1: data conversion
+  #  2: adding data label
+  #  3: file saving/logging/propagation to upper layer
+  #
+  # Update Priority
+  #    (propagation from upper layer)
+  #  0: loading/status query/propagation to lower layer
   class ProcArray
     include Msg
     def initialize(obj, name = nil)
       super()
       @obj = obj
       @name = __mk_id(@obj, name)
-      @list = []
-      @dic = {}
+      clear
     end
 
     def call
-      view.each do |k|
-        @dic[k].call(@obj)
-        verbose { "Calling #{k} in (#{@name})" }
+      @list.each do |a|
+        a.each do |k, p|
+          p.call(@obj)
+          verbose { "Calling #{k} in (#{@name})" }
+        end
       end
       self
     end
 
     def view
-      dic = @dic.keys
-      return @list.dup if dic.sort == @list.sort
-      a = [@list, dic].map(&:inspect).join(' vs. ')
-      cfg_err('Keys and Order List are inconsistent ' + a)
+      @list.map(&:keys).flatten
     end
 
     def clear
-      @list.clear
-      @dic.clear
+      @list = Array.new(5) { {} }
       self
     end
 
-    # Append proc after id (base id of file) proc
-    def append(obj, id, ref = nil, &prc)
+    # Append proc in specified priority dict
+    def append(obj, id, pri = 0, &prc)
       return self unless (id = __chk_id(obj, id))
-      @dic[id] = prc
-      if (idx = __find_idx(ref))
-        @list.insert(idx + 1, id)
-        verbose { "Insert '#{id}' after '#{ref}' in #{@name}#{view.inspect}" }
-      else
-        @list.push(id)
-        verbose { "Appended in #{@name}#{view.inspect}" }
-      end
-      self
-    end
-
-    # Prepend proc before id
-    def prepend(obj, id, ref = nil, &prc)
-      return self unless (id = __chk_id(obj, id))
-      @dic[id] = prc
-      if (idx = __find_idx(ref))
-        @list.insert(idx, id)
-        verbose { "Insert '#{id}' before '#{ref}' in #{@name}#{view.inspect}" }
-      else
-        @list.unshift(id)
-        verbose { "Prepended in #{@name}#{view.inspect}" }
-      end
+      @list[pri][id] = prc
+      verbose { "Appended in #{@name}#{view.inspect}" }
       self
     end
 
@@ -72,13 +59,8 @@ module CIAX
 
     def __chk_id(obj, name)
       id = __mk_id(obj, name)
-      return id unless @list.include?(id)
+      return id unless @list.any? { |h| h.key?(id) }
       cfg_err("Duplicated id [#{id}]")
-    end
-
-    def __find_idx(ref)
-      return unless ref
-      @list.index { |e| e =~ /#{ref}/ }
     end
   end
 end

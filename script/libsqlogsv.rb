@@ -67,12 +67,12 @@ module CIAX
 
       def ___real_mode(stat, tbl)
         # Add to stat.cmt
-        stat.cmt_procs.append(self, :sqlog) { @que.push tbl.insert }
+        stat.cmt_procs.append(self, :sqlog, 3) { @que.push tbl.insert }
       end
 
       def ___dummy_mode(stat, tbl)
         verbose { 'Invalid Version(0): No Log' }
-        stat.cmt_procs.append(self, :sqlog) do
+        stat.cmt_procs.append(self, :sqlog, 3) do
           verbose { "Dummy Insert\n" + tbl.insert }
         end
       end

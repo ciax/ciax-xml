@@ -10,7 +10,7 @@
           <string label="Device No.">00</string>
           <body/>
         </ccrange>
-        <string format="%02X">${cc}</string>
+        <cc format="%02X"/>
         <string label="Suffix">*</string>
         <char label="Delimiter" length="1">0xd</char>
       </frame>

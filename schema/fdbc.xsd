@@ -92,6 +92,7 @@
     <xsd:choice>
       <xsd:element ref="fdbc:char"/>
       <xsd:element ref="fdbc:string"/>
+      <xsd:element ref="fdbc:cc"/>
     </xsd:choice>
   </xsd:group>
   <xsd:element name="char">
@@ -112,6 +113,13 @@
           <xsd:attribute name="format" type="xsd:token"/>
         </xsd:extension>
       </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="cc">
+    <xsd:complexType>
+      <xsd:attribute name="label" type="xsd:token"/>
+      <xsd:attribute name="format" type="xsd:token"/>
+      <xsd:attribute name="length" type="xsd:int"/>
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

@@ -10,7 +10,7 @@
           <body/>
           <char label="Suffix" length="1">3</char>
         </ccrange>
-        <char length="1">${cc}</char>
+        <cc length="1"/>
       </frame>
       <group caption="Status" id="gst">
         <item id="getstat" label="Get Status" response="getstat" type="stat">

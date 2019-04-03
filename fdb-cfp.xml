@@ -9,7 +9,7 @@
         <ccrange>
           <body/>
         </ccrange>
-        <string format="%02X">${cc}</string>
+        <cc format="%02X"/>
         <char length="1">13</char>
         <char length="1">10</char>
       </frame>

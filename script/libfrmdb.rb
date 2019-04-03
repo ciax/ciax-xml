@@ -50,7 +50,7 @@ module CIAX
 
       def __add_cmdfrm(e)
         item = { type: e.name }
-        if %w(char string).include?(e.name)
+        if %w(char string cc).include?(e.name)
           item.update(_get_h(e) { |a| a[:val] = @rep.subst(a[:val]) })
         end
         verbose { "Data:[#{item}]" }

@@ -11,7 +11,7 @@
         <char label="Q Header: PC Number" length="1">0xFF</char>
         <char label="Q Header: Request Unit I/O Number" length="2">0x3FF</char>
         <char label="Q Header: Request Unit Station Number" length="1">0</char>
-        <char label="Q Header: Send Data Length MSB" length="1">${cc}</char>
+        <cc label="Q Header: Send Data Length MSB" length="1"/>
         <char label="Q Header: Send Data Length LSB" length="1">0</char>
         <ccrange>
           <char label="Q Header: CPU Watch Timer" length="2">1</char>

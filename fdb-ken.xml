@@ -11,7 +11,7 @@
           <body/>
           <char label="ETX" length="1">3</char>
         </ccrange>
-        <string format="%02X">${cc}</string>
+        <cc format="%02X"/>
       </frame>
       <group caption="Protocol" id="gpr">
         <!-- Ack Commands -->

@@ -13,7 +13,6 @@ module CIAX
     def initialize(spcfg, atrb = Hashx.new)
       @cfg = spcfg.gen(self).update(atrb)
       super(m2id(@cfg[:obj].class, -2))
-      _attr_set
       @opt = @cfg[:opt]
       verbose { 'Initiate ExeDic (option:' + @opt.keys.join + ')' }
       ext_dic(:dic)

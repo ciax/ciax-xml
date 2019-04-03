@@ -11,8 +11,8 @@ module CIAX
       attr_reader :finish_procs
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       def initialize(id = nil) # Session ID for Loading
-        super('record')
-        _attr_set(id, '0', nil, 'record')
+        super('record', id)
+        _attr_set('0', nil, 'record')
         @id = self[:id] = self[:time].to_s unless @id
         update(port: 55_555, cid: nil, label: nil, pid: '0')
         update(mode: 'test', status: 'ready', result: 'busy')

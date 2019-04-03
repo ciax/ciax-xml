@@ -47,8 +47,8 @@ module CIAX
       # Command Input Logging
       class Input < Varx
         def initialize(id, ver)
-          super("input_#{layer_name}")
-          _attr_set(id, ver)
+          super("input_#{layer_name}", id)
+          _attr_set(ver)
           init_time2cmt
           ext_local_log
         end

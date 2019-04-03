@@ -9,8 +9,7 @@ module CIAX
     class RecArc < Varx
       attr_reader :push_procs
       def initialize
-        super('list')
-        _attr_set('record')
+        super('list', 'record')
         @push_procs = [proc { verbose { 'Propagate push' } }]
         # [:dic] : Archive Dic : Dictionary of Record (id: cid,pid,res)
         self[:format_ver] = 1

@@ -17,9 +17,9 @@ module CIAX
       attr_reader :base64
       def initialize(id, cfg)
         iocmd = type?(cfg, Config)[:iocmd] || give_up(' No IO command')
-        super('stream')
+        super('stream', id)
         @sv_stat = cfg[:sv_stat]
-        _attr_set(id, cfg[:version])
+        _attr_set(cfg[:version])
         update('dir' => '', 'cmd' => '', 'base64' => '')
         verbose { "Initiate [#{iocmd}]" }
         init_time2cmt

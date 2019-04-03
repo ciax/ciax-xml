@@ -9,9 +9,9 @@ module CIAX
   class Statx < Varx
     attr_reader :dbi
     def initialize(type, obj, mod = Db)
-      super(type)
-      @dbi = type?(___get_dbi(obj, mod), Dbi)
-      _attr_set(@dbi[:site_id] || @dbi[:id], @dbi[:version].to_i, @dbi[:host])
+      super(type, ___get_id(obj))
+      @dbi ||= mod.new.get(@id)
+      _attr_set(@dbi[:version].to_i, @dbi[:host])
       @layer = @dbi[:layer]
     end
 
@@ -26,18 +26,18 @@ module CIAX
     #  obj == Dbi    : return obj
     #  obj == String : id <= obj
     #  obj == Array  : id <= obj.shift
-    # When input from File
-    #  obj <= Read[:id] anyway
     # -----------------
     # Get Dbi with id from Db
-    def ___get_dbi(obj, mod)
-      return obj if obj.is_a? Dbi
-      id = if STDIN.tty?
-             obj.is_a?(Array) ? obj.shift : obj
-           else
-             (@preload = jread)[:id]
-           end
-      mod.new.get(id)
+    def ___get_id(obj)
+      case obj
+      when Dbi
+        @dbi = obj
+        @dbi[:site_id] || @dbi[:id]
+      when Array
+        obj.shift
+      else
+        obj
+      end
     end
   end
 end

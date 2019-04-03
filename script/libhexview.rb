@@ -55,8 +55,8 @@ module CIAX
       #   + Field (field:name) + Frame (frame:name)
       def initialize(stat, hdb = nil)
         @stat = type?(stat, SubStat)
-        super('hex')
-        _attr_set(@stat[:id], @stat[:data_ver])
+        super('hex', @stat[:id])
+        _attr_set(@stat[:data_ver])
         @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
         @sv_stat = @stat.sv_stat
         vmode('x')

@@ -11,9 +11,13 @@ module CIAX
   class Varx < Upd
     # For checking local/remote, @host is exposed
     attr_reader :type, :id, :host
-    def initialize(type)
+    def initialize(type, id = nil)
       super()
       @type = type
+      # When input from File
+      #  obj <= Read[:id] anyway
+      id = (@preload = jread)[:id] if !id && !STDIN.tty?
+      @id = self[:id] = id
       # @id is for file name (prevent overwritten)
       self[:format_ver] = nil
     end
@@ -67,10 +71,8 @@ module CIAX
       _ext_local_file(@dir)
     end
 
-    def _attr_set(id = nil, ver = nil, host = nil, dir = nil)
+    def _attr_set(ver = nil, host = nil, dir = nil)
       # Headers (could be overwritten by file load)
-      self[:id] ||= id
-      @id = (self[:id] ||= id)
       self[:data_ver] = ver if ver
       self[:host] = host || HOST
       # @dir is subdir on web/file folder (~/.var/@dir)

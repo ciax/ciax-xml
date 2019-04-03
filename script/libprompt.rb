@@ -7,8 +7,7 @@ module CIAX
     attr_reader :db
     # type = site,mcr
     def initialize(type, id)
-      super(['server', type].compact.join('_'))
-      _attr_set(id)
+      super(['server', type].compact.join('_'), id)
       @db = {}
       self[:msg] = ''
       init_time2cmt

@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'libview'
-require 'libopt'
 # Extened Hash
 module CIAX
   # Extended Enumerable
@@ -88,20 +87,6 @@ module CIAX
           ov
         end
       end
-    end
-  end
-
-  module Opt::Chk
-    private
-
-    # Set view mode procs
-    def ___set_opt(str)
-      %i(j r).each do |k|
-        @optdb[k][:proc] = proc do
-          View.default_view.replace(k.to_s)
-        end
-      end
-      super
     end
   end
 end

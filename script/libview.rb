@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'libpath'
+require 'libopt'
 module CIAX
   module View
     # view mode change
@@ -39,6 +40,23 @@ module CIAX
 
       def self.default_view
         @default_view
+      end
+    end
+  end
+
+  module Opt
+    # Adding View mode option to Opt
+    module Chk
+      private
+
+      # Set view mode procs
+      def ___set_opt(str)
+        %i(j r).each do |k|
+          @optdb[k][:proc] = proc do
+            View.default_view.replace(k.to_s)
+          end
+        end
+        super
       end
     end
   end

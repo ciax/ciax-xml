@@ -51,8 +51,7 @@ module CIAX
 
       def response(ent)
         type?(ent, Config)
-        return self if snd(ent[:frame], ent.id) && ent.key?(:response) && rcv
-        Hashx.new
+        snd(ent[:frame], ent.id) && ent.key?(:response) && rcv || Hashx.new
       end
 
       private
@@ -107,7 +106,7 @@ module CIAX
         Process.kill('TERM', @f.pid)
         Process.waitpid(@f.pid)
         @f.close
-        verbose { @f.closed? ? 'Stream Closed' : 'Stream not Closed' }
+        verbose { cfmt('Stream%s Closed', @f.closed? ? '' : ' not') }
       end
 
       # rcv sub methods

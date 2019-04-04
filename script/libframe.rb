@@ -22,7 +22,8 @@ module CIAX
       end
 
       def input(hash)
-        _dic.update(type?(hash, Hash))
+        update(type?(hash, Hashx).pick([:time]))
+        _dic.update(hash['cmd'] => hash['base64'])
         cmt
       end
     end

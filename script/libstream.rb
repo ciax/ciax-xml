@@ -51,8 +51,8 @@ module CIAX
 
       def response(ent)
         type?(ent, Config)
-        return {} unless snd(ent[:frame], ent.id) && ent.key?(:response) && rcv
-        { time: self[:time], ent.id => @base64 }
+        return self if snd(ent[:frame], ent.id) && ent.key?(:response) && rcv
+        Hashx.new
       end
 
       private

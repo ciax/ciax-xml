@@ -32,7 +32,7 @@ module CIAX
             val = self[:data][hash[:ref] || key]
             ___match_items(tbl, key, val)
           end
-          verbose { 'Conversion Status -> Symbol' }
+          verbose { _conv_text('Status -> Symbol', @id, time) }
           self
         end
 

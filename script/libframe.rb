@@ -26,9 +26,7 @@ module CIAX
         update(hash.pick([:time]))
         cid = hash['cmd']
         _dic.update(cid => hash['base64'])
-        verbose do
-          cfmt('Conversion Stream -> Frame %S %S', cid, time)
-        end
+        verbose { _conv_text('Stream -> Frame', cid, time) }
         cmt
       end
     end

@@ -108,10 +108,15 @@ module CIAX
       end.join('').rstrip
     end
 
-    # make verbose text for exec
+    # Specific text for verbose
+    #  verbose text for exec
     def _exe_text(*par)
       # Action, cmdstr, source, priority
       cfmt("Executing %s from '%s' with priority %s", *par)
+    end
+
+    def _conv_text(*par)
+      cfmt('Conversion %s %S %S', *par)
     end
   end
 end

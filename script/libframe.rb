@@ -21,9 +21,14 @@ module CIAX
         dec64(val) if val
       end
 
-      def input(hash)
-        update(type?(hash, Hashx).pick([:time]))
-        _dic.update(hash['cmd'] => hash['base64'])
+      def conv(hash)
+        return self if type?(hash, Hashx).empty?
+        update(hash.pick([:time]))
+        cid = hash['cmd']
+        _dic.update(cid => hash['base64'])
+        verbose do
+          cfmt('Conversion Stream -> Frame %S %S', cid, time)
+        end
         cmt
       end
     end

@@ -40,7 +40,7 @@ module CIAX
           #   when no length or delimiter is specified
           @rspfrm = CutFrame.new(frmsrc.dup, @dbi[:stream])
           ___make_data(ent.deep_subst(@seldb.get(ent[:response])))
-          verbose { cfmt('Conversion Frame -> Field %S', ent.id) }
+          verbose { cfmt('Conversion Frame -> Field %S %S', ent.id, time) }
           self
         end
 

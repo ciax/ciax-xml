@@ -27,7 +27,7 @@ module CIAX
     # Should be done when pulling data
     def upd
       @upd_procs.call
-      verbose { "Update(#{time_id}) Pre Procs" }
+      verbose { "Update(#{time_id}) PreProcs#{@upd_procs.view.inspect}" }
       self
     end
 
@@ -64,6 +64,10 @@ module CIAX
     end
 
     # Time Updater
+    def time
+      self[:time]
+    end
+
     def time_upd(tm = nil)
       self[:time] = tm || now_msec
       verbose { "Time Updated #{self[:time]}" }
@@ -75,21 +79,15 @@ module CIAX
     end
 
     # Set time_upd to @cmt_procs with lower layer time
-    def init_time2cmt(stat = nil)
-      if stat
-        @cmt_procs.append(self, :time, 0) { time_upd(stat[:time]) }
-      else
-        @cmt_procs.append(self, :time, 0) { time_upd }
-      end
+    def init_time2cmt
+      @cmt_procs.append(self, :time, 0) { time_upd }
       self
     end
 
     def propagation(obj)
-      @upd_procs.append(obj, :upd) do
-        verbose { __ppg_verstr(self, obj, 'UPD') }
-        obj.upd
-      end
       obj.cmt_procs.append(self, :cmt, 4) do |o|
+        # Update self[:time]
+        time_upd(o[:time])
         verbose { __ppg_verstr(o, self, 'CMT') }
         cmt
       end

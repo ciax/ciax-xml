@@ -40,7 +40,6 @@ module CIAX
           step = Step.new(self[:start]).ext_local_processor(e1, depth, @opt)
           step.ext_local_dev(@cfg[:dev_dic]) if @cfg.key?(:dev_dic)
           self[:steps] << step
-          propagation(step)
           step
         end
 

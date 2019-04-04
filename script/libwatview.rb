@@ -30,7 +30,6 @@ module CIAX
       end
 
       def ___init_cmt_procs
-        init_time2cmt(@event)
         propagation(@event)
         @cmt_procs.append(self, :view, 1) do
           %i(exec block int act_time upd_next).each do |id|

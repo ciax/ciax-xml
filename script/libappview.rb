@@ -49,7 +49,6 @@ module CIAX
 
       def ___init_cmt_procs
         @elps = Elapsed.new(@stat)
-        init_time2cmt(@stat)
         propagation(@stat)
         @cmt_procs.append(self, :view, 1) do
           self['gtime'] = { caption: '', lines: [hash = {}] }

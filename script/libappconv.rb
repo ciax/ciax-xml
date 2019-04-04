@@ -19,7 +19,6 @@ module CIAX
         end
 
         def ext_local_conv
-          init_time2cmt(@field)
           @cmt_procs.append(self, :conv, 1) { conv }
           self
         end
@@ -33,6 +32,7 @@ module CIAX
             _dic[id] = cnd ? dflt : ___get_val(hash, id)
           end
           verbose { 'Conversion Field -> Status' }
+          time_upd(@field[:time])
           self
         end
 

@@ -69,7 +69,6 @@ module CIAX
 
       def ___init_status(status)
         @status = type_gen(status, App::Status) { |mod| mod.new(@dbi) }
-        init_time2cmt(@status)
         propagation(@status)
       end
     end

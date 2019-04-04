@@ -17,8 +17,6 @@ module CIAX
         self[:comerr] = false
         ext_dic(:data) { ___init_field }
         @frame = Stream::Frame.new(@dbi)
-        init_time2cmt(@frame)
-        propagation(@frame)
       end
 
       # Substitute str by Field data

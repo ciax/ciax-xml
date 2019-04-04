@@ -42,6 +42,7 @@ module CIAX
 
     # Append proc in specified priority dict
     def append(obj, id, pri = 0, &prc)
+      verbose { "Appending in #{@name}#{__mk_id(obj, id)}" }
       return self unless (id = __chk_id(obj, id))
       @list[pri][id] = prc
       verbose { "Appended in #{@name}#{view.inspect}" }

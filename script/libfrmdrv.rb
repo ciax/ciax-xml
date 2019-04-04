@@ -28,7 +28,9 @@ module CIAX
 
         def ___init_processor_ext
           @cobj.rem.ext.def_proc do |ent, src|
+            # This corresponds the propagation
             @frame.input(@stream.response(ent))
+            verbose { cfmt('Conversion Stream -> Frame %S %S', ent.id, @stream.time) }
             @stat.conv(ent)
             @stat.flush unless src == 'buffer'
           end

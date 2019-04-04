@@ -11,25 +11,24 @@ module CIAX
       attr_reader :dbi, :sv_stat
       def initialize(status, sv_stat = nil)
         ext_dic(:data)
-        self[:status] = type?(status, App::Status)
         super()
-        update(status.pick(%i(id time data_ver data class msg)))
-        self[:field] = type?(status.field, Frm::Field)
-        self[:frame] = type?(self[:field].frame, Stream::Frame)
-        @dbi = self[:status].dbi
-        @sv_stat = sv_stat || Prompt.new('site', self[:id])
+        @stat = type?(status, App::Status)
+        update(@stat.pick(%i(id time data_ver data class msg)))
+        @dbi = @stat.dbi
+        @sv_stat = sv_stat || Prompt.new('site', @stat[:id])
+        ___init_stats
         ___init_cmt_procs
       end
 
       def ext_remote(host)
-        %i(frame field status).each do |ky|
+        @skeys.each do |ky|
           self[ky].ext_remote(host)
         end
         self
       end
 
       def ext_local
-        %i(frame field status).each do |ky|
+        @skeys.each do |ky|
           self[ky].ext_local
         end
         self
@@ -41,10 +40,18 @@ module CIAX
 
       private
 
+      def ___init_stats
+        field = type?(@stat.field, Frm::Field)
+        frame = type?(field.frame, Stream::Frame)
+        sdic = { status: @stat, field: field, frame: frame }
+        @skeys = sdic.keys
+        update(sdic)
+      end
+
       def ___init_cmt_procs
-        init_time2cmt(self[:status])
+        init_time2cmt(@stat)
         propagation(@sv_stat)
-        propagation(self[:status])
+        propagation(@stat)
         cmt
       end
     end

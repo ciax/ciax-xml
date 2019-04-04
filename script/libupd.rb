@@ -84,20 +84,21 @@ module CIAX
       self
     end
 
+    # Returns argument
     def propagation(obj)
       obj.cmt_procs.append(self, :cmt, 4) do |o|
         # Update self[:time]
         time_upd(o[:time])
-        verbose { __ppg_verstr(o, self, 'CMT') }
+        verbose { __ppg_verstr(o, self) }
         cmt
       end
-      self
+      obj
     end
 
     private
 
-    def __ppg_verstr(src, dst, way)
-      fmt = "#{way} Propagate %s -> %s from %s"
+    def __ppg_verstr(src, dst)
+      fmt = 'Propagate %s -> %s from %s'
       ca = caller.grep_v(/lib(upd|msg)/).first.split('/').last.tr("'`", '')
       format(fmt, src.base_class, dst.base_class, ca)
     end

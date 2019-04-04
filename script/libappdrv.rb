@@ -40,10 +40,13 @@ module CIAX
         #      Batch: Update Field by Frm response
         #      Batch: Repeat until outbuffer is empty
         def ___init_buffer
-          buf = Buffer.new(@sv_stat, @sub.cobj)
+          buf = Buffer.new(@sv_stat, @sub.cobj) do |args, src|
+            verbose { cfmt('Processing App to Buffer %S', args) }
+            @sub.exe(args, src)
+          end
           ___init_proc_int(buf)
           ___init_proc_ext(buf)
-          ___init_proc_buf(buf)
+          ___init_proc_cmt(buf)
           # Start buffer server thread
           buf.server
         end
@@ -67,18 +70,11 @@ module CIAX
           end
         end
 
-        def ___init_proc_buf(buf)
-          # Frm: Execute single command
-          buf.conv_proc = proc do |args, src|
-            verbose { "Processing App to Buffer #{args.inspect}" }
-            @sub.exe(args, src)
-          end
+        def ___init_proc_cmt(buf)
           # Frm: Update after each single command finish
           # @stat file output should be done before :busy flag is reset
-          buf.cmt_procs.append(self, :flush, 1) do
-            # clear [:comerr]
-            @sub.stat.flush
-          end
+          #   flush => clear [:comerr]
+          buf.cmt_procs.append(self, :flush, 1) { @sub.stat.flush }
           @stat.propagation(buf)
         end
       end

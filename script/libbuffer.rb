@@ -28,15 +28,14 @@ module CIAX
     # Command Buffering
     class Buffer < Upd
       include Msg
-      attr_accessor :conv_proc
       # sv_stat: Server Status
-      def initialize(sv_stat, cobj = nil)
+      def initialize(sv_stat, cobj = nil, &conv_proc)
         super()
         @sv_stat = type?(sv_stat, Prompt).init_array(:queue).init_flg(busy: '*')
         # Frm Command Object
         @cobj = cobj
         # Update App Status
-        @conv_proc = proc {}
+        @conv_proc = conv_proc
         @outbuf = Outbuf.new
         @id = @sv_stat.get(:id)
         @que = Arrayx.new # For testing
@@ -48,7 +47,7 @@ module CIAX
       def send(ent, pri = 1)
         __clear if pri.to_i.zero? # interrupt
         cid = type?(ent, CmdBase::Entity).id
-        verbose { _exe_text('Executing', cid, 'send que', pri) }
+        verbose { _exe_text(cid, 'send que', pri) }
         # batch is frm batch (ary of ary)
         @que.push([pri, ent[:batch], cid])
         self
@@ -178,8 +177,7 @@ module CIAX
         # dbi.pick already includes :layer, :command, :version
         cobj = Index.new(cfg, dbi.pick)
         cobj.add_rem.add_ext
-        buf = Buffer.new(Prompt.new('test', id))
-        buf.conv_proc = proc { |par| puts par.inspect }
+        buf = Buffer.new(Prompt.new('test', id)) { |par| puts par.inspect }
         buf.send(cobj.set_cmd(cfg.args)).recv
       end
     end

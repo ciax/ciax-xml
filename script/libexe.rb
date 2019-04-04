@@ -33,7 +33,7 @@ module CIAX
     def exe(args, src = nil, pri = 1)
       type?(args, Array)
       src ||= 'local'
-      verbose { _exe_text('Executing', args.inspect, src, pri) }
+      verbose { _exe_text(args.inspect, src, pri) }
       @pre_exe_procs.each { |p| p.call(args, src) }
       msg = @cobj.set_cmd(args.dup).exe_cmd(src, pri).msg
       @post_exe_procs.each { |p| p.call(args, src, msg) }

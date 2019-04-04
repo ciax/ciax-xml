@@ -111,7 +111,7 @@ module CIAX
     # make verbose text for exec
     def _exe_text(*par)
       # Action, cmdstr, source, priority
-      format("%s %s from '%s' with priority %s", *par)
+      cfmt("Executing %s from '%s' with priority %s", *par)
     end
   end
 end

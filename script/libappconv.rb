@@ -26,7 +26,7 @@ module CIAX
         # Field will commit multiple timese par one commit here
         # So no propagation with it except time update
         def conv
-          time_upd(@field)
+          time_upd(@field.flush)
           @adbsi.each do |id, hash|
             cnd = hash[:fields].empty?
             next if cnd && get(id)

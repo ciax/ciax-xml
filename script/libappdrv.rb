@@ -46,7 +46,8 @@ module CIAX
           end
           ___init_proc_int(buf)
           ___init_proc_ext(buf)
-          ___init_proc_cmt(buf)
+          # @stat file output should be done before :busy flag is reset
+          @stat.propagation(buf)
           # Start buffer server thread
           buf.server
         end
@@ -68,14 +69,6 @@ module CIAX
             verbose { _exe_text(ent.id, src, pri) }
             buf.send(ent, pri)
           end
-        end
-
-        def ___init_proc_cmt(buf)
-          # Frm: Update after each single command finish
-          # @stat file output should be done before :busy flag is reset
-          #   flush => clear [:comerr]
-          buf.cmt_procs.append(self, :flush, 1) { @sub.stat.flush }
-          @stat.propagation(buf)
         end
       end
     end

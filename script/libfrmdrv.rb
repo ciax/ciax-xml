@@ -30,6 +30,8 @@ module CIAX
           @cobj.rem.ext.def_proc do |ent, src|
             # This corresponds the propagation
             @frame.conv(ent) && @stat.conv(ent)
+            # Frm: Update after each single command finish
+            #   flush => clear [:comerr]
             @stat.flush unless src == 'buffer'
           end
         end

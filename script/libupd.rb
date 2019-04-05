@@ -68,8 +68,9 @@ module CIAX
       self[:time]
     end
 
-    def time_upd(tm = nil)
-      self[:time] = tm || now_msec
+    # Takes [:time] from hash
+    def time_upd(hash = nil)
+      self[:time] = (hash[:time] if hash.is_a?(Hash)) || now_msec
       verbose { "Time Updated #{self[:time]}" }
       self
     end
@@ -88,7 +89,7 @@ module CIAX
     def propagation(obj)
       obj.cmt_procs.append(self, :cmt, 4) do |o|
         # Update self[:time]
-        time_upd(o[:time])
+        time_upd(o)
         verbose { __ppg_verstr(o, self) }
         cmt
       end

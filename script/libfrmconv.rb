@@ -25,7 +25,6 @@ module CIAX
 
         # Ent is needed which includes response_id and cmd_parameters
         def ext_local_conv
-          propagation(@frame)
           @seldb = Select.new(type?(@dbi, Dbi), :response)
           self
         end
@@ -40,6 +39,7 @@ module CIAX
           #   when no length or delimiter is specified
           @rspfrm = CutFrame.new(frmsrc.dup, @dbi[:stream])
           ___make_data(ent.deep_subst(@seldb.get(ent[:response])))
+          time_upd(@frame)
           verbose { _conv_text('Frame -> Field', ent.id, time) }
           self
         end

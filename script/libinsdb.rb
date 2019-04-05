@@ -15,6 +15,18 @@ module CIAX
         @adb = App::Db.new
       end
 
+      def run_list
+        valid_ins.select { |_k, v| v }.keys
+      end
+
+      def valid_ins
+        @disp_dic.valid_keys.each_with_object({}) do |id, hash|
+          atrb = get(id) || @docs.get(id)[:attr]
+          hash[id] = atrb[:run] != 'false' &&
+                     ['localhost', HOST].include?(atrb[:host])
+        end
+      end
+
       def valid_apps(applist)
         @disp_dic.valid_keys.select! do |id|
           applist.include?(get(id)[:app_id])
@@ -114,7 +126,7 @@ module CIAX
       require 'libconf'
       ConfOpts.new('[id] (key) ..', options: 'r') do |cfg|
         db = Db.new(cfg.proj)
-        puts "Run list = #{db.run_list.inspect}"
+        puts "Ins list = #{db.valid_ins.inspect}"
         puts "Dev list = #{db.valid_devs.inspect}"
         dbi = db.get(cfg.args.shift)
         puts cfg.opt[:r] ? dbi.to_v : dbi.path(cfg.args)

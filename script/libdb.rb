@@ -25,7 +25,7 @@ module CIAX
     end
 
     # Reduce valid_keys with parameter Array
-    def list(ary = [])
+    def reduce(ary = [])
       vk = @disp_dic.valid_keys
       return vk if ary.empty?
       ary &= vk
@@ -44,15 +44,6 @@ module CIAX
       else
         warning('No such ID [%s]', id)
         false
-      end
-    end
-
-    # For instance/device Db
-    def run_list
-      @disp_dic.valid_keys.select do |id|
-        atrb = get(id) || @docs.get(id)[:attr]
-        host = atrb[:host]
-        atrb[:run] != 'false' && ['localhost', HOST].include?(host)
       end
     end
 

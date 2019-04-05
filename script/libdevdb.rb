@@ -7,13 +7,13 @@ module CIAX
   module Dev
     # Device DB
     class Db < Db
+      attr_accessor :run_list
       # sites [id: run?(t/f) ] => { site1:true, site2:false ... }
-      def initialize(sites = {})
+      def initialize(sites = [])
         super('ddb')
-        @run_list = []
         @fdb = Frm::Db.new
-        return if sites.empty?
-        list(sites.keys)
+        # Reduce valid_keys with parameter
+        @run_list = reduce(sites)
       end
 
       private
@@ -42,8 +42,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
-        db = Db.new(Ins::Db.new.valid_devs)
-        puts "Run list = #{db.run_list.inspect}"
+        db = Db.new(Ins::Db.new.valid_devs.select { |_k, v| v }.keys)
+        puts "Dev list = #{db.run_list.inspect}"
         dbi = db.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end

@@ -28,8 +28,14 @@ module CIAX
 
       def _store_db(db)
         @db = @cfg[:db] = type?(db, Db)
-        sites = @db.disp_dic.valid_keys & (@cfg[:sites] || [])
-        @run_list = sites.empty? ? @db.run_list : sites
+        self
+      end
+
+      # Making run_list
+      def _mk_runlist
+        valid = @db.disp_dic.valid_keys
+        sites = @cfg[:sites]
+        @run_list = sites ? (sites & valid) : @db.run_list
         self
       end
 

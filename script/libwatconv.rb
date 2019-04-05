@@ -80,7 +80,7 @@ module CIAX
       odb = { t: 'test conditions[key=val,..]' }
       Opt::Get.new('< status_file', odb) do |opt, args|
         stat = App::Status.new(args.shift)
-        event = Event.new(stat[:id]).ext_local_conv(stat)
+        event = Event.new(stat[:id]).ext_local_conv
         if (t = opt[:t])
           stat.str_update(t)
         end

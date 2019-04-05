@@ -26,8 +26,8 @@ module CIAX
     # For loading with propagation
     # Should be done when pulling data
     def upd
+      verbose { "Updateing(#{time_id}) PreProcs#{@upd_procs.view.inspect}" }
       @upd_procs.call
-      verbose { "Update(#{time_id}) PreProcs#{@upd_procs.view.inspect}" }
       self
     end
 
@@ -40,8 +40,8 @@ module CIAX
     #  - Logging
     #  - Exec Upper data cmt
     def cmt
-      @cmt_procs.call
       verbose { "Commiting(#{time_id})" + @cmt_procs.view.inspect }
+      @cmt_procs.call
       self
     end
 

@@ -24,8 +24,8 @@ module CIAX
     def call
       @list.each do |a|
         a.each do |k, p|
-          p.call(@obj)
           verbose { "Calling #{k} in (#{@name})" }
+          p.call(@obj)
         end
       end
       self

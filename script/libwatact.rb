@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libwatdrv'
+require 'libwatexe'
 
 module CIAX
   # Watch Layer

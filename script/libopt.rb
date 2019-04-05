@@ -171,7 +171,7 @@ module CIAX
       end
 
       def get(id)
-        self[id][:title] if id
+        self[id][:title] if key?(id)
       end
 
       private

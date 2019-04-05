@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libmsg'
+require 'libupd'
 module CIAX
   # Proc Dic
   # Commit Priority
@@ -16,15 +16,16 @@ module CIAX
     include Msg
     def initialize(obj, name = nil)
       super()
-      @obj = obj
+      @obj = type?(obj, Upd)
       @name = __mk_id(@obj, name)
       clear
     end
 
-    def call
+    def call(title = 'ProcArray')
+      verbose { cfmt('%s (%s) %S', title, @obj.time_id, view) }
       @list.each do |a|
         a.each do |k, p|
-          verbose { "Calling #{k} in (#{@name})" }
+          verbose { cfmt('Calling %s in (%s)', k, @name) }
           p.call(@obj)
         end
       end
@@ -42,10 +43,10 @@ module CIAX
 
     # Append proc in specified priority dict
     def append(obj, id, pri = 0, &prc)
-      verbose { "Appending in #{@name}[#{__mk_id(obj, id)}]" }
+      verbose { cfmt('Appending in %s [%s]', @name, __mk_id(obj, id)) }
       return self unless (id = __chk_id(obj, id))
       @list[pri][id] = prc
-      verbose { "Appended in #{@name}#{view.inspect}" }
+      verbose { cfmt('Appended in %s %S', @name, view) }
       self
     end
 

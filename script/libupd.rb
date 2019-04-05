@@ -26,8 +26,7 @@ module CIAX
     # For loading with propagation
     # Should be done when pulling data
     def upd
-      verbose { "Updateing(#{time_id}) PreProcs#{@upd_procs.view.inspect}" }
-      @upd_procs.call
+      @upd_procs.call('Updating')
       self
     end
 
@@ -40,8 +39,7 @@ module CIAX
     #  - Logging
     #  - Exec Upper data cmt
     def cmt
-      verbose { "Commiting(#{time_id})" + @cmt_procs.view.inspect }
-      @cmt_procs.call
+      @cmt_procs.call('Committing')
       self
     end
 
@@ -70,8 +68,8 @@ module CIAX
 
     # Takes [:time] from hash
     def time_upd(hash = nil)
-      t = self[:time] = (hash[:time] if hash.is_a?(Hash)) || now_msec
-      verbose { ___time_text(t, hash) }
+      self[:time] = (hash[:time] if hash.is_a?(Hash)) || now_msec
+      verbose { ___time_text(hash ? 'Updated' : 'Generated') }
       self
     end
 
@@ -98,9 +96,8 @@ module CIAX
 
     private
 
-    def ___time_text(t, tf = nil)
-      str = tf ? 'Updated' : 'Generated'
-      format('Timestamp %s %s (%s)', str, elps_sec(t), t)
+    def ___time_text(str)
+      format('Timestamp %s %s (%s)', str, elps_sec(time), time_id)
     end
 
     def ___ppg_text(src, dst)

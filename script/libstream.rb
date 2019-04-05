@@ -51,7 +51,7 @@ module CIAX
 
       def response(ent)
         type?(ent, Config)
-        snd(ent[:frame], ent.id) && ent.key?(:response) && rcv || Hashx.new
+        snd(ent[:frame], ent.id) && ent.key?(:response) && rcv
       end
 
       private

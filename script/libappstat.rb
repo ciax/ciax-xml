@@ -1,6 +1,4 @@
 #!/usr/bin/env ruby
-require 'libstatx'
-require 'libdic'
 require 'libinsdb'
 require 'libfrmstat'
 
@@ -39,6 +37,7 @@ module CIAX
 
       private
 
+      # For element of SubStat
       def ___init_field(field)
         return unless @dbi[:dev_id]
         @field = type_gen(field, Frm::Field) { |mod| mod.new(@dbi[:dev_id]) }

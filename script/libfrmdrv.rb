@@ -23,14 +23,13 @@ module CIAX
         def ___init_stream
           @stat.ext_local_conv
           @stream = Stream::Driver.new(@id, @cfg)
-          @frame.ext_save
+          @frame.ext_local_conv(@stream).ext_save
         end
 
         def ___init_processor_ext
           @cobj.rem.ext.def_proc do |ent, src|
             # This corresponds the propagation
-            @frame.conv(@stream.response(ent))
-            @stat.conv(ent)
+            @frame.conv(ent) && @stat.conv(ent)
             @stat.flush unless src == 'buffer'
           end
         end

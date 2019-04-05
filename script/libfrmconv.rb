@@ -33,13 +33,13 @@ module CIAX
         def conv(ent)
           frmsrc = @frame.get(ent.id)
           return self unless frmsrc
+          time_upd(@frame)
           # CutFrame structure:
           #   main(total){ ccrange{ body(selected str) } }
           # terminator: frame pointer will jump to terminator
           #   when no length or delimiter is specified
           @rspfrm = CutFrame.new(frmsrc.dup, @dbi[:stream])
           ___make_data(ent.deep_subst(@seldb.get(ent[:response])))
-          time_upd(@frame)
           verbose { _conv_text('Frame -> Field', ent.id, time) }
           self
         end

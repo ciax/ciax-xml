@@ -21,20 +21,36 @@ module CIAX
         dec64(val) if val
       end
 
-      # Parameter could be Stream::Driver or empty Hash
-      #  Stream::Driver will commit twice(snd,rcv) par one commit here
-      #  So no propagation with it except time update
-      def conv(hash)
-        return self if type?(hash, Hashx).empty?
-        # Time update from Stream
-        time_upd(hash)
-        cid = hash['cmd']
-        _dic.update(cid => hash['base64'])
-        verbose { _conv_text('Stream -> Frame', cid, time) }
-        cmt
+      def ext_local_conv(stream)
+        extend(Conv).ext_local_conv(stream)
+      end
+
+      # Converting module
+      module Conv
+        def self.extended(obj)
+          Msg.type?(obj, Frame)
+        end
+
+        def ext_local_conv(stream)
+          @stream = type?(stream, Driver)
+          self
+        end
+
+        # Parameter could be Stream::Driver or empty Hash
+        #  Stream::Driver will commit twice(snd,rcv) par one commit here
+        #  So no propagation with it except time update
+        def conv(ent)
+          res = @stream.response(ent)
+          return unless res
+          # Time update from Stream
+          time_upd(res)
+          cid = res['cmd']
+          _dic.update(cid => res['base64'])
+          verbose { _conv_text('Stream -> Frame', cid, time) }
+          self
+        end
       end
     end
-
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id]', options: 'h') do |opt, args|
         puts Frame.new(args).cmode(opt.host).path(args)

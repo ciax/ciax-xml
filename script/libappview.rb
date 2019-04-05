@@ -49,14 +49,13 @@ module CIAX
 
       def ___init_cmt_procs
         @elps = Elapsed.new(@stat)
-        propagation(@stat)
         @cmt_procs.append(self, :view, 1) do
           self['gtime'] = { caption: '', lines: [hash = {}] }
           hash[:time] = { label: 'TIMESTAMP', msg: date(@stat[:time]) }
           hash[:elapsed] = { label: 'ELAPSED', msg: @elps }
           ___view_groups
         end
-        cmt
+        propagation(@stat)
       end
 
       def ___view_groups
@@ -104,7 +103,7 @@ module CIAX
       require 'libinsdb'
       odb = { options: 'rj', c: 'CSV output' }
       Opt::Get.new('[site] | < status_file', odb) do |opt, args|
-        stat = Status.new(args.shift).ext_local_sym
+        stat = Status.new(args).ext_local_sym
         view = View.new(stat)
         stat.ext_local if STDIN.tty?
         stat.cmt

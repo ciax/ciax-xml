@@ -49,6 +49,7 @@ module CIAX
         cmt
       end
 
+      # returns self or nil
       def response(ent)
         type?(ent, Config)
         snd(ent[:frame], ent.id) && ent.key?(:response) && rcv

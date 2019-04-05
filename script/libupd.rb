@@ -68,7 +68,7 @@ module CIAX
 
     # Takes [:time] from hash
     def time_upd(hash = nil)
-      self[:time] = (hash[:time] if hash.is_a?(Hash)) || now_msec
+      self[:time] = (hash.time if hash.is_a?(Upd)) || now_msec
       verbose { ___time_text(hash ? 'Updated' : 'Generated') }
       self
     end

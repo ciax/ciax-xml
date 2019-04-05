@@ -56,6 +56,7 @@ module CIAX
           ___view_groups
         end
         propagation(@stat)
+        cmt
       end
 
       def ___view_groups

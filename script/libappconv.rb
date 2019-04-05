@@ -20,11 +20,13 @@ module CIAX
 
         def ext_local_conv
           @cmt_procs.append(self, :conv, 1) { conv }
-          propagation(@field)
           self
         end
 
+        # Field will commit multiple timese par one commit here
+        # So no propagation with it except time update
         def conv
+          time_upd(@field)
           @adbsi.each do |id, hash|
             cnd = hash[:fields].empty?
             next if cnd && get(id)

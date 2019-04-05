@@ -70,8 +70,8 @@ module CIAX
 
     # Takes [:time] from hash
     def time_upd(hash = nil)
-      self[:time] = (hash[:time] if hash.is_a?(Hash)) || now_msec
-      verbose { "Time Updated #{self[:time]}" }
+      t = self[:time] = (hash[:time] if hash.is_a?(Hash)) || now_msec
+      verbose { ___time_text(t, hash) }
       self
     end
 
@@ -90,7 +90,7 @@ module CIAX
       obj.cmt_procs.append(self, :cmt, 4) do |o|
         # Update self[:time]
         time_upd(o)
-        verbose { __ppg_verstr(o, self) }
+        verbose { ___ppg_text(o, self) }
         cmt
       end
       obj
@@ -98,7 +98,12 @@ module CIAX
 
     private
 
-    def __ppg_verstr(src, dst)
+    def ___time_text(t, tf = nil)
+      str = tf ? 'Updated' : 'Generated'
+      format('Timestamp %s %s (%s)', str, elps_sec(t), t)
+    end
+
+    def ___ppg_text(src, dst)
       fmt = 'Propagate %s -> %s from %s'
       ca = caller.grep_v(/lib(upd|msg)/).first.split('/').last.tr("'`", '')
       format(fmt, src.base_class, dst.base_class, ca)

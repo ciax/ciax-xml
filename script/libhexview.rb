@@ -155,7 +155,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id]', options: 'h') do |opt, args|
-        stat = SubStat.new(App::Status.new(args.shift)).cmode(opt.host)
+        stat = SubStat.new(App::Status.new(args)).cmode(opt.host)
         puts View.new(stat).to_x
       end
     end

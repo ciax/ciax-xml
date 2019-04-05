@@ -102,7 +102,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[site] | < status_file') do |_o, args|
-        stat = Status.new(args.shift)
+        stat = Status.new(args)
         stat.ext_local_sym
         stat.ext_local if STDIN.tty?
         puts stat.cmt

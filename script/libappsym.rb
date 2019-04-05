@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libappstat'
+require 'libappconv'
 require 'libsymdb'
 
 # Status to App::Sym (String with attributes)
@@ -14,18 +14,19 @@ module CIAX
       # Symbol Converter
       module Symbol
         def self.extended(obj)
-          Msg.type?(obj, Status)
+          Msg.type?(obj, Conv)
         end
 
         def ext_local_sym(sdb)
           @symdb = type?(sdb, Sym::Db).get_dbi(['share'] + @adbs[:symtbl])
           @symbol = @adbs[:symbol] || {}
-          ___init_procs
+          @index = @adbs[:index].dup.update(@adbs[:alias] || {})
           self
         end
 
-        def store_sym(index)
-          index.each do |key, hash|
+        def conv
+          super
+          @index.each do |key, hash|
             sid = hash[:symbol] || next
             tbl = ___chk_tbl(sid) || next
             verbose { "ID=#{key},Table=#{sid}" }
@@ -37,12 +38,6 @@ module CIAX
         end
 
         private
-
-        def ___init_procs
-          @cmt_procs.append(self, :sym, 2) do # post process
-            store_sym(@adbs[:index].dup.update(@adbs[:alias] || {}))
-          end
-        end
 
         def ___match_items(tbl, key, val)
           res = nil
@@ -101,11 +96,12 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      Opt::Get.new('[site] | < status_file') do |_o, args|
-        stat = Status.new(args)
-        stat.ext_local_sym
-        stat.ext_local if STDIN.tty?
-        puts stat.cmt
+      require 'libfrmstat'
+      Opt::Get.new('[site] | < field_file', options: 'r') do |opt, args|
+        field = Frm::Field.new(args).ext_local
+        stat = Status.new(field[:id], field)
+        stat.ext_local_conv.ext_local_sym.cmt
+        puts opt[:r] ? stat.to_v : stat.path(args)
       end
     end
   end

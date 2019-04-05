@@ -50,7 +50,7 @@ module CIAX
 
       def ___chk_item(id, item)
         return true unless (cklst = item[:cnd])
-        verbose { "Check: <#{item[:label]}>" }
+        verbose { cfmt('Check: <%s>(%S)', item[:label], item) }
         rary = []
         cklst.each do |ckitm|
           res = ___chk_by_type(ckitm)
@@ -75,6 +75,8 @@ module CIAX
 
       def ___chk_by_type(ckitm)
         vn = ckitm[:var]
+        type = ckitm[:type]
+        verbose { "Type #{type}" }
         name = "_cnd_#{ckitm[:type]}"
         method(name).call(vn, ckitm)
       rescue NameError

@@ -31,10 +31,12 @@ module CIAX
         end
 
         def conv
-          return unless @status[:time] > @last_updated
-          @last_updated = self[:time]
-          @cond.upd_cond
-          verbose { _conv_text('Symbol -> Event', @id, time) }
+          if @status[:time] > @last_updated
+            @last_updated = self[:time]
+            @cond.upd_cond
+            verbose { _conv_text('Symbol -> Event', @id, time) }
+          end
+          self
         end
 
         def queue(src, pri, batch = [])
@@ -79,12 +81,12 @@ module CIAX
       require 'libinsdb'
       odb = { t: 'test conditions[key=val,..]' }
       Opt::Get.new('< status_file', odb) do |opt, args|
-        stat = App::Status.new(args)
+        stat = App::Status.new(args).ext_local
         event = Event.new(stat[:id]).ext_local_conv
         if (t = opt[:t])
           stat.str_update(t)
         end
-        puts event.upd
+        puts event.conv
       end
     end
   end

@@ -153,8 +153,9 @@ module CIAX
           # form = 'data', 'class' or 'msg' in Status
           form = (h[:form] || :data).to_sym
           var = h[:var]
-          warning("No [#{var}] in Status[#{form}]") unless stat[form].key?(var)
-          stat[form][var]
+          data = stat[form]
+          warning('No [%s] in Status[%s]', var, form) unless data.key?(var)
+          data[var]
         end
       end
     end

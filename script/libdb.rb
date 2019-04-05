@@ -42,7 +42,7 @@ module CIAX
       if @disp_dic.valid?(id)
         self[id] || __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
       else
-        warning("No such ID [#{id}]")
+        warning('No such ID [%s]', id)
         false
       end
     end

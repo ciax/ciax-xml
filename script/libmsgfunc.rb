@@ -88,7 +88,7 @@ module CIAX
     # File feature
     def loadfile(fname)
       data_err("Cant read (#{fname})") unless test('r', fname)
-      warning("File empty (#{fname})") unless test('s', fname)
+      warning('File empty (%s)', fname) unless test('s', fname)
       File.open(fname) do |f|
         verbose { "Loading file [#{fname}](#{f.size})" }
         f.flock(::File::LOCK_SH)

@@ -24,7 +24,7 @@ module CIAX
         url = format('http://%s%s%s.json', @host, @dir, fname)
         jstr = ___read_url(url)
         if jstr.empty?
-          warning(" -- json url file (#{url}) is empty at loading")
+          warning(' -- json url file (%s) is empty at loading', url)
         else
           ___chkupd(jstr, fname)
         end

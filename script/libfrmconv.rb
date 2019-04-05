@@ -95,8 +95,9 @@ module CIAX
 
         # Field
         def ___str_field(e1, data)
-          if e1[:valid] && /#{e1[:valid]}/ !~ data
-            warning("Invalid Data (#{data}) for /#{e1[:valid]}/")
+          valid = e1[:valid]
+          if valid && /#{valid}/ !~ data
+            warning('Invalid Data (%s) for /%s/', data, valid)
           else
             ref = e1[:ref]
             @cache[ref] = data

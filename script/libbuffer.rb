@@ -119,7 +119,7 @@ module CIAX
       def ___rm_dup(args, batch)
         batch.delete_if do |e|
           if e[:type] == 'stat' && e[:args] == args
-            warning(format('duplicated stat cmd %s(%s)', args.inspect, e[:cid]))
+            warning('duplicated stat cmd %S(%s)', args, e[:cid])
           end
         end
       end

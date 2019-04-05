@@ -29,18 +29,18 @@ module CIAX
       true
     end
 
-    def info(title)
-      show __make_msg(title, 7)
+    def info(*ary)
+      show __make_msg(cfmt(*ary), 7)
       self
     end
 
-    def warning(title)
-      show __make_msg(title, 3)
+    def warning(*ary)
+      show __make_msg(cfmt(*ary), 3)
       self
     end
 
-    def alert(title)
-      show __make_msg(title, 5)
+    def alert(*ary)
+      show __make_msg(cfmt(*ary), 5)
       self
     end
 

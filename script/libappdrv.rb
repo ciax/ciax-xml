@@ -58,7 +58,7 @@ module CIAX
               verbose { "Issuing:#{args} for Interrupt" }
               buf.send(@cobj.set_cmd(args.dup), 0)
             end
-            warning("Interrupt(#{@batch_interrupt}) from #{src}")
+            warning('Interrupt%S from %s', @batch_interrupt, src)
           end
         end
 

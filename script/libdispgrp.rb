@@ -32,7 +32,7 @@ module CIAX
       def to_v
         @num = -1
         res = @sub.view.to_s
-        warning("SubGroup [#{@caption}] is empty") if res.empty?
+        warning('SubGroup [%s] is empty', @caption) if res.empty?
         res
       end
 

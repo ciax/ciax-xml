@@ -17,7 +17,7 @@ module CIAX
     end
 
     # Add cmt for self return method
-    def deep_update(ope)
+    def deep_update(ope, concat = false)
       super
       cmt
     end

@@ -19,9 +19,10 @@ module CIAX
       self
     end
 
+    # Merge all the element with keeping structure
     # ope overwrites self
-    def deep_update(ope)
-      __rec_merge(self, ope)
+    def deep_update(ope, concat = false)
+      __rec_merge(self, ope, concat)
       self
     end
 
@@ -77,12 +78,12 @@ module CIAX
     end
 
     # other overwrites me (me will change)
-    def __rec_merge(me, other)
+    def __rec_merge(me, other, concat)
       me.update(other) do |_k, mv, ov|
         if mv.is_a? Hash
-          __rec_merge(mv, ov)
+          __rec_merge(mv, ov, concat)
         elsif mv.is_a? Array
-          mv.replace(ov)
+          concat ? mv.concat(ov) : mv.replace(ov)
         else
           ov
         end

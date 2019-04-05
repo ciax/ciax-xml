@@ -16,7 +16,7 @@ module CIAX
         return {} unless doc.key?(:watch)
         wdoc = doc[:watch]
         wdb = ___mk_wdb(wdoc, db[:command][:group])
-        (db[:watch] ||= Hashx.new).deep_update(wdb)
+        (db[:watch] ||= Hashx.new).deep_update(wdb, true)
         self
       end
 

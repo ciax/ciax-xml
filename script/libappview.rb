@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libappsym'
+require 'libappstat'
 
 # View is separated from Status. (Propagate Status -> View (Prt)
 # View is not used for computing, just for apperance for user.

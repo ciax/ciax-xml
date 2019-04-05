@@ -51,7 +51,7 @@ module CIAX
           return self unless update?
           # Do it when no other command in the queue, and not in motion
           return self unless self[:exec].empty? && self[:active].empty?
-          verbose { format('Auto Update(%s, %s)', self[:time], @regexe) }
+          verbose { cfmt('Auto Update(%s, %s)', time, @regexe) }
           begin
             queue('auto', 3, @regexe)
           rescue
@@ -69,8 +69,8 @@ module CIAX
           @periodm = per * 1000 if per > 0
           @regexe = reg[:exec] || [['upd']]
           verbose do
-            format('Initiate Auto Update: Period = %d sec, Command = %s',
-                   @periodm / 1000, @regexe)
+            cfmt('Initiate Auto Update: Period = %d sec, Command = %s',
+                 per / 1000, @regexe)
           end
           self
         end

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libappcmd'
-require 'libappconv'
+require 'libappsym'
 require 'libappview'
 require 'libfrmdic'
 require 'libinsdb'
@@ -28,7 +28,6 @@ module CIAX
 
       # Mode Extension by Option
       def _ext_local
-        @stat.ext_local_sym(@cfg[:sdb])
         ___init_proc_set
         ___init_proc_del
         super

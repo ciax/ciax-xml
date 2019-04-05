@@ -16,6 +16,7 @@ module CIAX
           super
           return self unless @sub
           @stat.ext_local_conv
+          @stat.ext_local_sym(@cfg[:sdb])
           ___init_buffer
           self
         end

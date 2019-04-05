@@ -6,8 +6,8 @@ module CIAX
   #    (propagation from lower layer)
   #  0: timestamp update
   #  1: data conversion
-  #  2: adding data label
-  #  3: file saving/logging/propagation to upper layer
+  #  2: file saving/logging
+  #  3: propagation to upper layer
   #
   # Update Priority
   #    (propagation from upper layer)

@@ -46,7 +46,7 @@ module CIAX
           time_upd(res)
           cid = res['cmd']
           _dic.update(cid => res['base64'])
-          verbose { _conv_text('Stream -> Frame', cid, time) }
+          verbose { _conv_text('Stream -> Frame', cid, time_id) }
           self
         end
       end

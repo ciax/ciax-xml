@@ -34,7 +34,7 @@ module CIAX
             # Don't use put() which makes infinity loop in cmt
             _dic[id] = cnd ? dflt : ___get_val(hash, id)
           end
-          verbose { _conv_text('Field -> Status', @id, time) }
+          verbose { _conv_text('Field -> Status', @id, time_id) }
           self
         end
 

@@ -34,7 +34,7 @@ module CIAX
           if @status[:time] > @last_updated
             @last_updated = self[:time]
             @cond.upd_cond
-            verbose { _conv_text('Symbol -> Event', @id, time) }
+            verbose { _conv_text('Symbol -> Event', @id, time_id) }
           end
           self
         end

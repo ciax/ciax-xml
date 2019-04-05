@@ -80,7 +80,7 @@ module CIAX
         return unless len
         verbose { "Cut by Size [#{len}]" }
         if len.to_i > @frame.size
-          alert("Cut reached end [#{@frame.size}/#{len}] ")
+          alert('Cut reached end [%d/%s]', @frame.size, len)
           str = @frame
         else
           str = @frame.slice!(0, len.to_i)

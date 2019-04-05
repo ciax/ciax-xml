@@ -69,7 +69,7 @@ module CIAX
         type?(db, Hashx)
         key, atrb = ___attr_to_a(id, &at_proc)
         if id != :ref && db.key?(key)
-          alert("ATTRDB: Duplicated ID [#{key}]")
+          alert('ATTRDB: Duplicated ID [%s]', key)
           db.delete(key)
         end
         db.get(key) { Hashx.new }.update(atrb)

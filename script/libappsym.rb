@@ -89,7 +89,7 @@ module CIAX
         def ___chk_tbl(sid)
           tbl = @symdb[sid]
           return tbl if tbl
-          alert("Table[#{sid}] not exist")
+          alert('Table[%s] not exist', sid)
           nil
         end
 

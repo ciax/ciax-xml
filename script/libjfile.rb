@@ -40,10 +40,11 @@ module CIAX
       #       -> deep_update by @preload
       def load(tag = nil)
         if !tag && @preload
-          verbose { 'Load from Preloading' }
+          verbose { 'Loading from Preloading' }
           deep_update(@preload)
           @preload = nil
         else
+          verbose { cfmt('Loading File %s', __file_name(tag)) }
           deep_update(__read_json(tag))
         end
         cmt

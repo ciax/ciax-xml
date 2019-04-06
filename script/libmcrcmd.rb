@@ -69,7 +69,7 @@ module CIAX
           end
         end
         # generate [:sequence]
-        class Item
+        class Form
           private
 
           def _gen_entity(opt)

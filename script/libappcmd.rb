@@ -24,7 +24,7 @@ module CIAX
       # External Command
       module Ext
         # Generate [:batch]
-        class Item
+        class Form
           # Ext entity
           include Math
 

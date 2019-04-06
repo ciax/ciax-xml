@@ -25,7 +25,7 @@ module CIAX
 
       # atrb could be dbi[:index][id]
       # atrb could have 'label',:body,'unit','group'
-      def add_item(id, title = nil, atrb = Hashx.new) # returns Item
+      def add_item(id, title = nil, atrb = Hashx.new) # returns Form
         return self[id] if key?(id)
         @disp_dic.put_item(id, title)
         _new_item(id, atrb)
@@ -84,7 +84,7 @@ module CIAX
 
       # atrb can be /cdb//index[id] which contains [:parameter] and so on
       def _new_item(id, atrb = Hashx.new)
-        self[id] = context_module('Item').new(@cfg, atrb.update(id: id))
+        self[id] = context_module('Form').new(@cfg, atrb.update(id: id))
       end
     end
   end

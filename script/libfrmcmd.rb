@@ -25,7 +25,7 @@ module CIAX
       # External Command Group
       module Ext
         # Generate [:frame]
-        class Item
+        class Form
           private
 
           def _gen_entity(opt)

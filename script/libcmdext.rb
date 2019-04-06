@@ -23,7 +23,7 @@ module CIAX
           private
 
           # itm is from cdb
-          def ___add_item(id, itm) # returns Item
+          def ___add_item(id, itm) # returns Form
             ___init_par(itm)
             _new_item(id, itm)
           end
@@ -79,7 +79,7 @@ module CIAX
           end
         end
 
-        class Item < Item; end
+        class Form < Form; end
 
         # Substitute string($+number) with parameters, which is called by others
         #  par={ val,range,format } or String

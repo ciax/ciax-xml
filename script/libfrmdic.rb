@@ -11,8 +11,7 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super
         idb = type?(@cfg[:db], Ins::Db)
-        ddb = Dev::Db.new(idb.valid_devs)
-        _store_db(ddb)
+        _store_db(Dev::Db.new) { idb.valid_devs.trues }
       end
     end
 

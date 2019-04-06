@@ -26,7 +26,7 @@ module CIAX
     end
 
     def ___server(port)
-      yield
+      info('Start Layer %s', yield.class)
       msg = 'for Thread status'
       Udp::Server.new('daemon', 'top', port, msg).listen do |reg, _host|
         ['===== Thread List =====',

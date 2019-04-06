@@ -16,16 +16,16 @@ module CIAX
             super
             cfg_err('No dbi in Ext::Group@cfg') unless @cfg.key?(:dbi)
             @disp_dic = @disp_dic.ext_grp
-            ___init_items(@cfg[:dbi].get(:command))
+            ___init_form(@cfg[:dbi].get(:command))
             @disp_dic.reset!
           end
 
           private
 
           # itm is from cdb
-          def ___add_item(id, itm) # returns Form
+          def ___add_form(id, itm) # returns Form
             ___init_par(itm)
-            _new_item(id, itm)
+            _new_form(id, itm)
           end
 
           # command label can contain printf format (i.e. %s)
@@ -41,7 +41,7 @@ module CIAX
           end
 
           # Set items by DB
-          def ___init_items(cdb)
+          def ___init_form(cdb)
             cdb[:group].each do |gid, gat|
               sg = @disp_dic.add_grp(gid, gat[:caption], nil, gat[:rank])
               ___init_member(cdb, gat[:members], sg)
@@ -56,7 +56,7 @@ module CIAX
               itm = cdb[:index][id]
               sg.put_item(id, itm[:label])
               # [:parameters] is set here
-              ___add_item(id, itm)
+              ___add_form(id, itm)
             end
           end
 
@@ -67,11 +67,11 @@ module CIAX
             guni.each do |u|
               uat = cdb[:unit][u]
               next unless uat.key?(:title)
-              ___make_unit_item(sg, uat, cdb[:index])
+              ___make_unit_form(sg, uat, cdb[:index])
             end
           end
 
-          def ___make_unit_item(sg, uat, index)
+          def ___make_unit_form(sg, uat, index)
             umem = uat[:members]
             il = umem.map { |m| index[m][:label] }.join('/')
             sg.put_dummy(uat[:title], uat[:label] % il)

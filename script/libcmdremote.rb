@@ -63,13 +63,13 @@ module CIAX
           def initialize(dom_cfg, atrb = Hashx.new)
             atrb.get(:caption) { 'System Commands' }
             super
-            add_item('interrupt', nil, def_msg: 'INTERRUPT')
-            add_item('reset', 'stream', dev_msg: 'RESET')
+            add_form('interrupt', nil, def_msg: 'INTERRUPT')
+            add_form('reset', 'stream', dev_msg: 'RESET')
           end
 
           def add_empty
             # Accept empty command for upd
-            add_item(nil, nil, def_msg: '')
+            add_form(nil, nil, def_msg: '')
           end
         end
       end
@@ -85,9 +85,9 @@ module CIAX
             @cfg[:nocache] = true
           end
 
-          def init_item_file_io
-            add_item('save', '[key,key...] [tag]').pars_any(2)
-            add_item('load', '[tag]').pars.add_enum([])
+          def init_form_fio
+            add_form('save', '[key,key...] [tag]').pars_any(2)
+            add_form('load', '[tag]').pars.add_enum([])
           end
         end
       end

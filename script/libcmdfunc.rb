@@ -15,9 +15,9 @@ module CIAX
       def set_cmd(args = [], opt = {})
         id = type?(args, Array).shift
         valid_keys.include?(id) || cmd_err("Invalid command [#{id}]", view_dic)
-        item = get(id)
-        @view_par = item.view_par
-        item.set_par(args, opt)
+        form = get(id)
+        @view_par = form.view_par
+        form.set_par(args, opt)
       end
 
       def error

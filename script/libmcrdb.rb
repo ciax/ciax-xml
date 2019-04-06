@@ -47,7 +47,7 @@ module CIAX
         dbi
       end
 
-      def _add_item(e0, gid)
+      def _add_form(e0, gid)
         id, itm = super
         verbose { "Command[#{id}]" }
         @body = itm.get(:body) { [] }
@@ -62,7 +62,7 @@ module CIAX
           atrb = Hashx.new(type: e1.name)
           atrb.update(e1.to_h)
           ___get_sites(atrb)
-          _par2item(e1, itm) && next
+          _par2form(e1, itm) && next
           ___step_by_name(e1, atrb)
           ___make_verify_step(e1, atrb)
           @body << atrb

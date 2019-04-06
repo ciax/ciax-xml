@@ -26,8 +26,8 @@ module CIAX
             super
             add_dummy('0', 'List page')
             add_dummy('[1-n]', 'Switch Pages')
-            add_item('last', 'Get last item [n]').pars.add_num('1')
-            add_item('cl', 'Clean list')
+            add_form('last', 'Get last item [n]').pars.add_num('1')
+            add_form('cl', 'Clean list')
           end
         end
       end
@@ -54,7 +54,7 @@ module CIAX
             crnt[:caption] = 'Control Macro'
             super
             INTCMD.each do |id, cap|
-              add_item(id, id.capitalize + ' ' + cap)
+              add_form(id, id.capitalize + ' ' + cap)
             end
           end
         end
@@ -87,8 +87,8 @@ module CIAX
           def initialize(dom_cfg, atrb = Hashx.new)
             super
             sv_stat = @cfg[:sv_stat]
-            add_item('nonstop', 'Mode').def_proc { sv_stat.up(:nonstop) }
-            add_item('interactive', 'Mode').def_proc { sv_stat.dw(:nonstop) }
+            add_form('nonstop', 'Mode').def_proc { sv_stat.up(:nonstop) }
+            add_form('interactive', 'Mode').def_proc { sv_stat.dw(:nonstop) }
           end
         end
       end

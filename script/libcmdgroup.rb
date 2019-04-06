@@ -25,25 +25,25 @@ module CIAX
 
       # atrb could be dbi[:index][id]
       # atrb could have 'label',:body,'unit','group'
-      def add_item(id, title = nil, atrb = Hashx.new) # returns Form
+      def add_form(id, title = nil, atrb = Hashx.new) # returns Form
         return self[id] if key?(id)
         @disp_dic.put_item(id, title)
-        _new_item(id, atrb)
+        _new_form(id, atrb)
       end
 
-      def del_item(id)
+      def del_form(id)
         @disp_dic.delete(id)
         delete(id)
       end
 
-      def clear_item
+      def clear_form
         @disp_dic.clear
         clear
       end
 
-      def merge_items(disp_dic)
+      def merge_forms(disp_dic)
         @disp_dic.merge_sub(disp_dic)
-        disp_dic.keys.each { |id| _new_item(id) }
+        disp_dic.keys.each { |id| _new_form(id) }
         self
       end
 
@@ -83,7 +83,7 @@ module CIAX
       private
 
       # atrb can be /cdb//index[id] which contains [:parameter] and so on
-      def _new_item(id, atrb = Hashx.new)
+      def _new_form(id, atrb = Hashx.new)
         self[id] = context_module('Form').new(@cfg, atrb.update(id: id))
       end
     end

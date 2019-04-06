@@ -14,12 +14,12 @@ module CIAX
       private
 
       # Take parameter and next line
-      def _par2item(doc, item)
+      def _par2form(doc, form)
         return unless /par_(num|str|reg)/ =~ doc.name
         @argc += 1
         atrb = { type: Regexp.last_match(1), list: doc.text.split(',') }
         atrb[:label] = doc[:label] if doc[:label]
-        item.get(:parameters) { [] } << atrb
+        form.get(:parameters) { [] } << atrb
       end
 
       # Check parameter var for subst in db
@@ -55,7 +55,7 @@ module CIAX
           when 'unit'
             ___add_unit(e0, gid)
           when 'item'
-            _add_item(e0, gid)
+            _add_form(e0, gid)
           end
         end
         self
@@ -65,12 +65,12 @@ module CIAX
         uid = e0.attr2item(@units)
         @grps[gid].get(:units) { [] } << uid
         e0.each do |e1|
-          id = _add_item(e1, gid).first
+          id = _add_form(e1, gid).first
           @units[uid].get(:members) { [] } << id
         end
       end
 
-      def _add_item(doc, gid)
+      def _add_form(doc, gid)
         id = doc.attr2item(@idx)
         @grps[gid].get(:members) { [] } << id
         [id, @idx[id]] # item is used by child

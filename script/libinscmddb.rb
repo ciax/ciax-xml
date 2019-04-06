@@ -30,7 +30,7 @@ module CIAX
         dbi
       end
 
-      def _add_item(e0, gid)
+      def _add_form(e0, gid)
         id, itm = super
         e0.each do |e1|
           itm.get(:argv) { [] } << e1.text

@@ -98,7 +98,7 @@ module CIAX
         # For macro manager
         def put(id, mobj)
           cid = type?(mobj, CIAX::Exe).cfg[:cid]
-          @jumpgrp.add_item(id, cid)
+          @jumpgrp.add_form(id, cid)
           @current = id
           super
         end

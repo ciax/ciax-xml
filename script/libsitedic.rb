@@ -51,7 +51,7 @@ module CIAX
         def ext_local_shell
           super
           @cfg[:jump_site] = @jumpgrp
-          @jumpgrp.ext_grp.merge_items(@cfg[:db].disp_dic)
+          @jumpgrp.ext_grp.merge_forms(@cfg[:db].disp_dic)
           @current = @run_list.first
           @sub_dic.ext_local_shell if @sub_dic
           self

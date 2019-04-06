@@ -5,7 +5,7 @@ module CIAX
   # Frame Layer
   module Frm
     # Frame DB
-    class Db < DbTree
+    class Db < Db::Tree
       def initialize
         super('fdb')
       end

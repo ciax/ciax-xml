@@ -6,7 +6,7 @@ module CIAX
   # Device Layer
   module Dev
     # Device DB
-    class Db < Db
+    class Db < Db::Index
       def initialize
         super('ddb')
         @fdb = Frm::Db.new

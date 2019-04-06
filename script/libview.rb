@@ -34,7 +34,7 @@ module CIAX
 
       # For Exe @def_proc
       def vmode(mode)
-        @vmode = mode ? mode : Mode.default_view
+        @vmode = mode || Mode.default_view
         self
       end
 

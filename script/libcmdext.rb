@@ -6,7 +6,7 @@ module CIAX
     module Remote
       # For External Command Domain
       # @cfg must contain [:dbi]
-      # Content of Dbi[:command][:index][id] will be merged in Item@cfg
+      # Content of Db::Item[:command][:index][id] will be merged in Item@cfg
       module Ext
         include CmdBase
         # External Command Group

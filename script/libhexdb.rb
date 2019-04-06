@@ -6,7 +6,7 @@ module CIAX
   # Hex module
   module Hex
     # Hex DB
-    class Db < Db
+    class Db < Db::Index
       # [:length] is output str length in hex or others
       def initialize
         super('hdb')

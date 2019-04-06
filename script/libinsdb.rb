@@ -6,7 +6,7 @@ module CIAX
   # Instance Layer
   module Ins
     # Instance DB
-    class Db < DbTree
+    class Db < Db::Tree
       include Wat::Db
       attr_reader :proj
       def initialize(proj = nil)
@@ -17,6 +17,7 @@ module CIAX
 
       def valid_ins
         @disp_dic.valid_keys.each_with_object(Hashx.new) do |id, hash|
+          get(id)
           atrb = get(id) || @docs.get(id)[:attr]
           hash[id] = atrb[:run] != 'false' &&
                      ['localhost', HOST].include?(atrb[:host])

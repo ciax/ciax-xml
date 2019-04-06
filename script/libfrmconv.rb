@@ -25,7 +25,7 @@ module CIAX
 
         # Ent is needed which includes response_id and cmd_parameters
         def ext_local_conv
-          @seldb = Select.new(type?(@dbi, Dbi), :response)
+          @seldb = Select.new(type?(@dbi, Db::Item), :response)
           self
         end
 

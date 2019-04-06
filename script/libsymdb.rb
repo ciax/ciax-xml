@@ -7,13 +7,13 @@ module CIAX
   # Symbol module
   module Sym
     # Symbole DB
-    class Db < Db
+    class Db < Db::Index
       def initialize
         super('sdb')
       end
 
       def get_dbi(ary = [])
-        dbi = Dbi.new
+        dbi = Db::Item.new
         ary.compact.each { |k| dbi.update(get(k)) }
         dbi
       end

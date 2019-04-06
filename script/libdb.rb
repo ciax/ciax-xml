@@ -24,12 +24,17 @@ module CIAX
       @argc = 0
     end
 
+    def list
+      @disp_dic.valid_keys
+    end
+
     # Reduce valid_keys with parameter Array
     def reduce(ary = [])
-      vk = @disp_dic.valid_keys
-      return vk if ary.empty?
-      ary &= vk
-      vk.replace(ary)
+      unless ary.empty?
+        ary &= list
+        list.replace(ary)
+      end
+      self
     end
 
     def get(id)

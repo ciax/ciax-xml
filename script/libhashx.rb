@@ -64,6 +64,11 @@ module CIAX
       end
     end
 
+    # key list that value is true
+    def trues
+      select { |_k, v| v }.keys
+    end
+
     # Pick Hash which isn't Array or Hash for XML attributes
     def attrs
       hash = Hashx.new

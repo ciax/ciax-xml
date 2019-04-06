@@ -15,12 +15,8 @@ module CIAX
         @adb = App::Db.new
       end
 
-      def run_list
-        valid_ins.select { |_k, v| v }.keys
-      end
-
       def valid_ins
-        @disp_dic.valid_keys.each_with_object({}) do |id, hash|
+        @disp_dic.valid_keys.each_with_object(Hashx.new) do |id, hash|
           atrb = get(id) || @docs.get(id)[:attr]
           hash[id] = atrb[:run] != 'false' &&
                      ['localhost', HOST].include?(atrb[:host])
@@ -34,8 +30,8 @@ module CIAX
       end
 
       def valid_devs
-        rl = run_list
-        @disp_dic.valid_keys.each_with_object({}) do |s, hash|
+        rl = valid_ins.trues
+        @disp_dic.valid_keys.each_with_object(Hashx.new) do |s, hash|
           did = get(s)[:dev_id]
           hash[did] = rl.include?(s) if did
         end

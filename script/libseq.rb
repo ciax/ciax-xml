@@ -115,7 +115,7 @@ module CIAX
       def ___init_record_file
         return unless @opt.mcr_log?
         # ext_file must be after ext_rsp which includes time update
-        @record.ext_local.ext_save
+        @record.ext_local.ext_file.ext_save
         @record.mklink # Make latest link
         @record.mklink(@id) # Make link to /json
       end

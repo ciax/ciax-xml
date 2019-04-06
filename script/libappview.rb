@@ -15,7 +15,7 @@ module CIAX
       def initialize(stat)
         super()
         @stat = type?(stat, Status)
-        adbs = type?(@stat.dbi, Db::Item)[:status]
+        adbs = type?(@stat.dbi, CIAX::Db::Item)[:status]
         @group = adbs[:group]
         @index = adbs[:index].dup
         @index.update(adbs[:alias]) if adbs.key?(:alias)

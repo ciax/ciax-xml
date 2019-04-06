@@ -24,7 +24,7 @@ module CIAX
 
     # For loading file manipulation module
     def ext_local
-      extend(Local).ext_local
+      extend(context_module('Local')).ext_local
     end
 
     # Read only as a client

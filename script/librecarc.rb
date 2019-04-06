@@ -37,19 +37,16 @@ module CIAX
       #   Remote (Read only)
       #   Local (Read/Write Memory, File read only)
       #   Local_Save (Read/Write File)
-      def ext_local
-        extend(Local).ext_local
-      end
-
       # Macro Response Module
       module Local
+        include Varx::Local
         def self.extended(obj)
           Msg.type?(obj, RecArc)
         end
 
         def ext_local
           init_time2cmt
-          _ext_local_file.load
+          ext_file.load
         end
 
         def push(record) # returns self

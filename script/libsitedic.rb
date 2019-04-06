@@ -31,7 +31,7 @@ module CIAX
         @db = @cfg[:db] = type?(db, Db)
         @db.reduce(yield @db) if defined? yield
         # Making run_list
-        sites = @cfg[:sites]
+        sites = @cfg[:sites] || []
         @run_list = sites.empty? ? @db.list : (sites & @db.list)
         self
       end

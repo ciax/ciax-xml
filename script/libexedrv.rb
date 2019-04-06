@@ -21,7 +21,7 @@ module CIAX
 
       def ___init_log_mode
         return unless @opt.drv?
-        @stat.ext_local_log
+        @stat.ext_log
         @cobj.rem.ext_input_log
       end
 

@@ -23,7 +23,7 @@ module CIAX
         def ___init_stream
           @stat.ext_local_conv
           @stream = Stream::Driver.new(@id, @cfg)
-          @frame.ext_local_conv(@stream).ext_save
+          @frame.ext_local_conv(@stream).ext_file.ext_save
         end
 
         def ___init_processor_ext

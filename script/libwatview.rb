@@ -12,7 +12,7 @@ module CIAX
       def initialize(event)
         super()
         @event = type?(event, Event)
-        wdb = type?(event.dbi, Db::Item)[:watch]
+        wdb = type?(event.dbi, CIAX::Db::Item)[:watch]
         ___init_stat(wdb || { index: [] })
         ___init_cmt_procs
       end

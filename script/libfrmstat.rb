@@ -77,8 +77,8 @@ module CIAX
         cmt
       end
 
-      def ext_local_log
-        @frame.ext_local_log
+      def ext_log
+        @frame.ext_log
         self
       end
 
@@ -133,7 +133,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id]', options: 'h') do |opt, args|
-        puts Field.new(args).cmode(opt.host)
+        puts Field.new(args).cmode(opt.host).load
       end
     end
   end

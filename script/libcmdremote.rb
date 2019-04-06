@@ -50,7 +50,7 @@ module CIAX
           super("input_#{layer_name}", id)
           _attr_set(ver)
           init_time2cmt
-          ext_local_log
+          ext_local.ext_log
         end
       end
 

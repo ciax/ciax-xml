@@ -46,7 +46,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id]', options: 'h') do |opt, args|
-        puts Status.new(args).cmode(opt.host)
+        puts Status.new(args).cmode(opt.host).load
       end
     end
   end

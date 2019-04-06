@@ -13,7 +13,7 @@ module CIAX
       end
 
       def get_dbi(ary = [])
-        dbi = Db::Item.new
+        dbi = CIAX::Db::Item.new
         ary.compact.each { |k| dbi.update(get(k)) }
         dbi
       end

@@ -15,10 +15,6 @@ module CIAX
       @layer = @dbi[:layer]
     end
 
-    def ext_local
-      super.load
-    end
-
     private
 
     # Set dbi, otherwise generate by stdin info

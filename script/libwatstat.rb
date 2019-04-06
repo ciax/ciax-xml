@@ -76,7 +76,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       Opt::Get.new('[site]', options: 'h') do |opt, args|
-        puts Event.new(args.shift).cmode(opt.host)
+        puts Event.new(args.shift).cmode(opt.host).load
       end
     end
   end

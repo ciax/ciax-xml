@@ -10,7 +10,7 @@ module CIAX
       end
 
       # logging with flatten
-      def ext_local_log
+      def ext_log
         @logfile = vardir('log') + base_name + "_#{Time.now.year}.log"
         @que = ___log_thread.que
         @cmt_procs.append(self, :flog, 2) { save_log }

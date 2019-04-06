@@ -24,6 +24,15 @@ module CIAX
         Msg.type?(obj, Varx)
       end
 
+      def ext_file(dir = nil)
+        verbose { "Initiate File Feature [#{base_name}]" }
+        @id || cfg_err('No ID')
+        @jsondir = vardir(dir || 'json')
+        @cfile = base_name # Current file name
+        @tag_list = TagList.new(@jsondir + __file_name('*'))
+        self
+      end
+
       # Use @preload (STDIN data) if exists
       #  i.e. Initialy, data get from STDIN (@preload)
       #       -> get id from @preload
@@ -45,15 +54,6 @@ module CIAX
       end
 
       private
-
-      def _ext_local_file(dir = nil)
-        verbose { "Initiate File Feature [#{base_name}]" }
-        @id || cfg_err('No ID')
-        @jsondir = vardir(dir || 'json')
-        @cfile = base_name # Current file name
-        @tag_list = TagList.new(@jsondir + __file_name('*'))
-        self
-      end
 
       def __file_name(tag = nil)
         base_name(tag) + '.json'

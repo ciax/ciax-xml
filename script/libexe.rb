@@ -85,7 +85,7 @@ module CIAX
     # Local operation included in ext_local_test, ext_local_driver
     # (non_client)
     def _ext_local
-      @stat.ext_local
+      @stat.ext_local.ext_file
       @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
       self
     end

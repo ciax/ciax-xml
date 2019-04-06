@@ -22,16 +22,9 @@ module CIAX
       self[:format_ver] = nil
     end
 
-    # independent from ext_local_file
-    def ext_local_log
-      require 'libjslog'
-      raise('Log ext conflicts with Http ext') if @host
-      extend(JsLog).ext_local_log
-    end
-
     # For loading file manipulation module
     def ext_local
-      _ext_local_file
+      extend(Local).ext_local
     end
 
     # Read only as a client
@@ -43,7 +36,7 @@ module CIAX
 
     # Control mode (Local or Remote) by host
     def cmode(host)
-      host ? ext_remote(host) : ext_local
+      host ? ext_remote(host) : ext_local.ext_file
     end
 
     def base_name(tag = nil)
@@ -63,14 +56,6 @@ module CIAX
 
     private
 
-    def _ext_local_file
-      require 'libjfile'
-      raise('File ext conflicts with Http ext') if @host
-      return self if is_a? JFile
-      extend(JFile)
-      _ext_local_file(@dir)
-    end
-
     def _attr_set(ver = nil, host = nil, dir = nil)
       # Headers (could be overwritten by file load)
       self[:data_ver] = ver if ver
@@ -86,7 +71,32 @@ module CIAX
       org = self[key]
       inc = hash[key]
       return if inc == org
-      data_err(format('File %s version mismatch <%s> for [%s]', type, inc, org))
+      data_err(cfmt('File %s version mismatch <%s> for [%s]', type, inc, org))
+    end
+
+    # Local mode
+    module Local
+      def self.extended(obj)
+        Msg.type?(obj, Varx)
+      end
+
+      def ext_local
+        raise('Log ext conflicts with Http ext') if @host
+        self
+      end
+
+      # independent from ext_local_file
+      def ext_log
+        require 'libjslog'
+        return self if is_a? JsLog
+        extend(JsLog).ext_log
+      end
+
+      def ext_file
+        require 'libjfile'
+        return self if is_a? JFile
+        extend(JFile).ext_file(@dir)
+      end
     end
   end
 end

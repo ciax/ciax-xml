@@ -16,7 +16,7 @@ module CIAX
           @sub.batch_interrupt = @stat.get(:int)
           ___init_cmt_procs
           ___init_exe_processor
-          @stat.ext_local_log if @opt.drv?
+          @stat.ext_log if @opt.drv?
           self
         end
 

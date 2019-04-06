@@ -8,7 +8,7 @@ module CIAX
       # type = //response or //command
       def initialize(dbi, type)
         super()
-        dbe = type?(dbi, CIAX::Db::Item)[type]
+        dbe = type?(dbi, Dbx::Item)[type]
         # Ent is needed which includes response_id and cmd_parameters
         ___mk_dic(dbe[:frame], dbe[:index])
       end

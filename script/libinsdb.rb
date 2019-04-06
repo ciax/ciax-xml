@@ -6,7 +6,7 @@ module CIAX
   # Instance Layer
   module Ins
     # Instance DB
-    class Db < Db::Tree
+    class Db < Dbx::Tree
       include Wat::Db
       attr_reader :proj
       def initialize(proj = nil)

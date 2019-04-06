@@ -3,7 +3,7 @@ require 'libdb'
 require 'libxmlrepeat'
 
 module CIAX
-  module Db
+  module Dbx
     ####### For Command DB #######
     class Tree < Index
       def initialize(type)

@@ -6,7 +6,7 @@ module CIAX
   module Ins
     # This is part of Instance DB
     # You need add <command ref='*'/> in InsDB to use it
-    class CmdDb < Db::Tree
+    class CmdDb < Dbx::Tree
       def initialize
         super('cdb')
       end

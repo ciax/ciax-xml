@@ -1,6 +1,6 @@
 * Data Mode (Varx)
 - Test
-    Show skeleton by Db::Item
+    Show skeleton by Dbx::Item
 
 - Remote : ext_remote
     Read URL for update

@@ -3,7 +3,7 @@ require 'libappstat'
 
 # View is separated from Status. (Propagate Status -> View (Prt)
 # View is not used for computing, just for apperance for user.
-# Some information is added from Db::Item
+# Some information is added from Dbx::Item
 # So the convert process (upd) will be included in to_v
 # Updated at to_v.
 module CIAX
@@ -15,7 +15,7 @@ module CIAX
       def initialize(stat)
         super()
         @stat = type?(stat, Status)
-        adbs = type?(@stat.dbi, CIAX::Db::Item)[:status]
+        adbs = type?(@stat.dbi, Dbx::Item)[:status]
         @group = adbs[:group]
         @index = adbs[:index].dup
         @index.update(adbs[:alias]) if adbs.key?(:alias)

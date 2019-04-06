@@ -2,7 +2,7 @@
 require 'libwatconv'
 
 # View is not used for computing, just for apperance for user.
-# Some information is added from Db::Item
+# Some information is added from Dbx::Item
 # So the convert process (upd) will be included in to_s
 module CIAX
   # Watch Layer
@@ -12,7 +12,7 @@ module CIAX
       def initialize(event)
         super()
         @event = type?(event, Event)
-        wdb = type?(event.dbi, Db::Item)[:watch]
+        wdb = type?(event.dbi, Dbx::Item)[:watch]
         ___init_stat(wdb || { index: [] })
         ___init_cmt_procs
       end

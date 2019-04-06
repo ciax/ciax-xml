@@ -9,7 +9,7 @@ module CIAX
     class Header < Xml::Format
       def initialize(dbi)
         super()
-        @dbi = type?(dbi, Db::Item)
+        @dbi = type?(dbi, Dbx::Item)
         dbc = @dbi[:command]
         @idx = dbc[:index]
         @gdb = dbc[:group]

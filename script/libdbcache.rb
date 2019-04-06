@@ -3,7 +3,7 @@ require 'libmsg'
 
 module CIAX
   # Cache is available
-  module Db
+  module Dbx
     # DB Cache
     class Cache
       include Msg
@@ -13,7 +13,7 @@ module CIAX
         @type = type
       end
 
-      # Returns Db::Item(command list) or Disp(site list)
+      # Returns Dbx::Item(command list) or Disp(site list)
       def get(id)
         @cbase = "#{@type}-#{id}"
         @cachefile = vardir('cache') + "#{@cbase}.mar"

@@ -26,12 +26,12 @@ module CIAX
     end
 
     # Macro Db
-    class Db < Db::Tree
+    class Db < Dbx::Tree
       def initialize
         super('mdb')
       end
 
-      # Allows nil, get Db::Item
+      # Allows nil, get Dbx::Item
       def get(id = nil)
         super.extend(CmdDic)
       end

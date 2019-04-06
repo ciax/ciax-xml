@@ -5,7 +5,7 @@ module CIAX
   # Application Layer
   module App
     # Application DB
-    class Db < Db::Tree
+    class Db < Dbx::Tree
       include Wat::Db
       def initialize
         super('adb')

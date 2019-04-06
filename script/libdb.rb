@@ -2,12 +2,12 @@
 require 'libxmldoc'
 require 'libdbcache'
 module CIAX
-  # Db::Index class is for read only databases
+  # Dbx::Index class is for read only databases
   #   which holds all the items of database.
   # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list, :dic..)
   # set() generates HashDb
   # Cache is available
-  module Db
+  module Dbx
     class Item < Hashx # DB Item
       def pick(ary = [])
         super(%i(layer version) + ary).update(dbi: self)
@@ -19,7 +19,7 @@ module CIAX
       attr_reader :disp_dic
       def initialize(type)
         super()
-        verbose { 'Initiate Db' }
+        verbose { 'Initiate Dbx' }
         @type = type
         @cache = Cache.new(type)
         _get_disp_dic
@@ -43,7 +43,7 @@ module CIAX
         ref(id) || id_err(id, @type, @disp_dic)
       end
 
-      # return Db::Item
+      # return Dbx::Item
       # Order of file reading: type-id.mar -> type-id.xml (processing)
       def ref(id)
         if @disp_dic.valid?(id)

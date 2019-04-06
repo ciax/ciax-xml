@@ -131,7 +131,7 @@ module CIAX
     #  @dbi will be set for Varx, @cfg[:dbi] will be set for Index
     #  It is not necessarily the case that id and Config[:dbi][:id] is identical
     def _init_dbi2cfg(ary = [])
-      dbi = type?(@cfg[:dbi], CIAX::Db::Item)
+      dbi = type?(@cfg[:dbi], Dbx::Item)
       # dbi.pick already includes :command, :version
       @cfg.update(dbi.pick(ary + %i(id host port)))
       @id = dbi[:id]

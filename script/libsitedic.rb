@@ -29,12 +29,10 @@ module CIAX
       # Reduce valid_keys with Array in block
       def _store_db(db)
         @db = @cfg[:db] = type?(db, Db)
-        if defined? yield
-          @db.reduce(yield @db)
-          # Making run_list
-          sites = @cfg[:sites]
-          @run_list = sites ? (sites & @db.list) : @db.list
-        end
+        @db.reduce(yield @db) if defined? yield
+        # Making run_list
+        sites = @cfg[:sites]
+        @run_list = sites.empty? ? @db.list : (sites & @db.list)
         self
       end
 

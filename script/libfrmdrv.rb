@@ -29,7 +29,7 @@ module CIAX
         def ___init_processor_ext
           @cobj.rem.ext.def_proc do |ent, src|
             # This corresponds the propagation
-            break unless @frame.conv(ent)
+            next unless @frame.conv(ent)
             @stat.conv(ent)
             # Frm: Update after each single command finish
             #   flush => clear [:comerr]

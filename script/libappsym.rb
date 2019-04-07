@@ -8,8 +8,10 @@ module CIAX
   module App
     # Status class
     class Status
-      def ext_local_sym(sdb = nil)
-        extend(Symbol).ext_local_sym(sdb || Sym::Db.new)
+      module Conv
+        def ext_sym(sdb = nil)
+          extend(Symbol).ext_sym(sdb || Sym::Db.new)
+        end
       end
       # Symbol Converter
       module Symbol
@@ -17,7 +19,7 @@ module CIAX
           Msg.type?(obj, Conv)
         end
 
-        def ext_local_sym(sdb)
+        def ext_sym(sdb)
           @symdb = type?(sdb, Sym::Db).get_dbi(['share'] + @adbs[:symtbl])
           @symbol = @adbs[:symbol] || {}
           @index = @adbs[:index].dup.update(@adbs[:alias] || {})
@@ -100,7 +102,7 @@ module CIAX
       Opt::Get.new('[site] | < field_file', options: 'r') do |opt, args|
         field = Frm::Field.new(args).ext_local
         stat = Status.new(field[:id], field).ext_local
-        stat.ext_conv.ext_local_sym.cmt
+        stat.ext_conv.ext_sym.cmt
         puts opt[:r] ? stat.to_v : stat.path(args)
       end
     end

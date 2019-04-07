@@ -4,7 +4,7 @@ module CIAX
   # Command Module
   module CmdBase
     # Corresponds commands
-    class Item < Hashx
+    class Form < Hashx
       include CmdFunc
       # grp_cfg should have :id,'label',:parameters,:def_proc,:def_msg
       attr_reader :id

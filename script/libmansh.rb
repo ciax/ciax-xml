@@ -54,11 +54,11 @@ module CIAX
 
         def ___init_rank_cmd(view)
           return unless @cobj.rem.ext
-          view.add_item('dig', 'Show more Submacros').def_proc do
+          view.add_form('dig', 'Show more Submacros').def_proc do
             @cobj.rem.ext.rankup
             @cobj.error
           end
-          view.add_item('hide', 'Hide Submacros').def_proc do
+          view.add_form('hide', 'Hide Submacros').def_proc do
             @cobj.rem.ext.rank(0)
             @cobj.error
           end

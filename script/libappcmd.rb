@@ -15,16 +15,16 @@ module CIAX
           # cfg should have [:dbi] and [:stat]
           def initialize(spcfg, atrb = Hashx.new)
             super
-            init_item_file_io
-            add_item('set', '[key] [val]').pars_any(2)
-            add_item('del', '[key,...]').pars_any(1)
+            init_form_fio
+            add_form('set', '[key] [val]').pars_any(2)
+            add_form('del', '[key,...]').pars_any(1)
           end
         end
       end
       # External Command
       module Ext
         # Generate [:batch]
-        class Item
+        class Form
           # Ext entity
           include Math
 

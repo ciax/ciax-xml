@@ -16,16 +16,16 @@ module CIAX
           # cfg should have [:field]
           def initialize(spcfg, atrb = Hashx.new)
             super
-            init_item_file_io
-            add_item('set', '[key(@idx)] [val(,val)]').pars_any(2)
-            add_item('flush', 'Stream')
+            init_form_fio
+            add_form('set', '[key(@idx)] [val(,val)]').pars_any(2)
+            add_form('flush', 'Stream')
           end
         end
       end
       # External Command Group
       module Ext
         # Generate [:frame]
-        class Item
+        class Form
           private
 
           def _gen_entity(opt)

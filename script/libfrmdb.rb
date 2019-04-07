@@ -29,7 +29,7 @@ module CIAX
         end
       end
 
-      def _add_item(e0, gid)
+      def _add_form(e0, gid)
         id, itm = super
         # enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
         ___rep_item(e0, itm)
@@ -41,7 +41,7 @@ module CIAX
       def ___rep_item(e0, itm)
         @rep.each(e0) do |e1|
           # skip <par_..>
-          _par2item(e1, itm) && next
+          _par2form(e1, itm) && next
           e2 = __add_cmdfrm(e1)
           itm.get(:body) { [] } << e2
           verbose { "Body Frame [#{e2.inspect}]" }

@@ -22,10 +22,10 @@ module CIAX
         dbi
       end
 
-      def _add_item(e0, gid)
+      def _add_form(e0, gid)
         id, itm = super
         @rep.each(e0) do |e1|
-          _par2item(e1, itm) && next
+          _par2form(e1, itm) && next
           ___add_frmcmd(e1, itm)
         end
         _validate_par(itm)

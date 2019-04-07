@@ -67,11 +67,11 @@ module CIAX
             end
           end
 
-          def number_item(ary)
+          def number_form(ary)
             clear
             i = 0
             type?(ary, Array).each do |str|
-              add_item((i += 1).to_s, str)
+              add_form((i += 1).to_s, str)
             end
             self
           end
@@ -91,10 +91,10 @@ module CIAX
           def initialize(spcfg, atrb = Hashx.new)
             atrb.update(caption: 'Change View Mode', column: 2, color: 9)
             super
-            add_item('vis', 'Visual mode').def_proc do
+            add_form('vis', 'Visual mode').def_proc do
               @cfg[:output].vmode('v')
             end
-            add_item('raw', 'Raw Print mode').def_proc do
+            add_form('raw', 'Raw Print mode').def_proc do
               @cfg[:output].vmode('o')
             end
           end

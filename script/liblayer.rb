@@ -22,7 +22,7 @@ module CIAX
         super
         @cfg[:jump_layer] = @jumpgrp
         _dic.each do |id, _obj|
-          @jumpgrp.add_item(id, id.capitalize + ' mode')
+          @jumpgrp.add_form(id, id.capitalize + ' mode')
         end
         @current = @cfg[:opt].init_layer || _dic.keys.first
         self

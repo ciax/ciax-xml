@@ -4,7 +4,7 @@ require 'libcmdfunc'
 module CIAX
   # Command Module
   module CmdBase
-    # Command db with parameter derived from Item
+    # Command db with parameter derived from Form
     class Entity < Config
       attr_reader :id, :par
       attr_accessor :msg

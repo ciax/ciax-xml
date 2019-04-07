@@ -13,8 +13,7 @@ module CIAX
           super
           ___init_stream
           ___init_processor_ext
-          ___init_processor_flush
-          ___init_processor_reset
+          ___init_processor_int
           self
         end
 
@@ -22,8 +21,7 @@ module CIAX
 
         def ___init_stream
           @stat.ext_local_conv
-          @stream = Stream::Driver.new(@id, @cfg)
-          @frame.ext_local_conv(@stream).ext_file.ext_save
+          @frame.ext_local_conv(@cfg).ext_file.ext_save
         end
 
         def ___init_processor_ext
@@ -37,18 +35,9 @@ module CIAX
           end
         end
 
-        def ___init_processor_flush
-          @cobj.get('flush').def_proc do
-            @stream.rcv
-            verbose { 'Flush Stream' }
-          end
-        end
-
-        def ___init_processor_reset
-          @cobj.get('reset').def_proc do
-            @stream.reset
-            verbose { 'Reset Stream' }
-          end
+        def ___init_processor_int
+          @cobj.get('flush').def_proc { @frame.flush }
+          @cobj.get('reset').def_proc { @frame.reset }
         end
       end
     end

@@ -21,8 +21,8 @@ module CIAX
         dec64(val) if val
       end
 
-      def ext_local_conv(stream)
-        extend(Conv).ext_local_conv(stream)
+      def ext_local_conv(cfg)
+        extend(Conv).ext_local_conv(cfg)
       end
 
       # Converting module
@@ -31,8 +31,8 @@ module CIAX
           Msg.type?(obj, Frame)
         end
 
-        def ext_local_conv(stream)
-          @stream = type?(stream, Driver)
+        def ext_local_conv(cfg)
+          @stream = Stream::Driver.new(@id, cfg)
           self
         end
 
@@ -48,6 +48,17 @@ module CIAX
           _dic.update(cid => res['base64'])
           verbose { _conv_text('Stream -> Frame', cid, time_id) }
           self
+        end
+
+        # Indivisual commands
+        def flush
+          @stream.rcv
+          verbose { 'Flush Stream' }
+        end
+
+        def reset
+          @stream.reset
+          verbose { 'Reset Stream' }
         end
       end
     end

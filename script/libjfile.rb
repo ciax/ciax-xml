@@ -30,7 +30,8 @@ module CIAX
         @jsondir = vardir(dir || 'json')
         @cfile = base_name # Current file name
         @tag_list = TagList.new(@jsondir + __file_name('*'))
-        self
+        @upd_procs.append(self, :file) { load }
+        upd
       end
 
       # Use @preload (STDIN data) if exists

@@ -53,7 +53,7 @@ module CIAX
     end
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id]', options: 'h') do |opt, args|
-        puts Frame.new(args).cmode(opt.host).load
+        puts Frame.new(args).cmode(opt.host)
       end
     end
   end

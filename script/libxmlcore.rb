@@ -93,7 +93,7 @@ module CIAX
         return f if f.is_a?(_element)
         cfg_err('Parameter shoud be String or Node') unless f.is_a? String
         test('r', f) || cfg_err("Can't read file #{f}")
-        verbose { "Loading file #{f}" }
+        verbose { "Loading xml file #{f}" }
         _get_file(f)
       end
 

@@ -36,17 +36,6 @@ module CIAX
 
       private
 
-      def _ext_local_driver
-        super
-        @cfg[:cid] = 'manager'
-        @mode = 'DRY' if @opt.dry?
-        @pre_exe_procs << proc do
-          @sv_stat.repl(:sid, '')
-          @sv_stat.flush(:run).cmt if @sv_stat.get(:list).empty?
-        end
-        self
-      end
-
       # Overridden by libmansh
       def _ext_local_shell
         super
@@ -72,8 +61,25 @@ module CIAX
         @int_par = rem.add_int.pars.add_enum(@sv_stat.get(:list)).last
         rem.add_ext
       end
-    end
+      # Local mode
+      module Local
+        include CIAX::Exe::Local
+        def self.extended(obj)
+          Msg.type?(obj, Man)
+        end
 
+        def _ext_local_driver
+          super
+          @cfg[:cid] = 'manager'
+          @mode = 'DRY' if @opt.dry?
+          @pre_exe_procs << proc do
+            @sv_stat.repl(:sid, '')
+            @sv_stat.flush(:run).cmt if @sv_stat.get(:list).empty?
+          end
+          self
+        end
+      end
+    end
     if __FILE__ == $PROGRAM_NAME
       ConfOpts.new('[proj] [cmd] (par)', options: 'cedhlnr') do |cfg|
         Man.new(cfg, Atrb.new(cfg)).shell

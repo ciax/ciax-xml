@@ -13,7 +13,7 @@ module CIAX
 
       # If you get a system error 'Address family not ..',
       # remove ipv6 entry from /etc/hosts
-      def ext_remote_client
+      def ext_remote
         @mode = 'CL'
         @stat.ext_remote(@host)
         @pre_exe_procs << proc { @stat.upd }

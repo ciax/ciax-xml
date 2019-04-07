@@ -31,28 +31,11 @@ module CIAX
 
       private
 
-      # Mode Extention by Option
-      def _ext_local
-        @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
-        super
-      end
-
       def _ext_local_shell
         super.input_conv_set
         @cfg[:output] = View.new(@stat).ext_prt.upd
         @cobj.loc.add_view
         self
-      end
-
-      def _ext_local_test
-        @post_exe_procs << proc { @stat.update? }
-        super
-      end
-
-      def _ext_local_driver
-        super
-        require 'libwatdrv'
-        extend(Driver).ext_local_driver
       end
 
       # Sub methods for Initialize
@@ -63,6 +46,31 @@ module CIAX
         @mode = @sub.mode
         @post_exe_procs.concat(@sub.post_exe_procs)
         @sub.stat
+      end
+
+      # Local mode
+      module Local
+        include CIAX::Exe::Local
+        def self.extended(obj)
+          Msg.type?(obj, Exe)
+        end
+
+        # Mode Extention by Option
+        def _ext_local
+          @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
+          super
+        end
+
+        def _ext_local_test
+          @post_exe_procs << proc { @stat.update? }
+          super
+        end
+
+        def _ext_local_driver
+          super
+          require 'libwatdrv'
+          extend(Driver).ext_local_driver
+        end
       end
     end
 

@@ -26,32 +26,11 @@ module CIAX
 
       private
 
-      # Mode Extension by Option
-      def _ext_local
-        ___init_proc_set
-        ___init_proc_del
-        super
-      end
-
       def _ext_local_shell
         super.input_conv_set
         @cfg[:output] = View.new(@stat)
         @cobj.loc.add_view
         self
-      end
-
-      def _ext_local_test
-        @cobj.rem.ext.def_proc do |ent|
-          @stat[:time] = now_msec
-          ent.msg = ent[:batch].inspect
-        end
-        super
-      end
-
-      def _ext_local_driver
-        super
-        require 'libappdrv'
-        extend(Driver).ext_local_driver
       end
 
       # Sub methods for Initialize
@@ -78,18 +57,47 @@ module CIAX
         self
       end
 
-      # Initiate procs
-      def ___init_proc_set
-        @cobj.get('set').def_proc do |ent|
-          @stat[:data].repl(ent.par[0], ent.par[1])
-          verbose { "SET:#{ent.par[0]}=#{ent.par[1]}" }
+      # Local mode
+      module Local
+        include CIAX::Exe::Local
+        def self.extended(obj)
+          Msg.type?(obj, Exe)
         end
-      end
 
-      def ___init_proc_del
-        @cobj.get('del').def_proc do |ent|
-          ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
-          verbose { "DELETE:#{ent.par[0]}" }
+        # Mode Extension by Option
+        def _ext_local
+          ___init_proc_set
+          ___init_proc_del
+          super
+        end
+
+        def _ext_local_test
+          @cobj.rem.ext.def_proc do |ent|
+            @stat[:time] = now_msec
+            ent.msg = ent[:batch].inspect
+          end
+          super
+        end
+
+        def _ext_local_driver
+          super
+          require 'libappdrv'
+          extend(Driver).ext_local_driver
+        end
+
+        # Initiate procs
+        def ___init_proc_set
+          @cobj.get('set').def_proc do |ent|
+            @stat[:data].repl(ent.par[0], ent.par[1])
+            verbose { "SET:#{ent.par[0]}=#{ent.par[1]}" }
+          end
+        end
+
+        def ___init_proc_del
+          @cobj.get('del').def_proc do |ent|
+            ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
+            verbose { "DELETE:#{ent.par[0]}" }
+          end
         end
       end
     end

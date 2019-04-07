@@ -25,11 +25,6 @@ module CIAX
         self
       end
 
-      def run
-        @thread = Threadx::Fork.new('Macro', 'seq', @id) { @seq.play }
-        self
-      end
-
       private
 
       # Mode Extention by Option
@@ -53,6 +48,18 @@ module CIAX
         @id = @seq.id
         @int.def_proc { |ent| @seq.reply(ent.id) }
         @stat = @seq.record
+      end
+      # Local mode
+      module Local
+        include CIAX::Exe::Local
+        def self.extended(obj)
+          Msg.type?(obj, Exe)
+        end
+
+        def run
+          @thread = Threadx::Fork.new('Macro', 'seq', @id) { @seq.play }
+          self
+        end
       end
     end
 

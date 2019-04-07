@@ -18,16 +18,6 @@ module CIAX
         _opt_mode
       end
 
-      # Mode Extension by Option
-      def run
-        # Specific setting must be done after super to override them
-        @server_input_proc = proc do |line|
-          /^(strobe|stat)/ =~ line ? [] : line.split(' ')
-        end
-        @server_output_proc = proc { @stat.to_x }
-        super
-      end
-
       private
 
       # Sub Methods for Initialize
@@ -40,9 +30,27 @@ module CIAX
         @post_exe_procs.concat(@sub.post_exe_procs)
       end
 
-      def _ext_local_driver
-        @stat.ext_log
-        self
+      # Local mode
+      module Local
+        include CIAX::Exe::Local
+        def self.extended(obj)
+          Msg.type?(obj, Exe)
+        end
+
+        def _ext_local_driver
+          @stat.ext_log
+          self
+        end
+
+        # Mode Extension by Option
+        def run
+          # Specific setting must be done after super to override them
+          @server_input_proc = proc do |line|
+            /^(strobe|stat)/ =~ line ? [] : line.split(' ')
+          end
+          @server_output_proc = proc { @stat.to_x }
+          super
+        end
       end
     end
 

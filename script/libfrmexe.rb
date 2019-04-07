@@ -35,31 +35,8 @@ module CIAX
 
       private
 
-      # Mode Extension by Option
-      def _ext_local
-        @frame.ext_local
-        @cobj.get('set').def_proc do |ent|
-          key, val = ent.par
-          @stat.repl(key, val)
-          @stat.flush
-          verbose { "Set [#{key}] = #{val}" }
-        end
-        super
-      end
-
       def _ext_local_shell
         super.input_conv_set
-      end
-
-      def _ext_local_test
-        @cobj.rem.ext.cfg[:def_msg] = 'TEST'
-        super
-      end
-
-      def _ext_local_driver
-        super
-        require 'libfrmdrv'
-        extend(Driver).ext_local_driver
       end
 
       # Sub Methods for Initialize
@@ -69,6 +46,37 @@ module CIAX
         @cobj.rem.add_ext
         @cobj.rem.add_int
         self
+      end
+
+      # Local mode
+      module Local
+        include CIAX::Exe::Local
+        def self.extended(obj)
+          Msg.type?(obj, Exe)
+        end
+
+        # Mode Extension by Option
+        def _ext_local
+          @frame.ext_local
+          @cobj.get('set').def_proc do |ent|
+            key, val = ent.par
+            @stat.repl(key, val)
+            @stat.flush
+            verbose { "Set [#{key}] = #{val}" }
+          end
+          super
+        end
+
+        def _ext_local_test
+          @cobj.rem.ext.cfg[:def_msg] = 'TEST'
+          super
+        end
+
+        def _ext_local_driver
+          super
+          require 'libfrmdrv'
+          extend(Driver).ext_local_driver
+        end
       end
     end
 

@@ -54,7 +54,7 @@ module CIAX
     #  Modes
     #   Shell  : ext_local_shell
     #       Add shell feature
-    #   Remote : ext_remote_client
+    #   Remote : ext_remote
     #       Access via udp/html
     #   Local  : ext_local
     #       Manipulates memory
@@ -71,49 +71,33 @@ module CIAX
       _ext_local_shell.shell
     end
 
-    # UDP Listen
-    def run
-      return self if @opt.cl?
-      require 'libserver'
-      @sub.run if @sub
-      return self if is_a?(Server)
-      extend(Server).ext_local_server
-    end
-
     private
 
-    # Local operation included in ext_local_test, ext_local_driver
-    # (non_client)
+    # Option handling
+    # Single Mode
+    # none: test mode
+    # -c: client mode
+    # -e: drive mode
+    # -s: test mode + server
+    # -es: drive mode + server
+    def _opt_mode
+      @opt.cl? ? _ext_remote : _ext_local.opt_mode
+    end
+
+    def _ext_remote
+      require 'libclient'
+      return self if is_a?(Client)
+      extend(Client).ext_remote
+    end
+
     def _ext_local
-      @stat.ext_local.ext_file
-      @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
-      self
+      extend(context_module('Local')).ext_local
     end
 
     def _ext_local_shell
       require 'libsh'
       return self if is_a?(Shell)
       extend(Shell).ext_local_shell
-    end
-
-    # No save any data
-    def _ext_local_test
-      @mode = 'TEST'
-      self
-    end
-
-    # Generate and Save Data
-    def _ext_local_driver
-      @mode = 'DRV'
-      @stat.ext_save
-      self
-    end
-
-    # Load Data
-    def _ext_remote_client
-      require 'libclient'
-      return self if is_a?(Client)
-      extend(Client).ext_remote_client
     end
 
     # Sub methods for Initialize
@@ -144,17 +128,48 @@ module CIAX
       self
     end
 
-    # Single Mode
-    # none: test mode
-    # -c: client mode
-    # -e: drive mode
-    # -s: test mode + server
-    # -es: drive mode + server
-    def _opt_mode
+    # Local mode
+    module Local
+      def self.extended(obj)
+        Msg.type?(obj, Exe)
+      end
+
+      # Local operation included in ext_local_test, ext_local_driver
+      # (non_client)
+      def ext_local
+        @stat.ext_local.ext_file
+        @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
+        self
+      end
+
+      # UDP Listen
+      def run
+        return self if @opt.cl?
+        require 'libserver'
+        @sub.run if @sub
+        return self if is_a?(Server)
+        extend(Server).ext_local_server
+      end
+
       # Option handling
-      return _ext_remote_client if @opt.cl?
-      _ext_local
-      @opt.drv? ? _ext_local_driver : _ext_local_test
+      def opt_mode
+        @opt.drv? ? _ext_local_driver : _ext_local_test
+      end
+
+      private
+
+      # No save any data
+      def _ext_local_test
+        @mode = 'TEST'
+        self
+      end
+
+      # Generate and Save Data
+      def _ext_local_driver
+        @mode = 'DRV'
+        @stat.ext_save
+        self
+      end
     end
   end
 end

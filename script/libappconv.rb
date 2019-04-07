@@ -6,19 +6,22 @@ module CIAX
   module App
     # Convert Response
     class Status
-      def ext_local_conv
-        return self unless @field
-        extend(Conv).ext_local_conv
+      # Local mode
+      module Local
+        include Varx::Local
+        def ext_conv
+          return self unless @field
+          extend(Conv).ext_conv
+        end
       end
 
       # Response Module
       module Conv
         def self.extended(obj)
-          Msg.bad_order(Symbol, Varx::JSave)
           Msg.type?(obj, Status)
         end
 
-        def ext_local_conv
+        def ext_conv
           @cmt_procs.append(self, :conv, 1) { conv }
           self
         end
@@ -129,11 +132,10 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         require 'libfrmstat'
-        Opt::Get.new('[site] | < field_file', options: 'r') do |opt, args|
+        Opt::Get.new('[site] | < field_file') do |_opt, args|
           field = Frm::Field.new(args).ext_local
           stat = Status.new(field[:id], field)
-          stat.ext_local_conv.cmt
-          puts opt[:r] ? stat.to_v : stat.path(args)
+          puts stat.ext_local.ext_conv.cmt
         end
       end
     end

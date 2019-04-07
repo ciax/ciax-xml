@@ -8,8 +8,12 @@ module CIAX
   module Wat
     # Add extend method in Event
     class Event
-      def ext_local_conv
-        extend(Conv).ext_local_conv
+      # Local mode
+      module Local
+        include Varx::Local
+        def ext_conv
+          extend(Conv).ext_conv
+        end
       end
       # Watch Response Module
       module Conv
@@ -22,7 +26,7 @@ module CIAX
         #       => self[:crnt]<-@status.data(picked)
         #       => check(self[:crnt] <> self[:last]?)
         # Stat no changed -> clear exec, no eval
-        def ext_local_conv
+        def ext_conv
           wdb = @dbi[:watch] || {}
           @interval = wdb[:interval].to_f if wdb.key?(:interval)
           @cond = Condition.new(wdb[:index] || {}, @status, self)
@@ -82,7 +86,7 @@ module CIAX
       odb = { t: 'test conditions[key=val,..]' }
       Opt::Get.new('< status_file', odb) do |opt, args|
         stat = App::Status.new(args).ext_local
-        event = Event.new(stat[:id]).ext_local_conv
+        event = Event.new(stat[:id]).ext_local.ext_conv
         if (t = opt[:t])
           stat.str_update(t)
         end

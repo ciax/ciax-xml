@@ -11,10 +11,13 @@ module CIAX
   module Frm
     # Field class
     class Field
-      def ext_local_conv
-        extend(Conv).ext_local_conv
+      # Local mode
+      module Local
+        include Varx::Local
+        def ext_conv
+          extend(Conv).ext_conv
+        end
       end
-
       # Frame Response module
       module Conv
         # @< (base),(prefix)
@@ -24,7 +27,7 @@ module CIAX
         end
 
         # Ent is needed which includes response_id and cmd_parameters
-        def ext_local_conv
+        def ext_conv
           @seldb = Select.new(type?(@dbi, Dbx::Item), :response)
           self
         end
@@ -131,8 +134,8 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
       ConfOpts.new('[id] [cmd]', options: 'h') do |cfg|
-        field = Field.new(cfg.args).ext_local_conv
-        field.frame.cmode(cfg.opt.host).load
+        field = Field.new(cfg.args).ext_local.ext_conv
+        field.frame.cmode(cfg.opt.host)
         atrb = field.dbi.pick(%i(stream)).update(field: field)
         # dbi.pick alreay includes :command, :version
         cobj = Index.new(cfg, atrb)

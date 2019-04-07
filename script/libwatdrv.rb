@@ -11,7 +11,7 @@ module CIAX
         end
 
         def ext_local_driver
-          @stat.ext_local_conv
+          @stat.ext_conv
           # @stat[:int] is overwritten by initial loading
           @sub.batch_interrupt = @stat.get(:int)
           ___init_cmt_procs

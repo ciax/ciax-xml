@@ -20,9 +20,12 @@ module CIAX
         val = super
         dec64(val) if val
       end
-
-      def ext_local_conv(cfg)
-        extend(Conv).ext_local_conv(cfg)
+      # Local mode
+      module Local
+        include Varx::Local
+        def ext_conv(cfg)
+          extend(Conv).ext_conv(cfg)
+        end
       end
 
       # Converting module
@@ -31,7 +34,7 @@ module CIAX
           Msg.type?(obj, Frame)
         end
 
-        def ext_local_conv(cfg)
+        def ext_conv(cfg)
           @stream = Stream::Driver.new(@id, cfg)
           self
         end

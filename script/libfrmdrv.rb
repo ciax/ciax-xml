@@ -20,8 +20,8 @@ module CIAX
         private
 
         def ___init_stream
-          @stat.ext_local_conv
-          @frame.ext_local_conv(@cfg).ext_file.ext_save
+          @stat.ext_conv
+          @frame.ext_conv(@cfg).ext_file.ext_save
         end
 
         def ___init_processor_ext

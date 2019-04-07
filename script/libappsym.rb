@@ -99,8 +99,8 @@ module CIAX
       require 'libfrmstat'
       Opt::Get.new('[site] | < field_file', options: 'r') do |opt, args|
         field = Frm::Field.new(args).ext_local
-        stat = Status.new(field[:id], field)
-        stat.ext_local_conv.ext_local_sym.cmt
+        stat = Status.new(field[:id], field).ext_local
+        stat.ext_conv.ext_local_sym.cmt
         puts opt[:r] ? stat.to_v : stat.path(args)
       end
     end

@@ -47,7 +47,6 @@ module CIAX
         def ext_local
           super
           init_time2cmt
-          ext_file.load
         end
 
         def push(record) # returns self

@@ -6,20 +6,11 @@ module CIAX
   module Msg
     module_function
 
-    # For Debug
-    def _w(var, str = '') # watch var for debug
-      clr = ':' + caller(1).to_s
-      res = if var.is_a?(Enumerable)
-              colorize(str, 5) + clr + ___prt_enum(var)
-            else
-              colorize(var, 5) + clr
-            end
-      show res
-    end
-
-    def ___prt_enum(var)
-      res = colorize("(#{var.object_id})", 3)
-      res << var.dup.extend(Enumx).path
+    # Watch var for debug
+    def _w(name, &take_value)
+      return unless take_value && (var = yield)
+      show cfmt('%:5s:%s(%:3s) = %S', 'Debug', name, var.object_id, var)
+      show caller(1).to_s
     end
 
     # Assertion
@@ -37,6 +28,7 @@ module CIAX
     end
 
     # Temporary condition test
+    #  Put on both branch
     def good(str = '')
       show("Good for #{str}")
       true

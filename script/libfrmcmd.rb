@@ -105,7 +105,7 @@ module CIAX
           dbi = (cfg[:field] = Field.new).dbi
         end
         # dbi.pick alreay includes :layer, :command, :version
-        cobj = Index.new(cfg, dbi.pick(%i(stream)))
+        cobj = Index.new(cfg, dbi.pick(:stream))
         rem = cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }.add_ext
         res = rem.set_cmd(cfg.args).exe_cmd('test')
         if cfg.opt[:r]

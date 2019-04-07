@@ -136,7 +136,7 @@ module CIAX
       ConfOpts.new('[id] [cmd]', options: 'h') do |cfg|
         field = Field.new(cfg.args).ext_local.ext_conv
         field.frame.cmode(cfg.opt.host)
-        atrb = field.dbi.pick(%i(stream)).update(field: field)
+        atrb = field.dbi.pick(:stream).update(field: field)
         # dbi.pick alreay includes :command, :version
         cobj = Index.new(cfg, atrb)
         cobj.add_rem.add_ext

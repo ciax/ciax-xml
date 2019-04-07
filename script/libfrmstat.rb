@@ -61,8 +61,8 @@ module CIAX
       end
 
       # Structure is Hashx{ data:{ key,val ..} }
-      def pick(keyary, atrb = {})
-        Hashx.new(atrb).update(data: _dic.pick(keyary))
+      def pick(*keyary)
+        Hashx.new[data: _dic.pick(*keyary)]
       end
 
       # For propagate to Status update

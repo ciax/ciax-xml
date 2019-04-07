@@ -13,7 +13,7 @@ module CIAX
         ext_dic(:data)
         super()
         @stat = type?(status, App::Status)
-        update(@stat.pick(%i(id time data_ver data class msg)))
+        update(@stat.pick(:id, :time, :data_ver, :data, :class, :msg))
         @dbi = @stat.dbi
         @sv_stat = sv_stat || Prompt.new('site', @stat[:id])
         ___init_stats

@@ -12,7 +12,7 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super()
         @cfg = spcfg.gen(self).update(atrb)
-        datr = @cfg.pick(%i(caption color column line_number))
+        datr = @cfg.pick(:caption, :color, :column, :line_number)
         @disp_dic = Disp::Index.new(datr)
         @cfg[:disp] = @disp_dic
         @valid_keys = @disp_dic.valid_keys

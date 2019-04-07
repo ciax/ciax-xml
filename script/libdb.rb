@@ -9,8 +9,8 @@ module CIAX
   # Cache is available
   module Dbx
     class Item < Hashx # DB Item
-      def pick(ary = [])
-        super(%i(layer version) + ary).update(dbi: self)
+      def pick(*keyary)
+        super(:layer, :version, *keyary).update(dbi: self)
       end
     end
 

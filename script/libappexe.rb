@@ -66,7 +66,7 @@ module CIAX
       def ___init_svstat(subsvs)
         @sv_stat.db.update(subsvs.db)
         subsvs.cmt_procs.append(self, "sv_stat:#{@id}", 4) do |ss|
-          @sv_stat.update(ss.pick(%i(comerr ioerr))).cmt
+          @sv_stat.update(ss.pick(:comerr, :ioerr)).cmt
         end
       end
 

@@ -80,7 +80,7 @@ module CIAX
         end
 
         def __extract(rec)
-          ele = Hashx.new(rec).pick(%i(cid pid result)) # extract header
+          ele = Hashx.new(rec).pick(:cid, :pid, :result) # extract header
           return if ele.empty?
           verbose { 'Record Archive Updated' }
           dic[rec[:id]] = ele

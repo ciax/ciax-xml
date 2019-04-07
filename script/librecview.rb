@@ -81,7 +81,7 @@ module CIAX
 
       def ___result_view(rec)
         if rec.key?(:status) && rec[:status] != 'end'
-          args = rec.pick(%i(steps total_steps status)).values
+          args = rec.pick(:steps, :total_steps, :status).values
           args[0] = args[0].size
           msg = format(' [%s/%s](%s)', *args)
           msg << opt_listing(rec[:option])

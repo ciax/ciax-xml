@@ -133,7 +133,7 @@ module CIAX
     def _init_dbi2cfg(ary = [])
       dbi = type?(@cfg[:dbi], Dbx::Item)
       # dbi.pick already includes :command, :version
-      @cfg.update(dbi.pick(ary + %i(id host port)))
+      @cfg.update(dbi.pick(*ary, :id, :host, :port))
       @id = dbi[:id]
       dbi
     end

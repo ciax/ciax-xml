@@ -42,7 +42,7 @@ module CIAX
         idx = cdb[:index]
         aidx = ali[:index]
         aidx.each do |_id, itm|
-          itm.update(idx[itm[:ref]].pick(%i(parameters body)))
+          itm.update(idx[itm[:ref]].pick(:parameters, :body))
         end
         idx.update(aidx)
       end

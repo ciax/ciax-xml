@@ -8,6 +8,7 @@ module CIAX
   module App
     # Status class
     class Status
+      # Access from Conv
       module Conv
         def ext_sym(sdb = nil)
           extend(Symbol).ext_sym(sdb || Sym::Db.new)

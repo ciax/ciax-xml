@@ -97,9 +97,7 @@ module CIAX
       def save_partial(keyary, tag = nil)
         tag ||= (tag_list.map(&:to_i).max + 1)
         # id is tag, this is Mark's request
-        jstr = pick(
-          keyary, time: self[:time], id: self[:id], data_ver: self[:data_ver]
-        ).to_j
+        jstr = pick(:time, :id, :data_ver, *keyary).to_j
         msg("File Saving for [#{tag}]")
         __write_json(jstr, tag)
       end

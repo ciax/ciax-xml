@@ -11,8 +11,8 @@ module CIAX
     end
 
     # Generate value if @get_proc and no key
-    def get(key)
-      self[key] ||= yield key if defined? yield
+    def get(key, &gen_proc)
+      self[key] ||= yield key if gen_proc
       self[key]
     end
 
@@ -36,12 +36,9 @@ module CIAX
       self
     end
 
-    # Delete key, return self
-    def del(key, &done_proc)
-      if key?(key)
-        delete(key)
-        yield if done_proc
-      end
+    # Delete keyary, return self
+    def del(*keyary, &done_proc)
+      yield if keyary.any? { |k| delete(k) } && done_proc
       self
     end
 
@@ -58,8 +55,8 @@ module CIAX
     end
 
     # Generate Hashx with picked up keys
-    def pick(keyary, atrb = {})
-      keyary.each_with_object(Hashx.new(atrb)) do |key, hash|
+    def pick(*keyary)
+      keyary.each_with_object(Hashx.new) do |key, hash|
         hash[key] = self[key] if key?(key)
       end
     end

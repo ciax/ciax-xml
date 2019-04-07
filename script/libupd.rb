@@ -52,7 +52,7 @@ module CIAX
       super { cmt }
     end
 
-    def del(key)
+    def del(*keyary)
       super { cmt }
     end
 

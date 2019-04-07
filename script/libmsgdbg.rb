@@ -7,6 +7,8 @@ module CIAX
     module_function
 
     # Watch var for debug
+    #  example in block
+    #  { var.inspect if condition }
     def _w(name, &take_value)
       return unless take_value && (var = yield)
       show cfmt('%:5s:%s(%:3s) = %S', 'Debug', name, var.object_id, var)

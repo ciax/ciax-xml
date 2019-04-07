@@ -7,17 +7,18 @@ module CIAX
   # Macro Layer
   module Mcr
     # Macro Manager
+    # Local mode only
     class Exe < Exe
       attr_reader :thread, :seq
       def initialize(spcfg, atrb = Hashx.new, &submcr_proc)
         super
         verbose { 'Initiate New Macro' }
         ___init_cmd
-        ___init_seq(submcr_proc)
+        @submcr_proc = submcr_proc
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
         @cobj.get('interrupt').def_proc { interrupt }
-        _ext_local
-        @mode = @opt.drv? ? 'DRV' : 'TEST'
+        @stat = Record.new
+        _opt_mode
       end
 
       def interrupt
@@ -43,12 +44,6 @@ module CIAX
         @cfg[:valid_keys] = @int.valid_keys.clear
       end
 
-      def ___init_seq(submcr_proc)
-        @seq = Sequencer.new(@cfg, &submcr_proc)
-        @id = @seq.id
-        @int.def_proc { |ent| @seq.reply(ent.id) }
-        @stat = @seq.record
-      end
       # Local mode
       module Local
         include CIAX::Exe::Local
@@ -58,6 +53,17 @@ module CIAX
 
         def run
           @thread = Threadx::Fork.new('Macro', 'seq', @id) { @seq.play }
+          self
+        end
+
+        private
+
+        def _ext_local_driver
+          @seq = Sequencer.new(@cfg, &@submcr_proc)
+          @id = @seq.id
+          @int.def_proc { |ent| @seq.reply(ent.id) }
+          @stat = @seq.record
+          @mode = 'DRV'
           self
         end
       end

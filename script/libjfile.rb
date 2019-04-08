@@ -31,23 +31,12 @@ module CIAX
         @cfile = base_name # Current file name
         @tag_list = TagList.new(@jsondir + __file_name('*'))
         @upd_procs.append(self, :file) { load }
-        upd
+        ___init_load
       end
 
-      # Use @preload (STDIN data) if exists
-      #  i.e. Initialy, data get from STDIN (@preload)
-      #       -> get id from @preload
-      #       -> make skeleton with dbi
-      #       -> deep_update by @preload
       def load(tag = nil)
-        if !tag && @preload
-          verbose { 'Loading from Preloading' }
-          deep_update(@preload)
-          @preload = nil
-        else
-          verbose { cfmt('Loading File %s', __file_name(tag)) }
-          deep_update(__read_json(tag))
-        end
+        verbose { cfmt('Loading File %s', __file_name(tag)) }
+        deep_update(__read_json(tag))
         cmt
       end
 
@@ -56,6 +45,21 @@ module CIAX
       end
 
       private
+
+      # Use @preload (STDIN data) if exists
+      #  i.e. Initialy, data get from STDIN (@preload)
+      #       -> get id from @preload
+      #       -> make skeleton with dbi
+      #       -> deep_update by @preload
+      def ___init_load
+        if @preload
+          verbose { 'Loading from Preloading' }
+          deep_update(@preload)
+          @preload = nil
+        else
+          load
+        end
+      end
 
       def __file_name(tag = nil)
         base_name(tag) + '.json'

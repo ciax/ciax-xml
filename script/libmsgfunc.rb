@@ -2,7 +2,6 @@
 # Common Module
 require 'libmsgdbg'
 require 'libmsgtime'
-require 'fileutils'
 require 'json'
 module CIAX
   ### Checking Methods ###
@@ -51,51 +50,15 @@ module CIAX
       data_err('NOT JSON')
     end
 
-    # Json read with contents conversion
-    def jread(jstr = nil)
-      return j2h(jstr) if jstr
-      data_err("No data in file(#{ARGV})") unless (jstr = gets(nil))
-      show('Getting Data from STDIN')
-      j2h(jstr)
-    end
-
     # Thread is main
     def fg?
       Thread.current == Thread.main
-    end
-
-    def xmlfiles(type)
-      Dir.glob("#{__dir__}/../#{type}-*.xml").map { |f| File.absolute_path(f) }
-    end
-
-    def v1cfgdir
-      "#{__dir__}/../config-v1"
     end
 
     # For information (e.g. macro)
     def show_fg(str = "\n")
       print(str) if fg?
       self
-    end
-
-    # Make Var dir if not exist
-    def vardir(subdir)
-      dir = "#{ENV['HOME']}/.var/#{subdir}/"
-      FileUtils.mkdir_p(dir)
-      dir
-    end
-
-    # File feature
-    def loadfile(fname)
-      data_err("Cant read (#{fname})") unless test('r', fname)
-      warning('File empty (%s)', fname) unless test('s', fname)
-      File.open(fname) do |f|
-        verbose { "Loading file [#{fname}](#{f.size})" }
-        f.flock(::File::LOCK_SH)
-        f.read
-      end
-    rescue Errno::ENOENT
-      verbose { "  -- no json file (#{fname})" }
     end
 
     # Encode/Decode base64
@@ -105,14 +68,6 @@ module CIAX
 
     def dec64(ascii)
       ascii.unpack('m').first
-    end
-
-    # OK for bad file
-    def jload(fname)
-      jread(loadfile(fname))
-    rescue InvalidData
-      show_err
-      Hashx.new
     end
 
     # Git administration

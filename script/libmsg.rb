@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # Common Module
-require 'libmsgfunc'
+require 'libmsgfile'
 require 'libmsgmod'
 # CIAX
 module CIAX

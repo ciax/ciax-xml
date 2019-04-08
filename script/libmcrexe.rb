@@ -56,15 +56,12 @@ module CIAX
           self
         end
 
-        private
-
-        def _ext_local_driver
+        def ext_local
           @seq = Sequencer.new(@cfg, &@submcr_proc)
           @id = @seq.id
           @int.def_proc { |ent| @seq.reply(ent.id) }
           @stat = @seq.record
-          @mode = 'DRV'
-          self
+          super
         end
       end
     end

@@ -48,12 +48,12 @@ module CIAX
       module Shell
         include CIAX::ExeDic::Shell
 
-        def ext_local_shell
+        def ext_shell
           super
           @cfg[:jump_site] = @jumpgrp
           @jumpgrp.ext_grp.merge_forms(@cfg[:db].disp_dic)
           @current = @run_list.first
-          @sub_dic.ext_local_shell if @sub_dic
+          @sub_dic.ext_shell if @sub_dic
           self
         end
 

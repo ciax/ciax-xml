@@ -29,7 +29,7 @@ module CIAX
       private
 
       # Mode Extention by Option
-      def _ext_local_shell
+      def _ext_shell
         super
         @prompt_proc = proc { opt_listing(@int.valid_keys) }
         @cobj.loc.add_view

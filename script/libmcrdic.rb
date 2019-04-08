@@ -87,11 +87,11 @@ module CIAX
       module Shell
         include CIAX::ExeDic::Shell
 
-        def ext_local_shell
+        def ext_shell
           super
           @cfg[:jump_mcr] = @jumpgrp
           _dic.each { |id, mobj| put(id, mobj) }
-          @sub_dic.ext_local_shell
+          @sub_dic.ext_shell
           self
         end
 

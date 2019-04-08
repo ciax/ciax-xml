@@ -26,7 +26,7 @@ module CIAX
 
       private
 
-      def _ext_local_shell
+      def _ext_shell
         super.input_conv_set
         @cfg[:output] = View.new(@stat)
         @cobj.loc.add_view

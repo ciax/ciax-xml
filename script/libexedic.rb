@@ -19,13 +19,13 @@ module CIAX
     end
 
     def shell
-      ext_local_shell.shell
+      ext_shell.shell
     end
 
-    def ext_local_shell
+    def ext_shell
       smod = context_module('Shell')
       return self if is_a?(smod)
-      extend(smod).ext_local_shell
+      extend(smod).ext_shell
     end
 
     # Shell module
@@ -36,7 +36,7 @@ module CIAX
       end
 
       # atrb should have [:jump_class] (Used in Local::Jump::Group)
-      def ext_local_shell
+      def ext_shell
         verbose { 'Initiate ExeDic Shell' }
         @cfg[:jump_class] = context_module('Jump')
         @jumpgrp = CmdTree::Local::Jump::Group.new(@cfg)

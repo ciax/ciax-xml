@@ -7,15 +7,15 @@ module CIAX
   module Mcr
     # Macro Manager
     class Man
-      def _ext_local_shell
-        extend(Shell).ext_local_shell
+      def _ext_shell
+        extend(Shell).ext_shell
       end
 
       # Macro Shell
       module Shell
         include Exe::Shell
         # cfg should have [:jump_groups]
-        def ext_local_shell
+        def ext_shell
           super
           verbose { 'Initiate Mcr Shell' }
           ___init_stat

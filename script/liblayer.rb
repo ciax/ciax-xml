@@ -18,7 +18,7 @@ module CIAX
     # Shell module which is Layer specific
     module Shell
       include CIAX::ExeDic::Shell
-      def ext_local_shell
+      def ext_shell
         super
         @cfg[:jump_layer] = @jumpgrp
         _dic.each do |id, _obj|

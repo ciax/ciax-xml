@@ -52,7 +52,7 @@ module CIAX
     end
 
     #  Modes
-    #   Shell  : ext_local_shell
+    #   Shell  : ext_shell
     #       Add shell feature
     #   Remote : ext_remote
     #       Access via udp/html
@@ -68,7 +68,7 @@ module CIAX
     #           Add network command input feature
 
     def shell
-      _ext_local_shell.shell
+      _ext_shell.shell
     end
 
     private
@@ -94,10 +94,10 @@ module CIAX
       extend(context_module('Local')).ext_local
     end
 
-    def _ext_local_shell
+    def _ext_shell
       require 'libsh'
       return self if is_a?(Shell)
-      extend(Shell).ext_local_shell
+      extend(Shell).ext_shell
     end
 
     # Sub methods for Initialize

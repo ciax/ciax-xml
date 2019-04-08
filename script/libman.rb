@@ -37,7 +37,7 @@ module CIAX
       private
 
       # Overridden by libmansh
-      def _ext_local_shell
+      def _ext_shell
         super
         @cobj.loc.add_view
         @cfg[:output] = RecView.new(@stat)

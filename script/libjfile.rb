@@ -52,7 +52,9 @@ module CIAX
       #       -> make skeleton with dbi
       #       -> deep_update by @preload
       def ___init_load
-        deep_update(jload(@jsondir + __file_name))
+        fname = @jsondir + __file_name
+        return self unless test('r', fname)
+        deep_update(jload(fname))
       end
 
       def __file_name(tag = nil)

@@ -52,13 +52,7 @@ module CIAX
       #       -> make skeleton with dbi
       #       -> deep_update by @preload
       def ___init_load
-        if @preload
-          verbose { 'Loading from Preloading' }
-          deep_update(@preload)
-          @preload = nil
-        else
-          load
-        end
+        deep_update(jload(@jsondir + __file_name))
       end
 
       def __file_name(tag = nil)

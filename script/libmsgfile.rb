@@ -34,16 +34,20 @@ module CIAX
     end
 
     # Json read with contents conversion
+    # Invalid json str including nil gives error
     def jread(jstr = nil)
       return j2h(jstr) if jstr
       data_err("No data in file(#{ARGV})") unless (jstr = gets(nil))
       show('Getting Data from STDIN')
-      j2h(jstr)
+      @preload = j2h(jstr)
     end
 
     # OK for bad file
     def jload(fname)
-      jread(loadfile(fname))
+      return j2h(loadfile(fname)) unless (res = @preload)
+      verbose { 'Loading from Preloading' }
+      @preload = nil
+      res
     rescue InvalidData
       show_err
       Hashx.new

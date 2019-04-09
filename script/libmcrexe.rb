@@ -14,15 +14,18 @@ module CIAX
         super
         verbose { 'Initiate New Macro' }
         ___init_cmd
-        @submcr_proc = submcr_proc
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
         @cobj.get('interrupt').def_proc { interrupt }
-        @stat = Record.new
-        _opt_mode
+        ___init_seq(submcr_proc)
       end
 
       def interrupt
         @thread.raise(Interrupt)
+        self
+      end
+
+      def run
+        @thread = Threadx::Fork.new('Macro', 'seq', @id) { @seq.play }
         self
       end
 
@@ -44,25 +47,11 @@ module CIAX
         @cfg[:valid_keys] = @int.valid_keys.clear
       end
 
-      # Local mode
-      module Local
-        include CIAX::Exe::Local
-        def self.extended(obj)
-          Msg.type?(obj, Exe)
-        end
-
-        def run
-          @thread = Threadx::Fork.new('Macro', 'seq', @id) { @seq.play }
-          self
-        end
-
-        def ext_local
-          @seq = Sequencer.new(@cfg, &@submcr_proc)
-          @id = @seq.id
-          @int.def_proc { |ent| @seq.reply(ent.id) }
-          @stat = @seq.record
-          super
-        end
+      def ___init_seq(submcr_proc)
+        @seq = Sequencer.new(@cfg, &submcr_proc)
+        @id = @seq.id
+        @int.def_proc { |ent| @seq.reply(ent.id) }
+        @stat = @seq.record
       end
     end
 

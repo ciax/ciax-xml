@@ -6,6 +6,7 @@ require 'libmansh'
 module CIAX
   module Mcr
     # ExeDic for Running Macro
+    # Local mode only
     class ExeDic < CIAX::ExeDic
       attr_reader :cfg, :sub_dic
       # @cfg should have [:sv_stat]

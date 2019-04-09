@@ -5,6 +5,7 @@ module CIAX
   # Macro Layer
   module Mcr
     # Record View (Front Page)
+    # Show part of RecArc and RecDic
     class RecView < Upd
       attr_reader :rec_arc
       def initialize(rec_arc, &get_proc)

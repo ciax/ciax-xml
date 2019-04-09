@@ -6,7 +6,7 @@ require 'libthreadx'
 module CIAX
   # Macro Layer
   module Mcr
-    # Macro Manager
+    # Macro Executor
     # Local mode only
     class Exe < Exe
       attr_reader :thread, :seq

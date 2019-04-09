@@ -104,9 +104,8 @@ module CIAX
       require 'libinsdb'
       odb = { options: 'rj', c: 'CSV output' }
       Opt::Get.new('[site] | < status_file', odb) do |opt, args|
-        stat = Status.new(args).ext_local
+        stat = Status.new(args).ext_local.ext_file
         view = View.new(stat)
-        stat.ext_local if STDIN.tty?
         stat.cmt
         puts opt[:c] ? view.to_csv : view.to_s
       end

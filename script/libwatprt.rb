@@ -98,10 +98,8 @@ module CIAX
       if __FILE__ == $PROGRAM_NAME
         require 'libinsdb'
         Opt::Get.new('[site] | < event_file', options: 'r') do |_opt, args|
-          event = Event.new(args.shift)
-          wview = View.new(event).ext_prt
-          event.ext_local if STDIN.tty?
-          puts wview
+          event = Event.new(args.shift).ext_local.ext_file
+          puts View.new(event).ext_prt
         end
       end
     end

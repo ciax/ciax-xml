@@ -82,7 +82,7 @@ module CIAX
       require 'libappstat'
       Opt::Get.new('[id]') do |_opt, args|
         dbi = Ins::Db.new.get(args.shift)
-        stat = App::Status.new(dbi).ext_local
+        stat = App::Status.new(dbi).ext_local.ext_file
         tbl = Table.new('app', stat)
         puts stat
         puts tbl.create

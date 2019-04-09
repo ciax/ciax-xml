@@ -133,7 +133,7 @@ module CIAX
       if __FILE__ == $PROGRAM_NAME
         require 'libfrmstat'
         Opt::Get.new('[site] | < field_file') do |_opt, args|
-          field = Frm::Field.new(args).ext_local
+          field = Frm::Field.new(args).ext_local.ext_file
           stat = Status.new(field[:id], field)
           puts stat.ext_local.ext_conv.cmt
         end

@@ -29,7 +29,7 @@ module CIAX
 
       def ext_local
         @skeys.each do |ky|
-          self[ky].ext_local
+          self[ky].ext_local.ext_file
         end
         self
       end

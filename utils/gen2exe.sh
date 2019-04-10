@@ -15,7 +15,7 @@ loghead(){
     echo -en "[$(date +%D-%T)]% $@" >> $exelog
 }
 doexe(){
-    eval $* 2>&1
+    eval $* 2>> $exelog
     code="$?"
 }
 setexit(){

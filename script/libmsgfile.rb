@@ -35,6 +35,7 @@ module CIAX
 
     # Json read with contents conversion
     # Invalid json str including nil gives error
+    #  Used for initial reading
     def jread(jstr = nil)
       return j2h(jstr) if jstr
       data_err("No data in file(#{ARGV})") unless (jstr = gets(nil))
@@ -43,6 +44,7 @@ module CIAX
     end
 
     # OK for bad file
+    #  Used for jverify() input
     def jload(fname)
       return j2h(loadfile(fname)) unless (res = @preload)
       verbose { 'Loading from Preloading' }

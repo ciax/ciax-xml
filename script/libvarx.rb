@@ -44,13 +44,11 @@ module CIAX
     end
 
     # With Format Version check
-    def jverify(hash = {}, fname = nil)
-      fname = " of [#{fname}]" if fname
-      __chk_ver("format#{fname}", hash)
+    def jverify(hash = {})
+      __chk_ver('format', hash)
       # For back compatibility
       hash[:data_ver] = hash.delete(:ver) if hash.key?(:ver)
-      __chk_ver("data#{fname}", hash)
-      hash
+      __chk_ver('data', hash) ? hash : {}
     end
 
     private
@@ -69,8 +67,10 @@ module CIAX
       key = "#{type}_ver".to_sym
       org = self[key]
       inc = hash[key]
-      return if inc == org
-      data_err(cfmt('File %s version mismatch <%s> for [%s]', type, inc, org))
+      verbose { cfmt('Checking %s inc<%s> vs org[%s]', key, inc, org) }
+      return true if inc == org
+      warning('File %s version mismatch <%s> for [%s]', type, inc, org)
+      false
     end
 
     # Local mode

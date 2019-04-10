@@ -54,7 +54,7 @@ module CIAX
       def ___init_load
         fname = @jsondir + __file_name
         return self unless test('r', fname)
-        deep_update(jload(fname))
+        deep_update(__veri_load(fname))
       end
 
       def __file_name(tag = nil)
@@ -68,9 +68,13 @@ module CIAX
         nil
       end
 
+      def __veri_load(fname)
+        jverify(jload(fname))
+      end
+
       def __read_json(tag = nil)
         @cfile = ___chk_tag(tag)
-        jverify(jload(@jsondir + @cfile), @cfile)
+        __veri_load(@jsondir + @cfile)
       rescue CommError
         show_err
         self

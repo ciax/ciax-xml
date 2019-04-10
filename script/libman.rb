@@ -40,7 +40,7 @@ module CIAX
       def _ext_shell
         super
         @cobj.loc.add_view
-        @cfg[:output] = RecView.new(@stat)
+        @cfg[:output] = RecArc::View.new(@stat)
         @prompt_proc = proc do
           @int_par.def_par
           ''

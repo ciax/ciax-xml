@@ -10,7 +10,7 @@ module CIAX
 
       # type of usage: shell/command line
       # type of semantics: execution/test
-      def ext_local_driver
+      def ext_driver
         ___init_log_mode
         ___init_processor_save
         ___init_processor_load

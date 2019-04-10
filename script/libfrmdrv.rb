@@ -9,7 +9,7 @@ module CIAX
       module Driver
         include CIAX::Exe::Driver
 
-        def ext_local_driver
+        def ext_driver
           super
           ___init_stream
           ___init_processor_ext

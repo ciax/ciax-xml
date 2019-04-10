@@ -75,15 +75,15 @@ module CIAX
 
         private
 
-        def _ext_local_test
+        def _ext_test
           @cobj.rem.ext.cfg[:def_msg] = 'TEST'
           super
         end
 
-        def _ext_local_driver
+        def _ext_driver
           super
           require 'libfrmdrv'
-          extend(Driver).ext_local_driver
+          extend(Driver).ext_driver
         end
       end
     end

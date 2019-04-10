@@ -12,7 +12,7 @@ module CIAX
 
         # type of usage: shell/command line
         # type of semantics: execution/test
-        def ext_local_driver
+        def ext_driver
           super
           return self unless @sub
           @stat.ext_conv

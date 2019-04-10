@@ -10,7 +10,7 @@ module CIAX
           Msg.type?(obj, Exe)
         end
 
-        def ext_local_driver
+        def ext_driver
           @stat.ext_conv
           # @stat[:int] is overwritten by initial loading
           @sub.batch_interrupt = @stat.get(:int)

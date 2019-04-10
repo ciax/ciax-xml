@@ -58,9 +58,9 @@ module CIAX
     #       Access via udp/html
     #   Local  : ext_local
     #       Manipulates memory
-    #     Local Test   : ext_local_test
+    #     Local Test   : ext_test
     #         Access to local file (read only)
-    #     Local Driver : ext_local_driver
+    #     Local Driver : ext_driver
     #         Access to local file (R/W)
     #       Local log     : ext_local_log
     #           Add logging feature to local file
@@ -134,7 +134,7 @@ module CIAX
         Msg.type?(obj, Exe)
       end
 
-      # Local operation included in ext_local_test, ext_local_driver
+      # Local operation included in ext_test, ext_driver
       # (non_client)
       def ext_local
         @stat.ext_local.ext_file
@@ -152,19 +152,19 @@ module CIAX
 
       # Option handling
       def opt_mode
-        @opt.drv? ? _ext_local_driver : _ext_local_test
+        @opt.drv? ? _ext_driver : _ext_test
       end
 
       private
 
       # No save any data
-      def _ext_local_test
+      def _ext_test
         @mode = 'TEST'
         self
       end
 
       # Generate and Save Data
-      def _ext_local_driver
+      def _ext_driver
         @mode = 'DRV'
         @stat.ext_save
         self

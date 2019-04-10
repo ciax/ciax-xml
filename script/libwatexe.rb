@@ -63,15 +63,15 @@ module CIAX
 
         private
 
-        def _ext_local_test
+        def _ext_test
           @post_exe_procs << proc { @stat.update? }
           super
         end
 
-        def _ext_local_driver
+        def _ext_driver
           super
           require 'libwatdrv'
-          extend(Driver).ext_local_driver
+          extend(Driver).ext_driver
         end
       end
     end

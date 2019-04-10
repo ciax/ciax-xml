@@ -79,7 +79,7 @@ module CIAX
 
         private
 
-        def _ext_local_test
+        def _ext_test
           @cobj.rem.ext.def_proc do |ent|
             @stat[:time] = now_msec
             ent.msg = ent[:batch].inspect
@@ -87,10 +87,10 @@ module CIAX
           super
         end
 
-        def _ext_local_driver
+        def _ext_driver
           super
           require 'libappdrv'
-          extend(Driver).ext_local_driver
+          extend(Driver).ext_driver
         end
 
         # Initiate procs

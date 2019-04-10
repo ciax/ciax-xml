@@ -70,7 +70,7 @@ module CIAX
 
         private
 
-        def _ext_local_driver
+        def _ext_driver
           super
           @cfg[:cid] = 'manager'
           @mode = 'DRY' if @opt.dry?

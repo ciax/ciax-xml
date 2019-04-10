@@ -22,6 +22,11 @@ module CIAX
       ext_local_shell.shell
     end
 
+    def run
+      @sub_dic.run
+      self
+    end
+
     def ext_local_shell
       smod = context_module('Shell')
       return self if is_a?(smod)

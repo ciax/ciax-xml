@@ -24,9 +24,8 @@ module CIAX
         dbi = @cfg[:dbi]
         ___arc_refresh(dbi)
         ___web_select(dbi)
-        @sub_dic.run
         get('man').run
-        self
+        super
       end
 
       # obsolete, was used for RecDic@cache

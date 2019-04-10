@@ -76,9 +76,9 @@ module CIAX
           @sv_stat.ext_local.ext_file.ext_save.ext_log
           self
         end
-        
+
         private
-        
+
         def _ext_local_test
           @cobj.rem.ext.def_proc do |ent|
             @stat[:time] = now_msec

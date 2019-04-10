@@ -65,7 +65,7 @@ module CIAX
         end
 
         # Mode Extension by Option
-        def _ext_local
+        def ext_local
           ___init_proc_set
           ___init_proc_del
           super

@@ -12,7 +12,7 @@ exelog=~/.var/gen2log.txt
 [ -f $exit ] || echo "0" > $exit
 [ -f $pid ] || touch $pid
 loghead(){
-    echo -en "[$(date +%D-%T)]% $@" >> $exelog
+    echo -e "[$(date +%D-%T)]% $@" >> $exelog
 }
 doexe(){
     eval $* 2>> $exelog

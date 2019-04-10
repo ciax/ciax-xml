@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'librecview'
+require 'librecarcview'
 require 'libcmdremote'
 
 module CIAX

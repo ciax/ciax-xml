@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'libexe'
 require 'libmcrcmd'
-require 'librecview'
+require 'librecarcview'
 require 'libwatdic' # deprecated
 
 module CIAX

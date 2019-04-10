@@ -39,7 +39,7 @@ module CIAX
 
       def ___chkupd(jstr, fname)
         lt = self[:time]
-        deep_update(jverify(jstr, fname))
+        deep_update(jverify(j2h(jstr), fname))
         cmt if self[:time] > lt
       end
 

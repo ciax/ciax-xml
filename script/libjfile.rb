@@ -41,6 +41,7 @@ module CIAX
       end
 
       def ext_save
+        return self if is_a?(JSave)
         extend(JSave).ext_save
       end
 

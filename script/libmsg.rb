@@ -75,7 +75,7 @@ module CIAX
 
     def __make_msg(title, c = nil)
       return unless title
-      ts = ___make_head + ':'
+      ts = __make_head + ':'
       ts << (c ? Msg.colorize(title.to_s, c) : title.to_s)
     end
 
@@ -90,7 +90,7 @@ module CIAX
       cary << [cls, Msg.cls_color(cls)]
     end
 
-    def ___make_head
+    def __make_head
       Msg.indent(Msg.ver_indent) + ___head_ary.map do |str, color|
         Msg.colorize(str.to_s, color)
       end.join(':')

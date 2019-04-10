@@ -23,6 +23,11 @@ setexit(){
     echo "$code" > $exit
     echo " [exitcode=$code]" >> $exelog
 }
+updexit(){
+    code=$(< $exit)
+    [ "$code" = "0" ] || echo "0" > $exit
+    echo $code
+}
 bglog(){
     loghead "$@" "(pid=$$)\n"
     echo "$$" > $pid
@@ -53,8 +58,7 @@ chkbg(){
 }
 case "$1" in
     '')
-        cat $exit
-        echo "0" > $exit
+        updexit
         ;;
     -b)
         shift

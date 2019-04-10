@@ -51,17 +51,17 @@ module CIAX
           Msg.type?(obj, Exe)
         end
 
-        def run
-          @thread = Threadx::Fork.new('Macro', 'seq', @id) { @seq.play }
-          self
-        end
-
         def ext_local
           @seq = Sequencer.new(@cfg, &@submcr_proc)
           @id = @seq.id
           @int.def_proc { |ent| @seq.reply(ent.id) }
           @stat = @seq.record
           super
+        end
+
+        def run
+          @thread = Threadx::Fork.new('Macro', 'seq', @id) { @seq.play }
+          self
         end
       end
     end

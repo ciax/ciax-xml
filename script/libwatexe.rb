@@ -61,6 +61,8 @@ module CIAX
           super
         end
 
+        private
+
         def _ext_local_test
           @post_exe_procs << proc { @stat.update? }
           super

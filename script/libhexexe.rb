@@ -37,11 +37,6 @@ module CIAX
           Msg.type?(obj, Exe)
         end
 
-        def _ext_local_driver
-          @stat.ext_log
-          self
-        end
-
         # Mode Extension by Option
         def run
           # Specific setting must be done after super to override them
@@ -50,6 +45,13 @@ module CIAX
           end
           @server_output_proc = proc { @stat.to_x }
           super
+        end
+
+        private
+
+        def _ext_local_driver
+          @stat.ext_log
+          self
         end
       end
     end

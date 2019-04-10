@@ -17,7 +17,6 @@ module CIAX
         @mode += ':SV'
         @cobj.rem.sys.add_empty
         @server_input_proc ||= ___init_input
-        @sv_stat.ext_local.ext_file.ext_save.ext_log
         @server_output_proc ||= proc { JSON.dump(@sv_stat) }
         ___startup
         self

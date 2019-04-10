@@ -1,31 +1,48 @@
 #!/usr/bin/env ruby
-require 'libstepproc'
-require 'libwatdic'
+require 'libmsg'
 
 module CIAX
   # Macro Layer
   module Mcr
     # Element of Record
     class Step
-      # Step condition module
-      module Condition
-        private
+      # Step condition class
+      class Condition
+        include Msg
+        def initialize(cond)
+          @conditions = type?(cond, Array)
+        end
 
-        def __get_real(stat, h)
-          warning('No form specified') unless h[:form]
+        # Get condition result Array
+        def get_cond(stats)
+          @conditions.map do |ref|
+            ___condition(stats[ref[:site]], ref)
+          end
+        end
+
+        # Getting Scanning sites
+        def sites
+          @conditions.map { |ref| ref[:site] }.uniq
+        end
+
+        # Getting real value in [data:id]
+        def pick_val(stat, ref)
+          warning('No form specified') unless ref[:form]
           # form = 'data', 'class' or 'msg' in Status
-          form = (h[:form] || :data).to_sym
-          var = h[:var]
+          form = (ref[:form] || :data).to_sym
+          var = ref[:var]
           data = stat[form]
           warning('No [%s] in Status[%s]', var, form) unless data.key?(var)
           data[var]
         end
 
-        def ___condition(stat, h)
+        private
+
+        def ___condition(stat, ref)
           c = {}
-          %i(site var form cmp cri skip).each { |k| c[k] = h[k] }
+          %i(site var form cmp cri skip).each { |k| c[k] = ref[k] }
           unless c[:skip]
-            real = __get_real(stat, c)
+            real = pick_val(stat, c)
             res = method('_ope_' + c[:cmp]).call(c[:cri], real)
             c.update(real: real, res: res)
             verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }

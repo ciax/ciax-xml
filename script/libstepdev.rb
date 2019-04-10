@@ -16,7 +16,6 @@ module CIAX
       end
       # Check Device Status
       module Device
-        include Condition
         def self.extended(obj)
           Msg.type?(obj, Processor)
         end
@@ -25,9 +24,9 @@ module CIAX
         def ext_local_dev(dev_dic)
           @dev_dic = type?(dev_dic, Wat::ExeDic)
           # App::Exe dic used in this Step
-          if (@condition = delete(:cond))
-            sites = @condition.map { |h| h[:site] }.uniq
-            @exes = sites.map { |s| @dev_dic.get(s) }
+          if (condb = delete(:cond))
+            @condition = Condition.new(condb)
+            @exes = @condition.sites.map { |s| @dev_dic.get(s) }
           end
           self
         end
@@ -44,9 +43,10 @@ module CIAX
           _show_res(`#{self[:val]}`.chomp)
         end
 
+        # step has site,var,form
         def select_args
           stat = @dev_dic.get(self[:site]).sub.stat
-          super(__get_real(stat, self))
+          super(@condition.pick_val(stat, self))
         end
 
         # Conditional judgment section
@@ -99,10 +99,7 @@ module CIAX
         end
 
         def __all_conds?
-          stats = ___scan
-          conds = @condition.map do |h|
-            ___condition(stats[h[:site]], h)
-          end
+          conds = @condition.get_cond(___scan)
           self[:conditions] = conds
           conds.all? { |h| h[:skip] || h[:res] }
         end

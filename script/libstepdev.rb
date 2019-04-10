@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'libstepcond'
 require 'libstepproc'
 require 'libwatdic'
 
@@ -13,41 +14,6 @@ module CIAX
           extend(Device).ext_local_dev(dev_dic)
         end
       end
-
-      # Step condition module
-      module Condition
-        private
-
-        def ___condition(stat, h)
-          c = {}
-          %i(site var form cmp cri skip).each { |k| c[k] = h[k] }
-          unless c[:skip]
-            real = __get_real(stat, c)
-            res = method('_ope_' + c[:cmp]).call(c[:cri], real)
-            c.update(real: real, res: res)
-            verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
-          end
-          c
-        end
-
-        # Operators
-        def _ope_equal(a, b)
-          a == b
-        end
-
-        def _ope_not(a, b)
-          a != b
-        end
-
-        def _ope_match(a, b)
-          /#{a}/ =~ b ? true : false
-        end
-
-        def _ope_unmatch(a, b)
-          /#{a}/ !~ b ? true : false
-        end
-      end
-
       # Check Device Status
       module Device
         include Condition
@@ -55,6 +21,7 @@ module CIAX
           Msg.type?(obj, Processor)
         end
 
+        # exes: eobj list that is used for macro
         def ext_local_dev(dev_dic)
           @dev_dic = type?(dev_dic, Wat::ExeDic)
           # App::Exe dic used in this Step
@@ -146,16 +113,6 @@ module CIAX
             st = hash[exe.id] = exe.sub.stat.latest
             verbose { "Scanning #{exe.id} (#{elps_sec(st[:time])})" }
           end
-        end
-
-        def __get_real(stat, h)
-          warning('No form specified') unless h[:form]
-          # form = 'data', 'class' or 'msg' in Status
-          form = (h[:form] || :data).to_sym
-          var = h[:var]
-          data = stat[form]
-          warning('No [%s] in Status[%s]', var, form) unless data.key?(var)
-          data[var]
         end
       end
     end

@@ -20,13 +20,12 @@ module CIAX
       end
 
       def load(tag = nil)
-        fname = base_name(tag)
-        url = format('http://%s%s%s.json', @host, @dir, fname)
+        url = format('http://%s%s%s.json', @host, @dir, base_name(tag))
         jstr = ___read_url(url)
         if jstr.empty?
           warning(' -- json url file (%s) is empty at loading', url)
         else
-          ___chkupd(jstr, fname)
+          ___chkupd(jstr)
         end
         self
       end
@@ -37,9 +36,9 @@ module CIAX
 
       private
 
-      def ___chkupd(jstr, fname)
+      def ___chkupd(jstr)
         lt = self[:time]
-        deep_update(jverify(jstr, fname))
+        deep_update(jverify(j2h(jstr)))
         cmt if self[:time] > lt
       end
 

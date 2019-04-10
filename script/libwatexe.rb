@@ -56,10 +56,12 @@ module CIAX
         end
 
         # Mode Extention by Option
-        def _ext_local
+        def ext_local
           @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
           super
         end
+
+        private
 
         def _ext_local_test
           @post_exe_procs << proc { @stat.update? }

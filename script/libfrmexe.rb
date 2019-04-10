@@ -56,7 +56,7 @@ module CIAX
         end
 
         # Mode Extension by Option
-        def _ext_local
+        def ext_local
           @frame.ext_local.ext_file
           @cobj.get('set').def_proc do |ent|
             key, val = ent.par
@@ -66,6 +66,14 @@ module CIAX
           end
           super
         end
+
+        def run
+          super
+          @sv_stat.ext_local.ext_file.ext_save.ext_log
+          self
+        end
+
+        private
 
         def _ext_local_test
           @cobj.rem.ext.cfg[:def_msg] = 'TEST'

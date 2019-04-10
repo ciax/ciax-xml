@@ -68,6 +68,8 @@ module CIAX
           Msg.type?(obj, Man)
         end
 
+        private
+
         def _ext_local_driver
           super
           @cfg[:cid] = 'manager'

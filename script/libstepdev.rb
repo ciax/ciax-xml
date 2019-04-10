@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
-require 'libstepcond'
 require 'libstepproc'
+require 'libstepcond'
 require 'libwatdic'
 
 module CIAX

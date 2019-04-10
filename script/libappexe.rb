@@ -65,11 +65,19 @@ module CIAX
         end
 
         # Mode Extension by Option
-        def _ext_local
+        def ext_local
           ___init_proc_set
           ___init_proc_del
           super
         end
+
+        def run
+          super
+          @sv_stat.ext_local.ext_file.ext_save.ext_log
+          self
+        end
+
+        private
 
         def _ext_local_test
           @cobj.rem.ext.def_proc do |ent|

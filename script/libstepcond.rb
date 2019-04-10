@@ -9,20 +9,19 @@ module CIAX
       # Step condition class
       class Condition
         include Msg
+        attr_reader :exes
         def initialize(cond)
           @conditions = type?(cond, Array)
+          sites = @conditions.map { |ref| ref[:site] }.uniq
+          @exes = sites.map { |id| type?(yield(id), Wat::Exe) }
         end
 
-        # Get condition result Array
-        def get_cond(stats)
+        # Get condition result Array with latest stat
+        def results
+          sdic = ___scan
           @conditions.map do |ref|
-            ___condition(stats[ref[:site]], ref)
+            ___condition(sdic[ref[:site]], ref)
           end
-        end
-
-        # Getting Scanning sites
-        def sites
-          @conditions.map { |ref| ref[:site] }.uniq
         end
 
         # Getting real value in [data:id]
@@ -48,6 +47,14 @@ module CIAX
             verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }
           end
           c
+        end
+
+        # Get Status from Devices via http
+        def ___scan
+          @exes.each_with_object({}) do |exe, hash|
+            st = hash[exe.id] = exe.sub.stat.latest
+            verbose { "Scanning #{exe.id} (#{elps_sec(st[:time])})" }
+          end
         end
 
         # Operators

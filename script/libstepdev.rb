@@ -25,8 +25,7 @@ module CIAX
           @dev_dic = type?(dev_dic, Wat::ExeDic)
           # App::Exe dic used in this Step
           if (condb = delete(:cond))
-            @condition = Condition.new(condb)
-            @exes = @condition.sites.map { |s| @dev_dic.get(s) }
+            @condition = Condition.new(condb) { |s| @dev_dic.get(s) }
           end
           self
         end
@@ -74,12 +73,12 @@ module CIAX
         # obj.stat -> looking at Status
 
         def active?
-          @exes.all? { |e| e.stat.active? }
+          @condition.exes.all? { |e| e.stat.active? }
         end
 
         # Blocking during busy. (for interlock check)
         def wait_ready_all
-          @exes.each(&:wait_ready)
+          @condition.exes.each(&:wait_ready)
           self
         end
 
@@ -87,7 +86,7 @@ module CIAX
           var ||= self[:retry].to_i - self[:count].to_i
           return super(var) unless defined? yield
           super(var) do
-            @exes.all? { |e| e.stat.updating? }
+            @condition.exes.all? { |e| e.stat.updating? }
             yield
           end
         end
@@ -99,17 +98,9 @@ module CIAX
         end
 
         def __all_conds?
-          conds = @condition.get_cond(___scan)
+          conds = @condition.results
           self[:conditions] = conds
           conds.all? { |h| h[:skip] || h[:res] }
-        end
-
-        # Get status from Devices via http
-        def ___scan
-          @exes.each_with_object({}) do |exe, hash|
-            st = hash[exe.id] = exe.sub.stat.latest
-            verbose { "Scanning #{exe.id} (#{elps_sec(st[:time])})" }
-          end
         end
       end
     end

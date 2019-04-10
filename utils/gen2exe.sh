@@ -15,6 +15,7 @@ loghead(){
     echo -e "[$(date +%D-%T)]% $@" >> $exelog
 }
 doexe(){
+    # Error output should be separated
     eval $* 2>> $exelog
     code="$?"
 }
@@ -51,7 +52,10 @@ chkbg(){
     return $code
 }
 case "$1" in
-    '') cat $exit;;
+    '')
+        cat $exit
+        echo "0" > $exit
+        ;;
     -b)
         shift
         if [ "$1" ] ; then

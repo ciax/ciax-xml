@@ -60,9 +60,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      Opt::Get.new('< record_file', options: 'r') do
-        raise(InvalidARGS, 'No Input File') if STDIN.tty?
-        puts Record.new.jmerge
+      Opt::Get.new('[record_id] | < record_file', options: 'r') do |opt,args|
+        puts Record.new(args)
       end
     end
   end

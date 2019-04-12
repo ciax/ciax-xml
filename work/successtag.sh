@@ -7,6 +7,6 @@ br=$(git branch --contains)
 tag="Success!${PROJ^^}@$HOSTNAME($date)-${br#* }"
 git check-ref-format "$tag" || { echo "Invalid format"; exit 1; }
 echo "$tag"
-[ "$s" ] || exit
+[ "$s" ] || { echo "successtag (-s: real setting)"; exit; }
 git tag $tag
 git push --tag

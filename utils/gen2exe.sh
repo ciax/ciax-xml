@@ -12,15 +12,21 @@ exelog=~/.var/gen2log.txt
 [ -f $exit ] || echo "0" > $exit
 [ -f $pid ] || touch $pid
 loghead(){
-    echo -en "[$(date +%D-%T)]% $@" >> $exelog
+    echo -e "[$(date +%D-%T)]% $@" >> $exelog
 }
 doexe(){
-    eval $* 2>&1
+    # Error output should be separated
+    eval $* 2>> $exelog
     code="$?"
 }
 setexit(){
     echo "$code" > $exit
     echo " [exitcode=$code]" >> $exelog
+}
+updexit(){
+    code=$(< $exit)
+    [ "$code" = "0" ] || echo "0" > $exit
+    echo $code
 }
 bglog(){
     loghead "$@" "(pid=$$)\n"
@@ -51,7 +57,9 @@ chkbg(){
     return $code
 }
 case "$1" in
-    '') cat $exit;;
+    '')
+        updexit
+        ;;
     -b)
         shift
         if [ "$1" ] ; then

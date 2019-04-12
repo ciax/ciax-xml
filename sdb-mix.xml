@@ -27,7 +27,7 @@
       <numeric class="warn" msg="NB2315" tolerance="0.1">8</numeric>
       <numeric class="warn" msg="NB2095" tolerance="0.1">9</numeric>
       <numeric class="warn" msg="NB1550" tolerance="0.1">10</numeric>
-      <numeric class="warn" msg="HOLE" tolerance="0.1">11</numeric>
+      <numeric class="warn" msg="NB2085" tolerance="0.1">11</numeric>
     </table>
     <table id="t3">
       <numeric class="warn" msg="VPH_H" tolerance="0.1">0</numeric>
